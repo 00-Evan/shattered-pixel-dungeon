@@ -207,7 +207,12 @@ public class AboutScene extends PixelScene {
 				"_Pack: Onomatopoeia_ by _Adam N_\n" +
 				"_Pack: Watermelon_ by _lolamadeus_\n" +
 				"_metal chain_ by _Mediapaja2009_\n" +
-				"_Pack: Sword Clashes Pack_ by _JohnBuhr_\n",
+				"_Pack: Sword Clashes Pack_ by _JohnBuhr_\n" +
+				"_Pack: Metal Clangs and Pings_ by _wilhellboy_\n" +
+				"_Pack: Stabbing Stomachs & Crushing Skulls_ by _TheFilmLook_\n" +
+				"_Sheep bleating_ by _zachrau_\n" +
+				"_Lemon,Juicy,Squeeze,Fruit.wav_ by _Filipe Chagas_\n" +
+				"_Lemon,Squeeze,Squishy,Fruit.wav_ by _Filipe Chagas_",
 				"www.freesound.org",
 				"https://www.freesound.org");
 		freesound.setRect(transifex.left()-10, transifex.bottom() + 8, colWidth+20, 0);

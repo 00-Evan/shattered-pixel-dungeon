@@ -1103,10 +1103,10 @@ public class Hero extends Char {
 			flashIntensity = Math.min(1/3f, flashIntensity); //cap intensity at 1/3
 			GameScene.flash( (int)(0xFF*flashIntensity) << 16 );
 			if (isAlive()) {
-				if (flashIntensity >= 1/3f) {
-					Sample.INSTANCE.play(Assets.Sounds.HEALTH_CRITICAL);
+				if (flashIntensity >= 1/6f) {
+					Sample.INSTANCE.play(Assets.Sounds.HEALTH_CRITICAL, 1/3f + flashIntensity * 2f);
 				} else {
-					Sample.INSTANCE.play(Assets.Sounds.HEALTH_WARN, flashIntensity * 3f);
+					Sample.INSTANCE.play(Assets.Sounds.HEALTH_WARN, 1/3f + flashIntensity * 4f);
 				}
 			}
 		}
@@ -1598,6 +1598,8 @@ public class Hero extends Char {
 
 	@Override
 	public void move( int step ) {
+		boolean wasHighGrass = Dungeon.level.map[step] == Terrain.HIGH_GRASS;
+
 		super.move( step );
 		
 		if (!flying) {
@@ -1608,7 +1610,11 @@ public class Hero extends Char {
 			} else if (Dungeon.level.map[pos] == Terrain.GRASS
 					|| Dungeon.level.map[pos] == Terrain.EMBERS
 					|| Dungeon.level.map[pos] == Terrain.FURROWED_GRASS){
-				Sample.INSTANCE.play( Assets.Sounds.GRASS, 1, Random.Float( 0.96f, 1.05f ) );
+				if (step == pos && wasHighGrass) {
+					Sample.INSTANCE.play(Assets.Sounds.TRAMPLE, 1, Random.Float( 0.96f, 1.05f ) );
+				} else {
+					Sample.INSTANCE.play( Assets.Sounds.GRASS, 1, Random.Float( 0.96f, 1.05f ) );
+				}
 			} else {
 				Sample.INSTANCE.play( Assets.Sounds.STEP, 1, Random.Float( 0.96f, 1.05f ) );
 			}
