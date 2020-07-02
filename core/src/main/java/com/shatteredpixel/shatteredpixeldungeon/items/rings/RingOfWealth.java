@@ -179,11 +179,11 @@ public class RingOfWealth extends Ring {
 		if (roll < (0.6f - 0.04f * level)) {
 			latestDropTier = 1;
 			return genLowValueConsumable();
-		//30% chance + 2% per level. Starting from +15: 60%-2%*lvl
+		//30% chance + 2% per level. Starting from +15: 60%-2%*(lvl-15)
 		} else if (roll < (0.9f - 0.02f * level)) {
 			latestDropTier = 2;
 			return genMidValueConsumable();
-		//10% chance + 2% per level. Starting from +15: 40%+2%*lvl
+		//10% chance + 2% per level. Starting from +15: 40%+2%*(lvl-15)
 		} else {
 			latestDropTier = 3;
 			return genHighValueConsumable();
@@ -227,11 +227,11 @@ public class RingOfWealth extends Ring {
 	private static Item genHighValueConsumable(){
 		switch (Random.Int(4)){
 			case 0: default:
-				Item i = genLowValueConsumable();
+				Item i = genMidValueConsumable();
 				if (i instanceof Bomb){
 					return new Bomb.DoubleBomb();
 				} else {
-					return i.quantity(i.quantity() * 2);
+					return i.quantity(i.quantity()*2);
 				}
 			case 1:
 				return new StoneOfEnchantment();
@@ -249,13 +249,13 @@ public class RingOfWealth extends Ring {
 		switch (Random.Int(5)){
 			default: case 0: case 1:
 				Weapon w = Generator.randomWeapon(floorset);
-				if (!w.hasGoodEnchant() && Random.Int(10-level) == 0)   w.enchant();
+				if (!w.hasGoodEnchant() && Random.Int(10) < level)      w.enchant();
 				else if (w.hasCurseEnchant())                           w.enchant(null);
 				result = w;
 				break;
 			case 2:
 				Armor a = Generator.randomArmor(floorset);
-				if (!a.hasGoodGlyph() && Random.Int(10-level) == 0)     a.inscribe();
+				if (!a.hasGoodGlyph() && Random.Int(10) < level)        a.inscribe();
 				else if (a.hasCurseGlyph())                             a.inscribe(null);
 				result = a;
 				break;

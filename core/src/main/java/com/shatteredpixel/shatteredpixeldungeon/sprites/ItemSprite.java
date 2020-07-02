@@ -307,6 +307,10 @@ public class ItemSprite extends MovieClip {
 
 		visible = (heap == null || heap.seen);
 
+		if (emitter != null){
+			emitter.visible = visible;
+		}
+
 		if (dropInterval > 0){
 			shadowOffset -= speed.y * Game.elapsed * 0.8f;
 

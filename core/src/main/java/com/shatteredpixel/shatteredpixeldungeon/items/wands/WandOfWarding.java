@@ -68,7 +68,7 @@ public class WandOfWarding extends Wand {
 				return false;
 			}
 		} else {
-			if ((currentWardEnergy + 2) > maxWardEnergy){
+			if ((currentWardEnergy + 1) > maxWardEnergy){
 				GLog.w( Messages.get(this, "no_more_wards"));
 				return false;
 			}

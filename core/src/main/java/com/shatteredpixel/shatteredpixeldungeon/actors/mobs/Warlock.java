@@ -105,10 +105,8 @@ public class Warlock extends Mob implements Callback {
 		if (hit( this, enemy, true )) {
 			//TODO would be nice for this to work on ghost/statues too
 			if (enemy == Dungeon.hero && Random.Int( 2 ) == 0) {
-				if (enemy.buff( Degrade.class ) == null){
-					Sample.INSTANCE.play( Assets.Sounds.DEBUFF );
-				}
 				Buff.prolong( enemy, Degrade.class, Degrade.DURATION );
+				Sample.INSTANCE.play( Assets.Sounds.DEBUFF );
 			}
 			
 			int dmg = Random.NormalIntRange( 12, 18 );
