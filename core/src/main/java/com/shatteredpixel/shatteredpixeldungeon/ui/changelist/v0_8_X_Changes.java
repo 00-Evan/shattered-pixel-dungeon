@@ -66,6 +66,37 @@ public class v0_8_X_Changes {
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo( "", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo( "v0.8.1a", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.AUDIO), "Sound Effect Adjustments",
+				"_-_ The volume of debuffing, item collection, and dewdrop collection sounds has been adjusted.\n\n" +
+				"_-_ The grass trampling sound no longer layers ontop of the regular grass stepping sound.\n\n" +
+				"_-_ Adjusted the hitsounds for arrows and darts.\n" +
+				"_-_ Added pitch variance to the attack sounds for the bow and crossbow.\n\n" +
+				"_-_ Adjusted the warning sounds that play when the hero is injured.\n\n" +
+				"_-_ Adjusted the surprise attack sound to play better on phone speakers."));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_- The Wand of Frost_ can now stack chill debuff, instead of just refreshing it. This should make the battlemage's freeze affect more accessible after the nerf, but multiple charges may be needed.\n\n" +
+				"_-_ Updated translations."));
+
+		changes.addButton( new ChangeButton(new Image( Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by v0.8.1):\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Warlocks not playing their debuff sound if the hero is already debuffed\n" +
+				"_-_ Various small logic errors with ring of wealth\n" +
+				"_-_ Wand of warding incorrectly refusing to place a new ward with 1 energy left\n\n" +
+				"Fixed (existed prior to v0.8.1):\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Various minor visual errors\n" +
+				"_-_ Corpse dust wraiths rarely spawning inside doors"));
+
 		changes = new ChangeInfo( Messages.get( ChangesScene.class, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
