@@ -49,10 +49,6 @@ public class CorpseDust extends Item {
 		unique = true;
 	}
 
-	@Override
-	public ArrayList<String> actions(Hero hero) {
-		return new ArrayList<>(); //yup, no dropping this one
-	}
 
 	@Override
 	public boolean isUpgradable() {
@@ -105,7 +101,7 @@ public class CorpseDust extends Item {
 				do{
 					pos = Random.Int(Dungeon.level.length());
 					tries --;
-				} while (tries > 0 && (!Dungeon.level.heroFOV[pos] || !Dungeon.level.passable[pos] || Actor.findChar( pos ) != null));
+				} while (tries > 0 && (!Dungeon.level.heroFOV[pos] || Dungeon.level.solid[pos] || Actor.findChar( pos ) != null));
 				if (tries > 0) {
 					Wraith.spawnAt(pos);
 					Sample.INSTANCE.play(Assets.Sounds.CURSED);
