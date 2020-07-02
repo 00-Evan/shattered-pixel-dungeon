@@ -502,7 +502,7 @@ public class GameScene extends PixelScene {
 	public void destroy() {
 		
 		//tell the actor thread to finish, then wait for it to complete any actions it may be doing.
-		if (actorThread.isAlive()){
+		if (actorThread != null && actorThread.isAlive()){
 			synchronized (GameScene.class){
 				synchronized (actorThread) {
 					actorThread.interrupt();
