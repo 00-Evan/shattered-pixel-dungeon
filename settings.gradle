@@ -1,2 +1,3 @@
 include ':core', ':SPD-classes', ':android', ':desktop', ':services',
-        ':services:updates:debugUpdates', ':services:updates:githubUpdates'
+        ':services:updates:debugUpdates', ':services:updates:githubUpdates',
+        ':services:news:debugNews', ':services:news:shatteredNews'
