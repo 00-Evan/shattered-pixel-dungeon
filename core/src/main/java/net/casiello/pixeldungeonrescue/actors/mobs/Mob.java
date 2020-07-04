@@ -651,6 +651,7 @@ public abstract class Mob extends Char {
 			GLog.i( Messages.get(this, "died") );
 		}
 
+		CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.2f, 6);
 		CellEmitter.get(pos).burst(ShaftParticle.FACTORY, 6);
 
 		super.die( cause );
