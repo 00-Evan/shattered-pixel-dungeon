@@ -149,7 +149,7 @@ public class Wandmaker extends NPC {
 					msg1 += Messages.get(this, "intro_mage", Dungeon.hero.name());
 					break;
 				case HUNTER:
-					msg1 += Messages.get(this, "intro_huntress");
+					msg1 += Messages.get(this, "intro_hunter");
 					break;
 			}
 
