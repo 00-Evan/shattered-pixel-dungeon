@@ -50,8 +50,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourg
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Lucky;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -546,7 +548,14 @@ public abstract class Mob extends Char {
 		if (surprisedBy(enemy) && Dungeon.hero.canSurpriseAttack()) {
 			Statistics.sneakAttacks++;
 			Badges.validateRogueUnlock();
-			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+			//TODO this is somewhat messy, it would be nicer to not have to manually handle delays here
+			// playing the strong hit sound might work best as another property of weapon?
+			if (Dungeon.hero.belongings.weapon instanceof SpiritBow.SpiritArrow
+				|| Dungeon.hero.belongings.weapon instanceof Dart){
+				Sample.INSTANCE.playDelayed(Assets.Sounds.HIT_STRONG, 0.125f);
+			} else {
+				Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+			}
 			if (enemy.buff(Preparation.class) != null) {
 				Wound.hit(this);
 			} else {

@@ -251,7 +251,8 @@ public class Game implements ApplicationListener {
 		Game.realTime = TimeUtils.millis();
 
 		inputHandler.processAllEvents();
-		
+
+		Sample.INSTANCE.update();
 		scene.update();
 		Camera.updateAll();
 	}
