@@ -22,7 +22,6 @@
 		android:label="${appName}"
 		android:theme="@android:style/Theme.Black.NoTitleBar"
 		android:resizeableActivity="true"
-		android:launchMode="singleInstance"
 		android:allowBackup="true"
 		android:fullBackupOnly="true"
 		android:backupAgent=".AndroidBackupHandler">

@@ -35,7 +35,7 @@ public enum Sample {
 	private boolean enabled = true;
 	private float globalVolume = 1f;
 
-	public void reset() {
+	public synchronized void reset() {
 
 		for (Sound sound : ids.values()){
 			sound.dispose();
@@ -45,13 +45,13 @@ public enum Sample {
 
 	}
 
-	public void pause() {
+	public synchronized void pause() {
 		for (Sound sound : ids.values()) {
 			sound.pause();
 		}
 	}
 
-	public void resume() {
+	public synchronized void resume() {
 		for (Sound sound : ids.values()) {
 			sound.resume();
 		}
@@ -75,7 +75,7 @@ public enum Sample {
 		
 	}
 
-	public void unload( Object src ) {
+	public synchronized void unload( Object src ) {
 		if (ids.containsKey( src )) {
 			ids.get( src ).dispose();
 			ids.remove( src );

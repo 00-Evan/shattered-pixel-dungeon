@@ -241,13 +241,17 @@ public class NewTengu extends Mob {
 			if (level.state() == NewPrisonBossLevel.State.FIGHT_START) {
 				
 				level.cleanTenguCell();
-				
+
+				int tries = 100;
 				do {
 					newPos = ((NewPrisonBossLevel)Dungeon.level).randomTenguCellPos();
-				} while ( level.trueDistance(newPos, enemy.pos) <= 3.5f
+					tries--;
+				} while ( tries > 0 && (level.trueDistance(newPos, enemy.pos) <= 3.5f
 						|| level.trueDistance(newPos, Dungeon.hero.pos) <= 3.5f
-						|| Actor.findChar(newPos) != null);
-				
+						|| Actor.findChar(newPos) != null));
+
+				if (tries <= 0) newPos = pos;
+
 				if (level.heroFOV[pos]) CellEmitter.get( pos ).burst( Speck.factory( Speck.WOOL ), 6 );
 				
 				sprite.move( pos, newPos );

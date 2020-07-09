@@ -109,8 +109,10 @@ public class IconTitle extends Component {
 	}
 
 	public void icon( Image icon ) {
-		remove( imIcon );
-		add( imIcon = icon );
+		if (icon != null) {
+			remove(imIcon);
+			add(imIcon = icon);
+		}
 	}
 
 	public void label( String label ) {
