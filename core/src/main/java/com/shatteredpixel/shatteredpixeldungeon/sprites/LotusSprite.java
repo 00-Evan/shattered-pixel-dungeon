@@ -108,4 +108,16 @@ public class LotusSprite extends MobSprite {
 			grassVfx = null;
 		}
 	}
+
+	@Override
+	public void kill() {
+		super.kill();
+
+		if (grassVfx != null){
+			for (Emitter e : grassVfx){
+				e.on = false;
+			}
+			grassVfx = null;
+		}
+	}
 }

@@ -43,16 +43,17 @@ public class Corrupting extends Weapon.Enchantment {
 	
 	@Override
 	public int proc(Weapon weapon, Char attacker, Char defender, int damage) {
-		if (defender.buff(Corruption.class) != null || !(defender instanceof Mob)) return damage;
-		
 		int level = Math.max( 0, weapon.buffedLvl() );
 		
 		// lvl 0 - 20%
 		// lvl 1 ~ 23%
 		// lvl 2 ~ 26%
 		if (damage >= defender.HP
+				&& Random.Int( level + 25 ) >= 20
 				&& !defender.isImmune(Corruption.class)
-				&& Random.Int( level + 25 ) >= 20){
+				&& defender.buff(Corruption.class) == null
+				&& defender instanceof Mob
+				&& defender.isAlive()){
 			
 			Mob enemy = (Mob) defender;
 			Hero hero = (attacker instanceof Hero) ? (Hero) attacker : Dungeon.hero;
