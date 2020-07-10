@@ -163,8 +163,8 @@ public enum HeroClass {
 		(hero.belongings.weapon = new Dagger()).identify();
 
 		CloakOfShadows cloak = new CloakOfShadows();
-		(hero.belongings.misc1 = cloak).identify();
-		hero.belongings.misc1.activate( hero );
+		(hero.belongings.artifact = cloak).identify();
+		hero.belongings.artifact.activate( hero );
 
 		ThrowingKnife knives = new ThrowingKnife();
 		knives.quantity(3).collect();

@@ -45,11 +45,11 @@ public class ArtifactRecharge extends Buff {
 		if (target instanceof Hero){
 			Belongings b = ((Hero) target).belongings;
 			
-			if (b.misc1 instanceof Artifact){
-				((Artifact)b.misc1).charge((Hero)target);
+			if (b.artifact instanceof Artifact){
+				((Artifact)b.artifact).charge((Hero)target);
 			}
-			if (b.misc2 instanceof Artifact){
-				((Artifact)b.misc2).charge((Hero)target);
+			if (b.misc instanceof Artifact){
+				((Artifact)b.misc).charge((Hero)target);
 			}
 		}
 		
