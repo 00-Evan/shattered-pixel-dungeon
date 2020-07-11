@@ -183,13 +183,13 @@ public enum Icons {
 			break;
 		
 		case ENTER:
-			icon.frame( icon.texture.uvRect( 0, 64, 17, 81 ) );
+			icon.frame( icon.texture.uvRect( 0, 64, 16, 80 ) );
 			break;
 		case RANKINGS:
-			icon.frame( icon.texture.uvRect( 17, 64, 34, 81 ) );
+			icon.frame( icon.texture.uvRect( 17, 64, 34, 80 ) );
 			break;
 		case BADGES:
-			icon.frame( icon.texture.uvRect( 34, 64, 51, 81 ) );
+			icon.frame( icon.texture.uvRect( 34, 64, 50, 80 ) );
 			break;
 		case CHANGES:
 			icon.frame( icon.texture.uvRect( 51, 64, 68, 79 ) );
