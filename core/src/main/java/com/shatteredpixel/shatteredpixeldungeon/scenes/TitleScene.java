@@ -27,26 +27,22 @@ import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Fireball;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.services.updates.AvailableUpdateData;
 import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
-import com.shatteredpixel.shatteredpixeldungeon.ui.LanguageButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.PrefsButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.UpdateNotification;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSettings;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndStartGame;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.audio.Music;
 import com.watabou.utils.ColorMath;
 import com.watabou.utils.DeviceCompat;
@@ -179,13 +175,7 @@ public class TitleScene extends PixelScene {
 		btnNews.icon(Icons.get(Icons.CHANGES));
 		add(btnNews);
 
-		StyledButton btnSettings = new StyledButton(GREY_TR, Messages.get(this, "settings")){
-			@Override
-			protected void onClick() {
-				ShatteredPixelDungeon.scene().add(new WndSettings());
-			}
-		};
-		btnSettings.icon(Icons.get(Icons.PREFS));
+		StyledButton btnSettings = new SettingsButton(GREY_TR, Messages.get(this, "settings"));
 		add(btnSettings);
 
 		StyledButton btnAbout = new StyledButton(GREY_TR, Messages.get(this, "about")){
@@ -233,10 +223,6 @@ public class TitleScene extends PixelScene {
 		
 		int pos = 2;
 
-		LanguageButton btnLang = new LanguageButton();
-		btnLang.setRect(pos, 0, 16, 20);
-		add( btnLang );
-
 		ExitButton btnExit = new ExitButton();
 		btnExit.setPos( w - btnExit.width(), 0 );
 		add( btnExit );
@@ -250,6 +236,7 @@ public class TitleScene extends PixelScene {
 		add( fb );
 	}
 
+	//TODO change icon?
 	private static class ChangesButton extends StyledButton {
 
 		public ChangesButton( Chrome.Type type, String label ){
@@ -299,5 +286,39 @@ public class TitleScene extends PixelScene {
 			}
 		}
 
+	}
+
+	//TODO maybe have this blink a bit differently than the language button used to
+	private static class SettingsButton extends StyledButton {
+
+		boolean blinking;
+
+		public SettingsButton( Chrome.Type type, String label ){
+			super(type, label);
+			if (Messages.lang().status() == Languages.Status.INCOMPLETE){
+				icon(Icons.get(Icons.LANGS));
+				icon.hardlight(1.5f, 0, 0);
+				blinking = true;
+			} else {
+				icon(Icons.get(Icons.PREFS));
+			}
+		}
+
+		@Override
+		public void update() {
+			super.update();
+
+			if (blinking){
+				icon.am = (float)Math.abs(Math.cos( Game.timeTotal ));
+			}
+		}
+
+		@Override
+		protected void onClick() {
+			if (blinking){
+				WndSettings.last_index = 3;
+			}
+			ShatteredPixelDungeon.scene().add(new WndSettings());
+		}
 	}
 }

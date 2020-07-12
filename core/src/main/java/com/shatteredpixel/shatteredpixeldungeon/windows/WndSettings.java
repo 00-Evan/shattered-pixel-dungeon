@@ -22,26 +22,38 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.CheckBox;
+import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.OptionSlider;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Locale;
+
 public class WndSettings extends WndTabbed {
 
-	private static final int WIDTH		    = 112;
+	private static final int WIDTH_P	    = 122;
+	private static final int WIDTH_L	    = 223;
+
 	private static final int SLIDER_HEIGHT	= 24;
 	private static final int BTN_HEIGHT	    = 18;
 	private static final int GAP_TINY 		= 2;
@@ -51,16 +63,20 @@ public class WndSettings extends WndTabbed {
 	private DisplayTab display;
 	private UITab ui;
 	private AudioTab audio;
+	private LangsTab langs;
 
-	private static int last_index = 0;
+	public static int last_index = 0;
 
+	//FIXME now that this is totally refactored I should look into making this look neater. It's almost there
 	public WndSettings() {
 		super();
 
 		float height;
 
+		int width = PixelScene.landscape() ? WIDTH_L : WIDTH_P;
+
 		display = new DisplayTab();
-		display.setSize(WIDTH, 0);
+		display.setSize(width, 0);
 		height = display.height();
 		add( display );
 
@@ -74,7 +90,7 @@ public class WndSettings extends WndTabbed {
 		});
 
 		ui = new UITab();
-		ui.setSize(WIDTH, 0);
+		ui.setSize(width, 0);
 		height = Math.max(height, ui.height());
 		add( ui );
 
@@ -88,7 +104,7 @@ public class WndSettings extends WndTabbed {
 		});
 
 		audio = new AudioTab();
-		audio.setSize(WIDTH, 0);
+		audio.setSize(width, 0);
 		height = Math.max(height, audio.height());
 		add( audio );
 
@@ -101,12 +117,56 @@ public class WndSettings extends WndTabbed {
 			}
 		});
 
-		resize(WIDTH, (int)Math.ceil(height));
+		langs = new LangsTab();
+		langs.setSize(width, 0);
+		height = Math.max(height, langs.height());
+		add( langs );
+
+		add( new IconTab(Icons.get(Icons.LANGS)){
+			@Override
+			protected void select(boolean value) {
+				super.select(value);
+				langs.visible = langs.active = value;
+				if (value) last_index = 3;
+			}
+
+			@Override
+			protected void createChildren() {
+				super.createChildren();
+				switch(Messages.lang().status()){
+					case INCOMPLETE:
+						icon.hardlight(1.5f, 0, 0);
+						break;
+					case UNREVIEWED:
+						icon.hardlight(1.5f, 0.75f, 0f);
+						break;
+				}
+			}
+
+		});
+
+		resize(width, (int)Math.ceil(height));
 
 		layoutTabs();
 
 		select(last_index);
 
+	}
+
+	@Override
+	public void hide() {
+		super.hide();
+		//resets generators because there's no need to retain chars for languages not selected
+		ShatteredPixelDungeon.seamlessResetScene(new Game.SceneChangeCallback() {
+			@Override
+			public void beforeCreate() {
+				Game.platform.resetGenerators();
+			}
+			@Override
+			public void afterCreate() {
+				//do nothing
+			}
+		});
 	}
 
 	private class DisplayTab extends Component {
@@ -134,6 +194,7 @@ public class WndSettings extends WndTabbed {
 						}
 					}
 				};
+				optScale.setSelectedValue(PixelScene.defaultZoom);
 				add(optScale);
 			}
 
@@ -210,18 +271,29 @@ public class WndSettings extends WndTabbed {
 				bottom = optScale.bottom();
 			}
 
-			if (chkSaver != null){
-				chkSaver.setRect( 0, bottom + GAP_TINY, width, BTN_HEIGHT );
-				bottom = chkSaver.bottom();
-			}
-
-			if (btnOrientation != null){
-				btnOrientation.setRect( 0, bottom + GAP_TINY, width, BTN_HEIGHT );
+			if (width > 200 && chkSaver != null && btnOrientation != null) {
+				chkSaver.setRect(0, bottom + GAP_TINY, width/2-1, BTN_HEIGHT);
+				btnOrientation.setRect(chkSaver.right()+GAP_TINY, bottom + GAP_TINY, width/2-1, BTN_HEIGHT);
 				bottom = btnOrientation.bottom();
+			} else {
+				if (chkSaver != null) {
+					chkSaver.setRect(0, bottom + GAP_TINY, width, BTN_HEIGHT);
+					bottom = chkSaver.bottom();
+				}
+
+				if (btnOrientation != null) {
+					btnOrientation.setRect(0, bottom + GAP_TINY, width, BTN_HEIGHT);
+					bottom = btnOrientation.bottom();
+				}
 			}
 
-			optBrightness.setRect(0, bottom + GAP_LRG, width, SLIDER_HEIGHT);
-			optVisGrid.setRect(0, optBrightness.bottom() + GAP_TINY, width, SLIDER_HEIGHT);
+			if (width > 200){
+				optBrightness.setRect(0, bottom + GAP_LRG, width/2-1, SLIDER_HEIGHT);
+				optVisGrid.setRect(optBrightness.right() + GAP_TINY, optBrightness.top(), width/2-1, SLIDER_HEIGHT);
+			} else {
+				optBrightness.setRect(0, bottom + GAP_LRG, width, SLIDER_HEIGHT);
+				optVisGrid.setRect(0, optBrightness.bottom() + GAP_TINY, width, SLIDER_HEIGHT);
+			}
 
 			height = optVisGrid.bottom();
 		}
@@ -349,12 +421,19 @@ public class WndSettings extends WndTabbed {
 			btnGrouped.setRect(btnSplit.right()+GAP_TINY, btnSplit.top(), btnWidth, 16);
 			btnCentered.setRect(btnGrouped.right()+GAP_TINY, btnSplit.top(), btnWidth, 16);
 
-			chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP_TINY, width, BTN_HEIGHT);
-			chkFlipTags.setRect(0, chkFlipToolbar.bottom() + GAP_TINY, width, BTN_HEIGHT);
+			if (width > 200) {
+				chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP_TINY, width/2 - 1, BTN_HEIGHT);
+				chkFlipTags.setRect(chkFlipToolbar.right() + GAP_TINY, chkFlipToolbar.top(), width/2 -1, BTN_HEIGHT);
 
-			chkFullscreen.setRect(0, chkFlipTags.bottom() + GAP_SML, width, BTN_HEIGHT);
+				chkFullscreen.setRect(0, chkFlipTags.bottom() + GAP_SML, width/2 - 1, BTN_HEIGHT);
+				chkFont.setRect(chkFullscreen.right() + GAP_TINY, chkFullscreen.top(), width/2 - 1, BTN_HEIGHT);
+			} else {
+				chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP_TINY, width, BTN_HEIGHT);
+				chkFlipTags.setRect(0, chkFlipToolbar.bottom() + GAP_TINY, width, BTN_HEIGHT);
 
-			chkFont.setRect(0, chkFullscreen.bottom() + GAP_TINY, width, BTN_HEIGHT);
+				chkFullscreen.setRect(0, chkFlipTags.bottom() + GAP_SML, width, BTN_HEIGHT);
+				chkFont.setRect(0, chkFullscreen.bottom() + GAP_TINY, width, BTN_HEIGHT);
+			}
 
 			if (btnKeyBindings != null){
 				btnKeyBindings.setRect(0, chkFont.bottom() + GAP_SML, width, BTN_HEIGHT);
@@ -437,5 +516,223 @@ public class WndSettings extends WndTabbed {
 			height = chkMuteSFX.bottom();
 		}
 
+	}
+
+	private class LangsTab extends Component{
+
+		final static int COLS_P = 3;
+		final static int COLS_L = 4;
+
+		final static int BTN_HEIGHT = 12;
+
+		RenderedTextBlock txtLangName;
+		RenderedTextBlock txtLangInfo;
+
+		ColorBlock sep1;
+
+		RedButton[] lanBtns;
+
+		ColorBlock sep2;
+
+		RenderedTextBlock txtTranifex;
+		RedButton btnCredits;
+
+		@Override
+		protected void createChildren() {
+			final ArrayList<Languages> langs = new ArrayList<>(Arrays.asList(Languages.values()));
+
+			Languages nativeLang = Languages.matchLocale(Locale.getDefault());
+			langs.remove(nativeLang);
+			//move the native language to the top.
+			langs.add(0, nativeLang);
+
+			final Languages currLang = Messages.lang();
+
+			txtLangName = PixelScene.renderTextBlock( Messages.titleCase(currLang.nativeName()) , 9 );
+			txtLangName.hardlight(TITLE_COLOR);
+			add(txtLangName);
+
+			txtLangInfo = PixelScene.renderTextBlock(6);
+			if (currLang == Languages.ENGLISH) txtLangInfo.text("This is the source language, written by the developer.");
+			else if (currLang.status() == Languages.Status.REVIEWED) txtLangInfo.text(Messages.get(this, "completed"));
+			else if (currLang.status() == Languages.Status.UNREVIEWED) txtLangInfo.text(Messages.get(this, "unreviewed"));
+			else if (currLang.status() == Languages.Status.INCOMPLETE) txtLangInfo.text(Messages.get(this, "unfinished"));
+			if (currLang.status() == Languages.Status.UNREVIEWED) txtLangInfo.setHightlighting(true, CharSprite.WARNING);
+			else if (currLang.status() == Languages.Status.INCOMPLETE) txtLangInfo.setHightlighting(true, CharSprite.NEGATIVE);
+			add(txtLangInfo);
+
+			sep1 = new ColorBlock(1, 1, 0xFF000000);
+			add(sep1);
+
+			lanBtns = new RedButton[langs.size()];
+			for (int i = 0; i < langs.size(); i++){
+				final int langIndex = i;
+				RedButton btn = new RedButton(Messages.titleCase(langs.get(i).nativeName()), 8){
+					@Override
+					protected void onClick() {
+						super.onClick();
+						Messages.setup(langs.get(langIndex));
+						ShatteredPixelDungeon.seamlessResetScene(new Game.SceneChangeCallback() {
+							@Override
+							public void beforeCreate() {
+								SPDSettings.language(langs.get(langIndex));
+								GameLog.wipe();
+								Game.platform.resetGenerators();
+							}
+							@Override
+							public void afterCreate() {
+								//do nothing
+							}
+						});
+					}
+				};
+				if (currLang == langs.get(i)){
+					btn.textColor(TITLE_COLOR);
+				} else {
+					switch (langs.get(i).status()) {
+						case INCOMPLETE:
+							btn.textColor(0x888888);
+							break;
+						case UNREVIEWED:
+							btn.textColor(0xBBBBBB);
+							break;
+					}
+				}
+				lanBtns[i] = btn;
+				add(btn);
+			}
+
+			sep2 = new ColorBlock(1, 1, 0xFF000000);
+			add(sep2);
+
+			txtTranifex = PixelScene.renderTextBlock(6);
+			txtTranifex.text(Messages.get(this, "transifex"));
+			add(txtTranifex);
+
+			if (currLang != Languages.ENGLISH) {
+				String credText = Messages.titleCase(Messages.get(this, "credits"));
+				btnCredits = new RedButton(credText, credText.length() > 9 ? 6 : 9) {
+					@Override
+					protected void onClick() {
+						super.onClick();
+						String creds = "";
+						String creds2 = "";
+						String[] reviewers = currLang.reviewers();
+						String[] translators = currLang.translators();
+
+						ArrayList<String> total = new ArrayList<>();
+						total.addAll(Arrays.asList(reviewers));
+						total.addAll(Arrays.asList(reviewers));
+						total.addAll(Arrays.asList(translators));
+						int translatorIdx = reviewers.length;
+
+						//we have 2 columns in wide mode
+						boolean wide = (2 * reviewers.length + translators.length) > (PixelScene.landscape() ? 15 : 30);
+
+						int i;
+						if (reviewers.length > 0) {
+							creds += Messages.titleCase(Messages.get(LangsTab.this, "reviewers"));
+							creds2 += "";
+							boolean col2 = false;
+							for (i = 0; i < total.size(); i++) {
+								if (i == translatorIdx){
+									creds += "\n\n" + Messages.titleCase(Messages.get(LangsTab.this, "translators"));
+									creds2 += "\n\n";
+									if (col2) creds2 += "\n";
+									col2 = false;
+								}
+								if (wide && col2) {
+									creds2 += "\n-" + total.get(i);
+								} else {
+									creds += "\n-" + total.get(i);
+								}
+								col2 = !col2 && wide;
+							}
+						}
+
+						Window credits = new Window(0, 0, 0, Chrome.get(Chrome.Type.TOAST));
+
+						int w = wide ? 125 : 60;
+
+						RenderedTextBlock title = PixelScene.renderTextBlock(6);
+						title.text(Messages.titleCase(Messages.get(LangsTab.this, "credits")), w);
+						title.hardlight(SHPX_COLOR);
+						title.setPos((w - title.width()) / 2, 0);
+						credits.add(title);
+
+						RenderedTextBlock text = PixelScene.renderTextBlock(5);
+						text.setHightlighting(false);
+						text.text(creds, 65);
+						text.setPos(0, title.bottom() + 2);
+						credits.add(text);
+
+						if (wide) {
+							RenderedTextBlock rightColumn = PixelScene.renderTextBlock(5);
+							rightColumn.setHightlighting(false);
+							rightColumn.text(creds2, 65);
+							rightColumn.setPos(65, title.bottom() + 6);
+							credits.add(rightColumn);
+						}
+
+						credits.resize(w, (int) text.bottom() + 2);
+						ShatteredPixelDungeon.scene().addToFront(credits);
+					}
+				};
+				add(btnCredits);
+			}
+
+		}
+
+		@Override
+		protected void layout() {
+			txtLangName.setPos( (width - txtLangName.width())/2f, 2 );
+			PixelScene.align(txtLangName);
+
+			txtLangInfo.setPos(0, txtLangName.bottom() + 4);
+			txtLangInfo.maxWidth((int)width);
+
+			int y = PixelScene.landscape() ? 26 : 32;
+			y = Math.max(y, (int)Math.ceil(txtLangInfo.bottom()+1));
+			int x = 0;
+
+			sep1.size(width, 1);
+			sep1.y = y;
+			y += 2;
+
+			int cols = PixelScene.landscape() ? COLS_L : COLS_P;
+			int btnWidth = (int)Math.floor((width - (cols-1)) / cols);
+			for (RedButton btn : lanBtns){
+				btn.setRect(x, y, btnWidth, BTN_HEIGHT);
+				btn.setPos(x, y);
+				x += btnWidth+1;
+				if (x + btnWidth > width){
+					x = 0;
+					y += BTN_HEIGHT+1;
+				}
+			}
+			if (x > 0){
+				y += BTN_HEIGHT+1;
+			}
+
+			sep2.size(width, 1);
+			sep2.y = y;
+			y += 2;
+
+			if (btnCredits != null){
+				btnCredits.setSize(btnCredits.reqWidth() + 2, 16);
+				btnCredits.setPos(width - btnCredits.width(), y);
+
+				txtTranifex.setPos(0, y);
+				txtTranifex.maxWidth((int)btnCredits.left());
+
+				height = Math.max(btnCredits.bottom(), txtTranifex.bottom());
+			} else {
+				txtTranifex.setPos(0, y);
+				txtTranifex.maxWidth((int)width);
+
+				height = txtTranifex.bottom();
+			}
+
+		}
 	}
 }
