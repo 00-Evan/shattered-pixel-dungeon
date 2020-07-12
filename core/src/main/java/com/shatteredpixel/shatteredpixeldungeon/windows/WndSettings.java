@@ -308,7 +308,7 @@ public class WndSettings extends WndTabbed {
 			chkFont.checked(SPDSettings.systemFont());
 			add(chkFont);
 
-			if (DeviceCompat.isDesktop()){
+			if (DeviceCompat.hasHardKeyboard()){
 				RedButton btnKeyBindings = new RedButton(Messages.get(this, "key_bindings")){
 					@Override
 					protected void onClick() {
