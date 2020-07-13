@@ -30,7 +30,12 @@ public class DebugUpdates extends UpdateService {
 	private static AvailableUpdateData debugUpdateInfo;
 
 	@Override
-	public void checkForUpdate(UpdateResultCallback callback) {
+	public void checkForUpdate(boolean useMetered, UpdateResultCallback callback) {
+
+		if (!useMetered && !Game.platform.connectedToUnmeteredNetwork()){
+			callback.onConnectionFailed();
+			return;
+		}
 
 		//turn on to test update UI
 		if (false){

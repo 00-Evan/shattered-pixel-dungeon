@@ -40,7 +40,7 @@ public enum Icons {
 	CLOSE,
 	ARROW,
 	DISPLAY,
-	//TODO UI,
+	DATA,
 	AUDIO,
 	
 	//ingame UI icons
@@ -125,10 +125,12 @@ public enum Icons {
 			icon.frame( icon.texture.uvRect( 32, 16, 45, 32 ) );
 			break;
 		//TODO UI icon?
-		case AUDIO:
-			icon.frame( icon.texture.uvRect( 64, 16, 77, 28 ) );
+		case DATA:
+			icon.frame( icon.texture.uvRect( 48, 16, 64, 31 ) );
 			break;
-			
+		case AUDIO:
+			icon.frame( icon.texture.uvRect( 64, 16, 78, 30 ) );
+			break;
 		case SKULL:
 			icon.frame( icon.texture.uvRect( 0, 32, 8, 40 ) );
 			break;

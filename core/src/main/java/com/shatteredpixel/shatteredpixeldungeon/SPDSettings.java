@@ -253,6 +253,36 @@ public class SPDSettings extends GameSettings {
 		return getBoolean(KEY_SYSTEMFONT,
 				(language() == Languages.KOREAN || language() == Languages.CHINESE || language() == Languages.JAPANESE));
 	}
+
+	//Connectivity
+
+	public static final String KEY_NEWS     = "news";
+	public static final String KEY_UPDATES	= "updates";
+	public static final String KEY_WIFI     = "wifi";
+
+	public static void news(boolean value){
+		put(KEY_NEWS, value);
+	}
+
+	public static boolean news(){
+		return getBoolean(KEY_NEWS, true);
+	}
+
+	public static void updates(boolean value){
+		put(KEY_UPDATES, value);
+	}
+
+	public static boolean updates(){
+		return getBoolean(KEY_UPDATES, true);
+	}
+
+	public static void WiFi(boolean value){
+		put(KEY_WIFI, value);
+	}
+
+	public static boolean WiFi(){
+		return getBoolean(KEY_WIFI, true);
+	}
 	
 	//Window management (desktop only atm)
 

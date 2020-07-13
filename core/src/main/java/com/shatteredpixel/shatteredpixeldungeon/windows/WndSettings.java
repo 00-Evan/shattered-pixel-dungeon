@@ -29,6 +29,8 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.services.news.News;
+import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.CheckBox;
 import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
@@ -64,6 +66,7 @@ public class WndSettings extends WndTabbed {
 	private UITab ui;
 	private AudioTab audio;
 	private LangsTab langs;
+	private DataTab data;
 
 	public static int last_index = 0;
 
@@ -145,6 +148,20 @@ public class WndSettings extends WndTabbed {
 
 		});
 
+		data = new DataTab();
+		data.setSize(width, 0);
+		height = Math.max(height, data.height());
+		add( data );
+
+		add( new IconTab(Icons.get(Icons.DATA)){
+			@Override
+			protected void select(boolean value) {
+				super.select(value);
+				data.visible = data.active = value;
+				if (value) last_index = 4;
+			}
+		});
+
 		resize(width, (int)Math.ceil(height));
 
 		layoutTabs();
@@ -169,7 +186,7 @@ public class WndSettings extends WndTabbed {
 		});
 	}
 
-	private class DisplayTab extends Component {
+	private static class DisplayTab extends Component {
 
 		OptionSlider optScale;
 		CheckBox chkSaver;
@@ -300,7 +317,7 @@ public class WndSettings extends WndTabbed {
 
 	}
 
-	private class UITab extends Component {
+	private static class UITab extends Component {
 
 		RenderedTextBlock barDesc;
 		RedButton btnSplit; RedButton btnGrouped; RedButton btnCentered;
@@ -320,28 +337,40 @@ public class WndSettings extends WndTabbed {
 			btnSplit = new RedButton(Messages.get(this, "split")){
 				@Override
 				protected void onClick() {
+					textColor(TITLE_COLOR);
+					btnGrouped.textColor(WHITE);
+					btnCentered.textColor(WHITE);
 					SPDSettings.toolbarMode(Toolbar.Mode.SPLIT.name());
 					Toolbar.updateLayout();
 				}
 			};
+			if (SPDSettings.toolbarMode().equals(Toolbar.Mode.SPLIT.name())) btnSplit.textColor(TITLE_COLOR);
 			add(btnSplit);
 
 			btnGrouped = new RedButton(Messages.get(this, "group")){
 				@Override
 				protected void onClick() {
+					btnSplit.textColor(WHITE);
+					textColor(TITLE_COLOR);
+					btnCentered.textColor(WHITE);
 					SPDSettings.toolbarMode(Toolbar.Mode.GROUP.name());
 					Toolbar.updateLayout();
 				}
 			};
+			if (SPDSettings.toolbarMode().equals(Toolbar.Mode.GROUP.name())) btnGrouped.textColor(TITLE_COLOR);
 			add(btnGrouped);
 
 			btnCentered = new RedButton(Messages.get(this, "center")){
 				@Override
 				protected void onClick() {
+					btnSplit.textColor(WHITE);
+					btnGrouped.textColor(WHITE);
+					textColor(TITLE_COLOR);
 					SPDSettings.toolbarMode(Toolbar.Mode.CENTER.name());
 					Toolbar.updateLayout();
 				}
 			};
+			if (SPDSettings.toolbarMode().equals(Toolbar.Mode.CENTER.name())) btnCentered.textColor(TITLE_COLOR);
 			add(btnCentered);
 
 			chkFlipToolbar = new CheckBox(Messages.get(this, "flip_toolbar")){
@@ -445,7 +474,7 @@ public class WndSettings extends WndTabbed {
 
 	}
 
-	private class AudioTab extends Component {
+	private static class AudioTab extends Component {
 
 		OptionSlider optMusic;
 		CheckBox chkMusicMute;
@@ -518,7 +547,7 @@ public class WndSettings extends WndTabbed {
 
 	}
 
-	private class LangsTab extends Component{
+	private static class LangsTab extends Component{
 
 		final static int COLS_P = 3;
 		final static int COLS_L = 4;
@@ -732,6 +761,70 @@ public class WndSettings extends WndTabbed {
 
 				height = txtTranifex.bottom();
 			}
+
+		}
+	}
+
+	private static class DataTab extends Component{
+
+		CheckBox chkNews;
+		CheckBox chkUpdates;
+		CheckBox chkWifi;
+
+		@Override
+		protected void createChildren() {
+			chkNews = new CheckBox(Messages.get(this, "news")){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					SPDSettings.news(checked());
+					News.clearArticles();
+				}
+			};
+			chkNews.checked(SPDSettings.news());
+			add(chkNews);
+
+			chkUpdates = new CheckBox(Messages.get(this, "updates")){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					SPDSettings.updates(checked());
+					Updates.clearUpdate();
+				}
+			};
+			chkUpdates.checked(SPDSettings.updates());
+			add(chkUpdates);
+
+			if (!DeviceCompat.isDesktop()){
+				chkWifi = new CheckBox(Messages.get(this, "wifi")){
+					@Override
+					protected void onClick() {
+						super.onClick();
+						SPDSettings.WiFi(checked());
+					}
+				};
+				chkWifi.checked(SPDSettings.WiFi());
+				add(chkWifi);
+			}
+		}
+
+		@Override
+		protected void layout() {
+			if (width > 200){
+				chkNews.setRect(0, 0, width/2-1, BTN_HEIGHT);
+				chkUpdates.setRect(chkNews.right() + GAP_TINY, chkNews.top(), width/2-1, BTN_HEIGHT);
+			} else {
+				chkNews.setRect(0, 0, width, BTN_HEIGHT);
+				chkUpdates.setRect(0, chkNews.bottom()+GAP_TINY, width, BTN_HEIGHT);
+			}
+
+			float pos = chkUpdates.bottom();
+			if (chkWifi != null){
+				chkWifi.setRect(0, pos + GAP_TINY, width, BTN_HEIGHT);
+				pos = chkWifi.bottom();
+			}
+
+			height = pos;
 
 		}
 	}

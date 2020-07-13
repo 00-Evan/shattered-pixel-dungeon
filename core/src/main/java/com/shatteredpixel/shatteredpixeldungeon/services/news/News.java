@@ -39,7 +39,7 @@ public class News {
 		if (!supportsNews()) return;
 		if (lastCheck != null && (new Date().getTime() - lastCheck.getTime()) < CHECK_DELAY) return;
 
-		service.checkForArticles(new NewsService.NewsResultCallback() {
+		service.checkForArticles(false, new NewsService.NewsResultCallback() {
 			@Override
 			public void onArticlesFound(ArrayList<NewsArticle> articles) {
 				lastCheck = new Date();
@@ -73,6 +73,9 @@ public class News {
 		return unread;
 	}
 
-
+	public static void clearArticles(){
+		articles = null;
+		lastCheck = null;
+	}
 
 }

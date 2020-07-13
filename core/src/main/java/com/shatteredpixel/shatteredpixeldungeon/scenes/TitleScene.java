@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Fireball;
@@ -241,7 +242,7 @@ public class TitleScene extends PixelScene {
 
 		public ChangesButton( Chrome.Type type, String label ){
 			super(type, label);
-			Updates.checkForUpdate();
+			if (SPDSettings.updates()) Updates.checkForUpdate();
 		}
 
 		boolean updateShown = false;

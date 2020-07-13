@@ -21,14 +21,19 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.services.news;
 
+import com.watabou.noosa.Game;
+
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 public class DebugNews extends NewsService {
 
 	@Override
-	public void checkForArticles(NewsResultCallback callback) {
+	public void checkForArticles(boolean useMetered, NewsResultCallback callback) {
+
+		if (!useMetered && !Game.platform.connectedToUnmeteredNetwork()){
+			callback.onConnectionFailed();
+		}
 
 		//turn on to test connection failure
 		if (false){

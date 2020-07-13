@@ -27,6 +27,7 @@ import com.badlogic.gdx.Net;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.DeviceCompat;
+import com.watabou.utils.GameSettings;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,9 +40,9 @@ public class GitHubUpdates extends UpdateService {
 	private static Pattern versionCodePattern = Pattern.compile("internal version number: ([0-9]*)", Pattern.CASE_INSENSITIVE);
 
 	@Override
-	public void checkForUpdate(UpdateResultCallback callback) {
+	public void checkForUpdate(boolean useMetered, UpdateResultCallback callback) {
 
-		if (!Game.platform.connectedToUnmeteredNetwork()){
+		if (!useMetered && !Game.platform.connectedToUnmeteredNetwork()){
 			callback.onConnectionFailed();
 			return;
 		}

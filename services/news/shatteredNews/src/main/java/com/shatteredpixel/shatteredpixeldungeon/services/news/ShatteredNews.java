@@ -34,9 +34,9 @@ import java.util.Locale;
 public class ShatteredNews extends NewsService {
 
 	@Override
-	public void checkForArticles(NewsResultCallback callback) {
+	public void checkForArticles(boolean useMetered, NewsResultCallback callback) {
 
-		if (!Game.platform.connectedToUnmeteredNetwork()){
+		if (!useMetered && !Game.platform.connectedToUnmeteredNetwork()){
 			callback.onConnectionFailed();
 		}
 
