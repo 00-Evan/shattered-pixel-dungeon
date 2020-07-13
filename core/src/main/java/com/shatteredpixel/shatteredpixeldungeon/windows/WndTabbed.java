@@ -53,7 +53,7 @@ public class WndTabbed extends Window {
 		super.add( tab );
 		
 		tabs.add( tab );
-		
+
 		return tab;
 	}
 	
@@ -109,39 +109,18 @@ public class WndTabbed extends Window {
 	}
 
 	public void layoutTabs(){
-		//subract two as there's extra horizontal space for those nobs on the top.
+		//subtract two as that horizontal space is transparent at the bottom
 		int fullWidth = width+chrome.marginHor()-2;
-		int numTabs = tabs.size();
+		float numTabs = tabs.size();
+		float tabWidth = (fullWidth - (numTabs-1))/numTabs;
 
-		if (numTabs == 0)
-			return;
-		if (numTabs == 1) {
-			tabs.get(0).setSize(fullWidth, tabHeight());
-			return;
+		float pos = -chrome.marginLeft() + 1;
+		for (Tab tab : tabs){
+			tab.setSize(tabWidth, tabHeight());
+			tab.setPos(pos, height);
+			pos = tab.right() + 1;
+			PixelScene.align(tab);
 		}
-
-		int spaces = numTabs-1;
-		int spacing = -1;
-
-		while (spacing == -1) {
-			for (int i = 0; i <= 3; i++){
-				if ((fullWidth - i*(spaces)) % numTabs == 0) {
-					spacing = i;
-					break;
-				}
-			}
-			if (spacing == -1) fullWidth--;
-		}
-
-		int tabWidth = (fullWidth - spacing*(numTabs-1)) / numTabs;
-
-		for (int i = 0; i < tabs.size(); i++){
-			tabs.get(i).setSize(tabWidth, tabHeight());
-			tabs.get(i).setPos( i == 0 ?
-					-chrome.marginLeft() + 1 :
-					tabs.get( i - 1 ).right() + spacing, height );
-		}
-
 	}
 	
 	protected int tabHeight() {
