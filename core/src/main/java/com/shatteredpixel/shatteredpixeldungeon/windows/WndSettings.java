@@ -58,19 +58,16 @@ public class WndSettings extends WndTabbed {
 
 	private static final int SLIDER_HEIGHT	= 24;
 	private static final int BTN_HEIGHT	    = 18;
-	private static final int GAP_TINY 		= 2;
-	private static final int GAP_SML 		= 6;
-	private static final int GAP_LRG 		= 18;
+	private static final float GAP          = 2;
 
-	private DisplayTab display;
-	private UITab ui;
-	private AudioTab audio;
-	private LangsTab langs;
-	private DataTab data;
+	private DisplayTab  display;
+	private UITab       ui;
+	private DataTab     data;
+	private AudioTab    audio;
+	private LangsTab    langs;
 
 	public static int last_index = 0;
 
-	//FIXME now that this is totally refactored I should look into making this look neater. It's almost there
 	public WndSettings() {
 		super();
 
@@ -106,6 +103,20 @@ public class WndSettings extends WndTabbed {
 			}
 		});
 
+		data = new DataTab();
+		data.setSize(width, 0);
+		height = Math.max(height, data.height());
+		add( data );
+
+		add( new IconTab(Icons.get(Icons.DATA)){
+			@Override
+			protected void select(boolean value) {
+				super.select(value);
+				data.visible = data.active = value;
+				if (value) last_index = 2;
+			}
+		});
+
 		audio = new AudioTab();
 		audio.setSize(width, 0);
 		height = Math.max(height, audio.height());
@@ -116,7 +127,7 @@ public class WndSettings extends WndTabbed {
 			protected void select(boolean value) {
 				super.select(value);
 				audio.visible = audio.active = value;
-				if (value) last_index = 2;
+				if (value) last_index = 3;
 			}
 		});
 
@@ -130,7 +141,7 @@ public class WndSettings extends WndTabbed {
 			protected void select(boolean value) {
 				super.select(value);
 				langs.visible = langs.active = value;
-				if (value) last_index = 3;
+				if (value) last_index = 4;
 			}
 
 			@Override
@@ -146,20 +157,6 @@ public class WndSettings extends WndTabbed {
 				}
 			}
 
-		});
-
-		data = new DataTab();
-		data.setSize(width, 0);
-		height = Math.max(height, data.height());
-		add( data );
-
-		add( new IconTab(Icons.get(Icons.DATA)){
-			@Override
-			protected void select(boolean value) {
-				super.select(value);
-				data.visible = data.active = value;
-				if (value) last_index = 4;
-			}
 		});
 
 		resize(width, (int)Math.ceil(height));
@@ -188,15 +185,24 @@ public class WndSettings extends WndTabbed {
 
 	private static class DisplayTab extends Component {
 
+		RenderedTextBlock title;
+		ColorBlock sep1;
 		OptionSlider optScale;
 		CheckBox chkSaver;
 		RedButton btnOrientation;
-
+		ColorBlock sep2;
 		OptionSlider optBrightness;
 		OptionSlider optVisGrid;
 
 		@Override
 		protected void createChildren() {
+			title = PixelScene.renderTextBlock(Messages.get(this, "title"), 9);
+			title.hardlight(TITLE_COLOR);
+			add(title);
+
+			sep1 = new ColorBlock(1, 1, 0xFF000000);
+			add(sep1);
+
 			if ((int)Math.ceil(2* Game.density) < PixelScene.maxDefaultZoom) {
 				optScale = new OptionSlider(Messages.get(this, "scale"),
 						(int)Math.ceil(2* Game.density)+ "X",
@@ -256,6 +262,9 @@ public class WndSettings extends WndTabbed {
 				add(btnOrientation);
 			}
 
+			sep2 = new ColorBlock(1, 1, 0xFF000000);
+			add(sep2);
+
 			optBrightness = new OptionSlider(Messages.get(this, "brightness"),
 					Messages.get(this, "dark"), Messages.get(this, "bright"), -1, 1) {
 				@Override
@@ -281,35 +290,45 @@ public class WndSettings extends WndTabbed {
 		@Override
 		protected void layout() {
 
-			float bottom = 0;
+			float bottom = y;
+
+			title.setPos((width - title.width())/2, bottom + GAP);
+			sep1.size(width, 1);
+			sep1.y = title.bottom() + 2*GAP;
+
+			bottom = sep1.y + 1;
 
 			if (optScale != null){
-				optScale.setRect(0, 0, width, SLIDER_HEIGHT);
+				optScale.setRect(0, bottom + GAP, width, SLIDER_HEIGHT);
 				bottom = optScale.bottom();
 			}
 
 			if (width > 200 && chkSaver != null && btnOrientation != null) {
-				chkSaver.setRect(0, bottom + GAP_TINY, width/2-1, BTN_HEIGHT);
-				btnOrientation.setRect(chkSaver.right()+GAP_TINY, bottom + GAP_TINY, width/2-1, BTN_HEIGHT);
+				chkSaver.setRect(0, bottom + GAP, width/2-1, BTN_HEIGHT);
+				btnOrientation.setRect(chkSaver.right()+ GAP, bottom + GAP, width/2-1, BTN_HEIGHT);
 				bottom = btnOrientation.bottom();
 			} else {
 				if (chkSaver != null) {
-					chkSaver.setRect(0, bottom + GAP_TINY, width, BTN_HEIGHT);
+					chkSaver.setRect(0, bottom + GAP, width, BTN_HEIGHT);
 					bottom = chkSaver.bottom();
 				}
 
 				if (btnOrientation != null) {
-					btnOrientation.setRect(0, bottom + GAP_TINY, width, BTN_HEIGHT);
+					btnOrientation.setRect(0, bottom + GAP, width, BTN_HEIGHT);
 					bottom = btnOrientation.bottom();
 				}
 			}
 
+			sep2.size(width, 1);
+			sep2.y = bottom + GAP;
+			bottom = sep2.y + 1;
+
 			if (width > 200){
-				optBrightness.setRect(0, bottom + GAP_LRG, width/2-1, SLIDER_HEIGHT);
-				optVisGrid.setRect(optBrightness.right() + GAP_TINY, optBrightness.top(), width/2-1, SLIDER_HEIGHT);
+				optBrightness.setRect(0, bottom + GAP, width/2-GAP/2, SLIDER_HEIGHT);
+				optVisGrid.setRect(optBrightness.right() + GAP, optBrightness.top(), width/2-GAP/2, SLIDER_HEIGHT);
 			} else {
-				optBrightness.setRect(0, bottom + GAP_LRG, width, SLIDER_HEIGHT);
-				optVisGrid.setRect(0, optBrightness.bottom() + GAP_TINY, width, SLIDER_HEIGHT);
+				optBrightness.setRect(0, bottom + GAP, width, SLIDER_HEIGHT);
+				optVisGrid.setRect(0, optBrightness.bottom() + GAP, width, SLIDER_HEIGHT);
 			}
 
 			height = optVisGrid.bottom();
@@ -319,18 +338,27 @@ public class WndSettings extends WndTabbed {
 
 	private static class UITab extends Component {
 
+		RenderedTextBlock title;
+		ColorBlock sep1;
 		RenderedTextBlock barDesc;
 		RedButton btnSplit; RedButton btnGrouped; RedButton btnCentered;
 		CheckBox chkFlipToolbar;
 		CheckBox chkFlipTags;
-
+		ColorBlock sep2;
 		CheckBox chkFullscreen;
 		CheckBox chkFont;
-
+		ColorBlock sep3;
 		RedButton btnKeyBindings;
 
 		@Override
 		protected void createChildren() {
+			title = PixelScene.renderTextBlock(Messages.get(this, "title"), 9);
+			title.hardlight(TITLE_COLOR);
+			add(title);
+
+			sep1 = new ColorBlock(1, 1, 0xFF000000);
+			add(sep1);
+
 			barDesc = PixelScene.renderTextBlock(Messages.get(this, "mode"), 9);
 			add(barDesc);
 
@@ -395,6 +423,9 @@ public class WndSettings extends WndTabbed {
 			chkFlipTags.checked(SPDSettings.flipTags());
 			add(chkFlipTags);
 
+			sep2 = new ColorBlock(1, 1, 0xFF000000);
+			add(sep2);
+
 			chkFullscreen = new CheckBox( Messages.get(this, "fullscreen") ) {
 				@Override
 				protected void onClick() {
@@ -423,11 +454,14 @@ public class WndSettings extends WndTabbed {
 					});
 				}
 			};
-
 			chkFont.checked(SPDSettings.systemFont());
 			add(chkFont);
 
 			if (DeviceCompat.hasHardKeyboard()){
+
+				sep3 = new ColorBlock(1, 1, 0xFF000000);
+				add(sep3);
+
 				btnKeyBindings = new RedButton(Messages.get(this, "key_bindings")){
 					@Override
 					protected void onClick() {
@@ -442,30 +476,38 @@ public class WndSettings extends WndTabbed {
 
 		@Override
 		protected void layout() {
-			barDesc.setPos((width-barDesc.width())/2f, GAP_TINY);
+			title.setPos((width - title.width())/2, y + GAP);
+			sep1.size(width, 1);
+			sep1.y = title.bottom() + 2*GAP;
+
+			barDesc.setPos((width-barDesc.width())/2f, sep1.y + 1 + GAP);
 			PixelScene.align(barDesc);
 
-			int btnWidth = (int)(width - 2*GAP_TINY)/3;
-			btnSplit.setRect(0, barDesc.bottom() + GAP_TINY, btnWidth, 16);
-			btnGrouped.setRect(btnSplit.right()+GAP_TINY, btnSplit.top(), btnWidth, 16);
-			btnCentered.setRect(btnGrouped.right()+GAP_TINY, btnSplit.top(), btnWidth, 16);
+			int btnWidth = (int)(width - 2* GAP)/3;
+			btnSplit.setRect(0, barDesc.bottom() + GAP, btnWidth, 16);
+			btnGrouped.setRect(btnSplit.right()+ GAP, btnSplit.top(), btnWidth, 16);
+			btnCentered.setRect(btnGrouped.right()+ GAP, btnSplit.top(), btnWidth, 16);
 
 			if (width > 200) {
-				chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP_TINY, width/2 - 1, BTN_HEIGHT);
-				chkFlipTags.setRect(chkFlipToolbar.right() + GAP_TINY, chkFlipToolbar.top(), width/2 -1, BTN_HEIGHT);
-
-				chkFullscreen.setRect(0, chkFlipTags.bottom() + GAP_SML, width/2 - 1, BTN_HEIGHT);
-				chkFont.setRect(chkFullscreen.right() + GAP_TINY, chkFullscreen.top(), width/2 - 1, BTN_HEIGHT);
+				chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP, width/2 - 1, BTN_HEIGHT);
+				chkFlipTags.setRect(chkFlipToolbar.right() + GAP, chkFlipToolbar.top(), width/2 -1, BTN_HEIGHT);
+				sep2.size(width, 1);
+				sep2.y = chkFlipTags.bottom() + 2;
+				chkFullscreen.setRect(0, sep2.y + 1 + GAP, width/2 - 1, BTN_HEIGHT);
+				chkFont.setRect(chkFullscreen.right() + GAP, chkFullscreen.top(), width/2 - 1, BTN_HEIGHT);
 			} else {
-				chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP_TINY, width, BTN_HEIGHT);
-				chkFlipTags.setRect(0, chkFlipToolbar.bottom() + GAP_TINY, width, BTN_HEIGHT);
-
-				chkFullscreen.setRect(0, chkFlipTags.bottom() + GAP_SML, width, BTN_HEIGHT);
-				chkFont.setRect(0, chkFullscreen.bottom() + GAP_TINY, width, BTN_HEIGHT);
+				chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP, width, BTN_HEIGHT);
+				chkFlipTags.setRect(0, chkFlipToolbar.bottom() + GAP, width, BTN_HEIGHT);
+				sep2.size(width, 1);
+				sep2.y = chkFlipTags.bottom() + 2;
+				chkFullscreen.setRect(0, sep2.y + 1 + GAP, width, BTN_HEIGHT);
+				chkFont.setRect(0, chkFullscreen.bottom() + GAP, width, BTN_HEIGHT);
 			}
 
 			if (btnKeyBindings != null){
-				btnKeyBindings.setRect(0, chkFont.bottom() + GAP_SML, width, BTN_HEIGHT);
+				sep3.size(width, 1);
+				sep3.y = chkFont.bottom() + 2;
+				btnKeyBindings.setRect(0, sep3.y + 1 + GAP, width, BTN_HEIGHT);
 				height = btnKeyBindings.bottom();
 			} else {
 				height = chkFont.bottom();
@@ -474,16 +516,102 @@ public class WndSettings extends WndTabbed {
 
 	}
 
+	private static class DataTab extends Component{
+
+		RenderedTextBlock title;
+		ColorBlock sep1;
+		CheckBox chkNews;
+		CheckBox chkUpdates;
+		CheckBox chkWifi;
+
+		@Override
+		protected void createChildren() {
+			title = PixelScene.renderTextBlock(Messages.get(this, "title"), 9);
+			title.hardlight(TITLE_COLOR);
+			add(title);
+
+			sep1 = new ColorBlock(1, 1, 0xFF000000);
+			add(sep1);
+
+			chkNews = new CheckBox(Messages.get(this, "news")){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					SPDSettings.news(checked());
+					News.clearArticles();
+				}
+			};
+			chkNews.checked(SPDSettings.news());
+			add(chkNews);
+
+			chkUpdates = new CheckBox(Messages.get(this, "updates")){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					SPDSettings.updates(checked());
+					Updates.clearUpdate();
+				}
+			};
+			chkUpdates.checked(SPDSettings.updates());
+			add(chkUpdates);
+
+			if (!DeviceCompat.isDesktop()){
+				chkWifi = new CheckBox(Messages.get(this, "wifi")){
+					@Override
+					protected void onClick() {
+						super.onClick();
+						SPDSettings.WiFi(checked());
+					}
+				};
+				chkWifi.checked(SPDSettings.WiFi());
+				add(chkWifi);
+			}
+		}
+
+		@Override
+		protected void layout() {
+			title.setPos((width - title.width())/2, y + GAP);
+			sep1.size(width, 1);
+			sep1.y = title.bottom() + 2*GAP;
+
+			if (width > 200){
+				chkNews.setRect(0, sep1.y + 1 + GAP, width/2-1, BTN_HEIGHT);
+				chkUpdates.setRect(chkNews.right() + GAP, chkNews.top(), width/2-1, BTN_HEIGHT);
+			} else {
+				chkNews.setRect(0, sep1.y + 1 + GAP, width, BTN_HEIGHT);
+				chkUpdates.setRect(0, chkNews.bottom()+ GAP, width, BTN_HEIGHT);
+			}
+
+			float pos = chkUpdates.bottom();
+			if (chkWifi != null){
+				chkWifi.setRect(0, pos + GAP, width, BTN_HEIGHT);
+				pos = chkWifi.bottom();
+			}
+
+			height = pos;
+
+		}
+	}
+
 	private static class AudioTab extends Component {
 
+		RenderedTextBlock title;
+		ColorBlock sep1;
 		OptionSlider optMusic;
 		CheckBox chkMusicMute;
-
+		ColorBlock sep2;
 		OptionSlider optSFX;
 		CheckBox chkMuteSFX;
 
 		@Override
 		protected void createChildren() {
+			title = PixelScene.renderTextBlock(Messages.get(this, "title"), 9);
+			title.hardlight(TITLE_COLOR);
+			add(title);
+
+			sep1 = new ColorBlock(1, 1, 0xFF000000);
+			add(sep1);
+
 			optMusic = new OptionSlider(Messages.get(this, "music_vol"), "0", "10", 0, 10) {
 				@Override
 				protected void onChange() {
@@ -502,6 +630,9 @@ public class WndSettings extends WndTabbed {
 			};
 			chkMusicMute.checked(!SPDSettings.music());
 			add(chkMusicMute);
+
+			sep2 = new ColorBlock(1, 1, 0xFF000000);
+			add(sep2);
 
 			optSFX = new OptionSlider(Messages.get(this, "sfx_vol"), "0", "10", 0, 10) {
 				@Override
@@ -536,11 +667,18 @@ public class WndSettings extends WndTabbed {
 
 		@Override
 		protected void layout() {
-			optMusic.setRect(0, 0, width, SLIDER_HEIGHT);
-			chkMusicMute.setRect(0, optMusic.bottom() + GAP_TINY, width, BTN_HEIGHT);
+			title.setPos((width - title.width())/2, y + GAP);
+			sep1.size(width, 1);
+			sep1.y = title.bottom() + 2*GAP;
 
-			optSFX.setRect(0, chkMusicMute.bottom() + GAP_LRG, width, SLIDER_HEIGHT);
-			chkMuteSFX.setRect(0, optSFX.bottom() + GAP_TINY, width, BTN_HEIGHT);
+			optMusic.setRect(0, sep1.y + 1 + GAP, width, SLIDER_HEIGHT);
+			chkMusicMute.setRect(0, optMusic.bottom() + GAP, width, BTN_HEIGHT);
+
+			sep2.size(width, 1);
+			sep2.y = chkMusicMute.bottom() + GAP;
+
+			optSFX.setRect(0, sep2.y + 1 + GAP, width, SLIDER_HEIGHT);
+			chkMuteSFX.setRect(0, optSFX.bottom() + GAP, width, BTN_HEIGHT);
 
 			height = chkMuteSFX.bottom();
 		}
@@ -552,22 +690,27 @@ public class WndSettings extends WndTabbed {
 		final static int COLS_P = 3;
 		final static int COLS_L = 4;
 
-		final static int BTN_HEIGHT = 12;
+		final static int BTN_HEIGHT = 11;
 
+		RenderedTextBlock title;
+		ColorBlock sep1;
 		RenderedTextBlock txtLangName;
 		RenderedTextBlock txtLangInfo;
-
-		ColorBlock sep1;
-
-		RedButton[] lanBtns;
-
 		ColorBlock sep2;
-
+		RedButton[] lanBtns;
+		ColorBlock sep3;
 		RenderedTextBlock txtTranifex;
 		RedButton btnCredits;
 
 		@Override
 		protected void createChildren() {
+			title = PixelScene.renderTextBlock(Messages.get(this, "title"), 9);
+			title.hardlight(TITLE_COLOR);
+			add(title);
+
+			sep1 = new ColorBlock(1, 1, 0xFF000000);
+			add(sep1);
+
 			final ArrayList<Languages> langs = new ArrayList<>(Arrays.asList(Languages.values()));
 
 			Languages nativeLang = Languages.matchLocale(Locale.getDefault());
@@ -578,7 +721,9 @@ public class WndSettings extends WndTabbed {
 			final Languages currLang = Messages.lang();
 
 			txtLangName = PixelScene.renderTextBlock( Messages.titleCase(currLang.nativeName()) , 9 );
-			txtLangName.hardlight(TITLE_COLOR);
+			if (currLang.status() == Languages.Status.REVIEWED) txtLangName.hardlight(TITLE_COLOR);
+			else if (currLang.status() == Languages.Status.UNREVIEWED) txtLangName.hardlight(CharSprite.WARNING);
+			else if (currLang.status() == Languages.Status.INCOMPLETE) txtLangName.hardlight(CharSprite.NEGATIVE);
 			add(txtLangName);
 
 			txtLangInfo = PixelScene.renderTextBlock(6);
@@ -590,8 +735,8 @@ public class WndSettings extends WndTabbed {
 			else if (currLang.status() == Languages.Status.INCOMPLETE) txtLangInfo.setHightlighting(true, CharSprite.NEGATIVE);
 			add(txtLangInfo);
 
-			sep1 = new ColorBlock(1, 1, 0xFF000000);
-			add(sep1);
+			sep2 = new ColorBlock(1, 1, 0xFF000000);
+			add(sep2);
 
 			lanBtns = new RedButton[langs.size()];
 			for (int i = 0; i < langs.size(); i++){
@@ -631,8 +776,8 @@ public class WndSettings extends WndTabbed {
 				add(btn);
 			}
 
-			sep2 = new ColorBlock(1, 1, 0xFF000000);
-			add(sep2);
+			sep3 = new ColorBlock(1, 1, 0xFF000000);
+			add(sep3);
 
 			txtTranifex = PixelScene.renderTextBlock(6);
 			txtTranifex.text(Messages.get(this, "transifex"));
@@ -714,18 +859,21 @@ public class WndSettings extends WndTabbed {
 
 		@Override
 		protected void layout() {
-			txtLangName.setPos( (width - txtLangName.width())/2f, 2 );
+			title.setPos((width - title.width())/2, y + GAP);
+			sep1.size(width, 1);
+			sep1.y = title.bottom() + 2*GAP;
+
+			txtLangName.setPos( (width - txtLangName.width())/2f, sep1.y + 1 + GAP );
 			PixelScene.align(txtLangName);
 
-			txtLangInfo.setPos(0, txtLangName.bottom() + 4);
+			txtLangInfo.setPos(0, txtLangName.bottom() + 2*GAP);
 			txtLangInfo.maxWidth((int)width);
 
-			int y = PixelScene.landscape() ? 26 : 32;
-			y = Math.max(y, (int)Math.ceil(txtLangInfo.bottom()+1));
+			y = txtLangInfo.bottom() + GAP;
 			int x = 0;
 
-			sep1.size(width, 1);
-			sep1.y = y;
+			sep2.size(width, 1);
+			sep2.y = y;
 			y += 2;
 
 			int cols = PixelScene.landscape() ? COLS_L : COLS_P;
@@ -743,8 +891,8 @@ public class WndSettings extends WndTabbed {
 				y += BTN_HEIGHT+1;
 			}
 
-			sep2.size(width, 1);
-			sep2.y = y;
+			sep3.size(width, 1);
+			sep3.y = y;
 			y += 2;
 
 			if (btnCredits != null){
@@ -761,70 +909,6 @@ public class WndSettings extends WndTabbed {
 
 				height = txtTranifex.bottom();
 			}
-
-		}
-	}
-
-	private static class DataTab extends Component{
-
-		CheckBox chkNews;
-		CheckBox chkUpdates;
-		CheckBox chkWifi;
-
-		@Override
-		protected void createChildren() {
-			chkNews = new CheckBox(Messages.get(this, "news")){
-				@Override
-				protected void onClick() {
-					super.onClick();
-					SPDSettings.news(checked());
-					News.clearArticles();
-				}
-			};
-			chkNews.checked(SPDSettings.news());
-			add(chkNews);
-
-			chkUpdates = new CheckBox(Messages.get(this, "updates")){
-				@Override
-				protected void onClick() {
-					super.onClick();
-					SPDSettings.updates(checked());
-					Updates.clearUpdate();
-				}
-			};
-			chkUpdates.checked(SPDSettings.updates());
-			add(chkUpdates);
-
-			if (!DeviceCompat.isDesktop()){
-				chkWifi = new CheckBox(Messages.get(this, "wifi")){
-					@Override
-					protected void onClick() {
-						super.onClick();
-						SPDSettings.WiFi(checked());
-					}
-				};
-				chkWifi.checked(SPDSettings.WiFi());
-				add(chkWifi);
-			}
-		}
-
-		@Override
-		protected void layout() {
-			if (width > 200){
-				chkNews.setRect(0, 0, width/2-1, BTN_HEIGHT);
-				chkUpdates.setRect(chkNews.right() + GAP_TINY, chkNews.top(), width/2-1, BTN_HEIGHT);
-			} else {
-				chkNews.setRect(0, 0, width, BTN_HEIGHT);
-				chkUpdates.setRect(0, chkNews.bottom()+GAP_TINY, width, BTN_HEIGHT);
-			}
-
-			float pos = chkUpdates.bottom();
-			if (chkWifi != null){
-				chkWifi.setRect(0, pos + GAP_TINY, width, BTN_HEIGHT);
-				pos = chkWifi.bottom();
-			}
-
-			height = pos;
 
 		}
 	}

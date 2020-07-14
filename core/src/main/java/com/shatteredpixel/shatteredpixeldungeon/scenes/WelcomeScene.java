@@ -66,15 +66,11 @@ public class WelcomeScene extends PixelScene {
 		Image title = BannerSprites.get( BannerSprites.Type.PIXEL_DUNGEON );
 		title.brightness(0.6f);
 		add( title );
-		
-		float topRegion = Math.max(title.height, h*0.45f);
-		
+
+		float topRegion = Math.max(title.height - 6, h*0.45f);
+
 		title.x = (w - title.width()) / 2f;
-		if (landscape()) {
-			title.y = (topRegion - title.height()) / 2f;
-		} else {
-			title.y = 20 + (topRegion - title.height() - 20) / 2f;
-		}
+		title.y = 2 + (topRegion - title.height()) / 2f;
 
 		align(title);
 
@@ -113,7 +109,8 @@ public class WelcomeScene extends PixelScene {
 			}
 		};
 
-		//FIXME these buttons are very low on 18:9 devices
+		float buttonY = Math.min(topRegion + (PixelScene.landscape() ? 60 : 120), h - 24);
+
 		if (previousVersion != 0){
 			StyledButton changes = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(TitleScene.class, "changes")){
 				@Override
@@ -123,15 +120,15 @@ public class WelcomeScene extends PixelScene {
 					ShatteredPixelDungeon.switchScene(ChangesScene.class);
 				}
 			};
-			okay.setRect(title.x, h-25, (title.width()/2)-2, 21);
+			okay.setRect(title.x, buttonY, (title.width()/2)-2, 20);
 			add(okay);
 
-			changes.setRect(okay.right()+2, h-25, (title.width()/2)-2, 21);
+			changes.setRect(okay.right()+2, buttonY, (title.width()/2)-2, 20);
 			changes.icon(Icons.get(Icons.CHANGES));
 			add(changes);
 		} else {
 			okay.text(Messages.get(TitleScene.class, "enter"));
-			okay.setRect(title.x, h-25, title.width(), 21);
+			okay.setRect(title.x, buttonY, title.width(), 20);
 			okay.icon(Icons.get(Icons.ENTER));
 			add(okay);
 		}
@@ -157,8 +154,8 @@ public class WelcomeScene extends PixelScene {
 			message = Messages.get(this, "what_msg");
 		}
 		text.text(message, w-20);
-		float textSpace = h - title.y - (title.height() - 10) - okay.height() - 2;
-		text.setPos((w - text.width()) / 2f, title.y+(title.height() - 10) + ((textSpace - text.height()) / 2));
+		float textSpace = okay.top() - topRegion - 4;
+		text.setPos((w - text.width()) / 2f, (topRegion + 2) + (textSpace - text.height())/2);
 		add(text);
 
 	}
@@ -207,12 +204,6 @@ public class WelcomeScene extends PixelScene {
 		}
 		
 		SPDSettings.version(ShatteredPixelDungeon.versionCode);
-	}
-
-	private void placeTorch( float x, float y ) {
-		Fireball fb = new Fireball();
-		fb.setPos( x, y );
-		add( fb );
 	}
 	
 }

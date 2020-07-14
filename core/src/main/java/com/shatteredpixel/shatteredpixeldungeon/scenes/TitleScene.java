@@ -224,10 +224,6 @@ public class TitleScene extends PixelScene {
 		
 		int pos = 2;
 
-		ExitButton btnExit = new ExitButton();
-		btnExit.setPos( w - btnExit.width(), 0 );
-		add( btnExit );
-
 		fadeIn();
 	}
 	
@@ -317,7 +313,7 @@ public class TitleScene extends PixelScene {
 		@Override
 		protected void onClick() {
 			if (blinking){
-				WndSettings.last_index = 3;
+				WndSettings.last_index = 4;
 			}
 			ShatteredPixelDungeon.scene().add(new WndSettings());
 		}
