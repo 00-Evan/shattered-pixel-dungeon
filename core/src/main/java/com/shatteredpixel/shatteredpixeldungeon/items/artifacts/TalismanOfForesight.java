@@ -156,20 +156,16 @@ public class TalismanOfForesight extends Artifact {
 					}
 
 					if (Dungeon.level.secret[cell]) {
-						Dungeon.level.discover(cell);
+						int oldValue = Dungeon.level.map[cell];
+						GameScene.discoverTile(cell, oldValue);
+						Dungeon.level.discover( cell );
+						ScrollOfMagicMapping.discover(cell);
+						noticed = true;
 
-						if (Dungeon.level.heroFOV[cell]) {
-							int oldValue = Dungeon.level.map[cell];
-							GameScene.discoverTile(cell, Dungeon.level.map[cell]);
-							Dungeon.level.discover( cell );
-							ScrollOfMagicMapping.discover(cell);
-							noticed = true;
-
-							if (oldValue == Terrain.SECRET_TRAP){
-								earnedExp += 10;
-							} else if (oldValue == Terrain.SECRET_DOOR){
-								earnedExp += 100;
-							}
+						if (oldValue == Terrain.SECRET_TRAP){
+							earnedExp += 10;
+						} else if (oldValue == Terrain.SECRET_DOOR){
+							earnedExp += 100;
 						}
 					}
 
@@ -214,6 +210,7 @@ public class TalismanOfForesight extends Artifact {
 				GameScene.updateFog();
 
 				curUser.sprite.zap(target);
+				curUser.spend(Actor.TICK);
 				Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 				if (noticed) Sample.INSTANCE.play(Assets.Sounds.SECRET);
 

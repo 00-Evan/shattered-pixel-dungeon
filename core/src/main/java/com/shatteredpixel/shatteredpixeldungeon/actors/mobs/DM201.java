@@ -126,7 +126,7 @@ public class DM201 extends DM200 {
 		int ofs;
 		do {
 			ofs = PathFinder.NEIGHBOURS8[Random.Int(8)];
-		} while (!Dungeon.level.passable[pos + ofs]);
+		} while (Dungeon.level.solid[pos + ofs]);
 		Dungeon.level.drop( new MetalShard(), pos + ofs ).sprite.drop( pos );
 	}
 

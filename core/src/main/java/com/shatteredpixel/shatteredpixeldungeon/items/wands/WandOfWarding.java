@@ -250,15 +250,12 @@ public class WandOfWarding extends Wand {
 					return;
 				case 4:
 					heal = 8;
-					HP = Math.min(HT, HP+9);
 					break;
 				case 5:
 					heal = 10;
-					HP = Math.min(HT, HP+10);
 					break;
 				case 6:
 					heal = 15;
-					HP = Math.min(HT, HP+15);
 					break;
 			}
 

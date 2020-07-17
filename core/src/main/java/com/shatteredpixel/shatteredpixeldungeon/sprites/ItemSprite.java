@@ -322,17 +322,23 @@ public class ItemSprite extends MovieClip {
 				place(heap.pos);
 
 				if (visible) {
-					boolean water = Dungeon.level.water[heap.pos];
 
-					if (water) {
+					if (Dungeon.level.water[heap.pos]) {
 						GameScene.ripple(heap.pos);
-					} else {
-						int cell = Dungeon.level.map[heap.pos];
-						water = (cell == Terrain.WELL || cell == Terrain.ALCHEMY);
 					}
 
-					if (!(heap.peek() instanceof Gold)) {
-						Sample.INSTANCE.play(water ? Assets.Sounds.WATER : Assets.Sounds.STEP, 0.8f, 0.8f, 1.2f);
+					if (Dungeon.level.water[heap.pos]) {
+						Sample.INSTANCE.play( Assets.Sounds.WATER, 0.8f, Random.Float( 1f, 1.45f ) );
+					} else if (Dungeon.level.map[heap.pos] == Terrain.EMPTY_SP) {
+						Sample.INSTANCE.play( Assets.Sounds.STURDY, 0.8f, Random.Float( 1.16f, 1.25f ) );
+					} else if (Dungeon.level.map[heap.pos] == Terrain.GRASS
+							|| Dungeon.level.map[heap.pos] == Terrain.EMBERS
+							|| Dungeon.level.map[heap.pos] == Terrain.FURROWED_GRASS){
+						Sample.INSTANCE.play( Assets.Sounds.GRASS, 0.8f, Random.Float( 1.16f, 1.25f ) );
+					} else if (Dungeon.level.map[heap.pos] == Terrain.HIGH_GRASS) {
+						Sample.INSTANCE.play( Assets.Sounds.STEP, 0.8f, Random.Float( 1.16f, 1.25f ) );
+					} else {
+						Sample.INSTANCE.play( Assets.Sounds.STEP, 0.8f, Random.Float( 1.16f, 1.25f ));
 					}
 				}
 			}
