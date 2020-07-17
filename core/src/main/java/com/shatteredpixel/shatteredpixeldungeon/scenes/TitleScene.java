@@ -30,8 +30,10 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Fireball;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.services.news.News;
 import com.shatteredpixel.shatteredpixeldungeon.services.updates.AvailableUpdateData;
 import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
@@ -47,6 +49,8 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Music;
 import com.watabou.utils.ColorMath;
 import com.watabou.utils.DeviceCompat;
+
+import java.util.Date;
 
 public class TitleScene extends PixelScene {
 	
@@ -99,7 +103,7 @@ public class TitleScene extends PixelScene {
 		add( signs );
 
 		final Chrome.Type GREY_TR = Chrome.Type.GREY_BUTTON_TR;
-
+		
 		StyledButton btnPlay = new StyledButton(GREY_TR, Messages.get(this, "enter")){
 			@Override
 			protected void onClick() {
@@ -127,26 +131,7 @@ public class TitleScene extends PixelScene {
 		btnPlay.icon(Icons.get(Icons.ENTER));
 		add(btnPlay);
 
-		//TODO turn this into its own class?
-		StyledButton btnSupport = new StyledButton(GREY_TR, Messages.get(this, "support")){
-			@Override
-			protected void onClick() {
-				WndOptions wnd = new WndOptions(Messages.get(TitleScene.class, "support"),
-						Messages.get(TitleScene.class, "patreon_body"),
-						Messages.get(TitleScene.class, "patreon_button")){
-					@Override
-					protected void onSelect(int index) {
-						if (index == 0){
-							DeviceCompat.openURI("https://www.patreon.com/ShatteredPixel");
-						} else {
-							hide();
-						}
-					}
-				};
-				parent.add(wnd);
-			}
-		};
-		btnSupport.icon(Icons.get(Icons.GOLD));
+		StyledButton btnSupport = new SupportButton(GREY_TR, Messages.get(this, "support"));
 		add(btnSupport);
 
 		StyledButton btnRankings = new StyledButton(GREY_TR,Messages.get(this, "rankings")){
@@ -167,14 +152,13 @@ public class TitleScene extends PixelScene {
 		btnBadges.icon(Icons.get(Icons.BADGES));
 		add(btnBadges);
 
-		ChangesButton btnChanges = new ChangesButton(GREY_TR, Messages.get(this, "changes"));
+		StyledButton btnNews = new NewsButtons(GREY_TR, Messages.get(this, "news"));
+		btnNews.icon(Icons.get(Icons.NEWS));
+		add(btnNews);
+
+		StyledButton btnChanges = new ChangesButton(GREY_TR, Messages.get(this, "changes"));
 		btnChanges.icon(Icons.get(Icons.CHANGES));
 		add(btnChanges);
-
-		//TODO news feed functionality here
-		StyledButton btnNews = new StyledButton(GREY_TR, Messages.get(this, "news"));
-		btnNews.icon(Icons.get(Icons.CHANGES));
-		add(btnNews);
 
 		StyledButton btnSettings = new SettingsButton(GREY_TR, Messages.get(this, "settings"));
 		add(btnSettings);
@@ -206,13 +190,13 @@ public class TitleScene extends PixelScene {
 		} else {
 			btnPlay.setRect(title.x, topRegion+GAP, title.width(), BTN_HEIGHT);
 			align(btnPlay);
-			btnRankings.setRect(btnPlay.left(), btnPlay.bottom()+ GAP, (btnPlay.width()/2)-1, BTN_HEIGHT);
+			btnSupport.setRect(btnPlay.left(), btnPlay.bottom()+ GAP, btnPlay.width(), BTN_HEIGHT);
+			btnRankings.setRect(btnPlay.left(), btnSupport.bottom()+ GAP, (btnPlay.width()/2)-1, BTN_HEIGHT);
 			btnBadges.setRect(btnRankings.right()+2, btnRankings.top(), btnRankings.width(), BTN_HEIGHT);
 			btnNews.setRect(btnRankings.left(), btnRankings.bottom()+ GAP, btnRankings.width(), BTN_HEIGHT);
 			btnChanges.setRect(btnNews.right()+2, btnNews.top(), btnNews.width(), BTN_HEIGHT);
 			btnSettings.setRect(btnNews.left(), btnNews.bottom()+GAP, btnRankings.width(), BTN_HEIGHT);
 			btnAbout.setRect(btnSettings.right()+2, btnSettings.top(), btnSettings.width(), BTN_HEIGHT);
-			btnSupport.setRect(btnPlay.left(), btnAbout.bottom()+ GAP, btnPlay.width(), BTN_HEIGHT);
 		}
 
 		BitmapText version = new BitmapText( "v" + Game.version, pixelFont);
@@ -221,8 +205,6 @@ public class TitleScene extends PixelScene {
 		version.x = w - version.width() - 4;
 		version.y = h - version.height() - 2;
 		add( version );
-		
-		int pos = 2;
 
 		fadeIn();
 	}
@@ -233,7 +215,41 @@ public class TitleScene extends PixelScene {
 		add( fb );
 	}
 
-	//TODO change icon?
+	private static class NewsButtons extends StyledButton {
+
+		public NewsButtons( Chrome.Type type, String label ){
+			super(type, label);
+			if (SPDSettings.news()) News.checkForNews();
+		}
+
+		int unreadCount = -1;
+
+		@Override
+		public void update() {
+			super.update();
+
+			if (unreadCount == -1 && News.articlesAvailable()){
+				unreadCount = News.unreadArticles(new Date(SPDSettings.newsLastRead()));
+				if (unreadCount > 0){
+					unreadCount = Math.min(unreadCount, 9);
+					text(text() + "(" + unreadCount + ")");
+				} else {
+					SPDSettings.newsLastRead(Game.realTime);
+				}
+			}
+
+			if (unreadCount > 0){
+				textColor(ColorMath.interpolate( 0xFFFFFF, Window.SHPX_COLOR, 0.5f + (float)Math.sin(Game.timeTotal*5)/2f));
+			}
+		}
+
+		@Override
+		protected void onClick() {
+			super.onClick();
+			//ShatteredPixelDungeon.switchNoFade( NewsScene.class );
+		}
+	}
+
 	private static class ChangesButton extends StyledButton {
 
 		public ChangesButton( Chrome.Type type, String label ){
@@ -252,7 +268,7 @@ public class TitleScene extends PixelScene {
 					updateShown = true;
 					text(Messages.get(TitleScene.class, "update"));
 				}
-				textColor(ColorMath.interpolate( 0xFFFFFF, Window.SHPX_COLOR, 0.5f + (float)Math.sin(Game.timeTotal*4)/2f));
+				textColor(ColorMath.interpolate( 0xFFFFFF, Window.SHPX_COLOR, 0.5f + (float)Math.sin(Game.timeTotal*5)/2f));
 			}
 		}
 
@@ -285,17 +301,13 @@ public class TitleScene extends PixelScene {
 
 	}
 
-	//TODO maybe have this blink a bit differently than the language button used to
 	private static class SettingsButton extends StyledButton {
-
-		boolean blinking;
 
 		public SettingsButton( Chrome.Type type, String label ){
 			super(type, label);
 			if (Messages.lang().status() == Languages.Status.INCOMPLETE){
 				icon(Icons.get(Icons.LANGS));
 				icon.hardlight(1.5f, 0, 0);
-				blinking = true;
 			} else {
 				icon(Icons.get(Icons.PREFS));
 			}
@@ -305,17 +317,43 @@ public class TitleScene extends PixelScene {
 		public void update() {
 			super.update();
 
-			if (blinking){
-				icon.am = (float)Math.abs(Math.cos( Game.timeTotal ));
+			if (Messages.lang().status() == Languages.Status.INCOMPLETE){
+				textColor(ColorMath.interpolate( 0xFFFFFF, CharSprite.NEGATIVE, 0.5f + (float)Math.sin(Game.timeTotal*5)/2f));
 			}
 		}
 
 		@Override
 		protected void onClick() {
-			if (blinking){
+			if (Messages.lang().status() == Languages.Status.INCOMPLETE){
 				WndSettings.last_index = 4;
 			}
 			ShatteredPixelDungeon.scene().add(new WndSettings());
+		}
+	}
+
+	private static class SupportButton extends StyledButton{
+
+		public SupportButton( Chrome.Type type, String label ){
+			super(type, label);
+			icon(Icons.get(Icons.GOLD));
+			textColor(Window.TITLE_COLOR);
+		}
+
+		@Override
+		protected void onClick() {
+			WndOptions wnd = new WndOptions(Messages.get(TitleScene.class, "support"),
+					Messages.get(TitleScene.class, "patreon_body"),
+					Messages.get(TitleScene.class, "patreon_button")){
+				@Override
+				protected void onSelect(int index) {
+					if (index == 0){
+						DeviceCompat.openURI("https://www.patreon.com/ShatteredPixel");
+					} else {
+						hide();
+					}
+				}
+			};
+			parent.add(wnd);
 		}
 	}
 }

@@ -69,6 +69,7 @@ public enum Icons {
 	GOLD,
 	RANKINGS,
 	BADGES,
+	NEWS,
 	CHANGES,
 	SHPX,
 	
@@ -193,14 +194,17 @@ public enum Icons {
 		case BADGES:
 			icon.frame( icon.texture.uvRect( 34, 64, 50, 80 ) );
 			break;
+		case NEWS:
+			icon.frame( icon.texture.uvRect( 51, 64, 67, 79 ) );
+			break;
 		case CHANGES:
-			icon.frame( icon.texture.uvRect( 51, 64, 68, 79 ) );
+			icon.frame( icon.texture.uvRect( 68, 64, 83, 79 ) );
 			break;
 		case SHPX:
-			icon.frame( icon.texture.uvRect( 68, 64, 84, 80 ) );
+			icon.frame( icon.texture.uvRect( 85, 64, 101, 80 ) );
 			break;
 		case GOLD:
-			icon.frame( icon.texture.uvRect( 85, 64, 102, 80 ) );
+			icon.frame( icon.texture.uvRect( 102, 64, 119, 80 ) );
 			break;
 		
 		case LIBGDX:
@@ -231,7 +235,7 @@ public enum Icons {
 			icon.scale.set(PixelScene.align(0.49f));
 			break;
 		case CUBE_CODE:
-			icon.frame( icon.texture.uvRect( 101, 39, 128, 69 ) );
+			icon.frame( icon.texture.uvRect( 101, 32, 128, 62 ) );
 			icon.scale.set(PixelScene.align(0.49f));
 			break;
 
