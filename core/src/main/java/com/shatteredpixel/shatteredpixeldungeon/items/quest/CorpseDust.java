@@ -36,8 +36,6 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-import java.util.ArrayList;
-
 public class CorpseDust extends Item {
 	
 	{

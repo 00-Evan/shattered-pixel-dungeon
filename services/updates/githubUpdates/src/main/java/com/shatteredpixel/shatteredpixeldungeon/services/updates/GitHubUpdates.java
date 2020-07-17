@@ -27,7 +27,6 @@ import com.badlogic.gdx.Net;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.DeviceCompat;
-import com.watabou.utils.GameSettings;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

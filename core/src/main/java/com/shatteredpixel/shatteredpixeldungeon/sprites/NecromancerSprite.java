@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Necromancer;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Callback;
 
 public class NecromancerSprite extends MobSprite {
 	

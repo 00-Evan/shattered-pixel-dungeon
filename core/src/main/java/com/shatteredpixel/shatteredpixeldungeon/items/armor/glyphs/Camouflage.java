@@ -21,14 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundle;
 
 public class Camouflage extends Armor.Glyph {
 

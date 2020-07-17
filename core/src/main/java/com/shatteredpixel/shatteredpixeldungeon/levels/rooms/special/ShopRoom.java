@@ -55,7 +55,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Tipp
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 

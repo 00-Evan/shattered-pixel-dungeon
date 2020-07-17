@@ -26,7 +26,6 @@ import com.badlogic.gdx.utils.I18NBundle;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.watabou.utils.FileUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

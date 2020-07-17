@@ -49,7 +49,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.KingSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.UndeadSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;

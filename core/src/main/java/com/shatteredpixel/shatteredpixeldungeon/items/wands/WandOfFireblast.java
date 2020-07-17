@@ -41,10 +41,8 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
-import com.watabou.utils.PathFinder;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class WandOfFireblast extends DamageWand {
 

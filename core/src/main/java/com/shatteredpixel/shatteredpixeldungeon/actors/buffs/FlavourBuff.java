@@ -21,8 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import com.watabou.noosa.Image;
-
 //buff whose only internal logic is to wait and detach after a time.
 public class FlavourBuff extends Buff {
 	

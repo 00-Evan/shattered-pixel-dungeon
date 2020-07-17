@@ -22,7 +22,6 @@
 package com.watabou.utils;
 
 import com.badlogic.gdx.utils.reflect.ClassReflection;
-import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.watabou.noosa.Game;
 
 //wrapper for LibGDX reflection

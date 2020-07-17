@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor.Glyph;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Random;
 
 public class Metabolism extends Glyph {

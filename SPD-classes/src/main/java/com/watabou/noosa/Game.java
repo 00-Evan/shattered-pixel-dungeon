@@ -30,7 +30,6 @@ import com.watabou.glscripts.Script;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
 import com.watabou.glwrap.Vertexbuffer;
-import com.watabou.input.GameAction;
 import com.watabou.input.InputHandler;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
