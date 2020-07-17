@@ -39,7 +39,7 @@ public class ThrowingStone extends MissileWeapon {
 	}
 	
 	@Override
-	public int price() {
-		return super.price()/2; //half normal value
+	public int value() {
+		return super.value()/2; //half normal value
 	}
 }

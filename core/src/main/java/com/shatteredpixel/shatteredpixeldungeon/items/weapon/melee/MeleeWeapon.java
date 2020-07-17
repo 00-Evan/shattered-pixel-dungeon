@@ -117,7 +117,7 @@ public class MeleeWeapon extends Weapon {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		int price = 20 * tier;
 		if (hasGoodEnchant()) {
 			price *= 1.5;

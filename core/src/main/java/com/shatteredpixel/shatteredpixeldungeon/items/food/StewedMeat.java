@@ -33,7 +33,7 @@ public class StewedMeat extends Food {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return 8 * quantity;
 	}
 	

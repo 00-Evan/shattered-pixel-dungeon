@@ -309,7 +309,7 @@ public class MagesStaff extends MeleeWeapon {
 	}
 
 	@Override
-	public int price() {
+	public int value() {
 		return 0;
 	}
 	

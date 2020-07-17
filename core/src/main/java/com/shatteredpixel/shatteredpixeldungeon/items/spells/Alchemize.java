@@ -58,7 +58,7 @@ public class Alchemize extends Spell implements AlchemyScene.AlchemyProvider {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		//prices of ingredients, divided by output quantity
 		return Math.round(quantity * ((40 + 40) / 4f));
 	}

@@ -31,9 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 
 public class WndTradeItem extends WndInfoItem {
@@ -54,7 +51,7 @@ public class WndTradeItem extends WndInfoItem {
 
 		if (item.quantity() == 1) {
 
-			RedButton btnSell = new RedButton( Messages.get(this, "sell", item.price()) ) {
+			RedButton btnSell = new RedButton( Messages.get(this, "sell", item.value()) ) {
 				@Override
 				protected void onClick() {
 					sell( item );
@@ -68,7 +65,7 @@ public class WndTradeItem extends WndInfoItem {
 
 		} else {
 
-			int priceAll= item.price();
+			int priceAll= item.value();
 			RedButton btnSell1 = new RedButton( Messages.get(this, "sell_1", priceAll / item.quantity()) ) {
 				@Override
 				protected void onClick() {
@@ -104,7 +101,7 @@ public class WndTradeItem extends WndInfoItem {
 
 		float pos = height;
 
-		final int price = price( item );
+		final int price = Shopkeeper.sellPrice( item );
 
 		RedButton btnBuy = new RedButton( Messages.get(this, "buy", price) ) {
 			@Override
@@ -175,7 +172,7 @@ public class WndTradeItem extends WndInfoItem {
 		}
 		item.detachAll( hero.belongings.backpack );
 		
-		new Gold( item.price() ).doPickUp( hero );
+		new Gold( item.value() ).doPickUp( hero );
 		
 		//selling items in the sell interface doesn't spend time
 		hero.spend(-hero.cooldown());
@@ -191,16 +188,11 @@ public class WndTradeItem extends WndInfoItem {
 			
 			item = item.detach( hero.belongings.backpack );
 			
-			new Gold( item.price() ).doPickUp( hero );
+			new Gold( item.value() ).doPickUp( hero );
 			
 			//selling items in the sell interface doesn't spend time
 			hero.spend(-hero.cooldown());
 		}
-	}
-	
-	private int price( Item item ) {
-		int price = item.price() * 5 * (Dungeon.depth / 5 + 1);
-		return price;
 	}
 	
 	private void buy( Heap heap ) {
@@ -208,7 +200,7 @@ public class WndTradeItem extends WndInfoItem {
 		Item item = heap.pickUp();
 		if (item == null) return;
 		
-		int price = price( item );
+		int price = Shopkeeper.sellPrice( item );
 		Dungeon.gold -= price;
 		
 		if (!item.doPickUp( Dungeon.hero )) {

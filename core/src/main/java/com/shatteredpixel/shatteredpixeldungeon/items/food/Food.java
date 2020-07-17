@@ -123,7 +123,7 @@ public class Food extends Item {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return 10 * quantity;
 	}
 }

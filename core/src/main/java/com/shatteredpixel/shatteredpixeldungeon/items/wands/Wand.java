@@ -366,7 +366,7 @@ public abstract class Wand extends Item {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		int price = 75;
 		if (cursed && cursedKnown) {
 			price /= 2;

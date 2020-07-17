@@ -188,7 +188,7 @@ public class Artifact extends KindofMisc {
 	}
 
 	@Override
-	public int price() {
+	public int value() {
 		int price = 100;
 		if (level() > 0)
 			price += 20*visiblyUpgraded();

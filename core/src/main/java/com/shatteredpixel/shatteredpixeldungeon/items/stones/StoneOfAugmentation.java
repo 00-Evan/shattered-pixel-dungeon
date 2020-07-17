@@ -65,7 +65,7 @@ public class StoneOfAugmentation extends InventoryStone {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return 30 * quantity;
 	}
 	

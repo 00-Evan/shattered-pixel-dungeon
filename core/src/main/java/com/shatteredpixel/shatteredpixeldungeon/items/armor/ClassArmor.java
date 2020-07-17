@@ -174,7 +174,7 @@ abstract public class ClassArmor extends Armor {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return 0;
 	}
 

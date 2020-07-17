@@ -60,7 +60,7 @@ public class ScrollHolder extends Bag {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return 40;
 	}
 

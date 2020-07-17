@@ -76,7 +76,7 @@ public class PhaseShift extends TargetedSpell {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		//prices of ingredients, divided by output quantity
 		return Math.round(quantity * ((30 + 40) / 8f));
 	}

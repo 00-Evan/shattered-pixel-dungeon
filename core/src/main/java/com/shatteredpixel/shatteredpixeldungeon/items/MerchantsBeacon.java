@@ -74,7 +74,7 @@ public class MerchantsBeacon extends Item {
 	}
 
 	@Override
-	public int price() {
+	public int value() {
 		return 5 * quantity;
 	}
 

@@ -154,7 +154,7 @@ public class Bones {
 						Artifact artifact = Reflection.newInstance(((Artifact)item).getClass());
 						
 						if (artifact == null){
-							return new Gold(item.price());
+							return new Gold(item.value());
 						}
 
 						artifact.cursed = true;
@@ -163,7 +163,7 @@ public class Bones {
 						return artifact;
 						
 					} else {
-						return new Gold(item.price());
+						return new Gold(item.value());
 					}
 				}
 				

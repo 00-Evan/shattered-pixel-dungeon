@@ -48,7 +48,7 @@ public class ElixirOfIcyTouch extends Elixir {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		//prices of ingredients
 		return quantity * (50 + 40);
 	}

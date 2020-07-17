@@ -408,7 +408,7 @@ public class TimekeepersHourglass extends Artifact {
 		}
 
 		@Override
-		public int price() {
+		public int value() {
 			return 20;
 		}
 	}

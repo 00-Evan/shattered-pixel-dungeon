@@ -163,7 +163,7 @@ public abstract class TippedDart extends Dart {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		//value of regular dart plus half of the seed
 		return 8 * quantity;
 	}

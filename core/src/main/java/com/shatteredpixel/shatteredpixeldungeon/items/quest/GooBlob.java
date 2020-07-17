@@ -42,7 +42,7 @@ public class GooBlob extends Item {
 	}
 
 	@Override
-	public int price() {
+	public int value() {
 		return quantity * 50;
 	}
 }

@@ -365,7 +365,7 @@ abstract public class MissileWeapon extends Weapon {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return 6 * tier * quantity * (level() + 1);
 	}
 	

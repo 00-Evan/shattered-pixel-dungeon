@@ -257,7 +257,7 @@ public abstract class Scroll extends Item {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return 30 * quantity;
 	}
 	

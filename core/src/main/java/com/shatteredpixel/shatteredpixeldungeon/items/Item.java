@@ -438,12 +438,8 @@ public class Item implements Bundlable {
 		return this;
 	}
 	
-	public int price() {
+	public int value() {
 		return 0;
-	}
-
-	public final int sellPrice(){
-		return price() * 5 * (Dungeon.depth / 5 + 1);
 	}
 	
 	public Item virtual(){

@@ -84,7 +84,7 @@ public class Torch extends Item {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return 8 * quantity;
 	}
 

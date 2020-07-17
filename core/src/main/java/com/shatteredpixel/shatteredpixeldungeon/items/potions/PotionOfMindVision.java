@@ -49,7 +49,7 @@ public class PotionOfMindVision extends Potion {
 	}
 	
 	@Override
-	public int price() {
-		return isKnown() ? 30 * quantity : super.price();
+	public int value() {
+		return isKnown() ? 30 * quantity : super.value();
 	}
 }

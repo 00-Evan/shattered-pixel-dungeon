@@ -250,7 +250,7 @@ public class Ring extends KindofMisc {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		int price = 75;
 		if (cursed && cursedKnown) {
 			price /= 2;

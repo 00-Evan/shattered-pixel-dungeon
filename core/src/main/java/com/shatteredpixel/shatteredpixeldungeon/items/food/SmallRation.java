@@ -32,7 +32,7 @@ public class SmallRation extends Food {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return 10 * quantity;
 	}
 }

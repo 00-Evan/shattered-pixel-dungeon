@@ -117,8 +117,8 @@ public abstract class ExoticScroll extends Scroll {
 	
 	@Override
 	//20 gold more than its none-exotic equivalent
-	public int price() {
-		return (Reflection.newInstance(exoToReg.get(getClass())).price() + 20) * quantity;
+	public int value() {
+		return (Reflection.newInstance(exoToReg.get(getClass())).value() + 20) * quantity;
 	}
 	
 	public static class ScrollToExotic extends Recipe {

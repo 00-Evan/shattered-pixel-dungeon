@@ -76,7 +76,7 @@ public class AlchemicalCatalyst extends Potion {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return 40 * quantity;
 	}
 	

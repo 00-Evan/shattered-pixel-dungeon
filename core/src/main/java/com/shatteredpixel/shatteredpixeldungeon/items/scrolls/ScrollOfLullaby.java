@@ -74,7 +74,7 @@ public class ScrollOfLullaby extends Scroll {
 	}
 	
 	@Override
-	public int price() {
-		return isKnown() ? 40 * quantity : super.price();
+	public int value() {
+		return isKnown() ? 40 * quantity : super.value();
 	}
 }

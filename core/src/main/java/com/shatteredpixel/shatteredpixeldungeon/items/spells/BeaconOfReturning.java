@@ -187,7 +187,7 @@ public class BeaconOfReturning extends Spell {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		//prices of ingredients, divided by output quantity
 		return Math.round(quantity * ((50 + 40) / 5f));
 	}

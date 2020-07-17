@@ -129,7 +129,7 @@ public class Pasty extends Food {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return 20 * quantity;
 	}
 }

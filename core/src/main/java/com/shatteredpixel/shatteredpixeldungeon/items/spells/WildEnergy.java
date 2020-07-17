@@ -74,7 +74,7 @@ public class WildEnergy extends TargetedSpell {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		//prices of ingredients, divided by output quantity
 		return Math.round(quantity * ((50 + 100) / 5f));
 	}

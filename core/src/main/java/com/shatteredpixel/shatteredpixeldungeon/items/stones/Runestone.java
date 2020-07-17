@@ -54,7 +54,7 @@ public abstract class Runestone extends Item {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return 10 * quantity;
 	}
 	

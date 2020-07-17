@@ -68,7 +68,7 @@ public class ElixirOfHoneyedHealing extends Elixir {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		//prices of ingredients
 		return quantity * (30 + 5);
 	}

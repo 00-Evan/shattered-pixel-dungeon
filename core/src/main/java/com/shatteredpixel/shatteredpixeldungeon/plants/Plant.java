@@ -189,7 +189,7 @@ public abstract class Plant implements Bundlable {
 		}
 		
 		@Override
-		public int price() {
+		public int value() {
 			return 10 * quantity;
 		}
 

@@ -93,6 +93,11 @@ public class Shopkeeper extends NPC {
 	public boolean reset() {
 		return true;
 	}
+
+	//shopkeepers are greedy!
+	public static int sellPrice(Item item){
+		return item.value() * 5 * (Dungeon.depth / 5 + 1);
+	}
 	
 	public static WndBag sell() {
 		return GameScene.selectItem( itemSelector, WndBag.Mode.FOR_SALE, Messages.get(Shopkeeper.class, "sell"));

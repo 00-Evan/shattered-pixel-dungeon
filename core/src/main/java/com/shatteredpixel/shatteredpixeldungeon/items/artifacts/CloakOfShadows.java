@@ -168,7 +168,7 @@ public class CloakOfShadows extends Artifact {
 	}
 
 	@Override
-	public int price() {
+	public int value() {
 		return 0;
 	}
 

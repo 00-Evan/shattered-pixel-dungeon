@@ -44,7 +44,7 @@ public class MeatPie extends Food {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return 40 * quantity;
 	}
 	
