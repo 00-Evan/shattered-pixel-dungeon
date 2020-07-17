@@ -70,6 +70,7 @@ public class Notes {
 		ALCHEMY,
 		GARDEN,
 		STATUE,
+		SHOP,
 		
 		GHOST,
 		WANDMAKER,

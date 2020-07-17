@@ -38,14 +38,8 @@ public class WndInfoItem extends Window {
 	public WndInfoItem( Heap heap ) {
 		
 		super();
-		
-		if (heap.type == Heap.Type.HEAP || heap.type == Heap.Type.FOR_SALE) {
-			fillFields( heap.peek() );
-			
-		} else {
-			fillFields( heap );
-			
-		}
+
+		fillFields( heap );
 	}
 	
 	public WndInfoItem( Item item ) {

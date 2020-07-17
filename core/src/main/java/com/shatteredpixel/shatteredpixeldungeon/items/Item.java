@@ -441,6 +441,10 @@ public class Item implements Bundlable {
 	public int price() {
 		return 0;
 	}
+
+	public final int sellPrice(){
+		return price() * 5 * (Dungeon.depth / 5 + 1);
+	}
 	
 	public Item virtual(){
 		Item item = Reflection.newInstance(getClass());

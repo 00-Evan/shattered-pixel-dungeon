@@ -351,6 +351,9 @@ public class Heap implements Bundlable {
 	@Override
 	public String toString(){
 		switch(type){
+			case FOR_SALE:
+				Item i = peek();
+				return Messages.get(this, "for_sale", i.sellPrice(), i.toString());
 			case CHEST:
 			case MIMIC:
 				return Messages.get(this, "chest");

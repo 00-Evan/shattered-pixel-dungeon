@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ShopkeeperSprite;
@@ -48,6 +49,10 @@ public class Shopkeeper extends NPC {
 	protected boolean act() {
 
 		throwItem();
+
+		if (Dungeon.level.heroFOV[pos]){
+			Notes.add(Notes.Landmark.SHOP);
+		}
 		
 		sprite.turnTo( pos, Dungeon.hero.pos );
 		spend( TICK );
@@ -66,6 +71,8 @@ public class Shopkeeper extends NPC {
 	
 	public void flee() {
 		destroy();
+
+		Notes.remove(Notes.Landmark.SHOP);
 		
 		sprite.killAndErase();
 		CellEmitter.get( pos ).burst( ElmoParticle.FACTORY, 6 );
