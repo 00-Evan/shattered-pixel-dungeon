@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Patch;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -189,9 +190,9 @@ public abstract class RegularPainter extends Painter {
 						d.type = Room.Door.Type.UNLOCKED;
 					}
 
-					//entrance doors on floor 2 are hidden if the player hasn't beaten the first boss
+					//entrance doors on floor 2 are hidden if the player hasn't picked up 2nd guidebook page
 					if (Dungeon.depth == 2
-							&& !Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_1)
+							&& !Document.ADVENTURERS_GUIDE.hasPage(Document.GUIDE_SEARCH_PAGE)
 							&& r instanceof EntranceRoom){
 						d.type = Room.Door.Type.HIDDEN;
 					}
