@@ -30,6 +30,8 @@ public class PotionOfAdrenalineSurge extends ExoticPotion {
 	
 	{
 		icon = ItemSpriteSheet.Icons.POTION_ARENSURGE;
+
+		unique = true;
 	}
 	
 	@Override

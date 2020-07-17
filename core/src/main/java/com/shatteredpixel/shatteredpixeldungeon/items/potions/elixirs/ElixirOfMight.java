@@ -39,6 +39,8 @@ public class ElixirOfMight extends Elixir {
 
 	{
 		image = ItemSpriteSheet.ELIXIR_MIGHT;
+
+		unique = true;
 	}
 	
 	@Override

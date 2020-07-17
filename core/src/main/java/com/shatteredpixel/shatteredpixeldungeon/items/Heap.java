@@ -206,8 +206,7 @@ public class Heap implements Bundlable {
 		boolean evaporated = false;
 		
 		for (Item item : items.toArray( new Item[0] )) {
-			if (item instanceof Scroll
-					&& !(item instanceof ScrollOfUpgrade)) {
+			if (item instanceof Scroll && !item.unique) {
 				items.remove( item );
 				burnt = true;
 			} else if (item instanceof Dewdrop) {
@@ -308,7 +307,7 @@ public class Heap implements Bundlable {
 			if (item instanceof MysteryMeat) {
 				replace( item, FrozenCarpaccio.cook( (MysteryMeat)item ) );
 				frozen = true;
-			} else if (item instanceof Potion && !(item instanceof PotionOfStrength)) {
+			} else if (item instanceof Potion && !item.unique) {
 				items.remove(item);
 				((Potion) item).shatter(pos);
 				frozen = true;

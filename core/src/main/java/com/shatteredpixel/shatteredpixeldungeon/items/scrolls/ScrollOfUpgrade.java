@@ -43,6 +43,8 @@ public class ScrollOfUpgrade extends InventoryScroll {
 	{
 		icon = ItemSpriteSheet.Icons.SCROLL_UPGRADE;
 		mode = WndBag.Mode.UPGRADEABLE;
+
+		unique = true;
 	}
 	
 	@Override

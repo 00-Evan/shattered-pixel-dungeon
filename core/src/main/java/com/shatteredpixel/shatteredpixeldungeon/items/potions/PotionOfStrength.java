@@ -32,6 +32,8 @@ public class PotionOfStrength extends Potion {
 
 	{
 		icon = ItemSpriteSheet.Icons.POTION_STRENGTH;
+
+		unique = true;
 	}
 	
 	@Override

@@ -38,6 +38,8 @@ public class MagicalInfusion extends InventorySpell {
 	{
 		mode = WndBag.Mode.UPGRADEABLE;
 		image = ItemSpriteSheet.MAGIC_INFUSE;
+
+		unique = true;
 	}
 	
 	@Override
