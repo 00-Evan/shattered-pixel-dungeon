@@ -151,7 +151,7 @@ public class TitleScene extends PixelScene {
 		btnBadges.icon(Icons.get(Icons.BADGES));
 		add(btnBadges);
 
-		StyledButton btnNews = new NewsButtons(GREY_TR, Messages.get(this, "news"));
+		StyledButton btnNews = new NewsButton(GREY_TR, Messages.get(this, "news"));
 		btnNews.icon(Icons.get(Icons.NEWS));
 		add(btnNews);
 
@@ -214,9 +214,9 @@ public class TitleScene extends PixelScene {
 		add( fb );
 	}
 
-	private static class NewsButtons extends StyledButton {
+	private static class NewsButton extends StyledButton {
 
-		public NewsButtons( Chrome.Type type, String label ){
+		public NewsButton(Chrome.Type type, String label ){
 			super(type, label);
 			if (SPDSettings.news()) News.checkForNews();
 		}
@@ -232,8 +232,6 @@ public class TitleScene extends PixelScene {
 				if (unreadCount > 0){
 					unreadCount = Math.min(unreadCount, 9);
 					text(text() + "(" + unreadCount + ")");
-				} else {
-					SPDSettings.newsLastRead(Game.realTime);
 				}
 			}
 
@@ -245,7 +243,7 @@ public class TitleScene extends PixelScene {
 		@Override
 		protected void onClick() {
 			super.onClick();
-			//ShatteredPixelDungeon.switchNoFade( NewsScene.class );
+			ShatteredPixelDungeon.switchNoFade( NewsScene.class );
 		}
 	}
 

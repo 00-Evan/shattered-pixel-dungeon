@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.GameSettings;
@@ -260,6 +261,8 @@ public class SPDSettings extends GameSettings {
 	public static final String KEY_UPDATES	= "updates";
 	public static final String KEY_WIFI     = "wifi";
 
+	public static final String KEY_NEWS_LAST_READ = "news_last_read";
+
 	public static void news(boolean value){
 		put(KEY_NEWS, value);
 	}
@@ -283,7 +286,16 @@ public class SPDSettings extends GameSettings {
 	public static boolean WiFi(){
 		return getBoolean(KEY_WIFI, true);
 	}
-	
+
+	public static void newsLastRead(long lastRead){
+		put(KEY_NEWS_LAST_READ, lastRead);
+	}
+
+	public static long newsLastRead(){
+		//returns the current time when none is stored, so historical news isn't seen as unread
+		return getLong(KEY_NEWS_LAST_READ, Game.realTime);
+	}
+
 	//Window management (desktop only atm)
 
 	public static final String KEY_WINDOW_WIDTH     = "window_width";

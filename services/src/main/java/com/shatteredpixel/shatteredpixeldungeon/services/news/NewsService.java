@@ -30,6 +30,6 @@ public abstract class NewsService {
 		public abstract void onConnectionFailed();
 	}
 
-	public abstract void checkForArticles(boolean useMetered, NewsResultCallback callback);
+	public abstract void checkForArticles(boolean useMetered, boolean forceHTTPS, NewsResultCallback callback);
 
 }

@@ -34,14 +34,19 @@ import java.util.Locale;
 public class ShatteredNews extends NewsService {
 
 	@Override
-	public void checkForArticles(boolean useMetered, NewsResultCallback callback) {
+	public void checkForArticles(boolean useMetered, boolean preferHTTPS, NewsResultCallback callback) {
 
 		if (!useMetered && !Game.platform.connectedToUnmeteredNetwork()){
 			callback.onConnectionFailed();
+			return;
 		}
 
 		Net.HttpRequest httpGet = new Net.HttpRequest(Net.HttpMethods.GET);
-		httpGet.setUrl("http://shatteredpixel.com/feed");
+		if (preferHTTPS) {
+			httpGet.setUrl("https://shatteredpixel.com/feed");
+		} else {
+			httpGet.setUrl("http://shatteredpixel.com/feed");
+		}
 
 		Gdx.net.sendHttpRequest(httpGet, new Net.HttpResponseListener() {
 			@Override
@@ -61,7 +66,17 @@ public class ShatteredNews extends NewsService {
 						Game.reportException(e);
 					}
 					article.summary = xmlArticle.get("summary");
-					article.URL = xmlArticle.get("id").replace("https://", "http://");
+					article.URL = xmlArticle.getChildByName("link").getAttribute("href");
+					if (!preferHTTPS) {
+						article.URL = article.URL.replace("https://", "http://");
+					}
+
+					try {
+						article.icon = xmlArticle.getChildByName("category").getAttribute("term");
+					} catch (Exception e){
+						article.icon = null;
+					}
+
 					articles.add(article);
 				}
 				callback.onArticlesFound(articles);

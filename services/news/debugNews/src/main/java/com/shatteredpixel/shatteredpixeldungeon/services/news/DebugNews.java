@@ -29,10 +29,11 @@ import java.util.Date;
 public class DebugNews extends NewsService {
 
 	@Override
-	public void checkForArticles(boolean useMetered, NewsResultCallback callback) {
+	public void checkForArticles(boolean useMetered, boolean forceHTTPS, NewsResultCallback callback) {
 
 		if (!useMetered && !Game.platform.connectedToUnmeteredNetwork()){
 			callback.onConnectionFailed();
+			return;
 		}
 
 		//turn on to test connection failure
@@ -40,6 +41,11 @@ public class DebugNews extends NewsService {
 			callback.onConnectionFailed();
 			return;
 		}
+
+		boolean testUnread = false;
+		//start placing articles either at the current time (if testing unread count)
+		// or 10 days after 1st jan 1970
+		long startTime = testUnread ? Game.realTime : 10*1000*60*60*24;
 
 		ArrayList<NewsArticle> articles = new ArrayList<>();
 		for (int i = 0; i < 10; i++){
@@ -51,10 +57,14 @@ public class DebugNews extends NewsService {
 					"commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit " +
 					"esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat " +
 					"non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+			// 10 to 1 days after Jan 1st 1970
+			article.date = new Date(startTime - (i)*1000*60*60*24);
+
 			article.URL = "http://www.google.com";
-			// a year in the past, plus one day for each article
-			long daysBack = 365+i;
-			article.date = new Date(System.currentTimeMillis() - (daysBack*1000*60*60*24));
+
+			//debug icon!
+			article.icon = "sprites/spinner.png, 144, 0, 16, 16";
+
 			articles.add(article);
 		}
 
