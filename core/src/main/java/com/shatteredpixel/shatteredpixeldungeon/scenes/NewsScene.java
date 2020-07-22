@@ -299,7 +299,12 @@ public class NewsScene extends PixelScene {
 				@Override
 				protected void onClick() {
 					super.onClick();
-					DeviceCompat.openURI(article.URL);
+					String link = article.URL;
+					//tracking codes, so that the website knows where this pageview came from
+					link += "/?utm_source=shatteredpd";
+					link += "&utm_medium=android";
+					link += "&utm_campaign=news_page";
+					DeviceCompat.openURI(link);
 				}
 			};
 			link.setRect(0, height + 2, width, BTN_HEIGHT);

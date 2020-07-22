@@ -57,12 +57,18 @@ public class AboutScene extends PixelScene {
 
 		//*** Shattered Pixel Dungeon Credits ***
 
+		String shpxLink = "https://ShatteredPixel.com";
+		//tracking codes, so that the website knows where this pageview came from
+		shpxLink += "/?utm_source=shatteredpd";
+		shpxLink += "&utm_medium=android";
+		shpxLink += "&utm_campaign=about_page";
+
 		CreditsBlock shpx = new CreditsBlock(true, Window.SHPX_COLOR,
 				"Shattered Pixel Dungeon",
 				Icons.SHPX.get(),
 				"Developed by: _Evan Debenham_\nBased on Pixel Dungeon's open source",
 				"ShatteredPixel.com",
-				"https://ShatteredPixel.com");
+				shpxLink);
 		shpx.setRect((w - fullWidth)/2f, 6, 120, 0);
 		content.add(shpx);
 
