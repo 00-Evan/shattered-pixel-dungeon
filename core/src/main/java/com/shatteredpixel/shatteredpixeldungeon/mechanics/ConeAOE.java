@@ -33,21 +33,26 @@ import java.util.LinkedHashSet;
 //a cone made of up several ballisticas scanning in an arc
 public class ConeAOE {
 
+	public Ballistica coreRay;
+
 	public ArrayList<Ballistica> rays = new ArrayList<>();
 	public HashSet<Integer> cells = new HashSet<>();
 
-	public ConeAOE( int from, int to, float degrees ){
-		this(from, to, Float.POSITIVE_INFINITY, degrees, Ballistica.STOP_TARGET);
+	public ConeAOE( Ballistica core, float degrees ){
+		this( core, Float.POSITIVE_INFINITY, degrees, Ballistica.STOP_TARGET/* TODO */);
 	}
 
-	public ConeAOE( int from, int to, float maxDist, float degrees, int ballisticaParams ){
+	public ConeAOE( Ballistica core, float maxDist, float degrees, int ballisticaParams ){
+
+		coreRay = core;
 
 		//we want to use true coordinates for our trig functions, not game cells
 		// so get the center of from and to as points
-		PointF fromP = new PointF(Dungeon.level.cellToPoint(from));
+		PointF fromP = new PointF(Dungeon.level.cellToPoint(core.sourcePos));
 		fromP.x += 0.5f;
 		fromP.y += 0.5f;
-		PointF toP = new PointF(Dungeon.level.cellToPoint(to));
+
+		PointF toP = new PointF(Dungeon.level.cellToPoint(core.collisionPos));
 		toP.x += 0.5f;
 		toP.y += 0.5f;
 
@@ -94,9 +99,16 @@ public class ConeAOE {
 
 		//cast a ray to each found cell, these make up the cone
 		for( int c : targetCells ){
-			Ballistica ray = new Ballistica(from, c, ballisticaParams);
+			Ballistica ray = new Ballistica(core.sourcePos, c, ballisticaParams);
 			cells.addAll(ray.subPath(1, ray.dist));
 			rays.add(ray);
+		}
+
+		//lastly add any cells in the core
+		for ( int c : core.subPath(1, core.dist)){
+			if (Dungeon.level.trueDistance(core.sourcePos, c) <= maxDist){
+				cells.add(c);
+			}
 		}
 
 	}

@@ -144,7 +144,7 @@ public class TalismanOfForesight extends Artifact {
 
 				//starts at 200 degrees, loses 8% per tile of distance
 				float angle = Math.round(200*(float)Math.pow(0.92, dist));
-				ConeAOE cone = new ConeAOE(curUser.pos, target, angle);
+				ConeAOE cone = new ConeAOE(new Ballistica(curUser.pos, target, Ballistica.STOP_TARGET), angle);
 
 				int earnedExp = 0;
 				boolean noticed = false;

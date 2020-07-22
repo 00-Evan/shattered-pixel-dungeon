@@ -40,6 +40,9 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
+
+import java.util.ArrayList;
 
 public class PotionOfDragonsBreath extends ExoticPotion {
 	
@@ -77,12 +80,12 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 						curUser.sprite.zap(cell);
 						Sample.INSTANCE.play( Assets.Sounds.BURNING );
 
-						final Ballistica bolt = new Ballistica(curUser.pos, cell, Ballistica.STOP_TERRAIN);
+						final Ballistica bolt = new Ballistica(curUser.pos, cell, Ballistica.STOP_TERRAIN | Ballistica.OPEN_DOORS);
 
 						int maxDist = 6;
 						int dist = Math.min(bolt.dist, maxDist);
 
-						final ConeAOE cone = new ConeAOE(curUser.pos, bolt.path.get(dist), 6, 60, Ballistica.STOP_TERRAIN | Ballistica.STOP_TARGET );
+						final ConeAOE cone = new ConeAOE(bolt, 6, 60, Ballistica.STOP_TERRAIN | Ballistica.STOP_TARGET | Ballistica.OPEN_DOORS );
 
 						//cast to cells at the tip, rather than all cells, better performance.
 						for (Ballistica ray : cone.rays){
@@ -101,6 +104,7 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 								new Callback() {
 									@Override
 									public void call() {
+										ArrayList<Integer> adjacentCells = new ArrayList<>();
 										for (int cell : cone.cells){
 											//ignore caster cell
 											if (cell == bolt.sourcePos){
@@ -108,7 +112,9 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 											}
 
 											//only ignite cells directly near caster if they are flammable
-											if (!Dungeon.level.adjacent(bolt.sourcePos, cell) || Dungeon.level.flamable[cell]){
+											if (Dungeon.level.adjacent(bolt.sourcePos, cell) && !Dungeon.level.flamable[cell]){
+												adjacentCells.add(cell);
+											} else {
 												GameScene.add( Blob.seed( cell, 5, Fire.class ) );
 											}
 											
@@ -119,6 +125,19 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 												Buff.affect(ch, Cripple.class, 5f);
 											}
 										}
+
+										//ignite cells that share a side with an adjacent cell, are flammable, and are further from the source pos
+										//This prevents short-range casts not igniting barricades or bookshelves
+										for (int cell : adjacentCells){
+											for (int i : PathFinder.NEIGHBOURS4){
+												if (Dungeon.level.trueDistance(cell+i, bolt.sourcePos) > Dungeon.level.trueDistance(cell, bolt.sourcePos)
+														&& Dungeon.level.flamable[cell+i]
+														&& Fire.volumeAt(cell+i, Fire.class) == 0){
+													GameScene.add( Blob.seed( cell+i, 5, Fire.class ) );
+												}
+											}
+										}
+
 										curUser.next();
 									}
 								});

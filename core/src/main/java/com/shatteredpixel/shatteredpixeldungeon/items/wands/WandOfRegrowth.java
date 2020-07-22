@@ -203,7 +203,7 @@ public class WandOfRegrowth extends Wand {
 		int maxDist = 2 + 2*chargesPerCast();
 		int dist = Math.min(bolt.dist, maxDist);
 
-		cone = new ConeAOE( bolt.sourcePos, bolt.path.get(dist),
+		cone = new ConeAOE( bolt,
 				maxDist,
 				20 + 10*chargesPerCast(),
 				collisionProperties | Ballistica.STOP_TARGET);
