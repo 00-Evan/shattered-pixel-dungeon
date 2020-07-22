@@ -93,12 +93,10 @@ public class RankingsScene extends PixelScene {
 			
 			for (Rankings.Record rec : Rankings.INSTANCE.records) {
 				Record row = new Record( pos, pos == Rankings.INSTANCE.lastRecord, rec );
-				float offset =
-						rowHeight <= 14 ?
-								pos %2 == 1?
-										5 :
-										-5
-								: 0;
+				float offset = 0;
+				if (rowHeight <= 14){
+					offset = (pos % 2 == 1) ? 5 : -5;
+				}
 				row.setRect( left+offset, top + pos * rowHeight, w - left * 2, rowHeight );
 				add(row);
 				
@@ -185,8 +183,6 @@ public class RankingsScene extends PixelScene {
 			position.measure();
 			
 			desc.text( Messages.titleCase(rec.desc()) );
-
-			//desc.measure();
 
 			int odd = pos % 2;
 			
