@@ -323,11 +323,12 @@ public class Hero extends Char {
 	public boolean shoot( Char enemy, MissileWeapon wep ) {
 
 		//temporarily set the hero's weapon to the missile weapon being used
-		KindOfWeapon equipped = belongings.weapon;
+		belongings.stashedWeapon = belongings.weapon;
 		belongings.weapon = wep;
 		boolean hit = attack( enemy );
 		Invisibility.dispel();
-		belongings.weapon = equipped;
+		belongings.weapon = belongings.stashedWeapon;
+		belongings.stashedWeapon = null;
 		
 		if (subClass == HeroSubClass.GLADIATOR){
 			if (hit) {

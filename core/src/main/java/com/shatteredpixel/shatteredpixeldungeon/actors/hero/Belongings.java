@@ -52,6 +52,9 @@ public class Belongings implements Iterable<Item> {
 	public Artifact artifact = null;
 	public KindofMisc misc = null;
 	public Ring ring = null;
+
+	//used when thrown weapons temporary occupy the weapon slot
+	public KindOfWeapon stashedWeapon = null;
 	
 	public Belongings( Hero owner ) {
 		this.owner = owner;
