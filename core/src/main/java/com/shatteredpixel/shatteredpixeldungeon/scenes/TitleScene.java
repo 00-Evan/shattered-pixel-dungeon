@@ -260,18 +260,23 @@ public class TitleScene extends PixelScene {
 		public void update() {
 			super.update();
 
-			if (Updates.updateAvailable()){
-				if (!updateShown){
-					updateShown = true;
-					text(Messages.get(TitleScene.class, "update"));
-				}
+			if (!updateShown && (Updates.updateAvailable() || Updates.isInstallable())){
+				updateShown = true;
+				if (Updates.isInstallable())    text(Messages.get(TitleScene.class, "install"));
+				else                            text(Messages.get(TitleScene.class, "update"));
+			}
+
+			if (updateShown){
 				textColor(ColorMath.interpolate( 0xFFFFFF, Window.SHPX_COLOR, 0.5f + (float)Math.sin(Game.timeTotal*5)/2f));
 			}
 		}
 
 		@Override
 		protected void onClick() {
-			if (Updates.updateAvailable()){
+			if (Updates.isInstallable()){
+				Updates.launchInstall();
+
+			} else if (Updates.updateAvailable()){
 				AvailableUpdateData update = Updates.updateData();
 
 				ShatteredPixelDungeon.scene().addToFront( new WndOptions(
@@ -290,6 +295,7 @@ public class TitleScene extends PixelScene {
 						}
 					}
 				});
+
 			} else {
 				ChangesScene.changesSelected = 0;
 				ShatteredPixelDungeon.switchNoFade( ChangesScene.class );

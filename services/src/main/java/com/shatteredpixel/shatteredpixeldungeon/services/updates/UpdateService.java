@@ -29,8 +29,16 @@ public abstract class UpdateService {
 		public abstract void onConnectionFailed();
 	}
 
+	//whether the app is updateable via an ingame prompt (e.g. not a demo or an android instant app)
+	public abstract boolean isUpdateable();
+
 	public abstract void checkForUpdate( boolean useMetered, UpdateResultCallback callback );
 
 	public abstract void initializeUpdate( AvailableUpdateData update );
+
+	//whether the app installable via an ingame prompt (e.g. a demo, or an android instant app)
+	public abstract boolean isInstallable();
+
+	public abstract void initializeInstall();
 
 }

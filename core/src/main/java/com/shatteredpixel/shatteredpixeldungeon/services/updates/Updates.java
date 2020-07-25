@@ -36,8 +36,12 @@ public class Updates {
 	private static Date lastCheck = null;
 	private static final long CHECK_DELAY = 1000*60*60; //1 hour
 
+	public static boolean isUpdateable(){
+		return supportsUpdates() && service.isUpdateable();
+	}
+
 	public static void checkForUpdate(){
-		if (!supportsUpdates()) return;
+		if (!isUpdateable()) return;
 		if (lastCheck != null && (new Date().getTime() - lastCheck.getTime()) < CHECK_DELAY) return;
 
 		service.checkForUpdate(!SPDSettings.WiFi(), new UpdateService.UpdateResultCallback() {
@@ -76,6 +80,16 @@ public class Updates {
 	public static void clearUpdate(){
 		updateData = null;
 		lastCheck = null;
+	}
+
+	public static boolean isInstallable(){
+		return supportsUpdates() && service.isInstallable();
+	}
+
+	public static void launchInstall(){
+		if (supportsUpdates()){
+			service.initializeInstall();
+		}
 	}
 
 }
