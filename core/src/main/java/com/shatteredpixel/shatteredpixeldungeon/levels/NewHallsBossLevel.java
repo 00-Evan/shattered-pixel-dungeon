@@ -206,6 +206,7 @@ public class NewHallsBossLevel extends Level {
 
 	@Override
 	public void unseal() {
+		super.unseal();
 		set( entrance, Terrain.ENTRANCE );
 		GameScene.updateMap( entrance );
 

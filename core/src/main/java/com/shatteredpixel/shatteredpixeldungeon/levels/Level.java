@@ -463,6 +463,9 @@ public abstract class Level implements Bundlable {
 	public void unseal(){
 		if (locked) {
 			locked = false;
+			if (Dungeon.hero.buff(LockedFloor.class) != null){
+				Dungeon.hero.buff(LockedFloor.class).detach();
+			}
 		}
 	}
 
