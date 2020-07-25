@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.DeviceCompat;
 
 public class SupporterScene extends PixelScene {
 
@@ -68,7 +69,18 @@ public class SupporterScene extends PixelScene {
 		msg.setSize(elementWidth, 0);
 		add(msg);
 
-		StyledButton link = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(this, "supporter_link"));
+		StyledButton link = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(this, "supporter_link")){
+			@Override
+			protected void onClick() {
+				super.onClick();
+				String link = "https://www.patreon.com/ShatteredPixel";
+				//tracking codes, so that the website knows where this pageview came from
+				link += "/?utm_source=shatteredpd";
+				link += "&utm_medium=android";
+				link += "&utm_campaign=supporter_page";
+				DeviceCompat.openURI(link);
+			}
+		};
 		link.icon(Icons.get(Icons.GOLD));
 		link.textColor(Window.TITLE_COLOR);
 		link.setSize(elementWidth, 20);
