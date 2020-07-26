@@ -59,7 +59,7 @@ public class AboutScene extends PixelScene {
 
 		String shpxLink = "https://ShatteredPixel.com";
 		//tracking codes, so that the website knows where this pageview came from
-		shpxLink += "/?utm_source=shatteredpd";
+		shpxLink += "?utm_source=shatteredpd";
 		shpxLink += "&utm_medium=android";
 		shpxLink += "&utm_campaign=about_page";
 

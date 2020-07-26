@@ -51,7 +51,7 @@ public class NewsScene extends PixelScene {
 
 	boolean displayingNoArticles = false;
 
-	private static final int BTN_HEIGHT = 20;
+	private static final int BTN_HEIGHT = 22;
 	private static final int BTN_WIDTH = 100;
 
 	@Override
@@ -261,7 +261,7 @@ public class NewsScene extends PixelScene {
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(article.date);
 			date = new BitmapText( News.parseArticleDate(article), pixelFont);
-			date.scale.set(PixelScene.align(0.49f));
+			date.scale.set(PixelScene.align(0.5f));
 			date.hardlight( 0x888888 );
 			date.measure();
 			add(date);
@@ -273,7 +273,8 @@ public class NewsScene extends PixelScene {
 
 			if (date != null) {
 				date.x = x + width - bg.marginRight() - date.width() + 2;
-				date.y = y + height - bg.marginBottom() - date.baseLine() + 2;
+				date.y = y + height - bg.marginBottom() - date.height() + 3.5f;
+				align(date);
 			}
 
 			super.layout();
@@ -301,7 +302,7 @@ public class NewsScene extends PixelScene {
 					super.onClick();
 					String link = article.URL;
 					//tracking codes, so that the website knows where this pageview came from
-					link += "/?utm_source=shatteredpd";
+					link += "?utm_source=shatteredpd";
 					link += "&utm_medium=android";
 					link += "&utm_campaign=news_page";
 					DeviceCompat.openURI(link);

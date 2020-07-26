@@ -21,12 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.services.news;
 
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.watabou.noosa.Image;
-import com.watabou.utils.DeviceCompat;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -47,7 +48,11 @@ public class News {
 		if (!supportsNews()) return;
 		if (lastCheck != null && (new Date().getTime() - lastCheck.getTime()) < CHECK_DELAY) return;
 
-		service.checkForArticles(!SPDSettings.WiFi(), !DeviceCompat.legacyDevice(), new NewsService.NewsResultCallback() {
+		boolean useHTTPS = true;
+		if (Gdx.app.getType() == Application.ApplicationType.Android && Gdx.app.getVersion() < 20){
+			useHTTPS = false; //android versions below 5.0 don't support TLSv1.2 by default
+		}
+		service.checkForArticles(!SPDSettings.WiFi(), useHTTPS, new NewsService.NewsResultCallback() {
 			@Override
 			public void onArticlesFound(ArrayList<NewsArticle> articles) {
 				lastCheck = new Date();
