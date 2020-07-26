@@ -31,11 +31,15 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Camera;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.DeviceCompat;
 
 public class SupporterScene extends PixelScene {
+
+	private static final int BTN_HEIGHT = 22;
+	private static final int GAP = 2;
 
 	@Override
 	public void create() {
@@ -46,7 +50,7 @@ public class SupporterScene extends PixelScene {
 		int w = Camera.main.width;
 		int h = Camera.main.height;
 
-		int elementWidth = PixelScene.landscape() ? 200 : 120;
+		int elementWidth = PixelScene.landscape() ? 202 : 120;
 
 		Archs archs = new Archs();
 		archs.setSize(w, h);
@@ -83,10 +87,10 @@ public class SupporterScene extends PixelScene {
 		};
 		link.icon(Icons.get(Icons.GOLD));
 		link.textColor(Window.TITLE_COLOR);
-		link.setSize(elementWidth, 20);
+		link.setSize(elementWidth, BTN_HEIGHT);
 		add(link);
 
-		float elementHeight = msg.height() + link.height() + 2;
+		float elementHeight = msg.height() + BTN_HEIGHT + GAP;
 
 		float top = 16 + (h - 16 - elementHeight)/2f;
 		float left = (w-elementWidth)/2f;
@@ -94,7 +98,7 @@ public class SupporterScene extends PixelScene {
 		msg.setPos(left, top);
 		align(msg);
 
-		link.setPos(left, msg.bottom()+2);
+		link.setPos(left, msg.bottom()+GAP);
 		align(link);
 
 	}
@@ -103,19 +107,25 @@ public class SupporterScene extends PixelScene {
 
 		NinePatch bg;
 		RenderedTextBlock text;
+		Image icon;
 
 		@Override
 		protected void createChildren() {
 			bg = Chrome.get(Chrome.Type.GREY_BUTTON_TR);
 			add(bg);
 
-			String message = Messages.get(this, "patreon");
-			if (Messages.lang() != Languages.ENGLISH){
-				message += "\n\n" + Messages.get(this, "patreon_english");
+			String message = Messages.get(this, "intro");
+			message += "\n\n" + Messages.get(this, "patreon_msg");
+			if (Messages.lang() != Languages.ENGLISH) {
+				message += "\n" + Messages.get(this, "patreon_english");
 			}
+			message += "\n\n- Evan";
 
 			text = PixelScene.renderTextBlock(message, 6);
 			add(text);
+
+			icon = Icons.get(Icons.SHPX);
+			add(icon);
 
 		}
 
@@ -127,7 +137,10 @@ public class SupporterScene extends PixelScene {
 			text.maxWidth((int)width - bg.marginHor());
 			text.setPos(x + bg.marginLeft(), y + bg.marginTop());
 
-			height = (text.bottom()) - y;
+			icon.y = text.bottom() - icon.height() + 4;
+			icon.x = x + 25;
+
+			height = (text.bottom() + 2) - y;
 
 			height += bg.marginBottom();
 
