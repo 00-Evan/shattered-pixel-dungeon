@@ -87,6 +87,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFrost;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLightning;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfPlasma;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfPrismaticLight;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTransfusion;
@@ -196,6 +197,7 @@ public enum Catalog {
 		WANDS.seen.put( WandOfDisintegration.class,         false);
 		WANDS.seen.put( WandOfFireblast.class,              false);
 		WANDS.seen.put( WandOfCorrosion.class,              false);
+		WANDS.seen.put( WandOfPlasma.class,					false);
 		WANDS.seen.put( WandOfBlastWave.class,              false);
 		WANDS.seen.put( WandOfLivingEarth.class,            false);
 		WANDS.seen.put( WandOfFrost.class,                  false);
