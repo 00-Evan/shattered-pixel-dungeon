@@ -146,7 +146,7 @@ public class TitleScene extends PixelScene {
 			}
 		};
 		btnSupport.icon(Icons.get(Icons.GOLD));
-		add(btnSupport);
+		//add(btnSupport);
 		
 		TitleButton btnRankings = new TitleButton(Messages.get(this, "rankings")){
 			@Override
@@ -225,7 +225,7 @@ public class TitleScene extends PixelScene {
 
 		LanguageButton btnLang = new LanguageButton();
 		btnLang.setRect(pos, 0, 16, 20);
-		add( btnLang );
+		//add( btnLang );
 
 		ExitButton btnExit = new ExitButton();
 		btnExit.setPos( w - btnExit.width(), 0 );
