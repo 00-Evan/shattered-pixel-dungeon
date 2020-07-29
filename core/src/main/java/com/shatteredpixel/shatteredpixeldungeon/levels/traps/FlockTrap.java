@@ -73,6 +73,7 @@ public class FlockTrap extends Trap {
 					}
 				}
 				Sample.INSTANCE.play(Assets.Sounds.PUFF);
+				Sample.INSTANCE.play(Assets.Sounds.SHEEP);
 				Actor.remove(this);
 				return true;
 			}

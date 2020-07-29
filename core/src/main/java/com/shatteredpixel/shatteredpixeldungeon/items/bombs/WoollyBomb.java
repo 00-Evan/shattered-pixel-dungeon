@@ -61,7 +61,7 @@ public class WoollyBomb extends Bomb {
 		}
 		
 		Sample.INSTANCE.play(Assets.Sounds.PUFF);
-		
+		Sample.INSTANCE.play(Assets.Sounds.SHEEP);
 		
 	}
 	

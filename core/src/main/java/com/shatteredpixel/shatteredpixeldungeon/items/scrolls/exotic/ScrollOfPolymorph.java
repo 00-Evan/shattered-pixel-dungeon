@@ -68,6 +68,8 @@ public class ScrollOfPolymorph extends ExoticScroll {
 					TargetHealthIndicator.instance.target(null);
 					GameScene.add(sheep);
 					CellEmitter.get(sheep.pos).burst(Speck.factory(Speck.WOOL), 4);
+					Sample.INSTANCE.play(Assets.Sounds.PUFF);
+					Sample.INSTANCE.play(Assets.Sounds.SHEEP);
 				}
 			}
 		}

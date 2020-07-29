@@ -300,6 +300,8 @@ public class CursedWand {
 							TargetHealthIndicator.instance.target(null);
 							GameScene.add(sheep);
 							CellEmitter.get(sheep.pos).burst(Speck.factory(Speck.WOOL), 4);
+							Sample.INSTANCE.play(Assets.Sounds.PUFF);
+							Sample.INSTANCE.play(Assets.Sounds.SHEEP);
 						} else {
 							GLog.i(Messages.get(CursedWand.class, "nothing"));
 						}
