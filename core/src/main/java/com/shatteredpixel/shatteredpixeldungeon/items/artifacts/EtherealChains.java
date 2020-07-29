@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Chains;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
@@ -271,7 +272,10 @@ public class EtherealChains extends Artifact {
 			int chargeTarget = 5+(level()*2);
 			LockedFloor lock = target.buff(LockedFloor.class);
 			if (charge < chargeTarget && !cursed && (lock == null || lock.regenOn())) {
-				partialCharge += 1 / (40f - (chargeTarget - charge)*2f);
+				//gains a charge in 40 - 2*missingCharge turns
+				float chargeGain = (1 / (40f - (chargeTarget - charge)*2f));
+				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
+				partialCharge += chargeGain;
 			} else if (cursed && Random.Int(100) == 0){
 				Buff.prolong( target, Cripple.class, 10f);
 			}

@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CheckedCell;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -294,10 +295,12 @@ public class TalismanOfForesight extends Artifact {
 				warn = false;
 			}
 
-			//fully charges in 2000 turns at lvl=0, scaling to 1000 turns at lvl = 10.
 			LockedFloor lock = target.buff(LockedFloor.class);
 			if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
-				partialCharge += 0.05f+(level()*0.005f);
+				//fully charges in 2000 turns at +0, scaling to 1000 turns at +10.
+				float chargeGain = (0.05f+(level()*0.005f));
+				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
+				partialCharge += chargeGain;
 
 				if (partialCharge > 1 && charge < chargeCap) {
 					partialCharge--;

@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EarthParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
@@ -170,7 +171,13 @@ public class SandalsOfNature extends Artifact {
 		public void charge() {
 			if (level() > 0 && charge < target.HT){
 				//gain 1+(1*level)% of the difference between current charge and max HP.
-				charge+= (Math.round( (target.HT-charge) * (.01+ level()*0.01) ));
+				float chargeGain = (target.HT-charge) * (.01f+ level()*0.01f);
+				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
+				partialCharge += Math.max(0, chargeGain);
+				while (partialCharge > 1){
+					charge++;
+					partialCharge--;
+				}
 				updateQuickslot();
 			}
 		}

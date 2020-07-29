@@ -167,7 +167,7 @@ public class ChaliceOfBlood extends Artifact {
 	}
 
 	public class chaliceRegen extends ArtifactBuff {
-
+		//see Regeneration.class for effect
 	}
 
 }
