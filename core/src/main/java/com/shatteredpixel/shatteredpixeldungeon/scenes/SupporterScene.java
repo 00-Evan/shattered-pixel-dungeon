@@ -114,10 +114,10 @@ public class SupporterScene extends PixelScene {
 			bg = Chrome.get(Chrome.Type.GREY_BUTTON_TR);
 			add(bg);
 
-			String message = Messages.get(this, "intro");
-			message += "\n\n" + Messages.get(this, "patreon_msg");
+			String message = Messages.get(SupporterScene.class, "intro");
+			message += "\n\n" + Messages.get(SupporterScene.class, "patreon_msg");
 			if (Messages.lang() != Languages.ENGLISH) {
-				message += "\n" + Messages.get(this, "patreon_english");
+				message += "\n" + Messages.get(SupporterScene.class, "patreon_english");
 			}
 			message += "\n\n- Evan";
 

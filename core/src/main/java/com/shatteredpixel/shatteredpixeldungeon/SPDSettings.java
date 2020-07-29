@@ -160,7 +160,9 @@ public class SPDSettings extends GameSettings {
 	public static final String KEY_LAST_CLASS	= "last_class";
 	public static final String KEY_CHALLENGES	= "challenges";
 	public static final String KEY_INTRO		= "intro";
-	
+
+	public static final String KEY_SUPPORT_NAGGED= "support_nagged";
+
 	public static void intro( boolean value ) {
 		put( KEY_INTRO, value );
 	}
@@ -184,7 +186,15 @@ public class SPDSettings extends GameSettings {
 	public static int challenges() {
 		return getInt( KEY_CHALLENGES, 0, 0, Challenges.MAX_VALUE );
 	}
-	
+
+	public static void supportNagged( boolean value ) {
+		put( KEY_SUPPORT_NAGGED, value );
+	}
+
+	public static boolean supportNagged() {
+		return getBoolean(KEY_SUPPORT_NAGGED, false);
+	}
+
 	//Audio
 	
 	public static final String KEY_MUSIC		= "music";
@@ -295,29 +305,29 @@ public class SPDSettings extends GameSettings {
 		//returns the current time when none is stored, so historical news isn't seen as unread
 		return getLong(KEY_NEWS_LAST_READ, Game.realTime);
 	}
-
+	
 	//Window management (desktop only atm)
-
+	
 	public static final String KEY_WINDOW_WIDTH     = "window_width";
 	public static final String KEY_WINDOW_HEIGHT    = "window_height";
 	public static final String KEY_WINDOW_MAXIMIZED = "window_maximized";
-
+	
 	public static void windowResolution( Point p ){
 		put(KEY_WINDOW_WIDTH, p.x);
 		put(KEY_WINDOW_HEIGHT, p.y);
 	}
-
+	
 	public static Point windowResolution(){
 		return new Point(
 				getInt( KEY_WINDOW_WIDTH, 960, 480, Integer.MAX_VALUE ),
 				getInt( KEY_WINDOW_HEIGHT, 640, 320, Integer.MAX_VALUE )
 		);
 	}
-
+	
 	public static void windowMaximized( boolean value ){
 		put( KEY_WINDOW_MAXIMIZED, value );
 	}
-
+	
 	public static boolean windowMaximized(){
 		return getBoolean( KEY_WINDOW_MAXIMIZED, false );
 	}
