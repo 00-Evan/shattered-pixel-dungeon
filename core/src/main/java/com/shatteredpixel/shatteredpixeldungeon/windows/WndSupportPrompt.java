@@ -24,21 +24,38 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.SupporterScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.utils.DeviceCompat;
 
-public class WndSupportPrompt extends WndTitledMessage {
+public class WndSupportPrompt extends Window {
+
+	protected static final int WIDTH_P    = 120;
+	protected static final int WIDTH_L    = 200;
 
 	public WndSupportPrompt(){
-		super( new IconTitle(Icons.get(Icons.SHPX), Messages.get(WndSupportPrompt.class, "title")),
-				Messages.get(WndSupportPrompt.class, "intro") + "\n\n" +
-				Messages.get(SupporterScene.class, "patreon_msg") + "\n" +
-				(Messages.lang() != Languages.ENGLISH ? Messages.get(SupporterScene.class, "patreon_english") + "\n\n" : "\n") +
-				"- Evan");
 
-		float y = height;
+		int width = PixelScene.landscape() ? WIDTH_L : WIDTH_P;
+
+		IconTitle title = new IconTitle(Icons.get(Icons.SHPX), Messages.get(WndSupportPrompt.class, "title"));
+		title.setRect( 0, 0, width, 0 );
+		add(title);
+
+		String message = Messages.get(WndSupportPrompt.class, "intro");
+		message += "\n\n" + Messages.get(SupporterScene.class, "patreon_msg");
+		if (Messages.lang() != Languages.ENGLISH) {
+			message += "\n" + Messages.get(SupporterScene.class, "patreon_english");
+		}
+		message += "\n\n- Evan";
+
+		RenderedTextBlock text = PixelScene.renderTextBlock( 6 );
+		text.text( message, width );
+		text.setPos( title.left(), title.bottom() + 4 );
+		add( text );
 
 		RedButton link = new RedButton(Messages.get(SupporterScene.class, "supporter_link")){
 			@Override
@@ -54,7 +71,7 @@ public class WndSupportPrompt extends WndTitledMessage {
 				WndSupportPrompt.super.hide();
 			}
 		};
-		link.setRect(0, y + 2, width, 18);
+		link.setRect(0, text.bottom() + 4, width, 18);
 		add(link);
 
 		RedButton close = new RedButton(Messages.get(this, "close")){
