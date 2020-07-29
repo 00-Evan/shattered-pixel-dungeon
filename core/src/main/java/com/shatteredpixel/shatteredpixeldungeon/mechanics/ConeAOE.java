@@ -85,7 +85,7 @@ public class ConeAOE {
 			targetCells.add(Dungeon.level.pointToCell(scanInt));
 			//if the cone is large enough, also cast rays to cells just inside of the outer arc
 			// this helps fill in any holes when casting rays
-			if (circleRadius >= 7) {
+			if (circleRadius >= 4) {
 				scan.polar(a * PointF.G2R, circleRadius - 1);
 				scan.offset(fromP);
 				scan.x += (fromP.x > scan.x ? +0.5f : -0.5f);

@@ -85,7 +85,7 @@ public class WandOfRegrowth extends Wand {
 		float furrowedChance = overLimit > 0 ? (overLimit / (10f + Dungeon.hero.lvl)) : 0;
 
 		int chrgUsed = chargesPerCast();
-		int grassToPlace = Math.round((3.5f+buffedLvl()/2f)*chrgUsed);
+		int grassToPlace = Math.round((3.67f+buffedLvl()/3f)*chrgUsed);
 
 		//ignore cells which can't have anything grow in them.
 		for (Iterator<Integer> i = cells.iterator(); i.hasNext();) {
@@ -148,18 +148,13 @@ public class WandOfRegrowth extends Wand {
 		}
 
 		if (!cells.isEmpty() && Random.Float() > furrowedChance &&
-				(chrgUsed == 3 || (chrgUsed == 2 && Random.Int(2) == 0))){
+				(Random.Int(6) < chrgUsed)){ // 16%/33%/50% chance to spawn a seed pod or dewcatcher
 			int cell = cells.remove(0);
 			Dungeon.level.plant( Random.Int(2) == 0 ? new Seedpod.Seed() : new Dewcatcher.Seed(), cell);
 		}
 
-		if (!cells.isEmpty() && Random.Float() > furrowedChance && chrgUsed == 3){
-			int cell = cells.remove(0);
-			Dungeon.level.plant((Plant.Seed) Generator.randomUsingDefaults(Generator.Category.SEED), cell);
-		}
-
 		if (!cells.isEmpty() && Random.Float() > furrowedChance &&
-				(chrgUsed >= 2 || (chrgUsed == 1 && Random.Int(2) == 0))){
+				(Random.Int(3) < chrgUsed)){ // 33%/66%/100% chance to spawn a plant
 			int cell = cells.remove(0);
 			Dungeon.level.plant((Plant.Seed) Generator.randomUsingDefaults(Generator.Category.SEED), cell);
 		}
@@ -352,7 +347,7 @@ public class WandOfRegrowth extends Wand {
 
 		private void setLevel( int lvl ){
 			wandLvl = lvl;
-			HP = HT = lvl*4;
+			HP = HT = 25 + 3*lvl;
 		}
 
 		public boolean inRange(int pos){
@@ -360,7 +355,7 @@ public class WandOfRegrowth extends Wand {
 		}
 
 		public float seedPreservation(){
-			return 0.25f + 0.05f*wandLvl;
+			return 0.40f + 0.04f*wandLvl;
 		}
 
 		@Override

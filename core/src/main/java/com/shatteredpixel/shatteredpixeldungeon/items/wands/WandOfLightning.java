@@ -80,7 +80,7 @@ public class WandOfLightning extends DamageWand {
 			}
 			processSoulMark(ch, chargesPerCast());
 			if (ch == curUser) {
-				ch.damage(Math.round(damageRoll() * multipler * 0.67f), this);
+				ch.damage(Math.round(damageRoll() * multipler * 0.5f), this);
 			} else {
 				ch.damage(Math.round(damageRoll() * multipler), this);
 			}

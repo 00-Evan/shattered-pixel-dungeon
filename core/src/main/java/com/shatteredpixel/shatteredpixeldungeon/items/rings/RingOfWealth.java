@@ -61,9 +61,9 @@ public class RingOfWealth extends Ring {
 	
 	public String statsInfo() {
 		if (isIdentified()){
-			return Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (Math.pow(1.25f, soloBuffedBonus()) - 1f)));
+			return Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (Math.pow(1.20f, soloBuffedBonus()) - 1f)));
 		} else {
-			return Messages.get(this, "typical_stats", new DecimalFormat("#.##").format(25f));
+			return Messages.get(this, "typical_stats", new DecimalFormat("#.##").format(20f));
 		}
 	}
 
@@ -90,7 +90,7 @@ public class RingOfWealth extends Ring {
 	}
 	
 	public static float dropChanceMultiplier( Char target ){
-		return (float)Math.pow(1.25, getBuffedBonus(target, Wealth.class));
+		return (float)Math.pow(1.20, getBuffedBonus(target, Wealth.class));
 	}
 	
 	public static ArrayList<Item> tryForBonusDrop(Char target, int tries ){
@@ -112,8 +112,8 @@ public class RingOfWealth extends Ring {
 
 		//reset (if needed), decrement, and store counts
 		if (triesToDrop == Float.MIN_VALUE) {
-			triesToDrop = Random.NormalIntRange(0, 30);
-			dropsToEquip = Random.NormalIntRange(5, 10);
+			triesToDrop = Random.NormalIntRange(0, 25);
+			dropsToEquip = Random.NormalIntRange(4, 8);
 		}
 
 		//now handle reward logic
@@ -127,7 +127,7 @@ public class RingOfWealth extends Ring {
 					i = genEquipmentDrop(bonus - 1);
 				} while (Challenges.isItemBlocked(i));
 				drops.add(i);
-				dropsToEquip = Random.NormalIntRange(5, 10);
+				dropsToEquip = Random.NormalIntRange(4, 8);
 			} else {
 				Item i;
 				do {
@@ -136,7 +136,7 @@ public class RingOfWealth extends Ring {
 				drops.add(i);
 				dropsToEquip--;
 			}
-			triesToDrop += Random.NormalIntRange(0, 30);
+			triesToDrop += Random.NormalIntRange(0, 25);
 		}
 
 		//store values back into rings
@@ -266,10 +266,11 @@ public class RingOfWealth extends Ring {
 				result = Generator.random(Generator.Category.ARTIFACT);
 				break;
 		}
-		//minimum level of sqrt(ringLvl)
+		//minimum level is 1/2/3/4/5/6 when ring level is 1/3/6/10/15/21
 		if (result.isUpgradable()){
-			if (result.level() < Math.floor(Math.sqrt(level))){
-				result.level((int)Math.floor(Math.sqrt(level)));
+			int minLevel = (int)Math.floor((Math.sqrt(8*level + 1)-1)/2f);
+			if (result.level() < minLevel){
+				result.level(minLevel);
 			}
 		}
 		result.cursed = false;

@@ -131,8 +131,8 @@ public class WandOfFireblast extends DamageWand {
 	protected void fx( Ballistica bolt, Callback callback ) {
 		//need to perform flame spread logic here so we can determine what cells to put flames in.
 
-		// 4/6/8 distance
-		int maxDist = 2 + 2*chargesPerCast();
+		// 5/7/9 distance
+		int maxDist = 3 + 2*chargesPerCast();
 		int dist = Math.min(bolt.dist, maxDist);
 
 		cone = new ConeAOE( bolt,
