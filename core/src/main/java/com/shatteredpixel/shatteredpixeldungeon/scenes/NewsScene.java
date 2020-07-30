@@ -156,6 +156,11 @@ public class NewsScene extends PixelScene {
 	}
 
 	@Override
+	protected void onBackPressed() {
+		ShatteredPixelDungeon.switchNoFade( TitleScene.class );
+	}
+
+	@Override
 	public void update() {
 		if (displayingNoArticles && News.articlesAvailable()){
 			ShatteredPixelDungeon.seamlessResetScene();

@@ -103,6 +103,11 @@ public class SupporterScene extends PixelScene {
 
 	}
 
+	@Override
+	protected void onBackPressed() {
+		ShatteredPixelDungeon.switchNoFade( TitleScene.class );
+	}
+
 	private static class SupporterMessage extends Component {
 
 		NinePatch bg;
