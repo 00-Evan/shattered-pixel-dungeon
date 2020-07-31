@@ -45,13 +45,14 @@ public class WornDartTrap extends Trap {
 	@Override
 	public void activate() {
 		Char target = Actor.findChar(pos);
-		
-		//find the closest char that can be aimed at
+
 		if (target == null){
+			float closestDist = Float.MAX_VALUE;
 			for (Char ch : Actor.chars()){
+				float curDist = Dungeon.level.trueDistance(pos, target.pos);
+				if (target.invisible > 0) curDist += 1000;
 				Ballistica bolt = new Ballistica(pos, ch.pos, Ballistica.PROJECTILE);
-				if (bolt.collisionPos == ch.pos &&
-						(target == null || Dungeon.level.trueDistance(pos, ch.pos) < Dungeon.level.trueDistance(pos, target.pos))){
+				if (bolt.collisionPos == ch.pos && curDist < closestDist){
 					target = ch;
 				}
 			}
