@@ -257,6 +257,11 @@ public class Heap implements Bundlable {
 
 			for (Item item : items.toArray( new Item[0] )) {
 
+				//unique items aren't affect by explosions
+				if (item.unique || (item instanceof Armor && ((Armor) item).checkSeal() != null)){
+					continue;
+				}
+
 				if (item instanceof Potion) {
 					items.remove(item);
 					((Potion) item).shatter(pos);
@@ -273,10 +278,10 @@ public class Heap implements Bundlable {
 						return;
 					}
 
-				//unique and upgraded items can endure the blast
-				} else if (!(item.level() > 0 || item.unique
-						|| (item instanceof Armor && ((Armor) item).checkSeal() != null)))
+				//upgraded items can endure the blast
+				} else if (item.level() <= 0) {
 					items.remove( item );
+				}
 
 			}
 

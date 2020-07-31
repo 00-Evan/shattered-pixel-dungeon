@@ -107,7 +107,12 @@ public class AndroidGame extends AndroidApplication {
 		view = (GLSurfaceView)graphics.getView();
 		
 	}
-	
+
+	@Override
+	public void onBackPressed() {
+		//do nothing, game should catch all back presses
+	}
+
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);

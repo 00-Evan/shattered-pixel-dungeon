@@ -98,9 +98,15 @@ public class WandOfRegrowth extends Wand {
 					terr == Terrain.HIGH_GRASS ||
 					terr == Terrain.FURROWED_GRASS)) {
 				i.remove();
+			} else if (Char.hasProp(Actor.findChar(cell), Char.Property.IMMOVABLE)) {
+				i.remove();
+			} else if (Dungeon.level.plants.get(cell) != null){
+				i.remove();
 			} else {
-				Level.set( cell, Terrain.GRASS );
-				GameScene.updateMap( cell );
+				if (terr != Terrain.HIGH_GRASS && terr != Terrain.FURROWED_GRASS) {
+					Level.set(cell, Terrain.GRASS);
+					GameScene.updateMap( cell );
+				}
 				Char ch = Actor.findChar(cell);
 				if (ch != null){
 					processSoulMark(ch, chargesPerCast());
@@ -161,6 +167,8 @@ public class WandOfRegrowth extends Wand {
 
 		for (int cell : cells){
 			if (grassToPlace <= 0 || bolt.path.contains(cell)) break;
+
+			if (Dungeon.level.map[cell] == Terrain.HIGH_GRASS) continue;
 
 			if (Random.Float() > furrowedChance) {
 				Level.set(cell, Terrain.HIGH_GRASS);

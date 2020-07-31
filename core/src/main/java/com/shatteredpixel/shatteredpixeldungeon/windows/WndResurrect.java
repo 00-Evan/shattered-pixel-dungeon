@@ -79,9 +79,9 @@ public class WndResurrect extends Window {
 			@Override
 			protected void onClick() {
 				hide();
-				
-				Rankings.INSTANCE.submit( false, WndResurrect.causeOfDeath.getClass() );
+
 				Hero.reallyDie( WndResurrect.causeOfDeath );
+				Rankings.INSTANCE.submit( false, WndResurrect.causeOfDeath.getClass() );
 			}
 		};
 		btnNo.setRect( 0, btnYes.bottom() + GAP, WIDTH, BTN_HEIGHT );

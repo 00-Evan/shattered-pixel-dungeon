@@ -119,7 +119,7 @@ public class Burning extends Buff implements Hero.Doom {
 				target.damage( damage, this );
 			}
 
-			if (target instanceof Thief) {
+			if (target instanceof Thief && ((Thief) target).item != null) {
 
 				Item item = ((Thief) target).item;
 
