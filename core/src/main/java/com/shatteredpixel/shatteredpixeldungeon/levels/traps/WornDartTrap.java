@@ -54,6 +54,7 @@ public class WornDartTrap extends Trap {
 				Ballistica bolt = new Ballistica(pos, ch.pos, Ballistica.PROJECTILE);
 				if (bolt.collisionPos == ch.pos && curDist < closestDist){
 					target = ch;
+					closestDist = curDist;
 				}
 			}
 		}

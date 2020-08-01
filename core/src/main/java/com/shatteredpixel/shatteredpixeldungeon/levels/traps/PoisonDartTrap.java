@@ -69,6 +69,7 @@ public class PoisonDartTrap extends Trap {
 				Ballistica bolt = new Ballistica(pos, ch.pos, Ballistica.PROJECTILE);
 				if (canTarget(ch) && bolt.collisionPos == ch.pos && curDist < closestDist){
 					target = ch;
+					closestDist = curDist;
 				}
 			}
 		}
