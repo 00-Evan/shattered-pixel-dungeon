@@ -360,7 +360,7 @@ public class DriedRose extends Artifact {
 				
 				//heals to full over 1000 turns
 				if (ghost.HP < ghost.HT) {
-					partialCharge += ghost.HT / 1000f;
+					partialCharge += (ghost.HT / 1000f) * RingOfEnergy.artifactChargeMultiplier(target);
 					updateQuickslot();
 					
 					if (partialCharge > 1) {

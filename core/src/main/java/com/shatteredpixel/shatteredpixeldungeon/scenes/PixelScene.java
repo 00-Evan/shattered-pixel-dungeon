@@ -138,7 +138,9 @@ public class PixelScene extends Scene {
 	private static ArrayList<Class<?extends Window>> savedWindows = new ArrayList<>();
 	private static Class<?extends PixelScene> savedClass = null;
 	
-	public void saveWindows(){
+	public synchronized void saveWindows(){
+		if (members == null) return;
+
 		savedWindows.clear();
 		savedClass = getClass();
 		for (Gizmo g : members.toArray(new Gizmo[0])){
@@ -148,7 +150,7 @@ public class PixelScene extends Scene {
 		}
 	}
 	
-	public void restoreWindows(){
+	public synchronized void restoreWindows(){
 		if (getClass().equals(savedClass)){
 			for (Class<?extends Window> w : savedWindows){
 				try{

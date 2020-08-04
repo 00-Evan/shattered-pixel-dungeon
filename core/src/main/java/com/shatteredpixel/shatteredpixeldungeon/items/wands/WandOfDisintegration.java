@@ -118,7 +118,7 @@ public class WandOfDisintegration extends DamageWand {
 	}
 
 	private int distance() {
-		return level()*2 + 6;
+		return buffedLvl()*2 + 6;
 	}
 	
 	@Override
