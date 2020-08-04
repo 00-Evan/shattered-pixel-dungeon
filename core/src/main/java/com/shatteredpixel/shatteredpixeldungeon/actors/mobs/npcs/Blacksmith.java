@@ -64,6 +64,9 @@ public class Blacksmith extends NPC {
 	@Override
 	protected boolean act() {
 		throwItem();
+		if (Dungeon.level.heroFOV[pos] && !Quest.reforged){
+			Notes.add( Notes.Landmark.TROLL );
+		}
 		return super.act();
 	}
 	
@@ -101,8 +104,6 @@ public class Blacksmith extends NPC {
 					} );
 				}
 			});
-			
-			Notes.add( Notes.Landmark.TROLL );
 			
 		} else if (!Quest.completed) {
 			if (Quest.alternative) {

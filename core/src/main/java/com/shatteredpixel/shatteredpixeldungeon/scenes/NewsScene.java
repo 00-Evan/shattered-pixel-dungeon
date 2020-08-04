@@ -276,13 +276,17 @@ public class NewsScene extends PixelScene {
 		protected void layout() {
 			text.maxWidth( (int)(width - icon.width() - bg.marginHor() - 2));
 
+			super.layout();
+
+			icon.x = x + bg.marginLeft() + (16-icon.width())/2f;
+			PixelScene.align(icon);
+			text.setPos(x + bg.marginLeft() + 18, text.top());
+
 			if (date != null) {
 				date.x = x + width - bg.marginRight() - date.width() + 2;
 				date.y = y + height - bg.marginBottom() - date.height() + 3.5f;
 				align(date);
 			}
-
-			super.layout();
 		}
 
 		@Override

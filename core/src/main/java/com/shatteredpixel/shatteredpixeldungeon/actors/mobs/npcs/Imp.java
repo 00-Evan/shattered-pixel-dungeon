@@ -60,6 +60,7 @@ public class Imp extends NPC {
 			if (!seenBefore) {
 				yell( Messages.get(this, "hey", Dungeon.hero.name() ) );
 			}
+			Notes.add( Notes.Landmark.IMP );
 			seenBefore = true;
 		} else {
 			seenBefore = false;
@@ -117,8 +118,6 @@ public class Imp extends NPC {
 			tell( Quest.alternative ? Messages.get(this, "monks_1") : Messages.get(this, "golems_1") );
 			Quest.given = true;
 			Quest.completed = false;
-			
-			Notes.add( Notes.Landmark.IMP );
 		}
 
 		return true;
