@@ -292,7 +292,7 @@ public class Wandmaker extends NPC {
 							validPos = false;
 						}
 					}
-					if (Dungeon.level.traps.get(npc.pos) != null){
+					if (level.traps.get(npc.pos) != null){
 						validPos = false;
 					}
 				} while (!validPos);
