@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -412,7 +413,7 @@ public class WndBag extends WndTabbed {
 					enable( false );
 				} else {
 					enable(
-						mode == Mode.FOR_SALE && !item.unique && (item.value() > 0) && (!item.isEquipped( Dungeon.hero ) || !item.cursed) ||
+						mode == Mode.FOR_SALE && Shopkeeper.willBuyItem(item) ||
 						mode == Mode.UPGRADEABLE && item.isUpgradable() ||
 						mode == Mode.UNIDENTIFED && !item.isIdentified() ||
 						mode == Mode.UNCURSABLE && ScrollOfRemoveCurse.uncursable(item) ||
