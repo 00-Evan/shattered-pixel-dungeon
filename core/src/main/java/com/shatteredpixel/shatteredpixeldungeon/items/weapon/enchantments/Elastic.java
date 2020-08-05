@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
@@ -39,13 +40,13 @@ public class Elastic extends Weapon.Enchantment {
 		// lvl 2 - 43%
 		int level = Math.max( 0, weapon.buffedLvl() );
 		
-		if (Random.Int( level + 5 ) >= 4) {
+		if (Random.Int( level + 500 ) >= 4) {
 			//trace a ballistica to our target (which will also extend past them
 			Ballistica trajectory = new Ballistica(attacker.pos, defender.pos, Ballistica.STOP_TARGET);
 			//trim it to just be the part that goes past them
 			trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size()-1), Ballistica.PROJECTILE);
 			//knock them back along that ballistica
-			WandOfBlastWave.throwChar(defender, trajectory, 2);
+			WandOfBlastWave.throwChar(defender, trajectory, 2, !(weapon instanceof MissileWeapon));
 		}
 		
 		return damage;

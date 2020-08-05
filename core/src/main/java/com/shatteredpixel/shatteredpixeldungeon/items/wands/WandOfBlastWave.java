@@ -61,7 +61,7 @@ public class WandOfBlastWave extends DamageWand {
 	}
 
 	public int max(int lvl){
-		return 5+3*lvl;
+		return 3+3*lvl;
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class WandOfBlastWave extends DamageWand {
 				if (ch.isAlive() && ch.pos == bolt.collisionPos + i) {
 					Ballistica trajectory = new Ballistica(ch.pos, ch.pos + i, Ballistica.MAGIC_BOLT);
 					int strength = 1 + Math.round(buffedLvl() / 2f);
-					throwChar(ch, trajectory, strength);
+					throwChar(ch, trajectory, strength, false);
 				} else if (ch == Dungeon.hero){
 					Dungeon.fail( getClass() );
 					GLog.n( Messages.get( this, "ondeath") );
@@ -104,7 +104,7 @@ public class WandOfBlastWave extends DamageWand {
 			if (ch.isAlive() && bolt.path.size() > bolt.dist+1 && ch.pos == bolt.collisionPos) {
 				Ballistica trajectory = new Ballistica(ch.pos, bolt.path.get(bolt.dist + 1), Ballistica.MAGIC_BOLT);
 				int strength = buffedLvl() + 3;
-				throwChar(ch, trajectory, strength);
+				throwChar(ch, trajectory, strength, false);
 			}
 		}
 		
@@ -114,7 +114,13 @@ public class WandOfBlastWave extends DamageWand {
 		throwChar(ch, trajectory, power, true);
 	}
 
-	public static void throwChar(final Char ch, final Ballistica trajectory, int power, boolean collideDmg){
+	public static void throwChar(final Char ch, final Ballistica trajectory, int power,
+	                             boolean closeDoors) {
+		throwChar(ch, trajectory, power, closeDoors, true);
+	}
+
+	public static void throwChar(final Char ch, final Ballistica trajectory, int power,
+	                             boolean closeDoors, boolean collideDmg){
 		if (ch.properties().contains(Char.Property.BOSS)) {
 			power /= 2;
 		}
@@ -161,10 +167,10 @@ public class WandOfBlastWave extends DamageWand {
 				int oldPos = ch.pos;
 				ch.pos = newPos;
 				if (finalCollided && ch.isAlive()) {
-					ch.damage(Random.NormalIntRange((finalDist + 1) / 2, finalDist), this);
-					Paralysis.prolong(ch, Paralysis.class, Random.NormalIntRange((finalDist + 1) / 2, finalDist));
+					ch.damage(Random.NormalIntRange(finalDist, 2*finalDist), this);
+					Paralysis.prolong(ch, Paralysis.class, 1 + finalDist/2f);
 				}
-				if (Dungeon.level.map[oldPos] == Terrain.OPEN_DOOR){
+				if (closeDoors && Dungeon.level.map[oldPos] == Terrain.OPEN_DOOR){
 					Door.leave(oldPos);
 				}
 				Dungeon.level.occupyCell(ch);
