@@ -61,6 +61,7 @@ public class WndOptions extends Window {
 					onSelect( index );
 				}
 			};
+			btn.enable(enabled(i));
 			btn.setRect( MARGIN, pos, width - MARGIN * 2, BUTTON_HEIGHT );
 			add( btn );
 			
@@ -68,6 +69,10 @@ public class WndOptions extends Window {
 		}
 		
 		resize( width, (int)pos );
+	}
+
+	protected boolean enabled( int index ){
+		return true;
 	}
 	
 	protected void onSelect( int index ) {}
