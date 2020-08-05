@@ -81,8 +81,8 @@ public class SupporterScene extends PixelScene {
 				String link = "https://www.patreon.com/ShatteredPixel";
 				//tracking codes, so that the website knows where this pageview came from
 				link += "?utm_source=shatteredpd";
-				link += "&utm_medium=android";
-				link += "&utm_campaign=supporter_page";
+				link += "&utm_medium=supporter_page";
+				link += "&utm_campaign=ingame_link";
 				DeviceCompat.openURI(link);
 			}
 		};

@@ -312,8 +312,8 @@ public class NewsScene extends PixelScene {
 					String link = article.URL;
 					//tracking codes, so that the website knows where this pageview came from
 					link += "?utm_source=shatteredpd";
-					link += "&utm_medium=android";
-					link += "&utm_campaign=news_page";
+					link += "&utm_medium=news_page";
+					link += "&utm_campaign=ingame_link";
 					DeviceCompat.openURI(link);
 				}
 			};

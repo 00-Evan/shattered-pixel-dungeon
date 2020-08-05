@@ -60,8 +60,8 @@ public class AboutScene extends PixelScene {
 		String shpxLink = "https://ShatteredPixel.com";
 		//tracking codes, so that the website knows where this pageview came from
 		shpxLink += "?utm_source=shatteredpd";
-		shpxLink += "&utm_medium=android";
-		shpxLink += "&utm_campaign=about_page";
+		shpxLink += "&utm_medium=about_page";
+		shpxLink += "&utm_campaign=ingame_link";
 
 		CreditsBlock shpx = new CreditsBlock(true, Window.SHPX_COLOR,
 				"Shattered Pixel Dungeon",
