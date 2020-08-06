@@ -133,6 +133,7 @@ public class Hunger extends Buff implements Hero.Doom {
 			partialDamage += excess * (target.HT/1000f);
 		}
 
+		BuffIndicator.refreshHero();
 	}
 
 	public boolean isStarving() {
