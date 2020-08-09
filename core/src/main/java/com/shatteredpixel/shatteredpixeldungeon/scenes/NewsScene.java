@@ -145,7 +145,12 @@ public class NewsScene extends PixelScene {
 			@Override
 			protected void onClick() {
 				super.onClick();
-				DeviceCompat.openURI("https://ShatteredPixel.com/");
+				String link = "https://ShatteredPixel.com";
+				//tracking codes, so that the website knows where this pageview came from
+				link += "?utm_source=shatteredpd";
+				link += "&utm_medium=news_page";
+				link += "&utm_campaign=ingame_link";
+				DeviceCompat.openURI(link);
 			}
 		};
 		btnSite.icon(Icons.get(Icons.NEWS));
