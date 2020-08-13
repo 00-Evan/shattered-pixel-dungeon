@@ -62,7 +62,7 @@ public class GitHubUpdates extends UpdateService {
 					Bundle latestRelease = null;
 					int latestVersionCode = Game.versionCode;
 
-					boolean includePrereleases = Game.version.toLowerCase().contains("beta");
+					boolean includePrereleases = Game.version.contains("-BETA-") || Game.version.contains("-RC-");
 
 					for (Bundle b : Bundle.read( httpResponse.getResultAsStream() ).getBundleArray()){
 						Matcher m = versionCodePattern.matcher(b.getString("body"));
