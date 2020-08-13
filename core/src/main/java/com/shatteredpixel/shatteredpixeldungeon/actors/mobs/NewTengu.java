@@ -274,7 +274,7 @@ public class NewTengu extends Mob {
 								level.distance(newPos, enemy.pos) > 7 ||
 								level.distance(newPos, Dungeon.hero.pos) < 5 ||
 								level.distance(newPos, Dungeon.hero.pos) > 7 ||
-								level.distance(newPos, pos) < 6 ||
+								level.distance(newPos, pos) < 5 ||
 								Actor.findChar(newPos) != null ||
 								Dungeon.level.heaps.get(newPos) != null);
 				

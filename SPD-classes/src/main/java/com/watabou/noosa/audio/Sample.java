@@ -97,7 +97,7 @@ public enum Sample {
 		return play( id, volume, volume, pitch );
 	}
 	
-	public long play( Object id, float leftVolume, float rightVolume, float pitch ) {
+	public synchronized long play( Object id, float leftVolume, float rightVolume, float pitch ) {
 		float volume = Math.max(leftVolume, rightVolume);
 		float pan = rightVolume - leftVolume;
 		if (enabled && ids.containsKey( id )) {

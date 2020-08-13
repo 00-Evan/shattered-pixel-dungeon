@@ -225,6 +225,12 @@ public class Ghoul extends Mob {
 				return true;
 			}
 
+			if (Dungeon.level.pit[ghoul.pos]){
+				super.detach();
+				ghoul.die(this);
+				return true;
+			}
+
 			turnsToRevive--;
 			if (turnsToRevive <= 0){
 				ghoul.HP = Math.round(ghoul.HT/10f);

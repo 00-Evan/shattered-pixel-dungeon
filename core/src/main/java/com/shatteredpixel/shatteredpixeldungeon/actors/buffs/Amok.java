@@ -40,8 +40,9 @@ public class Amok extends FlavourBuff {
 	@Override
 	public void detach() {
 		super.detach();
-		if (target instanceof Mob)
-			((Mob)target).aggro( null );
+		if (target instanceof Mob && target.isAlive()) {
+			((Mob) target).aggro(null);
+		}
 	}
 
 	@Override

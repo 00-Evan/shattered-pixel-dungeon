@@ -227,8 +227,8 @@ public abstract class Mob extends Char {
 		//We are charmed and current enemy is what charmed us
 		} else if (buff(Charm.class) != null && buff(Charm.class).object == enemy.id()) {
 			newEnemy = true;
-		//we aren't amoked and current enemy is invulnerable to us
-		} else if (buff( Amok.class ) == null && enemy.isInvulnerable(getClass())) {
+		//we aren't amoked, current enemy is invulnerable to us, and that enemy isn't affect by aggression
+		} else if (buff( Amok.class ) == null && enemy.isInvulnerable(getClass()) && enemy.buff(StoneOfAggression.Aggression.class) == null) {
 			newEnemy = true;
 		}
 

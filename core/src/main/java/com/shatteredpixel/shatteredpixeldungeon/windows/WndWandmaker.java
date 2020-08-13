@@ -88,9 +88,13 @@ public class WndWandmaker extends Window {
 	}
 	
 	private void selectReward( Wandmaker wandmaker, Item item, Wand reward ) {
-		
+
+		if (reward == null){
+			return;
+		}
+
 		hide();
-		
+
 		item.detach( Dungeon.hero.belongings.backpack );
 
 		reward.identify();
