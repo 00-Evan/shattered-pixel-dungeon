@@ -398,14 +398,13 @@ public abstract class RegularLevel extends Level {
 			}
 		}
 
-		//these are dropped specially
+		//a total of 8 pages drop randomly, 2 pages are specially dropped
 		missingPages.remove(Document.GUIDE_INTRO_PAGE);
 		missingPages.remove(Document.GUIDE_SEARCH_PAGE);
 
-		int foundPages = allPages.size() - (missingPages.size() + 2);
-
 		//chance to find a page scales with pages missing and depth
-		if (missingPages.size() > 0 && Random.Float() < (Dungeon.depth/(float)(foundPages + 1))){
+		float dropChance = (missingPages.size() + Dungeon.depth) / (float)(allPages.size() - 2);
+		if (Random.Float() < dropChance){
 			GuidePage p = new GuidePage();
 			p.page(missingPages.get(0));
 			int cell = randomDropCell();

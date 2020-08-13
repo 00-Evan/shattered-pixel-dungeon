@@ -199,7 +199,7 @@ public class HeroSelectScene extends PixelScene {
 
 		btnExit = new ExitButton();
 		btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
-		add( btnExit );
+		if (!SPDSettings.intro()) add( btnExit );
 
 		PointerArea fadeResetter = new PointerArea(0, 0, Camera.main.width, Camera.main.height){
 			@Override
@@ -272,7 +272,11 @@ public class HeroSelectScene extends PixelScene {
 
 	@Override
 	protected void onBackPressed() {
-		ShatteredPixelDungeon.switchScene( TitleScene.class );
+		if (!SPDSettings.intro()){
+			ShatteredPixelDungeon.switchScene(TitleScene.class);
+		} else {
+			super.onBackPressed();
+		}
 	}
 
 	private class HeroBtn extends StyledButton {

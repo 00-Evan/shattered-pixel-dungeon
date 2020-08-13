@@ -52,7 +52,7 @@ public class WelcomeScene extends PixelScene {
 
 		final int previousVersion = SPDSettings.version();
 
-		if (ShatteredPixelDungeon.versionCode == previousVersion) {
+		if (ShatteredPixelDungeon.versionCode == previousVersion && !SPDSettings.intro()) {
 			ShatteredPixelDungeon.switchNoFade(TitleScene.class);
 			return;
 		}
@@ -96,7 +96,7 @@ public class WelcomeScene extends PixelScene {
 			@Override
 			protected void onClick() {
 				super.onClick();
-				if (previousVersion == 0){
+				if (previousVersion == 0 || SPDSettings.intro()){
 					SPDSettings.version(ShatteredPixelDungeon.versionCode);
 					GamesInProgress.selectedClass = null;
 					GamesInProgress.curSlot = 1;
@@ -110,7 +110,7 @@ public class WelcomeScene extends PixelScene {
 
 		float buttonY = Math.min(topRegion + (PixelScene.landscape() ? 60 : 120), h - 24);
 
-		if (previousVersion != 0){
+		if (previousVersion != 0 && !SPDSettings.intro()){
 			StyledButton changes = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(TitleScene.class, "changes")){
 				@Override
 				protected void onClick() {
@@ -134,7 +134,7 @@ public class WelcomeScene extends PixelScene {
 
 		RenderedTextBlock text = PixelScene.renderTextBlock(6);
 		String message;
-		if (previousVersion == 0) {
+		if (previousVersion == 0 || SPDSettings.intro()) {
 			message = Messages.get(this, "welcome_msg");
 		} else if (previousVersion <= ShatteredPixelDungeon.versionCode) {
 			if (previousVersion < LATEST_UPDATE){
