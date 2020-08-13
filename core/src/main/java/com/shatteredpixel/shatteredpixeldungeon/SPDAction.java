@@ -131,6 +131,10 @@ public class SPDAction extends GameAction {
 
 	public static void loadBindings(){
 
+		if (!KeyBindings.getAllBindings().isEmpty()){
+			return;
+		}
+
 		try {
 			Bundle b = FileUtils.bundleFromFile(BINDINGS_FILE);
 

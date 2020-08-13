@@ -49,38 +49,45 @@ public class AndroidGame extends AndroidApplication {
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		instance = this;
-		
-		try {
-			Game.version = getPackageManager().getPackageInfo( getPackageName(), 0 ).versionName;
-		} catch (PackageManager.NameNotFoundException e) {
-			Game.version = "???";
-		}
-		try {
-			Game.versionCode = getPackageManager().getPackageInfo( getPackageName(), 0 ).versionCode;
-		} catch (PackageManager.NameNotFoundException e) {
-			Game.versionCode = 0;
-		}
 
-		if (UpdateImpl.supportsUpdates()){
-			Updates.service = UpdateImpl.getUpdateService();
-		}
-		if (NewsImpl.supportsNews()){
-			News.service = NewsImpl.getNewsService();
-		}
+		//there are some things we only need to set up on first launch
+		if (instance == null) {
 
-		FileUtils.setDefaultFileProperties( Files.FileType.Local, "" );
-		
-		// grab preferences directly using our instance first
-		// so that we don't need to rely on Gdx.app, which isn't initialized yet.
-		// Note that we use a different prefs name on android for legacy purposes,
-		// this is the default prefs filename given to an android app (.xml is automatically added to it)
-		SPDSettings.set(instance.getPreferences("ShatteredPixelDungeon"));
+			instance = this;
+
+			try {
+				Game.version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+			} catch (PackageManager.NameNotFoundException e) {
+				Game.version = "???";
+			}
+			try {
+				Game.versionCode = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+			} catch (PackageManager.NameNotFoundException e) {
+				Game.versionCode = 0;
+			}
+
+			if (UpdateImpl.supportsUpdates()) {
+				Updates.service = UpdateImpl.getUpdateService();
+			}
+			if (NewsImpl.supportsNews()) {
+				News.service = NewsImpl.getNewsService();
+			}
+
+			FileUtils.setDefaultFileProperties(Files.FileType.Local, "");
+
+			// grab preferences directly using our instance first
+			// so that we don't need to rely on Gdx.app, which isn't initialized yet.
+			// Note that we use a different prefs name on android for legacy purposes,
+			// this is the default prefs filename given to an android app (.xml is automatically added to it)
+			SPDSettings.set(instance.getPreferences("ShatteredPixelDungeon"));
+
+		} else {
+			instance = this;
+		}
 		
 		//set desired orientation (if it exists) before initializing the app.
 		if (SPDSettings.landscape() != null) {
-			AndroidGame.instance.setRequestedOrientation( SPDSettings.landscape() ?
+			instance.setRequestedOrientation( SPDSettings.landscape() ?
 					ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
 					ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT );
 		}
