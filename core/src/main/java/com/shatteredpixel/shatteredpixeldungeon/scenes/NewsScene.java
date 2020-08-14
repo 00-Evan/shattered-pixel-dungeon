@@ -266,7 +266,10 @@ public class NewsScene extends PixelScene {
 			this.article = article;
 
 			icon(News.parseArticleIcon(article));
-			if (article.date.getTime() > SPDSettings.newsLastRead()) textColor(Window.SHPX_COLOR);
+			long lastRead = SPDSettings.newsLastRead();
+			if (lastRead > 0 && article.date.getTime() > lastRead) {
+				textColor(Window.SHPX_COLOR);
+			}
 
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(article.date);

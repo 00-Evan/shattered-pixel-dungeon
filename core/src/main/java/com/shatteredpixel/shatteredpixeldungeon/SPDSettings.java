@@ -302,8 +302,7 @@ public class SPDSettings extends GameSettings {
 	}
 
 	public static long newsLastRead(){
-		//returns the current time when none is stored, so historical news isn't seen as unread
-		return getLong(KEY_NEWS_LAST_READ, Game.realTime);
+		return getLong(KEY_NEWS_LAST_READ, 0);
 	}
 	
 	//Window management (desktop only atm)

@@ -228,10 +228,17 @@ public class TitleScene extends PixelScene {
 			super.update();
 
 			if (unreadCount == -1 && News.articlesAvailable()){
-				unreadCount = News.unreadArticles(new Date(SPDSettings.newsLastRead()));
-				if (unreadCount > 0){
-					unreadCount = Math.min(unreadCount, 9);
-					text(text() + "(" + unreadCount + ")");
+				long lastRead = SPDSettings.newsLastRead();
+				if (lastRead == 0){
+					if (News.articles().get(0) != null) {
+						SPDSettings.newsLastRead(News.articles().get(0).date.getTime());
+					}
+				} else {
+					unreadCount = News.unreadArticles(new Date(SPDSettings.newsLastRead()));
+					if (unreadCount > 0) {
+						unreadCount = Math.min(unreadCount, 9);
+						text(text() + "(" + unreadCount + ")");
+					}
 				}
 			}
 
