@@ -403,7 +403,7 @@ public abstract class RegularLevel extends Level {
 		missingPages.remove(Document.GUIDE_SEARCH_PAGE);
 
 		//chance to find a page scales with pages missing and depth
-		float dropChance = (missingPages.size() + Dungeon.depth) / (float)(allPages.size() - 2);
+		float dropChance = (missingPages.size() + Dungeon.depth - 1) / (float)(allPages.size() - 2);
 		if (Random.Float() < dropChance){
 			GuidePage p = new GuidePage();
 			p.page(missingPages.get(0));
