@@ -103,7 +103,7 @@ public class Wraith extends Mob {
 	}
 	
 	public static Wraith spawnAt( int pos ) {
-		if (Dungeon.level.passable[pos] && Actor.findChar( pos ) == null) {
+		if (!Dungeon.level.solid[pos] && Actor.findChar( pos ) == null) {
 			
 			Wraith w = new Wraith();
 			w.adjustStats( Dungeon.depth );

@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.quest;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bat;
@@ -150,9 +151,24 @@ public class Pickaxe extends Weapon {
 	
 	@Override
 	public int proc( Char attacker, Char defender, int damage ) {
-		if (!bloodStained && defender instanceof Bat && (defender.HP <= damage)) {
-			bloodStained = true;
-			updateQuickslot();
+		if (!bloodStained && defender instanceof Bat) {
+			Actor.add(new Actor() {
+
+				{
+					actPriority = VFX_PRIO;
+				}
+
+				@Override
+				protected boolean act() {
+					if (!defender.isAlive()){
+						bloodStained = true;
+						updateQuickslot();
+					}
+
+					Actor.remove(this);
+					return true;
+				}
+			});
 		}
 		return damage;
 	}

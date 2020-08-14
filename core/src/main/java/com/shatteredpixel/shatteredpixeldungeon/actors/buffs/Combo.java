@@ -30,6 +30,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -271,25 +274,12 @@ public class Combo extends Buff implements ActionIndicator.Action {
 			switch (type){
 				case CLOBBER:
 					if (enemy.isAlive()){
-						if (!enemy.properties().contains(Char.Property.IMMOVABLE)){
-							for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-								int ofs = PathFinder.NEIGHBOURS8[i];
-								if (enemy.pos - target.pos == ofs) {
-									int newPos = enemy.pos + ofs;
-									if ((Dungeon.level.passable[newPos] || Dungeon.level.avoid[newPos])
-											&& Actor.findChar( newPos ) == null
-											&& (!Char.hasProp(enemy, Char.Property.LARGE) || Dungeon.level.openSpace[newPos])) {
-
-										Actor.addDelayed( new Pushing( enemy, enemy.pos, newPos ), -1 );
-
-										enemy.pos = newPos;
-										Dungeon.level.occupyCell(enemy );
-
-									}
-									break;
-								}
-							}
-						}
+						//trace a ballistica to our target (which will also extend past them
+						Ballistica trajectory = new Ballistica(target.pos, enemy.pos, Ballistica.STOP_TARGET);
+						//trim it to just be the part that goes past them
+						trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size()-1), Ballistica.PROJECTILE);
+						//knock them back along that ballistica
+						WandOfBlastWave.throwChar(enemy, trajectory, 2, true, false);
 						Buff.prolong(enemy, Vertigo.class, Random.NormalIntRange(1, 4));
 					}
 					break;

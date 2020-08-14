@@ -359,7 +359,8 @@ public class DriedRose extends Artifact {
 				defaultAction = AC_DIRECT;
 				
 				//heals to full over 1000 turns
-				if (ghost.HP < ghost.HT) {
+				LockedFloor lock = target.buff(LockedFloor.class);
+				if (ghost.HP < ghost.HT && (lock == null || lock.regenOn())) {
 					partialCharge += (ghost.HT / 1000f) * RingOfEnergy.artifactChargeMultiplier(target);
 					updateQuickslot();
 					
