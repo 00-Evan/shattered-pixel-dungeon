@@ -333,14 +333,16 @@ public class WndBag extends WndTabbed {
 	}
 	
 	public static class Placeholder extends Item {
-		{
-			name = null;
-		}
-		
-		public Placeholder( int image ) {
+
+		public Placeholder(int image ) {
 			this.image = image;
 		}
-		
+
+		@Override
+		public String name() {
+			return null;
+		}
+
 		@Override
 		public boolean isIdentified() {
 			return true;

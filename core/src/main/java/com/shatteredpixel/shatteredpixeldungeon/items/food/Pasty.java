@@ -83,15 +83,12 @@ public class Pasty extends Food {
 		super.reset();
 		switch(holiday){
 			case NONE:
-				name = Messages.get(this, "pasty");
 				image = ItemSpriteSheet.PASTY;
 				break;
 			case HWEEN:
-				name = Messages.get(this, "pie");
 				image = ItemSpriteSheet.PUMPKIN_PIE;
 				break;
 			case XMAS:
-				name = Messages.get(this, "cane");
 				image = ItemSpriteSheet.CANDY_CANE;
 				break;
 		}
@@ -113,6 +110,18 @@ public class Pasty extends Food {
 				Buff.affect( hero, Recharging.class, 2f ); //half of a charge
 				ScrollOfRecharging.charge( hero );
 				break;
+		}
+	}
+
+	@Override
+	public String name() {
+		switch(holiday){
+			case NONE: default:
+				return Messages.get(this, "pasty");
+			case HWEEN:
+				return Messages.get(this, "pie");
+			case XMAS:
+				return Messages.get(this, "cane");
 		}
 	}
 

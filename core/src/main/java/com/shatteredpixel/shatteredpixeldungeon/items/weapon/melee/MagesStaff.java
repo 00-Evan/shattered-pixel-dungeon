@@ -94,7 +94,6 @@ public class MagesStaff extends MeleeWeapon {
 		this.wand = wand;
 		updateWand(false);
 		wand.curCharges = wand.maxCharges;
-		name = Messages.get(wand, "staff_name");
 	}
 
 	@Override
@@ -202,8 +201,6 @@ public class MagesStaff extends MeleeWeapon {
 		wand.curCharges = wand.maxCharges;
 		if (owner != null) wand.charge(owner);
 
-		name = Messages.get(wand, "staff_name");
-
 		//This is necessary to reset any particles.
 		//FIXME this is gross, should implement a better way to fully reset quickslot visuals
 		int slot = Dungeon.quickslot.getSlot(this);
@@ -265,6 +262,15 @@ public class MagesStaff extends MeleeWeapon {
 	}
 
 	@Override
+	public String name() {
+		if (wand == null) {
+			return super.name();
+		} else {
+			return Messages.get(wand, "staff_name");
+		}
+	}
+
+	@Override
 	public String info() {
 		String info = super.info();
 
@@ -303,7 +309,6 @@ public class MagesStaff extends MeleeWeapon {
 		wand = (Wand) bundle.get(WAND);
 		if (wand != null) {
 			wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
-			name = Messages.get(wand, "staff_name");
 		}
 	}
 

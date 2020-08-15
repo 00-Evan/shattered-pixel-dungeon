@@ -64,8 +64,8 @@ public class Item implements Bundlable {
 	
 	public String defaultAction;
 	public boolean usesTargeting;
-	
-	protected String name = Messages.get(this, "name");
+
+	//TODO should these be private and accessed through methods?
 	public int image = 0;
 	public int icon = -1; //used as an identifier for items with randomized images
 	
@@ -120,10 +120,7 @@ public class Item implements Bundlable {
 	}
 
 	//resets an item's properties, to ensure consistency between runs
-	public void reset(){
-		//resets the name incase the language has changed.
-		name = Messages.get(this, "name");
-	}
+	public void reset(){}
 
 	public void doThrow( Hero hero ) {
 		GameScene.selectCell(thrower);
@@ -404,11 +401,11 @@ public class Item implements Bundlable {
 	}
 	
 	public String name() {
-		return name;
+		return trueName();
 	}
 	
 	public final String trueName() {
-		return name;
+		return Messages.get(this, "name");
 	}
 	
 	public int image() {

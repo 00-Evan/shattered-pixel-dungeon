@@ -60,9 +60,6 @@ public class Belongings implements Iterable<Item> {
 		this.owner = owner;
 		
 		backpack = new Bag() {
-			{
-				name = Messages.get(Bag.class, "name");
-			}
 			public int capacity(){
 				int cap = super.capacity();
 				for (Item item : items){
