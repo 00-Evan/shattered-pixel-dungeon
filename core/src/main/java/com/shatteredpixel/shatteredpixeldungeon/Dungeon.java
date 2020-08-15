@@ -366,11 +366,8 @@ public class Dungeon {
 		Dungeon.level = level;
 		Mob.restoreAllies( level, pos );
 		Actor.init();
-		
-		Actor respawner = level.respawner();
-		if (respawner != null) {
-			Actor.addDelayed( respawner, level.respawnTime() );
-		}
+
+		level.addRespawner();
 
 		hero.pos = pos;
 		

@@ -152,7 +152,7 @@ public class OldPrisonBossLevel extends Level {
 		tengu = new OldTengu(); //We want to keep track of tengu independently of other mobs, he's not always in the level.
 	}
 	
-	public Actor respawner() {
+	public Actor addRespawner() {
 		return null;
 	}
 

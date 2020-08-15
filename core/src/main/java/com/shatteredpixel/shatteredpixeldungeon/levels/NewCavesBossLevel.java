@@ -183,7 +183,7 @@ public class NewCavesBossLevel extends Level {
 	}
 
 	@Override
-	public Actor respawner() {
+	public Actor addRespawner() {
 		return null;
 	}
 

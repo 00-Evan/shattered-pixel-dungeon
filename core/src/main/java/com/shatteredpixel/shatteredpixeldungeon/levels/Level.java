@@ -378,7 +378,11 @@ public abstract class Level implements Bundlable {
 				if (mob != null) mobsToSpawn.add(mob);
 			}
 		}
-		
+
+		if (bundle.contains( "respawner" )){
+			respawner = (Respawner) bundle.get("respawner");
+		}
+
 		buildFlagMaps();
 		cleanWalls();
 
@@ -411,6 +415,7 @@ public abstract class Level implements Bundlable {
 		bundle.put( BLOBS, blobs.values() );
 		bundle.put( FEELING, feeling );
 		bundle.put( "mobs_to_spawn", mobsToSpawn.toArray(new Class[0]));
+		bundle.put( "respawner", respawner );
 	}
 	
 	public int tunnelTile() {
@@ -499,43 +504,52 @@ public abstract class Level implements Bundlable {
 		}
 		return null;
 	}
-	
-	public Actor respawner() {
-		return new Actor() {
 
-			{
-				actPriority = BUFF_PRIO; //as if it were a buff.
-			}
+	private Respawner respawner;
 
-			@Override
-			protected boolean act() {
-				float count = 0;
-
-				for (Mob mob : mobs.toArray(new Mob[0])){
-					if (mob.alignment == Char.Alignment.ENEMY && !mob.properties().contains(Char.Property.MINIBOSS)) {
-						count += mob.spawningWeight();
-					}
-				}
-				
-				if (count < nMobs()) {
-
-					Mob mob = createMob();
-					mob.state = mob.WANDERING;
-					mob.pos = randomRespawnCell( mob );
-					if (Dungeon.hero.isAlive() && mob.pos != -1 && distance(Dungeon.hero.pos, mob.pos) >= 4) {
-						GameScene.add( mob );
-						if (Statistics.amuletObtained) {
-							mob.beckon( Dungeon.hero.pos );
-						}
-					}
-				}
-				spend(respawnTime());
-				return true;
-			}
-		};
+	public Actor addRespawner() {
+		if (respawner == null){
+			respawner = new Respawner();
+			Actor.addDelayed(respawner, respawnCooldown());
+		} else {
+			Actor.add(respawner);
+		}
+		return respawner;
 	}
-	
-	public float respawnTime(){
+
+	public static class Respawner extends Actor {
+		{
+			actPriority = BUFF_PRIO; //as if it were a buff.
+		}
+
+		@Override
+		protected boolean act() {
+			float count = 0;
+
+			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])){
+				if (mob.alignment == Char.Alignment.ENEMY && !mob.properties().contains(Char.Property.MINIBOSS)) {
+					count += mob.spawningWeight();
+				}
+			}
+
+			if (count < Dungeon.level.nMobs()) {
+
+				Mob mob = Dungeon.level.createMob();
+				mob.state = mob.WANDERING;
+				mob.pos = Dungeon.level.randomRespawnCell( mob );
+				if (Dungeon.hero.isAlive() && mob.pos != -1) {
+					GameScene.add( mob );
+					if (Statistics.amuletObtained) {
+						mob.beckon( Dungeon.hero.pos );
+					}
+				}
+			}
+			spend(Dungeon.level.respawnCooldown());
+			return true;
+		}
+	}
+
+	public float respawnCooldown(){
 		if (Statistics.amuletObtained){
 			return TIME_TO_RESPAWN/2f;
 		} else if (Dungeon.level.feeling == Feeling.DARK){

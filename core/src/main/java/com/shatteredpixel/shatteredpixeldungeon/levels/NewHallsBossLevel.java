@@ -152,7 +152,7 @@ public class NewHallsBossLevel extends Level {
 	protected void createMobs() {
 	}
 
-	public Actor respawner() {
+	public Actor addRespawner() {
 		return null;
 	}
 
