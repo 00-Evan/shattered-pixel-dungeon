@@ -136,7 +136,8 @@ public class WndSettings extends WndTabbed {
 		height = Math.max(height, langs.height());
 		add( langs );
 
-		add( new IconTab(Icons.get(Icons.LANGS)){
+
+		IconTab langsTab = new IconTab(Icons.get(Icons.LANGS)){
 			@Override
 			protected void select(boolean value) {
 				super.select(value);
@@ -157,7 +158,8 @@ public class WndSettings extends WndTabbed {
 				}
 			}
 
-		});
+		};
+		add( langsTab );
 
 		resize(width, (int)Math.ceil(height));
 
