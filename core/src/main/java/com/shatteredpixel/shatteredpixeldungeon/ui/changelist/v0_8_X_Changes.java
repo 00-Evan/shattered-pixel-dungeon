@@ -74,6 +74,35 @@ public class v0_8_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("v0.8.2a", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"I've made a few small tweaks to the new player experience:\n" +
+				"_-_ Snakes now give new players a hint about surprise attacks after 3 misses, down from 5\n" +
+				"_-_ Accelerated the rate that guidebook pages drop on early floors\n" +
+				"_-_ The regular main menu is now only accessible after starting your first game\n\n" +
+				"_-_ Enemies now cannot spawn near to the player, even if they are out of the player's view\n\n" +
+				"_-_ Sped up loading times on Android when the game is relaunched\n\n" +
+				"_-_ Updated translations and translator credits"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by v0.8.2):\n" +
+				"_-_ Various crash and freeze bugs\n" +
+				"_-_ Various text errors in the new settings window\n" +
+				"_-_ Item names not showing correctly when languages are swapped while ingame\n" +
+				"_-_ Clobber knockback not closing doors\n\n" +
+				"Fixed (existed prior to v0.8.2):\n" +
+				"_-_ Pickaxe not getting bloodied by killing bats in rare cases\n" +
+				"_-_ Dried rose ghost healing not respecting level lock limits\n" +
+				"_-_ Wraiths refusing to spawn over traps despite not being able to activate them\n" +
+				"_-_ Enemy respawn timer being reset by saving/loading the game"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
