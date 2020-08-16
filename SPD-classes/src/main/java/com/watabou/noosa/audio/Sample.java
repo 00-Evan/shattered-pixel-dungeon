@@ -116,7 +116,7 @@ public enum Sample {
 		float pitch;
 	}
 
-	private static HashSet<DelayedSoundEffect> delayedSFX = new HashSet<>();
+	private static final HashSet<DelayedSoundEffect> delayedSFX = new HashSet<>();
 
 	public void playDelayed( Object id, float delay ){
 		playDelayed( id, delay, 1 );
@@ -130,7 +130,7 @@ public enum Sample {
 		playDelayed( id, delay, volume, volume, pitch );
 	}
 
-	public synchronized void playDelayed( Object id, float delay, float leftVolume, float rightVolume, float pitch ) {
+	public void playDelayed( Object id, float delay, float leftVolume, float rightVolume, float pitch ) {
 		if (delay <= 0) {
 			play(id, leftVolume, rightVolume, pitch);
 			return;
@@ -141,16 +141,20 @@ public enum Sample {
 		sfx.leftVol = leftVolume;
 		sfx.rightVol = rightVolume;
 		sfx.pitch = pitch;
-		delayedSFX.add(sfx);
+		synchronized (delayedSFX) {
+			delayedSFX.add(sfx);
+		}
 	}
 
-	public synchronized void update(){
-		if (delayedSFX.isEmpty()) return;
-		for (DelayedSoundEffect sfx : delayedSFX.toArray(new DelayedSoundEffect[0])){
-			sfx.delay -= Game.elapsed;
-			if (sfx.delay <= 0){
-				delayedSFX.remove(sfx);
-				play(sfx.id, sfx.leftVol, sfx.rightVol, sfx.pitch);
+	public void update(){
+		synchronized (delayedSFX) {
+			if (delayedSFX.isEmpty()) return;
+			for (DelayedSoundEffect sfx : delayedSFX.toArray(new DelayedSoundEffect[0])) {
+				sfx.delay -= Game.elapsed;
+				if (sfx.delay <= 0) {
+					delayedSFX.remove(sfx);
+					play(sfx.id, sfx.leftVol, sfx.rightVol, sfx.pitch);
+				}
 			}
 		}
 	}
