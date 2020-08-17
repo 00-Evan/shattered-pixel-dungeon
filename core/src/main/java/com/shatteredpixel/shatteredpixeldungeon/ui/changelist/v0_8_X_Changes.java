@@ -74,9 +74,15 @@ public class v0_8_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v0.8.2b", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by v0.8.2a):\n" +
+				"_-_ Uncommon crashes when descending to a new floor\n\n" +
+				"Fixed (existed prior to v0.8.2):\n" +
+				"_-_ Wraiths refusing to spawn over traps despite not being able to activate them"));
 
 		changes = new ChangeInfo("v0.8.2a", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -100,7 +106,6 @@ public class v0_8_X_Changes {
 				"Fixed (existed prior to v0.8.2):\n" +
 				"_-_ Pickaxe not getting bloodied by killing bats in rare cases\n" +
 				"_-_ Dried rose ghost healing not respecting level lock limits\n" +
-				"_-_ Wraiths refusing to spawn over traps despite not being able to activate them\n" +
 				"_-_ Enemy respawn timer being reset by saving/loading the game"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
