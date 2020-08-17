@@ -95,10 +95,7 @@ public class Wraith extends Mob {
 	
 	public static void spawnAround( int pos ) {
 		for (int n : PathFinder.NEIGHBOURS4) {
-			int cell = pos + n;
-			if (Dungeon.level.passable[cell] && Actor.findChar( cell ) == null) {
-				spawnAt( cell );
-			}
+			spawnAt( pos + n );
 		}
 	}
 	
