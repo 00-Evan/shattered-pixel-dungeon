@@ -534,17 +534,25 @@ public abstract class Level implements Bundlable {
 
 			if (count < Dungeon.level.nMobs()) {
 
+				PathFinder.buildDistanceMap(Dungeon.hero.pos, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null));
+
 				Mob mob = Dungeon.level.createMob();
 				mob.state = mob.WANDERING;
 				mob.pos = Dungeon.level.randomRespawnCell( mob );
-				if (Dungeon.hero.isAlive() && mob.pos != -1) {
+				if (Dungeon.hero.isAlive() && mob.pos != -1 && PathFinder.distance[mob.pos] >= 12) {
 					GameScene.add( mob );
 					if (Statistics.amuletObtained) {
 						mob.beckon( Dungeon.hero.pos );
 					}
+					spend(Dungeon.level.respawnCooldown());
+				} else {
+					//try again in 1 turn
+					spend(TICK);
 				}
+			} else {
+				spend(Dungeon.level.respawnCooldown());
 			}
-			spend(Dungeon.level.respawnCooldown());
+
 			return true;
 		}
 	}

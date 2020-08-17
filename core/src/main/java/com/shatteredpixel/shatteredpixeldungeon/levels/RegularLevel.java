@@ -55,9 +55,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FrostTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WornDartTrap;
-import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -232,38 +230,33 @@ public abstract class RegularLevel extends Level {
 		}
 
 	}
-	
+
 	@Override
 	public int randomRespawnCell( Char ch ) {
 		int count = 0;
 		int cell = -1;
 
-		PathFinder.buildDistanceMap(Dungeon.hero.pos, BArray.or(passable, avoid, null));
-
 		while (true) {
-			
+
 			if (++count > 30) {
 				return -1;
 			}
-			
+
 			Room room = randomRoom( StandardRoom.class );
 			if (room == null || room == roomEntrance) {
 				continue;
 			}
 
 			cell = pointToCell(room.random(1));
-			if (Actor.findChar( cell ) == null
+			if (!heroFOV[cell]
+					&& Actor.findChar( cell ) == null
 					&& passable[cell]
 					&& (!Char.hasProp(ch, Char.Property.LARGE) || openSpace[cell])
 					&& room.canPlaceCharacter(cellToPoint(cell), this)
 					&& cell != exit) {
-
-				if (heroFOV[cell] || PathFinder.distance[cell] < 12){
-					continue;
-				}
 				return cell;
 			}
-			
+
 		}
 	}
 	
