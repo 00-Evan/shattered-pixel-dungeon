@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
+import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
@@ -199,7 +200,8 @@ public class HeroSelectScene extends PixelScene {
 
 		btnExit = new ExitButton();
 		btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
-		if (!SPDSettings.intro()) add( btnExit );
+		add( btnExit );
+		btnExit.visible = SPDSettings.intro() || Rankings.INSTANCE.totalNumber > 0;
 
 		PointerArea fadeResetter = new PointerArea(0, 0, Camera.main.width, Camera.main.height){
 			@Override
@@ -246,6 +248,7 @@ public class HeroSelectScene extends PixelScene {
 	@Override
 	public void update() {
 		super.update();
+		btnExit.visible = SPDSettings.intro() || Rankings.INSTANCE.totalNumber > 0;
 		//do not fade when a window is open
 		for (Object v : members){
 			if (v instanceof Window) resetFade();
@@ -272,7 +275,7 @@ public class HeroSelectScene extends PixelScene {
 
 	@Override
 	protected void onBackPressed() {
-		if (!SPDSettings.intro()){
+		if (!SPDSettings.intro() && Rankings.INSTANCE.totalNumber == 0){
 			ShatteredPixelDungeon.switchScene(TitleScene.class);
 		} else {
 			super.onBackPressed();
