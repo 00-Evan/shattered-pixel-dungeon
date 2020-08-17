@@ -108,7 +108,8 @@ public class SandalsOfNature extends Artifact {
 
 	@Override
 	public String name() {
-		return Messages.get(this, "name_" + (level()+1));
+		if (level() == 0)   return super.name();
+		else                return Messages.get(this, "name_" + level());
 	}
 
 	@Override
