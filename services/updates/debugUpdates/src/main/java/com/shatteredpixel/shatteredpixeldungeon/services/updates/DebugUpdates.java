@@ -65,4 +65,10 @@ public class DebugUpdates extends UpdateService {
 		//does nothing
 	}
 
+	@Override
+	public void initializeReview(ReviewResultCallback callback) {
+		//does nothing
+		callback.onComplete();
+	}
+
 }

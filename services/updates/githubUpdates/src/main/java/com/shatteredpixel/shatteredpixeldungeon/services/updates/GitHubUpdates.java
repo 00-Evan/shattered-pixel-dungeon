@@ -135,4 +135,9 @@ public class GitHubUpdates extends UpdateService {
 		//does nothing, always installed
 	}
 
+	@Override
+	public void initializeReview(ReviewResultCallback callback) {
+		//does nothing, no review functionality here
+		callback.onComplete();
+	}
 }
