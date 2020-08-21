@@ -381,7 +381,6 @@ public class WandOfRegrowth extends Wand {
 				sprite.die();
 			}
 
-			spend(TICK);
 			return true;
 		}
 
