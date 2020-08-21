@@ -290,10 +290,7 @@ public class Bomb extends Item {
 
 					} else {
 
-						heap.items.remove(bomb);
-						if (heap.items.isEmpty()) {
-							heap.destroy();
-						}
+						heap.remove(bomb);
 
 						bomb.explode(heap.pos);
 					}
