@@ -60,6 +60,7 @@ import com.watabou.gltextures.TextureCache;
 import com.watabou.input.KeyBindings;
 import com.watabou.input.KeyEvent;
 import com.watabou.noosa.BitmapText;
+import com.watabou.noosa.Camera;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
@@ -98,11 +99,11 @@ public class WndBag extends WndTabbed {
 	protected static final int COLS_P   = 5;
 	protected static final int COLS_L   = 5;
 	
-	protected static int SLOT_WIDTH_P   = 24;
+	protected static int SLOT_WIDTH_P   = 28;
 	protected static int SLOT_WIDTH_L   = 28;
 
 	protected static int SLOT_HEIGHT_P	= 28;
-	protected static int SLOT_HEIGHT_L	= 24;
+	protected static int SLOT_HEIGHT_L	= 28;
 
 	protected static final int SLOT_MARGIN	= 1;
 	
@@ -113,6 +114,7 @@ public class WndBag extends WndTabbed {
 	private String title;
 
 	private int nCols;
+	private int nRows;
 
 	private int slotWidth;
 	private int slotHeight;
@@ -144,15 +146,28 @@ public class WndBag extends WndTabbed {
 		slotHeight = PixelScene.landscape() ? SLOT_HEIGHT_L : SLOT_HEIGHT_P;
 
 		nCols = PixelScene.landscape() ? COLS_L : COLS_P;
-		int slotsWidth = slotWidth * nCols + SLOT_MARGIN * (nCols - 1);
+		nRows = (int)Math.ceil(25/(float)nCols); //we expect to lay out 25 slots in all cases
 
-		placeTitle( bag, slotsWidth );
+		int windowWidth = slotWidth * nCols + SLOT_MARGIN * (nCols - 1);
+		int windowHeight = TITLE_HEIGHT + slotHeight * nRows + SLOT_MARGIN * (nRows - 1);
+
+		if (PixelScene.landscape()){
+			while (windowHeight + 20 > Camera.main.height){
+				slotHeight--;
+				windowHeight -= nRows;
+			}
+		} else {
+			while (windowWidth > Camera.main.width){
+				slotWidth--;
+				windowWidth -= nCols;
+			}
+		}
+
+		placeTitle( bag, windowWidth );
 		
 		placeItems( bag );
 
-		int slotsHeight = slotHeight * row + SLOT_MARGIN * (row - 1);
-
-		resize( slotsWidth, slotsHeight + TITLE_HEIGHT );
+		resize( windowWidth, windowHeight );
 
 		Belongings stuff = Dungeon.hero.belongings;
 		Bag[] bags = {
