@@ -95,6 +95,7 @@ public abstract class KindofMisc extends EquipableItem {
 								collect();
 							}
 							if (slot != -1) Dungeon.quickslot.setSlot(slot, KindofMisc.this);
+							updateQuickslot();
 						}
 
 						@Override
