@@ -191,12 +191,6 @@ public class WandOfWarding extends Wand {
 		}
 
 		@Override
-		protected boolean act() {
-			throwItem();
-			return super.act();
-		}
-
-		@Override
 		public String name() {
 			return Messages.get(this, "name_" + tier );
 		}

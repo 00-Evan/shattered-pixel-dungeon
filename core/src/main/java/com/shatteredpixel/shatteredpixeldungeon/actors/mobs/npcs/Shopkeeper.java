@@ -49,15 +49,13 @@ public class Shopkeeper extends NPC {
 	@Override
 	protected boolean act() {
 
-		throwItem();
-
 		if (Dungeon.level.heroFOV[pos]){
 			Notes.add(Notes.Landmark.SHOP);
 		}
 		
 		sprite.turnTo( pos, Dungeon.hero.pos );
 		spend( TICK );
-		return true;
+		return super.act();
 	}
 	
 	@Override

@@ -63,7 +63,6 @@ public class Blacksmith extends NPC {
 	
 	@Override
 	protected boolean act() {
-		throwItem();
 		if (Dungeon.level.heroFOV[pos] && !Quest.reforged){
 			Notes.add( Notes.Landmark.TROLL );
 		}

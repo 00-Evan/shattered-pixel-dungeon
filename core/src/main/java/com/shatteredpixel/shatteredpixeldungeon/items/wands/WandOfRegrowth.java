@@ -374,7 +374,6 @@ public class WandOfRegrowth extends Wand {
 		@Override
 		protected boolean act() {
 			super.act();
-			throwItem();
 
 			if (--HP <= 0){
 				destroy();

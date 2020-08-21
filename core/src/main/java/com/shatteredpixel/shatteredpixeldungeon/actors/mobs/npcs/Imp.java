@@ -66,8 +66,6 @@ public class Imp extends NPC {
 			seenBefore = false;
 		}
 		
-		throwItem();
-		
 		return super.act();
 	}
 	

@@ -60,7 +60,6 @@ public class Wandmaker extends NPC {
 	
 	@Override
 	protected boolean act() {
-		throwItem();
 		if (Dungeon.level.heroFOV[pos] && Quest.wand1 != null){
 			Notes.add( Notes.Landmark.WANDMAKER );
 		}
