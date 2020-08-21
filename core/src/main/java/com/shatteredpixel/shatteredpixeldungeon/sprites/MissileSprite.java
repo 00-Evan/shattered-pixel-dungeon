@@ -46,24 +46,30 @@ import java.util.HashMap;
 
 public class MissileSprite extends ItemSprite implements Tweener.Listener {
 
-	private static final float SPEED	= 240f;
+	private static final float SPEED	= 24f;
 	
 	private Callback callback;
 	
 	public void reset( int from, int to, Item item, Callback listener ) {
-		reset( DungeonTilemap.tileToWorld( from ), DungeonTilemap.tileToWorld( to ), item, listener);
-	}
-
-	public void reset( Visual from, Visual to, Item item, Callback listener ) {
-		reset(from.center(this), to.center(this), item, listener );
+		reset(Dungeon.level.solid[from] ? DungeonTilemap.raisedTileCenterToWorld(from) : DungeonTilemap.raisedTileCenterToWorld(from),
+				Dungeon.level.solid[to] ? DungeonTilemap.raisedTileCenterToWorld(to) : DungeonTilemap.raisedTileCenterToWorld(to),
+				item, listener);
 	}
 
 	public void reset( Visual from, int to, Item item, Callback listener ) {
-		reset(from.center(this), DungeonTilemap.tileToWorld( to ), item, listener );
+		reset(from.center(),
+				Dungeon.level.solid[to] ? DungeonTilemap.raisedTileCenterToWorld(to) : DungeonTilemap.raisedTileCenterToWorld(to),
+				item, listener );
 	}
-	
+
 	public void reset( int from, Visual to, Item item, Callback listener ) {
-		reset(DungeonTilemap.tileToWorld( from ), to.center(this), item, listener );
+		reset(Dungeon.level.solid[from] ? DungeonTilemap.raisedTileCenterToWorld(from) : DungeonTilemap.raisedTileCenterToWorld(from),
+				to.center(),
+				item, listener );
+	}
+
+	public void reset( Visual from, Visual to, Item item, Callback listener ) {
+		reset(from.center(), to.center(), item, listener );
 	}
 
 	public void reset( PointF from, PointF to, Item item, Callback listener) {
@@ -107,6 +113,12 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 	private void setup( PointF from, PointF to, Item item, Callback listener ){
 
 		originToCenter();
+
+		//adjust points so they work with the center of the missile sprite, not the corner
+		from.x -= width()/2;
+		to.x -= width()/2;
+		from.y -= height()/2;
+		to.y -= height()/2;
 
 		this.callback = listener;
 

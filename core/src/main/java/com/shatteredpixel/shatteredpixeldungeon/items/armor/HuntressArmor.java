@@ -70,7 +70,7 @@ public class HuntressArmor extends ClassArmor {
 				};
 				
 				((MissileSprite)curUser.sprite.parent.recycle( MissileSprite.class )).
-					reset( curUser.pos, mob.pos, proto, callback );
+					reset( curUser.sprite, mob.pos, proto, callback );
 				
 				targets.put( callback, mob );
 			}
