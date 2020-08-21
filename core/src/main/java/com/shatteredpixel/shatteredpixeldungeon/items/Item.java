@@ -373,7 +373,7 @@ public class Item implements Bundlable {
 		cursedKnown = true;
 		
 		if (Dungeon.hero != null && Dungeon.hero.isAlive()) {
-			Catalog.setSeen(getClass());
+			Catalog.setKnown(getClass());
 		}
 		
 		return this;
@@ -460,6 +460,10 @@ public class Item implements Bundlable {
 	
 	public static void updateQuickslot() {
 			QuickSlotButton.refresh();
+	}
+
+	public static class UnknownItem extends Item {
+		public String desc() {return "";}
 	}
 	
 	private static final String QUANTITY		= "quantity";

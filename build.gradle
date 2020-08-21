@@ -13,7 +13,7 @@ buildscript {
 allprojects {
 
     ext {
-        appName = 'Immmersive Pixel Dungeon'
+        appName = 'Immersive Pixel Dungeon'
         appPackageName = 'com.talegate.immersivepixeldungeon'
 
         appVersionCode = 423

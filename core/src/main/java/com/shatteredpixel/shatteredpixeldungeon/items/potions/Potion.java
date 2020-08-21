@@ -359,7 +359,7 @@ public class Potion extends Item {
 			}
 			
 			if (Dungeon.hero.isAlive()) {
-				Catalog.setSeen(getClass());
+				Catalog.setKnown(getClass());
 			}
 		}
 	}

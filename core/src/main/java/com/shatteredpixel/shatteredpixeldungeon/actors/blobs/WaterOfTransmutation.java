@@ -72,7 +72,7 @@ public class WaterOfTransmutation extends WellWater {
 		
 		//incase a never-seen item pops out
 		if (item != null&& item.isIdentified()){
-			Catalog.setSeen(item.getClass());
+			Catalog.setKnown(item.getClass());
 		}
 
 		return item;

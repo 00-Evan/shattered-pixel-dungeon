@@ -62,6 +62,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.spells.ReclaimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Recycle;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.WildEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.AlchemyScene;
@@ -99,21 +100,34 @@ public class QuickRecipe extends Component {
 		for (final Item in : inputs) {
 			anonymize(in);
 			ItemSlot curr;
-			curr = new ItemSlot(in) {
-				@Override
-				protected void onClick() {
-					ShatteredPixelDungeon.scene().addToFront(new WndInfoItem(in));
+			if (Catalog.isSeen(in.getClass())) {
+				curr = new ItemSlot(in) {
+					@Override
+					protected void onClick() {
+						ShatteredPixelDungeon.scene().addToFront(new WndInfoItem(in));
+					}
+				};
+
+				ArrayList<Item> similar = Dungeon.hero.belongings.getAllSimilar(in);
+				int quantity = 0;
+				for (Item sim : similar) {
+					//if we are looking for a specific item, it must be IDed
+					if (sim.getClass() != in.getClass() || sim.isIdentified())
+						quantity += sim.quantity();
 				}
-			};
-			
-			ArrayList<Item> similar = Dungeon.hero.belongings.getAllSimilar(in);
-			int quantity = 0;
-			for (Item sim : similar) {
-				//if we are looking for a specific item, it must be IDed
-				if (sim.getClass() != in.getClass() || sim.isIdentified()) quantity += sim.quantity();
-			}
-			
-			if (quantity < in.quantity()) {
+
+				if (quantity < in.quantity()) {
+					curr.sprite.alpha(0.3f);
+					hasInputs = false;
+				}
+			} else {
+				Item placeholder = new Item.UnknownItem();
+				curr = new ItemSlot(placeholder) {
+					@Override
+					protected void onClick() {
+						ShatteredPixelDungeon.scene().addToFront(new WndInfoItem(placeholder));
+					}
+				};
 				curr.sprite.alpha(0.3f);
 				hasInputs = false;
 			}

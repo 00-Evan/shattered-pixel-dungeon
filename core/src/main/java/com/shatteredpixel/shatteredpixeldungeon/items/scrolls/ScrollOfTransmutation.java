@@ -114,7 +114,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 				}
 			}
 			if (result.isIdentified()){
-				Catalog.setSeen(result.getClass());
+				Catalog.setKnown(result.getClass());
 			}
 			//TODO visuals
 			GLog.p( Messages.get(this, "morph") );

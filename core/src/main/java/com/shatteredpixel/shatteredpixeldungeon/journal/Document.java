@@ -162,15 +162,10 @@ public enum Document {
 		
 		for ( Document doc : values()){
 			if (docBundle.contains(doc.name())){
-				List<String> pages = Arrays.asList(docBundle.getStringArray(doc.name()));
+				String[] pages = docBundle.getStringArray(doc.name());
 				for (String page : pages){
 					if (doc.pages.containsKey(page)) {
 						doc.pages.put(page, true);
-					}
-					//pre-0.7.2 saves
-					else if (page.equals("Brews")){
-						doc.pages.put("Catalysts", true);
-						doc.pages.put("Brews_Elixirs", true);
 					}
 				}
 			}

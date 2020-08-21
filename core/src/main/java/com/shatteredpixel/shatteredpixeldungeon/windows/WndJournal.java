@@ -542,7 +542,7 @@ public class WndJournal extends WndTabbed {
 	private static class CatalogTab extends Component{
 		
 		private RedButton[] itemButtons;
-		private static final int NUM_BUTTONS = 7;
+		private static final int NUM_BUTTONS = 12;
 		
 		private static int currentItemIdx   = 0;
 		
@@ -554,8 +554,13 @@ public class WndJournal extends WndTabbed {
 		private static final int ARTIF_IDX  = 4;
 		private static final int POTION_IDX = 5;
 		private static final int SCROLL_IDX = 6;
+		private static final int SEED_IDX = 7;
+		private static final int STONE_IDX = 8;
+		private static final int THROWING_IDX = 9;
+		private static final int SPECIAL_IDX = 10;
+		private static final int MISC_IDX = 11;
 		
-		private static final int spriteIndexes[] = {1, 2, 4, 5, 6, 9, 11};
+		private static final int[] spriteIndexes = {1, 2, 4, 5, 6, 9, 11, 10, 12, 3, 15, 8};
 		
 		private ScrollPane list;
 		
@@ -595,7 +600,7 @@ public class WndJournal extends WndTabbed {
 		protected void layout() {
 			super.layout();
 			
-			int perRow = NUM_BUTTONS;
+			int perRow = NUM_BUTTONS / 2;
 			float buttonWidth = width()/perRow;
 			
 			for (int i = 0; i < NUM_BUTTONS; i++) {
@@ -626,29 +631,66 @@ public class WndJournal extends WndTabbed {
 			
 			ArrayList<Class<? extends Item>> itemClasses;
 			final HashMap<Class<?  extends Item>, Boolean> known = new HashMap<>();
-			if (currentItemIdx == WEAPON_IDX) {
-				itemClasses = new ArrayList<>(Catalog.WEAPONS.items());
-				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
-			} else if (currentItemIdx == ARMOR_IDX){
-				itemClasses = new ArrayList<>(Catalog.ARMOR.items());
-				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
-			} else if (currentItemIdx == WAND_IDX){
-				itemClasses = new ArrayList<>(Catalog.WANDS.items());
-				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
-			} else if (currentItemIdx == RING_IDX){
-				itemClasses = new ArrayList<>(Catalog.RINGS.items());
-				for (Class<? extends Item> cls : itemClasses) known.put(cls, Ring.getKnown().contains(cls));
-			} else if (currentItemIdx == ARTIF_IDX){
-				itemClasses = new ArrayList<>(Catalog.ARTIFACTS.items());
-				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
-			} else if (currentItemIdx == POTION_IDX){
-				itemClasses = new ArrayList<>(Catalog.POTIONS.items());
-				for (Class<? extends Item> cls : itemClasses) known.put(cls, Potion.getKnown().contains(cls));
-			} else if (currentItemIdx == SCROLL_IDX) {
-				itemClasses = new ArrayList<>(Catalog.SCROLLS.items());
-				for (Class<? extends Item> cls : itemClasses) known.put(cls, Scroll.getKnown().contains(cls));
-			} else {
-				itemClasses = new ArrayList<>();
+			switch (currentItemIdx) {
+				case WEAPON_IDX:
+					itemClasses = new ArrayList<>(Catalog.WEAPONS.items());
+					for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
+					break;
+				case ARMOR_IDX:
+					itemClasses = new ArrayList<>(Catalog.ARMOR.items());
+					for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
+					break;
+				case WAND_IDX:
+					itemClasses = new ArrayList<>(Catalog.WANDS.items());
+					for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
+					break;
+				case RING_IDX:
+					itemClasses = new ArrayList<>(Catalog.RINGS.items());
+					for (Class<? extends Item> cls : itemClasses)
+						known.put(cls, Ring.getKnown().contains(cls));
+					break;
+				case ARTIF_IDX:
+					itemClasses = new ArrayList<>(Catalog.ARTIFACTS.items());
+					for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
+					break;
+				case POTION_IDX:
+					itemClasses = new ArrayList<>(Catalog.POTIONS.items());
+					for (Class<? extends Item> cls : itemClasses)
+						known.put(cls, Potion.getKnown().contains(cls));
+					break;
+				case SCROLL_IDX:
+					itemClasses = new ArrayList<>(Catalog.SCROLLS.items());
+					for (Class<? extends Item> cls : itemClasses)
+						known.put(cls, Scroll.getKnown().contains(cls));
+					break;
+				case SEED_IDX:
+					itemClasses = new ArrayList<>(Catalog.SEEDS.items());
+					for (Class<? extends Item> cls : itemClasses)
+						known.put(cls, true);
+					break;
+				case STONE_IDX:
+					itemClasses = new ArrayList<>(Catalog.STONES.items());
+					for (Class<? extends Item> cls : itemClasses)
+						known.put(cls, true);
+					break;
+				case THROWING_IDX:
+					itemClasses = new ArrayList<>(Catalog.THROWING.items());
+					for (Class<? extends Item> cls : itemClasses)
+						known.put(cls, true);
+					break;
+				case SPECIAL_IDX:
+					itemClasses = new ArrayList<>(Catalog.SPECIAL.items());
+					for (Class<? extends Item> cls : itemClasses)
+						known.put(cls, true);
+					break;
+				case MISC_IDX:
+					itemClasses = new ArrayList<>(Catalog.MISC.items());
+					for (Class<? extends Item> cls : itemClasses)
+						known.put(cls, true);
+					break;
+				default:
+					itemClasses = new ArrayList<>();
+					break;
 			}
 			
 			Collections.sort(itemClasses, new Comparator<Class<? extends Item>>() {
