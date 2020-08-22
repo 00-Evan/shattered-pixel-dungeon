@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Identification;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
@@ -55,11 +54,7 @@ public class ScrollOfDivination extends ExoticScroll {
 		
 		curUser.sprite.parent.add( new Identification( curUser.sprite.center().offset( 0, -16 ) ) );
 		
-		readAnimation();
-		setKnown();
-		
 		Sample.INSTANCE.play( Assets.Sounds.READ );
-		Invisibility.dispel();
 		
 		HashSet<Class<? extends Potion>> potions = Potion.getUnknown();
 		HashSet<Class<? extends Scroll>> scrolls = Scroll.getUnknown();
@@ -122,6 +117,9 @@ public class ScrollOfDivination extends ExoticScroll {
 		}
 		
 		GameScene.show(new WndDivination( IDed ));
+
+		readAnimation();
+		setKnown();
 	}
 	
 	private class WndDivination extends Window {

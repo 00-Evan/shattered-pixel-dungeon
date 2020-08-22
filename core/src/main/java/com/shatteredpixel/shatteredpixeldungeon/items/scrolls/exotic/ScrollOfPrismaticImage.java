@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PrismaticGuard;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.PrismaticImage;
@@ -57,7 +56,6 @@ public class ScrollOfPrismaticImage extends ExoticScroll {
 		setKnown();
 		
 		Sample.INSTANCE.play( Assets.Sounds.READ );
-		Invisibility.dispel();
 	
 		readAnimation();
 	}

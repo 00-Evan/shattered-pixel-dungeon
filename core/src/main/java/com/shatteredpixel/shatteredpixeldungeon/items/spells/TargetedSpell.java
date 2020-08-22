@@ -82,12 +82,12 @@ public abstract class TargetedSpell extends Spell {
 					QuickSlotButton.target(Actor.findChar(cell));
 				
 				curUser.busy();
-				Invisibility.dispel();
 				
 				curSpell.fx(shot, new Callback() {
 					public void call() {
 						curSpell.affectTarget(shot, curUser);
 						curSpell.detach( curUser.belongings.backpack );
+						Invisibility.dispel();
 						curSpell.updateQuickslot();
 						curUser.spendAndNext( 1f );
 					}

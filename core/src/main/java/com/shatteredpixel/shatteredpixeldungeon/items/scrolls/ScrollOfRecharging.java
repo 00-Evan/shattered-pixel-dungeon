@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EnergyParticle;
@@ -47,7 +46,6 @@ public class ScrollOfRecharging extends Scroll {
 
 		Sample.INSTANCE.play( Assets.Sounds.READ );
 		Sample.INSTANCE.play( Assets.Sounds.CHARGEUP );
-		Invisibility.dispel();
 
 		GLog.i( Messages.get(this, "surge") );
 		SpellSprite.show( curUser, SpellSprite.CHARGE );

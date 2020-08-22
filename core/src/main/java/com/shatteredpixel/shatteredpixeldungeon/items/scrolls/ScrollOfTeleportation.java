@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
@@ -58,7 +57,6 @@ public class ScrollOfTeleportation extends Scroll {
 	public void doRead() {
 
 		Sample.INSTANCE.play( Assets.Sounds.READ );
-		Invisibility.dispel();
 		
 		teleportPreferringUnseen( curUser );
 		setKnown();

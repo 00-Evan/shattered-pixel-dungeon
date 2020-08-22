@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -44,7 +43,6 @@ public class ScrollOfLullaby extends Scroll {
 		
 		curUser.sprite.centerEmitter().start( Speck.factory( Speck.NOTE ), 0.3f, 5 );
 		Sample.INSTANCE.play( Assets.Sounds.LULLABY );
-		Invisibility.dispel();
 
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 			if (Dungeon.level.heroFOV[mob.pos]) {
@@ -58,7 +56,6 @@ public class ScrollOfLullaby extends Scroll {
 		GLog.i( Messages.get(this, "sooth") );
 
 		setKnown();
-
 		readAnimation();
 	}
 	

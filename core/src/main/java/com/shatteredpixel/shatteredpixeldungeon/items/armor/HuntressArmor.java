@@ -47,7 +47,6 @@ public class HuntressArmor extends ClassArmor {
 	@Override
 	public void doSpecial() {
 
-		Invisibility.dispel();
 		charge -= 35;
 		updateQuickslot();
 
@@ -64,6 +63,7 @@ public class HuntressArmor extends ClassArmor {
 						curUser.attack( targets.get( this ) );
 						targets.remove( this );
 						if (targets.isEmpty()) {
+							Invisibility.dispel();
 							curUser.spendAndNext( curUser.attackDelay() );
 						}
 					}
@@ -80,7 +80,7 @@ public class HuntressArmor extends ClassArmor {
 			GLog.w( Messages.get(this, "no_enemies") );
 			return;
 		}
-		
+
 		curUser.sprite.zap( curUser.pos );
 		curUser.busy();
 	}

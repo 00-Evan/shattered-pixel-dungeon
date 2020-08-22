@@ -44,7 +44,6 @@ public class MageArmor extends ClassArmor {
 	@Override
 	public void doSpecial() {
 
-		Invisibility.dispel();
 		charge -= 35;
 		updateQuickslot();
 
@@ -59,6 +58,7 @@ public class MageArmor extends ClassArmor {
 		
 		curUser.spend( Actor.TICK );
 		curUser.sprite.operate( curUser.pos );
+		Invisibility.dispel();
 		curUser.busy();
 		
 		curUser.sprite.emitter().start( ElmoParticle.FACTORY, 0.025f, 20 );

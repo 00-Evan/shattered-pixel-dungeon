@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -55,7 +54,6 @@ public class ScrollOfMirrorImage extends Scroll {
 		}
 		
 		Sample.INSTANCE.play( Assets.Sounds.READ );
-		Invisibility.dispel();
 		
 		readAnimation();
 	}
@@ -68,7 +66,6 @@ public class ScrollOfMirrorImage extends Scroll {
 		setKnown();
 		
 		Sample.INSTANCE.play( Assets.Sounds.READ );
-		Invisibility.dispel();
 	
 		readAnimation();
 	}

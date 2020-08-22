@@ -65,8 +65,6 @@ public class WarriorArmor extends ClassArmor {
 				if (Actor.findChar( cell ) != null && cell != curUser.pos)
 					cell = route.path.get(route.dist-1);
 
-
-				Invisibility.dispel();
 				charge -= 35;
 				updateQuickslot();
 
@@ -90,6 +88,7 @@ public class WarriorArmor extends ClassArmor {
 						CellEmitter.center(dest).burst(Speck.factory(Speck.DUST), 10);
 						Camera.main.shake(2, 0.5f);
 
+						Invisibility.dispel();
 						curUser.spendAndNext(LEAP_TIME);
 					}
 				});

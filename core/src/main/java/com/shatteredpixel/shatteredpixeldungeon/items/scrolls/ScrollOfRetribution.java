@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -48,7 +47,6 @@ public class ScrollOfRetribution extends Scroll {
 		float power = Math.min( 4f, 4.45f*hpPercent);
 		
 		Sample.INSTANCE.play( Assets.Sounds.BLAST );
-		Invisibility.dispel();
 		
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 			if (Dungeon.level.heroFOV[mob.pos]) {
@@ -75,7 +73,6 @@ public class ScrollOfRetribution extends Scroll {
 		GameScene.flash( 0xFFFFFF );
 		
 		Sample.INSTANCE.play( Assets.Sounds.BLAST );
-		Invisibility.dispel();
 		
 		//scales from 3x to 5x power, maxing at ~20% HP
 		float hpPercent = (curUser.HT - curUser.HP)/(float)(curUser.HT);

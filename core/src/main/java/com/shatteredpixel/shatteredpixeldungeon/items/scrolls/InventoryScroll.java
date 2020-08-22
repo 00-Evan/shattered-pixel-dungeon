@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -86,7 +85,6 @@ public abstract class InventoryScroll extends Scroll {
 				((InventoryScroll)curItem).readAnimation();
 				
 				Sample.INSTANCE.play( Assets.Sounds.READ );
-				Invisibility.dispel();
 				
 			} else if (identifiedByUse && !((Scroll)curItem).anonymous) {
 				

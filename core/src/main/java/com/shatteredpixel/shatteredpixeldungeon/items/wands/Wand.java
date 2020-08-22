@@ -335,6 +335,8 @@ public abstract class Wand extends Item {
 		if (buff != null && buff.level() > super.buffedLvl()){
 			buff.detach();
 		}
+
+		Invisibility.dispel();
 		
 		if (curUser.heroClass == HeroClass.MAGE) levelKnown = true;
 		updateQuickslot();
@@ -408,11 +410,6 @@ public abstract class Wand extends Item {
 		usesLeftToID = bundle.getInt( USES_LEFT_TO_ID );
 		availableUsesToID = bundle.getInt( AVAILABLE_USES );
 		
-		//pre-0.7.2 saves
-		if (bundle.contains( "unfamiliarity" )){
-			usesLeftToID = Math.min(10, bundle.getInt( "unfamiliarity" ));
-			availableUsesToID = USES_TO_ID/2f;
-		}
 		curCharges = bundle.getInt( CUR_CHARGES );
 		curChargeKnown = bundle.getBoolean( CUR_CHARGE_KNOWN );
 		partialCharge = bundle.getFloat( PARTIALCHARGE );
@@ -465,7 +462,6 @@ public abstract class Wand extends Item {
 				if (curWand.tryToZap(curUser, target)) {
 					
 					curUser.busy();
-					Invisibility.dispel();
 					
 					if (curWand.cursed){
 						if (!curWand.cursedKnown){

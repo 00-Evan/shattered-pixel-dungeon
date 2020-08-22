@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -46,7 +45,6 @@ public class ScrollOfTerror extends Scroll {
 		
 		new Flare( 5, 32 ).color( 0xFF0000, true ).show( curUser.sprite, 2f );
 		Sample.INSTANCE.play( Assets.Sounds.READ );
-		Invisibility.dispel();
 		
 		int count = 0;
 		Mob affected = null;
