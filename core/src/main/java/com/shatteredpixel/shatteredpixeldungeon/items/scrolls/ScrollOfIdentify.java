@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Identification;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -29,10 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
-import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Random;
-
-import java.util.ArrayList;
 
 public class ScrollOfIdentify extends InventoryScroll {
 
@@ -41,24 +36,6 @@ public class ScrollOfIdentify extends InventoryScroll {
 		mode = WndBag.Mode.UNIDENTIFED;
 
 		bones = true;
-	}
-	
-	@Override
-	public void empoweredRead() {
-		ArrayList<Item> unIDed = new ArrayList<>();
-		
-		for( Item i : curUser.belongings){
-			if (!i.isIdentified()){
-				unIDed.add(i);
-			}
-		}
-		
-		if (unIDed.size() > 1) {
-			Random.element(unIDed).identify();
-			Sample.INSTANCE.play( Assets.Sounds.TELEPORT );
-		}
-		
-		doRead();
 	}
 	
 	@Override

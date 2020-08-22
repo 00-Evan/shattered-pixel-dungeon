@@ -33,9 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -62,32 +60,6 @@ public class ScrollOfTeleportation extends Scroll {
 		setKnown();
 
 		readAnimation();
-	}
-	
-	@Override
-	public void empoweredRead() {
-		
-		if (Dungeon.bossLevel()){
-			GLog.w( Messages.get(this, "no_tele") );
-			return;
-		}
-		
-		GameScene.selectCell(new CellSelector.Listener() {
-			@Override
-			public void onSelect(Integer target) {
-				if (target != null) {
-					//time isn't spent
-					((HeroSprite)curUser.sprite).read();
-					teleportToLocation(curUser, target);
-					
-				}
-			}
-			
-			@Override
-			public String prompt() {
-				return Messages.get(ScrollOfTeleportation.class, "prompt");
-			}
-		});
 	}
 	
 	public static void teleportToLocation(Hero hero, int pos){

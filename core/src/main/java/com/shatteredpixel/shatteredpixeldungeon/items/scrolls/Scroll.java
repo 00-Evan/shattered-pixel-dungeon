@@ -190,9 +190,6 @@ public abstract class Scroll extends Item {
 	}
 	
 	public abstract void doRead();
-	
-	//currently unused. Used to be used for unstable spellbook prior to 0.7.0
-	public void empoweredRead(){}
 
 	protected void readAnimation() {
 		curUser.spend( TIME_TO_READ );

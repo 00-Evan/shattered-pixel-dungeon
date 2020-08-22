@@ -268,11 +268,6 @@ public class ScrollOfTransmutation extends InventoryScroll {
 	}
 	
 	@Override
-	public void empoweredRead() {
-		//does nothing, this shouldn't happen
-	}
-	
-	@Override
 	public int value() {
 		return isKnown() ? 50 * quantity : super.value();
 	}

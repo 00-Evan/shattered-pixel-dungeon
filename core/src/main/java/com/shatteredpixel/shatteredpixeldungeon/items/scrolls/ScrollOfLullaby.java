@@ -60,17 +60,6 @@ public class ScrollOfLullaby extends Scroll {
 	}
 	
 	@Override
-	public void empoweredRead() {
-		doRead();
-		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-			if (Dungeon.level.heroFOV[mob.pos]) {
-				Buff drowsy = mob.buff(Drowsy.class);
-				if (drowsy != null) drowsy.act();
-			}
-		}
-	}
-	
-	@Override
 	public int value() {
 		return isKnown() ? 40 * quantity : super.value();
 	}

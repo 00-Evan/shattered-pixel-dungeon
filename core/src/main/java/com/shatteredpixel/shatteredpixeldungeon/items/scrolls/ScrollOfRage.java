@@ -59,22 +59,6 @@ public class ScrollOfRage extends Scroll {
 	}
 	
 	@Override
-	public void empoweredRead() {
-		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-			if (Dungeon.level.heroFOV[mob.pos]) {
-				Buff.prolong(mob, Amok.class, 5f);
-			}
-		}
-		
-		setKnown();
-		
-		curUser.sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
-		Sample.INSTANCE.play( Assets.Sounds.READ );
-		
-		readAnimation();
-	}
-	
-	@Override
 	public int value() {
 		return isKnown() ? 40 * quantity : super.value();
 	}

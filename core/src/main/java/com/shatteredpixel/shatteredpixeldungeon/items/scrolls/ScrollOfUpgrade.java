@@ -123,11 +123,6 @@ public class ScrollOfUpgrade extends InventoryScroll {
 	}
 	
 	@Override
-	public void empoweredRead() {
-		//does nothing for now, this should never happen.
-	}
-	
-	@Override
 	public int value() {
 		return isKnown() ? 50 * quantity : super.value();
 	}

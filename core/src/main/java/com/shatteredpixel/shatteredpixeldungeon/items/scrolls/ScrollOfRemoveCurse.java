@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -36,24 +35,12 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
-import com.watabou.noosa.audio.Sample;
 
 public class ScrollOfRemoveCurse extends InventoryScroll {
 
 	{
 		icon = ItemSpriteSheet.Icons.SCROLL_REMCURSE;
 		mode = WndBag.Mode.UNCURSABLE;
-	}
-	
-	@Override
-	public void empoweredRead() {
-		for (Item item : curUser.belongings){
-			if (item.cursed){
-				item.cursedKnown = true;
-			}
-		}
-		Sample.INSTANCE.play( Assets.Sounds.READ );
-		doRead();
 	}
 	
 	@Override

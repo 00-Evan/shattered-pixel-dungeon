@@ -111,11 +111,6 @@ public abstract class ExoticScroll extends Scroll {
 	}
 	
 	@Override
-	public void empoweredRead() {
-	
-	}
-	
-	@Override
 	//20 gold more than its none-exotic equivalent
 	public int value() {
 		return (Reflection.newInstance(exoToReg.get(getClass())).value() + 20) * quantity;

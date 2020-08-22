@@ -58,18 +58,6 @@ public class ScrollOfMirrorImage extends Scroll {
 		readAnimation();
 	}
 	
-	@Override
-	public void empoweredRead() {
-		//spawns 2 images right away, delays 3 of them, 5 total.
-		new DelayedImageSpawner(5 - spawnImages(curUser, 2), 1, 2).attachTo(curUser);
-		
-		setKnown();
-		
-		Sample.INSTANCE.play( Assets.Sounds.READ );
-	
-		readAnimation();
-	}
-	
 	//returns the number of images spawned
 	public static int spawnImages( Hero hero, int nImages ){
 		
