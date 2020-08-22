@@ -30,6 +30,7 @@ import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public abstract class SpecialRoom extends Room {
 	
@@ -167,12 +168,7 @@ public abstract class SpecialRoom extends Room {
 	public static void restoreRoomsFromBundle( Bundle bundle ) {
 		runSpecials.clear();
 		if (bundle.contains( ROOMS )) {
-			for (Class<? extends Room> type : bundle.getClassArray(ROOMS)) {
-				//pre-0.7.0 saves
-				if (type != null && type != LaboratoryRoom.class) {
-					runSpecials.add(type);
-				}
-			}
+			Collections.addAll(runSpecials, bundle.getClassArray(ROOMS));
 		} else {
 			initForRun();
 			ShatteredPixelDungeon.reportException(new Exception("specials array didn't exist!"));

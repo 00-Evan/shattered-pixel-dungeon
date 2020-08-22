@@ -49,12 +49,7 @@ public class Ooze extends Buff {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle(bundle);
-		//pre-0.7.0
-		if (bundle.contains( LEFT )) {
-			left = bundle.getFloat(LEFT);
-		} else {
-			left = 20;
-		}
+		left = bundle.getFloat(LEFT);
 	}
 	
 	@Override

@@ -41,19 +41,17 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesi
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CavesLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.DeadEndLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.NewHallsBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.HallsLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.LastLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.LastShopLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.NewCavesBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.NewCityBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.NewHallsBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.NewPrisonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerBossLevel;
@@ -388,35 +386,6 @@ public class Dungeon {
 		
 		hero.curAction = hero.lastAction = null;
 		
-		//pre-0.7.1 saves. Adjusting for spirit bows in weapon slot or with upgrades.
-		SpiritBow bow;
-		if (hero.belongings.weapon instanceof SpiritBow){
-			bow = (SpiritBow)hero.belongings.weapon;
-			hero.belongings.weapon = null;
-			
-			if (!bow.collect()){
-				level.drop(bow, hero.pos);
-			}
-		} else {
-			bow = hero.belongings.getItem(SpiritBow.class);
-		}
-		
-		//pre-0.7.1 saves. refunding upgrades previously spend on a boomerang
-		if (bow != null && bow.spentUpgrades() > 0){
-			ScrollOfUpgrade refund = new ScrollOfUpgrade();
-			refund.quantity(bow.spentUpgrades());
-			bow.level(0);
-			
-			//to prevent exploits, some SoU are lost in the conversion of a boomerang higher than +1
-			if (refund.quantity() > 1){
-				refund.quantity(1 + (int)Math.floor((refund.quantity()-1)*0.8f));
-			}
-			
-			if (!refund.collect()){
-				level.drop(refund, hero.pos);
-			}
-		}
-		
 		observe();
 		try {
 			saveAll();
@@ -643,17 +612,6 @@ public class Dungeon {
 		
 		hero = null;
 		hero = (Hero)bundle.get( HERO );
-
-		//pre-0.7.0 saves, back when alchemy had a window which could store items
-		if (bundle.contains("alchemy_inputs")){
-			for (Bundlable item : bundle.getCollection("alchemy_inputs")){
-				
-				//try to add normally, force-add otherwise.
-				if (!((Item)item).collect(hero.belongings.backpack)){
-					hero.belongings.backpack.items.add((Item)item);
-				}
-			}
-		}
 		
 		gold = bundle.getInt( GOLD );
 		depth = bundle.getInt( DEPTH );

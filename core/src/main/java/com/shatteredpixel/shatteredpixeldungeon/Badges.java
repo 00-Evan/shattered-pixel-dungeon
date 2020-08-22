@@ -36,7 +36,6 @@ import com.watabou.utils.FileUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -176,15 +175,12 @@ public class Badges {
 	
 	private static final HashSet<String> removedBadges = new HashSet<>();
 	static{
-		//removed in 0.6.5
-		removedBadges.addAll(Arrays.asList("RARE_ALBINO", "RARE_BANDIT", "RARE_SHIELDED",
-				"RARE_SENIOR", "RARE_ACIDIC", "RARE", "TUTORIAL_WARRIOR", "TUTORIAL_MAGE"));
+		//no recently removed badges
 	}
 
 	private static final HashMap<String, String> renamedBadges = new HashMap<>();
 	static{
-		//0.6.5
-		renamedBadges.put("CHAMPION", "CHAMPION_1");
+		//no recently renamed badges
 	}
 
 	public static HashSet<Badge> restore( Bundle bundle ) {

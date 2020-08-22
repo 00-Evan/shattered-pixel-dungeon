@@ -30,14 +30,9 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PlatformSupport;
 
 public class ShatteredPixelDungeon extends Game {
-	
+
 	//variable constants for specific older versions of shattered, used for data conversion
-	//versions older than v0.6.5c are no longer supported, and data from them is ignored
-	public static final int v0_6_5c = 264;
-	
-	public static final int v0_7_0c = 311;
-	public static final int v0_7_1d = 323;
-	public static final int v0_7_2d = 340;
+	//versions older than v0.7.3b are no longer supported, and data from them is ignored
 	public static final int v0_7_3b = 349;
 	public static final int v0_7_4c = 362;
 	public static final int v0_7_5e = 382;
@@ -48,62 +43,7 @@ public class ShatteredPixelDungeon extends Game {
 	
 	public ShatteredPixelDungeon( PlatformSupport platform ) {
 		super( sceneClass == null ? WelcomeScene.class : sceneClass, platform );
-		
-		//v0.7.0
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.Bomb" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMight.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicalInfusion.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion" );
-		
-		//v0.7.1
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang" );
-		
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gloves.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knuckles" );
-		
-		//v0.7.2
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDisarming.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDetectCurse" );
-		
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Elastic.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Elastic" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Elastic.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Dazzling" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Elastic.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Eldritch" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Stunning" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Chilling.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Venomous" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Kinetic.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vorpal" );
-		
-		//v0.7.3
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Kinetic.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Precise" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Kinetic.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Swift" );
-		
+
 		//v0.7.5
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.sewerboss.SewerBossEntranceRoom.class,

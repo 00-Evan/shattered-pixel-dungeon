@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.watabou.utils.Bundle;
 
 public class Brimstone extends Armor.Glyph {
 
@@ -71,14 +70,6 @@ public class Brimstone extends Armor.Glyph {
 			return true;
 		}
 
-		@Override
-		public void restoreFromBundle(Bundle bundle) {
-			super.restoreFromBundle(bundle);
-			//pre-0.7.0
-			if (bundle.contains("added")){
-				setShield(bundle.getInt("added"));
-			}
-		}
 	}
 
 }

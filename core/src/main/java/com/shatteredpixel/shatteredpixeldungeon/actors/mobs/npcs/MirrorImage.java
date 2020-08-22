@@ -175,11 +175,6 @@ public class MirrorImage extends NPC {
 	public CharSprite sprite() {
 		CharSprite s = super.sprite();
 		
-		//pre-0.7.0 saves
-		if (heroID == 0){
-			heroID = Dungeon.hero.id();
-		}
-		
 		hero = (Hero)Actor.findById(heroID);
 		if (hero != null) {
 			armTier = hero.tier();

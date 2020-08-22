@@ -60,17 +60,9 @@ public class Berserk extends Buff {
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
-		//pre-0.6.5 saves
-		if (bundle.contains("exhaustion")){
-			state = State.RECOVERING;
-		} else {
-			state = bundle.getEnum(STATE, State.class);
-		}
-		if (bundle.contains(POWER)){
-			power = bundle.getFloat(POWER);
-		} else {
-			power = 1f;
-		}
+
+		state = bundle.getEnum(STATE, State.class);
+		power = bundle.getFloat(POWER);
 		if (state == State.RECOVERING) levelRecovery = bundle.getFloat(LEVEL_RECOVERY);
 	}
 

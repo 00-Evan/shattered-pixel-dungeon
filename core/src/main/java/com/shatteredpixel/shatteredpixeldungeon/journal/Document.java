@@ -167,11 +167,6 @@ public enum Document {
 					if (doc.pages.containsKey(page)) {
 						doc.pages.put(page, true);
 					}
-					//pre-0.7.2 saves
-					else if (page.equals("Brews")){
-						doc.pages.put("Catalysts", true);
-						doc.pages.put("Brews_Elixirs", true);
-					}
 				}
 			}
 		}

@@ -91,11 +91,6 @@ public class AdrenalineSurge extends Buff {
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 		boost = bundle.getInt( BOOST );
-		//pre-0.7.1
-		if (bundle.contains(INTERVAL)) {
-			interval = bundle.getFloat(INTERVAL);
-		} else {
-			interval = 800f;
-		}
+		interval = bundle.getFloat(INTERVAL);
 	}
 }
