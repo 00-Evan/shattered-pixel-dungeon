@@ -266,7 +266,8 @@ public class MagesStaff extends MeleeWeapon {
 		if (wand == null) {
 			return super.name();
 		} else {
-			return Messages.get(wand, "staff_name");
+			String name = Messages.get(wand, "staff_name");
+			return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.name( name ) : name;
 		}
 	}
 
