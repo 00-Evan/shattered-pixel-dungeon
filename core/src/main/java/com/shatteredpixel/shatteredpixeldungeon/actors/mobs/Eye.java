@@ -65,7 +65,7 @@ public class Eye extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange(20, 30);
+		return Random.NormalIntRange(0, 0);
 	}
 
 	@Override
@@ -133,6 +133,7 @@ public class Eye extends Mob {
 				sprite.zap( beam.collisionPos );
 				return false;
 			} else {
+				sprite.idle();
 				deathGaze();
 				return true;
 			}
@@ -174,7 +175,7 @@ public class Eye extends Mob {
 			}
 
 			if (hit( this, ch, true )) {
-				ch.damage( Random.NormalIntRange( 30, 50 ), new DeathGaze() );
+				ch.damage( Random.NormalIntRange( 0, 0 ), new DeathGaze() );
 
 				if (Dungeon.level.heroFOV[pos]) {
 					ch.sprite.flash();
