@@ -234,15 +234,9 @@ public abstract class ElementalSprite extends MobSprite {
 	}
 	
 	public static class Chaos extends ElementalSprite {
-		
-		//no bolt, overrides zap instead
-		@Override
-		public void zap( int cell ) {
-			turnTo( ch.pos , cell );
-			play( zap );
-			
-			((Elemental)ch).onZapComplete();
-			Sample.INSTANCE.play( Assets.Sounds.ZAP );
+
+		{
+			boltType = MagicMissile.RAINBOW;
 		}
 		
 		@Override
