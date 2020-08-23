@@ -69,18 +69,7 @@ public class Bag extends Item implements Iterable<Item> {
 	@Override
 	public boolean collect( Bag container ) {
 
-		for (Item item : container.items.toArray( new Item[0] )) {
-			if (canHold( item )) {
-				int slot = Dungeon.quickslot.getSlot(item);
-				item.detachAll(container);
-				if (!item.collect(this)) {
-					item.collect(container);
-				}
-				if (slot != -1) {
-					Dungeon.quickslot.setSlot(slot, item);
-				}
-			}
-		}
+		grabItems(container);
 
 		if (super.collect( container )) {
 			
@@ -100,6 +89,27 @@ public class Bag extends Item implements Iterable<Item> {
 		for (Item item : items)
 			Dungeon.quickslot.clearItem(item);
 		updateQuickslot();
+	}
+
+	public void grabItems(){
+		if (this != Dungeon.hero.belongings.backpack) {
+			grabItems(Dungeon.hero.belongings.backpack);
+		}
+	}
+
+	public void grabItems( Bag container ){
+		for (Item item : container.items.toArray( new Item[0] )) {
+			if (canHold( item )) {
+				int slot = Dungeon.quickslot.getSlot(item);
+				item.detachAll(container);
+				if (!item.collect(this)) {
+					item.collect(container);
+				}
+				if (slot != -1) {
+					Dungeon.quickslot.setSlot(slot, item);
+				}
+			}
+		}
 	}
 
 	@Override

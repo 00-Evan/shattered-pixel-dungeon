@@ -270,6 +270,7 @@ public class Item implements Bundlable {
 			if (item == this) {
 				container.items.remove(this);
 				item.onDetach();
+				container.grabItems(); //try to put more items into the bag as it now has free space
 				return this;
 			} else if (item instanceof Bag) {
 				Bag bag = (Bag)item;
