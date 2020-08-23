@@ -44,7 +44,8 @@ public class Emitter extends Group {
 	protected int quantity;
 	
 	public boolean on = false;
-	
+
+	private boolean started = false;
 	public boolean autoKill = true;
 	
 	protected int count;
@@ -87,7 +88,9 @@ public class Emitter extends Group {
 	}
 
 	public void start( Factory factory, float interval, int quantity ) {
-		
+
+		started = true;
+
 		this.factory = factory;
 		this.lightMode = factory.lightMode();
 		
@@ -113,13 +116,19 @@ public class Emitter extends Group {
 					break;
 				}
 			}
-		} else if (autoKill && countLiving() == 0) {
+		} else if (started && autoKill && countLiving() == 0) {
 			kill();
 		}
 		
 		super.update();
 	}
-	
+
+	@Override
+	public void revive() {
+		started = false;
+		super.revive();
+	}
+
 	protected void emit( int index ) {
 		if (target == null) {
 			factory.emit(
