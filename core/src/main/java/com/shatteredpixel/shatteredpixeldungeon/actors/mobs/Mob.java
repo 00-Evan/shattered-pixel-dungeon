@@ -771,7 +771,7 @@ public abstract class Mob extends Char {
 				state = HUNTING;
 				target = enemy.pos;
 
-				if (Dungeon.isChallenged( Challenges.SWARM_INTELLIGENCE )) {
+				if (alignment == Alignment.ENEMY && Dungeon.isChallenged( Challenges.SWARM_INTELLIGENCE )) {
 					for (Mob mob : Dungeon.level.mobs) {
 						if (Dungeon.level.distance(pos, mob.pos) <= 8 && mob.state != mob.HUNTING) {
 							mob.beckon( target );
@@ -817,7 +817,7 @@ public abstract class Mob extends Char {
 			state = HUNTING;
 			target = enemy.pos;
 			
-			if (Dungeon.isChallenged( Challenges.SWARM_INTELLIGENCE )) {
+			if (alignment == Alignment.ENEMY && Dungeon.isChallenged( Challenges.SWARM_INTELLIGENCE )) {
 				for (Mob mob : Dungeon.level.mobs) {
 					if (Dungeon.level.distance(pos, mob.pos) <= 8 && mob.state != mob.HUNTING) {
 						mob.beckon( target );
