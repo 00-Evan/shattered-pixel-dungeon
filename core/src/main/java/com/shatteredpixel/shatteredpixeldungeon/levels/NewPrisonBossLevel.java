@@ -195,6 +195,9 @@ public class NewPrisonBossLevel extends Level {
 		}
 	}
 
+	//area where items/chars are preserved when moving to the arena
+	private static final Rect pauseSafeArea = new Rect(9, 2, 12, 12);
+
 	private void setMapPause(){
 		setMapStart();
 
@@ -416,7 +419,7 @@ public class NewPrisonBossLevel extends Level {
 				
 				Dungeon.hero.interrupt();
 				
-				clearEntities( arena ); //clear anything not in the arena
+				clearEntities( pauseSafeArea );
 				
 				setMapArena();
 				cleanMapState();
