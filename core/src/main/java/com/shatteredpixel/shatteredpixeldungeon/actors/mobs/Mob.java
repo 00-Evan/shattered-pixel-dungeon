@@ -180,6 +180,10 @@ public abstract class Mob extends Char {
 			spend( TICK );
 			return true;
 		}
+
+		if (buff(Terror.class) != null){
+			state = FLEEING;
+		}
 		
 		enemy = chooseEnemy();
 		
@@ -332,8 +336,12 @@ public abstract class Mob extends Char {
 	public void remove( Buff buff ) {
 		super.remove( buff );
 		if (buff instanceof Terror) {
-			sprite.showStatus( CharSprite.NEGATIVE, Messages.get(this, "rage") );
-			state = HUNTING;
+			if (enemySeen) {
+				sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "rage"));
+				state = HUNTING;
+			} else {
+				state = WANDERING;
+			}
 		}
 	}
 	
@@ -729,7 +737,7 @@ public abstract class Mob extends Char {
 		
 		notice();
 		
-		if (state != HUNTING) {
+		if (state != HUNTING && state != FLEEING) {
 			state = WANDERING;
 		}
 		target = cell;
