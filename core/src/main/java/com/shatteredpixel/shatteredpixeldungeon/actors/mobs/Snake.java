@@ -60,7 +60,7 @@ public class Snake extends Mob {
 	public String defenseVerb() {
 		dodges++;
 		if (dodges >= 3 && !Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_1)){
-			GLog.w(Messages.get(this, "hint"));
+			GLog.h(Messages.get(this, "hint"));
 			dodges = 0;
 		}
 		return super.defenseVerb();
