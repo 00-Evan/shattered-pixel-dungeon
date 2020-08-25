@@ -233,6 +233,17 @@ public class DriedRose extends Artifact {
 	}
 	
 	@Override
+	public int value() {
+		if (weapon != null){
+			return -1;
+		}
+		if (armor != null){
+			return -1;
+		}
+		return super.value();
+	}
+
+	@Override
 	public String status() {
 		if (ghost == null && ghostID != 0){
 			try {
