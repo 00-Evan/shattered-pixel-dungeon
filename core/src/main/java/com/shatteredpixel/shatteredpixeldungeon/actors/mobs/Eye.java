@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
@@ -104,6 +103,7 @@ public class Eye extends Mob {
 	protected boolean act() {
 		if (beamCharged && state != HUNTING){
 			beamCharged = false;
+			sprite.idle();
 		}
 		if (beam == null && beamTarget != -1) {
 			beam = new Ballistica(pos, beamTarget, Ballistica.STOP_TERRAIN);
@@ -243,7 +243,7 @@ public class Eye extends Mob {
 	}
 	
 	{
-		immunities.add( Terror.class );
+		//immunities.add( Terror.class );
 	}
 
 	private class Hunting extends Mob.Hunting{

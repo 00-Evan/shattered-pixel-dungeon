@@ -71,7 +71,16 @@ public class Necromancer extends Mob {
 	
 	private NecroSkeleton mySkeleton;
 	private int storedSkeletonID = -1;
-	
+
+	@Override
+	protected boolean act() {
+		if (summoning && state != HUNTING){
+			summoning = false;
+			updateSpriteState();
+		}
+		return super.act();
+	}
+
 	@Override
 	public void updateSpriteState() {
 		super.updateSpriteState();
@@ -80,6 +89,9 @@ public class Necromancer extends Mob {
 			summoningEmitter = CellEmitter.get( summoningPos );
 			summoningEmitter.pour(Speck.factory(Speck.RATTLE), 0.2f);
 			sprite.zap( summoningPos );
+		} else if (!summoning && summoningEmitter != null){
+			summoningEmitter.on = false;
+			summoningEmitter = null;
 		}
 	}
 	
@@ -115,7 +127,7 @@ public class Necromancer extends Mob {
 		}
 		
 		if (summoningEmitter != null){
-			summoningEmitter.killAndErase();
+			summoningEmitter.on = false;
 			summoningEmitter = null;
 		}
 		
