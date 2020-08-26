@@ -27,8 +27,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
@@ -69,6 +71,8 @@ public class YogDzewa extends Mob {
 
 		//so that allies can attack it. States are never actually used.
 		state = HUNTING;
+
+		viewDistance = 12;
 
 		properties.add(Property.BOSS);
 		properties.add(Property.IMMOVABLE);
@@ -112,7 +116,19 @@ public class YogDzewa extends Mob {
 
 	@Override
 	protected boolean act() {
-		enemySeen = true;
+		//char logic
+		if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
+			fieldOfView = new boolean[Dungeon.level.length()];
+		}
+		Dungeon.level.updateFieldOfView( this, fieldOfView );
+
+		throwItems();
+
+		//mob logic
+		enemy = chooseEnemy();
+
+		enemySeen = enemy != null && enemy.isAlive() && fieldOfView[enemy.pos] && enemy.invisible <= 0;
+		//end of char/mob logic
 
 		if (phase == 0){
 			if (Dungeon.hero.viewDistance >= Dungeon.level.distance(pos, Dungeon.hero.pos)) {
@@ -416,6 +432,8 @@ public class YogDzewa extends Mob {
 		immunities.add( Charm.class );
 		immunities.add( Sleep.class );
 		immunities.add( Vertigo.class );
+		immunities.add( Frost.class );
+		immunities.add( Paralysis.class );
 	}
 
 	private static final String PHASE = "phase";

@@ -133,16 +133,20 @@ public abstract class Char extends Actor {
 
 		//throw any items that are on top of an immovable char
 		if (properties.contains(Property.IMMOVABLE)){
-			Heap heap = Dungeon.level.heaps.get( pos );
-			if (heap != null && heap.type == Heap.Type.HEAP) {
-				int n;
-				do {
-					n = pos + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
-				} while (!Dungeon.level.passable[n] && !Dungeon.level.avoid[n]);
-				Dungeon.level.drop( heap.pickUp(), n ).sprite.drop( pos );
-			}
+			throwItems();
 		}
 		return false;
+	}
+
+	protected void throwItems(){
+		Heap heap = Dungeon.level.heaps.get( pos );
+		if (heap != null && heap.type == Heap.Type.HEAP) {
+			int n;
+			do {
+				n = pos + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
+			} while (!Dungeon.level.passable[n] && !Dungeon.level.avoid[n]);
+			Dungeon.level.drop( heap.pickUp(), n ).sprite.drop( pos );
+		}
 	}
 
 	public String name(){
