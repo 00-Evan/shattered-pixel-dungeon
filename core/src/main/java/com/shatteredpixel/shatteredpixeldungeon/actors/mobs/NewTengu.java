@@ -265,19 +265,23 @@ public class NewTengu extends Mob {
 				
 			//otherwise, jump in a larger possible area, as the room is bigger
 			} else {
-				
+
+				int tries = 100;
 				do {
 					newPos = Random.Int(level.length());
-				} while (
-						level.solid[newPos] ||
+					tries--;
+				} while (  tries > 0 &&
+						(level.solid[newPos] ||
 								level.distance(newPos, enemy.pos) < 5 ||
 								level.distance(newPos, enemy.pos) > 7 ||
 								level.distance(newPos, Dungeon.hero.pos) < 5 ||
 								level.distance(newPos, Dungeon.hero.pos) > 7 ||
 								level.distance(newPos, pos) < 5 ||
 								Actor.findChar(newPos) != null ||
-								Dungeon.level.heaps.get(newPos) != null);
-				
+								Dungeon.level.heaps.get(newPos) != null));
+
+				if (tries <= 0) newPos = pos;
+
 				if (level.heroFOV[pos]) CellEmitter.get( pos ).burst( Speck.factory( Speck.WOOL ), 6 );
 				
 				sprite.move( pos, newPos );
