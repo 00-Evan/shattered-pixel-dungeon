@@ -594,7 +594,7 @@ public abstract class Mob extends Char {
 	}
 
 	public boolean surprisedBy( Char enemy ){
-		return enemy == Dungeon.hero && (enemy.invisible > 0 || (!enemySeen && state != PASSIVE));
+		return enemy == Dungeon.hero && (enemy.invisible > 0 || !enemySeen);
 	}
 
 	public void aggro( Char ch ) {
@@ -944,7 +944,7 @@ public abstract class Mob extends Char {
 
 		@Override
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
-			enemySeen = false;
+			enemySeen = enemyInFOV;
 			spend( TICK );
 			return true;
 		}
