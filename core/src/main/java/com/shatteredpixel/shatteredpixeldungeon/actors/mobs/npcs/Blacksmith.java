@@ -33,9 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DarkGold;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.BlacksmithRoom;
@@ -230,16 +228,16 @@ public class Blacksmith extends NPC {
 		if (first.isEquipped( Dungeon.hero )) {
 			((EquipableItem)first).doUnequip( Dungeon.hero, true );
 		}
-		if (first instanceof MissileWeapon && first.quantity() > 1){
-			first = first.split(1);
+
+		//preserves enchant/glyphs if present
+		if (first instanceof Weapon && ((Weapon) first).hasGoodEnchant()){
+			((Weapon) first).upgrade(true);
+		} else if (first instanceof Armor && ((Armor) first).hasGoodGlyph()){
+			((Armor) first).upgrade(true);
+		} else {
+			first.upgrade();
 		}
-		int level = first.level();
-		//adjust for curse infusion
-		if (first instanceof Weapon && ((Weapon) first).curseInfusionBonus) level--;
-		if (first instanceof Armor && ((Armor) first).curseInfusionBonus) level--;
-		if (first instanceof Wand && ((Wand) first).curseInfusionBonus) level--;
-		first.level(level+1); //prevents on-upgrade effects like enchant/glyph removal
-		if (first instanceof MissileWeapon && !Dungeon.hero.belongings.contains(first)) {
+		if (!Dungeon.hero.belongings.contains(first)) {
 			if (!first.collect()){
 				Dungeon.level.drop( first, Dungeon.hero.pos );
 			}
