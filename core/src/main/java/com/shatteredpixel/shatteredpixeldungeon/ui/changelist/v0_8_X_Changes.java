@@ -74,17 +74,46 @@ public class v0_8_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("v0.8.2b", false, null);
+		changes = new ChangeInfo("v0.8.2c", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by v0.8.2a):\n" +
-				"_-_ Uncommon crashes when descending to a new floor\n\n" +
-				"Fixed (existed prior to v0.8.2):\n" +
-				"_-_ Wraiths refusing to spawn over traps despite not being able to activate them"));
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_Balance Changes:_\n" +
+				"_-_ Bleed from gripping/flashing traps reduced, but they are also affected less by armor.\n" +
+				"_-_ All effects which cancel invisibility and time freeze now fully resolve before they cancel invis/freeze.\n" +
+				"_-_ Swarm intelligence no longer triggers from allies, and no longer affects magically slept enemies.\n" +
+				"_-_ Evil eyes are no longer immune to terror\n\n" +
+				"_Smaller Tweaks:_\n" +
+				"_-_ The dried rose can no longer be sold if it contains a weapon or armor\n" +
+				"_-_ Tweaked item visibility in furrowed grass\n" +
+				"_-_ Adjusted sizing for inventory and message windows\n" +
+				"_-_ Items now automatically get added to bags if room is made for them by dropping/using something else\n" +
+				"_-_ Shortened game log text from well of awareness\n" +
+				"_-_ Slightly tweaked the sprites of tipped vs. untipped darts\n" +
+				"_-_ Torches now play a burning sound when ignited"));
 
-		changes = new ChangeInfo("v0.8.2a", false, null);
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by v0.8.2):\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Back button on hero select not appearing when it should\n" +
+				"_-_ Enchanted Mage's Staff not showing its enchantment name\n\n" +
+				"Fixed (existed prior to v0.8.2):\n" +
+				"_-_ Sniper shot incorrectly capping at 2.5x damage instead of 3x\n" +
+				"_-_ Golden Lotus having twice at much HP as intended\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Lots of minor visual errors\n" +
+				"_-_ Particle effects rarely not appearing\n" +
+				"_-_ Visual errors with Goo's charge up particles\n" +
+				"_-_ DM-201s rarely tossing grenades though walls\n" +
+				"_-_ Various rare errors with blacksmith reforging\n" +
+				"_-_ Various minor errors with cursed wands and chaos elementals\n" +
+				"_-_ Terrored enemies not fleeing in some cases\n" +
+				"_-_ Various minor errors with the Tengu fight\n" +
+				"_-_ Acidic scorpios not always dropping potions of experience\n" +
+				"_-_ Some immovable enemies not knocking items away"));
+
+		changes = new ChangeInfo("v0.8.2a&b", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
@@ -106,7 +135,8 @@ public class v0_8_X_Changes {
 				"Fixed (existed prior to v0.8.2):\n" +
 				"_-_ Pickaxe not getting bloodied by killing bats in rare cases\n" +
 				"_-_ Dried rose ghost healing not respecting level lock limits\n" +
-				"_-_ Enemy respawn timer being reset by saving/loading the game"));
+				"_-_ Enemy respawn timer being reset by saving/loading the game\n" +
+				"_-_ Wraiths refusing to spawn over traps despite not being able to activate them"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
