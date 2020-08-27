@@ -60,7 +60,6 @@ import com.watabou.gltextures.TextureCache;
 import com.watabou.input.KeyBindings;
 import com.watabou.input.KeyEvent;
 import com.watabou.noosa.BitmapText;
-import com.watabou.noosa.Camera;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
@@ -152,12 +151,12 @@ public class WndBag extends WndTabbed {
 		int windowHeight = TITLE_HEIGHT + slotHeight * nRows + SLOT_MARGIN * (nRows - 1);
 
 		if (PixelScene.landscape()){
-			while (windowHeight + 20 > Camera.main.height){
+			while (windowHeight + 20 > PixelScene.uiCamera.height){
 				slotHeight--;
 				windowHeight -= nRows;
 			}
 		} else {
-			while (windowWidth > Camera.main.width){
+			while (windowWidth > PixelScene.uiCamera.width){
 				slotWidth--;
 				windowWidth -= nCols;
 			}
