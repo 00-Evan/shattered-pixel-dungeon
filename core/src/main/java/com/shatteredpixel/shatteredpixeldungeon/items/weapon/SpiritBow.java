@@ -169,7 +169,7 @@ public class SpiritBow extends Weapon {
 					//as distance increases so does damage, capping at 3x:
 					//1.20x|1.35x|1.52x|1.71x|1.92x|2.16x|2.43x|2.74x|3.00x
 					int distance = Dungeon.level.distance(owner.pos, targetPos) - 1;
-					float multiplier = Math.min(2.5f, 1.2f * (float)Math.pow(1.125f, distance));
+					float multiplier = Math.min(3f, 1.2f * (float)Math.pow(1.125f, distance));
 					damage = Math.round(damage * multiplier);
 					break;
 			}
