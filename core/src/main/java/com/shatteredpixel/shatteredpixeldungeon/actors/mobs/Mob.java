@@ -781,7 +781,9 @@ public abstract class Mob extends Char {
 
 				if (alignment == Alignment.ENEMY && Dungeon.isChallenged( Challenges.SWARM_INTELLIGENCE )) {
 					for (Mob mob : Dungeon.level.mobs) {
-						if (Dungeon.level.distance(pos, mob.pos) <= 8 && mob.state != mob.HUNTING) {
+						if (mob.paralysed <= 0
+								&& Dungeon.level.distance(pos, mob.pos) <= 8 //TODO base on pathfinder distance instead?
+								&& mob.state != mob.HUNTING) {
 							mob.beckon( target );
 						}
 					}
@@ -827,7 +829,9 @@ public abstract class Mob extends Char {
 			
 			if (alignment == Alignment.ENEMY && Dungeon.isChallenged( Challenges.SWARM_INTELLIGENCE )) {
 				for (Mob mob : Dungeon.level.mobs) {
-					if (Dungeon.level.distance(pos, mob.pos) <= 8 && mob.state != mob.HUNTING) {
+					if (mob.paralysed <= 0
+							&& Dungeon.level.distance(pos, mob.pos) <= 8 //TODO base on pathfinder distance instead?
+							&& mob.state != mob.HUNTING) {
 						mob.beckon( target );
 					}
 				}
