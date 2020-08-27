@@ -84,15 +84,17 @@ public class Piranha extends Mob {
 	public int drRoll() {
 		return Random.NormalIntRange(0, Dungeon.depth);
 	}
-	
+
 	@Override
-	public int defenseSkill( Char enemy ) {
-		enemySeen = state != SLEEPING
-				&& this.enemy != null
-				&& fieldOfView != null
-				&& fieldOfView[this.enemy.pos]
-				&& this.enemy.invisible == 0;
-		return super.defenseSkill( enemy );
+	public boolean surprisedBy(Char enemy) {
+		if (enemy == Dungeon.hero){
+			if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
+				fieldOfView = new boolean[Dungeon.level.length()];
+				Dungeon.level.updateFieldOfView( this, fieldOfView );
+			}
+			return state == SLEEPING || !fieldOfView[enemy.pos] || enemy.invisible > 0;
+		}
+		return super.surprisedBy(enemy);
 	}
 	
 	@Override
