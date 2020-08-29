@@ -74,7 +74,7 @@ public class v0_8_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("v0.8.2c", false, null);
+		changes = new ChangeInfo("v0.8.2c&d", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
@@ -112,6 +112,16 @@ public class v0_8_X_Changes {
 				"_-_ Various minor errors with the Tengu fight\n" +
 				"_-_ Acidic scorpios not always dropping potions of experience\n" +
 				"_-_ Some immovable enemies not knocking items away"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by v0.8.2c):\n" +
+				"_-_ Evil eyes unintentionally dealing 0 damage\n" +
+				"_-_ Rare crash/freeze bugs caused by changes to container functionality\n\n" +
+				"Fixed (caused by v0.8.2):\n" +
+				"_-_ Wand of fireblast opening doors out of its reach\n\n" +
+				"Fixed (existed prior to v0.8.2):\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Various minor visual errors"));
 
 		changes = new ChangeInfo("v0.8.2a&b", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
