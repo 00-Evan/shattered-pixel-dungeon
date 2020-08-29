@@ -32,6 +32,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -80,12 +82,12 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 						curUser.sprite.zap(cell);
 						Sample.INSTANCE.play( Assets.Sounds.BURNING );
 
-						final Ballistica bolt = new Ballistica(curUser.pos, cell, Ballistica.STOP_TERRAIN | Ballistica.OPEN_DOORS);
+						final Ballistica bolt = new Ballistica(curUser.pos, cell, Ballistica.STOP_TERRAIN | Ballistica.IGNORE_DOORS);
 
 						int maxDist = 6;
 						int dist = Math.min(bolt.dist, maxDist);
 
-						final ConeAOE cone = new ConeAOE(bolt, 6, 60, Ballistica.STOP_TERRAIN | Ballistica.STOP_TARGET | Ballistica.OPEN_DOORS );
+						final ConeAOE cone = new ConeAOE(bolt, 6, 60, Ballistica.STOP_TERRAIN | Ballistica.STOP_TARGET | Ballistica.IGNORE_DOORS );
 
 						//cast to cells at the tip, rather than all cells, better performance.
 						for (Ballistica ray : cone.rays){
@@ -109,6 +111,12 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 											//ignore caster cell
 											if (cell == bolt.sourcePos){
 												continue;
+											}
+
+											//knock doors open
+											if (Dungeon.level.map[cell] == Terrain.DOOR){
+												Level.set(cell, Terrain.OPEN_DOOR);
+												GameScene.updateMap(cell);
 											}
 
 											//only ignite cells directly near caster if they are flammable

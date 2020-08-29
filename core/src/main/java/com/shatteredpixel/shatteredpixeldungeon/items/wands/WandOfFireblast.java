@@ -34,6 +34,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -50,7 +52,7 @@ public class WandOfFireblast extends DamageWand {
 	{
 		image = ItemSpriteSheet.WAND_FIREBOLT;
 
-		collisionProperties = Ballistica.STOP_TERRAIN | Ballistica.OPEN_DOORS;
+		collisionProperties = Ballistica.STOP_TERRAIN | Ballistica.IGNORE_DOORS;
 	}
 
 	//1x/2x/3x damage
@@ -75,6 +77,12 @@ public class WandOfFireblast extends DamageWand {
 			//ignore caster cell
 			if (cell == bolt.sourcePos){
 				continue;
+			}
+
+			//knock doors open
+			if (Dungeon.level.map[cell] == Terrain.DOOR){
+				Level.set(cell, Terrain.OPEN_DOOR);
+				GameScene.updateMap(cell);
 			}
 
 			//only ignite cells directly near caster if they are flammable
