@@ -86,8 +86,9 @@ public class Succubus extends Mob {
 			sprite.emitter().burst( Speck.factory( Speck.HEALING ), 2 );
 			Sample.INSTANCE.play( Assets.Sounds.CHARMS );
 		} else if (Random.Int( 3 ) == 0) {
-			//attack will reduce by 5 turns, so effectively DURATION-5 turns
-			Buff.affect( enemy, Charm.class, Charm.DURATION ).object = id();
+			Charm c = Buff.affect( enemy, Charm.class, Charm.DURATION/2f );
+			c.object = id();
+			c.ignoreNextHit = true; //so that the -5 duration from succubus hit is ignored
 			enemy.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
 			Sample.INSTANCE.play( Assets.Sounds.CHARMS );
 		}

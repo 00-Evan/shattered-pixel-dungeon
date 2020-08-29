@@ -74,8 +74,14 @@ public class Charm extends FlavourBuff {
 	public String desc() {
 		return Messages.get(this, "desc", dispTurns());
 	}
-	
+
+	public boolean ignoreNextHit = false;
+
 	public void recover() {
+		if (ignoreNextHit){
+			ignoreNextHit = false;
+			return;
+		}
 		spend(-5f);
 		if (cooldown() <= 0){
 			detach();
