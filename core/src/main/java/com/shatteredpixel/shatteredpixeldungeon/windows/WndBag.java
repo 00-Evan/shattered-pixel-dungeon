@@ -151,12 +151,12 @@ public class WndBag extends WndTabbed {
 		int windowHeight = TITLE_HEIGHT + slotHeight * nRows + SLOT_MARGIN * (nRows - 1);
 
 		if (PixelScene.landscape()){
-			while (windowHeight + 20 > PixelScene.uiCamera.height){
+			while (slotHeight >= 24 && (windowHeight + 20 + chrome.marginTop()) > PixelScene.uiCamera.height){
 				slotHeight--;
 				windowHeight -= nRows;
 			}
 		} else {
-			while (windowWidth > PixelScene.uiCamera.width){
+			while (slotWidth >= 26 && (windowWidth + chrome.marginHor()) > PixelScene.uiCamera.width){
 				slotWidth--;
 				windowWidth -= nCols;
 			}
