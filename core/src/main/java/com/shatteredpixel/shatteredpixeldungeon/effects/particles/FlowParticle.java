@@ -23,8 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.effects.particles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
-import com.watabou.noosa.Game;
-import com.watabou.noosa.Group;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.Emitter.Factory;
 import com.watabou.noosa.particles.PixelParticle;
@@ -69,28 +67,20 @@ public class FlowParticle extends PixelParticle {
 		am = (p < 0.5f ? p : 1 - p) * 0.6f;
 		size( (1 - p) * 4 );
 	}
-	
-	public static class Flow extends Group {
-		
-		private static final float DELAY	= 0.1f;
+
+	public static class Flow extends Emitter {
 		
 		private int pos;
-		
-		private float x;
-		private float y;
-		
-		private float delay;
 		
 		public Flow( int pos ) {
 			super();
 			
 			this.pos = pos;
-			
+
 			PointF p = DungeonTilemap.tileToWorld( pos );
-			x = p.x;
-			y = p.y + DungeonTilemap.SIZE - 1;
-			
-			delay = Random.Float( DELAY );
+			pos( p.x, p.y + DungeonTilemap.SIZE - 1, DungeonTilemap.SIZE, 0);
+
+			pour(FACTORY, 0.05f);
 		}
 		
 		@Override
@@ -99,14 +89,7 @@ public class FlowParticle extends PixelParticle {
 			if (visible = (pos < Dungeon.level.heroFOV.length && Dungeon.level.heroFOV[pos])) {
 				
 				super.update();
-				
-				if ((delay -= Game.elapsed) <= 0) {
-					
-					delay = Random.Float( DELAY );
-					
-					((FlowParticle)recycle( FlowParticle.class )).reset(
-						x + Random.Float( DungeonTilemap.SIZE ), y );
-				}
+
 			}
 		}
 	}

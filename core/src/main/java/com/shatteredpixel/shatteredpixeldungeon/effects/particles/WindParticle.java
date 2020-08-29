@@ -23,8 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.effects.particles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
-import com.watabou.noosa.Game;
-import com.watabou.noosa.Group;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.Emitter.Factory;
 import com.watabou.noosa.particles.PixelParticle;
@@ -75,25 +73,19 @@ public class WindParticle extends PixelParticle {
 		float p = left / lifespan;
 		am = (p < 0.5f ? p : 1 - p) * size * 0.2f;
 	}
-	
-	public static class Wind extends Group {
+
+	public static class Wind extends Emitter {
 		
 		private int pos;
 		
-		private float x;
-		private float y;
-		
-		private float delay;
-		
 		public Wind( int pos ) {
 			super();
-			
+
 			this.pos = pos;
 			PointF p = DungeonTilemap.tileToWorld( pos );
-			x = p.x;
-			y = p.y;
+			pos(p.x, p.y, DungeonTilemap.SIZE, DungeonTilemap.SIZE);
 			
-			delay = Random.Float( 5 );
+			pour(FACTORY, 2.5f);
 		}
 		
 		@Override
@@ -102,15 +94,7 @@ public class WindParticle extends PixelParticle {
 			if (visible = (pos < Dungeon.level.heroFOV.length && Dungeon.level.heroFOV[pos])) {
 				
 				super.update();
-				
-				if ((delay -= Game.elapsed) <= 0) {
-					
-					delay = Random.Float( 5 );
-					
-					((WindParticle)recycle( WindParticle.class )).reset(
-						x + Random.Float( DungeonTilemap.SIZE ),
-						y + Random.Float( DungeonTilemap.SIZE ) );
-				}
+
 			}
 		}
 	}

@@ -102,9 +102,19 @@ public class Emitter extends Group {
 		
 		on = true;
 	}
+
+	public static boolean freezeEmitters = false;
+
+	protected boolean isFrozen(){
+		return Game.timeTotal > 1 && freezeEmitters;
+	}
 	
 	@Override
 	public void update() {
+
+		if (isFrozen()){
+			return;
+		}
 		
 		if (on) {
 			time += Game.elapsed;

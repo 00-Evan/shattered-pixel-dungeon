@@ -211,7 +211,12 @@ public class MagicMissile extends Emitter {
 		}
 		return missile;
 	}
-	
+
+	@Override
+	protected boolean isFrozen() {
+		return false; //cannot be frozen
+	}
+
 	@Override
 	public void update() {
 		super.update();

@@ -520,8 +520,8 @@ public class GameScene extends PixelScene {
 				}
 			}
 		}
-		
-		freezeEmitters = false;
+
+		Emitter.freezeEmitters = false;
 		
 		scene = null;
 		Badges.saveGlobal();
@@ -562,7 +562,7 @@ public class GameScene extends PixelScene {
 
 		super.update();
 		
-		if (!freezeEmitters) water.offset( 0, -5 * Game.elapsed );
+		if (!Emitter.freezeEmitters) water.offset( 0, -5 * Game.elapsed );
 
 		if (!Actor.processing() && Dungeon.hero.isAlive()) {
 			if (actorThread == null || !actorThread.isAlive()) {

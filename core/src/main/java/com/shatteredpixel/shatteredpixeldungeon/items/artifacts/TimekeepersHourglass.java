@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -335,29 +336,26 @@ public class TimekeepersHourglass extends Artifact {
 		}
 
 		@Override
-		public boolean attachTo(Char target) {
-			if (super.attachTo(target)){
-				if (Dungeon.level != null)
-					for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
-						mob.sprite.add(CharSprite.State.PARALYSED);
-				GameScene.freezeEmitters = true;
-				return true;
-			} else {
-				return false;
-			}
-		}
-
-		@Override
 		public void detach(){
-			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
-				if (mob.paralysed <= 0) mob.sprite.remove(CharSprite.State.PARALYSED);
-			GameScene.freezeEmitters = false;
-
 			updateQuickslot();
 			super.detach();
 			activeBuff = null;
 			triggerPresses();
 			target.next();
+		}
+
+		@Override
+		public void fx(boolean on) {
+			Emitter.freezeEmitters = on;
+			if (on){
+				for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
+					if (mob.sprite != null) mob.sprite.add(CharSprite.State.PARALYSED);
+				}
+			} else {
+				for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
+					if (mob.paralysed <= 0) mob.sprite.remove(CharSprite.State.PARALYSED);
+				}
+			}
 		}
 
 		private static final String PRESSES = "presses";
