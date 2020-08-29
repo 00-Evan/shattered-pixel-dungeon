@@ -92,8 +92,8 @@ public class Bag extends Item implements Iterable<Item> {
 	}
 
 	public void grabItems(){
-		if (this != Dungeon.hero.belongings.backpack) {
-			grabItems(Dungeon.hero.belongings.backpack);
+		if (owner != null && owner instanceof Hero && this != ((Hero) owner).belongings.backpack) {
+			grabItems(((Hero) owner).belongings.backpack);
 		}
 	}
 
