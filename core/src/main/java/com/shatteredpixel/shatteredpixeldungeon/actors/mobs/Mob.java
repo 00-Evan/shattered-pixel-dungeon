@@ -532,9 +532,7 @@ public abstract class Mob extends Char {
 	
 	@Override
 	public int defenseSkill( Char enemy ) {
-		boolean seen = (enemySeen && enemy.invisible == 0);
-		if (enemy == Dungeon.hero && !Dungeon.hero.canSurpriseAttack()) seen = true;
-		if ( seen
+		if ( !surprisedBy(enemy)
 				&& paralysed == 0
 				&& !(alignment == Alignment.ALLY && enemy == Dungeon.hero)) {
 			return this.defenseSkill;
@@ -552,7 +550,7 @@ public abstract class Mob extends Char {
 			hitWithRanged = true;
 		}
 		
-		if (surprisedBy(enemy) && Dungeon.hero.canSurpriseAttack()) {
+		if (surprisedBy(enemy)) {
 			Statistics.sneakAttacks++;
 			Badges.validateRogueUnlock();
 			//TODO this is somewhat messy, it would be nicer to not have to manually handle delays here
@@ -594,7 +592,9 @@ public abstract class Mob extends Char {
 	}
 
 	public boolean surprisedBy( Char enemy ){
-		return enemy == Dungeon.hero && (enemy.invisible > 0 || !enemySeen);
+		return enemy == Dungeon.hero
+				&& (enemy.invisible > 0 || !enemySeen)
+				&& ((Hero)enemy).canSurpriseAttack();
 	}
 
 	public void aggro( Char ch ) {
