@@ -116,6 +116,7 @@ public class v0_8_X_Changes {
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed (caused by v0.8.2c):\n" +
 				"_-_ Evil eyes unintentionally dealing 0 damage\n" +
+				"_-_ Piranhas dodging less than intended\n" +
 				"_-_ Rare crash/freeze bugs caused by changes to container functionality\n\n" +
 				"Fixed (caused by v0.8.2):\n" +
 				"_-_ Wand of fireblast opening doors out of its reach\n\n" +
