@@ -275,7 +275,7 @@ public class HeroSelectScene extends PixelScene {
 
 	@Override
 	protected void onBackPressed() {
-		if (!SPDSettings.intro() && Rankings.INSTANCE.totalNumber == 0){
+		if (btnExit.visible){
 			ShatteredPixelDungeon.switchScene(TitleScene.class);
 		} else {
 			super.onBackPressed();
