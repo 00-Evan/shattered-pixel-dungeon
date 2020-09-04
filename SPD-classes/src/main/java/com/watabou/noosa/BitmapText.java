@@ -23,7 +23,6 @@ package com.watabou.noosa;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.watabou.gltextures.SmartTexture;
-import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Matrix;
 import com.watabou.glwrap.Quad;
 import com.watabou.glwrap.Vertexbuffer;
@@ -342,15 +341,15 @@ public class BitmapText extends Visual {
 			return pixel != color;
 		}
 		
-		public static Font colorMarked( Pixmap bmp, int color, String chars ) {
-			Font font = new Font( TextureCache.get( bmp ) );
-			font.splitBy( bmp, bmp.getHeight(), color, chars );
+		public static Font colorMarked( SmartTexture tex, int color, String chars ) {
+			Font font = new Font( tex );
+			font.splitBy( tex.bitmap, tex.height, color, chars );
 			return font;
 		}
 		 
-		public static Font colorMarked( Pixmap bmp, int height, int color, String chars ) {
-			Font font = new Font( TextureCache.get( bmp ) );
-			font.splitBy( bmp, height, color, chars );
+		public static Font colorMarked( SmartTexture tex, int height, int color, String chars ) {
+			Font font = new Font( tex );
+			font.splitBy( tex.bitmap, height, color, chars );
 			return font;
 		}
 		
