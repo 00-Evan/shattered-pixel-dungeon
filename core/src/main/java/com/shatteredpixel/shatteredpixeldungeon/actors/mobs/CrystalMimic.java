@@ -188,11 +188,13 @@ public class CrystalMimic extends Mimic {
 				if (enemySeen) {
 					sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Mob.class, "rage"));
 					state = HUNTING;
-				} else {
+				} else if (!Dungeon.level.heroFOV[pos] && Dungeon.level.distance(Dungeon.hero.pos, pos) >= 6) {
 					GLog.n( Messages.get(CrystalMimic.class, "escaped"));
 					if (Dungeon.level.heroFOV[pos]) CellEmitter.get(pos).burst(Speck.factory(Speck.WOOL), 6);
 					destroy();
 					sprite.killAndErase();
+				} else {
+					state = WANDERING;
 				}
 			} else {
 				super.nowhereToRun();
