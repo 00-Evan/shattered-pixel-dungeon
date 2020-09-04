@@ -63,7 +63,7 @@ public class BitmapCache {
 		}
 	}
 	
-	//Unused, LibGDX does not support resource Ids
+	//Unused, libGDX does not support resource Ids
 	/*
 	public static Pixmap get( int resID ) {
 		return get( DEFAULT, resID );

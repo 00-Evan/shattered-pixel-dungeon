@@ -610,7 +610,7 @@ public class v0_8_X_Changes {
 				"_-_ The hero is now interrupted if their path becomes obstructed by an ally."));
 
 		if (DeviceCompat.isDesktop()) {
-			changes.addButton( new ChangeButton( Icons.get( Icons.LIBGDX ), "LibGDX Desktop Functionality",
+			changes.addButton( new ChangeButton( Icons.get( Icons.LIBGDX ), "libGDX Desktop Functionality",
 					"The desktop version of the game is now running through the same codebase as the Android version!\n\n" +
 					"Moving forward the desktop version of the game will be at feature parity with the Android version, which includes translations, access to betas, and release timings!\n\n" +
 					"Currently all features from the old desktop codebase have been re-implemented in this version:\n" +

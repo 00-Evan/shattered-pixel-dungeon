@@ -21,7 +21,7 @@
 
 package com.watabou.glwrap;
 
-//TODO LibGDX offer matrix classes as well, which might give better performance.
+//TODO libGDX offer matrix classes as well, which might give better performance.
 //should investigate using them
 public class Matrix {
 

@@ -127,14 +127,14 @@ public class AboutScene extends PixelScene {
 		}
 		content.add(cube);
 
-		//*** LibGDX Credits ***
+		//*** libGDX Credits ***
 
 		final int GDX_COLOR = 0xE44D3C;
 		CreditsBlock gdx = new CreditsBlock(true,
 				GDX_COLOR,
 				null,
 				Icons.LIBGDX.get(),
-				"ShatteredPD is powered by _LibGDX_!",
+				"ShatteredPD is powered by _libGDX_!",
 				"libgdx.badlogicgames.com",
 				"http://libgdx.badlogicgames.com");
 		if (landscape()){

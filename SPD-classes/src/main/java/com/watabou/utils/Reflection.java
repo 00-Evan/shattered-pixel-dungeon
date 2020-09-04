@@ -24,7 +24,7 @@ package com.watabou.utils;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.watabou.noosa.Game;
 
-//wrapper for LibGDX reflection
+//wrapper for libGDX reflection
 public class Reflection {
 	
 	public static boolean isMemberClass( Class cls ){

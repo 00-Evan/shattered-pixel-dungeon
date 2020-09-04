@@ -97,8 +97,8 @@ public class v0_7_X_Changes {
 				"_-_ Damage reduced by 30%\n" +
 				"_-_ Accuracy reduced by 10%"));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.LIBGDX), "LibGDX Text Rendering!",
-				"The game's text renderer is now using LibGDX freetype. This looks almost identical to the existing text but is slightly crisper, platform-independent, and much more efficient!\n\n" +
+		changes.addButton( new ChangeButton(Icons.get(Icons.LIBGDX), "libGDX Text Rendering!",
+				"The game's text renderer is now using libGDX freetype. This looks almost identical to the existing text but is slightly crisper, platform-independent, and much more efficient!\n\n" +
 				"Text rendering was the last bit of android-dependant code, so the game's core code modules (~98% of its code) are now being compiled as general code and not android-specific code!"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
@@ -123,7 +123,7 @@ public class v0_7_X_Changes {
 		
 		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
-				"_-_ Various stability issues caused by the LibGDX conversion\n" +
+				"_-_ Various stability issues caused by the libGDX conversion\n" +
 				"_-_ Bolts from wand of lightning not spreading in many cases where they should\n" +
 				"_-_ Thrown weapons sticking to corrupted characters when they shouldn't\n" +
 				"_-_ Area-based effects behaving oddly in rare cases\n" +
@@ -203,10 +203,10 @@ public class v0_7_X_Changes {
 				"This new wand has a lower damage output, but grants significant defensive power. The rocks the wand shoots at enemies reform around the hero and absorb damage. If enough rock is built, it will form up into a rock guardian which fights with the player.\n\n" +
 				"The Wand of Living Earth is lacking in offensive output, but does a great job of pulling focus and damage away from the player."));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LIBGDX), "LibGDX",
-				"Large sections of Shattered's codebase is now using the multiplatform game library _LibGDX._ Making the game's codebase less heavily tied to Android is a big step towards making the game available on other platforms!\n\n" +
-				"Keyboard input handling and text rendering are still coupled to Android however. I will convert these game systems to use LibGDX in a later update.\n\n" +
-				"Note that Shattered will not immediately release on other platforms once LibGDX conversion is complete, but it is a big step towards that."));
+		changes.addButton( new ChangeButton(Icons.get(Icons.LIBGDX), "libGDX",
+				"Large sections of Shattered's codebase is now using the multiplatform game library _libGDX._ Making the game's codebase less heavily tied to Android is a big step towards making the game available on other platforms!\n\n" +
+				"Keyboard input handling and text rendering are still coupled to Android however. I will convert these game systems to use libGDX in a later update.\n\n" +
+				"Note that Shattered will not immediately release on other platforms once libGDX conversion is complete, but it is a big step towards that."));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
 		changes.hardlight( CharSprite.WARNING );

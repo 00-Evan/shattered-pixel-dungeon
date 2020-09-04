@@ -137,7 +137,7 @@ public class RenderedText extends Image {
 		}
 	}
 
-	//implements regular PD rendering within a LibGDX batch so that our rendering logic
+	//implements regular PD rendering within a libGDX batch so that our rendering logic
 	//can interface with the freetype font generator
 	private static class TextRenderBatch implements Batch {
 		
