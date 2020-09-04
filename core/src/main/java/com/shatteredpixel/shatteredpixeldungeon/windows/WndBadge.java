@@ -33,18 +33,20 @@ public class WndBadge extends Window {
 	private static final int WIDTH = 120;
 	private static final int MARGIN = 4;
 	
-	public WndBadge( Badges.Badge badge ) {
+	public WndBadge( Badges.Badge badge, boolean unlocked ) {
 		
 		super();
 		
 		Image icon = BadgeBanner.image( badge.image );
 		icon.scale.set( 2 );
+		if (!unlocked) icon.brightness(0.2f);
 		add( icon );
 
 		RenderedTextBlock info = PixelScene.renderTextBlock( badge.desc(), 8 );
 		info.maxWidth(WIDTH - MARGIN * 2);
 		info.align(RenderedTextBlock.CENTER_ALIGN);
 		PixelScene.align(info);
+		if (!unlocked) info.hardlight( 0x777777 );
 		add(info);
 		
 		float w = Math.max( icon.width(), info.width() ) + MARGIN * 2;
@@ -56,6 +58,6 @@ public class WndBadge extends Window {
 		info.setPos((w - info.width()) / 2, icon.y + icon.height() + MARGIN);
 		resize( (int)w, (int)(info.bottom() + MARGIN) );
 		
-		BadgeBanner.highlight( icon, badge.image );
+		if (unlocked) BadgeBanner.highlight( icon, badge.image );
 	}
 }
