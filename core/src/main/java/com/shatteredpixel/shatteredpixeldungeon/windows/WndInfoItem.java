@@ -39,7 +39,13 @@ public class WndInfoItem extends Window {
 		
 		super();
 
-		fillFields( heap );
+		if (heap.type == Heap.Type.HEAP) {
+			fillFields( heap.peek() );
+
+		} else {
+			fillFields( heap );
+
+		}
 	}
 	
 	public WndInfoItem( Item item ) {
