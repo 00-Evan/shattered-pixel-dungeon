@@ -51,8 +51,6 @@ public abstract class Trap implements Bundlable {
 	public static final int CROSSHAIR   = 5;
 	public static final int LARGE_DOT   = 6;
 
-	public String name = Messages.get(this, "name");
-
 	public int color;
 	public int shape;
 
@@ -103,6 +101,14 @@ public abstract class Trap implements Bundlable {
 		Dungeon.level.disarmTrap(pos);
 	}
 
+	public String name(){
+		return Messages.get(this, "name");
+	}
+
+	public String desc() {
+		return Messages.get(this, "desc");
+	}
+
 	private static final String POS	= "pos";
 	private static final String VISIBLE	= "visible";
 	private static final String ACTIVE = "active";
@@ -121,9 +127,5 @@ public abstract class Trap implements Bundlable {
 		bundle.put( POS, pos );
 		bundle.put( VISIBLE, visible );
 		bundle.put( ACTIVE, active );
-	}
-
-	public String desc() {
-		return Messages.get(this, "desc");
 	}
 }

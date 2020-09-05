@@ -945,7 +945,7 @@ public abstract class Level implements Bundlable {
 		case Terrain.SECRET_TRAP:
 			if (hard) {
 				trap = traps.get( cell );
-				GLog.i(Messages.get(Level.class, "hidden_trap", trap.name));
+				GLog.i(Messages.get(Level.class, "hidden_trap", trap.name()));
 			}
 			break;
 			
