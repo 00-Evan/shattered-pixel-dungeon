@@ -215,14 +215,14 @@ public abstract class Actor implements Bundlable {
 			
 			current = null;
 			if (!interrupted) {
-				now = Float.MAX_VALUE;
-				
+				float earliest = Float.MAX_VALUE;
+
 				for (Actor actor : all) {
 					
 					//some actors will always go before others if time is equal.
-					if (actor.time < now ||
-							actor.time == now && (current == null || actor.actPriority > current.actPriority)) {
-						now = actor.time;
+					if (actor.time < earliest ||
+							actor.time == earliest && (current == null || actor.actPriority > current.actPriority)) {
+						earliest = actor.time;
 						current = actor;
 					}
 					
@@ -231,6 +231,7 @@ public abstract class Actor implements Bundlable {
 
 			if  (current != null) {
 
+				now = current.time;
 				Actor acting = current;
 
 				if (acting instanceof Char && ((Char) acting).sprite != null) {
