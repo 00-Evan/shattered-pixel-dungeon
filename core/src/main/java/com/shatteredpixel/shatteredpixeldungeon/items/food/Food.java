@@ -23,6 +23,8 @@ package com.shatteredpixel.shatteredpixeldungeon.items.food;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
@@ -90,7 +92,11 @@ public class Food extends Item {
 	}
 	
 	protected void satisfy( Hero hero ){
-		Buff.affect(hero, Hunger.class).satisfy( energy );
+		if (Dungeon.isChallenged(Challenges.NO_FOOD)){
+			Buff.affect(hero, Hunger.class).satisfy(energy/3f);
+		} else {
+			Buff.affect(hero, Hunger.class).satisfy(energy);
+		}
 	}
 	
 	public static void foodProc( Hero hero ){

@@ -33,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
@@ -102,10 +101,6 @@ public enum HeroClass {
 
 		i = new Food();
 		if (!Challenges.isItemBlocked(i)) i.collect();
-
-		if (Dungeon.isChallenged(Challenges.NO_FOOD)){
-			new SmallRation().collect();
-		}
 
 		new ScrollOfIdentify().identify();
 
