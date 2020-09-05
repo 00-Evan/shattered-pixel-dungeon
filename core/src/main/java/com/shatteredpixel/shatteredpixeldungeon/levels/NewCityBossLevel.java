@@ -406,7 +406,9 @@ public class NewCityBossLevel extends Level {
 					data[i] = 15*8 + 5;
 
 				//ground tiles
-				} else if (map[i] == Terrain.EMPTY || map[i] == Terrain.EMPTY_DECO){
+				} else if (map[i] == Terrain.EMPTY || map[i] == Terrain.EMPTY_DECO
+						|| map[i] == Terrain.EMBERS || map[i] == Terrain.GRASS
+						|| map[i] == Terrain.HIGH_GRASS || map[i] == Terrain.FURROWED_GRASS){
 
 					//final ground stiching with city tiles
 					if (i/tileW == 21){
