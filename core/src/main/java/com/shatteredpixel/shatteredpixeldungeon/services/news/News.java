@@ -70,23 +70,25 @@ public class News {
 
 	private static ArrayList<NewsArticle> articles;
 
-	public static boolean articlesAvailable(){
+	public static synchronized boolean articlesAvailable(){
 		return articles != null;
 	}
 
-	public static ArrayList<NewsArticle> articles(){
+	public static synchronized ArrayList<NewsArticle> articles(){
 		return new ArrayList<>(articles);
 	}
 
-	public static int unreadArticles(Date lastRead){
+	public static synchronized int unreadArticles(Date lastRead) {
 		int unread = 0;
-		for (NewsArticle article : articles){
-			if (article.date.after(lastRead)) unread++;
+		if (articles != null) {
+			for (NewsArticle article : articles) {
+				if (article.date.after(lastRead)) unread++;
+			}
 		}
 		return unread;
 	}
 
-	public static void clearArticles(){
+	public static synchronized void clearArticles(){
 		articles = null;
 		lastCheck = null;
 	}
