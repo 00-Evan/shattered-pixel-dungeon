@@ -56,7 +56,7 @@ public class AquaBlast extends TargetedSpell {
 		
 		if (target != null && target != hero){
 			//just enough to skip their current turn
-			Buff.affect(target, Paralysis.class, 0f);
+			Buff.affect(target, Paralysis.class, target.cooldown());
 		}
 	}
 	
