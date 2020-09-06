@@ -237,7 +237,7 @@ public class NewsScene extends PixelScene {
 			bg.y = y;
 
 			text.maxWidth((int)width - bg.marginHor());
-			text.setPos(x + bg.marginLeft(), y + bg.marginTop());
+			text.setPos(x + bg.marginLeft(), y + bg.marginTop()+1);
 
 			height = (text.bottom()) - y;
 
@@ -248,7 +248,7 @@ public class NewsScene extends PixelScene {
 				height = button.bottom() - y;
 			}
 
-			height += bg.marginBottom();
+			height += bg.marginBottom() + 1;
 
 			bg.size(width, height);
 
@@ -291,8 +291,8 @@ public class NewsScene extends PixelScene {
 			text.setPos(x + bg.marginLeft() + 18, text.top());
 
 			if (date != null) {
-				date.x = x + width - bg.marginRight() - date.width() + 2;
-				date.y = y + height - bg.marginBottom() - date.height() + 3.5f;
+				date.x = x + width - bg.marginRight() - date.width() + 1;
+				date.y = y + height - bg.marginBottom() - date.height() + 2.5f;
 				align(date);
 			}
 		}

@@ -141,12 +141,12 @@ public class SupporterScene extends PixelScene {
 			bg.y = y;
 
 			text.maxWidth((int)width - bg.marginHor());
-			text.setPos(x + bg.marginLeft(), y + bg.marginTop());
+			text.setPos(x + bg.marginLeft(), y + bg.marginTop() + 1);
 
 			icon.y = text.bottom() - icon.height() + 4;
 			icon.x = x + 25;
 
-			height = (text.bottom() + 2) - y;
+			height = (text.bottom() + 3) - y;
 
 			height += bg.marginBottom();
 
