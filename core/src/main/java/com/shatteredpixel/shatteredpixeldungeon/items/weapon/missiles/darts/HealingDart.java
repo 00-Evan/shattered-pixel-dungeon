@@ -37,8 +37,8 @@ public class HealingDart extends TippedDart {
 	public int proc(Char attacker, Char defender, int damage) {
 		
 		//heals 30 hp at base, scaling with enemy HT
-		Buff.affect( defender, Healing.class ).setHeal((int)(0.5f*defender.HT + 30), 0.25f, 0);
 		PotionOfHealing.cure( defender );
+		Buff.affect( defender, Healing.class ).setHeal((int)(0.5f*defender.HT + 30), 0.25f, 0);
 		
 		if (attacker.alignment == defender.alignment){
 			return 0;

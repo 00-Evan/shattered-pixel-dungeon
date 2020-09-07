@@ -26,8 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 
 public class Challenges {
 
@@ -60,15 +58,6 @@ public class Challenges {
 
 		if (Dungeon.isChallenged(NO_ARMOR)){
 			if (item instanceof Armor && !(item instanceof ClothArmor || item instanceof ClassArmor)) {
-				return true;
-			}
-		}
-
-		if (Dungeon.isChallenged(NO_HEALING)){
-			if (item instanceof PotionOfHealing){
-				return true;
-			} else if (item instanceof Blandfruit
-					&& ((Blandfruit) item).potionAttrib instanceof PotionOfHealing){
 				return true;
 			}
 		}
