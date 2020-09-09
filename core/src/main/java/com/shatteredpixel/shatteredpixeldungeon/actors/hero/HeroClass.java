@@ -72,6 +72,7 @@ public enum HeroClass {
 	public void initHero( Hero hero ) {
 
 		hero.heroClass = this;
+		Talent.initClassTalents(hero);
 
 		initCommon( hero );
 

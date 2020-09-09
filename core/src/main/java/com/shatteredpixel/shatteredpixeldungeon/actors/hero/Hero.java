@@ -131,6 +131,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 
 public class Hero extends Char {
 
@@ -150,6 +151,7 @@ public class Hero extends Char {
 	
 	public HeroClass heroClass = HeroClass.ROGUE;
 	public HeroSubClass subClass = HeroSubClass.NONE;
+	public ArrayList<LinkedHashMap<Talent, Integer>> talents = new ArrayList<>();
 	
 	private int attackSkill = 10;
 	private int defenseSkill = 5;
@@ -235,6 +237,7 @@ public class Hero extends Char {
 		
 		heroClass.storeInBundle( bundle );
 		subClass.storeInBundle( bundle );
+		Talent.storeTalentsInBundle( bundle, this );
 		
 		bundle.put( ATTACK, attackSkill );
 		bundle.put( DEFENSE, defenseSkill );
@@ -255,6 +258,7 @@ public class Hero extends Char {
 		
 		heroClass = HeroClass.restoreInBundle( bundle );
 		subClass = HeroSubClass.restoreInBundle( bundle );
+		Talent.restoreTalentsFromBundle( bundle, this );
 		
 		attackSkill = bundle.getInt( ATTACK );
 		defenseSkill = bundle.getInt( DEFENSE );
@@ -279,6 +283,42 @@ public class Hero extends Char {
 		info.heroClass = HeroClass.restoreInBundle( bundle );
 		info.subClass = HeroSubClass.restoreInBundle( bundle );
 		Belongings.preview( info, bundle );
+	}
+
+	public boolean hasTalent( Talent talent ){
+		return pointsInTalent(talent) > 0;
+	}
+
+	public int pointsInTalent( Talent talent ){
+		for (LinkedHashMap<Talent, Integer> tier : talents){
+			for (Talent f : tier.keySet()){
+				if (f == talent) return tier.get(f);
+			}
+		}
+		return 0;
+	}
+
+	public void upgradeTalent( Talent talent ){
+		for (LinkedHashMap<Talent, Integer> tier : talents){
+			for (Talent f : tier.keySet()){
+				if (f == talent) tier.put(talent, tier.get(talent)+1);
+			}
+		}
+	}
+
+	public int talentPointsSpent(){
+		int total = 0;
+		for (LinkedHashMap<Talent, Integer> tier : talents){
+			for (int i : tier.values()){
+				total += i;
+			}
+		}
+		return total;
+	}
+
+	public int talentPointsAvailable(){
+		//hero currently only gains points up to level 6
+		return Math.min(lvl, 6) - 1 - talentPointsSpent();
 	}
 	
 	public String className() {
