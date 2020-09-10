@@ -89,6 +89,22 @@ public class Speck extends Image {
 		
 		origin.set( SIZE / 2f );
 	}
+
+	public Speck image( int type ){
+		reset(0, 0, 0, type);
+
+		left = lifespan = Float.POSITIVE_INFINITY;
+		this.type = -1;
+
+		resetColor();
+		scale.set( 1 );
+		speed.set( 0 );
+		acc.set( 0 );
+		angle = 0;
+		angularSpeed = 0;
+
+		return this;
+	}
 	
 	public void reset( int index, float x, float y, int type ) {
 		revive();

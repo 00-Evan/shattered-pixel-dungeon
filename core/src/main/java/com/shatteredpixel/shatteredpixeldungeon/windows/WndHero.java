@@ -33,6 +33,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
+import com.shatteredpixel.shatteredpixeldungeon.ui.StatusPane;
+import com.shatteredpixel.shatteredpixeldungeon.ui.TalentsPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
@@ -46,27 +48,28 @@ import java.util.Locale;
 
 public class WndHero extends WndTabbed {
 	
-	private static final int WIDTH		= 115;
+	private static final int WIDTH		= 120;
 	private static final int HEIGHT		= 100;
 	
 	private StatsTab stats;
+	private TalentsTab talents;
 	private BuffsTab buffs;
-	
-	private SmartTexture icons;
-	private TextureFilm film;
-	
+
+	public static int lastIdx = 0;
+
 	public WndHero() {
 		
 		super();
 		
 		resize( WIDTH, HEIGHT );
 		
-		icons = TextureCache.get( Assets.Interfaces.BUFFS_LARGE );
-		film = new TextureFilm( icons, 16, 16 );
-		
 		stats = new StatsTab();
 		add( stats );
-		
+
+		talents = new TalentsTab();
+		add(talents);
+		talents.setRect(0, 0, WIDTH, HEIGHT);
+
 		buffs = new BuffsTab();
 		add( buffs );
 		buffs.setRect(0, 0, WIDTH, HEIGHT);
@@ -75,21 +78,31 @@ public class WndHero extends WndTabbed {
 		add( new LabeledTab( Messages.get(this, "stats") ) {
 			protected void select( boolean value ) {
 				super.select( value );
+				if (selected) lastIdx = 0;
 				stats.visible = stats.active = selected;
+			}
+		} );
+		add( new LabeledTab( Messages.get(this, "talents") ) {
+			protected void select( boolean value ) {
+				super.select( value );
+				if (selected) lastIdx = 1;
+				if (selected) StatusPane.talentBlink = 0;
+				talents.visible = talents.active = selected;
 			}
 		} );
 		add( new LabeledTab( Messages.get(this, "buffs") ) {
 			protected void select( boolean value ) {
 				super.select( value );
+				if (selected) lastIdx = 2;
 				buffs.visible = buffs.active = selected;
 			}
 		} );
 
 		layoutTabs();
 		
-		select( 0 );
+		select( lastIdx );
 	}
-	
+
 	private class StatsTab extends Group {
 		
 		private static final int GAP = 6;
@@ -106,7 +119,7 @@ public class WndHero extends WndTabbed {
 				title.label( Messages.get(this, "title", hero.lvl, hero.className() ).toUpperCase( Locale.ENGLISH ) );
 			else
 				title.label((hero.name() + "\n" + Messages.get(this, "title", hero.lvl, hero.className())).toUpperCase(Locale.ENGLISH));
-			title.color(Window.SHPX_COLOR);
+			title.color(Window.TITLE_COLOR);
 			title.setRect( 0, 0, WIDTH, 0 );
 			add(title);
 
@@ -147,16 +160,44 @@ public class WndHero extends WndTabbed {
 			return pos;
 		}
 	}
+
+	public class TalentsTab extends Component {
+
+		TalentsPane pane;
+
+		@Override
+		protected void createChildren() {
+			super.createChildren();
+			pane = new TalentsPane(true);
+			add(pane);
+		}
+
+		@Override
+		protected void layout() {
+			super.layout();
+			pane.setRect(x, y, width, height);
+		}
+
+	}
 	
 	private class BuffsTab extends Component {
 		
 		private static final int GAP = 2;
+
+		private SmartTexture icons;
+		private TextureFilm film;
 		
 		private float pos;
 		private ScrollPane buffList;
 		private ArrayList<BuffSlot> slots = new ArrayList<>();
-		
-		public BuffsTab() {
+
+		@Override
+		protected void createChildren() {
+			icons = TextureCache.get( Assets.Interfaces.BUFFS_LARGE );
+			film = new TextureFilm( icons, 16, 16 );
+
+			super.createChildren();
+
 			buffList = new ScrollPane( new Component() ){
 				@Override
 				public void onClick( float x, float y ) {

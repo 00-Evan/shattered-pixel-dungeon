@@ -469,6 +469,13 @@ public class GameScene extends PixelScene {
 				GLog.h(Messages.get(this, "return"), Dungeon.depth);
 			}
 
+			if (Dungeon.hero.talentPointsAvailable() > 0){
+				GLog.newLine();
+				GLog.w( Messages.get(Dungeon.hero, "unspent") );
+				StatusPane.talentBlink = 10f;
+				WndHero.lastIdx = 1;
+			}
+
 			switch (Dungeon.level.feeling) {
 				case CHASM:
 					GLog.w(Messages.get(this, "chasm"));

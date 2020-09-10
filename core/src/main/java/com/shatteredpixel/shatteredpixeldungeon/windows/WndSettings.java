@@ -832,7 +832,7 @@ public class WndSettings extends WndTabbed {
 
 						RenderedTextBlock title = PixelScene.renderTextBlock(6);
 						title.text(Messages.titleCase(Messages.get(LangsTab.this, "credits")), w);
-						title.hardlight(SHPX_COLOR);
+						title.hardlight(TITLE_COLOR);
 						title.setPos((w - title.width()) / 2, 0);
 						credits.add(title);
 

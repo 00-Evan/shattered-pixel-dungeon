@@ -49,6 +49,7 @@ public class StatusPane extends Component {
 
 	private NinePatch bg;
 	private Image avatar;
+	public static float talentBlink;
 	private float warning;
 
 	private int lastTier = 0;
@@ -104,6 +105,8 @@ public class StatusPane extends Component {
 		avatar = HeroSprite.avatar( Dungeon.hero.heroClass, lastTier );
 		add( avatar );
 
+		talentBlink = 0;
+
 		compass = new Compass( Statistics.amuletObtained ? Dungeon.level.entrance : Dungeon.level.exit );
 		add( compass );
 
@@ -124,7 +127,7 @@ public class StatusPane extends Component {
 		add( bossHP );
 
 		level = new BitmapText( PixelScene.pixelFont);
-		level.hardlight( 0xFFEBA4 );
+		level.hardlight( 0xFFFFAA );
 		add( level );
 
 		depth = new BitmapText( Integer.toString( Dungeon.depth ), PixelScene.pixelFont);
@@ -200,6 +203,9 @@ public class StatusPane extends Component {
 			warning += Game.elapsed * 5f *(0.4f - (health/max));
 			warning %= 1f;
 			avatar.tint(ColorMath.interpolate(warning, warningColors), 0.5f );
+		} else if (talentBlink > 0){
+			talentBlink -= Game.elapsed;
+			avatar.tint(1, 1, 0, (float)Math.abs(Math.sin(2*talentBlink)/2f));
 		} else {
 			avatar.resetColor();
 		}

@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
+import com.shatteredpixel.shatteredpixeldungeon.ui.TalentsPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
@@ -155,23 +156,39 @@ public class WndRanking extends WndTabbed {
 	
 	private class StatsTab extends Group {
 
-		private int GAP	= 5;
+		private int GAP	= 4;
 		
 		public StatsTab() {
 			super();
-
-			if (Dungeon.challenges > 0) GAP--;
 			
 			String heroClass = Dungeon.hero.className();
 			
 			IconTitle title = new IconTitle();
 			title.icon( HeroSprite.avatar( Dungeon.hero.heroClass, Dungeon.hero.tier() ) );
 			title.label( Messages.get(this, "title", Dungeon.hero.lvl, heroClass ).toUpperCase( Locale.ENGLISH ) );
-			title.color(Window.SHPX_COLOR);
+			title.color(Window.TITLE_COLOR);
 			title.setRect( 0, 0, WIDTH, 0 );
 			add( title );
 			
 			float pos = title.bottom() + GAP;
+
+			RedButton btnTalents = new RedButton( Messages.get(this, "talents") ){
+				@Override
+				protected void onClick() {
+					Game.scene().addToFront( new Window(){
+						{
+							resize(120, 144);
+							TalentsPane p = new TalentsPane(false);
+							add(p);
+							p.setRect(0, 0, width, height);
+						}
+					});
+				}
+			};
+			btnTalents.setRect( (WIDTH - btnTalents.reqWidth()+2)/2, pos, btnTalents.reqWidth()+2 , 16 );
+			add(btnTalents);
+
+			pos = btnTalents.bottom();
 
 			if (Dungeon.challenges > 0) {
 				RedButton btnChallenges = new RedButton( Messages.get(this, "challenges") ) {
@@ -180,11 +197,14 @@ public class WndRanking extends WndTabbed {
 						Game.scene().add( new WndChallenges( Dungeon.challenges, false ) );
 					}
 				};
-				float btnW = btnChallenges.reqWidth() + 2;
-				btnChallenges.setRect( (WIDTH - btnW)/2, pos, btnW , btnChallenges.reqHeight() + 2 );
+
+				btnChallenges.setSize( btnChallenges.reqWidth()+2, 16 );
 				add( btnChallenges );
 
-				pos = btnChallenges.bottom();
+				float left = (WIDTH - btnTalents.width() - btnChallenges.width())/3f;
+
+				btnTalents.setPos(left, btnTalents.top());
+				btnChallenges.setPos(btnTalents.right() + left, btnTalents.top());
 			}
 
 			pos += GAP;

@@ -116,7 +116,9 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.StatusPane;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
@@ -306,6 +308,7 @@ public class Hero extends Char {
 		}
 	}
 
+	//TODO account for tiers
 	public int talentPointsSpent(){
 		int total = 0;
 		for (LinkedHashMap<Talent, Integer> tier : talents){
@@ -316,6 +319,7 @@ public class Hero extends Char {
 		return total;
 	}
 
+	//TODO account for tiers
 	public int talentPointsAvailable(){
 		//hero currently only gains points up to level 6
 		return Math.min(lvl, 6) - 1 - talentPointsSpent();
@@ -1431,9 +1435,15 @@ public class Hero extends Char {
 			
 			if (sprite != null) {
 				GLog.newLine();
-				GLog.p( Messages.get(this, "new_level"), lvl );
+				GLog.p( Messages.get(this, "new_level") );
 				sprite.showStatus( CharSprite.POSITIVE, Messages.get(Hero.class, "level_up") );
 				Sample.INSTANCE.play( Assets.Sounds.LEVELUP );
+				if (talentPointsAvailable() > 0){
+					GLog.newLine();
+					GLog.p( Messages.get(this, "new_talent") );
+					StatusPane.talentBlink = 10f;
+					WndHero.lastIdx = 1;
+				}
 			}
 			
 			Item.updateQuickslot();
