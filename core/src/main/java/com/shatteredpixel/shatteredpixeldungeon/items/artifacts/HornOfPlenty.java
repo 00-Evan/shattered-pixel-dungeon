@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
@@ -97,7 +98,7 @@ public class HornOfPlenty extends Artifact {
 				if (chargesToUse > charge) chargesToUse = charge;
 				hunger.satisfy(satietyPerCharge * chargesToUse);
 
-				Food.foodProc( hero );
+				Talent.onFoodEaten(hero, satietyPerCharge * chargesToUse);
 
 				Statistics.foodEaten++;
 
