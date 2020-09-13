@@ -102,8 +102,8 @@ public class GamesInProgress {
 				info.slot = slot;
 				Dungeon.preview(info, bundle);
 				
-				//saves from before v0.7.3b are not supported
-				if (info.version < ShatteredPixelDungeon.v0_7_3b) {
+				//saves from before v0.7.5e are not supported
+				if (info.version < ShatteredPixelDungeon.v0_7_5e) {
 					info = null;
 				}
 

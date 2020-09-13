@@ -32,28 +32,15 @@ import com.watabou.utils.PlatformSupport;
 public class ShatteredPixelDungeon extends Game {
 
 	//variable constants for specific older versions of shattered, used for data conversion
-	//versions older than v0.7.3b are no longer supported, and data from them is ignored
-	public static final int v0_7_3b = 349;
-	public static final int v0_7_4c = 362;
+	//versions older than v0.7.5e are no longer supported, and data from them is ignored
 	public static final int v0_7_5e = 382;
 
-	public static final int v0_8_0  = 412;
+	public static final int v0_8_0b = 414;
 	public static final int v0_8_1a = 422;
 	public static final int v0_8_2  = 447;
 	
 	public ShatteredPixelDungeon( PlatformSupport platform ) {
 		super( sceneClass == null ? WelcomeScene.class : sceneClass, platform );
-
-		//v0.7.5
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.sewerboss.SewerBossEntranceRoom.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.SewerBossEntranceRoom" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.OldPrisonBossLevel.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.OldTengu.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu" );
 
 		//v0.8.0
 		com.watabou.utils.Bundle.addAlias(
