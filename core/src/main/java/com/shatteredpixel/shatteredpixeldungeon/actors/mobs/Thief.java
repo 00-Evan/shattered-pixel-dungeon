@@ -144,23 +144,21 @@ public class Thief extends Mob {
 
 	protected boolean steal( Hero hero ) {
 
-		Item item = hero.belongings.randomUnequipped();
+		Item toSteal = hero.belongings.randomUnequipped();
 
-		if (item != null && !item.unique && item.level() < 1 ) {
+		if (toSteal != null && !toSteal.unique && toSteal.level() < 1 ) {
 
-			GLog.w( Messages.get(Thief.class, "stole", item.name()) );
-			if (!item.stackable) {
+			GLog.w( Messages.get(Thief.class, "stole", toSteal.name()) );
+			if (!toSteal.stackable) {
 				Dungeon.quickslot.convertToPlaceholder(item);
 			}
-			item.updateQuickslot();
+			Item.updateQuickslot();
 
+			item = toSteal.detach( hero.belongings.backpack );
 			if (item instanceof Honeypot){
-				this.item = ((Honeypot)item).shatter(this, this.pos);
-				item.detach( hero.belongings.backpack );
-			} else {
-				this.item = item.detach( hero.belongings.backpack );
-				if ( item instanceof Honeypot.ShatteredPot)
-					((Honeypot.ShatteredPot)item).pickupPot(this);
+				item = ((Honeypot)item).shatter(this, this.pos);
+			} else if (item instanceof Honeypot.ShatteredPot) {
+				((Honeypot.ShatteredPot)item).pickupPot(this);
 			}
 
 			return true;
