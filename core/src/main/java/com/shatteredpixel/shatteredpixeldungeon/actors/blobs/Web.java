@@ -52,6 +52,7 @@ public class Web extends Blob {
 				volume += off[cell];
 
 				l.solid[cell] = off[cell] > 0 || (Terrain.flags[l.map[cell]] & Terrain.SOLID) != 0;
+				l.flamable[cell] = off[cell] > 0 || (Terrain.flags[l.map[cell]] & Terrain.FLAMABLE) != 0;
 			}
 		}
 	}
@@ -60,6 +61,7 @@ public class Web extends Blob {
 	public void seed(Level level, int cell, int amount) {
 		super.seed(level, cell, amount);
 		level.solid[cell] = cur[cell] > 0 || (Terrain.flags[level.map[cell]] & Terrain.SOLID) != 0;
+		level.flamable[cell] = cur[cell] > 0 || (Terrain.flags[level.map[cell]] & Terrain.FLAMABLE) != 0;
 	}
 
 	//affects characters as they step on it. See Level.OccupyCell and Level.PressCell
@@ -80,6 +82,7 @@ public class Web extends Blob {
 		if (cur == null) return;
 		Level l = Dungeon.level;
 		l.solid[cell] = cur[cell] > 0 || (Terrain.flags[l.map[cell]] & Terrain.SOLID) != 0;
+		l.flamable[cell] = cur[cell] > 0 || (Terrain.flags[l.map[cell]] & Terrain.FLAMABLE) != 0;
 	}
 
 	@Override

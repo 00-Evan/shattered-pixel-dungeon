@@ -52,7 +52,7 @@ public class WandOfFireblast extends DamageWand {
 	{
 		image = ItemSpriteSheet.WAND_FIREBOLT;
 
-		collisionProperties = Ballistica.STOP_TERRAIN | Ballistica.IGNORE_DOORS;
+		collisionProperties = Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID;
 	}
 
 	//1x/2x/3x damage

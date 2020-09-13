@@ -205,11 +205,11 @@ public class RipperDemon extends Mob {
 						targetPos = enemy.pos + PathFinder.CIRCLE8[(closestIdx+4)%8];
 					}
 
-					Ballistica b = new Ballistica(pos, targetPos, Ballistica.STOP_TARGET | Ballistica.STOP_TERRAIN);
+					Ballistica b = new Ballistica(pos, targetPos, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID);
 					//try aiming directly at hero if aiming near them doesn't work
 					if (b.collisionPos != targetPos && targetPos != enemy.pos){
 						targetPos = enemy.pos;
-						b = new Ballistica(pos, targetPos, Ballistica.STOP_TARGET | Ballistica.STOP_TERRAIN);
+						b = new Ballistica(pos, targetPos, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID);
 					}
 					if (b.collisionPos == targetPos){
 						//get ready to leap

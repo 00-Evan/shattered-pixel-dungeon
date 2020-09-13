@@ -48,7 +48,7 @@ public class WandOfCorrosion extends Wand {
 	{
 		image = ItemSpriteSheet.WAND_CORROSION;
 
-		collisionProperties = Ballistica.STOP_TARGET | Ballistica.STOP_TERRAIN;
+		collisionProperties = Ballistica.STOP_TARGET | Ballistica.STOP_SOLID;
 	}
 
 	@Override

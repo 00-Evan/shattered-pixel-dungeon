@@ -171,7 +171,7 @@ public class Spinner extends Mob {
 		int webPos = b.path.get( collisionIndex+1 );
 
 		//ensure we aren't shooting the web through walls
-		int projectilePos = new Ballistica( pos, webPos, Ballistica.STOP_TARGET | Ballistica.STOP_TERRAIN).collisionPos;
+		int projectilePos = new Ballistica( pos, webPos, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID).collisionPos;
 		
 		if (projectilePos == webPos && Dungeon.level.passable[webPos]){
 			return webPos;
