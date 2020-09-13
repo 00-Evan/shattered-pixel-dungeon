@@ -177,6 +177,7 @@ public class Mimic extends Mob {
 
 	public void stopHiding(){
 		state = HUNTING;
+		if (sprite != null) sprite.idle();
 		if (Actor.chars().contains(this) && Dungeon.level.heroFOV[pos]) {
 			enemy = Dungeon.hero;
 			target = Dungeon.hero.pos;
