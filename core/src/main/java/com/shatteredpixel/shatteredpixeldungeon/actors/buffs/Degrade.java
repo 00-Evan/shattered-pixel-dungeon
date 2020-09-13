@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -39,6 +40,7 @@ public class Degrade extends FlavourBuff {
 	public boolean attachTo(Char target) {
 		if (super.attachTo(target)){
 			Item.updateQuickslot();
+			if (target instanceof Hero) ((Hero) target).updateHT(false);
 			return true;
 		}
 		return false;
@@ -47,6 +49,7 @@ public class Degrade extends FlavourBuff {
 	@Override
 	public void detach() {
 		super.detach();
+		if (target instanceof Hero) ((Hero) target).updateHT(false);
 		Item.updateQuickslot();
 	}
 
