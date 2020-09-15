@@ -34,7 +34,7 @@ public class PotionOfStamina extends ExoticPotion {
 	
 	@Override
 	public void apply(Hero hero) {
-		setKnown();
+		identify();
 		
 		Buff.affect(hero, Stamina.class, Stamina.DURATION);
 	}

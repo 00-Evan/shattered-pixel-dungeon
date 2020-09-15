@@ -40,7 +40,7 @@ public class PotionOfCleansing extends ExoticPotion {
 	
 	@Override
 	public void apply( Hero hero ) {
-		setKnown();
+		identify();
 		
 		cleanse( hero );
 	}
@@ -53,7 +53,7 @@ public class PotionOfCleansing extends ExoticPotion {
 			if (Dungeon.level.heroFOV[cell]) {
 				Sample.INSTANCE.play(Assets.Sounds.SHATTER);
 				splash(cell);
-				setKnown();
+				identify();
 			}
 			
 			if (Actor.findChar(cell) != null){

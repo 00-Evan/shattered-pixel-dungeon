@@ -45,7 +45,7 @@ public class ElixirOfMight extends Elixir {
 	
 	@Override
 	public void apply( Hero hero ) {
-		setKnown();
+		identify();
 		
 		hero.STR++;
 		

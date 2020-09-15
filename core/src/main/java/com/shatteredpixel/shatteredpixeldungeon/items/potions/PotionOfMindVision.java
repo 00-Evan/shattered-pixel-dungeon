@@ -37,7 +37,7 @@ public class PotionOfMindVision extends Potion {
 
 	@Override
 	public void apply( Hero hero ) {
-		setKnown();
+		identify();
 		Buff.affect( hero, MindVision.class, MindVision.DURATION );
 		Dungeon.observe();
 		

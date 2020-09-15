@@ -41,8 +41,6 @@ public class InfernalBrew extends Brew {
 	public void shatter(int cell) {
 		
 		if (Dungeon.level.heroFOV[cell]) {
-			setKnown();
-			
 			splash( cell );
 			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 			Sample.INSTANCE.play( Assets.Sounds.GAS );

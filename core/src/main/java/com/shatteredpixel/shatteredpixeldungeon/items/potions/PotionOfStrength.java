@@ -38,7 +38,7 @@ public class PotionOfStrength extends Potion {
 	
 	@Override
 	public void apply( Hero hero ) {
-		setKnown();
+		identify();
 		
 		hero.STR++;
 		hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "msg_1") );

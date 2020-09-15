@@ -40,7 +40,7 @@ public class PotionOfLiquidFlame extends Potion {
 	public void shatter( int cell ) {
 
 		if (Dungeon.level.heroFOV[cell]) {
-			setKnown();
+			identify();
 
 			splash( cell );
 			Sample.INSTANCE.play( Assets.Sounds.SHATTER );

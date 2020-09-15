@@ -45,8 +45,8 @@ public enum Talent {
 
 	HEARTY_MEAL(0),
 	ARMSMASTERS_INTUITION(1),
-	TEST_WARRIOR_3(2),
-	TEST_WARRIOR_4(3),
+	TEST_SUBJECT(2),
+	IRON_WILL(3),
 
 	ENERGIZING_MEAL(16),
 	SCHOLARS_INTUITION(17),
@@ -179,7 +179,7 @@ public enum Talent {
 		//tier 1
 		switch (hero.heroClass){
 			case WARRIOR: default:
-				Collections.addAll(tierTalents, HEARTY_MEAL, ARMSMASTERS_INTUITION, TEST_WARRIOR_3, TEST_WARRIOR_4);
+				Collections.addAll(tierTalents, HEARTY_MEAL, ARMSMASTERS_INTUITION, TEST_SUBJECT, IRON_WILL);
 				break;
 			case MAGE:
 				Collections.addAll(tierTalents, ENERGIZING_MEAL, SCHOLARS_INTUITION, TEST_MAGE_3, TEST_MAGE_4);

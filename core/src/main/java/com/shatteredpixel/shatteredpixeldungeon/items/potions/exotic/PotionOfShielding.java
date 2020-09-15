@@ -37,7 +37,7 @@ public class PotionOfShielding extends ExoticPotion {
 	
 	@Override
 	public void apply(Hero hero) {
-		setKnown();
+		identify();
 
 		if (Dungeon.isChallenged(Challenges.NO_HEALING)){
 			PotionOfHealing.pharmacophobiaProc(hero);

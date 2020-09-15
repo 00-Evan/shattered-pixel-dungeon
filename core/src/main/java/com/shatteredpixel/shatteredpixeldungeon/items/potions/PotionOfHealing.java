@@ -50,7 +50,7 @@ public class PotionOfHealing extends Potion {
 	
 	@Override
 	public void apply( Hero hero ) {
-		setKnown();
+		identify();
 		cure( hero );
 		heal( hero );
 	}

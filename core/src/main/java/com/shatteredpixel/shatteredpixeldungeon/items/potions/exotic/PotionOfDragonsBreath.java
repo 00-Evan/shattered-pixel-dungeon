@@ -66,10 +66,10 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 		public void onSelect(final Integer cell) {
 
 			if (cell == null && !isKnown()){
-				setKnown();
+				identify();
 				detach(curUser.belongings.backpack);
 			} else if (cell != null) {
-				setKnown();
+				identify();
 				Sample.INSTANCE.play( Assets.Sounds.DRINK );
 				curUser.sprite.operate(curUser.pos, new Callback() {
 					@Override

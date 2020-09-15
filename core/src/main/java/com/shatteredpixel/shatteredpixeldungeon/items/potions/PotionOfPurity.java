@@ -90,8 +90,8 @@ public class PotionOfPurity extends Potion {
 		if (Dungeon.level.heroFOV[cell]) {
 			splash(cell);
 			Sample.INSTANCE.play(Assets.Sounds.SHATTER);
-			
-			setKnown();
+
+			identify();
 			GLog.i(Messages.get(this, "freshness"));
 		}
 		
@@ -101,7 +101,7 @@ public class PotionOfPurity extends Potion {
 	public void apply( Hero hero ) {
 		GLog.w( Messages.get(this, "protected") );
 		Buff.prolong( hero, BlobImmunity.class, BlobImmunity.DURATION );
-		setKnown();
+		identify();
 	}
 	
 	@Override
