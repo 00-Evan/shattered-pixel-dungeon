@@ -21,12 +21,19 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
 
@@ -37,22 +44,22 @@ import java.util.LinkedHashMap;
 public enum Talent {
 
 	HEARTY_MEAL(0),
-	TEST_WARRIOR_2(1),
+	ARMSMASTERS_INTUITION(1),
 	TEST_WARRIOR_3(2),
 	TEST_WARRIOR_4(3),
 
 	ENERGIZING_MEAL(16),
-	TEST_MAGE_2(17),
+	SCHOLARS_INTUITION(17),
 	TEST_MAGE_3(18),
 	TEST_MAGE_4(19),
 
 	RATIONED_MEAL(32),
-	TEST_ROGUE_2(33),
+	THIEFS_INTUITION(33),
 	TEST_ROGUE_3(34),
 	TEST_ROGUE_4(35),
 
 	INVIGORATING_MEAL(48),
-	TEST_HUNTRESS_2(49),
+	SURVIVALISTS_INTUITION(49),
 	TEST_HUNTRESS_3(50),
 	TEST_HUNTRESS_4(51);
 
@@ -76,6 +83,26 @@ public enum Talent {
 
 	public String desc(){
 		return Messages.get(this, name() + ".desc");
+	}
+
+	public static void onTalentUpgraded( Hero hero, Talent talent){
+		if (talent == ARMSMASTERS_INTUITION && hero.pointsInTalent(ARMSMASTERS_INTUITION) == 2){
+			if (hero.belongings.weapon != null) hero.belongings.weapon.identify();
+			if (hero.belongings.armor != null)  hero.belongings.armor.identify();
+		}
+		if (talent == THIEFS_INTUITION && hero.pointsInTalent(THIEFS_INTUITION) == 2){
+			if (hero.belongings.ring instanceof Ring) hero.belongings.ring.identify();
+			if (hero.belongings.misc instanceof Ring) hero.belongings.misc.identify();
+			for (Item item : Dungeon.hero.belongings){
+				if (item instanceof Ring){
+					((Ring) item).setKnown();
+				}
+			}
+		}
+		if (talent == THIEFS_INTUITION && hero.pointsInTalent(THIEFS_INTUITION) == 1){
+			if (hero.belongings.ring instanceof Ring) hero.belongings.ring.setKnown();
+			if (hero.belongings.misc instanceof Ring) ((Ring) hero.belongings.misc).setKnown();
+		}
 	}
 
 	public static void onFoodEaten( Hero hero, float foodVal ){
@@ -104,6 +131,42 @@ public enum Talent {
 		}
 	}
 
+	public static float itemIDSpeedFactor( Hero hero, Item item ){
+		// 1.5x/2x speed with huntress talent
+		float factor = 1f + hero.pointsInTalent(SURVIVALISTS_INTUITION)/2f;
+
+		//otherwise 2x/3x speed (also ID instantly though)
+		if (item instanceof MeleeWeapon || item instanceof Armor){
+			factor *= 1f + hero.pointsInTalent(ARMSMASTERS_INTUITION);
+		}
+		if (item instanceof Wand){
+			factor *= 1f + hero.pointsInTalent(SCHOLARS_INTUITION);
+		}
+		if (item instanceof Ring){
+			factor *= 1f + hero.pointsInTalent(THIEFS_INTUITION);
+		}
+		return factor;
+	}
+
+	public static void onItemEquipped( Hero hero, Item item ){
+		if (hero.hasTalent(ARMSMASTERS_INTUITION) && (item instanceof Weapon || item instanceof Armor)){
+			item.identify();
+		}
+		if (hero.hasTalent(THIEFS_INTUITION) && item instanceof Ring){
+			if (hero.pointsInTalent(THIEFS_INTUITION) == 2){
+				item.identify();
+			} else {
+				((Ring) item).setKnown();
+			}
+		}
+	}
+
+	public static void onItemCollected( Hero hero, Item item ){
+		if (hero.pointsInTalent(THIEFS_INTUITION) == 2){
+			if (item instanceof Ring) ((Ring) item).setKnown();
+		}
+	}
+
 	private static final int TALENT_TIERS = 1;
 
 	public static void initClassTalents( Hero hero ){
@@ -116,16 +179,16 @@ public enum Talent {
 		//tier 1
 		switch (hero.heroClass){
 			case WARRIOR: default:
-				Collections.addAll(tierTalents, HEARTY_MEAL, TEST_WARRIOR_2, TEST_WARRIOR_3, TEST_WARRIOR_4);
+				Collections.addAll(tierTalents, HEARTY_MEAL, ARMSMASTERS_INTUITION, TEST_WARRIOR_3, TEST_WARRIOR_4);
 				break;
 			case MAGE:
-				Collections.addAll(tierTalents, ENERGIZING_MEAL, TEST_MAGE_2, TEST_MAGE_3, TEST_MAGE_4);
+				Collections.addAll(tierTalents, ENERGIZING_MEAL, SCHOLARS_INTUITION, TEST_MAGE_3, TEST_MAGE_4);
 				break;
 			case ROGUE:
-				Collections.addAll(tierTalents, RATIONED_MEAL, TEST_ROGUE_2, TEST_ROGUE_3, TEST_ROGUE_4);
+				Collections.addAll(tierTalents, RATIONED_MEAL, THIEFS_INTUITION, TEST_ROGUE_3, TEST_ROGUE_4);
 				break;
 			case HUNTRESS:
-				Collections.addAll(tierTalents, INVIGORATING_MEAL, TEST_HUNTRESS_2, TEST_HUNTRESS_3, TEST_HUNTRESS_4);
+				Collections.addAll(tierTalents, INVIGORATING_MEAL, SURVIVALISTS_INTUITION, TEST_HUNTRESS_3, TEST_HUNTRESS_4);
 				break;
 		}
 		for (Talent talent : tierTalents){
