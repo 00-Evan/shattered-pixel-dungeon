@@ -76,6 +76,13 @@ public class Burning extends Buff implements Hero.Doom {
 	}
 
 	@Override
+	public boolean attachTo(Char target) {
+		Buff.detach( target, Chill.class);
+
+		return super.attachTo(target);
+	}
+
+	@Override
 	public boolean act() {
 		
 		if (target.isAlive() && !target.isImmune(getClass())) {

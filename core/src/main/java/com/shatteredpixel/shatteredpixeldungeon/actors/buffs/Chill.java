@@ -39,15 +39,9 @@ public class Chill extends FlavourBuff {
 
 	@Override
 	public boolean attachTo(Char target) {
-		//can't chill what's frozen!
-		if (target.buff(Frost.class) != null) return false;
+		Buff.detach( target, Burning.class );
 
-		if (super.attachTo(target)){
-			Buff.detach( target, Burning.class );
-			return true;
-		} else {
-			return false;
-		}
+		return super.attachTo(target);
 	}
 
 	//reduces speed by 10% for every turn remaining, capping at 50%
