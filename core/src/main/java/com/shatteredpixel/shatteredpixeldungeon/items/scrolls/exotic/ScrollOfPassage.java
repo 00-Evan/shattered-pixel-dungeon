@@ -40,8 +40,8 @@ public class ScrollOfPassage extends ExoticScroll {
 	
 	@Override
 	public void doRead() {
-		
-		setKnown();
+
+		identify();
 		
 		if (Dungeon.bossLevel()) {
 			

@@ -50,7 +50,7 @@ public class ScrollOfMirrorImage extends Scroll {
 		int spawnedImages = spawnImages(curUser, NIMAGES);
 		
 		if (spawnedImages > 0) {
-			setKnown();
+			identify();
 		}
 		
 		Sample.INSTANCE.play( Assets.Sounds.READ );

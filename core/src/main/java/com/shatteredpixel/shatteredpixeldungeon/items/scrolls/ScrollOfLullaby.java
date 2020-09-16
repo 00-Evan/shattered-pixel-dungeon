@@ -55,7 +55,7 @@ public class ScrollOfLullaby extends Scroll {
 
 		GLog.i( Messages.get(this, "sooth") );
 
-		setKnown();
+		identify();
 		readAnimation();
 	}
 	

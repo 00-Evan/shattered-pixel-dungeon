@@ -71,7 +71,7 @@ public class ScrollOfPolymorph extends ExoticScroll {
 				}
 			}
 		}
-		setKnown();
+		identify();
 		
 		readAnimation();
 		

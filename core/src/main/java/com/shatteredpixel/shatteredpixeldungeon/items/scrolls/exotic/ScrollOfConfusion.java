@@ -46,8 +46,8 @@ public class ScrollOfConfusion extends ExoticScroll {
 				Buff.prolong(mob, Blindness.class, Blindness.DURATION);
 			}
 		}
-		
-		setKnown();
+
+		identify();
 		
 		curUser.sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
 		Sample.INSTANCE.play( Assets.Sounds.READ );

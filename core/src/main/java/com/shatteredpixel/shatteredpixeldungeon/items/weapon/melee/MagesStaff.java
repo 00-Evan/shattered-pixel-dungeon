@@ -27,6 +27,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
@@ -231,6 +233,14 @@ public class MagesStaff extends MeleeWeapon {
 		super.upgrade( enchant );
 
 		updateWand(true);
+
+		if (wand != null && Dungeon.hero.hasTalent(Talent.ENERGIZING_UPGRADE)){
+			wand.curCharges += Dungeon.hero.pointsInTalent(Talent.ENERGIZING_UPGRADE);
+			wand.curCharges = Math.min( wand.curCharges, wand.maxCharges + Dungeon.hero.pointsInTalent(Talent.ENERGIZING_UPGRADE));
+			ScrollOfRecharging.charge( Dungeon.hero );
+			SpellSprite.show( curUser, SpellSprite.CHARGE );
+			updateQuickslot();
+		}
 
 		return this;
 	}

@@ -57,7 +57,7 @@ public class ScrollOfTeleportation extends Scroll {
 		Sample.INSTANCE.play( Assets.Sounds.READ );
 		
 		teleportPreferringUnseen( curUser );
-		setKnown();
+		identify();
 
 		readAnimation();
 	}

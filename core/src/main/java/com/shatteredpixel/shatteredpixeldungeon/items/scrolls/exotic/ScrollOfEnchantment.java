@@ -45,7 +45,7 @@ public class ScrollOfEnchantment extends ExoticScroll {
 	
 	@Override
 	public void doRead() {
-		setKnown();
+		identify();
 		
 		GameScene.selectItem( itemSelector, WndBag.Mode.ENCHANTABLE, Messages.get(this, "inv_title"));
 	}

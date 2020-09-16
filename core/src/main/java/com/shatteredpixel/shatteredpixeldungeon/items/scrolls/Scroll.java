@@ -22,10 +22,13 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
@@ -217,7 +220,16 @@ public abstract class Scroll extends Item {
 	
 	@Override
 	public Item identify() {
-		setKnown();
+
+		if (!isKnown()) {
+			setKnown();
+			//6/9 HP barrier
+			Hero hero = Dungeon.hero;
+			if (hero.hasTalent(Talent.TESTED_HYPOTHESIS)) {
+				Buff.affect(hero, Barrier.class).setShield(3 + (3 * hero.pointsInTalent(Talent.TESTED_HYPOTHESIS)));
+				ScrollOfRecharging.charge(hero);
+			}
+		}
 		return super.identify();
 	}
 	

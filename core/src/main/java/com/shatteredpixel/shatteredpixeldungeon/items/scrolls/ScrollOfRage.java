@@ -50,7 +50,7 @@ public class ScrollOfRage extends Scroll {
 		}
 
 		GLog.w( Messages.get(this, "roar") );
-		setKnown();
+		identify();
 		
 		curUser.sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
 		Sample.INSTANCE.play( Assets.Sounds.CHALLENGE );

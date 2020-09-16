@@ -50,8 +50,8 @@ public class ScrollOfAffection extends ExoticScroll {
 		}
 		
 		//GLog.i( Messages.get(this, "sooth") );
-		
-		setKnown();
+
+		identify();
 		
 		readAnimation();
 		

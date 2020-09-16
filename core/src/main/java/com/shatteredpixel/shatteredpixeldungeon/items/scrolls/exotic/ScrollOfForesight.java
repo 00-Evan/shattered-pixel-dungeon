@@ -40,8 +40,8 @@ public class ScrollOfForesight extends ExoticScroll {
 		Sample.INSTANCE.play( Assets.Sounds.READ );
 		
 		Buff.affect(curUser, Foresight.class, Foresight.DURATION);
-		
-		setKnown();
+
+		identify();
 		
 		readAnimation();
 	}

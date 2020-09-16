@@ -38,7 +38,7 @@ public abstract class InventoryScroll extends Scroll {
 	public void doRead() {
 		
 		if (!isKnown()) {
-			setKnown();
+			identify();
 			identifiedByUse = true;
 		} else {
 			identifiedByUse = false;

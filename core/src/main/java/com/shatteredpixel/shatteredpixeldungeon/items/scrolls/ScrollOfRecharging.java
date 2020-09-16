@@ -49,7 +49,7 @@ public class ScrollOfRecharging extends Scroll {
 
 		GLog.i( Messages.get(this, "surge") );
 		SpellSprite.show( curUser, SpellSprite.CHARGE );
-		setKnown();
+		identify();
 
 		readAnimation();
 	}

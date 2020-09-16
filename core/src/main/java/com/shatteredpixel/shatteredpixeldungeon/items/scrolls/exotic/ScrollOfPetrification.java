@@ -47,8 +47,8 @@ public class ScrollOfPetrification extends ExoticScroll {
 				Buff.affect( mob, Paralysis.class, Paralysis.DURATION );
 			}
 		}
-		
-		setKnown();
+
+		identify();
 		
 		readAnimation();
 	}

@@ -52,8 +52,8 @@ public class ScrollOfPrismaticImage extends ExoticScroll {
 		if (!found) {
 			Buff.affect(curUser, PrismaticGuard.class).set( PrismaticGuard.maxHP( curUser ) );
 		}
-		
-		setKnown();
+
+		identify();
 		
 		Sample.INSTANCE.play( Assets.Sounds.READ );
 	
