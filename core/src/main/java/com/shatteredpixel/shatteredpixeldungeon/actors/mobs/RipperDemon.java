@@ -135,39 +135,56 @@ public class RipperDemon extends Mob {
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
 
 			if (leapPos != -1){
+
+				leapCooldown = Random.NormalIntRange(2, 4);
+				Ballistica b = new Ballistica(pos, leapPos, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID);
+
+				//check if leap pos is not obstructed by terrain
+				if (b.collisionPos != leapPos){
+					leapPos = -1;
+					return true;
+				}
+
+				final Char leapVictim = Actor.findChar(leapPos);
+				final int endPos;
+
+				//ensure there is somewhere to land after leaping
+				if (leapVictim != null){
+					int bouncepos = -1;
+					for (int i : PathFinder.NEIGHBOURS8){
+						if ((bouncepos == -1 || Dungeon.level.trueDistance(pos, leapPos+i) < Dungeon.level.trueDistance(pos, bouncepos))
+								&& Actor.findChar(leapPos+i) == null && Dungeon.level.passable[leapPos+i]){
+							bouncepos = leapPos+i;
+						}
+					}
+					if (bouncepos == -1) {
+						leapPos = -1;
+						return true;
+					} else {
+						endPos = bouncepos;
+					}
+				} else {
+					endPos = leapPos;
+				}
+
 				//do leap
-				sprite.visible = Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[leapPos];
+				sprite.visible = Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[leapPos] || Dungeon.level.heroFOV[endPos];
 				sprite.jump(pos, leapPos, new Callback() {
 					@Override
 					public void call() {
 
-						Char ch = Actor.findChar(leapPos);
-						if (ch != null){
-							if (alignment != ch.alignment){
-								Buff.affect(ch, Bleeding.class).set(0.75f*damageRoll());
-								ch.sprite.flash();
-								Sample.INSTANCE.play(Assets.Sounds.HIT);
-							}
-							//bounce to a random safe pos(if possible)
-							int bouncepos = -1;
-							for (int i : PathFinder.NEIGHBOURS8){
-								if ((bouncepos == -1 || Dungeon.level.trueDistance(pos, leapPos+i) < Dungeon.level.trueDistance(pos, bouncepos))
-										&& Actor.findChar(leapPos+i) == null && Dungeon.level.passable[leapPos+i]){
-									bouncepos = leapPos+i;
-								}
-							}
-							if (bouncepos != -1) {
-								pos = bouncepos;
-								Actor.addDelayed(new Pushing(RipperDemon.this, leapPos, bouncepos), -1);
-							} else {
-								pos = leapPos;
-							}
-						} else {
-							pos = leapPos;
+						if (leapVictim != null && alignment != leapVictim.alignment){
+							Buff.affect(leapVictim, Bleeding.class).set(0.75f*damageRoll());
+							leapVictim.sprite.flash();
+							Sample.INSTANCE.play(Assets.Sounds.HIT);
 						}
 
+						if (endPos != leapPos){
+							Actor.addDelayed(new Pushing(RipperDemon.this, leapPos, endPos), -1);
+						}
+
+						pos = endPos;
 						leapPos = -1;
-						leapCooldown = Random.NormalIntRange(2, 4);
 						sprite.idle();
 						Dungeon.level.occupyCell(RipperDemon.this);
 						next();
