@@ -37,6 +37,8 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Reflection;
 
+import java.util.ArrayList;
+
 public class ReclaimTrap extends TargetedSpell {
 	
 	{
@@ -45,6 +47,17 @@ public class ReclaimTrap extends TargetedSpell {
 	
 	private Class<?extends Trap> storedTrap = null;
 	
+	@Override
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions(hero);
+		//prevents exploits
+		if (storedTrap != null){
+			actions.remove(AC_DROP);
+			actions.remove(AC_THROW);
+		}
+		return actions;
+	}
+
 	@Override
 	protected void affectTarget(Ballistica bolt, Hero hero) {
 		if (storedTrap == null) {
@@ -78,18 +91,6 @@ public class ReclaimTrap extends TargetedSpell {
 			desc += "\n\n" + Messages.get(this, "desc_trap", Messages.get(storedTrap, "name"));
 		}
 		return desc;
-	}
-	
-	@Override
-	protected void onThrow(int cell) {
-		storedTrap = null;
-		super.onThrow(cell);
-	}
-	
-	@Override
-	public void doDrop(Hero hero) {
-		storedTrap = null;
-		super.doDrop(hero);
 	}
 	
 	private static final ItemSprite.Glowing[] COLORS = new ItemSprite.Glowing[]{
