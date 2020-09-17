@@ -25,6 +25,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.watabou.noosa.Game;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -60,17 +61,27 @@ public enum Sample {
 		}
 	}
 
-	public void load( final String... assets ) {
+	public synchronized void load( final String... assets ) {
+
+		final ArrayList<String> toLoad = new ArrayList<>();
+
+		for (String asset : assets){
+			if (!ids.containsKey(asset)){
+				toLoad.add(asset);
+			}
+		}
+
+		//don't make a new thread of all assets are already loaded
+		if (toLoad.isEmpty()) return;
 
 		//load in a separate thread to prevent this blocking the UI
 		new Thread(){
 			@Override
 			public void run() {
-				synchronized (Sample.class) {
-					for (String asset : assets) {
-						if (!ids.containsKey(asset)) {
-							ids.put(asset, Gdx.audio.newSound(Gdx.files.internal(asset)));
-						}
+				for (String asset : toLoad) {
+					Sound newSound = Gdx.audio.newSound(Gdx.files.internal(asset));
+					synchronized (INSTANCE) {
+						ids.put(asset, newSound);
 					}
 				}
 			}
