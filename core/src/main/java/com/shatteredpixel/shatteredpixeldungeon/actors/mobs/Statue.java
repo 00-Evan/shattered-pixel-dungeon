@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -169,7 +168,7 @@ public class Statue extends Mob {
 	}
 
 	public static Statue random(){
-		if (Random.Int(10) == 0 && !Dungeon.isChallenged(Challenges.NO_ARMOR)){
+		if (Random.Int(10) == 0){
 			return new ArmoredStatue();
 		} else {
 			return new Statue();

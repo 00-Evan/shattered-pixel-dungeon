@@ -23,9 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 
 public class Challenges {
 
@@ -56,16 +53,8 @@ public class Challenges {
 
 	public static boolean isItemBlocked( Item item ){
 
-		if (Dungeon.isChallenged(NO_ARMOR)){
-			if (item instanceof Armor && !(item instanceof ClothArmor || item instanceof ClassArmor)) {
-				return true;
-			}
-		}
-
-		if (Dungeon.isChallenged(NO_HERBALISM)){
-			if (item instanceof Dewdrop) {
-				return true;
-			}
+		if (Dungeon.isChallenged(NO_HERBALISM) && item instanceof Dewdrop){
+			return true;
 		}
 
 		return false;
