@@ -546,8 +546,12 @@ public abstract class Mob extends Char {
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
 		
-		if (enemy instanceof Hero && ((Hero) enemy).belongings.weapon instanceof MissileWeapon){
+		if (enemy instanceof Hero
+				&& ((Hero) enemy).belongings.weapon instanceof MissileWeapon
+				&& !hitWithRanged){
 			hitWithRanged = true;
+			Statistics.thrownAssists++;
+			Badges.validateHuntressUnlock();
 		}
 		
 		if (surprisedBy(enemy)) {
@@ -648,11 +652,6 @@ public abstract class Mob extends Char {
 	@Override
 	public void die( Object cause ) {
 
-		if (hitWithRanged){
-			Statistics.thrownAssists++;
-			Badges.validateHuntressUnlock();
-		}
-		
 		if (cause == Chasm.class){
 			//50% chance to round up, 50% to round down
 			if (EXP % 2 == 1) EXP += Random.Int(2);
