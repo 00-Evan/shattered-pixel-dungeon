@@ -209,8 +209,10 @@ public class BitmapText extends Visual {
 	}
 
 	public synchronized void text( String str ) {
-		text = str;
-		dirty = true;
+		if (str == null || !str.equals(text)) {
+			text = str;
+			dirty = true;
+		}
 	}
 	
 	public static class Font extends TextureFilm {

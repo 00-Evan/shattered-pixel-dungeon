@@ -57,6 +57,8 @@ public class StatusPane extends Component {
 	private Image rawShielding;
 	private Image shieldedHP;
 	private Image hp;
+	private BitmapText hpText;
+
 	private Image exp;
 
 	private BossHealthBar bossHP;
@@ -120,6 +122,10 @@ public class StatusPane extends Component {
 		hp = new Image( Assets.Interfaces.HP_BAR );
 		add( hp );
 
+		hpText = new BitmapText(PixelScene.pixelFont);
+		hpText.alpha(0.6f);
+		add(hpText);
+
 		exp = new Image( Assets.Interfaces.XP_BAR );
 		add( exp );
 
@@ -166,6 +172,12 @@ public class StatusPane extends Component {
 		hp.x = shieldedHP.x = rawShielding.x = 30;
 		hp.y = shieldedHP.y = rawShielding.y = 3;
 
+		hpText.scale.set(PixelScene.align(0.5f));
+		hpText.x = hp.x + 1;
+		hpText.y = hp.y + (hp.height - (hpText.baseLine()+hpText.scale.y))/2f;
+		hpText.y -= 0.001f; //prefer to be slightly higher
+		PixelScene.align(hpText);
+
 		bossHP.setPos( 6 + (width - bossHP.width())/2, 20);
 
 		depth.x = width - 35.5f - depth.width() / 2f;
@@ -193,14 +205,14 @@ public class StatusPane extends Component {
 	public void update() {
 		super.update();
 		
-		float health = Dungeon.hero.HP;
-		float shield = Dungeon.hero.shielding();
-		float max = Dungeon.hero.HT;
+		int health = Dungeon.hero.HP;
+		int shield = Dungeon.hero.shielding();
+		int max = Dungeon.hero.HT;
 
 		if (!Dungeon.hero.isAlive()) {
 			avatar.tint(0x000000, 0.5f);
-		} else if ((health/max) < 0.3f) {
-			warning += Game.elapsed * 5f *(0.4f - (health/max));
+		} else if ((health/(float)max) < 0.3f) {
+			warning += Game.elapsed * 5f *(0.4f - (health/(float)max));
 			warning %= 1f;
 			avatar.tint(ColorMath.interpolate(warning, warningColors), 0.5f );
 		} else if (talentBlink > 0){
@@ -210,9 +222,15 @@ public class StatusPane extends Component {
 			avatar.resetColor();
 		}
 
-		hp.scale.x = Math.max( 0, (health-shield)/max);
-		shieldedHP.scale.x = health/max;
-		rawShielding.scale.x = shield/max;
+		hp.scale.x = Math.max( 0, (health-shield)/(float)max);
+		shieldedHP.scale.x = health/(float)max;
+		rawShielding.scale.x = shield/(float)max;
+
+		if (shield <= 0){
+			hpText.text(health + "/" + max);
+		} else {
+			hpText.text(health + "+" + shield +  "/" + max);
+		}
 
 		exp.scale.x = (width / exp.width) * Dungeon.hero.exp / Dungeon.hero.maxExp();
 
