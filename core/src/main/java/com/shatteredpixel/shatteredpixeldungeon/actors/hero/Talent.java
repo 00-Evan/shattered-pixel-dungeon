@@ -56,12 +56,12 @@ public enum Talent {
 	RATIONED_MEAL(32),
 	THIEFS_INTUITION(33),
 	TEST_ROGUE_3(34),
-	TEST_ROGUE_4(35),
+	MENDING_SHADOWS(35),
 
 	INVIGORATING_MEAL(48),
 	SURVIVALISTS_INTUITION(49),
 	TEST_HUNTRESS_3(50),
-	TEST_HUNTRESS_4(51);
+	NATURES_AID(51);
 
 	int icon;
 
@@ -185,10 +185,10 @@ public enum Talent {
 				Collections.addAll(tierTalents, ENERGIZING_MEAL, SCHOLARS_INTUITION, TESTED_HYPOTHESIS, ENERGIZING_UPGRADE);
 				break;
 			case ROGUE:
-				Collections.addAll(tierTalents, RATIONED_MEAL, THIEFS_INTUITION, TEST_ROGUE_3, TEST_ROGUE_4);
+				Collections.addAll(tierTalents, RATIONED_MEAL, THIEFS_INTUITION, TEST_ROGUE_3, MENDING_SHADOWS);
 				break;
 			case HUNTRESS:
-				Collections.addAll(tierTalents, INVIGORATING_MEAL, SURVIVALISTS_INTUITION, TEST_HUNTRESS_3, TEST_HUNTRESS_4);
+				Collections.addAll(tierTalents, INVIGORATING_MEAL, SURVIVALISTS_INTUITION, TEST_HUNTRESS_3, NATURES_AID);
 				break;
 		}
 		for (Talent talent : tierTalents){
