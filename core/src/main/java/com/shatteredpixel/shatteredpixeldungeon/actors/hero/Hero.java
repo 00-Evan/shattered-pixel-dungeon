@@ -1318,15 +1318,20 @@ public class Hero extends Char {
 		if (cell == -1) {
 			return false;
 		}
+
+		if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
+			fieldOfView = new boolean[Dungeon.level.length()];
+			Dungeon.level.updateFieldOfView( this, fieldOfView );
+		}
 		
-		Char ch;
-		Heap heap;
+		Char ch = Actor.findChar( cell );
+		Heap heap = Dungeon.level.heaps.get( cell );
 		
 		if (Dungeon.level.map[cell] == Terrain.ALCHEMY && cell != pos) {
 			
 			curAction = new HeroAction.Alchemy( cell );
 			
-		} else if (fieldOfView[cell] && (ch = Actor.findChar( cell )) instanceof Mob) {
+		} else if (fieldOfView[cell] && ch instanceof Mob) {
 
 			if (ch.alignment != Alignment.ENEMY && ch.buff(Amok.class) == null) {
 				curAction = new HeroAction.Interact( ch );
@@ -1334,7 +1339,7 @@ public class Hero extends Char {
 				curAction = new HeroAction.Attack( ch );
 			}
 
-		} else if ((heap = Dungeon.level.heaps.get( cell )) != null
+		} else if (heap != null
 				//moving to an item doesn't auto-pickup when enemies are near...
 				&& (visibleEnemies.size() == 0 || cell == pos ||
 				//...but only for standard heaps, chests and similar open as normal.
