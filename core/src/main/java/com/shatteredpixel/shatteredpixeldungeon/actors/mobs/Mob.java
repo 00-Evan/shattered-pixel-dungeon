@@ -890,7 +890,8 @@ public abstract class Mob extends Char {
 					Char newEnemy = chooseEnemy();
 					if (newEnemy != null && enemy != newEnemy){
 						enemy = newEnemy;
-						return act(enemyInFOV, justAlerted);
+						spend( TICK );
+						return true;
 					}
 
 					spend( TICK );
