@@ -22,10 +22,12 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
@@ -34,8 +36,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,12 +59,12 @@ public enum Talent {
 
 	RATIONED_MEAL(32),
 	THIEFS_INTUITION(33),
-	TEST_ROGUE_3(34),
+	SUCKER_PUNCH(34),
 	MENDING_SHADOWS(35),
 
 	INVIGORATING_MEAL(48),
 	SURVIVALISTS_INTUITION(49),
-	TEST_HUNTRESS_3(50),
+	FOLLOWUP_STRIKE(50),
 	NATURES_AID(51);
 
 	int icon;
@@ -167,6 +171,29 @@ public enum Talent {
 		}
 	}
 
+	public static int onAttackProc( Hero hero, Char enemy, int dmg ){
+		if (hero.hasTalent(Talent.SUCKER_PUNCH)
+				&& enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)
+				&& enemy.buff(SuckerPunchTracker.class) == null){
+			dmg += Random.IntRange(1 , hero.pointsInTalent(Talent.SUCKER_PUNCH));
+			Buff.affect(enemy, SuckerPunchTracker.class);
+		}
+
+		if (hero.hasTalent(Talent.FOLLOWUP_STRIKE)) {
+			if (hero.belongings.weapon instanceof MissileWeapon) {
+				Buff.affect(enemy, FollowupStrikeTracker.class);
+			} else if (enemy.buff(FollowupStrikeTracker.class) != null){
+				dmg += Random.IntRange(1 , hero.pointsInTalent(Talent.FOLLOWUP_STRIKE));
+				enemy.buff(FollowupStrikeTracker.class).detach();
+			}
+		}
+
+		return dmg;
+	}
+
+	public static class SuckerPunchTracker extends Buff{};
+	public static class FollowupStrikeTracker extends Buff{};
+
 	private static final int TALENT_TIERS = 1;
 
 	public static void initClassTalents( Hero hero ){
@@ -185,10 +212,10 @@ public enum Talent {
 				Collections.addAll(tierTalents, ENERGIZING_MEAL, SCHOLARS_INTUITION, TESTED_HYPOTHESIS, ENERGIZING_UPGRADE);
 				break;
 			case ROGUE:
-				Collections.addAll(tierTalents, RATIONED_MEAL, THIEFS_INTUITION, TEST_ROGUE_3, MENDING_SHADOWS);
+				Collections.addAll(tierTalents, RATIONED_MEAL, THIEFS_INTUITION, SUCKER_PUNCH, MENDING_SHADOWS);
 				break;
 			case HUNTRESS:
-				Collections.addAll(tierTalents, INVIGORATING_MEAL, SURVIVALISTS_INTUITION, TEST_HUNTRESS_3, NATURES_AID);
+				Collections.addAll(tierTalents, INVIGORATING_MEAL, SURVIVALISTS_INTUITION, FOLLOWUP_STRIKE, NATURES_AID);
 				break;
 		}
 		for (Talent talent : tierTalents){
