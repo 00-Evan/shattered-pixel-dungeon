@@ -367,6 +367,8 @@ public class Hero extends Char {
 	
 	public boolean shoot( Char enemy, MissileWeapon wep ) {
 
+		this.enemy = enemy;
+
 		//temporarily set the hero's weapon to the missile weapon being used
 		belongings.stashedWeapon = belongings.weapon;
 		belongings.weapon = wep;
@@ -1051,6 +1053,8 @@ public class Hero extends Char {
 		KindOfWeapon wep = belongings.weapon;
 
 		if (wep != null) damage = wep.proc( this, enemy, damage );
+
+		damage = Talent.onAttackProc( this, enemy, damage );
 		
 		switch (subClass) {
 		case SNIPER:
