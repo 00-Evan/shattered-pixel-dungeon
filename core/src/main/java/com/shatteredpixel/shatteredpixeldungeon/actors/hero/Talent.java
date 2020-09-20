@@ -197,14 +197,18 @@ public enum Talent {
 	private static final int TALENT_TIERS = 1;
 
 	public static void initClassTalents( Hero hero ){
-		while (hero.talents.size() < TALENT_TIERS){
-			hero.talents.add(new LinkedHashMap<>());
+		initClassTalents( hero.heroClass, hero.talents );
+	}
+
+	public static void initClassTalents( HeroClass cls, ArrayList<LinkedHashMap<Talent, Integer>> talents ){
+		while (talents.size() < TALENT_TIERS){
+			talents.add(new LinkedHashMap<>());
 		}
 
 		ArrayList<Talent> tierTalents = new ArrayList<>();
 
 		//tier 1
-		switch (hero.heroClass){
+		switch (cls){
 			case WARRIOR: default:
 				Collections.addAll(tierTalents, HEARTY_MEAL, ARMSMASTERS_INTUITION, TEST_SUBJECT, IRON_WILL);
 				break;
@@ -219,7 +223,7 @@ public enum Talent {
 				break;
 		}
 		for (Talent talent : tierTalents){
-			hero.talents.get(0).put(talent, 0);
+			talents.get(0).put(talent, 0);
 		}
 		tierTalents.clear();
 

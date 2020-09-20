@@ -31,6 +31,7 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 //TODO some stuff here is currently coded without accounting for tiers
 public class TalentsPane extends ScrollPane {
@@ -38,24 +39,28 @@ public class TalentsPane extends ScrollPane {
 	RenderedTextBlock title;
 	ArrayList<TalentButton> buttons;
 
-	ArrayList<Image> stars;
+	ArrayList<Image> stars = new ArrayList<>();
 
 	ColorBlock sep;
 	ColorBlock blocker;
 	RenderedTextBlock blockText;
 
 	public TalentsPane( boolean canUpgrade ) {
+		this( canUpgrade, Dungeon.hero.talents );
+	}
+
+	public TalentsPane( boolean canUpgrade, ArrayList<LinkedHashMap<Talent, Integer>> talents ) {
 		super(new Component());
 
 		title = PixelScene.renderTextBlock(Messages.titleCase(Messages.get(this, "tier", 1)), 9);
 		title.hardlight(Window.TITLE_COLOR);
 		content.add(title);
 
-		setupStars();
+		if (canUpgrade) setupStars();
 
 		buttons = new ArrayList<>();
-		for (Talent talent : Dungeon.hero.talents.get(0).keySet()){
-			TalentButton btn = new TalentButton(talent, canUpgrade){
+		for (Talent talent : talents.get(0).keySet()){
+			TalentButton btn = new TalentButton(talent, talents.get(0).get(talent), canUpgrade){
 				@Override
 				public void upgradeTalent() {
 					super.upgradeTalent();
@@ -78,13 +83,11 @@ public class TalentsPane extends ScrollPane {
 	}
 
 	private void setupStars(){
-		if (stars != null){
+		if (!stars.isEmpty()){
 			for (Image im : stars){
 				im.killAndErase();
 			}
 			stars.clear();
-		} else {
-			stars = new ArrayList<>();
 		}
 
 		int totStars = 5;
@@ -108,7 +111,7 @@ public class TalentsPane extends ScrollPane {
 
 		float titleWidth = title.width();
 		titleWidth += 2 + stars.size()*6;
-		title.setPos(x + (width - titleWidth)/2f, y+2);
+		title.setPos((width - titleWidth)/2f, 2);
 
 		float left = title.right() + 2;
 		for (Image star : stars){
@@ -119,21 +122,21 @@ public class TalentsPane extends ScrollPane {
 		}
 
 		float gap = (width - buttons.size()*TalentButton.WIDTH)/(buttons.size()+1);
-		left = x + gap;
+		left = gap;
 		for (TalentButton btn : buttons){
 			btn.setPos(left, title.bottom() + 4);
 			PixelScene.align(btn);
 			left += btn.width() + gap;
 		}
 
-		sep.x = x;
+		sep.x = 0;
 		sep.y = buttons.get(0).bottom() + 2;
 		sep.size(width, 1);
 
-		blocker.x = x;
+		blocker.x = 0;
 		blocker.y = sep.y + 1;
 		blocker.size(width, height - sep.y - 1);
 
-		blockText.setPos(x + (width - blockText.width())/2f, blocker.y + 10);
+		blockText.setPos((width - blockText.width())/2f, blocker.y + 10);
 	}
 }

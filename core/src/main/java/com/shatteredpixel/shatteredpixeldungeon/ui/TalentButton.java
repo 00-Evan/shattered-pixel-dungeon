@@ -47,6 +47,7 @@ public class TalentButton extends Button {
 	private TextureFilm film;
 
 	Talent talent;
+	int pointsInTalent;
 	boolean upgradeEnabled;
 
 	Image icon;
@@ -54,9 +55,10 @@ public class TalentButton extends Button {
 
 	ColorBlock fill;
 
-	public TalentButton(Talent talent, boolean upgradeEnabled){
+	public TalentButton(Talent talent, int points, boolean upgradeEnabled){
 		super();
 		this.talent = talent;
+		this.pointsInTalent = points;
 		this.upgradeEnabled = upgradeEnabled;
 
 		icon.frame( film.get( talent.icon() ) );
@@ -88,7 +90,7 @@ public class TalentButton extends Button {
 
 		fill.x = x;
 		fill.y = y + WIDTH - 1;
-		fill.size( Dungeon.hero.pointsInTalent(talent)/2f * WIDTH, 5);
+		fill.size( pointsInTalent/2f * WIDTH, 5);
 
 		bg.x = x;
 		bg.y = y;
