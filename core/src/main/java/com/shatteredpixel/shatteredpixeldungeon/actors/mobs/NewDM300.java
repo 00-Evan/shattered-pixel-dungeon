@@ -461,6 +461,7 @@ public class NewDM300 extends Mob {
 		spend(3f);
 		yell(Messages.get(this, "charging"));
 		sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "invulnerable"));
+		((DM300Sprite)sprite).updateChargeState(true);
 		((DM300Sprite)sprite).charge();
 		chargeAnnounced = false;
 
@@ -472,7 +473,7 @@ public class NewDM300 extends Mob {
 
 	public void loseSupercharge(){
 		supercharged = false;
-		sprite.resetColor();
+		((DM300Sprite)sprite).updateChargeState(false);
 
 		if (pylonsActivated < 2){
 			yell(Messages.get(this, "charge_lost"));

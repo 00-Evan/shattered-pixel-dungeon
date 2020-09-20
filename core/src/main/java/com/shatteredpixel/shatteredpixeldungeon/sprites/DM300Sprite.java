@@ -45,10 +45,12 @@ public class DM300Sprite extends MobSprite {
 		
 		texture( Assets.Sprites.DM300 );
 		
-		setAnimations(false);
+		updateChargeState(false);
 	}
 
-	private void setAnimations( boolean enraged ){
+	public void updateChargeState( boolean enraged ){
+		if (superchargeSparks != null) superchargeSparks.on = enraged;
+
 		int c = enraged ? 10 : 0;
 
 		TextureFilm frames = new TextureFilm( texture, 25, 22 );
@@ -148,8 +150,7 @@ public class DM300Sprite extends MobSprite {
 		superchargeSparks.on = false;
 
 		if (ch instanceof NewDM300 && ((NewDM300) ch).isSupercharged()){
-			setAnimations(true);
-			superchargeSparks.on = true;
+			updateChargeState(true);
 		}
 	}
 
@@ -159,11 +160,6 @@ public class DM300Sprite extends MobSprite {
 
 		if (superchargeSparks != null){
 			superchargeSparks.visible = visible;
-			if (ch instanceof NewDM300
-					&& ((NewDM300) ch).isSupercharged() != superchargeSparks.on){
-				superchargeSparks.on = ((NewDM300) ch).isSupercharged();
-				setAnimations(((NewDM300) ch).isSupercharged());
-			}
 		}
 	}
 
