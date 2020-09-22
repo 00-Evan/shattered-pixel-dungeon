@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WellWater;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
@@ -445,8 +446,12 @@ public abstract class Level implements Bundlable {
 		if (mobsToSpawn == null || mobsToSpawn.isEmpty()) {
 			mobsToSpawn = Bestiary.getMobRotation(Dungeon.depth);
 		}
-		
-		return Reflection.newInstance(mobsToSpawn.remove(0));
+
+		Mob m = Reflection.newInstance(mobsToSpawn.remove(0));
+		if (Dungeon.isChallenged(Challenges.CHAMPION_ENEMIES)){
+			ChampionEnemy.rollForChampion(m);
+		}
+		return m;
 	}
 
 	abstract protected void createMobs();
@@ -538,6 +543,9 @@ public abstract class Level implements Bundlable {
 					GameScene.add( mob );
 					if (Statistics.amuletObtained) {
 						mob.beckon( Dungeon.hero.pos );
+					}
+					if (!mob.buffs(ChampionEnemy.class).isEmpty()){
+						GLog.w(Messages.get(ChampionEnemy.class, "warn"));
 					}
 					spend(Dungeon.level.respawnCooldown());
 				} else {

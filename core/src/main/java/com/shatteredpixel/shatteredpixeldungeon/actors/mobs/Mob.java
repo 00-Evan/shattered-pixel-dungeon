@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
@@ -346,7 +347,15 @@ public abstract class Mob extends Char {
 	}
 	
 	protected boolean canAttack( Char enemy ) {
-		return Dungeon.level.adjacent( pos, enemy.pos );
+		if (Dungeon.level.adjacent( pos, enemy.pos )){
+			return true;
+		}
+		for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
+			if (buff.canAttackWithExtraReach( enemy )){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	protected boolean getCloser( int target ) {

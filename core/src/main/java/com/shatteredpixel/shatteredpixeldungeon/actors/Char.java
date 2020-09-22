@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corrosion;
@@ -132,7 +133,7 @@ public abstract class Char extends Actor {
 		Dungeon.level.updateFieldOfView( this, fieldOfView );
 
 		//throw any items that are on top of an immovable char
-		if (properties.contains(Property.IMMOVABLE)){
+		if (properties().contains(Property.IMMOVABLE)){
 			throwItems();
 		}
 		return false;
@@ -172,8 +173,8 @@ public abstract class Char extends Actor {
 		}
 
 		//can't swap into a space without room
-		if (properties.contains(Property.LARGE) && !Dungeon.level.openSpace[c.pos]
-			|| c.properties.contains(Property.LARGE) && !Dungeon.level.openSpace[pos]){
+		if (properties().contains(Property.LARGE) && !Dungeon.level.openSpace[c.pos]
+			|| c.properties().contains(Property.LARGE) && !Dungeon.level.openSpace[pos]){
 			return true;
 		}
 		
@@ -375,10 +376,16 @@ public abstract class Char extends Actor {
 		float acuRoll = Random.Float( acuStat );
 		if (attacker.buff(Bless.class) != null) acuRoll *= 1.25f;
 		if (attacker.buff(  Hex.class) != null) acuRoll *= 0.8f;
+		for (ChampionEnemy buff : attacker.buffs(ChampionEnemy.class)){
+			acuRoll *= buff.evasionAndAccuracyFactor();
+		}
 		
 		float defRoll = Random.Float( defStat );
 		if (defender.buff(Bless.class) != null) defRoll *= 1.25f;
 		if (defender.buff(  Hex.class) != null) defRoll *= 0.8f;
+		for (ChampionEnemy buff : defender.buffs(ChampionEnemy.class)){
+			defRoll *= buff.evasionAndAccuracyFactor();
+		}
 		
 		return (magic ? acuRoll * 2 : acuRoll) >= defRoll;
 	}
@@ -409,6 +416,10 @@ public abstract class Char extends Actor {
 	public int attackProc( Char enemy, int damage ) {
 		if ( buff(Weakness.class) != null ){
 			damage *= 0.67f;
+		}
+		for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
+			damage *= buff.meleeDamageFactor();
+			buff.onAttackProc( enemy );
 		}
 		return damage;
 	}
@@ -452,6 +463,10 @@ public abstract class Char extends Actor {
 		if(isInvulnerable(src.getClass())){
 			sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "invulnerable"));
 			return;
+		}
+
+		for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
+			dmg *= buff.damageTakenFactor();
 		}
 
 		if (!(src instanceof LifeLink) && buff(LifeLink.class) != null){
@@ -656,7 +671,7 @@ public abstract class Char extends Actor {
 			sprite.interruptMotion();
 			int newPos = pos + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
 			if (!(Dungeon.level.passable[newPos] || Dungeon.level.avoid[newPos])
-					|| (properties.contains(Property.LARGE) && !Dungeon.level.openSpace[pos])
+					|| (properties().contains(Property.LARGE) && !Dungeon.level.openSpace[pos])
 					|| Actor.findChar( newPos ) != null)
 				return;
 			else {
@@ -746,7 +761,12 @@ public abstract class Char extends Actor {
 	protected HashSet<Property> properties = new HashSet<>();
 
 	public HashSet<Property> properties() {
-		return new HashSet<>(properties);
+		HashSet<Property> props = new HashSet<>(properties);
+		//TODO any more of these and we should make it a property of the buff, like with resistances/immunities
+		if (buff(ChampionEnemy.Giant.class) != null) {
+			props.add(Property.LARGE);
+		}
+		return props;
 	}
 
 	public enum Property{
@@ -794,6 +814,6 @@ public abstract class Char extends Actor {
 	}
 
 	public static boolean hasProp( Char ch, Property p){
-		return (ch != null && ch.properties.contains(p));
+		return (ch != null && ch.properties().contains(p));
 	}
 }

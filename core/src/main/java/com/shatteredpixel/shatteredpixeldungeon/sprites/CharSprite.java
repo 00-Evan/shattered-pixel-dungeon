@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.DarkBlock;
 import com.shatteredpixel.shatteredpixeldungeon.effects.EmoIcon;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.IceBlock;
 import com.shatteredpixel.shatteredpixeldungeon.effects.ShieldHalo;
@@ -104,6 +105,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected TorchHalo light;
 	protected ShieldHalo shield;
 	protected AlphaTweener invisible;
+	protected Flare aura;
 	
 	protected EmoIcon emo;
 	protected CharHealthIndicator health;
@@ -460,6 +462,24 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				break;
 		}
 	}
+
+	public void aura( int color ){
+		if (aura != null){
+			aura.killAndErase();
+		}
+		float size = Math.max(width(), height());
+		size = Math.max(size+4, 16);
+		aura = new Flare(5, size);
+		aura.angularSpeed = 90;
+		aura.color(color, true).show(this, 0);
+	}
+
+	public void clearAura(){
+		if (aura != null){
+			aura.killAndErase();
+			aura = null;
+		}
+	}
 	
 	@Override
 	public void update() {
@@ -488,6 +508,10 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		}
 		if (marked != null) {
 			marked.visible = visible;
+		}
+		if (aura != null){
+			aura.visible = visible;
+			aura.point(center());
 		}
 		if (sleeping) {
 			showSleep();
