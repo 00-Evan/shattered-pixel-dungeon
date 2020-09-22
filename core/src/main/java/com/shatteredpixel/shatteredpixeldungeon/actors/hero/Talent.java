@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2020 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,20 +52,20 @@ public enum Talent {
 	TEST_SUBJECT(2),
 	IRON_WILL(3),
 
-	ENERGIZING_MEAL(16),
-	SCHOLARS_INTUITION(17),
-	TESTED_HYPOTHESIS(18),
-	ENERGIZING_UPGRADE(19),
+	ENERGIZING_MEAL(4),
+	SCHOLARS_INTUITION(5),
+	TESTED_HYPOTHESIS(6),
+	ENERGIZING_UPGRADE(7),
 
-	RATIONED_MEAL(32),
-	THIEFS_INTUITION(33),
-	SUCKER_PUNCH(34),
-	MENDING_SHADOWS(35),
+	RATIONED_MEAL(8),
+	THIEFS_INTUITION(9),
+	SUCKER_PUNCH(10),
+	MENDING_SHADOWS(11),
 
-	INVIGORATING_MEAL(48),
-	SURVIVALISTS_INTUITION(49),
-	FOLLOWUP_STRIKE(50),
-	NATURES_AID(51);
+	INVIGORATING_MEAL(12),
+	SURVIVALISTS_INTUITION(13),
+	FOLLOWUP_STRIKE(14),
+	NATURES_AID(15);
 
 	int icon;
 
