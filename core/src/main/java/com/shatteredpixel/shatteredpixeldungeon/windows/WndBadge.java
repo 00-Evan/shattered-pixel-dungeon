@@ -39,14 +39,14 @@ public class WndBadge extends Window {
 		
 		Image icon = BadgeBanner.image( badge.image );
 		icon.scale.set( 2 );
-		if (!unlocked) icon.brightness(0.2f);
+		if (!unlocked) icon.brightness(0.52f);
 		add( icon );
 
 		RenderedTextBlock info = PixelScene.renderTextBlock( badge.desc(), 8 );
 		info.maxWidth(WIDTH - MARGIN * 2);
 		info.align(RenderedTextBlock.CENTER_ALIGN);
 		PixelScene.align(info);
-		if (!unlocked) info.hardlight( 0x777777 );
+		if (!unlocked) info.hardlight( 0x888888 );
 		add(info);
 		
 		float w = Math.max( icon.width(), info.width() ) + MARGIN * 2;
