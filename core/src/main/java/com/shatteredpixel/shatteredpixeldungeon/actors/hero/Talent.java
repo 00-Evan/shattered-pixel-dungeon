@@ -130,7 +130,7 @@ public enum Talent {
 			//eating food takes 1 turn, instead of 3
 			hero.spend(-2);
 			//effectively 2/3 turns of haste
-			Buff.affect( hero, Haste.class, 2+hero.pointsInTalent(INVIGORATING_MEAL));
+			Buff.affect( hero, Haste.class, 1.67f+hero.pointsInTalent(INVIGORATING_MEAL));
 			//TODO VFX
 		}
 	}
@@ -153,7 +153,7 @@ public enum Talent {
 	}
 
 	public static void onItemEquipped( Hero hero, Item item ){
-		if (hero.hasTalent(ARMSMASTERS_INTUITION) && (item instanceof Weapon || item instanceof Armor)){
+		if (hero.pointsInTalent(ARMSMASTERS_INTUITION) == 2 && (item instanceof Weapon || item instanceof Armor)){
 			item.identify();
 		}
 		if (hero.hasTalent(THIEFS_INTUITION) && item instanceof Ring){
