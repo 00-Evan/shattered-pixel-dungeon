@@ -72,6 +72,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
@@ -375,7 +376,8 @@ public class Potion extends Item {
 			Hero hero = Dungeon.hero;
 			if (hero.hasTalent(Talent.TEST_SUBJECT)) {
 				hero.HP = Math.min(hero.HP + 1 + (2 * hero.pointsInTalent(Talent.TEST_SUBJECT)), hero.HT);
-				hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), hero.pointsInTalent(Talent.TEST_SUBJECT));
+				Emitter e = hero.sprite.emitter();
+				if (e != null) e.burst(Speck.factory(Speck.HEALING), hero.pointsInTalent(Talent.TEST_SUBJECT));
 			}
 		}
 		return super.identify();

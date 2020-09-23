@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
 
 public class ScrollOfRecharging extends Scroll {
 
@@ -55,7 +56,8 @@ public class ScrollOfRecharging extends Scroll {
 	}
 	
 	public static void charge( Char user ) {
-		user.sprite.centerEmitter().burst( EnergyParticle.FACTORY, 15 );
+		Emitter e = user.sprite.centerEmitter();
+		if (e != null) e.burst( EnergyParticle.FACTORY, 15 );
 	}
 	
 	@Override
