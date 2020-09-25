@@ -225,7 +225,7 @@ public abstract class Scroll extends Item {
 			setKnown();
 			//6/9 HP barrier
 			Hero hero = Dungeon.hero;
-			if (hero.hasTalent(Talent.TESTED_HYPOTHESIS)) {
+			if (hero.isAlive() && hero.hasTalent(Talent.TESTED_HYPOTHESIS)) {
 				Buff.affect(hero, Barrier.class).setShield(3 + (3 * hero.pointsInTalent(Talent.TESTED_HYPOTHESIS)));
 				ScrollOfRecharging.charge(hero);
 			}
