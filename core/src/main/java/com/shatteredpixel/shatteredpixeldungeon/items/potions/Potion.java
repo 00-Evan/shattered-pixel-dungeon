@@ -514,12 +514,12 @@ public class Potion extends Item {
 				}
 			}
 			
-			Item result;
+			Potion result;
 			
 			if ( (seeds.size() == 2 && Random.Int(4) == 0)
 					|| (seeds.size() == 3 && Random.Int(2) == 0)) {
 				
-				result = Generator.randomUsingDefaults( Generator.Category.POTION );
+				result = (Potion) Generator.randomUsingDefaults( Generator.Category.POTION );
 				
 			} else {
 				result = Reflection.newInstance(types.get(Random.element(ingredients).getClass()));
@@ -527,14 +527,14 @@ public class Potion extends Item {
 			}
 			
 			if (seeds.size() == 1){
-				result.identify();
+				result.setKnown();
 			}
 
 			while (result instanceof PotionOfHealing
 					&& (Dungeon.isChallenged(Challenges.NO_HEALING)
 					|| Random.Int(10) < Dungeon.LimitedDrops.COOKING_HP.count)) {
 
-				result = Generator.randomUsingDefaults(Generator.Category.POTION);
+				result = (Potion) Generator.randomUsingDefaults(Generator.Category.POTION);
 			}
 			
 			if (result instanceof PotionOfHealing) {
