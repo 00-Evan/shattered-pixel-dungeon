@@ -133,7 +133,12 @@ public class Necromancer extends Mob {
 		
 		super.die(cause);
 	}
-	
+
+	@Override
+	protected boolean canAttack(Char enemy) {
+		return false;
+	}
+
 	private static final String SUMMONING = "summoning";
 	private static final String FIRST_SUMMON = "first_summon";
 	private static final String SUMMONING_POS = "summoning_pos";
