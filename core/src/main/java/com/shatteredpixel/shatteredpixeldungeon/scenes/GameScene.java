@@ -824,7 +824,7 @@ public class GameScene extends PixelScene {
 	}
 	
 	public static void effect( Visual effect ) {
-		scene.effects.add( effect );
+		if (scene != null) scene.effects.add( effect );
 	}
 
 	public static void effectOverFog( Visual effect ) {

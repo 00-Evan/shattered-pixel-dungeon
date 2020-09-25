@@ -302,19 +302,19 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	
 	public Emitter emitter() {
 		Emitter emitter = GameScene.emitter();
-		emitter.pos( this );
+		if (emitter != null) emitter.pos( this );
 		return emitter;
 	}
 	
 	public Emitter centerEmitter() {
 		Emitter emitter = GameScene.emitter();
-		emitter.pos( center() );
+		if (emitter != null) emitter.pos( center() );
 		return emitter;
 	}
 	
 	public Emitter bottomEmitter() {
 		Emitter emitter = GameScene.emitter();
-		emitter.pos( x, y + height, width, 0 );
+		if (emitter != null) emitter.pos( x, y + height, width, 0 );
 		return emitter;
 	}
 	
