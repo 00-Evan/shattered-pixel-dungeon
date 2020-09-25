@@ -44,8 +44,8 @@ public class Challenges {
 			"no_armor",
 			"no_healing",
 			"no_herbalism",
-			"darkness",
 			"swarm_intelligence",
+			"darkness",
 			"no_scrolls"
 	};
 
