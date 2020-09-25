@@ -242,8 +242,7 @@ public class CloakOfShadows extends Artifact {
 			}
 		}
 
-		//starts at -1 to account for turn cloak was activated
-		float healInc = -1;
+		float healInc = 0;
 
 		@Override
 		public boolean act(){
@@ -251,8 +250,8 @@ public class CloakOfShadows extends Artifact {
 
 			if (((Hero)target).hasTalent(Talent.MENDING_SHADOWS)){
 				healInc++;
-				// 3/2 turns to heal
-				if (healInc >= 4 - ((Hero) target).pointsInTalent(Talent.MENDING_SHADOWS)){
+				// 5/3 turns to heal
+				if (healInc >= 7 - 2*((Hero) target).pointsInTalent(Talent.MENDING_SHADOWS)){
 					healInc = 0;
 					target.HP = Math.min(target.HT, target.HP+1);
 					target.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );

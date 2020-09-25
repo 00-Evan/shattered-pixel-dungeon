@@ -372,10 +372,10 @@ public class Potion extends Item {
 
 		if (!isKnown()) {
 			setKnown();
-			//3/5 HP healed
+			//4/6 HP healed
 			Hero hero = Dungeon.hero;
 			if (hero.isAlive() && hero.hasTalent(Talent.TEST_SUBJECT)) {
-				hero.HP = Math.min(hero.HP + 1 + (2 * hero.pointsInTalent(Talent.TEST_SUBJECT)), hero.HT);
+				hero.HP = Math.min(hero.HP + 2 * (1+hero.pointsInTalent(Talent.TEST_SUBJECT)), hero.HT);
 				Emitter e = hero.sprite.emitter();
 				if (e != null) e.burst(Speck.factory(Speck.HEALING), hero.pointsInTalent(Talent.TEST_SUBJECT));
 			}

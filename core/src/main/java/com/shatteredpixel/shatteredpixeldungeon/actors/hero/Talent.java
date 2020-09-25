@@ -111,8 +111,8 @@ public enum Talent {
 
 	public static void onFoodEaten( Hero hero, float foodVal ){
 		if (hero.hasTalent(HEARTY_MEAL) && hero.HP <= hero.HT/2){
-			//4/6 HP healed
-			hero.HP = Math.min( hero.HP + 2*(1+hero.pointsInTalent(HEARTY_MEAL)), hero.HT );
+			//3/5 HP healed
+			hero.HP = Math.min( hero.HP + 1 + 2*hero.pointsInTalent(HEARTY_MEAL), hero.HT );
 			hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), hero.pointsInTalent(HEARTY_MEAL) );
 		}
 		if (hero.hasTalent(ENERGIZING_MEAL) && hero.HP <= hero.HT/2){
