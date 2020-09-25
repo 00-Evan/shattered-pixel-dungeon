@@ -139,7 +139,7 @@ public class TalentButton extends Button {
 	}
 
 	public void upgradeTalent(){
-		if (Dungeon.hero.talentPointsAvailable() > 0) {
+		if (Dungeon.hero.talentPointsAvailable() > 0 && parent != null) {
 			Dungeon.hero.upgradeTalent(talent);
 			float oldWidth = fill.width();
 			pointsInTalent++;
