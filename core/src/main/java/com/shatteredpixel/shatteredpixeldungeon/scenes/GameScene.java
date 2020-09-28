@@ -204,6 +204,7 @@ public class GameScene extends PixelScene {
 				Blending.enable();
 			}
 		};
+		water.autoAdjust = true;
 		terrain.add( water );
 
 		ripples = new Group();

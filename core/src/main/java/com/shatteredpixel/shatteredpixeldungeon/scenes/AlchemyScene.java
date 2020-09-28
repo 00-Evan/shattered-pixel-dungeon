@@ -102,6 +102,7 @@ public class AlchemyScene extends PixelScene {
 				Blending.enable();
 			}
 		};
+		water.autoAdjust = true;
 		add(water);
 		
 		Image im = new Image(TextureCache.createGradient(0x66000000, 0x88000000, 0xAA000000, 0xCC000000, 0xFF000000));

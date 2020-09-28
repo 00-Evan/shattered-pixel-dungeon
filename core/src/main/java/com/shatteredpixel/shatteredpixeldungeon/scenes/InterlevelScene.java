@@ -171,6 +171,7 @@ public class InterlevelScene extends PixelScene {
 			}
 		};
 		bg.scale(4, 4);
+		bg.autoAdjust = true;
 		add(bg);
 		
 		Image im = new Image(TextureCache.createGradient(0xAA000000, 0xBB000000, 0xCC000000, 0xDD000000, 0xFF000000)){
