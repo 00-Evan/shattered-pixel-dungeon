@@ -64,8 +64,10 @@ public class TalentsPane extends ScrollPane {
 				@Override
 				public void upgradeTalent() {
 					super.upgradeTalent();
-					setupStars();
-					TalentsPane.this.layout();
+					if (parent != null) {
+						setupStars();
+						TalentsPane.this.layout();
+					}
 				}
 			};
 			buttons.add(btn);
