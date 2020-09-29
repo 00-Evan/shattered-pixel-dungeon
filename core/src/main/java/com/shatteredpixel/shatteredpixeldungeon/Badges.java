@@ -228,6 +228,16 @@ public class Badges {
 			try {
 				Bundle bundle = FileUtils.bundleFromFile( BADGES_FILE );
 				global = restore( bundle );
+
+				//fixes a bug with challenge badges in pre-0.9.0 saves
+				if (global.contains(Badge.CHAMPION_3)){
+					saveNeeded = !global.contains(Badge.CHAMPION_2) || global.contains(Badge.CHAMPION_1);
+					global.add(Badge.CHAMPION_2);
+					global.add(Badge.CHAMPION_1);
+				} else if (global.contains(Badge.CHAMPION_2)){
+					saveNeeded = !global.contains(Badge.CHAMPION_1);
+					global.add(Badge.CHAMPION_1);
+				}
 				
 			} catch (IOException e) {
 				global = new HashSet<>();
@@ -794,9 +804,17 @@ public class Badges {
 			badge = Badge.CHAMPION_1;
 		}
 		if (challenges >= 3){
+			if (!global.contains(badge)){
+				global.add(badge);
+				saveNeeded = true;
+			}
 			badge = Badge.CHAMPION_2;
 		}
 		if (challenges >= 6){
+			if (!global.contains(badge)){
+				global.add(badge);
+				saveNeeded = true;
+			}
 			badge = Badge.CHAMPION_3;
 		}
 		displayBadge( badge );
