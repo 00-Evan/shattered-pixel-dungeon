@@ -120,9 +120,12 @@ public class GolemSprite extends MobSprite {
 		Sample.INSTANCE.play( Assets.Sounds.ZAP );
 	}
 
+	private boolean died = false;
+
 	@Override
 	public void onComplete( Animation anim ) {
-		if (anim == die) {
+		if (anim == die && !died) {
+			died = true;
 			emitter().burst( ElmoParticle.FACTORY, 4 );
 		}
 		if (anim == zap) {
