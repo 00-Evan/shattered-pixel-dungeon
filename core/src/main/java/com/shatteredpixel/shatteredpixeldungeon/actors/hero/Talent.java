@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -38,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -111,27 +113,25 @@ public enum Talent {
 
 	public static void onFoodEaten( Hero hero, float foodVal ){
 		if (hero.hasTalent(HEARTY_MEAL) && hero.HP <= hero.HT/2){
-			//3/5 HP healed
+			//3/5 HP healed, when hero is below 50% health
 			hero.HP = Math.min( hero.HP + 1 + 2*hero.pointsInTalent(HEARTY_MEAL), hero.HT );
 			hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), hero.pointsInTalent(HEARTY_MEAL) );
 		}
-		if (hero.hasTalent(ENERGIZING_MEAL) && hero.HP <= hero.HT/2){
+		if (hero.hasTalent(ENERGIZING_MEAL)){
 			//4/6 turns of recharging
 			Buff.affect( hero, Recharging.class, 2*(1+hero.pointsInTalent(ENERGIZING_MEAL)) );
 			ScrollOfRecharging.charge( hero );
 		}
-		if (hero.hasTalent(RATIONED_MEAL) && hero.HP <= hero.HT/2){
-			//20%/30% bonus food value
-			float bonusSatiety = foodVal * 0.1f*(1+hero.pointsInTalent(RATIONED_MEAL));
+		if (hero.hasTalent(RATIONED_MEAL)){
+			//15%/25% bonus food value
+			float bonusSatiety = foodVal * (0.05f + (0.1f * hero.pointsInTalent(RATIONED_MEAL)));
 			Buff.affect(hero, Hunger.class).affectHunger(bonusSatiety, true);
-			//TODO vfx
 		}
-		if (hero.hasTalent(INVIGORATING_MEAL) && hero.HP <= hero.HT/2){
+		if (hero.hasTalent(INVIGORATING_MEAL)){
 			//eating food takes 1 turn, instead of 3
 			hero.spend(-2);
-			//effectively 2/3 turns of haste
-			Buff.affect( hero, Haste.class, 1.67f+hero.pointsInTalent(INVIGORATING_MEAL));
-			//TODO VFX
+			//effectively 1/2 turns of haste
+			Buff.affect( hero, Haste.class, 0.67f+hero.pointsInTalent(INVIGORATING_MEAL));
 		}
 	}
 
@@ -183,7 +183,13 @@ public enum Talent {
 			if (hero.belongings.weapon instanceof MissileWeapon) {
 				Buff.affect(enemy, FollowupStrikeTracker.class);
 			} else if (enemy.buff(FollowupStrikeTracker.class) != null){
-				dmg += Random.IntRange(1 , hero.pointsInTalent(Talent.FOLLOWUP_STRIKE));
+				dmg += Random.IntRange(1, 2);
+				if (hero.pointsInTalent(FOLLOWUP_STRIKE) == 2){
+					dmg += 1;
+				}
+				if (!(enemy instanceof Mob) || !((Mob) enemy).surprisedBy(hero)){
+					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG, 0.75f, 1.2f);
+				}
 				enemy.buff(FollowupStrikeTracker.class).detach();
 			}
 		}

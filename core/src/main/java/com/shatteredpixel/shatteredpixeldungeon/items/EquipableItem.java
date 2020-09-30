@@ -60,9 +60,6 @@ public abstract class EquipableItem extends Item {
 			//This is a special case as the item is being removed from inventory, but is staying with the hero.
 			int slot = Dungeon.quickslot.getSlot( this );
 			doEquip(hero);
-			if (isEquipped(hero)){
-				Talent.onItemEquipped(hero, this);
-			}
 			if (slot != -1) {
 				Dungeon.quickslot.setSlot( slot, this );
 				updateQuickslot();
@@ -121,6 +118,8 @@ public abstract class EquipableItem extends Item {
 			updateQuickslot();
 			if (collect) Dungeon.level.drop( this, hero.pos );
 		}
+
+		Talent.onItemEquipped(hero, this);
 
 		return true;
 	}
