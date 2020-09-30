@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -44,7 +43,7 @@ public class WndInfoTalent extends Window {
 	private SmartTexture icons;
 	private TextureFilm film;
 
-	public WndInfoTalent(Talent talent, Callback onUpgradeButton){
+	public WndInfoTalent(Talent talent, int points, Callback onUpgradeButton){
 		super();
 
 		IconTitle titlebar = new IconTitle();
@@ -57,8 +56,8 @@ public class WndInfoTalent extends Window {
 
 		titlebar.icon( buffIcon );
 		String title = Messages.titleCase(talent.title());
-		if (Dungeon.hero != null && Dungeon.hero.pointsInTalent(talent) > 0){
-			title += " +" + Dungeon.hero.pointsInTalent(talent);
+		if (points > 0){
+			title += " +" + points;
 		}
 		titlebar.label( title, Window.TITLE_COLOR );
 		titlebar.setRect( 0, 0, WIDTH, 0 );

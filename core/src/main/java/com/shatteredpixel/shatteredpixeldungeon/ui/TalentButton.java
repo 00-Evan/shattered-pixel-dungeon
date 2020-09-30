@@ -108,14 +108,14 @@ public class TalentButton extends Button {
 				&& Dungeon.hero != null
 				&& Dungeon.hero.talentPointsAvailable() > 0
 				&& Dungeon.hero.pointsInTalent(talent) < talent.maxPoints()){
-			ShatteredPixelDungeon.scene().addToFront(new WndInfoTalent(talent, new Callback() {
+			ShatteredPixelDungeon.scene().addToFront(new WndInfoTalent(talent, pointsInTalent, new Callback() {
 				@Override
 				public void call() {
 					upgradeTalent();
 				}
 			}));
 		} else {
-			ShatteredPixelDungeon.scene().addToFront(new WndInfoTalent(talent, null));
+			ShatteredPixelDungeon.scene().addToFront(new WndInfoTalent(talent, pointsInTalent, null));
 		}
 	}
 
