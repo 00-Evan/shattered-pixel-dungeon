@@ -338,7 +338,6 @@ public abstract class Scroll extends Item {
 		@Override
 		public boolean testIngredients(ArrayList<Item> ingredients) {
 			if (ingredients.size() != 1
-					|| !ingredients.get(0).isIdentified()
 					|| !(ingredients.get(0) instanceof Scroll)
 					|| !stones.containsKey(ingredients.get(0).getClass())){
 				return false;
@@ -359,6 +358,7 @@ public abstract class Scroll extends Item {
 			Scroll s = (Scroll) ingredients.get(0);
 			
 			s.quantity(s.quantity() - 1);
+			s.setKnown();
 			
 			return Reflection.newInstance(stones.get(s.getClass())).quantity(amnts.get(s.getClass()));
 		}
@@ -368,7 +368,12 @@ public abstract class Scroll extends Item {
 			if (!testIngredients(ingredients)) return null;
 			
 			Scroll s = (Scroll) ingredients.get(0);
-			return Reflection.newInstance(stones.get(s.getClass())).quantity(amnts.get(s.getClass()));
+
+			if (!s.isKnown()){
+				return new Runestone.PlaceHolder();
+			} else {
+				return Reflection.newInstance(stones.get(s.getClass())).quantity(amnts.get(s.getClass()));
+			}
 		}
 	}
 }
