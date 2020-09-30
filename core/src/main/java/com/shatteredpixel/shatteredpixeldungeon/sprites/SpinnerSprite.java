@@ -61,7 +61,12 @@ public class SpinnerSprite extends MobSprite {
 	@Override
 	public void link(Char ch) {
 		super.link(ch);
-		if (parent != null) parent.sendToBack(this);
+		if (parent != null) {
+			parent.sendToBack(this);
+			if (aura != null){
+				parent.sendToBack(aura);
+			}
+		}
 		renderShadow = false;
 	}
 	
