@@ -466,7 +466,7 @@ public abstract class Char extends Actor {
 		}
 
 		for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
-			dmg *= buff.damageTakenFactor();
+			dmg = (int) Math.ceil(dmg * buff.damageTakenFactor());
 		}
 
 		if (!(src instanceof LifeLink) && buff(LifeLink.class) != null){
