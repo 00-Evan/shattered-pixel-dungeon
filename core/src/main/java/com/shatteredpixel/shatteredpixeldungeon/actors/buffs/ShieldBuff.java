@@ -49,8 +49,13 @@ public abstract class ShieldBuff extends Buff {
 	}
 	
 	public void setShield( int shield ) {
-		this.shielding = shield;
+		setShield(shield, 0);
+	}
+
+	public void setShield( int shield, float delay ) {
+		if (this.shielding <= shield) this.shielding = shield;
 		if (target != null) target.needsShieldUpdate = true;
+		spend(delay);
 	}
 	
 	public void incShield(){
@@ -58,8 +63,13 @@ public abstract class ShieldBuff extends Buff {
 	}
 	
 	public void incShield( int amt ){
+		incShield(amt, 0);
+	}
+
+	public void incShield( int amt, float delay ){
 		shielding += amt;
 		if (target != null) target.needsShieldUpdate = true;
+		spend(delay);
 	}
 	
 	public void decShield(){
@@ -67,8 +77,13 @@ public abstract class ShieldBuff extends Buff {
 	}
 	
 	public void decShield( int amt ){
+		decShield(amt, 0);
+	}
+
+	public void decShield( int amt, float delay ){
 		shielding -= amt;
 		if (target != null) target.needsShieldUpdate = true;
+		spend(delay);
 	}
 	
 	//returns the amount of damage leftover
