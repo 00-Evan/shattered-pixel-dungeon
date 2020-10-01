@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
@@ -234,7 +235,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 		public void onSelect(Integer cell) {
 			if (cell == null) return;
 			final Char enemy = Actor.findChar( cell );
-			if (enemy == null || Dungeon.hero.isCharmedBy(enemy) || enemy instanceof NPC){
+			if (enemy == null || Dungeon.hero.isCharmedBy(enemy) || enemy instanceof NPC || !Dungeon.level.heroFOV[cell]){
 				GLog.w(Messages.get(Preparation.class, "no_target"));
 			} else {
 				
@@ -247,22 +248,15 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				
 				AttackLevel lvl = AttackLevel.getLvl(turnsInvis);
 				
-				boolean[] passable = Dungeon.level.passable.clone();
-				//need to consider enemy cell as passable in case they are on a trap or chasm
-				passable[cell] = true;
-				PathFinder.buildDistanceMap(Dungeon.hero.pos, passable, lvl.blinkDistance+1);
-				if (PathFinder.distance[cell] == Integer.MAX_VALUE){
-					GLog.w(Messages.get(Preparation.class, "out_of_reach"));
-					return;
+				boolean[] blinkable = BArray.not(Dungeon.level.solid, null);
+
+				//we consider passable and cell occupancy for adjacent cells to target
+				for (int i : PathFinder.NEIGHBOURS9){
+					if (Actor.findChar(cell+i) != null)     blinkable[cell+i] = false;
+					if (!Dungeon.level.passable[cell+i])    blinkable[cell+i] = false;
 				}
 				
-				//we can move through enemies when determining blink distance,
-				// but not when actually jumping to a location
-				for (Char ch : Actor.chars()){
-					if (ch != Dungeon.hero)  passable[ch.pos] = false;
-				}
-				
-				PathFinder.Path path = PathFinder.find(Dungeon.hero.pos, cell, passable);
+				PathFinder.Path path = PathFinder.find(Dungeon.hero.pos, cell, blinkable);
 				int attackPos = path == null ? -1 : path.get(path.size()-2);
 				
 				if (attackPos == -1 ||
