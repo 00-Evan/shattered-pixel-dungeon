@@ -173,13 +173,14 @@ public class EtherealChains extends Artifact {
 			public void call() {
 				Actor.add(new Pushing(enemy, enemy.pos, pulledPos, new Callback() {
 					public void call() {
+						enemy.pos = pulledPos;
 						Dungeon.level.occupyCell(enemy);
+						Dungeon.observe();
+						GameScene.updateFog();
+						hero.spendAndNext(1f);
 					}
 				}));
-				enemy.pos = pulledPos;
-				Dungeon.observe();
-				GameScene.updateFog();
-				hero.spendAndNext(1f);
+				hero.next();
 			}
 		}));
 	}
@@ -222,13 +223,14 @@ public class EtherealChains extends Artifact {
 			public void call() {
 				Actor.add(new Pushing(hero, hero.pos, newHeroPos, new Callback() {
 					public void call() {
+						hero.pos = newHeroPos;
 						Dungeon.level.occupyCell(hero);
+						hero.spendAndNext(1f);
+						Dungeon.observe();
+						GameScene.updateFog();
 					}
 				}));
-				hero.spendAndNext(1f);
-				hero.pos = newHeroPos;
-				Dungeon.observe();
-				GameScene.updateFog();
+				hero.next();
 			}
 		}));
 	}
