@@ -359,29 +359,25 @@ public class HeroSelectScene extends PixelScene {
 				case WARRIOR: default:
 					tabIcons = new Image[]{
 							new ItemSprite(ItemSpriteSheet.SEAL, null),
-							new ItemSprite(ItemSpriteSheet.WORN_SHORTSWORD, null),
-							new ItemSprite(ItemSpriteSheet.ARMOR_WARRIOR, null)
+							new ItemSprite(ItemSpriteSheet.WORN_SHORTSWORD, null)
 					};
 					break;
 				case MAGE:
 					tabIcons = new Image[]{
 							new ItemSprite(ItemSpriteSheet.MAGES_STAFF, null),
-							new ItemSprite(ItemSpriteSheet.HOLDER, null),
-							new ItemSprite(ItemSpriteSheet.ARMOR_MAGE, null)
+							new ItemSprite(ItemSpriteSheet.HOLDER, null)
 					};
 					break;
 				case ROGUE:
 					tabIcons = new Image[]{
 							new ItemSprite(ItemSpriteSheet.ARTIFACT_CLOAK, null),
-							new ItemSprite(ItemSpriteSheet.DAGGER, null),
-							new ItemSprite(ItemSpriteSheet.ARMOR_ROGUE, null),
+							new ItemSprite(ItemSpriteSheet.DAGGER, null)
 					};
 					break;
 				case HUNTRESS:
 					tabIcons = new Image[]{
 							new ItemSprite(ItemSpriteSheet.SPIRIT_BOW, null),
-							new ItemSprite(ItemSpriteSheet.GLOVES, null),
-							new ItemSprite(ItemSpriteSheet.ARMOR_HUNTRESS, null)
+							new ItemSprite(ItemSpriteSheet.GLOVES, null)
 					};
 					break;
 			}
@@ -410,7 +406,7 @@ public class HeroSelectScene extends PixelScene {
 			};
 			add(tab);
 
-			tab = new IconTab( tabIcons[2] ){
+			tab = new IconTab( Icons.get(Icons.TALENT) ){
 				@Override
 				protected void select(boolean value) {
 					super.select(value);
