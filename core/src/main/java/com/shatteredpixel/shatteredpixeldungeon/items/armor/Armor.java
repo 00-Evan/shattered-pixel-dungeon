@@ -199,7 +199,7 @@ public class Armor extends EquipableItem {
 			
 			((HeroSprite)hero.sprite).updateArmor();
 			activate(hero);
-
+			Talent.onItemEquipped(hero, this);
 			hero.spendAndNext( time2equip( hero ) );
 			return true;
 			
