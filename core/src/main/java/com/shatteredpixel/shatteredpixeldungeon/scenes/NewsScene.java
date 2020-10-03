@@ -83,7 +83,7 @@ public class NewsScene extends PixelScene {
 		align(title);
 		add(title);
 
-		float top = 20;
+		float top = 18;
 
 		displayingNoArticles = !News.articlesAvailable();
 		if (displayingNoArticles || Messages.lang() != Languages.ENGLISH) {
@@ -106,7 +106,7 @@ public class NewsScene extends PixelScene {
 			}
 			rows++;
 
-			while ((articleSpace) / (BTN_HEIGHT+1) < rows) {
+			while ((articleSpace) / (BTN_HEIGHT+0.5f) < rows) {
 				articles.remove(articles.size() - 1);
 				if (PixelScene.landscape()) {
 					articles.remove(articles.size() - 1);

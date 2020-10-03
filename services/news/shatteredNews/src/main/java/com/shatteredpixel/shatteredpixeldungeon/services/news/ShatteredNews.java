@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.services.news;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.watabou.noosa.Game;
 
@@ -30,6 +31,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ShatteredNews extends NewsService {
 
@@ -43,9 +46,9 @@ public class ShatteredNews extends NewsService {
 
 		Net.HttpRequest httpGet = new Net.HttpRequest(Net.HttpMethods.GET);
 		if (preferHTTPS) {
-			httpGet.setUrl("https://shatteredpixel.com/feed");
+			httpGet.setUrl("https://shatteredpixel.com/feed_by_tag/SHPD_INGAME.xml");
 		} else {
-			httpGet.setUrl("http://shatteredpixel.com/feed");
+			httpGet.setUrl("http://shatteredpixel.com/feed_by_tag/SHPD_INGAME.xml");
 		}
 
 		Gdx.net.sendHttpRequest(httpGet, new Net.HttpResponseListener() {
@@ -71,8 +74,21 @@ public class ShatteredNews extends NewsService {
 						article.URL = article.URL.replace("https://", "http://");
 					}
 
+					Pattern versionCodeMatcher = Pattern.compile("v[0-9]+");
 					try {
-						article.icon = xmlArticle.getChildByName("category").getAttribute("term");
+						Array<XmlReader.Element> properties = xmlArticle.getChildrenByName("category");
+						for (XmlReader.Element prop : properties){
+							String propVal = prop.getAttribute("term");
+							if (propVal.startsWith("SHPD_ICON")){
+								Matcher m = versionCodeMatcher.matcher(propVal);
+								if (m.find()) {
+									int iconGameVer = Integer.parseInt(m.group().substring(1));
+									if (iconGameVer <= Game.versionCode) {
+										article.icon = propVal.substring(propVal.indexOf(": ") + 2);
+									}
+								}
+							}
+						}
 					} catch (Exception e){
 						article.icon = null;
 					}
