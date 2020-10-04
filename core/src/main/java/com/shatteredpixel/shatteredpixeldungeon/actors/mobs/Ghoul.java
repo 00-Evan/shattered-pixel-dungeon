@@ -165,8 +165,10 @@ public class Ghoul extends Mob {
 	protected synchronized void onRemove() {
 		if (beingLifeLinked) {
 			for (Buff buff : buffs()) {
-				//corruption and king damager are preserved when removed via life link
-				if (!(buff instanceof Corruption) && !(buff instanceof DwarfKing.KingDamager)) {
+				//corruption, champion, and king damager are preserved when removed via life link
+				if (!(buff instanceof Corruption)
+						&& (!(buff instanceof ChampionEnemy))
+						&& !(buff instanceof DwarfKing.KingDamager)) {
 					buff.detach();
 				}
 			}
