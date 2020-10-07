@@ -4,9 +4,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        //FIXME the version of R8 coming with gradle plugin 4.0.0 causes serious problems
-        //noinspection GradleDependency
-        classpath 'com.android.tools.build:gradle:3.6.4'
+        classpath 'com.android.tools.build:gradle:4.0.2'
     }
 }
 
