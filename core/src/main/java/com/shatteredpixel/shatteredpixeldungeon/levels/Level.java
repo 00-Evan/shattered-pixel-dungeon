@@ -684,7 +684,7 @@ public abstract class Level implements Bundlable {
 	public void destroy( int pos ) {
 		//if raw tile type is flammable or empty
 		int terr = map[pos];
-		if (terr == Terrain.EMPTY || terr == Terrain.EMPTY_SP
+		if (terr == Terrain.EMPTY || terr == Terrain.EMPTY_DECO
 				|| (Terrain.flags[map[pos]] & Terrain.FLAMABLE) != 0) {
 			set(pos, Terrain.EMBERS);
 		}
