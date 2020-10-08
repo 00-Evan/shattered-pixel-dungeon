@@ -180,13 +180,17 @@ public class NinePatch extends Visual {
 	}
 
 	public void flipHorizontal(boolean value) {
-		flipHorizontal = value;
-		updateVertices();
+		if (flipHorizontal != value){
+			flipHorizontal = value;
+			updateVertices();
+		}
 	}
 
 	public void flipVertical(boolean value) {
-		flipVertical = value;
-		updateVertices();
+		if (flipVertical != value) {
+			flipVertical = value;
+			updateVertices();
+		}
 	}
 	
 	public void size( float width, float height ) {
