@@ -52,7 +52,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
-import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
@@ -110,7 +109,6 @@ import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.GameMath;
-import com.watabou.utils.Random;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -492,10 +490,6 @@ public class GameScene extends PixelScene {
 					GLog.w(Messages.get(this, "dark"));
 					break;
 				default:
-			}
-			if (Dungeon.level instanceof RegularLevel &&
-					((RegularLevel) Dungeon.level).secretDoors > Random.IntRange(3, 4)) {
-				GLog.w(Messages.get(this, "secrets"));
 			}
 
 			for (Mob mob : Dungeon.level.mobs) {
