@@ -71,7 +71,7 @@ public class News {
 	private static ArrayList<NewsArticle> articles;
 
 	public static synchronized boolean articlesAvailable(){
-		return articles != null;
+		return articles != null && !articles.isEmpty();
 	}
 
 	public static synchronized ArrayList<NewsArticle> articles(){

@@ -145,6 +145,7 @@ public class Spinner extends Mob {
 	
 	public int webPos(){
 
+		Char enemy = this.enemy;
 		if (enemy == null) return -1;
 		
 		Ballistica b;
