@@ -44,6 +44,32 @@ public class v0_9_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("v0.9.0a", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"I'm still planning to evaluate talent balance and make adjustments where needed, but some bugs have to get fixed first!\n\nInitial data for talents is looking good though, but a few will likely be slightly buffed or nerfed."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Updated Translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by v0.9.0):\n" +
+				"_-_ Various crash bugs\n" +
+				"_-_ Cases where warrior's shield would not decrease when it should\n" +
+				"_-_ Incorrect interactions between scrolls and time freeze\n" +
+				"_-_ Unlocked badges rarely showing as locked\n" +
+				"_-_ Burning spider webs destroying some tile types that they shouldn't\n\n" +
+				"Fixed (existed prior to v0.9.0):\n" +
+				"_-_ Great crab sometimes dropping 3 meat instead of 2\n" +
+				"_-_ Cleave being reset when a kill corrupts the enemy\n" +
+				"_-_ Sleeping VFX persisting in cases where it shouldn't"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
