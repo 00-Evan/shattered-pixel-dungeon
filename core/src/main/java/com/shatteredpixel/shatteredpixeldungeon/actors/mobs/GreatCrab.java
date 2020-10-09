@@ -47,6 +47,9 @@ public class GreatCrab extends Crab {
 
 		state = WANDERING;
 
+		loot = new MysteryMeat().quantity(2);
+		lootChance = 1f;
+
 		properties.add(Property.MINIBOSS);
 	}
 
@@ -85,8 +88,5 @@ public class GreatCrab extends Crab {
 		super.die( cause );
 
 		Ghost.Quest.process();
-
-		Dungeon.level.drop( new MysteryMeat(), pos );
-		Dungeon.level.drop( new MysteryMeat(), pos ).sprite.drop();
 	}
 }
