@@ -119,10 +119,12 @@ public class NewTengu extends Mob {
 		return Random.NormalIntRange(0, 5);
 	}
 
+	boolean loading = false;
+
 	//Tengu is immune to debuffs and damage when removed from the level
 	@Override
 	public void add(Buff buff) {
-		if (Actor.chars().contains(this) || buff instanceof Doom){
+		if (Actor.chars().contains(this) || buff instanceof Doom || loading){
 			super.add(buff);
 		}
 	}
@@ -352,7 +354,9 @@ public class NewTengu extends Mob {
 	
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
+		loading = true;
 		super.restoreFromBundle(bundle);
+		loading = false;
 		lastAbility = bundle.getInt( LAST_ABILITY );
 		abilitiesUsed = bundle.getInt( ABILITIES_USED );
 		arenaJumps = bundle.getInt( ARENA_JUMPS );
@@ -1014,6 +1018,8 @@ public class NewTengu extends Mob {
 			
 			@Override
 			protected void evolve() {
+
+				boolean shocked = false;
 				
 				int cell;
 				for (int i = area.left; i < area.right; i++){
@@ -1026,6 +1032,8 @@ public class NewTengu extends Mob {
 						}
 						
 						if (cur[cell] > 0 && off[cell] == 0){
+
+							shocked = true;
 							
 							Char ch = Actor.findChar(cell);
 							if (ch != null && !(ch instanceof NewTengu)){
@@ -1039,6 +1047,8 @@ public class NewTengu extends Mob {
 						}
 					}
 				}
+
+				if (shocked) Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
 				
 			}
 			
