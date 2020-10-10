@@ -266,7 +266,7 @@ public enum Talent {
 			if (talentBundle.contains(talent.name())){
 				for (LinkedHashMap<Talent, Integer> tier : hero.talents){
 					if (tier.containsKey(talent)){
-						tier.put(talent, talentBundle.getInt(talent.name()));
+						tier.put(talent, Math.min(talentBundle.getInt(talent.name()), talent.maxPoints()));
 					}
 				}
 			}

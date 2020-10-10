@@ -61,6 +61,7 @@ public class TalentButton extends Button {
 		this.pointsInTalent = points;
 		this.upgradeEnabled = upgradeEnabled;
 
+		bg.frame(20*(talent.maxPoints()-1), 0, WIDTH, HEIGHT);
 		icon.frame( film.get( talent.icon() ) );
 	}
 
@@ -74,7 +75,7 @@ public class TalentButton extends Button {
 		fill = new ColorBlock(0, 4, 0xFFFFFF44);
 		add(fill);
 
-		bg = new Image(Assets.Interfaces.TALENT_BUTTON, 20, 0, WIDTH, HEIGHT);
+		bg = new Image(Assets.Interfaces.TALENT_BUTTON);
 		add(bg);
 
 		icon = new Image( icons );
@@ -90,7 +91,7 @@ public class TalentButton extends Button {
 
 		fill.x = x;
 		fill.y = y + WIDTH - 1;
-		fill.size( pointsInTalent/2f * WIDTH, 5);
+		fill.size( pointsInTalent/(float)talent.maxPoints() * WIDTH, 5);
 
 		bg.x = x;
 		bg.y = y;
