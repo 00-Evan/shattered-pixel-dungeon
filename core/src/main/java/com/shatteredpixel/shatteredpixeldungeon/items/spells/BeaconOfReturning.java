@@ -120,6 +120,9 @@ public class BeaconOfReturning extends Spell {
 		}
 		
 		if (returnDepth == Dungeon.depth) {
+			if (!Dungeon.level.passable[returnPos] && !Dungeon.level.avoid[returnPos]){
+				returnPos = Dungeon.level.entrance;
+			}
 			ScrollOfTeleportation.appear( hero, returnPos );
 			for(Mob m : Dungeon.level.mobs){
 				if (m.pos == hero.pos){
