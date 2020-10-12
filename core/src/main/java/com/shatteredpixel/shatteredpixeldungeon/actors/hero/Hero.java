@@ -1449,7 +1449,7 @@ public class Hero extends Char {
 				GLog.p( Messages.get(this, "new_level") );
 				sprite.showStatus( CharSprite.POSITIVE, Messages.get(Hero.class, "level_up") );
 				Sample.INSTANCE.play( Assets.Sounds.LEVELUP );
-				if (talentPointsAvailable() > 0){
+				if (lvl <= 6){
 					GLog.newLine();
 					GLog.p( Messages.get(this, "new_talent") );
 					StatusPane.talentBlink = 10f;
