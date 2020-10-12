@@ -803,6 +803,7 @@ public class Badges {
 	}
 
 	public static void validateChampion( int challenges ) {
+		if (challenges == 0) return;
 		Badge badge = null;
 		if (challenges >= 1) {
 			badge = Badge.CHAMPION_1;

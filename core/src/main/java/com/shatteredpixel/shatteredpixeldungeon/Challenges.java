@@ -53,6 +53,14 @@ public class Challenges {
 			CHAMPION_ENEMIES, NO_FOOD, NO_ARMOR, NO_HEALING, NO_HERBALISM, SWARM_INTELLIGENCE, DARKNESS, NO_SCROLLS
 	};
 
+	public static int activeChallenges(){
+		int chCount = 0;
+		for (int ch : Challenges.MASKS){
+			if ((Dungeon.challenges & ch) != 0) chCount++;
+		}
+		return chCount;
+	}
+
 	public static boolean isItemBlocked( Item item ){
 
 		if (Dungeon.isChallenged(NO_HERBALISM) && item instanceof Dewdrop){

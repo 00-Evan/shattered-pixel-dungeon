@@ -690,15 +690,6 @@ public class Dungeon {
 
 		hero.belongings.identify();
 
-		int chCount = 0;
-		for (int ch : Challenges.MASKS){
-			if ((challenges & ch) != 0) chCount++;
-		}
-		
-		if (chCount != 0) {
-			Badges.validateChampion(chCount);
-		}
-
 		Rankings.INSTANCE.submit( true, cause );
 	}
 

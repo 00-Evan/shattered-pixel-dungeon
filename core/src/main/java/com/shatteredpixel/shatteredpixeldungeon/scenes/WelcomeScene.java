@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
@@ -157,14 +159,16 @@ public class WelcomeScene extends PixelScene {
 	}
 
 	private void updateVersion(int previousVersion){
-		
+
 		//update rankings, to update any data which may be outdated
 		if (previousVersion < LATEST_UPDATE){
+			int highestChalInRankings = 0;
 			try {
 				Rankings.INSTANCE.load();
 				for (Rankings.Record rec : Rankings.INSTANCE.records.toArray(new Rankings.Record[0])){
 					try {
 						Rankings.INSTANCE.loadGameData(rec);
+						highestChalInRankings = Math.max(highestChalInRankings, Challenges.activeChallenges());
 						Rankings.INSTANCE.saveGameData(rec);
 					} catch (Exception e) {
 						//if we encounter a fatal per-record error, then clear that record
@@ -177,6 +181,15 @@ public class WelcomeScene extends PixelScene {
 				//if we encounter a fatal error, then just clear the rankings
 				FileUtils.deleteFile( Rankings.RANKINGS_FILE );
 				ShatteredPixelDungeon.reportException(e);
+			}
+
+			//fixes a bug from v0.9.0- where champion badges would rarely not save
+			if (highestChalInRankings > 0){
+				Badges.loadGlobal();
+				if (highestChalInRankings >= 1) Badges.addGlobal(Badges.Badge.CHAMPION_1);
+				if (highestChalInRankings >= 3) Badges.addGlobal(Badges.Badge.CHAMPION_2);
+				if (highestChalInRankings >= 6) Badges.addGlobal(Badges.Badge.CHAMPION_3);
+				Badges.saveGlobal();
 			}
 		}
 		

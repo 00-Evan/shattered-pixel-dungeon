@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
@@ -67,7 +68,6 @@ public class Amulet extends Item {
 			
 			if (!Statistics.amuletObtained) {
 				Statistics.amuletObtained = true;
-				Badges.validateVictory();
 				hero.spend(-TIME_TO_PICK_UP);
 
 				//add a delayed actor here so pickup behaviour can fully process.
@@ -91,7 +91,19 @@ public class Amulet extends Item {
 		try {
 			Dungeon.saveAll();
 			AmuletScene.noText = !showText;
-			Game.switchScene( AmuletScene.class );
+			Game.switchScene( AmuletScene.class, new Game.SceneChangeCallback() {
+				@Override
+				public void beforeCreate() {
+
+				}
+
+				@Override
+				public void afterCreate() {
+					Badges.validateVictory();
+					Badges.validateChampion(Challenges.activeChallenges());
+					Badges.saveGlobal();
+				}
+			});
 		} catch (IOException e) {
 			ShatteredPixelDungeon.reportException(e);
 		}
