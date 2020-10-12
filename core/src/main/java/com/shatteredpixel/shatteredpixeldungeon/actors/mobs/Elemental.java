@@ -98,7 +98,7 @@ public abstract class Elemental extends Mob {
 	
 	protected boolean doAttack( Char enemy ) {
 		
-		if (Dungeon.level.adjacent( pos, enemy.pos )) {
+		if (Dungeon.level.adjacent( pos, enemy.pos ) || rangedCooldown > 0) {
 			
 			return super.doAttack( enemy );
 			
