@@ -58,6 +58,7 @@ public class ForceCube extends MissileWeapon {
 			return;
 		}
 
+		rangedHit( null, cell );
 		Dungeon.level.pressCell(cell);
 		
 		ArrayList<Char> targets = new ArrayList<>();
@@ -75,8 +76,6 @@ public class ForceCube extends MissileWeapon {
 				GLog.n(Messages.get(this, "ondeath"));
 			}
 		}
-		
-		rangedHit( null, cell );
 		
 		WandOfBlastWave.BlastWave.blast(cell);
 		Sample.INSTANCE.play( Assets.Sounds.BLAST );
