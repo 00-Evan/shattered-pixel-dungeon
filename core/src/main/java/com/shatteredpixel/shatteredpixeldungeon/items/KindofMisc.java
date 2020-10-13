@@ -43,11 +43,25 @@ public abstract class KindofMisc extends EquipableItem {
 		if ( this instanceof Artifact
 				&& hero.belongings.artifact != null
 				&& hero.belongings.misc != null){
-			equipFull = true;
+
+			//see if we can re-arrange items first
+			if (hero.belongings.misc instanceof Ring && hero.belongings.ring == null){
+				hero.belongings.ring = (Ring) hero.belongings.misc;
+				hero.belongings.misc = null;
+			} else {
+				equipFull = true;
+			}
 		} else if (this instanceof Ring
 				&& hero.belongings.misc != null
 				&& hero.belongings.ring != null){
-			equipFull = true;
+
+			//see if we can re-arrange items first
+			if (hero.belongings.misc instanceof Artifact && hero.belongings.artifact == null){
+				hero.belongings.artifact = (Artifact) hero.belongings.misc;
+				hero.belongings.misc = null;
+			} else {
+				equipFull = true;
+			}
 		}
 
 		if (equipFull) {
