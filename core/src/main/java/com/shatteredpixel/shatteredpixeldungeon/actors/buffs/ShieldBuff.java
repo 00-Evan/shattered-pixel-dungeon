@@ -53,7 +53,7 @@ public abstract class ShieldBuff extends Buff {
 	}
 
 	public void setShield( int shield, float delay ) {
-		this.shielding = shield;
+		if (this.shielding <= shield) this.shielding = shield;
 		if (target != null) target.needsShieldUpdate = true;
 		spend(delay);
 	}

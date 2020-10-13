@@ -150,7 +150,7 @@ public class BrokenSeal extends Item {
 				dmg = 0;
 			} else {
 				dmg -= shielding();
-				setShield(0);
+				decShield(shielding());
 			}
 			return dmg;
 		}
