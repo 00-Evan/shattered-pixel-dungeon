@@ -33,8 +33,8 @@ import com.watabou.noosa.ui.Component;
 public class WndInfoMob extends WndTitledMessage {
 	
 	public WndInfoMob( Mob mob ) {
-		
-		super( new MobTitle( mob ), mob.description() );
+
+		super( new MobTitle( mob ), mob.info() );
 		
 	}
 	
