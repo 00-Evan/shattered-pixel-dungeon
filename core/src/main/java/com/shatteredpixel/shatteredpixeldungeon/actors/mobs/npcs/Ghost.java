@@ -281,23 +281,15 @@ public class Ghost extends NPC {
 				depth = Dungeon.depth;
 
 				//50%:tier2, 30%:tier3, 15%:tier4, 5%:tier5
-				float itemTierRoll = Random.Float();
-				int wepTier;
-
-				if (itemTierRoll < 0.5f) {
-					wepTier = 2;
-					armor = new LeatherArmor();
-				} else if (itemTierRoll < 0.8f) {
-					wepTier = 3;
-					armor = new MailArmor();
-				} else if (itemTierRoll < 0.95f) {
-					wepTier = 4;
-					armor = new ScaleArmor();
-				} else {
-					wepTier = 5;
-					armor = new PlateArmor();
+				switch (Random.chances(new float[]{0, 0, 10, 6, 3, 1})){
+					default:
+					case 2: armor = new LeatherArmor(); break;
+					case 3: armor = new MailArmor();    break;
+					case 4: armor = new ScaleArmor();   break;
+					case 5: armor = new PlateArmor();   break;
 				}
-				
+				//50%:tier2, 30%:tier3, 15%:tier4, 5%:tier5
+				int wepTier = Random.chances(new float[]{0, 10, 6, 3, 1});
 				Generator.Category c = Generator.wepTiers[wepTier - 1];
 				weapon = (MeleeWeapon) Reflection.newInstance(c.classes[Random.chances(c.probs)]);
 
