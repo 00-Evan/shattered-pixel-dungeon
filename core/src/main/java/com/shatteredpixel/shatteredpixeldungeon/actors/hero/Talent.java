@@ -121,8 +121,8 @@ public enum Talent {
 			hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), hero.pointsInTalent(HEARTY_MEAL) );
 		}
 		if (hero.hasTalent(ENERGIZING_MEAL)){
-			//4/6 turns of recharging
-			Buff.affect( hero, Recharging.class, 2*(1+hero.pointsInTalent(ENERGIZING_MEAL)) );
+			//5/8 turns of recharging
+			Buff.affect( hero, Recharging.class, 2 + 3*(hero.pointsInTalent(ENERGIZING_MEAL)) );
 			ScrollOfRecharging.charge( hero );
 		}
 		if (hero.hasTalent(RATIONED_MEAL)){
@@ -139,16 +139,18 @@ public enum Talent {
 	}
 
 	public static float itemIDSpeedFactor( Hero hero, Item item ){
-		// 1.5x/2x speed with huntress talent
-		float factor = 1f + hero.pointsInTalent(SURVIVALISTS_INTUITION)/2f;
+		// 1.75x/2.5x speed with huntress talent
+		float factor = 1f + hero.pointsInTalent(SURVIVALISTS_INTUITION)*0.75f;
 
-		//otherwise 2x/3x speed (also ID instantly though)
+		// 2x/instant for Warrior (see onItemEquipped)
 		if (item instanceof MeleeWeapon || item instanceof Armor){
 			factor *= 1f + hero.pointsInTalent(ARMSMASTERS_INTUITION);
 		}
+		// 3x/instant for mage (see Wand.wandUsed())
 		if (item instanceof Wand){
-			factor *= 1f + hero.pointsInTalent(SCHOLARS_INTUITION);
+			factor *= 1f + 2*hero.pointsInTalent(SCHOLARS_INTUITION);
 		}
+		// 2x/instant for rogue (see onItemEqupped), also id's type on equip/on pickup
 		if (item instanceof Ring){
 			factor *= 1f + hero.pointsInTalent(THIEFS_INTUITION);
 		}
@@ -178,7 +180,7 @@ public enum Talent {
 		if (hero.hasTalent(Talent.SUCKER_PUNCH)
 				&& enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)
 				&& enemy.buff(SuckerPunchTracker.class) == null){
-			dmg += Random.IntRange(1 , hero.pointsInTalent(Talent.SUCKER_PUNCH));
+			dmg += Random.IntRange(hero.pointsInTalent(Talent.SUCKER_PUNCH) , 2);
 			Buff.affect(enemy, SuckerPunchTracker.class);
 		}
 
@@ -186,10 +188,7 @@ public enum Talent {
 			if (hero.belongings.weapon instanceof MissileWeapon) {
 				Buff.affect(enemy, FollowupStrikeTracker.class);
 			} else if (enemy.buff(FollowupStrikeTracker.class) != null){
-				dmg += Random.IntRange(1, 2);
-				if (hero.pointsInTalent(FOLLOWUP_STRIKE) == 2){
-					dmg += 1;
-				}
+				dmg += 1 + hero.pointsInTalent(FOLLOWUP_STRIKE);
 				if (!(enemy instanceof Mob) || !((Mob) enemy).surprisedBy(hero)){
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG, 0.75f, 1.2f);
 				}
