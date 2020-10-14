@@ -49,14 +49,16 @@ public class TalentsPane extends ScrollPane {
 	public TalentsPane( boolean canUpgrade, ArrayList<LinkedHashMap<Talent, Integer>> talents ) {
 		super(new Component());
 
-		//TODO more code here for future tiers as they are added
-		int tiersAvailable;
+		int tiersAvailable = 1;
+
 		if (!canUpgrade){
 			tiersAvailable = 4;
-		} else if (Dungeon.hero.lvl >= 7){
-			tiersAvailable = 2;
 		} else {
-			tiersAvailable = 1;
+			while (Dungeon.hero.lvl+1 >= Talent.tierLevelThresholds[tiersAvailable+1]){
+				tiersAvailable++;
+			}
+			//TODO lighten limit as future tiers are added
+			tiersAvailable = Math.min(tiersAvailable, 2);
 		}
 
 		for (int i = 0; i < Math.min(tiersAvailable, talents.size()); i++){
@@ -83,8 +85,9 @@ public class TalentsPane extends ScrollPane {
 	protected void layout() {
 		super.layout();
 
-		float top = 2;
+		float top = 0;
 		for (int i = 0; i < panes.size(); i++){
+			top += 2;
 			panes.get(i).setRect(x, top, width, 0);
 			top = panes.get(i).bottom();
 
@@ -100,10 +103,12 @@ public class TalentsPane extends ScrollPane {
 		blocker.y = top;
 		blocker.size(width, height - top);
 
-		blockText.setPos((width - blockText.width())/2f, blocker.y + 10);
+		blockText.setPos((width - blockText.width())/2f, blocker.y + (height - blocker.y)/2 - 3);
 	}
 
 	public static class TalentTierPane extends Component {
+
+		private int tier;
 
 		RenderedTextBlock title;
 		ArrayList<TalentButton> buttons;
@@ -113,6 +118,8 @@ public class TalentsPane extends ScrollPane {
 		public TalentTierPane(LinkedHashMap<Talent, Integer> talents, int tier, boolean canUpgrade){
 			super();
 
+			this.tier = tier;
+
 			title = PixelScene.renderTextBlock(Messages.titleCase(Messages.get(TalentsPane.class, "tier", tier)), 9);
 			title.hardlight(Window.TITLE_COLOR);
 			add(title);
@@ -121,7 +128,7 @@ public class TalentsPane extends ScrollPane {
 
 			buttons = new ArrayList<>();
 			for (Talent talent : talents.keySet()){
-				TalentButton btn = new TalentButton(talent, talents.get(talent), canUpgrade){
+				TalentButton btn = new TalentButton(tier, talent, talents.get(talent), canUpgrade){
 					@Override
 					public void upgradeTalent() {
 						super.upgradeTalent();
@@ -145,9 +152,9 @@ public class TalentsPane extends ScrollPane {
 				stars.clear();
 			}
 
-			int totStars = 5;
-			int openStars = Dungeon.hero.talentPointsAvailable();
-			int usedStars = Dungeon.hero.talentPointsSpent();
+			int totStars = Talent.tierLevelThresholds[tier+1] - Talent.tierLevelThresholds[tier];
+			int openStars = Dungeon.hero.talentPointsAvailable(tier);
+			int usedStars = Dungeon.hero.talentPointsSpent(tier);
 			for (int i = 0; i < totStars; i++){
 				Image im = new Speck().image(Speck.STAR);
 				stars.add(im);

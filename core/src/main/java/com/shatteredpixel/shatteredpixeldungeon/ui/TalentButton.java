@@ -46,6 +46,7 @@ public class TalentButton extends Button {
 	private SmartTexture icons;
 	private TextureFilm film;
 
+	int tier;
 	Talent talent;
 	int pointsInTalent;
 	boolean upgradeEnabled;
@@ -55,8 +56,9 @@ public class TalentButton extends Button {
 
 	ColorBlock fill;
 
-	public TalentButton(Talent talent, int points, boolean upgradeEnabled){
+	public TalentButton(int tier, Talent talent, int points, boolean upgradeEnabled){
 		super();
+		this.tier = tier;
 		this.talent = talent;
 		this.pointsInTalent = points;
 		this.upgradeEnabled = upgradeEnabled;
@@ -107,7 +109,7 @@ public class TalentButton extends Button {
 
 		if (upgradeEnabled
 				&& Dungeon.hero != null
-				&& Dungeon.hero.talentPointsAvailable() > 0
+				&& Dungeon.hero.talentPointsAvailable(tier) > 0
 				&& Dungeon.hero.pointsInTalent(talent) < talent.maxPoints()){
 			ShatteredPixelDungeon.scene().addToFront(new WndInfoTalent(talent, pointsInTalent, new Callback() {
 				@Override
@@ -140,7 +142,7 @@ public class TalentButton extends Button {
 	}
 
 	public void upgradeTalent(){
-		if (Dungeon.hero.talentPointsAvailable() > 0 && parent != null) {
+		if (Dungeon.hero.talentPointsAvailable(tier) > 0 && parent != null) {
 			Dungeon.hero.upgradeTalent(talent);
 			float oldWidth = fill.width();
 			pointsInTalent++;

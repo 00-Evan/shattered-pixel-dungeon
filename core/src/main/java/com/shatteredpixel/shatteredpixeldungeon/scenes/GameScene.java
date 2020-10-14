@@ -469,7 +469,14 @@ public class GameScene extends PixelScene {
 				GLog.h(Messages.get(this, "return"), Dungeon.depth);
 			}
 
-			if (Dungeon.hero.talentPointsAvailable() > 0){
+			boolean unspentTalents = false;
+			for (int i = 1; i <= Dungeon.hero.talents.size(); i++){
+				if (Dungeon.hero.talentPointsAvailable(i) > 0){
+					unspentTalents = true;
+					break;
+				}
+			}
+			if (unspentTalents){
 				GLog.newLine();
 				GLog.w( Messages.get(Dungeon.hero, "unspent") );
 				StatusPane.talentBlink = 10f;

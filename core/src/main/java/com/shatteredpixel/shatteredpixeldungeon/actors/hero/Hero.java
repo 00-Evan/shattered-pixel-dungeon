@@ -310,21 +310,22 @@ public class Hero extends Char {
 		Talent.onTalentUpgraded(this, talent);
 	}
 
-	//TODO account for tiers
-	public int talentPointsSpent(){
+	public int talentPointsSpent(int tier){
 		int total = 0;
-		for (LinkedHashMap<Talent, Integer> tier : talents){
-			for (int i : tier.values()){
-				total += i;
-			}
+		for (int i : talents.get(tier-1).values()){
+			total += i;
 		}
 		return total;
 	}
 
-	//TODO account for tiers
-	public int talentPointsAvailable(){
-		//hero currently only gains points up to level 6
-		return Math.min(lvl, 6) - 1 - talentPointsSpent();
+	public int talentPointsAvailable(int tier){
+		if (lvl < Talent.tierLevelThresholds[tier]){
+			return 0;
+		} else if (lvl >= Talent.tierLevelThresholds[tier+1]){
+			return Talent.tierLevelThresholds[tier+1] - Talent.tierLevelThresholds[tier] - talentPointsSpent(tier);
+		} else {
+			return 1 + lvl - Talent.tierLevelThresholds[tier] - talentPointsSpent(tier);
+		}
 	}
 	
 	public String className() {
