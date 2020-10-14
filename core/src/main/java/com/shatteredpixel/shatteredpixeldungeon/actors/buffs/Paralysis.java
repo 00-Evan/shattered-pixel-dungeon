@@ -82,8 +82,8 @@ public class Paralysis extends FlavourBuff {
 
 	@Override
 	public void fx(boolean on) {
-		if (on) target.sprite.add(CharSprite.State.PARALYSED);
-		else target.sprite.remove(CharSprite.State.PARALYSED);
+		if (on)                         target.sprite.add(CharSprite.State.PARALYSED);
+		else if (target.paralysed <= 1) target.sprite.remove(CharSprite.State.PARALYSED);
 	}
 
 	@Override
