@@ -153,6 +153,15 @@ public class AlchemyScene extends PixelScene {
 						}
 						AlchemyScene.this.addToFront(WndBag.lastBag( itemSelector, WndBag.Mode.ALCHEMY, Messages.get(AlchemyScene.class, "select")));
 					}
+
+					@Override
+					protected boolean onLongClick() {
+						if (item != null){
+							Game.scene().addToFront(new WndInfoItem(item));
+							return true;
+						}
+						return false;
+					}
 				};
 				inputs[i].setRect(left + 10, pos, BTN_SIZE, BTN_SIZE);
 				add(inputs[i]);
@@ -518,12 +527,20 @@ public class AlchemyScene extends PixelScene {
 				protected void onClick() {
 					ItemButton.this.onClick();
 				}
+
+				@Override
+				protected boolean onLongClick() {
+					return ItemButton.this.onLongClick();
+				}
 			};
 			slot.enable(true);
 			add( slot );
 		}
 		
 		protected void onClick() {}
+		protected boolean onLongClick() {
+			return false;
+		}
 		
 		@Override
 		protected void layout() {

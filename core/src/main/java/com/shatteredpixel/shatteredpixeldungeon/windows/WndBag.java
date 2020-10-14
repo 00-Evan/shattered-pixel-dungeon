@@ -492,6 +492,9 @@ public class WndBag extends WndTabbed {
 				Dungeon.quickslot.setSlot( 0 , item );
 				QuickSlotButton.refresh();
 				return true;
+			} else if (listener != null) {
+				Game.scene().addToFront(new WndInfoItem(item));
+				return true;
 			} else {
 				return false;
 			}
