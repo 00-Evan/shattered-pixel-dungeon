@@ -145,6 +145,8 @@ public class BrokenSeal extends Item {
 		@Override
 		//logic edited slightly as buff should not detach
 		public int absorbDamage(int dmg) {
+			if (shielding() <= 0) return dmg;
+
 			if (shielding() >= dmg){
 				decShield(dmg);
 				dmg = 0;
