@@ -130,7 +130,7 @@ public class Frost extends FlavourBuff {
 			target.sprite.add(CharSprite.State.PARALYSED);
 		} else {
 			target.sprite.remove(CharSprite.State.FROZEN);
-			if (target.paralysed <= 1) target.sprite.remove(CharSprite.State.FROZEN);
+			if (target.paralysed <= 1) target.sprite.remove(CharSprite.State.PARALYSED);
 		}
 	}
 

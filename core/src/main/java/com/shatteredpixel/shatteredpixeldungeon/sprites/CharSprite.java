@@ -417,7 +417,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				alpha( 1f );
 				break;
 			case PARALYSED:
-				if (iceBlock != null) paused = false;
+				paused = false;
 				break;
 			case FROZEN:
 				if (iceBlock != null) {
