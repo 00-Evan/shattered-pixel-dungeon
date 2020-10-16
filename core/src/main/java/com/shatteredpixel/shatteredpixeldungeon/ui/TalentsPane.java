@@ -52,13 +52,12 @@ public class TalentsPane extends ScrollPane {
 		int tiersAvailable = 1;
 
 		if (!canUpgrade){
-			tiersAvailable = 4;
+			tiersAvailable = Talent.MAX_TALENT_TIERS;
 		} else {
-			while (Dungeon.hero.lvl+1 >= Talent.tierLevelThresholds[tiersAvailable+1]){
+			while (tiersAvailable < Talent.MAX_TALENT_TIERS
+					&& Dungeon.hero.lvl+1 >= Talent.tierLevelThresholds[tiersAvailable+1]){
 				tiersAvailable++;
 			}
-			//TODO lighten limit as future tiers are added
-			tiersAvailable = Math.min(tiersAvailable, 2);
 		}
 
 		for (int i = 0; i < Math.min(tiersAvailable, talents.size()); i++){

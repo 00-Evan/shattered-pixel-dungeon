@@ -202,14 +202,14 @@ public enum Talent {
 	public static class SuckerPunchTracker extends Buff{};
 	public static class FollowupStrikeTracker extends Buff{};
 
-	private static final int TALENT_TIERS = 1;
+	public static final int MAX_TALENT_TIERS = 1;
 
 	public static void initClassTalents( Hero hero ){
 		initClassTalents( hero.heroClass, hero.talents );
 	}
 
 	public static void initClassTalents( HeroClass cls, ArrayList<LinkedHashMap<Talent, Integer>> talents ){
-		while (talents.size() < TALENT_TIERS){
+		while (talents.size() < MAX_TALENT_TIERS){
 			talents.add(new LinkedHashMap<>());
 		}
 
