@@ -143,7 +143,7 @@ public class WelcomeScene extends PixelScene {
 				//TODO: change the messages here in accordance with the type of patch.
 				message = Messages.get(this, "patch_intro");
 				message += "\n";
-				//message += "\n" + Messages.get(this, "patch_balance");
+				message += "\n" + Messages.get(this, "patch_balance");
 				message += "\n" + Messages.get(this, "patch_bugfixes");
 				message += "\n" + Messages.get(this, "patch_translations");
 
@@ -161,7 +161,8 @@ public class WelcomeScene extends PixelScene {
 	private void updateVersion(int previousVersion){
 
 		//update rankings, to update any data which may be outdated
-		if (previousVersion < LATEST_UPDATE){
+		//FIXME this is set to true temporarily as we want to run this no matter what, to ensure the v0.9.0a- badges bug is fixed
+		if (true){
 			int highestChalInRankings = 0;
 			try {
 				Rankings.INSTANCE.load();

@@ -44,16 +44,51 @@ public class v0_9_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v0.9.0b", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.TALENT), "Talent Balance Changes",
+				"I'm making some numbers changes to improve some of the lowest winrate talents. Expect more thorough changes, and a new tier of talents, when I release v0.9.1!\n\n" +
+				"_- Survivalist's Intuition_ ID speed boost at +1/+2 increased to 1.75x/2.5x, from 1.5x/2x\n" +
+				"_- Scholar's Intuition_ ID speed boost at +1 increased to 3x from 2x\n\n" +
+				"_- Energizing Meal_ recharging turns at +1/+2 increased to 5/8 from 4/6\n\n" +
+				"_- Sucker Punch_ damage boost at +1/+2 increased to 1-2/2 from 1/1-2\n" +
+				"_- Followup Strike_ damage boost +1/+2 increased to 2/3 from 1-2/2-3"));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_ON), "Hostile Champions Tweaks",
+				"Based on feedback, I'm adjusting the hostile champions challenge to be a bit harsher overall, while also reduce the chance of some of the worst-case scenarios:\n" +
+				"_-_ Champion spawn chance increased to 1/10 from 1/15\n" +
+				"_-_ Champions per floor are now capped, to prevent unlucky cases with huge champion numbers. This cap gets higher as depth increases.\n" +
+				"_-_ Growing champion base power reduced by 20%, power scaling reduced by 50%.\n" +
+				"_-_ Champion enemies now include their champion buff description in their regular description.\n\n" +
+				"I've also fixed two bugs that affected hostile champions specifically:\n" +
+				"_-_ Fixed pathing issues with giant champions.\n" +
+				"_-_ Fixed projecting elementals spamming their ranged attacks."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"I'm making some adjustments to sewers loot to give players a bit more control of what gear they get, and to reduce the chance of spawning high tier gear that the player may never get to use:\n" +
+				"_-_ Chance for regular gear drops in the sewers to be T4/T5 reduced by 50%.\n" +
+				"_-_ Players can now see what type of weapon/armor the sad ghost has before selecting it.\n\n" +
+				"_-_ Statues are now killed if a disarming trap triggers under them.\n" +
+				"_-_ Weak shields no longer override stronger ones.\n" +
+				"_-_ Long pressing item slots in the alchemy screen now shows the item's description.\n\n" +
+				"_-_ Updated translations and translator credits."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by v0.9.0):\n" +
+				"_-_ \"+1 Talent Point\" appearing when no new points are given in some cases.\n\n" +
+				"Fixed (existed prior to v0.9.0):\n" +
+				"_-_ Tengu's abilities being reset by saving/loading\n" +
+				"_-_ Various cases where game win badges would not appear\n" +
+				"_-_ Force cubes trigger traps before being placed to the floor\n" +
+				"_-_ Beacon of returning rarely teleporting the player into walls\n" +
+				"_-_ Player being forced to swap equipped misc items when they shouldn't in some cases\n" +
+				"_-_ Enemies rarely not appearing paralyzed when they are"));
 
 		changes = new ChangeInfo("v0.9.0a", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
-				"I'm still planning to evaluate talent balance and make adjustments where needed, but some bugs have to get fixed first!\n\nInitial data for talents is looking good though, but a few will likely be slightly buffed or nerfed."));
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"_-_ Updated Translations"));
