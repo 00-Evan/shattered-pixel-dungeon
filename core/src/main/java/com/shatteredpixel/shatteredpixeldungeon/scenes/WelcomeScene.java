@@ -168,7 +168,7 @@ public class WelcomeScene extends PixelScene {
 				for (Rankings.Record rec : Rankings.INSTANCE.records.toArray(new Rankings.Record[0])){
 					try {
 						Rankings.INSTANCE.loadGameData(rec);
-						highestChalInRankings = Math.max(highestChalInRankings, Challenges.activeChallenges());
+						if (rec.win) highestChalInRankings = Math.max(highestChalInRankings, Challenges.activeChallenges());
 						Rankings.INSTANCE.saveGameData(rec);
 					} catch (Exception e) {
 						//if we encounter a fatal per-record error, then clear that record
