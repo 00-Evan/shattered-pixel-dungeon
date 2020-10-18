@@ -213,13 +213,13 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 		if (!foundPoint) return false;
 		
 		if (i.width() == 0 && i.left == left)
-			return canConnect(LEFT) && r.canConnect(LEFT);
+			return canConnect(LEFT) && r.canConnect(RIGHT);
 		else if (i.height() == 0 && i.top == top)
-			return canConnect(TOP) && r.canConnect(TOP);
+			return canConnect(TOP) && r.canConnect(BOTTOM);
 		else if (i.width() == 0 && i.right == right)
-			return canConnect(RIGHT) && r.canConnect(RIGHT);
+			return canConnect(RIGHT) && r.canConnect(LEFT);
 		else if (i.height() == 0 && i.bottom == bottom)
-			return canConnect(BOTTOM) && r.canConnect(BOTTOM);
+			return canConnect(BOTTOM) && r.canConnect(TOP);
 		else
 			return false;
 	}
