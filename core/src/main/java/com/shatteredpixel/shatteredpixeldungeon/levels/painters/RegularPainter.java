@@ -165,6 +165,17 @@ public abstract class RegularPainter extends Painter {
 	}
 	
 	protected void paintDoors( Level l, ArrayList<Room> rooms ) {
+
+		float hiddenDoorChance = 0;
+		if (Dungeon.depth > 1){
+			//chance for a hidden door scales from 2/20 on floor 2 to 20/20 on floor 20
+			hiddenDoorChance = Math.min(1f, Dungeon.depth / 20f);
+		}
+		if (l.feeling == Level.Feeling.SECRETS){
+			//pull the value of extra secret doors toward 50% on secrets level feel
+			hiddenDoorChance = (0.5f + hiddenDoorChance)/2f;
+		}
+
 		for (Room r : rooms) {
 			for (Room n : r.connected.keySet()) {
 				
@@ -176,13 +187,12 @@ public abstract class RegularPainter extends Painter {
 				int door = d.x + d.y * l.width();
 				
 				if (d.type == Room.Door.Type.REGULAR){
-					//chance for a hidden door scales from 3/21 on floor 2 to 3/3 on floor 20
-					if (Dungeon.depth > 1 &&
-							(Dungeon.depth >= 20 || Random.Int(23 - Dungeon.depth) < Dungeon.depth)) {
+					if (Random.Float() < hiddenDoorChance) {
 						d.type = Room.Door.Type.HIDDEN;
 						Graph.buildDistanceMap(rooms, r);
 						//don't hide if it would make this room only accessible by hidden doors
-						if (n.distance == Integer.MAX_VALUE){
+						//unless we're on a secrets depth
+						if (l.feeling != Level.Feeling.SECRETS && n.distance == Integer.MAX_VALUE){
 							d.type = Room.Door.Type.UNLOCKED;
 						}
 					} else {
@@ -370,6 +380,20 @@ public abstract class RegularPainter extends Painter {
 			l.setTrap( trap, trapPos );
 			//some traps will not be hidden
 			l.map[trapPos] = trap.visible ? Terrain.TRAP : Terrain.SECRET_TRAP;
+		}
+
+		//4x regular trap count of visible traps on traps level feeling
+		if (l.feeling == Level.Feeling.TRAPS){
+			for (int i = 0; i < 4*nTraps; i++) {
+
+				Integer trapPos = Random.element(validCells);
+				validCells.remove(trapPos); //removes the integer object, not at the index
+
+				Trap trap = Reflection.newInstance(trapClasses[Random.chances( trapChances )]).reveal();
+				l.setTrap( trap, trapPos );
+				//some traps will not be hidden
+				l.map[trapPos] = trap.visible ? Terrain.TRAP : Terrain.SECRET_TRAP;
+			}
 		}
 	}
 	

@@ -484,19 +484,13 @@ public class GameScene extends PixelScene {
 			}
 
 			switch (Dungeon.level.feeling) {
-				case CHASM:
-					GLog.w(Messages.get(this, "chasm"));
-					break;
-				case WATER:
-					GLog.w(Messages.get(this, "water"));
-					break;
-				case GRASS:
-					GLog.w(Messages.get(this, "grass"));
-					break;
-				case DARK:
-					GLog.w(Messages.get(this, "dark"));
-					break;
-				default:
+				case CHASM:     GLog.w(Messages.get(this, "chasm"));    break;
+				case WATER:     GLog.w(Messages.get(this, "water"));    break;
+				case GRASS:     GLog.w(Messages.get(this, "grass"));    break;
+				case DARK:      GLog.w(Messages.get(this, "dark"));     break;
+				case LARGE:     GLog.w(Messages.get(this, "large"));    break;
+				case TRAPS:     GLog.w(Messages.get(this, "traps"));    break;
+				case SECRETS:   GLog.w(Messages.get(this, "secrets"));  break;
 			}
 
 			for (Mob mob : Dungeon.level.mobs) {
