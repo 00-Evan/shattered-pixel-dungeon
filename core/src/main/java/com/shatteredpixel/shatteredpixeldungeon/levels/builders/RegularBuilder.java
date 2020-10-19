@@ -49,9 +49,9 @@ public abstract class RegularBuilder extends Builder {
 	}
 	
 	//path length is the percentage of pathable rooms that are on
-	protected float pathLength = 0.5f;
+	protected float pathLength = 0.33f;
 	//The chance weights for extra rooms to be added to the path
-	protected float[] pathLenJitterChances = new float[]{0, 1, 0};
+	protected float[] pathLenJitterChances = new float[]{0, 1, 2, 1};
 	
 	public RegularBuilder setPathLength( float len, float[] jitter ){
 		pathLength = len;
@@ -67,8 +67,9 @@ public abstract class RegularBuilder extends Builder {
 		branchTunnelChances = branch;
 		return this;
 	}
-	
-	protected float extraConnectionChance = 0.2f;
+
+	//each adjacency is processed twice, so this gives a ~50% chance to connect two adjacent rooms
+	protected float extraConnectionChance = 0.30f;
 	
 	public RegularBuilder setExtraConnectionChance( float chance ){
 		extraConnectionChance = chance;
