@@ -33,7 +33,7 @@ public class CaveRoom extends PatchRoom {
 
 	@Override
 	public float[] sizeCatProbs() {
-		return new float[]{9, 3, 1};
+		return new float[]{4, 2, 1};
 	}
 	
 	@Override
@@ -44,13 +44,13 @@ public class CaveRoom extends PatchRoom {
 			door.set( Door.Type.REGULAR );
 		}
 		
-		//fill scales from ~25% at 4x4, to ~55% at 18x18
-		// normal   ~25% to ~35%
-		// large    ~35% to ~45%
-		// giant    ~45% to ~55%
-		float fill = 0.25f + (width()*height())/1024f;
+		//fill scales from ~30% at 4x4, to ~60% at 18x18
+		// normal   ~30% to ~40%
+		// large    ~40% to ~50%
+		// giant    ~50% to ~60%
+		float fill = 0.30f + (width()*height())/1024f;
 		
-		setupPatch(level, fill, 4, true);
+		setupPatch(level, fill, 3, true);
 		cleanDiagonalEdges();
 		
 		for (int i = top + 1; i < bottom; i++) {
