@@ -29,6 +29,10 @@ import com.watabou.utils.Reflection;
 import java.util.ArrayList;
 
 public abstract class StandardRoom extends Room {
+
+	//whether this room can be joined with other standard rooms
+	//should usually be set to false by rooms that substantially alter terrain
+	public boolean joinable = true;
 	
 	public enum SizeCategory {
 		

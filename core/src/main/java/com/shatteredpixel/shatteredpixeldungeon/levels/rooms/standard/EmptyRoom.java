@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 
-//other rooms should only extend emptyRoom if they do not add significant terrain
 public class EmptyRoom extends StandardRoom {
 	
 	@Override

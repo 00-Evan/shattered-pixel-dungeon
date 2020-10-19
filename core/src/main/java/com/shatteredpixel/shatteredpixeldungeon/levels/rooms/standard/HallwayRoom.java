@@ -30,7 +30,11 @@ import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
 
-public class HallwayRoom extends EmptyRoom {
+public class HallwayRoom extends StandardRoom {
+
+	{
+		joinable = false;
+	}
 
 	//FIXME lots of copy-pasta from tunnel rooms here
 	@Override

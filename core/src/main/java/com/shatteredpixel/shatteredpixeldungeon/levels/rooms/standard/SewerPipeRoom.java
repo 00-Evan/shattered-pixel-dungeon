@@ -35,6 +35,10 @@ import java.util.ArrayList;
 
 public class SewerPipeRoom extends StandardRoom {
 
+	{
+		joinable = false;
+	}
+
 	@Override
 	public int minWidth() {
 		return Math.max(7, super.minWidth());

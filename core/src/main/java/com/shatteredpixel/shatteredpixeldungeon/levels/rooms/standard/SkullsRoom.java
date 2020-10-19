@@ -27,6 +27,10 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 
 public class SkullsRoom extends StandardRoom {
 
+	{
+		joinable = false;
+	}
+
 	@Override
 	public int minWidth() {
 		return Math.max(7, super.minWidth());

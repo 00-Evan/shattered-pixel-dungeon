@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Random;
 
-public class SuspiciousChestRoom extends EmptyRoom {
+public class SuspiciousChestRoom extends StandardRoom {
 
 	@Override
 	public int minWidth() {
@@ -44,7 +44,8 @@ public class SuspiciousChestRoom extends EmptyRoom {
 
 	@Override
 	public void paint(Level level) {
-		super.paint(level);
+		Painter.fill( level, this, Terrain.WALL );
+		Painter.fill( level, this, 1 , Terrain.EMPTY );
 
 		Item i = level.findPrizeItem();
 

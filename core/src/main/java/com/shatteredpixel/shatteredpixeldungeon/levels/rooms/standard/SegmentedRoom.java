@@ -29,7 +29,11 @@ import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
 
 public class SegmentedRoom extends StandardRoom {
-	
+
+	{
+		joinable = false;
+	}
+
 	@Override
 	public int minWidth() {
 		return Math.max(super.minWidth(), 7);

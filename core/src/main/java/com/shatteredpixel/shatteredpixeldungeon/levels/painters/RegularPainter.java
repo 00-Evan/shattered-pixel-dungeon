@@ -28,8 +28,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Patch;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.watabou.utils.Graph;
 import com.watabou.utils.PathFinder;
@@ -232,12 +232,13 @@ public abstract class RegularPainter extends Painter {
 	}
 	
 	protected boolean joinRooms( Level l, Room r, Room n ) {
-		
-		if (!(r instanceof EmptyRoom && n instanceof EmptyRoom)) {
+
+		//FIXME currently this joins rooms a bit too often! Need to think up some limitations
+		if (!(r instanceof StandardRoom) || !((StandardRoom) r).joinable
+				|| !(n instanceof StandardRoom) || !((StandardRoom) n).joinable) {
 			return false;
 		}
 		
-		//TODO decide on good probabilities and dimension restrictions
 		Rect w = r.intersect( n );
 		if (w.left == w.right) {
 			
@@ -245,17 +246,7 @@ public abstract class RegularPainter extends Painter {
 				return false;
 			}
 			
-			if (w.height()+1 == Math.max( r.height(), n.height() )) {
-				return false;
-			}
-			
-			if (r.width() + n.width() > 10) {
-				return false;
-			}
-			
-			w.top += 1;
-			w.bottom -= 0;
-			
+			w.top++;
 			w.right++;
 			
 			Painter.fill( l, w.left, w.top, 1, w.height(), Terrain.EMPTY );
@@ -266,17 +257,7 @@ public abstract class RegularPainter extends Painter {
 				return false;
 			}
 			
-			if (w.width()+1 == Math.max( r.width(), n.width() )) {
-				return false;
-			}
-			
-			if (r.height() + n.height() > 10) {
-				return false;
-			}
-			
-			w.left += 1;
-			w.right -= 0;
-			
+			w.left++;
 			w.bottom++;
 			
 			Painter.fill( l, w.left, w.top, w.width(), 1, Terrain.EMPTY );
