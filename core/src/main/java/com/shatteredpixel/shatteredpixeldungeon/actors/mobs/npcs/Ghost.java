@@ -204,12 +204,16 @@ public class Ghost extends NPC {
 		
 		public static Weapon weapon;
 		public static Armor armor;
+		public static Weapon.Enchantment enchant;
+		public static Armor.Glyph glyph;
 		
 		public static void reset() {
 			spawned = false;
 			
 			weapon = null;
 			armor = null;
+			enchant = null;
+			glyph = null;
 		}
 		
 		private static final String NODE		= "sadGhost";
@@ -221,6 +225,8 @@ public class Ghost extends NPC {
 		private static final String DEPTH		= "depth";
 		private static final String WEAPON		= "weapon";
 		private static final String ARMOR		= "armor";
+		private static final String ENCHANT		= "enchant";
+		private static final String GLYPH		= "glyph";
 		
 		public static void storeInBundle( Bundle bundle ) {
 			
@@ -234,10 +240,15 @@ public class Ghost extends NPC {
 				
 				node.put( GIVEN, given );
 				node.put( DEPTH, depth );
-				node.put( PROCESSED, processed);
+				node.put( PROCESSED, processed );
 				
 				node.put( WEAPON, weapon );
 				node.put( ARMOR, armor );
+
+				if (enchant != null) {
+					node.put(ENCHANT, enchant);
+					node.put(GLYPH, glyph);
+				}
 			}
 			
 			bundle.put( NODE, node );
@@ -257,6 +268,11 @@ public class Ghost extends NPC {
 				
 				weapon	= (Weapon)node.get( WEAPON );
 				armor	= (Armor)node.get( ARMOR );
+
+				if (node.contains(ENCHANT)) {
+					enchant = (Weapon.Enchantment) node.get(ENCHANT);
+					glyph   = (Armor.Glyph) node.get(GLYPH);
+				}
 			} else {
 				reset();
 			}
@@ -308,10 +324,10 @@ public class Ghost extends NPC {
 				weapon.upgrade(itemLevel);
 				armor.upgrade(itemLevel);
 
-				//10% to be enchanted
+				//10% to be enchanted. We store it separately so enchant status isn't revealed early
 				if (Random.Int(10) == 0){
-					weapon.enchant();
-					armor.inscribe();
+					enchant = Weapon.Enchantment.random();
+					glyph = Armor.Glyph.random();
 				}
 
 			}
