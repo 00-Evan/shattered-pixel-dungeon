@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
@@ -44,20 +45,6 @@ import java.util.HashSet;
 public class Ring extends KindofMisc {
 	
 	protected Buff buff;
-	
-	private static final Class<?>[] rings = {
-		RingOfAccuracy.class,
-		RingOfEvasion.class,
-		RingOfElements.class,
-		RingOfForce.class,
-		RingOfFuror.class,
-		RingOfHaste.class,
-		RingOfEnergy.class,
-		RingOfMight.class,
-		RingOfSharpshooting.class,
-		RingOfTenacity.class,
-		RingOfWealth.class,
-	};
 
 	private static final HashMap<String, Integer> gems = new HashMap<String, Integer>() {
 		{
@@ -85,7 +72,7 @@ public class Ring extends KindofMisc {
 	
 	@SuppressWarnings("unchecked")
 	public static void initGems() {
-		handler = new ItemStatusHandler<>( (Class<? extends Ring>[])rings, gems );
+		handler = new ItemStatusHandler<>( (Class<? extends Ring>[])Generator.Category.RING.classes, gems );
 	}
 	
 	public static void save( Bundle bundle ) {
@@ -98,7 +85,7 @@ public class Ring extends KindofMisc {
 	
 	@SuppressWarnings("unchecked")
 	public static void restore( Bundle bundle ) {
-		handler = new ItemStatusHandler<>( (Class<? extends Ring>[])rings, gems, bundle );
+		handler = new ItemStatusHandler<>( (Class<? extends Ring>[])Generator.Category.RING.classes, gems, bundle );
 	}
 	
 	public Ring() {
@@ -247,7 +234,7 @@ public class Ring extends KindofMisc {
 	}
 	
 	public static boolean allKnown() {
-		return handler.known().size() == rings.length - 2;
+		return handler.known().size() == Generator.Category.RING.classes.length;
 	}
 	
 	@Override

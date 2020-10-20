@@ -90,21 +90,6 @@ public class Potion extends Item {
 
 	private static final float TIME_TO_DRINK = 1f;
 
-	private static final Class<?>[] potions = {
-			PotionOfHealing.class,
-			PotionOfExperience.class,
-			PotionOfToxicGas.class,
-			PotionOfLiquidFlame.class,
-			PotionOfStrength.class,
-			PotionOfParalyticGas.class,
-			PotionOfLevitation.class,
-			PotionOfMindVision.class,
-			PotionOfPurity.class,
-			PotionOfInvisibility.class,
-			PotionOfHaste.class,
-			PotionOfFrost.class
-	};
-
 	private static final HashMap<String, Integer> colors = new HashMap<String, Integer>() {
 		{
 			put("crimson",ItemSpriteSheet.POTION_CRIMSON);
@@ -163,7 +148,7 @@ public class Potion extends Item {
 	
 	@SuppressWarnings("unchecked")
 	public static void initColors() {
-		handler = new ItemStatusHandler<>( (Class<? extends Potion>[])potions, colors );
+		handler = new ItemStatusHandler<>( (Class<? extends Potion>[])Generator.Category.POTION.classes, colors );
 	}
 	
 	public static void save( Bundle bundle ) {
@@ -188,7 +173,7 @@ public class Potion extends Item {
 	
 	@SuppressWarnings("unchecked")
 	public static void restore( Bundle bundle ) {
-		handler = new ItemStatusHandler<>( (Class<? extends Potion>[])potions, colors, bundle );
+		handler = new ItemStatusHandler<>( (Class<? extends Potion>[])Generator.Category.POTION.classes, colors, bundle );
 	}
 	
 	public Potion() {
@@ -412,7 +397,7 @@ public class Potion extends Item {
 	}
 	
 	public static boolean allKnown() {
-		return handler.known().size() == potions.length;
+		return handler.known().size() == Generator.Category.POTION.classes.length;
 	}
 	
 	protected int splashColor(){
