@@ -97,7 +97,7 @@ public class DM300Sprite extends MobSprite {
 						((NewDM300)ch).onZapComplete();
 					}
 				} );
-		Sample.INSTANCE.play( Assets.Sounds.PUFF );
+		Sample.INSTANCE.play( Assets.Sounds.GAS );
 	}
 
 	public void charge(){
