@@ -54,6 +54,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Speed;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Stamina;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
@@ -550,6 +551,18 @@ public abstract class Char extends Actor {
 	public void destroy() {
 		HP = 0;
 		Actor.remove( this );
+
+		for (Char ch : Actor.chars().toArray(new Char[0])){
+			if (ch.buff(Charm.class) != null && ch.buff(Charm.class).object == id()){
+				ch.buff(Charm.class).detach();
+			}
+			if (ch.buff(Terror.class) != null && ch.buff(Terror.class).object == id()){
+				ch.buff(Terror.class).detach();
+			}
+			if (ch.buff(SnipersMark.class) != null && ch.buff(SnipersMark.class).object == id()){
+				ch.buff(SnipersMark.class).detach();
+			}
+		}
 	}
 	
 	public void die( Object src ) {
