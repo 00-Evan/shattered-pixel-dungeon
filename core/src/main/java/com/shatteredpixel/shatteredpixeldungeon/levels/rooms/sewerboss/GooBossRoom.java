@@ -30,6 +30,10 @@ import com.watabou.noosa.Tilemap;
 import com.watabou.utils.Random;
 
 public abstract class GooBossRoom extends StandardRoom {
+
+	{
+		joinable = false;
+	}
 	
 	@Override
 	public float[] sizeCatProbs() {

@@ -82,7 +82,13 @@ public class FigureEightBuilder extends RegularBuilder {
 		
 		//TODO might want to make this able to work without an exit. Probably a random room would be landmark and the landmark room would become exit
 		if (landmarkRoom == null){
-			landmarkRoom = Random.element(multiConnections);
+			//prefer large and giant standard rooms over others
+			for (Room r : multiConnections){
+				if ( r.maxConnections(Room.ALL) >= 4 &&
+						(landmarkRoom == null || landmarkRoom.minWidth()*landmarkRoom.minHeight() < r.minWidth()*r.minHeight())){
+					landmarkRoom = r;
+				}
+			}
 		}
 		
 		if (multiConnections.contains(landmarkRoom)){
