@@ -309,7 +309,8 @@ public class TimekeepersHourglass extends Artifact {
 		public void processTime(float time){
 			turnsToCost -= time;
 
-			while (turnsToCost < 0f){
+			//use 1/1,000 to account for rounding errors
+			while (turnsToCost < -0.001f){
 				turnsToCost += 2f;
 				charge --;
 			}

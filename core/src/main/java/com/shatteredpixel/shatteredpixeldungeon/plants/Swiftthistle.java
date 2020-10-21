@@ -99,8 +99,9 @@ public class Swiftthistle extends Plant {
 		
 		public void processTime(float time){
 			left -= time;
-			
-			if (left <= 0){
+
+			//use 1/1,000 to account for rounding errors
+			while (left < -0.001f){
 				detach();
 			}
 			

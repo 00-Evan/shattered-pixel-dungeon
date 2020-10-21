@@ -171,11 +171,11 @@ public class WndTradeItem extends WndInfoItem {
 			return;
 		}
 		item.detachAll( hero.belongings.backpack );
-		
-		new Gold( item.value() ).doPickUp( hero );
-		
+
 		//selling items in the sell interface doesn't spend time
 		hero.spend(-hero.cooldown());
+
+		new Gold( item.value() ).doPickUp( hero );
 	}
 	
 	private void sellOne( Item item ) {
@@ -187,11 +187,11 @@ public class WndTradeItem extends WndInfoItem {
 			Hero hero = Dungeon.hero;
 			
 			item = item.detach( hero.belongings.backpack );
-			
-			new Gold( item.value() ).doPickUp( hero );
-			
+
 			//selling items in the sell interface doesn't spend time
 			hero.spend(-hero.cooldown());
+
+			new Gold( item.value() ).doPickUp( hero );
 		}
 	}
 	
