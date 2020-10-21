@@ -265,7 +265,7 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 	
 	//whether or not a painter can make its own modifications to a specific point
 	public boolean canPlaceWater(Point p){
-		return inside(p);
+		return true;
 	}
 	
 	public final ArrayList<Point> waterPlaceablePoints(){
@@ -281,7 +281,7 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 
 	//whether or not a painter can make place grass at a specific point
 	public boolean canPlaceGrass(Point p){
-		return inside(p);
+		return true;
 	}
 
 	public final ArrayList<Point> grassPlaceablePoints(){
@@ -297,7 +297,7 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 	
 	//whether or not a painter can place a trap at a specific point
 	public boolean canPlaceTrap(Point p){
-		return inside(p);
+		return true;
 	}
 	
 	public final ArrayList<Point> trapPlaceablePoints(){
