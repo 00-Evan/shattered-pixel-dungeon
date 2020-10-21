@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -74,6 +75,7 @@ public class CurseInfusion extends InventorySpell {
 			((Wand) item).curseInfusionBonus = true;
 			((Wand) item).updateLevel();
 		}
+		Badges.validateItemLevelAquired(item);
 		updateQuickslot();
 	}
 	
