@@ -34,7 +34,7 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
-//Introduces the concept of a major path, and branches
+//Introduces the concept of a main path, and branches
 // with tunnels padding rooms placed in them
 public abstract class RegularBuilder extends Builder {
 	
@@ -48,10 +48,11 @@ public abstract class RegularBuilder extends Builder {
 		return this;
 	}
 	
-	//path length is the percentage of pathable rooms that are on
-	protected float pathLength = 0.33f;
+	//path length is the percentage of pathable rooms that are on the main path
+	protected float pathLength = 0.25f;
 	//The chance weights for extra rooms to be added to the path
-	protected float[] pathLenJitterChances = new float[]{0, 1, 2, 1};
+	protected float[] pathLenJitterChances = new float[]{0, 0, 0, 1};
+	//default is 25% of multi connection rooms, plus 3
 	
 	public RegularBuilder setPathLength( float len, float[] jitter ){
 		pathLength = len;
