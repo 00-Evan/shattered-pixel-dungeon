@@ -214,6 +214,9 @@ public abstract class RegularPainter extends Painter {
 					case TUNNEL:
 						l.map[door] = l.tunnelTile();
 						break;
+					case WATER:
+						l.map[door] = Terrain.WATER;
+						break;
 					case UNLOCKED:
 						l.map[door] = Terrain.DOOR;
 						break;
