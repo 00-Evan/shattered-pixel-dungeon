@@ -83,7 +83,7 @@ public class SewerBossLevel extends SewerLevel {
 	
 	protected Builder builder(){
 		return new FigureEightBuilder()
-				.setLoopShape( 2 , Random.Float(0.4f, 0.7f), Random.Float(0f, 0.5f))
+				.setLoopShape( 2 , Random.Float(0.3f, 0.8f), 0f)
 				.setPathLength(1f, new float[]{1})
 				.setTunnelLength(new float[]{1, 2}, new float[]{1});
 	}

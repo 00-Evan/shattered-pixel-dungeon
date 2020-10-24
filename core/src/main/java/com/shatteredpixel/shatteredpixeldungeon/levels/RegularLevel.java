@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.journal.GuidePage;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
+import com.shatteredpixel.shatteredpixeldungeon.levels.builders.FigureEightBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LoopBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
@@ -144,10 +145,18 @@ public abstract class RegularLevel extends Level {
 	}
 	
 	protected Builder builder(){
-		return new LoopBuilder()
-				.setLoopShape( 2 ,
-						Random.Float(0.4f, 0.7f),
-						Random.Float(0f, 0.5f));
+		if (Random.Int(2) == 0){
+			return new LoopBuilder()
+					.setLoopShape( 2 ,
+							Random.Float(0f, 0.65f),
+							Random.Float(0f, 0.50f));
+		} else {
+			return new FigureEightBuilder()
+					.setLoopShape( 2 ,
+							Random.Float(0.3f, 0.8f),
+							0f);
+		}
+
 	}
 	
 	protected abstract Painter painter();

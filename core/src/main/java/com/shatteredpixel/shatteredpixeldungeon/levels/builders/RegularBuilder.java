@@ -82,7 +82,9 @@ public abstract class RegularBuilder extends Builder {
 	protected Room entrance = null;
 	protected Room exit = null;
 	protected Room shop = null;
-	
+
+	protected ArrayList<Room> mainPathRooms = new ArrayList<>();
+
 	protected ArrayList<Room> multiConnections = new ArrayList<>();
 	protected ArrayList<Room> singleConnections = new ArrayList<>();
 	
@@ -92,6 +94,7 @@ public abstract class RegularBuilder extends Builder {
 		}
 		
 		entrance = exit = shop = null;
+		mainPathRooms.clear();
 		singleConnections.clear();
 		multiConnections.clear();
 		for (Room r : rooms){
@@ -112,6 +115,20 @@ public abstract class RegularBuilder extends Builder {
 		weightRooms(multiConnections);
 		Random.shuffle(multiConnections);
 		multiConnections = new ArrayList<>(new LinkedHashSet<>(multiConnections));
+		//shuffle one more time to ensure that the actual ordering of the path doesn't put big rooms early
+		Random.shuffle(multiConnections);
+
+		int roomsOnMainPath = (int)(multiConnections.size()*pathLength) + Random.chances(pathLenJitterChances);
+
+		while (roomsOnMainPath > 0 && !multiConnections.isEmpty()){
+			Room r = multiConnections.remove(0);
+			if (r instanceof StandardRoom){
+				roomsOnMainPath -= ((StandardRoom) r).sizeCat.roomValue;
+			} else {
+				roomsOnMainPath--;
+			}
+			mainPathRooms.add(r);
+		}
 	}
 	
 	// *** Branch Placement ***

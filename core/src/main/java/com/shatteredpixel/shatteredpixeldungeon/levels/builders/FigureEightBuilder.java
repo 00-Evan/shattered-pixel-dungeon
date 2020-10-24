@@ -80,71 +80,73 @@ public class FigureEightBuilder extends RegularBuilder {
 	public ArrayList<Room> build(ArrayList<Room> rooms) {
 		setupRooms(rooms);
 		
-		//TODO might want to make this able to work without an exit. Probably a random room would be landmark and the landmark room would become exit
 		if (landmarkRoom == null){
 			//prefer large and giant standard rooms over others
-			for (Room r : multiConnections){
+			for (Room r : mainPathRooms){
 				if ( r.maxConnections(Room.ALL) >= 4 &&
 						(landmarkRoom == null || landmarkRoom.minWidth()*landmarkRoom.minHeight() < r.minWidth()*r.minHeight())){
 					landmarkRoom = r;
 				}
 			}
+			//add another room to the path to compensate
+			if (!multiConnections.isEmpty()){
+				mainPathRooms.add(multiConnections.remove(0));
+			}
 		}
-		
-		if (multiConnections.contains(landmarkRoom)){
-			multiConnections.remove(landmarkRoom);
-		}
+		mainPathRooms.remove(landmarkRoom);
+		multiConnections.remove(landmarkRoom);
 		
 		float startAngle = Random.Float(0, 180);
-		
-		int roomsOnLoop = (int)(multiConnections.size()*pathLength) + Random.chances(pathLenJitterChances);
-		roomsOnLoop = Math.min(roomsOnLoop, multiConnections.size());
-		
-		int roomsOnFirstLoop = roomsOnLoop/2;
-		if (roomsOnLoop % 2 == 1) roomsOnFirstLoop += Random.Int(2);
-		
-		firstLoop = new ArrayList<>();
+
+		int roomsOnFirstLoop = mainPathRooms.size()/2;
+		if (mainPathRooms.size() % 2 == 1) roomsOnFirstLoop += Random.Int(2);
+
+		ArrayList<Room> roomsToLoop = (ArrayList<Room>) mainPathRooms.clone();
+
+		ArrayList<Room> firstLoopTemp = new ArrayList<>();
+		firstLoopTemp.add(landmarkRoom);
+		for (int i = 0; i < roomsOnFirstLoop; i++){
+			firstLoopTemp.add(roomsToLoop.remove(0));
+		}
+		firstLoopTemp.add((firstLoopTemp.size()+1)/2, entrance);
+
 		float[] pathTunnels = pathTunnelChances.clone();
-		for (int i = 0; i <= roomsOnFirstLoop; i++){
-			if (i == 0)
-				firstLoop.add(landmarkRoom);
-			else
-				firstLoop.add(multiConnections.remove(0));
-			
+
+		firstLoop = new ArrayList<>();
+		for (Room r : firstLoopTemp){
+			firstLoop.add(r);
+
 			int tunnels = Random.chances(pathTunnels);
 			if (tunnels == -1){
 				pathTunnels = pathTunnelChances.clone();
 				tunnels = Random.chances(pathTunnels);
 			}
 			pathTunnels[tunnels]--;
-			
+
 			for (int j = 0; j < tunnels; j++){
 				firstLoop.add(ConnectionRoom.createRoom());
 			}
 		}
-		if (entrance != null) firstLoop.add((firstLoop.size()+1)/2, entrance);
-		
-		int roomsOnSecondLoop = roomsOnLoop - roomsOnFirstLoop;
-		
+		ArrayList<Room> secondLoopTemp = new ArrayList<>();
+		secondLoopTemp.add(landmarkRoom);
+		secondLoopTemp.addAll(roomsToLoop);
+		secondLoopTemp.add((secondLoopTemp.size()+1)/2, exit);
+
 		secondLoop = new ArrayList<>();
-		for (int i = 0; i <= roomsOnSecondLoop; i++){
-			if (i == 0)
-				secondLoop.add(landmarkRoom);
-			else
-				secondLoop.add(multiConnections.remove(0));
-			
+		for (Room r : secondLoopTemp){
+			secondLoop.add(r);
+
 			int tunnels = Random.chances(pathTunnels);
 			if (tunnels == -1){
 				pathTunnels = pathTunnelChances.clone();
 				tunnels = Random.chances(pathTunnels);
 			}
 			pathTunnels[tunnels]--;
-			
+
 			for (int j = 0; j < tunnels; j++){
 				secondLoop.add(ConnectionRoom.createRoom());
 			}
 		}
-		if (exit != null) secondLoop.add((secondLoop.size()+1)/2, exit);
 		
 		landmarkRoom.setSize();
 		landmarkRoom.setPos(0, 0);

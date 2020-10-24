@@ -82,17 +82,14 @@ public class LoopBuilder extends RegularBuilder {
 		entrance.setPos(0, 0);
 		
 		float startAngle = Random.Float(0, 360);
-		
+
+		mainPathRooms.add(0, entrance);
+		mainPathRooms.add((mainPathRooms.size()+1)/2, exit);
+
 		ArrayList<Room> loop = new ArrayList<>();
-		int roomsOnLoop = (int)(multiConnections.size()*pathLength) + Random.chances(pathLenJitterChances);
-		roomsOnLoop = Math.min(roomsOnLoop, multiConnections.size());
-		
 		float[] pathTunnels = pathTunnelChances.clone();
-		for (int i = 0; i <= roomsOnLoop; i++){
-			if (i == 0)
-				loop.add(entrance);
-			else
-				loop.add(multiConnections.remove(0));
+		for (Room r : mainPathRooms){
+			loop.add(r);
 			
 			int tunnels = Random.chances(pathTunnels);
 			if (tunnels == -1){
@@ -105,8 +102,6 @@ public class LoopBuilder extends RegularBuilder {
 				loop.add(ConnectionRoom.createRoom());
 			}
 		}
-		
-		if (exit != null) loop.add((loop.size()+1)/2, exit);
 		
 		Room prev = entrance;
 		float targetAngle;
