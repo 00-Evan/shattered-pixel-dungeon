@@ -24,8 +24,10 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.Rect;
 
 import java.util.ArrayList;
 
@@ -61,5 +63,30 @@ public class HallsPainter extends RegularPainter {
 				
 			}
 		}
+
+		for (Room r : rooms) {
+			if (r instanceof StandardRoom && ((StandardRoom) r).joinable) {
+				for (Room n : r.neigbours) {
+					if (n instanceof StandardRoom && ((StandardRoom) n).joinable && !r.connected.containsKey( n )) {
+						Rect i = r.intersect( n );
+						if (i.left == i.right && i.bottom - i.top >= 3) {
+
+							i.top++;
+							i.right++;
+
+							Painter.fill( level, i.left, i.top, 1, i.height(), Terrain.CHASM );
+
+						} else if (i.top == i.bottom && i.right - i.left >= 3) {
+
+							i.left++;
+							i.bottom++;
+
+							Painter.fill( level, i.left, i.top, i.width(), 1, Terrain.CHASM );
+						}
+					}
+				}
+			}
+		}
+
 	}
 }

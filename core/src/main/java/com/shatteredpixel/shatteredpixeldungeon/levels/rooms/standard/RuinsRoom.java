@@ -29,7 +29,7 @@ public class RuinsRoom extends PatchRoom {
 	
 	@Override
 	public float[] sizeCatProbs() {
-		return new float[]{9, 3, 1};
+		return new float[]{4, 2, 1};
 	}
 	
 	@Override
@@ -39,12 +39,12 @@ public class RuinsRoom extends PatchRoom {
 		for (Door door : connected.values()) {
 			door.set( Door.Type.REGULAR );
 		}
-		
-		//fill scales from ~10% at 4x4, to ~25% at 18x18
-		// normal   ~20% to ~25%
-		// large    ~25% to ~30%
-		// giant    ~30% to ~35%
-		float fill = .2f + (width()*height())/2048f;
+
+		//fill scales from ~20% at 4x4, to ~50% at 18x18
+		// normal   ~20% to ~30%
+		// large    ~30% to ~40%
+		// giant    ~40% to ~50%
+		float fill = 0.20f + (width()*height())/1024f;
 		
 		setupPatch(level, fill, 0, true);
 		cleanDiagonalEdges();
