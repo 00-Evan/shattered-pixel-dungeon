@@ -92,8 +92,8 @@ public class PerimeterRoom extends ConnectionRoom {
 	//gets the path distance between two points
 	private static int distanceBetweenPoints(Room r, Point a, Point b){
 		//on the same side
-		if (((a.x == r.left || a.x == r.right) && a.y == b.y)
-				|| ((a.y == r.top || a.y == r.bottom) && a.x == b.x)){
+		if (((a.x == r.left+1 || a.x == r.right-1) && a.y == b.y)
+				|| ((a.y == r.top+1 || a.y == r.bottom-1) && a.x == b.x)){
 			return Math.max(spaceBetween(a.x, b.x), spaceBetween(a.y, b.y));
 		}
 		

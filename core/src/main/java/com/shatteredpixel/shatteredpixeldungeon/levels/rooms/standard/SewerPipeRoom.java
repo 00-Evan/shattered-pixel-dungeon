@@ -212,8 +212,8 @@ public class SewerPipeRoom extends StandardRoom {
 	//gets the path distance between two points
 	private int distanceBetweenPoints(Point a, Point b){
 		//on the same side
-		if (((a.x == left || a.x == right) && a.y == b.y)
-				|| ((a.y == top || a.y == bottom) && a.x == b.x)){
+		if (((a.x == left+2 || a.x == right-2) && a.y == b.y)
+				|| ((a.y == top+2 || a.y == bottom-2) && a.x == b.x)){
 			return Math.max(spaceBetween(a.x, b.x), spaceBetween(a.y, b.y));
 		}
 
@@ -235,8 +235,8 @@ public class SewerPipeRoom extends StandardRoom {
 	private void fillBetweenPoints(Level level, Point from, Point to, int floor){
 
 		//doors are along the same side
-		if (((from.x == left+1 || from.x == right-1) && from.x == to.x)
-				|| ((from.y == top+1 || from.y == bottom-1) && from.y == to.y)){
+		if (((from.x == left+2 || from.x == right-2) && from.x == to.x)
+				|| ((from.y == top+2 || from.y == bottom-2) && from.y == to.y)){
 			Painter.fill(level,
 					Math.min(from.x, to.x),
 					Math.min(from.y, to.y),
