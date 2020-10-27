@@ -211,7 +211,7 @@ public class FigureEightBuilder extends RegularBuilder {
 			float angle;
 			int tries = 10;
 			do {
-				angle = placeRoom(firstLoop, entrance, shop, Random.Float(360f));
+				angle = placeRoom(rooms, entrance, shop, Random.Float(360f));
 				tries--;
 			} while (angle == -1 && tries >= 0);
 			if (angle == -1) return null;
