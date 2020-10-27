@@ -33,7 +33,9 @@ import com.watabou.utils.Random;
 
 public class EntranceRoom extends StandardRoom {
 
-	//TODO maybe not joinable? It's a little BS to spawn with enemies
+	{
+		joinable = false;
+	}
 	
 	@Override
 	public int minWidth() {

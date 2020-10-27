@@ -29,6 +29,10 @@ import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 public class BurnedRoom extends PatchRoom {
+
+	{
+		joinable = false;
+	}
 	
 	@Override
 	public float[] sizeCatProbs() {

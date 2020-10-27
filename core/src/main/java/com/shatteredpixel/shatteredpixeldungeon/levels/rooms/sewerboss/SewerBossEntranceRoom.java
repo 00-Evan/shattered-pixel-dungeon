@@ -28,10 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 
 public class SewerBossEntranceRoom extends EntranceRoom {
-
-	{
-		joinable = false;
-	}
 	
 	public void paint(Level level ) {
 		
