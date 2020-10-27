@@ -248,14 +248,8 @@ public abstract class RegularPainter extends Painter {
 
 		if (roomMerges.get(r) == n) return true;
 		if (roomMerges.get(n) == r) return true;
-
-		//normal sized rooms can be merged at most once. Large and Giant rooms can be merged many times
-		if (roomMerges.containsKey(r) || roomMerges.containsValue(r)){
-			if (((StandardRoom) r).sizeCat == StandardRoom.SizeCategory.NORMAL) return false;
-		}
-		if (roomMerges.containsKey(n) || roomMerges.containsValue(n)){
-			if (((StandardRoom) n).sizeCat == StandardRoom.SizeCategory.NORMAL) return false;
-		}
+		if (roomMerges.containsKey(r)) return false;
+		if (roomMerges.containsKey(n)) return false;
 
 		//TODO maybe more limitations here, such as limiting maximum width/height for normal sized rooms?
 		
@@ -283,7 +277,9 @@ public abstract class RegularPainter extends Painter {
 			Painter.fill( l, w.left, w.top, w.width(), 1, Terrain.EMPTY );
 		}
 
-		roomMerges.put(r, n);
+		//normal sized rooms can be merged at most once. Large and Giant rooms can be merged many times
+		if (((StandardRoom) r).sizeCat == StandardRoom.SizeCategory.NORMAL) roomMerges.put(r, n);
+		if (((StandardRoom) n).sizeCat == StandardRoom.SizeCategory.NORMAL) roomMerges.put(n, r);
 		
 		return true;
 	}
