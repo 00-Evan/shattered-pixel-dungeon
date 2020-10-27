@@ -55,7 +55,7 @@ public class PillarsRoom extends StandardRoom {
 		int minDim = Math.min(width(), height());
 		
 		//2 pillars
-		if (minDim == 7 || Random.Int(2) == 0){
+		if (minDim == 7 || (minDim <= 10 && Random.Int(2) == 0)){
 			
 			int pillarInset = minDim >= 11 ? 2 : 1;
 			int pillarSize = ((minDim-3)/2) - pillarInset;

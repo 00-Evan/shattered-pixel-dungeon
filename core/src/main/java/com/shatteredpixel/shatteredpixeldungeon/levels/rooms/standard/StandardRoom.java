@@ -113,13 +113,13 @@ public abstract class StandardRoom extends Room {
 		rooms.add(CircleBasinRoom.class);
 
 		rooms.add(SegmentedRoom.class);
-		rooms.add(StatuesRoom.class);
+		rooms.add(PillarsRoom.class);
 
 		rooms.add(CaveRoom.class);
 		rooms.add(CirclePitRoom.class);
 
 		rooms.add(HallwayRoom.class);
-		rooms.add(PillarsRoom.class);
+		rooms.add(StatuesRoom.class);
 		rooms.add(SegmentedLibraryRoom.class);
 
 		rooms.add(RuinsRoom.class);
