@@ -462,7 +462,7 @@ public class NewPrisonBossLevel extends Level {
 				for (Mob m : allies){
 					do{
 						m.pos = randomTenguCellPos();
-					} while (findMob(m.pos) != null);
+					} while (findMob(m.pos) != null || m.pos == Dungeon.hero.pos);
 					if (m.sprite != null) m.sprite.place(m.pos);
 					mobs.add(m);
 				}
