@@ -47,5 +47,10 @@ public class SlimeSprite extends MobSprite {
 		
 		play(idle);
 	}
+
+	@Override
+	public int blood() {
+		return 0xFF88CC44;
+	}
 	
 }

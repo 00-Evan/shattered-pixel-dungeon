@@ -137,4 +137,8 @@ public class WardSprite extends MobSprite {
 		}
 	}
 
+	@Override
+	public int blood() {
+		return 0xFFCC33FF;
+	}
 }

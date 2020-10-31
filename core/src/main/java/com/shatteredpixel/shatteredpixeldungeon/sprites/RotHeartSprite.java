@@ -91,4 +91,9 @@ public class RotHeartSprite extends MobSprite {
 			cloud.on = false;
 		}
 	}
+
+	@Override
+	public int blood() {
+		return 0xFF88CC44;
+	}
 }

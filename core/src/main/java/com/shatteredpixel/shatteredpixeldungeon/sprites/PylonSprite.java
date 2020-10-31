@@ -95,4 +95,9 @@ public class PylonSprite extends MobSprite {
 		}
 		super.onComplete(anim);
 	}
+
+	@Override
+	public int blood() {
+		return 0xFFFFFF88;
+	}
 }

@@ -96,4 +96,9 @@ public class DM201Sprite extends MobSprite {
 		super.onComplete( anim );
 	}
 
+	@Override
+	public int blood() {
+		return 0xFFFFFF88;
+	}
+
 }
