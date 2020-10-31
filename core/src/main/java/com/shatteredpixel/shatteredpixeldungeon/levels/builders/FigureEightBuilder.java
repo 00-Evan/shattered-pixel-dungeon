@@ -96,7 +96,7 @@ public class FigureEightBuilder extends RegularBuilder {
 		mainPathRooms.remove(landmarkRoom);
 		multiConnections.remove(landmarkRoom);
 		
-		float startAngle = Random.Float(0, 180);
+		float startAngle = Random.Float(0, 360);
 
 		int roomsOnFirstLoop = mainPathRooms.size()/2;
 		if (mainPathRooms.size() % 2 == 1) roomsOnFirstLoop += Random.Int(2);
