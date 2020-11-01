@@ -27,10 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 
 public class CirclePitRoom extends StandardRoom {
 
-	{
-		joinable = false;
-	}
-
 	@Override
 	public int minWidth() {
 		return Math.max(8, super.minWidth());

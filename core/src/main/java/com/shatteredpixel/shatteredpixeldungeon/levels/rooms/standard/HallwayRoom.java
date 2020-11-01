@@ -32,10 +32,6 @@ import com.watabou.utils.Rect;
 
 public class HallwayRoom extends StandardRoom {
 
-	{
-		joinable = false;
-	}
-
 	@Override
 	public int minWidth() {
 		return Math.max(5, super.minWidth());
@@ -44,6 +40,11 @@ public class HallwayRoom extends StandardRoom {
 	@Override
 	public int minHeight() {
 		return Math.max(5, super.minHeight());
+	}
+
+	@Override
+	public boolean canMerge(Level l, Point p, int mergeTerrain) {
+		return false;
 	}
 
 	//FIXME lots of copy-pasta from tunnel rooms here

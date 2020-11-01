@@ -32,10 +32,6 @@ import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 public class EntranceRoom extends StandardRoom {
-
-	{
-		joinable = false;
-	}
 	
 	@Override
 	public int minWidth() {
@@ -45,6 +41,11 @@ public class EntranceRoom extends StandardRoom {
 	@Override
 	public int minHeight() {
 		return Math.max(super.minHeight(), 5);
+	}
+
+	@Override
+	public boolean canMerge(Level l, Point p, int mergeTerrain) {
+		return false;
 	}
 
 	public void paint( Level level ) {

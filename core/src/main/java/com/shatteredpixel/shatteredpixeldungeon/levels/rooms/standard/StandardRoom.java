@@ -22,17 +22,16 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
 public abstract class StandardRoom extends Room {
-
-	//whether this room can be joined with other standard rooms
-	//should usually be set to false by rooms that substantially alter terrain
-	public boolean joinable = true;
 	
 	public enum SizeCategory {
 		
@@ -101,7 +100,13 @@ public abstract class StandardRoom extends Room {
 	@Override
 	public int minHeight() { return sizeCat.minDim; }
 	public int maxHeight() { return sizeCat.maxDim; }
-	
+
+	@Override
+	public boolean canMerge(Level l, Point p, int mergeTerrain) {
+		int cell = l.pointToCell(pointInside(p, 1));
+		return (Terrain.flags[l.map[cell]] & Terrain.SOLID) == 0;
+	}
+
 	//FIXME this is a very messy way of handing variable standard rooms
 	private static ArrayList<Class<?extends StandardRoom>> rooms = new ArrayList<>();
 	static {

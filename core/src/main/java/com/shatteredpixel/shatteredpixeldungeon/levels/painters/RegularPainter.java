@@ -177,12 +177,18 @@ public abstract class RegularPainter extends Painter {
 			hiddenDoorChance = (0.5f + hiddenDoorChance)/2f;
 		}
 
-		roomMerges.clear();
+		HashMap<Room, Room> roomMerges = new HashMap<>();
 
 		for (Room r : rooms) {
 			for (Room n : r.connected.keySet()) {
-				
-				if (joinRooms(l, r, n)) {
+
+				//normal sized rooms can be merged at most once. Large and Giant rooms can be merged many times
+				if (roomMerges.get(r) == n || roomMerges.get(n) == r){
+					continue;
+				} else if (!roomMerges.containsKey(r) && !roomMerges.containsKey(n) &&
+						mergeRooms(l, r, n, r.connected.get(n), Terrain.EMPTY)) {
+					if (((StandardRoom) r).sizeCat == StandardRoom.SizeCategory.NORMAL) roomMerges.put(r, n);
+					if (((StandardRoom) n).sizeCat == StandardRoom.SizeCategory.NORMAL) roomMerges.put(n, r);
 					continue;
 				}
 				
@@ -237,51 +243,60 @@ public abstract class RegularPainter extends Painter {
 		}
 	}
 
-	private HashMap<Room, Room> roomMerges = new HashMap<>();
-	
-	protected boolean joinRooms( Level l, Room r, Room n ) {
+	protected boolean mergeRooms( Level l, Room r, Room n, Point start, int mergeTerrain){
 
-		if (!(r instanceof StandardRoom) || !((StandardRoom) r).joinable
-				|| !(n instanceof StandardRoom) || !((StandardRoom) n).joinable) {
+		Rect intersect = r.intersect( n );
+		if (intersect.left == intersect.right) {
+
+			Rect merge = new Rect();
+			merge.left = merge.right = intersect.left;
+			merge.top = merge.bottom = start != null ? start.y : intersect.center().y;
+
+			Point p = new Point(merge.left, merge.top);
+			while(merge.top > intersect.top && n.canMerge(l, p, mergeTerrain) && r.canMerge(l, p, mergeTerrain)) {
+				merge.top--;
+				p.y--;
+			}
+			p.y = merge.bottom;
+			while(merge.bottom < intersect.bottom && n.canMerge(l, p, mergeTerrain) && r.canMerge(l, p, mergeTerrain)) {
+				merge.bottom++;
+				p.y++;
+			}
+
+			if (merge.height() >= 3) {
+				Painter.fill(l, merge.left, merge.top + 1, 1, merge.height()-1, mergeTerrain);
+				return true;
+			} else {
+				return false;
+			}
+
+		} else if (intersect.top == intersect.bottom) {
+
+			Rect merge = new Rect();
+			merge.left = merge.right = start != null ? start.x : intersect.center().x;
+			merge.top = merge.bottom = intersect.top;
+
+			Point p = new Point(merge.left, merge.top);
+			while(merge.left > intersect.left && n.canMerge(l, p, mergeTerrain) && r.canMerge(l, p, mergeTerrain)) {
+				merge.left--;
+				p.x--;
+			}
+			p.x = merge.right;
+			while(merge.right < intersect.right && n.canMerge(l, p, mergeTerrain) && r.canMerge(l, p, mergeTerrain)) {
+				merge.right++;
+				p.x++;
+			}
+
+			if (merge.width() >= 3) {
+				Painter.fill(l, merge.left + 1, merge.top, merge.width()-1, 1, mergeTerrain);
+				return true;
+			} else {
+				return false;
+			}
+		} else {
 			return false;
 		}
 
-		if (roomMerges.get(r) == n) return true;
-		if (roomMerges.get(n) == r) return true;
-		if (roomMerges.containsKey(r)) return false;
-		if (roomMerges.containsKey(n)) return false;
-
-		//TODO maybe more limitations here, such as limiting maximum width/height for normal sized rooms?
-		
-		Rect w = r.intersect( n );
-		if (w.left == w.right) {
-			
-			if (w.bottom - w.top < 3) {
-				return false;
-			}
-			
-			w.top++;
-			w.right++;
-			
-			Painter.fill( l, w.left, w.top, 1, w.height(), Terrain.EMPTY );
-			
-		} else {
-			
-			if (w.right - w.left < 3) {
-				return false;
-			}
-			
-			w.left++;
-			w.bottom++;
-			
-			Painter.fill( l, w.left, w.top, w.width(), 1, Terrain.EMPTY );
-		}
-
-		//normal sized rooms can be merged at most once. Large and Giant rooms can be merged many times
-		if (((StandardRoom) r).sizeCat == StandardRoom.SizeCategory.NORMAL) roomMerges.put(r, n);
-		if (((StandardRoom) n).sizeCat == StandardRoom.SizeCategory.NORMAL) roomMerges.put(n, r);
-		
-		return true;
 	}
 	
 	protected void paintWater( Level l, ArrayList<Room> rooms ){

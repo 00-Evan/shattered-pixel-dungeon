@@ -27,19 +27,21 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRo
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.Tilemap;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 public abstract class GooBossRoom extends StandardRoom {
 
-	{
-		joinable = false;
-	}
-	
 	@Override
 	public float[] sizeCatProbs() {
 		return new float[]{0, 1, 0};
 	}
-	
+
+	@Override
+	public boolean canMerge(Level l, Point p, int mergeTerrain) {
+		return false;
+	}
+
 	public static GooBossRoom randomGooRoom(){
 		switch (Random.Int(4)){
 			case 0: default:

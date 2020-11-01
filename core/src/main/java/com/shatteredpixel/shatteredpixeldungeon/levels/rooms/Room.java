@@ -115,6 +115,20 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 			return true;
 		}
 	}
+
+	public Point pointInside(Point from, int n){
+		Point step = new Point(from);
+		if (from.x == left) {
+			step.offset( +n, 0 );
+		} else if (from.x == right) {
+			step.offset( -n, 0 );
+		} else if (from.y == top) {
+			step.offset( 0, +n );
+		} else if (from.y == bottom) {
+			step.offset( 0, -n );
+		}
+		return step;
+	}
 	
 	//Width and height are increased by 1 because rooms are inclusive to their right and bottom sides
 	@Override
@@ -222,6 +236,10 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 			return canConnect(BOTTOM) && r.canConnect(TOP);
 		else
 			return false;
+	}
+
+	public boolean canMerge(Level l, Point p, int mergeTerrain){
+		return false;
 	}
 	
 	public boolean addNeigbour( Room other ) {

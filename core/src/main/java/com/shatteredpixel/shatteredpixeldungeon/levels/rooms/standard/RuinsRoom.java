@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.watabou.utils.Point;
 
 public class RuinsRoom extends PatchRoom {
 	
@@ -31,7 +32,12 @@ public class RuinsRoom extends PatchRoom {
 	public float[] sizeCatProbs() {
 		return new float[]{4, 2, 1};
 	}
-	
+
+	@Override
+	public boolean canMerge(Level l, Point p, int mergeTerrain) {
+		return true;
+	}
+
 	@Override
 	public void paint(Level level) {
 		Painter.fill( level, this, Terrain.WALL );

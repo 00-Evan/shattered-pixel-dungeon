@@ -30,10 +30,6 @@ import com.watabou.utils.Rect;
 
 public class SegmentedRoom extends StandardRoom {
 
-	{
-		joinable = false;
-	}
-
 	@Override
 	public int minWidth() {
 		return Math.max(super.minWidth(), 7);
@@ -48,7 +44,7 @@ public class SegmentedRoom extends StandardRoom {
 	public float[] sizeCatProbs() {
 		return new float[]{9, 3, 1};
 	}
-	
+
 	@Override
 	public void paint( Level level ) {
 		Painter.fill( level, this, Terrain.WALL );

@@ -31,10 +31,6 @@ import com.watabou.utils.Rect;
 //FIXME some copypasta from segmented room with changed constants in here, might want to externalize
 public class SegmentedLibraryRoom extends StandardRoom {
 
-	{
-		joinable = false;
-	}
-
 	@Override
 	public float[] sizeCatProbs() {
 		return new float[]{0, 3, 1};

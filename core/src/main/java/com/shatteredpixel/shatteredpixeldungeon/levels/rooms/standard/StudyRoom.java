@@ -30,10 +30,6 @@ import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 public class StudyRoom extends StandardRoom {
-
-	{
-		joinable = false;
-	}
 	
 	@Override
 	public int minWidth() {
