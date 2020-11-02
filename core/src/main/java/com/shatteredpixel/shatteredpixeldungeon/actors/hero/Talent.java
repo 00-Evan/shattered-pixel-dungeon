@@ -53,21 +53,41 @@ public enum Talent {
 	ARMSMASTERS_INTUITION(1),
 	TEST_SUBJECT(2),
 	IRON_WILL(3),
+	TEST_WARRIOR_T2_1(4),
+	TEST_WARRIOR_T2_2(5),
+	TEST_WARRIOR_T2_3(6),
+	TEST_WARRIOR_T2_4(7),
+	TEST_WARRIOR_T2_5(8),
 
-	ENERGIZING_MEAL(4),
-	SCHOLARS_INTUITION(5),
-	TESTED_HYPOTHESIS(6),
-	ENERGIZING_UPGRADE(7),
+	ENERGIZING_MEAL(16),
+	SCHOLARS_INTUITION(17),
+	TESTED_HYPOTHESIS(18),
+	ENERGIZING_UPGRADE(19),
+	TEST_MAGE_T2_1(20),
+	TEST_MAGE_T2_2(21),
+	TEST_MAGE_T2_3(22),
+	TEST_MAGE_T2_4(23),
+	TEST_MAGE_T2_5(24),
 
-	RATIONED_MEAL(8),
-	THIEFS_INTUITION(9),
-	SUCKER_PUNCH(10),
-	MENDING_SHADOWS(11),
+	RATIONED_MEAL(32),
+	THIEFS_INTUITION(33),
+	SUCKER_PUNCH(34),
+	MENDING_SHADOWS(35),
+	TEST_ROGUE_T2_1(36),
+	TEST_ROGUE_T2_2(37),
+	TEST_ROGUE_T2_3(38),
+	TEST_ROGUE_T2_4(39),
+	TEST_ROGUE_T2_5(40),
 
-	INVIGORATING_MEAL(12),
-	SURVIVALISTS_INTUITION(13),
-	FOLLOWUP_STRIKE(14),
-	NATURES_AID(15);
+	INVIGORATING_MEAL(48),
+	SURVIVALISTS_INTUITION(49),
+	FOLLOWUP_STRIKE(50),
+	NATURES_AID(51),
+	TEST_HUNTRESS_T2_1(52),
+	TEST_HUNTRESS_T2_2(53),
+	TEST_HUNTRESS_T2_3(54),
+	TEST_HUNTRESS_T2_4(55),
+	TEST_HUNTRESS_T2_5(56);
 
 	int icon;
 
@@ -202,7 +222,7 @@ public enum Talent {
 	public static class SuckerPunchTracker extends Buff{};
 	public static class FollowupStrikeTracker extends Buff{};
 
-	public static final int MAX_TALENT_TIERS = 1;
+	public static final int MAX_TALENT_TIERS = 2;
 
 	public static void initClassTalents( Hero hero ){
 		initClassTalents( hero.heroClass, hero.talents );
@@ -236,6 +256,27 @@ public enum Talent {
 		tierTalents.clear();
 
 		//tier 2+
+		switch (cls){
+			case WARRIOR: default:
+				Collections.addAll(tierTalents, TEST_WARRIOR_T2_1, TEST_WARRIOR_T2_2, TEST_WARRIOR_T2_3, TEST_WARRIOR_T2_4, TEST_WARRIOR_T2_5);
+				break;
+			case MAGE:
+				Collections.addAll(tierTalents, TEST_MAGE_T2_1, TEST_MAGE_T2_2, TEST_MAGE_T2_3, TEST_MAGE_T2_4, TEST_MAGE_T2_5);
+				break;
+			case ROGUE:
+				Collections.addAll(tierTalents, TEST_ROGUE_T2_1, TEST_ROGUE_T2_2, TEST_ROGUE_T2_3, TEST_ROGUE_T2_4, TEST_ROGUE_T2_5);
+				break;
+			case HUNTRESS:
+				Collections.addAll(tierTalents, TEST_HUNTRESS_T2_1, TEST_HUNTRESS_T2_2, TEST_HUNTRESS_T2_3, TEST_HUNTRESS_T2_4, TEST_HUNTRESS_T2_5);
+				break;
+		}
+		for (Talent talent : tierTalents){
+			talents.get(1).put(talent, 0);
+		}
+		tierTalents.clear();
+
+
+		//tier 3+
 		//TBD
 	}
 

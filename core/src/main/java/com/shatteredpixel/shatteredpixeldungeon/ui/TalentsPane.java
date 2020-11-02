@@ -76,7 +76,11 @@ public class TalentsPane extends ScrollPane {
 		blocker = new ColorBlock(0, 0, 0xFF222222);
 		content.add(blocker);
 
-		blockText = PixelScene.renderTextBlock(Messages.get(this, "coming_soon"), 6);
+		if (tiersAvailable == 1) {
+			blockText = PixelScene.renderTextBlock(Messages.get(this, "unlock_tier2"), 6);
+		} else {
+			blockText = PixelScene.renderTextBlock(Messages.get(this, "coming_soon"), 6);
+		}
 		content.add(blockText);
 	}
 
