@@ -25,17 +25,25 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
+import com.watabou.utils.Bundle;
 
 public class Barrier extends ShieldBuff {
 	
 	{
 		type = buffType.POSITIVE;
 	}
+
+	float partialLostShield;
 	
 	@Override
 	public boolean act() {
-		
-		absorbDamage(1);
+
+		partialLostShield += Math.min(1f, shielding()/20f);
+
+		if (partialLostShield >= 1f) {
+			absorbDamage(1);
+			partialLostShield = 0;
+		}
 		
 		if (shielding() <= 0){
 			detach();
@@ -70,5 +78,19 @@ public class Barrier extends ShieldBuff {
 	@Override
 	public String desc() {
 		return Messages.get(this, "desc", shielding());
+	}
+
+	private static final String PARTIAL_LOST_SHIELD = "partial_lost_shield";
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put(PARTIAL_LOST_SHIELD, partialLostShield);
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		partialLostShield = bundle.getFloat(PARTIAL_LOST_SHIELD);
 	}
 }
