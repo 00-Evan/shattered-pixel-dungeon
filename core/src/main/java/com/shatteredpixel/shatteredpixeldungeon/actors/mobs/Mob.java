@@ -879,6 +879,9 @@ public abstract class Mob extends Char {
 
 		public static final String TAG	= "HUNTING";
 
+		//prevents rare infinite loop cases
+		private boolean recursing = false;
+
 		@Override
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
 			enemySeen = enemyInFOV;
@@ -906,11 +909,16 @@ public abstract class Mob extends Char {
 				} else {
 
 					//if moving towards an enemy isn't possible, try to switch targets to another enemy that is closer
-					Char newEnemy = chooseEnemy();
-					if (newEnemy != null && enemy != newEnemy){
-						enemy = newEnemy;
-						spend( TICK );
-						return true;
+					//unless we have already done that and still can't move toward them, then move on.
+					if (!recursing) {
+						Char newEnemy = chooseEnemy();
+						if (newEnemy != null && enemy != newEnemy) {
+							enemy = newEnemy;
+							recursing = true;
+							boolean result = act(enemyInFOV, justAlerted);
+							recursing = false;
+							return result;
+						}
 					}
 
 					spend( TICK );
