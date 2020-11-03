@@ -259,7 +259,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				PathFinder.Path path = PathFinder.find(Dungeon.hero.pos, cell, blinkable);
 				int attackPos = path == null ? -1 : path.get(path.size()-2);
 				
-				if (attackPos == -1 ||
+				if (attackPos == -1 || Dungeon.hero.rooted ||
 						Dungeon.level.distance(attackPos, Dungeon.hero.pos) > lvl.blinkDistance){
 					GLog.w(Messages.get(Preparation.class, "out_of_reach"));
 					return;
