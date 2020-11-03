@@ -233,7 +233,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 	public static int autoAim(Char target, Item item){
 
 		//first try to directly target
-		if (item.throwPos(Dungeon.hero, target.pos) == target.pos) {
+		if (item.targetingPos(Dungeon.hero, target.pos) == target.pos) {
 			return target.pos;
 		}
 

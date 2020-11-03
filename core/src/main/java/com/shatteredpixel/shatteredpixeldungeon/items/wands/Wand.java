@@ -106,8 +106,13 @@ public abstract class Wand extends Item {
 			
 		}
 	}
-	
-	protected abstract void onZap( Ballistica attack );
+
+	@Override
+	public int targetingPos(Hero user, int dst) {
+		return new Ballistica( user.pos, dst, collisionProperties ).collisionPos;
+	}
+
+	protected abstract void onZap(Ballistica attack );
 
 	public abstract void onHit( MagesStaff staff, Char attacker, Char defender, int damage);
 
