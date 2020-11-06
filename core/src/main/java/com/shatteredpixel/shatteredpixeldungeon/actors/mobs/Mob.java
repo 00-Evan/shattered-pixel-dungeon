@@ -627,7 +627,7 @@ public abstract class Mob extends Char {
 		if (state == SLEEPING) {
 			state = WANDERING;
 		}
-		if (state != HUNTING) {
+		if (state != HUNTING && !(src instanceof Corruption)) {
 			alerted = true;
 		}
 		

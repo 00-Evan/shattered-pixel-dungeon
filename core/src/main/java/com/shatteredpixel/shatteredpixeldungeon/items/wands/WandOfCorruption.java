@@ -231,20 +231,21 @@ public class WandOfCorruption extends Wand {
 					buff.detach();
 				}
 			}
-			if (enemy.alignment == Char.Alignment.ENEMY){
-				enemy.rollToDropLoot();
-			}
-			
+
+			boolean droppingLoot = enemy.alignment != Char.Alignment.ALLY;
 			Buff.affect(enemy, Corruption.class);
-			
-			Statistics.enemiesSlain++;
-			Badges.validateMonstersSlain();
-			Statistics.qualifiedForNoKilling = false;
-			if (enemy.EXP > 0 && curUser.lvl <= enemy.maxLvl) {
-				curUser.sprite.showStatus(CharSprite.POSITIVE, Messages.get(enemy, "exp", enemy.EXP));
-				curUser.earnExp(enemy.EXP, enemy.getClass());
-			} else {
-				curUser.earnExp(0, enemy.getClass());
+
+			if (enemy.buff(Corruption.class) != null){
+				if (droppingLoot) enemy.rollToDropLoot();
+				Statistics.enemiesSlain++;
+				Badges.validateMonstersSlain();
+				Statistics.qualifiedForNoKilling = false;
+				if (enemy.EXP > 0 && curUser.lvl <= enemy.maxLvl) {
+					curUser.sprite.showStatus(CharSprite.POSITIVE, Messages.get(enemy, "exp", enemy.EXP));
+					curUser.earnExp(enemy.EXP, enemy.getClass());
+				} else {
+					curUser.earnExp(0, enemy.getClass());
+				}
 			}
 		} else {
 			Buff.affect(enemy, Doom.class);
