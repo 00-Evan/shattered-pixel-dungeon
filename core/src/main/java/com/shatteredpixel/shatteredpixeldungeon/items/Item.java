@@ -373,13 +373,14 @@ public class Item implements Bundlable {
 	}
 	
 	public Item identify() {
-		
+
+		if (Dungeon.hero != null && Dungeon.hero.isAlive()){
+			Catalog.setSeen(getClass());
+			if (!isIdentified()) Talent.onItemIdentified(Dungeon.hero, this);
+		}
+
 		levelKnown = true;
 		cursedKnown = true;
-		
-		if (Dungeon.hero != null && Dungeon.hero.isAlive()) {
-			Catalog.setSeen(getClass());
-		}
 		
 		return this;
 	}

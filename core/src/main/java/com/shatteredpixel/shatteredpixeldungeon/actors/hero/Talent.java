@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
@@ -33,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
@@ -40,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -135,10 +138,16 @@ public enum Talent {
 	}
 
 	public static void onFoodEaten( Hero hero, float foodVal ){
-		if (hero.hasTalent(HEARTY_MEAL) && hero.HP <= hero.HT/2){
-			//3/5 HP healed, when hero is below 50% health
-			hero.HP = Math.min( hero.HP + 1 + 2*hero.pointsInTalent(HEARTY_MEAL), hero.HT );
-			hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), hero.pointsInTalent(HEARTY_MEAL) );
+		if (hero.hasTalent(HEARTY_MEAL)){
+			//3/5 HP healed, when hero is below 25% health
+			if (hero.HP <= hero.HT/4) {
+				hero.HP = Math.min(hero.HP + 1 + 2 * hero.pointsInTalent(HEARTY_MEAL), hero.HT);
+				hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), hero.pointsInTalent(HEARTY_MEAL));
+			//2/3 HP healed, when hero is below 50% health
+			} else if (hero.HP <= hero.HT/2){
+				hero.HP = Math.min(hero.HP + 1 + hero.pointsInTalent(HEARTY_MEAL), hero.HT);
+				hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1+hero.pointsInTalent(HEARTY_MEAL));
+			}
 		}
 		if (hero.hasTalent(ENERGIZING_MEAL)){
 			//5/8 turns of recharging
@@ -193,6 +202,20 @@ public enum Talent {
 	public static void onItemCollected( Hero hero, Item item ){
 		if (hero.pointsInTalent(THIEFS_INTUITION) == 2){
 			if (item instanceof Ring) ((Ring) item).setKnown();
+		}
+	}
+
+	//note that IDing can happen in alchemy scene, so be careful with VFX here
+	public static void onItemIdentified( Hero hero, Item item ){
+		if (hero.hasTalent(TEST_SUBJECT)){
+			//heal for 2/3 HP
+			hero.HP = Math.min(hero.HP + 1 + hero.pointsInTalent(TEST_SUBJECT), hero.HT);
+			Emitter e = hero.sprite.emitter();
+			if (e != null) e.burst(Speck.factory(Speck.HEALING), hero.pointsInTalent(TEST_SUBJECT));
+		}
+		if (item instanceof Scroll && hero.hasTalent(TESTED_HYPOTHESIS)){
+			Buff.affect(hero, Barrier.class).setShield(3 + (3 * hero.pointsInTalent(Talent.TESTED_HYPOTHESIS)), 1);
+			ScrollOfRecharging.charge(hero);
 		}
 	}
 

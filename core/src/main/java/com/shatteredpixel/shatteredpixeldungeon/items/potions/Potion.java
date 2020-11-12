@@ -33,8 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -72,7 +70,6 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
@@ -354,18 +351,12 @@ public class Potion extends Item {
 	
 	@Override
 	public Item identify() {
+		super.identify();
 
 		if (!isKnown()) {
 			setKnown();
-			//4/6 HP healed
-			Hero hero = Dungeon.hero;
-			if (hero.isAlive() && hero.hasTalent(Talent.TEST_SUBJECT)) {
-				hero.HP = Math.min(hero.HP + 2 * (1+hero.pointsInTalent(Talent.TEST_SUBJECT)), hero.HT);
-				Emitter e = hero.sprite.emitter();
-				if (e != null) e.burst(Speck.factory(Speck.HEALING), hero.pointsInTalent(Talent.TEST_SUBJECT));
-			}
 		}
-		return super.identify();
+		return this;
 	}
 	
 	@Override
@@ -512,7 +503,7 @@ public class Potion extends Item {
 			}
 			
 			if (seeds.size() == 1){
-				result.setKnown();
+				result.identify();
 			}
 
 			while (result instanceof PotionOfHealing
