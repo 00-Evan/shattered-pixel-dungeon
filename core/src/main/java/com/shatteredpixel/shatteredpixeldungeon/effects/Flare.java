@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
@@ -110,7 +111,11 @@ public class Flare extends Visual {
 	}
 	
 	public Flare show( Visual visual, float duration ) {
-		point( visual.center() );
+		if (visual instanceof CharSprite){
+			point(((CharSprite) visual).destinationCenter());
+		} else {
+			point(visual.center());
+		}
 		visual.parent.addToBack( this );
 		
 		lifespan = this.duration = duration;
