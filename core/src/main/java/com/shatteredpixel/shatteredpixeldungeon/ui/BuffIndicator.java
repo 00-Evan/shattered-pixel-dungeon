@@ -95,6 +95,7 @@ public class BuffIndicator extends Component {
 	public static final int HEX         = 47;
 	public static final int DEGRADE     = 48;
 	public static final int PINCUSHION  = 49;
+	public static final int UPGRADE     = 50;
 
 	public static final int SIZE	= 7;
 	

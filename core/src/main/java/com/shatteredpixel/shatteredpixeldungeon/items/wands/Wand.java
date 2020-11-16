@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
@@ -341,6 +342,15 @@ public abstract class Wand extends Item {
 		WandOfMagicMissile.MagicCharge buff = curUser.buff(WandOfMagicMissile.MagicCharge.class);
 		if (buff != null && buff.level() > super.buffedLvl()){
 			buff.detach();
+		}
+
+		//if the wand is owned by the hero, but not in their inventory, it must be in the staff
+		if (curCharges == 0
+				&& charger.target == Dungeon.hero
+				&& !Dungeon.hero.belongings.contains(this)
+				&& Dungeon.hero.hasTalent(Talent.BACKUP_BARRIER)){
+			//grants 3/5 shielding
+			Buff.affect(Dungeon.hero, Barrier.class).setShield(1 + 2*Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER));
 		}
 
 		Invisibility.dispel();

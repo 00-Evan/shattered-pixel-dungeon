@@ -119,7 +119,7 @@ public class WandOfMagicMissile extends DamageWand {
 
 		@Override
 		public int icon() {
-			return BuffIndicator.RECHARGING;
+			return BuffIndicator.UPGRADE;
 		}
 
 		@Override

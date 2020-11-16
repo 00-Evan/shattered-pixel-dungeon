@@ -24,17 +24,16 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WandEmpower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
@@ -62,12 +61,12 @@ public enum Talent {
 	TEST_WARRIOR_T2_4(7),
 	TEST_WARRIOR_T2_5(8),
 
-	ENERGIZING_MEAL(16),
+	EMPOWERING_MEAL(16),
 	SCHOLARS_INTUITION(17),
 	TESTED_HYPOTHESIS(18),
-	ENERGIZING_UPGRADE(19),
-	TEST_MAGE_T2_1(20),
-	TEST_MAGE_T2_2(21),
+	BACKUP_BARRIER(19),
+	ENERGIZING_MEAL(20),
+	ENERGIZING_UPGRADE(21),
 	TEST_MAGE_T2_3(22),
 	TEST_MAGE_T2_4(23),
 	TEST_MAGE_T2_5(24),
@@ -149,6 +148,11 @@ public enum Talent {
 				hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1+hero.pointsInTalent(HEARTY_MEAL));
 			}
 		}
+		if (hero.hasTalent(EMPOWERING_MEAL)){
+			//2/3 bonus wand damage for next 3 zaps
+			Buff.affect( hero, WandEmpower.class).set(1 + hero.pointsInTalent(EMPOWERING_MEAL), 3);
+			ScrollOfRecharging.charge( hero );
+		}
 		if (hero.hasTalent(ENERGIZING_MEAL)){
 			//5/8 turns of recharging
 			Buff.affect( hero, Recharging.class, 2 + 3*(hero.pointsInTalent(ENERGIZING_MEAL)) );
@@ -213,8 +217,9 @@ public enum Talent {
 			Emitter e = hero.sprite.emitter();
 			if (e != null) e.burst(Speck.factory(Speck.HEALING), hero.pointsInTalent(TEST_SUBJECT));
 		}
-		if (item instanceof Scroll && hero.hasTalent(TESTED_HYPOTHESIS)){
-			Buff.affect(hero, Barrier.class).setShield(3 + (3 * hero.pointsInTalent(Talent.TESTED_HYPOTHESIS)), 1);
+		if (hero.hasTalent(TESTED_HYPOTHESIS)){
+			//2/3 turns of wand recharging
+			Buff.affect(hero, Recharging.class, 1f + hero.pointsInTalent(TESTED_HYPOTHESIS));
 			ScrollOfRecharging.charge(hero);
 		}
 	}
@@ -264,7 +269,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, HEARTY_MEAL, ARMSMASTERS_INTUITION, TEST_SUBJECT, IRON_WILL);
 				break;
 			case MAGE:
-				Collections.addAll(tierTalents, ENERGIZING_MEAL, SCHOLARS_INTUITION, TESTED_HYPOTHESIS, ENERGIZING_UPGRADE);
+				Collections.addAll(tierTalents, EMPOWERING_MEAL, SCHOLARS_INTUITION, TESTED_HYPOTHESIS, BACKUP_BARRIER);
 				break;
 			case ROGUE:
 				Collections.addAll(tierTalents, RATIONED_MEAL, THIEFS_INTUITION, SUCKER_PUNCH, MENDING_SHADOWS);
@@ -284,7 +289,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, TEST_WARRIOR_T2_1, TEST_WARRIOR_T2_2, TEST_WARRIOR_T2_3, TEST_WARRIOR_T2_4, TEST_WARRIOR_T2_5);
 				break;
 			case MAGE:
-				Collections.addAll(tierTalents, TEST_MAGE_T2_1, TEST_MAGE_T2_2, TEST_MAGE_T2_3, TEST_MAGE_T2_4, TEST_MAGE_T2_5);
+				Collections.addAll(tierTalents, ENERGIZING_MEAL, ENERGIZING_UPGRADE, TEST_MAGE_T2_3, TEST_MAGE_T2_4, TEST_MAGE_T2_5);
 				break;
 			case ROGUE:
 				Collections.addAll(tierTalents, TEST_ROGUE_T2_1, TEST_ROGUE_T2_2, TEST_ROGUE_T2_3, TEST_ROGUE_T2_4, TEST_ROGUE_T2_5);
@@ -307,32 +312,41 @@ public enum Talent {
 		//Nothing here yet. Hm.....
 	}
 
-	private static final String TALENTS = "talents";
+	private static final String TALENT_TIER = "talents_tier_";
 
 	public static void storeTalentsInBundle( Bundle bundle, Hero hero ){
-		Bundle talentBundle = new Bundle();
+		for (int i = 0; i < MAX_TALENT_TIERS; i++){
+			LinkedHashMap<Talent, Integer> tier = hero.talents.get(i);
+			Bundle tierBundle = new Bundle();
 
-		for (Talent talent : values()){
-			if (hero.hasTalent(talent)){
-				talentBundle.put(talent.name(), hero.pointsInTalent(talent));
+			for (Talent talent : tier.keySet()){
+				if (tier.get(talent) > 0){
+					tierBundle.put(talent.name(), tier.get(talent));
+				}
+				if (tierBundle.contains(talent.name())){
+					tier.put(talent, Math.min(tierBundle.getInt(talent.name()), talent.maxPoints()));
+				}
 			}
+			bundle.put(TALENT_TIER+(i+1), tierBundle);
 		}
-
-		bundle.put(TALENTS, talentBundle);
 	}
 
 	public static void restoreTalentsFromBundle( Bundle bundle, Hero hero ){
 		if (hero.heroClass != null) initClassTalents(hero);
 		if (hero.subClass != null)  initSubclassTalents(hero);
 
-		if (!bundle.contains(TALENTS)) return;
-		Bundle talentBundle = bundle.getBundle(TALENTS);
+		for (int i = 0; i < MAX_TALENT_TIERS; i++){
+			LinkedHashMap<Talent, Integer> tier = hero.talents.get(i);
+			Bundle tierBundle = bundle.contains(TALENT_TIER+(i+1)) ? bundle.getBundle(TALENT_TIER+(i+1)) : null;
+			//pre-0.9.1 saves
+			if (tierBundle == null && i == 0 && bundle.contains("talents")){
+				tierBundle = bundle.getBundle("talents");
+			}
 
-		for (Talent talent : values()){
-			if (talentBundle.contains(talent.name())){
-				for (LinkedHashMap<Talent, Integer> tier : hero.talents){
-					if (tier.containsKey(talent)){
-						tier.put(talent, Math.min(talentBundle.getInt(talent.name()), talent.maxPoints()));
+			if (tierBundle != null){
+				for (Talent talent : tier.keySet()){
+					if (tierBundle.contains(talent.name())){
+						tier.put(talent, Math.min(tierBundle.getInt(talent.name()), talent.maxPoints()));
 					}
 				}
 			}
