@@ -209,7 +209,7 @@ public class NewDM300 extends Mob {
 
 					}
 
-				} else {
+				} else if (fieldOfView[enemy.pos]) {
 					if (turnsSinceLastAbility > abilityCooldown) {
 
 						if (lastAbility == NONE) {
