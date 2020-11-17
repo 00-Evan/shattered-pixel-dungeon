@@ -101,11 +101,10 @@ public class Honeypot extends Item {
 		int newPos = pos;
 		if (Actor.findChar( pos ) != null) {
 			ArrayList<Integer> candidates = new ArrayList<>();
-			boolean[] passable = Dungeon.level.passable;
 			
 			for (int n : PathFinder.NEIGHBOURS4) {
 				int c = pos + n;
-				if (passable[c] && Actor.findChar( c ) == null) {
+				if (!Dungeon.level.solid[c] && Actor.findChar( c ) == null) {
 					candidates.add( c );
 				}
 			}
