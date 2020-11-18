@@ -25,6 +25,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoldenMimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -33,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.GuidePage;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
@@ -378,7 +381,7 @@ public abstract class RegularLevel extends Level {
 			}
 		}
 
-		//use a separate generator for this to prevent held items and meta progress from affecting levelgen
+		//use a separate generator for this to prevent held items, meta progress, and talents from affecting levelgen
 		Random.pushGenerator( Dungeon.seedCurDepth() );
 
 		Item item = Bones.get();
@@ -408,6 +411,24 @@ public abstract class RegularLevel extends Level {
 					}
 					rose.droppedPetals++;
 				}
+			}
+		}
+
+		//cached rations try to drop in a special room on floors 2/4/6/8/9, to a max of 3/5
+		if (Dungeon.hero.hasTalent(Talent.CACHED_RATIONS)){
+			Talent.CachedRationsDropped dropped = Buff.affect(Dungeon.hero, Talent.CachedRationsDropped.class);
+			if (dropped.count() < 1 + 2*Dungeon.hero.pointsInTalent(Talent.CACHED_RATIONS)
+					&& Math.min(8, 1 + 2*dropped.count()) < Dungeon.depth){
+				int cell;
+				do {
+					cell = randomDropCell(SpecialRoom.class);
+				} while (room(cell) instanceof SecretRoom);
+				if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
+					map[cell] = Terrain.GRASS;
+					losBlocking[cell] = false;
+				}
+				drop( new SmallRation(), cell).type = Heap.Type.CHEST;
+				dropped.countUp(1);
 			}
 		}
 
@@ -474,10 +495,14 @@ public abstract class RegularLevel extends Level {
 		
 		return null;
 	}
+
+	protected int randomDropCell(){
+		return randomDropCell(StandardRoom.class);
+	}
 	
-	protected int randomDropCell() {
+	protected int randomDropCell( Class<?extends Room> roomType ) {
 		while (true) {
-			Room room = randomRoom( StandardRoom.class );
+			Room room = randomRoom( roomType );
 			if (room != null && room != roomEntrance) {
 				int pos = pointToCell(room.random());
 				if (passable[pos]

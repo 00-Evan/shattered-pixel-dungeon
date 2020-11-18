@@ -24,13 +24,13 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -242,19 +242,21 @@ public class CloakOfShadows extends Artifact {
 			}
 		}
 
-		float healInc = 0;
+		float barrierInc = 0.5f;
 
 		@Override
 		public boolean act(){
 			turnsToCost--;
 
-			if (((Hero)target).hasTalent(Talent.MENDING_SHADOWS)){
-				healInc++;
-				// 5/3 turns to heal
-				if (healInc >= 7 - 2*((Hero) target).pointsInTalent(Talent.MENDING_SHADOWS)){
-					healInc = 0;
-					target.HP = Math.min(target.HT, target.HP+1);
-					target.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
+			//barrier every 2/1 turns, to a max of 3/5
+			if (((Hero)target).hasTalent(Talent.PROTECTIVE_SHADOWS)){
+				Barrier barrier = Buff.affect(target, Barrier.class);
+				if (barrier.shielding() < 1 + 2*((Hero)target).pointsInTalent(Talent.PROTECTIVE_SHADOWS)) {
+					barrierInc += 0.5f * ((Hero) target).pointsInTalent(Talent.PROTECTIVE_SHADOWS);
+				}
+				if (barrierInc >= 1 ){
+					barrierInc = 0;
+					barrier.incShield(1);
 				}
 			}
 			
@@ -326,14 +328,14 @@ public class CloakOfShadows extends Artifact {
 		}
 		
 		private static final String TURNSTOCOST = "turnsToCost";
-		private static final String HEAL_INC = "heal_inc";
+		private static final String BARRIER_INC = "barrier_inc";
 		
 		@Override
 		public void storeInBundle(Bundle bundle) {
 			super.storeInBundle(bundle);
 			
 			bundle.put( TURNSTOCOST , turnsToCost);
-			bundle.put( HEAL_INC, healInc);
+			bundle.put( BARRIER_INC, barrierInc);
 		}
 		
 		@Override
@@ -341,7 +343,7 @@ public class CloakOfShadows extends Artifact {
 			super.restoreFromBundle(bundle);
 			
 			turnsToCost = bundle.getInt( TURNSTOCOST );
-			healInc = bundle.getFloat( HEAL_INC );
+			barrierInc = bundle.getFloat( BARRIER_INC );
 		}
 	}
 }

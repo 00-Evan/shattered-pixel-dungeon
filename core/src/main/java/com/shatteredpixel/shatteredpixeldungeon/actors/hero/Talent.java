@@ -25,8 +25,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CounterBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WandEmpower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -71,21 +71,21 @@ public enum Talent {
 	TEST_MAGE_T2_4(23),
 	TEST_MAGE_T2_5(24),
 
-	RATIONED_MEAL(32),
+	CACHED_RATIONS(32),
 	THIEFS_INTUITION(33),
 	SUCKER_PUNCH(34),
-	MENDING_SHADOWS(35),
+	PROTECTIVE_SHADOWS(35),
 	TEST_ROGUE_T2_1(36),
 	TEST_ROGUE_T2_2(37),
 	TEST_ROGUE_T2_3(38),
 	TEST_ROGUE_T2_4(39),
 	TEST_ROGUE_T2_5(40),
 
-	INVIGORATING_MEAL(48),
+	NATURES_BOUNTY(48),
 	SURVIVALISTS_INTUITION(49),
 	FOLLOWUP_STRIKE(50),
 	NATURES_AID(51),
-	TEST_HUNTRESS_T2_1(52),
+	INVIGORATING_MEAL(52),
 	TEST_HUNTRESS_T2_2(53),
 	TEST_HUNTRESS_T2_3(54),
 	TEST_HUNTRESS_T2_4(55),
@@ -117,6 +117,11 @@ public enum Talent {
 	}
 
 	public static void onTalentUpgraded( Hero hero, Talent talent){
+		if (talent == NATURES_BOUNTY){
+			if ( hero.pointsInTalent(NATURES_BOUNTY) == 1) Buff.count(hero, NatureBerriesAvailable.class, 4);
+			else                                           Buff.count(hero, NatureBerriesAvailable.class, 2);
+		}
+
 		if (talent == ARMSMASTERS_INTUITION && hero.pointsInTalent(ARMSMASTERS_INTUITION) == 2){
 			if (hero.belongings.weapon != null) hero.belongings.weapon.identify();
 			if (hero.belongings.armor != null)  hero.belongings.armor.identify();
@@ -135,6 +140,9 @@ public enum Talent {
 			if (hero.belongings.misc instanceof Ring) ((Ring) hero.belongings.misc).setKnown();
 		}
 	}
+
+	public static class CachedRationsDropped extends CounterBuff{};
+	public static class NatureBerriesAvailable extends CounterBuff{};
 
 	public static void onFoodEaten( Hero hero, float foodVal ){
 		if (hero.hasTalent(HEARTY_MEAL)){
@@ -157,11 +165,6 @@ public enum Talent {
 			//5/8 turns of recharging
 			Buff.affect( hero, Recharging.class, 2 + 3*(hero.pointsInTalent(ENERGIZING_MEAL)) );
 			ScrollOfRecharging.charge( hero );
-		}
-		if (hero.hasTalent(RATIONED_MEAL)){
-			//15%/25% bonus food value
-			float bonusSatiety = foodVal * (0.05f + (0.1f * hero.pointsInTalent(RATIONED_MEAL)));
-			Buff.affect(hero, Hunger.class).affectHunger(bonusSatiety, true);
 		}
 		if (hero.hasTalent(INVIGORATING_MEAL)){
 			//effectively 1/2 turns of haste
@@ -270,10 +273,10 @@ public enum Talent {
 				Collections.addAll(tierTalents, EMPOWERING_MEAL, SCHOLARS_INTUITION, TESTED_HYPOTHESIS, BACKUP_BARRIER);
 				break;
 			case ROGUE:
-				Collections.addAll(tierTalents, RATIONED_MEAL, THIEFS_INTUITION, SUCKER_PUNCH, MENDING_SHADOWS);
+				Collections.addAll(tierTalents, CACHED_RATIONS, THIEFS_INTUITION, SUCKER_PUNCH, PROTECTIVE_SHADOWS);
 				break;
 			case HUNTRESS:
-				Collections.addAll(tierTalents, INVIGORATING_MEAL, SURVIVALISTS_INTUITION, FOLLOWUP_STRIKE, NATURES_AID);
+				Collections.addAll(tierTalents, NATURES_BOUNTY, SURVIVALISTS_INTUITION, FOLLOWUP_STRIKE, NATURES_AID);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -293,7 +296,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, TEST_ROGUE_T2_1, TEST_ROGUE_T2_2, TEST_ROGUE_T2_3, TEST_ROGUE_T2_4, TEST_ROGUE_T2_5);
 				break;
 			case HUNTRESS:
-				Collections.addAll(tierTalents, TEST_HUNTRESS_T2_1, TEST_HUNTRESS_T2_2, TEST_HUNTRESS_T2_3, TEST_HUNTRESS_T2_4, TEST_HUNTRESS_T2_5);
+				Collections.addAll(tierTalents, INVIGORATING_MEAL, TEST_HUNTRESS_T2_2, TEST_HUNTRESS_T2_3, TEST_HUNTRESS_T2_4, TEST_HUNTRESS_T2_5);
 				break;
 		}
 		for (Talent talent : tierTalents){
