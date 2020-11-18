@@ -81,11 +81,19 @@ public class Food extends Item {
 			SpellSprite.show( hero, SpellSprite.FOOD );
 			Sample.INSTANCE.play( Assets.Sounds.EAT );
 			
-			hero.spend( TIME_TO_EAT );
+			hero.spend( eatingTime() );
 			
 			Statistics.foodEaten++;
 			Badges.validateFoodEaten();
 			
+		}
+	}
+
+	protected float eatingTime(){
+		if (Dungeon.hero.hasTalent(Talent.INVIGORATING_MEAL)){
+			return TIME_TO_EAT - 2;
+		} else {
+			return TIME_TO_EAT;
 		}
 	}
 	

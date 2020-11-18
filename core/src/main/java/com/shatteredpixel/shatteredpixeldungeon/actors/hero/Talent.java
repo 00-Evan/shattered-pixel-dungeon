@@ -164,8 +164,6 @@ public enum Talent {
 			Buff.affect(hero, Hunger.class).affectHunger(bonusSatiety, true);
 		}
 		if (hero.hasTalent(INVIGORATING_MEAL)){
-			//eating food takes 1 turn, instead of 3
-			hero.spend(-2);
 			//effectively 1/2 turns of haste
 			Buff.affect( hero, Haste.class, 0.67f+hero.pointsInTalent(INVIGORATING_MEAL));
 		}
