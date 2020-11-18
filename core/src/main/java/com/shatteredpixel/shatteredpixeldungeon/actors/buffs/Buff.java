@@ -158,6 +158,12 @@ public class Buff extends Actor {
 		buff.postpone( duration * target.resist(buffClass) );
 		return buff;
 	}
+
+	public static<T extends CounterBuff> T count( Char target, Class<T> buffclass, float count ) {
+		T buff = affect( target, buffclass );
+		buff.countUp( count );
+		return buff;
+	}
 	
 	public static void detach( Char target, Class<? extends Buff> cl ) {
 		for ( Buff b : target.buffs( cl )){
