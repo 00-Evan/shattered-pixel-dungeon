@@ -1118,6 +1118,7 @@ public abstract class Level implements Bundlable {
 					}
 
 				}
+			//TODO this is becoming a talent
 			} else if (((Hero)c).heroClass == HeroClass.HUNTRESS) {
 				for (Mob mob : mobs) {
 					int p = mob.pos;

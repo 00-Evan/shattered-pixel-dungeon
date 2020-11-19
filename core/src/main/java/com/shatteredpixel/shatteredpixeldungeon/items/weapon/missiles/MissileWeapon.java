@@ -219,7 +219,8 @@ abstract public class MissileWeapon extends Weapon {
 	
 	protected float durabilityPerUse(){
 		float usages = baseUses * (float)(Math.pow(3, level()));
-		
+
+		//TODO this is becoming a talent
 		if (Dungeon.hero.heroClass == HeroClass.HUNTRESS)   usages *= 1.5f;
 		if (holster)                                        usages *= MagicalHolster.HOLSTER_DURABILITY_FACTOR;
 		
