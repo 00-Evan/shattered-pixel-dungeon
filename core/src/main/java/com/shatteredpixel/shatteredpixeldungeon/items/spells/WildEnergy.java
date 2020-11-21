@@ -64,7 +64,7 @@ public class WildEnergy extends TargetedSpell {
 				}
 
 				Buff.affect(hero, Recharging.class, 8f);
-				Buff.affect(hero, ArtifactRecharge.class).prolong( 8 );
+				Buff.affect(hero, ArtifactRecharge.class).prolong( 8 ).ignoreHornOfPlenty = false;
 				
 				detach( curUser.belongings.backpack );
 				updateQuickslot();

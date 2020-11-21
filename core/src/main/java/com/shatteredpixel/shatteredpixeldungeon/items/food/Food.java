@@ -74,7 +74,7 @@ public class Food extends Item {
 			satisfy(hero);
 			GLog.i( message );
 
-			Talent.onFoodEaten(hero, energy);
+			Talent.onFoodEaten(hero, energy, this);
 			
 			hero.sprite.operate( hero.pos );
 			hero.busy();
@@ -90,7 +90,10 @@ public class Food extends Item {
 	}
 
 	protected float eatingTime(){
-		if (Dungeon.hero.hasTalent(Talent.INVIGORATING_MEAL)){
+		if (Dungeon.hero.hasTalent(Talent.IRON_STOMACH)
+			|| Dungeon.hero.hasTalent(Talent.ENERGIZING_MEAL)
+			|| Dungeon.hero.hasTalent(Talent.MYSTICAL_MEAL)
+			|| Dungeon.hero.hasTalent(Talent.INVIGORATING_MEAL)){
 			return TIME_TO_EAT - 2;
 		} else {
 			return TIME_TO_EAT;

@@ -24,8 +24,10 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CounterBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WandEmpower;
@@ -33,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
@@ -55,7 +58,7 @@ public enum Talent {
 	ARMSMASTERS_INTUITION(1),
 	TEST_SUBJECT(2),
 	IRON_WILL(3),
-	TEST_WARRIOR_T2_1(4),
+	IRON_STOMACH(4),
 	TEST_WARRIOR_T2_2(5),
 	TEST_WARRIOR_T2_3(6),
 	TEST_WARRIOR_T2_4(7),
@@ -75,7 +78,7 @@ public enum Talent {
 	THIEFS_INTUITION(33),
 	SUCKER_PUNCH(34),
 	PROTECTIVE_SHADOWS(35),
-	TEST_ROGUE_T2_1(36),
+	MYSTICAL_MEAL(36),
 	TEST_ROGUE_T2_2(37),
 	TEST_ROGUE_T2_3(38),
 	TEST_ROGUE_T2_4(39),
@@ -144,7 +147,7 @@ public enum Talent {
 	public static class CachedRationsDropped extends CounterBuff{};
 	public static class NatureBerriesAvailable extends CounterBuff{};
 
-	public static void onFoodEaten( Hero hero, float foodVal ){
+	public static void onFoodEaten( Hero hero, float foodVal, Item foodSource ){
 		if (hero.hasTalent(HEARTY_MEAL)){
 			//3/5 HP healed, when hero is below 25% health
 			if (hero.HP <= hero.HT/4) {
@@ -156,6 +159,9 @@ public enum Talent {
 				hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1+hero.pointsInTalent(HEARTY_MEAL));
 			}
 		}
+		if (hero.hasTalent(IRON_STOMACH)){
+			Buff.affect(hero, WarriorFoodImmunity.class, 1f);
+		}
 		if (hero.hasTalent(EMPOWERING_MEAL)){
 			//2/3 bonus wand damage for next 3 zaps
 			Buff.affect( hero, WandEmpower.class).set(1 + hero.pointsInTalent(EMPOWERING_MEAL), 3);
@@ -166,11 +172,18 @@ public enum Talent {
 			Buff.affect( hero, Recharging.class, 2 + 3*(hero.pointsInTalent(ENERGIZING_MEAL)) );
 			ScrollOfRecharging.charge( hero );
 		}
+		if (hero.hasTalent(MYSTICAL_MEAL)){
+			//3/5 turns of recharging
+			Buff.affect( hero, ArtifactRecharge.class).set(1 + 2*(hero.pointsInTalent(MYSTICAL_MEAL))).ignoreHornOfPlenty = foodSource instanceof HornOfPlenty;
+			ScrollOfRecharging.charge( hero );
+		}
 		if (hero.hasTalent(INVIGORATING_MEAL)){
 			//effectively 1/2 turns of haste
 			Buff.affect( hero, Haste.class, 0.67f+hero.pointsInTalent(INVIGORATING_MEAL));
 		}
 	}
+
+	public static class WarriorFoodImmunity extends FlavourBuff{};
 
 	public static float itemIDSpeedFactor( Hero hero, Item item ){
 		// 1.75x/2.5x speed with huntress talent
@@ -287,13 +300,13 @@ public enum Talent {
 		//tier 2+
 		switch (cls){
 			case WARRIOR: default:
-				Collections.addAll(tierTalents, TEST_WARRIOR_T2_1, TEST_WARRIOR_T2_2, TEST_WARRIOR_T2_3, TEST_WARRIOR_T2_4, TEST_WARRIOR_T2_5);
+				Collections.addAll(tierTalents, IRON_STOMACH, TEST_WARRIOR_T2_2, TEST_WARRIOR_T2_3, TEST_WARRIOR_T2_4, TEST_WARRIOR_T2_5);
 				break;
 			case MAGE:
 				Collections.addAll(tierTalents, ENERGIZING_MEAL, ENERGIZING_UPGRADE, TEST_MAGE_T2_3, TEST_MAGE_T2_4, TEST_MAGE_T2_5);
 				break;
 			case ROGUE:
-				Collections.addAll(tierTalents, TEST_ROGUE_T2_1, TEST_ROGUE_T2_2, TEST_ROGUE_T2_3, TEST_ROGUE_T2_4, TEST_ROGUE_T2_5);
+				Collections.addAll(tierTalents, MYSTICAL_MEAL, TEST_ROGUE_T2_2, TEST_ROGUE_T2_3, TEST_ROGUE_T2_4, TEST_ROGUE_T2_5);
 				break;
 			case HUNTRESS:
 				Collections.addAll(tierTalents, INVIGORATING_MEAL, TEST_HUNTRESS_T2_2, TEST_HUNTRESS_T2_3, TEST_HUNTRESS_T2_4, TEST_HUNTRESS_T2_5);

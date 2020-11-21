@@ -39,7 +39,7 @@ public class ScrollOfMysticalEnergy extends ExoticScroll {
 	public void doRead() {
 		
 		//append buff
-		Buff.affect(curUser, ArtifactRecharge.class).set( 30 );
+		Buff.affect(curUser, ArtifactRecharge.class).set( 30 ).ignoreHornOfPlenty = false;
 
 		Sample.INSTANCE.play( Assets.Sounds.READ );
 		Sample.INSTANCE.play( Assets.Sounds.CHARGEUP );
