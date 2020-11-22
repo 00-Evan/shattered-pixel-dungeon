@@ -187,9 +187,9 @@ public class NewDM300 extends Mob {
 				}
 			} else {
 
-				if (enemy == null) enemy = Dungeon.hero;
+				if (enemy == null && Dungeon.hero.invisible <= 0) enemy = Dungeon.hero;
 
-				if (!canReach){
+				if (enemy != null && !canReach){
 
 					if (fieldOfView[enemy.pos] && turnsSinceLastAbility >= MIN_COOLDOWN){
 
@@ -209,7 +209,7 @@ public class NewDM300 extends Mob {
 
 					}
 
-				} else if (fieldOfView[enemy.pos]) {
+				} else if (enemy != null && fieldOfView[enemy.pos]) {
 					if (turnsSinceLastAbility > abilityCooldown) {
 
 						if (lastAbility == NONE) {
