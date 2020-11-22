@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
@@ -220,9 +220,13 @@ abstract public class MissileWeapon extends Weapon {
 	protected float durabilityPerUse(){
 		float usages = baseUses * (float)(Math.pow(3, level()));
 
-		//TODO this is becoming a talent
-		if (Dungeon.hero.heroClass == HeroClass.HUNTRESS)   usages *= 1.5f;
-		if (holster)                                        usages *= MagicalHolster.HOLSTER_DURABILITY_FACTOR;
+		//+50%/75% durability
+		if (Dungeon.hero.hasTalent(Talent.DURABLE_PROJECTILES)){
+			usages *= 1.25f + (0.25f*Dungeon.hero.pointsInTalent(Talent.DURABLE_PROJECTILES));
+		}
+		if (holster) {
+			usages *= MagicalHolster.HOLSTER_DURABILITY_FACTOR;
+		}
 		
 		usages *= RingOfSharpshooting.durabilityMultiplier( Dungeon.hero );
 		

@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Surprise;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
@@ -789,33 +790,43 @@ public abstract class Mob extends Char {
 
 		@Override
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
-			if (enemyInFOV && Random.Float( distance( enemy ) + enemy.stealth() ) < 1) {
 
-				enemySeen = true;
+			if (enemyInFOV) {
 
-				notice();
-				state = HUNTING;
-				target = enemy.pos;
+				float enemyStealth = enemy.stealth();
 
-				if (alignment == Alignment.ENEMY && Dungeon.isChallenged( Challenges.SWARM_INTELLIGENCE )) {
-					for (Mob mob : Dungeon.level.mobs) {
-						if (mob.paralysed <= 0
-								&& Dungeon.level.distance(pos, mob.pos) <= 8 //TODO base on pathfinder distance instead?
-								&& mob.state != mob.HUNTING) {
-							mob.beckon( target );
-						}
+				if (enemy instanceof Hero && ((Hero) enemy).hasTalent(Talent.SILENT_STEPS)){
+					if (Dungeon.level.distance(pos, enemy.pos) >= 4 - ((Hero) enemy).pointsInTalent(Talent.SILENT_STEPS)) {
+						enemyStealth = Float.POSITIVE_INFINITY;
 					}
 				}
 
-				spend( TIME_TO_WAKE_UP );
+				if (Random.Float( distance( enemy ) + enemyStealth ) < 1) {
+					enemySeen = true;
 
-			} else {
+					notice();
+					state = HUNTING;
+					target = enemy.pos;
 
-				enemySeen = false;
+					if (alignment == Alignment.ENEMY && Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) {
+						for (Mob mob : Dungeon.level.mobs) {
+							if (mob.paralysed <= 0
+									&& Dungeon.level.distance(pos, mob.pos) <= 8 //TODO base on pathfinder distance instead?
+									&& mob.state != mob.HUNTING) {
+								mob.beckon(target);
+							}
+						}
+					}
 
-				spend( TICK );
+					spend(TIME_TO_WAKE_UP);
+					return true;
+				}
 
 			}
+
+			enemySeen = false;
+			spend( TICK );
+
 			return true;
 		}
 	}

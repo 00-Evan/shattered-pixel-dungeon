@@ -56,8 +56,8 @@ public abstract class TippedDart extends Dart {
 	{
 		tier = 2;
 		
-		//so that slightly more than 1.5x durability is needed for 2 uses
-		baseUses = 0.65f;
+		//so that 1.5x durability is needed for 2 uses
+		baseUses = 0.67f;
 	}
 	
 	private static final String AC_CLEAN = "CLEAN";
