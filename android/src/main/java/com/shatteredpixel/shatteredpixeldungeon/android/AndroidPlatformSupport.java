@@ -328,7 +328,27 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		}
 		setupFontGenerators(pageSize, systemfont);
 	}
-	
+
+	@Override
+	//FIXME it would be really nice to keep the local texture data and just re-send it to the GPU
+	public void reloadGenerators() {
+		if (packer != null) {
+			for (FreeTypeFontGenerator generator : fonts.keySet()) {
+				for (BitmapFont f : fonts.get(generator).values()) {
+					f.dispose();
+				}
+				fonts.get(generator).clear();
+			}
+			if (packer != null) {
+				for (PixmapPacker.Page p : packer.getPages()) {
+					p.getTexture().dispose();
+				}
+				packer.dispose();
+			}
+			packer = new PixmapPacker(pageSize, pageSize, Pixmap.Format.RGBA8888, 1, false);
+		}
+	}
+
 	private static Pattern KRMatcher = Pattern.compile("\\p{InHangul_Syllables}");
 	private static Pattern SCMatcher = Pattern.compile("\\p{InCJK_Unified_Ideographs}|\\p{InCJK_Symbols_and_Punctuation}|\\p{InHalfwidth_and_Fullwidth_Forms}");
 	private static Pattern JPMatcher = Pattern.compile("\\p{InHiragana}|\\p{InKatakana}");
@@ -358,7 +378,7 @@ public class AndroidPlatformSupport extends PlatformSupport {
 			parameters.size = size;
 			parameters.flip = true;
 			parameters.borderWidth = parameters.size / 10f;
-			parameters.renderCount = 3;
+			parameters.renderCount = 1;
 			parameters.hinting = FreeTypeFontGenerator.Hinting.None;
 			parameters.spaceX = -(int) parameters.borderWidth;
 			parameters.incremental = true;

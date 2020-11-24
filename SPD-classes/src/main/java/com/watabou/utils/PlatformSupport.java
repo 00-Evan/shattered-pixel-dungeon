@@ -43,8 +43,10 @@ public abstract class PlatformSupport {
 	//TODO should consider spinning this into its own class, rather than platform support getting ever bigger
 	
 	public abstract void setupFontGenerators(int pageSize, boolean systemFont );
-	
+
 	public abstract void resetGenerators();
+
+	public abstract void reloadGenerators();
 	
 	public abstract BitmapFont getFont(int size, String text);
 	

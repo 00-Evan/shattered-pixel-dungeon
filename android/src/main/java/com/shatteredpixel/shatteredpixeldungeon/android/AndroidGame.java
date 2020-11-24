@@ -105,7 +105,7 @@ public class AndroidGame extends AndroidApplication {
 		config.useAccelerometer = false;
 		
 		if (support == null) support = new AndroidPlatformSupport();
-		else                 support.resetGenerators();
+		else                 support.reloadGenerators();
 		
 		support.updateSystemUI();
 		

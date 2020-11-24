@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.desktop;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -153,6 +154,16 @@ public class DesktopPlatformSupport extends PlatformSupport {
 			fonts = null;
 		}
 		setupFontGenerators(pageSize, systemfont);
+	}
+
+	@Override
+	public void reloadGenerators() {
+		if (packer != null) {
+			for (PixmapPacker.Page p : packer.getPages()) {
+				p.getTexture().dispose();
+				p.updateTexture(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest, false);
+			}
+		}
 	}
 	
 	private static Pattern asianMatcher = Pattern.compile("\\p{InHangul_Syllables}|" +
