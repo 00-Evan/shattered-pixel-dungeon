@@ -22,6 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Enchanting;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
@@ -81,6 +83,7 @@ public class ScrollOfEnchantment extends ExoticScroll {
 							
 							Sample.INSTANCE.play( Assets.Sounds.READ );
 							Enchanting.show(curUser, item);
+							Talent.onUpgradeScrollUsed( Dungeon.hero );
 						}
 					}
 					
@@ -117,6 +120,7 @@ public class ScrollOfEnchantment extends ExoticScroll {
 							
 							Sample.INSTANCE.play( Assets.Sounds.READ );
 							Enchanting.show(curUser, item);
+							Talent.onUpgradeScrollUsed( Dungeon.hero );
 						}
 					}
 					

@@ -146,11 +146,16 @@ public abstract class Wand extends Item {
 			return false;
 		}
 	}
-	
+
 	public void gainCharge( float amt ){
+		gainCharge( amt, false );
+	}
+
+	public void gainCharge( float amt, boolean overcharge ){
 		partialCharge += amt;
 		while (partialCharge >= 1) {
-			curCharges = Math.min(maxCharges, curCharges+1);
+			if (overcharge) curCharges = Math.min(maxCharges+(int)amt, curCharges+1);
+			else curCharges = Math.min(maxCharges, curCharges+1);
 			partialCharge--;
 			updateQuickslot();
 		}

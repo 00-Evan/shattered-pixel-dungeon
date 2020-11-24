@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bee;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
@@ -44,6 +45,7 @@ public class ElixirOfHoneyedHealing extends Elixir {
 	public void apply(Hero hero) {
 		PotionOfHealing.cure(hero);
 		PotionOfHealing.heal(hero);
+		Talent.onHealingPotionUsed( hero );
 		Buff.affect(hero, Hunger.class).satisfy(Hunger.STARVING/5f);
 	}
 	

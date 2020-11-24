@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -30,22 +31,33 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CounterBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WandEmpower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -59,7 +71,7 @@ public enum Talent {
 	TEST_SUBJECT(2),
 	IRON_WILL(3),
 	IRON_STOMACH(4),
-	TEST_WARRIOR_T2_2(5),
+	RESTORED_WILLPOWER(5),
 	TEST_WARRIOR_T2_3(6),
 	TEST_WARRIOR_T2_4(7),
 	TEST_WARRIOR_T2_5(8),
@@ -79,7 +91,7 @@ public enum Talent {
 	SUCKER_PUNCH(34),
 	PROTECTIVE_SHADOWS(35),
 	MYSTICAL_MEAL(36),
-	TEST_ROGUE_T2_2(37),
+	MYSTICAL_UPGRADE(37),
 	SILENT_STEPS(38),
 	ROGUES_FORESIGHT(39),
 	TEST_ROGUE_T2_5(40),
@@ -89,7 +101,7 @@ public enum Talent {
 	FOLLOWUP_STRIKE(50),
 	NATURES_AID(51),
 	INVIGORATING_MEAL(52),
-	TEST_HUNTRESS_T2_2(53),
+	RESTORED_NATURE(53),
 	DURABLE_PROJECTILES(54),
 	HEIGHTENED_SENSES(55),
 	TEST_HUNTRESS_T2_5(56);
@@ -204,6 +216,71 @@ public enum Talent {
 		return factor;
 	}
 
+	public static void onHealingPotionUsed( Hero hero ){
+		if (hero.hasTalent(RESTORED_WILLPOWER)){
+			BrokenSeal.WarriorShield shield = hero.buff(BrokenSeal.WarriorShield.class);
+			if (shield != null){
+				int shieldToGive = Math.round(shield.maxShield() * 0.33f*(1+hero.pointsInTalent(RESTORED_WILLPOWER)));
+				shield.supercharge(shieldToGive);
+			}
+		}
+		if (hero.hasTalent(RESTORED_NATURE)){
+			ArrayList<Integer> grassCells = new ArrayList<>();
+			for (int i : PathFinder.NEIGHBOURS8){
+				grassCells.add(hero.pos+i);
+			}
+			Random.shuffle(grassCells);
+			for (int cell : grassCells){
+				Char ch = Actor.findChar(cell);
+				if (ch != null){
+					Buff.affect(ch, Roots.class, 1f + hero.pointsInTalent(RESTORED_NATURE));
+				}
+				if (Dungeon.level.map[cell] == Terrain.EMPTY ||
+						Dungeon.level.map[cell] == Terrain.EMBERS ||
+						Dungeon.level.map[cell] == Terrain.EMPTY_DECO){
+					Level.set(cell, Terrain.GRASS);
+					GameScene.updateMap(cell);
+				}
+				CellEmitter.get(cell).burst(LeafParticle.LEVEL_SPECIFIC, 4);
+			}
+			if (hero.pointsInTalent(RESTORED_NATURE) == 1){
+				grassCells.remove(0);
+				grassCells.remove(0);
+				grassCells.remove(0);
+			}
+			for (int cell : grassCells){
+				if (Dungeon.level.map[cell] == Terrain.EMPTY ||
+						Dungeon.level.map[cell] == Terrain.EMBERS ||
+						Dungeon.level.map[cell] == Terrain.EMPTY_DECO ||
+						Dungeon.level.map[cell] == Terrain.GRASS ||
+						Dungeon.level.map[cell] == Terrain.FURROWED_GRASS){
+					Level.set(cell, Terrain.HIGH_GRASS);
+					GameScene.updateMap(cell);
+				}
+			}
+			Dungeon.observe();
+		}
+	}
+
+	public static void onUpgradeScrollUsed( Hero hero ){
+		if (hero.hasTalent(ENERGIZING_UPGRADE)){
+			MagesStaff staff = hero.belongings.getItem(MagesStaff.class);
+			if (staff != null){
+				staff.gainCharge( hero.pointsInTalent(ENERGIZING_UPGRADE), true);
+				ScrollOfRecharging.charge( Dungeon.hero );
+				SpellSprite.show( hero, SpellSprite.CHARGE );
+			}
+		}
+		if (hero.hasTalent(MYSTICAL_UPGRADE)){
+			CloakOfShadows cloak = hero.belongings.getItem(CloakOfShadows.class);
+			if (cloak != null){
+				cloak.overCharge(hero.pointsInTalent(MYSTICAL_UPGRADE));
+				ScrollOfRecharging.charge( Dungeon.hero );
+				SpellSprite.show( hero, SpellSprite.CHARGE );
+			}
+		}
+	}
+
 	public static void onItemEquipped( Hero hero, Item item ){
 		if (hero.pointsInTalent(ARMSMASTERS_INTUITION) == 2 && (item instanceof Weapon || item instanceof Armor)){
 			item.identify();
@@ -300,16 +377,16 @@ public enum Talent {
 		//tier 2+
 		switch (cls){
 			case WARRIOR: default:
-				Collections.addAll(tierTalents, IRON_STOMACH, TEST_WARRIOR_T2_2, TEST_WARRIOR_T2_3, TEST_WARRIOR_T2_4, TEST_WARRIOR_T2_5);
+				Collections.addAll(tierTalents, IRON_STOMACH, RESTORED_WILLPOWER, TEST_WARRIOR_T2_3, TEST_WARRIOR_T2_4, TEST_WARRIOR_T2_5);
 				break;
 			case MAGE:
 				Collections.addAll(tierTalents, ENERGIZING_MEAL, ENERGIZING_UPGRADE, TEST_MAGE_T2_3, TEST_MAGE_T2_4, TEST_MAGE_T2_5);
 				break;
 			case ROGUE:
-				Collections.addAll(tierTalents, MYSTICAL_MEAL, TEST_ROGUE_T2_2, SILENT_STEPS, ROGUES_FORESIGHT, TEST_ROGUE_T2_5);
+				Collections.addAll(tierTalents, MYSTICAL_MEAL, MYSTICAL_UPGRADE, SILENT_STEPS, ROGUES_FORESIGHT, TEST_ROGUE_T2_5);
 				break;
 			case HUNTRESS:
-				Collections.addAll(tierTalents, INVIGORATING_MEAL, TEST_HUNTRESS_T2_2, DURABLE_PROJECTILES, HEIGHTENED_SENSES, TEST_HUNTRESS_T2_5);
+				Collections.addAll(tierTalents, INVIGORATING_MEAL, RESTORED_NATURE, DURABLE_PROJECTILES, HEIGHTENED_SENSES, TEST_HUNTRESS_T2_5);
 				break;
 		}
 		for (Talent talent : tierTalents){
