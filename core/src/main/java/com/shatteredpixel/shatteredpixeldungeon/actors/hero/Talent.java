@@ -249,11 +249,10 @@ public enum Talent {
 				grassCells.remove(0);
 			}
 			for (int cell : grassCells){
-				if (Dungeon.level.map[cell] == Terrain.EMPTY ||
-						Dungeon.level.map[cell] == Terrain.EMBERS ||
-						Dungeon.level.map[cell] == Terrain.EMPTY_DECO ||
-						Dungeon.level.map[cell] == Terrain.GRASS ||
-						Dungeon.level.map[cell] == Terrain.FURROWED_GRASS){
+				int t = Dungeon.level.map[cell];
+				if ((t == Terrain.EMPTY || t == Terrain.EMPTY_DECO || t == Terrain.EMBERS
+						|| t == Terrain.GRASS || t == Terrain.FURROWED_GRASS)
+						&& Dungeon.level.plants.get(cell) == null){
 					Level.set(cell, Terrain.HIGH_GRASS);
 					GameScene.updateMap(cell);
 				}
