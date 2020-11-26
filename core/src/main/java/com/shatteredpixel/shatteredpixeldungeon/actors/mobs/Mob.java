@@ -906,8 +906,10 @@ public abstract class Mob extends Char {
 				if (enemyInFOV) {
 					target = enemy.pos;
 				} else if (enemy == null) {
+					sprite.showLost();
 					state = WANDERING;
 					target = Dungeon.level.randomDestination( Mob.this );
+					spend( TICK );
 					return true;
 				}
 				
