@@ -494,7 +494,7 @@ public abstract class Char extends Actor {
 		}
 		Charm c = buff(Charm.class);
 		if (c != null){
-			c.recover();
+			c.recover(src);
 		}
 		if (this.buff(Frost.class) != null){
 			Buff.detach( this, Frost.class );

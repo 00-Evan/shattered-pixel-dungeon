@@ -194,7 +194,7 @@ public class WandOfLivingEarth extends DamageWand {
 			}
 		}
 		
-		int armor = Math.round(damage*0.25f);
+		int armor = Math.round(damage*0.33f);
 
 		if (guardian != null){
 			guardian.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + buffedLvl() / 2);

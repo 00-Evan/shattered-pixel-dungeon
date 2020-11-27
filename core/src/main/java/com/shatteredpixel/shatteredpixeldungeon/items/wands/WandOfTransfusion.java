@@ -76,8 +76,8 @@ public class WandOfTransfusion extends Wand {
 			//heals/shields an ally or a charmed enemy while damaging self
 			if (ch.alignment == Char.Alignment.ALLY || ch.buff(Charm.class) != null){
 				
-				// 10% of max hp
-				int selfDmg = Math.round(curUser.HT*0.10f);
+				// 5% of max hp
+				int selfDmg = Math.round(curUser.HT*0.05f);
 				
 				int healing = selfDmg + 3*buffedLvl();
 				int shielding = (ch.HP + healing) - ch.HT;
@@ -104,8 +104,10 @@ public class WandOfTransfusion extends Wand {
 				
 				//charms living enemies
 				if (!ch.properties().contains(Char.Property.UNDEAD)) {
-					Buff.affect(ch, Charm.class, Charm.DURATION/2f).object = curUser.id();
-					ch.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 3 + buffedLvl()/2 );
+					Charm charm = Buff.affect(ch, Charm.class, Charm.DURATION/2f);
+					charm.object = curUser.id();
+					charm.ignoreHeroAllies = true;
+					ch.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 3 );
 				
 				//harms the undead
 				} else {
@@ -115,7 +117,7 @@ public class WandOfTransfusion extends Wand {
 				}
 				
 				//and grants a self shield
-				Buff.affect(curUser, Barrier.class).setShield((5 + 2*buffedLvl()));
+				Buff.affect(curUser, Barrier.class).setShield((5 + buffedLvl()));
 
 			}
 			
@@ -135,18 +137,11 @@ public class WandOfTransfusion extends Wand {
 	}
 
 	@Override
-	protected int initialCharges() {
-		return 1;
-	}
-
-	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
-		// lvl 0 - 10%
-		// lvl 1 - 18%
-		// lvl 2 - 25%
-		if (Random.Int( buffedLvl() + 10 ) >= 9){
-			//grants a free use of the staff
+		if (defender.buff(Charm.class) != null && defender.buff(Charm.class).object == attacker.id()){
+			//grants a free use of the staff and shields self
 			freeCharge = true;
+			Buff.affect(curUser, Barrier.class).setShield(2*(5 + buffedLvl()));
 			GLog.p( Messages.get(this, "charged") );
 			attacker.sprite.emitter().burst(BloodParticle.BURST, 20);
 		}
