@@ -109,6 +109,7 @@ public class TalentButton extends Button {
 
 		if (upgradeEnabled
 				&& Dungeon.hero != null
+				&& Dungeon.hero.isAlive()
 				&& Dungeon.hero.talentPointsAvailable(tier) > 0
 				&& Dungeon.hero.pointsInTalent(talent) < talent.maxPoints()){
 			ShatteredPixelDungeon.scene().addToFront(new WndInfoTalent(talent, pointsInTalent, new Callback() {
