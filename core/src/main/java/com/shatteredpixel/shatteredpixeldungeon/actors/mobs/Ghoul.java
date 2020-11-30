@@ -223,6 +223,11 @@ public class Ghoul extends Mob {
 		public boolean act() {
 			ghoul.sprite.visible = Dungeon.level.heroFOV[ghoul.pos];
 
+			if (target.alignment != ghoul.alignment){
+				detach();
+				return true;
+			}
+
 			if (target.fieldOfView == null){
 				target.fieldOfView = new boolean[Dungeon.level.length()];
 				Dungeon.level.updateFieldOfView( target, target.fieldOfView );
