@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesi
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -474,6 +475,18 @@ public abstract class Wand extends Item {
 				int cell = shot.collisionPos;
 				
 				if (target == curUser.pos || cell == curUser.pos) {
+					if (target == curUser.pos && curUser.hasTalent(Talent.SHIELD_BATTERY)){
+						float shield = curUser.HT * (0.05f*curWand.curCharges);
+						if (curUser.pointsInTalent(Talent.SHIELD_BATTERY) == 2) shield *= 1.5f;
+						Buff.affect(curUser, Barrier.class).setShield(Math.round(shield));
+						curWand.curCharges = 0;
+						curUser.sprite.operate(curUser.pos);
+						Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
+						ScrollOfRecharging.charge(curUser);
+						updateQuickslot();
+						curUser.spend(Actor.TICK);
+						return;
+					}
 					GLog.i( Messages.get(Wand.class, "self_target") );
 					return;
 				}
