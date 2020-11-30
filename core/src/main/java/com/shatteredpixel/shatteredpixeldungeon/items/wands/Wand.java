@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
@@ -175,7 +176,13 @@ public abstract class Wand extends Item {
 		processSoulMark(target, buffedLvl(), chargesUsed);
 	}
 
+	//TODO some naming issues here. Consider renaming this method and externalizing char awareness buff
 	protected static void processSoulMark(Char target, int wandLevel, int chargesUsed){
+		if (Dungeon.hero.hasTalent(Talent.ARCANE_VISION)) {
+			int dur = 5 + 5*Dungeon.hero.pointsInTalent(Talent.ARCANE_VISION);
+			Buff.affect(Dungeon.hero, TalismanOfForesight.CharAwareness.class, dur).charID = target.id();
+		}
+
 		if (target != Dungeon.hero &&
 				Dungeon.hero.subClass == HeroSubClass.WARLOCK &&
 				//standard 1 - 0.92^x chance, plus 7%. Starts at 15%
