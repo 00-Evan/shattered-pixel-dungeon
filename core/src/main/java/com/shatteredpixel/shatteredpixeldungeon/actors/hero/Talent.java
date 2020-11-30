@@ -103,8 +103,11 @@ public enum Talent {
 	INVIGORATING_MEAL(52),
 	RESTORED_NATURE(53),
 	REJUVENATING_STEPS(54),
-	DURABLE_PROJECTILES(55),
-	HEIGHTENED_SENSES(56);
+	HEIGHTENED_SENSES(55),
+	DURABLE_PROJECTILES(56);
+
+	public static class ImprovisedProjectileCooldown extends FlavourBuff{};
+	public static class RejuvenatingStepsCooldown extends FlavourBuff{};
 
 	int icon;
 
