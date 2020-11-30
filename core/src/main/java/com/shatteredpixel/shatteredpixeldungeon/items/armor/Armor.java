@@ -173,6 +173,17 @@ public class Armor extends EquipableItem {
 			if (seal.level() > 0){
 				degrade();
 			}
+			if (seal.getGlyph() != null){
+				if (hero.hasTalent(Talent.RUNIC_TRANSFERENCE)
+						&& Arrays.asList(Glyph.common).contains(seal.getGlyph().getClass())){
+					inscribe(null);
+				} else if (hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 2
+						&& Arrays.asList(Glyph.uncommon).contains(seal.getGlyph().getClass())){
+					inscribe(null);
+				} else {
+					seal.setGlyph(null);
+				}
+			}
 			GLog.i( Messages.get(Armor.class, "detach_seal") );
 			hero.sprite.operate(hero.pos);
 			if (!seal.collect()){
@@ -222,6 +233,9 @@ public class Armor extends EquipableItem {
 			//doesn't trigger upgrading logic such as affecting curses/glyphs
 			level(level()+1);
 			Badges.validateItemLevelAquired(this);
+		}
+		if (seal.getGlyph() != null){
+			inscribe(seal.getGlyph());
 		}
 		if (isEquipped(Dungeon.hero)){
 			Buff.affect(Dungeon.hero, BrokenSeal.WarriorShield.class).setArmor(this);
@@ -542,6 +556,11 @@ public class Armor extends EquipableItem {
 		if (glyph == null || !glyph.curse()) curseInfusionBonus = false;
 		this.glyph = glyph;
 		updateQuickslot();
+		//the hero needs runic transference to actually transfer, but we still attach the glyph here
+		// in case they take that talent in the future
+		if (glyph != null && seal != null){
+			seal.setGlyph(glyph);
+		}
 		return this;
 	}
 

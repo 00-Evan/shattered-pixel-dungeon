@@ -29,9 +29,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
 import com.watabou.noosa.audio.Sample;
 
@@ -52,6 +54,21 @@ public class BrokenSeal extends Item {
 		bones = false;
 
 		defaultAction = AC_INFO;
+	}
+
+	private Armor.Glyph glyph;
+
+	public Armor.Glyph getGlyph(){
+		return glyph;
+	}
+
+	public void setGlyph( Armor.Glyph glyph ){
+		this.glyph = glyph;
+	}
+
+	@Override
+	public ItemSprite.Glowing glowing() {
+		return glyph != null ? glyph.glowing() : null;
 	}
 
 	@Override
@@ -89,6 +106,23 @@ public class BrokenSeal extends Item {
 					GLog.w(Messages.get(BrokenSeal.class, "unknown_armor"));
 				} else if (armor.cursed || armor.level() < 0){
 					GLog.w(Messages.get(BrokenSeal.class, "degraded_armor"));
+				} else if (armor.glyph != null && ((BrokenSeal)curItem).getGlyph() != null) {
+					GameScene.show(new WndOptions(Messages.get(BrokenSeal.class, "choose_title"),
+							Messages.get(BrokenSeal.class, "choose_desc"),
+							armor.glyph.name(),
+							((BrokenSeal)curItem).getGlyph().name()){
+						@Override
+						protected void onSelect(int index) {
+							if (index == 0) ((BrokenSeal)curItem).setGlyph(null);
+							//if index is 1, then the glyph transfer happens in affixSeal
+
+							GLog.p(Messages.get(BrokenSeal.class, "affix"));
+							Dungeon.hero.sprite.operate(Dungeon.hero.pos);
+							Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
+							armor.affixSeal((BrokenSeal)curItem);
+							curItem.detach(Dungeon.hero.belongings.backpack);
+						}
+					});
 				} else {
 					GLog.p(Messages.get(BrokenSeal.class, "affix"));
 					Dungeon.hero.sprite.operate(Dungeon.hero.pos);
