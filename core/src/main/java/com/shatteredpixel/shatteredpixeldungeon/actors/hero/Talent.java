@@ -107,6 +107,7 @@ public enum Talent {
 	DURABLE_PROJECTILES(56);
 
 	public static class ImprovisedProjectileCooldown extends FlavourBuff{};
+	public static class LethalMomentumTracker extends FlavourBuff{};
 	public static class RejuvenatingStepsCooldown extends FlavourBuff{};
 
 	int icon;

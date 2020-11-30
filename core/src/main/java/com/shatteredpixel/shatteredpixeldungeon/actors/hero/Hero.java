@@ -527,6 +527,11 @@ public class Hero extends Char {
 	}
 	
 	public float attackDelay() {
+		if (buff(Talent.LethalMomentumTracker.class) != null){
+			buff(Talent.LethalMomentumTracker.class).detach();
+			return 0;
+		}
+
 		if (belongings.weapon != null) {
 			
 			return belongings.weapon.speedFactor( this );
