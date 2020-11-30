@@ -935,6 +935,13 @@ public abstract class Level implements Bundlable {
 			Web.affectChar( ch );
 		}
 
+		if ( (map[ch.pos] == Terrain.GRASS || map[ch.pos] == Terrain.EMBERS)
+				&& ch == Dungeon.hero && Dungeon.hero.hasTalent(Talent.REJUVENATING_STEPS)
+				&& ch.buff(Talent.RejuvenatingStepsCooldown.class) == null){
+			set(ch.pos, Terrain.HIGH_GRASS);
+			Buff.affect(ch, Talent.RejuvenatingStepsCooldown.class, 15f - 5f*Dungeon.hero.pointsInTalent(Talent.REJUVENATING_STEPS));
+		}
+
 		if (!ch.flying){
 			
 			if (pit[ch.pos]){
