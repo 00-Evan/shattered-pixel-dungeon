@@ -108,6 +108,7 @@ public enum Talent {
 
 	public static class ImprovisedProjectileCooldown extends FlavourBuff{};
 	public static class LethalMomentumTracker extends FlavourBuff{};
+	public static class WandPreservationCounter extends CounterBuff{};
 	public static class RejuvenatingStepsCooldown extends FlavourBuff{};
 
 	int icon;
