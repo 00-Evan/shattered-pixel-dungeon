@@ -188,9 +188,12 @@ public class MagesStaff extends MeleeWeapon {
 
 	public Item imbueWand(Wand wand, Char owner){
 
+		int oldStaffcharges = this.wand.curCharges;
+
 		if (owner == Dungeon.hero && Dungeon.hero.hasTalent(Talent.WAND_PRESERVATION)
 				&& Random.Float() < 0.3f + 0.3f*Dungeon.hero.pointsInTalent(Talent.WAND_PRESERVATION)){
 			this.wand.level(0);
+			this.wand.curCharges = 0;
 			if (!this.wand.collect()){
 				Dungeon.level.drop(this.wand, owner.pos);
 			}
@@ -209,7 +212,7 @@ public class MagesStaff extends MeleeWeapon {
 		level(targetLevel);
 		this.wand = wand;
 		updateWand(false);
-		wand.curCharges = wand.maxCharges;
+		wand.curCharges = Math.min(wand.maxCharges, wand.curCharges+oldStaffcharges);
 		if (owner != null) wand.charge(owner);
 
 		//This is necessary to reset any particles.
