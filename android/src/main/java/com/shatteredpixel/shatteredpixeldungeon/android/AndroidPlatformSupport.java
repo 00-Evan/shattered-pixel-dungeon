@@ -378,7 +378,11 @@ public class AndroidPlatformSupport extends PlatformSupport {
 			parameters.size = size;
 			parameters.flip = true;
 			parameters.borderWidth = parameters.size / 10f;
-			parameters.renderCount = 1;
+			if (size >= 20){
+				parameters.renderCount = 2;
+			} else {
+				parameters.renderCount = 3;
+			}
 			parameters.hinting = FreeTypeFontGenerator.Hinting.None;
 			parameters.spaceX = -(int) parameters.borderWidth;
 			parameters.incremental = true;
