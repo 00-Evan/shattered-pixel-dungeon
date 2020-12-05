@@ -427,13 +427,17 @@ public class NewDM300 extends Mob {
 
 	@Override
 	public void damage(int dmg, Object src) {
+		int preHP = HP;
 		super.damage(dmg, src);
 		if (isInvulnerable(src.getClass())){
 			return;
 		}
 
-		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
-		if (lock != null && !isImmune(src.getClass())) lock.addTime(dmg);
+		int dmgTaken = preHP - HP;
+		if (dmgTaken > 0) {
+			LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
+			if (lock != null && !isImmune(src.getClass())) lock.addTime(dmgTaken*1.5f);
+		}
 
 		int threshold = HT/3 * (2- pylonsActivated);
 
