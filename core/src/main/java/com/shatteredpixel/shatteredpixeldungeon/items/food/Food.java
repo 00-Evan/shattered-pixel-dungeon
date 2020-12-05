@@ -73,8 +73,6 @@ public class Food extends Item {
 			
 			satisfy(hero);
 			GLog.i( message );
-
-			Talent.onFoodEaten(hero, energy, this);
 			
 			hero.sprite.operate( hero.pos );
 			hero.busy();
@@ -82,6 +80,8 @@ public class Food extends Item {
 			Sample.INSTANCE.play( Assets.Sounds.EAT );
 			
 			hero.spend( eatingTime() );
+
+			Talent.onFoodEaten(hero, energy, this);
 			
 			Statistics.foodEaten++;
 			Badges.validateFoodEaten();
