@@ -78,6 +78,9 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 		slot = new ItemSlot() {
 			@Override
 			protected void onClick() {
+				if (!Dungeon.hero.isAlive()){
+					return;
+				}
 				if (targeting) {
 					int cell = autoAim(lastTarget, select(slotNum));
 
