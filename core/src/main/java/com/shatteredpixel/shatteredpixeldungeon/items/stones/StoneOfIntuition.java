@@ -50,8 +50,19 @@ public class StoneOfIntuition extends InventoryStone {
 	
 	
 	{
-		mode = WndBag.Mode.UNIDED_POTION_OR_SCROLL;
+		mode = WndBag.Mode.INTUITIONABLE;
 		image = ItemSpriteSheet.STONE_INTUITION;
+	}
+
+	public static boolean isIntuitionable( Item item ){
+		if (item instanceof Ring){
+			return !((Ring) item).isKnown();
+		} else if (item instanceof Potion){
+			return !((Potion) item).isKnown();
+		} else if (item instanceof Scroll){
+			return !((Scroll) item).isKnown();
+		}
+		return false;
 	}
 	
 	@Override
