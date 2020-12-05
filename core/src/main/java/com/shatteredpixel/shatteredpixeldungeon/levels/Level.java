@@ -939,6 +939,7 @@ public abstract class Level implements Bundlable {
 				&& ch == Dungeon.hero && Dungeon.hero.hasTalent(Talent.REJUVENATING_STEPS)
 				&& ch.buff(Talent.RejuvenatingStepsCooldown.class) == null){
 			set(ch.pos, Terrain.HIGH_GRASS);
+			GameScene.updateMap(ch.pos);
 			Buff.affect(ch, Talent.RejuvenatingStepsCooldown.class, 15f - 5f*Dungeon.hero.pointsInTalent(Talent.REJUVENATING_STEPS));
 		}
 
