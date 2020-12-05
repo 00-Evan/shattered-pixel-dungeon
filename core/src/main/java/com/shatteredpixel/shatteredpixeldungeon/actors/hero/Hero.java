@@ -1066,7 +1066,7 @@ public class Hero extends Char {
 		
 		switch (subClass) {
 		case SNIPER:
-			if (wep instanceof MissileWeapon && !(wep instanceof SpiritBow.SpiritArrow)) {
+			if (wep instanceof MissileWeapon && !(wep instanceof SpiritBow.SpiritArrow) && enemy != this) {
 				Actor.add(new Actor() {
 					
 					{
