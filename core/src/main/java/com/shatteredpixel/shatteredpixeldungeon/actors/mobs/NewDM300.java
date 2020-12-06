@@ -526,7 +526,7 @@ public class NewDM300 extends Mob {
 			return true;
 		} else {
 
-			if (rooted || target == pos) {
+			if (!supercharged || rooted || target == pos) {
 				return false;
 			}
 
@@ -542,7 +542,7 @@ public class NewDM300 extends Mob {
 				return true;
 			}
 
-			if (!supercharged || state != HUNTING || Dungeon.level.adjacent(pos, target)){
+			if (state != HUNTING || Dungeon.level.adjacent(pos, target)){
 				return false;
 			}
 
