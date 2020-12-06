@@ -359,6 +359,7 @@ public abstract class Wand extends Item {
 
 		//if the wand is owned by the hero, but not in their inventory, it must be in the staff
 		if (curCharges == 0
+				&& charger != null
 				&& charger.target == Dungeon.hero
 				&& !Dungeon.hero.belongings.contains(this)
 				&& Dungeon.hero.hasTalent(Talent.BACKUP_BARRIER)){
