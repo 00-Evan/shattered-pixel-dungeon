@@ -363,8 +363,8 @@ public abstract class Wand extends Item {
 				&& charger.target == Dungeon.hero
 				&& !Dungeon.hero.belongings.contains(this)
 				&& Dungeon.hero.hasTalent(Talent.BACKUP_BARRIER)){
-			//grants 3/5 shielding
-			Buff.affect(Dungeon.hero, Barrier.class).setShield(1 + 2*Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER));
+			//grants 4/6 shielding
+			Buff.affect(Dungeon.hero, Barrier.class).setShield(2 + 2*Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER));
 		}
 
 		Invisibility.dispel();

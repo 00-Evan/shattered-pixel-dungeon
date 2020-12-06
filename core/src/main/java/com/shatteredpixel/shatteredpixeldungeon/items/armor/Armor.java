@@ -175,10 +175,10 @@ public class Armor extends EquipableItem {
 			}
 			if (seal.getGlyph() != null){
 				if (hero.hasTalent(Talent.RUNIC_TRANSFERENCE)
-						&& Arrays.asList(Glyph.common).contains(seal.getGlyph().getClass())){
+						&& (Arrays.asList(Glyph.common).contains(seal.getGlyph().getClass())
+							|| Arrays.asList(Glyph.uncommon).contains(seal.getGlyph().getClass()))){
 					inscribe(null);
-				} else if (hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 2
-						&& Arrays.asList(Glyph.uncommon).contains(seal.getGlyph().getClass())){
+				} else if (hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 2){
 					inscribe(null);
 				} else {
 					seal.setGlyph(null);
