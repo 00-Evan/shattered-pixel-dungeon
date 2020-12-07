@@ -26,11 +26,13 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.view.View;
 import android.view.WindowManager;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.android.AndroidGraphics;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
@@ -53,12 +55,14 @@ public class AndroidPlatformSupport extends PlatformSupport {
 					ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
 					ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT );
 		}
+
+		GLSurfaceView view = (GLSurfaceView) ((AndroidGraphics)Gdx.graphics).getView();
 		
-		if (AndroidGame.view.getMeasuredWidth() == 0 || AndroidGame.view.getMeasuredHeight() == 0)
+		if (view.getMeasuredWidth() == 0 || view.getMeasuredHeight() == 0)
 			return;
 		
-		Game.dispWidth = AndroidGame.view.getMeasuredWidth();
-		Game.dispHeight = AndroidGame.view.getMeasuredHeight();
+		Game.dispWidth = view.getMeasuredWidth();
+		Game.dispHeight = view.getMeasuredHeight();
 
 		boolean fullscreen = Build.VERSION.SDK_INT < Build.VERSION_CODES.N
 				|| !AndroidGame.instance.isInMultiWindowMode();
@@ -99,7 +103,7 @@ public class AndroidPlatformSupport extends PlatformSupport {
 				AndroidGame.instance.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						AndroidGame.view.getHolder().setFixedSize(finalW, finalH);
+						view.getHolder().setFixedSize(finalW, finalH);
 					}
 				});
 				
@@ -108,7 +112,7 @@ public class AndroidPlatformSupport extends PlatformSupport {
 			AndroidGame.instance.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					AndroidGame.view.getHolder().setSizeFromLayout();
+					view.getHolder().setSizeFromLayout();
 				}
 			});
 		}

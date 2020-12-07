@@ -23,12 +23,10 @@ package com.shatteredpixel.shatteredpixeldungeon.android;
 
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.os.Bundle;
 
 import com.badlogic.gdx.Files;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
@@ -43,7 +41,6 @@ import com.watabou.utils.FileUtils;
 public class AndroidGame extends AndroidApplication {
 	
 	public static AndroidApplication instance;
-	protected static GLSurfaceView view;
 	
 	private static AndroidPlatformSupport support;
 	
@@ -112,8 +109,6 @@ public class AndroidGame extends AndroidApplication {
 		
 		initialize(new ShatteredPixelDungeon(support), config);
 		
-		view = (GLSurfaceView)graphics.getView();
-		
 	}
 
 	@Override
@@ -134,16 +129,8 @@ public class AndroidGame extends AndroidApplication {
 		//LibGDX itself doesn't clear these in every case, so we do it ourselves to be sure
 		graphics.clearManagedCaches();
 		audio.dispose();
-		Gdx.app = null;
-		Gdx.input = null;
-		Gdx.audio = null;
-		Gdx.files = null;
-		Gdx.graphics = null;
-		Gdx.net = null;
-
 		if (instance == this) {
 			instance = null;
-			view = null;
 		}
 		super.onDestroy();
 	}
