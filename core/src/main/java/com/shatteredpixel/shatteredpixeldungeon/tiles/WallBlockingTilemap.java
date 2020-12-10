@@ -46,9 +46,6 @@ public class WallBlockingTilemap extends Tilemap {
 
 	@Override
 	public synchronized void updateMap() {
-		super.updateMap();
-		data = new int[size]; //clears all values, including cleared tiles
-		
 		for (int cell = 0; cell < data.length; cell++) {
 			//force all top/bottom row, and none-discoverable cells to cleared
 			if (!Dungeon.level.discoverable[cell]
@@ -59,6 +56,8 @@ public class WallBlockingTilemap extends Tilemap {
 				updateMapCell(cell);
 			}
 		}
+
+		super.updateMap();
 	}
 
 	private int curr;
