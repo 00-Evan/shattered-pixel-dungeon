@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 
@@ -133,6 +134,20 @@ public class BrokenSeal extends Item {
 			}
 		}
 	};
+
+	private static final String GLYPH = "glyph";
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put(GLYPH, glyph);
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		glyph = (Armor.Glyph)bundle.get(GLYPH);
+	}
 
 	public static class WarriorShield extends ShieldBuff {
 
