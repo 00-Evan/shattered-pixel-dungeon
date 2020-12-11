@@ -43,7 +43,7 @@ import java.util.ArrayList;
 
 public class WelcomeScene extends PixelScene {
 
-	private static final int LATEST_UPDATE = ShatteredPixelDungeon.v0_9_0;
+	private static final int LATEST_UPDATE = ShatteredPixelDungeon.v0_9_1;
 
 	@Override
 	public void create() {
@@ -162,7 +162,7 @@ public class WelcomeScene extends PixelScene {
 
 		//update rankings, to update any data which may be outdated
 		//FIXME this is set to true temporarily as we want to run this no matter what, to ensure the v0.9.0a- badges bug is fixed
-		if (true){
+		if (previousVersion < LATEST_UPDATE){
 			int highestChalInRankings = 0;
 			try {
 				Rankings.INSTANCE.load();
