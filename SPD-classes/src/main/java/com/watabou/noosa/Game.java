@@ -60,13 +60,13 @@ public class Game implements ApplicationListener {
 	public static int versionCode;
 	
 	// Current scene
-	protected Scene scene;
+	protected static Scene scene;
 	// New scene we are going to switch to
-	protected Scene requestedScene;
+	protected static Scene requestedScene;
 	// true if scene switch is requested
-	protected boolean requestedReset = true;
+	protected static boolean requestedReset = true;
 	// callback to perform logic during scene change
-	protected SceneChangeCallback onChange;
+	protected static SceneChangeCallback onChange;
 	// New scene class
 	protected static Class<? extends Scene> sceneClass;
 	
