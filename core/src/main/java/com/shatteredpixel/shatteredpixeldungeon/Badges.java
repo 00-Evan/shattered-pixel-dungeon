@@ -557,7 +557,6 @@ public class Badges {
 			global.contains( Badge.DEATH_FROM_FALLING)) {
 			
 			Badge badge = Badge.YASD;
-			local.add( badge );
 			displayBadge( badge );
 		}
 	}
