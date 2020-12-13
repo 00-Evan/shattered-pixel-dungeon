@@ -273,7 +273,11 @@ public class ShopRoom extends SpecialRoom {
 		if (itemsToSpawn.size() > 63)
 			throw new RuntimeException("Shop attempted to carry more than 63 items!");
 
-		Random.shuffle(itemsToSpawn);
+		//use a new generator here to prevent items in shop stock affecting levelgen RNG (e.g. sandbags)
+		Random.pushGenerator(Random.Long());
+			Random.shuffle(itemsToSpawn);
+		Random.popGenerator();
+
 		return itemsToSpawn;
 	}
 
