@@ -207,16 +207,12 @@ public class NoosaScript extends Script {
 		//fragment shader
 		//preprocessor directives let us define precision on GLES platforms, and ignore it elsewhere
 		"#ifdef GL_ES\n" +
-		"  #define LOW lowp\n" +
-		"  #define MED mediump\n" +
-		"#else\n" +
-		"  #define LOW\n" +
-		"  #define MED\n" +
+		"  precision mediump float;\n" +
 		"#endif\n" +
-		"varying MED vec2 vUV;\n" +
-		"uniform LOW sampler2D uTex;\n" +
-		"uniform LOW vec4 uColorM;\n" +
-		"uniform LOW vec4 uColorA;\n" +
+		"varying vec2 vUV;\n" +
+		"uniform sampler2D uTex;\n" +
+		"uniform vec4 uColorM;\n" +
+		"uniform vec4 uColorA;\n" +
 		"void main() {\n" +
 		"  gl_FragColor = texture2D( uTex, vUV ) * uColorM + uColorA;\n" +
 		"}\n";
