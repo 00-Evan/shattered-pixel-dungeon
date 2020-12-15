@@ -930,9 +930,10 @@ public abstract class Mob extends Char {
 					//if moving towards an enemy isn't possible, try to switch targets to another enemy that is closer
 					//unless we have already done that and still can't move toward them, then move on.
 					if (!recursing) {
-						Char newEnemy = chooseEnemy();
-						if (newEnemy != null && enemy != newEnemy) {
-							enemy = newEnemy;
+						Char oldEnemy = enemy;
+						enemy = null;
+						enemy = chooseEnemy();
+						if (enemy != null && enemy != oldEnemy) {
 							recursing = true;
 							boolean result = act(enemyInFOV, justAlerted);
 							recursing = false;
