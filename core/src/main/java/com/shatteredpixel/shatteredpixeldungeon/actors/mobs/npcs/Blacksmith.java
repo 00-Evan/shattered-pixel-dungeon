@@ -90,6 +90,7 @@ public class Blacksmith extends NPC {
 							
 							Quest.given = true;
 							Quest.completed = false;
+							Notes.add( Notes.Landmark.TROLL );
 							
 							Pickaxe pick = new Pickaxe();
 							if (pick.doPickUp( Dungeon.hero )) {

@@ -116,6 +116,7 @@ public class Imp extends NPC {
 			tell( Quest.alternative ? Messages.get(this, "monks_1") : Messages.get(this, "golems_1") );
 			Quest.given = true;
 			Quest.completed = false;
+			Notes.add( Notes.Landmark.IMP );
 		}
 
 		return true;

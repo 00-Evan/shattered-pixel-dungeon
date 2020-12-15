@@ -178,6 +178,7 @@ public class Ghost extends NPC {
 			if (questBoss.pos != -1) {
 				GameScene.add(questBoss);
 				Quest.given = true;
+				Notes.add( Notes.Landmark.GHOST );
 				Game.runOnRenderThread(new Callback() {
 					@Override
 					public void call() {
