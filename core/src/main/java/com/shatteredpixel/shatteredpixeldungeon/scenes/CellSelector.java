@@ -83,8 +83,19 @@ public class CellSelector extends ScrollArea {
 			
 			PointF p = Camera.main.screenToCamera( (int) event.current.x, (int) event.current.y );
 
-			//Prioritizes a mob sprite if it and a tile overlap, so long as the mob sprite isn't more than 4 pixels into a tile the mob doesn't occupy.
-			//The extra check prevents large mobs from blocking the player from clicking adjacent tiles
+			//Prioritizes a sprite if it and a tile overlap, so long as that sprite isn't more than 4 pixels into another tile.
+			//The extra check prevents large sprites from blocking the player from clicking adjacent tiles
+
+			//hero first
+			if (Dungeon.hero.sprite != null && Dungeon.hero.sprite.overlapsPoint( p.x, p.y )){
+				PointF c = DungeonTilemap.tileCenterToWorld(Dungeon.hero.pos);
+				if (Math.abs(p.x - c.x) <= 12 && Math.abs(p.y - c.y) <= 12) {
+					select(Dungeon.hero.pos);
+					return;
+				}
+			}
+
+			//then mobs
 			for (Char mob : Dungeon.level.mobs.toArray(new Mob[0])){
 				if (mob.sprite != null && mob.sprite.overlapsPoint( p.x, p.y )){
 					PointF c = DungeonTilemap.tileCenterToWorld(mob.pos);
@@ -95,7 +106,7 @@ public class CellSelector extends ScrollArea {
 				}
 			}
 
-			//Does the same but for heaps
+			//then heaps
 			for (Heap heap : Dungeon.level.heaps.valueList()){
 				if (heap.sprite != null && heap.sprite.overlapsPoint( p.x, p.y)){
 					PointF c = DungeonTilemap.tileCenterToWorld(heap.pos);
