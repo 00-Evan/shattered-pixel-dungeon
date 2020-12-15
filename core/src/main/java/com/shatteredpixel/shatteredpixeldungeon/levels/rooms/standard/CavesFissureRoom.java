@@ -194,11 +194,14 @@ public class CavesFissureRoom extends StandardRoom {
 	private void buildBridge( Level level, float fisssureAngle, PointF center, int centerMargin){
 		float dX = (float)Math.cos(fisssureAngle/A - Math.PI/2.0);
 		float dY = (float)Math.sin(fisssureAngle/A - Math.PI/2.0);
+
+		int edgemargin = sizeCat == SizeCategory.NORMAL ? 3 : 2;
+
 		//horizontal bridge
 		if (Math.abs(dY) >= Math.abs(dX)){
 			int Y;
-			if (dY > 0) Y = Random.IntRange((int)center.y+centerMargin, bottom-2);
-			else        Y = Random.IntRange(top+2, (int)center.y-centerMargin);
+			if (dY > 0) Y = Random.IntRange((int)center.y+centerMargin, bottom-edgemargin);
+			else        Y = Random.IntRange(top+edgemargin, (int)center.y-centerMargin);
 
 			boolean foundChasm = false;
 			if (dX <= 0) {
@@ -226,8 +229,8 @@ public class CavesFissureRoom extends StandardRoom {
 		//vertical bridge
 		} else {
 			int X;
-			if (dX > 0) X = Random.IntRange((int)center.x+centerMargin, right-2);
-			else        X = Random.IntRange(left+2, (int)center.x-centerMargin);
+			if (dX > 0) X = Random.IntRange((int)center.x+centerMargin, right-edgemargin);
+			else        X = Random.IntRange(left+edgemargin, (int)center.x-centerMargin);
 
 			boolean foundChasm = false;
 			if (dY <= 0) {
