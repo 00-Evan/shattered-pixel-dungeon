@@ -244,7 +244,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 		PathFinder.buildDistanceMap( target.pos, BArray.not( new boolean[Dungeon.level.length()], null ), 2 );
 		for (int i = 0; i < PathFinder.distance.length; i++) {
 			if (PathFinder.distance[i] < Integer.MAX_VALUE
-					&& item.throwPos(Dungeon.hero, i) == target.pos)
+					&& item.targetingPos(Dungeon.hero, i) == target.pos)
 				return i;
 		}
 
