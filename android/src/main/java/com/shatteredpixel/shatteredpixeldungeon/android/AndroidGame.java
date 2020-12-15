@@ -125,17 +125,6 @@ public class AndroidGame extends AndroidApplication {
 	}
 
 	@Override
-	protected void onDestroy() {
-		//LibGDX itself doesn't clear these in every case, so we do it ourselves to be sure
-		graphics.clearManagedCaches();
-		audio.dispose();
-		if (instance == this) {
-			instance = null;
-		}
-		super.onDestroy();
-	}
-
-	@Override
 	public void onBackPressed() {
 		//do nothing, game should catch all back presses
 	}
