@@ -269,7 +269,7 @@ public class Toolbar extends Component {
 		if (lastEnabled != (Dungeon.hero.ready && Dungeon.hero.isAlive())) {
 			lastEnabled = (Dungeon.hero.ready && Dungeon.hero.isAlive());
 			
-			for (Gizmo tool : members) {
+			for (Gizmo tool : members.toArray(new Gizmo[0])) {
 				if (tool instanceof Tool) {
 					((Tool)tool).enable( lastEnabled );
 				}

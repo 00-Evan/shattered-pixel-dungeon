@@ -1048,7 +1048,7 @@ public class Hero extends Char {
 	
 	public void rest( boolean fullRest ) {
 		spendAndNext( TIME_TO_REST );
-		if (!fullRest) {
+		if (!fullRest && sprite != null) {
 			sprite.showStatus( CharSprite.DEFAULT, Messages.get(this, "wait") );
 		}
 		resting = fullRest;
