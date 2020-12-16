@@ -25,7 +25,7 @@ import java.util.Locale;
 
 public enum Languages {
 	ENGLISH("english",      "",   Status.REVIEWED,   null, null),
-	RUSSIAN("русский",      "ru", Status.INCOMPLETE, new String[]{"ConsideredHamster", "Inevielle", "apxwn", "yarikonline" }, new String[]{"AttHawk46", "BlueberryShortcake", "HerrGotlieb", "HoloTheWise", "Ilbko", "JleHuBbluKoT", "MrXantar", "Nikets", "Originalej0name", "Raymundo", "Shamahan", "kirusyaga", "perefrazz", "roman.yagodin", "un_logic", "Вoвa"}),
+	RUSSIAN("русский",      "ru", Status.REVIEWED,   new String[]{"ConsideredHamster", "Inevielle", "apxwn", "yarikonline" }, new String[]{"AttHawk46", "BlueberryShortcake", "HerrGotlieb", "HoloTheWise", "Ilbko", "JleHuBbluKoT", "MrXantar", "Nikets", "Originalej0name", "Raymundo", "Shamahan", "kirusyaga", "perefrazz", "roman.yagodin", "un_logic", "Вoвa"}),
 	KOREAN("한국어",          "ko", Status.REVIEWED,   new String[]{"Cocoa", "Flameblast12", "GameConqueror", "Korean2017"}, new String[]{"WondarRabb1t", "ddojin0115", "eeeei", "enjuxx", "hancyel", "linterpreteur", "lsiebnie"}),
 	CHINESE("中文",         "zh", Status.UNREVIEWED,  new String[]{"Jinkeloid(zdx00793)", "endlesssolitude"}, new String[]{"931451545", "Fatir", "Fishbone", "HoofBumpBlurryface", "Lery", "Lyn_0401", "ShatteredFlameBlast", "hmdzl001", "tempest102"}),
 	POLISH("polski",        "pl", Status.INCOMPLETE, new String[]{"Deksippos", "MrKukurykpl", "kuadziw", "szymex73"}, new String[]{"Chasseur", "Darden", "DarkKnightComes", "KarixDaii", "KrnąbrnyOlaf", "MJedi", "Odiihinia", "Peperos", "Scharnvirk", "VasteelXolotl", "bogumilg", "bvader95", "dusakus", "michaub", "ozziezombie", "szczoteczka22", "transportowiec96"}),
@@ -36,7 +36,7 @@ public enum Languages {
 	ITALIAN("italiano",		"it", Status.INCOMPLETE, new String[]{"bizzolino", "funnydwarf"}, new String[]{"4est", "Danelix", "DaniMare", "Danzl", "Guiller124", "andrearubbino00", "cantarini", "nessunluogo", "righi.a", "umby000"}),
 	CZECH("čeština",        "cs", Status.REVIEWED,   new String[]{"ObisMike"}, new String[]{"AshenShugar", "Autony", "Buba237", "JStrange", "RealBrofessor", "chuckjirka"}),
 	FINNISH("suomi", 		"fi", Status.INCOMPLETE, new String[]{"TenguTheKnight"}, new String[]{"Sautari"} ),
-	TURKISH("türkçe",       "tr", Status.INCOMPLETE, new String[]{"LokiofMillenium", "emrebnk"}, new String[]{"AGORAAA", "AcuriousPotato", "OzanAlkan", "alikeremozfidan", "alpekin98", "denizakalin", "erdemozdemir98", "gorkem_yılmaz", "hasantahsin160", "immortalsamuraicn", "kayikyaki", "melezorus34", "mitux"}),
+	TURKISH("türkçe",       "tr", Status.UNREVIEWED, new String[]{"LokiofMillenium", "emrebnk"}, new String[]{"AGORAAA", "AcuriousPotato", "OzanAlkan", "alikeremozfidan", "alpekin98", "denizakalin", "erdemozdemir98", "gorkem_yılmaz", "hasantahsin160", "immortalsamuraicn", "kayikyaki", "melezorus34", "mitux"}),
 	HUNGARIAN("magyar",     "hu", Status.UNREVIEWED, new String[]{"dorheim", "szalaik"}, new String[]{"Navetelen", "acszoltan111", "clarovani", "dhialub", "nanometer", "nardomaa", "savarall"}),
 	JAPANESE("日本語",      "ja",  Status.INCOMPLETE, null, new String[]{"Gosamaru", "amama", "librada", "mocklike"}),
 	INDONESIAN("indonésien","in", Status.UNREVIEWED, new String[]{"rakapratama"}, new String[]{"Izulhaaq", "ZangieF347", "esprogarap"}),
