@@ -52,6 +52,31 @@ public class v0_9_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("v0.9.1a", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ The shadows buff now has a green icon, instead of the regular invisibility blue.\n\n" +
+				"_-_ Slightly adjusted the Huntress' splash art to improve details on her face."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by v0.9.1):\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Errors with autotargeting and the wand of disintegration\n" +
+				"_-_ Fissure rooms in the caves rarely failing to make bridges\n" +
+				"_-_ Enemies not changing targets when their current target cannot be reached\n\n" +
+				"Fixed (existed prior to v0.9.1):\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Incorrect badges rarely showing in rankings\n" +
+				"_-_ Hourglass spawning sand when unidentified or cursed\n" +
+				"_-_ Hero having a smaller tap region than other characters\n" +
+				"_-_ Questgivers rarely not being added to the journal"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
