@@ -537,7 +537,7 @@ public class DwarfKing extends Mob {
 					}
 				} else {
 					Char ch = Actor.findChar(pos);
-					ch.damage(Random.NormalIntRange(20, 40), summon);
+					ch.damage(Random.NormalIntRange(20, 40), target);
 					if (((DwarfKing)target).phase == 2){
 						target.damage(target.HT/12, new KingDamager());
 					}
