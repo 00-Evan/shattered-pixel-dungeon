@@ -235,6 +235,12 @@ public class Necromancer extends Mob {
 						Dungeon.level.occupyCell(ch );
 						
 					} else {
+
+						Char blocker = Actor.findChar(summoningPos);
+						if (blocker.alignment != alignment){
+							blocker.damage( Random.NormalIntRange(2, 10), this );
+						}
+
 						spend(TICK);
 						return true;
 					}
