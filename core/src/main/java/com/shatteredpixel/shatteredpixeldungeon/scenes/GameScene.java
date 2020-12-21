@@ -468,23 +468,26 @@ public class GameScene extends PixelScene {
 						}
 					}
 				}
-
-				if (Dungeon.hero.hasTalent(Talent.ROGUES_FORESIGHT)
-						&& Dungeon.level instanceof RegularLevel){
-					int reqSecrets = Dungeon.level.feeling == Level.Feeling.SECRETS ? 2 : 1;
-					for (Room r : ((RegularLevel) Dungeon.level).rooms()){
-						if (r instanceof SecretRoom) reqSecrets--;
-					}
-					//50%/75% chance
-					if (reqSecrets <= 0 && Random.Int(4) <= Dungeon.hero.pointsInTalent(Talent.ROGUES_FORESIGHT)){
-						GLog.p(Messages.get(this, "secret_hint"));
-					}
-				}
 				
 			} else if (InterlevelScene.mode == InterlevelScene.Mode.RESET) {
 				GLog.h(Messages.get(this, "warp"));
 			} else {
 				GLog.h(Messages.get(this, "return"), Dungeon.depth);
+			}
+
+			if (Dungeon.hero.hasTalent(Talent.ROGUES_FORESIGHT)
+					&& Dungeon.level instanceof RegularLevel){
+				int reqSecrets = Dungeon.level.feeling == Level.Feeling.SECRETS ? 2 : 1;
+				for (Room r : ((RegularLevel) Dungeon.level).rooms()){
+					if (r instanceof SecretRoom) reqSecrets--;
+				}
+
+				//50%/75% chance, use level's seed so that we get the same result for the same level
+				Random.pushGenerator(Dungeon.seedCurDepth());
+					if (reqSecrets <= 0 && Random.Int(4) <= Dungeon.hero.pointsInTalent(Talent.ROGUES_FORESIGHT)){
+						GLog.p(Messages.get(this, "secret_hint"));
+					}
+				Random.popGenerator();
 			}
 
 			boolean unspentTalents = false;
