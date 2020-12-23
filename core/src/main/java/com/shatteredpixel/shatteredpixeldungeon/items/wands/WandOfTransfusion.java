@@ -166,9 +166,9 @@ public class WandOfTransfusion extends Wand {
 
 	@Override
 	public String statsDesc() {
-		int selfDMG = Math.round(Dungeon.hero.HT*0.10f);
+		int selfDMG = Math.round(Dungeon.hero.HT*0.05f);
 		if (levelKnown)
-			return Messages.get(this, "stats_desc", selfDMG, selfDMG + 3*buffedLvl(), 5+2*buffedLvl(), 3+buffedLvl()/2, 6+ buffedLvl());
+			return Messages.get(this, "stats_desc", selfDMG, selfDMG + 3*buffedLvl(), 5+buffedLvl(), 3+buffedLvl()/2, 6+ buffedLvl());
 		else
 			return Messages.get(this, "stats_desc", selfDMG, selfDMG, 5, 3, 6);
 	}
