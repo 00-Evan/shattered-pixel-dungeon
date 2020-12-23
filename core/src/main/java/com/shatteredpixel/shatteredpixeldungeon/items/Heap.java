@@ -349,7 +349,11 @@ public class Heap implements Bundlable {
 		switch(type){
 			case FOR_SALE:
 				Item i = peek();
-				return Messages.get(this, "for_sale", Shopkeeper.sellPrice(i), i.toString());
+				if (size() == 1) {
+					return Messages.get(this, "for_sale", Shopkeeper.sellPrice(i), i.toString());
+				} else {
+					return i.toString();
+				}
 			case CHEST:
 			case MIMIC:
 				return Messages.get(this, "chest");
