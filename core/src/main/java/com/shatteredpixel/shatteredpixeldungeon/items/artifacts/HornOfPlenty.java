@@ -98,8 +98,6 @@ public class HornOfPlenty extends Artifact {
 				if (chargesToUse > charge) chargesToUse = charge;
 				hunger.satisfy(satietyPerCharge * chargesToUse);
 
-				Talent.onFoodEaten(hero, satietyPerCharge * chargesToUse, this);
-
 				Statistics.foodEaten++;
 
 				charge -= chargesToUse;
@@ -118,6 +116,8 @@ public class HornOfPlenty extends Artifact {
 				} else {
 					hero.spend(Food.TIME_TO_EAT);
 				}
+
+				Talent.onFoodEaten(hero, satietyPerCharge * chargesToUse, this);
 
 				Badges.validateFoodEaten();
 
