@@ -106,7 +106,9 @@ public class TalentsPane extends ScrollPane {
 		blocker.y = top;
 		blocker.size(width, height - top);
 
-		blockText.setPos((width - blockText.width())/2f, blocker.y + (height - blocker.y)/2 - 3);
+		blockText.maxWidth((int)width);
+		blockText.align(RenderedTextBlock.CENTER_ALIGN);
+		blockText.setPos((width - blockText.width())/2f, blocker.y + (height - blocker.y - blockText.height())/2);
 	}
 
 	public static class TalentTierPane extends Component {
