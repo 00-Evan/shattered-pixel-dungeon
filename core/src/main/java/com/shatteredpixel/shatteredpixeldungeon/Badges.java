@@ -264,6 +264,11 @@ public class Badges {
 		}
 	}
 
+	public static int unlocked(boolean global){
+		if (global) return Badges.global.size();
+		else        return Badges.local.size();
+	}
+
 	public static void validateMonstersSlain() {
 		Badge badge = null;
 		
