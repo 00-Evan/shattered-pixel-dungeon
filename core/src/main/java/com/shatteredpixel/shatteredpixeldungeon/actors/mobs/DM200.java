@@ -106,9 +106,6 @@ public class DM200 extends Mob {
 
 	@Override
 	protected boolean act() {
-		//ensures toxic gas acts at the appropriate time when added
-		//TODO we have this check in 2 places now, can we just ensure that blobs spend an extra turn when added?
-		GameScene.add(Blob.seed(pos, 0, ToxicGas.class));
 		ventCooldown--;
 		return super.act();
 	}

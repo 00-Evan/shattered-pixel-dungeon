@@ -63,7 +63,6 @@ public class DM201 extends DM200 {
 			Dungeon.level.updateFieldOfView( this, fieldOfView );
 		}
 
-		GameScene.add(Blob.seed(pos, 0, CorrosiveGas.class));
 		if (paralysed <= 0 && state == HUNTING && enemy != null && enemySeen
 				&& threatened && !Dungeon.level.adjacent(pos, enemy.pos) && fieldOfView[enemy.pos]){
 			enemySeen = enemy.isAlive() && fieldOfView[enemy.pos] && enemy.invisible <= 0;

@@ -118,6 +118,7 @@ public abstract class Actor implements Bundlable {
 
 	// **********************
 	// *** Static members ***
+	// **********************
 	
 	private static HashSet<Actor> all = new HashSet<>();
 	private static HashSet<Char> chars = new HashSet<>();
@@ -202,6 +203,10 @@ public abstract class Actor implements Bundlable {
 
 	public static boolean processing(){
 		return current != null;
+	}
+
+	public static int curActorPriority() {
+		return current != null ? current.actPriority : DEFAULT;
 	}
 	
 	public static boolean keepActorThreadAlive = true;

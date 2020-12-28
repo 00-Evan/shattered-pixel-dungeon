@@ -234,6 +234,10 @@ public class Blob extends Actor {
 		
 		if (gas == null) {
 			gas = Reflection.newInstance(type);
+			//this ensures that gasses do not get an 'extra turn' if they are added by a mob or buff
+			if (Actor.curActorPriority() < gas.actPriority) {
+				gas.spend(1f);
+			}
 		}
 		
 		if (gas != null){

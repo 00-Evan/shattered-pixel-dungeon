@@ -153,7 +153,6 @@ public class NewDM300 extends Mob {
 	@Override
 	protected boolean act() {
 		GameScene.add(Blob.seed(pos, 0, FallingRocks.class));
-		GameScene.add(Blob.seed(pos, 0, ToxicGas.class));
 
 		//ability logic only triggers if DM is not supercharged
 		if (!supercharged){
