@@ -73,6 +73,7 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class NewTengu extends Mob {
@@ -566,34 +567,61 @@ public class NewTengu extends Mob {
 	
 	public static class BombAbility extends Buff {
 		
-		public int bombPos;
+		public int bombPos = -1;
 		private int timer = 3;
+
+		private ArrayList<Emitter> smokeEmitters = new ArrayList<>();
 		
 		@Override
 		public boolean act() {
+
+			if (smokeEmitters.isEmpty()){
+				PathFinder.buildDistanceMap( bombPos, BArray.not( Dungeon.level.solid, null ), 2 );
+				for (int i = 0; i < PathFinder.distance.length; i++) {
+					if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+						Emitter e = CellEmitter.get(i);
+						e.pour( SmokeParticle.FACTORY, 0.25f );
+						smokeEmitters.add(e);
+					}
+				}
+			}
 			
 			PointF p = DungeonTilemap.raisedTileCenterToWorld(bombPos);
 			if (timer == 3) {
 				FloatingText.show(p.x, p.y, bombPos, "3...", CharSprite.NEUTRAL);
-				PathFinder.buildDistanceMap( bombPos, BArray.not( Dungeon.level.solid, null ), 2 );
-				for (int i = 0; i < PathFinder.distance.length; i++) {
-					if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-						GameScene.add(Blob.seed(i, 4, BombBlob.class));
-					}
-				}
 			} else if (timer == 2){
 				FloatingText.show(p.x, p.y, bombPos, "2...", CharSprite.WARNING);
 			} else if (timer == 1){
 				FloatingText.show(p.x, p.y, bombPos, "1...", CharSprite.NEGATIVE);
 			} else {
-				Heap h = Dungeon.level.heaps.get(bombPos);
-				if (h != null){
-					for (Item i : h.items.toArray(new Item[0])){
-						if (i instanceof BombItem){
-							h.remove(i);
+				PathFinder.buildDistanceMap( bombPos, BArray.not( Dungeon.level.solid, null ), 2 );
+				for (int cell = 0; cell < PathFinder.distance.length; cell++) {
+
+					Char ch = Actor.findChar(cell);
+					if (ch != null && !(ch instanceof NewTengu)){
+						int dmg = Random.NormalIntRange(5 + Dungeon.depth, 10 + Dungeon.depth*2);
+						dmg -= ch.drRoll();
+
+						if (dmg > 0) {
+							ch.damage(dmg, Bomb.class);
+						}
+
+						if (ch == Dungeon.hero && !ch.isAlive()) {
+							Dungeon.fail(NewTengu.class);
 						}
 					}
+
+					Heap h = Dungeon.level.heaps.get(cell);
+					if (h != null){
+						for (Item i : h.items.toArray(new Item[0])){
+							if (i instanceof BombItem){
+								h.remove(i);
+							}
+						}
+					}
+
 				}
+				Sample.INSTANCE.play(Assets.Sounds.BLAST);
 				detach();
 				return true;
 			}
@@ -602,7 +630,25 @@ public class NewTengu extends Mob {
 			spend(TICK);
 			return true;
 		}
-		
+
+		@Override
+		public void fx(boolean on) {
+			if (on && bombPos != -1){
+				PathFinder.buildDistanceMap( bombPos, BArray.not( Dungeon.level.solid, null ), 2 );
+				for (int i = 0; i < PathFinder.distance.length; i++) {
+					if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+						Emitter e = CellEmitter.get(i);
+						e.pour( SmokeParticle.FACTORY, 0.25f );
+						smokeEmitters.add(e);
+					}
+				}
+			} else if (!on) {
+				for (Emitter e : smokeEmitters){
+					e.burst(BlastParticle.FACTORY, 2);
+				}
+			}
+		}
+
 		private static final String BOMB_POS = "bomb_pos";
 		private static final String TIMER = "timer";
 		
@@ -618,77 +664,6 @@ public class NewTengu extends Mob {
 			super.restoreFromBundle(bundle);
 			bombPos = bundle.getInt( BOMB_POS );
 			timer = bundle.getInt( TIMER );
-		}
-		
-		public static class BombBlob extends Blob {
-			{
-				actPriority = BUFF_PRIO - 1;
-				alwaysVisible = true;
-			}
-			
-			@Override
-			protected void evolve() {
-				
-				boolean exploded = false;
-				
-				int cell;
-				for (int i = area.left; i < area.right; i++){
-					for (int j = area.top; j < area.bottom; j++){
-						cell = i + j* Dungeon.level.width();
-						off[cell] = cur[cell] > 0 ? cur[cell] - 1 : 0;
-						
-						if (off[cell] > 0) {
-							volume += off[cell];
-						}
-						
-						if (cur[cell] > 0 && off[cell] == 0){
-							
-							Char ch = Actor.findChar(cell);
-							if (ch != null && !(ch instanceof NewTengu)){
-								int dmg = Random.NormalIntRange(5 + Dungeon.depth, 10 + Dungeon.depth*2);
-								dmg -= ch.drRoll();
-								
-								if (dmg > 0) {
-									ch.damage(dmg, Bomb.class);
-								}
-								
-								if (ch == Dungeon.hero && !ch.isAlive()) {
-									Dungeon.fail(NewTengu.class);
-								}
-							}
-
-							Heap h = Dungeon.level.heaps.get(cell);
-							if (h != null){
-								for (Item it : h.items.toArray(new Item[0])){
-									if (it instanceof BombItem){
-										h.remove(it);
-									}
-								}
-							}
-							
-							exploded = true;
-							CellEmitter.center(cell).burst(BlastParticle.FACTORY, 2);
-						}
-					}
-				}
-				
-				if (exploded){
-					Sample.INSTANCE.play(Assets.Sounds.BLAST);
-				}
-				
-			}
-			
-			@Override
-			public void use(BlobEmitter emitter) {
-				super.use(emitter);
-				
-				emitter.pour( SmokeParticle.FACTORY, 0.25f );
-			}
-			
-			@Override
-			public String tileDesc() {
-				return Messages.get(this, "desc");
-			}
 		}
 		
 		public static class BombItem extends Item {
