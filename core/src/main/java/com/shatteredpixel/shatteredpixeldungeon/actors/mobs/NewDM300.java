@@ -264,7 +264,7 @@ public class NewDM300 extends Mob {
 				chargeAnnounced = true;
 			}
 
-			if (state == WANDERING && Dungeon.hero.invisible <= 0){
+			if (Dungeon.hero.invisible <= 0){
 				beckon(Dungeon.hero.pos);
 				state = HUNTING;
 				enemy = Dungeon.hero;
@@ -514,26 +514,11 @@ public class NewDM300 extends Mob {
 			return true;
 		} else {
 
-			if (!supercharged || rooted || target == pos) {
+			if (!supercharged || rooted || target == pos || Dungeon.level.adjacent(pos, target)) {
 				return false;
 			}
 
 			int bestpos = pos;
-			for (int i : PathFinder.NEIGHBOURS8){
-				if (Dungeon.level.openSpace[pos+i] && Actor.findChar(pos+i) == null &&
-						Dungeon.level.distance(bestpos, target) > Dungeon.level.distance(pos+i, target)){
-					bestpos = pos+i;
-				}
-			}
-			if (bestpos != pos){
-				move( bestpos );
-				return true;
-			}
-
-			if (state != HUNTING || Dungeon.level.adjacent(pos, target)){
-				return false;
-			}
-
 			for (int i : PathFinder.NEIGHBOURS8){
 				if (Actor.findChar(pos+i) == null &&
 						Dungeon.level.trueDistance(bestpos, target) > Dungeon.level.trueDistance(pos+i, target)){
