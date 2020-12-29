@@ -576,14 +576,7 @@ public class NewTengu extends Mob {
 		public boolean act() {
 
 			if (smokeEmitters.isEmpty()){
-				PathFinder.buildDistanceMap( bombPos, BArray.not( Dungeon.level.solid, null ), 2 );
-				for (int i = 0; i < PathFinder.distance.length; i++) {
-					if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-						Emitter e = CellEmitter.get(i);
-						e.pour( SmokeParticle.FACTORY, 0.25f );
-						smokeEmitters.add(e);
-					}
-				}
+				fx(true);
 			}
 			
 			PointF p = DungeonTilemap.raisedTileCenterToWorld(bombPos);
