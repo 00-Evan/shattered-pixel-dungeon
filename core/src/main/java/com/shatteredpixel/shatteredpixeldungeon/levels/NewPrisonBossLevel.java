@@ -338,6 +338,12 @@ public class NewPrisonBossLevel extends Level {
 		}
 		addVisuals(); //this also resets existing visuals
 		traps.clear();
+
+		for (CustomTilemap t : customTiles){
+			if (t instanceof FadingTraps){
+				((FadingTraps) t).remove();
+			}
+		}
 		
 		GameScene.resetMap();
 		Dungeon.observe();
@@ -546,16 +552,16 @@ public class NewPrisonBossLevel extends Level {
 		traps.clear();
 		Painter.fill(this, tenguCell, 1, Terrain.EMPTY);
 		buildFlagMaps();
-		
-	}
-	
-	public void placeTrapsInTenguCell(float fill){
 
 		for (CustomTilemap vis : customTiles){
 			if (vis instanceof FadingTraps){
 				((FadingTraps) vis).remove();
 			}
 		}
+		
+	}
+	
+	public void placeTrapsInTenguCell(float fill){
 		
 		Point tenguPoint = cellToPoint(tengu.pos);
 		Point heroPoint = cellToPoint(Dungeon.hero.pos);
