@@ -407,7 +407,7 @@ public class NewDM300 extends Mob {
 				pos++;
 			}
 		}
-		Buff.append(this, FallingRocks.class, Math.min(target.cooldown(), 3*TICK)).setRockPositions(rockCells);
+		Buff.append(this, FallingRockBuff.class, Math.min(target.cooldown(), 3*TICK)).setRockPositions(rockCells);
 
 	}
 
@@ -600,7 +600,7 @@ public class NewDM300 extends Mob {
 		resistances.add(Slow.class);
 	}
 
-	public static class FallingRocks extends FlavourBuff {
+	public static class FallingRockBuff extends FlavourBuff {
 
 		private int[] rockPositions;
 		private ArrayList<Emitter> rockEmitters = new ArrayList<>();
