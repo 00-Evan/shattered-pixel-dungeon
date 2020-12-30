@@ -23,6 +23,7 @@ package com.watabou.glwrap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.BufferUtils;
+import com.watabou.noosa.Game;
 
 import java.nio.IntBuffer;
 
@@ -48,7 +49,7 @@ public class Program {
 		IntBuffer status = BufferUtils.newIntBuffer(1);
 		Gdx.gl.glGetProgramiv( handle, Gdx.gl.GL_LINK_STATUS, status );
 		if (status.get() == Gdx.gl.GL_FALSE) {
-			throw new Error( Gdx.gl.glGetProgramInfoLog( handle ) );
+			Game.reportException( new RuntimeException( Gdx.gl.glGetProgramInfoLog( handle ) ) );
 		}
 	}
 	
