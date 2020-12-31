@@ -186,6 +186,7 @@ public class WndRanking extends WndTabbed {
 					});
 				}
 			};
+			btnTalents.icon(Icons.get(Icons.TALENT));
 			btnTalents.setRect( (WIDTH - btnTalents.reqWidth()+2)/2, pos, btnTalents.reqWidth()+2 , 16 );
 			add(btnTalents);
 
@@ -199,6 +200,7 @@ public class WndRanking extends WndTabbed {
 					}
 				};
 
+				btnChallenges.icon(Icons.get(Icons.CHALLENGE_ON));
 				btnChallenges.setSize( btnChallenges.reqWidth()+2, 16 );
 				add( btnChallenges );
 
