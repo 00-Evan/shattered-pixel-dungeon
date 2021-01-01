@@ -286,12 +286,8 @@ public class Combo extends Buff implements ActionIndicator.Action {
 						break;
 				}
 
-				if (target.buff(FireImbue.class) != null)
-					target.buff(FireImbue.class).proc(enemy);
-				if (target.buff(EarthImbue.class) != null)
-					target.buff(EarthImbue.class).proc(enemy);
-				if (target.buff(FrostImbue.class) != null)
-					target.buff(FrostImbue.class).proc(enemy);
+				if (target.buff(FireImbue.class) != null)   target.buff(FireImbue.class).proc(enemy);
+				if (target.buff(FrostImbue.class) != null)  target.buff(FrostImbue.class).proc(enemy);
 
 				target.hitSound(Random.Float(0.87f, 1.15f));
 				if (type != finisherType.FURY) Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);

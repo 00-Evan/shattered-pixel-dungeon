@@ -22,8 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 
@@ -40,36 +38,6 @@ public class Brimstone extends Armor.Glyph {
 	@Override
 	public ItemSprite.Glowing glowing() {
 		return ORANGE;
-	}
-
-	//pre-0.7.4 saves
-	public static class BrimstoneShield extends ShieldBuff {
-		
-		{
-			type = buffType.POSITIVE;
-		}
-
-		@Override
-		public boolean act() {
-			Hero hero = (Hero)target;
-
-			if (hero.belongings.armor == null || !hero.belongings.armor.hasGlyph(Brimstone.class, hero)) {
-				detach();
-				return true;
-			}
-
-			if (shielding() > 0){
-				decShield();
-
-				//shield decays at a rate of 1 per turn.
-				spend(TICK);
-			} else {
-				detach();
-			}
-
-			return true;
-		}
-
 	}
 
 }
