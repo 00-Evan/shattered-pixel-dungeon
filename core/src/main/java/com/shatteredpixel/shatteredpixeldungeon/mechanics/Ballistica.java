@@ -35,6 +35,7 @@ public class Ballistica {
 	public ArrayList<Integer> path = new ArrayList<>();
 	public Integer sourcePos = null;
 	public Integer collisionPos = null;
+	public Integer collisionProperties = null;
 	public Integer dist = 0;
 
 	//parameters to specify the colliding cell
@@ -52,6 +53,7 @@ public class Ballistica {
 
 	public Ballistica( int from, int to, int params ){
 		sourcePos = from;
+		collisionProperties = params;
 		build(from, to,
 				(params & STOP_TARGET) > 0,
 				(params & STOP_CHARS) > 0,

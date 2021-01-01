@@ -359,7 +359,6 @@ public class NewCityBossLevel extends Level {
 		return visuals;
 	}
 
-	//TODO need to change text for some of these tiles
 	public static class CustomGroundVisuals extends CustomTilemap {
 
 		{
@@ -469,7 +468,7 @@ public class NewCityBossLevel extends Level {
 						//mid row of DK's throne
 					}else if (map[i + 1] == Terrain.SIGN) {
 						data[i] = 14 * 8 + 1;
-						data[++i] = 14 * 8 + 2; //TODO finalize throne visuals
+						data[++i] = 14 * 8 + 2;
 						data[++i] = 14 * 8 + 3;
 
 						//bottom row of DK's throne

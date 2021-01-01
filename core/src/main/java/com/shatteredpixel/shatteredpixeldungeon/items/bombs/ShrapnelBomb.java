@@ -57,7 +57,6 @@ public class ShrapnelBomb extends Bomb {
 		for (int i = 0; i < FOV.length; i++) {
 			if (FOV[i]) {
 				if (Dungeon.level.heroFOV[i] && !Dungeon.level.solid[i]) {
-					//TODO better vfx?
 					CellEmitter.center( i ).burst( BlastParticle.FACTORY, 5 );
 				}
 				Char ch = Actor.findChar(i);

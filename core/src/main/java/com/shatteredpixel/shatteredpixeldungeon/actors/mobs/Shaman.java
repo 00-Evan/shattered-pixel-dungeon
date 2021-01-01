@@ -38,7 +38,6 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
-//TODO stats on these might be a bit weak
 public abstract class Shaman extends Mob {
 	
 	{
@@ -173,8 +172,6 @@ public abstract class Shaman extends Mob {
 			Buff.prolong( enemy, Hex.class, Hex.DURATION );
 		}
 	}
-	
-	//TODO a rare variant that helps brutes?
 	
 	public static Class<? extends Shaman> random(){
 		float roll = Random.Float();

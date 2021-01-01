@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class ElixirOfToxicEssence extends Elixir {
 	
 	{
-		//TODO finish visuals
 		image = ItemSpriteSheet.ELIXIR_TOXIC;
 	}
 	

@@ -34,7 +34,6 @@ import com.watabou.noosa.audio.Sample;
 public class ElixirOfDragonsBlood extends Elixir {
 	
 	{
-		//TODO finish visuals
 		image = ItemSpriteSheet.ELIXIR_DRAGON;
 	}
 	

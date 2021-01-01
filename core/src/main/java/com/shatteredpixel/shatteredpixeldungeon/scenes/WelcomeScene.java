@@ -161,7 +161,6 @@ public class WelcomeScene extends PixelScene {
 	private void updateVersion(int previousVersion){
 
 		//update rankings, to update any data which may be outdated
-		//FIXME this is set to true temporarily as we want to run this no matter what, to ensure the v0.9.0a- badges bug is fixed
 		if (previousVersion < LATEST_UPDATE){
 			int highestChalInRankings = 0;
 			try {

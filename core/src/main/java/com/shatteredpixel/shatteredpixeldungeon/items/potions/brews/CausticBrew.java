@@ -38,7 +38,6 @@ import com.watabou.utils.PathFinder;
 public class CausticBrew extends Brew {
 	
 	{
-		//TODO finish visuals
 		image = ItemSpriteSheet.BREW_CAUSTIC;
 	}
 	

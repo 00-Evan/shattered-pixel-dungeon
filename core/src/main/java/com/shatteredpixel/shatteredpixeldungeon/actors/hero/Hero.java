@@ -104,7 +104,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
@@ -763,7 +762,6 @@ public class Hero extends Char {
 			}
 			
 			Alchemy alch = (Alchemy) Dungeon.level.blobs.get(Alchemy.class);
-			//TODO logic for a well having dried up?
 			if (alch != null) {
 				alch.alchPos = dst;
 				AlchemyScene.setProvider( alch );
@@ -817,11 +815,8 @@ public class Hero extends Char {
 							|| item instanceof Key) {
 						//Do Nothing
 					} else {
-						//TODO temporary until 0.8.0a, when all languages will get this phrase
-						if (Messages.lang() == Languages.ENGLISH) {
-							GLog.newLine();
-							GLog.n(Messages.get(this, "you_cant_have", item.name()));
-						}
+						GLog.newLine();
+						GLog.n(Messages.get(this, "you_cant_have", item.name()));
 					}
 
 					heap.sprite.drop();
@@ -1317,10 +1312,7 @@ public class Hero extends Char {
 				Buff.affect(this, Momentum.class).gainStack();
 			}
 
-			//FIXME this is a fairly sloppy fix for a crash involving pitfall traps.
-			//really there should be a way for traps to specify whether action should continue or
-			//not when they are pressed.
-			return InterlevelScene.mode != InterlevelScene.Mode.FALL;
+			return true;
 
 		} else {
 

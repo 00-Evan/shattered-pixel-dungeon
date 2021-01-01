@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.HeavyBoomerang;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.MazeRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrippingTrap;
@@ -352,7 +351,7 @@ public class OldPrisonBossLevel extends Level {
 				TargetHealthIndicator.instance.target(null);
 				tengu.sprite.kill();
 
-				Room maze = new MazeRoom();
+				Room maze = new EmptyRoom();
 				maze.set(10, 1, 31, 29);
 				maze.connected.put(null, new Room.Door(10, 2));
 				maze.connected.put(maze, new Room.Door(20, 29));

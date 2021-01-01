@@ -39,7 +39,7 @@ public class ConeAOE {
 	public HashSet<Integer> cells = new HashSet<>();
 
 	public ConeAOE( Ballistica core, float degrees ){
-		this( core, Float.POSITIVE_INFINITY, degrees, Ballistica.STOP_TARGET/* TODO */);
+		this( core, Float.POSITIVE_INFINITY, degrees, core.collisionProperties );
 	}
 
 	public ConeAOE( Ballistica core, float maxDist, float degrees, int ballisticaParams ){

@@ -76,7 +76,6 @@ import java.util.List;
 public class NewDM300 extends Mob {
 
 	{
-		//TODO improved sprite
 		spriteClass = DM300Sprite.class;
 
 		HP = HT = 300;

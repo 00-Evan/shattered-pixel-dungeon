@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.FeatherFall;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
@@ -106,7 +107,7 @@ public class Chasm {
 		FeatherFall.FeatherBuff b = hero.buff(FeatherFall.FeatherBuff.class);
 		
 		if (b != null){
-			//TODO visuals
+			hero.sprite.emitter().burst( Speck.factory( Speck.JET ), 20);
 			b.detach();
 			return;
 		}

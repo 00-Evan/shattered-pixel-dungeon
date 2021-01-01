@@ -298,11 +298,7 @@ public class MagesStaff extends MeleeWeapon {
 	public String info() {
 		String info = super.info();
 
-		if (wand == null){
-			//FIXME this is removed because of journal stuff, and is generally unused.
-			//perhaps reword to fit in journal better
-			//info += "\n\n" + Messages.get(this, "no_wand");
-		} else {
+		if (wand != null){
 			info += "\n\n" + Messages.get(this, "has_wand", Messages.get(wand, "name")) + " " + wand.statsDesc();
 		}
 

@@ -137,7 +137,4 @@ public class PitfallTrap extends Trap {
 		}
 
 	}
-
-	//TODO these used to become chasms when disarmed, but the functionality was problematic
-	//because it could block routes, perhaps some way to make this work elegantly?
 }
