@@ -202,7 +202,9 @@ public enum Talent {
 		}
 	}
 
-	public static class WarriorFoodImmunity extends FlavourBuff{};
+	public static class WarriorFoodImmunity extends FlavourBuff{
+		{ actPriority = HERO_PRIO+1; }
+	}
 
 	public static float itemIDSpeedFactor( Hero hero, Item item ){
 		// 1.75x/2.5x speed with huntress talent
