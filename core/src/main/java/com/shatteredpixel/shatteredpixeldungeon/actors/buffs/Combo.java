@@ -214,97 +214,94 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 			AttackIndicator.target(enemy);
 
+			boolean wasAlly = enemy.alignment == target.alignment;
+
 			if (enemy.defenseSkill(target) >= Char.INFINITE_EVASION){
 				enemy.sprite.showStatus( CharSprite.NEUTRAL, enemy.defenseVerb() );
 				Sample.INSTANCE.play(Assets.Sounds.MISS);
-				detach();
-				ActionIndicator.clearAction(Combo.this);
-				((Hero)target).spendAndNext(((Hero)target).attackDelay());
-				return;
+
 			} else if (enemy.isInvulnerable(target.getClass())){
 				enemy.sprite.showStatus( CharSprite.POSITIVE, Messages.get(Char.class, "invulnerable") );
 				Sample.INSTANCE.play(Assets.Sounds.MISS);
-				detach();
-				ActionIndicator.clearAction(Combo.this);
-				((Hero)target).spendAndNext(((Hero)target).attackDelay());
-				return;
-			}
 
-			int dmg = target.damageRoll();
+			} else {
 
-			//variance in damage dealt
-			switch(type){
-				case CLOBBER:
-					dmg = Math.round(dmg*0.6f);
-					break;
-				case CLEAVE:
-					dmg = Math.round(dmg*1.5f);
-					break;
-				case SLAM:
-					dmg += target.drRoll();
-					break;
-				case CRUSH:
-					//rolls 4 times, takes the highest roll
-					for (int i = 1; i < 4; i++) {
-						int dmgReroll = target.damageRoll();
-						if (dmgReroll > dmg) dmg = dmgReroll;
-					}
-					dmg = Math.round(dmg*2.5f);
-					break;
-				case FURY:
-					dmg = Math.round(dmg*0.6f);
-					break;
-			}
-			
-			dmg = enemy.defenseProc(target, dmg);
-			dmg -= enemy.drRoll();
-			
-			if ( enemy.buff( Vulnerable.class ) != null){
-				dmg *= 1.33f;
-			}
+				int dmg = target.damageRoll();
 
-			boolean wasAlly = enemy.alignment == target.alignment;
-			dmg = target.attackProc(enemy, dmg);
-			enemy.damage( dmg, target );
+				//variance in damage dealt
+				switch (type) {
+					case CLOBBER:
+						dmg = Math.round(dmg * 0.6f);
+						break;
+					case CLEAVE:
+						dmg = Math.round(dmg * 1.5f);
+						break;
+					case SLAM:
+						dmg += target.drRoll();
+						break;
+					case CRUSH:
+						//rolls 4 times, takes the highest roll
+						for (int i = 1; i < 4; i++) {
+							int dmgReroll = target.damageRoll();
+							if (dmgReroll > dmg) dmg = dmgReroll;
+						}
+						dmg = Math.round(dmg * 2.5f);
+						break;
+					case FURY:
+						dmg = Math.round(dmg * 0.6f);
+						break;
+				}
 
-			//special effects
-			switch (type){
-				case CLOBBER:
-					if (enemy.isAlive()){
-						//trace a ballistica to our target (which will also extend past them
-						Ballistica trajectory = new Ballistica(target.pos, enemy.pos, Ballistica.STOP_TARGET);
-						//trim it to just be the part that goes past them
-						trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size()-1), Ballistica.PROJECTILE);
-						//knock them back along that ballistica
-						WandOfBlastWave.throwChar(enemy, trajectory, 2, true, false);
-						Buff.prolong(enemy, Vertigo.class, Random.NormalIntRange(1, 4));
-					}
-					break;
-				case SLAM:
-					BrokenSeal.WarriorShield shield = Buff.affect(target, BrokenSeal.WarriorShield.class);
-					if (shield != null) {
-						shield.supercharge(dmg / 2);
-					}
-					break;
-				default:
-					//nothing
-					break;
-			}
+				dmg = enemy.defenseProc(target, dmg);
+				dmg -= enemy.drRoll();
 
-			if (target.buff(FireImbue.class) != null)
-				target.buff(FireImbue.class).proc(enemy);
-			if (target.buff(EarthImbue.class) != null)
-				target.buff(EarthImbue.class).proc(enemy);
-			if (target.buff(FrostImbue.class) != null)
-				target.buff(FrostImbue.class).proc(enemy);
+				if (enemy.buff(Vulnerable.class) != null) {
+					dmg *= 1.33f;
+				}
 
-			target.hitSound(Random.Float(0.87f, 1.15f));
-			if (type != finisherType.FURY) Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
-			enemy.sprite.bloodBurstA( target.sprite.center(), dmg );
-			enemy.sprite.flash();
+				dmg = target.attackProc(enemy, dmg);
+				enemy.damage(dmg, target);
 
-			if (!enemy.isAlive()){
-				GLog.i( Messages.capitalize(Messages.get(Char.class, "defeat", enemy.name())) );
+				//special effects
+				switch (type) {
+					case CLOBBER:
+						if (enemy.isAlive()) {
+							//trace a ballistica to our target (which will also extend past them
+							Ballistica trajectory = new Ballistica(target.pos, enemy.pos, Ballistica.STOP_TARGET);
+							//trim it to just be the part that goes past them
+							trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
+							//knock them back along that ballistica
+							WandOfBlastWave.throwChar(enemy, trajectory, 2, true, false);
+							Buff.prolong(enemy, Vertigo.class, Random.NormalIntRange(1, 4));
+						}
+						break;
+					case SLAM:
+						BrokenSeal.WarriorShield shield = Buff.affect(target, BrokenSeal.WarriorShield.class);
+						if (shield != null) {
+							shield.supercharge(dmg / 2);
+						}
+						break;
+					default:
+						//nothing
+						break;
+				}
+
+				if (target.buff(FireImbue.class) != null)
+					target.buff(FireImbue.class).proc(enemy);
+				if (target.buff(EarthImbue.class) != null)
+					target.buff(EarthImbue.class).proc(enemy);
+				if (target.buff(FrostImbue.class) != null)
+					target.buff(FrostImbue.class).proc(enemy);
+
+				target.hitSound(Random.Float(0.87f, 1.15f));
+				if (type != finisherType.FURY) Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+				enemy.sprite.bloodBurstA(target.sprite.center(), dmg);
+				enemy.sprite.flash();
+
+				if (!enemy.isAlive()) {
+					GLog.i(Messages.capitalize(Messages.get(Char.class, "defeat", enemy.name())));
+				}
+
 			}
 
 			Hero hero = (Hero)target;
@@ -327,7 +324,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 				case FURY:
 					count--;
 					//fury attacks as many times as you have combo count
-					if (count > 0 && enemy.isAlive()){
+					if (count > 0 && enemy.isAlive() && (wasAlly || enemy.alignment != target.alignment)){
 						target.sprite.attack(enemy.pos, new Callback() {
 							@Override
 							public void call() {
