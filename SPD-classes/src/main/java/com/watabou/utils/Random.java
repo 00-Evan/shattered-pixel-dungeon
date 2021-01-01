@@ -39,20 +39,20 @@ public class Random {
 		resetGenerators();
 	}
 
-	public static void resetGenerators(){
+	public static synchronized void resetGenerators(){
 		generators = new ArrayDeque<>();
 		generators.push(new java.util.Random());
 	}
 
-	public static void pushGenerator(){
+	public static synchronized void pushGenerator(){
 		generators.push( new java.util.Random() );
 	}
 
-	public static void pushGenerator( long seed ){
+	public static synchronized void pushGenerator( long seed ){
 		generators.push( new java.util.Random( seed ) );
 	}
 
-	public static void popGenerator(){
+	public static synchronized void popGenerator(){
 		if (generators.size() == 1){
 			Game.reportException( new RuntimeException("tried to pop the last random number generator!"));
 		} else {
@@ -61,7 +61,7 @@ public class Random {
 	}
 
 	//returns a uniformly distributed float in the range [0, 1)
-	public static float Float() {
+	public static synchronized float Float() {
 		return generators.peek().nextFloat();
 	}
 
@@ -81,7 +81,7 @@ public class Random {
 	}
 
 	//returns a uniformly distributed int in the range [0, max)
-	public static int Int( int max ) {
+	public static synchronized int Int( int max ) {
 		return max > 0 ? generators.peek().nextInt(max) : 0;
 	}
 
@@ -101,7 +101,7 @@ public class Random {
 	}
 
 	//returns a uniformly distributed long in the range [-2^63, 2^63)
-	public static long Long() {
+	public static synchronized long Long() {
 		return generators.peek().nextLong();
 	}
 
@@ -190,7 +190,7 @@ public class Random {
 			null;
 	}
 
-	public static<T> void shuffle( List<?extends T> list){
+	public synchronized static<T> void shuffle( List<?extends T> list){
 		Collections.shuffle(list, generators.peek());
 	}
 	

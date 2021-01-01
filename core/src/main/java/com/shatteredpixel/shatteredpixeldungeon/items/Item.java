@@ -570,7 +570,8 @@ public class Item implements Bundlable {
 						@Override
 						public void call() {
 							curUser = user;
-							Item.this.detach(user.belongings.backpack).onThrow(cell);
+							Item i = Item.this.detach(user.belongings.backpack);
+							if (i != null) i.onThrow(cell);
 							if (curUser.hasTalent(Talent.IMPROVISED_PROJECTILES)
 									&& !(Item.this instanceof MissileWeapon)
 									&& curUser.buff(Talent.ImprovisedProjectileCooldown.class) == null){
