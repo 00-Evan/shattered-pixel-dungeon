@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Starflower;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
@@ -41,13 +40,8 @@ public class Overgrowth extends Armor.Glyph {
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
 		
 		if ( Random.Int( 20 ) == 0) {
-			
-			Plant.Seed s;
-			do{
-				s = (Plant.Seed) Generator.randomUsingDefaults(Generator.Category.SEED);
-			} while (s instanceof Starflower.Seed);
-			
-			Plant p = s.couch(defender.pos, null);
+
+			Plant p = ((Plant.Seed) Generator.randomUsingDefaults(Generator.Category.SEED)).couch(defender.pos, null);
 			
 			//momentarily revoke warden benefits, otherwise this curse would be incredibly powerful
 			if (defender instanceof Hero && ((Hero) defender).subClass == HeroSubClass.WARDEN){
