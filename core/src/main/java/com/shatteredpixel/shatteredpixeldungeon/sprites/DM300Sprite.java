@@ -111,8 +111,6 @@ public class DM300Sprite extends MobSprite {
 		Camera.main.shake( 3, 0.7f );
 	}
 
-	private boolean exploded = false;
-
 	@Override
 	public void onComplete( Animation anim ) {
 
@@ -126,8 +124,7 @@ public class DM300Sprite extends MobSprite {
 
 		super.onComplete( anim );
 		
-		if (anim == die && !exploded) {
-			exploded = true;
+		if (anim == die) {
 			Sample.INSTANCE.play(Assets.Sounds.BLAST);
 			emitter().burst( BlastParticle.FACTORY, 100 );
 			killAndErase();
