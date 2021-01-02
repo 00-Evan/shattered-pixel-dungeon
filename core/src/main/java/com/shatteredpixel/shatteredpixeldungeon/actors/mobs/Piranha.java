@@ -25,6 +25,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
@@ -49,8 +52,7 @@ public class Piranha extends Mob {
 		HUNTING = new Hunting();
 		
 		state = SLEEPING;
-		
-		properties.add(Property.BLOB_IMMUNE);
+
 	}
 	
 	public Piranha() {
@@ -144,6 +146,11 @@ public class Piranha extends Mob {
 	}
 	
 	{
+		for (Class c : new BlobImmunity().immunities()){
+			if (c != Electricity.class && c != Freezing.class){
+				immunities.add(c);
+			}
+		}
 		immunities.add( Burning.class );
 	}
 	
