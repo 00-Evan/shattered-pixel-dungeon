@@ -23,6 +23,8 @@ package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Transmuting;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
@@ -73,7 +75,8 @@ public class Recycle extends InventorySpell {
 		if (!result.collect()){
 			Dungeon.level.drop(result, curUser.pos).sprite.drop();
 		}
-		//TODO visuals
+		Transmuting.show(curUser, item, result);
+		curUser.sprite.emitter().start(Speck.factory(Speck.CHANGE), 0.2f, 10);
 	}
 	
 	public static boolean isRecyclable(Item item){
