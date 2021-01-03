@@ -423,8 +423,8 @@ public abstract class RegularLevel extends Level {
 				int tries = 100;
 				do {
 					cell = randomDropCell(SpecialRoom.class);
-				} while (tries-- > 0 && room(cell) instanceof SecretRoom);
-				if (!(room(cell) instanceof SecretRoom) && cell != -1) {
+				} while (tries-- > 0 && (room(cell) instanceof SecretRoom || room(cell) instanceof ShopRoom));
+				if (!(room(cell) instanceof SecretRoom || room(cell) instanceof ShopRoom) && cell != -1) {
 					if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
 						map[cell] = Terrain.GRASS;
 						losBlocking[cell] = false;
