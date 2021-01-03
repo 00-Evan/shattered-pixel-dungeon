@@ -104,7 +104,12 @@ public abstract class Actor implements Bundlable {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		time = bundle.getFloat( TIME );
-		id = bundle.getInt( ID );
+		int incomingID = bundle.getInt( ID );
+		if (Actor.findById(id) == null){
+			id = incomingID;
+		} else {
+			id = nextID++;
+		}
 	}
 
 	private static int nextID = 1;
