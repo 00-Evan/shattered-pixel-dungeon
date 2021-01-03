@@ -52,16 +52,42 @@ public class v0_9_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v0.9.1b", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Necromancers now damage enemies if their summoning position is totally blocked\n\n" +
+				"_-_ Rogue's foresight can now also trigger when returning to a floor, if that floor was detected initially\n\n" +
+				"_-_ Small UI improvements to rankings window\n\n" +
+				"_-_ The Overgrowth curse can now trigger starflower effects\n\n" +
+				"_-_ Added some VFX to scroll of transmutation\n\n" +
+				"_-_ Piranha are no longer invulnerable to electricity and frost\n\n" +
+				"_-_ Updated translations and translator credits"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by v0.9.1):\n" +
+				"_-_ Rare freeze errors caused by Cached Rations talent\n" +
+				"_-_ Various minor visual and text errors\n" +
+				"_-_ Incorrect numbers in wand of transfusion description\n" +
+				"_-_ Horn of Plenty not triggering Iron Stomach\n" +
+				"_-_ Iron Stomach immunity lasting longer than intended\n" +
+				"_-_ Various minor timing bugs in the Tengu and DM-300 bossfights\n" +
+				"_-_ Pathfinding errors in DM-300\n" +
+				"_-_ Bees being affected by Improvised Projectiles when they spawn\n\n" +
+				"Fixed (existed prior to v0.9.1):\n" +
+				"_-_ Rare freeze and crash errors\n" +
+				"_-_ 'death from viscocity' badge not appearing in rankings\n" +
+				"_-_ Various rare errors with shops\n" +
+				"_-_ Scrolls of teleportation spending a turn when they fail\n" +
+				"_-_ Various rare errors with Gladiator's fury\n" +
+				"_-_ Various rare errors with multiplicity curse"));
 
 		changes = new ChangeInfo("v0.9.1a", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ The shadows buff now has a green icon, instead of the regular invisibility blue.\n\n" +
 				"_-_ Slightly adjusted the Huntress' splash art to improve details on her face."));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
