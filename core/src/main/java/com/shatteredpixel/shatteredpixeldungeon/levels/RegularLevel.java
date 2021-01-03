@@ -420,15 +420,18 @@ public abstract class RegularLevel extends Level {
 			Talent.CachedRationsDropped dropped = Buff.affect(Dungeon.hero, Talent.CachedRationsDropped.class);
 			if (dropped.count() < 2 + 2*Dungeon.hero.pointsInTalent(Talent.CACHED_RATIONS)){
 				int cell;
+				int tries = 100;
 				do {
 					cell = randomDropCell(SpecialRoom.class);
-				} while (room(cell) instanceof SecretRoom);
-				if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
-					map[cell] = Terrain.GRASS;
-					losBlocking[cell] = false;
+				} while (tries-- > 0 && room(cell) instanceof SecretRoom);
+				if (!(room(cell) instanceof SecretRoom) && cell != -1) {
+					if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
+						map[cell] = Terrain.GRASS;
+						losBlocking[cell] = false;
+					}
+					drop(new SmallRation(), cell).type = Heap.Type.CHEST;
+					dropped.countUp(1);
 				}
-				drop( new SmallRation(), cell).type = Heap.Type.CHEST;
-				dropped.countUp(1);
 			}
 		}
 
@@ -503,7 +506,10 @@ public abstract class RegularLevel extends Level {
 	protected int randomDropCell( Class<?extends Room> roomType ) {
 		while (true) {
 			Room room = randomRoom( roomType );
-			if (room != null && room != roomEntrance) {
+			if (room == null){
+				return -1;
+			}
+			if (room != roomEntrance) {
 				int pos = pointToCell(room.random());
 				if (passable[pos] && !solid[pos]
 						&& pos != exit
