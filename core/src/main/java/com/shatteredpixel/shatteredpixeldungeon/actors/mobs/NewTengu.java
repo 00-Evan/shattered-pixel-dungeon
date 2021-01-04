@@ -590,25 +590,27 @@ public class NewTengu extends Mob {
 				PathFinder.buildDistanceMap( bombPos, BArray.not( Dungeon.level.solid, null ), 2 );
 				for (int cell = 0; cell < PathFinder.distance.length; cell++) {
 
-					Char ch = Actor.findChar(cell);
-					if (ch != null && !(ch instanceof NewTengu)){
-						int dmg = Random.NormalIntRange(5 + Dungeon.depth, 10 + Dungeon.depth*2);
-						dmg -= ch.drRoll();
+					if (PathFinder.distance[cell] < Integer.MAX_VALUE) {
+						Char ch = Actor.findChar(cell);
+						if (ch != null && !(ch instanceof NewTengu)) {
+							int dmg = Random.NormalIntRange(5 + Dungeon.depth, 10 + Dungeon.depth * 2);
+							dmg -= ch.drRoll();
 
-						if (dmg > 0) {
-							ch.damage(dmg, Bomb.class);
+							if (dmg > 0) {
+								ch.damage(dmg, Bomb.class);
+							}
+
+							if (ch == Dungeon.hero && !ch.isAlive()) {
+								Dungeon.fail(NewTengu.class);
+							}
 						}
 
-						if (ch == Dungeon.hero && !ch.isAlive()) {
-							Dungeon.fail(NewTengu.class);
-						}
-					}
-
-					Heap h = Dungeon.level.heaps.get(cell);
-					if (h != null){
-						for (Item i : h.items.toArray(new Item[0])){
-							if (i instanceof BombItem){
-								h.remove(i);
+						Heap h = Dungeon.level.heaps.get(cell);
+						if (h != null) {
+							for (Item i : h.items.toArray(new Item[0])) {
+								if (i instanceof BombItem) {
+									h.remove(i);
+								}
 							}
 						}
 					}
