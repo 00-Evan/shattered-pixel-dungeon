@@ -107,7 +107,8 @@ public class BrokenSeal extends Item {
 					GLog.w(Messages.get(BrokenSeal.class, "unknown_armor"));
 				} else if (armor.cursed || armor.level() < 0){
 					GLog.w(Messages.get(BrokenSeal.class, "degraded_armor"));
-				} else if (armor.glyph != null && ((BrokenSeal)curItem).getGlyph() != null) {
+				} else if (armor.glyph != null && ((BrokenSeal)curItem).getGlyph() != null
+						&& armor.glyph.getClass() != ((BrokenSeal) curItem).getGlyph().getClass()) {
 					GameScene.show(new WndOptions(Messages.get(BrokenSeal.class, "choose_title"),
 							Messages.get(BrokenSeal.class, "choose_desc"),
 							armor.glyph.name(),
