@@ -47,6 +47,10 @@ public class SuspiciousChestRoom extends StandardRoom {
 		Painter.fill( level, this, Terrain.WALL );
 		Painter.fill( level, this, 1 , Terrain.EMPTY );
 
+		for (Door door : connected.values()) {
+			door.set( Door.Type.REGULAR );
+		}
+
 		Item i = level.findPrizeItem();
 
 		if ( i == null ){
