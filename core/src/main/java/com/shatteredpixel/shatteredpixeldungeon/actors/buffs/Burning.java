@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -104,7 +105,7 @@ public class Burning extends Buff implements Hero.Doom {
 					ArrayList<Item> burnable = new ArrayList<>();
 					//does not reach inside of containers
 					for (Item i : hero.belongings.backpack.items){
-						if (!i.unique && (i instanceof Scroll || i instanceof MysteryMeat)){
+						if (!i.unique && (i instanceof Scroll || i instanceof MysteryMeat || i instanceof FrozenCarpaccio)){
 							burnable.add(i);
 						}
 					}
@@ -112,7 +113,7 @@ public class Burning extends Buff implements Hero.Doom {
 					if (!burnable.isEmpty()){
 						Item toBurn = Random.element(burnable).detach(hero.belongings.backpack);
 						GLog.w( Messages.get(this, "burnsup", Messages.capitalize(toBurn.toString())) );
-						if (toBurn instanceof MysteryMeat){
+						if (toBurn instanceof MysteryMeat || toBurn instanceof FrozenCarpaccio){
 							ChargrilledMeat steak = new ChargrilledMeat();
 							if (!steak.collect( hero.belongings.backpack )) {
 								Dungeon.level.drop( steak, hero.pos ).sprite.drop();
