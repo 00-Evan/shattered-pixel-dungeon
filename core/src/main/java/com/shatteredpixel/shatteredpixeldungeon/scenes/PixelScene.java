@@ -214,7 +214,8 @@ public class PixelScene extends Scene {
 		banner.camera = uiCamera;
 		banner.x = align( banner.camera, (banner.camera.width - banner.width) / 2 );
 		banner.y = align( banner.camera, (banner.camera.height - banner.height) / 3 );
-		Game.scene().add( banner );
+		Scene s = Game.scene();
+		if (s != null) s.add( banner );
 	}
 	
 	protected static class Fader extends ColorBlock {

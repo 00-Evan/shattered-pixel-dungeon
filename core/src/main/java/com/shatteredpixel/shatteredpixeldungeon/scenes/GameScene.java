@@ -173,7 +173,7 @@ public class GameScene extends PixelScene {
 	@Override
 	public void create() {
 		
-		if (Dungeon.hero == null){
+		if (Dungeon.hero == null || Dungeon.level == null){
 			ShatteredPixelDungeon.switchNoFade(TitleScene.class);
 			return;
 		}

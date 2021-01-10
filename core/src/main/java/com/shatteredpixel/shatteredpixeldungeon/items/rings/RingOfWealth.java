@@ -154,7 +154,7 @@ public class RingOfWealth extends Ring {
 	private static int latestDropTier = 0;
 
 	public static void showFlareForBonusDrop( Visual vis ){
-		if (vis == null) return;
+		if (vis == null || vis.parent == null) return;
 		switch (latestDropTier){
 			default:
 				break; //do nothing
