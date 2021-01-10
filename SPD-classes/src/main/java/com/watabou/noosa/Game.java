@@ -89,7 +89,7 @@ public class Game implements ApplicationListener {
 	//FIXME this is a temporary workaround to improve start times on android (first frame is 'cheated' and only renders a black screen)
 	//this is partly to improve stats on google play, and partly to try and diagnose what the cause of slow loading times is
 	//ultimately once the cause is found it should be fixed and this should no longer be needed
-	private boolean justResumed = false;
+	private boolean justResumed = true;
 	
 	@Override
 	public void create() {
@@ -149,6 +149,7 @@ public class Game implements ApplicationListener {
 		if (justResumed){
 			Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
 			justResumed = false;
+			System.out.println("resuming!");
 			return;
 		}
 
