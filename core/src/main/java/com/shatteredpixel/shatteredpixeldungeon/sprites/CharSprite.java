@@ -482,8 +482,10 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	
 	@Override
 	public void update() {
-		if (paused && curAnim == die){
-			paused = false;
+		if (paused && !looping()){
+			Animation cur = curAnim;
+			curAnim = null;
+			listener.onComplete(cur);
 		}
 		
 		super.update();
