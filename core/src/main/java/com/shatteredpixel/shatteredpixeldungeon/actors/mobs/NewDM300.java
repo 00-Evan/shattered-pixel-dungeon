@@ -156,6 +156,10 @@ public class NewDM300 extends Mob {
 	@Override
 	protected boolean act() {
 
+		if (paralysed > 0){
+			return super.act();
+		}
+
 		//ability logic only triggers if DM is not supercharged
 		if (!supercharged){
 			if (turnsSinceLastAbility >= 0) turnsSinceLastAbility++;
