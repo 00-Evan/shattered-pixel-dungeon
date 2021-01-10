@@ -48,7 +48,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
-public class Chasm {
+public class Chasm implements Hero.Doom {
 
 	public static boolean jumpConfirmed = false;
 	
@@ -99,7 +99,15 @@ public class Chasm {
 			Dungeon.hero.sprite.visible = false;
 		}
 	}
-	
+
+	@Override
+	public void onDeath() {
+		Badges.validateDeathFromFalling();
+
+		Dungeon.fail( Chasm.class );
+		GLog.n( Messages.get(Chasm.class, "ondeath") );
+	}
+
 	public static void heroLand() {
 		
 		Hero hero = Dungeon.hero;
@@ -120,15 +128,7 @@ public class Chasm {
 		//The lower the hero's HP, the more bleed and the less upfront damage.
 		//Hero has a 50% chance to bleed out at 66% HP, and begins to risk instant-death at 25%
 		Buff.affect( hero, FallBleed.class).set( Math.round(hero.HT / (6f + (6f*(hero.HP/(float)hero.HT)))));
-		hero.damage( Math.max( hero.HP / 2, Random.NormalIntRange( hero.HP / 2, hero.HT / 4 )), new Hero.Doom() {
-			@Override
-			public void onDeath() {
-				Badges.validateDeathFromFalling();
-				
-				Dungeon.fail( Chasm.class );
-				GLog.n( Messages.get(Chasm.class, "ondeath") );
-			}
-		} );
+		hero.damage( Math.max( hero.HP / 2, Random.NormalIntRange( hero.HP / 2, hero.HT / 4 )), new Chasm() );
 	}
 
 	public static void mobFall( Mob mob ) {
