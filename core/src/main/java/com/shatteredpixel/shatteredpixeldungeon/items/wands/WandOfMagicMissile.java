@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class WandOfMagicMissile extends DamageWand {
@@ -140,6 +141,20 @@ public class WandOfMagicMissile extends DamageWand {
 		@Override
 		public String desc() {
 			return Messages.get(this, "desc", level(), dispTurns());
+		}
+
+		private static final String LEVEL = "level";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(LEVEL, level);
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			level = bundle.getInt(LEVEL);
 		}
 	}
 
