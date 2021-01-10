@@ -1011,6 +1011,7 @@ public class NewTengu extends Mob {
 								
 								if (ch == Dungeon.hero && !ch.isAlive()) {
 									Dungeon.fail(NewTengu.class);
+									GLog.n( Messages.get(Electricity.class, "ondeath") );
 								}
 							}
 							
