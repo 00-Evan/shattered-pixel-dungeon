@@ -558,7 +558,7 @@ public class Armor extends EquipableItem {
 		updateQuickslot();
 		//the hero needs runic transference to actually transfer, but we still attach the glyph here
 		// in case they take that talent in the future
-		if (glyph != null && seal != null){
+		if (seal != null){
 			seal.setGlyph(glyph);
 		}
 		return this;
