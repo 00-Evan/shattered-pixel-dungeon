@@ -225,10 +225,6 @@ public class Blacksmith extends NPC {
 				Dungeon.level.drop( seal, Dungeon.hero.pos );
 			}
 		}
-		
-		if (first.isEquipped( Dungeon.hero )) {
-			((EquipableItem)first).doUnequip( Dungeon.hero, true );
-		}
 
 		//preserves enchant/glyphs if present
 		if (first instanceof Weapon && ((Weapon) first).hasGoodEnchant()){
@@ -237,11 +233,6 @@ public class Blacksmith extends NPC {
 			((Armor) first).upgrade(true);
 		} else {
 			first.upgrade();
-		}
-		if (!Dungeon.hero.belongings.contains(first)) {
-			if (!first.collect()){
-				Dungeon.level.drop( first, Dungeon.hero.pos );
-			}
 		}
 		Dungeon.hero.spendAndNext( 2f );
 		Badges.validateItemLevelAquired( first );
