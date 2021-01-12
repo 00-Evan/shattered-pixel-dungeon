@@ -52,6 +52,31 @@ public class v0_9_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("v0.9.1c", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Frozen carpaccio can now burn like mystery meat\n\n" +
+				"_-_ Challenge completion badges can now appear in rankings\n\n" +
+				"_-_ Improved blacksmith logic when upgraded item is also equipped\n\n" +
+				"_-_ Updated translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by v0.9.1):\n" +
+				"_-_ Various uncommon freeze bugs caused by v0.9.1b\n" +
+				"_-_ Various minor errors with runic transference\n" +
+				"_-_ Doors failing to spawn in rare cases\n\n" +
+				"Fixed (existed prior to v0.9.1):\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Rare cases where dieing to a chasm would be recorded as 'Killed by Something'\n" +
+				"_-_ Various minor errors with magical charge buff\n" +
+				"_-_ DM-300 rarely using abilities while stunned"));
+
 		changes = new ChangeInfo("v0.9.1b", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
