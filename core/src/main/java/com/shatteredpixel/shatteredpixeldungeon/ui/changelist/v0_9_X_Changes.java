@@ -75,7 +75,8 @@ public class v0_9_X_Changes {
 				"_-_ Various rare crash bugs\n" +
 				"_-_ Rare cases where dieing to a chasm would be recorded as 'Killed by Something'\n" +
 				"_-_ Various minor errors with magical charge buff\n" +
-				"_-_ DM-300 rarely using abilities while stunned"));
+				"_-_ DM-300 rarely using abilities while stunned\n" +
+				"_-_ Tengu getting extra turns on game load in rare cases"));
 
 		changes = new ChangeInfo("v0.9.1b", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
