@@ -72,6 +72,10 @@ public class EtherealChains extends Artifact {
 		return actions;
 	}
 
+	public int targetingPos( Hero user, int dst ){
+		return dst;
+	}
+
 	@Override
 	public void execute(Hero hero, String action) {
 
