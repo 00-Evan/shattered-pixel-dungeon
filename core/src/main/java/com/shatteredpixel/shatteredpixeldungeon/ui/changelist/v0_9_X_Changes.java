@@ -52,9 +52,15 @@ public class v0_9_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v0.9.1d", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by v0.9.1):\n" +
+				"_-_ Fixed error with runic transference caused by v0.9.1d\n\n" +
+				"Fixed (existed prior to v0.9.1):\n" +
+				"_-_ Targeting errors with projecting bow and ethereal chains"));
 
 		changes = new ChangeInfo("v0.9.1c", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
