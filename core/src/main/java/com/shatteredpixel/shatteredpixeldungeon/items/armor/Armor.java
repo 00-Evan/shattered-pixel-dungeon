@@ -460,10 +460,10 @@ public class Armor extends EquipableItem {
 
 		switch (augment) {
 			case EVASION:
-				info += "\n\n" + Messages.get(Armor.class, "evasion");
+				info += " " + Messages.get(Armor.class, "evasion");
 				break;
 			case DEFENSE:
-				info += "\n\n" + Messages.get(Armor.class, "defense");
+				info += " " + Messages.get(Armor.class, "defense");
 				break;
 			case NONE:
 		}

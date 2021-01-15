@@ -295,7 +295,9 @@ public class MagesStaff extends MeleeWeapon {
 		String info = super.info();
 
 		if (wand != null){
-			info += "\n\n" + Messages.get(this, "has_wand", Messages.get(wand, "name")) + " " + wand.statsDesc();
+			info += "\n\n" + Messages.get(this, "has_wand", Messages.get(wand, "name"));
+			if (!cursed || !cursedKnown)    info += " " + wand.statsDesc();
+			else                            info += " " + Messages.get(this, "cursed_wand");
 		}
 
 		return info;

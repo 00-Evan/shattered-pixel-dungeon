@@ -88,10 +88,10 @@ public class MeleeWeapon extends Weapon {
 
 		switch (augment) {
 			case SPEED:
-				info += "\n\n" + Messages.get(Weapon.class, "faster");
+				info += " " + Messages.get(Weapon.class, "faster");
 				break;
 			case DAMAGE:
-				info += "\n\n" + Messages.get(Weapon.class, "stronger");
+				info += " " + Messages.get(Weapon.class, "stronger");
 				break;
 			case NONE:
 		}
