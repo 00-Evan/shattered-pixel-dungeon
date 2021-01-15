@@ -360,15 +360,29 @@ public class MagesStaff extends MeleeWeapon {
 				if (wand == null){
 					applyWand((Wand)item);
 				} else {
-					final int newLevel =
-							item.level() >= level() ?
-									level() > 0 ?
-										item.level() + 1
-										: item.level()
-									: level();
+					int newLevel;
+					if (item.level() >= level()){
+						if (level() > 0)    newLevel = item.level() + 1;
+						else                newLevel = item.level();
+					} else {
+						newLevel = level();
+					}
+
+					String bodyText = Messages.get(MagesStaff.class, "imbue_desc", newLevel);
+					int preservesLeft = Dungeon.hero.hasTalent(Talent.WAND_PRESERVATION) ? 3 : 0;
+					if (Dungeon.hero.buff(Talent.WandPreservationCounter.class) != null){
+						preservesLeft -= Dungeon.hero.buff(Talent.WandPreservationCounter.class).count();
+					}
+					if (preservesLeft > 0){
+						int preserveChance = Dungeon.hero.pointsInTalent(Talent.WAND_PRESERVATION) == 1 ? 67 : 100;
+						bodyText += "\n\n" + Messages.get(MagesStaff.class, "imbue_talent", preserveChance, preservesLeft);
+					} else {
+						bodyText += "\n\n" + Messages.get(MagesStaff.class, "imbue_lost");
+					}
+
 					GameScene.show(
 							new WndOptions("",
-									Messages.get(MagesStaff.class, "warning", newLevel),
+									bodyText,
 									Messages.get(MagesStaff.class, "yes"),
 									Messages.get(MagesStaff.class, "no")) {
 								@Override
