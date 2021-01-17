@@ -72,6 +72,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoItem;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Reflection;
 
@@ -100,6 +101,10 @@ public class QuickRecipe extends Component {
 			anonymize(in);
 			ItemSlot curr;
 			curr = new ItemSlot(in) {
+				{
+					hotArea.blockLevel = PointerArea.NEVER_BLOCK;
+				}
+
 				@Override
 				protected void onClick() {
 					ShatteredPixelDungeon.scene().addToFront(new WndInfoItem(in));
@@ -196,6 +201,8 @@ public class QuickRecipe extends Component {
 		
 		public arrow( Image icon, int count ){
 			super( icon );
+			hotArea.blockLevel = PointerArea.NEVER_BLOCK;
+
 			text = new BitmapText( Integer.toString(count), PixelScene.pixelFont);
 			text.measure();
 			add(text);

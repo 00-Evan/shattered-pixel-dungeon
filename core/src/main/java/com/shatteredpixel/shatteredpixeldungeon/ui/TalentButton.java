@@ -32,6 +32,7 @@ import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
@@ -58,6 +59,8 @@ public class TalentButton extends Button {
 
 	public TalentButton(int tier, Talent talent, int points, boolean upgradeEnabled){
 		super();
+		hotArea.blockLevel = PointerArea.NEVER_BLOCK;
+
 		this.tier = tier;
 		this.talent = talent;
 		this.pointsInTalent = points;
