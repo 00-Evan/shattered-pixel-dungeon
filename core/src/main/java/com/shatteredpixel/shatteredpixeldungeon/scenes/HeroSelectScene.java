@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TalentsPane;
@@ -333,11 +334,15 @@ public class HeroSelectScene extends PixelScene {
 		private RenderedTextBlock info;
 
 		private TalentsPane talents;
+		private RedButton firstSub;
+		private RedButton secondSub;
 
-		private int WIDTH = 120;
+		private int WIDTH = 130;
 		private int HEIGHT = 120;
 		private int MARGIN = 2;
 		private int INFO_WIDTH = WIDTH - MARGIN*2;
+
+		private static boolean secondSubclass = false;
 
 		public WndHeroInfo( HeroClass cl ){
 
@@ -350,8 +355,45 @@ public class HeroSelectScene extends PixelScene {
 
 			ArrayList<LinkedHashMap<Talent, Integer>> talentList = new ArrayList<>();
 			Talent.initClassTalents(cl, talentList);
+			Talent.initSubclassTalents(cl.subClasses()[secondSubclass ? 1 : 0], talentList);
 			talents = new TalentsPane(false, talentList);
 			add(talents);
+
+			firstSub = new RedButton(Messages.titleCase(cl.subClasses()[0].title()), 7){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					if (secondSubclass){
+						secondSubclass = false;
+						hide();
+						WndHeroInfo newWindow = new WndHeroInfo(cl);
+						newWindow.talents.scrollTo(0, talents.content().camera.scroll.y);
+						newWindow.select(2);
+						ShatteredPixelDungeon.scene().addToFront(newWindow);
+					}
+				}
+			};
+			if (!secondSubclass) firstSub.textColor(Window.TITLE_COLOR);
+			firstSub.setSize(40, firstSub.reqHeight()+2);
+			add(firstSub);
+
+			secondSub = new RedButton(Messages.titleCase(cl.subClasses()[1].title()), 7){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					if (!secondSubclass){
+						secondSubclass = true;
+						hide();
+						WndHeroInfo newWindow = new WndHeroInfo(cl);
+						newWindow.talents.scrollTo(0, talents.content().camera.scroll.y);
+						newWindow.select(2);
+						ShatteredPixelDungeon.scene().addToFront(newWindow);
+					}
+				}
+			};
+			if (secondSubclass) secondSub.textColor(Window.TITLE_COLOR);
+			secondSub.setSize(40, secondSub.reqHeight()+2);
+			add(secondSub);
 
 			Tab tab;
 			Image[] tabIcons;
@@ -415,6 +457,8 @@ public class HeroSelectScene extends PixelScene {
 						info.text(Messages.get(WndHeroInfo.class, "talents_desc"), INFO_WIDTH);
 					}
 					talents.visible = talents.active = value;
+					firstSub.visible = firstSub.active = value;
+					secondSub.visible = secondSub.active = value;
 				}
 			};
 			add(tab);
@@ -435,6 +479,7 @@ public class HeroSelectScene extends PixelScene {
 			};
 			add(tab);
 
+			resize(WIDTH, HEIGHT);
 			select(0);
 
 		}
@@ -445,14 +490,13 @@ public class HeroSelectScene extends PixelScene {
 
 			title.setPos((WIDTH-title.width())/2, MARGIN);
 			info.setPos(MARGIN, title.bottom()+2*MARGIN);
-			talents.setRect(0, info.bottom()+2*MARGIN, WIDTH, 100);
 
-			if (talents.visible) {
-				resize(WIDTH, (int) talents.bottom());
-				talents.setRect(0, info.bottom()+2*MARGIN, WIDTH, 100);
-			} else {
-				resize(WIDTH, (int) info.bottom() + 2*MARGIN);
-			}
+			firstSub.setPos((title.left() - firstSub.width())/2, 0);
+			secondSub.setPos(title.right() + (WIDTH - title.right() - secondSub.width())/2, 0);
+
+			talents.setRect(0, info.bottom()+2*MARGIN, WIDTH, HEIGHT - (info.bottom()+2*MARGIN));
+
+			resize(WIDTH, Math.max(HEIGHT, (int)info.bottom()));
 
 			layoutTabs();
 

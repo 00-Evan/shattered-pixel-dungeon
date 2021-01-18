@@ -48,8 +48,8 @@ import java.util.Locale;
 
 public class WndHero extends WndTabbed {
 	
-	private static final int WIDTH		= 120;
-	private static final int HEIGHT		= 100;
+	private static final int WIDTH		= 130;
+	private static final int HEIGHT		= 120;
 	
 	private StatsTab stats;
 	private TalentsTab talents;
@@ -99,7 +99,11 @@ public class WndHero extends WndTabbed {
 		} );
 
 		layoutTabs();
-		
+
+		talents.setRect(0, 0, WIDTH, HEIGHT);
+		talents.pane.scrollTo(0, talents.pane.content().height() - talents.pane.height());
+		talents.layout();
+
 		select( lastIdx );
 	}
 

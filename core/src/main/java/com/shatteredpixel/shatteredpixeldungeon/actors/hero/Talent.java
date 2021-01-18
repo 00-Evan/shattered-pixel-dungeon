@@ -66,45 +66,49 @@ import java.util.LinkedHashMap;
 
 public enum Talent {
 
-	HEARTY_MEAL(0),
-	ARMSMASTERS_INTUITION(1),
-	TEST_SUBJECT(2),
-	IRON_WILL(3),
-	IRON_STOMACH(4),
-	RESTORED_WILLPOWER(5),
-	RUNIC_TRANSFERENCE(6),
-	LETHAL_MOMENTUM(7),
-	IMPROVISED_PROJECTILES(8),
+	//Warrior T1
+	HEARTY_MEAL(0), ARMSMASTERS_INTUITION(1), TEST_SUBJECT(2), IRON_WILL(3),
+	//Warrior T2
+	IRON_STOMACH(4), RESTORED_WILLPOWER(5), RUNIC_TRANSFERENCE(6), LETHAL_MOMENTUM(7), IMPROVISED_PROJECTILES(8),
+	//Warrior T3
+	WARRIOR_T3_1(9), WARRIOR_T3_2(10), WARRIOR_T3_3(11),
+	//Berserker T3
+	BERSERKER_T3_1(12), BERSERKER_T3_2(13), BERSERKER_T3_3(14),
+	//Gladiator T3
+	GLADIATOR_T3_1(15), GLADIATOR_T3_2(16), GLADIATOR_T3_3(17),
 
-	EMPOWERING_MEAL(16),
-	SCHOLARS_INTUITION(17),
-	TESTED_HYPOTHESIS(18),
-	BACKUP_BARRIER(19),
-	ENERGIZING_MEAL(20),
-	ENERGIZING_UPGRADE(21),
-	WAND_PRESERVATION(22),
-	ARCANE_VISION(23),
-	SHIELD_BATTERY(24),
+	//Mage T1
+	EMPOWERING_MEAL(32), SCHOLARS_INTUITION(33), TESTED_HYPOTHESIS(34), BACKUP_BARRIER(35),
+	//Mage T2
+	ENERGIZING_MEAL(36), ENERGIZING_UPGRADE(37), WAND_PRESERVATION(38), ARCANE_VISION(39), SHIELD_BATTERY(40),
+	//Mage T3
+	MAGE_T3_1(41), MAGE_T3_2(42), MAGE_T3_3(43),
+	//Battlemage T3
+	BATTLEMAGE_T3_1(44), BATTLEMAGE_T3_2(45), BATTLEMAGE_T3_3(46),
+	//Warlock T3
+	WARLOCK_T3_1(47), WARLOCK_T3_2(48), WARLOCK_T3_3(49),
 
-	CACHED_RATIONS(32),
-	THIEFS_INTUITION(33),
-	SUCKER_PUNCH(34),
-	PROTECTIVE_SHADOWS(35),
-	MYSTICAL_MEAL(36),
-	MYSTICAL_UPGRADE(37),
-	WIDE_SEARCH(38),
-	SILENT_STEPS(39),
-	ROGUES_FORESIGHT(40),
+	//Rogue T1
+	CACHED_RATIONS(64), THIEFS_INTUITION(65), SUCKER_PUNCH(66), PROTECTIVE_SHADOWS(67),
+	//Rogue T2
+	MYSTICAL_MEAL(68), MYSTICAL_UPGRADE(69), WIDE_SEARCH(70), SILENT_STEPS(71), ROGUES_FORESIGHT(72),
+	//Rogue T3
+	ROGUE_T3_1(73), ROGUE_T3_2(74), ROGUE_T3_3(75),
+	//Assassin T3
+	ASSASSIN_T3_1(76), ASSASSIN_T3_2(77), ASSASSIN_T3_3(78),
+	//Freerunner T3
+	FREERUNNER_T3_1(79), FREERUNNER_T3_2(80), FREERUNNER_T3_3(81),
 
-	NATURES_BOUNTY(48),
-	SURVIVALISTS_INTUITION(49),
-	FOLLOWUP_STRIKE(50),
-	NATURES_AID(51),
-	INVIGORATING_MEAL(52),
-	RESTORED_NATURE(53),
-	REJUVENATING_STEPS(54),
-	HEIGHTENED_SENSES(55),
-	DURABLE_PROJECTILES(56);
+	//Huntress T1
+	NATURES_BOUNTY(96), SURVIVALISTS_INTUITION(97), FOLLOWUP_STRIKE(98), NATURES_AID(99),
+	//Huntress T2
+	INVIGORATING_MEAL(100), RESTORED_NATURE(101), REJUVENATING_STEPS(102), HEIGHTENED_SENSES(103), DURABLE_PROJECTILES(104),
+	//Huntress T3
+	HUNTRESS_T3_1(105), HUNTRESS_T3_2(106), HUNTRESS_T3_3(107),
+	//Sniper T3
+	SNIPER_T3_1(108), SNIPER_T3_2(109), SNIPER_T3_3(110),
+	//Warden T3
+	WARDEN_T3_1(111), WARDEN_T3_2(112), WARDEN_T3_3(113);
 
 	public static class ImprovisedProjectileCooldown extends FlavourBuff{};
 	public static class LethalMomentumTracker extends FlavourBuff{};
@@ -349,7 +353,7 @@ public enum Talent {
 	public static class SuckerPunchTracker extends Buff{};
 	public static class FollowupStrikeTracker extends Buff{};
 
-	public static final int MAX_TALENT_TIERS = 2;
+	public static final int MAX_TALENT_TIERS = 3;
 
 	public static void initClassTalents( Hero hero ){
 		initClassTalents( hero.heroClass, hero.talents );
@@ -382,7 +386,7 @@ public enum Talent {
 		}
 		tierTalents.clear();
 
-		//tier 2+
+		//tier 2
 		switch (cls){
 			case WARRIOR: default:
 				Collections.addAll(tierTalents, IRON_STOMACH, RESTORED_WILLPOWER, RUNIC_TRANSFERENCE, LETHAL_MOMENTUM, IMPROVISED_PROJECTILES);
@@ -402,13 +406,77 @@ public enum Talent {
 		}
 		tierTalents.clear();
 
+		//tier 3
+		switch (cls){
+			case WARRIOR: default:
+				Collections.addAll(tierTalents, WARRIOR_T3_1, WARRIOR_T3_2, WARRIOR_T3_3);
+				break;
+			case MAGE:
+				Collections.addAll(tierTalents, MAGE_T3_1, MAGE_T3_2, MAGE_T3_3);
+				break;
+			case ROGUE:
+				Collections.addAll(tierTalents, ROGUE_T3_1, ROGUE_T3_2, ROGUE_T3_3);
+				break;
+			case HUNTRESS:
+				Collections.addAll(tierTalents, HUNTRESS_T3_1, HUNTRESS_T3_2, HUNTRESS_T3_3);
+				break;
+		}
+		for (Talent talent : tierTalents){
+			talents.get(2).put(talent, 0);
+		}
+		tierTalents.clear();
 
-		//tier 3+
+		//tier4
 		//TBD
 	}
 
 	public static void initSubclassTalents( Hero hero ){
-		//Nothing here yet. Hm.....
+		initSubclassTalents( hero.subClass, hero.talents );
+	}
+
+	public static void initSubclassTalents( HeroSubClass cls, ArrayList<LinkedHashMap<Talent, Integer>> talents ){
+		if (cls == HeroSubClass.NONE) return;
+
+		while (talents.size() < MAX_TALENT_TIERS){
+			talents.add(new LinkedHashMap<>());
+		}
+
+		ArrayList<Talent> tierTalents = new ArrayList<>();
+
+		//tier 3
+		switch (cls){
+			case BERSERKER: default:
+				Collections.addAll(tierTalents, BERSERKER_T3_1, BERSERKER_T3_2, BERSERKER_T3_3);
+				break;
+			case GLADIATOR:
+				Collections.addAll(tierTalents, GLADIATOR_T3_1, GLADIATOR_T3_2, GLADIATOR_T3_3);
+				break;
+			case BATTLEMAGE:
+				Collections.addAll(tierTalents, BATTLEMAGE_T3_1, BATTLEMAGE_T3_2, BATTLEMAGE_T3_3);
+				break;
+			case WARLOCK:
+				Collections.addAll(tierTalents, WARLOCK_T3_1, WARLOCK_T3_2, WARLOCK_T3_3);
+				break;
+			case ASSASSIN:
+				Collections.addAll(tierTalents, ASSASSIN_T3_1, ASSASSIN_T3_2, ASSASSIN_T3_3);
+				break;
+			case FREERUNNER:
+				Collections.addAll(tierTalents, FREERUNNER_T3_1, FREERUNNER_T3_2, FREERUNNER_T3_3);
+				break;
+			case SNIPER:
+				Collections.addAll(tierTalents, SNIPER_T3_1, SNIPER_T3_2, SNIPER_T3_3);
+				break;
+			case WARDEN:
+				Collections.addAll(tierTalents, WARDEN_T3_1, WARDEN_T3_2, WARDEN_T3_3);
+				break;
+		}
+		for (Talent talent : tierTalents){
+			talents.get(2).put(talent, 0);
+		}
+		tierTalents.clear();
+
+		//tier4
+		//TBD
 	}
 
 	private static final String TALENT_TIER = "talents_tier_";

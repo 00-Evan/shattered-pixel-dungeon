@@ -61,6 +61,7 @@ public class ScrollPane extends Component {
 
 	public void scrollTo( float x, float y ) {
 		content.camera.scroll.set( x, y );
+		thumb.y = y + height * content.camera.scroll.y / content.height();
 	}
 
 	@Override
@@ -92,7 +93,7 @@ public class ScrollPane extends Component {
 		if (thumb.visible) {
 			thumb.scale.set( 2, height * height / content.height() );
 			thumb.x = right() - thumb.width();
-			thumb.y = y;
+			thumb.y = y + height * content.camera.scroll.y / content.height();
 		}
 	}
 
