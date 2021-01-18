@@ -135,8 +135,8 @@ public class AboutScene extends PixelScene {
 				null,
 				Icons.LIBGDX.get(),
 				"ShatteredPD is powered by _libGDX_!",
-				"libgdx.badlogicgames.com",
-				"http://libgdx.badlogicgames.com");
+				"libGDX.com",
+				"https://libGDX.com/");
 		if (landscape()){
 			gdx.setRect(wata.left(), wata.bottom() + 8, colWidth, 0);
 		} else {
