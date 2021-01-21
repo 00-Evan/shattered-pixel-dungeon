@@ -787,7 +787,7 @@ public class Dungeon {
 		}
 
 		if (chars && Char.hasProp(ch, Char.Property.LARGE)){
-			BArray.and( pass, Dungeon.level.openSpace, passable );
+			BArray.and( passable, Dungeon.level.openSpace, passable );
 		}
 
 		if (chars) {
@@ -816,7 +816,7 @@ public class Dungeon {
 		}
 
 		if (Char.hasProp(ch, Char.Property.LARGE)){
-			BArray.and( pass, Dungeon.level.openSpace, passable );
+			BArray.and( passable, Dungeon.level.openSpace, passable );
 		}
 
 		if (chars){
@@ -841,7 +841,7 @@ public class Dungeon {
 		}
 
 		if (Char.hasProp(ch, Char.Property.LARGE)){
-			BArray.and( pass, Dungeon.level.openSpace, passable );
+			BArray.and( passable, Dungeon.level.openSpace, passable );
 		}
 
 		if (chars) {
