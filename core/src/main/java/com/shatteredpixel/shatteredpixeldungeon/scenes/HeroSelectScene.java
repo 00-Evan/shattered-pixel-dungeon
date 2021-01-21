@@ -337,7 +337,7 @@ public class HeroSelectScene extends PixelScene {
 		private RedButton firstSub;
 		private RedButton secondSub;
 
-		private int WIDTH = 130;
+		private int WIDTH = 120;
 		private int HEIGHT = 120;
 		private int MARGIN = 2;
 		private int INFO_WIDTH = WIDTH - MARGIN*2;
@@ -494,7 +494,7 @@ public class HeroSelectScene extends PixelScene {
 			firstSub.setPos((title.left() - firstSub.width())/2, 0);
 			secondSub.setPos(title.right() + (WIDTH - title.right() - secondSub.width())/2, 0);
 
-			talents.setRect(0, info.bottom()+2*MARGIN, WIDTH, HEIGHT - (info.bottom()+2*MARGIN));
+			talents.setRect(0, info.bottom()+MARGIN, WIDTH, HEIGHT - (info.bottom()+MARGIN));
 
 			resize(WIDTH, Math.max(HEIGHT, (int)info.bottom()));
 

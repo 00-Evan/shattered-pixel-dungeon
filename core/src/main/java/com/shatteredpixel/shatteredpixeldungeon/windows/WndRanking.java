@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -176,12 +177,21 @@ public class WndRanking extends WndTabbed {
 			RedButton btnTalents = new RedButton( Messages.get(this, "talents") ){
 				@Override
 				protected void onClick() {
+					//removes talents from upper tiers
+					int tiers = 1;
+					if (Dungeon.hero.lvl >= 6) tiers++;
+					if (Dungeon.hero.lvl >= 12 && Dungeon.hero.subClass != HeroSubClass.NONE) tiers++;
+					while (Dungeon.hero.talents.size() > tiers){
+						Dungeon.hero.talents.remove(Dungeon.hero.talents.size()-1);
+					}
 					Game.scene().addToFront( new Window(){
 						{
-							resize(120, 144);
 							TalentsPane p = new TalentsPane(false);
 							add(p);
-							p.setRect(0, 0, width, height);
+							p.setPos(0, 0);
+							p.setSize(120, p.content().height());
+							resize((int)p.width(), (int)p.height());
+							p.setPos(0, 0);
 						}
 					});
 				}

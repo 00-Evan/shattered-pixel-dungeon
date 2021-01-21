@@ -64,7 +64,11 @@ public class TalentsPane extends ScrollPane {
 			}
 		}
 
+		tiersAvailable = Math.min(tiersAvailable, talents.size());
+
 		for (int i = 0; i < Math.min(tiersAvailable, talents.size()); i++){
+			if (talents.get(i).isEmpty()) continue;
+
 			TalentTierPane pane = new TalentTierPane(talents.get(i), i+1, canUpgrade);
 			panes.add(pane);
 			content.add(pane);

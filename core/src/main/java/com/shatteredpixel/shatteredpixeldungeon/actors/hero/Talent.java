@@ -71,44 +71,44 @@ public enum Talent {
 	//Warrior T2
 	IRON_STOMACH(4), RESTORED_WILLPOWER(5), RUNIC_TRANSFERENCE(6), LETHAL_MOMENTUM(7), IMPROVISED_PROJECTILES(8),
 	//Warrior T3
-	WARRIOR_T3_1(9), WARRIOR_T3_2(10), WARRIOR_T3_3(11),
+	WARRIOR_T3_1(9, 3), WARRIOR_T3_2(10, 3),
 	//Berserker T3
-	BERSERKER_T3_1(12), BERSERKER_T3_2(13), BERSERKER_T3_3(14),
+	BERSERKER_T3_1(11, 3), BERSERKER_T3_2(12, 3), BERSERKER_T3_3(13, 3),
 	//Gladiator T3
-	GLADIATOR_T3_1(15), GLADIATOR_T3_2(16), GLADIATOR_T3_3(17),
+	GLADIATOR_T3_1(14, 3), GLADIATOR_T3_2(15, 3), GLADIATOR_T3_3(16, 3),
 
 	//Mage T1
 	EMPOWERING_MEAL(32), SCHOLARS_INTUITION(33), TESTED_HYPOTHESIS(34), BACKUP_BARRIER(35),
 	//Mage T2
 	ENERGIZING_MEAL(36), ENERGIZING_UPGRADE(37), WAND_PRESERVATION(38), ARCANE_VISION(39), SHIELD_BATTERY(40),
 	//Mage T3
-	MAGE_T3_1(41), MAGE_T3_2(42), MAGE_T3_3(43),
+	MAGE_T3_1(41), MAGE_T3_2(42),
 	//Battlemage T3
-	BATTLEMAGE_T3_1(44), BATTLEMAGE_T3_2(45), BATTLEMAGE_T3_3(46),
+	BATTLEMAGE_T3_1(43, 3), BATTLEMAGE_T3_2(44, 3), BATTLEMAGE_T3_3(45, 3),
 	//Warlock T3
-	WARLOCK_T3_1(47), WARLOCK_T3_2(48), WARLOCK_T3_3(49),
+	WARLOCK_T3_1(46, 3), WARLOCK_T3_2(47, 3), WARLOCK_T3_3(48, 3),
 
 	//Rogue T1
 	CACHED_RATIONS(64), THIEFS_INTUITION(65), SUCKER_PUNCH(66), PROTECTIVE_SHADOWS(67),
 	//Rogue T2
 	MYSTICAL_MEAL(68), MYSTICAL_UPGRADE(69), WIDE_SEARCH(70), SILENT_STEPS(71), ROGUES_FORESIGHT(72),
 	//Rogue T3
-	ROGUE_T3_1(73), ROGUE_T3_2(74), ROGUE_T3_3(75),
+	ROGUE_T3_1(73), ROGUE_T3_2(74),
 	//Assassin T3
-	ASSASSIN_T3_1(76), ASSASSIN_T3_2(77), ASSASSIN_T3_3(78),
+	ASSASSIN_T3_1(75, 3), ASSASSIN_T3_2(76, 3), ASSASSIN_T3_3(77, 3),
 	//Freerunner T3
-	FREERUNNER_T3_1(79), FREERUNNER_T3_2(80), FREERUNNER_T3_3(81),
+	FREERUNNER_T3_1(78, 3), FREERUNNER_T3_2(79, 3), FREERUNNER_T3_3(80, 3),
 
 	//Huntress T1
 	NATURES_BOUNTY(96), SURVIVALISTS_INTUITION(97), FOLLOWUP_STRIKE(98), NATURES_AID(99),
 	//Huntress T2
 	INVIGORATING_MEAL(100), RESTORED_NATURE(101), REJUVENATING_STEPS(102), HEIGHTENED_SENSES(103), DURABLE_PROJECTILES(104),
 	//Huntress T3
-	HUNTRESS_T3_1(105), HUNTRESS_T3_2(106), HUNTRESS_T3_3(107),
+	HUNTRESS_T3_1(105, 3), HUNTRESS_T3_2(106, 3),
 	//Sniper T3
-	SNIPER_T3_1(108), SNIPER_T3_2(109), SNIPER_T3_3(110),
+	SNIPER_T3_1(107, 3), SNIPER_T3_2(108, 3), SNIPER_T3_3(109, 3),
 	//Warden T3
-	WARDEN_T3_1(111), WARDEN_T3_2(112), WARDEN_T3_3(113);
+	WARDEN_T3_1(110, 3), WARDEN_T3_2(111, 3), WARDEN_T3_3(112, 3);
 
 	public static class ImprovisedProjectileCooldown extends FlavourBuff{};
 	public static class LethalMomentumTracker extends FlavourBuff{};
@@ -116,12 +116,18 @@ public enum Talent {
 	public static class RejuvenatingStepsCooldown extends FlavourBuff{};
 
 	int icon;
+	int maxPoints;
 
 	// tiers 1/2/3/4 start at levels 2/7/13/21
 	public static int[] tierLevelThresholds = new int[]{0, 2, 7, 13, 21, 31};
 
-	Talent(int icon ){
+	Talent( int icon ){
+		this(icon, 2);
+	}
+
+	Talent( int icon, int maxPoints ){
 		this.icon = icon;
+		this.maxPoints = maxPoints;
 	}
 
 	public int icon(){
@@ -129,7 +135,7 @@ public enum Talent {
 	}
 
 	public int maxPoints(){
-		return 2;
+		return maxPoints;
 	}
 
 	public String title(){
@@ -409,16 +415,16 @@ public enum Talent {
 		//tier 3
 		switch (cls){
 			case WARRIOR: default:
-				Collections.addAll(tierTalents, WARRIOR_T3_1, WARRIOR_T3_2, WARRIOR_T3_3);
+				Collections.addAll(tierTalents, WARRIOR_T3_1, WARRIOR_T3_2);
 				break;
 			case MAGE:
-				Collections.addAll(tierTalents, MAGE_T3_1, MAGE_T3_2, MAGE_T3_3);
+				Collections.addAll(tierTalents, MAGE_T3_1, MAGE_T3_2);
 				break;
 			case ROGUE:
-				Collections.addAll(tierTalents, ROGUE_T3_1, ROGUE_T3_2, ROGUE_T3_3);
+				Collections.addAll(tierTalents, ROGUE_T3_1, ROGUE_T3_2);
 				break;
 			case HUNTRESS:
-				Collections.addAll(tierTalents, HUNTRESS_T3_1, HUNTRESS_T3_2, HUNTRESS_T3_3);
+				Collections.addAll(tierTalents, HUNTRESS_T3_1, HUNTRESS_T3_2);
 				break;
 		}
 		for (Talent talent : tierTalents){

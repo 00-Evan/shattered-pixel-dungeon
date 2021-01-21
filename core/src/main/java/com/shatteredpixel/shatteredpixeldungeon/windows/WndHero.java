@@ -48,7 +48,7 @@ import java.util.Locale;
 
 public class WndHero extends WndTabbed {
 	
-	private static final int WIDTH		= 130;
+	private static final int WIDTH		= 120;
 	private static final int HEIGHT		= 120;
 	
 	private StatsTab stats;
