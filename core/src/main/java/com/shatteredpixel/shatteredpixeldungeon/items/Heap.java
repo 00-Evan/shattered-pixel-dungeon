@@ -175,6 +175,12 @@ public class Heap implements Bundlable {
 		int index = items.indexOf( a );
 		if (index != -1) {
 			items.remove( index );
+			for (Item i : items) {
+				if (i.isSimilar( b )) {
+					i.merge( b );
+					return;
+				}
+			}
 			items.add( index, b );
 		}
 	}
