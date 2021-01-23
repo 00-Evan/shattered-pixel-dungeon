@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
@@ -209,17 +208,19 @@ public abstract class Elemental extends Mob {
 			spriteClass = ElementalSprite.NewbornFire.class;
 			
 			HT = 60;
-			HP = HT/2; //32
+			HP = HT/2; //30
 			
 			defenseSkill = 12;
 			
 			EXP = 7;
-			maxLvl = Hero.MAX_LEVEL;
-			
-			loot = new Embers();
-			lootChance = 1f;
 			
 			properties.add(Property.MINIBOSS);
+		}
+
+		@Override
+		public void die(Object cause) {
+			super.die(cause);
+			Dungeon.level.drop( new Embers(), pos ).sprite.drop();
 		}
 
 		@Override
