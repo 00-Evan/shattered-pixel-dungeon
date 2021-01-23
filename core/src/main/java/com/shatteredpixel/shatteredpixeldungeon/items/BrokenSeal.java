@@ -101,30 +101,35 @@ public class BrokenSeal extends Item {
 	protected static WndBag.Listener armorSelector = new WndBag.Listener() {
 		@Override
 		public void onSelect( Item item ) {
+			BrokenSeal seal = (BrokenSeal) curItem;
 			if (item != null && item instanceof Armor) {
 				Armor armor = (Armor)item;
 				if (!armor.levelKnown){
 					GLog.w(Messages.get(BrokenSeal.class, "unknown_armor"));
-				} else if (armor.cursed || armor.level() < 0){
+
+				} else if ((armor.cursed || armor.level() < 0)
+						&& (seal.getGlyph() == null || !seal.getGlyph().curse())){
 					GLog.w(Messages.get(BrokenSeal.class, "degraded_armor"));
-				} else if (armor.glyph != null && ((BrokenSeal)curItem).getGlyph() != null
-						&& armor.glyph.getClass() != ((BrokenSeal) curItem).getGlyph().getClass()) {
+
+				} else if (armor.glyph != null && seal.getGlyph() != null
+						&& armor.glyph.getClass() != seal.getGlyph().getClass()) {
 					GameScene.show(new WndOptions(Messages.get(BrokenSeal.class, "choose_title"),
 							Messages.get(BrokenSeal.class, "choose_desc"),
 							armor.glyph.name(),
-							((BrokenSeal)curItem).getGlyph().name()){
+							seal.getGlyph().name()){
 						@Override
 						protected void onSelect(int index) {
-							if (index == 0) ((BrokenSeal)curItem).setGlyph(null);
+							if (index == 0) seal.setGlyph(null);
 							//if index is 1, then the glyph transfer happens in affixSeal
 
 							GLog.p(Messages.get(BrokenSeal.class, "affix"));
 							Dungeon.hero.sprite.operate(Dungeon.hero.pos);
 							Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
-							armor.affixSeal((BrokenSeal)curItem);
-							curItem.detach(Dungeon.hero.belongings.backpack);
+							armor.affixSeal(seal);
+							seal.detach(Dungeon.hero.belongings.backpack);
 						}
 					});
+
 				} else {
 					GLog.p(Messages.get(BrokenSeal.class, "affix"));
 					Dungeon.hero.sprite.operate(Dungeon.hero.pos);
