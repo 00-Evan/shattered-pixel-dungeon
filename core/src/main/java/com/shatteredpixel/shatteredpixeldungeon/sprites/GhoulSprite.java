@@ -45,10 +45,10 @@ public class GhoulSprite extends MobSprite {
 		attack = new Animation( 12, false );
 		attack.frames( frames, 0, 8, 9 );
 
-		crumple = new Animation( 1, false);
+		crumple = new Animation( 15, false);
 		crumple.frames( frames, 0, 10, 11, 12 );
 
-		die = new Animation( 1, false );
+		die = new Animation( 15, false );
 		die.frames( frames, 0, 10, 11, 12, 13 );
 		
 		play( idle );
