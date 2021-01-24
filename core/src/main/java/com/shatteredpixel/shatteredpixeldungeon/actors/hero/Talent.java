@@ -104,7 +104,7 @@ public enum Talent {
 	//Huntress T2
 	INVIGORATING_MEAL(100), RESTORED_NATURE(101), REJUVENATING_STEPS(102), HEIGHTENED_SENSES(103), DURABLE_PROJECTILES(104),
 	//Huntress T3
-	HUNTRESS_T3_1(105, 3), HUNTRESS_T3_2(106, 3),
+	POINT_BLANK(105, 3), HUNTRESS_T3_2(106, 3),
 	//Sniper T3
 	SNIPER_T3_1(107, 3), SNIPER_T3_2(108, 3), SNIPER_T3_3(109, 3),
 	//Warden T3
@@ -424,7 +424,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, ROGUE_T3_1, ROGUE_T3_2);
 				break;
 			case HUNTRESS:
-				Collections.addAll(tierTalents, HUNTRESS_T3_1, HUNTRESS_T3_2);
+				Collections.addAll(tierTalents, POINT_BLANK, HUNTRESS_T3_2);
 				break;
 		}
 		for (Talent talent : tierTalents){
