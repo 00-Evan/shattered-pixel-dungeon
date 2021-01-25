@@ -528,10 +528,20 @@ public class Armor extends EquipableItem {
 	}
 
 	public int STRReq(int lvl){
+		return STRReq(tier, lvl);
+	}
+
+	protected static int STRReq(int tier, int lvl){
 		lvl = Math.max(0, lvl);
 
 		//strength req decreases at +1,+3,+6,+10,etc.
-		return (8 + Math.round(tier * 2)) - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
+		int req = (8 + Math.round(tier * 2)) - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
+
+		if (Dungeon.hero.hasTalent(Talent.STRONGMAN)){
+			req -= (Dungeon.hero.pointsInTalent(Talent.STRONGMAN)+1)/2;
+		}
+
+		return req;
 	}
 	
 	@Override
