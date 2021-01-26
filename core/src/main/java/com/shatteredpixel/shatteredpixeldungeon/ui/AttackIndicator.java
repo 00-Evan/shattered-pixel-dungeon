@@ -50,13 +50,15 @@ public class AttackIndicator extends Tag {
 	
 	public AttackIndicator() {
 		super( DangerIndicator.COLOR );
-		
-		instance = this;
-		lastTarget = null;
-		
-		setSize( 24, 24 );
-		visible( false );
-		enable( false );
+
+		synchronized (this) {
+			instance = this;
+			lastTarget = null;
+
+			setSize(24, 24);
+			visible(false);
+			enable(false);
+		}
 	}
 	
 	@Override
