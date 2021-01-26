@@ -106,7 +106,7 @@ public enum Talent {
 	//Huntress T3
 	POINT_BLANK(105, 3), HUNTRESS_T3_2(106, 3),
 	//Sniper T3
-	SNIPER_T3_1(107, 3), SNIPER_T3_2(108, 3), SNIPER_T3_3(109, 3),
+	FARSIGHT(107, 3), SNIPER_T3_2(108, 3), SNIPER_T3_3(109, 3),
 	//Warden T3
 	WARDEN_T3_1(110, 3), WARDEN_T3_2(111, 3), WARDEN_T3_3(112, 3);
 
@@ -168,6 +168,10 @@ public enum Talent {
 		if (talent == THIEFS_INTUITION && hero.pointsInTalent(THIEFS_INTUITION) == 1){
 			if (hero.belongings.ring instanceof Ring) hero.belongings.ring.setKnown();
 			if (hero.belongings.misc instanceof Ring) ((Ring) hero.belongings.misc).setKnown();
+		}
+
+		if (talent == FARSIGHT){
+			Dungeon.observe();
 		}
 	}
 
@@ -470,7 +474,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, FREERUNNER_T3_1, FREERUNNER_T3_2, FREERUNNER_T3_3);
 				break;
 			case SNIPER:
-				Collections.addAll(tierTalents, SNIPER_T3_1, SNIPER_T3_2, SNIPER_T3_3);
+				Collections.addAll(tierTalents, FARSIGHT, SNIPER_T3_2, SNIPER_T3_3);
 				break;
 			case WARDEN:
 				Collections.addAll(tierTalents, WARDEN_T3_1, WARDEN_T3_2, WARDEN_T3_3);
