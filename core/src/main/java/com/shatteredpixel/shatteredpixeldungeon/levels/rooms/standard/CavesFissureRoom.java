@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
@@ -59,135 +60,171 @@ public class CavesFissureRoom extends StandardRoom {
 
 	@Override
 	public void paint(Level level) {
-		Painter.fill( level, this, Terrain.WALL );
-		Painter.fill( level, this, 1 , Terrain.EMPTY );
 
-		for (Door door : connected.values()) {
-			door.set( Door.Type.REGULAR );
-		}
+		boolean pathable = true;
+		PathFinder.setMapSize(width()-2, height()-2);
 
-		PointF center = new PointF(center());
-		center.x += 0.5f;
-		center.y += 0.5f;
+		do {
+			Painter.fill(level, this, Terrain.WALL);
+			Painter.fill(level, this, 1, Terrain.EMPTY);
 
-		//find the angle of each door from our center point
-		ArrayList<Float> doorAngles = new ArrayList<>();
-		for (Door d : connected.values()){
-			PointF doorCenter = new PointF(d.x+0.5f, d.y+0.5f);
-			float doorAngle = angleBetweenPoints(center, doorCenter);
-			if (doorAngle < 0) doorAngle += 360f;
-			doorAngles.add(doorAngle);
-		}
-
-		//generate angles for 2-4 fissure lines, they can't be too close to doors or eachother
-		ArrayList<Float> lineAngles = new ArrayList<>();
-		int numLines = 1 + sizeCat.roomValue;
-		for (int i = 0; i < numLines; i++){
-			int tries = 100;
-			boolean valid;
-			do {
-				valid = true;
-				float lineAngle = Random.Float(0, 360);
-				for (float doorAngle : doorAngles){
-					float angleDiff = Math.abs(lineAngle - doorAngle);
-					if (angleDiff > 180f) angleDiff = 360f - angleDiff;
-					if (angleDiff <= (sizeCat == SizeCategory.NORMAL ? 30f : 15f)){
-						valid = false;
-						break;
-					}
-				}
-
-				for (float existingLineAngle : lineAngles){
-					float angleDiff = Math.abs(lineAngle - existingLineAngle);
-					if (angleDiff > 180f) angleDiff = 360f - angleDiff;
-					if (angleDiff <= (numLines == 2 ? 120f : 60f)){
-						valid = false;
-						break;
-					}
-				}
-
-				if (valid){
-					lineAngles.add(lineAngle);
-				}
-
-			} while (!valid && --tries > 0);
-		}
-
-		//just become an empty room if we can't make at least 2 lines
-		if (lineAngles.size() < 2){
-			return;
-		}
-
-		//fill in each fissure
-		for(float lineAngle : lineAngles){
-			float dX = (float)Math.cos(lineAngle/A - Math.PI/2.0);
-			float dY = (float)Math.sin(lineAngle/A - Math.PI/2.0);
-
-			boolean horizontal;
-			if (Math.abs(dX) >= Math.abs(dY)){
-				horizontal = true;
-				dY /= Math.abs(dX);
-				dX /= Math.abs(dX);
-			} else {
-				horizontal = false;
-				dX /= Math.abs(dY);
-				dY /= Math.abs(dY);
+			for (Door door : connected.values()) {
+				door.set(Door.Type.REGULAR);
 			}
 
-			PointF curr = new PointF(center);
-			int cell = (int)curr.x + ((int)curr.y)*level.width();
-			Painter.set(level, cell, Terrain.CHASM);
-			do {
-				if (!horizontal){
-					if (level.map[cell-1] == Terrain.EMPTY
-							&& ((curr.x % 1 <= 0.5f) || sizeCat == SizeCategory.GIANT)) {
-						Painter.set(level, cell - 1, Terrain.CHASM);
+			PointF center = new PointF(center());
+			center.x += 0.5f;
+			center.y += 0.5f;
+
+			//find the angle of each door from our center point
+			ArrayList<Float> doorAngles = new ArrayList<>();
+			for (Door d : connected.values()) {
+				PointF doorCenter = new PointF(d.x + 0.5f, d.y + 0.5f);
+				float doorAngle = angleBetweenPoints(center, doorCenter);
+				if (doorAngle < 0) doorAngle += 360f;
+				doorAngles.add(doorAngle);
+			}
+
+			//generate angles for 2-4 fissure lines, they can't be too close to doors or eachother
+			ArrayList<Float> lineAngles = new ArrayList<>();
+			int numLines = 1 + sizeCat.roomValue;
+			for (int i = 0; i < numLines; i++) {
+				int tries = 100;
+				boolean valid;
+				do {
+					valid = true;
+					float lineAngle = Random.Float(0, 360);
+					for (float doorAngle : doorAngles) {
+						float angleDiff = Math.abs(lineAngle - doorAngle);
+						if (angleDiff > 180f) angleDiff = 360f - angleDiff;
+						if (angleDiff <= (sizeCat == SizeCategory.NORMAL ? 30f : 15f)) {
+							valid = false;
+							break;
+						}
 					}
-					if (level.map[cell] == Terrain.EMPTY)   Painter.set(level, cell, Terrain.CHASM);
-					if (level.map[cell+1] == Terrain.EMPTY
-							&& ((curr.x % 1 > 0.5f) || sizeCat == SizeCategory.GIANT)) {
-						Painter.set(level, cell + 1, Terrain.CHASM);
+
+					for (float existingLineAngle : lineAngles) {
+						float angleDiff = Math.abs(lineAngle - existingLineAngle);
+						if (angleDiff > 180f) angleDiff = 360f - angleDiff;
+						if (angleDiff <= (numLines == 2 ? 120f : 60f)) {
+							valid = false;
+							break;
+						}
 					}
+
+					if (valid) {
+						lineAngles.add(lineAngle);
+					}
+
+				} while (!valid && --tries > 0);
+			}
+
+			//just become an empty room if we can't make at least 2 lines
+			if (lineAngles.size() < 2) {
+				return;
+			}
+
+			//fill in each fissure
+			for (float lineAngle : lineAngles) {
+				float dX = (float) Math.cos(lineAngle / A - Math.PI / 2.0);
+				float dY = (float) Math.sin(lineAngle / A - Math.PI / 2.0);
+
+				boolean horizontal;
+				if (Math.abs(dX) >= Math.abs(dY)) {
+					horizontal = true;
+					dY /= Math.abs(dX);
+					dX /= Math.abs(dX);
 				} else {
-					if (level.map[cell-level.width()] == Terrain.EMPTY
-							&& ((curr.y % 1 <= 0.5f) || sizeCat == SizeCategory.GIANT)) {
-						Painter.set(level, cell - level.width(), Terrain.CHASM);
-					}
-					if (level.map[cell] == Terrain.EMPTY)               Painter.set(level, cell, Terrain.CHASM);
-					if (level.map[cell+level.width()] == Terrain.EMPTY
-							&& ((curr.y % 1 > 0.5f) || sizeCat == SizeCategory.GIANT)) {
-						Painter.set(level, cell + level.width(), Terrain.CHASM);
-					}
+					horizontal = false;
+					dX /= Math.abs(dY);
+					dY /= Math.abs(dY);
 				}
 
-				curr.x += dX;
-				curr.y += dY;
-				cell = (int)curr.x + ((int)curr.y)*level.width();
-			} while (level.map[cell] == Terrain.EMPTY || level.map[cell] == Terrain.CHASM);
+				PointF curr = new PointF(center);
+				int cell = (int) curr.x + ((int) curr.y) * level.width();
+				Painter.set(level, cell, Terrain.CHASM);
+				do {
+					if (!horizontal) {
+						if (level.map[cell - 1] == Terrain.EMPTY
+								&& ((curr.x % 1 <= 0.5f) || sizeCat == SizeCategory.GIANT)) {
+							Painter.set(level, cell - 1, Terrain.CHASM);
+						}
+						if (level.map[cell] == Terrain.EMPTY)
+							Painter.set(level, cell, Terrain.CHASM);
+						if (level.map[cell + 1] == Terrain.EMPTY
+								&& ((curr.x % 1 > 0.5f) || sizeCat == SizeCategory.GIANT)) {
+							Painter.set(level, cell + 1, Terrain.CHASM);
+						}
+					} else {
+						if (level.map[cell - level.width()] == Terrain.EMPTY
+								&& ((curr.y % 1 <= 0.5f) || sizeCat == SizeCategory.GIANT)) {
+							Painter.set(level, cell - level.width(), Terrain.CHASM);
+						}
+						if (level.map[cell] == Terrain.EMPTY)
+							Painter.set(level, cell, Terrain.CHASM);
+						if (level.map[cell + level.width()] == Terrain.EMPTY
+								&& ((curr.y % 1 > 0.5f) || sizeCat == SizeCategory.GIANT)) {
+							Painter.set(level, cell + level.width(), Terrain.CHASM);
+						}
+					}
 
-		}
+					curr.x += dX;
+					curr.y += dY;
+					cell = (int) curr.x + ((int) curr.y) * level.width();
+				} while (level.map[cell] == Terrain.EMPTY || level.map[cell] == Terrain.CHASM);
 
-		//add chasm to the center in larger rooms
-		if (lineAngles.size() >= 3){
-			if (sizeCat == SizeCategory.GIANT){
-				Painter.fill(level, (int)center.x-2, (int)center.y-2, 5, 5, Terrain.CHASM);
+			}
+
+			//add chasm to the center in larger rooms
+			if (lineAngles.size() >= 3) {
+				if (sizeCat == SizeCategory.GIANT) {
+					Painter.fill(level, (int) center.x - 2, (int) center.y - 2, 5, 5, Terrain.CHASM);
+				} else {
+					Painter.fill(level, (int) center.x - 1, (int) center.y - 1, 3, 3, Terrain.CHASM);
+				}
+			}
+
+			//draw bridges for the chasms
+			if (lineAngles.size() == 2) {
+				buildBridge(level, Random.element(lineAngles), center, 1);
 			} else {
-				Painter.fill(level, (int)center.x-1, (int)center.y-1, 3, 3, Terrain.CHASM);
+				for (float angle : lineAngles) {
+					buildBridge(level, angle, center, sizeCat.roomValue);
+				}
 			}
-		}
 
-		//draw bridges for the chasms
-		if (lineAngles.size() == 2){
-			buildBridge(level, Random.element(lineAngles), center, 1);
-		} else {
-			for (float angle : lineAngles){
-				buildBridge(level, angle, center, sizeCat.roomValue);
+			int doorPoint = 0;
+			for (Door door : connected.values()) {
+				Painter.drawInside(level, this, door, 1, Terrain.EMPTY);
+				if (door.x == left)         doorPoint = xyToRoomCoords(door.x+1, door.y);
+				else if (door.x == right)   doorPoint = xyToRoomCoords(door.x-1, door.y);
+				else if (door.y == top)     doorPoint = xyToRoomCoords(door.x, door.y+1);
+				else if (door.y == bottom)  doorPoint = xyToRoomCoords(door.x, door.y-1);
 			}
-		}
 
-		for (Door door : connected.values()) {
-			Painter.drawInside( level, this, door, 1, Terrain.EMPTY);
-		}
+			//ensures that there is always a path to any non-chasm tile
+			//TODO some copypasta from PatchRoom here, maybe standardize this as a static function in Room?
+			pathable = true;
+			boolean[] passable = new boolean[PathFinder.distance.length];
+
+			for (Point p : shrink().getPoints()){
+				int i = xyToRoomCoords(p.x, p.y);
+				passable[i] = level.map[level.pointToCell(p)] != Terrain.CHASM;
+			}
+
+			PathFinder.buildDistanceMap(doorPoint, passable);
+
+			for (Point p : shrink().getPoints()){
+				int i = xyToRoomCoords(p.x, p.y);
+				if (passable[i] && PathFinder.distance[i] == Integer.MAX_VALUE){
+					pathable = false;
+					break;
+				}
+			}
+
+		} while (!pathable);
+
+		PathFinder.setMapSize(level.width(), level.height());
 
 	}
 
@@ -195,7 +232,7 @@ public class CavesFissureRoom extends StandardRoom {
 		float dX = (float)Math.cos(fisssureAngle/A - Math.PI/2.0);
 		float dY = (float)Math.sin(fisssureAngle/A - Math.PI/2.0);
 
-		int edgemargin = sizeCat == SizeCategory.NORMAL ? 3 : 2;
+		int edgemargin = 2;
 
 		//horizontal bridge
 		if (Math.abs(dY) >= Math.abs(dX)){
@@ -266,6 +303,10 @@ public class CavesFissureRoom extends StandardRoom {
 		float angle = (float)(A*(Math.atan(m) + Math.PI/2.0));
 		if (from.x > to.x) angle -= 180f;
 		return angle;
+	}
+
+	protected int xyToRoomCoords(int x, int y){
+		return (x-left-1) + ((y-top-1) * (width()-2));
 	}
 
 }
