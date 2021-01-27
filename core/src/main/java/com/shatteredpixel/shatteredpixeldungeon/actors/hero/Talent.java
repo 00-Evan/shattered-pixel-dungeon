@@ -73,7 +73,7 @@ public enum Talent {
 	//Warrior T3
 	STRONGMAN(9, 3), WARRIOR_T3_2(10, 3),
 	//Berserker T3
-	BERSERKER_T3_1(11, 3), BERSERKER_T3_2(12, 3), BERSERKER_T3_3(13, 3),
+	ENDLESS_RAGE(11, 3), BERSERKER_T3_2(12, 3), BERSERKER_T3_3(13, 3),
 	//Gladiator T3
 	GLADIATOR_T3_1(14, 3), GLADIATOR_T3_2(15, 3), GLADIATOR_T3_3(16, 3),
 
@@ -456,7 +456,7 @@ public enum Talent {
 		//tier 3
 		switch (cls){
 			case BERSERKER: default:
-				Collections.addAll(tierTalents, BERSERKER_T3_1, BERSERKER_T3_2, BERSERKER_T3_3);
+				Collections.addAll(tierTalents, ENDLESS_RAGE, BERSERKER_T3_2, BERSERKER_T3_3);
 				break;
 			case GLADIATOR:
 				Collections.addAll(tierTalents, GLADIATOR_T3_1, GLADIATOR_T3_2, GLADIATOR_T3_3);
