@@ -231,7 +231,7 @@ public class CloakOfShadows extends Artifact {
 
 		@Override
 		public float iconFadePercent() {
-			return (5f - turnsToCost) / 5f;
+			return (4f - turnsToCost) / 4f;
 		}
 
 		@Override
@@ -291,7 +291,7 @@ public class CloakOfShadows extends Artifact {
 						GLog.p(Messages.get(this, "levelup"));
 						
 					}
-					turnsToCost = 5;
+					turnsToCost = 4;
 				}
 				updateQuickslot();
 			}
