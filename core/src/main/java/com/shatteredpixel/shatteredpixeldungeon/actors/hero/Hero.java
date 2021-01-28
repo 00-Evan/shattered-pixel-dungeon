@@ -379,13 +379,8 @@ public class Hero extends Char {
 		belongings.weapon = belongings.stashedWeapon;
 		belongings.stashedWeapon = null;
 		
-		if (subClass == HeroSubClass.GLADIATOR){
-			if (hit) {
-				Buff.affect( this, Combo.class ).hit( enemy );
-			} else {
-				Combo combo = buff(Combo.class);
-				if (combo != null) combo.miss( enemy );
-			}
+		if (hit && subClass == HeroSubClass.GLADIATOR){
+			Buff.affect( this, Combo.class ).hit( enemy );
 		}
 
 		return hit;
@@ -1690,18 +1685,13 @@ public class Hero extends Char {
 		AttackIndicator.target(enemy);
 		
 		boolean hit = attack( enemy );
-
-		if (subClass == HeroSubClass.GLADIATOR){
-			if (hit) {
-				Buff.affect( this, Combo.class ).hit( enemy );
-			} else {
-				Combo combo = buff(Combo.class);
-				if (combo != null) combo.miss( enemy );
-			}
-		}
 		
 		Invisibility.dispel();
 		spend( attackDelay() );
+
+		if (hit && subClass == HeroSubClass.GLADIATOR){
+			Buff.affect( this, Combo.class ).hit( enemy );
+		}
 
 		curAction = null;
 

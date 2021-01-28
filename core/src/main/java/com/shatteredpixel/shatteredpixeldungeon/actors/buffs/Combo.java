@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
@@ -51,7 +52,6 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	
 	private int count = 0;
 	private float comboTime = 0f;
-	private int misses = 0;
 	
 	@Override
 	public int icon() {
@@ -70,7 +70,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public float iconFadePercent() {
-		return Math.max(0, (4 - comboTime)/4f);
+		return Math.max(0, (5 - comboTime)/5f);
 	}
 
 	@Override
@@ -81,9 +81,12 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	public void hit( Char enemy ) {
 
 		count++;
-		comboTime = 4f;
-		misses = 0;
-		
+		comboTime = 5f;
+
+		if (!enemy.isAlive() || enemy.buff(Corruption.class) != null){
+			comboTime = Math.max(comboTime, 10*((Hero)target).pointsInTalent(Talent.CLEAVE));
+		}
+
 		if (count >= 2) {
 
 			ActionIndicator.setAction( this );
@@ -95,14 +98,6 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 		BuffIndicator.refreshHero(); //refresh the buff visually on-hit
 
-	}
-
-	public void miss( Char enemy ){
-		misses++;
-		comboTime = 4f;
-		if (misses >= 2){
-			detach();
-		}
 	}
 
 	@Override
@@ -136,14 +131,11 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 	private static final String COUNT = "count";
 	private static final String TIME  = "combotime";
-	private static final String MISSES= "misses";
-
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
 		bundle.put(COUNT, count);
 		bundle.put(TIME, comboTime);
-		bundle.put(MISSES, misses);
 	}
 
 	@Override
@@ -152,7 +144,6 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		count = bundle.getInt( COUNT );
 		if (count >= 2) ActionIndicator.setAction(this);
 		comboTime = bundle.getFloat( TIME );
-		misses = bundle.getInt( MISSES );
 	}
 
 	@Override
@@ -179,6 +170,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	}
 
 	private enum finisherType{
+		//TODO rework these, as well as finisher mechanics in general
 		CLOBBER, CLEAVE, SLAM, CRUSH, FURY
 	}
 
