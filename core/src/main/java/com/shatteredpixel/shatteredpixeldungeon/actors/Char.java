@@ -625,7 +625,7 @@ public abstract class Char extends Actor {
 	public synchronized void add( Buff buff ) {
 		
 		buffs.add( buff );
-		Actor.add( buff );
+		if (Actor.chars().contains(this)) Actor.add( buff );
 
 		if (sprite != null && buff.announced)
 			switch(buff.type){
