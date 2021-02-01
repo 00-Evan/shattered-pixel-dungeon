@@ -200,8 +200,7 @@ public class Dungeon {
 		droppedItems = new SparseArray<>();
 		portedItems = new SparseArray<>();
 
-		for (LimitedDrops a : LimitedDrops.values())
-			a.count = 0;
+		LimitedDrops.reset();
 		
 		chapters = new HashSet<>();
 		
@@ -382,7 +381,7 @@ public class Dungeon {
 		}
 		
 		Light light = hero.buff( Light.class );
-		hero.viewDistance = light == null ? level.viewDistance : Math.max( Light.DISTANCE, level.viewDistance );
+		hero.viewDistance = 2;
 		
 		hero.curAction = hero.lastAction = null;
 		
