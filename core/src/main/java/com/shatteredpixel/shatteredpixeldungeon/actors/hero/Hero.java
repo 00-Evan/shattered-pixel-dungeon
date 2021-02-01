@@ -484,9 +484,11 @@ public class Hero extends Char {
 		}
 		
 		Momentum momentum = buff(Momentum.class);
-		if (momentum != null){
-			((HeroSprite)sprite).sprint( 1f + 0.05f*momentum.stacks());
+		if (momentum != null && momentum.freerunning()){
+			((HeroSprite)sprite).sprint( 1.5f );
 			speed *= momentum.speedMultiplier();
+		} else {
+			((HeroSprite)sprite).sprint( 1f );
 		}
 		
 		return speed;

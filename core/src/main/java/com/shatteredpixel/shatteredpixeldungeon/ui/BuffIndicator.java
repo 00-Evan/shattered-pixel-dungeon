@@ -86,7 +86,7 @@ public class BuffIndicator extends Component {
 	public static final int RAGE		= 38;
 	public static final int SACRIFICE	= 39;
 	public static final int BERSERK     = 40;
-	public static final int MOMENTUM    = 41;
+	public static final int HASTE       = 41;
 	public static final int PREPARATION = 42;
 	public static final int WELL_FED    = 43;
 	public static final int HEALING     = 44;
@@ -96,6 +96,7 @@ public class BuffIndicator extends Component {
 	public static final int DEGRADE     = 48;
 	public static final int PINCUSHION  = 49;
 	public static final int UPGRADE     = 50;
+	public static final int MOMENTUM    = 51;
 
 	public static final int SIZE	= 7;
 	

@@ -35,7 +35,7 @@ public class Haste extends FlavourBuff {
 	
 	@Override
 	public int icon() {
-		return BuffIndicator.MOMENTUM;
+		return BuffIndicator.HASTE;
 	}
 
 	@Override
