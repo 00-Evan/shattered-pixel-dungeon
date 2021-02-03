@@ -95,7 +95,7 @@ public enum Talent {
 	//Rogue T3
 	ROGUE_T3_1(73, 3), ROGUE_T3_2(74, 3),
 	//Assassin T3
-	ASSASSIN_T3_1(75, 3), ASSASSIN_T3_2(76, 3), ASSASSIN_T3_3(77, 3),
+	ENHANCED_LETHALITY(75, 3), ASSASSIN_T3_2(76, 3), ASSASSIN_T3_3(77, 3),
 	//Freerunner T3
 	EVASIVE_ARMOR(78, 3), FREERUNNER_T3_2(79, 3), FREERUNNER_T3_3(80, 3),
 
@@ -468,7 +468,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, SOUL_SIPHON, WARLOCK_T3_2, WARLOCK_T3_3);
 				break;
 			case ASSASSIN:
-				Collections.addAll(tierTalents, ASSASSIN_T3_1, ASSASSIN_T3_2, ASSASSIN_T3_3);
+				Collections.addAll(tierTalents, ENHANCED_LETHALITY, ASSASSIN_T3_2, ASSASSIN_T3_3);
 				break;
 			case FREERUNNER:
 				Collections.addAll(tierTalents, EVASIVE_ARMOR, FREERUNNER_T3_2, FREERUNNER_T3_3);

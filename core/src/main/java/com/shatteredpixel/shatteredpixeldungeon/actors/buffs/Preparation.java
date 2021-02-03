@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroAction;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Effects;
@@ -54,27 +55,39 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 	}
 	
 	public enum AttackLevel{
-		LVL_1( 1, 0.15f, 0.05f, 1, 1),
-		LVL_2( 3, 0.30f, 0.15f, 1, 3),
-		LVL_3( 5, 0.45f, 0.30f, 2, 5),
-		LVL_4( 9, 0.60f, 0.50f, 3, 7);
-		
+		LVL_1( 1, 0.15f, 1, 1),
+		LVL_2( 3, 0.30f, 1, 3),
+		LVL_3( 5, 0.45f, 2, 5),
+		LVL_4( 9, 0.60f, 3, 7);
+
 		final int turnsReq;
-		final float baseDmgBonus, KOThreshold;
+		final float baseDmgBonus;
 		final int damageRolls, blinkDistance;
 		
-		AttackLevel( int turns, float base, float threshold, int rolls, int dist){
+		AttackLevel( int turns, float base, int rolls, int dist){
 			turnsReq = turns;
-			baseDmgBonus = base; KOThreshold = threshold;
+			baseDmgBonus = base;
 			damageRolls = rolls; blinkDistance = dist;
+		}
+
+		//1st index is prep level, 2nd is talent level
+		private static final float[][] KOThresholds = new float[][]{
+				{.03f, .04f, .05f, .06f},
+				{.10f, .12f, .14f, .16f},
+				{.20f, .25f, .30f, .35f},
+				{.40f, .60f, .80f, 1.0f}
+		};
+
+		public float KOThreshold(){
+			return KOThresholds[ordinal()][Dungeon.hero.pointsInTalent(Talent.ENHANCED_LETHALITY)];
 		}
 		
 		public boolean canKO(Char defender){
 			if (defender.properties().contains(Char.Property.MINIBOSS)
 					|| defender.properties().contains(Char.Property.BOSS)){
-				return (defender.HP/(float)defender.HT) < (KOThreshold/5f);
+				return (defender.HP/(float)defender.HT) < (KOThreshold()/5f);
 			} else {
-				return (defender.HP/(float)defender.HT) < KOThreshold;
+				return (defender.HP/(float)defender.HT) < KOThreshold();
 			}
 		}
 		
@@ -179,8 +192,8 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 
 		desc += "\n\n" + Messages.get(this, "desc_dmg",
 				(int)(lvl.baseDmgBonus*100),
-				(int)(lvl.KOThreshold*100),
-				(int)(lvl.KOThreshold*20));
+				(int)(lvl.KOThreshold()*100),
+				(int)(lvl.KOThreshold()*20));
 		
 		if (lvl.damageRolls > 1){
 			desc += " " + Messages.get(this, "desc_dmg_likely");
