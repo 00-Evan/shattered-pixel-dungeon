@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndCombo;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -60,12 +61,12 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	
 	@Override
 	public void tintIcon(Image icon) {
-		if (count >= 10)    icon.hardlight(1f, 0f, 0f);
-		else if (count >= 8)icon.hardlight(1f, 0.8f, 0f);
-		else if (count >= 6)icon.hardlight(1f, 1f, 0f);
-		else if (count >= 4)icon.hardlight(0.8f, 1f, 0f);
-		else if (count >= 2)icon.hardlight(0f, 1f, 0f);
-		else                icon.resetColor();
+		ComboMove move = getHighestMove();
+		if (move != null){
+			icon.hardlight(move.tintColor & 0x00FFFFFF);
+		} else {
+			icon.resetColor();
+		}
 	}
 
 	@Override
@@ -83,11 +84,12 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		count++;
 		comboTime = 5f;
 
+		//TODO this won't count a kill on an enemy that gets corruped by corrupting I think?
 		if (!enemy.isAlive() || enemy.buff(Corruption.class) != null){
 			comboTime = Math.max(comboTime, 10*((Hero)target).pointsInTalent(Talent.CLEAVE));
 		}
 
-		if (count >= 2) {
+		if ((getHighestMove() != null)) {
 
 			ActionIndicator.setAction( this );
 			Badges.validateMasteryCombo( count );
@@ -118,15 +120,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public String desc() {
-		String desc = Messages.get(this, "desc");
-
-		if (count >= 10)    desc += "\n\n" + Messages.get(this, "fury_desc");
-		else if (count >= 8)desc += "\n\n" + Messages.get(this, "crush_desc");
-		else if (count >= 6)desc += "\n\n" + Messages.get(this, "slam_desc");
-		else if (count >= 4)desc += "\n\n" + Messages.get(this, "cleave_desc");
-		else if (count >= 2)desc += "\n\n" + Messages.get(this, "clobber_desc");
-
-		return desc;
+		return Messages.get(this, "desc");
 	}
 
 	private static final String COUNT = "count";
@@ -142,7 +136,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		count = bundle.getInt( COUNT );
-		if (count >= 2) ActionIndicator.setAction(this);
+		if (getHighestMove() != null) ActionIndicator.setAction(this);
 		comboTime = bundle.getFloat( TIME );
 	}
 
@@ -155,28 +149,60 @@ public class Combo extends Buff implements ActionIndicator.Action {
 			icon = new ItemSprite(new Item(){ {image = ItemSpriteSheet.WEAPON_HOLDER; }});
 		}
 
-		if (count >= 10)    icon.tint(0xFFFF0000);
-		else if (count >= 8)icon.tint(0xFFFFCC00);
-		else if (count >= 6)icon.tint(0xFFFFFF00);
-		else if (count >= 4)icon.tint(0xFFCCFF00);
-		else                icon.tint(0xFF00FF00);
-
+		icon.tint(getHighestMove().tintColor);
 		return icon;
 	}
 
 	@Override
 	public void doAction() {
-		GameScene.selectCell(finisher);
+		GameScene.show(new WndCombo(this));
+		//GameScene.selectCell(finisher);
 	}
 
-	private enum finisherType{
-		//TODO rework these, as well as finisher mechanics in general
-		CLOBBER, CLEAVE, SLAM, CRUSH, FURY
+	public enum ComboMove {
+		//TODO rework these moves
+		CLOBBER(2, 0xFF00FF00),
+		CLEAVE(4, 0xFFCCFF00),
+		SLAM(6, 0xFFFFFF00),
+		CRUSH(8, 0xFFFFCC00),
+		FURY(10, 0xFFFF0000);
+
+		public int comboReq, tintColor;
+
+		ComboMove(int comboReq, int tintColor){
+			this.comboReq = comboReq;
+			this.tintColor = tintColor;
+		}
+
+		public String desc(){
+			return Messages.get(this, name()+"_desc");
+		}
+
+
 	}
 
-	private CellSelector.Listener finisher = new CellSelector.Listener() {
+	public ComboMove getHighestMove(){
+		ComboMove best = null;
+		for (ComboMove move : ComboMove.values()){
+			if (count >= move.comboReq){
+				best = move;
+			}
+		}
+		return best;
+	}
 
-		private finisherType type;
+	public boolean canUseMove(ComboMove move){
+		return move.comboReq <= count;
+	}
+
+	public void useMove(ComboMove move){
+		moveBeingUsed = move;
+		GameScene.selectCell(listener);
+	}
+
+	private static ComboMove moveBeingUsed;
+
+	private CellSelector.Listener listener = new CellSelector.Listener() {
 
 		@Override
 		public void onSelect(Integer cell) {
@@ -191,11 +217,6 @@ public class Combo extends Buff implements ActionIndicator.Action {
 				target.sprite.attack(cell, new Callback() {
 					@Override
 					public void call() {
-						if (count >= 10)    type = finisherType.FURY;
-						else if (count >= 8)type = finisherType.CRUSH;
-						else if (count >= 6)type = finisherType.SLAM;
-						else if (count >= 4)type = finisherType.CLEAVE;
-						else                type = finisherType.CLOBBER;
 						doAttack(enemy);
 					}
 				});
@@ -221,7 +242,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 				int dmg = target.damageRoll();
 
 				//variance in damage dealt
-				switch (type) {
+				switch (moveBeingUsed) {
 					case CLOBBER:
 						dmg = Math.round(dmg * 0.6f);
 						break;
@@ -255,7 +276,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 				enemy.damage(dmg, target);
 
 				//special effects
-				switch (type) {
+				switch (moveBeingUsed) {
 					case CLOBBER:
 						if (enemy.isAlive()) {
 							//trace a ballistica to our target (which will also extend past them
@@ -282,7 +303,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 				if (target.buff(FrostImbue.class) != null)  target.buff(FrostImbue.class).proc(enemy);
 
 				target.hitSound(Random.Float(0.87f, 1.15f));
-				if (type != finisherType.FURY) Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+				if (moveBeingUsed != ComboMove.FURY) Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				enemy.sprite.bloodBurstA(target.sprite.center(), dmg);
 				enemy.sprite.flash();
 
@@ -295,7 +316,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 			Hero hero = (Hero)target;
 
 			//Post-attack behaviour
-			switch(type){
+			switch(moveBeingUsed){
 				case CLEAVE:
 					//combo isn't reset, but rather increments with a cleave kill, and grants more time.
 					//this includes corrupting kills (which is why we check alignment
@@ -338,11 +359,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 		@Override
 		public String prompt() {
-			if (count >= 10)    return Messages.get(Combo.class, "fury_prompt");
-			else if (count >= 8)return Messages.get(Combo.class, "crush_prompt");
-			else if (count >= 6)return Messages.get(Combo.class, "slam_prompt");
-			else if (count >= 4)return Messages.get(Combo.class, "cleave_prompt");
-			else                return Messages.get(Combo.class, "clobber_prompt");
+			return Messages.get(Combo.class, "prompt");
 		}
 	};
 }
