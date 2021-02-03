@@ -154,11 +154,11 @@ public class WndGameInProgress extends Window {
 			}
 		};
 		
-		cont.setRect(0, HEIGHT - 20, WIDTH/2 -1, 20);
-		add(cont);
-		
-		erase.setRect(WIDTH/2 + 1, HEIGHT-20, WIDTH/2 - 1, 20);
+		erase.setRect(0, HEIGHT - 20, WIDTH/2 -1, 20);
 		add(erase);
+		
+		cont.setRect(WIDTH/2 + 1, HEIGHT-20, WIDTH/2 - 1, 20);
+		add(cont);
 		
 		resize(WIDTH, HEIGHT);
 	}
