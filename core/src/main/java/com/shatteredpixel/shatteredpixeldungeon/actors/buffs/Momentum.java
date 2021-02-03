@@ -22,6 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
@@ -84,8 +86,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 	
 	public int evasionBonus( int heroLvl, int excessArmorStr ){
 		if (freerunTurns > 0) {
-			return heroLvl / 2;
-			//TODO also grant bonuses based on excess str with talent
+			return heroLvl/2 + excessArmorStr*Dungeon.hero.pointsInTalent(Talent.EVASIVE_ARMOR);
 		} else {
 			return 0;
 		}
