@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
@@ -79,7 +80,8 @@ public class WndInfoTalent extends Window {
 					onUpgradeButton.call();
 				}
 			};
-			upgrade.setRect(0, txtInfo.bottom() + 2*GAP, WIDTH, 16);
+			upgrade.icon(Icons.get(Icons.TALENT));
+			upgrade.setRect(0, txtInfo.bottom() + 2*GAP, WIDTH, 18);
 			add(upgrade);
 			resize( WIDTH, (int)upgrade.bottom()+1 );
 		}

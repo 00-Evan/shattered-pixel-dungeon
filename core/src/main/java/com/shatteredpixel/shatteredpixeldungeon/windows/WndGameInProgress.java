@@ -156,14 +156,14 @@ public class WndGameInProgress extends Window {
 		};
 
 		cont.icon(Icons.get(Icons.ENTER));
-		cont.setRect(0, pos, WIDTH/2 -1, 18);
+		cont.setRect(0, pos, WIDTH/2 -1, 20);
 		add(cont);
 
 		erase.icon(Icons.get(Icons.CLOSE));
-		erase.setRect(WIDTH/2 + 1, pos, WIDTH/2 - 1, 18);
+		erase.setRect(WIDTH/2 + 1, pos, WIDTH/2 - 1, 20);
 		add(erase);
 		
-		resize(WIDTH, (int)cont.bottom());
+		resize(WIDTH, (int)cont.bottom()+1);
 	}
 	
 	private void statSlot( String label, String value ) {
