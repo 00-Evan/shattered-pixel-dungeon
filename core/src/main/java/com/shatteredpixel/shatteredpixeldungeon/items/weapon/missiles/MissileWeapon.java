@@ -230,6 +230,8 @@ abstract public class MissileWeapon extends Weapon {
 		
 		//at 100 uses, items just last forever.
 		if (usages >= 100f) return 0;
+
+		usages = Math.round(usages);
 		
 		//add a tiny amount to account for rounding error for calculations like 1/3
 		return (MAX_DURABILITY/usages) + 0.001f;
