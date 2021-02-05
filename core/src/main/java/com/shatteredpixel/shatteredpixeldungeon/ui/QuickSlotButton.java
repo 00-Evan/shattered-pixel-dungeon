@@ -92,8 +92,9 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 					}
 				} else {
 					Item item = select(slotNum);
-					if (item.usesTargeting)
+					if (item.usesTargeting) {
 						useTargeting();
+					}
 					item.execute( Dungeon.hero );
 				}
 			}
@@ -207,6 +208,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 		if (lastTarget != null &&
 				Actor.chars().contains( lastTarget ) &&
 				lastTarget.isAlive() &&
+				lastTarget.alignment != Char.Alignment.ALLY &&
 				Dungeon.level.heroFOV[lastTarget.pos]) {
 
 			targeting = true;
