@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.StartScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
@@ -46,7 +47,6 @@ import java.util.Locale;
 public class WndGameInProgress extends Window {
 	
 	private static final int WIDTH    = 120;
-	private static final int HEIGHT   = 120;
 	
 	private int GAP	  = 6;
 	
@@ -98,8 +98,9 @@ public class WndGameInProgress extends Window {
 					Game.scene().add( new WndChallenges( info.challenges, false ) );
 				}
 			};
+			btnChallenges.icon(Icons.get(Icons.CHALLENGE_ON));
 			float btnW = btnChallenges.reqWidth() + 2;
-			btnChallenges.setRect( (WIDTH - btnW)/2, pos, btnW , btnChallenges.reqHeight() + 2 );
+			btnChallenges.setRect( (WIDTH - btnW)/2, pos, btnW , 18 );
 			add( btnChallenges );
 			
 			pos = btnChallenges.bottom() + GAP;
@@ -153,14 +154,16 @@ public class WndGameInProgress extends Window {
 				} );
 			}
 		};
-		
-		cont.setRect(0, HEIGHT - 20, WIDTH/2 -1, 20);
+
+		cont.icon(Icons.get(Icons.ENTER));
+		cont.setRect(0, pos, WIDTH/2 -1, 18);
 		add(cont);
-		
-		erase.setRect(WIDTH/2 + 1, HEIGHT-20, WIDTH/2 - 1, 20);
+
+		erase.icon(Icons.get(Icons.CLOSE));
+		erase.setRect(WIDTH/2 + 1, pos, WIDTH/2 - 1, 18);
 		add(erase);
 		
-		resize(WIDTH, HEIGHT);
+		resize(WIDTH, (int)cont.bottom());
 	}
 	
 	private void statSlot( String label, String value ) {
