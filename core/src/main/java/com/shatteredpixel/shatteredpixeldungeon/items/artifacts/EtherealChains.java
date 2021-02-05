@@ -189,9 +189,15 @@ public class EtherealChains extends Artifact {
 		}));
 	}
 	
-	//pulls the hero along the chain to the collosionPos, if possible.
+	//pulls the hero along the chain to the collisionPos, if possible.
 	private void chainLocation( Ballistica chain, final Hero hero ){
-		
+
+		//don't pull if rooted
+		if (hero.rooted){
+			GLog.w( Messages.get(EtherealChains.class, "rooted") );
+			return;
+		}
+
 		//don't pull if the collision spot is in a wall
 		if (Dungeon.level.solid[chain.collisionPos]){
 			GLog.i( Messages.get(this, "inside_wall"));
