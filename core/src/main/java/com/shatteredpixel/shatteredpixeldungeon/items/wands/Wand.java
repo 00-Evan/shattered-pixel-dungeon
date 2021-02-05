@@ -362,13 +362,16 @@ public abstract class Wand extends Item {
 		}
 
 		//if the wand is owned by the hero, but not in their inventory, it must be in the staff
-		if (curCharges == 0
-				&& charger != null
+		if (charger != null
 				&& charger.target == Dungeon.hero
-				&& !Dungeon.hero.belongings.contains(this)
-				&& Dungeon.hero.hasTalent(Talent.BACKUP_BARRIER)){
-			//grants 4/6 shielding
-			Buff.affect(Dungeon.hero, Barrier.class).setShield(2 + 2*Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER));
+				&& !Dungeon.hero.belongings.contains(this)) {
+			if (curCharges == 0 && Dungeon.hero.hasTalent(Talent.BACKUP_BARRIER)) {
+				//grants 4/6 shielding
+				Buff.affect(Dungeon.hero, Barrier.class).setShield(2 + 2 * Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER));
+			}
+			if (Dungeon.hero.hasTalent(Talent.EMPOWERED_STRIKE)){
+				Buff.prolong(Dungeon.hero, Talent.EmpoweredStrikeTracker.class, 5f);
+			}
 		}
 
 		Invisibility.dispel();
