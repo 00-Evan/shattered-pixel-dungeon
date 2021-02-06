@@ -598,7 +598,7 @@ public abstract class Mob extends Char {
 				restoration = Math.round(restoration * 0.15f*Dungeon.hero.pointsInTalent(Talent.SOUL_SIPHON));
 			}
 			if (restoration > 0) {
-				Buff.affect(Dungeon.hero, Hunger.class).satisfy(restoration);
+				Buff.affect(Dungeon.hero, Hunger.class).affectHunger(restoration*Dungeon.hero.pointsInTalent(Talent.SOUL_EATER)/3f);
 				Dungeon.hero.HP = (int) Math.ceil(Math.min(Dungeon.hero.HT, Dungeon.hero.HP + (restoration * 0.4f)));
 				Dungeon.hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
 			}
@@ -716,6 +716,12 @@ public abstract class Mob extends Char {
 		if (Dungeon.hero.lvl <= maxLvl && buff(Lucky.LuckProc.class) != null){
 			Dungeon.level.drop(Lucky.genLoot(), pos).sprite.drop();
 			Lucky.showFlare(sprite);
+		}
+
+		//soul eater talent
+		if (buff(SoulMark.class) != null &&
+				Random.Int(10) < Dungeon.hero.pointsInTalent(Talent.SOUL_EATER)){
+			Talent.onFoodEaten(Dungeon.hero, 0, null);
 		}
 
 		//bounty hunter talent

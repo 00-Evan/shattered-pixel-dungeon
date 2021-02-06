@@ -86,7 +86,7 @@ public enum Talent {
 	//Battlemage T3
 	EMPOWERED_STRIKE(43, 3), BATTLEMAGE_T3_2(44, 3), BATTLEMAGE_T3_3(45, 3),
 	//Warlock T3
-	SOUL_SIPHON(46, 3), WARLOCK_T3_2(47, 3), WARLOCK_T3_3(48, 3),
+	SOUL_SIPHON(46, 3), SOUL_EATER(47, 3), WARLOCK_T3_3(48, 3),
 
 	//Rogue T1
 	CACHED_RATIONS(64), THIEFS_INTUITION(65), SUCKER_PUNCH(66), PROTECTIVE_SHADOWS(67),
@@ -467,7 +467,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, EMPOWERED_STRIKE, BATTLEMAGE_T3_2, BATTLEMAGE_T3_3);
 				break;
 			case WARLOCK:
-				Collections.addAll(tierTalents, SOUL_SIPHON, WARLOCK_T3_2, WARLOCK_T3_3);
+				Collections.addAll(tierTalents, SOUL_SIPHON, SOUL_EATER, WARLOCK_T3_3);
 				break;
 			case ASSASSIN:
 				Collections.addAll(tierTalents, ENHANCED_LETHALITY, ASSASSIN_T3_2, BOUNTY_HUNTER);
