@@ -643,8 +643,8 @@ public class Hero extends Char {
 			}
 		}
 		
-		if( subClass == HeroSubClass.WARDEN && Dungeon.level.map[pos] == Terrain.FURROWED_GRASS){
-			Buff.affect(this, Barkskin.class).set( lvl + 5, 1 );
+		if(hasTalent(Talent.BARKSKIN) && Dungeon.level.map[pos] == Terrain.FURROWED_GRASS){
+			Buff.affect(this, Barkskin.class).set( lvl, pointsInTalent(Talent.BARKSKIN) );
 		}
 		
 		return actResult;

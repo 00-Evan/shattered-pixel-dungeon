@@ -59,7 +59,7 @@ public class Barkskin extends Buff {
 	
 	public void set( int value, int time ) {
 		//decide whether to override, preferring high value + low interval
-		if (Math.sqrt(interval)*level < Math.sqrt(time)*value) {
+		if (Math.sqrt(interval)*level <= Math.sqrt(time)*value) {
 			level = value;
 			interval = time;
 			spend(time - cooldown() - 1);
@@ -74,7 +74,7 @@ public class Barkskin extends Buff {
 	@Override
 	public float iconFadePercent() {
 		if (target instanceof Hero){
-			float max = ((Hero) target).lvl + 5;
+			float max = ((Hero) target).lvl;
 			return (max-level)/max;
 		}
 		return 0;

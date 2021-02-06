@@ -108,7 +108,7 @@ public enum Talent {
 	//Sniper T3
 	FARSIGHT(107, 3), SNIPER_T3_2(108, 3), SNIPER_T3_3(109, 3),
 	//Warden T3
-	DURABLE_TIPS(110, 3), WARDEN_T3_2(111, 3), WARDEN_T3_3(112, 3);
+	DURABLE_TIPS(110, 3), BARKSKIN(111, 3), WARDEN_T3_3(112, 3);
 
 	public static class ImprovisedProjectileCooldown extends FlavourBuff{};
 	public static class LethalMomentumTracker extends FlavourBuff{};
@@ -479,7 +479,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, FARSIGHT, SNIPER_T3_2, SNIPER_T3_3);
 				break;
 			case WARDEN:
-				Collections.addAll(tierTalents, DURABLE_TIPS, WARDEN_T3_2, WARDEN_T3_3);
+				Collections.addAll(tierTalents, DURABLE_TIPS, BARKSKIN, WARDEN_T3_3);
 				break;
 		}
 		for (Talent talent : tierTalents){
