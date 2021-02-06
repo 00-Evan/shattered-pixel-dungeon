@@ -97,7 +97,7 @@ public enum Talent {
 	//Assassin T3
 	ENHANCED_LETHALITY(75, 3), ASSASSIN_T3_2(76, 3), BOUNTY_HUNTER(77, 3),
 	//Freerunner T3
-	EVASIVE_ARMOR(78, 3), FREERUNNER_T3_2(79, 3), FREERUNNER_T3_3(80, 3),
+	EVASIVE_ARMOR(78, 3), PROJECTILE_MOMENTUM(79, 3), FREERUNNER_T3_3(80, 3),
 
 	//Huntress T1
 	NATURES_BOUNTY(96), SURVIVALISTS_INTUITION(97), FOLLOWUP_STRIKE(98), NATURES_AID(99),
@@ -473,7 +473,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, ENHANCED_LETHALITY, ASSASSIN_T3_2, BOUNTY_HUNTER);
 				break;
 			case FREERUNNER:
-				Collections.addAll(tierTalents, EVASIVE_ARMOR, FREERUNNER_T3_2, FREERUNNER_T3_3);
+				Collections.addAll(tierTalents, EVASIVE_ARMOR, PROJECTILE_MOMENTUM, FREERUNNER_T3_3);
 				break;
 			case SNIPER:
 				Collections.addAll(tierTalents, FARSIGHT, SNIPER_T3_2, SNIPER_T3_3);
