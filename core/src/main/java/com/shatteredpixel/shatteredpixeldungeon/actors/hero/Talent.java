@@ -106,7 +106,7 @@ public enum Talent {
 	//Huntress T3
 	POINT_BLANK(105, 3), HUNTRESS_T3_2(106, 3),
 	//Sniper T3
-	FARSIGHT(107, 3), SNIPER_T3_2(108, 3), SNIPER_T3_3(109, 3),
+	FARSIGHT(107, 3), SHARED_ENCHANTMENT(108, 3), SNIPER_T3_3(109, 3),
 	//Warden T3
 	DURABLE_TIPS(110, 3), BARKSKIN(111, 3), WARDEN_T3_3(112, 3);
 
@@ -476,7 +476,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, EVASIVE_ARMOR, PROJECTILE_MOMENTUM, FREERUNNER_T3_3);
 				break;
 			case SNIPER:
-				Collections.addAll(tierTalents, FARSIGHT, SNIPER_T3_2, SNIPER_T3_3);
+				Collections.addAll(tierTalents, FARSIGHT, SHARED_ENCHANTMENT, SNIPER_T3_3);
 				break;
 			case WARDEN:
 				Collections.addAll(tierTalents, DURABLE_TIPS, BARKSKIN, WARDEN_T3_3);
