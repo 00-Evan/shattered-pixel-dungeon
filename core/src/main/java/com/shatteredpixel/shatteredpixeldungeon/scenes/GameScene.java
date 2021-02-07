@@ -554,20 +554,22 @@ public class GameScene extends PixelScene {
 		}
 	}
 
-	public synchronized boolean waitForActorThread(int msToWait ){
-		if (actorThread != null && actorThread.isAlive()){
-			return true;
-		}
-		synchronized (actorThread) {
-			actorThread.interrupt();
-		}
-		try {
-			GameScene.class.wait(msToWait);
-		} catch (InterruptedException e) {
-			ShatteredPixelDungeon.reportException(e);
-		}
-		synchronized (actorThread) {
-			return Actor.processing();
+	public boolean waitForActorThread(int msToWait ){
+		synchronized (GameScene.class) {
+			if (actorThread == null || !actorThread.isAlive()) {
+				return true;
+			}
+			synchronized (actorThread) {
+				actorThread.interrupt();
+			}
+			try {
+				GameScene.class.wait(msToWait);
+			} catch (InterruptedException e) {
+				ShatteredPixelDungeon.reportException(e);
+			}
+			synchronized (actorThread) {
+				return !Actor.processing();
+			}
 		}
 	}
 	
