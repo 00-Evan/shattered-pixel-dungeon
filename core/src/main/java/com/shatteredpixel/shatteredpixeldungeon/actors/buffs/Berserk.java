@@ -42,7 +42,7 @@ public class Berserk extends Buff {
 	}
 	private State state = State.NORMAL;
 
-	private static final float LEVEL_RECOVER_START = 2f;
+	private static final float LEVEL_RECOVER_START = 3f;
 	private float levelRecovery;
 	
 	private float power = 0;
@@ -73,7 +73,7 @@ public class Berserk extends Buff {
 		if (berserking()){
 			ShieldBuff buff = target.buff(WarriorShield.class);
 			if (target.HP <= 0) {
-				int dmg = 1 + (int)Math.ceil(target.shielding() * 0.1f);
+				int dmg = 1 + (int)Math.ceil(target.shielding() * 0.05f);
 				if (buff != null && buff.shielding() > 0) {
 					buff.absorbDamage(dmg);
 				} else {
@@ -89,7 +89,7 @@ public class Berserk extends Buff {
 				}
 			} else {
 				state = State.RECOVERING;
-				levelRecovery = LEVEL_RECOVER_START;
+				levelRecovery = LEVEL_RECOVER_START - 0.5f*Dungeon.hero.pointsInTalent(Talent.BERSERKING_STAMINA);
 				if (buff != null) buff.absorbDamage(buff.shielding());
 				power = 0f;
 			}
@@ -115,7 +115,9 @@ public class Berserk extends Buff {
 			WarriorShield shield = target.buff(WarriorShield.class);
 			if (shield != null){
 				state = State.BERSERK;
-				shield.supercharge(shield.maxShield() * 10);
+				int shieldAmount = shield.maxShield() * 8;
+				shieldAmount = Math.round(shieldAmount * (1f + Dungeon.hero.pointsInTalent(Talent.BERSERKING_STAMINA)/6f));
+				shield.supercharge(shieldAmount);
 
 				SpellSprite.show(target, SpellSprite.BERSERK);
 				Sample.INSTANCE.play( Assets.Sounds.CHALLENGE );
@@ -173,7 +175,7 @@ public class Berserk extends Buff {
 			case BERSERK:
 				return 0f;
 			case RECOVERING:
-				return 1f - levelRecovery/2f;
+				return 1f - levelRecovery/LEVEL_RECOVER_START;
 		}
 	}
 
