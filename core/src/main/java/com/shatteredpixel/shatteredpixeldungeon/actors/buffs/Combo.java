@@ -53,7 +53,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	
 	private int count = 0;
 	private float comboTime = 0f;
-	
+
 	@Override
 	public int icon() {
 		return BuffIndicator.COMBO;
@@ -125,19 +125,30 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 	private static final String COUNT = "count";
 	private static final String TIME  = "combotime";
+
+	private static final String CLOBBER_USED = "clobber_used";
+	private static final String PARRY_USED   = "parry_used";
+
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
 		bundle.put(COUNT, count);
 		bundle.put(TIME, comboTime);
+
+		bundle.put(CLOBBER_USED, clobberUsed);
+		bundle.put(PARRY_USED, parryUsed);
 	}
 
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		count = bundle.getInt( COUNT );
-		if (getHighestMove() != null) ActionIndicator.setAction(this);
 		comboTime = bundle.getFloat( TIME );
+
+		clobberUsed = bundle.getBoolean(CLOBBER_USED);
+		parryUsed = bundle.getBoolean(PARRY_USED);
+
+		if (getHighestMove() != null) ActionIndicator.setAction(this);
 	}
 
 	@Override
@@ -160,12 +171,11 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	}
 
 	public enum ComboMove {
-		//TODO rework these moves
 		CLOBBER(2, 0xFF00FF00),
-		CLEAVE(4, 0xFFCCFF00),
-		SLAM(6, 0xFFFFFF00),
-		CRUSH(8, 0xFFFFCC00),
-		FURY(10, 0xFFFF0000);
+		SLAM   (4, 0xFFCCFF00),
+		PARRY  (6, 0xFFFFFF00), //TODO implement
+		CRUSH  (8, 0xFFFFCC00), //TODO rework
+		FURY   (10, 0xFFFF0000); //TODO rework
 
 		public int comboReq, tintColor;
 
@@ -178,8 +188,10 @@ public class Combo extends Buff implements ActionIndicator.Action {
 			return Messages.get(this, name()+"_desc");
 		}
 
-
 	}
+
+	private boolean clobberUsed = false;
+	private boolean parryUsed = false;
 
 	public ComboMove getHighestMove(){
 		ComboMove best = null;
@@ -192,12 +204,19 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	}
 
 	public boolean canUseMove(ComboMove move){
+		if (move == ComboMove.CLOBBER && clobberUsed)   return false;
+		if (move == ComboMove.PARRY && parryUsed)       return false;
 		return move.comboReq <= count;
 	}
 
 	public void useMove(ComboMove move){
-		moveBeingUsed = move;
-		GameScene.selectCell(listener);
+		if (move == ComboMove.PARRY){
+			//TODO
+			parryUsed = true;
+		} else {
+			moveBeingUsed = move;
+			GameScene.selectCell(listener);
+		}
 	}
 
 	private static ComboMove moveBeingUsed;
@@ -244,13 +263,10 @@ public class Combo extends Buff implements ActionIndicator.Action {
 				//variance in damage dealt
 				switch (moveBeingUsed) {
 					case CLOBBER:
-						dmg = Math.round(dmg * 0.6f);
-						break;
-					case CLEAVE:
-						dmg = Math.round(dmg * 1.5f);
+						dmg = 0;
 						break;
 					case SLAM:
-						dmg += target.drRoll();
+						dmg += Math.round(target.drRoll() * count/5f);
 						break;
 					case CRUSH:
 						//rolls 4 times, takes the highest roll
@@ -283,9 +299,13 @@ public class Combo extends Buff implements ActionIndicator.Action {
 							Ballistica trajectory = new Ballistica(target.pos, enemy.pos, Ballistica.STOP_TARGET);
 							//trim it to just be the part that goes past them
 							trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
-							//knock them back along that ballistica
-							WandOfBlastWave.throwChar(enemy, trajectory, 2, true, false);
-							Buff.prolong(enemy, Vertigo.class, Random.NormalIntRange(1, 4));
+							//knock them back along that ballistica, ensuring they don't fall into a pit
+							int dist = 2;
+							while (dist > 0 && Dungeon.level.pit[trajectory.path.get(dist)]){
+								dist--;
+							}
+							WandOfBlastWave.throwChar(enemy, trajectory, dist, true, false);
+							hit( enemy );
 						}
 						break;
 					case SLAM:
@@ -317,7 +337,13 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 			//Post-attack behaviour
 			switch(moveBeingUsed){
-				case CLEAVE:
+				case CLOBBER:
+					clobberUsed = true;
+					if (getHighestMove() == null) ActionIndicator.clearAction(Combo.this);
+					hero.spendAndNext(hero.attackDelay());
+					break;
+
+				/*case CLEAVE:
 					//combo isn't reset, but rather increments with a cleave kill, and grants more time.
 					//this includes corrupting kills (which is why we check alignment
 					if (!enemy.isAlive() || (!wasAlly && enemy.alignment == target.alignment)) {
@@ -328,7 +354,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 						ActionIndicator.clearAction(Combo.this);
 					}
 					hero.spendAndNext(hero.attackDelay());
-					break;
+					break;*/
 
 				case FURY:
 					count--;
@@ -360,8 +386,6 @@ public class Combo extends Buff implements ActionIndicator.Action {
 					BrokenSeal.WarriorShield shield = hero.buff(BrokenSeal.WarriorShield.class);
 					shield.supercharge(Math.round(shield.maxShield() * hero.pointsInTalent(Talent.LETHAL_DEFENSE)/3f));
 				}
-				hit( enemy );
-				comboTime = 12f;
 			}
 
 		}
