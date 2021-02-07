@@ -355,6 +355,15 @@ public class Combo extends Buff implements ActionIndicator.Action {
 					break;
 			}
 
+			if (!enemy.isAlive() || (!wasAlly && enemy.alignment == target.alignment)) {
+				if (hero.hasTalent(Talent.LETHAL_DEFENSE) && hero.buff(BrokenSeal.WarriorShield.class) != null){
+					BrokenSeal.WarriorShield shield = hero.buff(BrokenSeal.WarriorShield.class);
+					shield.supercharge(Math.round(shield.maxShield() * hero.pointsInTalent(Talent.LETHAL_DEFENSE)/3f));
+				}
+				hit( enemy );
+				comboTime = 12f;
+			}
+
 		}
 
 		@Override

@@ -75,7 +75,7 @@ public enum Talent {
 	//Berserker T3
 	ENDLESS_RAGE(11, 3), BERSERKER_T3_2(12, 3), BERSERKER_T3_3(13, 3),
 	//Gladiator T3
-	CLEAVE(14, 3), GLADIATOR_T3_2(15, 3), GLADIATOR_T3_3(16, 3),
+	CLEAVE(14, 3), LETHAL_DEFENSE(15, 3), GLADIATOR_T3_3(16, 3),
 
 	//Mage T1
 	EMPOWERING_MEAL(32), SCHOLARS_INTUITION(33), TESTED_HYPOTHESIS(34), BACKUP_BARRIER(35),
@@ -461,7 +461,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, ENDLESS_RAGE, BERSERKER_T3_2, BERSERKER_T3_3);
 				break;
 			case GLADIATOR:
-				Collections.addAll(tierTalents, CLEAVE, GLADIATOR_T3_2, GLADIATOR_T3_3);
+				Collections.addAll(tierTalents, CLEAVE, LETHAL_DEFENSE, GLADIATOR_T3_3);
 				break;
 			case BATTLEMAGE:
 				Collections.addAll(tierTalents, EMPOWERED_STRIKE, BATTLEMAGE_T3_2, BATTLEMAGE_T3_3);
