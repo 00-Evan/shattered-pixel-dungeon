@@ -84,7 +84,7 @@ public enum Talent {
 	//Mage T3
 	MAGE_T3_1(41), MAGE_T3_2(42),
 	//Battlemage T3
-	EMPOWERED_STRIKE(43, 3), BATTLEMAGE_T3_2(44, 3), BATTLEMAGE_T3_3(45, 3),
+	EMPOWERED_STRIKE(43, 3), MYSTICAL_CHARGE(44, 3), BATTLEMAGE_T3_3(45, 3),
 	//Warlock T3
 	SOUL_SIPHON(46, 3), SOUL_EATER(47, 3), WARLOCK_T3_3(48, 3),
 
@@ -464,7 +464,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, CLEAVE, LETHAL_DEFENSE, GLADIATOR_T3_3);
 				break;
 			case BATTLEMAGE:
-				Collections.addAll(tierTalents, EMPOWERED_STRIKE, BATTLEMAGE_T3_2, BATTLEMAGE_T3_3);
+				Collections.addAll(tierTalents, EMPOWERED_STRIKE, MYSTICAL_CHARGE, BATTLEMAGE_T3_3);
 				break;
 			case WARLOCK:
 				Collections.addAll(tierTalents, SOUL_SIPHON, SOUL_EATER, WARLOCK_T3_3);
