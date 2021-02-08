@@ -144,7 +144,10 @@ public class ChaliceOfBlood extends Artifact {
 	
 	@Override
 	public void charge(Hero target) {
-		target.HP = Math.min( target.HT, target.HP + 1 + Dungeon.depth/5);
+		//grants 5 turns of healing up-front
+		float healDelay = 10f - level()*0.9f;
+		//effectively 1HP at lvl 0-5, 2HP lvl 6-8, 3HP lvl 9, and 5HP lvl 10.
+		target.HP = Math.min( target.HT, target.HP + (int)Math.ceil(5/healDelay));
 	}
 	
 	@Override
