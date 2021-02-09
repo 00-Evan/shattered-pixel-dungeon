@@ -43,97 +43,15 @@ import java.util.ArrayList;
 public class v0_9_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
+		add_v0_9_1_Changes(changeInfos);
 		add_v0_9_0_Changes(changeInfos);
 	}
 
-	public static void add_v0_9_0_Changes( ArrayList<ChangeInfo> changeInfos ) {
+	public static void add_v0_9_1_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
 		ChangeInfo changes = new ChangeInfo("v0.9.1", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("v0.9.1d", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by v0.9.1):\n" +
-				"_-_ Fixed error with runic transference caused by v0.9.1d\n\n" +
-				"Fixed (existed prior to v0.9.1):\n" +
-				"_-_ Targeting errors with projecting bow and ethereal chains"));
-
-		changes = new ChangeInfo("v0.9.1c", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Frozen carpaccio can now burn like mystery meat\n\n" +
-				"_-_ Challenge completion badges can now appear in rankings\n\n" +
-				"_-_ Improved blacksmith logic when upgraded item is also equipped\n\n" +
-				"_-_ Updated translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by v0.9.1):\n" +
-				"_-_ Various uncommon freeze bugs caused by v0.9.1b\n" +
-				"_-_ Various minor errors with runic transference\n" +
-				"_-_ Doors failing to spawn in rare cases\n\n" +
-				"Fixed (existed prior to v0.9.1):\n" +
-				"_-_ Various rare crash bugs\n" +
-				"_-_ Rare cases where dieing to a chasm would be recorded as 'Killed by Something'\n" +
-				"_-_ Various minor errors with magical charge buff\n" +
-				"_-_ DM-300 rarely using abilities while stunned\n" +
-				"_-_ Tengu getting extra turns on game load in rare cases"));
-
-		changes = new ChangeInfo("v0.9.1b", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Necromancers now damage enemies if their summoning position is totally blocked\n\n" +
-				"_-_ Rogue's foresight can now also trigger when returning to a floor, if that floor was detected initially\n\n" +
-				"_-_ Small UI improvements to rankings window\n\n" +
-				"_-_ The Overgrowth curse can now trigger starflower effects\n\n" +
-				"_-_ Added some VFX to scroll of transmutation\n\n" +
-				"_-_ Piranha are no longer invulnerable to electricity and frost\n\n" +
-				"_-_ Updated translations and translator credits"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by v0.9.1):\n" +
-				"_-_ Rare freeze errors caused by Cached Rations talent\n" +
-				"_-_ Various minor visual and text errors\n" +
-				"_-_ Incorrect numbers in wand of transfusion description\n" +
-				"_-_ Horn of Plenty not triggering Iron Stomach\n" +
-				"_-_ Iron Stomach immunity lasting longer than intended\n" +
-				"_-_ Various minor timing bugs in the Tengu and DM-300 bossfights\n" +
-				"_-_ Pathfinding errors in DM-300\n" +
-				"_-_ Bees being affected by Improvised Projectiles when they spawn\n\n" +
-				"Fixed (existed prior to v0.9.1):\n" +
-				"_-_ Rare freeze and crash errors\n" +
-				"_-_ 'death from viscocity' badge not appearing in rankings\n" +
-				"_-_ Various rare errors with shops\n" +
-				"_-_ Scrolls of teleportation spending a turn when they fail\n" +
-				"_-_ Various rare errors with Gladiator's fury\n" +
-				"_-_ Various rare errors with multiplicity curse"));
-
-		changes = new ChangeInfo("v0.9.1a", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Slightly adjusted the Huntress' splash art to improve details on her face."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by v0.9.1):\n" +
-				"_-_ Various rare crash bugs\n" +
-				"_-_ Errors with autotargeting and the wand of disintegration\n" +
-				"_-_ Fissure rooms in the caves rarely failing to make bridges\n" +
-				"_-_ Enemies not changing targets when their current target cannot be reached\n\n" +
-				"Fixed (existed prior to v0.9.1):\n" +
-				"_-_ Various rare crash bugs\n" +
-				"_-_ Incorrect badges rarely showing in rankings\n" +
-				"_-_ Hourglass spawning sand when unidentified or cursed\n" +
-				"_-_ Hero having a smaller tap region than other characters\n" +
-				"_-_ Questgivers rarely not being added to the journal"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -181,34 +99,63 @@ public class v0_9_X_Changes {
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"_-_ Statue grid rooms now appear in the Dwarven City, rather than the Prison.\n" +
 				"_-_ Pillar rooms now appear in the Prison, rather than the Dwarven City.\n\n" +
-				"_-_ The Sad Ghost's reward UI has been improved.\n\n" +
-				"_-_ Added a debuff indicating when enemies have thrown weapons attached to them.\n\n" +
-				"_-_ Sniper's mark, charm, and terror all now cancel if their subject is dead.\n\n" +
-				"_-_ Stones of intuition can now be used on rings.\n\n" +
-				"_-_ Barriers now decay more slowly when under 20 shielding.\n\n" +
-				"_-_ Elixir of honeyed healing now triggers on-eat talents and satiates 150 turns of hunger, up from 90.\n\n" +
-				"_-_ The Mage's staff is no longer automatically set to max charges when imbuing a new wand."));
+				"_-_ Improved blacksmith logic when upgraded item is also equipped\n" +
+				"_-_ Stones of intuition can now be used on rings.\n" +
+				"_-_ Elixir of honeyed healing now triggers on-eat talents and satiates 150 turns of hunger, up from 90.\n" +
+				"_-_ The Mage's staff is no longer automatically set to max charges when imbuing a new wand.\n" +
+				"_-_ Frozen carpaccio can now burn like mystery meat\n\n" +
+				"_-_ Necromancers now damage enemies if their summoning position is totally blocked\n" +
+				"_-_ Piranha are no longer invulnerable to electricity and frost\n\n" +
+				"_-_ Barriers now decay more slowly when under 20 shielding.\n" +
+				"_-_ Sniper's mark, charm, and terror all now cancel if their subject is dead.\n" +
+				"_-_ Rogue's foresight can now also trigger when returning to a floor, if that floor was detected initially\n" +
+				"_-_ The Overgrowth curse can now trigger starflower effects"));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Slightly adjusted the Huntress' splash art to improve details on her face.\n" +
+				"_-_ The Sad Ghost's reward UI has been improved.\n" +
+				"_-_ Small UI improvements to rankings window\n" +
+				"_-_ Challenge completion badges can now appear in rankings\n" +
+				"_-_ Added a debuff indicating when enemies have thrown weapons attached to them.\n" +
+				"_-_ Added some VFX to scroll of transmutation\n\n" +
+				"_-_ Updated translations and translator credits"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
 				"_-_ Various minor audiovisual errors\n" +
-				"_-_ Various rare crash bugs\n" +
+				"_-_ Various rare crash and freeze bugs\n" +
+				"_-_ Targeting errors with projecting bow and ethereal chains\n" +
 				"_-_ Curse infusion not awarding item level badge\n" +
-				"_-_ Various errors with DM-300\n" +
-				"_-_ Various minor errors relating to time freeze\n" +
-				"_-_ Dwarf King and some Yog fists rarely taking negative damage\n" +
 				"_-_ Talisman gaining charge while cursed\n" +
-				"_-_ Large characters entering tunnels when vertigoed\n" +
-				"_-_ Assassin blink ignoring hero being rooted\n" +
-				"_-_ Hero being able to be both well-fed and hungry\n" +
-				"_-_ Rare AI issues when paths are blocked\n" +
-				"_-_ Various rare bugs with corruption\n" +
-				"_-_ Antimagic not applying to wards or magical sleep debuff\n" +
 				"_-_ Artifacts rarely losing levels when transmuted\n" +
+				"_-_ Hourglass spawning sand when unidentified or cursed\n" +
+				"_-_ Various rare errors with shops\n" +
+				"_-_ Scrolls of teleportation spending a turn when they fail\n" +
+				"_-_ Tengu getting extra turns on game load in rare cases\n" +
+				"_-_ Various errors with DM-300\n" +
+				"_-_ Dwarf King and some Yog fists rarely taking negative damage\n" +
+				"_-_ Warlocks not having capped health potions drops\n" +
+				"_-_ Large characters entering tunnels when vertigoed\n" +
+				"_-_ Rare AI issues when paths are blocked"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed:\n" +
+				"_-_ Various minor errors relating to time freeze\n" +
+				"_-_ Assassin blink ignoring hero being rooted\n" +
+				"_-_ Various rare bugs with corruption\n" +
+				"_-_ Hero being able to be both well-fed and hungry\n" +
+				"_-_ Antimagic not applying to wards or magical sleep debuff\n" +
+				"_-_ Various rare errors with Gladiator's fury\n" +
+				"_-_ Various rare errors with multiplicity curse\n" +
+				"_-_ Various minor errors with magical charge buff\n" +
+				"_-_ Rare cases where dieing to a chasm would be recorded as 'Killed by Something'\n" +
+				"_-_ Hero having a smaller tap region than other characters\n" +
+				"_-_ Questgivers rarely not being added to the journal\n" +
+				"_-_ 'death from viscocity' badge not appearing in rankings\n" +
+				"_-_ Incorrect badges rarely showing in rankings\n" +
 				"_-_ High grass appearing on top of plants in rare cases\n" +
 				"_-_ Characters rarely appearing inside doors or the hero\n" +
-				"_-_ Talent points being spendable when the hero is dead\n" +
-				"_-_ Warlocks not having capped health potions drops"));
+				"_-_ Talent points being spendable when the hero is dead"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight(CharSprite.POSITIVE);
@@ -249,7 +196,11 @@ public class v0_9_X_Changes {
 				"I'm pulling down the damage of _Cave Spinners_ slightly to address player frustration:\n\n" +
 				"_-_ Melee damage down to 10-20 from 10-25"));
 
-		changes = new ChangeInfo("v0.9.0", true, "");
+	}
+
+	public static void add_v0_9_0_Changes( ArrayList<ChangeInfo> changeInfos ) {
+
+		ChangeInfo changes = new ChangeInfo("v0.9.0", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
