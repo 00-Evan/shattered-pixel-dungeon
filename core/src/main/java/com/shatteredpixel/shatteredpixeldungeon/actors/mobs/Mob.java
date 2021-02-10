@@ -41,9 +41,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Surprise;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -679,12 +681,25 @@ public abstract class Mob extends Char {
 				Buff.affect(Dungeon.hero, Talent.LethalMomentumTracker.class, 1f);
 			}
 		}
-		
+
 		if (Dungeon.hero.isAlive() && !Dungeon.level.heroFOV[pos]) {
 			GLog.i( Messages.get(this, "died") );
 		}
-		
+
+		boolean soulMarked = buff(SoulMark.class) != null;
+
 		super.die( cause );
+
+		if (!(this instanceof Wraith)
+				&& soulMarked
+				&& Random.Int(10) < Dungeon.hero.pointsInTalent(Talent.NECROMANCERS_MINIONS)){
+			Wraith w = Wraith.spawnAt(pos);
+			Buff.affect(w, Corruption.class);
+			if (Dungeon.level.heroFOV[pos]){
+				CellEmitter.get(pos).burst( ShadowParticle.CURSE, 6 );
+				Sample.INSTANCE.play( Assets.Sounds.CURSED );
+			}
+		}
 	}
 	
 	public void rollToDropLoot(){
