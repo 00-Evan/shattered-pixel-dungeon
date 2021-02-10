@@ -68,7 +68,7 @@ public class RipperDemon extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 12, 25 );
+		return Random.NormalIntRange( 15, 25 );
 	}
 
 	@Override
