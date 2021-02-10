@@ -57,7 +57,9 @@ public class v0_3_X_Changes {
 				"_-_ Released May 1st, 2016\n" +
 				"_-_ 81 days after Shattered v0.3.4\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"v0.3.5 introduced the second proper class rework, this time to the Warrior! I tried to shift the warrior's powers away from a raw stat increase into something more interesting, while still keeping his power easy to access for new players. Similarly to the Mage's rework, the core ideas added here are still in the game, but I've since made lots of changes to the specifics.\n" +
+				"\n" +
+				"This was also the first time that I decided to split a major update into two smaller ones. Originally v0.4.0 was going to rework both the warrior and weapons, but partyway through development I decided to split them in order to get an update out sooner. This approach was quite successful, but I ended up not properly using it again until v0.9.0!"));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.Sprites.WARRIOR, 0, 15, 12, 15), "Warrior Rework!",
 				"Warrior Rework:\n" +
@@ -99,7 +101,11 @@ public class v0_3_X_Changes {
 				"_-_ Released February 10th, 2016\n" +
 				"_-_ 54 days after Shattered v0.3.3\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"v0.3.4 made Shattered available in multiple languages! This was a direct response to messages I kept getting from users in non-english speaking communities, who wanted to share the game with their friends, but couldn't due to the language barrier.\n" +
+				"\n" +
+				"Translating the game was no small feat, Shattered has a huge amount of text and it is constantly changing and growing. As of early 2021 Shattered has roughly 35 thousand words of total text. Because of the volume of text it would have been prohibitively expensive to get the game professionally translated, and so I opted to ask for community translations instead.\n" +
+				"\n" +
+				"The response from the community was and continues to be incredible! Even multiple years later Shattered's updates are still consistently translated into a number of languages."));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), "Translations!",
 				"Shattered Pixel Dungeon now supports multiple languages, thanks to a new community translation project!\n\n" +
@@ -136,7 +142,9 @@ public class v0_3_X_Changes {
 				"_-_ Released December 18th, 2015\n" +
 				"_-_ 44 days after Shattered v0.3.2\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"v0.3.3 was a small bumper update that was mostly focused on getting Google Play Games functionality working.\n" +
+				"\n" +
+				"Google Play Games was the first online functionality ever added to Shattered. Understandably, some people were worried that this was the beginning of a trend towards turning Shattered into an online-only game. I tried to address this worry by making the functionality as optional as possible, and heavily emphasizing that it was only for tiny extras like cloud sync and play games badges. Nowadays things are much more relaxed and Shattered has several internet-enabled features, but still none of them are needed to play the game itself."));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Google Play Games",
 				"Added support for Google Play Games in the Google Play version:\n\n" +
@@ -170,7 +178,11 @@ public class v0_3_X_Changes {
 				"_-_ Released November 4th, 2015\n" +
 				"_-_ 79 days after Shattered v0.3.1\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"v0.3.2 was my second 'area rework' before I ended up shelving the idea.\n" +
+				"\n" +
+				"I stopped doing area reworks because I realized that I was going to be working on Shattered for quite a while, and the quality bar I was working towards was continually increasing. I decided to shift my focus toward the longer-term, and so decided I wasn't ready to rework more areas yet. Future area reworks instead ended up happening incrementally as I worked on larger updates instead, such as v0.6.0 and v0.8.0.\n" +
+				"\n" +
+				"v0.3.2 was also another update with a controversial change: the removal of the tome of mastery from the start of the game. Prior to this change subclasses were available from floor 1 after you unlocked them. I mainly changed this as I wanted to make subclasses more powerful and interesting, but having them available on floor 1 limited that."));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.Sprites.TENGU, 0, 0, 14, 16), "Prison Rework",
 				"_-_ Tengu boss fight completely redone\n" +
@@ -223,7 +235,11 @@ public class v0_3_X_Changes {
 				"_-_ Released August 17th, 2015\n" +
 				"_-_ 83 days after Shattered v0.3.0\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"The trap changes in v0.3.1 are the first group of content changes that I ended up regretting. While almost all of the content in these earlier updates has been revisited in some form, the trap changes were probably detrimental to the game at the time they were implemented.\n" +
+				"\n" +
+				"I was too obsessed with quantity over quality. While v0.3.1 definitely added a great variety of traps, and did help with trap frustration in the earlygame, it also added a tonne of trap frustration in the mid and lategame. I only ended up fixing this years later, primarily with the trap changes in v0.6.2 and v0.8.0. Incrementally adding well-designed traps over time would have been a much better approach.\n" +
+				"\n" +
+				"Still, v0.3.1 wasn't all bad. It also introduced some very important interface changes such as four quickslots, heavily expanded game settings, and quickslot autotargeting."));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.Environment.TERRAIN_FEATURES, 112, 96, 16, 16), "Trap Overhaul",
 				"_-_ Over 20 new traps + tweaks to existing ones\n" +
@@ -268,7 +284,11 @@ public class v0_3_X_Changes {
 				"_-_ 253 days after Shattered v0.2.0\n" +
 				"_-_ 92 days after Shattered v0.2.4\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"v0.3.0 was Shattered's second major item category rework (if you ignore the relatively tiny changes in v0.1.0), and Shattered's first real subclass rework!\n" +
+				"\n" +
+				"This rework also included changes to the Mage's subclasses. While other aspect's of the Mage have changed a bunch since the rework, the core idea of each subclass and his staff have persisted. While this may seem similar to the Rogue changes in v0.2.0, the mage never required a second rework.\n" +
+				"\n" +
+				"Around this time I was also starting to include substantial smaller tweaks in each update. Nowadays every update includes a large amount of smaller changes, but back in these earlier days this was a newer development."));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.Sprites.MAGE, 0, 15, 12, 15), "Mage Rework!",
 				"_-_ No longer starts with knuckledusters or a wand\n" +
