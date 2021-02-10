@@ -55,19 +55,19 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 	}
 	
 	public enum AttackLevel{
-		LVL_1( 1, 0.15f, 1, 1),
-		LVL_2( 3, 0.30f, 1, 3),
-		LVL_3( 5, 0.45f, 2, 5),
-		LVL_4( 9, 0.60f, 3, 7);
+		LVL_1( 1, 0.15f, 1),
+		LVL_2( 3, 0.30f, 1),
+		LVL_3( 5, 0.45f, 2),
+		LVL_4( 9, 0.60f, 3);
 
 		final int turnsReq;
 		final float baseDmgBonus;
-		final int damageRolls, blinkDistance;
+		final int damageRolls;
 		
-		AttackLevel( int turns, float base, int rolls, int dist){
+		AttackLevel( int turns, float base, int rolls){
 			turnsReq = turns;
 			baseDmgBonus = base;
-			damageRolls = rolls; blinkDistance = dist;
+			damageRolls = rolls;
 		}
 
 		//1st index is prep level, 2nd is talent level
@@ -80,6 +80,18 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 
 		public float KOThreshold(){
 			return KOThresholds[ordinal()][Dungeon.hero.pointsInTalent(Talent.ENHANCED_LETHALITY)];
+		}
+
+		//1st index is prep level, 2nd is talent level
+		private static final int[][] blinkRanges = new int[][]{
+				{1, 2, 3, 4},
+				{2, 3, 5, 6},
+				{3, 4, 6, 8},
+				{4, 6, 8, 10}
+		};
+
+		public int blinkDistance(){
+			return blinkRanges[ordinal()][Dungeon.hero.pointsInTalent(Talent.ASSASSINS_REACH)];
 		}
 		
 		public boolean canKO(Char defender){
@@ -118,7 +130,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 	public boolean act() {
 		if (target.invisible > 0){
 			turnsInvis++;
-			if (AttackLevel.getLvl(turnsInvis).blinkDistance > 0 && target == Dungeon.hero){
+			if (AttackLevel.getLvl(turnsInvis).blinkDistance() > 0 && target == Dungeon.hero){
 				ActionIndicator.setAction(this);
 			}
 			spend(TICK);
@@ -199,8 +211,8 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 			desc += " " + Messages.get(this, "desc_dmg_likely");
 		}
 		
-		if (lvl.blinkDistance > 0){
-			desc += "\n\n" + Messages.get(this, "desc_blink", lvl.blinkDistance);
+		if (lvl.blinkDistance() > 0){
+			desc += "\n\n" + Messages.get(this, "desc_blink", lvl.blinkDistance());
 		}
 		
 		desc += "\n\n" + Messages.get(this, "desc_invis_time", turnsInvis);
@@ -219,7 +231,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		turnsInvis = bundle.getInt(TURNS);
-		if (AttackLevel.getLvl(turnsInvis).blinkDistance > 0){
+		if (AttackLevel.getLvl(turnsInvis).blinkDistance() > 0){
 			ActionIndicator.setAction(this);
 		}
 	}
@@ -277,7 +289,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				int attackPos = path == null ? -1 : path.get(path.size()-2);
 				
 				if (attackPos == -1 || Dungeon.hero.rooted ||
-						Dungeon.level.distance(attackPos, Dungeon.hero.pos) > lvl.blinkDistance){
+						Dungeon.level.distance(attackPos, Dungeon.hero.pos) > lvl.blinkDistance()){
 					GLog.w(Messages.get(Preparation.class, "out_of_reach"));
 					return;
 				}
@@ -300,7 +312,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 		
 		@Override
 		public String prompt() {
-			return Messages.get(Preparation.class, "prompt", AttackLevel.getLvl(turnsInvis).blinkDistance);
+			return Messages.get(Preparation.class, "prompt", AttackLevel.getLvl(turnsInvis).blinkDistance());
 		}
 	};
 }
