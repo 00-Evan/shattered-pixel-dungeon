@@ -57,6 +57,7 @@ public class SpiritBow extends Weapon {
 	}
 	
 	public boolean sniperSpecial = false;
+	public float sniperSpecialBonusDamage = 0f;
 	
 	@Override
 	public ArrayList<String> actions(Hero hero) {
@@ -159,6 +160,8 @@ public class SpiritBow extends Weapon {
 				damage += Random.IntRange( 0, exStr );
 			}
 		}
+
+		damage = Math.round(damage * (1f + sniperSpecialBonusDamage));
 		
 		if (sniperSpecial){
 			switch (augment){
