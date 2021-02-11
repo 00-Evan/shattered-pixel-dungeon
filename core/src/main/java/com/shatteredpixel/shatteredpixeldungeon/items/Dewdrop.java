@@ -22,7 +22,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -49,17 +52,8 @@ public class Dewdrop extends Item {
 			vial.collectDew( this );
 			
 		} else {
-			
-			//20 drops for a full heal
-			int heal = Math.round( hero.HT * 0.05f * quantity );
-			
-			int effect = Math.min( hero.HT - hero.HP, heal );
-			if (effect > 0) {
-				hero.HP += effect;
-				hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
-				hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "value", effect) );
-			} else {
-				GLog.i( Messages.get(this, "already_full") );
+
+			if (!consumeDew(1, hero)){
 				return false;
 			}
 			
@@ -68,6 +62,39 @@ public class Dewdrop extends Item {
 		Sample.INSTANCE.play( Assets.Sounds.DEWDROP );
 		hero.spendAndNext( TIME_TO_PICK_UP );
 		
+		return true;
+	}
+
+	public static boolean consumeDew(int quantity, Hero hero){
+		//20 drops for a full heal
+		int heal = Math.round( hero.HT * 0.05f * quantity );
+
+		int effect = Math.min( hero.HT - hero.HP, heal );
+		int shield = 0;
+		if (hero.hasTalent(Talent.SHIELDING_DEW)){
+			shield = heal - effect;
+			int maxShield = Math.round(hero.HT *0.2f*hero.pointsInTalent(Talent.SHIELDING_DEW));
+			int curShield = 0;
+			if (hero.buff(Barrier.class) != null) curShield = hero.buff(Barrier.class).shielding();
+			shield = Math.min(shield, maxShield-curShield);
+		}
+		if (effect > 0 || shield > 0) {
+			hero.HP += effect;
+			if (shield > 0) Buff.affect(hero, Barrier.class).incShield(shield);
+			hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
+			if (effect > 0 && shield > 0){
+				hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(Dewdrop.class, "both", effect, shield) );
+			} else if (effect > 0){
+				hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(Dewdrop.class, "heal", effect) );
+			} else {
+				hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(Dewdrop.class, "shield", shield) );
+			}
+
+		} else {
+			GLog.i( Messages.get(Dewdrop.class, "already_full") );
+			return false;
+		}
+
 		return true;
 	}
 
