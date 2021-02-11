@@ -34,8 +34,6 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-import java.util.HashSet;
-
 public abstract class ChampionEnemy extends Buff {
 
 	{
@@ -94,20 +92,12 @@ public abstract class ChampionEnemy extends Buff {
 		immunities.add(Corruption.class);
 	}
 
-	public static void rollForChampion(Mob m, HashSet<Mob> existing){
-		int existingChamps = 0;
-		for (Mob e : existing){
-			if (!e.buffs(ChampionEnemy.class).isEmpty()){
-				existingChamps++;
-			}
-		}
+	public static void rollForChampion(Mob m){
+		if (Dungeon.mobsToChampion <= 0) Dungeon.mobsToChampion = 8;
 
-		//cap of 2/2/3/3/4 champs for each region. Mainly to prevent terrible luck in the earlygame
-		if (existingChamps >= 2 + Dungeon.depth/10){
-			return;
-		}
+		Dungeon.mobsToChampion--;
 
-		if (Random.Int(10) == 0){
+		if (Dungeon.mobsToChampion <= 0){
 			switch (Random.Int(6)){
 				case 0: default:    Buff.affect(m, Blazing.class);      break;
 				case 1:             Buff.affect(m, Projecting.class);   break;
