@@ -483,8 +483,8 @@ public class Hero extends Char {
 		}
 		
 		Momentum momentum = buff(Momentum.class);
-		if (momentum != null && momentum.freerunning()){
-			((HeroSprite)sprite).sprint( 1.5f );
+		if (momentum != null){
+			((HeroSprite)sprite).sprint( momentum.freerunning() ? 1.5f : 1f );
 			speed *= momentum.speedMultiplier();
 		} else {
 			((HeroSprite)sprite).sprint( 1f );
@@ -1294,7 +1294,11 @@ public class Hero extends Char {
 		}
 
 		if (step != -1) {
-			
+
+			if (subClass == HeroSubClass.FREERUNNER){
+				Buff.affect(this, Momentum.class).gainStack();
+			}
+
 			float speed = speed();
 			
 			sprite.move(pos, step);
@@ -1304,10 +1308,6 @@ public class Hero extends Char {
 			justMoved = true;
 			
 			search(false);
-			
-			if (subClass == HeroSubClass.FREERUNNER){
-				Buff.affect(this, Momentum.class).gainStack();
-			}
 
 			return true;
 
