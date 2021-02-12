@@ -58,7 +58,9 @@ public class v0_4_X_Changes {
 				"_-_ Released October 16th, 2016\n" +
 				"_-_ 37 days after Shattered v0.4.2\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"v0.4.3 was a small update that mostly focused on more technical changes. With all the internal changes that v0.4.2 brought there were lots of new bugs, and I didn't want to make players wait all the way until the release of v0.5.0 to get fixes for them.\n" +
+				"\n" +
+				"While it doesn't affect the content of the game, I also massively improved how Shattered is built from its source code in v0.4.2 and v0.4.3. This makes Shattered easier to compile for people who want to work with its open source, and also results in a compiled game that's a bit smaller and more efficient."));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Technical Improvements",
 				"_-_ Added rankings and hall of heroes sync via Google Play Games, for the Google Play version of Shattered.\n\n" +
@@ -87,7 +89,11 @@ public class v0_4_X_Changes {
 				"_-_ Released September 9th, 2016\n" +
 				"_-_ 46 days after Shattered v0.4.1\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"v0.4.2 was an update almost entirely focused on technical improvements in preparation for v0.5.0 and v0.6.0. I knew that I wanted the game to be able to support bigger maps and more complex graphics.\n" +
+						"\n" +
+						"The most user-visible change in this update was the decoupling of Shattered's display logic and gameplay logic. This doubled the amount of processor power that the game had access to and meant that the game wouldn't freeze or hitch if gameplay logic was taking a while. This made the game run much smoother.\n" +
+						"\n" +
+						"Behind the scenes, the biggest changes were probably to various bits of game logic that assumed a constant map size of 32x32. After 0.4.2 many of these operations were made more efficient, and could work on variably sized maps, up to a new theoretical max of about 144x144."));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Technical Improvements",
 				"_-_ Many general performance improvements\n" +
@@ -117,7 +123,9 @@ public class v0_4_X_Changes {
 				"_-_ Released July 25th, 2016\n" +
 				"_-_ 35 days after Shattered v0.4.0\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"v0.4.1 was a direct followup to v0.4.0. I wanted to address various balance issues that arose as a consequence of the weapon overhaul. Upgrading armor was already seen as optional by many players prior to v0.4.0, and so after v0.4.0 armor was beginning to be seen as almost useless! I had always intended to try and better balance armor vs. weapons, but after v0.4.0 I realized that I needed to make it a top priority.\n" +
+				"\n" +
+				"Aside from the obvious numbers changes in this update, I also made armor much more reliable. In Shattered damage calculations have always used a 'triangular distribution', where the middle value is the most likely result, and the max or min are quite rare. Armor didn't use this prior to v0.4.1, which meant that even highly upgraded armor could be quite unreliable. Since v0.4.1, and other updates like v0.8.0, I now feel that armor is well-balanced versus weapons."));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(new PlateArmor()), "Item Changes pt.1",
 				"Armor and Enemy Balance Changes:\n" +
@@ -185,7 +193,11 @@ public class v0_4_X_Changes {
 				"_-_ 391 days after Shattered v0.3.0\n" +
 				"_-_ 50 days after Shattered v0.3.5\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"0.4.0 was Shattered's third major item category update, this time addressing weapons! I see this update as the start of a new era for Shattered's development. For the first time a major update was adding far more content than it was reworking or repurposing.\n" +
+				"\n" +
+				"This update also restructured how weapon strength requirements scaled with upgrades. This made it much more difficult to access high tier items early by dumping upgrades into them. This was my attempt to solve some of the game's pacing issues without adding degradation.\n" +
+				"\n" +
+				"I also retooled curses to try and make them more about negative effects than negative stats. This meant the player had more flexibility when it came to trying gear out, as equipping a cursed item wasn't an almost certain game over."));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(new Longsword()), "Equipment Overhaul!",
 				"_-_ 13 new weapons, 12 rebalanced weapons\n" +

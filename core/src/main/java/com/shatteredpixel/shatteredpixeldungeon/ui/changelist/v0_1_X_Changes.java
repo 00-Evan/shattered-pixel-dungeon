@@ -52,11 +52,11 @@ public class v0_1_X_Changes {
 				"_-_ Released August 15th, 2014\n" +
 				"_-_ 10 days after Shattered v0.1.0\n" +
 				"\n" +
-				"v0.1.1 was the first update that added new content! Based on suggestions and feedback from v0.1.0, I decided to implement new functionality for ankhs and a new type of food!\n" +
+				"v0.1.1 was the first update that added new content! I added new ankh functionality and a new type of food based on suggestions and feedback from v0.1.0.\n" +
 				"\n" +
-				"This update also included Shattered's first contentious change: I removed the automatic revival feature from the dew vial. This lead to many accidental deaths for players who were used to the automatic revive from Pixel Dungeon. I kept receiving complaints about it years later!\n" +
+				"This update also included Shattered's first contentious change: I removed the automatic revival feature from the dew vial. This led to many accidental deaths for players who were used to the automatic revive from Pixel Dungeon. I kept receiving complaints about it years later!\n" +
 				"\n" +
-				"These early updates were much smaller and less polished compared to more modern ones, which meant I released them much faster. I eventually shifted towards a more quality oriented approach."));
+				"These early updates were much smaller and less polished compared to more modern ones, which meant I released them much faster. I eventually shifted towards slower updates with more size and quality."));
 		
 		changes.addButton( new ChangeButton(new Blandfruit(),
 				"Players who chance upon gardens or who get lucky while trampling grass may come across a new plant: the _Blandfruit._\n\n" +
@@ -94,9 +94,11 @@ public class v0_1_X_Changes {
 				"_-_ 69 days after Pixel Dungeon v1.7.1\n" +
 				"_-_ 9 days after v1.7.1 source release\n" +
 				"\n" +
-				"I started playing Pixel Dungeon in mid 2013, and loved the game but was frustrated with the balance of some items. When Pixel Dungeon went open source I decided to make Shattered as a balance modification to Pixel Dungeon (it 'shattered' the game's balance). At this stage I didn't have any plans to add new content. I was just going to spend a couple months rebalancing the game and that was it!\n" +
+				"v0.1.0 and v0.1.1 were extremely early Shattered updates that were only distributed via the Pixel Dungeon Subreddit. At this early stage of development Shattered was basically the same game as Pixel Dungeon v1.7.1.\n" +
 				"\n" +
-				"This version was only distributed via the Pixel Dungeon Subreddit, I didn't release on Google Play until v0.2.0. At this early stage of development Shattered was basically the same game as Pixel Dungeon v1.7.1. At the time I thought this update was all the changes I would ever make to consumable items!"));
+				"I started playing Pixel Dungeon in mid 2013. I loved the game but was frustrated with the balance of some items. When Pixel Dungeon went open source I decided to make Shattered as a balance modification. I called it Shattered as 'Shattered Pixel' was an old trade name I had, and the mod was going to 'shatter' Pixel Dungeon's balance.\n" +
+				"\n" +
+				"At this stage I didn't have any plans to add new content, I thought I was just going to spend a couple months rebalancing the game and that was it!"));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SEED_EARTHROOT, null), "Seed Changes",
 				"_-_ Blindweed buffed, now cripples as well as blinds.\n\n" +

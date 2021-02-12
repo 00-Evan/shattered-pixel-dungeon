@@ -48,7 +48,9 @@ public class v0_5_X_Changes {
 				"_-_ 233 days after Shattered v0.4.0\n" +
 				"_-_ 115 days after Shattered v0.4.3\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"v0.5.0 was the first major update that didn't focus on a category of items, instead it was all about the game's visuals! This visual overhaul was a very important update for Shattered, as it created an immediate visual difference between it and the original Pixel Dungeon. At this stage Shattered was starting to become less of an addition to Pixel Dungeon and more of its own game in the same spirit. Having an updated set of graphics really helped sell people on this idea.\n" +
+						"\n" +
+						"v0.5.0 was also Shattered's longest-developed update yet. While I don't think there was much I could do about this for v0.5.0 and v0.6.0, it started an unfortunate trend of major updates taking up to half a year! I eventually broke this trend in v0.9.0 by splitting these larger updates into smaller parts."));
 		
 		changes.addButton( new ChangeButton( Icons.get(Icons.DEPTH), "New Dungeon Visual Style!",
 				"_-_ Walls and some terrain now have depth\n" +

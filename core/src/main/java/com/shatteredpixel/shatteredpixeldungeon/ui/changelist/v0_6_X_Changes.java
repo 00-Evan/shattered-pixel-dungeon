@@ -86,7 +86,7 @@ public class v0_6_X_Changes {
 				"_-_ Released May 3rd, 2018\n" +
 				"_-_ 32 days after Shattered v0.6.4\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"Dev commentary will be added here in v0.9.3."));
 		
 		changes.addButton( new ChangeButton(new StoneOfAugmentation(),
 				"The weightstone is now the runestone of augmentation!\n\n" +
@@ -211,7 +211,7 @@ public class v0_6_X_Changes {
 				"_-_ Released April 1st, 2018\n" +
 				"_-_ 46 days after Shattered v0.6.3\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"Dev commentary will be added here in v0.9.3."));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.CHALLENGE_ON), "Challenges",
 				"Challenges have received several major changes, with the goal of making them more fair and interesting.\n" +
@@ -353,7 +353,7 @@ public class v0_6_X_Changes {
 				"_-_ Released February 14th, 2018\n" +
 				"_-_ 113 days after Shattered v0.6.2\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"Dev commentary will be added here in v0.9.3."));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.TRIDENT, null), "Ranged Weapons Overhaul!",
 				"Ranged weapons have been completely overhauled!\n\n" +
@@ -498,7 +498,7 @@ public class v0_6_X_Changes {
 				"_-_ Released October 24th, 2017\n" +
 				"_-_ 70 days after Shattered v0.6.1\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"Dev commentary will be added here in v0.9.3."));
 		
 		changes.addButton( new ChangeButton( Icons.get(Icons.DEPTH), "Dungeon Secrets!",
 				"The secrets of the dungeon have been totally redesigned!\n\n" +
@@ -681,7 +681,7 @@ public class v0_6_X_Changes {
 				"_-_ Released August 15th, 2017\n" +
 				"_-_ 72 days after Shattered v0.6.0\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"Dev commentary will be added here in v0.9.3."));
 		
 		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.GUIDE_PAGE, null), "Journal Additions",
 				"_-_ Overhauled the Journal window with loads of new functionality\n\n" +
@@ -848,7 +848,7 @@ public class v0_6_X_Changes {
 				"_-_ Released June 4th, 2017\n" +
 				"_-_ 116 days after Shattered v0.5.0\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"Dev commentary will be added here in v0.9.3."));
 		
 		changes.addButton( new ChangeButton( Icons.get(Icons.DEPTH), "Levelgen Overhaul!",
 				"Level creation algorithm overhauled!\n\n" +
