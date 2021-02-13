@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -150,6 +151,10 @@ public class MagesStaff extends MeleeWeapon {
 		if (attacker.buff(Talent.EmpoweredStrikeTracker.class) != null){
 			attacker.buff(Talent.EmpoweredStrikeTracker.class).detach();
 			damage = Math.round( damage * (1f + Dungeon.hero.pointsInTalent(Talent.EMPOWERED_STRIKE)/6f));
+		}
+
+		if (wand.curCharges == wand.maxCharges && Random.Int(6) < ((Hero) attacker).pointsInTalent(Talent.EXCESS_CHARGE)){
+			Buff.affect(attacker, Barrier.class).setShield(buffedLvl()*2);
 		}
 
 		if (attacker instanceof Hero && ((Hero) attacker).hasTalent(Talent.MYSTICAL_CHARGE)){
