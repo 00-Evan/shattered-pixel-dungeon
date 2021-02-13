@@ -71,7 +71,7 @@ public enum Talent {
 	//Warrior T2
 	IRON_STOMACH(4), RESTORED_WILLPOWER(5), RUNIC_TRANSFERENCE(6), LETHAL_MOMENTUM(7), IMPROVISED_PROJECTILES(8),
 	//Warrior T3
-	STRONGMAN(9, 3), WARRIOR_T3_2(10, 3),
+	WARRIOR_T3_1(9, 3), STRONGMAN(10, 3),
 	//Berserker T3
 	ENDLESS_RAGE(11, 3), BERSERKING_STAMINA(12, 3), ENRAGED_CATALYST(13, 3),
 	//Gladiator T3
@@ -82,18 +82,18 @@ public enum Talent {
 	//Mage T2
 	ENERGIZING_MEAL(36), ENERGIZING_UPGRADE(37), WAND_PRESERVATION(38), ARCANE_VISION(39), SHIELD_BATTERY(40),
 	//Mage T3
-	MAGE_T3_1(41, 3), EMPOWERING_SCROLLS(42, 3),
+	EMPOWERING_SCROLLS(41, 3), MAGE_T3_2(42, 3),
 	//Battlemage T3
 	EMPOWERED_STRIKE(43, 3), MYSTICAL_CHARGE(44, 3), BATTLEMAGE_T3_3(45, 3),
 	//Warlock T3
-	SOUL_SIPHON(46, 3), SOUL_EATER(47, 3), NECROMANCERS_MINIONS(48, 3),
+	SOUL_EATER(46, 3), SOUL_SIPHON(47, 3), NECROMANCERS_MINIONS(48, 3),
 
 	//Rogue T1
 	CACHED_RATIONS(64), THIEFS_INTUITION(65), SUCKER_PUNCH(66), PROTECTIVE_SHADOWS(67),
 	//Rogue T2
 	MYSTICAL_MEAL(68), MYSTICAL_UPGRADE(69), WIDE_SEARCH(70), SILENT_STEPS(71), ROGUES_FORESIGHT(72),
 	//Rogue T3
-	LIGHT_CLOAK(73, 3), ROGUE_T3_2(74, 3),
+	ROGUE_T3_1(73, 3), LIGHT_CLOAK(74, 3),
 	//Assassin T3
 	ENHANCED_LETHALITY(75, 3), ASSASSINS_REACH(76, 3), BOUNTY_HUNTER(77, 3),
 	//Freerunner T3
@@ -428,13 +428,13 @@ public enum Talent {
 		//tier 3
 		switch (cls){
 			case WARRIOR: default:
-				Collections.addAll(tierTalents, STRONGMAN, WARRIOR_T3_2);
+				Collections.addAll(tierTalents, WARRIOR_T3_1, STRONGMAN);
 				break;
 			case MAGE:
-				Collections.addAll(tierTalents, MAGE_T3_1, EMPOWERING_SCROLLS);
+				Collections.addAll(tierTalents, EMPOWERING_SCROLLS, MAGE_T3_2);
 				break;
 			case ROGUE:
-				Collections.addAll(tierTalents, LIGHT_CLOAK, ROGUE_T3_2);
+				Collections.addAll(tierTalents, ROGUE_T3_1, LIGHT_CLOAK);
 				break;
 			case HUNTRESS:
 				Collections.addAll(tierTalents, POINT_BLANK, HUNTRESS_T3_2);
@@ -474,7 +474,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, EMPOWERED_STRIKE, MYSTICAL_CHARGE, BATTLEMAGE_T3_3);
 				break;
 			case WARLOCK:
-				Collections.addAll(tierTalents, SOUL_SIPHON, SOUL_EATER, NECROMANCERS_MINIONS);
+				Collections.addAll(tierTalents, SOUL_EATER, SOUL_SIPHON, NECROMANCERS_MINIONS);
 				break;
 			case ASSASSIN:
 				Collections.addAll(tierTalents, ENHANCED_LETHALITY, ASSASSINS_REACH, BOUNTY_HUNTER);
