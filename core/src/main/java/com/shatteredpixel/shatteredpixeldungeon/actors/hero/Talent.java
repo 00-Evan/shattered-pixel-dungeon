@@ -82,7 +82,7 @@ public enum Talent {
 	//Mage T2
 	ENERGIZING_MEAL(36), ENERGIZING_UPGRADE(37), WAND_PRESERVATION(38), ARCANE_VISION(39), SHIELD_BATTERY(40),
 	//Mage T3
-	MAGE_T3_1(41), MAGE_T3_2(42),
+	MAGE_T3_1(41, 3), EMPOWERING_SCROLLS(42, 3),
 	//Battlemage T3
 	EMPOWERED_STRIKE(43, 3), MYSTICAL_CHARGE(44, 3), BATTLEMAGE_T3_3(45, 3),
 	//Warlock T3
@@ -113,6 +113,13 @@ public enum Talent {
 	public static class ImprovisedProjectileCooldown extends FlavourBuff{};
 	public static class LethalMomentumTracker extends FlavourBuff{};
 	public static class WandPreservationCounter extends CounterBuff{};
+	public static class EmpoweringScrollsTracker extends FlavourBuff{
+		@Override
+		public void detach() {
+			super.detach();
+			Item.updateQuickslot();
+		}
+	};
 	public static class EmpoweredStrikeTracker extends FlavourBuff{};
 	public static class BountyHunterTracker extends FlavourBuff{};
 	public static class RejuvenatingStepsCooldown extends FlavourBuff{};
@@ -424,7 +431,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, STRONGMAN, WARRIOR_T3_2);
 				break;
 			case MAGE:
-				Collections.addAll(tierTalents, MAGE_T3_1, MAGE_T3_2);
+				Collections.addAll(tierTalents, MAGE_T3_1, EMPOWERING_SCROLLS);
 				break;
 			case ROGUE:
 				Collections.addAll(tierTalents, LIGHT_CLOAK, ROGUE_T3_2);

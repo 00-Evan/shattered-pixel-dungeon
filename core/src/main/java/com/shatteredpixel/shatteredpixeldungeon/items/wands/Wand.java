@@ -303,6 +303,11 @@ public abstract class Wand extends Item {
 	@Override
 	public int buffedLvl() {
 		int lvl = super.buffedLvl();
+
+		if (charger.target.buff(Talent.EmpoweringScrollsTracker.class) != null){
+			lvl += Dungeon.hero.pointsInTalent(Talent.EMPOWERING_SCROLLS);
+		}
+
 		if (charger != null && charger.target != null) {
 			WandOfMagicMissile.MagicCharge buff = charger.target.buff(WandOfMagicMissile.MagicCharge.class);
 			if (buff != null && buff.level() > lvl){
@@ -355,6 +360,11 @@ public abstract class Wand extends Item {
 		}
 		
 		curCharges -= cursed ? 1 : chargesPerCast();
+
+		Talent.EmpoweringScrollsTracker tracker = curUser.buff(Talent.EmpoweringScrollsTracker.class);
+		if (tracker != null){
+			tracker.detach();
+		}
 
 		WandOfMagicMissile.MagicCharge buff = curUser.buff(WandOfMagicMissile.MagicCharge.class);
 		if (buff != null && buff.level() > super.buffedLvl()){
