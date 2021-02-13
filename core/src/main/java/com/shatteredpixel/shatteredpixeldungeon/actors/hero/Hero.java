@@ -440,7 +440,9 @@ public class Hero extends Char {
 			return super.defenseVerb();
 		} else {
 			parry.parried = true;
-			parry.detach();
+			if (buff(Combo.class).getComboCount() < 9 || pointsInTalent(Talent.ENHANCED_COMBO) < 2){
+				parry.detach();
+			}
 			return Messages.get(Monk.class, "parried");
 		}
 	}

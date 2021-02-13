@@ -203,6 +203,10 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		return best;
 	}
 
+	public int getComboCount(){
+		return count;
+	}
+
 	public boolean canUseMove(ComboMove move){
 		if (move == ComboMove.CLOBBER && clobberUsed)   return false;
 		if (move == ComboMove.PARRY && parryUsed)       return false;
@@ -309,8 +313,13 @@ public class Combo extends Buff implements ActionIndicator.Action {
 						trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
 						//knock them back along that ballistica, ensuring they don't fall into a pit
 						int dist = 2;
-						while (dist > 0 && Dungeon.level.pit[trajectory.path.get(dist)]){
-							dist--;
+						if (count >= 7 && hero.pointsInTalent(Talent.ENHANCED_COMBO) >= 1){
+							dist ++;
+							Buff.prolong(enemy, Vertigo.class, 3);
+						} else {
+							while (dist > 0 && Dungeon.level.pit[trajectory.path.get(dist)]) {
+								dist--;
+							}
 						}
 						WandOfBlastWave.throwChar(enemy, trajectory, dist, true, false);
 					}
@@ -414,9 +423,36 @@ public class Combo extends Buff implements ActionIndicator.Action {
 			final Char enemy = Actor.findChar( cell );
 			if (enemy == null
 					|| !Dungeon.level.heroFOV[cell]
-					|| !((Hero)target).canAttack(enemy)
-					|| target.isCharmedBy( enemy )){
-				GLog.w( Messages.get(Combo.class, "bad_target") );
+					|| target.isCharmedBy( enemy )) {
+				GLog.w(Messages.get(Combo.class, "bad_target"));
+
+			} else if (!((Hero)target).canAttack(enemy)){
+				if (((Hero) target).pointsInTalent(Talent.ENHANCED_COMBO) < 3
+					|| Dungeon.level.distance(target.pos, enemy.pos) > 1 + target.buff(Combo.class).count/3){
+					GLog.w(Messages.get(Combo.class, "bad_target"));
+				} else {
+					Ballistica c = new Ballistica(target.pos, enemy.pos, Ballistica.PROJECTILE);
+					if (c.collisionPos == enemy.pos){
+						target.sprite.jump(target.pos, c.path.get(c.dist-1), new Callback() {
+							@Override
+							public void call() {
+								target.move(c.path.get(c.dist-1));
+								Dungeon.level.occupyCell(target);
+								Dungeon.observe();
+								GameScene.updateFog();
+								target.sprite.attack(cell, new Callback() {
+									@Override
+									public void call() {
+										doAttack(enemy);
+									}
+								});
+							}
+						});
+					} else {
+						GLog.w(Messages.get(Combo.class, "bad_target"));
+					}
+				}
+
 			} else {
 				target.sprite.attack(cell, new Callback() {
 					@Override
