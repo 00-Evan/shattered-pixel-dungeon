@@ -47,6 +47,7 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class Combo extends Buff implements ActionIndicator.Action {
@@ -167,15 +168,14 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	@Override
 	public void doAction() {
 		GameScene.show(new WndCombo(this));
-		//GameScene.selectCell(finisher);
 	}
 
 	public enum ComboMove {
 		CLOBBER(2, 0xFF00FF00),
 		SLAM   (4, 0xFFCCFF00),
-		PARRY  (6, 0xFFFFFF00), //TODO implement
-		CRUSH  (8, 0xFFFFCC00), //TODO rework
-		FURY   (10, 0xFFFF0000); //TODO rework
+		PARRY  (6, 0xFFFFFF00),
+		CRUSH  (8, 0xFFFFCC00),
+		FURY   (10, 0xFFFF0000); //TODO can currently input other actions while attacking with fury
 
 		public int comboReq, tintColor;
 
@@ -211,15 +211,200 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 	public void useMove(ComboMove move){
 		if (move == ComboMove.PARRY){
-			//TODO
 			parryUsed = true;
+			Buff.affect(target, ParryTracker.class, Actor.TICK);
+			((Hero)target).spendAndNext(Actor.TICK);
 		} else {
 			moveBeingUsed = move;
 			GameScene.selectCell(listener);
 		}
 	}
 
+	public static class ParryTracker extends FlavourBuff{
+		{ actPriority = HERO_PRIO+1;}
+
+		public boolean parried;
+
+		@Override
+		public void detach() {
+			if (!parried) target.buff(Combo.class).detach();
+			super.detach();
+		}
+	}
+
+	public static class RiposteTracker extends Buff{
+		{ actPriority = VFX_PRIO;}
+
+		public Char enemy;
+
+		@Override
+		public boolean act() {
+			moveBeingUsed = ComboMove.PARRY;
+			target.sprite.attack(enemy.pos, new Callback() {
+				@Override
+				public void call() {
+					target.buff(Combo.class).doAttack(enemy);
+				}
+			});
+			detach();
+			return true;
+		}
+	}
+
 	private static ComboMove moveBeingUsed;
+
+	private void doAttack(final Char enemy){
+
+		AttackIndicator.target(enemy);
+
+		boolean wasAlly = enemy.alignment == target.alignment;
+		Hero hero = (Hero)target;
+
+		if (enemy.defenseSkill(target) >= Char.INFINITE_EVASION){
+			enemy.sprite.showStatus( CharSprite.NEUTRAL, enemy.defenseVerb() );
+			Sample.INSTANCE.play(Assets.Sounds.MISS);
+
+		} else if (enemy.isInvulnerable(target.getClass())){
+			enemy.sprite.showStatus( CharSprite.POSITIVE, Messages.get(Char.class, "invulnerable") );
+			Sample.INSTANCE.play(Assets.Sounds.MISS);
+
+		} else {
+
+			int dmg = target.damageRoll();
+
+			//variance in damage dealt
+			switch (moveBeingUsed) {
+				case CLOBBER:
+					dmg = 0;
+					break;
+				case SLAM:
+					dmg += Math.round(target.drRoll() * count/5f);
+					break;
+				case CRUSH:
+					dmg = Math.round(dmg * 0.25f*count);
+					break;
+				case FURY:
+					dmg = Math.round(dmg * 0.6f);
+					break;
+			}
+
+			dmg = enemy.defenseProc(target, dmg);
+			dmg -= enemy.drRoll();
+
+			if (enemy.buff(Vulnerable.class) != null) {
+				dmg *= 1.33f;
+			}
+
+			dmg = target.attackProc(enemy, dmg);
+			enemy.damage(dmg, target);
+
+			//special effects
+			switch (moveBeingUsed) {
+				case CLOBBER:
+					hit( enemy );
+					if (enemy.isAlive()) {
+						//trace a ballistica to our target (which will also extend past them
+						Ballistica trajectory = new Ballistica(target.pos, enemy.pos, Ballistica.STOP_TARGET);
+						//trim it to just be the part that goes past them
+						trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
+						//knock them back along that ballistica, ensuring they don't fall into a pit
+						int dist = 2;
+						while (dist > 0 && Dungeon.level.pit[trajectory.path.get(dist)]){
+							dist--;
+						}
+						WandOfBlastWave.throwChar(enemy, trajectory, dist, true, false);
+					}
+					break;
+				case PARRY:
+					hit( enemy );
+					break;
+				case CRUSH:
+					WandOfBlastWave.BlastWave.blast(enemy.pos);
+					PathFinder.buildDistanceMap(target.pos, Dungeon.level.passable, 3);
+					for (Char ch : Actor.chars()){
+						if (ch != enemy && ch.alignment == Char.Alignment.ENEMY
+								&& PathFinder.distance[ch.pos] < Integer.MAX_VALUE){
+							int aoeHit = Math.round(target.damageRoll() * 0.25f*count);
+							aoeHit /= 2;
+							aoeHit -= ch.drRoll();
+							if (ch.buff(Vulnerable.class) != null) aoeHit *= 1.33f;
+							ch.damage(aoeHit, target);
+							ch.sprite.bloodBurstA(target.sprite.center(), dmg);
+							ch.sprite.flash();
+
+							if (!ch.isAlive()) {
+								if (hero.hasTalent(Talent.LETHAL_DEFENSE) && hero.buff(BrokenSeal.WarriorShield.class) != null){
+									BrokenSeal.WarriorShield shield = hero.buff(BrokenSeal.WarriorShield.class);
+									shield.supercharge(Math.round(shield.maxShield() * hero.pointsInTalent(Talent.LETHAL_DEFENSE)/3f));
+								}
+							}
+						}
+					}
+					break;
+				default:
+					//nothing
+					break;
+			}
+
+			if (target.buff(FireImbue.class) != null)   target.buff(FireImbue.class).proc(enemy);
+			if (target.buff(FrostImbue.class) != null)  target.buff(FrostImbue.class).proc(enemy);
+
+			target.hitSound(Random.Float(0.87f, 1.15f));
+			if (moveBeingUsed != ComboMove.FURY) Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+			enemy.sprite.bloodBurstA(target.sprite.center(), dmg);
+			enemy.sprite.flash();
+
+			if (!enemy.isAlive()) {
+				GLog.i(Messages.capitalize(Messages.get(Char.class, "defeat", enemy.name())));
+			}
+
+		}
+
+		//Post-attack behaviour
+		switch(moveBeingUsed){
+			case CLOBBER:
+				clobberUsed = true;
+				if (getHighestMove() == null) ActionIndicator.clearAction(Combo.this);
+				hero.spendAndNext(hero.attackDelay());
+				break;
+
+			case PARRY:
+				hero.next();
+				break;
+
+			case FURY:
+				count--;
+				//fury attacks as many times as you have combo count
+				if (count > 0 && enemy.isAlive() && (wasAlly || enemy.alignment != target.alignment)){
+					target.sprite.attack(enemy.pos, new Callback() {
+						@Override
+						public void call() {
+							doAttack(enemy);
+						}
+					});
+				} else {
+					detach();
+					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+					ActionIndicator.clearAction(Combo.this);
+					hero.spendAndNext(hero.attackDelay());
+				}
+				break;
+
+			default:
+				detach();
+				ActionIndicator.clearAction(Combo.this);
+				hero.spendAndNext(hero.attackDelay());
+				break;
+		}
+
+		if (!enemy.isAlive() || (!wasAlly && enemy.alignment == target.alignment)) {
+			if (hero.hasTalent(Talent.LETHAL_DEFENSE) && hero.buff(BrokenSeal.WarriorShield.class) != null){
+				BrokenSeal.WarriorShield shield = hero.buff(BrokenSeal.WarriorShield.class);
+				shield.supercharge(Math.round(shield.maxShield() * hero.pointsInTalent(Talent.LETHAL_DEFENSE)/3f));
+			}
+		}
+
+	}
 
 	private CellSelector.Listener listener = new CellSelector.Listener() {
 
@@ -240,154 +425,6 @@ public class Combo extends Buff implements ActionIndicator.Action {
 					}
 				});
 			}
-		}
-
-		private void doAttack(final Char enemy){
-
-			AttackIndicator.target(enemy);
-
-			boolean wasAlly = enemy.alignment == target.alignment;
-
-			if (enemy.defenseSkill(target) >= Char.INFINITE_EVASION){
-				enemy.sprite.showStatus( CharSprite.NEUTRAL, enemy.defenseVerb() );
-				Sample.INSTANCE.play(Assets.Sounds.MISS);
-
-			} else if (enemy.isInvulnerable(target.getClass())){
-				enemy.sprite.showStatus( CharSprite.POSITIVE, Messages.get(Char.class, "invulnerable") );
-				Sample.INSTANCE.play(Assets.Sounds.MISS);
-
-			} else {
-
-				int dmg = target.damageRoll();
-
-				//variance in damage dealt
-				switch (moveBeingUsed) {
-					case CLOBBER:
-						dmg = 0;
-						break;
-					case SLAM:
-						dmg += Math.round(target.drRoll() * count/5f);
-						break;
-					case CRUSH:
-						//rolls 4 times, takes the highest roll
-						for (int i = 1; i < 4; i++) {
-							int dmgReroll = target.damageRoll();
-							if (dmgReroll > dmg) dmg = dmgReroll;
-						}
-						dmg = Math.round(dmg * 2.5f);
-						break;
-					case FURY:
-						dmg = Math.round(dmg * 0.6f);
-						break;
-				}
-
-				dmg = enemy.defenseProc(target, dmg);
-				dmg -= enemy.drRoll();
-
-				if (enemy.buff(Vulnerable.class) != null) {
-					dmg *= 1.33f;
-				}
-
-				dmg = target.attackProc(enemy, dmg);
-				enemy.damage(dmg, target);
-
-				//special effects
-				switch (moveBeingUsed) {
-					case CLOBBER:
-						if (enemy.isAlive()) {
-							//trace a ballistica to our target (which will also extend past them
-							Ballistica trajectory = new Ballistica(target.pos, enemy.pos, Ballistica.STOP_TARGET);
-							//trim it to just be the part that goes past them
-							trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
-							//knock them back along that ballistica, ensuring they don't fall into a pit
-							int dist = 2;
-							while (dist > 0 && Dungeon.level.pit[trajectory.path.get(dist)]){
-								dist--;
-							}
-							WandOfBlastWave.throwChar(enemy, trajectory, dist, true, false);
-							hit( enemy );
-						}
-						break;
-					case SLAM:
-						BrokenSeal.WarriorShield shield = Buff.affect(target, BrokenSeal.WarriorShield.class);
-						if (shield != null) {
-							shield.supercharge(dmg / 2);
-						}
-						break;
-					default:
-						//nothing
-						break;
-				}
-
-				if (target.buff(FireImbue.class) != null)   target.buff(FireImbue.class).proc(enemy);
-				if (target.buff(FrostImbue.class) != null)  target.buff(FrostImbue.class).proc(enemy);
-
-				target.hitSound(Random.Float(0.87f, 1.15f));
-				if (moveBeingUsed != ComboMove.FURY) Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
-				enemy.sprite.bloodBurstA(target.sprite.center(), dmg);
-				enemy.sprite.flash();
-
-				if (!enemy.isAlive()) {
-					GLog.i(Messages.capitalize(Messages.get(Char.class, "defeat", enemy.name())));
-				}
-
-			}
-
-			Hero hero = (Hero)target;
-
-			//Post-attack behaviour
-			switch(moveBeingUsed){
-				case CLOBBER:
-					clobberUsed = true;
-					if (getHighestMove() == null) ActionIndicator.clearAction(Combo.this);
-					hero.spendAndNext(hero.attackDelay());
-					break;
-
-				/*case CLEAVE:
-					//combo isn't reset, but rather increments with a cleave kill, and grants more time.
-					//this includes corrupting kills (which is why we check alignment
-					if (!enemy.isAlive() || (!wasAlly && enemy.alignment == target.alignment)) {
-						hit( enemy );
-						comboTime = 12f;
-					} else {
-						detach();
-						ActionIndicator.clearAction(Combo.this);
-					}
-					hero.spendAndNext(hero.attackDelay());
-					break;*/
-
-				case FURY:
-					count--;
-					//fury attacks as many times as you have combo count
-					if (count > 0 && enemy.isAlive() && (wasAlly || enemy.alignment != target.alignment)){
-						target.sprite.attack(enemy.pos, new Callback() {
-							@Override
-							public void call() {
-								doAttack(enemy);
-							}
-						});
-					} else {
-						detach();
-						Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
-						ActionIndicator.clearAction(Combo.this);
-						hero.spendAndNext(hero.attackDelay());
-					}
-					break;
-
-				default:
-					detach();
-					ActionIndicator.clearAction(Combo.this);
-					hero.spendAndNext(hero.attackDelay());
-					break;
-			}
-
-			if (!enemy.isAlive() || (!wasAlly && enemy.alignment == target.alignment)) {
-				if (hero.hasTalent(Talent.LETHAL_DEFENSE) && hero.buff(BrokenSeal.WarriorShield.class) != null){
-					BrokenSeal.WarriorShield shield = hero.buff(BrokenSeal.WarriorShield.class);
-					shield.supercharge(Math.round(shield.maxShield() * hero.pointsInTalent(Talent.LETHAL_DEFENSE)/3f));
-				}
-			}
-
 		}
 
 		@Override

@@ -52,6 +52,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CheckedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
@@ -409,6 +410,13 @@ public class Hero extends Char {
 	
 	@Override
 	public int defenseSkill( Char enemy ) {
+
+		if (buff(Combo.ParryTracker.class) != null){
+			if (canAttack(enemy)){
+				Buff.affect(this, Combo.RiposteTracker.class).enemy = enemy;
+			}
+			return INFINITE_EVASION;
+		}
 		
 		float evasion = defenseSkill;
 		
@@ -424,7 +432,19 @@ public class Hero extends Char {
 
 		return Math.round(evasion);
 	}
-	
+
+	@Override
+	public String defenseVerb() {
+		Combo.ParryTracker parry = buff(Combo.ParryTracker.class);
+		if (parry == null){
+			return super.defenseVerb();
+		} else {
+			parry.parried = true;
+			parry.detach();
+			return Messages.get(Monk.class, "parried");
+		}
+	}
+
 	@Override
 	public int drRoll() {
 		int dr = 0;
