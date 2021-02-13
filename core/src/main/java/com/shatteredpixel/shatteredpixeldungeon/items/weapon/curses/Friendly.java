@@ -35,8 +35,9 @@ public class Friendly extends Weapon.Enchantment {
 	
 	@Override
 	public int proc(Weapon weapon, Char attacker, Char defender, int damage ) {
-		
-		if (Random.Int(10) == 0){
+
+		float procChance = 1/10f * procChanceMultiplier(attacker);
+		if (Random.Float() < procChance) {
 			
 			Buff.affect( attacker, Charm.class, Charm.DURATION ).object = defender.id();
 			attacker.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );

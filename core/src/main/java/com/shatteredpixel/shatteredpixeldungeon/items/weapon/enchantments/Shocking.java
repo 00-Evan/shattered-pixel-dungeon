@@ -42,12 +42,13 @@ public class Shocking extends Weapon.Enchantment {
 
 	@Override
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
+		int level = Math.max( 0, weapon.buffedLvl() );
+
 		// lvl 0 - 25%
 		// lvl 1 - 40%
 		// lvl 2 - 50%
-		int level = Math.max( 0, weapon.buffedLvl() );
-		
-		if (Random.Int( level + 4 ) >= 3) {
+		float procChance = (level+1f)/(level+4f) * procChanceMultiplier(attacker);
+		if (Random.Float() < procChance) {
 			
 			affected.clear();
 			arcs.clear();

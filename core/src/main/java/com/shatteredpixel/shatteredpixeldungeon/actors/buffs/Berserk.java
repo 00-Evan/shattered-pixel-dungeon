@@ -104,6 +104,10 @@ public class Berserk extends Buff {
 		return true;
 	}
 
+	public float rageAmount(){
+		return Math.min(1f, power);
+	}
+
 	public int damageFactor(int dmg){
 		float bonus = Math.min(1.5f, 1f + (power / 2f));
 		return Math.round(dmg * bonus);
