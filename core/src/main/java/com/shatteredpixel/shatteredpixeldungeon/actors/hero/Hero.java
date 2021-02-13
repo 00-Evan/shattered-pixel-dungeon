@@ -470,6 +470,10 @@ public class Hero extends Char {
 		
 		Blocking.BlockBuff block = buff(Blocking.BlockBuff.class);
 		if (block != null)              dr += block.blockingRoll();
+
+		if (buff(Talent.HoldFastTracker.class) != null){
+			dr += Random.NormalIntRange(0, 2*pointsInTalent(Talent.HOLD_FAST));
+		}
 		
 		return dr;
 	}
@@ -1061,8 +1065,13 @@ public class Hero extends Char {
 	
 	public void rest( boolean fullRest ) {
 		spendAndNext( TIME_TO_REST );
-		if (!fullRest && sprite != null) {
-			sprite.showStatus( CharSprite.DEFAULT, Messages.get(this, "wait") );
+		if (!fullRest) {
+			if (hasTalent(Talent.HOLD_FAST)){
+				Buff.affect(this, Talent.HoldFastTracker.class);
+			}
+			if (sprite != null) {
+				sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "wait"));
+			}
 		}
 		resting = fullRest;
 	}
