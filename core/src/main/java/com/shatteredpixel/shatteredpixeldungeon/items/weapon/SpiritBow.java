@@ -25,7 +25,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
@@ -337,6 +339,16 @@ public class SpiritBow extends Weapon {
 				});
 				
 			} else {
+
+				if (Actor.findChar(dst) == null
+						&& user.hasTalent(Talent.SEER_SHOT)
+						&& user.buff(Talent.SeerShotCooldown.class) == null){
+					Talent.SeerShotTracker seerShot = Buff.affect(user, Talent.SeerShotTracker.class, 5*user.pointsInTalent(Talent.SEER_SHOT));
+					seerShot.depth = Dungeon.depth;
+					seerShot.pos = dst;
+					Buff.affect(user, Talent.SeerShotCooldown.class, 20f);
+				}
+
 				super.cast(user, dst);
 			}
 		}

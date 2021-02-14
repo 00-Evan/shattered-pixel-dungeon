@@ -1190,6 +1190,13 @@ public abstract class Level implements Bundlable {
 					BArray.or(fieldOfView, m.fieldOfView, fieldOfView);
 				}
 			}
+
+			Talent.SeerShotTracker seerShot = c.buff(Talent.SeerShotTracker.class);
+			if (seerShot != null && seerShot.depth == Dungeon.depth){
+				for (int i : PathFinder.NEIGHBOURS9)
+					fieldOfView[seerShot.pos+i] = true;
+			}
+
 		}
 
 		if (c == Dungeon.hero) {

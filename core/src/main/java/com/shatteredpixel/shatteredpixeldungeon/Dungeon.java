@@ -697,7 +697,6 @@ public class Dungeon {
 		Rankings.INSTANCE.submit( true, cause );
 	}
 
-	//TODO hero max vision is now separate from shadowcaster max vision. Might want to adjust.
 	public static void observe(){
 		int dist = Dungeon.hero.viewDistance;
 		dist *= 1f + 0.25f*Dungeon.hero.pointsInTalent(Talent.FARSIGHT);
@@ -768,6 +767,14 @@ public class Dungeon {
 			BArray.or( level.visited, level.heroFOV, h.pos - 1, 3, level.visited );
 			BArray.or( level.visited, level.heroFOV, h.pos - 1 + level.width(), 3, level.visited );
 			GameScene.updateFog(h.pos, 2);
+		}
+
+		Talent.SeerShotTracker seerShot = hero.buff(Talent.SeerShotTracker.class);
+		if (seerShot != null && seerShot.depth == Dungeon.depth){
+			BArray.or( level.visited, level.heroFOV, seerShot.pos - 1 - level.width(), 3, level.visited );
+			BArray.or( level.visited, level.heroFOV, seerShot.pos - 1, 3, level.visited );
+			BArray.or( level.visited, level.heroFOV, seerShot.pos - 1 + level.width(), 3, level.visited );
+			GameScene.updateFog(seerShot.pos, 2);
 		}
 
 		GameScene.afterObserve();

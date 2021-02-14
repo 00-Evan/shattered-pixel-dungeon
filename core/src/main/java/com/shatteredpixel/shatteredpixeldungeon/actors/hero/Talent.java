@@ -104,7 +104,7 @@ public enum Talent {
 	//Huntress T2
 	INVIGORATING_MEAL(100), RESTORED_NATURE(101), REJUVENATING_STEPS(102), HEIGHTENED_SENSES(103), DURABLE_PROJECTILES(104),
 	//Huntress T3
-	POINT_BLANK(105, 3), HUNTRESS_T3_2(106, 3),
+	POINT_BLANK(105, 3), SEER_SHOT(106, 3),
 	//Sniper T3
 	FARSIGHT(107, 3), SHARED_ENCHANTMENT(108, 3), SHARED_UPGRADES(109, 3),
 	//Warden T3
@@ -137,6 +137,16 @@ public enum Talent {
 	public static class EnhancedRingsTracker extends FlavourBuff{};
 	public static class BountyHunterTracker extends FlavourBuff{};
 	public static class RejuvenatingStepsCooldown extends FlavourBuff{};
+	public static class SeerShotTracker extends FlavourBuff{
+		public int depth, pos; //TODO bundle
+
+		@Override
+		public void detach() {
+			GameScene.updateFog(pos, 2);
+			super.detach();
+		}
+	}
+	public static class SeerShotCooldown extends FlavourBuff{};
 
 	int icon;
 	int maxPoints;
@@ -457,7 +467,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, ENHANCED_RINGS, LIGHT_CLOAK);
 				break;
 			case HUNTRESS:
-				Collections.addAll(tierTalents, POINT_BLANK, HUNTRESS_T3_2);
+				Collections.addAll(tierTalents, POINT_BLANK, SEER_SHOT);
 				break;
 		}
 		for (Talent talent : tierTalents){
