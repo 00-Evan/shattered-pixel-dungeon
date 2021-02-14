@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CounterBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EnhancedRings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
@@ -112,40 +113,10 @@ public enum Talent {
 
 	public static class ImprovisedProjectileCooldown extends FlavourBuff{};
 	public static class LethalMomentumTracker extends FlavourBuff{};
-	public static class HoldFastTracker extends Buff{
-		public int pos = -1;
-		@Override
-		public boolean act() {
-			if (pos == -1) pos = target.pos;
-			if (pos != target.pos) {
-				detach();
-			} else {
-				spend(TICK);
-			}
-			return true;
-		}
-	}
 	public static class WandPreservationCounter extends CounterBuff{};
-	public static class EmpoweringScrollsTracker extends FlavourBuff{
-		@Override
-		public void detach() {
-			super.detach();
-			Item.updateQuickslot();
-		}
-	};
 	public static class EmpoweredStrikeTracker extends FlavourBuff{};
-	public static class EnhancedRingsTracker extends FlavourBuff{};
 	public static class BountyHunterTracker extends FlavourBuff{};
 	public static class RejuvenatingStepsCooldown extends FlavourBuff{};
-	public static class SeerShotTracker extends FlavourBuff{
-		public int depth, pos; //TODO bundle
-
-		@Override
-		public void detach() {
-			GameScene.updateFog(pos, 2);
-			super.detach();
-		}
-	}
 	public static class SeerShotCooldown extends FlavourBuff{};
 
 	int icon;
@@ -338,7 +309,7 @@ public enum Talent {
 
 	public static void onArtifactUsed( Hero hero ){
 		if (hero.hasTalent(ENHANCED_RINGS)){
-			Buff.affect(hero, EnhancedRingsTracker.class, 5f*hero.pointsInTalent(ENHANCED_RINGS));
+			Buff.prolong(hero, EnhancedRings.class, 5f*hero.pointsInTalent(ENHANCED_RINGS));
 		}
 	}
 

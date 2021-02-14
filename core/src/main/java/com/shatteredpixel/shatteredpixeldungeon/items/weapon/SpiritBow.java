@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
@@ -344,9 +345,9 @@ public class SpiritBow extends Weapon {
 						&& user.buff(Talent.SeerShotCooldown.class) == null){
 					int shotPos = throwPos(user, dst);
 					if (Actor.findChar(shotPos) == null) {
-						Talent.SeerShotTracker seerShot = Buff.affect(user, Talent.SeerShotTracker.class, 5 * user.pointsInTalent(Talent.SEER_SHOT));
-						seerShot.depth = Dungeon.depth;
-						seerShot.pos = shotPos;
+						RevealedArea a = Buff.affect(user, RevealedArea.class, 5 * user.pointsInTalent(Talent.SEER_SHOT));
+						a.depth = Dungeon.depth;
+						a.pos = shotPos;
 						Buff.affect(user, Talent.SeerShotCooldown.class, 20f);
 					}
 				}

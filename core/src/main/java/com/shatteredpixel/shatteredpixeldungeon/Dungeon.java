@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -769,12 +770,12 @@ public class Dungeon {
 			GameScene.updateFog(h.pos, 2);
 		}
 
-		Talent.SeerShotTracker seerShot = hero.buff(Talent.SeerShotTracker.class);
-		if (seerShot != null && seerShot.depth == Dungeon.depth){
-			BArray.or( level.visited, level.heroFOV, seerShot.pos - 1 - level.width(), 3, level.visited );
-			BArray.or( level.visited, level.heroFOV, seerShot.pos - 1, 3, level.visited );
-			BArray.or( level.visited, level.heroFOV, seerShot.pos - 1 + level.width(), 3, level.visited );
-			GameScene.updateFog(seerShot.pos, 2);
+		for (RevealedArea a : hero.buffs(RevealedArea.class)){
+			if (Dungeon.depth != a.depth) continue;
+			BArray.or( level.visited, level.heroFOV, a.pos - 1 - level.width(), 3, level.visited );
+			BArray.or( level.visited, level.heroFOV, a.pos - 1, 3, level.visited );
+			BArray.or( level.visited, level.heroFOV, a.pos - 1 + level.width(), 3, level.visited );
+			GameScene.updateFog(a.pos, 2);
 		}
 
 		GameScene.afterObserve();

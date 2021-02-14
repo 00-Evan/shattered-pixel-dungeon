@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EnhancedRings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -289,7 +290,7 @@ public class Ring extends KindofMisc {
 	@Override
 	public int buffedLvl() {
 		int lvl = super.buffedLvl();
-		if (Dungeon.hero.buff(Talent.EnhancedRingsTracker.class) != null){
+		if (Dungeon.hero.buff(EnhancedRings.class) != null){
 			lvl++;
 		}
 		return lvl;

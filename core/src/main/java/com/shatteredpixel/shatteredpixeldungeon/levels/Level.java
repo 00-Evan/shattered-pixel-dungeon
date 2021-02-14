@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Shadows;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -1191,10 +1192,10 @@ public abstract class Level implements Bundlable {
 				}
 			}
 
-			Talent.SeerShotTracker seerShot = c.buff(Talent.SeerShotTracker.class);
-			if (seerShot != null && seerShot.depth == Dungeon.depth){
+			for (RevealedArea a : c.buffs(RevealedArea.class)){
+				if (Dungeon.depth != a.depth) continue;
 				for (int i : PathFinder.NEIGHBOURS9)
-					fieldOfView[seerShot.pos+i] = true;
+					fieldOfView[a.pos+i] = true;
 			}
 
 		}

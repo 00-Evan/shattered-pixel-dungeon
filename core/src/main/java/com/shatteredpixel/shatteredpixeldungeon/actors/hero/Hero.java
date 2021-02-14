@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Foresight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fury;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HoldFast;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
@@ -471,7 +472,7 @@ public class Hero extends Char {
 		Blocking.BlockBuff block = buff(Blocking.BlockBuff.class);
 		if (block != null)              dr += block.blockingRoll();
 
-		if (buff(Talent.HoldFastTracker.class) != null){
+		if (buff(HoldFast.class) != null){
 			dr += Random.NormalIntRange(0, 2*pointsInTalent(Talent.HOLD_FAST));
 		}
 		
@@ -1067,7 +1068,7 @@ public class Hero extends Char {
 		spendAndNext( TIME_TO_REST );
 		if (!fullRest) {
 			if (hasTalent(Talent.HOLD_FAST)){
-				Buff.affect(this, Talent.HoldFastTracker.class);
+				Buff.affect(this, HoldFast.class);
 			}
 			if (sprite != null) {
 				sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "wait"));

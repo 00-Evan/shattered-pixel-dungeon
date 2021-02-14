@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ScrollEmpower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -305,7 +306,7 @@ public abstract class Wand extends Item {
 		int lvl = super.buffedLvl();
 
 		if (charger != null && charger.target != null) {
-			if (charger.target.buff(Talent.EmpoweringScrollsTracker.class) != null){
+			if (charger.target.buff(ScrollEmpower.class) != null){
 				lvl += Dungeon.hero.pointsInTalent(Talent.EMPOWERING_SCROLLS);
 			}
 
@@ -361,9 +362,9 @@ public abstract class Wand extends Item {
 		
 		curCharges -= cursed ? 1 : chargesPerCast();
 
-		Talent.EmpoweringScrollsTracker tracker = curUser.buff(Talent.EmpoweringScrollsTracker.class);
-		if (tracker != null){
-			tracker.detach();
+		ScrollEmpower empower = curUser.buff(ScrollEmpower.class);
+		if (empower != null){
+			empower.detach();
 		}
 
 		WandOfMagicMissile.MagicCharge buff = curUser.buff(WandOfMagicMissile.MagicCharge.class);
