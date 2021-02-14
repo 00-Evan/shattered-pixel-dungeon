@@ -304,11 +304,11 @@ public abstract class Wand extends Item {
 	public int buffedLvl() {
 		int lvl = super.buffedLvl();
 
-		if (charger.target.buff(Talent.EmpoweringScrollsTracker.class) != null){
-			lvl += Dungeon.hero.pointsInTalent(Talent.EMPOWERING_SCROLLS);
-		}
-
 		if (charger != null && charger.target != null) {
+			if (charger.target.buff(Talent.EmpoweringScrollsTracker.class) != null){
+				lvl += Dungeon.hero.pointsInTalent(Talent.EMPOWERING_SCROLLS);
+			}
+
 			WandOfMagicMissile.MagicCharge buff = charger.target.buff(WandOfMagicMissile.MagicCharge.class);
 			if (buff != null && buff.level() > lvl){
 				return buff.level();
