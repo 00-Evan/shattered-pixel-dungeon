@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
@@ -208,6 +209,7 @@ public class AlchemistsToolkit extends Artifact {
 		@Override
 		public void spendEnergy(int reduction) {
 			charge = Math.max(0, charge - reduction);
+			Talent.onArtifactUsed(Dungeon.hero);
 		}
 	}
 	

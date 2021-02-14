@@ -100,6 +100,7 @@ public class CloakOfShadows extends Artifact {
 					} else {
 						hero.sprite.alpha(0.4f);
 					}
+					Talent.onArtifactUsed(Dungeon.hero);
 					hero.sprite.operate(hero.pos);
 				}
 			} else {

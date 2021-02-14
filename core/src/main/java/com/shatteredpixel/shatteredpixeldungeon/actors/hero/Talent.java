@@ -93,7 +93,7 @@ public enum Talent {
 	//Rogue T2
 	MYSTICAL_MEAL(68), MYSTICAL_UPGRADE(69), WIDE_SEARCH(70), SILENT_STEPS(71), ROGUES_FORESIGHT(72),
 	//Rogue T3
-	ROGUE_T3_1(73, 3), LIGHT_CLOAK(74, 3),
+	ENHANCED_RINGS(73, 3), LIGHT_CLOAK(74, 3),
 	//Assassin T3
 	ENHANCED_LETHALITY(75, 3), ASSASSINS_REACH(76, 3), BOUNTY_HUNTER(77, 3),
 	//Freerunner T3
@@ -134,6 +134,7 @@ public enum Talent {
 		}
 	};
 	public static class EmpoweredStrikeTracker extends FlavourBuff{};
+	public static class EnhancedRingsTracker extends FlavourBuff{};
 	public static class BountyHunterTracker extends FlavourBuff{};
 	public static class RejuvenatingStepsCooldown extends FlavourBuff{};
 
@@ -325,6 +326,12 @@ public enum Talent {
 		}
 	}
 
+	public static void onArtifactUsed( Hero hero ){
+		if (hero.hasTalent(ENHANCED_RINGS)){
+			Buff.affect(hero, EnhancedRingsTracker.class, 5f*hero.pointsInTalent(ENHANCED_RINGS));
+		}
+	}
+
 	public static void onItemEquipped( Hero hero, Item item ){
 		if (hero.pointsInTalent(ARMSMASTERS_INTUITION) == 2 && (item instanceof Weapon || item instanceof Armor)){
 			item.identify();
@@ -447,7 +454,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, EMPOWERING_SCROLLS, MAGE_T3_2);
 				break;
 			case ROGUE:
-				Collections.addAll(tierTalents, ROGUE_T3_1, LIGHT_CLOAK);
+				Collections.addAll(tierTalents, ENHANCED_RINGS, LIGHT_CLOAK);
 				break;
 			case HUNTRESS:
 				Collections.addAll(tierTalents, POINT_BLANK, HUNTRESS_T3_2);

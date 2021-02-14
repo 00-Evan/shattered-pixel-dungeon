@@ -286,6 +286,15 @@ public class Ring extends KindofMisc {
 		}
 	}
 
+	@Override
+	public int buffedLvl() {
+		int lvl = super.buffedLvl();
+		if (Dungeon.hero.buff(Talent.EnhancedRingsTracker.class) != null){
+			lvl++;
+		}
+		return lvl;
+	}
+
 	public static int getBonus(Char target, Class<?extends RingBuff> type){
 		int bonus = 0;
 		for (RingBuff buff : target.buffs(type)) {
