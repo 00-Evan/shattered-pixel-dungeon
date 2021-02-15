@@ -252,10 +252,8 @@ public class Necromancer extends Mob {
 				mySkeleton.pos = summoningPos;
 				GameScene.add( mySkeleton );
 				Dungeon.level.occupyCell( mySkeleton );
-				if (Dungeon.level.heroFOV[summoningPos]) {
-					Sample.INSTANCE.play(Assets.Sounds.BONES);
-					summoningEmitter.burst(Speck.factory(Speck.RATTLE), 5);
-				}
+				Sample.INSTANCE.play(Assets.Sounds.BONES);
+				summoningEmitter.burst(Speck.factory(Speck.RATTLE), 5);
 				sprite.idle();
 				
 				if (buff(Corruption.class) != null){
