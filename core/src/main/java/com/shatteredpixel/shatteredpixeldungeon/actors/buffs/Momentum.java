@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.GameMath;
 
 public class Momentum extends Buff implements ActionIndicator.Action {
 	
@@ -63,7 +64,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 				freerunTurns--;
 			}
 		} else if (!movedLastTurn){
-			momentumStacks = Math.min(momentumStacks -1, Math.round(momentumStacks * 0.667f));
+			momentumStacks = (int)GameMath.gate(0, momentumStacks-1, Math.round(momentumStacks * 0.667f));
 			if (momentumStacks <= 0) {
 				ActionIndicator.clearAction(this);
 				if (freerunCooldown <= 0) detach();
@@ -78,7 +79,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 	public void gainStack(){
 		movedLastTurn = true;
 		if (freerunCooldown <= 0){
-			postpone(target.cooldown());
+			postpone(target.cooldown()+(1/target.speed()));
 			momentumStacks = Math.min(momentumStacks + 1, 10);
 			ActionIndicator.setAction(this);
 		}
