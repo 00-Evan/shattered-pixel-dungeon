@@ -90,8 +90,10 @@ public class Artifact extends KindofMisc {
 	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
 		if (super.doUnequip( hero, collect, single )) {
 
-			passiveBuff.detach();
-			passiveBuff = null;
+			if (passiveBuff != null) {
+				passiveBuff.detach();
+				passiveBuff = null;
+			}
 
 			if (activeBuff != null){
 				activeBuff.detach();

@@ -231,9 +231,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		turnsInvis = bundle.getInt(TURNS);
-		if (AttackLevel.getLvl(turnsInvis).blinkDistance() > 0){
-			ActionIndicator.setAction(this);
-		}
+		ActionIndicator.setAction(this);
 	}
 	
 	@Override

@@ -155,11 +155,10 @@ public class CloakOfShadows extends Artifact {
 		if (passiveBuff != null){
 			passiveBuff.detach();
 			passiveBuff = null;
-
-			if (activeBuff != null){
-				activeBuff.detach();
-				activeBuff = null;
-			}
+		}
+		if (activeBuff != null){
+			activeBuff.detach();
+			activeBuff = null;
 		}
 	}
 

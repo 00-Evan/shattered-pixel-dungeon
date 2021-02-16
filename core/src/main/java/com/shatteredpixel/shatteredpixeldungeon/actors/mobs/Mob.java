@@ -694,10 +694,12 @@ public abstract class Mob extends Char {
 				&& soulMarked
 				&& Random.Int(10) < Dungeon.hero.pointsInTalent(Talent.NECROMANCERS_MINIONS)){
 			Wraith w = Wraith.spawnAt(pos);
-			Buff.affect(w, Corruption.class);
-			if (Dungeon.level.heroFOV[pos]){
-				CellEmitter.get(pos).burst( ShadowParticle.CURSE, 6 );
-				Sample.INSTANCE.play( Assets.Sounds.CURSED );
+			if (w != null) {
+				Buff.affect(w, Corruption.class);
+				if (Dungeon.level.heroFOV[pos]) {
+					CellEmitter.get(pos).burst(ShadowParticle.CURSE, 6);
+					Sample.INSTANCE.play(Assets.Sounds.CURSED);
+				}
 			}
 		}
 	}

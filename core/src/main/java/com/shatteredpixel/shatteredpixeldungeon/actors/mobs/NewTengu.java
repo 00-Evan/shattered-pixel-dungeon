@@ -265,8 +265,8 @@ public class NewTengu extends Mob {
 				
 				if (level.heroFOV[newPos]) CellEmitter.get( newPos ).burst( Speck.factory( Speck.WOOL ), 6 );
 				Sample.INSTANCE.play( Assets.Sounds.PUFF );
-				
-				float fill = 0.9f - 0.5f*((HP-80)/80f);
+
+				float fill = 0.9f - 0.5f*((HP-(HT/2f))/(HT/2f));
 				level.placeTrapsInTenguCell(fill);
 				
 			//otherwise, jump in a larger possible area, as the room is bigger
