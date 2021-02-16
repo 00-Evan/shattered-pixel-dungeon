@@ -164,9 +164,9 @@ public class SpiritBow extends Weapon {
 			}
 		}
 
-		damage = Math.round(damage * (1f + sniperSpecialBonusDamage));
-		
 		if (sniperSpecial){
+			damage = Math.round(damage * (1f + sniperSpecialBonusDamage));
+
 			switch (augment){
 				case NONE:
 					damage = Math.round(damage * 0.667f);
