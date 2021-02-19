@@ -22,6 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -31,6 +33,21 @@ public class EnhancedRings extends FlavourBuff{
 
 	{
 		type = Buff.buffType.POSITIVE;
+	}
+
+	@Override
+	public boolean attachTo(Char target) {
+		if (super.attachTo(target)){
+			if (target instanceof Hero) ((Hero) target).updateHT(false);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void detach() {
+		super.detach();
+		if (target instanceof Hero) ((Hero) target).updateHT(false);
 	}
 
 	@Override
