@@ -121,6 +121,7 @@ public class CavesFissureRoom extends StandardRoom {
 
 			//just become an empty room if we can't make at least 2 lines
 			if (lineAngles.size() < 2) {
+				PathFinder.setMapSize(level.width(), level.height());
 				return;
 			}
 
