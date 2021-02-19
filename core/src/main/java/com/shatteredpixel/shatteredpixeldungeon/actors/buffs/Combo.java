@@ -232,7 +232,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 		@Override
 		public void detach() {
-			if (!parried) target.buff(Combo.class).detach();
+			if (!parried && target.buff(Combo.class) != null) target.buff(Combo.class).detach();
 			super.detach();
 		}
 	}
@@ -244,13 +244,15 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 		@Override
 		public boolean act() {
-			moveBeingUsed = ComboMove.PARRY;
-			target.sprite.attack(enemy.pos, new Callback() {
-				@Override
-				public void call() {
-					target.buff(Combo.class).doAttack(enemy);
-				}
-			});
+			if (target.buff(Combo.class) != null) {
+				moveBeingUsed = ComboMove.PARRY;
+				target.sprite.attack(enemy.pos, new Callback() {
+					@Override
+					public void call() {
+						target.buff(Combo.class).doAttack(enemy);
+					}
+				});
+			}
 			detach();
 			return true;
 		}
@@ -318,7 +320,8 @@ public class Combo extends Buff implements ActionIndicator.Action {
 							dist ++;
 							Buff.prolong(enemy, Vertigo.class, 3);
 						} else {
-							while (dist > 0 && Dungeon.level.pit[trajectory.path.get(dist)]) {
+							while (dist > trajectory.dist ||
+									(dist > 0 && Dungeon.level.pit[trajectory.path.get(dist)])) {
 								dist--;
 							}
 						}
