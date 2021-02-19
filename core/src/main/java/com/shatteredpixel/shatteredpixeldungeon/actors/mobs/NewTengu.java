@@ -972,14 +972,14 @@ public class NewTengu extends Mob {
 		public void storeInBundle(Bundle bundle) {
 			super.storeInBundle(bundle);
 			bundle.put( SHOCKER_POS, shockerPos );
-			bundle.put( SHOCKING_ORDINALS, shockingOrdinals );
+			if (shockingOrdinals != null) bundle.put( SHOCKING_ORDINALS, shockingOrdinals );
 		}
 		
 		@Override
 		public void restoreFromBundle(Bundle bundle) {
 			super.restoreFromBundle(bundle);
 			shockerPos = bundle.getInt( SHOCKER_POS );
-			shockingOrdinals = bundle.getBoolean( SHOCKING_ORDINALS );
+			if (bundle.contains(SHOCKING_ORDINALS)) shockingOrdinals = bundle.getBoolean( SHOCKING_ORDINALS );
 		}
 		
 		public static class ShockerBlob extends Blob {
