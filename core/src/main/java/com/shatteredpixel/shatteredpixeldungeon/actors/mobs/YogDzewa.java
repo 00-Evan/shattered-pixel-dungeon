@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -315,11 +316,9 @@ public class YogDzewa extends Mob {
 
 		if (phase < 4 && HP <= HT - 300*phase){
 
-			Dungeon.level.viewDistance = Math.max(1, Dungeon.level.viewDistance-1);
-			if (Dungeon.hero.buff(Light.class) == null){
-				Dungeon.hero.viewDistance = Dungeon.level.viewDistance;
-			}
-			Dungeon.observe();
+			phase++;
+
+			updateVisibility(Dungeon.level);
 			GLog.n(Messages.get(this, "darkness"));
 			sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "invulnerable"));
 
@@ -344,12 +343,26 @@ public class YogDzewa extends Mob {
 
 			GameScene.add(fist, 4);
 			Actor.addDelayed( new Pushing( fist, Dungeon.level.exit, fist.pos ), -1 );
-			phase++;
 		}
 
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 		if (lock != null) lock.addTime(dmgTaken);
 
+	}
+
+	public void updateVisibility( Level level ){
+		if (phase > 1 && isAlive()){
+			level.viewDistance = 4 - (phase-1);
+		} else {
+			level.viewDistance = 4;
+		}
+		level.viewDistance = Math.max(1, level.viewDistance);
+		if (Dungeon.hero != null) {
+			if (Dungeon.hero.buff(Light.class) == null) {
+				Dungeon.hero.viewDistance = level.viewDistance;
+			}
+			Dungeon.observe();
+		}
 	}
 
 	private YogFist findFist(){
@@ -385,10 +398,7 @@ public class YogDzewa extends Mob {
 			}
 		}
 
-		Dungeon.level.viewDistance = 4;
-		if (Dungeon.hero.buff(Light.class) == null){
-			Dungeon.hero.viewDistance = Dungeon.level.viewDistance;
-		}
+		updateVisibility(Dungeon.level);
 
 		GameScene.bossSlain();
 		Dungeon.level.unseal();
