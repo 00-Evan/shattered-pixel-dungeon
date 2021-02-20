@@ -54,6 +54,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	
 	private int count = 0;
 	private float comboTime = 0f;
+	private float initialComboTime = 5f;
 
 	@Override
 	public int icon() {
@@ -72,7 +73,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public float iconFadePercent() {
-		return Math.max(0, (5 - comboTime)/5f);
+		return Math.max(0, (initialComboTime - comboTime)/ initialComboTime);
 	}
 
 	@Override
@@ -89,6 +90,8 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		if (!enemy.isAlive() || enemy.buff(Corruption.class) != null){
 			comboTime = Math.max(comboTime, 10*((Hero)target).pointsInTalent(Talent.CLEAVE));
 		}
+
+		initialComboTime = comboTime;
 
 		if ((getHighestMove() != null)) {
 
@@ -126,6 +129,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 	private static final String COUNT = "count";
 	private static final String TIME  = "combotime";
+	private static final String INITIAL_TIME  = "initialComboTime";
 
 	private static final String CLOBBER_USED = "clobber_used";
 	private static final String PARRY_USED   = "parry_used";
@@ -135,6 +139,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		super.storeInBundle(bundle);
 		bundle.put(COUNT, count);
 		bundle.put(TIME, comboTime);
+		bundle.put(INITIAL_TIME, initialComboTime);
 
 		bundle.put(CLOBBER_USED, clobberUsed);
 		bundle.put(PARRY_USED, parryUsed);
@@ -145,6 +150,10 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		super.restoreFromBundle(bundle);
 		count = bundle.getInt( COUNT );
 		comboTime = bundle.getFloat( TIME );
+
+		//pre-0.9.2
+		if (bundle.contains(INITIAL_TIME))  initialComboTime = bundle.getFloat( INITIAL_TIME );
+		else                                initialComboTime = 5;
 
 		clobberUsed = bundle.getBoolean(CLOBBER_USED);
 		parryUsed = bundle.getBoolean(PARRY_USED);
