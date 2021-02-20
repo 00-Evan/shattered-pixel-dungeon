@@ -146,8 +146,20 @@ abstract public class MissileWeapon extends Weapon {
 	
 	@Override
 	public int throwPos(Hero user, int dst) {
-		if (hasEnchant(Projecting.class, user)
-				&& !Dungeon.level.solid[dst] && Dungeon.level.distance(user.pos, dst) <= 4){
+
+		boolean projecting = hasEnchant(Projecting.class, user);
+		if (!projecting && Random.Int(3) < user.pointsInTalent(Talent.SHARED_ENCHANTMENT)){
+			if (this instanceof Dart && ((Dart) this).crossbowHasEnchant(Dungeon.hero)){
+				//do nothing
+			} else {
+				SpiritBow bow = Dungeon.hero.belongings.getItem(SpiritBow.class);
+				if (bow != null && bow.hasEnchant(Projecting.class, user)) {
+					projecting = true;
+				}
+			}
+		}
+
+		if (projecting && !Dungeon.level.solid[dst] && Dungeon.level.distance(user.pos, dst) <= 4){
 			return dst;
 		} else {
 			return super.throwPos(user, dst);
