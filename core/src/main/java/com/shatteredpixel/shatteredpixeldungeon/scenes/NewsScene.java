@@ -282,8 +282,6 @@ public class NewsScene extends PixelScene {
 
 		@Override
 		protected void layout() {
-			text.maxWidth( (int)(width - icon.width() - bg.marginHor() - 2));
-
 			super.layout();
 
 			icon.x = x + bg.marginLeft() + (16-icon.width())/2f;
