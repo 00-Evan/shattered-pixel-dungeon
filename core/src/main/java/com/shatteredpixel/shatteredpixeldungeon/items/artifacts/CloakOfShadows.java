@@ -64,15 +64,13 @@ public class CloakOfShadows extends Artifact {
 		bones = false;
 	}
 
-	private boolean stealthed = false;
-
 	public static final String AC_STEALTH = "STEALTH";
 
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		if ((isEquipped( hero ) || hero.hasTalent(Talent.LIGHT_CLOAK))
-				&& !cursed && (charge > 0 || stealthed)) {
+				&& !cursed && (charge > 0 || activeBuff != null)) {
 			actions.add(AC_STEALTH);
 		}
 		return actions;
@@ -85,12 +83,11 @@ public class CloakOfShadows extends Artifact {
 
 		if (action.equals( AC_STEALTH )) {
 
-			if (!stealthed){
+			if (activeBuff == null){
 				if (!isEquipped(hero) && !hero.hasTalent(Talent.LIGHT_CLOAK)) GLog.i( Messages.get(Artifact.class, "need_to_equip") );
 				else if (cursed)       GLog.i( Messages.get(this, "cursed") );
 				else if (charge <= 0)  GLog.i( Messages.get(this, "no_charge") );
 				else {
-					stealthed = true;
 					hero.spend( 1f );
 					hero.busy();
 					Sample.INSTANCE.play(Assets.Sounds.MELD);
@@ -105,7 +102,6 @@ public class CloakOfShadows extends Artifact {
 					hero.sprite.operate(hero.pos);
 				}
 			} else {
-				stealthed = false;
 				activeBuff.detach();
 				activeBuff = null;
 				hero.spend( 1f );
@@ -118,8 +114,7 @@ public class CloakOfShadows extends Artifact {
 	@Override
 	public void activate(Char ch){
 		super.activate(ch);
-		if (stealthed){
-			activeBuff = activeBuff();
+		if (activeBuff != null){
 			activeBuff.attachTo(ch);
 		}
 	}
@@ -127,7 +122,6 @@ public class CloakOfShadows extends Artifact {
 	@Override
 	public boolean doUnequip(Hero hero, boolean collect, boolean single) {
 		if (super.doUnequip(hero, collect, single)){
-			stealthed = false;
 			if (hero.hasTalent(Talent.LIGHT_CLOAK)){
 				activate(hero);
 			}
@@ -141,6 +135,7 @@ public class CloakOfShadows extends Artifact {
 	public boolean collect( Bag container ) {
 		if (super.collect(container)){
 			if (container.owner instanceof Hero
+					&& passiveBuff == null
 					&& ((Hero) container.owner).hasTalent(Talent.LIGHT_CLOAK)){
 				activate((Hero) container.owner);
 			}
@@ -167,7 +162,6 @@ public class CloakOfShadows extends Artifact {
 		return new cloakRecharge();
 	}
 
-	//FIXME errors with this!
 	@Override
 	protected ArtifactBuff activeBuff( ) {
 		return new cloakStealth();
@@ -197,17 +191,21 @@ public class CloakOfShadows extends Artifact {
 	}
 
 	private static final String STEALTHED = "stealthed";
+	private static final String BUFF = "buff";
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle(bundle);
-		bundle.put( STEALTHED, stealthed );
+		if (activeBuff != null) bundle.put(BUFF, activeBuff);
 	}
 
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle(bundle);
-		stealthed = bundle.getBoolean( STEALTHED );
+		if (bundle.contains(BUFF)){
+			activeBuff = new cloakStealth();
+			activeBuff.restoreFromBundle(bundle.getBundle(BUFF));
+		}
 	}
 
 	@Override
@@ -220,7 +218,7 @@ public class CloakOfShadows extends Artifact {
 		public boolean act() {
 			if (charge < chargeCap) {
 				LockedFloor lock = target.buff(LockedFloor.class);
-				if (!stealthed && (lock == null || lock.regenOn())) {
+				if (activeBuff == null && (lock == null || lock.regenOn())) {
 					float missing = (chargeCap - charge);
 					if (level() > 7) missing += 5*(level() - 7)/3f;
 					float turnsToCharge = (45 - missing);
@@ -363,9 +361,7 @@ public class CloakOfShadows extends Artifact {
 
 		@Override
 		public void detach() {
-			if (target.invisible > 0)
-				target.invisible--;
-			stealthed = false;
+			if (target.invisible > 0)   target.invisible--;
 
 			updateQuickslot();
 			super.detach();
