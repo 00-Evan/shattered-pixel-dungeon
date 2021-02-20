@@ -159,8 +159,9 @@ public class MagesStaff extends MeleeWeapon {
 
 		if (attacker instanceof Hero && ((Hero) attacker).hasTalent(Talent.MYSTICAL_CHARGE)){
 			Hero hero = (Hero) attacker;
-			if (hero.belongings.artifact instanceof Artifact)   ((Artifact) hero.belongings.artifact).charge(hero, hero.pointsInTalent(Talent.MYSTICAL_CHARGE)/2f);
-			if (hero.belongings.misc instanceof Artifact)       ((Artifact) hero.belongings.misc).charge(hero, hero.pointsInTalent(Talent.MYSTICAL_CHARGE)/2f);
+			for (Buff b : hero.buffs()){
+				if (b instanceof Artifact.ArtifactBuff) ((Artifact.ArtifactBuff) b).charge(hero, hero.pointsInTalent(Talent.MYSTICAL_CHARGE)/2f);
+			}
 		}
 
 		if (wand != null &&

@@ -224,6 +224,10 @@ public class Artifact extends KindofMisc {
 			return cursed;
 		}
 
+		public void charge(Hero target, float amount){
+			Artifact.this.charge(target, amount);
+		}
+
 	}
 	
 	private static final String EXP = "exp";

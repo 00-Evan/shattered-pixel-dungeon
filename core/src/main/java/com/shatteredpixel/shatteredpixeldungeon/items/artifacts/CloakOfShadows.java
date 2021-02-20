@@ -170,6 +170,7 @@ public class CloakOfShadows extends Artifact {
 	@Override
 	public void charge(Hero target, float amount) {
 		if (charge < chargeCap) {
+			if (!isEquipped(target)) amount *= target.pointsInTalent(Talent.LIGHT_CLOAK)/10f;
 			partialCharge += 0.25f*amount;
 			if (partialCharge >= 1){
 				partialCharge--;

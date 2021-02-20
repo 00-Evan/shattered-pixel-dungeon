@@ -21,10 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
@@ -43,24 +41,16 @@ public class ArtifactRecharge extends Buff {
 	
 	@Override
 	public boolean act() {
-		
-		if (target instanceof Hero){
-			Belongings b = ((Hero) target).belongings;
 
+		if (target instanceof Hero) {
 			float chargeAmount = Math.min(1, left);
-			
-			if (b.artifact instanceof Artifact){
-				if (!(b.artifact instanceof HornOfPlenty) || !ignoreHornOfPlenty) {
-					((Artifact) b.artifact).charge((Hero) target, chargeAmount);
-				}
-			}
-			if (b.misc instanceof Artifact){
-				if (!(b.misc instanceof HornOfPlenty) || !ignoreHornOfPlenty) {
-					((Artifact) b.misc).charge((Hero) target, chargeAmount);
+			for (Buff b : target.buffs()) {
+				if (b instanceof Artifact.ArtifactBuff) {
+					((Artifact.ArtifactBuff) b).charge((Hero) target, chargeAmount);
 				}
 			}
 		}
-		
+
 		left--;
 		if (left <= 0){
 			detach();
