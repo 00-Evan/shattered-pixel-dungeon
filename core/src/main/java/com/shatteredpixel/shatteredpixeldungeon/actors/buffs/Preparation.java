@@ -151,7 +151,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 	}
 
 	public boolean canKO( Char defender ){
-		return AttackLevel.getLvl(turnsInvis).canKO(defender);
+		return !defender.isInvulnerable(target.getClass()) && AttackLevel.getLvl(turnsInvis).canKO(defender);
 	}
 	
 	@Override
