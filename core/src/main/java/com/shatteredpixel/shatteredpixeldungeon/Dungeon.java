@@ -857,16 +857,15 @@ public class Dungeon {
 			BArray.and( passable, Dungeon.level.openSpace, passable );
 		}
 
-		if (chars) {
-			for (Char c : Actor.chars()) {
-				if (visible[c.pos]) {
-					passable[c.pos] = false;
-				}
-			}
-		}
 		passable[ch.pos] = true;
-		
-		return PathFinder.getStepBack( ch.pos, from, passable );
+
+		//only consider chars impassable if our retreat path runs into them
+		int step = PathFinder.getStepBack( ch.pos, from, passable );
+		while (step != -1 && Actor.findChar(step) != null){
+			passable[step] = false;
+			step = PathFinder.getStepBack( ch.pos, from, passable );
+		}
+		return step;
 		
 	}
 
