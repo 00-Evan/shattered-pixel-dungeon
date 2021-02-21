@@ -362,6 +362,8 @@ public class CloakOfShadows extends Artifact {
 
 		@Override
 		public void detach() {
+			activeBuff = null;
+
 			if (target.invisible > 0)   target.invisible--;
 
 			updateQuickslot();
