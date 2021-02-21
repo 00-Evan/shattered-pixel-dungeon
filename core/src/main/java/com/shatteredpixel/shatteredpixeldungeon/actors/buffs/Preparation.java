@@ -274,25 +274,31 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				}
 				
 				AttackLevel lvl = AttackLevel.getLvl(turnsInvis);
-				
-				boolean[] blinkable = BArray.not(Dungeon.level.solid, null);
 
-				//we consider passable and cell occupancy for adjacent cells to target
-				for (int i : PathFinder.NEIGHBOURS9){
-					if (Actor.findChar(cell+i) != null)     blinkable[cell+i] = false;
-					if (!Dungeon.level.passable[cell+i])    blinkable[cell+i] = false;
+				PathFinder.buildDistanceMap(Dungeon.hero.pos, BArray.not(Dungeon.level.solid, null), lvl.blinkDistance());
+				int dest = -1;
+				for (int i : PathFinder.NEIGHBOURS8){
+					//cannot blink into a cell that's occupied or impassable, only over them
+					if (Actor.findChar(cell+i) != null)     continue;
+					if (!Dungeon.level.passable[cell+i])    continue;
+
+					if (dest == -1 || PathFinder.distance[dest] > PathFinder.distance[cell+i]){
+						dest = cell+i;
+					//if two cells have the same pathfinder distance, prioritize the one with the closest true distance to the hero
+					} else if (PathFinder.distance[dest] == PathFinder.distance[cell+i]){
+						if (Dungeon.level.trueDistance(Dungeon.hero.pos, dest) > Dungeon.level.trueDistance(Dungeon.hero.pos, cell+i)){
+							dest = cell+i;
+						}
+					}
+
 				}
-				
-				PathFinder.Path path = PathFinder.find(Dungeon.hero.pos, cell, blinkable);
-				int attackPos = path == null ? -1 : path.get(path.size()-2);
-				
-				if (attackPos == -1 || Dungeon.hero.rooted ||
-						Dungeon.level.distance(attackPos, Dungeon.hero.pos) > lvl.blinkDistance()){
+
+				if (dest == -1 || PathFinder.distance[dest] == Integer.MAX_VALUE || Dungeon.hero.rooted){
 					GLog.w(Messages.get(Preparation.class, "out_of_reach"));
 					return;
 				}
 				
-				Dungeon.hero.pos = attackPos;
+				Dungeon.hero.pos = dest;
 				Dungeon.level.occupyCell(Dungeon.hero);
 				//prevents the hero from being interrupted by seeing new enemies
 				Dungeon.observe();
