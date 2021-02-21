@@ -23,6 +23,7 @@ package com.watabou.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.watabou.noosa.Game;
 
 public class GameSettings {
 	
@@ -60,8 +61,8 @@ public class GameSettings {
 			} else {
 				return i;
 			}
-		} catch (ClassCastException e) {
-			//ShatteredPixelDungeon.reportException(e);
+		} catch (Exception e) {
+			Game.reportException(e);
 			put(key, defValue);
 			return defValue;
 		}
@@ -81,8 +82,8 @@ public class GameSettings {
 			} else {
 				return i;
 			}
-		} catch (ClassCastException e) {
-			//ShatteredPixelDungeon.reportException(e);
+		} catch (Exception e) {
+			Game.reportException(e);
 			put(key, defValue);
 			return defValue;
 		}
@@ -91,9 +92,8 @@ public class GameSettings {
 	public static boolean getBoolean( String key, boolean defValue ) {
 		try {
 			return get().getBoolean(key, defValue);
-		} catch (ClassCastException e) {
-			//ShatteredPixelDungeon.reportException(e);
-			put(key, defValue);
+		} catch (Exception e) {
+			Game.reportException(e);
 			return defValue;
 		}
 	}
@@ -111,8 +111,8 @@ public class GameSettings {
 			} else {
 				return s;
 			}
-		} catch (ClassCastException e) {
-			//ShatteredPixelDungeon.reportException(e);
+		} catch (Exception e) {
+			Game.reportException(e);
 			put(key, defValue);
 			return defValue;
 		}
