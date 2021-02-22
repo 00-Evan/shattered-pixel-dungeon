@@ -119,6 +119,7 @@ public class NewsScene extends PixelScene {
 			boolean rightCol = false;
 			for (NewsArticle article : articles) {
 				StyledButton b = new ArticleButton(article);
+				b.multiline = true;
 				if (!rightCol) {
 					top += gap;
 					b.setRect( left, top, BTN_WIDTH, BTN_HEIGHT);

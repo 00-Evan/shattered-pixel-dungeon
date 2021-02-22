@@ -35,6 +35,8 @@ public class StyledButton extends Button {
 	protected NinePatch bg;
 	protected RenderedTextBlock text;
 	protected Image icon;
+
+	public boolean multiline;
 	
 	public StyledButton(Chrome.Type type, String label ) {
 		this(type, label, 9);
@@ -65,7 +67,7 @@ public class StyledButton extends Button {
 		if (icon != null) componentWidth += icon.width() + 2;
 		
 		if (text != null && !text.text().equals("")){
-			text.maxWidth( (int)(width - componentWidth - bg.marginHor() - 2));
+			if (multiline) text.maxWidth( (int)(width - componentWidth - bg.marginHor() - 2));
 			componentWidth += text.width() + 2;
 
 			text.setPos(

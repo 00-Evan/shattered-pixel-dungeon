@@ -74,6 +74,7 @@ public class WndCombo extends Window {
 			};
 			ic.tint(move.tintColor);
 			moveBtn.icon(ic);
+			moveBtn.multiline = true;
 			moveBtn.setSize(width, moveBtn.reqHeight());
 			moveBtn.setRect(0, pos, width, moveBtn.reqHeight());
 			moveBtn.enable(combo.canUseMove(move));
