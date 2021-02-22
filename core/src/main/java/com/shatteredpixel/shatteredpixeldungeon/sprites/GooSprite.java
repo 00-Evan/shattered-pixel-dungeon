@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.noosa.TextureFilm;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.Emitter.Factory;
 import com.watabou.noosa.particles.PixelParticle;
@@ -87,12 +88,10 @@ public class GooSprite extends MobSprite {
 
 	public void pumpUp( int warnDist ) {
 		if (warnDist == 0){
-			for (Emitter e : pumpUpEmitters){
-				e.on = false;
-			}
-			pumpUpEmitters.clear();
+			clearEmitters();
 		} else {
 			play(pump);
+			Sample.INSTANCE.play( Assets.Sounds.CHARGEUP, 1f, warnDist == 1 ? 0.8f : 1f );
 			PathFinder.buildDistanceMap(ch.pos, BArray.not(Dungeon.level.solid, null), 2);
 			for (int i = 0; i < PathFinder.distance.length; i++) {
 				if (PathFinder.distance[i] <= warnDist) {
@@ -104,15 +103,27 @@ public class GooSprite extends MobSprite {
 		}
 	}
 
+	public void clearEmitters(){
+		for (Emitter e : pumpUpEmitters){
+			e.on = false;
+		}
+		pumpUpEmitters.clear();
+	}
+
+	public void triggerEmitters(){
+		for (Emitter e : pumpUpEmitters){
+			e.burst(ElmoParticle.FACTORY, 10);
+		}
+		Sample.INSTANCE.play( Assets.Sounds.BURNING );
+		pumpUpEmitters.clear();
+	}
+
 	public void pumpAttack() { play(pumpAttack); }
 
 	@Override
 	public void play(Animation anim) {
 		if (anim != pump && anim != pumpAttack){
-			for (Emitter e : pumpUpEmitters){
-				e.on = false;
-			}
-			pumpUpEmitters.clear();
+			clearEmitters();
 		}
 		super.play(anim);
 	}
@@ -177,10 +188,7 @@ public class GooSprite extends MobSprite {
 
 		if (anim == pumpAttack) {
 
-			for (Emitter e : pumpUpEmitters){
-				e.burst(ElmoParticle.FACTORY, 10);
-			}
-			pumpUpEmitters.clear();
+			triggerEmitters();
 
 			idle();
 			ch.onAttackComplete();
