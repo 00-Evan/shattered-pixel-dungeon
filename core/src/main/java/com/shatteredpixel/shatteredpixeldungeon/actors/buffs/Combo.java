@@ -228,6 +228,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 			comboTime = 5f;
 			Buff.affect(target, ParryTracker.class, Actor.TICK);
 			((Hero)target).spendAndNext(Actor.TICK);
+			Dungeon.hero.busy();
 		} else {
 			moveBeingUsed = move;
 			GameScene.selectCell(listener);
@@ -447,6 +448,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 				} else {
 					Ballistica c = new Ballistica(target.pos, enemy.pos, Ballistica.PROJECTILE);
 					if (c.collisionPos == enemy.pos){
+						Dungeon.hero.busy();
 						target.sprite.jump(target.pos, c.path.get(c.dist-1), new Callback() {
 							@Override
 							public void call() {
@@ -468,6 +470,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 				}
 
 			} else {
+				Dungeon.hero.busy();
 				target.sprite.attack(cell, new Callback() {
 					@Override
 					public void call() {
