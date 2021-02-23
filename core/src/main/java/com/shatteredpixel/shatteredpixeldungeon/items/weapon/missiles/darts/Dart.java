@@ -117,11 +117,10 @@ public class Dart extends MissileWeapon {
 	
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
-		if (bow != null && bow.enchantment != null && attacker.buff(MagicImmune.class) == null){
-			level(bow.level());
-			damage = bow.enchantment.proc(bow, attacker, defender, damage);
-			level(0);
+		if (bow != null){
+			damage = bow.proc(attacker, defender, damage);
 		}
+
 		return super.proc(attacker, defender, damage);
 	}
 	
