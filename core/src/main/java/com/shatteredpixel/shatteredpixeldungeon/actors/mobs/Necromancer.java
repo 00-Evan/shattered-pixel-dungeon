@@ -221,6 +221,7 @@ public class Necromancer extends Mob {
 					for (int c : PathFinder.NEIGHBOURS8) {
 						if (Actor.findChar(summoningPos + c) == null
 								&& Dungeon.level.passable[summoningPos + c]
+								&& (Dungeon.level.openSpace[summoningPos + c] || !hasProp(Actor.findChar(summoningPos), Property.LARGE))
 								&& Dungeon.level.trueDistance(pos, summoningPos + c) > Dungeon.level.trueDistance(pos, pushPos)) {
 							pushPos = summoningPos + c;
 						}
