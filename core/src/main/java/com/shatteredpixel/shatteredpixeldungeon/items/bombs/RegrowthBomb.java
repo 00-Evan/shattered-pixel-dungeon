@@ -66,7 +66,7 @@ public class RegrowthBomb extends Bomb {
 		for (int i = 0; i < PathFinder.distance.length; i++) {
 			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
 				Char ch = Actor.findChar(i);
-				int t = Dungeon.level.map[cell];
+				int t = Dungeon.level.map[i];
 				if (ch != null){
 					if (ch.alignment == Dungeon.hero.alignment) {
 						//same as a healing potion
@@ -75,7 +75,7 @@ public class RegrowthBomb extends Bomb {
 					}
 				} else if ((t == Terrain.EMPTY || t == Terrain.EMPTY_DECO || t == Terrain.EMBERS
 						|| t == Terrain.GRASS || t == Terrain.FURROWED_GRASS || t == Terrain.HIGH_GRASS)
-						&& Dungeon.level.plants.get(cell) == null){
+						&& Dungeon.level.plants.get(i) == null){
 					plantCandidates.add(i);
 				}
 				GameScene.add( Blob.seed( i, 10, Regrowth.class ) );
