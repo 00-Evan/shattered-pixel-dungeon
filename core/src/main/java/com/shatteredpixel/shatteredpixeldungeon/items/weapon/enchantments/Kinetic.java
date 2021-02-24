@@ -43,9 +43,9 @@ public class Kinetic extends Weapon.Enchantment {
 			attacker.buff(ConservedDamage.class).detach();
 		}
 		
-		if (damage > defender.HP){
-			int extraDamage = damage - defender.HP;
-			
+		if (damage > (defender.HP + defender.shielding())){
+			int extraDamage = damage - (defender.HP + defender.shielding());
+
 			Buff.affect(attacker, ConservedDamage.class).setBonus(extraDamage);
 		}
 		
