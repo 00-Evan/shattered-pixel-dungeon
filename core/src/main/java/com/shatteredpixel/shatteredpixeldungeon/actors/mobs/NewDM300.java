@@ -54,6 +54,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.NewCavesBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -194,22 +195,39 @@ public class NewDM300 extends Mob {
 
 				if (enemy == null && Dungeon.hero.invisible <= 0) enemy = Dungeon.hero;
 
+				//more aggressive ability usage when DM can't reach its target
 				if (enemy != null && !canReach){
 
-					if (fieldOfView[enemy.pos] && turnsSinceLastAbility >= MIN_COOLDOWN){
+					//try to fire gas at an enemy we can't reach
+					if (turnsSinceLastAbility >= MIN_COOLDOWN){
+						//use a coneAOE to try and account for trickshotting angles
+						ConeAOE aim = new ConeAOE(new Ballistica(pos, enemy.pos, Ballistica.PROJECTILE), 30);
+						if (aim.cells.contains(enemy.pos)) {
+							lastAbility = GAS;
+							turnsSinceLastAbility = 0;
 
-						lastAbility = GAS;
-						turnsSinceLastAbility = 0;
-						spend(TICK);
-
-						GLog.w(Messages.get(this, "vent"));
-						if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
-							sprite.zap(enemy.pos);
-							return false;
+							GLog.w(Messages.get(this, "vent"));
+							if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
+								sprite.zap(enemy.pos);
+								return false;
+							} else {
+								ventGas(enemy);
+								Sample.INSTANCE.play(Assets.Sounds.GAS);
+								return true;
+							}
+						//if we can't gas, then drop rocks
 						} else {
-							ventGas(enemy);
-							Sample.INSTANCE.play(Assets.Sounds.GAS);
-							return true;
+							lastAbility = GAS;
+							turnsSinceLastAbility = 0;
+							GLog.w(Messages.get(this, "rocks"));
+							if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
+								((DM300Sprite)sprite).slam(enemy.pos);
+								return false;
+							} else {
+								dropRocks(enemy);
+								Sample.INSTANCE.play(Assets.Sounds.ROCKS);
+								return true;
+							}
 						}
 
 					}
