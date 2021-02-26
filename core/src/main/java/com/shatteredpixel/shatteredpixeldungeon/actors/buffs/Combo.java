@@ -260,11 +260,15 @@ public class Combo extends Buff implements ActionIndicator.Action {
 					@Override
 					public void call() {
 						target.buff(Combo.class).doAttack(enemy);
+						next();
 					}
 				});
+				detach();
+				return false;
+			} else {
+				detach();
+				return true;
 			}
-			detach();
-			return true;
 		}
 	}
 
@@ -383,6 +387,8 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 		}
 
+		Invisibility.dispel();
+
 		//Post-attack behaviour
 		switch(moveBeingUsed){
 			case CLOBBER:
@@ -392,7 +398,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 				break;
 
 			case PARRY:
-				hero.next();
+				//do nothing
 				break;
 
 			case FURY:

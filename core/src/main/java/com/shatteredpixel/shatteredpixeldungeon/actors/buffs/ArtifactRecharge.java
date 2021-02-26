@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
@@ -46,6 +47,9 @@ public class ArtifactRecharge extends Buff {
 			float chargeAmount = Math.min(1, left);
 			for (Buff b : target.buffs()) {
 				if (b instanceof Artifact.ArtifactBuff) {
+					if (b instanceof HornOfPlenty.hornRecharge && ignoreHornOfPlenty){
+						continue;
+					}
 					((Artifact.ArtifactBuff) b).charge((Hero) target, chargeAmount);
 				}
 			}
