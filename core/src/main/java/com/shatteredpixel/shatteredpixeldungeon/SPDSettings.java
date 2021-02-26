@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.GameSettings;
@@ -162,7 +161,7 @@ public class SPDSettings extends GameSettings {
 	public static final String KEY_INTRO		= "intro";
 
 	public static final String KEY_SUPPORT_NAGGED= "support_nagged";
-
+	
 	public static void intro( boolean value ) {
 		put( KEY_INTRO, value );
 	}
@@ -194,7 +193,7 @@ public class SPDSettings extends GameSettings {
 	public static boolean supportNagged() {
 		return getBoolean(KEY_SUPPORT_NAGGED, false);
 	}
-
+	
 	//Audio
 	
 	public static final String KEY_MUSIC		= "music";
@@ -261,6 +260,8 @@ public class SPDSettings extends GameSettings {
 	}
 	
 	public static boolean systemFont(){
+		//FIXME need to add pixel glyphs for Greek
+		if (language() == Languages.GREEK) return true;
 		return getBoolean(KEY_SYSTEMFONT,
 				(language() == Languages.KOREAN || language() == Languages.CHINESE || language() == Languages.JAPANESE));
 	}

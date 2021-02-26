@@ -41,6 +41,7 @@ public enum Languages {
 	JAPANESE("日本語",      "ja",  Status.INCOMPLETE, null, new String[]{"Gosamaru", "amama", "librada", "mocklike", "tomofumikitano"}),
 	INDONESIAN("indonésien","in", Status.INCOMPLETE, new String[]{"rakapratama"}, new String[]{"Izulhaaq", "Taka31", "ZakyM313", "ZangieF347", "esprogarap"}),
 	UKRANIAN("українська",  "uk", Status.INCOMPLETE, new String[]{"Oster"}, new String[]{"Sadsaltan1", "TheGuyBill", "Tomfire", "Volkov", "ZverWolf", "ingvarfed", "oliolioxinfree", "romanokurg", "vlisivka"}),
+	GREEK("ελληνικά",       "el", Status.UNREVIEWED, null, null), //FIXME add credits
 	CATALAN("català",       "ca", Status.INCOMPLETE, new String[]{"Illyatwo2"}, new String[]{"Elosy", "n1ngu"}),
 	BASQUE("euskara",       "eu", Status.INCOMPLETE, new String[]{"Deathrevenge", "Osoitz"}, null),
 	ESPERANTO("esperanto",  "eo", Status.INCOMPLETE, new String[]{"Verdulo"}, new String[]{"Raizin"});
