@@ -262,10 +262,6 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				GLog.w(Messages.get(Preparation.class, "no_target"));
 			} else {
 
-				if (Dungeon.hero.hasTalent(Talent.BOUNTY_HUNTER)) {
-					Buff.affect(Dungeon.hero, Talent.BountyHunterTracker.class, 0.0f);
-				}
-
 				//just attack them then!
 				if (Dungeon.hero.canAttack(enemy)){
 					Dungeon.hero.curAction = new HeroAction.Attack( enemy );
