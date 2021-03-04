@@ -260,8 +260,6 @@ public class SPDSettings extends GameSettings {
 	}
 	
 	public static boolean systemFont(){
-		//FIXME need to add pixel glyphs for Greek
-		if (language() == Languages.GREEK) return true;
 		return getBoolean(KEY_SYSTEMFONT,
 				(language() == Languages.KOREAN || language() == Languages.CHINESE || language() == Languages.JAPANESE));
 	}
