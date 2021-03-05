@@ -143,7 +143,16 @@ public class Dart extends MissileWeapon {
 	@Override
 	public String info() {
 		updateCrossbow();
-		return super.info();
+		if (bow != null && !bow.isIdentified()){
+			int level = bow.level();
+			//temporarily sets the level of the bow to 0 for IDing purposes
+			bow.level(0);
+			String info = super.info();
+			bow.level(level);
+			return info;
+		} else {
+			return super.info();
+		}
 	}
 	
 	@Override
