@@ -106,6 +106,9 @@ public class Sungrass extends Plant {
 			
 			if (level <= 0) {
 				detach();
+				if (target instanceof Hero){
+					((Hero)target).resting = false;
+				}
 			}
 			spend( STEP );
 			return true;
