@@ -148,6 +148,7 @@ public class AttackIndicator extends Tag {
 		sprite.linkVisuals(lastTarget);
 		sprite.idle();
 		sprite.paused = true;
+		sprite.visible = bg.visible;
 		add( sprite );
 
 		layout();
