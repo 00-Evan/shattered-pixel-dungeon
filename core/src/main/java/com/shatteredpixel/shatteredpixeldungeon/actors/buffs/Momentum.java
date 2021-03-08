@@ -128,7 +128,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 		if (freerunTurns > 0){
 			return (20 - freerunTurns) / 20f;
 		} else if (freerunCooldown > 0){
-			return (freerunCooldown) / 50f;
+			return (freerunCooldown) / 30f;
 		} else {
 			return (10 - momentumStacks) / 10f;
 		}
@@ -190,7 +190,8 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 	@Override
 	public void doAction() {
 		freerunTurns = 2*momentumStacks;
-		freerunCooldown = 50;
+		//cooldown is functionally 10+2*stacks when active effect ends
+		freerunCooldown = 10 + 4*momentumStacks;
 		Sample.INSTANCE.play(Assets.Sounds.MISS, 1f, 0.8f);
 		target.sprite.emitter().burst(Speck.factory(Speck.JET), 5+ momentumStacks);
 		momentumStacks = 0;
