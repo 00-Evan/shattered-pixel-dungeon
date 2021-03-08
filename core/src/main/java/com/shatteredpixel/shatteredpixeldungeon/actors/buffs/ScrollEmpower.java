@@ -52,7 +52,7 @@ public class ScrollEmpower extends FlavourBuff {
 
 	@Override
 	public float iconFadePercent() {
-		return Math.max(0, (10-visualcooldown()) / 10f);
+		return Math.max(0, (20-visualcooldown()) / 20f);
 	}
 
 	@Override
