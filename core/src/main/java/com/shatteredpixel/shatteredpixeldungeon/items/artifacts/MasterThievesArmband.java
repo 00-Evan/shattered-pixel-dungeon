@@ -48,10 +48,8 @@ public class MasterThievesArmband extends Artifact {
 	
 	@Override
 	public void charge(Hero target, float amount) {
-		if (charge < chargeCap){
-			charge += Math.round(10*amount);
-			updateQuickslot();
-		}
+		charge += Math.round(10*amount);
+		updateQuickslot();
 	}
 
 	@Override
