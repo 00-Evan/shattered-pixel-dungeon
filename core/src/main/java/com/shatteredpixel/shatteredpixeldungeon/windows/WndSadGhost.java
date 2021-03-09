@@ -122,7 +122,7 @@ public class WndSadGhost extends Window {
 		Ghost.Quest.complete();
 	}
 
-	public class RewardButton extends Component {
+	private class RewardButton extends Component {
 
 		protected NinePatch bg;
 		protected ItemSlot slot;
@@ -161,7 +161,7 @@ public class WndSadGhost extends Window {
 		}
 	}
 
-	public class RewardWindow extends WndInfoItem {
+	private class RewardWindow extends WndInfoItem {
 
 		public RewardWindow( Item item ) {
 			super(item);
