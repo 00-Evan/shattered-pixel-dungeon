@@ -46,7 +46,6 @@ public class Food extends Item {
 	public static final String AC_EAT	= "EAT";
 	
 	public float energy = Hunger.HUNGRY;
-	public String message = Messages.get(this, "eat_msg");
 	
 	{
 		stackable = true;
@@ -72,7 +71,7 @@ public class Food extends Item {
 			detach( hero.belongings.backpack );
 			
 			satisfy(hero);
-			GLog.i( message );
+			GLog.i( Messages.get(this, "eat_msg") );
 			
 			hero.sprite.operate( hero.pos );
 			hero.busy();
