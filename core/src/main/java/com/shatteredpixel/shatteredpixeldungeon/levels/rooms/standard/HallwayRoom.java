@@ -54,12 +54,6 @@ public class HallwayRoom extends StandardRoom {
 		Painter.fill( level, this, Terrain.WALL );
 		Painter.fill( level, this, 1 , Terrain.EMPTY );
 
-		if (connected.size() < 2){
-			//don't want to make a hallway between doors that don't exist
-			return;
-		}
-
-
 		Rect c = getConnectionSpace();
 
 		for (Door door : connected.values()) {
