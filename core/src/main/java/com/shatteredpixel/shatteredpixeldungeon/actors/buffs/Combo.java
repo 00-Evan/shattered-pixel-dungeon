@@ -333,7 +333,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 						if (count >= 7 && hero.pointsInTalent(Talent.ENHANCED_COMBO) >= 1){
 							dist ++;
 							Buff.prolong(enemy, Vertigo.class, 3);
-						} else {
+						} else if (!enemy.flying) {
 							while (dist > trajectory.dist ||
 									(dist > 0 && Dungeon.level.pit[trajectory.path.get(dist)])) {
 								dist--;
