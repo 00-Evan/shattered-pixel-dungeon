@@ -57,6 +57,54 @@ public class v0_9_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("v0.9.2a", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton( new Image(Assets.Sprites.WARRIOR, 0, 90, 12, 15), "Subclass Adjustments",
+				"I've made the cooldowns for the Berserker and Freerunner a bit more permissive:\n\n" +
+				"_- Berserking_ default cooldown reverted back to 2 levels from 3.\n" +
+				"_- Berserking Stamina_ adjusted to compensate, now reduces berserk cooldown to 1.67/1.33/1 levels from 2.5/2/1.5.\n\n" +
+				"_- Freerunning_ cooldown is now much lower if the freerunner had low momentum, cooldown at max momentum unchanged."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.TALENT), "Talent Adjustments",
+				"I've adjusted several talents based on gameplay data:\n\n" +
+				"_- Enraged Catalyst_ maximum enchantment proc bonus reduced to 17%/33%/50% from 20%/40%/60%.\n\n" +
+				"_- Empowering Scrolls_ turns of wand boost increased to 20 from 10.\n" +
+				"_- Empowered Strike_ damage bonus increased to 20%/40%/60% from 17%/33%/50%\n" +
+				"_- Excess Charge_ proc chance increased to 20%/40%/60% from 17%/33%/50%\n\n" +
+				"_- Enhanced Rings_ buff duration reduced to 3/6/9 turns from 5/10/15\n" +
+				"_- Projectile Momentum_ damage boost increased to 15/30/45% from 10/20/30%\n" +
+				"_- Assassin's Reach_ bonus blink distance reduced, primarily at 1 and 3 turns of preparation"));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Added Greek language support\n\n" +
+				"_-_ Improved the reward UI from the wandmaker's quest\n\n" +
+				"_-_ Characters now awaken from regular sleep if they are debuffed\n\n" +
+				"_-_ Sungrass healing now interrupts hero resting when it expires"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed: (caused by v0.9.2)\n" +
+				"_-_ Various rare crashes\n" +
+				"_-_ Various rare visual errors\n" +
+				"_-_ Characters revealed by seer shot not being considered as in mind vision\n" +
+				"_-_ Excess charge talent not working when Mage's staff is overcharged\n" +
+				"_-_ Darts showing exact damage when the hero has an unidentified crossbow equipped\n" +
+				"_-_ Various rare cases where buffs would act multiple times at once\n" +
+				"_-_ Bounty Hunter talent sometimes not triggering\n" +
+				"_-_ Clobber not knocking flying enemies over pits\n" +
+				"_-_ Incorrect wording in warlock and soul eater descriptions\n\n" +
+
+				"Fixed: (existed prior to v0.9.2)\n" +
+				"_-_ Traps rarely not triggering in the caves\n" +
+				"_-_ Master Thieves' Armband not working with artifact charging effects\n" +
+				"_-_ Food eating messages rarely being in the wrong language\n" +
+				"_-_ Rooms rarely incorrectly being empty in the dwarf city"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
