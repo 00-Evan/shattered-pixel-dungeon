@@ -206,6 +206,10 @@ public class TalismanOfForesight extends Artifact {
 					partialCharge ++;
 					charge --;
 				}
+				while (charge < 0){
+					charge++;
+					partialCharge--;
+				}
 				Talent.onArtifactUsed(Dungeon.hero);
 				updateQuickslot();
 				Dungeon.observe();
