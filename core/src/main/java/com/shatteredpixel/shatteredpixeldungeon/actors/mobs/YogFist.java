@@ -481,11 +481,11 @@ public abstract class YogFist extends Mob {
 						|| PathFinder.getStep(i, Dungeon.level.exit, Dungeon.level.passable) == -1);
 				ScrollOfTeleportation.appear(this, i);
 				state = WANDERING;
-				GameScene.flash(0xFFFFFF);
+				GameScene.flash(0x80FFFFFF);
 				GLog.w( Messages.get( this, "teleport" ));
 			} else if (!isAlive()){
 				Buff.prolong( Dungeon.hero, Blindness.class, Blindness.DURATION*3f );
-				GameScene.flash(0xFFFFFF);
+				GameScene.flash(0x80FFFFFF);
 			}
 		}
 

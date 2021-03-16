@@ -71,7 +71,7 @@ public class FlashingTrap extends Trap {
 		}
 		
 		if (Dungeon.level.heroFOV[pos]) {
-			GameScene.flash(0xFFFFFF);
+			GameScene.flash(0x80FFFFFF);
 			Sample.INSTANCE.play( Assets.Sounds.BLAST );
 		}
 		

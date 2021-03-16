@@ -360,7 +360,7 @@ public class OldPrisonBossLevel extends Level {
 				cleanWalls();
 				GameScene.resetMap();
 
-				GameScene.flash(0xFFFFFF);
+				GameScene.flash(0x80FFFFFF);
 				Sample.INSTANCE.play(Assets.Sounds.BLAST);
 
 				state = State.MAZE;
@@ -391,7 +391,7 @@ public class OldPrisonBossLevel extends Level {
 				GameScene.add(tengu);
 				tengu.notice();
 				
-				GameScene.flash(0xFFFFFF);
+				GameScene.flash(0x80FFFFFF);
 				Sample.INSTANCE.play(Assets.Sounds.BLAST);
 
 				state = State.FIGHT_ARENA;
@@ -445,7 +445,7 @@ public class OldPrisonBossLevel extends Level {
 				for (Item item : storedItems)
 					drop(item, randomTenguArenaCell());
 				
-				GameScene.flash(0xFFFFFF);
+				GameScene.flash(0x80FFFFFF);
 				Sample.INSTANCE.play(Assets.Sounds.BLAST);
 				
 				state = State.WON;
