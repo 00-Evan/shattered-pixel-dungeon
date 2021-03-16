@@ -111,7 +111,7 @@ public abstract class Shaman extends Mob {
 		
 		if (hit( this, enemy, true )) {
 			
-			if (enemy == Dungeon.hero && Random.Int( 2 ) == 0) {
+			if (Random.Int( 2 ) == 0) {
 				debuff( enemy );
 				Sample.INSTANCE.play( Assets.Sounds.DEBUFF );
 			}
