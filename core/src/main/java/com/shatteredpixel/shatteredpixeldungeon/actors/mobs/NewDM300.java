@@ -217,7 +217,7 @@ public class NewDM300 extends Mob {
 							}
 						//if we can't gas, then drop rocks
 						} else {
-							lastAbility = GAS;
+							lastAbility = ROCKS;
 							turnsSinceLastAbility = 0;
 							GLog.w(Messages.get(this, "rocks"));
 							if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
