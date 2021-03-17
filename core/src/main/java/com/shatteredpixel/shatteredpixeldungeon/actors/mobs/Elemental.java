@@ -188,7 +188,7 @@ public abstract class Elemental extends Mob {
 		protected void meleeProc( Char enemy, int damage ) {
 			if (Random.Int( 2 ) == 0 && !Dungeon.level.water[enemy.pos]) {
 				Buff.affect( enemy, Burning.class ).reignite( enemy );
-				Splash.at( enemy.sprite.center(), sprite.blood(), 5);
+				if (enemy.sprite.visible) Splash.at( enemy.sprite.center(), sprite.blood(), 5);
 			}
 		}
 		
@@ -197,7 +197,7 @@ public abstract class Elemental extends Mob {
 			if (!Dungeon.level.water[enemy.pos]) {
 				Buff.affect( enemy, Burning.class ).reignite( enemy, 4f );
 			}
-			Splash.at( enemy.sprite.center(), sprite.blood(), 5);
+			if (enemy.sprite.visible) Splash.at( enemy.sprite.center(), sprite.blood(), 5);
 		}
 	}
 	
@@ -247,14 +247,14 @@ public abstract class Elemental extends Mob {
 		protected void meleeProc( Char enemy, int damage ) {
 			if (Random.Int( 3 ) == 0 || Dungeon.level.water[enemy.pos]) {
 				Freezing.freeze( enemy.pos );
-				Splash.at( enemy.sprite.center(), sprite.blood(), 5);
+				if (enemy.sprite.visible) Splash.at( enemy.sprite.center(), sprite.blood(), 5);
 			}
 		}
 		
 		@Override
 		protected void rangedProc( Char enemy ) {
 			Freezing.freeze( enemy.pos );
-			Splash.at( enemy.sprite.center(), sprite.blood(), 5);
+			if (enemy.sprite.visible) Splash.at( enemy.sprite.center(), sprite.blood(), 5);
 		}
 	}
 	
@@ -282,9 +282,16 @@ public abstract class Elemental extends Mob {
 			for (Char ch : affected) {
 				ch.damage( Math.round( damage * 0.4f ), this );
 			}
-			
-			sprite.parent.addToFront( new Lightning( arcs, null ) );
-			Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
+
+			boolean visible = sprite.visible || enemy.sprite.visible;
+			for (Char ch : affected){
+				if (ch.sprite.visible) visible = true;
+			}
+
+			if (visible) {
+				sprite.parent.addToFront(new Lightning(arcs, null));
+				Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);
+			}
 		}
 		
 		@Override
