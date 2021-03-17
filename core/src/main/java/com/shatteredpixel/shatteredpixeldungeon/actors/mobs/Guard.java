@@ -90,30 +90,39 @@ public class Guard extends Mob {
 			} else {
 				final int newPosFinal = newPos;
 				this.target = newPos;
-				yell( Messages.get(this, "scorpion") );
-				new Item().throwSound();
-				Sample.INSTANCE.play( Assets.Sounds.CHAINS );
-				sprite.parent.add(new Chains(sprite.center(), enemy.sprite.center(), new Callback() {
-					public void call() {
-						Actor.addDelayed(new Pushing(enemy, enemy.pos, newPosFinal, new Callback(){
-							public void call() {
-								enemy.pos = newPosFinal;
-								Dungeon.level.occupyCell(enemy);
-								Cripple.prolong(enemy, Cripple.class, 4f);
-								if (enemy == Dungeon.hero) {
-									Dungeon.hero.interrupt();
-									Dungeon.observe();
-									GameScene.updateFog();
+
+				if (sprite.visible || enemy.sprite.visible) {
+					yell(Messages.get(this, "scorpion"));
+					new Item().throwSound();
+					Sample.INSTANCE.play(Assets.Sounds.CHAINS);
+					sprite.parent.add(new Chains(sprite.center(), enemy.sprite.center(), new Callback() {
+						public void call() {
+							Actor.addDelayed(new Pushing(enemy, enemy.pos, newPosFinal, new Callback() {
+								public void call() {
+									pullEnemy(enemy, newPosFinal);
 								}
-							}
-						}), -1);
-						next();
-					}
-				}));
+							}), -1);
+							next();
+						}
+					}));
+				} else {
+					pullEnemy(enemy, newPos);
+				}
 			}
 		}
 		chainsUsed = true;
 		return true;
+	}
+
+	private void pullEnemy( Char enemy, int pullPos ){
+		enemy.pos = pullPos;
+		Dungeon.level.occupyCell(enemy);
+		Cripple.prolong(enemy, Cripple.class, 4f);
+		if (enemy == Dungeon.hero) {
+			Dungeon.hero.interrupt();
+			Dungeon.observe();
+			GameScene.updateFog();
+		}
 	}
 
 	@Override
@@ -167,7 +176,7 @@ public class Guard extends Mob {
 					&& Random.Int(3) == 0
 					
 					&& chain(enemy.pos)){
-				return false;
+				return !(sprite.visible || enemy.sprite.visible);
 			} else {
 				return super.act( enemyInFOV, justAlerted );
 			}

@@ -220,14 +220,6 @@ public class NewTengu extends Mob {
 		return new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE).collisionPos == enemy.pos;
 	}
 	
-	//tengu's attack is always visible
-	@Override
-	protected boolean doAttack(Char enemy) {
-		sprite.attack( enemy.pos );
-		spend( attackDelay() );
-		return false;
-	}
-	
 	private void jump() {
 		
 		//in case tengu hasn't had a chance to act yet
