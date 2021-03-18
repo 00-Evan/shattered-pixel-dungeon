@@ -351,7 +351,7 @@ public class TalismanOfForesight extends Artifact {
 		public int charID;
 		public int depth = Dungeon.depth;
 
-		private static final String ID = "id";
+		private static final String CHAR_ID = "char_id";
 
 		@Override
 		public void detach() {
@@ -363,13 +363,13 @@ public class TalismanOfForesight extends Artifact {
 		@Override
 		public void restoreFromBundle(Bundle bundle) {
 			super.restoreFromBundle(bundle);
-			charID = bundle.getInt(ID);
+			charID = bundle.getInt(CHAR_ID);
 		}
 
 		@Override
 		public void storeInBundle(Bundle bundle) {
 			super.storeInBundle(bundle);
-			bundle.put(ID, charID);
+			bundle.put(CHAR_ID, charID);
 		}
 
 	}
