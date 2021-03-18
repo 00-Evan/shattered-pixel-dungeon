@@ -455,22 +455,27 @@ public class Combo extends Buff implements ActionIndicator.Action {
 				} else {
 					Ballistica c = new Ballistica(target.pos, enemy.pos, Ballistica.PROJECTILE);
 					if (c.collisionPos == enemy.pos){
-						Dungeon.hero.busy();
-						target.sprite.jump(target.pos, c.path.get(c.dist-1), new Callback() {
-							@Override
-							public void call() {
-								target.move(c.path.get(c.dist-1));
-								Dungeon.level.occupyCell(target);
-								Dungeon.observe();
-								GameScene.updateFog();
-								target.sprite.attack(cell, new Callback() {
-									@Override
-									public void call() {
-										doAttack(enemy);
-									}
-								});
-							}
-						});
+						final int leapPos = c.path.get(c.dist-1);
+						if (!Dungeon.level.passable[leapPos]){
+							GLog.w(Messages.get(Combo.class, "bad_target"));
+						} else {
+							Dungeon.hero.busy();
+							target.sprite.jump(target.pos, leapPos, new Callback() {
+								@Override
+								public void call() {
+									target.move(leapPos);
+									Dungeon.level.occupyCell(target);
+									Dungeon.observe();
+									GameScene.updateFog();
+									target.sprite.attack(cell, new Callback() {
+										@Override
+										public void call() {
+											doAttack(enemy);
+										}
+									});
+								}
+							});
+						}
 					} else {
 						GLog.w(Messages.get(Combo.class, "bad_target"));
 					}
