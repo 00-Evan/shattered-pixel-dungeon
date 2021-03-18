@@ -233,7 +233,9 @@ public class Armor extends EquipableItem {
 		this.seal = seal;
 		if (seal.level() > 0){
 			//doesn't trigger upgrading logic such as affecting curses/glyphs
-			level(level()+1);
+			int newLevel = level()+1;
+			if (curseInfusionBonus) newLevel--;
+			level(newLevel);
 			Badges.validateItemLevelAquired(this);
 		}
 		if (seal.getGlyph() != null){
