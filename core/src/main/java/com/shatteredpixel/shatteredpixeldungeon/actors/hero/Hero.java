@@ -531,7 +531,7 @@ public class Hero extends Char {
 	}
 
 	public boolean canAttack(Char enemy){
-		if (enemy == null || pos == enemy.pos) {
+		if (enemy == null || pos == enemy.pos || !Actor.chars().contains(enemy)) {
 			return false;
 		}
 
