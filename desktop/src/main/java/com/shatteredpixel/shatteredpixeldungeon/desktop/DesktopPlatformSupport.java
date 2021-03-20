@@ -67,6 +67,11 @@ public class DesktopPlatformSupport extends PlatformSupport {
 	}
 
 	@Override
+	public boolean openURI(String URI) {
+		return Gdx.net.openURI(URI);
+	}
+
+	@Override
 	//FIXME tinyfd_inputBox isn't a full solution for this. No support for multiline, looks ugly. Ideally we'd have an opengl-based input box
 	public void promptTextInput(String title, String hintText, int maxLen, boolean multiLine, String posTxt, String negTxt, TextCallback callback) {
 		String result = TinyFileDialogs.tinyfd_inputBox(title, title, hintText);

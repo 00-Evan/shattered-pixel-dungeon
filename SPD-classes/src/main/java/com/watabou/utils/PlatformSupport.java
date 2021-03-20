@@ -30,6 +30,10 @@ public abstract class PlatformSupport {
 	public abstract void updateSystemUI();
 
 	public abstract boolean connectedToUnmeteredNetwork();
+
+	//FIXME this is a temporary method to workaround a bug in libGDX with Android 11+
+	//it can be removed once Shattered is updated to libGDX 1.9.14+
+	public abstract boolean openURI( String URI );
 	
 	//FIXME this is currently used because no platform-agnostic text input has been implemented.
 	//should look into doing that using either plain openGL or libgdx's libraries

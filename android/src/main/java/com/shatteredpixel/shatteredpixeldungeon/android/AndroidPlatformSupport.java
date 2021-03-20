@@ -22,16 +22,21 @@
 package com.shatteredpixel.shatteredpixeldungeon.android;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.view.View;
 import android.view.WindowManager;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidGraphics;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -165,6 +170,23 @@ public class AndroidPlatformSupport extends PlatformSupport {
 					|| activeNetwork.getType() == ConnectivityManager.TYPE_WIMAX
 					|| activeNetwork.getType() == ConnectivityManager.TYPE_BLUETOOTH
 					|| activeNetwork.getType() == ConnectivityManager.TYPE_ETHERNET);
+		}
+	}
+
+	@Override
+	public boolean openURI(String URI) {
+		//copied from LibGDX 1.9.14 source
+		final Uri uri = Uri.parse(URI);
+		try {
+			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+			// LiveWallpaper and Daydream applications need this flag
+			if (!(((AndroidApplication)Gdx.app).getContext() instanceof Activity)) {
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			}
+			((AndroidApplication)Gdx.app).startActivity(intent);
+			return true;
+		} catch (ActivityNotFoundException e) {
+			return false;
 		}
 	}
 

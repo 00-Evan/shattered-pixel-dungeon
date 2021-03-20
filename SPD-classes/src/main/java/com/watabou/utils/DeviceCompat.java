@@ -64,7 +64,7 @@ public class DeviceCompat {
 	}
 	
 	public static void openURI( String URI ){
-		Gdx.net.openURI( URI );
+		Game.platform.openURI(URI);
 	}
 	
 	public static void log( String tag, String message ){
