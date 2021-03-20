@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor.Glyph;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
@@ -49,6 +50,12 @@ public class Viscosity extends Glyph {
 		//should build in functionality for that, but this works for now
 		int realDamage = damage - defender.drRoll();
 
+		//account for icon stomach (just skip the glyph)
+		if (defender.buff(Talent.WarriorFoodImmunity.class) != null){
+			return damage;
+		}
+
+		//account for huntress armor piercing
 		if (attacker instanceof Hero
 				&& ((Hero) attacker).belongings.weapon instanceof MissileWeapon
 				&& ((Hero) attacker).subClass == HeroSubClass.SNIPER
