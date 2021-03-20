@@ -86,8 +86,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		count++;
 		comboTime = 5f;
 
-		//TODO this won't count a kill on an enemy that gets corruped by corrupting I think?
-		if (!enemy.isAlive() || enemy.buff(Corruption.class) != null){
+		if (!enemy.isAlive() || (enemy.buff(Corruption.class) != null && enemy.HP == enemy.HT)){
 			comboTime = Math.max(comboTime, 10*((Hero)target).pointsInTalent(Talent.CLEAVE));
 		}
 
