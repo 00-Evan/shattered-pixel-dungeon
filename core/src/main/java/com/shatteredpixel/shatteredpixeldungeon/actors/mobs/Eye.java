@@ -211,7 +211,11 @@ public class Eye extends Mob {
 				do {
 					ofs = PathFinder.NEIGHBOURS8[Random.Int(8)];
 				} while (Dungeon.level.solid[pos + ofs] && !Dungeon.level.passable[pos + ofs]);
-				Dungeon.level.drop( new Dewdrop(), pos + ofs ).sprite.drop( pos );
+				if (Dungeon.level.heaps.get(pos+ofs) == null) {
+					Dungeon.level.drop(new Dewdrop(), pos + ofs).sprite.drop(pos);
+				} else {
+					Dungeon.level.drop(new Dewdrop(), pos + ofs).sprite.drop(pos + ofs);
+				}
 				break;
 			case 2:
 				loot = Generator.random(Generator.Category.SEED);
