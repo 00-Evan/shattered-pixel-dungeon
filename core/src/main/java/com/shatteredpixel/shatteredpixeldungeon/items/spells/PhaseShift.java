@@ -45,14 +45,14 @@ public class PhaseShift extends TargetedSpell {
 		if (ch == hero){
 			ScrollOfTeleportation.teleportHero(curUser);
 		} else if (ch != null) {
-			int count = 10;
+			int count = 20;
 			int pos;
 			do {
 				pos = Dungeon.level.randomRespawnCell( hero );
 				if (count-- <= 0) {
 					break;
 				}
-			} while (pos == -1);
+			} while (pos == -1 || Dungeon.level.secret[pos]);
 			
 			if (pos == -1 || Dungeon.bossLevel()) {
 				

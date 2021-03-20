@@ -54,14 +54,14 @@ public class TeleportationTrap extends Trap {
 			if (ch instanceof Hero) {
 				ScrollOfTeleportation.teleportHero((Hero) ch);
 			} else {
-				int count = 10;
+				int count = 20;
 				int pos;
 				do {
 					pos = Dungeon.level.randomRespawnCell( ch );
 					if (count-- <= 0) {
 						break;
 					}
-				} while (pos == -1);
+				} while (pos == -1 || Dungeon.level.secret[pos]);
 				
 				if (pos == -1 || Dungeon.bossLevel()) {
 					

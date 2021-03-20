@@ -77,14 +77,14 @@ public class Fadeleaf extends Plant {
 
 			if (!Dungeon.bossLevel()) {
 
-				int count = 10;
+				int count = 20;
 				int newPos;
 				do {
 					newPos = Dungeon.level.randomRespawnCell(ch);
 					if (count-- <= 0) {
 						break;
 					}
-				} while (newPos == -1);
+				} while (newPos == -1 || Dungeon.level.secret[newPos]);
 
 				if (newPos != -1) {
 

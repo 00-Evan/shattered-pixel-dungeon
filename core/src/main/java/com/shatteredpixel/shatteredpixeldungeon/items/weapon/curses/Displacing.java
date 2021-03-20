@@ -39,14 +39,14 @@ public class Displacing extends Weapon.Enchantment {
 
 		float procChance = 1/12f * procChanceMultiplier(attacker);
 		if (Random.Float() < procChance && !defender.properties().contains(Char.Property.IMMOVABLE)){
-			int count = 10;
+			int count = 20;
 			int newPos;
 			do {
 				newPos = Dungeon.level.randomRespawnCell( defender );
 				if (count-- <= 0) {
 					break;
 				}
-			} while (newPos == -1);
+			} while (newPos == -1 || Dungeon.level.secret[newPos]);
 
 			if (newPos != -1 && !Dungeon.bossLevel()) {
 

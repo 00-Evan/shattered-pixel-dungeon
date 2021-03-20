@@ -91,7 +91,7 @@ public class ScrollOfTeleportation extends Scroll {
 			return;
 		}
 		
-		int count = 10;
+		int count = 20;
 		int pos;
 		do {
 			pos = Dungeon.level.randomRespawnCell( ch );
