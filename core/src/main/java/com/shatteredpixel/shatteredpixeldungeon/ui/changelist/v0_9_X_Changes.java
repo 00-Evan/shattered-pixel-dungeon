@@ -57,9 +57,34 @@ public class v0_9_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v0.9.2b", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Reduced the intensity of white flash effects, should help photosensitive users\n\n" +
+				"_-_ The hero now hovers while idling if they are levitating, instead of appearing to stand\n\n" +
+				"_-_ Updated translations and translator credits"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed: (caused by v0.9.2)\n" +
+				"_-_ Ally warp allowing the player to reach unintended places\n" +
+				"_-_ Leap from enhanced combo being able to place the gladiator over pits\n" +
+				"_-_ Corrupted enemies always proccing cleave when attacked\n\n" +
+				"Fixed: (existed prior to v0.9.2)\n" +
+				"_-_ Various crash and freeze bugs\n" +
+				"_-_ Game freezing when jumping into chasms for some users\n" +
+				"_-_ Various minor visual bugs and typos\n" +
+				"_-_ Various cases where SFX/VFX would play for combat happening in the fog of war\n" +
+				"_-_ Upgrades duplicating in an extremely specific case\n" +
+				"_-_ Tengu being attackable between his first and second phase in rare cases\n" +
+				"_-_ Rare cases where the talisman of foresight could have negative charges\n" +
+				"_-_ Ripper demons leaping while rooted\n" +
+				"_-_ Shamans not being able to debuff allies\n" +
+				"_-_ Scrolls of remove curse being usable on items known to be uncursed\n" +
+				"_-_ Pitfall traps affecting items in locked chests or shops\n" +
+				"_-_ Various cases where teleportation could put the player onto traps\n" +
+				"_-_ Iron stomach not working with viscocity glyph"));
 
 		changes = new ChangeInfo("v0.9.2a", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
