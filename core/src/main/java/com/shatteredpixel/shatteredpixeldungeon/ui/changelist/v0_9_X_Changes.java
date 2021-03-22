@@ -84,7 +84,8 @@ public class v0_9_X_Changes {
 				"_-_ Scrolls of remove curse being usable on items known to be uncursed\n" +
 				"_-_ Pitfall traps affecting items in locked chests or shops\n" +
 				"_-_ Various cases where teleportation could put the player onto traps\n" +
-				"_-_ Iron stomach not working with viscocity glyph"));
+				"_-_ Iron stomach not working with viscocity glyph\n" +
+				"_-_ Web links not working on Android 11"));
 
 		changes = new ChangeInfo("v0.9.2a", false, null);
 		changes.hardlight(Window.TITLE_COLOR);

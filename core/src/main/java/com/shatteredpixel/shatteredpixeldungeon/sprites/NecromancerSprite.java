@@ -73,7 +73,7 @@ public class NecromancerSprite extends MobSprite {
 	@Override
 	public void update() {
 		super.update();
-		if (summoningBones != null){
+		if (summoningBones != null && ((Necromancer) ch).summoningPos != -1){
 			summoningBones.visible = Dungeon.level.heroFOV[((Necromancer) ch).summoningPos];
 		}
 	}
