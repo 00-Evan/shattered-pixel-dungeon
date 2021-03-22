@@ -72,7 +72,7 @@ public class Necromancer extends Mob {
 	protected boolean act() {
 		if (summoning && state != HUNTING){
 			summoning = false;
-			updateSpriteState();
+			if (sprite instanceof NecromancerSprite) ((NecromancerSprite) sprite).cancelSummoning();
 		}
 		return super.act();
 	}
