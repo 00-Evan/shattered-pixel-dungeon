@@ -407,7 +407,7 @@ public class HeroSelectScene extends PixelScene {
 				case MAGE:
 					tabIcons = new Image[]{
 							new ItemSprite(ItemSpriteSheet.MAGES_STAFF, null),
-							new ItemSprite(ItemSpriteSheet.HOLDER, null)
+							new ItemSprite(ItemSpriteSheet.MAGES_STAFF, null)
 					};
 					break;
 				case ROGUE:

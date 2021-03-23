@@ -29,8 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
@@ -103,6 +101,9 @@ public enum HeroClass {
 		i = new Food();
 		if (!Challenges.isItemBlocked(i)) i.collect();
 
+		new VelvetPouch().collect();
+		Dungeon.LimitedDrops.VELVET_POUCH.drop();
+
 		new ScrollOfIdentify().identify();
 
 	}
@@ -131,9 +132,6 @@ public enum HeroClass {
 			hero.belongings.armor.affixSeal(new BrokenSeal());
 		}
 
-		new PotionBandolier().collect();
-		Dungeon.LimitedDrops.POTION_BANDOLIER.drop();
-
 		new PotionOfHealing().identify();
 		new ScrollOfRage().identify();
 	}
@@ -147,9 +145,6 @@ public enum HeroClass {
 		hero.belongings.weapon.activate(hero);
 
 		Dungeon.quickslot.setSlot(0, staff);
-
-		new ScrollHolder().collect();
-		Dungeon.LimitedDrops.SCROLL_HOLDER.drop();
 
 		new ScrollOfUpgrade().identify();
 		new PotionOfLiquidFlame().identify();
@@ -168,9 +163,6 @@ public enum HeroClass {
 		Dungeon.quickslot.setSlot(0, cloak);
 		Dungeon.quickslot.setSlot(1, knives);
 
-		new VelvetPouch().collect();
-		Dungeon.LimitedDrops.VELVET_POUCH.drop();
-
 		new ScrollOfMagicMapping().identify();
 		new PotionOfInvisibility().identify();
 	}
@@ -182,9 +174,6 @@ public enum HeroClass {
 		bow.identify().collect();
 
 		Dungeon.quickslot.setSlot(0, bow);
-
-		new VelvetPouch().collect();
-		Dungeon.LimitedDrops.VELVET_POUCH.drop();
 
 		new PotionOfMindVision().identify();
 		new ScrollOfLullaby().identify();
