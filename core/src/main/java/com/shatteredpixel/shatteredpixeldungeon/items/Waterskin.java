@@ -34,7 +34,7 @@ import com.watabou.utils.GameMath;
 
 import java.util.ArrayList;
 
-public class DewVial extends Item {
+public class Waterskin extends Item {
 
 	private static final int MAX_VOLUME	= 20;
 
@@ -45,7 +45,7 @@ public class DewVial extends Item {
 	private static final String TXT_STATUS	= "%d/%d";
 
 	{
-		image = ItemSpriteSheet.VIAL;
+		image = ItemSpriteSheet.WATERSKIN;
 
 		defaultAction = AC_DRINK;
 
@@ -123,7 +123,27 @@ public class DewVial extends Item {
 		}
 	}
 
-	public void empty() {volume = 0; updateQuickslot();}
+	@Override
+	public String info() {
+		String info = desc();
+
+		if (volume == 0){
+			info += "\n\n" + Messages.get(this, "desc_water");
+		} else {
+			info += "\n\n" + Messages.get(this, "desc_heal");
+		}
+
+		if (isFull()){
+			info += "\n\n" + Messages.get(this, "desc_full");
+		}
+
+		return info;
+	}
+
+	public void empty() {
+		volume = 0;
+		updateQuickslot();
+	}
 
 	@Override
 	public boolean isUpgradable() {

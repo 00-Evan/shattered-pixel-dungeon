@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -45,12 +46,13 @@ public class Dewdrop extends Item {
 	@Override
 	public boolean doPickUp( Hero hero ) {
 		
-		DewVial vial = hero.belongings.getItem( DewVial.class );
+		Waterskin flask = hero.belongings.getItem( Waterskin.class );
 		
-		if (vial != null && !vial.isFull()){
-			
-			vial.collectDew( this );
-			
+		if (flask != null && !flask.isFull()){
+
+			flask.collectDew( this );
+			GameScene.pickUp( this, hero.pos );
+
 		} else {
 
 			if (!consumeDew(1, hero)){

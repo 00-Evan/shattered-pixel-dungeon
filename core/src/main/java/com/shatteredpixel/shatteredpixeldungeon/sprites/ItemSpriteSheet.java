@@ -666,17 +666,19 @@ public class ItemSpriteSheet {
 	}
 
 	private static final int BAGS       =                                   xy(1, 31);  //16 slots
-	public static final int VIAL        = BAGS+0;
+	public static final int WATERSKIN   = BAGS+0; //FIXME placeholder sprite
 	public static final int POUCH       = BAGS+1;
 	public static final int HOLDER      = BAGS+2;
 	public static final int BANDOLIER   = BAGS+3;
 	public static final int HOLSTER     = BAGS+4;
+	public static final int VIAL        = BAGS+5;
 	static{
-		assignItemRect(VIAL,        12, 12);
+		assignItemRect(WATERSKIN,   12, 16);
 		assignItemRect(POUCH,       14, 15);
 		assignItemRect(HOLDER,      16, 16);
 		assignItemRect(BANDOLIER,   15, 16);
 		assignItemRect(HOLSTER,     15, 16);
+		assignItemRect(VIAL,        12, 12);
 	}
 
 	                                                                                    //16 free slots

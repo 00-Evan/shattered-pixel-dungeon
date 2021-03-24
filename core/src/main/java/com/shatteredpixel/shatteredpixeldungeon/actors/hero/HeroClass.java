@@ -25,8 +25,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
@@ -72,7 +74,19 @@ public enum HeroClass {
 		hero.heroClass = this;
 		Talent.initClassTalents(hero);
 
-		initCommon( hero );
+		Item i = new ClothArmor().identify();
+		if (!Challenges.isItemBlocked(i)) hero.belongings.armor = (ClothArmor)i;
+
+		i = new Food();
+		if (!Challenges.isItemBlocked(i)) i.collect();
+
+		new VelvetPouch().collect();
+		Dungeon.LimitedDrops.VELVET_POUCH.drop();
+
+		Waterskin waterskin = new Waterskin();
+		waterskin.collect();
+
+		new ScrollOfIdentify().identify();
 
 		switch (this) {
 			case WARRIOR:
@@ -92,19 +106,12 @@ public enum HeroClass {
 				break;
 		}
 
-	}
-
-	private static void initCommon( Hero hero ) {
-		Item i = new ClothArmor().identify();
-		if (!Challenges.isItemBlocked(i)) hero.belongings.armor = (ClothArmor)i;
-
-		i = new Food();
-		if (!Challenges.isItemBlocked(i)) i.collect();
-
-		new VelvetPouch().collect();
-		Dungeon.LimitedDrops.VELVET_POUCH.drop();
-
-		new ScrollOfIdentify().identify();
+		for (int s = 0; s < QuickSlot.SIZE; s++){
+			if (Dungeon.quickslot.getItem(s) == null){
+				Dungeon.quickslot.setSlot(s, waterskin);
+				break;
+			}
+		}
 
 	}
 
