@@ -35,7 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StenchGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StormCloud;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Web;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewTengu;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
@@ -79,7 +79,7 @@ public class BlobImmunity extends FlavourBuff {
 		immunities.add( ToxicGas.class );
 		immunities.add( Web.class );
 
-		immunities.add(NewTengu.FireAbility.FireBlob.class);
+		immunities.add(Tengu.FireAbility.FireBlob.class);
 	}
 
 	@Override

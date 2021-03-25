@@ -74,6 +74,12 @@ public class ShatteredPixelDungeon extends Game {
 
 		//v0.9.3
 		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu.class,
+				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewTengu" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewPrisonBossLevel" );
+		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.Waterskin.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.DewVial" );
 		
