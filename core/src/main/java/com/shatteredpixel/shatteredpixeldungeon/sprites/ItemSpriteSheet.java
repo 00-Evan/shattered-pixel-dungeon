@@ -125,23 +125,23 @@ public class ItemSpriteSheet {
 		assignItemRect(EBONY_CHEST,     16, 14);
 	}
 
-	private static final int SINGLE_USE     =                               xy(1, 4);   //16 slots
-	public static final int ANKH            = SINGLE_USE+0;
-	public static final int STYLUS          = SINGLE_USE+1;
-	
-	public static final int SEAL            = SINGLE_USE+3;
-	public static final int TORCH           = SINGLE_USE+4;
-	public static final int BEACON          = SINGLE_USE+5;
-
-	public static final int HONEYPOT        = SINGLE_USE+7;
-	public static final int SHATTPOT        = SINGLE_USE+8;
-	public static final int IRON_KEY        = SINGLE_USE+9;
-	public static final int GOLDEN_KEY      = SINGLE_USE+10;
-	public static final int CRYSTAL_KEY     = SINGLE_USE+11;
-	public static final int SKELETON_KEY    = SINGLE_USE+12;
-	public static final int MASTERY         = SINGLE_USE+13;
-	public static final int KIT             = SINGLE_USE+14;
-	public static final int AMULET          = SINGLE_USE+15;
+	private static final int MISC_CONSUMABLE =                              xy(1, 4);   //16 slots
+	public static final int ANKH            = MISC_CONSUMABLE +0;
+	public static final int STYLUS          = MISC_CONSUMABLE +1;
+	public static final int SEAL            = MISC_CONSUMABLE +2;
+	public static final int TORCH           = MISC_CONSUMABLE +3;
+	public static final int BEACON          = MISC_CONSUMABLE +4;
+	public static final int HONEYPOT        = MISC_CONSUMABLE +5;
+	public static final int SHATTPOT        = MISC_CONSUMABLE +6;
+	public static final int IRON_KEY        = MISC_CONSUMABLE +7;
+	public static final int GOLDEN_KEY      = MISC_CONSUMABLE +8;
+	public static final int CRYSTAL_KEY     = MISC_CONSUMABLE +9;
+	public static final int SKELETON_KEY    = MISC_CONSUMABLE +10;
+	public static final int MASK            = MISC_CONSUMABLE +11; //FIXME placeholder sprite
+	public static final int CROWN           = MISC_CONSUMABLE +12; //FIXME placeholder sprite
+	public static final int AMULET          = MISC_CONSUMABLE +13;
+	public static final int MASTERY         = MISC_CONSUMABLE +14;
+	public static final int KIT             = MISC_CONSUMABLE +15;
 	static{
 		assignItemRect(ANKH,            10, 16);
 		assignItemRect(STYLUS,          12, 13);
@@ -156,9 +156,11 @@ public class ItemSpriteSheet {
 		assignItemRect(GOLDEN_KEY,      8,  14);
 		assignItemRect(CRYSTAL_KEY,     8,  14);
 		assignItemRect(SKELETON_KEY,    8,  14);
+		assignItemRect(MASK,            9,  9);
+		assignItemRect(CROWN,           13, 6);
+		assignItemRect(AMULET,          16, 16);
 		assignItemRect(MASTERY,         13, 16);
 		assignItemRect(KIT,             16, 15);
-		assignItemRect(AMULET,          16, 16);
 	}
 	
 	private static final int BOMBS          =                               xy(1, 5);   //16 slots
