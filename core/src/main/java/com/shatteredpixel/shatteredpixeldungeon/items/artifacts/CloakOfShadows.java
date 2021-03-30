@@ -41,7 +41,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
@@ -93,11 +92,6 @@ public class CloakOfShadows extends Artifact {
 					Sample.INSTANCE.play(Assets.Sounds.MELD);
 					activeBuff = activeBuff();
 					activeBuff.attachTo(hero);
-					if (hero.sprite.parent != null) {
-						hero.sprite.parent.add(new AlphaTweener(hero.sprite, 0.4f, 0.4f));
-					} else {
-						hero.sprite.alpha(0.4f);
-					}
 					Talent.onArtifactUsed(Dungeon.hero);
 					hero.sprite.operate(hero.pos);
 				}
