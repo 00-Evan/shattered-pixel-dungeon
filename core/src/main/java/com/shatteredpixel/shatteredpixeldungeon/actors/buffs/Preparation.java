@@ -298,6 +298,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				Dungeon.level.occupyCell(Dungeon.hero);
 				//prevents the hero from being interrupted by seeing new enemies
 				Dungeon.observe();
+				GameScene.updateFog();
 				Dungeon.hero.checkVisibleMobs();
 				
 				Dungeon.hero.sprite.place( Dungeon.hero.pos );
