@@ -698,7 +698,8 @@ public class Dungeon {
 	}
 
 	public static void observe(){
-		int dist = 8 + 2*Dungeon.hero.pointsInTalent(Talent.FARSIGHT);
+		int dist = Dungeon.hero.viewDistance;
+		dist *= 1f + 0.25f*Dungeon.hero.pointsInTalent(Talent.FARSIGHT);
 		observe( dist+1 );
 	}
 	
