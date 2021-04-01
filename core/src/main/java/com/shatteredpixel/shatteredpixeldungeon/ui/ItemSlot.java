@@ -176,7 +176,7 @@ public class ItemSlot extends Button {
 		}
 	}
 
-	private void updateText(){
+	public void updateText(){
 
 		if (itemIcon != null){
 			remove(itemIcon);

@@ -189,7 +189,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 		slot.item( item );
 		enableSlot();
 	}
-	
+
 	public void enable( boolean value ) {
 		active = value;
 		if (value) {
@@ -257,7 +257,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 	public static void refresh() {
 		for (int i = 0; i < instance.length; i++) {
 			if (instance[i] != null) {
-				instance[i].item(select(i));
+				instance[i].slot.updateText();
 			}
 		}
 	}
