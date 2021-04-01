@@ -35,6 +35,7 @@ public class StyledButton extends Button {
 	protected NinePatch bg;
 	protected RenderedTextBlock text;
 	protected Image icon;
+	public boolean leftJustify = false;
 
 	public boolean multiline;
 	
@@ -84,7 +85,19 @@ public class StyledButton extends Button {
 			icon.y = y + (height() - icon.height()) / 2f;
 			PixelScene.align(icon);
 		}
-		
+
+		if (leftJustify){
+			if (icon != null){
+				icon.x = x + bg.marginLeft() + 1;
+				PixelScene.align(icon);
+				text.setPos( icon.x + icon.width() + 1, text.top());
+				PixelScene.align(text);
+			} else if (text != null) {
+				text.setPos( x + bg.marginLeft() + 1, text.top());
+				PixelScene.align(text);
+			}
+		}
+
 	}
 	
 	@Override

@@ -64,7 +64,7 @@ public class WndCombo extends Window {
 		for (Combo.ComboMove move : Combo.ComboMove.values()) {
 			Image ic = new Image(icon);
 
-			RedButton moveBtn = new RedButton(move.desc(), 6){
+			RedButton moveBtn = new RedButton(move.desc(combo.getComboCount()), 6){
 				@Override
 				protected void onClick() {
 					super.onClick();
@@ -74,6 +74,7 @@ public class WndCombo extends Window {
 			};
 			ic.tint(move.tintColor);
 			moveBtn.icon(ic);
+			moveBtn.leftJustify = true;
 			moveBtn.multiline = true;
 			moveBtn.setSize(width, moveBtn.reqHeight());
 			moveBtn.setRect(0, pos, width, moveBtn.reqHeight());

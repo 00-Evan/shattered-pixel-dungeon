@@ -124,7 +124,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc");
+		return Messages.get(this, "desc", count, dispTurns(comboTime));
 	}
 
 	private static final String COUNT = "count";
@@ -193,8 +193,16 @@ public class Combo extends Buff implements ActionIndicator.Action {
 			this.tintColor = tintColor;
 		}
 
-		public String desc(){
-			return Messages.get(this, name()+"_desc");
+		public String desc(int count){
+			switch (this){
+				default:
+					return Messages.get(this, name()+"_desc");
+				case SLAM:
+					return Messages.get(this, name()+"_desc", count*20);
+				case CRUSH:
+					return Messages.get(this, name()+"_desc", count*25);
+			}
+
 		}
 
 	}
