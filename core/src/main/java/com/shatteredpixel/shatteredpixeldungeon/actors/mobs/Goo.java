@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -32,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.GooBlob;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -46,7 +48,7 @@ import com.watabou.utils.Random;
 public class Goo extends Mob {
 
 	{
-		HP = HT = 100;
+		HP = HT = Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 120 : 100;
 		EXP = 10;
 		defenseSkill = 8;
 		spriteClass = GooSprite.class;
@@ -57,6 +59,7 @@ public class Goo extends Mob {
 	}
 
 	private int pumpedUp = 0;
+	private int healInc = 1;
 
 	@Override
 	public int damageRoll() {
@@ -92,14 +95,20 @@ public class Goo extends Mob {
 	public boolean act() {
 
 		if (Dungeon.level.water[pos] && HP < HT) {
+			HP += healInc;
 			if (Dungeon.level.heroFOV[pos] ){
-				sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
+				sprite.emitter().burst( Speck.factory( Speck.HEALING ), healInc );
 			}
-			if (HP*2 == HT) {
+			if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES) && healInc < 3) {
+				healInc++;
+			}
+			if (HP*2 > HT) {
 				BossHealthBar.bleed(false);
 				((GooSprite)sprite).spray(false);
+				HP = Math.min(HP, HT);
 			}
-			HP++;
+		} else {
+			healInc = 1;
 		}
 		
 		if (state != SLEEPING){
@@ -111,7 +120,15 @@ public class Goo extends Mob {
 
 	@Override
 	protected boolean canAttack( Char enemy ) {
-		return (pumpedUp > 0) ? distance( enemy ) <= 2 : super.canAttack(enemy);
+		if (pumpedUp > 0){
+			//we check both from and to in this case as projectile logic isn't always symmetrical.
+			//this helps trim out BS edge-cases
+			return Dungeon.level.distance(enemy.pos, pos) <= 2
+						&& new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE).collisionPos == enemy.pos
+						&& new Ballistica( enemy.pos, pos, Ballistica.PROJECTILE).collisionPos == pos;
+		} else {
+			return super.canAttack(enemy);
+		}
 	}
 
 	@Override
@@ -141,8 +158,8 @@ public class Goo extends Mob {
 	@Override
 	protected boolean doAttack( Char enemy ) {
 		if (pumpedUp == 1) {
-			((GooSprite)sprite).pumpUp( 2 );
 			pumpedUp++;
+			((GooSprite)sprite).pumpUp( pumpedUp );
 
 			spend( attackDelay() );
 
@@ -171,8 +188,11 @@ public class Goo extends Mob {
 		} else {
 
 			pumpedUp++;
+			if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES)){
+				pumpedUp++;
+			}
 
-			((GooSprite)sprite).pumpUp( 1 );
+			((GooSprite)sprite).pumpUp( pumpedUp );
 
 			if (Dungeon.level.heroFOV[pos]) {
 				sprite.showStatus( CharSprite.NEGATIVE, Messages.get(this, "!!!") );
@@ -258,6 +278,7 @@ public class Goo extends Mob {
 	}
 
 	private final String PUMPEDUP = "pumpedup";
+	private final String HEALINC = "healinc";
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -265,6 +286,7 @@ public class Goo extends Mob {
 		super.storeInBundle( bundle );
 
 		bundle.put( PUMPEDUP , pumpedUp );
+		bundle.put( HEALINC, healInc );
 	}
 
 	@Override
@@ -275,6 +297,9 @@ public class Goo extends Mob {
 		pumpedUp = bundle.getInt( PUMPEDUP );
 		if (state != SLEEPING) BossHealthBar.assignBoss(this);
 		if ((HP*2 <= HT)) BossHealthBar.bleed(true);
+
+		//if check is for pre-0.9.3 saves
+		healInc = bundle.getInt(HEALINC);
 
 	}
 	
