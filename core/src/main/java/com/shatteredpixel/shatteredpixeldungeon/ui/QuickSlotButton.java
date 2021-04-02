@@ -92,10 +92,10 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 					}
 				} else {
 					Item item = select(slotNum);
+					item.execute( Dungeon.hero );
 					if (item.usesTargeting) {
 						useTargeting();
 					}
-					item.execute( Dungeon.hero );
 				}
 			}
 			
