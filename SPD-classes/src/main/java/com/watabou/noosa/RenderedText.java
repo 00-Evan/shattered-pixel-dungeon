@@ -139,14 +139,15 @@ public class RenderedText extends Image {
 
 	//implements regular PD rendering within a libGDX batch so that our rendering logic
 	//can interface with the freetype font generator
+	//some copypasta from BitmapText here
 	private static class TextRenderBatch implements Batch {
 		
-		//this isn't as good as only updating once, like with bitmaptext
+		//this isn't as good as only updating once, like with BitmapText
 		// but it skips almost all allocations, which is almost as good
 		private static RenderedText textBeingRendered = null;
 		private static float[] vertices = new float[16];
 		private static HashMap<Integer, FloatBuffer> buffers = new HashMap<>();
-		
+
 		@Override
 		public void draw(Texture texture, float[] spriteVertices, int offset, int count) {
 			Visual v = textBeingRendered;
@@ -162,29 +163,29 @@ public class RenderedText extends Image {
 			
 			for (int i = 0; i < count; i += 20){
 				
-				vertices[0] 	= spriteVertices[i+0];
-				vertices[1] 	= spriteVertices[i+1];
+				vertices[0]     = spriteVertices[i+0];
+				vertices[1]     = spriteVertices[i+1];
 				
-				vertices[2]		= spriteVertices[i+3];
-				vertices[3]		= spriteVertices[i+4];
+				vertices[2]     = spriteVertices[i+3];
+				vertices[3]     = spriteVertices[i+4];
 				
-				vertices[4] 	= spriteVertices[i+5];
-				vertices[5] 	= spriteVertices[i+6];
+				vertices[4]     = spriteVertices[i+5];
+				vertices[5]     = spriteVertices[i+6];
 				
-				vertices[6]		= spriteVertices[i+8];
-				vertices[7]		= spriteVertices[i+9];
+				vertices[6]     = spriteVertices[i+8];
+				vertices[7]     = spriteVertices[i+9];
 				
-				vertices[8] 	= spriteVertices[i+10];
-				vertices[9] 	= spriteVertices[i+11];
+				vertices[8]     = spriteVertices[i+10];
+				vertices[9]     = spriteVertices[i+11];
 				
-				vertices[10]	= spriteVertices[i+13];
-				vertices[11]	= spriteVertices[i+14];
+				vertices[10]    = spriteVertices[i+13];
+				vertices[11]    = spriteVertices[i+14];
 				
-				vertices[12]	= spriteVertices[i+15];
-				vertices[13]	= spriteVertices[i+16];
+				vertices[12]    = spriteVertices[i+15];
+				vertices[13]    = spriteVertices[i+16];
 				
-				vertices[14]	= spriteVertices[i+18];
-				vertices[15]	= spriteVertices[i+19];
+				vertices[14]    = spriteVertices[i+18];
+				vertices[15]    = spriteVertices[i+19];
 				
 				toOpenGL.put(vertices);
 				
