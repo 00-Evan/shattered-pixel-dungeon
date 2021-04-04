@@ -85,7 +85,9 @@ public class v0_6_X_Changes {
 				"_-_ Released May 3rd, 2018\n" +
 				"_-_ 32 days after Shattered v0.6.4\n" +
 				"\n" +
-				"Dev commentary will be added here in v0.9.3."));
+				"v0.6.5 was the third major design iteration for glyphs, with the first being from Pixel Dungeon and the second from v0.4.0. In both of these earlier iterations glyphs had big trade-offs, which led many players to dislike or outright ignore them. I finally just decided to make them like enchantments. With that, plus the new augmentation functionality, armor finally had some of the variability in stats and effects that weapons had, though adding full blown armor types is still a common suggestion.\n" +
+				"\n" +
+				"I also made another attempt at designing the Berserker in v0.6.5. Prior to this update his death-defying rage would always trigger if it was available. That built-in safety net translated to a win rate that was hugely higher than the other subclasses, so I decided to make building rage and cheating death much harder to access. The Berserker retained his simple up-front gameplay, but started requiring investment in armor and rage management to access his power."));
 		
 		changes.addButton( new ChangeButton(new StoneOfAugmentation(),
 				"The weightstone is now the runestone of augmentation!\n\n" +
@@ -210,7 +212,9 @@ public class v0_6_X_Changes {
 				"_-_ Released April 1st, 2018\n" +
 				"_-_ 46 days after Shattered v0.6.3\n" +
 				"\n" +
-				"Dev commentary will be added here in v0.9.3."));
+				"v0.6.4 was a smaller update, mostly focused on additions and fixes following v0.6.4. Probably the most interesting content that came in v0.6.4 was the crossbow! This weapon was an attempt to fulfill the common request for an ammo-based ranged weapon, without actually having an ammo system in the game. I felt that an ammo system would be more cumbersome than it would be worth. Letting darts piggyback on an equipped weapon seemed like a great compromise.\n" +
+				"\n" +
+				"I also made some important changes to challenges in v0.6.4, primarily to make stacked challenge games a bit easier. This made high-challenge games more feasible without extreme luck, which led to a big increase in challenge interest among highly skilled players."));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.CHALLENGE_ON), "Challenges",
 				"Challenges have received several major changes, with the goal of making them more fair and interesting.\n" +
