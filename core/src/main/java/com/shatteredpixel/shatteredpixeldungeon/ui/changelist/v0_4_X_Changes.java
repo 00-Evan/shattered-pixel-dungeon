@@ -93,7 +93,7 @@ public class v0_4_X_Changes {
 						"\n" +
 						"The most user-visible change in this update was the decoupling of Shattered's display logic and gameplay logic. This doubled the amount of processor power that the game had access to and meant that the game wouldn't freeze or hitch if gameplay logic was taking a while. This made the game run much smoother.\n" +
 						"\n" +
-						"Behind the scenes, the biggest changes were probably to various bits of game logic that assumed a constant map size of 32x32. After 0.4.2 many of these operations were made more efficient, and could work on variably sized maps, up to a new theoretical max of about 144x144."));
+						"Behind the scenes, the biggest changes were probably to various bits of game logic that assumed a constant map size of 32x32. After v0.4.2 many of these operations were made more efficient, and could work on variably sized maps, up to a new theoretical max of about 144x144."));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Technical Improvements",
 				"_-_ Many general performance improvements\n" +
@@ -193,7 +193,7 @@ public class v0_4_X_Changes {
 				"_-_ 391 days after Shattered v0.3.0\n" +
 				"_-_ 50 days after Shattered v0.3.5\n" +
 				"\n" +
-				"0.4.0 was Shattered's third major item category update, this time addressing weapons! I see this update as the start of a new era for Shattered's development. For the first time a major update was adding far more content than it was reworking or repurposing.\n" +
+				"v0.4.0 was Shattered's third major item category update, this time addressing weapons! I see this update as the start of a new era for Shattered's development. For the first time a major update was adding far more content than it was reworking or repurposing.\n" +
 				"\n" +
 				"This update also restructured how weapon strength requirements scaled with upgrades. This made it much more difficult to access high tier items early by dumping upgrades into them. This was my attempt to solve some of the game's pacing issues without adding degradation.\n" +
 				"\n" +

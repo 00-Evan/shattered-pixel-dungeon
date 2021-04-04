@@ -94,11 +94,11 @@ public class v0_1_X_Changes {
 				"_-_ 69 days after Pixel Dungeon v1.7.1\n" +
 				"_-_ 9 days after v1.7.1 source release\n" +
 				"\n" +
-				"v0.1.0 and v0.1.1 were extremely early Shattered updates that were only distributed via the Pixel Dungeon Subreddit. At this early stage of development Shattered was basically the same game as Pixel Dungeon v1.7.1.\n" +
+				"v0.1.0 and v0.1.1 were extremely early Shattered updates that were only distributed via the Pixel Dungeon Subreddit. At this stage of development Shattered was basically the same game as Pixel Dungeon v1.7.1.\n" +
 				"\n" +
 				"I started playing Pixel Dungeon in mid 2013. I loved the game but was frustrated with the balance of some items. When Pixel Dungeon went open source I decided to make Shattered as a balance modification. I called it Shattered as 'Shattered Pixel' was an old trade name I had, and the mod was going to 'shatter' Pixel Dungeon's balance.\n" +
 				"\n" +
-				"At this stage I didn't have any plans to add new content, I thought I was just going to spend a couple months rebalancing the game and that was it!"));
+				"At the time I didn't have any plans to add new content, I thought I was just going to spend a couple months rebalancing the game and that was it!"));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SEED_EARTHROOT, null), "Seed Changes",
 				"_-_ Blindweed buffed, now cripples as well as blinds.\n\n" +

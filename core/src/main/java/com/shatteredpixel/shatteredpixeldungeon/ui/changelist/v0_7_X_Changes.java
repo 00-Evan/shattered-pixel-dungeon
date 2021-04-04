@@ -79,7 +79,7 @@ public class v0_7_X_Changes {
 				"_-_ Released October 2nd, 2019\n" +
 				"_-_ 76 days after Shattered v0.7.4\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"Dev commentary will be added here in v0.9.4."));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SNAKE, 12, 0, 12, 11), "Sewer Enemies",
 				"Two new enemies have been added to the sewers!\n\n" +
@@ -193,7 +193,7 @@ public class v0_7_X_Changes {
 				"_-_ Released July 18th, 2019\n" +
 				"_-_ 56 days after Shattered v0.7.3\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"Dev commentary will be added here in v0.9.4."));
 
 		changes.addButton( new ChangeButton(new WandOfWarding(),
 				"This brand new wand spawns autonomous wards which attack enemies. Wards can be upgraded by being zapped again, and eventually form up into sentry turrets.\n\n" +
@@ -319,7 +319,7 @@ public class v0_7_X_Changes {
 				"_-_ Released May 23rd, 2019\n" +
 				"_-_ 66 days after Shattered v0.7.2\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"Dev commentary will be added here in v0.9.4."));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.LONGSWORD, new ItemSprite.Glowing(0xFFFF00)), "Enchantment Changes",
 				"Several changes have been made to enchantments, based on feedback from 0.7.2:\n\n" +
@@ -449,7 +449,7 @@ public class v0_7_X_Changes {
 				"_-_ Released Mar 18th, 2019\n" +
 				"_-_ 90 days after Shattered v0.7.1\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"Dev commentary will be added here in v0.9.4."));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.POTION_CATALYST, null), "Catalysts!",
 				"Added two new recipes: _Alchemical Catalysts_ and _Arcane Catalysts._\n\n" +
@@ -605,7 +605,7 @@ public class v0_7_X_Changes {
 				"_-_ Released Dec 18th, 2018\n" +
 				"_-_ 61 days after Shattered v0.7.0\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"Dev commentary will be added here in v0.9.4."));
 		
 		changes.addButton( new ChangeButton( new Image(Assets.Sprites.HUNTRESS, 0, 15, 12, 15), "Huntress Reworked!",
 				"The Huntress has received a class overhaul!\n\n" +
@@ -738,7 +738,7 @@ public class v0_7_X_Changes {
 				"_-_ 501 days after Shattered v0.6.0\n" +
 				"_-_ 168 days after Shattered v0.6.5\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"Dev commentary will be added here in v0.9.4."));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_SEWERS, 48, 96, 16, 16 ), "Alchemy Overhaul!",
 				"The game's alchemy system has been entirely overhauled!\n\n" +

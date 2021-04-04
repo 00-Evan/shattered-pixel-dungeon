@@ -145,9 +145,9 @@ public class v0_2_X_Changes {
 				"_-_ Released November 3rd, 2014\n" +
 				"_-_ 21 days after Shattered v0.2.1\n" +
 				"\n" +
-				"v0.2.2 was Shattered's first update that didn't have a specific focus. It instead made a bunch of little improvements.\n" +
+				"v0.2.2 was Shattered's first update that didn't have a specific focus. Instead this update was forking on making a bunch of little improvements.\n" +
 				"\n" +
-				"The largest change was the integration of Pixel Dungeon's source code from v1.7.2, which included synchronous movement! It's something we take for granted now, but before this change every on-screen character had to move one at a time. This slowed the pace of the game to a crawl whenever two or more enemies were on screen.\n" +
+				"The largest change was the integration of Pixel Dungeon's source code from v1.7.2, which included synchronous movement! It's something we take for granted now, but before this change every on-screen character had to move one at a time. This slowed the pace of the game to a crawl whenever enemies were on screen.\n" +
 				"\n" +
 				"Heroes remains also received big changes this update. In Pixel Dungeon you could use remains to consistently pass highly upgraded armor from one run to the next. I felt this violated the roguelike nature of the game, and so I nerfed remains to prevent this."));
 		
@@ -193,7 +193,7 @@ public class v0_2_X_Changes {
 				"\n" +
 				"v0.2.1 was the first in a short lived series of 'region overhaul' updates. Thanks to releasing on Google Play, Shattered was getting a huge influx of new players, and I wanted to make some changes that they would appreciate. The three new minibosses and Goo changes were all made to try and help new players get used to the game.\n" +
 				"\n" +
-				"This update also continued 0.2.0's trend of expanding Shattered's scope. I was no longer just planning to change items, but was now making additions and reworks to regions of the game as well!"));
+				"This update also continued v0.2.0's trend of expanding Shattered's scope. I was no longer just planning to change items, but was now making additions and reworks to regions of the dungeon as well!"));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.Sprites.GHOST, 0, 0, 14, 15), "New Sewer Quests",
 				"_-_ Removed the dried rose quest (the rose will return...)\n\n" +
@@ -220,7 +220,7 @@ public class v0_2_X_Changes {
 				"\n" +
 				"v0.2.0 was the first version of Shattered to release on Google Play! I had originally wanted to wait longer, but I was getting flooded with messages about it.\n" +
 				"\n" +
-				"Artifacts came from realizing it would be very difficult to make some rings worth upgrading by just buffing them. Instead, I decided to put their mechanics  on a new class of item that didn't need upgrades! Artifacts ended up becoming Shattered's first flagship feature!\n" +
+				"Artifacts came from realizing it would be very difficult to make some rings worth upgrading by just buffing them. Instead, I decided to put their mechanics  on a new class of item that didn't need upgrades. Artifacts ended up becoming Shattered's first flagship feature!\n" +
 				"\n" +
 				"I feel like this was the start of a new era for Shattered's development, as updates become about making much more significant changes to content than just balance adjustments.\n" +
 				"\n" +

@@ -103,7 +103,7 @@ public class v0_3_X_Changes {
 				"\n" +
 				"v0.3.4 made Shattered available in multiple languages! This update was a direct response to messages I kept getting from users who wanted to share the game with their friends, but couldn't due to the language barrier.\n" +
 				"\n" +
-				"Translating the game was no small feat, Shattered has a huge amount of text that is constantly changing and growing. As of early 2021 Shattered has roughly 35 thousand words of total text. Because of the volume of text it would have been prohibitively expensive to get the game professionally translated, and so I opted to ask for community translations instead.\n" +
+				"Translating the game was no small feat, Shattered has a huge amount of text that is constantly changing and growing. As of mid 2021 Shattered has roughly 40 thousand words of total text. Because of the volume of text it would have been prohibitively expensive to get the game professionally translated, and so I opted to ask for community translations instead.\n" +
 				"\n" +
 				"The response from the community was and continues to be incredible! Even multiple years later Shattered's updates are still consistently translated into a number of languages."));
 		
@@ -144,7 +144,7 @@ public class v0_3_X_Changes {
 				"\n" +
 				"v0.3.3 was a small bumper update that was mostly focused on getting Google Play Games functionality working.\n" +
 				"\n" +
-				"Google Play Games was the first online functionality ever added to Shattered. Some people were understandable worried that this was the start of me turning Shattered into a game that would require internet. I tried to address this worry by making the functionality as optional as possible and heavily emphasizing that it was only for tiny extras like cloud sync and play games badges. Nowadays things are much more relaxed and Shattered has several internet-enabled features, but still none of them are needed to play the game itself."));
+				"Google Play Games was the first online functionality ever added to Shattered. Some people were worried that this was the start of me turning Shattered into a game that would require internet. I tried to address this worry by making the functionality as optional as possible and heavily emphasizing that it was only for tiny extras like cloud sync and play games badges. Nowadays things are much more relaxed and Shattered has several internet-enabled features, but still none of them are needed to play the game itself."));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Google Play Games",
 				"Added support for Google Play Games in the Google Play version:\n\n" +
@@ -233,11 +233,11 @@ public class v0_3_X_Changes {
 				"_-_ Released August 17th, 2015\n" +
 				"_-_ 83 days after Shattered v0.3.0\n" +
 				"\n" +
-				"v0.3.1 is the first update that I ended up regretting. While almost all of the content in these earlier updates has been revisited in some way, the trap changes were probably detrimental to the game at the time they were implemented.\n" +
+				"v0.3.1 is the first update that I ended up regretting. While almost all of the content in these earlier updates has been revisited in some way, the trap changes were arguably detrimental to the game at the time they were implemented.\n" +
 				"\n" +
-				"I was too obsessed with quantity over quality, and so I ended up adding a tonne of trap frustration in the mid and lategame. I only ended up fixing this years later, primarily with the trap changes in v0.6.2 and v0.8.0. Incrementally adding well-designed traps over time would have been a much better approach.\n" +
+				"I was too obsessed with quantity over quality, and so I ended up adding lots of frustrating traps in the mid and lategame. I only ended up fixing this years later, primarily with the trap changes in v0.6.2 and v0.8.0. Incrementally adding well-designed traps over time would have been a much better approach.\n" +
 				"\n" +
-				"Still, v0.3.1 wasn't all bad. It also introduced some very important interface changes such as four quickslots, heavily expanded game settings, and added quickslot autotargeting."));
+				"Still, v0.3.1 wasn't all bad. Traps in the earlygame were improved, and it also introduced some very important interface changes such as four quickslots, expanded game settings, and quickslot autotargeting. This was also the first update that had a beta release, something that I've done for every update since."));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.Environment.TERRAIN_FEATURES, 112, 96, 16, 16), "Trap Overhaul",
 				"_-_ Over 20 new traps + tweaks to existing ones\n" +
@@ -284,7 +284,7 @@ public class v0_3_X_Changes {
 				"\n" +
 				"v0.3.0 was Shattered's second major item category rework, and Shattered's first real class rework!\n" +
 				"\n" +
-				"This class rework also included changes to the Mage's subclasses. While other aspects of the Mage have changed a bunch since the rework, the core idea of each subclass and his staff have persisted. While this may seem similar to the Rogue changes in v0.2.0, the mage never required a second rework.\n" +
+				"This class rework also included changes to the Mage's subclasses. While other aspects of the Mage have changed a bunch since the rework, the core idea of each subclass and his staff have persisted. While this may seem similar to the Rogue changes in v0.2.0, the mage never required a second full rework.\n" +
 				"\n" +
 				"Around this time I was also starting to include substantial smaller tweaks in each update. Nowadays every update includes a large amount of smaller changes, but back in these earlier days this was a newer development."));
 		
