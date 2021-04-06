@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WandEmpower;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -495,8 +496,16 @@ public enum Talent {
 		}
 		tierTalents.clear();
 
-		//tier4
-		//TBD
+	}
+
+	public static void initArmorTalents( Hero hero ){
+		initArmorTalents( hero.armorAbility, hero.talents);
+	}
+
+	public static void initArmorTalents(ArmorAbility abil, ArrayList<LinkedHashMap<Talent, Integer>> talents ){
+		if (abil == null) return;
+
+		//TODO
 	}
 
 	private static final String TALENT_TIER = "talents_tier_";
@@ -519,8 +528,9 @@ public enum Talent {
 	}
 
 	public static void restoreTalentsFromBundle( Bundle bundle, Hero hero ){
-		if (hero.heroClass != null) initClassTalents(hero);
-		if (hero.subClass != null)  initSubclassTalents(hero);
+		if (hero.heroClass != null)     initClassTalents(hero);
+		if (hero.subClass != null)      initSubclassTalents(hero);
+		if (hero.armorAbility != null)  initArmorTalents(hero);
 
 		for (int i = 0; i < MAX_TALENT_TIERS; i++){
 			LinkedHashMap<Talent, Integer> tier = hero.talents.get(i);

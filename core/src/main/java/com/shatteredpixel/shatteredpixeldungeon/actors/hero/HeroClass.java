@@ -26,6 +26,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Warrior1;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Warrior2;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Warrior3;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
@@ -51,21 +55,18 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortswor
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingStone;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.watabou.utils.Bundle;
 import com.watabou.utils.DeviceCompat;
 
 public enum HeroClass {
 
-	WARRIOR( "warrior", HeroSubClass.BERSERKER, HeroSubClass.GLADIATOR ),
-	MAGE( "mage", HeroSubClass.BATTLEMAGE, HeroSubClass.WARLOCK ),
-	ROGUE( "rogue", HeroSubClass.ASSASSIN, HeroSubClass.FREERUNNER ),
-	HUNTRESS( "huntress", HeroSubClass.SNIPER, HeroSubClass.WARDEN );
+	WARRIOR( HeroSubClass.BERSERKER, HeroSubClass.GLADIATOR ),
+	MAGE( HeroSubClass.BATTLEMAGE, HeroSubClass.WARLOCK ),
+	ROGUE( HeroSubClass.ASSASSIN, HeroSubClass.FREERUNNER ),
+	HUNTRESS( HeroSubClass.SNIPER, HeroSubClass.WARDEN );
 
-	private String title;
 	private HeroSubClass[] subClasses;
 
-	HeroClass( String title, HeroSubClass...subClasses ) {
-		this.title = title;
+	HeroClass( HeroSubClass...subClasses ) {
 		this.subClasses = subClasses;
 	}
 
@@ -187,11 +188,15 @@ public enum HeroClass {
 	}
 
 	public String title() {
-		return Messages.get(HeroClass.class, title);
+		return Messages.get(HeroClass.class, name());
 	}
 
 	public HeroSubClass[] subClasses() {
 		return subClasses;
+	}
+
+	public ArmorAbility[] armorAbilities(){
+		return new ArmorAbility[]{new Warrior1(), new Warrior2(), new Warrior3()};
 	}
 
 	public String spritesheet() {
@@ -286,14 +291,4 @@ public enum HeroClass {
 		}
 	}
 
-	private static final String CLASS	= "class";
-	
-	public void storeInBundle( Bundle bundle ) {
-		bundle.put( CLASS, toString() );
-	}
-	
-	public static HeroClass restoreInBundle( Bundle bundle ) {
-		String value = bundle.getString( CLASS );
-		return value.length() > 0 ? valueOf( value ) : ROGUE;
-	}
 }

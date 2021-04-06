@@ -52,6 +52,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -154,6 +155,7 @@ public class Hero extends Char {
 	
 	public HeroClass heroClass = HeroClass.ROGUE;
 	public HeroSubClass subClass = HeroSubClass.NONE;
+	public ArmorAbility armorAbility = null;
 	public ArrayList<LinkedHashMap<Talent, Integer>> talents = new ArrayList<>();
 	
 	private int attackSkill = 10;
@@ -226,6 +228,10 @@ public class Hero extends Char {
 		return STR;
 	}
 
+	private static final String CLASS       = "class";
+	private static final String SUBCLASS    = "subClass";
+	private static final String ABILITY     = "armorAbility";
+
 	private static final String ATTACK		= "attackSkill";
 	private static final String DEFENSE		= "defenseSkill";
 	private static final String STRENGTH	= "STR";
@@ -237,9 +243,10 @@ public class Hero extends Char {
 	public void storeInBundle( Bundle bundle ) {
 
 		super.storeInBundle( bundle );
-		
-		heroClass.storeInBundle( bundle );
-		subClass.storeInBundle( bundle );
+
+		bundle.put( CLASS, heroClass );
+		bundle.put( SUBCLASS, subClass );
+		bundle.put( ABILITY, armorAbility );
 		Talent.storeTalentsInBundle( bundle, this );
 		
 		bundle.put( ATTACK, attackSkill );
@@ -264,9 +271,10 @@ public class Hero extends Char {
 		HTBoost = bundle.getInt(HTBOOST);
 
 		super.restoreFromBundle( bundle );
-		
-		heroClass = HeroClass.restoreInBundle( bundle );
-		subClass = HeroSubClass.restoreInBundle( bundle );
+
+		heroClass = bundle.getEnum( CLASS, HeroClass.class );
+		subClass = bundle.getEnum( SUBCLASS, HeroSubClass.class );
+		armorAbility = (ArmorAbility)bundle.get( ABILITY );
 		Talent.restoreTalentsFromBundle( bundle, this );
 		
 		attackSkill = bundle.getInt( ATTACK );
@@ -284,8 +292,8 @@ public class Hero extends Char {
 		info.hp = bundle.getInt( Char.TAG_HP );
 		info.ht = bundle.getInt( Char.TAG_HT );
 		info.shld = bundle.getInt( Char.TAG_SHLD );
-		info.heroClass = HeroClass.restoreInBundle( bundle );
-		info.subClass = HeroSubClass.restoreInBundle( bundle );
+		info.heroClass = bundle.getEnum( CLASS, HeroClass.class );
+		info.subClass = bundle.getEnum( SUBCLASS, HeroSubClass.class );
 		Belongings.preview( info, bundle );
 	}
 

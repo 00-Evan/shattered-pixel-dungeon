@@ -19,32 +19,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
+package com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities;
 
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.watabou.utils.Bundlable;
+import com.watabou.utils.Bundle;
 
-public enum HeroSubClass {
+public abstract class ArmorAbility implements Bundlable {
 
-	NONE,
-	
-	GLADIATOR,
-	BERSERKER,
-	
-	WARLOCK,
-	BATTLEMAGE,
-	
-	ASSASSIN,
-	FREERUNNER,
-	
-	SNIPER,
-	WARDEN;
-	
-	public String title() {
-		return Messages.get(this, name());
-	}
-	
-	public String desc() {
-		return Messages.get(this, name()+"_desc");
+	//TODO code for actual effects
+
+	public String name(){
+		return Messages.get(this, "name");
 	}
 
+	public String desc(){
+		return Messages.get(this, "desc");
+	}
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+	}
 }

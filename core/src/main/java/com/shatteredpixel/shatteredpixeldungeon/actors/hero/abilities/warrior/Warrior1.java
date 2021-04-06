@@ -19,32 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
+package com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior;
 
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 
-public enum HeroSubClass {
-
-	NONE,
-	
-	GLADIATOR,
-	BERSERKER,
-	
-	WARLOCK,
-	BATTLEMAGE,
-	
-	ASSASSIN,
-	FREERUNNER,
-	
-	SNIPER,
-	WARDEN;
-	
-	public String title() {
-		return Messages.get(this, name());
-	}
-	
-	public String desc() {
-		return Messages.get(this, name()+"_desc");
-	}
+public class Warrior1 extends ArmorAbility {
 
 }
