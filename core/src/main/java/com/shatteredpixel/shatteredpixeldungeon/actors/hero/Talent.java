@@ -374,7 +374,7 @@ public enum Talent {
 	public static class SuckerPunchTracker extends Buff{};
 	public static class FollowupStrikeTracker extends Buff{};
 
-	public static final int MAX_TALENT_TIERS = 3;
+	public static final int MAX_TALENT_TIERS = 4;
 
 	public static void initClassTalents( Hero hero ){
 		initClassTalents( hero.heroClass, hero.talents );
@@ -505,7 +505,13 @@ public enum Talent {
 	public static void initArmorTalents(ArmorAbility abil, ArrayList<LinkedHashMap<Talent, Integer>> talents ){
 		if (abil == null) return;
 
-		//TODO
+		while (talents.size() < MAX_TALENT_TIERS){
+			talents.add(new LinkedHashMap<>());
+		}
+
+		for (Talent t : abil.talents()){
+			talents.get(3).put(t, 0);
+		}
 	}
 
 	private static final String TALENT_TIER = "talents_tier_";

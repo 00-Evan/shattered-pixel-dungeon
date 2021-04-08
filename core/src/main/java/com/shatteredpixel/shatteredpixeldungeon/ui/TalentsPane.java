@@ -70,6 +70,8 @@ public class TalentsPane extends ScrollPane {
 			}
 			if (tiersAvailable > 2 && Dungeon.hero.subClass == HeroSubClass.NONE){
 				tiersAvailable = 2;
+			} else if (tiersAvailable > 3 && Dungeon.hero.armorAbility == null){
+				tiersAvailable = 3;
 			}
 		}
 
@@ -95,12 +97,16 @@ public class TalentsPane extends ScrollPane {
 
 		if (tiersAvailable == 1) {
 			blockText = PixelScene.renderTextBlock(Messages.get(this, "unlock_tier2"), 6);
+			content.add(blockText);
 		} else if (tiersAvailable == 2) {
 			blockText = PixelScene.renderTextBlock(Messages.get(this, "unlock_tier3"), 6);
+			content.add(blockText);
+		} else if (tiersAvailable == 3) {
+			blockText = PixelScene.renderTextBlock(Messages.get(this, "unlock_tier4"), 6);
+			content.add(blockText);
 		} else {
-			blockText = PixelScene.renderTextBlock(Messages.get(this, "coming_soon"), 6);
+			blockText = null;
 		}
-		content.add(blockText);
 	}
 
 	@Override
@@ -121,15 +127,22 @@ public class TalentsPane extends ScrollPane {
 
 		}
 
-		float bottom = Math.max(height, top + 20);
+		float bottom;
+		if (blockText != null) {
+			bottom = Math.max(height, top + 20);
 
-		blocker.x = 0;
-		blocker.y = top;
-		blocker.size(width, bottom - top);
+			blocker.x = 0;
+			blocker.y = top;
+			blocker.size(width, bottom - top);
 
-		blockText.maxWidth((int)width);
-		blockText.align(RenderedTextBlock.CENTER_ALIGN);
-		blockText.setPos((width - blockText.width())/2f, blocker.y + (bottom - blocker.y - blockText.height())/2);
+			blockText.maxWidth((int) width);
+			blockText.align(RenderedTextBlock.CENTER_ALIGN);
+			blockText.setPos((width - blockText.width()) / 2f, blocker.y + (bottom - blocker.y - blockText.height()) / 2);
+		} else {
+			bottom = Math.max(height, top);
+
+			blocker.visible = false;
+		}
 
 		content.setSize(width, bottom);
 	}

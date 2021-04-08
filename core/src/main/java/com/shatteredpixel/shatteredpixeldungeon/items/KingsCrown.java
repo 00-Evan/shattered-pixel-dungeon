@@ -24,14 +24,17 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndChooseAbility;
 import com.watabou.noosa.audio.Sample;
 
 import java.util.ArrayList;
@@ -62,7 +65,7 @@ public class KingsCrown extends Item {
 
 			curUser = hero;
 			if (hero.belongings.armor != null){
-				upgrade(hero.belongings.armor);
+				GameScene.show( new WndChooseAbility(this, hero.belongings.armor, hero));
 			} else {
 				GLog.w( Messages.get(this, "naked"));
 			}
@@ -80,19 +83,19 @@ public class KingsCrown extends Item {
 		return true;
 	}
 	
-	private void upgrade( Armor armor ) {
-		
-		detach( curUser.belongings.backpack );
-		
-		curUser.sprite.centerEmitter().start( Speck.factory( Speck.KIT ), 0.05f, 10 );
+	public void upgradeArmor(Hero hero, Armor armor, ArmorAbility ability) {
+
+		detach( hero.belongings.backpack );
+
+		hero.sprite.centerEmitter().start( Speck.factory( Speck.KIT ), 0.05f, 10 );
 		//TODO add a spell icon?
-		curUser.spend( Actor.TICK );
-		curUser.busy();
+		hero.spend( Actor.TICK );
+		hero.busy();
 		
 		GLog.p( Messages.get(this, "upgraded"));
 		
-		ClassArmor classArmor = ClassArmor.upgrade( curUser, armor );
-		if (curUser.belongings.armor == armor) {
+		ClassArmor classArmor = ClassArmor.upgrade( hero, armor );
+		if (hero.belongings.armor == armor) {
 			
 			curUser.belongings.armor = classArmor;
 			((HeroSprite)curUser.sprite).updateArmor();
@@ -104,17 +107,11 @@ public class KingsCrown extends Item {
 			classArmor.collect( curUser.belongings.backpack );
 			
 		}
+		hero.armorAbility = ability;
+		Talent.initArmorTalents(hero);
 		
 		curUser.sprite.operate( curUser.pos );
 		Sample.INSTANCE.play( Assets.Sounds.MASTERY );
 	}
-	
-	private final WndBag.Listener itemSelector = new WndBag.Listener() {
-		@Override
-		public void onSelect( Item item ) {
-			if (item != null) {
-				KingsCrown.this.upgrade( (Armor)item );
-			}
-		}
-	};
+
 }

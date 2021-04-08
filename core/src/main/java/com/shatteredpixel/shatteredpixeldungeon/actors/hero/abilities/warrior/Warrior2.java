@@ -21,7 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 
 public class Warrior2 extends ArmorAbility {
+
+	@Override
+	public Talent[] talents() {
+		return new Talent[]{Talent.EMPOWERING_MEAL, Talent.SCHOLARS_INTUITION, Talent.TESTED_HYPOTHESIS, Talent.BACKUP_BARRIER};
+	}
 }

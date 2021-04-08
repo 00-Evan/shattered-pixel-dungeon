@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -36,6 +37,8 @@ public abstract class ArmorAbility implements Bundlable {
 	public String desc(){
 		return Messages.get(this, "desc");
 	}
+
+	public abstract Talent[] talents();
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
