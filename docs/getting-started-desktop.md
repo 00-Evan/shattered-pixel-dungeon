@@ -1,7 +1,7 @@
 ## Quick Setup
 
 If you merely wish to build the game from source, or make small personal changes to the code, then the project can be built with minimal setup:
-- Ensure a [JDK (Java Development Kit)](https://www.oracle.com/java/technologies/javase-downloads.html) is installed on your computer.
+- Ensure a [JDK (Java Development Kit)](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html) is installed on your computer. (Java 8 is recommended)
 - Copy the code by pressing the 'clone or download' button and then 'Download ZIP'. Unzip the downloaded zip to any directory on your computer you like.
     - or optionally use version control (see full setup for details).
 - Open a command prompt from the project's root folder and type `./gradlew desktop:debug` to run the game in debug mode.
