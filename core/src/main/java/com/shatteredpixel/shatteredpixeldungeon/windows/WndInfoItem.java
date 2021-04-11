@@ -34,10 +34,18 @@ public class WndInfoItem extends Window {
 
 	private static final int WIDTH_MIN = 120;
 	private static final int WIDTH_MAX = 220;
-	
+
+	//only one WndInfoItem can appear at a time
+	private static WndInfoItem INSTANCE;
+
 	public WndInfoItem( Heap heap ) {
-		
+
 		super();
+
+		if (INSTANCE != null){
+			INSTANCE.hide();
+		}
+		INSTANCE = this;
 
 		if (heap.type == Heap.Type.HEAP) {
 			fillFields( heap.peek() );
@@ -50,6 +58,11 @@ public class WndInfoItem extends Window {
 	
 	public WndInfoItem( Item item ) {
 		super();
+
+		if (INSTANCE != null){
+			INSTANCE.hide();
+		}
+		INSTANCE = this;
 		
 		fillFields( item );
 	}

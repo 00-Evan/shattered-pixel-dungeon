@@ -136,7 +136,11 @@ public class WndWandmaker extends Window {
 				}
 				@Override
 				protected void onClick() {
-					ShatteredPixelDungeon.scene().addToFront(new RewardWindow(item));
+					if (Dungeon.hero.belongings.contains(item)) {
+						ShatteredPixelDungeon.scene().addToFront(new RewardWindow(item));
+					} else {
+						hide();
+					}
 				}
 			};
 			add(slot);

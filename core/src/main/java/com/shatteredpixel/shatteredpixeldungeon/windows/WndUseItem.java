@@ -57,7 +57,9 @@ public class WndUseItem extends WndInfoItem {
 					protected void onClick() {
 						hide();
 						if (owner != null && owner.parent != null) owner.hide();
-						if (Dungeon.hero.isAlive()) item.execute( Dungeon.hero, action );
+						if (Dungeon.hero.isAlive() && Dungeon.hero.belongings.contains(item)){
+							item.execute( Dungeon.hero, action );
+						}
 					}
 				};
 				btn.setSize( btn.reqWidth(), BUTTON_HEIGHT );
