@@ -97,7 +97,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMappi
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
@@ -475,11 +474,6 @@ public class Hero extends Char {
 			}
 			if (wepDr > 0) dr += wepDr;
 		}
-		Barkskin bark = buff(Barkskin.class);
-		if (bark != null)               dr += Random.NormalIntRange( 0 , bark.level() );
-		
-		Blocking.BlockBuff block = buff(Blocking.BlockBuff.class);
-		if (block != null)              dr += block.blockingRoll();
 
 		if (buff(HoldFast.class) != null){
 			dr += Random.NormalIntRange(0, 2*pointsInTalent(Talent.HOLD_FAST));
