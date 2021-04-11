@@ -181,7 +181,11 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 	public void onSelect( Item item ) {
 		if (item != null) {
 			Dungeon.quickslot.setSlot( slotNum , item );
-			refresh();
+			for (int i = 0; i < instance.length; i++) {
+				if (instance[i] != null) {
+					instance[i].item(select(i));
+				}
+			}
 		}
 	}
 	
