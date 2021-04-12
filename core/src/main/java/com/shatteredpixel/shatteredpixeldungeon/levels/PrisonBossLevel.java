@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -572,15 +573,23 @@ public class PrisonBossLevel extends Level {
 		int heroPos = heroPoint.x-(tenguCell.left+1) + (heroPoint.y-(tenguCell.top+1))*7;
 		
 		boolean[] trapsPatch;
-		
+
+		//fill ramps up much faster during challenge, effectively 78%-90%
+		if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES)){
+			fill = 0.675f + fill/4f;
+		}
+
+		int tries = 0;
 		do {
+			tries++;
 			trapsPatch = Patch.generate(7, 7, fill, 0, false);
-			
+
 			PathFinder.buildDistanceMap(tenguPos, BArray.not(trapsPatch, null));
 			//note that the effective range of fill is 40%-90%
 			//so distance to tengu starts at 3-6 tiles and scales up to 7-8 as fill increases
 		} while (((PathFinder.distance[heroPos] < Math.ceil(7*fill))
 				|| (PathFinder.distance[heroPos] > Math.ceil(4 + 4*fill))));
+		System.out.println(tries);
 
 		PathFinder.setMapSize(width(), height());
 		

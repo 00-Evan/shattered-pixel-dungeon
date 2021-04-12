@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -69,6 +70,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
@@ -81,7 +83,7 @@ public class Tengu extends Mob {
 	{
 		spriteClass = TenguSprite.class;
 		
-		HP = HT = 200;
+		HP = HT = Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 250 : 200;
 		EXP = 20;
 		defenseSkill = 15;
 		
@@ -434,8 +436,9 @@ public class Tengu extends Mob {
 			
 			abilityCooldown--;
 			
-			if (targetAbilityUses() - abilitiesUsed >= 4){
+			if (targetAbilityUses() - abilitiesUsed >= 4 && !Dungeon.isChallenged(Challenges.STRONGER_BOSSES)){
 				//Very behind in ability uses, use one right away!
+				//but not on bosses challenge, we already cast quickly then
 				abilityCooldown = 0;
 				
 			} else if (targetAbilityUses() - abilitiesUsed >= 3){
@@ -475,6 +478,8 @@ public class Tengu extends Mob {
 				abilityToUse = BOMB_ABILITY;
 			} else if (abilitiesUsed == 1){
 				abilityToUse = SHOCKER_ABILITY;
+			} else if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES)) {
+				abilityToUse = Random.Int(2)*2; //0 or 2, can't roll fire ability with challenge
 			} else {
 				abilityToUse = Random.Int(3);
 			}
@@ -502,15 +507,27 @@ public class Tengu extends Mob {
 						}
 						break;
 				}
+				//always use the fire ability with the bosses challenge
+				if (abilityUsed && abilityToUse != FIRE_ABILITY && Dungeon.isChallenged(Challenges.STRONGER_BOSSES)){
+					throwFire(Tengu.this, enemy);
+				}
 			}
 			
 		}
 		
-		//spend only 1 turn if seriously behind on ability uses
-		if (targetAbilityUses() - abilitiesUsed >= 4){
-			spend(TICK);
+		//spend 1 less turn if seriously behind on ability uses
+		if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES)){
+			if (targetAbilityUses() - abilitiesUsed >= 4) {
+				//spend no time
+			} else {
+				spend(TICK);
+			}
 		} else {
-			spend(2 * TICK);
+			if (targetAbilityUses() - abilitiesUsed >= 4) {
+				spend(TICK);
+			} else {
+				spend(2 * TICK);
+			}
 		}
 		
 		lastAbility = abilityToUse;
@@ -527,14 +544,12 @@ public class Tengu extends Mob {
 		
 		int targetCell = -1;
 		
-		//Targets closest cell which is adjacent to target, and at least 3 tiles away
+		//Targets closest cell which is adjacent to target
 		for (int i : PathFinder.NEIGHBOURS8){
 			int cell = target.pos + i;
-			if (Dungeon.level.distance(cell, thrower.pos) >= 3 && !Dungeon.level.solid[cell]){
-				if (targetCell == -1 ||
-						Dungeon.level.trueDistance(cell, thrower.pos) < Dungeon.level.trueDistance(targetCell, thrower.pos)){
-					targetCell = cell;
-				}
+			if (targetCell == -1 ||
+					Dungeon.level.trueDistance(cell, thrower.pos) < Dungeon.level.trueDistance(targetCell, thrower.pos)){
+				targetCell = cell;
 			}
 		}
 		
@@ -811,7 +826,7 @@ public class Tengu extends Mob {
 				for (int i = area.left; i < area.right; i++){
 					for (int j = area.top; j < area.bottom; j++){
 						cell = i + j* Dungeon.level.width();
-						off[cell] = cur[cell] > 0 ? cur[cell] - 1 : 0;
+						off[cell] = (int)GameMath.gate(0, cur[cell] - 1, 1);
 						
 						if (off[cell] > 0) {
 							volume += off[cell];
