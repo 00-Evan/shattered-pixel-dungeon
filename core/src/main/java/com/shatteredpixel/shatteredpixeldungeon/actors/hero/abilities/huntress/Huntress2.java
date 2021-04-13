@@ -19,14 +19,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.armor;
+package com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress;
 
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 
-public class MageArmor extends ClassArmor {
-	
-	{
-		image = ItemSpriteSheet.ARMOR_MAGE;
+public class Huntress2 extends ArmorAbility {
+
+	@Override
+	protected void activate(ClassArmor armor, Hero hero, Integer target) {
+		//TODO
 	}
 
+	@Override
+	public Talent[] talents() {
+		return new Talent[]{Talent.HEARTY_MEAL, Talent.EMPOWERING_MEAL, Talent.CACHED_RATIONS, Talent.NATURES_BOUNTY};
+	}
 }

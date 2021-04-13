@@ -34,6 +34,7 @@ import java.util.ArrayList;
 abstract public class ClassArmor extends Armor {
 
 	private static final String AC_SPECIAL = "SPECIAL";
+	//TODO heroes without an ability need to be able to choose one
 	
 	{
 		levelKnown = true;
@@ -45,7 +46,7 @@ abstract public class ClassArmor extends Armor {
 
 	private int armorTier;
 
-	protected float charge = 0;
+	public float charge = 0;
 	
 	public ClassArmor() {
 		super( 6 );
@@ -134,8 +135,7 @@ abstract public class ClassArmor extends Armor {
 			} else if (charge < 35) {
 				GLog.w( Messages.get(this, "low_charge") );
 			} else  {
-				curUser = hero;
-				doSpecial();
+				hero.armorAbility.use(this, hero);
 			}
 			
 		}
@@ -149,7 +149,11 @@ abstract public class ClassArmor extends Armor {
 		updateQuickslot();
 	}
 
-	abstract public void doSpecial();
+	@Override
+	public String desc() {
+		//TODO custom desc, core desc + description of ability
+		return super.desc();
+	}
 
 	@Override
 	public int STRReq(int lvl) {

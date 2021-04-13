@@ -21,14 +21,41 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 
 public abstract class ArmorAbility implements Bundlable {
 
-	//TODO code for actual effects
+	public void use( ClassArmor armor, Hero hero ){
+		if (targetingPrompt() == null){
+			activate(armor, hero, hero.pos);
+		} else {
+			GameScene.selectCell(new CellSelector.Listener() {
+				@Override
+				public void onSelect(Integer cell) {
+					activate(armor, hero, cell);
+				}
+
+				@Override
+				public String prompt() {
+					return targetingPrompt();
+				}
+			});
+		}
+	}
+
+	//leave null for no targeting
+	protected String targetingPrompt(){
+		return null;
+	}
+
+	protected abstract void activate( ClassArmor armor, Hero hero, Integer target );
 
 	public String name(){
 		return Messages.get(this, "name");

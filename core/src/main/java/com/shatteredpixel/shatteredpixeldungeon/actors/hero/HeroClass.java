@@ -27,7 +27,16 @@ import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Warrior1;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.Huntress2;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.Huntress3;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpectralBlades;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.Mage2;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.Mage3;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.MoltenEarth;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.Rogue2;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.Rogue3;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.SmokeBomb;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.HeroicLeap;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Warrior2;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Warrior3;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
@@ -196,7 +205,16 @@ public enum HeroClass {
 	}
 
 	public ArmorAbility[] armorAbilities(){
-		return new ArmorAbility[]{new Warrior1(), new Warrior2(), new Warrior3()};
+		switch (this) {
+			case WARRIOR: default:
+				return new ArmorAbility[]{new HeroicLeap(), new Warrior2(), new Warrior3()};
+			case MAGE:
+				return new ArmorAbility[]{new MoltenEarth(), new Mage2(), new Mage3()};
+			case ROGUE:
+				return new ArmorAbility[]{new SmokeBomb(), new Rogue2(), new Rogue3()};
+			case HUNTRESS:
+				return new ArmorAbility[]{new SpectralBlades(), new Huntress2(), new Huntress3()};
+		}
 	}
 
 	public String spritesheet() {
