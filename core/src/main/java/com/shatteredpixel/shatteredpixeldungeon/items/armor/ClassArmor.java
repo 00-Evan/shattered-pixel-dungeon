@@ -26,7 +26,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndChooseAbility;
 import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
@@ -34,7 +36,7 @@ import java.util.ArrayList;
 abstract public class ClassArmor extends Armor {
 
 	private static final String AC_SPECIAL = "SPECIAL";
-	//TODO heroes without an ability need to be able to choose one
+	private static final String AC_CHOOSE  = "CHOOSE";
 	
 	{
 		levelKnown = true;
@@ -129,6 +131,12 @@ abstract public class ClassArmor extends Armor {
 		super.execute( hero, action );
 
 		if (action.equals(AC_SPECIAL)) {
+
+			//for pre-0.9.3 saves
+			if (hero.armorAbility == null){
+				GameScene.show(new WndChooseAbility(null, this, hero));
+				return;
+			}
 			
 			if (!isEquipped( hero )) {
 				GLog.w( Messages.get(this, "not_equipped") );

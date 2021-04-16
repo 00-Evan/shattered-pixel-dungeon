@@ -85,28 +85,32 @@ public class KingsCrown extends Item {
 	
 	public void upgradeArmor(Hero hero, Armor armor, ArmorAbility ability) {
 
-		detach( hero.belongings.backpack );
+		detach(hero.belongings.backpack);
 
-		hero.sprite.centerEmitter().start( Speck.factory( Speck.KIT ), 0.05f, 10 );
+		hero.sprite.centerEmitter().start(Speck.factory(Speck.KIT), 0.05f, 10);
 		//TODO add a spell icon?
-		hero.spend( Actor.TICK );
+		hero.spend(Actor.TICK);
 		hero.busy();
-		
-		GLog.p( Messages.get(this, "upgraded"));
-		
-		ClassArmor classArmor = ClassArmor.upgrade( hero, armor );
-		if (hero.belongings.armor == armor) {
-			
-			curUser.belongings.armor = classArmor;
-			((HeroSprite)curUser.sprite).updateArmor();
-			classArmor.activate(curUser);
-			
-		} else {
-			
-			armor.detach( curUser.belongings.backpack );
-			classArmor.collect( curUser.belongings.backpack );
-			
+
+		if (armor != null){
+
+			GLog.p(Messages.get(this, "upgraded"));
+
+			ClassArmor classArmor = ClassArmor.upgrade(hero, armor);
+			if (hero.belongings.armor == armor) {
+
+				curUser.belongings.armor = classArmor;
+				((HeroSprite) curUser.sprite).updateArmor();
+				classArmor.activate(curUser);
+
+			} else {
+
+				armor.detach(curUser.belongings.backpack);
+				classArmor.collect(curUser.belongings.backpack);
+
+			}
 		}
+
 		hero.armorAbility = ability;
 		Talent.initArmorTalents(hero);
 		

@@ -41,14 +41,19 @@ public class WndChooseAbility extends Window {
 
 		super();
 
+		//crown can be null if hero is choosing from armor, pre-0.9.3 saves
 		IconTitle titlebar = new IconTitle();
-		titlebar.icon( new ItemSprite( crown.image(), null ) );
-		titlebar.label( crown.name() );
+		titlebar.icon( new ItemSprite( crown == null ? armor.image() : crown.image(), null ) );
+		titlebar.label( Messages.titleCase(crown == null ? armor.name() : crown.name()) );
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
 
 		RenderedTextBlock body = PixelScene.renderTextBlock( 6 );
-		body.text( Messages.get(this, "message"), WIDTH );
+		if (crown != null) {
+			body.text(Messages.get(this, "message"), WIDTH);
+		} else {
+			body.text(Messages.get(this, "message_no_crown"), WIDTH);
+		}
 		body.setPos( titlebar.left(), titlebar.bottom() + GAP );
 		add( body );
 
@@ -60,7 +65,11 @@ public class WndChooseAbility extends Window {
 				protected void onClick() {
 					super.onClick();
 					hide();
-					crown.upgradeArmor(hero, armor, ability);
+					if (crown != null) {
+						crown.upgradeArmor(hero, armor, ability);
+					} else {
+						new KingsCrown().upgradeArmor(hero, null, ability);
+					}
 				}
 			};
 			abilityButton.leftJustify = true;
