@@ -80,6 +80,17 @@ public class WndChooseAbility extends Window {
 			pos = abilityButton.bottom() + GAP;
 		}
 
+		RedButton cancelButton = new RedButton(Messages.get(this, "cancel")){
+			@Override
+			protected void onClick() {
+				hide();
+			}
+		};
+		cancelButton.setSize(WIDTH, 18);
+		cancelButton.setRect(0, pos, WIDTH, 18);
+		add(cancelButton);
+		pos = cancelButton.bottom() + GAP;
+
 		resize(WIDTH, (int)pos);
 
 	}

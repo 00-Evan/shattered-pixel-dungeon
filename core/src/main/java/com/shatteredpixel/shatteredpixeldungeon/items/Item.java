@@ -103,6 +103,10 @@ public class Item implements Bundlable {
 		actions.add( AC_THROW );
 		return actions;
 	}
+
+	public String actionName(String action, Hero hero){
+		return Messages.get(this, "ac_" + action);
+	}
 	
 	public boolean doPickUp( Hero hero ) {
 		if (collect( hero.belongings.backpack )) {

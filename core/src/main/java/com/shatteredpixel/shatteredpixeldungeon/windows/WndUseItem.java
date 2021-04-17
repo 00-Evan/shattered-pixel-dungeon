@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 
 import java.util.ArrayList;
@@ -52,7 +51,7 @@ public class WndUseItem extends WndInfoItem {
 			ArrayList<RedButton> buttons = new ArrayList<>();
 			for (final String action : item.actions( Dungeon.hero )) {
 				
-				RedButton btn = new RedButton( Messages.get(item, "ac_" + action), 8 ) {
+				RedButton btn = new RedButton( item.actionName(action, Dungeon.hero), 8 ) {
 					@Override
 					protected void onClick() {
 						hide();

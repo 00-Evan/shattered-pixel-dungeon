@@ -36,7 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.RogueArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -62,7 +61,7 @@ public class SmokeBomb extends ArmorAbility {
 					!Dungeon.level.heroFOV[target] ||
 					Actor.findChar( target ) != null) {
 
-				GLog.w( Messages.get(RogueArmor.class, "fov") );
+				GLog.w( Messages.get(this, "fov") );
 				return;
 			}
 

@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -35,13 +36,12 @@ import java.util.ArrayList;
 
 abstract public class ClassArmor extends Armor {
 
-	private static final String AC_SPECIAL = "SPECIAL";
-	private static final String AC_CHOOSE  = "CHOOSE";
+	private static final String AC_ABILITY = "ABILITY";
 	
 	{
 		levelKnown = true;
 		cursedKnown = true;
-		defaultAction = AC_SPECIAL;
+		defaultAction = AC_ABILITY;
 
 		bones = false;
 	}
@@ -114,10 +114,19 @@ abstract public class ClassArmor extends Armor {
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		if (hero.HP >= 3 && isEquipped( hero )) {
-			actions.add( AC_SPECIAL );
+		if (isEquipped( hero )) {
+			actions.add( AC_ABILITY );
 		}
 		return actions;
+	}
+
+	@Override
+	public String actionName(String action, Hero hero) {
+		if (hero.armorAbility != null && action.equals(AC_ABILITY)){
+			return hero.armorAbility.name().toUpperCase();
+		} else {
+			return super.actionName(action, hero);
+		}
 	}
 
 	@Override
@@ -130,15 +139,12 @@ abstract public class ClassArmor extends Armor {
 
 		super.execute( hero, action );
 
-		if (action.equals(AC_SPECIAL)) {
+		if (action.equals(AC_ABILITY)){
 
 			//for pre-0.9.3 saves
 			if (hero.armorAbility == null){
 				GameScene.show(new WndChooseAbility(null, this, hero));
-				return;
-			}
-			
-			if (!isEquipped( hero )) {
+			} else if (!isEquipped( hero )) {
 				GLog.w( Messages.get(this, "not_equipped") );
 			} else if (charge < 35) {
 				GLog.w( Messages.get(this, "low_charge") );
@@ -159,8 +165,17 @@ abstract public class ClassArmor extends Armor {
 
 	@Override
 	public String desc() {
-		//TODO custom desc, core desc + description of ability
-		return super.desc();
+		//TODO descriptions for each class armor
+		String desc = super.desc();
+
+		ArmorAbility ability = Dungeon.hero.armorAbility;
+		if (ability != null){
+			desc += "\n\n" + "_" + Messages.titleCase(ability.name()) + ":_ " + ability.desc();
+		} else {
+			desc += "\n\n" + "_" + Messages.get(this, "no_ability") + "_";
+		}
+
+		return desc;
 	}
 
 	@Override
