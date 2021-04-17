@@ -23,6 +23,9 @@ package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
@@ -48,13 +51,35 @@ abstract public class ClassArmor extends Armor {
 
 	private int armorTier;
 
+	private Charger charger;
 	public float charge = 0;
 	
 	public ClassArmor() {
 		super( 6 );
 	}
-	
-	public static ClassArmor upgrade ( Hero owner, Armor armor ) {
+
+	@Override
+	public void activate(Char ch) {
+		charger = new Charger();
+		charger.attachTo(ch);
+	}
+
+	@Override
+	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
+		if (super.doUnequip( hero, collect, single )) {
+			if (charger != null){
+				charger.detach();
+				charger = null;
+			}
+			return true;
+
+		} else {
+			return false;
+
+		}
+	}
+
+	public static ClassArmor upgrade (Hero owner, Armor armor ) {
 		
 		ClassArmor classArmor = null;
 		
@@ -85,11 +110,7 @@ abstract public class ClassArmor extends Armor {
 		classArmor.curseInfusionBonus = armor.curseInfusionBonus;
 		classArmor.identify();
 
-		classArmor.charge = 0;
-		if (owner.lvl > 18){
-			classArmor.charge += (owner.lvl-18)*25;
-			if (classArmor.charge > 100) classArmor.charge = 100;
-		}
+		classArmor.charge = 50;
 		
 		return classArmor;
 	}
@@ -156,14 +177,6 @@ abstract public class ClassArmor extends Armor {
 	}
 
 	@Override
-	public void onHeroGainExp(float levelPercent, Hero hero) {
-		super.onHeroGainExp(levelPercent, hero);
-		charge += 50 * levelPercent;
-		if (charge > 100) charge = 100;
-		updateQuickslot();
-	}
-
-	@Override
 	public String desc() {
 		//TODO descriptions for each class armor
 		String desc = super.desc();
@@ -207,4 +220,19 @@ abstract public class ClassArmor extends Armor {
 		return 0;
 	}
 
+	public class Charger extends Buff {
+		@Override
+		public boolean act() {
+			LockedFloor lock = target.buff(LockedFloor.class);
+			if (lock == null || lock.regenOn()) {
+				charge += 100 / 500f; //500 turns to full charge
+				updateQuickslot();
+				if (charge > 100) {
+					charge = 100;
+				}
+			}
+			spend(TICK);
+			return true;
+		}
+	}
 }
