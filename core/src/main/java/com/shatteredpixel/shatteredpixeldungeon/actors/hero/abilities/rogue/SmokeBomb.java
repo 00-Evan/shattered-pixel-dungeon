@@ -90,6 +90,6 @@ public class SmokeBomb extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.CACHED_RATIONS, Talent.THIEFS_INTUITION, Talent.SUCKER_PUNCH, Talent.PROTECTIVE_SHADOWS};
+		return new Talent[]{Talent.SMOKE_BOMB_1, Talent.SMOKE_BOMB_2, Talent.SMOKE_BOMB_3, Talent.SMOKE_BOMB_4};
 	}
 }

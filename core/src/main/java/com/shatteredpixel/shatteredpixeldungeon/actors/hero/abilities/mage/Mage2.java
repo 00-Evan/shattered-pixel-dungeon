@@ -35,6 +35,6 @@ public class Mage2 extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.HEARTY_MEAL, Talent.EMPOWERING_MEAL, Talent.CACHED_RATIONS, Talent.NATURES_BOUNTY};
+		return new Talent[]{Talent.MAGE_2_1, Talent.MAGE_2_2, Talent.MAGE_2_3, Talent.MAGE_2_4};
 	}
 }

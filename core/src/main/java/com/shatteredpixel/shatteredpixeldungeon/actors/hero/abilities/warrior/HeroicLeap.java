@@ -93,6 +93,6 @@ public class HeroicLeap extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.HEARTY_MEAL, Talent.ARMSMASTERS_INTUITION, Talent.TEST_SUBJECT, Talent.IRON_WILL};
+		return new Talent[]{Talent.HEROIC_LEAP_1, Talent.HEROIC_LEAP_2, Talent.HEROIC_LEAP_3, Talent.HEROIC_LEAP_4};
 	}
 }

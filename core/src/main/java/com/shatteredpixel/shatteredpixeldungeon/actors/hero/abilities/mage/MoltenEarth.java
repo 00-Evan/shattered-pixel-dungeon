@@ -68,6 +68,6 @@ public class MoltenEarth extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.EMPOWERING_MEAL, Talent.SCHOLARS_INTUITION, Talent.TESTED_HYPOTHESIS, Talent.BACKUP_BARRIER};
+		return new Talent[]{Talent.MOLTEN_EARTH_1, Talent.MOLTEN_EARTH_2, Talent.MOLTEN_EARTH_3, Talent.MOLTEN_EARTH_4};
 	}
 }

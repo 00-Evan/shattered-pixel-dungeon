@@ -35,6 +35,6 @@ public class Warrior2 extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.HEARTY_MEAL, Talent.EMPOWERING_MEAL, Talent.CACHED_RATIONS, Talent.NATURES_BOUNTY};
+		return new Talent[]{Talent.WARRIOR_2_1, Talent.WARRIOR_2_2, Talent.WARRIOR_2_3, Talent.WARRIOR_2_4};
 	}
 }

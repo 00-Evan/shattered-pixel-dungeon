@@ -35,6 +35,6 @@ public class Huntress2 extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.HEARTY_MEAL, Talent.EMPOWERING_MEAL, Talent.CACHED_RATIONS, Talent.NATURES_BOUNTY};
+		return new Talent[]{Talent.HUNTRESS_2_1, Talent.HUNTRESS_2_2, Talent.HUNTRESS_2_3, Talent.HUNTRESS_2_4};
 	}
 }
