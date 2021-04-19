@@ -531,6 +531,7 @@ public class DwarfKing extends Mob {
 					m.pos = pos;
 					m.maxLvl = -2;
 					GameScene.add(m);
+					Dungeon.level.occupyCell(m);
 					m.state = m.HUNTING;
 					if (((DwarfKing)target).phase == 2){
 						Buff.affect(m, KingDamager.class);
