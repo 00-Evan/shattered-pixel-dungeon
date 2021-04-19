@@ -28,13 +28,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -140,7 +140,12 @@ public class Belongings implements Iterable<Item> {
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
 		if (bundle.contains( ARMOR )){
-			info.armorTier = ((Armor)bundle.get( ARMOR )).tier;
+			Armor armor = ((Armor)bundle.get( ARMOR ));
+			if (armor instanceof ClassArmor){
+				info.armorTier = 6;
+			} else {
+				info.armorTier = armor.tier;
+			}
 		} else {
 			info.armorTier = 0;
 		}

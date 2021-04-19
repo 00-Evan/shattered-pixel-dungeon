@@ -66,6 +66,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
@@ -373,7 +374,13 @@ public class Hero extends Char {
 	}
 	
 	public int tier() {
-		return belongings.armor == null ? 0 : belongings.armor.tier;
+		if (belongings.armor instanceof ClassArmor){
+			return 6;
+		} else if (belongings.armor != null){
+			return belongings.armor.tier;
+		} else {
+			return 0;
+		}
 	}
 	
 	public boolean shoot( Char enemy, MissileWeapon wep ) {

@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -55,11 +54,12 @@ abstract public class ClassArmor extends Armor {
 	public float charge = 0;
 	
 	public ClassArmor() {
-		super( 6 );
+		super( 5 );
 	}
 
 	@Override
 	public void activate(Char ch) {
+		super.activate(ch);
 		charger = new Charger();
 		charger.attachTo(ch);
 	}
@@ -103,7 +103,7 @@ abstract public class ClassArmor extends Armor {
 		}
 		
 		classArmor.level(armor.level() - (armor.curseInfusionBonus ? 1 : 0));
-		classArmor.armorTier = armor.tier;
+		classArmor.tier = armor.tier;
 		classArmor.augment = armor.augment;
 		classArmor.inscribe( armor.glyph );
 		classArmor.cursed = armor.cursed;
@@ -121,14 +121,14 @@ abstract public class ClassArmor extends Armor {
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
-		bundle.put( ARMOR_TIER, armorTier );
+		bundle.put( ARMOR_TIER, tier );
 		bundle.put( CHARGE, charge );
 	}
 
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
-		armorTier = bundle.getInt( ARMOR_TIER );
+		tier = bundle.getInt( ARMOR_TIER );
 		charge = bundle.getFloat(CHARGE);
 	}
 	
@@ -189,25 +189,6 @@ abstract public class ClassArmor extends Armor {
 		}
 
 		return desc;
-	}
-
-	@Override
-	public int STRReq(int lvl) {
-		return STRReq(armorTier, lvl);
-	}
-
-	@Override
-	public int DRMax(int lvl){
-		if (Dungeon.isChallenged(Challenges.NO_ARMOR)){
-			return 1 + armorTier + lvl + augment.defenseFactor(lvl);
-		}
-
-		int max = armorTier * (2 + lvl) + augment.defenseFactor(lvl);
-		if (lvl > max){
-			return ((lvl - max)+1)/2;
-		} else {
-			return max;
-		}
 	}
 	
 	@Override
