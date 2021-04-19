@@ -801,7 +801,7 @@ public class NewCavesBossLevel extends Level {
 						if (c instanceof Pylon && c.alignment != Char.Alignment.NEUTRAL){
 							energySourceSprite = c.sprite;
 							break;
-						} else if (c instanceof OldDM300){
+						} else if (c instanceof NewDM300){
 							energySourceSprite = c.sprite;
 						}
 					}
