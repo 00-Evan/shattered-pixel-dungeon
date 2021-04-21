@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -79,7 +80,7 @@ public class NewDM300 extends Mob {
 	{
 		spriteClass = DM300Sprite.class;
 
-		HP = HT = 300;
+		HP = HT = Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 400 : 300;
 		EXP = 30;
 		defenseSkill = 15;
 
@@ -107,11 +108,11 @@ public class NewDM300 extends Mob {
 	public boolean supercharged = false;
 	public boolean chargeAnnounced = false;
 
+	private final int MIN_COOLDOWN = 5;
+	private final int MAX_COOLDOWN = Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 7 : 9;
+
 	private int turnsSinceLastAbility = -1;
 	private int abilityCooldown = Random.NormalIntRange(MIN_COOLDOWN, MAX_COOLDOWN);
-
-	private static final int MIN_COOLDOWN = 5;
-	private static final int MAX_COOLDOWN = 9;
 
 	private int lastAbility = 0;
 	private static final int NONE = 0;
@@ -150,7 +151,7 @@ public class NewDM300 extends Mob {
 
 		if (turnsSinceLastAbility != -1){
 			BossHealthBar.assignBoss(this);
-			if (!supercharged && pylonsActivated == 2) BossHealthBar.bleed(true);
+			if (!supercharged && pylonsActivated == totalPylonsToActivate()) BossHealthBar.bleed(true);
 		}
 	}
 
@@ -216,7 +217,8 @@ public class NewDM300 extends Mob {
 								return true;
 							}
 						//if we can't gas, then drop rocks
-						} else {
+						//unless enemy is already stunned, we don't want to stunlock them
+						} else if (enemy.paralysed <= 0) {
 							lastAbility = ROCKS;
 							turnsSinceLastAbility = 0;
 							GLog.w(Messages.get(this, "rocks"));
@@ -363,15 +365,17 @@ public class NewDM300 extends Mob {
 
 		Ballistica trajectory = new Ballistica(pos, target.pos, Ballistica.STOP_TARGET);
 
+		int gasMulti = Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 2 : 1;
+
 		for (int i : trajectory.subPath(0, trajectory.dist)){
-			GameScene.add(Blob.seed(i, 20, ToxicGas.class));
-			gasVented += 20;
+			GameScene.add(Blob.seed(i, 20*gasMulti, ToxicGas.class));
+			gasVented += 20*gasMulti;
 		}
 
-		GameScene.add(Blob.seed(trajectory.collisionPos, 100, ToxicGas.class));
+		GameScene.add(Blob.seed(trajectory.collisionPos, 100*gasMulti, ToxicGas.class));
 
-		if (gasVented < 250){
-			int toVentAround = (int)Math.ceil((250 - gasVented)/8f);
+		if (gasVented < 250*gasMulti){
+			int toVentAround = (int)Math.ceil(((250*gasMulti) - gasVented)/8f);
 			for (int i : PathFinder.NEIGHBOURS8){
 				GameScene.add(Blob.seed(pos+i, toVentAround, ToxicGas.class));
 			}
@@ -448,13 +452,22 @@ public class NewDM300 extends Mob {
 			if (lock != null && !isImmune(src.getClass())) lock.addTime(dmgTaken*1.5f);
 		}
 
-		int threshold = HT/3 * (2- pylonsActivated);
+		int threshold;
+		if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES)){
+			threshold = HT / 4 * (3 - pylonsActivated);
+		} else {
+			threshold = HT / 3 * (2 - pylonsActivated);
+		}
 
 		if (HP < threshold){
 			HP = threshold;
 			supercharge();
 		}
 
+	}
+
+	public int totalPylonsToActivate(){
+		return Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 3 : 2;
 	}
 
 	@Override
@@ -471,7 +484,7 @@ public class NewDM300 extends Mob {
 		((NewCavesBossLevel)Dungeon.level).activatePylon();
 		pylonsActivated++;
 
-		spend(3f);
+		spend(Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 2f : 3f);
 		yell(Messages.get(this, "charging"));
 		sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "invulnerable"));
 		((DM300Sprite)sprite).updateChargeState(true);
@@ -488,7 +501,7 @@ public class NewDM300 extends Mob {
 		supercharged = false;
 		((DM300Sprite)sprite).updateChargeState(false);
 
-		if (pylonsActivated < 2){
+		if (pylonsActivated < totalPylonsToActivate()){
 			yell(Messages.get(this, "charge_lost"));
 		} else {
 			yell(Messages.get(this, "pylons_destroyed"));
@@ -498,7 +511,7 @@ public class NewDM300 extends Mob {
 
 	@Override
 	public boolean isAlive() {
-		return HP > 0 || pylonsActivated < 2;
+		return HP > 0 || pylonsActivated < totalPylonsToActivate();
 	}
 
 	@Override
@@ -562,7 +575,7 @@ public class NewDM300 extends Mob {
 				}
 				Dungeon.level.cleanWalls();
 				Dungeon.observe();
-				spend(3f);
+				spend(Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 2f : 3f);
 
 				bestpos = pos;
 				for (int i : PathFinder.NEIGHBOURS8){
@@ -627,7 +640,7 @@ public class NewDM300 extends Mob {
 
 				Char ch = Actor.findChar(i);
 				if (ch != null && !(ch instanceof NewDM300)){
-					Buff.prolong( ch, Paralysis.class, 3 );
+					Buff.prolong( ch, Paralysis.class, Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 5 : 3 );
 				}
 			}
 

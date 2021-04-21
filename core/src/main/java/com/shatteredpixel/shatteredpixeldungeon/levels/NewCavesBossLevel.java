@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -30,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewDM300;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.OldDM300;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Pylon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -103,7 +103,7 @@ public class NewCavesBossLevel extends Level {
 			if (map[i] == Terrain.EMPTY) {
 				if (patch[i - 14*width()]){
 					map[i] = Terrain.WATER;
-				} else if (Random.Int(8) == 0){
+				} else if (Random.Int(Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 4 : 8) == 0){
 					map[i] = Terrain.INACTIVE_TRAP;
 				}
 			}
@@ -344,7 +344,8 @@ public class NewCavesBossLevel extends Level {
 				pylonsRemaining++;
 			}
 		}
-		if (pylonsRemaining > 2) {
+		int finalPylonsRemaining = Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 1 : 2;
+		if (pylonsRemaining > finalPylonsRemaining) {
 			blobs.get(PylonEnergy.class).fullyClear();
 		}
 	}

@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -48,12 +49,14 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
+
 public class Pylon extends Mob {
 
 	{
 		spriteClass = PylonSprite.class;
 
-		HP = HT = 50;
+		HP = HT = Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 80 : 50;
 
 		maxLvl = -2;
 
@@ -85,20 +88,38 @@ public class Pylon extends Mob {
 			return true;
 		}
 
-		int cell1 = pos + PathFinder.CIRCLE8[targetNeighbor];
-		int cell2 = pos + PathFinder.CIRCLE8[(targetNeighbor+4)%8];
+		ArrayList<Integer> shockCells = new ArrayList<>();
+
+		shockCells.add(pos + PathFinder.CIRCLE8[targetNeighbor]);
+
+		if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES)){
+			shockCells.add(pos + PathFinder.CIRCLE8[(targetNeighbor+3)%8]);
+			shockCells.add(pos + PathFinder.CIRCLE8[(targetNeighbor+5)%8]);
+		} else {
+			shockCells.add(pos + PathFinder.CIRCLE8[(targetNeighbor+4)%8]);
+		}
 
 		sprite.flash();
-		if (Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[cell1] || Dungeon.level.heroFOV[cell2]) {
-			sprite.parent.add(new Lightning(DungeonTilemap.raisedTileCenterToWorld(cell1),
-					DungeonTilemap.raisedTileCenterToWorld(cell2), null));
-			CellEmitter.get(cell1).burst(SparkParticle.FACTORY, 3);
-			CellEmitter.get(cell2).burst(SparkParticle.FACTORY, 3);
+
+		boolean visible = Dungeon.level.heroFOV[pos];
+		for (int cell : shockCells){
+			if (Dungeon.level.heroFOV[cell]){
+				visible = true;
+			}
+		}
+
+		if (visible) {
+			for (int cell : shockCells){
+				sprite.parent.add(new Lightning(sprite.center(),
+						DungeonTilemap.raisedTileCenterToWorld(cell), null));
+				CellEmitter.get(cell).burst(SparkParticle.FACTORY, 3);
+			}
 			Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
 		}
 
-		shockChar(Actor.findChar(cell1));
-		shockChar(Actor.findChar(cell2));
+		for (int cell : shockCells) {
+			shockChar(Actor.findChar(cell));
+		}
 
 		targetNeighbor = (targetNeighbor+1)%8;
 
