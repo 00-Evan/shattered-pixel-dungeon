@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -38,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KingsCrown;
@@ -68,7 +70,7 @@ public class DwarfKing extends Mob {
 	{
 		spriteClass = KingSprite.class;
 
-		HP = HT = 300;
+		HP = HT = Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 450 : 300;
 		EXP = 40;
 		defenseSkill = 22;
 
@@ -96,8 +98,8 @@ public class DwarfKing extends Mob {
 
 	private float summonCooldown = 0;
 	private float abilityCooldown = 0;
-	private static final int MIN_COOLDOWN = 10;
-	private static final int MAX_COOLDOWN = 14;
+	private final int MIN_COOLDOWN = Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 8 : 10;
+	private final int MAX_COOLDOWN = Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 10 : 14;
 
 	private int lastAbility = 0;
 	private static final int NONE = 0;
@@ -137,7 +139,7 @@ public class DwarfKing extends Mob {
 	protected boolean act() {
 		if (phase == 1) {
 
-			if (summonCooldown <= 0 && summonSubject(3)){
+			if (summonCooldown <= 0 && summonSubject(Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 2 : 3)){
 				summonsMade++;
 				summonCooldown += Random.NormalIntRange(MIN_COOLDOWN, MAX_COOLDOWN);
 			} else if (summonCooldown > 0){
@@ -178,58 +180,128 @@ public class DwarfKing extends Mob {
 			}
 
 		} else if (phase == 2){
-			if (summonsMade < 4){
-				if (summonsMade == 0){
-					sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.4f, 2 );
-					Sample.INSTANCE.play( Assets.Sounds.CHALLENGE );
-					yell(Messages.get(this, "wave_1"));
-				}
-				summonSubject(3, DKGhoul.class);
-				spend(3*TICK);
-				summonsMade++;
-				return true;
-			} else if (shielding() <= 200 && summonsMade < 8){
-				if (summonsMade == 4){
-					sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.4f, 2 );
-					Sample.INSTANCE.play( Assets.Sounds.CHALLENGE );
-					yell(Messages.get(this, "wave_2"));
-				}
-				if (summonsMade == 7){
-					summonSubject(3, Random.Int(2) == 0 ? DKMonk.class : DKWarlock.class);
-				} else {
+
+			if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES)){
+				//challenge logic
+				if (summonsMade < 6){
+					if (summonsMade == 0) {
+						sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.4f, 2);
+						Sample.INSTANCE.play(Assets.Sounds.CHALLENGE);
+						yell(Messages.get(this, "wave_1"));
+					}
 					summonSubject(3, DKGhoul.class);
+					summonSubject(3, DKGhoul.class);
+					spend(3 * TICK);
+					summonsMade += 2;
+					return true;
+				} else if (shielding() <= 300 && summonsMade < 12){
+					if (summonsMade == 6) {
+						sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.4f, 2);
+						Sample.INSTANCE.play(Assets.Sounds.CHALLENGE);
+						yell(Messages.get(this, "wave_2"));
+					}
+					summonSubject(3, DKGhoul.class);
+					summonSubject(3, DKGhoul.class);
+					if (summonsMade == 6) {
+						summonSubject(3, DKMonk.class);
+					} else {
+						summonSubject(3, DKWarlock.class);
+					}
+					summonsMade += 3;
+					spend(3*TICK);
+					return true;
+				} else if (shielding() <= 150 && summonsMade < 18) {
+					if (summonsMade == 12) {
+						sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.4f, 2);
+						Sample.INSTANCE.play(Assets.Sounds.CHALLENGE);
+						yell(Messages.get(this, "wave_3"));
+						summonSubject(4, DKWarlock.class);
+						summonSubject(4, DKMonk.class);
+						summonSubject(4, DKGhoul.class);
+						summonSubject(4, DKGhoul.class);
+						summonsMade += 4;
+						spend(3*TICK);
+					} else {
+						summonSubject(3, DKGolem.class);
+						summonSubject(3, DKGolem.class);
+						summonsMade += 2;
+						spend(TICK);
+					}
+					return true;
+				} else {
+					spend(TICK);
+					return true;
 				}
-				summonsMade++;
-				spend(TICK);
-				return true;
-			} else if (shielding() <= 100 && summonsMade < 12) {
-				sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.4f, 2 );
-				Sample.INSTANCE.play( Assets.Sounds.CHALLENGE );
-				yell(Messages.get(this, "wave_3"));
-				summonSubject(4, DKWarlock.class);
-				summonSubject(4, DKMonk.class);
-				summonSubject(4, DKGhoul.class);
-				summonSubject(4, DKGhoul.class);
-				summonsMade = 12;
-				spend(TICK);
-				return true;
 			} else {
-				spend(TICK);
-				return true;
+				//non-challenge logic
+				if (summonsMade < 4) {
+					if (summonsMade == 0) {
+						sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.4f, 2);
+						Sample.INSTANCE.play(Assets.Sounds.CHALLENGE);
+						yell(Messages.get(this, "wave_1"));
+					}
+					summonSubject(3, DKGhoul.class);
+					spend(3 * TICK);
+					summonsMade++;
+					return true;
+				} else if (shielding() <= 200 && summonsMade < 8) {
+					if (summonsMade == 4) {
+						sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.4f, 2);
+						Sample.INSTANCE.play(Assets.Sounds.CHALLENGE);
+						yell(Messages.get(this, "wave_2"));
+					}
+					if (summonsMade == 7) {
+						summonSubject(3, Random.Int(2) == 0 ? DKMonk.class : DKWarlock.class);
+					} else {
+						summonSubject(3, DKGhoul.class);
+					}
+					summonsMade++;
+					spend(TICK);
+					return true;
+				} else if (shielding() <= 100 && summonsMade < 12) {
+					sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.4f, 2);
+					Sample.INSTANCE.play(Assets.Sounds.CHALLENGE);
+					yell(Messages.get(this, "wave_3"));
+					summonSubject(4, DKWarlock.class);
+					summonSubject(4, DKMonk.class);
+					summonSubject(4, DKGhoul.class);
+					summonSubject(4, DKGhoul.class);
+					summonsMade = 12;
+					spend(TICK);
+					return true;
+				} else {
+					spend(TICK);
+					return true;
+				}
 			}
 		} else if (phase == 3 && buffs(Summoning.class).size() < 4){
-			if (summonSubject(3)) summonsMade++;
+			if (summonSubject(Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 2 : 3)) summonsMade++;
 		}
 
 		return super.act();
 	}
 
 	private boolean summonSubject( int delay ){
-		//4th summon is always a monk or warlock, otherwise ghoul
-		if (summonsMade % 4 == 3){
-			return summonSubject( delay, Random.Int(2) == 0 ? DKMonk.class : DKWarlock.class );
+		if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES)) {
+			//every 3rd summon is always a monk or warlock, otherwise ghoul
+			//except every 9th summon, which is a golem!
+			if (summonsMade % 3 == 2) {
+				if (summonsMade % 9 == 8){
+					return summonSubject(delay, DKGolem.class);
+				} else {
+					return summonSubject(delay, Random.Int(2) == 0 ? DKMonk.class : DKWarlock.class);
+				}
+			} else {
+				return summonSubject(delay, DKGhoul.class);
+			}
+
 		} else {
-			return summonSubject( delay, DKGhoul.class );
+			//every 4th summon is always a monk or warlock, otherwise ghoul
+			if (summonsMade % 4 == 3) {
+				return summonSubject(delay, Random.Int(2) == 0 ? DKMonk.class : DKWarlock.class);
+			} else {
+				return summonSubject(delay, DKGhoul.class);
+			}
 		}
 	}
 
@@ -246,7 +318,7 @@ public class DwarfKing extends Mob {
 	private HashSet<Mob> getSubjects(){
 		HashSet<Mob> subjects = new HashSet<>();
 		for (Mob m : Dungeon.level.mobs){
-			if (m.alignment == alignment && (m instanceof Ghoul || m instanceof Monk || m instanceof Warlock)){
+			if (m.alignment == alignment && (m instanceof Ghoul || m instanceof Monk || m instanceof Warlock || m instanceof Golem)){
 				subjects.add(m);
 			}
 		}
@@ -380,8 +452,8 @@ public class DwarfKing extends Mob {
 			int dmgTaken = preHP - HP;
 			abilityCooldown -= dmgTaken/8f;
 			summonCooldown -= dmgTaken/8f;
-			if (HP <= 50) {
-				HP = 50;
+			if (HP <= (Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 100 : 50)) {
+				HP = (Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 100 : 50);
 				sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "invulnerable"));
 				ScrollOfTeleportation.appear(this, NewCityBossLevel.throne);
 				properties.add(Property.IMMOVABLE);
@@ -393,7 +465,7 @@ public class DwarfKing extends Mob {
 					s.detach();
 				}
 				for (Mob m : Dungeon.level.mobs.toArray(new Mob[0])) {
-					if (m instanceof Ghoul || m instanceof Monk || m instanceof Warlock) {
+					if (m instanceof Ghoul || m instanceof Monk || m instanceof Warlock || m instanceof Golem) {
 						m.die(null);
 					}
 				}
@@ -484,6 +556,12 @@ public class DwarfKing extends Mob {
 		}
 	}
 
+	public static class DKGolem extends Golem {
+		{
+			state = HUNTING;
+		}
+	}
+
 	public static class Summoning extends Buff {
 
 		private int delay;
@@ -502,7 +580,10 @@ public class DwarfKing extends Mob {
 
 			if (delay <= 0){
 
-				if (summon == DKWarlock.class){
+				if (summon == DKGolem.class){
+					particles.burst(SparkParticle.FACTORY, 10);
+					Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
+				} else if (summon == DKWarlock.class){
 					particles.burst(ShadowParticle.CURSE, 10);
 					Sample.INSTANCE.play(Assets.Sounds.CURSED);
 				} else if (summon == DKMonk.class){
@@ -556,7 +637,9 @@ public class DwarfKing extends Mob {
 			if (on && particles == null) {
 				particles = CellEmitter.get(pos);
 
-				if (summon == DKWarlock.class){
+				if (summon == DKGolem.class){
+					particles.pour(SparkParticle.STATIC, 0.05f);
+				} else if (summon == DKWarlock.class){
 					particles.pour(ShadowParticle.UP, 0.1f);
 				} else if (summon == DKMonk.class){
 					particles.pour(ElmoParticle.FACTORY, 0.1f);
@@ -606,7 +689,8 @@ public class DwarfKing extends Mob {
 			super.detach();
 			for (Mob m : Dungeon.level.mobs){
 				if (m instanceof DwarfKing){
-					m.damage(m.HT/12, this);
+					int damage = m.HT / (Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 18 : 12);
+					m.damage(damage, this);
 				}
 			}
 		}
