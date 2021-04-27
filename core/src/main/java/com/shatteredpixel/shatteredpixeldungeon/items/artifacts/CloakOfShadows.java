@@ -220,7 +220,7 @@ public class CloakOfShadows extends Artifact {
 					turnsToCharge /= RingOfEnergy.artifactChargeMultiplier(target);
 					float chargeToGain = (1f / turnsToCharge);
 					if (!isEquipped(Dungeon.hero)){
-						chargeToGain *= 0.1f*Dungeon.hero.pointsInTalent(Talent.LIGHT_CLOAK);
+						chargeToGain *= 0.4f*Dungeon.hero.pointsInTalent(Talent.LIGHT_CLOAK)/3f;
 					}
 					partialCharge += chargeToGain;
 				}

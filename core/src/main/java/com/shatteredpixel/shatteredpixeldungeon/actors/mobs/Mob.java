@@ -742,8 +742,11 @@ public abstract class Mob extends Char {
 		}
 
 		//bounty hunter talent
-		if (Dungeon.hero.buff(Talent.BountyHunterTracker.class) != null){
-			Dungeon.level.drop(new Gold(10 * Dungeon.hero.pointsInTalent(Talent.BOUNTY_HUNTER)), pos).sprite.drop();
+		if (Dungeon.hero.buff(Talent.BountyHunterTracker.class) != null) {
+			Preparation prep = Dungeon.hero.buff(Preparation.class);
+			if (prep != null && Random.Float() < 0.25f * prep.attackLevel()) {
+				Dungeon.level.drop(new Gold(15 * Dungeon.hero.pointsInTalent(Talent.BOUNTY_HUNTER)), pos).sprite.drop();
+			}
 		}
 
 	}

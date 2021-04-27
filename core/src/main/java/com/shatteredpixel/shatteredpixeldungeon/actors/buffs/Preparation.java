@@ -73,9 +73,9 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 		//1st index is prep level, 2nd is talent level
 		private static final float[][] KOThresholds = new float[][]{
 				{.03f, .04f, .05f, .06f},
-				{.10f, .12f, .14f, .16f},
-				{.20f, .25f, .30f, .35f},
-				{.40f, .60f, .80f, 1.0f}
+				{.10f, .13f, .17f, .20f},
+				{.20f, .27f, .33f, .40f},
+				{.50f, .67f, .83f, 1.0f}
 		};
 
 		public float KOThreshold(){
@@ -144,6 +144,10 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 	public void detach() {
 		super.detach();
 		ActionIndicator.clearAction(this);
+	}
+
+	public int attackLevel(){
+		return AttackLevel.getLvl(turnsInvis).ordinal()+1;
 	}
 	
 	public int damageRoll( Char attacker ){
