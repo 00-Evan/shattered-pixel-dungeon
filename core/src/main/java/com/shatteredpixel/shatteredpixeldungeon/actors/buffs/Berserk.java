@@ -120,7 +120,7 @@ public class Berserk extends Buff {
 			if (shield != null){
 				state = State.BERSERK;
 				int shieldAmount = shield.maxShield() * 8;
-				shieldAmount = Math.round(shieldAmount * (1f + Dungeon.hero.pointsInTalent(Talent.BERSERKING_STAMINA)/6f));
+				shieldAmount = Math.round(shieldAmount * (1f + Dungeon.hero.pointsInTalent(Talent.BERSERKING_STAMINA)/4f));
 				shield.supercharge(shieldAmount);
 
 				SpellSprite.show(target, SpellSprite.BERSERK);

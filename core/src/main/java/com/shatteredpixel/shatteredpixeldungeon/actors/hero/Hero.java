@@ -225,6 +225,10 @@ public class Hero extends Char {
 			STR += buff.boost();
 		}
 
+		if (hasTalent(Talent.STRONGMAN)){
+			STR = (int)Math.floor(STR * (1f + 0.3f + 0.5f*pointsInTalent(Talent.STRONGMAN)));
+		}
+
 		return STR;
 	}
 
