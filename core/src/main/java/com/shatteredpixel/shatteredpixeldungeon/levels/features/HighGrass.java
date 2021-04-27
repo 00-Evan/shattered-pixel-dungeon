@@ -85,15 +85,27 @@ public class HighGrass {
 					}
 				}
 
+				//berries try to drop on floors 2/3/4/6/7/8, to a max of 4/6
 				Talent.NatureBerriesAvailable berries = ch.buff(Talent.NatureBerriesAvailable.class);
-				if (berries != null && Random.Int(30) == 0){
-					if (berries.count() > 0){
+				if (berries != null) {
+					int targetFloor = 2 + 2*((Hero)ch).pointsInTalent(Talent.NATURES_BOUNTY);
+					targetFloor -= berries.count();
+					targetFloor += (targetFloor >= 5) ? 3 : 2;
+
+					//If we're behind: 1/10, if we're on page: 1/30, if we're ahead: 1/90
+					boolean droppingBerry = false;
+					if (Dungeon.depth > targetFloor)        droppingBerry = Random.Int(10) == 0;
+					else if (Dungeon.depth == targetFloor)  droppingBerry = Random.Int(30) == 0;
+					else if (Dungeon.depth < targetFloor)   droppingBerry = Random.Int(90) == 0;
+
+					if (droppingBerry){
 						berries.countDown(1);
 						level.drop(new Berry(), pos).sprite.drop();
+						if (berries.count() <= 0){
+							berries.detach();
+						}
 					}
-					if (berries.count() <= 0){
-						berries.detach();
-					}
+
 				}
 			}
 			

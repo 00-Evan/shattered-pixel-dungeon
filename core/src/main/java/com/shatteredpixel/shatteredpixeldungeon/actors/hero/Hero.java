@@ -685,7 +685,7 @@ public class Hero extends Char {
 		}
 		
 		if(hasTalent(Talent.BARKSKIN) && Dungeon.level.map[pos] == Terrain.FURROWED_GRASS){
-			Buff.affect(this, Barkskin.class).set( lvl, pointsInTalent(Talent.BARKSKIN) );
+			Buff.affect(this, Barkskin.class).set( (lvl*pointsInTalent(Talent.BARKSKIN))/2, 1 );
 		}
 		
 		return actResult;
@@ -1460,6 +1460,12 @@ public class Hero extends Char {
 		if (source != PotionOfExperience.class) {
 			for (Item i : belongings) {
 				i.onHeroGainExp(percent, this);
+			}
+			if (buff(Talent.RejuvenatingStepsFurrow.class) != null){
+				buff(Talent.RejuvenatingStepsFurrow.class).countDown(percent*200f);
+				if (buff(Talent.RejuvenatingStepsFurrow.class).count() <= 0){
+					buff(Talent.RejuvenatingStepsFurrow.class).detach();
+				}
 			}
 		}
 		

@@ -942,8 +942,11 @@ public abstract class Level implements Bundlable {
 
 			if (Dungeon.hero.buff(LockedFloor.class) != null && !Dungeon.hero.buff(LockedFloor.class).regenOn()){
 				set(ch.pos, Terrain.FURROWED_GRASS);
+			} else if (ch.buff(Talent.RejuvenatingStepsFurrow.class) != null && ch.buff(Talent.RejuvenatingStepsFurrow.class).count() >= 200) {
+				set(ch.pos, Terrain.FURROWED_GRASS);
 			} else {
 				set(ch.pos, Terrain.HIGH_GRASS);
+				Buff.count(ch, Talent.RejuvenatingStepsFurrow.class, 3 - Dungeon.hero.pointsInTalent(Talent.REJUVENATING_STEPS));
 			}
 			GameScene.updateMap(ch.pos);
 			Buff.affect(ch, Talent.RejuvenatingStepsCooldown.class, 15f - 5f*Dungeon.hero.pointsInTalent(Talent.REJUVENATING_STEPS));
@@ -1141,9 +1144,14 @@ public abstract class Level implements Bundlable {
 					}
 				}
 			} else if (((Hero) c).hasTalent(Talent.HEIGHTENED_SENSES)) {
+				Hero h = (Hero) c;
+				int range = 1+h.pointsInTalent(Talent.HEIGHTENED_SENSES);
+				if (h.hasTalent(Talent.FARSIGHT)){
+					range = (int)Math.floor( range * (1f + 0.25f*h.pointsInTalent(Talent.FARSIGHT)));
+				}
 				for (Mob mob : mobs) {
 					int p = mob.pos;
-					if (!fieldOfView[p] && distance(c.pos, p) <= 1+((Hero) c).pointsInTalent(Talent.HEIGHTENED_SENSES)) {
+					if (!fieldOfView[p] && distance(c.pos, p) <= range) {
 						for (int i : PathFinder.NEIGHBOURS9) {
 							heroMindFov[mob.pos + i] = true;
 						}
