@@ -150,7 +150,7 @@ public class MagesStaff extends MeleeWeapon {
 	public int proc(Char attacker, Char defender, int damage) {
 		if (attacker.buff(Talent.EmpoweredStrikeTracker.class) != null){
 			attacker.buff(Talent.EmpoweredStrikeTracker.class).detach();
-			damage = Math.round( damage * (1f + Dungeon.hero.pointsInTalent(Talent.EMPOWERED_STRIKE)/5f));
+			damage = Math.round( damage * (1f + Dungeon.hero.pointsInTalent(Talent.EMPOWERED_STRIKE)/4f));
 		}
 
 		if (wand.curCharges >= wand.maxCharges && attacker instanceof Hero && Random.Int(5) < ((Hero) attacker).pointsInTalent(Talent.EXCESS_CHARGE)){

@@ -597,7 +597,7 @@ public abstract class Mob extends Char {
 			
 			//physical damage that doesn't come from the hero is less effective
 			if (enemy != Dungeon.hero){
-				restoration = Math.round(restoration * 0.15f*Dungeon.hero.pointsInTalent(Talent.SOUL_SIPHON));
+				restoration = Math.round(restoration * 0.4f*Dungeon.hero.pointsInTalent(Talent.SOUL_SIPHON)/3f);
 			}
 			if (restoration > 0) {
 				Buff.affect(Dungeon.hero, Hunger.class).affectHunger(restoration*Dungeon.hero.pointsInTalent(Talent.SOUL_EATER)/3f);
@@ -692,7 +692,7 @@ public abstract class Mob extends Char {
 
 		if (!(this instanceof Wraith)
 				&& soulMarked
-				&& Random.Int(10) < Dungeon.hero.pointsInTalent(Talent.NECROMANCERS_MINIONS)){
+				&& Random.Float() < (0.4f*Dungeon.hero.pointsInTalent(Talent.NECROMANCERS_MINIONS)/3f)){
 			Wraith w = Wraith.spawnAt(pos);
 			if (w != null) {
 				Buff.affect(w, Corruption.class);

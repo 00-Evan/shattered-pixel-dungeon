@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 
-public class ScrollEmpower extends FlavourBuff {
+public class ScrollEmpower extends Buff {
 
 	{
 		type = buffType.POSITIVE;
@@ -51,18 +51,13 @@ public class ScrollEmpower extends FlavourBuff {
 	}
 
 	@Override
-	public float iconFadePercent() {
-		return Math.max(0, (20-visualcooldown()) / 20f);
-	}
-
-	@Override
 	public String toString() {
 		return Messages.get(this, "name");
 	}
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", (int)visualcooldown(), Dungeon.hero.pointsInTalent(Talent.EMPOWERING_SCROLLS));
+		return Messages.get(this, "desc", Dungeon.hero.pointsInTalent(Talent.EMPOWERING_SCROLLS));
 	}
 
 }

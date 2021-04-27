@@ -377,11 +377,11 @@ public abstract class Wand extends Item {
 				&& charger.target == Dungeon.hero
 				&& !Dungeon.hero.belongings.contains(this)) {
 			if (curCharges == 0 && Dungeon.hero.hasTalent(Talent.BACKUP_BARRIER)) {
-				//grants 4/6 shielding
-				Buff.affect(Dungeon.hero, Barrier.class).setShield(2 + 2 * Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER));
+				//grants 3/5 shielding
+				Buff.affect(Dungeon.hero, Barrier.class).setShield(1 + 2 * Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER));
 			}
 			if (Dungeon.hero.hasTalent(Talent.EMPOWERED_STRIKE)){
-				Buff.prolong(Dungeon.hero, Talent.EmpoweredStrikeTracker.class, 5f);
+				Buff.prolong(Dungeon.hero, Talent.EmpoweredStrikeTracker.class, 10f);
 			}
 		}
 
