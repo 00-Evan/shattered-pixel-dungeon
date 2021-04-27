@@ -150,7 +150,7 @@ public class TimekeepersHourglass extends Artifact {
 			if (partialCharge >= 1){
 				partialCharge--;
 				charge++;
-				updateQuickslot();
+				updateQuickslot(false);
 			}
 		}
 	}
@@ -234,7 +234,7 @@ public class TimekeepersHourglass extends Artifact {
 			} else if (cursed && Random.Int(10) == 0)
 				((Hero) target).spend( TICK );
 
-			updateQuickslot();
+			updateQuickslot(false);
 
 			spend( TICK );
 
@@ -267,7 +267,7 @@ public class TimekeepersHourglass extends Artifact {
 
 				target.invisible++;
 
-				updateQuickslot();
+				updateQuickslot(false);
 
 				Dungeon.observe();
 
@@ -318,7 +318,7 @@ public class TimekeepersHourglass extends Artifact {
 				charge --;
 			}
 
-			updateQuickslot();
+			updateQuickslot(false);
 
 			if (charge < 0){
 				charge = 0;
@@ -341,7 +341,7 @@ public class TimekeepersHourglass extends Artifact {
 
 		@Override
 		public void detach(){
-			updateQuickslot();
+			updateQuickslot(false);
 			super.detach();
 			activeBuff = null;
 			triggerPresses();

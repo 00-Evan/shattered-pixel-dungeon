@@ -168,7 +168,7 @@ public class Waterskin extends Item {
 			GLog.p( Messages.get(this, "full") );
 		}
 
-		updateQuickslot();
+		updateQuickslot(false);
 	}
 
 	public void fill() {

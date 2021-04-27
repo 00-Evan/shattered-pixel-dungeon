@@ -37,7 +37,7 @@ public class ScrollEmpower extends FlavourBuff {
 	@Override
 	public void detach() {
 		super.detach();
-		Item.updateQuickslot();
+		Item.updateQuickslot(false);
 	}
 
 	@Override

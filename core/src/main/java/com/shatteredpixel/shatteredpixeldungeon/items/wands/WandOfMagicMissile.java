@@ -111,7 +111,7 @@ public class WandOfMagicMissile extends DamageWand {
 		@Override
 		public void detach() {
 			super.detach();
-			QuickSlotButton.refresh();
+			QuickSlotButton.refresh(false);
 		}
 
 		public int level(){

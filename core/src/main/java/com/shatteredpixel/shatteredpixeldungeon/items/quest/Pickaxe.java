@@ -162,7 +162,7 @@ public class Pickaxe extends Weapon {
 				protected boolean act() {
 					if (!defender.isAlive()){
 						bloodStained = true;
-						updateQuickslot();
+						updateQuickslot(true);
 					}
 
 					Actor.remove(this);

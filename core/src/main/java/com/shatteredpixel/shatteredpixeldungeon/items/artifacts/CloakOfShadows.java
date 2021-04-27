@@ -169,14 +169,14 @@ public class CloakOfShadows extends Artifact {
 			if (partialCharge >= 1){
 				partialCharge--;
 				charge++;
-				updateQuickslot();
+				updateQuickslot(false);
 			}
 		}
 	}
 
 	public void overCharge(int amount){
 		charge = Math.min(charge+amount, chargeCap+amount);
-		updateQuickslot();
+		updateQuickslot(false);
 	}
 	
 	@Override
@@ -239,7 +239,7 @@ public class CloakOfShadows extends Artifact {
 			if (cooldown > 0)
 				cooldown --;
 
-			updateQuickslot();
+			updateQuickslot(false);
 
 			spend( TICK );
 
@@ -325,7 +325,7 @@ public class CloakOfShadows extends Artifact {
 					}
 					turnsToCost = 4;
 				}
-				updateQuickslot();
+				updateQuickslot(false);
 			}
 
 			spend( TICK );
@@ -334,7 +334,7 @@ public class CloakOfShadows extends Artifact {
 		}
 
 		public void dispel(){
-			updateQuickslot();
+			updateQuickslot(false);
 			detach();
 		}
 
@@ -360,7 +360,7 @@ public class CloakOfShadows extends Artifact {
 
 			if (target.invisible > 0)   target.invisible--;
 
-			updateQuickslot();
+			updateQuickslot(false);
 			super.detach();
 		}
 		

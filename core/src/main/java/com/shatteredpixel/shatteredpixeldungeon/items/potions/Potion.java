@@ -334,7 +334,7 @@ public class Potion extends Item {
 		if (!anonymous) {
 			if (!isKnown()) {
 				handler.know(this);
-				updateQuickslot();
+				updateQuickslot(false);
 				Potion p = Dungeon.hero.belongings.getItem(getClass());
 				if (p != null)  p.setAction();
 				if (ExoticPotion.regToExo.get(getClass()) != null) {

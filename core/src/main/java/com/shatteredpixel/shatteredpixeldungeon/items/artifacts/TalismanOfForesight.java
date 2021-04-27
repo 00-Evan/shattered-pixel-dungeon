@@ -197,7 +197,7 @@ public class TalismanOfForesight extends Artifact {
 					upgrade();
 					GLog.p( Messages.get(TalismanOfForesight.class, "levelup") );
 				}
-				updateQuickslot();
+				updateQuickslot(false);
 
 				//5 charge at 2 tiles, up to 30 charge at 25 tiles
 				charge -= 3 + dist*1.08f;
@@ -211,7 +211,7 @@ public class TalismanOfForesight extends Artifact {
 					partialCharge--;
 				}
 				Talent.onArtifactUsed(Dungeon.hero);
-				updateQuickslot();
+				updateQuickslot(false);
 				Dungeon.observe();
 				Dungeon.hero.checkVisibleMobs();
 				GameScene.updateFog();
@@ -311,7 +311,7 @@ public class TalismanOfForesight extends Artifact {
 				if (partialCharge > 1 && charge < chargeCap) {
 					partialCharge--;
 					charge++;
-					updateQuickslot();
+					updateQuickslot(false);
 				} else if (charge >= chargeCap) {
 					partialCharge = 0;
 					GLog.p( Messages.get(TalismanOfForesight.class, "full_charge") );

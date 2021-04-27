@@ -473,7 +473,11 @@ public class Item implements Bundlable {
 	}
 	
 	public static void updateQuickslot() {
-			QuickSlotButton.refresh();
+		updateQuickslot(true);
+	}
+
+	public static void updateQuickslot(boolean full) {
+		QuickSlotButton.refresh(full);
 	}
 	
 	private static final String QUANTITY		= "quantity";

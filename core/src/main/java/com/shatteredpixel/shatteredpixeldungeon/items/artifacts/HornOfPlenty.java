@@ -122,12 +122,13 @@ public class HornOfPlenty extends Artifact {
 
 				Badges.validateFoodEaten();
 
+				int oldImage = image;
 				if (charge >= 15)       image = ItemSpriteSheet.ARTIFACT_HORN4;
 				else if (charge >= 10)  image = ItemSpriteSheet.ARTIFACT_HORN3;
 				else if (charge >= 5)   image = ItemSpriteSheet.ARTIFACT_HORN2;
 				else                    image = ItemSpriteSheet.ARTIFACT_HORN1;
 
-				updateQuickslot();
+				updateQuickslot( image != oldImage );
 			}
 
 		} else if (action.equals(AC_STORE)){
@@ -154,12 +155,14 @@ public class HornOfPlenty extends Artifact {
 					GLog.p( Messages.get(HornOfPlenty.class, "full") );
 					partialCharge = 0;
 				}
-				
+
+				int oldImage = image;
 				if (charge >= 15)       image = ItemSpriteSheet.ARTIFACT_HORN4;
 				else if (charge >= 10)  image = ItemSpriteSheet.ARTIFACT_HORN3;
 				else if (charge >= 5)   image = ItemSpriteSheet.ARTIFACT_HORN2;
-				
-				updateQuickslot();
+				else                    image = ItemSpriteSheet.ARTIFACT_HORN1;
+
+				updateQuickslot( image != oldImage );
 			}
 		}
 	}
@@ -250,17 +253,18 @@ public class HornOfPlenty extends Artifact {
 					charge++;
 					partialCharge -= Hunger.STARVING/10;
 
+					int oldImage = image;
 					if (charge >= 15)       image = ItemSpriteSheet.ARTIFACT_HORN4;
 					else if (charge >= 10)  image = ItemSpriteSheet.ARTIFACT_HORN3;
 					else if (charge >= 5)   image = ItemSpriteSheet.ARTIFACT_HORN2;
 					else                    image = ItemSpriteSheet.ARTIFACT_HORN1;
 
+					updateQuickslot( image != oldImage );
+
 					if (charge == chargeCap){
 						GLog.p( Messages.get(HornOfPlenty.class, "full") );
 						partialCharge = 0;
 					}
-
-					updateQuickslot();
 				}
 			} else
 				partialCharge = 0;

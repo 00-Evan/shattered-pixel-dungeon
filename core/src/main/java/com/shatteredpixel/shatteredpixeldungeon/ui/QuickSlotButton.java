@@ -183,11 +183,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 	public void onSelect( Item item ) {
 		if (item != null) {
 			Dungeon.quickslot.setSlot( slotNum , item );
-			for (int i = 0; i < instance.length; i++) {
-				if (instance[i] != null) {
-					instance[i].item(select(i));
-				}
-			}
+			refresh(false);
 		}
 	}
 	
@@ -261,9 +257,17 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 	}
 	
 	public static void refresh() {
+		refresh(true);
+	}
+
+	public static void refresh( boolean full ) {
 		for (int i = 0; i < instance.length; i++) {
 			if (instance[i] != null) {
-				instance[i].slot.updateText();
+				if (full) {
+					instance[i].item(select(i));
+				} else {
+					instance[i].slot.updateText();
+				}
 			}
 		}
 	}
