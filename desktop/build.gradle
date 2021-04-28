@@ -35,6 +35,8 @@ task compileForRelease(dependsOn: classes, type: JavaCompile){
 }
 
 task release(dependsOn: compileForRelease, type: Jar) {
+    //FIXME this is now needed as of gradle 7.0, due to our weird sourceSets setup. Should see if there's a better way to do this
+    setDuplicatesStrategy(DuplicatesStrategy.INCLUDE)
     from sourceSets.main.output
     from { sourceSets.release.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) } }
     from { configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) } }
