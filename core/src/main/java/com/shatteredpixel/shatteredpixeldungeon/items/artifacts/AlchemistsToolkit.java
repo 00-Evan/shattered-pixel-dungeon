@@ -96,7 +96,7 @@ public class AlchemistsToolkit extends Artifact {
 			if (partialCharge >= 1){
 				partialCharge--;
 				charge++;
-				updateQuickslot(false);
+				updateQuickslot();
 			}
 		}
 	}
@@ -126,7 +126,7 @@ public class AlchemistsToolkit extends Artifact {
 				break;
 			}
 		}
-		updateQuickslot(false);
+		updateQuickslot();
 		
 	}
 
@@ -195,7 +195,7 @@ public class AlchemistsToolkit extends Artifact {
 						partialCharge = 0;
 					}
 					
-					updateQuickslot(false);
+					updateQuickslot();
 				}
 			} else
 				partialCharge = 0;

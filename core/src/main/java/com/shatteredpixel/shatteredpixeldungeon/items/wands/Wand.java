@@ -160,7 +160,7 @@ public abstract class Wand extends Item {
 			if (overcharge) curCharges = Math.min(maxCharges+(int)amt, curCharges+1);
 			else curCharges = Math.min(maxCharges, curCharges+1);
 			partialCharge--;
-			updateQuickslot(false);
+			updateQuickslot();
 		}
 	}
 	
@@ -581,7 +581,7 @@ public abstract class Wand extends Item {
 			while (partialCharge >= 1 && curCharges < maxCharges) {
 				partialCharge--;
 				curCharges++;
-				updateQuickslot(false);
+				updateQuickslot();
 			}
 			
 			if (curCharges == maxCharges){
@@ -623,7 +623,7 @@ public abstract class Wand extends Item {
 					partialCharge--;
 				}
 				curCharges = Math.min(curCharges, maxCharges);
-				updateQuickslot(false);
+				updateQuickslot();
 			}
 		}
 

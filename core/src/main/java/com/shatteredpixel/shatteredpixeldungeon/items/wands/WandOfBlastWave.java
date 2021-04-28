@@ -84,7 +84,7 @@ public class WandOfBlastWave extends DamageWand {
 				processSoulMark(ch, chargesPerCast());
 				if (ch.alignment != Char.Alignment.ALLY) ch.damage(damageRoll(), this);
 
-				if (ch.isAlive() && ch.pos == bolt.collisionPos + i) {
+				if (ch.pos == bolt.collisionPos + i) {
 					Ballistica trajectory = new Ballistica(ch.pos, ch.pos + i, Ballistica.MAGIC_BOLT);
 					int strength = 1 + Math.round(buffedLvl() / 2f);
 					throwChar(ch, trajectory, strength, false);
@@ -101,7 +101,7 @@ public class WandOfBlastWave extends DamageWand {
 			processSoulMark(ch, chargesPerCast());
 			ch.damage(damageRoll(), this);
 
-			if (ch.isAlive() && bolt.path.size() > bolt.dist+1 && ch.pos == bolt.collisionPos) {
+			if (bolt.path.size() > bolt.dist+1 && ch.pos == bolt.collisionPos) {
 				Ballistica trajectory = new Ballistica(ch.pos, bolt.path.get(bolt.dist + 1), Ballistica.MAGIC_BOLT);
 				int strength = buffedLvl() + 3;
 				throwChar(ch, trajectory, strength, false);

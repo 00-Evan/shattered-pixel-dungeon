@@ -37,7 +37,7 @@ public class ScrollEmpower extends Buff {
 	@Override
 	public void detach() {
 		super.detach();
-		Item.updateQuickslot(false);
+		Item.updateQuickslot();
 	}
 
 	@Override

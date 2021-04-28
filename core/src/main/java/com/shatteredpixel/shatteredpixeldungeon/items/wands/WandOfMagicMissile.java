@@ -33,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -111,7 +110,7 @@ public class WandOfMagicMissile extends DamageWand {
 		@Override
 		public void detach() {
 			super.detach();
-			QuickSlotButton.refresh(false);
+			updateQuickslot();
 		}
 
 		public int level(){

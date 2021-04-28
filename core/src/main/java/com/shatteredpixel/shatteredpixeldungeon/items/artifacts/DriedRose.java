@@ -174,7 +174,7 @@ public class DriedRose extends Artifact {
 					Talent.onArtifactUsed(hero);
 					charge = 0;
 					partialCharge = 0;
-					updateQuickslot(false);
+					updateQuickslot();
 
 				} else
 					GLog.i( Messages.get(this, "no_space") );
@@ -282,12 +282,12 @@ public class DriedRose extends Artifact {
 					partialCharge = 0;
 					GLog.p(Messages.get(DriedRose.class, "charged"));
 				}
-				updateQuickslot(false);
+				updateQuickslot();
 			}
 		} else {
 			int heal = Math.round((1 + level()/3f)*amount);
 			ghost.HP = Math.min( ghost.HT, ghost.HP + heal);
-			updateQuickslot(false);
+			updateQuickslot();
 		}
 	}
 	
@@ -376,7 +376,7 @@ public class DriedRose extends Artifact {
 				LockedFloor lock = target.buff(LockedFloor.class);
 				if (ghost.HP < ghost.HT && (lock == null || lock.regenOn())) {
 					partialCharge += (ghost.HT / 1000f) * RingOfEnergy.artifactChargeMultiplier(target);
-					updateQuickslot(false);
+					updateQuickslot();
 					
 					if (partialCharge > 1) {
 						ghost.HP++;
@@ -421,7 +421,7 @@ public class DriedRose extends Artifact {
 
 			}
 
-			updateQuickslot(false);
+			updateQuickslot();
 
 			return true;
 		}
@@ -667,7 +667,7 @@ public class DriedRose extends Artifact {
 			super.damage( dmg, src );
 			
 			//for the rose status indicator
-			Item.updateQuickslot(false);
+			Item.updateQuickslot();
 		}
 		
 		@Override

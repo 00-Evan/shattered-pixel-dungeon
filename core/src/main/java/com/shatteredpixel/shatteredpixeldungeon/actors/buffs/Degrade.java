@@ -39,7 +39,7 @@ public class Degrade extends FlavourBuff {
 	@Override
 	public boolean attachTo(Char target) {
 		if (super.attachTo(target)){
-			Item.updateQuickslot(false);
+			Item.updateQuickslot();
 			if (target instanceof Hero) ((Hero) target).updateHT(false);
 			return true;
 		}
@@ -50,7 +50,7 @@ public class Degrade extends FlavourBuff {
 	public void detach() {
 		super.detach();
 		if (target instanceof Hero) ((Hero) target).updateHT(false);
-		Item.updateQuickslot(false);
+		Item.updateQuickslot();
 	}
 
 	//called in Item.buffedLevel()

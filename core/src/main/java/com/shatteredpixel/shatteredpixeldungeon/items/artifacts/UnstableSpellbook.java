@@ -168,7 +168,7 @@ public class UnstableSpellbook extends Artifact {
 					scroll.doRead();
 					Talent.onArtifactUsed(Dungeon.hero);
 				}
-				updateQuickslot(false);
+				updateQuickslot();
 			}
 
 		} else if (action.equals( AC_ADD )) {
@@ -222,7 +222,7 @@ public class UnstableSpellbook extends Artifact {
 			if (partialCharge >= 1){
 				partialCharge--;
 				charge++;
-				updateQuickslot(false);
+				updateQuickslot();
 			}
 		}
 	}
@@ -297,7 +297,7 @@ public class UnstableSpellbook extends Artifact {
 				}
 			}
 
-			updateQuickslot(false);
+			updateQuickslot();
 
 			spend( TICK );
 

@@ -201,7 +201,7 @@ public class LloydsBeacon extends Artifact {
 
 			Invisibility.dispel();
 			charge -= Dungeon.depth > 20 ? 2 : 1;
-			updateQuickslot(false);
+			updateQuickslot();
 
 			if (Actor.findChar(target) == curUser){
 				ScrollOfTeleportation.teleportHero(curUser);
@@ -330,7 +330,7 @@ public class LloydsBeacon extends Artifact {
 				}
 			}
 
-			updateQuickslot(false);
+			updateQuickslot();
 			spend( TICK );
 			return true;
 		}

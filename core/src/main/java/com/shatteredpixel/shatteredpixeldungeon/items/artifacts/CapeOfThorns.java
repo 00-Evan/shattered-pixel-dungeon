@@ -53,7 +53,7 @@ public class CapeOfThorns extends Artifact {
 	public void charge(Hero target, float amount) {
 		if (cooldown == 0) {
 			charge += Math.round(4*amount);
-			updateQuickslot(false);
+			updateQuickslot();
 		}
 		if (charge >= chargeCap){
 			target.buff(Thorns.class).proc(0, null, null);
@@ -83,7 +83,7 @@ public class CapeOfThorns extends Artifact {
 				if (cooldown == 0) {
 					GLog.w( Messages.get(this, "inert") );
 				}
-				updateQuickslot(false);
+				updateQuickslot();
 			}
 			spend(TICK);
 			return true;
@@ -116,7 +116,7 @@ public class CapeOfThorns extends Artifact {
 				}
 
 			}
-			updateQuickslot(false);
+			updateQuickslot();
 			return damage;
 		}
 

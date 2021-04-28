@@ -128,7 +128,7 @@ public class HornOfPlenty extends Artifact {
 				else if (charge >= 5)   image = ItemSpriteSheet.ARTIFACT_HORN2;
 				else                    image = ItemSpriteSheet.ARTIFACT_HORN1;
 
-				updateQuickslot( image != oldImage );
+				updateQuickslot();
 			}
 
 		} else if (action.equals(AC_STORE)){
@@ -162,7 +162,7 @@ public class HornOfPlenty extends Artifact {
 				else if (charge >= 5)   image = ItemSpriteSheet.ARTIFACT_HORN2;
 				else                    image = ItemSpriteSheet.ARTIFACT_HORN1;
 
-				updateQuickslot( image != oldImage );
+				updateQuickslot();
 			}
 		}
 	}
@@ -259,7 +259,7 @@ public class HornOfPlenty extends Artifact {
 					else if (charge >= 5)   image = ItemSpriteSheet.ARTIFACT_HORN2;
 					else                    image = ItemSpriteSheet.ARTIFACT_HORN1;
 
-					updateQuickslot( image != oldImage );
+					updateQuickslot();
 
 					if (charge == chargeCap){
 						GLog.p( Messages.get(HornOfPlenty.class, "full") );

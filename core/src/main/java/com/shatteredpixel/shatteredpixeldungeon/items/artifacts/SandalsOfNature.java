@@ -93,7 +93,7 @@ public class SandalsOfNature extends Artifact {
 				Camera.main.shake(1, 0.4f);
 				charge = 0;
 				Talent.onArtifactUsed(Dungeon.hero);
-				updateQuickslot(false);
+				updateQuickslot();
 			}
 		}
 	}
@@ -185,7 +185,7 @@ public class SandalsOfNature extends Artifact {
 					charge++;
 					partialCharge--;
 				}
-				updateQuickslot(false);
+				updateQuickslot();
 			}
 		}
 	}

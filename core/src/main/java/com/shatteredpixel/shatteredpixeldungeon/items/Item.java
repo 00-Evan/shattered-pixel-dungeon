@@ -471,13 +471,9 @@ public class Item implements Bundlable {
 	public String status() {
 		return quantity != 1 ? Integer.toString( quantity ) : null;
 	}
-	
-	public static void updateQuickslot() {
-		updateQuickslot(true);
-	}
 
-	public static void updateQuickslot(boolean full) {
-		QuickSlotButton.refresh(full);
+	public static void updateQuickslot() {
+		QuickSlotButton.refresh();
 	}
 	
 	private static final String QUANTITY		= "quantity";

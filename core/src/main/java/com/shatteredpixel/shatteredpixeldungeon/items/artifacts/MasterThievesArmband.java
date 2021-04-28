@@ -49,7 +49,7 @@ public class MasterThievesArmband extends Artifact {
 	@Override
 	public void charge(Hero target, float amount) {
 		charge += Math.round(10*amount);
-		updateQuickslot(false);
+		updateQuickslot();
 	}
 
 	@Override

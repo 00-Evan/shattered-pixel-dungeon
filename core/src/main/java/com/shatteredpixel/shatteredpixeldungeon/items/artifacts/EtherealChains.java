@@ -171,7 +171,7 @@ public class EtherealChains extends Artifact {
 		} else {
 			charge -= chargeUse;
 			Talent.onArtifactUsed(hero);
-			updateQuickslot(false);
+			updateQuickslot();
 		}
 		
 		hero.busy();
@@ -228,7 +228,7 @@ public class EtherealChains extends Artifact {
 		} else {
 			charge -= chargeUse;
 			Talent.onArtifactUsed(hero);
-			updateQuickslot(false);
+			updateQuickslot();
 		}
 		
 		hero.busy();
@@ -261,7 +261,7 @@ public class EtherealChains extends Artifact {
 			if (partialCharge >= 1){
 				partialCharge--;
 				charge++;
-				updateQuickslot(false);
+				updateQuickslot();
 			}
 		}
 	}
@@ -300,7 +300,7 @@ public class EtherealChains extends Artifact {
 				charge ++;
 			}
 
-			updateQuickslot(false);
+			updateQuickslot();
 
 			spend( TICK );
 
