@@ -559,6 +559,7 @@ public class Dungeon {
 
 		seed = bundle.contains( SEED ) ? bundle.getLong( SEED ) : DungeonSeed.randomSeed();
 
+		Actor.clear();
 		Actor.restoreNextID( bundle );
 
 		quickslot.reset();
