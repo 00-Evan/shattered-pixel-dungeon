@@ -55,6 +55,10 @@ public abstract class ArmorAbility implements Bundlable {
 		return null;
 	}
 
+	public float chargeUse( Hero hero ){
+		return 35;
+	}
+
 	protected abstract void activate( ClassArmor armor, Hero hero, Integer target );
 
 	public String name(){

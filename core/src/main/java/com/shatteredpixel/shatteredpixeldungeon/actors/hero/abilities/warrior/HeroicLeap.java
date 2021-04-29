@@ -25,14 +25,13 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -43,7 +42,6 @@ import com.watabou.utils.PathFinder;
 public class HeroicLeap extends ArmorAbility {
 
 	private static int LEAP_TIME	= 1;
-	private static int SHOCK_TIME	= 5;
 
 	@Override
 	protected String targetingPrompt() {
@@ -51,17 +49,28 @@ public class HeroicLeap extends ArmorAbility {
 	}
 
 	@Override
+	public float chargeUse( Hero hero ) {
+		float chargeUse = 35;
+		if (hero.buff(DoubleJumpTracker.class) != null){
+			//reduced charge by 24%/42%/56%/67%
+			chargeUse *= Math.pow(0.76, hero.pointsInTalent(Talent.DOUBLE_JUMP));
+		}
+		return chargeUse;
+	}
+
+	@Override
 	public void activate( ClassArmor armor, Hero hero, Integer target ) {
-		if (target != null && target != hero.pos) {
+		if (target != null) {
 
 			Ballistica route = new Ballistica(hero.pos, target, Ballistica.PROJECTILE);
 			int cell = route.collisionPos;
 
 			//can't occupy the same cell as another char, so move back one.
-			if (Actor.findChar( cell ) != null && cell != hero.pos)
-				cell = route.path.get(route.dist-1);
+			if (Actor.findChar( cell ) != null && cell != hero.pos) {
+				cell = route.path.get(route.dist - 1);
+			}
 
-			armor.charge -= 35;
+			armor.charge -= chargeUse( hero );
 			armor.updateQuickslot();
 
 			final int dest = cell;
@@ -74,25 +83,44 @@ public class HeroicLeap extends ArmorAbility {
 					Dungeon.observe();
 					GameScene.updateFog();
 
-					for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-						Char mob = Actor.findChar(hero.pos + PathFinder.NEIGHBOURS8[i]);
+					for (int i : PathFinder.NEIGHBOURS8) {
+						Char mob = Actor.findChar(hero.pos + i);
 						if (mob != null && mob != hero && mob.alignment != Char.Alignment.ALLY) {
-							Buff.prolong(mob, Paralysis.class, SHOCK_TIME);
+							if (hero.hasTalent(Talent.BODY_SLAM)){
+								int damage = hero.drRoll();
+								damage = Math.round(damage*0.25f*hero.pointsInTalent(Talent.BODY_SLAM));
+								mob.damage(damage, hero);
+							}
+							if (mob.pos == hero.pos + i && hero.hasTalent(Talent.IMPACT_WAVE)){
+								Ballistica trajectory = new Ballistica(mob.pos, mob.pos + i, Ballistica.MAGIC_BOLT);
+								int strength = 2*hero.pointsInTalent(Talent.IMPACT_WAVE);
+								WandOfBlastWave.throwChar(mob, trajectory, strength, true);
+							}
 						}
 					}
 
-					CellEmitter.center(dest).burst(Speck.factory(Speck.DUST), 10);
+					WandOfBlastWave.BlastWave.blast(dest);
 					Camera.main.shake(2, 0.5f);
 
 					Invisibility.dispel();
 					hero.spendAndNext(LEAP_TIME);
+
+					if (hero.buff(DoubleJumpTracker.class) != null){
+						hero.buff(DoubleJumpTracker.class).detach();
+					} else {
+						if (hero.hasTalent(Talent.DOUBLE_JUMP)) {
+							Buff.affect(hero, DoubleJumpTracker.class, 5);
+						}
+					}
 				}
 			});
 		}
 	}
 
+	public static class DoubleJumpTracker extends FlavourBuff{};
+
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.HEROIC_LEAP_1, Talent.HEROIC_LEAP_2, Talent.HEROIC_LEAP_3, Talent.HEROIC_LEAP_4};
+		return new Talent[]{Talent.BODY_SLAM, Talent.IMPACT_WAVE, Talent.DOUBLE_JUMP, Talent.HEROIC_LEAP_4};
 	}
 }

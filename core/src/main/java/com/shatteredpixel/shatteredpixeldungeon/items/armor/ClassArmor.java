@@ -152,7 +152,7 @@ abstract public class ClassArmor extends Armor {
 
 	@Override
 	public String status() {
-		return Messages.format( "%.0f%%", charge );
+		return Messages.format( "%.0f%%", Math.floor(charge) );
 	}
 
 	@Override
@@ -167,7 +167,7 @@ abstract public class ClassArmor extends Armor {
 				GameScene.show(new WndChooseAbility(null, this, hero));
 			} else if (!isEquipped( hero )) {
 				GLog.w( Messages.get(this, "not_equipped") );
-			} else if (charge < 35) {
+			} else if (charge < hero.armorAbility.chargeUse(hero)) {
 				GLog.w( Messages.get(this, "low_charge") );
 			} else  {
 				hero.armorAbility.use(this, hero);
