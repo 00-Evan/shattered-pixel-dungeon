@@ -98,7 +98,6 @@ public class CloakOfShadows extends Artifact {
 			} else {
 				activeBuff.detach();
 				activeBuff = null;
-				hero.spend( 1f );
 				hero.sprite.operate( hero.pos );
 			}
 
