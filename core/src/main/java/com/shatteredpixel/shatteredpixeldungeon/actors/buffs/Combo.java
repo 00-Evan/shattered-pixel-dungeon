@@ -331,24 +331,22 @@ public class Combo extends Buff implements ActionIndicator.Action {
 			switch (moveBeingUsed) {
 				case CLOBBER:
 					hit( enemy );
-					if (enemy.isAlive()) {
-						//trace a ballistica to our target (which will also extend past them
-						Ballistica trajectory = new Ballistica(target.pos, enemy.pos, Ballistica.STOP_TARGET);
-						//trim it to just be the part that goes past them
-						trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
-						//knock them back along that ballistica, ensuring they don't fall into a pit
-						int dist = 2;
-						if (count >= 7 && hero.pointsInTalent(Talent.ENHANCED_COMBO) >= 1){
-							dist ++;
-							Buff.prolong(enemy, Vertigo.class, 3);
-						} else if (!enemy.flying) {
-							while (dist > trajectory.dist ||
-									(dist > 0 && Dungeon.level.pit[trajectory.path.get(dist)])) {
-								dist--;
-							}
+					//trace a ballistica to our target (which will also extend past them
+					Ballistica trajectory = new Ballistica(target.pos, enemy.pos, Ballistica.STOP_TARGET);
+					//trim it to just be the part that goes past them
+					trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
+					//knock them back along that ballistica, ensuring they don't fall into a pit
+					int dist = 2;
+					if (enemy.isAlive() && count >= 7 && hero.pointsInTalent(Talent.ENHANCED_COMBO) >= 1){
+						dist ++;
+						Buff.prolong(enemy, Vertigo.class, 3);
+					} else if (!enemy.flying) {
+						while (dist > trajectory.dist ||
+								(dist > 0 && Dungeon.level.pit[trajectory.path.get(dist)])) {
+							dist--;
 						}
-						WandOfBlastWave.throwChar(enemy, trajectory, dist, true, false);
 					}
+					WandOfBlastWave.throwChar(enemy, trajectory, dist, true, false);
 					break;
 				case PARRY:
 					hit( enemy );

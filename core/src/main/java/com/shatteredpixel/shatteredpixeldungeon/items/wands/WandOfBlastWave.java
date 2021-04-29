@@ -88,7 +88,9 @@ public class WandOfBlastWave extends DamageWand {
 					Ballistica trajectory = new Ballistica(ch.pos, ch.pos + i, Ballistica.MAGIC_BOLT);
 					int strength = 1 + Math.round(buffedLvl() / 2f);
 					throwChar(ch, trajectory, strength, false);
-				} else if (ch == Dungeon.hero){
+				}
+
+				if (ch == Dungeon.hero){
 					Dungeon.fail( getClass() );
 					GLog.n( Messages.get( this, "ondeath") );
 				}
