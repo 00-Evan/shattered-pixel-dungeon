@@ -80,6 +80,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Banner;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BusyIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.CharHealthIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.LootIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ResumeIndicator;
@@ -1137,8 +1138,10 @@ public class GameScene extends PixelScene {
 		} else if (objects.size() == 1){
 			examineObject(objects.get(0));
 		} else {
-			GameScene.show(new WndOptions(Messages.get(GameScene.class, "choose_examine"),
-					Messages.get(GameScene.class, "multiple_examine"), names.toArray(new String[names.size()])){
+			GameScene.show(new WndOptions(Icons.get(Icons.INFO),
+					Messages.get(GameScene.class, "choose_examine"),
+					Messages.get(GameScene.class, "multiple_examine"),
+					names.toArray(new String[names.size()])){
 				@Override
 				protected void onSelect(int index) {
 					examineObject(objects.get(index));

@@ -44,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
@@ -403,7 +404,8 @@ public class MagesStaff extends MeleeWeapon {
 					}
 
 					GameScene.show(
-							new WndOptions("",
+							new WndOptions(new ItemSprite(item),
+									Messages.titleCase(item.name()),
 									bodyText,
 									Messages.get(MagesStaff.class, "yes"),
 									Messages.get(MagesStaff.class, "no")) {

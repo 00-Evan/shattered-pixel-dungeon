@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
@@ -65,7 +66,8 @@ public class ScrollOfEnchantment extends ExoticScroll {
 				enchants[1] = Weapon.Enchantment.randomUncommon( existing );
 				enchants[2] = Weapon.Enchantment.random( existing, enchants[0].getClass(), enchants[1].getClass());
 				
-				GameScene.show(new WndOptions(Messages.titleCase(ScrollOfEnchantment.this.name()),
+				GameScene.show(new WndOptions(new ItemSprite(ScrollOfEnchantment.this),
+						Messages.titleCase(ScrollOfEnchantment.this.name()),
 						Messages.get(ScrollOfEnchantment.class, "weapon") +
 						"\n\n" +
 						Messages.get(ScrollOfEnchantment.class, "cancel_warn"),
@@ -102,7 +104,8 @@ public class ScrollOfEnchantment extends ExoticScroll {
 				glyphs[1] = Armor.Glyph.randomUncommon( existing );
 				glyphs[2] = Armor.Glyph.random( existing, glyphs[0].getClass(), glyphs[1].getClass());
 				
-				GameScene.show(new WndOptions(Messages.titleCase(ScrollOfEnchantment.this.name()),
+				GameScene.show(new WndOptions( new ItemSprite(ScrollOfEnchantment.this),
+						Messages.titleCase(ScrollOfEnchantment.this.name()),
 						Messages.get(ScrollOfEnchantment.class, "armor") +
 						"\n\n" +
 						Messages.get(ScrollOfEnchantment.class, "cancel_warn"),

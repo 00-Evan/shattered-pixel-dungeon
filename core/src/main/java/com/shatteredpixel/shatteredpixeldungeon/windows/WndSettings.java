@@ -230,7 +230,7 @@ public class WndSettings extends WndTabbed {
 						super.onClick();
 						if (checked()) {
 							checked(!checked());
-							ShatteredPixelDungeon.scene().add(new WndOptions(
+							ShatteredPixelDungeon.scene().add(new WndOptions(Icons.get(Icons.DISPLAY),
 									Messages.get(DisplayTab.class, "saver"),
 									Messages.get(DisplayTab.class, "saver_desc"),
 									Messages.get(DisplayTab.class, "okay"),

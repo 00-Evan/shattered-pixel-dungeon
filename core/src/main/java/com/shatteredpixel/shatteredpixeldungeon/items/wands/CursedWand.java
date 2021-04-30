@@ -64,6 +64,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
@@ -371,7 +372,12 @@ public class CursedWand {
 						return cursedEffect(origin, user, targetPos);
 					} else {
 						GameScene.show(
-								new WndOptions("CURSED WAND ERROR", "this application will now self-destruct", "abort", "retry", "fail") {
+								new WndOptions(Icons.get(Icons.WARNING),
+										"CURSED WAND ERROR",
+										"this application will now self-destruct",
+										"abort",
+										"retry",
+										"fail") {
 									
 									@Override
 									protected void onSelect(int index) {

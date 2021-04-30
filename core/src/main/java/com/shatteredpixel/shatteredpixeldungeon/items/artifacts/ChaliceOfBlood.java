@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
@@ -67,7 +68,8 @@ public class ChaliceOfBlood extends Artifact {
 			if (damage > hero.HP*0.75) {
 
 				GameScene.show(
-					new WndOptions(Messages.titleCase(Messages.get(this, "name")),
+					new WndOptions(new ItemSprite(this),
+							Messages.titleCase(name()),
 							Messages.get(this, "prick_warn"),
 							Messages.get(this, "yes"),
 							Messages.get(this, "no")) {

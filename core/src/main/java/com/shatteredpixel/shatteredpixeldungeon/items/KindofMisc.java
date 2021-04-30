@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 
@@ -84,7 +85,8 @@ public abstract class KindofMisc extends EquipableItem {
 			}
 
 			GameScene.show(
-					new WndOptions(Messages.get(KindofMisc.class, "unequip_title"),
+					new WndOptions(new ItemSprite(this),
+							Messages.get(KindofMisc.class, "unequip_title"),
 							Messages.get(KindofMisc.class, "unequip_message"),
 							miscs[0] == null ? "---" : Messages.titleCase(miscs[0].toString()),
 							miscs[1] == null ? "---" : Messages.titleCase(miscs[1].toString()),

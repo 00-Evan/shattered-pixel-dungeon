@@ -113,7 +113,8 @@ public class BrokenSeal extends Item {
 
 				} else if (armor.glyph != null && seal.getGlyph() != null
 						&& armor.glyph.getClass() != seal.getGlyph().getClass()) {
-					GameScene.show(new WndOptions(Messages.get(BrokenSeal.class, "choose_title"),
+					GameScene.show(new WndOptions(new ItemSprite(seal),
+							Messages.get(BrokenSeal.class, "choose_title"),
 							Messages.get(BrokenSeal.class, "choose_desc"),
 							armor.glyph.name(),
 							seal.getGlyph().name()){

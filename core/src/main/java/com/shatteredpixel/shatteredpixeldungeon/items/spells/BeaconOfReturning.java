@@ -59,7 +59,8 @@ public class BeaconOfReturning extends Spell {
 		if (returnDepth == -1){
 			setBeacon(hero);
 		} else {
-			GameScene.show(new WndOptions(Messages.titleCase(name()),
+			GameScene.show(new WndOptions(new ItemSprite(this),
+					Messages.titleCase(name()),
 					Messages.get(BeaconOfReturning.class, "wnd_body"),
 					Messages.get(BeaconOfReturning.class, "wnd_set"),
 					Messages.get(BeaconOfReturning.class, "wnd_return")){

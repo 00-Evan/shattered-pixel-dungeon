@@ -138,7 +138,7 @@ public class WndGameInProgress extends Window {
 			protected void onClick() {
 				super.onClick();
 				
-				ShatteredPixelDungeon.scene().add(new WndOptions(
+				ShatteredPixelDungeon.scene().add(new WndOptions(Icons.get(Icons.WARNING),
 						Messages.get(WndGameInProgress.class, "erase_warn_title"),
 						Messages.get(WndGameInProgress.class, "erase_warn_body"),
 						Messages.get(WndGameInProgress.class, "erase_warn_yes"),

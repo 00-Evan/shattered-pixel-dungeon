@@ -238,7 +238,8 @@ public class Potion extends Item {
 			if (isKnown() && mustThrowPots.contains(getClass())) {
 				
 					GameScene.show(
-						new WndOptions( Messages.get(Potion.class, "harmful"),
+						new WndOptions(new ItemSprite(this),
+								Messages.get(Potion.class, "harmful"),
 								Messages.get(Potion.class, "sure_drink"),
 								Messages.get(Potion.class, "yes"), Messages.get(Potion.class, "no") ) {
 							@Override
@@ -265,7 +266,8 @@ public class Potion extends Item {
 				&& !canThrowPots.contains(this.getClass())) {
 		
 			GameScene.show(
-				new WndOptions( Messages.get(Potion.class, "beneficial"),
+				new WndOptions(new ItemSprite(this),
+						Messages.get(Potion.class, "beneficial"),
 						Messages.get(Potion.class, "sure_throw"),
 						Messages.get(Potion.class, "yes"), Messages.get(Potion.class, "no") ) {
 					@Override

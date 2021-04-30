@@ -382,7 +382,8 @@ public class WandOfWarding extends Wand {
 			Game.runOnRenderThread(new Callback() {
 				@Override
 				public void call() {
-					GameScene.show(new WndOptions( Messages.get(Ward.this, "dismiss_title"),
+					GameScene.show(new WndOptions( sprite(),
+							Messages.get(Ward.this, "dismiss_title"),
 							Messages.get(Ward.this, "dismiss_body"),
 							Messages.get(Ward.this, "dismiss_confirm"),
 							Messages.get(Ward.this, "dismiss_cancel") ){
