@@ -27,11 +27,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -39,16 +41,29 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.MobSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 public class SmokeBomb extends ArmorAbility {
 
 	@Override
 	protected String targetingPrompt() {
 		return Messages.get(this, "prompt");
+	}
+
+	@Override
+	public float chargeUse(Hero hero) {
+		if (!hero.hasTalent(Talent.SHADOW_STEP) || hero.invisible <= 0){
+			return super.chargeUse(hero);
+		} else {
+			//reduced charge cost by 24%/42%/56%/67%
+			return (float)(35f * Math.pow(0.76, hero.pointsInTalent(Talent.SHADOW_STEP)));
+		}
 	}
 
 	@Override
@@ -65,17 +80,38 @@ public class SmokeBomb extends ArmorAbility {
 				return;
 			}
 
-			armor.charge -= 35;
+			armor.charge -= chargeUse(hero);
 			Item.updateQuickslot();
 
-			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
-				if (Dungeon.level.adjacent(mob.pos, hero.pos) && mob.alignment != Char.Alignment.ALLY) {
-					Buff.prolong( mob, Blindness.class, Blindness.DURATION/2f );
-					if (mob.state == mob.HUNTING) mob.state = mob.WANDERING;
-					mob.sprite.emitter().burst( Speck.factory( Speck.LIGHT ), 4 );
+			boolean shadowStepping = hero.invisible > 0 && hero.hasTalent(Talent.SHADOW_STEP);
+
+			if (!shadowStepping) {
+				for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
+					if (Dungeon.level.adjacent(mob.pos, hero.pos) && mob.alignment != Char.Alignment.ALLY) {
+						Buff.prolong(mob, Blindness.class, Blindness.DURATION / 2f);
+						if (mob.state == mob.HUNTING) mob.state = mob.WANDERING;
+						mob.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 4);
+					}
+				}
+
+				if (hero.hasTalent(Talent.BODY_REPLACEMENT)) {
+					for (Char ch : Actor.chars()){
+						if (ch instanceof NinjaLog){
+							ch.die(null);
+						}
+					}
+
+					NinjaLog n = new NinjaLog();
+					n.pos = hero.pos;
+					GameScene.add(n);
+				}
+
+				if (hero.hasTalent(Talent.HASTY_RETREAT)){
+					int duration = 2*hero.pointsInTalent(Talent.HASTY_RETREAT);
+					Buff.affect(hero, Haste.class, duration);
+					Buff.affect(hero, Invisibility.class, duration);
 				}
 			}
-			Buff.affect(hero, Invisibility.class, Invisibility.DURATION/2f);
 
 			CellEmitter.get( hero.pos ).burst( Speck.factory( Speck.WOOL ), 10 );
 			ScrollOfTeleportation.appear( hero, target );
@@ -84,12 +120,72 @@ public class SmokeBomb extends ArmorAbility {
 			Dungeon.observe();
 			GameScene.updateFog();
 
-			hero.spendAndNext( Actor.TICK );
+			if (!shadowStepping) {
+				hero.spendAndNext(Actor.TICK);
+			} else {
+				hero.next();
+			}
 		}
 	}
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.SMOKE_BOMB_1, Talent.SMOKE_BOMB_2, Talent.SMOKE_BOMB_3, Talent.SMOKE_BOMB_4};
+		return new Talent[]{Talent.HASTY_RETREAT, Talent.BODY_REPLACEMENT, Talent.SHADOW_STEP, Talent.SMOKE_BOMB_4};
+	}
+
+	public static class NinjaLog extends NPC {
+
+		{
+			spriteClass = NinjaLogSprite.class;
+			defenseSkill = 0;
+
+			properties.add(Property.INORGANIC); //wood is organic, but this is accurate for game logic
+
+			alignment = Alignment.ALLY;
+
+			HP = HT = 30*Dungeon.hero.pointsInTalent(Talent.BODY_REPLACEMENT);
+		}
+
+		@Override
+		public int drRoll() {
+			return Random.NormalIntRange(Dungeon.hero.pointsInTalent(Talent.BODY_REPLACEMENT),
+					5*Dungeon.hero.pointsInTalent(Talent.BODY_REPLACEMENT));
+		}
+
+	}
+
+	public static class NinjaLogSprite extends MobSprite {
+
+		public NinjaLogSprite(){
+			super();
+
+			texture("sprites/ninja_log.png");
+
+			TextureFilm frames = new TextureFilm( texture, 11, 12 );
+
+			idle = new Animation( 0, true );
+			idle.frames( frames, 0 );
+
+			run = idle.clone();
+			attack = idle.clone();
+			zap = attack.clone();
+
+			die = new Animation( 12, false );
+			die.frames( frames, 1, 2, 3, 4 );
+
+			play( idle );
+
+		}
+
+		@Override
+		public void showAlert() {
+			//do nothing
+		}
+
+		@Override
+		public int blood() {
+			return 0xFF966400;
+		}
+
 	}
 }
