@@ -202,7 +202,7 @@ public class NewDM300 extends Mob {
 					//try to fire gas at an enemy we can't reach
 					if (turnsSinceLastAbility >= MIN_COOLDOWN){
 						//use a coneAOE to try and account for trickshotting angles
-						ConeAOE aim = new ConeAOE(new Ballistica(pos, enemy.pos, Ballistica.PROJECTILE), 30);
+						ConeAOE aim = new ConeAOE(new Ballistica(pos, enemy.pos, Ballistica.WONT_STOP), Float.POSITIVE_INFINITY, 30, Ballistica.STOP_SOLID);
 						if (aim.cells.contains(enemy.pos)) {
 							lastAbility = GAS;
 							turnsSinceLastAbility = 0;

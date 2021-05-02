@@ -60,7 +60,8 @@ public class WandOfRegrowth extends Wand {
 	{
 		image = ItemSpriteSheet.WAND_REGROWTH;
 
-		collisionProperties = Ballistica.STOP_SOLID;
+		//only used for targeting, actual projectile logic is Ballistica.STOP_SOLID
+		collisionProperties = Ballistica.WONT_STOP;
 	}
 	
 	private int totChrgUsed = 0;
@@ -238,7 +239,7 @@ public class WandOfRegrowth extends Wand {
 		cone = new ConeAOE( bolt,
 				maxDist,
 				20 + 10*chargesPerCast(),
-				collisionProperties | Ballistica.STOP_TARGET);
+				Ballistica.STOP_SOLID | Ballistica.STOP_TARGET);
 
 		//cast to cells at the tip, rather than all cells, better performance.
 		for (Ballistica ray : cone.rays){

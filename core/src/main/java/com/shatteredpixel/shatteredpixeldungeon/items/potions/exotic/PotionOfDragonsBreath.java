@@ -82,7 +82,7 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 						curUser.sprite.zap(cell);
 						Sample.INSTANCE.play( Assets.Sounds.BURNING );
 
-						final Ballistica bolt = new Ballistica(curUser.pos, cell, Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID);
+						final Ballistica bolt = new Ballistica(curUser.pos, cell, Ballistica.WONT_STOP);
 
 						int maxDist = 6;
 						int dist = Math.min(bolt.dist, maxDist);

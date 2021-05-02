@@ -52,7 +52,8 @@ public class WandOfFireblast extends DamageWand {
 	{
 		image = ItemSpriteSheet.WAND_FIREBOLT;
 
-		collisionProperties = Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID;
+		//only used for targeting, actual projectile logic is Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID
+		collisionProperties = Ballistica.WONT_STOP;
 	}
 
 	//1x/2x/3x damage
@@ -146,7 +147,7 @@ public class WandOfFireblast extends DamageWand {
 		cone = new ConeAOE( bolt,
 				maxDist,
 				30 + 20*chargesPerCast(),
-				collisionProperties | Ballistica.STOP_TARGET);
+				Ballistica.STOP_TARGET | Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID);
 
 		//cast to cells at the tip, rather than all cells, better performance.
 		for (Ballistica ray : cone.rays){

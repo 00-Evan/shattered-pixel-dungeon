@@ -98,17 +98,11 @@ public class ConeAOE {
 		}
 
 		//cast a ray to each found cell, these make up the cone
+		//we don't add the core ray as its collision properties may differ from the cone
 		for( int c : targetCells ){
 			Ballistica ray = new Ballistica(core.sourcePos, c, ballisticaParams);
 			cells.addAll(ray.subPath(1, ray.dist));
 			rays.add(ray);
-		}
-
-		//lastly add any cells in the core
-		for ( int c : core.subPath(1, core.dist)){
-			if (Dungeon.level.trueDistance(core.sourcePos, c) <= maxDist){
-				cells.add(c);
-			}
 		}
 
 	}
