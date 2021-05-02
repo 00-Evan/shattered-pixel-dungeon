@@ -70,6 +70,7 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 				detach(curUser.belongings.backpack);
 			} else if (cell != null) {
 				identify();
+				curUser.busy();
 				Sample.INSTANCE.play( Assets.Sounds.DRINK );
 				curUser.sprite.operate(curUser.pos, new Callback() {
 					@Override
@@ -77,7 +78,6 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 
 						curItem.detach(curUser.belongings.backpack);
 
-						curUser.spend(1f);
 						curUser.sprite.idle();
 						curUser.sprite.zap(cell);
 						Sample.INSTANCE.play( Assets.Sounds.BURNING );
@@ -146,7 +146,7 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 											}
 										}
 
-										curUser.next();
+										curUser.spendAndNext(1f);
 									}
 								});
 						
