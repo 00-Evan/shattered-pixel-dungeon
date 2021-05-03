@@ -141,14 +141,16 @@ public class AttackIndicator extends Tag {
 			sprite.killAndErase();
 			sprite = null;
 		}
-		
-		sprite = lastTarget.sprite();
-		active = true;
-		sprite.linkVisuals(lastTarget);
-		sprite.idle();
-		sprite.paused = true;
-		sprite.visible = bg.visible;
-		add( sprite );
+
+		if (lastTarget != null) {
+			sprite = lastTarget.sprite();
+			active = true;
+			sprite.linkVisuals(lastTarget);
+			sprite.idle();
+			sprite.paused = true;
+			sprite.visible = bg.visible;
+			add(sprite);
+		}
 
 		layout();
 	}
