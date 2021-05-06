@@ -61,8 +61,8 @@ public class SmokeBomb extends ArmorAbility {
 		if (!hero.hasTalent(Talent.SHADOW_STEP) || hero.invisible <= 0){
 			return super.chargeUse(hero);
 		} else {
-			//reduced charge cost by 24%/42%/56%/67%
-			return (float)(35f * Math.pow(0.76, hero.pointsInTalent(Talent.SHADOW_STEP)));
+			//reduced charge use by 24%/42%/56%/67%
+			return (float)(super.chargeUse(hero) * Math.pow(0.76, hero.pointsInTalent(Talent.SHADOW_STEP)));
 		}
 	}
 
@@ -130,7 +130,7 @@ public class SmokeBomb extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.HASTY_RETREAT, Talent.BODY_REPLACEMENT, Talent.SHADOW_STEP, Talent.SMOKE_BOMB_4};
+		return new Talent[]{Talent.HASTY_RETREAT, Talent.BODY_REPLACEMENT, Talent.SHADOW_STEP, Talent.HEROIC_ENERGY};
 	}
 
 	public static class NinjaLog extends NPC {

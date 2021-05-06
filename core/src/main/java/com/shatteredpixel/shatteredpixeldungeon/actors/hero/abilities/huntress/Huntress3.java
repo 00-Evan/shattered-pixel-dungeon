@@ -35,6 +35,6 @@ public class Huntress3 extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.HUNTRESS_3_1, Talent.HUNTRESS_3_2, Talent.HUNTRESS_3_3, Talent.HUNTRESS_3_4};
+		return new Talent[]{Talent.HUNTRESS_3_1, Talent.HUNTRESS_3_2, Talent.HUNTRESS_3_3, Talent.HEROIC_ENERGY};
 	}
 }

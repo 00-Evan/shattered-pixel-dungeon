@@ -35,6 +35,6 @@ public class Rogue3 extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.ROGUE_3_1, Talent.ROGUE_3_2, Talent.ROGUE_3_3, Talent.ROGUE_3_4};
+		return new Talent[]{Talent.ROGUE_3_1, Talent.ROGUE_3_2, Talent.ROGUE_3_3, Talent.HEROIC_ENERGY};
 	}
 }

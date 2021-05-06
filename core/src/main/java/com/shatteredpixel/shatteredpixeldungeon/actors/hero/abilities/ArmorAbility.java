@@ -56,7 +56,12 @@ public abstract class ArmorAbility implements Bundlable {
 	}
 
 	public float chargeUse( Hero hero ){
-		return 35;
+		float chargeUse = 35;
+		if (hero.hasTalent(Talent.HEROIC_ENERGY)){
+			//reduced charge use by 13%/24%/34%/43%
+			chargeUse *= Math.pow( 0.869, hero.pointsInTalent(Talent.HEROIC_ENERGY));
+		}
+		return chargeUse;
 	}
 
 	protected abstract void activate( ClassArmor armor, Hero hero, Integer target );

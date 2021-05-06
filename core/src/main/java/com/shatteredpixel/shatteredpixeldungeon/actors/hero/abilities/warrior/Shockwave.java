@@ -62,7 +62,7 @@ public class Shockwave extends ArmorAbility {
 		}
 		hero.busy();
 
-		//armor.charge -= chargeUse(hero);
+		armor.charge -= chargeUse(hero);
 		Item.updateQuickslot();
 
 		Ballistica aim = new Ballistica(hero.pos, target, Ballistica.WONT_STOP);
@@ -133,6 +133,6 @@ public class Shockwave extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.EXPANDING_WAVE, Talent.STRIKING_WAVE, Talent.SHOCK_FORCE, Talent.WARRIOR_2_4};
+		return new Talent[]{Talent.EXPANDING_WAVE, Talent.STRIKING_WAVE, Talent.SHOCK_FORCE, Talent.HEROIC_ENERGY};
 	}
 }

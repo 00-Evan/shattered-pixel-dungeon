@@ -35,6 +35,6 @@ public class Mage3 extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.MAGE_3_1, Talent.MAGE_3_2, Talent.MAGE_3_3, Talent.MAGE_3_4};
+		return new Talent[]{Talent.MAGE_3_1, Talent.MAGE_3_2, Talent.MAGE_3_3, Talent.HEROIC_ENERGY};
 	}
 }

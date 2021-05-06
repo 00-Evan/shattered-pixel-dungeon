@@ -68,6 +68,6 @@ public class MoltenEarth extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.MOLTEN_EARTH_1, Talent.MOLTEN_EARTH_2, Talent.MOLTEN_EARTH_3, Talent.MOLTEN_EARTH_4};
+		return new Talent[]{Talent.MOLTEN_EARTH_1, Talent.MOLTEN_EARTH_2, Talent.MOLTEN_EARTH_3, Talent.HEROIC_ENERGY};
 	}
 }

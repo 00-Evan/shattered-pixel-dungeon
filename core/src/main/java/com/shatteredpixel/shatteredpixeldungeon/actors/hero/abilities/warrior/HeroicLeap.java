@@ -50,9 +50,9 @@ public class HeroicLeap extends ArmorAbility {
 
 	@Override
 	public float chargeUse( Hero hero ) {
-		float chargeUse = 35;
+		float chargeUse = super.chargeUse(hero);
 		if (hero.buff(DoubleJumpTracker.class) != null){
-			//reduced charge by 24%/42%/56%/67%
+			//reduced charge use by 24%/42%/56%/67%
 			chargeUse *= Math.pow(0.76, hero.pointsInTalent(Talent.DOUBLE_JUMP));
 		}
 		return chargeUse;
@@ -121,6 +121,6 @@ public class HeroicLeap extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.BODY_SLAM, Talent.IMPACT_WAVE, Talent.DOUBLE_JUMP, Talent.HEROIC_LEAP_4};
+		return new Talent[]{Talent.BODY_SLAM, Talent.IMPACT_WAVE, Talent.DOUBLE_JUMP, Talent.HEROIC_ENERGY};
 	}
 }
