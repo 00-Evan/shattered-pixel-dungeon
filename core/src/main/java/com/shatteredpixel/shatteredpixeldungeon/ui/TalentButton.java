@@ -94,9 +94,9 @@ public class TalentButton extends Button {
 
 		super.layout();
 
-		fill.x = x;
+		fill.x = x+2;
 		fill.y = y + WIDTH - 1;
-		fill.size( pointsInTalent/(float)talent.maxPoints() * WIDTH, 5);
+		fill.size( pointsInTalent/(float)talent.maxPoints() * (WIDTH-4), 5);
 
 		bg.x = x;
 		bg.y = y;
