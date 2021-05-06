@@ -37,7 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.Rogu
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.Rogue3;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.SmokeBomb;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.HeroicLeap;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Warrior2;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Shockwave;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Warrior3;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -207,7 +207,7 @@ public enum HeroClass {
 	public ArmorAbility[] armorAbilities(){
 		switch (this) {
 			case WARRIOR: default:
-				return new ArmorAbility[]{new HeroicLeap(), new Warrior2(), new Warrior3()};
+				return new ArmorAbility[]{new HeroicLeap(), new Shockwave(), new Warrior3()};
 			case MAGE:
 				return new ArmorAbility[]{new MoltenEarth(), new Mage2(), new Mage3()};
 			case ROGUE:

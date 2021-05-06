@@ -70,8 +70,9 @@ public class MagicMissile extends Emitter {
 	public static final int TOXIC_VENT      = 14;
 	public static final int ELMO            = 15;
 
-	public static final int FIRE_CONE       = 100;
-	public static final int FOLIAGE_CONE    = 101;
+	public static final int FIRE_CONE       = 102;
+	public static final int FOLIAGE_CONE    = 104;
+	public static final int FORCE_CONE      = 105;
 	
 	public void reset( int type, int from, int to, Callback callback ) {
 		reset( type,
@@ -181,6 +182,10 @@ public class MagicMissile extends Emitter {
 			case FOLIAGE_CONE:
 				size( 10 );
 				pour( LeafParticle.GENERAL, 0.03f );
+				break;
+			case FORCE_CONE:
+				size( 10 );
+				pour( SlowParticle.FACTORY, 0.02f );
 				break;
 		}
 
