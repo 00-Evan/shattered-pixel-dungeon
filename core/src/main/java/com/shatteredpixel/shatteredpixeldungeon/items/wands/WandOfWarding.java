@@ -275,15 +275,6 @@ public class WandOfWarding extends Wand {
 		}
 
 		@Override
-		protected float attackDelay() {
-			if (tier > 3){
-				return 1f;
-			} else {
-				return 2f;
-			}
-		}
-
-		@Override
 		protected boolean canAttack( Char enemy ) {
 			return new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
 		}
