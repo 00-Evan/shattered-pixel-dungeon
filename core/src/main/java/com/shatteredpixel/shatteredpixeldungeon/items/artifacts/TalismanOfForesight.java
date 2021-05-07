@@ -349,7 +349,6 @@ public class TalismanOfForesight extends Artifact {
 	public static class CharAwareness extends FlavourBuff {
 
 		public int charID;
-		public int depth = Dungeon.depth;
 
 		private static final String CHAR_ID = "char_id";
 

@@ -753,7 +753,6 @@ public class Dungeon {
 		}
 
 		for (TalismanOfForesight.CharAwareness c : hero.buffs(TalismanOfForesight.CharAwareness.class)){
-			if (Dungeon.depth != c.depth) continue;
 			Char ch = (Char) Actor.findById(c.charID);
 			if (ch == null) continue;
 			BArray.or( level.visited, level.heroFOV, ch.pos - 1 - level.width(), 3, level.visited );
