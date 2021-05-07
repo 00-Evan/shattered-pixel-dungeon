@@ -1682,6 +1682,12 @@ public class Hero extends Char {
 			items.remove( item );
 		}
 
+		for (Char c : Actor.chars()){
+			if (c instanceof DriedRose.GhostHero){
+				((DriedRose.GhostHero) c).sayHeroKilled();
+			}
+		}
+
 		GameScene.gameOver();
 		
 		if (cause instanceof Hero.Doom) {

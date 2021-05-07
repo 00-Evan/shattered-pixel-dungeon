@@ -568,12 +568,7 @@ public class DriedRose extends Artifact {
 				damage(1, this);
 			}
 			
-			if (!isAlive())
-				return true;
-			if (!Dungeon.hero.isAlive()){
-				sayHeroKilled();
-				sprite.die();
-				destroy();
+			if (!isAlive()) {
 				return true;
 			}
 			return super.act();
@@ -827,11 +822,8 @@ public class DriedRose extends Artifact {
 		}
 		
 		public void sayHeroKilled(){
-			if (Dungeon.bossLevel()){
-				yell( Messages.get( this, "hero_killed_boss_" + Random.IntRange(1, 3) ));
-			} else {
-				yell( Messages.get( this, "hero_killed_" + Random.IntRange(1, 3) ));
-			}
+			yell( Messages.get( this, "player_killed_" + Random.IntRange(1, 3) ));
+			GLog.newLine();
 			Sample.INSTANCE.play( Assets.Sounds.GHOST );
 		}
 		
