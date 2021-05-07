@@ -196,7 +196,7 @@ public class Dungeon {
 		quickslot.reset();
 		QuickSlotButton.reset();
 		
-		depth = 0;
+		depth = 24;
 		gold = 0;
 
 		droppedItems = new SparseArray<>();
@@ -698,8 +698,9 @@ public class Dungeon {
 		Rankings.INSTANCE.submit( true, cause );
 	}
 
+	//default to recomputing based on max hero vision, in case vision just shrank/grew
 	public static void observe(){
-		int dist = Dungeon.hero.viewDistance;
+		int dist = 8;
 		dist *= 1f + 0.25f*Dungeon.hero.pointsInTalent(Talent.FARSIGHT);
 		observe( dist+1 );
 	}
