@@ -205,6 +205,14 @@ public enum Talent {
 			if (hero.belongings.misc instanceof Ring) ((Ring) hero.belongings.misc).setKnown();
 		}
 
+		if (talent == LIGHT_CLOAK && hero.pointsInTalent(LIGHT_CLOAK) == 1){
+			for (Item item : Dungeon.hero.belongings.backpack){
+				if (item instanceof CloakOfShadows){
+					((CloakOfShadows) item).activate(Dungeon.hero);
+				}
+			}
+		}
+
 		if (talent == FARSIGHT){
 			Dungeon.observe();
 		}
