@@ -239,6 +239,17 @@ public class UnstableSpellbook extends Artifact {
 		return super.upgrade();
 	}
 
+	public static boolean canUseScroll( Item item ){
+		if (item instanceof Scroll){
+			if (!(curItem instanceof UnstableSpellbook)){
+				return true;
+			} else {
+				return item.isIdentified() && ((UnstableSpellbook) curItem).scrolls.contains(item.getClass());
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public String desc() {
 		String desc = super.desc();
@@ -328,8 +339,9 @@ public class UnstableSpellbook extends Artifact {
 					}
 				}
 				GLog.w( Messages.get(UnstableSpellbook.class, "unable_scroll") );
-			} else if (item instanceof Scroll && !item.isIdentified())
+			} else if (item instanceof Scroll && !item.isIdentified()) {
 				GLog.w( Messages.get(UnstableSpellbook.class, "unknown_scroll") );
+			}
 		}
 	};
 }
