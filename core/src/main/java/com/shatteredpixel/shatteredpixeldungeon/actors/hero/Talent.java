@@ -130,7 +130,7 @@ public enum Talent {
 	//Warden T3
 	DURABLE_TIPS(110, 3), BARKSKIN(111, 3), SHIELDING_DEW(112, 3),
 	//Spectral Blades T4
-	SPECTRAL_BLADES_1(113, 4), SPECTRAL_BLADES_2(114, 4), SPECTRAL_BLADES_3(115, 4),
+	FAN_OF_BLADES(113, 4), PROJECTING_BLADES(114, 4), SPIRIT_BLADES(115, 4),
 	//??? T4
 	HUNTRESS_2_1(116, 4), HUNTRESS_2_2(117, 4), HUNTRESS_2_3(118, 4),
 	//??? T4
@@ -149,6 +149,7 @@ public enum Talent {
 	public static class RejuvenatingStepsCooldown extends FlavourBuff{};
 	public static class RejuvenatingStepsFurrow extends CounterBuff{};
 	public static class SeerShotCooldown extends FlavourBuff{};
+	public static class SpiritBladesTracker extends FlavourBuff{};
 
 	int icon;
 	int maxPoints;

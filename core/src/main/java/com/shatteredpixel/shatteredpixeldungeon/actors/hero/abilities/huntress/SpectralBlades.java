@@ -22,68 +22,137 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Callback;
 
-import java.util.HashMap;
+import java.util.HashSet;
 
 public class SpectralBlades extends ArmorAbility {
 
 	@Override
+	protected String targetingPrompt() {
+		return Messages.get(this, "prompt");
+	}
+
+	@Override
 	protected void activate(ClassArmor armor, Hero hero, Integer target) {
-		armor.charge -= 35;
+		if (target == null){
+			return;
+		}
+
+		if (Actor.findChar(target) == hero){
+			GLog.w(Messages.get(this, "self_target"));
+			return;
+		}
+
+		Ballistica b = new Ballistica(hero.pos, target, Ballistica.WONT_STOP);
+		final HashSet<Char> targets = new HashSet<>();
+
+		Char enemy = findChar(b, hero, 2*hero.pointsInTalent(Talent.PROJECTING_BLADES), targets);
+
+		if (enemy == null){
+			GLog.w(Messages.get(this, "no_target"));
+			return;
+		}
+
+		targets.add(enemy);
+
+		if (hero.hasTalent(Talent.FAN_OF_BLADES)){
+			ConeAOE cone = new ConeAOE(b, 30*hero.pointsInTalent(Talent.FAN_OF_BLADES));
+			for (Ballistica ray : cone.rays){
+				Char toAdd = findChar(ray, hero, 2*hero.pointsInTalent(Talent.PROJECTING_BLADES), targets);
+				if (toAdd != null && hero.fieldOfView[toAdd.pos]){
+					targets.add(toAdd);
+				}
+			}
+			while (targets.size() > 1 + hero.pointsInTalent(Talent.FAN_OF_BLADES)){
+				Char furthest = null;
+				for (Char ch : targets){
+					if (furthest == null){
+						furthest = ch;
+					} else if (Dungeon.level.trueDistance(enemy.pos, ch.pos) >
+							Dungeon.level.trueDistance(enemy.pos, furthest.pos)){
+						furthest = ch;
+					}
+				}
+				targets.remove(furthest);
+			}
+		}
+
+		armor.charge -= chargeUse(hero);
 		Item.updateQuickslot();
 
 		Item proto = new Shuriken();
 
-		final HashMap<Callback, Mob> targets = new HashMap<>();
+		final HashSet<Callback> callbacks = new HashSet<>();
 
-		for (Mob mob : Dungeon.level.mobs) {
-			if (Dungeon.level.distance(hero.pos, mob.pos) <= 12
-					&& Dungeon.level.heroFOV[mob.pos]
-					&& mob.alignment != Char.Alignment.ALLY) {
-
-				Callback callback = new Callback() {
-					@Override
-					public void call() {
-						hero.attack( targets.get( this ) );
-						targets.remove( this );
-						if (targets.isEmpty()) {
-							Invisibility.dispel();
-							hero.spendAndNext( hero.attackDelay() );
-						}
+		for (Char ch : targets) {
+			Callback callback = new Callback() {
+				@Override
+				public void call() {
+					float dmgMulti = ch == enemy ? 1f : 0.5f;
+					float accmulti = 1f + 0.25f*hero.pointsInTalent(Talent.PROJECTING_BLADES);
+					if (hero.hasTalent(Talent.SPIRIT_BLADES)){
+						Buff.affect(hero, Talent.SpiritBladesTracker.class, 0f);
 					}
-				};
+					hero.attack( ch, dmgMulti, 0, accmulti );
+					callbacks.remove( this );
+					if (callbacks.isEmpty()) {
+						Invisibility.dispel();
+						hero.spendAndNext( hero.attackDelay() );
+					}
+				}
+			};
 
-				((MissileSprite)hero.sprite.parent.recycle( MissileSprite.class )).
-						reset( hero.sprite, mob.pos, proto, callback );
+			((MissileSprite)hero.sprite.parent.recycle( MissileSprite.class )).
+					reset( hero.sprite, ch.pos, proto, callback );
 
-				targets.put( callback, mob );
+			callbacks.add( callback );
+		}
+
+		hero.sprite.zap( enemy.pos );
+		hero.busy();
+	}
+
+	private Char findChar(Ballistica path, Hero hero, int wallPenetration, HashSet<Char> existingTargets){
+		for (int cell : path.path){
+			Char ch = Actor.findChar(cell);
+			if (ch != null){
+				if (ch == hero || existingTargets.contains(ch)){
+					continue;
+				} else if (ch.alignment != Char.Alignment.ALLY){
+					return ch;
+				} else {
+					return null;
+				}
+			}
+			if (Dungeon.level.solid[cell]){
+				wallPenetration--;
+				if (wallPenetration < 0){
+					return null;
+				}
 			}
 		}
-
-		if (targets.size() == 0) {
-			GLog.w( Messages.get(this, "no_enemies") );
-			return;
-		}
-
-		hero.sprite.zap( hero.pos );
-		hero.busy();
+		return null;
 	}
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.SPECTRAL_BLADES_1, Talent.SPECTRAL_BLADES_2, Talent.SPECTRAL_BLADES_3, Talent.HEROIC_ENERGY};
+		return new Talent[]{Talent.FAN_OF_BLADES, Talent.PROJECTING_BLADES, Talent.SPIRIT_BLADES, Talent.HEROIC_ENERGY};
 	}
 }
