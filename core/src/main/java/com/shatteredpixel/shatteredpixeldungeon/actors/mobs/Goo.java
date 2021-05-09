@@ -96,6 +96,10 @@ public class Goo extends Mob {
 
 		if (Dungeon.level.water[pos] && HP < HT) {
 			HP += healInc;
+
+			LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
+			if (lock != null) lock.removeTime(healInc*2);
+
 			if (Dungeon.level.heroFOV[pos] ){
 				sprite.emitter().burst( Speck.factory( Speck.HEALING ), healInc );
 			}

@@ -48,6 +48,10 @@ public class LockedFloor extends Buff {
 		left += time;
 	}
 
+	public void removeTime(float time){
+		left -= time; //can go negative!
+	}
+
 	public boolean regenOn(){
 		return left >= 1;
 	}
