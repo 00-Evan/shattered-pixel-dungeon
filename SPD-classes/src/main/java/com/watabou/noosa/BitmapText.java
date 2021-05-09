@@ -28,6 +28,7 @@ import com.watabou.glwrap.Quad;
 import com.watabou.glwrap.Vertexbuffer;
 import com.watabou.utils.RectF;
 
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 
 public class BitmapText extends Visual {
@@ -74,7 +75,7 @@ public class BitmapText extends Visual {
 
 		if (dirty) {
 			updateVertices();
-			quads.limit(quads.position());
+			((Buffer)quads).limit(quads.position());
 			if (buffer == null)
 				buffer = new Vertexbuffer(quads);
 			else

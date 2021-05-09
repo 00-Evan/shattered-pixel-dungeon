@@ -23,6 +23,7 @@ package com.watabou.glwrap;
 
 import com.badlogic.gdx.Gdx;
 
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
@@ -74,7 +75,7 @@ public class Vertexbuffer {
 	public void updateGLData(){
 		if (updateStart == -1) return;
 
-		vertices.position(updateStart);
+		((Buffer)vertices).position(updateStart);
 		bind();
 
 		if (updateStart == 0 && updateEnd == vertices.limit()){

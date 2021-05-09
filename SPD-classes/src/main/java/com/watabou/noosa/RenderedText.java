@@ -33,6 +33,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.watabou.glwrap.Matrix;
 import com.watabou.glwrap.Quad;
 
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 import java.util.HashMap;
 
@@ -155,7 +156,7 @@ public class RenderedText extends Image {
 			FloatBuffer toOpenGL;
 			if (buffers.containsKey(count/20)){
 				toOpenGL = buffers.get(count/20);
-				toOpenGL.position(0);
+				((Buffer)toOpenGL).position(0);
 			} else {
 				toOpenGL = Quad.createSet(count / 20);
 				buffers.put(count/20, toOpenGL);
@@ -190,8 +191,8 @@ public class RenderedText extends Image {
 				toOpenGL.put(vertices);
 				
 			}
-			
-			toOpenGL.position(0);
+
+			((Buffer)toOpenGL).position(0);
 			
 			NoosaScript script = NoosaScript.get();
 			

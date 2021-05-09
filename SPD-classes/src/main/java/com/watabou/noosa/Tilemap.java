@@ -28,6 +28,7 @@ import com.watabou.glwrap.Vertexbuffer;
 import com.watabou.utils.Rect;
 import com.watabou.utils.RectF;
 
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 import java.util.Arrays;
 
@@ -136,7 +137,7 @@ public class Tilemap extends Visual {
 
 				bottomRightUpdating = pos + 1;
 
-				quads.position(pos*16);
+				((Buffer)quads).position(pos*16);
 				
 				uv = tileset.get(data[pos]);
 				

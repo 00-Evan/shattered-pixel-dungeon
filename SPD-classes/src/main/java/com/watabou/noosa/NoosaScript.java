@@ -28,6 +28,7 @@ import com.watabou.glwrap.Quad;
 import com.watabou.glwrap.Uniform;
 import com.watabou.glwrap.Vertexbuffer;
 
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
@@ -72,11 +73,11 @@ public class NoosaScript extends Script {
 	}
 
 	public void drawElements( FloatBuffer vertices, ShortBuffer indices, int size ) {
-		
-		vertices.position( 0 );
+
+		((Buffer)vertices).position( 0 );
 		aXY.vertexPointer( 2, 4, vertices );
-		
-		vertices.position( 2 );
+
+		((Buffer)vertices).position( 2 );
 		aUV.vertexPointer( 2, 4, vertices );
 
 		Quad.releaseIndices();
@@ -85,11 +86,11 @@ public class NoosaScript extends Script {
 	}
 
 	public void drawQuad( FloatBuffer vertices ) {
-		
-		vertices.position( 0 );
+
+		((Buffer)vertices).position( 0 );
 		aXY.vertexPointer( 2, 4, vertices );
-		
-		vertices.position( 2 );
+
+		((Buffer)vertices).position( 2 );
 		aUV.vertexPointer( 2, 4, vertices );
 		
 		Gdx.gl20.glDrawElements( Gdx.gl20.GL_TRIANGLES, Quad.SIZE, Gdx.gl20.GL_UNSIGNED_SHORT, 0 );
@@ -114,11 +115,11 @@ public class NoosaScript extends Script {
 		if (size == 0) {
 			return;
 		}
-		
-		vertices.position( 0 );
+
+		((Buffer)vertices).position( 0 );
 		aXY.vertexPointer( 2, 4, vertices );
-		
-		vertices.position( 2 );
+
+		((Buffer)vertices).position( 2 );
 		aUV.vertexPointer( 2, 4, vertices );
 		
 		Gdx.gl20.glDrawElements( Gdx.gl20.GL_TRIANGLES, Quad.SIZE * size, Gdx.gl20.GL_UNSIGNED_SHORT, 0 );

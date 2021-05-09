@@ -27,6 +27,7 @@ import com.watabou.glwrap.Quad;
 import com.watabou.glwrap.Vertexbuffer;
 import com.watabou.utils.RectF;
 
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 
 public class Image extends Visual {
@@ -156,7 +157,7 @@ public class Image extends Visual {
 		super.draw();
 
 		if (dirty) {
-			verticesBuffer.position( 0 );
+			((Buffer)verticesBuffer).position( 0 );
 			verticesBuffer.put( vertices );
 			if (buffer == null)
 				buffer = new Vertexbuffer( verticesBuffer );

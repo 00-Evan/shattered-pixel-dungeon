@@ -43,6 +43,8 @@ import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
+import java.nio.Buffer;
+
 public class ItemSprite extends MovieClip {
 
 	public static final int SIZE	= 16;
@@ -272,7 +274,7 @@ public class ItemSprite extends MovieClip {
 
 		if (renderShadow) {
 			if (dirty) {
-				verticesBuffer.position(0);
+				((Buffer)verticesBuffer).position(0);
 				verticesBuffer.put(vertices);
 				if (buffer == null)
 					buffer = new Vertexbuffer(verticesBuffer);

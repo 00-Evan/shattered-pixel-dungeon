@@ -27,6 +27,7 @@ import com.watabou.glwrap.Quad;
 import com.watabou.glwrap.Vertexbuffer;
 import com.watabou.utils.RectF;
 
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 
 public class NinePatch extends Visual {
@@ -91,7 +92,7 @@ public class NinePatch extends Visual {
 	
 	protected void updateVertices() {
 
-		quads.position( 0 );
+		((Buffer)quads).position( 0 );
 		
 		float right = width - marginRight;
 		float bottom = height - marginBottom;
