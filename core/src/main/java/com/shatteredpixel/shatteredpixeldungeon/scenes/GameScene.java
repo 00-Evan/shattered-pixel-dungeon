@@ -588,6 +588,10 @@ public class GameScene extends PixelScene {
 	//sometimes UI changes can be prompted by the actor thread.
 	// We queue any removed element destruction, rather than destroying them in the actor thread.
 	private ArrayList<Gizmo> toDestroy = new ArrayList<>();
+
+	//the actor thread processes at a maximum of 60 times a second
+	//this caps the speed of resting for higher refresh rate displays
+	private float notifyDelay = 1/60f;
 	
 	@Override
 	public synchronized void update() {
@@ -596,7 +600,9 @@ public class GameScene extends PixelScene {
 		}
 
 		super.update();
-		
+
+		if (notifyDelay > 0) notifyDelay -= Game.elapsed;
+
 		if (!Emitter.freezeEmitters) water.offset( 0, -5 * Game.elapsed );
 
 		if (!Actor.processing() && Dungeon.hero.isAlive()) {
@@ -617,7 +623,8 @@ public class GameScene extends PixelScene {
 				Thread.currentThread().setName("SHPD Render Thread");
 				Actor.keepActorThreadAlive = true;
 				actorThread.start();
-			} else {
+			} else if (notifyDelay <= 0f) {
+				notifyDelay += 1/60f;
 				synchronized (actorThread) {
 					actorThread.notify();
 				}
