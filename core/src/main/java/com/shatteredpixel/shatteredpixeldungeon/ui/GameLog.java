@@ -158,12 +158,6 @@ public class GameLog extends Component implements Signal.Listener<String> {
 		}
 	}
 
-	@Override
-	public void destroy() {
-		GLog.update.remove( this );
-		super.destroy();
-	}
-
 	private static class Entry {
 		public String text;
 		public int color;
