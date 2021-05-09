@@ -383,15 +383,11 @@ public class PrisonBossLevel extends Level {
 				seal();
 				set(pointToCell(tenguCellDoor), Terrain.LOCKED_DOOR);
 				GameScene.updateMap(pointToCell(tenguCellDoor));
-				
-				for (Mob m : mobs){
-					//bring the first ally with you
-					if (m.alignment == Char.Alignment.ALLY && !m.properties().contains(Char.Property.IMMOVABLE)){
-						m.pos = pointToCell(tenguCellDoor); //they should immediately walk out of the door
-						m.sprite.place(m.pos);
-						break;
-					}
-				}
+
+				//moves intelligent allies with the hero, preferring closer pos to cell door
+				int doorPos = pointToCell(tenguCellDoor);
+				Mob.holdAllies(this, doorPos);
+				Mob.restoreAllies(this, Dungeon.hero.pos, doorPos);
 				
 				tengu.state = tengu.HUNTING;
 				tengu.pos = tenguPos;
