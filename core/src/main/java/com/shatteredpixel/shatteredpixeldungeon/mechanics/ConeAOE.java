@@ -35,6 +35,7 @@ public class ConeAOE {
 
 	public Ballistica coreRay;
 
+	public ArrayList<Ballistica> outerRays = new ArrayList<>();
 	public ArrayList<Ballistica> rays = new ArrayList<>();
 	public HashSet<Integer> cells = new HashSet<>();
 
@@ -72,6 +73,7 @@ public class ConeAOE {
 		float initalAngle = PointF.angle(fromP, toP)/PointF.G2R;
 		//want to preserve order so that our collection of rays is going clockwise
 		LinkedHashSet<Integer> targetCells = new LinkedHashSet<>();
+		LinkedHashSet<Integer> outerCells = new LinkedHashSet<>();
 
 		//cast a ray every 0.5 degrees in a clockwise arc, to find cells along the cone's outer arc
 		for (float a = initalAngle+degrees/2f; a >= initalAngle-degrees/2f; a-=0.5f){
@@ -83,6 +85,7 @@ public class ConeAOE {
 					(int)GameMath.gate(0, (int)Math.floor(scan.x), Dungeon.level.width()-1),
 					(int)GameMath.gate(0, (int)Math.floor(scan.y), Dungeon.level.height()-1));
 			targetCells.add(Dungeon.level.pointToCell(scanInt));
+			outerCells.add(Dungeon.level.pointToCell(scanInt));
 			//if the cone is large enough, also cast rays to cells just inside of the outer arc
 			// this helps fill in any holes when casting rays
 			if (circleRadius >= 4) {
@@ -103,6 +106,9 @@ public class ConeAOE {
 			Ballistica ray = new Ballistica(core.sourcePos, c, ballisticaParams);
 			cells.addAll(ray.subPath(1, ray.dist));
 			rays.add(ray);
+			if (outerCells.contains(c)){
+				outerRays.add(ray);
+			}
 		}
 
 	}

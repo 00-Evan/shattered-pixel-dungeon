@@ -151,7 +151,7 @@ public class WandOfFireblast extends DamageWand {
 				Ballistica.STOP_TARGET | Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID);
 
 		//cast to cells at the tip, rather than all cells, better performance.
-		for (Ballistica ray : cone.rays){
+		for (Ballistica ray : cone.outerRays){
 			((MagicMissile)curUser.sprite.parent.recycle( MagicMissile.class )).reset(
 					MagicMissile.FIRE_CONE,
 					curUser.sprite,

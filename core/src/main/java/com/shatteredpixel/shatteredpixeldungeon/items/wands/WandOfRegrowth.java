@@ -243,7 +243,7 @@ public class WandOfRegrowth extends Wand {
 				Ballistica.STOP_SOLID | Ballistica.STOP_TARGET);
 
 		//cast to cells at the tip, rather than all cells, better performance.
-		for (Ballistica ray : cone.rays){
+		for (Ballistica ray : cone.outerRays){
 			((MagicMissile)curUser.sprite.parent.recycle( MagicMissile.class )).reset(
 					MagicMissile.FOLIAGE_CONE,
 					curUser.sprite,
