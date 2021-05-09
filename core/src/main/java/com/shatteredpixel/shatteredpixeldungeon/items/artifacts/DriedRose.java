@@ -887,6 +887,11 @@ public class DriedRose extends Artifact {
 						if (pos == defendingPos) movingToDefendPos = false;
 						return moveSprite( oldPos, pos );
 					} else {
+						//if ghost can't move closer to defending pos, then give up an defend current position
+						if (movingToDefendPos){
+							defendingPos = pos;
+							movingToDefendPos = false;
+						}
 						spend( TICK );
 					}
 					
