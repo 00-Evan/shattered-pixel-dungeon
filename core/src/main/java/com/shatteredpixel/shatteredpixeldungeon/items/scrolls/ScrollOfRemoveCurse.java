@@ -106,8 +106,6 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 			return ((Weapon)item).hasCurseEnchant();
 		} else if (item instanceof Armor){
 			return ((Armor)item).hasCurseGlyph();
-		} else if (item.level() != item.buffedLvl()) {
-			return true;
 		} else {
 			return false;
 		}
