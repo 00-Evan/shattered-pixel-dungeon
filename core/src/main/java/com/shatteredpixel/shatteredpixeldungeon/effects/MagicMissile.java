@@ -22,12 +22,15 @@
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BloodParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.CorrosionParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.RainbowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -70,9 +73,19 @@ public class MagicMissile extends Emitter {
 	public static final int TOXIC_VENT      = 14;
 	public static final int ELMO            = 15;
 
+	public static final int MAGIC_MISS_CONE = 100;
+	public static final int FROST_CONE      = 101;
 	public static final int FIRE_CONE       = 102;
+	public static final int CORROSION_CONE  = 103;
 	public static final int FOLIAGE_CONE    = 104;
 	public static final int FORCE_CONE      = 105;
+	public static final int SHADOW_CONE     = 107;
+	public static final int RAINBOW_CONE    = 108;
+	public static final int EARTH_CONE      = 109;
+	public static final int WARD_CONE       = 110;
+	public static final int PURPLE_CONE     = 111;
+	public static final int SPARK_CONE      = 112;
+	public static final int BLOOD_CONE      = 113;
 	
 	public void reset( int type, int from, int to, Callback callback ) {
 		reset( type,
@@ -175,9 +188,21 @@ public class MagicMissile extends Emitter {
 				pour( ElmoParticle.FACTORY, 0.01f );
 				break;
 
+			case MAGIC_MISS_CONE:
+				size( 10 );
+				pour( WhiteParticle.FACTORY, 0.03f );
+				break;
+			case FROST_CONE:
+				size( 10 );
+				pour( MagicParticle.FACTORY, 0.03f );
+				break;
 			case FIRE_CONE:
 				size( 10 );
 				pour( FlameParticle.FACTORY, 0.03f );
+				break;
+			case CORROSION_CONE:
+				size( 10 );
+				pour( CorrosionParticle.MISSILE, 0.03f );
 				break;
 			case FOLIAGE_CONE:
 				size( 10 );
@@ -186,6 +211,34 @@ public class MagicMissile extends Emitter {
 			case FORCE_CONE:
 				size( 10 );
 				pour( SlowParticle.FACTORY, 0.02f );
+				break;
+			case SHADOW_CONE:
+				size( 10 );
+				pour( ShadowParticle.MISSILE, 0.03f );
+				break;
+			case RAINBOW_CONE:
+				size( 10 );
+				pour( RainbowParticle.BURST, 0.03f );
+				break;
+			case EARTH_CONE:
+				size( 10 );
+				pour( EarthParticle.FACTORY, 0.03f );
+				break;
+			case WARD_CONE:
+				size( 10 );
+				pour( WardParticle.FACTORY, 0.03f );
+				break;
+			case PURPLE_CONE:
+				size( 10 );
+				pour( PurpleParticle.MISSILE, 0.03f );
+				break;
+			case SPARK_CONE:
+				size( 10 );
+				pour( SparkParticle.FACTORY, 0.03f );
+				break;
+			case BLOOD_CONE:
+				size( 10 );
+				pour( BloodParticle.FACTORY, 0.03f );
 				break;
 		}
 
