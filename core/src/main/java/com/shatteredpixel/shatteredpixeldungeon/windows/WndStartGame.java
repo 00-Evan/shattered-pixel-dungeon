@@ -267,7 +267,7 @@ public class WndStartGame extends Window {
 					if (cl == null) return;
 					String msg = Messages.get(cl, cl.name() + "_desc_subclasses");
 					for (HeroSubClass sub : cl.subClasses()){
-						msg += "\n\n" + sub.desc();
+						msg += "\n\n" + sub.shortDesc();
 					}
 					ShatteredPixelDungeon.scene().addToFront(new WndMessage(msg));
 				}

@@ -35,11 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.shatteredpixel.shatteredpixeldungeon.ui.WndInfoArmorAbility;
-import com.shatteredpixel.shatteredpixeldungeon.ui.WndInfoSubclass;
 import com.watabou.noosa.Image;
-
-import javax.swing.Icon;
 
 public class WndChooseAbility extends Window {
 
@@ -69,7 +65,7 @@ public class WndChooseAbility extends Window {
 		float pos = body.bottom() + 3*GAP;
 		for (ArmorAbility ability : hero.heroClass.armorAbilities()) {
 
-			RedButton abilityButton = new RedButton("_" + Messages.titleCase(ability.name()) + ":_ " + ability.desc(), 6){
+			RedButton abilityButton = new RedButton("_" + Messages.titleCase(ability.name()) + ":_ " + ability.shortDesc(), 6){
 				@Override
 				protected void onClick() {
 					GameScene.show(new WndOptions(new Image(hero.heroClass.spritesheet(), 0, 90, 12, 15),

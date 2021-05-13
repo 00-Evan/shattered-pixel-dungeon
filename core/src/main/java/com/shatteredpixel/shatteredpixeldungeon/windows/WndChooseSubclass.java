@@ -34,8 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.shatteredpixel.shatteredpixeldungeon.ui.WndInfoSubclass;
-import com.watabou.noosa.RenderedText;
 
 public class WndChooseSubclass extends Window {
 	
@@ -60,7 +58,7 @@ public class WndChooseSubclass extends Window {
 		float pos = message.bottom() + 3*GAP;
 
 		for (HeroSubClass subCls : hero.heroClass.subClasses()){
-			RedButton btnCls = new RedButton( subCls.desc(), 6 ) {
+			RedButton btnCls = new RedButton( subCls.shortDesc(), 6 ) {
 				@Override
 				protected void onClick() {
 					GameScene.show(new WndOptions(subCls.icon(),

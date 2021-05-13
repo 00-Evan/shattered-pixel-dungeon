@@ -70,6 +70,10 @@ public abstract class ArmorAbility implements Bundlable {
 		return Messages.get(this, "name");
 	}
 
+	public String shortDesc(){
+		return Messages.get(this, "short_desc");
+	}
+
 	public String desc(){
 		return Messages.get(this, "desc");
 	}

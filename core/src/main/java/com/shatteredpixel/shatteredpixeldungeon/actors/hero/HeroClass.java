@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.H
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpectralBlades;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.Mage2;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.Mage3;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.MoltenEarth;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.ElementalBlast;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.Rogue2;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.Rogue3;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.SmokeBomb;
@@ -200,6 +200,10 @@ public enum HeroClass {
 		return Messages.get(HeroClass.class, name());
 	}
 
+	public String desc(){
+		return Messages.get(HeroClass.class, name()+"_desc");
+	}
+
 	public HeroSubClass[] subClasses() {
 		return subClasses;
 	}
@@ -209,7 +213,7 @@ public enum HeroClass {
 			case WARRIOR: default:
 				return new ArmorAbility[]{new HeroicLeap(), new Shockwave(), new Warrior3()};
 			case MAGE:
-				return new ArmorAbility[]{new MoltenEarth(), new Mage2(), new Mage3()};
+				return new ArmorAbility[]{new ElementalBlast(), new Mage2(), new Mage3()};
 			case ROGUE:
 				return new ArmorAbility[]{new SmokeBomb(), new Rogue2(), new Rogue3()};
 			case HUNTRESS:

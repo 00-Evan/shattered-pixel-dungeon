@@ -151,7 +151,7 @@ public class TalentsPane extends ScrollPane {
 
 		private int tier;
 
-		RenderedTextBlock title;
+		public RenderedTextBlock title;
 		ArrayList<TalentButton> buttons;
 
 		ArrayList<Image> stars = new ArrayList<>();
