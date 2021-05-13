@@ -33,11 +33,13 @@ import com.watabou.utils.Random;
 
 public class ArmoredStatue extends Statue {
 
+	protected Armor armor;
+
 	{
 		spriteClass = StatueSprite.class;
+		MIN_DEF=armor.DRMin();
+		MAX_DEF=armor.DRMax();
 	}
-
-	protected Armor armor;
 
 	public ArmoredStatue(){
 		super();
@@ -65,9 +67,10 @@ public class ArmoredStatue extends Statue {
 		armor = (Armor)bundle.get( ARMOR );
 	}
 
+
 	@Override
 	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange( armor.DRMin(), armor.DRMax());
+		return super.drRoll() + Random.NormalIntRange( MIN_DEF, MAX_DEF );
 	}
 
 	@Override

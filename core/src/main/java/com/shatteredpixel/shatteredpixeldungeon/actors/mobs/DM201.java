@@ -37,6 +37,8 @@ public class DM201 extends DM200 {
 		spriteClass = DM201Sprite.class;
 
 		HP = HT = 120;
+		MIN_ATT=15;
+		MAX_ATT=25;
 
 		properties.add(Property.IMMOVABLE);
 
@@ -45,7 +47,7 @@ public class DM201 extends DM200 {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 15, 25 );
+		return Random.NormalIntRange( MIN_ATT, MAX_ATT );
 	}
 
 	private boolean threatened = false;

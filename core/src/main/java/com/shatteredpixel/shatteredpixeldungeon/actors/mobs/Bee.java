@@ -43,7 +43,10 @@ public class Bee extends Mob {
 		viewDistance = 4;
 
 		EXP = 0;
-		
+		MIN_ATT=HT/10;
+		MAX_ATT=HT/4;
+		MIN_DEF=0;
+		MAX_DEF=0;
 		flying = true;
 		state = WANDERING;
 		
@@ -108,10 +111,10 @@ public class Bee extends Mob {
 	public int attackSkill( Char target ) {
 		return defenseSkill;
 	}
-	
+
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( HT / 10, HT / 4 );
+		return Random.NormalIntRange( MIN_ATT, MAX_ATT );
 	}
 	
 	@Override

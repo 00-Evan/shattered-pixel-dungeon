@@ -62,6 +62,10 @@ public class Mimic extends Mob {
 		//mimics are neutral when hidden
 		alignment = Alignment.NEUTRAL;
 		state = PASSIVE;
+		MIN_ATT=1+level;
+		MAX_ATT=2+2*level;
+		MIN_DEF=0;
+		MAX_DEF=1+level/2;
 	}
 	
 	public ArrayList<Item> items;
@@ -191,15 +195,15 @@ public class Mimic extends Mob {
 	@Override
 	public int damageRoll() {
 		if (alignment == Alignment.NEUTRAL){
-			return Random.NormalIntRange( 2 + 2*level, 2 + 2*level);
+			return Random.NormalIntRange( MAX_ATT,MAX_ATT);
 		} else {
-			return Random.NormalIntRange( 1 + level, 2 + 2*level);
+			return Random.NormalIntRange( MIN_ATT, MAX_ATT);
 		}
 	}
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 1 + level/2);
+		return Random.NormalIntRange(MIN_DEF, MAX_DEF);
 	}
 
 	@Override

@@ -54,11 +54,15 @@ public class Golem extends Mob {
 
 		WANDERING = new Wandering();
 		HUNTING = new Hunting();
+		MIN_ATT=25;
+		MAX_ATT=30;
+		MIN_DEF=0;
+		MAX_DEF=12;
 	}
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 25, 30 );
+		return Random.NormalIntRange( MIN_ATT, MAX_ATT );
 	}
 	
 	@Override
@@ -68,7 +72,7 @@ public class Golem extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 12);
+		return Random.NormalIntRange(MIN_DEF, MAX_DEF);
 	}
 
 	@Override

@@ -50,13 +50,16 @@ public class Scorpio extends Mob {
 		
 		loot = Generator.Category.POTION;
 		lootChance = 0.5f;
-
+		MIN_ATT=30;
+		MAX_ATT=48;
+		MIN_DEF=0;
+		MAX_DEF=16;
 		properties.add(Property.DEMONIC);
 	}
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 30, 40 );
+		return Random.NormalIntRange( MIN_ATT, MAX_ATT );
 	}
 	
 	@Override
@@ -66,7 +69,7 @@ public class Scorpio extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 16);
+		return Random.NormalIntRange(MIN_DEF, MAX_DEF);
 	}
 	
 	@Override

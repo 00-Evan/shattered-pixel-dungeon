@@ -62,13 +62,16 @@ public class Succubus extends Mob {
 		
 		loot = Generator.Category.SCROLL;
 		lootChance = 0.33f;
-
+		MIN_ATT=25;
+		MAX_ATT=30;
+		MIN_DEF=0;
+		MAX_DEF=10;
 		properties.add(Property.DEMONIC);
 	}
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 25, 30 );
+		return Random.NormalIntRange( MIN_ATT, MAX_ATT );
 	}
 	
 	@Override
@@ -153,7 +156,7 @@ public class Succubus extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 10);
+		return Random.NormalIntRange(MIN_DEF, MAX_DEF);
 	}
 
 	@Override

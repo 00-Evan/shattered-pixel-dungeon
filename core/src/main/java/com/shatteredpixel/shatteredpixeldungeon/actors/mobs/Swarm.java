@@ -51,7 +51,10 @@ public class Swarm extends Mob {
 		maxLvl = 9;
 		
 		flying = true;
-
+		MIN_ATT=1;
+		MAX_ATT=4;
+		MIN_DEF=0;
+		MAX_DEF=0;
 		loot = new PotionOfHealing();
 		lootChance = 0.1667f; //by default, see rollToDropLoot()
 	}
@@ -77,7 +80,7 @@ public class Swarm extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 1, 4 );
+		return Random.NormalIntRange( MIN_ATT, MAX_ATT );
 	}
 	
 	@Override

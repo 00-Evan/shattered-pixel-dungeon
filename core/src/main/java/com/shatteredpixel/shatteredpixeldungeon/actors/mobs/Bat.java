@@ -40,7 +40,10 @@ public class Bat extends Mob {
 		
 		EXP = 7;
 		maxLvl = 15;
-		
+		MIN_ATT=5;
+		MAX_ATT=18;
+		MIN_DEF=0;
+		MAX_DEF=4;
 		flying = true;
 		
 		loot = new PotionOfHealing();
@@ -49,7 +52,7 @@ public class Bat extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 5, 18 );
+		return Random.NormalIntRange( MIN_ATT, MAX_ATT );
 	}
 	
 	@Override
@@ -59,7 +62,7 @@ public class Bat extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 4);
+		return Random.NormalIntRange(MIN_DEF, MAX_DEF);
 	}
 	
 	@Override

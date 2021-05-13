@@ -53,7 +53,10 @@ public abstract class Elemental extends Mob {
 	{
 		HP = HT = 60;
 		defenseSkill = 20;
-		
+		MIN_ATT=20;
+		MAX_ATT=25;
+		MIN_DEF=0;
+		MAX_DEF=5;
 		EXP = 10;
 		maxLvl = 20;
 		
@@ -62,7 +65,7 @@ public abstract class Elemental extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 20, 25 );
+		return Random.NormalIntRange(MIN_ATT, MAX_ATT );
 	}
 	
 	@Override
@@ -72,7 +75,7 @@ public abstract class Elemental extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 5);
+		return Random.NormalIntRange(MIN_DEF, MAX_DEF);
 	}
 	
 	private int rangedCooldown = Random.NormalIntRange( 3, 5 );

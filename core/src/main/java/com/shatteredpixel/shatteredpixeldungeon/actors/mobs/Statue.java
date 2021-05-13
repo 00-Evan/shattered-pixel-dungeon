@@ -59,6 +59,10 @@ public class Statue extends Mob {
 		
 		HP = HT = 15 + Dungeon.depth * 5;
 		defenseSkill = 4 + Dungeon.depth;
+		MIN_ATT=weapon.damageRoll(this);
+		MAX_ATT=weapon.damageRoll(this);
+		MIN_DEF=0;
+		MAX_DEF=Dungeon.depth+weapon.defenseFactor(this);
 	}
 	
 	private static final String WEAPON	= "weapon";
@@ -105,7 +109,7 @@ public class Statue extends Mob {
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, Dungeon.depth + weapon.defenseFactor(this));
+		return Random.NormalIntRange(0, MAX_DEF);
 	}
 	
 	@Override

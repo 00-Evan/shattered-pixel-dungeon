@@ -56,7 +56,9 @@ public class Necromancer extends Mob {
 		lootChance = 0.2f; //see createloot
 		
 		properties.add(Property.UNDEAD);
-		
+
+		MIN_DEF=0;
+		MAX_DEF=5;
 		HUNTING = new Hunting();
 	}
 	
@@ -79,7 +81,7 @@ public class Necromancer extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 5);
+		return Random.NormalIntRange(MIN_DEF, MAX_DEF);
 	}
 	
 	@Override

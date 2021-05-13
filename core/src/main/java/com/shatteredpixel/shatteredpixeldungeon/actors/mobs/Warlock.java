@@ -53,13 +53,16 @@ public class Warlock extends Mob implements Callback {
 		
 		loot = Generator.Category.POTION;
 		lootChance = 0.5f;
-
+		MIN_ATT=12;
+		MAX_ATT=18;
+		MIN_DEF=0;
+		MAX_DEF=8;
 		properties.add(Property.UNDEAD);
 	}
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 12, 18 );
+		return Random.NormalIntRange( MIN_ATT, MAX_ATT );
 	}
 	
 	@Override
@@ -69,7 +72,7 @@ public class Warlock extends Mob implements Callback {
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 8);
+		return Random.NormalIntRange(MIN_DEF, MAX_DEF);
 	}
 	
 	@Override

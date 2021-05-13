@@ -43,6 +43,8 @@ public class FetidRat extends Rat {
 
 		state = WANDERING;
 
+		MIN_DEF=0;
+		MAX_DEF=2;
 		properties.add(Property.MINIBOSS);
 		properties.add(Property.DEMONIC);
 	}
@@ -54,7 +56,7 @@ public class FetidRat extends Rat {
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 2);
+		return Random.NormalIntRange(MIN_DEF, MAX_DEF);
 	}
 
 	@Override

@@ -54,7 +54,10 @@ public class Thief extends Mob {
 
 		loot = Random.oneOf(Generator.Category.RING, Generator.Category.ARTIFACT);
 		lootChance = 0.03f; //initially, see rollToDropLoot
-
+		MIN_ATT=1;
+		MAX_ATT=10;
+		MIN_DEF=0;
+		MAX_DEF=3;
 		WANDERING = new Wandering();
 		FLEEING = new Fleeing();
 
@@ -83,7 +86,7 @@ public class Thief extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 1, 10 );
+		return Random.NormalIntRange( MIN_ATT, MAX_ATT );
 	}
 
 	@Override
@@ -118,7 +121,7 @@ public class Thief extends Mob {
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 3);
+		return Random.NormalIntRange(MIN_DEF, MAX_DEF);
 	}
 
 	@Override

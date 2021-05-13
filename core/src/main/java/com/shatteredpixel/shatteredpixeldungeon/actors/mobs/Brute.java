@@ -45,18 +45,21 @@ public class Brute extends Mob {
 		
 		EXP = 8;
 		maxLvl = 16;
-		
+		MIN_ATT=5;
+		MAX_ATT=25;
+		MIN_DEF=0;
+		MAX_DEF=8;
 		loot = Gold.class;
 		lootChance = 0.5f;
 	}
 	
 	protected boolean hasRaged = false;
-	
+
 	@Override
 	public int damageRoll() {
 		return buff(BruteRage.class) != null ?
-			Random.NormalIntRange( 15, 40 ) :
-			Random.NormalIntRange( 5, 25 );
+			Random.NormalIntRange( MIN_ATT+10, MAX_ATT + 15 ) :
+			Random.NormalIntRange( MIN_ATT, MAX_ATT );
 	}
 	
 	@Override

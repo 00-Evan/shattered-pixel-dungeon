@@ -57,13 +57,16 @@ public class Guard extends Mob {
 		lootChance = 0.2f; //by default, see rollToDropLoot()
 
 		properties.add(Property.UNDEAD);
-		
+		MIN_ATT=4;
+		MAX_ATT=12;
+		MIN_DEF=0;
+		MAX_DEF=7;
 		HUNTING = new Hunting();
 	}
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange(4, 12);
+		return Random.NormalIntRange(MIN_ATT, MAX_ATT);
 	}
 
 	private boolean chain(int target){
@@ -132,7 +135,7 @@ public class Guard extends Mob {
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 7);
+		return Random.NormalIntRange(MIN_DEF, MAX_DEF);
 	}
 
 	@Override

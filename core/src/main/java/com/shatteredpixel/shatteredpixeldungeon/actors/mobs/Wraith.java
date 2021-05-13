@@ -47,7 +47,10 @@ public class Wraith extends Mob {
 		maxLvl = -2;
 		
 		flying = true;
-
+		MIN_ATT=1+level/2;
+		MAX_ATT=2+level;
+		MIN_DEF=0;
+		MAX_DEF=0;
 		properties.add(Property.UNDEAD);
 	}
 	
@@ -68,7 +71,7 @@ public class Wraith extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 1 + level/2, 2 + level );
+		return Random.NormalIntRange( MIN_ATT, MAX_ATT );
 	}
 	
 	@Override

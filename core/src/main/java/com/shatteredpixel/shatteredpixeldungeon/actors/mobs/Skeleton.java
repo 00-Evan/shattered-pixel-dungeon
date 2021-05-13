@@ -47,14 +47,17 @@ public class Skeleton extends Mob {
 
 		loot = Generator.Category.WEAPON;
 		lootChance = 0.1667f; //by default, see rollToDropLoot()
-
+		MIN_ATT=2;
+		MAX_ATT=10;
+		MIN_DEF=0;
+		MAX_DEF=5;
 		properties.add(Property.UNDEAD);
 		properties.add(Property.INORGANIC);
 	}
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 2, 10 );
+		return Random.NormalIntRange( MIN_ATT, MAX_ATT );
 	}
 	
 	@Override
@@ -108,7 +111,7 @@ public class Skeleton extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 5);
+		return Random.NormalIntRange(MIN_DEF, MAX_DEF);
 	}
 
 }

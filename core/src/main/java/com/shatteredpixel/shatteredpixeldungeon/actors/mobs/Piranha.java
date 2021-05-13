@@ -60,6 +60,10 @@ public class Piranha extends Mob {
 		
 		HP = HT = 10 + Dungeon.depth * 5;
 		defenseSkill = 10 + Dungeon.depth * 2;
+		MIN_ATT=Dungeon.depth;
+		MAX_ATT=Dungeon.depth*2+4;
+		MIN_DEF=0;
+		MAX_DEF=Dungeon.depth;
 	}
 	
 	@Override
@@ -75,7 +79,7 @@ public class Piranha extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( Dungeon.depth, 4 + Dungeon.depth * 2 );
+		return Random.NormalIntRange( MIN_ATT, MAX_ATT );
 	}
 	
 	@Override
@@ -85,7 +89,7 @@ public class Piranha extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, Dungeon.depth);
+		return Random.NormalIntRange(MIN_DEF,MAX_DEF);
 	}
 
 	@Override

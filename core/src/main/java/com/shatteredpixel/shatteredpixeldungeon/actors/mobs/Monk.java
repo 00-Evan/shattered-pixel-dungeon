@@ -47,13 +47,16 @@ public class Monk extends Mob {
 		
 		loot = new Food();
 		lootChance = 0.083f;
-
+		MIN_ATT=12;
+		MAX_ATT=25;
+		MIN_DEF=0;
+		MAX_DEF=2;
 		properties.add(Property.UNDEAD);
 	}
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 12, 25 );
+		return Random.NormalIntRange( MIN_ATT, MAX_ATT );
 	}
 	
 	@Override
@@ -68,7 +71,7 @@ public class Monk extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 2);
+		return Random.NormalIntRange(MIN_DEF, MAX_DEF);
 	}
 	
 	@Override

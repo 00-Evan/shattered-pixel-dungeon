@@ -46,14 +46,17 @@ public abstract class Shaman extends Mob {
 		
 		EXP = 8;
 		maxLvl = 16;
-		
+		MIN_ATT=5;
+		MAX_ATT=10;
+		MIN_DEF=0;
+		MAX_DEF=6;
 		loot = Generator.Category.WAND;
 		lootChance = 0.03f; //initially, see rollToDropLoot
 	}
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 5, 10 );
+		return Random.NormalIntRange( MIN_ATT, MAX_ATT );
 	}
 	
 	@Override
@@ -63,7 +66,7 @@ public abstract class Shaman extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 6);
+		return Random.NormalIntRange(MIN_DEF, MAX_DEF);
 	}
 	
 	@Override

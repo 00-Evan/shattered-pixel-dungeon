@@ -32,13 +32,16 @@ public class Rat extends Mob {
 		
 		HP = HT = 8;
 		defenseSkill = 2;
-		
+		MIN_ATT=1;
+		MAX_ATT=4;
+		MIN_DEF=0;
+		MAX_DEF=1;
 		maxLvl = 5;
 	}
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 1, 4 );
+		return Random.NormalIntRange( MIN_ATT, MAX_ATT );
 	}
 	
 	@Override
@@ -48,6 +51,6 @@ public class Rat extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 1);
+		return Random.NormalIntRange(MIN_DEF, MAX_DEF);
 	}
 }

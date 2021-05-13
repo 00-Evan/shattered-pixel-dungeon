@@ -49,13 +49,16 @@ public class Spinner extends Mob {
 
 		loot = new MysteryMeat();
 		lootChance = 0.125f;
-
+		MIN_ATT=10;
+		MAX_ATT=20;
+		MIN_DEF=0;
+		MAX_DEF=6;
 		FLEEING = new Fleeing();
 	}
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange(10, 20);
+		return Random.NormalIntRange(MIN_ATT, MAX_ATT);
 	}
 
 	@Override
@@ -65,7 +68,7 @@ public class Spinner extends Mob {
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 6);
+		return Random.NormalIntRange(MIN_DEF, MAX_DEF);
 	}
 
 	private int webCoolDown = 0;

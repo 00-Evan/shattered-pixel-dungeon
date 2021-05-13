@@ -43,7 +43,10 @@ public class DM200 extends Mob {
 
 		EXP = 9;
 		maxLvl = 17;
-
+		MIN_ATT=10;
+		MAX_ATT=25;
+		MIN_DEF=0;
+		MAX_DEF=8;
 		loot = Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR);
 		lootChance = 0.125f; //initially, see rollToDropLoot
 
@@ -55,7 +58,7 @@ public class DM200 extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 10, 25 );
+		return Random.NormalIntRange( MIN_ATT, MAX_ATT );
 	}
 
 	@Override
@@ -65,7 +68,7 @@ public class DM200 extends Mob {
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 8);
+		return Random.NormalIntRange(MIN_DEF, MAX_DEF);
 	}
 
 	@Override

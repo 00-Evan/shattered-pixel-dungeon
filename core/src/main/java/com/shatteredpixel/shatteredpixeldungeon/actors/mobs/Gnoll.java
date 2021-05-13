@@ -36,14 +36,17 @@ public class Gnoll extends Mob {
 		
 		EXP = 2;
 		maxLvl = 8;
-		
+		MIN_ATT=1;
+		MAX_ATT=6;
+		MIN_DEF=0;
+		MAX_DEF=2;
 		loot = Gold.class;
 		lootChance = 0.5f;
 	}
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 1, 6 );
+		return Random.NormalIntRange( MIN_ATT, MAX_ATT );
 	}
 	
 	@Override
@@ -53,6 +56,6 @@ public class Gnoll extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 2);
+		return Random.NormalIntRange(MIN_DEF, MAX_DEF);
 	}
 }

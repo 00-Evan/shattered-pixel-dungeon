@@ -40,13 +40,16 @@ public class Slime extends Mob {
 		
 		EXP = 4;
 		maxLvl = 9;
-		
+		MIN_ATT=2;
+		MAX_ATT=5;
+		MIN_DEF=0;
+		MAX_DEF=0;
 		lootChance = 0.2f; //by default, see rollToDropLoot()
 	}
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 2, 5 );
+		return Random.NormalIntRange( MIN_ATT, MAX_ATT );
 	}
 	
 	@Override

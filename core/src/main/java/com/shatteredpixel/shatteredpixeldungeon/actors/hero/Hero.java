@@ -21,6 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
+import com.shatteredpixel.shatteredpixeldungeon.capstone.GetData;
+import com.shatteredpixel.shatteredpixeldungeon.capstone.Data;
+// capstone data 받아오기 위해 import
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
@@ -136,7 +139,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 
-public class Hero extends Char {
+public class Hero extends Char implements GetData {
 
 	{
 		actPriority = HERO_PRIO;
@@ -180,6 +183,8 @@ public class Hero extends Char {
 	public int HTBoost = 0;
 	
 	private ArrayList<Mob> visibleEnemies;
+
+	private int totalDamage = 0; // Data에 총 입은 데미지 계산을 위한 변수
 
 	//This list is maintained so that some logic checks can be skipped
 	// for enemies we know we aren't seeing normally, resultign in better performance
@@ -275,6 +280,13 @@ public class Hero extends Char {
 		STR = bundle.getInt( STRENGTH );
 
 		belongings.restoreFromBundle( bundle );
+	}
+
+	public void storeInData( Data data ){
+		data.storeHP(HP);
+		data.storeHT(HT);
+		data.storeDamaged(totalDamage);
+		data.storeEarnEXP(exp);
 	}
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
@@ -1177,6 +1189,7 @@ public class Hero extends Char {
 		super.damage( dmg, src );
 		int postHP = HP + shielding();
 		int effectiveDamage = preHP - postHP;
+		totalDamage += effectiveDamage; // 총 데미지 계산
 
 		//flash red when hit for serious damage.
 		float percentDMG = effectiveDamage / (float)preHP; //percent of current HP that was taken

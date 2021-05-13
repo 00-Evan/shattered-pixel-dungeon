@@ -52,7 +52,10 @@ public class Eye extends Mob {
 		
 		EXP = 13;
 		maxLvl = 26;
-		
+		MIN_ATT=20;
+		MAX_ATT=30;
+		MIN_DEF=0;
+		MAX_DEF=10;
 		flying = true;
 
 		HUNTING = new Hunting();
@@ -65,7 +68,7 @@ public class Eye extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange(20, 30);
+		return Random.NormalIntRange(MIN_ATT, MAX_ATT);
 	}
 
 	@Override
@@ -75,7 +78,7 @@ public class Eye extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 10);
+		return Random.NormalIntRange(MIN_DEF, MAX_DEF);
 	}
 	
 	private Ballistica beam;

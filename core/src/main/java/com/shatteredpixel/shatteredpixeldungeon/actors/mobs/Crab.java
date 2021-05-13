@@ -40,11 +40,15 @@ public class Crab extends Mob {
 		
 		loot = new MysteryMeat();
 		lootChance = 0.167f;
+		MIN_ATT=1;
+		MAX_ATT=7;
+		MIN_DEF=0;
+		MAX_DEF=4;
 	}
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 1, 7 );
+		return Random.NormalIntRange( MIN_ATT, MAX_ATT );
 	}
 	
 	@Override
@@ -54,6 +58,6 @@ public class Crab extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 4);
+		return Random.NormalIntRange(MIN_DEF, MAX_DEF);
 	}
 }

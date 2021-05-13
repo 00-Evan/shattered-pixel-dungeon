@@ -45,7 +45,10 @@ public class RotLasher extends Mob {
 		lootChance = 1f;
 
 		state = WANDERING = new Waiting();
-
+		MIN_ATT=8;
+		MAX_ATT=15;
+		MIN_DEF=0;
+		MAX_DEF=8;
 		properties.add(Property.IMMOVABLE);
 		properties.add(Property.MINIBOSS);
 	}
@@ -92,7 +95,7 @@ public class RotLasher extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange(8, 15);
+		return Random.NormalIntRange(MIN_ATT, MAX_ATT);
 	}
 
 	@Override
@@ -102,7 +105,7 @@ public class RotLasher extends Mob {
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 8);
+		return Random.NormalIntRange(MIN_DEF, MAX_DEF);
 	}
 	
 	{

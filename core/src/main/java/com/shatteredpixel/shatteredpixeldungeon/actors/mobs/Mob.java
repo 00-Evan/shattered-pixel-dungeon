@@ -100,7 +100,12 @@ public abstract class Mob extends Char {
 	protected int target = -1;
 	
 	protected int defenseSkill = 0;
-	
+
+	public int MAX_ATT = 0;
+	public int MIN_ATT = 0;
+	public int MAX_DEF = 0;
+	public int MIN_DEF = 0;
+
 	public int EXP = 1;
 	public int maxLvl = Hero.MAX_LEVEL;
 	

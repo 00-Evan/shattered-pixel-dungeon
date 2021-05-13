@@ -55,13 +55,16 @@ public class Ghoul extends Mob {
 
 		loot = Gold.class;
 		lootChance = 0.2f;
-		
+		MIN_ATT=16;
+		MAX_ATT=22;
+		MIN_DEF=0;
+		MAX_DEF=4;
 		properties.add(Property.UNDEAD);
 	}
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 16, 22 );
+		return Random.NormalIntRange( MIN_ATT, MAX_ATT );
 	}
 
 	@Override
@@ -71,7 +74,7 @@ public class Ghoul extends Mob {
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 4);
+		return Random.NormalIntRange(MIN_DEF, MAX_DEF);
 	}
 
 	@Override

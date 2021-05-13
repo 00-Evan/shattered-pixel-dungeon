@@ -48,6 +48,8 @@ public class RotHeart extends Mob {
 
 		state = PASSIVE;
 
+		MIN_DEF=0;
+		MAX_DEF=5;
 		properties.add(Property.IMMOVABLE);
 		properties.add(Property.MINIBOSS);
 	}

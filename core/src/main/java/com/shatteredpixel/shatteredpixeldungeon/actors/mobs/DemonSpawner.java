@@ -56,7 +56,8 @@ public class DemonSpawner extends Mob {
 
 		loot = PotionOfHealing.class;
 		lootChance = 1f;
-
+		MIN_DEF=0;
+		MAX_DEF=12;
 		properties.add(Property.IMMOVABLE);
 		properties.add(Property.MINIBOSS);
 		properties.add(Property.DEMONIC);
@@ -64,7 +65,7 @@ public class DemonSpawner extends Mob {
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 12);
+		return Random.NormalIntRange(MIN_DEF, MAX_DEF);
 	}
 
 	@Override

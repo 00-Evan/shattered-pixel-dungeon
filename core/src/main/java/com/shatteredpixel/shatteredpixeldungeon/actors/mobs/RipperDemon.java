@@ -56,7 +56,10 @@ public class RipperDemon extends Mob {
 		HUNTING = new Hunting();
 
 		baseSpeed = 1f;
-
+		MIN_ATT=15;
+		MAX_ATT=25;
+		MIN_DEF=0;
+		MAX_DEF=4;
 		properties.add(Property.DEMONIC);
 		properties.add(Property.UNDEAD);
 	}
@@ -68,7 +71,7 @@ public class RipperDemon extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 15, 25 );
+		return Random.NormalIntRange( MIN_ATT, MAX_ATT );
 	}
 
 	@Override
@@ -83,7 +86,7 @@ public class RipperDemon extends Mob {
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 4);
+		return Random.NormalIntRange(MIN_DEF, MAX_DEF);
 	}
 
 	private static final String LAST_ENEMY_POS = "last_enemy_pos";
