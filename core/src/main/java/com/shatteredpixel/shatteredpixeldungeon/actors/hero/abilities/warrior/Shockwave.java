@@ -101,7 +101,8 @@ public class Shockwave extends ArmorAbility {
 
 							Char ch = Actor.findChar(cell);
 							if (ch != null && ch.alignment != hero.alignment){
-								int damage = Random.NormalIntRange(hero.STR()/2, hero.STR());
+								int scalingStr = hero.STR()-10;
+								int damage = Random.NormalIntRange(5 + scalingStr, 10 + 2*scalingStr);
 								damage = Math.round(damage * (1f + 0.15f*hero.pointsInTalent(Talent.SHOCK_FORCE)));
 								damage -= ch.drRoll();
 
