@@ -232,7 +232,11 @@ public class WandOfWarding extends Wand {
 
 		}
 
-		private void wandHeal( int wandLevel ){
+		public void wandHeal( int wandLevel ){
+			wandHeal( wandLevel, 1f );
+		}
+
+		public void wandHeal( int wandLevel, float healFactor ){
 			if (this.wandLevel < wandLevel){
 				this.wandLevel = wandLevel;
 			}
@@ -242,13 +246,13 @@ public class WandOfWarding extends Wand {
 				default:
 					return;
 				case 4:
-					heal = 9;
+					heal = Math.round(9 * healFactor);
 					break;
 				case 5:
-					heal = 12;
+					heal = Math.round(12 * healFactor);
 					break;
 				case 6:
-					heal = 16;
+					heal = Math.round(16 * healFactor);
 					break;
 			}
 
