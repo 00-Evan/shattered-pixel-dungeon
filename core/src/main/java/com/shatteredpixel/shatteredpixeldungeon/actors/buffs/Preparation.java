@@ -84,10 +84,10 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 
 		//1st index is prep level, 2nd is talent level
 		private static final int[][] blinkRanges = new int[][]{
-				{1, 2, 3, 4},
-				{1, 3, 4, 6},
-				{2, 4, 6, 8},
-				{2, 5, 7, 10}
+				{1, 1, 2, 2},
+				{2, 3, 4, 5},
+				{3, 4, 6, 7},
+				{4, 6, 8, 10}
 		};
 
 		public int blinkDistance(){
