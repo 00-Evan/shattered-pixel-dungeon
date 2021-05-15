@@ -235,7 +235,7 @@ public class WndHeroInfo extends WndTabbed {
 			message.maxWidth((int)width);
 			message.setPos(0, title.bottom()+4*MARGIN);
 
-			talentPane.setRect(0, message.bottom() + MARGIN, width, height-message.bottom());
+			talentPane.setRect(0, message.bottom() + 3*MARGIN, width, height-message.bottom()-3*MARGIN);
 		}
 	}
 
