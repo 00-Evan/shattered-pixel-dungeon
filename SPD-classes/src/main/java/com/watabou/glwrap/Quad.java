@@ -98,7 +98,7 @@ public class Quad {
 			}
 			
 			indices.put( values );
-			indices.position( 0 );
+			((Buffer)indices).position( 0 );
 		}
 		
 		return indices;
