@@ -324,6 +324,7 @@ public class TalismanOfForesight extends Artifact {
 		public void charge(int boost){
 			if (!cursed) {
 				charge = Math.min((charge + boost), chargeCap);
+				updateQuickslot();
 			}
 		}
 
