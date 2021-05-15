@@ -22,8 +22,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 
 public enum HeroSubClass {
@@ -51,7 +54,20 @@ public enum HeroSubClass {
 	}
 
 	public String desc() {
-		return Messages.get(this, name()+"_desc");
+		//Include the staff effect description in the battlemage's desc if possible
+		if (this == BATTLEMAGE){
+			String desc = Messages.get(this, name() + "_desc");
+			if (Game.scene() instanceof GameScene){
+				MagesStaff staff = Dungeon.hero.belongings.getItem(MagesStaff.class);
+				if (staff != null && staff.wandClass() != null){
+					desc += "\n\n" + Messages.get(staff.wandClass(), "bmage_desc");
+					desc = desc.replaceAll("_", "");
+				}
+			}
+			return desc;
+		} else {
+			return Messages.get(this, name() + "_desc");
+		}
 	}
 
 	//FIXME shouldn't hardcode these, probably want to just have a BuffIcon class
