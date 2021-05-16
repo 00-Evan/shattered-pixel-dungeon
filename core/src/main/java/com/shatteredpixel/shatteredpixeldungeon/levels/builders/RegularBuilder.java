@@ -60,8 +60,8 @@ public abstract class RegularBuilder extends Builder {
 		return this;
 	}
 	
-	protected float[] pathTunnelChances = new float[]{1, 3, 1};
-	protected float[] branchTunnelChances = new float[]{2, 2, 1};
+	protected float[] pathTunnelChances = new float[]{2, 2, 1};
+	protected float[] branchTunnelChances = new float[]{1, 1, 0};
 	
 	public RegularBuilder setTunnelLength( float[] path, float[] branch){
 		pathTunnelChances = path;

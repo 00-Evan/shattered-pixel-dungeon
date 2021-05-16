@@ -56,4 +56,11 @@ public class ExitRoom extends StandardRoom {
 	public boolean canPlaceCharacter(Point p, Level l) {
 		return super.canPlaceCharacter(p, l) && l.pointToCell(p) != l.exit;
 	}
+
+	@Override
+	public boolean connect(Room room) {
+		//cannot connect to entrance, otherwise works normally
+		if (room instanceof EntranceRoom)   return false;
+		else                            return super.connect(room);
+	}
 }

@@ -94,5 +94,12 @@ public class EntranceRoom extends StandardRoom {
 		Random.popGenerator();
 
 	}
+
+	@Override
+	public boolean connect(Room room) {
+		//cannot connect to exit, otherwise works normally
+		if (room instanceof ExitRoom)   return false;
+		else                            return super.connect(room);
+	}
 	
 }
