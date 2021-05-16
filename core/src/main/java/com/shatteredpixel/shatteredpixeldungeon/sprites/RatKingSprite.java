@@ -22,6 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
 import com.watabou.noosa.TextureFilm;
 
 import java.util.Calendar;
@@ -33,29 +36,49 @@ public class RatKingSprite extends MobSprite {
 	public RatKingSprite() {
 		super();
 
+		resetAnims();
+	}
+
+	public void resetAnims(){
+
 		final Calendar calendar = Calendar.getInstance();
 		//once a year the rat king feels a bit festive!
 		festive = (calendar.get(Calendar.MONTH) == Calendar.DECEMBER
 				&& calendar.get(Calendar.WEEK_OF_MONTH) > 2);
 
-		final int c = festive ? 8 : 0;
-		
+		int c = festive ? 8 : 0;
+
+		if (Dungeon.hero != null && Dungeon.hero.armorAbility instanceof Ratmogrify){
+			c += 16;
+			if (parent != null) aura(0xFFFF00);
+		}
+
 		texture( Assets.Sprites.RATKING );
-		
+
 		TextureFilm frames = new TextureFilm( texture, 16, 17 );
-		
+
 		idle = new Animation( 2, true );
 		idle.frames( frames, c+0, c+0, c+0, c+1 );
-		
+
 		run = new Animation( 10, true );
 		run.frames( frames, c+2, c+3, c+4, c+5, c+6 );
-		
+
 		attack = new Animation( 15, false );
 		attack.frames( frames, c+0 );
-		
+
 		die = new Animation( 10, false );
 		die.frames( frames, c+0 );
-		
+
 		play( idle );
+
+	}
+
+
+	@Override
+	public void link(Char ch) {
+		super.link(ch);
+		if (Dungeon.hero != null && Dungeon.hero.armorAbility instanceof Ratmogrify){
+			aura(0xFFFF00);
+		}
 	}
 }

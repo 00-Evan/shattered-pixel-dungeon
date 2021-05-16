@@ -27,18 +27,18 @@ import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.Huntress2;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.Huntress3;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesStrength;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpiritHawk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpectralBlades;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.Mage2;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.Mage3;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.WildMagic;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.MagicalChains;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.ElementalBlast;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.Rogue2;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.Rogue3;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.DeathMark;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.ShadowClone;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.SmokeBomb;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.HeroicLeap;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Shockwave;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Warrior3;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
@@ -211,13 +211,13 @@ public enum HeroClass {
 	public ArmorAbility[] armorAbilities(){
 		switch (this) {
 			case WARRIOR: default:
-				return new ArmorAbility[]{new HeroicLeap(), new Shockwave(), new Warrior3()};
+				return new ArmorAbility[]{new HeroicLeap(), new Shockwave(), new Endure()};
 			case MAGE:
-				return new ArmorAbility[]{new ElementalBlast(), new Mage2(), new Mage3()};
+				return new ArmorAbility[]{new ElementalBlast(), new WildMagic(), new MagicalChains()};
 			case ROGUE:
-				return new ArmorAbility[]{new SmokeBomb(), new Rogue2(), new Rogue3()};
+				return new ArmorAbility[]{new SmokeBomb(), new DeathMark(), new ShadowClone()};
 			case HUNTRESS:
-				return new ArmorAbility[]{new SpectralBlades(), new Huntress2(), new Huntress3()};
+				return new ArmorAbility[]{new SpectralBlades(), new NaturesStrength(), new SpiritHawk()};
 		}
 	}
 

@@ -65,7 +65,7 @@ public class WndChooseAbility extends Window {
 		float pos = body.bottom() + 3*GAP;
 		for (ArmorAbility ability : hero.heroClass.armorAbilities()) {
 
-			RedButton abilityButton = new RedButton("_" + Messages.titleCase(ability.name()) + ":_ " + ability.shortDesc(), 6){
+			RedButton abilityButton = new RedButton(ability.shortDesc(), 6){
 				@Override
 				protected void onClick() {
 					GameScene.show(new WndOptions(new Image(hero.heroClass.spritesheet(), 0, 90, 12, 15),

@@ -24,8 +24,14 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
+import com.shatteredpixel.shatteredpixeldungeon.items.KingsCrown;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RatKingSprite;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.watabou.noosa.Game;
+import com.watabou.utils.Callback;
 
 public class RatKing extends NPC {
 
@@ -103,10 +109,41 @@ public class RatKing extends NPC {
 			return super.interact(c);
 		}
 
+		KingsCrown crown = Dungeon.hero.belongings.getItem(KingsCrown.class);
 		if (state == SLEEPING) {
 			notice();
 			yell( Messages.get(this, "not_sleeping") );
 			state = WANDERING;
+		} else if (crown != null){
+			if (Dungeon.hero.belongings.armor == null){
+				yell( Messages.get(RatKing.class, "crown_clothes") );
+			} else {
+				Game.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						GameScene.show(new WndOptions(
+								sprite(),
+								Messages.titleCase(name()),
+								Messages.get(RatKing.class, "crown_desc"),
+								Messages.get(RatKing.class, "crown_yes"),
+								Messages.get(RatKing.class, "crown_no")
+						){
+							@Override
+							protected void onSelect(int index) {
+								if (index == 0){
+									crown.upgradeArmor(Dungeon.hero, Dungeon.hero.belongings.armor, new Ratmogrify());
+									((RatKingSprite)sprite).resetAnims();
+									yell(Messages.get(RatKing.class, "crown_thankyou"));
+								} else {
+									yell(Messages.get(RatKing.class, "crown_fine"));
+								}
+							}
+						});
+					}
+				});
+			}
+		} else if (Dungeon.hero.armorAbility instanceof Ratmogrify) {
+			yell( Messages.get(RatKing.class, "crown_after") );
 		} else {
 			yell( Messages.get(this, "what_is_it") );
 		}

@@ -19,14 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue;
+package com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 
-public class Rogue2 extends ArmorAbility {
+public class NaturesStrength extends ArmorAbility {
 
 	@Override
 	protected void activate(ClassArmor armor, Hero hero, Integer target) {
@@ -35,6 +35,6 @@ public class Rogue2 extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.ROGUE_2_1, Talent.ROGUE_2_2, Talent.ROGUE_2_3, Talent.HEROIC_ENERGY};
+		return new Talent[]{Talent.HUNTRESS_2_1, Talent.HUNTRESS_2_2, Talent.HUNTRESS_2_3, Talent.HEROIC_ENERGY};
 	}
 }

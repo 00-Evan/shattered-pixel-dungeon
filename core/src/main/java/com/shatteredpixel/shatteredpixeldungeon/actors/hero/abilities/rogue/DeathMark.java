@@ -26,7 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 
-public class Rogue3 extends ArmorAbility {
+public class DeathMark extends ArmorAbility {
 
 	@Override
 	protected void activate(ClassArmor armor, Hero hero, Integer target) {
@@ -35,6 +35,6 @@ public class Rogue3 extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.ROGUE_3_1, Talent.ROGUE_3_2, Talent.ROGUE_3_3, Talent.HEROIC_ENERGY};
+		return new Talent[]{Talent.ROGUE_2_1, Talent.ROGUE_2_2, Talent.ROGUE_2_3, Talent.HEROIC_ENERGY};
 	}
 }

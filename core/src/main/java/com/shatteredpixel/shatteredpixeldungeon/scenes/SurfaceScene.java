@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
@@ -75,7 +76,9 @@ public class SurfaceScene extends PixelScene {
 
 	private static final int NSTARS		= 100;
 	private static final int NCLOUDS	= 5;
-	
+
+	private Pet[] rats;
+
 	private Camera viewport;
 	@Override
 	public void create() {
@@ -142,7 +145,20 @@ public class SurfaceScene extends PixelScene {
 		a.x = (SKY_WIDTH - a.width) / 2;
 		a.y = SKY_HEIGHT - a.height;
 		align(a);
-		
+
+		if (Dungeon.hero.armorAbility instanceof Ratmogrify) {
+			rats = new Pet[30];
+			for (int i = 0; i < rats.length; i++){
+				Pet pet = new Pet();
+				pet.rm = pet.gm = pet.bm = 1.2f;
+				pet.x = Random.Int(SKY_WIDTH)-10;
+				pet.y = SKY_HEIGHT - pet.height;
+				window.add(pet);
+				rats[i] = pet;
+				if (dayTime) pet.brightness( 1.2f );
+			}
+		}
+
 		final Pet pet = new Pet();
 		pet.rm = pet.gm = pet.bm = 1.2f;
 		pet.x = SKY_WIDTH / 2 + 2;
@@ -239,7 +255,20 @@ public class SurfaceScene extends PixelScene {
 		
 		fadeIn();
 	}
-	
+
+	private float ratJumpTimer = 0.02f;
+	@Override
+	public void update() {
+		ratJumpTimer -= Game.elapsed;
+		while (ratJumpTimer <= 0f){
+			ratJumpTimer += 0.02f;
+			Random.element(rats).jump();
+		}
+
+		super.update();
+
+	}
+
 	@Override
 	public void destroy() {
 		Badges.saveGlobal();

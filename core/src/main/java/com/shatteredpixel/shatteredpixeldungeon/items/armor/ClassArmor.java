@@ -178,12 +178,11 @@ abstract public class ClassArmor extends Armor {
 
 	@Override
 	public String desc() {
-		//TODO descriptions for each class armor
 		String desc = super.desc();
 
 		ArmorAbility ability = Dungeon.hero.armorAbility;
 		if (ability != null){
-			desc += "\n\n" + "_" + Messages.titleCase(ability.name()) + ":_ " + ability.desc();
+			desc += "\n\n" + ability.shortDesc();
 		} else {
 			desc += "\n\n" + "_" + Messages.get(this, "no_ability") + "_";
 		}

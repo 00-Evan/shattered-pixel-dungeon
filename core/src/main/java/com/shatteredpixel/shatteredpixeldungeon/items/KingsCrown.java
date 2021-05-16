@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
@@ -94,27 +95,31 @@ public class KingsCrown extends Item {
 
 		if (armor != null){
 
-			GLog.p(Messages.get(this, "upgraded"));
+			if (ability instanceof Ratmogrify){
+				GLog.p(Messages.get(this, "ratgraded"));
+			} else {
+				GLog.p(Messages.get(this, "upgraded"));
+			}
 
 			ClassArmor classArmor = ClassArmor.upgrade(hero, armor);
 			if (hero.belongings.armor == armor) {
 
-				curUser.belongings.armor = classArmor;
-				((HeroSprite) curUser.sprite).updateArmor();
-				classArmor.activate(curUser);
+				hero.belongings.armor = classArmor;
+				((HeroSprite) hero.sprite).updateArmor();
+				classArmor.activate(hero);
 
 			} else {
 
-				armor.detach(curUser.belongings.backpack);
-				classArmor.collect(curUser.belongings.backpack);
+				armor.detach(hero.belongings.backpack);
+				classArmor.collect(hero.belongings.backpack);
 
 			}
 		}
 
 		hero.armorAbility = ability;
 		Talent.initArmorTalents(hero);
-		
-		curUser.sprite.operate( curUser.pos );
+
+		hero.sprite.operate( hero.pos );
 		Sample.INSTANCE.play( Assets.Sounds.MASTERY );
 	}
 
