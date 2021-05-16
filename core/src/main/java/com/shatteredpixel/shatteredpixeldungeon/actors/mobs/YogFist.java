@@ -200,8 +200,8 @@ public abstract class YogFist extends Mob {
 				CellEmitter.get( pos ).burst( Speck.factory( Speck.STEAM ), 10 );
 			}
 
-			//1.33 evaporated tiles on average
-			int evaporatedTiles = Random.chances(new float[]{0, 2, 1});
+			//1.67 evaporated tiles on average
+			int evaporatedTiles = Random.chances(new float[]{0, 1, 2});
 
 			for (int i = 0; i < evaporatedTiles; i++) {
 				int cell = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
@@ -372,7 +372,7 @@ public abstract class YogFist extends Mob {
 					b = new Bleeding();
 				}
 				b.announced = false;
-				b.set(dmg*.67f);
+				b.set(dmg*.6f);
 				b.attachTo(this);
 				sprite.showStatus(CharSprite.WARNING, b.toString() + " " + (int)b.level());
 			} else{
