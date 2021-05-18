@@ -94,7 +94,7 @@ public class Statue extends Mob {
 	}
 	
 	@Override
-	protected float attackDelay() {
+	public float attackDelay() {
 		return super.attackDelay()*weapon.speedFactor( this );
 	}
 

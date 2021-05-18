@@ -129,7 +129,7 @@ public class MirrorImage extends NPC {
 	}
 	
 	@Override
-	protected float attackDelay() {
+	public float attackDelay() {
 		return hero.attackDelay(); //handles ring of furor
 	}
 	

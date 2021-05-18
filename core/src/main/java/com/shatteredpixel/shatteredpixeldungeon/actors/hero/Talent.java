@@ -138,8 +138,8 @@ public enum Talent {
 
 	//universal T4
 	HEROIC_ENERGY(123, 4),
-	//??? T4
-	RK_1(125, 4), RK_2(126, 4), RK_3(127, 4);
+	//Ratmogrify T4
+	RATSISTANCE(125, 4), RATLOMACY(126, 4), RATFORCEMENTS(127, 4);
 
 	public static class ImprovisedProjectileCooldown extends FlavourBuff{};
 	public static class LethalMomentumTracker extends FlavourBuff{};
