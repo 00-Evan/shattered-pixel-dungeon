@@ -21,20 +21,114 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.utils.Callback;
+import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class WildMagic extends ArmorAbility {
 
 	@Override
+	protected String targetingPrompt() {
+		return Messages.get(this, "prompt");
+	}
+
+	@Override
 	protected void activate(ClassArmor armor, Hero hero, Integer target) {
-		//TODO
+		if (target == null){
+			return;
+		}
+
+		if (target == hero.pos){
+			GLog.w(Messages.get(this, "self_target"));
+			return;
+		}
+
+		ArrayList<Wand> wands = hero.belongings.getAllItems(Wand.class);
+		Random.shuffle(wands);
+
+		float chargeUsePerShot = (float)Math.pow(0.707, hero.pointsInTalent(Talent.CONSERVED_MAGIC));
+
+		for (Wand w : wands.toArray(new Wand[0])){
+			if (w.curCharges < 1 && w.partialCharge < chargeUsePerShot){
+				wands.remove(w);
+			}
+		}
+
+		int maxWands = 4 + Dungeon.hero.pointsInTalent(Talent.FIRE_EVERYTHING);
+
+		if (wands.size() < maxWands){
+			ArrayList<Wand> dupes = new ArrayList<>(wands);
+
+			for (Wand w : dupes.toArray(new Wand[0])){
+				float totalCharge = w.curCharges + w.partialCharge;
+				if (totalCharge < 2*chargeUsePerShot){
+					dupes.remove(w);
+				}
+			}
+
+			Random.shuffle(dupes);
+			while (!dupes.isEmpty() && wands.size() < maxWands){
+				wands.add(dupes.remove(0));
+			}
+		}
+
+		if (wands.size() == 0){
+			GLog.w(Messages.get(this, "no_wands"));
+			return;
+		}
+
+		Random.shuffle(wands);
+
+		Buff.affect(hero, WildMagicTracker.class, 0f);
+
+		zapWand(wands, hero, target);
+
+	}
+
+	public static class WildMagicTracker extends FlavourBuff{};
+
+	private void zapWand( ArrayList<Wand> wands, Hero hero, int target){
+		Wand cur = wands.remove(0);
+
+		Ballistica aim = new Ballistica(hero.pos, target, cur.collisionProperties(target));
+
+		hero.sprite.zap(target);
+		cur.fx(aim, new Callback() {
+			@Override
+			public void call() {
+				cur.onZap(aim);
+				cur.partialCharge -= (float)Math.pow(0.707, hero.pointsInTalent(Talent.CONSERVED_MAGIC));
+				if (cur.partialCharge < 0){
+					cur.partialCharge++;
+					cur.curCharges--;
+				}
+				if (!wands.isEmpty()){
+					zapWand(wands, hero, target);
+				} else {
+					hero.buff(WildMagicTracker.class).detach();
+					Item.updateQuickslot();
+					hero.spendAndNext(Actor.TICK);
+				}
+			}
+		});
 	}
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.MAGE_2_1, Talent.MAGE_2_2, Talent.MAGE_2_3, Talent.HEROIC_ENERGY};
+		return new Talent[]{Talent.WILD_POWER, Talent.FIRE_EVERYTHING, Talent.CONSERVED_MAGIC, Talent.HEROIC_ENERGY};
 	}
 }

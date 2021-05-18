@@ -35,10 +35,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TenguDartTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
@@ -65,7 +63,7 @@ public class WandOfBlastWave extends DamageWand {
 	}
 
 	@Override
-	protected void onZap(Ballistica bolt) {
+	public void onZap(Ballistica bolt) {
 		Sample.INSTANCE.play( Assets.Sounds.BLAST );
 		BlastWave.blast(bolt.collisionPos);
 
@@ -186,7 +184,7 @@ public class WandOfBlastWave extends DamageWand {
 	}
 
 	@Override
-	protected void fx(Ballistica bolt, Callback callback) {
+	public void fx(Ballistica bolt, Callback callback) {
 		MagicMissile.boltFromChar( curUser.sprite.parent,
 				MagicMissile.FORCE,
 				curUser.sprite,

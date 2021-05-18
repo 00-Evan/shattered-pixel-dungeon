@@ -162,6 +162,18 @@ public class Belongings implements Iterable<Item> {
 		
 		return null;
 	}
+
+	public<T extends Item> ArrayList<T> getAllItems( Class<T> itemClass ) {
+		ArrayList<T> result = new ArrayList<>();
+
+		for (Item item : this) {
+			if (itemClass.isInstance( item )) {
+				result.add((T) item);
+			}
+		}
+
+		return result;
+	}
 	
 	public boolean contains( Item contains ){
 		

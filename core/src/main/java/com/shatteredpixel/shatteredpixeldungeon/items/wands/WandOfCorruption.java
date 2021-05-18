@@ -122,7 +122,7 @@ public class WandOfCorruption extends Wand {
 	}
 	
 	@Override
-	protected void onZap(Ballistica bolt) {
+	public void onZap(Ballistica bolt) {
 		Char ch = Actor.findChar(bolt.collisionPos);
 
 		if (ch != null){
@@ -263,7 +263,7 @@ public class WandOfCorruption extends Wand {
 	}
 
 	@Override
-	protected void fx(Ballistica bolt, Callback callback) {
+	public void fx(Ballistica bolt, Callback callback) {
 		MagicMissile.boltFromChar( curUser.sprite.parent,
 				MagicMissile.SHADOW,
 				curUser.sprite,

@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.WildMagic;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
@@ -116,7 +117,7 @@ public abstract class Wand extends Item {
 		return new Ballistica( user.pos, dst, collisionProperties ).collisionPos;
 	}
 
-	protected abstract void onZap(Ballistica attack );
+	public abstract void onZap(Ballistica attack);
 
 	public abstract void onHit( MagesStaff staff, Char attacker, Char defender, int damage);
 
@@ -306,6 +307,12 @@ public abstract class Wand extends Item {
 		int lvl = super.buffedLvl();
 
 		if (charger != null && charger.target != null) {
+			if (charger.target.buff(WildMagic.WildMagicTracker.class) != null){
+				int level = 2 + ((Hero)charger.target).pointsInTalent(Talent.WILD_POWER);
+				if (Random.Int(2) == 0) level++;
+				return level/2; // +1/+1.5/+2/+2.5/+3 at 0/1/2/3/4 talent points
+			}
+
 			if (charger.target.buff(ScrollEmpower.class) != null){
 				lvl += Dungeon.hero.pointsInTalent(Talent.EMPOWERING_SCROLLS);
 			}
@@ -331,7 +338,7 @@ public abstract class Wand extends Item {
 		return 1;
 	}
 	
-	protected void fx( Ballistica bolt, Callback callback ) {
+	public void fx(Ballistica bolt, Callback callback) {
 		MagicMissile.boltFromChar( curUser.sprite.parent,
 				MagicMissile.MAGIC_MISSILE,
 				curUser.sprite,
@@ -470,7 +477,7 @@ public abstract class Wand extends Item {
 		availableUsesToID = USES_TO_ID/2f;
 	}
 
-	protected int collisionProperties( int target ){
+	public int collisionProperties(int target){
 		return collisionProperties;
 	}
 	

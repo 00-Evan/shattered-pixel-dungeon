@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.WildMagic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
@@ -82,7 +83,7 @@ public class WandOfRegrowth extends Wand {
 	}
 
 	@Override
-	protected void onZap( Ballistica bolt ) {
+	public void onZap(Ballistica bolt) {
 
 		ArrayList<Integer> cells = new ArrayList<>(cone.cells);
 
@@ -231,7 +232,7 @@ public class WandOfRegrowth extends Wand {
 
 	}
 
-	protected void fx( Ballistica bolt, Callback callback ) {
+	public void fx(Ballistica bolt, Callback callback) {
 
 		// 4/6/8 distance
 		int maxDist = 2 + 2*chargesPerCast();
@@ -263,8 +264,11 @@ public class WandOfRegrowth extends Wand {
 
 	@Override
 	protected int chargesPerCast() {
+		if (charger != null && charger.target.buff(WildMagic.WildMagicTracker.class) != null){
+			return 1;
+		}
 		//consumes 30% of current charges, rounded up, with a min of 1 and a max of 3.
-		return (int)GameMath.gate(1, (int)Math.ceil(curCharges*0.3f), 3);
+		return (int) GameMath.gate(1, (int)Math.ceil(curCharges*0.3f), 3);
 	}
 
 	@Override
