@@ -29,19 +29,29 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesPower;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Firebloom;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Icecap;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Sorrowmoss;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Stormvine;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
@@ -83,7 +93,47 @@ public class SpiritBow extends Weapon {
 			
 		}
 	}
-	
+
+	private static Class[] harmfulPlants = new Class[]{
+			Blindweed.class, Firebloom.class, Icecap.class, Sorrowmoss.class,  Stormvine.class
+	};
+
+	@Override
+	public int proc(Char attacker, Char defender, int damage) {
+
+		if (attacker.buff(NaturesPower.NaturesStrengthTracker.class) != null){
+
+			Actor.add(new Actor() {
+				{
+					actPriority = VFX_PRIO;
+				}
+
+				@Override
+				protected boolean act() {
+
+					if (Random.Int(12) < ((Hero)attacker).pointsInTalent(Talent.NATURES_WRATH)){
+						Plant plant = (Plant) Reflection.newInstance(Random.element(harmfulPlants));
+						plant.pos = defender.pos;
+						plant.activate( defender.isAlive() ? defender : null );
+					}
+
+					if (!defender.isAlive()){
+						NaturesPower.NaturesStrengthTracker tracker = attacker.buff(NaturesPower.NaturesStrengthTracker.class);
+						if (tracker != null){
+							tracker.extend(((Hero) attacker).pointsInTalent(Talent.WILD_MOMENTUM));
+						}
+					}
+
+					Actor.remove(this);
+					return true;
+				}
+			});
+
+		}
+
+		return super.proc(attacker, defender, damage);
+	}
+
 	@Override
 	public String info() {
 		String info = desc();
@@ -199,7 +249,15 @@ public class SpiritBow extends Weapon {
 					return 2f * RingOfFuror.attackDelayMultiplier(owner);
 			}
 		} else {
-			return super.speedFactor(owner);
+
+			float speed = super.speedFactor(owner);
+
+			if (owner.buff(NaturesPower.NaturesStrengthTracker.class) != null){
+				// 1.33x speed to 1.5x speed, depending on talent points
+				speed /= ((32 + ((Hero)owner).pointsInTalent(Talent.GROWING_POWER)) / 24f);
+			}
+
+			return speed;
 		}
 	}
 	
@@ -230,7 +288,20 @@ public class SpiritBow extends Weapon {
 
 			hitSound = Assets.Sounds.HIT_ARROW;
 		}
-		
+
+		@Override
+		public Emitter emitter() {
+			if (Dungeon.hero.buff(NaturesPower.NaturesStrengthTracker.class) != null){
+				Emitter e = new Emitter();
+				e.pos(5, 5);
+				e.fillTarget = false;
+				e.pour(LeafParticle.GENERAL, 0.01f);
+				return e;
+			} else {
+				return super.emitter();
+			}
+		}
+
 		@Override
 		public int damageRoll(Char owner) {
 			return SpiritBow.this.damageRoll(owner);

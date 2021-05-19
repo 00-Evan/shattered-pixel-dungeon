@@ -53,6 +53,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesPower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -529,6 +530,11 @@ public class Hero extends Char {
 			speed *= momentum.speedMultiplier();
 		} else {
 			((HeroSprite)sprite).sprint( 1f );
+		}
+
+		NaturesPower.NaturesStrengthTracker natStrength = buff(NaturesPower.NaturesStrengthTracker.class);
+		if (natStrength != null){
+			speed *= (2f + 0.25f*pointsInTalent(Talent.GROWING_POWER));
 		}
 		
 		return speed;
