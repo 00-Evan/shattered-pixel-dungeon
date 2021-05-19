@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 
@@ -75,7 +76,12 @@ public class Swiftthistle extends Plant {
 		
 		@Override
 		public int icon() {
-			return BuffIndicator.SLOW;
+			return BuffIndicator.TIME;
+		}
+
+		@Override
+		public void tintIcon(Image icon) {
+			icon.hardlight(1f, 1f, 0);
 		}
 
 		@Override
