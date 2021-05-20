@@ -64,6 +64,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.DeathMark;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
@@ -97,7 +98,6 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -325,6 +325,11 @@ public abstract class Char extends Actor {
 
 			dmg = Math.round(dmg*dmgMulti);
 			dmg += dmgBonus;
+
+			Endure.EndureTracker endure = enemy.buff(Endure.EndureTracker.class);
+			if (endure != null){
+				dmg = endure.adjustDamageTaken(dmg);
+			}
 			
 			int effectiveDamage = enemy.defenseProc( this, dmg );
 			effectiveDamage = Math.max( effectiveDamage - dr, 0 );
@@ -551,6 +556,11 @@ public abstract class Char extends Actor {
 		if (alignment != Alignment.ALLY && this.buff(DeathMark.DeathMarkTracker.class) != null){
 			dmg *= 1.25f;
 		}
+		Endure.EndureTracker endure = buff(Endure.EndureTracker.class);
+		//reduce damage here if it isn't coming from a chacter (if it is we already reduced it)
+		if (endure != null && !(src instanceof Char)){
+			dmg = endure.adjustDamageTaken(dmg);
+		}
 		
 		Class<?> srcClass = src.getClass();
 		if (isImmune( srcClass )) {
@@ -567,6 +577,10 @@ public abstract class Char extends Actor {
 		
 		if (buff( Paralysis.class ) != null) {
 			buff( Paralysis.class ).processDamage(dmg);
+		}
+
+		if (endure != null){
+			dmg = endure.enforceDamagetakenLimit(dmg);
 		}
 
 		int shielded = dmg;

@@ -54,6 +54,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesPower;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -509,6 +510,9 @@ public class Hero extends Char {
 		
 		Berserk berserk = buff(Berserk.class);
 		if (berserk != null) dmg = berserk.damageFactor(dmg);
+
+		Endure.EndureTracker endure = buff(Endure.EndureTracker.class);
+		if (endure != null) dmg = endure.damageFactor(dmg);
 		
 		return buff( Fury.class ) != null ? (int)(dmg * 1.5f) : dmg;
 	}
@@ -615,6 +619,10 @@ public class Hero extends Char {
 		
 		//calls to dungeon.observe will also update hero's local FOV.
 		fieldOfView = Dungeon.level.heroFOV;
+
+		if (buff(Endure.EndureTracker.class) != null){
+			buff(Endure.EndureTracker.class).endEnduring();
+		}
 		
 		if (!ready) {
 			//do a full observe (including fog update) if not resting.
