@@ -80,7 +80,7 @@ public class Brute extends Mob {
 
 	@Override
 	public synchronized boolean isAlive() {
-		if (HP > 0){
+		if (super.isAlive()){
 			return true;
 		} else {
 			if (!hasRaged){

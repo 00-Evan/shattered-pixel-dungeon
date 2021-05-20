@@ -63,6 +63,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.DeathMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
@@ -96,6 +97,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -546,6 +548,9 @@ public abstract class Char extends Actor {
 		if (this.buff(Doom.class) != null && !isImmune(Doom.class)){
 			dmg *= 2;
 		}
+		if (alignment != Alignment.ALLY && this.buff(DeathMark.DeathMarkTracker.class) != null){
+			dmg *= 1.25f;
+		}
 		
 		Class<?> srcClass = src.getClass();
 		if (isImmune( srcClass )) {
@@ -586,6 +591,28 @@ public abstract class Char extends Actor {
 
 		if (!isAlive()) {
 			die( src );
+		} else if (HP == 0 && buff(DeathMark.DeathMarkTracker.class) != null){
+			if (Dungeon.hero.hasTalent(Talent.FEAR_THE_REAPER)) {
+				if (Dungeon.hero.pointsInTalent(Talent.FEAR_THE_REAPER) >= 2) {
+					Buff.prolong(this, Terror.class, 5f).target = Dungeon.hero;
+				}
+				Buff.prolong(this, Cripple.class, 5f);
+
+				if (Dungeon.hero.pointsInTalent(Talent.FEAR_THE_REAPER) >= 3) {
+					boolean[] passable = BArray.not(Dungeon.level.solid, null);
+					PathFinder.buildDistanceMap(pos, passable, 3);
+
+					for (Char ch : Actor.chars()) {
+						if (ch != this && ch.alignment == Alignment.ENEMY
+								&& PathFinder.distance[ch.pos] != Integer.MAX_VALUE) {
+							if (Dungeon.hero.pointsInTalent(Talent.FEAR_THE_REAPER) == 4) {
+								Buff.prolong(ch, Terror.class, 5f).target = Dungeon.hero;
+							}
+							Buff.prolong(ch, Cripple.class, 5f);
+						}
+					}
+				}
+			}
 		}
 	}
 	
@@ -612,6 +639,9 @@ public abstract class Char extends Actor {
 	}
 	
 	public boolean isAlive() {
+		if (buff(DeathMark.DeathMarkTracker.class) != null){
+			return true;
+		}
 		return HP > 0;
 	}
 	

@@ -511,7 +511,7 @@ public class NewDM300 extends Mob {
 
 	@Override
 	public boolean isAlive() {
-		return HP > 0 || pylonsActivated < totalPylonsToActivate();
+		return super.isAlive() || pylonsActivated < totalPylonsToActivate();
 	}
 
 	@Override
