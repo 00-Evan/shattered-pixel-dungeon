@@ -259,10 +259,12 @@ public class SurfaceScene extends PixelScene {
 	private float ratJumpTimer = 0.02f;
 	@Override
 	public void update() {
-		ratJumpTimer -= Game.elapsed;
-		while (ratJumpTimer <= 0f){
-			ratJumpTimer += 0.02f;
-			Random.element(rats).jump();
+		if (rats != null) {
+			ratJumpTimer -= Game.elapsed;
+			while (ratJumpTimer <= 0f) {
+				ratJumpTimer += 0.02f;
+				Random.element(rats).jump();
+			}
 		}
 
 		super.update();
