@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.DirectableAlly;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Surprise;
@@ -1062,9 +1063,9 @@ public abstract class Mob extends Char {
 	public static void holdAllies( Level level, int holdFromPos ){
 		heldAllies.clear();
 		for (Mob mob : level.mobs.toArray( new Mob[0] )) {
-			//preserve the ghost no matter where they are
-			if (mob instanceof DriedRose.GhostHero) {
-				((DriedRose.GhostHero) mob).clearDefensingPos();
+			//preserve directable allies no matter where they are
+			if (mob instanceof DirectableAlly) {
+				((DirectableAlly) mob).clearDefensingPos();
 				level.mobs.remove( mob );
 				heldAllies.add(mob);
 				
