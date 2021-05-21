@@ -48,6 +48,9 @@ public class NaturesPower extends ArmorAbility {
 		hero.sprite.operate(hero.pos);
 		Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
 		hero.sprite.emitter().burst(LeafParticle.GENERAL, 10);
+
+		armor.charge -= chargeUse(hero);
+		armor.updateQuickslot();
 		hero.spendAndNext(Actor.TICK);
 
 	}
@@ -89,8 +92,6 @@ public class NaturesPower extends ArmorAbility {
 		public String desc() {
 			return Messages.get(this, "desc", dispTurns(visualcooldown()));
 		}
-
-		//TODO name/desc
 
 	}
 }

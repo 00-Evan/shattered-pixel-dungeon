@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -61,7 +60,7 @@ public class WarpBeacon extends ArmorAbility {
 	}
 
 	@Override
-	protected String targetingPrompt() {
+	public String targetingPrompt() {
 		if (Dungeon.hero.buff(WarpBeaconTracker.class) == null
 				&& Dungeon.hero.hasTalent(Talent.REMOTE_BEACON)){
 			return Messages.get(this, "prompt");
@@ -105,6 +104,9 @@ public class WarpBeacon extends ArmorAbility {
 							GLog.w( Messages.get(ClassArmor.class, "low_charge") );
 							return;
 						}
+
+						armor.charge -= chargeNeeded;
+						armor.updateQuickslot();
 
 						if (tracker.depth == Dungeon.depth){
 							Char existing = Actor.findChar(tracker.pos);

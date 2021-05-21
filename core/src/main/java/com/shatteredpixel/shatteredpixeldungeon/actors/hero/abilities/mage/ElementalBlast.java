@@ -123,9 +123,6 @@ public class ElementalBlast extends ArmorAbility {
 
 	@Override
 	protected void activate(ClassArmor armor, Hero hero, Integer target) {
-		armor.charge -= chargeUse(hero);
-		Item.updateQuickslot();
-
 		Ballistica aim;
 		//Basically the direction of the aim only matters if it goes outside the map
 		//So we just ensure it won't do that.
@@ -141,7 +138,6 @@ public class ElementalBlast extends ArmorAbility {
 		}
 
 		if (wandCls == null){
-			//TODO
 			return;
 		}
 
@@ -396,6 +392,9 @@ public class ElementalBlast extends ArmorAbility {
 		hero.sprite.operate( hero.pos );
 		Invisibility.dispel();
 		hero.busy();
+
+		armor.charge -= chargeUse(hero);
+		armor.updateQuickslot();
 
 		Sample.INSTANCE.play( Assets.Sounds.CHARGEUP );
 

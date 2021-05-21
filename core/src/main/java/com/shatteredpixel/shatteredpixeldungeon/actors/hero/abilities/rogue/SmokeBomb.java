@@ -52,7 +52,7 @@ import com.watabou.utils.Random;
 public class SmokeBomb extends ArmorAbility {
 
 	@Override
-	protected String targetingPrompt() {
+	public String targetingPrompt() {
 		return Messages.get(this, "prompt");
 	}
 

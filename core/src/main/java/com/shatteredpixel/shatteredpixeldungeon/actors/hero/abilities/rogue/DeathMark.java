@@ -42,7 +42,7 @@ import com.watabou.utils.Bundle;
 public class DeathMark extends ArmorAbility {
 
 	@Override
-	protected String targetingPrompt() {
+	public String targetingPrompt() {
 		return Messages.get(this, "prompt");
 	}
 

@@ -46,7 +46,7 @@ public class WildMagic extends ArmorAbility {
 	}
 
 	@Override
-	protected String targetingPrompt() {
+	public String targetingPrompt() {
 		return Messages.get(this, "prompt");
 	}
 
@@ -98,6 +98,9 @@ public class WildMagic extends ArmorAbility {
 		Random.shuffle(wands);
 
 		Buff.affect(hero, WildMagicTracker.class, 0f);
+
+		armor.charge -= chargeUse(hero);
+		armor.updateQuickslot();
 
 		zapWand(wands, hero, target);
 

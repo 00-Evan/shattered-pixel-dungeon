@@ -62,7 +62,6 @@ public class Endure extends ArmorAbility {
 		hero.spendAndNext(3f);
 	}
 
-	//TODO visual buff stuff
 	public static class EndureTracker extends FlavourBuff {
 
 		public boolean enduring;
