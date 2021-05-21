@@ -50,14 +50,14 @@ public class WndWandmaker extends Window {
 	private static final int GAP		= 2;
 
 	Wandmaker wandmaker;
-	Item item;
+	Item questItem;
 
 	public WndWandmaker( final Wandmaker wandmaker, final Item item ) {
 		
 		super();
 
 		this.wandmaker = wandmaker;
-		this.item = item;
+		this.questItem = item;
 		
 		IconTitle titlebar = new IconTitle();
 		titlebar.icon(new ItemSprite(item.image(), null));
@@ -98,7 +98,7 @@ public class WndWandmaker extends Window {
 
 		hide();
 
-		item.detach( Dungeon.hero.belongings.backpack );
+		questItem.detach( Dungeon.hero.belongings.backpack );
 
 		reward.identify();
 		if (reward.doPickUp( Dungeon.hero )) {
@@ -136,7 +136,7 @@ public class WndWandmaker extends Window {
 				}
 				@Override
 				protected void onClick() {
-					if (Dungeon.hero.belongings.contains(item)) {
+					if (Dungeon.hero.belongings.contains(questItem)) {
 						ShatteredPixelDungeon.scene().addToFront(new RewardWindow(item));
 					} else {
 						hide();
