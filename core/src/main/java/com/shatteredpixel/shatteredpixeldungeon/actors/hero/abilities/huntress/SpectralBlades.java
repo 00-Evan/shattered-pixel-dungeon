@@ -44,6 +44,10 @@ import java.util.HashSet;
 
 public class SpectralBlades extends ArmorAbility {
 
+	{
+		baseChargeUse = 25f;
+	}
+
 	@Override
 	protected String targetingPrompt() {
 		return Messages.get(this, "prompt");

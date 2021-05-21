@@ -101,7 +101,7 @@ public class SpiritBow extends Weapon {
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
 
-		if (attacker.buff(NaturesPower.NaturesStrengthTracker.class) != null){
+		if (attacker.buff(NaturesPower.naturesPowerTracker.class) != null){
 
 			Actor.add(new Actor() {
 				{
@@ -118,7 +118,7 @@ public class SpiritBow extends Weapon {
 					}
 
 					if (!defender.isAlive()){
-						NaturesPower.NaturesStrengthTracker tracker = attacker.buff(NaturesPower.NaturesStrengthTracker.class);
+						NaturesPower.naturesPowerTracker tracker = attacker.buff(NaturesPower.naturesPowerTracker.class);
 						if (tracker != null){
 							tracker.extend(((Hero) attacker).pointsInTalent(Talent.WILD_MOMENTUM));
 						}
@@ -252,7 +252,7 @@ public class SpiritBow extends Weapon {
 
 			float speed = super.speedFactor(owner);
 
-			if (owner.buff(NaturesPower.NaturesStrengthTracker.class) != null){
+			if (owner.buff(NaturesPower.naturesPowerTracker.class) != null){
 				// 1.33x speed to 1.5x speed, depending on talent points
 				speed /= ((32 + ((Hero)owner).pointsInTalent(Talent.GROWING_POWER)) / 24f);
 			}
@@ -291,7 +291,7 @@ public class SpiritBow extends Weapon {
 
 		@Override
 		public Emitter emitter() {
-			if (Dungeon.hero.buff(NaturesPower.NaturesStrengthTracker.class) != null){
+			if (Dungeon.hero.buff(NaturesPower.naturesPowerTracker.class) != null){
 				Emitter e = new Emitter();
 				e.pos(5, 5);
 				e.fillTarget = false;

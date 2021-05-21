@@ -30,16 +30,21 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.audio.Sample;
 
 public class NaturesPower extends ArmorAbility {
 
+	{
+		baseChargeUse = 35f;
+	}
+
 	@Override
 	protected void activate(ClassArmor armor, Hero hero, Integer target) {
 
-		Buff.prolong(hero, NaturesStrengthTracker.class, NaturesStrengthTracker.DURATION);
-		hero.buff(NaturesStrengthTracker.class).extensionsLeft = 2;
+		Buff.prolong(hero, naturesPowerTracker.class, naturesPowerTracker.DURATION);
+		hero.buff(naturesPowerTracker.class).extensionsLeft = 2;
 		hero.sprite.operate(hero.pos);
 		Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
 		hero.sprite.emitter().burst(LeafParticle.GENERAL, 10);
@@ -52,7 +57,7 @@ public class NaturesPower extends ArmorAbility {
 		return new Talent[]{Talent.GROWING_POWER, Talent.NATURES_WRATH, Talent.WILD_MOMENTUM, Talent.HEROIC_ENERGY};
 	}
 
-	public static class NaturesStrengthTracker extends FlavourBuff{
+	public static class naturesPowerTracker extends FlavourBuff{
 
 		public static final float DURATION = 8f;
 
@@ -73,6 +78,16 @@ public class NaturesPower extends ArmorAbility {
 		@Override
 		public float iconFadePercent() {
 			return Math.max(0, (DURATION - visualcooldown()) / DURATION);
+		}
+
+		@Override
+		public String toString() {
+			return Messages.get(this, "name");
+		}
+
+		@Override
+		public String desc() {
+			return Messages.get(this, "desc", dispTurns(visualcooldown()));
 		}
 
 		//TODO name/desc

@@ -29,6 +29,10 @@ import java.util.ArrayList;
 
 public class Ratmogrify extends ArmorAbility {
 
+	{
+		baseChargeUse = 35f;
+	}
+
 	@Override
 	protected String targetingPrompt() {
 		return Messages.get(this, "prompt");
