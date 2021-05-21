@@ -159,7 +159,7 @@ public class SmokeBomb extends ArmorAbility {
 		public NinjaLogSprite(){
 			super();
 
-			texture("sprites/ninja_log.png");
+			texture( Assets.Sprites.NINJA_LOG );
 
 			TextureFilm frames = new TextureFilm( texture, 11, 12 );
 
