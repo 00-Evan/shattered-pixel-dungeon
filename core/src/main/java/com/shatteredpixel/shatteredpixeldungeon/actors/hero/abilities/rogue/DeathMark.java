@@ -134,6 +134,7 @@ public class DeathMark extends ArmorAbility {
 			if (!target.isAlive()){
 				target.sprite.flash();
 				target.sprite.bloodBurstA(target.sprite.center(), target.HT*2);
+				Sample.INSTANCE.play(Assets.Sounds.HIT_STAB);
 				Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				target.die(this);
 				int shld = Math.round(initialHP * (0.1f*Dungeon.hero.pointsInTalent(Talent.DEATHLY_DURABILITY)));
