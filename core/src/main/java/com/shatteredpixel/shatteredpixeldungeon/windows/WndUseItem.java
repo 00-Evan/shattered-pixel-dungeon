@@ -164,13 +164,5 @@ public class WndUseItem extends WndInfoItem {
 		
 		return y - 1;
 	}
-	
-	@Override
-	public void hide() {
-		super.hide();
-		if (INSTANCE == this){
-			INSTANCE = null;
-		}
-	}
 
 }

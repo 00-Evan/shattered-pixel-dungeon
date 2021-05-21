@@ -66,8 +66,16 @@ public class WndInfoItem extends Window {
 		
 		fillFields( item );
 	}
-	
-	private void fillFields( Heap heap ) {
+
+	@Override
+	public void hide() {
+		super.hide();
+		if (INSTANCE == this){
+			INSTANCE = null;
+		}
+	}
+
+	private void fillFields(Heap heap ) {
 		
 		IconTitle titlebar = new IconTitle( heap );
 		titlebar.color( TITLE_COLOR );
