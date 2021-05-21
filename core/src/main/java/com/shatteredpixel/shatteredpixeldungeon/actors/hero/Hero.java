@@ -335,7 +335,8 @@ public class Hero extends Char {
 
 	public int talentPointsAvailable(int tier){
 		if (lvl < Talent.tierLevelThresholds[tier]
-			|| (tier == 3 && subClass == HeroSubClass.NONE)){
+			|| (tier == 3 && subClass == HeroSubClass.NONE)
+			|| (tier == 4 && armorAbility == null)){
 			return 0;
 		} else if (lvl >= Talent.tierLevelThresholds[tier+1]){
 			return Talent.tierLevelThresholds[tier+1] - Talent.tierLevelThresholds[tier] - talentPointsSpent(tier);
