@@ -77,10 +77,14 @@ public class TunnelRoom extends ConnectionRoom {
 		}
 
 		//fill in an extra diagonal tile at center randomly if we're a larger room with many connections
+		//this makes the shape a bit more varied in these cases
 		if (width() >= 7 && height() >= 7 && connected.size() > 4 && c.square() == 0){
 			Point p = new Point(c.left, c.top);
 			p.x += Random.Int(2) == 0 ? 1 : -1;
 			p.y += Random.Int(2) == 0 ? 1 : -1;
+			//also prevent filling a tile outside the room in rare cases
+			p.x = (int)GameMath.gate(left+1, p.x, right-1);
+			p.y = (int)GameMath.gate(top+1, p.y, bottom-1);
 			Painter.set(level, p, floor);
 		}
 
