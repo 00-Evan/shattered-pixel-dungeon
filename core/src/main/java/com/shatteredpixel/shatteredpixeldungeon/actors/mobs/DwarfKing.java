@@ -215,10 +215,10 @@ public class DwarfKing extends Mob {
 						sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.4f, 2);
 						Sample.INSTANCE.play(Assets.Sounds.CHALLENGE);
 						yell(Messages.get(this, "wave_3"));
-						summonSubject(4, DKWarlock.class);
-						summonSubject(4, DKMonk.class);
-						summonSubject(4, DKGhoul.class);
-						summonSubject(4, DKGhoul.class);
+						summonSubject(3, DKWarlock.class);
+						summonSubject(3, DKMonk.class);
+						summonSubject(3, DKGhoul.class);
+						summonSubject(3, DKGhoul.class);
 						summonsMade += 4;
 						spend(3*TICK);
 					} else {
@@ -621,7 +621,11 @@ public class DwarfKing extends Mob {
 					Char ch = Actor.findChar(pos);
 					ch.damage(Random.NormalIntRange(20, 40), target);
 					if (((DwarfKing)target).phase == 2){
-						target.damage(target.HT/12, new KingDamager());
+						if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES)){
+							target.damage(target.HT/18, new KingDamager());
+						} else {
+							target.damage(target.HT/12, new KingDamager());
+						}
 					}
 				}
 
