@@ -32,6 +32,8 @@ import com.watabou.utils.Bundle;
 
 public abstract class ArmorAbility implements Bundlable {
 
+	protected float baseChargeUse = 35;
+
 	public void use( ClassArmor armor, Hero hero ){
 		if (targetingPrompt() == null){
 			activate(armor, hero, hero.pos);
@@ -56,7 +58,7 @@ public abstract class ArmorAbility implements Bundlable {
 	}
 
 	public float chargeUse( Hero hero ){
-		float chargeUse = 35;
+		float chargeUse = baseChargeUse;
 		if (hero.hasTalent(Talent.HEROIC_ENERGY)){
 			//reduced charge use by 13%/24%/34%/43%
 			chargeUse *= Math.pow( 0.869, hero.pointsInTalent(Talent.HEROIC_ENERGY));

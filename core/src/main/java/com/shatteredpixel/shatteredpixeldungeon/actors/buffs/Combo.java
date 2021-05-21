@@ -106,6 +106,10 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 	}
 
+	public void addTime( float time ){
+		comboTime += time;
+	}
+
 	@Override
 	public void detach() {
 		super.detach();

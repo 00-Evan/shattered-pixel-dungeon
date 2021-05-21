@@ -41,7 +41,9 @@ import com.watabou.utils.PathFinder;
 
 public class HeroicLeap extends ArmorAbility {
 
-	private static int LEAP_TIME	= 1;
+	{
+		baseChargeUse = 25f;
+	}
 
 	@Override
 	protected String targetingPrompt() {
@@ -62,12 +64,14 @@ public class HeroicLeap extends ArmorAbility {
 	public void activate( ClassArmor armor, Hero hero, Integer target ) {
 		if (target != null) {
 
-			Ballistica route = new Ballistica(hero.pos, target, Ballistica.PROJECTILE);
+			Ballistica route = new Ballistica(hero.pos, target, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID);
 			int cell = route.collisionPos;
 
 			//can't occupy the same cell as another char, so move back one.
-			if (Actor.findChar( cell ) != null && cell != hero.pos) {
-				cell = route.path.get(route.dist - 1);
+			int backTrace = route.dist-1;
+			while (Actor.findChar( cell ) != null && cell != hero.pos) {
+				cell = route.path.get(backTrace);
+				backTrace--;
 			}
 
 			armor.charge -= chargeUse( hero );
@@ -103,7 +107,7 @@ public class HeroicLeap extends ArmorAbility {
 					Camera.main.shake(2, 0.5f);
 
 					Invisibility.dispel();
-					hero.spendAndNext(LEAP_TIME);
+					hero.spendAndNext(Actor.TICK);
 
 					if (hero.buff(DoubleJumpTracker.class) != null){
 						hero.buff(DoubleJumpTracker.class).detach();

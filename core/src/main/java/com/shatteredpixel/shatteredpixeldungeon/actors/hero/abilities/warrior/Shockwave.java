@@ -46,6 +46,10 @@ import com.watabou.utils.Random;
 
 public class Shockwave extends ArmorAbility {
 
+	{
+		baseChargeUse = 35f;
+	}
+
 	@Override
 	protected String targetingPrompt() {
 		return Messages.get(this, "prompt");

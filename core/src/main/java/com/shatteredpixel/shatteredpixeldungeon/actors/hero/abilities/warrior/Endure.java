@@ -21,27 +21,40 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
 public class Endure extends ArmorAbility {
+
+	{
+		baseChargeUse = 50f;
+	}
 
 	@Override
 	protected void activate(ClassArmor armor, Hero hero, Integer target) {
 
 		Buff.prolong(hero, EndureTracker.class, 13f).setup(hero);
-		//TODO extend combo maybe?
+
+		Combo combo = hero.buff(Combo.class);
+		if (combo != null){
+			combo.addTime(3f);
+		}
 		hero.sprite.operate(hero.pos);
-		//TODO vfx/sfx?
 
 		armor.charge -= chargeUse(hero);
 		armor.updateQuickslot();
@@ -66,6 +79,16 @@ public class Endure extends ArmorAbility {
 		@Override
 		public float iconFadePercent() {
 			return Math.max(0, (10f - visualcooldown()) / 10f);
+		}
+
+		@Override
+		public String toString() {
+			return Messages.get(this, "name");
+		}
+
+		@Override
+		public String desc() {
+			return Messages.get(this, "desc", damageBonus, hitsLeft);
 		}
 
 		public void setup(Hero hero){
@@ -111,6 +134,13 @@ public class Endure extends ArmorAbility {
 
 			hitsLeft = 1+Dungeon.hero.pointsInTalent(Talent.SUSTAINED_RETRIBUTION);
 			damageBonus /= hitsLeft;
+
+			if (damageBonus > 0) {
+				target.sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
+				Sample.INSTANCE.play(Assets.Sounds.CHALLENGE);
+			} else {
+				detach();
+			}
 		}
 
 		public int damageFactor(int damage){
