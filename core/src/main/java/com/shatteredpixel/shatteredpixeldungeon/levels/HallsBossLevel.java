@@ -43,7 +43,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-public class NewHallsBossLevel extends Level {
+public class HallsBossLevel extends Level {
 
 	{
 		color1 = 0x801500;

@@ -49,7 +49,7 @@ import com.watabou.utils.Rect;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class NewCityBossLevel extends Level {
+public class CityBossLevel extends Level {
 
 	{
 		color1 = 0x4b6636;
@@ -505,9 +505,9 @@ public class NewCityBossLevel extends Level {
 				//DK arena tiles
 			} else {
 				if (Dungeon.level.map[cell] == Terrain.SIGN){
-					return Messages.get(NewCityBossLevel.class, "throne_name");
+					return Messages.get(CityBossLevel.class, "throne_name");
 				} else if (Dungeon.level.map[cell] == Terrain.PEDESTAL){
-					return Messages.get(NewCityBossLevel.class, "summoning_name");
+					return Messages.get(CityBossLevel.class, "summoning_name");
 				}
 			}
 
@@ -531,9 +531,9 @@ public class NewCityBossLevel extends Level {
 			//DK arena tiles
 			} else {
 				if (Dungeon.level.map[cell] == Terrain.SIGN){
-					return Messages.get(NewCityBossLevel.class, "throne_desc");
+					return Messages.get(CityBossLevel.class, "throne_desc");
 				} else if (Dungeon.level.map[cell] == Terrain.PEDESTAL){
-					return Messages.get(NewCityBossLevel.class, "summoning_desc");
+					return Messages.get(CityBossLevel.class, "summoning_desc");
 				}
 			}
 
