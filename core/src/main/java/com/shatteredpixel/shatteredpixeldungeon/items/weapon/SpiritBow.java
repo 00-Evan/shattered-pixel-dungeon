@@ -101,7 +101,7 @@ public class SpiritBow extends Weapon {
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
 
-		if (attacker.buff(NaturesPower.naturesPowerTracker.class) != null){
+		if (attacker.buff(NaturesPower.naturesPowerTracker.class) != null && !sniperSpecial){
 
 			Actor.add(new Actor() {
 				{
@@ -291,7 +291,7 @@ public class SpiritBow extends Weapon {
 
 		@Override
 		public Emitter emitter() {
-			if (Dungeon.hero.buff(NaturesPower.naturesPowerTracker.class) != null){
+			if (Dungeon.hero.buff(NaturesPower.naturesPowerTracker.class) != null && !sniperSpecial){
 				Emitter e = new Emitter();
 				e.pos(5, 5);
 				e.fillTarget = false;
