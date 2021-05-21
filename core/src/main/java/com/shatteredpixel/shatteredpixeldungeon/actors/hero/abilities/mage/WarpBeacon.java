@@ -56,6 +56,10 @@ import java.util.ArrayList;
 
 public class WarpBeacon extends ArmorAbility {
 
+	{
+		baseChargeUse = 35f;
+	}
+
 	@Override
 	protected String targetingPrompt() {
 		if (Dungeon.hero.buff(WarpBeaconTracker.class) == null

@@ -114,7 +114,11 @@ public class ElementalBlast extends ArmorAbility {
 		damageFactors.put(WandOfWarding.class,          0f);
 		damageFactors.put(WandOfTransfusion.class,      0f);
 		damageFactors.put(WandOfCorruption.class,       0f);
-			damageFactors.put(WandOfRegrowth.class,         0f);
+		damageFactors.put(WandOfRegrowth.class,         0f);
+	}
+
+	{
+		baseChargeUse = 35f;
 	}
 
 	@Override
