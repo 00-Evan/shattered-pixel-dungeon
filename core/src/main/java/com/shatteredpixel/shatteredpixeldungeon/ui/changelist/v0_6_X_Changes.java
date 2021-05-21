@@ -212,7 +212,7 @@ public class v0_6_X_Changes {
 				"_-_ Released April 1st, 2018\n" +
 				"_-_ 46 days after Shattered v0.6.3\n" +
 				"\n" +
-				"v0.6.4 was a smaller update, mostly focused on additions and fixes following v0.6.4. Probably the most interesting content that came in v0.6.4 was the crossbow! This weapon was an attempt to fulfill the common request for an ammo-based ranged weapon, without actually having an ammo system in the game. I felt that an ammo system would be more cumbersome than it would be worth. Letting darts piggyback on an equipped weapon seemed like a great compromise.\n" +
+				"v0.6.4 was a smaller update, mostly focused on additions and fixes following v0.6.3. Probably the most interesting content that came in v0.6.4 was the crossbow! This weapon was an attempt to fulfill the common request for an ammo-based ranged weapon, without actually having an ammo system in the game. I felt that an ammo system would be more cumbersome than it would be worth. Letting darts piggyback on an equipped weapon seemed like a great compromise.\n" +
 				"\n" +
 				"I also made some important changes to challenges in v0.6.4, primarily to make stacked challenge games a bit easier. This made high-challenge games more feasible without extreme luck, which led to a big increase in challenge interest among highly skilled players."));
 		
@@ -356,7 +356,7 @@ public class v0_6_X_Changes {
 				"_-_ Released February 14th, 2018\n" +
 				"_-_ 113 days after Shattered v0.6.2\n" +
 				"\n" +
-				"Prior to v0.6.3 thrown weapons broke on a single hit each and so weren't useful for much. I didn't want to just amp up their quantity though, as players would just horde them and use them against bosses. By lowering quantity but also giving thrown weapons durability, I was able to make them much more useful without making hording problematic.\n" +
+				"Prior to v0.6.3 thrown weapons broke on a single hit each and so weren't useful for much. I didn't want to just amp up their quantity though, as players would just horde them and use them against bosses. By lowering quantity but also giving thrown weapons durability, I was able to make them much more useful without making hoarding problematic.\n" +
 				"\n" +
 				"v0.6.3 is also an excellent case for why I run betas for every Shattered update. In the original beta for v0.6.3 thrown weapons were seriously overpowered, and threatened to make regular weapons pointless. I ended up significantly reducing their stats and quantity before the full release.\n" +
 				"\n" +
