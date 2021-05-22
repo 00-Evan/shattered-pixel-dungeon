@@ -228,7 +228,7 @@ public class Hero extends Char {
 		}
 
 		if (hasTalent(Talent.STRONGMAN)){
-			STR = (int)Math.floor(STR * (1f + 0.3f + 0.5f*pointsInTalent(Talent.STRONGMAN)));
+			STR = (int)Math.floor(STR * (1f + 0.03f + 0.05f*pointsInTalent(Talent.STRONGMAN)));
 		}
 
 		return STR;
