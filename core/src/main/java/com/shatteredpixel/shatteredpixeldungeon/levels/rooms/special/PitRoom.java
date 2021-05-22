@@ -35,6 +35,12 @@ import com.watabou.utils.Random;
 
 public class PitRoom extends SpecialRoom {
 
+	@Override //increase min size slightly to prevent tiny 3x3 wraith fights
+	public int minWidth() { return 6; }
+	public int minHeight() {
+		return 6;
+	}
+
 	public void paint( Level level ) {
 		
 		Painter.fill( level, this, Terrain.WALL );
