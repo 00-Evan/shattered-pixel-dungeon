@@ -334,7 +334,7 @@ public class CavesBossLevel extends Level {
 	}
 
 	public void eliminatePylon(){
-		customArenaVisuals.updateState();
+		if (customArenaVisuals != null) customArenaVisuals.updateState();
 		int pylonsRemaining = 0;
 		for (Mob m : mobs){
 			if (m instanceof DM300){
