@@ -320,7 +320,7 @@ public enum Talent {
 			Random.shuffle(grassCells);
 			for (int cell : grassCells){
 				Char ch = Actor.findChar(cell);
-				if (ch != null){
+				if (ch != null && ch.alignment == Char.Alignment.ENEMY){
 					Buff.affect(ch, Roots.class, 1f + hero.pointsInTalent(RESTORED_NATURE));
 				}
 				if (Dungeon.level.map[cell] == Terrain.EMPTY ||
