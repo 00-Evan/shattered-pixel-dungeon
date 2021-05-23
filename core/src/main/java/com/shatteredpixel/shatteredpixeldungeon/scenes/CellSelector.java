@@ -245,10 +245,12 @@ public class CellSelector extends ScrollArea {
 				} else {
 					if (action == SPDAction.ZOOM_IN){
 						zoom( camera.zoom+1 );
+						mouseZoom = camera.zoom;
 						return true;
 
 					} else if (action == SPDAction.ZOOM_OUT){
 						zoom( camera.zoom-1 );
+						mouseZoom = camera.zoom;
 						return true;
 					}
 				}
