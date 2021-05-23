@@ -52,17 +52,47 @@ public class ShatteredPixelDungeon extends Game {
 				com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel.class,
 				"com.shatteredpixel.shatteredpixeldungeon.levels.NewPrisonBossLevel" );
 		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel.ExitVisual.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewPrisonBossLevel$exitVisual" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel.ExitVisualWalls.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewPrisonBossLevel$exitVisualWalls" );
+		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM300.class,
 				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewDM300" );
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel.class,
 				"com.shatteredpixel.shatteredpixeldungeon.levels.NewCavesBossLevel" );
 		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel.PylonEnergy.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewCavesBossLevel$PylonEnergy" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel.ArenaVisuals.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewCavesBossLevel$ArenaVisuals" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel.CityEntrance.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewCavesBossLevel$CityEntrance" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel.EntranceOverhang.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewCavesBossLevel$EntranceOverhang" );
+		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel.class,
 				"com.shatteredpixel.shatteredpixeldungeon.levels.NewCityBossLevel" );
 		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel.CustomGroundVisuals.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewCityBossLevel$CustomGroundVisuals" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel.CustomWallVisuals.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewCityBossLevel$CustomWallVisuals" );
+		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel.class,
 				"com.shatteredpixel.shatteredpixeldungeon.levels.NewHallsBossLevel" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel.CenterPieceVisuals.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewHallsBossLevel$CenterPieceWalls" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel.CenterPieceWalls.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewHallsBossLevel$CenterPieceWalls" );
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.Waterskin.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.DewVial" );

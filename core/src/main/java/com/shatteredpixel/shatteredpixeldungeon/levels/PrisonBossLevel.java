@@ -273,12 +273,12 @@ public class PrisonBossLevel extends Level {
 			}
 		}
 		
-		CustomTilemap vis = new exitVisual();
+		CustomTilemap vis = new ExitVisual();
 		vis.pos(11, 10);
 		customTiles.add(vis);
 		GameScene.add(vis, false);
 		
-		vis = new exitVisualWalls();
+		vis = new ExitVisualWalls();
 		vis.pos(11, 10);
 		customWalls.add(vis);
 		GameScene.add(vis, true);
@@ -756,7 +756,7 @@ public class PrisonBossLevel extends Level {
 		
 	}
 	
-	public static class exitVisual extends CustomTilemap {
+	public static class ExitVisual extends CustomTilemap {
 		
 		{
 			texture = Assets.Environment.PRISON_EXIT_NEW;
@@ -802,7 +802,7 @@ public class PrisonBossLevel extends Level {
 		}
 	}
 	
-	public static class exitVisualWalls extends CustomTilemap {
+	public static class ExitVisualWalls extends CustomTilemap {
 		
 		{
 			texture = Assets.Environment.PRISON_EXIT_NEW;
