@@ -181,6 +181,7 @@ public class WndRanking extends WndTabbed {
 					int tiers = 1;
 					if (Dungeon.hero.lvl >= 6) tiers++;
 					if (Dungeon.hero.lvl >= 12 && Dungeon.hero.subClass != HeroSubClass.NONE) tiers++;
+					if (Dungeon.hero.lvl >= 20 && Dungeon.hero.armorAbility != null) tiers++;
 					while (Dungeon.hero.talents.size() > tiers){
 						Dungeon.hero.talents.remove(Dungeon.hero.talents.size()-1);
 					}
