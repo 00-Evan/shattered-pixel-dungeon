@@ -19,21 +19,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.stones;
+package com.elementalpixel.elementalpixeldungeon.items.stones;
 
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+
+import com.elementalpixel.elementalpixeldungeon.items.Item;
+import com.elementalpixel.elementalpixeldungeon.items.armor.Armor;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.Weapon;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.scenes.GameScene;
+import com.elementalpixel.elementalpixeldungeon.scenes.PixelScene;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
+import com.elementalpixel.elementalpixeldungeon.ui.RedButton;
+import com.elementalpixel.elementalpixeldungeon.ui.RenderedTextBlock;
+import com.elementalpixel.elementalpixeldungeon.ui.Window;
+import com.elementalpixel.elementalpixeldungeon.windows.IconTitle;
+import com.elementalpixel.elementalpixeldungeon.windows.WndBag;
 
 public class StoneOfAugmentation extends InventoryStone {
 	
@@ -49,7 +50,7 @@ public class StoneOfAugmentation extends InventoryStone {
 		
 	}
 	
-	public void apply( Weapon weapon, Weapon.Augment augment ) {
+	public void apply(Weapon weapon, Weapon.Augment augment ) {
 		
 		weapon.augment = augment;
 		useAnimation();
