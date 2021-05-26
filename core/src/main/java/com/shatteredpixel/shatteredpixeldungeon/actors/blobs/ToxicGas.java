@@ -19,36 +19,62 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
+package com.elementalpixel.elementalpixeldungeon.actors.blobs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.elementalpixel.elementalpixeldungeon.Badges;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.Actor;
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.HeroSubClass;
+import com.elementalpixel.elementalpixeldungeon.effects.BlobEmitter;
+import com.elementalpixel.elementalpixeldungeon.effects.Speck;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.utils.GLog;
+import static com.elementalpixel.elementalpixeldungeon.items.Item.curUser;
 
 public class ToxicGas extends Blob implements Hero.Doom {
 
 	@Override
 	protected void evolve() {
-		super.evolve();
+		if (curUser.subClass == HeroSubClass.ELEMENTALIST) {
+			super.evolve();
 
-		int damage = 1 + Dungeon.depth/5;
+			int damage = 1 + Dungeon.depth/5;
 
-		Char ch;
-		int cell;
+			Char ch;
+			int cell;
 
-		for (int i = area.left; i < area.right; i++){
-			for (int j = area.top; j < area.bottom; j++){
-				cell = i + j*Dungeon.level.width();
-				if (cur[cell] > 0 && (ch = Actor.findChar( cell )) != null) {
-					if (!ch.isImmune(this.getClass())) {
+			for (int i = area.left; i < area.right; i++){
+				for (int j = area.top; j < area.bottom; j++){
+					cell = i + j*Dungeon.level.width();
+					if (cur[cell] > 0 && (ch = Actor.findChar( cell )) != null) {
+						if (!ch.isImmune(this.getClass())) {
 
-						ch.damage(damage, this);
+							ch.HP += damage / 2;
+							if (ch.HP > ch.HT) ch.HP = ch.HT;
+
+						}
+					}
+				}
+			}
+		} else {
+			super.evolve();
+
+			int damage = 1 + Dungeon.depth/5;
+
+			Char ch;
+			int cell;
+
+			for (int i = area.left; i < area.right; i++){
+				for (int j = area.top; j < area.bottom; j++){
+					cell = i + j*Dungeon.level.width();
+					if (cur[cell] > 0 && (ch = Actor.findChar( cell )) != null) {
+						if (!ch.isImmune(this.getClass())) {
+
+							ch.damage(damage, this);
+
+						}
 					}
 				}
 			}
