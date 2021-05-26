@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.android;
+package com.elementalpixel.elementalpixeldungeon.android;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -42,9 +42,9 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
-import com.shatteredpixel.shatteredpixeldungeon.android.windows.WndAndroidTextInput;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.elementalpixel.elementalpixeldungeon.SPDSettings;
+import com.elementalpixel.elementalpixeldungeon.android.windows.WndAndroidTextInput;
+import com.elementalpixel.elementalpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PlatformSupport;
