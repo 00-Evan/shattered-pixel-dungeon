@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.services.news;
+package com.elementalpixel.elementalpixeldungeon.services.news;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
