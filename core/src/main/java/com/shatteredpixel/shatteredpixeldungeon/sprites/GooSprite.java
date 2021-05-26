@@ -19,18 +19,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.sprites;
+package com.elementalpixel.elementalpixeldungeon.sprites;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
-import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
+
+import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.effects.CellEmitter;
+import com.elementalpixel.elementalpixeldungeon.effects.particles.ElmoParticle;
+import com.elementalpixel.elementalpixeldungeon.utils.BArray;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
-import com.watabou.noosa.particles.Emitter.Factory;
 import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
@@ -146,7 +146,7 @@ public class GooSprite extends MobSprite {
 
 	public static class GooParticle extends PixelParticle.Shrinking {
 
-		public static final Emitter.Factory FACTORY = new Factory() {
+		public static final Emitter.Factory FACTORY = new Emitter.Factory() {
 			@Override
 			public void emit( Emitter emitter, int index, float x, float y ) {
 				((GooParticle)emitter.recycle( GooParticle.class )).reset( x, y );

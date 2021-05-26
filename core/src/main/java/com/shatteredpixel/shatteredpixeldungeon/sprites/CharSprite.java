@@ -19,28 +19,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.sprites;
+package com.elementalpixel.elementalpixeldungeon.sprites;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.effects.DarkBlock;
-import com.shatteredpixel.shatteredpixeldungeon.effects.EmoIcon;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
-import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
-import com.shatteredpixel.shatteredpixeldungeon.effects.IceBlock;
-import com.shatteredpixel.shatteredpixeldungeon.effects.ShieldHalo;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
-import com.shatteredpixel.shatteredpixeldungeon.effects.TorchHalo;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SnowParticle;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.ui.CharHealthIndicator;
+
+import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.effects.DarkBlock;
+import com.elementalpixel.elementalpixeldungeon.effects.EmoIcon;
+import com.elementalpixel.elementalpixeldungeon.effects.Flare;
+import com.elementalpixel.elementalpixeldungeon.effects.FloatingText;
+import com.elementalpixel.elementalpixeldungeon.effects.IceBlock;
+import com.elementalpixel.elementalpixeldungeon.effects.ShieldHalo;
+import com.elementalpixel.elementalpixeldungeon.effects.Speck;
+import com.elementalpixel.elementalpixeldungeon.effects.Splash;
+import com.elementalpixel.elementalpixeldungeon.effects.TorchHalo;
+import com.elementalpixel.elementalpixeldungeon.effects.particles.FlameParticle;
+import com.elementalpixel.elementalpixeldungeon.effects.particles.ShadowParticle;
+import com.elementalpixel.elementalpixeldungeon.effects.particles.SnowParticle;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.scenes.GameScene;
+import com.elementalpixel.elementalpixeldungeon.scenes.PixelScene;
+import com.elementalpixel.elementalpixeldungeon.tiles.DungeonTilemap;
+import com.elementalpixel.elementalpixeldungeon.ui.CharHealthIndicator;
 import com.watabou.glwrap.Matrix;
 import com.watabou.glwrap.Vertexbuffer;
 import com.watabou.noosa.Camera;
@@ -163,7 +164,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		//do nothin by default
 	}
 	
-	public PointF worldToCamera( int cell ) {
+	public PointF worldToCamera(int cell ) {
 		
 		final int csize = DungeonTilemap.SIZE;
 		

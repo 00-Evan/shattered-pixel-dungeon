@@ -19,9 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.sprites;
+package com.elementalpixel.elementalpixeldungeon.sprites;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
+
+import com.elementalpixel.elementalpixeldungeon.Assets;
 import com.watabou.noosa.TextureFilm;
 
 public class ItemSpriteSheet {
@@ -91,6 +92,8 @@ public class ItemSpriteSheet {
 	
 	public static final int TENGU_BOMB      = UNCOLLECTIBLE+9;
 	public static final int TENGU_SHOCKER   = UNCOLLECTIBLE+10;
+
+	public static final int ALCHEMIST_PROJECTILE = UNCOLLECTIBLE+11;
 	static{
 		assignItemRect(GOLD,        15, 13);
 		assignItemRect(DEWDROP,     10, 10);
@@ -103,6 +106,7 @@ public class ItemSpriteSheet {
 		
 		assignItemRect(TENGU_BOMB,      10, 10);
 		assignItemRect(TENGU_SHOCKER,   10, 10);
+		assignItemRect(ALCHEMIST_PROJECTILE, 15, 15);
 	}
 
 	private static final int CONTAINERS     =                               xy(1, 3);   //16 slots
@@ -671,15 +675,34 @@ public class ItemSpriteSheet {
 	public static final int HOLDER      = BAGS+2;
 	public static final int BANDOLIER   = BAGS+3;
 	public static final int HOLSTER     = BAGS+4;
+	//public static final int FIRE_SHARD  = BAGS+5;
+	//public static final int WATER_SHARD = QUEST+9;
+	//public static final int EARTH_SHARD = QUEST+10;
 	static{
 		assignItemRect(VIAL,        12, 12);
 		assignItemRect(POUCH,       14, 15);
 		assignItemRect(HOLDER,      16, 16);
 		assignItemRect(BANDOLIER,   15, 16);
 		assignItemRect(HOLSTER,     15, 16);
+		//assignItemRect(FIRE_SHARD,  20, 16);
+		//assignItemRect(WATER_SHARD, 22, 16);
+		//assignItemRect(EARTH_SHARD, 22, 16);
 	}
 
-	                                                                                    //16 free slots
+	private static final int FRAGMENTS       =                                   xy(1, 32);  //16 slots
+	public static final int EARTH_FRAGMENT = FRAGMENTS+0;
+	public static final int FIRE_FRAGMENT  = FRAGMENTS+2;
+	public static final int WATER_FRAGMENT = FRAGMENTS+4;
+	public static final int AIR_FRAGMENT   = FRAGMENTS+6;
+	static{
+		assignItemRect(EARTH_FRAGMENT, 22, 16);
+		assignItemRect(FIRE_FRAGMENT,  20, 16);
+		assignItemRect(WATER_FRAGMENT, 22, 16);
+		assignItemRect(AIR_FRAGMENT, 22, 16);
+	}
+
+
+	//16 free slots
 
 	//for smaller 8x8 icons that often accompany an item sprite
 	public static class Icons {

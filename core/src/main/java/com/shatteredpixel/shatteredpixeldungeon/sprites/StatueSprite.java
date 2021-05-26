@@ -19,9 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.sprites;
+package com.elementalpixel.elementalpixeldungeon.sprites;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
+
+import com.elementalpixel.elementalpixeldungeon.Assets;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.utils.GameMath;
 
@@ -52,7 +53,7 @@ public class StatueSprite extends MobSprite {
 	private static int[] tierFrames = {0, 21, 32, 43, 54, 65};
 
 	public void setArmor( int tier ){
-		int c = tierFrames[(int)GameMath.gate(0, tier, 5)];
+		int c = tierFrames[(int) GameMath.gate(0, tier, 5)];
 
 		TextureFilm frames = new TextureFilm( texture, 12, 15 );
 

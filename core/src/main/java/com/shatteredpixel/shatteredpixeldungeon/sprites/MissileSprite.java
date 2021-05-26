@@ -19,23 +19,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.sprites;
+package com.elementalpixel.elementalpixeldungeon.sprites;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Bolas;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.FishingSpear;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.HeavyBoomerang;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Javelin;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Kunai;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingSpear;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Trident;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.items.Item;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.SpiritBow;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.melee.Crossbow;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.missiles.Bolas;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.missiles.FishingSpear;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.missiles.HeavyBoomerang;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.missiles.Javelin;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.missiles.Kunai;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.missiles.Shuriken;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.missiles.ThrowingKnife;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.missiles.ThrowingSpear;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.missiles.Trident;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.missiles.darts.Dart;
+import com.elementalpixel.elementalpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.tweeners.PosTweener;
 import com.watabou.noosa.tweeners.Tweener;
@@ -50,13 +51,13 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 	
 	private Callback callback;
 	
-	public void reset( int from, int to, Item item, Callback listener ) {
+	public void reset(int from, int to, Item item, Callback listener ) {
 		reset(Dungeon.level.solid[from] ? DungeonTilemap.raisedTileCenterToWorld(from) : DungeonTilemap.raisedTileCenterToWorld(from),
 				Dungeon.level.solid[to] ? DungeonTilemap.raisedTileCenterToWorld(to) : DungeonTilemap.raisedTileCenterToWorld(to),
 				item, listener);
 	}
 
-	public void reset( Visual from, int to, Item item, Callback listener ) {
+	public void reset(Visual from, int to, Item item, Callback listener ) {
 		reset(from.center(),
 				Dungeon.level.solid[to] ? DungeonTilemap.raisedTileCenterToWorld(to) : DungeonTilemap.raisedTileCenterToWorld(to),
 				item, listener );
@@ -72,7 +73,7 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		reset(from.center(), to.center(), item, listener );
 	}
 
-	public void reset( PointF from, PointF to, Item item, Callback listener) {
+	public void reset(PointF from, PointF to, Item item, Callback listener) {
 		revive();
 
 		if (item == null)   view(0, null);
