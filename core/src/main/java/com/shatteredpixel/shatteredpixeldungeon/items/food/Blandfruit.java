@@ -19,34 +19,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.food;
+package com.elementalpixel.elementalpixeldungeon.items.food;
 
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticGas;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfPurity;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Plant.Seed;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+
+import com.elementalpixel.elementalpixeldungeon.Challenges;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Hunger;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.items.Item;
+import com.elementalpixel.elementalpixeldungeon.items.Recipe;
+import com.elementalpixel.elementalpixeldungeon.items.potions.Potion;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfExperience;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfFrost;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfHaste;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfHealing;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfInvisibility;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfLevitation;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfLiquidFlame;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfMindVision;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfParalyticGas;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfPurity;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfStrength;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfToxicGas;
+import com.elementalpixel.elementalpixeldungeon.levels.Terrain;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.plants.Plant;
+import com.elementalpixel.elementalpixeldungeon.plants.Sungrass;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
+import com.elementalpixel.elementalpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Reflection;
 
@@ -82,7 +83,7 @@ public class Blandfruit extends Food {
 	}
 
 	@Override
-	public void execute( Hero hero, String action ) {
+	public void execute(Hero hero, String action ) {
 
 		if (action.equals( AC_EAT ) && potionAttrib == null) {
 
@@ -140,7 +141,7 @@ public class Blandfruit extends Food {
 		return 20 * quantity;
 	}
 
-	public Item cook(Seed seed){
+	public Item cook(Plant.Seed seed){
 		return imbuePotion(Reflection.newInstance(Potion.SeedToPotion.types.get(seed.getClass())));
 	}
 
@@ -224,10 +225,10 @@ public class Blandfruit extends Food {
 			if (ingredients.size() != 2) return false;
 			
 			if (ingredients.get(0) instanceof Blandfruit){
-				if (!(ingredients.get(1) instanceof Seed)){
+				if (!(ingredients.get(1) instanceof Plant.Seed)){
 					return false;
 				}
-			} else if (ingredients.get(0) instanceof Seed){
+			} else if (ingredients.get(0) instanceof Plant.Seed){
 				if (ingredients.get(1) instanceof Blandfruit){
 					Item temp = ingredients.get(0);
 					ingredients.set(0, ingredients.get(1));
@@ -240,7 +241,7 @@ public class Blandfruit extends Food {
 			}
 			
 			Blandfruit fruit = (Blandfruit) ingredients.get(0);
-			Seed seed = (Seed) ingredients.get(1);
+			Plant.Seed seed = (Plant.Seed) ingredients.get(1);
 			
 			if (fruit.quantity() >= 1 && fruit.potionAttrib == null
 				&& seed.quantity() >= 1){
@@ -269,14 +270,14 @@ public class Blandfruit extends Food {
 			ingredients.get(1).quantity(ingredients.get(1).quantity() - 1);
 			
 			
-			return new Blandfruit().cook((Seed) ingredients.get(1));
+			return new Blandfruit().cook((Plant.Seed) ingredients.get(1));
 		}
 		
 		@Override
 		public Item sampleOutput(ArrayList<Item> ingredients) {
 			if (!testIngredients(ingredients)) return null;
 			
-			return new Blandfruit().cook((Seed) ingredients.get(1));
+			return new Blandfruit().cook((Plant.Seed) ingredients.get(1));
 		}
 	}
 
