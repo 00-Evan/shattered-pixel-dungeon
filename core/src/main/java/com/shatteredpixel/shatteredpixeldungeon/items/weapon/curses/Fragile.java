@@ -19,11 +19,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses;
+package com.elementalpixel.elementalpixeldungeon.items.weapon.curses;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.Weapon;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Bundle;
 
 public class Fragile extends Weapon.Enchantment {
@@ -32,7 +33,7 @@ public class Fragile extends Weapon.Enchantment {
 	private int hits = 0;
 
 	@Override
-	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
+	public int proc(Weapon weapon, Char attacker, Char defender, int damage ) {
 		//degrades from 100% to 25% damage over 150 hits
 		damage *= (1f - hits*0.005f);
 		if (hits < 150) hits++;
