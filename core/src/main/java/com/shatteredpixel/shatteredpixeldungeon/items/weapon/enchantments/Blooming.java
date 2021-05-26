@@ -19,17 +19,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
+package com.elementalpixel.elementalpixeldungeon.items.weapon.enchantments;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.effects.CellEmitter;
+import com.elementalpixel.elementalpixeldungeon.effects.particles.LeafParticle;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.Weapon;
+import com.elementalpixel.elementalpixeldungeon.levels.Level;
+import com.elementalpixel.elementalpixeldungeon.levels.Terrain;
+import com.elementalpixel.elementalpixeldungeon.scenes.GameScene;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 

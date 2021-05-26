@@ -19,17 +19,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
+package com.elementalpixel.elementalpixeldungeon.items.weapon.enchantments;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
+
+import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.Actor;
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.effects.Lightning;
+import com.elementalpixel.elementalpixeldungeon.effects.particles.SparkParticle;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.Weapon;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSprite;
+import com.elementalpixel.elementalpixeldungeon.utils.BArray;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -41,7 +42,7 @@ public class Shocking extends Weapon.Enchantment {
 	private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing( 0xFFFFFF, 0.5f );
 
 	@Override
-	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
+	public int proc(Weapon weapon, Char attacker, Char defender, int damage ) {
 		int level = Math.max( 0, weapon.buffedLvl() );
 
 		// lvl 0 - 25%

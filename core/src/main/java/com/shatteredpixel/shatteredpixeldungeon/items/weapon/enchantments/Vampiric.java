@@ -19,14 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
+package com.elementalpixel.elementalpixeldungeon.items.weapon.enchantments;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
+
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.effects.Speck;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.Weapon;
+import com.elementalpixel.elementalpixeldungeon.sprites.CharSprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
 public class Vampiric extends Weapon.Enchantment {
@@ -34,7 +34,7 @@ public class Vampiric extends Weapon.Enchantment {
 	private static ItemSprite.Glowing RED = new ItemSprite.Glowing( 0x660022 );
 	
 	@Override
-	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
+	public int proc(Weapon weapon, Char attacker, Char defender, int damage ) {
 		
 		//chance to heal scales from 5%-30% based on missing HP
 		float missingPercent = (attacker.HT - attacker.HP) / (float)attacker.HT;
@@ -61,7 +61,7 @@ public class Vampiric extends Weapon.Enchantment {
 	}
 	
 	@Override
-	public Glowing glowing() {
+	public ItemSprite.Glowing glowing() {
 		return RED;
 	}
 }

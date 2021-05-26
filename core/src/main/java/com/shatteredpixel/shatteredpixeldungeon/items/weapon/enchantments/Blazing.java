@@ -19,16 +19,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
+package com.elementalpixel.elementalpixeldungeon.items.weapon.enchantments;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
+
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Buff;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Burning;
+import com.elementalpixel.elementalpixeldungeon.effects.particles.FlameParticle;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.Weapon;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
 public class Blazing extends Weapon.Enchantment {
@@ -36,7 +36,7 @@ public class Blazing extends Weapon.Enchantment {
 	private static ItemSprite.Glowing ORANGE = new ItemSprite.Glowing( 0xFF4400 );
 	
 	@Override
-	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
+	public int proc(Weapon weapon, Char attacker, Char defender, int damage ) {
 		int level = Math.max( 0, weapon.buffedLvl() );
 
 		// lvl 0 - 33%
@@ -62,7 +62,7 @@ public class Blazing extends Weapon.Enchantment {
 	}
 	
 	@Override
-	public Glowing glowing() {
+	public ItemSprite.Glowing glowing() {
 		return ORANGE;
 	}
 }

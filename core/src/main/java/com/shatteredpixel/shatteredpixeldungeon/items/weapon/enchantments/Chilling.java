@@ -19,15 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
+package com.elementalpixel.elementalpixeldungeon.items.weapon.enchantments;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
+
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Buff;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Chill;
+import com.elementalpixel.elementalpixeldungeon.effects.Splash;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.Weapon;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
 public class Chilling extends Weapon.Enchantment {
@@ -35,7 +35,7 @@ public class Chilling extends Weapon.Enchantment {
 	private static ItemSprite.Glowing TEAL = new ItemSprite.Glowing( 0x00FFFF );
 	
 	@Override
-	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
+	public int proc(Weapon weapon, Char attacker, Char defender, int damage ) {
 		int level = Math.max( 0, weapon.buffedLvl() );
 
 		// lvl 0 - 25%
@@ -60,7 +60,7 @@ public class Chilling extends Weapon.Enchantment {
 	}
 	
 	@Override
-	public Glowing glowing() {
+	public ItemSprite.Glowing glowing() {
 		return TEAL;
 	}
 
