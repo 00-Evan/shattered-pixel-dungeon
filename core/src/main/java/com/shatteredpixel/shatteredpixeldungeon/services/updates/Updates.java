@@ -19,9 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.services.updates;
+package com.elementalpixel.elementalpixeldungeon.services.updates;
 
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
+
+import com.elementalpixel.elementalpixeldungeon.SPDSettings;
 import com.watabou.utils.Callback;
 
 import java.util.Date;
