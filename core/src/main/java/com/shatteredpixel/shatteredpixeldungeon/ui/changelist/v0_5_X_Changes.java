@@ -19,15 +19,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
+/*package com.elementalpixel.elementalpixeldungeon.ui.changelist;
 
-import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+
+import com.elementalpixel.elementalpixeldungeon.items.Stylus;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.melee.Quarterstaff;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.scenes.ChangesScene;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSprite;
+import com.elementalpixel.elementalpixeldungeon.ui.Icons;
+import com.elementalpixel.elementalpixeldungeon.ui.Window;
 
 import java.util.ArrayList;
 
@@ -75,3 +76,4 @@ public class v0_5_X_Changes {
 	}
 	
 }
+*/

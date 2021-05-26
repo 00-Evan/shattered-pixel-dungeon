@@ -19,19 +19,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
-
-import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Glaive;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+/*import com.elementalpixel.elementalpixeldungeon.items.Stylus;
+import com.elementalpixel.elementalpixeldungeon.items.armor.PlateArmor;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.melee.Glaive;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.melee.Longsword;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.melee.RunicBlade;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.scenes.ChangesScene;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
+import com.elementalpixel.elementalpixeldungeon.ui.Icons;
+import com.elementalpixel.elementalpixeldungeon.ui.Window;
+import com.elementalpixel.elementalpixeldungeon.ui.changelist.ChangeButton;
+import com.elementalpixel.elementalpixeldungeon.ui.changelist.ChangeInfo;
 
 import java.util.ArrayList;
 
@@ -247,3 +247,4 @@ public class v0_4_X_Changes {
 				"_-_ Various bugfixes"));
 	}
 }
+*/

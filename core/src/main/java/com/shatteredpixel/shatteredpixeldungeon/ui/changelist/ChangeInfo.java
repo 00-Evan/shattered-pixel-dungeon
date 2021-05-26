@@ -19,10 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
+package com.elementalpixel.elementalpixeldungeon.ui.changelist;
 
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
+
+import com.elementalpixel.elementalpixeldungeon.scenes.PixelScene;
+import com.elementalpixel.elementalpixeldungeon.ui.RenderedTextBlock;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.ui.Component;
 

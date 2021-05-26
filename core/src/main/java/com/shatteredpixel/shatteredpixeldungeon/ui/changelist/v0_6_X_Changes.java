@@ -19,45 +19,45 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
-
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
-import com.shatteredpixel.shatteredpixeldungeon.items.DewVial;
-import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Bulk;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEvasion;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMight;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorrosion;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Wayward;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Lucky;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greataxe;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+/*import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.Badges;
+import com.elementalpixel.elementalpixeldungeon.effects.BadgeBanner;
+import com.elementalpixel.elementalpixeldungeon.items.DewVial;
+import com.elementalpixel.elementalpixeldungeon.items.Torch;
+import com.elementalpixel.elementalpixeldungeon.items.armor.curses.Bulk;
+import com.elementalpixel.elementalpixeldungeon.items.artifacts.CloakOfShadows;
+import com.elementalpixel.elementalpixeldungeon.items.artifacts.DriedRose;
+import com.elementalpixel.elementalpixeldungeon.items.artifacts.EtherealChains;
+import com.elementalpixel.elementalpixeldungeon.items.artifacts.HornOfPlenty;
+import com.elementalpixel.elementalpixeldungeon.items.artifacts.TalismanOfForesight;
+import com.elementalpixel.elementalpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.elementalpixel.elementalpixeldungeon.items.artifacts.UnstableSpellbook;
+import com.elementalpixel.elementalpixeldungeon.items.food.Food;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfHealing;
+import com.elementalpixel.elementalpixeldungeon.items.rings.RingOfElements;
+import com.elementalpixel.elementalpixeldungeon.items.rings.RingOfEnergy;
+import com.elementalpixel.elementalpixeldungeon.items.rings.RingOfEvasion;
+import com.elementalpixel.elementalpixeldungeon.items.rings.RingOfMight;
+import com.elementalpixel.elementalpixeldungeon.items.rings.RingOfSharpshooting;
+import com.elementalpixel.elementalpixeldungeon.items.rings.RingOfWealth;
+import com.elementalpixel.elementalpixeldungeon.items.stones.StoneOfAugmentation;
+import com.elementalpixel.elementalpixeldungeon.items.stones.StoneOfEnchantment;
+import com.elementalpixel.elementalpixeldungeon.items.wands.WandOfCorrosion;
+import com.elementalpixel.elementalpixeldungeon.items.wands.WandOfCorruption;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.curses.Wayward;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.enchantments.Lucky;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.melee.Dagger;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.melee.Flail;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.melee.Greataxe;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.scenes.ChangesScene;
+import com.elementalpixel.elementalpixeldungeon.sprites.CharSprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
+import com.elementalpixel.elementalpixeldungeon.ui.Icons;
+import com.elementalpixel.elementalpixeldungeon.ui.Window;
+import com.elementalpixel.elementalpixeldungeon.ui.changelist.ChangeButton;
+import com.elementalpixel.elementalpixeldungeon.ui.changelist.ChangeInfo;
 import com.watabou.noosa.Image;
 
 import java.util.ArrayList;
@@ -892,3 +892,4 @@ public class v0_6_X_Changes {
 				"_-_ Resume indicator now appears in more cases"));
 	}
 }
+*/

@@ -19,43 +19,44 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
+/*package com.elementalpixel.elementalpixeldungeon.ui.changelist;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewDM300;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFrost;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.DM100Sprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.DM300Sprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ElementalSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.GuardSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.KingSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.NecromancerSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ShamanSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.SpawnerSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.StatueSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.YogSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+
+import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.DwarfKing;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.NewDM300;
+import com.elementalpixel.elementalpixeldungeon.items.artifacts.TalismanOfForesight;
+import com.elementalpixel.elementalpixeldungeon.items.rings.RingOfEnergy;
+import com.elementalpixel.elementalpixeldungeon.items.rings.RingOfWealth;
+import com.elementalpixel.elementalpixeldungeon.items.stones.StoneOfAugmentation;
+import com.elementalpixel.elementalpixeldungeon.items.wands.WandOfBlastWave;
+import com.elementalpixel.elementalpixeldungeon.items.wands.WandOfCorruption;
+import com.elementalpixel.elementalpixeldungeon.items.wands.WandOfFireblast;
+import com.elementalpixel.elementalpixeldungeon.items.wands.WandOfFrost;
+import com.elementalpixel.elementalpixeldungeon.items.wands.WandOfMagicMissile;
+import com.elementalpixel.elementalpixeldungeon.items.wands.WandOfRegrowth;
+import com.elementalpixel.elementalpixeldungeon.items.wands.WandOfWarding;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.SpiritBow;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.melee.Flail;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.melee.Quarterstaff;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.scenes.ChangesScene;
+import com.elementalpixel.elementalpixeldungeon.scenes.PixelScene;
+import com.elementalpixel.elementalpixeldungeon.sprites.CharSprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.DM100Sprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.DM300Sprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.ElementalSprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.GuardSprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
+import com.elementalpixel.elementalpixeldungeon.sprites.KingSprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.NecromancerSprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.ShamanSprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.SpawnerSprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.StatueSprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.YogSprite;
+import com.elementalpixel.elementalpixeldungeon.ui.Icons;
+import com.elementalpixel.elementalpixeldungeon.ui.Window;
 import com.watabou.noosa.Image;
 import com.watabou.utils.DeviceCompat;
 
@@ -716,3 +717,4 @@ public class v0_8_X_Changes {
 	}
 	
 }
+*/
