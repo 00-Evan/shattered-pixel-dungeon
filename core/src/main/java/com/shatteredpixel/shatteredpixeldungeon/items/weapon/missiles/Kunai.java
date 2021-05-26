@@ -19,14 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
+package com.elementalpixel.elementalpixeldungeon.items.weapon.missiles;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+
+import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.actors.Actor;
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.Mob;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
 public class Kunai extends MissileWeapon {

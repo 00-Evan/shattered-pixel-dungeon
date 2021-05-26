@@ -19,10 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
+package com.elementalpixel.elementalpixeldungeon.items.weapon.missiles;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+
+import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
 
 public class ThrowingClub extends MissileWeapon {
 	

@@ -19,28 +19,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
+package com.elementalpixel.elementalpixeldungeon.items.weapon.missiles;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projecting;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.Actor;
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Buff;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Corruption;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.MagicImmune;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Momentum;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.PinCushion;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Talent;
+import com.elementalpixel.elementalpixeldungeon.items.Item;
+import com.elementalpixel.elementalpixeldungeon.items.bags.Bag;
+import com.elementalpixel.elementalpixeldungeon.items.bags.MagicalHolster;
+import com.elementalpixel.elementalpixeldungeon.items.rings.RingOfSharpshooting;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.SpiritBow;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.Weapon;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.enchantments.Projecting;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.missiles.darts.Dart;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -132,7 +133,7 @@ abstract public class MissileWeapon extends Weapon {
 	}
 
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
+	public ArrayList<String> actions(Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		actions.remove( AC_EQUIP );
 		return actions;
@@ -288,7 +289,7 @@ abstract public class MissileWeapon extends Weapon {
 			} else {
 				parent.durability -= parent.durabilityPerUse();
 				if (parent.durability > 0 && parent.durability <= parent.durabilityPerUse()){
-					if (level() <= 0)GLog.w(Messages.get(this, "about_to_break"));
+					if (level() <= 0) GLog.w(Messages.get(this, "about_to_break"));
 					else             GLog.n(Messages.get(this, "about_to_break"));
 				}
 			}
