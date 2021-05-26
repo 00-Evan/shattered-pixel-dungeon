@@ -19,9 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.utils;
+package com.elementalpixel.elementalpixeldungeon.utils;
 
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.Signal;
 
