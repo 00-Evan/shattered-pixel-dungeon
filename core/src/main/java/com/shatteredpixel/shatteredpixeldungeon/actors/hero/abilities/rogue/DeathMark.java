@@ -27,17 +27,20 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 
 public class DeathMark extends ArmorAbility {
 
@@ -66,20 +69,20 @@ public class DeathMark extends ArmorAbility {
 
 		if (ch == null){
 			GLog.w(Messages.get(this, "no_target"));
+			return;
 		} else if (ch.alignment != Char.Alignment.ENEMY){
 			GLog.w(Messages.get(this, "ally_target"));
+			return;
 		}
 
 		if (ch != null){
-			Buff.affect(ch, DeathMarkTracker.class, 5f);
-			ch.buff(DeathMarkTracker.class).setInitialHP(ch.HP);
+			Buff.affect(ch, DeathMarkTracker.class, 5f).setInitialHP(ch.HP);
 		}
 
 		armor.charge -= chargeUse( hero );
 		armor.updateQuickslot();
 		hero.sprite.zap(target);
 
-		Invisibility.dispel();
 		hero.next();
 
 		if (hero.buff(DoubleMarkTracker.class) != null){
@@ -88,6 +91,34 @@ public class DeathMark extends ArmorAbility {
 			Buff.affect(hero, DoubleMarkTracker.class, 0.01f);
 		}
 
+	}
+
+	public static void processFearTheReaper( Char ch ){
+		if (ch.HP > 0 || ch.buff(DeathMarkTracker.class) == null){
+			return;
+		}
+
+		if (Dungeon.hero.hasTalent(Talent.FEAR_THE_REAPER)) {
+			if (Dungeon.hero.pointsInTalent(Talent.FEAR_THE_REAPER) >= 2) {
+				Buff.prolong(ch, Terror.class, 5f).target = Dungeon.hero;
+			}
+			Buff.prolong(ch, Cripple.class, 5f);
+
+			if (Dungeon.hero.pointsInTalent(Talent.FEAR_THE_REAPER) >= 3) {
+				boolean[] passable = BArray.not(Dungeon.level.solid, null);
+				PathFinder.buildDistanceMap(ch.pos, passable, 3);
+
+				for (Char near : Actor.chars()) {
+					if (near != ch && near.alignment == Char.Alignment.ENEMY
+							&& PathFinder.distance[near.pos] != Integer.MAX_VALUE) {
+						if (Dungeon.hero.pointsInTalent(Talent.FEAR_THE_REAPER) == 4) {
+							Buff.prolong(near, Terror.class, 5f).target = Dungeon.hero;
+						}
+						Buff.prolong(near, Cripple.class, 5f);
+					}
+				}
+			}
+		}
 	}
 
 	public static class DoubleMarkTracker extends FlavourBuff{};

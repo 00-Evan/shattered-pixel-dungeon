@@ -364,6 +364,7 @@ public abstract class Char extends Actor {
 				} else {
 					//helps with triggering any on-damage effects that need to activate
 					enemy.damage(-1, this);
+					DeathMark.processFearTheReaper(enemy);
 				}
 				enemy.sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Preparation.class, "assassinated"));
 			}
@@ -606,27 +607,7 @@ public abstract class Char extends Actor {
 		if (!isAlive()) {
 			die( src );
 		} else if (HP == 0 && buff(DeathMark.DeathMarkTracker.class) != null){
-			if (Dungeon.hero.hasTalent(Talent.FEAR_THE_REAPER)) {
-				if (Dungeon.hero.pointsInTalent(Talent.FEAR_THE_REAPER) >= 2) {
-					Buff.prolong(this, Terror.class, 5f).target = Dungeon.hero;
-				}
-				Buff.prolong(this, Cripple.class, 5f);
-
-				if (Dungeon.hero.pointsInTalent(Talent.FEAR_THE_REAPER) >= 3) {
-					boolean[] passable = BArray.not(Dungeon.level.solid, null);
-					PathFinder.buildDistanceMap(pos, passable, 3);
-
-					for (Char ch : Actor.chars()) {
-						if (ch != this && ch.alignment == Alignment.ENEMY
-								&& PathFinder.distance[ch.pos] != Integer.MAX_VALUE) {
-							if (Dungeon.hero.pointsInTalent(Talent.FEAR_THE_REAPER) == 4) {
-								Buff.prolong(ch, Terror.class, 5f).target = Dungeon.hero;
-							}
-							Buff.prolong(ch, Cripple.class, 5f);
-						}
-					}
-				}
-			}
+			DeathMark.processFearTheReaper(this);
 		}
 	}
 	
