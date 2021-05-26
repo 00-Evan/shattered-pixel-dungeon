@@ -19,9 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.mechanics;
+package com.elementalpixel.elementalpixeldungeon.mechanics;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
@@ -80,7 +81,7 @@ public class ConeAOE {
 			scan.x += (fromP.x > scan.x ? +0.5f : -0.5f);
 			scan.y += (fromP.y > scan.y ? +0.5f : -0.5f);
 			scanInt.set(
-					(int)GameMath.gate(0, (int)Math.floor(scan.x), Dungeon.level.width()-1),
+					(int) GameMath.gate(0, (int)Math.floor(scan.x), Dungeon.level.width()-1),
 					(int)GameMath.gate(0, (int)Math.floor(scan.y), Dungeon.level.height()-1));
 			targetCells.add(Dungeon.level.pointToCell(scanInt));
 			//if the cone is large enough, also cast rays to cells just inside of the outer arc
