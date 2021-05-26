@@ -46,8 +46,8 @@ public class RingOfFuror extends Ring {
 		return new Furor();
 	}
 	
-	public static float attackDelayMultiplier(Char target ){
-		return 1f / (float)Math.pow(1.105, getBuffedBonus(target, Furor.class));
+	public static float attackSpeedMultiplier(Char target ){
+		return (float)Math.pow(1.105, getBuffedBonus(target, Furor.class));
 	}
 
 	public class Furor extends RingBuff {

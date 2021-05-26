@@ -181,18 +181,24 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 	
 	@Override
-	public float speedFactor( Char owner ) {
+	public float delayFactor( Char owner ) {
+		return baseDelay(owner) * (1f/speedMultiplier(owner));
+	}
 
-		int encumbrance = 0;
+	protected float baseDelay( Char owner ){
+		float delay = augment.delayFactor(this.DLY);
 		if (owner instanceof Hero) {
-			encumbrance = STRReq() - ((Hero)owner).STR();
+			int encumbrance = STRReq() - ((Hero)owner).STR();
+			if (encumbrance > 0){
+				delay *= Math.pow( 1.2, encumbrance );
+			}
 		}
 
-		float DLY = augment.delayFactor(this.DLY);
+		return delay;
+	}
 
-		DLY *= RingOfFuror.attackDelayMultiplier(owner);
-
-		return (encumbrance > 0 ? (float)(DLY * Math.pow( 1.2, encumbrance )) : DLY);
+	protected float speedMultiplier(Char owner ){
+		return RingOfFuror.attackSpeedMultiplier(owner);
 	}
 
 	@Override

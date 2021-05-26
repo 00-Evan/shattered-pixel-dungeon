@@ -235,7 +235,7 @@ abstract public class MissileWeapon extends Weapon {
 	
 	@Override
 	public float castDelay(Char user, int dst) {
-		return speedFactor( user );
+		return delayFactor( user );
 	}
 	
 	protected void rangedHit( Char enemy, int cell ){

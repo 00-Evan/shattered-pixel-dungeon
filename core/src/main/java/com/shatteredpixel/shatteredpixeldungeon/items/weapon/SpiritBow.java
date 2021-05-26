@@ -238,29 +238,31 @@ public class SpiritBow extends Weapon {
 	}
 	
 	@Override
-	public float speedFactor(Char owner) {
+	protected float baseDelay(Char owner) {
 		if (sniperSpecial){
 			switch (augment){
 				case NONE: default:
 					return 0f;
 				case SPEED:
-					return 1f * RingOfFuror.attackDelayMultiplier(owner);
+					return 1f * RingOfFuror.attackSpeedMultiplier(owner);
 				case DAMAGE:
-					return 2f * RingOfFuror.attackDelayMultiplier(owner);
+					return 2f * RingOfFuror.attackSpeedMultiplier(owner);
 			}
-		} else {
-
-			float speed = super.speedFactor(owner);
-
-			if (owner.buff(NaturesPower.naturesPowerTracker.class) != null){
-				// 1.33x speed to 1.5x speed, depending on talent points
-				speed /= ((32 + ((Hero)owner).pointsInTalent(Talent.GROWING_POWER)) / 24f);
-			}
-
-			return speed;
+		} else{
+			return super.baseDelay(owner);
 		}
 	}
-	
+
+	@Override
+	protected float speedMultiplier(Char owner) {
+		float speed = super.speedMultiplier(owner);
+		if (owner.buff(NaturesPower.naturesPowerTracker.class) != null){
+			// +33% speed to +50% speed, depending on talent points
+			speed += ((8 + ((Hero)owner).pointsInTalent(Talent.GROWING_POWER)) / 24f);
+		}
+		return speed;
+	}
+
 	@Override
 	public int level() {
 		return (Dungeon.hero == null ? 0 : Dungeon.hero.lvl/5) + (curseInfusionBonus ? 1 : 0);
@@ -318,8 +320,8 @@ public class SpiritBow extends Weapon {
 		}
 		
 		@Override
-		public float speedFactor(Char user) {
-			return SpiritBow.this.speedFactor(user);
+		public float delayFactor(Char user) {
+			return SpiritBow.this.delayFactor(user);
 		}
 		
 		@Override
