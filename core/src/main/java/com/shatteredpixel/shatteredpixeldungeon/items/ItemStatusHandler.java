@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items;
+package com.elementalpixel.elementalpixeldungeon.items;
 
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
