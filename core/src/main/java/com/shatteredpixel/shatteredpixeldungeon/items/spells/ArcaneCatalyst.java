@@ -19,26 +19,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.spells;
+package com.elementalpixel.elementalpixeldungeon.items.spells;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImage;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRage;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.items.Item;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.Scroll;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfIdentify;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfLullaby;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfMagicMapping;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfMirrorImage;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfRage;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfRetribution;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfTerror;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfTransmutation;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.exotic.ExoticScroll;
+import com.elementalpixel.elementalpixeldungeon.items.stones.Runestone;
+import com.elementalpixel.elementalpixeldungeon.plants.Plant;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
@@ -83,7 +84,7 @@ public class ArcaneCatalyst extends Spell {
 		return 40 * quantity;
 	}
 	
-	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe {
+	public static class Recipe extends com.elementalpixel.elementalpixeldungeon.items.Recipe {
 		
 		@Override
 		public boolean testIngredients(ArrayList<Item> ingredients) {
