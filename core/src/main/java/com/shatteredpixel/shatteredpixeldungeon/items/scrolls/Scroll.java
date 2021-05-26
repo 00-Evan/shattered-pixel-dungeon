@@ -19,41 +19,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
+package com.elementalpixel.elementalpixeldungeon.items.scrolls;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ScrollEmpower;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
-import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfAntiMagic;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAffection;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlast;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlink;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfClairvoyance;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDeepenedSleep;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDisarming;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFlock;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfShock;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Blindness;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Buff;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Invisibility;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.MagicImmune;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.ScrollEmpower;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Talent;
+import com.elementalpixel.elementalpixeldungeon.items.Generator;
+import com.elementalpixel.elementalpixeldungeon.items.Item;
+import com.elementalpixel.elementalpixeldungeon.items.ItemStatusHandler;
+import com.elementalpixel.elementalpixeldungeon.items.Recipe;
+import com.elementalpixel.elementalpixeldungeon.items.artifacts.UnstableSpellbook;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.exotic.ExoticScroll;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.exotic.ScrollOfAntiMagic;
+import com.elementalpixel.elementalpixeldungeon.items.stones.Runestone;
+import com.elementalpixel.elementalpixeldungeon.items.stones.StoneOfAffection;
+import com.elementalpixel.elementalpixeldungeon.items.stones.StoneOfAggression;
+import com.elementalpixel.elementalpixeldungeon.items.stones.StoneOfAugmentation;
+import com.elementalpixel.elementalpixeldungeon.items.stones.StoneOfBlast;
+import com.elementalpixel.elementalpixeldungeon.items.stones.StoneOfBlink;
+import com.elementalpixel.elementalpixeldungeon.items.stones.StoneOfClairvoyance;
+import com.elementalpixel.elementalpixeldungeon.items.stones.StoneOfDeepenedSleep;
+import com.elementalpixel.elementalpixeldungeon.items.stones.StoneOfDisarming;
+import com.elementalpixel.elementalpixeldungeon.items.stones.StoneOfEnchantment;
+import com.elementalpixel.elementalpixeldungeon.items.stones.StoneOfFlock;
+import com.elementalpixel.elementalpixeldungeon.items.stones.StoneOfIntuition;
+import com.elementalpixel.elementalpixeldungeon.items.stones.StoneOfShock;
+import com.elementalpixel.elementalpixeldungeon.journal.Catalog;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.sprites.HeroSprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
+import com.elementalpixel.elementalpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Reflection;
 
@@ -69,7 +70,7 @@ public abstract class Scroll extends Item {
 
 	private static final HashMap<String, Integer> runes = new HashMap<String, Integer>() {
 		{
-			put("KAUNAN",ItemSpriteSheet.SCROLL_KAUNAN);
+			put("KAUNAN", ItemSpriteSheet.SCROLL_KAUNAN);
 			put("SOWILO",ItemSpriteSheet.SCROLL_SOWILO);
 			put("LAGUZ",ItemSpriteSheet.SCROLL_LAGUZ);
 			put("YNGVI",ItemSpriteSheet.SCROLL_YNGVI);
@@ -95,7 +96,7 @@ public abstract class Scroll extends Item {
 	
 	@SuppressWarnings("unchecked")
 	public static void initLabels() {
-		handler = new ItemStatusHandler<>( (Class<? extends Scroll>[])Generator.Category.SCROLL.classes, runes );
+		handler = new ItemStatusHandler<>( (Class<? extends Scroll>[]) Generator.Category.SCROLL.classes, runes );
 	}
 	
 	public static void save( Bundle bundle ) {
