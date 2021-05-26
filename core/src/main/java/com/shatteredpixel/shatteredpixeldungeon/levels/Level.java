@@ -1139,9 +1139,6 @@ public abstract class Level implements Bundlable {
 			} else if (((Hero) c).hasTalent(Talent.HEIGHTENED_SENSES)) {
 				Hero h = (Hero) c;
 				int range = 1+h.pointsInTalent(Talent.HEIGHTENED_SENSES);
-				if (h.hasTalent(Talent.FARSIGHT)){
-					range = (int)Math.floor( range * (1f + 0.25f*h.pointsInTalent(Talent.FARSIGHT)));
-				}
 				for (Mob mob : mobs) {
 					int p = mob.pos;
 					if (!fieldOfView[p] && distance(c.pos, p) <= range) {
