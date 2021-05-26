@@ -19,14 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.tiles;
+package com.elementalpixel.elementalpixeldungeon.tiles;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.levels.NewHallsBossLevel;
+
+import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.levels.NewHallsBossLevel;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.Tilemap;
-
 
 public class WallBlockingTilemap extends Tilemap {
 

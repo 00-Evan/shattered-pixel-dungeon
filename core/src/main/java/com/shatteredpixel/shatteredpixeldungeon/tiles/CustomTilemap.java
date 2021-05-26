@@ -19,9 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.tiles;
+package com.elementalpixel.elementalpixeldungeon.tiles;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.TextureFilm;
@@ -40,7 +41,7 @@ public abstract class CustomTilemap implements Bundlable {
 	protected Tilemap vis = null;
 
 	public void pos(int pos) {
-		pos( pos%Dungeon.level.width(), pos/Dungeon.level.width() );
+		pos( pos% Dungeon.level.width(), pos/Dungeon.level.width() );
 	}
 
 	public void pos(int tileX, int tileY){

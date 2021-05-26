@@ -19,9 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.tiles;
+package com.elementalpixel.elementalpixeldungeon.tiles;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.Tilemap;

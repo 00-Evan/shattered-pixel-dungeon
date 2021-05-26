@@ -19,9 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.tiles;
+package com.elementalpixel.elementalpixeldungeon.tiles;
 
-import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+
+import com.elementalpixel.elementalpixeldungeon.levels.Terrain;
 import com.watabou.utils.Random;
 import com.watabou.utils.SparseArray;
 
