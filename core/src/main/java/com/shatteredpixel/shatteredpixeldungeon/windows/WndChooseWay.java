@@ -19,16 +19,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.windows;
+package com.elementalpixel.elementalpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
-import com.shatteredpixel.shatteredpixeldungeon.items.TomeOfMastery;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+
+import com.elementalpixel.elementalpixeldungeon.actors.hero.HeroSubClass;
+import com.elementalpixel.elementalpixeldungeon.items.TomeOfMastery;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.scenes.PixelScene;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSprite;
+import com.elementalpixel.elementalpixeldungeon.ui.RedButton;
+import com.elementalpixel.elementalpixeldungeon.ui.RenderedTextBlock;
+import com.elementalpixel.elementalpixeldungeon.ui.Window;
 
 public class WndChooseWay extends Window {
 	
@@ -36,7 +37,7 @@ public class WndChooseWay extends Window {
 	private static final int BTN_HEIGHT	= 18;
 	private static final float GAP		= 2;
 	
-	public WndChooseWay( final TomeOfMastery tome, final HeroSubClass way1, final HeroSubClass way2 ) {
+	public WndChooseWay(final TomeOfMastery tome, final HeroSubClass way1, final HeroSubClass way2 ) {
 		
 		super();
 

@@ -19,11 +19,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.windows;
+package com.elementalpixel.elementalpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+
+import com.elementalpixel.elementalpixeldungeon.scenes.PixelScene;
+import com.elementalpixel.elementalpixeldungeon.ui.RenderedTextBlock;
+import com.elementalpixel.elementalpixeldungeon.ui.Window;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
 
@@ -33,13 +34,13 @@ public class WndTitledMessage extends Window {
 	protected static final int WIDTH_MAX    = 220;
 	protected static final int GAP	= 2;
 
-	public WndTitledMessage( Image icon, String title, String message ) {
+	public WndTitledMessage(Image icon, String title, String message ) {
 		
 		this( new IconTitle( icon, title ), message );
 
 	}
 	
-	public WndTitledMessage( Component titlebar, String message ) {
+	public WndTitledMessage(Component titlebar, String message ) {
 
 		super();
 

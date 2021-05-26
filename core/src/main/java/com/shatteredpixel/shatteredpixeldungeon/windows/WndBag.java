@@ -19,44 +19,46 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.windows;
+package com.elementalpixel.elementalpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
-import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
-import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
-import com.shatteredpixel.shatteredpixeldungeon.items.spells.Recycle;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
-import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
-import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
+
+import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.SPDAction;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Belongings;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.npcs.Shopkeeper;
+import com.elementalpixel.elementalpixeldungeon.items.EquipableItem;
+import com.elementalpixel.elementalpixeldungeon.items.Gold;
+import com.elementalpixel.elementalpixeldungeon.items.Item;
+import com.elementalpixel.elementalpixeldungeon.items.Recipe;
+import com.elementalpixel.elementalpixeldungeon.items.armor.Armor;
+import com.elementalpixel.elementalpixeldungeon.items.artifacts.SandalsOfNature;
+import com.elementalpixel.elementalpixeldungeon.items.bags.Bag;
+import com.elementalpixel.elementalpixeldungeon.items.bags.MagicalHolster;
+import com.elementalpixel.elementalpixeldungeon.items.bags.PotionBandolier;
+import com.elementalpixel.elementalpixeldungeon.items.bags.ScrollHolder;
+import com.elementalpixel.elementalpixeldungeon.items.bags.VelvetPouch;
+import com.elementalpixel.elementalpixeldungeon.items.food.Food;
+import com.elementalpixel.elementalpixeldungeon.items.fragments.Fragment;
+import com.elementalpixel.elementalpixeldungeon.items.potions.Potion;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.Scroll;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfTransmutation;
+import com.elementalpixel.elementalpixeldungeon.items.spells.Recycle;
+import com.elementalpixel.elementalpixeldungeon.items.stones.StoneOfIntuition;
+import com.elementalpixel.elementalpixeldungeon.items.wands.Wand;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.SpiritBow;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.missiles.MissileWeapon;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.scenes.PixelScene;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
+import com.elementalpixel.elementalpixeldungeon.ui.Icons;
+import com.elementalpixel.elementalpixeldungeon.ui.ItemSlot;
+import com.elementalpixel.elementalpixeldungeon.ui.QuickSlotButton;
+import com.elementalpixel.elementalpixeldungeon.ui.RenderedTextBlock;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.input.KeyBindings;
 import com.watabou.input.KeyEvent;
@@ -93,7 +95,8 @@ public class WndBag extends WndTabbed {
 		TRANMSUTABLE,
 		ALCHEMY,
 		RECYCLABLE,
-		NOT_EQUIPPED
+		NOT_EQUIPPED,
+		FRAGMENT
 	}
 
 	protected static final int COLS_P   = 5;
@@ -321,7 +324,7 @@ public class WndBag extends WndTabbed {
 		return 20;
 	}
 	
-	private Image icon( Bag bag ) {
+	private Image icon(Bag bag ) {
 		if (bag instanceof VelvetPouch) {
 			return Icons.get( Icons.SEED_POUCH );
 		} else if (bag instanceof ScrollHolder) {
@@ -408,7 +411,7 @@ public class WndBag extends WndTabbed {
 		}
 		
 		@Override
-		public void item( Item item ) {
+		public Item item(Item item ) {
 			
 			super.item( item );
 			if (item != null) {
@@ -450,12 +453,14 @@ public class WndBag extends WndTabbed {
 						mode == Mode.TRANMSUTABLE && ScrollOfTransmutation.canTransmute(item) ||
 						mode == Mode.NOT_EQUIPPED && !item.isEquipped(Dungeon.hero) ||
 						mode == Mode.RECYCLABLE && Recycle.isRecyclable(item) ||
+						mode == Mode.FRAGMENT && (item instanceof Fragment) ||
 						mode == Mode.ALL
 					);
 				}
 			} else {
 				bg.color( NORMAL );
 			}
+			return item;
 		}
 		
 		@Override

@@ -19,14 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.windows;
+package com.elementalpixel.elementalpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.Chrome;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+
+import com.elementalpixel.elementalpixeldungeon.Chrome;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.scenes.PixelScene;
+import com.elementalpixel.elementalpixeldungeon.ui.RenderedTextBlock;
+import com.elementalpixel.elementalpixeldungeon.ui.Window;
 import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
@@ -48,6 +49,8 @@ public class WndStory extends Window {
 	public static final int ID_CAVES		= 2;
 	public static final int ID_CITY     	= 3;
 	public static final int ID_HALLS		= 4;
+	public static final int ID_FIRE  		= 5;
+
 	
 	private static final SparseArray<String> CHAPTERS = new SparseArray<>();
 	
@@ -57,6 +60,7 @@ public class WndStory extends Window {
 		CHAPTERS.put( ID_CAVES, "caves" );
 		CHAPTERS.put( ID_CITY, "city" );
 		CHAPTERS.put( ID_HALLS, "halls" );
+		CHAPTERS.put( ID_FIRE, "fire" );
 	}
 
 	private IconTitle ttl;

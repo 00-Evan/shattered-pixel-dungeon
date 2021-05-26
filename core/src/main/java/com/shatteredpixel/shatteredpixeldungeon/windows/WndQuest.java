@@ -19,14 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.windows;
+package com.elementalpixel.elementalpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.npcs.NPC;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
 
 public class WndQuest extends WndTitledMessage {
 
-	public WndQuest( NPC questgiver, String text ) {
+	public WndQuest(NPC questgiver, String text ) {
 		super( questgiver.sprite(), Messages.titleCase( questgiver.name() ), text );
 	}
 }

@@ -19,9 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.windows;
+package com.elementalpixel.elementalpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
+
+import com.elementalpixel.elementalpixeldungeon.ui.RedButton;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
@@ -35,7 +36,7 @@ public class WndHardNotification extends WndTitledMessage{
 	private double timeLeft;
 	private String btnMessage;
 
-	public WndHardNotification( Image icon, String title, String message, String btnMessage, int time) {
+	public WndHardNotification(Image icon, String title, String message, String btnMessage, int time) {
 		this(new IconTitle(icon, title), message, btnMessage, time);
 	}
 
