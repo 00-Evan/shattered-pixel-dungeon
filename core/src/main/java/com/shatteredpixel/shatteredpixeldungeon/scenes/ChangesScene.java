@@ -19,28 +19,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.scenes;
+package com.elementalpixel.elementalpixeldungeon.scenes;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Chrome;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
-import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
-import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
-import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.ChangeInfo;
-import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_1_X_Changes;
-import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_2_X_Changes;
-import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_3_X_Changes;
-import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_4_X_Changes;
-import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_5_X_Changes;
-import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_6_X_Changes;
-import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_7_X_Changes;
-import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_8_X_Changes;
-import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_9_X_Changes;
+
+import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.Chrome;
+import com.elementalpixel.elementalpixeldungeon.ShatteredPixelDungeon;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.ui.Archs;
+import com.elementalpixel.elementalpixeldungeon.ui.ExitButton;
+import com.elementalpixel.elementalpixeldungeon.ui.RenderedTextBlock;
+import com.elementalpixel.elementalpixeldungeon.ui.ScrollPane;
+import com.elementalpixel.elementalpixeldungeon.ui.StyledButton;
+import com.elementalpixel.elementalpixeldungeon.ui.Window;
+import com.elementalpixel.elementalpixeldungeon.ui.changelist.ChangeInfo;
+import com.elementalpixel.elementalpixeldungeon.ui.changelist.v0_1_X_Changes;
+/*import com.elementalpixel.elementalpixeldungeon.ui.changelist.v0_2_X_Changes;
+import com.elementalpixel.elementalpixeldungeon.ui.changelist.v0_3_X_Changes;
+import com.elementalpixel.elementalpixeldungeon.ui.changelist.v0_4_X_Changes;
+import com.elementalpixel.elementalpixeldungeon.ui.changelist.v0_5_X_Changes;
+import com.elementalpixel.elementalpixeldungeon.ui.changelist.v0_6_X_Changes;
+import com.elementalpixel.elementalpixeldungeon.ui.changelist.v0_7_X_Changes;
+import com.elementalpixel.elementalpixeldungeon.ui.changelist.v0_8_X_Changes;
+import com.elementalpixel.elementalpixeldungeon.ui.changelist.v0_9_X_Changes;*/
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.audio.Music;
@@ -89,22 +90,22 @@ public class ChangesScene extends PixelScene {
 		
 		switch (changesSelected){
 			case 0: default:
-				v0_9_X_Changes.addAllChanges(changeInfos);
+				//v0_9_X_Changes.addAllChanges(changeInfos);
 				break;
 			case 1:
-				v0_8_X_Changes.addAllChanges(changeInfos);
+				//v0_8_X_Changes.addAllChanges(changeInfos);
 				break;
 			case 2:
-				v0_7_X_Changes.addAllChanges(changeInfos);
+				//v0_7_X_Changes.addAllChanges(changeInfos);
 				break;
 			case 3:
-				v0_6_X_Changes.addAllChanges(changeInfos);
+				//v0_6_X_Changes.addAllChanges(changeInfos);
 				break;
 			case 4:
-				v0_5_X_Changes.addAllChanges(changeInfos);
+				/*v0_5_X_Changes.addAllChanges(changeInfos);
 				v0_4_X_Changes.addAllChanges(changeInfos);
 				v0_3_X_Changes.addAllChanges(changeInfos);
-				v0_2_X_Changes.addAllChanges(changeInfos);
+				v0_2_X_Changes.addAllChanges(changeInfos);*/
 				v0_1_X_Changes.addAllChanges(changeInfos);
 				break;
 		}

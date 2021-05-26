@@ -19,88 +19,88 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.scenes;
+package com.elementalpixel.elementalpixeldungeon.scenes;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Statistics;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DemonSpawner;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
-import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CircleArc;
-import com.shatteredpixel.shatteredpixeldungeon.effects.EmoIcon;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
-import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Ripple;
-import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.DiscardedItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTerrainTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonWallsTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.FogOfWar;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.GridTileMap;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.RaisedTerrainTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.TerrainFeaturesTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.WallBlockingTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Banner;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BusyIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.ui.CharHealthIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
-import com.shatteredpixel.shatteredpixeldungeon.ui.LootIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.ResumeIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.ui.StatusPane;
-import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Toast;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag.Mode;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndGame;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoCell;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoItem;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoMob;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoPlant;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoTrap;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
+
+import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.Badges;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.SPDSettings;
+import com.elementalpixel.elementalpixeldungeon.ShatteredPixelDungeon;
+import com.elementalpixel.elementalpixeldungeon.Statistics;
+import com.elementalpixel.elementalpixeldungeon.actors.Actor;
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.actors.blobs.Blob;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.ChampionEnemy;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Talent;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.DemonSpawner;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.Mob;
+import com.elementalpixel.elementalpixeldungeon.effects.BannerSprites;
+import com.elementalpixel.elementalpixeldungeon.effects.BlobEmitter;
+import com.elementalpixel.elementalpixeldungeon.effects.CircleArc;
+import com.elementalpixel.elementalpixeldungeon.effects.EmoIcon;
+import com.elementalpixel.elementalpixeldungeon.effects.Flare;
+import com.elementalpixel.elementalpixeldungeon.effects.FloatingText;
+import com.elementalpixel.elementalpixeldungeon.effects.Ripple;
+import com.elementalpixel.elementalpixeldungeon.effects.SpellSprite;
+import com.elementalpixel.elementalpixeldungeon.items.Heap;
+import com.elementalpixel.elementalpixeldungeon.items.Honeypot;
+import com.elementalpixel.elementalpixeldungeon.items.Item;
+import com.elementalpixel.elementalpixeldungeon.items.artifacts.DriedRose;
+import com.elementalpixel.elementalpixeldungeon.items.bags.MagicalHolster;
+import com.elementalpixel.elementalpixeldungeon.items.bags.PotionBandolier;
+import com.elementalpixel.elementalpixeldungeon.items.bags.ScrollHolder;
+import com.elementalpixel.elementalpixeldungeon.items.bags.VelvetPouch;
+import com.elementalpixel.elementalpixeldungeon.items.potions.Potion;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.elementalpixel.elementalpixeldungeon.journal.Journal;
+import com.elementalpixel.elementalpixeldungeon.levels.Level;
+import com.elementalpixel.elementalpixeldungeon.levels.RegularLevel;
+import com.elementalpixel.elementalpixeldungeon.levels.rooms.Room;
+import com.elementalpixel.elementalpixeldungeon.levels.rooms.secret.SecretRoom;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.Trap;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.plants.Plant;
+import com.elementalpixel.elementalpixeldungeon.sprites.CharSprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.DiscardedItemSprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.HeroSprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSprite;
+import com.elementalpixel.elementalpixeldungeon.tiles.CustomTilemap;
+import com.elementalpixel.elementalpixeldungeon.tiles.DungeonTerrainTilemap;
+import com.elementalpixel.elementalpixeldungeon.tiles.DungeonTileSheet;
+import com.elementalpixel.elementalpixeldungeon.tiles.DungeonTilemap;
+import com.elementalpixel.elementalpixeldungeon.tiles.DungeonWallsTilemap;
+import com.elementalpixel.elementalpixeldungeon.tiles.FogOfWar;
+import com.elementalpixel.elementalpixeldungeon.tiles.GridTileMap;
+import com.elementalpixel.elementalpixeldungeon.tiles.RaisedTerrainTilemap;
+import com.elementalpixel.elementalpixeldungeon.tiles.TerrainFeaturesTilemap;
+import com.elementalpixel.elementalpixeldungeon.tiles.WallBlockingTilemap;
+import com.elementalpixel.elementalpixeldungeon.ui.ActionIndicator;
+import com.elementalpixel.elementalpixeldungeon.ui.AttackIndicator;
+import com.elementalpixel.elementalpixeldungeon.ui.Banner;
+import com.elementalpixel.elementalpixeldungeon.ui.BusyIndicator;
+import com.elementalpixel.elementalpixeldungeon.ui.CharHealthIndicator;
+import com.elementalpixel.elementalpixeldungeon.ui.GameLog;
+import com.elementalpixel.elementalpixeldungeon.ui.LootIndicator;
+import com.elementalpixel.elementalpixeldungeon.ui.QuickSlotButton;
+import com.elementalpixel.elementalpixeldungeon.ui.ResumeIndicator;
+import com.elementalpixel.elementalpixeldungeon.ui.StatusPane;
+import com.elementalpixel.elementalpixeldungeon.ui.TargetHealthIndicator;
+import com.elementalpixel.elementalpixeldungeon.ui.Toast;
+import com.elementalpixel.elementalpixeldungeon.ui.Toolbar;
+import com.elementalpixel.elementalpixeldungeon.ui.Window;
+import com.elementalpixel.elementalpixeldungeon.utils.GLog;
+import com.elementalpixel.elementalpixeldungeon.windows.WndBag;
+import com.elementalpixel.elementalpixeldungeon.windows.WndGame;
+import com.elementalpixel.elementalpixeldungeon.windows.WndHero;
+import com.elementalpixel.elementalpixeldungeon.windows.WndInfoCell;
+import com.elementalpixel.elementalpixeldungeon.windows.WndInfoItem;
+import com.elementalpixel.elementalpixeldungeon.windows.WndInfoMob;
+import com.elementalpixel.elementalpixeldungeon.windows.WndInfoPlant;
+import com.elementalpixel.elementalpixeldungeon.windows.WndInfoTrap;
+import com.elementalpixel.elementalpixeldungeon.windows.WndMessage;
+import com.elementalpixel.elementalpixeldungeon.windows.WndOptions;
+import com.elementalpixel.elementalpixeldungeon.windows.WndStory;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
@@ -850,7 +850,7 @@ public class GameScene extends PixelScene {
 		scene.overFogEffects.add( effect );
 	}
 	
-	public static Ripple ripple( int pos ) {
+	public static Ripple ripple(int pos ) {
 		if (scene != null) {
 			Ripple ripple = (Ripple) scene.ripples.recycle(Ripple.class);
 			ripple.reset(pos);
@@ -1043,17 +1043,17 @@ public class GameScene extends PixelScene {
 		}
 	}
 	
-	public static WndBag selectItem( WndBag.Listener listener, WndBag.Mode mode, String title ) {
+	public static WndBag selectItem(WndBag.Listener listener, WndBag.Mode mode, String title ) {
 		cancelCellSelector();
 		
 		WndBag wnd =
-				mode == Mode.SEED ?
+				mode == WndBag.Mode.SEED ?
 					WndBag.getBag( VelvetPouch.class, listener, mode, title ) :
-				mode == Mode.SCROLL ?
+				mode == WndBag.Mode.SCROLL ?
 					WndBag.getBag( ScrollHolder.class, listener, mode, title ) :
-				mode == Mode.POTION ?
+				mode == WndBag.Mode.POTION ?
 					WndBag.getBag( PotionBandolier.class, listener, mode, title ) :
-				mode == Mode.WAND ?
+				mode == WndBag.Mode.WAND ?
 					WndBag.getBag( MagicalHolster.class, listener, mode, title ) :
 				WndBag.lastBag( listener, mode, title );
 		

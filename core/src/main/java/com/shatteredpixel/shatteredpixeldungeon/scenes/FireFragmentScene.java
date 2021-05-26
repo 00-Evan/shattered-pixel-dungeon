@@ -35,7 +35,7 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Random;
 
-public class AmuletScene extends PixelScene {
+public class FireFragmentScene extends PixelScene {
 	
 	private static final int WIDTH			= 120;
 	private static final int BTN_HEIGHT		= 18;
@@ -44,7 +44,7 @@ public class AmuletScene extends PixelScene {
 	
 	public static boolean noText = false;
 	
-	private Image amulet;
+	private Image firefragment;
 	
 	@Override
 	public void create() {
@@ -57,8 +57,8 @@ public class AmuletScene extends PixelScene {
 			add( text );
 		}
 		
-		amulet = new Image( Assets.Sprites.AMULET );
-		add( amulet );
+		firefragment = new Image( Assets.Sprites.FIRE_FRAGMENT );
+		add( firefragment );
 		
 		RedButton btnExit = new RedButton( Messages.get(this, "exit") ) {
 			@Override
@@ -82,30 +82,30 @@ public class AmuletScene extends PixelScene {
 		
 		float height;
 		if (noText) {
-			height = amulet.height + LARGE_GAP + btnExit.height() + SMALL_GAP + btnStay.height();
+			height = firefragment.height + LARGE_GAP + btnExit.height() + SMALL_GAP + btnStay.height();
 			
-			amulet.x = (Camera.main.width - amulet.width) / 2;
-			amulet.y = (Camera.main.height - height) / 2;
-			align(amulet);
+			firefragment.x = (Camera.main.width - firefragment.width) / 2;
+			firefragment.y = (Camera.main.height - height) / 2;
+			align(firefragment);
 
-			btnExit.setPos( (Camera.main.width - btnExit.width()) / 2, amulet.y + amulet.height + LARGE_GAP );
+			btnExit.setPos( (Camera.main.width - btnExit.width()) / 2, firefragment.y + firefragment.height + LARGE_GAP );
 			btnStay.setPos( btnExit.left(), btnExit.bottom() + SMALL_GAP );
 			
 		} else {
-			height = amulet.height + LARGE_GAP + text.height() + LARGE_GAP + btnExit.height() + SMALL_GAP + btnStay.height();
+			height = firefragment.height + LARGE_GAP + text.height() + LARGE_GAP + btnExit.height() + SMALL_GAP + btnStay.height();
 			
-			amulet.x = (Camera.main.width - amulet.width) / 2;
-			amulet.y = (Camera.main.height - height) / 2;
-			align(amulet);
+			firefragment.x = (Camera.main.width - firefragment.width) / 2;
+			firefragment.y = (Camera.main.height - height) / 2;
+			align(firefragment);
 
-			text.setPos((Camera.main.width - text.width()) / 2, amulet.y + amulet.height + LARGE_GAP);
+			text.setPos((Camera.main.width - text.width()) / 2, firefragment.y + firefragment.height + LARGE_GAP);
 			align(text);
 			
 			btnExit.setPos( (Camera.main.width - btnExit.width()) / 2, text.top() + text.height() + LARGE_GAP );
 			btnStay.setPos( btnExit.left(), btnExit.bottom() + SMALL_GAP );
 		}
 
-		new Flare( 8, 48 ).color( 0xFFDDBB, true ).show( amulet, 0 ).angularSpeed = +30;
+		new Flare( 8, 48 ).color( 0xFFDDBB, true ).show( firefragment, 0 ).angularSpeed = +30;
 		
 		fadeIn();
 	}
@@ -126,7 +126,7 @@ public class AmuletScene extends PixelScene {
 			timer = Random.Float( 0.5f, 5f );
 			
 			Speck star = (Speck)recycle( Speck.class );
-			star.reset( 0, amulet.x + 10.5f, amulet.y + 5.5f, Speck.DISCOVER );
+			star.reset( 0, firefragment.x + 10.5f, firefragment.y + 5.5f, Speck.DISCOVER );
 			add( star );
 		}
 	}

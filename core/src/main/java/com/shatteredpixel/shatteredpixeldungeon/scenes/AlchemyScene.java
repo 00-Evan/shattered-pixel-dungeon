@@ -19,33 +19,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.scenes;
+package com.elementalpixel.elementalpixeldungeon.scenes;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Chrome;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
-import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoItem;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal;
+
+import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.Badges;
+import com.elementalpixel.elementalpixeldungeon.Chrome;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.ShatteredPixelDungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Belongings;
+import com.elementalpixel.elementalpixeldungeon.effects.Speck;
+import com.elementalpixel.elementalpixeldungeon.items.Item;
+import com.elementalpixel.elementalpixeldungeon.items.Recipe;
+import com.elementalpixel.elementalpixeldungeon.items.artifacts.AlchemistsToolkit;
+import com.elementalpixel.elementalpixeldungeon.items.potions.Potion;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfExperience;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfStrength;
+import com.elementalpixel.elementalpixeldungeon.items.potions.brews.Brew;
+import com.elementalpixel.elementalpixeldungeon.items.potions.elixirs.Elixir;
+import com.elementalpixel.elementalpixeldungeon.items.potions.exotic.ExoticPotion;
+import com.elementalpixel.elementalpixeldungeon.items.potions.exotic.PotionOfAdrenalineSurge;
+import com.elementalpixel.elementalpixeldungeon.items.potions.exotic.PotionOfHolyFuror;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.missiles.darts.Dart;
+import com.elementalpixel.elementalpixeldungeon.journal.Journal;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
+import com.elementalpixel.elementalpixeldungeon.ui.ExitButton;
+import com.elementalpixel.elementalpixeldungeon.ui.IconButton;
+import com.elementalpixel.elementalpixeldungeon.ui.Icons;
+import com.elementalpixel.elementalpixeldungeon.ui.ItemSlot;
+import com.elementalpixel.elementalpixeldungeon.ui.RedButton;
+import com.elementalpixel.elementalpixeldungeon.ui.RenderedTextBlock;
+import com.elementalpixel.elementalpixeldungeon.ui.Window;
+import com.elementalpixel.elementalpixeldungeon.windows.WndBag;
+import com.elementalpixel.elementalpixeldungeon.windows.WndInfoItem;
+import com.elementalpixel.elementalpixeldungeon.windows.WndJournal;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Camera;
@@ -62,6 +71,8 @@ import com.watabou.noosa.ui.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import static com.elementalpixel.elementalpixeldungeon.items.Item.curUser;
 
 public class AlchemyScene extends PixelScene {
 	
@@ -384,14 +395,15 @@ public class AlchemyScene extends PixelScene {
 		}
 		
 	}
-	
+	public static Item result = null;
+
 	private void combine(){
-		
+
+
 		ArrayList<Item> ingredients = filterInput(Item.class);
 		Recipe recipe = Recipe.findRecipe(ingredients);
 		
-		Item result = null;
-		
+
 		if (recipe != null){
 			provider.spendEnergy(recipe.cost(ingredients));
 			energyLeft.text(Messages.get(AlchemyScene.class, "energy", availableEnergy()));
@@ -403,15 +415,71 @@ public class AlchemyScene extends PixelScene {
 			result = recipe.brew(ingredients);
 		}
 		
-		if (result != null){
+		if (result != null) {
 			bubbleEmitter.start(Speck.factory( Speck.BUBBLE ), 0.01f, 100 );
 			smokeEmitter.burst(Speck.factory( Speck.WOOL ), 10 );
 			Sample.INSTANCE.play( Assets.Sounds.PUFF );
-			
+
+
 			output.item(result);
+
 			if (!(result instanceof AlchemistsToolkit)) {
-				if (!result.collect()){
-					Dungeon.level.drop(result, Dungeon.hero.pos);
+				switch (curUser.subClass) {
+					case SCIENTIST:
+						if (result instanceof Potion) {
+							if (result instanceof PotionOfExperience) {
+
+								if (!result.collect()) {
+									Dungeon.level.drop(result, Dungeon.hero.pos);
+								}
+
+							} else if (result instanceof PotionOfStrength) {
+								if (!result.collect()) {
+									Dungeon.level.drop(result, Dungeon.hero.pos);
+								}
+
+							} else if (result instanceof ExoticPotion) {
+								if (result instanceof PotionOfAdrenalineSurge) {
+									if (!result.collect()) {
+										Dungeon.level.drop(result, Dungeon.hero.pos);
+									}
+								} else if (result instanceof PotionOfHolyFuror) {
+									if (!result.collect()) {
+										Dungeon.level.drop(result, Dungeon.hero.pos);
+									}
+								} else {
+									if (!result.quantity(2).collect()) {
+										Dungeon.level.drop(result.quantity(2), Dungeon.hero.pos);
+									}
+								}
+
+							} else if (result instanceof Brew) {
+								if (!result.collect()) {
+									Dungeon.level.drop(result, Dungeon.hero.pos);
+								}
+
+							} else if (result instanceof Elixir) {
+								if (!result.collect()) {
+									Dungeon.level.drop(result, Dungeon.hero.pos);
+								}
+
+							} else {
+								if (!result.quantity(2).collect()) {
+									Dungeon.level.drop(result.quantity(2), Dungeon.hero.pos);
+								}
+
+							}
+
+						} else {
+							if (!result.collect()) {
+								Dungeon.level.drop(result, Dungeon.hero.pos);
+							}
+						}
+					default:
+						if (!result.collect()) {
+							Dungeon.level.drop(result, Dungeon.hero.pos);
+						}
+
 				}
 			}
 			
@@ -436,7 +504,7 @@ public class AlchemyScene extends PixelScene {
 			
 			btnCombine.enable(false);
 		}
-		
+
 	}
 	
 	public void populate(ArrayList<Item> toFind, Belongings inventory){
