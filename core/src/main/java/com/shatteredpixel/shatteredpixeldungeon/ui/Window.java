@@ -19,12 +19,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.ui;
+package com.elementalpixel.elementalpixeldungeon.ui;
 
-import com.shatteredpixel.shatteredpixeldungeon.Chrome;
-import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
-import com.shatteredpixel.shatteredpixeldungeon.effects.ShadowBox;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+
+import com.elementalpixel.elementalpixeldungeon.Chrome;
+import com.elementalpixel.elementalpixeldungeon.SPDAction;
+import com.elementalpixel.elementalpixeldungeon.effects.ShadowBox;
+import com.elementalpixel.elementalpixeldungeon.scenes.PixelScene;
 import com.watabou.input.KeyBindings;
 import com.watabou.input.KeyEvent;
 import com.watabou.input.PointerEvent;

@@ -19,18 +19,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.ui;
+package com.elementalpixel.elementalpixeldungeon.ui;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+
+import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.items.Item;
+import com.elementalpixel.elementalpixeldungeon.items.armor.Armor;
+import com.elementalpixel.elementalpixeldungeon.items.rings.Ring;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.Weapon;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.scenes.PixelScene;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Button;
@@ -47,10 +48,10 @@ public class ItemSlot extends Button {
 	private static final float DISABLED	= 0.3f;
 	
 	protected ItemSprite sprite;
-	protected Item       item;
+	protected Item item;
 	protected BitmapText status;
 	protected BitmapText extra;
-	protected Image      itemIcon;
+	protected Image itemIcon;
 	protected BitmapText level;
 	
 	private static final String TXT_STRENGTH	= ":%d";
@@ -147,14 +148,14 @@ public class ItemSlot extends Button {
 
 	}
 	
-	public void item( Item item ) {
+	public Item item(Item item ) {
 		if (this.item == item) {
 			if (item != null) {
 				sprite.frame(item.image());
 				sprite.glow(item.glowing());
 			}
 			updateText();
-			return;
+            return item;
 		}
 
 		this.item = item;
@@ -174,7 +175,8 @@ public class ItemSlot extends Button {
 			sprite.view( item );
 			updateText();
 		}
-	}
+        return item;
+    }
 
 	private void updateText(){
 

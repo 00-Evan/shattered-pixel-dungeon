@@ -19,9 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.ui;
+package com.elementalpixel.elementalpixeldungeon.ui;
 
-import com.shatteredpixel.shatteredpixeldungeon.Chrome;
+
+import com.elementalpixel.elementalpixeldungeon.Chrome;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.ui.Button;

@@ -19,9 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.ui;
+package com.elementalpixel.elementalpixeldungeon.ui;
 
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+
+import com.elementalpixel.elementalpixeldungeon.scenes.PixelScene;
 import com.watabou.input.PointerEvent;
 import com.watabou.input.ScrollEvent;
 import com.watabou.noosa.Camera;
