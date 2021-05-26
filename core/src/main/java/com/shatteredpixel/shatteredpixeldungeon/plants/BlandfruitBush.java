@@ -19,11 +19,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.plants;
+package com.elementalpixel.elementalpixeldungeon.plants;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
+
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.items.food.Blandfruit;
 
 public class BlandfruitBush extends Plant {
 

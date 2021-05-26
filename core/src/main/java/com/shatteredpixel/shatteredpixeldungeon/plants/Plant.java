@@ -19,27 +19,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.plants;
+package com.elementalpixel.elementalpixeldungeon.plants;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+
+import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.Challenges;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.Actor;
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Barkskin;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Buff;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.HeroSubClass;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Talent;
+import com.elementalpixel.elementalpixeldungeon.effects.CellEmitter;
+import com.elementalpixel.elementalpixeldungeon.effects.particles.LeafParticle;
+import com.elementalpixel.elementalpixeldungeon.items.Item;
+import com.elementalpixel.elementalpixeldungeon.items.wands.WandOfRegrowth;
+import com.elementalpixel.elementalpixeldungeon.levels.Level;
+import com.elementalpixel.elementalpixeldungeon.levels.Terrain;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.scenes.GameScene;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -136,7 +137,7 @@ public abstract class Plant implements Bundlable {
 		protected Class<? extends Plant> plantClass;
 		
 		@Override
-		public ArrayList<String> actions( Hero hero ) {
+		public ArrayList<String> actions(Hero hero ) {
 			ArrayList<String> actions = super.actions( hero );
 			actions.add( AC_PLANT );
 			return actions;

@@ -19,20 +19,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.plants;
+package com.elementalpixel.elementalpixeldungeon.plants;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FireImbue;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.actors.blobs.Blob;
+import com.elementalpixel.elementalpixeldungeon.actors.blobs.Fire;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Buff;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.FireImbue;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.HeroSubClass;
+import com.elementalpixel.elementalpixeldungeon.effects.CellEmitter;
+import com.elementalpixel.elementalpixeldungeon.effects.particles.FlameParticle;
+import com.elementalpixel.elementalpixeldungeon.scenes.GameScene;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Firebloom extends Plant {
 	

@@ -19,15 +19,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.plants;
+package com.elementalpixel.elementalpixeldungeon.plants;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Levitation;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Buff;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Levitation;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Vertigo;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.HeroSubClass;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Stormvine extends Plant {
 

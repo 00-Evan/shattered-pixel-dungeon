@@ -19,19 +19,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.plants;
+package com.elementalpixel.elementalpixeldungeon.plants;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.BlobImmunity;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Buff;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.MagicalSleep;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.HeroSubClass;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.Mob;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfHealing;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
+import com.elementalpixel.elementalpixeldungeon.utils.GLog;
 
 public class Dreamfoil extends Plant {
 
