@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
+package com.elementalpixel.elementalpixeldungeon.items.potions.exotic;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AdrenalineSurge;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.AdrenalineSurge;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Buff;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.HeroSubClass;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
 
 public class PotionOfAdrenalineSurge extends ExoticPotion {
 	
@@ -37,7 +39,11 @@ public class PotionOfAdrenalineSurge extends ExoticPotion {
 	@Override
 	public void apply(Hero hero) {
 		identify();
-		Buff.affect(hero, AdrenalineSurge.class).reset(2, 800f);
+		if (curUser.subClass == HeroSubClass.SCIENTIST) {
+			Buff.affect(hero, AdrenalineSurge.class).reset(2, 801f); //HAHA big buff
+		} else {
+			Buff.affect(hero, AdrenalineSurge.class).reset(2, 800f);
+		}
 	}
 	
 }

@@ -19,13 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
+package com.elementalpixel.elementalpixeldungeon.items.potions.exotic;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSight;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Buff;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.MagicalSight;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.HeroSubClass;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
 
 public class PotionOfMagicalSight extends ExoticPotion {
 	
@@ -36,7 +38,11 @@ public class PotionOfMagicalSight extends ExoticPotion {
 	@Override
 	public void apply(Hero hero) {
 		identify();
-		Buff.affect(hero, MagicalSight.class, MagicalSight.DURATION);
+		if (curUser.subClass == HeroSubClass.SCIENTIST) {
+			Buff.affect(hero, MagicalSight.class, MagicalSight.DURATION * 1.4f);
+		} else {
+			Buff.affect(hero, MagicalSight.class, MagicalSight.DURATION);
+		}
 		Dungeon.observe();
 		
 	}

@@ -19,25 +19,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
+package com.elementalpixel.elementalpixeldungeon.items.potions.exotic;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticGas;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfPurity;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
+
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.items.Item;
+import com.elementalpixel.elementalpixeldungeon.items.Recipe;
+import com.elementalpixel.elementalpixeldungeon.items.potions.Potion;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfExperience;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfFrost;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfHaste;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfHealing;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfInvisibility;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfLevitation;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfLiquidFlame;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfMindVision;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfParalyticGas;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfPurity;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfStrength;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfToxicGas;
+import com.elementalpixel.elementalpixeldungeon.plants.Plant;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
@@ -121,7 +122,7 @@ public class ExoticPotion extends Potion {
 		return (Reflection.newInstance(exoToReg.get(getClass())).value() + 20) * quantity;
 	}
 	
-	public static class PotionToExotic extends Recipe{
+	public static class PotionToExotic extends Recipe {
 		
 		@Override
 		public boolean testIngredients(ArrayList<Item> ingredients) {
