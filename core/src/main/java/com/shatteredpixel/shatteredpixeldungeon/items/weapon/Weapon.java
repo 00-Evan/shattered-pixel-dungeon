@@ -19,42 +19,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.weapon;
+package com.elementalpixel.elementalpixeldungeon.items.weapon;
 
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Annoying;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Displacing;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Exhausting;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Fragile;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Friendly;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Polarized;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Sacrificial;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Wayward;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocking;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blooming;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Chilling;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Corrupting;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Elastic;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Kinetic;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Lucky;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projecting;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstable;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampiric;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+
+import com.elementalpixel.elementalpixeldungeon.Badges;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Berserk;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.MagicImmune;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Talent;
+import com.elementalpixel.elementalpixeldungeon.items.Item;
+import com.elementalpixel.elementalpixeldungeon.items.KindOfWeapon;
+import com.elementalpixel.elementalpixeldungeon.items.rings.RingOfFuror;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.curses.Annoying;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.curses.Displacing;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.curses.Exhausting;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.curses.Fragile;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.curses.Friendly;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.curses.Polarized;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.curses.Sacrificial;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.curses.Wayward;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.enchantments.Blazing;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.enchantments.Blocking;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.enchantments.Blooming;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.enchantments.Chilling;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.enchantments.Corrupting;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.enchantments.Elastic;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.enchantments.Grim;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.enchantments.Kinetic;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.enchantments.Lucky;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.enchantments.Projecting;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.enchantments.Shocking;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.enchantments.Unstable;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.enchantments.Vampiric;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSprite;
+import com.elementalpixel.elementalpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -101,7 +102,7 @@ abstract public class Weapon extends KindOfWeapon {
 	public boolean curseInfusionBonus = false;
 	
 	@Override
-	public int proc( Char attacker, Char defender, int damage ) {
+	public int proc(Char attacker, Char defender, int damage ) {
 		
 		if (enchantment != null && attacker.buff(MagicImmune.class) == null) {
 			damage = enchantment.proc( this, attacker, defender, damage );
