@@ -19,16 +19,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.potions.brews;
+package com.elementalpixel.elementalpixeldungeon.items.potions.brews;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blizzard;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+
+import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.blobs.Blizzard;
+import com.elementalpixel.elementalpixeldungeon.actors.blobs.Blob;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.HeroSubClass;
+import com.elementalpixel.elementalpixeldungeon.items.potions.AlchemicalCatalyst;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfFrost;
+import com.elementalpixel.elementalpixeldungeon.scenes.GameScene;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 
 public class BlizzardBrew extends Brew {
@@ -44,8 +46,11 @@ public class BlizzardBrew extends Brew {
 			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 			Sample.INSTANCE.play( Assets.Sounds.GAS );
 		}
-		
-		GameScene.add( Blob.seed( cell, 1000, Blizzard.class ) );
+		if (curUser.subClass == HeroSubClass.SCIENTIST) {
+			GameScene.add( Blob.seed( cell, 1400, Blizzard.class ) );
+		} else {
+			GameScene.add( Blob.seed( cell, 1000, Blizzard.class ) );
+		}
 	}
 	
 	@Override
@@ -54,7 +59,7 @@ public class BlizzardBrew extends Brew {
 		return quantity * (30 + 40);
 	}
 	
-	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
+	public static class Recipe extends com.elementalpixel.elementalpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{
 			inputs =  new Class[]{PotionOfFrost.class, AlchemicalCatalyst.class};

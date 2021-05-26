@@ -19,19 +19,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.potions.brews;
+package com.elementalpixel.elementalpixeldungeon.items.potions.brews;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
-import com.shatteredpixel.shatteredpixeldungeon.items.quest.GooBlob;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
+
+import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.Actor;
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Buff;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Ooze;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.HeroSubClass;
+import com.elementalpixel.elementalpixeldungeon.effects.Splash;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfToxicGas;
+import com.elementalpixel.elementalpixeldungeon.items.quest.GooBlob;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
+import com.elementalpixel.elementalpixeldungeon.utils.BArray;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 
@@ -56,7 +58,11 @@ public class CausticBrew extends Brew {
 				Char ch = Actor.findChar(i);
 				
 				if (ch != null){
-					Buff.affect(ch, Ooze.class).set( Ooze.DURATION );
+					if (curUser.subClass == HeroSubClass.SCIENTIST) {
+						Buff.affect(ch, Ooze.class).set( Ooze.DURATION * 1.4f);
+					} else {
+						Buff.affect(ch, Ooze.class).set( Ooze.DURATION );
+					}
 				}
 			}
 		}
@@ -68,7 +74,7 @@ public class CausticBrew extends Brew {
 		return quantity * (30 + 50);
 	}
 	
-	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
+	public static class Recipe extends com.elementalpixel.elementalpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{
 			inputs =  new Class[]{PotionOfToxicGas.class, GooBlob.class};
