@@ -50,7 +50,7 @@ import com.watabou.utils.ColorMath;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
-public class SewerLevel extends RegularLevel {
+public class FireLevel extends RegularLevel {
 
 	{
 		color1 = 0x48763c;
@@ -111,14 +111,7 @@ public class SewerLevel extends RegularLevel {
 	
 	@Override
 	protected void createItems() {
-		if (!Dungeon.LimitedDrops.DEW_VIAL.dropped()) {
-			addItemToSpawn( new DewVial() );
-			Dungeon.LimitedDrops.DEW_VIAL.drop();
-		}
 
-		Ghost.Quest.spawn( this );
-		
-		super.createItems();
 	}
 	
 	@Override
@@ -140,7 +133,7 @@ public class SewerLevel extends RegularLevel {
 	public String tileName( int tile ) {
 		switch (tile) {
 			case Terrain.WATER:
-				return Messages.get(SewerLevel.class, "water_name");
+				return Messages.get(FireLevel.class, "water_name");
 			default:
 				return super.tileName( tile );
 		}
@@ -150,9 +143,9 @@ public class SewerLevel extends RegularLevel {
 	public String tileDesc(int tile) {
 		switch (tile) {
 			case Terrain.EMPTY_DECO:
-				return Messages.get(SewerLevel.class, "empty_deco_desc");
+				return Messages.get(FireLevel.class, "empty_deco_desc");
 			case Terrain.BOOKSHELF:
-				return Messages.get(SewerLevel.class, "bookshelf_desc");
+				return Messages.get(FireLevel.class, "bookshelf_desc");
 			default:
 				return super.tileDesc( tile );
 		}
@@ -163,7 +156,7 @@ public class SewerLevel extends RegularLevel {
 		private int pos;
 		private float rippleDelay = 0;
 		
-		private static final Emitter.Factory factory = new Factory() {
+		private static final Factory factory = new Factory() {
 			
 			@Override
 			public void emit( Emitter emitter, int index, float x, float y ) {

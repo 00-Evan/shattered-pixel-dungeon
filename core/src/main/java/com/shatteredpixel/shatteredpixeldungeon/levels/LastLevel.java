@@ -19,26 +19,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels;
+package com.elementalpixel.elementalpixeldungeon.levels;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Statistics;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
+
+import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.Statistics;
+import com.elementalpixel.elementalpixeldungeon.actors.Actor;
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.Mob;
+import com.elementalpixel.elementalpixeldungeon.items.BrokenAmulet;
+import com.elementalpixel.elementalpixeldungeon.levels.builders.Builder;
+import com.elementalpixel.elementalpixeldungeon.levels.painters.Painter;
+import com.elementalpixel.elementalpixeldungeon.levels.rooms.standard.ExitRoom;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.scenes.GameScene;
+import com.elementalpixel.elementalpixeldungeon.tiles.CustomTilemap;
+import com.elementalpixel.elementalpixeldungeon.tiles.DungeonTileSheet;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Tilemap;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.Rect;
 
 import java.util.Arrays;
+
+import static com.elementalpixel.elementalpixeldungeon.items.Item.curUser;
 
 public class LastLevel extends Level {
 
@@ -84,6 +91,11 @@ public class LastLevel extends Level {
 
 	private static final int ROOM_TOP = 10;
 
+	private static final Rect entranceRoom4 = new Rect(10, 9, 11, 10);
+	private static final Rect entranceRoom1 = new Rect(6, 9, 7, 10);
+	private static final Rect entranceRoom2 = new Rect(7, 9, 8, 10);
+	private static final Rect entranceRoom3 = new Rect(9, 9, 10, 10);
+
 	@Override
 	protected boolean build() {
 		
@@ -114,6 +126,18 @@ public class LastLevel extends Level {
 
 		Painter.fill( this, MID - 2, 9, 5, 7, Terrain.EMPTY);
 		Painter.fill( this, MID - 3, 10, 7, 5, Terrain.EMPTY);
+
+		/*Painter.fill( this, 10, 9, 1, 1, Terrain.EXIT);
+		Painter.fill( this, 9, 9, 1, 1, Terrain.EXIT);
+
+		Painter.fill( this, 7, 9, 1, 1, Terrain.EXIT);
+		Painter.fill( this, 6, 9, 1, 1, Terrain.EXIT);*/
+
+		Painter.fill(this, entranceRoom4, Terrain.EXIT);
+		Painter.fill(this, entranceRoom1, Terrain.EXIT);
+		Painter.fill(this, entranceRoom2, Terrain.EXIT);
+		Painter.fill(this, entranceRoom3, Terrain.ENTRANCE);
+
 
 		feeling = Feeling.NONE;
 		viewDistance = 4;
@@ -148,7 +172,7 @@ public class LastLevel extends Level {
 
 	@Override
 	protected void createItems() {
-		drop( new Amulet(), exit );
+		drop( new BrokenAmulet(), exit );
 	}
 
 	@Override
@@ -231,8 +255,8 @@ public class LastLevel extends Level {
 		}
 
 		private static final int[] CANDLES = new int[]{
-				-1, 42, 46, 46, 46, 43, -1,
-				42, 46, 46, 46, 46, 46, 43,
+				-1, -1, -1, 19, -1, -1, -1,
+				42, 46, 46, 19, 46, 46, 43,
 				46, 46, 45, 19, 44, 46, 46,
 				46, 46, 19, 19, 19, 46, 46,
 				46, 46, 43, 19, 42, 46, 46,

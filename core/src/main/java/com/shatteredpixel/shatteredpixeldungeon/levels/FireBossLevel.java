@@ -32,7 +32,6 @@ import com.elementalpixel.elementalpixeldungeon.levels.builders.FigureEightBuild
 import com.elementalpixel.elementalpixeldungeon.levels.painters.Painter;
 import com.elementalpixel.elementalpixeldungeon.levels.painters.SewerPainter;
 import com.elementalpixel.elementalpixeldungeon.levels.rooms.Room;
-import com.elementalpixel.elementalpixeldungeon.levels.rooms.secret.RatKingRoom;
 import com.elementalpixel.elementalpixeldungeon.levels.rooms.sewerboss.GooBossRoom;
 import com.elementalpixel.elementalpixeldungeon.levels.rooms.sewerboss.SewerBossEntranceRoom;
 import com.elementalpixel.elementalpixeldungeon.levels.rooms.sewerboss.SewerBossExitRoom;
@@ -44,7 +43,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class SewerBossLevel extends SewerLevel {
+public class FireBossLevel extends SewerLevel {
 
 	{
 		color1 = 0x48763c;
@@ -59,7 +58,7 @@ public class SewerBossLevel extends SewerLevel {
 		
 		initRooms.add( roomEntrance = new SewerBossEntranceRoom() );
 		initRooms.add( roomExit = new SewerBossExitRoom() );
-		
+
 		int standards = standardRooms(true);
 		for (int i = 0; i < standards; i++) {
 			StandardRoom s = StandardRoom.createRoom();
@@ -71,7 +70,6 @@ public class SewerBossLevel extends SewerLevel {
 		GooBossRoom gooRoom = GooBossRoom.randomGooRoom();
 		initRooms.add(gooRoom);
 		((FigureEightBuilder)builder).setLandmarkRoom(gooRoom);
-		initRooms.add(new RatKingRoom());
 		return initRooms;
 	}
 	

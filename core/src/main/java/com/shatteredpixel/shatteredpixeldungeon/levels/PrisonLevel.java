@@ -19,29 +19,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels;
+package com.elementalpixel.elementalpixeldungeon.levels;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.PrisonPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.AlarmTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ConfusionTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FlockTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrippingTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.OozeTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PoisonDartTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ShockingTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TeleportationTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ToxicTrap;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+
+import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.npcs.Wandmaker;
+import com.elementalpixel.elementalpixeldungeon.effects.particles.FlameParticle;
+import com.elementalpixel.elementalpixeldungeon.levels.painters.Painter;
+import com.elementalpixel.elementalpixeldungeon.levels.painters.PrisonPainter;
+import com.elementalpixel.elementalpixeldungeon.levels.rooms.Room;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.AlarmTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.BurningTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.ChillingTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.ConfusionTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.FlockTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.GrippingTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.OozeTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.PoisonDartTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.ShockingTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.SummoningTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.TeleportationTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.ToxicTrap;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Halo;
 import com.watabou.noosa.particles.Emitter;
@@ -66,7 +67,7 @@ public class PrisonLevel extends RegularLevel {
 	protected int standardRooms(boolean forceMax) {
 		if (forceMax) return 8;
 		//6 to 8, average 6.75
-		return 6+Random.chances(new float[]{4, 2, 2});
+		return 6+ Random.chances(new float[]{4, 2, 2});
 	}
 	
 	@Override

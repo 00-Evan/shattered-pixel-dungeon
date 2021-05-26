@@ -19,30 +19,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels;
+package com.elementalpixel.elementalpixeldungeon.levels;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.CityPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BlazingTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CorrosionTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CursingTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisarmingTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DistortionTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FlashingTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FrostTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GuardianTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PitfallTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.RockfallTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.StormTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WarpingTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WeakeningTrap;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+
+import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.npcs.Imp;
+import com.elementalpixel.elementalpixeldungeon.levels.painters.CityPainter;
+import com.elementalpixel.elementalpixeldungeon.levels.painters.Painter;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.BlazingTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.CorrosionTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.CursingTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.DisarmingTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.DisintegrationTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.DistortionTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.FlashingTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.FrostTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.GuardianTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.PitfallTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.RockfallTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.StormTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.SummoningTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.WarpingTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.WeakeningTrap;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
@@ -60,7 +61,7 @@ public class CityLevel extends RegularLevel {
 	protected int standardRooms(boolean forceMax) {
 		if (forceMax) return 10;
 		//7 to 10, average 8.0
-		return 7+Random.chances(new float[]{4, 3, 2, 1});
+		return 7+ Random.chances(new float[]{4, 3, 2, 1});
 	}
 	
 	@Override

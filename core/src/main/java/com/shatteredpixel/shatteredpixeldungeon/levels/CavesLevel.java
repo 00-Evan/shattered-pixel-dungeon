@@ -19,28 +19,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels;
+package com.elementalpixel.elementalpixeldungeon.levels;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.CavesPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ConfusionTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CorrosionTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FrostTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrippingTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GuardianTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PitfallTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PoisonDartTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.RockfallTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.StormTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WarpingTrap;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+
+import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.npcs.Blacksmith;
+import com.elementalpixel.elementalpixeldungeon.levels.painters.CavesPainter;
+import com.elementalpixel.elementalpixeldungeon.levels.painters.Painter;
+import com.elementalpixel.elementalpixeldungeon.levels.rooms.Room;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.BurningTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.ConfusionTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.CorrosionTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.FrostTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.GrippingTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.GuardianTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.PitfallTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.PoisonDartTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.RockfallTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.StormTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.SummoningTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.WarpingTrap;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.particles.PixelParticle;
@@ -65,7 +66,7 @@ public class CavesLevel extends RegularLevel {
 	protected int standardRooms(boolean forceMax) {
 		if (forceMax) return 9;
 		//6 to 9, average 7.333
-		return 6+Random.chances(new float[]{2, 3, 3, 1});
+		return 6+ Random.chances(new float[]{2, 3, 3, 1});
 	}
 	
 	@Override
