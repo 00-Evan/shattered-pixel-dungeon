@@ -19,11 +19,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon;
+package com.elementalpixel.elementalpixeldungeon;
 
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.WelcomeScene;
+
+import com.elementalpixel.elementalpixeldungeon.scenes.GameScene;
+import com.elementalpixel.elementalpixeldungeon.scenes.PixelScene;
+import com.elementalpixel.elementalpixeldungeon.scenes.WelcomeScene;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
@@ -33,44 +34,36 @@ public class ShatteredPixelDungeon extends Game {
 
 	//variable constants for specific older versions of shattered, used for data conversion
 	//versions older than v0.7.5e are no longer supported, and data from them is ignored
-	public static final int v0_7_5e = 382;
+	public static final int v0_0_1b = 1;
 
-	public static final int v0_8_0b = 414;
-	public static final int v0_8_1a = 422;
-	public static final int v0_8_2d = 463;
-
-	public static final int v0_9_0b  = 489;
-	public static final int v0_9_1d  = 511;
-	public static final int v0_9_2   = 519;
-	
 	public ShatteredPixelDungeon( PlatformSupport platform ) {
 		super( sceneClass == null ? WelcomeScene.class : sceneClass, platform );
 
 		//v0.8.0
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ArmoredBrute.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shielded");
+				com.elementalpixel.elementalpixeldungeon.actors.mobs.ArmoredBrute.class,
+				"com.elementalpixel.elementalpixeldungeon.actors.mobs.Shielded");
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM100.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shaman");
+				com.elementalpixel.elementalpixeldungeon.actors.mobs.DM100.class,
+				"com.elementalpixel.elementalpixeldungeon.actors.mobs.Shaman");
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental.FireElemental.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental");
+				com.elementalpixel.elementalpixeldungeon.actors.mobs.Elemental.FireElemental.class,
+				"com.elementalpixel.elementalpixeldungeon.actors.mobs.Elemental");
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental.NewbornFireElemental.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewbornElemental");
+				com.elementalpixel.elementalpixeldungeon.actors.mobs.Elemental.NewbornFireElemental.class,
+				"com.elementalpixel.elementalpixeldungeon.actors.mobs.NewbornElemental");
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.OldDM300.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM300");
+				com.elementalpixel.elementalpixeldungeon.actors.mobs.OldDM300.class,
+				"com.elementalpixel.elementalpixeldungeon.actors.mobs.DM300");
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.OldCavesBossLevel.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel" );
+				com.elementalpixel.elementalpixeldungeon.levels.OldCavesBossLevel.class,
+				"com.elementalpixel.elementalpixeldungeon.levels.CavesBossLevel" );
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.OldCityBossLevel.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel" );
+				com.elementalpixel.elementalpixeldungeon.levels.OldCityBossLevel.class,
+				"com.elementalpixel.elementalpixeldungeon.levels.CityBossLevel" );
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.OldHallsBossLevel.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel" );
+				com.elementalpixel.elementalpixeldungeon.levels.OldHallsBossLevel.class,
+				"com.elementalpixel.elementalpixeldungeon.levels.HallsBossLevel" );
 		
 	}
 	

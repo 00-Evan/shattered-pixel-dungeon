@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon;
+package com.elementalpixel.elementalpixeldungeon;
 
 public class Assets {
 
@@ -221,6 +221,11 @@ public class Assets {
 		public static final String PET		= "sprites/pet.png";
 		public static final String AMULET	= "sprites/amulet.png";
 
+		public static final String FIRE_FRAGMENT= "sprites/firefragment.png";
+		public static final String EARTH_FRAGMENT= "sprites/earthfragment.png";
+		public static final String WATER_FRAGMENT= "sprites/waterfragment.png";
+		public static final String AIR_FRAGMENT= "sprites/airfragment.png";
+
 		public static final String RAT		= "sprites/rat.png";
 		public static final String BRUTE	= "sprites/brute.png";
 		public static final String SPINNER	= "sprites/spinner.png";
@@ -273,5 +278,5 @@ public class Assets {
 		public static final String PYLON	= "sprites/pylon.png";
 		public static final String DM200	= "sprites/dm200.png";
 		public static final String LOTUS	= "sprites/lotus.png";
-	}
+    }
 }

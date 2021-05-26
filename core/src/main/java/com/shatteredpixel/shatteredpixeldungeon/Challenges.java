@@ -19,10 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon;
+package com.elementalpixel.elementalpixeldungeon;
 
-import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+
+import com.elementalpixel.elementalpixeldungeon.items.Dewdrop;
+import com.elementalpixel.elementalpixeldungeon.items.Item;
 
 public class Challenges {
 

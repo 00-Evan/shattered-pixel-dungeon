@@ -19,18 +19,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon;
+package com.elementalpixel.elementalpixeldungeon;
 
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.elementalpixel.elementalpixeldungeon.items.Item;
+import com.elementalpixel.elementalpixeldungeon.items.artifacts.Artifact;
+import com.elementalpixel.elementalpixeldungeon.items.bags.MagicalHolster;
+import com.elementalpixel.elementalpixeldungeon.items.bags.PotionBandolier;
+import com.elementalpixel.elementalpixeldungeon.items.bags.ScrollHolder;
+import com.elementalpixel.elementalpixeldungeon.items.bags.VelvetPouch;
+import com.elementalpixel.elementalpixeldungeon.journal.Catalog;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.scenes.PixelScene;
+import com.elementalpixel.elementalpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.FileUtils;
 
@@ -50,26 +50,28 @@ public class Badges {
 		MASTERY_MAGE,
 		MASTERY_ROGUE,
 		MASTERY_HUNTRESS,
+		MASTERY_ALCHEMIST,
 
 		//bronze
 		UNLOCK_MAGE                 ( 1 ),
 		UNLOCK_ROGUE                ( 2 ),
 		UNLOCK_HUNTRESS             ( 3 ),
-		MONSTERS_SLAIN_1            ( 4 ),
-		MONSTERS_SLAIN_2            ( 5 ),
-		GOLD_COLLECTED_1            ( 6 ),
-		GOLD_COLLECTED_2            ( 7 ),
-		ITEM_LEVEL_1                ( 8 ),
-		LEVEL_REACHED_1             ( 9 ),
-		STRENGTH_ATTAINED_1         ( 10 ),
-		FOOD_EATEN_1                ( 11 ),
-		POTIONS_COOKED_1            ( 12 ),
-		BOSS_SLAIN_1                ( 13 ),
-		DEATH_FROM_FIRE             ( 14 ),
-		DEATH_FROM_POISON           ( 15 ),
-		DEATH_FROM_GAS              ( 16 ),
-		DEATH_FROM_HUNGER           ( 17 ),
-		DEATH_FROM_FALLING          ( 18 ),
+		UNLOCK_ALCHEMIST            ( 4 ),
+		MONSTERS_SLAIN_1            ( 5 ),
+		MONSTERS_SLAIN_2            ( 6 ),
+		GOLD_COLLECTED_1            ( 7 ),
+		GOLD_COLLECTED_2            ( 8 ),
+		ITEM_LEVEL_1                ( 9 ),
+		LEVEL_REACHED_1             ( 10 ),
+		STRENGTH_ATTAINED_1         ( 11 ),
+		FOOD_EATEN_1                ( 12 ),
+		POTIONS_COOKED_1            ( 13 ),
+		BOSS_SLAIN_1                ( 14 ),
+		DEATH_FROM_FIRE             ( 15 ),
+		DEATH_FROM_POISON           ( 16 ),
+		DEATH_FROM_GAS              ( 17 ),
+		DEATH_FROM_HUNGER           ( 18 ),
+		DEATH_FROM_FALLING          ( 19 ),
 
 		//silver
 		NO_MONSTERS_SLAIN           ( 32 ),
@@ -97,6 +99,7 @@ public class Badges {
 		BOSS_SLAIN_1_MAGE,
 		BOSS_SLAIN_1_ROGUE,
 		BOSS_SLAIN_1_HUNTRESS,
+		BOSS_SLAIN_1_ALCHEMIST,
 		BOSS_SLAIN_1_ALL_CLASSES    ( 53, true ),
 		GAMES_PLAYED_1              ( 54, true ),
 
@@ -130,6 +133,8 @@ public class Badges {
 		BOSS_SLAIN_3_ASSASSIN,
 		BOSS_SLAIN_3_SNIPER,
 		BOSS_SLAIN_3_WARDEN,
+		BOSS_SLAIN_3_SCIENTIST,
+		BOSS_SLAIN_3_ELEMENTALIST,
 		BOSS_SLAIN_3_ALL_SUBCLASSES ( 80, true ),
 		GAMES_PLAYED_2              ( 81, true ),
 
@@ -140,6 +145,7 @@ public class Badges {
 		VICTORY_MAGE,
 		VICTORY_ROGUE,
 		VICTORY_HUNTRESS,
+		VICTORY_ALCHEMIST,
 		VICTORY_ALL_CLASSES         ( 98, true ),
 		GAMES_PLAYED_3              ( 99, true ),
 		CHAMPION_1                  ( 100 ),
@@ -403,6 +409,10 @@ public class Badges {
 			badge = Badge.POTIONS_COOKED_4;
 			local.add( badge );
 		}
+		if (!local.contains( Badge.UNLOCK_ALCHEMIST ) && Statistics.potionsCooked >= 4) {
+			badge = Badge.UNLOCK_ALCHEMIST;
+			local.add(badge);
+		}
 		
 		displayBadge( badge );
 	}
@@ -447,7 +457,7 @@ public class Badges {
 			badge = Badge.ITEM_LEVEL_4;
 			local.add( badge );
 		}
-		
+
 		displayBadge( badge );
 	}
 	
@@ -601,6 +611,8 @@ public class Badges {
 				case HUNTRESS:
 					badge = Badge.BOSS_SLAIN_1_HUNTRESS;
 					break;
+				case ALCHEMIST:
+					badge = Badge.BOSS_SLAIN_1_ALCHEMIST;
 				}
 				local.add( badge );
 				if (!global.contains( badge )) {
@@ -611,7 +623,8 @@ public class Badges {
 				if (global.contains( Badge.BOSS_SLAIN_1_WARRIOR ) &&
 					global.contains( Badge.BOSS_SLAIN_1_MAGE ) &&
 					global.contains( Badge.BOSS_SLAIN_1_ROGUE ) &&
-					global.contains( Badge.BOSS_SLAIN_1_HUNTRESS)) {
+					global.contains( Badge.BOSS_SLAIN_1_HUNTRESS ) &&
+					global.contains( Badge.BOSS_SLAIN_1_ALCHEMIST )) {
 					
 					badge = Badge.BOSS_SLAIN_1_ALL_CLASSES;
 					if (!global.contains( badge )) {
@@ -647,6 +660,10 @@ public class Badges {
 				case WARDEN:
 					badge = Badge.BOSS_SLAIN_3_WARDEN;
 					break;
+				case SCIENTIST:
+					badge = Badge.BOSS_SLAIN_3_SCIENTIST;
+				case ELEMENTALIST:
+					badge = Badge.BOSS_SLAIN_3_ELEMENTALIST;
 				default:
 					return;
 				}
@@ -663,7 +680,9 @@ public class Badges {
 					global.contains( Badge.BOSS_SLAIN_3_FREERUNNER ) &&
 					global.contains( Badge.BOSS_SLAIN_3_ASSASSIN ) &&
 					global.contains( Badge.BOSS_SLAIN_3_SNIPER ) &&
-					global.contains( Badge.BOSS_SLAIN_3_WARDEN )) {
+					global.contains( Badge.BOSS_SLAIN_3_WARDEN ) &&
+					global.contains( Badge.BOSS_SLAIN_3_SCIENTIST) &&
+					global.contains( Badge.BOSS_SLAIN_3_ELEMENTALIST)) {
 					
 					badge = Badge.BOSS_SLAIN_3_ALL_SUBCLASSES;
 					if (!global.contains( badge )) {
@@ -692,6 +711,8 @@ public class Badges {
 		case HUNTRESS:
 			badge = Badge.MASTERY_HUNTRESS;
 			break;
+		case ALCHEMIST:
+			badge = Badge.MASTERY_ALCHEMIST;
 		}
 		
 		if (!global.contains( badge )) {
@@ -712,12 +733,13 @@ public class Badges {
 		}
 	}
 	
-	public static void validateHuntressUnlock(){
-		if (Statistics.thrownAssists >= 15 && !global.contains(Badge.UNLOCK_HUNTRESS)){
-			displayBadge( Badge.UNLOCK_HUNTRESS );
+	public static void validateHuntressUnlock() {
+		if (Statistics.thrownAssists >= 15 && !global.contains(Badge.UNLOCK_HUNTRESS)) {
+			displayBadge(Badge.UNLOCK_HUNTRESS);
 		}
 	}
-	
+
+
 	public static void validateMasteryCombo( int n ) {
 		if (!local.contains( Badge.MASTERY_COMBO ) && n == 10) {
 			Badge badge = Badge.MASTERY_COMBO;
@@ -744,6 +766,8 @@ public class Badges {
 		case HUNTRESS:
 			badge = Badge.VICTORY_HUNTRESS;
 			break;
+		case ALCHEMIST:
+			badge = Badge.VICTORY_ALCHEMIST;
 		}
 		local.add( badge );
 		if (!global.contains( badge )) {
@@ -754,7 +778,8 @@ public class Badges {
 		if (global.contains( Badge.VICTORY_WARRIOR ) &&
 			global.contains( Badge.VICTORY_MAGE ) &&
 			global.contains( Badge.VICTORY_ROGUE ) &&
-			global.contains( Badge.VICTORY_HUNTRESS )) {
+			global.contains( Badge.VICTORY_HUNTRESS ) &&
+			global.contains( Badge.VICTORY_ALCHEMIST )) {
 			
 			badge = Badge.VICTORY_ALL_CLASSES;
 			displayBadge( badge );
@@ -878,7 +903,7 @@ public class Badges {
 		}
 	}
 
-	public static List<Badge> filterReplacedBadges( boolean global ) {
+	public static List<Badge> filterReplacedBadges(boolean global ) {
 
 		ArrayList<Badge> badges = new ArrayList<>(global ? Badges.global : Badges.local);
 
@@ -950,7 +975,7 @@ public class Badges {
 		return badges;
 	}
 	
-	private static void leaveBest( Collection<Badge> list, Badge...badges ) {
+	private static void leaveBest(Collection<Badge> list, Badge...badges ) {
 		for (int i=badges.length-1; i > 0; i--) {
 			if (list.contains( badges[i])) {
 				for (int j=0; j < i; j++) {

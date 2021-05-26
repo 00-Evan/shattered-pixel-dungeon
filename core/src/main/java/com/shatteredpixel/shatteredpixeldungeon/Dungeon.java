@@ -19,52 +19,54 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon;
+package com.elementalpixel.elementalpixeldungeon;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
-import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
-import com.shatteredpixel.shatteredpixeldungeon.levels.CavesLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.CityLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.DeadEndLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.HallsLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.LastLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.LastShopLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.NewCavesBossLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.NewCityBossLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.NewHallsBossLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.NewPrisonBossLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.SewerBossLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
-import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
-import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
+import com.elementalpixel.elementalpixeldungeon.actors.Actor;
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Amok;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Awareness;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Light;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.MindVision;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.RevealedArea;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Talent;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.Mob;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.npcs.Blacksmith;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.npcs.Ghost;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.npcs.Imp;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.npcs.Wandmaker;
+import com.elementalpixel.elementalpixeldungeon.items.Ankh;
+import com.elementalpixel.elementalpixeldungeon.items.Generator;
+import com.elementalpixel.elementalpixeldungeon.items.Heap;
+import com.elementalpixel.elementalpixeldungeon.items.Item;
+import com.elementalpixel.elementalpixeldungeon.items.artifacts.TalismanOfForesight;
+import com.elementalpixel.elementalpixeldungeon.items.potions.Potion;
+import com.elementalpixel.elementalpixeldungeon.items.rings.Ring;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.Scroll;
+import com.elementalpixel.elementalpixeldungeon.journal.Notes;
+import com.elementalpixel.elementalpixeldungeon.levels.CavesLevel;
+import com.elementalpixel.elementalpixeldungeon.levels.CityLevel;
+import com.elementalpixel.elementalpixeldungeon.levels.DeadEndLevel;
+import com.elementalpixel.elementalpixeldungeon.levels.FireBossLevel;
+import com.elementalpixel.elementalpixeldungeon.levels.FireLevel;
+import com.elementalpixel.elementalpixeldungeon.levels.HallsLevel;
+import com.elementalpixel.elementalpixeldungeon.levels.LastLevel;
+import com.elementalpixel.elementalpixeldungeon.levels.LastShopLevel;
+import com.elementalpixel.elementalpixeldungeon.levels.Level;
+import com.elementalpixel.elementalpixeldungeon.levels.NewCavesBossLevel;
+import com.elementalpixel.elementalpixeldungeon.levels.NewCityBossLevel;
+import com.elementalpixel.elementalpixeldungeon.levels.NewHallsBossLevel;
+import com.elementalpixel.elementalpixeldungeon.levels.NewPrisonBossLevel;
+import com.elementalpixel.elementalpixeldungeon.levels.PrisonLevel;
+import com.elementalpixel.elementalpixeldungeon.levels.SewerBossLevel;
+import com.elementalpixel.elementalpixeldungeon.levels.SewerLevel;
+import com.elementalpixel.elementalpixeldungeon.levels.rooms.secret.SecretRoom;
+import com.elementalpixel.elementalpixeldungeon.levels.rooms.special.SpecialRoom;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.scenes.GameScene;
+import com.elementalpixel.elementalpixeldungeon.ui.QuickSlotButton;
+import com.elementalpixel.elementalpixeldungeon.utils.BArray;
+import com.elementalpixel.elementalpixeldungeon.utils.DungeonSeed;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -305,6 +307,15 @@ public class Dungeon {
 		case 26:
 			level = new LastLevel();
 			break;
+		case 27:
+		case 28:
+		case 29:
+		case 30:
+			level = new FireLevel();
+			break;
+		case 31:
+			level = new FireBossLevel();
+			break;
 		default:
 			level = new DeadEndLevel();
 			Statistics.deepestFloor--;
@@ -350,7 +361,7 @@ public class Dungeon {
 	}
 	
 	public static boolean bossLevel( int depth ) {
-		return depth == 5 || depth == 10 || depth == 15 || depth == 20 || depth == 25;
+		return depth == 5 || depth == 10 || depth == 15 || depth == 20 || depth == 25 || depth == 31;
 	}
 	
 	public static void switchLevel( final Level level, int pos ) {

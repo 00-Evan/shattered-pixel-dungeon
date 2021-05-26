@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon;
+package com.elementalpixel.elementalpixeldungeon;
 
 import com.watabou.utils.Bundle;
 
@@ -49,25 +49,25 @@ public class Statistics {
 	
 	public static void reset() {
 		
-		goldCollected	= 0;
-		deepestFloor	= 0;
-		enemiesSlain	= 0;
-		foodEaten		= 0;
-		potionsCooked	= 0;
-		piranhasKilled	= 0;
-		ankhsUsed		= 0;
+		goldCollected			= 0;
+		deepestFloor			= 0;
+		enemiesSlain			= 0;
+		foodEaten				= 0;
+		potionsCooked			= 0;
+		piranhasKilled			= 0;
+		ankhsUsed				= 0;
 		
-		upgradesUsed    = 0;
-		sneakAttacks    = 0;
-		thrownAssists   = 0;
+		upgradesUsed    		= 0;
+		sneakAttacks    		= 0;
+		thrownAssists   		= 0;
 
-		spawnersAlive   = 0;
+		spawnersAlive   		= 0;
 		
-		duration	= 0;
+		duration	    		= 0;
 		
-		qualifiedForNoKilling = false;
+		qualifiedForNoKilling   = false;
 		
-		amuletObtained = false;
+		amuletObtained 			= false;
 		
 	}
 	
