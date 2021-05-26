@@ -19,27 +19,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
+package com.elementalpixel.elementalpixeldungeon.levels.rooms.special;
 
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FlashingTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FlockTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrippingTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PoisonDartTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TeleportationTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WarpingTrap;
+
+import com.elementalpixel.elementalpixeldungeon.Challenges;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Burning;
+import com.elementalpixel.elementalpixeldungeon.items.Generator;
+import com.elementalpixel.elementalpixeldungeon.items.Heap;
+import com.elementalpixel.elementalpixeldungeon.items.Item;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfLevitation;
+import com.elementalpixel.elementalpixeldungeon.levels.Level;
+import com.elementalpixel.elementalpixeldungeon.levels.Terrain;
+import com.elementalpixel.elementalpixeldungeon.levels.painters.Painter;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.BlazingTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.BurningTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.DisintegrationTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.ExplosiveTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.FlashingTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.FlockTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.GrimTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.GrippingTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.PoisonDartTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.TeleportationTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.Trap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.WarpingTrap;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
@@ -112,7 +116,7 @@ public class TrapsRoom extends SpecialRoom {
 		level.addItemToSpawn( new PotionOfLevitation() );
 	}
 	
-	private static Item prize( Level level ) {
+	private static Item prize(Level level ) {
 
 		Item prize;
 
@@ -151,6 +155,8 @@ public class TrapsRoom extends SpecialRoom {
 			//city
 			{WarpingTrap.class, FlashingTrap.class, DisintegrationTrap.class},
 			//halls, muahahahaha
-			{GrimTrap.class}
+			{GrimTrap.class},
+			//fire level
+			{BlazingTrap.class, ExplosiveTrap.class, BurningTrap.class}
 	};
 }
