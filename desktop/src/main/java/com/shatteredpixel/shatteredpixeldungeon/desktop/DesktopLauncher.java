@@ -19,7 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.desktop;
+package com.elementalpixel.elementalpixeldungeon.desktop;
+
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
@@ -29,12 +30,12 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3FileHandle;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Preferences;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.SharedLibraryLoader;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.services.news.News;
-import com.shatteredpixel.shatteredpixeldungeon.services.news.NewsImpl;
-import com.shatteredpixel.shatteredpixeldungeon.services.updates.UpdateImpl;
-import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
+import com.elementalpixel.elementalpixeldungeon.SPDSettings;
+import com.elementalpixel.elementalpixeldungeon.ShatteredPixelDungeon;
+import com.elementalpixel.elementalpixeldungeon.services.news.News;
+import com.elementalpixel.elementalpixeldungeon.services.news.NewsImpl;
+import com.elementalpixel.elementalpixeldungeon.services.updates.UpdateImpl;
+import com.elementalpixel.elementalpixeldungeon.services.updates.Updates;
 import com.watabou.noosa.Game;
 import com.watabou.utils.FileUtils;
 import com.watabou.utils.Point;
@@ -48,7 +49,7 @@ public class DesktopLauncher {
 
 	public static void main (String[] args) {
 
-		if (!DesktopLaunchValidator.verifyValidJVMState(args)){
+		if (!com.elementalpixel.elementalpixeldungeon.desktop.DesktopLaunchValidator.verifyValidJVMState(args)){
 			return;
 		}
 		
@@ -71,7 +72,7 @@ public class DesktopLauncher {
 
 				//shorten/simplify exception message to make it easier to fit into a message box
 				exceptionMsg = exceptionMsg.replaceAll("\\(.*:([0-9]*)\\)", "($1)");
-				exceptionMsg = exceptionMsg.replace("com.shatteredpixel.shatteredpixeldungeon.", "");
+				exceptionMsg = exceptionMsg.replace("com.elementalpixel.elementalpixeldungeon.", "");
 				exceptionMsg = exceptionMsg.replace("com.watabou.", "");
 				exceptionMsg = exceptionMsg.replace("com.badlogic.gdx.", "");
 				exceptionMsg = exceptionMsg.replace("\t", "    ");
@@ -146,12 +147,12 @@ public class DesktopLauncher {
 		config.setAutoIconify( true );
 		
 		//we set fullscreen/maximized in the listener as doing it through the config seems to be buggy
-		DesktopWindowListener listener = new DesktopWindowListener();
+		com.elementalpixel.elementalpixeldungeon.desktop.DesktopWindowListener listener = new com.elementalpixel.elementalpixeldungeon.desktop.DesktopWindowListener();
 		config.setWindowListener( listener );
 		
 		config.setWindowIcon("icons/icon_16.png", "icons/icon_32.png", "icons/icon_64.png",
 				"icons/icon_128.png", "icons/icon_256.png");
 
-		new Lwjgl3Application(new ShatteredPixelDungeon(new DesktopPlatformSupport()), config);
+		new Lwjgl3Application(new ShatteredPixelDungeon(new com.elementalpixel.elementalpixeldungeon.desktop.DesktopPlatformSupport()), config);
 	}
 }

@@ -19,7 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.desktop;
+package com.elementalpixel.elementalpixeldungeon.desktop;
+
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -27,7 +28,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
+import com.elementalpixel.elementalpixeldungeon.SPDSettings;
 import com.watabou.noosa.Game;
 import com.watabou.utils.PlatformSupport;
 import com.watabou.utils.Point;
@@ -48,7 +49,7 @@ public class DesktopPlatformSupport extends PlatformSupport {
 	
 	@Override
 	public void updateSystemUI() {
-		Gdx.app.postRunnable( new Runnable() {
+		Gdx.app.postRunnable(new Runnable() {
 			@Override
 			public void run () {
 				if (SPDSettings.fullscreen()){
