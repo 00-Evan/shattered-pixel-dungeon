@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.elementalpixel.elementalpixeldungeon;
+package com.elementalpixel.elementalpixeldungeon.items;
 
 public class Assets {
 
