@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoBuff;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
@@ -192,6 +193,7 @@ public class BuffIndicator extends Component {
 		for (BuffIcon icon : buffIcons.values()){
 			icon.updateIcon();
 			icon.setRect(x + pos * (SIZE + 2), y, 9, 12);
+			PixelScene.align(icon);
 			pos++;
 		}
 	}
