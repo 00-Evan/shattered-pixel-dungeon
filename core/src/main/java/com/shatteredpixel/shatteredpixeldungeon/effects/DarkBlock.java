@@ -19,12 +19,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.effects;
+package com.elementalpixel.elementalpixeldungeon.effects;
 
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+
+import com.elementalpixel.elementalpixeldungeon.sprites.CharSprite;
 import com.watabou.noosa.Gizmo;
 
-public class DarkBlock extends Gizmo{
+public class DarkBlock extends Gizmo {
 
 	private CharSprite target;
 

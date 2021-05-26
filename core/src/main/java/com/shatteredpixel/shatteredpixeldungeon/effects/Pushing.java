@@ -19,11 +19,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.effects;
+package com.elementalpixel.elementalpixeldungeon.effects;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+
+import com.elementalpixel.elementalpixeldungeon.actors.Actor;
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.sprites.CharSprite;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Visual;
 import com.watabou.utils.Callback;
@@ -43,7 +44,7 @@ public class Pushing extends Actor {
 		actPriority = VFX_PRIO;
 	}
 	
-	public Pushing( Char ch, int from, int to ) {
+	public Pushing(Char ch, int from, int to ) {
 		sprite = ch.sprite;
 		this.from = from;
 		this.to = to;
