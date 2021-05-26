@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -146,6 +147,7 @@ public class WarpBeacon extends ArmorAbility {
 								}
 							}
 
+							Invisibility.dispel();
 							ScrollOfTeleportation.appear(hero, tracker.pos);
 							Dungeon.observe();
 
@@ -156,6 +158,7 @@ public class WarpBeacon extends ArmorAbility {
 								return;
 							}
 
+							Invisibility.dispel();
 							Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
 							if (buff != null) buff.detach();
 							buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
@@ -198,6 +201,7 @@ public class WarpBeacon extends ArmorAbility {
 
 			hero.sprite.operate(target);
 			Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+			Invisibility.dispel();
 			hero.spendAndNext(Actor.TICK);
 		}
 	}
