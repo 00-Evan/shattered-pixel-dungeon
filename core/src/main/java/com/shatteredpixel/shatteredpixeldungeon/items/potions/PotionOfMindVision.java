@@ -19,15 +19,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.potions;
+package com.elementalpixel.elementalpixeldungeon.items.potions;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Buff;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.MindVision;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.HeroClass;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.HeroSubClass;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
+import com.elementalpixel.elementalpixeldungeon.utils.GLog;
 
 public class PotionOfMindVision extends Potion {
 
@@ -38,7 +41,11 @@ public class PotionOfMindVision extends Potion {
 	@Override
 	public void apply( Hero hero ) {
 		identify();
-		Buff.affect( hero, MindVision.class, MindVision.DURATION );
+		if (curUser.subClass == HeroSubClass.SCIENTIST) {
+			Buff.affect( hero, MindVision.class, MindVision.DURATION * 1.4f);
+		} else {
+			Buff.affect( hero, MindVision.class, MindVision.DURATION );
+		}
 		Dungeon.observe();
 		
 		if (Dungeon.level.mobs.size() > 0) {
@@ -50,6 +57,10 @@ public class PotionOfMindVision extends Potion {
 	
 	@Override
 	public int value() {
-		return isKnown() ? 30 * quantity : super.value();
+		if (curUser.heroClass == HeroClass.ALCHEMIST) {
+			return isKnown() ? 25 * quantity : super.value();
+		} else {
+			return isKnown() ? 30 * quantity : super.value();
+		}
 	}
 }

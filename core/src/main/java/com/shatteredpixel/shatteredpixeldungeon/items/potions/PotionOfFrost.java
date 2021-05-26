@@ -19,14 +19,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.potions;
+package com.elementalpixel.elementalpixeldungeon.items.potions;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+
+import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.blobs.Blob;
+import com.elementalpixel.elementalpixeldungeon.actors.blobs.Freezing;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.HeroClass;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.HeroSubClass;
+import com.elementalpixel.elementalpixeldungeon.scenes.GameScene;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 
@@ -49,8 +52,12 @@ public class PotionOfFrost extends Potion {
 		for (int offset : PathFinder.NEIGHBOURS9){
 			if (!Dungeon.level.solid[cell+offset]) {
 				
-				GameScene.add(Blob.seed(cell + offset, 10, Freezing.class));
-				
+				if (curUser.subClass == HeroSubClass.SCIENTIST) {
+					GameScene.add(Blob.seed(cell + offset, 20, Freezing.class)); //lasts longer
+				} else {
+					GameScene.add(Blob.seed(cell + offset, 10, Freezing.class)); //lasts longer
+				}
+
 			}
 		}
 		
@@ -58,6 +65,10 @@ public class PotionOfFrost extends Potion {
 	
 	@Override
 	public int value() {
-		return isKnown() ? 30 * quantity : super.value();
+		if (curUser.heroClass == HeroClass.ALCHEMIST) {
+			return isKnown() ? 25 * quantity : super.value();
+		} else {
+			return isKnown() ? 30 * quantity : super.value();
+		}
 	}
 }

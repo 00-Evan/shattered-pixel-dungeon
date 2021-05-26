@@ -19,14 +19,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.potions;
+package com.elementalpixel.elementalpixeldungeon.items.potions;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Buff;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Haste;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.HeroClass;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.HeroSubClass;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
+import com.elementalpixel.elementalpixeldungeon.utils.GLog;
 
 public class PotionOfHaste extends Potion {
 	
@@ -39,11 +42,19 @@ public class PotionOfHaste extends Potion {
 		identify();
 		
 		GLog.w( Messages.get(this, "energetic") );
-		Buff.prolong( hero, Haste.class, Haste.DURATION);
+		if (curUser.subClass == HeroSubClass.SCIENTIST) {
+			Buff.prolong( hero, Haste.class, Haste.DURATION * 1.4f);
+		} else {
+			Buff.prolong( hero, Haste.class, Haste.DURATION);
+		}
 	}
 	
 	@Override
 	public int value() {
-		return isKnown() ? 40 * quantity : super.value();
+		if (curUser.heroClass == HeroClass.ALCHEMIST) {
+			return isKnown() ? 35 * quantity : super.value();
+		} else {
+			return isKnown() ? 40 * quantity : super.value();
+		}
 	}
 }
