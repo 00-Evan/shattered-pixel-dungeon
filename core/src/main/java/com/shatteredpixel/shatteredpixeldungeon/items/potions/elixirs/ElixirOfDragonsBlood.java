@@ -19,16 +19,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs;
+package com.elementalpixel.elementalpixeldungeon.items.potions.elixirs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FireImbue;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfDragonsBreath;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+
+import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Buff;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.FireImbue;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.HeroSubClass;
+import com.elementalpixel.elementalpixeldungeon.effects.particles.FlameParticle;
+import com.elementalpixel.elementalpixeldungeon.items.potions.AlchemicalCatalyst;
+import com.elementalpixel.elementalpixeldungeon.items.potions.exotic.PotionOfDragonsBreath;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 
 public class ElixirOfDragonsBlood extends Elixir {
@@ -39,9 +41,15 @@ public class ElixirOfDragonsBlood extends Elixir {
 	
 	@Override
 	public void apply(Hero hero) {
-		Buff.affect(hero, FireImbue.class).set(FireImbue.DURATION);
-		Sample.INSTANCE.play( Assets.Sounds.BURNING );
-		hero.sprite.emitter().burst(FlameParticle.FACTORY, 10);
+		if (curUser.subClass == HeroSubClass.SCIENTIST) {
+			Buff.affect(hero, FireImbue.class).set(FireImbue.DURATION * 1.4f);
+			Sample.INSTANCE.play( Assets.Sounds.BURNING );
+			hero.sprite.emitter().burst(FlameParticle.FACTORY, 14);
+		} else {
+			Buff.affect(hero, FireImbue.class).set(FireImbue.DURATION);
+			Sample.INSTANCE.play( Assets.Sounds.BURNING );
+			hero.sprite.emitter().burst(FlameParticle.FACTORY, 10);
+		}
 	}
 	
 	@Override
@@ -55,7 +63,7 @@ public class ElixirOfDragonsBlood extends Elixir {
 		return quantity * (50 + 40);
 	}
 	
-	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
+	public static class Recipe extends com.elementalpixel.elementalpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{
 			inputs =  new Class[]{PotionOfDragonsBreath.class, AlchemicalCatalyst.class};

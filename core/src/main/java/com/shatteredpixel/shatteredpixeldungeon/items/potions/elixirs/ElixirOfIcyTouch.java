@@ -19,15 +19,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs;
+package com.elementalpixel.elementalpixeldungeon.items.potions.elixirs;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FrostImbue;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SnowParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfSnapFreeze;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Buff;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.FrostImbue;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.HeroSubClass;
+import com.elementalpixel.elementalpixeldungeon.effects.particles.SnowParticle;
+import com.elementalpixel.elementalpixeldungeon.items.potions.AlchemicalCatalyst;
+import com.elementalpixel.elementalpixeldungeon.items.potions.exotic.PotionOfSnapFreeze;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
 
 public class ElixirOfIcyTouch extends Elixir {
 	
@@ -37,8 +39,13 @@ public class ElixirOfIcyTouch extends Elixir {
 	
 	@Override
 	public void apply(Hero hero) {
-		Buff.affect(hero, FrostImbue.class, FrostImbue.DURATION);
-		hero.sprite.emitter().burst(SnowParticle.FACTORY, 5);
+		if (curUser.subClass == HeroSubClass.SCIENTIST) {
+			Buff.affect(hero, FrostImbue.class, FrostImbue.DURATION * 1.4f);
+			hero.sprite.emitter().burst(SnowParticle.FACTORY, 8);
+		} else {
+			Buff.affect(hero, FrostImbue.class, FrostImbue.DURATION);
+			hero.sprite.emitter().burst(SnowParticle.FACTORY, 5);
+		}
 	}
 	
 	@Override
@@ -52,7 +59,7 @@ public class ElixirOfIcyTouch extends Elixir {
 		return quantity * (50 + 40);
 	}
 	
-	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
+	public static class Recipe extends com.elementalpixel.elementalpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{
 			inputs =  new Class[]{PotionOfSnapFreeze.class, AlchemicalCatalyst.class};
