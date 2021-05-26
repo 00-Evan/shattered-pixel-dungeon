@@ -19,13 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.sewerboss;
+package com.elementalpixel.elementalpixeldungeon.levels.rooms.sewerboss;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Goo;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.PerimeterRoom;
+
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.FireGoo;
+import com.elementalpixel.elementalpixeldungeon.levels.Level;
+import com.elementalpixel.elementalpixeldungeon.levels.Terrain;
+import com.elementalpixel.elementalpixeldungeon.levels.painters.Painter;
+import com.elementalpixel.elementalpixeldungeon.levels.rooms.connection.PerimeterRoom;
 
 public class ThinPillarsGooRoom extends GooBossRoom {
 	
@@ -61,8 +62,8 @@ public class ThinPillarsGooRoom extends GooBossRoom {
 		}
 		
 		setupGooNest(level);
-		
-		Goo boss = new Goo();
+
+		FireGoo boss = new FireGoo();
 		boss.pos = level.pointToCell(center());
 		level.mobs.add( boss );
 		
