@@ -19,35 +19,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs;
+package com.elementalpixel.elementalpixeldungeon.items.armor.glyphs;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM100;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Eye;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shaman;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Warlock;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogFist;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFrost;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLightning;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfPrismaticLight;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTransfusion;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Charm;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Degrade;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Hex;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.MagicalSleep;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Vulnerable;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Weakness;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.DM100;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.Eye;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.Shaman;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.Warlock;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.Yog;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.YogFist;
+import com.elementalpixel.elementalpixeldungeon.items.armor.Armor;
+import com.elementalpixel.elementalpixeldungeon.items.wands.WandOfBlastWave;
+import com.elementalpixel.elementalpixeldungeon.items.wands.WandOfDisintegration;
+import com.elementalpixel.elementalpixeldungeon.items.wands.WandOfFireblast;
+import com.elementalpixel.elementalpixeldungeon.items.wands.WandOfFrost;
+import com.elementalpixel.elementalpixeldungeon.items.wands.WandOfLightning;
+import com.elementalpixel.elementalpixeldungeon.items.wands.WandOfLivingEarth;
+import com.elementalpixel.elementalpixeldungeon.items.wands.WandOfMagicMissile;
+import com.elementalpixel.elementalpixeldungeon.items.wands.WandOfPrismaticLight;
+import com.elementalpixel.elementalpixeldungeon.items.wands.WandOfTransfusion;
+import com.elementalpixel.elementalpixeldungeon.items.wands.WandOfWarding;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.DisintegrationTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.GrimTrap;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
 import java.util.HashSet;

@@ -19,24 +19,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs;
+package com.elementalpixel.elementalpixeldungeon.items.armor.glyphs;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor.Glyph;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
+
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Buff;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Charm;
+import com.elementalpixel.elementalpixeldungeon.effects.Speck;
+import com.elementalpixel.elementalpixeldungeon.items.armor.Armor;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
-public class Affection extends Glyph {
+public class Affection extends Armor.Glyph {
 	
 	private static ItemSprite.Glowing PINK = new ItemSprite.Glowing( 0xFF4488 );
 	
 	@Override
-	public int proc( Armor armor, Char attacker, Char defender, int damage) {
+	public int proc(Armor armor, Char attacker, Char defender, int damage) {
 
 		int level = Math.max(0, armor.buffedLvl());
 		
@@ -54,7 +53,7 @@ public class Affection extends Glyph {
 	}
 
 	@Override
-	public Glowing glowing() {
+	public ItemSprite.Glowing glowing() {
 		return PINK;
 	}
 }

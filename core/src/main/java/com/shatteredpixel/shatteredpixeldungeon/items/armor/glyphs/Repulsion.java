@@ -19,13 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs;
+package com.elementalpixel.elementalpixeldungeon.items.armor.glyphs;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.items.armor.Armor;
+import com.elementalpixel.elementalpixeldungeon.items.wands.WandOfBlastWave;
+import com.elementalpixel.elementalpixeldungeon.mechanics.Ballistica;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
 public class Repulsion extends Armor.Glyph {
@@ -33,7 +34,7 @@ public class Repulsion extends Armor.Glyph {
 	private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing( 0xFFFFFF );
 	
 	@Override
-	public int proc( Armor armor, Char attacker, Char defender, int damage) {
+	public int proc(Armor armor, Char attacker, Char defender, int damage) {
 		// lvl 0 - 20%
 		// lvl 1 - 33%
 		// lvl 2 - 43%

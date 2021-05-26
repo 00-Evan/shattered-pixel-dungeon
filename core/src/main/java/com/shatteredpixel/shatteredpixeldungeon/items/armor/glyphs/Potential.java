@@ -19,23 +19,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs;
+package com.elementalpixel.elementalpixeldungeon.items.armor.glyphs;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EnergyParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor.Glyph;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
+
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.effects.particles.EnergyParticle;
+import com.elementalpixel.elementalpixeldungeon.items.armor.Armor;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
-public class Potential extends Glyph {
+public class Potential extends Armor.Glyph {
 	
 	private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing( 0xFFFFFF, 0.6f );
 	
 	@Override
-	public int proc( Armor armor, Char attacker, Char defender, int damage) {
+	public int proc(Armor armor, Char attacker, Char defender, int damage) {
 
 		int level = Math.max( 0, armor.buffedLvl() );
 		
@@ -53,7 +52,7 @@ public class Potential extends Glyph {
 	}
 
 	@Override
-	public Glowing glowing() {
+	public ItemSprite.Glowing glowing() {
 		return WHITE;
 	}
 }

@@ -19,32 +19,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs;
+package com.elementalpixel.elementalpixeldungeon.items.armor.glyphs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor.Glyph;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+
+import com.elementalpixel.elementalpixeldungeon.Badges;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Buff;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.HeroSubClass;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Talent;
+import com.elementalpixel.elementalpixeldungeon.items.armor.Armor;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.missiles.MissileWeapon;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.sprites.CharSprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSprite;
+import com.elementalpixel.elementalpixeldungeon.ui.BuffIndicator;
+import com.elementalpixel.elementalpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 
-public class Viscosity extends Glyph {
+public class Viscosity extends Armor.Glyph {
 	
 	private static ItemSprite.Glowing PURPLE = new ItemSprite.Glowing( 0x8844CC );
 	
 	@Override
-	public int proc( Armor armor, Char attacker, Char defender, int damage ) {
+	public int proc(Armor armor, Char attacker, Char defender, int damage ) {
 
 		//FIXME this glyph should really just proc after DR is accounted for.
 		//should build in functionality for that, but this works for now
@@ -82,7 +81,7 @@ public class Viscosity extends Glyph {
 	}
 
 	@Override
-	public Glowing glowing() {
+	public ItemSprite.Glowing glowing() {
 		return PURPLE;
 	}
 	
