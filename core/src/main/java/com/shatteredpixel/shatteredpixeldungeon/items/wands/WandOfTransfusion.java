@@ -69,7 +69,7 @@ public class WandOfTransfusion extends Wand {
 
 		if (ch instanceof Mob){
 			
-			processSoulMark(ch, chargesPerCast());
+			wandProc(ch, chargesPerCast());
 			
 			//this wand does different things depending on the target.
 			

@@ -78,7 +78,7 @@ public class WandOfPrismaticLight extends DamageWand {
 		
 		Char ch = Actor.findChar(beam.collisionPos);
 		if (ch != null){
-			processSoulMark(ch, chargesPerCast());
+			wandProc(ch, chargesPerCast());
 			affectTarget(ch);
 		}
 	}

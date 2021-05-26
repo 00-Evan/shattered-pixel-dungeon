@@ -63,7 +63,7 @@ public class WandOfCorrosion extends Wand {
 		for (int i : PathFinder.NEIGHBOURS9) {
 			Char ch = Actor.findChar(bolt.collisionPos + i);
 			if (ch != null) {
-				processSoulMark(ch, chargesPerCast());
+				wandProc(ch, chargesPerCast());
 			}
 		}
 		

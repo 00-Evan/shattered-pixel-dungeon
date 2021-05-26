@@ -113,7 +113,7 @@ public class WandOfRegrowth extends Wand {
 				}
 				Char ch = Actor.findChar(cell);
 				if (ch != null){
-					processSoulMark(ch, chargesPerCast());
+					wandProc(ch, chargesPerCast());
 					Buff.prolong( ch, Roots.class, 4f * chrgUsed );
 				}
 			}
