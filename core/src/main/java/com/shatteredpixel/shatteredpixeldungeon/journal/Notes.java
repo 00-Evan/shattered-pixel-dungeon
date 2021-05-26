@@ -19,11 +19,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.journal;
+package com.elementalpixel.elementalpixeldungeon.journal;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.items.keys.Key;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 
