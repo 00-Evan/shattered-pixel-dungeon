@@ -19,10 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection;
+package com.elementalpixel.elementalpixeldungeon.levels.rooms.connection;
 
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+
+import com.elementalpixel.elementalpixeldungeon.levels.Level;
+import com.elementalpixel.elementalpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
@@ -109,7 +110,7 @@ public class TunnelRoom extends ConnectionRoom {
 		Point c = new Point((int)doorCenter.x / connected.size(), (int)doorCenter.y / connected.size());
 		if (Random.Float() < doorCenter.x % 1) c.x++;
 		if (Random.Float() < doorCenter.y % 1) c.y++;
-		c.x = (int)GameMath.gate(left+1, c.x, right-1);
+		c.x = (int) GameMath.gate(left+1, c.x, right-1);
 		c.y = (int)GameMath.gate(top+1, c.y, bottom-1);
 
 		return c;
