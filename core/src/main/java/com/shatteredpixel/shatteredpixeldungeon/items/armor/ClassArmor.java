@@ -19,14 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.armor;
+package com.elementalpixel.elementalpixeldungeon.items.armor;
 
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+
+import com.elementalpixel.elementalpixeldungeon.Challenges;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.items.BrokenSeal;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ abstract public class ClassArmor extends Armor {
 		super( 6 );
 	}
 	
-	public static ClassArmor upgrade ( Hero owner, Armor armor ) {
+	public static ClassArmor upgrade (Hero owner, Armor armor ) {
 		
 		ClassArmor classArmor = null;
 		
@@ -71,6 +72,9 @@ abstract public class ClassArmor extends Armor {
 			break;
 		case HUNTRESS:
 			classArmor = new HuntressArmor();
+			break;
+		case ALCHEMIST:
+			classArmor = new AlchemistArmor();
 			break;
 		}
 		
@@ -109,7 +113,7 @@ abstract public class ClassArmor extends Armor {
 	}
 	
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
+	public ArrayList<String> actions(Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		if (hero.HP >= 3 && isEquipped( hero )) {
 			actions.add( AC_SPECIAL );
@@ -131,7 +135,7 @@ abstract public class ClassArmor extends Armor {
 			
 			if (!isEquipped( hero )) {
 				GLog.w( Messages.get(this, "not_equipped") );
-			} else if (charge < 35) {
+			} else if (charge < 0) {
 				GLog.w( Messages.get(this, "low_charge") );
 			} else  {
 				curUser = hero;
