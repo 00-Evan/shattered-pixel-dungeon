@@ -1,0 +1,10 @@
+apply plugin: 'java-library'
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+sourceCompatibility = targetCompatibility = appJavaCompatibility
+
+dependencies {
+    api project(':SPD-classes')
+    //TODO might be nice to remove this, should decide
+    implementation project(':services')
+}
