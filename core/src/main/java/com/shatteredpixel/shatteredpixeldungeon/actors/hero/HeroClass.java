@@ -19,38 +19,65 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
+package com.elementalpixel.elementalpixeldungeon.actors.hero;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRage;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gloves;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingStone;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.Badges;
+import com.elementalpixel.elementalpixeldungeon.Challenges;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.items.Amulet;
+import com.elementalpixel.elementalpixeldungeon.items.ArmorKit;
+import com.elementalpixel.elementalpixeldungeon.items.BrokenAmulet;
+import com.elementalpixel.elementalpixeldungeon.items.BrokenSeal;
+import com.elementalpixel.elementalpixeldungeon.items.Item;
+import com.elementalpixel.elementalpixeldungeon.items.TomeOfMastery;
+import com.elementalpixel.elementalpixeldungeon.items.armor.ClothArmor;
+import com.elementalpixel.elementalpixeldungeon.items.armor.PlateArmor;
+import com.elementalpixel.elementalpixeldungeon.items.artifacts.AlchemistsToolkit;
+import com.elementalpixel.elementalpixeldungeon.items.artifacts.CloakOfShadows;
+import com.elementalpixel.elementalpixeldungeon.items.artifacts.HornOfPlenty;
+import com.elementalpixel.elementalpixeldungeon.items.bags.MagicalHolster;
+import com.elementalpixel.elementalpixeldungeon.items.bags.PotionBandolier;
+import com.elementalpixel.elementalpixeldungeon.items.bags.ScrollHolder;
+import com.elementalpixel.elementalpixeldungeon.items.bags.VelvetPouch;
+import com.elementalpixel.elementalpixeldungeon.items.food.Food;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfExperience;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfFrost;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfHaste;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfHealing;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfInvisibility;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfLevitation;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfLiquidFlame;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfMindVision;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfParalyticGas;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfStrength;
+import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfToxicGas;
+import com.elementalpixel.elementalpixeldungeon.items.rings.RingOfHaste;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.Scroll;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfIdentify;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfLullaby;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfMagicMapping;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfRage;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.elementalpixel.elementalpixeldungeon.items.teleport;
+import com.elementalpixel.elementalpixeldungeon.items.wands.WandOfMagicMissile;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.AlchemistFlask;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.SpiritBow;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.melee.AlchemistDagger;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.melee.Dagger;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.melee.Glaive;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.melee.Gloves;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.melee.MagesStaff;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.melee.WornShortsword;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.missiles.ThrowingKnife;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.missiles.ThrowingStone;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.plants.Earthroot;
+import com.elementalpixel.elementalpixeldungeon.plants.Fadeleaf;
+import com.elementalpixel.elementalpixeldungeon.plants.Rotberry;
+import com.elementalpixel.elementalpixeldungeon.plants.Starflower;
+import com.elementalpixel.elementalpixeldungeon.plants.Sungrass;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.DeviceCompat;
 
@@ -59,7 +86,8 @@ public enum HeroClass {
 	WARRIOR( "warrior", HeroSubClass.BERSERKER, HeroSubClass.GLADIATOR ),
 	MAGE( "mage", HeroSubClass.BATTLEMAGE, HeroSubClass.WARLOCK ),
 	ROGUE( "rogue", HeroSubClass.ASSASSIN, HeroSubClass.FREERUNNER ),
-	HUNTRESS( "huntress", HeroSubClass.SNIPER, HeroSubClass.WARDEN );
+	HUNTRESS( "huntress", HeroSubClass.SNIPER, HeroSubClass.WARDEN ),
+	ALCHEMIST("alchemist", HeroSubClass.ELEMENTALIST, HeroSubClass.SCIENTIST);
 
 	private String title;
 	private HeroSubClass[] subClasses;
@@ -92,6 +120,10 @@ public enum HeroClass {
 			case HUNTRESS:
 				initHuntress( hero );
 				break;
+
+			case ALCHEMIST:
+				initAlchemist( hero );
+				break;
 		}
 
 	}
@@ -103,7 +135,57 @@ public enum HeroClass {
 		i = new Food();
 		if (!Challenges.isItemBlocked(i)) i.collect();
 
-		new ScrollOfIdentify().identify();
+		//POTIONS
+		new PotionOfExperience().quantity(29).identify().collect();
+		new PotionOfLiquidFlame().quantity(10).identify().collect();
+		new PotionOfToxicGas().quantity(10).identify().collect();
+		new PotionOfParalyticGas().quantity(10).identify().collect();
+		new PotionOfLevitation().quantity(10).identify().collect();
+		new PotionOfStrength().quantity(20).identify().collect();
+		new PotionOfHealing().quantity(20).identify().collect();
+		new PotionOfFrost().quantity(15).identify().collect();
+		new PotionOfHaste().quantity(15).identify().collect();
+
+		//SCROLLS
+		new ScrollOfIdentify().quantity(20).identify().collect();
+		Item scroll = new ScrollOfMagicMapping().quantity(30).identify();
+		new ScrollOfUpgrade().quantity(50).identify().collect();
+		new ScrollOfTeleportation().quantity(5).identify().collect();
+
+		//MISC
+		new TomeOfMastery().collect();
+
+		new Amulet().collect();
+		new BrokenAmulet().collect();
+		new teleport().collect();
+		new ArmorKit().collect();
+
+		new HornOfPlenty().identify().collect();
+		new AlchemistsToolkit().identify().collect();
+
+		new Glaive().upgrade(30).identify().collect();
+		new PlateArmor().upgrade(30).identify().collect();
+
+		new Food().quantity(15).collect();
+
+		//BAGS
+		new VelvetPouch().collect();
+		Dungeon.LimitedDrops.VELVET_POUCH.drop();
+
+		new ScrollHolder().collect();
+		Dungeon.LimitedDrops.SCROLL_HOLDER.drop();
+
+		new MagicalHolster().collect();
+		Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
+
+		//SEEDS
+		new Sungrass.Seed().quantity(20).collect();
+		new Fadeleaf.Seed().quantity(20).collect();
+		new Earthroot.Seed().quantity(20).collect();
+		new Starflower.Seed().quantity(20).collect();
+		new Rotberry.Seed().quantity(20).collect();
+
+		Dungeon.quickslot.setSlot(1, scroll);
 
 	}
 
@@ -117,6 +199,8 @@ public enum HeroClass {
 				return Badges.Badge.MASTERY_ROGUE;
 			case HUNTRESS:
 				return Badges.Badge.MASTERY_HUNTRESS;
+			case ALCHEMIST:
+				return Badges.Badge.MASTERY_ALCHEMIST;
 		}
 		return null;
 	}
@@ -190,6 +274,24 @@ public enum HeroClass {
 		new ScrollOfLullaby().identify();
 	}
 
+	private static void initAlchemist( Hero hero ) {
+
+		(hero.belongings.weapon = new AlchemistDagger()).identify();
+		(hero.belongings.ring = new RingOfHaste()).identify();
+
+		AlchemistFlask flask = new AlchemistFlask();
+		flask.identify().collect();
+
+		Dungeon.quickslot.setSlot(0, flask);
+
+		new PotionBandolier().collect();
+		Dungeon.LimitedDrops.POTION_BANDOLIER.drop();
+
+		new PotionOfToxicGas().identify();
+		new ScrollOfTeleportation().identify();
+
+	}
+
 	public String title() {
 		return Messages.get(HeroClass.class, title);
 	}
@@ -208,6 +310,8 @@ public enum HeroClass {
 				return Assets.Sprites.ROGUE;
 			case HUNTRESS:
 				return Assets.Sprites.HUNTRESS;
+			case ALCHEMIST:
+				return Assets.Sprites.ROGUE;
 		}
 	}
 
@@ -221,6 +325,8 @@ public enum HeroClass {
 				return Assets.Splashes.ROGUE;
 			case HUNTRESS:
 				return Assets.Splashes.HUNTRESS;
+			case ALCHEMIST:
+				return Assets.Splashes.ROGUE;
 		}
 	}
 	
@@ -258,6 +364,15 @@ public enum HeroClass {
 						Messages.get(HeroClass.class, "huntress_perk4"),
 						Messages.get(HeroClass.class, "huntress_perk5"),
 				};
+			case ALCHEMIST:
+				return new String[]{
+						Messages.get(HeroClass.class, "huntress_perk1"),
+						Messages.get(HeroClass.class, "huntress_perk2"),
+						Messages.get(HeroClass.class, "huntress_perk3"),
+						Messages.get(HeroClass.class, "huntress_perk4"),
+						Messages.get(HeroClass.class, "huntress_perk5"),
+				};
+
 		}
 	}
 	
@@ -274,6 +389,8 @@ public enum HeroClass {
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_ROGUE);
 			case HUNTRESS:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_HUNTRESS);
+			case ALCHEMIST:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_ALCHEMIST);
 		}
 	}
 	
@@ -287,6 +404,8 @@ public enum HeroClass {
 				return Messages.get(HeroClass.class, "rogue_unlock");
 			case HUNTRESS:
 				return Messages.get(HeroClass.class, "huntress_unlock");
+			case ALCHEMIST:
+				return Messages.get(HeroClass.class, "alchemist_unlock");
 		}
 	}
 

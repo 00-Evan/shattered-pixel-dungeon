@@ -19,9 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
+package com.elementalpixel.elementalpixeldungeon.actors.hero;
 
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
 
 public enum HeroSubClass {
@@ -38,7 +38,10 @@ public enum HeroSubClass {
 	FREERUNNER( "freerunner" ),
 	
 	SNIPER( "sniper" ),
-	WARDEN( "warden" );
+	WARDEN( "warden" ),
+
+	ELEMENTALIST( "elementalist" ),
+	SCIENTIST( "scientist" );
 	
 	private String title;
 	

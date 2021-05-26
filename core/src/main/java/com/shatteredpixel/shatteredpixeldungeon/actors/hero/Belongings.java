@@ -19,22 +19,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
+package com.elementalpixel.elementalpixeldungeon.actors.hero;
 
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
-import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.Badges;
+import com.elementalpixel.elementalpixeldungeon.GamesInProgress;
+import com.elementalpixel.elementalpixeldungeon.items.EquipableItem;
+import com.elementalpixel.elementalpixeldungeon.items.Item;
+import com.elementalpixel.elementalpixeldungeon.items.KindOfWeapon;
+import com.elementalpixel.elementalpixeldungeon.items.KindofMisc;
+import com.elementalpixel.elementalpixeldungeon.items.armor.Armor;
+import com.elementalpixel.elementalpixeldungeon.items.artifacts.Artifact;
+import com.elementalpixel.elementalpixeldungeon.items.bags.Bag;
+import com.elementalpixel.elementalpixeldungeon.items.keys.Key;
+import com.elementalpixel.elementalpixeldungeon.items.rings.Ring;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
+import com.elementalpixel.elementalpixeldungeon.items.wands.Wand;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
