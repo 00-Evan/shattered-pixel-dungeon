@@ -19,11 +19,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
+package com.elementalpixel.elementalpixeldungeon.actors.buffs;
 
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+
+import com.elementalpixel.elementalpixeldungeon.items.armor.glyphs.AntiMagic;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 
 public class MagicImmune extends FlavourBuff {

@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
+package com.elementalpixel.elementalpixeldungeon.actors.buffs;
 
 import com.watabou.utils.Bundle;
 

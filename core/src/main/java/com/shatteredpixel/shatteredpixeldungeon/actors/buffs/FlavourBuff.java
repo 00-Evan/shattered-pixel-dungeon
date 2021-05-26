@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
+package com.elementalpixel.elementalpixeldungeon.actors.buffs;
 
 //buff whose only internal logic is to wait and detach after a time.
 public class FlavourBuff extends Buff {

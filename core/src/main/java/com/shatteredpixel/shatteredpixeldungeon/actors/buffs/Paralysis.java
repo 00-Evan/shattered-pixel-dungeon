@@ -19,13 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
+package com.elementalpixel.elementalpixeldungeon.actors.buffs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.sprites.CharSprite;
+import com.elementalpixel.elementalpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -37,7 +38,8 @@ public class Paralysis extends FlavourBuff {
 		type = buffType.NEGATIVE;
 		announced = true;
 	}
-	
+
+
 	@Override
 	public boolean attachTo( Char target ) {
 		if (super.attachTo( target )) {
@@ -47,7 +49,7 @@ public class Paralysis extends FlavourBuff {
 			return false;
 		}
 	}
-	
+
 	public void processDamage( int damage ){
 		if (target == null) return;
 		ParalysisResist resist = target.buff(ParalysisResist.class);
@@ -62,14 +64,14 @@ public class Paralysis extends FlavourBuff {
 			detach();
 		}
 	}
-	
+
 	@Override
 	public void detach() {
 		super.detach();
 		if (target.paralysed > 0)
 			target.paralysed--;
 	}
-	
+
 	@Override
 	public int icon() {
 		return BuffIndicator.PARALYSIS;
@@ -101,15 +103,15 @@ public class Paralysis extends FlavourBuff {
 		return Messages.get(this, "desc", dispTurns());
 	}
 
-	
+
 	public static class ParalysisResist extends Buff {
-		
+
 		{
 			type = buffType.POSITIVE;
 		}
-		
+
 		private int damage;
-		
+
 		@Override
 		public boolean act() {
 			if (target.buff(Paralysis.class) == null) {
@@ -119,15 +121,15 @@ public class Paralysis extends FlavourBuff {
 			spend(TICK);
 			return true;
 		}
-		
+
 		private static final String DAMAGE = "damage";
-		
+
 		@Override
 		public void storeInBundle(Bundle bundle) {
 			super.storeInBundle(bundle);
 			damage = bundle.getInt(DAMAGE);
 		}
-		
+
 		@Override
 		public void restoreFromBundle(Bundle bundle) {
 			super.restoreFromBundle(bundle);

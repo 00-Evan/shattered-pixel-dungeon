@@ -19,35 +19,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
+package com.elementalpixel.elementalpixeldungeon.actors.buffs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Thief;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+
+import com.elementalpixel.elementalpixeldungeon.Badges;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.actors.blobs.Blob;
+import com.elementalpixel.elementalpixeldungeon.actors.blobs.Fire;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.HeroSubClass;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.Thief;
+import com.elementalpixel.elementalpixeldungeon.effects.particles.ElmoParticle;
+import com.elementalpixel.elementalpixeldungeon.items.Heap;
+import com.elementalpixel.elementalpixeldungeon.items.Item;
+import com.elementalpixel.elementalpixeldungeon.items.food.ChargrilledMeat;
+import com.elementalpixel.elementalpixeldungeon.items.food.FrozenCarpaccio;
+import com.elementalpixel.elementalpixeldungeon.items.food.MysteryMeat;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.Scroll;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.scenes.GameScene;
+import com.elementalpixel.elementalpixeldungeon.sprites.CharSprite;
+import com.elementalpixel.elementalpixeldungeon.ui.BuffIndicator;
+import com.elementalpixel.elementalpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
+import static com.elementalpixel.elementalpixeldungeon.items.Item.curUser;
+
 public class Burning extends Buff implements Hero.Doom {
 	
-	private static final float DURATION = 8f;
+	public static final float DURATION = 8f;
 	
 	private float left;
 	
@@ -85,83 +89,138 @@ public class Burning extends Buff implements Hero.Doom {
 
 	@Override
 	public boolean act() {
-		
-		if (target.isAlive() && !target.isImmune(getClass())) {
-			
-			int damage = Random.NormalIntRange( 1, 3 + Dungeon.depth/4 );
-			Buff.detach( target, Chill.class);
+		if (curUser.subClass == HeroSubClass.ELEMENTALIST) {
+			if (target.isAlive() && !target.isImmune(getClass())) {
 
-			if (target instanceof Hero) {
-				
-				Hero hero = (Hero)target;
+				int damage = Random.NormalIntRange( 1, 3 + Dungeon.depth/4 );
+				Buff.detach( target, Chill.class);
 
-				hero.damage( damage, this );
-				burnIncrement++;
+				if (target instanceof Hero) {
 
-				//at 4+ turns, there is a (turns-3)/3 chance an item burns
-				if (Random.Int(3) < (burnIncrement - 3)){
-					burnIncrement = 0;
 
-					ArrayList<Item> burnable = new ArrayList<>();
-					//does not reach inside of containers
-					for (Item i : hero.belongings.backpack.items){
-						if (!i.unique && (i instanceof Scroll || i instanceof MysteryMeat || i instanceof FrozenCarpaccio)){
-							burnable.add(i);
-						}
-					}
+					Hero hero = (Hero)target;
+					hero.HP += damage / 2;
 
-					if (!burnable.isEmpty()){
-						Item toBurn = Random.element(burnable).detach(hero.belongings.backpack);
-						GLog.w( Messages.get(this, "burnsup", Messages.capitalize(toBurn.toString())) );
-						if (toBurn instanceof MysteryMeat || toBurn instanceof FrozenCarpaccio){
-							ChargrilledMeat steak = new ChargrilledMeat();
-							if (!steak.collect( hero.belongings.backpack )) {
-								Dungeon.level.drop( steak, hero.pos ).sprite.drop();
-							}
-						}
-						Heap.burnFX( hero.pos );
-					}
+					if (hero.HP > hero.HT) hero.HP = hero.HT;
+					burnIncrement++;
+
+				} else {
+					target.damage( damage, this );
 				}
-				
+
+				if (target instanceof Thief && ((Thief) target).item != null) {
+
+					Item item = ((Thief) target).item;
+
+					if (!item.unique && item instanceof Scroll) {
+						target.sprite.emitter().burst( ElmoParticle.FACTORY, 6 );
+						((Thief)target).item = null;
+					} else if (item instanceof MysteryMeat) {
+						target.sprite.emitter().burst( ElmoParticle.FACTORY, 6 );
+						((Thief)target).item = new ChargrilledMeat();
+					}
+
+				}
+
 			} else {
-				target.damage( damage, this );
+
+				detach();
 			}
 
-			if (target instanceof Thief && ((Thief) target).item != null) {
-
-				Item item = ((Thief) target).item;
-
-				if (!item.unique && item instanceof Scroll) {
-					target.sprite.emitter().burst( ElmoParticle.FACTORY, 6 );
-					((Thief)target).item = null;
-				} else if (item instanceof MysteryMeat) {
-					target.sprite.emitter().burst( ElmoParticle.FACTORY, 6 );
-					((Thief)target).item = new ChargrilledMeat();
-				}
-
+			if (Dungeon.level.flamable[target.pos] && Blob.volumeAt(target.pos, Fire.class) == 0) {
+				GameScene.add( Blob.seed( target.pos, 4, Fire.class ) );
 			}
+
+			spend( TICK );
+			left -= TICK;
+
+			if (left <= 0 ||
+					(Dungeon.level.water[target.pos] && !target.flying)) {
+
+				detach();
+			}
+
+			return true;
 
 		} else {
+			if (target.isAlive() && !target.isImmune(getClass())) {
 
-			detach();
+				int damage = Random.NormalIntRange( 1, 3 + Dungeon.depth/4 );
+				Buff.detach( target, Chill.class);
+
+				if (target instanceof Hero) {
+
+
+					Hero hero = (Hero)target;
+					hero.damage( damage, this );
+					burnIncrement++;
+
+					//at 4+ turns, there is a (turns-3)/3 chance an item burns
+					if (Random.Int(3) < (burnIncrement - 3)){
+						burnIncrement = 0;
+
+						ArrayList<Item> burnable = new ArrayList<>();
+						//does not reach inside of containers
+						for (Item i : hero.belongings.backpack.items){
+							if (!i.unique && (i instanceof Scroll || i instanceof MysteryMeat || i instanceof FrozenCarpaccio)){
+								burnable.add(i);
+							}
+						}
+
+						if (!burnable.isEmpty()){
+							Item toBurn = Random.element(burnable).detach(hero.belongings.backpack);
+							GLog.w( Messages.get(this, "burnsup", Messages.capitalize(toBurn.toString())) );
+							if (toBurn instanceof MysteryMeat || toBurn instanceof FrozenCarpaccio){
+								ChargrilledMeat steak = new ChargrilledMeat();
+								if (!steak.collect( hero.belongings.backpack )) {
+									Dungeon.level.drop( steak, hero.pos ).sprite.drop();
+								}
+							}
+							Heap.burnFX( hero.pos );
+						}
+					}
+
+				} else {
+					target.damage( damage, this );
+				}
+
+				if (target instanceof Thief && ((Thief) target).item != null) {
+
+					Item item = ((Thief) target).item;
+
+					if (!item.unique && item instanceof Scroll) {
+						target.sprite.emitter().burst( ElmoParticle.FACTORY, 6 );
+						((Thief)target).item = null;
+					} else if (item instanceof MysteryMeat) {
+						target.sprite.emitter().burst( ElmoParticle.FACTORY, 6 );
+						((Thief)target).item = new ChargrilledMeat();
+					}
+
+				}
+
+			} else {
+
+				detach();
+			}
+
+			if (Dungeon.level.flamable[target.pos] && Blob.volumeAt(target.pos, Fire.class) == 0) {
+				GameScene.add( Blob.seed( target.pos, 4, Fire.class ) );
+			}
+
+			spend( TICK );
+			left -= TICK;
+
+			if (left <= 0 ||
+					(Dungeon.level.water[target.pos] && !target.flying)) {
+
+				detach();
+			}
+
+			return true;
 		}
-		
-		if (Dungeon.level.flamable[target.pos] && Blob.volumeAt(target.pos, Fire.class) == 0) {
-			GameScene.add( Blob.seed( target.pos, 4, Fire.class ) );
-		}
-		
-		spend( TICK );
-		left -= TICK;
-		
-		if (left <= 0 ||
-			(Dungeon.level.water[target.pos] && !target.flying)) {
-			
-			detach();
-		}
-		
-		return true;
+
 	}
-	
+
 	public void reignite( Char ch ) {
 		reignite( ch, DURATION );
 	}

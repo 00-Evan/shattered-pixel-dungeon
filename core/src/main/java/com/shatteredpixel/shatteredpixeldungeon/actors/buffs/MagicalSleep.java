@@ -19,14 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
+package com.elementalpixel.elementalpixeldungeon.actors.buffs;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.Mob;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.ui.BuffIndicator;
+import com.elementalpixel.elementalpixeldungeon.utils.GLog;
 
 public class MagicalSleep extends Buff {
 
@@ -40,7 +41,7 @@ public class MagicalSleep extends Buff {
 			
 			if (target.alignment == Char.Alignment.ALLY) {
 				if (target.HP == target.HT) {
-					if (target instanceof  Hero) GLog.i(Messages.get(this, "toohealthy"));
+					if (target instanceof Hero) GLog.i(Messages.get(this, "toohealthy"));
 					detach();
 				} else {
 					if (target instanceof  Hero) GLog.i(Messages.get(this, "fallasleep"));

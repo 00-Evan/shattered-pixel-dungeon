@@ -19,12 +19,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
+package com.elementalpixel.elementalpixeldungeon.actors.buffs;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+
+import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.sprites.CharSprite;
+import com.elementalpixel.elementalpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 
@@ -64,7 +65,7 @@ public class Healing extends Buff {
 	}
 	
 	private int healingThisTick(){
-		return (int)GameMath.gate(1,
+		return (int) GameMath.gate(1,
 				Math.round(healingLeft * percentHealPerTick) + flatHealPerTick,
 				healingLeft);
 	}

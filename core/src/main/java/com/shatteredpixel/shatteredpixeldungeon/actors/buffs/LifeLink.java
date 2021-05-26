@@ -19,12 +19,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
+package com.elementalpixel.elementalpixeldungeon.actors.buffs;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+
+import com.elementalpixel.elementalpixeldungeon.actors.Actor;
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
 
 public class LifeLink extends FlavourBuff {
@@ -41,7 +42,7 @@ public class LifeLink extends FlavourBuff {
 	@Override
 	public void detach() {
 		super.detach();
-		Char ch = (Char)Actor.findById(object);
+		Char ch = (Char) Actor.findById(object);
 		if (!target.isAlive() && ch != null){
 			for (LifeLink l : ch.buffs(LifeLink.class)){
 				if (l.object == target.id()){
