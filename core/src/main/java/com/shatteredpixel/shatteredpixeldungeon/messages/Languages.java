@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.messages;
+package com.elementalpixel.elementalpixeldungeon.messages;
 
 import java.util.Locale;
 
