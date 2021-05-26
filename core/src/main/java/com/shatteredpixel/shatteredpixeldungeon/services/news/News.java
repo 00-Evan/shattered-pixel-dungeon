@@ -19,14 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.services.news;
+package com.elementalpixel.elementalpixeldungeon.services.news;
+
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.elementalpixel.elementalpixeldungeon.SPDSettings;
+import com.elementalpixel.elementalpixeldungeon.ShatteredPixelDungeon;
+import com.elementalpixel.elementalpixeldungeon.sprites.ItemSprite;
+import com.elementalpixel.elementalpixeldungeon.ui.Icons;
 import com.watabou.noosa.Image;
 
 import java.util.ArrayList;
