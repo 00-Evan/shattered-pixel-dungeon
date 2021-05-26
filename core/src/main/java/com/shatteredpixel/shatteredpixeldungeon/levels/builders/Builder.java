@@ -19,9 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.builders;
+package com.elementalpixel.elementalpixeldungeon.levels.builders;
 
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+
+import com.elementalpixel.elementalpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
@@ -161,7 +162,7 @@ public abstract class Builder {
 	// and it matches the given angle ([0-360), where 0 is straight up) as closely as possible.
 	//Note that getting an exactly correct angle is harder the closer that angle is to diagonal.
 	//Returns the exact angle between the centerpoints of the two rooms, or -1 if placement fails.
-	protected static float placeRoom( ArrayList<Room> collision, Room prev, Room next, float angle){
+	public static float placeRoom( ArrayList<Room> collision, Room prev, Room next, float angle){
 
 		//wrap angle around to always be [0-360)
 		angle %= 360f;
