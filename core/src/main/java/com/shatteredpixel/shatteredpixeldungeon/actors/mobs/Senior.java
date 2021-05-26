@@ -19,10 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
+package com.elementalpixel.elementalpixeldungeon.actors.mobs;
 
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Pasty;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.SeniorSprite;
+import com.elementalpixel.elementalpixeldungeon.items.food.Pasty;
+import com.elementalpixel.elementalpixeldungeon.sprites.SeniorSprite;
 import com.watabou.utils.Random;
 
 public class Senior extends Monk {

@@ -19,36 +19,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
+package com.elementalpixel.elementalpixeldungeon.actors.mobs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.items.ArmorKit;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
-import com.shatteredpixel.shatteredpixeldungeon.levels.OldCityBossLevel;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.KingSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.UndeadSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
+
+import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.Badges;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.Actor;
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.actors.blobs.ToxicGas;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Blindness;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Buff;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Burning;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.LockedFloor;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Paralysis;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Terror;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Vertigo;
+import com.elementalpixel.elementalpixeldungeon.effects.Flare;
+import com.elementalpixel.elementalpixeldungeon.effects.Speck;
+import com.elementalpixel.elementalpixeldungeon.items.ArmorKit;
+import com.elementalpixel.elementalpixeldungeon.items.artifacts.DriedRose;
+import com.elementalpixel.elementalpixeldungeon.items.artifacts.LloydsBeacon;
+import com.elementalpixel.elementalpixeldungeon.items.keys.SkeletonKey;
+import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.elementalpixel.elementalpixeldungeon.items.wands.WandOfDisintegration;
+import com.elementalpixel.elementalpixeldungeon.items.weapon.enchantments.Grim;
+import com.elementalpixel.elementalpixeldungeon.levels.OldCityBossLevel;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.scenes.GameScene;
+import com.elementalpixel.elementalpixeldungeon.sprites.KingSprite;
+import com.elementalpixel.elementalpixeldungeon.sprites.UndeadSprite;
+import com.elementalpixel.elementalpixeldungeon.ui.BossHealthBar;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
@@ -106,7 +107,7 @@ public class King extends Mob {
 	@Override
 	protected boolean getCloser( int target ) {
 		return canTryToSummon() ?
-			super.getCloser( ((OldCityBossLevel)Dungeon.level).pedestal( nextPedestal ) ) :
+			super.getCloser( ((OldCityBossLevel) Dungeon.level).pedestal( nextPedestal ) ) :
 			super.getCloser( target );
 	}
 	

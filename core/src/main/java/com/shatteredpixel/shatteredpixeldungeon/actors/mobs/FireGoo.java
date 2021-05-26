@@ -31,6 +31,7 @@ import com.elementalpixel.elementalpixeldungeon.actors.buffs.LockedFloor;
 import com.elementalpixel.elementalpixeldungeon.actors.buffs.Ooze;
 import com.elementalpixel.elementalpixeldungeon.effects.Speck;
 import com.elementalpixel.elementalpixeldungeon.items.artifacts.DriedRose;
+import com.elementalpixel.elementalpixeldungeon.items.fragments.FireFragment;
 import com.elementalpixel.elementalpixeldungeon.items.keys.SkeletonKey;
 import com.elementalpixel.elementalpixeldungeon.items.quest.GooBlob;
 import com.elementalpixel.elementalpixeldungeon.messages.Messages;
@@ -44,7 +45,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-public class Goo extends Mob {
+public class FireGoo extends Mob {
 
 	{
 		HP = HT = 100;
@@ -227,20 +228,9 @@ public class Goo extends Mob {
 		Dungeon.level.unseal();
 		
 		GameScene.bossSlain();
-		Dungeon.level.drop( new SkeletonKey( Dungeon.depth ), pos ).sprite.drop();
-		
-		//60% chance of 2 blobs, 30% chance of 3, 10% chance for 4. Average of 2.5
-		int blobs = Random.chances(new float[]{0, 0, 6, 3, 1});
-		for (int i = 0; i < blobs; i++){
-			int ofs;
-			do {
-				ofs = PathFinder.NEIGHBOURS8[Random.Int(8)];
-			} while (!Dungeon.level.passable[pos + ofs]);
-			Dungeon.level.drop( new GooBlob(), pos + ofs ).sprite.drop( pos );
-		}
-		
-		Badges.validateBossSlain();
-		
+
+		Dungeon.level.drop( new FireFragment( Dungeon.depth ), pos ).sprite.drop();
+
 		yell( Messages.get(this, "defeated") );
 	}
 	
