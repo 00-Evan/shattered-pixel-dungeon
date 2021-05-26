@@ -169,5 +169,6 @@ public class GameLog extends Component implements Signal.Listener<String> {
 
 	public static void wipe() {
 		entries.clear();
+		textsToAdd.clear();
 	}
 }
