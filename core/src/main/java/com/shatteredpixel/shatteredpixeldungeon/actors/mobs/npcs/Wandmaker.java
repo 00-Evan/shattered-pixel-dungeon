@@ -19,29 +19,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
+package com.elementalpixel.elementalpixeldungeon.actors.mobs.npcs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.quest.CeremonialCandle;
-import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
-import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MassGraveRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.RotGardenRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.RitualSiteRoom;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.WandmakerSprite;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndWandmaker;
+
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Buff;
+import com.elementalpixel.elementalpixeldungeon.items.Generator;
+import com.elementalpixel.elementalpixeldungeon.items.Item;
+import com.elementalpixel.elementalpixeldungeon.items.quest.CeremonialCandle;
+import com.elementalpixel.elementalpixeldungeon.items.quest.CorpseDust;
+import com.elementalpixel.elementalpixeldungeon.items.quest.Embers;
+import com.elementalpixel.elementalpixeldungeon.items.wands.Wand;
+import com.elementalpixel.elementalpixeldungeon.journal.Notes;
+import com.elementalpixel.elementalpixeldungeon.levels.Level;
+import com.elementalpixel.elementalpixeldungeon.levels.rooms.Room;
+import com.elementalpixel.elementalpixeldungeon.levels.rooms.special.MassGraveRoom;
+import com.elementalpixel.elementalpixeldungeon.levels.rooms.special.RotGardenRoom;
+import com.elementalpixel.elementalpixeldungeon.levels.rooms.standard.RitualSiteRoom;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.plants.Rotberry;
+import com.elementalpixel.elementalpixeldungeon.scenes.GameScene;
+import com.elementalpixel.elementalpixeldungeon.sprites.WandmakerSprite;
+import com.elementalpixel.elementalpixeldungeon.windows.WndQuest;
+import com.elementalpixel.elementalpixeldungeon.windows.WndWandmaker;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
@@ -273,7 +274,7 @@ public class Wandmaker extends NPC {
 		
 		private static boolean questRoomSpawned;
 		
-		public static void spawnWandmaker( Level level, Room room ) {
+		public static void spawnWandmaker(Level level, Room room ) {
 			if (questRoomSpawned) {
 				
 				questRoomSpawned = false;
@@ -314,7 +315,7 @@ public class Wandmaker extends NPC {
 			}
 		}
 		
-		public static ArrayList<Room> spawnRoom( ArrayList<Room> rooms) {
+		public static ArrayList<Room> spawnRoom(ArrayList<Room> rooms) {
 			questRoomSpawned = false;
 			if (!spawned && (type != 0 || (Dungeon.depth > 6 && Random.Int( 10 - Dungeon.depth ) == 0))) {
 				

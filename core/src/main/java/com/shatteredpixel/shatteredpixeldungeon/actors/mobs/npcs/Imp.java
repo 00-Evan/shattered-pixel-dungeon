@@ -19,24 +19,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
+package com.elementalpixel.elementalpixeldungeon.actors.mobs.npcs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Golem;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
-import com.shatteredpixel.shatteredpixeldungeon.levels.CityLevel;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ImpSprite;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndImp;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
+
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.Char;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Buff;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.Golem;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.Mob;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.Monk;
+import com.elementalpixel.elementalpixeldungeon.items.Generator;
+import com.elementalpixel.elementalpixeldungeon.items.quest.DwarfToken;
+import com.elementalpixel.elementalpixeldungeon.items.rings.Ring;
+import com.elementalpixel.elementalpixeldungeon.journal.Notes;
+import com.elementalpixel.elementalpixeldungeon.levels.CityLevel;
+import com.elementalpixel.elementalpixeldungeon.messages.Messages;
+import com.elementalpixel.elementalpixeldungeon.scenes.GameScene;
+import com.elementalpixel.elementalpixeldungeon.sprites.ImpSprite;
+import com.elementalpixel.elementalpixeldungeon.windows.WndImp;
+import com.elementalpixel.elementalpixeldungeon.windows.WndQuest;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
@@ -227,7 +228,7 @@ public class Imp extends NPC {
 				given = false;
 				
 				do {
-					reward = (Ring)Generator.random( Generator.Category.RING );
+					reward = (Ring) Generator.random( Generator.Category.RING );
 				} while (reward.cursed);
 				reward.upgrade( 2 );
 				reward.cursed = true;
