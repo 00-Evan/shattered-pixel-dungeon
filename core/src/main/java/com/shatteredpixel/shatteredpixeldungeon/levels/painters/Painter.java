@@ -19,10 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
+package com.elementalpixel.elementalpixeldungeon.levels.painters;
 
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+
+import com.elementalpixel.elementalpixeldungeon.levels.Level;
+import com.elementalpixel.elementalpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Point;
 import com.watabou.utils.Rect;
 
@@ -47,7 +48,7 @@ public abstract class Painter {
 		set( level, x + y * level.width(), value );
 	}
 	
-	public static void set( Level level, Point p, int value ) {
+	public static void set(Level level, Point p, int value ) {
 		set( level, p.x, p.y, value );
 	}
 	
@@ -61,7 +62,7 @@ public abstract class Painter {
 		}
 	}
 	
-	public static void fill( Level level, Rect rect, int value ) {
+	public static void fill(Level level, Rect rect, int value ) {
 		fill( level, rect.left, rect.top, rect.width(), rect.height(), value );
 	}
 	
