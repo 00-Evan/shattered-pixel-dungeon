@@ -19,11 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.effects.particles;
+package com.elementalpixel.elementalpixeldungeon.effects.particles;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
 import com.watabou.noosa.particles.Emitter;
-import com.watabou.noosa.particles.Emitter.Factory;
 import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.utils.ColorMath;
 import com.watabou.utils.Random;
@@ -34,7 +34,7 @@ public class LeafParticle extends PixelParticle.Shrinking {
 	public static int color2;
 	
 	
-	public static final Emitter.Factory GENERAL = new Factory() {
+	public static final Emitter.Factory GENERAL = new Emitter.Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			LeafParticle p = ((LeafParticle)emitter.recycle( LeafParticle.class ));
@@ -43,7 +43,7 @@ public class LeafParticle extends PixelParticle.Shrinking {
 		}
 	};
 	
-	public static final Emitter.Factory LEVEL_SPECIFIC = new Factory() {
+	public static final Emitter.Factory LEVEL_SPECIFIC = new Emitter.Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			LeafParticle p = ((LeafParticle)emitter.recycle( LeafParticle.class ));
