@@ -46,6 +46,7 @@ public class DirectableAlly extends NPC {
 	public void targetChar( Char ch ){
 		aggro(ch);
 		target = ch.pos;
+		defendingPos = -1;
 		movingToDefendPos = false;
 	}
 
