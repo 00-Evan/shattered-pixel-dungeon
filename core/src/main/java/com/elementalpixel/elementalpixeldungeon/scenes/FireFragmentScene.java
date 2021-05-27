@@ -63,8 +63,9 @@ public class FireFragmentScene extends PixelScene {
 		RedButton btnExit = new RedButton( Messages.get(this, "exit") ) {
 			@Override
 			protected void onClick() {
-				Dungeon.depth = 25;
+				Dungeon.depth = 27;
 				//InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
+				InterlevelScene.mode = InterlevelScene.Mode.ASCEND;
 				Game.switchScene( InterlevelScene.class);
 			}
 		};
