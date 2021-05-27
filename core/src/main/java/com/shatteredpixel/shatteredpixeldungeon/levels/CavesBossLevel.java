@@ -298,7 +298,7 @@ public class CavesBossLevel extends Level {
 		}
 		GameScene.updateMap();
 
-		customArenaVisuals.updateState();
+		if (customArenaVisuals != null) customArenaVisuals.updateState();
 
 		Dungeon.observe();
 

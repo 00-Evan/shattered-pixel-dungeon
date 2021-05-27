@@ -127,7 +127,9 @@ public class WildMagic extends ArmorAbility {
 				if (!wands.isEmpty()){
 					zapWand(wands, hero, target);
 				} else {
-					hero.buff(WildMagicTracker.class).detach();
+					if (hero.buff(WildMagicTracker.class) != null){
+						hero.buff(WildMagicTracker.class).detach();
+					}
 					Item.updateQuickslot();
 					Invisibility.dispel();
 					hero.spendAndNext(Actor.TICK);
