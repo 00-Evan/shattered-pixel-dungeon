@@ -30,7 +30,7 @@ import java.util.ArrayList;
 public class Ratmogrify extends ArmorAbility {
 
 	{
-		baseChargeUse = 35f;
+		baseChargeUse = 50f;
 	}
 
 	@Override
