@@ -85,8 +85,12 @@ public class CryptRoom extends SpecialRoom {
 		if (!prize.cursed){
 			prize.upgrade();
 			//curse the armor, unless it has a glyph
-			if (!prize.hasGoodGlyph()){
-				prize.inscribe(Armor.Glyph.randomCurse());
+			try {
+				if (!prize.hasGoodGlyph()) {
+					prize.inscribe(Armor.Glyph.randomCurse());
+				}
+			} catch (ClassCastException e) {
+
 			}
 		}
 		prize.cursed = prize.cursedKnown = true;
