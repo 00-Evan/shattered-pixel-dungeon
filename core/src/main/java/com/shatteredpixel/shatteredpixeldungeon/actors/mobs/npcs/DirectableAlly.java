@@ -4,10 +4,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.Random;
 
 public class DirectableAlly extends NPC {
 
@@ -15,11 +12,14 @@ public class DirectableAlly extends NPC {
 		alignment = Char.Alignment.ALLY;
 		intelligentAlly = true;
 		WANDERING = new Wandering();
+		state = WANDERING;
 
 		//before other mobs
 		actPriority = MOB_PRIO + 1;
 
 	}
+
+	protected boolean attacksAutomatically = true;
 
 	protected int defendingPos = -1;
 	protected boolean movingToDefendPos = false;
@@ -73,23 +73,6 @@ public class DirectableAlly extends NPC {
 		}
 	}
 
-
-	@Override
-	protected Char chooseEnemy() {
-		Char enemy = super.chooseEnemy();
-
-		int targetPos = defendingPos != -1 ? defendingPos : Dungeon.hero.pos;
-
-		//will never attack something far from their target
-		if (enemy != null
-				&& Dungeon.level.mobs.contains(enemy)
-				&& (Dungeon.level.distance(enemy.pos, targetPos) <= 8)){
-			return enemy;
-		}
-
-		return null;
-	}
-
 	private static final String DEFEND_POS = "defend_pos";
 	private static final String MOVING_TO_DEFEND = "moving_to_defend";
 
@@ -111,7 +94,7 @@ public class DirectableAlly extends NPC {
 
 		@Override
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
-			if ( enemyInFOV && !movingToDefendPos ) {
+			if ( enemyInFOV && !movingToDefendPos && attacksAutomatically) {
 
 				enemySeen = true;
 
