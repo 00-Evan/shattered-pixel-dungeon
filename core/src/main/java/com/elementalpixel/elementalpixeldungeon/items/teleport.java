@@ -25,7 +25,7 @@ public class teleport extends Item {
     public void execute(Hero hero, String action) {
 
         super.execute(hero, action);
-        Dungeon.depth = 30;
+        //Dungeon.depth = 30;
         InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
         Game.switchScene( InterlevelScene.class);
 

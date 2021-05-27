@@ -63,9 +63,9 @@ public class FireFragmentScene extends PixelScene {
 		RedButton btnExit = new RedButton( Messages.get(this, "exit") ) {
 			@Override
 			protected void onClick() {
-				Dungeon.win( Amulet.class );
-				Dungeon.deleteGame( GamesInProgress.curSlot, true );
-				Game.switchScene( RankingsScene.class );
+				Dungeon.depth = 25;
+				//InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
+				Game.switchScene( InterlevelScene.class);
 			}
 		};
 		btnExit.setSize( WIDTH, BTN_HEIGHT );
