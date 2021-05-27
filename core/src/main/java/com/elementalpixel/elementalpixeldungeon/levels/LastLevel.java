@@ -28,9 +28,11 @@ import com.elementalpixel.elementalpixeldungeon.Statistics;
 import com.elementalpixel.elementalpixeldungeon.actors.Actor;
 import com.elementalpixel.elementalpixeldungeon.actors.Char;
 import com.elementalpixel.elementalpixeldungeon.actors.mobs.Mob;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.elementalpixel.elementalpixeldungeon.items.BrokenAmulet;
 import com.elementalpixel.elementalpixeldungeon.levels.builders.Builder;
 import com.elementalpixel.elementalpixeldungeon.levels.painters.Painter;
+import com.elementalpixel.elementalpixeldungeon.levels.rooms.Room;
 import com.elementalpixel.elementalpixeldungeon.levels.rooms.standard.ExitRoom;
 import com.elementalpixel.elementalpixeldungeon.messages.Messages;
 import com.elementalpixel.elementalpixeldungeon.scenes.GameScene;
@@ -43,6 +45,7 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static com.elementalpixel.elementalpixeldungeon.items.Item.curUser;
@@ -96,9 +99,14 @@ public class LastLevel extends Level {
 	private static final Rect entranceRoom2 = new Rect(7, 9, 8, 10);
 	private static final Rect entranceRoom3 = new Rect(9, 9, 10, 10);
 
+
+
+
 	@Override
 	protected boolean build() {
-		
+
+
+
 		setSize(16, 64);
 		Arrays.fill( map, Terrain.CHASM );
 
