@@ -21,20 +21,234 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.DirectableAlly;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.BatSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.GameMath;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class SpiritHawk extends ArmorAbility {
 
 	@Override
+	public String targetingPrompt() {
+		if (getHawk() == null) {
+			return super.targetingPrompt();
+		} else {
+			return Messages.get(this, "prompt");
+		}
+	}
+
+	{
+		baseChargeUse = 35f;
+	}
+
+	@Override
+	public float chargeUse(Hero hero) {
+		if (getHawk() == null) {
+			return super.chargeUse(hero);
+		} else {
+			return 0;
+		}
+	}
+
+	@Override
 	protected void activate(ClassArmor armor, Hero hero, Integer target) {
-		//TODO
+		HawkAlly ally = getHawk();
+
+		if (ally != null){
+			if (target == null){
+				return;
+			} else {
+				ally.directTocell(target);
+			}
+		} else {
+			ArrayList<Integer> spawnPoints = new ArrayList<>();
+			for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+				int p = hero.pos + PathFinder.NEIGHBOURS8[i];
+				if (Actor.findChar(p) == null && (Dungeon.level.passable[p] || Dungeon.level.avoid[p])) {
+					spawnPoints.add(p);
+				}
+			}
+
+			if (!spawnPoints.isEmpty()){
+				ally = new HawkAlly();
+
+				ally.pos = Random.element(spawnPoints);
+
+				GameScene.add(ally);
+				Dungeon.level.occupyCell(ally);
+				Dungeon.observe();
+
+				armor.charge -= chargeUse(hero);
+				armor.updateQuickslot();
+				Invisibility.dispel();
+				hero.spendAndNext(Actor.TICK);
+
+			} else {
+				GLog.w(Messages.get(this, "no_space"));
+			}
+		}
+
 	}
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.HUNTRESS_3_1, Talent.HUNTRESS_3_2, Talent.HUNTRESS_3_3, Talent.HEROIC_ENERGY};
+		return new Talent[]{Talent.EAGLE_EYE, Talent.GO_FOR_THE_EYES, Talent.SWIFT_SPIRIT, Talent.HEROIC_ENERGY};
+	}
+
+	private static HawkAlly getHawk(){
+		for (Char ch : Actor.chars()){
+			if (ch instanceof HawkAlly){
+				return (HawkAlly) ch;
+			}
+		}
+		return null;
+	}
+
+	public static class HawkAlly extends DirectableAlly {
+
+		{
+			spriteClass = HawkSprite.class;
+
+			HP = HT = 10;
+			defenseSkill = 50;
+
+			flying = true;
+			viewDistance = (int)GameMath.gate(6, 6+Dungeon.hero.pointsInTalent(Talent.EAGLE_EYE), 8);
+			attacksAutomatically = false;
+
+			immunities.addAll(new BlobImmunity().immunities());
+		}
+
+		@Override
+		public int attackSkill(Char target) {
+			return 50;
+		}
+
+		private int dodgesUsed = 0;
+		private float timeRemaining = 50f;
+
+		@Override
+		public int defenseSkill(Char enemy) {
+			if (dodgesUsed < Dungeon.hero.pointsInTalent(Talent.SWIFT_SPIRIT)){
+				dodgesUsed++;
+				return Char.INFINITE_EVASION;
+			}
+			return super.defenseSkill(enemy);
+		}
+
+		@Override
+		public int damageRoll() {
+			return Random.NormalIntRange(5, 10);
+		}
+
+		@Override
+		public int attackProc(Char enemy, int damage) {
+			damage = super.attackProc( enemy, damage );
+			if (Dungeon.hero.hasTalent(Talent.GO_FOR_THE_EYES)) {
+				Buff.prolong( enemy, Blindness.class, 1 + Dungeon.hero.pointsInTalent(Talent.GO_FOR_THE_EYES) );
+			}
+
+			return damage;
+		}
+
+		@Override
+		protected boolean act() {
+			viewDistance = (int)GameMath.gate(6, 6+Dungeon.hero.pointsInTalent(Talent.EAGLE_EYE), 8);
+			boolean result = super.act();
+			Dungeon.level.updateFieldOfView( this, fieldOfView );
+			GameScene.updateFog(pos, viewDistance+(int)Math.ceil(speed()));
+			return result;
+		}
+
+		@Override
+		public float speed() {
+			return 2f + Dungeon.hero.pointsInTalent(Talent.SWIFT_SPIRIT)/2f;
+		}
+
+		@Override
+		protected void spend(float time) {
+			super.spend(time);
+			timeRemaining -= time;
+			if (timeRemaining <= 0){
+				die(null);
+			}
+		}
+
+		@Override
+		public void destroy() {
+			super.destroy();
+			Dungeon.observe();
+			GameScene.updateFog();
+		}
+
+		@Override
+		public void followHero() {
+			GLog.i(Messages.get(this, "direct_follow"));
+			super.followHero();
+		}
+
+		@Override
+		public void targetChar(Char ch) {
+			GLog.i(Messages.get(this, "direct_attack"));
+			super.targetChar(ch);
+		}
+
+		@Override
+		public String description() {
+			String message = Messages.get(this, "desc", (int)timeRemaining);
+			if (dodgesUsed < Dungeon.hero.pointsInTalent(Talent.SWIFT_SPIRIT)){
+				message += "\n" + Messages.get(this, "desc_dodges", (Dungeon.hero.pointsInTalent(Talent.SWIFT_SPIRIT) - dodgesUsed));
+			}
+			return message;
+		}
+
+		private static final String DODGES_USED     = "dodges_used";
+		private static final String TIME_REMAINING  = "time_remaining";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(DODGES_USED, dodgesUsed);
+			bundle.put(TIME_REMAINING, timeRemaining);
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			dodgesUsed = bundle.getInt(DODGES_USED);
+			timeRemaining = bundle.getFloat(TIME_REMAINING);
+		}
+	}
+
+	//TODO real sprite
+	public static class HawkSprite extends BatSprite {
+
+		@Override
+		public void resetColor() {
+			super.resetColor();
+			tint(0, 1f, 1f, 1f);
+		}
+
 	}
 }
