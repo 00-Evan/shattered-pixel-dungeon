@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.DirectableAlly;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BatSprite;
@@ -56,6 +57,11 @@ public class SpiritHawk extends ArmorAbility {
 		} else {
 			return Messages.get(this, "prompt");
 		}
+	}
+
+	@Override
+	public boolean useTargeting(){
+		return false;
 	}
 
 	{
@@ -91,16 +97,16 @@ public class SpiritHawk extends ArmorAbility {
 			}
 
 			if (!spawnPoints.isEmpty()){
-				ally = new HawkAlly();
-
-				ally.pos = Random.element(spawnPoints);
-
-				GameScene.add(ally);
-				Dungeon.level.occupyCell(ally);
-				Dungeon.observe();
-
 				armor.charge -= chargeUse(hero);
 				armor.updateQuickslot();
+
+				ally = new HawkAlly();
+				ally.pos = Random.element(spawnPoints);
+				GameScene.add(ally);
+
+				ScrollOfTeleportation.appear(ally, ally.pos);
+				Dungeon.observe();
+
 				Invisibility.dispel();
 				hero.spendAndNext(Actor.TICK);
 

@@ -176,11 +176,6 @@ public abstract class Char extends Actor {
 	//swaps places by default
 	public boolean interact(Char c){
 
-		//can't spawn places if one char has restricted movement
-		if (rooted || c.rooted || buff(Vertigo.class) != null || c.buff(Vertigo.class) != null){
-			return true;
-		}
-
 		//don't allow char to swap onto hazard unless they're flying
 		//you can swap onto a hazard though, as you're not the one instigating the swap
 		if (!Dungeon.level.passable[pos] && !c.flying){
@@ -207,7 +202,12 @@ public abstract class Char extends Actor {
 			GameScene.updateFog();
 			return true;
 		}
-		
+
+		//can't swap places if one char has restricted movement
+		if (rooted || c.rooted || buff(Vertigo.class) != null || c.buff(Vertigo.class) != null){
+			return true;
+		}
+
 		moveSprite( pos, Dungeon.hero.pos );
 		move( Dungeon.hero.pos );
 		

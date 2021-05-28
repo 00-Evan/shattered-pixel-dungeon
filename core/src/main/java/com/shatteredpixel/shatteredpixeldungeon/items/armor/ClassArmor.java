@@ -170,7 +170,7 @@ abstract public class ClassArmor extends Armor {
 			} else if (charge < hero.armorAbility.chargeUse(hero)) {
 				GLog.w( Messages.get(this, "low_charge") );
 			} else  {
-				usesTargeting = hero.armorAbility.targetingPrompt() != null;
+				usesTargeting = hero.armorAbility.useTargeting();
 				hero.armorAbility.use(this, hero);
 			}
 			

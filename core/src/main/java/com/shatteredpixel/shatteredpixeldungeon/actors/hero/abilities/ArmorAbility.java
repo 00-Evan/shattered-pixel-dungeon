@@ -57,6 +57,10 @@ public abstract class ArmorAbility implements Bundlable {
 		return null;
 	}
 
+	public boolean useTargeting(){
+		return targetingPrompt() != null;
+	}
+
 	public float chargeUse( Hero hero ){
 		float chargeUse = baseChargeUse;
 		if (hero.hasTalent(Talent.HEROIC_ENERGY)){
