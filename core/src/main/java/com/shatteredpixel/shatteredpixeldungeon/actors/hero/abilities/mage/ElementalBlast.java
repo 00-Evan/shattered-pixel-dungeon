@@ -71,8 +71,10 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
@@ -374,6 +376,12 @@ public class ElementalBlast extends ArmorAbility {
 								}
 							}
 
+						//*** Wand of Frost ***
+						} else if (finalWandCls == WandOfFrost.class){
+							if ((hero.buff(Burning.class)) != null) {
+								hero.buff(Burning.class).detach();
+							}
+
 						//*** Wand of Prismatic Light ***
 						} else if (finalWandCls == WandOfPrismaticLight.class){
 							Buff.prolong( hero, Light.class, effectMulti*50f);
@@ -399,6 +407,23 @@ public class ElementalBlast extends ArmorAbility {
 
 		Sample.INSTANCE.play( Assets.Sounds.CHARGEUP );
 
+	}
+
+	@Override
+	public String desc() {
+		String desc = Messages.get(this, "desc");
+		if (Game.scene() instanceof GameScene){
+			MagesStaff staff = Dungeon.hero.belongings.getItem(MagesStaff.class);
+			if (staff != null && staff.wandClass() != null){
+				desc += "\n\n" + Messages.get(staff.wandClass(), "eleblast_desc");
+			} else {
+				desc += "\n\n" + Messages.get(this, "generic_desc");
+			}
+		} else {
+			desc += "\n\n" + Messages.get(this, "generic_desc");
+		}
+		desc += "\n\n" + Messages.get(this, "cost", (int)baseChargeUse);
+		return desc;
 	}
 
 	@Override

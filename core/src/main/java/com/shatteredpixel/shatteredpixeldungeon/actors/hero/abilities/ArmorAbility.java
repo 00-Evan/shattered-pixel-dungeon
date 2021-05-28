@@ -77,7 +77,7 @@ public abstract class ArmorAbility implements Bundlable {
 	}
 
 	public String desc(){
-		return Messages.get(this, "desc");
+		return Messages.get(this, "desc") + "\n\n" + Messages.get(this, "cost", (int)baseChargeUse);
 	}
 
 	public abstract Talent[] talents();
