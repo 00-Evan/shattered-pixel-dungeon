@@ -119,7 +119,7 @@ public class WildMagic extends ArmorAbility {
 			@Override
 			public void call() {
 				cur.onZap(aim);
-				cur.partialCharge -= (float)Math.pow(0.707, hero.pointsInTalent(Talent.CONSERVED_MAGIC));
+				cur.partialCharge -= (float)Math.pow(0.563f, hero.pointsInTalent(Talent.CONSERVED_MAGIC));
 				if (cur.partialCharge < 0){
 					cur.partialCharge++;
 					cur.curCharges--;

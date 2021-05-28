@@ -380,6 +380,7 @@ public class ElementalBlast extends ArmorAbility {
 
 						}
 
+						charsHit = Math.min(5, charsHit);
 						if (charsHit > 0 && hero.hasTalent(Talent.REACTIVE_BARRIER)){
 							Buff.affect(hero, Barrier.class).setShield(charsHit*2*hero.pointsInTalent(Talent.REACTIVE_BARRIER));
 						}
