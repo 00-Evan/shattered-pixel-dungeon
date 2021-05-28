@@ -107,7 +107,7 @@ public class SmokeBomb extends ArmorAbility {
 				}
 
 				if (hero.hasTalent(Talent.HASTY_RETREAT)){
-					int duration = 2*hero.pointsInTalent(Talent.HASTY_RETREAT);
+					int duration = 1+hero.pointsInTalent(Talent.HASTY_RETREAT);
 					Buff.affect(hero, Haste.class, duration);
 					Buff.affect(hero, Invisibility.class, duration);
 				}
@@ -143,7 +143,7 @@ public class SmokeBomb extends ArmorAbility {
 
 			alignment = Alignment.ALLY;
 
-			HP = HT = 30*Dungeon.hero.pointsInTalent(Talent.BODY_REPLACEMENT);
+			HP = HT = 20*Dungeon.hero.pointsInTalent(Talent.BODY_REPLACEMENT);
 		}
 
 		@Override

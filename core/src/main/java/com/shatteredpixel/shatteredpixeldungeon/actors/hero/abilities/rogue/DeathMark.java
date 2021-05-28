@@ -49,12 +49,16 @@ public class DeathMark extends ArmorAbility {
 		return Messages.get(this, "prompt");
 	}
 
+	{
+		baseChargeUse = 25f;
+	}
+
 	@Override
 	public float chargeUse( Hero hero ) {
 		float chargeUse = super.chargeUse(hero);
 		if (hero.buff(DoubleMarkTracker.class) != null){
-			//reduced charge use by 24%/42%/56%/67%
-			chargeUse *= Math.pow(0.76, hero.pointsInTalent(Talent.DOUBLE_MARK));
+			//reduced charge use by 33%/55%/70%/80%
+			chargeUse *= Math.pow(0.67, hero.pointsInTalent(Talent.DOUBLE_MARK));
 		}
 		return chargeUse;
 	}
@@ -168,7 +172,7 @@ public class DeathMark extends ArmorAbility {
 				Sample.INSTANCE.play(Assets.Sounds.HIT_STAB);
 				Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				target.die(this);
-				int shld = Math.round(initialHP * (0.1f*Dungeon.hero.pointsInTalent(Talent.DEATHLY_DURABILITY)));
+				int shld = Math.round(initialHP * (0.125f*Dungeon.hero.pointsInTalent(Talent.DEATHLY_DURABILITY)));
 				if (shld > 0 && target.alignment != Char.Alignment.ALLY){
 					Buff.affect(Dungeon.hero, Barrier.class).setShield(shld);
 				}
