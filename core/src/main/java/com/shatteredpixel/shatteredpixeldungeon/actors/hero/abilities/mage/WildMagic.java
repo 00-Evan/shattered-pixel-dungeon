@@ -65,7 +65,7 @@ public class WildMagic extends ArmorAbility {
 		ArrayList<Wand> wands = hero.belongings.getAllItems(Wand.class);
 		Random.shuffle(wands);
 
-		float chargeUsePerShot = (float)Math.pow(0.707, hero.pointsInTalent(Talent.CONSERVED_MAGIC));
+		float chargeUsePerShot = (float)Math.pow(0.563f, hero.pointsInTalent(Talent.CONSERVED_MAGIC));
 
 		for (Wand w : wands.toArray(new Wand[0])){
 			if (w.curCharges < 1 && w.partialCharge < chargeUsePerShot){
