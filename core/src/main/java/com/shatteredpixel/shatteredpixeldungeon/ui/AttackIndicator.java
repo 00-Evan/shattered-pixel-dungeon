@@ -80,10 +80,16 @@ public class AttackIndicator extends Tag {
 			PixelScene.align(sprite);
 		}
 	}
+
+	private boolean needsImageUpdate = false;
 	
 	@Override
 	public synchronized void update() {
 		super.update();
+
+		if (needsImageUpdate){
+			updateImage();
+		}
 
 		if (!bg.visible){
 			enable(false);
@@ -121,7 +127,7 @@ public class AttackIndicator extends Tag {
 			} else {
 				active = true;
 				lastTarget = Random.element( candidates );
-				updateImage();
+				needsImageUpdate = true;
 				flash();
 			}
 		} else {
@@ -182,7 +188,7 @@ public class AttackIndicator extends Tag {
 	public static void target( Char target ) {
 		synchronized (instance) {
 			instance.lastTarget = (Mob) target;
-			instance.updateImage();
+			instance.needsImageUpdate = true;
 
 			TargetHealthIndicator.instance.target(target);
 		}
