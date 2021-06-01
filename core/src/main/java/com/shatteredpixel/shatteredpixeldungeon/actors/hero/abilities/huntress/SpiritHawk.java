@@ -141,6 +141,7 @@ public class SpiritHawk extends ArmorAbility {
 
 			flying = true;
 			viewDistance = (int)GameMath.gate(6, 6+Dungeon.hero.pointsInTalent(Talent.EAGLE_EYE), 8);
+			baseSpeed = 2f + Dungeon.hero.pointsInTalent(Talent.SWIFT_SPIRIT)/2f;
 			attacksAutomatically = false;
 
 			immunities.addAll(new BlobImmunity().immunities());
@@ -181,15 +182,11 @@ public class SpiritHawk extends ArmorAbility {
 		@Override
 		protected boolean act() {
 			viewDistance = (int)GameMath.gate(6, 6+Dungeon.hero.pointsInTalent(Talent.EAGLE_EYE), 8);
+			baseSpeed = 2f + Dungeon.hero.pointsInTalent(Talent.SWIFT_SPIRIT)/2f;
 			boolean result = super.act();
 			Dungeon.level.updateFieldOfView( this, fieldOfView );
 			GameScene.updateFog(pos, viewDistance+(int)Math.ceil(speed()));
 			return result;
-		}
-
-		@Override
-		public float speed() {
-			return 2f + Dungeon.hero.pointsInTalent(Talent.SWIFT_SPIRIT)/2f;
 		}
 
 		@Override
