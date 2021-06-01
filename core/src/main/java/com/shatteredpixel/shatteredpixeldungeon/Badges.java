@@ -50,6 +50,7 @@ public class Badges {
 		MASTERY_MAGE,
 		MASTERY_ROGUE,
 		MASTERY_HUNTRESS,
+		FOUND_RATMOGRIFY,
 
 		//bronze
 		UNLOCK_MAGE                 ( 1 ),
@@ -696,6 +697,13 @@ public class Badges {
 		
 		if (!global.contains( badge )) {
 			global.add( badge );
+			saveNeeded = true;
+		}
+	}
+
+	public static void validateRatmogrify(){
+		if (!global.contains( Badge.FOUND_RATMOGRIFY )) {
+			global.add( Badge.FOUND_RATMOGRIFY );
 			saveNeeded = true;
 		}
 	}
