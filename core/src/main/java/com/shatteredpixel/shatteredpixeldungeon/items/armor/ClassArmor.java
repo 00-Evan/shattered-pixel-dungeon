@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndChooseAbility;
 import com.watabou.utils.Bundle;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 abstract public class ClassArmor extends Armor {
@@ -184,6 +185,8 @@ abstract public class ClassArmor extends Armor {
 		ArmorAbility ability = Dungeon.hero.armorAbility;
 		if (ability != null){
 			desc += "\n\n" + ability.shortDesc();
+			float chargeUse = ability.chargeUse(Dungeon.hero);
+			desc += " " + Messages.get(this, "charge_use", new DecimalFormat("#.##").format(chargeUse));
 		} else {
 			desc += "\n\n" + "_" + Messages.get(this, "no_ability") + "_";
 		}
