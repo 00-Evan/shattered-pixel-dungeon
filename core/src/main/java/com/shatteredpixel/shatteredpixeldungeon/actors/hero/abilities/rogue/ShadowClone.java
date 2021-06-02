@@ -45,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.noosa.tweeners.Tweener;
 import com.watabou.utils.Bundle;
@@ -305,6 +306,8 @@ public class ShadowClone extends ArmorAbility {
 
 	public static class ShadowSprite extends MobSprite {
 
+		private Emitter smoke;
+
 		public ShadowSprite() {
 			super();
 
@@ -334,16 +337,40 @@ public class ShadowClone extends ArmorAbility {
 		}
 
 		@Override
-		public void link(Char ch) {
-			super.link(ch);
-			renderShadow = false;
+		public void resetColor() {
+			super.resetColor();
+			alpha(0.8f);
+			brightness(0.0f);
 		}
 
 		@Override
-		public void resetColor() {
-			super.resetColor();
-			alpha(0.6f);
-			brightness(0.0f);
+		public void link( Char ch ) {
+			super.link( ch );
+			renderShadow = false;
+
+			if (smoke == null) {
+				smoke = emitter();
+				smoke.pour( CityLevel.Smoke.factory, 0.2f );
+			}
+		}
+
+		@Override
+		public void update() {
+
+			super.update();
+
+			if (smoke != null) {
+				smoke.visible = visible;
+			}
+		}
+
+		@Override
+		public void kill() {
+			super.kill();
+
+			if (smoke != null) {
+				smoke.on = false;
+			}
 		}
 	}
 }
