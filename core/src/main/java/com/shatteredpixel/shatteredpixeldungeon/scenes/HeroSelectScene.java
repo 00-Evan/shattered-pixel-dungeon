@@ -68,6 +68,8 @@ public class HeroSelectScene extends PixelScene {
 	public void create() {
 		super.create();
 
+		Dungeon.hero = null;
+
 		Badges.loadGlobal();
 		Journal.loadGlobal();
 
