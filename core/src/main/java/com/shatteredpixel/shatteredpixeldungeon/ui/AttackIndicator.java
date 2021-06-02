@@ -89,6 +89,7 @@ public class AttackIndicator extends Tag {
 
 		if (needsImageUpdate){
 			updateImage();
+			needsImageUpdate = false;
 		}
 
 		if (!bg.visible){
