@@ -50,7 +50,7 @@ public class WndHeroInfo extends WndTabbed {
 	private ArmorAbilityInfoTab abilityInfo;
 
 	private static int WIDTH = 120;
-	private static int HEIGHT = 125;
+	private static int MIN_HEIGHT = 125;
 	private static int MARGIN = 2;
 
 	public WndHeroInfo( HeroClass cl ){
@@ -71,9 +71,12 @@ public class WndHeroInfo extends WndTabbed {
 				break;
 		}
 
+		int finalHeight = MIN_HEIGHT;
+
 		heroInfo = new HeroInfoTab(cl);
 		add(heroInfo);
-		heroInfo.setSize(WIDTH, HEIGHT);
+		heroInfo.setSize(WIDTH, MIN_HEIGHT);
+		finalHeight = (int)Math.max(finalHeight, heroInfo.height());
 
 		add( new IconTab( tabIcon ){
 			@Override
@@ -85,7 +88,8 @@ public class WndHeroInfo extends WndTabbed {
 
 		talentInfo = new TalentInfoTab(cl);
 		add(talentInfo);
-		talentInfo.setSize(WIDTH, HEIGHT);
+		talentInfo.setSize(WIDTH, MIN_HEIGHT);
+		finalHeight = (int)Math.max(finalHeight, talentInfo.height());
 
 		add( new IconTab( Icons.get(Icons.TALENT) ){
 			@Override
@@ -98,7 +102,8 @@ public class WndHeroInfo extends WndTabbed {
 		if (Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_2)) {
 			subclassInfo = new SubclassInfoTab(cl);
 			add(subclassInfo);
-			subclassInfo.setSize(WIDTH, HEIGHT);
+			subclassInfo.setSize(WIDTH, MIN_HEIGHT);
+			finalHeight = (int)Math.max(finalHeight, subclassInfo.height());
 
 			add(new IconTab(new ItemSprite(ItemSpriteSheet.MASK, null)) {
 				@Override
@@ -112,7 +117,8 @@ public class WndHeroInfo extends WndTabbed {
 		if (Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_4)) {
 			abilityInfo = new ArmorAbilityInfoTab(cl);
 			add(abilityInfo);
-			abilityInfo.setSize(WIDTH, HEIGHT);
+			abilityInfo.setSize(WIDTH, MIN_HEIGHT);
+			finalHeight = (int)Math.max(finalHeight, abilityInfo.height());
 
 			add(new IconTab(new ItemSprite(ItemSpriteSheet.CROWN, null)) {
 				@Override
@@ -123,7 +129,7 @@ public class WndHeroInfo extends WndTabbed {
 			});
 		}
 
-		resize(WIDTH, HEIGHT);
+		resize(WIDTH, finalHeight);
 
 		layoutTabs();
 		talentInfo.layout();
@@ -201,6 +207,8 @@ public class WndHeroInfo extends WndTabbed {
 				pos = info[i].bottom() + 4*MARGIN;
 			}
 
+			height = Math.max(height, pos - 4*MARGIN);
+
 		}
 	}
 
@@ -235,7 +243,9 @@ public class WndHeroInfo extends WndTabbed {
 			message.maxWidth((int)width);
 			message.setPos(0, title.bottom()+4*MARGIN);
 
-			talentPane.setRect(0, message.bottom() + 3*MARGIN, width, height-message.bottom()-3*MARGIN);
+			talentPane.setRect(0, message.bottom() + 3*MARGIN, width, 85);
+
+			height = Math.max(height, talentPane.bottom());
 		}
 	}
 
@@ -294,6 +304,8 @@ public class WndHeroInfo extends WndTabbed {
 				pos = subClsDescs[i].bottom() + 4*MARGIN;
 			}
 
+			height = Math.max(height, pos - 4*MARGIN);
+
 		}
 	}
 
@@ -351,6 +363,8 @@ public class WndHeroInfo extends WndTabbed {
 
 				pos = abilityDescs[i].bottom() + 4*MARGIN;
 			}
+
+			height = Math.max(height, pos - 4*MARGIN);
 
 		}
 	}
