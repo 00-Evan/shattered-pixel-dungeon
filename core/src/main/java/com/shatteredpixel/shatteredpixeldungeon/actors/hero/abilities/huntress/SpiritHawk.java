@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -35,12 +36,16 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.DirectableAlly;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShaftParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BatSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.MobSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.TextureFilm;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
@@ -244,14 +249,42 @@ public class SpiritHawk extends ArmorAbility {
 		}
 	}
 
-	//TODO real sprite
-	public static class HawkSprite extends BatSprite {
+	public static class HawkSprite extends MobSprite {
 
-		@Override
-		public void resetColor() {
-			super.resetColor();
-			tint(0, 1f, 1f, 1f);
+		public HawkSprite() {
+			super();
+
+			texture( Assets.Sprites.SPIRIT_HAWK );
+
+			TextureFilm frames = new TextureFilm( texture, 15, 15 );
+
+			int c = 0;
+
+			idle = new Animation( 6, true );
+			idle.frames( frames, 0, 1 );
+
+			run = new Animation( 8, true );
+			run.frames( frames, 0, 1 );
+
+			attack = new Animation( 12, false );
+			attack.frames( frames, 2, 3, 0, 1 );
+
+			die = new Animation( 12, false );
+			die.frames( frames, 4, 5, 6 );
+
+			play( idle );
 		}
 
+		@Override
+		public int blood() {
+			return 0xFF00FFFF;
+		}
+
+		@Override
+		public void die() {
+			super.die();
+			emitter().start( ShaftParticle.FACTORY, 0.3f, 4 );
+			emitter().start( Speck.factory( Speck.LIGHT ), 0.2f, 3 );
+		}
 	}
 }
