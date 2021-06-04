@@ -30,6 +30,7 @@ import com.watabou.noosa.TextureFilm;
 
 import java.util.HashMap;
 
+//FIXME this is seriously underused atm, should add more of these!
 public class SpellSprite extends Image {
 
 	public static final int FOOD		= 0;

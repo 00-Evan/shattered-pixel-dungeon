@@ -88,8 +88,7 @@ public class KingsCrown extends Item {
 
 		detach(hero.belongings.backpack);
 
-		hero.sprite.centerEmitter().start(Speck.factory(Speck.KIT), 0.05f, 10);
-		//TODO add a spell icon?
+		hero.sprite.emitter().burst( Speck.factory( Speck.CROWN), 12 );
 		hero.spend(Actor.TICK);
 		hero.busy();
 
