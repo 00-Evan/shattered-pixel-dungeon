@@ -53,6 +53,7 @@ public class Ratmogrify extends ArmorAbility {
 		} else if (ch == hero){
 			if (!hero.hasTalent(Talent.RATFORCEMENTS)){
 				GLog.w(Messages.get(this, "self_target"));
+				return;
 			} else {
 				ArrayList<Integer> spawnPoints = new ArrayList<>();
 
@@ -96,6 +97,7 @@ public class Ratmogrify extends ArmorAbility {
 			}
 		} else if (Char.hasProp(ch, Char.Property.MINIBOSS) || Char.hasProp(ch, Char.Property.BOSS)){
 			GLog.w(Messages.get(this, "too_strong"));
+			return;
 		} else {
 			TransmogRat rat = new TransmogRat();
 			rat.setup((Mob)ch);
