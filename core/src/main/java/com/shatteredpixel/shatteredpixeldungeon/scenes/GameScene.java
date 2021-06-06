@@ -683,26 +683,29 @@ public class GameScene extends PixelScene {
 
 		float pos = scene.toolbar.top();
 
-		scene.attack.setPos( tagLeft, pos - scene.attack.height());
-		scene.attack.flip(tagLeft == 0);
+		//FIXME adjusting this to position even without visibility resulted in deadlocks
 		if (scene.tagAttack){
+			scene.attack.setPos( tagLeft, pos - scene.attack.height());
+			scene.attack.flip(tagLeft == 0);
 			pos = scene.attack.top();
 		}
 
-		scene.loot.setPos( tagLeft, pos - scene.loot.height() );
-		scene.loot.flip(tagLeft == 0);
 		if (scene.tagLoot) {
+			scene.loot.setPos( tagLeft, pos - scene.loot.height() );
+			scene.loot.flip(tagLeft == 0);
 			pos = scene.loot.top();
 		}
 
-		scene.action.setPos( tagLeft, pos - scene.action.height() );
-		scene.action.flip(tagLeft == 0);
 		if (scene.tagAction) {
+			scene.action.setPos( tagLeft, pos - scene.action.height() );
+			scene.action.flip(tagLeft == 0);
 			pos = scene.action.top();
 		}
 
-		scene.resume.setPos( tagLeft, pos - scene.resume.height() );
-		scene.resume.flip(tagLeft == 0);
+		if (scene.tagResume) {
+			scene.resume.setPos(tagLeft, pos - scene.resume.height());
+			scene.resume.flip(tagLeft == 0);
+		}
 	}
 	
 	@Override

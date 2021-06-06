@@ -33,6 +33,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
+//FIXME needs a refactor, lots of weird thread interaction here.
 public class AttackIndicator extends Tag {
 	
 	private static final float ENABLED	= 1.0f;
