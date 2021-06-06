@@ -37,11 +37,11 @@ public enum Languages {
 	CZECH("čeština",        "cs", Status.UNREVIEWED, new String[]{"ObisMike"}, new String[]{"16cnovotny", "AshenShugar", "Autony", "Buba237", "JStrange", "RealBrofessor", "kristanka", "chuckjirka", "novotnyvaclav"}),
 	TURKISH("türkçe",       "tr", Status.INCOMPLETE, new String[]{"LokiofMillenium", "emrebnk"}, new String[]{"AGORAAA", "AcuriousPotato", "OzanAlkan", "alikeremozfidan", "alpekin98", "denizakalin", "erdemozdemir98", "gorkem_yılmaz", "hasantahsin160", "immortalsamuraicn", "kayikyaki", "melezorus34", "mitux"}),
 	INDONESIAN("indonésien","in", Status.INCOMPLETE, new String[]{"rakapratama"}, new String[]{"Izulhaaq", "Taka3   1", "ZakyM313", "ZangieF347", "esprogarap", "kirimaja", "wisnugafur"}),
-	FINNISH("suomi", 		"fi", Status.INCOMPLETE,   new String[]{"TenguKnight"}, new String[]{"Dakkus", "Sautari"} ),
+	FINNISH("suomi", 		"fi", Status.INCOMPLETE, new String[]{"TenguKnight"}, new String[]{"Dakkus", "Sautari"} ),
 	HUNGARIAN("magyar",     "hu", Status.INCOMPLETE, new String[]{"dorheim", "szalaik"}, new String[]{"Navetelen", "acszoltan111", "clarovani", "dhialub", "nanometer", "nardomaa", "savarall"}),
 	JAPANESE("日本語",      "ja",  Status.INCOMPLETE, null, new String[]{"Gosamaru", "amama", "librada", "mocklike", "tomofumikitano"}),
 	UKRANIAN("українська",  "uk", Status.INCOMPLETE, new String[]{"Oster"}, new String[]{"Sadsaltan1", "TheGuyBill", "Tomfire", "Volkov", "ZverWolf", "ingvarfed", "oliolioxinfree", "romanokurg", "vlisivka"}),
-	GREEK("ελληνικά",       "el", Status.INCOMPLETE, new String[]{"Saxy"}, new String[]{"Aeonius", "DU_Clouds", "VasKyr", "YiorgosH", "stefboi", "val.exe"}),
+	GREEK("ελληνικά",       "el", Status.UNREVIEWED, new String[]{"Saxy"}, new String[]{"Aeonius", "DU_Clouds", "VasKyr", "YiorgosH", "stefboi", "val.exe"}),
 	CATALAN("català",       "ca", Status.INCOMPLETE, new String[]{"Illyatwo2"}, new String[]{"Elosy", "n1ngu"}),
 	BASQUE("euskara",       "eu", Status.INCOMPLETE, new String[]{"Deathrevenge", "Osoitz"}, null),
 	ESPERANTO("esperanto",  "eo", Status.INCOMPLETE, new String[]{"Verdulo"}, new String[]{"Raizin"});
