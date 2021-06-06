@@ -62,6 +62,8 @@ public class WildMagic extends ArmorAbility {
 			return;
 		}
 
+		hero.busy();
+
 		ArrayList<Wand> wands = hero.belongings.getAllItems(Wand.class);
 		Random.shuffle(wands);
 
