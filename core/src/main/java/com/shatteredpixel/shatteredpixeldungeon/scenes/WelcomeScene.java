@@ -45,7 +45,7 @@ import java.util.Locale;
 
 public class WelcomeScene extends PixelScene {
 
-	private static final int LATEST_UPDATE = ShatteredPixelDungeon.v0_9_2;
+	private static final int LATEST_UPDATE = ShatteredPixelDungeon.v0_9_3;
 
 	@Override
 	public void create() {
