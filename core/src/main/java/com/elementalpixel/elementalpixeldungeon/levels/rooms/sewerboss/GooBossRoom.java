@@ -23,6 +23,7 @@ package com.elementalpixel.elementalpixeldungeon.levels.rooms.sewerboss;
 
 
 import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
 import com.elementalpixel.elementalpixeldungeon.levels.Level;
 import com.elementalpixel.elementalpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.elementalpixel.elementalpixeldungeon.tiles.CustomTilemap;
@@ -44,15 +45,20 @@ public abstract class GooBossRoom extends StandardRoom {
 	}
 
 	public static GooBossRoom randomGooRoom(){
-		switch (Random.Int(4)){
-			case 0: default:
-				return new DiamondGooRoom();
-			case 1:
-				return new WalledGooRoom();
-			case 2:
-				return new ThinPillarsGooRoom();
-			case 3:
-				return new ThickPillarsGooRoom();
+		if (Dungeon.depth == 31) {
+			return new FireGooRoom();
+		} else {
+			switch (Random.Int(4)) {
+				case 0:
+				default:
+					return new DiamondGooRoom();
+				case 1:
+					return new WalledGooRoom();
+				case 2:
+					return new ThinPillarsGooRoom();
+				case 3:
+					return new ThickPillarsGooRoom();
+			}
 		}
 	}
 	

@@ -73,6 +73,8 @@ import com.watabou.utils.Reflection;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.sound.midi.SysexMessage;
+
 public class Armor extends EquipableItem {
 
 	protected static final String AC_DETACH       = "DETACH";
@@ -705,15 +707,26 @@ public class Armor extends EquipableItem {
 		}
 		
 		@SuppressWarnings("unchecked")
-		public static Glyph randomCurse( Class<? extends Glyph> ... toIgnore ){
+		public static Glyph randomCurse( Class<? extends Glyph> ... toIgnore ) {
 			ArrayList<Class<?>> glyphs = new ArrayList<>(Arrays.asList(curses));
+			System.out.println(glyphs);
 			glyphs.removeAll(Arrays.asList(toIgnore));
+			System.out.println(glyphs);
 			if (glyphs.isEmpty()) {
 				return random();
 			} else {
-				return (Glyph) Reflection.newInstance(Random.element(glyphs));
+				System.out.println(glyphs);
+				try {
+					return (Glyph) Reflection.newInstance(Random.element(glyphs));
+				} catch (ClassCastException e) {
+					randomCurse();
+					try {
+						return (Glyph) Reflection.newInstance(Random.element(glyphs));
+					} catch (ClassCastException e2) {
+						return null;
+					}
+				}
 			}
 		}
-		
 	}
 }

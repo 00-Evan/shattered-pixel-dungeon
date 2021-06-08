@@ -39,6 +39,7 @@ public class Terrain {
 	public static final int BARRICADE		= 13;
 	public static final int EMPTY_SP		= 14;
 	public static final int HIGH_GRASS		= 15;
+	public static final int FEXIT           = 31;
 	public static final int FURROWED_GRASS	= 30;
 
 	public static final int SECRET_DOOR	    = 16;
@@ -102,6 +103,7 @@ public class Terrain {
 		flags[STATUE_SP]	= flags[STATUE];
 		flags[BOOKSHELF]	= flags[BARRICADE];
 		flags[ALCHEMY]		= SOLID;
+		flags[FEXIT]        = PASSABLE;
 
 	}
 

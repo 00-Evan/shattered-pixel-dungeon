@@ -49,7 +49,6 @@ public class AlchemistArmor extends ClassArmor {
         image = ItemSpriteSheet.ARMOR_ROGUE;
     }
 
-    private HashMap<Callback, Mob> targets = new HashMap<>();
 
     private int targetPos;
     public int damage = 0;

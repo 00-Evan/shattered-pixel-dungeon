@@ -22,15 +22,19 @@
 package com.elementalpixel.elementalpixeldungeon.levels.rooms.sewerboss;
 
 
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
+import com.elementalpixel.elementalpixeldungeon.actors.blobs.Fire;
 import com.elementalpixel.elementalpixeldungeon.actors.mobs.FireGoo;
 import com.elementalpixel.elementalpixeldungeon.actors.mobs.Goo;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.Mob;
 import com.elementalpixel.elementalpixeldungeon.levels.Level;
 import com.elementalpixel.elementalpixeldungeon.levels.Terrain;
 import com.elementalpixel.elementalpixeldungeon.levels.painters.Painter;
+import com.sun.media.sound.SF2InstrumentRegion;
 import com.watabou.utils.Point;
 
 public class DiamondGooRoom extends GooBossRoom {
-	
+
 	@Override
 	public void paint(Level level) {
 		Painter.fill( level, this, Terrain.WALL );
@@ -62,8 +66,10 @@ public class DiamondGooRoom extends GooBossRoom {
 		Painter.fill( level, left + width()/2 - 2, top + height()/2 - 1, 4 + width()%2, 2 + height()%2, Terrain.WATER);
 		
 		setupGooNest(level);
-		
-		FireGoo boss = new FireGoo();
+
+		Goo boss = new Goo();
+
+
 		boss.pos = level.pointToCell(center());
 		level.mobs.add( boss );
 	}

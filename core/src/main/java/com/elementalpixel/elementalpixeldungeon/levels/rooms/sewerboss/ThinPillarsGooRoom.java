@@ -23,6 +23,7 @@ package com.elementalpixel.elementalpixeldungeon.levels.rooms.sewerboss;
 
 
 import com.elementalpixel.elementalpixeldungeon.actors.mobs.FireGoo;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.Goo;
 import com.elementalpixel.elementalpixeldungeon.levels.Level;
 import com.elementalpixel.elementalpixeldungeon.levels.Terrain;
 import com.elementalpixel.elementalpixeldungeon.levels.painters.Painter;
@@ -63,7 +64,7 @@ public class ThinPillarsGooRoom extends GooBossRoom {
 		
 		setupGooNest(level);
 
-		FireGoo boss = new FireGoo();
+		Goo boss = new Goo();
 		boss.pos = level.pointToCell(center());
 		level.mobs.add( boss );
 		

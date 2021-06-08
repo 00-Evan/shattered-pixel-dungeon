@@ -42,11 +42,16 @@ public class Assets {
 		public static final String TILES_CITY	= "environment/tiles_city.png";
 		public static final String TILES_HALLS	= "environment/tiles_halls.png";
 
+		public static final String TILES_FIRE	= "environment/tiles_sewers.png";
+
 		public static final String WATER_SEWERS	= "environment/water0.png";
 		public static final String WATER_PRISON	= "environment/water1.png";
 		public static final String WATER_CAVES	= "environment/water2.png";
 		public static final String WATER_CITY	= "environment/water3.png";
 		public static final String WATER_HALLS	= "environment/water4.png";
+
+		public static final String WATER_FIRE	= "environment/water0.png";
+		public static final String F_EXIT	= "environment/f_exit.png";
 
 		public static final String WEAK_FLOOR       = "environment/custom_tiles/weak_floor.png";
 		public static final String SEWER_BOSS       = "environment/custom_tiles/sewer_boss.png";

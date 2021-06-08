@@ -272,7 +272,7 @@ public class Wandmaker extends NPC {
 			}
 		}
 		
-		private static boolean questRoomSpawned;
+		public static boolean questRoomSpawned;
 		
 		public static void spawnWandmaker(Level level, Room room ) {
 			if (questRoomSpawned) {

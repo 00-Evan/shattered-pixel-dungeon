@@ -29,6 +29,7 @@ import com.elementalpixel.elementalpixeldungeon.items.Amulet;
 import com.elementalpixel.elementalpixeldungeon.items.ArmorKit;
 import com.elementalpixel.elementalpixeldungeon.items.BrokenAmulet;
 import com.elementalpixel.elementalpixeldungeon.items.BrokenSeal;
+import com.elementalpixel.elementalpixeldungeon.items.ElementalOrb;
 import com.elementalpixel.elementalpixeldungeon.items.Item;
 import com.elementalpixel.elementalpixeldungeon.items.TomeOfMastery;
 import com.elementalpixel.elementalpixeldungeon.items.armor.ClothArmor;
@@ -136,7 +137,8 @@ public enum HeroClass {
 		if (!Challenges.isItemBlocked(i)) i.collect();
 
 		//POTIONS
-		new PotionOfExperience().quantity(29).identify().collect();
+		Item potion = new PotionOfExperience().quantity(30).identify();
+		potion.collect();
 		new PotionOfLiquidFlame().quantity(10).identify().collect();
 		new PotionOfToxicGas().quantity(10).identify().collect();
 		new PotionOfParalyticGas().quantity(10).identify().collect();
@@ -145,26 +147,28 @@ public enum HeroClass {
 		new PotionOfHealing().quantity(20).identify().collect();
 		new PotionOfFrost().quantity(15).identify().collect();
 		new PotionOfHaste().quantity(15).identify().collect();
+		new PotionOfMindVision().quantity(15).identify().collect();
+
 
 		//SCROLLS
 		new ScrollOfIdentify().quantity(20).identify().collect();
 		Item scroll = new ScrollOfMagicMapping().quantity(30).identify();
+		scroll.collect();
 		new ScrollOfUpgrade().quantity(50).identify().collect();
 		new ScrollOfTeleportation().quantity(5).identify().collect();
 
 		//MISC
-		new TomeOfMastery().collect();
+		new ElementalOrb().collect();
+		new Glaive().upgrade(30).identify().collect();
+		new PlateArmor().upgrade(30).identify().collect();
+		new teleport().collect();
+
+		//new TomeOfMastery().collect();
 
 		new Amulet().collect();
 		new BrokenAmulet().collect();
-		new teleport().collect();
-		new ArmorKit().collect();
-
-		new HornOfPlenty().identify().collect();
 		new AlchemistsToolkit().identify().collect();
 
-		new Glaive().upgrade(30).identify().collect();
-		new PlateArmor().upgrade(30).identify().collect();
 
 		new Food().quantity(15).collect();
 
@@ -186,6 +190,7 @@ public enum HeroClass {
 		new Rotberry.Seed().quantity(20).collect();
 
 		Dungeon.quickslot.setSlot(1, scroll);
+		Dungeon.quickslot.setSlot(2, potion);
 
 	}
 

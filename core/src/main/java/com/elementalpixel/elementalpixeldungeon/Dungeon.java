@@ -64,6 +64,7 @@ import com.elementalpixel.elementalpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.elementalpixel.elementalpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.elementalpixel.elementalpixeldungeon.messages.Messages;
 import com.elementalpixel.elementalpixeldungeon.scenes.GameScene;
+import com.elementalpixel.elementalpixeldungeon.scenes.InterlevelScene;
 import com.elementalpixel.elementalpixeldungeon.ui.QuickSlotButton;
 import com.elementalpixel.elementalpixeldungeon.utils.BArray;
 import com.elementalpixel.elementalpixeldungeon.utils.DungeonSeed;
@@ -310,6 +311,8 @@ public class Dungeon {
 		case 27:
 		case 28:
 		case 29:
+			level = new SewerLevel();
+			break;
 		case 30:
 			level = new FireLevel();
 			break;
@@ -320,8 +323,13 @@ public class Dungeon {
 			level = new DeadEndLevel();
 			Statistics.deepestFloor--;
 		}
-		
-		level.create();
+
+		if (level == null) {
+			depth -= 2;
+			newLevel();
+		} else {
+			level.create();
+		}
 		
 		Statistics.qualifiedForNoKilling = !bossLevel();
 		
