@@ -56,7 +56,7 @@ public class ElementalOrbScene extends PixelScene {
         RedButton btnFire = new RedButton( Messages.get(this, "fire") ) {
             @Override
             protected void onClick() {
-                Dungeon.depth = 29;
+                Dungeon.depth = 30;
                 InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
                 Game.switchScene( InterlevelScene.class);
             }

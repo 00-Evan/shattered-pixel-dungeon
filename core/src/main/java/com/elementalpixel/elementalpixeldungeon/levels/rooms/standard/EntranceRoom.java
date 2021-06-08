@@ -61,7 +61,11 @@ public class EntranceRoom extends StandardRoom {
 		do {
 			level.entrance = level.pointToCell(random(2));
 		} while (level.findMob(level.entrance) != null);
-		Painter.set( level, level.entrance, Terrain.ENTRANCE );
+		if (Dungeon.depth == 31) {
+			Painter.set( level, level.entrance, Terrain.EMPTY );
+		} else {
+			Painter.set(level, level.entrance, Terrain.ENTRANCE);
+		}
 
 		//use a separate generator here so meta progression doesn't affect levelgen
 		Random.pushGenerator();

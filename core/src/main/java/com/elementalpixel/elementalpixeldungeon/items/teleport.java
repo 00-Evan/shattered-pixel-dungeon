@@ -30,11 +30,13 @@ Do not look at this file, it's awful*/
 
 public class teleport extends Item {
     String AC_TELEPORT = "teleport";
+    String AC_TELEPORT2 = "teleport2";
 
     @Override
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
         actions.add(AC_TELEPORT);
+        actions.add(AC_TELEPORT2);
         return actions;
     }
 
@@ -42,9 +44,14 @@ public class teleport extends Item {
     public void execute(Hero hero, String action) {
 
         super.execute(hero, action);
-        Dungeon.depth = 28;
-        InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
-        Game.switchScene( InterlevelScene.class);
+        if (action.equals(AC_TELEPORT)) {
+            Dungeon.depth = 28;
+            InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
+            Game.switchScene( InterlevelScene.class);
+        } else if (action.equals(AC_TELEPORT2)) {
+            InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
+            Game.switchScene( InterlevelScene.class);
+        }
     }
 
     @Override
