@@ -11,6 +11,9 @@ import java.io.IOException;
 public class FireFragment extends Fragment {
     {
         image = ItemSpriteSheet.FIRE_FRAGMENT;
+        unique = true;
+        stackable = false;
+        bones = false;
     }
 
     public FireFragment(int depth) {
