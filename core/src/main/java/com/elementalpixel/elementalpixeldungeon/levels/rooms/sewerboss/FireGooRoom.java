@@ -60,7 +60,7 @@ public class FireGooRoom extends GooBossRoom {
 
         setupGooNest(level);
 
-        Goo boss = new Goo();
+        FireGoo boss = new FireGoo();
         boss.pos = level.pointToCell(center());
         level.mobs.add( boss );
     }

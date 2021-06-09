@@ -307,13 +307,11 @@ public class Dungeon {
 		case 26:
 			level = new LastLevel();
 			break;
-
 		case 31:
 		case 32:
 		case 33:
 		case 34:
 			level = new FireLevel();
-
 			break;
 		case 35:
 			level = new FireBossLevel();

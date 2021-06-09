@@ -32,6 +32,7 @@ import com.elementalpixel.elementalpixeldungeon.levels.builders.FigureEightBuild
 import com.elementalpixel.elementalpixeldungeon.levels.painters.Painter;
 import com.elementalpixel.elementalpixeldungeon.levels.painters.SewerPainter;
 import com.elementalpixel.elementalpixeldungeon.levels.rooms.Room;
+import com.elementalpixel.elementalpixeldungeon.levels.rooms.sewerboss.FireGooRoom;
 import com.elementalpixel.elementalpixeldungeon.levels.rooms.sewerboss.GooBossRoom;
 import com.elementalpixel.elementalpixeldungeon.levels.rooms.sewerboss.SewerBossEntranceRoom;
 import com.elementalpixel.elementalpixeldungeon.levels.rooms.sewerboss.SewerBossExitRoom;
@@ -67,7 +68,7 @@ public class FireBossLevel extends SewerLevel {
 			initRooms.add(s);
 		}
 		
-		GooBossRoom gooRoom = GooBossRoom.randomGooRoom();
+		GooBossRoom gooRoom = new FireGooRoom();
 		initRooms.add(gooRoom);
 		((FigureEightBuilder)builder).setLandmarkRoom(gooRoom);
 		return initRooms;

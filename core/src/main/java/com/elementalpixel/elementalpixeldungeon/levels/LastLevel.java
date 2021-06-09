@@ -105,10 +105,10 @@ public class LastLevel extends Level {
 
 	private static final int ROOM_TOP = 10;
 
-	private static final Rect entranceRoom4 = new Rect(10, 9, 11, 10);
+	/*private static final Rect entranceRoom4 = new Rect(10, 9, 11, 10);
 	private static final Rect entranceRoom1 = new Rect(6, 9, 7, 10);
 	private static final Rect entranceRoom2 = new Rect(7, 9, 8, 10);
-	private static final Rect entranceRoom3 = new Rect(9, 9, 10, 10);
+	private static final Rect entranceRoom3 = new Rect(9, 9, 10, 10);*/
 
 
 	//@Override
@@ -151,19 +151,14 @@ public class LastLevel extends Level {
 		Painter.fill(this, MID - 2, 9, 5, 7, Terrain.EMPTY);
 		Painter.fill(this, MID - 3, 10, 7, 5, Terrain.EMPTY);
 
-		/*Painter.fill(this, 10, 9, 1, 1, Terrain.EXIT);
-		Painter.fill(this, 9, 9, 1, 1, Terrain.EXIT);
 
-		Painter.fill(this, 7, 9, 1, 1, Terrain.EXIT);
-		Painter.fill(this, 6, 9, 1, 1, Terrain.EXIT);*/
-
-		Painter.fill(this, entranceRoom4, Terrain.EXIT);
-		Painter.fill(this, entranceRoom1, Terrain.EXIT);
+		//Painter.fill(this, entranceRoom4, Terrain.EXIT);
+		//Painter.fill(this, entranceRoom1, Terrain.EXIT);
 
 
 
-		Painter.fill(this, entranceRoom2, Terrain.EXIT);
-		Painter.fill(this, entranceRoom3, Terrain.FEXIT);
+		//Painter.fill(this, entranceRoom2, Terrain.EXIT);
+		//Painter.fill(this, entranceRoom3, Terrain.FEXIT);
 
 
 
@@ -291,7 +286,7 @@ public class LastLevel extends Level {
 		}
 
 		private static final int[] CANDLES = new int[]{
-				-1, -1, -1, 19, -1, -1, -1,
+				-1, 42, 46, 46, 46, 43, -1,
 				42, 46, 46, 19, 46, 46, 43,
 				46, 46, 45, 19, 44, 46, 46,
 				46, 46, 19, 19, 19, 46, 46,

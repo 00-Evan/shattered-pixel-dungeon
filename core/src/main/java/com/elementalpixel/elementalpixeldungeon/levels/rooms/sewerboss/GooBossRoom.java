@@ -45,7 +45,7 @@ public abstract class GooBossRoom extends StandardRoom {
 	}
 
 	public static GooBossRoom randomGooRoom(){
-		if (Dungeon.depth == 31) {
+		if (Dungeon.depth == 35) {
 			return new FireGooRoom();
 		} else {
 			switch (Random.Int(4)) {
