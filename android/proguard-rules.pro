@@ -1,5 +1,5 @@
 # retain these to support class references for the bundling and translation systems
--keepnames class com.shatteredpixel.** { *; }
+-keepnames class com.elementalpixel.** { *; }
 -keepnames class com.watabou.** { *; }
 
 # keep members of classes that are instantiated via reflection
