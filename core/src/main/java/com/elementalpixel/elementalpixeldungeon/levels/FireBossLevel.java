@@ -36,6 +36,7 @@ import com.elementalpixel.elementalpixeldungeon.levels.rooms.sewerboss.FireGooRo
 import com.elementalpixel.elementalpixeldungeon.levels.rooms.sewerboss.GooBossRoom;
 import com.elementalpixel.elementalpixeldungeon.levels.rooms.sewerboss.SewerBossEntranceRoom;
 import com.elementalpixel.elementalpixeldungeon.levels.rooms.sewerboss.SewerBossExitRoom;
+import com.elementalpixel.elementalpixeldungeon.levels.rooms.standard.ExitRoom;
 import com.elementalpixel.elementalpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.elementalpixel.elementalpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.Group;
@@ -58,7 +59,7 @@ public class FireBossLevel extends SewerLevel {
 		ArrayList<Room> initRooms = new ArrayList<>();
 		
 		initRooms.add( roomEntrance = new SewerBossEntranceRoom() );
-		initRooms.add( roomExit = new SewerBossExitRoom() );
+		initRooms.add( roomExit = new ExitRoom() );
 
 		int standards = standardRooms(true);
 		for (int i = 0; i < standards; i++) {

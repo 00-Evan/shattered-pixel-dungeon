@@ -22,6 +22,7 @@
 package com.elementalpixel.elementalpixeldungeon.levels.rooms.standard;
 
 
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
 import com.elementalpixel.elementalpixeldungeon.levels.Level;
 import com.elementalpixel.elementalpixeldungeon.levels.Terrain;
 import com.elementalpixel.elementalpixeldungeon.levels.painters.Painter;
@@ -50,7 +51,11 @@ public class ExitRoom extends StandardRoom {
 		}
 		
 		level.exit = level.pointToCell(random( 2 ));
-		Painter.set( level, level.exit, Terrain.EXIT );
+		if (Dungeon.depth == 35) {
+			Painter.set( level, level.exit, Terrain.EMPTY );
+		} else {
+			Painter.set(level, level.exit, Terrain.EXIT);
+		}
 	}
 	
 	@Override

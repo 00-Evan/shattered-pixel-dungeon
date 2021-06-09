@@ -23,6 +23,7 @@ package com.elementalpixel.elementalpixeldungeon.levels.rooms.sewerboss;
 
 
 import com.elementalpixel.elementalpixeldungeon.Assets;
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
 import com.elementalpixel.elementalpixeldungeon.levels.Level;
 import com.elementalpixel.elementalpixeldungeon.levels.Terrain;
 import com.elementalpixel.elementalpixeldungeon.levels.painters.Painter;
@@ -32,6 +33,8 @@ import com.elementalpixel.elementalpixeldungeon.tiles.CustomTilemap;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.Tilemap;
 import com.watabou.utils.Point;
+
+import sun.jvm.hotspot.debugger.DebuggerUtilities;
 
 public class SewerBossExitRoom extends ExitRoom {
 	
@@ -86,7 +89,8 @@ public class SewerBossExitRoom extends ExitRoom {
 				23, 23, 23,
 				24, 24, 24
 		};
-		
+
+
 		@Override
 		public Tilemap create() {
 			Tilemap v = super.create();
