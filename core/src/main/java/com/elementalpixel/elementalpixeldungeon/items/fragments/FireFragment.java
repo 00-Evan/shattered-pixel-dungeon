@@ -1,14 +1,8 @@
 package com.elementalpixel.elementalpixeldungeon.items.fragments;
 
-import com.elementalpixel.elementalpixeldungeon.Badges;
-import com.elementalpixel.elementalpixeldungeon.Challenges;
 import com.elementalpixel.elementalpixeldungeon.Dungeon;
 import com.elementalpixel.elementalpixeldungeon.ShatteredPixelDungeon;
-import com.elementalpixel.elementalpixeldungeon.Statistics;
-import com.elementalpixel.elementalpixeldungeon.actors.Actor;
 import com.elementalpixel.elementalpixeldungeon.actors.hero.Hero;
-import com.elementalpixel.elementalpixeldungeon.scenes.AmuletScene;
-import com.elementalpixel.elementalpixeldungeon.scenes.FireFragmentScene;
 import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.Game;
 
@@ -29,26 +23,6 @@ public class FireFragment extends Fragment {
             return true;
         } else {
             return false;
-        }
-    }
-
-    private void showFireFragmentScene( boolean showText ) {
-        try {
-            Dungeon.saveAll();
-            FireFragmentScene.noText = !showText;
-            Game.switchScene( FireFragmentScene.class, new Game.SceneChangeCallback() {
-                @Override
-                public void beforeCreate() {
-
-                }
-
-                @Override
-                public void afterCreate() {
-
-                }
-            });
-        } catch (IOException e) {
-            ShatteredPixelDungeon.reportException(e);
         }
     }
 }
