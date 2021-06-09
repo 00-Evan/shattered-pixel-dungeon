@@ -400,7 +400,6 @@ public class YogDzewa extends Mob {
 				mob.die( cause );
 			}
 		}
-		Dungeon.level.drop( new ElementalOrb(), pos ).sprite.drop();
 
 		updateVisibility(Dungeon.level);
 
