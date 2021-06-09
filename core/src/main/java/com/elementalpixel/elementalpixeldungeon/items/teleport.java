@@ -45,10 +45,12 @@ public class teleport extends Item {
 
         super.execute(hero, action);
         if (action.equals(AC_TELEPORT)) {
-            Dungeon.depth = 23;
+            Dungeon.depth = 24;
             InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
             Game.switchScene( InterlevelScene.class);
         } else if (action.equals(AC_TELEPORT2)) {
+            //Dungeon.depth = 14;
+            //Dungeon.depth++;
             InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
             Game.switchScene( InterlevelScene.class);
         }
