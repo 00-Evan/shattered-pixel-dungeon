@@ -264,6 +264,10 @@ public class CellSelector extends ScrollArea {
 	};
 	
 	private boolean moveFromAction(GameAction action){
+		if (Dungeon.hero == null){
+			return false;
+		}
+
 		int cell = Dungeon.hero.pos;
 
 		if (action == SPDAction.N)  cell += -Dungeon.level.width();
