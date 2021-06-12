@@ -61,6 +61,10 @@ public class BadgeBanner extends Image {
 			atlas = new TextureFilm( texture, 16, 16 );
 		}
 		
+		setup(index);
+	}
+	
+	public void setup( int index ){
 		this.index = index;
 		
 		frame( atlas.get( index ) );
@@ -113,7 +117,7 @@ public class BadgeBanner extends Image {
 				killAndErase();
 				break;
 			}
-				
+			
 		}
 	}
 	
@@ -189,9 +193,11 @@ public class BadgeBanner extends Image {
 	
 	public static BadgeBanner show( int image ) {
 		if (current != null) {
-			current.killAndErase();
+			current.setup(image);
+		} else {
+			current = new BadgeBanner(image);
 		}
-		return (current = new BadgeBanner( image ));
+		return current;
 	}
 	
 	public static Image image( int index ) {
