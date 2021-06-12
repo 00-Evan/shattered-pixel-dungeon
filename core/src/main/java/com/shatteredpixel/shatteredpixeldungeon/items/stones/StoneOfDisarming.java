@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.stones;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
@@ -43,7 +44,19 @@ public class StoneOfDisarming extends Runestone {
 	{
 		image = ItemSpriteSheet.STONE_DISARM;
 	}
-	
+
+	@Override
+	protected void onThrow(int cell) {
+		//This runestone uniquely presses cells after its effect resolves, instead of before
+		if (Dungeon.level.pit[cell] || !defaultAction.equals(AC_THROW)){
+			super.onThrow( cell );
+		} else {
+			activate(cell);
+			Invisibility.dispel();
+			Dungeon.level.pressCell( cell );
+		}
+	}
+
 	@Override
 	protected void activate(final int cell) {
 		boolean[] FOV = new boolean[Dungeon.level.length()];
