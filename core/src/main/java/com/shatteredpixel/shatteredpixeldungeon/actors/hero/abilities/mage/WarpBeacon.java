@@ -112,7 +112,7 @@ public class WarpBeacon extends ArmorAbility {
 						if (tracker.depth == Dungeon.depth){
 							Char existing = Actor.findChar(tracker.pos);
 
-							if (existing != null){
+							if (existing != null && existing != hero){
 								if (hero.hasTalent(Talent.TELEFRAG)){
 									int heroHP = hero.HP + hero.shielding();
 									int heroDmg = Math.round(1.666f + 3.333f*hero.pointsInTalent(Talent.TELEFRAG));
@@ -137,8 +137,10 @@ public class WarpBeacon extends ArmorAbility {
 										}
 									}
 									Random.shuffle(candidates);
+									Char toPush = Char.hasProp(existing, Char.Property.IMMOVABLE) ? hero : existing;
+
 									if (!candidates.isEmpty()){
-										Actor.addDelayed( new Pushing( existing, existing.pos, candidates.get(0) ), -1 );
+										Actor.addDelayed( new Pushing( toPush, toPush.pos, candidates.get(0) ), -1 );
 
 										existing.pos = candidates.get(0);
 										Dungeon.level.occupyCell(existing);
