@@ -178,11 +178,13 @@ public class Pylon extends Mob {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
+	public boolean isInvulnerable(Class effect) {
 		//immune to damage when inactive
-		if (alignment == Alignment.NEUTRAL){
-			return;
-		}
+		return (alignment == Alignment.NEUTRAL);
+	}
+
+	@Override
+	public void damage(int dmg, Object src) {
 		if (dmg >= 15){
 			//takes 15/16/17/18/19/20 dmg at 15/17/20/24/29/36 incoming dmg
 			dmg = 14 + (int)(Math.sqrt(8*(dmg - 14) + 1) - 1)/2;
