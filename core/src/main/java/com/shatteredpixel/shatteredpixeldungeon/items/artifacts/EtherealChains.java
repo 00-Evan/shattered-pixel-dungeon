@@ -88,17 +88,18 @@ public class EtherealChains extends Artifact {
 
 			if (!isEquipped( hero )) {
 				GLog.i( Messages.get(Artifact.class, "need_to_equip") );
-				QuickSlotButton.cancel();
+				usesTargeting = false;
 
 			} else if (charge < 1) {
 				GLog.i( Messages.get(this, "no_charge") );
-				QuickSlotButton.cancel();
+				usesTargeting = false;
 
 			} else if (cursed) {
 				GLog.w( Messages.get(this, "cursed") );
-				QuickSlotButton.cancel();
+				usesTargeting = false;
 
 			} else {
+				usesTargeting = true;
 				GameScene.selectCell(caster);
 			}
 
