@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.watabou.input.GameAction;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
@@ -81,17 +82,10 @@ public class AttackIndicator extends Tag {
 			PixelScene.align(sprite);
 		}
 	}
-
-	private boolean needsImageUpdate = false;
 	
 	@Override
 	public synchronized void update() {
 		super.update();
-
-		if (needsImageUpdate){
-			updateImage();
-			needsImageUpdate = false;
-		}
 
 		if (!bg.visible){
 			enable(false);
@@ -129,7 +123,7 @@ public class AttackIndicator extends Tag {
 			} else {
 				active = true;
 				lastTarget = Random.element( candidates );
-				needsImageUpdate = true;
+				updateImage();
 				flash();
 			}
 		} else {
@@ -149,16 +143,14 @@ public class AttackIndicator extends Tag {
 			sprite.killAndErase();
 			sprite = null;
 		}
-
-		if (lastTarget != null) {
-			sprite = lastTarget.sprite();
-			active = true;
-			sprite.linkVisuals(lastTarget);
-			sprite.idle();
-			sprite.paused = true;
-			sprite.visible = bg.visible;
-			add(sprite);
-		}
+		
+		sprite = Reflection.newInstance(lastTarget.spriteClass);
+		active = true;
+		sprite.linkVisuals(lastTarget);
+		sprite.idle();
+		sprite.paused = true;
+		sprite.visible = bg.visible;
+		add( sprite );
 
 		layout();
 	}
@@ -190,7 +182,7 @@ public class AttackIndicator extends Tag {
 	public static void target( Char target ) {
 		synchronized (instance) {
 			instance.lastTarget = (Mob) target;
-			instance.needsImageUpdate = true;
+			instance.updateImage();
 
 			TargetHealthIndicator.instance.target(target);
 		}
