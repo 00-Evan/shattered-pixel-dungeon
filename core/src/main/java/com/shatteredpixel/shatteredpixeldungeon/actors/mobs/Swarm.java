@@ -89,7 +89,7 @@ public class Swarm extends Mob {
 			int[] neighbours = {pos + 1, pos - 1, pos + Dungeon.level.width(), pos - Dungeon.level.width()};
 			for (int n : neighbours) {
 				if (!Dungeon.level.solid[n] && Actor.findChar( n ) == null
-						&& (!properties.contains(Property.LARGE) || Dungeon.level.openSpace[n])) {
+						&& (!properties().contains(Property.LARGE) || Dungeon.level.openSpace[n])) {
 					candidates.add( n );
 				}
 			}
