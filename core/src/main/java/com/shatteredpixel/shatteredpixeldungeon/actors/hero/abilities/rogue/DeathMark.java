@@ -164,8 +164,19 @@ public class DeathMark extends ArmorAbility {
 		}
 
 		@Override
+		public boolean attachTo(Char target) {
+			if (super.attachTo(target)){
+				target.deathMarked = true;
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		@Override
 		public void detach() {
 			super.detach();
+			target.deathMarked = false;
 			if (!target.isAlive()){
 				target.sprite.flash();
 				target.sprite.bloodBurstA(target.sprite.center(), target.HT*2);

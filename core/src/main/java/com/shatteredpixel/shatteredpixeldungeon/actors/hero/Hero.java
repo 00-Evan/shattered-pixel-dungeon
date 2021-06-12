@@ -1719,9 +1719,9 @@ public class Hero extends Char {
 		Dungeon.deleteGame( GamesInProgress.curSlot, true );
 	}
 
-	//effectively cache this buff to prevent having to call buff(Berserk.class) a bunch.
+	//effectively cache this buff to prevent having to call buff(...) a bunch.
 	//This is relevant because we call isAlive during drawing, which has both performance
-	//and concurrent modification implications if that method calls buff(Berserk.class)
+	//and thread coordination implications if that method calls buff(...) frequently
 	private Berserk berserk;
 
 	@Override
