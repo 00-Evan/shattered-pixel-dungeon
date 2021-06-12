@@ -95,11 +95,6 @@ public class Artifact extends KindofMisc {
 				passiveBuff = null;
 			}
 
-			if (activeBuff != null){
-				activeBuff.detach();
-				activeBuff = null;
-			}
-
 			return true;
 
 		} else {

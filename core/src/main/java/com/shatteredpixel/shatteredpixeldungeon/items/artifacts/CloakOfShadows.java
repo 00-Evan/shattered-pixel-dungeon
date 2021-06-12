@@ -110,7 +110,7 @@ public class CloakOfShadows extends Artifact {
 	@Override
 	public void activate(Char ch){
 		super.activate(ch);
-		if (activeBuff != null){
+		if (activeBuff != null && activeBuff.target == null){
 			activeBuff.attachTo(ch);
 		}
 	}
@@ -118,8 +118,11 @@ public class CloakOfShadows extends Artifact {
 	@Override
 	public boolean doUnequip(Hero hero, boolean collect, boolean single) {
 		if (super.doUnequip(hero, collect, single)){
-			if (hero.hasTalent(Talent.LIGHT_CLOAK)){
-				activate(hero);
+			if (!collect || !hero.hasTalent(Talent.LIGHT_CLOAK)){
+				if (activeBuff != null){
+					activeBuff.detach();
+					activeBuff = null;
+				}
 			}
 
 			return true;
@@ -147,7 +150,7 @@ public class CloakOfShadows extends Artifact {
 			passiveBuff.detach();
 			passiveBuff = null;
 		}
-		if (activeBuff != null){
+		if (activeBuff != null && !isEquipped((Hero) activeBuff.target)){
 			activeBuff.detach();
 			activeBuff = null;
 		}
@@ -166,7 +169,7 @@ public class CloakOfShadows extends Artifact {
 	@Override
 	public void charge(Hero target, float amount) {
 		if (charge < chargeCap) {
-			if (!isEquipped(target)) amount *= target.pointsInTalent(Talent.LIGHT_CLOAK)/10f;
+			if (!isEquipped(target)) amount *= 0.4f*target.pointsInTalent(Talent.LIGHT_CLOAK)/3f;
 			partialCharge += 0.25f*amount;
 			if (partialCharge >= 1){
 				partialCharge--;
