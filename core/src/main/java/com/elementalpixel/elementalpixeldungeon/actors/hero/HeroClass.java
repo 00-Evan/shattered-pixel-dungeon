@@ -79,6 +79,7 @@ import com.elementalpixel.elementalpixeldungeon.plants.Fadeleaf;
 import com.elementalpixel.elementalpixeldungeon.plants.Rotberry;
 import com.elementalpixel.elementalpixeldungeon.plants.Starflower;
 import com.elementalpixel.elementalpixeldungeon.plants.Sungrass;
+import com.elementalpixel.elementalpixeldungeon.windows.WndSettings;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.DeviceCompat;
 
@@ -136,61 +137,63 @@ public enum HeroClass {
 		i = new Food();
 		if (!Challenges.isItemBlocked(i)) i.collect();
 
-		//POTIONS
-		Item potion = new PotionOfExperience().quantity(30).identify();
-		potion.collect();
-		new PotionOfLiquidFlame().quantity(10).identify().collect();
-		new PotionOfToxicGas().quantity(10).identify().collect();
-		new PotionOfParalyticGas().quantity(10).identify().collect();
-		new PotionOfLevitation().quantity(10).identify().collect();
-		new PotionOfStrength().quantity(20).identify().collect();
-		new PotionOfHealing().quantity(20).identify().collect();
-		new PotionOfFrost().quantity(15).identify().collect();
-		new PotionOfHaste().quantity(15).identify().collect();
-		new PotionOfMindVision().quantity(15).identify().collect();
+		if (WndSettings.dev) {
+			//POTIONS
+			Item potion = new PotionOfExperience().quantity(30).identify();
+			potion.collect();
+			new PotionOfLiquidFlame().quantity(10).identify().collect();
+			new PotionOfToxicGas().quantity(10).identify().collect();
+			new PotionOfParalyticGas().quantity(10).identify().collect();
+			new PotionOfLevitation().quantity(10).identify().collect();
+			new PotionOfStrength().quantity(20).identify().collect();
+			new PotionOfHealing().quantity(20).identify().collect();
+			new PotionOfFrost().quantity(15).identify().collect();
+			new PotionOfHaste().quantity(15).identify().collect();
+			new PotionOfMindVision().quantity(15).identify().collect();
 
 
-		//SCROLLS
-		new ScrollOfIdentify().quantity(20).identify().collect();
-		Item scroll = new ScrollOfMagicMapping().quantity(30).identify();
-		scroll.collect();
-		new ScrollOfUpgrade().quantity(50).identify().collect();
-		new ScrollOfTeleportation().quantity(5).identify().collect();
+			//SCROLLS
+			new ScrollOfIdentify().quantity(20).identify().collect();
+			Item scroll = new ScrollOfMagicMapping().quantity(30).identify();
+			scroll.collect();
+			new ScrollOfUpgrade().quantity(50).identify().collect();
+			new ScrollOfTeleportation().quantity(5).identify().collect();
 
-		//MISC
-		new ElementalOrb().collect();
-		new Glaive().upgrade(30).identify().collect();
-		new PlateArmor().upgrade(30).identify().collect();
-		new teleport().collect();
+			//MISC
+			new ElementalOrb().collect();
+			new Glaive().upgrade(30).identify().collect();
+			new PlateArmor().upgrade(30).identify().collect();
+			new teleport().collect();
 
-		//new TomeOfMastery().collect();
+			//new TomeOfMastery().collect();
 
-		new Amulet().collect();
-		new BrokenAmulet().collect();
-		new AlchemistsToolkit().identify().collect();
+			new Amulet().collect();
+			new BrokenAmulet().collect();
+			new AlchemistsToolkit().identify().collect();
 
 
-		new Food().quantity(15).collect();
+			new Food().quantity(15).collect();
 
-		//BAGS
-		new VelvetPouch().collect();
-		Dungeon.LimitedDrops.VELVET_POUCH.drop();
+			//BAGS
+			new VelvetPouch().collect();
+			Dungeon.LimitedDrops.VELVET_POUCH.drop();
 
-		new ScrollHolder().collect();
-		Dungeon.LimitedDrops.SCROLL_HOLDER.drop();
+			new ScrollHolder().collect();
+			Dungeon.LimitedDrops.SCROLL_HOLDER.drop();
 
-		new MagicalHolster().collect();
-		Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
+			new MagicalHolster().collect();
+			Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
 
-		//SEEDS
-		new Sungrass.Seed().quantity(20).collect();
-		new Fadeleaf.Seed().quantity(20).collect();
-		new Earthroot.Seed().quantity(20).collect();
-		new Starflower.Seed().quantity(20).collect();
-		new Rotberry.Seed().quantity(20).collect();
+			//SEEDS
+			new Sungrass.Seed().quantity(20).collect();
+			new Fadeleaf.Seed().quantity(20).collect();
+			new Earthroot.Seed().quantity(20).collect();
+			new Starflower.Seed().quantity(20).collect();
+			new Rotberry.Seed().quantity(20).collect();
 
-		Dungeon.quickslot.setSlot(1, scroll);
-		Dungeon.quickslot.setSlot(2, potion);
+			Dungeon.quickslot.setSlot(1, scroll);
+			Dungeon.quickslot.setSlot(2, potion);
+		}
 
 	}
 
@@ -282,7 +285,6 @@ public enum HeroClass {
 	private static void initAlchemist( Hero hero ) {
 
 		(hero.belongings.weapon = new AlchemistDagger()).identify();
-		(hero.belongings.ring = new RingOfHaste()).identify();
 
 		AlchemistFlask flask = new AlchemistFlask();
 		flask.identify().collect();

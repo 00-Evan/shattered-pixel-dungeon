@@ -32,11 +32,14 @@ import com.elementalpixel.elementalpixeldungeon.ShatteredPixelDungeon;
 import com.elementalpixel.elementalpixeldungeon.actors.hero.HeroClass;
 import com.elementalpixel.elementalpixeldungeon.actors.hero.HeroSubClass;
 import com.elementalpixel.elementalpixeldungeon.actors.hero.Talent;
+import com.elementalpixel.elementalpixeldungeon.effects.CheckedCell;
 import com.elementalpixel.elementalpixeldungeon.journal.Journal;
 import com.elementalpixel.elementalpixeldungeon.messages.Messages;
 import com.elementalpixel.elementalpixeldungeon.sprites.ItemSprite;
 import com.elementalpixel.elementalpixeldungeon.sprites.ItemSpriteSheet;
+import com.elementalpixel.elementalpixeldungeon.sprites.ShamanSprite;
 import com.elementalpixel.elementalpixeldungeon.ui.ActionIndicator;
+import com.elementalpixel.elementalpixeldungeon.ui.CheckBox;
 import com.elementalpixel.elementalpixeldungeon.ui.ExitButton;
 import com.elementalpixel.elementalpixeldungeon.ui.IconButton;
 import com.elementalpixel.elementalpixeldungeon.ui.Icons;
@@ -61,6 +64,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.hide;
+import static com.elementalpixel.elementalpixeldungeon.items.Item.curUser;
 
 public class HeroSelectScene extends PixelScene {
 
@@ -73,6 +77,8 @@ public class HeroSelectScene extends PixelScene {
 	private IconButton infoButton;
 	private IconButton challengeButton;
 	private IconButton btnExit;
+	private CheckBox btnDevMode;
+
 
 	@Override
 	public void create() {
@@ -286,6 +292,7 @@ public class HeroSelectScene extends PixelScene {
 			super.onBackPressed();
 		}
 	}
+
 
 	private class HeroBtn extends StyledButton {
 

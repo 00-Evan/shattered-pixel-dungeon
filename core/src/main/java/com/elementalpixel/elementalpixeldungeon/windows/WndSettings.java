@@ -57,9 +57,11 @@ public class WndSettings extends WndTabbed {
 	private static final int WIDTH_P	    = 122;
 	private static final int WIDTH_L	    = 223;
 
-	private static final int SLIDER_HEIGHT	= 24;
-	private static final int BTN_HEIGHT	    = 18;
+	private static final int SLIDER_HEIGHT	= 20;
+	private static final int BTN_HEIGHT	    = 14;
 	private static final float GAP          = 2;
+
+	public static boolean dev = false;
 
 	private DisplayTab  display;
 	private UITab       ui;
@@ -196,6 +198,7 @@ public class WndSettings extends WndTabbed {
 		ColorBlock sep2;
 		OptionSlider optBrightness;
 		OptionSlider optVisGrid;
+		CheckBox chkDevMode;
 
 		@Override
 		protected void createChildren() {
@@ -288,7 +291,38 @@ public class WndSettings extends WndTabbed {
 			optVisGrid.setSelectedValue(SPDSettings.visualGrid());
 			add(optVisGrid);
 
+
+			chkDevMode = new CheckBox(Messages.get(this, "dev")) {
+				@Override
+				protected void onClick() {
+					super.onClick();
+					if (checked()) {
+						checked(!checked());
+						ShatteredPixelDungeon.scene().add(new WndOptions(
+								Messages.get(DisplayTab.class, "dev"),
+								Messages.get(DisplayTab.class, "dev_desc"),
+								Messages.get(DisplayTab.class, "okay"),
+								Messages.get(DisplayTab.class, "cancel")) {
+							@Override
+							protected void onSelect(int index) {
+								if (index == 0) {
+									checked(!checked());
+									SPDSettings.devMode(checked());
+								}
+							}
+						});
+					} else {
+						SPDSettings.devMode(checked());
+					}
+				}
+			};
+			chkDevMode.checked( SPDSettings.devMode() );
+			add( chkDevMode );
 		}
+
+
+
+
 
 		@Override
 		protected void layout() {
@@ -329,9 +363,11 @@ public class WndSettings extends WndTabbed {
 			if (width > 200){
 				optBrightness.setRect(0, bottom + GAP, width/2-GAP/2, SLIDER_HEIGHT);
 				optVisGrid.setRect(optBrightness.right() + GAP, optBrightness.top(), width/2-GAP/2, SLIDER_HEIGHT);
+				chkDevMode.setRect(optVisGrid.right() + GAP, optVisGrid.top(), width/2-GAP/2, SLIDER_HEIGHT);
 			} else {
 				optBrightness.setRect(0, bottom + GAP, width, SLIDER_HEIGHT);
 				optVisGrid.setRect(0, optBrightness.bottom() + GAP, width, SLIDER_HEIGHT);
+				chkDevMode.setRect(0, optVisGrid.bottom() + GAP, width, SLIDER_HEIGHT);
 			}
 
 			height = optVisGrid.bottom();
