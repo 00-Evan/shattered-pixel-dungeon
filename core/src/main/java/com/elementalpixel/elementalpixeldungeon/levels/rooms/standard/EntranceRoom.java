@@ -62,7 +62,7 @@ public class EntranceRoom extends StandardRoom {
 			level.entrance = level.pointToCell(random(2));
 		} while (level.findMob(level.entrance) != null);
 		if (Dungeon.depth == 31) {
-			Painter.set( level, level.entrance, Terrain.EMPTY );
+			Painter.set( level, level.entrance, Terrain.ENTRANCE );
 		} else {
 			Painter.set(level, level.entrance, Terrain.ENTRANCE);
 		}

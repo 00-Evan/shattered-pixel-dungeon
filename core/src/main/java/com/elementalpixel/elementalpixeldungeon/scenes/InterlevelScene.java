@@ -366,9 +366,16 @@ public class InterlevelScene extends PixelScene {
 		}
 
 		if (Dungeon.depth >= Statistics.deepestFloor) {
+			if (Dungeon.depth == 26) {
+				Dungeon.depth = 30;
+			}
 			level = Dungeon.newLevel();
 		} else {
-			Dungeon.depth++;
+			if (Dungeon.depth == 26) {
+				Dungeon.depth += 5;
+			} else {
+				Dungeon.depth++;
+			}
 			level = Dungeon.loadLevel( GamesInProgress.curSlot );
 		}
 		Dungeon.switchLevel( level, level.entrance );
@@ -396,7 +403,11 @@ public class InterlevelScene extends PixelScene {
 		Mob.holdAllies( Dungeon.level );
 
 		Dungeon.saveAll();
-		Dungeon.depth--;
+		if (Dungeon.depth == 31) {
+			Dungeon.depth -= 5;
+		} else {
+			Dungeon.depth--;
+		}
 		Level level = Dungeon.loadLevel( GamesInProgress.curSlot );
 		Dungeon.switchLevel( level, level.exit );
 	}

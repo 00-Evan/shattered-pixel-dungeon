@@ -307,6 +307,13 @@ public class Dungeon {
 		case 26:
 			level = new LastLevel();
 			break;
+		case 27:
+		case 28:
+		case 29:
+		case 30:
+			depth++;
+			level = newLevel();
+			break;
 		case 31:
 		case 32:
 		case 33:
