@@ -97,7 +97,11 @@ public class RenderedText extends Image {
 			for (char c : text.toCharArray()) {
 				BitmapFont.Glyph g = font.getData().getGlyph(c);
 				if (g == null || (g.id != c)){
-					Game.reportException(new Throwable("font file " + font.toString() + " could not render " + c));
+					String toException = text;
+					if (toException.length() > 30){
+						toException = toException.substring(0, 30) + "...";
+					}
+					Game.reportException(new Throwable("font file " + font.toString() + " could not render " + c + " from string: " + toException));
 				}
 			}
 			
