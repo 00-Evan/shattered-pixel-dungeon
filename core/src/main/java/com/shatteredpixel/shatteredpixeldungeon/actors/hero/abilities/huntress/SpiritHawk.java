@@ -186,6 +186,10 @@ public class SpiritHawk extends ArmorAbility {
 
 		@Override
 		protected boolean act() {
+			if (timeRemaining <= 0){
+				die(null);
+				return true;
+			}
 			viewDistance = (int)GameMath.gate(6, 6+Dungeon.hero.pointsInTalent(Talent.EAGLE_EYE), 8);
 			baseSpeed = 2f + Dungeon.hero.pointsInTalent(Talent.SWIFT_SPIRIT)/2f;
 			boolean result = super.act();
@@ -198,9 +202,6 @@ public class SpiritHawk extends ArmorAbility {
 		protected void spend(float time) {
 			super.spend(time);
 			timeRemaining -= time;
-			if (timeRemaining <= 0){
-				die(null);
-			}
 		}
 
 		@Override
