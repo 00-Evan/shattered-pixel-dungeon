@@ -59,6 +59,31 @@ public class v0_9_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("v0.9.3a", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Runestones now press tiles when they are thrown (stones of disarming specifically activate before triggering traps)"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by v0.9.3):\n" +
+				"_-_ Various freeze bugs that were common for certain users\n" +
+				"_-_ Various rare crashes\n" +
+				"_-_ Giant swarms still duplicating into enclosed spaces in rare cases\n" +
+				"_-_ Game freeze bugs with wild magic\n" +
+				"_-_ Various bugs with warp beacon telefragging\n" +
+				"_-_ Ethereal chains causing quickslot UI issues\n\n" +
+				"Fixed (existed prior to v0.9.3):\n" +
+				"_-_ On-hit effects triggering on invulnerable pylons\n" +
+				"_-_ Wells of healing not fully healing the hero in all cases\n" +
+				"_-_ Lightweight cloak getting cancelled when equipped/unequipped\n" +
+				"_-_ Displacing darts sometimes teleporting enemies into unreachable places"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
