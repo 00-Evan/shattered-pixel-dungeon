@@ -38,6 +38,8 @@ import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.DeviceCompat;
 
+import javax.swing.Icon;
+
 
 public class AboutScene extends PixelScene {
 
@@ -58,6 +60,16 @@ public class AboutScene extends PixelScene {
 		content.clear();
 
 		//*** Shattered Pixel Dungeon Credits ***
+		String elpxLink = "https://github.com/Meel703/elemental-pixel-dungeon";
+		final int ELPX_COLOR = 0xf5df1b;
+		CreditsBlock elpx = new CreditsBlock(true, ELPX_COLOR,
+				"Elemental Pixel Dungeon",
+				Icons.SHPX.get(),
+				"Developed by: _Meel_\nBased on Shattered Pixel Dungeon",
+				"github.com/Meel703/elemental-pixel-dungeon",
+				elpxLink);
+		elpx.setRect((w - fullWidth)/2f, 6, 120, 0);
+		content.add(elpx);
 
 		String shpxLink = "https://ShatteredPixel.com";
 		//tracking codes, so that the website knows where this pageview came from
@@ -71,8 +83,9 @@ public class AboutScene extends PixelScene {
 				"Developed by: _Evan Debenham_\nBased on Pixel Dungeon's open source",
 				"ShatteredPixel.com",
 				shpxLink);
-		shpx.setRect((w - fullWidth)/2f, 6, 120, 0);
+		shpx.setRect(elpx.left(),elpx.bottom() + 8, colWidth, 0);
 		content.add(shpx);
+		addLine(shpx.top() - 4, content);
 
 		CreditsBlock alex = new CreditsBlock(false, Window.SHPX_COLOR,
 				"Hero Art & Design:",

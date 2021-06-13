@@ -109,8 +109,7 @@ public class LastLevel extends Level {
 	private static final Rect entranceRoom1 = new Rect(6, 9, 7, 10);
 	private static final Rect entranceRoom2 = new Rect(7, 9, 8, 10);
 	private static final Rect entranceRoom3 = new Rect(9, 9, 10, 10);*/
-
-
+	private static final Rect Exit = new Rect(7, 9, 8, 10);
 	//@Override
 	protected int standardRooms(boolean forceMax) {
 		if (forceMax) return 3;
@@ -152,7 +151,7 @@ public class LastLevel extends Level {
 		Painter.fill(this, MID - 3, 10, 7, 5, Terrain.EMPTY);
 
 
-		//Painter.fill(this, entranceRoom4, Terrain.EXIT);
+		Painter.fill(this, Exit, Terrain.EXIT);
 		//Painter.fill(this, entranceRoom1, Terrain.EXIT);
 
 
