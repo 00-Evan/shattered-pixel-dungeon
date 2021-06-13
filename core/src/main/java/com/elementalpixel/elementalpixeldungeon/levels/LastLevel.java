@@ -88,18 +88,15 @@ public class LastLevel extends Level {
 				visited[i] = true;
 			}
 		}
-
-		//Painter.fill(this, entranceRoom1, new Wandmaker());
-
 	}
 
 	private static final int ROOM_TOP = 10;
 
-	/*private static final Rect entranceRoom4 = new Rect(10, 9, 11, 10);
-	private static final Rect entranceRoom1 = new Rect(6, 9, 7, 10);
-	private static final Rect entranceRoom2 = new Rect(7, 9, 8, 10);
-	private static final Rect entranceRoom3 = new Rect(9, 9, 10, 10);*/
-	private static final Rect Exit = new Rect(7, 9, 8, 10);
+	//private static final Rect entranceRoom4 = new Rect(10, 9, 11, 10);
+	private static final Rect entranceRoom1 = new Rect(6, 7, 7, 11);
+	//private static final Rect entranceRoom2 = new Rect(7, 9, 8, 10);
+	//private static final Rect entranceRoom3 = new Rect(9, 9, 10, 10);
+	private static final Rect Exit = new Rect(8, 10, 9, 11);
 	//@Override
 	protected int standardRooms(boolean forceMax) {
 		if (forceMax) return 3;
@@ -275,7 +272,7 @@ public class LastLevel extends Level {
 
 		private static final int[] CANDLES = new int[]{
 				-1, 42, 46, 46, 46, 43, -1,
-				42, 46, 46, 19, 46, 46, 43,
+				42, 46, 46, -1, 46, 46, 43,
 				46, 46, 45, 19, 44, 46, 46,
 				46, 46, 19, 19, 19, 46, 46,
 				46, 46, 43, 19, 42, 46, 46,
