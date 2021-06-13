@@ -22,7 +22,6 @@
 package com.elementalpixel.elementalpixeldungeon.levels.rooms.special;
 
 
-//import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SacrificialFire;
 
 import com.elementalpixel.elementalpixeldungeon.Dungeon;
 import com.elementalpixel.elementalpixeldungeon.levels.Level;
