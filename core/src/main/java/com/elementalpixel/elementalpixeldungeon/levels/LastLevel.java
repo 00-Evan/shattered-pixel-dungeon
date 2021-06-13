@@ -29,17 +29,10 @@ import com.elementalpixel.elementalpixeldungeon.Statistics;
 import com.elementalpixel.elementalpixeldungeon.actors.Actor;
 import com.elementalpixel.elementalpixeldungeon.actors.Char;
 import com.elementalpixel.elementalpixeldungeon.actors.mobs.Mob;
-import com.elementalpixel.elementalpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.elementalpixel.elementalpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.elementalpixel.elementalpixeldungeon.items.BrokenAmulet;
-import com.elementalpixel.elementalpixeldungeon.items.ElementalOrb;
-import com.elementalpixel.elementalpixeldungeon.levels.builders.Builder;
-import com.elementalpixel.elementalpixeldungeon.levels.painters.HallsPainter;
 import com.elementalpixel.elementalpixeldungeon.levels.painters.Painter;
 import com.elementalpixel.elementalpixeldungeon.levels.rooms.Room;
-import com.elementalpixel.elementalpixeldungeon.levels.rooms.standard.EntranceRoom;
-import com.elementalpixel.elementalpixeldungeon.levels.rooms.standard.ExitRoom;
-import com.elementalpixel.elementalpixeldungeon.levels.rooms.standard.ImpShopRoom;
 import com.elementalpixel.elementalpixeldungeon.messages.Messages;
 import com.elementalpixel.elementalpixeldungeon.tiles.CustomTilemap;
 import com.elementalpixel.elementalpixeldungeon.tiles.DungeonTileSheet;
@@ -50,9 +43,6 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
 
-import org.graalvm.compiler.core.common.type.ArithmeticOpTable;
-
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -202,7 +192,6 @@ public class LastLevel extends Level {
 	@Override
 	protected void createItems() {
 		drop(new BrokenAmulet(), exit);
-		drop(new ElementalOrb(), exit);
 	}
 
 	@Override

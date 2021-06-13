@@ -318,6 +318,9 @@ public class WndSettings extends WndTabbed {
 			};
 			chkDevMode.checked( SPDSettings.devMode() );
 			add( chkDevMode );
+			if(chkDevMode.checked()) {
+				dev = true;
+			}
 		}
 
 

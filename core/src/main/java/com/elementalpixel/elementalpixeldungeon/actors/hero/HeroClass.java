@@ -26,17 +26,13 @@ import com.elementalpixel.elementalpixeldungeon.Badges;
 import com.elementalpixel.elementalpixeldungeon.Challenges;
 import com.elementalpixel.elementalpixeldungeon.Dungeon;
 import com.elementalpixel.elementalpixeldungeon.items.Amulet;
-import com.elementalpixel.elementalpixeldungeon.items.ArmorKit;
 import com.elementalpixel.elementalpixeldungeon.items.BrokenAmulet;
 import com.elementalpixel.elementalpixeldungeon.items.BrokenSeal;
-import com.elementalpixel.elementalpixeldungeon.items.ElementalOrb;
 import com.elementalpixel.elementalpixeldungeon.items.Item;
-import com.elementalpixel.elementalpixeldungeon.items.TomeOfMastery;
 import com.elementalpixel.elementalpixeldungeon.items.armor.ClothArmor;
 import com.elementalpixel.elementalpixeldungeon.items.armor.PlateArmor;
 import com.elementalpixel.elementalpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.elementalpixel.elementalpixeldungeon.items.artifacts.CloakOfShadows;
-import com.elementalpixel.elementalpixeldungeon.items.artifacts.HornOfPlenty;
 import com.elementalpixel.elementalpixeldungeon.items.bags.MagicalHolster;
 import com.elementalpixel.elementalpixeldungeon.items.bags.PotionBandolier;
 import com.elementalpixel.elementalpixeldungeon.items.bags.ScrollHolder;
@@ -53,8 +49,6 @@ import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfMindVision
 import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfParalyticGas;
 import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfStrength;
 import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfToxicGas;
-import com.elementalpixel.elementalpixeldungeon.items.rings.RingOfHaste;
-import com.elementalpixel.elementalpixeldungeon.items.scrolls.Scroll;
 import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfMagicMapping;
@@ -160,7 +154,6 @@ public enum HeroClass {
 			new ScrollOfTeleportation().quantity(5).identify().collect();
 
 			//MISC
-			new ElementalOrb().collect();
 			new Glaive().upgrade(30).identify().collect();
 			new PlateArmor().upgrade(30).identify().collect();
 			new teleport().collect();
