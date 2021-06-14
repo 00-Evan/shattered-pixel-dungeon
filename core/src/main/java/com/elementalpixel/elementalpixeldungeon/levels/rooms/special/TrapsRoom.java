@@ -25,6 +25,7 @@ package com.elementalpixel.elementalpixeldungeon.levels.rooms.special;
 import com.elementalpixel.elementalpixeldungeon.Challenges;
 import com.elementalpixel.elementalpixeldungeon.Dungeon;
 import com.elementalpixel.elementalpixeldungeon.actors.buffs.Burning;
+import com.elementalpixel.elementalpixeldungeon.actors.buffs.Frost;
 import com.elementalpixel.elementalpixeldungeon.items.Generator;
 import com.elementalpixel.elementalpixeldungeon.items.Heap;
 import com.elementalpixel.elementalpixeldungeon.items.Item;
@@ -34,17 +35,22 @@ import com.elementalpixel.elementalpixeldungeon.levels.Terrain;
 import com.elementalpixel.elementalpixeldungeon.levels.painters.Painter;
 import com.elementalpixel.elementalpixeldungeon.levels.traps.BlazingTrap;
 import com.elementalpixel.elementalpixeldungeon.levels.traps.BurningTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.ConfusionTrap;
 import com.elementalpixel.elementalpixeldungeon.levels.traps.DisintegrationTrap;
 import com.elementalpixel.elementalpixeldungeon.levels.traps.ExplosiveTrap;
 import com.elementalpixel.elementalpixeldungeon.levels.traps.FlashingTrap;
 import com.elementalpixel.elementalpixeldungeon.levels.traps.FlockTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.FrostTrap;
 import com.elementalpixel.elementalpixeldungeon.levels.traps.GrimTrap;
 import com.elementalpixel.elementalpixeldungeon.levels.traps.GrippingTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.PitfallTrap;
 import com.elementalpixel.elementalpixeldungeon.levels.traps.PoisonDartTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.SummoningTrap;
 import com.elementalpixel.elementalpixeldungeon.levels.traps.TeleportationTrap;
 import com.elementalpixel.elementalpixeldungeon.levels.traps.ToxicTrap;
 import com.elementalpixel.elementalpixeldungeon.levels.traps.Trap;
 import com.elementalpixel.elementalpixeldungeon.levels.traps.WarpingTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.WeakeningTrap;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
@@ -159,6 +165,13 @@ public class TrapsRoom extends SpecialRoom {
 			{GrimTrap.class},
 			{FlockTrap.class},
 			//fire chapter
-			{BlazingTrap.class, ExplosiveTrap.class, BurningTrap.class}
+			{BlazingTrap.class, ExplosiveTrap.class, BurningTrap.class},
+
+			{ConfusionTrap.class, SummoningTrap.class},
+
+			{FrostTrap.class, FlockTrap.class},
+
+			{PitfallTrap.class, WeakeningTrap.class},
+
 	};
 }
