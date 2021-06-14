@@ -331,6 +331,24 @@ public class Dungeon {
 		case 40:
 			level = new NewPrisonBossLevel();
 			break;
+		case 41:
+		case 42:
+		case 43:
+		case 44:
+			level = new CavesLevel();
+			break;
+		case 45:
+			level = new NewCavesBossLevel();
+			break;
+		case 46:
+		case 47:
+		case 48:
+		case 49:
+			level = new CityLevel();
+			break;
+		case 50:
+			level = new NewCityBossLevel();
+			break;
 		default:
 			level = new DeadEndLevel();
 			Statistics.deepestFloor--;
