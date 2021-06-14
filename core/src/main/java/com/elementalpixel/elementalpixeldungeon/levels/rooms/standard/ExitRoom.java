@@ -51,11 +51,12 @@ public class ExitRoom extends StandardRoom {
 		}
 		
 		level.exit = level.pointToCell(random( 2 ));
-		if (Dungeon.depth == 35) {
-			Painter.set( level, level.exit, Terrain.EMPTY );
+		if (Dungeon.depth >= 32 ) {
+			Painter.set(level, level.exit, Terrain.EXIT);
 		} else {
 			Painter.set(level, level.exit, Terrain.EXIT);
 		}
+
 	}
 	
 	@Override

@@ -51,7 +51,6 @@ public class Assets {
 		public static final String WATER_HALLS	= "environment/water4.png";
 
 		public static final String WATER_FIRE	= "environment/water0.png";
-		public static final String F_EXIT	= "environment/f_exit.png";
 
 		public static final String WEAK_FLOOR       = "environment/custom_tiles/weak_floor.png";
 		public static final String SEWER_BOSS       = "environment/custom_tiles/sewer_boss.png";

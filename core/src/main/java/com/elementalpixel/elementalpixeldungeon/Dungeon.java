@@ -307,6 +307,12 @@ public class Dungeon {
 		case 26:
 			level = new LastLevel();
 			break;
+		case 27:
+		case 28:
+		case 29:
+		case 30:
+			level = new DeadEndLevel();
+			break;
 		case 31:
 		case 32:
 		case 33:
@@ -315,6 +321,15 @@ public class Dungeon {
 			break;
 		case 35:
 			level = new FireBossLevel();
+			break;
+		case 36:
+		case 37:
+		case 38:
+		case 39:
+			level = new PrisonLevel();
+			break;
+		case 40:
+			level = new NewPrisonBossLevel();
 			break;
 		default:
 			level = new DeadEndLevel();

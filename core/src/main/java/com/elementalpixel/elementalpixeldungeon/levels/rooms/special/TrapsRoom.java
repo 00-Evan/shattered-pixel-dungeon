@@ -42,6 +42,7 @@ import com.elementalpixel.elementalpixeldungeon.levels.traps.GrimTrap;
 import com.elementalpixel.elementalpixeldungeon.levels.traps.GrippingTrap;
 import com.elementalpixel.elementalpixeldungeon.levels.traps.PoisonDartTrap;
 import com.elementalpixel.elementalpixeldungeon.levels.traps.TeleportationTrap;
+import com.elementalpixel.elementalpixeldungeon.levels.traps.ToxicTrap;
 import com.elementalpixel.elementalpixeldungeon.levels.traps.Trap;
 import com.elementalpixel.elementalpixeldungeon.levels.traps.WarpingTrap;
 import com.watabou.utils.Point;
@@ -156,8 +157,8 @@ public class TrapsRoom extends SpecialRoom {
 			{WarpingTrap.class, FlashingTrap.class, DisintegrationTrap.class},
 			//halls, muahahahaha
 			{GrimTrap.class},
-			{},
-			//fire level
+			{FlockTrap.class},
+			//fire chapter
 			{BlazingTrap.class, ExplosiveTrap.class, BurningTrap.class}
 	};
 }

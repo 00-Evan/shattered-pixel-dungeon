@@ -21,6 +21,7 @@
 
 package com.elementalpixel.elementalpixeldungeon.actors.hero;
 
+import com.elementalpixel.elementalpixeldungeon.Dungeon;
 import com.elementalpixel.elementalpixeldungeon.actors.Char;
 
 public class HeroAction {
@@ -30,6 +31,7 @@ public class HeroAction {
 	public static class Move extends HeroAction {
 		public Move( int dst ) {
 			this.dst = dst;
+			System.out.println(Dungeon.depth);
 		}
 	}
 	
