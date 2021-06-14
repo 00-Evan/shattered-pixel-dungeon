@@ -45,7 +45,7 @@ import com.elementalpixel.elementalpixeldungeon.items.armor.glyphs.Viscosity;
 import com.elementalpixel.elementalpixeldungeon.items.artifacts.DriedRose;
 import com.elementalpixel.elementalpixeldungeon.items.artifacts.LloydsBeacon;
 import com.elementalpixel.elementalpixeldungeon.items.scrolls.ScrollOfTeleportation;
-import com.elementalpixel.elementalpixeldungeon.levels.NewCityBossLevel;
+import com.elementalpixel.elementalpixeldungeon.levels.EarthBossLevel;
 import com.elementalpixel.elementalpixeldungeon.mechanics.Ballistica;
 import com.elementalpixel.elementalpixeldungeon.messages.Messages;
 import com.elementalpixel.elementalpixeldungeon.scenes.GameScene;
@@ -235,7 +235,7 @@ public class DwarfKing extends Mob {
 
 	private boolean summonSubject( int delay, Class<?extends Mob> type ){
 		Summoning s = new Summoning();
-		s.pos = ((NewCityBossLevel) Dungeon.level).getSummoningPos();
+		s.pos = ((EarthBossLevel) Dungeon.level).getSummoningPos();
 		if (s.pos == -1) return false;
 		s.summon = type;
 		s.delay = delay;
@@ -383,7 +383,7 @@ public class DwarfKing extends Mob {
 			if (HP <= 50) {
 				HP = 50;
 				sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "invulnerable"));
-				ScrollOfTeleportation.appear(this, NewCityBossLevel.throne);
+				ScrollOfTeleportation.appear(this, EarthBossLevel.throne);
 				properties.add(Property.IMMOVABLE);
 				phase = 2;
 				summonsMade = 0;

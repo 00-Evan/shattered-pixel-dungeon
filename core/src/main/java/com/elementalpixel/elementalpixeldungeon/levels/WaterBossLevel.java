@@ -33,6 +33,8 @@ import com.elementalpixel.elementalpixeldungeon.actors.mobs.Mob;
 import com.elementalpixel.elementalpixeldungeon.actors.mobs.NewDM300;
 import com.elementalpixel.elementalpixeldungeon.actors.mobs.OldDM300;
 import com.elementalpixel.elementalpixeldungeon.actors.mobs.Pylon;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.WaterDM300;
+import com.elementalpixel.elementalpixeldungeon.actors.mobs.WaterPylon;
 import com.elementalpixel.elementalpixeldungeon.effects.BlobEmitter;
 import com.elementalpixel.elementalpixeldungeon.effects.CellEmitter;
 import com.elementalpixel.elementalpixeldungeon.effects.Speck;
@@ -165,7 +167,7 @@ public class WaterBossLevel extends Level {
 
 			for (int i : pylonPositions) {
 				if (findMob(i) == null) {
-					Pylon pylon = new Pylon();
+					WaterPylon pylon = new WaterPylon();
 					pylon.pos = i;
 					mobs.add(pylon);
 				}
@@ -177,7 +179,7 @@ public class WaterBossLevel extends Level {
 	@Override
 	protected void createMobs() {
 		for (int i : pylonPositions) {
-			Pylon pylon = new Pylon();
+			WaterPylon pylon = new WaterPylon();
 			pylon.pos = i;
 			mobs.add(pylon);
 		}
@@ -274,7 +276,7 @@ public class WaterBossLevel extends Level {
 		Camera.main.shake( 3, 0.7f );
 		Sample.INSTANCE.play( Assets.Sounds.ROCKS );
 
-		NewDM300 boss = new NewDM300();
+		WaterDM300 boss = new WaterDM300();
 		boss.state = boss.WANDERING;
 		do {
 			boss.pos = pointToCell(Random.element(mainArena.getPoints()));
@@ -287,7 +289,7 @@ public class WaterBossLevel extends Level {
 	public void unseal() {
 		super.unseal();
 
-		blobs.get(PylonEnergy.class).fullyClear();
+		blobs.get(WaterPylonEnergy.class).fullyClear();
 
 		set( entrance, Terrain.ENTRANCE );
 		int i = 14 + 13*width();
@@ -306,18 +308,18 @@ public class WaterBossLevel extends Level {
 	}
 
 	public void activatePylon(){
-		ArrayList<Pylon> pylons = new ArrayList<>();
+		ArrayList<WaterPylon> pylons = new ArrayList<>();
 		for (Mob m : mobs){
-			if (m instanceof Pylon && m.alignment == Char.Alignment.NEUTRAL){
-				pylons.add((Pylon) m);
+			if (m instanceof WaterPylon && m.alignment == Char.Alignment.NEUTRAL){
+				pylons.add((WaterPylon) m);
 			}
 		}
 
 		if (pylons.size() == 1){
 			pylons.get(0).activate();
 		} else if (!pylons.isEmpty()) {
-			Pylon closest = null;
-			for (Pylon p : pylons){
+			WaterPylon closest = null;
+			for (WaterPylon p : pylons){
 				if (closest == null || trueDistance(p.pos, Dungeon.hero.pos) < trueDistance(closest.pos, Dungeon.hero.pos)){
 					closest = p;
 				}
@@ -328,7 +330,7 @@ public class WaterBossLevel extends Level {
 
 		for( int i = (mainArena.top-1)*width; i <length; i++){
 			if (map[i] == Terrain.INACTIVE_TRAP || map[i] == Terrain.WATER || map[i] == Terrain.SIGN){
-				GameScene.add(Blob.seed(i, 1, PylonEnergy.class));
+				GameScene.add(Blob.seed(i, 1, WaterPylonEnergy.class));
 			}
 		}
 
@@ -338,15 +340,15 @@ public class WaterBossLevel extends Level {
 		customArenaVisuals.updateState();
 		int pylonsRemaining = 0;
 		for (Mob m : mobs){
-			if (m instanceof NewDM300){
-				((NewDM300) m).loseSupercharge();
-				PylonEnergy.energySourceSprite = m.sprite;
-			} else if (m instanceof Pylon){
+			if (m instanceof WaterDM300){
+				((WaterDM300) m).loseSupercharge();
+				WaterPylonEnergy.energySourceSprite = m.sprite;
+			} else if (m instanceof WaterPylon){
 				pylonsRemaining++;
 			}
 		}
 		if (pylonsRemaining > 2) {
-			blobs.get(PylonEnergy.class).fullyClear();
+			blobs.get(WaterPylonEnergy.class).fullyClear();
 		}
 	}
 
@@ -682,7 +684,7 @@ public class WaterBossLevel extends Level {
 						for (int k : pylonPositions) {
 							if (k == j) {
 								if (Dungeon.level.locked
-										&& !(Actor.findChar(k) instanceof Pylon)) {
+										&& !(Actor.findChar(k) instanceof WaterPylon)) {
 									data[i] = 38;
 								} else {
 									data[i] = -1;
@@ -753,7 +755,7 @@ public class WaterBossLevel extends Level {
 		}
 	}
 
-	public static class PylonEnergy extends Blob {
+	public static class WaterPylonEnergy extends Blob {
 
 		@Override
 		protected void evolve() {
@@ -771,13 +773,13 @@ public class WaterBossLevel extends Level {
 					if (off[cell] > 0){
 
 						Char ch = Actor.findChar(cell);
-						if (ch != null && !(ch instanceof NewDM300)) {
+						if (ch != null && !(ch instanceof WaterDM300)) {
 							Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
 							ch.damage( Random.NormalIntRange(6, 12), Electricity.class);
 							ch.sprite.flash();
 
 							if (ch == Dungeon.hero && !ch.isAlive()) {
-								Dungeon.fail(NewDM300.class);
+								Dungeon.fail(WaterDM300.class);
 								GLog.n( Messages.get(Electricity.class, "ondeath") );
 							}
 						}
@@ -799,7 +801,7 @@ public class WaterBossLevel extends Level {
 			public void emit(Emitter emitter, int index, float x, float y) {
 				if (energySourceSprite == null){
 					for (Char c : Actor.chars()){
-						if (c instanceof Pylon && c.alignment != Char.Alignment.NEUTRAL){
+						if (c instanceof WaterPylon && c.alignment != Char.Alignment.NEUTRAL){
 							energySourceSprite = c.sprite;
 							break;
 						} else if (c instanceof OldDM300){
