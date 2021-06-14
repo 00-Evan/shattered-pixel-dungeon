@@ -44,9 +44,13 @@ import com.elementalpixel.elementalpixeldungeon.items.potions.Potion;
 import com.elementalpixel.elementalpixeldungeon.items.rings.Ring;
 import com.elementalpixel.elementalpixeldungeon.items.scrolls.Scroll;
 import com.elementalpixel.elementalpixeldungeon.journal.Notes;
+import com.elementalpixel.elementalpixeldungeon.levels.AirBossLevel;
+import com.elementalpixel.elementalpixeldungeon.levels.AirLevel;
 import com.elementalpixel.elementalpixeldungeon.levels.CavesLevel;
 import com.elementalpixel.elementalpixeldungeon.levels.CityLevel;
 import com.elementalpixel.elementalpixeldungeon.levels.DeadEndLevel;
+import com.elementalpixel.elementalpixeldungeon.levels.EarthBossLevel;
+import com.elementalpixel.elementalpixeldungeon.levels.EarthLevel;
 import com.elementalpixel.elementalpixeldungeon.levels.FireBossLevel;
 import com.elementalpixel.elementalpixeldungeon.levels.FireLevel;
 import com.elementalpixel.elementalpixeldungeon.levels.HallsLevel;
@@ -60,6 +64,8 @@ import com.elementalpixel.elementalpixeldungeon.levels.NewPrisonBossLevel;
 import com.elementalpixel.elementalpixeldungeon.levels.PrisonLevel;
 import com.elementalpixel.elementalpixeldungeon.levels.SewerBossLevel;
 import com.elementalpixel.elementalpixeldungeon.levels.SewerLevel;
+import com.elementalpixel.elementalpixeldungeon.levels.WaterBossLevel;
+import com.elementalpixel.elementalpixeldungeon.levels.WaterLevel;
 import com.elementalpixel.elementalpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.elementalpixel.elementalpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.elementalpixel.elementalpixeldungeon.messages.Messages;
@@ -326,28 +332,28 @@ public class Dungeon {
 		case 37:
 		case 38:
 		case 39:
-			level = new PrisonLevel();
+			level = new AirLevel();
 			break;
 		case 40:
-			level = new NewPrisonBossLevel();
+			level = new AirBossLevel();
 			break;
 		case 41:
 		case 42:
 		case 43:
 		case 44:
-			level = new CavesLevel();
+			level = new WaterLevel();
 			break;
 		case 45:
-			level = new NewCavesBossLevel();
+			level = new WaterBossLevel();
 			break;
 		case 46:
 		case 47:
 		case 48:
 		case 49:
-			level = new CityLevel();
+			level = new EarthLevel();
 			break;
 		case 50:
-			level = new NewCityBossLevel();
+			level = new EarthBossLevel();
 			break;
 		default:
 			level = new DeadEndLevel();
