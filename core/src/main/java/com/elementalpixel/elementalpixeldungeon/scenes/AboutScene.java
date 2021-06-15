@@ -63,10 +63,10 @@ public class AboutScene extends PixelScene {
 		String elpxLink = "https://github.com/Meel703/elemental-pixel-dungeon";
 		final int ELPX_COLOR = 0xf5df1b;
 		CreditsBlock elpx = new CreditsBlock(true, ELPX_COLOR,
-				"Elemental Pixel Dungeon",
-				Icons.SHPX.get(),
+				"Elemental Pixel Dungeon\n",
+				null,
 				"Developed by: _Meel_\nBased on Shattered Pixel Dungeon",
-				"github.com/Meel703/elemental-pixel-dungeon",
+				"Available on GitHub",
 				elpxLink);
 		elpx.setRect((w - fullWidth)/2f, 6, 120, 0);
 		content.add(elpx);
