@@ -400,6 +400,8 @@ public enum Talent {
 			case HUNTRESS:
 				Collections.addAll(tierTalents, NATURES_BOUNTY, SURVIVALISTS_INTUITION, FOLLOWUP_STRIKE, NATURES_AID);
 				break;
+			case ALCHEMIST:
+				break;
 		}
 		for (Talent talent : tierTalents){
 			talents.get(0).put(talent, 0);
@@ -420,6 +422,8 @@ public enum Talent {
 			case HUNTRESS:
 				Collections.addAll(tierTalents, INVIGORATING_MEAL, RESTORED_NATURE, REJUVENATING_STEPS, HEIGHTENED_SENSES, DURABLE_PROJECTILES);
 				break;
+			case ALCHEMIST:
+				break;
 		}
 		for (Talent talent : tierTalents){
 			talents.get(1).put(talent, 0);
@@ -439,6 +443,8 @@ public enum Talent {
 				break;
 			case HUNTRESS:
 				Collections.addAll(tierTalents, POINT_BLANK, SEER_SHOT);
+				break;
+			case ALCHEMIST:
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -488,6 +494,9 @@ public enum Talent {
 				break;
 			case WARDEN:
 				Collections.addAll(tierTalents, DURABLE_TIPS, BARKSKIN, SHIELDING_DEW);
+				break;
+			case SCIENTIST:
+			case ELEMENTALIST:
 				break;
 		}
 		for (Talent talent : tierTalents){
