@@ -29,6 +29,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.elementalpixel.elementalpixeldungeon.SPDSettings;
+import com.elementalpixel.elementalpixeldungeon.windows.WndSettings;
 import com.watabou.noosa.Game;
 import com.watabou.utils.PlatformSupport;
 import com.watabou.utils.Point;
@@ -46,7 +47,12 @@ public class DesktopPlatformSupport extends PlatformSupport {
 			SPDSettings.windowResolution( new Point( Game.width, Game.height ) );
 		}
 	}
-	
+
+	@Override
+	public void setTrue() {
+		WndSettings.dev = true;
+	}
+
 	@Override
 	public void updateSystemUI() {
 		Gdx.app.postRunnable(new Runnable() {

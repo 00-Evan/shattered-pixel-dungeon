@@ -63,7 +63,7 @@ public class DesktopLaunchValidator {
 			jvmArgs.add(System.getProperty("java.class.path"));
 			jvmArgs.add(DesktopLauncher.class.getName());
 
-			System.err.println("Error: ShatteredPD must start on the first thread in order to work on macOS.");
+			System.err.println("Error: ElementalPD must start on the first thread in order to work on macOS.");
 			System.err.println("  To avoid this error, run the game with the \"-XstartOnFirstThread\" argument");
 			System.err.println("  Now attempting to relaunch the game on the first thread automatically:\n");
 
