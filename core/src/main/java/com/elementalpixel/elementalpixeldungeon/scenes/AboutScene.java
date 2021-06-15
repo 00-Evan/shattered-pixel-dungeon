@@ -58,8 +58,7 @@ public class AboutScene extends PixelScene {
 
 		Component content = list.content();
 		content.clear();
-
-		//*** Shattered Pixel Dungeon Credits ***
+		//Elemental Pixel Dungeon credits
 		String elpxLink = "https://github.com/Meel703/elemental-pixel-dungeon";
 		final int ELPX_COLOR = 0xf5df1b;
 		CreditsBlock elpx = new CreditsBlock(true, ELPX_COLOR,
@@ -71,6 +70,7 @@ public class AboutScene extends PixelScene {
 		elpx.setRect((w - fullWidth)/2f, 6, 120, 0);
 		content.add(elpx);
 
+		//*** Shattered Pixel Dungeon Credits ***
 		String shpxLink = "https://ShatteredPixel.com";
 		//tracking codes, so that the website knows where this pageview came from
 		shpxLink += "?utm_source=shatteredpd";
