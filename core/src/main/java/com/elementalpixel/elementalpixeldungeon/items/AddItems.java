@@ -13,6 +13,10 @@ import com.elementalpixel.elementalpixeldungeon.items.bags.PotionBandolier;
 import com.elementalpixel.elementalpixeldungeon.items.bags.ScrollHolder;
 import com.elementalpixel.elementalpixeldungeon.items.bags.VelvetPouch;
 import com.elementalpixel.elementalpixeldungeon.items.food.Food;
+import com.elementalpixel.elementalpixeldungeon.items.fragments.AirFragment;
+import com.elementalpixel.elementalpixeldungeon.items.fragments.EarthFragment;
+import com.elementalpixel.elementalpixeldungeon.items.fragments.FireFragment;
+import com.elementalpixel.elementalpixeldungeon.items.fragments.WaterFragment;
 import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfExperience;
 import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfFrost;
 import com.elementalpixel.elementalpixeldungeon.items.potions.PotionOfHaste;
@@ -162,6 +166,12 @@ public class AddItems extends Item {
             new Swiftthistle.Seed().quantity(20).collect();
 
             //FRAGMENTS
+            new FireFragment(Dungeon.depth).collect();
+            new AirFragment(Dungeon.depth).collect();
+            new WaterFragment(Dungeon.depth).collect();
+            new EarthFragment(Dungeon.depth).collect();
+
+
         } else if (action.equals(AC_REMOVE)) {
             curItem.detach(hero.belongings.backpack);
             GLog.h(Messages.get(AddItems.class, "remove"));
