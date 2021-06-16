@@ -56,7 +56,7 @@ public class SPDSettings extends GameSettings {
 	public static final String KEY_ZOOM			= "zoom";
 	public static final String KEY_BRIGHTNESS	= "brightness";
 	public static final String KEY_GRID 	    = "visual_grid";
-	public static final String KEY_DEV_MODE     = "dev_mode";
+	//public static final String KEY_DEV_MODE     = "dev_mode";
 	
 	public static void fullscreen( boolean value ) {
 		put( KEY_FULLSCREEN, value );
@@ -92,14 +92,14 @@ public class SPDSettings extends GameSettings {
 		return getBoolean( KEY_POWER_SAVER, false );
 	}
 
-	public static void devMode( boolean value) {
+	/*public static void devMode( boolean value) {
 		put( KEY_DEV_MODE, value );
 		WndSettings.dev = true;
 	}
 
 	public static boolean devMode() {
 		return getBoolean( KEY_DEV_MODE, false);
-	}
+	}*/
 
 
 	public static void scale( int value ) {

@@ -57,8 +57,8 @@ public class WndSettings extends WndTabbed {
 	private static final int WIDTH_P	    = 122;
 	private static final int WIDTH_L	    = 223;
 
-	private static final int SLIDER_HEIGHT	= 20;
-	private static final int BTN_HEIGHT	    = 14;
+	private static final int SLIDER_HEIGHT	= 24;
+	private static final int BTN_HEIGHT	    = 18;
 	private static final float GAP          = 2;
 
 	public static boolean dev = false;
@@ -292,7 +292,7 @@ public class WndSettings extends WndTabbed {
 			add(optVisGrid);
 
 
-			chkDevMode = new CheckBox(Messages.get(this, "dev")) {
+			/*chkDevMode = new CheckBox(Messages.get(this, "dev")) {
 				@Override
 				protected void onClick() {
 					super.onClick();
@@ -320,7 +320,7 @@ public class WndSettings extends WndTabbed {
 			add( chkDevMode );
 			if(chkDevMode.checked()) {
 				dev = true;
-			}
+			}*/
 		}
 
 
@@ -366,11 +366,11 @@ public class WndSettings extends WndTabbed {
 			if (width > 200){
 				optBrightness.setRect(0, bottom + GAP, width/2-GAP/2, SLIDER_HEIGHT);
 				optVisGrid.setRect(optBrightness.right() + GAP, optBrightness.top(), width/2-GAP/2, SLIDER_HEIGHT);
-				chkDevMode.setRect(optVisGrid.right() + GAP, optVisGrid.top(), width/2-GAP/2, SLIDER_HEIGHT);
+				//chkDevMode.setRect(optVisGrid.right() + GAP, optVisGrid.top(), width/2-GAP/2, SLIDER_HEIGHT);
 			} else {
 				optBrightness.setRect(0, bottom + GAP, width, SLIDER_HEIGHT);
 				optVisGrid.setRect(0, optBrightness.bottom() + GAP, width, SLIDER_HEIGHT);
-				chkDevMode.setRect(0, optVisGrid.bottom() + GAP, width, SLIDER_HEIGHT);
+				//chkDevMode.setRect(0, optVisGrid.bottom() + GAP, width, SLIDER_HEIGHT);
 			}
 
 			height = optVisGrid.bottom();
