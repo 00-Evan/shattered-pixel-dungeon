@@ -46,7 +46,9 @@ public class KingsCrown extends Item {
 	
 	{
 		image = ItemSpriteSheet.CROWN;
-		
+
+		defaultAction = AC_WEAR;
+
 		unique = true;
 	}
 	

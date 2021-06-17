@@ -40,12 +40,14 @@ import java.util.ArrayList;
 
 public class TengusMask extends Item {
 	
-	public static final String AC_WEAR	= "WEAR";
+	private static final String AC_WEAR	= "WEAR";
 	
 	{
 		stackable = false;
 		image = ItemSpriteSheet.MASK;
-		
+
+		defaultAction = AC_WEAR;
+
 		unique = true;
 	}
 	

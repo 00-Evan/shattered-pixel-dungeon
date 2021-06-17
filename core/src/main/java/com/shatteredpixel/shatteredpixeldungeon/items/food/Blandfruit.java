@@ -44,9 +44,11 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant.Seed;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Reflection;
 
@@ -83,6 +85,13 @@ public class Blandfruit extends Food {
 
 	@Override
 	public void execute( Hero hero, String action ) {
+
+		if (action.equals( Potion.AC_CHOOSE )){
+
+			GameScene.show(new WndUseItem(null, this) );
+			return;
+
+		}
 
 		if (action.equals( AC_EAT ) && potionAttrib == null) {
 
@@ -163,6 +172,12 @@ public class Blandfruit extends Food {
 		if (potionAttrib instanceof PotionOfPurity)         potionGlow = new ItemSprite.Glowing( 0xC152AA );
 		if (potionAttrib instanceof PotionOfExperience)     potionGlow = new ItemSprite.Glowing( 0x404040 );
 		if (potionAttrib instanceof PotionOfHaste)          potionGlow = new ItemSprite.Glowing( 0xCCBB00 );
+
+		potionAttrib.setAction();
+		defaultAction = potionAttrib.defaultAction;
+		if (defaultAction.equals(Potion.AC_DRINK)){
+			defaultAction = AC_EAT;
+		}
 
 		return this;
 	}
