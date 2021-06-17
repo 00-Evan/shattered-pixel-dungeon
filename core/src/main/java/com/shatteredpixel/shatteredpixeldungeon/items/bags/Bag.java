@@ -27,7 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuickBag;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 
@@ -61,7 +61,7 @@ public class Bag extends Item implements Iterable<Item> {
 
 		if (action.equals( AC_OPEN )) {
 			
-			GameScene.show( new WndBag( this, null, WndBag.Mode.ALL, null ) );
+			GameScene.show( new WndQuickBag( this ) );
 			
 		}
 	}

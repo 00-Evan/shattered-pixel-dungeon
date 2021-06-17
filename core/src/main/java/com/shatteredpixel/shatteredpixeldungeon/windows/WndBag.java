@@ -57,6 +57,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.input.KeyBindings;
 import com.watabou.input.KeyEvent;
@@ -68,8 +69,8 @@ import com.watabou.noosa.audio.Sample;
 
 public class WndBag extends WndTabbed {
 	
-	//only one wnditem can appear at a time
-	private static WndBag INSTANCE;
+	//only one bag window can appear at a time
+	public static Window INSTANCE;
 	
 	//FIXME this is getting cumbersome, there should be a better way to manage this
 	public static enum Mode {
