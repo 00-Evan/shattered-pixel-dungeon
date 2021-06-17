@@ -112,6 +112,8 @@ public class Ratmogrify extends ArmorAbility {
 			TargetHealthIndicator.instance.target(null);
 			CellEmitter.get(rat.pos).burst(Speck.factory(Speck.WOOL), 4);
 			Sample.INSTANCE.play(Assets.Sounds.PUFF);
+
+			Dungeon.level.occupyCell(rat);
 		}
 
 		armor.charge -= chargeUse(hero);
