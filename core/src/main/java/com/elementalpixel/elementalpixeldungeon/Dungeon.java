@@ -400,7 +400,7 @@ public class Dungeon {
 	}
 	
 	public static boolean bossLevel( int depth ) {
-		return depth == 5 || depth == 10 || depth == 15 || depth == 20 || depth == 25 || depth == 31;
+		return depth == 5 || depth == 10 || depth == 15 || depth == 20 || depth == 25 || depth == 35 || depth == 40 || depth == 45 || depth == 50;
 	}
 	
 	public static void switchLevel( final Level level, int pos ) {
