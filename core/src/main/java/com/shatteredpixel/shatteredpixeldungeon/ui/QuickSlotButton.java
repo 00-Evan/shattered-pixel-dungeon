@@ -204,7 +204,11 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 	private void enableSlot() {
 		slot.enable(Dungeon.quickslot.isNonePlaceholder( slotNum ));
 	}
-	
+
+	public static void useTargeting(int idx){
+		instance[idx].useTargeting();
+	}
+
 	private void useTargeting() {
 
 		if (lastTarget != null &&

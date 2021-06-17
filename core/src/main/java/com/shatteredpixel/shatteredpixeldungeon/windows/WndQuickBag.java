@@ -3,6 +3,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -16,6 +17,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
+import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.gltextures.TextureCache;
@@ -29,6 +31,8 @@ import java.util.Comparator;
 
 public class WndQuickBag extends Window {
 
+	private static Item bag;
+
 	public WndQuickBag(Bag bag){
 		super(0, 0, 0, Chrome.get(Chrome.Type.TOAST_TR));
 
@@ -36,6 +40,8 @@ public class WndQuickBag extends Window {
 			WndBag.INSTANCE.hide();
 		}
 		WndBag.INSTANCE = this;
+
+		WndQuickBag.bag = bag;
 
 		float width = 0, height = 0;
 		int maxWidth = PixelScene.landscape() ? 240 : 135;
@@ -211,6 +217,12 @@ public class WndQuickBag extends Window {
 		protected void onClick() {
 			hide();
 			item.execute(Dungeon.hero); //TODO targeting?
+			if (item.usesTargeting && bag != null){
+				int idx = Dungeon.quickslot.getSlot(WndQuickBag.bag);
+				if (idx != -1){
+					QuickSlotButton.useTargeting(idx);
+				}
+			}
 		}
 
 		@Override
