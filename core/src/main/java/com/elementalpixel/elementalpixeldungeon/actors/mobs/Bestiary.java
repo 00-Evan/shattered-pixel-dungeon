@@ -21,6 +21,7 @@
 
 package com.elementalpixel.elementalpixeldungeon.actors.mobs;
 
+import com.elementalpixel.elementalpixeldungeon.items.fragments.Fragment;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -176,6 +177,45 @@ public class Bestiary {
 						Succubus.class,
 						Eye.class, Eye.class,
 						Scorpio.class, Scorpio.class, Scorpio.class));
+			case 27:
+			case 28:
+			case 29:
+			case 30:
+				return new ArrayList<>(Arrays.asList());
+			case 31:
+			case 32:
+			case 33:
+			case 34:
+			case 35:
+				return new ArrayList<>(Arrays.asList(
+						Elemental.FireElemental.class, Elemental.FireElemental.class
+				));
+			case 36:
+			case 37:
+			case 38:
+			case 39:
+			case 40:
+				return new ArrayList<>(Arrays.asList(
+						Elemental.ShockElemental.class, Elemental.ShockElemental.class
+
+				));
+			case 41:
+			case 42:
+			case 43:
+			case 44:
+			case 45:
+				return new ArrayList<>(Arrays.asList(
+						Elemental.FrostElemental.class, Elemental.FrostElemental.class
+				));
+			case 46:
+			case 47:
+			case 48:
+			case 49:
+			case 50:
+				return new ArrayList<>(Arrays.asList(
+						Elemental.ChaosElemental.class, Elemental.ChaosElemental.class
+				));
+
 		}
 		
 	}
