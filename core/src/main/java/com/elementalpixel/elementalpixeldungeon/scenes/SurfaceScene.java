@@ -135,8 +135,10 @@ public class SurfaceScene extends PixelScene {
 			patch.brightness( dayTime ? 0.7f : 0.4f );
 			window.add( patch );
 		}
-		
+
 		Avatar a = new Avatar( Dungeon.hero.heroClass );
+
+
 		// Removing semitransparent contour
 		a.am = 2; a.aa = -1;
 		a.x = (SKY_WIDTH - a.width) / 2;
@@ -367,10 +369,10 @@ public class SurfaceScene extends PixelScene {
 	}
 
 	private static class Avatar extends Image {
-		
-		private static final int WIDTH	= 24;
-		private static final int HEIGHT	= 32;
-		
+
+		private static final int WIDTH    = 24;
+		private static final int HEIGHT    = 32;
+
 		public Avatar( HeroClass cl ) {
 			super( Assets.Sprites.AVATARS );
 			frame( new TextureFilm( texture, WIDTH, HEIGHT ).get( cl.ordinal() ) );
