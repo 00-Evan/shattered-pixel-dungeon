@@ -98,7 +98,7 @@ public class CloakOfShadows extends Artifact {
 			} else {
 				activeBuff.detach();
 				activeBuff = null;
-				if (hero.buff(Preparation.class) != null){
+				if (hero.invisible <= 0 && hero.buff(Preparation.class) != null){
 					hero.buff(Preparation.class).detach();
 				}
 				hero.sprite.operate( hero.pos );
