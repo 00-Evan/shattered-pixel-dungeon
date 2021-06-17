@@ -360,36 +360,36 @@ public class GameScene extends PixelScene {
 		counter.show(this, busy.center(), 0f);
 		
 		switch (InterlevelScene.mode) {
-		case RESURRECT:
-			ScrollOfTeleportation.appear( Dungeon.hero, Dungeon.level.entrance );
-			new Flare( 8, 32 ).color( 0xFFFF66, true ).show( hero, 2f ) ;
-			break;
-		case RETURN:
-			ScrollOfTeleportation.appear(  Dungeon.hero, Dungeon.hero.pos );
-			break;
-		case DESCEND:
-			switch (Dungeon.depth) {
-			case 1:
-				WndStory.showChapter( WndStory.ID_SEWERS );
+			case RESURRECT:
+				ScrollOfTeleportation.appear( Dungeon.hero, Dungeon.level.entrance );
+				new Flare( 8, 32 ).color( 0xFFFF66, true ).show( hero, 2f ) ;
 				break;
-			case 6:
-				WndStory.showChapter( WndStory.ID_PRISON );
+			case RETURN:
+				ScrollOfTeleportation.appear(  Dungeon.hero, Dungeon.hero.pos );
 				break;
-			case 11:
-				WndStory.showChapter( WndStory.ID_CAVES );
+			case DESCEND:
+			case FALL:
+				switch (Dungeon.depth) {
+				case 1:
+					WndStory.showChapter( WndStory.ID_SEWERS );
+					break;
+				case 6:
+					WndStory.showChapter( WndStory.ID_PRISON );
+					break;
+				case 11:
+					WndStory.showChapter( WndStory.ID_CAVES );
+					break;
+				case 16:
+					WndStory.showChapter( WndStory.ID_CITY );
+					break;
+				case 21:
+					WndStory.showChapter( WndStory.ID_HALLS );
+					break;
+				}
+				if (Dungeon.hero.isAlive()) {
+					Badges.validateNoKilling();
+				}
 				break;
-			case 16:
-				WndStory.showChapter( WndStory.ID_CITY );
-				break;
-			case 21:
-				WndStory.showChapter( WndStory.ID_HALLS );
-				break;
-			}
-			if (Dungeon.hero.isAlive()) {
-				Badges.validateNoKilling();
-			}
-			break;
-		default:
 		}
 
 		ArrayList<Item> dropped = Dungeon.droppedItems.get( Dungeon.depth );
