@@ -128,9 +128,10 @@ public enum Rankings {
 				for (Item bagItem : ((Bag) item).items.toArray( new Item[0])){
 					if (Dungeon.quickslot.contains(bagItem)) belongings.backpack.items.add(bagItem);
 				}
+			}
+			if (!Dungeon.quickslot.contains(item)) {
 				belongings.backpack.items.remove(item);
-			} else if (!Dungeon.quickslot.contains(item))
-				belongings.backpack.items.remove(item);
+			}
 		}
 
 		//remove all buffs (ones tied to equipment will be re-applied)
