@@ -37,6 +37,9 @@ public class StoneOfFlock extends Runestone {
 	
 	{
 		image = ItemSpriteSheet.STONE_FLOCK;
+
+		//the sheep will press the cell instead
+		pressesCell = false;
 	}
 	
 	@Override

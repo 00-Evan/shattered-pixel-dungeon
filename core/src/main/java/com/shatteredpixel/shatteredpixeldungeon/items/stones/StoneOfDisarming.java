@@ -43,18 +43,9 @@ public class StoneOfDisarming extends Runestone {
 	
 	{
 		image = ItemSpriteSheet.STONE_DISARM;
-	}
 
-	@Override
-	protected void onThrow(int cell) {
-		//This runestone uniquely presses cells after its effect resolves, instead of before
-		if (Dungeon.level.pit[cell] || !defaultAction.equals(AC_THROW)){
-			super.onThrow( cell );
-		} else {
-			activate(cell);
-			Invisibility.dispel();
-			Dungeon.level.pressCell( cell );
-		}
+		//so traps do not activate before the effect
+		pressesCell = false;
 	}
 
 	@Override

@@ -32,13 +32,16 @@ public abstract class Runestone extends Item {
 		stackable = true;
 		defaultAction = AC_THROW;
 	}
-	
+
+	//runestones press the cell they're thrown to by default, but a couple stones override this
+	protected boolean pressesCell = true;
+
 	@Override
 	protected void onThrow(int cell) {
 		if (Dungeon.level.pit[cell] || !defaultAction.equals(AC_THROW)){
 			super.onThrow( cell );
 		} else {
-			Dungeon.level.pressCell( cell );
+			if (pressesCell) Dungeon.level.pressCell( cell );
 			activate(cell);
 			Invisibility.dispel();
 		}
