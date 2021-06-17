@@ -154,6 +154,8 @@ public class WndClass extends WndTabbed {
 				case HUNTRESS:
 					message = HeroSubClass.SNIPER.desc() + "\n\n" + HeroSubClass.WARDEN.desc();
 					break;
+				case ALCHEMIST:
+					message = HeroSubClass.ELEMENTALIST.desc() + "\n\n" + HeroSubClass.SCIENTIST.desc();
 			}
 
 			RenderedTextBlock text = PixelScene.renderTextBlock( 6 );
