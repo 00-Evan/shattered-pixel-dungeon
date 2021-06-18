@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -59,9 +61,28 @@ public class v0_9_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v0.9.3b", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		if (Gdx.app.getType() == Application.ApplicationType.Android && Gdx.app.getVersion() < 14) {
+			changes.addButton(new ChangeButton(Icons.get(Icons.WARNING), "Android 2.3 and 3 Support",
+					"v0.9.3b is the final version of Shattered Pixel Dungeon which supports Android 2.3 Gingerbread and Android 3 Honeycomb. I don't currently have plans to end support for other Android versions.\n\n" +
+					"If you'd like to keep up to date on future updates, check out the blog at _ShatteredPixel.com_"));
+		}
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"It is now possible to access a quick-use window by quickslotting a bag or by long-pressing the inventory! A few items that were missing quick actions have also been given them, and bags can now appear in the rankings.\n\n" +
+				"_-_ Runestones of flock now also activate before triggering traps"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by v0.9.3):\n" +
+				"_-_ Deactivating cloak ending preparation when Assassin is invisible by other means as well\n" +
+				"_-_ Flying transmogrified enemies not falling if above chasms\n\n" +
+				"Fixed (existed prior to v0.9.3):\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Chaos elemental teleportation not interrupting the hero\n" +
+				"_-_ Pacifist badge not triggering if hero descended by falling"));
 
 		changes = new ChangeInfo("v0.9.3a", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
