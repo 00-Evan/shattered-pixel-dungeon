@@ -215,8 +215,13 @@ public class WndQuickBag extends Window {
 
 		@Override
 		protected void onClick() {
+			if (Dungeon.hero == null || !Dungeon.hero.isAlive()){
+				Game.scene().addToFront(new WndUseItem(WndQuickBag.this, item));
+				return;
+			}
+
 			hide();
-			item.execute(Dungeon.hero); //TODO targeting?
+			item.execute(Dungeon.hero);
 			if (item.usesTargeting && bag != null){
 				int idx = Dungeon.quickslot.getSlot(WndQuickBag.bag);
 				if (idx != -1){
