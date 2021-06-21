@@ -112,6 +112,9 @@ public class WarpBeacon extends ArmorAbility {
 						if (tracker.depth == Dungeon.depth){
 							Char existing = Actor.findChar(tracker.pos);
 
+							Invisibility.dispel();
+							ScrollOfTeleportation.appear(hero, tracker.pos);
+
 							if (existing != null && existing != hero){
 								if (hero.hasTalent(Talent.TELEFRAG)){
 									int heroHP = hero.HP + hero.shielding();
@@ -128,29 +131,28 @@ public class WarpBeacon extends ArmorAbility {
 								}
 
 								if (existing.isAlive()){
+									Char toPush = Char.hasProp(existing, Char.Property.IMMOVABLE) ? hero : existing;
+
 									ArrayList<Integer> candidates = new ArrayList<>();
 									for (int n : PathFinder.NEIGHBOURS8) {
-										int cell = target + n;
+										int cell = tracker.pos + n;
 										if (!Dungeon.level.solid[cell] && Actor.findChar( cell ) == null
-												&& (!Char.hasProp(existing, Char.Property.LARGE) || Dungeon.level.openSpace[cell])) {
+												&& (!Char.hasProp(toPush, Char.Property.LARGE) || Dungeon.level.openSpace[cell])) {
 											candidates.add( cell );
 										}
 									}
 									Random.shuffle(candidates);
-									Char toPush = Char.hasProp(existing, Char.Property.IMMOVABLE) ? hero : existing;
 
 									if (!candidates.isEmpty()){
 										Actor.addDelayed( new Pushing( toPush, toPush.pos, candidates.get(0) ), -1 );
 
-										existing.pos = candidates.get(0);
-										Dungeon.level.occupyCell(existing);
+										toPush.pos = candidates.get(0);
+										Dungeon.level.occupyCell(toPush);
 										hero.next();
 									}
 								}
 							}
 
-							Invisibility.dispel();
-							ScrollOfTeleportation.appear(hero, tracker.pos);
 							Dungeon.observe();
 
 						} else {
