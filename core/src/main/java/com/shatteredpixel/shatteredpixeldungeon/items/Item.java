@@ -205,7 +205,9 @@ public class Item implements Bundlable {
 				if (isSimilar( item )) {
 					item.merge( this );
 					item.updateQuickslot();
-					Talent.onItemCollected( Dungeon.hero, item );
+					if (Dungeon.hero != null && Dungeon.hero.isAlive()) {
+						Talent.onItemCollected(Dungeon.hero, item);
+					}
 					return true;
 				}
 			}
