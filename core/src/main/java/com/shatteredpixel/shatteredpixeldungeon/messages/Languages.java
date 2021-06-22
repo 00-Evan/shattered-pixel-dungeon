@@ -36,7 +36,7 @@ public enum Languages {
 	ITALIAN("italiano",		"it", Status.INCOMPLETE, new String[]{"bizzolino", "funnydwarf"}, new String[]{"4est", "Danelix", "DaniMare", "Danzl", "Eriliken", "Esse78", "Guiller124", "IoannesMaria", "Mat323", "Noostale", "andreafaffo", "andrearubbino00", "cantarini", "carinellialessandro31", "dmytro.tokayev", "mattiuw", "nessunluogo", "righi.a", "umby000"}),
 	CZECH("čeština",        "cs", Status.UNREVIEWED, new String[]{"ObisMike"}, new String[]{"16cnovotny", "AshenShugar", "Autony", "Buba237", "JStrange", "RealBrofessor", "kristanka", "chuckjirka", "novotnyvaclav"}),
 	TURKISH("türkçe",       "tr", Status.INCOMPLETE, new String[]{"LokiofMillenium", "emrebnk"}, new String[]{"AGORAAA", "AcuriousPotato", "OzanAlkan", "alikeremozfidan", "alpekin98", "denizakalin", "erdemozdemir98", "gorkem_yılmaz", "hasantahsin160", "immortalsamuraicn", "kayikyaki", "melezorus34", "mitux", "ryuga"}),
-	INDONESIAN("indonésien","in", Status.INCOMPLETE, new String[]{"rakapratama"}, new String[]{"Izulhaaq", "Taka31", "ZakyM313", "ZangieF347", "esprogarap", "kirimaja", "wisnugafur"}),
+	INDONESIAN("indonésien","in", Status.UNREVIEWED, new String[]{"rakapratama"}, new String[]{"Izulhaaq", "Taka31", "ZakyM313", "ZangieF347", "esprogarap", "kirimaja", "wisnugafur"}),
 	FINNISH("suomi", 		"fi", Status.INCOMPLETE, new String[]{"TenguKnight"}, new String[]{"Dakkus", "Sautari"} ),
 	HUNGARIAN("magyar",     "hu", Status.INCOMPLETE, new String[]{"dorheim", "szalaik"}, new String[]{"Navetelen", "acszoltan111", "clarovani", "dhialub", "nanometer", "nardomaa", "savarall"}),
 	JAPANESE("日本語",       "ja", Status.INCOMPLETE, null, new String[]{"Gosamaru", "amama", "librada", "mocklike", "tomofumikitano"}),
