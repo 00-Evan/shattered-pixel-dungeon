@@ -104,7 +104,7 @@ public class DeathMark extends ArmorAbility {
 
 		if (Dungeon.hero.hasTalent(Talent.FEAR_THE_REAPER)) {
 			if (Dungeon.hero.pointsInTalent(Talent.FEAR_THE_REAPER) >= 2) {
-				Buff.prolong(ch, Terror.class, 5f).target = Dungeon.hero;
+				Buff.prolong(ch, Terror.class, 5f).object = Dungeon.hero.id();
 			}
 			Buff.prolong(ch, Cripple.class, 5f);
 
@@ -116,7 +116,7 @@ public class DeathMark extends ArmorAbility {
 					if (near != ch && near.alignment == Char.Alignment.ENEMY
 							&& PathFinder.distance[near.pos] != Integer.MAX_VALUE) {
 						if (Dungeon.hero.pointsInTalent(Talent.FEAR_THE_REAPER) == 4) {
-							Buff.prolong(near, Terror.class, 5f).target = Dungeon.hero;
+							Buff.prolong(near, Terror.class, 5f).object = Dungeon.hero.id();
 						}
 						Buff.prolong(near, Cripple.class, 5f);
 					}
