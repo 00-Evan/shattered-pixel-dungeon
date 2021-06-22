@@ -131,6 +131,8 @@ public class Necromancer extends Mob {
 		}
 		if (mySkeleton != null){
 			bundle.put( MY_SKELETON, mySkeleton.id() );
+		} else if (storedSkeletonID != -1){
+			bundle.put( MY_SKELETON, storedSkeletonID );
 		}
 	}
 	
