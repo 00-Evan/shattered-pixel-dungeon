@@ -22,11 +22,14 @@
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -55,7 +58,8 @@ public class Dewdrop extends Item {
 
 		} else {
 
-			if (!consumeDew(1, hero)){
+			int terr = Dungeon.level.map[hero.pos];
+			if (!consumeDew(1, hero, terr == Terrain.ENTRANCE|| terr == Terrain.EXIT || terr == Terrain.UNLOCKED_EXIT)){
 				return false;
 			}
 			
@@ -67,7 +71,7 @@ public class Dewdrop extends Item {
 		return true;
 	}
 
-	public static boolean consumeDew(int quantity, Hero hero){
+	public static boolean consumeDew(int quantity, Hero hero, boolean force){
 		//20 drops for a full heal
 		int heal = Math.round( hero.HT * 0.05f * quantity );
 
@@ -92,7 +96,7 @@ public class Dewdrop extends Item {
 				hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(Dewdrop.class, "shield", shield) );
 			}
 
-		} else {
+		} else if (!force) {
 			GLog.i( Messages.get(Dewdrop.class, "already_full") );
 			return false;
 		}
