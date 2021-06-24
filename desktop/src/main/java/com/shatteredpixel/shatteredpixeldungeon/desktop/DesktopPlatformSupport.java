@@ -41,6 +41,7 @@ public class DesktopPlatformSupport extends PlatformSupport {
 	
 	@Override
 	public void updateDisplaySize() {
+		//FIXME we still set window resolution when game becomes maximized =/
 		if (!SPDSettings.fullscreen()) {
 			SPDSettings.windowResolution( new Point( Game.width, Game.height ) );
 		}
@@ -64,11 +65,6 @@ public class DesktopPlatformSupport extends PlatformSupport {
 	@Override
 	public boolean connectedToUnmeteredNetwork() {
 		return true; //no easy way to check this in desktop, just assume user doesn't care
-	}
-
-	@Override
-	public boolean openURI(String URI) {
-		return Gdx.net.openURI(URI);
 	}
 
 	@Override

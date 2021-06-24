@@ -174,23 +174,6 @@ public class AndroidPlatformSupport extends PlatformSupport {
 	}
 
 	@Override
-	public boolean openURI(String URI) {
-		//copied from LibGDX 1.9.14 source
-		final Uri uri = Uri.parse(URI);
-		try {
-			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-			// LiveWallpaper and Daydream applications need this flag
-			if (!(((AndroidApplication)Gdx.app).getContext() instanceof Activity)) {
-				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			}
-			((AndroidApplication)Gdx.app).startActivity(intent);
-			return true;
-		} catch (ActivityNotFoundException e) {
-			return false;
-		}
-	}
-
-	@Override
 	public void promptTextInput(final String title, final String hintText, final int maxLen, final boolean multiLine, final String posTxt, final String negTxt, final TextCallback callback) {
 		Game.runOnRenderThread( new Callback() {
 					@Override
