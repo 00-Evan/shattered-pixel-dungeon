@@ -39,7 +39,7 @@
 		<activity
 			android:label="${appName}"
 			android:name=".AndroidGame"
-			android:screenOrientation="nosensor"
+			android:screenOrientation="user"
 			android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize">
 		</activity>
 
