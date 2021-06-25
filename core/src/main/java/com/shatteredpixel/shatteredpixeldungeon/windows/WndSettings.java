@@ -532,16 +532,18 @@ public class WndSettings extends WndTabbed {
 			chkNews.checked(SPDSettings.news());
 			add(chkNews);
 
-			chkUpdates = new CheckBox(Messages.get(this, "updates")){
-				@Override
-				protected void onClick() {
-					super.onClick();
-					SPDSettings.updates(checked());
-					Updates.clearUpdate();
-				}
-			};
-			chkUpdates.checked(SPDSettings.updates());
-			add(chkUpdates);
+			if (Updates.supportsUpdates()) {
+				chkUpdates = new CheckBox(Messages.get(this, "updates")) {
+					@Override
+					protected void onClick() {
+						super.onClick();
+						SPDSettings.updates(checked());
+						Updates.clearUpdate();
+					}
+				};
+				chkUpdates.checked(SPDSettings.updates());
+				add(chkUpdates);
+			}
 
 			if (!DeviceCompat.isDesktop()){
 				chkWifi = new CheckBox(Messages.get(this, "wifi")){
@@ -562,15 +564,20 @@ public class WndSettings extends WndTabbed {
 			sep1.size(width, 1);
 			sep1.y = title.bottom() + 2*GAP;
 
-			if (width > 200){
+			float pos;
+			if (width > 200 && chkUpdates != null){
 				chkNews.setRect(0, sep1.y + 1 + GAP, width/2-1, BTN_HEIGHT);
 				chkUpdates.setRect(chkNews.right() + GAP, chkNews.top(), width/2-1, BTN_HEIGHT);
+				pos = chkUpdates.bottom();
 			} else {
 				chkNews.setRect(0, sep1.y + 1 + GAP, width, BTN_HEIGHT);
-				chkUpdates.setRect(0, chkNews.bottom()+ GAP, width, BTN_HEIGHT);
+				pos = chkNews.bottom();
+				if (chkUpdates != null) {
+					chkUpdates.setRect(0, chkNews.bottom() + GAP, width, BTN_HEIGHT);
+					pos = chkUpdates.bottom();
+				}
 			}
 
-			float pos = chkUpdates.bottom();
 			if (chkWifi != null){
 				chkWifi.setRect(0, pos + GAP, width, BTN_HEIGHT);
 				pos = chkWifi.bottom();
