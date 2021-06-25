@@ -52,7 +52,10 @@ public class Game implements ApplicationListener {
 	// Size of the EGL surface view
 	public static int width;
 	public static int height;
-	
+
+	//number of pixels from bottom of view before rendering starts
+	public static int bottomInset;
+
 	// Density: mdpi=1, hdpi=1.5, xhdpi=2...
 	public static float density = 1;
 	
@@ -299,7 +302,7 @@ public class Game implements ApplicationListener {
 	}
 	
 	public static void vibrate( int milliseconds ) {
-		Gdx.input.vibrate(milliseconds);
+		platform.vibrate( milliseconds );
 	}
 
 	public interface SceneChangeCallback{

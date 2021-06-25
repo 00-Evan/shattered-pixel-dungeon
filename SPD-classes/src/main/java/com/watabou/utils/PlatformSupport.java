@@ -21,6 +21,7 @@
 
 package com.watabou.utils;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 public abstract class PlatformSupport {
@@ -39,7 +40,12 @@ public abstract class PlatformSupport {
 	public static abstract class TextCallback {
 		public abstract void onSelect( boolean positive, String text );
 	}
-	
+
+	public void vibrate( int millis ){
+		//regular GDX vibration by default
+		Gdx.input.vibrate( millis );
+	}
+
 	//TODO should consider spinning this into its own class, rather than platform support getting ever bigger
 	
 	public abstract void setupFontGenerators(int pageSize, boolean systemFont );

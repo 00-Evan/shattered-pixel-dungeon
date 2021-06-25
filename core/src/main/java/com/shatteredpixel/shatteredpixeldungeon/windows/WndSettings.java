@@ -223,7 +223,7 @@ public class WndSettings extends WndTabbed {
 				add(optScale);
 			}
 
-			if (!DeviceCompat.isDesktop() && PixelScene.maxScreenZoom >= 2) {
+			if (DeviceCompat.isAndroid() && PixelScene.maxScreenZoom >= 2) {
 				chkSaver = new CheckBox(Messages.get(this, "saver")) {
 					@Override
 					protected void onClick() {
