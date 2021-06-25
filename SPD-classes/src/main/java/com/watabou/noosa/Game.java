@@ -35,6 +35,7 @@ import com.watabou.input.PointerEvent;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
+import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.PlatformSupport;
 import com.watabou.utils.Reflection;
 
@@ -88,11 +89,6 @@ public class Game implements ApplicationListener {
 		instance = this;
 		this.platform = platform;
 	}
-
-	//FIXME this is a temporary workaround to improve start times on android (first frame is 'cheated' and only renders a black screen)
-	//this is partly to improve stats on google play, and partly to try and diagnose what the cause of slow loading times is
-	//ultimately once the cause is found it should be fixed and this should no longer be needed
-	private boolean justResumed = true;
 	
 	@Override
 	public void create() {
@@ -140,7 +136,12 @@ public class Game implements ApplicationListener {
 			resetScene();
 		}
 	}
-	
+
+	//FIXME this is a temporary workaround to improve start times on android (first frame is 'cheated' and skips rendering)
+	//this is partly to improve stats on google play, and partly to try and diagnose what the cause of slow loading times is
+	//ultimately once the cause is found it should be fixed and this should no longer be needed
+	private boolean justResumed = true;
+
 	@Override
 	public void render() {
 		//prevents weird rare cases where the app is running twice
@@ -150,9 +151,8 @@ public class Game implements ApplicationListener {
 		}
 
 		if (justResumed){
-			Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
 			justResumed = false;
-			return;
+			if (DeviceCompat.isAndroid()) return;
 		}
 
 		NoosaScript.get().resetCamera();
