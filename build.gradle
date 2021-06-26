@@ -5,6 +5,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.1'
+        classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.13'
     }
 }
 
@@ -24,12 +25,14 @@ allprojects {
         appAndroidTargetSDK = 30
 
         gdxVersion = '1.10.0'
+        robovmVersion = '2.3.13'
     }
     version = appVersionName
 
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
 
 }
