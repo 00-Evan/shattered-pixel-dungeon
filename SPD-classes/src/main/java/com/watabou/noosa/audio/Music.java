@@ -23,6 +23,7 @@ package com.watabou.noosa.audio;
 
 import com.badlogic.gdx.Gdx;
 import com.watabou.noosa.Game;
+import com.watabou.utils.DeviceCompat;
 
 public enum Music {
 	
@@ -37,6 +38,11 @@ public enum Music {
 	private float volume = 1f;
 	
 	public synchronized void play( String assetName, boolean looping ) {
+
+		//iOS cannot play ogg, so we use an mp3 alternative instead
+		if (assetName != null && DeviceCompat.isiOS()){
+			assetName = assetName.replace(".ogg", ".mp3");
+		}
 		
 		if (isPlaying() && lastPlayed != null && lastPlayed.equals( assetName )) {
 			return;
