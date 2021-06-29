@@ -43,7 +43,8 @@ public enum Icons {
 	DATA,
 	AUDIO,
 	TALENT,
-	
+	NET,
+
 	//ingame UI icons
 	SKULL,
 	BUSY,
@@ -134,6 +135,9 @@ public enum Icons {
 			break;
 		case TALENT:
 			icon.frame( icon.texture.uvRect( 80, 16, 93, 29 ) );
+			break;
+		case NET:
+			icon.frame( icon.texture.uvRect( 95, 16, 112, 31 ) );
 			break;
 		case SKULL:
 			icon.frame( icon.texture.uvRect( 0, 32, 8, 40 ) );
