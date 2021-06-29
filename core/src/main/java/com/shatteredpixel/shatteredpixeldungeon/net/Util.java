@@ -13,4 +13,12 @@ public class Util {
     public static void message(String message){
         ShatteredPixelDungeon.scene().add(new WndMessage(message));
     }
+
+    public static void showSettings(){
+        ShatteredPixelDungeon.scene().add(new WndNetSettings());
+    }
+
+    public static void showServerInfo(){
+        ShatteredPixelDungeon.scene().add(new WndServerInfo());
+    }
 }

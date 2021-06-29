@@ -1,5 +1,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.net;
 
+import java.net.URI;
 import java.net.URISyntaxException;
 
 import io.socket.client.IO;
@@ -10,19 +11,25 @@ import static com.shatteredpixel.shatteredpixeldungeon.net.Util.error;
 public class Net {
     private Socket socket;
     private Emitters emitters;
+    private URI uri;
 
     public Net(){
-        host(Settings.uri(false).toString());
+        host(Settings.uri(false));
     }
 
-    public void host(String address){
-        System.out.println(address);
+    public void host(URI address){
         try {
             socket = IO.socket(address);
+            uri = address;
         }catch(Exception e){
             error(e.getMessage());
         }
     }
+
+    public URI uri(){
+        return this.uri;
+    }
+
     public void toggle() {
         if(socket == null || !socket.connected()) {
             try {
@@ -36,7 +43,7 @@ public class Net {
         }
     }
 
-    public void connect() throws URISyntaxException {
+    public void connect() {
         socket.connect();
     }
 

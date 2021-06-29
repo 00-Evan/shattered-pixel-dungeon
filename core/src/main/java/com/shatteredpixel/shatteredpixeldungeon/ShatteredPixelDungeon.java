@@ -113,7 +113,6 @@ public class ShatteredPixelDungeon extends Game {
 	public void create() {
 		super.create();
 
-		net = new Net();
 		updateSystemUI();
 		SPDAction.loadBindings();
 		
@@ -123,7 +122,7 @@ public class ShatteredPixelDungeon extends Game {
 		Sample.INSTANCE.volume( SPDSettings.SFXVol()*SPDSettings.SFXVol()/100f );
 
 		Sample.INSTANCE.load( Assets.Sounds.all );
-		
+		net = new Net();
 	}
 
 	public static void switchNoFade(Class<? extends PixelScene> c){
@@ -186,5 +185,9 @@ public class ShatteredPixelDungeon extends Game {
 
 	public static void updateSystemUI() {
 		platform.updateSystemUI();
+	}
+
+	public Net net(){
+		return net;
 	}
 }

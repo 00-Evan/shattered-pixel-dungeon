@@ -25,7 +25,7 @@ public class Emitters {
             Game.runOnRenderThread(new Callback() {
                 @Override
                 public void call() {
-                    message("Connected");
+                    showServerInfo();
                 }
             });
         }

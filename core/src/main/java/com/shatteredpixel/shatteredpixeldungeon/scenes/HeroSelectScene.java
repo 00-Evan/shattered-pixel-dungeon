@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.net.Util;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
@@ -63,8 +64,6 @@ public class HeroSelectScene extends PixelScene {
 	private IconButton infoButton;
 	private IconButton challengeButton;
 	private IconButton btnExit;
-
-	private ShatteredPixelDungeon instance = ((ShatteredPixelDungeon) ShatteredPixelDungeon.instance);
 
 	@Override
 	public void create() {
@@ -350,7 +349,7 @@ public class HeroSelectScene extends PixelScene {
 		@Override
 		protected void onClick() {
 			super.onClick();
-			instance.net.toggle();
+			Util.showServerInfo();
 		}
 	}
 }
