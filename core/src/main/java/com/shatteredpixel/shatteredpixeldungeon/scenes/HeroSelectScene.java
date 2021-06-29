@@ -21,12 +21,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
-import com.badlogic.gdx.graphics.Color;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
-import com.shatteredpixel.shatteredpixeldungeon.Net;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -52,7 +50,6 @@ import com.watabou.noosa.PointerArea;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 public class HeroSelectScene extends PixelScene {
@@ -353,11 +350,7 @@ public class HeroSelectScene extends PixelScene {
 		@Override
 		protected void onClick() {
 			super.onClick();
-			try {
-				instance.net.toggle();
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-			}
+			instance.net.toggle();
 		}
 	}
 }
