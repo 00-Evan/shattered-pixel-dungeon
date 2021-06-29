@@ -13,8 +13,19 @@ public class Net {
     private Emitters emitters;
     private URI uri;
 
-    public Net(){
+    public Net(String address, String key){
+        host(URI.create(address));
+        Settings.auth_key(key);
+    }
+
+    public Net(String key){
         host(Settings.uri(false));
+        Settings.auth_key(key);
+    }
+
+    public Net(){
+        host(URI.create("http://127.0.0.1:5500"));
+        Settings.auth_key("1234");
     }
 
     public void host(URI address){

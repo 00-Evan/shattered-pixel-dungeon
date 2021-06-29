@@ -8,6 +8,7 @@ import java.net.URISyntaxException;
 public class Settings extends GameSettings {
     public static final String KEY_ADDRESS	= "net_key";
     public static final String KEY_PORT	= "net_port";
+    public static final String KEY_AUTH_KEY	= "net_auth_key";
 
     public static void address( String value ) {
         put( KEY_ADDRESS, value );
@@ -34,5 +35,13 @@ public class Settings extends GameSettings {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void auth_key( String value ) {
+        put( KEY_AUTH_KEY, value );
+    }
+
+    public static String auth_key() {
+        return getString(KEY_AUTH_KEY, "00000000");
     }
 }

@@ -5,8 +5,8 @@ import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndNetSettings;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndServerInfo;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndMessage;
+import com.watabou.noosa.Image;
 
 
 public class Util {
@@ -15,8 +15,15 @@ public class Util {
         ShatteredPixelDungeon.scene().add(new WndError(message));
     }
 
+    public static void message(Image i, String title, String message){
+        ShatteredPixelDungeon.scene().add(new WndMessage(i, title, message));
+    }
+
+    public static void message(String title, String message){
+        ShatteredPixelDungeon.scene().add(new WndMessage(Icons.get(Icons.NET), title, message));
+    }
     public static void message(String message){
-        ShatteredPixelDungeon.scene().add(new WndMessage(message));
+        ShatteredPixelDungeon.scene().add(new WndMessage(Icons.get(Icons.NET), "Server Message", message));
     }
 
     public static void showSettings(){
@@ -28,6 +35,6 @@ public class Util {
     }
 
     public static void motd(String message){
-        ShatteredPixelDungeon.scene().add(new WndOptions(Icons.get(Icons.NEWS), "Motd", message, "Close"));
+        message(Icons.get(Icons.NEWS), "Motd", message);
     }
 }
