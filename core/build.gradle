@@ -7,4 +7,7 @@ dependencies {
     api project(':SPD-classes')
     //TODO might be nice to remove this, should decide
     implementation project(':services')
+
+    //socket-io
+    implementation "io.socket:socket.io-client:2.0.1"
 }
