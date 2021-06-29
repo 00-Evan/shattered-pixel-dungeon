@@ -9,5 +9,9 @@ dependencies {
     implementation project(':services')
 
     //socket-io
-    implementation "io.socket:socket.io-client:2.0.1"
+    implementation 'io.socket:socket.io-client:2.0.1'
+
+    //jackson
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.12.3'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
 }
