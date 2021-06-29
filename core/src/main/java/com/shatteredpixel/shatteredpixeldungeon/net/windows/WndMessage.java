@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.net.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
@@ -34,7 +33,6 @@ public class WndMessage extends Window {
 	private static final int WIDTH_L = 144;
 
 	private static final int MARGIN 		= 2;
-	private static final int BUTTON_HEIGHT	= 18;
 
 	public WndMessage(Image icon, String title, String message) {
 		super();

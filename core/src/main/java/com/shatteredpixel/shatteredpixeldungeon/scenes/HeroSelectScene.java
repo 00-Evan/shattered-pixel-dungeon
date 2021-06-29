@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.net.Util;
+import com.shatteredpixel.shatteredpixeldungeon.net.ui.NetBtn;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
@@ -326,30 +327,6 @@ public class HeroSelectScene extends PixelScene {
 			} else {
 				setSelectedHero(cl);
 			}
-		}
-	}
-
-	private class NetBtn extends StyledButton {
-		private static final int HEIGHT = 24;
-		private static final int MIN_WIDTH = 30;
-
-		private ShatteredPixelDungeon instance = ((ShatteredPixelDungeon) ShatteredPixelDungeon.instance);
-
-		NetBtn() {
-			super(Chrome.Type.GREY_BUTTON_TR, "");
-			icon(Icons.get(Icons.NET));
-		}
-
-		@Override
-		public void update() {
-			super.update();
-			icon.brightness(instance.net.connected() ? 0.8f : 0.2f );
-		}
-
-		@Override
-		protected void onClick() {
-			super.onClick();
-			Util.showServerInfo();
 		}
 	}
 }
