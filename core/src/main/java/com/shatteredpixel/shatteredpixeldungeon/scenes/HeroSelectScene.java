@@ -151,10 +151,10 @@ public class HeroSelectScene extends PixelScene {
 		HeroClass[] classes = HeroClass.values();
 
 		int btnWidth = HeroBtn.MIN_WIDTH;
-		int curX = (Camera.main.width - btnWidth * classes.length)/2;
+		int curX = (Camera.main.width - btnWidth * (classes.length+1))/2;
 		if (curX > 0){
-			btnWidth += Math.min(curX/(classes.length/2), 15);
-			curX = (Camera.main.width - btnWidth * classes.length)/2;
+			btnWidth += Math.min(curX/((classes.length+1)/2), 15);
+			curX = (Camera.main.width - btnWidth * (classes.length+1))/2;
 		}
 
 		int heroBtnleft = curX;

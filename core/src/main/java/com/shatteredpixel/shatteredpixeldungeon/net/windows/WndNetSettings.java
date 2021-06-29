@@ -1,4 +1,4 @@
-package com.shatteredpixel.shatteredpixeldungeon.net;
+package com.shatteredpixel.shatteredpixeldungeon.net.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
