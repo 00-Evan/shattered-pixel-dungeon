@@ -17,6 +17,7 @@ public class Emitters {
         this.socket = s;
         socket.once(Socket.EVENT_CONNECT_ERROR, onConnectionError);
         socket.once(Socket.EVENT_CONNECT, onConnected);
+        socket.once(Socket.EVENT_DISCONNECT, onDisconnected);
     }
 
     private final Emitter.Listener onConnected = new Emitter.Listener() {
@@ -25,7 +26,19 @@ public class Emitters {
             Game.runOnRenderThread(new Callback() {
                 @Override
                 public void call() {
-                    showServerInfo();
+                    //TODO: add connect stuff
+                }
+            });
+        }
+    };
+
+    private final Emitter.Listener onDisconnected = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            Game.runOnRenderThread(new Callback() {
+                @Override
+                public void call() {
+                    //TODO: add disconnect stuff
                 }
             });
         }
