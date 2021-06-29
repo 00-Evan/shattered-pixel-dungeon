@@ -105,11 +105,14 @@ public class ShatteredPixelDungeon extends Game {
 				"com.shatteredpixel.shatteredpixeldungeon.items.ArmorKit" );
 		
 	}
+
+	public Net net;
 	
 	@Override
 	public void create() {
 		super.create();
 
+		net = new Net();
 		updateSystemUI();
 		SPDAction.loadBindings();
 		
