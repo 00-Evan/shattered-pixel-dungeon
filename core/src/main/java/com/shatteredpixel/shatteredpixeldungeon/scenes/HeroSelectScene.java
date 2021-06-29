@@ -21,10 +21,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
+import com.badlogic.gdx.graphics.Color;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
+import com.shatteredpixel.shatteredpixeldungeon.Net;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -50,6 +52,7 @@ import com.watabou.noosa.PointerArea;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 public class HeroSelectScene extends PixelScene {
@@ -63,6 +66,8 @@ public class HeroSelectScene extends PixelScene {
 	private IconButton infoButton;
 	private IconButton challengeButton;
 	private IconButton btnExit;
+
+	private ShatteredPixelDungeon instance = ((ShatteredPixelDungeon) ShatteredPixelDungeon.instance);
 
 	@Override
 	public void create() {
@@ -164,6 +169,10 @@ public class HeroSelectScene extends PixelScene {
 			add(button);
 			heroBtns.add(button);
 		}
+
+		NetBtn netBtn = new NetBtn();
+		netBtn.setRect(curX, Camera.main.height-netBtn.HEIGHT+3, netBtn.MIN_WIDTH, netBtn.HEIGHT);
+		add(netBtn);
 
 		challengeButton = new IconButton(
 				Icons.get( SPDSettings.challenges() > 0 ? Icons.CHALLENGE_ON :Icons.CHALLENGE_OFF)){
@@ -279,6 +288,7 @@ public class HeroSelectScene extends PixelScene {
 		}
 	}
 
+
 	private class HeroBtn extends StyledButton {
 
 		private HeroClass cl;
@@ -323,4 +333,31 @@ public class HeroSelectScene extends PixelScene {
 		}
 	}
 
+	private class NetBtn extends StyledButton {
+		private static final int HEIGHT = 24;
+		private static final int MIN_WIDTH = 30;
+
+		private ShatteredPixelDungeon instance = ((ShatteredPixelDungeon) ShatteredPixelDungeon.instance);
+
+		NetBtn() {
+			super(Chrome.Type.GREY_BUTTON_TR, "");
+			icon(Icons.get(Icons.NET));
+		}
+
+		@Override
+		public void update() {
+			super.update();
+			icon.brightness(instance.net.connected() ? 0.8f : 0.2f );
+		}
+
+		@Override
+		protected void onClick() {
+			super.onClick();
+			try {
+				instance.net.toggle();
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }
