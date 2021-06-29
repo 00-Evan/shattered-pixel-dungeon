@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.message.Message;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.message.MessageTypes;
 
+import static com.shatteredpixel.shatteredpixeldungeon.net.Util.message;
+import static com.shatteredpixel.shatteredpixeldungeon.net.Util.motd;
+
 public class JsonHelper {
     private final ObjectMapper mapper;
 
@@ -12,17 +15,20 @@ public class JsonHelper {
         mapper = new ObjectMapper();
     }
 
-    public Message readMessage(int type, String json){
+    public void handleMessage(int type, String json){
         Message message = null;
         try{
             switch (type) {
-                case MessageTypes.MOTD:
-                message = mapper.readValue(json, Message.class);
-                break;
+                case MessageTypes.Recieve.AUTH:
+                    message(message.message);
+                    break;
+                case MessageTypes.Recieve.MOTD:
+                    message = mapper.readValue(json, Message.class);
+                    motd(message.message);
+                    break;
             }
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        return message;
     }
 }
