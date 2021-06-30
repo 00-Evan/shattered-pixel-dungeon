@@ -177,7 +177,7 @@ public class Dungeon {
 		challenges = SPDSettings.challenges();
 		mobsToChampion = -1;
 
-		seed = DungeonSeed.randomSeed();
+		seed = ((ShatteredPixelDungeon)ShatteredPixelDungeon.instance).net.seed();
 
 		Actor.clear();
 		Actor.resetNextID();
