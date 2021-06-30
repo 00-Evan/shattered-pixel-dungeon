@@ -11,70 +11,32 @@ import io.socket.engineio.client.EngineIOException;
 import static com.shatteredpixel.shatteredpixeldungeon.net.Util.*;
 
 public class Emitters {
-    private final Socket socket;
-    public String lastConnectionErrorMessage;
+    private Socket socket;
     private final Handler handler;
     private final Net net;
 
-    public Emitters(){
-        this.net = ((ShatteredPixelDungeon) ShatteredPixelDungeon.instance).net;
+    public Emitters(Net n){
+        this.net = n;
         this.socket = net.socket();
-        this.handler = new Handler(net);
+        this.handler = new Handler(n);
+    }
 
-        socket.once(Socket.EVENT_CONNECT_ERROR, onConnectionError);
-        socket.once(Socket.EVENT_CONNECT, onConnected);
-        socket.once(Socket.EVENT_DISCONNECT, onDisconnected);
+    public void startAll(){
+        Emitter.Listener onMessage = args -> Game.runOnRenderThread(() -> {
+            int type = (int) args[0];
+            String data = (String) args[1];
+            handler.handleMessage(type, data);
+        });
+
+        Emitter.Listener onMotd = args -> Game.runOnRenderThread(() -> {
+            String data = (String) args[0];
+            handler.handleMotd(data);
+        });
         socket.on("message", onMessage);
-        socket.on("motd", onMotd);
+        socket.once("motd", onMotd);
     }
-
     public void cancelAll(){
-        socket.off(Socket.EVENT_CONNECT_ERROR, onConnectionError);
-        socket.off(Socket.EVENT_CONNECT, onConnected);
-        socket.off(Socket.EVENT_DISCONNECT, onDisconnected);
-        socket.off("message", onMessage);
-        socket.off("motd", onMotd);
+        socket.off("message");
+        socket.off("motd");
     }
-
-    private final Emitter.Listener onConnected = args -> Game.runOnRenderThread(() -> {
-        //TODO: add connect stuff
-    });
-
-    private final Emitter.Listener onDisconnected = args -> Game.runOnRenderThread(() -> {
-        //TODO: add disconnect stuff
-    });
-
-    private final Emitter.Listener onConnectionError = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            Game.runOnRenderThread(() -> {
-                EngineIOException e = (EngineIOException) args[0];
-                lastConnectionErrorMessage = e.getMessage();
-                error(e.getMessage());
-                net.disconnect();
-            });
-        }
-    };
-
-    private final Emitter.Listener onMessage = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            Game.runOnRenderThread(() -> {
-                int type = (int) args[0];
-                String data = (String) args[1];
-                handler.handleMessage(type, data);
-            });
-        }
-    };
-
-    private final Emitter.Listener onMotd = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            Game.runOnRenderThread(() -> {
-                String data = (String) args[0];
-                handler.handleMotd(data);
-            });
-        }
-    };
-
 }

@@ -1,9 +1,15 @@
 package com.shatteredpixel.shatteredpixeldungeon.net;
 
+import com.watabou.noosa.Game;
+
 import java.net.URI;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
+import io.socket.engineio.client.EngineIOException;
+
+import static com.shatteredpixel.shatteredpixeldungeon.net.Util.error;
 
 public class Net {
     private Socket socket;
@@ -34,8 +40,34 @@ public class Net {
         session(Settings.uri());
     }
 
+    public void setupEvents(){
+        Emitter.Listener onConnected = args -> Game.runOnRenderThread(() -> {
+        });
+
+        Emitter.Listener onDisconnected = args -> Game.runOnRenderThread(() -> {
+        });
+
+        Emitter.Listener onConnectionError = args -> Game.runOnRenderThread(() -> {
+            EngineIOException e = (EngineIOException) args[0];
+            error(e.getMessage());
+            disconnect();
+        });
+
+        socket.on(Socket.EVENT_CONNECT_ERROR, onConnectionError);
+        socket.on(Socket.EVENT_CONNECT, onConnected);
+        socket.on(Socket.EVENT_DISCONNECT, onDisconnected);
+    }
+
+    public void endEvents(){
+        socket.off(Socket.EVENT_CONNECT_ERROR);
+        socket.off(Socket.EVENT_CONNECT);
+        socket.off(Socket.EVENT_DISCONNECT);
+    }
+
     public void session(URI address){
-            socket = IO.socket(address);
+        socket = IO.socket(address);
+        emitters = new Emitters(Net.this);
+        setupEvents();
     }
 
     public URI uri(){
@@ -43,23 +75,20 @@ public class Net {
     }
 
     public void toggle() {
-        if(socket != null && !socket.connected())
+        if(!socket.connected())
             connect();
         else
             disconnect();
     }
 
     public void connect() {
+        emitters.startAll();
         socket.connect();
-        if(emitters == null) emitters = new Emitters();
     }
 
     public void disconnect(){
+        emitters.cancelAll();
         socket.disconnect();
-        if(emitters != null) {
-            emitters.cancelAll();
-            emitters = null;
-        }
     }
 
     public Socket socket(){
@@ -68,6 +97,14 @@ public class Net {
 
     public Boolean connected() {
         return socket != null && socket.connected();
+    }
+
+    public void die(){
+        if (socket != null) {
+            endEvents();
+            disconnect();
+            socket = null;
+        }
     }
 
     public long seed() { return this.seed; }

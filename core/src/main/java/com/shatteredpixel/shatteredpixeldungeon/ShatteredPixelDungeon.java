@@ -177,6 +177,7 @@ public class ShatteredPixelDungeon extends Game {
 	public void destroy(){
 		super.destroy();
 		GameScene.endActorThread();
+		net.die();
 	}
 	
 	public void updateDisplaySize(){
