@@ -1215,6 +1215,8 @@ public class Hero extends Char {
 		int postHP = HP + shielding();
 		int effectiveDamage = preHP - postHP;
 
+		if (effectiveDamage <= 0) return;
+
 		//flash red when hit for serious damage.
 		float percentDMG = effectiveDamage / (float)preHP; //percent of current HP that was taken
 		float percentHP = 1 - ((HT - postHP) / (float)HT); //percent health after damage was taken
