@@ -19,12 +19,13 @@ public class Emitters {
     public Emitters(){
         this.net = ((ShatteredPixelDungeon) ShatteredPixelDungeon.instance).net;
         this.socket = net.socket();
-        this.handler = new Handler(this.socket);
+        this.handler = new Handler(net);
 
         socket.once(Socket.EVENT_CONNECT_ERROR, onConnectionError);
         socket.once(Socket.EVENT_CONNECT, onConnected);
         socket.once(Socket.EVENT_DISCONNECT, onDisconnected);
         socket.on("message", onMessage);
+        socket.on("motd", onMotd);
     }
 
     public void cancelAll(){
@@ -32,6 +33,7 @@ public class Emitters {
         socket.off(Socket.EVENT_CONNECT, onConnected);
         socket.off(Socket.EVENT_DISCONNECT, onDisconnected);
         socket.off("message", onMessage);
+        socket.off("motd", onMotd);
     }
 
     private final Emitter.Listener onConnected = args -> Game.runOnRenderThread(() -> {
@@ -61,6 +63,16 @@ public class Emitters {
                 int type = (int) args[0];
                 String data = (String) args[1];
                 handler.handleMessage(type, data);
+            });
+        }
+    };
+
+    private final Emitter.Listener onMotd = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            Game.runOnRenderThread(() -> {
+                String data = (String) args[0];
+                handler.handleMotd(data);
             });
         }
     };

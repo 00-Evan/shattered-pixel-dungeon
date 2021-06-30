@@ -8,6 +8,7 @@ import io.socket.client.Socket;
 public class Net {
     private Socket socket;
     private Emitters emitters = null;
+    private String seed;
 
     public Net(String address, String key){
         URI url = URI.create(address);
@@ -69,4 +70,6 @@ public class Net {
         return socket != null && socket.connected();
     }
 
+    public String seed() { return this.seed; }
+    public void seed(String seed) { this.seed = seed; }
 }
