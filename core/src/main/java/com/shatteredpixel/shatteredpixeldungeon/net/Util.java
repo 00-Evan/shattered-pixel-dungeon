@@ -12,7 +12,7 @@ import com.watabou.noosa.Image;
 public class Util {
 
     public static void error(String message){
-        ShatteredPixelDungeon.scene().add(new WndError(message));
+        message(Icons.get(Icons.ALERT), "Connection Error", message);
     }
 
     public static void message(Image i, String title, String message){

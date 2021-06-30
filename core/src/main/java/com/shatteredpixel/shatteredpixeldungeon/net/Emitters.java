@@ -1,5 +1,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.net;
 
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.Handler;
 import com.watabou.noosa.Game;
 
@@ -13,10 +14,12 @@ public class Emitters {
     private final Socket socket;
     public String lastConnectionErrorMessage;
     private final Handler handler;
+    private final Net net;
 
-    public Emitters(Socket s){
-        this.socket = s;
-        this.handler = new Handler(s);
+    public Emitters(){
+        this.net = ((ShatteredPixelDungeon) ShatteredPixelDungeon.instance).net;
+        this.socket = net.socket();
+        this.handler = new Handler(this.socket);
 
         socket.once(Socket.EVENT_CONNECT_ERROR, onConnectionError);
         socket.once(Socket.EVENT_CONNECT, onConnected);
@@ -24,16 +27,20 @@ public class Emitters {
         socket.on("message", onMessage);
     }
 
+    public void cancelAll(){
+        socket.off(Socket.EVENT_CONNECT_ERROR, onConnectionError);
+        socket.off(Socket.EVENT_CONNECT, onConnected);
+        socket.off(Socket.EVENT_DISCONNECT, onDisconnected);
+        socket.off("message", onMessage);
+    }
+
     private final Emitter.Listener onConnected = args -> Game.runOnRenderThread(() -> {
         //TODO: add connect stuff
     });
 
-    private final Emitter.Listener onDisconnected = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            Game.runOnRenderThread(() -> socket.off("message"));
-        }
-    };
+    private final Emitter.Listener onDisconnected = args -> Game.runOnRenderThread(() -> {
+        //TODO: add disconnect stuff
+    });
 
     private final Emitter.Listener onConnectionError = new Emitter.Listener() {
         @Override
@@ -42,7 +49,7 @@ public class Emitters {
                 EngineIOException e = (EngineIOException) args[0];
                 lastConnectionErrorMessage = e.getMessage();
                 error(e.getMessage());
-                socket.disconnect();
+                net.disconnect();
             });
         }
     };

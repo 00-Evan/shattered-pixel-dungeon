@@ -5,60 +5,64 @@ import java.net.URI;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 
-import static com.shatteredpixel.shatteredpixeldungeon.net.Util.error;
-
 public class Net {
     private Socket socket;
-    private Emitters emitters;
-    private URI uri;
+    private Emitters emitters = null;
 
     public Net(String address, String key){
-        host(URI.create(address));
+        URI url = URI.create(address);
+
+        Settings.authority(url.getAuthority());
+        Settings.address(url.getHost());
+        Settings.port(url.getPort());
         Settings.auth_key(key);
+        session(Settings.uri());
     }
 
     public Net(String key){
-        host(Settings.uri(false));
+        Settings.address("127.0.0.1");
+        Settings.port(5500);
         Settings.auth_key(key);
+        session(Settings.uri());
     }
 
     public Net(){
-        host(URI.create("http://127.0.0.1:5500"));
+        Settings.address("127.0.0.1");
+        Settings.port(5500);
         Settings.auth_key("1234");
+        session(Settings.uri());
     }
 
-    public void host(URI address){
-        try {
+    public void session(URI address){
             socket = IO.socket(address);
-            uri = address;
-        }catch(Exception e){
-            error(e.getMessage());
-        }
     }
 
     public URI uri(){
-        return this.uri;
+        return Settings.uri();
     }
 
     public void toggle() {
-        if(socket == null || !socket.connected()) {
-            try {
-                emitters = new Emitters(socket);
-                this.connect();
-            } catch (Exception e){
-                error(e.getMessage());
-            }
-        }else {
-            if(socket.connected()) socket.disconnect();
-        }
+        if(socket != null && !socket.connected())
+            connect();
+        else
+            disconnect();
     }
 
     public void connect() {
         socket.connect();
+        if(emitters == null) emitters = new Emitters();
     }
 
     public void disconnect(){
         socket.disconnect();
+        if(emitters != null) {
+            emitters.cancelAll();
+            emitters = null;
+        }
+    }
+
+    public Socket socket(){
+        return this.socket;
     }
 
     public Boolean connected() {
