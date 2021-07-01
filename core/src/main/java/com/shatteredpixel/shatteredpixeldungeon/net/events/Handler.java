@@ -42,6 +42,7 @@ public class Handler {
     }
 
     public void handleMotd(String json){
+        System.out.println("Motd -> "+json);
         try{
             Motd motd = mapper.readValue(json, Motd.class);
             motd(motd.motd);

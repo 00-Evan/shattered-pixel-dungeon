@@ -4,9 +4,10 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndNetSettings;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndServerInfo;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndMessage;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
+import com.watabou.utils.Callback;
 
 
 public class Util {
@@ -16,22 +17,37 @@ public class Util {
     }
 
     public static void message(Image i, String title, String message){
-        ShatteredPixelDungeon.scene().add(new WndMessage(i, title, message));
+        Game.runOnRenderThread(new Callback() {
+            @Override
+            public void call() {
+                ShatteredPixelDungeon.scene().add(new WndMessage(i, title, message));
+            }
+        });
     }
 
     public static void message(String title, String message){
-        ShatteredPixelDungeon.scene().add(new WndMessage(Icons.get(Icons.NET), title, message));
+        message(Icons.get(Icons.NET), title, message);
     }
     public static void message(String message){
-        ShatteredPixelDungeon.scene().add(new WndMessage(Icons.get(Icons.NET), "Server Message", message));
+        message(Icons.get(Icons.NET), "Server Message", message);
     }
 
     public static void showSettings(){
-        ShatteredPixelDungeon.scene().add(new WndNetSettings());
+        Game.runOnRenderThread(new Callback() {
+            @Override
+            public void call() {
+                ShatteredPixelDungeon.scene().add(new WndNetSettings());
+            }
+        });
     }
 
     public static void showServerInfo(){
-        ShatteredPixelDungeon.scene().add(new WndServerInfo());
+        Game.runOnRenderThread(new Callback() {
+            @Override
+            public void call() {
+                ShatteredPixelDungeon.scene().add(new WndServerInfo());
+            }
+        });
     }
 
     public static void motd(String message){
