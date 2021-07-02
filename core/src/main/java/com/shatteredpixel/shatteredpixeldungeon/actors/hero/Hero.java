@@ -109,6 +109,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.net.emit.Actions;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.AlchemyScene;
@@ -702,7 +703,6 @@ public class Hero extends Char {
 		if(hasTalent(Talent.BARKSKIN) && Dungeon.level.map[pos] == Terrain.FURROWED_GRASS){
 			Buff.affect(this, Barkskin.class).set( (lvl*pointsInTalent(Talent.BARKSKIN))/2, 1 );
 		}
-		
 		return actResult;
 	}
 	
@@ -747,6 +747,7 @@ public class Hero extends Char {
 			ready();
 			return false;
 		}
+
 	}
 	
 	private boolean actInteract( HeroAction.Interact action ) {
@@ -995,7 +996,8 @@ public class Hero extends Char {
 			if (buff != null) buff.detach();
 			buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
 			if (buff != null) buff.detach();
-			
+
+
 			InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
 			Game.switchScene( InterlevelScene.class );
 
@@ -1048,6 +1050,7 @@ public class Hero extends Char {
 				if (buff != null) buff.detach();
 				buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
 				if (buff != null) buff.detach();
+
 
 				InterlevelScene.mode = InterlevelScene.Mode.ASCEND;
 				Game.switchScene( InterlevelScene.class );
@@ -1741,7 +1744,8 @@ public class Hero extends Char {
 		boolean wasHighGrass = Dungeon.level.map[step] == Terrain.HIGH_GRASS;
 
 		super.move( step );
-		
+		((ShatteredPixelDungeon)ShatteredPixelDungeon.instance).net().send(Actions.MOVE, step);
+
 		if (!flying) {
 			if (Dungeon.level.water[pos]) {
 				Sample.INSTANCE.play( Assets.Sounds.WATER, 1, Random.Float( 0.8f, 1.25f ) );

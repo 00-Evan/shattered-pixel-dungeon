@@ -1,5 +1,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.net;
 
+import com.shatteredpixel.shatteredpixeldungeon.net.emit.Actions;
+import com.shatteredpixel.shatteredpixeldungeon.net.emit.EmittHandler;
+import com.watabou.utils.DeviceCompat;
+
 import java.net.URI;
 
 import io.socket.client.IO;
@@ -11,7 +15,7 @@ import static com.shatteredpixel.shatteredpixeldungeon.net.Util.error;
 
 public class Net {
     private Socket socket;
-    private Emitters emitters = null;
+    private EmittHandler emitter = null;
     private long seed;
 
     public Net(String address, String key){
@@ -34,7 +38,7 @@ public class Net {
     public Net(){
         Settings.address("127.0.0.1");
         Settings.port(5500);
-        Settings.auth_key("1234");
+        Settings.auth_key(DeviceCompat.isDebug() ? "debug": "empty");
         session(Settings.uri());
     }
 
@@ -58,12 +62,6 @@ public class Net {
 
     public void endEvents(){
         socket.off();
-        System.out.println("Message listening? "+ socket.hasListeners("message"));
-        System.out.println("Motd listening? "+ socket.hasListeners("motd"));
-        System.out.println("Socket.EVENT_CONNECT_ERROR listening? "+ socket.hasListeners(Socket.EVENT_CONNECT_ERROR));
-        System.out.println("Socket.EVENT_CONNECT listening? "+ socket.hasListeners(Socket.EVENT_CONNECT));
-        System.out.println("Socket.EVENT_DISCONNECT listening? "+ socket.hasListeners(Socket.EVENT_DISCONNECT));
-        System.out.println("Net Events ended");
     }
 
     public void session(URI address){
@@ -72,7 +70,7 @@ public class Net {
                 .setReconnection(false)
                 .build();
         socket = IO.socket(address, options);
-        emitters = new Emitters(Net.this);
+        emitter = new EmittHandler(Net.this);
         setupEvents();
     }
 
@@ -88,7 +86,7 @@ public class Net {
     }
 
     public void connect() {
-        emitters.startAll();
+        emitter.startAll();
         socket.connect();
     }
 
@@ -105,17 +103,22 @@ public class Net {
     }
 
     public void die(){
-        System.out.println("Killing net");
         if (socket != null) {
             if(socket.connected()) disconnect();
             endEvents();
             socket = null;
         }
-        emitters = null;
-        System.out.println("Socket null? "+ (socket == null));
-        System.out.println("Emitters null? "+ (emitters == null));
+        emitter = null;
     }
 
     public long seed() { return this.seed; }
     public void seed(long seed) { this.seed = seed; }
+
+    public void send(int type, int data){
+        send(Types.Send.ACTION, type, data);
+    }
+
+    public void send(int action, int type, int data){
+        emitter.send(action, type, data);
+    }
 }

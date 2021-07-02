@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.net.emit.Actions;
 import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
 import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
@@ -370,6 +371,7 @@ public class InterlevelScene extends PixelScene {
 			level = Dungeon.loadLevel( GamesInProgress.curSlot );
 		}
 		Dungeon.switchLevel( level, level.entrance );
+		((ShatteredPixelDungeon)ShatteredPixelDungeon.instance).net().send(Actions.DESC, Dungeon.depth);
 	}
 	
 	private void fall() throws IOException {
@@ -387,6 +389,7 @@ public class InterlevelScene extends PixelScene {
 			level = Dungeon.loadLevel( GamesInProgress.curSlot );
 		}
 		Dungeon.switchLevel( level, level.fallCell( fallIntoPit ));
+		((ShatteredPixelDungeon)ShatteredPixelDungeon.instance).net().send(Actions.DESC, Dungeon.depth);
 	}
 	
 	private void ascend() throws IOException {
@@ -397,6 +400,7 @@ public class InterlevelScene extends PixelScene {
 		Dungeon.depth--;
 		Level level = Dungeon.loadLevel( GamesInProgress.curSlot );
 		Dungeon.switchLevel( level, level.exit );
+		((ShatteredPixelDungeon)ShatteredPixelDungeon.instance).net().send(Actions.ASC, Dungeon.depth);
 	}
 	
 	private void returnTo() throws IOException {
