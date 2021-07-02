@@ -60,7 +60,7 @@ public class EmittHandler {
                         Move m = new Move(data);
                         json = handler.mapper().writeValueAsString(m);
                 }
-                socket.send(action, json);
+                if(socket.connected()) socket.send(action, json);
                 break;
         }
         } catch (JsonProcessingException e) {

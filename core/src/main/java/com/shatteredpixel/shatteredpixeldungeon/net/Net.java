@@ -44,14 +44,17 @@ public class Net {
 
     public void setupEvents(){
         Emitter.Listener onConnected = args -> {
+            emitter.startAll();
         };
 
         Emitter.Listener onDisconnected = args -> {
+            emitter.cancelAll();
         };
 
         Emitter.Listener onConnectionError = args -> {
             EngineIOException e = (EngineIOException) args[0];
             error(e.getMessage());
+            emitter.cancelAll();
             disconnect();
         };
 
@@ -86,7 +89,6 @@ public class Net {
     }
 
     public void connect() {
-        emitter.startAll();
         socket.connect();
     }
 
