@@ -7,6 +7,8 @@ import com.shatteredpixel.shatteredpixeldungeon.net.Settings;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.message.Auth;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.message.Message;
 import com.shatteredpixel.shatteredpixeldungeon.net.Types;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.player.recieve.Motd;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.player.recieve.Move;
 
 import static com.shatteredpixel.shatteredpixeldungeon.net.Util.message;
 import static com.shatteredpixel.shatteredpixeldungeon.net.Util.motd;
@@ -46,6 +48,18 @@ public class Handler {
             Motd motd = mapper.readValue(json, Motd.class);
             motd(motd.motd);
             net.seed(motd.seed);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void handleAction(String json){
+        System.out.println("Action -> "+json);
+        try{
+            Move m = mapper.readValue(json, Move.class);
+            Move.Player p = m.player;
+            Move.Data d = m.data;
+            System.out.println("Move -> "+p.nick+" dst: "+d.dst);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

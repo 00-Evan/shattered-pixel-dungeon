@@ -1,4 +1,4 @@
-package com.shatteredpixel.shatteredpixeldungeon.net.events.player;
+package com.shatteredpixel.shatteredpixeldungeon.net.events.player.send;
 
 import com.shatteredpixel.shatteredpixeldungeon.net.emit.Actions;
 

@@ -119,8 +119,10 @@ public class Net {
     public void send(int type, int data){
         send(Types.Send.ACTION, type, data);
     }
-
     public void send(int action, int type, int data){
+        emitter.send(action, type, data);
+    }
+    public void send(int action, int type, int... data){
         emitter.send(action, type, data);
     }
 }
