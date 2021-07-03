@@ -1,7 +1,5 @@
 package com.shatteredpixel.shatteredpixeldungeon.net;
 
-import com.shatteredpixel.shatteredpixeldungeon.net.emit.Actions;
-import com.shatteredpixel.shatteredpixeldungeon.net.emit.EmittHandler;
 import com.watabou.utils.DeviceCompat;
 
 import java.net.URI;
@@ -116,12 +114,6 @@ public class Net {
     public long seed() { return this.seed; }
     public void seed(long seed) { this.seed = seed; }
 
-    public void send(int type, int data){
-        send(Types.Send.ACTION, type, data);
-    }
-    public void send(int action, int type, int data){
-        emitter.send(action, type, data);
-    }
     public void send(int action, int type, int... data){
         emitter.send(action, type, data);
     }

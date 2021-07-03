@@ -1,12 +1,11 @@
-package com.shatteredpixel.shatteredpixeldungeon.net.emit;
+package com.shatteredpixel.shatteredpixeldungeon.net;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.shatteredpixel.shatteredpixeldungeon.net.Net;
-import com.shatteredpixel.shatteredpixeldungeon.net.Types;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.Handler;
-import com.shatteredpixel.shatteredpixeldungeon.net.events.player.send.Ascend;
-import com.shatteredpixel.shatteredpixeldungeon.net.events.player.send.Descend;
-import com.shatteredpixel.shatteredpixeldungeon.net.events.player.send.Move;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.send.Actions;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.send.Ascend;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.send.Descend;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.send.Move;
 
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -24,26 +23,32 @@ public class EmittHandler {
 
     public void startAll(){
         Emitter.Listener onMessage = args -> {
+            String data = (String) args[0];
+            handler.handleMessage(data);
+        };
+        Emitter.Listener onAuth = args -> {
+            String data = (String) args[0];
+            handler.handleAuth(data);
+        };
+        Emitter.Listener onAction = args -> {
             int type = (int) args[0];
             String data = (String) args[1];
-            handler.handleMessage(type, data);
+            handler.handleAction(type, data);
         };
         Emitter.Listener onMotd = args -> {
             String data = (String) args[0];
             handler.handleMotd(data);
         };
-        Emitter.Listener onAction = args -> {
-            String data = (String) args[0];
-            handler.handleAction(data);
-        };
-        socket.on("message", onMessage);
-        socket.once("motd", onMotd);
-        socket.on("action", onAction);
+        socket.on(Types.Recieve.ACTION, onAction);
+        socket.once(Types.Recieve.AUTH, onAuth);
+        socket.on(Types.Recieve.MESSAGE, onMessage);
+        socket.once(Types.Recieve.MOTD, onMotd);
     }
     public void cancelAll(){
-        socket.off("message");
-        socket.off("motd");
-        socket.off("action");
+        socket.off(Types.Recieve.ACTION);
+        socket.off(Types.Recieve.AUTH);
+        socket.off(Types.Recieve.MESSAGE);
+        socket.off(Types.Recieve.MOTD);
     }
 
     public void send(int action, int type, int... data) {
@@ -53,11 +58,11 @@ public class EmittHandler {
                 String json = "";
                 switch (type) {
                     case Actions.ASC:
-                        Ascend a = new Ascend(data[0]);
+                        Ascend a = new Ascend(data[0], data[1]);
                             json = handler.mapper().writeValueAsString(a);
                         break;
                     case Actions.DESC:
-                        Descend d = new Descend(data[0]);
+                        Descend d = new Descend(data[0], data[1]);
                         json = handler.mapper().writeValueAsString(d);
                         break;
                     case Actions.MOVE:

@@ -1,4 +1,4 @@
-package com.shatteredpixel.shatteredpixeldungeon.net.emit;
+package com.shatteredpixel.shatteredpixeldungeon.net.events.send;
 
 public class Actions {
     public static final int ASC = 0;

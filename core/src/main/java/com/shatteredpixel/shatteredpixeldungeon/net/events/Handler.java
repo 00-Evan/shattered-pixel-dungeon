@@ -4,11 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shatteredpixel.shatteredpixeldungeon.net.Net;
 import com.shatteredpixel.shatteredpixeldungeon.net.Settings;
-import com.shatteredpixel.shatteredpixeldungeon.net.events.message.Auth;
-import com.shatteredpixel.shatteredpixeldungeon.net.events.message.Message;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.auth.Auth;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.message.Message;
 import com.shatteredpixel.shatteredpixeldungeon.net.Types;
-import com.shatteredpixel.shatteredpixeldungeon.net.events.player.recieve.Motd;
-import com.shatteredpixel.shatteredpixeldungeon.net.events.player.recieve.Move;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.motd.Motd;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.Actions;
+import com.watabou.utils.DeviceCompat;
 
 import static com.shatteredpixel.shatteredpixeldungeon.net.Util.message;
 import static com.shatteredpixel.shatteredpixeldungeon.net.Util.motd;
@@ -22,44 +23,53 @@ public class Handler {
         this.net = n;
     }
 
-    public void handleMessage(int type, String json){
-        Message message = null;
-        System.out.println("Message -> "+json);
+    public void handleMessage(String json){
+        DeviceCompat.log("Message",json);
         try{
-            switch (type) {
-                case Types.Recieve.AUTH:
-                    Auth auth = new Auth(Settings.auth_key());
-                    String j = mapper.writeValueAsString(auth);
-                    net.socket().emit("message", Types.Send.AUTH, j);
-                    break;
-                case Types.Recieve.MESSAGE:
-                    message = mapper.readValue(json, Message.class);
-                    message(message.data);
-                    break;
-            }
+            Message message = mapper.readValue(json, Message.class);
+            message(message.data);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
     }
 
+    public void handleAction(int type, String json) {
+            switch (type){
+                case Actions.MOVE:
+                    DeviceCompat.log("Move",json);
+                    break;
+                case Actions.JOIN:
+                    DeviceCompat.log("Join", json);
+                    break;
+                case Actions.JOINLIST:
+                    DeviceCompat.log("JoinList",json);
+                    break;
+                case Actions.LEAVE:
+                    DeviceCompat.log("Leave",json);
+                    break;
+                default:
+                    DeviceCompat.log("Unknown Action",json);
+            }
+
+    }
+    public void handleAuth(String json){
+        DeviceCompat.log("Auth",json);
+        try    {
+            Auth auth = new Auth(Settings.auth_key());
+            String j = mapper.writeValueAsString(auth);
+            net.socket().emit("message", Types.Send.AUTH, j);
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+}
+
     public void handleMotd(String json){
-        System.out.println("Motd -> "+json);
+        DeviceCompat.log("MOTD",json);
         try{
             Motd motd = mapper.readValue(json, Motd.class);
             motd(motd.motd);
             net.seed(motd.seed);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void handleAction(String json){
-        System.out.println("Action -> "+json);
-        try{
-            Move m = mapper.readValue(json, Move.class);
-            Move.Player p = m.player;
-            Move.Data d = m.data;
-            System.out.println("Move -> "+p.nick+" dst: "+d.dst);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
