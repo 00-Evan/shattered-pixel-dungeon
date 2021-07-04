@@ -79,6 +79,7 @@ public class Player extends Mob {
 	public void move(int step) {
 		sprite.move(pos, step);
 		pos = step;
+		sprite.visible = Dungeon.level.heroFOV[pos];
 	}
 
 	@Override
