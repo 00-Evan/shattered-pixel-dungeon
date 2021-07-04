@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.net.sprites.PlayerSprite;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class Player extends Mob {
@@ -58,6 +59,9 @@ public class Player extends Mob {
 		return this.nick;
 	}
 
+	public String name(){
+		return this.nick;
+	}
 	public int playerClass(){
 	    return this.playerClass;
 	}
@@ -68,24 +72,14 @@ public class Player extends Mob {
 
 	@Override
 	protected boolean act() {
-		return super.act();
+		return true;
 	}
 
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 1, 4 );
+	public void move(int step) {
+		sprite.move(pos, step);
+		pos = step;
 	}
-	
-	@Override
-	public int attackSkill( Char target ) {
-		return 8;
-	}
-	
-	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 1);
-	}
-
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
