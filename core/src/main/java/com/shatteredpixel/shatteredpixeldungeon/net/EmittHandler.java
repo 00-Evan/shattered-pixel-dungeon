@@ -1,11 +1,13 @@
 package com.shatteredpixel.shatteredpixeldungeon.net;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.Handler;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.send.Actions;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.send.Ascend;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.send.Descend;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.send.Move;
+import com.watabou.utils.DeviceCompat;
 
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -58,15 +60,15 @@ public class EmittHandler {
                 String json = "";
                 switch (type) {
                     case Actions.ASC:
-                        Ascend a = new Ascend(data[0], data[1]);
+                        Ascend a = new Ascend(data[0], data[1], data[2]);
                             json = handler.mapper().writeValueAsString(a);
                         break;
                     case Actions.DESC:
-                        Descend d = new Descend(data[0], data[1]);
+                        Descend d = new Descend(data[0], data[1], data[2]);
                         json = handler.mapper().writeValueAsString(d);
                         break;
                     case Actions.MOVE:
-                        Move m = new Move(data[0], data[1]);
+                        Move m = new Move(data[0], data[1], data[2]);
                         json = handler.mapper().writeValueAsString(m);
                 }
                 if(socket.connected()) socket.send(action, json);

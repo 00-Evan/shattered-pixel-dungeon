@@ -372,7 +372,7 @@ public class InterlevelScene extends PixelScene {
 			level = Dungeon.loadLevel( GamesInProgress.curSlot );
 		}
 		Dungeon.switchLevel( level, level.entrance );
-		((ShatteredPixelDungeon)ShatteredPixelDungeon.instance).net().send(Types.Send.ACTION, Actions.DESC, Dungeon.depth, level.entrance);
+		((ShatteredPixelDungeon)ShatteredPixelDungeon.instance).net().send(Types.Send.ACTION, Actions.DESC, Dungeon.hero.heroClass.ordinal(), Dungeon.depth, level.entrance);
 	}
 	
 	private void fall() throws IOException {
@@ -391,7 +391,7 @@ public class InterlevelScene extends PixelScene {
 		}
 		int cell = level.fallCell( fallIntoPit);
 		Dungeon.switchLevel( level, cell);
-		((ShatteredPixelDungeon)ShatteredPixelDungeon.instance).net().send(Types.Send.ACTION, Actions.DESC, Dungeon.depth, cell);
+		((ShatteredPixelDungeon)ShatteredPixelDungeon.instance).net().send(Types.Send.ACTION, Actions.DESC, Dungeon.hero.heroClass.ordinal(), Dungeon.depth, cell);
 	}
 	
 	private void ascend() throws IOException {

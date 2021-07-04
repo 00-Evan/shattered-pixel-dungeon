@@ -2,8 +2,14 @@ package com.shatteredpixel.shatteredpixeldungeon.net.events;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat;
 import com.shatteredpixel.shatteredpixeldungeon.net.Net;
 import com.shatteredpixel.shatteredpixeldungeon.net.Settings;
+import com.shatteredpixel.shatteredpixeldungeon.net.actor.Player;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.action.Join;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.action.JoinList;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.action.Leave;
@@ -13,10 +19,15 @@ import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.message.Messa
 import com.shatteredpixel.shatteredpixeldungeon.net.Types;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.motd.Motd;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.Actions;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.watabou.noosa.Game;
 import com.watabou.utils.DeviceCompat;
 
 import static com.shatteredpixel.shatteredpixeldungeon.net.Util.message;
 import static com.shatteredpixel.shatteredpixeldungeon.net.Util.motd;
+import static com.shatteredpixel.shatteredpixeldungeon.net.actor.Player.addPlayer;
+import static com.shatteredpixel.shatteredpixeldungeon.net.actor.Player.getPlayer;
+import static com.shatteredpixel.shatteredpixeldungeon.net.actor.Player.movePlayer;
 
 public class Handler {
     private final ObjectMapper mapper;
@@ -28,7 +39,6 @@ public class Handler {
     }
 
     public void handleMessage(String json){
-        DeviceCompat.log("Message",json);
         try{
             Message message = mapper.readValue(json, Message.class);
             message(message.data);
@@ -37,29 +47,33 @@ public class Handler {
         }
     }
 
+
     public void handleAction(int type, String json) {
+        Player player;
+        Join join;
         try {
             switch (type){
                 case Actions.MOVE:
                     Move m = mapper.readValue(json, Move.class);
-                    DeviceCompat.log("Move","id:"+m.id +" nick:" +m.nick+ " depth:"+m.depth +" pos:" +m.pos);
+                    movePlayer(getPlayer(m.id), m.pos, m.playerClass);
                     break;
                 case Actions.JOIN:
-                    Join j = mapper.readValue(json, Join.class);
-                    DeviceCompat.log("Join","id:"+j.id +" nick:" +j.nick+ " depth:"+j.depth +" pos:" +j.pos);
+                    join = mapper.readValue(json, Join.class);
+                    addPlayer(join.id,join.nick, join.playerClass, join.pos);
                     break;
                 case Actions.JOINLIST:
-                    DeviceCompat.log("JoinList",json);
                     JoinList jl = mapper.readValue(json, JoinList.class);
                     for (int i = 0; i < jl.players.length; i++) {
-                        Join join = jl.players[i];
-                        DeviceCompat.log("Player "+i,"id:"+join.id +" nick:" +join.nick+ " depth:"+join.depth +" pos:" +join.pos);
+                        Join j = jl.players[i];
+                        addPlayer(j.id,j.nick, j.playerClass, j.pos);
                     }
                     break;
                 case Actions.LEAVE:
-                    DeviceCompat.log("Leave",json);
                     Leave l = mapper.readValue(json, Leave.class);
-                    DeviceCompat.log("Leave","id:"+l.id +" nick:" +l.nick+ " depth:"+l.depth +" pos:" +l.pos);
+                    player = getPlayer(l.id);
+                    if(player != null) {
+                        player.die(this);
+                    }
                     break;
                 default:
                     DeviceCompat.log("Unknown Action",json);
@@ -69,7 +83,6 @@ public class Handler {
         }
     }
     public void handleAuth(String json){
-        DeviceCompat.log("Auth",json);
         try    {
             Auth auth = new Auth(Settings.auth_key());
             String j = mapper.writeValueAsString(auth);
@@ -85,7 +98,6 @@ public class Handler {
             Motd motd = mapper.readValue(json, Motd.class);
             motd(motd.motd);
             net.seed(motd.seed);
-            DeviceCompat.log("MOTD","message:"+motd.motd +" seed:" +motd.seed);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

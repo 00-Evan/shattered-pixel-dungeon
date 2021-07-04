@@ -60,6 +60,9 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.net.actor.Player;
+import com.shatteredpixel.shatteredpixeldungeon.net.sprites.PlayerSprite;
+import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndInfoPlayer;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.DiscardedItemSprite;
@@ -265,6 +268,9 @@ public class GameScene extends PixelScene {
 			addMobSprite( mob );
 			if (Statistics.amuletObtained) {
 				mob.beckon( Dungeon.hero.pos );
+			}
+			if (mob instanceof Player) {
+				((PlayerSprite) mob.sprite).updatePlayerSprite((((Player) mob).playerClass()));
 			}
 		}
 		
@@ -757,7 +763,7 @@ public class GameScene extends PixelScene {
 		mobs.add( sprite );
 		sprite.link( mob );
 	}
-	
+
 	private synchronized void prompt( String text ) {
 		
 		if (prompt != null) {
@@ -823,6 +829,11 @@ public class GameScene extends PixelScene {
 		Dungeon.level.mobs.add( mob );
 		scene.addMobSprite( mob );
 		Actor.add( mob );
+	}
+
+	public static void add( Player p ) {
+		Dungeon.level.mobs.add( p );
+		if(scene != null) scene.addMobSprite( p );
 	}
 
 	public static void addSprite( Mob mob ) {
@@ -1124,6 +1135,12 @@ public class GameScene extends PixelScene {
 			}
 		}
 
+		Player player = Player.getPlayerAtCell(cell);
+		if (player != null) {
+			objects.add(player);
+			names.add(player.nick());
+		}
+
 		Heap heap = Dungeon.level.heaps.get(cell);
 		if (heap != null && heap.seen) {
 			objects.add(heap);
@@ -1163,6 +1180,8 @@ public class GameScene extends PixelScene {
 	public static void examineObject(Object o){
 		if (o == Dungeon.hero){
 			GameScene.show( new WndHero() );
+		} else if ( o instanceof Player ){
+			GameScene.show(new WndInfoPlayer((Player) o));
 		} else if ( o instanceof Mob ){
 			GameScene.show(new WndInfoMob((Mob) o));
 		} else if ( o instanceof Heap ){

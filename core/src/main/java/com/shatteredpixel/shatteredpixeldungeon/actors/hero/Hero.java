@@ -1745,7 +1745,7 @@ public class Hero extends Char {
 		boolean wasHighGrass = Dungeon.level.map[step] == Terrain.HIGH_GRASS;
 
 		super.move( step );
-		((ShatteredPixelDungeon)ShatteredPixelDungeon.instance).net().send(Types.Send.ACTION, Actions.MOVE, Dungeon.depth, step);
+		((ShatteredPixelDungeon)ShatteredPixelDungeon.instance).net().send(Types.Send.ACTION, Actions.MOVE, heroClass.ordinal(), Dungeon.depth, step);
 
 		if (!flying) {
 			if (Dungeon.level.water[pos]) {
