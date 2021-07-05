@@ -63,6 +63,16 @@ public abstract class DocumentPage extends Item {
 		hero.spendAndNext( TIME_TO_PICK_UP );
 		return true;
 	}
+
+	@Override
+	public boolean isUpgradable() {
+		return false;
+	}
+
+	@Override
+	public boolean isIdentified() {
+		return true;
+	}
 	
 	private static final String PAGE = "page";
 	

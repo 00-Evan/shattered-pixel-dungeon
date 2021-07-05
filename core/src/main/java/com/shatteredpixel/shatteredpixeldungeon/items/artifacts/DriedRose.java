@@ -479,6 +479,16 @@ public class DriedRose extends Artifact {
 			}
 		}
 
+		@Override
+		public boolean isUpgradable() {
+			return false;
+		}
+
+		@Override
+		public boolean isIdentified() {
+			return true;
+		}
+
 	}
 
 	public static class GhostHero extends DirectableAlly {
