@@ -6,16 +6,16 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class Settings extends GameSettings {
-    public static final String KEY_AUTHORITY	= "net_authority";
+    public static final String KEY_AUTHORITY	= "net_scheme";
     public static final String KEY_ADDRESS	= "net_address";
     public static final String KEY_PORT	= "net_port";
     public static final String KEY_AUTH_KEY	= "net_auth_key";
 
-    public static void authority( String value ) {
+    public static void scheme( String value ) {
         put( KEY_AUTHORITY, value );
     }
 
-    public static String authority() {
+    public static String scheme() {
         return getString(KEY_AUTHORITY, "http");
     }
 
@@ -36,11 +36,11 @@ public class Settings extends GameSettings {
     }
 
     public static URI uri() {
-        String authority = authority();
+        String scheme = scheme();
         String address = address();
         int port = port();
         try {
-            return new URI(authority, null, address, port, null, null, null);
+            return new URI(scheme, null, address, port, null, null, null);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }

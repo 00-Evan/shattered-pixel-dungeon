@@ -39,6 +39,7 @@ public class Handler {
     }
 
     public void handleMessage(String json){
+        DeviceCompat.log("MESSAGE", json);
         try{
             Message message = mapper.readValue(json, Message.class);
             message(message.data);

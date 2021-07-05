@@ -1,5 +1,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.net;
 
+import com.sun.jndi.toolkit.url.Uri;
 import com.watabou.utils.DeviceCompat;
 
 import java.net.URI;
@@ -18,8 +19,7 @@ public class Net {
 
     public Net(String address, String key){
         URI url = URI.create(address);
-
-        Settings.authority(url.getAuthority());
+        Settings.scheme(url.getScheme());
         Settings.address(url.getHost());
         Settings.port(url.getPort());
         Settings.auth_key(key);
@@ -28,14 +28,14 @@ public class Net {
 
     public Net(String key){
         Settings.address("127.0.0.1");
-        Settings.port(5500);
+        Settings.port(5000);
         Settings.auth_key(key);
         session(Settings.uri());
     }
 
     public Net(){
         Settings.address("127.0.0.1");
-        Settings.port(5500);
+        Settings.port(5000);
         Settings.auth_key(DeviceCompat.isDebug() ? "debug": "empty");
         session(Settings.uri());
     }

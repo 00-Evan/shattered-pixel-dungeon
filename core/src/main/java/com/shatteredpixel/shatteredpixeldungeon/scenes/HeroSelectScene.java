@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.net.Net;
 import com.shatteredpixel.shatteredpixeldungeon.net.Util;
 import com.shatteredpixel.shatteredpixeldungeon.net.ui.NetBtn;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
@@ -65,6 +66,7 @@ public class HeroSelectScene extends PixelScene {
 	private IconButton infoButton;
 	private IconButton challengeButton;
 	private IconButton btnExit;
+	private NetBtn netBtn;
 
 	@Override
 	public void create() {
@@ -117,7 +119,11 @@ public class HeroSelectScene extends PixelScene {
 			@Override
 			protected void onClick() {
 				super.onClick();
-
+				Net net = ((ShatteredPixelDungeon)ShatteredPixelDungeon.instance).net();
+				if(!net.connected()) {
+					Util.showServerInfo();
+					return;
+				}
 				if (GamesInProgress.selectedClass == null) return;
 
 				Dungeon.hero = null;
@@ -167,7 +173,7 @@ public class HeroSelectScene extends PixelScene {
 			heroBtns.add(button);
 		}
 
-		NetBtn netBtn = new NetBtn();
+		netBtn = new NetBtn();
 		netBtn.setRect(curX, Camera.main.height-netBtn.HEIGHT+3, netBtn.MIN_WIDTH, netBtn.HEIGHT);
 		add(netBtn);
 
@@ -268,6 +274,7 @@ public class HeroSelectScene extends PixelScene {
 			btnExit.icon().alpha(alpha);
 			challengeButton.icon().alpha(alpha);
 			infoButton.icon().alpha(alpha);
+			netBtn.alpha(alpha);
 		}
 	}
 
