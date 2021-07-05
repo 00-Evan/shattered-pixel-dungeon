@@ -30,6 +30,8 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Fireball;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.net.Net;
+import com.shatteredpixel.shatteredpixeldungeon.net.Util;
 import com.shatteredpixel.shatteredpixeldungeon.services.news.News;
 import com.shatteredpixel.shatteredpixeldungeon.services.updates.AvailableUpdateData;
 import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
@@ -106,13 +108,10 @@ public class TitleScene extends PixelScene {
 		StyledButton btnPlay = new StyledButton(GREY_TR, Messages.get(this, "enter")){
 			@Override
 			protected void onClick() {
-				/*if (GamesInProgress.checkAll().size() == 0){
-					GamesInProgress.selectedClass = null;
-					GamesInProgress.curSlot = 1;
-					ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
-				} else {
-					ShatteredPixelDungeon.switchNoFade( StartScene.class );
-				}*/
+				if(!ShatteredPixelDungeon.net().connected()) {
+					Util.showServerInfo();
+					return;
+				}
 				ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
 			}
 			

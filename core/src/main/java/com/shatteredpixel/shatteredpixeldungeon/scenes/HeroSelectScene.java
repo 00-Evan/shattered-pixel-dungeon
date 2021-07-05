@@ -119,8 +119,7 @@ public class HeroSelectScene extends PixelScene {
 			@Override
 			protected void onClick() {
 				super.onClick();
-				Net net = ((ShatteredPixelDungeon)ShatteredPixelDungeon.instance).net();
-				if(!net.connected()) {
+				if(!ShatteredPixelDungeon.net().connected()) {
 					Util.showServerInfo();
 					return;
 				}

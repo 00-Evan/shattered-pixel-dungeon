@@ -6,9 +6,11 @@ public class Types {
         public static final String MOTD = "motd";
         public static final String MESSAGE = "message";
         public static final String ACTION = "action";
+        public static final String PLAYERLIST = "playerlist";
     }
     public class Send {
         public static final int AUTH = 0;
         public static final int ACTION = 1;
+        public static final int PLAYERLIISTREQUEST = 2;
     }
 }

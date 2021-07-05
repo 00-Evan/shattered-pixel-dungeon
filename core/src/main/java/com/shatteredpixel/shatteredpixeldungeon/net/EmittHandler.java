@@ -1,13 +1,13 @@
 package com.shatteredpixel.shatteredpixeldungeon.net;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.Handler;
-import com.shatteredpixel.shatteredpixeldungeon.net.events.send.Actions;
-import com.shatteredpixel.shatteredpixeldungeon.net.events.send.Ascend;
-import com.shatteredpixel.shatteredpixeldungeon.net.events.send.Descend;
-import com.shatteredpixel.shatteredpixeldungeon.net.events.send.Move;
-import com.watabou.utils.DeviceCompat;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.send.auth.Auth;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.send.action.Actions;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.send.action.Ascend;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.send.action.Descend;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.send.action.Move;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.send.message.Message;
 
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -52,7 +52,19 @@ public class EmittHandler {
         socket.off(Types.Recieve.MESSAGE);
         socket.off(Types.Recieve.MOTD);
     }
+    public void send(String event, int type, String data) {
+        String message = null;
+        try {
+            message = handler.mapper().writeValueAsString(data);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        net.socket().emit(event, type, message);
+    }
 
+    public Handler handler() {
+        return this.handler;
+    }
     public void send(int action, int type, int... data) {
         try {
             switch (action) {

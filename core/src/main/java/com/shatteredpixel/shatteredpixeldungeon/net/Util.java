@@ -1,7 +1,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.net;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.playerlist.PlayerList;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndNetSettings;
+import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndPlayerList;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndServerInfo;
 import com.shatteredpixel.shatteredpixeldungeon.net.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndMessage;
@@ -17,12 +19,7 @@ public class Util {
     }
 
     public static void message(Image i, String title, String message){
-        Game.runOnRenderThread(new Callback() {
-            @Override
-            public void call() {
-                ShatteredPixelDungeon.scene().add(new WndMessage(i, title, message));
-            }
-        });
+        Game.runOnRenderThread(() -> ShatteredPixelDungeon.scene().add(new WndMessage(i, title, message)));
     }
 
     public static void message(String title, String message){
@@ -33,24 +30,18 @@ public class Util {
     }
 
     public static void showSettings(){
-        Game.runOnRenderThread(new Callback() {
-            @Override
-            public void call() {
-                ShatteredPixelDungeon.scene().add(new WndNetSettings());
-            }
-        });
+        Game.runOnRenderThread(() -> ShatteredPixelDungeon.scene().add(new WndNetSettings()));
     }
 
     public static void showServerInfo(){
-        Game.runOnRenderThread(new Callback() {
-            @Override
-            public void call() {
-                ShatteredPixelDungeon.scene().add(new WndServerInfo());
-            }
-        });
+        Game.runOnRenderThread(() -> ShatteredPixelDungeon.scene().add(new WndServerInfo()));
     }
 
     public static void motd(String message){
         message(Icons.get(Icons.NEWS), "Motd", message);
+    }
+
+    public static void showPlayerList(PlayerList p){
+        Game.runOnRenderThread(() -> ShatteredPixelDungeon.scene().add(new WndPlayerList(Icons.get(Icons.PLAYERS),p)));
     }
 }

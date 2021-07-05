@@ -1,4 +1,4 @@
-package com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.auth;
+package com.shatteredpixel.shatteredpixeldungeon.net.events.send.auth;
 
 public class Auth {
     public String key;

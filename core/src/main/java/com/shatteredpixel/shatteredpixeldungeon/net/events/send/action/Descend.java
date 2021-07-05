@@ -1,4 +1,4 @@
-package com.shatteredpixel.shatteredpixeldungeon.net.events.send;
+package com.shatteredpixel.shatteredpixeldungeon.net.events.send.action;
 
 public class Descend {
     public int type;

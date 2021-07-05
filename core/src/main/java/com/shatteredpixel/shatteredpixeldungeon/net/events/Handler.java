@@ -2,11 +2,7 @@ package com.shatteredpixel.shatteredpixeldungeon.net.events;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat;
+import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.net.Net;
 import com.shatteredpixel.shatteredpixeldungeon.net.Settings;
 import com.shatteredpixel.shatteredpixeldungeon.net.actor.Player;
@@ -14,13 +10,11 @@ import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.action.Join;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.action.JoinList;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.action.Leave;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.action.Move;
-import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.auth.Auth;
-import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.message.Message;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.send.auth.Auth;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.send.message.Message;
 import com.shatteredpixel.shatteredpixeldungeon.net.Types;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.motd.Motd;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.Actions;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.watabou.noosa.Game;
 import com.watabou.utils.DeviceCompat;
 
 import static com.shatteredpixel.shatteredpixeldungeon.net.Util.message;
@@ -87,7 +81,7 @@ public class Handler {
         try    {
             Auth auth = new Auth(Settings.auth_key());
             String j = mapper.writeValueAsString(auth);
-            net.socket().emit("message", Types.Send.AUTH, j);
+            net.socket().emit(Types.Recieve.MESSAGE, Types.Send.AUTH, j);
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();

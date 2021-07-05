@@ -1,5 +1,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.net;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.Handler;
 import com.sun.jndi.toolkit.url.Uri;
 import com.watabou.utils.DeviceCompat;
 
@@ -38,6 +40,18 @@ public class Net {
         Settings.port(5000);
         Settings.auth_key(DeviceCompat.isDebug() ? "debug": "empty");
         session(Settings.uri());
+    }
+
+    public EmittHandler emitter() {
+        return emitter;
+    }
+
+    public ObjectMapper mapper() {
+           return this.handler().mapper();
+    }
+
+    public Handler handler() {
+        return this.emitter.handler();
     }
 
     public void setupEvents(){
@@ -116,5 +130,9 @@ public class Net {
 
     public void send(int action, int type, int... data){
         emitter.send(action, type, data);
+    }
+
+    public void send(String event, int type, String data){
+        emitter.send(event, type, data);
     }
 }
