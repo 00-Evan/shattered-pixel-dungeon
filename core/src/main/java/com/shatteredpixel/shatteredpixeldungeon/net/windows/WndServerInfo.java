@@ -3,7 +3,7 @@ package com.shatteredpixel.shatteredpixeldungeon.net.windows;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.net.Net;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.net.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTabbed;
@@ -31,7 +31,7 @@ public class WndServerInfo extends WndTabbed {
         height = info.height();
         add( info );
 
-        add( new IconTab(Icons.get(Icons.NET)){
+        add( new IconTab(Icons.get(Icons.GLOBE)){
             @Override
             protected void select(boolean value) {
                 super.select(value);
@@ -45,7 +45,7 @@ public class WndServerInfo extends WndTabbed {
         height = Math.max(height, info.height());
         add( players );
 
-        add( new IconTab(Icons.get(Icons.MAGE)){
+        add( new IconTab(Icons.get(Icons.PLAYERS)){
             @Override
             protected void select(boolean value) {
                 super.select(value);

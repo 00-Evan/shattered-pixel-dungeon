@@ -3,7 +3,7 @@ package com.shatteredpixel.shatteredpixeldungeon.net;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndNetSettings;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndServerInfo;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.net.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndMessage;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
@@ -26,10 +26,10 @@ public class Util {
     }
 
     public static void message(String title, String message){
-        message(Icons.get(Icons.NET), title, message);
+        message(Icons.get(Icons.GLOBE), title, message);
     }
     public static void message(String message){
-        message(Icons.get(Icons.NET), "Server Message", message);
+        message(Icons.get(Icons.GLOBE), "Server Message", message);
     }
 
     public static void showSettings(){

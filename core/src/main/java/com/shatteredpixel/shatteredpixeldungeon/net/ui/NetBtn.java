@@ -3,7 +3,6 @@ package com.shatteredpixel.shatteredpixeldungeon.net.ui;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.net.Util;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 
 public class NetBtn extends StyledButton {
@@ -14,7 +13,7 @@ public class NetBtn extends StyledButton {
 
     public NetBtn() {
         super(Chrome.Type.GREY_BUTTON_TR, "");
-        icon(Icons.get(Icons.NET));
+        icon(Icons.get(Icons.GLOBE));
     }
 
     @Override
