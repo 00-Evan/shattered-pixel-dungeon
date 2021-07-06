@@ -21,18 +21,14 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
+import com.shatteredpixel.shatteredpixeldungeon.ui.TalentIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.watabou.gltextures.SmartTexture;
-import com.watabou.gltextures.TextureCache;
-import com.watabou.noosa.Image;
-import com.watabou.noosa.TextureFilm;
 import com.watabou.utils.Callback;
 
 public class WndInfoTalent extends Window {
@@ -41,21 +37,12 @@ public class WndInfoTalent extends Window {
 
 	private static final int WIDTH = 120;
 
-	private SmartTexture icons;
-	private TextureFilm film;
-
 	public WndInfoTalent(Talent talent, int points, Callback onUpgradeButton){
 		super();
 
 		IconTitle titlebar = new IconTitle();
 
-		icons = TextureCache.get( Assets.Interfaces.TALENT_ICONS );
-		film = new TextureFilm( icons, 16, 16 );
-
-		Image buffIcon = new Image( icons );
-		buffIcon.frame( film.get(talent.icon()) );
-
-		titlebar.icon( buffIcon );
+		titlebar.icon( new TalentIcon( talent ) );
 		String title = Messages.titleCase(talent.title());
 		if (points > 0){
 			title += " +" + points;
@@ -85,7 +72,6 @@ public class WndInfoTalent extends Window {
 			add(upgrade);
 			resize( WIDTH, (int)upgrade.bottom()+1 );
 		}
-
 
 	}
 

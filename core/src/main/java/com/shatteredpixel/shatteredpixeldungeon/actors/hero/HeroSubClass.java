@@ -23,9 +23,13 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fury;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIcon;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 
@@ -70,34 +74,33 @@ public enum HeroSubClass {
 		}
 	}
 
-	//FIXME shouldn't hardcode these, probably want to just have a BuffIcon class
 	public Image icon(){
 		switch (this){
 			case GLADIATOR: default:
-				return new Image(Assets.Interfaces.BUFFS_LARGE, 16, 16, 16, 16);
+				return new BuffIcon(BuffIndicator.COMBO, true);
 			case BERSERKER:
-				return new Image(Assets.Interfaces.BUFFS_LARGE, 32, 16, 16, 16);
+				return new BuffIcon(BuffIndicator.FURY, true);
 
 			case WARLOCK:
-				return new Image(Assets.Interfaces.BUFFS_LARGE, 64, 32, 16, 16);
+				return new BuffIcon(BuffIndicator.CORRUPT, true);
 			case BATTLEMAGE:
-				Image im = new Image(Assets.Interfaces.BUFFS_LARGE, 32, 48, 16, 16);
+				Image im = new BuffIcon(BuffIndicator.UPGRADE, true);
 				im.hardlight(1f, 1f, 0f);
 				return im;
 
 			case ASSASSIN:
-				im = new Image(Assets.Interfaces.BUFFS_LARGE, 160, 32, 16, 16);
+				im = new BuffIcon(BuffIndicator.PREPARATION, true);
 				im.hardlight(1f, 0f, 0f);
 				return im;
 			case FREERUNNER:
-				im = new Image(Assets.Interfaces.BUFFS_LARGE, 48, 48, 16, 16);
+				im = new BuffIcon(BuffIndicator.MOMENTUM, true);
 				im.hardlight(1f, 1f, 0f);
 				return im;
 
 			case SNIPER:
-				return new Image(Assets.Interfaces.BUFFS_LARGE, 176, 16, 16, 16);
+				return new BuffIcon(BuffIndicator.MARK, true);
 			case WARDEN:
-				return new Image(Assets.Interfaces.BUFFS_LARGE, 208, 0, 16, 16);
+				return new BuffIcon(BuffIndicator.BARKSKIN, true);
 		}
 	}
 
