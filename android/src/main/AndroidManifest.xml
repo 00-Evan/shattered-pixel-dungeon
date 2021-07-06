@@ -27,7 +27,8 @@
 		android:resizeableActivity="true"
 		android:allowBackup="true"
 		android:fullBackupOnly="true"
-		android:backupAgent=".AndroidBackupHandler">
+		android:backupAgent=".AndroidBackupHandler"
+		android:usesCleartextTraffic="true" >
 		<activity
 			android:label="${appName}"
 			android:name=".AndroidLauncher">
