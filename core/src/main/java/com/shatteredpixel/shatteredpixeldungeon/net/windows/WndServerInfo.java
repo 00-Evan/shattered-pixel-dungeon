@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.shatteredpixel.shatteredpixeldungeon.net.Settings;
 import com.shatteredpixel.shatteredpixeldungeon.net.Types;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.playerlist.PlayerList;
+import com.shatteredpixel.shatteredpixeldungeon.net.ui.LabeledText;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
@@ -13,13 +14,14 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.ui.Component;
 
 import static com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon.net;
+import static com.shatteredpixel.shatteredpixeldungeon.net.Util.error;
+import static com.shatteredpixel.shatteredpixeldungeon.net.Util.message;
 import static com.shatteredpixel.shatteredpixeldungeon.net.Util.showPlayerList;
 
 public class WndServerInfo extends Window {
     private static final int WIDTH_P	    = 122;
     private static final int WIDTH_L	    = 223;
 
-    private static final int BTN_HEIGHT	    = 16;
     private static final float GAP          = 2;
 
     RenderedTextBlock title;
@@ -37,8 +39,11 @@ public class WndServerInfo extends Window {
         int height, y = 0;
 
         int width = PixelScene.landscape() ? WIDTH_L : WIDTH_P;
+        int maxBtnHeight = PixelScene.landscape() ? 16: 12;
+        int maxTitleHeight =  PixelScene.landscape() ? 12: 9;
+        String maxTitleText = PixelScene.landscape() ? "Server Info": "Server";
 
-        title = PixelScene.renderTextBlock("Server Info", 12);
+        title = PixelScene.renderTextBlock(maxTitleText, maxTitleHeight);
         title.hardlight(TITLE_COLOR);
         add(title);
 
@@ -61,6 +66,9 @@ public class WndServerInfo extends Window {
                 super.onClick();
                 if (net().connected()) {
                     net().send(Types.Recieve.MESSAGE, Types.Send.PLAYERLIISTREQUEST, null);
+                }else{
+                    error("You are not connected!");
+                    return;
                 }
                 net().socket().once(Types.Recieve.PLAYERLIST, args -> {
                     String data = (String) args[0];
@@ -80,7 +88,7 @@ public class WndServerInfo extends Window {
             public synchronized void update() {
                 super.update();
                 text.text(net().connected() ? "Disconnect" : "Connect");
-                setSize(net().connected() ? 50 : 40, BTN_HEIGHT);
+                setSize(net().connected() ? 50 : 40, maxBtnHeight);
                 setPos(playerListButton.left() - connectBtn.width() - GAP, 0);
             }
 
@@ -95,8 +103,8 @@ public class WndServerInfo extends Window {
             @Override
             public synchronized void update() {
                 super.update();
-                text.text(net().connected() ? "Connected" : "Disconnected");
-                text.hardlight(net().connected() ? 0x00FF00 : 0xFF0000);
+                text().text(net().connected() ? "Connected" : "Disconnected");
+                text().hardlight(net().connected() ? 0x00FF00 : 0xFF0000);
             }
         };
         add(status);
@@ -104,10 +112,10 @@ public class WndServerInfo extends Window {
 
         float bottom = y;
 
-        title.setPos(GAP, bottom + 2 * GAP);
-        playerListButton.setSize(40, BTN_HEIGHT);
-        playerListButton.setPos(width - (playerListButton.reqWidth() + 3 * GAP), 0);
-        connectBtn.setSize(40, BTN_HEIGHT);
+        title.setPos(GAP, (PixelScene.landscape() ? 1: 2));
+        playerListButton.setSize(40, maxBtnHeight);
+        playerListButton.setPos(width - playerListButton.width(), 0);
+        connectBtn.setSize(40, maxBtnHeight);
         connectBtn.setPos(0, 0);
 
         sep1.size(width, 1);
@@ -135,34 +143,6 @@ public class WndServerInfo extends Window {
        resize(width, height);
     }
 
-    private static class LabeledText extends Component {
-        RenderedTextBlock label;
-        RenderedTextBlock text;
-
-        public LabeledText(String label, String text){
-
-            this.label = PixelScene.renderTextBlock(label+": ", 9);
-            add(this.label);
-
-            this.text = PixelScene.renderTextBlock(text, 9);
-            add(this.text);
-        }
-
-        @Override
-        protected void layout() {
-            float bottom = y;
-            float right = x;
-
-            label.setPos(right, bottom + GAP);
-
-            right = label.right() + GAP;
-
-            text.setPos(right, bottom + GAP);
-
-            height = text.height();
-            width = label.width() + text.width() + GAP;
-        }
-    }
 
 }
 

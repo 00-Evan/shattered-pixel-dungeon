@@ -2,6 +2,7 @@ package com.shatteredpixel.shatteredpixeldungeon.net;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.playerlist.PlayerList;
+import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndMotd;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndNetSettings;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndPlayerList;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndServerInfo;
@@ -37,8 +38,8 @@ public class Util {
         Game.runOnRenderThread(() -> ShatteredPixelDungeon.scene().add(new WndServerInfo()));
     }
 
-    public static void motd(String message){
-        message(Icons.get(Icons.NEWS), "Motd", message);
+    public static void motd(String motd, long seed){
+        Game.runOnRenderThread(() -> ShatteredPixelDungeon.scene().add(new WndMotd(motd,seed)));
     }
 
     public static void showPlayerList(PlayerList p){

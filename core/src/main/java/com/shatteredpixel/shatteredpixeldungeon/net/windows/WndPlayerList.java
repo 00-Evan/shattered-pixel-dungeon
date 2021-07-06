@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.net.windows;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.playerlist.PlayerList;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.watabou.noosa.Image;

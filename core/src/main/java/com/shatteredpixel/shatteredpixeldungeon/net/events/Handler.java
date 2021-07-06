@@ -91,7 +91,7 @@ public class Handler {
     public void handleMotd(String json){
         try{
             Motd motd = mapper.readValue(json, Motd.class);
-            motd(motd.motd);
+            motd(motd.motd, motd.seed);
             net.seed(motd.seed);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
