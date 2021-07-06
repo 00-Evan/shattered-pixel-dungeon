@@ -30,14 +30,14 @@ public class Net {
 
     public Net(String key){
         Settings.address("127.0.0.1");
-        Settings.port(5000);
+        Settings.port(5800);
         Settings.auth_key(key);
         session(Settings.uri());
     }
 
     public Net(){
         Settings.address("127.0.0.1");
-        Settings.port(5000);
+        Settings.port(5800);
         Settings.auth_key(DeviceCompat.isDebug() ? "debug": "empty");
         session(Settings.uri());
     }
@@ -79,12 +79,13 @@ public class Net {
         socket.off();
     }
 
-    public void session(URI address){
+    public void session(URI url){
+        System.out.println("-- Scheme: "+url.getScheme()+ " address: "+ url.getHost()+" port: " + url.getPort()+ " key: "+Settings.auth_key());
         IO.Options options = IO.Options.builder()
                 .setForceNew(true)
                 .setReconnection(false)
                 .build();
-        socket = IO.socket(address, options);
+        socket = IO.socket(url, options);
         emitter = new EmittHandler(Net.this);
         setupEvents();
     }

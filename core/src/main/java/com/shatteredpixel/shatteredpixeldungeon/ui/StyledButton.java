@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
+import com.shatteredpixel.shatteredpixeldungeon.net.ui.UI;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
@@ -53,7 +54,22 @@ public class StyledButton extends Button {
 		text.text( label );
 		add( text );
 	}
-	
+
+	public StyledButton(UI.Type type, String label ) {
+		this(type, label, 9);
+	}
+
+	public StyledButton(UI.Type type, String label, int size ){
+		super();
+
+		bg = UI.get( type );
+		addToBack( bg );
+
+		text = PixelScene.renderTextBlock( size );
+		text.text( label );
+		add( text );
+	}
+
 	@Override
 	protected void layout() {
 		

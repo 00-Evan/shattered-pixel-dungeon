@@ -21,61 +21,72 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.net.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.playerlist.Player;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.playerlist.PlayerList;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.ui.Component;
 
-public class WndPlayerList extends Window {
+public class WndPlayerList extends NetWindow {
 
 	private static final int WIDTH_P = 120;
 	private static final int WIDTH_L = 144;
+	private static final int HEIGHT	= 120;
 
-	private static final int MARGIN 		= 2;
-	private static final int BUTTON_HEIGHT	= 18;
+	public WndPlayerList(PlayerList p) {
+		super(PixelScene.landscape() ? WIDTH_L : WIDTH_P, HEIGHT);
 
-	public WndPlayerList(Image icon, PlayerList p) {
-		super();
+		ScrollPane list = new ScrollPane( new Component() );
+		add( list );
 
-		int width = PixelScene.landscape() ? WIDTH_L : WIDTH_P;
+		Component content = list.content();
+		content.clear();
+
+		list.scrollTo( 0, 0 );
 
 		float pos = 0;
-			IconTitle tfTitle = new IconTitle(icon, "Players");
-			tfTitle.setRect(0, pos, width, 0);
-			add(tfTitle);
+		for (int i=0; i < p.list.length; i++) {
 
-			pos = tfTitle.bottom() + 2*MARGIN;
+			Player player = p.list[i];
 
-		layoutBody(pos, p);
-	}
+			IconTitle playerInfo = new IconTitle();
+			Image ic = player.playerClass != null ? HeroSprite.avatar( playerClassToHeroClass(player.playerClass), 0 ): Icons.get(Icons.LOST);
+			playerInfo.icon( ic);
+			playerInfo.label( player.nick );
+			playerInfo.color(Window.TITLE_COLOR);
+			playerInfo.setRect( 0, pos, width, 18 );
 
-	private void layoutBody(float pos, PlayerList pl){
-		int width = PixelScene.landscape() ? WIDTH_L : WIDTH_P;
+			content.add( playerInfo );
 
-		for (int i=0; i < pl.list.length; i++) {
-			final int index = i;
-			RedButton btn = new RedButton( pl.list[i].nick ) {
-				@Override
-				protected void onClick() {
-					hide();
-					onSelect( index );
-				}
-			};
-			btn.enable(enabled(i));
-			btn.setRect( 0, pos, width, BUTTON_HEIGHT );
-			add( btn );
-
-			pos += BUTTON_HEIGHT + MARGIN;
+			pos+=playerInfo.height();
 		}
 
-		resize( width, (int)(pos - MARGIN) );
+		content.setRect(0,0, width, pos );
+		list.setRect( 0, 0, width, HEIGHT);
+	}
+
+	public static HeroClass playerClassToHeroClass(int playerClass){
+		switch (playerClass){
+			case 0: default:
+				return HeroClass.WARRIOR;
+			case 1:
+				return HeroClass.MAGE;
+			case 2:
+				return HeroClass.ROGUE;
+			case 3:
+				return HeroClass.HUNTRESS;
+		}
 	}
 
 	protected boolean enabled( int index ){
 		return true;
 	}
-	
+
 	protected void onSelect( int index ) {}
 }

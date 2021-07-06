@@ -23,11 +23,10 @@ package com.shatteredpixel.shatteredpixeldungeon.net.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.watabou.noosa.Image;
 
-public class WndMessage extends Window {
+public class WndMessage extends NetWindow {
 
 	private static final int WIDTH_P = 120;
 	private static final int WIDTH_L = 144;

@@ -1,24 +1,16 @@
 package com.shatteredpixel.shatteredpixeldungeon.net.windows;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.shatteredpixel.shatteredpixeldungeon.net.Settings;
-import com.shatteredpixel.shatteredpixeldungeon.net.Types;
-import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.playerlist.PlayerList;
+import com.shatteredpixel.shatteredpixeldungeon.net.ui.BlueButton;
 import com.shatteredpixel.shatteredpixeldungeon.net.ui.LabeledText;
+import com.shatteredpixel.shatteredpixeldungeon.net.ui.PlayerListButton;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.ColorBlock;
-import com.watabou.noosa.Game;
-import com.watabou.noosa.ui.Component;
 
 import static com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon.net;
-import static com.shatteredpixel.shatteredpixeldungeon.net.Util.error;
-import static com.shatteredpixel.shatteredpixeldungeon.net.Util.message;
-import static com.shatteredpixel.shatteredpixeldungeon.net.Util.showPlayerList;
 
-public class WndServerInfo extends Window {
+public class WndServerInfo extends NetWindow {
     private static final int WIDTH_P	    = 122;
     private static final int WIDTH_L	    = 223;
 
@@ -30,8 +22,8 @@ public class WndServerInfo extends Window {
     LabeledText host;
     LabeledText port;
     LabeledText status;
-    RedButton connectBtn;
-    RedButton playerListButton;
+    BlueButton connectBtn;
+    BlueButton playerListButton;
 
     public WndServerInfo() {
         super();
@@ -60,30 +52,10 @@ public class WndServerInfo extends Window {
         add(port);
 
 
-        playerListButton = new RedButton("Players") {
-            @Override
-            protected void onClick() {
-                super.onClick();
-                if (net().connected()) {
-                    net().send(Types.Recieve.MESSAGE, Types.Send.PLAYERLIISTREQUEST, null);
-                }else{
-                    error("You are not connected!");
-                    return;
-                }
-                net().socket().once(Types.Recieve.PLAYERLIST, args -> {
-                    String data = (String) args[0];
-                    try {
-                        final PlayerList pl = net().mapper().readValue(data, PlayerList.class);
-                        Game.runOnRenderThread(() -> showPlayerList(pl));
-                    } catch (JsonProcessingException e) {
-                        e.printStackTrace();
-                    }
-                });
-            }
-        };
+        playerListButton = new PlayerListButton();
         add(playerListButton);
 
-        connectBtn = new RedButton("Connect") {
+        connectBtn = new BlueButton("Connect") {
             @Override
             public synchronized void update() {
                 super.update();

@@ -24,32 +24,31 @@ package com.shatteredpixel.shatteredpixeldungeon.net.windows;
 import com.shatteredpixel.shatteredpixeldungeon.net.actor.Player;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
 
 public class WndInfoPlayer extends WndTitledMessage {
 
 	public WndInfoPlayer(Player player ) {
-
 		super( new PlayerTitle( player ), player.info() );
-		
 	}
 	
 	private static class PlayerTitle extends Component {
 
-		private static final int GAP	= 2;
+		private static final int GAP = 2;
 		
-		private CharSprite image;
+		private Image image;
 		private RenderedTextBlock name;
 
 		public PlayerTitle( Player player ) {
 			
 			name = PixelScene.renderTextBlock( player.nick(), 9 );
-			name.hardlight( TITLE_COLOR );
 			add( name );
 			
-			image = player.sprite();
+			image = HeroSprite.avatar(WndPlayerList.playerClassToHeroClass(player.playerClass()), 0);
 			add( image );
 		}
 		

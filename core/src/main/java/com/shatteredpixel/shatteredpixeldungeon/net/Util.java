@@ -43,6 +43,6 @@ public class Util {
     }
 
     public static void showPlayerList(PlayerList p){
-        Game.runOnRenderThread(() -> ShatteredPixelDungeon.scene().add(new WndPlayerList(Icons.get(Icons.PLAYERS),p)));
+        Game.runOnRenderThread(() -> ShatteredPixelDungeon.scene().add(new WndPlayerList(p)));
     }
 }

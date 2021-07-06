@@ -22,22 +22,20 @@
 package com.shatteredpixel.shatteredpixeldungeon.net.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.net.ui.BlueButton;
 import com.shatteredpixel.shatteredpixeldungeon.net.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.net.ui.LabeledText;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.HeroSelectScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
-import com.watabou.noosa.Image;
 
-public class WndMotd extends Window {
+public class WndMotd extends NetWindow {
 
 	private static final int WIDTH_P = 120;
 	private static final int WIDTH_L = 144;
 
-	private static final int MARGIN 		= 2;
+	private static final int MARGIN = 2;
 
 	public WndMotd(String motd, long seed) {
 		super();
@@ -64,11 +62,17 @@ public class WndMotd extends Window {
 
 		pos = tfMesage.bottom() + 2*MARGIN;
 
-		LabeledText seedText = new LabeledText("Seed", String.valueOf(seed), 6, 6);
+		LabeledText seedText = new LabeledText("Seed", String.valueOf(seed), 6, 6){
+			@Override
+			protected void layout() {
+				super.layout();
+				text().hardlight(0x008000);
+			}
+		};
 		seedText.setPos(0, pos);
 		add(seedText);
 
-		RedButton okayBtn = new RedButton("Play"){
+		BlueButton okayBtn = new BlueButton("Play"){
 			@Override
 			protected void onClick() {
 				super.onClick();
@@ -84,13 +88,6 @@ public class WndMotd extends Window {
 		pos = okayBtn.bottom() + 2*MARGIN;
 
 		resize( width, (int)(pos - MARGIN) );
-	}
-
-	@Override
-	public void destroy() {
-		super.destroy();
-		if(!(ShatteredPixelDungeon.scene() instanceof HeroSelectScene))
-			ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
 	}
 
 	protected boolean enabled(int index ){
