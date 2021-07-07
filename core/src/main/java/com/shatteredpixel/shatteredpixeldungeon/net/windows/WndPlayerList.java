@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
+import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
 
@@ -50,24 +51,45 @@ public class WndPlayerList extends NetWindow {
 
 		list.scrollTo( 0, 0 );
 
-		float pos = 0;
+		float xpos = 0;
+		float ypos = 0;
+
 		for (int i=0; i < p.list.length; i++) {
 
 			Player player = p.list[i];
+
+			if(player.depth != null) {
+				Image steps = Icons.DEPTH.get();
+				steps.x = xpos;
+				steps.y = ypos;
+				content.add(steps);
+				xpos+=steps.width();
+
+				BitmapText depth;
+				depth = new BitmapText( PixelScene.pixelFont);
+				depth.text( Integer.toString(player.depth) );
+				depth.measure();
+				content.add(depth);
+
+				depth.x = steps.x + (steps.width - depth.width()) / 2f;
+				depth.y = steps.y + (steps.height - depth.height()) / 2f + 1;
+				PixelScene.align(depth);
+
+			}
 
 			IconTitle playerInfo = new IconTitle();
 			Image ic = player.playerClass != null ? HeroSprite.avatar( playerClassToHeroClass(player.playerClass), 0 ): Icons.get(Icons.LOST);
 			playerInfo.icon( ic);
 			playerInfo.label( player.nick );
 			playerInfo.color(Window.TITLE_COLOR);
-			playerInfo.setRect( 0, pos, width, 18 );
+			playerInfo.setRect( xpos, ypos, width, 18 );
 
 			content.add( playerInfo );
 
-			pos+=playerInfo.height();
+			ypos+=playerInfo.height();
 		}
 
-		content.setRect(0,0, width, pos );
+		content.setRect(0,0, width, ypos );
 		list.setRect( 0, 0, width, HEIGHT);
 	}
 
