@@ -39,8 +39,13 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.ui.Button;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.FileUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import static com.shatteredpixel.shatteredpixeldungeon.net.Util.error;
 
 public class StartScene extends PixelScene {
 	
@@ -86,7 +91,7 @@ public class StartScene extends PixelScene {
 		if (landscape()) yPos += 8;
 		
 		for (GamesInProgress.Info game : games) {
-			SaveSlotButton existingGame = new SaveSlotButton();
+			SaveSlotButton existingGame = new SaveSlotButton(true);
 			existingGame.set(game.slot);
 			existingGame.setRect((w - SLOT_WIDTH) / 2f, yPos, SLOT_WIDTH, SLOT_HEIGHT);
 			yPos += SLOT_HEIGHT + slotGap;
@@ -96,7 +101,7 @@ public class StartScene extends PixelScene {
 		}
 		
 		if (games.size() < GamesInProgress.MAX_SLOTS){
-			SaveSlotButton newGame = new SaveSlotButton();
+			SaveSlotButton newGame = new SaveSlotButton(false);
 			newGame.set(GamesInProgress.firstEmpty());
 			newGame.setRect((w - SLOT_WIDTH) / 2f, yPos, SLOT_WIDTH, SLOT_HEIGHT);
 			yPos += SLOT_HEIGHT + slotGap;
@@ -126,17 +131,26 @@ public class StartScene extends PixelScene {
 		private BitmapText depth;
 		private Image classIcon;
 		private BitmapText level;
-		
+
+		private boolean newButtonSlot;
+		private long seed;
 		private int slot;
 		private boolean newGame;
-		
+		private boolean eligible;
+
+
+		private SaveSlotButton(boolean newButtonSlot){
+			this.newButtonSlot = newButtonSlot;
+		}
+
 		@Override
 		protected void createChildren() {
 			super.createChildren();
 			
 			bg = Chrome.get(Chrome.Type.GEM);
 			add( bg);
-			
+
+
 			name = PixelScene.renderTextBlock(9);
 			add(name);
 		}
@@ -144,6 +158,17 @@ public class StartScene extends PixelScene {
 		public void set( int slot ){
 			this.slot = slot;
 			GamesInProgress.Info info = GamesInProgress.check(slot);
+
+			try {
+				Bundle bundle = FileUtils.bundleFromFile(GamesInProgress.gameFile(slot));
+				seed = bundle.getLong("seed");
+				eligible = ShatteredPixelDungeon.net().connected() &&
+						ShatteredPixelDungeon.net().seed() == seed &&
+						seed != 0;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 			newGame = info == null;
 			if (newGame){
 				name.text( Messages.get(StartScene.class, "new"));
@@ -204,7 +229,9 @@ public class StartScene extends PixelScene {
 				}
 				
 			}
-			
+
+			if(newButtonSlot) bg.hardlight(eligible ? 0x00FF00: 0xff0000);
+
 			layout();
 		}
 		
@@ -215,7 +242,7 @@ public class StartScene extends PixelScene {
 			bg.x = x;
 			bg.y = y;
 			bg.size( width, height );
-			
+
 			if (hero != null){
 				hero.x = x+8;
 				hero.y = y + (height - hero.height())/2f;
@@ -261,7 +288,12 @@ public class StartScene extends PixelScene {
 				GamesInProgress.curSlot = slot;
 				ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
 			} else {
-				ShatteredPixelDungeon.scene().add( new WndGameInProgress(slot));
+				if(eligible){
+					ShatteredPixelDungeon.scene().add( new WndGameInProgress(slot));
+				}else{
+					if(!ShatteredPixelDungeon.net().connected()) error("Not connected", "You must connect before loading save");
+					else error("Seed mismatch", "Save seed: "+seed+"\nServer seed: " +ShatteredPixelDungeon.net().seed());
+				}
 			}
 		}
 	}

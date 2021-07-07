@@ -119,10 +119,6 @@ public class HeroSelectScene extends PixelScene {
 			@Override
 			protected void onClick() {
 				super.onClick();
-				if(!ShatteredPixelDungeon.net().connected()) {
-					Util.showServerInfo();
-					return;
-				}
 				if (GamesInProgress.selectedClass == null) return;
 
 				Dungeon.hero = null;

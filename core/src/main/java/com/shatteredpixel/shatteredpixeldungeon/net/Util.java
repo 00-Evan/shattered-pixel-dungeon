@@ -18,6 +18,10 @@ public class Util {
         message(NetIcons.get(NetIcons.ALERT), "Connection Error", message);
     }
 
+    public static void error(String title, String message){
+        message(NetIcons.get(NetIcons.ALERT), title, message);
+    }
+
     public static void message(Image i, String title, String message){
         Game.runOnRenderThread(() -> ShatteredPixelDungeon.scene().add(new WndMessage(i, title, message)));
     }

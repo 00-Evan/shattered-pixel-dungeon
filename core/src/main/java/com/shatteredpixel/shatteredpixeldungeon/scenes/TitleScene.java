@@ -158,7 +158,7 @@ public class TitleScene extends PixelScene {
 				if (net().connected()) {
 					net().send(Types.Recieve.MESSAGE, Types.Send.PLAYERLIISTREQUEST, null);
 				}else{
-					error("You are not connected!");
+					error("Not Connected", "You must connect before viewing players");
 					return;
 				}
 				net().socket().once(Types.Recieve.PLAYERLIST, args -> {
