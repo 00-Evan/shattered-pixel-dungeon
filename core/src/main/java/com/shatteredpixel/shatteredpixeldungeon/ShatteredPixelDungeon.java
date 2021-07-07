@@ -105,7 +105,7 @@ public class ShatteredPixelDungeon extends Game {
 				com.shatteredpixel.shatteredpixeldungeon.items.KingsCrown.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.ArmorKit" );
 
-		net = new Net("debug");
+		net = new Net("http://10.0.0.172:5800","android");
 	}
 
 	public Net net;

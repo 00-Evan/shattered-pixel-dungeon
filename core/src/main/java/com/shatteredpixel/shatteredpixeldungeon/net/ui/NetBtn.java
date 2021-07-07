@@ -13,7 +13,7 @@ public class NetBtn extends StyledButton {
 
     public NetBtn() {
         super(Chrome.Type.GREY_BUTTON_TR, "");
-        icon(Icons.get(Icons.GLOBE));
+        icon(NetIcons.get(NetIcons.GLOBE));
     }
 
     @Override

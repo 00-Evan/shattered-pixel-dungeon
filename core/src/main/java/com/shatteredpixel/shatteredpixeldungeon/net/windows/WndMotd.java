@@ -21,12 +21,14 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.net.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.net.ui.BlueButton;
-import com.shatteredpixel.shatteredpixeldungeon.net.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.net.ui.NetIcons;
 import com.shatteredpixel.shatteredpixeldungeon.net.ui.LabeledText;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.HeroSelectScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.StartScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 
@@ -43,7 +45,7 @@ public class WndMotd extends NetWindow {
 		int width = PixelScene.landscape() ? WIDTH_L : WIDTH_P;
 
 		float pos = 0;
-		IconTitle tfTitle = new IconTitle(Icons.get(Icons.NEWS), "Welcome");
+		IconTitle tfTitle = new IconTitle(NetIcons.get(NetIcons.NEWS), "Welcome");
 		tfTitle.setRect(0, pos, width, 0);
 		add(tfTitle);
 
@@ -76,9 +78,16 @@ public class WndMotd extends NetWindow {
 			@Override
 			protected void onClick() {
 				super.onClick();
-				if(!(ShatteredPixelDungeon.scene() instanceof HeroSelectScene))
-					ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
-				else ShatteredPixelDungeon.switchNoFade(HeroSelectScene.class);
+				if (GamesInProgress.checkAll().size() == 0){
+					GamesInProgress.selectedClass = null;
+					GamesInProgress.curSlot = 1;
+					if(!(ShatteredPixelDungeon.scene() instanceof HeroSelectScene))
+						ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
+					else ShatteredPixelDungeon.switchNoFade(HeroSelectScene.class);
+
+				} else {
+					ShatteredPixelDungeon.switchNoFade( StartScene.class );
+				}
 			}
 		};
 

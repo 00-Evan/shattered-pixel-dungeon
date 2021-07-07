@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.net.ui.NetIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
@@ -69,6 +70,7 @@ public class StatusPane extends Component {
 	private BitmapText depth;
 
 	private DangerIndicator danger;
+	private NetIndicator connected;
 	private BuffIndicator buffs;
 	private Compass compass;
 
@@ -141,6 +143,9 @@ public class StatusPane extends Component {
 		depth.measure();
 		add( depth );
 
+		connected = new NetIndicator();
+		add( connected );
+
 		danger = new DangerIndicator();
 		add( danger );
 
@@ -148,7 +153,7 @@ public class StatusPane extends Component {
 		add( buffs );
 
 		add( pickedUp = new Toolbar.PickedUpItem());
-		
+
 		version = new BitmapText( "v" + Game.version, PixelScene.pixelFont);
 		version.alpha( 0.5f );
 		add(version);
@@ -184,14 +189,16 @@ public class StatusPane extends Component {
 		depth.y = 8f - depth.baseLine() / 2f;
 		PixelScene.align(depth);
 
-		danger.setPos( width - danger.width(), 20 );
+		connected.setPos( width - connected.width(), 20);
+		danger.setPos( width - danger.width(), connected.bottom() );
 
 		buffs.setPos( 31, 9 );
 
 		btnJournal.setPos( width - 42, 1 );
 
 		btnMenu.setPos( width - btnMenu.width(), 1 );
-		
+
+
 		version.scale.set(PixelScene.align(0.5f));
 		version.measure();
 		version.x = width - version.width();

@@ -23,15 +23,14 @@ public class WndServerInfo extends NetWindow {
     LabeledText port;
     LabeledText status;
     BlueButton connectBtn;
-    BlueButton playerListButton;
 
     public WndServerInfo() {
         super();
 
         int height, y = 0;
 
-        int width = PixelScene.landscape() ? WIDTH_L : WIDTH_P;
-        int maxBtnHeight = PixelScene.landscape() ? 16: 12;
+        int maxWidth = PixelScene.landscape() ? WIDTH_L : WIDTH_P;
+        int maxBtnHeight = PixelScene.landscape() ? 18: 14;
         int maxTitleHeight =  PixelScene.landscape() ? 12: 9;
         String maxTitleText = PixelScene.landscape() ? "Server Info": "Server";
 
@@ -52,8 +51,6 @@ public class WndServerInfo extends NetWindow {
         add(port);
 
 
-        playerListButton = new PlayerListButton();
-        add(playerListButton);
 
         connectBtn = new BlueButton("Connect") {
             @Override
@@ -61,7 +58,7 @@ public class WndServerInfo extends NetWindow {
                 super.update();
                 text.text(net().connected() ? "Disconnect" : "Connect");
                 setSize(net().connected() ? 50 : 40, maxBtnHeight);
-                setPos(playerListButton.left() - connectBtn.width() - GAP, 0);
+                setPos(maxWidth - connectBtn.width(), 0);
             }
 
             @Override
@@ -85,12 +82,10 @@ public class WndServerInfo extends NetWindow {
         float bottom = y;
 
         title.setPos(GAP, (PixelScene.landscape() ? 1: 2));
-        playerListButton.setSize(40, maxBtnHeight);
-        playerListButton.setPos(width - playerListButton.width(), 0);
         connectBtn.setSize(40, maxBtnHeight);
-        connectBtn.setPos(0, 0);
+        connectBtn.setPos(maxWidth- connectBtn.width(), 0);
 
-        sep1.size(width, 1);
+        sep1.size(maxWidth, 1);
         sep1.y = connectBtn.bottom() + GAP;
 
         bottom = sep1.y + 1;
@@ -112,7 +107,7 @@ public class WndServerInfo extends NetWindow {
 
         height = (int) (status.bottom() + 4 * GAP);
 
-       resize(width, height);
+       resize(maxWidth, height);
     }
 
 

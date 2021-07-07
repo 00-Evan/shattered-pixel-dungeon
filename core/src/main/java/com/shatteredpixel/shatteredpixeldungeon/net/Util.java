@@ -6,17 +6,16 @@ import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndMotd;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndNetSettings;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndPlayerList;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndServerInfo;
-import com.shatteredpixel.shatteredpixeldungeon.net.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.net.ui.NetIcons;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndMessage;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
-import com.watabou.utils.Callback;
 
 
 public class Util {
 
     public static void error(String message){
-        message(Icons.get(Icons.ALERT), "Connection Error", message);
+        message(NetIcons.get(NetIcons.ALERT), "Connection Error", message);
     }
 
     public static void message(Image i, String title, String message){
@@ -24,10 +23,10 @@ public class Util {
     }
 
     public static void message(String title, String message){
-        message(Icons.get(Icons.GLOBE), title, message);
+        message(NetIcons.get(NetIcons.GLOBE), title, message);
     }
     public static void message(String message){
-        message(Icons.get(Icons.GLOBE), "Server Message", message);
+        message(NetIcons.get(NetIcons.GLOBE), "Server Message", message);
     }
 
     public static void showSettings(){

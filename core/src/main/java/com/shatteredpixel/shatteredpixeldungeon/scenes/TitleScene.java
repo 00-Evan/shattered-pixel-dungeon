@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
@@ -30,8 +31,10 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Fireball;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.net.Net;
+import com.shatteredpixel.shatteredpixeldungeon.net.Types;
 import com.shatteredpixel.shatteredpixeldungeon.net.Util;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.playerlist.PlayerList;
+import com.shatteredpixel.shatteredpixeldungeon.net.ui.NetIcons;
 import com.shatteredpixel.shatteredpixeldungeon.services.news.News;
 import com.shatteredpixel.shatteredpixeldungeon.services.updates.AvailableUpdateData;
 import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
@@ -52,6 +55,10 @@ import com.watabou.utils.ColorMath;
 import com.watabou.utils.DeviceCompat;
 
 import java.util.Date;
+
+import static com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon.net;
+import static com.shatteredpixel.shatteredpixeldungeon.net.Util.error;
+import static com.shatteredpixel.shatteredpixeldungeon.net.Util.showPlayerList;
 
 public class TitleScene extends PixelScene {
 	
@@ -108,11 +115,13 @@ public class TitleScene extends PixelScene {
 		StyledButton btnPlay = new StyledButton(GREY_TR, Messages.get(this, "enter")){
 			@Override
 			protected void onClick() {
-				if(!ShatteredPixelDungeon.net().connected()) {
-					Util.showServerInfo();
-					return;
+				if (GamesInProgress.checkAll().size() == 0){
+					GamesInProgress.selectedClass = null;
+					GamesInProgress.curSlot = 1;
+					ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
+				} else {
+					ShatteredPixelDungeon.switchNoFade( StartScene.class );
 				}
-				ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
 			}
 			
 			@Override
@@ -130,8 +139,44 @@ public class TitleScene extends PixelScene {
 		btnPlay.icon(Icons.get(Icons.ENTER));
 		add(btnPlay);
 
-		StyledButton btnSupport = new SupportButton(GREY_TR, Messages.get(this, "support"));
-		add(btnSupport);
+
+		StyledButton btnConnection = new StyledButton(GREY_TR, "SPDNet"){
+			@Override
+			protected void onClick() {
+				Util.showServerInfo();
+			}
+		};
+
+		btnConnection.icon(NetIcons.get(NetIcons.GLOBE));
+		btnConnection.icon().scale.set(PixelScene.align(0.8f));
+		add(btnConnection);
+
+
+		StyledButton btnPlayers = new StyledButton(GREY_TR, "Players"){
+			@Override
+			protected void onClick() {
+				if (net().connected()) {
+					net().send(Types.Recieve.MESSAGE, Types.Send.PLAYERLIISTREQUEST, null);
+				}else{
+					error("You are not connected!");
+					return;
+				}
+				net().socket().once(Types.Recieve.PLAYERLIST, args -> {
+					String data = (String) args[0];
+					try {
+						final PlayerList pl = net().mapper().readValue(data, PlayerList.class);
+						Game.runOnRenderThread(() -> showPlayerList(pl));
+					} catch (JsonProcessingException e) {
+						e.printStackTrace();
+					}
+				});
+			}
+		};
+
+
+		btnPlayers.icon(NetIcons.get(NetIcons.PLAYERS));
+		btnPlayers.icon().scale.set(PixelScene.align(0.8f));
+		add(btnPlayers);
 
 		StyledButton btnRankings = new StyledButton(GREY_TR,Messages.get(this, "rankings")){
 			@Override
@@ -177,10 +222,13 @@ public class TitleScene extends PixelScene {
 		GAP = Math.max(GAP, 2);
 
 		if (landscape()) {
-			btnPlay.setRect(title.x-50, topRegion+GAP, ((title.width()+100)/2)-1, BTN_HEIGHT);
+			btnPlay.text("Enter");
+			btnPlay.setRect(title.x-50, topRegion+GAP, (MIN_WIDTH_L/3)-1, BTN_HEIGHT);
 			align(btnPlay);
-			btnSupport.setRect(btnPlay.right()+2, btnPlay.top(), btnPlay.width(), BTN_HEIGHT);
-			btnRankings.setRect(btnPlay.left(), btnPlay.bottom()+ GAP, (btnPlay.width()*.67f)-1, BTN_HEIGHT);
+
+			btnConnection.setRect(btnPlay.right()+2, topRegion+GAP, btnPlay.width(), BTN_HEIGHT);
+			btnPlayers.setRect(btnConnection.right()+2, topRegion+GAP, btnConnection.width(), BTN_HEIGHT);
+			btnRankings.setRect(btnPlay.left(), btnPlay.bottom()+ GAP, (MIN_WIDTH_L/3)-1, BTN_HEIGHT);
 			btnBadges.setRect(btnRankings.left(), btnRankings.bottom()+GAP, btnRankings.width(), BTN_HEIGHT);
 			btnNews.setRect(btnRankings.right()+2, btnRankings.top(), btnRankings.width(), BTN_HEIGHT);
 			btnChanges.setRect(btnNews.left(), btnNews.bottom() + GAP, btnRankings.width(), BTN_HEIGHT);
@@ -189,8 +237,10 @@ public class TitleScene extends PixelScene {
 		} else {
 			btnPlay.setRect(title.x, topRegion+GAP, title.width(), BTN_HEIGHT);
 			align(btnPlay);
-			btnSupport.setRect(btnPlay.left(), btnPlay.bottom()+ GAP, btnPlay.width(), BTN_HEIGHT);
-			btnRankings.setRect(btnPlay.left(), btnSupport.bottom()+ GAP, (btnPlay.width()/2)-1, BTN_HEIGHT);
+
+			btnConnection.setRect(btnPlay.left(), btnPlay.bottom()+ GAP, (btnPlay.width()/2)-1, BTN_HEIGHT);
+			btnPlayers.setRect(btnConnection.right()+2, btnConnection.top(), btnConnection.width(), BTN_HEIGHT);
+			btnRankings.setRect(btnPlay.left(), btnConnection.bottom()+ GAP, (btnPlay.width()/2)-1, BTN_HEIGHT);
 			btnBadges.setRect(btnRankings.right()+2, btnRankings.top(), btnRankings.width(), BTN_HEIGHT);
 			btnNews.setRect(btnRankings.left(), btnRankings.bottom()+ GAP, btnRankings.width(), BTN_HEIGHT);
 			btnChanges.setRect(btnNews.right()+2, btnNews.top(), btnNews.width(), BTN_HEIGHT);

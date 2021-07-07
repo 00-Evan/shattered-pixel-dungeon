@@ -3,7 +3,7 @@ package com.shatteredpixel.shatteredpixeldungeon.net.ui;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.watabou.noosa.Image;
 
-public enum Icons {
+public enum NetIcons {
     GLOBE,
     ALERT,
     NEWS,
@@ -13,7 +13,7 @@ public enum Icons {
         return get( this );
     }
 
-    public static Image get( com.shatteredpixel.shatteredpixeldungeon.net.ui.Icons type ) {
+    public static Image get( NetIcons type ) {
         Image icon = new Image(Assets.Interfaces.NETICONS);
 
         switch (type) {
