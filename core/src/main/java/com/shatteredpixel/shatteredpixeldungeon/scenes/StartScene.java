@@ -28,6 +28,8 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.net.ui.NetIcons;
+import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndNetOptions;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
@@ -46,6 +48,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static com.shatteredpixel.shatteredpixeldungeon.net.Util.error;
+import static com.shatteredpixel.shatteredpixeldungeon.net.Util.runWindow;
 
 public class StartScene extends PixelScene {
 	
@@ -292,7 +295,17 @@ public class StartScene extends PixelScene {
 					ShatteredPixelDungeon.scene().add( new WndGameInProgress(slot));
 				}else{
 					if(!ShatteredPixelDungeon.net().connected()) error("Not connected", "You must connect before loading save");
-					else error("Seed mismatch", "Save seed: "+seed+"\nServer seed: " +ShatteredPixelDungeon.net().seed());
+					else runWindow(new WndNetOptions(NetIcons.get(NetIcons.ALERT), "Seed Mismatch","Save seed: "+seed+"\nServer seed: " +ShatteredPixelDungeon.net().seed(), "Delete"){
+						@Override
+						protected void onSelect(int index) {
+							super.onSelect(index);
+							if (index ==0){
+								FileUtils.deleteDir(GamesInProgress.gameFolder(slot));
+								GamesInProgress.setUnknown(slot);
+								ShatteredPixelDungeon.switchNoFade(StartScene.class);
+							}
+						}
+					});
 				}
 			}
 		}

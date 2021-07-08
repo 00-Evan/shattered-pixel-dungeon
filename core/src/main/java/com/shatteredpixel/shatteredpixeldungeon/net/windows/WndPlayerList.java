@@ -51,34 +51,36 @@ public class WndPlayerList extends NetWindow {
 
 		list.scrollTo( 0, 0 );
 
-		float xpos = 0;
 		float ypos = 0;
 
 		for (int i=0; i < p.list.length; i++) {
+			float xpos = 0;
 
 			Player player = p.list[i];
 
-			if(player.depth != null) {
-				Image steps = Icons.DEPTH.get();
-				steps.x = xpos;
-				steps.y = ypos;
-				content.add(steps);
-				xpos+=steps.width();
+			Image steps = Icons.DEPTH.get();
+			steps.x = xpos;
+			steps.y = ypos;
+			content.add(steps);
+			steps.brightness(player.depth != null?  1: 0);
 
-				BitmapText depth;
-				depth = new BitmapText( PixelScene.pixelFont);
-				depth.text( Integer.toString(player.depth) );
-				depth.measure();
-				content.add(depth);
+			xpos+=steps.width();
 
-				depth.x = steps.x + (steps.width - depth.width()) / 2f;
-				depth.y = steps.y + (steps.height - depth.height()) / 2f + 1;
-				PixelScene.align(depth);
+			BitmapText depth;
+			depth = new BitmapText(PixelScene.pixelFont);
+			depth.text(player.depth != null ? Integer.toString(player.depth): "...");
+			depth.measure();
+			content.add(depth);
 
-			}
+			depth.x = steps.x + (steps.width - depth.width()) / 2f;
+			depth.y = steps.y + (steps.height - depth.height()) / 2f + 1;
+			PixelScene.align(depth);
+			depth.brightness(player.depth != null?  1: 0);
 
 			IconTitle playerInfo = new IconTitle();
-			Image ic = player.playerClass != null ? HeroSprite.avatar( playerClassToHeroClass(player.playerClass), 0 ): Icons.get(Icons.LOST);
+			Image ic =  HeroSprite.avatar( playerClassToHeroClass(player.depth != null ? player.playerClass: 0), 0 );
+			ic.brightness(player.depth != null?  1: 0);
+
 			playerInfo.icon( ic);
 			playerInfo.label( player.nick );
 			playerInfo.color(Window.TITLE_COLOR);
@@ -87,6 +89,7 @@ public class WndPlayerList extends NetWindow {
 			content.add( playerInfo );
 
 			ypos+=playerInfo.height();
+
 		}
 
 		content.setRect(0,0, width, ypos );
