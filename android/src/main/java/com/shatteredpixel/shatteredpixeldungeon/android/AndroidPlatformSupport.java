@@ -178,27 +178,14 @@ public class AndroidPlatformSupport extends PlatformSupport {
 	
 	/* FONT SUPPORT */
 	
-	private int pageSize;
-	private PixmapPacker packer;
-	private boolean systemfont;
-	
 	//droid sans / roboto, or a custom pixel font, for use with Latin and Cyrillic languages
 	private static FreeTypeFontGenerator basicFontGenerator;
-	private static HashMap<Integer, BitmapFont> basicFonts = new HashMap<>();
-	
 	//droid sans / nanum gothic / noto sans, for use with Korean
 	private static FreeTypeFontGenerator KRFontGenerator;
-	private static HashMap<Integer, BitmapFont> KRFonts = new HashMap<>();
-	
 	//droid sans / noto sans, for use with Simplified Chinese
 	private static FreeTypeFontGenerator SCFontGenerator;
-	private static HashMap<Integer, BitmapFont> SCFonts = new HashMap<>();
-	
 	//droid sans / noto sans, for use with Japanese
 	private static FreeTypeFontGenerator JPFontGenerator;
-	private static HashMap<Integer, BitmapFont> JPFonts = new HashMap<>();
-	
-	private static HashMap<FreeTypeFontGenerator, HashMap<Integer, BitmapFont>> fonts;
 	
 	//special logic for handling korean android 6.0 font oddities
 	private static boolean koreanAndroid6OTF = false;
@@ -211,23 +198,8 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		}
 		this.pageSize = pageSize;
 		this.systemfont = systemfont;
-		
-		if (fonts != null){
-			for (FreeTypeFontGenerator generator : fonts.keySet()){
-				for (BitmapFont f : fonts.get(generator).values()){
-					f.dispose();
-				}
-				fonts.get(generator).clear();
-				generator.dispose();
-			}
-			fonts.clear();
-			if (packer != null){
-				for (PixmapPacker.Page p : packer.getPages()){
-					p.getTexture().dispose();
-				}
-				packer.dispose();
-			}
-		}
+
+		resetGenerators(false);
 		fonts = new HashMap<>();
 		basicFontGenerator = KRFontGenerator = SCFontGenerator = JPFontGenerator = null;
 		
@@ -294,62 +266,21 @@ public class AndroidPlatformSupport extends PlatformSupport {
 			
 		}
 		
-		if (basicFontGenerator != null) fonts.put(basicFontGenerator, basicFonts);
-		if (KRFontGenerator != null) fonts.put(KRFontGenerator, KRFonts);
-		if (SCFontGenerator != null) fonts.put(SCFontGenerator, SCFonts);
-		if (JPFontGenerator != null) fonts.put(JPFontGenerator, JPFonts);
+		if (basicFontGenerator != null) fonts.put(basicFontGenerator, new HashMap<>());
+		if (KRFontGenerator != null) fonts.put(KRFontGenerator, new HashMap<>());
+		if (SCFontGenerator != null) fonts.put(SCFontGenerator, new HashMap<>());
+		if (JPFontGenerator != null) fonts.put(JPFontGenerator, new HashMap<>());
 		
 		//would be nice to use RGBA4444 to save memory, but this causes problems on some gpus =S
 		packer = new PixmapPacker(pageSize, pageSize, Pixmap.Format.RGBA8888, 1, false);
-	}
-	
-	@Override
-	public void resetGenerators() {
-		if (fonts != null) {
-			for (FreeTypeFontGenerator generator : fonts.keySet()) {
-				for (BitmapFont f : fonts.get(generator).values()) {
-					f.dispose();
-				}
-				fonts.get(generator).clear();
-				generator.dispose();
-			}
-			fonts.clear();
-			if (packer != null) {
-				for (PixmapPacker.Page p : packer.getPages()) {
-					p.getTexture().dispose();
-				}
-				packer.dispose();
-			}
-			fonts = null;
-		}
-		setupFontGenerators(pageSize, systemfont);
-	}
-
-	@Override
-	//FIXME it would be really nice to keep the local texture data and just re-send it to the GPU
-	public void reloadGenerators() {
-		if (packer != null) {
-			for (FreeTypeFontGenerator generator : fonts.keySet()) {
-				for (BitmapFont f : fonts.get(generator).values()) {
-					f.dispose();
-				}
-				fonts.get(generator).clear();
-			}
-			if (packer != null) {
-				for (PixmapPacker.Page p : packer.getPages()) {
-					p.getTexture().dispose();
-				}
-				packer.dispose();
-			}
-			packer = new PixmapPacker(pageSize, pageSize, Pixmap.Format.RGBA8888, 1, false);
-		}
 	}
 
 	private static Pattern KRMatcher = Pattern.compile("\\p{InHangul_Syllables}");
 	private static Pattern SCMatcher = Pattern.compile("\\p{InCJK_Unified_Ideographs}|\\p{InCJK_Symbols_and_Punctuation}|\\p{InHalfwidth_and_Fullwidth_Forms}");
 	private static Pattern JPMatcher = Pattern.compile("\\p{InHiragana}|\\p{InKatakana}");
-	
-	private static FreeTypeFontGenerator getGeneratorForString( String input ){
+
+	@Override
+	protected FreeTypeFontGenerator getGeneratorForString( String input ){
 		if (KRMatcher.matcher(input).find()){
 			return KRFontGenerator;
 		} else if (SCMatcher.matcher(input).find()){
@@ -359,49 +290,6 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		} else {
 			return basicFontGenerator;
 		}
-	}
-	
-	@Override
-	public BitmapFont getFont(int size, String text) {
-		FreeTypeFontGenerator generator = getGeneratorForString(text);
-		
-		if (generator == null){
-			return null;
-		}
-		
-		if (!fonts.get(generator).containsKey(size)) {
-			FreeTypeFontGenerator.FreeTypeFontParameter parameters = new FreeTypeFontGenerator.FreeTypeFontParameter();
-			parameters.size = size;
-			parameters.flip = true;
-			parameters.borderWidth = parameters.size / 10f;
-			if (size >= 20){
-				parameters.renderCount = 2;
-			} else {
-				parameters.renderCount = 3;
-			}
-			parameters.hinting = FreeTypeFontGenerator.Hinting.None;
-			parameters.spaceX = -(int) parameters.borderWidth;
-			parameters.incremental = true;
-			if (generator == basicFontGenerator){
-				//if we're using latin/cyrillic, we can safely pre-generate some common letters
-				//(we define common as >4% frequency in english)
-				parameters.characters = "�etaoinshrdl";
-			} else {
-				parameters.characters = "�";
-			}
-			parameters.packer = packer;
-			
-			try {
-				BitmapFont font = generator.generateFont(parameters);
-				font.getData().missingGlyph = font.getData().getGlyph('�');
-				fonts.get(generator).put(size, font);
-			} catch ( Exception e ){
-				Game.reportException(e);
-				return null;
-			}
-		}
-		
-		return fonts.get(generator).get(size);
 	}
 	
 	//splits on newlines, underscores, and chinese/japaneses characters
