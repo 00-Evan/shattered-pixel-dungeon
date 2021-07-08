@@ -2,6 +2,7 @@ package com.watabou.noosa;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.watabou.glscripts.Script;
 import com.watabou.glwrap.Blending;
 import com.watabou.glwrap.Quad;
@@ -36,7 +38,12 @@ public class TextInput extends Component {
 		this.bg = bg;
 		add(bg);
 
-		stage = new Stage(new ScreenViewport());
+		//use a custom viewport here to ensure stage camera matches game camera
+		Viewport viewport = new Viewport() {};
+		viewport.setWorldSize(Game.width, Game.height);
+		viewport.setScreenBounds(0, Game.bottomInset, Game.width, Game.height);
+		viewport.setCamera(new OrthographicCamera());
+		stage = new Stage(viewport);
 		Game.inputHandler.addInputProcessor(stage);
 
 		container = new Container<TextField>();

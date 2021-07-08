@@ -121,7 +121,8 @@ public class Game implements ApplicationListener {
 			TextureCache.reload();
 			Vertexbuffer.refreshAllBuffers();
 		}
-		
+
+		height -= bottomInset;
 		if (height != Game.height || width != Game.width) {
 
 			Game.width = width;

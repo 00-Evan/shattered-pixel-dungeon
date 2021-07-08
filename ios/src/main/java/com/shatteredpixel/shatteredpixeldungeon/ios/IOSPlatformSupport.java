@@ -33,8 +33,9 @@ public class IOSPlatformSupport extends PlatformSupport {
 		}
 
 		if (!SPDSettings.fullscreen()) {
+			int insetChange = Gdx.graphics.getSafeInsetBottom() - Game.bottomInset;
 			Game.bottomInset = Gdx.graphics.getSafeInsetBottom();
-			Game.height -= Game.bottomInset;
+			Game.height -= insetChange;
 			Game.dispHeight = Game.height;
 		} else {
 			Game.height += Game.bottomInset;
@@ -46,8 +47,11 @@ public class IOSPlatformSupport extends PlatformSupport {
 
 	@Override
 	public void updateSystemUI() {
+		int prevInset = Game.bottomInset;
 		updateDisplaySize();
-		ShatteredPixelDungeon.seamlessResetScene();
+		if (prevInset != Game.bottomInset) {
+			ShatteredPixelDungeon.seamlessResetScene();
+		}
 	}
 
 	@Override
