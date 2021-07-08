@@ -29,9 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import java.util.ArrayList;
 
 public class WndUseItem extends WndInfoItem {
-	
-	//only one wnduseitem can appear at a time
-	private static WndUseItem INSTANCE;
 
 	private static final float BUTTON_HEIGHT	= 16;
 	
@@ -40,12 +37,7 @@ public class WndUseItem extends WndInfoItem {
 	public WndUseItem( final Window owner, final Item item ) {
 		
 		super(item);
-		
-		if( INSTANCE != null ){
-			INSTANCE.hide();
-		}
-		INSTANCE = this;
-	
+
 		float y = height + GAP;
 		
 		if (Dungeon.hero.isAlive()) {
