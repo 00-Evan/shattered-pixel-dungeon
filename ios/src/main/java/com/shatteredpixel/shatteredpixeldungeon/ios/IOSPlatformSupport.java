@@ -56,11 +56,6 @@ public class IOSPlatformSupport extends PlatformSupport {
         return !test.getFlags().contains(SCNetworkReachabilityFlags.IsWWAN);
     }
 
-    @Override
-    public void promptTextInput(String title, String hintText, int maxLen, boolean multiLine, String posTxt, String negTxt, TextCallback callback) {
-        //TODO need multiplat text input, this does nothing atm!
-    }
-
     public void vibrate( int millis ){
         //gives a short vibrate on iPhone 6+, no vibration otherwise
         AudioServices.playSystemSound(1520);
