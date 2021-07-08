@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.services.updates.UpdateImpl;
 import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.ui.Button;
+import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.FileUtils;
 
 public class AndroidGame extends AndroidApplication {
@@ -90,11 +91,11 @@ public class AndroidGame extends AndroidApplication {
 		
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.depth = 0;
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-			//use rgb888 on more modern devices for better visuals
-			config.r = config.g = config.b = 8;
-		} else {
-			//and rgb565 (default) on older ones for better performance
+		if (DeviceCompat.legacyDevice()) {
+			//use rgb565 on older devices for better performance
+			config.r = 5;
+			config.g = 6;
+			config.b = 5;
 		}
 		
 		config.useCompass = false;
