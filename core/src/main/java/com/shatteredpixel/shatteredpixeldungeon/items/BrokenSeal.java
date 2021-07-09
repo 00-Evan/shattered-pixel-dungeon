@@ -67,6 +67,10 @@ public class BrokenSeal extends Item {
 		this.glyph = glyph;
 	}
 
+	public int maxShield( int armTier, int armLvl ){
+		return armTier + armLvl + Dungeon.hero.pointsInTalent(Talent.IRON_WILL);
+	}
+
 	@Override
 	public ItemSprite.Glowing glowing() {
 		return glyph != null ? glyph.glowing() : null;
@@ -191,8 +195,8 @@ public class BrokenSeal extends Item {
 		}
 
 		public synchronized int maxShield() {
-			if (armor != null && armor.isEquipped((Hero)target)) {
-				return armor.tier + armor.level() + ((Hero) target).pointsInTalent(Talent.IRON_WILL);
+			if (armor != null && armor.isEquipped((Hero)target) && armor.checkSeal() != null) {
+				return armor.checkSeal().maxShield(armor.tier, armor.level());
 			} else {
 				return 0;
 			}
