@@ -192,6 +192,7 @@ public class WndSettings extends WndTabbed {
 		CheckBox chkFullscreen;
 		OptionSlider optScale;
 		CheckBox chkSaver;
+		RedButton btnOrientation;
 		ColorBlock sep2;
 		OptionSlider optBrightness;
 		OptionSlider optVisGrid;
@@ -267,6 +268,18 @@ public class WndSettings extends WndTabbed {
 				add( chkSaver );
 			}
 
+			if (DeviceCompat.isAndroid()) {
+				btnOrientation = new RedButton(PixelScene.landscape() ?
+						Messages.get(this, "portrait")
+						: Messages.get(this, "landscape")) {
+					@Override
+					protected void onClick() {
+						SPDSettings.landscape(!PixelScene.landscape());
+					}
+				};
+				add(btnOrientation);
+			}
+
 			sep2 = new ColorBlock(1, 1, 0xFF000000);
 			add(sep2);
 
@@ -315,6 +328,11 @@ public class WndSettings extends WndTabbed {
 					chkSaver.setRect(0, bottom + GAP, width, BTN_HEIGHT);
 					bottom = chkSaver.bottom();
 				}
+			}
+
+			if (btnOrientation != null) {
+				btnOrientation.setRect(0, bottom + GAP, width, BTN_HEIGHT);
+				bottom = btnOrientation.bottom();
 			}
 
 			if (optScale != null){

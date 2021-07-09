@@ -55,6 +55,12 @@ import java.util.regex.Pattern;
 public class AndroidPlatformSupport extends PlatformSupport {
 	
 	public void updateDisplaySize(){
+		if (SPDSettings.landscape() != null) {
+			AndroidGame.instance.setRequestedOrientation( SPDSettings.landscape() ?
+					ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
+					ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT );
+		}
+
 		GLSurfaceView view = (GLSurfaceView) ((AndroidGraphics)Gdx.graphics).getView();
 		
 		if (view.getMeasuredWidth() == 0 || view.getMeasuredHeight() == 0)
@@ -66,6 +72,13 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		boolean fullscreen = Build.VERSION.SDK_INT < Build.VERSION_CODES.N
 				|| !AndroidGame.instance.isInMultiWindowMode();
 
+		if (fullscreen && SPDSettings.landscape() != null
+				&& (Game.dispWidth >= Game.dispHeight) != SPDSettings.landscape()){
+			int tmp = Game.dispWidth;
+			Game.dispWidth = Game.dispHeight;
+			Game.dispHeight = tmp;
+		}
+		
 		float dispRatio = Game.dispWidth / (float)Game.dispHeight;
 		
 		float renderWidth = dispRatio > 1 ? PixelScene.MIN_WIDTH_L : PixelScene.MIN_WIDTH_P;
