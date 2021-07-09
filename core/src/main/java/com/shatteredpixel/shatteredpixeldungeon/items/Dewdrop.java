@@ -114,8 +114,18 @@ public class Dewdrop extends Item {
 		return true;
 	}
 
-	@Override
 	//max of one dew in a stack
+
+	@Override
+	public Item merge( Item other ){
+		if (isSimilar( other )){
+			quantity = 1;
+			other.quantity = 0;
+		}
+		return this;
+	}
+
+	@Override
 	public Item quantity(int value) {
 		quantity = Math.min( value, 1);
 		return this;
