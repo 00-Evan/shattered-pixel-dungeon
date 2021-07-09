@@ -2,7 +2,7 @@ package com.shatteredpixel.shatteredpixeldungeon.net.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.net.Util;
+import com.shatteredpixel.shatteredpixeldungeon.net.windows.NetWindow;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 
 public class NetBtn extends StyledButton {
@@ -25,6 +25,6 @@ public class NetBtn extends StyledButton {
     @Override
     protected void onClick() {
         super.onClick();
-        Util.showServerInfo();
+        NetWindow.showServerInfo();
     }
 }

@@ -4,12 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.Events;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.playerlist.PlayerList;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.send.Send;
+import com.shatteredpixel.shatteredpixeldungeon.net.windows.NetWindow;
 import com.watabou.noosa.Game;
 import com.watabou.utils.DeviceCompat;
 
 import static com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon.net;
-import static com.shatteredpixel.shatteredpixeldungeon.net.Util.error;
-import static com.shatteredpixel.shatteredpixeldungeon.net.Util.showPlayerList;
 
 public class PlayerListButton extends BlueButton {
     public PlayerListButton(){
@@ -21,7 +20,7 @@ public class PlayerListButton extends BlueButton {
         if (net().connected()) {
             net().send(Events.MESSAGE, Send.PLAYERLIISTREQUEST, null);
         }else{
-            error("Not connected", "You must connect before viewing players");
+            NetWindow.error("Not connected", "You must connect before viewing players");
             return;
         }
         net().socket().once(Events.PLAYERLIST, args -> {
@@ -29,7 +28,7 @@ public class PlayerListButton extends BlueButton {
             DeviceCompat.log("PLIST", data);
             try {
                 final PlayerList pl = net().mapper().readValue(data, PlayerList.class);
-                Game.runOnRenderThread(() -> showPlayerList(pl));
+                Game.runOnRenderThread(() -> NetWindow.showPlayerList(pl));
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }

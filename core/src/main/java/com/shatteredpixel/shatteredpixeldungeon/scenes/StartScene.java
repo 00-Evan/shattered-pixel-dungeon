@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.net.ui.NetIcons;
+import com.shatteredpixel.shatteredpixeldungeon.net.windows.NetWindow;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndNetOptions;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
@@ -46,9 +47,6 @@ import com.watabou.utils.FileUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-import static com.shatteredpixel.shatteredpixeldungeon.net.Util.error;
-import static com.shatteredpixel.shatteredpixeldungeon.net.Util.runWindow;
 
 public class StartScene extends PixelScene {
 	
@@ -294,8 +292,8 @@ public class StartScene extends PixelScene {
 				if(eligible){
 					ShatteredPixelDungeon.scene().add( new WndGameInProgress(slot));
 				}else{
-					if(!ShatteredPixelDungeon.net().connected()) error("Not connected", "You must connect before loading save");
-					else runWindow(new WndNetOptions(NetIcons.get(NetIcons.ALERT), "Seed Mismatch","Save seed: "+seed+"\nServer seed: " +ShatteredPixelDungeon.net().seed(), "Delete"){
+					if(!ShatteredPixelDungeon.net().connected()) NetWindow.error("Not connected", "You must connect before loading save");
+					else NetWindow.runWindow(new WndNetOptions(NetIcons.get(NetIcons.ALERT), "Seed Mismatch","Save seed: "+seed+"\nServer seed: " +ShatteredPixelDungeon.net().seed(), "Delete"){
 						@Override
 						protected void onSelect(int index) {
 							super.onSelect(index);

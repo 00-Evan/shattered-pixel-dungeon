@@ -31,9 +31,8 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.net.Net;
-import com.shatteredpixel.shatteredpixeldungeon.net.Util;
 import com.shatteredpixel.shatteredpixeldungeon.net.ui.NetBtn;
+import com.shatteredpixel.shatteredpixeldungeon.net.windows.NetWindow;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
@@ -54,8 +53,6 @@ import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
 
 import java.util.ArrayList;
-
-import static com.shatteredpixel.shatteredpixeldungeon.net.Util.error;
 
 public class HeroSelectScene extends PixelScene {
 
@@ -122,7 +119,7 @@ public class HeroSelectScene extends PixelScene {
 			protected void onClick() {
 				super.onClick();
 				if(!ShatteredPixelDungeon.net().connected()) {
-					error("Not connected", "You must connect before starting a new game");
+					NetWindow.error("Not connected", "You must connect before starting a new game");
 					return;
 				}
 				if (GamesInProgress.selectedClass == null) return;

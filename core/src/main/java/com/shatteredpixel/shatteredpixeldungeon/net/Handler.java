@@ -15,6 +15,7 @@ import com.shatteredpixel.shatteredpixeldungeon.net.events.send.action.Descend;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.send.action.Move;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.send.auth.Auth;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.send.message.Message;
+import com.shatteredpixel.shatteredpixeldungeon.net.windows.NetWindow;
 import com.watabou.utils.DeviceCompat;
 
 import io.socket.emitter.Emitter;
@@ -63,7 +64,7 @@ public class Handler {
         DeviceCompat.log("MESSAGE", json);
         try{
             Message message = mapper.readValue(json, Message.class);
-            Util.message(message.data);
+            NetWindow.message(message.data);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -117,7 +118,7 @@ public class Handler {
     public void handleMotd(String json){
         try{
             Motd motd = mapper.readValue(json, Motd.class);
-            Util.motd(motd.motd, motd.seed);
+            NetWindow.motd(motd.motd, motd.seed);
             net.seed(motd.seed);
         } catch (JsonProcessingException e) {
             e.printStackTrace();

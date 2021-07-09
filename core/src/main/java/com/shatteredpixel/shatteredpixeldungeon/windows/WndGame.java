@@ -40,8 +40,6 @@ import com.watabou.noosa.Game;
 
 import java.io.IOException;
 
-import static com.shatteredpixel.shatteredpixeldungeon.net.Util.error;
-
 public class WndGame extends Window {
 
 	private static final int WIDTH		= 120;

@@ -31,11 +31,11 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Fireball;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.net.Util;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.Events;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.playerlist.PlayerList;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.send.Send;
 import com.shatteredpixel.shatteredpixeldungeon.net.ui.NetIcons;
+import com.shatteredpixel.shatteredpixeldungeon.net.windows.NetWindow;
 import com.shatteredpixel.shatteredpixeldungeon.services.news.News;
 import com.shatteredpixel.shatteredpixeldungeon.services.updates.AvailableUpdateData;
 import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
@@ -58,8 +58,6 @@ import com.watabou.utils.DeviceCompat;
 import java.util.Date;
 
 import static com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon.net;
-import static com.shatteredpixel.shatteredpixeldungeon.net.Util.error;
-import static com.shatteredpixel.shatteredpixeldungeon.net.Util.showPlayerList;
 
 public class TitleScene extends PixelScene {
 	
@@ -144,7 +142,7 @@ public class TitleScene extends PixelScene {
 		StyledButton btnConnection = new StyledButton(GREY_TR, "SPDNet"){
 			@Override
 			protected void onClick() {
-				Util.showServerInfo();
+				NetWindow.showServerInfo();
 			}
 		};
 
@@ -159,14 +157,14 @@ public class TitleScene extends PixelScene {
 				if (net().connected()) {
 					net().send(Events.MESSAGE, Send.PLAYERLIISTREQUEST, null);
 				}else{
-					error("Not Connected", "You must connect before viewing players");
+					NetWindow.error("Not Connected", "You must connect before viewing players");
 					return;
 				}
 				net().socket().once(Events.PLAYERLIST, args -> {
 					String data = (String) args[0];
 					try {
 						final PlayerList pl = net().mapper().readValue(data, PlayerList.class);
-						Game.runOnRenderThread(() -> showPlayerList(pl));
+						Game.runOnRenderThread(() -> NetWindow.showPlayerList(pl));
 					} catch (JsonProcessingException e) {
 						e.printStackTrace();
 					}

@@ -1,16 +1,14 @@
 package com.shatteredpixel.shatteredpixeldungeon.net;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.watabou.utils.DeviceCompat;
-
 import java.net.URI;
+
+import com.shatteredpixel.shatteredpixeldungeon.net.windows.NetWindow;
+import com.watabou.utils.DeviceCompat;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 import io.socket.engineio.client.EngineIOException;
-
-import static com.shatteredpixel.shatteredpixeldungeon.net.Util.error;
 
 public class Net {
     private Socket socket;
@@ -61,7 +59,7 @@ public class Net {
 
         Emitter.Listener onConnectionError = args -> {
             EngineIOException e = (EngineIOException) args[0];
-            error(e.getMessage());
+            NetWindow.error(e.getMessage());
             handler.cancelAll();
             disconnect();
         };
