@@ -369,14 +369,19 @@ public abstract class Wand extends Item {
 		
 		curCharges -= cursed ? 1 : chargesPerCast();
 
-		ScrollEmpower empower = curUser.buff(ScrollEmpower.class);
-		if (empower != null){
-			empower.detach();
-		}
-
+		//remove magic charge at a higher priority, if we are benefiting from it are and not the
+		//wand that just applied it
 		WandOfMagicMissile.MagicCharge buff = curUser.buff(WandOfMagicMissile.MagicCharge.class);
-		if (buff != null && buff.level() > super.buffedLvl()){
+		if (buff != null
+				&& buff.wandJustApplied() != this
+				&& buff.level() == buffedLvl()
+				&& buffedLvl() > super.buffedLvl()){
 			buff.detach();
+		} else {
+			ScrollEmpower empower = curUser.buff(ScrollEmpower.class);
+			if (empower != null){
+				empower.detach();
+			}
 		}
 
 		//if the wand is owned by the hero, but not in their inventory, it must be in the staff
