@@ -1,8 +1,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.net;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.shatteredpixel.shatteredpixeldungeon.net.events.Handler;
-import com.sun.jndi.toolkit.url.Uri;
 import com.watabou.utils.DeviceCompat;
 
 import java.net.URI;
@@ -16,7 +14,7 @@ import static com.shatteredpixel.shatteredpixeldungeon.net.Util.error;
 
 public class Net {
     private Socket socket;
-    private EmittHandler emitter = null;
+    private Handler handler = null;
     private long seed;
 
     public Net(String address, String key){
@@ -42,31 +40,29 @@ public class Net {
         session(Settings.uri());
     }
 
-    public EmittHandler emitter() {
-        return emitter;
-    }
-
-    public ObjectMapper mapper() {
-           return this.handler().mapper();
-    }
-
-    public Handler handler() {
-        return this.emitter.handler();
+    public void session(URI url){
+        IO.Options options = IO.Options.builder()
+                .setForceNew(true)
+                .setReconnection(false)
+                .build();
+        socket = IO.socket(url, options);
+        handler = new Handler(Net.this);
+        setupEvents();
     }
 
     public void setupEvents(){
         Emitter.Listener onConnected = args -> {
-            emitter.startAll();
+            handler.startAll();
         };
 
         Emitter.Listener onDisconnected = args -> {
-            emitter.cancelAll();
+            handler.cancelAll();
         };
 
         Emitter.Listener onConnectionError = args -> {
             EngineIOException e = (EngineIOException) args[0];
             error(e.getMessage());
-            emitter.cancelAll();
+            handler.cancelAll();
             disconnect();
         };
 
@@ -79,19 +75,12 @@ public class Net {
         socket.off();
     }
 
-    public void session(URI url){
-        System.out.println("-- Scheme: "+url.getScheme()+ " address: "+ url.getHost()+" port: " + url.getPort()+ " key: "+Settings.auth_key());
-        IO.Options options = IO.Options.builder()
-                .setForceNew(true)
-                .setReconnection(false)
-                .build();
-        socket = IO.socket(url, options);
-        emitter = new EmittHandler(Net.this);
-        setupEvents();
+    public void connect() {
+        socket.connect();
     }
 
-    public URI uri(){
-        return Settings.uri();
+    public void disconnect(){
+        socket.disconnect();
     }
 
     public void toggle() {
@@ -101,13 +90,26 @@ public class Net {
             disconnect();
     }
 
-    public void connect() {
-        socket.connect();
+    public void die(){
+        if (socket != null) {
+            if(socket.connected()) disconnect();
+            endEvents();
+            socket = null;
+        }
+        handler = null;
     }
 
-    public void disconnect(){
-        socket.disconnect();
+    public void send(String event, int type, String data){
+        handler.send(event, type, data);
     }
+
+    public void send(int action, int type, int... data){
+        handler.send(action, type, data);
+    }
+
+    public long seed() { return this.seed; }
+
+    public void seed(long seed) { this.seed = seed; }
 
     public Socket socket(){
         return this.socket;
@@ -117,23 +119,9 @@ public class Net {
         return socket != null && socket.connected();
     }
 
-    public void die(){
-        if (socket != null) {
-            if(socket.connected()) disconnect();
-            endEvents();
-            socket = null;
-        }
-        emitter = null;
+    public URI uri(){
+        return Settings.uri();
     }
 
-    public long seed() { return this.seed; }
-    public void seed(long seed) { this.seed = seed; }
-
-    public void send(int action, int type, int... data){
-        emitter.send(action, type, data);
-    }
-
-    public void send(String event, int type, String data){
-        emitter.send(event, type, data);
-    }
+    public ObjectMapper mapper() { return handler.mapper();}
 }

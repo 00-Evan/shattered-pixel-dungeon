@@ -3,14 +3,12 @@ package com.shatteredpixel.shatteredpixeldungeon.net;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.playerlist.PlayerList;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndMotd;
-import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndNetOptions;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndNetSettings;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndPlayerList;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndServerInfo;
 import com.shatteredpixel.shatteredpixeldungeon.net.ui.NetIcons;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.WndMessage;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 

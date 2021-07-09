@@ -1,5 +1,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.net.events.send.action;
 
+import com.shatteredpixel.shatteredpixeldungeon.net.events.send.Actions;
+
 public class Ascend {
     public int type;
     public int playerClass;

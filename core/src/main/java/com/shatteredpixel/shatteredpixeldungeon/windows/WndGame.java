@@ -21,14 +21,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.net.Types;
-import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.playerlist.Player;
-import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.playerlist.PlayerList;
 import com.shatteredpixel.shatteredpixeldungeon.net.ui.BlueButton;
 import com.shatteredpixel.shatteredpixeldungeon.net.ui.PlayerListButton;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -41,13 +37,10 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Game;
-import com.watabou.utils.DeviceCompat;
 
 import java.io.IOException;
 
-import static com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon.net;
 import static com.shatteredpixel.shatteredpixeldungeon.net.Util.error;
-import static com.shatteredpixel.shatteredpixeldungeon.net.Util.showPlayerList;
 
 public class WndGame extends Window {
 

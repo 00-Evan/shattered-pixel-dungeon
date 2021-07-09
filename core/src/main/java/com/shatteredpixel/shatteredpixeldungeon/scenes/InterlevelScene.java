@@ -34,8 +34,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.net.Types;
-import com.shatteredpixel.shatteredpixeldungeon.net.events.send.action.Actions;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.send.Actions;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.send.Send;
 import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
 import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
@@ -372,7 +372,7 @@ public class InterlevelScene extends PixelScene {
 			level = Dungeon.loadLevel( GamesInProgress.curSlot );
 		}
 		Dungeon.switchLevel( level, level.entrance );
-		ShatteredPixelDungeon.net().send(Types.Send.ACTION, Actions.DESC, Dungeon.hero.heroClass.ordinal(), Dungeon.depth, level.entrance);
+		ShatteredPixelDungeon.net().send(Send.ACTION, Actions.DESC, Dungeon.hero.heroClass.ordinal(), Dungeon.depth, level.entrance);
 	}
 	
 	private void fall() throws IOException {
@@ -391,7 +391,7 @@ public class InterlevelScene extends PixelScene {
 		}
 		int cell = level.fallCell( fallIntoPit);
 		Dungeon.switchLevel( level, cell);
-		ShatteredPixelDungeon.net().send(Types.Send.ACTION, Actions.DESC, Dungeon.hero.heroClass.ordinal(), Dungeon.depth, cell);
+		ShatteredPixelDungeon.net().send(Send.ACTION, Actions.DESC, Dungeon.hero.heroClass.ordinal(), Dungeon.depth, cell);
 	}
 	
 	private void ascend() throws IOException {
@@ -402,7 +402,7 @@ public class InterlevelScene extends PixelScene {
 		Dungeon.depth--;
 		Level level = Dungeon.loadLevel( GamesInProgress.curSlot );
 		Dungeon.switchLevel( level, level.exit );
-		ShatteredPixelDungeon.net().send(Types.Send.ACTION, Actions.ASC, Dungeon.hero.heroClass.ordinal(), Dungeon.depth, level.exit);
+		ShatteredPixelDungeon.net().send(Send.ACTION, Actions.ASC, Dungeon.hero.heroClass.ordinal(), Dungeon.depth, level.exit);
 	}
 	
 	private void returnTo() throws IOException {
@@ -413,7 +413,7 @@ public class InterlevelScene extends PixelScene {
 		Dungeon.depth = returnDepth;
 		Level level = Dungeon.loadLevel( GamesInProgress.curSlot );
 		Dungeon.switchLevel( level, returnPos );
-		ShatteredPixelDungeon.net().send(Types.Send.ACTION, Actions.DESC, Dungeon.hero.heroClass.ordinal(), Dungeon.depth, returnPos);
+		ShatteredPixelDungeon.net().send(Send.ACTION, Actions.DESC, Dungeon.hero.heroClass.ordinal(), Dungeon.depth, returnPos);
 	}
 	
 	private void restore() throws IOException {
@@ -430,7 +430,7 @@ public class InterlevelScene extends PixelScene {
 			Level level = Dungeon.loadLevel( GamesInProgress.curSlot );
 			Dungeon.switchLevel( level, Dungeon.hero.pos );
 		}
-		ShatteredPixelDungeon.net().send(Types.Send.ACTION, Actions.DESC, Dungeon.hero.heroClass.ordinal(), Dungeon.depth, Dungeon.hero.pos);
+		ShatteredPixelDungeon.net().send(Send.ACTION, Actions.DESC, Dungeon.hero.heroClass.ordinal(), Dungeon.depth, Dungeon.hero.pos);
 	}
 
 	private void resurrect() throws IOException {
@@ -442,7 +442,7 @@ public class InterlevelScene extends PixelScene {
 			Dungeon.depth--;
 			Level level = Dungeon.newLevel();
 			Dungeon.switchLevel( level, level.entrance );
-			ShatteredPixelDungeon.net().send(Types.Send.ACTION, Actions.DESC, Dungeon.hero.heroClass.ordinal(), Dungeon.depth, level.entrance);
+			ShatteredPixelDungeon.net().send(Send.ACTION, Actions.DESC, Dungeon.hero.heroClass.ordinal(), Dungeon.depth, level.entrance);
 		} else {
 			Dungeon.hero.resurrect( -1 );
 			Dungeon.resetLevel();
@@ -458,7 +458,7 @@ public class InterlevelScene extends PixelScene {
 		Dungeon.depth--;
 		Level level = Dungeon.newLevel();
 		Dungeon.switchLevel( level, level.entrance );
-		ShatteredPixelDungeon.net().send(Types.Send.ACTION, Actions.DESC, Dungeon.hero.heroClass.ordinal(), Dungeon.depth, level.entrance);
+		ShatteredPixelDungeon.net().send(Send.ACTION, Actions.DESC, Dungeon.hero.heroClass.ordinal(), Dungeon.depth, level.entrance);
 	}
 	
 	@Override

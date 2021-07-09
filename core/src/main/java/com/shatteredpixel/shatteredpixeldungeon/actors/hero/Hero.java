@@ -109,8 +109,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.net.Types;
-import com.shatteredpixel.shatteredpixeldungeon.net.events.send.action.Actions;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.send.Actions;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.send.Send;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.AlchemyScene;
@@ -1745,7 +1745,7 @@ public class Hero extends Char {
 		boolean wasHighGrass = Dungeon.level.map[step] == Terrain.HIGH_GRASS;
 
 		super.move( step );
-		ShatteredPixelDungeon.net().send(Types.Send.ACTION, Actions.MOVE, heroClass.ordinal(), Dungeon.depth, step);
+		ShatteredPixelDungeon.net().send(Send.ACTION, Actions.MOVE, heroClass.ordinal(), Dungeon.depth, step);
 
 		if (!flying) {
 			if (Dungeon.level.water[pos]) {
