@@ -23,9 +23,11 @@ package com.shatteredpixel.shatteredpixeldungeon.net.actor;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.net.sprites.PlayerSprite;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -49,25 +51,6 @@ public class Player extends Mob {
 		this.socketid = socketid;
 		this.nick = nick;
 		this.playerClass = playerClass;
-	}
-
-	public String socketid(){
-		return this.socketid;
-	}
-
-	public String nick(){
-		return this.nick;
-	}
-
-	public String name(){
-		return this.nick;
-	}
-	public int playerClass(){
-	    return this.playerClass;
-	}
-
-	public String info(){
-		return "";
 	}
 
 	@Override
@@ -94,6 +77,34 @@ public class Player extends Mob {
 	public void onMotionComplete() {
 		super.onMotionComplete();
 		sprite.idle();
+	}
+
+	public void leave(){
+	    destroy();
+		((PlayerSprite)sprite).leave();
+	}
+
+	public void join(){
+		if( sprite != null) ((PlayerSprite)sprite).join();
+	}
+
+	public String socketid(){
+		return this.socketid;
+	}
+
+	public String nick(){
+		return this.nick;
+	}
+
+	public String name(){
+		return this.nick;
+	}
+	public int playerClass(){
+		return this.playerClass;
+	}
+
+	public String info(){
+		return "";
 	}
 
 	public static Player getPlayer(String id){
@@ -125,6 +136,7 @@ public class Player extends Mob {
 		Player p = new Player(id, nick, playerClass);
 		p.pos = pos;
 		GameScene.add( p );
+		p.join();
 	}
 
 	public static void movePlayer(Player p, int pos, int pc){

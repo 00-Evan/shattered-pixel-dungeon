@@ -58,7 +58,6 @@ public class Handler {
         net.socket().off(Events.MOTD);
     }
 
-
     public void handleMessage(String json){
         DeviceCompat.log("MESSAGE", json);
         try{
@@ -92,9 +91,7 @@ public class Handler {
                 case Recieve.LEAVE:
                     Leave l = mapper.readValue(json, Leave.class);
                     player = Player.getPlayer(l.id);
-                    if(player != null) {
-                        player.die(this);
-                    }
+                    if(player != null) player.leave();
                     break;
                 default:
                     DeviceCompat.log("Unknown Action",json);
@@ -103,6 +100,7 @@ public class Handler {
             e.printStackTrace();
         }
     }
+
     public void handleAuth(){
         try {
             Auth auth = new Auth(Settings.auth_key());
@@ -139,7 +137,6 @@ public class Handler {
         net.socket().emit(Events.PLAYERLISTREQUEST, 0);
     }
 
-
     public void sendAction(int type, int... data) {
         try {
             String json = "";
@@ -156,7 +153,7 @@ public class Handler {
                     Move m = new Move(data[0], data[1], data[2]);
                     json = mapper.writeValueAsString(m);
             }
-            if(net.socket().connected()) net.socket().emit("action",type, json);
+            if(net.socket().connected()) net.socket().emit(Events.ACTION,type, json);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

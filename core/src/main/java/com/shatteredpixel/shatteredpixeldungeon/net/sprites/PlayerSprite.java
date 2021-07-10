@@ -26,12 +26,20 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.net.actor.Player;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MobSprite;
 import com.watabou.noosa.TextureFilm;
+import com.watabou.noosa.tweeners.AlphaTweener;
 
 public class PlayerSprite extends MobSprite {
 
 	private static final int FRAME_WIDTH	= 12;
 	private static final int FRAME_HEIGHT	= 15;
 	private static final int RUN_FRAMERATE	= 20;
+
+	private static final float FADE_TIME	= 0.5f;
+
+	private Animation fly;
+	private Animation read;
+	private Animation leave;
+	private Animation join;
 
 	public PlayerSprite() {
 		super();
@@ -56,7 +64,50 @@ public class PlayerSprite extends MobSprite {
 		attack = new Animation( 15, false );
 		attack.frames( film, 13, 14, 15, 0 );
 
+		fly = new Animation( 1, true );
+		fly.frames( film, 18 );
+
+		read = new Animation( 20, false );
+		read.frames( film, 19, 20, 20, 20, 20, 20, 20, 20, 20, 19 );
+
+		// net animations
+		leave = new Animation( 1, false );
+		leave.frames( film, 0);
+
+		join = new Animation( 20, false );
+		join.frames( film, 11, 12,  10, 9, 8,18, 0);
+
 		play( idle );
+	}
+
+	public void leave(){
+		play(leave);
+	}
+
+	public void join(){
+		play(join);
+	}
+
+	@Override
+	public void play(Animation anim) {
+		if (curAnim == null || curAnim != die || curAnim != leave) {
+			super.play(anim);
+		}
+	}
+
+	@Override
+	public void onComplete( Animation anim ) {
+
+		super.onComplete( anim );
+
+		if (anim == leave && parent != null) {
+			parent.add( new AlphaTweener( this, 0, FADE_TIME ) {
+				@Override
+				protected void onComplete() {
+					PlayerSprite.this.killAndErase();
+				}
+			} );
+		}
 	}
 
 	public static String getPlayerSpriteSheet(int playerClass){
