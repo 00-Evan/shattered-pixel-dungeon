@@ -3,7 +3,6 @@ package com.shatteredpixel.shatteredpixeldungeon.net.ui;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.Events;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.playerlist.PlayerList;
-import com.shatteredpixel.shatteredpixeldungeon.net.events.send.Send;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.NetWindow;
 import com.watabou.noosa.Game;
 import com.watabou.utils.DeviceCompat;
@@ -18,12 +17,12 @@ public class PlayerListButton extends BlueButton {
     protected void onClick() {
         super.onClick();
         if (net().connected()) {
-            net().send(Events.MESSAGE, Send.PLAYERLIISTREQUEST, null);
+            net().sendPlayerListRequest();
         }else{
             NetWindow.error("Not connected", "You must connect before viewing players");
             return;
         }
-        net().socket().once(Events.PLAYERLIST, args -> {
+        net().socket().once(Events.PLAYERLISTREQUEST, args -> {
             String data = (String) args[0];
             DeviceCompat.log("PLIST", data);
             try {

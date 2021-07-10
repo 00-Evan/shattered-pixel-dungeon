@@ -5,9 +5,12 @@ import com.watabou.utils.GameSettings;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import static com.shatteredpixel.shatteredpixeldungeon.net.Net.DEFAULT_PORT;
+import static com.shatteredpixel.shatteredpixeldungeon.net.Net.DEFAULT_SCHEME;
+
 public class Settings extends GameSettings {
-    public static final String KEY_AUTHORITY	= "net_scheme";
-    public static final String KEY_ADDRESS	= "net_address";
+    public static final String KEY_AUTHORITY = "net_scheme";
+    public static final String KEY_ADDRESS = "net_address";
     public static final String KEY_PORT	= "net_port";
     public static final String KEY_AUTH_KEY	= "net_auth_key";
 
@@ -16,7 +19,7 @@ public class Settings extends GameSettings {
     }
 
     public static String scheme() {
-        return getString(KEY_AUTHORITY, "http");
+        return getString(KEY_AUTHORITY, DEFAULT_SCHEME);
     }
 
     public static void address( String value ) {
@@ -24,7 +27,7 @@ public class Settings extends GameSettings {
     }
 
     public static String address() {
-        return getString( KEY_ADDRESS, "127.0.0.1" );
+        return getString( KEY_ADDRESS, DEFAULT_SCHEME);
     }
 
     public static void port( int value ) {
@@ -32,7 +35,7 @@ public class Settings extends GameSettings {
     }
 
     public static int port() {
-        return getInt( KEY_PORT, 5500);
+        return getInt( KEY_PORT, DEFAULT_PORT);
     }
 
     public static URI uri() {

@@ -11,6 +11,12 @@ import io.socket.emitter.Emitter;
 import io.socket.engineio.client.EngineIOException;
 
 public class Net {
+    public static String DEFAULT_SCHEME = "http";
+    public static String DEFAULT_HOST = "127.0.0.1";
+    public static String DEFAULT_KEY = "empty";
+    public static String DEBUG_KEY = "debug";
+    public static int DEFAULT_PORT = 5800;
+
     private Socket socket;
     private Handler handler = null;
     private long seed;
@@ -25,16 +31,18 @@ public class Net {
     }
 
     public Net(String key){
-        Settings.address("127.0.0.1");
-        Settings.port(5800);
+        Settings.scheme(DEFAULT_SCHEME);
+        Settings.address(DEFAULT_HOST);
+        Settings.port(DEFAULT_PORT);
         Settings.auth_key(key);
         session(Settings.uri());
     }
 
     public Net(){
-        Settings.address("127.0.0.1");
-        Settings.port(5800);
-        Settings.auth_key(DeviceCompat.isDebug() ? "debug": "empty");
+        Settings.scheme(DEFAULT_SCHEME);
+        Settings.address(DEFAULT_HOST);
+        Settings.port(DEFAULT_PORT);
+        Settings.auth_key(DeviceCompat.isDebug() ? DEBUG_KEY: DEFAULT_KEY);
         session(Settings.uri());
     }
 
@@ -97,13 +105,12 @@ public class Net {
         handler = null;
     }
 
-    public void send(String event, int type, String data){
-        handler.send(event, type, data);
-    }
 
-    public void send(int action, int type, int... data){
-        handler.send(action, type, data);
+    public void sendMessage(int type, String data) {handler.sendMessage(type, data);};
+    public void sendAction(int type, int... data) {
+       handler.sendAction(type,data);
     }
+    public void sendPlayerListRequest() {handler.sendPlayerListRequest();};
 
     public long seed() { return this.seed; }
 

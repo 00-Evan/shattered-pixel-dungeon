@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.Events;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.playerlist.PlayerList;
+import com.shatteredpixel.shatteredpixeldungeon.net.events.recieve.Recieve;
 import com.shatteredpixel.shatteredpixeldungeon.net.events.send.Send;
 import com.shatteredpixel.shatteredpixeldungeon.net.ui.NetIcons;
 import com.shatteredpixel.shatteredpixeldungeon.net.windows.NetWindow;
@@ -155,12 +156,12 @@ public class TitleScene extends PixelScene {
 			@Override
 			protected void onClick() {
 				if (net().connected()) {
-					net().send(Events.MESSAGE, Send.PLAYERLIISTREQUEST, null);
+					net().sendPlayerListRequest();
 				}else{
 					NetWindow.error("Not Connected", "You must connect before viewing players");
 					return;
 				}
-				net().socket().once(Events.PLAYERLIST, args -> {
+				net().socket().once(Events.PLAYERLISTREQUEST, args -> {
 					String data = (String) args[0];
 					try {
 						final PlayerList pl = net().mapper().readValue(data, PlayerList.class);
