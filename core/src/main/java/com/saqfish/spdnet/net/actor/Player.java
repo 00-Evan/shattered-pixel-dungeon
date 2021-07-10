@@ -23,6 +23,9 @@ package com.saqfish.spdnet.net.actor;
 
 import com.saqfish.spdnet.Dungeon;
 import com.saqfish.spdnet.actors.mobs.Mob;
+import com.saqfish.spdnet.effects.particles.EarthParticle;
+import com.saqfish.spdnet.effects.particles.FlameParticle;
+import com.saqfish.spdnet.effects.particles.SmokeParticle;
 import com.saqfish.spdnet.net.sprites.PlayerSprite;
 import com.saqfish.spdnet.scenes.GameScene;
 import com.watabou.utils.Bundle;
@@ -76,11 +79,17 @@ public class Player extends Mob {
 
 	public void leave(){
 	    destroy();
-		((PlayerSprite)sprite).leave();
+		if( sprite != null) {
+			((PlayerSprite)sprite).leave();
+			sprite.emitter().burst( SmokeParticle.FACTORY, 6 );
+		}
 	}
 
 	public void join(){
-		if( sprite != null) ((PlayerSprite)sprite).join();
+		if( sprite != null) {
+			((PlayerSprite)sprite).join();
+			sprite.emitter().burst( SmokeParticle.FACTORY, 6 );
+		}
 	}
 
 	public String socketid(){
@@ -136,8 +145,10 @@ public class Player extends Mob {
 
 	public static void movePlayer(Player p, int pos, int pc){
 		if(p != null) {
-			p.sprite.turnTo( p.pos, pos);
-			p.sprite.move(p.pos, pos);
+			if(p.sprite != null) {
+				p.sprite.turnTo(p.pos, pos);
+				p.sprite.move(p.pos, pos);
+			}
 			p.move(pos);
 		}
 	}

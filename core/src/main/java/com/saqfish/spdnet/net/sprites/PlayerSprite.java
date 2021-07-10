@@ -71,11 +71,11 @@ public class PlayerSprite extends MobSprite {
 		read.frames( film, 19, 20, 20, 20, 20, 20, 20, 20, 20, 19 );
 
 		// net animations
-		leave = new Animation( 20, false );
-		leave.frames( film, 0, 18, 8, 9, 10, 12, 11);
+		leave = new Animation( 15, false );
+		leave.frames( film, 0, 18, 8, 9);
 
-		join = new Animation( 20, false );
-		join.frames( film, 11, 12, 10, 9, 8,18, 0);
+		join = new Animation( 15, false );
+		join.frames( film, 9, 8,18, 0);
 
 		play( idle );
 	}
