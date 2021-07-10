@@ -150,7 +150,7 @@ public class Handler {
                     json = mapper.writeValueAsString(d);
                     break;
                 case Send.MOVE:
-                    Move m = new Move(data[0], data[1], data[2]);
+                    Move m = new Move(data[0]);
                     json = mapper.writeValueAsString(m);
             }
             if(net.socket().connected()) net.socket().emit(Events.ACTION,type, json);
