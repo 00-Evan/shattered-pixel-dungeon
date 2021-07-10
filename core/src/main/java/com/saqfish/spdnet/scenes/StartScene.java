@@ -93,7 +93,6 @@ public class StartScene extends PixelScene {
 		if (landscape()) yPos += 8;
 
 		for (GamesInProgress.Info game : games) {
-			DeviceCompat.log("SLOT", "#"+game.slot);
 			SaveSlotButton existingGame = new SaveSlotButton(true);
 			existingGame.set(game.slot);
 			existingGame.setRect((w - SLOT_WIDTH) / 2f, yPos, SLOT_WIDTH, SLOT_HEIGHT);

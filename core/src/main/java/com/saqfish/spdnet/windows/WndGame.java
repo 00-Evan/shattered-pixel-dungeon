@@ -25,6 +25,7 @@ import com.saqfish.spdnet.Dungeon;
 import com.saqfish.spdnet.GamesInProgress;
 import com.saqfish.spdnet.ShatteredPixelDungeon;
 import com.saqfish.spdnet.messages.Messages;
+import com.saqfish.spdnet.net.events.send.Send;
 import com.saqfish.spdnet.net.ui.BlueButton;
 import com.saqfish.spdnet.net.ui.PlayerListButton;
 import com.saqfish.spdnet.scenes.GameScene;
@@ -122,6 +123,7 @@ public class WndGame extends Window {
 							ShatteredPixelDungeon.reportException(e);
 						}
 						Game.switchScene(TitleScene.class);
+						ShatteredPixelDungeon.net().sendAction(Send.DESC, 0, 0, 0);
 					}
 				},
 				// Quit
