@@ -11,8 +11,8 @@ buildscript {
 allprojects {
 
     ext {
-        appName = 'Shattered Pixel Dungeon'
-        appPackageName = 'com.shatteredpixel.shatteredpixeldungeon'
+        appName = 'SPDNet'
+        appPackageName = 'com.saqfish.spdnet'
 
         appVersionCode = 554
         appVersionName = '0.9.3c'

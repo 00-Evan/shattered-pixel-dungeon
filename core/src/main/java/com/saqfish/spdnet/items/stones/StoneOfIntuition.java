@@ -1,0 +1,203 @@
+/*
+ * Pixel Dungeon
+ * Copyright (C) 2012-2015 Oleg Dolya
+ *
+ * Shattered Pixel Dungeon
+ * Copyright (C) 2014-2021 Evan Debenham
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ */
+
+package com.saqfish.spdnet.items.stones;
+
+import com.saqfish.spdnet.Assets;
+import com.saqfish.spdnet.effects.Identification;
+import com.saqfish.spdnet.items.Item;
+import com.saqfish.spdnet.items.potions.Potion;
+import com.saqfish.spdnet.items.potions.exotic.ExoticPotion;
+import com.saqfish.spdnet.items.rings.Ring;
+import com.saqfish.spdnet.items.scrolls.Scroll;
+import com.saqfish.spdnet.items.scrolls.exotic.ExoticScroll;
+import com.saqfish.spdnet.messages.Messages;
+import com.saqfish.spdnet.scenes.GameScene;
+import com.saqfish.spdnet.scenes.PixelScene;
+import com.saqfish.spdnet.sprites.ItemSprite;
+import com.saqfish.spdnet.sprites.ItemSpriteSheet;
+import com.saqfish.spdnet.ui.IconButton;
+import com.saqfish.spdnet.ui.RedButton;
+import com.saqfish.spdnet.ui.RenderedTextBlock;
+import com.saqfish.spdnet.ui.Window;
+import com.saqfish.spdnet.utils.GLog;
+import com.saqfish.spdnet.windows.IconTitle;
+import com.saqfish.spdnet.windows.WndBag;
+import com.watabou.noosa.Image;
+import com.watabou.utils.Reflection;
+
+import java.util.ArrayList;
+
+public class StoneOfIntuition extends InventoryStone {
+	
+	
+	{
+		mode = WndBag.Mode.INTUITIONABLE;
+		image = ItemSpriteSheet.STONE_INTUITION;
+	}
+
+	public static boolean isIntuitionable( Item item ){
+		if (item instanceof Ring){
+			return !((Ring) item).isKnown();
+		} else if (item instanceof Potion){
+			return !((Potion) item).isKnown();
+		} else if (item instanceof Scroll){
+			return !((Scroll) item).isKnown();
+		}
+		return false;
+	}
+	
+	@Override
+	protected void onItemSelected(Item item) {
+		
+		GameScene.show( new WndGuess(item));
+		
+	}
+	
+	private static Class curGuess = null;
+	
+	public class WndGuess extends Window {
+		
+		private static final int WIDTH = 120;
+		private static final int BTN_SIZE = 20;
+		
+		public WndGuess(final Item item){
+			
+			IconTitle titlebar = new IconTitle();
+			titlebar.icon( new ItemSprite(ItemSpriteSheet.STONE_INTUITION, null) );
+			titlebar.label( Messages.titleCase(Messages.get(StoneOfIntuition.class, "name")) );
+			titlebar.setRect( 0, 0, WIDTH, 0 );
+			add( titlebar );
+			
+			RenderedTextBlock text = PixelScene.renderTextBlock(6);
+			text.text( Messages.get(this, "text") );
+			text.setPos(0, titlebar.bottom());
+			text.maxWidth( WIDTH );
+			add(text);
+			
+			final RedButton guess = new RedButton(""){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					useAnimation();
+					if (item.getClass() == curGuess){
+						if (item instanceof Ring){
+							((Ring) item).setKnown();
+						} else {
+							item.identify();
+						}
+						GLog.p( Messages.get(WndGuess.class, "correct") );
+						curUser.sprite.parent.add( new Identification( curUser.sprite.center().offset( 0, -16 ) ) );
+					} else {
+						GLog.n( Messages.get(WndGuess.class, "incorrect") );
+					}
+					curGuess = null;
+					hide();
+				}
+			};
+			guess.visible = false;
+			guess.icon( new ItemSprite(item) );
+			guess.enable(false);
+			guess.setRect(0, 80, WIDTH, 20);
+			add(guess);
+			
+			float left;
+			float top = text.bottom() + 5;
+			int rows;
+			int placed = 0;
+			
+			final ArrayList<Class<?extends Item>> unIDed = new ArrayList<>();
+			if (item.isIdentified()){
+				hide();
+				return;
+			} else if (item instanceof Potion){
+				if (item instanceof ExoticPotion) {
+					for (Class<?extends Item> i : Potion.getUnknown()){
+						unIDed.add(ExoticPotion.regToExo.get(i));
+					}
+				} else {
+					unIDed.addAll(Potion.getUnknown());
+				}
+			} else if (item instanceof Scroll){
+				if (item instanceof ExoticScroll) {
+					for (Class<?extends Item> i : Scroll.getUnknown()){
+						unIDed.add(ExoticScroll.regToExo.get(i));
+					}
+				} else {
+					unIDed.addAll(Scroll.getUnknown());
+				}
+			} else if (item instanceof Ring) {
+				unIDed.addAll(Ring.getUnknown());
+			} else {
+				hide();
+				return;
+			}
+			
+			if (unIDed.size() <= 5){
+				rows = 1;
+				top += BTN_SIZE/2f;
+				left = (WIDTH - BTN_SIZE*unIDed.size())/2f;
+			} else {
+				rows = 2;
+				left = (WIDTH - BTN_SIZE*((unIDed.size()+1)/2))/2f;
+			}
+			
+			for (final Class<?extends Item> i : unIDed){
+
+				IconButton btn = new IconButton(){
+					@Override
+					protected void onClick() {
+						curGuess = i;
+						guess.visible = true;
+						guess.text( Messages.titleCase(Messages.get(curGuess, "name")) );
+						guess.enable(true);
+						super.onClick();
+					}
+				};
+				Image im = new Image(Assets.Sprites.ITEM_ICONS);
+				im.frame(ItemSpriteSheet.Icons.film.get(Reflection.newInstance(i).icon));
+				im.scale.set(2f);
+				btn.icon(im);
+				btn.setRect(left + placed*BTN_SIZE, top, BTN_SIZE, BTN_SIZE);
+				add(btn);
+				
+				placed++;
+				if (rows == 2 && placed == ((unIDed.size()+1)/2)){
+					placed = 0;
+					if (unIDed.size() % 2 == 1){
+						left += BTN_SIZE/2f;
+					}
+					top += BTN_SIZE;
+				}
+			}
+			
+			resize(WIDTH, 100);
+			
+		}
+		
+		
+		@Override
+		public void onBackPressed() {
+			super.onBackPressed();
+			new StoneOfIntuition().collect();
+		}
+	}
+}
