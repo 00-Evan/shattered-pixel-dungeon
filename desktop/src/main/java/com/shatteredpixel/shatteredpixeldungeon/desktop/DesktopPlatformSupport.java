@@ -23,8 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.desktop;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
@@ -32,9 +30,8 @@ import com.watabou.noosa.Game;
 import com.watabou.utils.PlatformSupport;
 import com.watabou.utils.Point;
 
-import org.lwjgl.util.tinyfd.TinyFileDialogs;
-
 import java.util.HashMap;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DesktopPlatformSupport extends PlatformSupport {
@@ -98,13 +95,13 @@ public class DesktopPlatformSupport extends PlatformSupport {
 		packer = new PixmapPacker(pageSize, pageSize, Pixmap.Format.RGBA8888, 1, false);
 	}
 	
-	private static Pattern asianMatcher = Pattern.compile("\\p{InHangul_Syllables}|" +
+	private static Matcher asianMatcher = Pattern.compile("\\p{InHangul_Syllables}|" +
 			"\\p{InCJK_Unified_Ideographs}|\\p{InCJK_Symbols_and_Punctuation}|\\p{InHalfwidth_and_Fullwidth_Forms}|" +
-			"\\p{InHiragana}|\\p{InKatakana}");
+			"\\p{InHiragana}|\\p{InKatakana}").matcher("");
 
 	@Override
 	protected FreeTypeFontGenerator getGeneratorForString( String input ){
-		if (asianMatcher.matcher(input).find()){
+		if (asianMatcher.reset(input).find()){
 			return asianFontGenerator;
 		} else {
 			return basicFontGenerator;

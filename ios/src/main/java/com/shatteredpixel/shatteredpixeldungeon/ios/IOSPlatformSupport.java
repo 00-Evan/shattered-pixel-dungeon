@@ -18,6 +18,7 @@ import org.robovm.apple.systemconfiguration.SCNetworkReachabilityFlags;
 import org.robovm.apple.uikit.UIApplication;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class IOSPlatformSupport extends PlatformSupport {
@@ -97,13 +98,13 @@ public class IOSPlatformSupport extends PlatformSupport {
 		packer = new PixmapPacker(pageSize, pageSize, Pixmap.Format.RGBA8888, 1, false);
 	}
 
-	private static Pattern asianMatcher = Pattern.compile("\\p{InHangul_Syllables}|" +
+	private static final Matcher asianMatcher = Pattern.compile("\\p{InHangul_Syllables}|" +
 			"\\p{InCJK_Unified_Ideographs}|\\p{InCJK_Symbols_and_Punctuation}|\\p{InHalfwidth_and_Fullwidth_Forms}|" +
-			"\\p{InHiragana}|\\p{InKatakana}");
+			"\\p{InHiragana}|\\p{InKatakana}").matcher("");
 
 	@Override
 	protected FreeTypeFontGenerator getGeneratorForString( String input ){
-		if (asianMatcher.matcher(input).find()){
+		if (asianMatcher.reset(input).find()){
 			return asianFontGenerator;
 		} else {
 			return basicFontGenerator;

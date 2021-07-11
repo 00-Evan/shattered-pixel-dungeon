@@ -42,6 +42,7 @@ import com.watabou.noosa.Game;
 import com.watabou.utils.PlatformSupport;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AndroidPlatformSupport extends PlatformSupport {
@@ -264,17 +265,17 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		packer = new PixmapPacker(pageSize, pageSize, Pixmap.Format.RGBA8888, 1, false);
 	}
 
-	private static Pattern KRMatcher = Pattern.compile("\\p{InHangul_Syllables}");
-	private static Pattern SCMatcher = Pattern.compile("\\p{InCJK_Unified_Ideographs}|\\p{InCJK_Symbols_and_Punctuation}|\\p{InHalfwidth_and_Fullwidth_Forms}");
-	private static Pattern JPMatcher = Pattern.compile("\\p{InHiragana}|\\p{InKatakana}");
+	private static Matcher KRMatcher = Pattern.compile("\\p{InHangul_Syllables}").matcher("");
+	private static Matcher SCMatcher = Pattern.compile("\\p{InCJK_Unified_Ideographs}|\\p{InCJK_Symbols_and_Punctuation}|\\p{InHalfwidth_and_Fullwidth_Forms}").matcher("");
+	private static Matcher JPMatcher = Pattern.compile("\\p{InHiragana}|\\p{InKatakana}").matcher("");
 
 	@Override
 	protected FreeTypeFontGenerator getGeneratorForString( String input ){
-		if (KRMatcher.matcher(input).find()){
+		if (KRMatcher.reset(input).find()){
 			return KRFontGenerator;
-		} else if (SCMatcher.matcher(input).find()){
+		} else if (SCMatcher.reset(input).find()){
 			return SCFontGenerator;
-		} else if (JPMatcher.matcher(input).find()){
+		} else if (JPMatcher.reset(input).find()){
 			return JPFontGenerator;
 		} else {
 			return basicFontGenerator;
