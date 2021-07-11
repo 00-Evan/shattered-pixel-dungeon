@@ -102,7 +102,7 @@ public class Game implements ApplicationListener {
 		versionContextRef = Gdx.graphics.getGLVersion();
 		Blending.useDefault();
 		TextureCache.reload();
-		Vertexbuffer.refreshAllBuffers();
+		Vertexbuffer.reload();
 	}
 
 	private GLVersion versionContextRef;
@@ -119,7 +119,7 @@ public class Game implements ApplicationListener {
 			versionContextRef = Gdx.graphics.getGLVersion();
 			Blending.useDefault();
 			TextureCache.reload();
-			Vertexbuffer.refreshAllBuffers();
+			Vertexbuffer.reload();
 		}
 
 		height -= bottomInset;
@@ -248,6 +248,8 @@ public class Game implements ApplicationListener {
 		if (scene != null) {
 			scene.destroy();
 		}
+		//clear any leftover vertex buffers
+		Vertexbuffer.clear();
 		scene = requestedScene;
 		if (onChange != null) onChange.beforeCreate();
 		scene.create();

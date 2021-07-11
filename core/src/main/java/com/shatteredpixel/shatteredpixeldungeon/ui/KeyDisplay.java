@@ -213,5 +213,12 @@ public class KeyDisplay extends Visual {
 		dirty = false;
 		
 	}
+
+	@Override
+	public void destroy() {
+		super.destroy();
+		if (buffer != null)
+			buffer.delete();
+	}
 	
 }

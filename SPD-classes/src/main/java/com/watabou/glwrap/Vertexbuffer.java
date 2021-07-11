@@ -103,7 +103,15 @@ public class Vertexbuffer {
 		}
 	}
 
-	public static void refreshAllBuffers(){
+	public static void clear(){
+		synchronized (buffers) {
+			for (Vertexbuffer buf : buffers.toArray(new Vertexbuffer[0])) {
+				buf.delete();
+			}
+		}
+	}
+
+	public static void reload(){
 		synchronized (buffers) {
 			for (Vertexbuffer buf : buffers) {
 				buf.updateVertices();
