@@ -31,6 +31,7 @@ import com.saqfish.spdnet.effects.BannerSprites;
 import com.saqfish.spdnet.effects.Fireball;
 import com.saqfish.spdnet.messages.Languages;
 import com.saqfish.spdnet.messages.Messages;
+import com.saqfish.spdnet.net.Settings;
 import com.saqfish.spdnet.net.events.Events;
 import com.saqfish.spdnet.net.events.recieve.playerlist.PlayerList;
 import com.saqfish.spdnet.net.ui.NetIcons;
@@ -53,10 +54,14 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Music;
 import com.watabou.utils.ColorMath;
 import com.watabou.utils.DeviceCompat;
+import com.watabou.utils.PlatformSupport;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Date;
 
 import static com.saqfish.spdnet.ShatteredPixelDungeon.net;
+import static com.watabou.noosa.Game.platform;
 
 public class TitleScene extends PixelScene {
 	
@@ -142,6 +147,35 @@ public class TitleScene extends PixelScene {
 			@Override
 			protected void onClick() {
 				NetWindow.showServerInfo();
+			}
+
+			@Override
+			protected boolean onLongClick() {
+				platform.promptTextInput("Enter host", Settings.uri().toString(), 40, false, "Cancel", "Set", new PlatformSupport.TextCallback() {
+					@Override
+					public void onSelect(boolean positive, String text) {
+							if(positive){
+								URI url = null;
+								try {
+									url = new URI(text);
+									Settings.scheme(url.getScheme());
+									Settings.address(url.getHost());
+									Settings.port(url.getPort());
+									platform.promptTextInput("Enter key", Settings.auth_key(), 20, false, "Cancel", "Set", new PlatformSupport.TextCallback() {
+										@Override
+										public void onSelect(boolean positive, String text) {
+											if(positive){
+												Settings.auth_key(text);
+												net().reset();
+											}
+										}
+									});
+								} catch (URISyntaxException e) {
+								}
+							}
+					}
+				});
+				return true;
 			}
 		};
 

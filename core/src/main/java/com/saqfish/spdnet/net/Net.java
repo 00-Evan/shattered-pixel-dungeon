@@ -17,9 +17,8 @@ import static java.util.Collections.singletonMap;
 public class Net {
     public static String DEFAULT_SCHEME = "http";
     public static String DEFAULT_HOST = "127.0.0.1";
-    public static String DEFAULT_KEY = "empty";
-    public static String DEBUG_KEY = "debug";
     public static int DEFAULT_PORT = 5800;
+    public static String DEFAULT_KEY = "debug";
 
     private Socket socket;
     private Handler handler = null;
@@ -35,19 +34,16 @@ public class Net {
     }
 
     public Net(String key){
-        Settings.scheme(DEFAULT_SCHEME);
-        Settings.address(DEFAULT_HOST);
-        Settings.port(DEFAULT_PORT);
         Settings.auth_key(key);
         session(Settings.uri(), key);
     }
 
     public Net(){
-        Settings.scheme(DEFAULT_SCHEME);
-        Settings.address(DEFAULT_HOST);
-        Settings.port(DEFAULT_PORT);
-        Settings.auth_key(DeviceCompat.isDebug() ? DEBUG_KEY: DEFAULT_KEY);
-        session(Settings.uri(), "debug");
+        session(Settings.uri(), Settings.auth_key());
+    }
+
+    public void reset(){
+        session(Settings.uri(), Settings.auth_key());
     }
 
     public void session(URI url, String key){
