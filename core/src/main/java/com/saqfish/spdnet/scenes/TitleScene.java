@@ -151,7 +151,7 @@ public class TitleScene extends PixelScene {
 
 			@Override
 			protected boolean onLongClick() {
-				platform.promptTextInput("Enter host", Settings.uri().toString(), 40, false, "Cancel", "Set", new PlatformSupport.TextCallback() {
+				platform.promptTextInput("Enter host", Settings.uri().toString(), 40, false, "Set", "Cancel", new PlatformSupport.TextCallback() {
 					@Override
 					public void onSelect(boolean positive, String text) {
 							if(positive){
@@ -161,7 +161,7 @@ public class TitleScene extends PixelScene {
 									Settings.scheme(url.getScheme());
 									Settings.address(url.getHost());
 									Settings.port(url.getPort());
-									platform.promptTextInput("Enter key", Settings.auth_key(), 20, false, "Cancel", "Set", new PlatformSupport.TextCallback() {
+									platform.promptTextInput("Enter key", Settings.auth_key(), 20, false, "Set", "Cancel", new PlatformSupport.TextCallback() {
 										@Override
 										public void onSelect(boolean positive, String text) {
 											if(positive){
