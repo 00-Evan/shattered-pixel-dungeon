@@ -27,11 +27,11 @@
 		android:resizeableActivity="true"
 		android:allowBackup="true"
 		android:fullBackupOnly="true"
-		android:backupAgent="com.saqfish.com.saqfish.spdnet.android.AndroidBackupHandler"
+		android:backupAgent="com.saqfish.spdnet.android.AndroidBackupHandler"
 		android:usesCleartextTraffic="true" >
 		<activity
 			android:label="${appName}"
-			android:name="com.saqfish.com.saqfish.spdnet.android.AndroidLauncher">
+			android:name="com.saqfish.spdnet.android.AndroidLauncher">
 			<intent-filter >
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
@@ -39,7 +39,7 @@
 		</activity>
 		<activity
 			android:label="${appName}"
-			android:name="com.saqfish.com.saqfish.spdnet.android.AndroidGame"
+			android:name="com.saqfish.spdnet.android.AndroidGame"
 			android:screenOrientation="nosensor"
 			android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize">
 		</activity>
