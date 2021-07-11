@@ -80,6 +80,10 @@ public class AlchemyScene extends PixelScene {
 	private RedButton btnCombine;
 	
 	private static final int BTN_SIZE	= 28;
+
+	{
+		inGameScene = true;
+	}
 	
 	@Override
 	public void create() {

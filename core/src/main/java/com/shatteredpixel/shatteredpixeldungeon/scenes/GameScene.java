@@ -171,6 +171,10 @@ public class GameScene extends PixelScene {
 	private LootIndicator loot;
 	private ActionIndicator action;
 	private ResumeIndicator resume;
+
+	{
+		inGameScene = true;
+	}
 	
 	@Override
 	public void create() {

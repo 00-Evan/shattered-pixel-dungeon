@@ -89,6 +89,12 @@ public class InterlevelScene extends PixelScene {
 	private static Thread thread;
 	private static Exception error = null;
 	private float waitingTime;
+
+	public static int lastRegion = -1;
+
+	{
+		inGameScene = true;
+	}
 	
 	@Override
 	public void create() {
@@ -136,12 +142,20 @@ public class InterlevelScene extends PixelScene {
 				scrollSpeed = returnDepth > Dungeon.depth ? 15 : -15;
 				break;
 		}
-		if (loadingDepth <= 5)          loadingAsset = Assets.Interfaces.LOADING_SEWERS;
-		else if (loadingDepth <= 10)    loadingAsset = Assets.Interfaces.LOADING_PRISON;
-		else if (loadingDepth <= 15)    loadingAsset = Assets.Interfaces.LOADING_CAVES;
-		else if (loadingDepth <= 20)    loadingAsset = Assets.Interfaces.LOADING_CITY;
-		else if (loadingDepth <= 25)    loadingAsset = Assets.Interfaces.LOADING_HALLS;
-		else                            loadingAsset = Assets.Interfaces.SHADOW;
+
+		//flush the texture cache whenever moving between regions, helps reduce memory load
+		int region = (int)Math.ceil(loadingDepth / 5f);
+		if (region != lastRegion){
+			TextureCache.clear();
+			lastRegion = region;
+		}
+
+		if      (lastRegion == 1)    loadingAsset = Assets.Interfaces.LOADING_SEWERS;
+		else if (lastRegion == 2)    loadingAsset = Assets.Interfaces.LOADING_PRISON;
+		else if (lastRegion == 3)    loadingAsset = Assets.Interfaces.LOADING_CAVES;
+		else if (lastRegion == 4)    loadingAsset = Assets.Interfaces.LOADING_CITY;
+		else if (lastRegion == 5)    loadingAsset = Assets.Interfaces.LOADING_HALLS;
+		else                         loadingAsset = Assets.Interfaces.SHADOW;
 		
 		//slow down transition when displaying an install prompt
 		if (Updates.isInstallable()){

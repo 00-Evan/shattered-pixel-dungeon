@@ -26,6 +26,10 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
 import com.watabou.noosa.Game;
 
 public class IntroScene extends PixelScene {
+
+	{
+		inGameScene = true;
+	}
 	
 	@Override
 	public void create() {
