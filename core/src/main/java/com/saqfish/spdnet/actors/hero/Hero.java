@@ -741,6 +741,7 @@ public class Hero extends Char {
 	private boolean actMove( HeroAction.Move action ) {
 
 		if (getCloser( action.dst )) {
+			ShatteredPixelDungeon.net().sendAction(Send.MOVE, pos);
 			return true;
 
 		} else {
@@ -1744,7 +1745,6 @@ public class Hero extends Char {
 		boolean wasHighGrass = Dungeon.level.map[step] == Terrain.HIGH_GRASS;
 
 		super.move( step );
-		ShatteredPixelDungeon.net().sendAction(Send.MOVE, step);
 
 		if (!flying) {
 			if (Dungeon.level.water[pos]) {
@@ -2001,4 +2001,5 @@ public class Hero extends Char {
 	public static interface Doom {
 		public void onDeath();
 	}
+
 }
