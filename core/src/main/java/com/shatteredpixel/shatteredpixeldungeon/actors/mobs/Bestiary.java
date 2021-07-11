@@ -220,6 +220,8 @@ public class Bestiary {
 					cl = CausticSlime.class;
 				} else if (cl == Thief.class) {
 					cl = Bandit.class;
+				} else if (cl == Necromancer.class){
+					cl = SpectralNecromancer.class;
 				} else if (cl == Brute.class) {
 					cl = ArmoredBrute.class;
 				} else if (cl == DM200.class) {
