@@ -4,6 +4,7 @@ import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
 import com.badlogic.gdx.graphics.glutils.HdpiMode;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.services.news.News;
 import com.shatteredpixel.shatteredpixeldungeon.services.news.NewsImpl;
@@ -43,7 +44,6 @@ public class IOSLauncher extends IOSApplication.Delegate {
 			Game.versionCode = 0;
 		}
 
-
 		if (UpdateImpl.supportsUpdates()) {
 			Updates.service = UpdateImpl.getUpdateService();
 		}
@@ -58,6 +58,8 @@ public class IOSLauncher extends IOSApplication.Delegate {
 		config.colorFormat = GLKViewDrawableColorFormat.RGBA8888;
 		config.depthFormat = GLKViewDrawableDepthFormat.None;
 		config.hdpiMode = HdpiMode.Pixels;
+
+		config.hideHomeIndicator = SPDSettings.fullscreen();
 
 		CGRect statusBarFrame = UIApplication.getSharedApplication().getStatusBarFrame();
 		double statusBarHeight = Math.min(statusBarFrame.getWidth(), statusBarFrame.getHeight());
