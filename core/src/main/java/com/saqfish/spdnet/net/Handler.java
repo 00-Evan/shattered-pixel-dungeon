@@ -13,7 +13,6 @@ import com.saqfish.spdnet.net.events.send.Send;
 import com.saqfish.spdnet.net.events.send.action.Ascend;
 import com.saqfish.spdnet.net.events.send.action.Descend;
 import com.saqfish.spdnet.net.events.send.action.Move;
-import com.saqfish.spdnet.net.events.send.auth.Auth;
 import com.saqfish.spdnet.net.events.send.message.Message;
 import com.saqfish.spdnet.net.windows.NetWindow;
 import com.watabou.utils.DeviceCompat;
@@ -34,9 +33,6 @@ public class Handler {
             String data = (String) args[0];
             handleMessage(data);
         };
-        Emitter.Listener onAuth = args -> {
-            handleAuth();
-        };
         Emitter.Listener onAction = args -> {
             int type = (int) args[0];
             String data = (String) args[1];
@@ -47,13 +43,11 @@ public class Handler {
             handleMotd(data);
         };
         net.socket().on(Events.ACTION, onAction);
-        net.socket().once(Events.AUTH, onAuth);
         net.socket().on(Events.MESSAGE, onMessage);
         net.socket().once(Events.MOTD, onMotd);
     }
     public void cancelAll(){
         net.socket().off(Events.ACTION);
-        net.socket().off(Events.AUTH);
         net.socket().off(Events.MESSAGE);
         net.socket().off(Events.MOTD);
     }
@@ -96,17 +90,6 @@ public class Handler {
                 default:
                     DeviceCompat.log("Unknown Action",json);
             }
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void handleAuth(){
-        try {
-            Auth auth = new Auth(Settings.auth_key());
-            String j = mapper.writeValueAsString(auth);
-            net.socket().emit(Events.AUTH, j);
-
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

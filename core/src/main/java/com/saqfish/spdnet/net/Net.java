@@ -5,10 +5,14 @@ import com.saqfish.spdnet.net.windows.NetWindow;
 import com.watabou.utils.DeviceCompat;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.json.JSONObject;
+
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 import io.socket.engineio.client.EngineIOException;
+
+import static java.util.Collections.singletonMap;
 
 public class Net {
     public static String DEFAULT_SCHEME = "http";
@@ -27,7 +31,7 @@ public class Net {
         Settings.address(url.getHost());
         Settings.port(url.getPort());
         Settings.auth_key(key);
-        session(Settings.uri());
+        session(Settings.uri(), key);
     }
 
     public Net(String key){
@@ -35,7 +39,7 @@ public class Net {
         Settings.address(DEFAULT_HOST);
         Settings.port(DEFAULT_PORT);
         Settings.auth_key(key);
-        session(Settings.uri());
+        session(Settings.uri(), key);
     }
 
     public Net(){
@@ -43,11 +47,12 @@ public class Net {
         Settings.address(DEFAULT_HOST);
         Settings.port(DEFAULT_PORT);
         Settings.auth_key(DeviceCompat.isDebug() ? DEBUG_KEY: DEFAULT_KEY);
-        session(Settings.uri());
+        session(Settings.uri(), "debug");
     }
 
-    public void session(URI url){
+    public void session(URI url, String key){
         IO.Options options = IO.Options.builder()
+                .setAuth(singletonMap("token", key))
                 .setForceNew(true)
                 .setReconnection(false)
                 .build();
@@ -66,8 +71,14 @@ public class Net {
         };
 
         Emitter.Listener onConnectionError = args -> {
-            EngineIOException e = (EngineIOException) args[0];
-            NetWindow.error(e.getMessage());
+            try {
+                JSONObject json = (JSONObject)args[0];
+                Error e = mapper().readValue(json.toString(), Error.class);
+                NetWindow.error(e.message);
+            }catch(Exception e){
+                e.printStackTrace();
+                NetWindow.error("Connection could not be established!");
+            }
             handler.cancelAll();
             disconnect();
         };
