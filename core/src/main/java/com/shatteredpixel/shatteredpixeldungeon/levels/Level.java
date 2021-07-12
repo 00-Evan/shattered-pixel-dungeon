@@ -1091,9 +1091,7 @@ public abstract class Level implements Bundlable {
 			}
 			if (c.buff(MagicalSight.class) != null){
 				sense = 8;
-			}
-			if (((Hero)c).subClass == HeroSubClass.SNIPER){
-				sense *= 1.5f;
+				sense *= 1f + 0.25f*((Hero) c).pointsInTalent(Talent.FARSIGHT);
 			}
 		}
 		
