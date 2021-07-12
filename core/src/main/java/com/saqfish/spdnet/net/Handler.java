@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saqfish.spdnet.net.actor.Player;
 import com.saqfish.spdnet.net.events.Events;
-import com.saqfish.spdnet.net.events.recieve.Recieve;
+import com.saqfish.spdnet.net.events.recieve.Receive;
 import com.saqfish.spdnet.net.events.recieve.action.Join;
 import com.saqfish.spdnet.net.events.recieve.action.JoinList;
 import com.saqfish.spdnet.net.events.recieve.action.Leave;
@@ -67,22 +67,22 @@ public class Handler {
         Join join;
         try {
             switch (type){
-                case Recieve.MOVE:
+                case Receive.MOVE:
                     com.saqfish.spdnet.net.events.recieve.action.Move m = mapper.readValue(json, com.saqfish.spdnet.net.events.recieve.action.Move.class);
                     Player.movePlayer(Player.getPlayer(m.id), m.pos, m.playerClass);
                     break;
-                case Recieve.JOIN:
+                case Receive.JOIN:
                     join = mapper.readValue(json, Join.class);
                     Player.addPlayer(join.id,join.nick, join.playerClass, join.pos);
                     break;
-                case Recieve.JOIN_LIST:
+                case Receive.JOIN_LIST:
                     JoinList jl = mapper.readValue(json, JoinList.class);
                     for (int i = 0; i < jl.players.length; i++) {
                         Join j = jl.players[i];
                         Player.addPlayer(j.id,j.nick, j.playerClass, j.pos);
                     }
                     break;
-                case Recieve.LEAVE:
+                case Receive.LEAVE:
                     Leave l = mapper.readValue(json, Leave.class);
                     player = Player.getPlayer(l.id);
                     if(player != null) player.leave();
@@ -140,6 +140,15 @@ public class Handler {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+    }
+
+    public void sendAction(int type, String s) {
+        String json = "";
+        switch (type) {
+            case Send.ITEM:
+                json = s;
+        }
+        if(net.socket().connected()) net.socket().emit(Events.ACTION,type, json);
     }
 
     public ObjectMapper mapper() {

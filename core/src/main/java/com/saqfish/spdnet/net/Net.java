@@ -114,9 +114,8 @@ public class Net {
 
 
     public void sendMessage(int type, String data) {handler.sendMessage(type, data);};
-    public void sendAction(int type, int... data) {
-       handler.sendAction(type,data);
-    }
+    public void sendAction(int type, int... data) { handler.sendAction(type,data); }
+    public void sendAction(int type, String data) { handler.sendAction(type,data); }
     public void sendPlayerListRequest() {handler.sendPlayerListRequest();};
 
     public long seed() { return this.seed; }
