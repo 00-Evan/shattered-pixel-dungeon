@@ -112,7 +112,6 @@ public class WarpBeacon extends ArmorAbility {
 						if (tracker.depth == Dungeon.depth){
 							Char existing = Actor.findChar(tracker.pos);
 
-							Invisibility.dispel();
 							ScrollOfTeleportation.appear(hero, tracker.pos);
 
 							if (existing != null && existing != hero){
@@ -153,6 +152,7 @@ public class WarpBeacon extends ArmorAbility {
 								}
 							}
 
+							Invisibility.dispel();
 							Dungeon.observe();
 
 						} else {
@@ -162,11 +162,11 @@ public class WarpBeacon extends ArmorAbility {
 								return;
 							}
 
+							TimekeepersHourglass.timeFreeze timeFreeze = hero.buff(TimekeepersHourglass.timeFreeze.class);
+							if (timeFreeze != null) timeFreeze.disarmPressedTraps();
+							Swiftthistle.TimeBubble timeBubble = hero.buff(Swiftthistle.TimeBubble.class);
+							if (timeBubble != null) timeBubble.disarmPressedTraps();
 							Invisibility.dispel();
-							Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
-							if (buff != null) buff.detach();
-							buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
-							if (buff != null) buff.detach();
 
 							InterlevelScene.mode = InterlevelScene.Mode.RETURN;
 							InterlevelScene.returnDepth = tracker.depth;

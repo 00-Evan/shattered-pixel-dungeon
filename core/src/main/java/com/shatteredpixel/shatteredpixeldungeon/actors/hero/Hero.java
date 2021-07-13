@@ -993,10 +993,10 @@ public class Hero extends Char {
 			
 			curAction = null;
 
-			Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
-			if (buff != null) buff.detach();
-			buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
-			if (buff != null) buff.detach();
+			TimekeepersHourglass.timeFreeze timeFreeze = buff(TimekeepersHourglass.timeFreeze.class);
+			if (timeFreeze != null) timeFreeze.disarmPressedTraps();
+			Swiftthistle.TimeBubble timeBubble = buff(Swiftthistle.TimeBubble.class);
+			if (timeBubble != null) timeBubble.disarmPressedTraps();
 			
 			InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
 			Game.switchScene( InterlevelScene.class );
@@ -1046,10 +1046,10 @@ public class Hero extends Char {
 				
 				curAction = null;
 
-				Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
-				if (buff != null) buff.detach();
-				buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
-				if (buff != null) buff.detach();
+				TimekeepersHourglass.timeFreeze timeFreeze = buff(TimekeepersHourglass.timeFreeze.class);
+				if (timeFreeze != null) timeFreeze.disarmPressedTraps();
+				Swiftthistle.TimeBubble timeBubble = buff(Swiftthistle.TimeBubble.class);
+				if (timeBubble != null) timeBubble.disarmPressedTraps();
 
 				InterlevelScene.mode = InterlevelScene.Mode.ASCEND;
 				Game.switchScene( InterlevelScene.class );

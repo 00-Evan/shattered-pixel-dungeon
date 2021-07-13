@@ -299,11 +299,10 @@ public class CursedWand {
 					for (int i = 1; i < Dungeon.depth; i++) depths[i-1] = i;
 					int depth = 1+Random.chances(depths);
 
-					Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
-					if (buff != null) buff.detach();
-					
-					buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
-					if (buff != null) buff.detach();
+					TimekeepersHourglass.timeFreeze timeFreeze = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+					if (timeFreeze != null) timeFreeze.disarmPressedTraps();
+					Swiftthistle.TimeBubble timeBubble = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
+					if (timeBubble != null) timeBubble.disarmPressedTraps();
 
 					InterlevelScene.mode = InterlevelScene.Mode.RETURN;
 					InterlevelScene.returnDepth = depth;
