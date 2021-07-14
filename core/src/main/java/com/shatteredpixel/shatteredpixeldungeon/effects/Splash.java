@@ -63,6 +63,21 @@ public class Splash {
 		FACTORY.cone = cone;
 		emitter.burst( FACTORY, n );
 	}
+
+	public static void at( PointF p, final float dir, final float cone, final int color, int n, float interval ) {
+
+		if (n <= 0) {
+			return;
+		}
+
+		Emitter emitter = GameScene.emitter();
+		emitter.pos( p );
+
+		FACTORY.color = color;
+		FACTORY.dir = dir;
+		FACTORY.cone = cone;
+		emitter.start( FACTORY, interval, n );
+	}
 	
 	private static final SplashFactory FACTORY = new SplashFactory();
 			
