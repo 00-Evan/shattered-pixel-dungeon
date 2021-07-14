@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportat
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PathFinder;
 
 public class TeleportationTrap extends Trap {
 
@@ -46,52 +47,29 @@ public class TeleportationTrap extends Trap {
 	@Override
 	public void activate() {
 
-		CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
-		Sample.INSTANCE.play( Assets.Sounds.TELEPORT );
-
-		Char ch = Actor.findChar( pos);
-		if (ch != null && !ch.flying) {
-			if (ch instanceof Hero) {
-				ScrollOfTeleportation.teleportHero((Hero) ch);
-			} else {
-				int count = 20;
-				int pos;
-				do {
-					pos = Dungeon.level.randomRespawnCell( ch );
-					if (count-- <= 0) {
-						break;
-					}
-				} while (pos == -1 || Dungeon.level.secret[pos]);
-				
-				if (pos == -1 || Dungeon.bossLevel()) {
-					
-					GLog.w(Messages.get(ScrollOfTeleportation.class, "no_tele"));
-					
-				} else {
-					
-					ch.pos = pos;
+		for (int i : PathFinder.NEIGHBOURS9){
+			Char ch = Actor.findChar(pos + i);
+			if (ch != null){
+				if (ScrollOfTeleportation.teleportChar(ch)) {
 					if (ch instanceof Mob && ((Mob) ch).state == ((Mob) ch).HUNTING) {
 						((Mob) ch).state = ((Mob) ch).WANDERING;
 					}
-					ch.sprite.place(ch.pos);
-					ch.sprite.visible = Dungeon.level.heroFOV[pos];
-					
+				}
+			}
+			Heap heap = Dungeon.level.heaps.get(pos + i);
+			if (heap != null){
+				int cell = Dungeon.level.randomRespawnCell( null );
+
+				Item item = heap.pickUp();
+
+				if (cell != -1) {
+					Heap dropped = Dungeon.level.drop( item, cell );
+					dropped.type = heap.type;
+					dropped.sprite.view( dropped );
+
 				}
 			}
 		}
 
-		Heap heap = Dungeon.level.heaps.get(pos);
-
-		if (heap != null){
-			int cell = Dungeon.level.randomRespawnCell( null );
-
-			Item item = heap.pickUp();
-
-			if (cell != -1) {
-				Heap dropped = Dungeon.level.drop( item, cell );
-				dropped.type = heap.type;
-				dropped.sprite.view( dropped );
-			}
-		}
 	}
 }
