@@ -63,6 +63,8 @@ import com.saqfish.spdnet.levels.SewerLevel;
 import com.saqfish.spdnet.levels.rooms.secret.SecretRoom;
 import com.saqfish.spdnet.levels.rooms.special.SpecialRoom;
 import com.saqfish.spdnet.messages.Messages;
+import com.saqfish.spdnet.net.events.send.Send;
+import com.saqfish.spdnet.net.events.send.action.items.Items;
 import com.saqfish.spdnet.scenes.GameScene;
 import com.saqfish.spdnet.ui.QuickSlotButton;
 import com.saqfish.spdnet.utils.BArray;
@@ -341,7 +343,9 @@ public class Dungeon {
 	}
 	
 	public static void switchLevel( final Level level, int pos ) {
-		
+
+		Items.send();
+
 		if (pos == -2){
 			pos = level.exit;
 		} else if (pos < 0 || pos >= level.length() || (!level.passable[pos] && !level.avoid[pos])){

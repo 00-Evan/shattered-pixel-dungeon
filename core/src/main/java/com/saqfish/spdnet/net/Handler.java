@@ -79,6 +79,7 @@ public class Handler {
                     JoinList jl = mapper.readValue(json, JoinList.class);
                     for (int i = 0; i < jl.players.length; i++) {
                         Join j = jl.players[i];
+                        DeviceCompat.log("ADDING",""+j.id);
                         Player.addPlayer(j.id,j.nick, j.playerClass, j.pos);
                     }
                     break;
@@ -124,11 +125,7 @@ public class Handler {
         try {
             String json = "";
             switch (type) {
-                case Send.ASC:
-                    Ascend a = new Ascend(data[0], data[1], data[2]);
-                    json = mapper.writeValueAsString(a);
-                    break;
-                case Send.DESC:
+                case Send.ASCDESC:
                     Descend d = new Descend(data[0], data[1], data[2]);
                     json = mapper.writeValueAsString(d);
                     break;

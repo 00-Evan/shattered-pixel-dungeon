@@ -24,6 +24,8 @@ package com.saqfish.spdnet.net.windows;
 import com.saqfish.spdnet.actors.hero.HeroClass;
 import com.saqfish.spdnet.net.events.recieve.playerlist.Player;
 import com.saqfish.spdnet.net.events.recieve.playerlist.PlayerList;
+import com.saqfish.spdnet.net.ui.BlueButton;
+import com.saqfish.spdnet.net.ui.NetBtn;
 import com.saqfish.spdnet.scenes.PixelScene;
 import com.saqfish.spdnet.sprites.HeroSprite;
 import com.saqfish.spdnet.ui.Icons;
@@ -33,6 +35,7 @@ import com.saqfish.spdnet.windows.IconTitle;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.DeviceCompat;
 
 public class WndPlayerList extends NetWindow {
 
@@ -58,32 +61,14 @@ public class WndPlayerList extends NetWindow {
 
 			Player player = p.list[i];
 
-			Image steps = Icons.DEPTH.get();
-			steps.x = xpos;
-			steps.y = ypos;
-			content.add(steps);
-			steps.brightness(player.depth != null?  1: 0);
-
-			xpos+=steps.width();
-
-			BitmapText depth;
-			depth = new BitmapText(PixelScene.pixelFont);
-			depth.text(player.depth != null ? Integer.toString(player.depth): "...");
-			depth.measure();
-			content.add(depth);
-
-			depth.x = steps.x + (steps.width - depth.width()) / 2f;
-			depth.y = steps.y + (steps.height - depth.height()) / 2f + 1;
-			PixelScene.align(depth);
-			depth.brightness(player.depth != null?  1: 0);
-
-			IconTitle playerInfo = new IconTitle();
-			Image ic =  HeroSprite.avatar( playerClassToHeroClass(player.depth != null ? player.playerClass: 0), 0 );
-			ic.brightness(player.depth != null?  1: 0);
-
-			playerInfo.icon( ic);
-			playerInfo.label( player.nick );
-			playerInfo.color(Window.TITLE_COLOR);
+			BlueButton playerInfo = new BlueButton(player.nick){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					runWindow(new WndItemsList(player.items));
+				}
+			};
+			playerInfo.enable(player.depth != null);
 			playerInfo.setRect( xpos, ypos, width, 18 );
 
 			content.add( playerInfo );

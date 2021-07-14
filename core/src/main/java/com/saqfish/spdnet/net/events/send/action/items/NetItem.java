@@ -7,10 +7,16 @@ public class NetItem {
     public String className;
     public int level;
 
+    public NetItem(){
+        this.type = 0;
+        this.className = null;
+        this.level = 0;
+    }
+
     public NetItem(int t, Object i){
         this.type = t;
         try{
-            this.className = i.getClass().getSimpleName();
+            this.className = i.getClass().getName();
             this.level = ((Item)i).level();
         } catch(Exception ignored){}
     }
