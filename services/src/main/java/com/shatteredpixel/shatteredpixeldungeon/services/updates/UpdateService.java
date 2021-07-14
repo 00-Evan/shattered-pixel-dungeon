@@ -34,7 +34,10 @@ public abstract class UpdateService {
 	//whether the app is updateable via an ingame prompt (e.g. not a demo or an android instant app)
 	public abstract boolean isUpdateable();
 
-	public abstract void checkForUpdate( boolean useMetered, UpdateResultCallback callback );
+	//whether the service supports an opt-in channel for betas
+	public abstract boolean supportsBetaChannel();
+
+	public abstract void checkForUpdate( boolean useMetered, boolean includeBetas, UpdateResultCallback callback );
 
 	public abstract void initializeUpdate( AvailableUpdateData update );
 

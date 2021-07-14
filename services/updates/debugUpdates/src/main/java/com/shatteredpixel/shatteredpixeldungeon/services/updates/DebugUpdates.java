@@ -35,7 +35,12 @@ public class DebugUpdates extends UpdateService {
 	}
 
 	@Override
-	public void checkForUpdate(boolean useMetered, UpdateResultCallback callback) {
+	public boolean supportsBetaChannel() {
+		return true;
+	}
+
+	@Override
+	public void checkForUpdate(boolean useMetered, boolean includeBetas, UpdateResultCallback callback) {
 
 		if (!useMetered && !Game.platform.connectedToUnmeteredNetwork()){
 			callback.onConnectionFailed();

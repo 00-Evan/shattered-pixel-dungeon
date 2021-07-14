@@ -528,6 +528,7 @@ public class WndSettings extends WndTabbed {
 		ColorBlock sep1;
 		CheckBox chkNews;
 		CheckBox chkUpdates;
+		CheckBox chkBetas;
 		CheckBox chkWifi;
 
 		@Override
@@ -561,6 +562,19 @@ public class WndSettings extends WndTabbed {
 				};
 				chkUpdates.checked(SPDSettings.updates());
 				add(chkUpdates);
+
+				if (Updates.supportsBetaChannel()){
+					chkBetas = new CheckBox(Messages.get(this, "betas")) {
+						@Override
+						protected void onClick() {
+							super.onClick();
+							SPDSettings.updates(checked());
+							Updates.clearUpdate();
+						}
+					};
+					chkBetas.checked(SPDSettings.betas());
+					add(chkBetas);
+				}
 			}
 
 			if (!DeviceCompat.isDesktop()){
@@ -594,6 +608,11 @@ public class WndSettings extends WndTabbed {
 					chkUpdates.setRect(0, chkNews.bottom() + GAP, width, BTN_HEIGHT);
 					pos = chkUpdates.bottom();
 				}
+			}
+
+			if (chkBetas != null){
+				chkBetas.setRect(0, pos + GAP, width, BTN_HEIGHT);
+				pos = chkBetas.bottom();
 			}
 
 			if (chkWifi != null){

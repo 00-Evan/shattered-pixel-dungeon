@@ -41,11 +41,20 @@ public class Updates {
 		return supportsUpdates() && service.isUpdateable();
 	}
 
+	public static boolean supportsBetaChannel(){
+		return supportsUpdates() && service.supportsBetaChannel();
+	}
+
 	public static void checkForUpdate(){
 		if (!isUpdateable()) return;
 		if (lastCheck != null && (new Date().getTime() - lastCheck.getTime()) < CHECK_DELAY) return;
 
-		service.checkForUpdate(!SPDSettings.WiFi(), new UpdateService.UpdateResultCallback() {
+		//We do this so that automatically enabled beta checking (for users who DLed a beta) persists afterward
+		if (SPDSettings.betas()){
+			SPDSettings.betas(true);
+		}
+
+		service.checkForUpdate(!SPDSettings.WiFi(), SPDSettings.betas(), new UpdateService.UpdateResultCallback() {
 			@Override
 			public void onUpdateAvailable(AvailableUpdateData update) {
 				lastCheck = new Date();
