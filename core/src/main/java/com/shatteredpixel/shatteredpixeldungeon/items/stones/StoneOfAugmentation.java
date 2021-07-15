@@ -21,9 +21,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.stones;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -33,15 +35,19 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 
 public class StoneOfAugmentation extends InventoryStone {
 	
 	{
-		mode = WndBag.Mode.ENCHANTABLE;
+		preferredBag = Belongings.Backpack.class;
 		image = ItemSpriteSheet.STONE_AUGMENTATION;
 	}
-	
+
+	@Override
+	protected boolean usableOnItem(Item item) {
+		return ScrollOfEnchantment.enchantable(item);
+	}
+
 	@Override
 	protected void onItemSelected(Item item) {
 		

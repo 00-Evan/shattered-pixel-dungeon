@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
@@ -32,18 +33,41 @@ import com.watabou.noosa.audio.Sample;
 
 public abstract class InventorySpell extends Spell {
 	
-	protected String inventoryTitle = Messages.get(this, "inv_title");
-	protected WndBag.Mode mode = WndBag.Mode.ALL;
-	
 	@Override
 	protected void onCast(Hero hero) {
 		curItem = detach( hero.belongings.backpack );
-		GameScene.selectItem( itemSelector, mode, inventoryTitle );
+		GameScene.selectItem( itemSelector );
+	}
+
+	private String inventoryTitle(){
+		return Messages.get(this, "inv_title");
+	}
+
+	protected Class<?extends Bag> preferredBag = null;
+
+	protected boolean usableOnItem( Item item ){
+		return true;
 	}
 	
 	protected abstract void onItemSelected( Item item );
 	
-	protected static WndBag.Listener itemSelector = new WndBag.Listener() {
+	protected WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return inventoryTitle();
+		}
+
+		@Override
+		public Class<? extends Bag> preferredBag() {
+			return preferredBag;
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			return usableOnItem(item);
+		}
+
 		@Override
 		public void onSelect( Item item ) {
 			

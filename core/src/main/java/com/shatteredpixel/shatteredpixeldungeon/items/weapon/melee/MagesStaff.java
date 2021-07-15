@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorrosion;
@@ -123,7 +124,7 @@ public class MagesStaff extends MeleeWeapon {
 		if (action.equals(AC_IMBUE)) {
 
 			curUser = hero;
-			GameScene.selectItem(itemSelector, WndBag.Mode.WAND, Messages.get(this, "prompt"));
+			GameScene.selectItem(itemSelector);
 
 		} else if (action.equals(AC_ZAP)){
 
@@ -367,7 +368,23 @@ public class MagesStaff extends MeleeWeapon {
 		return super.enchant(ench);
 	}
 	
-	private final WndBag.Listener itemSelector = new WndBag.Listener() {
+	private final WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return Messages.get(MagesStaff.class, "prompt");
+		}
+
+		@Override
+		public Class<?extends Bag> preferredBag(){
+			return MagicalHolster.class;
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			return item instanceof Wand;
+		}
+
 		@Override
 		public void onSelect( final Item item ) {
 			if (item != null) {

@@ -48,7 +48,6 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
@@ -56,12 +55,12 @@ public class ScrollOfTransmutation extends InventoryScroll {
 	
 	{
 		icon = ItemSpriteSheet.Icons.SCROLL_TRANSMUTE;
-		mode = WndBag.Mode.TRANMSUTABLE;
 		
 		bones = true;
 	}
-	
-	public static boolean canTransmute(Item item){
+
+	@Override
+	protected boolean usableOnItem(Item item) {
 		return item instanceof MeleeWeapon ||
 				(item instanceof MissileWeapon && !(item instanceof Dart)) ||
 				(item instanceof Potion && !(item instanceof Elixir || item instanceof Brew || item instanceof AlchemicalCatalyst)) ||

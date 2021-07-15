@@ -143,7 +143,7 @@ public class Toolbar extends Component {
 
 			@Override
 			protected void onClick() {
-				GameScene.show(new WndBag(Dungeon.hero.belongings.backpack, null, WndBag.Mode.ALL, null));
+				GameScene.show(new WndBag(Dungeon.hero.belongings.backpack));
 			}
 			
 			@Override

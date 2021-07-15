@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
@@ -34,15 +35,33 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 
 public class ScrollOfRemoveCurse extends InventoryScroll {
 
 	{
 		icon = ItemSpriteSheet.Icons.SCROLL_REMCURSE;
-		mode = WndBag.Mode.UNCURSABLE;
+		preferredBag = Belongings.Backpack.class;
 	}
-	
+
+	@Override
+	protected boolean usableOnItem(Item item) {
+		return uncursable(item);
+	}
+
+	public static boolean uncursable( Item item ){
+		if (item.isEquipped(Dungeon.hero) && Dungeon.hero.buff(Degrade.class) != null) {
+			return true;
+		} if ((item instanceof EquipableItem || item instanceof Wand) && ((!item.isIdentified() && !item.cursedKnown) || item.cursed)){
+			return true;
+		} else if (item instanceof Weapon){
+			return ((Weapon)item).hasCurseEnchant();
+		} else if (item instanceof Armor){
+			return ((Armor)item).hasCurseGlyph();
+		} else {
+			return false;
+		}
+	}
+
 	@Override
 	protected void onItemSelected(Item item) {
 		new Flare( 6, 32 ).show( curUser.sprite, 2f ) ;
@@ -95,20 +114,6 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 		}
 		
 		return procced;
-	}
-	
-	public static boolean uncursable( Item item ){
-		if (item.isEquipped(Dungeon.hero) && Dungeon.hero.buff(Degrade.class) != null) {
-			return true;
-		} if ((item instanceof EquipableItem || item instanceof Wand) && ((!item.isIdentified() && !item.cursedKnown) || item.cursed)){
-			return true;
-		} else if (item instanceof Weapon){
-			return ((Weapon)item).hasCurseEnchant();
-		} else if (item instanceof Armor){
-			return ((Armor)item).hasCurseGlyph();
-		} else {
-			return false;
-		}
 	}
 	
 	@Override

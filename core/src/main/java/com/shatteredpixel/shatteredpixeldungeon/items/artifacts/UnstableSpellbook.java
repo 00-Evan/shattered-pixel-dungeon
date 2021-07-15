@@ -31,6 +31,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
@@ -74,8 +76,6 @@ public class UnstableSpellbook extends Artifact {
 	public static final String AC_ADD = "ADD";
 
 	private final ArrayList<Class> scrolls = new ArrayList<>();
-
-	protected WndBag.Mode mode = WndBag.Mode.SCROLL;
 
 	public UnstableSpellbook() {
 		super();
@@ -173,7 +173,7 @@ public class UnstableSpellbook extends Artifact {
 			}
 
 		} else if (action.equals( AC_ADD )) {
-			GameScene.selectItem(itemSelector, mode, Messages.get(this, "prompt"));
+			GameScene.selectItem(itemSelector);
 		}
 	}
 
@@ -237,17 +237,6 @@ public class UnstableSpellbook extends Artifact {
 			scrolls.remove(0);
 
 		return super.upgrade();
-	}
-
-	public static boolean canUseScroll( Item item ){
-		if (item instanceof Scroll){
-			if (!(curItem instanceof UnstableSpellbook)){
-				return true;
-			} else {
-				return item.isIdentified() && ((UnstableSpellbook) curItem).scrolls.contains(item.getClass());
-			}
-		}
-		return false;
 	}
 
 	@Override
@@ -317,7 +306,23 @@ public class UnstableSpellbook extends Artifact {
 		}
 	}
 
-	protected WndBag.Listener itemSelector = new WndBag.Listener() {
+	protected WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return Messages.get(UnstableSpellbook.class, "prompt");
+		}
+
+		@Override
+		public Class<?extends Bag> preferredBag(){
+			return ScrollHolder.class;
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			return item instanceof Scroll && !scrolls.contains(item.getClass());
+		}
+
 		@Override
 		public void onSelect(Item item) {
 			if (item != null && item instanceof Scroll && item.isIdentified()){

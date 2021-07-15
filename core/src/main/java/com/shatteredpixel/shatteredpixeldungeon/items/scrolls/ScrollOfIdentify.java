@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Identification;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -33,11 +34,15 @@ public class ScrollOfIdentify extends InventoryScroll {
 
 	{
 		icon = ItemSpriteSheet.Icons.SCROLL_IDENTIFY;
-		mode = WndBag.Mode.UNIDENTIFED;
 
 		bones = true;
 	}
-	
+
+	@Override
+	protected boolean usableOnItem(Item item) {
+		return !item.isIdentified();
+	}
+
 	@Override
 	protected void onItemSelected( Item item ) {
 		

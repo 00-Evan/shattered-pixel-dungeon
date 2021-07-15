@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.AlchemyScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
@@ -52,8 +51,6 @@ public class AlchemistsToolkit extends Artifact {
 	}
 
 	public static final String AC_BREW = "BREW";
-	
-	protected WndBag.Mode mode = WndBag.Mode.POTION;
 	
 	private boolean alchemyReady = false;
 

@@ -24,9 +24,11 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -90,7 +92,7 @@ public class BrokenSeal extends Item {
 
 		if (action.equals(AC_AFFIX)){
 			curItem = this;
-			GameScene.selectItem(armorSelector, WndBag.Mode.ARMOR, Messages.get(this, "prompt"));
+			GameScene.selectItem(armorSelector);
 		} else if (action.equals(AC_INFO)) {
 			GameScene.show(new WndUseItem(null, this));
 		}
@@ -102,7 +104,23 @@ public class BrokenSeal extends Item {
 		return level() == 0;
 	}
 
-	protected static WndBag.Listener armorSelector = new WndBag.Listener() {
+	protected static WndBag.ItemSelector armorSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return  Messages.get(BrokenSeal.class, "prompt");
+		}
+
+		@Override
+		public Class<?extends Bag> preferredBag(){
+			return Belongings.Backpack.class;
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			return item instanceof Armor;
+		}
+
 		@Override
 		public void onSelect( Item item ) {
 			BrokenSeal seal = (BrokenSeal) curItem;

@@ -26,29 +26,15 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
-import com.shatteredpixel.shatteredpixeldungeon.items.spells.Recycle;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -71,31 +57,6 @@ public class WndBag extends WndTabbed {
 	
 	//only one bag window can appear at a time
 	public static Window INSTANCE;
-	
-	//FIXME this is getting cumbersome, there should be a better way to manage this
-	public static enum Mode {
-		ALL,
-		UNIDENTIFED,
-		UNCURSABLE,
-		CURSABLE,
-		UPGRADEABLE,
-		QUICKSLOT,
-		FOR_SALE,
-		WEAPON,
-		ARMOR,
-		ENCHANTABLE,
-		WAND,
-		SEED,
-		FOOD,
-		POTION,
-		SCROLL,
-		INTUITIONABLE,
-		EQUIPMENT,
-		TRANMSUTABLE,
-		ALCHEMY,
-		RECYCLABLE,
-		NOT_EQUIPPED
-	}
 
 	protected static final int COLS_P   = 5;
 	protected static final int COLS_L   = 5;
@@ -110,9 +71,7 @@ public class WndBag extends WndTabbed {
 	
 	protected static final int TITLE_HEIGHT	= 14;
 	
-	private Listener listener;
-	private WndBag.Mode mode;
-	private String title;
+	private ItemSelector selector;
 
 	private int nCols;
 	private int nRows;
@@ -124,10 +83,13 @@ public class WndBag extends WndTabbed {
 	protected int col;
 	protected int row;
 	
-	private static Mode lastMode;
 	private static Bag lastBag;
-	
-	public WndBag( Bag bag, Listener listener, Mode mode, String title ) {
+
+	public WndBag( Bag bag ) {
+		this(bag, null);
+	}
+
+	public WndBag( Bag bag, ItemSelector selector ) {
 		
 		super();
 		
@@ -136,11 +98,8 @@ public class WndBag extends WndTabbed {
 		}
 		INSTANCE = this;
 		
-		this.listener = listener;
-		this.mode = mode;
-		this.title = title;
+		this.selector = selector;
 		
-		lastMode = mode;
 		lastBag = bag;
 
 		slotWidth = PixelScene.landscape() ? SLOT_WIDTH_L : SLOT_WIDTH_P;
@@ -189,25 +148,29 @@ public class WndBag extends WndTabbed {
 		layoutTabs();
 	}
 	
-	public static WndBag lastBag( Listener listener, Mode mode, String title ) {
+	public static WndBag lastBag( ItemSelector selector ) {
 		
-		if (mode == lastMode && lastBag != null &&
-			Dungeon.hero.belongings.backpack.contains( lastBag )) {
+		if (lastBag != null && Dungeon.hero.belongings.backpack.contains( lastBag )) {
 			
-			return new WndBag( lastBag, listener, mode, title );
+			return new WndBag( lastBag, selector );
 			
 		} else {
 			
-			return new WndBag( Dungeon.hero.belongings.backpack, listener, mode, title );
+			return new WndBag( Dungeon.hero.belongings.backpack, selector );
 			
 		}
 	}
 
-	public static WndBag getBag( Class<? extends Bag> bagClass, Listener listener, Mode mode, String title ) {
-		Bag bag = Dungeon.hero.belongings.getItem( bagClass );
-		return bag != null ?
-				new WndBag( bag, listener, mode, title ) :
-				lastBag( listener, mode, title );
+	public static WndBag getBag( ItemSelector selector ) {
+		if (selector.preferredBag() == Belongings.Backpack.class){
+			return new WndBag( Dungeon.hero.belongings.backpack, selector );
+
+		} else if (selector.preferredBag() != null){
+			Bag bag = Dungeon.hero.belongings.getItem( selector.preferredBag() );
+			if (bag != null) return new WndBag( bag, selector );
+		}
+
+		return lastBag( selector );
 	}
 	
 	protected void placeTitle( Bag bag, int width ){
@@ -225,7 +188,8 @@ public class WndBag extends WndTabbed {
 		amt.y = (TITLE_HEIGHT - amt.baseLine())/2f - 1;
 		PixelScene.align(amt);
 		add(amt);
-		
+
+		String title = selector != null ? selector.textPrompt() : null;
 		RenderedTextBlock txtTitle = PixelScene.renderTextBlock(
 				title != null ? Messages.titleCase(title) : Messages.titleCase( bag.name() ), 8 );
 		txtTitle.hardlight( TITLE_COLOR );
@@ -297,8 +261,8 @@ public class WndBag extends WndTabbed {
 	
 	@Override
 	public void onBackPressed() {
-		if (listener != null) {
-			listener.onSelect( null );
+		if (selector != null) {
+			selector.onSelect( null );
 		}
 		super.onBackPressed();
 	}
@@ -306,7 +270,7 @@ public class WndBag extends WndTabbed {
 	@Override
 	protected void onClick( Tab tab ) {
 		hide();
-		Game.scene().addToFront(new WndBag(((BagTab) tab).bag, listener, mode, title));
+		Game.scene().addToFront(new WndBag(((BagTab) tab).bag, selector));
 	}
 	
 	@Override
@@ -429,30 +393,8 @@ public class WndBag extends WndTabbed {
 				
 				if (item.name() == null) {
 					enable( false );
-				} else {
-					enable(
-						mode == Mode.FOR_SALE && Shopkeeper.willBuyItem(item) ||
-						mode == Mode.UPGRADEABLE && item.isUpgradable() ||
-						mode == Mode.UNIDENTIFED && !item.isIdentified() ||
-						mode == Mode.UNCURSABLE && ScrollOfRemoveCurse.uncursable(item) ||
-						mode == Mode.CURSABLE && ((item instanceof EquipableItem && !(item instanceof MissileWeapon)) || item instanceof Wand) ||
-						mode == Mode.QUICKSLOT && (item.defaultAction != null) ||
-						mode == Mode.WEAPON && (item instanceof MeleeWeapon) ||
-						mode == Mode.ARMOR && (item instanceof Armor) ||
-						mode == Mode.ENCHANTABLE && (item instanceof MeleeWeapon || item instanceof SpiritBow || item instanceof Armor) ||
-						mode == Mode.WAND && (item instanceof Wand) ||
-						mode == Mode.SEED && SandalsOfNature.canUseSeed(item) ||
-						mode == Mode.FOOD && (item instanceof Food) ||
-						mode == Mode.POTION && (item instanceof Potion) ||
-						mode == Mode.SCROLL && UnstableSpellbook.canUseScroll(item) ||
-						mode == Mode.INTUITIONABLE && StoneOfIntuition.isIntuitionable(item) ||
-						mode == Mode.EQUIPMENT && (item instanceof EquipableItem || item instanceof Wand) ||
-						mode == Mode.ALCHEMY && Recipe.usableInRecipe(item) ||
-						mode == Mode.TRANMSUTABLE && ScrollOfTransmutation.canTransmute(item) ||
-						mode == Mode.NOT_EQUIPPED && !item.isEquipped(Dungeon.hero) ||
-						mode == Mode.RECYCLABLE && Recycle.isRecyclable(item) ||
-						mode == Mode.ALL
-					);
+				} else if (selector != null) {
+					enable(selector.itemSelectable(item));
 				}
 			} else {
 				bg.color( NORMAL );
@@ -475,10 +417,10 @@ public class WndBag extends WndTabbed {
 
 				hide();
 
-			} else if (listener != null) {
+			} else if (selector != null) {
 				
 				hide();
-				listener.onSelect( item );
+				selector.onSelect( item );
 				
 			} else {
 				
@@ -489,12 +431,12 @@ public class WndBag extends WndTabbed {
 		
 		@Override
 		protected boolean onLongClick() {
-			if (listener == null && item.defaultAction != null) {
+			if (selector == null && item.defaultAction != null) {
 				hide();
 				Dungeon.quickslot.setSlot( 0 , item );
 				QuickSlotButton.refresh();
 				return true;
-			} else if (listener != null) {
+			} else if (selector != null) {
 				Game.scene().addToFront(new WndInfoItem(item));
 				return true;
 			} else {
@@ -502,8 +444,13 @@ public class WndBag extends WndTabbed {
 			}
 		}
 	}
-	
-	public interface Listener {
-		void onSelect( Item item );
+
+	public abstract static class ItemSelector {
+		public abstract String textPrompt();
+		public Class<?extends Bag> preferredBag(){
+			return null; //defaults to last bag opened
+		}
+		public abstract boolean itemSelectable( Item item );
+		public abstract void onSelect( Item item );
 	}
 }

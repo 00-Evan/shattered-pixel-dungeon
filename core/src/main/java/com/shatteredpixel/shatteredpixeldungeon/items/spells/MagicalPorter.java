@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.MerchantsBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 
 import java.util.ArrayList;
 
@@ -36,9 +35,8 @@ public class MagicalPorter extends InventorySpell {
 	
 	{
 		image = ItemSpriteSheet.MAGIC_PORTER;
-		mode = WndBag.Mode.NOT_EQUIPPED;
 	}
-	
+
 	@Override
 	protected void onCast(Hero hero) {
 		if (Dungeon.depth >= 25){
@@ -47,7 +45,12 @@ public class MagicalPorter extends InventorySpell {
 			super.onCast(hero);
 		}
 	}
-	
+
+	@Override
+	protected boolean usableOnItem(Item item) {
+		return !item.isEquipped(Dungeon.hero);
+	}
+
 	@Override
 	protected void onItemSelected(Item item) {
 		

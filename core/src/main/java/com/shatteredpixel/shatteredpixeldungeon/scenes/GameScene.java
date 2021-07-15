@@ -47,10 +47,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
@@ -92,7 +88,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag.Mode;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndGame;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoCell;
@@ -1057,20 +1052,11 @@ public class GameScene extends PixelScene {
 		}
 	}
 	
-	public static WndBag selectItem( WndBag.Listener listener, WndBag.Mode mode, String title ) {
+	public static WndBag selectItem( WndBag.ItemSelector listener ) {
 		cancelCellSelector();
-		
-		WndBag wnd =
-				mode == Mode.SEED ?
-					WndBag.getBag( VelvetPouch.class, listener, mode, title ) :
-				mode == Mode.SCROLL ?
-					WndBag.getBag( ScrollHolder.class, listener, mode, title ) :
-				mode == Mode.POTION ?
-					WndBag.getBag( PotionBandolier.class, listener, mode, title ) :
-				mode == Mode.WAND ?
-					WndBag.getBag( MagicalHolster.class, listener, mode, title ) :
-				WndBag.lastBag( listener, mode, title );
-		
+
+		WndBag wnd = WndBag.getBag( listener );
+
 		if (scene != null) scene.addToFront( wnd );
 		
 		return wnd;

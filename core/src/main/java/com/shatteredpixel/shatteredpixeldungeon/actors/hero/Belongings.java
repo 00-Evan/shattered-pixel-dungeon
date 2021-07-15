@@ -55,21 +55,23 @@ public class Belongings implements Iterable<Item> {
 
 	//used when thrown weapons temporary occupy the weapon slot
 	public KindOfWeapon stashedWeapon = null;
+
+	public static class Backpack extends Bag {
+		public int capacity(){
+			int cap = super.capacity();
+			for (Item item : items){
+				if (item instanceof Bag){
+					cap++;
+				}
+			}
+			return cap;
+		}
+	}
 	
 	public Belongings( Hero owner ) {
 		this.owner = owner;
 		
-		backpack = new Bag() {
-			public int capacity(){
-				int cap = super.capacity();
-				for (Item item : items){
-					if (item instanceof Bag){
-						cap++;
-					}
-				}
-				return cap;
-			}
-		};
+		backpack = new Backpack();
 		backpack.owner = owner;
 	}
 	
