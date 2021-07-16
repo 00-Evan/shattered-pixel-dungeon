@@ -1,89 +1,65 @@
 package com.saqfish.spdnet.net.windows;
 
-import com.saqfish.spdnet.items.KindOfWeapon;
-import com.saqfish.spdnet.items.KindofMisc;
-import com.saqfish.spdnet.items.armor.Armor;
-import com.saqfish.spdnet.items.artifacts.Artifact;
-import com.saqfish.spdnet.items.rings.Ring;
+import com.saqfish.spdnet.items.Item;
+import com.saqfish.spdnet.net.events.send.action.items.NetItem;
 import com.saqfish.spdnet.net.events.send.action.items.NetItems;
 import com.saqfish.spdnet.sprites.ItemSpriteSheet;
 import com.saqfish.spdnet.ui.ItemSlot;
 import com.saqfish.spdnet.windows.WndBag;
+import com.watabou.noosa.Game;
 import com.watabou.utils.Reflection;
 
 public class WndItemsList extends NetWindow{
     public WndItemsList(NetItems item) {
         super();
-        long x = 0;
-        long y = 0;
 
-        //TODO: clean this up
-        ItemSlot weaponSlot;
-        try{
-            Class k = Reflection.forNameUnhandled(item.weapon.className);
-            KindOfWeapon weapon = (KindOfWeapon)Reflection.newInstance(k) ;
-            weaponSlot = new ItemSlot(weapon);
-        }catch(Exception ignored){
-            WndBag.Placeholder p = new WndBag.Placeholder( ItemSpriteSheet.WEAPON_HOLDER );
-            weaponSlot = new ItemSlot(p);
-        }
-        weaponSlot.setRect( x, 0, 28, 23 );
+        int ITEM_HEIGHT = 23;
+        int ITEM_WIDTH = 23;
+        int x = 0;
+
+        ItemSlot weaponSlot = itemSlot(item.weapon, ItemSpriteSheet.WEAPON_HOLDER);
+        weaponSlot.setRect(x, 0, ITEM_WIDTH, ITEM_HEIGHT);
         add(weaponSlot);
-        x+=weaponSlot.width();
-        y+=weaponSlot.height();
+        x += ITEM_WIDTH;
 
-        ItemSlot armorSlot;
-        try{
-            Class k = Reflection.forNameUnhandled(item.armor.className);
-            Armor a = (Armor)Reflection.newInstance(k);
-            armorSlot = new ItemSlot(a);
-        }catch(Exception ignored){
-            WndBag.Placeholder p = new WndBag.Placeholder( ItemSpriteSheet.ARMOR_HOLDER  );
-            armorSlot = new ItemSlot(p);
-        }
-        armorSlot.setRect( x, 0, 28, 23 );
+        ItemSlot armorSlot = itemSlot(item.armor, ItemSpriteSheet.ARMOR_HOLDER);
+        armorSlot.setRect(x, 0, ITEM_WIDTH, ITEM_HEIGHT);
         add(armorSlot);
-        x+=armorSlot.width();
+        x += ITEM_WIDTH;
 
-        ItemSlot artifactSlot;
-        try{
-            Class k = Reflection.forNameUnhandled(item.artifact.className);
-            Artifact a = (Artifact)Reflection.newInstance(k);
-            artifactSlot = new ItemSlot(a);
-        }catch(Exception ignored){
-            WndBag.Placeholder p = new WndBag.Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER );
-            artifactSlot = new ItemSlot(p);
-        }
-        artifactSlot.setRect( x, 0, 28, 23 );
+        ItemSlot artifactSlot = itemSlot(item.artifact, ItemSpriteSheet.ARTIFACT_HOLDER);
+        artifactSlot.setRect(x, 0, ITEM_WIDTH, ITEM_HEIGHT);
         add(artifactSlot);
-        x+=artifactSlot.width();
+        x += ITEM_WIDTH;
 
-        ItemSlot miscSlot;
-        try{
-            Class k = Reflection.forNameUnhandled(item.misc.className);
-            KindofMisc m = (KindofMisc) Reflection.newInstance(k);
-            miscSlot = new ItemSlot(m);
-        }catch(Exception ignored){
-            WndBag.Placeholder p = new WndBag.Placeholder( ItemSpriteSheet.SOMETHING );
-            miscSlot = new ItemSlot(p);
-        }
-        miscSlot.setRect( x, 0, 28, 23 );
+        ItemSlot miscSlot = itemSlot(item.misc, ItemSpriteSheet.SOMETHING);
+        miscSlot.setRect(x, 0, ITEM_WIDTH, ITEM_HEIGHT);
         add(miscSlot);
-        x+=miscSlot.width();
+        x += ITEM_WIDTH;
 
-        ItemSlot ringSlot;
-        try{
-            Class k = Reflection.forNameUnhandled(item.ring.className);
-            Ring a = (Ring)Reflection.newInstance(k);
-            ringSlot = new ItemSlot(a);
-        }catch(Exception ignored){
-            WndBag.Placeholder p = new WndBag.Placeholder( ItemSpriteSheet.RING_HOLDER );
-            ringSlot = new ItemSlot(p);
-        }
-        ringSlot.setRect( x, 0, 28, 23 );
+        ItemSlot ringSlot = itemSlot(item.ring, ItemSpriteSheet.RING_HOLDER);
+        ringSlot.setRect(x, 0, ITEM_WIDTH, ITEM_HEIGHT);
         add(ringSlot);
-        x+=ringSlot.width();
+        x += ITEM_WIDTH;
 
-        resize((int)x, (int)y);
+        resize((int) x, ITEM_HEIGHT);
+    }
+
+    private ItemSlot itemSlot (NetItem item, int placeHolder){
+        ItemSlot slot;
+        try{
+            Class<?> k = Reflection.forNameUnhandled(addPkgName(item.className));
+            Item a = (Item)Reflection.newInstance(k);
+            a.level(item.level);
+            slot = new ItemSlot(a);
+        }catch(Exception ignored){
+            WndBag.Placeholder p = new WndBag.Placeholder(placeHolder);
+            slot = new ItemSlot(p);
+        }
+        return slot;
+    }
+
+    private String addPkgName(String c){
+        return Game.pkgName+".items."+c;
     }
 }

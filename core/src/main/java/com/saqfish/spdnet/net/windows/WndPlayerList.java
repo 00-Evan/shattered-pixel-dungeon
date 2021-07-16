@@ -25,17 +25,9 @@ import com.saqfish.spdnet.actors.hero.HeroClass;
 import com.saqfish.spdnet.net.events.recieve.playerlist.Player;
 import com.saqfish.spdnet.net.events.recieve.playerlist.PlayerList;
 import com.saqfish.spdnet.net.ui.BlueButton;
-import com.saqfish.spdnet.net.ui.NetBtn;
 import com.saqfish.spdnet.scenes.PixelScene;
-import com.saqfish.spdnet.sprites.HeroSprite;
-import com.saqfish.spdnet.ui.Icons;
 import com.saqfish.spdnet.ui.ScrollPane;
-import com.saqfish.spdnet.ui.Window;
-import com.saqfish.spdnet.windows.IconTitle;
-import com.watabou.noosa.BitmapText;
-import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
-import com.watabou.utils.DeviceCompat;
 
 public class WndPlayerList extends NetWindow {
 

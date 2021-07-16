@@ -56,6 +56,12 @@ public class AndroidGame extends AndroidApplication {
 			instance = this;
 
 			try {
+				String pkgName = getPackageManager().getPackageInfo(getPackageName(), 0).packageName;
+				Game.pkgName = pkgName.substring(0, pkgName.lastIndexOf("."));
+			} catch (PackageManager.NameNotFoundException e) {
+				Game.pkgName = "???";
+			}
+			try {
 				Game.version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
 			} catch (PackageManager.NameNotFoundException e) {
 				Game.version = "???";

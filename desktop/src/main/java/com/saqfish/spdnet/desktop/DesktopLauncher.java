@@ -93,7 +93,10 @@ public class DesktopLauncher {
 				if (Gdx.app != null) Gdx.app.exit();
 			}
 		});
-		
+
+		String pkgName = DesktopLauncher.class.getPackage().getName();
+		Game.pkgName = pkgName.substring(0, pkgName.lastIndexOf("."));
+
 		Game.version = DesktopLauncher.class.getPackage().getSpecificationVersion();
 		if (Game.version == null) {
 			Game.version = System.getProperty("Specification-Version");
