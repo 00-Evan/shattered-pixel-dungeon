@@ -53,7 +53,6 @@ public class Handler {
     }
 
     public void handleMessage(String json){
-        DeviceCompat.log("MESSAGE", json);
         try{
             Message message = mapper.readValue(json, Message.class);
             NetWindow.message(message.data);
@@ -79,7 +78,6 @@ public class Handler {
                     JoinList jl = mapper.readValue(json, JoinList.class);
                     for (int i = 0; i < jl.players.length; i++) {
                         Join j = jl.players[i];
-                        DeviceCompat.log("ADDING",""+j.id);
                         Player.addPlayer(j.id,j.nick, j.playerClass, j.pos);
                     }
                     break;
@@ -125,7 +123,7 @@ public class Handler {
         try {
             String json = "";
             switch (type) {
-                case Send.ASCDESC:
+                case Send.INTERLEVEL:
                     Descend d = new Descend(data[0], data[1], data[2]);
                     json = mapper.writeValueAsString(d);
                     break;

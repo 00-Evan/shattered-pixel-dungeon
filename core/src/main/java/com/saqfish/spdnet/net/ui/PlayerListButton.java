@@ -24,7 +24,6 @@ public class PlayerListButton extends BlueButton {
         }
         net().socket().once(Events.PLAYERLISTREQUEST, args -> {
             String data = (String) args[0];
-            DeviceCompat.log("PLIST", data);
             try {
                 final PlayerList pl = net().mapper().readValue(data, PlayerList.class);
                 Game.runOnRenderThread(() -> NetWindow.showPlayerList(pl));

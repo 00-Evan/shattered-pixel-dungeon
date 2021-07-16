@@ -123,7 +123,7 @@ public class WndGame extends Window {
 							ShatteredPixelDungeon.reportException(e);
 						}
 						Game.switchScene(TitleScene.class);
-						ShatteredPixelDungeon.net().sendAction(Send.ASCDESC, 0, 0, 0);
+						ShatteredPixelDungeon.net().sendAction(Send.INTERLEVEL, 0, 0, 0);
 					}
 				},
 				// Quit
