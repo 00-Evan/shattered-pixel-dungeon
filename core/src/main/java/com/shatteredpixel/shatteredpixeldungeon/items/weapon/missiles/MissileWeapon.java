@@ -257,6 +257,14 @@ abstract public class MissileWeapon extends Weapon {
 		parent = null;
 		super.onThrow(cell);
 	}
+
+	public float durabilityLeft(){
+		return durability;
+	}
+
+	public void repair( float amount ){
+		durability += amount;
+	}
 	
 	protected float durabilityPerUse(){
 		float usages = baseUses * (float)(Math.pow(3, level()));
