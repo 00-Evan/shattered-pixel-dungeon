@@ -57,7 +57,7 @@ public class WndPlayerList extends NetWindow {
 				@Override
 				protected void onClick() {
 					super.onClick();
-					runWindow(new WndItemsList(player.items));
+					runWindow(new WndInfoPlayer(player));
 				}
 			};
 			playerInfo.enable(player.depth != null);

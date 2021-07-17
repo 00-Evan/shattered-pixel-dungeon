@@ -345,7 +345,6 @@ public class Dungeon {
 	public static void switchLevel( final Level level, int pos ) {
 
 		Items.send();
-
 		if (pos == -2){
 			pos = level.exit;
 		} else if (pos < 0 || pos >= level.length() || (!level.passable[pos] && !level.avoid[pos])){

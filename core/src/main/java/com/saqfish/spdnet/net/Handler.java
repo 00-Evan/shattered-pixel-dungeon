@@ -72,13 +72,13 @@ public class Handler {
                     break;
                 case Receive.JOIN:
                     join = mapper.readValue(json, Join.class);
-                    Player.addPlayer(join.id,join.nick, join.playerClass, join.pos);
+                    Player.addPlayer(join.id, join.nick, join.playerClass, join.pos, join.depth, join.items);
                     break;
                 case Receive.JOIN_LIST:
                     JoinList jl = mapper.readValue(json, JoinList.class);
                     for (int i = 0; i < jl.players.length; i++) {
                         Join j = jl.players[i];
-                        Player.addPlayer(j.id,j.nick, j.playerClass, j.pos);
+                        Player.addPlayer(j.id, j.nick, j.playerClass, j.pos, j.depth, j.items);
                     }
                     break;
                 case Receive.LEAVE:

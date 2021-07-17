@@ -2,6 +2,8 @@ package com.saqfish.spdnet.net;
 import java.net.URI;
 
 import com.saqfish.spdnet.net.windows.NetWindow;
+import com.saqfish.spdnet.net.windows.WndServerInfo;
+import com.watabou.noosa.Game;
 import com.watabou.utils.DeviceCompat;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -23,6 +25,8 @@ public class Net {
     private Socket socket;
     private Handler handler = null;
     private long seed;
+
+    private NetWindow w;
 
     public Net(String address, String key){
         URI url = URI.create(address);
@@ -60,6 +64,9 @@ public class Net {
     public void setupEvents(){
         Emitter.Listener onConnected = args -> {
             handler.startAll();
+            if(w != null) {
+                Game.runOnRenderThread( () -> w.destroy());
+            }
         };
 
         Emitter.Listener onDisconnected = args -> {
@@ -96,7 +103,8 @@ public class Net {
         socket.disconnect();
     }
 
-    public void toggle() {
+    public void toggle(WndServerInfo w) {
+        this.w = w;
         if(!socket.connected())
             connect();
         else
@@ -111,7 +119,6 @@ public class Net {
         }
         handler = null;
     }
-
 
     public void sendMessage(int type, String data) {handler.sendMessage(type, data);};
     public void sendAction(int type, int... data) { handler.sendAction(type,data); }

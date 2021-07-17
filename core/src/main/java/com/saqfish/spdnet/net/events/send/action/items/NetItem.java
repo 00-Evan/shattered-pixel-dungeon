@@ -18,7 +18,6 @@ public class NetItem {
         this.type = t;
         try{
             this.className = clean(i.getClass().getName());
-            System.out.println(this.className);
             this.level = ((Item)i).level();
         } catch(Exception ignored){}
     }

@@ -35,6 +35,7 @@ import com.saqfish.spdnet.levels.features.Chasm;
 import com.saqfish.spdnet.levels.rooms.special.SpecialRoom;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.net.events.send.Send;
+import com.saqfish.spdnet.net.events.send.action.items.Items;
 import com.saqfish.spdnet.services.updates.Updates;
 import com.saqfish.spdnet.ui.GameLog;
 import com.saqfish.spdnet.ui.Icons;
@@ -262,7 +263,6 @@ public class InterlevelScene extends PixelScene {
 								reset();
 								break;
 						}
-						
 					} catch (Exception e) {
 						
 						error = e;
@@ -279,7 +279,7 @@ public class InterlevelScene extends PixelScene {
 		}
 		waitingTime = 0f;
 	}
-	
+
 	@Override
 	public void update() {
 		super.update();

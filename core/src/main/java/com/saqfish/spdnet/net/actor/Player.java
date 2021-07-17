@@ -26,6 +26,7 @@ import com.saqfish.spdnet.actors.mobs.Mob;
 import com.saqfish.spdnet.effects.particles.EarthParticle;
 import com.saqfish.spdnet.effects.particles.FlameParticle;
 import com.saqfish.spdnet.effects.particles.SmokeParticle;
+import com.saqfish.spdnet.net.events.send.action.items.NetItems;
 import com.saqfish.spdnet.net.sprites.PlayerSprite;
 import com.saqfish.spdnet.scenes.GameScene;
 import com.watabou.utils.Bundle;
@@ -44,11 +45,15 @@ public class Player extends Mob {
 	private String socketid;
 	private String nick;
 	private int playerClass;
+	private int depth;
+	private NetItems items;
 
-	public Player(String socketid, String nick, int playerClass){
+	public Player(String socketid, String nick, int playerClass, int depth, NetItems items){
 		this.socketid = socketid;
 		this.nick = nick;
+		this.depth = depth;
 		this.playerClass = playerClass;
+		this.items = items;
 	}
 
 	@Override
@@ -107,6 +112,14 @@ public class Player extends Mob {
 		return this.playerClass;
 	}
 
+	public int depth(){
+		return this.depth;
+	}
+
+	public NetItems items(){
+		return this.items;
+	}
+
 	public String info(){
 		return "";
 	}
@@ -136,8 +149,8 @@ public class Player extends Mob {
 		return null;
 	}
 
-	public static void addPlayer(String id, String nick, int playerClass, int pos){
-		Player p = new Player(id, nick, playerClass);
+	public static void addPlayer(String id, String nick, int playerClass, int pos, int depth, NetItems items){
+		Player p = new Player(id, nick, playerClass, depth, items);
 		p.pos = pos;
 		GameScene.add( p );
 		p.join();

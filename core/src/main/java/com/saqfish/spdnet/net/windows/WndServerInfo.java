@@ -23,6 +23,8 @@ public class WndServerInfo extends NetWindow {
     LabeledText status;
     BlueButton connectBtn;
 
+    WndServerInfo self = this;
+
     public WndServerInfo() {
         super();
 
@@ -63,7 +65,7 @@ public class WndServerInfo extends NetWindow {
             @Override
             protected void onClick() {
                 super.onClick();
-                net().toggle();
+                net().toggle(self);
             }
         };
         add(connectBtn);

@@ -21,46 +21,141 @@
 
 package com.saqfish.spdnet.net.windows;
 
-import com.saqfish.spdnet.net.actor.Player;
+import com.saqfish.spdnet.items.Item;
+import com.saqfish.spdnet.net.events.recieve.playerlist.Player;
+import com.saqfish.spdnet.net.events.send.action.items.NetItem;
+import com.saqfish.spdnet.net.events.send.action.items.NetItems;
 import com.saqfish.spdnet.scenes.PixelScene;
 import com.saqfish.spdnet.sprites.HeroSprite;
+import com.saqfish.spdnet.sprites.ItemSpriteSheet;
+import com.saqfish.spdnet.ui.ItemSlot;
 import com.saqfish.spdnet.ui.RenderedTextBlock;
-import com.saqfish.spdnet.windows.WndTitledMessage;
+import com.saqfish.spdnet.windows.WndBag;
+import com.watabou.noosa.ColorBlock;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.Reflection;
 
-public class WndInfoPlayer extends WndTitledMessage {
+public class WndInfoPlayer extends NetWindow {
 
-	public WndInfoPlayer(Player player ) {
-		super( new PlayerTitle( player ), player.info() );
+	private final static int ITEM_HEIGHT = 23;
+	private final static int ITEM_WIDTH = 23;
+	private final static int VGAP = 3;
+	private final static int HGAP = 4;
+
+	private Image image;
+	private RenderedTextBlock name;
+	private RenderedTextBlock depth;
+	private ColorBlock sep;
+	private ItemsList items;
+
+	public WndInfoPlayer( Player player ) {
+		layout(player.nick, player.playerClass, player.depth, player.items);
 	}
-	
-	private static class PlayerTitle extends Component {
 
-		private static final int GAP = 2;
-		
-		private Image image;
-		private RenderedTextBlock name;
+	public WndInfoPlayer( com.saqfish.spdnet.net.actor.Player player ) {
+		layout(player.nick(), player.playerClass(), player.depth(), player.items());
+	}
 
-		public PlayerTitle( Player player ) {
-			
-			name = PixelScene.renderTextBlock( player.nick(), 9 );
-			add( name );
-			
-			image = HeroSprite.avatar(WndPlayerList.playerClassToHeroClass(player.playerClass()), 0);
-			add( image );
+	private void layout(String nick, int playerClass, int pdepth, NetItems netItems) {
+		int x = 0;
+		int y = 0;
+
+		image = HeroSprite.avatar(WndPlayerList.playerClassToHeroClass(playerClass), 0);
+		add( image );
+		image.x = 0;
+		image.y = 0;
+
+		name = PixelScene.renderTextBlock( nick, 9 );
+		add( name );
+		name.setPos(x + image.width + VGAP,
+				image.height() > name.height() ? y +(image.height() - name.height()) / 2 : y);
+
+		depth = PixelScene.renderTextBlock( String.valueOf(pdepth), 9 );
+		add( depth );
+
+		sep = new ColorBlock(1, 1, 0xFF000000);
+		add(sep);
+		sep.size(width, 1);
+		sep.y = image.height() + HGAP;
+
+		items = new ItemsList(netItems);
+		add( items );
+		items.setPos(0, sep.y+(2*HGAP));
+
+		resize((int)items.width(), (int)items.bottom());
+	}
+
+	@Override
+	public synchronized void update() {
+		super.update();
+		sep.size(width, 1);
+		depth.setPos(width - depth.width() - (VGAP+2), HGAP);
+	}
+
+	private class ItemsList extends Component {
+		ItemSlot weaponSlot;
+		ItemSlot armorSlot;
+		ItemSlot artifactSlot;
+		ItemSlot miscSlot;
+		ItemSlot ringSlot;
+
+
+		public ItemsList(NetItems items) {
+			super();
+
+			weaponSlot = itemSlot(items == null ? null : items.weapon, ItemSpriteSheet.WEAPON_HOLDER);
+			armorSlot = itemSlot(items == null ? null : items.armor, ItemSpriteSheet.ARMOR_HOLDER);
+			artifactSlot = itemSlot(items == null ? null : items.artifact, ItemSpriteSheet.ARTIFACT_HOLDER);
+			miscSlot = itemSlot(items == null ? null : items.misc, ItemSpriteSheet.SOMETHING);
+			ringSlot = itemSlot(items == null ? null : items.ring, ItemSpriteSheet.RING_HOLDER);
 		}
-		
+
 		@Override
 		protected void layout() {
-			
-			image.x = 0;
-			image.y = Math.max( 0, name.height() - image.height() );
+			super.layout();
 
-			name.setPos(x + image.width + GAP,
-					image.height() > name.height() ? y +(image.height() - name.height()) / 2 : y);
+			weaponSlot.setRect(x, y, ITEM_WIDTH, ITEM_HEIGHT);
+			add(weaponSlot);
+			x += ITEM_WIDTH;
 
-			height = name.bottom();
+			armorSlot.setRect(x, y, ITEM_WIDTH, ITEM_HEIGHT);
+			add(armorSlot);
+			x += ITEM_WIDTH;
+
+			artifactSlot.setRect(x, y, ITEM_WIDTH, ITEM_HEIGHT);
+			add(artifactSlot);
+			x += ITEM_WIDTH;
+
+			miscSlot.setRect(x, y, ITEM_WIDTH, ITEM_HEIGHT);
+			add(miscSlot);
+			x += ITEM_WIDTH;
+
+			ringSlot.setRect(x, y, ITEM_WIDTH, ITEM_HEIGHT);
+			add(ringSlot);
+			x += ITEM_WIDTH;
+
+			width = x;
+			height = ITEM_HEIGHT;
+		}
+
+		private ItemSlot itemSlot (NetItem item, int placeHolder){
+			ItemSlot slot;
+			try{
+				Class<?> k = Reflection.forNameUnhandled(addPkgName(item.className));
+				Item a = (Item)Reflection.newInstance(k);
+				a.level(item.level);
+				slot = new ItemSlot(a);
+			}catch(Exception ignored){
+				WndBag.Placeholder p = new WndBag.Placeholder(placeHolder);
+				slot = new ItemSlot(p);
+			}
+			return slot;
+		}
+
+		private String addPkgName(String c){
+			return Game.pkgName+".items."+c;
 		}
 	}
 }
