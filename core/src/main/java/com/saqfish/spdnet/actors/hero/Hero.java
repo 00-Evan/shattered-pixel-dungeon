@@ -109,7 +109,7 @@ import com.saqfish.spdnet.levels.features.Chasm;
 import com.saqfish.spdnet.levels.traps.Trap;
 import com.saqfish.spdnet.mechanics.ShadowCaster;
 import com.saqfish.spdnet.messages.Messages;
-import com.saqfish.spdnet.net.events.send.Send;
+import com.saqfish.spdnet.net.events.Send;
 import com.saqfish.spdnet.plants.Earthroot;
 import com.saqfish.spdnet.plants.Swiftthistle;
 import com.saqfish.spdnet.scenes.AlchemyScene;
@@ -743,7 +743,7 @@ public class Hero extends Char {
 	private boolean actMove( HeroAction.Move action ) {
 
 		if (getCloser( action.dst )) {
-			ShatteredPixelDungeon.net().sendAction(Send.MOVE, pos);
+			net().sender().sendAction(Send.MOVE, pos);
 			return true;
 
 		} else {
@@ -1722,7 +1722,7 @@ public class Hero extends Char {
 			((Hero.Doom)cause).onDeath();
 		}
 
-		net().sendAction(Send.DEATH, cause);
+		net().sender().sendAction(Send.DEATH, cause);
 
 		Dungeon.deleteGame( GamesInProgress.curSlot, true );
 	}

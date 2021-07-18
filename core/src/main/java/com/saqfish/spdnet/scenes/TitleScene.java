@@ -33,7 +33,7 @@ import com.saqfish.spdnet.messages.Languages;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.net.Settings;
 import com.saqfish.spdnet.net.events.Events;
-import com.saqfish.spdnet.net.events.recieve.playerlist.PlayerList;
+import com.saqfish.spdnet.net.events.Receive;
 import com.saqfish.spdnet.net.ui.NetIcons;
 import com.saqfish.spdnet.net.windows.NetWindow;
 import com.saqfish.spdnet.services.news.News;
@@ -188,7 +188,7 @@ public class TitleScene extends PixelScene {
 			@Override
 			protected void onClick() {
 				if (net().connected()) {
-					net().sendPlayerListRequest();
+					net().sender().sendPlayerListRequest();
 				}else{
 					NetWindow.error("Not Connected", "You must connect before viewing players");
 					return;
@@ -196,7 +196,7 @@ public class TitleScene extends PixelScene {
 				net().socket().once(Events.PLAYERLISTREQUEST, args -> {
 					String data = (String) args[0];
 					try {
-						final PlayerList pl = net().mapper().readValue(data, PlayerList.class);
+						final Receive.PlayerList pl = net().mapper().readValue(data, Receive.PlayerList.class);
 						Game.runOnRenderThread(() -> NetWindow.showPlayerList(pl));
 					} catch (JsonProcessingException e) {
 						e.printStackTrace();

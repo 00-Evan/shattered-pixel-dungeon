@@ -22,9 +22,8 @@
 package com.saqfish.spdnet.net.windows;
 
 import com.saqfish.spdnet.items.Item;
-import com.saqfish.spdnet.net.events.recieve.playerlist.Player;
-import com.saqfish.spdnet.net.events.send.action.items.NetItem;
-import com.saqfish.spdnet.net.events.send.action.items.NetItems;
+import com.saqfish.spdnet.net.actor.Player;
+import com.saqfish.spdnet.net.events.Receive;
 import com.saqfish.spdnet.scenes.PixelScene;
 import com.saqfish.spdnet.sprites.HeroSprite;
 import com.saqfish.spdnet.sprites.ItemSpriteSheet;
@@ -50,15 +49,15 @@ public class WndInfoPlayer extends NetWindow {
 	private ColorBlock sep;
 	private ItemsList items;
 
-	public WndInfoPlayer( Player player ) {
+	public WndInfoPlayer( Receive.Player player ) {
 		layout(player.nick, player.playerClass, player.depth, player.items);
 	}
 
-	public WndInfoPlayer( com.saqfish.spdnet.net.actor.Player player ) {
+	public WndInfoPlayer( Player player ) {
 		layout(player.nick(), player.playerClass(), player.depth(), player.items());
 	}
 
-	private void layout(String nick, int playerClass, int pdepth, NetItems netItems) {
+	private void layout(String nick, int playerClass, int pdepth, Receive.NetItems netItems) {
 		int x = 0;
 		int y = 0;
 
@@ -102,7 +101,7 @@ public class WndInfoPlayer extends NetWindow {
 		ItemSlot ringSlot;
 
 
-		public ItemsList(NetItems items) {
+		public ItemsList(Receive.NetItems items) {
 			super();
 
 			weaponSlot = itemSlot(items == null ? null : items.weapon, ItemSpriteSheet.WEAPON_HOLDER);
@@ -140,7 +139,7 @@ public class WndInfoPlayer extends NetWindow {
 			height = ITEM_HEIGHT;
 		}
 
-		private ItemSlot itemSlot (NetItem item, int placeHolder){
+		private ItemSlot itemSlot (Receive.NetItem item, int placeHolder){
 			ItemSlot slot;
 			try{
 				Class<?> k = Reflection.forNameUnhandled(addPkgName(item.className));

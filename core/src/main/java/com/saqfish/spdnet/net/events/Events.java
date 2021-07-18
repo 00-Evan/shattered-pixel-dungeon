@@ -5,4 +5,8 @@ public class Events {
     public static final String MESSAGE = "message";
     public static final String ACTION = "action";
     public static final String PLAYERLISTREQUEST = "playerlistrequest";
+
+    public static class Error{
+        public String message;
+    }
 }

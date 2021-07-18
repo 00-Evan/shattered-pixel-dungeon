@@ -23,10 +23,8 @@ package com.saqfish.spdnet.net.actor;
 
 import com.saqfish.spdnet.Dungeon;
 import com.saqfish.spdnet.actors.mobs.Mob;
-import com.saqfish.spdnet.effects.particles.EarthParticle;
-import com.saqfish.spdnet.effects.particles.FlameParticle;
 import com.saqfish.spdnet.effects.particles.SmokeParticle;
-import com.saqfish.spdnet.net.events.send.action.items.NetItems;
+import com.saqfish.spdnet.net.events.Receive;
 import com.saqfish.spdnet.net.sprites.PlayerSprite;
 import com.saqfish.spdnet.scenes.GameScene;
 import com.watabou.utils.Bundle;
@@ -46,9 +44,9 @@ public class Player extends Mob {
 	private String nick;
 	private int playerClass;
 	private int depth;
-	private NetItems items;
+	private Receive.NetItems items;
 
-	public Player(String socketid, String nick, int playerClass, int depth, NetItems items){
+	public Player(String socketid, String nick, int playerClass, int depth, Receive.NetItems items){
 		this.socketid = socketid;
 		this.nick = nick;
 		this.depth = depth;
@@ -116,7 +114,7 @@ public class Player extends Mob {
 		return this.depth;
 	}
 
-	public NetItems items(){
+	public Receive.NetItems items(){
 		return this.items;
 	}
 
@@ -149,7 +147,7 @@ public class Player extends Mob {
 		return null;
 	}
 
-	public static void addPlayer(String id, String nick, int playerClass, int pos, int depth, NetItems items){
+	public static void addPlayer(String id, String nick, int playerClass, int pos, int depth, Receive.NetItems items){
 		Player p = new Player(id, nick, playerClass, depth, items);
 		p.pos = pos;
 		GameScene.add( p );

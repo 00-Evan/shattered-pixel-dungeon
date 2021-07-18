@@ -1,7 +1,7 @@
 package com.saqfish.spdnet.net.windows;
 
 import com.saqfish.spdnet.ShatteredPixelDungeon;
-import com.saqfish.spdnet.net.events.recieve.playerlist.PlayerList;
+import com.saqfish.spdnet.net.events.Receive;
 import com.saqfish.spdnet.net.ui.NetIcons;
 import com.saqfish.spdnet.net.ui.UI;
 import com.saqfish.spdnet.ui.Window;
@@ -52,7 +52,7 @@ public class NetWindow extends Window {
         Game.runOnRenderThread(() -> ShatteredPixelDungeon.scene().add(new WndMotd(motd,seed)));
     }
 
-    public static void showPlayerList(PlayerList p){
+    public static void showPlayerList(Receive.PlayerList p){
         Game.runOnRenderThread(() -> ShatteredPixelDungeon.scene().add(new WndPlayerList(p)));
     }
 }

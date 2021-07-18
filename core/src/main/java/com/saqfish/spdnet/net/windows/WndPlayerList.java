@@ -22,8 +22,7 @@
 package com.saqfish.spdnet.net.windows;
 
 import com.saqfish.spdnet.actors.hero.HeroClass;
-import com.saqfish.spdnet.net.events.recieve.playerlist.Player;
-import com.saqfish.spdnet.net.events.recieve.playerlist.PlayerList;
+import com.saqfish.spdnet.net.events.Receive;
 import com.saqfish.spdnet.net.ui.BlueButton;
 import com.saqfish.spdnet.scenes.PixelScene;
 import com.saqfish.spdnet.ui.ScrollPane;
@@ -35,7 +34,7 @@ public class WndPlayerList extends NetWindow {
 	private static final int WIDTH_L = 144;
 	private static final int HEIGHT	= 120;
 
-	public WndPlayerList(PlayerList p) {
+	public WndPlayerList(Receive.PlayerList p) {
 		super(PixelScene.landscape() ? WIDTH_L : WIDTH_P, HEIGHT);
 
 		ScrollPane list = new ScrollPane( new Component() );
@@ -51,7 +50,7 @@ public class WndPlayerList extends NetWindow {
 		for (int i=0; i < p.list.length; i++) {
 			float xpos = 0;
 
-			Player player = p.list[i];
+			Receive.Player player = p.list[i];
 
 			BlueButton playerInfo = new BlueButton(player.nick){
 				@Override

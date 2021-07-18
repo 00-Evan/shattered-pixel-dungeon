@@ -1,18 +1,18 @@
 package com.saqfish.spdnet.net;
 import java.net.URI;
 
+import com.saqfish.spdnet.net.events.Events;
 import com.saqfish.spdnet.net.windows.NetWindow;
 import com.saqfish.spdnet.net.windows.WndServerInfo;
 import com.watabou.noosa.Game;
-import com.watabou.utils.DeviceCompat;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.json.JSONObject;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
-import io.socket.engineio.client.EngineIOException;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.json.JSONObject;
 
 import static java.util.Collections.singletonMap;
 
@@ -23,7 +23,9 @@ public class Net {
     public static String DEFAULT_KEY = "debug";
 
     private Socket socket;
-    private Handler handler = null;
+    private Reciever reciever;
+    private Sender sender;
+    private ObjectMapper mapper;
     private long seed;
 
     private NetWindow w;
@@ -57,32 +59,34 @@ public class Net {
                 .setReconnection(false)
                 .build();
         socket = IO.socket(url, options);
-        handler = new Handler(Net.this);
+        mapper = new ObjectMapper();
+        reciever = new Reciever(this, mapper);
+        sender = new Sender(this, mapper);
         setupEvents();
     }
 
     public void setupEvents(){
         Emitter.Listener onConnected = args -> {
-            handler.startAll();
+            reciever.startAll();
             if(w != null) {
                 Game.runOnRenderThread( () -> w.destroy());
             }
         };
 
         Emitter.Listener onDisconnected = args -> {
-            handler.cancelAll();
+            reciever.cancelAll();
         };
 
         Emitter.Listener onConnectionError = args -> {
             try {
                 JSONObject json = (JSONObject)args[0];
-                Error e = mapper().readValue(json.toString(), Error.class);
+                Events.Error e = mapper().readValue(json.toString(), Events.Error.class);
                 NetWindow.error(e.message);
             }catch(Exception e){
                 e.printStackTrace();
                 NetWindow.error("Connection could not be established!");
             }
-            handler.cancelAll();
+            reciever.cancelAll();
             disconnect();
         };
 
@@ -98,7 +102,6 @@ public class Net {
     public void connect() {
         socket.connect();
     }
-
     public void disconnect(){
         socket.disconnect();
     }
@@ -117,30 +120,16 @@ public class Net {
             endEvents();
             socket = null;
         }
-        handler = null;
+        reciever = null;
+        sender = null;
     }
-
-    public void sendMessage(int type, String data) {handler.sendMessage(type, data);};
-    public void sendAction(int type, int... data) { handler.sendAction(type,data); }
-    public void sendAction(int type, String data) { handler.sendAction(type,data); }
-    public void sendAction(int type, Object data) { handler.sendAction(type,data); }
-    public void sendPlayerListRequest() {handler.sendPlayerListRequest();};
-
-    public long seed() { return this.seed; }
 
     public void seed(long seed) { this.seed = seed; }
+    public long seed() { return this.seed; }
 
-    public Socket socket(){
-        return this.socket;
-    }
-
-    public Boolean connected() {
-        return socket != null && socket.connected();
-    }
-
-    public URI uri(){
-        return Settings.uri();
-    }
-
-    public ObjectMapper mapper() { return handler.mapper();}
+    public Boolean connected() { return socket != null && socket.connected(); }
+    public Socket socket(){ return this.socket; }
+    public ObjectMapper mapper() { return this.mapper;}
+    public Sender sender() { return sender; }
+    public URI uri(){ return Settings.uri(); }
 }
