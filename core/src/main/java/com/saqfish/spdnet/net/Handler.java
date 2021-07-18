@@ -10,12 +10,15 @@ import com.saqfish.spdnet.net.events.recieve.action.JoinList;
 import com.saqfish.spdnet.net.events.recieve.action.Leave;
 import com.saqfish.spdnet.net.events.recieve.motd.Motd;
 import com.saqfish.spdnet.net.events.send.Send;
-import com.saqfish.spdnet.net.events.send.action.Ascend;
-import com.saqfish.spdnet.net.events.send.action.Descend;
+import com.saqfish.spdnet.net.events.send.action.Death;
+import com.saqfish.spdnet.net.events.send.action.Interlevel;
 import com.saqfish.spdnet.net.events.send.action.Move;
 import com.saqfish.spdnet.net.events.send.message.Message;
 import com.saqfish.spdnet.net.windows.NetWindow;
+import com.saqfish.spdnet.utils.GLog;
 import com.watabou.utils.DeviceCompat;
+
+import org.json.JSONObject;
 
 import io.socket.emitter.Emitter;
 
@@ -86,6 +89,11 @@ public class Handler {
                     player = Player.getPlayer(l.id);
                     if(player != null) player.leave();
                     break;
+                case Receive.DEATH:
+                    com.saqfish.spdnet.net.events.recieve.action.Death d = mapper.readValue(json, com.saqfish.spdnet.net.events.recieve.action.Death.class);
+                    GLog.n(d.nick+" "+d.cause);
+                    GLog.newLine();
+                    break;
                 default:
                     DeviceCompat.log("Unknown Action",json);
             }
@@ -124,12 +132,9 @@ public class Handler {
             String json = "";
             switch (type) {
                 case Send.INTERLEVEL:
-                    Descend d = new Descend(data[0], data[1], data[2]);
+                    Interlevel d = new Interlevel(data[0], data[1], data[2]);
                     json = mapper.writeValueAsString(d);
                     break;
-                case Send.MOVE:
-                    Move m = new Move(data[0]);
-                    json = mapper.writeValueAsString(m);
             }
             if(net.socket().connected()) net.socket().emit(Events.ACTION,type, json);
         } catch (JsonProcessingException e) {
@@ -138,12 +143,25 @@ public class Handler {
     }
 
     public void sendAction(int type, String s) {
+        if(net.socket().connected()) net.socket().emit(Events.ACTION,type, s);
+    }
+
+    public void sendAction(int type, Object o) {
         String json = "";
-        switch (type) {
-            case Send.ITEM:
-                json = s;
+        try {
+            switch (type) {
+                case Send.DEATH:
+                    Death d = new Death(o);
+                    json = mapper.writeValueAsString(d);
+                    break;
+                case Send.MOVE:
+                    Move m = new Move(((Integer)o));
+                    json = mapper.writeValueAsString(m);
+            }
+            if(net.socket().connected()) net.socket().emit(Events.ACTION,type, json);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
-        if(net.socket().connected()) net.socket().emit(Events.ACTION,type, json);
     }
 
     public ObjectMapper mapper() {

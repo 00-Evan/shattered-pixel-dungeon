@@ -140,6 +140,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 
+import static com.saqfish.spdnet.ShatteredPixelDungeon.net;
+
 public class Hero extends Char {
 
 	{
@@ -1719,7 +1721,9 @@ public class Hero extends Char {
 		if (cause instanceof Hero.Doom) {
 			((Hero.Doom)cause).onDeath();
 		}
-		
+
+		net().sendAction(Send.DEATH, cause);
+
 		Dungeon.deleteGame( GamesInProgress.curSlot, true );
 	}
 

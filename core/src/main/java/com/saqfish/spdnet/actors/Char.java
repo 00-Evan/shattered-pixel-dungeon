@@ -88,6 +88,7 @@ import com.saqfish.spdnet.levels.features.Chasm;
 import com.saqfish.spdnet.levels.features.Door;
 import com.saqfish.spdnet.levels.traps.GrimTrap;
 import com.saqfish.spdnet.messages.Messages;
+import com.saqfish.spdnet.net.events.send.Send;
 import com.saqfish.spdnet.scenes.GameScene;
 import com.saqfish.spdnet.sprites.CharSprite;
 import com.saqfish.spdnet.utils.BArray;
@@ -100,6 +101,8 @@ import com.watabou.utils.Random;
 
 import java.util.Arrays;
 import java.util.HashSet;
+
+import static com.saqfish.spdnet.ShatteredPixelDungeon.net;
 
 public abstract class Char extends Actor {
 	
@@ -381,7 +384,7 @@ public abstract class Char extends Actor {
 
 					Dungeon.fail( getClass() );
 					GLog.n( Messages.capitalize(Messages.get(Char.class, "kill", name())) );
-					
+
 				} else if (this == Dungeon.hero) {
 					GLog.i( Messages.capitalize(Messages.get(Char.class, "defeat", enemy.name())) );
 				}
