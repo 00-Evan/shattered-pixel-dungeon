@@ -27,7 +27,6 @@ import com.saqfish.spdnet.ShatteredPixelDungeon;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.net.events.Send;
 import com.saqfish.spdnet.net.ui.BlueButton;
-import com.saqfish.spdnet.net.ui.PlayerListButton;
 import com.saqfish.spdnet.scenes.GameScene;
 import com.saqfish.spdnet.scenes.HeroSelectScene;
 import com.saqfish.spdnet.scenes.InterlevelScene;
@@ -139,10 +138,6 @@ public class WndGame extends Window {
 					}
 				}
 		);
-
-
-		BlueButton playerListButton = new PlayerListButton();
-		addButton(playerListButton);
 
 		// Cancel
 		addButton( new RedButton( Messages.get(this, "return") ) {
