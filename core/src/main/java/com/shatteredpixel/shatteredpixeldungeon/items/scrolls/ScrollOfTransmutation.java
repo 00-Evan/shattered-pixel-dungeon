@@ -221,12 +221,16 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		n.level( 0 );
 		int level = w.level();
 		if (w.curseInfusionBonus) level--;
+		level -= n.resinBonus;
 		n.upgrade( level );
 		
 		n.levelKnown = w.levelKnown;
 		n.cursedKnown = w.cursedKnown;
 		n.cursed = w.cursed;
 		n.curseInfusionBonus = w.curseInfusionBonus;
+		n.resinBonus = w.resinBonus;
+
+		n.updateLevel();
 		
 		return n;
 	}

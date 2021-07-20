@@ -224,6 +224,9 @@ public class MagesStaff extends MeleeWeapon {
 
 		this.wand = null;
 
+		wand.resinBonus = 0;
+		wand.updateLevel();
+
 		//syncs the level of the two items.
 		int targetLevel = Math.max(this.level() - (curseInfusionBonus ? 1 : 0), wand.level());
 
@@ -401,9 +404,11 @@ public class MagesStaff extends MeleeWeapon {
 					applyWand((Wand)item);
 				} else {
 					int newLevel;
-					if (item.level() >= level()){
-						if (level() > 0)    newLevel = item.level() + 1;
-						else                newLevel = item.level();
+					int itemLevel = item.level();
+					itemLevel -= ((Wand)item).resinBonus;
+					if (itemLevel >= level()){
+						if (level() > 0)    newLevel = itemLevel + 1;
+						else                newLevel = itemLevel;
 					} else {
 						newLevel = level();
 					}
