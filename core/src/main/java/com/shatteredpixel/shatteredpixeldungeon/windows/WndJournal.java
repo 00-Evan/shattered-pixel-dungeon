@@ -325,9 +325,9 @@ public class WndJournal extends WndTabbed {
 	public static class AlchemyTab extends Component {
 		
 		private RedButton[] pageButtons;
-		private static final int NUM_BUTTONS = 9;
+		private static final int NUM_BUTTONS = 10;
 		
-		private static final int[] spriteIndexes = {10, 12, 7, 8, 9, 11, 13, 14, 15};
+		private static final int[] spriteIndexes = {10, 12, 7, 8, 3, 9, 11, 13, 14, 15};
 		
 		private static int currentPageIdx   = -1;
 		
@@ -380,14 +380,14 @@ public class WndJournal extends WndTabbed {
 				}
 			} else {
 				//for first row
-				float buttonWidth = width()/4;
+				float buttonWidth = width()/5;
 				float y = 0;
 				float x = 0;
 				for (int i = 0; i < NUM_BUTTONS; i++) {
 					pageButtons[i].setRect(x, y, buttonWidth, ITEM_HEIGHT);
 					PixelScene.align(pageButtons[i]);
 					x += buttonWidth;
-					if (i == 3){
+					if (i == 4){
 						y += ITEM_HEIGHT;
 						x = 0;
 						buttonWidth = width()/5;
@@ -440,7 +440,7 @@ public class WndJournal extends WndTabbed {
 			ArrayList<QuickRecipe> toAdd = QuickRecipe.getRecipes(currentPageIdx);
 			
 			float left;
-			float top = body.bottom()+1;
+			float top = body.bottom()+2;
 			int w;
 			ArrayList<QuickRecipe> toAddThisRow = new ArrayList<>();
 			while (!toAdd.isEmpty()){
@@ -486,7 +486,7 @@ public class WndJournal extends WndTabbed {
 				top += 17;
 				toAddThisRow.clear();
 			}
-			top -=1;
+			top -= 1;
 			content.setSize(width(), top);
 			list.setSize(list.width(), list.height());
 			list.scrollTo(0, 0);

@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projecting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -444,5 +445,22 @@ abstract public class MissileWeapon extends Weapon {
 		super.restoreFromBundle(bundle);
 		bundleRestoring = false;
 		durability = bundle.getInt(DURABILITY);
+	}
+
+	public static class PlaceHolder extends MissileWeapon {
+
+		{
+			image = ItemSpriteSheet.MISSILE_HOLDER;
+		}
+
+		@Override
+		public boolean isSimilar(Item item) {
+			return item instanceof MissileWeapon;
+		}
+
+		@Override
+		public String info() {
+			return "";
+		}
 	}
 }

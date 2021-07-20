@@ -508,6 +508,27 @@ public abstract class Wand extends Item {
 	public int collisionProperties(int target){
 		return collisionProperties;
 	}
+
+	public static class PlaceHolder extends Wand {
+
+		{
+			image = ItemSpriteSheet.WAND_HOLDER;
+		}
+
+		@Override
+		public boolean isSimilar(Item item) {
+			return item instanceof Wand;
+		}
+
+		@Override
+		public void onZap(Ballistica attack) {}
+		public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {}
+
+		@Override
+		public String info() {
+			return "";
+		}
+	}
 	
 	protected static CellSelector.Listener zapper = new  CellSelector.Listener() {
 		

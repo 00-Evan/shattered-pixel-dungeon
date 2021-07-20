@@ -84,11 +84,9 @@ public class LaboratoryRoom extends SpecialRoom {
 			}
 		}
 		
-		//4 pages in sewers, 6 in prison, 9 in caves+
+		//5 pages in sewers, 10 in prison+
 		int chapterTarget;
-		if (missingPages.size() <= 3){
-			chapterTarget = 3;
-		} else if (missingPages.size() <= 5){
+		if (missingPages.size() <= 5){
 			chapterTarget = 2;
 		} else {
 			chapterTarget = 1;
