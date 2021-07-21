@@ -101,23 +101,23 @@ public class WandOfTransfusion extends Wand {
 
 			//for enemies...
 			} else {
+
+				//grant a self-shield, and...
+				Buff.affect(curUser, Barrier.class).setShield((5 + buffedLvl()));
 				
-				//charms living enemies
+				//chars living enemies
 				if (!ch.properties().contains(Char.Property.UNDEAD)) {
 					Charm charm = Buff.affect(ch, Charm.class, Charm.DURATION/2f);
 					charm.object = curUser.id();
 					charm.ignoreHeroAllies = true;
 					ch.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 3 );
 				
-				//harms the undead
+				//harm the undead
 				} else {
 					ch.damage(Random.NormalIntRange(3 + buffedLvl()/2, 6+buffedLvl()), this);
 					ch.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10 + buffedLvl());
 					Sample.INSTANCE.play(Assets.Sounds.BURNING);
 				}
-				
-				//and grants a self shield
-				Buff.affect(curUser, Barrier.class).setShield((5 + buffedLvl()));
 
 			}
 			
