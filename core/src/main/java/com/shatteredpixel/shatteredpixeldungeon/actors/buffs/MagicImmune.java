@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -39,8 +40,25 @@ public class MagicImmune extends FlavourBuff {
 		immunities.addAll(AntiMagic.RESISTS);
 	}
 	
-	//FIXME what about active buffs/debuffs?, what about rings? what about artifacts?
-	
+	//FIXME still a lot of cases not handled here, e.g. rings/artifacts and various damage sources
+
+	@Override
+	public boolean attachTo(Char target) {
+		if (super.attachTo(target)){
+			for (Buff b : target.buffs()){
+				for (Class immunity : immunities){
+					if (b.getClass().isAssignableFrom(immunity)){
+						b.detach();
+						break;
+					}
+				}
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	@Override
 	public int icon() {
 		return BuffIndicator.COMBO;
