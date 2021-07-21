@@ -305,7 +305,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 				dmgBonus = Math.round(target.drRoll() * count / 5f);
 				break;
 			case CRUSH:
-				dmgMulti = 1f + (0.25f * count);
+				dmgMulti = 0.25f * count;
 				break;
 			case FURY:
 				dmgMulti = 0.6f;
