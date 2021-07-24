@@ -120,7 +120,6 @@ public class WndPlayerList extends NetWindow {
 
 	}
 
-
 	public static HeroClass playerClassToHeroClass(int playerClass){
 		switch (playerClass){
 			case 0: default:

@@ -39,6 +39,15 @@ public class Send {
         }
     }
 
+    public static class Transfer {
+        public String id;
+        public String className;
+        public Transfer (Item item, String to){
+            this.id = to;
+            this.className = clean(item.getClass().getName());
+        }
+    }
+
     public static class Interlevel {
         public int playerClass;
         public int depth;
@@ -81,9 +90,10 @@ public class Send {
             } catch(Exception ignored){}
         }
 
-        private String clean(String name){
-            return name.replace(Game.pkgName+".items.","");
-        }
+    }
+
+    public static String clean(String name){
+        return name.replace(Game.pkgName+".items.","");
     }
 
     public static class NetItems {
@@ -111,8 +121,6 @@ public class Send {
             this.misc = new NetItem(Types.MISC, Dungeon.hero.belongings.misc);
             this.ring = new NetItem(Types.RING, Dungeon.hero.belongings.ring);
         }
-
-
     }
 
     public static void sendItems(){

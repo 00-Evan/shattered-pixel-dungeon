@@ -1,5 +1,7 @@
 package com.saqfish.spdnet.net.events;
 
+import com.saqfish.spdnet.items.Item;
+
 public class Receive {
     public static final int MOVE = 0;
     public static final int JOIN = 1;
@@ -8,10 +10,13 @@ public class Receive {
     public static final int ITEM = 4;
     public static final int DEATH = 5;
 
-
     public static class Motd {
         public String motd;
         public long seed;
+    }
+
+    public static class Transfer {
+        public String className;
     }
 
     public static class Player {
