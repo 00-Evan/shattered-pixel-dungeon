@@ -103,6 +103,7 @@ public class Net {
         socket.connect();
     }
     public void disconnect(){
+        reciever.cancelAll();
         socket.disconnect();
     }
 

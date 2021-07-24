@@ -2,10 +2,15 @@ package com.saqfish.spdnet.net;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.saqfish.spdnet.Dungeon;
+import com.saqfish.spdnet.actors.mobs.Mob;
+import com.saqfish.spdnet.items.Heap;
 import com.saqfish.spdnet.items.Item;
 import com.saqfish.spdnet.net.actor.Player;
 import com.saqfish.spdnet.net.events.Events;
 import com.saqfish.spdnet.net.events.Send;
+
+import io.socket.client.Ack;
 
 import static com.saqfish.spdnet.ShatteredPixelDungeon.net;
 
@@ -22,9 +27,14 @@ public class Sender {
                 net.socket().emit(Events.PLAYERLISTREQUEST, 0);
         }
 
-        public void sendTransfer(Item i, String id) {
+        public void sendTransfer(Item i, String id, Heap h) {
                 Send.Transfer item = new Send.Transfer(i, id);
-                net.socket().emit(Events.TRANSFER, map(item));
+                net.socket().emit(Events.TRANSFER, map(item), (Ack) args -> {
+                    try {
+                            Boolean enabled = (Boolean)args[0];
+                            if(enabled) h.remove(i);
+                    }catch(Exception e){ }
+                });
         }
 
         public void sendAction(int type, String s) {

@@ -40,7 +40,7 @@ public class Reciever {
                         String data = (String) args[1];
                         handleAction(type, data);
                 };
-                Emitter.Listener onDrop = args -> {
+                Emitter.Listener onTransfer = args -> {
                         String data = (String) args[0];
                         handleTransfer(data);
                 };
@@ -49,13 +49,14 @@ public class Reciever {
                         handleMotd(data);
                 };
                 net.socket().on(Events.ACTION, onAction);
-                net.socket().on(Events.TRANSFER, onDrop);
+                net.socket().on(Events.TRANSFER, onTransfer);
                 net.socket().on(Events.MESSAGE, onMessage);
                 net.socket().once(Events.MOTD, onMotd);
         }
 
         public void cancelAll() {
                 net.socket().off(Events.ACTION);
+                net.socket().off(Events.TRANSFER);
                 net.socket().off(Events.MESSAGE);
                 net.socket().off(Events.MOTD);
         }
@@ -72,14 +73,12 @@ public class Reciever {
         public void handleTransfer(String json) {
                 try {
                         Receive.Transfer item = mapper.readValue(json, Receive.Transfer.class);
-                        System.out.println(addPkgName(item.className));
                         Class<?> k = Reflection.forNameUnhandled(addPkgName(item.className));
                         Item i = (Item) Reflection.newInstance(k);
                         Dungeon.hero.belongings.backpack.items.add(i);
                 } catch (Exception ignored) { }
 
         }
-
 
         public void handleAction(int type, String json) {
                 Player player;
@@ -128,7 +127,6 @@ public class Reciever {
                         e.printStackTrace();
                 }
         }
-
 
         public static String addPkgName(String c) {
                 return Game.pkgName + ".items." + c;

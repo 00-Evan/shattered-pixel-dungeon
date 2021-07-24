@@ -172,10 +172,8 @@ public class Item implements Bundlable {
 		}
 
 		Mob m = Dungeon.level.findMob(cell);
-		if(m instanceof Player){
-			net().sender().sendTransfer(this, ((Player)m).socketid());
-			heap.remove(this);
-		}
+		if(m instanceof Player)
+			net().sender().sendTransfer(this, ((Player)m).socketid(), heap);
 	}
 	
 	//takes two items and merges them (if possible)
