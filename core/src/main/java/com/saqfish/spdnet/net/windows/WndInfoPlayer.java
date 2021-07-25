@@ -30,6 +30,7 @@ import com.saqfish.spdnet.sprites.ItemSpriteSheet;
 import com.saqfish.spdnet.ui.ItemSlot;
 import com.saqfish.spdnet.ui.RenderedTextBlock;
 import com.saqfish.spdnet.windows.WndBag;
+import com.saqfish.spdnet.windows.WndInfoItem;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
@@ -145,7 +146,14 @@ public class WndInfoPlayer extends NetWindow {
 				Class<?> k = Reflection.forNameUnhandled(addPkgName(item.className));
 				Item a = (Item)Reflection.newInstance(k);
 				a.level(item.level);
-				slot = new ItemSlot(a);
+				a.levelKnown = true;
+				slot = new ItemSlot(a){
+					@Override
+					protected void onClick() {
+						super.onClick();
+						Game.scene().addToFront(new WndInfoItem(item));
+					}
+				};
 			}catch(Exception ignored){
 				WndBag.Placeholder p = new WndBag.Placeholder(placeHolder);
 				slot = new ItemSlot(p);

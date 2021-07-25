@@ -75,6 +75,7 @@ public class Reciever {
                         Receive.Transfer item = mapper.readValue(json, Receive.Transfer.class);
                         Class<?> k = Reflection.forNameUnhandled(addPkgName(item.className));
                         Item i = (Item) Reflection.newInstance(k);
+                        i.levelKnown = true;
                         Dungeon.hero.belongings.backpack.items.add(i);
                 } catch (Exception ignored) { }
 
