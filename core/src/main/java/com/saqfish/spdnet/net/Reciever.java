@@ -4,22 +4,30 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saqfish.spdnet.Dungeon;
 import com.saqfish.spdnet.actors.buffs.RevealedArea;
+import com.saqfish.spdnet.effects.BadgeBanner;
+import com.saqfish.spdnet.effects.SpellSprite;
+import com.saqfish.spdnet.effects.Transmuting;
 import com.saqfish.spdnet.items.Item;
 import com.saqfish.spdnet.net.actor.Player;
 import com.saqfish.spdnet.net.events.Events;
 import com.saqfish.spdnet.net.events.Receive;
 import com.saqfish.spdnet.net.events.Send;
 import com.saqfish.spdnet.net.windows.NetWindow;
+import com.saqfish.spdnet.scenes.PixelScene;
+import com.saqfish.spdnet.ui.GameLog;
 import com.saqfish.spdnet.ui.ItemSlot;
 import com.saqfish.spdnet.utils.GLog;
 import com.saqfish.spdnet.windows.WndBag;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.Scene;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.Reflection;
 
 import java.awt.SystemTray;
 
 import io.socket.emitter.Emitter;
+
+import static com.saqfish.spdnet.scenes.PixelScene.uiCamera;
 
 public class Reciever {
         private ObjectMapper mapper;
@@ -77,6 +85,8 @@ public class Reciever {
                         Item i = (Item) Reflection.newInstance(k);
                         i.levelKnown = true;
                         Dungeon.hero.belongings.backpack.items.add(i);
+                        Transmuting.show(Dungeon.hero, i, i);
+                        GLog.p("You received a "+i.name());
                 } catch (Exception ignored) { }
 
         }

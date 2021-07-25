@@ -371,7 +371,8 @@ public abstract class Level implements Bundlable {
 		for (Bundlable m : collection) {
 			Mob mob = (Mob)m;
 			if (mob != null) {
-				mobs.add( mob );
+				if (!(mob instanceof Player))
+					mobs.add( mob );
 			}
 		}
 		
