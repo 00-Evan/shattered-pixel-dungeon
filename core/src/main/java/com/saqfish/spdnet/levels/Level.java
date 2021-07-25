@@ -416,13 +416,6 @@ public abstract class Level implements Bundlable {
 		bundle.put( TRAPS, traps.valueList() );
 		bundle.put( CUSTOM_TILES, customTiles );
 		bundle.put( CUSTOM_WALLS, customWalls );
-
-		// Don't store net players in bundle
-		for (Iterator<Mob> i = mobs.iterator(); i.hasNext();) {
-			Mob mob = i.next();
-			if(mob instanceof Player) i.remove();
-		}
-
 		bundle.put( MOBS, mobs );
 		bundle.put( BLOBS, blobs.values() );
 		bundle.put( FEELING, feeling );
