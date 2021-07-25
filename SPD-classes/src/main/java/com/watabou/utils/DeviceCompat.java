@@ -60,7 +60,8 @@ public class DeviceCompat {
 	}
 	
 	public static boolean isDebug(){
-		return Game.version.contains("INDEV");
+		// return Game.version.contains("INDEV");
+		return true;
 	}
 	
 	public static void openURI( String URI ){
