@@ -181,7 +181,16 @@ public class Item implements Bundlable {
 			return true;
 		}
 
+		if (!container.canHold(this)){
+			GLog.n( Messages.get(Item.class, "pack_full", container.name()) );
+			return false;
+		}
+
 		ArrayList<Item> items = container.items;
+
+		if (items.contains( this )) {
+			return true;
+		}
 
 		for (Item item:items) {
 			if (item instanceof Bag && ((Bag)item).canHold( this )) {
@@ -189,15 +198,6 @@ public class Item implements Bundlable {
 					return true;
 				}
 			}
-		}
-
-		if (!container.canHold(this)){
-			GLog.n( Messages.get(Item.class, "pack_full", container.name()) );
-			return false;
-		}
-
-		if (items.contains( this )) {
-			return true;
 		}
 		
 		if (stackable) {

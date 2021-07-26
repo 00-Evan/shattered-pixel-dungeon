@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
@@ -31,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
@@ -47,6 +47,7 @@ public class Belongings implements Iterable<Item> {
 	
 	public Bag backpack;
 
+	//FIXME these need accessor methods so they can work in conjunction with the lost inventory debuff =I
 	public KindOfWeapon weapon = null;
 	public Armor armor = null;
 	public Artifact artifact = null;
@@ -152,9 +153,26 @@ public class Belongings implements Iterable<Item> {
 			info.armorTier = 0;
 		}
 	}
+
+	//ignores lost inventory debuff
+	public ArrayList<Bag> getBags(){
+		ArrayList<Bag> result = new ArrayList<>();
+
+		result.add(backpack);
+
+		for (Item i : this){
+			if (i instanceof Bag){
+				result.add((Bag)i);
+			}
+		}
+
+		return result;
+	}
 	
 	@SuppressWarnings("unchecked")
 	public<T extends Item> T getItem( Class<T> itemClass ) {
+
+		if (owner != null && owner.buff(LostInventory.class) != null) return null;
 
 		for (Item item : this) {
 			if (itemClass.isInstance( item )) {
@@ -168,6 +186,8 @@ public class Belongings implements Iterable<Item> {
 	public<T extends Item> ArrayList<T> getAllItems( Class<T> itemClass ) {
 		ArrayList<T> result = new ArrayList<>();
 
+		if (owner != null && owner.buff(LostInventory.class) != null) return result;
+
 		for (Item item : this) {
 			if (itemClass.isInstance( item )) {
 				result.add((T) item);
@@ -178,6 +198,8 @@ public class Belongings implements Iterable<Item> {
 	}
 	
 	public boolean contains( Item contains ){
+
+		if (owner != null && owner.buff(LostInventory.class) != null) return false;
 		
 		for (Item item : this) {
 			if (contains == item ) {
@@ -189,6 +211,8 @@ public class Belongings implements Iterable<Item> {
 	}
 	
 	public Item getSimilar( Item similar ){
+
+		if (owner != null && owner.buff(LostInventory.class) != null) return null;
 		
 		for (Item item : this) {
 			if (similar != item && similar.isSimilar(item)) {
@@ -201,6 +225,8 @@ public class Belongings implements Iterable<Item> {
 	
 	public ArrayList<Item> getAllSimilar( Item similar ){
 		ArrayList<Item> result = new ArrayList<>();
+
+		if (owner != null && owner.buff(LostInventory.class) != null) return result;
 		
 		for (Item item : this) {
 			if (item != similar && similar.isSimilar(item)) {
@@ -251,49 +277,6 @@ public class Belongings implements Iterable<Item> {
 	
 	public Item randomUnequipped() {
 		return Random.element( backpack.items );
-	}
-	
-	public void resurrect( int depth ) {
-
-		for (Item item : backpack.items.toArray( new Item[0])) {
-			if (item instanceof Key) {
-				if (((Key)item).depth == depth) {
-					item.detachAll( backpack );
-				}
-			} else if (item.unique) {
-				item.detachAll(backpack);
-				//you keep the bag itself, not its contents.
-				if (item instanceof Bag){
-					((Bag)item).resurrect();
-				}
-				item.collect();
-			} else if (!item.isEquipped( owner )) {
-				item.detachAll( backpack );
-			}
-		}
-		
-		if (weapon != null) {
-			weapon.cursed = false;
-			weapon.activate( owner );
-		}
-		
-		if (armor != null) {
-			armor.cursed = false;
-			armor.activate( owner );
-		}
-
-		if (artifact != null) {
-			artifact.cursed = false;
-			artifact.activate( owner );
-		}
-		if (misc != null) {
-			misc.cursed = false;
-			misc.activate( owner );
-		}
-		if (ring != null) {
-			ring.cursed = false;
-			ring.activate( owner );
-		}
 	}
 	
 	public int charge( float charge ) {

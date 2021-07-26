@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.items.LostBackpack;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
@@ -40,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
 import com.watabou.gltextures.TextureCache;
@@ -439,19 +441,32 @@ public class InterlevelScene extends PixelScene {
 		}
 	}
 	
-	private void resurrect() throws IOException {
+	private void resurrect() {
 		
 		Mob.holdAllies( Dungeon.level );
-		
+
+		Level level;
 		if (Dungeon.level.locked) {
-			Dungeon.hero.resurrect( Dungeon.depth );
+			Dungeon.hero.resurrect();
 			Dungeon.depth--;
-			Level level = Dungeon.newLevel();
-			Dungeon.switchLevel( level, level.entrance );
+			level = Dungeon.newLevel();
+			Dungeon.hero.pos = level.randomRespawnCell(Dungeon.hero);
+			level.drop(new LostBackpack(), level.randomRespawnCell(null));
 		} else {
-			Dungeon.hero.resurrect( -1 );
-			Dungeon.resetLevel();
+			Dungeon.hero.resurrect();
+			level = Dungeon.level;
+			BArray.setFalse(level.visited);
+			BArray.setFalse(level.mapped);
+			int invPos = Dungeon.hero.pos;
+			int tries = 0;
+			do {
+				Dungeon.hero.pos = level.randomRespawnCell(Dungeon.hero);
+				tries++;
+			} while (level.trueDistance(invPos, Dungeon.hero.pos) <= 30 - (tries/10));
+			level.drop(new LostBackpack(), invPos);
 		}
+
+		Dungeon.switchLevel( level, Dungeon.hero.pos );
 	}
 
 	private void reset() throws IOException {

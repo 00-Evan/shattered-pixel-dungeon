@@ -38,9 +38,10 @@ public class WndUseItem extends WndInfoItem {
 		
 		super(item);
 
-		float y = height + GAP;
+		float y = height;
 		
-		if (Dungeon.hero.isAlive()) {
+		if (Dungeon.hero.isAlive() && Dungeon.hero.belongings.contains(item)) {
+			y += GAP;
 			ArrayList<RedButton> buttons = new ArrayList<>();
 			for (final String action : item.actions( Dungeon.hero )) {
 				

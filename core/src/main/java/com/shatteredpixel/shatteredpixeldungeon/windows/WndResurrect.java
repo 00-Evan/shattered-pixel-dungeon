@@ -21,10 +21,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
+import com.shatteredpixel.shatteredpixeldungeon.items.LostBackpack;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -41,14 +43,14 @@ public class WndResurrect extends Window {
 	private static final float GAP		= 2;
 	
 	public static WndResurrect instance;
-	public static Object causeOfDeath;
 	
-	public WndResurrect( final Ankh ankh, Object causeOfDeath ) {
+	public WndResurrect() {
 		
 		super();
 		
 		instance = this;
-		WndResurrect.causeOfDeath = causeOfDeath;
+
+		Ankh ankh = new Ankh();
 		
 		IconTitle titlebar = new IconTitle();
 		titlebar.icon( new ItemSprite( ankh.image(), null ) );
@@ -56,7 +58,7 @@ public class WndResurrect extends Window {
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
 		
-		RenderedTextBlock message = PixelScene.renderTextBlock( Messages.get(this, "message"), 6 );
+		RenderedTextBlock message = PixelScene.renderTextBlock( "TODO, need to add item selection here. Atm we just revive and all equipped items work", 6 );
 		message.maxWidth(WIDTH);
 		message.setPos(0, titlebar.bottom() + GAP);
 		add( message );
@@ -74,20 +76,8 @@ public class WndResurrect extends Window {
 		};
 		btnYes.setRect( 0, message.top() + message.height() + GAP, WIDTH, BTN_HEIGHT );
 		add( btnYes );
-		
-		RedButton btnNo = new RedButton( Messages.get(this, "no") ) {
-			@Override
-			protected void onClick() {
-				hide();
 
-				Hero.reallyDie( WndResurrect.causeOfDeath );
-				Rankings.INSTANCE.submit( false, WndResurrect.causeOfDeath.getClass() );
-			}
-		};
-		btnNo.setRect( 0, btnYes.bottom() + GAP, WIDTH, BTN_HEIGHT );
-		add( btnNo );
-		
-		resize( WIDTH, (int)btnNo.bottom() );
+		resize( WIDTH, (int)btnYes.bottom() );
 	}
 	
 	@Override

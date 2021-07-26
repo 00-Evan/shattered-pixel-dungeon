@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
@@ -129,15 +130,7 @@ public class WndBag extends WndTabbed {
 
 		resize( windowWidth, windowHeight );
 
-		Belongings stuff = Dungeon.hero.belongings;
-		Bag[] bags = {
-			stuff.backpack,
-			stuff.getItem( VelvetPouch.class ),
-			stuff.getItem( ScrollHolder.class ),
-			stuff.getItem( PotionBandolier.class ),
-			stuff.getItem( MagicalHolster.class )};
-
-		for (Bag b : bags) {
+		for (Bag b : Dungeon.hero.belongings.getBags()) {
 			if (b != null) {
 				BagTab tab = new BagTab( b );
 				add( tab );
@@ -393,8 +386,10 @@ public class WndBag extends WndTabbed {
 				
 				if (item.name() == null) {
 					enable( false );
-				} else if (selector != null) {
-					enable(selector.itemSelectable(item));
+				} else if (selector != null && !selector.itemSelectable(item)) {
+					enable(false);
+				} else if (Dungeon.hero.buff(LostInventory.class) != null){
+					enable(false);
 				}
 			} else {
 				bg.color( NORMAL );

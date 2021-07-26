@@ -97,6 +97,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoPlant;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoTrap;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Camera;
@@ -360,8 +361,9 @@ public class GameScene extends PixelScene {
 		
 		switch (InterlevelScene.mode) {
 			case RESURRECT:
-				ScrollOfTeleportation.appear( Dungeon.hero, Dungeon.level.entrance );
-				new Flare( 8, 32 ).color( 0xFFFF66, true ).show( hero, 2f ) ;
+				ScrollOfTeleportation.appear( Dungeon.hero, Dungeon.hero.pos );
+				SpellSprite.show(Dungeon.hero, SpellSprite.ANKH);
+				new Flare( 5, 16 ).color( 0xFFFF00, true ).show( hero, 6f ) ;
 				break;
 			case RETURN:
 				ScrollOfTeleportation.appear(  Dungeon.hero, Dungeon.hero.pos );
@@ -527,6 +529,11 @@ public class GameScene extends PixelScene {
 		}
 		
 		fadeIn();
+
+		//assume the hero died with an ankh
+		if (!Dungeon.hero.isAlive()){
+			add(new WndResurrect());
+		}
 
 	}
 	

@@ -3,7 +3,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -198,6 +198,10 @@ public class WndQuickBag extends Window {
 					}
 				}
 
+				if (Dungeon.hero.buff(LostInventory.class) != null){
+					enable(false); //TODO enable when hero has selected this item to keep
+				}
+
 			} else {
 				bg.color(NORMAL);
 			}
@@ -215,7 +219,7 @@ public class WndQuickBag extends Window {
 
 		@Override
 		protected void onClick() {
-			if (Dungeon.hero == null || !Dungeon.hero.isAlive()){
+			if (Dungeon.hero == null || !Dungeon.hero.isAlive() || !Dungeon.hero.belongings.contains(item)){
 				Game.scene().addToFront(new WndUseItem(WndQuickBag.this, item));
 				return;
 			}

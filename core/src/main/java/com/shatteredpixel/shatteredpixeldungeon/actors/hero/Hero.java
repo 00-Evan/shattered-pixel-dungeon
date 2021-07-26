@@ -47,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fury;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HoldFast;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
@@ -378,6 +379,9 @@ public class Hero extends Char {
 	}
 
 	public void live() {
+		for (Buff b : buffs()){
+			b.detach();
+		}
 		Buff.affect( this, Regeneration.class );
 		Buff.affect( this, Hunger.class );
 	}
@@ -1596,7 +1600,7 @@ public class Hero extends Char {
 	}
 	
 	@Override
-	public void die( Object cause  ) {
+	public void die( Object cause ) {
 		
 		curAction = null;
 
@@ -1611,49 +1615,43 @@ public class Hero extends Char {
 			}
 		}
 
-		if (ankh != null && ankh.isBlessed()) {
-			this.HP = HT/4;
-
-			PotionOfHealing.cure(this);
-			Buff.prolong(this, AnkhInvulnerability.class, AnkhInvulnerability.DURATION);
-
+		if (ankh != null) {
 			ankh.detach(belongings.backpack);
 
-			SpellSprite.show(this, SpellSprite.ANKH);
-			GameScene.flash(0x80FFFF40);
-			Sample.INSTANCE.play( Assets.Sounds.TELEPORT );
-			GLog.w( Messages.get(this, "revive") );
-			Statistics.ankhsUsed++;
-			
-			for (Char ch : Actor.chars()){
-				if (ch instanceof DriedRose.GhostHero){
-					((DriedRose.GhostHero) ch).sayAnhk();
-					return;
-				}
-			}
+			if (ankh.isBlessed()) {
+				this.HP = HT / 4;
 
+				PotionOfHealing.cure(this);
+				Buff.prolong(this, AnkhInvulnerability.class, AnkhInvulnerability.DURATION);
+
+				SpellSprite.show(this, SpellSprite.ANKH);
+				GameScene.flash(0x80FFFF40);
+				Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+				GLog.w(Messages.get(this, "revive"));
+				Statistics.ankhsUsed++;
+
+				for (Char ch : Actor.chars()) {
+					if (ch instanceof DriedRose.GhostHero) {
+						((DriedRose.GhostHero) ch).sayAnhk();
+						return;
+					}
+				}
+			} else {
+
+				Game.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						GameScene.show( new WndResurrect() );
+					}
+				});
+
+			}
 			return;
 		}
 		
 		Actor.fixTime();
 		super.die( cause );
-
-		if (ankh == null) {
-			
-			reallyDie( cause );
-			
-		} else {
-			
-			Dungeon.deleteGame( GamesInProgress.curSlot, false );
-			final Ankh finalAnkh = ankh;
-			Game.runOnRenderThread(new Callback() {
-				@Override
-				public void call() {
-					GameScene.show( new WndResurrect( finalAnkh, cause ) );
-				}
-			});
-			
-		}
+		reallyDie( cause );
 	}
 	
 	public static void reallyDie( Object cause ) {
@@ -1983,15 +1981,13 @@ public class Hero extends Char {
 		return smthFound;
 	}
 	
-	public void resurrect( int resetLevel ) {
-		
+	public void resurrect() {
 		HP = HT;
-		Dungeon.gold = 0;
-		exp = 0;
-		
-		belongings.resurrect( resetLevel );
-
 		live();
+
+		Buff.affect(this, LostInventory.class);
+		Buff.affect(this, Invisibility.class, 3f);
+		//lost inventory is dropped in interlevelscene
 	}
 
 	@Override

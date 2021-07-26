@@ -231,8 +231,9 @@ public class Generator {
 					return i;
 				}
 			}
-			
-			return item instanceof Bag ? Integer.MAX_VALUE : Integer.MAX_VALUE - 1;
+
+			//items without a category-defined order are sorted based on the spritesheet
+			return Short.MAX_VALUE+item.image();
 		}
 
 		static {
