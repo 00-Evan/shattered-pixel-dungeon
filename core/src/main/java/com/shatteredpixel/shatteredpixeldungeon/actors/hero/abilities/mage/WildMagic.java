@@ -65,7 +65,7 @@ public class WildMagic extends ArmorAbility {
 		ArrayList<Wand> wands = hero.belongings.getAllItems(Wand.class);
 		Random.shuffle(wands);
 
-		float chargeUsePerShot = (float)Math.pow(0.563f, hero.pointsInTalent(Talent.CONSERVED_MAGIC));
+		float chargeUsePerShot = (float)Math.pow(0.67f, hero.pointsInTalent(Talent.CONSERVED_MAGIC));
 
 		for (Wand w : wands.toArray(new Wand[0])){
 			if (w.curCharges < 1 && w.partialCharge < chargeUsePerShot){
@@ -75,19 +75,30 @@ public class WildMagic extends ArmorAbility {
 
 		int maxWands = 4 + Dungeon.hero.pointsInTalent(Talent.FIRE_EVERYTHING);
 
+		//second and third shots
 		if (wands.size() < maxWands){
-			ArrayList<Wand> dupes = new ArrayList<>(wands);
+			ArrayList<Wand> seconds = new ArrayList<>(wands);
+			ArrayList<Wand> thirds = new ArrayList<>(wands);
 
-			for (Wand w : dupes.toArray(new Wand[0])){
+			for (Wand w : wands){
 				float totalCharge = w.curCharges + w.partialCharge;
 				if (totalCharge < 2*chargeUsePerShot){
-					dupes.remove(w);
+					seconds.remove(w);
+				}
+				if (totalCharge < 3*chargeUsePerShot
+					|| Random.Int(4) > Dungeon.hero.pointsInTalent(Talent.CONSERVED_MAGIC)){
+					thirds.remove(w);
 				}
 			}
 
-			Random.shuffle(dupes);
-			while (!dupes.isEmpty() && wands.size() < maxWands){
-				wands.add(dupes.remove(0));
+			Random.shuffle(seconds);
+			while (!seconds.isEmpty() && wands.size() < maxWands){
+				wands.add(seconds.remove(0));
+			}
+
+			Random.shuffle(thirds);
+			while (!thirds.isEmpty() && wands.size() < maxWands){
+				wands.add(thirds.remove(0));
 			}
 		}
 
@@ -121,7 +132,7 @@ public class WildMagic extends ArmorAbility {
 			@Override
 			public void call() {
 				cur.onZap(aim);
-				cur.partialCharge -= (float)Math.pow(0.563f, hero.pointsInTalent(Talent.CONSERVED_MAGIC));
+				cur.partialCharge -= (float)Math.pow(0.67f, hero.pointsInTalent(Talent.CONSERVED_MAGIC));
 				if (cur.partialCharge < 0){
 					cur.partialCharge++;
 					cur.curCharges--;
