@@ -117,7 +117,7 @@ public class WarpBeacon extends ArmorAbility {
 							if (existing != null && existing != hero){
 								if (hero.hasTalent(Talent.TELEFRAG)){
 									int heroHP = hero.HP + hero.shielding();
-									int heroDmg = Math.round(1.666f + 3.333f*hero.pointsInTalent(Talent.TELEFRAG));
+									int heroDmg = 5 * hero.pointsInTalent(Talent.TELEFRAG);
 									hero.damage(Math.min(heroDmg, heroHP-1), WarpBeacon.this);
 
 									int damage = Random.NormalIntRange(10*hero.pointsInTalent(Talent.TELEFRAG), 15*hero.pointsInTalent(Talent.TELEFRAG));
