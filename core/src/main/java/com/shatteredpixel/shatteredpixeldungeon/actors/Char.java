@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArcaneArmor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -42,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FireImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FrostImbue;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fury;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
@@ -332,9 +334,22 @@ public abstract class Char extends Actor {
 			}
 
 			dmg = Math.round(dmg*dmgMulti);
+
+			Berserk berserk = buff(Berserk.class);
+			if (berserk != null) dmg = berserk.damageFactor(dmg);
+
+			if (buff( Fury.class ) != null) {
+				dmg *= 1.5f;
+			}
+
 			dmg += dmgBonus;
 
-			Endure.EndureTracker endure = enemy.buff(Endure.EndureTracker.class);
+			//friendly endure
+			Endure.EndureTracker endure = buff(Endure.EndureTracker.class);
+			if (endure != null) dmg = endure.damageFactor(dmg);
+
+			//enemy endure
+			endure = enemy.buff(Endure.EndureTracker.class);
 			if (endure != null){
 				dmg = endure.adjustDamageTaken(dmg);
 			}

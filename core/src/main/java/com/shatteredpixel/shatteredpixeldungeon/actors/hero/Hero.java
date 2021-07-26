@@ -515,13 +515,7 @@ public class Hero extends Char {
 		}
 		if (dmg < 0) dmg = 0;
 		
-		Berserk berserk = buff(Berserk.class);
-		if (berserk != null) dmg = berserk.damageFactor(dmg);
-
-		Endure.EndureTracker endure = buff(Endure.EndureTracker.class);
-		if (endure != null) dmg = endure.damageFactor(dmg);
-		
-		return buff( Fury.class ) != null ? (int)(dmg * 1.5f) : dmg;
+		return dmg;
 	}
 	
 	@Override
