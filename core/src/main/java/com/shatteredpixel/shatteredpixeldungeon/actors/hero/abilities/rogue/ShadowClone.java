@@ -150,7 +150,7 @@ public class ShadowClone extends ArmorAbility {
 
 		public ShadowAlly( int heroLevel ){
 			super();
-			int hpBonus = 20 + 5*heroLevel;
+			int hpBonus = 15 + 5*heroLevel;
 			hpBonus = Math.round(0.1f * Dungeon.hero.pointsInTalent(Talent.PERFECT_COPY) * hpBonus);
 			if (hpBonus > 0){
 				HT += hpBonus;
@@ -192,7 +192,7 @@ public class ShadowClone extends ArmorAbility {
 			int damage = Random.NormalIntRange(10, 20);
 			int heroDamage = Dungeon.hero.damageRoll();
 			heroDamage /= Dungeon.hero.attackDelay(); //normalize hero damage based on atk speed
-			heroDamage = Math.round(0.0625f * Dungeon.hero.pointsInTalent(Talent.SHADOW_BLADE) * heroDamage);
+			heroDamage = Math.round(0.075f * Dungeon.hero.pointsInTalent(Talent.SHADOW_BLADE) * heroDamage);
 			if (heroDamage > 0){
 				damage += heroDamage;
 			}
@@ -214,7 +214,7 @@ public class ShadowClone extends ArmorAbility {
 		public int drRoll() {
 			int dr = super.drRoll();
 			int heroRoll = Dungeon.hero.drRoll();
-			heroRoll = Math.round(0.125f * Dungeon.hero.pointsInTalent(Talent.CLONED_ARMOR) * heroRoll);
+			heroRoll = Math.round(0.15f * Dungeon.hero.pointsInTalent(Talent.CLONED_ARMOR) * heroRoll);
 			if (heroRoll > 0){
 				dr += heroRoll;
 			}
@@ -230,6 +230,18 @@ public class ShadowClone extends ArmorAbility {
 			} else {
 				return damage;
 			}
+		}
+
+		@Override
+		public float speed() {
+			float speed = super.speed();
+
+			//moves 2 tiles at a time when returning to the hero
+			if (state == WANDERING && defendingPos == -1){
+				speed *= 2;
+			}
+
+			return speed;
 		}
 
 		@Override
