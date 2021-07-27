@@ -74,7 +74,7 @@ public class CursingTrap extends Trap {
 		//items the trap can curse if nothing else is available.
 		ArrayList<Item> canCurse = new ArrayList<>();
 
-		KindOfWeapon weapon = hero.belongings.weapon;
+		KindOfWeapon weapon = hero.belongings.weapon();
 		if (weapon instanceof Weapon && !(weapon instanceof MagesStaff)){
 			if (((Weapon) weapon).enchantment == null)
 				priorityCurse.add(weapon);
@@ -82,7 +82,7 @@ public class CursingTrap extends Trap {
 				canCurse.add(weapon);
 		}
 
-		Armor armor = hero.belongings.armor;
+		Armor armor = hero.belongings.armor();
 		if (armor != null){
 			if (armor.glyph == null)
 				priorityCurse.add(armor);

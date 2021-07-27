@@ -69,6 +69,14 @@ public class WndResurrect extends Window {
 				hide();
 				
 				Statistics.ankhsUsed++;
+
+				//TODO let the player choose their items, instead of rigid weapon or armor
+				if (Dungeon.hero.belongings.weapon() != null){
+					Dungeon.hero.belongings.weapon().keptThoughLostInvent = true;
+				}
+				if (Dungeon.hero.belongings.armor() != null){
+					Dungeon.hero.belongings.armor().keptThoughLostInvent = true;
+				}
 				
 				InterlevelScene.mode = InterlevelScene.Mode.RESURRECT;
 				Game.switchScene( InterlevelScene.class );

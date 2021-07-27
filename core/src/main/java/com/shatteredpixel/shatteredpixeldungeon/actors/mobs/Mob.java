@@ -568,7 +568,7 @@ public abstract class Mob extends Char {
 	public int defenseProc( Char enemy, int damage ) {
 		
 		if (enemy instanceof Hero
-				&& ((Hero) enemy).belongings.weapon instanceof MissileWeapon
+				&& ((Hero) enemy).belongings.weapon() instanceof MissileWeapon
 				&& !hitWithRanged){
 			hitWithRanged = true;
 			Statistics.thrownAssists++;
@@ -580,8 +580,8 @@ public abstract class Mob extends Char {
 			Badges.validateRogueUnlock();
 			//TODO this is somewhat messy, it would be nicer to not have to manually handle delays here
 			// playing the strong hit sound might work best as another property of weapon?
-			if (Dungeon.hero.belongings.weapon instanceof SpiritBow.SpiritArrow
-				|| Dungeon.hero.belongings.weapon instanceof Dart){
+			if (Dungeon.hero.belongings.weapon() instanceof SpiritBow.SpiritArrow
+				|| Dungeon.hero.belongings.weapon() instanceof Dart){
 				Sample.INSTANCE.playDelayed(Assets.Sounds.HIT_STRONG, 0.125f);
 			} else {
 				Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);

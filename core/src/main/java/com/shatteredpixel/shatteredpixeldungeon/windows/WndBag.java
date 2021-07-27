@@ -388,7 +388,8 @@ public class WndBag extends WndTabbed {
 					enable( false );
 				} else if (selector != null && !selector.itemSelectable(item)) {
 					enable(false);
-				} else if (Dungeon.hero.buff(LostInventory.class) != null){
+				} else if (Dungeon.hero.buff(LostInventory.class) != null
+						&& !item.keptThoughLostInvent){
 					enable(false);
 				}
 			} else {

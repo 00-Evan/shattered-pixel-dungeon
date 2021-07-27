@@ -216,7 +216,9 @@ public class QuickSlotButton extends Button {
 	}
 	
 	private void enableSlot() {
-		slot.enable(Dungeon.quickslot.isNonePlaceholder( slotNum ) && Dungeon.hero.buff(LostInventory.class) == null);
+		//TODO check if item persists!
+		slot.enable(Dungeon.quickslot.isNonePlaceholder( slotNum )
+				&& (Dungeon.hero.buff(LostInventory.class) == null || Dungeon.quickslot.getItem(slotNum).keptThoughLostInvent));
 	}
 
 	public static void useTargeting(int idx){

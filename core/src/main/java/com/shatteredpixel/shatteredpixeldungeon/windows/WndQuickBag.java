@@ -198,8 +198,9 @@ public class WndQuickBag extends Window {
 					}
 				}
 
-				if (Dungeon.hero.buff(LostInventory.class) != null){
-					enable(false); //TODO enable when hero has selected this item to keep
+				if (Dungeon.hero.buff(LostInventory.class) != null
+						&& !item.keptThoughLostInvent){
+					enable(false);
 				}
 
 			} else {

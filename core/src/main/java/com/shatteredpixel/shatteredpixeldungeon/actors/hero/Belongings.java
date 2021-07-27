@@ -44,18 +44,6 @@ import java.util.Iterator;
 public class Belongings implements Iterable<Item> {
 
 	private Hero owner;
-	
-	public Bag backpack;
-
-	//FIXME these need accessor methods so they can work in conjunction with the lost inventory debuff =I
-	public KindOfWeapon weapon = null;
-	public Armor armor = null;
-	public Artifact artifact = null;
-	public KindofMisc misc = null;
-	public Ring ring = null;
-
-	//used when thrown weapons temporary occupy the weapon slot
-	public KindOfWeapon stashedWeapon = null;
 
 	public static class Backpack extends Bag {
 		public int capacity(){
@@ -68,6 +56,8 @@ public class Belongings implements Iterable<Item> {
 			return cap;
 		}
 	}
+
+	public Backpack backpack;
 	
 	public Belongings( Hero owner ) {
 		this.owner = owner;
@@ -75,6 +65,69 @@ public class Belongings implements Iterable<Item> {
 		backpack = new Backpack();
 		backpack.owner = owner;
 	}
+
+	public KindOfWeapon weapon = null;
+	public Armor armor = null;
+	public Artifact artifact = null;
+	public KindofMisc misc = null;
+	public Ring ring = null;
+
+	//used when thrown weapons temporary become the current weapon
+	public KindOfWeapon thrownWeapon = null;
+
+	//*** these accessor methods are so that worn items can be affected by various effects/debuffs
+	// we still want to access the raw equipped items in cases where effects should be ignored though,
+	// such as when equipping something, showing an interface, or dealing with items from a dead hero
+
+	public KindOfWeapon weapon(){
+		//no point in lost invent check, if it's assigned it must be usable
+		if (thrownWeapon != null) return thrownWeapon;
+
+		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
+		if (!lostInvent || (weapon != null && weapon.keptThoughLostInvent)){
+			return weapon;
+		} else {
+			return null;
+		}
+	}
+
+	public Armor armor(){
+		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
+		if (!lostInvent || (armor != null && armor.keptThoughLostInvent)){
+			return armor;
+		} else {
+			return null;
+		}
+	}
+
+	public Artifact artifact(){
+		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
+		if (!lostInvent || (artifact != null && artifact.keptThoughLostInvent)){
+			return artifact;
+		} else {
+			return null;
+		}
+	}
+
+	public KindofMisc misc(){
+		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
+		if (!lostInvent || (misc != null && misc.keptThoughLostInvent)){
+			return misc;
+		} else {
+			return null;
+		}
+	}
+
+	public Ring ring(){
+		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
+		if (!lostInvent || (ring != null && ring.keptThoughLostInvent)){
+			return ring;
+		} else {
+			return null;
+		}
+	}
+
+	// ***
 	
 	private static final String WEAPON		= "weapon";
 	private static final String ARMOR		= "armor";
@@ -172,11 +225,13 @@ public class Belongings implements Iterable<Item> {
 	@SuppressWarnings("unchecked")
 	public<T extends Item> T getItem( Class<T> itemClass ) {
 
-		if (owner != null && owner.buff(LostInventory.class) != null) return null;
+		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
 
 		for (Item item : this) {
 			if (itemClass.isInstance( item )) {
-				return (T)item;
+				if (!lostInvent || item.keptThoughLostInvent) {
+					return (T) item;
+				}
 			}
 		}
 		
@@ -186,11 +241,13 @@ public class Belongings implements Iterable<Item> {
 	public<T extends Item> ArrayList<T> getAllItems( Class<T> itemClass ) {
 		ArrayList<T> result = new ArrayList<>();
 
-		if (owner != null && owner.buff(LostInventory.class) != null) return result;
+		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
 
 		for (Item item : this) {
 			if (itemClass.isInstance( item )) {
-				result.add((T) item);
+				if (!lostInvent || item.keptThoughLostInvent) {
+					result.add((T) item);
+				}
 			}
 		}
 
@@ -199,11 +256,13 @@ public class Belongings implements Iterable<Item> {
 	
 	public boolean contains( Item contains ){
 
-		if (owner != null && owner.buff(LostInventory.class) != null) return false;
+		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
 		
 		for (Item item : this) {
-			if (contains == item ) {
-				return true;
+			if (contains == item) {
+				if (!lostInvent || item.keptThoughLostInvent) {
+					return true;
+				}
 			}
 		}
 		
@@ -212,11 +271,13 @@ public class Belongings implements Iterable<Item> {
 	
 	public Item getSimilar( Item similar ){
 
-		if (owner != null && owner.buff(LostInventory.class) != null) return null;
+		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
 		
 		for (Item item : this) {
 			if (similar != item && similar.isSimilar(item)) {
-				return item;
+				if (!lostInvent || item.keptThoughLostInvent) {
+					return item;
+				}
 			}
 		}
 		
@@ -226,11 +287,13 @@ public class Belongings implements Iterable<Item> {
 	public ArrayList<Item> getAllSimilar( Item similar ){
 		ArrayList<Item> result = new ArrayList<>();
 
-		if (owner != null && owner.buff(LostInventory.class) != null) return result;
+		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
 		
 		for (Item item : this) {
 			if (item != similar && similar.isSimilar(item)) {
-				result.add(item);
+				if (!lostInvent || item.keptThoughLostInvent) {
+					result.add(item);
+				}
 			}
 		}
 		

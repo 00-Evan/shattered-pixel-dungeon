@@ -359,8 +359,8 @@ public class Hero extends Char {
 
 	@Override
 	public void hitSound(float pitch) {
-		if ( belongings.weapon != null ){
-			belongings.weapon.hitSound(pitch);
+		if ( belongings.weapon() != null ){
+			belongings.weapon().hitSound(pitch);
 		} else if (RingOfForce.getBuffedBonus(this, RingOfForce.Force.class) > 0) {
 			//pitch deepens by 2.5% (additive) per point of strength, down to 75%
 			super.hitSound( pitch * GameMath.gate( 0.75f, 1.25f - 0.025f*STR(), 1f) );
@@ -371,7 +371,7 @@ public class Hero extends Char {
 
 	@Override
 	public boolean blockSound(float pitch) {
-		if ( belongings.weapon != null && belongings.weapon.defenseFactor(this) >= 4 ){
+		if ( belongings.weapon() != null && belongings.weapon().defenseFactor(this) >= 4 ){
 			Sample.INSTANCE.play( Assets.Sounds.HIT_PARRY, 1, pitch);
 			return true;
 		}
@@ -387,10 +387,10 @@ public class Hero extends Char {
 	}
 	
 	public int tier() {
-		if (belongings.armor instanceof ClassArmor){
+		if (belongings.armor() instanceof ClassArmor){
 			return 6;
-		} else if (belongings.armor != null){
-			return belongings.armor.tier;
+		} else if (belongings.armor() != null){
+			return belongings.armor().tier;
 		} else {
 			return 0;
 		}
@@ -401,12 +401,11 @@ public class Hero extends Char {
 		this.enemy = enemy;
 
 		//temporarily set the hero's weapon to the missile weapon being used
-		belongings.stashedWeapon = belongings.weapon;
-		belongings.weapon = wep;
+		//TODO improve this!
+		belongings.thrownWeapon = wep;
 		boolean hit = attack( enemy );
 		Invisibility.dispel();
-		belongings.weapon = belongings.stashedWeapon;
-		belongings.stashedWeapon = null;
+		belongings.thrownWeapon = null;
 		
 		if (hit && subClass == HeroSubClass.GLADIATOR){
 			Buff.affect( this, Combo.class ).hit( enemy );
@@ -417,7 +416,7 @@ public class Hero extends Char {
 	
 	@Override
 	public int attackSkill( Char target ) {
-		KindOfWeapon wep = belongings.weapon;
+		KindOfWeapon wep = belongings.weapon();
 		
 		float accuracy = 1;
 		accuracy *= RingOfAccuracy.accuracyMultiplier( this );
@@ -455,8 +454,8 @@ public class Hero extends Char {
 			evasion /= 2;
 		}
 
-		if (belongings.armor != null) {
-			evasion = belongings.armor.evasionFactor(this, evasion);
+		if (belongings.armor() != null) {
+			evasion = belongings.armor().evasionFactor(this, evasion);
 		}
 
 		return Math.round(evasion);
@@ -480,17 +479,17 @@ public class Hero extends Char {
 	public int drRoll() {
 		int dr = 0;
 
-		if (belongings.armor != null) {
-			int armDr = Random.NormalIntRange( belongings.armor.DRMin(), belongings.armor.DRMax());
-			if (STR() < belongings.armor.STRReq()){
-				armDr -= 2*(belongings.armor.STRReq() - STR());
+		if (belongings.armor() != null) {
+			int armDr = Random.NormalIntRange( belongings.armor().DRMin(), belongings.armor().DRMax());
+			if (STR() < belongings.armor().STRReq()){
+				armDr -= 2*(belongings.armor().STRReq() - STR());
 			}
 			if (armDr > 0) dr += armDr;
 		}
-		if (belongings.weapon != null)  {
-			int wepDr = Random.NormalIntRange( 0 , belongings.weapon.defenseFactor( this ) );
-			if (STR() < ((Weapon)belongings.weapon).STRReq()){
-				wepDr -= 2*(((Weapon)belongings.weapon).STRReq() - STR());
+		if (belongings.weapon() != null)  {
+			int wepDr = Random.NormalIntRange( 0 , belongings.weapon().defenseFactor( this ) );
+			if (STR() < ((Weapon)belongings.weapon()).STRReq()){
+				wepDr -= 2*(((Weapon)belongings.weapon()).STRReq() - STR());
 			}
 			if (wepDr > 0) dr += wepDr;
 		}
@@ -504,7 +503,7 @@ public class Hero extends Char {
 	
 	@Override
 	public int damageRoll() {
-		KindOfWeapon wep = belongings.weapon;
+		KindOfWeapon wep = belongings.weapon();
 		int dmg;
 
 		if (wep != null) {
@@ -525,8 +524,8 @@ public class Hero extends Char {
 
 		speed *= RingOfHaste.speedMultiplier(this);
 		
-		if (belongings.armor != null) {
-			speed = belongings.armor.speedFactor(this, speed);
+		if (belongings.armor() != null) {
+			speed = belongings.armor().speedFactor(this, speed);
 		}
 		
 		Momentum momentum = buff(Momentum.class);
@@ -547,9 +546,9 @@ public class Hero extends Char {
 	}
 
 	public boolean canSurpriseAttack(){
-		if (belongings.weapon == null || !(belongings.weapon instanceof Weapon))    return true;
-		if (STR() < ((Weapon)belongings.weapon).STRReq())                           return false;
-		if (belongings.weapon instanceof Flail)                                     return false;
+		if (belongings.weapon() == null || !(belongings.weapon() instanceof Weapon))    return true;
+		if (STR() < ((Weapon)belongings.weapon()).STRReq())                             return false;
+		if (belongings.weapon() instanceof Flail)                                       return false;
 
 		return true;
 	}
@@ -564,7 +563,7 @@ public class Hero extends Char {
 			return true;
 		}
 
-		KindOfWeapon wep = Dungeon.hero.belongings.weapon;
+		KindOfWeapon wep = Dungeon.hero.belongings.weapon();
 
 		if (wep != null){
 			return wep.canReach(this, enemy.pos);
@@ -579,9 +578,9 @@ public class Hero extends Char {
 			return 0;
 		}
 
-		if (belongings.weapon != null) {
+		if (belongings.weapon() != null) {
 			
-			return belongings.weapon.delayFactor( this );
+			return belongings.weapon().delayFactor( this );
 			
 		} else {
 			//Normally putting furor speed on unarmed attacks would be unnecessary
@@ -1110,7 +1109,7 @@ public class Hero extends Char {
 	public int attackProc( final Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
 		
-		KindOfWeapon wep = belongings.weapon;
+		KindOfWeapon wep = belongings.weapon();
 
 		if (wep != null) damage = wep.proc( this, enemy, damage );
 
@@ -1158,8 +1157,8 @@ public class Hero extends Char {
 			berserk.damage(damage);
 		}
 		
-		if (belongings.armor != null) {
-			damage = belongings.armor.proc( enemy, this, damage );
+		if (belongings.armor() != null) {
+			damage = belongings.armor().proc( enemy, this, damage );
 		}
 		
 		Earthroot.Armor armor = buff( Earthroot.Armor.class );
@@ -1198,9 +1197,9 @@ public class Hero extends Char {
 		dmg = (int)Math.ceil(dmg * RingOfTenacity.damageMultiplier( this ));
 
 		//TODO improve this when I have proper damage source logic
-		if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class, this)
+		if (belongings.armor() != null && belongings.armor().hasGlyph(AntiMagic.class, this)
 				&& AntiMagic.RESISTS.contains(src.getClass())){
-			dmg -= AntiMagic.drRoll(belongings.armor.buffedLvl());
+			dmg -= AntiMagic.drRoll(belongings.armor().buffedLvl());
 		}
 
 		if (buff(Talent.WarriorFoodImmunity.class) != null){
@@ -1586,8 +1585,8 @@ public class Hero extends Char {
 	public float stealth() {
 		float stealth = super.stealth();
 		
-		if (belongings.armor != null){
-			stealth = belongings.armor.stealthFactor(this, stealth);
+		if (belongings.armor() != null){
+			stealth = belongings.armor().stealthFactor(this, stealth);
 		}
 		
 		return stealth;
@@ -1834,8 +1833,8 @@ public class Hero extends Char {
 	@Override
 	public boolean isImmune(Class effect) {
 		if (effect == Burning.class
-				&& belongings.armor != null
-				&& belongings.armor.hasGlyph(Brimstone.class, this)){
+				&& belongings.armor() != null
+				&& belongings.armor().hasGlyph(Brimstone.class, this)){
 			return true;
 		}
 		return super.isImmune(effect);
@@ -1982,6 +1981,13 @@ public class Hero extends Char {
 		Buff.affect(this, LostInventory.class);
 		Buff.affect(this, Invisibility.class, 3f);
 		//lost inventory is dropped in interlevelscene
+
+		//activate items that persist after lost inventory
+		if (belongings.weapon() != null)    belongings.weapon().activate(this);
+		if (belongings.armor() != null)     belongings.armor().activate(this);
+		if (belongings.artifact() != null)  belongings.artifact().activate(this);
+		if (belongings.misc() != null)      belongings.misc().activate(this);
+		if (belongings.ring() != null)      belongings.ring().activate(this);
 	}
 
 	@Override

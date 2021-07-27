@@ -126,7 +126,7 @@ public class HighGrass {
 				
 				//Camouflage
 				//FIXME doesn't work with sad ghost
-				if (hero.belongings.armor != null && hero.belongings.armor.hasGlyph(Camouflage.class, hero)) {
+				if (hero.belongings.armor() != null && hero.belongings.armor().hasGlyph(Camouflage.class, hero)) {
 					Buff.prolong(hero, Invisibility.class, 3 + hero.belongings.armor.buffedLvl()/2);
 					Sample.INSTANCE.play( Assets.Sounds.MELD );
 				}
