@@ -501,6 +501,8 @@ public abstract class Wand extends Item {
 		partialCharge = bundle.getFloat( PARTIALCHARGE );
 		curseInfusionBonus = bundle.getBoolean(CURSE_INFUSION_BONUS);
 		resinBonus = bundle.getInt(RESIN_BONUS);
+
+		updateLevel();
 	}
 	
 	@Override
