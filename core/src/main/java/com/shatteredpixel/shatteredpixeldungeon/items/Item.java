@@ -132,7 +132,9 @@ public class Item implements Bundlable {
 	}
 
 	//resets an item's properties, to ensure consistency between runs
-	public void reset(){}
+	public void reset(){
+		keptThoughLostInvent = false;
+	}
 
 	public void doThrow( Hero hero ) {
 		GameScene.selectCell(thrower);

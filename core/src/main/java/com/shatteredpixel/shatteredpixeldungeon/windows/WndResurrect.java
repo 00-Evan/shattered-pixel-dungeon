@@ -22,12 +22,13 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
-import com.shatteredpixel.shatteredpixeldungeon.items.LostBackpack;
+import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -41,8 +42,17 @@ public class WndResurrect extends Window {
 	private static final int WIDTH		= 120;
 	private static final int BTN_HEIGHT	= 20;
 	private static final float GAP		= 2;
-	
+	private static final float BTN_GAP  = 10;
+
+	private static final int BTN_SIZE	= 36;
+
 	public static WndResurrect instance;
+
+	private WndBlacksmith.ItemButton btnItem1;
+	private WndBlacksmith.ItemButton btnItem2;
+	private WndBlacksmith.ItemButton btnPressed;
+
+	RedButton btnContinue;
 	
 	public WndResurrect() {
 		
@@ -54,39 +64,91 @@ public class WndResurrect extends Window {
 		
 		IconTitle titlebar = new IconTitle();
 		titlebar.icon( new ItemSprite( ankh.image(), null ) );
-		titlebar.label( Messages.titleCase(ankh.name()) );
+		titlebar.label( Messages.titleCase(Messages.get(this, "title")) );
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
 		
-		RenderedTextBlock message = PixelScene.renderTextBlock( "TODO, need to add item selection here. Atm we just revive and all equipped items work", 6 );
+		RenderedTextBlock message = PixelScene.renderTextBlock(Messages.get(this, "message"), 6 );
 		message.maxWidth(WIDTH);
 		message.setPos(0, titlebar.bottom() + GAP);
 		add( message );
+
+		btnItem1 = new WndBlacksmith.ItemButton() {
+			@Override
+			protected void onClick() {
+				btnPressed = btnItem1;
+				GameScene.selectItem( itemSelector );
+			}
+		};
+		btnItem1.item(Dungeon.hero.belongings.weapon());
+		btnItem1.setRect( (WIDTH - BTN_GAP) / 2 - BTN_SIZE, message.bottom() + BTN_GAP, BTN_SIZE, BTN_SIZE );
+		add( btnItem1 );
+
+		btnItem2 = new WndBlacksmith.ItemButton() {
+			@Override
+			protected void onClick() {
+				btnPressed = btnItem2;
+				GameScene.selectItem( itemSelector );
+			}
+		};
+		btnItem2.item(Dungeon.hero.belongings.armor());
+		btnItem2.setRect( btnItem1.right() + BTN_GAP, btnItem1.top(), BTN_SIZE, BTN_SIZE );
+		add( btnItem2 );
 		
-		RedButton btnYes = new RedButton( Messages.get(this, "yes") ) {
+		btnContinue = new RedButton( Messages.get(this, "confirm") ) {
 			@Override
 			protected void onClick() {
 				hide();
 				
 				Statistics.ankhsUsed++;
 
-				//TODO let the player choose their items, instead of rigid weapon or armor
-				if (Dungeon.hero.belongings.weapon() != null){
-					Dungeon.hero.belongings.weapon().keptThoughLostInvent = true;
+				if (btnItem1.item != null){
+					btnItem1.item.keptThoughLostInvent = true;
 				}
-				if (Dungeon.hero.belongings.armor() != null){
-					Dungeon.hero.belongings.armor().keptThoughLostInvent = true;
+				if (btnItem2.item != null){
+					btnItem2.item.keptThoughLostInvent = true;
 				}
 				
 				InterlevelScene.mode = InterlevelScene.Mode.RESURRECT;
 				Game.switchScene( InterlevelScene.class );
 			}
 		};
-		btnYes.setRect( 0, message.top() + message.height() + GAP, WIDTH, BTN_HEIGHT );
-		add( btnYes );
+		btnContinue.setRect( 0, btnItem1.bottom() + BTN_GAP, WIDTH, BTN_HEIGHT );
+		add( btnContinue );
 
-		resize( WIDTH, (int)btnYes.bottom() );
+		resize( WIDTH, (int)btnContinue.bottom() );
 	}
+
+	protected WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return "TODO";
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			//cannot select ankhs or equippable items that aren't equipped
+			return !(item instanceof Ankh) &&
+					(!(item instanceof EquipableItem) || item.isEquipped(Dungeon.hero) || item instanceof MissileWeapon);
+		}
+
+		@Override
+		public void onSelect( Item item ) {
+			if (item != null && btnPressed.parent != null) {
+				btnPressed.item( item );
+
+				if (btnItem1.item == btnItem2.item){
+					if (btnPressed == btnItem1){
+						btnItem2.item(null);
+					} else {
+						btnItem1.item(null);
+					}
+				}
+
+			}
+		}
+	};
 	
 	@Override
 	public void destroy() {
