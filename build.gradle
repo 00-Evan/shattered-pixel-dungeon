@@ -4,7 +4,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.1'
+        classpath 'com.android.tools.build:gradle:7.0.0'
         classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.13'
     }
 }
@@ -16,7 +16,7 @@ allprojects {
         appPackageName = 'com.shatteredpixel.shatteredpixeldungeon'
 
         appVersionCode = 555
-        appVersionName = '0.9.3c'
+        appVersionName = '0.9.4-PREBETA'
 
         appJavaCompatibility = JavaVersion.VERSION_1_8
 
