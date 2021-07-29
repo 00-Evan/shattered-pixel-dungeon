@@ -78,9 +78,30 @@ public class TextureCache {
 		}
 		
 	}
-	
-	public synchronized static void add( Object key, SmartTexture tx ) {
-		all.put( key, tx );
+
+	//texture defaults to black and given size, but no assurance is made about this is another already exists
+	public synchronized static SmartTexture create( Object key, int width, int height ) {
+
+		if (all.containsKey( key )) {
+
+			return all.get( key );
+
+		} else {
+
+			Pixmap pixmap = new Pixmap( width, height, Pixmap.Format.RGBA8888 );
+
+			pixmap.setColor(0x000000FF);
+			pixmap.fill();
+
+			SmartTexture tx = new SmartTexture( pixmap );
+
+			tx.filter( Texture.LINEAR, Texture.LINEAR );
+			tx.wrap( Texture.CLAMP, Texture.CLAMP );
+
+			all.put( key, tx );
+
+			return tx;
+		}
 	}
 	
 	public synchronized static void remove( Object key ){
