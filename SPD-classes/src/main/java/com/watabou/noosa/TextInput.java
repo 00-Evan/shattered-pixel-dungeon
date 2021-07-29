@@ -33,7 +33,7 @@ public class TextInput extends Component {
 
 	private NinePatch bg;
 
-	public TextInput( NinePatch bg, boolean multiline ){
+	public TextInput( NinePatch bg, boolean multiline, int size ){
 		super();
 		this.bg = bg;
 		add(bg);
@@ -52,10 +52,8 @@ public class TextInput extends Component {
 
 		skin = new Skin(FileUtils.getFileHandle(Files.FileType.Internal, "gdx/textfield.json"));
 
-		int zoom = (int) Camera.main.zoom;
-		int textSize = multiline ? 6 : 9;
 		TextField.TextFieldStyle style = skin.get(TextField.TextFieldStyle.class);
-		style.font = Game.platform.getFont(textSize*zoom, "", false, false);
+		style.font = Game.platform.getFont(size, "", false, false);
 		style.background = null;
 		textField = multiline ? new TextArea("", style) : new TextField("", style);
 		textField.setProgrammaticChangeEvents(true);
@@ -65,7 +63,7 @@ public class TextInput extends Component {
 		textField.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				BitmapFont f = Game.platform.getFont(textSize*zoom, textField.getText(), false, false);
+				BitmapFont f = Game.platform.getFont(size, textField.getText(), false, false);
 				TextField.TextFieldStyle style = textField.getStyle();
 				if (f != style.font){
 					style.font = f;

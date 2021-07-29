@@ -38,7 +38,8 @@ public class WndTextInput extends Window {
 		txtTitle.setPos((width - txtTitle.width()) / 2, 2);
 		add(txtTitle);
 
-		TextInput textBox = new TextInput(Chrome.get(Chrome.Type.TOAST_WHITE), multiLine);
+		int textSize = (int)PixelScene.uiCamera.zoom * (multiLine ? 6 : 9);
+		TextInput textBox = new TextInput(Chrome.get(Chrome.Type.TOAST_WHITE), multiLine, textSize);
 		if (initialValue != null) textBox.setText(initialValue);
 		textBox.setMaxLength(maxLength);
 
