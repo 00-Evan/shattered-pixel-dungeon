@@ -283,43 +283,19 @@ public abstract class Scroll extends Item {
 	public static class ScrollToStone extends Recipe {
 		
 		private static HashMap<Class<?extends Scroll>, Class<?extends Runestone>> stones = new HashMap<>();
-		private static HashMap<Class<?extends Scroll>, Integer> amnts = new HashMap<>();
 		static {
 			stones.put(ScrollOfIdentify.class,      StoneOfIntuition.class);
-			amnts.put(ScrollOfIdentify.class,       3);
-			
 			stones.put(ScrollOfLullaby.class,       StoneOfDeepenedSleep.class);
-			amnts.put(ScrollOfLullaby.class,        3);
-			
 			stones.put(ScrollOfMagicMapping.class,  StoneOfClairvoyance.class);
-			amnts.put(ScrollOfMagicMapping.class,   3);
-			
 			stones.put(ScrollOfMirrorImage.class,   StoneOfFlock.class);
-			amnts.put(ScrollOfMirrorImage.class,    3);
-			
 			stones.put(ScrollOfRetribution.class,   StoneOfBlast.class);
-			amnts.put(ScrollOfRetribution.class,    2);
-			
 			stones.put(ScrollOfRage.class,          StoneOfAggression.class);
-			amnts.put(ScrollOfRage.class,           3);
-			
 			stones.put(ScrollOfRecharging.class,    StoneOfShock.class);
-			amnts.put(ScrollOfRecharging.class,     2);
-			
 			stones.put(ScrollOfRemoveCurse.class,   StoneOfDisarming.class);
-			amnts.put(ScrollOfRemoveCurse.class,    2);
-			
 			stones.put(ScrollOfTeleportation.class, StoneOfBlink.class);
-			amnts.put(ScrollOfTeleportation.class,  2);
-			
 			stones.put(ScrollOfTerror.class,        StoneOfAffection.class);
-			amnts.put(ScrollOfTerror.class,         3);
-			
 			stones.put(ScrollOfTransmutation.class, StoneOfAugmentation.class);
-			amnts.put(ScrollOfTransmutation.class,  2);
-			
 			stones.put(ScrollOfUpgrade.class,       StoneOfEnchantment.class);
-			amnts.put(ScrollOfUpgrade.class,        2);
 		}
 		
 		@Override
@@ -347,7 +323,7 @@ public abstract class Scroll extends Item {
 			s.quantity(s.quantity() - 1);
 			s.identify();
 			
-			return Reflection.newInstance(stones.get(s.getClass())).quantity(amnts.get(s.getClass()));
+			return Reflection.newInstance(stones.get(s.getClass())).quantity(2);
 		}
 		
 		@Override
@@ -357,9 +333,9 @@ public abstract class Scroll extends Item {
 			Scroll s = (Scroll) ingredients.get(0);
 
 			if (!s.isKnown()){
-				return new Runestone.PlaceHolder();
+				return new Runestone.PlaceHolder().quantity(2);
 			} else {
-				return Reflection.newInstance(stones.get(s.getClass())).quantity(amnts.get(s.getClass()));
+				return Reflection.newInstance(stones.get(s.getClass())).quantity(2);
 			}
 		}
 	}
