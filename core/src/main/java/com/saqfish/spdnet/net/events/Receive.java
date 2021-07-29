@@ -16,7 +16,11 @@ public class Receive {
     }
 
     public static class Transfer {
+        public String id;
         public String className;
+        public int level;
+        public boolean cursed;
+        public boolean identified;
     }
 
 

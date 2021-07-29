@@ -85,7 +85,9 @@ public class Reciever {
                         Receive.Transfer item = mapper.readValue(json, Receive.Transfer.class);
                         Class<?> k = Reflection.forNameUnhandled(addPkgName(item.className));
                         Item i = (Item) Reflection.newInstance(k);
-                        i.levelKnown = true;
+                        i.cursed = item.cursed;
+                        i.level(item.level);
+                        if(item.identified) i.identify();
                         Dungeon.hero.belongings.backpack.items.add(i);
                         Transmuting.show(Dungeon.hero, i, i);
                         GLog.p("You received a "+i.name());

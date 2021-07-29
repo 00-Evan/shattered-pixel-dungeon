@@ -42,9 +42,15 @@ public class Send {
     public static class Transfer {
         public String id;
         public String className;
+        public int level;
+        public boolean cursed;
+        public boolean identified;
         public Transfer (Item item, String to){
             this.id = to;
             this.className = clean(item.getClass().getName());
+            this.level = item.level();
+            this.cursed = item.cursed;
+            this.identified = item.isIdentified();
         }
     }
 
