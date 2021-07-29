@@ -3,9 +3,6 @@ package com.saqfish.spdnet.net;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saqfish.spdnet.Dungeon;
-import com.saqfish.spdnet.actors.buffs.RevealedArea;
-import com.saqfish.spdnet.effects.BadgeBanner;
-import com.saqfish.spdnet.effects.SpellSprite;
 import com.saqfish.spdnet.effects.Transmuting;
 import com.saqfish.spdnet.items.Item;
 import com.saqfish.spdnet.net.actor.Player;
@@ -13,36 +10,36 @@ import com.saqfish.spdnet.net.events.Events;
 import com.saqfish.spdnet.net.events.Receive;
 import com.saqfish.spdnet.net.events.Send;
 import com.saqfish.spdnet.net.windows.NetWindow;
-import com.saqfish.spdnet.scenes.PixelScene;
-import com.saqfish.spdnet.ui.GameLog;
-import com.saqfish.spdnet.ui.ItemSlot;
 import com.saqfish.spdnet.utils.GLog;
-import com.saqfish.spdnet.windows.WndBag;
 import com.watabou.noosa.Game;
-import com.watabou.noosa.Scene;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.Reflection;
 
 import java.awt.SystemTray;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.socket.emitter.Emitter;
 
+import static com.saqfish.spdnet.ShatteredPixelDungeon.net;
 import static com.saqfish.spdnet.scenes.PixelScene.uiCamera;
 
 public class Reciever {
         private ObjectMapper mapper;
         private Net net;
 
+        private boolean newMessage;
+        private ArrayList<ChatMessage> messages;
+
         public Reciever(Net net, ObjectMapper mapper) {
                 this.net = net;
                 this.mapper = mapper;
+                this.messages = new ArrayList<>();
         }
 
         public void startAll() {
-                Emitter.Listener onMessage = args -> {
-                        String data = (String) args[0];
-                        handleMessage(data);
-                };
+
                 Emitter.Listener onAction = args -> {
                         int type = (int) args[0];
                         String data = (String) args[1];
@@ -52,20 +49,25 @@ public class Reciever {
                         String data = (String) args[0];
                         handleTransfer(data);
                 };
+                Emitter.Listener onChat = args -> {
+                        String id = (String) args[0];
+                        String nick = (String) args[1];
+                        String message = (String) args[2];
+                        handleChat(id, nick, message);
+                };
                 Emitter.Listener onMotd = args -> {
                         String data = (String) args[0];
                         handleMotd(data);
                 };
                 net.socket().on(Events.ACTION, onAction);
                 net.socket().on(Events.TRANSFER, onTransfer);
-                net.socket().on(Events.MESSAGE, onMessage);
+                net().socket().on(Events.CHAT, onChat);
                 net.socket().once(Events.MOTD, onMotd);
         }
 
         public void cancelAll() {
                 net.socket().off(Events.ACTION);
                 net.socket().off(Events.TRANSFER);
-                net.socket().off(Events.MESSAGE);
                 net.socket().off(Events.MOTD);
         }
 
@@ -89,6 +91,48 @@ public class Reciever {
                         GLog.p("You received a "+i.name());
                 } catch (Exception ignored) { }
 
+        }
+
+        public class ChatMessage {
+                public String id;
+                public String nick;
+                public String message;
+
+                public ChatMessage (String id, String nick, String message){
+                        this.id = id;
+                        this.nick = nick;
+                        this.message = message;
+                }
+        }
+
+        public void handleChat(String id,String nick,String message){
+                        messages.add(new ChatMessage(id,nick,message));
+                        newMessage = true;
+        }
+
+        public void readMessages(){
+                newMessage = false;
+        }
+
+        public ArrayList<ChatMessage> messages(){
+                newMessage = false;
+                return messages;
+        }
+
+        public List<ChatMessage> messages(int n){
+                newMessage = false;
+                if(messages.size() > n)
+                        messages = new ArrayList(messages.subList(messages.size() - n, messages.size()));
+                return messages;
+        }
+
+        public ChatMessage lastMessage(){
+                newMessage = false;
+                return messages.get(messages.size()-1);
+        }
+
+        public boolean newMessage(){
+                return newMessage;
         }
 
         public void handleAction(int type, String json) {

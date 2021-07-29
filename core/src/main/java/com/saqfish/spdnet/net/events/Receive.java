@@ -19,6 +19,7 @@ public class Receive {
         public String className;
     }
 
+
     public static class Player {
         public String nick;
         public Integer playerClass;
@@ -29,6 +30,7 @@ public class Receive {
     public static class PlayerList {
         public Player[]list;
     }
+
 
     public static class Action {
         public int type;

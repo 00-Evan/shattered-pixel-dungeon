@@ -141,5 +141,6 @@ public class Net {
     public Socket socket(){ return this.socket; }
     public ObjectMapper mapper() { return this.mapper;}
     public Sender sender() { return sender; }
+    public Reciever reciever() { return reciever; }
     public URI uri(){ return Settings.uri(); }
 }

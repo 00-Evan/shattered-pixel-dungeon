@@ -44,6 +44,7 @@ import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.saqfish.spdnet.SPDSettings;
 import com.saqfish.spdnet.android.windows.WndAndroidTextInput;
+import com.saqfish.spdnet.android.windows.WndChat;
 import com.saqfish.spdnet.scenes.PixelScene;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Callback;
@@ -205,7 +206,17 @@ public class AndroidPlatformSupport extends PlatformSupport {
 				}
 		);
 	}
-	
+
+	@Override
+	public void showChat(boolean multiline) {
+		Game.runOnRenderThread( new Callback() {
+			@Override
+			public void call() {
+				Game.scene().addToFront(new WndChat());
+			}
+		});
+	}
+
 	/* FONT SUPPORT */
 	
 	private int pageSize;

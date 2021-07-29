@@ -39,7 +39,10 @@ public abstract class PlatformSupport {
 	//should look into doing that using either plain openGL or libgdx's libraries
 	public abstract void promptTextInput( String title, String hintText, int maxLen, boolean multiLine,
 	                             String posTxt, String negTxt, TextCallback callback);
-	
+
+
+	public abstract void showChat(boolean multiline);
+
 	public static abstract class TextCallback {
 		public abstract void onSelect( boolean positive, String text );
 	}

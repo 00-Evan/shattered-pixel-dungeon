@@ -139,6 +139,15 @@ public class RenderedTextBlock extends Component {
 			if (word != null) word.hardlight( color );
 		}
 	}
+
+	public synchronized void hardlightOnWord(int color, int index){
+		for (int i = 0; i < words.size(); i++) {
+			if(words.get(i) != null && i == index) {
+				words.get(i).hardlight(color);
+				break;
+			}
+		}
+	}
 	
 	public synchronized void resetColor(){
 		this.color = -1;

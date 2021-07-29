@@ -7,7 +7,9 @@ public enum NetIcons {
     GLOBE,
     ALERT,
     NEWS,
-    PLAYERS;
+    PLAYERS,
+    CHAT;
+
 
     public Image get() {
         return get( this );
@@ -29,6 +31,8 @@ public enum NetIcons {
             case PLAYERS:
                 icon.frame( icon.texture.uvRect( 48, 0, 63, 16 ) );
                 break;
+            case CHAT:
+                icon.frame(icon.texture.uvRect(0, 15, 15, 32));
         }
         return icon;
     }

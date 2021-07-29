@@ -41,9 +41,8 @@ public class Sender {
                 if(net.socket().connected()) net.socket().emit(Events.ACTION,type, s);
         }
 
-        public void sendMessage(int type, String data) {
-                String message = map(data);
-                if(net.socket().connected()&& message != null) net.socket().emit(Events.MESSAGE, type, message);
+        public void sendChat(String message) {
+                if(net.socket().connected()&& message != null) net.socket().emit(Events.CHAT, message);
         }
 
         public void sendAction(int type, int... data) {

@@ -84,6 +84,11 @@ public class DesktopPlatformSupport extends PlatformSupport {
 			callback.onSelect(true, result.replace("\r\n", "").replace("\n", ""));
 		}
 	}
+
+	@Override
+	public void showChat(boolean multiline) {
+	    // TODO: Chat is for only Android for now. Will add on 0.9.4
+	}
 	
 	private int pageSize;
 	private PixmapPacker packer;

@@ -23,9 +23,13 @@ package com.saqfish.spdnet.net.windows;
 
 import com.saqfish.spdnet.actors.hero.HeroClass;
 import com.saqfish.spdnet.net.events.Receive;
+import com.saqfish.spdnet.net.ui.NetIcons;
 import com.saqfish.spdnet.scenes.PixelScene;
+import com.saqfish.spdnet.ui.IconButton;
 import com.saqfish.spdnet.ui.RenderedTextBlock;
 import com.saqfish.spdnet.ui.ScrollPane;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Button;
 import com.watabou.noosa.ui.Component;
 
@@ -50,6 +54,19 @@ public class WndPlayerList extends NetWindow {
 		RenderedTextBlock nickLbl = PixelScene.renderTextBlock("Player", 8);
 		add(nickLbl);
 		nickLbl.setPos(rankLbl.right() + VGAP, y);
+
+		Image icon = NetIcons.get(NetIcons.CHAT);
+		icon.scale.set(0.8f);
+		IconButton chatBtn = new IconButton(icon){
+			@Override
+			protected void onClick() {
+				super.onClick();
+				Game.platform.showChat(false);
+			}
+		};
+		add(chatBtn);
+		chatBtn.setSize(10,10);
+		chatBtn.setPos(width - chatBtn.width()-(VGAP/2), y);
 
 		y+=rankLbl.height()+HGAP;
 
