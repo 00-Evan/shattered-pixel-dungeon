@@ -27,6 +27,7 @@ import com.saqfish.spdnet.effects.particles.SmokeParticle;
 import com.saqfish.spdnet.net.events.Receive;
 import com.saqfish.spdnet.net.sprites.PlayerSprite;
 import com.saqfish.spdnet.scenes.GameScene;
+import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
 
 public class Player extends Mob {
@@ -155,7 +156,7 @@ public class Player extends Mob {
 	}
 
 	public static void movePlayer(Player p, int pos, int pc){
-		if(p != null) {
+		if(p != null && Game.scene() instanceof GameScene) {
 			if(p.sprite != null) {
 				p.sprite.turnTo(p.pos, pos);
 				p.sprite.move(p.pos, pos);
