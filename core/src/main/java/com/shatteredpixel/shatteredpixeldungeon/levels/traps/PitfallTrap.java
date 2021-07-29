@@ -73,6 +73,10 @@ public class PitfallTrap extends Trap {
 
 	public static class DelayedPit extends FlavourBuff {
 
+		{
+			revivePersists = true;
+		}
+
 		int pos;
 		int depth;
 

@@ -380,7 +380,7 @@ public class Hero extends Char {
 
 	public void live() {
 		for (Buff b : buffs()){
-			b.detach();
+			if (!b.revivePersists) b.detach();
 		}
 		Buff.affect( this, Regeneration.class );
 		Buff.affect( this, Hunger.class );

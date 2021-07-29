@@ -212,6 +212,10 @@ public class WarpBeacon extends ArmorAbility {
 
 	public static class WarpBeaconTracker extends Buff {
 
+		{
+			revivePersists = true;
+		}
+
 		int pos;
 		int depth;
 

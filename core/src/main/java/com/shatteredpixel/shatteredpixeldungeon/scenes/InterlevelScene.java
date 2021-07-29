@@ -455,6 +455,7 @@ public class InterlevelScene extends PixelScene {
 		} else {
 			Dungeon.hero.resurrect();
 			level = Dungeon.level;
+			BArray.setFalse(level.heroFOV);
 			BArray.setFalse(level.visited);
 			BArray.setFalse(level.mapped);
 			int invPos = Dungeon.hero.pos;

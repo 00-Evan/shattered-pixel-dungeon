@@ -377,7 +377,6 @@ public class Dungeon {
 		
 		hero.curAction = hero.lastAction = null;
 		
-		observe();
 		try {
 			saveAll();
 		} catch (IOException e) {
