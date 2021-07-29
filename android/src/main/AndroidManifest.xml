@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
 	package="com.saqfish.spdnet.android"
 	android:installLocation="auto"
 	android:targetSandboxVersion="2"
@@ -28,7 +29,7 @@
 		android:allowBackup="true"
 		android:fullBackupOnly="true"
 		android:backupAgent="com.saqfish.spdnet.android.AndroidBackupHandler"
-		android:usesCleartextTraffic="true" >
+		android:networkSecurityConfig="@xml/network_security_config">
 		<activity
 			android:label="${appName}"
 			android:name="com.saqfish.spdnet.android.AndroidLauncher">

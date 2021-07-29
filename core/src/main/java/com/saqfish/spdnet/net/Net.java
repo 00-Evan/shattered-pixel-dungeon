@@ -9,6 +9,7 @@ import com.watabou.noosa.Game;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+import io.socket.engineio.client.EngineIOException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -82,8 +83,16 @@ public class Net {
                 JSONObject json = (JSONObject)args[0];
                 Events.Error e = mapper().readValue(json.toString(), Events.Error.class);
                 NetWindow.error(e.message);
-            }catch(Exception e){
-                e.printStackTrace();
+            }catch(ClassCastException ce){
+                try {
+                    EngineIOException err = (EngineIOException) args[0];
+                    NetWindow.error(err.getMessage());
+                    err.getStackTrace();
+                    System.out.println(err.getLocalizedMessage());
+                }catch (Exception eignored) {
+                    NetWindow.error("Connection could not be established!");
+                }
+            }catch(Exception ignored) {
                 NetWindow.error("Connection could not be established!");
             }
             reciever.cancelAll();
