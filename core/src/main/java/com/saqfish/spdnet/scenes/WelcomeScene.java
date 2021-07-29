@@ -52,10 +52,10 @@ public class WelcomeScene extends PixelScene {
 
 		final int previousVersion = SPDSettings.version();
 
-		if (ShatteredPixelDungeon.versionCode == previousVersion && !SPDSettings.intro()) {
+		/*if (ShatteredPixelDungeon.versionCode == previousVersion && !SPDSettings.intro()) {
 			ShatteredPixelDungeon.switchNoFade(TitleScene.class);
 			return;
-		}
+		}*/
 
 		uiCamera.visible = false;
 
@@ -138,15 +138,14 @@ public class WelcomeScene extends PixelScene {
 			message = Messages.get(this, "welcome_msg");
 		} else if (previousVersion <= ShatteredPixelDungeon.versionCode) {
 			if (previousVersion < LATEST_UPDATE){
-				message = Messages.get(this, "update_intro");
-				message += "\n\n" + Messages.get(this, "update_msg");
+				message = "SPDNet has been Updated!";
 			} else {
 				//TODO: change the messages here in accordance with the type of patch.
-				message = Messages.get(this, "patch_intro");
+				message = "SPDNet has been patched!";
 				message += "\n";
-				//message += "\n" + Messages.get(this, "patch_balance");
-				message += "\n" + Messages.get(this, "patch_bugfixes");
-				message += "\n" + Messages.get(this, "patch_translations");
+				message += "\n Chat added for Android users (Desktop soon)";
+				message += "\n Connection issues for Android 8 and older fixed";
+				message += "\n Shared item stats fixed";
 
 			}
 		} else {
