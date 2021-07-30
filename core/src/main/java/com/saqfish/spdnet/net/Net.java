@@ -78,6 +78,7 @@ public class Net {
             reciever.cancelAll();
         };
 
+        // TODO: Clean this up or handle errors better
         Emitter.Listener onConnectionError = args -> {
             try {
                 JSONObject json = (JSONObject)args[0];

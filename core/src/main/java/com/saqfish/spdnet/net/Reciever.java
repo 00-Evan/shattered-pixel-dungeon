@@ -15,15 +15,12 @@ import com.watabou.noosa.Game;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.Reflection;
 
-import java.awt.SystemTray;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.socket.emitter.Emitter;
 
 import static com.saqfish.spdnet.ShatteredPixelDungeon.net;
-import static com.saqfish.spdnet.scenes.PixelScene.uiCamera;
 
 public class Reciever {
         private ObjectMapper mapper;
@@ -71,72 +68,20 @@ public class Reciever {
                 net.socket().off(Events.MOTD);
         }
 
-        public void handleMessage(String json) {
+        // Handlers
+
+        // MOTD & seed handler
+        public void handleMotd(String json) {
                 try {
-                        Send.Message message = mapper.readValue(json, Send.Message.class);
-                        NetWindow.message(message.data);
+                        Receive.Motd motd = mapper.readValue(json, Receive.Motd.class);
+                        NetWindow.motd(motd.motd, motd.seed);
+                        net.seed(motd.seed);
                 } catch (JsonProcessingException e) {
                         e.printStackTrace();
                 }
         }
 
-        public void handleTransfer(String json) {
-                try {
-                        Receive.Transfer item = mapper.readValue(json, Receive.Transfer.class);
-                        Class<?> k = Reflection.forNameUnhandled(addPkgName(item.className));
-                        Item i = (Item) Reflection.newInstance(k);
-                        i.cursed = item.cursed;
-                        i.level(item.level);
-                        if(item.identified) i.identify();
-                        Dungeon.hero.belongings.backpack.items.add(i);
-                        Transmuting.show(Dungeon.hero, i, i);
-                        GLog.p("You received a "+i.name());
-                } catch (Exception ignored) { }
-
-        }
-
-        public class ChatMessage {
-                public String id;
-                public String nick;
-                public String message;
-
-                public ChatMessage (String id, String nick, String message){
-                        this.id = id;
-                        this.nick = nick;
-                        this.message = message;
-                }
-        }
-
-        public void handleChat(String id,String nick,String message){
-                        messages.add(new ChatMessage(id,nick,message));
-                        newMessage = true;
-        }
-
-        public void readMessages(){
-                newMessage = false;
-        }
-
-        public ArrayList<ChatMessage> messages(){
-                newMessage = false;
-                return messages;
-        }
-
-        public List<ChatMessage> messages(int n){
-                newMessage = false;
-                if(messages.size() > n)
-                        messages = new ArrayList(messages.subList(messages.size() - n, messages.size()));
-                return messages;
-        }
-
-        public ChatMessage lastMessage(){
-                newMessage = false;
-                return messages.get(messages.size()-1);
-        }
-
-        public boolean newMessage(){
-                return newMessage;
-        }
-
+        // Action handler
         public void handleAction(int type, String json) {
                 Player player;
                 Receive.Join join;
@@ -175,16 +120,68 @@ public class Reciever {
                 }
         }
 
-        public void handleMotd(String json) {
+        // Item sharing handler
+        public void handleTransfer(String json) {
                 try {
-                        Receive.Motd motd = mapper.readValue(json, Receive.Motd.class);
-                        NetWindow.motd(motd.motd, motd.seed);
-                        net.seed(motd.seed);
-                } catch (JsonProcessingException e) {
-                        e.printStackTrace();
+                        Receive.Transfer item = mapper.readValue(json, Receive.Transfer.class);
+                        Class<?> k = Reflection.forNameUnhandled(addPkgName(item.className));
+                        Item i = (Item) Reflection.newInstance(k);
+                        i.cursed = item.cursed;
+                        i.level(item.level);
+                        if(item.identified) i.identify();
+                        Dungeon.hero.belongings.backpack.items.add(i);
+                        Transmuting.show(Dungeon.hero, i, i);
+                        GLog.p("You received a "+i.name());
+                } catch (Exception ignored) { }
+
+        }
+
+        // Chat handler
+
+        public static class ChatMessage {
+                public String id;
+                public String nick;
+                public String message;
+
+                public ChatMessage (String id, String nick, String message){
+                        this.id = id;
+                        this.nick = nick;
+                        this.message = message;
                 }
         }
 
+        public void handleChat(String id,String nick,String message){
+                        messages.add(new ChatMessage(id, nick, message));
+                        newMessage = true;
+        }
+
+        public void readMessages(){
+                newMessage = false;
+        }
+
+        public ArrayList<ChatMessage> messages(){
+                newMessage = false;
+                return messages;
+        }
+
+        public List<ChatMessage> messages(int n){
+                newMessage = false;
+                if(messages.size() > n)
+                        messages = new ArrayList(messages.subList(messages.size() - n, messages.size()));
+                return messages;
+        }
+
+        public ChatMessage lastMessage(){
+                newMessage = false;
+                return messages.get(messages.size()-1);
+        }
+
+        public boolean newMessage(){
+                return newMessage;
+        }
+
+
+        // Static helpers
         public static String addPkgName(String c) {
                 return Game.pkgName + ".items." + c;
         }

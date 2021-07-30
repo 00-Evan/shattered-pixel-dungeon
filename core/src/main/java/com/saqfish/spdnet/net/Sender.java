@@ -71,6 +71,7 @@ public class Sender {
                 if(net.socket().connected() && json != null) net.socket().emit(Events.ACTION,type, json);
         }
 
+        // Object -> String
         public String map(Object o){
                 try {
                         return mapper.writeValueAsString(o);

@@ -366,13 +366,12 @@ public abstract class Level implements Bundlable {
 			CustomTilemap vis = (CustomTilemap)p;
 			customWalls.add(vis);
 		}
-		
-		collection = bundle.getCollection( MOBS );
+
+		collection = bundle.getCollection(MOBS);
 		for (Bundlable m : collection) {
 			Mob mob = (Mob)m;
 			if (mob != null) {
-				if (!(mob instanceof Player))
-					mobs.add( mob );
+				mobs.add( mob );
 			}
 		}
 		
