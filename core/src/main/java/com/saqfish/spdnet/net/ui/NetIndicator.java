@@ -1,11 +1,9 @@
 package com.saqfish.spdnet.net.ui;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.saqfish.spdnet.ShatteredPixelDungeon;
 import com.saqfish.spdnet.net.events.Events;
 import com.saqfish.spdnet.net.events.Receive;
 import com.saqfish.spdnet.net.windows.NetWindow;
-import com.saqfish.spdnet.scenes.PixelScene;
 import com.saqfish.spdnet.ui.Tag;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
@@ -15,6 +13,9 @@ import static com.saqfish.spdnet.ShatteredPixelDungeon.net;
 public class NetIndicator extends Tag {
 
     public static final int COLOR	= 0xFF4C4C;
+
+    private final int PLAYER_LIST = 0;
+    private final int CHAT = 1;
 
     private Image icon;
 
@@ -43,6 +44,7 @@ public class NetIndicator extends Tag {
     public void update() {
         super.update();
         bg.hardlight(net().connected() ? 0x52846b: 0x845252);
+        setIcon(net().reciever().newMessage() ? CHAT: PLAYER_LIST);
     }
 
     @Override
@@ -62,5 +64,18 @@ public class NetIndicator extends Tag {
                 e.printStackTrace();
             }
         });
+    }
+
+    private void setIcon(int type){
+        switch (type) {
+            case PLAYER_LIST:
+                icon.copy(NetIcons.get(NetIcons.PLAYERS));
+                icon.scale.set(0.72f);
+                break;
+            case CHAT:
+                icon.copy(NetIcons.get(NetIcons.CHAT));
+                icon.scale.set(0.62f);
+                break;
+        }
     }
 }

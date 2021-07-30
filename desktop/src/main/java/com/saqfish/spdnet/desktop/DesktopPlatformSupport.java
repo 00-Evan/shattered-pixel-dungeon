@@ -28,7 +28,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.saqfish.spdnet.SPDSettings;
+import com.saqfish.spdnet.ShatteredPixelDungeon;
+import com.saqfish.spdnet.desktop.windows.WndChat;
+import com.saqfish.spdnet.net.windows.NetWindow;
 import com.watabou.noosa.Game;
+import com.watabou.utils.Callback;
 import com.watabou.utils.PlatformSupport;
 import com.watabou.utils.Point;
 
@@ -87,7 +91,12 @@ public class DesktopPlatformSupport extends PlatformSupport {
 
 	@Override
 	public void showChat(boolean multiline) {
-	    // TODO: Chat is for only Android for now. Will add on 0.9.4
+			Game.runOnRenderThread(new Callback() {
+				@Override
+				public void call() {
+					ShatteredPixelDungeon.scene().add(new WndChat());
+				}
+			});
 	}
 	
 	private int pageSize;

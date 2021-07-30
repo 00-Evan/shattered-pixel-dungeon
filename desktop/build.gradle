@@ -72,4 +72,7 @@ dependencies {
     // The actual dependency used at runtime will vary based on source set.
     compileOnly project(':services:updates:debugUpdates')
     compileOnly project(':services:news:debugNews')
+
+    //socket-io
+    implementation 'io.socket:socket.io-client:2.0.1'
 }

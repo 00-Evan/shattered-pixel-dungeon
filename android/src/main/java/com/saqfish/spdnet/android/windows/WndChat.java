@@ -55,6 +55,7 @@ public class WndChat extends NetWindow {
 	private Camera cam = camera();
 
 	private int maxMessages = 10;
+	private String lastMessage;
 
 	public WndChat() {
 		super();
@@ -99,7 +100,12 @@ public class WndChat extends NetWindow {
 			sendBtn = new BlueButton(">") {
 				@Override
 				protected void onClick() {
-					net().sender().sendChat(textInput.getText().toString());
+					String msg = textInput.getText().toString();
+					if (!msg.equals(lastMessage)
+							&& msg.length() > 0) {
+						net().sender().sendChat(msg);
+						lastMessage = msg;
+					}
 				}
 			};
 
@@ -221,7 +227,7 @@ public class WndChat extends NetWindow {
 		c.lastMessagePos = r.bottom();
 
 		if (r.bottom() >= content.bottom())
-			content.setSize(content.width(), content.height() + r.height());
+			content.setSize(content.width(), content.height() + r.height() + MSGPADDING);
 
 		content.add(r);
 
@@ -251,4 +257,5 @@ public class WndChat extends NetWindow {
 			});
 		}
 	}
+
 }
