@@ -229,7 +229,7 @@ public class WndChat extends NetWindow {
 			list.scrollTo(0, r.bottom() - list.bottom() + 3);
 
 		if(isSender)
-			textInput.setText("");
+			if(textInput != null) textInput.setText("");
 	}
 
 	@Override

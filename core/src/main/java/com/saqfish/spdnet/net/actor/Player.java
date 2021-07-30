@@ -151,8 +151,10 @@ public class Player extends Mob {
 	public static void addPlayer(String id, String nick, int playerClass, int pos, int depth, Receive.NetItems items){
 		Player p = new Player(id, nick, playerClass, depth, items);
 		p.pos = pos;
-		GameScene.add( p );
-		p.join();
+		if(Dungeon.level.mobs != null) {
+			GameScene.add(p);
+			p.join();
+		}
 	}
 
 	public static void movePlayer(Player p, int pos, int pc){
