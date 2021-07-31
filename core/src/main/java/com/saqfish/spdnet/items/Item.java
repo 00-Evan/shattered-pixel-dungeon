@@ -171,9 +171,9 @@ public class Item implements Bundlable {
 			heap.sprite.drop( cell );
 		}
 
-		Mob m = Dungeon.level.findMob(cell);
-		if(m instanceof Player)
-			net().sender().sendTransfer(this, ((Player)m).socketid(), heap);
+		Player p = Dungeon.level.findPlayer(cell);
+		if(p != null)
+			net().sender().sendTransfer(this, p.socketid(), heap);
 	}
 	
 	//takes two items and merges them (if possible)

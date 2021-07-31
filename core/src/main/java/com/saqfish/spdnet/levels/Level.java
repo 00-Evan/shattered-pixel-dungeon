@@ -516,6 +516,15 @@ public abstract class Level implements Bundlable {
 		return null;
 	}
 
+	public Player findPlayer( int pos ){
+		for (Player p : players){
+			if (p.pos == pos){
+				return p;
+			}
+		}
+		return null;
+	}
+
 	private Respawner respawner;
 
 	public Actor addRespawner() {
