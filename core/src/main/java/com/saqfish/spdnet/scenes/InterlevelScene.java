@@ -128,7 +128,7 @@ public class InterlevelScene extends PixelScene {
 				scrollSpeed = 50;
 				break;
 			case ASCEND:
-				fadeTime = FAST_FADE;
+				fadeTime = SLOW_FADE;
 				loadingDepth = Dungeon.depth-1;
 				scrollSpeed = -5;
 				break;
@@ -147,9 +147,6 @@ public class InterlevelScene extends PixelScene {
 		//slow down transition when displaying an install prompt
 		if (Updates.isInstallable()){
 			fadeTime += 0.5f; //adds 1 second total
-		//speed up transition when debugging
-		} else if (DeviceCompat.isDebug()){
-			fadeTime = 0f;
 		}
 		
 		SkinnedBlock bg = new SkinnedBlock(Camera.main.width, Camera.main.height, loadingAsset ){

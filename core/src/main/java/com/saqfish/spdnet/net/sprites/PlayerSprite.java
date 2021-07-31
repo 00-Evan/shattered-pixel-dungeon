@@ -22,11 +22,15 @@
 package com.saqfish.spdnet.net.sprites;
 
 import com.saqfish.spdnet.Assets;
+import com.saqfish.spdnet.Dungeon;
 import com.saqfish.spdnet.actors.Char;
+import com.saqfish.spdnet.actors.mobs.Mob;
 import com.saqfish.spdnet.net.actor.Player;
+import com.saqfish.spdnet.scenes.GameScene;
 import com.saqfish.spdnet.sprites.MobSprite;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.tweeners.AlphaTweener;
+import com.watabou.noosa.tweeners.PosTweener;
 
 public class PlayerSprite extends MobSprite {
 
@@ -35,6 +39,9 @@ public class PlayerSprite extends MobSprite {
 	private static final int RUN_FRAMERATE	= 20;
 
 	private static final float FADE_TIME	= 0.5f;
+
+
+	public static final float moveInterval = 0.1f;
 
 	private Animation fly;
 	private Animation read;
@@ -90,7 +97,7 @@ public class PlayerSprite extends MobSprite {
 
 	@Override
 	public void play(Animation anim) {
-		if (curAnim == null || curAnim != die || curAnim != leave) {
+		if (curAnim == null || curAnim != die || curAnim != leave || curAnim != join) {
 			super.play(anim);
 		}
 	}

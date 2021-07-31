@@ -21,14 +21,19 @@
 
 package com.saqfish.spdnet.net.actor;
 
+import com.saqfish.spdnet.Badges;
 import com.saqfish.spdnet.Dungeon;
+import com.saqfish.spdnet.Statistics;
 import com.saqfish.spdnet.actors.mobs.Mob;
 import com.saqfish.spdnet.effects.particles.SmokeParticle;
+import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.net.events.Receive;
 import com.saqfish.spdnet.net.sprites.PlayerSprite;
 import com.saqfish.spdnet.scenes.GameScene;
+import com.saqfish.spdnet.sprites.CharSprite;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.DeviceCompat;
 
 public class Player extends Mob {
 
@@ -81,6 +86,13 @@ public class Player extends Mob {
 		sprite.idle();
 	}
 
+	@Override
+	public void destroy() {
+
+		super.destroy();
+		Dungeon.level.players.remove( this );
+	}
+
 	public void leave(){
 	    destroy();
 		if( sprite != null) {
@@ -124,20 +136,18 @@ public class Player extends Mob {
 	}
 
 	public static Player getPlayer(String id){
-		for (Mob mp : Dungeon.level.mobs){
-			if(mp instanceof Player){
-				Player p = (Player)mp;
-				if(p.socketid().contains(id)) {
-					return p;
-				}
+		Player lp = null;
+		for (Player p : Dungeon.level.players){
+			if(p.socketid().equals(id)) {
+				lp = p;
 			}
 		}
-		return null;
+		return lp;
 	}
 
 
 	public static Player getPlayerAtCell(int cell){
-		for (Mob mp : Dungeon.level.mobs){
+		for (Mob mp : Dungeon.level.players){
 			if(mp instanceof Player){
 				Player p = (Player)mp;
 				if(p.pos == cell) {
@@ -151,17 +161,23 @@ public class Player extends Mob {
 	public static void addPlayer(String id, String nick, int playerClass, int pos, int depth, Receive.NetItems items){
 		Player p = new Player(id, nick, playerClass, depth, items);
 		p.pos = pos;
-		if(Dungeon.level.mobs != null) {
+		if(Dungeon.level.players != null) {
+			for (Player op : Dungeon.level.players){
+				if(op.socketid().equals(id)) {
+					op.sprite.destroy();
+					op.destroy();
+				}
+			}
 			GameScene.add(p);
 			p.join();
 		}
 	}
 
 	public static void movePlayer(Player p, int pos, int pc){
-		if(p != null && Game.scene() instanceof GameScene) {
-			if(p.sprite != null) {
-				p.sprite.turnTo(p.pos, pos);
-				p.sprite.move(p.pos, pos);
+		if(p != null && p.sprite != null) {
+		    if(p.sprite.parent == null){
+		    	p.sprite.destroy();
+		    	GameScene.addSprite(p);
 			}
 			p.move(pos);
 		}

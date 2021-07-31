@@ -52,10 +52,10 @@ public class WelcomeScene extends PixelScene {
 
 		final int previousVersion = SPDSettings.version();
 
-		/*if (ShatteredPixelDungeon.versionCode == previousVersion && !SPDSettings.intro()) {
+		if (ShatteredPixelDungeon.versionCode == previousVersion && !SPDSettings.intro()) {
 			ShatteredPixelDungeon.switchNoFade(TitleScene.class);
 			return;
-		}*/
+		}
 
 		uiCamera.visible = false;
 
@@ -143,9 +143,9 @@ public class WelcomeScene extends PixelScene {
 				//TODO: change the messages here in accordance with the type of patch.
 				message = "SPDNet has been patched!";
 				message += "\n";
-				message += "\n Chat added for Android users (Desktop soon)";
-				message += "\n Connection issues for Android 8 and older fixed";
-				message += "\n Shared item stats fixed";
+				message += "\n Chat windows added for desktop (no text input)";
+				message += "\n UI fixes for Android chat";
+				message += "\n Net indicator displays chat icon on new message";
 
 			}
 		} else {

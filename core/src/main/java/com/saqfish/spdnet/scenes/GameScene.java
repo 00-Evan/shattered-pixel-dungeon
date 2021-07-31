@@ -157,6 +157,7 @@ public class GameScene extends PixelScene {
 	private Group traps;
 	private Group heaps;
 	private Group mobs;
+	private Group players;
 	private Group floorEmitters;
 	private Group emitters;
 	private Group effects;
@@ -259,6 +260,9 @@ public class GameScene extends PixelScene {
 		mobs = new Group();
 		add( mobs );
 
+		players = new Group();
+		add( players );
+
 		hero = new HeroSprite();
 		hero.place( Dungeon.hero.pos );
 		hero.updateArmor();
@@ -269,11 +273,13 @@ public class GameScene extends PixelScene {
 			if (Statistics.amuletObtained) {
 				mob.beckon( Dungeon.hero.pos );
 			}
-			if (mob instanceof Player) {
-				((PlayerSprite) mob.sprite).updatePlayerSprite((((Player) mob).playerClass()));
-			}
 		}
-		
+
+		for (Player p : Dungeon.level.players) {
+			addMobSprite( p );
+			((PlayerSprite) p.sprite).updatePlayerSprite(p.playerClass());
+		}
+
 		raisedTerrain = new RaisedTerrainTilemap();
 		add( raisedTerrain );
 
@@ -764,6 +770,13 @@ public class GameScene extends PixelScene {
 		sprite.link( mob );
 	}
 
+	private void addPlayerSprite( Player p ) {
+		CharSprite sprite = p.sprite();
+		sprite.visible = true;
+		players.add( sprite );
+		sprite.link( p );
+	}
+
 	private synchronized void prompt( String text ) {
 		
 		if (prompt != null) {
@@ -832,14 +845,18 @@ public class GameScene extends PixelScene {
 	}
 
 	public static void add( Player p ) {
-		Dungeon.level.mobs.add( p );
-		if(scene != null) scene.addMobSprite( p );
+		Dungeon.level.players.add( p );
+		if(scene != null) scene.addPlayerSprite( p );
 	}
 
 	public static void addSprite( Mob mob ) {
 		scene.addMobSprite( mob );
 	}
-	
+
+	public static void addSprite( Player p ) {
+		scene.addMobSprite( p );
+	}
+
 	public static void add( Mob mob, float delay ) {
 		Dungeon.level.mobs.add( mob );
 		scene.addMobSprite( mob );

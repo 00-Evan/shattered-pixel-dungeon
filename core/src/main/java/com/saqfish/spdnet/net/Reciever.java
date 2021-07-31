@@ -85,6 +85,7 @@ public class Reciever {
         public void handleAction(int type, String json) {
                 Player player;
                 Receive.Join join;
+                DeviceCompat.log("Action", "type: "+type);
                 try {
                         switch (type) {
                                 case Receive.MOVE:
