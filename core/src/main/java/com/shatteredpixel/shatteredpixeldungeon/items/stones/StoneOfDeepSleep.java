@@ -33,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 
-public class StoneOfDeepenedSleep extends Runestone {
+public class StoneOfDeepSleep extends Runestone {
 	
 	{
 		image = ItemSpriteSheet.STONE_SLEEP;
@@ -41,22 +41,17 @@ public class StoneOfDeepenedSleep extends Runestone {
 	
 	@Override
 	protected void activate(int cell) {
-		
-		for (int i : PathFinder.NEIGHBOURS9){
-			
-			CellEmitter.get(cell + i).start( Speck.factory( Speck.NOTE ), 0.1f, 2 );
-			
-			if (Actor.findChar(cell + i) != null) {
-				
-				Char c = Actor.findChar(cell + i);
-				
-				if ((c instanceof Mob && ((Mob) c).state == ((Mob) c).SLEEPING)){
-					
-					Buff.affect(c, MagicalSleep.class);
-					
-				}
-				
+
+		if (Actor.findChar(cell) != null) {
+
+			Char c = Actor.findChar(cell);
+
+			if (c instanceof Mob){
+
+				Buff.affect(c, MagicalSleep.class);
+
 			}
+
 		}
 		
 		Sample.INSTANCE.play( Assets.Sounds.LULLABY );

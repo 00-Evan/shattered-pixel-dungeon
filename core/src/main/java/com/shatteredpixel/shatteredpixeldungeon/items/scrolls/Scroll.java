@@ -37,13 +37,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellboo
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfAntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAffection;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFear;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlink;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfClairvoyance;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDeepenedSleep;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDeepSleep;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDisarming;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFlock;
@@ -285,7 +285,7 @@ public abstract class Scroll extends Item {
 		private static HashMap<Class<?extends Scroll>, Class<?extends Runestone>> stones = new HashMap<>();
 		static {
 			stones.put(ScrollOfIdentify.class,      StoneOfIntuition.class);
-			stones.put(ScrollOfLullaby.class,       StoneOfDeepenedSleep.class);
+			stones.put(ScrollOfLullaby.class,       StoneOfDeepSleep.class);
 			stones.put(ScrollOfMagicMapping.class,  StoneOfClairvoyance.class);
 			stones.put(ScrollOfMirrorImage.class,   StoneOfFlock.class);
 			stones.put(ScrollOfRetribution.class,   StoneOfBlast.class);
@@ -293,7 +293,7 @@ public abstract class Scroll extends Item {
 			stones.put(ScrollOfRecharging.class,    StoneOfShock.class);
 			stones.put(ScrollOfRemoveCurse.class,   StoneOfDisarming.class);
 			stones.put(ScrollOfTeleportation.class, StoneOfBlink.class);
-			stones.put(ScrollOfTerror.class,        StoneOfAffection.class);
+			stones.put(ScrollOfTerror.class,        StoneOfFear.class);
 			stones.put(ScrollOfTransmutation.class, StoneOfAugmentation.class);
 			stones.put(ScrollOfUpgrade.class,       StoneOfEnchantment.class);
 		}

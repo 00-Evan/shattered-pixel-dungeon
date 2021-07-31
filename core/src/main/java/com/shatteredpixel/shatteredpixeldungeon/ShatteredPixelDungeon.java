@@ -46,6 +46,14 @@ public class ShatteredPixelDungeon extends Game {
 	public ShatteredPixelDungeon( PlatformSupport platform ) {
 		super( sceneClass == null ? WelcomeScene.class : sceneClass, platform );
 
+		//v0.9.4
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFear.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAffection" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDeepSleep.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDeepenedSleep" );
+
 		//v0.9.3
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu.class,
