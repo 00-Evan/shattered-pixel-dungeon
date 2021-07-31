@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -128,27 +129,43 @@ public class WildMagic extends ArmorAbility {
 		Ballistica aim = new Ballistica(hero.pos, target, cur.collisionProperties(target));
 
 		hero.sprite.zap(target);
-		cur.fx(aim, new Callback() {
-			@Override
-			public void call() {
-				cur.onZap(aim);
-				cur.partialCharge -= (float)Math.pow(0.67f, hero.pointsInTalent(Talent.CONSERVED_MAGIC));
-				if (cur.partialCharge < 0){
-					cur.partialCharge++;
-					cur.curCharges--;
+
+		if (!cur.cursed) {
+			cur.fx(aim, new Callback() {
+				@Override
+				public void call() {
+					afterZap(cur, wands, hero, target);
 				}
-				if (!wands.isEmpty()){
-					zapWand(wands, hero, target);
-				} else {
-					if (hero.buff(WildMagicTracker.class) != null){
-						hero.buff(WildMagicTracker.class).detach();
-					}
-					Item.updateQuickslot();
-					Invisibility.dispel();
-					hero.spendAndNext(Actor.TICK);
-				}
+			});
+		} else {
+			CursedWand.cursedZap(cur,
+					hero,
+					new Ballistica(hero.pos, target, Ballistica.MAGIC_BOLT),
+					new Callback() {
+						@Override
+						public void call() {
+							afterZap(cur, wands, hero, target);
+						}
+					});
+		}
+	}
+
+	private void afterZap( Wand cur, ArrayList<Wand> wands, Hero hero, int target){
+		cur.partialCharge -= (float) Math.pow(0.67f, hero.pointsInTalent(Talent.CONSERVED_MAGIC));
+		if (cur.partialCharge < 0) {
+			cur.partialCharge++;
+			cur.curCharges--;
+		}
+		if (!wands.isEmpty()) {
+			zapWand(wands, hero, target);
+		} else {
+			if (hero.buff(WildMagicTracker.class) != null) {
+				hero.buff(WildMagicTracker.class).detach();
 			}
-		});
+			Item.updateQuickslot();
+			Invisibility.dispel();
+			hero.spendAndNext(Actor.TICK);
+		}
 	}
 
 	@Override
