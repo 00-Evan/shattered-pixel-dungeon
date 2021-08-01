@@ -68,14 +68,12 @@ public class Net {
 
     public void setupEvents(){
         Emitter.Listener onConnected = args -> {
-            reciever.startAll();
             if(w != null) {
                 Game.runOnRenderThread( () -> w.destroy());
             }
         };
 
         Emitter.Listener onDisconnected = args -> {
-            reciever.cancelAll();
         };
 
         // TODO: Clean this up or handle errors better
@@ -110,6 +108,7 @@ public class Net {
     }
 
     public void connect() {
+        reciever.startAll();
         socket.connect();
     }
     public void disconnect(){

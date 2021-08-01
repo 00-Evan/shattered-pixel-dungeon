@@ -32,11 +32,9 @@ public class Reciever {
         public Reciever(Net net, ObjectMapper mapper) {
                 this.net = net;
                 this.mapper = mapper;
-                this.messages = new ArrayList<>();
         }
 
         public void startAll() {
-
                 Emitter.Listener onAction = args -> {
                         int type = (int) args[0];
                         String data = (String) args[1];
@@ -58,14 +56,17 @@ public class Reciever {
                 };
                 net.socket().on(Events.ACTION, onAction);
                 net.socket().on(Events.TRANSFER, onTransfer);
-                net().socket().on(Events.CHAT, onChat);
+                net.socket().on(Events.CHAT, onChat);
                 net.socket().once(Events.MOTD, onMotd);
+                messages = new ArrayList<>();
         }
 
         public void cancelAll() {
                 net.socket().off(Events.ACTION);
                 net.socket().off(Events.TRANSFER);
+                net.socket().off(Events.CHAT);
                 net.socket().off(Events.MOTD);
+                messages = null;
         }
 
         // Handlers
@@ -154,6 +155,7 @@ public class Reciever {
         public void handleChat(String id,String nick,String message){
                         messages.add(new ChatMessage(id, nick, message));
                         newMessage = true;
+                        DeviceCompat.log("CHAT", "size:" + messages.size());
         }
 
         public void readMessages(){
