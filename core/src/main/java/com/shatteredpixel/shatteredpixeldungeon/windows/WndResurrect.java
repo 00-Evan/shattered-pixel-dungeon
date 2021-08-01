@@ -21,11 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -123,13 +125,13 @@ public class WndResurrect extends Window {
 
 		@Override
 		public String textPrompt() {
-			return "TODO";
+			return Messages.get(WndResurrect.class, "prompt");
 		}
 
 		@Override
 		public boolean itemSelectable(Item item) {
-			//cannot select ankhs or equippable items that aren't equipped
-			return !(item instanceof Ankh) &&
+			//cannot select ankhs, bags or equippable items that aren't equipped
+			return !(item instanceof Ankh) && !(item instanceof Bag) &&
 					(!(item instanceof EquipableItem) || item.isEquipped(Dungeon.hero) || item instanceof MissileWeapon);
 		}
 
