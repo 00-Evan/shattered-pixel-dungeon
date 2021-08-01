@@ -235,7 +235,14 @@ public class WndChat extends NetWindow {
 			list.scrollTo(0, r.bottom() - list.bottom() + 3);
 
 		if(isSender)
-			if(textInput != null) textInput.setText("");
+			if(textInput != null) {
+				((AndroidApplication)Gdx.app).runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						textInput.setText("");
+					}
+				});
+			}
 	}
 
 	@Override
