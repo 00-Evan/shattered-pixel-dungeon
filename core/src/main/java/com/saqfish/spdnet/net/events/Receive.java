@@ -8,7 +8,7 @@ public class Receive {
     public static final int JOIN_LIST = 2;
     public static final int LEAVE = 3;
     public static final int ITEM = 4;
-    public static final int DEATH = 5;
+    public static final int GLOG = 5;
 
     public static class Motd {
         public String motd;
@@ -41,9 +41,9 @@ public class Receive {
         public String data;
     }
 
-    public static class Death {
-        public String nick;
-        public String cause;
+
+    public static class Glog {
+        public String msg;
     }
 
     public static class Join {

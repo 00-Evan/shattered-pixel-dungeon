@@ -109,9 +109,10 @@ public class Reciever {
                                         player = Player.getPlayer(l.id);
                                         if (player != null) player.leave();
                                         break;
-                                case Receive.DEATH:
-                                        Receive.Death d = mapper.readValue(json, Receive.Death.class);
-                                        GLog.n(d.nick + " " + d.cause);
+                                case Receive.GLOG:
+                                        DeviceCompat.log("GLOG", json);
+                                        Receive.Glog g = mapper.readValue(json, Receive.Glog.class);
+                                        GLog.n(g.msg);
                                         GLog.newLine();
                                         break;
                                 default:

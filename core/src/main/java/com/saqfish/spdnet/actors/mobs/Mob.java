@@ -61,6 +61,7 @@ import com.saqfish.spdnet.items.weapon.missiles.darts.Dart;
 import com.saqfish.spdnet.levels.Level;
 import com.saqfish.spdnet.levels.features.Chasm;
 import com.saqfish.spdnet.messages.Messages;
+import com.saqfish.spdnet.net.events.Send;
 import com.saqfish.spdnet.plants.Swiftthistle;
 import com.saqfish.spdnet.sprites.CharSprite;
 import com.saqfish.spdnet.utils.GLog;
@@ -74,6 +75,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+
+import static com.saqfish.spdnet.ShatteredPixelDungeon.net;
 
 public abstract class Mob extends Char {
 
@@ -703,8 +706,20 @@ public abstract class Mob extends Char {
 				}
 			}
 		}
+
+		if(isBoss())net().sender().sendAction(Send.BOSSKILL, name());
 	}
-	
+
+	public Boolean isBoss(){
+		if(this instanceof Goo ||
+				this instanceof Tengu ||
+				this instanceof DM300 ||
+				this instanceof DwarfKing ||
+				this instanceof YogDzewa
+		) return true;
+		return false;
+	}
+
 	public void rollToDropLoot(){
 		if (Dungeon.hero.lvl > maxLvl + 2) return;
 		

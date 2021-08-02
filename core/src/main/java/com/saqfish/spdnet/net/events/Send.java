@@ -21,9 +21,9 @@ public class Send {
     public static final int MOVE = 1;
     public static final int ITEM = 2;
     public static final int DEATH = 3;
+    public static final int BOSSKILL = 4;
 
     public static class Message {
-        public int type;
         public String data;
     }
 
@@ -37,7 +37,12 @@ public class Send {
             else if(cause instanceof Burning) this.cause = "burned to death";
             else this.cause = "died";
         }
+
+        public Death(String whom){
+            this.cause = " killed"+whom;
+        }
     }
+
 
     public static class Transfer {
         public String id;

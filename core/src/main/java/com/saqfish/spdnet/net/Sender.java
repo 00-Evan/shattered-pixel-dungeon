@@ -59,15 +59,18 @@ public class Sender {
 
         public void sendAction(int type, Object o) {
                 String json = "";
+                Object c = null;
                 switch (type) {
                         case Send.DEATH:
-                                Send.Death d = new Send.Death(o);
-                                json = map(d);
+                                c = new Send.Death(o);
+                                break;
+                        case Send.BOSSKILL:
+                                c = new Send.Death((String)o);
                                 break;
                         case Send.MOVE:
-                                Send.Move m = new Send.Move(((Integer)o));
-                                json = map(m);
+                                c = new Send.Move(((Integer)o));
                 }
+                json = map(c);
                 if(net.socket().connected() && json != null) net.socket().emit(Events.ACTION,type, json);
         }
 
