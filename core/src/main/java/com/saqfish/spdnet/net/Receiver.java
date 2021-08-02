@@ -169,7 +169,7 @@ public class Receiver {
 
         public List<ChatMessage> messages(int n){
                 newMessage = false;
-                if(messages.size() > n)
+                if(messages != null && messages.size() > n)
                         messages = new ArrayList(messages.subList(messages.size() - n, messages.size()));
                 return messages;
         }

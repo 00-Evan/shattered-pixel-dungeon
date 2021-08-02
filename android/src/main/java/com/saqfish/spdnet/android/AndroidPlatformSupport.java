@@ -43,6 +43,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.saqfish.spdnet.SPDSettings;
+import com.saqfish.spdnet.ShatteredPixelDungeon;
 import com.saqfish.spdnet.android.windows.WndAndroidTextInput;
 import com.saqfish.spdnet.android.windows.WndChat;
 import com.saqfish.spdnet.scenes.PixelScene;
@@ -52,6 +53,8 @@ import com.watabou.utils.PlatformSupport;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;
+
+import static com.saqfish.spdnet.ShatteredPixelDungeon.net;
 
 public class AndroidPlatformSupport extends PlatformSupport {
 	
@@ -212,7 +215,8 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		Game.runOnRenderThread( new Callback() {
 			@Override
 			public void call() {
-				Game.scene().addToFront(new WndChat());
+				if(net().reciever().messages() != null)
+					ShatteredPixelDungeon.scene().add(new WndChat());
 			}
 		});
 	}

@@ -41,6 +41,8 @@ import org.lwjgl.util.tinyfd.TinyFileDialogs;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
+import static com.saqfish.spdnet.ShatteredPixelDungeon.net;
+
 public class DesktopPlatformSupport extends PlatformSupport {
 	
 	@Override
@@ -94,7 +96,8 @@ public class DesktopPlatformSupport extends PlatformSupport {
 			Game.runOnRenderThread(new Callback() {
 				@Override
 				public void call() {
-					ShatteredPixelDungeon.scene().add(new WndChat());
+					if(net().reciever().messages() != null)
+						ShatteredPixelDungeon.scene().add(new WndChat());
 				}
 			});
 	}
