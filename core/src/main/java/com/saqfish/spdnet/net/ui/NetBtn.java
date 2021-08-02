@@ -38,26 +38,12 @@ public class NetBtn extends StyledButton {
 
     @Override
     protected boolean onLongClick() {
-        platform.promptTextInput("Enter host", Settings.uri().toString(), 40, false, "Set", "Cancel", new PlatformSupport.TextCallback() {
+        platform.promptTextInput("Enter key", Settings.auth_key(), 30, false, "Set", "Cancel", new PlatformSupport.TextCallback() {
             @Override
             public void onSelect(boolean positive, String text) {
-                if(positive){
-                    URI url = null;
-                    try {
-                        url = new URI(text);
-                        Settings.scheme(url.getScheme());
-                        Settings.address(url.getHost());
-                        Settings.port(url.getPort());
-                        platform.promptTextInput("Enter key", Settings.auth_key(), 20, false, "Set", "Cancel", new PlatformSupport.TextCallback() {
-                            @Override
-                            public void onSelect(boolean positive, String text) {
-                                if(positive){
-                                    Settings.auth_key(text);
-                                }
-                            }
-                        });
-                    } catch (URISyntaxException e) {
-                    }
+                if (positive) {
+                    Settings.auth_key(text);
+                    net().reset();
                 }
             }
         });

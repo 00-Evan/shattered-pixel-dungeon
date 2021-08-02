@@ -78,6 +78,7 @@ public class Net {
         };
 
         Emitter.Listener onDisconnected = args -> {
+            disconnect();
         };
 
         // TODO: Clean this up or handle errors better
