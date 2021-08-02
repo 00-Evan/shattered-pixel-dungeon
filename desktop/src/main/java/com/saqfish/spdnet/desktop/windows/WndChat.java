@@ -27,7 +27,7 @@ public class WndChat extends NetWindow {
 	private Chat c;
 	private Camera cam = camera();
 
-	private int maxMessages = 10;
+	private int maxMessages = 20;
 
 	public WndChat() {
 		super();
