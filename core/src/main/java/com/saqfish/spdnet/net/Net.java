@@ -21,10 +21,10 @@ public class Net {
     public static String DEFAULT_SCHEME = "http";
     public static String DEFAULT_HOST = "saqfish.com";
     public static int DEFAULT_PORT = 5800;
-    public static String DEFAULT_KEY = "debug";
+    public static String DEFAULT_KEY = "new";
 
     private Socket socket;
-    private Reciever reciever;
+    private Receiver receiver;
     private Sender sender;
     private ObjectMapper mapper;
     private long seed;
@@ -37,23 +37,27 @@ public class Net {
         Settings.address(url.getHost());
         Settings.port(url.getPort());
         Settings.auth_key(key);
-        session(Settings.uri(), key);
+        session();
     }
 
     public Net(String key){
+        Settings.address(DEFAULT_HOST);
+        Settings.port(DEFAULT_PORT);
         Settings.auth_key(key);
-        session(Settings.uri(), key);
+        session();
     }
 
     public Net(){
-        session(Settings.uri(), Settings.auth_key());
+        session();
     }
 
-    public void reset(){
-        session(Settings.uri(), Settings.auth_key());
+    public void reset() {
+        session();
     }
 
-    public void session(URI url, String key){
+    public void session(){
+        URI url = Settings.uri();
+        String key = Settings.auth_key();
         IO.Options options = IO.Options.builder()
                 .setAuth(singletonMap("token", key))
                 .setForceNew(true)
@@ -61,7 +65,7 @@ public class Net {
                 .build();
         socket = IO.socket(url, options);
         mapper = new ObjectMapper();
-        reciever = new Reciever(this, mapper);
+        receiver = new Receiver(this, mapper);
         sender = new Sender(this, mapper);
         setupEvents();
     }
@@ -94,7 +98,7 @@ public class Net {
             }catch(Exception ignored) {
                 NetWindow.error("Connection could not be established!");
             }
-            reciever.cancelAll();
+            receiver.cancelAll();
             disconnect();
         };
 
@@ -108,11 +112,11 @@ public class Net {
     }
 
     public void connect() {
-        reciever.startAll();
+        receiver.startAll();
         socket.connect();
     }
     public void disconnect(){
-        reciever.cancelAll();
+        receiver.cancelAll();
         socket.disconnect();
     }
 
@@ -130,7 +134,7 @@ public class Net {
             endEvents();
             socket = null;
         }
-        reciever = null;
+        receiver = null;
         sender = null;
     }
 
@@ -141,6 +145,6 @@ public class Net {
     public Socket socket(){ return this.socket; }
     public ObjectMapper mapper() { return this.mapper;}
     public Sender sender() { return sender; }
-    public Reciever reciever() { return reciever; }
+    public Receiver reciever() { return receiver; }
     public URI uri(){ return Settings.uri(); }
 }

@@ -35,10 +35,15 @@ public class Settings extends GameSettings {
         return getInt( KEY_PORT, DEFAULT_PORT);
     }
 
-    public static void auth_key( String value ) {
-        put( KEY_AUTH_KEY, value );
-    }
+    public static void auth_key( String value ) { put( KEY_AUTH_KEY, value ); }
     public static String auth_key() { return getString(KEY_AUTH_KEY, DEFAULT_KEY); }
+
+    public static void setDefault(){
+        scheme(DEFAULT_SCHEME);
+        address(DEFAULT_HOST);
+        port(DEFAULT_PORT);
+        auth_key(DEFAULT_KEY);
+    }
 
     public static URI uri() {
         String scheme = scheme();

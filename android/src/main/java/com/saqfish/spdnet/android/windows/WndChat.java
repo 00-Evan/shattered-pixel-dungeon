@@ -19,7 +19,7 @@ import com.badlogic.gdx.backends.android.AndroidGraphics;
 import com.saqfish.spdnet.SPDSettings;
 import com.saqfish.spdnet.ShatteredPixelDungeon;
 import com.saqfish.spdnet.android.AndroidGame;
-import com.saqfish.spdnet.net.Reciever;
+import com.saqfish.spdnet.net.Receiver;
 import com.saqfish.spdnet.net.ui.BlueButton;
 import com.saqfish.spdnet.net.windows.NetWindow;
 import com.saqfish.spdnet.scenes.PixelScene;
@@ -197,20 +197,20 @@ public class WndChat extends NetWindow {
 
 		if (net().reciever().newMessage()) {
 			if(maxMessages != 1)
-				for (Reciever.ChatMessage message: net().reciever().messages(maxMessages)) {
+				for (Receiver.ChatMessage message: net().reciever().messages(maxMessages)) {
 					addChatMessage(message);
 				}
 			else addChatMessage(net().reciever().lastMessage());
 			maxMessages = 1;
 		}else if(maxMessages != 1){
-			for (Reciever.ChatMessage message : net().reciever().messages(maxMessages)) {
+			for (Receiver.ChatMessage message : net().reciever().messages(maxMessages)) {
 				addChatMessage(message);
 			}
 			maxMessages = 1;
 		}
 	}
 
-	private void addChatMessage(Reciever.ChatMessage message){
+	private void addChatMessage(Receiver.ChatMessage message){
 		boolean isSender = message.id.equals(net().socket().id());
 		RenderedTextBlock r = PixelScene.renderTextBlock(7);
 

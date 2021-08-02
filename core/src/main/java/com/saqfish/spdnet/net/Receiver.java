@@ -22,18 +22,19 @@ import io.socket.emitter.Emitter;
 
 import static com.saqfish.spdnet.ShatteredPixelDungeon.net;
 
-public class Reciever {
+public class Receiver {
         private ObjectMapper mapper;
         private Net net;
 
         private boolean newMessage;
         private ArrayList<ChatMessage> messages;
 
-        public Reciever(Net net, ObjectMapper mapper) {
+        public Receiver(Net net, ObjectMapper mapper) {
                 this.net = net;
                 this.mapper = mapper;
         }
 
+        // Start all receiver events
         public void startAll() {
                 Emitter.Listener onAction = args -> {
                         int type = (int) args[0];
@@ -61,6 +62,7 @@ public class Reciever {
                 messages = new ArrayList<>();
         }
 
+        // Stop all receiver events
         public void cancelAll() {
                 net.socket().off(Events.ACTION);
                 net.socket().off(Events.TRANSFER);
@@ -110,7 +112,6 @@ public class Reciever {
                                         if (player != null) player.leave();
                                         break;
                                 case Receive.GLOG:
-                                        DeviceCompat.log("GLOG", json);
                                         Receive.Glog g = mapper.readValue(json, Receive.Glog.class);
                                         GLog.n(g.msg);
                                         GLog.newLine();
@@ -140,7 +141,6 @@ public class Reciever {
         }
 
         // Chat handler
-
         public static class ChatMessage {
                 public String id;
                 public String nick;
@@ -156,7 +156,6 @@ public class Reciever {
         public void handleChat(String id,String nick,String message){
                         messages.add(new ChatMessage(id, nick, message));
                         newMessage = true;
-                        DeviceCompat.log("CHAT", "size:" + messages.size());
         }
 
         public void readMessages(){

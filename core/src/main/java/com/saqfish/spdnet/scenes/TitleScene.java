@@ -151,9 +151,10 @@ public class TitleScene extends PixelScene {
 
 			@Override
 			protected boolean onLongClick() {
-				platform.promptTextInput("Enter key", Settings.auth_key(), 20, false, "Set", "Cancel", new PlatformSupport.TextCallback() {
+				platform.promptTextInput("Enter key", Settings.auth_key(), 30, false, "Set", "Cancel", new PlatformSupport.TextCallback() {
 					@Override
 					public void onSelect(boolean positive, String text) {
+						System.out.println("TEXT: "+text);
 						if(positive){
 							Settings.auth_key(text);
 							net().reset();

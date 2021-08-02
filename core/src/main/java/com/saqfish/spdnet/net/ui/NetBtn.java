@@ -53,7 +53,6 @@ public class NetBtn extends StyledButton {
                             public void onSelect(boolean positive, String text) {
                                 if(positive){
                                     Settings.auth_key(text);
-                                    net().reset();
                                 }
                             }
                         });

@@ -61,6 +61,7 @@ import com.saqfish.spdnet.levels.rooms.secret.SecretRoom;
 import com.saqfish.spdnet.levels.traps.Trap;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.net.actor.Player;
+import com.saqfish.spdnet.net.events.Send;
 import com.saqfish.spdnet.net.sprites.PlayerSprite;
 import com.saqfish.spdnet.net.windows.WndInfoPlayer;
 import com.saqfish.spdnet.plants.Plant;
@@ -124,6 +125,8 @@ import com.watabou.utils.Random;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
+
+import static com.saqfish.spdnet.ShatteredPixelDungeon.net;
 
 public class GameScene extends PixelScene {
 

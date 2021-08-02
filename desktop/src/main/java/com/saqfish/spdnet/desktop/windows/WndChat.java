@@ -1,7 +1,7 @@
 package com.saqfish.spdnet.desktop.windows;
 
 
-import com.saqfish.spdnet.net.Reciever;
+import com.saqfish.spdnet.net.Receiver;
 import com.saqfish.spdnet.net.windows.NetWindow;
 import com.saqfish.spdnet.scenes.PixelScene;
 import com.saqfish.spdnet.ui.RenderedTextBlock;
@@ -89,20 +89,20 @@ public class WndChat extends NetWindow {
 		super.update();
 		if (net().reciever().newMessage()) {
 			if(maxMessages != 1)
-				for (Reciever.ChatMessage message: net().reciever().messages(maxMessages)) {
+				for (Receiver.ChatMessage message: net().reciever().messages(maxMessages)) {
 					addChatMessage(message);
 				}
 			else addChatMessage(net().reciever().lastMessage());
 			maxMessages = 1;
 		}else if(maxMessages != 1){
-			for (Reciever.ChatMessage message : net().reciever().messages(maxMessages)) {
+			for (Receiver.ChatMessage message : net().reciever().messages(maxMessages)) {
 				addChatMessage(message);
 			}
 			maxMessages = 1;
 		}
 	}
 
-	private void addChatMessage(Reciever.ChatMessage message){
+	private void addChatMessage(Receiver.ChatMessage message){
 		boolean isSender = message.id.equals(net().socket().id());
 		RenderedTextBlock r = PixelScene.renderTextBlock(7);
 
