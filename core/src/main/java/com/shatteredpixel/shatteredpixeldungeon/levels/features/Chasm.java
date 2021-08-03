@@ -52,8 +52,10 @@ import com.watabou.utils.Random;
 public class Chasm implements Hero.Doom {
 
 	public static boolean jumpConfirmed = false;
+	private static int heroPos;
 	
 	public static void heroJump( final Hero hero ) {
+		heroPos = hero.pos;
 		Game.runOnRenderThread(new Callback() {
 			@Override
 			public void call() {
@@ -66,8 +68,10 @@ public class Chasm implements Hero.Doom {
 							@Override
 							protected void onSelect( int index ) {
 								if (index == 0) {
-									jumpConfirmed = true;
-									hero.resume();
+									if (Dungeon.hero.pos == heroPos) {
+										jumpConfirmed = true;
+										hero.resume();
+									}
 								}
 							}
 						}
