@@ -79,9 +79,12 @@ public enum Icons {
 	WATA,
 	WARNING,
 
-	//32x32 icons for credits
+	//credits icons:
+	//16x16
 	ALEKS,
+	//32x32
 	CHARLIE,
+	KRISTJAN,
 	CUBE_CODE,
 	PURIGRO,
 	ARCNOR;
@@ -220,12 +223,15 @@ public enum Icons {
 			icon.frame( icon.texture.uvRect( 34, 81, 48, 95 ) );
 			break;
 
-		//32*32 icons are scaled down to match game's size
 		case ALEKS:
+			icon.frame( icon.texture.uvRect( 48, 80, 64, 96 ) );
+			break;
+		//32*32 icons are scaled down to match game's size
+		case CHARLIE:
 			icon.frame( icon.texture.uvRect( 0, 96, 32, 128 ) );
 			icon.scale.set(PixelScene.align(0.49f));
 			break;
-		case CHARLIE:
+		case KRISTJAN:
 			icon.frame( icon.texture.uvRect( 32, 96, 64, 128 ) );
 			icon.scale.set(PixelScene.align(0.49f));
 			break;
