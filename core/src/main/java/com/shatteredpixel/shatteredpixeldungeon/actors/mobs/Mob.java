@@ -1125,6 +1125,11 @@ public abstract class Mob extends Char {
 					ally.pos = pos;
 				}
 				if (ally.sprite != null) ally.sprite.place(ally.pos);
+
+				if (ally.fieldOfView == null || ally.fieldOfView.length != level.length()){
+					ally.fieldOfView = new boolean[level.length()];
+				}
+				Dungeon.level.updateFieldOfView( ally, ally.fieldOfView );
 				
 			}
 		}

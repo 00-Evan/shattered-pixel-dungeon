@@ -376,7 +376,8 @@ public class Dungeon {
 		hero.viewDistance = light == null ? level.viewDistance : Math.max( Light.DISTANCE, level.viewDistance );
 		
 		hero.curAction = hero.lastAction = null;
-		
+
+		observe();
 		try {
 			saveAll();
 		} catch (IOException e) {
