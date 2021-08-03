@@ -188,7 +188,6 @@ public class Item implements Bundlable {
 		}
 
 		if (!container.canHold(this)){
-			GLog.n( Messages.get(Item.class, "pack_full", container.name()) );
 			return false;
 		}
 
