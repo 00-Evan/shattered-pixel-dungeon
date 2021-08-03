@@ -58,6 +58,11 @@ public class WelcomeScene extends PixelScene {
 			return;
 		}
 
+		Music.INSTANCE.playTracks(
+				new String[]{Assets.Music.THEME_1, Assets.Music.THEME_2},
+				new float[]{1, 1},
+				false);
+
 		uiCamera.visible = false;
 
 		int w = Camera.main.width;
