@@ -24,6 +24,15 @@ public class Receive {
     }
 
 
+    public static class Record {
+        public String nick;
+        public Integer wins;
+    }
+
+    public static class Records {
+        public Record[] records;
+    }
+
     public static class Player {
         public String nick;
         public Integer playerClass;

@@ -23,9 +23,8 @@ public class Sender {
                 this.mapper = mapper;
         }
 
-        public void sendPlayerListRequest(){
-                net.socket().emit(Events.PLAYERLISTREQUEST, 0);
-        }
+        public void sendPlayerListRequest(){ net.socket().emit(Events.PLAYERLISTREQUEST, 0); }
+        public void sendRecordsRequest(){ net.socket().emit(Events.RECORDS, 0); }
 
         public void sendTransfer(Item i, String id, Heap h) {
                 Send.Transfer item = new Send.Transfer(i, id);

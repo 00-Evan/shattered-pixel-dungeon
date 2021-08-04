@@ -47,14 +47,6 @@ public class WndPlayerList extends NetWindow {
 
 		float y = 2;
 
-		RenderedTextBlock rankLbl = PixelScene.renderTextBlock("Rank", 8);
-		add(rankLbl);
-		rankLbl.setPos(1, y);
-
-		RenderedTextBlock nickLbl = PixelScene.renderTextBlock("Player", 8);
-		add(nickLbl);
-		nickLbl.setPos(rankLbl.right() + VGAP, y);
-
 		Image icon = NetIcons.get(NetIcons.CHAT);
 		icon.scale.set(0.8f);
 		IconButton chatBtn = new IconButton(icon){
@@ -68,7 +60,7 @@ public class WndPlayerList extends NetWindow {
 		chatBtn.setSize(10,10);
 		chatBtn.setPos(width - chatBtn.width()-(VGAP/2), y);
 
-		y+=rankLbl.height()+HGAP;
+		y+=HGAP;
 
 		ScrollPane list = new ScrollPane( new Component() );
 		add( list );
@@ -86,7 +78,7 @@ public class WndPlayerList extends NetWindow {
 
 			Receive.Player player = p.list[i];
 
-			PlayerRank playerRank = new PlayerRank(player, i+1, nickLbl.left()){
+			PlayerRank playerRank = new PlayerRank(player, i+1){
 				@Override
 				protected void onClick() {
 					if(player.depth != null)
@@ -107,20 +99,14 @@ public class WndPlayerList extends NetWindow {
 
 	public static class PlayerRank extends Button {
 		private int order;
-		private RenderedTextBlock rank;
 		private RenderedTextBlock label;
 
 		private boolean enabled;
-		private float rankEnd;
 
 
-		public PlayerRank(Receive.Player player, int order, float rankEnd){
+		public PlayerRank(Receive.Player player, int order){
 			this.order = order;
 			this.enabled = player.depth != null;
-			this.rankEnd = rankEnd;
-
-			rank = PixelScene.renderTextBlock(enabled ? String.valueOf(order): "-", 11);
-			add(rank);
 
 			label = PixelScene.renderTextBlock(player.nick, 11);
 			add(label);
@@ -129,9 +115,7 @@ public class WndPlayerList extends NetWindow {
 		@Override
 		protected void layout() {
 			super.layout();
-			rank.setPos(VGAP, y);
-			label.setPos(rankEnd, y);
-			rank.alpha( enabled ? 1.0f : 0.3f );
+			label.setPos(VGAP, y);
 			label.alpha( enabled ? 1.0f : 0.3f );
 		}
 

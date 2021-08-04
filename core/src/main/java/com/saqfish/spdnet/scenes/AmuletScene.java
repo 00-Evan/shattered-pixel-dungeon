@@ -28,12 +28,15 @@ import com.saqfish.spdnet.effects.Flare;
 import com.saqfish.spdnet.effects.Speck;
 import com.saqfish.spdnet.items.Amulet;
 import com.saqfish.spdnet.messages.Messages;
+import com.saqfish.spdnet.net.events.Send;
 import com.saqfish.spdnet.ui.RedButton;
 import com.saqfish.spdnet.ui.RenderedTextBlock;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Random;
+
+import static com.saqfish.spdnet.ShatteredPixelDungeon.net;
 
 public class AmuletScene extends PixelScene {
 	
@@ -49,6 +52,9 @@ public class AmuletScene extends PixelScene {
 	@Override
 	public void create() {
 		super.create();
+
+		// Send win regardless of stay or exit
+        net().sender().sendAction(Send.WIN, 0);
 		
 		RenderedTextBlock text = null;
 		if (!noText) {

@@ -22,6 +22,8 @@ public class Send {
     public static final int ITEM = 2;
     public static final int DEATH = 3;
     public static final int BOSSKILL = 4;
+    public static final int WIN = 5;
+    public static final int RECORDSREQUEST = 6;
 
     public static class Message {
         public String data;

@@ -6,6 +6,7 @@ public class Events {
     public static final String PLAYERLISTREQUEST = "playerlistrequest";
     public static final String TRANSFER = "transfer";
     public static final String CHAT = "chat";
+    public static final String RECORDS = "records";
 
     public static class Error{
         public String message;
