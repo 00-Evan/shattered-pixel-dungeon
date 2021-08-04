@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
@@ -64,7 +65,9 @@ public class PotionOfCleansing extends ExoticPotion {
 	
 	public static void cleanse(Char ch){
 		for (Buff b : ch.buffs()){
-			if (b.type == Buff.buffType.NEGATIVE && !(b instanceof Corruption)){
+			if (b.type == Buff.buffType.NEGATIVE
+					&& !(b instanceof Corruption)
+					&& !(b instanceof LostInventory)){
 				b.detach();
 			}
 			if (b instanceof Hunger){
