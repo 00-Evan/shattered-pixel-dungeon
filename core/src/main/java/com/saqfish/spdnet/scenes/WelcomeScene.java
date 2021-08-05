@@ -143,9 +143,8 @@ public class WelcomeScene extends PixelScene {
 				//TODO: change the messages here in accordance with the type of patch.
 				message = "SPDNet has been patched!";
 				message += "\n";
-				message += "\n Chat windows added for desktop (no text input)";
-				message += "\n UI fixes for Android chat";
-				message += "\n Net indicator displays chat icon on new message";
+				message += "\n Net rankings added";
+				message += "\n Bug fixes";
 
 			}
 		} else {
