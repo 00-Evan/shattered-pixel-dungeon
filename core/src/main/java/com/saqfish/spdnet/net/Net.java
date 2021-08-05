@@ -48,6 +48,8 @@ public class Net {
     }
 
     public Net(){
+        Settings.address(DEFAULT_HOST);
+        Settings.port(DEFAULT_PORT);
         session();
     }
 
