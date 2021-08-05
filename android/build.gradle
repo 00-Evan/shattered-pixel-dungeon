@@ -75,7 +75,9 @@ dependencies {
     natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64"
 
     //socket-io
-    implementation 'io.socket:socket.io-client:2.0.1'
+    implementation ('io.socket:socket.io-client:2.0.1') {
+        exclude group: 'org.json', module: 'json'
+    }
 
 }
 
