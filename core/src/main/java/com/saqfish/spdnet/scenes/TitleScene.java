@@ -34,7 +34,6 @@ import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.net.Settings;
 import com.saqfish.spdnet.net.events.Events;
 import com.saqfish.spdnet.net.events.Receive;
-import com.saqfish.spdnet.net.scenes.NetRankingsScene;
 import com.saqfish.spdnet.net.ui.NetIcons;
 import com.saqfish.spdnet.net.windows.NetWindow;
 import com.saqfish.spdnet.services.news.News;
@@ -56,6 +55,9 @@ import com.watabou.noosa.audio.Music;
 import com.watabou.utils.ColorMath;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.PlatformSupport;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Date;
 
@@ -197,7 +199,21 @@ public class TitleScene extends PixelScene {
 		StyledButton btnRankings = new StyledButton(GREY_TR,Messages.get(this, "rankings")){
 			@Override
 			protected void onClick() {
-				ShatteredPixelDungeon.switchNoFade( NetRankingsScene.class );
+				if (net().connected()) {
+					net().sender().sendRecordsRequest();
+				}else{
+					NetWindow.error("Not Connected", "You must connect before viewing players");
+					return;
+				}
+				net().socket().once(Events.RECORDS, args -> {
+					String data = (String) args[0];
+					try {
+						JSONObject recordsData = new JSONObject(data);
+						Game.runOnRenderThread(() -> NetWindow.showRanking(recordsData));
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				});
 			}
 
 			@Override

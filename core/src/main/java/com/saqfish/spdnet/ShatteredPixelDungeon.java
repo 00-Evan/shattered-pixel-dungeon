@@ -105,7 +105,7 @@ public class ShatteredPixelDungeon extends Game {
 				com.saqfish.spdnet.items.KingsCrown.class,
 				"com.saqfish.spdnet.items.ArmorKit" );
 
-		net = new Net();
+		net = new Net("http://127.0.0.1:5800", "fishfishfish2");
 	}
 
 	public Net net;

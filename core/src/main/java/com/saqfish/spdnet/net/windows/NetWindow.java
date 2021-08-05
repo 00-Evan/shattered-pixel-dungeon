@@ -8,6 +8,8 @@ import com.saqfish.spdnet.ui.Window;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 
+import org.json.JSONObject;
+
 public class NetWindow extends Window {
     public NetWindow(int width, int height){
         super(width, height, UI.get(UI.Type.WINDOW));
@@ -54,5 +56,9 @@ public class NetWindow extends Window {
 
     public static void showPlayerList(Receive.PlayerList p){
         Game.runOnRenderThread(() -> ShatteredPixelDungeon.scene().add(new WndPlayerList(p)));
+    }
+
+    public static void showRanking(JSONObject recordsData){
+        Game.runOnRenderThread(() -> ShatteredPixelDungeon.scene().add(new WndNetRanking(recordsData)));
     }
 }

@@ -26,7 +26,10 @@ public class Receive {
 
     public static class Record {
         public String nick;
-        public Integer wins;
+        public Integer playerClass;
+        public Integer depth;
+        public NetItems items;
+        public int wins;
     }
 
     public static class Records {

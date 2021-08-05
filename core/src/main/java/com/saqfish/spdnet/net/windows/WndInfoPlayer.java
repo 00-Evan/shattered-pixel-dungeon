@@ -58,7 +58,11 @@ public class WndInfoPlayer extends NetWindow {
 		layout(player.nick(), player.playerClass(), player.depth(), player.items());
 	}
 
-	private void layout(String nick, int playerClass, int pdepth, Receive.NetItems netItems) {
+    public WndInfoPlayer(Receive.Record player) {
+		layout(player.nick, player.playerClass, player.depth, player.items);
+    }
+
+    private void layout(String nick, int playerClass, int pdepth, Receive.NetItems netItems) {
 		int x = 0;
 		int y = 0;
 

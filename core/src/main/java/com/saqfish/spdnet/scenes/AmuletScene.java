@@ -29,6 +29,7 @@ import com.saqfish.spdnet.effects.Speck;
 import com.saqfish.spdnet.items.Amulet;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.net.events.Send;
+import com.saqfish.spdnet.net.windows.NetWindow;
 import com.saqfish.spdnet.ui.RedButton;
 import com.saqfish.spdnet.ui.RenderedTextBlock;
 import com.watabou.noosa.Camera;
@@ -53,9 +54,6 @@ public class AmuletScene extends PixelScene {
 	public void create() {
 		super.create();
 
-		// Send win regardless of stay or exit
-        net().sender().sendAction(Send.WIN, 0);
-		
 		RenderedTextBlock text = null;
 		if (!noText) {
 			text = renderTextBlock( Messages.get(this, "text"), 8 );
@@ -69,9 +67,14 @@ public class AmuletScene extends PixelScene {
 		RedButton btnExit = new RedButton( Messages.get(this, "exit") ) {
 			@Override
 			protected void onClick() {
-				Dungeon.win( Amulet.class );
-				Dungeon.deleteGame( GamesInProgress.curSlot, true );
-				Game.switchScene( RankingsScene.class );
+				if(net().connected()) {
+					// Send win to server
+					net().sender().sendAction(Send.WIN, 0);
+
+					Dungeon.win(Amulet.class);
+					Dungeon.deleteGame(GamesInProgress.curSlot, true);
+					Game.switchScene(RankingsScene.class);
+				}else NetWindow.error("You're not connected!\nTo record your win to the server, connect first.");
 			}
 		};
 		btnExit.setSize( WIDTH, BTN_HEIGHT );

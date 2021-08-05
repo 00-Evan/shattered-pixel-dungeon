@@ -28,6 +28,7 @@ import com.saqfish.spdnet.scenes.PixelScene;
 import com.saqfish.spdnet.ui.IconButton;
 import com.saqfish.spdnet.ui.RenderedTextBlock;
 import com.saqfish.spdnet.ui.ScrollPane;
+import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Button;
@@ -40,12 +41,16 @@ public class WndPlayerList extends NetWindow {
 	private static final int HEIGHT	= 120;
 
 	private static final int VGAP = 5;
-	private static final int HGAP = 7;
+	private static final int HGAP = 3;
 
 	public WndPlayerList(Receive.PlayerList p) {
 		super(PixelScene.landscape() ? WIDTH_L : WIDTH_P, HEIGHT);
 
 		float y = 2;
+
+		RenderedTextBlock titleLbl = PixelScene.renderTextBlock("Online Players" , 9);
+		add(titleLbl);
+		titleLbl.setPos(VGAP/2, y);
 
 		Image icon = NetIcons.get(NetIcons.CHAT);
 		icon.scale.set(0.8f);
@@ -60,7 +65,13 @@ public class WndPlayerList extends NetWindow {
 		chatBtn.setSize(10,10);
 		chatBtn.setPos(width - chatBtn.width()-(VGAP/2), y);
 
-		y+=HGAP;
+		ColorBlock sep = new ColorBlock(1, 1, 0xFF000000);
+		sep.size(width-(VGAP/2), 1);
+		sep.x = VGAP/2;
+		sep.y = chatBtn.bottom()+2;
+		add(sep);
+
+		y+=sep.y+HGAP;
 
 		ScrollPane list = new ScrollPane( new Component() );
 		add( list );
