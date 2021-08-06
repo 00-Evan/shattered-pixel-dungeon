@@ -216,7 +216,7 @@ public abstract class RegularPainter extends Painter {
 
 					//entrance doors on floor 2 are hidden if the player hasn't picked up 2nd guidebook page
 					if (Dungeon.depth == 2
-							&& !Document.ADVENTURERS_GUIDE.hasPage(Document.GUIDE_SEARCH_PAGE)
+							&& !Document.ADVENTURERS_GUIDE.pageFound(Document.GUIDE_SEARCH_PAGE)
 							&& r instanceof EntranceRoom){
 						d.type = Room.Door.Type.HIDDEN;
 					}

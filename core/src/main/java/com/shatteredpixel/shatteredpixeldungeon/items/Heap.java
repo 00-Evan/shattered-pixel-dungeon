@@ -414,8 +414,8 @@ public class Heap implements Bundlable {
 		//remove any document pages that either don't exist anymore or that the player already has
 		for (Item item : items.toArray(new Item[0])){
 			if (item instanceof DocumentPage
-					&& ( !((DocumentPage) item).document().pages().contains(((DocumentPage) item).page())
-					||    ((DocumentPage) item).document().hasPage(((DocumentPage) item).page()))){
+					&& ( !((DocumentPage) item).document().pageNames().contains(((DocumentPage) item).page())
+					||    ((DocumentPage) item).document().pageFound(((DocumentPage) item).page()))){
 				items.remove(item);
 			}
 		}

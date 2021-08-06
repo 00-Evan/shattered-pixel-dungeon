@@ -26,11 +26,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.DeviceCompat;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 public enum Document {
 	
@@ -40,37 +37,52 @@ public enum Document {
 	Document( int sprite ){
 		pageSprite = sprite;
 	}
+
+	private static final int NOT_FOUND = 0;
+	private static final int FOUND = 1;
+	private static final int READ = 2;
+	private LinkedHashMap<String, Integer> pagesStates = new LinkedHashMap<>();
 	
-	private LinkedHashMap<String, Boolean> pages = new LinkedHashMap<>();
-	
-	public Collection<String> pages(){
-		return pages.keySet();
+	public boolean findPage(String page ) {
+		if (pagesStates.containsKey(page) && pagesStates.get(page) == NOT_FOUND){
+			pagesStates.put(page, FOUND);
+			Journal.saveNeeded = true;
+			return true;
+		}
+		return false;
 	}
-	
-	public boolean addPage( String page ) {
-		if (pages.containsKey(page) && !pages.get(page)){
-			pages.put(page, true);
+
+	public boolean readPage( String page ) {
+		if (pagesStates.containsKey(page) && pagesStates.get(page) == FOUND){
+			pagesStates.put(page, READ);
 			Journal.saveNeeded = true;
 			return true;
 		}
 		return false;
 	}
 	
-	public boolean hasPage( String page ){
-		return pages.containsKey(page) && pages.get(page);
+	public boolean pageFound( String page ){
+		return pagesStates.containsKey(page) && pagesStates.get(page) > NOT_FOUND;
 	}
 	
-	public boolean hasPage( int pageIdx ){
-		return hasPage( pages.keySet().toArray(new String[0])[pageIdx] );
+	public boolean pageFound( int pageIdx ){
+		return pageFound( pagesStates.keySet().toArray(new String[0])[pageIdx] );
 	}
-	
-	public boolean hasAnyPages(){
-		for (String p : pages.keySet()){
-			if (pages.get(p)) {
-				return true;
-			}
-		}
-		return false;
+
+	public boolean pageRead( String page ){
+		return pagesStates.containsKey(page) && pagesStates.get(page) == READ;
+	}
+
+	public boolean pageRead( int pageIdx ){
+		return pageRead( pagesStates.keySet().toArray(new String[0])[pageIdx] );
+	}
+
+	public void setPageState( String page, int state ){
+		if (pagesStates.containsKey(page)) pagesStates.put(page, state);
+	}
+
+	public Collection<String> pageNames(){
+		return pagesStates.keySet();
 	}
 	
 	private int pageSprite;
@@ -87,7 +99,7 @@ public enum Document {
 	}
 	
 	public String pageTitle( int pageIdx ){
-		return pageTitle( pages.keySet().toArray(new String[0])[pageIdx] );
+		return pageTitle( pagesStates.keySet().toArray(new String[0])[pageIdx] );
 	}
 	
 	public String pageBody( String page ){
@@ -95,58 +107,60 @@ public enum Document {
 	}
 	
 	public String pageBody( int pageIdx ){
-		return pageBody( pages.keySet().toArray(new String[0])[pageIdx] );
+		return pageBody( pagesStates.keySet().toArray(new String[0])[pageIdx] );
 	}
 
 	public static final String GUIDE_INTRO_PAGE = "Intro";
 	public static final String GUIDE_SEARCH_PAGE = "Examining_and_Searching";
 	
 	static {
-		ADVENTURERS_GUIDE.pages.put(GUIDE_INTRO_PAGE, 	DeviceCompat.isDebug());
-		ADVENTURERS_GUIDE.pages.put("Identifying", 		DeviceCompat.isDebug());
-		ADVENTURERS_GUIDE.pages.put(GUIDE_SEARCH_PAGE, 	DeviceCompat.isDebug());
-		ADVENTURERS_GUIDE.pages.put("Strength", 		DeviceCompat.isDebug());
-		ADVENTURERS_GUIDE.pages.put("Food", 			DeviceCompat.isDebug());
-		ADVENTURERS_GUIDE.pages.put("Levelling", 		DeviceCompat.isDebug());
-		ADVENTURERS_GUIDE.pages.put("Surprise_Attacks", DeviceCompat.isDebug());
-		ADVENTURERS_GUIDE.pages.put("Dieing", 			DeviceCompat.isDebug());
-		ADVENTURERS_GUIDE.pages.put("Looting", 		    DeviceCompat.isDebug());
-		ADVENTURERS_GUIDE.pages.put("Magic", 			DeviceCompat.isDebug());
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_INTRO_PAGE, 	DeviceCompat.isDebug() ? 2 : 0);
+		ADVENTURERS_GUIDE.pagesStates.put("Identifying", 		DeviceCompat.isDebug() ? 2 : 0);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_SEARCH_PAGE, 	DeviceCompat.isDebug() ? 2 : 0);
+		ADVENTURERS_GUIDE.pagesStates.put("Strength", 		    DeviceCompat.isDebug() ? 2 : 0);
+		ADVENTURERS_GUIDE.pagesStates.put("Food", 			    DeviceCompat.isDebug() ? 2 : 0);
+		ADVENTURERS_GUIDE.pagesStates.put("Levelling", 		    DeviceCompat.isDebug() ? 2 : 0);
+		ADVENTURERS_GUIDE.pagesStates.put("Surprise_Attacks",   DeviceCompat.isDebug() ? 2 : 0);
+		ADVENTURERS_GUIDE.pagesStates.put("Dieing", 			DeviceCompat.isDebug() ? 2 : 0);
+		ADVENTURERS_GUIDE.pagesStates.put("Looting", 		    DeviceCompat.isDebug() ? 2 : 0);
+		ADVENTURERS_GUIDE.pagesStates.put("Magic", 			    DeviceCompat.isDebug() ? 2 : 0);
 		
 		//sewers
-		ALCHEMY_GUIDE.pages.put("Potions",              DeviceCompat.isDebug());
-		ALCHEMY_GUIDE.pages.put("Stones",               DeviceCompat.isDebug());
-		ALCHEMY_GUIDE.pages.put("Energy_Food",          DeviceCompat.isDebug());
-		ALCHEMY_GUIDE.pages.put("Bombs",                DeviceCompat.isDebug());
-		ALCHEMY_GUIDE.pages.put("Weapons",              DeviceCompat.isDebug());
+		ALCHEMY_GUIDE.pagesStates.put("Potions",              DeviceCompat.isDebug() ? 2 : 0);
+		ALCHEMY_GUIDE.pagesStates.put("Stones",               DeviceCompat.isDebug() ? 2 : 0);
+		ALCHEMY_GUIDE.pagesStates.put("Energy_Food",          DeviceCompat.isDebug() ? 2 : 0);
+		ALCHEMY_GUIDE.pagesStates.put("Bombs",                DeviceCompat.isDebug() ? 2 : 0);
+		ALCHEMY_GUIDE.pagesStates.put("Weapons",              DeviceCompat.isDebug() ? 2 : 0);
 		
 		//prison
-		ALCHEMY_GUIDE.pages.put("Exotic_Potions",       DeviceCompat.isDebug());
-		ALCHEMY_GUIDE.pages.put("Exotic_Scrolls",       DeviceCompat.isDebug());
-		ALCHEMY_GUIDE.pages.put("Catalysts",            DeviceCompat.isDebug());
-		ALCHEMY_GUIDE.pages.put("Brews_Elixirs",        DeviceCompat.isDebug());
-		ALCHEMY_GUIDE.pages.put("Spells",               DeviceCompat.isDebug());
+		ALCHEMY_GUIDE.pagesStates.put("Exotic_Potions",       DeviceCompat.isDebug() ? 2 : 0);
+		ALCHEMY_GUIDE.pagesStates.put("Exotic_Scrolls",       DeviceCompat.isDebug() ? 2 : 0);
+		ALCHEMY_GUIDE.pagesStates.put("Catalysts",            DeviceCompat.isDebug() ? 2 : 0);
+		ALCHEMY_GUIDE.pagesStates.put("Brews_Elixirs",        DeviceCompat.isDebug() ? 2 : 0);
+		ALCHEMY_GUIDE.pagesStates.put("Spells",               DeviceCompat.isDebug() ? 2 : 0);
 	}
 	
 	private static final String DOCUMENTS = "documents";
 	
 	public static void store( Bundle bundle ){
 		
-		Bundle docBundle = new Bundle();
+		Bundle docsBundle = new Bundle();
 		
 		for ( Document doc : values()){
-			ArrayList<String> pages = new ArrayList<>();
-			for (String page : doc.pages()){
-				if (doc.pages.get(page)){
-					pages.add(page);
+			Bundle pagesBundle = new Bundle();
+			boolean empty = true;
+			for (String page : doc.pageNames()){
+				if (doc.pagesStates.get(page) != NOT_FOUND){
+					pagesBundle.put(page, doc.pagesStates.get(page));
+					empty = false;
 				}
 			}
-			if (!pages.isEmpty()) {
-				docBundle.put(doc.name(), pages.toArray(new String[0]));
+			if (!empty){
+				docsBundle.put(doc.name(), pagesBundle);
 			}
 		}
 		
-		bundle.put( DOCUMENTS, docBundle );
+		bundle.put( DOCUMENTS, docsBundle );
 		
 	}
 	
@@ -156,14 +170,25 @@ public enum Document {
 			return;
 		}
 		
-		Bundle docBundle = bundle.getBundle( DOCUMENTS );
+		Bundle docsBundle = bundle.getBundle( DOCUMENTS );
 		
 		for ( Document doc : values()){
-			if (docBundle.contains(doc.name())){
-				List<String> pages = Arrays.asList(docBundle.getStringArray(doc.name()));
-				for (String page : pages){
-					if (doc.pages.containsKey(page)) {
-						doc.pages.put(page, true);
+			if (docsBundle.contains(doc.name())){
+				Bundle pagesBundle = docsBundle.getBundle(doc.name());
+
+				//compatibility with pre-0.9.4 saves
+				if (pagesBundle.isNull()) {
+					for (String page : docsBundle.getStringArray(doc.name())){
+						if (doc.pagesStates.containsKey(page)) {
+							doc.pagesStates.put(page, READ);
+						}
+					}
+
+				} else {
+					for (String page : doc.pageNames()) {
+						if (pagesBundle.contains(page)) {
+							doc.pagesStates.put(page, pagesBundle.getInt(page));
+						}
 					}
 				}
 			}

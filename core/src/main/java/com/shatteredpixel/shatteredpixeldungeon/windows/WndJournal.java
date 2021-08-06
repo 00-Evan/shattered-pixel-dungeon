@@ -245,7 +245,7 @@ public class WndJournal extends WndTabbed {
 			
 			pos += Math.max(ITEM_HEIGHT, title.height());
 			
-			for (String page : Document.ADVENTURERS_GUIDE.pages()){
+			for (String page : Document.ADVENTURERS_GUIDE.pageNames()){
 				GuideItem item = new GuideItem( page );
 				
 				item.setRect( 0, pos, width(), ITEM_HEIGHT );
@@ -268,7 +268,7 @@ public class WndJournal extends WndTabbed {
 				super( iconForPage(page), Messages.titleCase(Document.ADVENTURERS_GUIDE.pageTitle(page)));
 				
 				this.page = page;
-				found = Document.ADVENTURERS_GUIDE.hasPage(page);
+				found = Document.ADVENTURERS_GUIDE.pageFound(page);
 				
 				if (!found) {
 					icon.hardlight( 0.5f, 0.5f, 0.5f);
@@ -291,7 +291,7 @@ public class WndJournal extends WndTabbed {
 
 			//TODO might just want this to be part of the Document class
 			private static Image iconForPage( String page ){
-				if (!Document.ADVENTURERS_GUIDE.hasPage(page)){
+				if (!Document.ADVENTURERS_GUIDE.pageFound(page)){
 					return new ItemSprite( ItemSpriteSheet.GUIDE_PAGE );
 				}
 				switch (page){
@@ -349,7 +349,7 @@ public class WndJournal extends WndTabbed {
 						updateList();
 					}
 				};
-				if (Document.ALCHEMY_GUIDE.hasPage(i)) {
+				if (Document.ALCHEMY_GUIDE.pageFound(i)) {
 					pageButtons[i].icon(new ItemSprite(ItemSpriteSheet.SOMETHING + spriteIndexes[i], null));
 				} else {
 					pageButtons[i].icon(new ItemSprite(ItemSpriteSheet.SOMETHING, null));

@@ -76,10 +76,10 @@ public class LaboratoryRoom extends SpecialRoom {
 		}
 		
 		//guide pages
-		Collection<String> allPages = Document.ALCHEMY_GUIDE.pages();
+		Collection<String> allPages = Document.ALCHEMY_GUIDE.pageNames();
 		ArrayList<String> missingPages = new ArrayList<>();
 		for ( String page : allPages){
-			if (!Document.ALCHEMY_GUIDE.hasPage(page)){
+			if (!Document.ALCHEMY_GUIDE.pageFound(page)){
 				missingPages.add(page);
 			}
 		}

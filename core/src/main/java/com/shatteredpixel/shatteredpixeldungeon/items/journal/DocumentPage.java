@@ -58,7 +58,7 @@ public abstract class DocumentPage extends Item {
 		} else {
 			WndJournal.last_index = 0;
 		}
-		document().addPage(page);
+		document().findPage(page);
 		Sample.INSTANCE.play( Assets.Sounds.ITEM );
 		hero.spendAndNext( TIME_TO_PICK_UP );
 		return true;

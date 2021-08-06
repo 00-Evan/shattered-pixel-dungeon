@@ -436,10 +436,10 @@ public abstract class RegularLevel extends Level {
 		}
 
 		//guide pages
-		Collection<String> allPages = Document.ADVENTURERS_GUIDE.pages();
+		Collection<String> allPages = Document.ADVENTURERS_GUIDE.pageNames();
 		ArrayList<String> missingPages = new ArrayList<>();
 		for ( String page : allPages){
-			if (!Document.ADVENTURERS_GUIDE.hasPage(page)){
+			if (!Document.ADVENTURERS_GUIDE.pageFound(page)){
 				missingPages.add(page);
 			}
 		}
