@@ -111,7 +111,7 @@ public class AboutScene extends PixelScene {
 				"Music:",
 				Icons.KRISTJAN.get(),
 				"Kristjan Haaristo",
-				"youtube.com/c/Kristjan",
+				"youtube.com/user/...",
 				"https://www.youtube.com/channel/UCL1e7SgzSWbD_DQxB_5YcLA");
 		kristjan.setRect(alex.right() - colWidth/4f, alex.bottom() + 5, colWidth/2f, 0);
 		content.add(kristjan);
