@@ -839,6 +839,9 @@ public class WndSettings extends WndTabbed {
 						if (reviewers.length > 0) {
 							creds += Messages.titleCase(Messages.get(LangsTab.this, "reviewers"));
 							creds2 += "";
+						}
+
+						if (translators.length > 0){
 							boolean col2 = false;
 							for (i = 0; i < total.size(); i++) {
 								if (i == translatorIdx){
