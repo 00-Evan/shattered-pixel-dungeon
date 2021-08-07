@@ -244,7 +244,9 @@ public class NewsScene extends PixelScene {
 
 			if (button != null){
 				height += 4;
-				button.setSize(button.reqWidth()+2, 16);
+				button.multiline = true;
+				button.setSize(width - bg.marginHor(), 16);
+				button.setSize(width - bg.marginHor(), Math.max(button.reqHeight(), 16));
 				button.setPos(x + (width - button.width())/2, y + height);
 				height = button.bottom() - y;
 			}
