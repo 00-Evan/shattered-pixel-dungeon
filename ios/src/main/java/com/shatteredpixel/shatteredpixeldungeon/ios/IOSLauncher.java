@@ -59,8 +59,6 @@ public class IOSLauncher extends IOSApplication.Delegate {
 		config.depthFormat = GLKViewDrawableDepthFormat.None;
 		config.hdpiMode = HdpiMode.Pixels;
 
-		config.hideHomeIndicator = SPDSettings.fullscreen();
-
 		CGRect statusBarFrame = UIApplication.getSharedApplication().getStatusBarFrame();
 		double statusBarHeight = Math.min(statusBarFrame.getWidth(), statusBarFrame.getHeight());
 
