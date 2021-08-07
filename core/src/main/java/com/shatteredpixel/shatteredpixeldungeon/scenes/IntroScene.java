@@ -22,7 +22,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
+import com.watabou.noosa.Camera;
+import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 
 public class IntroScene extends PixelScene {
@@ -34,6 +37,16 @@ public class IntroScene extends PixelScene {
 	@Override
 	public void create() {
 		super.create();
+
+		int w = Camera.main.width;
+		int h = Camera.main.height;
+
+		Archs archs = new Archs();
+		archs.setSize( w, h );
+		add( archs );
+
+		//darkens the arches
+		add(new ColorBlock(w, h, 0x88000000));
 		
 		add( new WndStory( Messages.get(this, "text") ) {
 			@Override
