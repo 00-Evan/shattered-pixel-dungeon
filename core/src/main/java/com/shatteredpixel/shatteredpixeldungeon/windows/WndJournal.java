@@ -200,7 +200,7 @@ public class WndJournal extends WndTabbed {
 		}
 	}
 	
-	private static class GuideTab extends Component {
+	public static class GuideTab extends Component {
 		
 		private ScrollPane list;
 		private ArrayList<GuideItem> pages = new ArrayList<>();
@@ -283,43 +283,44 @@ public class WndJournal extends WndTabbed {
 					GameScene.show( new WndStory( iconForPage(page),
 							Document.ADVENTURERS_GUIDE.pageTitle(page),
 							Document.ADVENTURERS_GUIDE.pageBody(page) ));
+					Document.ALCHEMY_GUIDE.readPage(page);
 					return true;
 				} else {
 					return false;
 				}
 			}
-
-			//TODO might just want this to be part of the Document class
-			private static Image iconForPage( String page ){
-				if (!Document.ADVENTURERS_GUIDE.pageFound(page)){
-					return new ItemSprite( ItemSpriteSheet.GUIDE_PAGE );
-				}
-				switch (page){
-					case Document.GUIDE_INTRO_PAGE: default:
-						return new ItemSprite(ItemSpriteSheet.MASTERY);
-					case "Identifying":
-						return new ItemSprite( ItemSpriteSheet.SCROLL_ISAZ );
-					case Document.GUIDE_SEARCH_PAGE:
-						return new ItemSprite( ItemSpriteSheet.LOCKED_CHEST );
-					case "Strength":
-						return new ItemSprite( ItemSpriteSheet.ARMOR_SCALE );
-					case "Food":
-						return new ItemSprite( ItemSpriteSheet.PASTY );
-					case "Levelling":
-						return new ItemSprite( ItemSpriteSheet.POTION_MAGENTA );
-					case "Surprise_Attacks":
-						return new ItemSprite( ItemSpriteSheet.ASSASSINS_BLADE );
-					case "Dieing":
-						return new ItemSprite( ItemSpriteSheet.ANKH );
-					case "Looting":
-						return new ItemSprite( ItemSpriteSheet.CRYSTAL_KEY );
-					case "Magic":
-						return new ItemSprite( ItemSpriteSheet.WAND_LIGHTNING );
-				}
-			}
 			
 		}
-		
+
+		//TODO might just want this to be part of the Document class
+		public static Image iconForPage( String page ){
+			if (!Document.ADVENTURERS_GUIDE.pageFound(page)){
+				return new ItemSprite( ItemSpriteSheet.GUIDE_PAGE );
+			}
+			switch (page){
+				case Document.GUIDE_INTRO_PAGE: default:
+					return new ItemSprite(ItemSpriteSheet.MASTERY);
+				case "Identifying":
+					return new ItemSprite( ItemSpriteSheet.SCROLL_ISAZ );
+				case Document.GUIDE_SEARCH_PAGE:
+					return new ItemSprite( ItemSpriteSheet.LOCKED_CHEST );
+				case "Strength":
+					return new ItemSprite( ItemSpriteSheet.ARMOR_SCALE );
+				case "Food":
+					return new ItemSprite( ItemSpriteSheet.PASTY );
+				case "Levelling":
+					return new ItemSprite( ItemSpriteSheet.POTION_MAGENTA );
+				case "Surprise_Attacks":
+					return new ItemSprite( ItemSpriteSheet.ASSASSINS_BLADE );
+				case "Dieing":
+					return new ItemSprite( ItemSpriteSheet.ANKH );
+				case "Looting":
+					return new ItemSprite( ItemSpriteSheet.CRYSTAL_KEY );
+				case "Magic":
+					return new ItemSprite( ItemSpriteSheet.WAND_LIGHTNING );
+			}
+		}
+
 	}
 	
 	public static class AlchemyTab extends Component {
@@ -329,7 +330,7 @@ public class WndJournal extends WndTabbed {
 		
 		private static final int[] spriteIndexes = {10, 12, 7, 8, 3, 9, 11, 13, 14, 15};
 		
-		private static int currentPageIdx   = -1;
+		public static int currentPageIdx   = -1;
 		
 		private IconTitle title;
 		private RenderedTextBlock body;
@@ -436,6 +437,8 @@ public class WndJournal extends WndTabbed {
 			body.text(Document.ALCHEMY_GUIDE.pageBody(currentPageIdx));
 			body.setPos(0, title.bottom());
 			content.add(body);
+
+			Document.ALCHEMY_GUIDE.readPage(currentPageIdx);
 			
 			ArrayList<QuickRecipe> toAdd = QuickRecipe.getRecipes(currentPageIdx);
 			

@@ -52,6 +52,18 @@ public enum Document {
 		return false;
 	}
 
+	public boolean findPage( int pageIdx ) {
+		return findPage( pagesStates.keySet().toArray(new String[0])[pageIdx] );
+	}
+
+	public boolean pageFound( String page ){
+		return pagesStates.containsKey(page) && pagesStates.get(page) > NOT_FOUND;
+	}
+
+	public boolean pageFound( int pageIdx ){
+		return pageFound( pagesStates.keySet().toArray(new String[0])[pageIdx] );
+	}
+
 	public boolean readPage( String page ) {
 		if (pagesStates.containsKey(page) && pagesStates.get(page) == FOUND){
 			pagesStates.put(page, READ);
@@ -60,13 +72,9 @@ public enum Document {
 		}
 		return false;
 	}
-	
-	public boolean pageFound( String page ){
-		return pagesStates.containsKey(page) && pagesStates.get(page) > NOT_FOUND;
-	}
-	
-	public boolean pageFound( int pageIdx ){
-		return pageFound( pagesStates.keySet().toArray(new String[0])[pageIdx] );
+
+	public boolean readPage( int pageIdx ) {
+		return readPage( pagesStates.keySet().toArray(new String[0])[pageIdx] );
 	}
 
 	public boolean pageRead( String page ){
@@ -77,14 +85,21 @@ public enum Document {
 		return pageRead( pagesStates.keySet().toArray(new String[0])[pageIdx] );
 	}
 
-	public void setPageState( String page, int state ){
-		if (pagesStates.containsKey(page)) pagesStates.put(page, state);
-	}
-
 	public Collection<String> pageNames(){
 		return pagesStates.keySet();
 	}
-	
+
+	public int pageIdx(String name){
+		int i = 0;
+		for( String page : pagesStates.keySet()){
+			if (page.equals(name)){
+				return i;
+			}
+			i++;
+		}
+		return -1;
+	}
+
 	private int pageSprite;
 	public int pageSprite(){
 		return pageSprite;

@@ -917,9 +917,10 @@ public class GameScene extends PixelScene {
 	public static void pickUpJournal( Item item, int pos ) {
 		if (scene != null) scene.pane.pickup( item, pos );
 	}
-	
-	public static void flashJournal(){
-		if (scene != null) scene.pane.flash();
+
+	//TODO currently only works with guidebooks
+	public static void flashForDocument( String page ){
+		if (scene != null) scene.pane.flashForPage( page );
 	}
 	
 	public static void updateKeyDisplay(){
