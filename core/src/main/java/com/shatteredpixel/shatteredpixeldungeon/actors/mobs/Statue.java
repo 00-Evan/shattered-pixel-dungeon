@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon.Enchantment;
@@ -108,6 +109,14 @@ public class Statue extends Mob {
 		return Random.NormalIntRange(0, Dungeon.depth + weapon.defenseFactor(this));
 	}
 	
+	@Override
+	public void add(Buff buff) {
+		super.add(buff);
+		if (state == PASSIVE && buff.type == Buff.buffType.NEGATIVE){
+			state = HUNTING;
+		}
+	}
+
 	@Override
 	public void damage( int dmg, Object src ) {
 
