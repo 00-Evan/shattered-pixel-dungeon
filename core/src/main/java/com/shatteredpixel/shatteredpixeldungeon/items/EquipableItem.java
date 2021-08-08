@@ -27,11 +27,16 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
 import java.util.ArrayList;
+
+import javax.print.Doc;
 
 public abstract class EquipableItem extends Item {
 
@@ -47,6 +52,19 @@ public abstract class EquipableItem extends Item {
 		ArrayList<String> actions = super.actions( hero );
 		actions.add( isEquipped( hero ) ? AC_UNEQUIP : AC_EQUIP );
 		return actions;
+	}
+
+	@Override
+	public boolean doPickUp(Hero hero) {
+		if (super.doPickUp(hero)){
+			if (!isIdentified() && !Document.ADVENTURERS_GUIDE.pageRead(Document.GUIDE_IDING)){
+				GLog.p(Messages.get(Guidebook.class, "hint"));
+				GameScene.flashForDocument(Document.GUIDE_IDING);
+			}
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override

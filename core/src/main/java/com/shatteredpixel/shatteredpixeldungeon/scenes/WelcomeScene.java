@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Fireball;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
@@ -46,7 +47,6 @@ import com.watabou.noosa.audio.Music;
 import com.watabou.utils.FileUtils;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class WelcomeScene extends PixelScene {
 
@@ -189,13 +189,11 @@ public class WelcomeScene extends PixelScene {
 
 		//update rankings, to update any data which may be outdated
 		if (previousVersion < LATEST_UPDATE){
-			int highestChalInRankings = 0;
 			try {
 				Rankings.INSTANCE.load();
 				for (Rankings.Record rec : Rankings.INSTANCE.records.toArray(new Rankings.Record[0])){
 					try {
 						Rankings.INSTANCE.loadGameData(rec);
-						if (rec.win) highestChalInRankings = Math.max(highestChalInRankings, Challenges.activeChallenges());
 						Rankings.INSTANCE.saveGameData(rec);
 					} catch (Exception e) {
 						//if we encounter a fatal per-record error, then clear that record
@@ -210,25 +208,18 @@ public class WelcomeScene extends PixelScene {
 				ShatteredPixelDungeon.reportException(e);
 			}
 
-			//fixes a bug from v0.9.0- where champion badges would rarely not save
-			if (highestChalInRankings > 0){
-				Badges.loadGlobal();
-				if (highestChalInRankings >= 1) Badges.addGlobal(Badges.Badge.CHAMPION_1);
-				if (highestChalInRankings >= 3) Badges.addGlobal(Badges.Badge.CHAMPION_2);
-				if (highestChalInRankings >= 6) Badges.addGlobal(Badges.Badge.CHAMPION_3);
-				Badges.saveGlobal();
+		}
+
+		//if the player has beaten Goo, automatically give all guidebook pages
+		if (previousVersion <= ShatteredPixelDungeon.v0_9_3c){
+			Badges.loadGlobal();
+			if (Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_1)){
+				for (String page : Document.ADVENTURERS_GUIDE.pageNames()){
+					Document.ADVENTURERS_GUIDE.readPage(page);
+				}
 			}
 		}
 
-		//resetting language preference back to native for finnish speakers if they were on english
-		//This is because Finnish was unmaintained for quite a while
-		if ( previousVersion <= 500
-				&& Languages.matchLocale(Locale.getDefault()) == Languages.FINNISH
-				&& Messages.lang() == Languages.ENGLISH) {
-			SPDSettings.language(Languages.FINNISH);
-			Messages.setup(Languages.FINNISH);
-		}
-		
 		SPDSettings.version(ShatteredPixelDungeon.versionCode);
 	}
 	

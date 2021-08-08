@@ -43,6 +43,7 @@ public enum Icons {
 	DATA,
 	AUDIO,
 	TALENT,
+	MAGNIFY,
 	
 	//ingame UI icons
 	SKULL,
@@ -137,6 +138,9 @@ public enum Icons {
 			break;
 		case TALENT:
 			icon.frame( icon.texture.uvRect( 80, 16, 93, 29 ) );
+			break;
+		case MAGNIFY:
+			icon.frame( icon.texture.uvRect( 96, 16, 110, 30 ) );
 			break;
 		case SKULL:
 			icon.frame( icon.texture.uvRect( 0, 32, 8, 40 ) );

@@ -125,34 +125,45 @@ public enum Document {
 		return pageBody( pagesStates.keySet().toArray(new String[0])[pageIdx] );
 	}
 
-	public static final String GUIDE_INTRO_PAGE = "Intro";
-	public static final String GUIDE_SEARCH_PAGE = "Examining_and_Searching";
-	
+	public static final String GUIDE_INTRO          = "Intro";
+	public static final String GUIDE_EXAMINING      = "Examining";
+	public static final String GUIDE_SURPRISE_ATKS  = "Surprise_Attacks";
+	public static final String GUIDE_IDING          = "Identifying";
+	public static final String GUIDE_FOOD           = "Food";
+	public static final String GUIDE_DIEING         = "Dieing";
+	public static final String GUIDE_SEARCHING      = "Searching";
+
+	//pages and default states
 	static {
-		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_INTRO_PAGE, 	DeviceCompat.isDebug() ? 2 : 0);
-		ADVENTURERS_GUIDE.pagesStates.put("Identifying", 		DeviceCompat.isDebug() ? 2 : 0);
-		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_SEARCH_PAGE, 	DeviceCompat.isDebug() ? 2 : 0);
-		ADVENTURERS_GUIDE.pagesStates.put("Strength", 		    DeviceCompat.isDebug() ? 2 : 0);
-		ADVENTURERS_GUIDE.pagesStates.put("Food", 			    DeviceCompat.isDebug() ? 2 : 0);
-		ADVENTURERS_GUIDE.pagesStates.put("Levelling", 		    DeviceCompat.isDebug() ? 2 : 0);
-		ADVENTURERS_GUIDE.pagesStates.put("Surprise_Attacks",   DeviceCompat.isDebug() ? 2 : 0);
-		ADVENTURERS_GUIDE.pagesStates.put("Dieing", 			DeviceCompat.isDebug() ? 2 : 0);
-		ADVENTURERS_GUIDE.pagesStates.put("Looting", 		    DeviceCompat.isDebug() ? 2 : 0);
-		ADVENTURERS_GUIDE.pagesStates.put("Magic", 			    DeviceCompat.isDebug() ? 2 : 0);
+		boolean debug = DeviceCompat.isDebug();
+		//hero starts with these
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_INTRO,          debug ? READ : FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_EXAMINING,      debug ? READ : FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_SURPRISE_ATKS,  debug ? READ : FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_IDING,          debug ? READ : FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_FOOD,           debug ? READ : FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_DIEING,         debug ? READ : FOUND);
+		//given in sewers
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_SEARCHING,      debug ? READ : NOT_FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put("Strength",           debug ? READ : NOT_FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put("Upgrades",           debug ? READ : NOT_FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put("Looting",            debug ? READ : NOT_FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put("Levelling",          debug ? READ : NOT_FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put("Positioning",        debug ? READ : NOT_FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put("Magic",              debug ? READ : NOT_FOUND);
 		
-		//sewers
-		ALCHEMY_GUIDE.pagesStates.put("Potions",              DeviceCompat.isDebug() ? 2 : 0);
-		ALCHEMY_GUIDE.pagesStates.put("Stones",               DeviceCompat.isDebug() ? 2 : 0);
-		ALCHEMY_GUIDE.pagesStates.put("Energy_Food",          DeviceCompat.isDebug() ? 2 : 0);
-		ALCHEMY_GUIDE.pagesStates.put("Bombs",                DeviceCompat.isDebug() ? 2 : 0);
-		ALCHEMY_GUIDE.pagesStates.put("Weapons",              DeviceCompat.isDebug() ? 2 : 0);
-		
-		//prison
-		ALCHEMY_GUIDE.pagesStates.put("Exotic_Potions",       DeviceCompat.isDebug() ? 2 : 0);
-		ALCHEMY_GUIDE.pagesStates.put("Exotic_Scrolls",       DeviceCompat.isDebug() ? 2 : 0);
-		ALCHEMY_GUIDE.pagesStates.put("Catalysts",            DeviceCompat.isDebug() ? 2 : 0);
-		ALCHEMY_GUIDE.pagesStates.put("Brews_Elixirs",        DeviceCompat.isDebug() ? 2 : 0);
-		ALCHEMY_GUIDE.pagesStates.put("Spells",               DeviceCompat.isDebug() ? 2 : 0);
+		//given in sewers
+		ALCHEMY_GUIDE.pagesStates.put("Potions",              debug ? READ : NOT_FOUND);
+		ALCHEMY_GUIDE.pagesStates.put("Stones",               debug ? READ : NOT_FOUND);
+		ALCHEMY_GUIDE.pagesStates.put("Energy_Food",          debug ? READ : NOT_FOUND);
+		ALCHEMY_GUIDE.pagesStates.put("Bombs",                debug ? READ : NOT_FOUND);
+		ALCHEMY_GUIDE.pagesStates.put("Weapons",              debug ? READ : NOT_FOUND);
+		//given in prison
+		ALCHEMY_GUIDE.pagesStates.put("Exotic_Potions",       debug? READ : NOT_FOUND);
+		ALCHEMY_GUIDE.pagesStates.put("Exotic_Scrolls",       debug ? READ : NOT_FOUND);
+		ALCHEMY_GUIDE.pagesStates.put("Catalysts",            debug ? READ : NOT_FOUND);
+		ALCHEMY_GUIDE.pagesStates.put("Brews_Elixirs",        debug ? READ : NOT_FOUND);
+		ALCHEMY_GUIDE.pagesStates.put("Spells",               debug ? READ : NOT_FOUND);
 	}
 	
 	private static final String DOCUMENTS = "documents";

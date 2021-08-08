@@ -37,10 +37,12 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.DocumentPage;
+import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -416,6 +418,9 @@ public class Heap implements Bundlable {
 			if (item instanceof DocumentPage
 					&& ( !((DocumentPage) item).document().pageNames().contains(((DocumentPage) item).page())
 					||    ((DocumentPage) item).document().pageFound(((DocumentPage) item).page()))){
+				items.remove(item);
+			}
+			if (item instanceof Guidebook && Document.ADVENTURERS_GUIDE.pageRead(0)){
 				items.remove(item);
 			}
 		}
