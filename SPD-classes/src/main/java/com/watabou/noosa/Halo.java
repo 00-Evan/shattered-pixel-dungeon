@@ -41,6 +41,10 @@ public class Halo extends Image {
 		if (!TextureCache.contains( CACHE_KEY )) {
 
 			Pixmap pixmap = TextureCache.create( CACHE_KEY, 2*RADIUS+1, 2*RADIUS+1 ).bitmap;
+
+			pixmap.setColor( 0x00000000 );
+			pixmap.fill();
+
 			pixmap.setColor( 0xFFFFFF08 );
 			for (int i = 0; i < RADIUS; i+=2) {
 				pixmap.fillCircle(RADIUS, RADIUS, (RADIUS - i));

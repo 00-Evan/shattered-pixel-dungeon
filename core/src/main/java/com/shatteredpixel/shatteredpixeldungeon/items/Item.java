@@ -187,10 +187,6 @@ public class Item implements Bundlable {
 			return true;
 		}
 
-		if (!container.canHold(this)){
-			return false;
-		}
-
 		ArrayList<Item> items = container.items;
 
 		if (items.contains( this )) {
@@ -203,6 +199,10 @@ public class Item implements Bundlable {
 					return true;
 				}
 			}
+		}
+
+		if (!container.canHold(this)){
+			return false;
 		}
 		
 		if (stackable) {
