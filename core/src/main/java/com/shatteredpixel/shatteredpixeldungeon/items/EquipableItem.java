@@ -36,8 +36,6 @@ import com.watabou.noosa.audio.Sample;
 
 import java.util.ArrayList;
 
-import javax.print.Doc;
-
 public abstract class EquipableItem extends Item {
 
 	public static final String AC_EQUIP		= "EQUIP";
@@ -57,7 +55,7 @@ public abstract class EquipableItem extends Item {
 	@Override
 	public boolean doPickUp(Hero hero) {
 		if (super.doPickUp(hero)){
-			if (!isIdentified() && !Document.ADVENTURERS_GUIDE.pageRead(Document.GUIDE_IDING)){
+			if (!isIdentified() && !Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_IDING)){
 				GLog.p(Messages.get(Guidebook.class, "hint"));
 				GameScene.flashForDocument(Document.GUIDE_IDING);
 			}

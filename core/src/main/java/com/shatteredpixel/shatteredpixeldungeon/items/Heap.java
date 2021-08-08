@@ -417,10 +417,10 @@ public class Heap implements Bundlable {
 		for (Item item : items.toArray(new Item[0])){
 			if (item instanceof DocumentPage
 					&& ( !((DocumentPage) item).document().pageNames().contains(((DocumentPage) item).page())
-					||    ((DocumentPage) item).document().pageFound(((DocumentPage) item).page()))){
+					||    ((DocumentPage) item).document().isPageFound(((DocumentPage) item).page()))){
 				items.remove(item);
 			}
-			if (item instanceof Guidebook && Document.ADVENTURERS_GUIDE.pageRead(0)){
+			if (item instanceof Guidebook && Document.ADVENTURERS_GUIDE.isPageRead(0)){
 				items.remove(item);
 			}
 		}

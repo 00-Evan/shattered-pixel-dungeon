@@ -56,12 +56,12 @@ public enum Document {
 		return findPage( pagesStates.keySet().toArray(new String[0])[pageIdx] );
 	}
 
-	public boolean pageFound( String page ){
+	public boolean isPageFound( String page ){
 		return pagesStates.containsKey(page) && pagesStates.get(page) > NOT_FOUND;
 	}
 
-	public boolean pageFound( int pageIdx ){
-		return pageFound( pagesStates.keySet().toArray(new String[0])[pageIdx] );
+	public boolean isPageFound( int pageIdx ){
+		return isPageFound( pagesStates.keySet().toArray(new String[0])[pageIdx] );
 	}
 
 	public boolean readPage( String page ) {
@@ -77,12 +77,12 @@ public enum Document {
 		return readPage( pagesStates.keySet().toArray(new String[0])[pageIdx] );
 	}
 
-	public boolean pageRead( String page ){
+	public boolean isPageRead( String page ){
 		return pagesStates.containsKey(page) && pagesStates.get(page) == READ;
 	}
 
-	public boolean pageRead( int pageIdx ){
-		return pageRead( pagesStates.keySet().toArray(new String[0])[pageIdx] );
+	public boolean isPageRead( int pageIdx ){
+		return isPageRead( pagesStates.keySet().toArray(new String[0])[pageIdx] );
 	}
 
 	public Collection<String> pageNames(){

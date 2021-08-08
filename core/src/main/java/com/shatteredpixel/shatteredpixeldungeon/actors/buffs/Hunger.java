@@ -97,7 +97,7 @@ public class Hunger extends Buff implements Hero.Doom {
 
 					GLog.w( Messages.get(this, "onhungry") );
 
-					if (!Document.ADVENTURERS_GUIDE.pageRead(Document.GUIDE_FOOD)){
+					if (!Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_FOOD)){
 						GLog.p(Messages.get(Guidebook.class, "hint"));
 						GameScene.flashForDocument(Document.GUIDE_FOOD);
 					}
