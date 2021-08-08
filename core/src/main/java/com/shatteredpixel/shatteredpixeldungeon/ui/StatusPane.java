@@ -54,6 +54,8 @@ public class StatusPane extends Component {
 	public static float talentBlink;
 	private float warning;
 
+	private static final float FLASH_RATE = (float)(Math.PI*1.5f); //1.5 blinks per second
+
 	private int lastTier = 0;
 
 	private Image rawShielding;
@@ -217,9 +219,9 @@ public class StatusPane extends Component {
 			warning += Game.elapsed * 5f *(0.4f - (health/(float)max));
 			warning %= 1f;
 			avatar.tint(ColorMath.interpolate(warning, warningColors), 0.5f );
-		} else if (talentBlink > 0){
+		} else if (talentBlink > 0.33f){ //stops early so it doesn't end in the middle of a blink
 			talentBlink -= Game.elapsed;
-			avatar.tint(1, 1, 0, (float)Math.abs(Math.sin(2*talentBlink)/2f));
+			avatar.tint(1, 1, 0, (float)Math.abs(Math.cos(talentBlink*FLASH_RATE))/2f);
 		} else {
 			avatar.resetColor();
 		}
@@ -281,7 +283,7 @@ public class StatusPane extends Component {
 		private Image journalIcon;
 		private KeyDisplay keyIcon;
 		
-		private String flashingPage = Document.GUIDE_INTRO_PAGE;
+		private String flashingPage = null;
 
 		public JournalButton() {
 			super();
@@ -329,7 +331,6 @@ public class StatusPane extends Component {
 		}
 
 		private float time;
-		private static final float FLASH_RATE = (float)(Math.PI*1.5f); //1.5 blinks per second
 		
 		@Override
 		public void update() {
