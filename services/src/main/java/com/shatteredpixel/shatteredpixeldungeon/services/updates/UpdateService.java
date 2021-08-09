@@ -50,6 +50,10 @@ public abstract class UpdateService {
 		public abstract void onComplete();
 	}
 
+	public abstract boolean supportsReviews();
+
 	public abstract void initializeReview( ReviewResultCallback callback );
+
+	public abstract void openReviewURI();
 
 }

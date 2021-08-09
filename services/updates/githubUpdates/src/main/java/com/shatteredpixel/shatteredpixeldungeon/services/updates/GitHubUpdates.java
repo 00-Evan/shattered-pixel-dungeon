@@ -139,8 +139,18 @@ public class GitHubUpdates extends UpdateService {
 	}
 
 	@Override
+	public boolean supportsReviews() {
+		return false;
+	}
+
+	@Override
 	public void initializeReview(ReviewResultCallback callback) {
 		//does nothing, no review functionality here
 		callback.onComplete();
+	}
+
+	@Override
+	public void openReviewURI() {
+		//does nothing
 	}
 }

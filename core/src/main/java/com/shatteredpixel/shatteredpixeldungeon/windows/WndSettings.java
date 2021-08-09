@@ -551,7 +551,7 @@ public class WndSettings extends WndTabbed {
 			chkNews.checked(SPDSettings.news());
 			add(chkNews);
 
-			if (Updates.supportsUpdates()) {
+			if (Updates.supportsUpdates() && Updates.isUpdateable()) {
 				chkUpdates = new CheckBox(Messages.get(this, "updates")) {
 					@Override
 					protected void onClick() {

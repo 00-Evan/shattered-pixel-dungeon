@@ -71,9 +71,18 @@ public class DebugUpdates extends UpdateService {
 	}
 
 	@Override
+	public boolean supportsReviews() {
+		return true;
+	}
+
+	@Override
 	public void initializeReview(ReviewResultCallback callback) {
 		//does nothing
 		callback.onComplete();
 	}
 
+	@Override
+	public void openReviewURI() {
+		DeviceCompat.openURI("https://www.google.com/");
+	}
 }

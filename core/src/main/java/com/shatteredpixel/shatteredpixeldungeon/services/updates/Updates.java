@@ -102,6 +102,10 @@ public class Updates {
 		}
 	}
 
+	public static boolean supportsReviews() {
+		return supportsUpdates() && service.supportsReviews();
+	}
+
 	public static void launchReview(Callback callback){
 		if (supportsUpdates()){
 			service.initializeReview(new UpdateService.ReviewResultCallback() {
@@ -112,6 +116,12 @@ public class Updates {
 			});
 		} else {
 			callback.call();
+		}
+	}
+
+	public static void openReviewURI(){
+		if (supportsUpdates()){
+			service.openReviewURI();
 		}
 	}
 
