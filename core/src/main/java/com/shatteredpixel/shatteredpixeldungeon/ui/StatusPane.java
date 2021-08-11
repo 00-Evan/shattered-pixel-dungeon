@@ -380,6 +380,7 @@ public class StatusPane extends Component {
 					GameScene.show( new WndStory( WndJournal.GuideTab.iconForPage(flashingPage),
 							Document.ADVENTURERS_GUIDE.pageTitle(flashingPage),
 							Document.ADVENTURERS_GUIDE.pageBody(flashingPage) ));
+					Document.ADVENTURERS_GUIDE.readPage(flashingPage);
 				} else {
 					GameScene.show( new WndJournal() );
 				}
