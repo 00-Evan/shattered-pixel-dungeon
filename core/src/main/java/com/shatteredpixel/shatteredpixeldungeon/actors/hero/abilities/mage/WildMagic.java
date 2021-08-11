@@ -134,6 +134,7 @@ public class WildMagic extends ArmorAbility {
 			cur.fx(aim, new Callback() {
 				@Override
 				public void call() {
+					cur.onZap(aim);
 					afterZap(cur, wands, hero, target);
 				}
 			});
