@@ -299,7 +299,8 @@ public class Belongings implements Iterable<Item> {
 		
 		return result;
 	}
-	
+
+	//triggers when a run ends, so ignores lost inventory effects
 	public void identify() {
 		for (Item item : this) {
 			item.identify();
@@ -307,25 +308,25 @@ public class Belongings implements Iterable<Item> {
 	}
 	
 	public void observe() {
-		if (weapon != null) {
-			weapon.identify();
-			Badges.validateItemLevelAquired( weapon );
+		if (weapon() != null) {
+			weapon().identify();
+			Badges.validateItemLevelAquired(weapon());
 		}
-		if (armor != null) {
-			armor.identify();
-			Badges.validateItemLevelAquired( armor );
+		if (armor() != null) {
+			armor().identify();
+			Badges.validateItemLevelAquired(armor());
 		}
-		if (artifact != null) {
-			artifact.identify();
-			Badges.validateItemLevelAquired(artifact);
+		if (artifact() != null) {
+			artifact().identify();
+			Badges.validateItemLevelAquired(artifact());
 		}
-		if (misc != null) {
-			misc.identify();
-			Badges.validateItemLevelAquired(misc);
+		if (misc() != null) {
+			misc().identify();
+			Badges.validateItemLevelAquired(misc());
 		}
-		if (ring != null) {
-			ring.identify();
-			Badges.validateItemLevelAquired(ring);
+		if (ring() != null) {
+			ring().identify();
+			Badges.validateItemLevelAquired(ring());
 		}
 		for (Item item : backpack) {
 			if (item instanceof EquipableItem || item instanceof Wand) {
@@ -335,10 +336,12 @@ public class Belongings implements Iterable<Item> {
 	}
 	
 	public void uncurseEquipped() {
-		ScrollOfRemoveCurse.uncurse( owner, armor, weapon, artifact, misc, ring);
+		ScrollOfRemoveCurse.uncurse( owner, armor(), weapon(), artifact(), misc(), ring());
 	}
 	
 	public Item randomUnequipped() {
+		if (owner.buff(LostInventory.class) != null) return null;
+
 		return Random.element( backpack.items );
 	}
 	
