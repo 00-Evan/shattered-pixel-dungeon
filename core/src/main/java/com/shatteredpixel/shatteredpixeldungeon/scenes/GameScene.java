@@ -45,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Ripple;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
+import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -545,9 +546,18 @@ public class GameScene extends PixelScene {
 		
 		fadeIn();
 
-		//assume the hero died with an ankh
+		//re-show WndResurrect if needed
 		if (!Dungeon.hero.isAlive()){
-			add(new WndResurrect());
+			//check if hero has an unblessed ankh
+			boolean hasAnkh = false;
+			for (Ankh i : Dungeon.hero.belongings.getAllItems(Ankh.class)){
+				if (!i.isBlessed()){
+					hasAnkh = true;
+				}
+			}
+			if (hasAnkh) {
+				add(new WndResurrect());
+			}
 		}
 
 	}
