@@ -131,7 +131,7 @@ public class Succubus extends Mob {
 				cell = route.collisionPos + n;
 				if (Dungeon.level.passable[cell]
 						&& Actor.findChar( cell ) == null
-						&& (!properties().contains(Property.LARGE) || Dungeon.level.openSpace[n])) {
+						&& (!properties().contains(Property.LARGE) || Dungeon.level.openSpace[cell])) {
 					candidates.add( cell );
 				}
 			}
