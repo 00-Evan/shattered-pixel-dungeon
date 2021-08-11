@@ -127,12 +127,16 @@ public abstract class EquipableItem extends Item {
 			hero.spend( time2equip( hero ) );
 		}
 
+		//temporarily keep this item so it can be collected
+		boolean wasKept = keptThoughLostInvent;
+		keptThoughLostInvent = true;
 		if (!collect || !collect( hero.belongings.backpack )) {
 			onDetach();
 			Dungeon.quickslot.clearItem(this);
 			updateQuickslot();
 			if (collect) Dungeon.level.drop( this, hero.pos );
 		}
+		keptThoughLostInvent = wasKept;
 
 		return true;
 	}
