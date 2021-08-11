@@ -113,7 +113,7 @@ public class MagesStaff extends MeleeWeapon {
 
 	@Override
 	public void activate( Char ch ) {
-		if(wand != null) wand.charge( ch, STAFF_SCALE_FACTOR );
+		applyWandChargeBuff(ch);
 	}
 
 	@Override
@@ -189,8 +189,8 @@ public class MagesStaff extends MeleeWeapon {
 	@Override
 	public boolean collect( Bag container ) {
 		if (super.collect(container)) {
-			if (container.owner != null && wand != null) {
-				wand.charge(container.owner, STAFF_SCALE_FACTOR);
+			if (container.owner != null) {
+				applyWandChargeBuff(container.owner);
 			}
 			return true;
 		} else {
@@ -261,6 +261,12 @@ public class MagesStaff extends MeleeWeapon {
 	public void gainCharge( float amt, boolean overcharge ){
 		if (wand != null){
 			wand.gainCharge(amt, overcharge);
+		}
+	}
+
+	public void applyWandChargeBuff(Char owner){
+		if (wand != null){
+			wand.charge(owner, STAFF_SCALE_FACTOR);
 		}
 	}
 

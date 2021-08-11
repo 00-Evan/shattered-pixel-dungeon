@@ -64,6 +64,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
+import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -74,11 +75,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.CrystalKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
@@ -98,10 +101,12 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfTenacity;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
@@ -1986,16 +1991,30 @@ public class Hero extends Char {
 		HP = HT;
 		live();
 
+		MagicalHolster holster = belongings.getItem(MagicalHolster.class);
+
 		Buff.affect(this, LostInventory.class);
 		Buff.affect(this, Invisibility.class, 3f);
 		//lost inventory is dropped in interlevelscene
 
 		//activate items that persist after lost inventory
-		if (belongings.weapon() != null)    belongings.weapon().activate(this);
-		if (belongings.armor() != null)     belongings.armor().activate(this);
-		if (belongings.artifact() != null)  belongings.artifact().activate(this);
-		if (belongings.misc() != null)      belongings.misc().activate(this);
-		if (belongings.ring() != null)      belongings.ring().activate(this);
+		//FIXME this is very messy, maybe it would be better to just have one buff that
+		// handled all items that recharge over time?
+		for (Item i : belongings){
+			if (i instanceof EquipableItem && i.isEquipped(this)){
+				((EquipableItem) i).activate(this);
+			} else if (i instanceof CloakOfShadows && i.keptThoughLostInvent && hasTalent(Talent.LIGHT_CLOAK)){
+				((CloakOfShadows) i).activate(this);
+			} else if (i instanceof Wand && i.keptThoughLostInvent){
+				if (holster.contains(i)){
+					((Wand) i).charge(this, MagicalHolster.HOLSTER_SCALE_FACTOR);
+				} else {
+					((Wand) i).charge(this);
+				}
+			} else if (i instanceof MagesStaff && i.keptThoughLostInvent){
+				((MagesStaff) i).applyWandChargeBuff(this);
+			}
+		}
 	}
 
 	@Override

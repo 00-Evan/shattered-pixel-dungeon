@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CounterBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EnhancedRings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
@@ -259,7 +260,9 @@ public enum Talent {
 		if (talent == LIGHT_CLOAK && hero.pointsInTalent(LIGHT_CLOAK) == 1){
 			for (Item item : Dungeon.hero.belongings.backpack){
 				if (item instanceof CloakOfShadows){
-					((CloakOfShadows) item).activate(Dungeon.hero);
+					if (hero.buff(LostInventory.class) == null || item.keptThoughLostInvent) {
+						((CloakOfShadows) item).activate(Dungeon.hero);
+					}
 				}
 			}
 		}
