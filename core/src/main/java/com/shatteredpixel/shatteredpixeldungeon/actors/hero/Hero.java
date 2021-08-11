@@ -1616,6 +1616,8 @@ public class Hero extends Char {
 
 		if (ankh != null) {
 			ankh.detach(belongings.backpack);
+			interrupt();
+			resting = false;
 
 			if (ankh.isBlessed()) {
 				this.HP = HT / 4;
