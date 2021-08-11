@@ -59,17 +59,6 @@ public class DeviceCompat {
 		return Gdx.input.isPeripheralAvailable(Input.Peripheral.HardwareKeyboard);
 	}
 	
-	public static boolean legacyDevice(){
-		switch (Gdx.app.getType()){
-			case Android:
-				//Devices prior to Android 4.1 Jelly Bean
-				return Gdx.app.getVersion() < 16;
-			default:
-				//TODO implement functionality for other platforms here
-				return false;
-		}
-	}
-	
 	public static boolean isDebug(){
 		return Game.version.contains("INDEV");
 	}
