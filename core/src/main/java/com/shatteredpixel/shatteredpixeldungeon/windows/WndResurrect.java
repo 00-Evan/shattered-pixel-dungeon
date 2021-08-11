@@ -142,9 +142,9 @@ public class WndResurrect extends Window {
 
 				if (btnItem1.item == btnItem2.item){
 					if (btnPressed == btnItem1){
-						btnItem2.item(null);
+						btnItem2.clear();
 					} else {
-						btnItem1.item(null);
+						btnItem1.clear();
 					}
 				}
 

@@ -146,6 +146,14 @@ public class ItemSlot extends Button {
 		}
 
 	}
+
+	public void clear(){
+		item(null);
+		enable(true);
+		sprite.visible(true);
+		sprite.view(ItemSpriteSheet.SOMETHING, null);
+		layout();
+	}
 	
 	public void item( Item item ) {
 		if (this.item == item) {

@@ -186,5 +186,9 @@ public class WndBlacksmith extends Window {
 		public void item( Item item ) {
 			slot.item( this.item = item );
 		}
+
+		public void clear(){
+			slot.clear();
+		}
 	}
 }
