@@ -272,7 +272,9 @@ public class TimekeepersHourglass extends Artifact {
 
 				updateQuickslot();
 
-				Dungeon.observe();
+				if (Dungeon.hero != null) {
+					Dungeon.observe();
+				}
 
 				return true;
 			} else {
