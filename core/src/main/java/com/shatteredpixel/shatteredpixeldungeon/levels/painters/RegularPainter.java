@@ -390,30 +390,46 @@ public abstract class RegularPainter extends Painter {
 		
 		//no more than one trap every 5 valid tiles.
 		nTraps = Math.min(nTraps, validCells.size()/5);
-		
-		for (int i = 0; i < nTraps; i++) {
-			
-			Integer trapPos = Random.element(validCells);
-			validCells.remove(trapPos); //removes the integer object, not at the index
-			
-			Trap trap = Reflection.newInstance(trapClasses[Random.chances( trapChances )]).hide();
+
+		//for traps that want to avoid being in hallways
+		ArrayList<Integer> validNonHallways = new ArrayList<>();
+
+		//temporarily use the passable array for the next step
+		for (int i = 0; i < l.length(); i++){
+			l.passable[i] = (Terrain.flags[l.map[i]] & Terrain.PASSABLE) != 0;
+		}
+
+		for (int i : validCells){
+			if ((l.passable[i+PathFinder.CIRCLE4[0]] || l.passable[i+PathFinder.CIRCLE4[2]])
+					&& (l.passable[i+PathFinder.CIRCLE4[1]] || l.passable[i+PathFinder.CIRCLE4[3]])){
+				validNonHallways.add(i);
+			}
+		}
+
+		//no more than one trap every 5 valid tiles.
+		nTraps = Math.min(nTraps, validCells.size()/5);
+
+		//5x traps on traps level feeling, but the extra traps are all visible
+		for (int i = 0; i < (l.feeling == Level.Feeling.TRAPS ? 5*nTraps : nTraps); i++) {
+
+			Trap trap = Reflection.newInstance(trapClasses[Random.chances( trapChances )]);
+
+			Integer trapPos;
+			if (trap.avoidsHallways && !validNonHallways.isEmpty()){
+				trapPos = Random.element(validNonHallways);
+			} else {
+				trapPos = Random.element(validCells);
+			}
+			//removes the integer object, not at the index
+			validCells.remove(trapPos);
+			validNonHallways.remove(trapPos);
+
+			if (i < nTraps) trap.hide();
+			else            trap.reveal();
+
 			l.setTrap( trap, trapPos );
 			//some traps will not be hidden
 			l.map[trapPos] = trap.visible ? Terrain.TRAP : Terrain.SECRET_TRAP;
-		}
-
-		//4x regular trap count of visible traps on traps level feeling
-		if (l.feeling == Level.Feeling.TRAPS){
-			for (int i = 0; i < 4*nTraps; i++) {
-
-				Integer trapPos = Random.element(validCells);
-				validCells.remove(trapPos); //removes the integer object, not at the index
-
-				Trap trap = Reflection.newInstance(trapClasses[Random.chances( trapChances )]).reveal();
-				l.setTrap( trap, trapPos );
-				//some traps will not be hidden
-				l.map[trapPos] = trap.visible ? Terrain.TRAP : Terrain.SECRET_TRAP;
-			}
 		}
 	}
 	

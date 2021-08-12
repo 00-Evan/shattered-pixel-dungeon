@@ -1,6 +1,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
+
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -8,9 +8,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -22,20 +19,12 @@ public class GatewayTrap extends Trap {
 	{
 		color = TEAL;
 		shape = CROSSHAIR;
+
+		disarmedByActivation = false;
+		avoidsHallways = true;
 	}
 
 	private int telePos = -1;
-
-	@Override
-	public void trigger() {
-		if (Dungeon.level.heroFOV[pos]){
-			Sample.INSTANCE.play(Assets.Sounds.TRAP);
-		}
-		//this trap is not disarmed by being triggered
-		reveal();
-		Level.set(pos, Terrain.TRAP);
-		activate();
-	}
 
 	@Override
 	public void activate() {
