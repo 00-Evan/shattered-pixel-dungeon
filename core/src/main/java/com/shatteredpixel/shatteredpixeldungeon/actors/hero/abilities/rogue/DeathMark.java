@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbili
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -126,6 +127,11 @@ public class DeathMark extends ArmorAbility {
 	}
 
 	public static class DoubleMarkTracker extends FlavourBuff{};
+
+	@Override
+	public int icon() {
+		return HeroIcon.DEATH_MARK;
+	}
 
 	@Override
 	public Talent[] talents() {

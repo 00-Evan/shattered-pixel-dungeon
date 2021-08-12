@@ -74,6 +74,7 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
@@ -424,6 +425,11 @@ public class ElementalBlast extends ArmorAbility {
 		}
 		desc += "\n\n" + Messages.get(this, "cost", (int)baseChargeUse);
 		return desc;
+	}
+
+	@Override
+	public int icon() {
+		return HeroIcon.ELEMENTAL_BLAST;
 	}
 
 	@Override

@@ -94,6 +94,8 @@ public class Assets {
 
 		public static final String TALENT_ICONS	 = "interfaces/talent_icons.png";
 		public static final String TALENT_BUTTON = "interfaces/talent_button.png";
+
+		public static final String HERO_ICONS	= "interfaces/hero_icons.png";
 	}
 
 	//these points to resource bundles, not raw asset files

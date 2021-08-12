@@ -21,33 +21,34 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fury;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIcon;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.watabou.noosa.Game;
-import com.watabou.noosa.Image;
 
 public enum HeroSubClass {
 
-	NONE,
+	NONE(HeroIcon.NONE),
+
+	BERSERKER(HeroIcon.BERSERKER),
+	GLADIATOR(HeroIcon.GLADIATOR),
+
+	BATTLEMAGE(HeroIcon.BATTLEMAGE),
+	WARLOCK(HeroIcon.WARLOCK),
 	
-	GLADIATOR,
-	BERSERKER,
+	ASSASSIN(HeroIcon.ASSASSIN),
+	FREERUNNER(HeroIcon.FREERUNNER),
 	
-	WARLOCK,
-	BATTLEMAGE,
-	
-	ASSASSIN,
-	FREERUNNER,
-	
-	SNIPER,
-	WARDEN;
+	SNIPER(HeroIcon.SNIPER),
+	WARDEN(HeroIcon.WARDEN);
+
+	int icon;
+
+	HeroSubClass(int icon){
+		this.icon = icon;
+	}
 	
 	public String title() {
 		return Messages.get(this, name());
@@ -74,34 +75,8 @@ public enum HeroSubClass {
 		}
 	}
 
-	public Image icon(){
-		switch (this){
-			case GLADIATOR: default:
-				return new BuffIcon(BuffIndicator.COMBO, true);
-			case BERSERKER:
-				return new BuffIcon(BuffIndicator.FURY, true);
-
-			case WARLOCK:
-				return new BuffIcon(BuffIndicator.CORRUPT, true);
-			case BATTLEMAGE:
-				Image im = new BuffIcon(BuffIndicator.UPGRADE, true);
-				im.hardlight(1f, 1f, 0f);
-				return im;
-
-			case ASSASSIN:
-				im = new BuffIcon(BuffIndicator.PREPARATION, true);
-				im.hardlight(1f, 0f, 0f);
-				return im;
-			case FREERUNNER:
-				im = new BuffIcon(BuffIndicator.MOMENTUM, true);
-				im.hardlight(1f, 1f, 0f);
-				return im;
-
-			case SNIPER:
-				return new BuffIcon(BuffIndicator.MARK, true);
-			case WARDEN:
-				return new BuffIcon(BuffIndicator.BARKSKIN, true);
-		}
+	public int icon(){
+		return icon;
 	}
 
 }

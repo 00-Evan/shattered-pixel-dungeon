@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
@@ -167,6 +168,11 @@ public class WildMagic extends ArmorAbility {
 			Invisibility.dispel();
 			hero.spendAndNext(Actor.TICK);
 		}
+	}
+
+	@Override
+	public int icon() {
+		return HeroIcon.WILD_MAGIC;
 	}
 
 	@Override

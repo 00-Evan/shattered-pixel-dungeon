@@ -19,6 +19,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportat
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RatSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -122,6 +123,11 @@ public class Ratmogrify extends ArmorAbility {
 		Invisibility.dispel();
 		hero.spendAndNext(Actor.TICK);
 
+	}
+
+	@Override
+	public int icon() {
+		return HeroIcon.RATMOGRIFY;
 	}
 
 	@Override

@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
@@ -180,6 +181,11 @@ public class Endure extends ArmorAbility {
 			hitsLeft = bundle.getInt(HITS_LEFT);
 		}
 	};
+
+	@Override
+	public int icon() {
+		return HeroIcon.ENDURE;
+	}
 
 	@Override
 	public Talent[] talents() {

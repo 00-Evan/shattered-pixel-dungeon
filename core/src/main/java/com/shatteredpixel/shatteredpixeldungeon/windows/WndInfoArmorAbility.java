@@ -6,6 +6,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbili
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TalentsPane;
 import com.watabou.noosa.Image;
 
@@ -15,7 +16,7 @@ import java.util.LinkedHashMap;
 public class WndInfoArmorAbility extends WndTitledMessage {
 
 	public WndInfoArmorAbility(HeroClass cls, ArmorAbility ability){
-		super( new ItemSprite( ItemSpriteSheet.CROWN, null ), Messages.titleCase(ability.name()), ability.desc());
+		super( new HeroIcon(ability), Messages.titleCase(ability.name()), ability.desc());
 
 		ArrayList<LinkedHashMap<Talent, Integer>> talentList = new ArrayList<>();
 		Talent.initArmorTalents(ability, talentList);
