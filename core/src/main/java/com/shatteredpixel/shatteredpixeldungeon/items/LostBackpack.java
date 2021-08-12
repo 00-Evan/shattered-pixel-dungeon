@@ -38,7 +38,7 @@ public class LostBackpack extends Item {
 				} else if ( i instanceof CloakOfShadows && hero.hasTalent(Talent.LIGHT_CLOAK)){
 					((CloakOfShadows) i).activate(hero);
 				} else if (i instanceof Wand){
-					if (holster.contains(i)){
+					if (holster != null && holster.contains(i)){
 						((Wand) i).charge(hero, MagicalHolster.HOLSTER_SCALE_FACTOR);
 					} else {
 						((Wand) i).charge(hero);

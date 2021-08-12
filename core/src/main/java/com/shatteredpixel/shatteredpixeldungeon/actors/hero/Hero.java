@@ -2006,7 +2006,7 @@ public class Hero extends Char {
 			} else if (i instanceof CloakOfShadows && i.keptThoughLostInvent && hasTalent(Talent.LIGHT_CLOAK)){
 				((CloakOfShadows) i).activate(this);
 			} else if (i instanceof Wand && i.keptThoughLostInvent){
-				if (holster.contains(i)){
+				if (holster != null && holster.contains(i)){
 					((Wand) i).charge(this, MagicalHolster.HOLSTER_SCALE_FACTOR);
 				} else {
 					((Wand) i).charge(this);
