@@ -78,7 +78,6 @@ public class WndPlayerList extends NetWindow {
 
 		list.scrollTo( 0, 0 );
 
-
 		float ypos = 0;
 
 		for (int i=0; i < p.list.length; i++) {
@@ -93,16 +92,21 @@ public class WndPlayerList extends NetWindow {
 						runWindow(new WndInfoPlayer(player));
 				}
 			};
-			playerRank.setRect( xpos, ypos, width, 12 );
+			playerRank.setSize( width, 12 );
+			playerRank.setPos( xpos, ypos);
 
 			content.add( playerRank );
 
-			ypos=playerRank.bottom()+2;
+			ypos=playerRank.bottom();
 
 		}
 
-		content.setRect(0,y, width, ypos );
-		list.setRect( 0, y, width, HEIGHT);
+		content.setRect(0, list.top(), width, ypos );
+		list.setRect( 0, y, width, HEIGHT-20);
+
+		y+=list.height();
+
+		resize(width, (int)y);
 	}
 
 	public static class PlayerRank extends Button {
