@@ -21,13 +21,12 @@ package com.saqfish.spdnet.net;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saqfish.spdnet.Dungeon;
-import com.saqfish.spdnet.effects.Transmuting;
 import com.saqfish.spdnet.items.Item;
 import com.saqfish.spdnet.net.actor.Player;
 import com.saqfish.spdnet.net.events.Events;
 import com.saqfish.spdnet.net.events.Receive;
-import com.saqfish.spdnet.net.events.Send;
 import com.saqfish.spdnet.net.windows.NetWindow;
+import com.saqfish.spdnet.scenes.GameScene;
 import com.saqfish.spdnet.utils.GLog;
 import com.watabou.noosa.Game;
 import com.watabou.utils.DeviceCompat;
@@ -37,8 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.socket.emitter.Emitter;
-
-import static com.saqfish.spdnet.ShatteredPixelDungeon.net;
 
 public class Receiver {
         private ObjectMapper mapper;
@@ -106,7 +103,6 @@ public class Receiver {
         public void handleAction(int type, String json) {
                 Player player;
                 Receive.Join join;
-                DeviceCompat.log("Action", "type: "+type);
                 try {
                         switch (type) {
                                 case Receive.MOVE:
@@ -145,15 +141,18 @@ public class Receiver {
         // Item sharing handler
         public void handleTransfer(String json) {
                 try {
-                        Receive.Transfer item = mapper.readValue(json, Receive.Transfer.class);
-                        Class<?> k = Reflection.forNameUnhandled(addPkgName(item.className));
-                        Item i = (Item) Reflection.newInstance(k);
-                        i.cursed = item.cursed;
-                        i.level(item.level);
-                        if(item.identified) i.identify();
-                        Dungeon.hero.belongings.backpack.items.add(i);
-                        Transmuting.show(Dungeon.hero, i, i);
-                        GLog.p("You received a "+i.name());
+                        Receive.Transfer i = mapper.readValue(json, Receive.Transfer.class);
+                        Class<?> k = Reflection.forNameUnhandled(addPkgName(i.className));
+
+                        Item item = (Item) Reflection.newInstance(k);
+                        item.cursed = i.cursed;
+                        item.level(i.level);
+                        if(i.identified) item.identify();
+
+                        item.doPickUp(Dungeon.hero);
+                        GameScene.pickUp(item, Dungeon.hero.pos);
+
+                        GLog.p("You received a "+item.name());
                 } catch (Exception ignored) { }
 
         }
