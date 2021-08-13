@@ -19,17 +19,23 @@
 package com.saqfish.spdnet.net;
 import java.net.URI;
 
+import com.saqfish.spdnet.Dungeon;
+import com.saqfish.spdnet.ShatteredPixelDungeon;
 import com.saqfish.spdnet.net.events.Events;
+import com.saqfish.spdnet.net.events.Send;
 import com.saqfish.spdnet.net.windows.NetWindow;
 import com.saqfish.spdnet.net.windows.WndServerInfo;
+import com.saqfish.spdnet.scenes.GameScene;
 import com.watabou.noosa.Game;
 
 import io.socket.client.IO;
+import io.socket.client.Manager;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 import io.socket.engineio.client.EngineIOException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.watabou.utils.DeviceCompat;
 
 import org.json.JSONObject;
 
@@ -80,8 +86,6 @@ public class Net {
         String key = Settings.auth_key();
         IO.Options options = IO.Options.builder()
                 .setAuth(singletonMap("token", key))
-                .setForceNew(true)
-                .setReconnection(false)
                 .build();
         socket = IO.socket(url, options);
         mapper = new ObjectMapper();
@@ -95,10 +99,12 @@ public class Net {
             if(w != null) {
                 Game.runOnRenderThread( () -> w.destroy());
             }
+            if(Game.scene() instanceof GameScene)
+                ShatteredPixelDungeon.net().sender().sendAction(Send.INTERLEVEL, Dungeon.hero.heroClass.ordinal(), Dungeon.depth, Dungeon.hero.pos);
         };
 
         Emitter.Listener onDisconnected = args -> {
-            disconnect();
+            //disconnect();
         };
 
         // TODO: Clean this up or handle errors better
@@ -143,7 +149,7 @@ public class Net {
 
     public void toggle(WndServerInfo w) {
         this.w = w;
-        if(!socket.connected())
+        if(!socket.connected() && !socket.io().isReconnecting())
             connect();
         else
             disconnect();
