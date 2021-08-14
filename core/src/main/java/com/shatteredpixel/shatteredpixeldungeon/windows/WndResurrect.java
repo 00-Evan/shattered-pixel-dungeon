@@ -48,7 +48,7 @@ public class WndResurrect extends Window {
 
 	private static final int BTN_SIZE	= 36;
 
-	public static WndResurrect instance;
+	public static Object instance;
 
 	private WndBlacksmith.ItemButton btnItem1;
 	private WndBlacksmith.ItemButton btnItem2;

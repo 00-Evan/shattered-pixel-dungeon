@@ -676,7 +676,7 @@ public class Dungeon {
 	}
 	
 	public static void fail( Class cause ) {
-		if (hero.belongings.getItem( Ankh.class ) == null) {
+		if (WndResurrect.instance == null) {
 			Rankings.INSTANCE.submit( false, cause );
 		}
 	}

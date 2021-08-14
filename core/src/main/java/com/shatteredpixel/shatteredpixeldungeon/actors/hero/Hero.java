@@ -1644,6 +1644,11 @@ public class Hero extends Char {
 				}
 			} else {
 
+				//this is hacky, basically we want to declare that a wndResurrect exists before
+				//it actually gets created. This is important so that the game knows to not
+				//delete the run or submit it to rankings, because a WndResurrect is about to exist
+				//this is needed because the actual creation of the window is delayed here
+				WndResurrect.instance = new Object();
 				Game.runOnRenderThread(new Callback() {
 					@Override
 					public void call() {
