@@ -74,7 +74,7 @@ public abstract class Wand extends Item {
 	
 	protected Charger charger;
 	
-	private boolean curChargeKnown = false;
+	public boolean curChargeKnown = false;
 	
 	public boolean curseInfusionBonus = false;
 	public int resinBonus = 0;
