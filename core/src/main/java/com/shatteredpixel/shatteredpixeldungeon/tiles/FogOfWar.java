@@ -112,6 +112,11 @@ public class FogOfWar extends Image {
 
 		String key = "FogOfWar" + width2 + "x" + height2;
 		texture(TextureCache.create(key, width2, height2));
+
+		//sets contents to all black
+		texture.bitmap.setColor( 0x000000FF );
+		texture.bitmap.fill();
+
 		texture.bind();
 
 		scale.set( size, size );

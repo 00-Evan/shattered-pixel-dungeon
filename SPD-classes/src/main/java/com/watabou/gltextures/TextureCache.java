@@ -79,7 +79,8 @@ public class TextureCache {
 		
 	}
 
-	//texture defaults to black and given size, but no assurance is made about this is another already exists
+	//texture is created at given size, but size is not enforced if it already exists
+	//texture contents are also not enforced, make sure you know the texture's state!
 	public synchronized static SmartTexture create( Object key, int width, int height ) {
 
 		if (all.containsKey( key )) {
@@ -88,12 +89,7 @@ public class TextureCache {
 
 		} else {
 
-			Pixmap pixmap = new Pixmap( width, height, Pixmap.Format.RGBA8888 );
-
-			pixmap.setColor(0x000000FF);
-			pixmap.fill();
-
-			SmartTexture tx = new SmartTexture( pixmap );
+			SmartTexture tx = new SmartTexture(new Pixmap( width, height, Pixmap.Format.RGBA8888 ));
 
 			tx.filter( Texture.LINEAR, Texture.LINEAR );
 			tx.wrap( Texture.CLAMP, Texture.CLAMP );
