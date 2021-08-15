@@ -143,9 +143,8 @@ public class WelcomeScene extends PixelScene {
 				//TODO: change the messages here in accordance with the type of patch.
 				message = "SPDNet has been patched!";
 				message += "\n";
-				message += "\n Auto reconnect implemented";
-				message += "\n Player list scroll fix";
-				message += "\n Shared items not stacking fix";
+				message += "\n Rankings fix";
+				message += "\n Save on final ascend fix";
 
 			}
 		} else {
