@@ -21,17 +21,17 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Spinner;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.WoollyBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFrost;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTransfusion;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.GolemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SpawnerSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.SpectralNecromancerSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SpinnerSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TalentIcon;
@@ -61,74 +62,6 @@ public class v0_9_X_Changes {
 		ChangeInfo changes = new ChangeInfo("v0.9.3", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes = new ChangeInfo("v0.9.3c", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		if (Gdx.app.getType() == Application.ApplicationType.Android && Gdx.app.getVersion() < 14) {
-			changes.addButton(new ChangeButton(Icons.get(Icons.WARNING), "Android 2.3 and 3 Support",
-					"v0.9.3c is the final version of Shattered Pixel Dungeon which supports Android 2.3 Gingerbread and Android 3 Honeycomb. I don't currently have plans to end support for other Android versions.\n\n" +
-					"If you'd like to keep up to date on future updates, check out the blog at _ShatteredPixel.com_"));
-		}
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ The hero can now collect dew on stairs, even if they are at full HP.\n\n" +
-				"_-_ In the Google Play version of the game, the player can now separately enable Google Play Games and opt-out of sharing gameplay data."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by v0.9.3):\n" +
-				"_-_ Various errors with warp beacon\n" +
-				"_-_ Quick use window being usable after hero death\n" +
-				"_-_ Rare cases of rankings failing to load\n" +
-				"_-_ Fear from death mark lasting far longer than intended\n" +
-				"_-_ Errors with the Lightweight Cloak talent\n\n" +
-				"Fixed (existed prior to v0.9.3):\n" +
-				"_-_ Necromancers sometimes losing track of their skeleton\n" +
-				"_-_ Deaths to Dwarf King rarely not being recorded in rankings\n" +
-				"_-_ Various minor text errors"));
-
-		changes = new ChangeInfo("v0.9.3b", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"It is now possible to access a quick-use window by quickslotting a bag or by long-pressing the inventory! A few items that were missing quick actions have also been given them, and bags can now appear in the rankings.\n\n" +
-				"_-_ Runestones of flock now also activate before triggering traps"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by v0.9.3):\n" +
-				"_-_ Deactivating cloak ending preparation when Assassin is invisible by other means as well\n" +
-				"_-_ Flying transmogrified enemies not falling if above chasms\n\n" +
-				"Fixed (existed prior to v0.9.3):\n" +
-				"_-_ Various rare crash bugs\n" +
-				"_-_ Chaos elemental teleportation not interrupting the hero\n" +
-				"_-_ Pacifist badge not triggering if hero descended by falling"));
-
-		changes = new ChangeInfo("v0.9.3a", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Runestones now press tiles when they are thrown (stones of disarming specifically activate before triggering traps)"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by v0.9.3):\n" +
-				"_-_ Various freeze bugs that were common for certain users\n" +
-				"_-_ Various rare crashes\n" +
-				"_-_ Giant swarms still duplicating into enclosed spaces in rare cases\n" +
-				"_-_ Game freeze bugs with wild magic\n" +
-				"_-_ Various bugs with warp beacon telefragging\n" +
-				"_-_ Ethereal chains causing quickslot UI issues\n\n" +
-				"Fixed (existed prior to v0.9.3):\n" +
-				"_-_ On-hit effects triggering on invulnerable pylons\n" +
-				"_-_ Wells of healing not fully healing the hero in all cases\n" +
-				"_-_ Lightweight cloak getting cancelled when equipped/unequipped\n" +
-				"_-_ Displacing darts sometimes teleporting enemies into unreachable places"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -182,9 +115,18 @@ public class v0_9_X_Changes {
 				"_-_ Overhauled the subclass selection interface, now much more informative."));
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Long pressing now uses the system long-press time (default 0.5 sec), instead of taking 1 second.\n\n" +
-				"_-_ Deactivating the cloak of shadows no longer takes time.\n\n" +
+				"_-_ Quickslotting a bag or long-pressing the inventory now shows a quick-use windows!\n" +
+				"_-_ Added quickslot actions for some items that were missing them\n" +
+				"_-_ Bags can now appear in the rankings\n\n" +
+
+				"_-_ Long pressing now uses the system long-press time (default 0.5 sec).\n" +
+				"_-_ Google Play Games and sharing gameplay data can now be enabled separately.\n\n" +
+
+				"_-_ Deactivating the cloak of shadows no longer takes time.\n" +
+				"_-_ Runestones now press tiles when they are thrown.\n" +
+				"_-_ The hero can now collect dew on stairs, even if they are at full HP.\n" +
 				"_-_ Improved the functionality for allies following the hero into locked boss arenas.\n\n" +
+
 				"_-_ Improved the descriptions of combo abilities\n" +
 				"_-_ Added dev commentary for v0.6.0-v0.6.5\n" +
 				"_-_ The Unstable Spellbook now greys out scrolls that have already been fed to it.\n" +
@@ -197,8 +139,8 @@ public class v0_9_X_Changes {
 				"_-_ Various rare crash issues\n" +
 				"_-_ Various minor VFX/SFX/text issues\n" +
 				"_-_ Various exploits caused by window stacking and multitaps\n" +
-				"_-_ Resting causing time to pass faster at high framerates\n\n" +
-				"_-_ Errors when zooming with mouse and keyboard keys\n" +
+				"_-_ Resting causing time to pass faster at high framerates\n" +
+				"_-_ Errors when zooming with mouse and keyboard keys\n\n" +
 
 				"_-_ Thief's Intuition not working in rare cases\n" +
 				"_-_ Berries rarely appearing in hero's remains\n" +
@@ -213,6 +155,7 @@ public class v0_9_X_Changes {
 				"_-_ Various rare AI bugs with Ghost hero"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed:\n" +
 				"_-_ Incendiary darts being instantly used up when used on terrain\n" +
 				"_-_ Wands of regrowth and fireblast using more than 3 charges in rare cases\n" +
 				"_-_ Knockback effects not always working on dead characters\n" +
@@ -220,18 +163,26 @@ public class v0_9_X_Changes {
 				"_-_ Hero accepting input while using potion of dragon's breath\n" +
 				"_-_ Vision effects from talisman and arcane vision not working after save/load\n" +
 				"_-_ Aqua rejuv working while hero is levitating\n" +
-				"_-_ Seeds disappearing if they fall into a chasm with the barren land challenge enabled\n\n" +
+				"_-_ Seeds disappearing if they fall into a chasm with the barren land challenge enabled\n" +
+				"_-_ Displacing darts sometimes teleporting enemies into unreachable places\n" +
+				"_-_ Items with boosted levels being remove-cursable\n" +
+				"_-_ Magical infusion not clearing the degrade debuff"));
 
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed:\n" +
 				"_-_ Giant swarms duplicating in enclosed spaces\n" +
 				"_-_ Giant champions being able to attack through other characters\n" +
-				"_-_ Ghouls rarely healing without reviving\n\n" +
+				"_-_ Ghouls rarely healing without reviving\n" +
+				"_-_ Necromancers sometimes losing track of their skeleton\n" +
+				"_-_ Chaos elemental teleportation not interrupting the hero\n" +
+				"_-_ On-hit effects triggering on invulnerable pylons\n" +
+				"_-_ Deaths to Dwarf King rarely not being recorded in rankings\n\n" +
 
 				"_-_ Quickslots not appearing greyed out when they should\n" +
 				"_-_ Rare cases where non-visible cells would appear visible\n" +
-				"_-_ Game log entries not appearing from alchemy scene\n\n" +
-
-				"_-_ Items with boosted levels being remove-cursable\n" +
-				"_-_ Magical infusion not clearing the degrade debuff"));
+				"_-_ Pacifist badge not triggering if hero descended by falling\n" +
+				"_-_ Wells of healing not fully healing the hero in all cases\n" +
+				"_-_ Game log entries not appearing from alchemy scene"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight(CharSprite.POSITIVE);
