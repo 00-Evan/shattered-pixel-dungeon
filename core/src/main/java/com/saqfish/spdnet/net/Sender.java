@@ -21,12 +21,15 @@ package com.saqfish.spdnet.net;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saqfish.spdnet.Dungeon;
-import com.saqfish.spdnet.actors.mobs.Mob;
+import com.saqfish.spdnet.GamesInProgress;
+import com.saqfish.spdnet.items.Amulet;
 import com.saqfish.spdnet.items.Heap;
 import com.saqfish.spdnet.items.Item;
-import com.saqfish.spdnet.net.actor.Player;
 import com.saqfish.spdnet.net.events.Events;
 import com.saqfish.spdnet.net.events.Send;
+import com.saqfish.spdnet.net.windows.NetWindow;
+import com.saqfish.spdnet.scenes.RankingsScene;
+import com.watabou.noosa.Game;
 
 import io.socket.client.Ack;
 
@@ -89,6 +92,16 @@ public class Sender {
                 }
                 json = map(c);
                 if(net.socket().connected() && json != null) net.socket().emit(Events.ACTION,type, json);
+        }
+
+        public static void sendWin(){
+                if(net().connected()) {
+                        net().sender().sendAction(Send.WIN, 0);
+                        Dungeon.win(Amulet.class);
+                        Dungeon.deleteGame(GamesInProgress.curSlot, true);
+                        Game.switchScene(RankingsScene.class);
+                }else
+                        NetWindow.error("You're not connected!\nTo record your win to the server, connect first.");
         }
 
         // Object -> String

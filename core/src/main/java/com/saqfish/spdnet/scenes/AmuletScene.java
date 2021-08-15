@@ -67,14 +67,7 @@ public class AmuletScene extends PixelScene {
 		RedButton btnExit = new RedButton( Messages.get(this, "exit") ) {
 			@Override
 			protected void onClick() {
-				if(net().connected()) {
-					// Send win to server
-					net().sender().sendAction(Send.WIN, 0);
-
-					Dungeon.win(Amulet.class);
-					Dungeon.deleteGame(GamesInProgress.curSlot, true);
-					Game.switchScene(RankingsScene.class);
-				}else NetWindow.error("You're not connected!\nTo record your win to the server, connect first.");
+					net().sender().sendWin();
 			}
 		};
 		btnExit.setSize( WIDTH, BTN_HEIGHT );

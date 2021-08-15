@@ -36,6 +36,7 @@ import com.saqfish.spdnet.actors.mobs.npcs.Blacksmith;
 import com.saqfish.spdnet.actors.mobs.npcs.Ghost;
 import com.saqfish.spdnet.actors.mobs.npcs.Imp;
 import com.saqfish.spdnet.actors.mobs.npcs.Wandmaker;
+import com.saqfish.spdnet.items.Amulet;
 import com.saqfish.spdnet.items.Ankh;
 import com.saqfish.spdnet.items.Generator;
 import com.saqfish.spdnet.items.Heap;
