@@ -23,12 +23,24 @@ public class v1_X_Changes {
 
 	public static void add_v1_0_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("Coming in v0.1.0", true, "");
-		changes.hardlight(CharSprite.POSITIVE);
-		//changeInfos.add(changes);
+		ChangeInfo changes = new ChangeInfo("Coming Soon", true, "");
+		changeInfos.add(changes);
 
-		//alchemy improvements
-		//???
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Overview",
+			"The next Shattered update will be v1.1.0, and will focus heavily on alchemy! I want to make alchemy more cohesive, simple, and make it better at recycling items the player doesn’t want into items that they do want.\n\n" +
+			"Expect to hear more details about v1.1.0 in a future news post, likely sometime in September."));
+
+		changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_SEWERS, 48, 96, 16, 16 ), "Alchemical Energy",
+				"The most major change will be an overhaul to how alchemy energy works. Currently energy sort of sits on top of the system and acts as a limiter on how much advanced alchemy a player can perform, but otherwise does nothing. I have some plans to make energy a much more integral part of the system, and for it to tie directly into recycling consumable items. "));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ALCHEMIZE), "Alchemy Recipes",
+				"With alchemical energy changing, I'll naturally be looking at many of the game's higher end alchemy recipes as well! I can't promise that every single recipe will be perfect, but I hope to make some major changes in the next update that will substantially improve on many recipes. "));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.AUDIO), "More New Music",
+				"So far the early reception to the new music has been extremely positive! Kristjan and I are already working on some new tracks, and we might be ready to add more music in the next update. The current plan is to have a unique track for every region of the dungeon! "));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"Lastly, there will be some smaller miscellaneous changes v1.1.0 as well. I plan to continue keeping an eye on game balance and making tweaks to the new hero abilities added in the v0.9 updates. I might have enough time spare to rework an item or two as well! "));
 
 		changes = new ChangeInfo("v1.0.0", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
@@ -44,11 +56,12 @@ public class v1_X_Changes {
 				"_-_ 316 days after Shattered v0.9.0\n" +
 				"_-_ A bit more than 7 years after v0.1.0!\n" +
 				"\n" +
-				"Shattered's version naming scheme changed this update! It is now major.minor.patch, and we're moving up to v1.0.0! The next patch will follow this scheme and be v1.0.1, and the next update will be v1.1.0. _This change does not affect my plans for future updates!_\n\n" +
+				"_That's right, we've hit v1.0.0!_ This update was previously called v0.9.4 while in beta.\n\n" +
+				"Shattered will also now use the _major.minor.patch_ version naming scheme moving forward. So, the next patch will be v1.0.1, and the next update will be v1.1.0. _This change does not affect my plans for future updates!_\n\n" +
 				"Expect more dev commentary here in the future."));
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.DISPLAY), "iOS Release!",
-				"_Shattered Pixel Dungeon is now available on iOS App Store!_\n\n" +
+				"_Shattered Pixel Dungeon is now available on the iOS App Store!_\n\n" +
 				"After years of requests, Shattered is finally available on Apple devices! The iOS version of the game will release in lockstep with the Android version moving forward, with some small variance due to different update approval processes.\n\n" +
 				"Note that the iOS version costs $5, but comes with some supporter features built-in. I have no plans to make any changes to the monetization of the Android version."));
 
