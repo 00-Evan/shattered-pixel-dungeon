@@ -23,8 +23,10 @@ package com.saqfish.spdnet.ui;
 
 import com.saqfish.spdnet.Dungeon;
 import com.saqfish.spdnet.ShatteredPixelDungeon;
+import com.saqfish.spdnet.items.ArcaneResin;
 import com.saqfish.spdnet.items.Generator;
 import com.saqfish.spdnet.items.Item;
+import com.saqfish.spdnet.items.LiquidMetal;
 import com.saqfish.spdnet.items.Recipe;
 import com.saqfish.spdnet.items.bombs.Bomb;
 import com.saqfish.spdnet.items.food.Blandfruit;
@@ -62,6 +64,8 @@ import com.saqfish.spdnet.items.spells.ReclaimTrap;
 import com.saqfish.spdnet.items.spells.Recycle;
 import com.saqfish.spdnet.items.spells.WildEnergy;
 import com.saqfish.spdnet.items.stones.Runestone;
+import com.saqfish.spdnet.items.wands.Wand;
+import com.saqfish.spdnet.items.weapon.missiles.MissileWeapon;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.plants.Plant;
 import com.saqfish.spdnet.scenes.AlchemyScene;
@@ -309,6 +313,22 @@ public class QuickRecipe extends Component {
 				}
 				return result;
 			case 4:
+				result.add(new QuickRecipe( new LiquidMetal.Recipe(),
+						new ArrayList<Item>(Arrays.asList(new MissileWeapon.PlaceHolder())),
+						new LiquidMetal()));
+				result.add(new QuickRecipe( new LiquidMetal.Recipe(),
+						new ArrayList<Item>(Arrays.asList(new MissileWeapon.PlaceHolder().quantity(2))),
+						new LiquidMetal()));
+				result.add(new QuickRecipe( new LiquidMetal.Recipe(),
+						new ArrayList<Item>(Arrays.asList(new MissileWeapon.PlaceHolder().quantity(3))),
+						new LiquidMetal()));
+				result.add(null);
+				result.add(null);
+				result.add(new QuickRecipe( new ArcaneResin.Recipe(),
+						new ArrayList<Item>(Arrays.asList(new Wand.PlaceHolder())),
+						new ArcaneResin()));
+				return result;
+			case 5:
 				r = new ExoticPotion.PotionToExotic();
 				for (Class<?> cls : Generator.Category.POTION.classes){
 					Potion pot = (Potion) Reflection.newInstance(cls);
@@ -316,7 +336,7 @@ public class QuickRecipe extends Component {
 					result.add(new QuickRecipe( r, in, r.sampleOutput(in)));
 				}
 				return result;
-			case 5:
+			case 6:
 				r = new ExoticScroll.ScrollToExotic();
 				for (Class<?> cls : Generator.Category.SCROLL.classes){
 					Scroll scroll = (Scroll) Reflection.newInstance(cls);
@@ -324,7 +344,7 @@ public class QuickRecipe extends Component {
 					result.add(new QuickRecipe( r, in, r.sampleOutput(in)));
 				}
 				return result;
-			case 6:
+			case 7:
 				result.add(new QuickRecipe(new AlchemicalCatalyst.Recipe(), new ArrayList<>(Arrays.asList(new Potion.PlaceHolder(), new Plant.Seed.PlaceHolder())), new AlchemicalCatalyst()));
 				result.add(new QuickRecipe(new AlchemicalCatalyst.Recipe(), new ArrayList<>(Arrays.asList(new Potion.PlaceHolder(), new Runestone.PlaceHolder())), new AlchemicalCatalyst()));
 				result.add(null);
@@ -332,7 +352,7 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new ArcaneCatalyst.Recipe(), new ArrayList<>(Arrays.asList(new Scroll.PlaceHolder(), new Runestone.PlaceHolder())), new ArcaneCatalyst()));
 				result.add(new QuickRecipe(new ArcaneCatalyst.Recipe(), new ArrayList<>(Arrays.asList(new Scroll.PlaceHolder(), new Plant.Seed.PlaceHolder())), new ArcaneCatalyst()));
 				return result;
-			case 7:
+			case 8:
 				result.add(new QuickRecipe(new CausticBrew.Recipe()));
 				result.add(new QuickRecipe(new InfernalBrew.Recipe()));
 				result.add(new QuickRecipe(new BlizzardBrew.Recipe()));
@@ -347,7 +367,7 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new ElixirOfToxicEssence.Recipe()));
 				result.add(new QuickRecipe(new ElixirOfArcaneArmor.Recipe()));
 				return result;
-			case 8:
+			case 9:
 				result.add(new QuickRecipe(new MagicalPorter.Recipe()));
 				result.add(new QuickRecipe(new PhaseShift.Recipe()));
 				result.add(new QuickRecipe(new WildEnergy.Recipe()));

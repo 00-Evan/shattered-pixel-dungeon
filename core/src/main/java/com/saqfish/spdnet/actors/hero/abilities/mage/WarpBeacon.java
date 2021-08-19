@@ -41,6 +41,7 @@ import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.plants.Swiftthistle;
 import com.saqfish.spdnet.scenes.GameScene;
 import com.saqfish.spdnet.scenes.InterlevelScene;
+import com.saqfish.spdnet.ui.HeroIcon;
 import com.saqfish.spdnet.utils.BArray;
 import com.saqfish.spdnet.utils.GLog;
 import com.saqfish.spdnet.windows.WndOptions;
@@ -112,13 +113,12 @@ public class WarpBeacon extends ArmorAbility {
 						if (tracker.depth == Dungeon.depth){
 							Char existing = Actor.findChar(tracker.pos);
 
-							Invisibility.dispel();
 							ScrollOfTeleportation.appear(hero, tracker.pos);
 
 							if (existing != null && existing != hero){
 								if (hero.hasTalent(Talent.TELEFRAG)){
 									int heroHP = hero.HP + hero.shielding();
-									int heroDmg = Math.round(1.666f + 3.333f*hero.pointsInTalent(Talent.TELEFRAG));
+									int heroDmg = 5 * hero.pointsInTalent(Talent.TELEFRAG);
 									hero.damage(Math.min(heroDmg, heroHP-1), WarpBeacon.this);
 
 									int damage = Random.NormalIntRange(10*hero.pointsInTalent(Talent.TELEFRAG), 15*hero.pointsInTalent(Talent.TELEFRAG));
@@ -153,6 +153,7 @@ public class WarpBeacon extends ArmorAbility {
 								}
 							}
 
+							Invisibility.dispel();
 							Dungeon.observe();
 
 						} else {
@@ -162,11 +163,11 @@ public class WarpBeacon extends ArmorAbility {
 								return;
 							}
 
+							TimekeepersHourglass.timeFreeze timeFreeze = hero.buff(TimekeepersHourglass.timeFreeze.class);
+							if (timeFreeze != null) timeFreeze.disarmPressedTraps();
+							Swiftthistle.TimeBubble timeBubble = hero.buff(Swiftthistle.TimeBubble.class);
+							if (timeBubble != null) timeBubble.disarmPressedTraps();
 							Invisibility.dispel();
-							Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
-							if (buff != null) buff.detach();
-							buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
-							if (buff != null) buff.detach();
 
 							InterlevelScene.mode = InterlevelScene.Mode.RETURN;
 							InterlevelScene.returnDepth = tracker.depth;
@@ -212,6 +213,10 @@ public class WarpBeacon extends ArmorAbility {
 
 	public static class WarpBeaconTracker extends Buff {
 
+		{
+			revivePersists = true;
+		}
+
 		int pos;
 		int depth;
 
@@ -242,6 +247,11 @@ public class WarpBeacon extends ArmorAbility {
 			pos = bundle.getInt(POS);
 			depth = bundle.getInt(DEPTH);
 		}
+	}
+
+	@Override
+	public int icon() {
+		return HeroIcon.WARP_BEACON;
 	}
 
 	@Override

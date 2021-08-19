@@ -235,7 +235,7 @@ public class Imp extends NPC {
 		}
 		
 		public static void process( Mob mob ) {
-			if (spawned && given && !completed) {
+			if (spawned && given && !completed && Dungeon.depth != 20) {
 				if ((alternative && mob instanceof Monk) ||
 					(!alternative && mob instanceof Golem)) {
 					

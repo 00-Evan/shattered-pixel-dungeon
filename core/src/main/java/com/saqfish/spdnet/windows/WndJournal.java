@@ -27,6 +27,7 @@ import com.saqfish.spdnet.items.armor.ClassArmor;
 import com.saqfish.spdnet.items.potions.Potion;
 import com.saqfish.spdnet.items.rings.Ring;
 import com.saqfish.spdnet.items.scrolls.Scroll;
+import com.saqfish.spdnet.items.scrolls.ScrollOfIdentify;
 import com.saqfish.spdnet.journal.Catalog;
 import com.saqfish.spdnet.journal.Document;
 import com.saqfish.spdnet.journal.Notes;
@@ -200,7 +201,7 @@ public class WndJournal extends WndTabbed {
 		}
 	}
 	
-	private static class GuideTab extends Component {
+	public static class GuideTab extends Component {
 		
 		private ScrollPane list;
 		private ArrayList<GuideItem> pages = new ArrayList<>();
@@ -245,7 +246,7 @@ public class WndJournal extends WndTabbed {
 			
 			pos += Math.max(ITEM_HEIGHT, title.height());
 			
-			for (String page : Document.ADVENTURERS_GUIDE.pages()){
+			for (String page : Document.ADVENTURERS_GUIDE.pageNames()){
 				GuideItem item = new GuideItem( page );
 				
 				item.setRect( 0, pos, width(), ITEM_HEIGHT );
@@ -268,7 +269,7 @@ public class WndJournal extends WndTabbed {
 				super( iconForPage(page), Messages.titleCase(Document.ADVENTURERS_GUIDE.pageTitle(page)));
 				
 				this.page = page;
-				found = Document.ADVENTURERS_GUIDE.hasPage(page);
+				found = Document.ADVENTURERS_GUIDE.isPageFound(page);
 				
 				if (!found) {
 					icon.hardlight( 0.5f, 0.5f, 0.5f);
@@ -283,53 +284,60 @@ public class WndJournal extends WndTabbed {
 					GameScene.show( new WndStory( iconForPage(page),
 							Document.ADVENTURERS_GUIDE.pageTitle(page),
 							Document.ADVENTURERS_GUIDE.pageBody(page) ));
+					Document.ADVENTURERS_GUIDE.readPage(page);
 					return true;
 				} else {
 					return false;
 				}
 			}
 
-			//TODO might just want this to be part of the Document class
-			private static Image iconForPage( String page ){
-				if (!Document.ADVENTURERS_GUIDE.hasPage(page)){
-					return new ItemSprite( ItemSpriteSheet.GUIDE_PAGE );
-				}
-				switch (page){
-					case Document.GUIDE_INTRO_PAGE: default:
-						return new ItemSprite(ItemSpriteSheet.MASTERY);
-					case "Identifying":
-						return new ItemSprite( ItemSpriteSheet.SCROLL_ISAZ );
-					case Document.GUIDE_SEARCH_PAGE:
-						return new ItemSprite( ItemSpriteSheet.LOCKED_CHEST );
-					case "Strength":
-						return new ItemSprite( ItemSpriteSheet.ARMOR_SCALE );
-					case "Food":
-						return new ItemSprite( ItemSpriteSheet.PASTY );
-					case "Levelling":
-						return new ItemSprite( ItemSpriteSheet.POTION_MAGENTA );
-					case "Surprise_Attacks":
-						return new ItemSprite( ItemSpriteSheet.ASSASSINS_BLADE );
-					case "Dieing":
-						return new ItemSprite( ItemSpriteSheet.ANKH );
-					case "Looting":
-						return new ItemSprite( ItemSpriteSheet.CRYSTAL_KEY );
-					case "Magic":
-						return new ItemSprite( ItemSpriteSheet.WAND_LIGHTNING );
-				}
-			}
-			
 		}
-		
+
+		//TODO might just want this to be part of the Document class
+		public static Image iconForPage( String page ){
+			if (!Document.ADVENTURERS_GUIDE.isPageFound(page)){
+				return new ItemSprite( ItemSpriteSheet.GUIDE_PAGE );
+			}
+			switch (page){
+				case Document.GUIDE_INTRO: default:
+					return new ItemSprite(ItemSpriteSheet.MASTERY);
+				case "Examining":
+					return Icons.get(Icons.MAGNIFY);
+				case "Surprise_Attacks":
+					return new ItemSprite( ItemSpriteSheet.ASSASSINS_BLADE );
+				case "Identifying":
+					return new ItemSprite( new ScrollOfIdentify() );
+				case "Food":
+					return new ItemSprite( ItemSpriteSheet.PASTY );
+				case "Dieing":
+					return new ItemSprite( ItemSpriteSheet.TOMB );
+				case Document.GUIDE_SEARCHING:
+					return Icons.get(Icons.MAGNIFY);
+				case "Strength":
+					return new ItemSprite( ItemSpriteSheet.GREATAXE );
+				case "Upgrades":
+					return new ItemSprite( ItemSpriteSheet.RING_EMERALD );
+				case "Looting":
+					return new ItemSprite( ItemSpriteSheet.CRYSTAL_KEY );
+				case "Levelling":
+					return Icons.get(Icons.TALENT);
+				case "Positioning":
+					return new ItemSprite( ItemSpriteSheet.SPIRIT_BOW );
+				case "Magic":
+					return new ItemSprite( ItemSpriteSheet.WAND_FIREBOLT );
+			}
+		}
+
 	}
 	
 	public static class AlchemyTab extends Component {
 		
 		private RedButton[] pageButtons;
-		private static final int NUM_BUTTONS = 9;
+		private static final int NUM_BUTTONS = 10;
 		
-		private static final int[] spriteIndexes = {10, 12, 7, 8, 9, 11, 13, 14, 15};
+		private static final int[] spriteIndexes = {10, 12, 7, 8, 3, 9, 11, 13, 14, 15};
 		
-		private static int currentPageIdx   = -1;
+		public static int currentPageIdx   = -1;
 		
 		private IconTitle title;
 		private RenderedTextBlock body;
@@ -349,7 +357,7 @@ public class WndJournal extends WndTabbed {
 						updateList();
 					}
 				};
-				if (Document.ALCHEMY_GUIDE.hasPage(i)) {
+				if (Document.ALCHEMY_GUIDE.isPageFound(i)) {
 					pageButtons[i].icon(new ItemSprite(ItemSpriteSheet.SOMETHING + spriteIndexes[i], null));
 				} else {
 					pageButtons[i].icon(new ItemSprite(ItemSpriteSheet.SOMETHING, null));
@@ -380,14 +388,14 @@ public class WndJournal extends WndTabbed {
 				}
 			} else {
 				//for first row
-				float buttonWidth = width()/4;
+				float buttonWidth = width()/5;
 				float y = 0;
 				float x = 0;
 				for (int i = 0; i < NUM_BUTTONS; i++) {
 					pageButtons[i].setRect(x, y, buttonWidth, ITEM_HEIGHT);
 					PixelScene.align(pageButtons[i]);
 					x += buttonWidth;
-					if (i == 3){
+					if (i == 4){
 						y += ITEM_HEIGHT;
 						x = 0;
 						buttonWidth = width()/5;
@@ -436,11 +444,13 @@ public class WndJournal extends WndTabbed {
 			body.text(Document.ALCHEMY_GUIDE.pageBody(currentPageIdx));
 			body.setPos(0, title.bottom());
 			content.add(body);
-			
+
+			Document.ALCHEMY_GUIDE.readPage(currentPageIdx);
+
 			ArrayList<QuickRecipe> toAdd = QuickRecipe.getRecipes(currentPageIdx);
 			
 			float left;
-			float top = body.bottom()+1;
+			float top = body.bottom()+2;
 			int w;
 			ArrayList<QuickRecipe> toAddThisRow = new ArrayList<>();
 			while (!toAdd.isEmpty()){
@@ -486,7 +496,7 @@ public class WndJournal extends WndTabbed {
 				top += 17;
 				toAddThisRow.clear();
 			}
-			top -=1;
+			top -= 1;
 			content.setSize(width(), top);
 			list.setSize(list.width(), list.height());
 			list.scrollTo(0, 0);

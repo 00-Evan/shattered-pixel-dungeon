@@ -23,30 +23,22 @@ package com.saqfish.spdnet.desktop;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.saqfish.spdnet.SPDSettings;
-import com.saqfish.spdnet.ShatteredPixelDungeon;
-import com.saqfish.spdnet.desktop.windows.WndChat;
-import com.saqfish.spdnet.net.windows.NetWindow;
 import com.watabou.noosa.Game;
-import com.watabou.utils.Callback;
 import com.watabou.utils.PlatformSupport;
 import com.watabou.utils.Point;
 
-import org.lwjgl.util.tinyfd.TinyFileDialogs;
-
 import java.util.HashMap;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static com.saqfish.spdnet.ShatteredPixelDungeon.net;
 
 public class DesktopPlatformSupport extends PlatformSupport {
 	
 	@Override
 	public void updateDisplaySize() {
+		//FIXME we still set window resolution when game becomes maximized =/
 		if (!SPDSettings.fullscreen()) {
 			SPDSettings.windowResolution( new Point( Game.width, Game.height ) );
 		}
@@ -71,50 +63,12 @@ public class DesktopPlatformSupport extends PlatformSupport {
 	public boolean connectedToUnmeteredNetwork() {
 		return true; //no easy way to check this in desktop, just assume user doesn't care
 	}
-
-	@Override
-	public boolean openURI(String URI) {
-		return Gdx.net.openURI(URI);
-	}
-
-	@Override
-	//FIXME tinyfd_inputBox isn't a full solution for this. No support for multiline, looks ugly. Ideally we'd have an opengl-based input box
-	public void promptTextInput(String title, String hintText, int maxLen, boolean multiLine, String posTxt, String negTxt, TextCallback callback) {
-		String result = TinyFileDialogs.tinyfd_inputBox(title, title, hintText);
-		if (result == null){
-			callback.onSelect(false, "");
-		} else {
-			if (result.contains("\r\n"))    result = result.substring(0, result.indexOf("\r\n"));
-			if (result.contains("\n"))      result = result.substring(0, result.indexOf("\n"));
-			if (result.length() > maxLen)   result = result.substring(0, maxLen);
-			callback.onSelect(true, result.replace("\r\n", "").replace("\n", ""));
-		}
-	}
-
-	@Override
-	public void showChat(boolean multiline) {
-			Game.runOnRenderThread(new Callback() {
-				@Override
-				public void call() {
-					if(net().reciever().messages() != null)
-						ShatteredPixelDungeon.scene().add(new WndChat());
-				}
-			});
-	}
-	
-	private int pageSize;
-	private PixmapPacker packer;
-	private boolean systemfont;
+	/* FONT SUPPORT */
 	
 	//custom pixel font, for use with Latin and Cyrillic languages
 	private static FreeTypeFontGenerator basicFontGenerator;
-	private static HashMap<Integer, BitmapFont> basicFonts = new HashMap<>();
-	
 	//droid sans fallback, for asian fonts
 	private static FreeTypeFontGenerator asianFontGenerator;
-	private static HashMap<Integer, BitmapFont> asianFonts = new HashMap<>();
-	
-	private static HashMap<FreeTypeFontGenerator, HashMap<Integer, BitmapFont>> fonts;
 	
 	@Override
 	public void setupFontGenerators(int pageSize, boolean systemfont) {
@@ -124,23 +78,8 @@ public class DesktopPlatformSupport extends PlatformSupport {
 		}
 		this.pageSize = pageSize;
 		this.systemfont = systemfont;
-		
-		if (fonts != null){
-			for (FreeTypeFontGenerator generator : fonts.keySet()){
-				for (BitmapFont f : fonts.get(generator).values()){
-					f.dispose();
-				}
-				fonts.get(generator).clear();
-				generator.dispose();
-			}
-			fonts.clear();
-			if (packer != null){
-				for (PixmapPacker.Page p : packer.getPages()){
-					p.getTexture().dispose();
-				}
-				packer.dispose();
-			}
-		}
+
+		resetGenerators(false);
 		fonts = new HashMap<>();
 
 		if (systemfont) {
@@ -150,100 +89,25 @@ public class DesktopPlatformSupport extends PlatformSupport {
 			asianFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/droid_sans.ttf"));
 		}
 		
-		fonts.put(basicFontGenerator, basicFonts);
-		fonts.put(asianFontGenerator, asianFonts);
+		fonts.put(basicFontGenerator, new HashMap<>());
+		fonts.put(asianFontGenerator, new HashMap<>());
 		
 		packer = new PixmapPacker(pageSize, pageSize, Pixmap.Format.RGBA8888, 1, false);
 	}
 	
-	@Override
-	public void resetGenerators() {
-		if (fonts != null) {
-			for (FreeTypeFontGenerator generator : fonts.keySet()) {
-				for (BitmapFont f : fonts.get(generator).values()) {
-					f.dispose();
-				}
-				fonts.get(generator).clear();
-				generator.dispose();
-			}
-			fonts.clear();
-			if (packer != null) {
-				for (PixmapPacker.Page p : packer.getPages()) {
-					p.getTexture().dispose();
-				}
-				packer.dispose();
-			}
-			fonts = null;
-		}
-		setupFontGenerators(pageSize, systemfont);
-	}
+	private static Matcher asianMatcher = Pattern.compile("\\p{InHangul_Syllables}|" +
+			"\\p{InCJK_Unified_Ideographs}|\\p{InCJK_Symbols_and_Punctuation}|\\p{InHalfwidth_and_Fullwidth_Forms}|" +
+			"\\p{InHiragana}|\\p{InKatakana}").matcher("");
 
 	@Override
-	public void reloadGenerators() {
-		if (packer != null) {
-			for (PixmapPacker.Page p : packer.getPages()) {
-				p.getTexture().dispose();
-				p.updateTexture(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest, false);
-			}
-		}
-	}
-	
-	private static Pattern asianMatcher = Pattern.compile("\\p{InHangul_Syllables}|" +
-			"\\p{InCJK_Unified_Ideographs}|\\p{InCJK_Symbols_and_Punctuation}|\\p{InHalfwidth_and_Fullwidth_Forms}|" +
-			"\\p{InHiragana}|\\p{InKatakana}");
-	
-	private static FreeTypeFontGenerator getGeneratorForString( String input ){
-		if (asianMatcher.matcher(input).find()){
+	protected FreeTypeFontGenerator getGeneratorForString( String input ){
+		if (asianMatcher.reset(input).find()){
 			return asianFontGenerator;
 		} else {
 			return basicFontGenerator;
 		}
 	}
-	
-	
-	@Override
-	public BitmapFont getFont(int size, String text) {
-		FreeTypeFontGenerator generator = getGeneratorForString(text);
-		
-		if (generator == null){
-			return null;
-		}
-		
-		if (!fonts.get(generator).containsKey(size)) {
-			FreeTypeFontGenerator.FreeTypeFontParameter parameters = new FreeTypeFontGenerator.FreeTypeFontParameter();
-			parameters.size = size;
-			parameters.flip = true;
-			parameters.borderWidth = parameters.size / 10f;
-			if (size >= 20){
-				parameters.renderCount = 2;
-			} else {
-				parameters.renderCount = 3;
-			}
-			parameters.hinting = FreeTypeFontGenerator.Hinting.None;
-			parameters.spaceX = -(int) parameters.borderWidth;
-			parameters.incremental = true;
-			if (generator == basicFontGenerator){
-				//if we're using latin/cyrillic, we can safely pre-generate some common letters
-				//(we define common as >4% frequency in english)
-				parameters.characters = "�etaoinshrdl";
-			} else {
-				parameters.characters = "�";
-			}
-			parameters.packer = packer;
-			
-			try {
-				BitmapFont font = generator.generateFont(parameters);
-				font.getData().missingGlyph = font.getData().getGlyph('�');
-				fonts.get(generator).put(size, font);
-			} catch ( Exception e ){
-				Game.reportException(e);
-				return null;
-			}
-		}
-		
-		return fonts.get(generator).get(size);
-	}
-	
+
 	//splits on newlines, underscores, and chinese/japaneses characters
 	private Pattern regularsplitter = Pattern.compile(
 			"(?<=\n)|(?=\n)|(?<=_)|(?=_)|" +
@@ -268,5 +132,4 @@ public class DesktopPlatformSupport extends PlatformSupport {
 			return regularsplitter.split(text);
 		}
 	}
-	
 }

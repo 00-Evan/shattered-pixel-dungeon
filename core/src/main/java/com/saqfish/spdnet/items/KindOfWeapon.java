@@ -28,6 +28,7 @@ import com.saqfish.spdnet.actors.Char;
 import com.saqfish.spdnet.actors.hero.Hero;
 import com.saqfish.spdnet.actors.hero.Talent;
 import com.saqfish.spdnet.messages.Messages;
+import com.saqfish.spdnet.ui.ActionIndicator;
 import com.saqfish.spdnet.utils.BArray;
 import com.saqfish.spdnet.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -43,7 +44,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 	
 	@Override
 	public boolean isEquipped( Hero hero ) {
-		return hero.belongings.weapon == this || hero.belongings.stashedWeapon == this;
+		return hero.belongings.weapon() == this;
 	}
 	
 	@Override
@@ -56,6 +57,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 			hero.belongings.weapon = this;
 			activate( hero );
 			Talent.onItemEquipped(hero, this);
+			ActionIndicator.updateIcon();
 			updateQuickslot();
 			
 			cursedKnown = true;

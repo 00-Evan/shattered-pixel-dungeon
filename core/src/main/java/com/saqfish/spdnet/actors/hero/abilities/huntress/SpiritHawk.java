@@ -25,9 +25,14 @@ import com.saqfish.spdnet.Assets;
 import com.saqfish.spdnet.Dungeon;
 import com.saqfish.spdnet.actors.Actor;
 import com.saqfish.spdnet.actors.Char;
+import com.saqfish.spdnet.actors.blobs.Electricity;
+import com.saqfish.spdnet.actors.blobs.Freezing;
+import com.saqfish.spdnet.actors.buffs.Bleeding;
 import com.saqfish.spdnet.actors.buffs.Blindness;
 import com.saqfish.spdnet.actors.buffs.BlobImmunity;
 import com.saqfish.spdnet.actors.buffs.Buff;
+import com.saqfish.spdnet.actors.buffs.Corrosion;
+import com.saqfish.spdnet.actors.buffs.Corruption;
 import com.saqfish.spdnet.actors.buffs.Invisibility;
 import com.saqfish.spdnet.actors.hero.Hero;
 import com.saqfish.spdnet.actors.hero.Talent;
@@ -39,7 +44,9 @@ import com.saqfish.spdnet.items.armor.ClassArmor;
 import com.saqfish.spdnet.items.scrolls.ScrollOfTeleportation;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.scenes.GameScene;
+import com.saqfish.spdnet.sprites.BatSprite;
 import com.saqfish.spdnet.sprites.MobSprite;
+import com.saqfish.spdnet.ui.HeroIcon;
 import com.saqfish.spdnet.utils.GLog;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.utils.Bundle;
@@ -119,6 +126,11 @@ public class SpiritHawk extends ArmorAbility {
 	}
 
 	@Override
+	public int icon() {
+		return HeroIcon.SPIRIT_HAWK;
+	}
+
+	@Override
 	public Talent[] talents() {
 		return new Talent[]{Talent.EAGLE_EYE, Talent.GO_FOR_THE_EYES, Talent.SWIFT_SPIRIT, Talent.HEROIC_ENERGY};
 	}
@@ -138,7 +150,7 @@ public class SpiritHawk extends ArmorAbility {
 			spriteClass = HawkSprite.class;
 
 			HP = HT = 10;
-			defenseSkill = 50;
+			defenseSkill = 60;
 
 			flying = true;
 			viewDistance = (int)GameMath.gate(6, 6+Dungeon.hero.pointsInTalent(Talent.EAGLE_EYE), 8);
@@ -146,19 +158,21 @@ public class SpiritHawk extends ArmorAbility {
 			attacksAutomatically = false;
 
 			immunities.addAll(new BlobImmunity().immunities());
+			immunities.add(Corruption.class);
 		}
 
 		@Override
 		public int attackSkill(Char target) {
-			return 50;
+			return 60;
 		}
 
 		private int dodgesUsed = 0;
-		private float timeRemaining = 50f;
+		private float timeRemaining = 60f;
 
 		@Override
 		public int defenseSkill(Char enemy) {
-			if (dodgesUsed < Dungeon.hero.pointsInTalent(Talent.SWIFT_SPIRIT)){
+			if (Dungeon.hero.hasTalent(Talent.SWIFT_SPIRIT) &&
+					dodgesUsed < 1 + Dungeon.hero.pointsInTalent(Talent.SWIFT_SPIRIT)) {
 				dodgesUsed++;
 				return Char.INFINITE_EVASION;
 			}
@@ -174,7 +188,7 @@ public class SpiritHawk extends ArmorAbility {
 		public int attackProc(Char enemy, int damage) {
 			damage = super.attackProc( enemy, damage );
 			if (Dungeon.hero.hasTalent(Talent.GO_FOR_THE_EYES)) {
-				Buff.prolong( enemy, Blindness.class, 1 + Dungeon.hero.pointsInTalent(Talent.GO_FOR_THE_EYES) );
+				Buff.prolong( enemy, Blindness.class, 2*Dungeon.hero.pointsInTalent(Talent.GO_FOR_THE_EYES) );
 			}
 
 			return damage;

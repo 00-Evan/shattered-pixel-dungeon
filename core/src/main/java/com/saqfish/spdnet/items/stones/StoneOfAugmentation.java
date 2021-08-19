@@ -21,9 +21,11 @@
 
 package com.saqfish.spdnet.items.stones;
 
+import com.saqfish.spdnet.actors.hero.Belongings;
 import com.saqfish.spdnet.items.Item;
 import com.saqfish.spdnet.items.armor.Armor;
 import com.saqfish.spdnet.items.scrolls.ScrollOfUpgrade;
+import com.saqfish.spdnet.items.scrolls.exotic.ScrollOfEnchantment;
 import com.saqfish.spdnet.items.weapon.Weapon;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.scenes.GameScene;
@@ -33,15 +35,19 @@ import com.saqfish.spdnet.ui.RedButton;
 import com.saqfish.spdnet.ui.RenderedTextBlock;
 import com.saqfish.spdnet.ui.Window;
 import com.saqfish.spdnet.windows.IconTitle;
-import com.saqfish.spdnet.windows.WndBag;
 
 public class StoneOfAugmentation extends InventoryStone {
 	
 	{
-		mode = WndBag.Mode.ENCHANTABLE;
+		preferredBag = Belongings.Backpack.class;
 		image = ItemSpriteSheet.STONE_AUGMENTATION;
 	}
-	
+
+	@Override
+	protected boolean usableOnItem(Item item) {
+		return ScrollOfEnchantment.enchantable(item);
+	}
+
 	@Override
 	protected void onItemSelected(Item item) {
 		

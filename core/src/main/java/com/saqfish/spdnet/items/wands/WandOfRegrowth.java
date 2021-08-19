@@ -457,7 +457,8 @@ public class WandOfRegrowth extends Wand {
 
 		@Override
 		public String description() {
-			return Messages.get(this, "desc", wandLvl, (int)(seedPreservation()*100), (int)(seedPreservation()*100) );
+			int preservation = Math.round(seedPreservation()*100);
+			return Messages.get(this, "desc", wandLvl, preservation, preservation);
 		}
 
 		private static final String WAND_LVL = "wand_lvl";

@@ -23,6 +23,7 @@ package com.saqfish.spdnet.items.scrolls;
 
 import com.saqfish.spdnet.Dungeon;
 import com.saqfish.spdnet.actors.buffs.Degrade;
+import com.saqfish.spdnet.actors.hero.Belongings;
 import com.saqfish.spdnet.actors.hero.Hero;
 import com.saqfish.spdnet.effects.Flare;
 import com.saqfish.spdnet.effects.particles.ShadowParticle;
@@ -34,15 +35,33 @@ import com.saqfish.spdnet.items.weapon.Weapon;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.sprites.ItemSpriteSheet;
 import com.saqfish.spdnet.utils.GLog;
-import com.saqfish.spdnet.windows.WndBag;
 
 public class ScrollOfRemoveCurse extends InventoryScroll {
 
 	{
 		icon = ItemSpriteSheet.Icons.SCROLL_REMCURSE;
-		mode = WndBag.Mode.UNCURSABLE;
+		preferredBag = Belongings.Backpack.class;
 	}
-	
+
+	@Override
+	protected boolean usableOnItem(Item item) {
+		return uncursable(item);
+	}
+
+	public static boolean uncursable( Item item ){
+		if (item.isEquipped(Dungeon.hero) && Dungeon.hero.buff(Degrade.class) != null) {
+			return true;
+		} if ((item instanceof EquipableItem || item instanceof Wand) && ((!item.isIdentified() && !item.cursedKnown) || item.cursed)){
+			return true;
+		} else if (item instanceof Weapon){
+			return ((Weapon)item).hasCurseEnchant();
+		} else if (item instanceof Armor){
+			return ((Armor)item).hasCurseGlyph();
+		} else {
+			return false;
+		}
+	}
+
 	@Override
 	protected void onItemSelected(Item item) {
 		new Flare( 6, 32 ).show( curUser.sprite, 2f ) ;
@@ -96,21 +115,7 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 		
 		return procced;
 	}
-	
-	public static boolean uncursable( Item item ){
-		if (item.isEquipped(Dungeon.hero) && Dungeon.hero.buff(Degrade.class) != null) {
-			return true;
-		} if ((item instanceof EquipableItem || item instanceof Wand) && ((!item.isIdentified() && !item.cursedKnown) || item.cursed)){
-			return true;
-		} else if (item instanceof Weapon){
-			return ((Weapon)item).hasCurseEnchant();
-		} else if (item instanceof Armor){
-			return ((Armor)item).hasCurseGlyph();
-		} else {
-			return false;
-		}
-	}
-	
+
 	@Override
 	public int value() {
 		return isKnown() ? 30 * quantity : super.value();

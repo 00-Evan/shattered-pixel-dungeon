@@ -43,6 +43,7 @@ public class DisintegrationTrap extends Trap {
 		shape = CROSSHAIR;
 		
 		canBeHidden = false;
+		avoidsHallways = true;
 	}
 
 	@Override

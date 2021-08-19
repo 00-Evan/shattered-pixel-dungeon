@@ -25,6 +25,7 @@ import com.saqfish.spdnet.Badges;
 import com.saqfish.spdnet.Dungeon;
 import com.saqfish.spdnet.Statistics;
 import com.saqfish.spdnet.actors.buffs.Degrade;
+import com.saqfish.spdnet.actors.hero.Belongings;
 import com.saqfish.spdnet.actors.hero.Hero;
 import com.saqfish.spdnet.actors.hero.Talent;
 import com.saqfish.spdnet.effects.Speck;
@@ -37,17 +38,21 @@ import com.saqfish.spdnet.items.weapon.Weapon;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.sprites.ItemSpriteSheet;
 import com.saqfish.spdnet.utils.GLog;
-import com.saqfish.spdnet.windows.WndBag;
 
 public class ScrollOfUpgrade extends InventoryScroll {
 	
 	{
 		icon = ItemSpriteSheet.Icons.SCROLL_UPGRADE;
-		mode = WndBag.Mode.UPGRADEABLE;
+		preferredBag = Belongings.Backpack.class;
 
 		unique = true;
 	}
-	
+
+	@Override
+	protected boolean usableOnItem(Item item) {
+		return item.isUpgradable();
+	}
+
 	@Override
 	protected void onItemSelected( Item item ) {
 

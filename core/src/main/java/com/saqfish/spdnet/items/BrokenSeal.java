@@ -24,9 +24,11 @@ package com.saqfish.spdnet.items;
 import com.saqfish.spdnet.Assets;
 import com.saqfish.spdnet.Dungeon;
 import com.saqfish.spdnet.actors.buffs.ShieldBuff;
+import com.saqfish.spdnet.actors.hero.Belongings;
 import com.saqfish.spdnet.actors.hero.Hero;
 import com.saqfish.spdnet.actors.hero.Talent;
 import com.saqfish.spdnet.items.armor.Armor;
+import com.saqfish.spdnet.items.bags.Bag;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.scenes.GameScene;
 import com.saqfish.spdnet.sprites.ItemSprite;
@@ -67,6 +69,10 @@ public class BrokenSeal extends Item {
 		this.glyph = glyph;
 	}
 
+	public int maxShield( int armTier, int armLvl ){
+		return armTier + armLvl + Dungeon.hero.pointsInTalent(Talent.IRON_WILL);
+	}
+
 	@Override
 	public ItemSprite.Glowing glowing() {
 		return glyph != null ? glyph.glowing() : null;
@@ -86,7 +92,7 @@ public class BrokenSeal extends Item {
 
 		if (action.equals(AC_AFFIX)){
 			curItem = this;
-			GameScene.selectItem(armorSelector, WndBag.Mode.ARMOR, Messages.get(this, "prompt"));
+			GameScene.selectItem(armorSelector);
 		} else if (action.equals(AC_INFO)) {
 			GameScene.show(new WndUseItem(null, this));
 		}
@@ -98,7 +104,23 @@ public class BrokenSeal extends Item {
 		return level() == 0;
 	}
 
-	protected static WndBag.Listener armorSelector = new WndBag.Listener() {
+	protected static WndBag.ItemSelector armorSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return  Messages.get(BrokenSeal.class, "prompt");
+		}
+
+		@Override
+		public Class<?extends Bag> preferredBag(){
+			return Belongings.Backpack.class;
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			return item instanceof Armor;
+		}
+
 		@Override
 		public void onSelect( Item item ) {
 			BrokenSeal seal = (BrokenSeal) curItem;
@@ -191,8 +213,8 @@ public class BrokenSeal extends Item {
 		}
 
 		public synchronized int maxShield() {
-			if (armor != null && armor.isEquipped((Hero)target)) {
-				return armor.tier + armor.level() + ((Hero) target).pointsInTalent(Talent.IRON_WILL);
+			if (armor != null && armor.isEquipped((Hero)target) && armor.checkSeal() != null) {
+				return armor.checkSeal().maxShield(armor.tier, armor.level());
 			} else {
 				return 0;
 			}

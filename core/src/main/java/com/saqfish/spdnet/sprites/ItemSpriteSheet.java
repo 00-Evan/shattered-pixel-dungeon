@@ -466,10 +466,12 @@ public class ItemSpriteSheet {
 	public static final int SCROLL_TIWAZ    = SCROLLS+11;
 	
 	public static final int SCROLL_CATALYST = SCROLLS+13;
+	public static final int ARCANE_RESIN    = SCROLLS+14;
 	static {
 		for (int i = SCROLLS; i < SCROLLS+16; i++)
 			assignItemRect(i, 15, 14);
 		assignItemRect(SCROLL_CATALYST, 12, 11);
+		assignItemRect(ARCANE_RESIN   , 12, 11);
 	}
 	
 	private static final int EXOTIC_SCROLLS =                               xy(1, 20);  //16 slots
@@ -493,7 +495,7 @@ public class ItemSpriteSheet {
 	private static final int STONES             =                           xy(1, 21);  //16 slots
 	public static final int STONE_AGGRESSION    = STONES+0;
 	public static final int STONE_AUGMENTATION  = STONES+1;
-	public static final int STONE_AFFECTION     = STONES+2;
+	public static final int STONE_FEAR          = STONES+2;
 	public static final int STONE_BLAST         = STONES+3;
 	public static final int STONE_BLINK         = STONES+4;
 	public static final int STONE_CLAIRVOYANCE  = STONES+5;
@@ -522,10 +524,12 @@ public class ItemSpriteSheet {
 	public static final int POTION_SILVER   = POTIONS+10;
 	public static final int POTION_IVORY    = POTIONS+11;
 	public static final int POTION_CATALYST = POTIONS+13;
+	public static final int LIQUID_METAL    = POTIONS+14;
 	static {
 		for (int i = POTIONS; i < POTIONS+16; i++)
 			assignItemRect(i, 12, 14);
 		assignItemRect(POTION_CATALYST, 6, 15);
+		assignItemRect(LIQUID_METAL,    8, 15);
 	}
 	
 	private static final int EXOTIC_POTIONS =                               xy(1, 23);  //16 slots
@@ -669,13 +673,15 @@ public class ItemSpriteSheet {
 
 	private static final int BAGS       =                                   xy(1, 31);  //16 slots
 	public static final int WATERSKIN   = BAGS+0;
-	public static final int POUCH       = BAGS+1;
-	public static final int HOLDER      = BAGS+2;
-	public static final int BANDOLIER   = BAGS+3;
-	public static final int HOLSTER     = BAGS+4;
-	public static final int VIAL        = BAGS+5;
+	public static final int BACKPACK    = BAGS+1;
+	public static final int POUCH       = BAGS+2;
+	public static final int HOLDER      = BAGS+3;
+	public static final int BANDOLIER   = BAGS+4;
+	public static final int HOLSTER     = BAGS+5;
+	public static final int VIAL        = BAGS+6;
 	static{
 		assignItemRect(WATERSKIN,   16, 14);
+		assignItemRect(BACKPACK,    16, 16);
 		assignItemRect(POUCH,       14, 15);
 		assignItemRect(HOLDER,      16, 16);
 		assignItemRect(BANDOLIER,   15, 16);

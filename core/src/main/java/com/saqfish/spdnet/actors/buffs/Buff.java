@@ -44,6 +44,9 @@ public class Buff extends Actor {
 	
 	//whether or not the buff announces its name
 	public boolean announced = false;
+
+	//whether a buff should persist through revive effects for the hero
+	public boolean revivePersists = false;
 	
 	protected HashSet<Class> resistances = new HashSet<>();
 	

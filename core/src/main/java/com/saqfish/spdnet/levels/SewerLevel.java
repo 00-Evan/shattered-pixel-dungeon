@@ -31,6 +31,8 @@ import com.saqfish.spdnet.levels.traps.AlarmTrap;
 import com.saqfish.spdnet.levels.traps.ChillingTrap;
 import com.saqfish.spdnet.levels.traps.ConfusionTrap;
 import com.saqfish.spdnet.levels.traps.FlockTrap;
+import com.saqfish.spdnet.levels.traps.GatewayTrap;
+import com.saqfish.spdnet.levels.traps.GeyserTrap;
 import com.saqfish.spdnet.levels.traps.OozeTrap;
 import com.saqfish.spdnet.levels.traps.ShockingTrap;
 import com.saqfish.spdnet.levels.traps.SummoningTrap;
@@ -94,7 +96,7 @@ public class SewerLevel extends RegularLevel {
 				new Class<?>[]{
 						ChillingTrap.class, ShockingTrap.class, ToxicTrap.class, WornDartTrap.class,
 						AlarmTrap.class, OozeTrap.class,
-						ConfusionTrap.class, FlockTrap.class, SummoningTrap.class, TeleportationTrap.class };
+						ConfusionTrap.class, FlockTrap.class, SummoningTrap.class, TeleportationTrap.class, GatewayTrap.class };
 }
 
 	@Override
@@ -104,7 +106,7 @@ public class SewerLevel extends RegularLevel {
 				new float[]{
 						4, 4, 4, 4,
 						2, 2,
-						1, 1, 1, 1};
+						1, 1, 1, 1, 1};
 	}
 	
 	@Override

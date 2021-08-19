@@ -28,7 +28,7 @@ import com.saqfish.spdnet.utils.BArray;
 //based on: http://www.roguebasin.com/index.php?title=FOV_using_recursive_shadowcasting
 public final class ShadowCaster {
 
-	public static final int MAX_DISTANCE = 14;
+	public static final int MAX_DISTANCE = 20;
 	
 	//max length of rows as FOV moves out, for each FOV distance
 	//This is used to make the overall FOV circular, instead of square

@@ -23,9 +23,11 @@ package com.saqfish.spdnet.windows;
 
 import com.saqfish.spdnet.Assets;
 import com.saqfish.spdnet.Chrome;
+import com.saqfish.spdnet.actors.hero.Belongings;
 import com.saqfish.spdnet.actors.hero.Hero;
 import com.saqfish.spdnet.actors.mobs.npcs.Blacksmith;
 import com.saqfish.spdnet.items.Item;
+import com.saqfish.spdnet.items.bags.Bag;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.scenes.GameScene;
 import com.saqfish.spdnet.scenes.PixelScene;
@@ -69,7 +71,7 @@ public class WndBlacksmith extends Window {
 			@Override
 			protected void onClick() {
 				btnPressed = btnItem1;
-				GameScene.selectItem( itemSelector, WndBag.Mode.UPGRADEABLE, Messages.get(WndBlacksmith.class, "select") );
+				GameScene.selectItem( itemSelector );
 			}
 		};
 		btnItem1.setRect( (WIDTH - BTN_GAP) / 2 - BTN_SIZE, message.top() + message.height() + BTN_GAP, BTN_SIZE, BTN_SIZE );
@@ -79,7 +81,7 @@ public class WndBlacksmith extends Window {
 			@Override
 			protected void onClick() {
 				btnPressed = btnItem2;
-				GameScene.selectItem( itemSelector, WndBag.Mode.UPGRADEABLE, Messages.get(WndBlacksmith.class, "select") );
+				GameScene.selectItem( itemSelector );
 			}
 		};
 		btnItem2.setRect( btnItem1.right() + BTN_GAP, btnItem1.top(), BTN_SIZE, BTN_SIZE );
@@ -100,7 +102,23 @@ public class WndBlacksmith extends Window {
 		resize( WIDTH, (int)btnReforge.bottom() );
 	}
 	
-	protected WndBag.Listener itemSelector = new WndBag.Listener() {
+	protected WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return Messages.get(WndBlacksmith.class, "select");
+		}
+
+		@Override
+		public Class<?extends Bag> preferredBag(){
+			return Belongings.Backpack.class;
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			return item.isUpgradable();
+		}
+
 		@Override
 		public void onSelect( Item item ) {
 			if (item != null && btnPressed.parent != null) {
@@ -167,6 +185,10 @@ public class WndBlacksmith extends Window {
 		
 		public void item( Item item ) {
 			slot.item( this.item = item );
+		}
+
+		public void clear(){
+			slot.clear();
 		}
 	}
 }

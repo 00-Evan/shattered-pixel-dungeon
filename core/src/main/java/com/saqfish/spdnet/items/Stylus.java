@@ -22,10 +22,13 @@
 package com.saqfish.spdnet.items;
 
 import com.saqfish.spdnet.Assets;
+import com.saqfish.spdnet.actors.hero.Belongings;
 import com.saqfish.spdnet.actors.hero.Hero;
 import com.saqfish.spdnet.effects.Enchanting;
 import com.saqfish.spdnet.effects.particles.PurpleParticle;
 import com.saqfish.spdnet.items.armor.Armor;
+import com.saqfish.spdnet.items.bags.Bag;
+import com.saqfish.spdnet.items.bags.MagicalHolster;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.scenes.GameScene;
 import com.saqfish.spdnet.sprites.ItemSpriteSheet;
@@ -66,7 +69,7 @@ public class Stylus extends Item {
 		if (action.equals(AC_INSCRIBE)) {
 
 			curUser = hero;
-			GameScene.selectItem( itemSelector, WndBag.Mode.ARMOR, Messages.get(this, "prompt") );
+			GameScene.selectItem( itemSelector );
 			
 		}
 	}
@@ -111,7 +114,23 @@ public class Stylus extends Item {
 		return 30 * quantity;
 	}
 
-	private final WndBag.Listener itemSelector = new WndBag.Listener() {
+	private final WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return Messages.get(Stylus.class, "prompt");
+		}
+
+		@Override
+		public Class<?extends Bag> preferredBag(){
+			return Belongings.Backpack.class;
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			return item instanceof Armor;
+		}
+
 		@Override
 		public void onSelect( Item item ) {
 			if (item != null) {

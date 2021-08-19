@@ -32,8 +32,8 @@ import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.AlphaTweener;
-import com.watabou.noosa.ui.Button;
 import com.watabou.noosa.ui.Component;
 
 import java.util.ArrayList;
@@ -98,15 +98,14 @@ public class BuffIndicator extends Component {
 	public static final int PINCUSHION  = 49;
 	public static final int UPGRADE     = 50;
 	public static final int MOMENTUM    = 51;
+	public static final int ANKH        = 52;
+	public static final int NOINV       = 53;
 
 	public static final int SIZE    = 7;
 	
 	private static BuffIndicator heroInstance;
 	
-	private SmartTexture texture;
-	private TextureFilm film;
-	
-	private LinkedHashMap<Buff, BuffIcon> buffIcons = new LinkedHashMap<>();
+	private LinkedHashMap<Buff, BuffButton> buffButtons = new LinkedHashMap<>();
 	private boolean needsRefresh;
 	private Char ch;
 	
@@ -127,13 +126,7 @@ public class BuffIndicator extends Component {
 			heroInstance = null;
 		}
 	}
-	
-	@Override
-	protected void createChildren() {
-		texture = TextureCache.get( Assets.Interfaces.BUFFS_SMALL );
-		film = new TextureFilm( texture, SIZE, SIZE );
-	}
-	
+
 	@Override
 	public synchronized void update() {
 		super.update();
@@ -154,9 +147,9 @@ public class BuffIndicator extends Component {
 		}
 		
 		//remove any icons no longer present
-		for (Buff buff : buffIcons.keySet().toArray(new Buff[0])){
+		for (Buff buff : buffButtons.keySet().toArray(new Buff[0])){
 			if (!newBuffs.contains(buff)){
-				Image icon = buffIcons.get( buff ).icon;
+				Image icon = buffButtons.get( buff ).icon;
 				icon.origin.set( SIZE / 2f );
 				icon.alpha(0.6f);
 				add( icon );
@@ -173,24 +166,24 @@ public class BuffIndicator extends Component {
 					}
 				} );
 				
-				buffIcons.get( buff ).destroy();
-				remove(buffIcons.get( buff ));
-				buffIcons.remove( buff );
+				buffButtons.get( buff ).destroy();
+				remove(buffButtons.get( buff ));
+				buffButtons.remove( buff );
 			}
 		}
 		
 		//add new icons
 		for (Buff buff : newBuffs) {
-			if (!buffIcons.containsKey(buff)) {
-				BuffIcon icon = new BuffIcon( buff );
+			if (!buffButtons.containsKey(buff)) {
+				BuffButton icon = new BuffButton(buff);
 				add(icon);
-				buffIcons.put( buff, icon );
+				buffButtons.put( buff, icon );
 			}
 		}
 		
 		//layout
 		int pos = 0;
-		for (BuffIcon icon : buffIcons.values()){
+		for (BuffButton icon : buffButtons.values()){
 			icon.updateIcon();
 			icon.setRect(x + pos * (SIZE + 2), y, 9, 12);
 			PixelScene.align(icon);
@@ -198,28 +191,29 @@ public class BuffIndicator extends Component {
 		}
 	}
 
-	private class BuffIcon extends Button {
+	private static class BuffButton extends IconButton {
 
 		private Buff buff;
 
-		public Image icon;
+		//Todo maybe move into buff icon?
 		public Image grey;
 
-		public BuffIcon( Buff buff ){
-			super();
+		public BuffButton(Buff buff ){
+			super( new BuffIcon(buff, false));
 			this.buff = buff;
 
-			icon = new Image( texture );
-			icon.frame( film.get( buff.icon() ) );
-			add( icon );
+			bringToFront(grey);
+		}
 
+		@Override
+		protected void createChildren() {
+			super.createChildren();
 			grey = new Image( TextureCache.createSolid(0xCC666666));
 			add( grey );
 		}
-		
+
 		public void updateIcon(){
-			icon.frame( film.get( buff.icon() ) );
-			buff.tintIcon(icon);
+			((BuffIcon)icon).refresh(buff);
 			//round up to the nearest pixel if <50% faded, otherwise round down
 			float fadeHeight = buff.iconFadePercent() * icon.height();
 			float zoom = (camera() != null) ? camera().zoom : 1;
@@ -233,14 +227,24 @@ public class BuffIndicator extends Component {
 		@Override
 		protected void layout() {
 			super.layout();
-			grey.x = icon.x = this.x+1;
-			grey.y = icon.y = this.y+2;
+			grey.x = icon.x = this.x + 1;
+			grey.y = icon.y = this.y + 2;
 		}
 
 		@Override
 		protected void onClick() {
-			if (buff.icon() != NONE)
-				GameScene.show(new WndInfoBuff(buff));
+			if (buff.icon() != NONE) GameScene.show(new WndInfoBuff(buff));
+		}
+
+		@Override
+		protected void onPointerDown() {
+			//don't affect buff color
+			Sample.INSTANCE.play( Assets.Sounds.CLICK );
+		}
+
+		@Override
+		protected void onPointerUp() {
+			//don't affect buff color
 		}
 	}
 	

@@ -21,10 +21,12 @@
 
 package com.saqfish.spdnet.actors.mobs;
 
-import com.saqfish.spdnet.Badges;
 import com.saqfish.spdnet.actors.Char;
 import com.saqfish.spdnet.items.Generator;
+import com.saqfish.spdnet.items.journal.Guidebook;
+import com.saqfish.spdnet.journal.Document;
 import com.saqfish.spdnet.messages.Messages;
+import com.saqfish.spdnet.scenes.GameScene;
 import com.saqfish.spdnet.sprites.SnakeSprite;
 import com.saqfish.spdnet.utils.GLog;
 import com.watabou.utils.Random;
@@ -59,8 +61,9 @@ public class Snake extends Mob {
 	@Override
 	public String defenseVerb() {
 		dodges++;
-		if (dodges >= 3 && !Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_1)){
-			GLog.h(Messages.get(this, "hint"));
+		if (dodges >= 2 && !Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_SURPRISE_ATKS)){
+			GLog.p(Messages.get(Guidebook.class, "hint"));
+			GameScene.flashForDocument(Document.GUIDE_SURPRISE_ATKS);
 			dodges = 0;
 		}
 		return super.defenseVerb();

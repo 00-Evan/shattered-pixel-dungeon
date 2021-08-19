@@ -36,7 +36,6 @@ import com.saqfish.spdnet.actors.mobs.npcs.Blacksmith;
 import com.saqfish.spdnet.actors.mobs.npcs.Ghost;
 import com.saqfish.spdnet.actors.mobs.npcs.Imp;
 import com.saqfish.spdnet.actors.mobs.npcs.Wandmaker;
-import com.saqfish.spdnet.items.Amulet;
 import com.saqfish.spdnet.items.Ankh;
 import com.saqfish.spdnet.items.Generator;
 import com.saqfish.spdnet.items.Heap;
@@ -53,6 +52,7 @@ import com.saqfish.spdnet.levels.CityLevel;
 import com.saqfish.spdnet.levels.DeadEndLevel;
 import com.saqfish.spdnet.levels.HallsLevel;
 import com.saqfish.spdnet.levels.LastLevel;
+import com.saqfish.spdnet.levels.LastShopLevel;
 import com.saqfish.spdnet.levels.Level;
 import com.saqfish.spdnet.levels.CavesBossLevel;
 import com.saqfish.spdnet.levels.CityBossLevel;
@@ -69,6 +69,7 @@ import com.saqfish.spdnet.scenes.GameScene;
 import com.saqfish.spdnet.ui.QuickSlotButton;
 import com.saqfish.spdnet.utils.BArray;
 import com.saqfish.spdnet.utils.DungeonSeed;
+import com.saqfish.spdnet.windows.WndResurrect;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -377,7 +378,7 @@ public class Dungeon {
 		hero.viewDistance = light == null ? level.viewDistance : Math.max( Light.DISTANCE, level.viewDistance );
 		
 		hero.curAction = hero.lastAction = null;
-		
+
 		observe();
 		try {
 			saveAll();
@@ -527,7 +528,7 @@ public class Dungeon {
 	}
 	
 	public static void saveAll() throws IOException {
-		if (hero != null && hero.isAlive()) {
+		if (hero != null && (hero.isAlive() || WndResurrect.instance != null)) {
 			
 			Actor.fixTime();
 			saveGame( GamesInProgress.curSlot );
@@ -677,7 +678,7 @@ public class Dungeon {
 	}
 	
 	public static void fail( Class cause ) {
-		if (hero.belongings.getItem( Ankh.class ) == null) {
+		if (WndResurrect.instance == null) {
 			Rankings.INSTANCE.submit( false, cause );
 		}
 	}

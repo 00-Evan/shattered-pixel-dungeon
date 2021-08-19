@@ -31,7 +31,6 @@ import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.scenes.AlchemyScene;
 import com.saqfish.spdnet.sprites.ItemSpriteSheet;
 import com.saqfish.spdnet.utils.GLog;
-import com.saqfish.spdnet.windows.WndBag;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
@@ -52,9 +51,7 @@ public class AlchemistsToolkit extends Artifact {
 	}
 
 	public static final String AC_BREW = "BREW";
-	
-	protected WndBag.Mode mode = WndBag.Mode.POTION;
-	
+
 	private boolean alchemyReady = false;
 
 	@Override

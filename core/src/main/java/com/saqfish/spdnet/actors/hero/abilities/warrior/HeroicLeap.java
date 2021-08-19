@@ -28,6 +28,7 @@ import com.saqfish.spdnet.actors.buffs.Buff;
 import com.saqfish.spdnet.actors.buffs.FlavourBuff;
 import com.saqfish.spdnet.actors.buffs.Invisibility;
 import com.saqfish.spdnet.actors.buffs.Vulnerable;
+import com.saqfish.spdnet.actors.buffs.Weakness;
 import com.saqfish.spdnet.actors.hero.Hero;
 import com.saqfish.spdnet.actors.hero.Talent;
 import com.saqfish.spdnet.actors.hero.abilities.ArmorAbility;
@@ -36,6 +37,7 @@ import com.saqfish.spdnet.items.wands.WandOfBlastWave;
 import com.saqfish.spdnet.mechanics.Ballistica;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.scenes.GameScene;
+import com.saqfish.spdnet.ui.HeroIcon;
 import com.watabou.noosa.Camera;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
@@ -56,8 +58,8 @@ public class HeroicLeap extends ArmorAbility {
 	public float chargeUse( Hero hero ) {
 		float chargeUse = super.chargeUse(hero);
 		if (hero.buff(DoubleJumpTracker.class) != null){
-			//reduced charge use by 24%/42%/56%/67%
-			chargeUse *= Math.pow(0.76, hero.pointsInTalent(Talent.DOUBLE_JUMP));
+			//reduced charge use by 20%/36%/50%/60%
+			chargeUse *= Math.pow(0.795, hero.pointsInTalent(Talent.DOUBLE_JUMP));
 		}
 		return chargeUse;
 	}
@@ -127,6 +129,11 @@ public class HeroicLeap extends ArmorAbility {
 	}
 
 	public static class DoubleJumpTracker extends FlavourBuff{};
+
+	@Override
+	public int icon() {
+		return HeroIcon.HEROIC_LEAP;
+	}
 
 	@Override
 	public Talent[] talents() {

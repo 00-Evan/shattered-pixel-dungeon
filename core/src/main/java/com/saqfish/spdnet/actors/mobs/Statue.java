@@ -23,6 +23,7 @@ package com.saqfish.spdnet.actors.mobs;
 
 import com.saqfish.spdnet.Dungeon;
 import com.saqfish.spdnet.actors.Char;
+import com.saqfish.spdnet.actors.buffs.Buff;
 import com.saqfish.spdnet.items.Generator;
 import com.saqfish.spdnet.items.weapon.Weapon;
 import com.saqfish.spdnet.items.weapon.Weapon.Enchantment;
@@ -108,6 +109,14 @@ public class Statue extends Mob {
 		return Random.NormalIntRange(0, Dungeon.depth + weapon.defenseFactor(this));
 	}
 	
+	@Override
+	public void add(Buff buff) {
+		super.add(buff);
+		if (state == PASSIVE && buff.type == Buff.buffType.NEGATIVE){
+			state = HUNTING;
+		}
+	}
+
 	@Override
 	public void damage( int dmg, Object src ) {
 

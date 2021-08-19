@@ -25,6 +25,7 @@ import com.saqfish.spdnet.Assets;
 import com.saqfish.spdnet.Badges;
 import com.saqfish.spdnet.Challenges;
 import com.saqfish.spdnet.Dungeon;
+import com.saqfish.spdnet.Rankings;
 import com.saqfish.spdnet.SPDSettings;
 import com.saqfish.spdnet.ShatteredPixelDungeon;
 import com.saqfish.spdnet.Statistics;
@@ -35,6 +36,7 @@ import com.saqfish.spdnet.actors.buffs.ChampionEnemy;
 import com.saqfish.spdnet.actors.hero.Talent;
 import com.saqfish.spdnet.actors.mobs.DemonSpawner;
 import com.saqfish.spdnet.actors.mobs.Mob;
+import com.saqfish.spdnet.actors.mobs.Snake;
 import com.saqfish.spdnet.effects.BannerSprites;
 import com.saqfish.spdnet.effects.BlobEmitter;
 import com.saqfish.spdnet.effects.CircleArc;
@@ -43,16 +45,15 @@ import com.saqfish.spdnet.effects.Flare;
 import com.saqfish.spdnet.effects.FloatingText;
 import com.saqfish.spdnet.effects.Ripple;
 import com.saqfish.spdnet.effects.SpellSprite;
+import com.saqfish.spdnet.items.Ankh;
 import com.saqfish.spdnet.items.Heap;
 import com.saqfish.spdnet.items.Honeypot;
 import com.saqfish.spdnet.items.Item;
 import com.saqfish.spdnet.items.artifacts.DriedRose;
-import com.saqfish.spdnet.items.bags.MagicalHolster;
-import com.saqfish.spdnet.items.bags.PotionBandolier;
-import com.saqfish.spdnet.items.bags.ScrollHolder;
-import com.saqfish.spdnet.items.bags.VelvetPouch;
+import com.saqfish.spdnet.items.journal.Guidebook;
 import com.saqfish.spdnet.items.potions.Potion;
 import com.saqfish.spdnet.items.scrolls.ScrollOfTeleportation;
+import com.saqfish.spdnet.journal.Document;
 import com.saqfish.spdnet.journal.Journal;
 import com.saqfish.spdnet.levels.Level;
 import com.saqfish.spdnet.levels.RegularLevel;
@@ -61,7 +62,6 @@ import com.saqfish.spdnet.levels.rooms.secret.SecretRoom;
 import com.saqfish.spdnet.levels.traps.Trap;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.net.actor.Player;
-import com.saqfish.spdnet.net.events.Send;
 import com.saqfish.spdnet.net.sprites.PlayerSprite;
 import com.saqfish.spdnet.net.windows.WndInfoPlayer;
 import com.saqfish.spdnet.plants.Plant;
@@ -96,7 +96,6 @@ import com.saqfish.spdnet.ui.Toolbar;
 import com.saqfish.spdnet.ui.Window;
 import com.saqfish.spdnet.utils.GLog;
 import com.saqfish.spdnet.windows.WndBag;
-import com.saqfish.spdnet.windows.WndBag.Mode;
 import com.saqfish.spdnet.windows.WndGame;
 import com.saqfish.spdnet.windows.WndHero;
 import com.saqfish.spdnet.windows.WndInfoCell;
@@ -106,6 +105,7 @@ import com.saqfish.spdnet.windows.WndInfoPlant;
 import com.saqfish.spdnet.windows.WndInfoTrap;
 import com.saqfish.spdnet.windows.WndMessage;
 import com.saqfish.spdnet.windows.WndOptions;
+import com.saqfish.spdnet.windows.WndResurrect;
 import com.saqfish.spdnet.windows.WndStory;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Camera;
@@ -178,7 +178,11 @@ public class GameScene extends PixelScene {
 	private LootIndicator loot;
 	private ActionIndicator action;
 	private ResumeIndicator resume;
-	
+
+	{
+		inGameScene = true;
+	}
+
 	@Override
 	public void create() {
 		
@@ -187,7 +191,10 @@ public class GameScene extends PixelScene {
 			return;
 		}
 		
-		Music.INSTANCE.play( Assets.Music.GAME, true );
+		Music.INSTANCE.playTracks(
+				new String[]{Assets.Music.SEWERS_1, Assets.Music.SEWERS_2, Assets.Music.SEWERS_2},
+				new float[]{1, 1, 0.5f},
+				false);
 
 		SPDSettings.lastClass(Dungeon.hero.heroClass.ordinal());
 		
@@ -376,8 +383,10 @@ public class GameScene extends PixelScene {
 		
 		switch (InterlevelScene.mode) {
 			case RESURRECT:
-				ScrollOfTeleportation.appear( Dungeon.hero, Dungeon.level.entrance );
-				new Flare( 8, 32 ).color( 0xFFFF66, true ).show( hero, 2f ) ;
+				Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+				ScrollOfTeleportation.appear( Dungeon.hero, Dungeon.hero.pos );
+				SpellSprite.show(Dungeon.hero, SpellSprite.ANKH);
+				new Flare( 5, 16 ).color( 0xFFFF00, true ).show( hero, 4f ) ;
 				break;
 			case RETURN:
 				ScrollOfTeleportation.appear(  Dungeon.hero, Dungeon.hero.pos );
@@ -488,6 +497,8 @@ public class GameScene extends PixelScene {
 				
 			} else if (InterlevelScene.mode == InterlevelScene.Mode.RESET) {
 				GLog.h(Messages.get(this, "warp"));
+			} else if (InterlevelScene.mode == InterlevelScene.Mode.RESURRECT) {
+				GLog.h(Messages.get(this, "resurrect"), Dungeon.depth);
 			} else {
 				GLog.h(Messages.get(this, "return"), Dungeon.depth);
 			}
@@ -541,8 +552,27 @@ public class GameScene extends PixelScene {
 
 			
 		}
-		
+
+		if (Rankings.INSTANCE.totalNumber > 0 && !Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_DIEING)){
+			GLog.p(Messages.get(Guidebook.class, "hint"));
+			GameScene.flashForDocument(Document.GUIDE_DIEING);
+		}
+
 		fadeIn();
+
+		//re-show WndResurrect if needed
+		if (!Dungeon.hero.isAlive()){
+			//check if hero has an unblessed ankh
+			boolean hasAnkh = false;
+			for (Ankh i : Dungeon.hero.belongings.getAllItems(Ankh.class)){
+				if (!i.isBlessed()){
+					hasAnkh = true;
+				}
+			}
+			if (hasAnkh) {
+				add(new WndResurrect());
+			}
+		}
 
 	}
 	
@@ -936,9 +966,10 @@ public class GameScene extends PixelScene {
 	public static void pickUpJournal( Item item, int pos ) {
 		if (scene != null) scene.pane.pickup( item, pos );
 	}
-	
-	public static void flashJournal(){
-		if (scene != null) scene.pane.flash();
+
+	//TODO currently only works with guidebooks
+	public static void flashForDocument( String page ){
+		if (scene != null) scene.pane.flashForPage( page );
 	}
 	
 	public static void updateKeyDisplay(){
@@ -1084,20 +1115,11 @@ public class GameScene extends PixelScene {
 		}
 	}
 	
-	public static WndBag selectItem( WndBag.Listener listener, WndBag.Mode mode, String title ) {
+	public static WndBag selectItem( WndBag.ItemSelector listener ) {
 		cancelCellSelector();
-		
-		WndBag wnd =
-				mode == Mode.SEED ?
-					WndBag.getBag( VelvetPouch.class, listener, mode, title ) :
-				mode == Mode.SCROLL ?
-					WndBag.getBag( ScrollHolder.class, listener, mode, title ) :
-				mode == Mode.POTION ?
-					WndBag.getBag( PotionBandolier.class, listener, mode, title ) :
-				mode == Mode.WAND ?
-					WndBag.getBag( MagicalHolster.class, listener, mode, title ) :
-				WndBag.lastBag( listener, mode, title );
-		
+
+		WndBag wnd = WndBag.getBag( listener );
+
 		if (scene != null) scene.addToFront( wnd );
 		
 		return wnd;
@@ -1204,6 +1226,10 @@ public class GameScene extends PixelScene {
 			GameScene.show(new WndInfoPlayer((Player) o));
 		} else if ( o instanceof Mob ){
 			GameScene.show(new WndInfoMob((Mob) o));
+			if (o instanceof Snake && !Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_SURPRISE_ATKS)){
+				GLog.p(Messages.get(Guidebook.class, "hint"));
+				GameScene.flashForDocument(Document.GUIDE_SURPRISE_ATKS);
+			}
 		} else if ( o instanceof Heap ){
 			GameScene.show(new WndInfoItem((Heap)o));
 		} else if ( o instanceof Plant ){

@@ -50,6 +50,8 @@ import com.saqfish.spdnet.mechanics.Ballistica;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.scenes.CellSelector;
 import com.saqfish.spdnet.scenes.GameScene;
+import com.saqfish.spdnet.sprites.ItemSprite;
+import com.saqfish.spdnet.sprites.ItemSpriteSheet;
 import com.saqfish.spdnet.ui.QuickSlotButton;
 import com.saqfish.spdnet.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -72,10 +74,11 @@ public abstract class Wand extends Item {
 	
 	protected Charger charger;
 	
-	private boolean curChargeKnown = false;
+	public boolean curChargeKnown = false;
 	
 	public boolean curseInfusionBonus = false;
-	
+	public int resinBonus = 0;
+
 	private static final int USES_TO_ID = 10;
 	private float usesLeftToID = USES_TO_ID;
 	private float availableUsesToID = USES_TO_ID/2f;
@@ -236,6 +239,12 @@ public abstract class Wand extends Item {
 
 		desc += "\n\n" + statsDesc();
 
+		if (resinBonus == 1){
+			desc += "\n\n" + Messages.get(Wand.class, "resin_one");
+		} else if (resinBonus > 1){
+			desc += "\n\n" + Messages.get(Wand.class, "resin_many", resinBonus);
+		}
+
 		if (cursed && cursedKnown) {
 			desc += "\n\n" + Messages.get(Wand.class, "cursed");
 		} else if (!isIdentified() && cursedKnown){
@@ -273,7 +282,7 @@ public abstract class Wand extends Item {
 			curseInfusionBonus = false;
 			updateLevel();
 		}
-		return super.level() + (curseInfusionBonus ? 1 : 0);
+		return super.level() + resinBonus + (curseInfusionBonus ? 1 : 0);
 	}
 	
 	@Override
@@ -283,6 +292,10 @@ public abstract class Wand extends Item {
 
 		if (Random.Int(3) == 0) {
 			cursed = false;
+		}
+
+		if (resinBonus > 0){
+			resinBonus--;
 		}
 
 		updateLevel();
@@ -308,9 +321,14 @@ public abstract class Wand extends Item {
 
 		if (charger != null && charger.target != null) {
 			if (charger.target.buff(WildMagic.WildMagicTracker.class) != null){
-				int level = 2 + ((Hero)charger.target).pointsInTalent(Talent.WILD_POWER);
-				if (Random.Int(2) == 0) level++;
-				return level/2; // +1/+1.5/+2/+2.5/+3 at 0/1/2/3/4 talent points
+				int bonus = 2 + ((Hero)charger.target).pointsInTalent(Talent.WILD_POWER);
+				if (Random.Int(2) == 0) bonus++;
+				bonus /= 2; // +1/+1.5/+2/+2.5/+3 at 0/1/2/3/4 talent points
+
+				int maxBonusLevel = 2 + ((Hero)charger.target).pointsInTalent(Talent.WILD_POWER);
+				if (lvl < maxBonusLevel) {
+					lvl = Math.min(lvl + bonus, maxBonusLevel);
+				}
 			}
 
 			if (charger.target.buff(ScrollEmpower.class) != null){
@@ -369,14 +387,19 @@ public abstract class Wand extends Item {
 		
 		curCharges -= cursed ? 1 : chargesPerCast();
 
-		ScrollEmpower empower = curUser.buff(ScrollEmpower.class);
-		if (empower != null){
-			empower.detach();
-		}
-
+		//remove magic charge at a higher priority, if we are benefiting from it are and not the
+		//wand that just applied it
 		WandOfMagicMissile.MagicCharge buff = curUser.buff(WandOfMagicMissile.MagicCharge.class);
-		if (buff != null && buff.level() > super.buffedLvl()){
+		if (buff != null
+				&& buff.wandJustApplied() != this
+				&& buff.level() == buffedLvl()
+				&& buffedLvl() > super.buffedLvl()){
 			buff.detach();
+		} else {
+			ScrollEmpower empower = curUser.buff(ScrollEmpower.class);
+			if (empower != null){
+				empower.detach();
+			}
 		}
 
 		//if the wand is owned by the hero, but not in their inventory, it must be in the staff
@@ -420,7 +443,14 @@ public abstract class Wand extends Item {
 
 		return this;
 	}
-	
+
+	@Override
+	public ItemSprite.Glowing glowing() {
+		if (resinBonus == 0) return null;
+
+		return new ItemSprite.Glowing(0xFFFFFF, 1f/(float)resinBonus);
+	}
+
 	@Override
 	public int value() {
 		int price = 75;
@@ -440,13 +470,14 @@ public abstract class Wand extends Item {
 		return price;
 	}
 	
-	private static final String USES_LEFT_TO_ID = "uses_left_to_id";
-	private static final String AVAILABLE_USES  = "available_uses";
+	private static final String USES_LEFT_TO_ID     = "uses_left_to_id";
+	private static final String AVAILABLE_USES      = "available_uses";
 	private static final String CUR_CHARGES         = "curCharges";
 	private static final String CUR_CHARGE_KNOWN    = "curChargeKnown";
 	private static final String PARTIALCHARGE       = "partialCharge";
-	private static final String CURSE_INFUSION_BONUS = "curse_infusion_bonus";
-	
+	private static final String CURSE_INFUSION_BONUS= "curse_infusion_bonus";
+	private static final String RESIN_BONUS         = "resin_bonus";
+
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
@@ -455,7 +486,8 @@ public abstract class Wand extends Item {
 		bundle.put( CUR_CHARGES, curCharges );
 		bundle.put( CUR_CHARGE_KNOWN, curChargeKnown );
 		bundle.put( PARTIALCHARGE , partialCharge );
-		bundle.put(CURSE_INFUSION_BONUS, curseInfusionBonus );
+		bundle.put( CURSE_INFUSION_BONUS, curseInfusionBonus );
+		bundle.put( RESIN_BONUS, resinBonus );
 	}
 	
 	@Override
@@ -463,11 +495,14 @@ public abstract class Wand extends Item {
 		super.restoreFromBundle( bundle );
 		usesLeftToID = bundle.getInt( USES_LEFT_TO_ID );
 		availableUsesToID = bundle.getInt( AVAILABLE_USES );
-		
+		curseInfusionBonus = bundle.getBoolean(CURSE_INFUSION_BONUS);
+		resinBonus = bundle.getInt(RESIN_BONUS);
+
+		updateLevel();
+
 		curCharges = bundle.getInt( CUR_CHARGES );
 		curChargeKnown = bundle.getBoolean( CUR_CHARGE_KNOWN );
 		partialCharge = bundle.getFloat( PARTIALCHARGE );
-		curseInfusionBonus = bundle.getBoolean(CURSE_INFUSION_BONUS);
 	}
 	
 	@Override
@@ -480,7 +515,28 @@ public abstract class Wand extends Item {
 	public int collisionProperties(int target){
 		return collisionProperties;
 	}
-	
+
+	public static class PlaceHolder extends Wand {
+
+		{
+			image = ItemSpriteSheet.WAND_HOLDER;
+		}
+
+		@Override
+		public boolean isSimilar(Item item) {
+			return item instanceof Wand;
+		}
+
+		@Override
+		public void onZap(Ballistica attack) {}
+		public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {}
+
+		@Override
+		public String info() {
+			return "";
+		}
+	}
+
 	protected static CellSelector.Listener zapper = new  CellSelector.Listener() {
 		
 		@Override

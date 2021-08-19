@@ -189,6 +189,7 @@ public class WndSettings extends WndTabbed {
 
 		RenderedTextBlock title;
 		ColorBlock sep1;
+		CheckBox chkFullscreen;
 		OptionSlider optScale;
 		CheckBox chkSaver;
 		RedButton btnOrientation;
@@ -204,6 +205,21 @@ public class WndSettings extends WndTabbed {
 
 			sep1 = new ColorBlock(1, 1, 0xFF000000);
 			add(sep1);
+
+			chkFullscreen = new CheckBox( Messages.get(this, "fullscreen") ) {
+				@Override
+				protected void onClick() {
+					super.onClick();
+					SPDSettings.fullscreen(checked());
+				}
+			};
+			if (DeviceCompat.supportsFullScreen()){
+				chkFullscreen.checked(SPDSettings.fullscreen());
+			} else {
+				chkFullscreen.checked(true);
+				chkFullscreen.enable(false);
+			}
+			add(chkFullscreen);
 
 			if ((int)Math.ceil(2* Game.density) < PixelScene.maxDefaultZoom) {
 				optScale = new OptionSlider(Messages.get(this, "scale"),
@@ -223,7 +239,7 @@ public class WndSettings extends WndTabbed {
 				add(optScale);
 			}
 
-			if (!DeviceCompat.isDesktop() && PixelScene.maxScreenZoom >= 2) {
+			if (DeviceCompat.isAndroid() && PixelScene.maxScreenZoom >= 2) {
 				chkSaver = new CheckBox(Messages.get(this, "saver")) {
 					@Override
 					protected void onClick() {
@@ -252,7 +268,7 @@ public class WndSettings extends WndTabbed {
 				add( chkSaver );
 			}
 
-			if (!DeviceCompat.isDesktop()) {
+			if (DeviceCompat.isAndroid()) {
 				btnOrientation = new RedButton(PixelScene.landscape() ?
 						Messages.get(this, "portrait")
 						: Messages.get(this, "landscape")) {
@@ -300,25 +316,28 @@ public class WndSettings extends WndTabbed {
 
 			bottom = sep1.y + 1;
 
-			if (optScale != null){
-				optScale.setRect(0, bottom + GAP, width, SLIDER_HEIGHT);
-				bottom = optScale.bottom();
-			}
-
-			if (width > 200 && chkSaver != null && btnOrientation != null) {
-				chkSaver.setRect(0, bottom + GAP, width/2-1, BTN_HEIGHT);
-				btnOrientation.setRect(chkSaver.right()+ GAP, bottom + GAP, width/2-1, BTN_HEIGHT);
-				bottom = btnOrientation.bottom();
+			if (width > 200 && chkSaver != null) {
+				chkFullscreen.setRect(0, bottom + GAP, width/2-1, BTN_HEIGHT);
+				chkSaver.setRect(chkFullscreen.right()+ GAP, bottom + GAP, width/2-1, BTN_HEIGHT);
+				bottom = chkFullscreen.bottom();
 			} else {
+				chkFullscreen.setRect(0, bottom + GAP, width, BTN_HEIGHT);
+				bottom = chkFullscreen.bottom();
+
 				if (chkSaver != null) {
 					chkSaver.setRect(0, bottom + GAP, width, BTN_HEIGHT);
 					bottom = chkSaver.bottom();
 				}
+			}
 
-				if (btnOrientation != null) {
-					btnOrientation.setRect(0, bottom + GAP, width, BTN_HEIGHT);
-					bottom = btnOrientation.bottom();
-				}
+			if (btnOrientation != null) {
+				btnOrientation.setRect(0, bottom + GAP, width, BTN_HEIGHT);
+				bottom = btnOrientation.bottom();
+			}
+
+			if (optScale != null){
+				optScale.setRect(0, bottom + GAP, width, SLIDER_HEIGHT);
+				bottom = optScale.bottom();
 			}
 
 			sep2.size(width, 1);
@@ -347,7 +366,6 @@ public class WndSettings extends WndTabbed {
 		CheckBox chkFlipToolbar;
 		CheckBox chkFlipTags;
 		ColorBlock sep2;
-		CheckBox chkFullscreen;
 		CheckBox chkFont;
 		ColorBlock sep3;
 		RedButton btnKeyBindings;
@@ -428,17 +446,6 @@ public class WndSettings extends WndTabbed {
 			sep2 = new ColorBlock(1, 1, 0xFF000000);
 			add(sep2);
 
-			chkFullscreen = new CheckBox( Messages.get(this, "fullscreen") ) {
-				@Override
-				protected void onClick() {
-					super.onClick();
-					SPDSettings.fullscreen(checked());
-				}
-			};
-			chkFullscreen.checked(SPDSettings.fullscreen());
-			chkFullscreen.enable(DeviceCompat.supportsFullScreen());
-			add(chkFullscreen);
-
 			chkFont = new CheckBox(Messages.get(this, "system_font")){
 				@Override
 				protected void onClick() {
@@ -493,18 +500,15 @@ public class WndSettings extends WndTabbed {
 			if (width > 200) {
 				chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP, width/2 - 1, BTN_HEIGHT);
 				chkFlipTags.setRect(chkFlipToolbar.right() + GAP, chkFlipToolbar.top(), width/2 -1, BTN_HEIGHT);
-				sep2.size(width, 1);
-				sep2.y = chkFlipTags.bottom() + 2;
-				chkFullscreen.setRect(0, sep2.y + 1 + GAP, width/2 - 1, BTN_HEIGHT);
-				chkFont.setRect(chkFullscreen.right() + GAP, chkFullscreen.top(), width/2 - 1, BTN_HEIGHT);
 			} else {
 				chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP, width, BTN_HEIGHT);
 				chkFlipTags.setRect(0, chkFlipToolbar.bottom() + GAP, width, BTN_HEIGHT);
-				sep2.size(width, 1);
-				sep2.y = chkFlipTags.bottom() + 2;
-				chkFullscreen.setRect(0, sep2.y + 1 + GAP, width, BTN_HEIGHT);
-				chkFont.setRect(0, chkFullscreen.bottom() + GAP, width, BTN_HEIGHT);
 			}
+
+			sep2.size(width, 1);
+			sep2.y = chkFlipTags.bottom() + 2;
+
+			chkFont.setRect(0, sep2.y + 1 + GAP, width, BTN_HEIGHT);
 
 			if (btnKeyBindings != null){
 				sep3.size(width, 1);
@@ -524,6 +528,7 @@ public class WndSettings extends WndTabbed {
 		ColorBlock sep1;
 		CheckBox chkNews;
 		CheckBox chkUpdates;
+		CheckBox chkBetas;
 		CheckBox chkWifi;
 
 		@Override
@@ -546,16 +551,31 @@ public class WndSettings extends WndTabbed {
 			chkNews.checked(SPDSettings.news());
 			add(chkNews);
 
-			chkUpdates = new CheckBox(Messages.get(this, "updates")){
-				@Override
-				protected void onClick() {
-					super.onClick();
-					SPDSettings.updates(checked());
-					Updates.clearUpdate();
+			if (Updates.supportsUpdates() && Updates.isUpdateable()) {
+				chkUpdates = new CheckBox(Messages.get(this, "updates")) {
+					@Override
+					protected void onClick() {
+						super.onClick();
+						SPDSettings.updates(checked());
+						Updates.clearUpdate();
+					}
+				};
+				chkUpdates.checked(SPDSettings.updates());
+				add(chkUpdates);
+
+				if (Updates.supportsBetaChannel()){
+					chkBetas = new CheckBox(Messages.get(this, "betas")) {
+						@Override
+						protected void onClick() {
+							super.onClick();
+							SPDSettings.updates(checked());
+							Updates.clearUpdate();
+						}
+					};
+					chkBetas.checked(SPDSettings.betas());
+					add(chkBetas);
 				}
-			};
-			chkUpdates.checked(SPDSettings.updates());
-			add(chkUpdates);
+			}
 
 			if (!DeviceCompat.isDesktop()){
 				chkWifi = new CheckBox(Messages.get(this, "wifi")){
@@ -576,15 +596,25 @@ public class WndSettings extends WndTabbed {
 			sep1.size(width, 1);
 			sep1.y = title.bottom() + 2*GAP;
 
-			if (width > 200){
+			float pos;
+			if (width > 200 && chkUpdates != null){
 				chkNews.setRect(0, sep1.y + 1 + GAP, width/2-1, BTN_HEIGHT);
 				chkUpdates.setRect(chkNews.right() + GAP, chkNews.top(), width/2-1, BTN_HEIGHT);
+				pos = chkUpdates.bottom();
 			} else {
 				chkNews.setRect(0, sep1.y + 1 + GAP, width, BTN_HEIGHT);
-				chkUpdates.setRect(0, chkNews.bottom()+ GAP, width, BTN_HEIGHT);
+				pos = chkNews.bottom();
+				if (chkUpdates != null) {
+					chkUpdates.setRect(0, chkNews.bottom() + GAP, width, BTN_HEIGHT);
+					pos = chkUpdates.bottom();
+				}
 			}
 
-			float pos = chkUpdates.bottom();
+			if (chkBetas != null){
+				chkBetas.setRect(0, pos + GAP, width, BTN_HEIGHT);
+				pos = chkBetas.bottom();
+			}
+
 			if (chkWifi != null){
 				chkWifi.setRect(0, pos + GAP, width, BTN_HEIGHT);
 				pos = chkWifi.bottom();
@@ -809,6 +839,9 @@ public class WndSettings extends WndTabbed {
 						if (reviewers.length > 0) {
 							creds += Messages.titleCase(Messages.get(LangsTab.this, "reviewers"));
 							creds2 += "";
+						}
+
+						if (translators.length > 0){
 							boolean col2 = false;
 							for (i = 0; i < total.size(); i++) {
 								if (i == translatorIdx){

@@ -25,6 +25,7 @@ import com.saqfish.spdnet.Dungeon;
 import com.saqfish.spdnet.SPDAction;
 import com.saqfish.spdnet.actors.Actor;
 import com.saqfish.spdnet.actors.Char;
+import com.saqfish.spdnet.actors.buffs.LostInventory;
 import com.saqfish.spdnet.items.Item;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.scenes.GameScene;
@@ -37,7 +38,7 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Button;
 import com.watabou.utils.PathFinder;
 
-public class QuickSlotButton extends Button implements WndBag.Listener {
+public class QuickSlotButton extends Button {
 	
 	private static QuickSlotButton[] instance = new QuickSlotButton[4];
 	private int slotNum;
@@ -166,25 +167,38 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 	
 	@Override
 	protected void onClick() {
-		GameScene.selectItem( this, WndBag.Mode.QUICKSLOT, Messages.get(this, "select_item") );
+		GameScene.selectItem( itemSelector );
 	}
 	
 	@Override
 	protected boolean onLongClick() {
-		GameScene.selectItem( this, WndBag.Mode.QUICKSLOT, Messages.get(this, "select_item") );
+		GameScene.selectItem( itemSelector );
 		return true;
 	}
 
+	private WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return Messages.get(QuickSlotButton.class, "select_item");
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			return item.defaultAction != null;
+		}
+
+		@Override
+		public void onSelect(Item item) {
+			if (item != null) {
+				Dungeon.quickslot.setSlot( slotNum , item );
+				refresh();
+			}
+		}
+	};
+
 	private static Item select(int slotNum){
 		return Dungeon.quickslot.getItem( slotNum );
-	}
-
-	@Override
-	public void onSelect( Item item ) {
-		if (item != null) {
-			Dungeon.quickslot.setSlot( slotNum , item );
-			refresh();
-		}
 	}
 	
 	public void item( Item item ) {
@@ -202,7 +216,9 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 	}
 	
 	private void enableSlot() {
-		slot.enable(Dungeon.quickslot.isNonePlaceholder( slotNum ));
+		//TODO check if item persists!
+		slot.enable(Dungeon.quickslot.isNonePlaceholder( slotNum )
+				&& (Dungeon.hero.buff(LostInventory.class) == null || Dungeon.quickslot.getItem(slotNum).keptThoughLostInvent));
 	}
 
 	public static void useTargeting(int idx){

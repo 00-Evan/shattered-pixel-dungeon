@@ -21,7 +21,14 @@
 
 package com.watabou.utils;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.PixmapPacker;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.watabou.noosa.Game;
+
+import java.util.HashMap;
 
 public abstract class PlatformSupport {
 	
@@ -31,32 +38,108 @@ public abstract class PlatformSupport {
 
 	public abstract boolean connectedToUnmeteredNetwork();
 
-	//FIXME this is a temporary method to workaround a bug in libGDX with Android 11+
-	//it can be removed once Shattered is updated to libGDX 1.9.14+
-	public abstract boolean openURI( String URI );
-	
-	//FIXME this is currently used because no platform-agnostic text input has been implemented.
-	//should look into doing that using either plain openGL or libgdx's libraries
-	public abstract void promptTextInput( String title, String hintText, int maxLen, boolean multiLine,
-	                             String posTxt, String negTxt, TextCallback callback);
-
-
-	public abstract void showChat(boolean multiline);
-
-	public static abstract class TextCallback {
-		public abstract void onSelect( boolean positive, String text );
+	public void vibrate( int millis ){
+		//regular GDX vibration by default
+		Gdx.input.vibrate( millis );
 	}
-	
+
 	//TODO should consider spinning this into its own class, rather than platform support getting ever bigger
-	
+	protected static HashMap<FreeTypeFontGenerator, HashMap<Integer, BitmapFont>> fonts;
+
+	protected int pageSize;
+	protected PixmapPacker packer;
+	protected boolean systemfont;
+
 	public abstract void setupFontGenerators(int pageSize, boolean systemFont );
 
-	public abstract void resetGenerators();
+	protected abstract FreeTypeFontGenerator getGeneratorForString( String input );
 
-	public abstract void reloadGenerators();
-	
-	public abstract BitmapFont getFont(int size, String text);
-	
 	public abstract String[] splitforTextBlock( String text, boolean multiline );
+
+	public void resetGenerators(){
+		resetGenerators( true );
+	}
+
+	public void resetGenerators( boolean setupAfter ){
+		if (fonts != null) {
+			for (FreeTypeFontGenerator generator : fonts.keySet()) {
+				for (BitmapFont f : fonts.get(generator).values()) {
+					f.dispose();
+				}
+				fonts.get(generator).clear();
+				generator.dispose();
+			}
+			fonts.clear();
+			if (packer != null) {
+				for (PixmapPacker.Page p : packer.getPages()) {
+					p.getTexture().dispose();
+				}
+				packer.dispose();
+			}
+			fonts = null;
+		}
+		if (setupAfter) setupFontGenerators(pageSize, systemfont);
+	}
+
+	public void reloadGenerators(){
+		if (packer != null) {
+			for (FreeTypeFontGenerator generator : fonts.keySet()) {
+				for (BitmapFont f : fonts.get(generator).values()) {
+					f.dispose();
+				}
+				fonts.get(generator).clear();
+			}
+			if (packer != null) {
+				for (PixmapPacker.Page p : packer.getPages()) {
+					p.getTexture().dispose();
+				}
+				packer.dispose();
+			}
+			packer = new PixmapPacker(pageSize, pageSize, Pixmap.Format.RGBA8888, 1, false);
+		}
+	}
+
+	//flipped is needed because Shattered's graphics are y-down, while GDX graphics are y-up.
+	//this is very confusing, I know.
+	public BitmapFont getFont(int size, String text, boolean flipped, boolean border) {
+		FreeTypeFontGenerator generator = getGeneratorForString(text);
+
+		if (generator == null){
+			return null;
+		}
+
+		int key = size;
+		if (border) key += Short.MAX_VALUE; //surely we'll never have a size above 32k
+		if (flipped) key = -key;
+		if (!fonts.get(generator).containsKey(key)) {
+			FreeTypeFontGenerator.FreeTypeFontParameter parameters = new FreeTypeFontGenerator.FreeTypeFontParameter();
+			parameters.size = size;
+			parameters.flip = flipped;
+			if (border) {
+				parameters.borderWidth = parameters.size / 10f;
+			}
+			if (size >= 20){
+				parameters.renderCount = 2;
+			} else {
+				parameters.renderCount = 3;
+			}
+			parameters.hinting = FreeTypeFontGenerator.Hinting.None;
+			parameters.spaceX = -(int) parameters.borderWidth;
+			parameters.incremental = true;
+			parameters.characters = "�";
+			parameters.packer = packer;
+
+			try {
+				BitmapFont font = generator.generateFont(parameters);
+				font.getData().missingGlyph = font.getData().getGlyph('�');
+				fonts.get(generator).put(key, font);
+			} catch ( Exception e ){
+				Game.reportException(e);
+				return null;
+			}
+		}
+
+		return fonts.get(generator).get(key);
+	}
 
 }

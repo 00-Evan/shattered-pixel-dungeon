@@ -29,9 +29,6 @@ import com.saqfish.spdnet.ui.Window;
 import java.util.ArrayList;
 
 public class WndUseItem extends WndInfoItem {
-	
-	//only one wnduseitem can appear at a time
-	private static WndUseItem INSTANCE;
 
 	private static final float BUTTON_HEIGHT	= 16;
 	
@@ -40,15 +37,11 @@ public class WndUseItem extends WndInfoItem {
 	public WndUseItem( final Window owner, final Item item ) {
 		
 		super(item);
+
+		float y = height;
 		
-		if( INSTANCE != null ){
-			INSTANCE.hide();
-		}
-		INSTANCE = this;
-	
-		float y = height + GAP;
-		
-		if (Dungeon.hero.isAlive()) {
+		if (Dungeon.hero.isAlive() && Dungeon.hero.belongings.contains(item)) {
+			y += GAP;
 			ArrayList<RedButton> buttons = new ArrayList<>();
 			for (final String action : item.actions( Dungeon.hero )) {
 				

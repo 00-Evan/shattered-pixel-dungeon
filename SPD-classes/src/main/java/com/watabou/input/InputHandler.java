@@ -21,17 +21,61 @@
 
 package com.watabou.input;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.watabou.noosa.Game;
 import com.watabou.utils.PointF;
 
 public class InputHandler extends InputAdapter {
-	
+
+	private InputMultiplexer multiplexer;
+
 	public InputHandler( Input input ){
-		input.setInputProcessor( this );
+		//An input multiplexer, with additional coord tweaks for power saver mode
+		multiplexer = new InputMultiplexer(){
+			@Override
+			public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+				screenX /= (Game.dispWidth / (float)Game.width);
+				screenY /= (Game.dispHeight / (float)Game.height);
+				return super.touchDown(screenX, screenY, pointer, button);
+			}
+
+			@Override
+			public boolean touchDragged(int screenX, int screenY, int pointer) {
+				screenX /= (Game.dispWidth / (float)Game.width);
+				screenY /= (Game.dispHeight / (float)Game.height);
+				return super.touchDragged(screenX, screenY, pointer);
+			}
+
+			@Override
+			public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+				screenX /= (Game.dispWidth / (float)Game.width);
+				screenY /= (Game.dispHeight / (float)Game.height);
+				return super.touchUp(screenX, screenY, pointer, button);
+			}
+
+			@Override
+			public boolean mouseMoved(int screenX, int screenY) {
+				screenX /= (Game.dispWidth / (float)Game.width);
+				screenY /= (Game.dispHeight / (float)Game.height);
+				return super.mouseMoved(screenX, screenY);
+			}
+		};
+		input.setInputProcessor(multiplexer);
+		addInputProcessor(this);
 		input.setCatchKey( Input.Keys.BACK, true);
 		input.setCatchKey( Input.Keys.MENU, true);
+	}
+
+	public void addInputProcessor(InputProcessor processor){
+		multiplexer.addProcessor(0, processor);
+	}
+
+	public void removeInputProcessor(InputProcessor processor){
+		multiplexer.removeProcessor(processor);
 	}
 	
 	public void processAllEvents(){
@@ -46,24 +90,19 @@ public class InputHandler extends InputAdapter {
 	
 	@Override
 	public synchronized boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		screenX /= (Game.dispWidth / (float)Game.width);
-		screenY /= (Game.dispHeight / (float)Game.height);
+		Gdx.input.setOnscreenKeyboardVisible(false); //in-game events never need keyboard, so hide it
 		PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, pointer, true));
 		return true;
 	}
 	
 	@Override
 	public synchronized boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		screenX /= (Game.dispWidth / (float)Game.width);
-		screenY /= (Game.dispHeight / (float)Game.height);
 		PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, pointer, false));
 		return true;
 	}
 	
 	@Override
 	public synchronized boolean touchDragged(int screenX, int screenY, int pointer) {
-		screenX /= (Game.dispWidth / (float)Game.width);
-		screenY /= (Game.dispHeight / (float)Game.height);
 		PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, pointer, true));
 		return true;
 	}
@@ -73,8 +112,6 @@ public class InputHandler extends InputAdapter {
 	
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
-		screenX /= (Game.dispWidth / (float)Game.width);
-		screenY /= (Game.dispHeight / (float)Game.height);
 		pointerHoverPos.x = screenX;
 		pointerHoverPos.y = screenY;
 		return true;
@@ -109,8 +146,8 @@ public class InputHandler extends InputAdapter {
 	// ********************
 	
 	@Override
-	public boolean scrolled(int amount) {
-		ScrollEvent.addScrollEvent( new ScrollEvent(pointerHoverPos, amount));
+	public boolean scrolled(float amountX, float amountY) {
+		ScrollEvent.addScrollEvent( new ScrollEvent(pointerHoverPos, amountY));
 		return true;
 	}
 }

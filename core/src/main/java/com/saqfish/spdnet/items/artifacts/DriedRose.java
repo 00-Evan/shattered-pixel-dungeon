@@ -31,6 +31,7 @@ import com.saqfish.spdnet.actors.blobs.ToxicGas;
 import com.saqfish.spdnet.actors.buffs.Burning;
 import com.saqfish.spdnet.actors.buffs.Corruption;
 import com.saqfish.spdnet.actors.buffs.LockedFloor;
+import com.saqfish.spdnet.actors.hero.Belongings;
 import com.saqfish.spdnet.actors.hero.Hero;
 import com.saqfish.spdnet.actors.hero.Talent;
 import com.saqfish.spdnet.actors.mobs.Wraith;
@@ -43,6 +44,7 @@ import com.saqfish.spdnet.items.Item;
 import com.saqfish.spdnet.items.armor.Armor;
 import com.saqfish.spdnet.items.armor.glyphs.AntiMagic;
 import com.saqfish.spdnet.items.armor.glyphs.Brimstone;
+import com.saqfish.spdnet.items.bags.Bag;
 import com.saqfish.spdnet.items.rings.RingOfEnergy;
 import com.saqfish.spdnet.items.scrolls.ScrollOfRetribution;
 import com.saqfish.spdnet.items.scrolls.exotic.ScrollOfPsionicBlast;
@@ -479,6 +481,16 @@ public class DriedRose extends Artifact {
 			}
 		}
 
+		@Override
+		public boolean isUpgradable() {
+			return false;
+		}
+
+		@Override
+		public boolean isIdentified() {
+			return true;
+		}
+
 	}
 
 	public static class GhostHero extends DirectableAlly {
@@ -836,7 +848,23 @@ public class DriedRose extends Artifact {
 						}
 						rose.weapon = null;
 					} else {
-						GameScene.selectItem(new WndBag.Listener() {
+						GameScene.selectItem(new WndBag.ItemSelector() {
+
+							@Override
+							public String textPrompt() {
+								return Messages.get(WndGhostHero.class, "weapon_prompt");
+							}
+
+							@Override
+							public Class<?extends Bag> preferredBag(){
+								return Belongings.Backpack.class;
+							}
+
+							@Override
+							public boolean itemSelectable(Item item) {
+								return item instanceof MeleeWeapon;
+							}
+
 							@Override
 							public void onSelect(Item item) {
 								if (!(item instanceof MeleeWeapon)) {
@@ -864,7 +892,7 @@ public class DriedRose extends Artifact {
 								}
 								
 							}
-						}, WndBag.Mode.WEAPON, Messages.get(WndGhostHero.class, "weapon_prompt"));
+						});
 					}
 				}
 			};
@@ -886,7 +914,23 @@ public class DriedRose extends Artifact {
 						}
 						rose.armor = null;
 					} else {
-						GameScene.selectItem(new WndBag.Listener() {
+						GameScene.selectItem(new WndBag.ItemSelector() {
+
+							@Override
+							public String textPrompt() {
+								return Messages.get(WndGhostHero.class, "armor_prompt");
+							}
+
+							@Override
+							public Class<?extends Bag> preferredBag(){
+								return Belongings.Backpack.class;
+							}
+
+							@Override
+							public boolean itemSelectable(Item item) {
+								return item instanceof Armor;
+							}
+
 							@Override
 							public void onSelect(Item item) {
 								if (!(item instanceof Armor)) {
@@ -914,7 +958,7 @@ public class DriedRose extends Artifact {
 								}
 								
 							}
-						}, WndBag.Mode.ARMOR, Messages.get(WndGhostHero.class, "armor_prompt"));
+						});
 					}
 				}
 			};

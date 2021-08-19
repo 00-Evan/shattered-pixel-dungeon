@@ -36,6 +36,7 @@ import com.saqfish.spdnet.actors.hero.abilities.ArmorAbility;
 import com.saqfish.spdnet.items.armor.ClassArmor;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.ui.BuffIndicator;
+import com.saqfish.spdnet.ui.HeroIcon;
 import com.saqfish.spdnet.utils.BArray;
 import com.saqfish.spdnet.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -57,8 +58,8 @@ public class DeathMark extends ArmorAbility {
 	public float chargeUse( Hero hero ) {
 		float chargeUse = super.chargeUse(hero);
 		if (hero.buff(DoubleMarkTracker.class) != null){
-			//reduced charge use by 33%/55%/70%/80%
-			chargeUse *= Math.pow(0.67, hero.pointsInTalent(Talent.DOUBLE_MARK));
+			//reduced charge use by 30%/50%/65%/75%
+			chargeUse *= Math.pow(0.707, hero.pointsInTalent(Talent.DOUBLE_MARK));
 		}
 		return chargeUse;
 	}
@@ -126,6 +127,11 @@ public class DeathMark extends ArmorAbility {
 	}
 
 	public static class DoubleMarkTracker extends FlavourBuff{};
+
+	@Override
+	public int icon() {
+		return HeroIcon.DEATH_MARK;
+	}
 
 	@Override
 	public Talent[] talents() {

@@ -32,14 +32,25 @@ public class DeviceCompat {
 	public static boolean supportsFullScreen(){
 		switch (Gdx.app.getType()){
 			case Android:
-				//Android 4.4 KitKat and later, this is for immersive mode
+				//Android 4.4+ supports hiding UI via immersive mode
 				return Gdx.app.getVersion() >= 19;
+			case iOS:
+				//iOS supports hiding UI via drawing into the gesture safe area
+				return Gdx.graphics.getSafeInsetBottom() != 0;
 			default:
 				//TODO implement functionality for other platforms here
 				return true;
 		}
 	}
-	
+
+	public static boolean isAndroid(){
+		return Gdx.app.getType() == Application.ApplicationType.Android;
+	}
+
+	public static boolean isiOS(){
+		return Gdx.app.getType() == Application.ApplicationType.iOS;
+	}
+
 	public static boolean isDesktop(){
 		return Gdx.app.getType() == Application.ApplicationType.Desktop;
 	}
@@ -48,24 +59,13 @@ public class DeviceCompat {
 		return Gdx.input.isPeripheralAvailable(Input.Peripheral.HardwareKeyboard);
 	}
 	
-	public static boolean legacyDevice(){
-		switch (Gdx.app.getType()){
-			case Android:
-				//Devices prior to Android 4.1 Jelly Bean
-				return Gdx.app.getVersion() < 16;
-			default:
-				//TODO implement functionality for other platforms here
-				return false;
-		}
-	}
-	
 	public static boolean isDebug(){
 		// return Game.version.contains("INDEV");
 		return true;
 	}
 	
 	public static void openURI( String URI ){
-		Game.platform.openURI(URI);
+		Gdx.net.openURI(URI);
 	}
 	
 	public static void log( String tag, String message ){

@@ -30,6 +30,8 @@ import com.saqfish.spdnet.actors.hero.Talent;
 import com.saqfish.spdnet.effects.CellEmitter;
 import com.saqfish.spdnet.effects.particles.EarthParticle;
 import com.saqfish.spdnet.items.Item;
+import com.saqfish.spdnet.items.bags.Bag;
+import com.saqfish.spdnet.items.bags.VelvetPouch;
 import com.saqfish.spdnet.items.rings.RingOfEnergy;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.plants.Earthroot;
@@ -60,8 +62,6 @@ public class SandalsOfNature extends Artifact {
 	public static final String AC_FEED = "FEED";
 	public static final String AC_ROOT = "ROOT";
 
-	protected WndBag.Mode mode = WndBag.Mode.SEED;
-
 	public ArrayList<Class> seeds = new ArrayList<>();
 
 	@Override
@@ -80,7 +80,7 @@ public class SandalsOfNature extends Artifact {
 
 		if (action.equals(AC_FEED)){
 
-			GameScene.selectItem(itemSelector, mode, Messages.get(this, "prompt"));
+			GameScene.selectItem(itemSelector);
 
 		} else if (action.equals(AC_ROOT) && level() > 0){
 
@@ -146,12 +146,8 @@ public class SandalsOfNature extends Artifact {
 		return super.upgrade();
 	}
 
-	public static boolean canUseSeed(Item item){
-		if (item instanceof Plant.Seed){
-			return !(curItem instanceof SandalsOfNature) ||
-					!((SandalsOfNature) curItem).seeds.contains(item.getClass());
-		}
-		return false;
+	public boolean canUseSeed(Item item){
+		return item instanceof Plant.Seed && !seeds.contains(item.getClass());
 	}
 
 
@@ -190,7 +186,23 @@ public class SandalsOfNature extends Artifact {
 		}
 	}
 
-	protected WndBag.Listener itemSelector = new WndBag.Listener() {
+	protected WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return Messages.get(SandalsOfNature.class, "prompt");
+		}
+
+		@Override
+		public Class<?extends Bag> preferredBag(){
+			return VelvetPouch.class;
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			return canUseSeed(item);
+		}
+
 		@Override
 		public void onSelect( Item item ) {
 			if (item != null && item instanceof Plant.Seed) {

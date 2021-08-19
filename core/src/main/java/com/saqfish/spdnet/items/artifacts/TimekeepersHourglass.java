@@ -32,6 +32,7 @@ import com.saqfish.spdnet.actors.hero.Talent;
 import com.saqfish.spdnet.actors.mobs.Mob;
 import com.saqfish.spdnet.items.Item;
 import com.saqfish.spdnet.items.rings.RingOfEnergy;
+import com.saqfish.spdnet.levels.traps.Trap;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.scenes.GameScene;
 import com.saqfish.spdnet.sprites.CharSprite;
@@ -271,7 +272,9 @@ public class TimekeepersHourglass extends Artifact {
 
 				updateQuickslot();
 
-				Dungeon.observe();
+				if (Dungeon.hero != null) {
+					Dungeon.observe();
+				}
 
 				return true;
 			} else {
@@ -334,9 +337,18 @@ public class TimekeepersHourglass extends Artifact {
 				presses.add(cell);
 		}
 
-		private void triggerPresses(){
+		public void triggerPresses(){
 			for (int cell : presses)
 				Dungeon.level.pressCell(cell);
+
+			presses = new ArrayList<>();
+		}
+
+		public void disarmPressedTraps(){
+			for (int cell : presses){
+				Trap t = Dungeon.level.traps.get(cell);
+				if (t != null) t.disarm();
+			}
 
 			presses = new ArrayList<>();
 		}
@@ -418,6 +430,16 @@ public class TimekeepersHourglass extends Artifact {
 		@Override
 		public int value() {
 			return 20;
+		}
+
+		@Override
+		public boolean isUpgradable() {
+			return false;
+		}
+
+		@Override
+		public boolean isIdentified() {
+			return true;
 		}
 	}
 

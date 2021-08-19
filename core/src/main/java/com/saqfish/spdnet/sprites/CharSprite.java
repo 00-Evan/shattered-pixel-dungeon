@@ -472,7 +472,11 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		size = Math.max(size+4, 16);
 		aura = new Flare(5, size);
 		aura.angularSpeed = 90;
-		aura.color(color, true).show(this, 0);
+		aura.color(color, true);
+
+		if (parent != null) {
+			aura.show(this, 0);
+		}
 	}
 
 	public void clearAura(){
@@ -511,6 +515,9 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			marked.visible = visible;
 		}
 		if (aura != null){
+			if (aura.parent == null){
+				aura.show(this, 0);
+			}
 			aura.visible = visible;
 			aura.point(center());
 		}

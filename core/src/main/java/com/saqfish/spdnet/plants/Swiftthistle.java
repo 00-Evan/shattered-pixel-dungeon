@@ -27,6 +27,7 @@ import com.saqfish.spdnet.actors.buffs.Buff;
 import com.saqfish.spdnet.actors.buffs.Haste;
 import com.saqfish.spdnet.actors.hero.HeroSubClass;
 import com.saqfish.spdnet.actors.mobs.Mob;
+import com.saqfish.spdnet.levels.traps.Trap;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.sprites.CharSprite;
 import com.saqfish.spdnet.sprites.ItemSpriteSheet;
@@ -114,14 +115,25 @@ public class Swiftthistle extends Plant {
 		}
 		
 		public void setDelayedPress(int cell){
-			if (!presses.contains(cell))
+			if (!presses.contains(cell)) {
 				presses.add(cell);
+			}
 		}
-		
-		private void triggerPresses(){
-			for (int cell : presses)
+
+		public void triggerPresses() {
+			for (int cell : presses) {
 				Dungeon.level.pressCell(cell);
-			
+			}
+
+			presses = new ArrayList<>();
+		}
+
+		public void disarmPressedTraps(){
+			for (int cell : presses){
+				Trap t = Dungeon.level.traps.get(cell);
+				if (t != null) t.disarm();
+			}
+
 			presses = new ArrayList<>();
 		}
 		

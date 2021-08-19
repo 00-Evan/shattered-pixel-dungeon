@@ -21,6 +21,8 @@
 
 package com.saqfish.spdnet.services.updates;
 
+import com.watabou.noosa.Game;
+
 public class UpdateImpl {
 
 	private static UpdateService updateChecker = new DebugUpdates();
@@ -30,7 +32,7 @@ public class UpdateImpl {
 	}
 
 	public static boolean supportsUpdates(){
-		return true;
+		return Game.version.contains("INDEV");
 	}
 
 }

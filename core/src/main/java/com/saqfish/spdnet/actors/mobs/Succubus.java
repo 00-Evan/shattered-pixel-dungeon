@@ -125,11 +125,13 @@ public class Succubus extends Mob {
 		if (Actor.findChar( cell ) != null && cell != this.pos)
 			cell = route.path.get(route.dist-1);
 
-		if (Dungeon.level.avoid[ cell ]){
+		if (Dungeon.level.avoid[ cell ] && (!properties().contains(Property.LARGE) || Dungeon.level.openSpace[cell])){
 			ArrayList<Integer> candidates = new ArrayList<>();
 			for (int n : PathFinder.NEIGHBOURS8) {
 				cell = route.collisionPos + n;
-				if (Dungeon.level.passable[cell] && Actor.findChar( cell ) == null) {
+				if (Dungeon.level.passable[cell]
+						&& Actor.findChar( cell ) == null
+						&& (!properties().contains(Property.LARGE) || Dungeon.level.openSpace[cell])) {
 					candidates.add( cell );
 				}
 			}

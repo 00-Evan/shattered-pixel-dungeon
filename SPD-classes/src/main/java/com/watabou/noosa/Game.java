@@ -35,6 +35,7 @@ import com.watabou.input.PointerEvent;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
+import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.PlatformSupport;
 import com.watabou.utils.Reflection;
 
@@ -52,7 +53,10 @@ public class Game implements ApplicationListener {
 	// Size of the EGL surface view
 	public static int width;
 	public static int height;
-	
+
+	//number of pixels from bottom of view before rendering starts
+	public static int bottomInset;
+
 	// Density: mdpi=1, hdpi=1.5, xhdpi=2...
 	public static float density = 1;
 
@@ -76,8 +80,8 @@ public class Game implements ApplicationListener {
 	public static float elapsed = 0f;
 	public static float timeTotal = 0f;
 	public static long realTime = 0;
-	
-	protected static InputHandler inputHandler;
+
+	public static InputHandler inputHandler;
 	
 	public static PlatformSupport platform;
 	
@@ -87,25 +91,20 @@ public class Game implements ApplicationListener {
 		instance = this;
 		this.platform = platform;
 	}
-
-	//FIXME this is a temporary workaround to improve start times on android (first frame is 'cheated' and only renders a black screen)
-	//this is partly to improve stats on google play, and partly to try and diagnose what the cause of slow loading times is
-	//ultimately once the cause is found it should be fixed and this should no longer be needed
-	private boolean justResumed = true;
 	
 	@Override
 	public void create() {
 		density = Gdx.graphics.getDensity();
 		dispHeight = Gdx.graphics.getDisplayMode().height;
 		dispWidth = Gdx.graphics.getDisplayMode().width;
-		
+
 		inputHandler = new InputHandler( Gdx.input );
-		
+
 		//refreshes texture and vertex data stored on the gpu
 		versionContextRef = Gdx.graphics.getGLVersion();
 		Blending.useDefault();
 		TextureCache.reload();
-		Vertexbuffer.refreshAllBuffers();
+		Vertexbuffer.reload();
 	}
 
 	private GLVersion versionContextRef;
@@ -122,11 +121,12 @@ public class Game implements ApplicationListener {
 			versionContextRef = Gdx.graphics.getGLVersion();
 			Blending.useDefault();
 			TextureCache.reload();
-			Vertexbuffer.refreshAllBuffers();
+			Vertexbuffer.reload();
 		}
-		
+
+		height -= bottomInset;
 		if (height != Game.height || width != Game.width) {
-			
+
 			Game.width = width;
 			Game.height = height;
 			
@@ -139,7 +139,12 @@ public class Game implements ApplicationListener {
 			resetScene();
 		}
 	}
-	
+
+	//FIXME this is a temporary workaround to improve start times on android (first frame is 'cheated' and skips rendering)
+	//this is partly to improve stats on google play, and partly to try and diagnose what the cause of slow loading times is
+	//ultimately once the cause is found it should be fixed and this should no longer be needed
+	private boolean justResumed = true;
+
 	@Override
 	public void render() {
 		//prevents weird rare cases where the app is running twice
@@ -149,9 +154,8 @@ public class Game implements ApplicationListener {
 		}
 
 		if (justResumed){
-			Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
 			justResumed = false;
-			return;
+			if (DeviceCompat.isAndroid()) return;
 		}
 
 		NoosaScript.get().resetCamera();
@@ -246,6 +250,8 @@ public class Game implements ApplicationListener {
 		if (scene != null) {
 			scene.destroy();
 		}
+		//clear any leftover vertex buffers
+		Vertexbuffer.clear();
 		scene = requestedScene;
 		if (onChange != null) onChange.beforeCreate();
 		scene.create();
@@ -301,7 +307,7 @@ public class Game implements ApplicationListener {
 	}
 	
 	public static void vibrate( int milliseconds ) {
-		Gdx.input.vibrate(milliseconds);
+		platform.vibrate( milliseconds );
 	}
 
 	public interface SceneChangeCallback{

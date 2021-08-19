@@ -42,7 +42,6 @@ import com.saqfish.spdnet.items.artifacts.SandalsOfNature;
 import com.saqfish.spdnet.items.artifacts.TalismanOfForesight;
 import com.saqfish.spdnet.items.artifacts.TimekeepersHourglass;
 import com.saqfish.spdnet.items.artifacts.UnstableSpellbook;
-import com.saqfish.spdnet.items.bags.Bag;
 import com.saqfish.spdnet.items.food.Food;
 import com.saqfish.spdnet.items.food.MysteryMeat;
 import com.saqfish.spdnet.items.food.Pasty;
@@ -85,13 +84,13 @@ import com.saqfish.spdnet.items.scrolls.ScrollOfTerror;
 import com.saqfish.spdnet.items.scrolls.ScrollOfTransmutation;
 import com.saqfish.spdnet.items.scrolls.ScrollOfUpgrade;
 import com.saqfish.spdnet.items.stones.Runestone;
-import com.saqfish.spdnet.items.stones.StoneOfAffection;
+import com.saqfish.spdnet.items.stones.StoneOfFear;
 import com.saqfish.spdnet.items.stones.StoneOfAggression;
 import com.saqfish.spdnet.items.stones.StoneOfAugmentation;
 import com.saqfish.spdnet.items.stones.StoneOfBlast;
 import com.saqfish.spdnet.items.stones.StoneOfBlink;
 import com.saqfish.spdnet.items.stones.StoneOfClairvoyance;
-import com.saqfish.spdnet.items.stones.StoneOfDeepenedSleep;
+import com.saqfish.spdnet.items.stones.StoneOfDeepSleep;
 import com.saqfish.spdnet.items.stones.StoneOfDisarming;
 import com.saqfish.spdnet.items.stones.StoneOfEnchantment;
 import com.saqfish.spdnet.items.stones.StoneOfFlock;
@@ -231,8 +230,9 @@ public class Generator {
 					return i;
 				}
 			}
-			
-			return item instanceof Bag ? Integer.MAX_VALUE : Integer.MAX_VALUE - 1;
+
+			//items without a category-defined order are sorted based on the spritesheet
+			return Short.MAX_VALUE+item.image();
 		}
 
 		static {
@@ -296,11 +296,11 @@ public class Generator {
 					StoneOfFlock.class,
 					StoneOfShock.class,
 					StoneOfBlink.class,
-					StoneOfDeepenedSleep.class,
+					StoneOfDeepSleep.class,
 					StoneOfClairvoyance.class,
 					StoneOfAggression.class,
 					StoneOfBlast.class,
-					StoneOfAffection.class,
+					StoneOfFear.class,
 					StoneOfAugmentation.class  //1 is sold in each shop
 			};
 			STONE.defaultProbs = new float[]{ 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0 };

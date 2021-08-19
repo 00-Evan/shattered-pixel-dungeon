@@ -22,44 +22,34 @@
 package com.saqfish.spdnet.items.stones;
 
 import com.saqfish.spdnet.Assets;
+import com.saqfish.spdnet.Dungeon;
 import com.saqfish.spdnet.actors.Actor;
 import com.saqfish.spdnet.actors.Char;
 import com.saqfish.spdnet.actors.buffs.Buff;
-import com.saqfish.spdnet.actors.buffs.MagicalSleep;
-import com.saqfish.spdnet.actors.mobs.Mob;
-import com.saqfish.spdnet.effects.CellEmitter;
-import com.saqfish.spdnet.effects.Speck;
+import com.saqfish.spdnet.actors.buffs.Terror;
+import com.saqfish.spdnet.effects.Flare;
 import com.saqfish.spdnet.sprites.ItemSpriteSheet;
+import com.saqfish.spdnet.tiles.DungeonTilemap;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.PathFinder;
 
-public class StoneOfDeepenedSleep extends Runestone {
+public class StoneOfFear extends Runestone {
 	
 	{
-		image = ItemSpriteSheet.STONE_SLEEP;
+		image = ItemSpriteSheet.STONE_FEAR;
 	}
 	
 	@Override
 	protected void activate(int cell) {
-		
-		for (int i : PathFinder.NEIGHBOURS9){
-			
-			CellEmitter.get(cell + i).start( Speck.factory( Speck.NOTE ), 0.1f, 2 );
-			
-			if (Actor.findChar(cell + i) != null) {
-				
-				Char c = Actor.findChar(cell + i);
-				
-				if ((c instanceof Mob && ((Mob) c).state == ((Mob) c).SLEEPING)){
-					
-					Buff.affect(c, MagicalSleep.class);
-					
-				}
-				
-			}
+
+		Char ch = Actor.findChar( cell );
+
+		if (ch != null){
+			Buff.affect( ch, Terror.class, Terror.DURATION ).object = curUser.id();
 		}
-		
-		Sample.INSTANCE.play( Assets.Sounds.LULLABY );
+
+		new Flare( 5, 16 ).color( 0xFF0000, true ).show(Dungeon.hero.sprite.parent, DungeonTilemap.tileCenterToWorld(cell), 2f );
+		Sample.INSTANCE.play( Assets.Sounds.READ );
 		
 	}
+	
 }

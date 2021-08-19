@@ -38,7 +38,7 @@ import com.saqfish.spdnet.utils.BArray;
 import com.saqfish.spdnet.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
-public class WarpingTrap extends Trap {
+public class WarpingTrap extends TeleportationTrap {
 
 	{
 		color = TEAL;
@@ -47,56 +47,15 @@ public class WarpingTrap extends Trap {
 
 	@Override
 	public void activate() {
-		CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
-		Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
-		
-		Char ch = Actor.findChar(pos);
-		if (ch != null && !ch.flying) {
-			if (ch instanceof Hero) {
-				ScrollOfTeleportation.teleportHero((Hero) ch);
-				BArray.setFalse(Dungeon.level.visited);
-				BArray.setFalse(Dungeon.level.mapped);
-				GameScene.updateFog();
-				Dungeon.observe();
-				
-			} else {
-				int count = 20;
-				int pos;
-				do {
-					pos = Dungeon.level.randomRespawnCell( ch );
-					if (count-- <= 0) {
-						break;
-					}
-				} while (pos == -1 || Dungeon.level.secret[pos]);
-				
-				if (pos == -1 || Dungeon.bossLevel()) {
-					
-					GLog.w(Messages.get(ScrollOfTeleportation.class, "no_tele"));
-					
-				} else {
-					
-					ch.pos = pos;
-					if (ch instanceof Mob && ((Mob) ch).state == ((Mob) ch).HUNTING) {
-						((Mob) ch).state = ((Mob) ch).WANDERING;
-					}
-					ch.sprite.place(ch.pos);
-					ch.sprite.visible = Dungeon.level.heroFOV[pos];
-					
-				}
-			}
+		if (Dungeon.level.distance(Dungeon.hero.pos, pos) <= 1){
+			BArray.setFalse(Dungeon.level.visited);
+			BArray.setFalse(Dungeon.level.mapped);
 		}
-		
-		Heap heap = Dungeon.level.heaps.get(pos);
-		
-		if (heap != null){
-			int cell = Dungeon.level.randomRespawnCell( null );
-			
-			Item item = heap.pickUp();
-			
-			if (cell != -1) {
-				Dungeon.level.drop( item, cell );
-			}
-		}
+
+		super.activate();
+
+		GameScene.updateFog(); //just in case hero wasn't moved
+		Dungeon.observe();
 
 	}
 }

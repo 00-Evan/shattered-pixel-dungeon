@@ -28,6 +28,7 @@ import com.saqfish.spdnet.items.artifacts.Artifact;
 import com.saqfish.spdnet.items.rings.Ring;
 import com.saqfish.spdnet.net.actor.Player;
 import com.saqfish.spdnet.net.events.Receive;
+import com.saqfish.spdnet.scenes.GameScene;
 import com.saqfish.spdnet.scenes.PixelScene;
 import com.saqfish.spdnet.sprites.HeroSprite;
 import com.saqfish.spdnet.sprites.ItemSpriteSheet;
@@ -73,12 +74,13 @@ public class WndInfoPlayer extends NetWindow {
     }
 
     private void setUp(Receive.NetItems netItems){
-		Dungeon.hero = null;
-		Dungeon.hero = new Hero();
-
-		// These are artificial values for now
-		Dungeon.hero.STR = 100;
-		Dungeon.hero.HP = 0;
+		if(!(Game.scene() instanceof GameScene)) {
+			// These are artificial values for now
+			Dungeon.hero = null;
+			Dungeon.hero = new Hero();
+			Dungeon.hero.STR = 100;
+			Dungeon.hero.HP = 0;
+		}
 
 		Ring.initGems();
 

@@ -62,11 +62,6 @@ public class ScrollOfDivination extends ExoticScroll {
 		
 		int total = potions.size() + scrolls.size() + rings.size();
 		
-		if (total == 0){
-			GLog.n( Messages.get(this, "nothing_left") );
-			return;
-		}
-		
 		ArrayList<Item> IDed = new ArrayList<>();
 		int left = 4;
 		
@@ -115,8 +110,12 @@ public class ScrollOfDivination extends ExoticScroll {
 			left --;
 			total --;
 		}
-		
-		GameScene.show(new WndDivination( IDed ));
+
+		if (total == 0){
+			GLog.n( Messages.get(this, "nothing_left") );
+		} else {
+			GameScene.show(new WndDivination(IDed));
+		}
 
 		readAnimation();
 		identify();

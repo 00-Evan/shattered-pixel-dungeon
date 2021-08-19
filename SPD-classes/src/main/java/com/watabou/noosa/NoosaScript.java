@@ -167,11 +167,11 @@ public class NoosaScript extends Script {
 				// because for some reason all other openGL operations work on virtual pixels
 				// but glScissor operations work on real pixels
 				float xScale = (Gdx.graphics.getBackBufferWidth() / (float)Game.width );
-				float yScale = (Gdx.graphics.getBackBufferHeight() / (float)Game.height );
+				float yScale = ((Gdx.graphics.getBackBufferHeight()-Game.bottomInset) / (float)Game.height );
 
 				Gdx.gl20.glScissor(
 						Math.round(camera.x * xScale),
-						Math.round((Game.height - camera.screenHeight - camera.y) * yScale),
+						Math.round((Game.height - camera.screenHeight - camera.y) * yScale) + Game.bottomInset,
 						Math.round(camera.screenWidth * xScale),
 						Math.round(camera.screenHeight * yScale));
 			} else {

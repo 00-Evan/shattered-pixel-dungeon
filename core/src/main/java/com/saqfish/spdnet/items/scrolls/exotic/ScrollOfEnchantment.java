@@ -23,12 +23,16 @@ package com.saqfish.spdnet.items.scrolls.exotic;
 
 import com.saqfish.spdnet.Assets;
 import com.saqfish.spdnet.Dungeon;
+import com.saqfish.spdnet.actors.hero.Belongings;
 import com.saqfish.spdnet.actors.hero.Talent;
 import com.saqfish.spdnet.effects.Enchanting;
 import com.saqfish.spdnet.items.Item;
 import com.saqfish.spdnet.items.armor.Armor;
+import com.saqfish.spdnet.items.bags.Bag;
 import com.saqfish.spdnet.items.stones.StoneOfEnchantment;
+import com.saqfish.spdnet.items.weapon.SpiritBow;
 import com.saqfish.spdnet.items.weapon.Weapon;
+import com.saqfish.spdnet.items.weapon.melee.MeleeWeapon;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.scenes.GameScene;
 import com.saqfish.spdnet.sprites.ItemSprite;
@@ -50,10 +54,30 @@ public class ScrollOfEnchantment extends ExoticScroll {
 	public void doRead() {
 		identify();
 		
-		GameScene.selectItem( itemSelector, WndBag.Mode.ENCHANTABLE, Messages.get(this, "inv_title"));
+		GameScene.selectItem( itemSelector );
+	}
+
+	public static boolean enchantable( Item item ){
+		return (item instanceof MeleeWeapon || item instanceof SpiritBow || item instanceof Armor);
 	}
 	
-	protected WndBag.Listener itemSelector = new WndBag.Listener() {
+	protected WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return Messages.get(ScrollOfEnchantment.class, "inv_title");
+		}
+
+		@Override
+		public Class<?extends Bag> preferredBag(){
+			return Belongings.Backpack.class;
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			return enchantable(item);
+		}
+
 		@Override
 		public void onSelect(final Item item) {
 			

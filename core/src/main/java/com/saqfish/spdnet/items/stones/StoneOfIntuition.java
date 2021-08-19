@@ -22,6 +22,7 @@
 package com.saqfish.spdnet.items.stones;
 
 import com.saqfish.spdnet.Assets;
+import com.saqfish.spdnet.actors.buffs.Buff;
 import com.saqfish.spdnet.effects.Identification;
 import com.saqfish.spdnet.items.Item;
 import com.saqfish.spdnet.items.potions.Potion;
@@ -40,21 +41,19 @@ import com.saqfish.spdnet.ui.RenderedTextBlock;
 import com.saqfish.spdnet.ui.Window;
 import com.saqfish.spdnet.utils.GLog;
 import com.saqfish.spdnet.windows.IconTitle;
-import com.saqfish.spdnet.windows.WndBag;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
 public class StoneOfIntuition extends InventoryStone {
-	
-	
+
 	{
-		mode = WndBag.Mode.INTUITIONABLE;
 		image = ItemSpriteSheet.STONE_INTUITION;
 	}
 
-	public static boolean isIntuitionable( Item item ){
+	@Override
+	protected boolean usableOnItem(Item item) {
 		if (item instanceof Ring){
 			return !((Ring) item).isKnown();
 		} else if (item instanceof Potion){
@@ -71,7 +70,9 @@ public class StoneOfIntuition extends InventoryStone {
 		GameScene.show( new WndGuess(item));
 		
 	}
-	
+
+	public static class IntuitionUseTracker extends Buff {{ revivePersists = true; }};
+
 	private static Class curGuess = null;
 	
 	public class WndGuess extends Window {
@@ -106,7 +107,18 @@ public class StoneOfIntuition extends InventoryStone {
 						}
 						GLog.p( Messages.get(WndGuess.class, "correct") );
 						curUser.sprite.parent.add( new Identification( curUser.sprite.center().offset( 0, -16 ) ) );
+
+						if (curUser.buff(IntuitionUseTracker.class) == null){
+							GLog.h( Messages.get(WndGuess.class, "preserved") );
+							new StoneOfIntuition().collect();
+							Buff.affect(curUser, IntuitionUseTracker.class);
+						} else {
+							curUser.buff(IntuitionUseTracker.class).detach();
+						}
 					} else {
+						if (curUser.buff(IntuitionUseTracker.class) != null) {
+							curUser.buff(IntuitionUseTracker.class).detach();
+						}
 						GLog.n( Messages.get(WndGuess.class, "incorrect") );
 					}
 					curGuess = null;

@@ -104,18 +104,24 @@ public class Shopkeeper extends NPC {
 	}
 	
 	public static WndBag sell() {
-		return GameScene.selectItem( itemSelector, WndBag.Mode.FOR_SALE, Messages.get(Shopkeeper.class, "sell"));
+		return GameScene.selectItem( itemSelector );
 	}
 
-	public static boolean willBuyItem( Item item ){
-		if (item.value() <= 0)                                               return false;
-		if (item.unique && !item.stackable)                                 return false;
-		if (item instanceof Armor && ((Armor) item).checkSeal() != null)    return false;
-		if (item.isEquipped(Dungeon.hero) && item.cursed)                   return false;
-		return true;
-	}
-	
-	private static WndBag.Listener itemSelector = new WndBag.Listener() {
+	private static WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
+		@Override
+		public String textPrompt() {
+			return Messages.get(Shopkeeper.class, "sell");
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			if (item.value() <= 0)                                              return false;
+			if (item.unique && !item.stackable)                                 return false;
+			if (item instanceof Armor && ((Armor) item).checkSeal() != null)    return false;
+			if (item.isEquipped(Dungeon.hero) && item.cursed)                   return false;
+			return true;
+		}
+
 		@Override
 		public void onSelect( Item item ) {
 			if (item != null) {

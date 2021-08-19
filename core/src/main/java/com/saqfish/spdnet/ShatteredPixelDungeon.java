@@ -24,10 +24,12 @@ package com.saqfish.spdnet;
 import com.saqfish.spdnet.net.Net;
 import com.saqfish.spdnet.scenes.GameScene;
 import com.saqfish.spdnet.scenes.PixelScene;
+import com.saqfish.spdnet.scenes.TitleScene;
 import com.saqfish.spdnet.scenes.WelcomeScene;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.PlatformSupport;
 
 public class ShatteredPixelDungeon extends Game {
@@ -40,11 +42,23 @@ public class ShatteredPixelDungeon extends Game {
 
 	public static final int v0_9_0b  = 489;
 	public static final int v0_9_1d  = 511;
-	public static final int v0_9_2b  = 532;
-	public static final int v0_9_3   = 544;
-	
+	public static final int v0_9_2b  = 531;
+	public static final int v0_9_3c  = 557; //557 on iOS, 554 on other platforms
+	public static final int v1_0_0   = 565;
+
+	public Net net;
+
+
 	public ShatteredPixelDungeon( PlatformSupport platform ) {
 		super( sceneClass == null ? WelcomeScene.class : sceneClass, platform );
+
+		//v1.0.0
+		com.watabou.utils.Bundle.addAlias(
+				com.saqfish.spdnet.items.stones.StoneOfFear.class,
+				"com.saqfish.spdnet.items.stones.StoneOfAffection" );
+		com.watabou.utils.Bundle.addAlias(
+				com.saqfish.spdnet.items.stones.StoneOfDeepSleep.class,
+				"com.saqfish.spdnet.items.stones.StoneOfDeepenedSleep" );
 
 		//v0.9.3
 		com.watabou.utils.Bundle.addAlias(
@@ -106,23 +120,34 @@ public class ShatteredPixelDungeon extends Game {
 				"com.saqfish.spdnet.items.ArmorKit" );
 
 		net = new Net();
+
+
 	}
 
-	public Net net;
-	
 	@Override
 	public void create() {
 		super.create();
 
 		updateSystemUI();
 		SPDAction.loadBindings();
-		
+
 		Music.INSTANCE.enable( SPDSettings.music() );
 		Music.INSTANCE.volume( SPDSettings.musicVol()*SPDSettings.musicVol()/100f );
 		Sample.INSTANCE.enable( SPDSettings.soundFx() );
 		Sample.INSTANCE.volume( SPDSettings.SFXVol()*SPDSettings.SFXVol()/100f );
 
 		Sample.INSTANCE.load( Assets.Sounds.all );
+
+	}
+
+	@Override
+	public void finish() {
+		if (!DeviceCompat.isiOS()) {
+			super.finish();
+		} else {
+			//can't exit on iOS (Apple guidelines), so just go to title screen
+			switchScene(TitleScene.class);
+		}
 	}
 
 	public static void switchNoFade(Class<? extends PixelScene> c){
@@ -133,7 +158,7 @@ public class ShatteredPixelDungeon extends Game {
 		PixelScene.noFade = true;
 		switchScene( c, callback );
 	}
-	
+
 	public static void seamlessResetScene(SceneChangeCallback callback) {
 		if (scene() instanceof PixelScene){
 			((PixelScene) scene()).saveWindows();
@@ -142,11 +167,11 @@ public class ShatteredPixelDungeon extends Game {
 			resetScene();
 		}
 	}
-	
+
 	public static void seamlessResetScene(){
 		seamlessResetScene(null);
 	}
-	
+
 	@Override
 	protected void switchScene() {
 		super.switchScene();
@@ -154,7 +179,7 @@ public class ShatteredPixelDungeon extends Game {
 			((PixelScene) scene).restoreWindows();
 		}
 	}
-	
+
 	@Override
 	public void resize( int width, int height ) {
 		if (width == 0 || height == 0){
@@ -172,14 +197,15 @@ public class ShatteredPixelDungeon extends Game {
 		updateDisplaySize();
 
 	}
-	
+
 	@Override
 	public void destroy(){
 		super.destroy();
 		GameScene.endActorThread();
 		net.die();
+
 	}
-	
+
 	public void updateDisplaySize(){
 		platform.updateDisplaySize();
 	}

@@ -104,9 +104,11 @@ public class Burning extends Buff implements Hero.Doom {
 
 					ArrayList<Item> burnable = new ArrayList<>();
 					//does not reach inside of containers
-					for (Item i : hero.belongings.backpack.items){
-						if (!i.unique && (i instanceof Scroll || i instanceof MysteryMeat || i instanceof FrozenCarpaccio)){
-							burnable.add(i);
+					if (hero.buff(LostInventory.class) != null) {
+						for (Item i : hero.belongings.backpack.items) {
+							if (!i.unique && (i instanceof Scroll || i instanceof MysteryMeat || i instanceof FrozenCarpaccio)) {
+								burnable.add(i);
+							}
 						}
 					}
 

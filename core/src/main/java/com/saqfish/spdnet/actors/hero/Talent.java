@@ -32,6 +32,7 @@ import com.saqfish.spdnet.actors.buffs.CounterBuff;
 import com.saqfish.spdnet.actors.buffs.EnhancedRings;
 import com.saqfish.spdnet.actors.buffs.FlavourBuff;
 import com.saqfish.spdnet.actors.buffs.Haste;
+import com.saqfish.spdnet.actors.buffs.LostInventory;
 import com.saqfish.spdnet.actors.buffs.Recharging;
 import com.saqfish.spdnet.actors.buffs.RevealedArea;
 import com.saqfish.spdnet.actors.buffs.Roots;
@@ -60,6 +61,7 @@ import com.saqfish.spdnet.levels.Terrain;
 import com.saqfish.spdnet.messages.Languages;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.scenes.GameScene;
+import com.saqfish.spdnet.scenes.HeroSelectScene;
 import com.saqfish.spdnet.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
@@ -155,7 +157,8 @@ public enum Talent {
 		public String desc() { return Messages.get(this, "desc", dispTurns(visualcooldown())); }
 	};
 	public static class LethalMomentumTracker extends FlavourBuff{};
-	public static class WandPreservationCounter extends CounterBuff{};
+	public static class StrikingWaveTracker extends FlavourBuff{};
+	public static class WandPreservationCounter extends CounterBuff{{revivePersists = true;}};
 	public static class EmpoweredStrikeTracker extends FlavourBuff{};
 	public static class BountyHunterTracker extends FlavourBuff{};
 	public static class RejuvenatingStepsCooldown extends FlavourBuff{
@@ -165,7 +168,7 @@ public enum Talent {
 		public String toString() { return Messages.get(this, "name"); }
 		public String desc() { return Messages.get(this, "desc", dispTurns(visualcooldown())); }
 	};
-	public static class RejuvenatingStepsFurrow extends CounterBuff{};
+	public static class RejuvenatingStepsFurrow extends CounterBuff{{revivePersists = true;}};
 	public static class SeerShotCooldown extends FlavourBuff{
 		public int icon() { return target.buff(RevealedArea.class) != null ? BuffIndicator.NONE : BuffIndicator.TIME; }
 		public void tintIcon(Image icon) { icon.hardlight(0.7f, 0.4f, 0.7f); }
@@ -237,8 +240,8 @@ public enum Talent {
 		}
 
 		if (talent == ARMSMASTERS_INTUITION && hero.pointsInTalent(ARMSMASTERS_INTUITION) == 2){
-			if (hero.belongings.weapon != null) hero.belongings.weapon.identify();
-			if (hero.belongings.armor != null)  hero.belongings.armor.identify();
+			if (hero.belongings.weapon() != null) hero.belongings.weapon().identify();
+			if (hero.belongings.armor() != null)  hero.belongings.armor.identify();
 		}
 		if (talent == THIEFS_INTUITION && hero.pointsInTalent(THIEFS_INTUITION) == 2){
 			if (hero.belongings.ring instanceof Ring) hero.belongings.ring.identify();
@@ -257,7 +260,9 @@ public enum Talent {
 		if (talent == LIGHT_CLOAK && hero.pointsInTalent(LIGHT_CLOAK) == 1){
 			for (Item item : Dungeon.hero.belongings.backpack){
 				if (item instanceof CloakOfShadows){
-					((CloakOfShadows) item).activate(Dungeon.hero);
+					if (hero.buff(LostInventory.class) == null || item.keptThoughLostInvent) {
+						((CloakOfShadows) item).activate(Dungeon.hero);
+					}
 				}
 			}
 		}
@@ -267,8 +272,8 @@ public enum Talent {
 		}
 	}
 
-	public static class CachedRationsDropped extends CounterBuff{};
-	public static class NatureBerriesAvailable extends CounterBuff{};
+	public static class CachedRationsDropped extends CounterBuff{{revivePersists = true;}};
+	public static class NatureBerriesAvailable extends CounterBuff{{revivePersists = true;}};
 
 	public static void onFoodEaten( Hero hero, float foodVal, Item foodSource ){
 		if (hero.hasTalent(HEARTY_MEAL)){
@@ -444,7 +449,7 @@ public enum Talent {
 		}
 
 		if (hero.hasTalent(Talent.FOLLOWUP_STRIKE)) {
-			if (hero.belongings.weapon instanceof MissileWeapon) {
+			if (hero.belongings.weapon() instanceof MissileWeapon) {
 				Buff.affect(enemy, FollowupStrikeTracker.class);
 			} else if (enemy.buff(FollowupStrikeTracker.class) != null){
 				dmg += 1 + hero.pointsInTalent(FOLLOWUP_STRIKE);

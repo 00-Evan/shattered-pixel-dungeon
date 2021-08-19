@@ -67,12 +67,20 @@ public class PixelScene extends Scene {
 	//stylized 3x5 bitmapped pixel font. Only latin characters supported.
 	public static BitmapText.Font pixelFont;
 
+	protected boolean inGameScene = false;
+
 	@Override
 	public void create() {
 
 		super.create();
 
 		GameScene.scene = null;
+
+		//flush the texture cache whenever moving from ingame to menu, helps reduce memory load
+		if (!inGameScene && InterlevelScene.lastRegion != -1){
+			InterlevelScene.lastRegion = -1;
+			TextureCache.clear();
+		}
 
 		float minWidth, minHeight;
 		if (landscape()) {
@@ -100,15 +108,11 @@ public class PixelScene extends Scene {
 		uiCamera = Camera.createFullscreen( uiZoom );
 		Camera.add( uiCamera );
 
-		if (pixelFont == null) {
-
-			// 3x5 (6)
-			pixelFont = Font.colorMarked(
-				TextureCache.get( Assets.Fonts.PIXELFONT), 0x00000000, BitmapText.Font.LATIN_FULL );
-			pixelFont.baseLine = 6;
-			pixelFont.tracking = -1;
-			
-		}
+		// 3x5 (6)
+		pixelFont = Font.colorMarked(
+			TextureCache.get( Assets.Fonts.PIXELFONT), 0x00000000, BitmapText.Font.LATIN_FULL );
+		pixelFont.baseLine = 6;
+		pixelFont.tracking = -1;
 		
 		//set up the texture size which rendered text will use for any new glyphs.
 		int renderedTextPageSize;
@@ -245,6 +249,7 @@ public class PixelScene extends Scene {
 			if ((time -= Game.elapsed) <= 0) {
 				alpha( 0f );
 				parent.remove( this );
+				destroy();
 			} else {
 				alpha( time / FADE_TIME );
 			}

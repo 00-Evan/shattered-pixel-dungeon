@@ -30,6 +30,7 @@ import com.saqfish.spdnet.Statistics;
 import com.saqfish.spdnet.actors.Actor;
 import com.saqfish.spdnet.actors.buffs.Buff;
 import com.saqfish.spdnet.actors.mobs.Mob;
+import com.saqfish.spdnet.items.LostBackpack;
 import com.saqfish.spdnet.levels.Level;
 import com.saqfish.spdnet.levels.features.Chasm;
 import com.saqfish.spdnet.levels.rooms.special.SpecialRoom;
@@ -41,6 +42,7 @@ import com.saqfish.spdnet.ui.Icons;
 import com.saqfish.spdnet.ui.RenderedTextBlock;
 import com.saqfish.spdnet.ui.StyledButton;
 import com.saqfish.spdnet.ui.Window;
+import com.saqfish.spdnet.utils.BArray;
 import com.saqfish.spdnet.windows.WndError;
 import com.saqfish.spdnet.windows.WndStory;
 import com.watabou.gltextures.TextureCache;
@@ -90,7 +92,13 @@ public class InterlevelScene extends PixelScene {
 	private static Thread thread;
 	private static Exception error = null;
 	private float waitingTime;
-	
+
+	public static int lastRegion = -1;
+
+	{
+		inGameScene = true;
+	}
+
 	@Override
 	public void create() {
 		super.create();
@@ -137,12 +145,20 @@ public class InterlevelScene extends PixelScene {
 				scrollSpeed = returnDepth > Dungeon.depth ? 15 : -15;
 				break;
 		}
-		if (loadingDepth <= 5)          loadingAsset = Assets.Interfaces.LOADING_SEWERS;
-		else if (loadingDepth <= 10)    loadingAsset = Assets.Interfaces.LOADING_PRISON;
-		else if (loadingDepth <= 15)    loadingAsset = Assets.Interfaces.LOADING_CAVES;
-		else if (loadingDepth <= 20)    loadingAsset = Assets.Interfaces.LOADING_CITY;
-		else if (loadingDepth <= 25)    loadingAsset = Assets.Interfaces.LOADING_HALLS;
-		else                            loadingAsset = Assets.Interfaces.SHADOW;
+
+		//flush the texture cache whenever moving between regions, helps reduce memory load
+		int region = (int)Math.ceil(loadingDepth / 5f);
+		if (region != lastRegion){
+			TextureCache.clear();
+			lastRegion = region;
+		}
+
+		if      (lastRegion == 1)    loadingAsset = Assets.Interfaces.LOADING_SEWERS;
+		else if (lastRegion == 2)    loadingAsset = Assets.Interfaces.LOADING_PRISON;
+		else if (lastRegion == 3)    loadingAsset = Assets.Interfaces.LOADING_CAVES;
+		else if (lastRegion == 4)    loadingAsset = Assets.Interfaces.LOADING_CITY;
+		else if (lastRegion == 5)    loadingAsset = Assets.Interfaces.LOADING_HALLS;
+		else                         loadingAsset = Assets.Interfaces.SHADOW;
 		
 		//slow down transition when displaying an install prompt
 		if (Updates.isInstallable()){
@@ -259,6 +275,7 @@ public class InterlevelScene extends PixelScene {
 								reset();
 								break;
 						}
+						
 					} catch (Exception e) {
 						
 						error = e;
@@ -275,7 +292,7 @@ public class InterlevelScene extends PixelScene {
 		}
 		waitingTime = 0f;
 	}
-
+	
 	@Override
 	public void update() {
 		super.update();
@@ -427,21 +444,35 @@ public class InterlevelScene extends PixelScene {
 		}
 		ShatteredPixelDungeon.net().sender().sendAction(Send.INTERLEVEL, Dungeon.hero.heroClass.ordinal(), Dungeon.depth, Dungeon.hero.pos);
 	}
-
-	private void resurrect() throws IOException {
+	
+	private void resurrect() {
 		
 		Mob.holdAllies( Dungeon.level );
-		
+
+		Level level;
 		if (Dungeon.level.locked) {
-			Dungeon.hero.resurrect( Dungeon.depth );
+			Dungeon.hero.resurrect();
 			Dungeon.depth--;
-			Level level = Dungeon.newLevel();
-			Dungeon.switchLevel( level, level.entrance );
-			ShatteredPixelDungeon.net().sender().sendAction(Send.INTERLEVEL, Dungeon.hero.heroClass.ordinal(), Dungeon.depth, level.entrance);
+			level = Dungeon.newLevel();
+			Dungeon.hero.pos = level.randomRespawnCell(Dungeon.hero);
+			level.drop(new LostBackpack(), level.randomRespawnCell(null));
 		} else {
-			Dungeon.hero.resurrect( -1 );
-			Dungeon.resetLevel();
+			Dungeon.hero.resurrect();
+			level = Dungeon.level;
+			BArray.setFalse(level.heroFOV);
+			BArray.setFalse(level.visited);
+			BArray.setFalse(level.mapped);
+			int invPos = Dungeon.hero.pos;
+			int tries = 0;
+			do {
+				Dungeon.hero.pos = level.randomRespawnCell(Dungeon.hero);
+				tries++;
+			} while (level.trueDistance(invPos, Dungeon.hero.pos) <= 30 - (tries/10));
+			level.drop(new LostBackpack(), invPos);
 		}
+		ShatteredPixelDungeon.net().sender().sendAction(Send.INTERLEVEL, Dungeon.hero.heroClass.ordinal(), Dungeon.depth, level.entrance);
+
+		Dungeon.switchLevel( level, Dungeon.hero.pos );
 	}
 
 	private void reset() throws IOException {

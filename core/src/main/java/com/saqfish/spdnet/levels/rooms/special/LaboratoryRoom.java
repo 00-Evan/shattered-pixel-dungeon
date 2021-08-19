@@ -76,19 +76,17 @@ public class LaboratoryRoom extends SpecialRoom {
 		}
 		
 		//guide pages
-		Collection<String> allPages = Document.ALCHEMY_GUIDE.pages();
+		Collection<String> allPages = Document.ALCHEMY_GUIDE.pageNames();
 		ArrayList<String> missingPages = new ArrayList<>();
 		for ( String page : allPages){
-			if (!Document.ALCHEMY_GUIDE.hasPage(page)){
+			if (!Document.ALCHEMY_GUIDE.isPageFound(page)){
 				missingPages.add(page);
 			}
 		}
 		
-		//4 pages in sewers, 6 in prison, 9 in caves+
+		//5 pages in sewers, 10 in prison+
 		int chapterTarget;
-		if (missingPages.size() <= 3){
-			chapterTarget = 3;
-		} else if (missingPages.size() <= 5){
+		if (missingPages.size() <= 5){
 			chapterTarget = 2;
 		} else {
 			chapterTarget = 1;

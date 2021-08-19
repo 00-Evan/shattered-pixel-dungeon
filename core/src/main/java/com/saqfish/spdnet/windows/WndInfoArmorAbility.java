@@ -6,7 +6,9 @@ import com.saqfish.spdnet.actors.hero.abilities.ArmorAbility;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.sprites.ItemSprite;
 import com.saqfish.spdnet.sprites.ItemSpriteSheet;
+import com.saqfish.spdnet.ui.HeroIcon;
 import com.saqfish.spdnet.ui.TalentsPane;
+import com.watabou.noosa.Image;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -14,7 +16,7 @@ import java.util.LinkedHashMap;
 public class WndInfoArmorAbility extends WndTitledMessage {
 
 	public WndInfoArmorAbility(HeroClass cls, ArmorAbility ability){
-		super( new ItemSprite( ItemSpriteSheet.CROWN, null ), Messages.titleCase(ability.name()), ability.desc());
+		super( new HeroIcon(ability), Messages.titleCase(ability.name()), ability.desc());
 
 		ArrayList<LinkedHashMap<Talent, Integer>> talentList = new ArrayList<>();
 		Talent.initArmorTalents(ability, talentList);

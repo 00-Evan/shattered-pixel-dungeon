@@ -27,6 +27,8 @@ import com.saqfish.spdnet.actors.Char;
 import com.saqfish.spdnet.actors.buffs.MagicImmune;
 import com.saqfish.spdnet.actors.hero.Hero;
 import com.saqfish.spdnet.items.Item;
+import com.saqfish.spdnet.items.bags.Bag;
+import com.saqfish.spdnet.items.bags.VelvetPouch;
 import com.saqfish.spdnet.items.weapon.melee.Crossbow;
 import com.saqfish.spdnet.items.weapon.missiles.MissileWeapon;
 import com.saqfish.spdnet.messages.Messages;
@@ -67,7 +69,7 @@ public class Dart extends MissileWeapon {
 	public void execute(Hero hero, String action) {
 		super.execute(hero, action);
 		if (action.equals(AC_TIP)){
-			GameScene.selectItem(itemSelector, WndBag.Mode.SEED, Messages.get(this, "prompt"));
+			GameScene.selectItem(itemSelector);
 		}
 	}
 	
@@ -96,8 +98,8 @@ public class Dart extends MissileWeapon {
 	private static Crossbow bow;
 	
 	private void updateCrossbow(){
-		if (Dungeon.hero.belongings.weapon instanceof Crossbow){
-			bow = (Crossbow) Dungeon.hero.belongings.weapon;
+		if (Dungeon.hero.belongings.weapon() instanceof Crossbow){
+			bow = (Crossbow) Dungeon.hero.belongings.weapon();
 		} else {
 			bow = null;
 		}
@@ -166,8 +168,23 @@ public class Dart extends MissileWeapon {
 		return super.value()/2; //half normal value
 	}
 	
-	private final WndBag.Listener itemSelector = new WndBag.Listener() {
-		
+	private final WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return Messages.get(Dart.class, "prompt");
+		}
+
+		@Override
+		public Class<?extends Bag> preferredBag(){
+			return VelvetPouch.class;
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			return item instanceof Plant.Seed;
+		}
+
 		@Override
 		public void onSelect(final Item item) {
 			

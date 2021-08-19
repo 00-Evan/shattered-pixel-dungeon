@@ -21,18 +21,14 @@
 
 package com.saqfish.spdnet.windows;
 
-import com.saqfish.spdnet.Assets;
 import com.saqfish.spdnet.actors.hero.Talent;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.scenes.PixelScene;
 import com.saqfish.spdnet.ui.Icons;
 import com.saqfish.spdnet.ui.RedButton;
 import com.saqfish.spdnet.ui.RenderedTextBlock;
+import com.saqfish.spdnet.ui.TalentIcon;
 import com.saqfish.spdnet.ui.Window;
-import com.watabou.gltextures.SmartTexture;
-import com.watabou.gltextures.TextureCache;
-import com.watabou.noosa.Image;
-import com.watabou.noosa.TextureFilm;
 import com.watabou.utils.Callback;
 
 public class WndInfoTalent extends Window {
@@ -41,21 +37,12 @@ public class WndInfoTalent extends Window {
 
 	private static final int WIDTH = 120;
 
-	private SmartTexture icons;
-	private TextureFilm film;
-
 	public WndInfoTalent(Talent talent, int points, Callback onUpgradeButton){
 		super();
 
 		IconTitle titlebar = new IconTitle();
 
-		icons = TextureCache.get( Assets.Interfaces.TALENT_ICONS );
-		film = new TextureFilm( icons, 16, 16 );
-
-		Image buffIcon = new Image( icons );
-		buffIcon.frame( film.get(talent.icon()) );
-
-		titlebar.icon( buffIcon );
+		titlebar.icon( new TalentIcon( talent ) );
 		String title = Messages.titleCase(talent.title());
 		if (points > 0){
 			title += " +" + points;
@@ -85,7 +72,6 @@ public class WndInfoTalent extends Window {
 			add(upgrade);
 			resize( WIDTH, (int)upgrade.bottom()+1 );
 		}
-
 
 	}
 

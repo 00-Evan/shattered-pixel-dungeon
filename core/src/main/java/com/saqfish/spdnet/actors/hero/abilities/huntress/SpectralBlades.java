@@ -36,6 +36,7 @@ import com.saqfish.spdnet.mechanics.Ballistica;
 import com.saqfish.spdnet.mechanics.ConeAOE;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.sprites.MissileSprite;
+import com.saqfish.spdnet.ui.HeroIcon;
 import com.saqfish.spdnet.utils.GLog;
 import com.watabou.utils.Callback;
 
@@ -138,12 +139,10 @@ public class SpectralBlades extends ArmorAbility {
 		for (int cell : path.path){
 			Char ch = Actor.findChar(cell);
 			if (ch != null){
-				if (ch == hero || existingTargets.contains(ch)){
+				if (ch == hero || existingTargets.contains(ch) || ch.alignment == Char.Alignment.ALLY){
 					continue;
-				} else if (ch.alignment != Char.Alignment.ALLY){
-					return ch;
 				} else {
-					return null;
+					return ch;
 				}
 			}
 			if (Dungeon.level.solid[cell]){
@@ -154,6 +153,11 @@ public class SpectralBlades extends ArmorAbility {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public int icon() {
+		return HeroIcon.SPECTRAL_BLADES;
 	}
 
 	@Override

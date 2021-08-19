@@ -23,6 +23,7 @@ package com.saqfish.spdnet.levels.rooms.standard;
 
 import com.saqfish.spdnet.Dungeon;
 import com.saqfish.spdnet.items.journal.GuidePage;
+import com.saqfish.spdnet.items.journal.Guidebook;
 import com.saqfish.spdnet.journal.Document;
 import com.saqfish.spdnet.levels.Level;
 import com.saqfish.spdnet.levels.Terrain;
@@ -66,20 +67,18 @@ public class EntranceRoom extends StandardRoom {
 		Random.pushGenerator();
 
 		//places the first guidebook page on floor 1
-		if (Dungeon.depth == 1 && !Document.ADVENTURERS_GUIDE.hasPage(Document.GUIDE_INTRO_PAGE)){
+		if (Dungeon.depth == 1 && !Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_INTRO)){
 			int pos;
 			do {
 				//can't be on bottom row of tiles
 				pos = level.pointToCell(new Point( Random.IntRange( left + 1, right - 1 ),
 						Random.IntRange( top + 1, bottom - 2 )));
 			} while (pos == level.entrance || level.findMob(level.entrance) != null);
-			GuidePage p = new GuidePage();
-			p.page(Document.GUIDE_INTRO_PAGE);
-			level.drop( p, pos );
+			level.drop( new Guidebook(), pos );
 		}
 
 		//places the third guidebook page on floor 2
-		if (Dungeon.depth == 2 && !Document.ADVENTURERS_GUIDE.hasPage(Document.GUIDE_SEARCH_PAGE)){
+		if (Dungeon.depth == 2 && !Document.ADVENTURERS_GUIDE.isPageFound(Document.GUIDE_SEARCHING)){
 			int pos;
 			do {
 				//can't be on bottom row of tiles
@@ -87,7 +86,7 @@ public class EntranceRoom extends StandardRoom {
 						Random.IntRange( top + 1, bottom - 2 )));
 			} while (pos == level.entrance || level.findMob(level.entrance) != null);
 			GuidePage p = new GuidePage();
-			p.page(Document.GUIDE_SEARCH_PAGE);
+			p.page(Document.GUIDE_SEARCHING);
 			level.drop( p, pos );
 		}
 

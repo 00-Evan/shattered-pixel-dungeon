@@ -31,6 +31,8 @@ import com.saqfish.spdnet.levels.traps.BurningTrap;
 import com.saqfish.spdnet.levels.traps.ConfusionTrap;
 import com.saqfish.spdnet.levels.traps.CorrosionTrap;
 import com.saqfish.spdnet.levels.traps.FrostTrap;
+import com.saqfish.spdnet.levels.traps.GatewayTrap;
+import com.saqfish.spdnet.levels.traps.GeyserTrap;
 import com.saqfish.spdnet.levels.traps.GrippingTrap;
 import com.saqfish.spdnet.levels.traps.GuardianTrap;
 import com.saqfish.spdnet.levels.traps.PitfallTrap;
@@ -98,7 +100,7 @@ public class CavesLevel extends RegularLevel {
 		return new Class[]{
 				BurningTrap.class, PoisonDartTrap.class, FrostTrap.class, StormTrap.class, CorrosionTrap.class,
 				GrippingTrap.class, RockfallTrap.class,  GuardianTrap.class,
-				ConfusionTrap.class, SummoningTrap.class, WarpingTrap.class, PitfallTrap.class };
+				ConfusionTrap.class, SummoningTrap.class, WarpingTrap.class, PitfallTrap.class, GatewayTrap.class, GeyserTrap.class };
 	}
 
 	@Override
@@ -106,7 +108,7 @@ public class CavesLevel extends RegularLevel {
 		return new float[]{
 				4, 4, 4, 4, 4,
 				2, 2, 2,
-				1, 1, 1, 1};
+				1, 1, 1, 1, 1, 1 };
 	}
 	
 	@Override

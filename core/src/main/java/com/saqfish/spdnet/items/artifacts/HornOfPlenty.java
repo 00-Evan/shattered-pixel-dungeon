@@ -28,10 +28,12 @@ import com.saqfish.spdnet.Dungeon;
 import com.saqfish.spdnet.Statistics;
 import com.saqfish.spdnet.actors.buffs.Buff;
 import com.saqfish.spdnet.actors.buffs.Hunger;
+import com.saqfish.spdnet.actors.hero.Belongings;
 import com.saqfish.spdnet.actors.hero.Hero;
 import com.saqfish.spdnet.actors.hero.Talent;
 import com.saqfish.spdnet.effects.SpellSprite;
 import com.saqfish.spdnet.items.Item;
+import com.saqfish.spdnet.items.bags.Bag;
 import com.saqfish.spdnet.items.food.Blandfruit;
 import com.saqfish.spdnet.items.food.Food;
 import com.saqfish.spdnet.items.rings.RingOfEnergy;
@@ -64,8 +66,6 @@ public class HornOfPlenty extends Artifact {
 
 	public static final String AC_EAT = "EAT";
 	public static final String AC_STORE = "STORE";
-
-	protected WndBag.Mode mode = WndBag.Mode.FOOD;
 
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
@@ -133,7 +133,7 @@ public class HornOfPlenty extends Artifact {
 
 		} else if (action.equals(AC_STORE)){
 
-			GameScene.selectItem(itemSelector, mode, Messages.get(this, "prompt"));
+			GameScene.selectItem(itemSelector);
 
 		}
 	}
@@ -272,7 +272,23 @@ public class HornOfPlenty extends Artifact {
 
 	}
 
-	protected static WndBag.Listener itemSelector = new WndBag.Listener() {
+	protected static WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return Messages.get(HornOfPlenty.class, "prompt");
+		}
+
+		@Override
+		public Class<?extends Bag> preferredBag(){
+			return Belongings.Backpack.class;
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			return item instanceof Food;
+		}
+
 		@Override
 		public void onSelect( Item item ) {
 			if (item != null && item instanceof Food) {

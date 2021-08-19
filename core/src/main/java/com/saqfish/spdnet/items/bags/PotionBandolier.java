@@ -22,6 +22,7 @@
 package com.saqfish.spdnet.items.bags;
 
 import com.saqfish.spdnet.items.Item;
+import com.saqfish.spdnet.items.LiquidMetal;
 import com.saqfish.spdnet.items.potions.Potion;
 import com.saqfish.spdnet.sprites.ItemSpriteSheet;
 
@@ -33,7 +34,7 @@ public class PotionBandolier extends Bag {
 
 	@Override
 	public boolean canHold( Item item ) {
-		if (item instanceof Potion){
+		if (item instanceof Potion || item instanceof LiquidMetal){
 			return super.canHold(item);
 		} else {
 			return false;

@@ -56,6 +56,7 @@ import com.saqfish.spdnet.items.spells.ReclaimTrap;
 import com.saqfish.spdnet.items.spells.Recycle;
 import com.saqfish.spdnet.items.spells.WildEnergy;
 import com.saqfish.spdnet.items.wands.Wand;
+import com.saqfish.spdnet.items.weapon.missiles.MissileWeapon;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
@@ -163,10 +164,15 @@ public abstract class Recipe {
 	//*******
 	// Static members
 	//*******
+
+	private static Recipe[] variableRecipes = new Recipe[]{
+			new LiquidMetal.Recipe()
+	};
 	
 	private static Recipe[] oneIngredientRecipes = new Recipe[]{
 		new AlchemistsToolkit.upgradeKit(),
 		new Scroll.ScrollToStone(),
+		new ArcaneResin.Recipe(),
 		new StewedMeat.oneMeat()
 	};
 	
@@ -209,7 +215,13 @@ public abstract class Recipe {
 	};
 	
 	public static Recipe findRecipe(ArrayList<Item> ingredients){
-		
+
+		for (Recipe recipe : variableRecipes){
+			if (recipe.testIngredients(ingredients)){
+				return recipe;
+			}
+		}
+
 		if (ingredients.size() == 1){
 			for (Recipe recipe : oneIngredientRecipes){
 				if (recipe.testIngredients(ingredients)){
@@ -237,8 +249,9 @@ public abstract class Recipe {
 	
 	public static boolean usableInRecipe(Item item){
 		return !item.cursed
-				&& (!(item instanceof EquipableItem) || (item instanceof AlchemistsToolkit && item.isIdentified()))
-				&& !(item instanceof Wand);
+				&& (!(item instanceof EquipableItem)
+					|| (item instanceof AlchemistsToolkit && item.isIdentified())
+					|| item instanceof MissileWeapon);
 	}
 }
 

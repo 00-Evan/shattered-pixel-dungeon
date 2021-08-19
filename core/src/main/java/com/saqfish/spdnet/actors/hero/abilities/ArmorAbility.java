@@ -27,6 +27,7 @@ import com.saqfish.spdnet.items.armor.ClassArmor;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.scenes.CellSelector;
 import com.saqfish.spdnet.scenes.GameScene;
+import com.saqfish.spdnet.ui.HeroIcon;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 
@@ -82,6 +83,10 @@ public abstract class ArmorAbility implements Bundlable {
 
 	public String desc(){
 		return Messages.get(this, "desc") + "\n\n" + Messages.get(this, "cost", (int)baseChargeUse);
+	}
+
+	public int icon(){
+		return HeroIcon.NONE;
 	}
 
 	public abstract Talent[] talents();

@@ -33,17 +33,20 @@ import com.saqfish.spdnet.items.weapon.Weapon;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.sprites.ItemSpriteSheet;
 import com.saqfish.spdnet.utils.GLog;
-import com.saqfish.spdnet.windows.WndBag;
 
 public class MagicalInfusion extends InventorySpell {
 	
 	{
-		mode = WndBag.Mode.UPGRADEABLE;
 		image = ItemSpriteSheet.MAGIC_INFUSE;
 
 		unique = true;
 	}
-	
+
+	@Override
+	protected boolean usableOnItem(Item item) {
+		return item.isUpgradable();
+	}
+
 	@Override
 	protected void onItemSelected( Item item ) {
 
@@ -51,9 +54,9 @@ public class MagicalInfusion extends InventorySpell {
 
 		Degrade.detach( curUser, Degrade.class );
 
-		if (item instanceof Weapon && ((Weapon) item).enchantment != null && !((Weapon) item).hasCurseEnchant()) {
+		if (item instanceof Weapon && ((Weapon) item).enchantment != null) {
 			((Weapon) item).upgrade(true);
-		} else if (item instanceof Armor && ((Armor) item).glyph != null && !((Armor) item).hasCurseGlyph()) {
+		} else if (item instanceof Armor && ((Armor) item).glyph != null) {
 			((Armor) item).upgrade(true);
 		} else {
 			item.upgrade();

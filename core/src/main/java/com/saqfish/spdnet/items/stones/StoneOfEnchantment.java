@@ -21,25 +21,31 @@
 
 package com.saqfish.spdnet.items.stones;
 
+import com.saqfish.spdnet.actors.hero.Belongings;
 import com.saqfish.spdnet.effects.Enchanting;
 import com.saqfish.spdnet.effects.Speck;
 import com.saqfish.spdnet.items.Item;
 import com.saqfish.spdnet.items.armor.Armor;
+import com.saqfish.spdnet.items.scrolls.exotic.ScrollOfEnchantment;
 import com.saqfish.spdnet.items.weapon.Weapon;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.sprites.ItemSpriteSheet;
 import com.saqfish.spdnet.utils.GLog;
-import com.saqfish.spdnet.windows.WndBag;
 
 public class StoneOfEnchantment extends InventoryStone {
 	
 	{
-		mode = WndBag.Mode.ENCHANTABLE;
+		preferredBag = Belongings.Backpack.class;
 		image = ItemSpriteSheet.STONE_ENCHANT;
 
 		unique = true;
 	}
-	
+
+	@Override
+	protected boolean usableOnItem(Item item) {
+		return ScrollOfEnchantment.enchantable(item);
+	}
+
 	@Override
 	protected void onItemSelected(Item item) {
 		

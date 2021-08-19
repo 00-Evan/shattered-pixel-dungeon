@@ -27,8 +27,11 @@ import com.saqfish.spdnet.actors.Char;
 import com.saqfish.spdnet.actors.buffs.MagicImmune;
 import com.saqfish.spdnet.actors.hero.Hero;
 import com.saqfish.spdnet.effects.particles.ShadowParticle;
+import com.saqfish.spdnet.items.journal.Guidebook;
+import com.saqfish.spdnet.journal.Document;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.net.events.Send;
+import com.saqfish.spdnet.scenes.GameScene;
 import com.saqfish.spdnet.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
@@ -48,6 +51,19 @@ public abstract class EquipableItem extends Item {
 		ArrayList<String> actions = super.actions( hero );
 		actions.add( isEquipped( hero ) ? AC_UNEQUIP : AC_EQUIP );
 		return actions;
+	}
+
+	@Override
+	public boolean doPickUp(Hero hero) {
+		if (super.doPickUp(hero)){
+			if (!isIdentified() && !Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_IDING)){
+				GLog.p(Messages.get(Guidebook.class, "hint"));
+				GameScene.flashForDocument(Document.GUIDE_IDING);
+			}
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
@@ -114,12 +130,16 @@ public abstract class EquipableItem extends Item {
 			hero.spend( time2equip( hero ) );
 		}
 
+		//temporarily keep this item so it can be collected
+		boolean wasKept = keptThoughLostInvent;
+		keptThoughLostInvent = true;
 		if (!collect || !collect( hero.belongings.backpack )) {
 			onDetach();
 			Dungeon.quickslot.clearItem(this);
 			updateQuickslot();
 			if (collect) Dungeon.level.drop( this, hero.pos );
 		}
+		keptThoughLostInvent = wasKept;
 
 		return true;
 	}

@@ -61,9 +61,11 @@ public class Frost extends FlavourBuff {
 				Hero hero = (Hero)target;
 				ArrayList<Item> freezable = new ArrayList<>();
 				//does not reach inside of containers
-				for (Item i : hero.belongings.backpack.items){
-					if (!i.unique && (i instanceof Potion || i instanceof MysteryMeat)){
-						freezable.add(i);
+				if (hero.buff(LostInventory.class) != null) {
+					for (Item i : hero.belongings.backpack.items) {
+						if (!i.unique && (i instanceof Potion || i instanceof MysteryMeat)) {
+							freezable.add(i);
+						}
 					}
 				}
 				

@@ -87,11 +87,13 @@ public class Shadows extends Invisibility {
 			
 			if (--left <= 0) {
 				detach();
+				return true;
 			}
 
 			for (Mob m : Dungeon.level.mobs){
 				if (Dungeon.level.adjacent(m.pos, target.pos) && m.alignment != target.alignment){
 					detach();
+					return true;
 				}
 			}
 			

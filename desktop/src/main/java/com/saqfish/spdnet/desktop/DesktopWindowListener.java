@@ -29,19 +29,7 @@ import com.saqfish.spdnet.SPDSettings;
 public class DesktopWindowListener implements Lwjgl3WindowListener {
 	
 	@Override
-	public void created ( Lwjgl3Window lwjgl3Window ) {
-		if (SPDSettings.fullscreen()){
-			lwjgl3Window.postRunnable( new Runnable() {
-				@Override
-				public void run () {
-					Gdx.graphics.setFullscreenMode( Gdx.graphics.getDisplayMode() );
-				}
-			} );
-		}
-		if (SPDSettings.windowMaximized()) {
-			lwjgl3Window.maximizeWindow();
-		}
-	}
+	public void created ( Lwjgl3Window lwjgl3Window ) { }
 	
 	@Override
 	public void maximized ( boolean b ) {

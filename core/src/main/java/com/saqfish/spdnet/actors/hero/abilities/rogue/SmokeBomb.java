@@ -42,6 +42,7 @@ import com.saqfish.spdnet.items.scrolls.ScrollOfTeleportation;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.scenes.GameScene;
 import com.saqfish.spdnet.sprites.MobSprite;
+import com.saqfish.spdnet.ui.HeroIcon;
 import com.saqfish.spdnet.utils.BArray;
 import com.saqfish.spdnet.utils.GLog;
 import com.watabou.noosa.TextureFilm;
@@ -61,8 +62,8 @@ public class SmokeBomb extends ArmorAbility {
 		if (!hero.hasTalent(Talent.SHADOW_STEP) || hero.invisible <= 0){
 			return super.chargeUse(hero);
 		} else {
-			//reduced charge use by 24%/42%/56%/67%
-			return (float)(super.chargeUse(hero) * Math.pow(0.76, hero.pointsInTalent(Talent.SHADOW_STEP)));
+			//reduced charge use by 20%/36%/50%/60%
+			return (float)(super.chargeUse(hero) * Math.pow(0.795, hero.pointsInTalent(Talent.SHADOW_STEP)));
 		}
 	}
 
@@ -70,7 +71,7 @@ public class SmokeBomb extends ArmorAbility {
 	protected void activate(ClassArmor armor, Hero hero, Integer target) {
 		if (target != null) {
 
-			PathFinder.buildDistanceMap(hero.pos, BArray.not(Dungeon.level.solid,null), 8);
+			PathFinder.buildDistanceMap(hero.pos, BArray.not(Dungeon.level.solid,null), 6);
 
 			if ( PathFinder.distance[target] == Integer.MAX_VALUE ||
 					!Dungeon.level.heroFOV[target] ||
@@ -107,7 +108,7 @@ public class SmokeBomb extends ArmorAbility {
 				}
 
 				if (hero.hasTalent(Talent.HASTY_RETREAT)){
-					int duration = 1+hero.pointsInTalent(Talent.HASTY_RETREAT);
+					int duration = hero.pointsInTalent(Talent.HASTY_RETREAT);
 					Buff.affect(hero, Haste.class, duration);
 					Buff.affect(hero, Invisibility.class, duration);
 				}
@@ -126,6 +127,11 @@ public class SmokeBomb extends ArmorAbility {
 				hero.next();
 			}
 		}
+	}
+
+	@Override
+	public int icon() {
+		return HeroIcon.SMOKE_BOMB;
 	}
 
 	@Override
@@ -149,7 +155,7 @@ public class SmokeBomb extends ArmorAbility {
 		@Override
 		public int drRoll() {
 			return Random.NormalIntRange(Dungeon.hero.pointsInTalent(Talent.BODY_REPLACEMENT),
-					5*Dungeon.hero.pointsInTalent(Talent.BODY_REPLACEMENT));
+					3*Dungeon.hero.pointsInTalent(Talent.BODY_REPLACEMENT));
 		}
 
 	}

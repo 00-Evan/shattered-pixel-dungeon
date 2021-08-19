@@ -63,10 +63,10 @@ dependencies {
     implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
 
     //we use LWJGL tinyFD directly to display crash messages and (for now) single-line text input
-    implementation "org.lwjgl:lwjgl-tinyfd:3.2.1"
-    implementation "org.lwjgl:lwjgl-tinyfd:3.2.1:natives-windows"
-    implementation "org.lwjgl:lwjgl-tinyfd:3.2.1:natives-macos"
-    implementation "org.lwjgl:lwjgl-tinyfd:3.2.1:natives-linux"
+    implementation "org.lwjgl:lwjgl-tinyfd:3.2.3"
+    implementation "org.lwjgl:lwjgl-tinyfd:3.2.3:natives-windows"
+    implementation "org.lwjgl:lwjgl-tinyfd:3.2.3:natives-macos"
+    implementation "org.lwjgl:lwjgl-tinyfd:3.2.3:natives-linux"
 
     //Need these at compile time to prevent errors there.
     // The actual dependency used at runtime will vary based on source set.

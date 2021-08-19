@@ -39,6 +39,7 @@ import com.saqfish.spdnet.items.armor.ClassArmor;
 import com.saqfish.spdnet.mechanics.Ballistica;
 import com.saqfish.spdnet.mechanics.ConeAOE;
 import com.saqfish.spdnet.messages.Messages;
+import com.saqfish.spdnet.ui.HeroIcon;
 import com.saqfish.spdnet.utils.GLog;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
@@ -108,10 +109,14 @@ public class Shockwave extends ArmorAbility {
 							if (ch != null && ch.alignment != hero.alignment){
 								int scalingStr = hero.STR()-10;
 								int damage = Random.NormalIntRange(5 + scalingStr, 10 + 2*scalingStr);
-								damage = Math.round(damage * (1f + 0.15f*hero.pointsInTalent(Talent.SHOCK_FORCE)));
+								damage = Math.round(damage * (1f + 0.2f*hero.pointsInTalent(Talent.SHOCK_FORCE)));
 								damage -= ch.drRoll();
 
-								if (Random.Int(4) < hero.pointsInTalent(Talent.STRIKING_WAVE)){
+								if (hero.pointsInTalent(Talent.STRIKING_WAVE) == 4){
+									Buff.affect(hero, Talent.StrikingWaveTracker.class, 0f);
+								}
+
+								if (Random.Int(10) < 3*hero.pointsInTalent(Talent.STRIKING_WAVE)){
 									damage = hero.attackProc(ch, damage);
 									ch.damage(damage, hero);
 									if (hero.subClass == HeroSubClass.GLADIATOR){
@@ -136,6 +141,11 @@ public class Shockwave extends ArmorAbility {
 
 					}
 				});
+	}
+
+	@Override
+	public int icon() {
+		return HeroIcon.SHOCKWAVE;
 	}
 
 	@Override

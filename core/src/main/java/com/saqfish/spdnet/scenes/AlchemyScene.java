@@ -80,6 +80,10 @@ public class AlchemyScene extends PixelScene {
 	private RedButton btnCombine;
 	
 	private static final int BTN_SIZE	= 28;
+
+	{
+		inGameScene = true;
+	}
 	
 	@Override
 	public void create() {
@@ -151,7 +155,7 @@ public class AlchemyScene extends PixelScene {
 							slot.item(new WndBag.Placeholder(ItemSpriteSheet.SOMETHING));
 							updateState();
 						}
-						AlchemyScene.this.addToFront(WndBag.lastBag( itemSelector, WndBag.Mode.ALCHEMY, Messages.get(AlchemyScene.class, "select")));
+						AlchemyScene.this.addToFront(WndBag.getBag( itemSelector ));
 					}
 
 					@Override
@@ -315,7 +319,18 @@ public class AlchemyScene extends PixelScene {
 		Game.switchScene(GameScene.class);
 	}
 	
-	protected WndBag.Listener itemSelector = new WndBag.Listener() {
+	protected WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return Messages.get(AlchemyScene.class, "select");
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			return Recipe.usableInRecipe(item);
+		}
+
 		@Override
 		public void onSelect( Item item ) {
 			synchronized (inputs) {

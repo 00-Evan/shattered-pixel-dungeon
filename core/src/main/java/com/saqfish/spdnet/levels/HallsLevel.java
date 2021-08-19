@@ -36,6 +36,8 @@ import com.saqfish.spdnet.levels.traps.DisintegrationTrap;
 import com.saqfish.spdnet.levels.traps.DistortionTrap;
 import com.saqfish.spdnet.levels.traps.FlashingTrap;
 import com.saqfish.spdnet.levels.traps.FrostTrap;
+import com.saqfish.spdnet.levels.traps.GatewayTrap;
+import com.saqfish.spdnet.levels.traps.GeyserTrap;
 import com.saqfish.spdnet.levels.traps.GrimTrap;
 import com.saqfish.spdnet.levels.traps.GuardianTrap;
 import com.saqfish.spdnet.levels.traps.PitfallTrap;
@@ -118,7 +120,7 @@ public class HallsLevel extends RegularLevel {
 		return new Class[]{
 				FrostTrap.class, StormTrap.class, CorrosionTrap.class, BlazingTrap.class, DisintegrationTrap.class,
 				RockfallTrap.class, FlashingTrap.class, GuardianTrap.class, WeakeningTrap.class,
-				DisarmingTrap.class, SummoningTrap.class, WarpingTrap.class, CursingTrap.class, GrimTrap.class, PitfallTrap.class, DistortionTrap.class };
+				DisarmingTrap.class, SummoningTrap.class, WarpingTrap.class, CursingTrap.class, GrimTrap.class, PitfallTrap.class, DistortionTrap.class, GatewayTrap.class, GeyserTrap.class };
 	}
 
 	@Override
@@ -126,7 +128,7 @@ public class HallsLevel extends RegularLevel {
 		return new float[]{
 				4, 4, 4, 4, 4,
 				2, 2, 2, 2,
-				1, 1, 1, 1, 1, 1, 1 };
+				1, 1, 1, 1, 1, 1, 1, 1, 1 };
 	}
 	
 	@Override

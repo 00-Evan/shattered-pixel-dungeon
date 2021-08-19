@@ -29,6 +29,7 @@ import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.scenes.GameScene;
 import com.saqfish.spdnet.scenes.PixelScene;
 import com.saqfish.spdnet.sprites.ItemSprite;
+import com.saqfish.spdnet.ui.HeroIcon;
 import com.saqfish.spdnet.ui.IconButton;
 import com.saqfish.spdnet.ui.Icons;
 import com.saqfish.spdnet.ui.RedButton;
@@ -61,7 +62,7 @@ public class WndChooseSubclass extends Window {
 			RedButton btnCls = new RedButton( subCls.shortDesc(), 6 ) {
 				@Override
 				protected void onClick() {
-					GameScene.show(new WndOptions(subCls.icon(),
+					GameScene.show(new WndOptions(new HeroIcon(subCls),
 							Messages.titleCase(subCls.title()),
 							Messages.get(WndChooseSubclass.this, "are_you_sure"),
 							Messages.get(WndChooseSubclass.this, "yes"),

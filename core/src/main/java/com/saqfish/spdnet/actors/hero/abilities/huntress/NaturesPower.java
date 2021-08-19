@@ -33,6 +33,7 @@ import com.saqfish.spdnet.effects.particles.LeafParticle;
 import com.saqfish.spdnet.items.armor.ClassArmor;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.ui.BuffIndicator;
+import com.saqfish.spdnet.ui.HeroIcon;
 import com.watabou.noosa.audio.Sample;
 
 public class NaturesPower extends ArmorAbility {
@@ -55,6 +56,11 @@ public class NaturesPower extends ArmorAbility {
 		Invisibility.dispel();
 		hero.spendAndNext(Actor.TICK);
 
+	}
+
+	@Override
+	public int icon() {
+		return HeroIcon.NATURES_POWER;
 	}
 
 	@Override

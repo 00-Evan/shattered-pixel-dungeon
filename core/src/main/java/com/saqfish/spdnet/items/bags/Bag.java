@@ -24,6 +24,7 @@ package com.saqfish.spdnet.items.bags;
 import com.saqfish.spdnet.Badges;
 import com.saqfish.spdnet.Dungeon;
 import com.saqfish.spdnet.actors.Char;
+import com.saqfish.spdnet.actors.buffs.LostInventory;
 import com.saqfish.spdnet.actors.hero.Hero;
 import com.saqfish.spdnet.items.Item;
 import com.saqfish.spdnet.scenes.GameScene;
@@ -140,12 +141,18 @@ public class Bag extends Item implements Iterable<Item> {
 		bundle.put( ITEMS, items );
 	}
 
+	//temp variable so that bags can load contents even with lost inventory debuff
+	private boolean loading;
+
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
+
+		loading = true;
 		for (Bundlable item : bundle.getCollection( ITEMS )) {
 			if (item != null) ((Item)item).collect( this );
 		}
+		loading = false;
 	}
 	
 	public boolean contains( Item item ) {
@@ -160,6 +167,11 @@ public class Bag extends Item implements Iterable<Item> {
 	}
 
 	public boolean canHold( Item item ){
+		if (!loading && owner != null && owner.buff(LostInventory.class) != null
+			&& !item.keptThoughLostInvent){
+			return false;
+		}
+
 		if (items.contains(item) || item instanceof Bag || items.size() < capacity()){
 			return true;
 		} else if (item.stackable) {

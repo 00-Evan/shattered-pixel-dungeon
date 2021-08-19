@@ -18,13 +18,18 @@
 
 package com.saqfish.spdnet.net.windows;
 
+import static com.saqfish.spdnet.ShatteredPixelDungeon.net;
+
 import com.saqfish.spdnet.ShatteredPixelDungeon;
+import com.saqfish.spdnet.net.Settings;
 import com.saqfish.spdnet.net.events.Receive;
 import com.saqfish.spdnet.net.ui.NetIcons;
 import com.saqfish.spdnet.net.ui.UI;
 import com.saqfish.spdnet.ui.Window;
+import com.saqfish.spdnet.ui.WndTextInput;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
+import com.watabou.utils.PlatformSupport;
 
 import org.json.JSONObject;
 
@@ -64,8 +69,24 @@ public class NetWindow extends Window {
         Game.runOnRenderThread(() -> ShatteredPixelDungeon.scene().add(new WndNetSettings()));
     }
 
+    public static void showChat(){
+        Game.runOnRenderThread(() -> ShatteredPixelDungeon.scene().add(new WndChat()));
+    }
+
     public static void showServerInfo(){
         Game.runOnRenderThread(() -> ShatteredPixelDungeon.scene().add(new WndServerInfo()));
+    }
+
+    public static void showKeyInput(){
+        Game.runOnRenderThread(() -> ShatteredPixelDungeon.scene().add(new WndTextInput("Enter key", Settings.auth_key(), 30, false, "Set", "Cancel"){
+            @Override
+            public void onSelect(boolean positive, String text) {
+                if(positive){
+                    Settings.auth_key(text);
+                    net().reset();
+                }
+            }
+        }));
     }
 
     public static void motd(String motd, long seed){

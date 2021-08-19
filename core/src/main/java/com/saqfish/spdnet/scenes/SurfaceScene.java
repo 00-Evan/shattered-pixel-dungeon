@@ -84,8 +84,11 @@ public class SurfaceScene extends PixelScene {
 	public void create() {
 		
 		super.create();
-		
-		Music.INSTANCE.play( Assets.Music.SURFACE, true );
+
+		Music.INSTANCE.playTracks(
+				new String[]{Assets.Music.THEME_2, Assets.Music.THEME_1},
+				new float[]{1, 1},
+				false);
 		
 		uiCamera.visible = false;
 		

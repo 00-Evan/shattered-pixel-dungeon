@@ -39,16 +39,22 @@ import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.plants.Plant;
 import com.saqfish.spdnet.sprites.ItemSpriteSheet;
 import com.saqfish.spdnet.utils.GLog;
-import com.saqfish.spdnet.windows.WndBag;
 import com.watabou.utils.Reflection;
 
 public class Recycle extends InventorySpell {
 	
 	{
 		image = ItemSpriteSheet.RECYCLE;
-		mode = WndBag.Mode.RECYCLABLE;
 	}
-	
+
+	@Override
+	protected boolean usableOnItem(Item item) {
+		return (item instanceof Potion && !(item instanceof Elixir || item instanceof Brew)) ||
+				item instanceof Scroll ||
+				item instanceof Plant.Seed ||
+				item instanceof Runestone;
+	}
+
 	@Override
 	protected void onItemSelected(Item item) {
 		Item result;
@@ -79,13 +85,6 @@ public class Recycle extends InventorySpell {
 		curUser.sprite.emitter().start(Speck.factory(Speck.CHANGE), 0.2f, 10);
 	}
 	
-	public static boolean isRecyclable(Item item){
-		return (item instanceof Potion && !(item instanceof Elixir || item instanceof Brew)) ||
-				item instanceof Scroll ||
-				item instanceof Plant.Seed ||
-				item instanceof Runestone;
-	}
-	
 	@Override
 	public int value() {
 		//prices of ingredients, divided by output quantity
@@ -93,7 +92,7 @@ public class Recycle extends InventorySpell {
 	}
 	
 	public static class Recipe extends com.saqfish.spdnet.items.Recipe.SimpleRecipe {
-		
+
 		{
 			inputs =  new Class[]{ScrollOfTransmutation.class, ArcaneCatalyst.class};
 			inQuantity = new int[]{1, 1};

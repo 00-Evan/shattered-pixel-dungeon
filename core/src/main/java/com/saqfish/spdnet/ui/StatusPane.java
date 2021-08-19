@@ -27,6 +27,7 @@ import com.saqfish.spdnet.SPDAction;
 import com.saqfish.spdnet.Statistics;
 import com.saqfish.spdnet.effects.Speck;
 import com.saqfish.spdnet.items.Item;
+import com.saqfish.spdnet.journal.Document;
 import com.saqfish.spdnet.net.ui.NetIndicator;
 import com.saqfish.spdnet.scenes.GameScene;
 import com.saqfish.spdnet.scenes.PixelScene;
@@ -34,6 +35,7 @@ import com.saqfish.spdnet.sprites.HeroSprite;
 import com.saqfish.spdnet.windows.WndGame;
 import com.saqfish.spdnet.windows.WndHero;
 import com.saqfish.spdnet.windows.WndJournal;
+import com.saqfish.spdnet.windows.WndStory;
 import com.watabou.input.GameAction;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
@@ -52,6 +54,8 @@ public class StatusPane extends Component {
 	private Image avatar;
 	public static float talentBlink;
 	private float warning;
+
+	private static final float FLASH_RATE = (float)(Math.PI*1.5f); //1.5 blinks per second
 
 	private int lastTier = 0;
 
@@ -153,7 +157,7 @@ public class StatusPane extends Component {
 		add( buffs );
 
 		add( pickedUp = new Toolbar.PickedUpItem());
-
+		
 		version = new BitmapText( "v" + Game.version, PixelScene.pixelFont);
 		version.alpha( 0.5f );
 		add(version);
@@ -222,9 +226,9 @@ public class StatusPane extends Component {
 			warning += Game.elapsed * 5f *(0.4f - (health/(float)max));
 			warning %= 1f;
 			avatar.tint(ColorMath.interpolate(warning, warningColors), 0.5f );
-		} else if (talentBlink > 0){
+		} else if (talentBlink > 0.33f){ //stops early so it doesn't end in the middle of a blink
 			talentBlink -= Game.elapsed;
-			avatar.tint(1, 1, 0, (float)Math.abs(Math.sin(2*talentBlink)/2f));
+			avatar.tint(1, 1, 0, (float)Math.abs(Math.cos(talentBlink*FLASH_RATE))/2f);
 		} else {
 			avatar.resetColor();
 		}
@@ -271,9 +275,9 @@ public class StatusPane extends Component {
 			btnJournal.journalIcon.x + btnJournal.journalIcon.width()/2f,
 			btnJournal.journalIcon.y + btnJournal.journalIcon.height()/2f);
 	}
-	
-	public void flash(){
-		btnJournal.flashing = true;
+
+	public void flashForPage( String page ){
+		btnJournal.flashingPage = page;
 	}
 	
 	public void updateKeys(){
@@ -286,7 +290,7 @@ public class StatusPane extends Component {
 		private Image journalIcon;
 		private KeyDisplay keyIcon;
 		
-		private boolean flashing;
+		private String flashingPage = null;
 
 		public JournalButton() {
 			super();
@@ -339,10 +343,10 @@ public class StatusPane extends Component {
 		public void update() {
 			super.update();
 			
-			if (flashing){
-				journalIcon.am = (float)Math.abs(Math.cos( 3 * (time += Game.elapsed) ));
+			if (flashingPage != null){
+				journalIcon.am = (float)Math.abs(Math.cos( FLASH_RATE * (time += Game.elapsed) ));
 				keyIcon.am = journalIcon.am;
-				if (time >= 0.333f*Math.PI) {
+				if (time >= Math.PI/FLASH_RATE) {
 					time = 0;
 				}
 			}
@@ -376,10 +380,21 @@ public class StatusPane extends Component {
 
 		@Override
 		protected void onClick() {
-			flashing = false;
 			time = 0;
 			keyIcon.am = journalIcon.am = 1;
-			GameScene.show( new WndJournal() );
+			if (flashingPage != null){
+				if (Document.ADVENTURERS_GUIDE.pageNames().contains(flashingPage)){
+					GameScene.show( new WndStory( WndJournal.GuideTab.iconForPage(flashingPage),
+							Document.ADVENTURERS_GUIDE.pageTitle(flashingPage),
+							Document.ADVENTURERS_GUIDE.pageBody(flashingPage) ));
+					Document.ADVENTURERS_GUIDE.readPage(flashingPage);
+				} else {
+					GameScene.show( new WndJournal() );
+				}
+				flashingPage = null;
+			} else {
+				GameScene.show( new WndJournal() );
+			}
 		}
 
 	}

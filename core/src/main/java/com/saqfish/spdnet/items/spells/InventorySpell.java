@@ -25,25 +25,49 @@ import com.saqfish.spdnet.Assets;
 import com.saqfish.spdnet.actors.buffs.Invisibility;
 import com.saqfish.spdnet.actors.hero.Hero;
 import com.saqfish.spdnet.items.Item;
+import com.saqfish.spdnet.items.bags.Bag;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.scenes.GameScene;
 import com.saqfish.spdnet.windows.WndBag;
 import com.watabou.noosa.audio.Sample;
 
 public abstract class InventorySpell extends Spell {
-	
-	protected String inventoryTitle = Messages.get(this, "inv_title");
-	protected WndBag.Mode mode = WndBag.Mode.ALL;
-	
+
 	@Override
 	protected void onCast(Hero hero) {
 		curItem = detach( hero.belongings.backpack );
-		GameScene.selectItem( itemSelector, mode, inventoryTitle );
+		GameScene.selectItem( itemSelector );
+	}
+
+	private String inventoryTitle(){
+		return Messages.get(this, "inv_title");
+	}
+
+	protected Class<?extends Bag> preferredBag = null;
+
+	protected boolean usableOnItem( Item item ){
+		return true;
 	}
 	
 	protected abstract void onItemSelected( Item item );
 	
-	protected static WndBag.Listener itemSelector = new WndBag.Listener() {
+	protected WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return inventoryTitle();
+		}
+
+		@Override
+		public Class<? extends Bag> preferredBag() {
+			return preferredBag;
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			return usableOnItem(item);
+		}
+
 		@Override
 		public void onSelect( Item item ) {
 			

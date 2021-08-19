@@ -71,7 +71,10 @@ public class TitleScene extends PixelScene {
 		
 		super.create();
 
-		Music.INSTANCE.play( Assets.Music.THEME, true );
+		Music.INSTANCE.playTracks(
+				new String[]{Assets.Music.THEME_1, Assets.Music.THEME_2},
+				new float[]{1, 1},
+				false);
 
 		uiCamera.visible = false;
 		
@@ -152,15 +155,7 @@ public class TitleScene extends PixelScene {
 
 			@Override
 			protected boolean onLongClick() {
-				platform.promptTextInput("Enter key", Settings.auth_key(), 30, false, "Set", "Cancel", new PlatformSupport.TextCallback() {
-					@Override
-					public void onSelect(boolean positive, String text) {
-						if(positive){
-							Settings.auth_key(text);
-							net().reset();
-						}
-					}
-				});
+			    NetWindow.showKeyInput();
 				return true;
 			}
 		};

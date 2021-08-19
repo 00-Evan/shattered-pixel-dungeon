@@ -52,8 +52,10 @@ import com.watabou.utils.Random;
 public class Chasm implements Hero.Doom {
 
 	public static boolean jumpConfirmed = false;
+	private static int heroPos;
 	
 	public static void heroJump( final Hero hero ) {
+		heroPos = hero.pos;
 		Game.runOnRenderThread(new Callback() {
 			@Override
 			public void call() {
@@ -66,8 +68,10 @@ public class Chasm implements Hero.Doom {
 							@Override
 							protected void onSelect( int index ) {
 								if (index == 0) {
-									jumpConfirmed = true;
-									hero.resume();
+									if (Dungeon.hero.pos == heroPos) {
+										jumpConfirmed = true;
+										hero.resume();
+									}
 								}
 							}
 						}
@@ -82,10 +86,10 @@ public class Chasm implements Hero.Doom {
 				
 		Sample.INSTANCE.play( Assets.Sounds.FALLING );
 
-		Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
-		if (buff != null) buff.detach();
-		buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
-		if (buff != null) buff.detach();
+		TimekeepersHourglass.timeFreeze timeFreeze = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+		if (timeFreeze != null) timeFreeze.disarmPressedTraps();
+		Swiftthistle.TimeBubble timeBubble = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
+		if (timeBubble != null) timeBubble.disarmPressedTraps();
 		
 		if (Dungeon.hero.isAlive()) {
 			Dungeon.hero.interrupt();

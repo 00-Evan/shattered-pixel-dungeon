@@ -32,7 +32,8 @@
 		android:networkSecurityConfig="@xml/network_security_config">
 		<activity
 			android:label="${appName}"
-			android:name="com.saqfish.spdnet.android.AndroidLauncher">
+			android:name="com.saqfish.spdnet.android.AndroidLauncher"
+			android:exported="true">
 			<intent-filter >
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />

@@ -27,6 +27,7 @@ import com.saqfish.spdnet.actors.hero.Talent;
 import com.saqfish.spdnet.effects.Speck;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.ui.ActionIndicator;
+import com.saqfish.spdnet.ui.BuffIcon;
 import com.saqfish.spdnet.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
@@ -182,7 +183,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public Image getIcon() {
-		Image im = new Image(Assets.Interfaces.BUFFS_LARGE, 144, 32, 16, 16);
+		Image im = new BuffIcon(BuffIndicator.HASTE, true);
 		im.hardlight(0x99992E);
 		return im;
 	}

@@ -25,36 +25,36 @@ import com.saqfish.spdnet.Assets;
 import com.saqfish.spdnet.actors.Actor;
 import com.saqfish.spdnet.actors.Char;
 import com.saqfish.spdnet.actors.buffs.Buff;
-import com.saqfish.spdnet.actors.buffs.Charm;
+import com.saqfish.spdnet.actors.buffs.MagicalSleep;
+import com.saqfish.spdnet.actors.mobs.Mob;
 import com.saqfish.spdnet.effects.CellEmitter;
 import com.saqfish.spdnet.effects.Speck;
 import com.saqfish.spdnet.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 
-public class StoneOfAffection extends Runestone {
+public class StoneOfDeepSleep extends Runestone {
 	
 	{
-		image = ItemSpriteSheet.STONE_AFFECTION;
+		image = ItemSpriteSheet.STONE_SLEEP;
 	}
 	
 	@Override
 	protected void activate(int cell) {
-		
-		for (int i : PathFinder.NEIGHBOURS9){
-			
-			CellEmitter.center(cell + i).start( Speck.factory( Speck.HEART ), 0.2f, 5 );
-			
-			
-			Char ch = Actor.findChar( cell + i );
-			
-			if (ch != null && ch.alignment == Char.Alignment.ENEMY){
-				Buff.prolong(ch, Charm.class, Charm.DURATION).object = curUser.id();
+
+		if (Actor.findChar(cell) != null) {
+
+			Char c = Actor.findChar(cell);
+
+			if (c instanceof Mob){
+
+				Buff.affect(c, MagicalSleep.class);
+
 			}
+
 		}
 		
-		Sample.INSTANCE.play( Assets.Sounds.CHARMS );
+		Sample.INSTANCE.play( Assets.Sounds.LULLABY );
 		
 	}
-	
 }

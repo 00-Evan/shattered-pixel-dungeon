@@ -104,7 +104,27 @@ public class Dewdrop extends Item {
 	}
 
 	@Override
+	public boolean isUpgradable() {
+		return false;
+	}
+
+	@Override
+	public boolean isIdentified() {
+		return true;
+	}
+
 	//max of one dew in a stack
+
+	@Override
+	public Item merge( Item other ){
+		if (isSimilar( other )){
+			quantity = 1;
+			other.quantity = 0;
+		}
+		return this;
+	}
+
+	@Override
 	public Item quantity(int value) {
 		quantity = Math.min( value, 1);
 		return this;

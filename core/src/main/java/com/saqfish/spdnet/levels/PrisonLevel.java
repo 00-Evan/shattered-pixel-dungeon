@@ -33,6 +33,8 @@ import com.saqfish.spdnet.levels.traps.BurningTrap;
 import com.saqfish.spdnet.levels.traps.ChillingTrap;
 import com.saqfish.spdnet.levels.traps.ConfusionTrap;
 import com.saqfish.spdnet.levels.traps.FlockTrap;
+import com.saqfish.spdnet.levels.traps.GatewayTrap;
+import com.saqfish.spdnet.levels.traps.GeyserTrap;
 import com.saqfish.spdnet.levels.traps.GrippingTrap;
 import com.saqfish.spdnet.levels.traps.OozeTrap;
 import com.saqfish.spdnet.levels.traps.PoisonDartTrap;
@@ -99,7 +101,7 @@ public class PrisonLevel extends RegularLevel {
 		return new Class[]{
 				ChillingTrap.class, ShockingTrap.class, ToxicTrap.class, BurningTrap.class, PoisonDartTrap.class,
 				AlarmTrap.class, OozeTrap.class, GrippingTrap.class,
-				ConfusionTrap.class, FlockTrap.class, SummoningTrap.class, TeleportationTrap.class, };
+				ConfusionTrap.class, FlockTrap.class, SummoningTrap.class, TeleportationTrap.class, GatewayTrap.class, GeyserTrap.class };
 	}
 
 	@Override
@@ -107,7 +109,7 @@ public class PrisonLevel extends RegularLevel {
 		return new float[]{
 				4, 4, 4, 4, 4,
 				2, 2, 2,
-				1, 1, 1, 1 };
+				1, 1, 1, 1, 1, 1 };
 	}
 
 	@Override

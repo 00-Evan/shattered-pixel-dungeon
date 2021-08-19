@@ -45,12 +45,6 @@ public abstract class ConnectionRoom extends Room {
 		else                    return 0;
 	}
 	
-	@Override
-	public boolean canPlaceTrap(Point p) {
-		//traps cannot appear in connection rooms on floor 1
-		return super.canPlaceTrap(p) && Dungeon.depth > 1;
-	}
-	
 	//FIXME this is a very messy way of handing variable connection rooms
 	private static ArrayList<Class<?extends ConnectionRoom>> rooms = new ArrayList<>();
 	static {

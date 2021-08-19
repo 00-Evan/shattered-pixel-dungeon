@@ -55,7 +55,7 @@ public class WndPlayerList extends NetWindow {
 			@Override
 			protected void onClick() {
 				super.onClick();
-				Game.platform.showChat(false);
+				NetWindow.showChat();
 			}
 		};
 		add(chatBtn);

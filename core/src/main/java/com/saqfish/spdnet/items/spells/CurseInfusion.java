@@ -25,6 +25,7 @@ import com.saqfish.spdnet.Assets;
 import com.saqfish.spdnet.Badges;
 import com.saqfish.spdnet.effects.CellEmitter;
 import com.saqfish.spdnet.effects.particles.ShadowParticle;
+import com.saqfish.spdnet.items.EquipableItem;
 import com.saqfish.spdnet.items.Item;
 import com.saqfish.spdnet.items.armor.Armor;
 import com.saqfish.spdnet.items.quest.MetalShard;
@@ -34,17 +35,21 @@ import com.saqfish.spdnet.items.weapon.SpiritBow;
 import com.saqfish.spdnet.items.weapon.Weapon;
 import com.saqfish.spdnet.items.weapon.melee.MagesStaff;
 import com.saqfish.spdnet.items.weapon.melee.MeleeWeapon;
+import com.saqfish.spdnet.items.weapon.missiles.MissileWeapon;
 import com.saqfish.spdnet.sprites.ItemSpriteSheet;
-import com.saqfish.spdnet.windows.WndBag;
 import com.watabou.noosa.audio.Sample;
 
 public class CurseInfusion extends InventorySpell {
 	
 	{
 		image = ItemSpriteSheet.CURSE_INFUSE;
-		mode = WndBag.Mode.CURSABLE;
 	}
-	
+
+	@Override
+	protected boolean usableOnItem(Item item) {
+		return ((item instanceof EquipableItem && !(item instanceof MissileWeapon)) || item instanceof Wand);
+	}
+
 	@Override
 	protected void onItemSelected(Item item) {
 		

@@ -55,6 +55,10 @@ public class Noisemaker extends Bomb {
 	
 	public static class Trigger extends Buff {
 
+		{
+			revivePersists = true;
+		}
+
 		int cell;
 		int floor;
 		int left;

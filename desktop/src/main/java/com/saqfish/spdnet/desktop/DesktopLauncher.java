@@ -146,7 +146,12 @@ public class DesktopLauncher {
 		config.setWindowSizeLimits( 480, 320, -1, -1 );
 		Point p = SPDSettings.windowResolution();
 		config.setWindowedMode( p.x, p.y );
-		config.setAutoIconify( true );
+
+		config.setMaximized(SPDSettings.windowMaximized());
+
+		if (SPDSettings.fullscreen()) {
+			config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
+		}
 		
 		//we set fullscreen/maximized in the listener as doing it through the config seems to be buggy
 		DesktopWindowListener listener = new DesktopWindowListener();

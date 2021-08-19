@@ -206,10 +206,10 @@ public class Blandfruit extends Food {
 	
 	@Override
 	public void reset() {
-		if (potionAttrib != null)
+		super.reset();
+		if (potionAttrib != null) {
 			imbuePotion(potionAttrib);
-		else
-			super.reset();
+		}
 	}
 	
 	@Override

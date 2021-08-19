@@ -37,12 +37,15 @@ import com.saqfish.spdnet.items.food.ChargrilledMeat;
 import com.saqfish.spdnet.items.food.FrozenCarpaccio;
 import com.saqfish.spdnet.items.food.MysteryMeat;
 import com.saqfish.spdnet.items.journal.DocumentPage;
+import com.saqfish.spdnet.items.journal.Guidebook;
 import com.saqfish.spdnet.items.potions.Potion;
 import com.saqfish.spdnet.items.rings.RingOfWealth;
 import com.saqfish.spdnet.items.scrolls.Scroll;
 import com.saqfish.spdnet.items.wands.Wand;
+import com.saqfish.spdnet.journal.Document;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.sprites.ItemSprite;
+import com.saqfish.spdnet.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -152,8 +155,9 @@ public class Heap implements Bundlable {
 			items.remove( item );
 			
 		}
-		
-		if (item.dropsDownHeap && type != Type.FOR_SALE) {
+
+		//lost backpack must always be on top of a heap
+		if ((item.dropsDownHeap && type != Type.FOR_SALE) || peek() instanceof LostBackpack) {
 			items.add( item );
 		} else {
 			items.addFirst( item );
@@ -413,8 +417,11 @@ public class Heap implements Bundlable {
 		//remove any document pages that either don't exist anymore or that the player already has
 		for (Item item : items.toArray(new Item[0])){
 			if (item instanceof DocumentPage
-					&& ( !((DocumentPage) item).document().pages().contains(((DocumentPage) item).page())
-					||    ((DocumentPage) item).document().hasPage(((DocumentPage) item).page()))){
+					&& ( !((DocumentPage) item).document().pageNames().contains(((DocumentPage) item).page())
+					||    ((DocumentPage) item).document().isPageFound(((DocumentPage) item).page()))){
+				items.remove(item);
+			}
+			if (item instanceof Guidebook && Document.ADVENTURERS_GUIDE.isPageRead(0)){
 				items.remove(item);
 			}
 		}

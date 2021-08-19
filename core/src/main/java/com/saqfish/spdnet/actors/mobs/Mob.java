@@ -214,13 +214,16 @@ public abstract class Mob extends Char {
 			}
 		}
 		
-		//if we are an enemy, and have no target or current target isn't affected by aggression
-		//then auto-prioritize a target that is affected by aggression, even another enemy
-		if (alignment == Alignment.ENEMY
-				&& (enemy == null || enemy.buff(StoneOfAggression.Aggression.class) == null)) {
+		//if we are an alert enemy, auto-hunt a target that is affected by aggression, even another enemy
+		if (alignment == Alignment.ENEMY && state != PASSIVE && state != SLEEPING) {
+			if (enemy != null && enemy.buff(StoneOfAggression.Aggression.class) != null){
+				state = HUNTING;
+				return enemy;
+			}
 			for (Char ch : Actor.chars()) {
 				if (ch != this && fieldOfView[ch.pos] &&
 						ch.buff(StoneOfAggression.Aggression.class) != null) {
+					state = HUNTING;
 					return ch;
 				}
 			}
@@ -231,25 +234,30 @@ public abstract class Mob extends Char {
 		//we have no enemy, or the current one is dead/missing
 		if ( enemy == null || !enemy.isAlive() || !Actor.chars().contains(enemy) || state == WANDERING) {
 			newEnemy = true;
-		//We are an ally, and current enemy is another ally.
-		} else if (alignment == Alignment.ALLY && enemy.alignment == Alignment.ALLY) {
-			newEnemy = true;
 		//We are amoked and current enemy is the hero
 		} else if (buff( Amok.class ) != null && enemy == Dungeon.hero) {
 			newEnemy = true;
 		//We are charmed and current enemy is what charmed us
 		} else if (buff(Charm.class) != null && buff(Charm.class).object == enemy.id()) {
 			newEnemy = true;
-		//we aren't amoked, current enemy is invulnerable to us, and that enemy isn't affect by aggression
-		} else if (buff( Amok.class ) == null && enemy.isInvulnerable(getClass()) && enemy.buff(StoneOfAggression.Aggression.class) == null) {
-			newEnemy = true;
+		}
+
+		//additionally, if we are an ally, find a new enemy if...
+		if (!newEnemy && alignment == Alignment.ALLY){
+			//current enemy is also an ally
+			if (enemy.alignment == Alignment.ALLY){
+				newEnemy = true;
+			//current enemy is invulnerable
+			} else if (enemy.isInvulnerable(getClass())){
+				newEnemy = true;
+			}
 		}
 
 		if ( newEnemy ) {
 
 			HashSet<Char> enemies = new HashSet<>();
 
-			//if the mob is amoked...
+			//if we are amoked...
 			if ( buff(Amok.class) != null) {
 				//try to find an enemy mob to attack first.
 				for (Mob mob : Dungeon.level.mobs)
@@ -274,7 +282,7 @@ public abstract class Mob extends Char {
 					}
 				}
 				
-			//if the mob is an ally...
+			//if we are an ally...
 			} else if ( alignment == Alignment.ALLY ) {
 				//look for hostile mobs to attack
 				for (Mob mob : Dungeon.level.mobs)
@@ -286,20 +294,21 @@ public abstract class Mob extends Char {
 							enemies.add(mob);
 						}
 				
-			//if the mob is an enemy...
+			//if we are an enemy...
 			} else if (alignment == Alignment.ENEMY) {
 				//look for ally mobs to attack
 				for (Mob mob : Dungeon.level.mobs)
-					if (mob.alignment == Alignment.ALLY && fieldOfView[mob.pos] && mob.invisible <= 0 && !mob.isInvulnerable(getClass()))
+					if (mob.alignment == Alignment.ALLY && fieldOfView[mob.pos] && mob.invisible <= 0)
 						enemies.add(mob);
 
 				//and look for the hero
-				if (fieldOfView[Dungeon.hero.pos] && Dungeon.hero.invisible <= 0 && !Dungeon.hero.isInvulnerable(getClass())) {
+				if (fieldOfView[Dungeon.hero.pos] && Dungeon.hero.invisible <= 0) {
 					enemies.add(Dungeon.hero);
 				}
 				
 			}
-			
+
+			//do not target anything that's charming us
 			Charm charm = buff( Charm.class );
 			if (charm != null){
 				Char source = (Char)Actor.findById( charm.object );
@@ -564,7 +573,7 @@ public abstract class Mob extends Char {
 	public int defenseProc( Char enemy, int damage ) {
 		
 		if (enemy instanceof Hero
-				&& ((Hero) enemy).belongings.weapon instanceof MissileWeapon
+				&& ((Hero) enemy).belongings.weapon() instanceof MissileWeapon
 				&& !hitWithRanged){
 			hitWithRanged = true;
 			Statistics.thrownAssists++;
@@ -576,8 +585,8 @@ public abstract class Mob extends Char {
 			Badges.validateRogueUnlock();
 			//TODO this is somewhat messy, it would be nicer to not have to manually handle delays here
 			// playing the strong hit sound might work best as another property of weapon?
-			if (Dungeon.hero.belongings.weapon instanceof SpiritBow.SpiritArrow
-				|| Dungeon.hero.belongings.weapon instanceof Dart){
+			if (Dungeon.hero.belongings.weapon() instanceof SpiritBow.SpiritArrow
+				|| Dungeon.hero.belongings.weapon() instanceof Dart){
 				Sample.INSTANCE.playDelayed(Assets.Sounds.HIT_STRONG, 0.125f);
 			} else {
 				Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
@@ -597,7 +606,7 @@ public abstract class Mob extends Char {
 		}
 
 		if (buff(SoulMark.class) != null) {
-			int restoration = Math.min(damage, HP);
+			int restoration = Math.min(damage, HP+shielding());
 			
 			//physical damage that doesn't come from the hero is less effective
 			if (enemy != Dungeon.hero){
@@ -1130,6 +1139,11 @@ public abstract class Mob extends Char {
 					ally.pos = pos;
 				}
 				if (ally.sprite != null) ally.sprite.place(ally.pos);
+
+				if (ally.fieldOfView == null || ally.fieldOfView.length != level.length()){
+					ally.fieldOfView = new boolean[level.length()];
+				}
+				Dungeon.level.updateFieldOfView( ally, ally.fieldOfView );
 				
 			}
 		}

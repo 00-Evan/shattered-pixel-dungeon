@@ -166,8 +166,8 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	@Override
 	public Image getIcon() {
 		Image icon;
-		if (((Hero)target).belongings.weapon != null){
-			icon = new ItemSprite(((Hero)target).belongings.weapon.image, null);
+		if (((Hero)target).belongings.weapon() != null){
+			icon = new ItemSprite(((Hero)target).belongings.weapon().image, null);
 		} else {
 			icon = new ItemSprite(new Item(){ {image = ItemSpriteSheet.WEAPON_HOLDER; }});
 		}
@@ -303,7 +303,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 				dmgBonus = Math.round(target.drRoll() * count / 5f);
 				break;
 			case CRUSH:
-				dmgMulti = 1f + (0.25f * count);
+				dmgMulti = 0.25f * count;
 				break;
 			case FURY:
 				dmgMulti = 0.6f;

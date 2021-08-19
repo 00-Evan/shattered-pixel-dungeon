@@ -26,7 +26,10 @@ import com.saqfish.spdnet.Dungeon;
 import com.saqfish.spdnet.actors.hero.Hero;
 import com.saqfish.spdnet.items.artifacts.Artifact;
 import com.saqfish.spdnet.items.artifacts.HornOfPlenty;
+import com.saqfish.spdnet.items.journal.Guidebook;
+import com.saqfish.spdnet.journal.Document;
 import com.saqfish.spdnet.messages.Messages;
+import com.saqfish.spdnet.scenes.GameScene;
 import com.saqfish.spdnet.ui.BuffIndicator;
 import com.saqfish.spdnet.utils.GLog;
 import com.watabou.utils.Bundle;
@@ -93,6 +96,11 @@ public class Hunger extends Buff implements Hero.Doom {
 				} else if (newLevel >= HUNGRY && level < HUNGRY) {
 
 					GLog.w( Messages.get(this, "onhungry") );
+
+					if (!Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_FOOD)){
+						GLog.p(Messages.get(Guidebook.class, "hint"));
+						GameScene.flashForDocument(Document.GUIDE_FOOD);
+					}
 
 				}
 				level = newLevel;

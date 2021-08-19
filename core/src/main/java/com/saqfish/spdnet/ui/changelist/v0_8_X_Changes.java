@@ -54,6 +54,8 @@ import com.saqfish.spdnet.sprites.ShamanSprite;
 import com.saqfish.spdnet.sprites.SpawnerSprite;
 import com.saqfish.spdnet.sprites.StatueSprite;
 import com.saqfish.spdnet.sprites.YogSprite;
+import com.saqfish.spdnet.ui.BuffIcon;
+import com.saqfish.spdnet.ui.BuffIndicator;
 import com.saqfish.spdnet.ui.Icons;
 import com.saqfish.spdnet.ui.Window;
 import com.watabou.noosa.Image;
@@ -283,7 +285,7 @@ public class v0_8_X_Changes {
 				"_-_ Some misc sounds have also been added for: gas spewing, chains being thrown, magical effects charging up, and the player being hit to low health.\n\n" +
 				"I've also remastered the title and ending music tracks to improve their quality and volume."));
 
-		changes.addButton( new ChangeButton(new Image(Assets.Interfaces.BUFFS_LARGE, 0, 0, 16, 16), "Item and Buff Icons",
+		changes.addButton( new ChangeButton(new BuffIcon(BuffIndicator.MIND_VISION, true), "Item and Buff Icons",
 				"_Buff icons now have a new fading behaviour_ that much more accurately communicates how much of their duration is left. Several duplicated buff icons have also been recolored so they are distinct.\n\n" +
 				"_Item icons have been added to rings!_ To accommodate this, item icons now appear in the top-right of an item's inventory slot. Several existing item icons have also been improved."));
 
@@ -682,7 +684,7 @@ public class v0_8_X_Changes {
 				"_-_ Doubled corruption resistance reduction from debuffs, as it was 50% weaker than intended. It is now as strong as listed in 0.7.5 changelog (50% for major debuffs, 25% for minor)\n\n" +
 				"Additionally, corruption is getting access to two of the new debuffs added in 0.8.0: _Hex,_ and _Weakness._"));
 
-		changes.addButton( new ChangeButton(new Image(Assets.Interfaces.BUFFS_LARGE, 80, 32, 16, 16), "Bless changes",
+		changes.addButton( new ChangeButton(new BuffIcon(BuffIndicator.BLESS, true), "Bless changes",
 				"Accuracy and evasion bonuses from blessed buff increased to 25% from 20%." ));
 
 		changes.addButton( new ChangeButton(new StoneOfAugmentation(),

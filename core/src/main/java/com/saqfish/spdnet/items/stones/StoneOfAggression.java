@@ -49,7 +49,7 @@ public class StoneOfAggression extends Runestone {
 		
 		if (ch != null) {
 			if (ch.alignment == Char.Alignment.ENEMY) {
-				Buff.prolong(ch, Aggression.class, Aggression.DURATION / 5f);
+				Buff.prolong(ch, Aggression.class, Aggression.DURATION / 4f);
 			} else {
 				Buff.prolong(ch, Aggression.class, Aggression.DURATION);
 			}
@@ -64,7 +64,7 @@ public class StoneOfAggression extends Runestone {
 		}
 		
 	}
-	
+
 	public static class Aggression extends FlavourBuff {
 		
 		public static final float DURATION = 20f;

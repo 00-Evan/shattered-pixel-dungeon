@@ -1,0 +1,43 @@
+apply plugin: "java"
+apply plugin: "robovm"
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+sourceCompatibility = targetCompatibility = appJavaCompatibility
+
+task updateRoboVMProps(){
+    def props = new Properties()
+    
+    props.setProperty ('appName', appName)
+    //append .apple because com.shatteredpixel.shatteredpixeldungeon was taken =(
+    props.setProperty ('appPackageName', appPackageName + ".apple")
+
+    props.setProperty ('appVersionCode', appVersionCode.toString())
+    props.setProperty ('appVersionName', appVersionName)
+    //parse out just #.#.# from version name, this is an apple requirement
+    props.setProperty ('appShortVersionName', (appVersionName =~ /\d+\.\d+\.\d+/)[0])
+
+    props.setProperty ('appMainclass', "com.shatteredpixel.shatteredpixeldungeon.ios.IOSLauncher")
+    props.setProperty ('appExecutable', "IOSLauncher")
+
+    file("robovm.properties").withWriter { props.store(it, "Dynamically generated, do not commit to version control!") }
+}
+
+build.dependsOn updateRoboVMProps
+
+launchIPhoneSimulator.dependsOn build
+launchIPadSimulator.dependsOn build
+launchIOSDevice.dependsOn build
+createIPA.dependsOn build
+
+dependencies {
+    implementation project(':core')
+    implementation project(':services:updates:debugUpdates')
+    implementation project(':services:news:shatteredNews')
+
+    implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+    implementation "com.mobidevelop.robovm:robovm-rt:$robovmVersion"
+    implementation "com.mobidevelop.robovm:robovm-cocoatouch:$robovmVersion"
+    implementation "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
+    implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-ios"
+}

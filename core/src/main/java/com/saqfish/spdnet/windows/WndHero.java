@@ -31,6 +31,7 @@ import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.scenes.GameScene;
 import com.saqfish.spdnet.scenes.PixelScene;
 import com.saqfish.spdnet.sprites.HeroSprite;
+import com.saqfish.spdnet.ui.BuffIcon;
 import com.saqfish.spdnet.ui.BuffIndicator;
 import com.saqfish.spdnet.ui.IconButton;
 import com.saqfish.spdnet.ui.Icons;
@@ -142,9 +143,11 @@ public class WndHero extends WndTabbed {
 
 			pos = title.bottom() + 2*GAP;
 
-			statSlot( Messages.get(this, "str"), hero.STR() );
-			if (hero.shielding() > 0) statSlot( Messages.get(this, "health"), hero.HP + "+" + hero.shielding() + "/" + hero.HT );
-			else statSlot( Messages.get(this, "health"), (hero.HP) + "/" + hero.HT );
+			int strBonus = hero.STR() - hero.STR;
+			if (strBonus > 0)   statSlot( Messages.get(this, "str"), hero.STR + "+" + strBonus );
+			else                statSlot( Messages.get(this, "str"), hero.STR() );
+			if (hero.shielding() > 0)   statSlot( Messages.get(this, "health"), hero.HP + "+" + hero.shielding() + "/" + hero.HT );
+			else                        statSlot( Messages.get(this, "health"), (hero.HP) + "/" + hero.HT );
 			statSlot( Messages.get(this, "exp"), hero.exp + "/" + hero.maxExp() );
 
 			pos += GAP;
@@ -200,9 +203,6 @@ public class WndHero extends WndTabbed {
 	private class BuffsTab extends Component {
 		
 		private static final int GAP = 2;
-
-		private SmartTexture icons;
-		private TextureFilm film;
 		
 		private float pos;
 		private ScrollPane buffList;
@@ -210,8 +210,6 @@ public class WndHero extends WndTabbed {
 
 		@Override
 		protected void createChildren() {
-			icons = TextureCache.get( Assets.Interfaces.BUFFS_LARGE );
-			film = new TextureFilm( icons, 16, 16 );
 
 			super.createChildren();
 
@@ -260,11 +258,8 @@ public class WndHero extends WndTabbed {
 			public BuffSlot( Buff buff ){
 				super();
 				this.buff = buff;
-				int index = buff.icon();
 
-				icon = new Image( icons );
-				icon.frame( film.get( index ) );
-				buff.tintIcon(icon);
+				icon = new BuffIcon(buff, true);
 				icon.y = this.y;
 				add( icon );
 
