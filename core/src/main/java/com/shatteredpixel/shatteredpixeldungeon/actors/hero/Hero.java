@@ -1611,11 +1611,9 @@ public class Hero extends Char {
 		Ankh ankh = null;
 
 		//look for ankhs in player inventory, prioritize ones which are blessed.
-		for (Item item : belongings){
-			if (item instanceof Ankh) {
-				if (ankh == null || ((Ankh) item).isBlessed()) {
-					ankh = (Ankh) item;
-				}
+		for (Ankh i : belongings.getAllItems(Ankh.class)){
+			if (ankh == null || i.isBlessed()) {
+				ankh = i;
 			}
 		}
 
