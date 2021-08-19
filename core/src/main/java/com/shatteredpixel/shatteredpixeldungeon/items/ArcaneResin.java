@@ -8,6 +8,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -70,7 +71,8 @@ public class ArcaneResin extends Item {
 
 		@Override
 		public String textPrompt() {
-			return Messages.get(LiquidMetal.class, "prompt");
+			//FIXME give this its own prompt string
+			return Messages.get(MagesStaff.class, "prompt");
 		}
 
 		@Override
