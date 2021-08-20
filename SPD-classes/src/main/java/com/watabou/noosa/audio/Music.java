@@ -26,6 +26,7 @@ import com.watabou.noosa.Game;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.Random;
 
+import java.awt.MediaTracker;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -125,7 +126,7 @@ public enum Music {
 	private com.badlogic.gdx.audio.Music.OnCompletionListener trackLooper = new com.badlogic.gdx.audio.Music.OnCompletionListener() {
 		@Override
 		public void onCompletion(com.badlogic.gdx.audio.Music music) {
-			if (trackList == null || trackList.length == 0 || player.isLooping()){
+			if (trackList == null || trackList.length == 0 || player.isLooping() || music != player){
 				return;
 			}
 
@@ -180,10 +181,10 @@ public enum Music {
 			player.setLooping(looping);
 		}
 	}
-	
+
+	//TODO do we need to dispose every player? Maybe just stop them and keep an LRU cache of 2 or 3?
 	public synchronized void stop() {
 		if (player != null) {
-			player.stop();
 			player.dispose();
 			player = null;
 		}
