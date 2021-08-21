@@ -578,6 +578,12 @@ public class PrisonBossLevel extends Level {
 		int tries = 0;
 		do {
 			tries++;
+
+			if (tries >= 100){
+				tries = 0;
+				fill -= 0.01f;
+			}
+
 			trapsPatch = Patch.generate(7, 7, fill, 0, false);
 
 			PathFinder.buildDistanceMap(tenguPos, BArray.not(trapsPatch, null));
