@@ -1256,7 +1256,7 @@ public class Hero extends Char {
 					} else if (distance(target) > distance(m)) {
 						target = m;
 					}
-					if (m instanceof Snake
+					if (m instanceof Snake && Dungeon.level.distance(m.pos, pos) <= 4
 							&& !Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_EXAMINING)){
 						GLog.p(Messages.get(Guidebook.class, "hint"));
 						GameScene.flashForDocument(Document.GUIDE_EXAMINING);
