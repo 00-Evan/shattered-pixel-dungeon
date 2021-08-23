@@ -30,7 +30,6 @@ import net.casiello.pixeldungeonrescue.actors.hero.Hero;
 import net.casiello.pixeldungeonrescue.scenes.AmuletScene;
 import net.casiello.pixeldungeonrescue.sprites.ItemSpriteSheet;
 import com.watabou.noosa.Game;
-import com.watabou.utils.DeviceCompat;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -90,10 +89,7 @@ public class Amulet extends Item {
 	
 	private void showAmuletScene( boolean showText ) {
 		try {
-			// Don't save in debug mode
-			if (DeviceCompat.isDebug() == false) {
-				Dungeon.saveAll();
-			}
+			Dungeon.saveAll();
 			AmuletScene.noText = !showText;
 			Game.switchScene( AmuletScene.class );
 		} catch (IOException e) {

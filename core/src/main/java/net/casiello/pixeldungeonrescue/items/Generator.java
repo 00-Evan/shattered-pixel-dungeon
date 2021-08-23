@@ -578,21 +578,6 @@ public class Generator {
 		}
 	}
 
-	// FIXME: Move this into a special category
-	//enforces uniqueness of artifacts throughout a run.
-	public static Artifact getSpellbook() {
-
-		Class<?extends Artifact> art = (Class<? extends Artifact>) UnstableSpellbook.class;
-
-		if (removeArtifact(art)) {
-			Artifact artifact = Reflection.newInstance(art);
-			artifact.random();
-			return artifact;
-		} else {
-			return null;
-		}
-	}
-
 	public static boolean removeArtifact(Class<?extends Artifact> artifact) {
 		if (spawnedArtifacts.contains(artifact))
 			return false;

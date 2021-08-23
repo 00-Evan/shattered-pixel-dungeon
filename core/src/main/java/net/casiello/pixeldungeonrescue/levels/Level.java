@@ -49,7 +49,6 @@ import net.casiello.pixeldungeonrescue.actors.mobs.YogFist;
 import net.casiello.pixeldungeonrescue.actors.mobs.npcs.Sheep;
 import net.casiello.pixeldungeonrescue.effects.particles.FlowParticle;
 import net.casiello.pixeldungeonrescue.effects.particles.WindParticle;
-import net.casiello.pixeldungeonrescue.items.Dewdrop;
 import net.casiello.pixeldungeonrescue.items.Generator;
 import net.casiello.pixeldungeonrescue.items.Heap;
 import net.casiello.pixeldungeonrescue.items.Item;
@@ -929,20 +928,6 @@ public abstract class Level implements Bundlable {
 			
 		case Terrain.DOOR:
 			Door.enter( cell );
-			break;
-
-		case Terrain.BOOKSHELF:
-			Level.set( cell, Terrain.EMPTY_SP );
-			// Maybe drop a book
-			// FIXME: fix probabilities
-			if (Random.Int(4 ) == 0) {
-				Dungeon.level.drop(Generator.getSpellbook(), cell).sprite.drop();
-			}
-			else if (Random.Int(2) == 0) {
-				Dungeon.level.drop(Generator.random(Generator.Category.SCROLL), cell).sprite.drop();
-			}
-
-			GameScene.updateMap( cell );
 			break;
 		}
 

@@ -1,14 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        release {
-            storeFile file('C:\\Users\\brian\\AndroidAppKeystore\\AndroidAppKeystore.jks')
-            storePassword 'jbdgoweb'
-            keyAlias 'MyAndroidApp'
-            keyPassword 'jbdgoweb'
-        }
-    }
     compileSdkVersion appAndroidCompileSDK
     compileOptions.sourceCompatibility = compileOptions.targetCompatibility = appJavaCompatibility
 

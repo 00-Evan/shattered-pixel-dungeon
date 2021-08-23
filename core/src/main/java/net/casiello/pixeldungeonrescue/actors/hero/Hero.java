@@ -1538,7 +1538,7 @@ public class Hero extends Char {
 		
 		if (cause instanceof Hero.Doom) {
 			((Hero.Doom)cause).onDeath();
-	}
+		}
 
 		// Don't delete saves in debug mode
 		if (DeviceCompat.isDebug() == false) {
