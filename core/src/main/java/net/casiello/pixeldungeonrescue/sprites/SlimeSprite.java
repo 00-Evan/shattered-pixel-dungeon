@@ -24,62 +24,28 @@ package net.casiello.pixeldungeonrescue.sprites;
 import net.casiello.pixeldungeonrescue.Assets;
 import com.watabou.noosa.TextureFilm;
 
-public abstract class SlimeSprite extends MobSprite {
-
-	protected abstract int texOffset();
-
+public class SlimeSprite extends MobSprite {
+	
 	public SlimeSprite() {
 		super();
-
-		int c = texOffset();
-
+		
 		texture( Assets.SLIME );
-
+		
 		TextureFilm frames = new TextureFilm( texture, 14, 12 );
 		
 		idle = new Animation( 3, true );
-		idle.frames( frames, c+0, c+1, c+1, c+0 );
+		idle.frames( frames, 0, 1, 1, 0 );
 		
 		run = new Animation( 10, true );
-		run.frames( frames, c+0, c+2, c+3, c+3, c+2, c+0 );
+		run.frames( frames, 0, 2, 3, 3, 2, 0 );
 		
 		attack = new Animation( 15, false );
-		attack.frames( frames, c+2, c+3, c+4, c+3, c+2 );
+		attack.frames( frames, 2, 3, 4, 6, 5 );
 		
 		die = new Animation( 10, false );
-		die.frames( frames, c+5, c+6, c+7, c+8, c+7, c+6, c+5 );
-
+		die.frames( frames, 5, 6, 7, 8, 7, 6, 5 );
+		
 		play(idle);
 	}
-
-	public static class Lime extends SlimeSprite {
-		@Override
-		protected int texOffset() {
-			return 0;
-		}
-	}
-	public static class Lemon extends SlimeSprite {
-		@Override
-		protected int texOffset() {
-			return 2 * 9;
-		}
-	}
-	public static class Strawberry extends SlimeSprite {
-		@Override
-		protected int texOffset() {
-			return 3 * 9;
-		}
-	}
-	public static class Grape extends SlimeSprite {
-		@Override
-		protected int texOffset() {
-			return 4 * 9;
-		}
-	}
-	public static class Orange extends SlimeSprite {
-		@Override
-		protected int texOffset() {
-			return 5 * 9;
-		}
-	}
+	
 }

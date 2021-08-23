@@ -22,19 +22,18 @@
 package net.casiello.pixeldungeonrescue.actors.mobs;
 
 import net.casiello.pixeldungeonrescue.actors.Char;
-import net.casiello.pixeldungeonrescue.actors.buffs.Buff;
-import net.casiello.pixeldungeonrescue.actors.buffs.Weakness;
 import net.casiello.pixeldungeonrescue.items.Generator;
 import net.casiello.pixeldungeonrescue.items.Item;
 import net.casiello.pixeldungeonrescue.items.weapon.melee.MeleeWeapon;
-import net.casiello.pixeldungeonrescue.messages.Messages;
 import net.casiello.pixeldungeonrescue.sprites.SlimeSprite;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
-public abstract class Slime extends Mob {
+public class Slime extends Mob {
 	
 	{
+		spriteClass = SlimeSprite.class;
+		
 		HP = HT = 20;
 		defenseSkill = 5;
 		
@@ -70,51 +69,5 @@ public abstract class Slime extends Mob {
 		w.random();
 		w.level(0);
 		return w;
-	}
-
-	@Override
-	public String description() {
-		return super.description() + "\n\n" + Messages.get(this, "spell_desc");
-	}
-
-	public static class LimeSlime extends Slime {
-		{
-			spriteClass = SlimeSprite.Lime.class;
-		}
-	}
-	public static class LemonSlime extends Slime {
-		{
-			spriteClass = SlimeSprite.Lemon.class;
-		}
-	}
-	public static class StrawberrySlime extends Slime {
-		{
-			spriteClass = SlimeSprite.Strawberry.class;
-		}
-	}
-	public static class GrapeSlime extends Slime {
-		{
-			spriteClass = SlimeSprite.Grape.class;
-		}
-	}
-	public static class OrangeSlime extends Slime {
-		{
-			spriteClass = SlimeSprite.Orange.class;
-		}
-	}
-
-	public static Class<? extends Slime> random(){
-		int roll = Random.Int(5);
-		if (roll == 0){
-			return Slime.LimeSlime.class;
-		} else if (roll == 1){
-			return Slime.LemonSlime.class;
-		} else if (roll == 2){
-			return Slime.StrawberrySlime.class;
-		} else if (roll == 3){
-			return Slime.GrapeSlime.class;
-		} else {
-			return Slime.OrangeSlime.class;
-		}
 	}
 }
