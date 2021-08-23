@@ -210,7 +210,7 @@ public enum HeroClass {
 
 	public HeroType heroType() { return heroType; }
 	public String title() {
-		return Messages.get(HeroType.class, heroType.title());
+		return Messages.get(HeroClass.class, heroType.title());
 	}
 	
 	public HeroSubClass[] subClasses() {
