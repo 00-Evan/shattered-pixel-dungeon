@@ -43,7 +43,7 @@ public class RatSprite extends MobSprite {
 		attack.frames( frames, 2, 3, 4, 5, 0 );
 
 		die = new Animation( 10, false );
-		die.frames( frames, 11 );
+		die.frames( frames, 11, 12, 13, 14, 15, 14, 13, 12, 11 );
 
 		play( idle );
 	}

@@ -38,12 +38,10 @@ import net.casiello.pixeldungeonrescue.actors.buffs.Sleep;
 import net.casiello.pixeldungeonrescue.actors.buffs.SoulMark;
 import net.casiello.pixeldungeonrescue.actors.buffs.Terror;
 import net.casiello.pixeldungeonrescue.actors.hero.Hero;
-import net.casiello.pixeldungeonrescue.effects.CellEmitter;
 import net.casiello.pixeldungeonrescue.effects.Flare;
 import net.casiello.pixeldungeonrescue.effects.Speck;
 import net.casiello.pixeldungeonrescue.effects.Surprise;
 import net.casiello.pixeldungeonrescue.effects.Wound;
-import net.casiello.pixeldungeonrescue.effects.particles.ShaftParticle;
 import net.casiello.pixeldungeonrescue.items.Generator;
 import net.casiello.pixeldungeonrescue.items.Item;
 import net.casiello.pixeldungeonrescue.items.artifacts.DriedRose;
@@ -650,9 +648,7 @@ public abstract class Mob extends Char {
 		if (Dungeon.hero.isAlive() && !Dungeon.level.heroFOV[pos]) {
 			GLog.i( Messages.get(this, "died") );
 		}
-
-		CellEmitter.get(pos).burst(ShaftParticle.FACTORY, 6);
-
+		
 		super.die( cause );
 	}
 	
