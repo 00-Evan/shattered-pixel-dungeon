@@ -44,7 +44,7 @@ public class GreatCrabSprite extends MobSprite {
 		attack.frames( frames, 23, 24, 25 );
 
 		die = new MovieClip.Animation( 12, false );
-		die.frames( frames, 16 );
+		die.frames( frames, 26, 27, 28, 29, 30, 29, 28, 27, 26 );
 
 		play( idle );
 	}

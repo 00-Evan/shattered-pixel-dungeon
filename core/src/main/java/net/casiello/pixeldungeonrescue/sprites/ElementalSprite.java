@@ -66,7 +66,7 @@ public abstract class ElementalSprite extends MobSprite {
 		zap = attack.clone();
 		
 		die = new Animation( 15, false );
-		die.frames( frames, c+0 );
+		die.frames( frames, c+7, c+8, c+9, c+10, c+11, c+10, c+9, c+8, c+7 );
 		
 		play( idle );
 	}

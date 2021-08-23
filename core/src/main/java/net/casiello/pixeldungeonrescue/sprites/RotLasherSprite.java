@@ -43,7 +43,7 @@ public class RotLasherSprite extends MobSprite {
 		attack.frames( frames, 0, 1, 2, 2, 1 );
 
 		die = new Animation( 12, false );
-		die.frames( frames, 0 );
+		die.frames( frames, 3, 4, 5, 6, 7, 6, 5, 4, 3 );
 
 		play( idle );
 	}

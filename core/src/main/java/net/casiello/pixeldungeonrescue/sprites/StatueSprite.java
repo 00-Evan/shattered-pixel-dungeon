@@ -33,7 +33,6 @@ public class StatueSprite extends MobSprite {
 		texture( Assets.STATUE );
 		
 		TextureFilm frames = new TextureFilm( texture, 12, 15 );
-		
 		idle = new Animation( 2, true );
 		idle.frames( frames, 0, 0, 0, 0, 0, 1, 1 );
 		
@@ -44,8 +43,8 @@ public class StatueSprite extends MobSprite {
 		attack.frames( frames, 8, 9, 10 );
 		
 		die = new Animation( 5, false );
-		die.frames( frames, 0 );
-		
+		die.frames( frames, 11, 12, 13, 14, 15, 14, 13, 12, 11 );
+
 		play( idle );
 	}
 

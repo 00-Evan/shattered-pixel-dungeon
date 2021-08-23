@@ -51,7 +51,7 @@ public class GnollTricksterSprite extends MobSprite {
 		cast = attack.clone();
 
 		die = new MovieClip.Animation( 12, false );
-		die.frames( frames, 21 );
+		die.frames( frames, 29, 30, 31, 32, 33, 32, 31, 30, 29 );
 
 		play( idle );
 	}

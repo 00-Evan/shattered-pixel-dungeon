@@ -55,7 +55,7 @@ public abstract class ShamanSprite extends MobSprite {
 		zap = attack.clone();
 		
 		die = new Animation( 12, false );
-		die.frames( frames, c+0 );
+		die.frames( frames, c+8, c+9, c+10, c+11, c+12, c+11, c+10, c+9, c+8 );
 		
 		play( idle );
 	}

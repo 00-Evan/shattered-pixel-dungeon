@@ -51,7 +51,7 @@ public class DM200Sprite extends MobSprite {
 		zap.frames( frames, 7, 8, 8, 7 );
 
 		die = new Animation( 8, false );
-		die.frames( frames, 0 );
+		die.frames( frames, 9, 10, 11, 10, 9);
 
 		play( idle );
 	}

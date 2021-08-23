@@ -49,7 +49,7 @@ public class TenguSprite extends MobSprite {
 		zap = attack.clone();
 		
 		die = new Animation( 8, false );
-		die.frames( frames, 0 );
+		die.frames( frames, 8, 9, 10, 11, 12, 11, 10, 9, 8 );
 		
 		play( run.clone() );
 	}

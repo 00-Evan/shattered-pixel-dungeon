@@ -49,7 +49,7 @@ public class MonkSprite extends MobSprite {
 		kick.frames( frames, 5, 6, 5 );
 		
 		die = new Animation( 15, false );
-		die.frames( frames, 0 );
+		die.frames( frames, 7, 8, 9, 10, 9, 8, 7 );
 		
 		play( idle );
 	}

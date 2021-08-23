@@ -48,7 +48,7 @@ public class FetidRatSprite extends MobSprite {
 		attack.frames( frames, 34, 35, 36, 37, 32 );
 
 		die = new Animation( 10, false );
-		die.frames( frames, 32 );
+		die.frames( frames, 43, 44, 45, 46, 47, 46, 45, 44, 43 );
 
 		play( idle );
 	}

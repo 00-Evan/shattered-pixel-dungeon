@@ -22,7 +22,7 @@ public class EarthGuardianSprite extends MobSprite {
 		attack.frames( frames, 8, 9, 10 );
 
 		die = new Animation( 5, false );
-		die.frames( frames, 0 );
+		die.frames( frames, 11, 12, 13, 14, 15, 14, 13, 12, 11 );
 
 		play( idle );
 	}
