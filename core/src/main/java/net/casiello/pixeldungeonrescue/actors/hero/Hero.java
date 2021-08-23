@@ -128,7 +128,6 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
-import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
@@ -1470,10 +1469,8 @@ public class Hero extends Char {
 			reallyDie( cause );
 			
 		} else {
-			// Don't delete saves in debug mode
-			if (DeviceCompat.isDebug() == false) {
-				Dungeon.deleteGame( GamesInProgress.curSlot, false );
-			}
+			
+//			Dungeon.deleteGame( GamesInProgress.curSlot, false );
 			final Ankh finalAnkh = ankh;
 			Game.runOnRenderThread(new Callback() {
 				@Override
@@ -1539,11 +1536,8 @@ public class Hero extends Char {
 		if (cause instanceof Hero.Doom) {
 			((Hero.Doom)cause).onDeath();
 		}
-
-		// Don't delete saves in debug mode
-		if (DeviceCompat.isDebug() == false) {
-			Dungeon.deleteGame( GamesInProgress.curSlot, true );
-		}
+		
+//		Dungeon.deleteGame( GamesInProgress.curSlot, true );
 	}
 
 	//effectively cache this buff to prevent having to call buff(Berserk.class) a bunch.
