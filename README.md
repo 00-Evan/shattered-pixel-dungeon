@@ -6,9 +6,7 @@ Many years ago, Pixel City was enveloped by a dark magic, which made
 all the creatures of the countryside wild and full of rage. A
 brilliant wizard, Yendor, created a powerful artifact - an amulet that
 could pull this dark magic from a creature and store it inside
-itself.
-
-"No biggie", said Yendor, "I'm just gonna save the world!"
+itself. "No biggie", said Yendor, "I'm just gonna save the world!"
 
 Yendor went about the country, curing all the creatures she could
 find, until they were all restored, and the amulet was full. Yendor
