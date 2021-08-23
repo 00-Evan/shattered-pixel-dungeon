@@ -58,7 +58,7 @@ public enum Icons {
 	WARRIOR,
 	MAGE,
 	ROGUE,
-	HUNTER,
+	HUNTRESS,
 	
 	//main menu icons
 	ENTER,
@@ -160,7 +160,7 @@ public enum Icons {
 		case ROGUE:
 			icon.frame( icon.texture.uvRect( 48, 48, 57, 63 ) );
 			break;
-		case HUNTER:
+		case HUNTRESS:
 			icon.frame( icon.texture.uvRect( 64, 48, 80, 64 ) );
 			break;
 		
@@ -197,15 +197,15 @@ public enum Icons {
 	}
 	
 	public static Image get( HeroClass cl ) {
-		switch (cl.heroType()) {
+		switch (cl) {
 		case WARRIOR:
 			return get( WARRIOR );
 		case MAGE:
 			return get( MAGE );
 		case ROGUE:
 			return get( ROGUE );
-		case HUNTER:
-			return get( HUNTER );
+		case HUNTRESS:
+			return get( HUNTRESS );
 		default:
 			return null;
 		}

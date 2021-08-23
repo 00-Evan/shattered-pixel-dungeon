@@ -140,7 +140,7 @@ public class WndClass extends WndTabbed {
 			super();
 
 			String message = null;
-			switch (cl.heroType()) {
+			switch (cl) {
 				case WARRIOR:
 					message = HeroSubClass.GLADIATOR.desc() + "\n\n" + HeroSubClass.BERSERKER.desc();
 					break;
@@ -150,7 +150,7 @@ public class WndClass extends WndTabbed {
 				case ROGUE:
 					message = HeroSubClass.FREERUNNER.desc() + "\n\n" + HeroSubClass.ASSASSIN.desc();
 					break;
-				case HUNTER:
+				case HUNTRESS:
 					message = HeroSubClass.SNIPER.desc() + "\n\n" + HeroSubClass.WARDEN.desc();
 					break;
 			}

@@ -151,7 +151,7 @@ public class Hero extends Char {
 	private static final float TIME_TO_SEARCH	    = 2f;
 	private static final float HUNGER_FOR_SEARCH	= 6f;
 	
-	public HeroClass heroClass = HeroClass.ROGUE_F;
+	public HeroClass heroClass = HeroClass.ROGUE;
 	public HeroSubClass subClass = HeroSubClass.NONE;
 	
 	private int attackSkill = 10;
@@ -1674,7 +1674,7 @@ public class Hero extends Char {
 		
 		boolean smthFound = false;
 
-		int distance = heroClass.heroType() == HeroType.ROGUE ? 2 : 1;
+		int distance = heroClass == HeroClass.ROGUE ? 2 : 1;
 		
 		boolean foresight = buff(Foresight.class) != null;
 		

@@ -121,7 +121,7 @@ public class Badges {
 		MASTERY_HUNTRESS,
 		UNLOCK_MAGE( 65 ),
 		UNLOCK_ROGUE( 66 ),
-		UNLOCK_HUNTER( 67 ),
+		UNLOCK_HUNTRESS( 67 ),
 		ITEM_LEVEL_1( 48 ),
 		ITEM_LEVEL_2( 49 ),
 		ITEM_LEVEL_3( 50 ),
@@ -573,7 +573,7 @@ public class Badges {
 			displayBadge( badge );
 			
 			if (badge == Badge.BOSS_SLAIN_1) {
-				switch (Dungeon.hero.heroClass.heroType()) {
+				switch (Dungeon.hero.heroClass) {
 				case WARRIOR:
 					badge = Badge.BOSS_SLAIN_1_WARRIOR;
 					break;
@@ -583,7 +583,7 @@ public class Badges {
 				case ROGUE:
 					badge = Badge.BOSS_SLAIN_1_ROGUE;
 					break;
-				case HUNTER:
+				case HUNTRESS:
 					badge = Badge.BOSS_SLAIN_1_HUNTRESS;
 					break;
 				}
@@ -664,7 +664,7 @@ public class Badges {
 	public static void validateMastery() {
 		
 		Badge badge = null;
-		switch (Dungeon.hero.heroClass.heroType()) {
+		switch (Dungeon.hero.heroClass) {
 		case WARRIOR:
 			badge = Badge.MASTERY_WARRIOR;
 			break;
@@ -674,7 +674,7 @@ public class Badges {
 		case ROGUE:
 			badge = Badge.MASTERY_ROGUE;
 			break;
-		case HUNTER:
+		case HUNTRESS:
 			badge = Badge.MASTERY_HUNTRESS;
 			break;
 		}
@@ -698,8 +698,8 @@ public class Badges {
 	}
 	
 	public static void validateHuntressUnlock(){
-		if (Statistics.thrownAssists >= 20 && !global.contains(Badge.UNLOCK_HUNTER)){
-			displayBadge( Badge.UNLOCK_HUNTER );
+		if (Statistics.thrownAssists >= 20 && !global.contains(Badge.UNLOCK_HUNTRESS)){
+			displayBadge( Badge.UNLOCK_HUNTRESS );
 		}
 	}
 	
@@ -716,7 +716,7 @@ public class Badges {
 		Badge badge = Badge.VICTORY;
 		displayBadge( badge );
 
-		switch (Dungeon.hero.heroClass.heroType()) {
+		switch (Dungeon.hero.heroClass) {
 		case WARRIOR:
 			badge = Badge.VICTORY_WARRIOR;
 			break;
@@ -726,7 +726,7 @@ public class Badges {
 		case ROGUE:
 			badge = Badge.VICTORY_ROGUE;
 			break;
-		case HUNTER:
+		case HUNTRESS:
 			badge = Badge.VICTORY_HUNTRESS;
 			break;
 		}

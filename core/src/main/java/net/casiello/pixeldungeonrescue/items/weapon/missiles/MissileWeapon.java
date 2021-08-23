@@ -29,7 +29,6 @@ import net.casiello.pixeldungeonrescue.actors.buffs.Corruption;
 import net.casiello.pixeldungeonrescue.actors.buffs.PinCushion;
 import net.casiello.pixeldungeonrescue.actors.hero.Hero;
 import net.casiello.pixeldungeonrescue.actors.hero.HeroClass;
-import net.casiello.pixeldungeonrescue.actors.hero.HeroType;
 import net.casiello.pixeldungeonrescue.items.Item;
 import net.casiello.pixeldungeonrescue.items.bags.Bag;
 import net.casiello.pixeldungeonrescue.items.bags.MagicalHolster;
@@ -221,12 +220,8 @@ abstract public class MissileWeapon extends Weapon {
 	protected float durabilityPerUse(){
 		float usages = baseUses * (float)(Math.pow(3, level()));
 		
-		if (Dungeon.hero.heroClass.heroType() == HeroType.HUNTER) {
-			usages *= 1.5f;
-		}
-		if (holster) {
-			usages *= MagicalHolster.HOLSTER_DURABILITY_FACTOR;
-		}
+		if (Dungeon.hero.heroClass == HeroClass.HUNTRESS)   usages *= 1.5f;
+		if (holster)                                        usages *= MagicalHolster.HOLSTER_DURABILITY_FACTOR;
 		
 		usages *= RingOfSharpshooting.durabilityMultiplier( Dungeon.hero );
 		

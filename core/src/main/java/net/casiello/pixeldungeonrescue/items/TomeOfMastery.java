@@ -67,7 +67,7 @@ public class TomeOfMastery extends Item {
 			
 			HeroSubClass way1 = null;
 			HeroSubClass way2 = null;
-			switch (hero.heroClass.heroType()) {
+			switch (hero.heroClass) {
 			case WARRIOR:
 				way1 = HeroSubClass.GLADIATOR;
 				way2 = HeroSubClass.BERSERKER;
@@ -80,7 +80,7 @@ public class TomeOfMastery extends Item {
 				way1 = HeroSubClass.FREERUNNER;
 				way2 = HeroSubClass.ASSASSIN;
 				break;
-			case HUNTER:
+			case HUNTRESS:
 				way1 = HeroSubClass.SNIPER;
 				way2 = HeroSubClass.WARDEN;
 				break;

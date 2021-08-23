@@ -53,13 +53,13 @@ public class v0_1_X_Changes {
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Forked from Shattered Pixel Dungeon v0.8.0b"));
 
-		changes.addButton( new ChangeButton(new Image(Assets.WARRIOR_F, 0, 15, 12, 15), "Warrior Changes",
+		changes.addButton( new ChangeButton(new Image(Assets.WARRIOR, 0, 15, 12, 15), "Warrior Changes",
 				"_-_ Warrior is now female\n" +
 						 "_-_ Future task: allow sex choice"));
-		changes.addButton( new ChangeButton(new Image(Assets.MAGE_F, 0, 15, 12, 15), "Mage Changes",
+		changes.addButton( new ChangeButton(new Image(Assets.MAGE, 0, 15, 12, 15), "Mage Changes",
 				"_-_ Mage is now female\n" +
 						 "_-_ Future task: allow sex choice"));
-		changes.addButton( new ChangeButton(new Image(Assets.ROGUE_F, 0, 15, 12, 15), "Rogue Changes",
+		changes.addButton( new ChangeButton(new Image(Assets.ROGUE, 0, 15, 12, 15), "Rogue Changes",
 				"_-_ Rogue is now female\n" +
 						 "_-_ Future task: allow sex choice"));
 	}

@@ -94,7 +94,7 @@ public class Food extends Item {
 	}
 	
 	public static void foodProc( Hero hero ){
-		switch (hero.heroClass.heroType()) {
+		switch (hero.heroClass) {
 			case WARRIOR:
 				if (hero.HP < hero.HT) {
 					hero.HP = Math.min( hero.HP + 5, hero.HT );
@@ -107,7 +107,7 @@ public class Food extends Item {
 				ScrollOfRecharging.charge( hero );
 				break;
 			case ROGUE:
-			case HUNTER:
+			case HUNTRESS:
 				break;
 		}
 	}

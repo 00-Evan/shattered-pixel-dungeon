@@ -35,7 +35,6 @@ import net.casiello.pixeldungeonrescue.actors.buffs.SoulMark;
 import net.casiello.pixeldungeonrescue.actors.hero.Hero;
 import net.casiello.pixeldungeonrescue.actors.hero.HeroClass;
 import net.casiello.pixeldungeonrescue.actors.hero.HeroSubClass;
-import net.casiello.pixeldungeonrescue.actors.hero.HeroType;
 import net.casiello.pixeldungeonrescue.effects.MagicMissile;
 import net.casiello.pixeldungeonrescue.items.Item;
 import net.casiello.pixeldungeonrescue.items.bags.Bag;
@@ -320,7 +319,7 @@ public abstract class Wand extends Item {
 		
 		curCharges -= cursed ? 1 : chargesPerCast();
 		
-		if (curUser.heroClass.heroType() == HeroType.MAGE) levelKnown = true;
+		if (curUser.heroClass == HeroClass.MAGE) levelKnown = true;
 		updateQuickslot();
 
 		curUser.spendAndNext( TIME_TO_ZAP );

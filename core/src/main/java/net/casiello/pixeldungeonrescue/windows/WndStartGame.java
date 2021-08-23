@@ -49,15 +49,10 @@ import com.watabou.noosa.ui.Button;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.DeviceCompat;
 
-import static net.casiello.pixeldungeonrescue.actors.hero.HeroClass.HUNTER_F;
-import static net.casiello.pixeldungeonrescue.actors.hero.HeroClass.MAGE_F;
-import static net.casiello.pixeldungeonrescue.actors.hero.HeroClass.ROGUE_F;
-import static net.casiello.pixeldungeonrescue.actors.hero.HeroClass.WARRIOR_F;
-
 public class WndStartGame extends Window {
 	
 	private static final int WIDTH    = 120;
-	private static final int HEIGHT   = 160;
+	private static final int HEIGHT   = 140;
 
 	public WndStartGame(final int slot){
 		
@@ -73,24 +68,17 @@ public class WndStartGame extends Window {
 		float heroBtnSpacing = (WIDTH - 4*HeroBtn.WIDTH)/5f;
 		
 		float curX = heroBtnSpacing;
-		float curY = title.height() + 7;
-		int index = 0;
 		for (HeroClass cl : HeroClass.values()){
 			HeroBtn button = new HeroBtn(cl);
-			button.setRect(curX, curY, HeroBtn.WIDTH, HeroBtn.HEIGHT);
+			button.setRect(curX, title.height() + 7, HeroBtn.WIDTH, HeroBtn.HEIGHT);
 			curX += HeroBtn.WIDTH + heroBtnSpacing;
 			add(button);
-			++index;
-			if ((index % 4) == 0) {
-				curX = heroBtnSpacing;
-				curY += 20;
-			}
 		}
-
+		
 		ColorBlock separator = new ColorBlock(1, 1, 0xFF222222);
 		separator.size(WIDTH, 1);
 		separator.x = 0;
-		separator.y = title.bottom() + 12 + HeroBtn.HEIGHT * 2;
+		separator.y = title.bottom() + 6 + HeroBtn.HEIGHT;
 		add(separator);
 		
 		HeroPane ava = new HeroPane();
@@ -242,7 +230,7 @@ public class WndStartGame extends Window {
 			avatar = new Image(Assets.AVATARS);
 			avatar.scale.set(2f);
 			add(avatar);
-
+			
 			heroItem = new IconButton(){
 				@Override
 				protected void onClick() {
@@ -252,7 +240,7 @@ public class WndStartGame extends Window {
 			};
 			heroItem.setSize(BTN_SIZE, BTN_SIZE);
 			add(heroItem);
-
+			
 			heroLoadout = new IconButton(){
 				@Override
 				protected void onClick() {
@@ -262,7 +250,7 @@ public class WndStartGame extends Window {
 			};
 			heroLoadout.setSize(BTN_SIZE, BTN_SIZE);
 			add(heroLoadout);
-
+			
 			heroMisc = new IconButton(){
 				@Override
 				protected void onClick() {
@@ -272,7 +260,7 @@ public class WndStartGame extends Window {
 			};
 			heroMisc.setSize(BTN_SIZE, BTN_SIZE);
 			add(heroMisc);
-
+			
 			heroSubclass = new IconButton(new ItemSprite(ItemSpriteSheet.MASTERY, null)){
 				@Override
 				protected void onClick() {
@@ -286,7 +274,7 @@ public class WndStartGame extends Window {
 			};
 			heroSubclass.setSize(BTN_SIZE, BTN_SIZE);
 			add(heroSubclass);
-
+			
 			name = PixelScene.renderTextBlock(12);
 			add(name);
 			
@@ -300,7 +288,7 @@ public class WndStartGame extends Window {
 			avatar.x = x;
 			avatar.y = y + (height - avatar.height() - name.height() - 4)/2f;
 			PixelScene.align(avatar);
-
+			
 			name.setPos(
 					x + (avatar.width() - name.width())/2f,
 					avatar.y + avatar.height() + 3
@@ -319,32 +307,32 @@ public class WndStartGame extends Window {
 			if (GamesInProgress.selectedClass != cl){
 				cl = GamesInProgress.selectedClass;
 				if (cl != null) {
-					avatar.frame((cl.ordinal() % 4) * 24, (cl.ordinal() / 4) * 32, 24, 32);
+					avatar.frame(cl.ordinal() * 24, 0, 24, 32);
 
-					switch(cl.heroType()){
+					switch(cl){
 						case WARRIOR:
 							heroItem.icon(new ItemSprite(ItemSpriteSheet.SEAL, null));
 							heroLoadout.icon(new ItemSprite(ItemSpriteSheet.WORN_SHORTSWORD, null));
 							heroMisc.icon(new ItemSprite(ItemSpriteSheet.RATION, null));
-							name.text(Messages.capitalize((cl == WARRIOR_F) ? "Sonja" : "Conan")); // Red Sonja / Conan the Cimmerian
+							name.text(Messages.capitalize("Sonja")); // Red Sonja
 							break;
 						case MAGE:
 							heroItem.icon(new ItemSprite(ItemSpriteSheet.MAGES_STAFF, null));
 							heroLoadout.icon(new ItemSprite(ItemSpriteSheet.HOLDER, null));
 							heroMisc.icon(new ItemSprite(ItemSpriteSheet.WAND_MAGIC_MISSILE, null));
-							name.text(Messages.capitalize((cl == MAGE_F) ? "Megan" : "Stephen"));  // Pixie / Dr. Strange
+							name.text(Messages.capitalize("Megan")); // Pixie
 							break;
 						case ROGUE:
 							heroItem.icon(new ItemSprite(ItemSpriteSheet.ARTIFACT_CLOAK, null));
 							heroLoadout.icon(new ItemSprite(ItemSpriteSheet.DAGGER, null));
 							heroMisc.icon(Icons.get(Icons.DEPTH));
-							name.text(Messages.capitalize((cl == ROGUE_F) ? "Anna" : "Kurt"));  // Rogue / Nightcrawler
+							name.text(Messages.capitalize("Anna")); // Rogue
 							break;
-						case HUNTER:
+						case HUNTRESS:
 							heroItem.icon(new ItemSprite(ItemSpriteSheet.SPIRIT_BOW, null));
 							heroLoadout.icon(new ItemSprite(ItemSpriteSheet.GLOVES, null));
 							heroMisc.icon(new Image(Assets.TILES_SEWERS, 112, 96, 16, 16 ));
-							name.text(Messages.capitalize((cl == HUNTER_F) ? "Helena" : "Oliver"));  // Huntress / Green Arrow
+							name.text(Messages.capitalize("Helena")); // Huntress
 							break;
 					}
 					

@@ -43,16 +43,12 @@ public class Assets {
 	public static final String SHADOW   = "shadow.png";
 	public static final String BOSSHP   = "boss_hp.png";
 
-	public static final String WARRIOR_F	= "warrior-f.png";
-	public static final String WARRIOR_M	= "warrior-m.png";
-	public static final String MAGE_F		= "mage-f.png";
-	public static final String MAGE_M		= "mage-m.png";
-	public static final String ROGUE_F		= "rogue-f.png";
-	public static final String ROGUE_M		= "rogue-m.png";
-	public static final String HUNTER_F		= "hunter-f.png";
-	public static final String HUNTER_M		= "hunter-m.png";
-	public static final String AVATARS		= "avatars.png";
-	public static final String PET			= "pet.png";
+	public static final String WARRIOR	= "warrior.png";
+	public static final String MAGE		= "mage.png";
+	public static final String ROGUE	= "rogue.png";
+	public static final String HUNTRESS	= "huntress.png";
+	public static final String AVATARS	= "avatars.png";
+	public static final String PET		= "pet.png";
 	
 	public static final String SURFACE	= "surface.png";
 	

@@ -178,7 +178,7 @@ public class WelcomeScene extends PixelScene {
 			Badges.addGlobal(Badges.Badge.UNLOCK_MAGE);
 			Badges.addGlobal(Badges.Badge.UNLOCK_ROGUE);
 			if (Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_3)){
-				Badges.addGlobal(Badges.Badge.UNLOCK_HUNTER);
+				Badges.addGlobal(Badges.Badge.UNLOCK_HUNTRESS);
 			}
 			Badges.saveGlobal();
 		}

@@ -24,7 +24,6 @@ package net.casiello.pixeldungeonrescue.levels.rooms.secret;
 import net.casiello.pixeldungeonrescue.GamesInProgress;
 import net.casiello.pixeldungeonrescue.ShatteredPixelDungeon;
 import net.casiello.pixeldungeonrescue.actors.hero.HeroClass;
-import net.casiello.pixeldungeonrescue.actors.hero.HeroType;
 import net.casiello.pixeldungeonrescue.levels.rooms.special.SpecialRoom;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -54,7 +53,7 @@ public abstract class SecretRoom extends SpecialRoom {
 		
 		float[] regionChances = baseRegionSecrets.clone();
 		
-		if (GamesInProgress.selectedClass.heroType() == HeroType.ROGUE){
+		if (GamesInProgress.selectedClass == HeroClass.ROGUE){
 			for (int i = 0; i < regionChances.length; i++){
 				regionChances[i] += 0.6f;
 			}
