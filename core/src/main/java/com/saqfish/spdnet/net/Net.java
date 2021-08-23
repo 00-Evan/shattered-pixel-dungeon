@@ -86,6 +86,7 @@ public class Net {
         String key = Settings.auth_key();
         IO.Options options = IO.Options.builder()
                 .setAuth(singletonMap("token", key))
+                .setQuery("version="+Game.versionCode)
                 .build();
         socket = IO.socket(url, options);
         mapper = new ObjectMapper();
