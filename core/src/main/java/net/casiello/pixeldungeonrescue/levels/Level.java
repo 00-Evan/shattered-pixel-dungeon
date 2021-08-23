@@ -47,8 +47,6 @@ import net.casiello.pixeldungeonrescue.actors.mobs.Mimic;
 import net.casiello.pixeldungeonrescue.actors.mobs.Mob;
 import net.casiello.pixeldungeonrescue.actors.mobs.YogFist;
 import net.casiello.pixeldungeonrescue.actors.mobs.npcs.Sheep;
-import net.casiello.pixeldungeonrescue.effects.CellEmitter;
-import net.casiello.pixeldungeonrescue.effects.Speck;
 import net.casiello.pixeldungeonrescue.effects.particles.FlowParticle;
 import net.casiello.pixeldungeonrescue.effects.particles.WindParticle;
 import net.casiello.pixeldungeonrescue.items.Generator;
@@ -58,7 +56,6 @@ import net.casiello.pixeldungeonrescue.items.Stylus;
 import net.casiello.pixeldungeonrescue.items.Torch;
 import net.casiello.pixeldungeonrescue.items.artifacts.TimekeepersHourglass;
 import net.casiello.pixeldungeonrescue.items.food.SmallRation;
-import net.casiello.pixeldungeonrescue.items.potions.PotionOfHealing;
 import net.casiello.pixeldungeonrescue.items.potions.PotionOfStrength;
 import net.casiello.pixeldungeonrescue.items.scrolls.ScrollOfUpgrade;
 import net.casiello.pixeldungeonrescue.items.stones.StoneOfEnchantment;
@@ -83,7 +80,6 @@ import com.watabou.noosa.Group;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -184,13 +180,7 @@ public abstract class Level implements Bundlable {
 			if (Dungeon.isChallenged(Challenges.NO_FOOD)){
 				addItemToSpawn( new SmallRation() );
 			} else {
-				// Be more generous with food and healing potions in debug mode
-				if (DeviceCompat.isDebug() == true) {
-					for (int i = 0; i < 2; i++) {
-						addItemToSpawn(Generator.random(Generator.Category.FOOD));
-					}
-					addItemToSpawn(new PotionOfHealing() );
-				}
+				addItemToSpawn(Generator.random(Generator.Category.FOOD));
 			}
 
 			if (Dungeon.isChallenged(Challenges.DARKNESS)){
@@ -943,7 +933,7 @@ public abstract class Level implements Bundlable {
 		case Terrain.BOOKSHELF:
 			Level.set( cell, Terrain.EMPTY_SP );
 			// Small chance to drop the unstable spellbook
-			if (Random.Int(40 ) == 0) {
+			if (Random.Int(50 ) == 0) {
 				Dungeon.level.drop(Generator.getSpellbook(), cell).sprite.drop();
 			}
 			// Chance to drop a random scroll
@@ -952,9 +942,6 @@ public abstract class Level implements Bundlable {
 			}
 
 			GameScene.updateMap( cell );
-			/// Create cloud of smoke when bookcase is destroyed
-			CellEmitter.get(cell).burst(Speck.factory(Speck.WOOL), 6);
-			if (Dungeon.level.heroFOV[cell]) Dungeon.observe();
 			break;
 		}
 

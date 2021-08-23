@@ -459,8 +459,6 @@ public abstract class RegularLevel extends Level {
 				int pos = pointToCell(room.random());
 				if (passable[pos]
 						&& pos != exit
-						// Don't drop onto bookcases, even though they're passable
-						&&  map[pos] != Terrain.BOOKSHELF
 						&& heaps.get(pos) == null
 						&& findMob(pos) == null) {
 					
