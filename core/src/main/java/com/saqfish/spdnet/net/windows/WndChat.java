@@ -2,6 +2,7 @@ package com.saqfish.spdnet.net.windows;
 
 import static com.saqfish.spdnet.ShatteredPixelDungeon.net;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -43,11 +44,14 @@ public class WndChat extends NetWindow {
 	public WndChat() {
 		super();
 		int width, height;
+		boolean isMobile = DeviceCompat.isAndroid() || DeviceCompat.isiOS();
 
 		if (PixelScene.landscape()) width = (int)WIDTH_L;
 		else width = (int)WIDTH_P;
 
 		height = 0;
+
+		offset(isMobile ? (int)(-BUTTON_HEIGHT): 0);
 
 		c = new Chat();
 		c.setSize(width, height);
@@ -55,6 +59,7 @@ public class WndChat extends NetWindow {
 		add(c);
 
 		height += c.bottom();
+
 		resize(width, height);
 
 		textInput.setRect(0, sendBtn.top(), width-sendBtn.width(), sendBtn.height());
@@ -106,6 +111,7 @@ public class WndChat extends NetWindow {
 						net().sender().sendChat(msg);
 						lastMessage = msg;
 					}
+					Gdx.input.setOnscreenKeyboardVisible(true);
 				}
 			};
 
@@ -117,8 +123,8 @@ public class WndChat extends NetWindow {
 		protected void layout() {
 			super.layout();
 
-			content.setRect(0,0, width, BOXHEIGHT );
-			list.setRect( 0, 0, width, BOXHEIGHT);
+			content.setRect(0,y, width, BOXHEIGHT );
+			list.setRect( 0, y, width, BOXHEIGHT);
 
 			list.scrollTo( 0, 0 );
 
