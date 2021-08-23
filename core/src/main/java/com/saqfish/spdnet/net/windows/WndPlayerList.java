@@ -26,7 +26,6 @@ import com.saqfish.spdnet.ui.IconButton;
 import com.saqfish.spdnet.ui.RenderedTextBlock;
 import com.saqfish.spdnet.ui.ScrollPane;
 import com.watabou.noosa.ColorBlock;
-import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Button;
 import com.watabou.noosa.ui.Component;
@@ -39,6 +38,12 @@ public class WndPlayerList extends NetWindow {
 
 	private static final int VGAP = 5;
 	private static final int HGAP = 3;
+
+	public static class Roles {
+		public static final int ADMIN = 0;
+		public static final int PLAYER = 1;
+		public static final int BOT = 2;
+	}
 
 	public WndPlayerList(Receive.PlayerList p) {
 		super(PixelScene.landscape() ? WIDTH_L : WIDTH_P, HEIGHT);
@@ -111,7 +116,7 @@ public class WndPlayerList extends NetWindow {
 
 	public static class PlayerRank extends Button {
 		private int order;
-		private RenderedTextBlock label;
+		private RenderedTextBlock nick;
 
 		private boolean enabled;
 
@@ -120,15 +125,18 @@ public class WndPlayerList extends NetWindow {
 			this.order = order;
 			this.enabled = player.depth != null;
 
-			label = PixelScene.renderTextBlock(player.nick, 11);
-			add(label);
+			nick = PixelScene.renderTextBlock(player.nick, 11);
+			int color = getRoleColor(player.role);
+			System.out.println(player.nick + " - " + player.role + "color: " + color);
+			nick.hardlight(color);
+			add(nick);
 		}
 
 		@Override
 		protected void layout() {
 			super.layout();
-			label.setPos(VGAP, y);
-			label.alpha( enabled ? 1.0f : 0.3f );
+			nick.setPos(VGAP, y);
+			nick.alpha( enabled ? 1.0f : 0.3f );
 		}
 
 	}
@@ -151,4 +159,16 @@ public class WndPlayerList extends NetWindow {
 	}
 
 	protected void onSelect( int index ) {}
+
+	public static int getRoleColor(int role){
+		switch (role){
+			case Roles.BOT:
+			    return 0xFFFF00;
+			case Roles.ADMIN:
+				return 0x00FF00;
+			case Roles.PLAYER:
+				return 0xFFFFFF;
+		}
+		return 0xFFFFFF;
+	}
 }
