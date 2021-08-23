@@ -247,7 +247,7 @@ public class WndStartGame extends Window {
 				@Override
 				protected void onClick() {
 					if (cl == null) return;
-					ShatteredPixelDungeon.scene().addToFront(new WndMessage(Messages.get(cl, cl.heroType().name() + "_desc_item")));
+					ShatteredPixelDungeon.scene().addToFront(new WndMessage(Messages.get(cl, cl.name() + "_desc_item")));
 				}
 			};
 			heroItem.setSize(BTN_SIZE, BTN_SIZE);
@@ -257,7 +257,7 @@ public class WndStartGame extends Window {
 				@Override
 				protected void onClick() {
 					if (cl == null) return;
-					ShatteredPixelDungeon.scene().addToFront(new WndMessage(Messages.get(cl, cl.heroType().name() + "_desc_loadout")));
+					ShatteredPixelDungeon.scene().addToFront(new WndMessage(Messages.get(cl, cl.name() + "_desc_loadout")));
 				}
 			};
 			heroLoadout.setSize(BTN_SIZE, BTN_SIZE);
@@ -267,7 +267,7 @@ public class WndStartGame extends Window {
 				@Override
 				protected void onClick() {
 					if (cl == null) return;
-					ShatteredPixelDungeon.scene().addToFront(new WndMessage(Messages.get(cl, cl.heroType().name() + "_desc_misc")));
+					ShatteredPixelDungeon.scene().addToFront(new WndMessage(Messages.get(cl, cl.name() + "_desc_misc")));
 				}
 			};
 			heroMisc.setSize(BTN_SIZE, BTN_SIZE);
@@ -277,7 +277,7 @@ public class WndStartGame extends Window {
 				@Override
 				protected void onClick() {
 					if (cl == null) return;
-					String msg = Messages.get(cl, cl.heroType().name() + "_desc_subclasses");
+					String msg = Messages.get(cl, cl.name() + "_desc_subclasses");
 					for (HeroSubClass sub : cl.subClasses()){
 						msg += "\n\n" + sub.desc();
 					}
