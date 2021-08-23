@@ -33,7 +33,7 @@ public class MobSprite extends CharSprite {
 
 	private static final float FADE_TIME	= 3f;
 	private static final float FALL_TIME	= 1f;
-
+	
 	@Override
 	public void update() {
 		sleeping = ch != null && ((Mob)ch).state == ((Mob)ch).SLEEPING;

@@ -46,7 +46,7 @@ public class GhostSprite extends MobSprite {
 		attack.frames( frames, 0, 2, 3 );
 
 		die = new Animation( 8, false );
-		die.frames( frames, 4, 5, 6, 7, 8, 7, 6, 5, 4 );
+		die.frames( frames, 0, 4, 5, 6, 7 );
 		
 		play( idle );
 	}

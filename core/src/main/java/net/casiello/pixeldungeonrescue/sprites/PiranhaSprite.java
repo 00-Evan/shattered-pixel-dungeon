@@ -48,7 +48,7 @@ public class PiranhaSprite extends MobSprite {
 		attack.frames( frames, 3, 4, 5, 6, 7, 8, 9, 10, 11 );
 		
 		die = new Animation( 4, false );
-		die.frames( frames, 12, 13, 14, 15, 16, 15, 14, 13, 12 );
+		die.frames( frames, 12, 13, 14 );
 		
 		play( idle );
 	}

@@ -45,7 +45,7 @@ public class SnakeSprite extends MobSprite {
 		attack.frames( frames, 8, 9, 10, 9, 0);
 		
 		die = new Animation( 10, false );
-		die.frames( frames, 11, 12, 13, 14, 15, 14, 13, 12, 11 );
+		die.frames( frames, 11, 12, 13 );
 		
 		play(idle);
 	}

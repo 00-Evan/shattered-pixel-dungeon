@@ -39,7 +39,7 @@ public class ThiefSprite extends MobSprite {
 		run.frames( film, 0, 0, 2, 3, 3, 4 );
 		
 		die = new Animation( 10, false );
-		die.frames( film, 5, 6, 7, 8, 9, 8, 7, 6, 5 );
+		die.frames( film, 5, 6, 7, 8, 9 );
 		
 		attack = new Animation( 12, false );
 		attack.frames( film, 10, 11, 12, 0 );

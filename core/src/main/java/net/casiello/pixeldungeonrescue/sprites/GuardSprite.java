@@ -45,7 +45,7 @@ public class GuardSprite extends MobSprite {
 		attack.frames( frames, 8, 9, 10 );
 
 		die = new MovieClip.Animation( 8, false );
-		die.frames( frames, 11, 12, 13, 14, 15, 14, 13, 12, 11 );
+		die.frames( frames, 11, 12, 13, 14 );
 
 		play( idle );
 	}

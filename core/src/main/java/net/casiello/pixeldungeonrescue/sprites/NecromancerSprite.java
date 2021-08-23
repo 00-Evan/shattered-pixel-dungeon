@@ -48,7 +48,7 @@ public class NecromancerSprite extends MobSprite {
 		charging.frames( film, 7, 8 );
 		
 		die = new Animation( 10, false );
-		die.frames( film, 9, 10, 11, 12, 13, 12, 11, 10, 9 );
+		die.frames( film, 9, 10, 11, 12 );
 		
 		attack = zap.clone();
 		

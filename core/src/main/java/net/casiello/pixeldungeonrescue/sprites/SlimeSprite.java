@@ -43,7 +43,7 @@ public class SlimeSprite extends MobSprite {
 		attack.frames( frames, 2, 3, 4, 6, 5 );
 		
 		die = new Animation( 10, false );
-		die.frames( frames, 5, 6, 7, 8, 7, 6, 5 );
+		die.frames( frames, 0, 5, 6, 7 );
 		
 		play(idle);
 	}

@@ -43,7 +43,7 @@ public class BatSprite extends MobSprite {
 		attack.frames( frames, 2, 3, 0, 1 );
 		
 		die = new Animation( 12, false );
-		die.frames( frames, 4, 5, 6, 7, 6, 5, 4 );
+		die.frames( frames, 4, 5, 6 );
 		
 		play( idle );
 	}

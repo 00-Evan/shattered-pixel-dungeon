@@ -97,12 +97,12 @@ public class WndStartGame extends Window {
 				ActionIndicator.action = null;
 				InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
 				
-//				if (SPDSettings.intro()) {
-//					SPDSettings.intro( false );
+				if (SPDSettings.intro()) {
+					SPDSettings.intro( false );
 					Game.switchScene( IntroScene.class );
-//				} else {
-//					Game.switchScene( InterlevelScene.class );
-//				}
+				} else {
+					Game.switchScene( InterlevelScene.class );
+				}
 			}
 			
 			@Override
@@ -308,31 +308,29 @@ public class WndStartGame extends Window {
 				cl = GamesInProgress.selectedClass;
 				if (cl != null) {
 					avatar.frame(cl.ordinal() * 24, 0, 24, 32);
-
+					
+					name.text(Messages.capitalize(cl.title()));
+					
 					switch(cl){
 						case WARRIOR:
 							heroItem.icon(new ItemSprite(ItemSpriteSheet.SEAL, null));
 							heroLoadout.icon(new ItemSprite(ItemSpriteSheet.WORN_SHORTSWORD, null));
 							heroMisc.icon(new ItemSprite(ItemSpriteSheet.RATION, null));
-							name.text(Messages.capitalize("Sonja")); // Red Sonja
 							break;
 						case MAGE:
 							heroItem.icon(new ItemSprite(ItemSpriteSheet.MAGES_STAFF, null));
 							heroLoadout.icon(new ItemSprite(ItemSpriteSheet.HOLDER, null));
 							heroMisc.icon(new ItemSprite(ItemSpriteSheet.WAND_MAGIC_MISSILE, null));
-							name.text(Messages.capitalize("Megan")); // Pixie
 							break;
 						case ROGUE:
 							heroItem.icon(new ItemSprite(ItemSpriteSheet.ARTIFACT_CLOAK, null));
 							heroLoadout.icon(new ItemSprite(ItemSpriteSheet.DAGGER, null));
 							heroMisc.icon(Icons.get(Icons.DEPTH));
-							name.text(Messages.capitalize("Anna")); // Rogue
 							break;
 						case HUNTRESS:
 							heroItem.icon(new ItemSprite(ItemSpriteSheet.SPIRIT_BOW, null));
 							heroLoadout.icon(new ItemSprite(ItemSpriteSheet.GLOVES, null));
 							heroMisc.icon(new Image(Assets.TILES_SEWERS, 112, 96, 16, 16 ));
-							name.text(Messages.capitalize("Helena")); // Huntress
 							break;
 					}
 					

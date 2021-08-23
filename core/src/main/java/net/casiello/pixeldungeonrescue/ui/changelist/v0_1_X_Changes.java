@@ -21,9 +21,6 @@
 
 package net.casiello.pixeldungeonrescue.ui.changelist;
 
-import com.watabou.noosa.Image;
-
-import net.casiello.pixeldungeonrescue.Assets;
 import net.casiello.pixeldungeonrescue.items.Ankh;
 import net.casiello.pixeldungeonrescue.items.food.Blandfruit;
 import net.casiello.pixeldungeonrescue.sprites.ItemSprite;
@@ -37,11 +34,49 @@ public class v0_1_X_Changes {
 	
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
 		
-		ChangeInfo changes = new ChangeInfo( "v0.1.x", true, "");
+		ChangeInfo changes = new ChangeInfo( "v0.1.X", true, "");
 		changes.hardlight( Window.TITLE_COLOR);
 		changeInfos.add(changes);
 		
+		add_v0_1_1_Changes(changeInfos);
 		add_v0_1_0_Changes(changeInfos);
+	}
+	
+	public static void add_v0_1_1_Changes( ArrayList<ChangeInfo> changeInfos ){
+		
+		ChangeInfo changes = new ChangeInfo("v0.1.1", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released August 15th, 2014\n" +
+						"_-_ 10 days after Shattered v0.1.0\n" +
+						"\n" +
+						"Dev commentary will be added here in the future."));
+		
+		changes.addButton( new ChangeButton(new Blandfruit(),
+				"Players who chance upon gardens or who get lucky while trampling grass may come across a new plant: the _Blandfruit._\n\n" +
+						"As the name implies, the fruit from this plant is pretty unexceptional, and will barely do anything for you on its own. Perhaps there is some way to prepare the fruit with another ingredient..."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(new Ankh()), "Revival Item Changes",
+				"When the Dew Vial was initially added to Pixel Dungeon, its essentially free revive made ankhs pretty useless by comparison. " +
+						"To fix this, both items have been adjusted to combine to create a more powerful revive.\n\n" +
+						"Dew Vial nerfed:\n" +
+						"_-_ Still grants a full heal at full charge, but grants less healing at partial charge.\n" +
+						"_-_ No longer revives the player if they die.\n\n" +
+						"Ankh buffed:\n" +
+						"_-_ Can now be blessed with a full dew vial, to gain the vial's old revive effect."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCROLL_BERKANAN, null), "Misc Item Changes",
+				"Sungrass buffed:\n" +
+						"_-_ Heal scaling now scales with max hp.\n\n" +
+						"Scroll of Psionic Blast rebalanced:\n" +
+						"_-_ Now deals less self damage, and damage is more consistent.\n" +
+						"_-_ Duration of self stun/blind effect increased.\n\n" +
+						"Scroll of lullaby reworked:\n" +
+						"_-_ No longer instantly sleeps enemies, now afflicts them with drowsy, which turns into magical sleep.\n" +
+						"_-_ Magically slept enemies will only wake up when attacked.\n" +
+						"_-_ Hero is also affected, and will be healed by magical sleep."));
 	}
 	
 	public static void add_v0_1_0_Changes( ArrayList<ChangeInfo> changeInfos ){
@@ -51,17 +86,26 @@ public class v0_1_X_Changes {
 		changeInfos.add(changes);
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
-				"_-_ Forked from Shattered Pixel Dungeon v0.8.0b"));
-
-		changes.addButton( new ChangeButton(new Image(Assets.WARRIOR, 0, 15, 12, 15), "Warrior Changes",
-				"_-_ Warrior is now female\n" +
-						 "_-_ Future task: allow sex choice"));
-		changes.addButton( new ChangeButton(new Image(Assets.MAGE, 0, 15, 12, 15), "Mage Changes",
-				"_-_ Mage is now female\n" +
-						 "_-_ Future task: allow sex choice"));
-		changes.addButton( new ChangeButton(new Image(Assets.ROGUE, 0, 15, 12, 15), "Rogue Changes",
-				"_-_ Rogue is now female\n" +
-						 "_-_ Future task: allow sex choice"));
+				"_-_ Released August 5th, 2014\n" +
+				"_-_ 69 days after Pixel Dungeon v1.7.1\n" +
+				"_-_ 9 days after v1.7.1 source release\n" +
+				"\n" +
+				"Dev commentary will be added here in the future."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SEED_EARTHROOT, null), "Seed Changes",
+				"_-_ Blindweed buffed, now cripples as well as blinds.\n\n" +
+				"_-_ Sungrass nerfed, heal scales up over time, total heal reduced by combat.\n\n" +
+				"_-_ Earthroot nerfed, damage absorb down to 50% from 100%, total shield unchanged.\n\n" +
+				"_-_ Icecap buffed, freeze effect is now much stronger in water."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.POTION_SILVER, null), "Potion Changes",
+				"_-_ Potion of Purity buffed, immunity duration increased to 10 turns from 5, clear effect radius increased.\n\n" +
+				"_-_ Potion of Frost buffed, freeze effect is now much stronger in water."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCROLL_BERKANAN, null), "Scroll Changes",
+				"_-_ Scroll of Psionic blast reworked, now rarer and much stronger, but deals damage to the hero.\n\n" +
+				"_-_ Scroll of Challenge renamed to Scroll of Rage, now amoks nearby enemies."));
+		
 	}
 	
 }

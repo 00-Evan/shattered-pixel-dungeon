@@ -55,9 +55,7 @@ public class Assets {
 	public static final String FIREBALL		= "fireball.png";
 	public static final String SPECKS		= "specks.png";
 	public static final String EFFECTS		= "effects.png";
-
-	public static final String BEAMUP = "beamup16.png";
-
+	
 	public static final String RAT		= "rat.png";
 	public static final String GNOLL	= "gnoll.png";
 	public static final String CRAB		= "crab.png";

@@ -48,7 +48,7 @@ public class GhoulSprite extends MobSprite {
 		crumple.frames( frames, 0, 10, 11, 12 );
 
 		die = new Animation( 15, false );
-		die.frames( frames, 10, 11, 12, 13, 14, 13, 12, 11, 10 );
+		die.frames( frames, 0, 10, 11, 12, 13 );
 		
 		play( idle );
 	}
@@ -65,7 +65,7 @@ public class GhoulSprite extends MobSprite {
 	public void die() {
 		if (curAnim == crumple){
 			//causes the sprite to not rise then fall again when dieing.
-//			die.frames[0] = die.frames[1] = die.frames[2] = die.frames[3];
+			die.frames[0] = die.frames[1] = die.frames[2] = die.frames[3];
 		}
 		super.die();
 	}

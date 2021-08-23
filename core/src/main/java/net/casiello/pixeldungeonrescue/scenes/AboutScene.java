@@ -36,87 +36,112 @@ import com.watabou.utils.DeviceCompat;
 
 public class AboutScene extends PixelScene {
 
-	public static final int PDR_COLOR = 0x33BB33;
-
 	private static final String TTL_PDR = "Pixel Dungeon Rescue";
-	private static final String TXT_PDR = "bcasiello@gmail.com";
+
+	private static final String TXT_PDR =
+			"Code & Graphics: bcasiello@gmail.com";
+
 	private static final String LNK_PDR = "github.com/bcasiello/pixel-dungeon-rescue";
 
-	private static final String TTL_SHPX = "based on Shattered Pixel Dungeon by Evan";
+	private static final String TTL_SHPX = "Shattered Pixel Dungeon";
+
+	private static final String TXT_SHPX =
+			"Design, Code, & Graphics: Evan";
+
 	private static final String LNK_SHPX = "ShatteredPixel.com";
 
+	private static final String TTL_WATA = "Pixel Dungeon";
+
+	private static final String TXT_WATA =
+			"Code & Graphics: Watabou\n" +
+			"Music: Cube_Code";
+	
+	private static final String LNK_WATA = "pixeldungeon.watabou.ru";
+	
 	@Override
 	public void create() {
 		super.create();
 
-		final float colWidth = Camera.main.width;
-		final float colTop = 60;
+		final float colWidth = Camera.main.width / (landscape() ? 2 : 1);
+		final float colTop = (Camera.main.height / 2) - (landscape() ? 30 : 90);
+		final float wataOffset = landscape() ? colWidth : 0;
 
-		Image pdr = Icons.WATA.get();
-		pdr.x = (colWidth - pdr.width()) / 2;
-		pdr.y = colTop;
-		align(pdr);
-		add( pdr );
+		Image shpx = Icons.SHPX.get();
+		shpx.x = (colWidth - shpx.width()) / 2;
+		shpx.y = colTop;
+		align(shpx);
+		add( shpx );
 
-		new Flare( 7, 64 ).color( 0x112233, true ).show( pdr, 0 ).angularSpeed = +20;
+		new Flare( 7, 64 ).color( 0x225511, true ).show( shpx, 0 ).angularSpeed = +20;
 
-		RenderedTextBlock pdrtitle = renderTextBlock( TTL_PDR, 8 );
-		pdrtitle.hardlight( PDR_COLOR );
-		add( pdrtitle );
+		RenderedTextBlock shpxtitle = renderTextBlock( TTL_PDR, 8 );
+		shpxtitle.hardlight( Window.SHPX_COLOR );
+		add( shpxtitle );
 
-		pdrtitle.setPos((colWidth - pdrtitle.width()) / 2, pdr.y + pdr.height + 5 );
-		align(pdrtitle);
+		shpxtitle.setPos(
+				(colWidth - shpxtitle.width()) / 2,
+				shpx.y + shpx.height + 5
+		);
+		align(shpxtitle);
 
-		RenderedTextBlock pdrtext = renderTextBlock( TXT_PDR, 8 );
-		pdrtext.maxWidth((int)Math.min(colWidth, 120));
-		add( pdrtext );
+		RenderedTextBlock shpxtext = renderTextBlock( TXT_PDR, 8 );
+		shpxtext.maxWidth((int)Math.min(colWidth, 120));
+		add( shpxtext );
 
-		pdrtext.setPos((colWidth - pdrtext.width()) / 2, pdrtitle.bottom() + 6);
-		align(pdrtext);
+		shpxtext.setPos((colWidth - shpxtext.width()) / 2, shpxtitle.bottom() + 12);
+		align(shpxtext);
 
-		RenderedTextBlock pdrlink = renderTextBlock( LNK_PDR, 8 );
-		pdrlink.maxWidth(pdrtext.maxWidth());
-		pdrlink.hardlight( PDR_COLOR );
-		add( pdrlink );
+		RenderedTextBlock shpxlink = renderTextBlock( LNK_PDR, 8 );
+		shpxlink.maxWidth(shpxtext.maxWidth());
+		shpxlink.hardlight( Window.SHPX_COLOR );
+		add( shpxlink );
 
-		pdrlink.setPos((colWidth - pdrlink.width()) / 2, pdrtext.bottom() + 4);
-		align(pdrlink);
+		shpxlink.setPos((colWidth - shpxlink.width()) / 2, shpxtext.bottom() + 6);
+		align(shpxlink);
 
-		PointerArea pdrhotArea = new PointerArea( pdrlink.left(), pdrlink.top(), pdrlink.width(), pdrlink.height() ) {
+		PointerArea shpxhotArea = new PointerArea( shpxlink.left(), shpxlink.top(), shpxlink.width(), shpxlink.height() ) {
 			@Override
 			protected void onClick( PointerEvent event ) {
 				DeviceCompat.openURI( "https://" + LNK_PDR );
 			}
 		};
-		add( pdrhotArea );
+		add( shpxhotArea );
 
-//		Image shpx = Icons.WATA.get();
-//		shpx.x = (colWidth - shpx.width()) / 2;
-//		shpx.y = pdrlink.top() + shpx.height + 20;
-//		align(shpx);
-//		add( shpx );
-//
-//		new Flare( 7, 64 ).color( 0x225511, true ).show( shpx, 0 ).angularSpeed = +20;
+		Image wata = Icons.WATA.get();
+		wata.x = wataOffset + (colWidth - wata.width()) / 2;
+		wata.y = landscape() ? colTop: shpxlink.top() + wata.height + 20;
+		align(wata);
+		add( wata );
 
-		RenderedTextBlock shpxTitle = renderTextBlock( TTL_SHPX, 8 );
-		shpxTitle.hardlight(Window.TITLE_COLOR);
-		add( shpxTitle );
+		new Flare( 7, 64 ).color( 0x112233, true ).show( wata, 0 ).angularSpeed = +20;
 
-		shpxTitle.setPos(
-				(colWidth - shpxTitle.width()) / 2,
-				pdrlink.bottom() + 11
+		RenderedTextBlock wataTitle = renderTextBlock( TTL_SHPX, 8 );
+		wataTitle.hardlight(Window.TITLE_COLOR);
+		add( wataTitle );
+
+		wataTitle.setPos(
+				wataOffset + (colWidth - wataTitle.width()) / 2,
+				wata.y + wata.height + 11
 		);
-		align(shpxTitle);
+		align(wataTitle);
 
-		RenderedTextBlock shpxLink = renderTextBlock( LNK_SHPX, 8 );
-		shpxLink.maxWidth((int)Math.min(colWidth, 120));
-		shpxLink.hardlight(Window.TITLE_COLOR);
-		add(shpxLink);
+		RenderedTextBlock wataText = renderTextBlock( TXT_SHPX, 8 );
+		wataText.maxWidth((int)Math.min(colWidth, 120));
+		wataText.setHightlighting(false); //underscore in cube_code
+		add( wataText );
+
+		wataText.setPos(wataOffset + (colWidth - wataText.width()) / 2, wataTitle.bottom() + 12);
+		align(wataText);
 		
-		shpxLink.setPos((colWidth - shpxLink.width()) / 2 , shpxTitle.bottom() + 6);
-		align(shpxLink);
+		RenderedTextBlock wataLink = renderTextBlock( LNK_SHPX, 8 );
+		wataLink.maxWidth((int)Math.min(colWidth, 120));
+		wataLink.hardlight(Window.TITLE_COLOR);
+		add(wataLink);
 		
-		PointerArea hotArea = new PointerArea( shpxLink.left(), shpxLink.top(), shpxLink.width(), shpxLink.height() ) {
+		wataLink.setPos(wataOffset + (colWidth - wataLink.width()) / 2 , wataText.bottom() + 6);
+		align(wataLink);
+		
+		PointerArea hotArea = new PointerArea( wataLink.left(), wataLink.top(), wataLink.width(), wataLink.height() ) {
 			@Override
 			protected void onClick( PointerEvent event ) {
 				DeviceCompat.openURI( "http://" + LNK_SHPX );

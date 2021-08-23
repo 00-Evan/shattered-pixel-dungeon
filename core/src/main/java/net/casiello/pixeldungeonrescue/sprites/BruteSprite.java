@@ -43,7 +43,7 @@ public class BruteSprite extends MobSprite {
 		attack.frames( frames, 2, 3, 0 );
 		
 		die = new Animation( 12, false );
-		die.frames( frames, 8, 9, 10, 11, 12, 11, 10, 9, 8 );
+		die.frames( frames, 8, 9, 10 );
 		
 		play( idle );
 	}

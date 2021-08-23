@@ -43,7 +43,7 @@ public class ShieldedSprite extends MobSprite {
 		attack.frames( frames, 23, 24 );
 		
 		die = new Animation( 12, false );
-		die.frames( frames, 29, 30, 31, 32, 33, 32, 31, 30, 29 );
+		die.frames( frames, 29, 30, 31 );
 		
 		play( idle );
 	}
