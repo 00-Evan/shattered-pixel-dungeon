@@ -1,12 +1,14 @@
-# Pixel Dungeon: Veterinarian
+# Shattered Pixel Dungeon
 
-A Roguelike RPG, with randomly generated levels, items, enemies, and traps! Forked from [Shattered Pixel Dungeon](https://github.com/00-Evan/shattered-pixel-dungeon) which itself is based on the [source code of Pixel Dungeon](https://github.com/00-Evan/pixel-dungeon-gradle), by [Watabou](https://www.watabou.ru).
+A Roguelike RPG, with randomly generated levels, items, enemies, and traps! Based on the [source code of Pixel Dungeon](https://github.com/00-Evan/pixel-dungeon-gradle), by [Watabou](https://www.watabou.ru).
 
-Pixel Dungeon Veterinarian is essentially a light reskinning of Shattered, where the player characters are veterinarians, trying to cure an infection ravaging the dungeon. It is meant for people (younger children) who might not be interested in lots of killing to still enjoy a roguelike game. I suspect it is unlikely to be of interest to serious roguelike gamers. I plan to keep it current with bugfixes and enhancements from the upstream project.
+Shattered Pixel Dungeon currently compiles for Android and desktop platforms. It is available from [GitHub](https://github.com/00-Evan/shattered-pixel-dungeon/releases), [Google Play](https://play.google.com/store/apps/details?id=com.shatteredpixel.shatteredpixeldungeon), [Amazon](https://www.amazon.com/Shattered-Pixel-Dungeon/dp/B00OH2C21M), and [F-Droid](https://f-droid.org/repository/browse/?fdid=com.shatteredpixel.shatteredpixeldungeon).
 
-Pixel Dungeon: Veterinarian currently compiles for Android and desktop platforms. If anyone is interested in doing an iOS version, I'd be happy to merge, or else include pointers to your project!
+If you like this game, please consider [supporting me on Patreon](https://www.patreon.com/ShatteredPixel)!
 
-If you like this game, please consider [supporting Shattered Pixel on Patreon](https://www.patreon.com/ShatteredPixel)!
+There is an official blog for this project at [ShatteredPixel.com](http://www.shatteredpixel.com).
+
+The game also has a translation project hosted on [Transifex](https://www.transifex.com/shattered-pixel/shattered-pixel-dungeon/).
 
 If you'd like to work with the code, you can find the following guides in `/docs`:
 - [Compiling for Android.](docs/getting-started-android.md)
