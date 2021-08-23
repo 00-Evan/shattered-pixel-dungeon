@@ -44,7 +44,7 @@ public class LarvaSprite extends MobSprite {
 		attack.frames( frames, 6, 5, 7 );
 		
 		die = new Animation( 10, false );
-		die.frames( frames, 8, 9, 8 );
+		die.frames( frames, 8, 9, 10, 9, 8 );
 		
 		play( idle );
 	}
