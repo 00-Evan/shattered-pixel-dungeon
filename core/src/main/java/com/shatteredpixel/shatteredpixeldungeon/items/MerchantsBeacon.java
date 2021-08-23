@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ public class MerchantsBeacon extends Item {
 		if (action.equals(AC_USE)) {
 			detach( hero.belongings.backpack );
 			Shopkeeper.sell();
-			Sample.INSTANCE.play( Assets.SND_BEACON );
+			Sample.INSTANCE.play( Assets.Sounds.BEACON );
 		}
 
 	}
@@ -74,7 +74,7 @@ public class MerchantsBeacon extends Item {
 	}
 
 	@Override
-	public int price() {
+	public int value() {
 		return 5 * quantity;
 	}
 

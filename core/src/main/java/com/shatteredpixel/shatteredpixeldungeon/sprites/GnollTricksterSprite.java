@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ public class GnollTricksterSprite extends MobSprite {
 	public GnollTricksterSprite() {
 		super();
 
-		texture( Assets.GNOLL );
+		texture( Assets.Sprites.GNOLL );
 
 		TextureFilm frames = new TextureFilm( texture, 12, 15 );
 
@@ -61,7 +61,7 @@ public class GnollTricksterSprite extends MobSprite {
 		if (!Dungeon.level.adjacent(cell, ch.pos)) {
 
 			((MissileSprite)parent.recycle( MissileSprite.class )).
-					reset( ch.pos, cell, new ParalyticDart(), new Callback() {
+					reset( this, cell, new ParalyticDart(), new Callback() {
 						@Override
 						public void call() {
 							ch.onAttackComplete();

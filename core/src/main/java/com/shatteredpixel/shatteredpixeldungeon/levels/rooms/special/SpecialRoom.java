@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -168,10 +168,7 @@ public abstract class SpecialRoom extends Room {
 		runSpecials.clear();
 		if (bundle.contains( ROOMS )) {
 			for (Class<? extends Room> type : bundle.getClassArray(ROOMS)) {
-				//pre-0.7.0 saves
-				if (type != null && type != LaboratoryRoom.class) {
-					runSpecials.add(type);
-				}
+				runSpecials.add(type);
 			}
 		} else {
 			initForRun();

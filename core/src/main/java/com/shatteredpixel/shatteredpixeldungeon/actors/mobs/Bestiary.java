@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -220,6 +220,8 @@ public class Bestiary {
 					cl = CausticSlime.class;
 				} else if (cl == Thief.class) {
 					cl = Bandit.class;
+				} else if (cl == Necromancer.class){
+					cl = SpectralNecromancer.class;
 				} else if (cl == Brute.class) {
 					cl = ArmoredBrute.class;
 				} else if (cl == DM200.class) {

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,12 @@ public class BurnedRoom extends PatchRoom {
 	@Override
 	public float[] sizeCatProbs() {
 		return new float[]{4, 1, 0};
+	}
+
+	@Override
+	public boolean canMerge(Level l, Point p, int mergeTerrain) {
+		int cell = l.pointToCell(pointInside(p, 1));
+		return l.map[cell] == Terrain.EMPTY;
 	}
 	
 	@Override
@@ -83,17 +89,17 @@ public class BurnedRoom extends PatchRoom {
 	
 	@Override
 	public boolean canPlaceWater(Point p) {
-		return super.canPlaceWater(p) && !patch[xyToPatchCoords(p.x, p.y)];
+		return !inside(p) || !patch[xyToPatchCoords(p.x, p.y)];
 	}
 
 	@Override
 	public boolean canPlaceGrass(Point p) {
-		return super.canPlaceGrass(p) && !patch[xyToPatchCoords(p.x, p.y)];
+		return !inside(p) || !patch[xyToPatchCoords(p.x, p.y)];
 	}
 
 	@Override
 	public boolean canPlaceTrap(Point p) {
-		return super.canPlaceTrap(p) && !patch[xyToPatchCoords(p.x, p.y)];
+		return !inside(p) || !patch[xyToPatchCoords(p.x, p.y)];
 	}
 	
 }

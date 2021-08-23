@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,8 @@ import java.text.DecimalFormat;
 
 public class Chill extends FlavourBuff {
 
+	public static final float DURATION = 10f;
+
 	{
 		type = buffType.NEGATIVE;
 		announced = true;
@@ -37,15 +39,9 @@ public class Chill extends FlavourBuff {
 
 	@Override
 	public boolean attachTo(Char target) {
-		//can't chill what's frozen!
-		if (target.buff(Frost.class) != null) return false;
+		Buff.detach( target, Burning.class );
 
-		if (super.attachTo(target)){
-			Buff.detach( target, Burning.class );
-			return true;
-		} else {
-			return false;
-		}
+		return super.attachTo(target);
 	}
 
 	//reduces speed by 10% for every turn remaining, capping at 50%
@@ -56,6 +52,11 @@ public class Chill extends FlavourBuff {
 	@Override
 	public int icon() {
 		return BuffIndicator.FROST;
+	}
+
+	@Override
+	public float iconFadePercent() {
+		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 	}
 
 	@Override

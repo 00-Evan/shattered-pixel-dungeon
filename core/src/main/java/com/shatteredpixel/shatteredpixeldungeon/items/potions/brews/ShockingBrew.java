@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,8 @@ public class ShockingBrew extends Brew {
 	public void shatter(int cell) {
 		if (Dungeon.level.heroFOV[cell]) {
 			splash( cell );
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
+			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
+			Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);
 		}
 		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
 		for (int i = 0; i < PathFinder.distance.length; i++) {
@@ -51,11 +52,10 @@ public class ShockingBrew extends Brew {
 				GameScene.add(Blob.seed(i, 20, Electricity.class));
 			}
 		}
-		Sample.INSTANCE.play(Assets.SND_LIGHTNING);
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		//prices of ingredients
 		return quantity * (40 + 40);
 	}

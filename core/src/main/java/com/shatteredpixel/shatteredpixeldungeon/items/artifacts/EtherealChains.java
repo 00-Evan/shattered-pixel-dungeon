@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -28,8 +29,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Chains;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
@@ -39,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -69,6 +73,10 @@ public class EtherealChains extends Artifact {
 		return actions;
 	}
 
+	public int targetingPos( Hero user, int dst ){
+		return dst;
+	}
+
 	@Override
 	public void execute(Hero hero, String action) {
 
@@ -80,17 +88,18 @@ public class EtherealChains extends Artifact {
 
 			if (!isEquipped( hero )) {
 				GLog.i( Messages.get(Artifact.class, "need_to_equip") );
-				QuickSlotButton.cancel();
+				usesTargeting = false;
 
 			} else if (charge < 1) {
 				GLog.i( Messages.get(this, "no_charge") );
-				QuickSlotButton.cancel();
+				usesTargeting = false;
 
 			} else if (cursed) {
 				GLog.w( Messages.get(this, "cursed") );
-				QuickSlotButton.cancel();
+				usesTargeting = false;
 
 			} else {
+				usesTargeting = true;
 				GameScene.selectCell(caster);
 			}
 
@@ -160,28 +169,38 @@ public class EtherealChains extends Artifact {
 			return;
 		} else {
 			charge -= chargeUse;
+			Talent.onArtifactUsed(hero);
 			updateQuickslot();
 		}
 		
 		hero.busy();
+		throwSound();
+		Sample.INSTANCE.play( Assets.Sounds.CHAINS );
 		hero.sprite.parent.add(new Chains(hero.sprite.center(), enemy.sprite.center(), new Callback() {
 			public void call() {
 				Actor.add(new Pushing(enemy, enemy.pos, pulledPos, new Callback() {
 					public void call() {
+						enemy.pos = pulledPos;
 						Dungeon.level.occupyCell(enemy);
+						Dungeon.observe();
+						GameScene.updateFog();
+						hero.spendAndNext(1f);
 					}
 				}));
-				enemy.pos = pulledPos;
-				Dungeon.observe();
-				GameScene.updateFog();
-				hero.spendAndNext(1f);
+				hero.next();
 			}
 		}));
 	}
 	
-	//pulls the hero along the chain to the collosionPos, if possible.
+	//pulls the hero along the chain to the collisionPos, if possible.
 	private void chainLocation( Ballistica chain, final Hero hero ){
-		
+
+		//don't pull if rooted
+		if (hero.rooted){
+			GLog.w( Messages.get(EtherealChains.class, "rooted") );
+			return;
+		}
+
 		//don't pull if the collision spot is in a wall
 		if (Dungeon.level.solid[chain.collisionPos]){
 			GLog.i( Messages.get(this, "inside_wall"));
@@ -209,21 +228,25 @@ public class EtherealChains extends Artifact {
 			return;
 		} else {
 			charge -= chargeUse;
+			Talent.onArtifactUsed(hero);
 			updateQuickslot();
 		}
 		
 		hero.busy();
+		throwSound();
+		Sample.INSTANCE.play( Assets.Sounds.CHAINS );
 		hero.sprite.parent.add(new Chains(hero.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(newHeroPos), new Callback() {
 			public void call() {
 				Actor.add(new Pushing(hero, hero.pos, newHeroPos, new Callback() {
 					public void call() {
+						hero.pos = newHeroPos;
 						Dungeon.level.occupyCell(hero);
+						hero.spendAndNext(1f);
+						Dungeon.observe();
+						GameScene.updateFog();
 					}
 				}));
-				hero.spendAndNext(1f);
-				hero.pos = newHeroPos;
-				Dungeon.observe();
-				GameScene.updateFog();
+				hero.next();
 			}
 		}));
 	}
@@ -234,10 +257,10 @@ public class EtherealChains extends Artifact {
 	}
 	
 	@Override
-	public void charge(Hero target) {
+	public void charge(Hero target, float amount) {
 		int chargeTarget = 5+(level()*2);
 		if (charge < chargeTarget*2){
-			partialCharge += 0.5f;
+			partialCharge += 0.5f*amount;
 			if (partialCharge >= 1){
 				partialCharge--;
 				charge++;
@@ -267,7 +290,10 @@ public class EtherealChains extends Artifact {
 			int chargeTarget = 5+(level()*2);
 			LockedFloor lock = target.buff(LockedFloor.class);
 			if (charge < chargeTarget && !cursed && (lock == null || lock.regenOn())) {
-				partialCharge += 1 / (40f - (chargeTarget - charge)*2f);
+				//gains a charge in 40 - 2*missingCharge turns
+				float chargeGain = (1 / (40f - (chargeTarget - charge)*2f));
+				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
+				partialCharge += chargeGain;
 			} else if (cursed && Random.Int(100) == 0){
 				Buff.prolong( target, Cripple.class, 10f);
 			}
@@ -295,8 +321,8 @@ public class EtherealChains extends Artifact {
 			}
 			partialCharge += levelPortion*10f;
 
-			if (exp > 100+level()*50 && level() < levelCap){
-				exp -= 100+level()*50;
+			if (exp > 100+level()*100 && level() < levelCap){
+				exp -= 100+level()*100;
 				GLog.p( Messages.get(this, "levelup") );
 				upgrade();
 			}

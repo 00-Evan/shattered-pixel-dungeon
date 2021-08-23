@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -234,6 +234,10 @@ public class Blob extends Actor {
 		
 		if (gas == null) {
 			gas = Reflection.newInstance(type);
+			//this ensures that gasses do not get an 'extra turn' if they are added by a mob or buff
+			if (Actor.curActorPriority() < gas.actPriority) {
+				gas.spend(1f);
+			}
 		}
 		
 		if (gas != null){

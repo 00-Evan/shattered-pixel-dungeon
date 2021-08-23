@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ public class BadgesList extends ScrollPane {
 	public BadgesList( boolean global ) {
 		super( new Component() );
 		
-		for (Badges.Badge badge : Badges.filtered( global )) {
+		for (Badges.Badge badge : Badges.filterReplacedBadges( global )) {
 			
 			if (badge.image == -1) {
 				continue;
@@ -119,8 +119,8 @@ public class BadgesList extends ScrollPane {
 		
 		public boolean onClick( float x, float y ) {
 			if (inside( x, y )) {
-				Sample.INSTANCE.play( Assets.SND_CLICK, 0.7f, 0.7f, 1.2f );
-				Game.scene().add( new WndBadge( badge ) );
+				Sample.INSTANCE.play( Assets.Sounds.CLICK, 0.7f, 0.7f, 1.2f );
+				Game.scene().add( new WndBadge( badge, true ) );
 				return true;
 			} else {
 				return false;

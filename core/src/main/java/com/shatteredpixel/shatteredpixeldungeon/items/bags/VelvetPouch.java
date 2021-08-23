@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,18 +32,24 @@ public class VelvetPouch extends Bag {
 
 	{
 		image = ItemSpriteSheet.POUCH;
-		
-		size = 20;
+	}
+
+	@Override
+	public boolean canHold( Item item ) {
+		if (item instanceof Plant.Seed || item instanceof Runestone
+				|| item instanceof GooBlob || item instanceof MetalShard){
+			return super.canHold(item);
+		} else {
+			return false;
+		}
+	}
+
+	public int capacity(){
+		return 19;
 	}
 	
 	@Override
-	public boolean grab( Item item ) {
-		return item instanceof Plant.Seed || item instanceof Runestone
-				|| item instanceof GooBlob || item instanceof MetalShard;
-	}
-	
-	@Override
-	public int price() {
+	public int value() {
 		return 30;
 	}
 

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,8 +25,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
+import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GhoulSprite;
@@ -50,6 +52,9 @@ public class Ghoul extends Mob {
 		SLEEPING = new Sleeping();
 		WANDERING = new Wandering();
 		state = SLEEPING;
+
+		loot = Gold.class;
+		lootChance = 0.2f;
 		
 		properties.add(Property.UNDEAD);
 	}
@@ -124,6 +129,11 @@ public class Ghoul extends Mob {
 				if (sprite.visible) {
 					Actor.addDelayed( new Pushing( child, pos, child.pos ), -1 );
 				}
+
+				for (Buff b : buffs(ChampionEnemy.class)){
+					Buff.affect( child, b.getClass());
+				}
+
 			}
 			
 		}
@@ -134,7 +144,7 @@ public class Ghoul extends Mob {
 
 	@Override
 	public void die(Object cause) {
-		if (cause != Chasm.class && cause != GhoulLifeLink.class){
+		if (cause != Chasm.class && cause != GhoulLifeLink.class && !Dungeon.level.pit[pos]){
 			Ghoul nearby = GhoulLifeLink.searchForHost(this);
 			if (nearby != null){
 				beingLifeLinked = true;
@@ -155,8 +165,10 @@ public class Ghoul extends Mob {
 	protected synchronized void onRemove() {
 		if (beingLifeLinked) {
 			for (Buff buff : buffs()) {
-				//corruption and king damager are preserved when removed via life link
-				if (!(buff instanceof Corruption) && !(buff instanceof DwarfKing.KingDamager)) {
+				//corruption, champion, and king damager are preserved when removed via life link
+				if (!(buff instanceof Corruption)
+						&& (!(buff instanceof ChampionEnemy))
+						&& !(buff instanceof DwarfKing.KingDamager)) {
 					buff.detach();
 				}
 			}
@@ -211,6 +223,11 @@ public class Ghoul extends Mob {
 		public boolean act() {
 			ghoul.sprite.visible = Dungeon.level.heroFOV[ghoul.pos];
 
+			if (target.alignment != ghoul.alignment){
+				detach();
+				return true;
+			}
+
 			if (target.fieldOfView == null){
 				target.fieldOfView = new boolean[Dungeon.level.length()];
 				Dungeon.level.updateFieldOfView( target, target.fieldOfView );
@@ -221,9 +238,14 @@ public class Ghoul extends Mob {
 				return true;
 			}
 
+			if (Dungeon.level.pit[ghoul.pos]){
+				super.detach();
+				ghoul.die(this);
+				return true;
+			}
+
 			turnsToRevive--;
 			if (turnsToRevive <= 0){
-				ghoul.HP = Math.round(ghoul.HT/10f);
 				if (Actor.findChar( ghoul.pos ) != null) {
 					ArrayList<Integer> candidates = new ArrayList<>();
 					for (int n : PathFinder.NEIGHBOURS8) {
@@ -242,6 +264,7 @@ public class Ghoul extends Mob {
 						return true;
 					}
 				}
+				ghoul.HP = Math.round(ghoul.HT/10f);
 				Actor.add(ghoul);
 				ghoul.spend(-ghoul.cooldown());
 				Dungeon.level.mobs.add(ghoul);

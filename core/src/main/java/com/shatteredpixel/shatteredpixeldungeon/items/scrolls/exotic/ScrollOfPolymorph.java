@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,13 +24,13 @@ package com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
@@ -38,15 +38,14 @@ import com.watabou.utils.Random;
 public class ScrollOfPolymorph extends ExoticScroll {
 	
 	{
-		initials = 10;
+		icon = ItemSpriteSheet.Icons.SCROLL_POLYMORPH;
 	}
 	
 	@Override
 	public void doRead() {
 		
 		new Flare( 5, 32 ).color( 0xFFFFFF, true ).show( curUser.sprite, 2f );
-		Sample.INSTANCE.play( Assets.SND_READ );
-		Invisibility.dispel();
+		Sample.INSTANCE.play( Assets.Sounds.READ );
 		
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 			if (mob.alignment != Char.Alignment.ALLY && Dungeon.level.heroFOV[mob.pos]) {
@@ -67,10 +66,12 @@ public class ScrollOfPolymorph extends ExoticScroll {
 					TargetHealthIndicator.instance.target(null);
 					GameScene.add(sheep);
 					CellEmitter.get(sheep.pos).burst(Speck.factory(Speck.WOOL), 4);
+					Sample.INSTANCE.play(Assets.Sounds.PUFF);
+					Sample.INSTANCE.play(Assets.Sounds.SHEEP);
 				}
 			}
 		}
-		setKnown();
+		identify();
 		
 		readAnimation();
 		

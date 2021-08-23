@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ConfusionTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CorrosionTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FrostTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GatewayTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GeyserTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrippingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GuardianTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PitfallTrap;
@@ -62,15 +64,17 @@ public class CavesLevel extends RegularLevel {
 	}
 	
 	@Override
-	protected int standardRooms() {
-		//6 to 9, average 7.333
-		return 6+Random.chances(new float[]{2, 3, 3, 1});
+	protected int standardRooms(boolean forceMax) {
+		if (forceMax) return 7;
+		//6 to 7, average 6.333
+		return 6+Random.chances(new float[]{2, 1});
 	}
 	
 	@Override
-	protected int specialRooms() {
-		//1 to 3, average 2.2
-		return 1+Random.chances(new float[]{2, 4, 4});
+	protected int specialRooms(boolean forceMax) {
+		if (forceMax) return 3;
+		//2 to 3, average 2.2
+		return 2+Random.chances(new float[]{4, 1});
 	}
 	
 	@Override
@@ -83,12 +87,12 @@ public class CavesLevel extends RegularLevel {
 	
 	@Override
 	public String tilesTex() {
-		return Assets.TILES_CAVES;
+		return Assets.Environment.TILES_CAVES;
 	}
 	
 	@Override
 	public String waterTex() {
-		return Assets.WATER_CAVES;
+		return Assets.Environment.WATER_CAVES;
 	}
 	
 	@Override
@@ -96,7 +100,7 @@ public class CavesLevel extends RegularLevel {
 		return new Class[]{
 				BurningTrap.class, PoisonDartTrap.class, FrostTrap.class, StormTrap.class, CorrosionTrap.class,
 				GrippingTrap.class, RockfallTrap.class,  GuardianTrap.class,
-				ConfusionTrap.class, SummoningTrap.class, WarpingTrap.class, PitfallTrap.class };
+				ConfusionTrap.class, SummoningTrap.class, WarpingTrap.class, PitfallTrap.class, GatewayTrap.class, GeyserTrap.class };
 	}
 
 	@Override
@@ -104,7 +108,7 @@ public class CavesLevel extends RegularLevel {
 		return new float[]{
 				4, 4, 4, 4, 4,
 				2, 2, 2,
-				1, 1, 1, 1};
+				1, 1, 1, 1, 1, 1 };
 	}
 	
 	@Override

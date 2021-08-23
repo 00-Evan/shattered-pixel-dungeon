@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.spells.ReclaimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Recycle;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.WildEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
@@ -164,10 +164,15 @@ public abstract class Recipe {
 	//*******
 	// Static members
 	//*******
+
+	private static Recipe[] variableRecipes = new Recipe[]{
+			new LiquidMetal.Recipe()
+	};
 	
 	private static Recipe[] oneIngredientRecipes = new Recipe[]{
 		new AlchemistsToolkit.upgradeKit(),
 		new Scroll.ScrollToStone(),
+		new ArcaneResin.Recipe(),
 		new StewedMeat.oneMeat()
 	};
 	
@@ -210,7 +215,13 @@ public abstract class Recipe {
 	};
 	
 	public static Recipe findRecipe(ArrayList<Item> ingredients){
-		
+
+		for (Recipe recipe : variableRecipes){
+			if (recipe.testIngredients(ingredients)){
+				return recipe;
+			}
+		}
+
 		if (ingredients.size() == 1){
 			for (Recipe recipe : oneIngredientRecipes){
 				if (recipe.testIngredients(ingredients)){
@@ -238,8 +249,9 @@ public abstract class Recipe {
 	
 	public static boolean usableInRecipe(Item item){
 		return !item.cursed
-				&& (!(item instanceof EquipableItem) || (item instanceof AlchemistsToolkit && item.isIdentified()))
-				&& !(item instanceof Wand);
+				&& (!(item instanceof EquipableItem)
+					|| (item instanceof AlchemistsToolkit && item.isIdentified())
+					|| item instanceof MissileWeapon);
 	}
 }
 

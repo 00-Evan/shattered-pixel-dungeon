@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,8 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Regrowth;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
@@ -46,7 +44,6 @@ import java.util.ArrayList;
 public class RegrowthBomb extends Bomb {
 	
 	{
-		//TODO visuals
 		image = ItemSpriteSheet.REGROWTH_BOMB;
 	}
 	
@@ -69,19 +66,16 @@ public class RegrowthBomb extends Bomb {
 		for (int i = 0; i < PathFinder.distance.length; i++) {
 			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
 				Char ch = Actor.findChar(i);
+				int t = Dungeon.level.map[i];
 				if (ch != null){
 					if (ch.alignment == Dungeon.hero.alignment) {
 						//same as a healing potion
-						Buff.affect( ch, Healing.class ).setHeal((int)(0.8f*ch.HT + 14), 0.25f, 0);
 						PotionOfHealing.cure(ch);
+						PotionOfHealing.heal(ch);
 					}
-				} else if ( Dungeon.level.map[i] == Terrain.EMPTY ||
-							Dungeon.level.map[i] == Terrain.EMBERS ||
-							Dungeon.level.map[i] == Terrain.EMPTY_DECO ||
-							Dungeon.level.map[i] == Terrain.GRASS ||
-							Dungeon.level.map[i] == Terrain.HIGH_GRASS ||
-							Dungeon.level.map[i] == Terrain.FURROWED_GRASS){
-					
+				} else if ((t == Terrain.EMPTY || t == Terrain.EMPTY_DECO || t == Terrain.EMBERS
+						|| t == Terrain.GRASS || t == Terrain.FURROWED_GRASS || t == Terrain.HIGH_GRASS)
+						&& Dungeon.level.plants.get(i) == null){
 					plantCandidates.add(i);
 				}
 				GameScene.add( Blob.seed( i, 10, Regrowth.class ) );
@@ -93,7 +87,7 @@ public class RegrowthBomb extends Bomb {
 		for (int i = 0; i < plants; i++) {
 			Integer plantPos = Random.element(plantCandidates);
 			if (plantPos != null) {
-				Dungeon.level.plant((Plant.Seed) Generator.random(Generator.Category.SEED), plantPos);
+				Dungeon.level.plant((Plant.Seed) Generator.randomUsingDefaults(Generator.Category.SEED), plantPos);
 				plantCandidates.remove(plantPos);
 			}
 		}
@@ -117,7 +111,7 @@ public class RegrowthBomb extends Bomb {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		//prices of ingredients
 		return quantity * (20 + 30);
 	}

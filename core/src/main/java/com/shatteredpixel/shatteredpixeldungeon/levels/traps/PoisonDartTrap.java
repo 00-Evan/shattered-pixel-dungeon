@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,6 +42,7 @@ public class PoisonDartTrap extends Trap {
 		shape = CROSSHAIR;
 		
 		canBeHidden = false;
+		avoidsHallways = true;
 	}
 	
 	protected int poisonAmount(){
@@ -62,11 +63,14 @@ public class PoisonDartTrap extends Trap {
 		
 		//find the closest char that can be aimed at
 		if (target == null){
+			float closestDist = Float.MAX_VALUE;
 			for (Char ch : Actor.chars()){
+				float curDist = Dungeon.level.trueDistance(pos, ch.pos);
+				if (ch.invisible > 0) curDist += 1000;
 				Ballistica bolt = new Ballistica(pos, ch.pos, Ballistica.PROJECTILE);
-				if (canTarget(ch) && bolt.collisionPos == ch.pos &&
-						(target == null || Dungeon.level.trueDistance(pos, ch.pos) < Dungeon.level.trueDistance(pos, target.pos))){
+				if (canTarget(ch) && bolt.collisionPos == ch.pos && curDist < closestDist){
 					target = ch;
+					closestDist = curDist;
 				}
 			}
 		}
@@ -94,7 +98,7 @@ public class PoisonDartTrap extends Trap {
 										Dungeon.fail( trap.getClass() );
 									}
 									Buff.affect( finalTarget, Poison.class ).set( poisonAmount() );
-									Sample.INSTANCE.play(Assets.SND_HIT, 1, 1, Random.Float(0.8f, 1.25f));
+									Sample.INSTANCE.play(Assets.Sounds.HIT, 1, 1, Random.Float(0.8f, 1.25f));
 									finalTarget.sprite.bloodBurstA(finalTarget.sprite.center(), dmg);
 									finalTarget.sprite.flash();
 									Actor.remove(toRemove);

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +57,6 @@ public class ShrapnelBomb extends Bomb {
 		for (int i = 0; i < FOV.length; i++) {
 			if (FOV[i]) {
 				if (Dungeon.level.heroFOV[i] && !Dungeon.level.solid[i]) {
-					//TODO better vfx?
 					CellEmitter.center( i ).burst( BlastParticle.FACTORY, 5 );
 				}
 				Char ch = Actor.findChar(i);
@@ -80,7 +79,7 @@ public class ShrapnelBomb extends Bomb {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		//prices of ingredients
 		return quantity * (20 + 100);
 	}

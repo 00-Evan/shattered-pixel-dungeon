@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,12 +41,13 @@ public class Annoying extends Weapon.Enchantment {
 	@Override
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
 
-		if (Random.Int(20) == 0) {
+		float procChance = 1/20f * procChanceMultiplier(attacker);
+		if (Random.Float() < procChance) {
 			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
 				mob.beckon(attacker.pos);
 			}
 			attacker.sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.3f, 3);
-			Sample.INSTANCE.play(Assets.SND_MIMIC);
+			Sample.INSTANCE.play(Assets.Sounds.MIMIC);
 			Invisibility.dispel();
 			GLog.n(Messages.get(this, "msg_" + (Random.Int(5)+1)));
 		}

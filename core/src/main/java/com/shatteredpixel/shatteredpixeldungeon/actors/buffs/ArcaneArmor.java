@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
@@ -74,7 +75,16 @@ public class ArcaneArmor extends Buff {
 	
 	@Override
 	public void tintIcon(Image icon) {
-		icon.tint(0.5f, 0, 1, 0.5f);
+		icon.hardlight(1f, 0.5f, 2f);
+	}
+
+	@Override
+	public float iconFadePercent() {
+		if (target instanceof Hero){
+			float max = ((Hero) target).lvl/2 + 5;
+			return (max-level)/max;
+		}
+		return 0;
 	}
 	
 	@Override
@@ -84,7 +94,7 @@ public class ArcaneArmor extends Buff {
 	
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", level, dispTurns(cooldown()+1));
+		return Messages.get(this, "desc", level, dispTurns(visualcooldown()));
 	}
 	
 	private static final String LEVEL	    = "level";

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
@@ -53,6 +52,7 @@ public class Web extends Blob {
 				volume += off[cell];
 
 				l.solid[cell] = off[cell] > 0 || (Terrain.flags[l.map[cell]] & Terrain.SOLID) != 0;
+				l.flamable[cell] = off[cell] > 0 || (Terrain.flags[l.map[cell]] & Terrain.FLAMABLE) != 0;
 			}
 		}
 	}
@@ -61,11 +61,12 @@ public class Web extends Blob {
 	public void seed(Level level, int cell, int amount) {
 		super.seed(level, cell, amount);
 		level.solid[cell] = cur[cell] > 0 || (Terrain.flags[level.map[cell]] & Terrain.SOLID) != 0;
+		level.flamable[cell] = cur[cell] > 0 || (Terrain.flags[level.map[cell]] & Terrain.FLAMABLE) != 0;
 	}
 
 	//affects characters as they step on it. See Level.OccupyCell and Level.PressCell
 	public static void affectChar( Char ch ){
-		Buff.prolong( ch, Roots.class, 5f );
+		Buff.prolong( ch, Roots.class, Roots.DURATION );
 	}
 	
 	@Override
@@ -81,6 +82,7 @@ public class Web extends Blob {
 		if (cur == null) return;
 		Level l = Dungeon.level;
 		l.solid[cell] = cur[cell] > 0 || (Terrain.flags[l.map[cell]] & Terrain.SOLID) != 0;
+		l.flamable[cell] = cur[cell] > 0 || (Terrain.flags[l.map[cell]] & Terrain.FLAMABLE) != 0;
 	}
 
 	@Override

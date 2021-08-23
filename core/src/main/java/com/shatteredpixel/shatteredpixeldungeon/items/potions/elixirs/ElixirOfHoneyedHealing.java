@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,9 +26,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bee;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
@@ -43,32 +43,33 @@ public class ElixirOfHoneyedHealing extends Elixir {
 	
 	@Override
 	public void apply(Hero hero) {
-		Buff.affect( hero, Healing.class ).setHeal((int)(0.8f*hero.HT + 14), 0.25f, 0);
 		PotionOfHealing.cure(hero);
-		Buff.affect(hero, Hunger.class).satisfy(Hunger.STARVING/5f);
+		PotionOfHealing.heal(hero);
+		Talent.onHealingPotionUsed( hero );
+		Buff.affect(hero, Hunger.class).satisfy(Hunger.HUNGRY/2f);
+		Talent.onFoodEaten(hero, Hunger.HUNGRY/2f, this);
 	}
 	
 	@Override
 	public void shatter(int cell) {
 		if (Dungeon.level.heroFOV[cell]) {
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
+			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 			splash( cell );
 		}
 		
 		Char ch = Actor.findChar(cell);
 		if (ch != null){
-			Buff.affect( ch, Healing.class ).setHeal((int)(0.8f*ch.HT + 14), 0.25f, 0);
 			PotionOfHealing.cure(ch);
+			PotionOfHealing.heal(ch);
 			if (ch instanceof Bee && ch.alignment != curUser.alignment){
 				ch.alignment = Char.Alignment.ALLY;
 				((Bee)ch).setPotInfo(-1, null);
-				
 			}
 		}
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		//prices of ingredients
 		return quantity * (30 + 5);
 	}

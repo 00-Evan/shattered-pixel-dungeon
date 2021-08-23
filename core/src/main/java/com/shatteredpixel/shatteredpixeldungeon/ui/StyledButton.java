@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,6 +35,9 @@ public class StyledButton extends Button {
 	protected NinePatch bg;
 	protected RenderedTextBlock text;
 	protected Image icon;
+	public boolean leftJustify = false;
+
+	public boolean multiline;
 	
 	public StyledButton(Chrome.Type type, String label ) {
 		this(type, label, 9);
@@ -65,8 +68,9 @@ public class StyledButton extends Button {
 		if (icon != null) componentWidth += icon.width() + 2;
 		
 		if (text != null && !text.text().equals("")){
+			if (multiline) text.maxWidth( (int)(width - componentWidth - bg.marginHor() - 2));
 			componentWidth += text.width() + 2;
-			
+
 			text.setPos(
 					x + (width() + componentWidth)/2f - text.width() - 1,
 					y + (height() - text.height()) / 2f
@@ -81,13 +85,25 @@ public class StyledButton extends Button {
 			icon.y = y + (height() - icon.height()) / 2f;
 			PixelScene.align(icon);
 		}
-		
+
+		if (leftJustify){
+			if (icon != null){
+				icon.x = x + bg.marginLeft() + 1;
+				PixelScene.align(icon);
+				text.setPos( icon.x + icon.width() + 1, text.top());
+				PixelScene.align(text);
+			} else if (text != null) {
+				text.setPos( x + bg.marginLeft() + 1, text.top());
+				PixelScene.align(text);
+			}
+		}
+
 	}
 	
 	@Override
 	protected void onPointerDown() {
 		bg.brightness( 1.2f );
-		Sample.INSTANCE.play( Assets.SND_CLICK );
+		Sample.INSTANCE.play( Assets.Sounds.CLICK );
 	}
 	
 	@Override
@@ -103,6 +119,10 @@ public class StyledButton extends Button {
 	public void text( String value ) {
 		text.text( value );
 		layout();
+	}
+
+	public String text(){
+		return text.text();
 	}
 	
 	public void textColor( int value ) {
@@ -122,6 +142,12 @@ public class StyledButton extends Button {
 	
 	public Image icon(){
 		return icon;
+	}
+
+	public void alpha(float value){
+		if (icon != null) icon.alpha(value);
+		if (bg != null)   bg.alpha(value);
+		if (text != null) text.alpha(value);
 	}
 	
 	public float reqWidth() {

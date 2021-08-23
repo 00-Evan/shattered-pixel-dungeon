@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2020 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM201;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
@@ -34,7 +36,7 @@ public class DM201Sprite extends MobSprite {
 	public DM201Sprite () {
 		super();
 
-		texture( Assets.DM200 );
+		texture( Assets.Sprites.DM200 );
 
 		TextureFilm frames = new TextureFilm( texture, 21, 18 );
 
@@ -81,11 +83,12 @@ public class DM201Sprite extends MobSprite {
 				new Callback() {
 					@Override
 					public void call() {
-						Sample.INSTANCE.play( Assets.SND_PUFF );
+						Sample.INSTANCE.play( Assets.Sounds.GAS );
 						((DM201)ch).onZapComplete();
 					}
 				} );
-		Sample.INSTANCE.play( Assets.SND_MISS, 0.6f, 0.6f, 1.5f );
+		Sample.INSTANCE.play( Assets.Sounds.MISS, 1f, 1.5f );
+		GLog.w(Messages.get(DM201.class, "vent"));
 	}
 
 	@Override
@@ -94,6 +97,11 @@ public class DM201Sprite extends MobSprite {
 			idle();
 		}
 		super.onComplete( anim );
+	}
+
+	@Override
+	public int blood() {
+		return 0xFFFFFF88;
 	}
 
 }

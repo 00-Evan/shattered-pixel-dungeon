@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -87,7 +87,7 @@ public class Thief extends Mob {
 	}
 
 	@Override
-	protected float attackDelay() {
+	public float attackDelay() {
 		return super.attackDelay()*0.5f;
 	}
 	
@@ -144,23 +144,21 @@ public class Thief extends Mob {
 
 	protected boolean steal( Hero hero ) {
 
-		Item item = hero.belongings.randomUnequipped();
+		Item toSteal = hero.belongings.randomUnequipped();
 
-		if (item != null && !item.unique && item.level() < 1 ) {
+		if (toSteal != null && !toSteal.unique && toSteal.level() < 1 ) {
 
-			GLog.w( Messages.get(Thief.class, "stole", item.name()) );
-			if (!item.stackable) {
-				Dungeon.quickslot.convertToPlaceholder(item);
+			GLog.w( Messages.get(Thief.class, "stole", toSteal.name()) );
+			if (!toSteal.stackable) {
+				Dungeon.quickslot.convertToPlaceholder(toSteal);
 			}
-			item.updateQuickslot();
+			Item.updateQuickslot();
 
+			item = toSteal.detach( hero.belongings.backpack );
 			if (item instanceof Honeypot){
-				this.item = ((Honeypot)item).shatter(this, this.pos);
-				item.detach( hero.belongings.backpack );
-			} else {
-				this.item = item.detach( hero.belongings.backpack );
-				if ( item instanceof Honeypot.ShatteredPot)
-					((Honeypot.ShatteredPot)item).pickupPot(this);
+				item = ((Honeypot)item).shatter(this, this.pos);
+			} else if (item instanceof Honeypot.ShatteredPot) {
+				((Honeypot.ShatteredPot)item).pickupPot(this);
 			}
 
 			return true;

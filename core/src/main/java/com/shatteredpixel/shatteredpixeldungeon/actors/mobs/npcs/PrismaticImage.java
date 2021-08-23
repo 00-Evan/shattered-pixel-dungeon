@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -144,12 +144,20 @@ public class PrismaticImage extends NPC {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 1 + hero.lvl/8, 4 + hero.lvl/2 );
+		if (hero != null) {
+			return Random.NormalIntRange( 1 + hero.lvl/8, 4 + hero.lvl/2 );
+		} else {
+			return Random.NormalIntRange( 1, 4 );
+		}
 	}
 	
 	@Override
 	public int attackSkill( Char target ) {
-		return hero.attackSkill(target);
+		if (hero != null) {
+			return hero.attackSkill(target);
+		} else {
+			return 0;
+		}
 	}
 	
 	@Override
@@ -177,8 +185,8 @@ public class PrismaticImage extends NPC {
 	@Override
 	public int defenseProc(Char enemy, int damage) {
 		damage = super.defenseProc(enemy, damage);
-		if (hero.belongings.armor != null){
-			return hero.belongings.armor.proc( enemy, this, damage );
+		if (hero != null && hero.belongings.armor() != null){
+			return hero.belongings.armor().proc( enemy, this, damage );
 		} else {
 			return damage;
 		}
@@ -188,9 +196,9 @@ public class PrismaticImage extends NPC {
 	public void damage(int dmg, Object src) {
 		
 		//TODO improve this when I have proper damage source logic
-		if (hero.belongings.armor != null && hero.belongings.armor.hasGlyph(AntiMagic.class, this)
+		if (hero != null && hero.belongings.armor() != null && hero.belongings.armor().hasGlyph(AntiMagic.class, this)
 				&& AntiMagic.RESISTS.contains(src.getClass())){
-			dmg -= AntiMagic.drRoll(hero.belongings.armor.buffedLvl());
+			dmg -= AntiMagic.drRoll(hero.belongings.armor().buffedLvl());
 		}
 		
 		super.damage(dmg, src);
@@ -198,8 +206,8 @@ public class PrismaticImage extends NPC {
 	
 	@Override
 	public float speed() {
-		if (hero.belongings.armor != null){
-			return hero.belongings.armor.speedFactor(this, super.speed());
+		if (hero != null && hero.belongings.armor() != null){
+			return hero.belongings.armor().speedFactor(this, super.speed());
 		}
 		return super.speed();
 	}
@@ -230,8 +238,8 @@ public class PrismaticImage extends NPC {
 	public boolean isImmune(Class effect) {
 		if (effect == Burning.class
 				&& hero != null
-				&& hero.belongings.armor != null
-				&& hero.belongings.armor.hasGlyph(Brimstone.class, this)){
+				&& hero.belongings.armor() != null
+				&& hero.belongings.armor().hasGlyph(Brimstone.class, this)){
 			return true;
 		}
 		return super.isImmune(effect);
@@ -253,7 +261,7 @@ public class PrismaticImage extends NPC {
 				destroy();
 				CellEmitter.get(pos).start( Speck.factory(Speck.LIGHT), 0.2f, 3 );
 				sprite.die();
-				Sample.INSTANCE.play( Assets.SND_TELEPORT );
+				Sample.INSTANCE.play( Assets.Sounds.TELEPORT );
 				return true;
 			} else {
 				return super.act(enemyInFOV, justAlerted);

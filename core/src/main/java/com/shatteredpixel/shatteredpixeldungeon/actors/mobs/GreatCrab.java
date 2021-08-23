@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
@@ -30,6 +31,8 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GreatCrabSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 public class GreatCrab extends Crab {
 
@@ -43,6 +46,9 @@ public class GreatCrab extends Crab {
 		EXP = 6;
 
 		state = WANDERING;
+
+		loot = new MysteryMeat().quantity(2);
+		lootChance = 1f;
 
 		properties.add(Property.MINIBOSS);
 	}
@@ -71,6 +77,7 @@ public class GreatCrab extends Crab {
 				|| (src instanceof Char && enemy == src))){
 			GLog.n( Messages.get(this, "noticed") );
 			sprite.showStatus( CharSprite.NEUTRAL, Messages.get(this, "blocked") );
+			Sample.INSTANCE.play( Assets.Sounds.HIT_PARRY, 1, Random.Float(0.96f, 1.05f));
 		} else {
 			super.damage( dmg, src );
 		}
@@ -81,8 +88,5 @@ public class GreatCrab extends Crab {
 		super.die( cause );
 
 		Ghost.Quest.process();
-
-		Dungeon.level.drop( new MysteryMeat(), pos );
-		Dungeon.level.drop( new MysteryMeat(), pos ).sprite.drop();
 	}
 }

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,13 +34,15 @@ public class Repulsion extends Armor.Glyph {
 	
 	@Override
 	public int proc( Armor armor, Char attacker, Char defender, int damage) {
-
+		// lvl 0 - 20%
+		// lvl 1 - 33%
+		// lvl 2 - 43%
 		int level = Math.max( 0, armor.buffedLvl() );
 
 		if (Random.Int( level + 5 ) >= 4){
 			int oppositeHero = attacker.pos + (attacker.pos - defender.pos);
 			Ballistica trajectory = new Ballistica(attacker.pos, oppositeHero, Ballistica.MAGIC_BOLT);
-			WandOfBlastWave.throwChar(attacker, trajectory, 2);
+			WandOfBlastWave.throwChar(attacker, trajectory, 2, true);
 		}
 		
 		return damage;

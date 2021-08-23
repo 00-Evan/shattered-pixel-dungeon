@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewTengu;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 
 public class TenguDartTrap extends PoisonDartTrap {
 	
@@ -33,11 +35,15 @@ public class TenguDartTrap extends PoisonDartTrap {
 	
 	@Override
 	protected int poisonAmount() {
-		return 8; //17 damage total
+		if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES)){
+			return 15; //50 damage total, equal to poison dart traps on floor 10
+		} else {
+			return 8; //17 damage total
+		}
 	}
 	
 	@Override
 	protected boolean canTarget(Char ch) {
-		return !(ch instanceof NewTengu);
+		return !(ch instanceof Tengu);
 	}
 }

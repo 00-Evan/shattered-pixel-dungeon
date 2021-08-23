@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ public class RotLasherSprite extends MobSprite {
 	public RotLasherSprite() {
 		super();
 
-		texture( Assets.ROT_LASH );
+		texture( Assets.Sprites.ROT_LASH );
 
 		TextureFilm frames = new TextureFilm( texture, 12, 16 );
 
@@ -46,5 +46,10 @@ public class RotLasherSprite extends MobSprite {
 		die.frames( frames, 3, 4, 5, 6 );
 
 		play( idle );
+	}
+
+	@Override
+	public int blood() {
+		return 0xFF88CC44;
 	}
 }

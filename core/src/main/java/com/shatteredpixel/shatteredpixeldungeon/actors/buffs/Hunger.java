@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
+import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
@@ -82,27 +85,25 @@ public class Hunger extends Buff implements Hero.Doom {
 			} else {
 
 				float newLevel = level + STEP;
-				boolean statusUpdated = false;
 				if (newLevel >= STARVING) {
 
 					GLog.n( Messages.get(this, "onstarving") );
 					hero.resting = false;
 					hero.damage( 1, this );
-					statusUpdated = true;
 
 					hero.interrupt();
 
 				} else if (newLevel >= HUNGRY && level < HUNGRY) {
 
 					GLog.w( Messages.get(this, "onhungry") );
-					statusUpdated = true;
+
+					if (!Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_FOOD)){
+						GLog.p(Messages.get(Guidebook.class, "hint"));
+						GameScene.flashForDocument(Document.GUIDE_FOOD);
+					}
 
 				}
 				level = newLevel;
-
-				if (statusUpdated) {
-					BuffIndicator.refreshHero();
-				}
 
 			}
 			
@@ -125,14 +126,23 @@ public class Hunger extends Buff implements Hero.Doom {
 			GLog.n( Messages.get(this, "cursedhorn") );
 		}
 
-		reduceHunger( energy );
+		affectHunger( energy, false );
 	}
 
-	//directly interacts with hunger, no checks.
-	public void reduceHunger( float energy ) {
+	public void affectHunger(float energy ){
+		affectHunger( energy, false );
+	}
+
+	public void affectHunger(float energy, boolean overrideLimits ) {
+
+		if (energy < 0 && target.buff(WellFed.class) != null){
+			target.buff(WellFed.class).left += energy;
+			BuffIndicator.refreshHero();
+			return;
+		}
 
 		level -= energy;
-		if (level < 0) {
+		if (level < 0 && !overrideLimits) {
 			level = 0;
 		} else if (level > STARVING) {
 			float excess = level - STARVING;

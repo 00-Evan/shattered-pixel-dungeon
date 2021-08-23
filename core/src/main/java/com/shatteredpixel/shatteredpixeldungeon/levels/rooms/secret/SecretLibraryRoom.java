@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,13 +57,13 @@ public class SecretLibraryRoom extends SecretRoom {
 	static{
 		scrollChances.put( ScrollOfIdentify.class,      1f );
 		scrollChances.put( ScrollOfRemoveCurse.class,   2f );
-		scrollChances.put( ScrollOfMagicMapping.class,  3f );
 		scrollChances.put( ScrollOfMirrorImage.class,   3f );
 		scrollChances.put( ScrollOfRecharging.class,    3f );
+		scrollChances.put( ScrollOfTeleportation.class, 3f );
 		scrollChances.put( ScrollOfLullaby.class,       4f );
-		scrollChances.put( ScrollOfRetribution.class,  4f );
+		scrollChances.put( ScrollOfMagicMapping.class,  4f );
 		scrollChances.put( ScrollOfRage.class,          4f );
-		scrollChances.put( ScrollOfTeleportation.class, 4f );
+		scrollChances.put( ScrollOfRetribution.class,   4f );
 		scrollChances.put( ScrollOfTerror.class,        4f );
 		scrollChances.put( ScrollOfTransmutation.class, 6f );
 	}

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ public class DM100Sprite extends MobSprite {
 	public DM100Sprite () {
 		super();
 		
-		texture( Assets.DM100 );
+		texture( Assets.Sprites.DM100 );
 		
 		TextureFilm frames = new TextureFilm( texture, 16, 14 );
 		
@@ -76,7 +76,7 @@ public class DM100Sprite extends MobSprite {
 		} else {
 			parent.add(new Lightning(origin, pos, (DM100) ch));
 		}
-		Sample.INSTANCE.play( Assets.SND_LIGHTNING );
+		Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
 		
 		turnTo( ch.pos, pos );
 		flash();
@@ -95,5 +95,10 @@ public class DM100Sprite extends MobSprite {
 			idle();
 		}
 		super.onComplete( anim );
+	}
+
+	@Override
+	public int blood() {
+		return 0xFFFFFF88;
 	}
 }

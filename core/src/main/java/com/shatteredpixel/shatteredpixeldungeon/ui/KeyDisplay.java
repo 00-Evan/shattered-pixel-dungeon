@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,7 @@ import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.Visual;
 import com.watabou.utils.RectF;
 
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 import java.util.LinkedHashMap;
 
@@ -46,7 +47,7 @@ public class KeyDisplay extends Visual {
 	private FloatBuffer quads;
 	private Vertexbuffer buffer;
 	
-	private SmartTexture tx = TextureCache.get(Assets.MENU);
+	private SmartTexture tx = TextureCache.get(Assets.Interfaces.MENU);
 	
 	private boolean dirty = true;
 	private int[] keys;
@@ -97,8 +98,8 @@ public class KeyDisplay extends Visual {
 		if (dirty){
 			
 			updateVertices();
-			
-			quads.limit(quads.position());
+
+			((Buffer)quads).limit(quads.position());
 			if (buffer == null)
 				buffer = new Vertexbuffer(quads);
 			else
@@ -211,6 +212,13 @@ public class KeyDisplay extends Visual {
 		
 		dirty = false;
 		
+	}
+
+	@Override
+	public void destroy() {
+		super.destroy();
+		if (buffer != null)
+			buffer.delete();
 	}
 	
 }

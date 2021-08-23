@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,14 +45,14 @@ public class PhaseShift extends TargetedSpell {
 		if (ch == hero){
 			ScrollOfTeleportation.teleportHero(curUser);
 		} else if (ch != null) {
-			int count = 10;
+			int count = 20;
 			int pos;
 			do {
 				pos = Dungeon.level.randomRespawnCell( hero );
 				if (count-- <= 0) {
 					break;
 				}
-			} while (pos == -1);
+			} while (pos == -1 || Dungeon.level.secret[pos]);
 			
 			if (pos == -1 || Dungeon.bossLevel()) {
 				
@@ -76,7 +76,7 @@ public class PhaseShift extends TargetedSpell {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		//prices of ingredients, divided by output quantity
 		return Math.round(quantity * ((30 + 40) / 8f));
 	}

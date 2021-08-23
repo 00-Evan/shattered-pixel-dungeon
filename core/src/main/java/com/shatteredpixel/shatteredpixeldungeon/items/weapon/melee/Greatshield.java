@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,14 +41,14 @@ public class Greatshield extends MeleeWeapon {
 
 	@Override
 	public int defenseFactor( Char owner ) {
-		return 10+3*buffedLvl();    //10 extra defence, plus 3 per level;
+		return 6+3*buffedLvl();    //6 extra defence, plus 3 per level;
 	}
 	
 	public String statsInfo(){
 		if (isIdentified()){
-			return Messages.get(this, "stats_desc", 10+3*buffedLvl());
+			return Messages.get(this, "stats_desc", 6+3*buffedLvl());
 		} else {
-			return Messages.get(this, "typical_stats_desc", 10);
+			return Messages.get(this, "typical_stats_desc", 6);
 		}
 	}
 }

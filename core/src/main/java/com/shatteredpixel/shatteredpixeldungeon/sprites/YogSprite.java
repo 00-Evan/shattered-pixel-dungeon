@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ public class YogSprite extends MobSprite {
 
 		perspectiveRaise = 5 / 16f;
 
-		texture( Assets.YOG );
+		texture( Assets.Sprites.YOG );
 		
 		TextureFilm frames = new TextureFilm( texture, 20, 19 );
 		

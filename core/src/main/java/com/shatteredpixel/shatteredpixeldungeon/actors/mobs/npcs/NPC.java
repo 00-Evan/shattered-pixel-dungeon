@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,11 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.watabou.utils.PathFinder;
-import com.watabou.utils.Random;
 
 public abstract class NPC extends Mob {
 
@@ -35,17 +31,6 @@ public abstract class NPC extends Mob {
 
 		alignment = Alignment.NEUTRAL;
 		state = PASSIVE;
-	}
-
-	protected void throwItem() {
-		Heap heap = Dungeon.level.heaps.get( pos );
-		if (heap != null && heap.type == Heap.Type.HEAP) {
-			int n;
-			do {
-				n = pos + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
-			} while (!Dungeon.level.passable[n] && !Dungeon.level.avoid[n]);
-			Dungeon.level.drop( heap.pickUp(), n ).sprite.drop( pos );
-		}
 	}
 
 	@Override

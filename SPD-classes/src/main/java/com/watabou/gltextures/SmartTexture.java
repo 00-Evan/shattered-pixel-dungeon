@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,13 +40,6 @@ public class SmartTexture extends Texture {
 	
 	public Atlas atlas;
 
-	protected SmartTexture( ) {
-		//useful for subclasses which want to manage their own texture data
-		// in cases where pixmaps isn't fast enough.
-
-		//subclasses which use this MUST also override some mix of reload/generate/bind
-	}
-	
 	public SmartTexture( Pixmap bitmap ) {
 		this( bitmap, NEAREST, CLAMP, false );
 	}
@@ -116,7 +109,7 @@ public class SmartTexture extends Texture {
 	
 	public RectF uvRect( float left, float top, float right, float bottom ) {
 		return new RectF(
-			left		/ width,
+			left	/ width,
 			top		/ height,
 			right	/ width,
 			bottom	/ height );

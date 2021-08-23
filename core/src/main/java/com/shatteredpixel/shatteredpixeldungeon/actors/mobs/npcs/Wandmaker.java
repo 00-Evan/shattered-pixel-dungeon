@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,7 +60,9 @@ public class Wandmaker extends NPC {
 	
 	@Override
 	protected boolean act() {
-		throwItem();
+		if (Dungeon.level.heroFOV[pos] && Quest.wand1 != null){
+			Notes.add( Notes.Landmark.WANDMAKER );
+		}
 		return super.act();
 	}
 	
@@ -184,8 +186,8 @@ public class Wandmaker extends NPC {
 				}
 			});
 
-			Notes.add( Notes.Landmark.WANDMAKER );
 			Quest.given = true;
+			Notes.add( Notes.Landmark.WANDMAKER );
 		}
 
 		return true;
@@ -278,7 +280,7 @@ public class Wandmaker extends NPC {
 				
 				Wandmaker npc = new Wandmaker();
 				boolean validPos;
-				//Do not spawn wandmaker on the entrance, or in front of a door.
+				//Do not spawn wandmaker on the entrance, a trap, or in front of a door.
 				do {
 					validPos = true;
 					npc.pos = level.pointToCell(room.random());
@@ -289,6 +291,9 @@ public class Wandmaker extends NPC {
 						if (level.trueDistance( npc.pos, level.pointToCell( door ) ) <= 1){
 							validPos = false;
 						}
+					}
+					if (level.traps.get(npc.pos) != null){
+						validPos = false;
 					}
 				} while (!validPos);
 				level.mobs.add( npc );

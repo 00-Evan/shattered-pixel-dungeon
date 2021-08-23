@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ public class DM100 extends Mob implements Callback {
 		maxLvl = 13;
 		
 		loot = Generator.Category.SCROLL;
-		lootChance = 0.33f;
+		lootChance = 0.25f;
 		
 		properties.add(Property.ELECTRIC);
 		properties.add(Property.INORGANIC);
@@ -86,18 +86,16 @@ public class DM100 extends Mob implements Callback {
 			
 		} else {
 			
-			if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
-				sprite.zap( enemy.pos );
-			}
-			
 			spend( TIME_TO_ZAP );
 			
 			if (hit( this, enemy, true )) {
 				int dmg = Random.NormalIntRange(3, 10);
 				enemy.damage( dmg, new LightningBolt() );
-				
-				enemy.sprite.centerEmitter().burst( SparkParticle.FACTORY, 3 );
-				enemy.sprite.flash();
+
+				if (enemy.sprite.visible) {
+					enemy.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);
+					enemy.sprite.flash();
+				}
 				
 				if (enemy == Dungeon.hero) {
 					
@@ -112,7 +110,7 @@ public class DM100 extends Mob implements Callback {
 				enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
 			}
 			
-			if (sprite != null && sprite.visible) {
+			if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
 				sprite.zap( enemy.pos );
 				return false;
 			} else {

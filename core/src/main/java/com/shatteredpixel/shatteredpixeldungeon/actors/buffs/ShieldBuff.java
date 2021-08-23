@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,26 +49,26 @@ public abstract class ShieldBuff extends Buff {
 	}
 	
 	public void setShield( int shield ) {
-		this.shielding = shield;
-		target.needsShieldUpdate = true;
+		if (this.shielding <= shield) this.shielding = shield;
+		if (target != null) target.needsShieldUpdate = true;
 	}
 	
 	public void incShield(){
 		incShield(1);
 	}
-	
+
 	public void incShield( int amt ){
 		shielding += amt;
-		target.needsShieldUpdate = true;
+		if (target != null) target.needsShieldUpdate = true;
 	}
 	
 	public void decShield(){
 		decShield(1);
 	}
-	
+
 	public void decShield( int amt ){
 		shielding -= amt;
-		target.needsShieldUpdate = true;
+		if (target != null) target.needsShieldUpdate = true;
 	}
 	
 	//returns the amount of damage leftover
@@ -83,7 +83,7 @@ public abstract class ShieldBuff extends Buff {
 		if (shielding == 0){
 			detach();
 		}
-		target.needsShieldUpdate = true;
+		if (target != null) target.needsShieldUpdate = true;
 		return dmg;
 	}
 	

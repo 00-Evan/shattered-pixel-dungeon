@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,9 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
@@ -43,7 +41,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.MimicSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -127,7 +124,7 @@ public class Mimic extends Mob {
 			alignment = Alignment.ENEMY;
 			GLog.w(Messages.get(this, "reveal") );
 			CellEmitter.get(pos).burst(Speck.factory(Speck.STAR), 10);
-			Sample.INSTANCE.play(Assets.SND_MIMIC);
+			Sample.INSTANCE.play(Assets.Sounds.MIMIC);
 		}
 		return super.act();
 	}
@@ -180,13 +177,14 @@ public class Mimic extends Mob {
 
 	public void stopHiding(){
 		state = HUNTING;
+		if (sprite != null) sprite.idle();
 		if (Actor.chars().contains(this) && Dungeon.level.heroFOV[pos]) {
 			enemy = Dungeon.hero;
 			target = Dungeon.hero.pos;
 			enemySeen = true;
 			GLog.w(Messages.get(this, "reveal") );
 			CellEmitter.get(pos).burst(Speck.factory(Speck.STAR), 10);
-			Sample.INSTANCE.play(Assets.SND_MIMIC);
+			Sample.INSTANCE.play(Assets.Sounds.MIMIC);
 		}
 	}
 
@@ -249,7 +247,7 @@ public class Mimic extends Mob {
 
 	@Override
 	public boolean reset() {
-		state = WANDERING;
+		if (state != PASSIVE) state = WANDERING;
 		return true;
 	}
 

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,24 +50,25 @@ public abstract class DungeonTilemap extends Tilemap {
 
 	@Override
 	public synchronized void updateMap() {
-		super.updateMap();
 		for (int i = 0; i < data.length; i++)
 			data[i] = getTileVisual(i ,map[i], false);
+		super.updateMap();
 	}
 
 	@Override
 	public synchronized void updateMapCell(int cell) {
 		//update in a 3x3 grid to account for neighbours which might also be affected
 		if (Dungeon.level.insideMap(cell)) {
+			for (int i : PathFinder.NEIGHBOURS9) {
+				data[cell + i] = getTileVisual(cell + i, map[cell + i], false);
+			}
 			super.updateMapCell(cell - mapWidth - 1);
 			super.updateMapCell(cell + mapWidth + 1);
-			for (int i : PathFinder.NEIGHBOURS9)
-				data[cell + i] = getTileVisual(cell + i, map[cell + i], false);
 
 		//unless we're at the level's edge, then just do the one tile.
 		} else {
-			super.updateMapCell(cell);
 			data[cell] = getTileVisual(cell, map[cell], false);
+			super.updateMapCell(cell);
 		}
 	}
 

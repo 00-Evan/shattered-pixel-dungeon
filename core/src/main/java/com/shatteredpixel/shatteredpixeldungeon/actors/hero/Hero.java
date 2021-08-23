@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Alchemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AdrenalineSurge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AnkhInvulnerability;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
@@ -41,39 +42,47 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Foresight;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fury;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HoldFast;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesPower;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Snake;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CheckedCell;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
+import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
+import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.CrystalKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
@@ -82,7 +91,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEvasion;
@@ -93,20 +101,20 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfTenacity;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
@@ -119,7 +127,9 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.StatusPane;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
@@ -134,6 +144,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 
 public class Hero extends Char {
 
@@ -153,6 +164,8 @@ public class Hero extends Char {
 	
 	public HeroClass heroClass = HeroClass.ROGUE;
 	public HeroSubClass subClass = HeroSubClass.NONE;
+	public ArmorAbility armorAbility = null;
+	public ArrayList<LinkedHashMap<Talent, Integer>> talents = new ArrayList<>();
 	
 	private int attackSkill = 10;
 	private int defenseSkill = 5;
@@ -221,8 +234,16 @@ public class Hero extends Char {
 			STR += buff.boost();
 		}
 
+		if (hasTalent(Talent.STRONGMAN)){
+			STR = (int)Math.floor(STR * (1f + 0.03f + 0.05f*pointsInTalent(Talent.STRONGMAN)));
+		}
+
 		return STR;
 	}
+
+	private static final String CLASS       = "class";
+	private static final String SUBCLASS    = "subClass";
+	private static final String ABILITY     = "armorAbility";
 
 	private static final String ATTACK		= "attackSkill";
 	private static final String DEFENSE		= "defenseSkill";
@@ -235,9 +256,11 @@ public class Hero extends Char {
 	public void storeInBundle( Bundle bundle ) {
 
 		super.storeInBundle( bundle );
-		
-		heroClass.storeInBundle( bundle );
-		subClass.storeInBundle( bundle );
+
+		bundle.put( CLASS, heroClass );
+		bundle.put( SUBCLASS, subClass );
+		bundle.put( ABILITY, armorAbility );
+		Talent.storeTalentsInBundle( bundle, this );
 		
 		bundle.put( ATTACK, attackSkill );
 		bundle.put( DEFENSE, defenseSkill );
@@ -254,21 +277,24 @@ public class Hero extends Char {
 	
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
+
+		lvl = bundle.getInt( LEVEL );
+		exp = bundle.getInt( EXPERIENCE );
+
+		HTBoost = bundle.getInt(HTBOOST);
+
 		super.restoreFromBundle( bundle );
-		
-		heroClass = HeroClass.restoreInBundle( bundle );
-		subClass = HeroSubClass.restoreInBundle( bundle );
+
+		heroClass = bundle.getEnum( CLASS, HeroClass.class );
+		subClass = bundle.getEnum( SUBCLASS, HeroSubClass.class );
+		armorAbility = (ArmorAbility)bundle.get( ABILITY );
+		Talent.restoreTalentsFromBundle( bundle, this );
 		
 		attackSkill = bundle.getInt( ATTACK );
 		defenseSkill = bundle.getInt( DEFENSE );
 		
 		STR = bundle.getInt( STRENGTH );
-		
-		lvl = bundle.getInt( LEVEL );
-		exp = bundle.getInt( EXPERIENCE );
-		
-		HTBoost = bundle.getInt(HTBOOST);
-		
+
 		belongings.restoreFromBundle( bundle );
 	}
 	
@@ -279,9 +305,51 @@ public class Hero extends Char {
 		info.hp = bundle.getInt( Char.TAG_HP );
 		info.ht = bundle.getInt( Char.TAG_HT );
 		info.shld = bundle.getInt( Char.TAG_SHLD );
-		info.heroClass = HeroClass.restoreInBundle( bundle );
-		info.subClass = HeroSubClass.restoreInBundle( bundle );
+		info.heroClass = bundle.getEnum( CLASS, HeroClass.class );
+		info.subClass = bundle.getEnum( SUBCLASS, HeroSubClass.class );
 		Belongings.preview( info, bundle );
+	}
+
+	public boolean hasTalent( Talent talent ){
+		return pointsInTalent(talent) > 0;
+	}
+
+	public int pointsInTalent( Talent talent ){
+		for (LinkedHashMap<Talent, Integer> tier : talents){
+			for (Talent f : tier.keySet()){
+				if (f == talent) return tier.get(f);
+			}
+		}
+		return 0;
+	}
+
+	public void upgradeTalent( Talent talent ){
+		for (LinkedHashMap<Talent, Integer> tier : talents){
+			for (Talent f : tier.keySet()){
+				if (f == talent) tier.put(talent, tier.get(talent)+1);
+			}
+		}
+		Talent.onTalentUpgraded(this, talent);
+	}
+
+	public int talentPointsSpent(int tier){
+		int total = 0;
+		for (int i : talents.get(tier-1).values()){
+			total += i;
+		}
+		return total;
+	}
+
+	public int talentPointsAvailable(int tier){
+		if (lvl < Talent.tierLevelThresholds[tier]
+			|| (tier == 3 && subClass == HeroSubClass.NONE)
+			|| (tier == 4 && armorAbility == null)){
+			return 0;
+		} else if (lvl >= Talent.tierLevelThresholds[tier+1]){
+			return Talent.tierLevelThresholds[tier+1] - Talent.tierLevelThresholds[tier] - talentPointsSpent(tier);
+		} else {
+			return 1 + lvl - Talent.tierLevelThresholds[tier] - talentPointsSpent(tier);
+		}
 	}
 	
 	public String className() {
@@ -292,32 +360,59 @@ public class Hero extends Char {
 	public String name(){
 		return className();
 	}
-	
+
+	@Override
+	public void hitSound(float pitch) {
+		if ( belongings.weapon() != null ){
+			belongings.weapon().hitSound(pitch);
+		} else if (RingOfForce.getBuffedBonus(this, RingOfForce.Force.class) > 0) {
+			//pitch deepens by 2.5% (additive) per point of strength, down to 75%
+			super.hitSound( pitch * GameMath.gate( 0.75f, 1.25f - 0.025f*STR(), 1f) );
+		} else {
+			super.hitSound(pitch * 1.1f);
+		}
+	}
+
+	@Override
+	public boolean blockSound(float pitch) {
+		if ( belongings.weapon() != null && belongings.weapon().defenseFactor(this) >= 4 ){
+			Sample.INSTANCE.play( Assets.Sounds.HIT_PARRY, 1, pitch);
+			return true;
+		}
+		return super.blockSound(pitch);
+	}
+
 	public void live() {
+		for (Buff b : buffs()){
+			if (!b.revivePersists) b.detach();
+		}
 		Buff.affect( this, Regeneration.class );
 		Buff.affect( this, Hunger.class );
 	}
 	
 	public int tier() {
-		return belongings.armor == null ? 0 : belongings.armor.tier;
+		if (belongings.armor() instanceof ClassArmor){
+			return 6;
+		} else if (belongings.armor() != null){
+			return belongings.armor().tier;
+		} else {
+			return 0;
+		}
 	}
 	
 	public boolean shoot( Char enemy, MissileWeapon wep ) {
 
+		this.enemy = enemy;
+
 		//temporarily set the hero's weapon to the missile weapon being used
-		KindOfWeapon equipped = belongings.weapon;
-		belongings.weapon = wep;
+		//TODO improve this!
+		belongings.thrownWeapon = wep;
 		boolean hit = attack( enemy );
 		Invisibility.dispel();
-		belongings.weapon = equipped;
+		belongings.thrownWeapon = null;
 		
-		if (subClass == HeroSubClass.GLADIATOR){
-			if (hit) {
-				Buff.affect( this, Combo.class ).hit( enemy );
-			} else {
-				Combo combo = buff(Combo.class);
-				if (combo != null) combo.miss( enemy );
-			}
+		if (hit && subClass == HeroSubClass.GLADIATOR){
+			Buff.affect( this, Combo.class ).hit( enemy );
 		}
 
 		return hit;
@@ -325,14 +420,14 @@ public class Hero extends Char {
 	
 	@Override
 	public int attackSkill( Char target ) {
-		KindOfWeapon wep = belongings.weapon;
+		KindOfWeapon wep = belongings.weapon();
 		
 		float accuracy = 1;
 		accuracy *= RingOfAccuracy.accuracyMultiplier( this );
 		
 		if (wep instanceof MissileWeapon){
 			if (Dungeon.level.adjacent( pos, target.pos )) {
-				accuracy *= 0.5f;
+				accuracy *= (0.5f + 0.2f*pointsInTalent(Talent.POINT_BLANK));
 			} else {
 				accuracy *= 1.5f;
 			}
@@ -347,6 +442,13 @@ public class Hero extends Char {
 	
 	@Override
 	public int defenseSkill( Char enemy ) {
+
+		if (buff(Combo.ParryTracker.class) != null){
+			if (canAttack(enemy)){
+				Buff.affect(this, Combo.RiposteTracker.class).enemy = enemy;
+			}
+			return INFINITE_EVASION;
+		}
 		
 		float evasion = defenseSkill;
 		
@@ -356,43 +458,56 @@ public class Hero extends Char {
 			evasion /= 2;
 		}
 
-		if (belongings.armor != null) {
-			evasion = belongings.armor.evasionFactor(this, evasion);
+		if (belongings.armor() != null) {
+			evasion = belongings.armor().evasionFactor(this, evasion);
 		}
 
 		return Math.round(evasion);
 	}
-	
+
+	@Override
+	public String defenseVerb() {
+		Combo.ParryTracker parry = buff(Combo.ParryTracker.class);
+		if (parry == null){
+			return super.defenseVerb();
+		} else {
+			parry.parried = true;
+			if (buff(Combo.class).getComboCount() < 9 || pointsInTalent(Talent.ENHANCED_COMBO) < 2){
+				parry.detach();
+			}
+			return Messages.get(Monk.class, "parried");
+		}
+	}
+
 	@Override
 	public int drRoll() {
 		int dr = 0;
 
-		if (belongings.armor != null) {
-			int armDr = Random.NormalIntRange( belongings.armor.DRMin(), belongings.armor.DRMax());
-			if (STR() < belongings.armor.STRReq()){
-				armDr -= 2*(belongings.armor.STRReq() - STR());
+		if (belongings.armor() != null) {
+			int armDr = Random.NormalIntRange( belongings.armor().DRMin(), belongings.armor().DRMax());
+			if (STR() < belongings.armor().STRReq()){
+				armDr -= 2*(belongings.armor().STRReq() - STR());
 			}
 			if (armDr > 0) dr += armDr;
 		}
-		if (belongings.weapon != null)  {
-			int wepDr = Random.NormalIntRange( 0 , belongings.weapon.defenseFactor( this ) );
-			if (STR() < ((Weapon)belongings.weapon).STRReq()){
-				wepDr -= 2*(((Weapon)belongings.weapon).STRReq() - STR());
+		if (belongings.weapon() != null)  {
+			int wepDr = Random.NormalIntRange( 0 , belongings.weapon().defenseFactor( this ) );
+			if (STR() < ((Weapon)belongings.weapon()).STRReq()){
+				wepDr -= 2*(((Weapon)belongings.weapon()).STRReq() - STR());
 			}
 			if (wepDr > 0) dr += wepDr;
 		}
-		Barkskin bark = buff(Barkskin.class);
-		if (bark != null)               dr += Random.NormalIntRange( 0 , bark.level() );
-		
-		Blocking.BlockBuff block = buff(Blocking.BlockBuff.class);
-		if (block != null)              dr += block.blockingRoll();
+
+		if (buff(HoldFast.class) != null){
+			dr += Random.NormalIntRange(0, 2*pointsInTalent(Talent.HOLD_FAST));
+		}
 		
 		return dr;
 	}
 	
 	@Override
 	public int damageRoll() {
-		KindOfWeapon wep = belongings.weapon;
+		KindOfWeapon wep = belongings.weapon();
 		int dmg;
 
 		if (wep != null) {
@@ -403,10 +518,7 @@ public class Hero extends Char {
 		}
 		if (dmg < 0) dmg = 0;
 		
-		Berserk berserk = buff(Berserk.class);
-		if (berserk != null) dmg = berserk.damageFactor(dmg);
-		
-		return buff( Fury.class ) != null ? (int)(dmg * 1.5f) : dmg;
+		return dmg;
 	}
 	
 	@Override
@@ -416,14 +528,21 @@ public class Hero extends Char {
 
 		speed *= RingOfHaste.speedMultiplier(this);
 		
-		if (belongings.armor != null) {
-			speed = belongings.armor.speedFactor(this, speed);
+		if (belongings.armor() != null) {
+			speed = belongings.armor().speedFactor(this, speed);
 		}
 		
 		Momentum momentum = buff(Momentum.class);
 		if (momentum != null){
-			((HeroSprite)sprite).sprint( 1f + 0.05f*momentum.stacks());
+			((HeroSprite)sprite).sprint( momentum.freerunning() ? 1.5f : 1f );
 			speed *= momentum.speedMultiplier();
+		} else {
+			((HeroSprite)sprite).sprint( 1f );
+		}
+
+		NaturesPower.naturesPowerTracker natStrength = buff(NaturesPower.naturesPowerTracker.class);
+		if (natStrength != null){
+			speed *= (2f + 0.25f*pointsInTalent(Talent.GROWING_POWER));
 		}
 		
 		return speed;
@@ -431,15 +550,15 @@ public class Hero extends Char {
 	}
 
 	public boolean canSurpriseAttack(){
-		if (belongings.weapon == null || !(belongings.weapon instanceof Weapon))    return true;
-		if (STR() < ((Weapon)belongings.weapon).STRReq())                           return false;
-		if (belongings.weapon instanceof Flail)                                     return false;
+		if (belongings.weapon() == null || !(belongings.weapon() instanceof Weapon))    return true;
+		if (STR() < ((Weapon)belongings.weapon()).STRReq())                             return false;
+		if (belongings.weapon() instanceof Flail)                                       return false;
 
 		return true;
 	}
 
 	public boolean canAttack(Char enemy){
-		if (enemy == null || pos == enemy.pos) {
+		if (enemy == null || pos == enemy.pos || !Actor.chars().contains(enemy)) {
 			return false;
 		}
 
@@ -448,7 +567,7 @@ public class Hero extends Char {
 			return true;
 		}
 
-		KindOfWeapon wep = Dungeon.hero.belongings.weapon;
+		KindOfWeapon wep = Dungeon.hero.belongings.weapon();
 
 		if (wep != null){
 			return wep.canReach(this, enemy.pos);
@@ -458,15 +577,20 @@ public class Hero extends Char {
 	}
 	
 	public float attackDelay() {
-		if (belongings.weapon != null) {
+		if (buff(Talent.LethalMomentumTracker.class) != null){
+			buff(Talent.LethalMomentumTracker.class).detach();
+			return 0;
+		}
+
+		if (belongings.weapon() != null) {
 			
-			return belongings.weapon.speedFactor( this );
+			return belongings.weapon().delayFactor( this );
 			
 		} else {
 			//Normally putting furor speed on unarmed attacks would be unnecessary
 			//But there's going to be that one guy who gets a furor+force ring combo
 			//This is for that one guy, you shall get your fists of fury!
-			return RingOfFuror.attackDelayMultiplier(this);
+			return 1f/RingOfFuror.attackSpeedMultiplier(this);
 		}
 	}
 
@@ -499,6 +623,10 @@ public class Hero extends Char {
 		
 		//calls to dungeon.observe will also update hero's local FOV.
 		fieldOfView = Dungeon.level.heroFOV;
+
+		if (buff(Endure.EndureTracker.class) != null){
+			buff(Endure.EndureTracker.class).endEnduring();
+		}
 		
 		if (!ready) {
 			//do a full observe (including fog update) if not resting.
@@ -511,9 +639,7 @@ public class Hero extends Char {
 		}
 		
 		checkVisibleMobs();
-		if (!buffs(FlavourBuff.class).isEmpty()) {
-			BuffIndicator.refreshHero();
-		}
+		BuffIndicator.refreshHero();
 		
 		if (paralysed > 0) {
 			
@@ -576,8 +702,8 @@ public class Hero extends Char {
 			}
 		}
 		
-		if( subClass == HeroSubClass.WARDEN && Dungeon.level.map[pos] == Terrain.FURROWED_GRASS){
-			Buff.affect(this, Barkskin.class).set( lvl + 5, 1 );
+		if(hasTalent(Talent.BARKSKIN) && Dungeon.level.map[pos] == Terrain.FURROWED_GRASS){
+			Buff.affect(this, Barkskin.class).set( (lvl*pointsInTalent(Talent.BARKSKIN))/2, 1 );
 		}
 		
 		return actResult;
@@ -661,7 +787,7 @@ public class Hero extends Char {
 				Game.runOnRenderThread(new Callback() {
 					@Override
 					public void call() {
-						GameScene.show( new WndTradeItem( heap, true ) );
+						GameScene.show( new WndTradeItem( heap ) );
 					}
 				});
 			}
@@ -691,7 +817,6 @@ public class Hero extends Char {
 			}
 			
 			Alchemy alch = (Alchemy) Dungeon.level.blobs.get(Alchemy.class);
-			//TODO logic for a well having dried up?
 			if (alch != null) {
 				alch.alchPos = dst;
 				AlchemyScene.setProvider( alch );
@@ -726,9 +851,9 @@ public class Hero extends Char {
 						//Do Nothing
 					} else {
 
-						boolean important =
-								(item instanceof ScrollOfUpgrade && ((Scroll)item).isKnown()) ||
-								(item instanceof PotionOfStrength && ((Potion)item).isKnown());
+						//TODO make all unique items important? or just POS / SOU?
+						boolean important = item.unique && item.isIdentified() &&
+								(item instanceof Scroll || item instanceof Potion);
 						if (important) {
 							GLog.p( Messages.get(this, "you_now_have", item.name()) );
 						} else {
@@ -745,11 +870,8 @@ public class Hero extends Char {
 							|| item instanceof Key) {
 						//Do Nothing
 					} else {
-						//TODO temporary until 0.8.0a, when all languages will get this phrase
-						if (Messages.lang() == Languages.ENGLISH) {
-							GLog.newLine();
-							GLog.n(Messages.get(this, "you_cant_have", item.name()));
-						}
+						GLog.newLine();
+						GLog.n(Messages.get(this, "you_cant_have", item.name()));
 					}
 
 					heap.sprite.drop();
@@ -789,14 +911,14 @@ public class Hero extends Char {
 				
 				switch (heap.type) {
 				case TOMB:
-					Sample.INSTANCE.play( Assets.SND_TOMB );
+					Sample.INSTANCE.play( Assets.Sounds.TOMB );
 					Camera.main.shake( 1, 0.5f );
 					break;
 				case SKELETON:
 				case REMAINS:
 					break;
 				default:
-					Sample.INSTANCE.play( Assets.SND_UNLOCK );
+					Sample.INSTANCE.play( Assets.Sounds.UNLOCK );
 				}
 				
 				sprite.operate( dst );
@@ -840,7 +962,7 @@ public class Hero extends Char {
 				
 				sprite.operate( doorCell );
 				
-				Sample.INSTANCE.play( Assets.SND_UNLOCK );
+				Sample.INSTANCE.play( Assets.Sounds.UNLOCK );
 				
 			} else {
 				GLog.w( Messages.get(this, "locked_door") );
@@ -862,16 +984,20 @@ public class Hero extends Char {
 	private boolean actDescend( HeroAction.Descend action ) {
 		int stairs = action.dst;
 
+		if (rooted) {
+			Camera.main.shake(1, 1f);
+			ready();
+			return false;
 		//there can be multiple exit tiles, so descend on any of them
 		//TODO this is slightly brittle, it assumes there are no disjointed sets of exit tiles
-		if ((Dungeon.level.map[pos] == Terrain.EXIT || Dungeon.level.map[pos] == Terrain.UNLOCKED_EXIT)) {
+		} else if ((Dungeon.level.map[pos] == Terrain.EXIT || Dungeon.level.map[pos] == Terrain.UNLOCKED_EXIT)) {
 			
 			curAction = null;
 
-			Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
-			if (buff != null) buff.detach();
-			buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
-			if (buff != null) buff.detach();
+			TimekeepersHourglass.timeFreeze timeFreeze = buff(TimekeepersHourglass.timeFreeze.class);
+			if (timeFreeze != null) timeFreeze.disarmPressedTraps();
+			Swiftthistle.TimeBubble timeBubble = buff(Swiftthistle.TimeBubble.class);
+			if (timeBubble != null) timeBubble.disarmPressedTraps();
 			
 			InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
 			Game.switchScene( InterlevelScene.class );
@@ -891,9 +1017,14 @@ public class Hero extends Char {
 	private boolean actAscend( HeroAction.Ascend action ) {
 		int stairs = action.dst;
 
+
+		if (rooted){
+			Camera.main.shake( 1, 1f );
+			ready();
+			return false;
 		//there can be multiple entrance tiles, so descend on any of them
 		//TODO this is slightly brittle, it assumes there are no disjointed sets of entrance tiles
-		if (Dungeon.level.map[pos] == Terrain.ENTRANCE) {
+		} else if (Dungeon.level.map[pos] == Terrain.ENTRANCE) {
 			
 			if (Dungeon.depth == 1) {
 				
@@ -916,10 +1047,10 @@ public class Hero extends Char {
 				
 				curAction = null;
 
-				Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
-				if (buff != null) buff.detach();
-				buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
-				if (buff != null) buff.detach();
+				TimekeepersHourglass.timeFreeze timeFreeze = buff(TimekeepersHourglass.timeFreeze.class);
+				if (timeFreeze != null) timeFreeze.disarmPressedTraps();
+				Swiftthistle.TimeBubble timeBubble = buff(Swiftthistle.TimeBubble.class);
+				if (timeBubble != null) timeBubble.disarmPressedTraps();
 
 				InterlevelScene.mode = InterlevelScene.Mode.ASCEND;
 				Game.switchScene( InterlevelScene.class );
@@ -968,7 +1099,12 @@ public class Hero extends Char {
 	public void rest( boolean fullRest ) {
 		spendAndNext( TIME_TO_REST );
 		if (!fullRest) {
-			sprite.showStatus( CharSprite.DEFAULT, Messages.get(this, "wait") );
+			if (hasTalent(Talent.HOLD_FAST)){
+				Buff.affect(this, HoldFast.class);
+			}
+			if (sprite != null) {
+				sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "wait"));
+			}
 		}
 		resting = fullRest;
 	}
@@ -977,13 +1113,22 @@ public class Hero extends Char {
 	public int attackProc( final Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
 		
-		KindOfWeapon wep = belongings.weapon;
+		KindOfWeapon wep = belongings.weapon();
 
 		if (wep != null) damage = wep.proc( this, enemy, damage );
+
+		if (buff(Talent.SpiritBladesTracker.class) != null
+				&& Random.Int(10) < 3*pointsInTalent(Talent.SPIRIT_BLADES)){
+			SpiritBow bow = belongings.getItem(SpiritBow.class);
+			if (bow != null) damage = bow.proc( this, enemy, damage );
+			buff(Talent.SpiritBladesTracker.class).detach();
+		}
+
+		damage = Talent.onAttackProc( this, enemy, damage );
 		
 		switch (subClass) {
 		case SNIPER:
-			if (wep instanceof MissileWeapon && !(wep instanceof SpiritBow.SpiritArrow)) {
+			if (wep instanceof MissileWeapon && !(wep instanceof SpiritBow.SpiritArrow) && enemy != this) {
 				Actor.add(new Actor() {
 					
 					{
@@ -993,7 +1138,8 @@ public class Hero extends Char {
 					@Override
 					protected boolean act() {
 						if (enemy.isAlive()) {
-							Buff.prolong(Hero.this, SnipersMark.class, 2f).object = enemy.id();
+							int bonusTurns = hasTalent(Talent.SHARED_UPGRADES) ? wep.buffedLvl() : 0;
+							Buff.prolong(Hero.this, SnipersMark.class, SnipersMark.DURATION + bonusTurns).set(enemy.id(), bonusTurns);
 						}
 						Actor.remove(this);
 						return true;
@@ -1015,8 +1161,8 @@ public class Hero extends Char {
 			berserk.damage(damage);
 		}
 		
-		if (belongings.armor != null) {
-			damage = belongings.armor.proc( enemy, this, damage );
+		if (belongings.armor() != null) {
+			damage = belongings.armor().proc( enemy, this, damage );
 		}
 		
 		Earthroot.Armor armor = buff( Earthroot.Armor.class );
@@ -1055,15 +1201,22 @@ public class Hero extends Char {
 		dmg = (int)Math.ceil(dmg * RingOfTenacity.damageMultiplier( this ));
 
 		//TODO improve this when I have proper damage source logic
-		if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class, this)
+		if (belongings.armor() != null && belongings.armor().hasGlyph(AntiMagic.class, this)
 				&& AntiMagic.RESISTS.contains(src.getClass())){
-			dmg -= AntiMagic.drRoll(belongings.armor.buffedLvl());
+			dmg -= AntiMagic.drRoll(belongings.armor().buffedLvl());
+		}
+
+		if (buff(Talent.WarriorFoodImmunity.class) != null){
+			if (pointsInTalent(Talent.IRON_STOMACH) == 1)       dmg = Math.round(dmg*0.25f);
+			else if (pointsInTalent(Talent.IRON_STOMACH) == 2)  dmg = Math.round(dmg*0.00f);
 		}
 
 		int preHP = HP + shielding();
 		super.damage( dmg, src );
 		int postHP = HP + shielding();
 		int effectiveDamage = preHP - postHP;
+
+		if (effectiveDamage <= 0) return;
 
 		//flash red when hit for serious damage.
 		float percentDMG = effectiveDamage / (float)preHP; //percent of current HP that was taken
@@ -1074,6 +1227,13 @@ public class Hero extends Char {
 		if (flashIntensity >= 0.05f){
 			flashIntensity = Math.min(1/3f, flashIntensity); //cap intensity at 1/3
 			GameScene.flash( (int)(0xFF*flashIntensity) << 16 );
+			if (isAlive()) {
+				if (flashIntensity >= 1/6f) {
+					Sample.INSTANCE.play(Assets.Sounds.HEALTH_CRITICAL, 1/3f + flashIntensity * 2f);
+				} else {
+					Sample.INSTANCE.play(Assets.Sounds.HEALTH_WARN, 1/3f + flashIntensity * 4f);
+				}
+			}
 		}
 	}
 	
@@ -1096,6 +1256,13 @@ public class Hero extends Char {
 					} else if (distance(target) > distance(m)) {
 						target = m;
 					}
+					if (m instanceof Snake
+							&& !Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_EXAMINING)){
+						GLog.p(Messages.get(Guidebook.class, "hint"));
+						GameScene.flashForDocument(Document.GUIDE_EXAMINING);
+						//we set to read here to prevent this message popping up a bunch
+						Document.ADVENTURERS_GUIDE.readPage(Document.GUIDE_EXAMINING);
+					}
 				}
 			}
 		}
@@ -1103,14 +1270,17 @@ public class Hero extends Char {
 		Char lastTarget = QuickSlotButton.lastTarget;
 		if (target != null && (lastTarget == null ||
 							!lastTarget.isAlive() ||
-							!fieldOfView[lastTarget.pos]) ||
-							(lastTarget instanceof WandOfWarding.Ward && mindVisionEnemies.contains(lastTarget))){
+							lastTarget.alignment == Alignment.ALLY ||
+							!fieldOfView[lastTarget.pos])){
 			QuickSlotButton.target(target);
 		}
 		
 		if (newMob) {
 			interrupt();
-			resting = false;
+			if (resting){
+				Dungeon.observe();
+				resting = false;
+			}
 		}
 
 		visibleEnemies = visible;
@@ -1204,7 +1374,11 @@ public class Hero extends Char {
 		}
 
 		if (step != -1) {
-			
+
+			if (subClass == HeroSubClass.FREERUNNER){
+				Buff.affect(this, Momentum.class).gainStack();
+			}
+
 			float speed = speed();
 			
 			sprite.move(pos, step);
@@ -1214,15 +1388,8 @@ public class Hero extends Char {
 			justMoved = true;
 			
 			search(false);
-			
-			if (subClass == HeroSubClass.FREERUNNER){
-				Buff.affect(this, Momentum.class).gainStack();
-			}
 
-			//FIXME this is a fairly sloppy fix for a crash involving pitfall traps.
-			//really there should be a way for traps to specify whether action should continue or
-			//not when they are pressed.
-			return InterlevelScene.mode != InterlevelScene.Mode.FALL;
+			return true;
 
 		} else {
 
@@ -1237,15 +1404,20 @@ public class Hero extends Char {
 		if (cell == -1) {
 			return false;
 		}
+
+		if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
+			fieldOfView = new boolean[Dungeon.level.length()];
+			Dungeon.level.updateFieldOfView( this, fieldOfView );
+		}
 		
-		Char ch;
-		Heap heap;
+		Char ch = Actor.findChar( cell );
+		Heap heap = Dungeon.level.heaps.get( cell );
 		
 		if (Dungeon.level.map[cell] == Terrain.ALCHEMY && cell != pos) {
 			
 			curAction = new HeroAction.Alchemy( cell );
 			
-		} else if (fieldOfView[cell] && (ch = Actor.findChar( cell )) instanceof Mob) {
+		} else if (fieldOfView[cell] && ch instanceof Mob) {
 
 			if (ch.alignment != Alignment.ENEMY && ch.buff(Amok.class) == null) {
 				curAction = new HeroAction.Interact( ch );
@@ -1253,7 +1425,7 @@ public class Hero extends Char {
 				curAction = new HeroAction.Attack( ch );
 			}
 
-		} else if ((heap = Dungeon.level.heaps.get( cell )) != null
+		} else if (heap != null
 				//moving to an item doesn't auto-pickup when enemies are near...
 				&& (visibleEnemies.size() == 0 || cell == pos ||
 				//...but only for standard heaps, chests and similar open as normal.
@@ -1264,7 +1436,7 @@ public class Hero extends Char {
 				curAction = new HeroAction.PickUp( cell );
 				break;
 			case FOR_SALE:
-				curAction = heap.size() == 1 && heap.peek().price() > 0 ?
+				curAction = heap.size() == 1 && heap.peek().value() > 0 ?
 					new HeroAction.Buy( cell ) :
 					new HeroAction.PickUp( cell );
 				break;
@@ -1323,6 +1495,12 @@ public class Hero extends Char {
 			for (Item i : belongings) {
 				i.onHeroGainExp(percent, this);
 			}
+			if (buff(Talent.RejuvenatingStepsFurrow.class) != null){
+				buff(Talent.RejuvenatingStepsFurrow.class).countDown(percent*200f);
+				if (buff(Talent.RejuvenatingStepsFurrow.class).count() <= 0){
+					buff(Talent.RejuvenatingStepsFurrow.class).detach();
+				}
+			}
 		}
 		
 		boolean levelUp = false;
@@ -1341,12 +1519,12 @@ public class Hero extends Char {
 				defenseSkill++;
 
 			} else {
-				Buff.prolong(this, Bless.class, 30f);
+				Buff.prolong(this, Bless.class, Bless.DURATION);
 				this.exp = 0;
 
 				GLog.newLine();
 				GLog.p( Messages.get(this, "level_cap"));
-				Sample.INSTANCE.play( Assets.SND_LEVELUP );
+				Sample.INSTANCE.play( Assets.Sounds.LEVELUP );
 			}
 			
 		}
@@ -1355,9 +1533,15 @@ public class Hero extends Char {
 			
 			if (sprite != null) {
 				GLog.newLine();
-				GLog.p( Messages.get(this, "new_level"), lvl );
+				GLog.p( Messages.get(this, "new_level") );
 				sprite.showStatus( CharSprite.POSITIVE, Messages.get(Hero.class, "level_up") );
-				Sample.INSTANCE.play( Assets.SND_LEVELUP );
+				Sample.INSTANCE.play( Assets.Sounds.LEVELUP );
+				if (lvl < Talent.tierLevelThresholds[Talent.MAX_TALENT_TIERS+1]){
+					GLog.newLine();
+					GLog.p( Messages.get(this, "new_talent") );
+					StatusPane.talentBlink = 10f;
+					WndHero.lastIdx = 1;
+				}
 			}
 			
 			Item.updateQuickslot();
@@ -1412,15 +1596,15 @@ public class Hero extends Char {
 	public float stealth() {
 		float stealth = super.stealth();
 		
-		if (belongings.armor != null){
-			stealth = belongings.armor.stealthFactor(this, stealth);
+		if (belongings.armor() != null){
+			stealth = belongings.armor().stealthFactor(this, stealth);
 		}
 		
 		return stealth;
 	}
 	
 	@Override
-	public void die( Object cause  ) {
+	public void die( Object cause ) {
 		
 		curAction = null;
 
@@ -1435,52 +1619,50 @@ public class Hero extends Char {
 			}
 		}
 
-		if (ankh != null && ankh.isBlessed()) {
-			this.HP = HT/4;
-
-			//ensures that you'll get to act first in almost any case, to prevent reviving and then instantly dieing again.
-			PotionOfHealing.cure(this);
-			Buff.detach(this, Paralysis.class);
-			spend(-cooldown());
-
-			new Flare(8, 32).color(0xFFFF66, true).show(sprite, 2f);
-			CellEmitter.get(this.pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
-
+		if (ankh != null) {
 			ankh.detach(belongings.backpack);
+			interrupt();
+			resting = false;
 
-			Sample.INSTANCE.play( Assets.SND_TELEPORT );
-			GLog.w( Messages.get(this, "revive") );
-			Statistics.ankhsUsed++;
-			
-			for (Char ch : Actor.chars()){
-				if (ch instanceof DriedRose.GhostHero){
-					((DriedRose.GhostHero) ch).sayAnhk();
-					return;
+			if (ankh.isBlessed()) {
+				this.HP = HT / 4;
+
+				PotionOfHealing.cure(this);
+				Buff.prolong(this, AnkhInvulnerability.class, AnkhInvulnerability.DURATION);
+
+				SpellSprite.show(this, SpellSprite.ANKH);
+				GameScene.flash(0x80FFFF40);
+				Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+				GLog.w(Messages.get(this, "revive"));
+				Statistics.ankhsUsed++;
+
+				for (Char ch : Actor.chars()) {
+					if (ch instanceof DriedRose.GhostHero) {
+						((DriedRose.GhostHero) ch).sayAnhk();
+						return;
+					}
 				}
-			}
+			} else {
 
+				//this is hacky, basically we want to declare that a wndResurrect exists before
+				//it actually gets created. This is important so that the game knows to not
+				//delete the run or submit it to rankings, because a WndResurrect is about to exist
+				//this is needed because the actual creation of the window is delayed here
+				WndResurrect.instance = new Object();
+				Game.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						GameScene.show( new WndResurrect() );
+					}
+				});
+
+			}
 			return;
 		}
 		
 		Actor.fixTime();
 		super.die( cause );
-
-		if (ankh == null) {
-			
-			reallyDie( cause );
-			
-		} else {
-			
-			Dungeon.deleteGame( GamesInProgress.curSlot, false );
-			final Ankh finalAnkh = ankh;
-			Game.runOnRenderThread(new Callback() {
-				@Override
-				public void call() {
-					GameScene.show( new WndResurrect( finalAnkh, cause ) );
-				}
-			});
-			
-		}
+		reallyDie( cause );
 	}
 	
 	public static void reallyDie( Object cause ) {
@@ -1532,6 +1714,12 @@ public class Hero extends Char {
 			items.remove( item );
 		}
 
+		for (Char c : Actor.chars()){
+			if (c instanceof DriedRose.GhostHero){
+				((DriedRose.GhostHero) c).sayHeroKilled();
+			}
+		}
+
 		GameScene.gameOver();
 		
 		if (cause instanceof Hero.Doom) {
@@ -1541,9 +1729,9 @@ public class Hero extends Char {
 		Dungeon.deleteGame( GamesInProgress.curSlot, true );
 	}
 
-	//effectively cache this buff to prevent having to call buff(Berserk.class) a bunch.
+	//effectively cache this buff to prevent having to call buff(...) a bunch.
 	//This is relevant because we call isAlive during drawing, which has both performance
-	//and concurrent modification implications if that method calls buff(Berserk.class)
+	//and thread coordination implications if that method calls buff(...) frequently
 	private Berserk berserk;
 
 	@Override
@@ -1560,13 +1748,25 @@ public class Hero extends Char {
 
 	@Override
 	public void move( int step ) {
+		boolean wasHighGrass = Dungeon.level.map[step] == Terrain.HIGH_GRASS;
+
 		super.move( step );
 		
 		if (!flying) {
 			if (Dungeon.level.water[pos]) {
-				Sample.INSTANCE.play( Assets.SND_WATER, 1, 1, Random.Float( 0.8f, 1.25f ) );
+				Sample.INSTANCE.play( Assets.Sounds.WATER, 1, Random.Float( 0.8f, 1.25f ) );
+			} else if (Dungeon.level.map[pos] == Terrain.EMPTY_SP) {
+				Sample.INSTANCE.play( Assets.Sounds.STURDY, 1, Random.Float( 0.96f, 1.05f ) );
+			} else if (Dungeon.level.map[pos] == Terrain.GRASS
+					|| Dungeon.level.map[pos] == Terrain.EMBERS
+					|| Dungeon.level.map[pos] == Terrain.FURROWED_GRASS){
+				if (step == pos && wasHighGrass) {
+					Sample.INSTANCE.play(Assets.Sounds.TRAMPLE, 1, Random.Float( 0.96f, 1.05f ) );
+				} else {
+					Sample.INSTANCE.play( Assets.Sounds.GRASS, 1, Random.Float( 0.96f, 1.05f ) );
+				}
 			} else {
-				Sample.INSTANCE.play( Assets.SND_STEP );
+				Sample.INSTANCE.play( Assets.Sounds.STEP, 1, Random.Float( 0.96f, 1.05f ) );
 			}
 		}
 	}
@@ -1577,18 +1777,13 @@ public class Hero extends Char {
 		AttackIndicator.target(enemy);
 		
 		boolean hit = attack( enemy );
-
-		if (subClass == HeroSubClass.GLADIATOR){
-			if (hit) {
-				Buff.affect( this, Combo.class ).hit( enemy );
-			} else {
-				Combo combo = buff(Combo.class);
-				if (combo != null) combo.miss( enemy );
-			}
-		}
 		
 		Invisibility.dispel();
 		spend( attackDelay() );
+
+		if (hit && subClass == HeroSubClass.GLADIATOR){
+			Buff.affect( this, Combo.class ).hit( enemy );
+		}
 
 		curAction = null;
 
@@ -1633,7 +1828,7 @@ public class Hero extends Char {
 			if (Dungeon.level.distance(pos, heap.pos) <= 1){
 				boolean hasKey = true;
 				if (heap.type == Type.SKELETON || heap.type == Type.REMAINS) {
-					Sample.INSTANCE.play( Assets.SND_BONES );
+					Sample.INSTANCE.play( Assets.Sounds.BONES );
 				} else if (heap.type == Type.LOCKED_CHEST){
 					hasKey = Notes.remove(new GoldenKey(Dungeon.depth));
 				} else if (heap.type == Type.CRYSTAL_CHEST){
@@ -1656,11 +1851,16 @@ public class Hero extends Char {
 	@Override
 	public boolean isImmune(Class effect) {
 		if (effect == Burning.class
-				&& belongings.armor != null
-				&& belongings.armor.hasGlyph(Brimstone.class, this)){
+				&& belongings.armor() != null
+				&& belongings.armor().hasGlyph(Brimstone.class, this)){
 			return true;
 		}
 		return super.isImmune(effect);
+	}
+
+	@Override
+	public boolean isInvulnerable(Class effect) {
+		return buff(AnkhInvulnerability.class) != null;
 	}
 
 	public boolean search( boolean intentional ) {
@@ -1669,7 +1869,9 @@ public class Hero extends Char {
 		
 		boolean smthFound = false;
 
+		boolean circular = pointsInTalent(Talent.WIDE_SEARCH) == 1;
 		int distance = heroClass == HeroClass.ROGUE ? 2 : 1;
+		if (hasTalent(Talent.WIDE_SEARCH)) distance++;
 		
 		boolean foresight = buff(Foresight.class) != null;
 		
@@ -1699,11 +1901,15 @@ public class Hero extends Char {
 		
 		for (int y = ay; y <= by; y++) {
 			for (int x = ax, p = ax + y * Dungeon.level.width(); x <= bx; x++, p++) {
-				
+
+				if (circular && Math.abs(x - cx)-1 > ShadowCaster.rounding[distance][distance - Math.abs(y - cy)]){
+					continue;
+				}
+
 				if (fieldOfView[p] && p != pos) {
 					
 					if (intentional) {
-						sprite.parent.addToBack( new CheckedCell( p ) );
+						GameScene.effectOverFog(new CheckedCell(p, pos));
 					}
 					
 					if (Dungeon.level.secret[p]){
@@ -1748,8 +1954,13 @@ public class Hero extends Char {
 							
 							smthFound = true;
 	
-							if (talisman != null && !talisman.isCursed())
-								talisman.charge();
+							if (talisman != null){
+								if (oldValue == Terrain.SECRET_TRAP){
+									talisman.charge(2);
+								} else if (oldValue == Terrain.SECRET_DOOR){
+									talisman.charge(10);
+								}
+							}
 						}
 					}
 				}
@@ -1763,9 +1974,9 @@ public class Hero extends Char {
 			if (!Dungeon.level.locked) {
 				if (cursed) {
 					GLog.n(Messages.get(this, "search_distracted"));
-					Buff.affect(this, Hunger.class).reduceHunger(TIME_TO_SEARCH - (2 * HUNGER_FOR_SEARCH));
+					Buff.affect(this, Hunger.class).affectHunger(TIME_TO_SEARCH - (2 * HUNGER_FOR_SEARCH));
 				} else {
-					Buff.affect(this, Hunger.class).reduceHunger(TIME_TO_SEARCH - HUNGER_FOR_SEARCH);
+					Buff.affect(this, Hunger.class).affectHunger(TIME_TO_SEARCH - HUNGER_FOR_SEARCH);
 				}
 			}
 			spendAndNext(TIME_TO_SEARCH);
@@ -1774,22 +1985,41 @@ public class Hero extends Char {
 		
 		if (smthFound) {
 			GLog.w( Messages.get(this, "noticed_smth") );
-			Sample.INSTANCE.play( Assets.SND_SECRET );
+			Sample.INSTANCE.play( Assets.Sounds.SECRET );
 			interrupt();
 		}
 		
 		return smthFound;
 	}
 	
-	public void resurrect( int resetLevel ) {
-		
+	public void resurrect() {
 		HP = HT;
-		Dungeon.gold = 0;
-		exp = 0;
-		
-		belongings.resurrect( resetLevel );
-
 		live();
+
+		MagicalHolster holster = belongings.getItem(MagicalHolster.class);
+
+		Buff.affect(this, LostInventory.class);
+		Buff.affect(this, Invisibility.class, 3f);
+		//lost inventory is dropped in interlevelscene
+
+		//activate items that persist after lost inventory
+		//FIXME this is very messy, maybe it would be better to just have one buff that
+		// handled all items that recharge over time?
+		for (Item i : belongings){
+			if (i instanceof EquipableItem && i.isEquipped(this)){
+				((EquipableItem) i).activate(this);
+			} else if (i instanceof CloakOfShadows && i.keptThoughLostInvent && hasTalent(Talent.LIGHT_CLOAK)){
+				((CloakOfShadows) i).activate(this);
+			} else if (i instanceof Wand && i.keptThoughLostInvent){
+				if (holster != null && holster.contains(i)){
+					((Wand) i).charge(this, MagicalHolster.HOLSTER_SCALE_FACTOR);
+				} else {
+					((Wand) i).charge(this);
+				}
+			} else if (i instanceof MagesStaff && i.keptThoughLostInvent){
+				((MagesStaff) i).applyWandChargeBuff(this);
+			}
+		}
 	}
 
 	@Override

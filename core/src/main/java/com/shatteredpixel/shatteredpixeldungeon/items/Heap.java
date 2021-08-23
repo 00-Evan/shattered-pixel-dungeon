@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,17 +23,12 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
@@ -42,19 +37,18 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.DocumentPage;
+import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -71,8 +65,7 @@ public class Heap implements Bundlable {
 		CRYSTAL_CHEST,
 		TOMB,
 		SKELETON,
-		REMAINS,
-		MIMIC //remains for pre-0.8.0 compatibility. There are converted to mimics on level load
+		REMAINS
 	}
 	public Type type = Type.HEAP;
 	
@@ -86,9 +79,6 @@ public class Heap implements Bundlable {
 	
 	public void open( Hero hero ) {
 		switch (type) {
-		case MIMIC:
-			type = Type.CHEST;
-			break;
 		case TOMB:
 			Wraith.spawnAround( hero.pos );
 			break;
@@ -104,24 +94,17 @@ public class Heap implements Bundlable {
 				hero.sprite.emitter().burst( ShadowParticle.CURSE, 6 );
 				hero.damage( hero.HP / 2, this );
 			}
-			Sample.INSTANCE.play( Assets.SND_CURSED );
+			Sample.INSTANCE.play( Assets.Sounds.CURSED );
 		}
 
-		if (type != Type.MIMIC) {
-			type = Type.HEAP;
-			ArrayList<Item> bonus = RingOfWealth.tryForBonusDrop(hero, 1);
-			if (bonus != null && !bonus.isEmpty()) {
-				items.addAll(0, bonus);
-				if (RingOfWealth.latestDropWasRare){
-					new Flare(8, 48).color(0xAA00FF, true).show(sprite, 2f);
-					RingOfWealth.latestDropWasRare = false;
-				} else {
-					new Flare(8, 24).color(0xFFFFFF, true).show(sprite, 2f);
-				}
-			}
-			sprite.link();
-			sprite.drop();
+		type = Type.HEAP;
+		ArrayList<Item> bonus = RingOfWealth.tryForBonusDrop(hero, 1);
+		if (bonus != null && !bonus.isEmpty()) {
+			items.addAll(0, bonus);
+			RingOfWealth.showFlareForBonusDrop(sprite);
 		}
+		sprite.link();
+		sprite.drop();
 	}
 	
 	public Heap setHauntedIfCursed(){
@@ -172,8 +155,9 @@ public class Heap implements Bundlable {
 			items.remove( item );
 			
 		}
-		
-		if (item.dropsDownHeap && type != Type.FOR_SALE) {
+
+		//lost backpack must always be on top of a heap
+		if ((item.dropsDownHeap && type != Type.FOR_SALE) || peek() instanceof LostBackpack) {
 			items.add( item );
 		} else {
 			items.addFirst( item );
@@ -188,6 +172,12 @@ public class Heap implements Bundlable {
 		int index = items.indexOf( a );
 		if (index != -1) {
 			items.remove( index );
+			for (Item i : items) {
+				if (i.isSimilar( b )) {
+					i.merge( b );
+					return;
+				}
+			}
 			items.add( index, b );
 		}
 	}
@@ -211,15 +201,14 @@ public class Heap implements Bundlable {
 		boolean evaporated = false;
 		
 		for (Item item : items.toArray( new Item[0] )) {
-			if (item instanceof Scroll
-					&& !(item instanceof ScrollOfUpgrade)) {
+			if (item instanceof Scroll && !item.unique) {
 				items.remove( item );
 				burnt = true;
 			} else if (item instanceof Dewdrop) {
 				items.remove( item );
 				evaporated = true;
-			} else if (item instanceof MysteryMeat) {
-				replace( item, ChargrilledMeat.cook( (MysteryMeat)item ) );
+			} else if (item instanceof MysteryMeat || item instanceof FrozenCarpaccio) {
+				replace( item, ChargrilledMeat.cook( item.quantity ) );
 				burnt = true;
 			} else if (item instanceof Bomb) {
 				items.remove( item );
@@ -256,7 +245,7 @@ public class Heap implements Bundlable {
 	public void explode() {
 
 		//breaks open most standard containers, mimics die.
-		if (type == Type.MIMIC || type == Type.CHEST || type == Type.SKELETON) {
+		if (type == Type.CHEST || type == Type.SKELETON) {
 			type = Type.HEAP;
 			sprite.link();
 			sprite.drop();
@@ -270,6 +259,11 @@ public class Heap implements Bundlable {
 		} else {
 
 			for (Item item : items.toArray( new Item[0] )) {
+
+				//unique items aren't affect by explosions
+				if (item.unique || (item instanceof Armor && ((Armor) item).checkSeal() != null)){
+					continue;
+				}
 
 				if (item instanceof Potion) {
 					items.remove(item);
@@ -287,10 +281,10 @@ public class Heap implements Bundlable {
 						return;
 					}
 
-				//unique and upgraded items can endure the blast
-				} else if (!(item.level() > 0 || item.unique
-						|| (item instanceof Armor && ((Armor) item).checkSeal() != null)))
+				//upgraded items can endure the blast
+				} else if (item.level() <= 0) {
 					items.remove( item );
+				}
 
 			}
 
@@ -313,7 +307,7 @@ public class Heap implements Bundlable {
 			if (item instanceof MysteryMeat) {
 				replace( item, FrozenCarpaccio.cook( (MysteryMeat)item ) );
 				frozen = true;
-			} else if (item instanceof Potion && !(item instanceof PotionOfStrength)) {
+			} else if (item instanceof Potion && !item.unique) {
 				items.remove(item);
 				((Potion) item).shatter(pos);
 				frozen = true;
@@ -334,7 +328,7 @@ public class Heap implements Bundlable {
 	
 	public static void burnFX( int pos ) {
 		CellEmitter.get( pos ).burst( ElmoParticle.FACTORY, 6 );
-		Sample.INSTANCE.play( Assets.SND_BURNING );
+		Sample.INSTANCE.play( Assets.Sounds.BURNING );
 	}
 	
 	public static void evaporateFX( int pos ) {
@@ -356,8 +350,14 @@ public class Heap implements Bundlable {
 	@Override
 	public String toString(){
 		switch(type){
+			case FOR_SALE:
+				Item i = peek();
+				if (size() == 1) {
+					return Messages.get(this, "for_sale", Shopkeeper.sellPrice(i), i.toString());
+				} else {
+					return i.toString();
+				}
 			case CHEST:
-			case MIMIC:
 				return Messages.get(this, "chest");
 			case LOCKED_CHEST:
 				return Messages.get(this, "locked_chest");
@@ -377,7 +377,6 @@ public class Heap implements Bundlable {
 	public String info(){
 		switch(type){
 			case CHEST:
-			case MIMIC:
 				return Messages.get(this, "chest_desc");
 			case LOCKED_CHEST:
 				return Messages.get(this, "locked_chest_desc");
@@ -418,8 +417,11 @@ public class Heap implements Bundlable {
 		//remove any document pages that either don't exist anymore or that the player already has
 		for (Item item : items.toArray(new Item[0])){
 			if (item instanceof DocumentPage
-					&& ( !((DocumentPage) item).document().pages().contains(((DocumentPage) item).page())
-					||    ((DocumentPage) item).document().hasPage(((DocumentPage) item).page()))){
+					&& ( !((DocumentPage) item).document().pageNames().contains(((DocumentPage) item).page())
+					||    ((DocumentPage) item).document().isPageFound(((DocumentPage) item).page()))){
+				items.remove(item);
+			}
+			if (item instanceof Guidebook && Document.ADVENTURERS_GUIDE.isPageRead(0)){
 				items.remove(item);
 			}
 		}

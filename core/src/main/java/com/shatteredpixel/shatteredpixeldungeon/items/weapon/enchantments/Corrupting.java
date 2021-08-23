@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,16 +43,18 @@ public class Corrupting extends Weapon.Enchantment {
 	
 	@Override
 	public int proc(Weapon weapon, Char attacker, Char defender, int damage) {
-		if (defender.buff(Corruption.class) != null || !(defender instanceof Mob)) return damage;
-		
 		int level = Math.max( 0, weapon.buffedLvl() );
 		
 		// lvl 0 - 20%
-		// lvl 1 ~ 22.5%
-		// lvl 2 ~ 25%
+		// lvl 1 ~ 23%
+		// lvl 2 ~ 26%
+		float procChance = (level+5f)/(level+25f) * procChanceMultiplier(attacker);
 		if (damage >= defender.HP
+				&& Random.Float() < procChance
 				&& !defender.isImmune(Corruption.class)
-				&& Random.Int( level + 30 ) >= 24){
+				&& defender.buff(Corruption.class) == null
+				&& defender instanceof Mob
+				&& defender.isAlive()){
 			
 			Mob enemy = (Mob) defender;
 			Hero hero = (attacker instanceof Hero) ? (Hero) attacker : Dungeon.hero;

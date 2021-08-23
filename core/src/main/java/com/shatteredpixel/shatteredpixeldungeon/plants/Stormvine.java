@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@ public class Stormvine extends Plant {
 
 	{
 		image = 5;
+		seedClass = Seed.class;
 	}
 
 	@Override
@@ -40,7 +41,7 @@ public class Stormvine extends Plant {
 
 		if (ch != null) {
 			if (ch instanceof Hero && ((Hero) ch).subClass == HeroSubClass.WARDEN){
-				Buff.affect(ch, Levitation.class, 10f);
+				Buff.affect(ch, Levitation.class, Levitation.DURATION/2f);
 			} else {
 				Buff.affect(ch, Vertigo.class, Vertigo.DURATION);
 			}

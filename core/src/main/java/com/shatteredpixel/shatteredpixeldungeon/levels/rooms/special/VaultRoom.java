@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,10 +41,12 @@ import java.util.Arrays;
 
 public class VaultRoom extends SpecialRoom {
 
-	//size is reduced slightly to remove rare AI issues with crystal mimics
+	//fixed size to improve presentation and provide space for crystal mimics
 	@Override
-	public int maxHeight() { return 8; }
-	public int maxWidth() { return 8; }
+	public int minHeight() { return 7; }
+	public int maxHeight() { return 7; }
+	public int minWidth() { return 7; }
+	public int maxWidth() { return 7; }
 
 	public void paint( Level level ) {
 
@@ -52,30 +54,40 @@ public class VaultRoom extends SpecialRoom {
 		Painter.fill( level, this, 1, Terrain.EMPTY_SP );
 		Painter.fill( level, this, 2, Terrain.EMPTY );
 		
-		int cx = (left + right) / 2;
-		int cy = (top + bottom) / 2;
-		int c = cx + cy * level.width();
-		
+		int c = level.pointToCell(center());
 		Random.shuffle(prizeClasses);
 		
 		Item i1, i2;
-		i1 = prize( level );
-		i2 = prize( level );
-		level.drop( i1, c ).type = Heap.Type.CRYSTAL_CHEST;
+		i1 = prize();
+		i2 = prize();
+
+		int i1Pos, i2Pos;
+		int doorPos = level.pointToCell(entrance());
+		do {
+			int neighbourIdx = Random.Int(PathFinder.CIRCLE8.length);
+			i1Pos = c + PathFinder.CIRCLE8[neighbourIdx];
+			i2Pos = c + PathFinder.CIRCLE8[(neighbourIdx+4)%8];
+		} while (level.adjacent(i1Pos, doorPos) || level.adjacent(i2Pos, doorPos));
+
+		level.drop( i1, i1Pos ).type = Heap.Type.CRYSTAL_CHEST;
 		if (Random.Int(10) == 0){
-			level.mobs.add(Mimic.spawnAt(c + PathFinder.NEIGHBOURS8[Random.Int(8)], i2, CrystalMimic.class));
+			level.mobs.add(Mimic.spawnAt(i2Pos, i2, CrystalMimic.class));
 		} else {
-			level.drop(i2, c + PathFinder.NEIGHBOURS8[Random.Int(8)]).type = Heap.Type.CRYSTAL_CHEST;
+			level.drop(i2, i2Pos).type = Heap.Type.CRYSTAL_CHEST;
 		}
+		Painter.set(level, i1Pos, Terrain.PEDESTAL);
+		Painter.set(level, i2Pos, Terrain.PEDESTAL);
+
 		level.addItemToSpawn( new CrystalKey( Dungeon.depth ) );
 		
 		entrance().set( Door.Type.LOCKED );
 		level.addItemToSpawn( new IronKey( Dungeon.depth ) );
 	}
 	
-	private Item prize( Level level ) {
+	private Item prize() {
 		Generator.Category cat = prizeClasses.remove(0);
-		Item prize = null;
+		prizeClasses.add(cat);
+		Item prize;
 		do {
 			prize = Generator.random(cat);
 		} while (prize == null || Challenges.isItemBlocked(prize));

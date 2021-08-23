@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,13 +26,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SwarmSprite;
 import com.watabou.utils.Bundle;
@@ -86,11 +85,11 @@ public class Swarm extends Mob {
 
 		if (HP >= damage + 2) {
 			ArrayList<Integer> candidates = new ArrayList<>();
-			boolean[] solid = Dungeon.level.solid;
 			
 			int[] neighbours = {pos + 1, pos - 1, pos + Dungeon.level.width(), pos - Dungeon.level.width()};
 			for (int n : neighbours) {
-				if (!solid[n] && Actor.findChar( n ) == null) {
+				if (!Dungeon.level.solid[n] && Actor.findChar( n ) == null
+						&& (!properties().contains(Property.LARGE) || Dungeon.level.openSpace[n])) {
 					candidates.add( n );
 				}
 			}
@@ -131,6 +130,9 @@ public class Swarm extends Mob {
 		}
 		if (buff(Corruption.class ) != null) {
 			Buff.affect( clone, Corruption.class);
+		}
+		for (Buff b : buffs(ChampionEnemy.class)){
+			Buff.affect( clone, b.getClass());
 		}
 		return clone;
 	}

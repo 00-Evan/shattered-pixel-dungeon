@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,10 +39,21 @@ public class GitHubUpdates extends UpdateService {
 	private static Pattern versionCodePattern = Pattern.compile("internal version number: ([0-9]*)", Pattern.CASE_INSENSITIVE);
 
 	@Override
-	public void checkForUpdate(UpdateResultCallback callback) {
+	public boolean isUpdateable() {
+		return true;
+	}
 
-		if (!Game.platform.connectedToUnmeteredNetwork()){
+	@Override
+	public boolean supportsBetaChannel() {
+		return true;
+	}
+
+	@Override
+	public void checkForUpdate(boolean useMetered, boolean includeBetas, UpdateResultCallback callback) {
+
+		if (!useMetered && !Game.platform.connectedToUnmeteredNetwork()){
 			callback.onConnectionFailed();
+			return;
 		}
 
 		Net.HttpRequest httpGet = new Net.HttpRequest(Net.HttpMethods.GET);
@@ -56,15 +67,13 @@ public class GitHubUpdates extends UpdateService {
 					Bundle latestRelease = null;
 					int latestVersionCode = Game.versionCode;
 
-					boolean includePrereleases = Game.version.toLowerCase().contains("beta");
-
 					for (Bundle b : Bundle.read( httpResponse.getResultAsStream() ).getBundleArray()){
 						Matcher m = versionCodePattern.matcher(b.getString("body"));
 
 						if (m.find()){
 							int releaseVersion = Integer.parseInt(m.group(1));
 							if (releaseVersion > latestVersionCode
-									&& (includePrereleases || !b.getBoolean("prerelease"))){
+									&& (includeBetas || !b.getBoolean("prerelease"))){
 								latestRelease = b;
 								latestVersionCode = releaseVersion;
 							}
@@ -119,4 +128,29 @@ public class GitHubUpdates extends UpdateService {
 		DeviceCompat.openURI( update.URL );
 	}
 
+	@Override
+	public boolean isInstallable() {
+		return false;
+	}
+
+	@Override
+	public void initializeInstall() {
+		//does nothing, always installed
+	}
+
+	@Override
+	public boolean supportsReviews() {
+		return false;
+	}
+
+	@Override
+	public void initializeReview(ReviewResultCallback callback) {
+		//does nothing, no review functionality here
+		callback.onComplete();
+	}
+
+	@Override
+	public void openReviewURI() {
+		//does nothing
+	}
 }

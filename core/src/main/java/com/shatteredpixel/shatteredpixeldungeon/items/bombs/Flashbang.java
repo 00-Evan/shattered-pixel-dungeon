@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,9 +48,9 @@ public class Flashbang extends Bomb {
 				if (power > 0){
 					Buff.prolong(ch, Blindness.class, power);
 					Buff.prolong(ch, Cripple.class, power);
-				}
-				if (ch == Dungeon.hero){
-					GameScene.flash(0xFFFFFF);
+					if (ch == Dungeon.hero){
+						GameScene.flash(0x80FFFFFF);
+					}
 				}
 			}
 		}
@@ -58,7 +58,7 @@ public class Flashbang extends Bomb {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		//prices of ingredients
 		return quantity * (20 + 40);
 	}

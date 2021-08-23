@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ import com.watabou.glwrap.Quad;
 import com.watabou.glwrap.Uniform;
 import com.watabou.glwrap.Vertexbuffer;
 
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
@@ -72,11 +73,11 @@ public class NoosaScript extends Script {
 	}
 
 	public void drawElements( FloatBuffer vertices, ShortBuffer indices, int size ) {
-		
-		vertices.position( 0 );
+
+		((Buffer)vertices).position( 0 );
 		aXY.vertexPointer( 2, 4, vertices );
-		
-		vertices.position( 2 );
+
+		((Buffer)vertices).position( 2 );
 		aUV.vertexPointer( 2, 4, vertices );
 
 		Quad.releaseIndices();
@@ -85,11 +86,11 @@ public class NoosaScript extends Script {
 	}
 
 	public void drawQuad( FloatBuffer vertices ) {
-		
-		vertices.position( 0 );
+
+		((Buffer)vertices).position( 0 );
 		aXY.vertexPointer( 2, 4, vertices );
-		
-		vertices.position( 2 );
+
+		((Buffer)vertices).position( 2 );
 		aUV.vertexPointer( 2, 4, vertices );
 		
 		Gdx.gl20.glDrawElements( Gdx.gl20.GL_TRIANGLES, Quad.SIZE, Gdx.gl20.GL_UNSIGNED_SHORT, 0 );
@@ -114,11 +115,11 @@ public class NoosaScript extends Script {
 		if (size == 0) {
 			return;
 		}
-		
-		vertices.position( 0 );
+
+		((Buffer)vertices).position( 0 );
 		aXY.vertexPointer( 2, 4, vertices );
-		
-		vertices.position( 2 );
+
+		((Buffer)vertices).position( 2 );
 		aUV.vertexPointer( 2, 4, vertices );
 		
 		Gdx.gl20.glDrawElements( Gdx.gl20.GL_TRIANGLES, Quad.SIZE * size, Gdx.gl20.GL_UNSIGNED_SHORT, 0 );
@@ -166,11 +167,11 @@ public class NoosaScript extends Script {
 				// because for some reason all other openGL operations work on virtual pixels
 				// but glScissor operations work on real pixels
 				float xScale = (Gdx.graphics.getBackBufferWidth() / (float)Game.width );
-				float yScale = (Gdx.graphics.getBackBufferHeight() / (float)Game.height );
+				float yScale = ((Gdx.graphics.getBackBufferHeight()-Game.bottomInset) / (float)Game.height );
 
 				Gdx.gl20.glScissor(
 						Math.round(camera.x * xScale),
-						Math.round((Game.height - camera.screenHeight - camera.y) * yScale),
+						Math.round((Game.height - camera.screenHeight - camera.y) * yScale) + Game.bottomInset,
 						Math.round(camera.screenWidth * xScale),
 						Math.round(camera.screenHeight * yScale));
 			} else {
@@ -207,16 +208,12 @@ public class NoosaScript extends Script {
 		//fragment shader
 		//preprocessor directives let us define precision on GLES platforms, and ignore it elsewhere
 		"#ifdef GL_ES\n" +
-		"  #define LOW lowp\n" +
-		"  #define MED mediump\n" +
-		"#else\n" +
-		"  #define LOW\n" +
-		"  #define MED\n" +
+		"  precision mediump float;\n" +
 		"#endif\n" +
-		"varying MED vec2 vUV;\n" +
-		"uniform LOW sampler2D uTex;\n" +
-		"uniform LOW vec4 uColorM;\n" +
-		"uniform LOW vec4 uColorA;\n" +
+		"varying vec2 vUV;\n" +
+		"uniform sampler2D uTex;\n" +
+		"uniform vec4 uColorM;\n" +
+		"uniform vec4 uColorA;\n" +
 		"void main() {\n" +
 		"  gl_FragColor = texture2D( uTex, vUV ) * uColorM + uColorA;\n" +
 		"}\n";

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,6 +36,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DistortionTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FlashingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FrostTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GatewayTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GeyserTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GuardianTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PitfallTrap;
@@ -75,19 +77,15 @@ public class HallsLevel extends RegularLevel {
 	}
 
 	@Override
-	public int nMobs() {
-		//remove one mob to account for ripper demon spawners
-		return super.nMobs()-1;
-	}
-
-	@Override
-	protected int standardRooms() {
-		//8 to 10, average 8.67
-		return 8+Random.chances(new float[]{3, 2, 1});
+	protected int standardRooms(boolean forceMax) {
+		if (forceMax) return 9;
+		//8 to 9, average 8.33
+		return 8+Random.chances(new float[]{2, 1});
 	}
 	
 	@Override
-	protected int specialRooms() {
+	protected int specialRooms(boolean forceMax) {
+		if (forceMax) return 3;
 		//2 to 3, average 2.5
 		return 2 + Random.chances(new float[]{1, 1});
 	}
@@ -109,12 +107,12 @@ public class HallsLevel extends RegularLevel {
 	
 	@Override
 	public String tilesTex() {
-		return Assets.TILES_HALLS;
+		return Assets.Environment.TILES_HALLS;
 	}
 	
 	@Override
 	public String waterTex() {
-		return Assets.WATER_HALLS;
+		return Assets.Environment.WATER_HALLS;
 	}
 	
 	@Override
@@ -122,7 +120,7 @@ public class HallsLevel extends RegularLevel {
 		return new Class[]{
 				FrostTrap.class, StormTrap.class, CorrosionTrap.class, BlazingTrap.class, DisintegrationTrap.class,
 				RockfallTrap.class, FlashingTrap.class, GuardianTrap.class, WeakeningTrap.class,
-				DisarmingTrap.class, SummoningTrap.class, WarpingTrap.class, CursingTrap.class, GrimTrap.class, PitfallTrap.class, DistortionTrap.class };
+				DisarmingTrap.class, SummoningTrap.class, WarpingTrap.class, CursingTrap.class, GrimTrap.class, PitfallTrap.class, DistortionTrap.class, GatewayTrap.class, GeyserTrap.class };
 	}
 
 	@Override
@@ -130,7 +128,7 @@ public class HallsLevel extends RegularLevel {
 		return new float[]{
 				4, 4, 4, 4, 4,
 				2, 2, 2, 2,
-				1, 1, 1, 1, 1, 1, 1 };
+				1, 1, 1, 1, 1, 1, 1, 1, 1 };
 	}
 	
 	@Override

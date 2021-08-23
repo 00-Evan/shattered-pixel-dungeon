@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -40,7 +41,7 @@ public class Slime extends Mob {
 		EXP = 4;
 		maxLvl = 9;
 		
-		lootChance = 0.1f;
+		lootChance = 0.2f; //by default, see rollToDropLoot()
 	}
 	
 	@Override
@@ -61,9 +62,18 @@ public class Slime extends Mob {
 		}
 		super.damage(dmg, src);
 	}
+
+	@Override
+	public void rollToDropLoot() {
+		//each drop makes future drops 1/3 as likely
+		// so loot chance looks like: 1/5, 1/15, 1/45, 1/135, etc.
+		lootChance *= Math.pow(1/3f, Dungeon.LimitedDrops.SLIME_WEP.count);
+		super.rollToDropLoot();
+	}
 	
 	@Override
 	protected Item createLoot() {
+		Dungeon.LimitedDrops.SLIME_WEP.count++;
 		Generator.Category c = Generator.Category.WEP_T2;
 		MeleeWeapon w = (MeleeWeapon) Reflection.newInstance(c.classes[Random.chances(c.probs)]);
 		w.random();

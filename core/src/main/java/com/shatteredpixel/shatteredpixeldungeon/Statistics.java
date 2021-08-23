@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -86,6 +86,8 @@ public class Statistics {
 	private static final String SPAWNERS	= "spawnersAlive";
 	
 	private static final String DURATION	= "duration";
+
+	private static final String NO_KILLING_QUALIFIED	= "qualifiedForNoKilling";
 	
 	private static final String AMULET		= "amuletObtained";
 	
@@ -105,6 +107,8 @@ public class Statistics {
 		bundle.put( SPAWNERS,	spawnersAlive );
 		
 		bundle.put( DURATION,	duration );
+
+		bundle.put(NO_KILLING_QUALIFIED, qualifiedForNoKilling);
 		
 		bundle.put( AMULET,		amuletObtained );
 	}
@@ -125,6 +129,8 @@ public class Statistics {
 		spawnersAlive   = bundle.getInt( SPAWNERS );
 		
 		duration		= bundle.getFloat( DURATION );
+
+		qualifiedForNoKilling = bundle.getBoolean( NO_KILLING_QUALIFIED );
 		
 		amuletObtained	= bundle.getBoolean( AMULET );
 	}

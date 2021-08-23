@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,15 +27,21 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRo
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.Tilemap;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 public abstract class GooBossRoom extends StandardRoom {
-	
+
 	@Override
 	public float[] sizeCatProbs() {
 		return new float[]{0, 1, 0};
 	}
-	
+
+	@Override
+	public boolean canMerge(Level l, Point p, int mergeTerrain) {
+		return false;
+	}
+
 	public static GooBossRoom randomGooRoom(){
 		switch (Random.Int(4)){
 			case 0: default:
@@ -59,7 +65,7 @@ public abstract class GooBossRoom extends StandardRoom {
 	public static class GooNest extends CustomTilemap {
 		
 		{
-			texture = Assets.SEWER_BOSS;
+			texture = Assets.Environment.SEWER_BOSS;
 		}
 		
 		@Override

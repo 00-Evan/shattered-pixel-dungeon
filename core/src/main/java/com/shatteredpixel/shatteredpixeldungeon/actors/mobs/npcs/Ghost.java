@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,8 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.FetidRat;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollTrickster;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GreatCrab;
@@ -65,17 +63,15 @@ public class Ghost extends NPC {
 		
 		state = WANDERING;
 	}
-	
-	public Ghost() {
-		super();
-
-		Sample.INSTANCE.load( Assets.SND_GHOST );
-	}
 
 	@Override
 	protected boolean act() {
-		if (Quest.processed())
+		if (Quest.processed()) {
 			target = Dungeon.hero.pos;
+		}
+		if (Dungeon.level.heroFOV[pos] && !Quest.completed()){
+			Notes.add( Notes.Landmark.GHOST );
+		}
 		return super.act();
 	}
 
@@ -111,7 +107,7 @@ public class Ghost extends NPC {
 	public boolean interact(Char c) {
 		sprite.turnTo( pos, c.pos );
 		
-		Sample.INSTANCE.play( Assets.SND_GHOST );
+		Sample.INSTANCE.play( Assets.Sounds.GHOST );
 
 		if (c != Dungeon.hero){
 			return super.interact(c);
@@ -209,12 +205,16 @@ public class Ghost extends NPC {
 		
 		public static Weapon weapon;
 		public static Armor armor;
+		public static Weapon.Enchantment enchant;
+		public static Armor.Glyph glyph;
 		
 		public static void reset() {
 			spawned = false;
 			
 			weapon = null;
 			armor = null;
+			enchant = null;
+			glyph = null;
 		}
 		
 		private static final String NODE		= "sadGhost";
@@ -226,6 +226,8 @@ public class Ghost extends NPC {
 		private static final String DEPTH		= "depth";
 		private static final String WEAPON		= "weapon";
 		private static final String ARMOR		= "armor";
+		private static final String ENCHANT		= "enchant";
+		private static final String GLYPH		= "glyph";
 		
 		public static void storeInBundle( Bundle bundle ) {
 			
@@ -239,10 +241,15 @@ public class Ghost extends NPC {
 				
 				node.put( GIVEN, given );
 				node.put( DEPTH, depth );
-				node.put( PROCESSED, processed);
+				node.put( PROCESSED, processed );
 				
 				node.put( WEAPON, weapon );
 				node.put( ARMOR, armor );
+
+				if (enchant != null) {
+					node.put(ENCHANT, enchant);
+					node.put(GLYPH, glyph);
+				}
 			}
 			
 			bundle.put( NODE, node );
@@ -262,6 +269,11 @@ public class Ghost extends NPC {
 				
 				weapon	= (Weapon)node.get( WEAPON );
 				armor	= (Armor)node.get( ARMOR );
+
+				if (node.contains(ENCHANT)) {
+					enchant = (Weapon.Enchantment) node.get(ENCHANT);
+					glyph   = (Armor.Glyph) node.get(GLYPH);
+				}
 			} else {
 				reset();
 			}
@@ -286,23 +298,15 @@ public class Ghost extends NPC {
 				depth = Dungeon.depth;
 
 				//50%:tier2, 30%:tier3, 15%:tier4, 5%:tier5
-				float itemTierRoll = Random.Float();
-				int wepTier;
-
-				if (itemTierRoll < 0.5f) {
-					wepTier = 2;
-					armor = new LeatherArmor();
-				} else if (itemTierRoll < 0.8f) {
-					wepTier = 3;
-					armor = new MailArmor();
-				} else if (itemTierRoll < 0.95f) {
-					wepTier = 4;
-					armor = new ScaleArmor();
-				} else {
-					wepTier = 5;
-					armor = new PlateArmor();
+				switch (Random.chances(new float[]{0, 0, 10, 6, 3, 1})){
+					default:
+					case 2: armor = new LeatherArmor(); break;
+					case 3: armor = new MailArmor();    break;
+					case 4: armor = new ScaleArmor();   break;
+					case 5: armor = new PlateArmor();   break;
 				}
-				
+				//50%:tier2, 30%:tier3, 15%:tier4, 5%:tier5
+				int wepTier = Random.chances(new float[]{0, 0, 10, 6, 3, 1});
 				Generator.Category c = Generator.wepTiers[wepTier - 1];
 				weapon = (MeleeWeapon) Reflection.newInstance(c.classes[Random.chances(c.probs)]);
 
@@ -321,10 +325,10 @@ public class Ghost extends NPC {
 				weapon.upgrade(itemLevel);
 				armor.upgrade(itemLevel);
 
-				//10% to be enchanted
+				//10% to be enchanted. We store it separately so enchant status isn't revealed early
 				if (Random.Int(10) == 0){
-					weapon.enchant();
-					armor.inscribe();
+					enchant = Weapon.Enchantment.random();
+					glyph = Armor.Glyph.random();
 				}
 
 			}
@@ -333,7 +337,7 @@ public class Ghost extends NPC {
 		public static void process() {
 			if (spawned && given && !processed && (depth == Dungeon.depth)) {
 				GLog.n( Messages.get(Ghost.class, "find_me") );
-				Sample.INSTANCE.play( Assets.SND_GHOST );
+				Sample.INSTANCE.play( Assets.Sounds.GHOST );
 				processed = true;
 			}
 		}

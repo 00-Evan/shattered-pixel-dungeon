@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,10 +35,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StenchGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StormCloud;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Web;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewTengu;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.watabou.noosa.Image;
 
 public class BlobImmunity extends FlavourBuff {
 	
@@ -52,10 +51,10 @@ public class BlobImmunity extends FlavourBuff {
 	public int icon() {
 		return BuffIndicator.IMMUNITY;
 	}
-	
+
 	@Override
-	public void tintIcon(Image icon) {
-		greyIcon(icon, 5f, cooldown());
+	public float iconFadePercent() {
+		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 	}
 	
 	@Override
@@ -80,8 +79,7 @@ public class BlobImmunity extends FlavourBuff {
 		immunities.add( ToxicGas.class );
 		immunities.add( Web.class );
 
-		immunities.add(NewTengu.FireAbility.FireBlob.class);
-		immunities.add(NewTengu.BombAbility.BombBlob.class);
+		immunities.add(Tengu.FireAbility.FireBlob.class);
 	}
 
 	@Override

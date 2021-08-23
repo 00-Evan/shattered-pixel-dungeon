@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,6 +46,7 @@ public class SPDAction extends GameAction {
 
 	public static final GameAction WAIT        = new SPDAction("wait");
 	public static final GameAction SEARCH      = new SPDAction("search");
+	public static final GameAction REST        = new SPDAction("rest");
 
 	public static final GameAction INVENTORY   = new SPDAction("inventory");
 	public static final GameAction QUICKSLOT_1 = new SPDAction("quickslot_1");
@@ -81,6 +82,7 @@ public class SPDAction extends GameAction {
 
 		defaultBindings.put( Input.Keys.SPACE,       SPDAction.WAIT );
 		defaultBindings.put( Input.Keys.S,           SPDAction.SEARCH );
+		defaultBindings.put( Input.Keys.Z,           SPDAction.REST );
 
 		defaultBindings.put( Input.Keys.I,           SPDAction.INVENTORY );
 		defaultBindings.put( Input.Keys.Q,           SPDAction.QUICKSLOT_1 );
@@ -128,6 +130,10 @@ public class SPDAction extends GameAction {
 	private static final String BINDINGS_FILE = "keybinds.dat";
 
 	public static void loadBindings(){
+
+		if (!KeyBindings.getAllBindings().isEmpty()){
+			return;
+		}
 
 		try {
 			Bundle b = FileUtils.bundleFromFile(BINDINGS_FILE);

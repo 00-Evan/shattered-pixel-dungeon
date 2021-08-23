@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,14 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 
 public class Challenges {
 
@@ -42,10 +34,14 @@ public class Challenges {
 	public static final int SWARM_INTELLIGENCE	= 16;
 	public static final int DARKNESS			= 32;
 	public static final int NO_SCROLLS		    = 64;
+	public static final int CHAMPION_ENEMIES	= 128;
+	public static final int STRONGER_BOSSES 	= 256;
 
-	public static final int MAX_VALUE           = 127;
+	public static final int MAX_VALUE           = 511;
 
 	public static final String[] NAME_IDS = {
+			"champion_enemies",
+			"stronger_bosses",
 			"no_food",
 			"no_armor",
 			"no_healing",
@@ -56,37 +52,21 @@ public class Challenges {
 	};
 
 	public static final int[] MASKS = {
-			NO_FOOD, NO_ARMOR, NO_HEALING, NO_HERBALISM, SWARM_INTELLIGENCE, DARKNESS, NO_SCROLLS
+			CHAMPION_ENEMIES, STRONGER_BOSSES, NO_FOOD, NO_ARMOR, NO_HEALING, NO_HERBALISM, SWARM_INTELLIGENCE, DARKNESS, NO_SCROLLS
 	};
 
+	public static int activeChallenges(){
+		int chCount = 0;
+		for (int ch : Challenges.MASKS){
+			if ((Dungeon.challenges & ch) != 0) chCount++;
+		}
+		return chCount;
+	}
+
 	public static boolean isItemBlocked( Item item ){
-		if (Dungeon.isChallenged(NO_FOOD)){
-			if (item instanceof Food && !(item instanceof SmallRation)) {
-				return true;
-			} else if (item instanceof HornOfPlenty){
-				return true;
-			}
-		}
 
-		if (Dungeon.isChallenged(NO_ARMOR)){
-			if (item instanceof Armor && !(item instanceof ClothArmor || item instanceof ClassArmor)) {
-				return true;
-			}
-		}
-
-		if (Dungeon.isChallenged(NO_HEALING)){
-			if (item instanceof PotionOfHealing){
-				return true;
-			} else if (item instanceof Blandfruit
-					&& ((Blandfruit) item).potionAttrib instanceof PotionOfHealing){
-				return true;
-			}
-		}
-
-		if (Dungeon.isChallenged(NO_HERBALISM)){
-			if (item instanceof Dewdrop) {
-				return true;
-			}
+		if (Dungeon.isChallenged(NO_HERBALISM) && item instanceof Dewdrop){
+			return true;
 		}
 
 		return false;

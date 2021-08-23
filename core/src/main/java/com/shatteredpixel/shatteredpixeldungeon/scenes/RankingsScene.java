@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,8 +58,11 @@ public class RankingsScene extends PixelScene {
 	public void create() {
 		
 		super.create();
-		
-		Music.INSTANCE.play( Assets.THEME, true );
+
+		Music.INSTANCE.playTracks(
+				new String[]{Assets.Music.THEME_1, Assets.Music.THEME_2},
+				new float[]{1, 1},
+				false);
 
 		uiCamera.visible = false;
 		
@@ -93,12 +96,10 @@ public class RankingsScene extends PixelScene {
 			
 			for (Rankings.Record rec : Rankings.INSTANCE.records) {
 				Record row = new Record( pos, pos == Rankings.INSTANCE.lastRecord, rec );
-				float offset =
-						rowHeight <= 14 ?
-								pos %2 == 1?
-										5 :
-										-5
-								: 0;
+				float offset = 0;
+				if (rowHeight <= 14){
+					offset = (pos % 2 == 1) ? 5 : -5;
+				}
 				row.setRect( left+offset, top + pos * rowHeight, w - left * 2, rowHeight );
 				add(row);
 				
@@ -185,8 +186,6 @@ public class RankingsScene extends PixelScene {
 			position.measure();
 			
 			desc.text( Messages.titleCase(rec.desc()) );
-
-			//desc.measure();
 
 			int odd = pos % 2;
 			

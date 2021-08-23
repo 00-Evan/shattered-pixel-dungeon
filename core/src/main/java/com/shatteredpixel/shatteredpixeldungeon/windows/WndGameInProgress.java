@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.StartScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
@@ -46,7 +47,6 @@ import java.util.Locale;
 public class WndGameInProgress extends Window {
 	
 	private static final int WIDTH    = 120;
-	private static final int HEIGHT   = 120;
 	
 	private int GAP	  = 6;
 	
@@ -66,7 +66,7 @@ public class WndGameInProgress extends Window {
 		IconTitle title = new IconTitle();
 		title.icon( HeroSprite.avatar(info.heroClass, info.armorTier) );
 		title.label((Messages.get(this, "title", info.level, className)).toUpperCase(Locale.ENGLISH));
-		title.color(Window.SHPX_COLOR);
+		title.color(Window.TITLE_COLOR);
 		title.setRect( 0, 0, WIDTH, 0 );
 		add(title);
 		
@@ -98,18 +98,20 @@ public class WndGameInProgress extends Window {
 					Game.scene().add( new WndChallenges( info.challenges, false ) );
 				}
 			};
+			btnChallenges.icon(Icons.get(Icons.CHALLENGE_ON));
 			float btnW = btnChallenges.reqWidth() + 2;
-			btnChallenges.setRect( (WIDTH - btnW)/2, pos, btnW , btnChallenges.reqHeight() + 2 );
+			btnChallenges.setRect( (WIDTH - btnW)/2, pos, btnW , 18 );
 			add( btnChallenges );
 			
 			pos = btnChallenges.bottom() + GAP;
 		}
 		
 		pos += GAP;
-		
-		statSlot( Messages.get(this, "str"), info.str );
-		if (info.shld > 0) statSlot( Messages.get(this, "health"), info.hp + "+" + info.shld + "/" + info.ht );
-		else statSlot( Messages.get(this, "health"), (info.hp) + "/" + info.ht );
+
+		if (info.strBonus > 0)  statSlot( Messages.get(this, "str"), info.str + "+" + info.strBonus );
+		else                    statSlot( Messages.get(this, "str"), info.str );
+		if (info.shld > 0)  statSlot( Messages.get(this, "health"), info.hp + "+" + info.shld + "/" + info.ht );
+		else                statSlot( Messages.get(this, "health"), (info.hp) + "/" + info.ht );
 		statSlot( Messages.get(this, "exp"), info.exp + "/" + Hero.maxExp(info.level) );
 		
 		pos += GAP;
@@ -137,7 +139,7 @@ public class WndGameInProgress extends Window {
 			protected void onClick() {
 				super.onClick();
 				
-				ShatteredPixelDungeon.scene().add(new WndOptions(
+				ShatteredPixelDungeon.scene().add(new WndOptions(Icons.get(Icons.WARNING),
 						Messages.get(WndGameInProgress.class, "erase_warn_title"),
 						Messages.get(WndGameInProgress.class, "erase_warn_body"),
 						Messages.get(WndGameInProgress.class, "erase_warn_yes"),
@@ -153,14 +155,16 @@ public class WndGameInProgress extends Window {
 				} );
 			}
 		};
-		
-		cont.setRect(0, HEIGHT - 20, WIDTH/2 -1, 20);
+
+		cont.icon(Icons.get(Icons.ENTER));
+		cont.setRect(0, pos, WIDTH/2 -1, 20);
 		add(cont);
-		
-		erase.setRect(WIDTH/2 + 1, HEIGHT-20, WIDTH/2 - 1, 20);
+
+		erase.icon(Icons.get(Icons.CLOSE));
+		erase.setRect(WIDTH/2 + 1, pos, WIDTH/2 - 1, 20);
 		add(erase);
 		
-		resize(WIDTH, HEIGHT);
+		resize(WIDTH, (int)cont.bottom()+1);
 	}
 	
 	private void statSlot( String label, String value ) {

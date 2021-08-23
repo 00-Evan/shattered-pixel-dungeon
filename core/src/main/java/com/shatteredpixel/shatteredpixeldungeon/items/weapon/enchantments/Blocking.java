@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -70,7 +70,12 @@ public class Blocking extends Weapon.Enchantment {
 		
 		@Override
 		public void tintIcon(Image icon) {
-			icon.tint(0, 0.5f, 1, 0.5f);
+			icon.hardlight(0.5f, 1f, 2f);
+		}
+
+		@Override
+		public float iconFadePercent() {
+			return Math.max(0, (5f - visualcooldown()) / 5f);
 		}
 		
 		@Override

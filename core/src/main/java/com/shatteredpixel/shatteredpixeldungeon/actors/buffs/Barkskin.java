@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
@@ -58,7 +60,7 @@ public class Barkskin extends Buff {
 	
 	public void set( int value, int time ) {
 		//decide whether to override, preferring high value + low interval
-		if (Math.sqrt(interval)*level < Math.sqrt(time)*value) {
+		if (Math.sqrt(interval)*level <= Math.sqrt(time)*value) {
 			level = value;
 			interval = time;
 			spend(time - cooldown() - 1);
@@ -69,7 +71,17 @@ public class Barkskin extends Buff {
 	public int icon() {
 		return BuffIndicator.BARKSKIN;
 	}
-	
+
+	@Override
+	public float iconFadePercent() {
+		if (target instanceof Hero){
+			float max = ((Hero) target).lvl*((Hero) target).pointsInTalent(Talent.BARKSKIN)/2;
+			max = Math.max(max, 2+((Hero) target).lvl/3);
+			return Math.max(0, (max-level)/max);
+		}
+		return 0;
+	}
+
 	@Override
 	public String toString() {
 		return Messages.get(this, "name");
@@ -77,7 +89,7 @@ public class Barkskin extends Buff {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", level, dispTurns(cooldown()+1));
+		return Messages.get(this, "desc", level, dispTurns(visualcooldown()));
 	}
 	
 	private static final String LEVEL	    = "level";

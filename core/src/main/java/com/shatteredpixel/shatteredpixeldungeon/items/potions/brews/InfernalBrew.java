@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,17 +41,16 @@ public class InfernalBrew extends Brew {
 	public void shatter(int cell) {
 		
 		if (Dungeon.level.heroFOV[cell]) {
-			setKnown();
-			
 			splash( cell );
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
+			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
+			Sample.INSTANCE.play( Assets.Sounds.GAS );
 		}
 		
 		GameScene.add( Blob.seed( cell, 1000, Inferno.class ) );
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		//prices of ingredients
 		return quantity * (30 + 40);
 	}

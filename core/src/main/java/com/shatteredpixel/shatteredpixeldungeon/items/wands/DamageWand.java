@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WandEmpower;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
 //for wands that directly damage a target
@@ -41,11 +45,21 @@ public abstract class DamageWand extends Wand{
 	public abstract int max(int lvl);
 
 	public int damageRoll(){
-		return Random.NormalIntRange(min(), max());
+		return damageRoll(buffedLvl());
 	}
 
 	public int damageRoll(int lvl){
-		return Random.NormalIntRange(min(lvl), max(lvl));
+		int dmg = Random.NormalIntRange(min(lvl), max(lvl));
+		WandEmpower emp = Dungeon.hero.buff(WandEmpower.class);
+		if (emp != null){
+			dmg += emp.dmgBoost;
+			emp.left--;
+			if (emp.left <= 0) {
+				emp.detach();
+			}
+			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG, 0.75f, 1.2f);
+		}
+		return dmg;
 	}
 
 	@Override

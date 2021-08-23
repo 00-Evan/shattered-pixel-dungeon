@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,8 +67,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndItem;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -86,23 +86,6 @@ public class Potion extends Item {
 	public static final String AC_CHOOSE = "CHOOSE";
 
 	private static final float TIME_TO_DRINK = 1f;
-
-	protected Integer initials;
-
-	private static final Class<?>[] potions = {
-			PotionOfHealing.class,
-			PotionOfExperience.class,
-			PotionOfToxicGas.class,
-			PotionOfLiquidFlame.class,
-			PotionOfStrength.class,
-			PotionOfParalyticGas.class,
-			PotionOfLevitation.class,
-			PotionOfMindVision.class,
-			PotionOfPurity.class,
-			PotionOfInvisibility.class,
-			PotionOfHaste.class,
-			PotionOfFrost.class
-	};
 
 	private static final HashMap<String, Integer> colors = new HashMap<String, Integer>() {
 		{
@@ -162,7 +145,7 @@ public class Potion extends Item {
 	
 	@SuppressWarnings("unchecked")
 	public static void initColors() {
-		handler = new ItemStatusHandler<>( (Class<? extends Potion>[])potions, colors );
+		handler = new ItemStatusHandler<>( (Class<? extends Potion>[])Generator.Category.POTION.classes, colors );
 	}
 	
 	public static void save( Bundle bundle ) {
@@ -187,7 +170,7 @@ public class Potion extends Item {
 	
 	@SuppressWarnings("unchecked")
 	public static void restore( Bundle bundle ) {
-		handler = new ItemStatusHandler<>( (Class<? extends Potion>[])potions, colors, bundle );
+		handler = new ItemStatusHandler<>( (Class<? extends Potion>[])Generator.Category.POTION.classes, colors, bundle );
 	}
 	
 	public Potion() {
@@ -248,14 +231,15 @@ public class Potion extends Item {
 		
 		if (action.equals( AC_CHOOSE )){
 			
-			GameScene.show(new WndItem(null, this, true) );
+			GameScene.show(new WndUseItem(null, this) );
 			
 		} else if (action.equals( AC_DRINK )) {
 			
 			if (isKnown() && mustThrowPots.contains(getClass())) {
 				
 					GameScene.show(
-						new WndOptions( Messages.get(Potion.class, "harmful"),
+						new WndOptions(new ItemSprite(this),
+								Messages.get(Potion.class, "harmful"),
 								Messages.get(Potion.class, "sure_drink"),
 								Messages.get(Potion.class, "yes"), Messages.get(Potion.class, "no") ) {
 							@Override
@@ -282,7 +266,8 @@ public class Potion extends Item {
 				&& !canThrowPots.contains(this.getClass())) {
 		
 			GameScene.show(
-				new WndOptions( Messages.get(Potion.class, "beneficial"),
+				new WndOptions(new ItemSprite(this),
+						Messages.get(Potion.class, "beneficial"),
 						Messages.get(Potion.class, "sure_throw"),
 						Messages.get(Potion.class, "yes"), Messages.get(Potion.class, "no") ) {
 					@Override
@@ -307,7 +292,7 @@ public class Potion extends Item {
 		hero.busy();
 		apply( hero );
 		
-		Sample.INSTANCE.play( Assets.SND_DRINK );
+		Sample.INSTANCE.play( Assets.Sounds.DRINK );
 		
 		hero.sprite.operate( hero.pos );
 	}
@@ -333,7 +318,7 @@ public class Potion extends Item {
 	public void shatter( int cell ) {
 		if (Dungeon.level.heroFOV[cell]) {
 			GLog.i( Messages.get(Potion.class, "shatter") );
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
+			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 			splash( cell );
 		}
 	}
@@ -368,9 +353,12 @@ public class Potion extends Item {
 	
 	@Override
 	public Item identify() {
+		super.identify();
 
-		setKnown();
-		return super.identify();
+		if (!isKnown()) {
+			setKnown();
+		}
+		return this;
 	}
 	
 	@Override
@@ -381,10 +369,6 @@ public class Potion extends Item {
 	@Override
 	public String info() {
 		return isKnown() ? desc() : Messages.get(this, "unknown_desc");
-	}
-
-	public Integer initials(){
-		return isKnown() ? initials : null;
 	}
 	
 	@Override
@@ -406,7 +390,7 @@ public class Potion extends Item {
 	}
 	
 	public static boolean allKnown() {
-		return handler.known().size() == potions.length;
+		return handler.known().size() == Generator.Category.POTION.classes.length;
 	}
 	
 	protected int splashColor(){
@@ -422,7 +406,7 @@ public class Potion extends Item {
 		final int color = splashColor();
 
 		Char ch = Actor.findChar(cell);
-		if (ch != null) {
+		if (ch != null && ch.alignment == Char.Alignment.ALLY) {
 			Buff.detach(ch, Burning.class);
 			Buff.detach(ch, Ooze.class);
 			Splash.at( ch.sprite.center(), color, 5 );
@@ -432,7 +416,7 @@ public class Potion extends Item {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return 30 * quantity;
 	}
 	
@@ -508,12 +492,12 @@ public class Potion extends Item {
 				}
 			}
 			
-			Item result;
+			Potion result;
 			
 			if ( (seeds.size() == 2 && Random.Int(4) == 0)
 					|| (seeds.size() == 3 && Random.Int(2) == 0)) {
 				
-				result = Generator.random( Generator.Category.POTION );
+				result = (Potion) Generator.randomUsingDefaults( Generator.Category.POTION );
 				
 			} else {
 				result = Reflection.newInstance(types.get(Random.element(ingredients).getClass()));
@@ -523,11 +507,12 @@ public class Potion extends Item {
 			if (seeds.size() == 1){
 				result.identify();
 			}
-			
+
 			while (result instanceof PotionOfHealing
 					&& (Dungeon.isChallenged(Challenges.NO_HEALING)
 					|| Random.Int(10) < Dungeon.LimitedDrops.COOKING_HP.count)) {
-				result = Generator.random(Generator.Category.POTION);
+
+				result = (Potion) Generator.randomUsingDefaults(Generator.Category.POTION);
 			}
 			
 			if (result instanceof PotionOfHealing) {
@@ -543,8 +528,10 @@ public class Potion extends Item {
 		@Override
 		public Item sampleOutput(ArrayList<Item> ingredients) {
 			return new WndBag.Placeholder(ItemSpriteSheet.POTION_HOLDER){
-				{
-					name = Messages.get(SeedToPotion.class, "name");
+
+				@Override
+				public String name() {
+					return Messages.get(Potion.SeedToPotion.class, "name");
 				}
 				
 				@Override

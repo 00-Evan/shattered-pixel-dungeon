@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,13 +21,15 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Gauntlet extends MeleeWeapon {
 	
 	{
 		image = ItemSpriteSheet.GAUNTLETS;
+		hitSound = Assets.Sounds.HIT_CRUSH;
+		hitSoundPitch = 1.2f;
 		
 		tier = 5;
 		DLY = 0.5f; //2x speed
@@ -38,9 +40,5 @@ public class Gauntlet extends MeleeWeapon {
 		return  Math.round(2.5f*(tier+1)) +     //15 base, down from 30
 				lvl*Math.round(0.5f*(tier+1));  //+3 per level, down from +6
 	}
-	
-	@Override
-	public int defenseFactor( Char owner ) {
-		return 4;	//4 extra defence
-	}
+
 }

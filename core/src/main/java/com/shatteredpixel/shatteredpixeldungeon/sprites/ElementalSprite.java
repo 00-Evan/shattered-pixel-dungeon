@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ public abstract class ElementalSprite extends MobSprite {
 		
 		int c = texOffset();
 		
-		texture( Assets.ELEMENTAL );
+		texture( Assets.Sprites.ELEMENTAL );
 		
 		TextureFilm frames = new TextureFilm( texture, 12, 14 );
 		
@@ -120,7 +120,7 @@ public abstract class ElementalSprite extends MobSprite {
 						((Elemental)ch).onZapComplete();
 					}
 				} );
-		Sample.INSTANCE.play( Assets.SND_ZAP );
+		Sample.INSTANCE.play( Assets.Sounds.ZAP );
 	}
 	
 	@Override
@@ -234,15 +234,9 @@ public abstract class ElementalSprite extends MobSprite {
 	}
 	
 	public static class Chaos extends ElementalSprite {
-		
-		//no bolt, overrides zap instead
-		@Override
-		public void zap( int cell ) {
-			turnTo( ch.pos , cell );
-			play( zap );
-			
-			((Elemental)ch).onZapComplete();
-			Sample.INSTANCE.play( Assets.SND_ZAP );
+
+		{
+			boltType = MagicMissile.RAINBOW;
 		}
 		
 		@Override

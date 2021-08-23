@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ public class WndInfoTrap extends WndTitledMessage {
 	public WndInfoTrap(Trap trap) {
 
 		super(TerrainFeaturesTilemap.tile( trap.pos, Dungeon.level.map[trap.pos]),
-				Messages.titleCase(trap.name),
+				Messages.titleCase(trap.name()),
 				(!trap.active ? Messages.get(WndInfoTrap.class, "inactive") + "\n\n" : "") + trap.desc());
 
 	}

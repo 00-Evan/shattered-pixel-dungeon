@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -108,7 +108,7 @@ public abstract class OptionSlider extends Component {
 			protected void onPointerDown( PointerEvent event ) {
 				pressed = true;
 				PointF p = camera().screenToCamera((int) event.current.x, (int) event.current.y);
-				sliderNode.x = GameMath.gate(sliderBG.x-2, p.x, sliderBG.x+sliderBG.width()-2);
+				sliderNode.x = GameMath.gate(sliderBG.x-2, p.x - sliderNode.width()/2, sliderBG.x+sliderBG.width()-2);
 				sliderNode.brightness(1.5f);
 			}
 
@@ -116,12 +116,13 @@ public abstract class OptionSlider extends Component {
 			protected void onPointerUp( PointerEvent event ) {
 				if (pressed) {
 					PointF p = camera().screenToCamera((int) event.current.x, (int) event.current.y);
-					sliderNode.x = GameMath.gate(sliderBG.x - 2, p.x, sliderBG.x + sliderBG.width() - 2);
+					sliderNode.x = GameMath.gate(sliderBG.x - 2, p.x - sliderNode.width()/2, sliderBG.x + sliderBG.width() - 2);
 					sliderNode.resetColor();
 					
 					//sets the selected value
-					selectedVal = minVal + Math.round(sliderNode.x / tickDist);
-					sliderNode.x = (int) (x + tickDist * (selectedVal - minVal));
+					selectedVal = minVal + Math.round((sliderNode.x - x) / tickDist);
+					sliderNode.x = x + tickDist * (selectedVal - minVal);
+					PixelScene.align(sliderNode);
 					onChange();
 					pressed = false;
 				}
@@ -131,7 +132,7 @@ public abstract class OptionSlider extends Component {
 			protected void onDrag( PointerEvent event ) {
 				if (pressed) {
 					PointF p = camera().screenToCamera((int) event.current.x, (int) event.current.y);
-					sliderNode.x = GameMath.gate(sliderBG.x - 2, p.x, sliderBG.x + sliderBG.width() - 2);
+					sliderNode.x = GameMath.gate(sliderBG.x - 2, p.x - sliderNode.width()/2, sliderBG.x + sliderBG.width() - 2);
 				}
 			}
 		};
@@ -152,7 +153,8 @@ public abstract class OptionSlider extends Component {
 		tickDist = sliderBG.width()/(maxVal - minVal);
 		for (int i = 0; i < sliderTicks.length; i++){
 			sliderTicks[i].y = sliderBG.y-5;
-			sliderTicks[i].x = (int)(x + 2 + (tickDist*i));
+			sliderTicks[i].x = x + 2 + (tickDist*i);
+			PixelScene.align(sliderTicks[i]);
 		}
 
 		minTxt.setPos(
@@ -164,8 +166,9 @@ public abstract class OptionSlider extends Component {
 				sliderBG.y-6-minTxt.height()
 		);
 
-		sliderNode.x = (int)(x + tickDist*(selectedVal-minVal));
+		sliderNode.x = x + tickDist*(selectedVal-minVal);
 		sliderNode.y = sliderBG.y-4;
+		PixelScene.align(sliderNode);
 
 		pointerArea.x = x;
 		pointerArea.y = y;

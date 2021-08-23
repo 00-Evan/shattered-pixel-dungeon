@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ public class LootIndicator extends Tag {
 	@Override
 	protected void createChildren() {
 		super.createChildren();
-		
+
 		slot = new ItemSlot() {
 			protected void onClick() {
 				if (Dungeon.hero.handle(Dungeon.hero.pos)){
@@ -59,7 +59,7 @@ public class LootIndicator extends Tag {
 				return SPDAction.TAG_LOOT;
 			}
 		};
-		slot.showParams( true, false, false );
+		slot.showExtraInfo( false );
 		add( slot );
 	}
 	
@@ -67,7 +67,7 @@ public class LootIndicator extends Tag {
 	protected void layout() {
 		super.layout();
 		
-		slot.setRect( x + 2, y + 3, width - 2, height - 6 );
+		slot.setRect( x + 2, y + 3, width - 3, height - 6 );
 	}
 	
 	@Override
@@ -78,7 +78,7 @@ public class LootIndicator extends Tag {
 			if (heap != null) {
 				
 				Item item =
-					heap.type == Heap.Type.CHEST || heap.type == Heap.Type.MIMIC ? ItemSlot.CHEST :
+					heap.type == Heap.Type.CHEST ? ItemSlot.CHEST :
 					heap.type == Heap.Type.LOCKED_CHEST ? ItemSlot.LOCKED_CHEST :
 					heap.type == Heap.Type.CRYSTAL_CHEST ? ItemSlot.CRYSTAL_CHEST :
 					heap.type == Heap.Type.TOMB ? ItemSlot.TOMB :

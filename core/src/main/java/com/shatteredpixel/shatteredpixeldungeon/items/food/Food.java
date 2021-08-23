@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,15 +23,15 @@ package com.shatteredpixel.shatteredpixeldungeon.items.food;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -46,11 +46,12 @@ public class Food extends Item {
 	public static final String AC_EAT	= "EAT";
 	
 	public float energy = Hunger.HUNGRY;
-	public String message = Messages.get(this, "eat_msg");
 	
 	{
 		stackable = true;
 		image = ItemSpriteSheet.RATION;
+
+		defaultAction = AC_EAT;
 
 		bones = true;
 	}
@@ -72,43 +73,39 @@ public class Food extends Item {
 			detach( hero.belongings.backpack );
 			
 			satisfy(hero);
-			GLog.i( message );
-			
-			foodProc( hero );
+			GLog.i( Messages.get(this, "eat_msg") );
 			
 			hero.sprite.operate( hero.pos );
 			hero.busy();
 			SpellSprite.show( hero, SpellSprite.FOOD );
-			Sample.INSTANCE.play( Assets.SND_EAT );
+			Sample.INSTANCE.play( Assets.Sounds.EAT );
 			
-			hero.spend( TIME_TO_EAT );
+			hero.spend( eatingTime() );
+
+			Talent.onFoodEaten(hero, energy, this);
 			
 			Statistics.foodEaten++;
 			Badges.validateFoodEaten();
 			
 		}
 	}
-	
-	protected void satisfy( Hero hero ){
-		Buff.affect(hero, Hunger.class).satisfy( energy );
+
+	protected float eatingTime(){
+		if (Dungeon.hero.hasTalent(Talent.IRON_STOMACH)
+			|| Dungeon.hero.hasTalent(Talent.ENERGIZING_MEAL)
+			|| Dungeon.hero.hasTalent(Talent.MYSTICAL_MEAL)
+			|| Dungeon.hero.hasTalent(Talent.INVIGORATING_MEAL)){
+			return TIME_TO_EAT - 2;
+		} else {
+			return TIME_TO_EAT;
+		}
 	}
 	
-	public static void foodProc( Hero hero ){
-		switch (hero.heroClass) {
-			case WARRIOR:
-				if (hero.HP < hero.HT) {
-					hero.HP = Math.min( hero.HP + 5, hero.HT );
-					hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
-				}
-				break;
-			case MAGE:
-				//1 charge
-				Buff.affect( hero, Recharging.class, 4f );
-				ScrollOfRecharging.charge( hero );
-				break;
-			case ROGUE:
-			case HUNTRESS:
-				break;
+	protected void satisfy( Hero hero ){
+		if (Dungeon.isChallenged(Challenges.NO_FOOD)){
+			Buff.affect(hero, Hunger.class).satisfy(energy/3f);
+		} else {
+			Buff.affect(hero, Hunger.class).satisfy(energy);
 		}
 	}
 	
@@ -123,7 +120,7 @@ public class Food extends Item {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return 10 * quantity;
 	}
 }

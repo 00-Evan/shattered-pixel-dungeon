@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,6 +62,21 @@ public class Splash {
 		FACTORY.dir = dir;
 		FACTORY.cone = cone;
 		emitter.burst( FACTORY, n );
+	}
+
+	public static void at( PointF p, final float dir, final float cone, final int color, int n, float interval ) {
+
+		if (n <= 0) {
+			return;
+		}
+
+		Emitter emitter = GameScene.emitter();
+		emitter.pos( p );
+
+		FACTORY.color = color;
+		FACTORY.dir = dir;
+		FACTORY.cone = cone;
+		emitter.start( FACTORY, interval, n );
 	}
 	
 	private static final SplashFactory FACTORY = new SplashFactory();

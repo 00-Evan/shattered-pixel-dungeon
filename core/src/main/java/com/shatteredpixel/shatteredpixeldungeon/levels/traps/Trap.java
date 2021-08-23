@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,8 +51,6 @@ public abstract class Trap implements Bundlable {
 	public static final int CROSSHAIR   = 5;
 	public static final int LARGE_DOT   = 6;
 
-	public String name = Messages.get(this, "name");
-
 	public int color;
 	public int shape;
 
@@ -60,9 +58,12 @@ public abstract class Trap implements Bundlable {
 
 	public boolean visible;
 	public boolean active = true;
+	public boolean disarmedByActivation = true;
 	
 	public boolean canBeHidden = true;
 	public boolean canBeSearched = true;
+
+	public boolean avoidsHallways = false; //whether this trap should avoid being placed in hallways
 
 	public Trap set(int pos){
 		this.pos = pos;
@@ -88,9 +89,9 @@ public abstract class Trap implements Bundlable {
 	public void trigger() {
 		if (active) {
 			if (Dungeon.level.heroFOV[pos]) {
-				Sample.INSTANCE.play(Assets.SND_TRAP);
+				Sample.INSTANCE.play(Assets.Sounds.TRAP);
 			}
-			disarm();
+			if (disarmedByActivation) disarm();
 			reveal();
 			activate();
 		}
@@ -101,6 +102,14 @@ public abstract class Trap implements Bundlable {
 	public void disarm(){
 		active = false;
 		Dungeon.level.disarmTrap(pos);
+	}
+
+	public String name(){
+		return Messages.get(this, "name");
+	}
+
+	public String desc() {
+		return Messages.get(this, "desc");
 	}
 
 	private static final String POS	= "pos";
@@ -121,9 +130,5 @@ public abstract class Trap implements Bundlable {
 		bundle.put( POS, pos );
 		bundle.put( VISIBLE, visible );
 		bundle.put( ACTIVE, active );
-	}
-
-	public String desc() {
-		return Messages.get(this, "desc");
 	}
 }

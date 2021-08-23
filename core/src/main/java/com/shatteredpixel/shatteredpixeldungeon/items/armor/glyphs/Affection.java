@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,10 +44,8 @@ public class Affection extends Glyph {
 		// lvl 1 ~ 19%
 		// lvl 2 ~ 23%
 		if (Random.Int( level + 20 ) >= 17) {
-			
-			int duration = Random.IntRange( 8, 12 );
 
-			Buff.affect( attacker, Charm.class, duration ).object = defender.id();
+			Buff.affect( attacker, Charm.class, Charm.DURATION ).object = defender.id();
 			attacker.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
 
 		}

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,74 +25,51 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 
 public class ScrollOfRetribution extends Scroll {
 
 	{
-		initials = 4;
+		icon = ItemSpriteSheet.Icons.SCROLL_RETRIB;
 	}
 	
 	@Override
 	public void doRead() {
 		
-		GameScene.flash( 0xFFFFFF );
+		GameScene.flash( 0x80FFFFFF );
 		
 		//scales from 0x to 1x power, maxing at ~10% HP
 		float hpPercent = (curUser.HT - curUser.HP)/(float)(curUser.HT);
 		float power = Math.min( 4f, 4.45f*hpPercent);
 		
-		Sample.INSTANCE.play( Assets.SND_BLAST );
-		Invisibility.dispel();
+		Sample.INSTANCE.play( Assets.Sounds.BLAST );
 		
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 			if (Dungeon.level.heroFOV[mob.pos]) {
 				//deals 10%HT, plus 0-90%HP based on scaling
 				mob.damage(Math.round(mob.HT/10f + (mob.HP * power * 0.225f)), this);
 				if (mob.isAlive()) {
-					Buff.prolong(mob, Blindness.class, Math.round(6 + power));
+					Buff.prolong(mob, Blindness.class, Blindness.DURATION);
 				}
 			}
 		}
 		
 		Buff.prolong(curUser, Weakness.class, Weakness.DURATION);
-		Buff.prolong(curUser, Blindness.class, Math.round(6 + power));
+		Buff.prolong(curUser, Blindness.class, Blindness.DURATION);
 		Dungeon.observe();
-		
-		setKnown();
+
+		identify();
 		
 		readAnimation();
 		
 	}
 	
 	@Override
-	public void empoweredRead() {
-		GameScene.flash( 0xFFFFFF );
-		
-		Sample.INSTANCE.play( Assets.SND_BLAST );
-		Invisibility.dispel();
-		
-		//scales from 3x to 5x power, maxing at ~20% HP
-		float hpPercent = (curUser.HT - curUser.HP)/(float)(curUser.HT);
-		float power = Math.min( 5f, 3f + 2.5f*hpPercent);
-		
-		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-			if (Dungeon.level.heroFOV[mob.pos]) {
-				mob.damage(Math.round(mob.HP * power/5f), this);
-			}
-		}
-		
-		setKnown();
-		
-		readAnimation();
-	}
-	
-	@Override
-	public int price() {
-		return isKnown() ? 40 * quantity : super.price();
+	public int value() {
+		return isKnown() ? 40 * quantity : super.value();
 	}
 }

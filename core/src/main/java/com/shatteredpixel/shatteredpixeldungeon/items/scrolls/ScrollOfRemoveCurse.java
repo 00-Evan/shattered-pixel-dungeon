@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,9 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
@@ -33,29 +33,35 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
-import com.watabou.noosa.audio.Sample;
 
 public class ScrollOfRemoveCurse extends InventoryScroll {
 
 	{
-		initials = 7;
-		mode = WndBag.Mode.UNCURSABLE;
+		icon = ItemSpriteSheet.Icons.SCROLL_REMCURSE;
+		preferredBag = Belongings.Backpack.class;
 	}
-	
+
 	@Override
-	public void empoweredRead() {
-		for (Item item : curUser.belongings){
-			if (item.cursed){
-				item.cursedKnown = true;
-			}
-		}
-		Sample.INSTANCE.play( Assets.SND_READ );
-		Invisibility.dispel();
-		doRead();
+	protected boolean usableOnItem(Item item) {
+		return uncursable(item);
 	}
-	
+
+	public static boolean uncursable( Item item ){
+		if (item.isEquipped(Dungeon.hero) && Dungeon.hero.buff(Degrade.class) != null) {
+			return true;
+		} if ((item instanceof EquipableItem || item instanceof Wand) && ((!item.isIdentified() && !item.cursedKnown) || item.cursed)){
+			return true;
+		} else if (item instanceof Weapon){
+			return ((Weapon)item).hasCurseEnchant();
+		} else if (item instanceof Armor){
+			return ((Armor)item).hasCurseGlyph();
+		} else {
+			return false;
+		}
+	}
+
 	@Override
 	protected void onItemSelected(Item item) {
 		new Flare( 6, 32 ).show( curUser.sprite, 2f ) ;
@@ -110,20 +116,8 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 		return procced;
 	}
 	
-	public static boolean uncursable( Item item ){
-		if ((item instanceof EquipableItem || item instanceof Wand) && (!item.isIdentified() || item.cursed)){
-			return true;
-		} else if (item instanceof Weapon){
-			return ((Weapon)item).hasCurseEnchant();
-		} else if (item instanceof Armor){
-			return ((Armor)item).hasCurseGlyph();
-		} else {
-			return false;
-		}
-	}
-	
 	@Override
-	public int price() {
-		return isKnown() ? 30 * quantity : super.price();
+	public int value() {
+		return isKnown() ? 30 * quantity : super.value();
 	}
 }

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
 
 public class SegmentedRoom extends StandardRoom {
-	
+
 	@Override
 	public int minWidth() {
 		return Math.max(super.minWidth(), 7);
@@ -44,7 +44,7 @@ public class SegmentedRoom extends StandardRoom {
 	public float[] sizeCatProbs() {
 		return new float[]{9, 3, 1};
 	}
-	
+
 	@Override
 	public void paint( Level level ) {
 		Painter.fill( level, this, Terrain.WALL );

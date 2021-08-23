@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ElementalSprite;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -63,7 +62,7 @@ public abstract class Elemental extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 16, 26 );
+		return Random.NormalIntRange( 20, 25 );
 	}
 	
 	@Override
@@ -98,7 +97,7 @@ public abstract class Elemental extends Mob {
 	
 	protected boolean doAttack( Char enemy ) {
 		
-		if (Dungeon.level.adjacent( pos, enemy.pos )) {
+		if (Dungeon.level.adjacent( pos, enemy.pos ) || rangedCooldown > 0) {
 			
 			return super.doAttack( enemy );
 			
@@ -189,7 +188,7 @@ public abstract class Elemental extends Mob {
 		protected void meleeProc( Char enemy, int damage ) {
 			if (Random.Int( 2 ) == 0 && !Dungeon.level.water[enemy.pos]) {
 				Buff.affect( enemy, Burning.class ).reignite( enemy );
-				Splash.at( enemy.sprite.center(), sprite.blood(), 5);
+				if (enemy.sprite.visible) Splash.at( enemy.sprite.center(), sprite.blood(), 5);
 			}
 		}
 		
@@ -198,7 +197,7 @@ public abstract class Elemental extends Mob {
 			if (!Dungeon.level.water[enemy.pos]) {
 				Buff.affect( enemy, Burning.class ).reignite( enemy, 4f );
 			}
-			Splash.at( enemy.sprite.center(), sprite.blood(), 5);
+			if (enemy.sprite.visible) Splash.at( enemy.sprite.center(), sprite.blood(), 5);
 		}
 	}
 	
@@ -209,16 +208,19 @@ public abstract class Elemental extends Mob {
 			spriteClass = ElementalSprite.NewbornFire.class;
 			
 			HT = 60;
-			HP = HT/2; //32
+			HP = HT/2; //30
 			
 			defenseSkill = 12;
 			
 			EXP = 7;
 			
-			loot = new Embers();
-			lootChance = 1f;
-			
 			properties.add(Property.MINIBOSS);
+		}
+
+		@Override
+		public void die(Object cause) {
+			super.die(cause);
+			Dungeon.level.drop( new Embers(), pos ).sprite.drop();
 		}
 
 		@Override
@@ -245,14 +247,14 @@ public abstract class Elemental extends Mob {
 		protected void meleeProc( Char enemy, int damage ) {
 			if (Random.Int( 3 ) == 0 || Dungeon.level.water[enemy.pos]) {
 				Freezing.freeze( enemy.pos );
-				Splash.at( enemy.sprite.center(), sprite.blood(), 5);
+				if (enemy.sprite.visible) Splash.at( enemy.sprite.center(), sprite.blood(), 5);
 			}
 		}
 		
 		@Override
 		protected void rangedProc( Char enemy ) {
 			Freezing.freeze( enemy.pos );
-			Splash.at( enemy.sprite.center(), sprite.blood(), 5);
+			if (enemy.sprite.visible) Splash.at( enemy.sprite.center(), sprite.blood(), 5);
 		}
 	}
 	
@@ -280,16 +282,23 @@ public abstract class Elemental extends Mob {
 			for (Char ch : affected) {
 				ch.damage( Math.round( damage * 0.4f ), this );
 			}
-			
-			sprite.parent.addToFront( new Lightning( arcs, null ) );
-			Sample.INSTANCE.play( Assets.SND_LIGHTNING );
+
+			boolean visible = sprite.visible || enemy.sprite.visible;
+			for (Char ch : affected){
+				if (ch.sprite.visible) visible = true;
+			}
+
+			if (visible) {
+				sprite.parent.addToFront(new Lightning(arcs, null));
+				Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);
+			}
 		}
 		
 		@Override
 		protected void rangedProc( Char enemy ) {
-			Buff.affect( enemy, Blindness.class, 5f );
+			Buff.affect( enemy, Blindness.class, Blindness.DURATION/2f );
 			if (enemy == Dungeon.hero) {
-				GameScene.flash(0xFFFFFF);
+				GameScene.flash(0x80FFFFFF);
 			}
 		}
 	}
@@ -305,22 +314,12 @@ public abstract class Elemental extends Mob {
 		
 		@Override
 		protected void meleeProc( Char enemy, int damage ) {
-			CursedWand.cursedZap( null, this, new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT ), new Callback() {
-				@Override
-				public void call() {
-					next();
-				}
-			} );
+			CursedWand.cursedEffect(null, this, enemy);
 		}
 		
 		@Override
 		protected void rangedProc( Char enemy ) {
-			CursedWand.cursedZap( null, this, new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT ), new Callback() {
-				@Override
-				public void call() {
-					next();
-				}
-			} );
+			CursedWand.cursedEffect(null, this, enemy);
 		}
 	}
 	

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,7 +55,7 @@ public class PillarsRoom extends StandardRoom {
 		int minDim = Math.min(width(), height());
 		
 		//2 pillars
-		if (minDim == 7 || Random.Int(2) == 0){
+		if (minDim == 7 || (sizeCat == SizeCategory.NORMAL && Random.Int(2) == 0)){
 			
 			int pillarInset = minDim >= 11 ? 2 : 1;
 			int pillarSize = ((minDim-3)/2) - pillarInset;

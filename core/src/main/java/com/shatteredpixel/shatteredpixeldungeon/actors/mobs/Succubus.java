@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,7 +68,7 @@ public class Succubus extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 22, 30 );
+		return Random.NormalIntRange( 25, 30 );
 	}
 	
 	@Override
@@ -83,13 +83,18 @@ public class Succubus extends Mob {
 			} else {
 				HP += 5 + damage;
 			}
-			sprite.emitter().burst( Speck.factory( Speck.HEALING ), 2 );
-			Sample.INSTANCE.play( Assets.SND_CHARMS );
+			if (Dungeon.level.heroFOV[pos]) {
+				sprite.emitter().burst( Speck.factory( Speck.HEALING ), 2 );
+				Sample.INSTANCE.play( Assets.Sounds.CHARMS );
+			}
 		} else if (Random.Int( 3 ) == 0) {
-			//attack will reduce by 5 turns, so effectively 3-4 turns
-			Buff.affect( enemy, Charm.class, Random.IntRange( 3, 4 ) + 5 ).object = id();
-			enemy.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
-			Sample.INSTANCE.play( Assets.SND_CHARMS );
+			Charm c = Buff.affect( enemy, Charm.class, Charm.DURATION/2f );
+			c.object = id();
+			c.ignoreNextHit = true; //so that the -5 duration from succubus hit is ignored
+			if (Dungeon.level.heroFOV[enemy.pos]) {
+				enemy.sprite.centerEmitter().start(Speck.factory(Speck.HEART), 0.2f, 5);
+				Sample.INSTANCE.play(Assets.Sounds.CHARMS);
+			}
 		}
 		
 		return damage;
@@ -120,11 +125,13 @@ public class Succubus extends Mob {
 		if (Actor.findChar( cell ) != null && cell != this.pos)
 			cell = route.path.get(route.dist-1);
 
-		if (Dungeon.level.avoid[ cell ]){
+		if (Dungeon.level.avoid[ cell ] && (!properties().contains(Property.LARGE) || Dungeon.level.openSpace[cell])){
 			ArrayList<Integer> candidates = new ArrayList<>();
 			for (int n : PathFinder.NEIGHBOURS8) {
 				cell = route.collisionPos + n;
-				if (Dungeon.level.passable[cell] && Actor.findChar( cell ) == null) {
+				if (Dungeon.level.passable[cell]
+						&& Actor.findChar( cell ) == null
+						&& (!properties().contains(Property.LARGE) || Dungeon.level.openSpace[cell])) {
 					candidates.add( cell );
 				}
 			}

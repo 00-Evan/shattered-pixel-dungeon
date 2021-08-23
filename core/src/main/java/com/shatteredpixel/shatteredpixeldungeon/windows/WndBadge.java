@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,18 +33,20 @@ public class WndBadge extends Window {
 	private static final int WIDTH = 120;
 	private static final int MARGIN = 4;
 	
-	public WndBadge( Badges.Badge badge ) {
+	public WndBadge( Badges.Badge badge, boolean unlocked ) {
 		
 		super();
 		
 		Image icon = BadgeBanner.image( badge.image );
 		icon.scale.set( 2 );
+		if (!unlocked) icon.brightness(0.4f);
 		add( icon );
 
-		//TODO: this used to be centered, should probably figure that out.
 		RenderedTextBlock info = PixelScene.renderTextBlock( badge.desc(), 8 );
 		info.maxWidth(WIDTH - MARGIN * 2);
+		info.align(RenderedTextBlock.CENTER_ALIGN);
 		PixelScene.align(info);
+		if (!unlocked) info.hardlight( 0x888888 );
 		add(info);
 		
 		float w = Math.max( icon.width(), info.width() ) + MARGIN * 2;
@@ -56,6 +58,6 @@ public class WndBadge extends Window {
 		info.setPos((w - info.width()) / 2, icon.y + icon.height() + MARGIN);
 		resize( (int)w, (int)(info.bottom() + MARGIN) );
 		
-		BadgeBanner.highlight( icon, badge.image );
+		if (unlocked) BadgeBanner.highlight( icon, badge.image );
 	}
 }

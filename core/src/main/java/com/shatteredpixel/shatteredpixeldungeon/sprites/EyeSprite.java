@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.TextureFilm;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 
 public class EyeSprite extends MobSprite {
@@ -41,7 +42,7 @@ public class EyeSprite extends MobSprite {
 	public EyeSprite() {
 		super();
 		
-		texture( Assets.EYE );
+		texture( Assets.Sprites.EYE );
 		
 		TextureFilm frames = new TextureFilm( texture, 16, 18 );
 		
@@ -104,6 +105,7 @@ public class EyeSprite extends MobSprite {
 	public void charge( int pos ){
 		turnTo(ch.pos, pos);
 		play(charging);
+		if (visible) Sample.INSTANCE.play( Assets.Sounds.CHARGEUP );
 	}
 
 	@Override

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -61,8 +61,8 @@ public class Ankh extends Item {
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions(hero);
-		DewVial vial = hero.belongings.getItem(DewVial.class);
-		if (vial != null && vial.isFull() && !blessed)
+		Waterskin waterskin = hero.belongings.getItem(Waterskin.class);
+		if (waterskin != null && waterskin.isFull() && !blessed)
 			actions.add( AC_BLESS );
 		return actions;
 	}
@@ -74,16 +74,16 @@ public class Ankh extends Item {
 
 		if (action.equals( AC_BLESS )) {
 
-			DewVial vial = hero.belongings.getItem(DewVial.class);
-			if (vial != null){
+			Waterskin waterskin = hero.belongings.getItem(Waterskin.class);
+			if (waterskin != null){
 				blessed = true;
-				vial.empty();
+				waterskin.empty();
 				GLog.p( Messages.get(this, "bless") );
 				hero.spend( 1f );
 				hero.busy();
 
 
-				Sample.INSTANCE.play( Assets.SND_DRINK );
+				Sample.INSTANCE.play( Assets.Sounds.DRINK );
 				CellEmitter.get(hero.pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
 				hero.sprite.operate( hero.pos );
 			}
@@ -128,7 +128,7 @@ public class Ankh extends Item {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return 50 * quantity;
 	}
 }

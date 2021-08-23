@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ public class TenguSprite extends MobSprite {
 	public TenguSprite() {
 		super();
 		
-		texture( Assets.TENGU );
+		texture( Assets.Sprites.TENGU );
 		
 		TextureFilm frames = new TextureFilm( texture, 14, 16 );
 		
@@ -81,7 +81,7 @@ public class TenguSprite extends MobSprite {
 		if (!Dungeon.level.adjacent( cell, ch.pos )) {
 
 			((MissileSprite)parent.recycle( MissileSprite.class )).
-				reset( ch.pos, cell, new TenguShuriken(), new Callback() {
+				reset( this, cell, new TenguShuriken(), new Callback() {
 					@Override
 					public void call() {
 						ch.onAttackComplete();

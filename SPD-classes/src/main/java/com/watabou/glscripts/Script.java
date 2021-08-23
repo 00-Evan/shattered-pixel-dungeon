@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ public class Script extends Program {
 	
 	@SuppressWarnings("unchecked")
 	public synchronized static<T extends Script> T use( Class<T> c ) {
-		
+
 		if (c != curScriptClass) {
 			
 			Script script = all.get( c );
@@ -45,11 +45,7 @@ public class Script extends Program {
 				script = Reflection.newInstance( c );
 				all.put( c, script );
 			}
-			
-			if (curScript != null) {
-				curScript.unuse();
-			}
-			
+
 			curScript = script;
 			curScriptClass = c;
 			curScript.use();
@@ -57,6 +53,11 @@ public class Script extends Program {
 		}
 		
 		return (T)curScript;
+	}
+
+	public synchronized static void unuse(){
+		curScript = null;
+		curScriptClass = null;
 	}
 	
 	public synchronized static void reset() {
@@ -77,7 +78,5 @@ public class Script extends Program {
 		link();
 
 	}
-	
-	public void unuse() {
-	}
+
 }

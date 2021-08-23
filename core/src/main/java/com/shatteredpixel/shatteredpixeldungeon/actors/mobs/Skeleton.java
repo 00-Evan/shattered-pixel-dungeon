@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SkeletonSprite;
@@ -47,7 +46,7 @@ public class Skeleton extends Mob {
 		maxLvl = 10;
 
 		loot = Generator.Category.WEAPON;
-		lootChance = 0.125f;
+		lootChance = 0.1667f; //by default, see rollToDropLoot()
 
 		properties.add(Property.UNDEAD);
 		properties.add(Property.INORGANIC);
@@ -79,7 +78,7 @@ public class Skeleton extends Mob {
 		}
 		
 		if (Dungeon.level.heroFOV[pos]) {
-			Sample.INSTANCE.play( Assets.SND_BONES );
+			Sample.INSTANCE.play( Assets.Sounds.BONES );
 		}
 		
 		if (heroKilled) {
@@ -87,18 +86,21 @@ public class Skeleton extends Mob {
 			GLog.n( Messages.get(this, "explo_kill") );
 		}
 	}
-	
+
+	@Override
+	public void rollToDropLoot() {
+		//each drop makes future drops 1/2 as likely
+		// so loot chance looks like: 1/6, 1/12, 1/24, 1/48, etc.
+		lootChance *= Math.pow(1/2f, Dungeon.LimitedDrops.SKELE_WEP.count);
+		super.rollToDropLoot();
+	}
+
 	@Override
 	protected Item createLoot() {
-		MeleeWeapon loot;
-		do {
-			loot = Generator.randomWeapon();
-		//50% chance of re-rolling tier 4 or 5 melee weapons
-		} while (loot.tier >= 4 && Random.Int(2) == 0);
-		loot.level(0);
-		return loot;
+		Dungeon.LimitedDrops.SKELE_WEP.count++;
+		return super.createLoot();
 	}
-	
+
 	@Override
 	public int attackSkill( Char target ) {
 		return 12;

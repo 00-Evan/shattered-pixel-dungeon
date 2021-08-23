@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,12 +21,15 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Gloves extends MeleeWeapon {
 
 	{
 		image = ItemSpriteSheet.GLOVES;
+		hitSound = Assets.Sounds.HIT;
+		hitSoundPitch = 1.3f;
 
 		tier = 1;
 		DLY = 0.5f; //2x speed
@@ -36,8 +39,8 @@ public class Gloves extends MeleeWeapon {
 
 	@Override
 	public int max(int lvl) {
-		return  (int)(3f*(tier+1)) +    //6 base, down from 10
-				lvl*tier;               //+1 per level, down from +2
+		return  Math.round(2.5f*(tier+1)) +     //5 base, down from 10
+				lvl*Math.round(0.5f*(tier+1));  //+1 per level, down from +2
 	}
 
 }

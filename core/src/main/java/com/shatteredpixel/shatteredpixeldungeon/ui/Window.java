@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,7 +45,8 @@ public class Window extends Group implements Signal.Listener<KeyEvent> {
 	protected PointerArea blocker;
 	protected ShadowBox shadow;
 	protected NinePatch chrome;
-	
+
+	public static final int WHITE = 0xFFFFFF;
 	public static final int TITLE_COLOR = 0xFFFF44;
 	public static final int SHPX_COLOR = 0x33BB33;
 	

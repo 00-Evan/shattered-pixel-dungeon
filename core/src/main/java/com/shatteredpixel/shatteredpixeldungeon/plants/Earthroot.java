@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EarthParticle;
@@ -33,13 +32,13 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Camera;
-import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 
 public class Earthroot extends Plant {
 	
 	{
 		image = 8;
+		seedClass = Seed.class;
 	}
 	
 	@Override
@@ -107,7 +106,6 @@ public class Earthroot extends Plant {
 				return damage - block;
 			} else {
 				level -= block;
-				BuffIndicator.refreshHero();
 				return damage - block;
 			}
 		}
@@ -115,7 +113,6 @@ public class Earthroot extends Plant {
 		public void level( int value ) {
 			if (level < value) {
 				level = value;
-				BuffIndicator.refreshHero();
 			}
 			pos = target.pos;
 		}
@@ -124,10 +121,10 @@ public class Earthroot extends Plant {
 		public int icon() {
 			return BuffIndicator.ARMOR;
 		}
-		
+
 		@Override
-		public void tintIcon(Image icon) {
-			FlavourBuff.greyIcon(icon, target.HT/4f, level);
+		public float iconFadePercent() {
+			return Math.max(0, (target.HT - level) / (float) target.HT);
 		}
 		
 		@Override

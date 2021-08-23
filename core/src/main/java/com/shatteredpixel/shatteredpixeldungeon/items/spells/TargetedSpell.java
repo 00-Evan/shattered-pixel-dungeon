@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ public abstract class TargetedSpell extends Spell {
 				curUser.sprite,
 				bolt.collisionPos,
 				callback);
-		Sample.INSTANCE.play( Assets.SND_ZAP );
+		Sample.INSTANCE.play( Assets.Sounds.ZAP );
 	}
 	
 	private  static CellSelector.Listener targeter = new  CellSelector.Listener(){
@@ -82,12 +82,12 @@ public abstract class TargetedSpell extends Spell {
 					QuickSlotButton.target(Actor.findChar(cell));
 				
 				curUser.busy();
-				Invisibility.dispel();
 				
 				curSpell.fx(shot, new Callback() {
 					public void call() {
 						curSpell.affectTarget(shot, curUser);
 						curSpell.detach( curUser.belongings.backpack );
+						Invisibility.dispel();
 						curSpell.updateQuickslot();
 						curUser.spendAndNext( 1f );
 					}

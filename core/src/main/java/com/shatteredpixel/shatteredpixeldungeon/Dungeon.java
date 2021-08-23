@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpiritHawk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
@@ -37,34 +40,35 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CavesLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.DeadEndLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.NewHallsBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.HallsLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.LastLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.LastShopLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.NewCavesBossLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.NewCityBossLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.NewPrisonBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -99,11 +103,15 @@ public class Dungeon {
 		BLANDFRUIT_SEED,
 
 		//Other limited enemy drops
+		SLIME_WEP,
+		SKELE_WEP,
 		THEIF_MISC,
+		GUARD_ARM,
 		SHAMAN_WAND,
+		DM200_EQUIP,
+		GOLEM_EQUIP,
 
 		//containers
-		DEW_VIAL,
 		VELVET_POUCH,
 		SCROLL_HOLDER,
 		POTION_BANDOLIER,
@@ -145,6 +153,7 @@ public class Dungeon {
 	}
 
 	public static int challenges;
+	public static int mobsToChampion;
 
 	public static Hero hero;
 	public static Level level;
@@ -167,6 +176,7 @@ public class Dungeon {
 
 		version = Game.versionCode;
 		challenges = SPDSettings.challenges();
+		mobsToChampion = -1;
 
 		seed = DungeonSeed.randomSeed();
 
@@ -196,8 +206,7 @@ public class Dungeon {
 		droppedItems = new SparseArray<>();
 		portedItems = new SparseArray<>();
 
-		for (LimitedDrops a : LimitedDrops.values())
-			a.count = 0;
+		LimitedDrops.reset();
 		
 		chapters = new HashSet<>();
 		
@@ -206,8 +215,7 @@ public class Dungeon {
 		Blacksmith.Quest.reset();
 		Imp.Quest.reset();
 
-		Generator.reset();
-		Generator.initArtifacts();
+		Generator.fullReset();
 		hero = new Hero();
 		hero.live();
 		
@@ -254,7 +262,7 @@ public class Dungeon {
 			level = new PrisonLevel();
 			break;
 		case 10:
-			level = new NewPrisonBossLevel();
+			level = new PrisonBossLevel();
 			break;
 		case 11:
 		case 12:
@@ -263,7 +271,7 @@ public class Dungeon {
 			level = new CavesLevel();
 			break;
 		case 15:
-			level = new NewCavesBossLevel();
+			level = new CavesBossLevel();
 			break;
 		case 16:
 		case 17:
@@ -272,30 +280,16 @@ public class Dungeon {
 			level = new CityLevel();
 			break;
 		case 20:
-			level = new NewCityBossLevel();
+			level = new CityBossLevel();
 			break;
 		case 21:
-			//logic for old city boss levels, need to spawn a shop on floor 21
-			try {
-				Bundle bundle = FileUtils.bundleFromFile(GamesInProgress.depthFile(GamesInProgress.curSlot, 20));
-				Class cls = bundle.getBundle(LEVEL).getClass("__className");
-				if (cls == NewCityBossLevel.class) {
-					level = new HallsLevel();
-				} else {
-					level = new LastShopLevel();
-				}
-			} catch (Exception e) {
-				ShatteredPixelDungeon.reportException(e);
-				level = new HallsLevel();
-			}
-			break;
 		case 22:
 		case 23:
 		case 24:
 			level = new HallsLevel();
 			break;
 		case 25:
-			level = new NewHallsBossLevel();
+			level = new HallsBossLevel();
 			break;
 		case 26:
 			level = new LastLevel();
@@ -352,7 +346,7 @@ public class Dungeon {
 		
 		if (pos == -2){
 			pos = level.exit;
-		} else if (pos < 0 || pos >= level.length()){
+		} else if (pos < 0 || pos >= level.length() || (!level.passable[pos] && !level.avoid[pos])){
 			pos = level.entrance;
 		}
 		
@@ -361,11 +355,8 @@ public class Dungeon {
 		Dungeon.level = level;
 		Mob.restoreAllies( level, pos );
 		Actor.init();
-		
-		Actor respawner = level.respawner();
-		if (respawner != null) {
-			Actor.addDelayed( respawner, level.respawnTime() );
-		}
+
+		level.addRespawner();
 
 		hero.pos = pos;
 		
@@ -385,36 +376,7 @@ public class Dungeon {
 		hero.viewDistance = light == null ? level.viewDistance : Math.max( Light.DISTANCE, level.viewDistance );
 		
 		hero.curAction = hero.lastAction = null;
-		
-		//pre-0.7.1 saves. Adjusting for spirit bows in weapon slot or with upgrades.
-		SpiritBow bow;
-		if (hero.belongings.weapon instanceof SpiritBow){
-			bow = (SpiritBow)hero.belongings.weapon;
-			hero.belongings.weapon = null;
-			
-			if (!bow.collect()){
-				level.drop(bow, hero.pos);
-			}
-		} else {
-			bow = hero.belongings.getItem(SpiritBow.class);
-		}
-		
-		//pre-0.7.1 saves. refunding upgrades previously spend on a boomerang
-		if (bow != null && bow.spentUpgrades() > 0){
-			ScrollOfUpgrade refund = new ScrollOfUpgrade();
-			refund.quantity(bow.spentUpgrades());
-			bow.level(0);
-			
-			//to prevent exploits, some SoU are lost in the conversion of a boomerang higher than +1
-			if (refund.quantity() > 1){
-				refund.quantity(1 + (int)Math.floor((refund.quantity()-1)*0.8f));
-			}
-			
-			if (!refund.collect()){
-				level.drop(refund, hero.pos);
-			}
-		}
-		
+
 		observe();
 		try {
 			saveAll();
@@ -478,6 +440,7 @@ public class Dungeon {
 	private static final String VERSION		= "version";
 	private static final String SEED		= "seed";
 	private static final String CHALLENGES	= "challenges";
+	private static final String MOBS_TO_CHAMPION	= "mobs_to_champion";
 	private static final String HERO		= "hero";
 	private static final String GOLD		= "gold";
 	private static final String DEPTH		= "depth";
@@ -497,6 +460,7 @@ public class Dungeon {
 			bundle.put( VERSION, version );
 			bundle.put( SEED, seed );
 			bundle.put( CHALLENGES, challenges );
+			bundle.put( MOBS_TO_CHAMPION, mobsToChampion );
 			bundle.put( HERO, hero );
 			bundle.put( GOLD, gold );
 			bundle.put( DEPTH, depth );
@@ -562,7 +526,7 @@ public class Dungeon {
 	}
 	
 	public static void saveAll() throws IOException {
-		if (hero != null && hero.isAlive()) {
+		if (hero != null && (hero.isAlive() || WndResurrect.instance != null)) {
 			
 			Actor.fixTime();
 			saveGame( GamesInProgress.curSlot );
@@ -585,12 +549,14 @@ public class Dungeon {
 
 		seed = bundle.contains( SEED ) ? bundle.getLong( SEED ) : DungeonSeed.randomSeed();
 
+		Actor.clear();
 		Actor.restoreNextID( bundle );
 
 		quickslot.reset();
 		QuickSlotButton.reset();
 
 		Dungeon.challenges = bundle.getInt( CHALLENGES );
+		Dungeon.mobsToChampion = bundle.getInt( MOBS_TO_CHAMPION );
 		
 		Dungeon.level = null;
 		Dungeon.depth = -1;
@@ -641,17 +607,6 @@ public class Dungeon {
 		
 		hero = null;
 		hero = (Hero)bundle.get( HERO );
-
-		//pre-0.7.0 saves, back when alchemy had a window which could store items
-		if (bundle.contains("alchemy_inputs")){
-			for (Bundlable item : bundle.getCollection("alchemy_inputs")){
-				
-				//try to add normally, force-add otherwise.
-				if (!((Item)item).collect(hero.belongings.backpack)){
-					hero.belongings.backpack.items.add((Item)item);
-				}
-			}
-		}
 		
 		gold = bundle.getInt( GOLD );
 		depth = bundle.getInt( DEPTH );
@@ -721,7 +676,7 @@ public class Dungeon {
 	}
 	
 	public static void fail( Class cause ) {
-		if (hero.belongings.getItem( Ankh.class ) == null) {
+		if (WndResurrect.instance == null) {
 			Rankings.INSTANCE.submit( false, cause );
 		}
 	}
@@ -730,21 +685,14 @@ public class Dungeon {
 
 		hero.belongings.identify();
 
-		int chCount = 0;
-		for (int ch : Challenges.MASKS){
-			if ((challenges & ch) != 0) chCount++;
-		}
-		
-		if (chCount != 0) {
-			Badges.validateChampion(chCount);
-		}
-
 		Rankings.INSTANCE.submit( true, cause );
 	}
 
-	//TODO hero max vision is now separate from shadowcaster max vision. Might want to adjust.
+	//default to recomputing based on max hero vision, in case vision just shrank/grew
 	public static void observe(){
-		observe( ShadowCaster.MAX_DISTANCE+1 );
+		int dist = 8;
+		dist *= 1f + 0.25f*Dungeon.hero.pointsInTalent(Talent.FARSIGHT);
+		observe( dist+1 );
 	}
 	
 	public static void observe( int dist ) {
@@ -795,6 +743,58 @@ public class Dungeon {
 			}
 		}
 
+		for (TalismanOfForesight.CharAwareness c : hero.buffs(TalismanOfForesight.CharAwareness.class)){
+			Char ch = (Char) Actor.findById(c.charID);
+			if (ch == null) continue;
+			BArray.or( level.visited, level.heroFOV, ch.pos - 1 - level.width(), 3, level.visited );
+			BArray.or( level.visited, level.heroFOV, ch.pos - 1, 3, level.visited );
+			BArray.or( level.visited, level.heroFOV, ch.pos - 1 + level.width(), 3, level.visited );
+			GameScene.updateFog(ch.pos, 2);
+		}
+
+		for (TalismanOfForesight.HeapAwareness h : hero.buffs(TalismanOfForesight.HeapAwareness.class)){
+			if (Dungeon.depth != h.depth) continue;
+			BArray.or( level.visited, level.heroFOV, h.pos - 1 - level.width(), 3, level.visited );
+			BArray.or( level.visited, level.heroFOV, h.pos - 1, 3, level.visited );
+			BArray.or( level.visited, level.heroFOV, h.pos - 1 + level.width(), 3, level.visited );
+			GameScene.updateFog(h.pos, 2);
+		}
+
+		for (RevealedArea a : hero.buffs(RevealedArea.class)){
+			if (Dungeon.depth != a.depth) continue;
+			BArray.or( level.visited, level.heroFOV, a.pos - 1 - level.width(), 3, level.visited );
+			BArray.or( level.visited, level.heroFOV, a.pos - 1, 3, level.visited );
+			BArray.or( level.visited, level.heroFOV, a.pos - 1 + level.width(), 3, level.visited );
+			GameScene.updateFog(a.pos, 2);
+		}
+
+		for (Char ch : Actor.chars()){
+			if (ch instanceof WandOfWarding.Ward
+					|| ch instanceof WandOfRegrowth.Lotus
+					|| ch instanceof SpiritHawk.HawkAlly){
+				x = ch.pos % level.width();
+				y = ch.pos / level.width();
+
+				//left, right, top, bottom
+				dist = ch.viewDistance+1;
+				l = Math.max( 0, x - dist );
+				r = Math.min( x + dist, level.width() - 1 );
+				t = Math.max( 0, y - dist );
+				b = Math.min( y + dist, level.height() - 1 );
+
+				width = r - l + 1;
+				height = b - t + 1;
+
+				pos = l + t * level.width();
+
+				for (int i = t; i <= b; i++) {
+					BArray.or( level.visited, level.heroFOV, pos, width, level.visited );
+					pos+=level.width();
+				}
+				GameScene.updateFog(ch.pos, dist);
+			}
+		}
+
 		GameScene.afterObserve();
 	}
 
@@ -817,8 +817,8 @@ public class Dungeon {
 			System.arraycopy( pass, 0, passable, 0, Dungeon.level.length() );
 		}
 
-		if (Char.hasProp(ch, Char.Property.LARGE)){
-			BArray.and( pass, Dungeon.level.openSpace, passable );
+		if (chars && Char.hasProp(ch, Char.Property.LARGE)){
+			BArray.and( passable, Dungeon.level.openSpace, passable );
 		}
 
 		if (chars) {
@@ -847,7 +847,7 @@ public class Dungeon {
 		}
 
 		if (Char.hasProp(ch, Char.Property.LARGE)){
-			BArray.and( pass, Dungeon.level.openSpace, passable );
+			BArray.and( passable, Dungeon.level.openSpace, passable );
 		}
 
 		if (chars){
@@ -872,19 +872,18 @@ public class Dungeon {
 		}
 
 		if (Char.hasProp(ch, Char.Property.LARGE)){
-			BArray.and( pass, Dungeon.level.openSpace, passable );
+			BArray.and( passable, Dungeon.level.openSpace, passable );
 		}
 
-		if (chars) {
-			for (Char c : Actor.chars()) {
-				if (visible[c.pos]) {
-					passable[c.pos] = false;
-				}
-			}
-		}
 		passable[ch.pos] = true;
-		
-		return PathFinder.getStepBack( ch.pos, from, passable );
+
+		//only consider chars impassable if our retreat path runs into them
+		int step = PathFinder.getStepBack( ch.pos, from, passable );
+		while (step != -1 && Actor.findChar(step) != null){
+			passable[step] = false;
+			step = PathFinder.getStepBack( ch.pos, from, passable );
+		}
+		return step;
 		
 	}
 

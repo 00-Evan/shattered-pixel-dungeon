@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,33 +50,37 @@ public class v0_1_X_Changes {
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released August 15th, 2014\n" +
-						"_-_ 10 days after Shattered v0.1.0\n" +
-						"\n" +
-						"Dev commentary will be added here in the future."));
+				"_-_ 10 days after Shattered v0.1.0\n" +
+				"\n" +
+				"v0.1.1 was the first update that added new content! I added new ankh functionality and a new type of food based on suggestions and feedback from v0.1.0.\n" +
+				"\n" +
+				"This update also included Shattered's first contentious change: I removed the automatic revival feature from the dew vial. This led to many accidental deaths for players who were used to the automatic revive from Pixel Dungeon. I kept receiving complaints about it years later!\n" +
+				"\n" +
+				"These early updates were much smaller and less polished compared to more modern ones, which meant I released them much faster. I eventually shifted towards slower updates with more size and quality."));
 		
 		changes.addButton( new ChangeButton(new Blandfruit(),
 				"Players who chance upon gardens or who get lucky while trampling grass may come across a new plant: the _Blandfruit._\n\n" +
-						"As the name implies, the fruit from this plant is pretty unexceptional, and will barely do anything for you on its own. Perhaps there is some way to prepare the fruit with another ingredient..."));
+				"As the name implies, the fruit from this plant is pretty unexceptional, and will barely do anything for you on its own. Perhaps there is some way to prepare the fruit with another ingredient..."));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(new Ankh()), "Revival Item Changes",
 				"When the Dew Vial was initially added to Pixel Dungeon, its essentially free revive made ankhs pretty useless by comparison. " +
-						"To fix this, both items have been adjusted to combine to create a more powerful revive.\n\n" +
-						"Dew Vial nerfed:\n" +
-						"_-_ Still grants a full heal at full charge, but grants less healing at partial charge.\n" +
-						"_-_ No longer revives the player if they die.\n\n" +
-						"Ankh buffed:\n" +
-						"_-_ Can now be blessed with a full dew vial, to gain the vial's old revive effect."));
+				"To fix this, both items have been adjusted to combine to create a more powerful revive.\n\n" +
+				"Dew Vial nerfed:\n" +
+				"_-_ Still grants a full heal at full charge, but grants less healing at partial charge.\n" +
+				"_-_ No longer revives the player if they die.\n\n" +
+				"Ankh buffed:\n" +
+				"_-_ Can now be blessed with a full dew vial, to gain the vial's old revive effect."));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCROLL_BERKANAN, null), "Misc Item Changes",
 				"Sungrass buffed:\n" +
-						"_-_ Heal scaling now scales with max hp.\n\n" +
-						"Scroll of Psionic Blast rebalanced:\n" +
-						"_-_ Now deals less self damage, and damage is more consistent.\n" +
-						"_-_ Duration of self stun/blind effect increased.\n\n" +
-						"Scroll of lullaby reworked:\n" +
-						"_-_ No longer instantly sleeps enemies, now afflicts them with drowsy, which turns into magical sleep.\n" +
-						"_-_ Magically slept enemies will only wake up when attacked.\n" +
-						"_-_ Hero is also affected, and will be healed by magical sleep."));
+				"_-_ Heal scaling now scales with max hp.\n\n" +
+				"Scroll of Psionic Blast rebalanced:\n" +
+				"_-_ Now deals less self damage, and damage is more consistent.\n" +
+				"_-_ Duration of self stun/blind effect increased.\n\n" +
+				"Scroll of lullaby reworked:\n" +
+				"_-_ No longer instantly sleeps enemies, now afflicts them with drowsy, which turns into magical sleep.\n" +
+				"_-_ Magically slept enemies will only wake up when attacked.\n" +
+				"_-_ Hero is also affected, and will be healed by magical sleep."));
 	}
 	
 	public static void add_v0_1_0_Changes( ArrayList<ChangeInfo> changeInfos ){
@@ -90,7 +94,11 @@ public class v0_1_X_Changes {
 				"_-_ 69 days after Pixel Dungeon v1.7.1\n" +
 				"_-_ 9 days after v1.7.1 source release\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"v0.1.0 and v0.1.1 were extremely early Shattered updates that were only distributed via the Pixel Dungeon Subreddit. At this stage of development Shattered was basically the same game as Pixel Dungeon v1.7.1.\n" +
+				"\n" +
+				"I started playing Pixel Dungeon in mid 2013. I loved the game but was frustrated with the balance of some items. When Pixel Dungeon went open source I decided to make Shattered as a balance modification. I called it Shattered as 'Shattered Pixel' was an old trade name I had, and the mod was going to 'shatter' Pixel Dungeon's balance.\n" +
+				"\n" +
+				"At the time I didn't have any plans to add new content, I thought I was just going to spend a couple months rebalancing the game and that was it!"));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SEED_EARTHROOT, null), "Seed Changes",
 				"_-_ Blindweed buffed, now cripples as well as blinds.\n\n" +

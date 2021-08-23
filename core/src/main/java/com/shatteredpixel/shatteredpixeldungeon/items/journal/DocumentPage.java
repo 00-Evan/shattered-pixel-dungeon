@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,15 +52,26 @@ public abstract class DocumentPage extends Item {
 	@Override
 	public final boolean doPickUp(Hero hero) {
 		GameScene.pickUpJournal(this, hero.pos);
-		GameScene.flashJournal();
+		GameScene.flashForDocument(page());
 		if (document() == Document.ALCHEMY_GUIDE){
 			WndJournal.last_index = 1;
+			WndJournal.AlchemyTab.currentPageIdx = document().pageIdx(page());
 		} else {
 			WndJournal.last_index = 0;
 		}
-		document().addPage(page);
-		Sample.INSTANCE.play( Assets.SND_ITEM );
+		document().findPage(page);
+		Sample.INSTANCE.play( Assets.Sounds.ITEM );
 		hero.spendAndNext( TIME_TO_PICK_UP );
+		return true;
+	}
+
+	@Override
+	public boolean isUpgradable() {
+		return false;
+	}
+
+	@Override
+	public boolean isIdentified() {
 		return true;
 	}
 	

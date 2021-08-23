@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,9 +50,9 @@ public class CapeOfThorns extends Artifact {
 	}
 	
 	@Override
-	public void charge(Hero target) {
+	public void charge(Hero target, float amount) {
 		if (cooldown == 0) {
-			charge += 4;
+			charge += Math.round(4*amount);
 			updateQuickslot();
 		}
 		if (charge >= chargeCap){
@@ -81,7 +81,6 @@ public class CapeOfThorns extends Artifact {
 			if (cooldown > 0) {
 				cooldown--;
 				if (cooldown == 0) {
-					BuffIndicator.refreshHero();
 					GLog.w( Messages.get(this, "inert") );
 				}
 				updateQuickslot();
@@ -97,7 +96,6 @@ public class CapeOfThorns extends Artifact {
 					charge = 0;
 					cooldown = 10+level();
 					GLog.p( Messages.get(this, "radiating") );
-					BuffIndicator.refreshHero();
 				}
 			}
 

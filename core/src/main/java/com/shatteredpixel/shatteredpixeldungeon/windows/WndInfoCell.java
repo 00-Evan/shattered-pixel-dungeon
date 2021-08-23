@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -106,12 +106,14 @@ public class WndInfoCell extends Window {
 		RenderedTextBlock info = PixelScene.renderTextBlock(6);
 		add(info);
 
-		for (Blob blob:Dungeon.level.blobs.values()) {
-			if (blob.volume > 0 && blob.cur[cell] > 0 && blob.tileDesc() != null) {
-				if (desc.length() > 0) {
-					desc += "\n\n";
+		if (Dungeon.level.heroFOV[cell]) {
+			for (Blob blob : Dungeon.level.blobs.values()) {
+				if (blob.volume > 0 && blob.cur[cell] > 0 && blob.tileDesc() != null) {
+					if (desc.length() > 0) {
+						desc += "\n\n";
+					}
+					desc += blob.tileDesc();
 				}
-				desc += blob.tileDesc();
 			}
 		}
 		

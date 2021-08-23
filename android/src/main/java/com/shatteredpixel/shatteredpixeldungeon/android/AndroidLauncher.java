@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,7 +54,7 @@ public class AndroidLauncher extends Activity {
 					e.getMessage());
 			text.setTextSize(16);
 			text.setTextColor(0xFFFFFFFF);
-			text.setTypeface(Typeface.createFromAsset(getAssets(), "pixel_font.ttf"));
+			text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/pixel_font.ttf"));
 			text.setGravity(Gravity.CENTER_VERTICAL);
 			text.setPadding(10, 10, 10, 10);
 			setContentView(text);

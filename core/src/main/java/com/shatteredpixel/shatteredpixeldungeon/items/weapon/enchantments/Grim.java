@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,7 +46,9 @@ public class Grim extends Weapon.Enchantment {
 		float maxChance = 0.5f + .05f*level;
 		float chanceMulti = (float)Math.pow( ((defender.HT - enemyHealth) / (float)defender.HT), 2);
 		float chance = maxChance * chanceMulti;
-		
+
+		chance *= procChanceMultiplier(attacker);
+
 		if (Random.Float() < chance) {
 			
 			defender.damage( defender.HP, this );

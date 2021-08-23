@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
@@ -34,24 +36,42 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class PotionOfHealing extends Potion {
 
 	{
-		initials = 3;
+		icon = ItemSpriteSheet.Icons.POTION_HEALING;
 
 		bones = true;
 	}
 	
 	@Override
 	public void apply( Hero hero ) {
-		setKnown();
-		//starts out healing 30 hp, equalizes with hero health total at level 11
-		Buff.affect( hero, Healing.class ).setHeal((int)(0.8f*hero.HT + 14), 0.25f, 0);
+		identify();
 		cure( hero );
-		GLog.p( Messages.get(this, "heal") );
+		heal( hero );
+		Talent.onHealingPotionUsed( hero );
+	}
+
+	public static void heal( Char ch ){
+		if (ch == Dungeon.hero && Dungeon.isChallenged(Challenges.NO_HEALING)){
+			pharmacophobiaProc(Dungeon.hero);
+		} else {
+			//starts out healing 30 hp, equalizes with hero health total at level 11
+			Buff.affect(ch, Healing.class).setHeal((int) (0.8f * ch.HT + 14), 0.25f, 0);
+			if (ch == Dungeon.hero){
+				GLog.p( Messages.get(PotionOfHealing.class, "heal") );
+			}
+		}
+	}
+
+	public static void pharmacophobiaProc( Hero hero ){
+		// harms the hero for ~40% of their max HP in poison
+		Buff.affect( hero, Poison.class).set(4 + hero.lvl/2);
 	}
 	
 	public static void cure( Char ch ) {
@@ -67,7 +87,7 @@ public class PotionOfHealing extends Potion {
 	}
 
 	@Override
-	public int price() {
-		return isKnown() ? 30 * quantity : super.price();
+	public int value() {
+		return isKnown() ? 30 * quantity : super.value();
 	}
 }

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,17 +32,20 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 
 public class ElixirOfMight extends Elixir {
 
 	{
 		image = ItemSpriteSheet.ELIXIR_MIGHT;
+
+		unique = true;
 	}
 	
 	@Override
 	public void apply( Hero hero ) {
-		setKnown();
+		identify();
 		
 		hero.STR++;
 		
@@ -62,7 +65,7 @@ public class ElixirOfMight extends Elixir {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		//prices of ingredients
 		return quantity * (50 + 40);
 	}
@@ -111,6 +114,16 @@ public class ElixirOfMight extends Elixir {
 		@Override
 		public int icon() {
 			return BuffIndicator.HEALING;
+		}
+
+		@Override
+		public void tintIcon(Image icon) {
+			icon.hardlight(1f, 0.5f, 0f);
+		}
+
+		@Override
+		public float iconFadePercent() {
+			return (5f - left) / 5f;
 		}
 		
 		@Override

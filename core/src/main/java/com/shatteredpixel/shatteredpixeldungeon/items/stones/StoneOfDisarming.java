@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.stones;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
@@ -42,8 +43,11 @@ public class StoneOfDisarming extends Runestone {
 	
 	{
 		image = ItemSpriteSheet.STONE_DISARM;
+
+		//so traps do not activate before the effect
+		pressesCell = false;
 	}
-	
+
 	@Override
 	protected void activate(final int cell) {
 		boolean[] FOV = new boolean[Dungeon.level.length()];
@@ -99,6 +103,6 @@ public class StoneOfDisarming extends Runestone {
 			CellEmitter.get(t.pos).burst(Speck.factory(Speck.STEAM), 6);
 		}
 		
-		Sample.INSTANCE.play( Assets.SND_TELEPORT );
+		Sample.INSTANCE.play( Assets.Sounds.TELEPORT );
 	}
 }

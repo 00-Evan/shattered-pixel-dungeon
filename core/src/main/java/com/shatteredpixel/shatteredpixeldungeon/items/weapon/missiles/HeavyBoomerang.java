@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -36,6 +37,8 @@ public class HeavyBoomerang extends MissileWeapon {
 	
 	{
 		image = ItemSpriteSheet.BOOMERANG;
+		hitSound = Assets.Sounds.HIT_CRUSH;
+		hitSoundPitch = 1f;
 		
 		tier = 4;
 		sticky = false;
@@ -62,6 +65,10 @@ public class HeavyBoomerang extends MissileWeapon {
 	}
 	
 	public static class CircleBack extends Buff {
+
+		{
+			revivePersists = true;
+		}
 		
 		private MissileWeapon boomerang;
 		private int thrownPos;

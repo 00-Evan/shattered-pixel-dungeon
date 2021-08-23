@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ public class Corrosion extends Armor.Glyph {
 			for (int i : PathFinder.NEIGHBOURS9){
 				Splash.at(pos+i, 0x000000, 5);
 				if (Actor.findChar(pos+i) != null)
-					Buff.affect(Actor.findChar(pos+i), Ooze.class).set( 20f );
+					Buff.affect(Actor.findChar(pos+i), Ooze.class).set( Ooze.DURATION );
 			}
 		}
 

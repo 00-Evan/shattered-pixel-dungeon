@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,10 +22,13 @@
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Enchanting;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -46,6 +49,8 @@ public class Stylus extends Item {
 		
 		stackable = true;
 
+		defaultAction = AC_INSCRIBE;
+
 		bones = true;
 	}
 	
@@ -64,7 +69,7 @@ public class Stylus extends Item {
 		if (action.equals(AC_INSCRIBE)) {
 
 			curUser = hero;
-			GameScene.selectItem( itemSelector, WndBag.Mode.ARMOR, Messages.get(this, "prompt") );
+			GameScene.selectItem( itemSelector );
 			
 		}
 	}
@@ -98,18 +103,34 @@ public class Stylus extends Item {
 		curUser.sprite.operate(curUser.pos);
 		curUser.sprite.centerEmitter().start(PurpleParticle.BURST, 0.05f, 10);
 		Enchanting.show(curUser, armor);
-		Sample.INSTANCE.play(Assets.SND_BURNING);
+		Sample.INSTANCE.play(Assets.Sounds.BURNING);
 		
 		curUser.spend(TIME_TO_INSCRIBE);
 		curUser.busy();
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return 30 * quantity;
 	}
 
-	private final WndBag.Listener itemSelector = new WndBag.Listener() {
+	private final WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return Messages.get(Stylus.class, "prompt");
+		}
+
+		@Override
+		public Class<?extends Bag> preferredBag(){
+			return Belongings.Backpack.class;
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			return item instanceof Armor;
+		}
+
 		@Override
 		public void onSelect( Item item ) {
 			if (item != null) {

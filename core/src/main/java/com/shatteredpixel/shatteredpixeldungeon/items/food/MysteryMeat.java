@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items.food;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
@@ -48,7 +47,7 @@ public class MysteryMeat extends Food {
 		effect(hero);
 	}
 
-	public int price() {
+	public int value() {
 		return 5 * quantity;
 	}
 
@@ -60,7 +59,7 @@ public class MysteryMeat extends Food {
 				break;
 			case 1:
 				GLog.w( Messages.get(MysteryMeat.class, "legs") );
-				Buff.prolong( hero, Roots.class, Paralysis.DURATION );
+				Buff.prolong( hero, Roots.class, Roots.DURATION*2f );
 				break;
 			case 2:
 				GLog.w( Messages.get(MysteryMeat.class, "not_well") );

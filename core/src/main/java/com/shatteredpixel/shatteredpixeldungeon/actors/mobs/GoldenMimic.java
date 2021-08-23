@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,7 +71,7 @@ public class GoldenMimic extends Mimic {
 			enemySeen = true;
 			GLog.w(Messages.get(this, "reveal") );
 			CellEmitter.get(pos).burst(Speck.factory(Speck.STAR), 10);
-			Sample.INSTANCE.play(Assets.SND_MIMIC, 1, 0.85f);
+			Sample.INSTANCE.play(Assets.Sounds.MIMIC, 1, 0.85f);
 		}
 	}
 

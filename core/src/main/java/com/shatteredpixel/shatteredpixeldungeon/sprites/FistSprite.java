@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2020 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogFist;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
@@ -56,7 +55,7 @@ public abstract class FistSprite extends MobSprite {
 
 		int c = texOffset();
 
-		texture( Assets.FISTS );
+		texture( Assets.Sprites.FISTS );
 
 		TextureFilm frames = new TextureFilm( texture, 24, 17 );
 
@@ -131,15 +130,10 @@ public abstract class FistSprite extends MobSprite {
 				new Callback() {
 					@Override
 					public void call() {
-						//pre-0.8.0 saves
-						if (ch instanceof Yog.BurningFist){
-							((Yog.BurningFist)ch).onZapComplete();
-						} else {
-							((YogFist)ch).onZapComplete();
-						}
+						((YogFist)ch).onZapComplete();
 					}
 				} );
-		Sample.INSTANCE.play( Assets.SND_ZAP );
+		Sample.INSTANCE.play( Assets.Sounds.ZAP );
 	}
 
 	@Override

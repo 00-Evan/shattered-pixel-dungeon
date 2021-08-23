@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ public class AntiEntropy extends Glyph {
 		if (Random.Int( 8 ) == 0) {
 
 			if (Dungeon.level.adjacent( attacker.pos, defender.pos )) {
-				Buff.prolong(attacker, Frost.class, Frost.duration(attacker) * Random.Float(0.5f, 1f));
+				Buff.prolong(attacker, Frost.class, Frost.DURATION);
 				CellEmitter.get(attacker.pos).start(SnowParticle.FACTORY, 0.2f, 6);
 			}
 			

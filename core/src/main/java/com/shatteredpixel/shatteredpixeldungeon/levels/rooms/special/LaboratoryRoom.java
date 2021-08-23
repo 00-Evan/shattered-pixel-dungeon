@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -76,19 +76,17 @@ public class LaboratoryRoom extends SpecialRoom {
 		}
 		
 		//guide pages
-		Collection<String> allPages = Document.ALCHEMY_GUIDE.pages();
+		Collection<String> allPages = Document.ALCHEMY_GUIDE.pageNames();
 		ArrayList<String> missingPages = new ArrayList<>();
 		for ( String page : allPages){
-			if (!Document.ALCHEMY_GUIDE.hasPage(page)){
+			if (!Document.ALCHEMY_GUIDE.isPageFound(page)){
 				missingPages.add(page);
 			}
 		}
 		
-		//4 pages in sewers, 6 in prison, 9 in caves+
+		//5 pages in sewers, 10 in prison+
 		int chapterTarget;
-		if (missingPages.size() <= 3){
-			chapterTarget = 3;
-		} else if (missingPages.size() <= 5){
+		if (missingPages.size() <= 5){
 			chapterTarget = 2;
 		} else {
 			chapterTarget = 1;

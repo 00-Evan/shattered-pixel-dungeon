@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ import com.watabou.utils.Point;
 
 public class StoneOfClairvoyance extends Runestone {
 	
-	private static final int DIST = 12;
+	private static final int DIST = 20;
 	
 	{
 		image = ItemSpriteSheet.STONE_CLAIRVOYANCE;
@@ -61,8 +61,8 @@ public class StoneOfClairvoyance extends Runestone {
 			right = Math.min(Dungeon.level.width()-1, c.x + c.x - left);
 			left = Math.max(0, left);
 			for (curr = left + y * Dungeon.level.width(); curr <= right + y * Dungeon.level.width(); curr++){
-				
-				curUser.sprite.parent.addToBack( new CheckedCell( curr ) );
+
+				GameScene.effectOverFog( new CheckedCell( curr, cell ) );
 				Dungeon.level.mapped[curr] = true;
 				
 				if (Dungeon.level.secret[curr]) {
@@ -79,10 +79,10 @@ public class StoneOfClairvoyance extends Runestone {
 		}
 		
 		if (noticed) {
-			Sample.INSTANCE.play( Assets.SND_SECRET );
+			Sample.INSTANCE.play( Assets.Sounds.SECRET );
 		}
 		
-		Sample.INSTANCE.play( Assets.SND_TELEPORT );
+		Sample.INSTANCE.play( Assets.Sounds.TELEPORT );
 		GameScene.updateFog();
 		
 		

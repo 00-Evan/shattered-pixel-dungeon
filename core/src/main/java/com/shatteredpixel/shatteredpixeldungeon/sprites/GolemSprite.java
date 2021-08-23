@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ public class GolemSprite extends MobSprite {
 	public GolemSprite() {
 		super();
 		
-		texture( Assets.GOLEM );
+		texture( Assets.Sprites.GOLEM );
 		
 		TextureFilm frames = new TextureFilm( texture, 17, 19 );
 		
@@ -117,12 +117,15 @@ public class GolemSprite extends MobSprite {
 						((Golem)ch).onZapComplete();
 					}
 				} );
-		Sample.INSTANCE.play( Assets.SND_ZAP );
+		Sample.INSTANCE.play( Assets.Sounds.ZAP );
 	}
+
+	private boolean died = false;
 
 	@Override
 	public void onComplete( Animation anim ) {
-		if (anim == die) {
+		if (anim == die && !died) {
+			died = true;
 			emitter().burst( ElmoParticle.FACTORY, 4 );
 		}
 		if (anim == zap) {

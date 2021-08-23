@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
-import com.shatteredpixel.shatteredpixeldungeon.items.DewVial;
 import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Bulk;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
@@ -56,6 +55,8 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIcon;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Image;
@@ -86,7 +87,9 @@ public class v0_6_X_Changes {
 				"_-_ Released May 3rd, 2018\n" +
 				"_-_ 32 days after Shattered v0.6.4\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"v0.6.5 was the third major design iteration for glyphs, with the first being from Pixel Dungeon and the second from v0.4.0. In both of these earlier iterations glyphs had big trade-offs, which led many players to dislike or outright ignore them. I finally just decided to make them like enchantments. With that, plus the new augmentation functionality, armor finally had some of the variability in stats and effects that weapons had, though adding full blown armor types is still a common suggestion.\n" +
+				"\n" +
+				"I also made another attempt at designing the Berserker in v0.6.5. Prior to this update his death-defying rage would always trigger if it was available. That built-in safety net translated to a win rate that was hugely higher than the other subclasses, so I decided to make building rage and cheating death much harder to access. The Berserker retained his simple up-front gameplay, but started requiring investment in armor and rage management to access his power."));
 		
 		changes.addButton( new ChangeButton(new StoneOfAugmentation(),
 				"The weightstone is now the runestone of augmentation!\n\n" +
@@ -106,7 +109,7 @@ public class v0_6_X_Changes {
 				"_-_ 'Death by glyph' badge is now 'death by deferred damage'.\n\n" +
 				"_-_ Removed rare monster slayer badge."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.WARRIOR, 0, 90, 12, 15), "Berserker",
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.WARRIOR, 0, 90, 12, 15), "Berserker",
 				"Even with recent nerfs the berserker is still much stronger than other subclasses. Rather than continually nerfing his existing mechanics, which makes the subclass unfun, I have instead opted to give him a small rework.\n\n" +
 				"These changes focus on giving the berserker some of his old power back, but making it more difficult to access that power.\n\n" +
 				"_-_ Rage is built by taking physical damage\n" +
@@ -139,7 +142,7 @@ public class v0_6_X_Changes {
 				"_-_ Loading screen transitions are now faster in many cases\n\n" +
 				"_-_ Improved the layout of translator credits in landscape"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
 				"_-_ Various rare crash bugs\n" +
 				"_-_ Antimagic applying to elemental damage\n" +
@@ -169,13 +172,13 @@ public class v0_6_X_Changes {
 				"_-_ Base chance to deal 2x damage reduced to 50% from 60%\n" +
 				"_-_ Each time 0x damage is dealt, the next hit will be much more likely to deal 2x damage"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.MAGE, 0, 90, 12, 15), "Warlock",
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.MAGE, 0, 90, 12, 15), "Warlock",
 				"Soul mark chance changed. Now has a 10% chance to activate per wand level, stacking multiplicatively, with a base of 10% at +0.\n" +
 				"e.g. +0 is 10%, +1 is 19%, +2 is 27%, etc.\n\n" +
 				"Previous soul mark chance was 9% at base plus 6% per level, stacking linearly.\n\n" +
 				"This substantially increases soul mark chance at wand levels +1 to +5"));
 		
-		changes.addButton( new ChangeButton( new Image(Assets.HUNTRESS, 0, 15, 12, 15), "Huntress",
+		changes.addButton( new ChangeButton( new Image(Assets.Sprites.HUNTRESS, 0, 15, 12, 15), "Huntress",
 				"Huntress ranged weapon durability boost now stacks with magical holster durability boost, for a total of 180% durability."));
 		
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
@@ -186,7 +189,7 @@ public class v0_6_X_Changes {
 				"Wayward's accuracy penalty was very extreme, often making it impossible to win fights without doors. Wayward should punish non-guaranteed attacks, but this extent of this has been lessened.\n\n" +
 				"_-_ Reduced wayward accuracy penalty by 50%"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.SKELETON, 0, 0, 12, 15), "Skeletons",
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SKELETON, 0, 0, 12, 15), "Skeletons",
 				"Skeletons have been adjusted to be more counterable with armor, and to give less inventory-clogging loot.\n\n" +
 				"_-_ Bone explosion damage up to 6-12 from 2-10\n" +
 				"_-_ Armor is now 2x effective against bone explosion, up from 0.5x\n\n" +
@@ -211,7 +214,9 @@ public class v0_6_X_Changes {
 				"_-_ Released April 1st, 2018\n" +
 				"_-_ 46 days after Shattered v0.6.3\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"v0.6.4 was a smaller update, mostly focused on additions and fixes following v0.6.3. Probably the most interesting content that came in v0.6.4 was the crossbow! This weapon was an attempt to fulfill the common request for an ammo-based ranged weapon, without actually having an ammo system in the game. I felt that an ammo system would be more cumbersome than it would be worth. Letting darts piggyback on an equipped weapon seemed like a great compromise.\n" +
+				"\n" +
+				"I also made some important changes to challenges in v0.6.4, primarily to make stacked challenge games a bit easier. This made high-challenge games more feasible without extreme luck, which led to a big increase in challenge interest among highly skilled players."));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.CHALLENGE_ON), "Challenges",
 				"Challenges have received several major changes, with the goal of making them more fair and interesting.\n" +
@@ -273,7 +278,7 @@ public class v0_6_X_Changes {
 				"\n" +
 				"_-_ Made adjustments to sending gameplay data. Data use should be slightly reduced."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
 				"_-_ Crashes involving corrupted mimics\n" +
 				"_-_ Various rare crash bugs\n" +
@@ -309,14 +314,14 @@ public class v0_6_X_Changes {
 		changes.hardlight( CharSprite.NEGATIVE );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(new Image(Assets.BUFFS_LARGE, 64, 0, 16, 16), "Paralysis changes",
+		changes.addButton( new ChangeButton(new BuffIcon(BuffIndicator.PARALYSIS, true), "Paralysis changes",
 				"Paralysis is an extremely powerful debuff, and its ability to completely immobilize the player or an enemy while they are killed needs to be adjusted.\n" +
 				"\n" +
 				"Chance to resist paralysis is now based on all recent damage taken while paralyzed, instead of each specific instance of damage separately.\n" +
 				"\n" +
 				"This means that after taking around half current HP in damage, breaking from paralysis becomes very likely, and immediately re-applying paralysis will not reset this resist chance."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.TILES_SEWERS, 48, 48, 16, 16), "Chasm changes",
+		changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_SEWERS, 48, 48, 16, 16), "Chasm changes",
 				"Dropping enemies into chasms is a very fun way to deal with enemies, but killing an enemy instantly and getting almost the full reward is simply too strong. This change should keep killing via chasms fun and useful, without it being as strong.\n" +
 				"\n" +
 				"_-_ Enemies killed via chasms now only award 50% exp"));
@@ -353,7 +358,11 @@ public class v0_6_X_Changes {
 				"_-_ Released February 14th, 2018\n" +
 				"_-_ 113 days after Shattered v0.6.2\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"Prior to v0.6.3 thrown weapons broke on a single hit each and so weren't useful for much. I didn't want to just amp up their quantity though, as players would just horde them and use them against bosses. By lowering quantity but also giving thrown weapons durability, I was able to make them much more useful without making hoarding problematic.\n" +
+				"\n" +
+				"v0.6.3 is also an excellent case for why I run betas for every Shattered update. In the original beta for v0.6.3 thrown weapons were seriously overpowered, and threatened to make regular weapons pointless. I ended up significantly reducing their stats and quantity before the full release.\n" +
+				"\n" +
+				"This update also demonstrates Shattered's ever-increasing scope and update size. Despite reworking a whole category of items, I ended up just calling this a minor update."));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.TRIDENT, null), "Ranged Weapons Overhaul!",
 				"Ranged weapons have been completely overhauled!\n\n" +
@@ -363,7 +372,7 @@ public class v0_6_X_Changes {
 				"_-_ Existing ranged weapons reworked, 5 new ranged weapons added.\n\n" +
 				"_-_ Warrior now starts with throwing stones, rogue starts with throwing knives"));
 		
-		changes.addButton( new ChangeButton( new Image(Assets.HUNTRESS, 0, 15, 12, 15), "Huntress",
+		changes.addButton( new ChangeButton( new Image(Assets.Sprites.HUNTRESS, 0, 15, 12, 15), "Huntress",
 				"Huntress adjusted due to ranged weapon changes (note that this is not a full class rework):\n\n" +
 				"_-_ Huntress no longer has a chance to reclaim a single ranged weapon.\n\n" +
 				"_-_ Missile weapons now have 50% greater durability when used by the huntress.\n\n" +
@@ -388,7 +397,7 @@ public class v0_6_X_Changes {
 		changes.hardlight( CharSprite.WARNING );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(new Image(Assets.BUFFS_LARGE, 32, 0, 16, 16), "Changes to debuffs and resistances",
+		changes.addButton( new ChangeButton(new BuffIcon(BuffIndicator.FIRE, true), "Changes to debuffs and resistances",
 				"The game's resistance system has been totally overhauled, to allow for more flexibility and consistency.\n\n" +
 				"Previously, if a character was resistant to something, its effect would be reduced by a random amount between 0% and 100%.\n\n" +
 				"Now, resistances are much less random, applying a specific reduction to harmful effects. Currently all resistances are 50%.\n\n" +
@@ -412,7 +421,7 @@ public class v0_6_X_Changes {
 				"_-_ Starting weapons can no longer appear in hero's remains\n\n" +
 				"_-_ The ghost hero is no longer unaffected by all buffs, and is also immune to corruption"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
 				"_-_ Various crash bugs\n" +
 				"_-_ Serious memory leaks on android 8.0+\n" +
@@ -440,7 +449,7 @@ public class v0_6_X_Changes {
 				"_-_ Rather than granting a chance to resist elemental/magic damage, ring now grants a set percentage resistance to these effects, which increases each level.\n\n" +
 				"_-_ Ring now applies to more elemental/magical effects than before."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.MAGE, 0, 90, 12, 15), "Warlock",
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.MAGE, 0, 90, 12, 15), "Warlock",
 				"The warlock is underperforming relative to the battlemage at the moment, and so he is getting an adjustment to his ability.\n\n" +
 				"This should hopefully both increase his power, and further encourage investing upgrades in wands.\n\n" +
 				"_-_ Reduced the base soul mark chance by 40%\n" +
@@ -470,7 +479,7 @@ public class v0_6_X_Changes {
 		changes.hardlight( CharSprite.NEGATIVE );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(new Image(Assets.WARRIOR, 0, 90, 12, 15), "Berserker",
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.WARRIOR, 0, 90, 12, 15), "Berserker",
 				"The previous berserker nerf from 0.6.2 had little effect on his overall winrate, so I'm trying again with a different approach, based around having a permanent penalty for each use of berserk.\n\n" +
 				"_-_ Reverted exhaustion nerf from 0.6.2\n\n" +
 				"_-_ Decreased lvls to recover rage to 2 from 3\n" +
@@ -498,7 +507,11 @@ public class v0_6_X_Changes {
 				"_-_ Released October 24th, 2017\n" +
 				"_-_ 70 days after Shattered v0.6.1\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"Before v0.6.2 secret rooms weren't a purposeful part of level generation, they occurred when the levelgen algorithm randomly hid all of the doors leading to a room. This caused a lot of problems, as secrets were often easy to find, but could also sometimes hide important progression items! I changed this to make secret rooms more deliberate, which let me fine tune their rewards and difficulty of discovery.\n" +
+				"\n" +
+				"This update also featured a proper rework for the Rogue! The cloak of shadows from v0.2.0 was kept, and I made a bunch of changes focused on consolidating his benefits, which did a lot to make the Rogue's strengths more pronounced and focused.\n" +
+				"\n" +
+				"Lastly, v0.6.2 (and v0.6.1) included some important AI changes that made character behaviour much more consistent when allies are concerned. This paved the way for ally additions in future updates."));
 		
 		changes.addButton( new ChangeButton( Icons.get(Icons.DEPTH), "Dungeon Secrets!",
 				"The secrets of the dungeon have been totally redesigned!\n\n" +
@@ -508,7 +521,7 @@ public class v0_6_X_Changes {
 				"_-_ Searching now consumes 6 turns of hunger, up from 2.\n\n" +
 				"This is a big adjustment to how secrets work in the dungeon. The goal is to make secrets more interesting, harder to find, and also more optional."));
 		
-		changes.addButton( new ChangeButton( new Image(Assets.ROGUE, 0, 15, 12, 15), "Rogue Rework!",
+		changes.addButton( new ChangeButton( new Image(Assets.Sprites.ROGUE, 0, 15, 12, 15), "Rogue Rework!",
 				"The rogue has been reworked! His abilities have received a number of changes to make his strengths more pronounced and focused.\n\n" +
 				"These abilities have been _removed:_\n" +
 				"_-_ Gains evasion from excess strength on armor\n" +
@@ -520,7 +533,7 @@ public class v0_6_X_Changes {
 				"_-_ Is able to find more secrets in the dungeon\n\n" +
 				"Make sure to check out the Cloak of Shadows and Dagger changes as well."));
 		
-		changes.addButton( new ChangeButton( new Image(Assets.ROGUE, 0, 90, 12, 15), "Rogue Subclasses Rework!",
+		changes.addButton( new ChangeButton( new Image(Assets.Sprites.ROGUE, 0, 90, 12, 15), "Rogue Subclasses Rework!",
 				"Both of the rogue's subclasses has been reworked, with an emphasis on more powerful abilities that need more interaction from the player.\n\n" +
 				"_The Assassin:_\n" +
 				"_-_ No longer gains a free +25% damage on surprise attacks\n" +
@@ -532,7 +545,7 @@ public class v0_6_X_Changes {
 				"_-_ Momentum is rapidly lost when standing still.\n" +
 				"_-_ Evasion gained from momentum scales with excess strength on armor."));
 		
-		changes.addButton( new ChangeButton( new Image(Assets.TERRAIN_FEATURES, 16, 0, 16, 16), "Trap Overhaul!",
+		changes.addButton( new ChangeButton( new Image(Assets.Environment.TERRAIN_FEATURES, 16, 0, 16, 16), "Trap Overhaul!",
 				"Most of the game's traps have received changes, some have been overhauled entirely!\n\n" +
 				"_-_ Removed Spear and Paralytic Gas Traps\n" +
 				"_-_ Lightning Trap is now Shocking and Storm traps\n" +
@@ -567,7 +580,7 @@ public class v0_6_X_Changes {
 				"_-_ Corrupted enemies award exp immediately as they are corrupted.\n\n" +
 				"These changes are aimed at making the wand more powerful, and also less of an all-in wand. Wand of Corruption is now useful even if it doesn't corrupt an enemy."));
 		
-		changes.addButton( new ChangeButton( new Image(Assets.STATUE, 0, 0, 12, 15), "AI and Enemy Changes",
+		changes.addButton( new ChangeButton( new Image(Assets.Sprites.STATUE, 0, 0, 12, 15), "AI and Enemy Changes",
 				"_-_ Characters now have an internal alignment and choose enemies based on that. Friendly characters should now never attack eachother.\n\n" +
 				"_-_ Injured characters will now always have a persistent health bar, even if they aren't being targeted.\n\n" +
 				"_-_ Improved enemy emote visuals, they now appear more frequently and there is now one for losing a target.\n\n" +
@@ -587,7 +600,7 @@ public class v0_6_X_Changes {
 				"_-_ Improved older updates in the changes list.\n" +
 				"_-_ Game now mutes during phone calls on android 6.0+"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
 				"_-_ Various crash bugs\n" +
 				"_-_ Various exploits players could use to determine map shape\n" +
@@ -656,7 +669,7 @@ public class v0_6_X_Changes {
 		changes.hardlight( CharSprite.NEGATIVE );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(new Image(Assets.WARRIOR, 0, 90, 12, 15), "Berserker",
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.WARRIOR, 0, 90, 12, 15), "Berserker",
 				"The Berserker's survivability and power have been reduced to help bring him into line with the other subclasses:\n\n" +
 				"_-_ Bonus damage from low health reduced significantly when below 50% HP. 2x damage while berserking is unchanged.\n\n" +
 				"_-_ Turns of exhaustion after berserking increased to 60 from 40. Damage reduction from exhaustion stays higher for longer."));
@@ -681,7 +694,9 @@ public class v0_6_X_Changes {
 				"_-_ Released August 15th, 2017\n" +
 				"_-_ 72 days after Shattered v0.6.0\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"v0.6.1 was light on core game content, but made some critical improvements to the new player experience by expanding the journal system. I really wanted to make the player feel less compelled to seek out external guides for Shattered, and so I wrote up an in-game guide that pointed the player in the right direction without spoiling too much.  The previous system used signposts at the start of each floor, which were the same every run and couldn't be read at any time.\n" +
+				"\n" +
+				"v0.6.1 also overhauled the changes screen, which you're viewing right now! Long text-based changelogs just don't work on mobile screens, as there's much less screen real-estate to work with. I didn't want Shattered's changelog to be a big wall of text, but I also didn't want to abbreviate lots of details. The solution was to keep the full text, but hide it behind categories and icons!"));
 		
 		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.GUIDE_PAGE, null), "Journal Additions",
 				"_-_ Overhauled the Journal window with loads of new functionality\n\n" +
@@ -737,7 +752,7 @@ public class v0_6_X_Changes {
 				"_-_ Health potions now heal more than max HP at low levels, and slightly less than max HP at high levels.\n\n" +
 				"Make sure to read the dew vial changes as well."));
 		
-		changes.addButton( new ChangeButton( new DewVial(),
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.VIAL, null), "Dew Vial",
 				"The dew vial (and dew) are having their healing abilities enhanced to improve the availability of healing in the sewers, and to help offset the health potion changes.\n\n" +
 				"_-_ Dew drops now heal 5% of max HP\n\n" +
 				"_-_ Dew vial now always spawns on floor 1\n\n" +
@@ -745,11 +760,11 @@ public class v0_6_X_Changes {
 				"_-_ Dew will always be collected into an available vial, even if the hero is below full HP.\n\n" +
 				"_-_ When drinking from the vial, the hero will now only drink as many drops as they need to reach full HP."));
 		
-		changes.addButton( new ChangeButton( new Image(Assets.STATUE, 0, 0, 12, 15), "AI Changes",
+		changes.addButton( new ChangeButton( new Image(Assets.Sprites.STATUE, 0, 0, 12, 15), "AI Changes",
 				"_-_ Improvements to pathfinding. Characters are now more prone to take efficient paths to their targets, and will prefer to wait instead of taking a very inefficient path.\n\n" +
 				"_-_ Characters will now more consistently decide who to attack based on distance and who they are being attacked by."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
 				"_-_ Issues with Android 7.0+ multi-window\n" +
 				"_-_ Rare stability issues on certain devices\n" +
@@ -848,7 +863,11 @@ public class v0_6_X_Changes {
 				"_-_ Released June 4th, 2017\n" +
 				"_-_ 116 days after Shattered v0.5.0\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"v0.6.0 was another major content change focused on the dungeon, this time to level generation! After v0.6.0 rooms were able to specify their own shape and size before the levelgen algorithm then tried to fit them all together. Previously levelgen would create the shape of a level first and then try to place rooms in that shape.\n" +
+				"\n" +
+				"I'm really proud of this levelgen algorithm even to this day. v0.6.0 both improved levelgen on its own and paved the way for future improvements in updates like v0.6.2 and v0.9.1.\n" +
+				"\n" +
+				"I feel v0.6.0 also represents the start of another era in Shattered's development. While Shattered was still missing some big updates (most notably v0.8.0), after v0.6.0 Shattered started to resemble its current incarnation more than the original Pixel Dungeon."));
 		
 		changes.addButton( new ChangeButton( Icons.get(Icons.DEPTH), "Levelgen Overhaul!",
 				"Level creation algorithm overhauled!\n\n" +

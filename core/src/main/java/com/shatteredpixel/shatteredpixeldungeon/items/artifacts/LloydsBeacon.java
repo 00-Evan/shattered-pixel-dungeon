@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -152,7 +152,7 @@ public class LloydsBeacon extends Artifact {
 			hero.busy();
 			
 			hero.sprite.operate( hero.pos );
-			Sample.INSTANCE.play( Assets.SND_BEACON );
+			Sample.INSTANCE.play( Assets.Sounds.BEACON );
 			
 			GLog.i( Messages.get(this, "return") );
 			
@@ -177,10 +177,10 @@ public class LloydsBeacon extends Artifact {
 				GameScene.updateFog();
 			} else {
 
-				Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
-				if (buff != null) buff.detach();
-				buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
-				if (buff != null) buff.detach();
+				TimekeepersHourglass.timeFreeze timeFreeze = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+				if (timeFreeze != null) timeFreeze.disarmPressedTraps();
+				Swiftthistle.TimeBubble timeBubble = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
+				if (timeBubble != null) timeBubble.disarmPressedTraps();
 
 				InterlevelScene.mode = InterlevelScene.Mode.RETURN;
 				InterlevelScene.returnDepth = returnDepth;
@@ -214,7 +214,7 @@ public class LloydsBeacon extends Artifact {
 					ScrollOfTeleportation.teleportHero(curUser);
 					curUser.spendAndNext( 1f );
 				} else {
-					Sample.INSTANCE.play( Assets.SND_ZAP );
+					Sample.INSTANCE.play( Assets.Sounds.ZAP );
 					curUser.sprite.zap(bolt.collisionPos);
 					curUser.busy();
 
@@ -278,9 +278,9 @@ public class LloydsBeacon extends Artifact {
 	}
 	
 	@Override
-	public void charge(Hero target) {
+	public void charge(Hero target, float amount) {
 		if (charge < chargeCap){
-			partialCharge += 0.25f;
+			partialCharge += 0.25f*amount;
 			if (partialCharge >= 1){
 				partialCharge--;
 				charge++;

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,7 +63,11 @@ public class v0_2_X_Changes {
 				"_-_ Released February 23rd, 2015\n" +
 				"_-_ 48 days after Shattered v0.2.3\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"v0.2.4 was a very important update, even if it was mainly porting another update from Pixel Dungeon's source code. This is because the v1.7.5 source included a change that was quite controversial: Degradation.\n" +
+				"\n" +
+				"In Pixel Dungeon (after v1.7.5) upgraded gear degrades as it is used, and this degradation is usually reset by upgrading an item further. The goal of this change was to discourage hoarding upgrades and dumping them on a single weapon, but (especially in v.1.7.5) many players felt that degradation ruined the fun of the game.\n" +
+				"\n" +
+				"After a lot of consideration, I decided to not implement degradation into Shattered. Instead I started planning other changes to solve this problem without restricting gameplay quite as much. Those changes would eventually show up in updates like v0.4.0 and v0.8.0."));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(new Honeypot()), "Pixel Dungeon v1.7.5",
 				"v1.7.3 - v1.7.5 Source Implemented, with exceptions:\n" +
@@ -100,7 +104,11 @@ public class v0_2_X_Changes {
 				"_-_ Released January 6th, 2015\n" +
 				"_-_ 64 days after Shattered v0.2.2\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"v0.2.3 was another update made of many small improvements. The most significant game content in this update was major additions and refinements to artifacts, including preventing duplicates.\n" +
+				"\n" +
+				"This was also the first update where I started really trying to focus on game stability and code quality. In v0.2.3 I made some big changes to the internal code of the game's save system, which fixed lots of cases where the game would fail to save and load properly.\n" +
+				"\n" +
+				"Lastly, v0.2.3 brought the addition of the game's supporter system! While monetization isn't as exciting as new game content, the supporter system is the primary reason why I've been able to work on the game for so long."));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(new TimekeepersHourglass()), "Artifact Changes",
 				"Added 4 new artifacts:\n" +
@@ -137,7 +145,11 @@ public class v0_2_X_Changes {
 				"_-_ Released November 3rd, 2014\n" +
 				"_-_ 21 days after Shattered v0.2.1\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"v0.2.2 was Shattered's first update that didn't have a specific focus. Instead this update was focused on making a bunch of little improvements.\n" +
+				"\n" +
+				"The largest change was the integration of Pixel Dungeon's source code from v1.7.2, which included synchronous movement! It's something we take for granted now, but before this change every on-screen character had to move one at a time. This slowed the pace of the game to a crawl whenever enemies were on screen.\n" +
+				"\n" +
+				"Heroes remains also received big changes this update. In Pixel Dungeon you could use remains to consistently pass highly upgraded armor from one run to the next. I felt this violated the roguelike nature of the game, and so I nerfed remains to prevent this."));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.STONE_AUGMENTATION, null), "Pixel Dungeon v1.7.2",
 				"Implemented directly from v1.7.2:\n" +
@@ -151,7 +163,7 @@ public class v0_2_X_Changes {
 				"_-_ Key ring and unstackable keys\n" +
 				"_-_ Blindweed has not been removed"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.TERRAIN_FEATURES, 112, 112, 16, 16), "New Plants",
+		changes.addButton( new ChangeButton(new Image(Assets.Environment.TERRAIN_FEATURES, 112, 112, 16, 16), "New Plants",
 				"Added two new plants:\n" +
 				"_-_ Stormvine, which brews into levitation\n" +
 				"_-_ Dreamfoil, which brews into purity\n\n" +
@@ -179,15 +191,17 @@ public class v0_2_X_Changes {
 				"_-_ Released October 13th, 2014\n" +
 				"_-_ 28 days after Shattered v0.2.0\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"v0.2.1 was the first in a short lived series of 'region overhaul' updates. Thanks to releasing on Google Play, Shattered was getting a huge influx of new players, and I wanted to make some changes that they would appreciate. The three new minibosses and Goo changes were all made to try and help new players get used to the game.\n" +
+				"\n" +
+				"This update also continued v0.2.0's trend of expanding Shattered's scope. I was no longer just planning to change items, but was now making additions and reworks to regions of the dungeon as well!"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.GHOST, 0, 0, 14, 15), "New Sewer Quests",
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.GHOST, 0, 0, 14, 15), "New Sewer Quests",
 				"_-_ Removed the dried rose quest (the rose will return...)\n\n" +
 				"_-_ Tweaked the mechanics of the fetid rat quest\n\n" +
 				"_-_ Added a gnoll trickster quest\n\n" +
 				"_-_ Added a great crab quest"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.GOO, 43, 3, 14, 11), "Goo Changes",
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.GOO, 43, 3, 14, 11), "Goo Changes",
 				"Goo's animations have been overhauled, including a particle effect for the area of its pumped up attack.\n\n" +
 				"Goo's arena has been updated to give more room to maneuver, and to be more variable."));
 		
@@ -202,8 +216,16 @@ public class v0_2_X_Changes {
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released September 15th, 2014\n" +
-				"_-_ 31 days after Shattered v0.1.1"));
-		
+				"_-_ 31 days after Shattered v0.1.1\n" +
+				"\n" +
+				"v0.2.0 was the first version of Shattered to release on Google Play! I had originally wanted to wait longer, but I was getting flooded with messages about it.\n" +
+				"\n" +
+				"Artifacts came from realizing it would be very difficult to make some rings worth upgrading by just buffing them. Instead, I decided to put their mechanics  on a new class of item that didn't need upgrades. Artifacts ended up becoming Shattered's first flagship feature!\n" +
+				"\n" +
+				"I feel like this was the start of a new era for Shattered's development, as updates become about making much more significant changes to content than just balance adjustments.\n" +
+				"\n" +
+				"Giving the Cloak of Shadows to the Rogue was also my first attempt at a class rework. It was a much more simple change than later reworks, and I ended up revisiting the Rogue in v0.6.2."));
+
 		changes.addButton( new ChangeButton(new ItemSprite(new HornOfPlenty()), "Artifacts!",
 				"Added artifacts to the game!\n\n" +
 				"Artifacts are unique items which offer new gameplay opportunities and grow stronger through unique means.\n\n" +

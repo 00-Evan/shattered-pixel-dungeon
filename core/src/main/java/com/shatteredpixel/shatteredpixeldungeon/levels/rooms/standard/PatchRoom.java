@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,8 @@ public abstract class PatchRoom extends StandardRoom {
 	protected boolean[] patch;
 	
 	protected void setupPatch(Level level, float fill, int clustering, boolean ensurePath){
-		
+
+		int attempts = 0;
 		if (ensurePath){
 			PathFinder.setMapSize(width()-2, height()-2);
 			boolean valid;
@@ -68,6 +69,11 @@ public abstract class PatchRoom extends StandardRoom {
 						valid = false;
 						break;
 					}
+				}
+				attempts++;
+				if (attempts > 100){
+					fill -= 0.01f;
+					attempts = 0;
 				}
 			} while (!valid);
 			PathFinder.setMapSize(level.width(), level.height());

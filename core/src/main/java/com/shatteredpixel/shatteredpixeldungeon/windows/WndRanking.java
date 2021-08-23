@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,16 +27,18 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BadgesGrid;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BadgesList;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
-import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
+import com.shatteredpixel.shatteredpixeldungeon.ui.TalentsPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
@@ -44,6 +46,7 @@ import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Button;
+import com.watabou.noosa.ui.Component;
 
 import java.util.Locale;
 
@@ -155,23 +158,50 @@ public class WndRanking extends WndTabbed {
 	
 	private class StatsTab extends Group {
 
-		private int GAP	= 5;
+		private int GAP	= 4;
 		
 		public StatsTab() {
 			super();
-
-			if (Dungeon.challenges > 0) GAP--;
 			
 			String heroClass = Dungeon.hero.className();
 			
 			IconTitle title = new IconTitle();
 			title.icon( HeroSprite.avatar( Dungeon.hero.heroClass, Dungeon.hero.tier() ) );
 			title.label( Messages.get(this, "title", Dungeon.hero.lvl, heroClass ).toUpperCase( Locale.ENGLISH ) );
-			title.color(Window.SHPX_COLOR);
+			title.color(Window.TITLE_COLOR);
 			title.setRect( 0, 0, WIDTH, 0 );
 			add( title );
 			
 			float pos = title.bottom() + GAP;
+
+			RedButton btnTalents = new RedButton( Messages.get(this, "talents") ){
+				@Override
+				protected void onClick() {
+					//removes talents from upper tiers
+					int tiers = 1;
+					if (Dungeon.hero.lvl >= 6) tiers++;
+					if (Dungeon.hero.lvl >= 12 && Dungeon.hero.subClass != HeroSubClass.NONE) tiers++;
+					if (Dungeon.hero.lvl >= 20 && Dungeon.hero.armorAbility != null) tiers++;
+					while (Dungeon.hero.talents.size() > tiers){
+						Dungeon.hero.talents.remove(Dungeon.hero.talents.size()-1);
+					}
+					Game.scene().addToFront( new Window(){
+						{
+							TalentsPane p = new TalentsPane(false);
+							add(p);
+							p.setPos(0, 0);
+							p.setSize(120, p.content().height());
+							resize((int)p.width(), (int)p.height());
+							p.setPos(0, 0);
+						}
+					});
+				}
+			};
+			btnTalents.icon(Icons.get(Icons.TALENT));
+			btnTalents.setRect( (WIDTH - btnTalents.reqWidth()+2)/2, pos, btnTalents.reqWidth()+2 , 16 );
+			add(btnTalents);
+
+			pos = btnTalents.bottom();
 
 			if (Dungeon.challenges > 0) {
 				RedButton btnChallenges = new RedButton( Messages.get(this, "challenges") ) {
@@ -180,16 +210,22 @@ public class WndRanking extends WndTabbed {
 						Game.scene().add( new WndChallenges( Dungeon.challenges, false ) );
 					}
 				};
-				float btnW = btnChallenges.reqWidth() + 2;
-				btnChallenges.setRect( (WIDTH - btnW)/2, pos, btnW , btnChallenges.reqHeight() + 2 );
+
+				btnChallenges.icon(Icons.get(Icons.CHALLENGE_ON));
+				btnChallenges.setSize( btnChallenges.reqWidth()+2, 16 );
 				add( btnChallenges );
 
-				pos = btnChallenges.bottom();
+				float left = (WIDTH - btnTalents.width() - btnChallenges.width())/3f;
+
+				btnTalents.setPos(left, btnTalents.top());
+				btnChallenges.setPos(btnTalents.right() + left, btnTalents.top());
 			}
 
 			pos += GAP;
-			
-			pos = statSlot( this, Messages.get(this, "str"), Integer.toString( Dungeon.hero.STR() ), pos );
+
+			int strBonus = Dungeon.hero.STR() - Dungeon.hero.STR;
+			if (strBonus > 0)   pos = statSlot(this, Messages.get(this, "str"), Dungeon.hero.STR + "+" + strBonus, pos);
+			else                pos = statSlot(this, Messages.get(this, "str"), Integer.toString(Dungeon.hero.STR), pos);
 			pos = statSlot( this, Messages.get(this, "health"), Integer.toString( Dungeon.hero.HT ), pos );
 			
 			pos += GAP;
@@ -238,11 +274,14 @@ public class WndRanking extends WndTabbed {
 			if (stuff.armor != null) {
 				addItem( stuff.armor );
 			}
-			if (stuff.misc1 != null) {
-				addItem( stuff.misc1);
+			if (stuff.artifact != null) {
+				addItem( stuff.artifact );
 			}
-			if (stuff.misc2 != null) {
-				addItem( stuff.misc2);
+			if (stuff.misc != null) {
+				addItem( stuff.misc );
+			}
+			if (stuff.ring != null) {
+				addItem( stuff.ring );
 			}
 
 			pos = 0;
@@ -250,14 +289,14 @@ public class WndRanking extends WndTabbed {
 				if (Dungeon.quickslot.getItem(i) != null){
 					QuickSlotButton slot = new QuickSlotButton(Dungeon.quickslot.getItem(i));
 
-					slot.setRect( pos, 116, 28, 28 );
+					slot.setRect( pos, 120, 28, 23 );
 
 					add(slot);
 
 				} else {
-					ColorBlock bg = new ColorBlock( 28, 28, 0x9953564D );
+					ColorBlock bg = new ColorBlock( 28, 23, 0x9953564D );
 					bg.x = pos;
-					bg.y = 116;
+					bg.y = 120;
 					add(bg);
 				}
 				pos += 29;
@@ -279,17 +318,21 @@ public class WndRanking extends WndTabbed {
 			super();
 			
 			camera = WndRanking.this.camera;
-			
-			ScrollPane list = new BadgesList( false );
-			add( list );
-			
-			list.setSize( WIDTH, HEIGHT );
+
+			Component badges;
+			if (Badges.unlocked(false) <= 7){
+				badges = new BadgesList(false);
+			} else {
+				badges = new BadgesGrid(false);
+			}
+			add(badges);
+			badges.setSize( WIDTH, HEIGHT );
 		}
 	}
-	
+
 	private class ItemButton extends Button {
 		
-		public static final int HEIGHT	= 28;
+		public static final int HEIGHT	= 23;
 		
 		private Item item;
 		
@@ -316,7 +359,7 @@ public class WndRanking extends WndTabbed {
 		@Override
 		protected void createChildren() {
 			
-			bg = new ColorBlock( HEIGHT, HEIGHT, 0x9953564D );
+			bg = new ColorBlock( 28, HEIGHT, 0x9953564D );
 			add( bg );
 			
 			slot = new ItemSlot();
@@ -333,7 +376,7 @@ public class WndRanking extends WndTabbed {
 			bg.x = x;
 			bg.y = y;
 			
-			slot.setRect( x, y, HEIGHT, HEIGHT );
+			slot.setRect( x, y, 28, HEIGHT );
 			PixelScene.align(slot);
 			
 			name.maxWidth((int)(width - slot.width() - 2));
@@ -350,7 +393,7 @@ public class WndRanking extends WndTabbed {
 		@Override
 		protected void onPointerDown() {
 			bg.brightness( 1.5f );
-			Sample.INSTANCE.play( Assets.SND_CLICK, 0.7f, 0.7f, 1.2f );
+			Sample.INSTANCE.play( Assets.Sounds.CLICK, 0.7f, 0.7f, 1.2f );
 		}
 		
 		protected void onPointerUp() {
@@ -359,13 +402,13 @@ public class WndRanking extends WndTabbed {
 		
 		@Override
 		protected void onClick() {
-			Game.scene().add( new WndItem( null, item ) );
+			Game.scene().add( new WndInfoItem( item ) );
 		}
 	}
 
 	private class QuickSlotButton extends ItemSlot{
 
-		public static final int HEIGHT	= 28;
+		public static final int HEIGHT	= 23;
 
 		private Item item;
 		private ColorBlock bg;
@@ -377,7 +420,7 @@ public class WndRanking extends WndTabbed {
 
 		@Override
 		protected void createChildren() {
-			bg = new ColorBlock( HEIGHT, HEIGHT, 0x9953564D );
+			bg = new ColorBlock( 28, HEIGHT, 0x9953564D );
 			add( bg );
 
 			super.createChildren();
@@ -394,7 +437,7 @@ public class WndRanking extends WndTabbed {
 		@Override
 		protected void onPointerDown() {
 			bg.brightness( 1.5f );
-			Sample.INSTANCE.play( Assets.SND_CLICK, 0.7f, 0.7f, 1.2f );
+			Sample.INSTANCE.play( Assets.Sounds.CLICK, 0.7f, 0.7f, 1.2f );
 		}
 
 		protected void onPointerUp() {
@@ -403,7 +446,7 @@ public class WndRanking extends WndTabbed {
 
 		@Override
 		protected void onClick() {
-			Game.scene().add(new WndItem(null, item));
+			Game.scene().add(new WndInfoItem(item));
 		}
 	}
 }

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ package com.watabou.glwrap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
@@ -108,7 +109,7 @@ public class Texture {
 			order( ByteOrder.nativeOrder() ).
 			asIntBuffer();
 		imageBuffer.put( pixels );
-		imageBuffer.position( 0 );
+		((Buffer)imageBuffer).position( 0 );
 		
 		Gdx.gl.glTexImage2D(
 			Gdx.gl.GL_TEXTURE_2D,
@@ -130,7 +131,7 @@ public class Texture {
 			allocateDirect( w * h ).
 			order( ByteOrder.nativeOrder() );
 		imageBuffer.put( pixels );
-		imageBuffer.position( 0 );
+		((Buffer)imageBuffer).position( 0 );
 		
 		Gdx.gl.glPixelStorei( Gdx.gl.GL_UNPACK_ALIGNMENT, 1 );
 

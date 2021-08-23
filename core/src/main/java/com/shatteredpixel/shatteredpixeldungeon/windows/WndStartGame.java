@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -227,7 +227,7 @@ public class WndStartGame extends Window {
 		protected void createChildren() {
 			super.createChildren();
 			
-			avatar = new Image(Assets.AVATARS);
+			avatar = new Image(Assets.Sprites.AVATARS);
 			avatar.scale.set(2f);
 			add(avatar);
 			
@@ -267,7 +267,7 @@ public class WndStartGame extends Window {
 					if (cl == null) return;
 					String msg = Messages.get(cl, cl.name() + "_desc_subclasses");
 					for (HeroSubClass sub : cl.subClasses()){
-						msg += "\n\n" + sub.desc();
+						msg += "\n\n" + sub.shortDesc();
 					}
 					ShatteredPixelDungeon.scene().addToFront(new WndMessage(msg));
 				}
@@ -330,7 +330,7 @@ public class WndStartGame extends Window {
 						case HUNTRESS:
 							heroItem.icon(new ItemSprite(ItemSpriteSheet.SPIRIT_BOW, null));
 							heroLoadout.icon(new ItemSprite(ItemSpriteSheet.GLOVES, null));
-							heroMisc.icon(new Image(Assets.TILES_SEWERS, 112, 96, 16, 16 ));
+							heroMisc.icon(new Image(Assets.Environment.TILES_SEWERS, 112, 96, 16, 16 ));
 							break;
 					}
 					

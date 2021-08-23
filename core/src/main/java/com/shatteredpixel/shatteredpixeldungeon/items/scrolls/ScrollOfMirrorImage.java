@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,10 +26,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
@@ -40,7 +40,7 @@ import java.util.ArrayList;
 public class ScrollOfMirrorImage extends Scroll {
 
 	{
-		initials = 3;
+		icon = ItemSpriteSheet.Icons.SCROLL_MIRRORIMG;
 	}
 
 	private static final int NIMAGES	= 2;
@@ -50,25 +50,11 @@ public class ScrollOfMirrorImage extends Scroll {
 		int spawnedImages = spawnImages(curUser, NIMAGES);
 		
 		if (spawnedImages > 0) {
-			setKnown();
+			identify();
 		}
 		
-		Sample.INSTANCE.play( Assets.SND_READ );
-		Invisibility.dispel();
+		Sample.INSTANCE.play( Assets.Sounds.READ );
 		
-		readAnimation();
-	}
-	
-	@Override
-	public void empoweredRead() {
-		//spawns 2 images right away, delays 3 of them, 5 total.
-		new DelayedImageSpawner(5 - spawnImages(curUser, 2), 1, 2).attachTo(curUser);
-		
-		setKnown();
-		
-		Sample.INSTANCE.play( Assets.SND_READ );
-		Invisibility.dispel();
-	
 		readAnimation();
 	}
 	
@@ -166,7 +152,7 @@ public class ScrollOfMirrorImage extends Scroll {
 	}
 
 	@Override
-	public int price() {
-		return isKnown() ? 30 * quantity : super.price();
+	public int value() {
+		return isKnown() ? 30 * quantity : super.value();
 	}
 }

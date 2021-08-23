@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -32,6 +32,8 @@ public class ThrowingKnife extends MissileWeapon {
 	
 	{
 		image = ItemSpriteSheet.THROWING_KNIFE;
+		hitSound = Assets.Sounds.HIT_SLASH;
+		hitSoundPitch = 1.2f;
 		
 		bones = false;
 		
@@ -45,18 +47,11 @@ public class ThrowingKnife extends MissileWeapon {
 				(tier == 1 ? 2*lvl : tier*lvl); //scaling unchanged
 	}
 	
-	private Char enemy;
-	
-	@Override
-	protected void onThrow(int cell) {
-		enemy = Actor.findChar(cell);
-		super.onThrow(cell);
-	}
-	
 	@Override
 	public int damageRoll(Char owner) {
 		if (owner instanceof Hero) {
 			Hero hero = (Hero)owner;
+			Char enemy = hero.enemy();
 			if (enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)) {
 				//deals 75% toward max to max on surprise, instead of min to max.
 				int diff = max() - min();

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
@@ -51,7 +52,7 @@ public class ChaliceOfBlood extends Artifact {
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		if (isEquipped( hero ) && level() < levelCap && !cursed)
+		if (isEquipped( hero ) && level() < levelCap && !cursed && !hero.isInvulnerable(getClass()))
 			actions.add(AC_PRICK);
 		return actions;
 	}
@@ -67,7 +68,8 @@ public class ChaliceOfBlood extends Artifact {
 			if (damage > hero.HP*0.75) {
 
 				GameScene.show(
-					new WndOptions(Messages.titleCase(Messages.get(this, "name")),
+					new WndOptions(new ItemSprite(this),
+							Messages.titleCase(name()),
 							Messages.get(this, "prick_warn"),
 							Messages.get(this, "yes"),
 							Messages.get(this, "no")) {
@@ -107,7 +109,7 @@ public class ChaliceOfBlood extends Artifact {
 		if (damage <= 0){
 			damage = 1;
 		} else {
-			Sample.INSTANCE.play(Assets.SND_CURSED);
+			Sample.INSTANCE.play(Assets.Sounds.CURSED);
 			hero.sprite.emitter().burst( ShadowParticle.CURSE, 4+(damage/10) );
 		}
 
@@ -143,8 +145,12 @@ public class ChaliceOfBlood extends Artifact {
 	}
 	
 	@Override
-	public void charge(Hero target) {
-		target.HP = Math.min( target.HT, target.HP + 1 + Dungeon.depth/5);
+	public void charge(Hero target, float amount) {
+		//grants 5 turns of healing up-front
+		float healDelay = 10f - level()*0.9f;
+		healDelay /= amount;
+		//effectively 1HP at lvl 0-5, 2HP lvl 6-8, 3HP lvl 9, and 5HP lvl 10.
+		target.HP = Math.min( target.HT, target.HP + (int)Math.ceil(5/healDelay));
 	}
 	
 	@Override
@@ -167,7 +173,7 @@ public class ChaliceOfBlood extends Artifact {
 	}
 
 	public class chaliceRegen extends ArtifactBuff {
-
+		//see Regeneration.class for effect
 	}
 
 }

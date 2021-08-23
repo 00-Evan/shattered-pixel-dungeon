@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -53,7 +52,7 @@ public class Warlock extends Mob implements Callback {
 		maxLvl = 21;
 		
 		loot = Generator.Category.POTION;
-		lootChance = 0.83f;
+		lootChance = 0.5f;
 
 		properties.add(Property.UNDEAD);
 	}
@@ -105,16 +104,14 @@ public class Warlock extends Mob implements Callback {
 		if (hit( this, enemy, true )) {
 			//TODO would be nice for this to work on ghost/statues too
 			if (enemy == Dungeon.hero && Random.Int( 2 ) == 0) {
-				if (enemy.buff( Degrade.class ) == null){
-					Sample.INSTANCE.play( Assets.SND_DEGRADE );
-				}
 				Buff.prolong( enemy, Degrade.class, Degrade.DURATION );
+				Sample.INSTANCE.play( Assets.Sounds.DEBUFF );
 			}
 			
 			int dmg = Random.NormalIntRange( 12, 18 );
 			enemy.damage( dmg, new DarkBolt() );
 			
-			if (!enemy.isAlive() && enemy == Dungeon.hero) {
+			if (enemy == Dungeon.hero && !enemy.isAlive()) {
 				Dungeon.fail( getClass() );
 				GLog.n( Messages.get(this, "bolt_kill") );
 			}
@@ -135,19 +132,30 @@ public class Warlock extends Mob implements Callback {
 
 	@Override
 	public Item createLoot(){
-		Item loot = super.createLoot();
 
-		if (loot instanceof PotionOfHealing){
-
-			//count/10 chance of not dropping potion
-			if (Random.Float() < ((8f - Dungeon.LimitedDrops.WARLOCK_HP.count) / 8f)){
-				Dungeon.LimitedDrops.WARLOCK_HP.count++;
-			} else {
-				return null;
+		// 1/6 chance for healing, scaling to 0 over 8 drops
+		if (Random.Int(2) == 0 && Random.Int(8) > Dungeon.LimitedDrops.WARLOCK_HP.count ){
+			Dungeon.LimitedDrops.WARLOCK_HP.count++;
+			return new PotionOfHealing();
+		} else {
+			Item i = Generator.random(Generator.Category.POTION);
+			int healingTried = 0;
+			while (i instanceof PotionOfHealing){
+				healingTried++;
+				i = Generator.random(Generator.Category.POTION);
 			}
 
+			//return the attempted healing potion drops to the pool
+			if (healingTried > 0){
+				for (int j = 0; j < Generator.Category.POTION.classes.length; j++){
+					if (Generator.Category.POTION.classes[j] == PotionOfHealing.class){
+						Generator.Category.POTION.probs[j] += healingTried;
+					}
+				}
+			}
+
+			return i;
 		}
 
-		return loot;
 	}
 }

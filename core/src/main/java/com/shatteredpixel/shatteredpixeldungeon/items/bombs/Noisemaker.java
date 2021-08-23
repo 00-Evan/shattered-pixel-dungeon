@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -46,7 +45,7 @@ public class Noisemaker extends Bomb {
 		Buff.affect(Dungeon.hero, Trigger.class).set(cell);
 
 		CellEmitter.center( cell ).start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
-		Sample.INSTANCE.play( Assets.SND_ALERT );
+		Sample.INSTANCE.play( Assets.Sounds.ALERT );
 
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 			mob.beckon( cell );
@@ -55,6 +54,10 @@ public class Noisemaker extends Bomb {
 	}
 	
 	public static class Trigger extends Buff {
+
+		{
+			revivePersists = true;
+		}
 
 		int cell;
 		int floor;
@@ -106,7 +109,7 @@ public class Noisemaker extends Bomb {
 
 				if (left <= 0){
 					CellEmitter.center( cell ).start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
-					Sample.INSTANCE.play( Assets.SND_ALERT );
+					Sample.INSTANCE.play( Assets.Sounds.ALERT );
 
 					for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 						mob.beckon( cell );
@@ -141,7 +144,7 @@ public class Noisemaker extends Bomb {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		//prices of ingredients
 		return quantity * (20 + 40);
 	}

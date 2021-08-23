@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,6 +44,9 @@ public class Buff extends Actor {
 	
 	//whether or not the buff announces its name
 	public boolean announced = false;
+
+	//whether a buff should persist through revive effects for the hero
+	public boolean revivePersists = false;
 	
 	protected HashSet<Class> resistances = new HashSet<>();
 	
@@ -89,11 +92,18 @@ public class Buff extends Actor {
 	public int icon() {
 		return BuffIndicator.NONE;
 	}
-	
+
+	//some buffs may want to tint the base texture color of their icon
 	public void tintIcon( Image icon ){
 		//do nothing by default
 	}
 
+	//percent (0-1) to fade out out the buff icon, usually if buff is expiring
+	public float iconFadePercent(){
+		return 0;
+	}
+
+	//visual effect usually attached to the sprite of the character the buff is attacked to
 	public void fx(boolean on) {
 		//do nothing by default
 	}
@@ -109,6 +119,11 @@ public class Buff extends Actor {
 	//to handle the common case of showing how many turns are remaining in a buff description.
 	protected String dispTurns(float input){
 		return new DecimalFormat("#.##").format(input);
+	}
+
+	//buffs act after the hero, so it is often useful to use cooldown+1 when display buff time remaining
+	public float visualcooldown(){
+		return cooldown()+1f;
 	}
 
 	//creates a fresh instance of the buff and attaches that, this allows duplication.
@@ -144,6 +159,12 @@ public class Buff extends Actor {
 	public static<T extends FlavourBuff> T prolong( Char target, Class<T> buffClass, float duration ) {
 		T buff = affect( target, buffClass );
 		buff.postpone( duration * target.resist(buffClass) );
+		return buff;
+	}
+
+	public static<T extends CounterBuff> T count( Char target, Class<T> buffclass, float count ) {
+		T buff = affect( target, buffclass );
+		buff.countUp( count );
 		return buff;
 	}
 	

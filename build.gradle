@@ -1,10 +1,11 @@
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.3'
+        classpath 'com.android.tools.build:gradle:7.0.0'
+        classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.13'
     }
 }
 
@@ -14,22 +15,24 @@ allprojects {
         appName = 'Shattered Pixel Dungeon'
         appPackageName = 'com.shatteredpixel.shatteredpixeldungeon'
 
-        appVersionCode = 414
-        appVersionName = '0.8.0b'
+        appVersionCode = 566
+        appVersionName = '1.0.0'
 
-        appJavaCompatibility = 1.8
+        appJavaCompatibility = JavaVersion.VERSION_1_8
 
-        appAndroidCompileSDK = 29
-        appAndroidMinSDK = 9
-        appAndroidTargetSDK = 29
+        appAndroidCompileSDK = 30 //TODO update to 31 once it is out of preview
+        appAndroidMinSDK = 14
+        appAndroidTargetSDK = 31
 
-        gdxVersion = '1.9.10'
+        gdxVersion = '1.10.0'
+        robovmVersion = '2.3.13'
     }
     version = appVersionName
 
     repositories {
         google()
-        jcenter()
+        mavenCentral()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
 
 }

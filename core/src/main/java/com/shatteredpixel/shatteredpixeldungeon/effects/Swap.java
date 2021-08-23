@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ public class Swap extends Actor {
 
 		eff1 = new Effect( ch1.sprite, ch1.pos, ch2.pos );
 		eff2 = new Effect( ch2.sprite, ch2.pos, ch1.pos );
-		Sample.INSTANCE.play( Assets.SND_TELEPORT );
+		Sample.INSTANCE.play( Assets.Sounds.TELEPORT );
 	}
 
 	@Override

@@ -1,0 +1,5 @@
+#RoboVM build folders
+robovm-build/
+
+#RoboVM config (we dynamically generate it)
+robovm.properties

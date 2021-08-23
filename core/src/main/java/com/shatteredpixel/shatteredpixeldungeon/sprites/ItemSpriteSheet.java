@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,12 +27,19 @@ import com.watabou.noosa.TextureFilm;
 public class ItemSpriteSheet {
 
 	private static final int WIDTH = 16;
+	public static final int SIZE = 16;
 
-	public static TextureFilm film = new TextureFilm( Assets.ITEMS, 16, 16 );
+	public static TextureFilm film = new TextureFilm( Assets.Sprites.ITEMS, SIZE, SIZE );
 
 	private static int xy(int x, int y){
 		x -= 1; y -= 1;
 		return x + WIDTH*y;
+	}
+
+	private static void assignItemRect( int item, int width, int height ){
+		int x = (item % WIDTH) * SIZE;
+		int y = (item / WIDTH) * SIZE;
+		film.add( item, x, y, x+width, y+height);
 	}
 
 	private static final int PLACEHOLDERS   =                               xy(1, 1);   //16 slots
@@ -118,23 +125,23 @@ public class ItemSpriteSheet {
 		assignItemRect(EBONY_CHEST,     16, 14);
 	}
 
-	private static final int SINGLE_USE     =                               xy(1, 4);   //16 slots
-	public static final int ANKH            = SINGLE_USE+0;
-	public static final int STYLUS          = SINGLE_USE+1;
-	
-	public static final int SEAL            = SINGLE_USE+3;
-	public static final int TORCH           = SINGLE_USE+4;
-	public static final int BEACON          = SINGLE_USE+5;
-
-	public static final int HONEYPOT        = SINGLE_USE+7;
-	public static final int SHATTPOT        = SINGLE_USE+8;
-	public static final int IRON_KEY        = SINGLE_USE+9;
-	public static final int GOLDEN_KEY      = SINGLE_USE+10;
-	public static final int CRYSTAL_KEY     = SINGLE_USE+11;
-	public static final int SKELETON_KEY    = SINGLE_USE+12;
-	public static final int MASTERY         = SINGLE_USE+13;
-	public static final int KIT             = SINGLE_USE+14;
-	public static final int AMULET          = SINGLE_USE+15;
+	private static final int MISC_CONSUMABLE =                              xy(1, 4);   //16 slots
+	public static final int ANKH            = MISC_CONSUMABLE +0;
+	public static final int STYLUS          = MISC_CONSUMABLE +1;
+	public static final int SEAL            = MISC_CONSUMABLE +2;
+	public static final int TORCH           = MISC_CONSUMABLE +3;
+	public static final int BEACON          = MISC_CONSUMABLE +4;
+	public static final int HONEYPOT        = MISC_CONSUMABLE +5;
+	public static final int SHATTPOT        = MISC_CONSUMABLE +6;
+	public static final int IRON_KEY        = MISC_CONSUMABLE +7;
+	public static final int GOLDEN_KEY      = MISC_CONSUMABLE +8;
+	public static final int CRYSTAL_KEY     = MISC_CONSUMABLE +9;
+	public static final int SKELETON_KEY    = MISC_CONSUMABLE +10;
+	public static final int MASK            = MISC_CONSUMABLE +11;
+	public static final int CROWN           = MISC_CONSUMABLE +12;
+	public static final int AMULET          = MISC_CONSUMABLE +13;
+	public static final int MASTERY         = MISC_CONSUMABLE +14;
+	public static final int KIT             = MISC_CONSUMABLE +15;
 	static{
 		assignItemRect(ANKH,            10, 16);
 		assignItemRect(STYLUS,          12, 13);
@@ -149,9 +156,11 @@ public class ItemSpriteSheet {
 		assignItemRect(GOLDEN_KEY,      8,  14);
 		assignItemRect(CRYSTAL_KEY,     8,  14);
 		assignItemRect(SKELETON_KEY,    8,  14);
+		assignItemRect(MASK,            11,  9);
+		assignItemRect(CROWN,           13,  7);
+		assignItemRect(AMULET,          16, 16);
 		assignItemRect(MASTERY,         13, 16);
 		assignItemRect(KIT,             16, 15);
-		assignItemRect(AMULET,          16, 16);
 	}
 	
 	private static final int BOMBS          =                               xy(1, 5);   //16 slots
@@ -457,10 +466,12 @@ public class ItemSpriteSheet {
 	public static final int SCROLL_TIWAZ    = SCROLLS+11;
 	
 	public static final int SCROLL_CATALYST = SCROLLS+13;
+	public static final int ARCANE_RESIN    = SCROLLS+14;
 	static {
 		for (int i = SCROLLS; i < SCROLLS+16; i++)
 			assignItemRect(i, 15, 14);
 		assignItemRect(SCROLL_CATALYST, 12, 11);
+		assignItemRect(ARCANE_RESIN   , 12, 11);
 	}
 	
 	private static final int EXOTIC_SCROLLS =                               xy(1, 20);  //16 slots
@@ -484,7 +495,7 @@ public class ItemSpriteSheet {
 	private static final int STONES             =                           xy(1, 21);  //16 slots
 	public static final int STONE_AGGRESSION    = STONES+0;
 	public static final int STONE_AUGMENTATION  = STONES+1;
-	public static final int STONE_AFFECTION     = STONES+2;
+	public static final int STONE_FEAR          = STONES+2;
 	public static final int STONE_BLAST         = STONES+3;
 	public static final int STONE_BLINK         = STONES+4;
 	public static final int STONE_CLAIRVOYANCE  = STONES+5;
@@ -513,10 +524,12 @@ public class ItemSpriteSheet {
 	public static final int POTION_SILVER   = POTIONS+10;
 	public static final int POTION_IVORY    = POTIONS+11;
 	public static final int POTION_CATALYST = POTIONS+13;
+	public static final int LIQUID_METAL    = POTIONS+14;
 	static {
 		for (int i = POTIONS; i < POTIONS+16; i++)
 			assignItemRect(i, 12, 14);
 		assignItemRect(POTION_CATALYST, 6, 15);
+		assignItemRect(LIQUID_METAL,    8, 15);
 	}
 	
 	private static final int EXOTIC_POTIONS =                               xy(1, 23);  //16 slots
@@ -619,6 +632,7 @@ public class ItemSpriteSheet {
 	public static final int MEAT_PIE    = FOOD+9;
 	public static final int BLANDFRUIT  = FOOD+10;
 	public static final int BLAND_CHUNKS= FOOD+11;
+	public static final int BERRY =       FOOD+12;
 	static{
 		assignItemRect(MEAT,        15, 11);
 		assignItemRect(STEAK,       15, 11);
@@ -632,6 +646,7 @@ public class ItemSpriteSheet {
 		assignItemRect(MEAT_PIE,    16, 12);
 		assignItemRect(BLANDFRUIT,  9,  12);
 		assignItemRect(BLAND_CHUNKS,14, 6);
+		assignItemRect(BERRY,       9,  11);
 	}
 
 	private static final int QUEST  =                                       xy(1, 29);  //32 slots
@@ -657,26 +672,189 @@ public class ItemSpriteSheet {
 	}
 
 	private static final int BAGS       =                                   xy(1, 31);  //16 slots
-	public static final int VIAL        = BAGS+0;
-	public static final int POUCH       = BAGS+1;
-	public static final int HOLDER      = BAGS+2;
-	public static final int BANDOLIER   = BAGS+3;
-	public static final int HOLSTER     = BAGS+4;
+	public static final int WATERSKIN   = BAGS+0;
+	public static final int BACKPACK    = BAGS+1;
+	public static final int POUCH       = BAGS+2;
+	public static final int HOLDER      = BAGS+3;
+	public static final int BANDOLIER   = BAGS+4;
+	public static final int HOLSTER     = BAGS+5;
+	public static final int VIAL        = BAGS+6;
 	static{
-		assignItemRect(VIAL,        12, 12);
+		assignItemRect(WATERSKIN,   16, 14);
+		assignItemRect(BACKPACK,    16, 16);
 		assignItemRect(POUCH,       14, 15);
 		assignItemRect(HOLDER,      16, 16);
 		assignItemRect(BANDOLIER,   15, 16);
 		assignItemRect(HOLSTER,     15, 16);
+		assignItemRect(VIAL,        12, 12);
 	}
 
 	                                                                                    //16 free slots
 
+	//for smaller 8x8 icons that often accompany an item sprite
+	public static class Icons {
 
-	private static void assignItemRect( int item, int width, int height){
-		int x = (item % WIDTH) * WIDTH;
-		int y = (item / WIDTH) * WIDTH;
-		film.add( item, x, y, x+width, y+height);
+		private static final int WIDTH = 16;
+		public static final int SIZE = 8;
+
+		public static TextureFilm film = new TextureFilm( Assets.Sprites.ITEM_ICONS, SIZE, SIZE );
+
+		private static int xy(int x, int y){
+			x -= 1; y -= 1;
+			return x + WIDTH*y;
+		}
+
+		private static void assignIconRect( int item, int width, int height ){
+			int x = (item % WIDTH) * SIZE;
+			int y = (item / WIDTH) * SIZE;
+			film.add( item, x, y, x+width, y+height);
+		}
+
+		private static final int RINGS          =                            xy(1, 1);  //16 slots
+		public static final int RING_ACCURACY   = RINGS+0;
+		public static final int RING_ELEMENTS   = RINGS+1;
+		public static final int RING_ENERGY     = RINGS+2;
+		public static final int RING_EVASION    = RINGS+3;
+		public static final int RING_FORCE      = RINGS+4;
+		public static final int RING_FUROR      = RINGS+5;
+		public static final int RING_HASTE      = RINGS+6;
+		public static final int RING_MIGHT      = RINGS+7;
+		public static final int RING_SHARPSHOOT = RINGS+8;
+		public static final int RING_TENACITY   = RINGS+9;
+		public static final int RING_WEALTH     = RINGS+10;
+		public static final int RING_UNUSED     = RINGS+11;
+		static {
+			assignIconRect( RING_ACCURACY,      7, 7 );
+			assignIconRect( RING_ELEMENTS,      7, 7 );
+			assignIconRect( RING_ENERGY,        7, 5 );
+			assignIconRect( RING_EVASION,       7, 7 );
+			assignIconRect( RING_FORCE,         5, 6 );
+			assignIconRect( RING_FUROR,         7, 6 );
+			assignIconRect( RING_HASTE,         6, 6 );
+			assignIconRect( RING_MIGHT,         7, 7 );
+			assignIconRect( RING_SHARPSHOOT,    7, 7 );
+			assignIconRect( RING_TENACITY,      6, 6 );
+			assignIconRect( RING_WEALTH,        7, 6 );
+		}
+
+		                                                                                //16 free slots
+
+		private static final int SCROLLS        =                            xy(1, 3);  //16 slots
+		public static final int SCROLL_UPGRADE  = SCROLLS+0;
+		public static final int SCROLL_IDENTIFY = SCROLLS+1;
+		public static final int SCROLL_REMCURSE = SCROLLS+2;
+		public static final int SCROLL_MIRRORIMG= SCROLLS+3;
+		public static final int SCROLL_RECHARGE = SCROLLS+4;
+		public static final int SCROLL_TELEPORT = SCROLLS+5;
+		public static final int SCROLL_LULLABY  = SCROLLS+6;
+		public static final int SCROLL_MAGICMAP = SCROLLS+7;
+		public static final int SCROLL_RAGE     = SCROLLS+8;
+		public static final int SCROLL_RETRIB   = SCROLLS+9;
+		public static final int SCROLL_TERROR   = SCROLLS+10;
+		public static final int SCROLL_TRANSMUTE= SCROLLS+11;
+		static {
+			assignIconRect( SCROLL_UPGRADE,     7, 7 );
+			assignIconRect( SCROLL_IDENTIFY,    4, 7 );
+			assignIconRect( SCROLL_REMCURSE,    7, 7 );
+			assignIconRect( SCROLL_MIRRORIMG,   7, 5 );
+			assignIconRect( SCROLL_RECHARGE,    7, 5 );
+			assignIconRect( SCROLL_TELEPORT,    7, 7 );
+			assignIconRect( SCROLL_LULLABY,     7, 6 );
+			assignIconRect( SCROLL_MAGICMAP,    7, 7 );
+			assignIconRect( SCROLL_RAGE,        6, 6 );
+			assignIconRect( SCROLL_RETRIB,      5, 6 );
+			assignIconRect( SCROLL_TERROR,      5, 7 );
+			assignIconRect( SCROLL_TRANSMUTE,   7, 7 );
+		}
+
+		private static final int EXOTIC_SCROLLS =                            xy(1, 4);  //16 slots
+		public static final int SCROLL_ENCHANT  = EXOTIC_SCROLLS+0;
+		public static final int SCROLL_DIVINATE = EXOTIC_SCROLLS+1;
+		public static final int SCROLL_ANTIMAGIC= EXOTIC_SCROLLS+2;
+		public static final int SCROLL_PRISIMG  = EXOTIC_SCROLLS+3;
+		public static final int SCROLL_MYSTENRG = EXOTIC_SCROLLS+4;
+		public static final int SCROLL_PASSAGE  = EXOTIC_SCROLLS+5;
+		public static final int SCROLL_AFFECTION= EXOTIC_SCROLLS+6;
+		public static final int SCROLL_FORESIGHT= EXOTIC_SCROLLS+7;
+		public static final int SCROLL_CONFUSION= EXOTIC_SCROLLS+8;
+		public static final int SCROLL_PSIBLAST = EXOTIC_SCROLLS+9;
+		public static final int SCROLL_PETRIF   = EXOTIC_SCROLLS+10;
+		public static final int SCROLL_POLYMORPH= EXOTIC_SCROLLS+11;
+		static {
+			assignIconRect( SCROLL_ENCHANT,     7, 7 );
+			assignIconRect( SCROLL_DIVINATE,    7, 6 );
+			assignIconRect( SCROLL_ANTIMAGIC,   7, 7 );
+			assignIconRect( SCROLL_PRISIMG,     5, 7 );
+			assignIconRect( SCROLL_MYSTENRG,    7, 5 );
+			assignIconRect( SCROLL_PASSAGE,     5, 7 );
+			assignIconRect( SCROLL_AFFECTION,   7, 6 );
+			assignIconRect( SCROLL_FORESIGHT,   7, 5 );
+			assignIconRect( SCROLL_CONFUSION,   7, 7 );
+			assignIconRect( SCROLL_PSIBLAST,    5, 6 );
+			assignIconRect( SCROLL_PETRIF,      7, 5 );
+			assignIconRect( SCROLL_POLYMORPH,   7, 6 );
+		}
+
+		                                                                                //16 free slots
+
+		private static final int POTIONS        =                            xy(1, 6);  //16 slots
+		public static final int POTION_STRENGTH = POTIONS+0;
+		public static final int POTION_HEALING  = POTIONS+1;
+		public static final int POTION_MINDVIS  = POTIONS+2;
+		public static final int POTION_FROST    = POTIONS+3;
+		public static final int POTION_LIQFLAME = POTIONS+4;
+		public static final int POTION_TOXICGAS = POTIONS+5;
+		public static final int POTION_HASTE    = POTIONS+6;
+		public static final int POTION_INVIS    = POTIONS+7;
+		public static final int POTION_LEVITATE = POTIONS+8;
+		public static final int POTION_PARAGAS  = POTIONS+9;
+		public static final int POTION_PURITY   = POTIONS+10;
+		public static final int POTION_EXP      = POTIONS+11;
+		static {
+			assignIconRect( POTION_STRENGTH,    7, 7 );
+			assignIconRect( POTION_HEALING,     6, 7 );
+			assignIconRect( POTION_MINDVIS,     7, 5 );
+			assignIconRect( POTION_FROST,       7, 7 );
+			assignIconRect( POTION_LIQFLAME,    5, 7 );
+			assignIconRect( POTION_TOXICGAS,    7, 7 );
+			assignIconRect( POTION_HASTE,       6, 6 );
+			assignIconRect( POTION_INVIS,       5, 7 );
+			assignIconRect( POTION_LEVITATE,    6, 7 );
+			assignIconRect( POTION_PARAGAS,     7, 7 );
+			assignIconRect( POTION_PURITY,      5, 7 );
+			assignIconRect( POTION_EXP,         7, 7 );
+		}
+
+		private static final int EXOTIC_POTIONS =                            xy(1, 7);  //16 slots
+		public static final int POTION_ARENSURGE= EXOTIC_POTIONS+0;
+		public static final int POTION_SHIELDING= EXOTIC_POTIONS+1;
+		public static final int POTION_MAGISIGHT= EXOTIC_POTIONS+2;
+		public static final int POTION_SNAPFREEZ= EXOTIC_POTIONS+3;
+		public static final int POTION_DRGBREATH= EXOTIC_POTIONS+4;
+		public static final int POTION_CORROGAS = EXOTIC_POTIONS+5;
+		public static final int POTION_STAMINA  = EXOTIC_POTIONS+6;
+		public static final int POTION_SHROUDFOG= EXOTIC_POTIONS+7;
+		public static final int POTION_STRMCLOUD= EXOTIC_POTIONS+8;
+		public static final int POTION_EARTHARMR= EXOTIC_POTIONS+9;
+		public static final int POTION_CLEANSE  = EXOTIC_POTIONS+10;
+		public static final int POTION_HOLYFUROR= EXOTIC_POTIONS+11;
+		static {
+			assignIconRect( POTION_ARENSURGE,   7, 7 );
+			assignIconRect( POTION_SHIELDING,   6, 6 );
+			assignIconRect( POTION_MAGISIGHT,   7, 5 );
+			assignIconRect( POTION_SNAPFREEZ,   7, 7 );
+			assignIconRect( POTION_DRGBREATH,   7, 7 );
+			assignIconRect( POTION_CORROGAS,    7, 7 );
+			assignIconRect( POTION_STAMINA,     6, 6 );
+			assignIconRect( POTION_SHROUDFOG,   7, 7 );
+			assignIconRect( POTION_STRMCLOUD,   7, 7 );
+			assignIconRect( POTION_EARTHARMR,   6, 6 );
+			assignIconRect( POTION_CLEANSE,     7, 7 );
+			assignIconRect( POTION_HOLYFUROR,   5, 7 );
+		}
+
+		                                                                                //16 free slots
+
 	}
 
 }

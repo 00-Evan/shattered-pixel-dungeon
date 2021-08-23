@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -72,6 +72,10 @@ public class StatuesRoom extends StandardRoom {
 				Painter.set(level, left + w-1, top, Terrain.STATUE_SP);
 				Painter.set(level, left, top + h-1, Terrain.STATUE_SP);
 				Painter.set(level, left + w-1, top + h-1, Terrain.STATUE_SP);
+
+				if (w >= 5 && h >= 5){
+					Painter.fill(level, left+2, top+2, w-4, h-4, Terrain.STATUE_SP);
+				}
 			}
 		}
 

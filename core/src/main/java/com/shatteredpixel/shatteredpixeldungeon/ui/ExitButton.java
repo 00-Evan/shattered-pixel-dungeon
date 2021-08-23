@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,52 +21,17 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
 import com.watabou.noosa.Game;
-import com.watabou.noosa.Image;
-import com.watabou.noosa.audio.Sample;
-import com.watabou.noosa.ui.Button;
 
-public class ExitButton extends Button {
-
-	protected Image image;
+public class ExitButton extends IconButton {
 
 	public ExitButton() {
-		super();
+		super(Icons.EXIT.get());
 
 		width = 20;
 		height = 20;
-	}
-
-	@Override
-	protected void createChildren() {
-		super.createChildren();
-
-		image = Icons.EXIT.get();
-		add( image );
-	}
-
-	@Override
-	protected void layout() {
-		super.layout();
-
-		image.x = x + (width - image.width)/2f;
-		image.y = y + (height - image.height)/2f;
-		PixelScene.align(image);
-	}
-
-	@Override
-	protected void onPointerDown() {
-		image.brightness( 1.5f );
-		Sample.INSTANCE.play( Assets.SND_CLICK );
-	}
-
-	@Override
-	protected void onPointerUp() {
-		image.resetColor();
 	}
 
 	@Override

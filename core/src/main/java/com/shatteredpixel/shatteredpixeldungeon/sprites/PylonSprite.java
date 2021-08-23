@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ public class PylonSprite extends MobSprite {
 		perspectiveRaise = 5/16f; //1 pixel less
 		renderShadow = false;
 
-		texture( Assets.PYLON );
+		texture( Assets.Sprites.PYLON );
 
 		TextureFilm frames = new TextureFilm( texture, 10, 20 );
 
@@ -83,7 +83,7 @@ public class PylonSprite extends MobSprite {
 		if (anim == die){
 			turnTo(ch.pos, ch.pos+1); //always face right to merge with custom tiles
 			emitter().burst(BlastParticle.FACTORY, 20);
-			Sample.INSTANCE.play(Assets.SND_BLAST);
+			Sample.INSTANCE.play(Assets.Sounds.BLAST);
 		}
 		super.play(anim);
 	}
@@ -94,5 +94,10 @@ public class PylonSprite extends MobSprite {
 			flash();
 		}
 		super.onComplete(anim);
+	}
+
+	@Override
+	public int blood() {
+		return 0xFFFFFF88;
 	}
 }

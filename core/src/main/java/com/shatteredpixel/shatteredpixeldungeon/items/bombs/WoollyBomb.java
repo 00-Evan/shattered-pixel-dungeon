@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,14 +44,14 @@ public class WoollyBomb extends Bomb {
 	public void explode(int cell) {
 		super.explode(cell);
 		
-		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
+		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 4 );
 		for (int i = 0; i < PathFinder.distance.length; i++) {
 			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
 				if (Dungeon.level.insideMap(i)
 						&& Actor.findChar(i) == null
 						&& !(Dungeon.level.pit[i])) {
 					Sheep sheep = new Sheep();
-					sheep.lifespan = Random.NormalIntRange( 8, 16 );
+					sheep.lifespan = Random.NormalIntRange( 12, 16 );
 					sheep.pos = i;
 					Dungeon.level.occupyCell(sheep);
 					GameScene.add(sheep);
@@ -60,13 +60,13 @@ public class WoollyBomb extends Bomb {
 			}
 		}
 		
-		Sample.INSTANCE.play(Assets.SND_PUFF);
-		
+		Sample.INSTANCE.play(Assets.Sounds.PUFF);
+		Sample.INSTANCE.play(Assets.Sounds.SHEEP);
 		
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		//prices of ingredients
 		return quantity * (20 + 30);
 	}

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewDM300;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM300;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
@@ -43,12 +43,14 @@ public class DM300Sprite extends MobSprite {
 	public DM300Sprite() {
 		super();
 		
-		texture( Assets.DM300 );
+		texture( Assets.Sprites.DM300 );
 		
-		setAnimations(false);
+		updateChargeState(false);
 	}
 
-	private void setAnimations( boolean enraged ){
+	public void updateChargeState( boolean enraged ){
+		if (superchargeSparks != null) superchargeSparks.on = enraged;
+
 		int c = enraged ? 10 : 0;
 
 		TextureFilm frames = new TextureFilm( texture, 25, 22 );
@@ -92,10 +94,10 @@ public class DM300Sprite extends MobSprite {
 				new Callback() {
 					@Override
 					public void call() {
-						((NewDM300)ch).onZapComplete();
+						((DM300)ch).onZapComplete();
 					}
 				} );
-		Sample.INSTANCE.play( Assets.SND_PUFF );
+		Sample.INSTANCE.play( Assets.Sounds.GAS );
 	}
 
 	public void charge(){
@@ -105,11 +107,9 @@ public class DM300Sprite extends MobSprite {
 	public void slam( int cell ){
 		turnTo( ch.pos , cell );
 		play( slam );
-		Sample.INSTANCE.play( Assets.SND_ROCKS );
+		Sample.INSTANCE.play( Assets.Sounds.ROCKS );
 		Camera.main.shake( 3, 0.7f );
 	}
-
-	private boolean exploded = false;
 
 	@Override
 	public void onComplete( Animation anim ) {
@@ -119,14 +119,13 @@ public class DM300Sprite extends MobSprite {
 		}
 
 		if (anim == slam){
-			((NewDM300)ch).onSlamComplete();
+			((DM300)ch).onSlamComplete();
 		}
 
 		super.onComplete( anim );
 		
-		if (anim == die && !exploded) {
-			exploded = true;
-			Sample.INSTANCE.play(Assets.SND_BLAST);
+		if (anim == die) {
+			Sample.INSTANCE.play(Assets.Sounds.BLAST);
 			emitter().burst( BlastParticle.FACTORY, 100 );
 			killAndErase();
 		}
@@ -147,9 +146,8 @@ public class DM300Sprite extends MobSprite {
 		superchargeSparks.pour(SparkParticle.STATIC, 0.05f);
 		superchargeSparks.on = false;
 
-		if (ch instanceof NewDM300 && ((NewDM300) ch).isSupercharged()){
-			setAnimations(true);
-			superchargeSparks.on = true;
+		if (ch instanceof DM300 && ((DM300) ch).isSupercharged()){
+			updateChargeState(true);
 		}
 	}
 
@@ -159,11 +157,6 @@ public class DM300Sprite extends MobSprite {
 
 		if (superchargeSparks != null){
 			superchargeSparks.visible = visible;
-			if (ch instanceof NewDM300
-					&& ((NewDM300) ch).isSupercharged() != superchargeSparks.on){
-				superchargeSparks.on = ((NewDM300) ch).isSupercharged();
-				setAnimations(((NewDM300) ch).isSupercharged());
-			}
 		}
 	}
 

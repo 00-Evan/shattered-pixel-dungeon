@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,9 +45,7 @@ public class MeleeWeapon extends Weapon {
 	}
 
 	public int STRReq(int lvl){
-		lvl = Math.max(0, lvl);
-		//strength req decreases at +1,+3,+6,+10,etc.
-		return (8 + tier * 2) - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
+		return STRReq(tier, lvl);
 	}
 	
 	@Override
@@ -88,10 +86,10 @@ public class MeleeWeapon extends Weapon {
 
 		switch (augment) {
 			case SPEED:
-				info += "\n\n" + Messages.get(Weapon.class, "faster");
+				info += " " + Messages.get(Weapon.class, "faster");
 				break;
 			case DAMAGE:
-				info += "\n\n" + Messages.get(Weapon.class, "stronger");
+				info += " " + Messages.get(Weapon.class, "stronger");
 				break;
 			case NONE:
 		}
@@ -117,7 +115,7 @@ public class MeleeWeapon extends Weapon {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		int price = 20 * tier;
 		if (hasGoodEnchant()) {
 			price *= 1.5;

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,8 +58,8 @@ public class Artifact extends KindofMisc {
 	@Override
 	public boolean doEquip( final Hero hero ) {
 
-		if ((hero.belongings.misc1 != null && hero.belongings.misc1.getClass() == this.getClass())
-				|| (hero.belongings.misc2 != null && hero.belongings.misc2.getClass() == this.getClass())){
+		if ((hero.belongings.artifact != null && hero.belongings.artifact.getClass() == this.getClass())
+				|| (hero.belongings.misc != null && hero.belongings.misc.getClass() == this.getClass())){
 
 			GLog.w( Messages.get(Artifact.class, "cannot_wear_two") );
 			return false;
@@ -90,12 +90,9 @@ public class Artifact extends KindofMisc {
 	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
 		if (super.doUnequip( hero, collect, single )) {
 
-			passiveBuff.detach();
-			passiveBuff = null;
-
-			if (activeBuff != null){
-				activeBuff.detach();
-				activeBuff = null;
+			if (passiveBuff != null) {
+				passiveBuff.detach();
+				passiveBuff = null;
 			}
 
 			return true;
@@ -130,7 +127,7 @@ public class Artifact extends KindofMisc {
 
 	//transfers upgrades from another artifact, transfer level will equal the displayed level
 	public void transferUpgrade(int transferLvl) {
-		upgrade(Math.round((float)(transferLvl*levelCap)/10));
+		upgrade(Math.round((transferLvl*levelCap)/10f));
 	}
 
 	@Override
@@ -188,7 +185,7 @@ public class Artifact extends KindofMisc {
 	}
 
 	@Override
-	public int price() {
+	public int value() {
 		int price = 100;
 		if (level() > 0)
 			price += 20*visiblyUpgraded();
@@ -208,7 +205,7 @@ public class Artifact extends KindofMisc {
 
 	protected ArtifactBuff activeBuff() {return null; }
 	
-	public void charge(Hero target){
+	public void charge(Hero target, float amount){
 		//do nothing by default;
 	}
 
@@ -220,6 +217,10 @@ public class Artifact extends KindofMisc {
 
 		public boolean isCursed() {
 			return cursed;
+		}
+
+		public void charge(Hero target, float amount){
+			Artifact.this.charge(target, amount);
 		}
 
 	}

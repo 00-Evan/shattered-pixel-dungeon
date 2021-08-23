@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ public class MobSprite extends CharSprite {
 	
 	@Override
 	public void update() {
-		sleeping = ch != null && ((Mob)ch).state == ((Mob)ch).SLEEPING;
+		sleeping = ch != null && ch.isAlive() && ((Mob)ch).state == ((Mob)ch).SLEEPING;
 		super.update();
 	}
 	
@@ -45,12 +45,11 @@ public class MobSprite extends CharSprite {
 		
 		super.onComplete( anim );
 		
-		if (anim == die) {
+		if (anim == die && parent != null) {
 			parent.add( new AlphaTweener( this, 0, FADE_TIME ) {
 				@Override
 				protected void onComplete() {
 					MobSprite.this.killAndErase();
-					parent.erase( this );
 				}
 			} );
 		}
@@ -62,9 +61,7 @@ public class MobSprite extends CharSprite {
 		angularSpeed = Random.Int( 2 ) == 0 ? -720 : 720;
 		am = 1;
 
-		if (emo != null){
-			emo.killAndErase();
-		}
+		hideEmo();
 
 		if (health != null){
 			health.killAndErase();

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ public class SewerBossLevel extends SewerLevel {
 		initRooms.add( roomEntrance = new SewerBossEntranceRoom() );
 		initRooms.add( roomExit = new SewerBossExitRoom() );
 		
-		int standards = standardRooms();
+		int standards = standardRooms(true);
 		for (int i = 0; i < standards; i++) {
 			StandardRoom s = StandardRoom.createRoom();
 			//force to normal size
@@ -75,14 +75,15 @@ public class SewerBossLevel extends SewerLevel {
 	}
 	
 	@Override
-	protected int standardRooms() {
+	protected int standardRooms(boolean forceMax) {
+		if (forceMax) return 3;
 		//2 to 3, average 2.5
 		return 2+Random.chances(new float[]{1, 1});
 	}
 	
 	protected Builder builder(){
 		return new FigureEightBuilder()
-				.setLoopShape( 2 , Random.Float(0.4f, 0.7f), Random.Float(0f, 0.5f))
+				.setLoopShape( 2 , Random.Float(0.3f, 0.8f), 0f)
 				.setPathLength(1f, new float[]{1})
 				.setTunnelLength(new float[]{1, 2}, new float[]{1});
 	}
@@ -103,7 +104,7 @@ public class SewerBossLevel extends SewerLevel {
 	protected void createMobs() {
 	}
 	
-	public Actor respawner() {
+	public Actor addRespawner() {
 		return null;
 	}
 	

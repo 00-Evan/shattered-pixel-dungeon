@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
-//Introduces the concept of a major path, and branches
+//Introduces the concept of a main path, and branches
 // with tunnels padding rooms placed in them
 public abstract class RegularBuilder extends Builder {
 	
@@ -48,10 +48,11 @@ public abstract class RegularBuilder extends Builder {
 		return this;
 	}
 	
-	//path length is the percentage of pathable rooms that are on
-	protected float pathLength = 0.5f;
+	//path length is the percentage of pathable rooms that are on the main path
+	protected float pathLength = 0.25f;
 	//The chance weights for extra rooms to be added to the path
-	protected float[] pathLenJitterChances = new float[]{0, 1, 0};
+	protected float[] pathLenJitterChances = new float[]{0, 0, 0, 1};
+	//default is 25% of multi connection rooms, plus 3
 	
 	public RegularBuilder setPathLength( float len, float[] jitter ){
 		pathLength = len;
@@ -59,16 +60,17 @@ public abstract class RegularBuilder extends Builder {
 		return this;
 	}
 	
-	protected float[] pathTunnelChances = new float[]{1, 3, 1};
-	protected float[] branchTunnelChances = new float[]{2, 2, 1};
+	protected float[] pathTunnelChances = new float[]{2, 2, 1};
+	protected float[] branchTunnelChances = new float[]{1, 1, 0};
 	
 	public RegularBuilder setTunnelLength( float[] path, float[] branch){
 		pathTunnelChances = path;
 		branchTunnelChances = branch;
 		return this;
 	}
-	
-	protected float extraConnectionChance = 0.2f;
+
+	//each adjacency is processed twice, so this gives a ~50% chance to connect two adjacent rooms
+	protected float extraConnectionChance = 0.30f;
 	
 	public RegularBuilder setExtraConnectionChance( float chance ){
 		extraConnectionChance = chance;
@@ -80,7 +82,9 @@ public abstract class RegularBuilder extends Builder {
 	protected Room entrance = null;
 	protected Room exit = null;
 	protected Room shop = null;
-	
+
+	protected ArrayList<Room> mainPathRooms = new ArrayList<>();
+
 	protected ArrayList<Room> multiConnections = new ArrayList<>();
 	protected ArrayList<Room> singleConnections = new ArrayList<>();
 	
@@ -90,6 +94,7 @@ public abstract class RegularBuilder extends Builder {
 		}
 		
 		entrance = exit = shop = null;
+		mainPathRooms.clear();
 		singleConnections.clear();
 		multiConnections.clear();
 		for (Room r : rooms){
@@ -110,6 +115,20 @@ public abstract class RegularBuilder extends Builder {
 		weightRooms(multiConnections);
 		Random.shuffle(multiConnections);
 		multiConnections = new ArrayList<>(new LinkedHashSet<>(multiConnections));
+		//shuffle one more time to ensure that the actual ordering of the path doesn't put big rooms early
+		Random.shuffle(multiConnections);
+
+		int roomsOnMainPath = (int)(multiConnections.size()*pathLength) + Random.chances(pathLenJitterChances);
+
+		while (roomsOnMainPath > 0 && !multiConnections.isEmpty()){
+			Room r = multiConnections.remove(0);
+			if (r instanceof StandardRoom){
+				roomsOnMainPath -= ((StandardRoom) r).sizeCat.roomValue;
+			} else {
+				roomsOnMainPath--;
+			}
+			mainPathRooms.add(r);
+		}
 	}
 	
 	// *** Branch Placement ***

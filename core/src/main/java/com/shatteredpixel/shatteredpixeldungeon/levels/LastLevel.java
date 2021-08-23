@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,12 +51,12 @@ public class LastLevel extends Level {
 
 	@Override
 	public String tilesTex() {
-		return Assets.TILES_HALLS;
+		return Assets.Environment.TILES_HALLS;
 	}
 
 	@Override
 	public String waterTex() {
-		return Assets.WATER_HALLS;
+		return Assets.Environment.WATER_HALLS;
 	}
 
 	@Override
@@ -142,7 +142,7 @@ public class LastLevel extends Level {
 	protected void createMobs() {
 	}
 
-	public Actor respawner() {
+	public Actor addRespawner() {
 		return null;
 	}
 
@@ -227,7 +227,7 @@ public class LastLevel extends Level {
 	public static class CustomFloor extends CustomTilemap {
 
 		{
-			texture = Assets.HALLS_SP;
+			texture = Assets.Environment.HALLS_SP;
 		}
 
 		private static final int[] CANDLES = new int[]{
@@ -298,7 +298,7 @@ public class LastLevel extends Level {
 	public static class CenterPieceVisuals extends CustomTilemap {
 
 		{
-			texture = Assets.HALLS_SP;
+			texture = Assets.Environment.HALLS_SP;
 
 			tileW = 16;
 			tileH = 10;
@@ -328,7 +328,7 @@ public class LastLevel extends Level {
 	public static class CenterPieceWalls extends CustomTilemap {
 
 		{
-			texture = Assets.HALLS_SP;
+			texture = Assets.Environment.HALLS_SP;
 
 			tileW = 16;
 			tileH = 9;

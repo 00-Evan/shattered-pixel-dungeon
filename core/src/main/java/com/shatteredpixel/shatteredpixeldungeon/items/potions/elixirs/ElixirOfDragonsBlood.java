@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,14 +34,13 @@ import com.watabou.noosa.audio.Sample;
 public class ElixirOfDragonsBlood extends Elixir {
 	
 	{
-		//TODO finish visuals
 		image = ItemSpriteSheet.ELIXIR_DRAGON;
 	}
 	
 	@Override
 	public void apply(Hero hero) {
 		Buff.affect(hero, FireImbue.class).set(FireImbue.DURATION);
-		Sample.INSTANCE.play( Assets.SND_BURNING );
+		Sample.INSTANCE.play( Assets.Sounds.BURNING );
 		hero.sprite.emitter().burst(FlameParticle.FACTORY, 10);
 	}
 	
@@ -51,7 +50,7 @@ public class ElixirOfDragonsBlood extends Elixir {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		//prices of ingredients
 		return quantity * (50 + 40);
 	}

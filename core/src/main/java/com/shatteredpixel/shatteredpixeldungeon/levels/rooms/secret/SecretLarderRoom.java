@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
 
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
@@ -55,9 +54,7 @@ public class SecretLarderRoom extends SecretRoom {
 		Painter.fill(level, c.x-1, c.y-1, 3, 3, Terrain.WATER);
 		Painter.set(level, c, Terrain.GRASS);
 		
-		if (!Dungeon.isChallenged(Challenges.NO_FOOD)) {
-			level.plant(new BlandfruitBush.Seed(), level.pointToCell(c));
-		}
+		level.plant(new BlandfruitBush.Seed(), level.pointToCell(c));
 		
 		int extraFood = (int)(Hunger.STARVING - Hunger.HUNGRY) * (1 + Dungeon.depth / 5);
 		

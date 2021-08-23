@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,11 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.watabou.utils.Bundle;
 
 public class Brimstone extends Armor.Glyph {
 
@@ -41,44 +38,6 @@ public class Brimstone extends Armor.Glyph {
 	@Override
 	public ItemSprite.Glowing glowing() {
 		return ORANGE;
-	}
-
-	//pre-0.7.4 saves
-	public static class BrimstoneShield extends ShieldBuff {
-		
-		{
-			type = buffType.POSITIVE;
-		}
-
-		@Override
-		public boolean act() {
-			Hero hero = (Hero)target;
-
-			if (hero.belongings.armor == null || !hero.belongings.armor.hasGlyph(Brimstone.class, hero)) {
-				detach();
-				return true;
-			}
-
-			if (shielding() > 0){
-				decShield();
-
-				//shield decays at a rate of 1 per turn.
-				spend(TICK);
-			} else {
-				detach();
-			}
-
-			return true;
-		}
-
-		@Override
-		public void restoreFromBundle(Bundle bundle) {
-			super.restoreFromBundle(bundle);
-			//pre-0.7.0
-			if (bundle.contains("added")){
-				setShield(bundle.getInt("added"));
-			}
-		}
 	}
 
 }

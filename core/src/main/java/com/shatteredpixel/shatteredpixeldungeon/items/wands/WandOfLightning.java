@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ public class WandOfLightning extends DamageWand {
 	}
 	
 	@Override
-	protected void onZap( Ballistica bolt ) {
+	public void onZap(Ballistica bolt) {
 
 		//lightning deals less damage per-target, the more targets that are hit.
 		float multipler = 0.4f + (0.6f/affected.size());
@@ -71,12 +71,19 @@ public class WandOfLightning extends DamageWand {
 		if (Dungeon.level.water[bolt.collisionPos]) multipler = 1f;
 
 		for (Char ch : affected){
-			processSoulMark(ch, chargesPerCast());
-			ch.damage(Math.round(damageRoll() * multipler), this);
-
 			if (ch == Dungeon.hero) Camera.main.shake( 2, 0.3f );
 			ch.sprite.centerEmitter().burst( SparkParticle.FACTORY, 3 );
 			ch.sprite.flash();
+
+			if (ch != curUser && ch.alignment == curUser.alignment && ch.pos != bolt.collisionPos){
+				continue;
+			}
+			wandProc(ch, chargesPerCast());
+			if (ch == curUser) {
+				ch.damage(Math.round(damageRoll() * multipler * 0.5f), this);
+			} else {
+				ch.damage(Math.round(damageRoll() * multipler), this);
+			}
 		}
 
 		if (!curUser.isAlive()) {
@@ -117,7 +124,7 @@ public class WandOfLightning extends DamageWand {
 	}
 	
 	@Override
-	protected void fx( Ballistica bolt, Callback callback ) {
+	public void fx(Ballistica bolt, Callback callback) {
 
 		affected.clear();
 		arcs.clear();
@@ -136,7 +143,7 @@ public class WandOfLightning extends DamageWand {
 
 		//don't want to wait for the effect before processing damage.
 		curUser.sprite.parent.addToFront( new Lightning( arcs, null ) );
-		Sample.INSTANCE.play( Assets.SND_LIGHTNING );
+		Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
 		callback.call();
 	}
 

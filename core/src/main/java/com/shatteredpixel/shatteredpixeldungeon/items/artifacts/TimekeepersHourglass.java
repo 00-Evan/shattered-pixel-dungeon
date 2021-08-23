@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,15 +28,20 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -86,7 +91,8 @@ public class TimekeepersHourglass extends Artifact {
 			} else if (charge <= 0)         GLog.i( Messages.get(this, "no_charge") );
 			else if (cursed)                GLog.i( Messages.get(this, "cursed") );
 			else GameScene.show(
-						new WndOptions( Messages.get(this, "name"),
+						new WndOptions(new ItemSprite(this),
+								Messages.titleCase(name()),
 								Messages.get(this, "prompt"),
 								Messages.get(this, "stasis"),
 								Messages.get(this, "freeze")) {
@@ -94,17 +100,19 @@ public class TimekeepersHourglass extends Artifact {
 							protected void onSelect(int index) {
 								if (index == 0) {
 									GLog.i( Messages.get(TimekeepersHourglass.class, "onstasis") );
-									GameScene.flash(0xFFFFFF);
-									Sample.INSTANCE.play(Assets.SND_TELEPORT);
+									GameScene.flash(0x80FFFFFF);
+									Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 
 									activeBuff = new timeStasis();
+									Talent.onArtifactUsed(Dungeon.hero);
 									activeBuff.attachTo(Dungeon.hero);
 								} else if (index == 1) {
 									GLog.i( Messages.get(TimekeepersHourglass.class, "onfreeze") );
-									GameScene.flash(0xFFFFFF);
-									Sample.INSTANCE.play(Assets.SND_TELEPORT);
+									GameScene.flash(0x80FFFFFF);
+									Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 
 									activeBuff = new timeFreeze();
+									Talent.onArtifactUsed(Dungeon.hero);
 									activeBuff.attachTo(Dungeon.hero);
 									((timeFreeze)activeBuff).processTime(0f);
 								}
@@ -139,9 +147,9 @@ public class TimekeepersHourglass extends Artifact {
 	}
 	
 	@Override
-	public void charge(Hero target) {
+	public void charge(Hero target, float amount) {
 		if (charge < chargeCap){
-			partialCharge += 0.25f;
+			partialCharge += 0.25f*amount;
 			if (partialCharge >= 1){
 				partialCharge--;
 				charge++;
@@ -213,7 +221,10 @@ public class TimekeepersHourglass extends Artifact {
 
 			LockedFloor lock = target.buff(LockedFloor.class);
 			if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
-				partialCharge += 1 / (90f - (chargeCap - charge)*3f);
+				//90 turns to charge at full, 60 turns to charge at 0/10
+				float chargeGain = 1 / (90f - (chargeCap - charge)*3f);
+				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
+				partialCharge += chargeGain;
 
 				if (partialCharge >= 1) {
 					partialCharge --;
@@ -261,7 +272,9 @@ public class TimekeepersHourglass extends Artifact {
 
 				updateQuickslot();
 
-				Dungeon.observe();
+				if (Dungeon.hero != null) {
+					Dungeon.observe();
+				}
 
 				return true;
 			} else {
@@ -304,7 +317,8 @@ public class TimekeepersHourglass extends Artifact {
 		public void processTime(float time){
 			turnsToCost -= time;
 
-			while (turnsToCost < 0f){
+			//use 1/1,000 to account for rounding errors
+			while (turnsToCost < -0.001f){
 				turnsToCost += 2f;
 				charge --;
 			}
@@ -323,37 +337,43 @@ public class TimekeepersHourglass extends Artifact {
 				presses.add(cell);
 		}
 
-		private void triggerPresses(){
+		public void triggerPresses(){
 			for (int cell : presses)
 				Dungeon.level.pressCell(cell);
 
 			presses = new ArrayList<>();
 		}
 
-		@Override
-		public boolean attachTo(Char target) {
-			if (super.attachTo(target)){
-				if (Dungeon.level != null)
-					for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
-						mob.sprite.add(CharSprite.State.PARALYSED);
-				GameScene.freezeEmitters = true;
-				return true;
-			} else {
-				return false;
+		public void disarmPressedTraps(){
+			for (int cell : presses){
+				Trap t = Dungeon.level.traps.get(cell);
+				if (t != null) t.disarm();
 			}
+
+			presses = new ArrayList<>();
 		}
 
 		@Override
 		public void detach(){
-			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
-				if (mob.paralysed <= 0) mob.sprite.remove(CharSprite.State.PARALYSED);
-			GameScene.freezeEmitters = false;
-
 			updateQuickslot();
 			super.detach();
 			activeBuff = null;
 			triggerPresses();
 			target.next();
+		}
+
+		@Override
+		public void fx(boolean on) {
+			Emitter.freezeEmitters = on;
+			if (on){
+				for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
+					if (mob.sprite != null) mob.sprite.add(CharSprite.State.PARALYSED);
+				}
+			} else {
+				for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
+					if (mob.paralysed <= 0) mob.sprite.remove(CharSprite.State.PARALYSED);
+				}
+			}
 		}
 
 		private static final String PRESSES = "presses";
@@ -394,7 +414,7 @@ public class TimekeepersHourglass extends Artifact {
 			TimekeepersHourglass hourglass = hero.belongings.getItem( TimekeepersHourglass.class );
 			if (hourglass != null && !hourglass.cursed) {
 				hourglass.upgrade();
-				Sample.INSTANCE.play( Assets.SND_DEWDROP );
+				Sample.INSTANCE.play( Assets.Sounds.DEWDROP );
 				if (hourglass.level() == hourglass.levelCap)
 					GLog.p( Messages.get(this, "maxlevel") );
 				else
@@ -408,8 +428,18 @@ public class TimekeepersHourglass extends Artifact {
 		}
 
 		@Override
-		public int price() {
-			return 10;
+		public int value() {
+			return 20;
+		}
+
+		@Override
+		public boolean isUpgradable() {
+			return false;
+		}
+
+		@Override
+		public boolean isIdentified() {
+			return true;
 		}
 	}
 

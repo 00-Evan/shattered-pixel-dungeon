@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,9 +31,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.CorrosionParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
@@ -47,20 +49,21 @@ public class WandOfCorrosion extends Wand {
 	{
 		image = ItemSpriteSheet.WAND_CORROSION;
 
-		collisionProperties = Ballistica.STOP_TARGET | Ballistica.STOP_TERRAIN;
+		collisionProperties = Ballistica.STOP_TARGET | Ballistica.STOP_SOLID;
 	}
 
 	@Override
-	protected void onZap(Ballistica bolt) {
+	public void onZap(Ballistica bolt) {
 		CorrosiveGas gas = Blob.seed(bolt.collisionPos, 50 + 10 * buffedLvl(), CorrosiveGas.class);
-		CellEmitter.center(bolt.collisionPos).burst( CorrosionParticle.SPLASH, 10 );
+		CellEmitter.get(bolt.collisionPos).burst(Speck.factory(Speck.CORROSION), 10 );
 		gas.setStrength(2 + buffedLvl());
 		GameScene.add(gas);
+		Sample.INSTANCE.play(Assets.Sounds.GAS);
 
 		for (int i : PathFinder.NEIGHBOURS9) {
 			Char ch = Actor.findChar(bolt.collisionPos + i);
 			if (ch != null) {
-				processSoulMark(ch, chargesPerCast());
+				wandProc(ch, chargesPerCast());
 			}
 		}
 		
@@ -70,14 +73,14 @@ public class WandOfCorrosion extends Wand {
 	}
 
 	@Override
-	protected void fx(Ballistica bolt, Callback callback) {
+	public void fx(Ballistica bolt, Callback callback) {
 		MagicMissile.boltFromChar(
 				curUser.sprite.parent,
 				MagicMissile.CORROSION,
 				curUser.sprite,
 				bolt.collisionPos,
 				callback);
-		Sample.INSTANCE.play(Assets.SND_ZAP);
+		Sample.INSTANCE.play(Assets.Sounds.ZAP);
 	}
 
 	@Override
@@ -87,7 +90,7 @@ public class WandOfCorrosion extends Wand {
 		// lvl 2 - 60%
 		if (Random.Int( buffedLvl() + 3 ) >= 2) {
 			
-			Buff.affect( defender, Ooze.class ).set( 20f );
+			Buff.affect( defender, Ooze.class ).set( Ooze.DURATION );
 			CellEmitter.center(defender.pos).burst( CorrosionParticle.SPLASH, 5 );
 			
 		}
@@ -101,6 +104,14 @@ public class WandOfCorrosion extends Wand {
 		particle.acc.set(0, 20);
 		particle.setSize( 0.5f, 3f );
 		particle.shuffleXY( 1f );
+	}
+
+	@Override
+	public String statsDesc() {
+		if (levelKnown)
+			return Messages.get(this, "stats_desc", 2+buffedLvl());
+		else
+			return Messages.get(this, "stats_desc", 2);
 	}
 
 }

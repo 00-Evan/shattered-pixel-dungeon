@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.SharedLibraryLoader;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.services.news.News;
+import com.shatteredpixel.shatteredpixeldungeon.services.news.NewsImpl;
 import com.shatteredpixel.shatteredpixeldungeon.services.updates.UpdateImpl;
 import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
 import com.watabou.noosa.Game;
@@ -74,11 +76,20 @@ public class DesktopLauncher {
 				exceptionMsg = exceptionMsg.replace("com.badlogic.gdx.", "");
 				exceptionMsg = exceptionMsg.replace("\t", "    ");
 
-				TinyFileDialogs.tinyfd_messageBox(title + " Has Crashed!",
-						title + " has run into an error it can't recover from and has crashed, sorry about that!\n\n" +
-						"If you could, please email this error message to the developer (Evan@ShatteredPixel.com):\n\n" +
-						exceptionMsg,
-						"ok", "error", false );
+				if (exceptionMsg.contains("Couldn't create window")){
+					TinyFileDialogs.tinyfd_messageBox(title + " Has Crashed!",
+							title + " wasn't able to initialize it's graphics display, sorry about that!\n\n" +
+									"This usually happens when a computer's graphics card does not support OpenGL 2.0+, or has misconfigured graphics drivers.\n\n" +
+									"If you're certain the game should be working on your computer, feel free to message the developer (Evan@ShatteredPixel.com)\n\n" +
+									"version: " + Game.version, "ok", "error", false);
+				} else {
+					TinyFileDialogs.tinyfd_messageBox(title + " Has Crashed!",
+							title + " has run into an error it can't recover from and has crashed, sorry about that!\n\n" +
+									"If you could, please email this error message to the developer (Evan@ShatteredPixel.com):\n\n" +
+									"version: " + Game.version + "\n" +
+									exceptionMsg,
+							"ok", "error", false);
+				}
 				if (Gdx.app != null) Gdx.app.exit();
 			}
 		});
@@ -96,6 +107,9 @@ public class DesktopLauncher {
 
 		if (UpdateImpl.supportsUpdates()){
 			Updates.service = UpdateImpl.getUpdateService();
+		}
+		if (NewsImpl.supportsNews()){
+			News.service = NewsImpl.getNewsService();
 		}
 		
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
@@ -129,14 +143,20 @@ public class DesktopLauncher {
 		config.setWindowSizeLimits( 480, 320, -1, -1 );
 		Point p = SPDSettings.windowResolution();
 		config.setWindowedMode( p.x, p.y );
-		config.setAutoIconify( true );
+
+		config.setMaximized(SPDSettings.windowMaximized());
+
+		if (SPDSettings.fullscreen()) {
+			config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
+		}
 		
 		//we set fullscreen/maximized in the listener as doing it through the config seems to be buggy
 		DesktopWindowListener listener = new DesktopWindowListener();
 		config.setWindowListener( listener );
 		
-		config.setWindowIcon( "icon_16.png", "icon_32.png", "icon_64.png", "icon_128.png", "icon_256.png" );
-		
+		config.setWindowIcon("icons/icon_16.png", "icons/icon_32.png", "icons/icon_64.png",
+				"icons/icon_128.png", "icons/icon_256.png");
+
 		new Lwjgl3Application(new ShatteredPixelDungeon(new DesktopPlatformSupport()), config);
 	}
 }

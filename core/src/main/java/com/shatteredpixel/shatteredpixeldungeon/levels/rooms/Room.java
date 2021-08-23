@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -115,6 +115,20 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 			return true;
 		}
 	}
+
+	public Point pointInside(Point from, int n){
+		Point step = new Point(from);
+		if (from.x == left) {
+			step.offset( +n, 0 );
+		} else if (from.x == right) {
+			step.offset( -n, 0 );
+		} else if (from.y == top) {
+			step.offset( 0, +n );
+		} else if (from.y == bottom) {
+			step.offset( 0, -n );
+		}
+		return step;
+	}
 	
 	//Width and height are increased by 1 because rooms are inclusive to their right and bottom sides
 	@Override
@@ -213,15 +227,19 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 		if (!foundPoint) return false;
 		
 		if (i.width() == 0 && i.left == left)
-			return canConnect(LEFT) && r.canConnect(LEFT);
+			return canConnect(LEFT) && r.canConnect(RIGHT);
 		else if (i.height() == 0 && i.top == top)
-			return canConnect(TOP) && r.canConnect(TOP);
+			return canConnect(TOP) && r.canConnect(BOTTOM);
 		else if (i.width() == 0 && i.right == right)
-			return canConnect(RIGHT) && r.canConnect(RIGHT);
+			return canConnect(RIGHT) && r.canConnect(LEFT);
 		else if (i.height() == 0 && i.bottom == bottom)
-			return canConnect(BOTTOM) && r.canConnect(BOTTOM);
+			return canConnect(BOTTOM) && r.canConnect(TOP);
 		else
 			return false;
+	}
+
+	public boolean canMerge(Level l, Point p, int mergeTerrain){
+		return false;
 	}
 	
 	public boolean addNeigbour( Room other ) {
@@ -265,7 +283,7 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 	
 	//whether or not a painter can make its own modifications to a specific point
 	public boolean canPlaceWater(Point p){
-		return inside(p);
+		return true;
 	}
 	
 	public final ArrayList<Point> waterPlaceablePoints(){
@@ -281,7 +299,7 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 
 	//whether or not a painter can make place grass at a specific point
 	public boolean canPlaceGrass(Point p){
-		return inside(p);
+		return true;
 	}
 
 	public final ArrayList<Point> grassPlaceablePoints(){
@@ -297,7 +315,7 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 	
 	//whether or not a painter can place a trap at a specific point
 	public boolean canPlaceTrap(Point p){
-		return inside(p);
+		return true;
 	}
 	
 	public final ArrayList<Point> trapPlaceablePoints(){
@@ -387,7 +405,7 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 	public static class Door extends Point implements Bundlable {
 		
 		public enum Type {
-			EMPTY, TUNNEL, REGULAR, UNLOCKED, HIDDEN, BARRICADE, LOCKED
+			EMPTY, TUNNEL, WATER, REGULAR, UNLOCKED, HIDDEN, BARRICADE, LOCKED
 		}
 		public Type type = Type.EMPTY;
 		

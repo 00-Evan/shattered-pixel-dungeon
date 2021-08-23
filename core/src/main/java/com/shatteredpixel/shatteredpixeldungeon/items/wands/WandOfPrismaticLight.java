@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,7 +65,7 @@ public class WandOfPrismaticLight extends DamageWand {
 	}
 
 	@Override
-	protected void onZap(Ballistica beam) {
+	public void onZap(Ballistica beam) {
 		affectMap(beam);
 		
 		if (Dungeon.level.viewDistance < 6 ){
@@ -78,7 +78,7 @@ public class WandOfPrismaticLight extends DamageWand {
 		
 		Char ch = Actor.findChar(beam.collisionPos);
 		if (ch != null){
-			processSoulMark(ch, chargesPerCast());
+			wandProc(ch, chargesPerCast());
 			affectTarget(ch);
 		}
 	}
@@ -94,7 +94,7 @@ public class WandOfPrismaticLight extends DamageWand {
 
 		if (ch.properties().contains(Char.Property.DEMONIC) || ch.properties().contains(Char.Property.UNDEAD)){
 			ch.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10+buffedLvl() );
-			Sample.INSTANCE.play(Assets.SND_BURNING);
+			Sample.INSTANCE.play(Assets.Sounds.BURNING);
 
 			ch.damage(Math.round(dmg*1.333f), this);
 		} else {
@@ -132,13 +132,13 @@ public class WandOfPrismaticLight extends DamageWand {
 			CellEmitter.center(c).burst( RainbowParticle.BURST, Random.IntRange( 1, 2 ) );
 		}
 		if (noticed)
-			Sample.INSTANCE.play( Assets.SND_SECRET );
+			Sample.INSTANCE.play( Assets.Sounds.SECRET );
 
 		GameScene.updateFog();
 	}
 
 	@Override
-	protected void fx( Ballistica beam, Callback callback ) {
+	public void fx(Ballistica beam, Callback callback) {
 		curUser.sprite.parent.add(
 				new Beam.LightRay(curUser.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(beam.collisionPos)));
 		callback.call();

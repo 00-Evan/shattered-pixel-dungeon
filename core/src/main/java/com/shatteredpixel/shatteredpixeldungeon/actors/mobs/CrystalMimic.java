@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -118,7 +118,7 @@ public class CrystalMimic extends Mimic {
 			enemySeen = true;
 			GLog.w(Messages.get(this, "reveal") );
 			CellEmitter.get(pos).burst(Speck.factory(Speck.STAR), 10);
-			Sample.INSTANCE.play(Assets.SND_MIMIC, 1, 1.25f);
+			Sample.INSTANCE.play(Assets.Sounds.MIMIC, 1, 1.25f);
 		}
 	}
 
@@ -188,11 +188,13 @@ public class CrystalMimic extends Mimic {
 				if (enemySeen) {
 					sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Mob.class, "rage"));
 					state = HUNTING;
-				} else {
+				} else if (!Dungeon.level.heroFOV[pos] && Dungeon.level.distance(Dungeon.hero.pos, pos) >= 6) {
 					GLog.n( Messages.get(CrystalMimic.class, "escaped"));
 					if (Dungeon.level.heroFOV[pos]) CellEmitter.get(pos).burst(Speck.factory(Speck.WOOL), 6);
 					destroy();
 					sprite.killAndErase();
+				} else {
+					state = WANDERING;
 				}
 			} else {
 				super.nowhereToRun();

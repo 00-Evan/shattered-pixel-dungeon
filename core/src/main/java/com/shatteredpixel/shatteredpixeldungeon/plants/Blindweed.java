@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,12 +33,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.watabou.utils.Random;
 
 public class Blindweed extends Plant {
 	
 	{
 		image = 11;
+		seedClass = Seed.class;
 	}
 	
 	@Override
@@ -46,11 +46,10 @@ public class Blindweed extends Plant {
 		
 		if (ch != null) {
 			if (ch instanceof Hero && ((Hero) ch).subClass == HeroSubClass.WARDEN){
-				Buff.affect(ch, Invisibility.class, 10f);
+				Buff.affect(ch, Invisibility.class, Invisibility.DURATION/2f);
 			} else {
-				int len = Random.Int(5, 10);
-				Buff.prolong(ch, Blindness.class, len);
-				Buff.prolong(ch, Cripple.class, len);
+				Buff.prolong(ch, Blindness.class, Blindness.DURATION);
+				Buff.prolong(ch, Cripple.class, Cripple.DURATION);
 				if (ch instanceof Mob) {
 					if (((Mob) ch).state == ((Mob) ch).HUNTING) ((Mob) ch).state = ((Mob) ch).WANDERING;
 					((Mob) ch).beckon(Dungeon.level.randomDestination( ch ));

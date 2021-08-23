@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,7 +55,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Tipp
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -196,18 +195,17 @@ public class ShopRoom extends SpecialRoom {
 
 
 		itemsToSpawn.add( new PotionOfHealing() );
-		for (int i=0; i < 3; i++)
-			itemsToSpawn.add( Generator.random( Generator.Category.POTION ) );
+		itemsToSpawn.add( Generator.randomUsingDefaults( Generator.Category.POTION ) );
+		itemsToSpawn.add( Generator.randomUsingDefaults( Generator.Category.POTION ) );
 
 		itemsToSpawn.add( new ScrollOfIdentify() );
 		itemsToSpawn.add( new ScrollOfRemoveCurse() );
 		itemsToSpawn.add( new ScrollOfMagicMapping() );
-		itemsToSpawn.add( Generator.random( Generator.Category.SCROLL ) );
 
 		for (int i=0; i < 2; i++)
 			itemsToSpawn.add( Random.Int(2) == 0 ?
-					Generator.random( Generator.Category.POTION ) :
-					Generator.random( Generator.Category.SCROLL ) );
+					Generator.randomUsingDefaults( Generator.Category.POTION ) :
+					Generator.randomUsingDefaults( Generator.Category.SCROLL ) );
 
 
 		itemsToSpawn.add( new SmallRation() );
@@ -230,7 +228,7 @@ public class ShopRoom extends SpecialRoom {
 		itemsToSpawn.add( new StoneOfAugmentation() );
 
 		TimekeepersHourglass hourglass = Dungeon.hero.belongings.getItem(TimekeepersHourglass.class);
-		if (hourglass != null){
+		if (hourglass != null && hourglass.isIdentified() && !hourglass.cursed){
 			int bags = 0;
 			//creates the given float percent of the remaining bags to be dropped.
 			//this way players who get the hourglass late can still max it, usually.
@@ -275,7 +273,11 @@ public class ShopRoom extends SpecialRoom {
 		if (itemsToSpawn.size() > 63)
 			throw new RuntimeException("Shop attempted to carry more than 63 items!");
 
-		Random.shuffle(itemsToSpawn);
+		//use a new generator here to prevent items in shop stock affecting levelgen RNG (e.g. sandbags)
+		Random.pushGenerator(Random.Long());
+			Random.shuffle(itemsToSpawn);
+		Random.popGenerator();
+
 		return itemsToSpawn;
 	}
 
@@ -293,7 +295,7 @@ public class ShopRoom extends SpecialRoom {
 		//count up items in the main bag
 		for (Item item : pack.backpack.items) {
 			for (Bag bag : bags.keySet()){
-				if (bag.grab(item)){
+				if (bag.canHold(item)){
 					bags.put(bag, bags.get(bag)+1);
 				}
 			}

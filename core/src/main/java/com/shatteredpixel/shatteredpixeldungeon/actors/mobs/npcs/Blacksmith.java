@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,9 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DarkGold;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.BlacksmithRoom;
@@ -63,7 +61,9 @@ public class Blacksmith extends NPC {
 	
 	@Override
 	protected boolean act() {
-		throwItem();
+		if (Dungeon.level.heroFOV[pos] && !Quest.reforged){
+			Notes.add( Notes.Landmark.TROLL );
+		}
 		return super.act();
 	}
 	
@@ -90,6 +90,7 @@ public class Blacksmith extends NPC {
 							
 							Quest.given = true;
 							Quest.completed = false;
+							Notes.add( Notes.Landmark.TROLL );
 							
 							Pickaxe pick = new Pickaxe();
 							if (pick.doPickUp( Dungeon.hero )) {
@@ -101,8 +102,6 @@ public class Blacksmith extends NPC {
 					} );
 				}
 			});
-			
-			Notes.add( Notes.Landmark.TROLL );
 			
 		} else if (!Quest.completed) {
 			if (Quest.alternative) {
@@ -211,7 +210,7 @@ public class Blacksmith extends NPC {
 			second = item2;
 		}
 
-		Sample.INSTANCE.play( Assets.SND_EVOKE );
+		Sample.INSTANCE.play( Assets.Sounds.EVOKE );
 		ScrollOfUpgrade.upgrade( Dungeon.hero );
 		Item.evoke( Dungeon.hero );
 
@@ -226,26 +225,18 @@ public class Blacksmith extends NPC {
 				Dungeon.level.drop( seal, Dungeon.hero.pos );
 			}
 		}
-		
-		if (first.isEquipped( Dungeon.hero )) {
-			((EquipableItem)first).doUnequip( Dungeon.hero, true );
-		}
-		if (first instanceof MissileWeapon && first.quantity() > 1){
-			first = first.split(1);
-		}
-		int level = first.level();
-		//adjust for curse infusion
-		if (first instanceof Weapon && ((Weapon) first).curseInfusionBonus) level--;
-		if (first instanceof Armor && ((Armor) first).curseInfusionBonus) level--;
-		if (first instanceof Wand && ((Wand) first).curseInfusionBonus) level--;
-		first.level(level+1); //prevents on-upgrade effects like enchant/glyph removal
-		if (first instanceof MissileWeapon && !Dungeon.hero.belongings.contains(first)) {
-			if (!first.collect()){
-				Dungeon.level.drop( first, Dungeon.hero.pos );
-			}
+
+		//preserves enchant/glyphs if present
+		if (first instanceof Weapon && ((Weapon) first).hasGoodEnchant()){
+			((Weapon) first).upgrade(true);
+		} else if (first instanceof Armor && ((Armor) first).hasGoodGlyph()){
+			((Armor) first).upgrade(true);
+		} else {
+			first.upgrade();
 		}
 		Dungeon.hero.spendAndNext( 2f );
 		Badges.validateItemLevelAquired( first );
+		Item.updateQuickslot();
 		
 		Quest.reforged = true;
 		

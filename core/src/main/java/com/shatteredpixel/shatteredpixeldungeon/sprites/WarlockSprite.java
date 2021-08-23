@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ public class WarlockSprite extends MobSprite {
 	public WarlockSprite() {
 		super();
 		
-		texture( Assets.WARLOCK );
+		texture( Assets.Sprites.WARLOCK );
 		
 		TextureFilm frames = new TextureFilm( texture, 12, 15 );
 		
@@ -69,7 +69,7 @@ public class WarlockSprite extends MobSprite {
 						((Warlock)ch).onZapComplete();
 					}
 				} );
-		Sample.INSTANCE.play( Assets.SND_ZAP );
+		Sample.INSTANCE.play( Assets.Sounds.ZAP );
 	}
 	
 	@Override

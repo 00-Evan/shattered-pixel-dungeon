@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,121 +23,97 @@ package com.shatteredpixel.shatteredpixeldungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.WelcomeScene;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.PlatformSupport;
 
 public class ShatteredPixelDungeon extends Game {
-	
-	//variable constants for specific older versions of shattered, used for data conversion
-	//versions older than v0.6.5c are no longer supported, and data from them is ignored
-	public static final int v0_6_5c = 264;
-	
-	public static final int v0_7_0c = 311;
-	public static final int v0_7_1d = 323;
-	public static final int v0_7_2d = 340;
-	public static final int v0_7_3b = 349;
-	public static final int v0_7_4c = 362;
-	public static final int v0_7_5e = 382;
 
-	public static final int v0_8_0  = 412;
+	//variable constants for specific older versions of shattered, used for data conversion
+	//versions older than v0.8.0b are no longer supported, and data from them is ignored
+	public static final int v0_8_0b = 414;
+	public static final int v0_8_1a = 422;
+	public static final int v0_8_2d = 463;
+
+	public static final int v0_9_0b  = 489;
+	public static final int v0_9_1d  = 511;
+	public static final int v0_9_2b  = 531;
+	public static final int v0_9_3c  = 557; //557 on iOS, 554 on other platforms
+	public static final int v1_0_0   = 565;
 	
 	public ShatteredPixelDungeon( PlatformSupport platform ) {
 		super( sceneClass == null ? WelcomeScene.class : sceneClass, platform );
-		
-		//v0.7.0
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.Bomb" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMight.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicalInfusion.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion" );
-		
-		//v0.7.1
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang" );
-		
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gloves.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knuckles" );
-		
-		//v0.7.2
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDisarming.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDetectCurse" );
-		
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Elastic.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Elastic" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Elastic.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Dazzling" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Elastic.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Eldritch" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Stunning" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Chilling.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Venomous" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Kinetic.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vorpal" );
-		
-		//v0.7.3
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Kinetic.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Precise" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Kinetic.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Swift" );
-		
-		//v0.7.5
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.sewerboss.SewerBossEntranceRoom.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.SewerBossEntranceRoom" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.OldPrisonBossLevel.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.OldTengu.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu" );
 
-		//v0.8.0
+		//v1.0.0
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ArmoredBrute.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shielded");
+				com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFear.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAffection" );
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM100.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shaman");
+				com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDeepSleep.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDeepenedSleep" );
+
+		//v0.9.3
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental.FireElemental.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental");
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu.class,
+				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewTengu" );
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental.NewbornFireElemental.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewbornElemental");
+				com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewPrisonBossLevel" );
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.OldDM300.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM300");
+				com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel.ExitVisual.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewPrisonBossLevel$exitVisual" );
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.OldCavesBossLevel.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel" );
+				com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel.ExitVisualWalls.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewPrisonBossLevel$exitVisualWalls" );
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.OldCityBossLevel.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel" );
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM300.class,
+				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewDM300" );
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.OldHallsBossLevel.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel" );
+				com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewCavesBossLevel" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel.PylonEnergy.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewCavesBossLevel$PylonEnergy" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel.ArenaVisuals.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewCavesBossLevel$ArenaVisuals" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel.CityEntrance.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewCavesBossLevel$CityEntrance" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel.EntranceOverhang.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewCavesBossLevel$EntranceOverhang" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewCityBossLevel" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel.CustomGroundVisuals.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewCityBossLevel$CustomGroundVisuals" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel.CustomWallVisuals.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewCityBossLevel$CustomWallVisuals" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewHallsBossLevel" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel.CenterPieceVisuals.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewHallsBossLevel$CenterPieceWalls" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel.CenterPieceWalls.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.NewHallsBossLevel$CenterPieceWalls" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.Waterskin.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.DewVial" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.TengusMask.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.TomeOfMastery" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.KingsCrown.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.ArmorKit" );
 		
 	}
 	
@@ -149,61 +125,22 @@ public class ShatteredPixelDungeon extends Game {
 		SPDAction.loadBindings();
 		
 		Music.INSTANCE.enable( SPDSettings.music() );
-		Music.INSTANCE.volume( SPDSettings.musicVol()/10f );
+		Music.INSTANCE.volume( SPDSettings.musicVol()*SPDSettings.musicVol()/100f );
 		Sample.INSTANCE.enable( SPDSettings.soundFx() );
-		Sample.INSTANCE.volume( SPDSettings.SFXVol()/10f );
+		Sample.INSTANCE.volume( SPDSettings.SFXVol()*SPDSettings.SFXVol()/100f );
 
-		Sample.INSTANCE.load(
-				Assets.SND_CLICK,
-				Assets.SND_BADGE,
-				Assets.SND_GOLD,
-
-				Assets.SND_STEP,
-				Assets.SND_WATER,
-				Assets.SND_OPEN,
-				Assets.SND_UNLOCK,
-				Assets.SND_ITEM,
-				Assets.SND_DEWDROP,
-				Assets.SND_HIT,
-				Assets.SND_MISS,
-
-				Assets.SND_DESCEND,
-				Assets.SND_EAT,
-				Assets.SND_READ,
-				Assets.SND_LULLABY,
-				Assets.SND_DRINK,
-				Assets.SND_SHATTER,
-				Assets.SND_ZAP,
-				Assets.SND_LIGHTNING,
-				Assets.SND_LEVELUP,
-				Assets.SND_DEATH,
-				Assets.SND_CHALLENGE,
-				Assets.SND_CURSED,
-				Assets.SND_EVOKE,
-				Assets.SND_TRAP,
-				Assets.SND_TOMB,
-				Assets.SND_ALERT,
-				Assets.SND_MELD,
-				Assets.SND_BOSS,
-				Assets.SND_BLAST,
-				Assets.SND_PLANT,
-				Assets.SND_RAY,
-				Assets.SND_BEACON,
-				Assets.SND_TELEPORT,
-				Assets.SND_CHARMS,
-				Assets.SND_MASTERY,
-				Assets.SND_PUFF,
-				Assets.SND_ROCKS,
-				Assets.SND_BURNING,
-				Assets.SND_FALLING,
-				Assets.SND_GHOST,
-				Assets.SND_SECRET,
-				Assets.SND_BONES,
-				Assets.SND_BEE,
-				Assets.SND_DEGRADE,
-				Assets.SND_MIMIC );
-
+		Sample.INSTANCE.load( Assets.Sounds.all );
 		
+	}
+
+	@Override
+	public void finish() {
+		if (!DeviceCompat.isiOS()) {
+			super.finish();
+		} else {
+			//can't exit on iOS (Apple guidelines), so just go to title screen
+			switchScene(TitleScene.class);
+		}
 	}
 
 	public static void switchNoFade(Class<? extends PixelScene> c){

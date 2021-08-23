@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,16 +35,16 @@ public class Friendly extends Weapon.Enchantment {
 	
 	@Override
 	public int proc(Weapon weapon, Char attacker, Char defender, int damage ) {
-		
-		if (Random.Int(10) == 0){
+
+		float procChance = 1/10f * procChanceMultiplier(attacker);
+		if (Random.Float() < procChance) {
 			
-			int base = Random.IntRange(3, 5);
-			
-			Buff.affect( attacker, Charm.class, base + 10 ).object = defender.id();
+			Buff.affect( attacker, Charm.class, Charm.DURATION ).object = defender.id();
 			attacker.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
 			
-			//5 turns will be reduced by the attack, so effectively lasts for base turns
-			Buff.affect( defender, Charm.class, base + 5 ).object = attacker.id();
+			Charm c = Buff.affect( defender, Charm.class, Charm.DURATION/2 );
+			c.ignoreNextHit = true;
+			c.object = attacker.id();
 			defender.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
 			
 		}

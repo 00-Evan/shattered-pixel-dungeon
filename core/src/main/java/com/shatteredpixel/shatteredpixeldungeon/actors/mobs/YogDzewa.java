@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2020 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,14 +21,17 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
@@ -39,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -70,6 +74,8 @@ public class YogDzewa extends Mob {
 		//so that allies can attack it. States are never actually used.
 		state = HUNTING;
 
+		viewDistance = 12;
+
 		properties.add(Property.BOSS);
 		properties.add(Property.IMMOVABLE);
 		properties.add(Property.DEMONIC);
@@ -85,24 +91,57 @@ public class YogDzewa extends Mob {
 	private static final int MIN_SUMMON_CD = 10;
 	private static final int MAX_SUMMON_CD = 15;
 
+	private static Class getPairedFist(Class fist){
+		if (fist == YogFist.BurningFist.class) return YogFist.SoiledFist.class;
+		if (fist == YogFist.SoiledFist.class) return YogFist.BurningFist.class;
+		if (fist == YogFist.RottingFist.class) return YogFist.RustedFist.class;
+		if (fist == YogFist.RustedFist.class) return YogFist.RottingFist.class;
+		if (fist == YogFist.BrightFist.class) return YogFist.DarkFist.class;
+		if (fist == YogFist.DarkFist.class) return YogFist.BrightFist.class;
+		return null;
+	}
+
 	private ArrayList<Class> fistSummons = new ArrayList<>();
+	private ArrayList<Class> challengeSummons = new ArrayList<>();
 	{
 		Random.pushGenerator(Dungeon.seedCurDepth());
 			fistSummons.add(Random.Int(2) == 0 ? YogFist.BurningFist.class : YogFist.SoiledFist.class);
 			fistSummons.add(Random.Int(2) == 0 ? YogFist.RottingFist.class : YogFist.RustedFist.class);
 			fistSummons.add(Random.Int(2) == 0 ? YogFist.BrightFist.class : YogFist.DarkFist.class);
 			Random.shuffle(fistSummons);
+			//randomly place challenge summons so that two fists of a pair can never spawn together
+			if (Random.Int(2) == 0){
+				challengeSummons.add(getPairedFist(fistSummons.get(1)));
+				challengeSummons.add(getPairedFist(fistSummons.get(2)));
+				challengeSummons.add(getPairedFist(fistSummons.get(0)));
+			} else {
+				challengeSummons.add(getPairedFist(fistSummons.get(2)));
+				challengeSummons.add(getPairedFist(fistSummons.get(0)));
+				challengeSummons.add(getPairedFist(fistSummons.get(1)));
+			}
 		Random.popGenerator();
 	}
 
-	private static final int SUMMON_DECK_SIZE = 4;
 	private ArrayList<Class> regularSummons = new ArrayList<>();
 	{
-		for (int i = 0; i < SUMMON_DECK_SIZE; i++){
-			if (i >= Statistics.spawnersAlive){
-				regularSummons.add(Larva.class);
-			} else {
-				regularSummons.add(YogRipper.class);
+		if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES)){
+			for (int i = 0; i < 6; i++){
+				if (i >= 4){
+					regularSummons.add(YogRipper.class);
+				}
+				if (i >= Statistics.spawnersAlive){
+					regularSummons.add(Larva.class);
+				} else {
+					regularSummons.add( i % 2 == 0 ? YogEye.class : YogScorpio.class);
+				}
+			}
+		} else {
+			for (int i = 0; i < 6; i++){
+				if (i >= Statistics.spawnersAlive){
+					regularSummons.add(Larva.class);
+				} else {
+					regularSummons.add(YogRipper.class);
+				}
 			}
 		}
 		Random.shuffle(regularSummons);
@@ -112,10 +151,19 @@ public class YogDzewa extends Mob {
 
 	@Override
 	protected boolean act() {
-		//catches an error-case from 0.8.0 & 0.8.0a
-		if (!isAlive()){
-			die(null);
+		//char logic
+		if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
+			fieldOfView = new boolean[Dungeon.level.length()];
 		}
+		Dungeon.level.updateFieldOfView( this, fieldOfView );
+
+		throwItems();
+
+		//mob logic
+		enemy = chooseEnemy();
+
+		enemySeen = enemy != null && enemy.isAlive() && fieldOfView[enemy.pos] && enemy.invisible <= 0;
+		//end of char/mob logic
 
 		if (phase == 0){
 			if (Dungeon.hero.viewDistance >= Dungeon.level.distance(pos, Dungeon.hero.pos)) {
@@ -161,7 +209,11 @@ public class YogDzewa extends Mob {
 					Dungeon.observe();
 				}
 				for (Char ch : affected) {
-					ch.damage(Random.NormalIntRange(20, 35), new Eye.DeathGaze());
+					if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES)){
+						ch.damage(Random.NormalIntRange(30, 50), new Eye.DeathGaze());
+					} else {
+						ch.damage(Random.NormalIntRange(20, 30), new Eye.DeathGaze());
+					}
 
 					if (Dungeon.level.heroFOV[pos]) {
 						ch.sprite.flash();
@@ -302,16 +354,17 @@ public class YogDzewa extends Mob {
 
 		if (phase < 4 && HP <= HT - 300*phase){
 
-			Dungeon.level.viewDistance = Math.max(1, Dungeon.level.viewDistance-1);
-			if (Dungeon.hero.buff(Light.class) == null){
-				Dungeon.hero.viewDistance = Dungeon.level.viewDistance;
-			}
-			Dungeon.observe();
+			phase++;
+
+			updateVisibility(Dungeon.level);
 			GLog.n(Messages.get(this, "darkness"));
 			sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "invulnerable"));
 
-			YogFist fist = (YogFist) Reflection.newInstance(fistSummons.remove(0));
-			fist.pos = Dungeon.level.exit;
+			addFist((YogFist)Reflection.newInstance(fistSummons.remove(0)));
+
+			if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES)){
+				addFist((YogFist)Reflection.newInstance(challengeSummons.remove(0)));
+			}
 
 			CellEmitter.get(Dungeon.level.exit-1).burst(ShadowParticle.UP, 25);
 			CellEmitter.get(Dungeon.level.exit).burst(ShadowParticle.UP, 100);
@@ -320,23 +373,53 @@ public class YogDzewa extends Mob {
 			if (abilityCooldown < 5) abilityCooldown = 5;
 			if (summonCooldown < 5) summonCooldown = 5;
 
-			int targetPos = Dungeon.level.exit + Dungeon.level.width();
-			if (Actor.findChar(targetPos) == null){
-				fist.pos = targetPos;
-			} else if (Actor.findChar(targetPos-1) == null){
-				fist.pos = targetPos-1;
-			} else if (Actor.findChar(targetPos+1) == null){
-				fist.pos = targetPos+1;
-			}
-
-			GameScene.add(fist, 4);
-			Actor.addDelayed( new Pushing( fist, Dungeon.level.exit, fist.pos ), -1 );
-			phase++;
 		}
 
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 		if (lock != null) lock.addTime(dmgTaken);
 
+	}
+
+	public void addFist(YogFist fist){
+		fist.pos = Dungeon.level.exit;
+
+		CellEmitter.get(Dungeon.level.exit-1).burst(ShadowParticle.UP, 25);
+		CellEmitter.get(Dungeon.level.exit).burst(ShadowParticle.UP, 100);
+		CellEmitter.get(Dungeon.level.exit+1).burst(ShadowParticle.UP, 25);
+
+		if (abilityCooldown < 5) abilityCooldown = 5;
+		if (summonCooldown < 5) summonCooldown = 5;
+
+		int targetPos = Dungeon.level.exit + Dungeon.level.width();
+
+		if (!Dungeon.isChallenged(Challenges.STRONGER_BOSSES)
+				&& Actor.findChar(targetPos) == null){
+			fist.pos = targetPos;
+		} else if (Actor.findChar(targetPos-1) == null){
+			fist.pos = targetPos-1;
+		} else if (Actor.findChar(targetPos+1) == null){
+			fist.pos = targetPos+1;
+		} else if (Actor.findChar(targetPos) == null){
+			fist.pos = targetPos;
+		}
+
+		GameScene.add(fist, 4);
+		Actor.addDelayed( new Pushing( fist, Dungeon.level.exit, fist.pos ), -1 );
+	}
+
+	public void updateVisibility( Level level ){
+		if (phase > 1 && isAlive()){
+			level.viewDistance = 4 - (phase-1);
+		} else {
+			level.viewDistance = 4;
+		}
+		level.viewDistance = Math.max(1, level.viewDistance);
+		if (Dungeon.hero != null) {
+			if (Dungeon.hero.buff(Light.class) == null) {
+				Dungeon.hero.viewDistance = level.viewDistance;
+			}
+			Dungeon.observe();
+		}
 	}
 
 	private YogFist findFist(){
@@ -372,10 +455,7 @@ public class YogDzewa extends Mob {
 			}
 		}
 
-		Dungeon.level.viewDistance = 4;
-		if (Dungeon.hero.buff(Light.class) == null){
-			Dungeon.hero.viewDistance = Dungeon.level.viewDistance;
-		}
+		updateVisibility(Dungeon.level);
 
 		GameScene.bossSlain();
 		Dungeon.level.unseal();
@@ -419,6 +499,8 @@ public class YogDzewa extends Mob {
 		immunities.add( Charm.class );
 		immunities.add( Sleep.class );
 		immunities.add( Vertigo.class );
+		immunities.add( Frost.class );
+		immunities.add( Paralysis.class );
 	}
 
 	private static final String PHASE = "phase";
@@ -428,6 +510,7 @@ public class YogDzewa extends Mob {
 
 	private static final String FIST_SUMMONS = "fist_summons";
 	private static final String REGULAR_SUMMONS = "regular_summons";
+	private static final String CHALLENGE_SUMMONS = "challenges_summons";
 
 	private static final String TARGETED_CELLS = "targeted_cells";
 
@@ -440,6 +523,7 @@ public class YogDzewa extends Mob {
 		bundle.put(SUMMON_CD, summonCooldown);
 
 		bundle.put(FIST_SUMMONS, fistSummons.toArray(new Class[0]));
+		bundle.put(CHALLENGE_SUMMONS, challengeSummons.toArray(new Class[0]));
 		bundle.put(REGULAR_SUMMONS, regularSummons.toArray(new Class[0]));
 
 		int[] bundleArr = new int[targetedCells.size()];
@@ -460,6 +544,11 @@ public class YogDzewa extends Mob {
 
 		fistSummons.clear();
 		Collections.addAll(fistSummons, bundle.getClassArray(FIST_SUMMONS));
+		//pre-0.9.3 saves
+		if (bundle.contains(CHALLENGE_SUMMONS)) {
+			challengeSummons.clear();
+			Collections.addAll(challengeSummons, bundle.getClassArray(CHALLENGE_SUMMONS));
+		}
 		regularSummons.clear();
 		Collections.addAll(regularSummons, bundle.getClassArray(REGULAR_SUMMONS));
 
@@ -500,7 +589,16 @@ public class YogDzewa extends Mob {
 
 	}
 
-	//used so death to yog's ripper demons have their own rankings description and are more aggro
-	public static class YogRipper extends RipperDemon {
+	//used so death to yog's ripper demons have their own rankings description
+	public static class YogRipper extends RipperDemon {}
+	public static class YogEye extends Eye {
+		{
+			maxLvl = -2;
+		}
+	}
+	public static class YogScorpio extends Scorpio {
+		{
+			maxLvl = -2;
+		}
 	}
 }

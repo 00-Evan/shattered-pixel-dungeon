@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,14 +24,20 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.watabou.utils.Point;
 
 public class RuinsRoom extends PatchRoom {
 	
 	@Override
 	public float[] sizeCatProbs() {
-		return new float[]{9, 3, 1};
+		return new float[]{4, 2, 1};
 	}
-	
+
+	@Override
+	public boolean canMerge(Level l, Point p, int mergeTerrain) {
+		return true;
+	}
+
 	@Override
 	public void paint(Level level) {
 		Painter.fill( level, this, Terrain.WALL );
@@ -39,12 +45,12 @@ public class RuinsRoom extends PatchRoom {
 		for (Door door : connected.values()) {
 			door.set( Door.Type.REGULAR );
 		}
-		
-		//fill scales from ~10% at 4x4, to ~25% at 18x18
-		// normal   ~20% to ~25%
-		// large    ~25% to ~30%
-		// giant    ~30% to ~35%
-		float fill = .2f + (width()*height())/2048f;
+
+		//fill scales from ~20% at 4x4, to ~50% at 18x18
+		// normal   ~20% to ~30%
+		// large    ~30% to ~40%
+		// giant    ~40% to ~50%
+		float fill = 0.20f + (width()*height())/1024f;
 		
 		setupPatch(level, fill, 0, true);
 		cleanDiagonalEdges();

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -102,8 +102,8 @@ public class GamesInProgress {
 				info.slot = slot;
 				Dungeon.preview(info, bundle);
 				
-				//saves from before 0.6.5c are not supported
-				if (info.version < ShatteredPixelDungeon.v0_6_5c) {
+				//saves from before v0.8.0b are not supported
+				if (info.version < ShatteredPixelDungeon.v0_8_0b) {
 					info = null;
 				}
 
@@ -130,6 +130,7 @@ public class GamesInProgress {
 		
 		info.level = hero.lvl;
 		info.str = hero.STR;
+		info.strBonus = hero.STR() - hero.STR;
 		info.exp = hero.exp;
 		info.hp = hero.HP;
 		info.ht = hero.HT;
@@ -161,6 +162,7 @@ public class GamesInProgress {
 		
 		public int level;
 		public int str;
+		public int strBonus;
 		public int exp;
 		public int hp;
 		public int ht;

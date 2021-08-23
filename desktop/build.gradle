@@ -3,9 +3,11 @@ apply plugin: "java"
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 sourceCompatibility = targetCompatibility = appJavaCompatibility
 
-ext.mainClass = "com.shatteredpixel.shatteredpixeldungeon.desktop.DesktopLauncher"
-sourceSets.main.resources.srcDirs = [new File(project(':core').projectDir, "/src/main/assets"),
-                                     new File(project(':desktop').projectDir,"/src/main/assets")]
+ext.appMainClass = "com.shatteredpixel.shatteredpixeldungeon.desktop.DesktopLauncher"
+processResources {
+    from new File(project(':core').projectDir, "/src/main/assets")
+    from new File(project(':desktop').projectDir,"/src/main/assets")
+}
 
 sourceSets {
     debug
@@ -16,13 +18,14 @@ task debug(dependsOn: classes, type: JavaExec) {
     classpath = sourceSets.debug.runtimeClasspath + sourceSets.main.runtimeClasspath
     ignoreExitValue = true
 
-    main = mainClass
+    main = appMainClass
     systemProperty 'Specification-Title', appName
     systemProperty 'Specification-Version', appVersionName + "-INDEV"
     systemProperty 'Implementation-Version', appVersionCode
 
     dependencies {
         debugImplementation project(':services:updates:debugUpdates')
+        debugImplementation project(':services:news:debugNews')
     }
 }
 
@@ -32,12 +35,14 @@ task compileForRelease(dependsOn: classes, type: JavaCompile){
 }
 
 task release(dependsOn: compileForRelease, type: Jar) {
+    //FIXME this is now needed as of gradle 7.0, due to our weird sourceSets setup. Should see if there's a better way to do this
+    setDuplicatesStrategy(DuplicatesStrategy.INCLUDE)
     from sourceSets.main.output
     from { sourceSets.release.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) } }
     from { configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) } }
 
     manifest {
-        attributes 'Main-Class': mainClass
+        attributes 'Main-Class': appMainClass
         attributes 'Specification-Title': appName
         attributes 'Specification-Version': appVersionName
         attributes 'Implementation-Version': appVersionCode
@@ -45,6 +50,7 @@ task release(dependsOn: compileForRelease, type: Jar) {
 
     dependencies {
         releaseImplementation project(':services:updates:githubUpdates')
+        releaseImplementation project(':services:news:shatteredNews')
     }
 }
 
@@ -57,12 +63,13 @@ dependencies {
     implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
 
     //we use LWJGL tinyFD directly to display crash messages and (for now) single-line text input
-    implementation "org.lwjgl:lwjgl-tinyfd:3.2.1"
-    implementation "org.lwjgl:lwjgl-tinyfd:3.2.1:natives-windows"
-    implementation "org.lwjgl:lwjgl-tinyfd:3.2.1:natives-macos"
-    implementation "org.lwjgl:lwjgl-tinyfd:3.2.1:natives-linux"
+    implementation "org.lwjgl:lwjgl-tinyfd:3.2.3"
+    implementation "org.lwjgl:lwjgl-tinyfd:3.2.3:natives-windows"
+    implementation "org.lwjgl:lwjgl-tinyfd:3.2.3:natives-macos"
+    implementation "org.lwjgl:lwjgl-tinyfd:3.2.3:natives-linux"
 
     //Need these at compile time to prevent errors there.
     // The actual dependency used at runtime will vary based on source set.
     compileOnly project(':services:updates:debugUpdates')
+    compileOnly project(':services:news:debugNews')
 }

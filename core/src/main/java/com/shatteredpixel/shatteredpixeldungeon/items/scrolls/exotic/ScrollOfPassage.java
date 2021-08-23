@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,19 +28,20 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportat
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
 
 public class ScrollOfPassage extends ExoticScroll {
 	
 	{
-		initials = 8;
+		icon = ItemSpriteSheet.Icons.SCROLL_PASSAGE;
 	}
 	
 	@Override
 	public void doRead() {
-		
-		setKnown();
+
+		identify();
 		
 		if (Dungeon.bossLevel()) {
 			
@@ -48,12 +49,12 @@ public class ScrollOfPassage extends ExoticScroll {
 			return;
 			
 		}
-		
-		Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
-		if (buff != null) buff.detach();
-		buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
-		if (buff != null) buff.detach();
-		
+
+		TimekeepersHourglass.timeFreeze timeFreeze = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+		if (timeFreeze != null) timeFreeze.disarmPressedTraps();
+		Swiftthistle.TimeBubble timeBubble = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
+		if (timeBubble != null) timeBubble.disarmPressedTraps();
+
 		InterlevelScene.mode = InterlevelScene.Mode.RETURN;
 		InterlevelScene.returnDepth = Math.max(1, (Dungeon.depth - 1 - (Dungeon.depth-2)%5));
 		InterlevelScene.returnPos = -1;

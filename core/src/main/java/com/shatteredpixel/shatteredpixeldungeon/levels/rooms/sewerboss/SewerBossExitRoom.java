@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -74,7 +74,7 @@ public class SewerBossExitRoom extends ExitRoom {
 	public static class SewerExit extends CustomTilemap {
 		
 		{
-			texture = Assets.SEWER_BOSS;
+			texture = Assets.Environment.SEWER_BOSS;
 			
 			tileW = 3;
 			tileH = 3;
@@ -105,7 +105,7 @@ public class SewerBossExitRoom extends ExitRoom {
 	public static class SewerExitOverhang extends CustomTilemap {
 		
 		{
-			texture = Assets.SEWER_BOSS;
+			texture = Assets.Environment.SEWER_BOSS;
 			
 			tileW = 3;
 			tileH = 2;

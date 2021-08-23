@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.watabou.glwrap.Matrix;
 import com.watabou.glwrap.Quad;
 
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 import java.util.HashMap;
 
@@ -88,7 +89,7 @@ public class RenderedText extends Image {
 			visible = true;
 		}
 		
-		font = Game.platform.getFont(size, text);
+		font = Game.platform.getFont(size, text, true, true);
 		
 		if (font != null){
 			GlyphLayout glyphs = new GlyphLayout( font, text);
@@ -96,7 +97,11 @@ public class RenderedText extends Image {
 			for (char c : text.toCharArray()) {
 				BitmapFont.Glyph g = font.getData().getGlyph(c);
 				if (g == null || (g.id != c)){
-					Game.reportException(new Throwable("font file " + font.toString() + " could not render " + c));
+					String toException = text;
+					if (toException.length() > 30){
+						toException = toException.substring(0, 30) + "...";
+					}
+					Game.reportException(new Throwable("font file " + font.toString() + " could not render " + c + " from string: " + toException));
 				}
 			}
 			
@@ -137,16 +142,17 @@ public class RenderedText extends Image {
 		}
 	}
 
-	//implements regular PD rendering within a LibGDX batch so that our rendering logic
+	//implements regular PD rendering within a libGDX batch so that our rendering logic
 	//can interface with the freetype font generator
+	//some copypasta from BitmapText here
 	private static class TextRenderBatch implements Batch {
 		
-		//this isn't as good as only updating once, like with bitmaptext
+		//this isn't as good as only updating once, like with BitmapText
 		// but it skips almost all allocations, which is almost as good
 		private static RenderedText textBeingRendered = null;
 		private static float[] vertices = new float[16];
 		private static HashMap<Integer, FloatBuffer> buffers = new HashMap<>();
-		
+
 		@Override
 		public void draw(Texture texture, float[] spriteVertices, int offset, int count) {
 			Visual v = textBeingRendered;
@@ -154,7 +160,7 @@ public class RenderedText extends Image {
 			FloatBuffer toOpenGL;
 			if (buffers.containsKey(count/20)){
 				toOpenGL = buffers.get(count/20);
-				toOpenGL.position(0);
+				((Buffer)toOpenGL).position(0);
 			} else {
 				toOpenGL = Quad.createSet(count / 20);
 				buffers.put(count/20, toOpenGL);
@@ -162,35 +168,35 @@ public class RenderedText extends Image {
 			
 			for (int i = 0; i < count; i += 20){
 				
-				vertices[0] 	= spriteVertices[i+0];
-				vertices[1] 	= spriteVertices[i+1];
+				vertices[0]     = spriteVertices[i+0];
+				vertices[1]     = spriteVertices[i+1];
 				
-				vertices[2]		= spriteVertices[i+3];
-				vertices[3]		= spriteVertices[i+4];
+				vertices[2]     = spriteVertices[i+3];
+				vertices[3]     = spriteVertices[i+4];
 				
-				vertices[4] 	= spriteVertices[i+5];
-				vertices[5] 	= spriteVertices[i+6];
+				vertices[4]     = spriteVertices[i+5];
+				vertices[5]     = spriteVertices[i+6];
 				
-				vertices[6]		= spriteVertices[i+8];
-				vertices[7]		= spriteVertices[i+9];
+				vertices[6]     = spriteVertices[i+8];
+				vertices[7]     = spriteVertices[i+9];
 				
-				vertices[8] 	= spriteVertices[i+10];
-				vertices[9] 	= spriteVertices[i+11];
+				vertices[8]     = spriteVertices[i+10];
+				vertices[9]     = spriteVertices[i+11];
 				
-				vertices[10]	= spriteVertices[i+13];
-				vertices[11]	= spriteVertices[i+14];
+				vertices[10]    = spriteVertices[i+13];
+				vertices[11]    = spriteVertices[i+14];
 				
-				vertices[12]	= spriteVertices[i+15];
-				vertices[13]	= spriteVertices[i+16];
+				vertices[12]    = spriteVertices[i+15];
+				vertices[13]    = spriteVertices[i+16];
 				
-				vertices[14]	= spriteVertices[i+18];
-				vertices[15]	= spriteVertices[i+19];
+				vertices[14]    = spriteVertices[i+18];
+				vertices[15]    = spriteVertices[i+19];
 				
 				toOpenGL.put(vertices);
 				
 			}
-			
-			toOpenGL.position(0);
+
+			((Buffer)toOpenGL).position(0);
 			
 			NoosaScript script = NoosaScript.get();
 			

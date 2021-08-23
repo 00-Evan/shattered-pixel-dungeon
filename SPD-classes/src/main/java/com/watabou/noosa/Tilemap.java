@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ import com.watabou.glwrap.Vertexbuffer;
 import com.watabou.utils.Rect;
 import com.watabou.utils.RectF;
 
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 import java.util.Arrays;
 
@@ -136,7 +137,7 @@ public class Tilemap extends Visual {
 
 				bottomRightUpdating = pos + 1;
 
-				quads.position(pos*16);
+				((Buffer)quads).position(pos*16);
 				
 				uv = tileset.get(data[pos]);
 				
@@ -214,36 +215,6 @@ public class Tilemap extends Visual {
 			topLeftUpdating = -1;
 			updating.setEmpty();
 		}
-		
-		//FIXME temporarily disabled this optimization as it is suspected to cause crashes
-		/*Camera c = Camera.main;
-		//we treat the position of the tilemap as (0,0) here
-		camX = (int)(c.scroll.x/cellW - x/cellW);
-		camY = (int)(c.scroll.y/cellH - y/cellH);
-		camW = (int)Math.ceil(c.width/cellW);
-		camH = (int)Math.ceil(c.height/cellH);
-
-		if (camX >= mapWidth
-				|| camY >= mapHeight
-				|| camW + camW <= 0
-				|| camH + camH <= 0)
-			return;
-
-		//determines the top-left visible tile, the bottom-right one, and the buffer length
-		//between them, this culls a good number of none-visible tiles while keeping to 1 draw
-		topLeft = Math.max(camX, 0)
-				+ Math.max(camY*mapWidth, 0);
-
-		bottomRight = Math.min(camX+camW, mapWidth-1)
-				+ Math.min((camY+camH)*mapWidth, (mapHeight-1)*mapWidth);
-
-		if (topLeft >= size || bottomRight < 0)
-			length = 0;
-		else
-			length = bottomRight - topLeft + 1;
-
-		if (length <= 0)
-			return;*/
 
 		NoosaScript script = script();
 

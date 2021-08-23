@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,15 +83,12 @@ public class Pasty extends Food {
 		super.reset();
 		switch(holiday){
 			case NONE:
-				name = Messages.get(this, "pasty");
 				image = ItemSpriteSheet.PASTY;
 				break;
 			case HWEEN:
-				name = Messages.get(this, "pie");
 				image = ItemSpriteSheet.PUMPKIN_PIE;
 				break;
 			case XMAS:
-				name = Messages.get(this, "cane");
 				image = ItemSpriteSheet.CANDY_CANE;
 				break;
 		}
@@ -117,6 +114,18 @@ public class Pasty extends Food {
 	}
 
 	@Override
+	public String name() {
+		switch(holiday){
+			case NONE: default:
+				return Messages.get(this, "pasty");
+			case HWEEN:
+				return Messages.get(this, "pie");
+			case XMAS:
+				return Messages.get(this, "cane");
+		}
+	}
+
+	@Override
 	public String info() {
 		switch(holiday){
 			case NONE: default:
@@ -129,7 +138,7 @@ public class Pasty extends Food {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return 20 * quantity;
 	}
 }

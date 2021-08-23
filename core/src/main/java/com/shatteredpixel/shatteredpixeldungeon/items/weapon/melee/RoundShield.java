@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -29,26 +30,29 @@ public class RoundShield extends MeleeWeapon {
 
 	{
 		image = ItemSpriteSheet.ROUND_SHIELD;
+		hitSound = Assets.Sounds.HIT;
+		hitSoundPitch = 1f;
 
 		tier = 3;
 	}
 
 	@Override
 	public int max(int lvl) {
-		return  3*(tier+1) +    //12 base, down from 20
-				lvl*(tier-1);   //+2 per level, down from +4
+		return  Math.round(2.5f*(tier+1)) +     //10 base, down from 20
+				lvl*(tier-1);                   //+2 per level, down from +4
 	}
+
 
 	@Override
 	public int defenseFactor( Char owner ) {
-		return 5+2*buffedLvl();     //5 extra defence, plus 2 per level;
+		return 4+2*buffedLvl();     //4 extra defence, plus 2 per level;
 	}
 	
 	public String statsInfo(){
 		if (isIdentified()){
-			return Messages.get(this, "stats_desc", 5+2*buffedLvl());
+			return Messages.get(this, "stats_desc", 4+2*buffedLvl());
 		} else {
-			return Messages.get(this, "typical_stats_desc", 5);
+			return Messages.get(this, "typical_stats_desc", 4);
 		}
 	}
 }

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
@@ -32,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfMys
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 
 public class WildEnergy extends TargetedSpell {
@@ -51,16 +53,17 @@ public class WildEnergy extends TargetedSpell {
 		CursedWand.cursedZap(this, hero, bolt, new Callback() {
 			@Override
 			public void call() {
+				Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
+				Sample.INSTANCE.play( Assets.Sounds.CHARGEUP );
 				ScrollOfRecharging.charge(hero);
 
 				hero.belongings.charge(1f);
-				for (int i = 0; i < 4; i++){
-					if (hero.belongings.misc1 instanceof Artifact) ((Artifact) hero.belongings.misc1).charge(hero);
-					if (hero.belongings.misc2 instanceof Artifact) ((Artifact) hero.belongings.misc2).charge(hero);
+				for (Buff b : hero.buffs()){
+					if (b instanceof Artifact.ArtifactBuff) ((Artifact.ArtifactBuff) b).charge(hero, 4);
 				}
 
 				Buff.affect(hero, Recharging.class, 8f);
-				Buff.affect(hero, ArtifactRecharge.class).prolong( 8 );
+				Buff.affect(hero, ArtifactRecharge.class).prolong( 8 ).ignoreHornOfPlenty = false;
 				
 				detach( curUser.belongings.backpack );
 				updateQuickslot();
@@ -70,7 +73,7 @@ public class WildEnergy extends TargetedSpell {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		//prices of ingredients, divided by output quantity
 		return Math.round(quantity * ((50 + 100) / 5f));
 	}

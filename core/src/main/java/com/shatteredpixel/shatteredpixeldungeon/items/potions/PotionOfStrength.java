@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,17 +25,20 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class PotionOfStrength extends Potion {
 
 	{
-		initials = 10;
+		icon = ItemSpriteSheet.Icons.POTION_STRENGTH;
+
+		unique = true;
 	}
 	
 	@Override
 	public void apply( Hero hero ) {
-		setKnown();
+		identify();
 		
 		hero.STR++;
 		hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "msg_1") );
@@ -45,7 +48,7 @@ public class PotionOfStrength extends Potion {
 	}
 
 	@Override
-	public int price() {
-		return isKnown() ? 50 * quantity : super.price();
+	public int value() {
+		return isKnown() ? 50 * quantity : super.value();
 	}
 }

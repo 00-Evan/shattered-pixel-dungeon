@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,8 +24,10 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
@@ -41,10 +43,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazin
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blooming;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Chilling;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Kinetic;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Corrupting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Elastic;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Kinetic;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Lucky;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projecting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
@@ -92,7 +94,7 @@ abstract public class Weapon extends KindOfWeapon {
 	public Augment augment = Augment.NONE;
 	
 	private static final int USES_TO_ID = 20;
-	private int usesLeftToID = USES_TO_ID;
+	private float usesLeftToID = USES_TO_ID;
 	private float availableUsesToID = USES_TO_ID/2f;
 	
 	public Enchantment enchantment;
@@ -105,9 +107,10 @@ abstract public class Weapon extends KindOfWeapon {
 			damage = enchantment.proc( this, attacker, defender, damage );
 		}
 		
-		if (!levelKnown && attacker == Dungeon.hero && availableUsesToID >= 1) {
-			availableUsesToID--;
-			usesLeftToID--;
+		if (!levelKnown && attacker == Dungeon.hero) {
+			float uses = Math.min( availableUsesToID, Talent.itemIDSpeedFactor(Dungeon.hero, this) );
+			availableUsesToID -= uses;
+			usesLeftToID -= uses;
 			if (usesLeftToID <= 0) {
 				identify();
 				GLog.p( Messages.get(Weapon.class, "identify") );
@@ -119,6 +122,7 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 	
 	public void onHeroGainExp( float levelPercent, Hero hero ){
+		levelPercent *= Talent.itemIDSpeedFactor(hero, this);
 		if (!levelKnown && isEquipped(hero) && availableUsesToID <= USES_TO_ID/2f) {
 			//gains enough uses to ID over 0.5 levels
 			availableUsesToID = Math.min(USES_TO_ID/2f, availableUsesToID + levelPercent * USES_TO_ID);
@@ -144,17 +148,11 @@ abstract public class Weapon extends KindOfWeapon {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
-		usesLeftToID = bundle.getInt( USES_LEFT_TO_ID );
-		availableUsesToID = bundle.getInt( AVAILABLE_USES );
+		usesLeftToID = bundle.getFloat( USES_LEFT_TO_ID );
+		availableUsesToID = bundle.getFloat( AVAILABLE_USES );
 		enchantment = (Enchantment)bundle.get( ENCHANTMENT );
 		curseInfusionBonus = bundle.getBoolean( CURSE_INFUSION_BONUS );
-		
-		//pre-0.7.2 saves
-		if (bundle.contains( "unfamiliarity" )){
-			usesLeftToID = bundle.getInt( "unfamiliarity" );
-			availableUsesToID = USES_TO_ID/2f;
-		}
-		
+
 		augment = bundle.getEnum(AUGMENT, Augment.class);
 	}
 	
@@ -183,18 +181,24 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 	
 	@Override
-	public float speedFactor( Char owner ) {
+	public float delayFactor( Char owner ) {
+		return baseDelay(owner) * (1f/speedMultiplier(owner));
+	}
 
-		int encumbrance = 0;
+	protected float baseDelay( Char owner ){
+		float delay = augment.delayFactor(this.DLY);
 		if (owner instanceof Hero) {
-			encumbrance = STRReq() - ((Hero)owner).STR();
+			int encumbrance = STRReq() - ((Hero)owner).STR();
+			if (encumbrance > 0){
+				delay *= Math.pow( 1.2, encumbrance );
+			}
 		}
 
-		float DLY = augment.delayFactor(this.DLY);
+		return delay;
+	}
 
-		DLY *= RingOfFuror.attackDelayMultiplier(owner);
-
-		return (encumbrance > 0 ? (float)(DLY * Math.pow( 1.2, encumbrance )) : DLY);
+	protected float speedMultiplier(Char owner ){
+		return RingOfFuror.attackSpeedMultiplier(owner);
 	}
 
 	@Override
@@ -207,7 +211,14 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 
 	public abstract int STRReq(int lvl);
-	
+
+	protected static int STRReq(int tier, int lvl){
+		lvl = Math.max(0, lvl);
+
+		//strength req decreases at +1,+3,+6,+10,etc.
+		return (8 + tier * 2) - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
+	}
+
 	@Override
 	public int level() {
 		return super.level() + (curseInfusionBonus ? 1 : 0);
@@ -231,7 +242,7 @@ abstract public class Weapon extends KindOfWeapon {
 	public Item upgrade(boolean enchant ) {
 
 		if (enchant){
-			if (enchantment == null || hasCurseEnchant()){
+			if (enchantment == null){
 				enchant(Enchantment.random());
 			}
 		} else {
@@ -337,6 +348,25 @@ abstract public class Weapon extends KindOfWeapon {
 		
 			
 		public abstract int proc( Weapon weapon, Char attacker, Char defender, int damage );
+
+		protected float procChanceMultiplier( Char attacker ){
+			float multi = 1f;
+			if (attacker instanceof Hero && ((Hero) attacker).hasTalent(Talent.ENRAGED_CATALYST)){
+				Berserk rage = attacker.buff(Berserk.class);
+				if (rage != null) {
+					multi += (rage.rageAmount() / 6f) * ((Hero) attacker).pointsInTalent(Talent.ENRAGED_CATALYST);
+				}
+			}
+			if (attacker.buff(Talent.SpiritBladesTracker.class) != null
+					&& ((Hero)attacker).pointsInTalent(Talent.SPIRIT_BLADES) == 4){
+				multi += 0.1f;
+			}
+			if (attacker.buff(Talent.StrikingWaveTracker.class) != null
+					&& ((Hero)attacker).pointsInTalent(Talent.STRIKING_WAVE) == 4){
+				multi += 0.2f;
+			}
+			return multi;
+		}
 
 		public String name() {
 			if (!curse())

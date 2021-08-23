@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,6 +34,12 @@ import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 public class PitRoom extends SpecialRoom {
+
+	@Override //increase min size slightly to prevent tiny 3x3 wraith fights
+	public int minWidth() { return 6; }
+	public int minHeight() {
+		return 6;
+	}
 
 	public void paint( Level level ) {
 		
@@ -77,7 +83,7 @@ public class PitRoom extends SpecialRoom {
 					break;
 			}
 		} while ( mainLoot == null || Challenges.isItemBlocked(mainLoot));
-		level.drop(mainLoot, remains);
+		level.drop(mainLoot, remains).setHauntedIfCursed();
 		
 		int n = Random.IntRange( 1, 2 );
 		for (int i=0; i < n; i++) {

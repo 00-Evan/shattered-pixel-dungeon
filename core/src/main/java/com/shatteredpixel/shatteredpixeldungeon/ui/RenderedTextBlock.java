@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,6 +47,11 @@ public class RenderedTextBlock extends Component {
 	
 	private int hightlightColor = Window.TITLE_COLOR;
 	private boolean highlightingEnabled = true;
+
+	public static final int LEFT_ALIGN = 1;
+	public static final int CENTER_ALIGN = 2;
+	public static final int RIGHT_ALIGN = 3;
+	private int alignment = LEFT_ALIGN;
 	
 	public RenderedTextBlock(int size){
 		this.size = size;
@@ -175,6 +180,11 @@ public class RenderedTextBlock extends Component {
 		}
 	}
 
+	public synchronized void align(int align){
+		alignment = align;
+		layout();
+	}
+
 	@Override
 	protected synchronized void layout() {
 		super.layout();
@@ -182,6 +192,10 @@ public class RenderedTextBlock extends Component {
 		float y = this.y;
 		float height = 0;
 		nLines = 1;
+
+		ArrayList<ArrayList<RenderedText>> lines = new ArrayList<>();
+		ArrayList<RenderedText> curLine = new ArrayList<>();
+		lines.add(curLine);
 
 		width = 0;
 		for (RenderedText word : words){
@@ -192,19 +206,24 @@ public class RenderedTextBlock extends Component {
 				y += height+2f;
 				x = this.x;
 				nLines++;
+				curLine = new ArrayList<>();
+				lines.add(curLine);
 			} else {
 				if (word.height() > height) height = word.height();
 
-				if ((x - this.x) + word.width() > maxWidth){
+				if ((x - this.x) + word.width() > maxWidth && !curLine.isEmpty()){
 					y += height+2f;
 					x = this.x;
 					nLines++;
+					curLine = new ArrayList<>();
+					lines.add(curLine);
 				}
 
 				word.x = x;
 				word.y = y;
 				PixelScene.align(word);
 				x += word.width();
+				curLine.add(word);
 
 				if ((x - this.x) > width) width = (x - this.x);
 				
@@ -215,5 +234,23 @@ public class RenderedTextBlock extends Component {
 			}
 		}
 		this.height = (y - this.y) + height;
+
+		if (alignment != LEFT_ALIGN){
+			for (ArrayList<RenderedText> line : lines){
+				if (line.size() == 0) continue;
+				float lineWidth = line.get(line.size()-1).width() + line.get(line.size()-1).x - this.x;
+				if (alignment == CENTER_ALIGN){
+					for (RenderedText text : line){
+						text.x += (width() - lineWidth)/2f;
+						PixelScene.align(text);
+					}
+				} else if (alignment == RIGHT_ALIGN) {
+					for (RenderedText text : line){
+						text.x += width() - lineWidth;
+						PixelScene.align(text);
+					}
+				}
+			}
+		}
 	}
 }

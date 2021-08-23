@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,9 +26,12 @@ import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.HeroSelectScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.RankingsScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
+import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Game;
@@ -46,84 +49,81 @@ public class WndGame extends Window {
 	public WndGame() {
 		
 		super();
-		
-		addButton( new RedButton( Messages.get(this, "settings") ) {
+
+		//settings
+		RedButton curBtn;
+		addButton( curBtn = new RedButton( Messages.get(this, "settings") ) {
 			@Override
 			protected void onClick() {
 				hide();
 				GameScene.show(new WndSettings());
 			}
 		});
+		curBtn.icon(Icons.get(Icons.PREFS));
+
+		//install prompt
+		if (Updates.isInstallable()){
+			addButton( curBtn = new RedButton( Messages.get(this, "install") ) {
+				@Override
+				protected void onClick() {
+					Updates.launchInstall();
+				}
+			} );
+			curBtn.textColor(Window.SHPX_COLOR);
+			curBtn.icon(Icons.get(Icons.CHANGES));
+		}
 
 		// Challenges window
 		if (Dungeon.challenges > 0) {
-			addButton( new RedButton( Messages.get(this, "challenges") ) {
+			addButton( curBtn = new RedButton( Messages.get(this, "challenges") ) {
 				@Override
 				protected void onClick() {
 					hide();
 					GameScene.show( new WndChallenges( Dungeon.challenges, false ) );
 				}
 			} );
+			curBtn.icon(Icons.get(Icons.CHALLENGE_ON));
 		}
 
 		// Restart
 		if (Dungeon.hero == null || !Dungeon.hero.isAlive()) {
-			
-			RedButton btnStart;
-			addButton( btnStart = new RedButton( Messages.get(this, "start") ) {
+
+			addButton( curBtn = new RedButton( Messages.get(this, "start") ) {
 				@Override
 				protected void onClick() {
-					GamesInProgress.selectedClass = Dungeon.hero.heroClass;
 					InterlevelScene.noStory = true;
-					GameScene.show(new WndStartGame(GamesInProgress.firstEmpty()));
+					GamesInProgress.selectedClass = Dungeon.hero.heroClass;
+					GamesInProgress.curSlot = GamesInProgress.firstEmpty();
+					ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
 				}
 			} );
-			btnStart.textColor(Window.TITLE_COLOR);
+			curBtn.icon(Icons.get(Icons.ENTER));
+			curBtn.textColor(Window.TITLE_COLOR);
 			
-			addButton( new RedButton( Messages.get(this, "rankings") ) {
+			addButton( curBtn = new RedButton( Messages.get(this, "rankings") ) {
 				@Override
 				protected void onClick() {
 					InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
 					Game.switchScene( RankingsScene.class );
 				}
 			} );
+			curBtn.icon(Icons.get(Icons.RANKINGS));
 		}
 
-		addButtons(
-				// Main menu
-				new RedButton( Messages.get(this, "menu") ) {
-					@Override
-					protected void onClick() {
-						try {
-							Dungeon.saveAll();
-						} catch (IOException e) {
-							ShatteredPixelDungeon.reportException(e);
-						}
-						Game.switchScene(TitleScene.class);
-					}
-				},
-				// Quit
-				new RedButton( Messages.get(this, "exit") ) {
-					@Override
-					protected void onClick() {
-						try {
-							Dungeon.saveAll();
-						} catch (IOException e) {
-							ShatteredPixelDungeon.reportException(e);
-						}
-						Game.instance.finish();
-					}
-				}
-		);
-
-		// Cancel
-		addButton( new RedButton( Messages.get(this, "return") ) {
+		// Main menu
+		addButton(curBtn = new RedButton( Messages.get(this, "menu") ) {
 			@Override
 			protected void onClick() {
-				hide();
+				try {
+					Dungeon.saveAll();
+				} catch (IOException e) {
+					ShatteredPixelDungeon.reportException(e);
+				}
+				Game.switchScene(TitleScene.class);
 			}
 		} );
-		
+		curBtn.icon(Icons.get(Icons.DISPLAY));
+
 		resize( WIDTH, pos );
 	}
 	

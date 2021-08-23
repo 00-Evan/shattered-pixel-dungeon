@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,9 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.GuidePage;
+import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -44,6 +44,11 @@ public class EntranceRoom extends StandardRoom {
 		return Math.max(super.minHeight(), 5);
 	}
 
+	@Override
+	public boolean canMerge(Level l, Point p, int mergeTerrain) {
+		return false;
+	}
+
 	public void paint( Level level ) {
 		
 		Painter.fill( level, this, Terrain.WALL );
@@ -62,20 +67,18 @@ public class EntranceRoom extends StandardRoom {
 		Random.pushGenerator();
 
 		//places the first guidebook page on floor 1
-		if (Dungeon.depth == 1 && !Document.ADVENTURERS_GUIDE.hasPage(Document.GUIDE_INTRO_PAGE)){
+		if (Dungeon.depth == 1 && !Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_INTRO)){
 			int pos;
 			do {
 				//can't be on bottom row of tiles
 				pos = level.pointToCell(new Point( Random.IntRange( left + 1, right - 1 ),
 						Random.IntRange( top + 1, bottom - 2 )));
 			} while (pos == level.entrance || level.findMob(level.entrance) != null);
-			GuidePage p = new GuidePage();
-			p.page(Document.GUIDE_INTRO_PAGE);
-			level.drop( p, pos );
+			level.drop( new Guidebook(), pos );
 		}
 
 		//places the third guidebook page on floor 2
-		if (Dungeon.depth == 2 && !Document.ADVENTURERS_GUIDE.hasPage(Document.GUIDE_SEARCH_PAGE)){
+		if (Dungeon.depth == 2 && !Document.ADVENTURERS_GUIDE.isPageFound(Document.GUIDE_SEARCHING)){
 			int pos;
 			do {
 				//can't be on bottom row of tiles
@@ -83,12 +86,19 @@ public class EntranceRoom extends StandardRoom {
 						Random.IntRange( top + 1, bottom - 2 )));
 			} while (pos == level.entrance || level.findMob(level.entrance) != null);
 			GuidePage p = new GuidePage();
-			p.page(Document.GUIDE_SEARCH_PAGE);
+			p.page(Document.GUIDE_SEARCHING);
 			level.drop( p, pos );
 		}
 
 		Random.popGenerator();
 
+	}
+
+	@Override
+	public boolean connect(Room room) {
+		//cannot connect to exit, otherwise works normally
+		if (room instanceof ExitRoom)   return false;
+		else                            return super.connect(room);
 	}
 	
 }

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,7 +55,7 @@ public class Spinner extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange(10, 25);
+		return Random.NormalIntRange(10, 20);
 	}
 
 	@Override
@@ -145,6 +145,7 @@ public class Spinner extends Mob {
 	
 	public int webPos(){
 
+		Char enemy = this.enemy;
 		if (enemy == null) return -1;
 		
 		Ballistica b;
@@ -169,8 +170,11 @@ public class Spinner extends Mob {
 		}
 
 		int webPos = b.path.get( collisionIndex+1 );
+
+		//ensure we aren't shooting the web through walls
+		int projectilePos = new Ballistica( pos, webPos, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID).collisionPos;
 		
-		if (Dungeon.level.passable[webPos]){
+		if (webPos != enemy.pos && projectilePos == webPos && Dungeon.level.passable[webPos]){
 			return webPos;
 		} else {
 			return -1;
@@ -180,7 +184,7 @@ public class Spinner extends Mob {
 	
 	public void shootWeb(){
 		int webPos = webPos();
-		if (enemy != null && webPos != enemy.pos && webPos != -1){
+		if (webPos != -1){
 			int i;
 			for ( i = 0; i < PathFinder.CIRCLE8.length; i++){
 				if ((enemy.pos + PathFinder.CIRCLE8[i]) == webPos){

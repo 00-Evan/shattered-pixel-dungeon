@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ public class Effects {
 	}
 	
 	public static Image get( Type type ) {
-		Image icon = new Image( Assets.EFFECTS );
+		Image icon = new Image( Assets.Effects.EFFECTS );
 		switch (type) {
 			case RIPPLE:
 				icon.frame(icon.texture.uvRect(0, 0, 16, 16));

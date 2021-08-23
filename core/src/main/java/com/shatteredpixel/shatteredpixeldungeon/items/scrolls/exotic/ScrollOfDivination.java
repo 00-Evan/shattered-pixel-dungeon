@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Identification;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
@@ -32,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -46,7 +46,7 @@ import java.util.HashSet;
 public class ScrollOfDivination extends ExoticScroll {
 	
 	{
-		initials = 0;
+		icon = ItemSpriteSheet.Icons.SCROLL_DIVINATE;
 	}
 	
 	@Override
@@ -54,22 +54,13 @@ public class ScrollOfDivination extends ExoticScroll {
 		
 		curUser.sprite.parent.add( new Identification( curUser.sprite.center().offset( 0, -16 ) ) );
 		
-		readAnimation();
-		setKnown();
-		
-		Sample.INSTANCE.play( Assets.SND_READ );
-		Invisibility.dispel();
+		Sample.INSTANCE.play( Assets.Sounds.READ );
 		
 		HashSet<Class<? extends Potion>> potions = Potion.getUnknown();
 		HashSet<Class<? extends Scroll>> scrolls = Scroll.getUnknown();
 		HashSet<Class<? extends Ring>> rings = Ring.getUnknown();
 		
 		int total = potions.size() + scrolls.size() + rings.size();
-		
-		if (total == 0){
-			GLog.n( Messages.get(this, "nothing_left") );
-			return;
-		}
 		
 		ArrayList<Item> IDed = new ArrayList<>();
 		int left = 4;
@@ -89,7 +80,7 @@ public class ScrollOfDivination extends ExoticScroll {
 					}
 					probs[0]--;
 					Potion p = Reflection.newInstance(Random.element(potions));
-					p.setKnown();
+					p.identify();
 					IDed.add(p);
 					potions.remove(p.getClass());
 					break;
@@ -100,7 +91,7 @@ public class ScrollOfDivination extends ExoticScroll {
 					}
 					probs[1]--;
 					Scroll s = Reflection.newInstance(Random.element(scrolls));
-					s.setKnown();
+					s.identify();
 					IDed.add(s);
 					scrolls.remove(s.getClass());
 					break;
@@ -119,8 +110,15 @@ public class ScrollOfDivination extends ExoticScroll {
 			left --;
 			total --;
 		}
-		
-		GameScene.show(new WndDivination( IDed ));
+
+		if (total == 0){
+			GLog.n( Messages.get(this, "nothing_left") );
+		} else {
+			GameScene.show(new WndDivination(IDed));
+		}
+
+		readAnimation();
+		identify();
 	}
 	
 	private class WndDivination extends Window {

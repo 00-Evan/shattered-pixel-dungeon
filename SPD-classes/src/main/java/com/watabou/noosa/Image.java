@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ import com.watabou.glwrap.Quad;
 import com.watabou.glwrap.Vertexbuffer;
 import com.watabou.utils.RectF;
 
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 
 public class Image extends Visual {
@@ -156,7 +157,7 @@ public class Image extends Visual {
 		super.draw();
 
 		if (dirty) {
-			verticesBuffer.position( 0 );
+			((Buffer)verticesBuffer).position( 0 );
 			verticesBuffer.put( vertices );
 			if (buffer == null)
 				buffer = new Vertexbuffer( verticesBuffer );

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,9 +44,11 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant.Seed;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Reflection;
 
@@ -84,6 +86,13 @@ public class Blandfruit extends Food {
 	@Override
 	public void execute( Hero hero, String action ) {
 
+		if (action.equals( Potion.AC_CHOOSE )){
+
+			GameScene.show(new WndUseItem(null, this) );
+			return;
+
+		}
+
 		if (action.equals( AC_EAT ) && potionAttrib == null) {
 
 			GLog.w( Messages.get(this, "raw"));
@@ -98,6 +107,23 @@ public class Blandfruit extends Food {
 			potionAttrib.apply(hero);
 
 		}
+	}
+
+	@Override
+	public String name() {
+		if (potionAttrib instanceof PotionOfHealing)        return Messages.get(this, "sunfruit");
+		if (potionAttrib instanceof PotionOfStrength)       return Messages.get(this, "rotfruit");
+		if (potionAttrib instanceof PotionOfParalyticGas)   return Messages.get(this, "earthfruit");
+		if (potionAttrib instanceof PotionOfInvisibility)   return Messages.get(this, "blindfruit");
+		if (potionAttrib instanceof PotionOfLiquidFlame)    return Messages.get(this, "firefruit");
+		if (potionAttrib instanceof PotionOfFrost)          return Messages.get(this, "icefruit");
+		if (potionAttrib instanceof PotionOfMindVision)     return Messages.get(this, "fadefruit");
+		if (potionAttrib instanceof PotionOfToxicGas)       return Messages.get(this, "sorrowfruit");
+		if (potionAttrib instanceof PotionOfLevitation)     return Messages.get(this, "stormfruit");
+		if (potionAttrib instanceof PotionOfPurity)         return Messages.get(this, "dreamfruit");
+		if (potionAttrib instanceof PotionOfExperience)     return Messages.get(this, "starfruit");
+		if (potionAttrib instanceof PotionOfHaste)          return Messages.get(this, "swiftfruit");
+		return super.name();
 	}
 
 	@Override
@@ -119,7 +145,7 @@ public class Blandfruit extends Food {
 	}
 
 	@Override
-	public int price() {
+	public int value() {
 		return 20 * quantity;
 	}
 
@@ -134,42 +160,23 @@ public class Blandfruit extends Food {
 
 		potionAttrib.image = ItemSpriteSheet.BLANDFRUIT;
 
-		if (potionAttrib instanceof PotionOfHealing){
-			name = Messages.get(this, "sunfruit");
-			potionGlow = new ItemSprite.Glowing( 0x2EE62E );
-		} else if (potionAttrib instanceof PotionOfStrength){
-			name = Messages.get(this, "rotfruit");
-			potionGlow = new ItemSprite.Glowing( 0xCC0022 );
-		} else if (potionAttrib instanceof PotionOfParalyticGas){
-			name = Messages.get(this, "earthfruit");
-			potionGlow = new ItemSprite.Glowing( 0x67583D );
-		} else if (potionAttrib instanceof PotionOfInvisibility){
-			name = Messages.get(this, "blindfruit");
-			potionGlow = new ItemSprite.Glowing( 0xD9D9D9 );
-		} else if (potionAttrib instanceof PotionOfLiquidFlame){
-			name = Messages.get(this, "firefruit");
-			potionGlow = new ItemSprite.Glowing( 0xFF7F00 );
-		} else if (potionAttrib instanceof PotionOfFrost){
-			name = Messages.get(this, "icefruit");
-			potionGlow = new ItemSprite.Glowing( 0x66B3FF );
-		} else if (potionAttrib instanceof PotionOfMindVision){
-			name = Messages.get(this, "fadefruit");
-			potionGlow = new ItemSprite.Glowing( 0x919999 );
-		} else if (potionAttrib instanceof PotionOfToxicGas){
-			name = Messages.get(this, "sorrowfruit");
-			potionGlow = new ItemSprite.Glowing( 0xA15CE5 );
-		} else if (potionAttrib instanceof PotionOfLevitation) {
-			name = Messages.get(this, "stormfruit");
-			potionGlow = new ItemSprite.Glowing( 0x1B5F79 );
-		} else if (potionAttrib instanceof PotionOfPurity) {
-			name = Messages.get(this, "dreamfruit");
-			potionGlow = new ItemSprite.Glowing( 0xC152AA );
-		} else if (potionAttrib instanceof PotionOfExperience) {
-			name = Messages.get(this, "starfruit");
-			potionGlow = new ItemSprite.Glowing( 0x404040 );
-		} else if (potionAttrib instanceof PotionOfHaste) {
-			name = Messages.get(this, "swiftfruit");
-			potionGlow = new ItemSprite.Glowing( 0xCCBB00 );
+		if (potionAttrib instanceof PotionOfHealing)        potionGlow = new ItemSprite.Glowing( 0x2EE62E );
+		if (potionAttrib instanceof PotionOfStrength)       potionGlow = new ItemSprite.Glowing( 0xCC0022 );
+		if (potionAttrib instanceof PotionOfParalyticGas)   potionGlow = new ItemSprite.Glowing( 0x67583D );
+		if (potionAttrib instanceof PotionOfInvisibility)   potionGlow = new ItemSprite.Glowing( 0xD9D9D9 );
+		if (potionAttrib instanceof PotionOfLiquidFlame)    potionGlow = new ItemSprite.Glowing( 0xFF7F00 );
+		if (potionAttrib instanceof PotionOfFrost)          potionGlow = new ItemSprite.Glowing( 0x66B3FF );
+		if (potionAttrib instanceof PotionOfMindVision)     potionGlow = new ItemSprite.Glowing( 0x919999 );
+		if (potionAttrib instanceof PotionOfToxicGas)       potionGlow = new ItemSprite.Glowing( 0xA15CE5 );
+		if (potionAttrib instanceof PotionOfLevitation)     potionGlow = new ItemSprite.Glowing( 0x1B5F79 );
+		if (potionAttrib instanceof PotionOfPurity)         potionGlow = new ItemSprite.Glowing( 0xC152AA );
+		if (potionAttrib instanceof PotionOfExperience)     potionGlow = new ItemSprite.Glowing( 0x404040 );
+		if (potionAttrib instanceof PotionOfHaste)          potionGlow = new ItemSprite.Glowing( 0xCCBB00 );
+
+		potionAttrib.setAction();
+		defaultAction = potionAttrib.defaultAction;
+		if (defaultAction.equals(Potion.AC_DRINK)){
+			defaultAction = AC_EAT;
 		}
 
 		return this;
@@ -199,10 +206,10 @@ public class Blandfruit extends Food {
 	
 	@Override
 	public void reset() {
-		if (potionAttrib != null)
+		super.reset();
+		if (potionAttrib != null) {
 			imbuePotion(potionAttrib);
-		else
-			super.reset();
+		}
 	}
 	
 	@Override

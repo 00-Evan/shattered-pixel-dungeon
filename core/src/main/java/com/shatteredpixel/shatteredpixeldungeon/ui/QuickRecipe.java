@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,8 +23,10 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.ArcaneResin;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.LiquidMetal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
@@ -62,6 +64,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.spells.ReclaimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Recycle;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.WildEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.AlchemyScene;
@@ -72,6 +76,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoItem;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Reflection;
 
@@ -100,6 +105,10 @@ public class QuickRecipe extends Component {
 			anonymize(in);
 			ItemSlot curr;
 			curr = new ItemSlot(in) {
+				{
+					hotArea.blockLevel = PointerArea.NEVER_BLOCK;
+				}
+
 				@Override
 				protected void onClick() {
 					ShatteredPixelDungeon.scene().addToFront(new WndInfoItem(in));
@@ -114,10 +123,10 @@ public class QuickRecipe extends Component {
 			}
 			
 			if (quantity < in.quantity()) {
-				curr.icon.alpha(0.3f);
+				curr.sprite.alpha(0.3f);
 				hasInputs = false;
 			}
-			curr.showParams(true, false, true);
+			curr.showExtraInfo(false);
 			add(curr);
 			this.inputs.add(curr);
 		}
@@ -147,9 +156,9 @@ public class QuickRecipe extends Component {
 			}
 		};
 		if (!hasInputs){
-			this.output.icon.alpha(0.3f);
+			this.output.sprite.alpha(0.3f);
 		}
-		this.output.showParams(true, false, true);
+		this.output.showExtraInfo(false);
 		add(this.output);
 		
 		layout();
@@ -196,6 +205,8 @@ public class QuickRecipe extends Component {
 		
 		public arrow( Image icon, int count ){
 			super( icon );
+			hotArea.blockLevel = PointerArea.NEVER_BLOCK;
+
 			text = new BitmapText( Integer.toString(count), PixelScene.pixelFont);
 			text.measure();
 			add(text);
@@ -242,10 +253,11 @@ public class QuickRecipe extends Component {
 		switch (pageIdx){
 			case 0: default:
 				result.add(new QuickRecipe( new Potion.SeedToPotion(), new ArrayList<>(Arrays.asList(new Plant.Seed.PlaceHolder().quantity(3))), new WndBag.Placeholder(ItemSpriteSheet.POTION_HOLDER){
-					{
-						name = Messages.get(Potion.SeedToPotion.class, "name");
+					@Override
+					public String name() {
+						return Messages.get(Potion.SeedToPotion.class, "name");
 					}
-					
+
 					@Override
 					public String info() {
 						return "";
@@ -275,8 +287,9 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe( new Blandfruit.CookFruit(),
 						new ArrayList<>(Arrays.asList(new Blandfruit(), new Plant.Seed.PlaceHolder())),
 						new Blandfruit(){
-							{
-								name = Messages.get(Blandfruit.class, "cooked");
+
+							public String name(){
+								return Messages.get(Blandfruit.class, "cooked");
 							}
 							
 							@Override
@@ -300,6 +313,22 @@ public class QuickRecipe extends Component {
 				}
 				return result;
 			case 4:
+				result.add(new QuickRecipe( new LiquidMetal.Recipe(),
+						new ArrayList<Item>(Arrays.asList(new MissileWeapon.PlaceHolder())),
+						new LiquidMetal()));
+				result.add(new QuickRecipe( new LiquidMetal.Recipe(),
+						new ArrayList<Item>(Arrays.asList(new MissileWeapon.PlaceHolder().quantity(2))),
+						new LiquidMetal()));
+				result.add(new QuickRecipe( new LiquidMetal.Recipe(),
+						new ArrayList<Item>(Arrays.asList(new MissileWeapon.PlaceHolder().quantity(3))),
+						new LiquidMetal()));
+				result.add(null);
+				result.add(null);
+				result.add(new QuickRecipe( new ArcaneResin.Recipe(),
+						new ArrayList<Item>(Arrays.asList(new Wand.PlaceHolder())),
+						new ArcaneResin()));
+				return result;
+			case 5:
 				r = new ExoticPotion.PotionToExotic();
 				for (Class<?> cls : Generator.Category.POTION.classes){
 					Potion pot = (Potion) Reflection.newInstance(cls);
@@ -307,7 +336,7 @@ public class QuickRecipe extends Component {
 					result.add(new QuickRecipe( r, in, r.sampleOutput(in)));
 				}
 				return result;
-			case 5:
+			case 6:
 				r = new ExoticScroll.ScrollToExotic();
 				for (Class<?> cls : Generator.Category.SCROLL.classes){
 					Scroll scroll = (Scroll) Reflection.newInstance(cls);
@@ -315,7 +344,7 @@ public class QuickRecipe extends Component {
 					result.add(new QuickRecipe( r, in, r.sampleOutput(in)));
 				}
 				return result;
-			case 6:
+			case 7:
 				result.add(new QuickRecipe(new AlchemicalCatalyst.Recipe(), new ArrayList<>(Arrays.asList(new Potion.PlaceHolder(), new Plant.Seed.PlaceHolder())), new AlchemicalCatalyst()));
 				result.add(new QuickRecipe(new AlchemicalCatalyst.Recipe(), new ArrayList<>(Arrays.asList(new Potion.PlaceHolder(), new Runestone.PlaceHolder())), new AlchemicalCatalyst()));
 				result.add(null);
@@ -323,7 +352,7 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new ArcaneCatalyst.Recipe(), new ArrayList<>(Arrays.asList(new Scroll.PlaceHolder(), new Runestone.PlaceHolder())), new ArcaneCatalyst()));
 				result.add(new QuickRecipe(new ArcaneCatalyst.Recipe(), new ArrayList<>(Arrays.asList(new Scroll.PlaceHolder(), new Plant.Seed.PlaceHolder())), new ArcaneCatalyst()));
 				return result;
-			case 7:
+			case 8:
 				result.add(new QuickRecipe(new CausticBrew.Recipe()));
 				result.add(new QuickRecipe(new InfernalBrew.Recipe()));
 				result.add(new QuickRecipe(new BlizzardBrew.Recipe()));
@@ -338,7 +367,7 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new ElixirOfToxicEssence.Recipe()));
 				result.add(new QuickRecipe(new ElixirOfArcaneArmor.Recipe()));
 				return result;
-			case 8:
+			case 9:
 				result.add(new QuickRecipe(new MagicalPorter.Recipe()));
 				result.add(new QuickRecipe(new PhaseShift.Recipe()));
 				result.add(new QuickRecipe(new WildEnergy.Recipe()));

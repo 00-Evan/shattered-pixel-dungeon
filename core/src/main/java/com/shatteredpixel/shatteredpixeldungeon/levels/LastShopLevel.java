@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,12 +50,12 @@ public class LastShopLevel extends RegularLevel {
 	
 	@Override
 	public String tilesTex() {
-		return Assets.TILES_CITY;
+		return Assets.Environment.TILES_CITY;
 	}
 	
 	@Override
 	public String waterTex() {
-		return Assets.WATER_CITY;
+		return Assets.Environment.WATER_CITY;
 	}
 	
 	@Override
@@ -110,7 +110,7 @@ public class LastShopLevel extends RegularLevel {
 	protected void createMobs() {
 	}
 	
-	public Actor respawner() {
+	public Actor addRespawner() {
 		return null;
 	}
 	

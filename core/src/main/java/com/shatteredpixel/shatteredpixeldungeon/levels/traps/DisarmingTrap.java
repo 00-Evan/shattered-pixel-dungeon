@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,9 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Statue;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -56,9 +58,15 @@ public class DisarmingTrap extends Trap{
 					Dungeon.level.visited[cell+i] = true;
 				GameScene.updateFog();
 
-				Sample.INSTANCE.play(Assets.SND_TELEPORT);
+				Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 				CellEmitter.get(pos).burst(Speck.factory(Speck.LIGHT), 4);
 			}
+		}
+
+		if (Actor.findChar(pos) instanceof Statue){
+			Actor.findChar(pos).die(this);
+			Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+			CellEmitter.get(pos).burst(Speck.factory(Speck.LIGHT), 4);
 		}
 
 		if (Dungeon.hero.pos == pos && !Dungeon.hero.flying){
@@ -87,7 +95,7 @@ public class DisarmingTrap extends Trap{
 
 				GLog.w( Messages.get(this, "disarm") );
 
-				Sample.INSTANCE.play(Assets.SND_TELEPORT);
+				Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 				CellEmitter.get(pos).burst(Speck.factory(Speck.LIGHT), 4);
 
 			}

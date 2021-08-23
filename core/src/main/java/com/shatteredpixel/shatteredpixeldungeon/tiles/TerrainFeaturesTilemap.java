@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,6 @@ import com.watabou.utils.PointF;
 import com.watabou.utils.RectF;
 import com.watabou.utils.SparseArray;
 
-//TODO add in a proper set of vfx for plants growing/withering, grass burning, discovering traps
 public class TerrainFeaturesTilemap extends DungeonTilemap {
 
 	private static TerrainFeaturesTilemap instance;
@@ -42,7 +41,7 @@ public class TerrainFeaturesTilemap extends DungeonTilemap {
 	private SparseArray<Trap> traps;
 
 	public TerrainFeaturesTilemap(SparseArray<Plant> plants, SparseArray<Trap> traps) {
-		super(Assets.TERRAIN_FEATURES);
+		super(Assets.Environment.TERRAIN_FEATURES);
 
 		this.plants = plants;
 		this.traps = traps;
@@ -70,7 +69,6 @@ public class TerrainFeaturesTilemap extends DungeonTilemap {
 		if (tile == Terrain.HIGH_GRASS){
 			return 9 + 16*stage + (DungeonTileSheet.tileVariance[pos] >= 50 ? 1 : 0);
 		} else if (tile == Terrain.FURROWED_GRASS){
-			//TODO
 			return 11 + 16*stage + (DungeonTileSheet.tileVariance[pos] >= 50 ? 1 : 0);
 		} else if (tile == Terrain.GRASS) {
 			return 13 + 16*stage + (DungeonTileSheet.tileVariance[pos] >= 50 ? 1 : 0);
