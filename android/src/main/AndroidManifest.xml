@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="net.casiello.pixeldungeonrescue.android"
+	package="com.shatteredpixel.shatteredpixeldungeon.android"
 	android:installLocation="auto">
 	
 	<uses-feature android:glEsVersion="0x00020000"/>
@@ -24,10 +24,10 @@
 		android:resizeableActivity="true"
 		android:allowBackup="true"
 		android:fullBackupOnly="true"
-		android:backupAgent="net.casiello.pixeldungeonrescue.android.AndroidBackupHandler">
+		android:backupAgent=".AndroidBackupHandler">
 		<activity
 			android:label="${appName}"
-			android:name="net.casiello.pixeldungeonrescue.android.AndroidLauncher">
+			android:name=".AndroidLauncher">
 			<intent-filter >
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
@@ -35,7 +35,7 @@
 		</activity>
 		<activity
 			android:label="${appName}"
-			android:name="net.casiello.pixeldungeonrescue.android.AndroidGame"
+			android:name=".AndroidGame"
 			android:screenOrientation="nosensor"
 			android:configChanges="keyboard|keyboardHidden|orientation">
 		</activity>

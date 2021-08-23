@@ -1,5 +1,5 @@
 # retain these to support class references for the bundling and translation systems
--keepnames class net.casiello.** { *; }
+-keepnames class com.shatteredpixel.** { *; }
 -keepnames class com.watabou.** { *; }
 
 # retained to support meaningful stack traces
