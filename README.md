@@ -6,7 +6,7 @@ Shattered Pixel Dungeon currently compiles for Android, iOS and Desktop platform
 
 If you like this game, please consider [supporting me on Patreon](https://www.patreon.com/ShatteredPixel)!
 
-There is an official blog for this project at [ShatteredPixel.com](http://www.shatteredpixel.com).
+There is an official blog for this project at [ShatteredPixel.com](https://www.shatteredpixel.com).
 
 The game also has a translation project hosted on [Transifex](https://www.transifex.com/shattered-pixel/shattered-pixel-dungeon/).
 
