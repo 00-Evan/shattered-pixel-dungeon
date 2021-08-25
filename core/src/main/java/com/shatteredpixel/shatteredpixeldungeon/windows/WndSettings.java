@@ -821,67 +821,73 @@ public class WndSettings extends WndTabbed {
 					@Override
 					protected void onClick() {
 						super.onClick();
-						String creds = "";
-						String creds2 = "";
 						String[] reviewers = currLang.reviewers();
 						String[] translators = currLang.translators();
 
-						ArrayList<String> total = new ArrayList<>();
-						total.addAll(Arrays.asList(reviewers));
-						total.addAll(Arrays.asList(reviewers));
-						total.addAll(Arrays.asList(translators));
-						int translatorIdx = reviewers.length;
+						int totalCredits = 2*reviewers.length + translators.length;
+						int totalTokens = 2*totalCredits; //for spaces
 
-						//we have 2 columns in wide mode
-						boolean wide = (2 * reviewers.length + translators.length) > (PixelScene.landscape() ? 15 : 30);
+						//additional space for titles, and newline chars
+						if (reviewers.length > 0) totalTokens+=6;
+						totalTokens +=4;
 
-						int i;
-						if (reviewers.length > 0) {
-							creds += Messages.titleCase(Messages.get(LangsTab.this, "reviewers"));
-							creds2 += "";
+						String[] entries = new String[totalTokens];
+						int index = 0;
+						if (reviewers.length > 0){
+							entries[0] = "_";
+							entries[1] = Messages.titleCase(Messages.get(LangsTab.this, "reviewers"));
+							entries[2] = "_";
+							entries[3] = "\n";
+							index = 4;
+							for (int i = 0; i < reviewers.length; i++){
+								entries[index] = reviewers[i];
+								if (i < reviewers.length-1) entries[index] += ", ";
+								entries[index+1] = " ";
+								index += 2;
+							}
+							entries[index] = "\n";
+							entries[index+1] = "\n";
+							index += 2;
 						}
 
-						if (translators.length > 0){
-							boolean col2 = false;
-							for (i = 0; i < total.size(); i++) {
-								if (i == translatorIdx){
-									creds += "\n\n" + Messages.titleCase(Messages.get(LangsTab.this, "translators"));
-									creds2 += "\n\n";
-									if (col2) creds2 += "\n";
-									col2 = false;
-								}
-								if (wide && col2) {
-									creds2 += "\n-" + total.get(i);
-								} else {
-									creds += "\n-" + total.get(i);
-								}
-								col2 = !col2 && wide;
-							}
+						entries[index] = "_";
+						entries[index+1] = Messages.titleCase(Messages.get(LangsTab.this, "translators"));
+						entries[index+2] = "_";
+						entries[index+3] = "\n";
+						index += 4;
+
+						//reviewers are also shown as translators
+						for (int i = 0; i < reviewers.length; i++){
+							entries[index] = reviewers[i];
+							if (i < reviewers.length-1 || translators.length > 0) entries[index] += ", ";
+							entries[index+1] = " ";
+							index += 2;
+						}
+
+						for (int i = 0; i < translators.length; i++){
+							entries[index] = translators[i];
+							if (i < translators.length-1) entries[index] += ", ";
+							entries[index+1] = " ";
+							index += 2;
 						}
 
 						Window credits = new Window(0, 0, 0, Chrome.get(Chrome.Type.TOAST));
 
-						int w = wide ? 125 : 60;
+						int w = PixelScene.landscape() ? 120 : 80;
+						if (totalCredits >= 25) w *= 1.5f;
 
-						RenderedTextBlock title = PixelScene.renderTextBlock(6);
+						RenderedTextBlock title = PixelScene.renderTextBlock(9);
 						title.text(Messages.titleCase(Messages.get(LangsTab.this, "credits")), w);
 						title.hardlight(TITLE_COLOR);
 						title.setPos((w - title.width()) / 2, 0);
 						credits.add(title);
 
-						RenderedTextBlock text = PixelScene.renderTextBlock(5);
-						text.setHightlighting(false);
-						text.text(creds, 65);
-						text.setPos(0, title.bottom() + 2);
-						credits.add(text);
+						RenderedTextBlock text = PixelScene.renderTextBlock(7);
+						text.maxWidth(w);
+						text.tokens(entries);
 
-						if (wide) {
-							RenderedTextBlock rightColumn = PixelScene.renderTextBlock(5);
-							rightColumn.setHightlighting(false);
-							rightColumn.text(creds2, 65);
-							rightColumn.setPos(65, title.bottom() + 6);
-							credits.add(rightColumn);
-						}
+						text.setPos(0, title.bottom() + 4);
+						credits.add(text);
 
 						credits.resize(w, (int) text.bottom() + 2);
 						ShatteredPixelDungeon.scene().addToFront(credits);
