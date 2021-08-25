@@ -97,7 +97,7 @@ public class Scorpio extends Mob {
 	@Override
 	public void aggro(Char ch) {
 		//cannot be aggroed to something it can't see
-		if (fieldOfView == null || fieldOfView[ch.pos]) {
+		if (ch == null || fieldOfView == null || fieldOfView[ch.pos]) {
 			super.aggro(ch);
 		}
 	}
