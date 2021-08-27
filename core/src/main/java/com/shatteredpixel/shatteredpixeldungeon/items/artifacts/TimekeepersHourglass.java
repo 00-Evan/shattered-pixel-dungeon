@@ -250,6 +250,7 @@ public class TimekeepersHourglass extends Artifact {
 		
 		{
 			type = buffType.POSITIVE;
+			actPriority = BUFF_PRIO-3; //acts after all other buffs, so they are prevented
 		}
 
 		@Override
