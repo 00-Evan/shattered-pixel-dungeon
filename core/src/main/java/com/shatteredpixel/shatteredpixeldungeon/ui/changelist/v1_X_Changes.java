@@ -47,9 +47,22 @@ public class v1_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v1.0.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by 1.0.1):\n" +
+				"_-_ Additional crashes caused by the new music system\n\n" +
+				"Fixed (caused by 1.0.0):\n" +
+				"_-_ Negative STR bonuses not displaying separately\n" +
+				"_-_ Elemental Power talent not being buffed as intended\n" +
+				"_-_ Geyser traps rarely knocking the hero into other characters\n" +
+				"_-_ Unbreakable traps breaking in more rare cases\n" +
+				"_-_ Hasty Retreat talent giving fewer turns of haste/invis than intended\n\n" +
+				"Fixed (existed prior to 1.0.0):\n" +
+				"_-_ minor vfx corrections\n" +
+				"_-_ Time stasis sometimes not preventing harmful effects in its last turn."));
 
 		changes = new ChangeInfo("v1.0.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -118,7 +131,7 @@ public class v1_X_Changes {
 		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.MASTERY), "new player experience improvements",
 				"_The adventurer's guidebook is now the Tome of Dungeon Mastery!_\n\n" +
 				"This is partly as a reference to the tome of mastery, which I removed in the previous update, and partly because the game's tutorial functionality has been improved.\n\n" +
-				"Guidebook pages are now a bit shorter and more plentiful, and some of them are now given to them right at the start of the game. These automatic pages are suggested to the player to read at crucial moments. This way the guidebook does a better job of highlighting info right when it's needed."));
+				"Guidebook pages are now a bit shorter and more plentiful, and some of them are now given to the player right at the start of the game. These automatic pages are suggested to the player to read at crucial moments. This way the guidebook does a better job of highlighting info right when it's needed."));
 
 		changes.addButton(new ChangeButton(new Image(new SpectralNecromancerSprite()), "spectral necromancers",
 				"A new rare variant has been added for necromancers: _Spectral Necromancers!_\n\n" +
