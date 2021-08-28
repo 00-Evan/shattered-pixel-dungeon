@@ -424,11 +424,11 @@ public class Toolbar extends Component {
 			Point screen = Camera.main.cameraToScreen(tile.x, tile.y);
 			PointF start = camera().screenToCamera(screen.x, screen.y);
 			
-			x = this.startX = start.x - ItemSprite.SIZE / 2;
-			y = this.startY = start.y - ItemSprite.SIZE / 2;
+			x = this.startX = start.x - width() / 2;
+			y = this.startY = start.y - width() / 2;
 			
-			this.endX = endX - ItemSprite.SIZE / 2;
-			this.endY = endY - ItemSprite.SIZE / 2;
+			this.endX = endX - width() / 2;
+			this.endY = endY - width() / 2;
 			left = DURATION;
 			
 			scale.set( startScale = Camera.main.zoom / camera().zoom );
