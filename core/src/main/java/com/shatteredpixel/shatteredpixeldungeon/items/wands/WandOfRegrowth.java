@@ -390,7 +390,7 @@ public class WandOfRegrowth extends Wand {
 	public static class Lotus extends NPC {
 
 		{
-			alignment = Alignment.ALLY;
+			alignment = Alignment.NEUTRAL;
 			properties.add(Property.IMMOVABLE);
 
 			spriteClass = LotusSprite.class;

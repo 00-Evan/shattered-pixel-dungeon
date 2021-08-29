@@ -24,6 +24,7 @@ public class v1_X_Changes {
 	public static void add_v1_0_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
 		ChangeInfo changes = new ChangeInfo("Coming Soon", true, "");
+		changes.hardlight(0xCCCCCC);
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Overview",
@@ -45,6 +46,51 @@ public class v1_X_Changes {
 		changes = new ChangeInfo("v1.0.0", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes = new ChangeInfo("v1.0.2", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by 1.0.1):\n" +
+				"_-_ Additional crashes caused by the new music system\n\n" +
+				"Fixed (caused by 1.0.0):\n" +
+				"_-_ Negative STR bonuses not displaying separately\n" +
+				"_-_ Elemental Power talent not being buffed as intended\n" +
+				"_-_ Geyser traps rarely knocking the hero into other characters\n" +
+				"_-_ Unbreakable traps breaking in more rare cases\n" +
+				"_-_ Hasty Retreat talent giving fewer turns of haste/invis than intended\n\n" +
+				"Fixed (existed prior to 1.0.0):\n" +
+				"_-_ minor vfx corrections\n" +
+				"_-_ Time stasis sometimes not preventing harmful effects in its last turn."));
+
+		changes = new ChangeInfo("v1.0.1", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Added info buttons to the scroll of enchantment window"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by 1.0.0):\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Various minor visual and textual errors\n" +
+				"_-_ Graphics hitching when music was enabled\n" +
+				"_-_ Pressing enter not confirming single line text input\n" +
+				"_-_ Enemies attacking the golden lotus, despite it being neutral\n" +
+				"_-_ Remote Beacon talent not actually being buffed\n" +
+				"_-_ Ankhs still resurrecting the hero even if they lost their inventory\n" +
+				"_-_ Unbreakable traps breaking in rare cases\n" +
+				"_-_ Transmogrified enemies dropping items where they were transmogrified\n" +
+				"_-_ Potions/Scrolls never breaking due to frost/fire\n" +
+				"_-_ Sheep triggering traps before occupying space on them"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (existed prior to 1.0.0):\n" +
+				"_-_ Rings not being renamable if they weren't IDed\n" +
+				"_-_ Disarming traps opening chests\n" +
+				"_-_ Rogue's body replacement ally being vulnerable to various AI-related debuffs\n" +
+				"_-_ Some ranged enemies becoming frozen if they were attacked from out of their vision"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -85,7 +131,7 @@ public class v1_X_Changes {
 		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.MASTERY), "new player experience improvements",
 				"_The adventurer's guidebook is now the Tome of Dungeon Mastery!_\n\n" +
 				"This is partly as a reference to the tome of mastery, which I removed in the previous update, and partly because the game's tutorial functionality has been improved.\n\n" +
-				"Guidebook pages are now a bit shorter and more plentiful, and some of them are now given to them right at the start of the game. These automatic pages are suggested to the player to read at crucial moments. This way the guidebook does a better job of highlighting info right when it's needed."));
+				"Guidebook pages are now a bit shorter and more plentiful, and some of them are now given to the player right at the start of the game. These automatic pages are suggested to the player to read at crucial moments. This way the guidebook does a better job of highlighting info right when it's needed."));
 
 		changes.addButton(new ChangeButton(new Image(new SpectralNecromancerSprite()), "spectral necromancers",
 				"A new rare variant has been added for necromancers: _Spectral Necromancers!_\n\n" +

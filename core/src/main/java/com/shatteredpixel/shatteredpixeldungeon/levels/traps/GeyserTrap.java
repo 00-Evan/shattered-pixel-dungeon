@@ -68,7 +68,7 @@ public class GeyserTrap extends Trap {
 			}
 			if (targetpos != -1){
 				//trace a ballistica in the direction of our target
-				Ballistica trajectory = new Ballistica(pos, targetpos, Ballistica.STOP_SOLID);
+				Ballistica trajectory = new Ballistica(pos, targetpos, Ballistica.PROJECTILE);
 				//knock them back along that ballistica
 				WandOfBlastWave.throwChar(ch, trajectory, 2, true);
 			}

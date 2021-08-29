@@ -37,9 +37,12 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.watabou.noosa.audio.Sample;
 
 public class ScrollOfEnchantment extends ExoticScroll {
@@ -114,6 +117,19 @@ public class ScrollOfEnchantment extends ExoticScroll {
 					}
 					
 					@Override
+					protected boolean hasInfo(int index) {
+						return index < 3;
+					}
+
+					@Override
+					protected void onInfo( int index ) {
+						GameScene.show(new WndTitledMessage(
+								Icons.get(Icons.INFO),
+								Messages.titleCase(enchants[index].name()),
+								enchants[index].desc()));
+					}
+
+					@Override
 					public void onBackPressed() {
 						//do nothing, reader has to cancel
 					}
@@ -149,6 +165,19 @@ public class ScrollOfEnchantment extends ExoticScroll {
 							Enchanting.show(curUser, item);
 							Talent.onUpgradeScrollUsed( Dungeon.hero );
 						}
+					}
+
+					@Override
+					protected boolean hasInfo(int index) {
+						return index < 3;
+					}
+
+					@Override
+					protected void onInfo( int index ) {
+						GameScene.show(new WndTitledMessage(
+								Icons.get(Icons.INFO),
+								Messages.titleCase(glyphs[index].name()),
+								glyphs[index].desc()));
 					}
 					
 					@Override

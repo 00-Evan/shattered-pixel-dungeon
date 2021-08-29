@@ -73,6 +73,18 @@ public class RenderedTextBlock extends Component {
 		}
 	}
 
+	//for manual text block splitting, a space between each word is assumed
+	public void tokens(String... words){
+		StringBuilder fullText = new StringBuilder();
+		for (String word : words) {
+			fullText.append(word);
+		}
+		text = fullText.toString();
+
+		tokens = words;
+		build();
+	}
+
 	public void text(String text, int maxWidth){
 		this.maxWidth = maxWidth;
 		multiline = true;

@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.watabou.noosa.Game;
 
 public class Enchanting extends ItemSprite {
-	private static final int SIZE	= 16;
 
 	private enum Phase {
 		FADE_IN, STATIC, FADE_OUT
@@ -62,8 +61,10 @@ public class Enchanting extends ItemSprite {
 	public void update() {
 		super.update();
 
-		x = target.sprite.center().x - SIZE / 2;
-		y = target.sprite.y - SIZE;
+		if (passed == 0) {
+			x = target.sprite.center().x - width() / 2;
+			y = target.sprite.y - height();
+		}
 
 		switch (phase) {
 			case FADE_IN:

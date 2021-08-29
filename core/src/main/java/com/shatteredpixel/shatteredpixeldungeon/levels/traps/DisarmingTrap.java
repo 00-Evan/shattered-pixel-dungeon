@@ -53,9 +53,11 @@ public class DisarmingTrap extends Trap{
 
 			if (cell != -1) {
 				Item item = heap.pickUp();
-				Dungeon.level.drop( item, cell ).seen = true;
-				for (int i : PathFinder.NEIGHBOURS9)
-					Dungeon.level.visited[cell+i] = true;
+				Heap dropped = Dungeon.level.drop( item, cell );
+				dropped.type = heap.type;
+				dropped.sprite.view( dropped );
+				dropped.seen = true;
+				for (int i : PathFinder.NEIGHBOURS9) Dungeon.level.visited[cell+i] = true;
 				GameScene.updateFog();
 
 				Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
