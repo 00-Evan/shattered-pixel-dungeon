@@ -101,6 +101,14 @@ public class GnollTrickster extends Gnoll {
 			return super.getCloser( target );
 		}
 	}
+
+	@Override
+	public void aggro(Char ch) {
+		//cannot be aggroed to something it can't see
+		if (ch == null || fieldOfView == null || fieldOfView[ch.pos]) {
+			super.aggro(ch);
+		}
+	}
 	
 	@Override
 	protected Item createLoot() {

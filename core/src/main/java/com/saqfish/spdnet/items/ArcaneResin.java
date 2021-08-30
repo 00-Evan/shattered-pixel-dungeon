@@ -8,6 +8,7 @@ import com.saqfish.spdnet.effects.Speck;
 import com.saqfish.spdnet.items.bags.Bag;
 import com.saqfish.spdnet.items.bags.MagicalHolster;
 import com.saqfish.spdnet.items.wands.Wand;
+import com.saqfish.spdnet.items.weapon.melee.MagesStaff;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.scenes.GameScene;
 import com.saqfish.spdnet.sprites.ItemSpriteSheet;
@@ -70,7 +71,8 @@ public class ArcaneResin extends Item {
 
 		@Override
 		public String textPrompt() {
-			return Messages.get(LiquidMetal.class, "prompt");
+			//FIXME give this its own prompt string
+			return Messages.get(MagesStaff.class, "prompt");
 		}
 
 		@Override

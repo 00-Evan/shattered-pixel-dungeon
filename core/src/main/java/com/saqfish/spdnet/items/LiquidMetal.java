@@ -135,6 +135,7 @@ public class LiquidMetal extends Item {
 
 				curUser.sprite.operate(curUser.pos);
 				Sample.INSTANCE.play(Assets.Sounds.DRINK);
+				updateQuickslot();
 				curUser.sprite.emitter().start(Speck.factory(Speck.LIGHT), 0.1f, 10);
 			}
 		}

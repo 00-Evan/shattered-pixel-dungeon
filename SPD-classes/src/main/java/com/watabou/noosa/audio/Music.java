@@ -26,8 +26,12 @@ import com.watabou.noosa.Game;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.Random;
 
+import java.awt.MediaTracker;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public enum Music {
 	
@@ -125,26 +129,35 @@ public enum Music {
 	private com.badlogic.gdx.audio.Music.OnCompletionListener trackLooper = new com.badlogic.gdx.audio.Music.OnCompletionListener() {
 		@Override
 		public void onCompletion(com.badlogic.gdx.audio.Music music) {
-			if (trackList == null || trackList.length == 0 || player.isLooping()){
-				return;
-			}
+			//we do this in a separate thread to avoid graphics hitching while the music is prepared
+			//FIXME this fixes graphics stutter but there's still some audio stutter, perhaps keep more than 1 player alive?
+			new Thread(){
+				@Override
+				public void run() {
+					synchronized (Music.INSTANCE) {
+						if (trackList == null || trackList.length == 0 || player.isLooping() || music != player){
+							return;
+						}
 
-			stop();
+						Music.this.stop();
 
-			if (trackQueue.isEmpty()){
-				for (int i = 0; i < trackList.length; i++){
-					if (Random.Float() < trackChances[i]){
-						trackQueue.add(trackList[i]);
+						if (trackQueue.isEmpty()) {
+							for (int i = 0; i < trackList.length; i++) {
+								if (Random.Float() < trackChances[i]) {
+									trackQueue.add(trackList[i]);
+								}
+							}
+							if (shuffle) Collections.shuffle(trackQueue);
+						}
+
+						if (!enabled || trackQueue.isEmpty()) {
+							return;
+						}
+
+						play(trackQueue.remove(0), trackLooper);
 					}
 				}
-				if (shuffle) Collections.shuffle(trackQueue);
-			}
-
-			if (!enabled || trackQueue.isEmpty()){
-				return;
-			}
-
-			play(trackQueue.remove(0), trackLooper);
+			}.start();
 		}
 	};
 
@@ -180,10 +193,10 @@ public enum Music {
 			player.setLooping(looping);
 		}
 	}
-	
+
+	//TODO do we need to dispose every player? Maybe just stop them and keep an LRU cache of 2 or 3?
 	public synchronized void stop() {
 		if (player != null) {
-			player.stop();
 			player.dispose();
 			player = null;
 		}

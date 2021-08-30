@@ -235,9 +235,11 @@ public class QuickSlotButton extends Button {
 
 			targeting = true;
 			CharSprite sprite = lastTarget.sprite;
-			
-			sprite.parent.addToFront( crossM );
-			crossM.point(sprite.center(crossM));
+
+			if (sprite.parent != null) {
+				sprite.parent.addToFront(crossM);
+				crossM.point(sprite.center(crossM));
+			}
 
 			crossB.point(slot.sprite.center(crossB));
 			crossB.visible = true;

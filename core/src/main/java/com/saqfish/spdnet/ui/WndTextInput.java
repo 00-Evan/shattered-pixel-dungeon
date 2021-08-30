@@ -39,7 +39,14 @@ public class WndTextInput extends Window {
 		add(txtTitle);
 
 		int textSize = (int)PixelScene.uiCamera.zoom * (multiLine ? 6 : 9);
-		TextInput textBox = new TextInput(Chrome.get(Chrome.Type.TOAST_WHITE), multiLine, textSize);
+		final TextInput textBox = new TextInput(Chrome.get(Chrome.Type.TOAST_WHITE), multiLine, textSize){
+			@Override
+			public void enterPressed() {
+				//triggers positive action on enter pressed, only with non-multiline though.
+				onSelect(true, getText());
+				hide();
+			}
+		};
 		if (initialValue != null) textBox.setText(initialValue);
 		textBox.setMaxLength(maxLength);
 

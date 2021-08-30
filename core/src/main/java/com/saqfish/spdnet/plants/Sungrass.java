@@ -115,8 +115,10 @@ public class Sungrass extends Plant {
 		}
 
 		public void boost( int amount ){
-			level += amount;
-			pos = target.pos;
+			if (target != null) {
+				level += amount;
+				pos = target.pos;
+			}
 		}
 		
 		@Override
