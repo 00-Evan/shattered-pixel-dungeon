@@ -46,7 +46,7 @@ public class ReclaimTrap extends TargetedSpell {
 		image = ItemSpriteSheet.RECLAIM_TRAP;
 	}
 	
-	private Class<?extends Trap> storedTrap = SummoningTrap.class;
+	private Class<?extends Trap> storedTrap = null;
 	
 	@Override
 	public ArrayList<String> actions(Hero hero) {
