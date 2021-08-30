@@ -23,6 +23,8 @@ package com.saqfish.spdnet.levels.traps;
 
 import com.saqfish.spdnet.Assets;
 import com.saqfish.spdnet.Dungeon;
+import com.saqfish.spdnet.levels.Level;
+import com.saqfish.spdnet.levels.Terrain;
 import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.scenes.GameScene;
 import com.watabou.noosa.audio.Sample;
@@ -92,7 +94,7 @@ public abstract class Trap implements Bundlable {
 				Sample.INSTANCE.play(Assets.Sounds.TRAP);
 			}
 			if (disarmedByActivation) disarm();
-			reveal();
+			Dungeon.level.discover(pos);
 			activate();
 		}
 	}

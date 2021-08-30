@@ -174,7 +174,7 @@ public class ElementalBlast extends ArmorAbility {
 			);
 		}
 
-		final float effectMulti = 1f + 0.15f*hero.pointsInTalent(Talent.ELEMENTAL_POWER);
+		final float effectMulti = 1f + 0.2f*hero.pointsInTalent(Talent.ELEMENTAL_POWER);
 
 		//cast a ray 2/3 the way, and do effects
 		Class<? extends Wand> finalWandCls = wandCls;

@@ -27,6 +27,7 @@ import com.saqfish.spdnet.actors.hero.Hero;
 import com.saqfish.spdnet.items.quest.MetalShard;
 import com.saqfish.spdnet.items.scrolls.ScrollOfMagicMapping;
 import com.saqfish.spdnet.items.scrolls.ScrollOfRecharging;
+import com.saqfish.spdnet.levels.traps.SummoningTrap;
 import com.saqfish.spdnet.levels.traps.Trap;
 import com.saqfish.spdnet.mechanics.Ballistica;
 import com.saqfish.spdnet.messages.Messages;
@@ -45,7 +46,7 @@ public class ReclaimTrap extends TargetedSpell {
 		image = ItemSpriteSheet.RECLAIM_TRAP;
 	}
 	
-	private Class<?extends Trap> storedTrap = null;
+	private Class<?extends Trap> storedTrap = SummoningTrap.class;
 	
 	@Override
 	public ArrayList<String> actions(Hero hero) {
@@ -64,7 +65,7 @@ public class ReclaimTrap extends TargetedSpell {
 			quantity++; //storing a trap doesn't consume the spell
 			Trap t = Dungeon.level.traps.get(bolt.collisionPos);
 			if (t != null && t.active && t.visible) {
-				t.disarm();
+				t.disarm(); //even disarms traps that normally wouldn't be
 				
 				Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);
 				ScrollOfRecharging.charge(hero);

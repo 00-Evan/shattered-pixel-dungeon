@@ -136,9 +136,9 @@ public class SpellSprite extends Image {
 		}
 		
 		SpellSprite sprite = GameScene.spellSprite();
-		sprite.revive();
-		sprite.reset( index );
 		sprite.target = ch;
-		all.put( ch,  sprite );
+		sprite.reset( index );
+		sprite.revive();
+		all.put( ch, sprite );
 	}
 }

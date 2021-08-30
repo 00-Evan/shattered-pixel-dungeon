@@ -30,11 +30,13 @@ import com.saqfish.spdnet.messages.Messages;
 import com.saqfish.spdnet.scenes.GameScene;
 import com.saqfish.spdnet.scenes.PixelScene;
 import com.saqfish.spdnet.sprites.ItemSprite;
+import com.saqfish.spdnet.ui.HeroIcon;
 import com.saqfish.spdnet.ui.IconButton;
 import com.saqfish.spdnet.ui.Icons;
 import com.saqfish.spdnet.ui.RedButton;
 import com.saqfish.spdnet.ui.RenderedTextBlock;
 import com.saqfish.spdnet.ui.Window;
+import com.watabou.noosa.Image;
 
 public class WndChooseAbility extends Window {
 
@@ -67,7 +69,7 @@ public class WndChooseAbility extends Window {
 			RedButton abilityButton = new RedButton(ability.shortDesc(), 6){
 				@Override
 				protected void onClick() {
-					GameScene.show(new WndOptions( new ItemSprite( crown == null ? armor.image() : crown.image(), null ),
+					GameScene.show(new WndOptions( new HeroIcon( ability ),
 							Messages.titleCase(ability.name()),
 							Messages.get(WndChooseAbility.this, "are_you_sure"),
 							Messages.get(WndChooseAbility.this, "yes"),

@@ -70,10 +70,11 @@ public class WndInfoMob extends WndTitledMessage {
 			image.x = 0;
 			image.y = Math.max( 0, name.height() + health.height() - image.height() );
 
+			float w = width - image.width() - GAP;
+
+			name.maxWidth((int)w);
 			name.setPos(x + image.width + GAP,
 					image.height() > name.height() ? y +(image.height() - name.height()) / 2 : y);
-
-			float w = width - image.width() - GAP;
 
 			health.setRect(image.width() + GAP, name.bottom() + GAP, w, health.height());
 

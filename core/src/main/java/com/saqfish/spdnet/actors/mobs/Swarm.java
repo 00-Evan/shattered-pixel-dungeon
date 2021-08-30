@@ -100,11 +100,11 @@ public class Swarm extends Mob {
 				clone.HP = (HP - damage) / 2;
 				clone.pos = Random.element( candidates );
 				clone.state = clone.HUNTING;
-				
-				Dungeon.level.occupyCell(clone);
-				
+
 				GameScene.add( clone, SPLIT_DELAY );
 				Actor.addDelayed( new Pushing( clone, pos, clone.pos ), -1 );
+
+				Dungeon.level.occupyCell(clone);
 				
 				HP -= clone.HP;
 			}
