@@ -116,6 +116,7 @@ public class Guard extends Mob {
 
 	private void pullEnemy( Char enemy, int pullPos ){
 		enemy.pos = pullPos;
+		enemy.sprite.place(pullPos);
 		Dungeon.level.occupyCell(enemy);
 		Cripple.prolong(enemy, Cripple.class, 4f);
 		if (enemy == Dungeon.hero) {
@@ -173,7 +174,7 @@ public class Guard extends Mob {
 					&& !isCharmedBy( enemy )
 					&& !canAttack( enemy )
 					&& Dungeon.level.distance( pos, enemy.pos ) < 5
-					&& Random.Int(3) == 0
+
 					
 					&& chain(enemy.pos)){
 				return !(sprite.visible || enemy.sprite.visible);

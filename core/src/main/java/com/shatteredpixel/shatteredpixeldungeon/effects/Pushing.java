@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -58,7 +59,9 @@ public class Pushing extends Actor {
 	@Override
 	protected boolean act() {
 		if (sprite != null) {
-			
+			if (Dungeon.level.heroFOV[from] || Dungeon.level.heroFOV[to]){
+				sprite.visible = true;
+			}
 			if (effect == null) {
 				new Effect();
 			}
