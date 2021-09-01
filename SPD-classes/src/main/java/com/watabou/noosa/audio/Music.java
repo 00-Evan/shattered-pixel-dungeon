@@ -131,34 +131,41 @@ public enum Music {
 		public void onCompletion(com.badlogic.gdx.audio.Music music) {
 			//we do this in a separate thread to avoid graphics hitching while the music is prepared
 			//FIXME this fixes graphics stutter but there's still some audio stutter, perhaps keep more than 1 player alive?
-			new Thread(){
-				@Override
-				public void run() {
-					synchronized (Music.INSTANCE) {
-						if (trackList == null || trackList.length == 0 || player.isLooping() || music != player){
-							return;
-						}
-
-						Music.this.stop();
-
-						if (trackQueue.isEmpty()) {
-							for (int i = 0; i < trackList.length; i++) {
-								if (Random.Float() < trackChances[i]) {
-									trackQueue.add(trackList[i]);
-								}
-							}
-							if (shuffle) Collections.shuffle(trackQueue);
-						}
-
-						if (!enabled || trackQueue.isEmpty()) {
-							return;
-						}
-
-						play(trackQueue.remove(0), trackLooper);
+			if (!DeviceCompat.isDesktop()) {
+				new Thread() {
+					@Override
+					public void run() {
+						playNextTrack(music);
 					}
-				}
-			}.start();
+				}.start();
+			} else {
+				//don't use a separate thread on desktop, causes errors and makes no performance difference(?)
+				playNextTrack(music);
+			}
 		}
+	};
+
+	private synchronized void playNextTrack(com.badlogic.gdx.audio.Music music){
+		if (trackList == null || trackList.length == 0 || music != player || player.isLooping()){
+			return;
+		}
+
+		Music.this.stop();
+
+		if (trackQueue.isEmpty()) {
+			for (int i = 0; i < trackList.length; i++) {
+				if (Random.Float() < trackChances[i]) {
+					trackQueue.add(trackList[i]);
+				}
+			}
+			if (shuffle) Collections.shuffle(trackQueue);
+		}
+
+		if (!enabled || trackQueue.isEmpty()) {
+			return;
+		}
+
+		play(trackQueue.remove(0), trackLooper);
 	};
 
 	private synchronized void play(String track, com.badlogic.gdx.audio.Music.OnCompletionListener listener){

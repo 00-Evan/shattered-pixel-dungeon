@@ -453,7 +453,6 @@ public class InterlevelScene extends PixelScene {
 			Dungeon.hero.pos = level.randomRespawnCell(Dungeon.hero);
 			level.drop(new LostBackpack(), level.randomRespawnCell(null));
 		} else {
-			Dungeon.hero.resurrect();
 			level = Dungeon.level;
 			BArray.setFalse(level.heroFOV);
 			BArray.setFalse(level.visited);
@@ -464,6 +463,8 @@ public class InterlevelScene extends PixelScene {
 				Dungeon.hero.pos = level.randomRespawnCell(Dungeon.hero);
 				tries++;
 			} while (level.trueDistance(invPos, Dungeon.hero.pos) <= 30 - (tries/10));
+			level.plants.remove(Dungeon.hero.pos); //so the hero does not spawn on a plant
+			Dungeon.hero.resurrect();
 			level.drop(new LostBackpack(), invPos);
 		}
 
