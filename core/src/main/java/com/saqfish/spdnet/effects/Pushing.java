@@ -21,6 +21,7 @@
 
 package com.saqfish.spdnet.effects;
 
+import com.saqfish.spdnet.Dungeon;
 import com.saqfish.spdnet.actors.Actor;
 import com.saqfish.spdnet.actors.Char;
 import com.saqfish.spdnet.sprites.CharSprite;
@@ -58,7 +59,9 @@ public class Pushing extends Actor {
 	@Override
 	protected boolean act() {
 		if (sprite != null) {
-			
+			if (Dungeon.level.heroFOV[from] || Dungeon.level.heroFOV[to]){
+				sprite.visible = true;
+			}
 			if (effect == null) {
 				new Effect();
 			}

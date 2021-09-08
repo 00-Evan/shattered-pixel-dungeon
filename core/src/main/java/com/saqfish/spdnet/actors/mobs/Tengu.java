@@ -799,14 +799,14 @@ public class Tengu extends Mob {
 		public void storeInBundle(Bundle bundle) {
 			super.storeInBundle(bundle);
 			bundle.put( DIRECTION, direction );
-			bundle.put( CUR_CELLS, curCells );
+			if (curCells != null) bundle.put( CUR_CELLS, curCells );
 		}
 		
 		@Override
 		public void restoreFromBundle(Bundle bundle) {
 			super.restoreFromBundle(bundle);
 			direction = bundle.getInt( DIRECTION );
-			curCells = bundle.getIntArray( CUR_CELLS );
+			if (bundle.contains( CUR_CELLS )) curCells = bundle.getIntArray( CUR_CELLS );
 		}
 		
 		public static class FireBlob extends Blob {

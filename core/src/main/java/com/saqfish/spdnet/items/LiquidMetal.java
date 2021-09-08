@@ -114,21 +114,21 @@ public class LiquidMetal extends Item {
 				int maxToUse = 5*(m.tier+1);
 				maxToUse *= Math.pow(2, m.level());
 
-				float durabilityPerUse = 100 / (float)maxToUse;
+				float durabilityPerMetal = 100 / (float)maxToUse;
 
 				//we remove a tiny amount here to account for rounding errors
-				float percentDurabilityLeft = 0.999f - (m.durabilityLeft()/100f);
-				maxToUse = (int)Math.ceil(maxToUse*percentDurabilityLeft);
-				if (maxToUse == 0){
+				float percentDurabilityLost = 0.999f - (m.durabilityLeft()/100f);
+				maxToUse = (int)Math.ceil(maxToUse*percentDurabilityLost);
+				if (maxToUse == 0 || percentDurabilityLost < m.durabilityPerUse()/100f){
 					GLog.w(Messages.get(LiquidMetal.class, "already_fixed"));
 					return;
 				} else if (maxToUse < quantity()) {
-					m.repair(maxToUse*durabilityPerUse);
+					m.repair(maxToUse*durabilityPerMetal);
 					quantity(quantity()-maxToUse);
 					GLog.i(Messages.get(LiquidMetal.class, "apply", maxToUse));
 
 				} else {
-					m.repair(quantity()*durabilityPerUse);
+					m.repair(quantity()*durabilityPerMetal);
 					GLog.i(Messages.get(LiquidMetal.class, "apply", quantity()));
 					detachAll(Dungeon.hero.belongings.backpack);
 				}

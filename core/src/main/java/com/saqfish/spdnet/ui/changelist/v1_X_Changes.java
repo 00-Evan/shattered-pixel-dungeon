@@ -47,7 +47,23 @@ public class v1_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("v1.0.2", false, null);
+		changes = new ChangeInfo("v1.0.3", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by 1.0.2):\n" +
+				"_-_ Reclaim Trap spells incorrectly starting with a summoning trap reclaimed\n\n" +
+				"Fixed (caused by 1.0.1):\n" +
+				"_-_ Music corruption and crashes for Desktop users\n\n" +
+				"Fixed (caused by 1.0.0):\n" +
+				"_-_ Various rare game crashes\n" +
+				"_-_ Some items being treated as equipped after save/load with lost inventory\n" +
+				"_-_ Cases where liquid metal could be applied to items at full durability\n\n" +
+				"Fixed (existed prior to 1.0.0):\n" +
+				"_-_ Minor text and vfx corrections"));
+
+		changes = new ChangeInfo("v1.0.2 & v1.0.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
@@ -63,10 +79,6 @@ public class v1_X_Changes {
 				"Fixed (existed prior to 1.0.0):\n" +
 				"_-_ minor vfx corrections\n" +
 				"_-_ Time stasis sometimes not preventing harmful effects in its last turn."));
-
-		changes = new ChangeInfo("v1.0.1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"_-_ Added info buttons to the scroll of enchantment window"));
