@@ -26,15 +26,14 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SlimeSprite;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
-public class Slime extends Mob {
+public abstract class Slime extends Mob {
 	
 	{
-		spriteClass = SlimeSprite.class;
-		
 		HP = HT = 20;
 		defenseSkill = 5;
 		
@@ -80,4 +79,51 @@ public class Slime extends Mob {
 		w.level(0);
 		return w;
 	}
+
+	@Override
+	public String description() {
+		return super.description() + "\n\n" + Messages.get(this, "spell_desc");
+	}
+
+	public static class LimeSlime extends Slime {
+		{
+			spriteClass = SlimeSprite.Lime.class;
+		}
+	}
+	public static class LemonSlime extends Slime {
+		{
+			spriteClass = SlimeSprite.Lemon.class;
+		}
+	}
+	public static class StrawberrySlime extends Slime {
+		{
+			spriteClass = SlimeSprite.Strawberry.class;
+		}
+	}
+	public static class GrapeSlime extends Slime {
+		{
+			spriteClass = SlimeSprite.Grape.class;
+		}
+	}
+	public static class OrangeSlime extends Slime {
+		{
+			spriteClass = SlimeSprite.Orange.class;
+		}
+	}
+
+	public static Class<? extends Slime> random(){
+		int roll = Random.Int(5);
+		if (roll == 0){
+			return Slime.LimeSlime.class;
+		} else if (roll == 1){
+			return Slime.LemonSlime.class;
+		} else if (roll == 2){
+			return Slime.StrawberrySlime.class;
+		} else if (roll == 3){
+			return Slime.GrapeSlime.class;
+		} else {
+			return Slime.OrangeSlime.class;
+		}
+	}
+
 }

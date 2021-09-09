@@ -245,14 +245,14 @@ public class v0_9_X_Changes {
 				"These talents are a bit different than the previous tiers. They require 3 points each, are balanced to encourage specialization, and vary based on class and subclass!\n\n" +
 				"There is one more tier of talents left to be implemented, currently slated for v0.9.3. This tier will span levels 21-30, and will interact with an existing mechanic..."));
 
-		changes.addButton( new ChangeButton( new Image(Assets.Sprites.WARRIOR, 0, 90, 12, 15), HeroSubClass.GLADIATOR.title(),
+		changes.addButton( new ChangeButton( new Image(Assets.Sprites.WARRIOR_M, 0, 90, 12, 15), HeroSubClass.GLADIATOR.title(),
 				"I've made a variety of changes to _the Gladiator_ to make combo moves more interesting, flexible, and easier to build to:\n\n" +
 				"_-_ Combo is no longer reset on 2 misses, but misses also no longer reset combo time.\n" +
 				"_-_ Combo time increased to 5 turns from 4.\n" +
 				"_-_ Combo moves can now be selected, instead of only the strongest one being available.\n" +
 				"_-_ Combo moves have been redesigned around new flexibility and easier combo building."));
 
-		changes.addButton( new ChangeButton( new Image(Assets.Sprites.ROGUE, 0, 90, 12, 15), HeroSubClass.FREERUNNER.title(),
+		changes.addButton( new ChangeButton( new Image(Assets.Sprites.ROGUE_M, 0, 90, 12, 15), HeroSubClass.FREERUNNER.title(),
 				"I've redesigned _the Freerunner_'s main benefit to make it require more thought and give more visible power:\n\n" +
 				"_-_ Freerunner still builds momentum by moving, but this does nothing on its own.\n" +
 				"_-_ Freerunner can now activate momentum to start freerunning.\n" +
@@ -411,7 +411,7 @@ public class v0_9_X_Changes {
 		changes.hardlight(CharSprite.WARNING);
 		changeInfos.add(changes);
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.HUNTRESS, 0, 15, 12, 15), "Huntress and Rogue Adjustments",
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.HUNTRESS_F, 0, 15, 12, 15), "Huntress and Rogue Adjustments",
 				"The _Huntress and Rogue_ have both received some adjustments to their innate powers:\n\n" +
 				"_-_ Bonus thrown weapon durability is no longer an innate huntress power, it is now a talent.\n" +
 				"_-_ Short-range mind vision is no longer an innate huntress power, it is now a talent.\n\n" +
@@ -492,7 +492,7 @@ public class v0_9_X_Changes {
 		changes.hardlight(CharSprite.POSITIVE);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton( new Image(Assets.Sprites.MAGE, 0, 90, 12, 15), HeroSubClass.BATTLEMAGE.title(),
+		changes.addButton( new ChangeButton( new Image(Assets.Sprites.MAGE_M, 0, 90, 12, 15), HeroSubClass.BATTLEMAGE.title(),
 				"I'm making a variety of adjustments to the _Battlemage_ to make him a more compelling choice vs. the Warlock, and to improve some wands that don't work as well for him as the Warlock:\n\n" +
 				"_-_ Staff charge granted on-hit increased to 0.5 from 0.33\n\n" +
 				"_- Staff of Magic Missile_ on-hit now gives all wands 0.5 charge, up from 0.33\n\n" +
@@ -564,7 +564,7 @@ public class v0_9_X_Changes {
 		changes.hardlight(CharSprite.WARNING);
 		changeInfos.add(changes);
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.WARRIOR, 0, 15, 12, 15), "Hero balance adjustments",
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.WARRIOR_M, 0, 15, 12, 15), "Hero balance adjustments",
 				"The _Warrior, Mage, and Huntress_ are getting some balance tweaks to offset their new talents:\n\n" +
 				"The _Warrior and Mage_ no longer have innate on-eat effects, these are replaced by their food-based talents.\n\n" +
 				"The _Warrior's_ base max shielding has been reduced from 2 to 1, to compensate for his shielding talent.\n\n" +

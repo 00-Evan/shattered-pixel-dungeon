@@ -39,6 +39,7 @@ import com.watabou.noosa.ui.Component;
 import com.watabou.utils.DeviceCompat;
 
 public class AboutScene extends PixelScene {
+	public static final int PDR_COLOR = 0x33BB33;
 
 	@Override
 	public void create() {
@@ -63,6 +64,22 @@ public class AboutScene extends PixelScene {
 		Component content = list.content();
 		content.clear();
 
+		//*** Pixel Dungeon Rescue Credits ***
+
+		String pdrLink = "https://github.com/bcasiello/pixel-dungeon-rescue";
+
+		CreditsBlock pdr = new CreditsBlock(true, PDR_COLOR,
+				"Pixel Dungeon Rescue",
+				// btc - add pdr icon
+				Icons.WATA.get(),
+				"Developed by: _Brian Casiello_\nBased on Shattered Pixel Dungeon",
+				pdrLink,
+				pdrLink);
+		pdr.setRect((Camera.main.width - colWidth)/2f, 10, colWidth, 0);
+		content.add(pdr);
+
+		addLine(pdr.top() - 4, content);
+
 		//*** Shattered Pixel Dungeon Credits ***
 
 		String shpxLink = "https://ShatteredPixel.com";
@@ -71,16 +88,16 @@ public class AboutScene extends PixelScene {
 		shpxLink += "&utm_medium=about_page";
 		shpxLink += "&utm_campaign=ingame_link";
 
-		CreditsBlock shpx = new CreditsBlock(true, Window.SHPX_COLOR,
+		CreditsBlock shpx = new CreditsBlock(false, Window.SHPX_COLOR,
 				"Shattered Pixel Dungeon",
 				Icons.SHPX.get(),
 				"Developed by: _Evan Debenham_\nBased on Pixel Dungeon's open source",
 				"ShatteredPixel.com",
 				shpxLink);
 		if (landscape()){
-			shpx.setRect((w - fullWidth)/2f - 6, 10, 120, 0);
+			shpx.setRect(pdr.left(), pdr.bottom() + 18, colWidth, 0);
 		} else {
-			shpx.setRect((w - fullWidth)/2f, 6, 120, 0);
+			shpx.setRect(pdr.left(), pdr.bottom() + 18, colWidth, 0);
 		}
 		content.add(shpx);
 
@@ -92,7 +109,7 @@ public class AboutScene extends PixelScene {
 				"https://www.alekskomitov.com");
 		alex.setSize(colWidth/2f, 0);
 		if (landscape()){
-			alex.setPos(shpx.right(), shpx.top() + (shpx.height() - alex.height()*2)/2f);
+			alex.setPos(shpx.right(), shpx.top() + (shpx.height() - alex.height())/2f);
 		} else {
 			alex.setPos(w/2f - colWidth/2f, shpx.bottom()+5);
 		}

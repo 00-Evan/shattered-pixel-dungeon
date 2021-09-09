@@ -138,6 +138,7 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -162,7 +163,7 @@ public class Hero extends Char {
 	private static final float TIME_TO_SEARCH	    = 2f;
 	private static final float HUNGER_FOR_SEARCH	= 6f;
 	
-	public HeroClass heroClass = HeroClass.ROGUE;
+	public HeroClass heroClass = HeroClass.ROGUE_F;
 	public HeroSubClass subClass = HeroSubClass.NONE;
 	public ArmorAbility armorAbility = null;
 	public ArrayList<LinkedHashMap<Talent, Integer>> talents = new ArrayList<>();
@@ -1039,7 +1040,10 @@ public class Hero extends Char {
 				} else {
 					Badges.silentValidateHappyEnd();
 					Dungeon.win( Amulet.class );
-					Dungeon.deleteGame( GamesInProgress.curSlot, true );
+					// btc - don't delete saves in debug mode
+					if (DeviceCompat.isDebug() == false) {
+						Dungeon.deleteGame(GamesInProgress.curSlot, true);
+					}
 					Game.switchScene( SurfaceScene.class );
 				}
 				
@@ -1723,8 +1727,11 @@ public class Hero extends Char {
 		if (cause instanceof Hero.Doom) {
 			((Hero.Doom)cause).onDeath();
 		}
-		
-		Dungeon.deleteGame( GamesInProgress.curSlot, true );
+
+		// btc - don't delete saves in debug mode
+		if (DeviceCompat.isDebug() == false) {
+			Dungeon.deleteGame(GamesInProgress.curSlot, true);
+		}
 	}
 
 	//effectively cache this buff to prevent having to call buff(...) a bunch.
@@ -1868,7 +1875,7 @@ public class Hero extends Char {
 		boolean smthFound = false;
 
 		boolean circular = pointsInTalent(Talent.WIDE_SEARCH) == 1;
-		int distance = heroClass == HeroClass.ROGUE ? 2 : 1;
+		int distance = heroClass.heroType() == HeroType.ROGUE ? 2 : 1;
 		if (hasTalent(Talent.WIDE_SEARCH)) distance++;
 		
 		boolean foresight = buff(Foresight.class) != null;

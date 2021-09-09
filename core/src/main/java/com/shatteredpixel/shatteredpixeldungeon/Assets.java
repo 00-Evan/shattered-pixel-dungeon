@@ -28,6 +28,7 @@ public class Assets {
 		public static final String FIREBALL		= "effects/fireball.png";
 		public static final String SPECKS		= "effects/specks.png";
 		public static final String SPELL_ICONS	= "effects/spell_icons.png";
+        public static final String BEAMUP = "effects/beamup16.png";
 	}
 
 	public static class Environment {
@@ -206,20 +207,29 @@ public class Assets {
 	}
 
 	public static class Splashes {
-		public static final String WARRIOR	= "splashes/warrior.jpg";
-		public static final String MAGE		= "splashes/mage.jpg";
-		public static final String ROGUE	= "splashes/rogue.jpg";
-		public static final String HUNTRESS	= "splashes/huntress.jpg";
+		public static final String WARRIOR_F	= "splashes/warrior-f.jpg";
+		public static final String WARRIOR_M	= "splashes/warrior-m.jpg";
+		public static final String MAGE_F		= "splashes/mage-f.jpg";
+		public static final String MAGE_M		= "splashes/mage-m.jpg";
+		public static final String ROGUE_F		= "splashes/rogue-f.jpg";
+		public static final String ROGUE_M		= "splashes/rogue-m.jpg";
+		public static final String HUNTRESS_F	= "splashes/huntress-f.jpg";
+		public static final String HUNTRESS_M	= "splashes/huntress-m.jpg";
 	}
 
 	public static class Sprites {
 		public static final String ITEMS	    = "sprites/items.png";
 		public static final String ITEM_ICONS   = "sprites/item_icons.png";
 
-		public static final String WARRIOR	= "sprites/warrior.png";
-		public static final String MAGE		= "sprites/mage.png";
-		public static final String ROGUE	= "sprites/rogue.png";
-		public static final String HUNTRESS	= "sprites/huntress.png";
+		public static final String WARRIOR_F	= "sprites/warrior-f.png";
+		public static final String WARRIOR_M	= "sprites/warrior-m.png";
+		public static final String MAGE_F		= "sprites/mage-f.png";
+		public static final String MAGE_M		= "sprites/mage-m.png";
+		public static final String ROGUE_F		= "sprites/rogue-f.png";
+		public static final String ROGUE_M		= "sprites/rogue-m.png";
+		public static final String HUNTRESS_F	= "sprites/huntress-f.png";
+		public static final String HUNTRESS_M	= "sprites/huntress-m.png";
+
 		public static final String AVATARS	= "sprites/avatars.png";
 		public static final String PET		= "sprites/pet.png";
 		public static final String AMULET	= "sprites/amulet.png";

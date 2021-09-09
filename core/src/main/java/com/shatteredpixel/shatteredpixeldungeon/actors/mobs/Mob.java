@@ -699,6 +699,8 @@ public abstract class Mob extends Char {
 
 		boolean soulMarked = buff(SoulMark.class) != null;
 
+		CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.2f, 6);
+
 		super.die( cause );
 
 		if (!(this instanceof Wraith)

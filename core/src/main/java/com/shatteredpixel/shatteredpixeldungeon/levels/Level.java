@@ -50,6 +50,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogFist;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WindParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -59,6 +61,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
 import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
@@ -79,11 +82,13 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -185,6 +190,14 @@ public abstract class Level implements Bundlable {
 		if (!(Dungeon.bossLevel())) {
 
 			addItemToSpawn(Generator.random(Generator.Category.FOOD));
+
+			// btc - be more generous with food and healing potions
+			if (Random.Int(4) < 3) {
+				addItemToSpawn(Generator.random(Generator.Category.FOOD));
+			}
+			if (Random.Int(2) == 0) {
+				addItemToSpawn(new PotionOfHealing());
+			}
 
 			if (Dungeon.isChallenged(Challenges.DARKNESS)){
 				addItemToSpawn( new Torch() );
@@ -976,32 +989,47 @@ public abstract class Level implements Bundlable {
 	private void pressCell( int cell, boolean hard ) {
 
 		Trap trap = null;
-		
+
 		switch (map[cell]) {
-		
-		case Terrain.SECRET_TRAP:
-			if (hard) {
-				trap = traps.get( cell );
-				GLog.i(Messages.get(Level.class, "hidden_trap", trap.name()));
-			}
-			break;
-			
-		case Terrain.TRAP:
-			trap = traps.get( cell );
-			break;
-			
-		case Terrain.HIGH_GRASS:
-		case Terrain.FURROWED_GRASS:
-			HighGrass.trample( this, cell);
-			break;
-			
-		case Terrain.WELL:
-			WellWater.affectCell( cell );
-			break;
-			
-		case Terrain.DOOR:
-			Door.enter( cell );
-			break;
+
+			case Terrain.SECRET_TRAP:
+				if (hard) {
+					trap = traps.get(cell);
+					GLog.i(Messages.get(Level.class, "hidden_trap", trap.name()));
+				}
+				break;
+
+			case Terrain.TRAP:
+				trap = traps.get(cell);
+				break;
+
+			case Terrain.HIGH_GRASS:
+			case Terrain.FURROWED_GRASS:
+				HighGrass.trample(this, cell);
+				break;
+
+			case Terrain.WELL:
+				WellWater.affectCell(cell);
+				break;
+
+			case Terrain.DOOR:
+				Door.enter(cell);
+				break;
+
+			case Terrain.BOOKSHELF:
+				Level.set(cell, Terrain.EMPTY_SP);
+				// btc - maybe drop a book or scroll
+				if (Random.Int(50) == 0) {
+					Dungeon.level.drop(Generator.getSpellbook(), cell).sprite.drop();
+				} else if (Random.Int(10) == 0) {
+					Dungeon.level.drop(Generator.random(Generator.Category.SCROLL), cell).sprite.drop();
+				}
+
+				GameScene.updateMap(cell);
+				// Create cloud of smoke when bookcase is destroyed
+				CellEmitter.get(cell).burst(Speck.factory(Speck.WOOL), 6);
+				if (Dungeon.level.heroFOV[cell]) Dungeon.observe();
+				break;
 		}
 
 		if (trap != null) {

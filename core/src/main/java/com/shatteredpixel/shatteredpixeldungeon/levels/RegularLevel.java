@@ -514,7 +514,9 @@ public abstract class RegularLevel extends Level {
 				if (passable[pos] && !solid[pos]
 						&& pos != exit
 						&& heaps.get(pos) == null
-						&& findMob(pos) == null) {
+						&& findMob(pos) == null
+						// btc - don't drop onto bookcases, even though they're passable
+						&& map[pos] != Terrain.BOOKSHELF) {
 					
 					Trap t = traps.get(pos);
 					

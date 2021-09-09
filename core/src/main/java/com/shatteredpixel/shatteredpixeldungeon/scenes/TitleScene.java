@@ -82,8 +82,8 @@ public class TitleScene extends PixelScene {
 
 		align(title);
 
-		placeTorch(title.x + 22, title.y + 46);
-		placeTorch(title.x + title.width - 22, title.y + 46);
+		placeTorch(title.x + 22, title.y + 26);
+		placeTorch(title.x + title.width - 22, title.y + 26);
 
 		Image signs = new Image( BannerSprites.get( BannerSprites.Type.PIXEL_DUNGEON_SIGNS ) ) {
 			private float time = 0;
@@ -171,7 +171,8 @@ public class TitleScene extends PixelScene {
 				ShatteredPixelDungeon.switchScene( AboutScene.class );
 			}
 		};
-		btnAbout.icon(Icons.get(Icons.SHPX));
+        // btc - add pdr icon
+		btnAbout.icon(Icons.get(Icons.WATA));
 		add(btnAbout);
 		
 		final int BTN_HEIGHT = 20;

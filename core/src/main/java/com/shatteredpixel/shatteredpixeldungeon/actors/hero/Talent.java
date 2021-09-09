@@ -199,7 +199,7 @@ public enum Talent {
 				return 127;
 			}
 			HeroClass cls = Dungeon.hero != null ? Dungeon.hero.heroClass : GamesInProgress.selectedClass;
-			switch (cls){
+			switch (cls.heroType()){
 				case WARRIOR: default:
 					return 26;
 				case MAGE:
@@ -480,7 +480,7 @@ public enum Talent {
 		ArrayList<Talent> tierTalents = new ArrayList<>();
 
 		//tier 1
-		switch (cls){
+		switch (cls.heroType()){
 			case WARRIOR: default:
 				Collections.addAll(tierTalents, HEARTY_MEAL, ARMSMASTERS_INTUITION, TEST_SUBJECT, IRON_WILL);
 				break;
@@ -500,7 +500,7 @@ public enum Talent {
 		tierTalents.clear();
 
 		//tier 2
-		switch (cls){
+		switch (cls.heroType()){
 			case WARRIOR: default:
 				Collections.addAll(tierTalents, IRON_STOMACH, RESTORED_WILLPOWER, RUNIC_TRANSFERENCE, LETHAL_MOMENTUM, IMPROVISED_PROJECTILES);
 				break;
@@ -520,7 +520,7 @@ public enum Talent {
 		tierTalents.clear();
 
 		//tier 3
-		switch (cls){
+		switch (cls.heroType()){
 			case WARRIOR: default:
 				Collections.addAll(tierTalents, HOLD_FAST, STRONGMAN);
 				break;

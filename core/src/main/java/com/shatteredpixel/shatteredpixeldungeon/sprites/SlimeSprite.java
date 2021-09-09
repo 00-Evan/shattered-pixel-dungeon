@@ -24,28 +24,63 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.watabou.noosa.TextureFilm;
 
-public class SlimeSprite extends MobSprite {
-	
+public abstract class SlimeSprite extends MobSprite {
+
+	protected abstract int texOffset();
+
 	public SlimeSprite() {
 		super();
-		
+
+		int c = texOffset();
+
 		texture( Assets.Sprites.SLIME );
 		
 		TextureFilm frames = new TextureFilm( texture, 14, 12 );
 		
 		idle = new Animation( 3, true );
-		idle.frames( frames, 0, 1, 1, 0 );
+		idle.frames( frames, c+0, c+1, c+1, c+0 );
 		
 		run = new Animation( 10, true );
-		run.frames( frames, 0, 2, 3, 3, 2, 0 );
+		run.frames( frames, c+0, c+2, c+3, c+3, c+2, c+0 );
 		
 		attack = new Animation( 15, false );
-		attack.frames( frames, 2, 3, 4, 6, 5 );
+		attack.frames( frames, c+2, c+3, c+4, c+6, c+5 );
 		
 		die = new Animation( 10, false );
-		die.frames( frames, 0, 5, 6, 7 );
+		die.frames( frames, c+0, c+5, c+6, c+7 );
 		
 		play(idle);
+	}
+
+	public static class Lime extends SlimeSprite {
+		@Override
+		protected int texOffset() {
+			return 0;
+		}
+	}
+	public static class Lemon extends SlimeSprite {
+		@Override
+		protected int texOffset() {
+			return 2 * 9;
+		}
+	}
+	public static class Strawberry extends SlimeSprite {
+		@Override
+		protected int texOffset() {
+			return 3 * 9;
+		}
+	}
+	public static class Grape extends SlimeSprite {
+		@Override
+		protected int texOffset() {
+			return 4 * 9;
+		}
+	}
+	public static class Orange extends SlimeSprite {
+		@Override
+		protected int texOffset() {
+			return 5 * 9;
+		}
 	}
 
 	@Override

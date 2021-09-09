@@ -389,7 +389,7 @@ public class v0_8_X_Changes {
 				"The _Lucky_ Enchantment is also being buffed:\n" +
 				"_-_ Lucky now gives low and medium value drops from ring of wealth's special reward pool."));
 
-		changes.addButton( new ChangeButton( new Image(Assets.Sprites.ROGUE, 0, 90, 12, 15), "Assassin and Sniper",
+		changes.addButton( new ChangeButton( new Image(Assets.Sprites.ROGUE_M, 0, 90, 12, 15), "Assassin and Sniper",
 				"The _Assassin_ is having a little trouble now that more enemies have tools to counter raw damage, so he's getting a boost:\n" +
 				"_-_ Preparation now gives a +15% damage bonus at 1/3/6/11 turns, up from a +10% damage bonus at 1/3/6/11/16 turns.\n" +
 				"_-_ Preparation now executes low health enemies, rather than dealing more damage.\n" +

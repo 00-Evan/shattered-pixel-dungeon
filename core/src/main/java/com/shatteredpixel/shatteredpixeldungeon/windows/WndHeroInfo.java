@@ -56,7 +56,7 @@ public class WndHeroInfo extends WndTabbed {
 	public WndHeroInfo( HeroClass cl ){
 
 		Image tabIcon;
-		switch (cl){
+		switch (cl.heroType()){
 			case WARRIOR: default:
 				tabIcon = new ItemSprite(ItemSpriteSheet.SEAL, null);
 				break;
@@ -159,7 +159,7 @@ public class WndHeroInfo extends WndTabbed {
 				add(info[i]);
 			}
 
-			switch (cls){
+			switch (cls.heroType()){
 				case WARRIOR: default:
 					icons = new Image[]{ new ItemSprite(ItemSpriteSheet.SEAL),
 							new ItemSprite(ItemSpriteSheet.WORN_SHORTSWORD),

@@ -73,7 +73,7 @@ public class HeroSelectScene extends PixelScene {
 		Badges.loadGlobal();
 		Journal.loadGlobal();
 
-		background = new Image(HeroClass.WARRIOR.splashArt()){
+		background = new Image(HeroClass.WARRIOR_F.splashArt()){
 			@Override
 			public void update() {
 				if (rm > 1f){

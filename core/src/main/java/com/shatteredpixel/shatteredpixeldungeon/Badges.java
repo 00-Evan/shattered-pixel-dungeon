@@ -589,7 +589,7 @@ public class Badges {
 			displayBadge( badge );
 			
 			if (badge == Badge.BOSS_SLAIN_1) {
-				switch (Dungeon.hero.heroClass) {
+				switch (Dungeon.hero.heroClass.heroType()) {
 				case WARRIOR:
 					badge = Badge.BOSS_SLAIN_1_WARRIOR;
 					break;
@@ -680,7 +680,7 @@ public class Badges {
 	public static void validateMastery() {
 		
 		Badge badge = null;
-		switch (Dungeon.hero.heroClass) {
+		switch (Dungeon.hero.heroClass.heroType()) {
 		case WARRIOR:
 			badge = Badge.MASTERY_WARRIOR;
 			break;
@@ -739,7 +739,7 @@ public class Badges {
 		Badge badge = Badge.VICTORY;
 		displayBadge( badge );
 
-		switch (Dungeon.hero.heroClass) {
+		switch (Dungeon.hero.heroClass.heroType()) {
 		case WARRIOR:
 			badge = Badge.VICTORY_WARRIOR;
 			break;

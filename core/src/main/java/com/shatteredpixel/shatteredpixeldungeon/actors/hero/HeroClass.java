@@ -68,15 +68,23 @@ import com.watabou.utils.DeviceCompat;
 
 public enum HeroClass {
 
-	WARRIOR( HeroSubClass.BERSERKER, HeroSubClass.GLADIATOR ),
-	MAGE( HeroSubClass.BATTLEMAGE, HeroSubClass.WARLOCK ),
-	ROGUE( HeroSubClass.ASSASSIN, HeroSubClass.FREERUNNER ),
-	HUNTRESS( HeroSubClass.SNIPER, HeroSubClass.WARDEN );
+	WARRIOR_F(  HeroType.WARRIOR,   "F", HeroSubClass.BERSERKER,  HeroSubClass.GLADIATOR ),
+	WARRIOR_M(  HeroType.WARRIOR,   "M", HeroSubClass.BERSERKER,  HeroSubClass.GLADIATOR ),
+	MAGE_F(     HeroType.MAGE,      "F", HeroSubClass.BATTLEMAGE, HeroSubClass.WARLOCK ),
+	MAGE_M(     HeroType.MAGE,      "M", HeroSubClass.BATTLEMAGE, HeroSubClass.WARLOCK ),
+	ROGUE_F(    HeroType.ROGUE,     "F", HeroSubClass.ASSASSIN,   HeroSubClass.FREERUNNER ),
+	ROGUE_M(    HeroType.ROGUE,     "M", HeroSubClass.ASSASSIN,   HeroSubClass.FREERUNNER ),
+	HUNTRESS_F( HeroType.HUNTRESS,  "F", HeroSubClass.SNIPER,     HeroSubClass.WARDEN ),
+	HUNTRESS_M( HeroType.HUNTRESS,  "M", HeroSubClass.SNIPER,     HeroSubClass.WARDEN );
 
+    private HeroType heroType;
 	private HeroSubClass[] subClasses;
+    private String heroSex;		// should probably be an enum
 
-	HeroClass( HeroSubClass...subClasses ) {
+	HeroClass( HeroType type, String sex, HeroSubClass...subClasses ) {
+        this.heroType = type;
 		this.subClasses = subClasses;
+        this.heroSex = sex;
 	}
 
 	public void initHero( Hero hero ) {
@@ -98,7 +106,10 @@ public enum HeroClass {
 
 		new ScrollOfIdentify().identify();
 
-		switch (this) {
+		// clear quickslots
+		Dungeon.quickslot.reset();
+
+		switch (this.heroType()) {
 			case WARRIOR:
 				initWarrior( hero );
 				break;
@@ -126,7 +137,7 @@ public enum HeroClass {
 	}
 
 	public Badges.Badge masteryBadge() {
-		switch (this) {
+		switch (this.heroType()) {
 			case WARRIOR:
 				return Badges.Badge.MASTERY_WARRIOR;
 			case MAGE:
@@ -197,7 +208,7 @@ public enum HeroClass {
 	}
 
 	public String title() {
-		return Messages.get(HeroClass.class, name());
+		return Messages.get(HeroType.class, heroType.name());
 	}
 
 	public String desc(){
@@ -209,7 +220,7 @@ public enum HeroClass {
 	}
 
 	public ArmorAbility[] armorAbilities(){
-		switch (this) {
+		switch (this.heroType()) {
 			case WARRIOR: default:
 				return new ArmorAbility[]{new HeroicLeap(), new Shockwave(), new Endure()};
 			case MAGE:
@@ -223,32 +234,48 @@ public enum HeroClass {
 
 	public String spritesheet() {
 		switch (this) {
-			case WARRIOR: default:
-				return Assets.Sprites.WARRIOR;
-			case MAGE:
-				return Assets.Sprites.MAGE;
-			case ROGUE:
-				return Assets.Sprites.ROGUE;
-			case HUNTRESS:
-				return Assets.Sprites.HUNTRESS;
+			case WARRIOR_F: default:
+				return Assets.Sprites.WARRIOR_F;
+			case WARRIOR_M:
+				return Assets.Sprites.WARRIOR_M;
+			case MAGE_F:
+				return Assets.Sprites.MAGE_F;
+			case MAGE_M:
+				return Assets.Sprites.MAGE_M;
+			case ROGUE_F:
+				return Assets.Sprites.ROGUE_F;
+			case ROGUE_M:
+				return Assets.Sprites.ROGUE_M;
+			case HUNTRESS_F:
+				return Assets.Sprites.HUNTRESS_F;
+			case HUNTRESS_M:
+				return Assets.Sprites.HUNTRESS_M;
 		}
 	}
 
 	public String splashArt(){
 		switch (this) {
-			case WARRIOR: default:
-				return Assets.Splashes.WARRIOR;
-			case MAGE:
-				return Assets.Splashes.MAGE;
-			case ROGUE:
-				return Assets.Splashes.ROGUE;
-			case HUNTRESS:
-				return Assets.Splashes.HUNTRESS;
+			case WARRIOR_F: default:
+				return Assets.Splashes.WARRIOR_F;
+        case WARRIOR_M:
+				return Assets.Splashes.WARRIOR_M;
+			case MAGE_F:
+				return Assets.Splashes.MAGE_F;
+			case MAGE_M:
+				return Assets.Splashes.MAGE_M;
+			case ROGUE_F:
+				return Assets.Splashes.ROGUE_F;
+			case ROGUE_M:
+				return Assets.Splashes.ROGUE_M;
+			case HUNTRESS_F:
+				return Assets.Splashes.HUNTRESS_F;
+			case HUNTRESS_M:
+				return Assets.Splashes.HUNTRESS_M;
 		}
 	}
 	
 	public String[] perks() {
-		switch (this) {
+		switch (this.heroType) {
 			case WARRIOR: default:
 				return new String[]{
 						Messages.get(HeroClass.class, "warrior_perk1"),
@@ -288,7 +315,7 @@ public enum HeroClass {
 		//always unlock on debug builds
 		if (DeviceCompat.isDebug()) return true;
 		
-		switch (this){
+		switch (this.heroType){
 			case WARRIOR: default:
 				return true;
 			case MAGE:
@@ -301,7 +328,7 @@ public enum HeroClass {
 	}
 	
 	public String unlockMsg() {
-		switch (this){
+		switch (this.heroType){
 			case WARRIOR: default:
 				return "";
 			case MAGE:
@@ -313,4 +340,5 @@ public enum HeroClass {
 		}
 	}
 
+	public HeroType heroType() { return heroType; }
 }

@@ -61,7 +61,7 @@ public class v0_3_X_Changes {
 				"\n" +
 				"This was also the first time that I decided to split a major update into two smaller ones. Originally v0.4.0 was going to rework both the warrior and weapons, but part way through development I decided to split them in order to get an update out sooner. This approach was quite successful, but I ended up not properly using it again until v0.9.0!"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.Sprites.WARRIOR, 0, 15, 12, 15), "Warrior Rework!",
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.WARRIOR_M, 0, 15, 12, 15), "Warrior Rework!",
 				"Warrior Rework:\n" +
 				"_-_ Starting STR down to 10, from 11\n" +
 				"_-_ Short sword dmg down to 1-10, from 1-12\n" +
@@ -71,7 +71,7 @@ public class v0_3_X_Changes {
 				"_-_ Seal grants shielding ontop of health\n" +
 				"_-_ Seal allows for one upgrade transfer"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.Sprites.WARRIOR, 0, 90, 12, 15), "Warrior Subclass Rework!",
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.WARRIOR_M, 0, 90, 12, 15), "Warrior Subclass Rework!",
 				"Berserker Rework:\n" +
 				"_-_ Bonus damage now scales with lost HP, instead of a flat 50% at 50% hp\n" +
 				"_-_ Berserker can now endure through death for a short time, with caveats\n" +
@@ -288,7 +288,7 @@ public class v0_3_X_Changes {
 				"\n" +
 				"Around this time I was also starting to include substantial smaller tweaks in each update. Nowadays every update includes a large amount of smaller changes, but back in these earlier days this was a newer development."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.Sprites.MAGE, 0, 15, 12, 15), "Mage Rework!",
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.MAGE_M, 0, 15, 12, 15), "Mage Rework!",
 				"_-_ No longer starts with knuckledusters or a wand\n" +
 				"_-_ Can no longer equip wands\n" +
 				"_-_ Now starts with a unique mages staff, empowered with magic missile to start.\n\n" +

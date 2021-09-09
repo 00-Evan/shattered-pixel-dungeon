@@ -606,6 +606,21 @@ public class Generator {
 
 	}
 
+	// btc - move this into a special category
+	//enforces uniqueness of artifacts throughout a run.
+	public static Artifact getSpellbook() {
+
+		Class<? extends Artifact> art = (Class<? extends Artifact>) UnstableSpellbook.class;
+
+		if (removeArtifact(art)) {
+			Artifact artifact = Reflection.newInstance(art);
+			artifact.random();
+			return artifact;
+		} else {
+			return null;
+		}
+	}
+
 	public static boolean removeArtifact(Class<?extends Artifact> artifact) {
 		Category cat = Category.ARTIFACT;
 		for (int i = 0; i < cat.classes.length; i++){

@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_7_X_Changes;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_8_X_Changes;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_9_X_Changes;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v1_X_Changes;
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.pdr_v1_X_Changes;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.audio.Music;
@@ -93,26 +94,7 @@ public class ChangesScene extends PixelScene {
 		
 		switch (changesSelected){
 			case 0: default:
-				v1_X_Changes.addAllChanges(changeInfos);
-				break;
-			case 1:
-				v0_9_X_Changes.addAllChanges(changeInfos);
-				break;
-			case 2:
-				v0_8_X_Changes.addAllChanges(changeInfos);
-				break;
-			case 3:
-				v0_7_X_Changes.addAllChanges(changeInfos);
-				break;
-			case 4:
-				v0_6_X_Changes.addAllChanges(changeInfos);
-				break;
-			case 5:
-				v0_5_X_Changes.addAllChanges(changeInfos);
-				v0_4_X_Changes.addAllChanges(changeInfos);
-				v0_3_X_Changes.addAllChanges(changeInfos);
-				v0_2_X_Changes.addAllChanges(changeInfos);
-				v0_1_X_Changes.addAllChanges(changeInfos);
+				pdr_v1_X_Changes.addAllChanges(changeInfos);
 				break;
 		}
 
@@ -168,7 +150,7 @@ public class ChangesScene extends PixelScene {
 				panel.innerHeight() + 2);
 		list.scrollTo(0, 0);
 
-		StyledButton btn1_1 = new StyledButton(Chrome.Type.GREY_BUTTON_TR, "1.X"){
+		StyledButton btn1_1 = new StyledButton(Chrome.Type.GREY_BUTTON_TR, "1.0"){
 			@Override
 			protected void onClick() {
 				super.onClick();
@@ -182,7 +164,7 @@ public class ChangesScene extends PixelScene {
 		btn1_1.setRect(list.left()-4f, list.bottom(), 22, changesSelected == 0 ? 19 : 15);
 		addToBack(btn1_1);
 
-		StyledButton btn0_9 = new StyledButton(Chrome.Type.GREY_BUTTON_TR, "0.9"){
+		StyledButton btn0_9 = new StyledButton(Chrome.Type.GREY_BUTTON_TR, "SPD"){
 			@Override
 			protected void onClick() {
 				super.onClick();
@@ -194,63 +176,7 @@ public class ChangesScene extends PixelScene {
 		};
 		if (changesSelected != 1) btn0_9.textColor( 0xBBBBBB );
 		btn0_9.setRect(btn1_1.right()+1, list.bottom(), 22, changesSelected == 1 ? 19 : 15);
-		addToBack(btn0_9);
-
-		StyledButton btn0_8 = new StyledButton(Chrome.Type.GREY_BUTTON_TR, "0.8"){
-			@Override
-			protected void onClick() {
-				super.onClick();
-				if (changesSelected != 2) {
-					changesSelected = 2;
-					ShatteredPixelDungeon.seamlessResetScene();
-				}
-			}
-		};
-		if (changesSelected != 2) btn0_8.textColor( 0xBBBBBB );
-		btn0_8.setRect(btn0_9.right() + 1, list.bottom(), 22, changesSelected == 2 ? 19 : 15);
-		addToBack(btn0_8);
-		
-		StyledButton btn0_7 = new StyledButton(Chrome.Type.GREY_BUTTON_TR, "0.7"){
-			@Override
-			protected void onClick() {
-				super.onClick();
-				if (changesSelected != 3) {
-					changesSelected = 3;
-					ShatteredPixelDungeon.seamlessResetScene();
-				}
-			}
-		};
-		if (changesSelected != 3) btn0_7.textColor( 0xBBBBBB );
-		btn0_7.setRect(btn0_8.right() + 1, btn0_8.top(), 22, changesSelected == 3 ? 19 : 15);
-		addToBack(btn0_7);
-		
-		StyledButton btn0_6 = new StyledButton(Chrome.Type.GREY_BUTTON_TR, "0.6"){
-			@Override
-			protected void onClick() {
-				super.onClick();
-				if (changesSelected != 4) {
-					changesSelected = 4;
-					ShatteredPixelDungeon.seamlessResetScene();
-				}
-			}
-		};
-		if (changesSelected != 4) btn0_6.textColor( 0xBBBBBB );
-		btn0_6.setRect(btn0_7.right() + 1, btn0_8.top(), 22, changesSelected == 4 ? 19 : 15);
-		addToBack(btn0_6);
-		
-		StyledButton btnOld = new StyledButton(Chrome.Type.GREY_BUTTON_TR,"0.5-1"){
-			@Override
-			protected void onClick() {
-				super.onClick();
-				if (changesSelected != 5) {
-					changesSelected = 5;
-					ShatteredPixelDungeon.seamlessResetScene();
-				}
-			}
-		};
-		if (changesSelected != 5) btnOld.textColor( 0xBBBBBB );
-		btnOld.setRect(btn0_6.right() + 1, btn0_8.top(), 26, changesSelected == 5 ? 19 : 15);
-		addToBack(btnOld);
+//		addToBack(btn0_9);
 
 		Archs archs = new Archs();
 		archs.setSize( Camera.main.width, Camera.main.height );

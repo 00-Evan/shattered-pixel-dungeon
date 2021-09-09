@@ -63,7 +63,7 @@ public class Bestiary {
 				return new ArrayList<>(Arrays.asList(Gnoll.class,
 						Swarm.class,
 						Crab.class, Crab.class,
-						Slime.class, Slime.class));
+						Slime.random(), Slime.random()));
 				
 			// Prison
 			case 6:
