@@ -107,7 +107,9 @@ public enum HeroClass {
 		new ScrollOfIdentify().identify();
 
 		// clear quickslots
-		Dungeon.quickslot.reset();
+		for (int s = 0; s < QuickSlot.SIZE; s++){
+			Dungeon.quickslot.clearSlot(s);
+		}
 
 		switch (this.heroType()) {
 			case WARRIOR:

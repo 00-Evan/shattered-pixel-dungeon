@@ -18,3 +18,9 @@ local.properties
 #intellij project files
 *.iml
 *.idea
+*.aab
+core/src/main/assets/sprites/huntress-f-alt.png
+core/src/main/assets/sprites/mage-f-alt.png
+core/src/main/assets/sprites/rogue-f-alt.png
+core/src/main/assets/sprites/warrior-f-alt.png
+android/debug/output.json
