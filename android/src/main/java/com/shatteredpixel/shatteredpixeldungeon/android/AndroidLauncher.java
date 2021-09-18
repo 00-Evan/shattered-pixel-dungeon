@@ -48,9 +48,9 @@ public class AndroidLauncher extends Activity {
 			finish();
 		} catch (Exception e){
 			TextView text = new TextView(this);
-			text.setText("Shattered Pixel Dungeon cannot start because some of its code is missing!\n\n" +
+			text.setText("Pixel Dungeon Rescue cannot start because some of its code is missing!\n\n" +
 					"This usually happens when the Google Play version of the game is installed from somewhere outside of Google Play.\n\n" +
-					"If you're unsure of how to fix this, please email the developer (Evan@ShatteredPixel.com), and include this error message:\n\n" +
+					"If you're unsure of how to fix this, please open an issue on GitHub (https://github.com/bcasiello/pixel-dungeon-rescue), and include this error message:\n\n" +
 					e.getMessage());
 			text.setTextSize(16);
 			text.setTextColor(0xFFFFFFFF);
