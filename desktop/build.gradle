@@ -73,3 +73,11 @@ dependencies {
     compileOnly project(':services:updates:debugUpdates')
     compileOnly project(':services:news:debugNews')
 }
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.shatteredpixel.shatteredpixeldungeon.desktop.DesktopLauncher'
+        )
+    }
+}
