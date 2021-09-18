@@ -172,7 +172,7 @@ public class TitleScene extends PixelScene {
 			}
 		};
         // btc - add pdr icon
-		btnAbout.icon(Icons.get(Icons.WATA));
+		btnAbout.icon(Icons.get(Icons.BRIAN));
 		add(btnAbout);
 		
 		final int BTN_HEIGHT = 20;

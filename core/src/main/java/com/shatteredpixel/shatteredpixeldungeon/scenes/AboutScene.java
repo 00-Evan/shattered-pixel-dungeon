@@ -39,7 +39,7 @@ import com.watabou.noosa.ui.Component;
 import com.watabou.utils.DeviceCompat;
 
 public class AboutScene extends PixelScene {
-	public static final int PDR_COLOR = 0x33BB33;
+	public static final int PDR_COLOR = 0x9900AA;
 
 	@Override
 	public void create() {
@@ -71,7 +71,7 @@ public class AboutScene extends PixelScene {
 		CreditsBlock pdr = new CreditsBlock(true, PDR_COLOR,
 				"Pixel Dungeon Rescue",
 				// btc - add pdr icon
-				Icons.WATA.get(),
+				Icons.BRIAN.get(),
 				"Developed by: _Brian Casiello_\nBased on Shattered Pixel Dungeon",
 				pdrLink,
 				pdrLink);

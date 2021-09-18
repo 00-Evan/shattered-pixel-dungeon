@@ -26,7 +26,7 @@ public class pdr_v1_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 //		changeInfos.add(changes);
 
-		changes.addButton(new ChangeButton(Icons.get(Icons.WATA), Messages.get(ChangesScene.class, "new"),
+		changes.addButton(new ChangeButton(Icons.get(Icons.BRIAN), Messages.get(ChangesScene.class, "new"),
 				"Up-to-date with ShatteredPD 1.0.3.\n\n" +
 				"Pixel Dungeon Rescue changes:\n" +
 				"_-_ You don't kill creatures, you cure them from their dark magic\n" +
