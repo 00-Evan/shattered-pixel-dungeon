@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SmokeScreen;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PathFinder;
 
 public class PotionOfShroudingFog extends ExoticPotion {
 	
@@ -45,8 +46,17 @@ public class PotionOfShroudingFog extends ExoticPotion {
 			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 			Sample.INSTANCE.play( Assets.Sounds.GAS );
 		}
-		
-		GameScene.add( Blob.seed( cell, 1000, SmokeScreen.class ) );
+
+		int centerVolume = 120;
+		for (int i : PathFinder.NEIGHBOURS8){
+			if (!Dungeon.level.solid[cell+i]){
+				GameScene.add( Blob.seed( cell+i, 120, SmokeScreen.class ) );
+			} else {
+				centerVolume += 120;
+			}
+		}
+
+		GameScene.add( Blob.seed( cell, centerVolume, SmokeScreen.class ) );
 	}
 	
 }

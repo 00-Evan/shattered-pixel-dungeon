@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -692,6 +693,11 @@ public class Dungeon {
 	public static void observe(){
 		int dist = 8;
 		dist *= 1f + 0.25f*Dungeon.hero.pointsInTalent(Talent.FARSIGHT);
+
+		if (Dungeon.hero.buff(MagicalSight.class) != null){
+			dist = Math.max( dist, MagicalSight.DISTANCE );
+		}
+
 		observe( dist+1 );
 	}
 	
