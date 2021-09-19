@@ -699,7 +699,7 @@ public abstract class Mob extends Char {
 
 		boolean soulMarked = buff(SoulMark.class) != null;
 
-		CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.2f, 6);
+		CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.05f, 16);
 
 		super.die( cause );
 
