@@ -140,6 +140,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -1872,47 +1873,57 @@ public class Hero extends Char {
 		if (hasTalent(Talent.WIDE_SEARCH)) distance++;
 		
 		boolean foresight = buff(Foresight.class) != null;
-		
-		if (foresight) distance++;
-		
-		int cx = pos % Dungeon.level.width();
-		int cy = pos / Dungeon.level.width();
-		int ax = cx - distance;
-		if (ax < 0) {
-			ax = 0;
+		boolean foresightScan = foresight && !Dungeon.level.mapped[pos];
+
+		if (foresightScan){
+			Dungeon.level.mapped[pos] = true;
 		}
-		int bx = cx + distance;
-		if (bx >= Dungeon.level.width()) {
-			bx = Dungeon.level.width() - 1;
+
+		if (foresight) {
+			distance = Foresight.DISTANCE;
+			circular = true;
 		}
-		int ay = cy - distance;
-		if (ay < 0) {
-			ay = 0;
-		}
-		int by = cy + distance;
-		if (by >= Dungeon.level.height()) {
-			by = Dungeon.level.height() - 1;
-		}
+
+		Point c = Dungeon.level.cellToPoint(pos);
 
 		TalismanOfForesight.Foresight talisman = buff( TalismanOfForesight.Foresight.class );
 		boolean cursed = talisman != null && talisman.isCursed();
-		
-		for (int y = ay; y <= by; y++) {
-			for (int x = ax, p = ax + y * Dungeon.level.width(); x <= bx; x++, p++) {
 
-				if (circular && Math.abs(x - cx)-1 > ShadowCaster.rounding[distance][distance - Math.abs(y - cy)]){
-					continue;
+		int[] rounding = ShadowCaster.rounding[distance];
+
+		int left, right;
+		int curr;
+		for (int y = Math.max(0, c.y - distance); y <= Math.min(Dungeon.level.height()-1, c.y + distance); y++) {
+			if (!circular){
+				left = c.x - distance;
+			} else if (rounding[Math.abs(c.y - y)] < Math.abs(c.y - y)) {
+				left = c.x - rounding[Math.abs(c.y - y)];
+			} else {
+				left = distance;
+				while (rounding[left] < rounding[Math.abs(c.y - y)]){
+					left--;
 				}
+				left = c.x - left;
+			}
+			right = Math.min(Dungeon.level.width()-1, c.x + c.x - left);
+			left = Math.max(0, left);
+			for (curr = left + y * Dungeon.level.width(); curr <= right + y * Dungeon.level.width(); curr++){
 
-				if (fieldOfView[p] && p != pos) {
-					
-					if (intentional) {
-						GameScene.effectOverFog(new CheckedCell(p, pos));
+				if ((foresight || fieldOfView[curr]) && curr != pos) {
+
+					if ((foresight && (!Dungeon.level.mapped[curr] || foresightScan))){
+						GameScene.effectOverFog(new CheckedCell(curr, foresightScan ? pos : curr));
+					} else if (intentional) {
+						GameScene.effectOverFog(new CheckedCell(curr, pos));
+					}
+
+					if (foresight){
+						Dungeon.level.mapped[curr] = true;
 					}
 					
-					if (Dungeon.level.secret[p]){
+					if (Dungeon.level.secret[curr]){
 						
-						Trap trap = Dungeon.level.traps.get( p );
+						Trap trap = Dungeon.level.traps.get( curr );
 						float chance;
 
 						//searches aided by foresight always succeed, even if trap isn't searchable
@@ -1932,7 +1943,7 @@ public class Hero extends Char {
 							chance = 0f;
 							
 						//unintentional trap detection scales from 40% at floor 0 to 30% at floor 25
-						} else if (Dungeon.level.map[p] == Terrain.SECRET_TRAP) {
+						} else if (Dungeon.level.map[curr] == Terrain.SECRET_TRAP) {
 							chance = 0.4f - (Dungeon.depth / 250f);
 							
 						//unintentional door detection scales from 20% at floor 0 to 0% at floor 20
@@ -1942,15 +1953,15 @@ public class Hero extends Char {
 						
 						if (Random.Float() < chance) {
 						
-							int oldValue = Dungeon.level.map[p];
+							int oldValue = Dungeon.level.map[curr];
 							
-							GameScene.discoverTile( p, oldValue );
+							GameScene.discoverTile( curr, oldValue );
 							
-							Dungeon.level.discover( p );
+							Dungeon.level.discover( curr );
 							
-							ScrollOfMagicMapping.discover( p );
+							ScrollOfMagicMapping.discover( curr );
 							
-							smthFound = true;
+							if (fieldOfView[curr]) smthFound = true;
 	
 							if (talisman != null){
 								if (oldValue == Terrain.SECRET_TRAP){
@@ -1964,7 +1975,6 @@ public class Hero extends Char {
 				}
 			}
 		}
-
 		
 		if (intentional) {
 			sprite.showStatus( CharSprite.DEFAULT, Messages.get(this, "search") );
@@ -1985,6 +1995,10 @@ public class Hero extends Char {
 			GLog.w( Messages.get(this, "noticed_smth") );
 			Sample.INSTANCE.play( Assets.Sounds.SECRET );
 			interrupt();
+		}
+
+		if (foresight){
+			GameScene.updateFog(pos, Foresight.DISTANCE+1);
 		}
 		
 		return smthFound;
