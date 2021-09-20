@@ -48,7 +48,7 @@ public class PrismaticImage extends NPC {
 	{
 		spriteClass = PrismaticSprite.class;
 		
-		HP = HT = 8;
+		HP = HT = 10;
 		defenseSkill = 1;
 		
 		alignment = Alignment.ALLY;
@@ -145,9 +145,9 @@ public class PrismaticImage extends NPC {
 	@Override
 	public int damageRoll() {
 		if (hero != null) {
-			return Random.NormalIntRange( 1 + hero.lvl/8, 4 + hero.lvl/2 );
+			return Random.NormalIntRange( 2 + hero.lvl/4, 4 + hero.lvl/2 );
 		} else {
-			return Random.NormalIntRange( 1, 4 );
+			return Random.NormalIntRange( 2, 4 );
 		}
 	}
 	
