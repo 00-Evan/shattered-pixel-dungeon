@@ -538,7 +538,6 @@ public abstract class Mob extends Char {
 		
 		if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
 			sprite.attack( enemy.pos );
-			spend( attackDelay() );
 			return false;
 			
 		} else {
@@ -551,6 +550,7 @@ public abstract class Mob extends Char {
 	@Override
 	public void onAttackComplete() {
 		attack( enemy );
+		spend( attackDelay() );
 		super.onAttackComplete();
 	}
 	
