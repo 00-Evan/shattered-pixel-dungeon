@@ -1649,10 +1649,11 @@ public class Hero extends Char {
 				//delete the run or submit it to rankings, because a WndResurrect is about to exist
 				//this is needed because the actual creation of the window is delayed here
 				WndResurrect.instance = new Object();
+				Ankh finalAnkh = ankh;
 				Game.runOnRenderThread(new Callback() {
 					@Override
 					public void call() {
-						GameScene.show( new WndResurrect() );
+						GameScene.show( new WndResurrect(finalAnkh) );
 					}
 				});
 
