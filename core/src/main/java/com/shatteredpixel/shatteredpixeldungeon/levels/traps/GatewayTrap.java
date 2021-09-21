@@ -42,18 +42,14 @@ public class GatewayTrap extends Trap {
 					}
 				}
 				Heap heap = Dungeon.level.heaps.get(pos + i);
-				if (heap != null){
+				if (heap != null && heap.type == Heap.Type.HEAP){
 					int cell = Dungeon.level.randomRespawnCell( null );
 
 					Item item = heap.pickUp();
 
 					if (cell != -1) {
-						Heap dropped = Dungeon.level.drop( item, cell );
-						dropped.type = heap.type;
-						dropped.sprite.view( dropped );
-						telePos = cell;
+						Dungeon.level.drop( item, cell );
 						break;
-
 					}
 				}
 			}
