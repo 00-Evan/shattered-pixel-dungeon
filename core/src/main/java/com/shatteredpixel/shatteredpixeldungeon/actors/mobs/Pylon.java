@@ -73,16 +73,8 @@ public class Pylon extends Mob {
 
 	@Override
 	protected boolean act() {
-		spend(TICK);
-
-		Heap heap = Dungeon.level.heaps.get( pos );
-		if (heap != null) {
-			int n;
-			do {
-				n = pos + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
-			} while (!Dungeon.level.passable[n] && !Dungeon.level.avoid[n]);
-			Dungeon.level.drop( heap.pickUp(), n ).sprite.drop( pos );
-		}
+		alerted = false;
+		super.act();
 
 		if (alignment == Alignment.NEUTRAL){
 			return true;
@@ -151,7 +143,7 @@ public class Pylon extends Mob {
 	}
 
 	@Override
-	public void notice() {
+	public void beckon(int cell) {
 		//do nothing
 	}
 
@@ -219,7 +211,6 @@ public class Pylon extends Mob {
 		immunities.add( Paralysis.class );
 		immunities.add( Amok.class );
 		immunities.add( Sleep.class );
-		immunities.add( ToxicGas.class );
 		immunities.add( Terror.class );
 		immunities.add( Vertigo.class );
 	}

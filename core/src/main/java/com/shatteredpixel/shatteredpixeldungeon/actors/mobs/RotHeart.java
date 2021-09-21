@@ -53,6 +53,12 @@ public class RotHeart extends Mob {
 	}
 
 	@Override
+	protected boolean act() {
+		alerted = false;
+		return super.act();
+	}
+
+	@Override
 	public void damage(int dmg, Object src) {
 		//TODO: when effect properties are done, change this to FIRE
 		if (src instanceof Burning) {

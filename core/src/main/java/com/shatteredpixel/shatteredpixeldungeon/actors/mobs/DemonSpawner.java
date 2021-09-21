@@ -117,6 +117,7 @@ public class DemonSpawner extends Mob {
 				}
 			}
 		}
+		alerted = false;
 		return super.act();
 	}
 
