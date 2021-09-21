@@ -1619,7 +1619,6 @@ public class Hero extends Char {
 		}
 
 		if (ankh != null) {
-			ankh.detach(belongings.backpack);
 			interrupt();
 			resting = false;
 
@@ -1634,6 +1633,8 @@ public class Hero extends Char {
 				Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 				GLog.w(Messages.get(this, "revive"));
 				Statistics.ankhsUsed++;
+
+				ankh.detach(belongings.backpack);
 
 				for (Char ch : Actor.chars()) {
 					if (ch instanceof DriedRose.GhostHero) {

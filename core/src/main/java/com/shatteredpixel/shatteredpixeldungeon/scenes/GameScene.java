@@ -549,14 +549,14 @@ public class GameScene extends PixelScene {
 		//re-show WndResurrect if needed
 		if (!Dungeon.hero.isAlive()){
 			//check if hero has an unblessed ankh
-			boolean hasAnkh = false;
+			Ankh ankh = null;
 			for (Ankh i : Dungeon.hero.belongings.getAllItems(Ankh.class)){
 				if (!i.isBlessed()){
-					hasAnkh = true;
+					ankh = i;
 				}
 			}
-			if (hasAnkh) {
-				add(new WndResurrect());
+			if (ankh != null) {
+				add(new WndResurrect(ankh));
 			}
 		}
 
