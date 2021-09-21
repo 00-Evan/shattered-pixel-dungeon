@@ -741,7 +741,7 @@ public abstract class Mob extends Char {
 		}
 		
 		//lucky enchant logic
-		if (Dungeon.hero.lvl <= maxLvl && buff(Lucky.LuckProc.class) != null){
+		if (buff(Lucky.LuckProc.class) != null){
 			Dungeon.level.drop(Lucky.genLoot(), pos).sprite.drop();
 			Lucky.showFlare(sprite);
 		}
