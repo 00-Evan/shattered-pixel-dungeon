@@ -120,8 +120,8 @@ public class WndRanking extends WndTabbed {
 	
 	private void createControls() {
 		
-		String[] labels =
-			{Messages.get(this, "stats"), Messages.get(this, "items"), Messages.get(this, "badges")};
+		Icons[] icons =
+			{Icons.RANKINGS, Icons.BACKPACK_LRG, Icons.BADGES};
 		Group[] pages =
 			{new StatsTab(), new ItemsTab(), new BadgesTab()};
 		
@@ -129,7 +129,7 @@ public class WndRanking extends WndTabbed {
 			
 			add( pages[i] );
 			
-			Tab tab = new RankingTab( labels[i], pages[i] );
+			Tab tab = new RankingTab( icons[i], pages[i] );
 			add( tab );
 		}
 
@@ -138,12 +138,12 @@ public class WndRanking extends WndTabbed {
 		select( 0 );
 	}
 
-	private class RankingTab extends LabeledTab {
+	private class RankingTab extends IconTab {
 		
 		private Group page;
 		
-		public RankingTab( String label, Group page ) {
-			super( label );
+		public RankingTab( Icons icon, Group page ) {
+			super( Icons.get(icon) );
 			this.page = page;
 		}
 		

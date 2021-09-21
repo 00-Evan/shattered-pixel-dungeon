@@ -79,14 +79,14 @@ public class WndHero extends WndTabbed {
 		buffs.setRect(0, 0, WIDTH, HEIGHT);
 		buffs.setupList();
 		
-		add( new LabeledTab( Messages.get(this, "stats") ) {
+		add( new IconTab( Icons.get(Icons.RANKINGS) ) {
 			protected void select( boolean value ) {
 				super.select( value );
 				if (selected) lastIdx = 0;
 				stats.visible = stats.active = selected;
 			}
 		} );
-		add( new LabeledTab( Messages.get(this, "talents") ) {
+		add( new IconTab( Icons.get(Icons.TALENT) ) {
 			protected void select( boolean value ) {
 				super.select( value );
 				if (selected) lastIdx = 1;
@@ -94,7 +94,7 @@ public class WndHero extends WndTabbed {
 				talents.visible = talents.active = selected;
 			}
 		} );
-		add( new LabeledTab( Messages.get(this, "buffs") ) {
+		add( new IconTab( Icons.get(Icons.BUFFS) ) {
 			protected void select( boolean value ) {
 				super.select( value );
 				if (selected) lastIdx = 2;
