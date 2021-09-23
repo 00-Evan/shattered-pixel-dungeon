@@ -152,46 +152,19 @@ public class Belongings implements Iterable<Item> {
 		backpack.restoreFromBundle( bundle );
 		
 		weapon = (KindOfWeapon) bundle.get(WEAPON);
-		if (weapon() != null) {
-			weapon().activate(owner);
-		}
+		if (weapon() != null)       weapon().activate(owner);
 		
 		armor = (Armor)bundle.get( ARMOR );
-		if (armor() != null){
-			armor().activate( owner );
-		}
+		if (armor() != null)        armor().activate( owner );
 
-		//pre-0.8.2
-		if (bundle.contains("misc1") || bundle.contains("misc2")){
-			artifact = null;
-			misc = null;
-			ring = null;
+		artifact = (Artifact) bundle.get(ARTIFACT);
+		if (artifact() != null)     artifact().activate(owner);
 
-			KindofMisc m = (KindofMisc)bundle.get("misc1");
-			if (m instanceof Artifact){
-				artifact = (Artifact) m;
-			} else if (m instanceof Ring) {
-				ring = (Ring) m;
-			}
+		misc = (KindofMisc) bundle.get(MISC);
+		if (misc() != null)         misc().activate( owner );
 
-			m = (KindofMisc)bundle.get("misc2");
-			if (m instanceof Artifact){
-				if (artifact == null)   artifact = (Artifact) m;
-				else                    misc = (Artifact) m;
-			} else if (m instanceof Ring) {
-				if (ring == null)       ring = (Ring) m;
-				else                    misc = (Ring) m;
-			}
-
-		} else {
-			artifact = (Artifact) bundle.get(ARTIFACT);
-			misc = (KindofMisc) bundle.get(MISC);
-			ring = (Ring) bundle.get(RING);
-		}
-
-		if (artifact() != null)   artifact().activate(owner);
-		if (misc() != null)       misc().activate( owner );
-		if (ring() != null)       ring().activate( owner );
+		ring = (Ring) bundle.get(RING);
+		if (ring() != null)         ring().activate( owner );
 	}
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {

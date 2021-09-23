@@ -674,18 +674,6 @@ public class Generator {
 				}
 			}
 		}
-
-		//pre-0.8.1
-		if (bundle.contains("spawned_artifacts")) {
-			for (Class<? extends Artifact> artifact : bundle.getClassArray("spawned_artifacts")) {
-				Category cat = Category.ARTIFACT;
-				for (int i = 0; i < cat.classes.length; i++) {
-					if (cat.classes[i].equals(artifact)) {
-						cat.probs[i] = 0;
-					}
-				}
-			}
-		}
 		
 	}
 }
