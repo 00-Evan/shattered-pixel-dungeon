@@ -53,7 +53,7 @@ public class PylonSprite extends MobSprite {
 		attack = idle.clone();
 
 		die = new Animation( 1, false );
-		die.frames( frames, 2 );
+		die.frames( frames, 0 );
 
 		play( idle );
 	}

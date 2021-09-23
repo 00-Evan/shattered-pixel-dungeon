@@ -43,8 +43,8 @@ public class BeeSprite extends MobSprite {
 		attack.frames( frames, 3, 4, 5, 6 );
 		
 		die = new Animation( 20, false );
-		die.frames( frames, 7, 8, 9, 10 );
-		
+		die.frames( frames, 0 );
+
 		play( idle );
 	}
 	

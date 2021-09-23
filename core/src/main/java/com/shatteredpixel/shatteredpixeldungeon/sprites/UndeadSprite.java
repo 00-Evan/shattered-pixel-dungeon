@@ -45,7 +45,7 @@ public class UndeadSprite extends MobSprite {
 		attack.frames( frames, 14, 15, 16 );
 		
 		die = new Animation( 12, false );
-		die.frames( frames, 10, 11, 12, 13 );
+		die.frames( frames, 0 );
 		
 		play( idle );
 	}

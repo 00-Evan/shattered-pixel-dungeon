@@ -48,7 +48,7 @@ public class NewbornElementalSprite extends MobSprite{
 		attack.frames( frames, ofs+4, ofs+5, ofs+6 );
 
 		die = new MovieClip.Animation( 15, false );
-		die.frames( frames, ofs+7, ofs+8, ofs+9, ofs+10, ofs+11, ofs+12, ofs+13, ofs+12 );
+		die.frames( frames, ofs );
 
 		play( idle );
 	}

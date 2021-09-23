@@ -43,7 +43,7 @@ public class KingSprite extends MobSprite {
 		attack.frames( frames, 9, 10, 11 );
 		
 		die = new Animation( 8, false );
-		die.frames( frames, 12, 13, 14, 15 );
+		die.frames( frames, 0 );
 		
 		play( idle );
 	}

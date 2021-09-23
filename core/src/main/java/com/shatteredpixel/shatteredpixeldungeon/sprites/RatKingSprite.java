@@ -67,7 +67,7 @@ public class RatKingSprite extends MobSprite {
 		attack.frames( frames, c+0 );
 
 		die = new Animation( 10, false );
-		die.frames( frames, c+0 );
+		die.frames( frames, c );
 
 		play( idle );
 

@@ -51,7 +51,7 @@ public class RotHeartSprite extends MobSprite {
 		attack.frames( frames, 0 );
 
 		die = new MovieClip.Animation( 8, false );
-		die.frames( frames, 1, 2, 3, 4, 5, 6, 7, 7, 7 );
+		die.frames( frames, 0 );
 
 		play( idle );
 	}

@@ -76,7 +76,7 @@ public class DM300Sprite extends MobSprite {
 			zap.frames(frames, 6, 7, 7, 6);
 
 			die = new Animation(20, false);
-			die.frames(frames, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10);
+			die.frames(frames, 0 );
 		}
 
 		if (curAnim != charge) play(idle);

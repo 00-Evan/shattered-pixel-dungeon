@@ -43,7 +43,7 @@ public class CrabSprite extends MobSprite {
 		attack.frames( frames, 7, 8, 9 );
 
 		die = new Animation( 12, false );
-		die.frames( frames, 10, 11, 12, 13 );
+		die.frames( frames, 0 );
 
 		play( idle );
 	}

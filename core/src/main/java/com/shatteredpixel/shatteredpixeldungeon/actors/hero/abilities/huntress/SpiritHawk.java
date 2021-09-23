@@ -281,7 +281,7 @@ public class SpiritHawk extends ArmorAbility {
 			attack.frames( frames, 2, 3, 0, 1 );
 
 			die = new Animation( 12, false );
-			die.frames( frames, 4, 5, 6 );
+			die.frames( frames, 0 );
 
 			play( idle );
 		}

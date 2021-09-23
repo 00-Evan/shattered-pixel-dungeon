@@ -53,7 +53,7 @@ public class SpinnerSprite extends MobSprite {
 		zap = attack.clone();
 		
 		die = new Animation( 12, false );
-		die.frames( frames, 6, 7, 8, 9 );
+		die.frames( frames, 0 );
 		
 		play( idle );
 	}

@@ -72,7 +72,7 @@ public abstract class FistSprite extends MobSprite {
 		zap.frames( frames, c+0, c+5, c+6 );
 
 		die = new Animation( 10, false );
-		die.frames( frames, c+0, c+2, c+3, c+4 );
+		die.frames( frames, c );
 
 		play( idle );
 	}

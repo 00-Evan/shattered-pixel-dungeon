@@ -47,7 +47,7 @@ public abstract class SlimeSprite extends MobSprite {
 		attack.frames( frames, c+2, c+3, c+4, c+6, c+5 );
 		
 		die = new Animation( 10, false );
-		die.frames( frames, c+0, c+5, c+6, c+7 );
+		die.frames( frames, c );
 		
 		play(idle);
 	}

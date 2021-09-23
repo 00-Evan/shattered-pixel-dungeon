@@ -49,7 +49,7 @@ public class SeniorSprite extends MobSprite {
 		kick.frames( frames, 22, 23, 22 );
 		
 		die = new Animation( 15, false );
-		die.frames( frames, 18, 24, 25, 25, 26, 27 );
+		die.frames( frames, 0 );
 		
 		play( idle );
 	}

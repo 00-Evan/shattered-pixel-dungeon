@@ -68,7 +68,7 @@ public class GooSprite extends MobSprite {
 		attack.frames( frames, 8, 9, 10 );
 		
 		die = new Animation( 10, false );
-		die.frames( frames, 5, 6, 7 );
+		die.frames( frames, 0 );
 		
 		play(idle);
 

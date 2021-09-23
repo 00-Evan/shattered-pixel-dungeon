@@ -189,7 +189,7 @@ public class SmokeBomb extends ArmorAbility {
 			zap = attack.clone();
 
 			die = new Animation( 12, false );
-			die.frames( frames, 1, 2, 3, 4 );
+			die.frames( frames, 0 );
 
 			play( idle );
 

@@ -47,7 +47,7 @@ public class YogSprite extends MobSprite {
 		attack.frames( frames, 0 );
 		
 		die = new Animation( 10, false );
-		die.frames( frames, 0, 7, 8, 9 );
+		die.frames( frames, 0 );
 		
 		play( idle );
 	}

@@ -62,7 +62,7 @@ public class MimicSprite extends MobSprite {
 		attack.frames( frames, 2+c, 6+c, 7+c, 8+c );
 
 		die = new Animation( 5, false );
-		die.frames( frames, 9+c, 10+c, 11+c );
+		die.frames( frames, c );
 
 		play( idle );
 	}

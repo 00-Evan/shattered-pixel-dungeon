@@ -43,7 +43,7 @@ public class WraithSprite extends MobSprite {
 		attack.frames( frames, 0, 2, 3 );
 		
 		die = new Animation( 8, false );
-		die.frames( frames, 0, 4, 5, 6, 7 );
+		die.frames( frames, 0 );
 		
 		play( idle );
 	}

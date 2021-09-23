@@ -60,7 +60,7 @@ public class RipperSprite extends MobSprite {
 		leap.frames( frames, 12 );
 
 		die = new Animation( 15, false );
-		die.frames( frames, 1, 13, 14, 15, 16 );
+		die.frames( frames, 0 );
 
 		play( idle );
 	}

@@ -43,7 +43,7 @@ public class SwarmSprite extends MobSprite {
 		attack.frames( frames, 6, 7, 8, 9 );
 		
 		die = new Animation( 15, false );
-		die.frames( frames, 10, 11, 12, 13, 14 );
+		die.frames( frames, 0 );
 		
 		play( idle );
 	}

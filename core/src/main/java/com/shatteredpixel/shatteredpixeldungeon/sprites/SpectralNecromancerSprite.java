@@ -37,7 +37,7 @@ public class SpectralNecromancerSprite extends MobSprite {
 		charging.frames( film, c+7, c+8 );
 
 		die = new Animation( 10, false );
-		die.frames( film, c+9, c+10, c+11, c+12 );
+		die.frames( film, c );
 
 		attack = zap.clone();
 
