@@ -28,3 +28,4 @@ core/src/main/assets/sprites/warrior-f-alt.png
 android/debug/output.json
 .DS_Store
 ios-ipa/
+release-staging/
