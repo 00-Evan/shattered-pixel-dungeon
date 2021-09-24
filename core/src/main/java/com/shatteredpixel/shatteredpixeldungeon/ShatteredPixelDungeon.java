@@ -45,6 +45,10 @@ public class ShatteredPixelDungeon extends Game {
 	public ShatteredPixelDungeon( PlatformSupport platform ) {
 		super( sceneClass == null ? WelcomeScene.class : sceneClass, platform );
 
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfDread.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPetrification" );
+
 		//v1.0.0
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFear.class,

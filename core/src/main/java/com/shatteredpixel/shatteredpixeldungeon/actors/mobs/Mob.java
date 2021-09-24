@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
@@ -188,7 +189,7 @@ public abstract class Mob extends Char {
 			return true;
 		}
 
-		if (buff(Terror.class) != null){
+		if (buff(Terror.class) != null || buff(Dread.class) != null ){
 			state = FLEEING;
 		}
 		
@@ -203,6 +204,14 @@ public abstract class Mob extends Char {
 	protected boolean intelligentAlly = false;
 	
 	protected Char chooseEnemy() {
+
+		Dread dread = buff( Dread.class );
+		if (dread != null) {
+			Char source = (Char)Actor.findById( dread.object );
+			if (source != null) {
+				return source;
+			}
+		}
 
 		Terror terror = buff( Terror.class );
 		if (terror != null) {
@@ -340,7 +349,7 @@ public abstract class Mob extends Char {
 		super.add( buff );
 		if (buff instanceof Amok || buff instanceof Corruption) {
 			state = HUNTING;
-		} else if (buff instanceof Terror) {
+		} else if (buff instanceof Terror || buff instanceof Dread) {
 			state = FLEEING;
 		} else if (buff instanceof Sleep) {
 			state = SLEEPING;
@@ -351,7 +360,8 @@ public abstract class Mob extends Char {
 	@Override
 	public void remove( Buff buff ) {
 		super.remove( buff );
-		if (buff instanceof Terror) {
+		if ((buff instanceof Terror && buff(Dread.class) == null)
+				|| (buff instanceof Dread && buff(Terror.class) == null)) {
 			if (enemySeen) {
 				sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "rage"));
 				state = HUNTING;

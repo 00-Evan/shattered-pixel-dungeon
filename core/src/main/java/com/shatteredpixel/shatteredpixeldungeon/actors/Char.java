@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corrosion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FireImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FrostImbue;
@@ -507,6 +508,7 @@ public abstract class Char extends Actor {
 		if ( buff( Stamina.class ) != null) speed *= 1.5f;
 		if ( buff( Adrenaline.class ) != null) speed *= 2f;
 		if ( buff( Haste.class ) != null) speed *= 3f;
+		if ( buff( Dread.class ) != null) speed *= 2f;
 		return speed;
 	}
 	
@@ -563,6 +565,10 @@ public abstract class Char extends Actor {
 		Terror t = buff(Terror.class);
 		if (t != null){
 			t.recover();
+		}
+		Dread d = buff(Dread.class);
+		if (d != null){
+			d.recover();
 		}
 		Charm c = buff(Charm.class);
 		if (c != null){
@@ -641,6 +647,9 @@ public abstract class Char extends Actor {
 		for (Char ch : Actor.chars().toArray(new Char[0])){
 			if (ch.buff(Charm.class) != null && ch.buff(Charm.class).object == id()){
 				ch.buff(Charm.class).detach();
+			}
+			if (ch.buff(Dread.class) != null && ch.buff(Dread.class).object == id()){
+				ch.buff(Dread.class).detach();
 			}
 			if (ch.buff(Terror.class) != null && ch.buff(Terror.class).object == id()){
 				ch.buff(Terror.class).detach();
@@ -875,9 +884,9 @@ public abstract class Char extends Actor {
 
 	public enum Property{
 		BOSS ( new HashSet<Class>( Arrays.asList(Grim.class, GrimTrap.class, ScrollOfRetribution.class, ScrollOfPsionicBlast.class)),
-				new HashSet<Class>( Arrays.asList(Corruption.class) )),
+				new HashSet<Class>( Arrays.asList(Corruption.class, Dread.class) )),
 		MINIBOSS ( new HashSet<Class>(),
-				new HashSet<Class>( Arrays.asList(Corruption.class) )),
+				new HashSet<Class>( Arrays.asList(Corruption.class, Dread.class) )),
 		UNDEAD,
 		DEMONIC,
 		INORGANIC ( new HashSet<Class>(),

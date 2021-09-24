@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
@@ -212,6 +213,7 @@ public class Pylon extends Mob {
 		immunities.add( Amok.class );
 		immunities.add( Sleep.class );
 		immunities.add( Terror.class );
+		immunities.add( Dread.class );
 		immunities.add( Vertigo.class );
 	}
 
