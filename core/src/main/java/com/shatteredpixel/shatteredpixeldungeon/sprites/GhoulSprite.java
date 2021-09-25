@@ -49,7 +49,7 @@ public class GhoulSprite extends MobSprite {
 		crumple.frames( frames, 0, 10, 11, 12 );
 
 		die = new Animation( 15, false );
-		die.frames( frames, 0 );
+		die.frames( frames, 0, 10, 11, 12, 13 );
 		
 		play( idle );
 	}
