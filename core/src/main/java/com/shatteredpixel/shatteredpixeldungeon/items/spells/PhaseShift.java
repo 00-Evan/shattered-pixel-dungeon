@@ -43,7 +43,8 @@ public class PhaseShift extends TargetedSpell {
 		final Char ch = Actor.findChar(bolt.collisionPos);
 		
 		if (ch == hero){
-			ScrollOfTeleportation.teleportHero(curUser);
+			//TODO probably want this to not work on the hero for balance reasons?
+			ScrollOfTeleportation.teleportChar(curUser);
 		} else if (ch != null) {
 			int count = 20;
 			int pos;
