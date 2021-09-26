@@ -10,12 +10,20 @@
     If you're new to Pixel Dungeon Rescue (and you are, since this is the first release!), you
     should read the rest of this page to see what you're in for.
 
-## Screenshot
+## Screenshots
 
-![Mage encountering a sad ghost, a marsupial rat, and three sleeping piranha.](pdr-screenshot-1.png)
+![Mage in dungeon with cretures and treasure.](pdr-screenshot-1.png)
 
 Our Intrepid Hero Encounters a Marspial Rat, a Sad Ghost, and Three Sleeping Piranha. A sweet set of
 plate armor awaits, on level 2 yet! Noice!
+
+---
+
+![Inventory with pizza](pdr-screenshot-2.png)
+
+Hungry? Yelp has some good things to say about pizza found lying around on the floors of ancient
+dungeons!
+
 ## The Story
 
 Many years ago, Pixel Kingdom was enveloped by a dark magic, which made all the creatures in it
