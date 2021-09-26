@@ -93,23 +93,24 @@ by [Watabou](https://www.watabou.ru).
 Wikipedia has a good write-up on [Roguelike games](https://en.wikipedia.org/wiki/Roguelike) if
 you're interested in the history and definition. Here are a few features are common to most
 roguelikes:
-    1.  Roguelikes are (usually) turn-based. You take a turn, the monsters each take a turn. So when
-        it's your turn, you can stop and think for as long as you want, or shut it off and go do
-        something else for a while  - it'll be waiting for you exactly where you left off.
-    2.  Perma-death - if your character dies, you start over - no saves. Of course, due to its
-        theme, you don't actually die in Pixel Dungeon Rescue, you're beamed back to the surface and
-        start over again at level 1, without any of your accumulated loot, so it's pretty much
-        equivalent.
-    3.  Procedurally generated. The levels are (mostly) randomly generated for every game so it's
-        different every time you play. There may be some levels (like boss levels or town levels)
-        which are the same (or only have a few variations) between games, but most levels are
-        random every time. Also, items like potions, rings, and scrolls have to be re-identified
-        for each game. Just because a turquoise potion turned out to be a healing potion last game
-        doesn't mean it will be in the next.
-    4.  Resource management - usually, there is some limited resource (often food) which you need
-        to keep finding in order to survive. This prevents you from sitting on level one killing
-        weak creatures over and over to level up. Pixel Dungeon Rescue is a little more generous
-        in this regard than Shattered, but you will still have to manage your food supply.
+
+1.  Roguelikes are (usually) turn-based. You take a turn, the monsters each take a turn. So when
+    it's your turn, you can stop and think for as long as you want, or shut it off and go do
+    something else for a while  - it'll be waiting for you exactly where you left off.
+2.  Perma-death - if your character dies, you start over - no saves. Of course, due to its
+    theme, you don't actually die in Pixel Dungeon Rescue, you're beamed back to the surface and
+    start over again at level 1, without any of your accumulated loot, so it's pretty much
+    equivalent.
+3.  Procedurally generated. The levels are (mostly) randomly generated for every game so it's
+    different every time you play. There may be some levels (like boss levels or town levels)
+    which are the same (or only have a few variations) between games, but most levels are
+    random every time. Also, items like potions, rings, and scrolls have to be re-identified
+    for each game. Just because a turquoise potion turned out to be a healing potion last game
+    doesn't mean it will be in the next.
+4.  Resource management - usually, there is some limited resource (often food) which you need
+    to keep finding in order to survive. This prevents you from sitting on level one killing
+    weak creatures over and over to level up. Pixel Dungeon Rescue is a little more generous
+    in this regard than Shattered, but you will still have to manage your food supply.
 
 Pixel Dungeon Rescue is essentially a light reskinning of Shattered, where the player characters are
 trying to cure an infection ravaging the dungeon. It is meant for people (younger children) who
