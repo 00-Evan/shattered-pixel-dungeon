@@ -46,9 +46,9 @@ public class ShatteredNews extends NewsService {
 
 		Net.HttpRequest httpGet = new Net.HttpRequest(Net.HttpMethods.GET);
 		if (preferHTTPS) {
-			httpGet.setUrl("https://casiello.net/pixel-dungeon-rescue/news/pdr-news.xml");
+			httpGet.setUrl("https://www.casiello.net/pixel-dungeon-rescue/news/pdr-news.xml");
 		} else {
-			httpGet.setUrl("http://casiello.net/pixel-dungeon-rescue/news/pdr-news.xml");
+			httpGet.setUrl("http://www.casiello.net/pixel-dungeon-rescue/news/pdr-news.xml");
 		}
 
 		Gdx.net.sendHttpRequest(httpGet, new Net.HttpResponseListener() {
