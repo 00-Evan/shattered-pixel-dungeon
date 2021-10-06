@@ -64,7 +64,7 @@ public class PixelScene extends Scene {
 
 	public static Camera uiCamera;
 
-	//stylized 3x5 bitmapped pixel font. Only latin characters supported.
+	//stylized 3x5 bitmapped pixel font. 只支持拉丁字母.
 	public static BitmapText.Font pixelFont;
 
 	protected boolean inGameScene = false;
@@ -76,7 +76,7 @@ public class PixelScene extends Scene {
 
 		GameScene.scene = null;
 
-		//flush the texture cache whenever moving from ingame to menu, helps reduce memory load
+		//每当从游戏中移动到菜单时刷新纹理缓存，有助于减少内存负载
 		if (!inGameScene && InterlevelScene.lastRegion != -1){
 			InterlevelScene.lastRegion = -1;
 			TextureCache.clear();

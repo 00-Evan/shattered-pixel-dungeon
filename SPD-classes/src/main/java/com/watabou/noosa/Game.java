@@ -54,7 +54,7 @@ public class Game implements ApplicationListener {
 	public static int width;
 	public static int height;
 
-	//number of pixels from bottom of view before rendering starts
+	//渲染开始前number of pixels from bottom of view
 	public static int bottomInset;
 
 	// Density: mdpi=1, hdpi=1.5, xhdpi=2...
@@ -63,15 +63,15 @@ public class Game implements ApplicationListener {
 	public static String version;
 	public static int versionCode;
 	
-	// Current scene
+	//当前场景
 	protected Scene scene;
-	// New scene we are going to switch to
+	//要切换到的新场景
 	protected Scene requestedScene;
-	// true if scene switch is requested
+	//如果请求场景切换,则为 true
 	protected boolean requestedReset = true;
 	// callback to perform logic during scene change
 	protected SceneChangeCallback onChange;
-	// New scene class
+	//新场景类
 	protected static Class<? extends Scene> sceneClass;
 	
 	public static float timeScale = 1f;

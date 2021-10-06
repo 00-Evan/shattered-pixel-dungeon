@@ -57,7 +57,8 @@ public class Scene extends Group {
 	public void onResume(){
 	
 	}
-	
+
+	//判断是否是横屏,宽比高大是横屏,反之竖屏
 	public static boolean landscape(){
 		return Game.width > Game.height;
 	}
