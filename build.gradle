@@ -4,7 +4,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.2'
+        classpath 'com.android.tools.build:gradle:7.0.3'
         classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.13'
     }
 }
@@ -20,7 +20,7 @@ allprojects {
 
         appJavaCompatibility = JavaVersion.VERSION_1_8
 
-        appAndroidCompileSDK = 30 //TODO update to 31 once it is out of preview
+        appAndroidCompileSDK = 31
         appAndroidMinSDK = 14
         appAndroidTargetSDK = 31
 
