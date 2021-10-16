@@ -96,6 +96,11 @@ public class ScrollOfTeleportation extends Scroll {
 		if (!(Dungeon.level instanceof RegularLevel)){
 			return teleportInNonRegularLevel( ch, false );
 		}
+
+		if (Char.hasProp(ch, Char.Property.IMMOVABLE)){
+			GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
+			return false;
+		}
 		
 		int count = 20;
 		int pos;
@@ -203,6 +208,11 @@ public class ScrollOfTeleportation extends Scroll {
 	//teleports to a random pathable location on the floor
 	//prefers not seen(optional) > not visible > visible
 	public static boolean teleportInNonRegularLevel(Char ch, boolean preferNotSeen ){
+
+		if (Char.hasProp(ch, Char.Property.IMMOVABLE)){
+			GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
+			return false;
+		}
 
 		ArrayList<Integer> visibleValid = new ArrayList<>();
 		ArrayList<Integer> notVisibleValid = new ArrayList<>();
