@@ -275,7 +275,7 @@ public class Game implements ApplicationListener {
 	}
 	
 	public static void reportException( Throwable tr ) {
-		if (instance != null) {
+		if (instance != null && Gdx.app != null) {
 			instance.logException(tr);
 		} else {
 			//fallback if error happened in initialization
