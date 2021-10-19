@@ -219,12 +219,10 @@ public enum Talent {
 	}
 
 	public String title(){
-		//TODO translate this
-		if (this == HEROIC_ENERGY &&
-				Messages.lang() == Languages.ENGLISH
+		if (this == HEROIC_ENERGY
 				&& Dungeon.hero != null
 				&& Dungeon.hero.armorAbility instanceof Ratmogrify){
-			return "ratroic energy";
+			return Messages.get(this, name() + ".rat_title");
 		}
 		return Messages.get(this, name() + ".title");
 	}
