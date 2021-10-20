@@ -101,7 +101,7 @@ public class Tengu extends Mob {
 	protected void onAdd() {
 		//when he's removed and re-added to the fight, his time is always set to now.
 		if (cooldown() > TICK) {
-			spend(-cooldown());
+			timeToNow();
 			spendToWhole();
 		}
 		super.onAdd();

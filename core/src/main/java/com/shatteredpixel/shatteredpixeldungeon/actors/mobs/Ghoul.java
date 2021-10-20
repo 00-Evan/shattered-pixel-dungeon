@@ -266,7 +266,7 @@ public class Ghoul extends Mob {
 				}
 				ghoul.HP = Math.round(ghoul.HT/10f);
 				Actor.add(ghoul);
-				ghoul.spend(-ghoul.cooldown());
+				ghoul.timeToNow();
 				Dungeon.level.mobs.add(ghoul);
 				Dungeon.level.occupyCell( ghoul );
 				ghoul.sprite.idle();
@@ -297,7 +297,7 @@ public class Ghoul extends Mob {
 			Ghoul newHost = searchForHost(ghoul);
 			if (newHost != null){
 				attachTo(newHost);
-				spend(-cooldown());
+				timeToNow();
 			} else {
 				ghoul.die(this);
 			}
