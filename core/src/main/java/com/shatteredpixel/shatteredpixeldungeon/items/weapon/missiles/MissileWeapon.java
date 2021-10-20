@@ -61,7 +61,7 @@ abstract public class MissileWeapon extends Weapon {
 	
 	protected boolean sticky = true;
 	
-	protected static final float MAX_DURABILITY = 100;
+	public static final float MAX_DURABILITY = 100;
 	protected float durability = MAX_DURABILITY;
 	protected float baseUses = 10;
 	
@@ -265,6 +265,7 @@ abstract public class MissileWeapon extends Weapon {
 
 	public void repair( float amount ){
 		durability += amount;
+		durability = Math.min(durability, MAX_DURABILITY);
 	}
 	
 	public float durabilityPerUse(){
@@ -444,7 +445,7 @@ abstract public class MissileWeapon extends Weapon {
 		bundleRestoring = true;
 		super.restoreFromBundle(bundle);
 		bundleRestoring = false;
-		durability = bundle.getInt(DURABILITY);
+		durability = bundle.getFloat(DURABILITY);
 	}
 
 	public static class PlaceHolder extends MissileWeapon {

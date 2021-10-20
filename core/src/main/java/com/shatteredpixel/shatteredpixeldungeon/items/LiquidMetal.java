@@ -120,7 +120,9 @@ public class LiquidMetal extends Item {
 				//we remove a tiny amount here to account for rounding errors
 				float percentDurabilityLost = 0.999f - (m.durabilityLeft()/100f);
 				maxToUse = (int)Math.ceil(maxToUse*percentDurabilityLost);
-				if (maxToUse == 0 || percentDurabilityLost < m.durabilityPerUse()/100f){
+				float durPerUse = m.durabilityPerUse()/100f;
+				if (maxToUse == 0 ||
+						Math.ceil(m.durabilityLeft()/ m.durabilityPerUse()) >= Math.ceil(m.MAX_DURABILITY/ m.durabilityPerUse()) ){
 					GLog.w(Messages.get(LiquidMetal.class, "already_fixed"));
 					return;
 				} else if (maxToUse < quantity()) {
