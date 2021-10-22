@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
@@ -347,7 +348,7 @@ public abstract class Mob extends Char {
 	@Override
 	public void add( Buff buff ) {
 		super.add( buff );
-		if (buff instanceof Amok || buff instanceof Corruption) {
+		if (buff instanceof Amok || buff instanceof AllyBuff) {
 			state = HUNTING;
 		} else if (buff instanceof Terror || buff instanceof Dread) {
 			state = FLEEING;

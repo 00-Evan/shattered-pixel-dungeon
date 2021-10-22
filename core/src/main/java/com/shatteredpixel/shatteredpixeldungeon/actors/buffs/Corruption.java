@@ -26,7 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
-public class Corruption extends Buff {
+public class Corruption extends AllyBuff {
 
 	{
 		type = buffType.NEGATIVE;
@@ -34,14 +34,15 @@ public class Corruption extends Buff {
 	}
 
 	private float buildToDamage = 0f;
-	
-	@Override
-	public boolean attachTo(Char target) {
-		if (super.attachTo(target)){
-			target.alignment = Char.Alignment.ALLY;
-			return true;
-		} else {
-			return false;
+
+	//corrupted enemies are usually fully healed and cleansed of most debuffs
+	public static void corruptionHeal(Char target){
+		target.HP = target.HT;
+		for (Buff buff : target.buffs()) {
+			if (buff.type == Buff.buffType.NEGATIVE
+					&& !(buff instanceof SoulMark)) {
+				buff.detach();
+			}
 		}
 	}
 	

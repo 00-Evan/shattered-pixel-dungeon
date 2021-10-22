@@ -3,6 +3,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
@@ -118,8 +119,8 @@ public class SpectralNecromancer extends Necromancer {
 		Dungeon.level.occupyCell( wraith );
 		((SpectralNecromancerSprite)sprite).finishSummoning();
 
-		if (buff(Corruption.class) != null){
-			Buff.affect(wraith, Corruption.class);
+		for (Buff b : buffs(AllyBuff.class)){
+			Buff.affect( wraith, b.getClass());
 		}
 		for (Buff b : buffs(ChampionEnemy.class)){
 			Buff.affect( wraith, b.getClass());
