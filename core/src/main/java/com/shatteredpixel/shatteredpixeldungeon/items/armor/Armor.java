@@ -56,6 +56,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Stone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Swiftness;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Thorns;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
@@ -394,10 +395,16 @@ public class Armor extends EquipableItem {
 	
 	public Item upgrade( boolean inscribe ) {
 
-		if (inscribe && (glyph == null || glyph.curse())){
-			inscribe( Glyph.random() );
-		} else if (!inscribe && level() >= 4 && Random.Float(10) < Math.pow(2, level()-4)){
-			inscribe(null);
+		if (inscribe){
+			if (glyph == null){
+				inscribe( Glyph.random() );
+			}
+		} else {
+			if (hasCurseGlyph()){
+				if (Random.Int(3) == 0) inscribe(null);
+			} else if (level() >= 4 && Random.Float(10) < Math.pow(2, level()-4)){
+				inscribe(null);
+			}
 		}
 		
 		cursed = false;
