@@ -91,7 +91,7 @@ public class AntiMagic extends Armor.Glyph {
 	
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
-		//no proc effect, see Hero.damage
+		//no proc effect, see Hero.damage and GhostHero.damage and ArmoredStatue.damage
 		return damage;
 	}
 	

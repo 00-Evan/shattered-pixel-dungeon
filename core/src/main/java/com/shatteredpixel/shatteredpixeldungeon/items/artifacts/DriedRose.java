@@ -627,7 +627,7 @@ public class DriedRose extends Artifact {
 			//TODO improve this when I have proper damage source logic
 			if (rose != null && rose.armor != null && rose.armor.hasGlyph(AntiMagic.class, this)
 					&& AntiMagic.RESISTS.contains(src.getClass())){
-				dmg -= AntiMagic.drRoll(rose.armor.level());
+				dmg -= AntiMagic.drRoll(rose.armor.buffedLvl());
 			}
 			
 			super.damage( dmg, src );
@@ -684,6 +684,15 @@ public class DriedRose extends Artifact {
 				block += Random.NormalIntRange( 0, rose.weapon.defenseFactor( this ));
 			}
 			return block;
+		}
+
+		//used in some glyph calculations
+		public Armor armor(){
+			if (rose != null){
+				return rose.armor;
+			} else {
+				return null;
+			}
 		}
 
 		@Override
