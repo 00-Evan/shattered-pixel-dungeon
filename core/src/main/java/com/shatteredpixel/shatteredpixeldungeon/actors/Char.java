@@ -50,6 +50,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LifeLink;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
@@ -74,6 +75,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCleansing;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -730,7 +732,15 @@ public abstract class Char extends Actor {
 	}
 
 	public synchronized void add( Buff buff ) {
-		
+
+		if (buff(PotionOfCleansing.Cleanse.class) != null) { //cleansing buff
+			if (buff.type == Buff.buffType.NEGATIVE
+					&& !(buff instanceof AllyBuff)
+					&& !(buff instanceof LostInventory)){
+				return;
+			}
+		}
+
 		buffs.add( buff );
 		if (Actor.chars().contains(this)) Actor.add( buff );
 

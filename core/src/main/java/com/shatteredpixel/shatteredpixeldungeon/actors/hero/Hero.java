@@ -1571,7 +1571,7 @@ public class Hero extends Char {
 
 		super.add( buff );
 
-		if (sprite != null) {
+		if (sprite != null && buffs().contains(buff)) {
 			String msg = buff.heroMessage();
 			if (msg != null){
 				GLog.w(msg);
