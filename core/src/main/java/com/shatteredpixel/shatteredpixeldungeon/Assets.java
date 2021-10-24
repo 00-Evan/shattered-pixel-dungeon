@@ -117,6 +117,18 @@ public class Assets {
 
 		public static final String SEWERS_1		= "music/sewers_1.ogg";
 		public static final String SEWERS_2		= "music/sewers_2.ogg";
+
+		public static final String PRISON_1		= "music/prison_1.ogg";
+		public static final String PRISON_2		= "music/prison_2.ogg";
+
+		public static final String CAVES_1		= "music/caves_1.ogg";
+		public static final String CAVES_2		= "music/caves_2.ogg";
+
+		public static final String CITY_1		= "music/city_1.ogg";
+		public static final String CITY_2		= "music/city_2.ogg";
+
+		public static final String HALLS_1		= "music/halls_1.ogg";
+		public static final String HALLS_2		= "music/halls_2.ogg";
 	}
 
 	public static class Sounds {
