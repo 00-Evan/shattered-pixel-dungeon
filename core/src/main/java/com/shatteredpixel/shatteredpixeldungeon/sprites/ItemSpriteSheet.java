@@ -776,7 +776,7 @@ public class ItemSpriteSheet {
 		public static final int SCROLL_PASSAGE  = EXOTIC_SCROLLS+5;
 		public static final int SCROLL_SIREN    = EXOTIC_SCROLLS+6;
 		public static final int SCROLL_FORESIGHT= EXOTIC_SCROLLS+7;
-		public static final int SCROLL_CONFUSION= EXOTIC_SCROLLS+8;
+		public static final int SCROLL_CHALLENGE= EXOTIC_SCROLLS+8;
 		public static final int SCROLL_PSIBLAST = EXOTIC_SCROLLS+9;
 		public static final int SCROLL_DREAD    = EXOTIC_SCROLLS+10;
 		public static final int SCROLL_POLYMORPH= EXOTIC_SCROLLS+11;
@@ -789,7 +789,7 @@ public class ItemSpriteSheet {
 			assignIconRect( SCROLL_PASSAGE,     5, 7 );
 			assignIconRect( SCROLL_SIREN,       7, 6 );
 			assignIconRect( SCROLL_FORESIGHT,   7, 5 );
-			assignIconRect( SCROLL_CONFUSION,   7, 7 );
+			assignIconRect( SCROLL_CHALLENGE,   7, 7 );
 			assignIconRect( SCROLL_PSIBLAST,    5, 6 );
 			assignIconRect( SCROLL_DREAD,       5, 7 );
 			assignIconRect( SCROLL_POLYMORPH,   7, 6 );

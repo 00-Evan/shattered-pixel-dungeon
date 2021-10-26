@@ -52,6 +52,9 @@ public class ShatteredPixelDungeon extends Game {
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfSirensSong.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfAffection" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfChallenge.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfConfusion" );
 
 		//v1.0.0
 		com.watabou.utils.Bundle.addAlias(

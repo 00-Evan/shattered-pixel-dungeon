@@ -79,6 +79,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCle
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast;
@@ -357,6 +358,10 @@ public abstract class Char extends Actor {
 			if (endure != null){
 				dmg = endure.adjustDamageTaken(dmg);
 			}
+
+			if (enemy.buff(ScrollOfChallenge.ChallengeArena.class) != null){
+				dmg *= 0.67f;
+			}
 			
 			int effectiveDamage = enemy.defenseProc( this, dmg );
 			effectiveDamage = Math.max( effectiveDamage - dr, 0 );
@@ -590,9 +595,15 @@ public abstract class Char extends Actor {
 			dmg *= 1.25f;
 		}
 		Endure.EndureTracker endure = buff(Endure.EndureTracker.class);
-		//reduce damage here if it isn't coming from a chacter (if it is we already reduced it)
-		if (endure != null && !(src instanceof Char)){
-			dmg = endure.adjustDamageTaken(dmg);
+		if (!(src instanceof Char)){
+			//reduce damage here if it isn't coming from a character (if it is we already reduced it)
+			if (endure != null){
+				dmg = endure.adjustDamageTaken(dmg);
+			}
+			//the same also applies to challenge scroll damage reduction
+			if (buff(ScrollOfChallenge.ChallengeArena.class) != null){
+				dmg *= 0.67f;
+			}
 		}
 		
 		Class<?> srcClass = src.getClass();
