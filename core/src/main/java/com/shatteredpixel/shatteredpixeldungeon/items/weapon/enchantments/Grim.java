@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.TrueRunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.watabou.utils.Random;
@@ -45,7 +46,12 @@ public class Grim extends Weapon.Enchantment {
 		//scales from 0 - 50% based on how low hp the enemy is, plus 5% per level
 		float maxChance = 0.5f + .05f*level;
 		float chanceMulti = (float)Math.pow( ((defender.HT - enemyHealth) / (float)defender.HT), 2);
-		float chance = maxChance * chanceMulti;
+		float chance;
+		if (weapon instanceof TrueRunicBlade) {
+			chance = 0.5f;
+		} else {
+			chance = maxChance * chanceMulti;
+		}
 
 		chance *= procChanceMultiplier(attacker);
 

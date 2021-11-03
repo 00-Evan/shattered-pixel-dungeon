@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.TrueRunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.watabou.noosa.Visual;
@@ -42,7 +43,12 @@ public class Lucky extends Weapon.Enchantment {
 		// lvl 0 - 10%
 		// lvl 1 ~ 12%
 		// lvl 2 ~ 14%
-		float procChance = (level+4f)/(level+40f) * procChanceMultiplier(attacker);
+		float procChance;
+		if (weapon instanceof TrueRunicBlade) {
+			procChance = (level+5f)/(level+10f) * procChanceMultiplier(attacker);
+		} else {
+			procChance = (level+4f)/(level+40f) * procChanceMultiplier(attacker);
+		}
 		if (defender.HP <= damage && Random.Float() < procChance){
 			Buff.affect(defender, LuckProc.class);
 		}

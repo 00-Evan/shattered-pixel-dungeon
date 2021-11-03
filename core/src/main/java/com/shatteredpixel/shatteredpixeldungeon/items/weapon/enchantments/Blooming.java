@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.TrueRunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -46,7 +47,12 @@ public class Blooming extends Weapon.Enchantment {
 		// lvl 0 - 33%
 		// lvl 1 - 50%
 		// lvl 2 - 60%
-		float procChance = (level+1f)/(level+3f) * procChanceMultiplier(attacker);
+		float procChance;
+		if (weapon instanceof TrueRunicBlade) {
+			procChance = 1;
+		} else {
+			procChance = (level+1f)/(level+3f) * procChanceMultiplier(attacker);
+		}
 		if (Random.Float() < procChance) {
 			
 			boolean secondPlant = level > Random.Int(10);

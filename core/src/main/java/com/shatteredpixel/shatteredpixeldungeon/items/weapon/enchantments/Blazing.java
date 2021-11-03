@@ -27,9 +27,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.TrueRunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.watabou.utils.Random;
+
+import javax.swing.table.TableRowSorter;
 
 public class Blazing extends Weapon.Enchantment {
 
@@ -42,7 +45,12 @@ public class Blazing extends Weapon.Enchantment {
 		// lvl 0 - 33%
 		// lvl 1 - 50%
 		// lvl 2 - 60%
-		float procChance = (level+1f)/(level+3f) * procChanceMultiplier(attacker);
+		float procChance;
+		if (weapon instanceof TrueRunicBlade) {
+			procChance = 1;
+		} else {
+			procChance = (level+1f)/(level+3f) * procChanceMultiplier(attacker);
+		}
 		if (Random.Float() < procChance) {
 			
 			if (defender.buff(Burning.class) != null){

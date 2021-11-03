@@ -85,7 +85,7 @@ public class ItemSpriteSheet {
 	public static final int PETAL           = UNCOLLECTIBLE+2;
 	public static final int SANDBAG         = UNCOLLECTIBLE+3;
 	public static final int SPIRIT_ARROW    = UNCOLLECTIBLE+4;
-	
+	public static final int BULLET          = UNCOLLECTIBLE+5;
 	public static final int GUIDE_PAGE      = UNCOLLECTIBLE+6;
 	public static final int ALCH_PAGE       = UNCOLLECTIBLE+7;
 	
@@ -97,7 +97,7 @@ public class ItemSpriteSheet {
 		assignItemRect(PETAL,       8,  8);
 		assignItemRect(SANDBAG,     10, 10);
 		assignItemRect(SPIRIT_ARROW,11, 11);
-		
+		assignItemRect(BULLET,      4,  4);
 		assignItemRect(GUIDE_PAGE,  10, 11);
 		assignItemRect(ALCH_PAGE,   10, 11);
 		
@@ -246,6 +246,7 @@ public class ItemSpriteSheet {
 	public static final int RUNIC_BLADE     = WEP_TIER4+3;
 	public static final int ASSASSINS_BLADE = WEP_TIER4+4;
 	public static final int CROSSBOW        = WEP_TIER4+5;
+	public static final int TRUE_RUNIC_BLADE= WEP_TIER4+6;
 	static{
 		assignItemRect(LONGSWORD,       15, 15);
 		assignItemRect(BATTLE_AXE,      16, 16);
@@ -253,6 +254,7 @@ public class ItemSpriteSheet {
 		assignItemRect(RUNIC_BLADE,     14, 14);
 		assignItemRect(ASSASSINS_BLADE, 14, 15);
 		assignItemRect(CROSSBOW,        15, 15);
+		assignItemRect(TRUE_RUNIC_BLADE,14, 14);
 	}
 
 	private static final int WEP_TIER5      =                               xy(1, 9);   //8 slots
@@ -271,7 +273,21 @@ public class ItemSpriteSheet {
 		assignItemRect(GAUNTLETS,   13, 15);
 	}
 
-	                                                                                    //8 free slots
+	private static final int WEP_TIER6      =                               xy(9, 9);   //8 slots
+	public static final int LANCE           = WEP_TIER6+0;
+	public static final int HUNTING_RIFLE   = WEP_TIER6+1;
+	public static final int TIER6_3         = WEP_TIER6+2;
+	public static final int TIER6_4         = WEP_TIER6+3;
+	public static final int TIER6_5         = WEP_TIER6+4;
+	public static final int TIER6_6         = WEP_TIER6+5;
+	static{
+		assignItemRect(LANCE,             15, 15);
+		assignItemRect(HUNTING_RIFLE,     13, 16);
+		assignItemRect(TIER6_3,           16, 16);
+		assignItemRect(TIER6_4,           16, 16);
+		assignItemRect(TIER6_5,           16, 16);
+		assignItemRect(TIER6_6,           16, 16);
+	}
 
 	private static final int MISSILE_WEP    =                               xy(1, 10);  //16 slots. 3 per tier + boomerang
 	public static final int SPIRIT_BOW      = MISSILE_WEP+0;

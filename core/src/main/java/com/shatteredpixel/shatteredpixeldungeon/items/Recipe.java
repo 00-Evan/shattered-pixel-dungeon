@@ -56,6 +56,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.spells.ReclaimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Recycle;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.WildEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HuntingRifle;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Lance;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.TrueRunicBlade;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.watabou.utils.Reflection;
 
@@ -173,7 +177,7 @@ public abstract class Recipe {
 		new AlchemistsToolkit.upgradeKit(),
 		new Scroll.ScrollToStone(),
 		new ArcaneResin.Recipe(),
-		new StewedMeat.oneMeat()
+		new StewedMeat.oneMeat(),
 	};
 	
 	private static Recipe[] twoIngredientRecipes = new Recipe[]{
@@ -211,7 +215,10 @@ public abstract class Recipe {
 		new ExoticPotion.PotionToExotic(),
 		new ExoticScroll.ScrollToExotic(),
 		new StewedMeat.threeMeat(),
-		new MeatPie.Recipe()
+		new MeatPie.Recipe(),
+		new TrueRunicBlade.Recipe(),
+		new HuntingRifle.Recipe(),
+		new Lance.Recipe(),
 	};
 	
 	public static Recipe findRecipe(ArrayList<Item> ingredients){

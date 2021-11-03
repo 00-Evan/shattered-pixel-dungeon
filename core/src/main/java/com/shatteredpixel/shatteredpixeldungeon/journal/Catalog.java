@@ -115,6 +115,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Spear;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.TrueRunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WarHammer;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Whip;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
@@ -179,6 +180,8 @@ public enum Catalog {
 		WEAPONS.seen.put( Greataxe.class,                   false);
 		WEAPONS.seen.put( Greatshield.class,                false);
 		WEAPONS.seen.put( Gauntlet.class,                   false);
+
+		WEAPONS.seen.put( TrueRunicBlade.class,              true);
 	
 		ARMOR.seen.put( ClothArmor.class,                   false);
 		ARMOR.seen.put( LeatherArmor.class,                 false);

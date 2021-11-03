@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.TrueRunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -41,7 +42,12 @@ public class Elastic extends Weapon.Enchantment {
 		// lvl 0 - 20%
 		// lvl 1 - 33%
 		// lvl 2 - 43%
-		float procChance = (level+1f)/(level+5f) * procChanceMultiplier(attacker);
+		float procChance;
+		if (weapon instanceof TrueRunicBlade) {
+			procChance = 1;
+		} else {
+			procChance = (level+1f)/(level+5f) * procChanceMultiplier(attacker);
+		}
 		if (Random.Float() < procChance) {
 			//trace a ballistica to our target (which will also extend past them
 			Ballistica trajectory = new Ballistica(attacker.pos, defender.pos, Ballistica.STOP_TARGET);

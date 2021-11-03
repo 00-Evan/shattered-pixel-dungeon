@@ -202,9 +202,7 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 
 	@Override
-	public int reachFactor(Char owner) {
-		return hasEnchant(Projecting.class, owner) ? RCH+1 : RCH;
-	}
+	public int reachFactor(Char owner) { return hasEnchant(Projecting.class, owner) ? RCH+1 : RCH; }
 
 	public int STRReq(){
 		return STRReq(level());

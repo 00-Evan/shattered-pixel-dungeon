@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.TrueRunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -40,9 +41,13 @@ public class Blocking extends Weapon.Enchantment {
 	public int proc(Weapon weapon, Char attacker, Char defender, int damage) {
 		
 		int level = Math.max( 0, weapon.buffedLvl() );
-		
-		Buff.prolong(attacker, BlockBuff.class, 2 + level/2).setBlocking(level + 1);
-		
+
+		if (weapon instanceof TrueRunicBlade) {
+			Buff.prolong(attacker, BlockBuff.class, 2 + level/2).setBlocking(level * 2 + 1);
+		} else {
+			Buff.prolong(attacker, BlockBuff.class, 2 + level/2).setBlocking(level + 1);
+		}
+
 		return damage;
 	}
 	

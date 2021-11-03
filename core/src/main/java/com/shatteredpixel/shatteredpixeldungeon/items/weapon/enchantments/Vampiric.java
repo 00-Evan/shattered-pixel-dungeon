@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.TrueRunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
@@ -38,7 +39,12 @@ public class Vampiric extends Weapon.Enchantment {
 		
 		//chance to heal scales from 5%-30% based on missing HP
 		float missingPercent = (attacker.HT - attacker.HP) / (float)attacker.HT;
-		float healChance = 0.05f + .25f*missingPercent;
+		float healChance;
+		if (weapon instanceof TrueRunicBlade) {
+			healChance = 1;
+		} else {
+			healChance = 0.05f + .25f*missingPercent;
+		}
 
 		healChance *= procChanceMultiplier(attacker);
 		
