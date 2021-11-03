@@ -275,19 +275,37 @@ public class ItemSpriteSheet {
 
 	private static final int WEP_TIER6      =                               xy(9, 9);   //8 slots
 	public static final int LANCE           = WEP_TIER6+0;
-	public static final int HUNTING_RIFLE   = WEP_TIER6+1;
+	public static final int TIER6_2			= WEP_TIER6+1;
 	public static final int TIER6_3         = WEP_TIER6+2;
 	public static final int TIER6_4         = WEP_TIER6+3;
 	public static final int TIER6_5         = WEP_TIER6+4;
 	public static final int TIER6_6         = WEP_TIER6+5;
 	static{
 		assignItemRect(LANCE,             15, 15);
-		assignItemRect(HUNTING_RIFLE,     13, 16);
+		assignItemRect(TIER6_2,           16, 16);
 		assignItemRect(TIER6_3,           16, 16);
 		assignItemRect(TIER6_4,           16, 16);
 		assignItemRect(TIER6_5,           16, 16);
 		assignItemRect(TIER6_6,           16, 16);
 	}
+
+	private static final int GUNS         =                               xy(1, 32);
+	public static final int CRUDE_PISTOL  = GUNS+0;
+	public static final int PISTOL		  = GUNS+1;
+	public static final int GOLDEN_PISTOL = GUNS+2;
+	public static final int HANDGUN       = GUNS+3;
+	public static final int MAGNUM        = GUNS+4;
+	public static final int GUNS_6        = GUNS+5;
+	static{
+		assignItemRect(CRUDE_PISTOL   ,10, 13);
+		assignItemRect(PISTOL		  ,11, 15);
+		assignItemRect(GOLDEN_PISTOL  ,13, 15);
+		assignItemRect(HANDGUN        ,13, 16);
+		assignItemRect(MAGNUM         ,12, 16);
+		assignItemRect(GUNS_6         ,16, 16);
+	}
+
+
 
 	private static final int MISSILE_WEP    =                               xy(1, 10);  //16 slots. 3 per tier + boomerang
 	public static final int SPIRIT_BOW      = MISSILE_WEP+0;
