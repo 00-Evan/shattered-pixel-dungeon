@@ -91,6 +91,11 @@ public class ItemSpriteSheet {
 	
 	public static final int TENGU_BOMB      = UNCOLLECTIBLE+9;
 	public static final int TENGU_SHOCKER   = UNCOLLECTIBLE+10;
+	public static final int	SINGLE_BULLET   = UNCOLLECTIBLE+11;
+	public static final int	DUAL_BULLET     = UNCOLLECTIBLE+12;
+	public static final int TRIPLE_BULLET   = UNCOLLECTIBLE+13;
+	public static final int SNIPER_BULLET   = UNCOLLECTIBLE+14;
+
 	static{
 		assignItemRect(GOLD,        15, 13);
 		assignItemRect(DEWDROP,     10, 10);
@@ -103,6 +108,11 @@ public class ItemSpriteSheet {
 		
 		assignItemRect(TENGU_BOMB,      10, 10);
 		assignItemRect(TENGU_SHOCKER,   10, 10);
+
+		assignItemRect(SINGLE_BULLET,   8, 8);
+		assignItemRect(DUAL_BULLET,     11, 10);
+		assignItemRect(TRIPLE_BULLET,   11, 11);
+		assignItemRect(SNIPER_BULLET,   8, 8);
 	}
 
 	private static final int CONTAINERS     =                               xy(1, 3);   //16 slots
@@ -289,20 +299,68 @@ public class ItemSpriteSheet {
 		assignItemRect(TIER6_6,           16, 16);
 	}
 
-	private static final int GUNS         =                               xy(1, 32);
-	public static final int CRUDE_PISTOL  = GUNS+0;
-	public static final int PISTOL		  = GUNS+1;
-	public static final int GOLDEN_PISTOL = GUNS+2;
-	public static final int HANDGUN       = GUNS+3;
-	public static final int MAGNUM        = GUNS+4;
-	public static final int GUNS_6        = GUNS+5;
+	private static final int HANDGUNS         =                               xy(1, 32);
+	public static final int CRUDE_PISTOL  = HANDGUNS+0;
+	public static final int PISTOL		  = HANDGUNS+1;
+	public static final int GOLDEN_PISTOL = HANDGUNS+2;
+	public static final int HANDGUN       = HANDGUNS+3;
+	public static final int MAGNUM        = HANDGUNS+4;
+	public static final int HANDGUNS_6        = HANDGUNS+5;
 	static{
 		assignItemRect(CRUDE_PISTOL   ,10, 13);
 		assignItemRect(PISTOL		  ,11, 15);
 		assignItemRect(GOLDEN_PISTOL  ,13, 15);
 		assignItemRect(HANDGUN        ,13, 16);
 		assignItemRect(MAGNUM         ,12, 16);
-		assignItemRect(GUNS_6         ,16, 16);
+		assignItemRect(HANDGUNS_6     ,16, 16);
+	}
+
+	private static final int SNIPERS         =                               xy(9, 32);
+	public static final int HUNTING_RIFLE = SNIPERS+0;
+	public static final int SNIPER_RIFLE  = SNIPERS+1;
+	public static final int SNIPERS_3     = SNIPERS+2;
+	public static final int SNIPERS_4     = SNIPERS+3;
+	public static final int SNIPERS_5     = SNIPERS+4;
+	public static final int SNIPERS_6     = SNIPERS+5;
+	static{
+		assignItemRect(HUNTING_RIFLE  ,13, 16);
+		assignItemRect(SNIPER_RIFLE   ,14, 16);
+		assignItemRect(SNIPERS_3      ,16, 16);
+		assignItemRect(SNIPERS_4      ,16, 16);
+		assignItemRect(SNIPERS_5      ,16, 16);
+		assignItemRect(SNIPERS_6      ,16, 16);
+	}
+
+	private static final int MACHINEGUNS         =                               xy(1, 33);
+	public static final int DUAL_PISTOL        = MACHINEGUNS+0;
+	public static final int SUBMACHINEGUN     = MACHINEGUNS+1;
+	public static final int ASSULT_RIFLE      = MACHINEGUNS+2;
+	public static final int HEAVY_MACHINEGUN  = MACHINEGUNS+3;
+	public static final int MACHINEGUNS_5     = MACHINEGUNS+4;
+	public static final int MACHINEGUNS_6     = MACHINEGUNS+5;
+	static{
+		assignItemRect(DUAL_PISTOL        ,15, 16);
+		assignItemRect(SUBMACHINEGUN     ,15, 15);
+		assignItemRect(ASSULT_RIFLE      ,15, 16);
+		assignItemRect(HEAVY_MACHINEGUN  ,13, 15);
+		assignItemRect(MACHINEGUNS_5     ,16, 16);
+		assignItemRect(MACHINEGUNS_6     ,16, 16);
+	}
+
+	private static final int SPECIALGUNS         =                               xy(9, 33);
+	public static final int SHOTGUN        = SPECIALGUNS+0;
+	public static final int PLASMA_CANNON  = SPECIALGUNS+1;
+	public static final int SPECIALGUNS_3  = SPECIALGUNS+2;
+	public static final int SPECIALGUNS_4  = SPECIALGUNS+3;
+	public static final int SPECIALGUNS_5  = SPECIALGUNS+4;
+	public static final int SPECIALGUNS_6  = SPECIALGUNS+5;
+	static{
+		assignItemRect(SHOTGUN              ,14, 16);
+		assignItemRect(PLASMA_CANNON        ,14, 16);
+		assignItemRect(SPECIALGUNS_3        ,16, 16);
+		assignItemRect(SPECIALGUNS_4        ,16, 16);
+		assignItemRect(SPECIALGUNS_5        ,16, 16);
+		assignItemRect(SPECIALGUNS_6        ,16, 16);
 	}
 
 
