@@ -24,7 +24,19 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.AssultRifle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.CrudePistol;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.DualPistol;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.GoldenPistol;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Handgun;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HeavyMachinegun;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HuntingRifle;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Magnum;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Pistol;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.ShotGun;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.SniperRifle;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.SubMachinegun;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Bolas;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.FishingSpear;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.HeavyBoomerang;
@@ -98,6 +110,20 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		
 		ANGULAR_SPEEDS.put(SpiritBow.SpiritArrow.class,       0);
 		ANGULAR_SPEEDS.put(ScorpioSprite.ScorpioShot.class,   0);
+
+		ANGULAR_SPEEDS.put(CrudePistol.Bullet.class,          0);
+		ANGULAR_SPEEDS.put(Pistol.Bullet.class,               0);
+		ANGULAR_SPEEDS.put(GoldenPistol.Bullet.class,         0);
+		ANGULAR_SPEEDS.put(Handgun.Bullet.class,              0);
+		ANGULAR_SPEEDS.put(Magnum.Bullet.class,               0);
+		ANGULAR_SPEEDS.put(HuntingRifle.Bullet.class,         0);
+		ANGULAR_SPEEDS.put(SniperRifle.Bullet.class,          0);
+		ANGULAR_SPEEDS.put(DualPistol.Bullet.class,           0);
+		ANGULAR_SPEEDS.put(SubMachinegun.Bullet.class,        0);
+		ANGULAR_SPEEDS.put(AssultRifle.Bullet.class,          0);
+		ANGULAR_SPEEDS.put(HeavyMachinegun.Bullet.class,      0);
+		ANGULAR_SPEEDS.put(ShotGun.Bullet.class,              0);
+	  //ANGULAR_SPEEDS.put(.Bullet.class,                     0);
 		
 		//720 is default
 		
@@ -156,6 +182,21 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 				|| item instanceof ScorpioSprite.ScorpioShot
 				|| item instanceof TenguSprite.TenguShuriken){
 			speed *= 1.5f;
+		} else if (item instanceof CrudePistol.Bullet
+		        || item instanceof Pistol.Bullet
+				|| item instanceof GoldenPistol.Bullet
+				|| item instanceof Handgun.Bullet
+				|| item instanceof Magnum.Bullet
+				|| item instanceof HuntingRifle.Bullet
+				|| item instanceof SniperRifle.Bullet
+				|| item instanceof DualPistol.Bullet
+				|| item instanceof SubMachinegun.Bullet
+				|| item instanceof AssultRifle.Bullet
+				|| item instanceof HeavyMachinegun.Bullet
+				|| item instanceof ShotGun.Bullet
+			  //|| item instanceof ShotGun.Bullet
+		) {
+			speed *= 3f;
 		}
 		
 		PosTweener tweener = new PosTweener( this, to, d.length() / speed );
