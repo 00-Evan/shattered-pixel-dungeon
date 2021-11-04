@@ -92,11 +92,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTransfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.AssassinsBlade;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.AssultRifle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BattleAxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.CrudePistol;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dirk;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.DualPistol;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gauntlet;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Glaive;
@@ -107,6 +109,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatshield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HandAxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Handgun;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HeavyMachinegun;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HuntingRifle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Lance;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Mace;
@@ -119,7 +123,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sai;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shortsword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.ShotGun;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.SniperRifle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Spear;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.SubMachinegun;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.TrueRunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WarHammer;
@@ -197,7 +204,14 @@ public enum Catalog {
 		WEAPONS.seen.put( Handgun.class,                     true);
 		WEAPONS.seen.put( Magnum.class,                      true);
 
+		WEAPONS.seen.put( HuntingRifle.class,                true);
+		WEAPONS.seen.put( SniperRifle.class,                 true);
 
+		WEAPONS.seen.put( DualPistol.class,                  true);
+		WEAPONS.seen.put( SubMachinegun.class,               true);
+		WEAPONS.seen.put( AssultRifle.class,                 true);
+		WEAPONS.seen.put( HeavyMachinegun.class,             true);
+		WEAPONS.seen.put( ShotGun.class,                     true);
 	
 		ARMOR.seen.put( ClothArmor.class,                   false);
 		ARMOR.seen.put( LeatherArmor.class,                 false);

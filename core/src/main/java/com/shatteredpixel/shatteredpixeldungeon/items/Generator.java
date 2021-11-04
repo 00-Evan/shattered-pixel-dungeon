@@ -111,11 +111,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTransfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.AssassinsBlade;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.AssultRifle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BattleAxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.CrudePistol;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dirk;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.DualPistol;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gauntlet;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Glaive;
@@ -126,6 +128,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatshield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HandAxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Handgun;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HeavyMachinegun;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HuntingRifle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Mace;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
@@ -138,7 +142,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sai;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shortsword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.ShotGun;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Spear;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.SubMachinegun;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WarHammer;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Whip;
@@ -346,9 +352,10 @@ public class Generator {
 					Spear.class,
 					Quarterstaff.class,
 					Dirk.class,
-					Pistol.class
+					Pistol.class,
+					DualPistol.class
 			};
-			WEP_T2.probs = new float[]{ 6, 5, 5, 4, 4 ,3 };
+			WEP_T2.probs = new float[]{ 6, 5, 5, 4, 4 ,3 ,3 };
 			
 			WEP_T3.classes = new Class<?>[]{
 					Sword.class,
@@ -357,9 +364,12 @@ public class Generator {
 					RoundShield.class,
 					Sai.class,
 					Whip.class,
-					GoldenPistol.class
+					GoldenPistol.class,
+					SubMachinegun.class,
+					ShotGun.class,
+					HuntingRifle.class
 			};
-			WEP_T3.probs = new float[]{ 6, 5, 5, 4, 4, 4, 3 };
+			WEP_T3.probs = new float[]{ 6, 5, 5, 4, 4, 4, 3 ,3 ,3 ,3 };
 			
 			WEP_T4.classes = new Class<?>[]{
 					Longsword.class,
@@ -368,9 +378,10 @@ public class Generator {
 					RunicBlade.class,
 					AssassinsBlade.class,
 					Crossbow.class,
-					Handgun.class
+					Handgun.class,
+					AssultRifle.class
 			};
-			WEP_T4.probs = new float[]{ 6, 5, 5, 4, 4, 4, 3 };
+			WEP_T4.probs = new float[]{ 6, 5, 5, 4, 4, 4, 3 ,3 };
 			
 			WEP_T5.classes = new Class<?>[]{
 					Greatsword.class,
@@ -379,9 +390,10 @@ public class Generator {
 					Greataxe.class,
 					Greatshield.class,
 					Gauntlet.class,
-					Magnum.class
+					Magnum.class,
+					HeavyMachinegun.class
 			};
-			WEP_T5.probs = new float[]{ 6, 5, 5, 4, 4, 4, 3 };
+			WEP_T5.probs = new float[]{ 6, 5, 5, 4, 4, 4, 3 ,3 };
 			
 			//see Generator.randomArmor
 			ARMOR.classes = new Class<?>[]{
