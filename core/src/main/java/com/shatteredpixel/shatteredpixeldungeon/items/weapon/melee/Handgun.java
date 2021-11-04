@@ -197,31 +197,26 @@ public class Handgun extends MeleeWeapon {
         return STRReq(tier, lvl); //18 base strength req, Changeable
     }
 
-    @Override
     public int min(int lvl) {
-        return  tier +  //base                                                               //if you make something different guns, you should change this
-                lvl;     //Changeable                                                        //if you make something different guns, you should change this
+        return tier +                                                                      //if you make something different guns, you should change this
+                lvl;                                                                        //if you make something different guns, you should change this
     }
 
-
-    @Override
     public int max(int lvl) {
-        return  2 * (tier) +       //base                                                    //if you make something different guns, you should change this
-                lvl * 2;           //Changeable                                             `//if you make something different guns, you should change this
+        return 3 * (tier + 1) +                                                            //if you make something different guns, you should change this
+                lvl;                                                           //if you make something different guns, you should change this
     }
 
     public int Bulletmin(int lvl) {
-        return tier +                                                                        //if you make something different guns, you should change this
-                lvl +                                                                        //if you make something different guns, you should change this
+        return 2 * tier +                                                                  //if you make something different guns, you should change this
+                lvl      +                                                                  //if you make something different guns, you should change this
                 RingOfSharpshooting.levelDamageBonus(Dungeon.hero);
-
     }
 
     public int Bulletmax(int lvl) {
-        return 3 * (tier) +                                                                  //if you make something different guns, you should change this
-                lvl*(tier) +                                                                 //if you make something different guns, you should change this
+        return 5 * (tier + 1)   +                                                           //if you make something different guns, you should change this
+                lvl * (tier + 1) +                                                           //if you make something different guns, you should change this
                 RingOfSharpshooting.levelDamageBonus(Dungeon.hero);
-
     }
 
     @Override
@@ -315,7 +310,7 @@ public class Handgun extends MeleeWeapon {
     public class Bullet extends MissileWeapon {
 
         {
-            image = ItemSpriteSheet.BULLET;
+            image = ItemSpriteSheet.SINGLE_BULLET;
 
             hitSound = Assets.Sounds.PUFF;
             tier = 4;                                                                            //if you make something different guns, you should change this
@@ -391,7 +386,11 @@ public class Handgun extends MeleeWeapon {
         @Override
         public void onSelect( Integer target ) {
             if (target != null) {
-                knockBullet().cast(curUser, target);
+                if (target == curUser.pos) {
+                    reload();
+                } else {
+                    knockBullet().cast(curUser, target);
+                }
             }
         }
         @Override
