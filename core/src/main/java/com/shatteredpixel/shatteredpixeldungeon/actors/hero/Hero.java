@@ -107,6 +107,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.ShotGun;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
@@ -427,9 +428,19 @@ public class Hero extends Char {
 		
 		if (wep instanceof MissileWeapon){
 			if (Dungeon.level.adjacent( pos, target.pos )) {
-				accuracy *= (0.5f + 0.2f*pointsInTalent(Talent.POINT_BLANK));
+				if (wep instanceof ShotGun.Bullet) {
+					accuracy *= (1.5f + 0.2f*pointsInTalent(Talent.POINT_BLANK));
+				} else {
+					accuracy *= (0.5f + 0.2f*pointsInTalent(Talent.POINT_BLANK));
+				}
+
 			} else {
-				accuracy *= 1.5f;
+				if (wep instanceof ShotGun.Bullet){
+					accuracy *= 0 ;
+				} else {
+					accuracy *= 1.5f;
+				}
+
 			}
 		}
 		
