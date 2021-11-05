@@ -214,8 +214,8 @@ public class Handgun extends MeleeWeapon {
     }
 
     public int Bulletmax(int lvl) {
-        return 5 * (tier + 1)   +                                                           //if you make something different guns, you should change this
-                lvl * (tier + 1) +                                                           //if you make something different guns, you should change this
+        return 4 * (tier)   +                                                           //if you make something different guns, you should change this
+                lvl * (tier) +                                                           //if you make something different guns, you should change this
                 RingOfSharpshooting.levelDamageBonus(Dungeon.hero);
     }
 
@@ -235,8 +235,8 @@ public class Handgun extends MeleeWeapon {
                 info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR() - STRReq());
             }
             info += "\n\n" + Messages.get(Handgun.class, "stats_known",
-                    Math.round(Bulletmin(Handgun.this.buffedLvl())),
-                    Math.round(Bulletmax(Handgun.this.buffedLvl())),
+                    Bulletmin(Handgun.this.buffedLvl()),
+                    Bulletmax(Handgun.this.buffedLvl()),
                     round, max_round, reload_time);
         } else {
             info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_unknown", tier, min(0), max(0), STRReq(0));
@@ -365,19 +365,6 @@ public class Handgun extends MeleeWeapon {
 
         @Override
         public void cast(final Hero user, final int dst) {
-            final int cell = throwPos( user, dst );
-            Handgun.this.targetPos = cell;
-            if (user.hasTalent(Talent.SEER_SHOT)
-                    && user.buff(Talent.SeerShotCooldown.class) == null){
-                int shotPos = throwPos(user, dst);
-                if (Actor.findChar(shotPos) == null) {
-                    RevealedArea a = Buff.affect(user, RevealedArea.class, 5 * user.pointsInTalent(Talent.SEER_SHOT));
-                    a.depth = Dungeon.depth;
-                    a.pos = shotPos;
-                    Buff.affect(user, Talent.SeerShotCooldown.class, 20f);
-                }
-            }
-
             super.cast(user, dst);
         }
     }
