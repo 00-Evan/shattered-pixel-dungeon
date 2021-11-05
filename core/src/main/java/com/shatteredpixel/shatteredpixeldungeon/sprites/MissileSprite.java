@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HeavyMachineg
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HuntingRifle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Magnum;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Pistol;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RocketLauncher;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.ShotGun;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.SniperRifle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.SubMachinegun;
@@ -123,7 +124,7 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		ANGULAR_SPEEDS.put(AssultRifle.Bullet.class,          0);
 		ANGULAR_SPEEDS.put(HeavyMachinegun.Bullet.class,      0);
 		ANGULAR_SPEEDS.put(ShotGun.Bullet.class,              0);
-	  //ANGULAR_SPEEDS.put(.Bullet.class,                     0);
+	    ANGULAR_SPEEDS.put(RocketLauncher.Bullet.class,       0);
 		
 		//720 is default
 		
@@ -194,9 +195,10 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 				|| item instanceof AssultRifle.Bullet
 				|| item instanceof HeavyMachinegun.Bullet
 				|| item instanceof ShotGun.Bullet
-			  //|| item instanceof ShotGun.Bullet
 		) {
 			speed *= 3f;
+		} else if (item instanceof RocketLauncher.Bullet) {
+			speed *= 1.2f;
 		}
 		
 		PosTweener tweener = new PosTweener( this, to, d.length() / speed );
