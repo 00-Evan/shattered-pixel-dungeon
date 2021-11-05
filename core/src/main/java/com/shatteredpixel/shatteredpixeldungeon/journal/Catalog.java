@@ -118,6 +118,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Magnum;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Pistol;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RocketLauncher;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RoundShield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sai;
@@ -211,7 +212,9 @@ public enum Catalog {
 		WEAPONS.seen.put( SubMachinegun.class,               true);
 		WEAPONS.seen.put( AssultRifle.class,                 true);
 		WEAPONS.seen.put( HeavyMachinegun.class,             true);
+
 		WEAPONS.seen.put( ShotGun.class,                     true);
+		WEAPONS.seen.put( RocketLauncher.class,              true);      //TODO:비활성화 필요
 	
 		ARMOR.seen.put( ClothArmor.class,                   false);
 		ARMOR.seen.put( LeatherArmor.class,                 false);
