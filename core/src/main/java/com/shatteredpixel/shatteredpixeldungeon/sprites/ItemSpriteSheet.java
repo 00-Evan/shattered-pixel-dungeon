@@ -95,6 +95,7 @@ public class ItemSpriteSheet {
 	public static final int	DUAL_BULLET     = UNCOLLECTIBLE+12;
 	public static final int TRIPLE_BULLET   = UNCOLLECTIBLE+13;
 	public static final int SNIPER_BULLET   = UNCOLLECTIBLE+14;
+	public static final int ROCKET          = UNCOLLECTIBLE+15;
 
 	static{
 		assignItemRect(GOLD,        15, 13);
@@ -113,6 +114,7 @@ public class ItemSpriteSheet {
 		assignItemRect(DUAL_BULLET,     11, 10);
 		assignItemRect(TRIPLE_BULLET,   11, 11);
 		assignItemRect(SNIPER_BULLET,   8, 8);
+		assignItemRect(ROCKET,   9, 9);
 	}
 
 	private static final int CONTAINERS     =                               xy(1, 3);   //16 slots
@@ -349,14 +351,14 @@ public class ItemSpriteSheet {
 
 	private static final int SPECIALGUNS         =                               xy(9, 33);
 	public static final int SHOTGUN        = SPECIALGUNS+0;
-	public static final int PLASMA_CANNON  = SPECIALGUNS+1;
+	public static final int ROCKET_LAUNCHER= SPECIALGUNS+1;
 	public static final int SPECIALGUNS_3  = SPECIALGUNS+2;
 	public static final int SPECIALGUNS_4  = SPECIALGUNS+3;
 	public static final int SPECIALGUNS_5  = SPECIALGUNS+4;
 	public static final int SPECIALGUNS_6  = SPECIALGUNS+5;
 	static{
 		assignItemRect(SHOTGUN              ,14, 16);
-		assignItemRect(PLASMA_CANNON        ,14, 16);
+		assignItemRect(ROCKET_LAUNCHER      ,15, 15);
 		assignItemRect(SPECIALGUNS_3        ,16, 16);
 		assignItemRect(SPECIALGUNS_4        ,16, 16);
 		assignItemRect(SPECIALGUNS_5        ,16, 16);
