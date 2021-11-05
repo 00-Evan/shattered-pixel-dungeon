@@ -86,6 +86,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Lance;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Magnum;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Pistol;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RocketLauncher;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.ShotGun;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.SniperRifle;
@@ -198,10 +199,11 @@ public enum HeroClass {
 		new HuntingRifle().identify().collect();
 		new SniperRifle().identify().collect();
 		new ShotGun().identify().collect();
+		new RocketLauncher().identify().collect();
 
 		new ScrollOfUpgrade().identify().quantity(99).collect();
 		new PotionOfExperience().identify().quantity(30).collect();
-		new PotionOfStrength().identify().quantity(20).collect();
+		new PotionOfStrength().identify().quantity(20).collect(); 										//TODO:삭제필요
 	}
 
 	private static void initMage( Hero hero ) {
