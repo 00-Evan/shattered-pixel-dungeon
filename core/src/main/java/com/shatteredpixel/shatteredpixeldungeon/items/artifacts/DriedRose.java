@@ -373,10 +373,10 @@ public class DriedRose extends Artifact {
 			if (ghost != null){
 				defaultAction = AC_DIRECT;
 				
-				//heals to full over 1000 turns
+				//heals to full over 500 turns
 				LockedFloor lock = target.buff(LockedFloor.class);
 				if (ghost.HP < ghost.HT && (lock == null || lock.regenOn())) {
-					partialCharge += (ghost.HT / 1000f) * RingOfEnergy.artifactChargeMultiplier(target);
+					partialCharge += (ghost.HT / 500f) * RingOfEnergy.artifactChargeMultiplier(target);
 					updateQuickslot();
 					
 					if (partialCharge > 1) {
@@ -394,8 +394,8 @@ public class DriedRose extends Artifact {
 			
 			LockedFloor lock = target.buff(LockedFloor.class);
 			if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
-				//500 turns to a full charge
-				partialCharge += (1/5f * RingOfEnergy.artifactChargeMultiplier(target));
+				//250 turns to a full charge
+				partialCharge += (2/5f * RingOfEnergy.artifactChargeMultiplier(target));
 				if (partialCharge > 1){
 					charge++;
 					partialCharge--;
@@ -544,7 +544,7 @@ public class DriedRose extends Artifact {
 			//same dodge as the hero
 			defenseSkill = (Dungeon.hero.lvl+4);
 			if (rose == null) return;
-			HT = 20 + 8*rose.level();
+			HT = 40 + 10*rose.level();
 		}
 
 		@Override
@@ -591,9 +591,9 @@ public class DriedRose extends Artifact {
 		public int damageRoll() {
 			int dmg = 0;
 			if (rose != null && rose.weapon != null){
-				dmg += rose.weapon.damageRoll(this);
+				dmg += rose.weapon.damageRoll(this) + Math.round(Dungeon.hero.belongings.weapon.damageRoll(this)/2);
 			} else {
-				dmg += Random.NormalIntRange(0, 5);
+				dmg += Random.NormalIntRange(0, 5) +  Math.round(Dungeon.hero.belongings.weapon.damageRoll(this)/2);
 			}
 			
 			return dmg;
@@ -677,10 +677,10 @@ public class DriedRose extends Artifact {
 		public int drRoll() {
 			int block = 0;
 			if (rose != null && rose.armor != null){
-				block += Random.NormalIntRange( rose.armor.DRMin(), rose.armor.DRMax());
+				block += Random.NormalIntRange( rose.armor.DRMin(), rose.armor.DRMax()) + Math.round(Random.NormalIntRange(Dungeon.hero.belongings.armor.DRMin(), Dungeon.hero.belongings.armor.DRMax())/2);
 			}
 			if (rose != null && rose.weapon != null){
-				block += Random.NormalIntRange( 0, rose.weapon.defenseFactor( this ));
+				block += Random.NormalIntRange( 0, rose.weapon.defenseFactor( this )) + Math.round(Random.NormalIntRange(0, Dungeon.hero.belongings.weapon.defenseFactor(this))/2);
 			}
 			return block;
 		}
