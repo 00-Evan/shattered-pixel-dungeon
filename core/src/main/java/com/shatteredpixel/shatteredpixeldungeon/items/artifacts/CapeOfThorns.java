@@ -91,16 +91,16 @@ public class CapeOfThorns extends Artifact {
 
 		public int proc(int damage, Char attacker, Char defender){
 			if (cooldown == 0){
-				charge += damage*(0.5+level()*0.05);
+				charge += damage*(1+level()*0.05);
 				if (charge >= chargeCap){
 					charge = 0;
-					cooldown = 10+level();
+					cooldown = 20+level();
 					GLog.p( Messages.get(this, "radiating") );
 				}
 			}
 
 			if (cooldown != 0){
-				int deflected = Random.NormalIntRange(0, damage);
+				int deflected = Random.NormalIntRange(damage/2 + damage/2*level(), damage);
 				damage -= deflected;
 
 				if (attacker != null && Dungeon.level.adjacent(attacker.pos, defender.pos)) {
@@ -109,8 +109,8 @@ public class CapeOfThorns extends Artifact {
 
 				exp+= deflected;
 
-				if (exp >= (level()+1)*5 && level() < levelCap){
-					exp -= (level()+1)*5;
+				if (exp >= (level()+1)*10 && level() < levelCap){
+					exp -= (level()+1)*10;
 					upgrade();
 					GLog.p( Messages.get(this, "levelup") );
 				}
