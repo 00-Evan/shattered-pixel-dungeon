@@ -565,7 +565,8 @@ public class Hero extends Char {
 		if (belongings.weapon() == null || !(belongings.weapon() instanceof Weapon))    return true;
 		if (STR() < ((Weapon)belongings.weapon()).STRReq())                             return false;
 		if (belongings.weapon() instanceof Flail)                                       return false;
-		if (belongings.weapon() instanceof RocketLauncher.Bullet)					    return false;
+		if (belongings.weapon() instanceof RocketLauncher.Rocket)					    return false;
+		if (belongings.weapon() instanceof ShotGun.Bullet)				          	    return false;
 
 		return true;
 	}

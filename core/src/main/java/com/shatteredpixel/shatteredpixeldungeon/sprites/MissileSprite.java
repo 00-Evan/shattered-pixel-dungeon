@@ -124,7 +124,7 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		ANGULAR_SPEEDS.put(AssultRifle.Bullet.class,          0);
 		ANGULAR_SPEEDS.put(HeavyMachinegun.Bullet.class,      0);
 		ANGULAR_SPEEDS.put(ShotGun.Bullet.class,              0);
-	    ANGULAR_SPEEDS.put(RocketLauncher.Bullet.class,       0);
+	    ANGULAR_SPEEDS.put(RocketLauncher.Rocket.class,       0);
 		
 		//720 is default
 		
@@ -197,7 +197,7 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 				|| item instanceof ShotGun.Bullet
 		) {
 			speed *= 3f;
-		} else if (item instanceof RocketLauncher.Bullet) {
+		} else if (item instanceof RocketLauncher.Rocket) {
 			speed *= 1.2f;
 		}
 		

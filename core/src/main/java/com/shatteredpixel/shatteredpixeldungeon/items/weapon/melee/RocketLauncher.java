@@ -72,6 +72,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.spells.ArcaneCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ForceCube;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TenguDartTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -309,10 +310,10 @@ public class RocketLauncher extends MeleeWeapon {
         return super.baseDelay(owner);
     }                   //공격 속도
 
-    public RocketLauncher.Bullet knockBullet(){
-        return new RocketLauncher.Bullet();
+    public RocketLauncher.Rocket knockBullet(){
+        return new RocketLauncher.Rocket();
     }
-    public class Bullet extends MissileWeapon {
+    public class Rocket extends MissileWeapon {
 
         {
             image = ItemSpriteSheet.ROCKET;
@@ -358,7 +359,7 @@ public class RocketLauncher extends MeleeWeapon {
                 curUser.shoot(target, this);
                 if (target == Dungeon.hero && !target.isAlive()){
                     Dungeon.fail(getClass());
-                    GLog.n(Messages.get(this, "ondeath"));
+                    GLog.n(Messages.get(RocketLauncher.class, "ondeath"));
                 }
             }
             CellEmitter.get(cell).burst(SmokeParticle.FACTORY, 2);
