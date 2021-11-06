@@ -33,11 +33,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.RogueArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.WarriorArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
@@ -195,26 +197,26 @@ public enum Catalog {
 		WEAPONS.seen.put( Greatshield.class,                false);
 		WEAPONS.seen.put( Gauntlet.class,                   false);
 
-		WEAPONS.seen.put( TrueRunicBlade.class,              true);
+		WEAPONS.seen.put( TrueRunicBlade.class,             false);
 
-		WEAPONS.seen.put( Lance.class,                       true);
+		WEAPONS.seen.put( Lance.class,                      false);
 
-		WEAPONS.seen.put( CrudePistol.class,                 true);
-		WEAPONS.seen.put( Pistol.class,                      true);
-		WEAPONS.seen.put( GoldenPistol.class,                true);
-		WEAPONS.seen.put( Handgun.class,                     true);
-		WEAPONS.seen.put( Magnum.class,                      true);
+		WEAPONS.seen.put( CrudePistol.class,                false);
+		WEAPONS.seen.put( Pistol.class,                     false);
+		WEAPONS.seen.put( GoldenPistol.class,               false);
+		WEAPONS.seen.put( Handgun.class,                    false);
+		WEAPONS.seen.put( Magnum.class,                     false);
 
-		WEAPONS.seen.put( HuntingRifle.class,                true);
-		WEAPONS.seen.put( SniperRifle.class,                 true);
+		WEAPONS.seen.put( HuntingRifle.class,               false);
+		WEAPONS.seen.put( SniperRifle.class,                false);
 
-		WEAPONS.seen.put( DualPistol.class,                  true);
-		WEAPONS.seen.put( SubMachinegun.class,               true);
-		WEAPONS.seen.put( AssultRifle.class,                 true);
-		WEAPONS.seen.put( HeavyMachinegun.class,             true);
+		WEAPONS.seen.put( DualPistol.class,                 false);
+		WEAPONS.seen.put( SubMachinegun.class,              false);
+		WEAPONS.seen.put( AssultRifle.class,                false);
+		WEAPONS.seen.put( HeavyMachinegun.class,            false);
 
-		WEAPONS.seen.put( ShotGun.class,                     true);
-		WEAPONS.seen.put( RocketLauncher.class,              true);      //TODO:비활성화 필요
+		WEAPONS.seen.put( ShotGun.class,                    false);
+		WEAPONS.seen.put( RocketLauncher.class,             false);      //TODO:비활성화 필요
 	
 		ARMOR.seen.put( ClothArmor.class,                   false);
 		ARMOR.seen.put( LeatherArmor.class,                 false);
@@ -253,13 +255,13 @@ public enum Catalog {
 		RINGS.seen.put( RingOfWealth.class,                 false);
 	
 		ARTIFACTS.seen.put( AlchemistsToolkit.class,        false);
-		//ARTIFACTS.seen.put( CapeOfThorns.class,             false);
+		ARTIFACTS.seen.put( CapeOfThorns.class,             false);
 		ARTIFACTS.seen.put( ChaliceOfBlood.class,           false);
 		ARTIFACTS.seen.put( CloakOfShadows.class,           false);
 		ARTIFACTS.seen.put( DriedRose.class,                false);
 		ARTIFACTS.seen.put( EtherealChains.class,           false);
 		ARTIFACTS.seen.put( HornOfPlenty.class,             false);
-		//ARTIFACTS.seen.put( LloydsBeacon.class,             false);
+		ARTIFACTS.seen.put( LloydsBeacon.class,             false);
 		ARTIFACTS.seen.put( MasterThievesArmband.class,     false);
 		ARTIFACTS.seen.put( SandalsOfNature.class,          false);
 		ARTIFACTS.seen.put( TalismanOfForesight.class,      false);
