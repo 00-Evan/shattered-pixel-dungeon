@@ -221,6 +221,8 @@ public enum HeroClass {
 		return subClasses;
 	}
 
+	public String sex() { return heroSex; }
+
 	public ArmorAbility[] armorAbilities(){
 		switch (this.heroType()) {
 			case WARRIOR: default:
