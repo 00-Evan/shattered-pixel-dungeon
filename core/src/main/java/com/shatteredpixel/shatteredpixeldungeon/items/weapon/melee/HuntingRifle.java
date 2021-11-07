@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -223,6 +224,7 @@ public class HuntingRifle extends MeleeWeapon {
 
         max_round = 1;                                                                       //if you make something different guns, you should change this
         reload_time = 3f* RingOfReload.reloadMultiplier(Dungeon.hero);         //if you make something different guns, you should change this;
+        reload_time = 3f* RingOfReload.reloadMultiplier(Dungeon.hero);         //if you make something different guns, you should change this;
 
         String info = desc();
 
@@ -317,7 +319,11 @@ public class HuntingRifle extends MeleeWeapon {
 
         @Override
         public int damageRoll(Char owner) {
-            return Random.NormalIntRange(Bulletmin(HuntingRifle.this.buffedLvl()), Bulletmax(HuntingRifle.this.buffedLvl()));
+            if (owner.buff(Momentum.class) != null && owner.buff(Momentum.class).freerunning()) {
+                return Math.round(Random.NormalIntRange(Bulletmin(HuntingRifle.this.buffedLvl()), Bulletmax(HuntingRifle.this.buffedLvl())) * (1f + 0.15f * ((Hero) owner).pointsInTalent(Talent.PROJECTILE_MOMENTUM)));
+            } else {
+                return Random.NormalIntRange(Bulletmin(HuntingRifle.this.buffedLvl()), Bulletmax(HuntingRifle.this.buffedLvl()));
+            }
         }
 
         @Override

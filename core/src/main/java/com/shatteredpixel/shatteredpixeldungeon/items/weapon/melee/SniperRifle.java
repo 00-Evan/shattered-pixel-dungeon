@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -319,7 +320,11 @@ public class SniperRifle extends MeleeWeapon {
 
         @Override
         public int damageRoll(Char owner) {
-            return Random.NormalIntRange(Bulletmin(SniperRifle.this.buffedLvl()), Bulletmax(SniperRifle.this.buffedLvl()));
+            if (owner.buff(Momentum.class) != null && owner.buff(Momentum.class).freerunning()) {
+                return Math.round(Random.NormalIntRange(Bulletmin(SniperRifle.this.buffedLvl()), Bulletmax(SniperRifle.this.buffedLvl())) * (1f + 0.15f * ((Hero) owner).pointsInTalent(Talent.PROJECTILE_MOMENTUM)));
+            } else {
+                return Random.NormalIntRange(Bulletmin(SniperRifle.this.buffedLvl()), Bulletmax(SniperRifle.this.buffedLvl()));
+            }
         }
 
         @Override
