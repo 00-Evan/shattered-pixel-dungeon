@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.ArcaneResin;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.KingsCrown;
 import com.shatteredpixel.shatteredpixeldungeon.items.LiquidMetal;
 import com.shatteredpixel.shatteredpixeldungeon.items.TengusMask;
 import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
@@ -62,6 +63,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibili
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfReload;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
@@ -191,26 +195,31 @@ public enum HeroClass {
 		new PotionOfHealing().identify();
 		new ScrollOfRage().identify();
 
-		//new CrudePistol().identify().collect();
-		//new Pistol().identify().collect();
-		//new GoldenPistol().identify().collect();
-		//new Handgun().identify().collect();
-		//new Magnum().identify().collect();
-		//new DualPistol().identify().collect();
-		//new SubMachinegun().identify().collect();
-		//new AssultRifle().identify().collect();
-		//new HeavyMachinegun().identify().collect();
-		//new HuntingRifle().identify().collect();
-		//new SniperRifle().identify().collect();
-		//new ShotGun().identify().collect();
-		//new RocketLauncher().identify().collect();
+		new CrudePistol().identify().collect();
+		new Pistol().identify().collect();
+		new GoldenPistol().identify().collect();
+		new Handgun().identify().collect();
+		new Magnum().identify().collect();
+		new DualPistol().identify().collect();
+		new SubMachinegun().identify().collect();
+		new AssultRifle().identify().collect();
+		new HeavyMachinegun().identify().collect();
+		new HuntingRifle().identify().collect();
+		new SniperRifle().identify().collect();
+		new ShotGun().identify().collect();
+		new RocketLauncher().identify().collect();
 		//new CapeOfThorns().identify().collect();
 		//new LloydsBeacon().identify().collect();
 		//new DriedRose().identify().collect();
+		new RingOfReload().identify().collect();
 
-		//new ScrollOfUpgrade().identify().quantity(99).collect();
-		//new PotionOfExperience().identify().quantity(30).collect();
-		//new PotionOfStrength().identify().quantity(20).collect(); 										//TODO:삭제필요
+		//new TengusMask().collect();
+		//new KingsCrown().collect();
+
+		new ScrollOfUpgrade().identify().quantity(99).collect();
+		new PotionOfExperience().identify().quantity(30).collect();
+		new PotionOfInvisibility().identify().quantity(30).collect();
+		new PotionOfStrength().identify().quantity(20).collect(); 										//TODO:삭제필요
 	}
 
 	private static void initMage( Hero hero ) {

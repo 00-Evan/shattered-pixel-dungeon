@@ -67,6 +67,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfShr
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfSnapFreeze;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfStamina;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfStormClouds;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfReload;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.ArcaneCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
@@ -107,8 +108,6 @@ public class RocketLauncher extends MeleeWeapon {
         hitSoundPitch = 0.8f;
 
         tier = 6;                                                               //if you make something different guns, you should change this
-
-        reload_time = 3f;                                                       //if you make something different guns, you should change this
     }
 
     private static final String ROUND = "round";
@@ -229,7 +228,7 @@ public class RocketLauncher extends MeleeWeapon {
     public String info() {
 
         max_round = 1;                                                                       //if you make something different guns, you should change this
-        reload_time = 3f;                                                                    //if you make something different guns, you should change this
+        reload_time = 3f* RingOfReload.reloadMultiplier(Dungeon.hero);         //if you make something different guns, you should change this;
 
         String info = desc();
 

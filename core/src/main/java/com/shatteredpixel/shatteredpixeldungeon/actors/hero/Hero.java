@@ -106,9 +106,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HuntingRifle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RocketLauncher;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.ShotGun;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.SniperRifle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
@@ -431,13 +433,20 @@ public class Hero extends Char {
 			if (Dungeon.level.adjacent( pos, target.pos )) {
 				if (wep instanceof ShotGun.Bullet) {
 					accuracy *= (1.5f + 0.2f*pointsInTalent(Talent.POINT_BLANK));
+				} else if (wep instanceof HuntingRifle.Bullet
+						|| wep instanceof SniperRifle.Bullet){
+					accuracy *= 0;
 				} else {
 					accuracy *= (0.5f + 0.2f*pointsInTalent(Talent.POINT_BLANK));
 				}
 
 			} else {
-				if (wep instanceof ShotGun.Bullet){
-					accuracy *= 0 ;
+				if (wep instanceof ShotGun.Bullet) {
+					accuracy *= 0;
+				}
+				else if (wep instanceof HuntingRifle.Bullet
+						|| wep instanceof SniperRifle.Bullet) {
+						accuracy *= 2f;
 				} else {
 					accuracy *= 1.5f;
 				}

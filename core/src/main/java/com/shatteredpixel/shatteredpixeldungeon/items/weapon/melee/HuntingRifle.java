@@ -65,6 +65,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfShr
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfSnapFreeze;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfStamina;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfStormClouds;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfReload;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.ArcaneCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
@@ -101,8 +102,6 @@ public class HuntingRifle extends MeleeWeapon {
         hitSoundPitch = 0.8f;
 
         tier = 3;                                                               //if you make something different guns, you should change this
-
-        reload_time = 3f;                                                       //if you make something different guns, you should change this
     }
 
     private static final String ROUND = "round";
@@ -208,14 +207,14 @@ public class HuntingRifle extends MeleeWeapon {
     }
 
     public int Bulletmin(int lvl) {
-        return 3 * tier +                                                                  //if you make something different guns, you should change this
+        return 2 * tier +                                                                  //if you make something different guns, you should change this
                 lvl      +                                                                  //if you make something different guns, you should change this
                 RingOfSharpshooting.levelDamageBonus(Dungeon.hero);
     }
 
     public int Bulletmax(int lvl) {
-        return 6 * (tier)   +                                                           //if you make something different guns, you should change this
-                lvl * (tier) +                                                           //if you make something different guns, you should change this
+        return 8 * (tier+1)   +                                                           //if you make something different guns, you should change this
+                lvl * (tier+1) +                                                           //if you make something different guns, you should change this
                 RingOfSharpshooting.levelDamageBonus(Dungeon.hero);
     }
 
@@ -223,7 +222,7 @@ public class HuntingRifle extends MeleeWeapon {
     public String info() {
 
         max_round = 1;                                                                       //if you make something different guns, you should change this
-        reload_time = 3f;                                                                    //if you make something different guns, you should change this
+        reload_time = 3f* RingOfReload.reloadMultiplier(Dungeon.hero);         //if you make something different guns, you should change this;
 
         String info = desc();
 
@@ -318,13 +317,7 @@ public class HuntingRifle extends MeleeWeapon {
 
         @Override
         public int damageRoll(Char owner) {
-            int damage = Random.NormalIntRange(Bulletmin(HuntingRifle.this.buffedLvl()), Bulletmax(HuntingRifle.this.buffedLvl()));
-            //as distance increases so does damage, capping at 3x:
-            //1.20x|1.35x|1.52x|1.71x|1.92x|2.16x|2.43x|2.74x|3.00x
-            int distance = Dungeon.level.distance(owner.pos, targetPos) - 1;
-            float multiplier = Math.min(3f, 1.2f * (float)Math.pow(1.125f, distance));
-            damage = Math.round(damage * multiplier);
-            return damage;
+            return Random.NormalIntRange(Bulletmin(HuntingRifle.this.buffedLvl()), Bulletmax(HuntingRifle.this.buffedLvl()));
         }
 
         @Override
