@@ -50,7 +50,9 @@ public class ArtifactRecharge extends Buff {
 					if (b instanceof HornOfPlenty.hornRecharge && ignoreHornOfPlenty){
 						continue;
 					}
-					((Artifact.ArtifactBuff) b).charge((Hero) target, chargeAmount);
+					if (!((Artifact.ArtifactBuff) b).isCursed()) {
+						((Artifact.ArtifactBuff) b).charge((Hero) target, chargeAmount);
+					}
 				}
 			}
 		}
