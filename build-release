@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+set -e
+
+# these should be parameters, or in a config file
+export ARCHS=thumbv7:arm64:x86_64
+export PROFILE="iOS Team Provisioning Profile: net.casiello.pixeldungeonrescue-apple"
+export SIGNER=FEA20DC19A9659F28A81D1775EA815F9B976691A
+
+./gradlew desktop:release
+./gradlew android:assembleRelease -Pandroid.injected.signing.store.file
+./gradlew -Probovm.archs=$ARCHS -Probovm.iosProvisioningProfile=$PROFILE -Probovm.iosSignIdentity=$SIGNER ios:createIpa

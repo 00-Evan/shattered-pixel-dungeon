@@ -21,6 +21,15 @@ android {
                 "eo", "ru", "zh_CN", "de", "fr", "es", "pt", "fi", "hu", "in"
     }
 
+    signingConfigs {
+        release {
+            storeFile file(STORE_FILE)
+            storePassword STORE_PASSWORD
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
+        }
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix ".indev"
