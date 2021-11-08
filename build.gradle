@@ -15,8 +15,8 @@ allprojects {
         appName = 'Pixel Dungeon Rescue'
         appPackageName = 'net.casiello.pixeldungeonrescue'
 
-        appVersionCode = 574
-        appVersionName = '1.0.0'
+        appVersionCode = 575
+        appVersionName = '1.0.1'
 
         appJavaCompatibility = JavaVersion.VERSION_1_8
 
