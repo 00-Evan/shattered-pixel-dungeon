@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.LostBackpack;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -462,9 +463,16 @@ public class InterlevelScene extends PixelScene {
 			do {
 				Dungeon.hero.pos = level.randomRespawnCell(Dungeon.hero);
 				tries++;
+
+			//prevents spawning on traps or plants, prefers farther locations first
 			} while (level.traps.get(Dungeon.hero.pos) != null
 					|| (level.plants.get(Dungeon.hero.pos) != null && tries < 500)
 					|| level.trueDistance(invPos, Dungeon.hero.pos) <= 30 - (tries/10));
+
+			//directly trample grass
+			if (level.map[Dungeon.hero.pos] == Terrain.HIGH_GRASS || level.map[Dungeon.hero.pos] == Terrain.FURROWED_GRASS){
+				level.map[Dungeon.hero.pos] = Terrain.GRASS;
+			}
 			Dungeon.hero.resurrect();
 			level.drop(new LostBackpack(), invPos);
 		}
