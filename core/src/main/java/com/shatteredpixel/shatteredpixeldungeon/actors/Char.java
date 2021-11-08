@@ -594,17 +594,6 @@ public abstract class Char extends Actor {
 		if (alignment != Alignment.ALLY && this.buff(DeathMark.DeathMarkTracker.class) != null){
 			dmg *= 1.25f;
 		}
-		Endure.EndureTracker endure = buff(Endure.EndureTracker.class);
-		if (!(src instanceof Char)){
-			//reduce damage here if it isn't coming from a character (if it is we already reduced it)
-			if (endure != null){
-				dmg = endure.adjustDamageTaken(dmg);
-			}
-			//the same also applies to challenge scroll damage reduction
-			if (buff(ScrollOfChallenge.ChallengeArena.class) != null){
-				dmg *= 0.67f;
-			}
-		}
 		
 		Class<?> srcClass = src.getClass();
 		if (isImmune( srcClass )) {
@@ -623,6 +612,7 @@ public abstract class Char extends Actor {
 			buff( Paralysis.class ).processDamage(dmg);
 		}
 
+		Endure.EndureTracker endure = buff(Endure.EndureTracker.class);
 		if (endure != null){
 			dmg = endure.enforceDamagetakenLimit(dmg);
 		}
