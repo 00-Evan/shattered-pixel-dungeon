@@ -39,7 +39,7 @@ public class BanditSprite extends MobSprite {
 		run.frames( film, 21, 21, 23, 24, 24, 25 );
 		
 		die = new Animation( 10, false );
-		die.frames( film, 0 );
+		die.frames( film, 21 );
 		
 		attack = new Animation( 12, false );
 		attack.frames( film, 31, 32, 33 );
