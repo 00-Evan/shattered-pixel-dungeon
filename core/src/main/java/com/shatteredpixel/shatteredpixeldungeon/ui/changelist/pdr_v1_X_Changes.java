@@ -22,10 +22,19 @@ public class pdr_v1_X_Changes {
 	}
 
 	public static void add_v1_0_Changes( ArrayList<ChangeInfo> changeInfos ) {
-		ChangeInfo changes = new ChangeInfo("v1.0.0", true, "");
+		ChangeInfo changes = new ChangeInfo("v1.0.1", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
-//		changeInfos.add(changes);
+		changes.addButton(new ChangeButton(Icons.get(Icons.BRIAN), Messages.get(ChangesScene.class, "new"),
+						"_-_ New news feed! (Used to pull Shattered's news.)\n" +
+						"_-_ Bugfix: Bandit now uses its own beam-up sprite\n" +
+						"_-_ Bugfix: Game Over scene has correct avatars\n" +
+						"_-_ Assassins are now Ninjas\n" +
+						"_-_ Corpse dust is now bone dust\n" +
+						"_-_ Corruption is now Mesmerization\n"));
+		changeInfos.add(changes);
 
+		changes = new ChangeInfo("v1.0.0", true, "");
+		changes.hardlight(Window.TITLE_COLOR);
 		changes.addButton(new ChangeButton(Icons.get(Icons.BRIAN), Messages.get(ChangesScene.class, "new"),
 				"Up-to-date with ShatteredPD 1.0.3.\n\n" +
 				"Pixel Dungeon Rescue changes:\n" +
