@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.LostBackpack;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -57,6 +58,7 @@ import com.watabou.utils.DeviceCompat;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class InterlevelScene extends PixelScene {
 	
@@ -448,11 +450,18 @@ public class InterlevelScene extends PixelScene {
 
 		Level level;
 		if (Dungeon.level.locked) {
+			ArrayList<Item> preservedItems = Dungeon.level.getItemsToPreserveFromSealedResurrect();
+
 			Dungeon.hero.resurrect();
 			Dungeon.depth--;
 			level = Dungeon.newLevel();
 			Dungeon.hero.pos = level.randomRespawnCell(Dungeon.hero);
+
+			for (Item i : preservedItems){
+				level.drop(i, level.randomRespawnCell(null));
+			}
 			level.drop(new LostBackpack(), level.randomRespawnCell(null));
+
 		} else {
 			level = Dungeon.level;
 			BArray.setFalse(level.heroFOV);

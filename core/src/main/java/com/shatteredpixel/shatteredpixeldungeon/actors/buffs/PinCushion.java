@@ -45,6 +45,10 @@ public class PinCushion extends Buff {
 		items.add(projectile);
 	}
 
+	public ArrayList<MissileWeapon> getStuckItems(){
+		return new ArrayList<>(items);
+	}
+
 	@Override
 	public void detach() {
 		for (Item item : items)

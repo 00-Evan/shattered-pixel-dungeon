@@ -307,7 +307,8 @@ public class PrisonBossLevel extends Level {
 		}
 		
 		for (HeavyBoomerang.CircleBack b : Dungeon.hero.buffs(HeavyBoomerang.CircleBack.class)){
-			if (safeArea == null || !safeArea.inside(cellToPoint(b.returnPos()))){
+			if (b.activeDepth() == Dungeon.depth
+					&& (safeArea == null || !safeArea.inside(cellToPoint(b.returnPos())))){
 				storedItems.add(b.cancel());
 			}
 		}
@@ -528,7 +529,22 @@ public class PrisonBossLevel extends Level {
 		}
 		drop(new IronKey(10), randomPrisonCellPos());
 	}
-	
+
+	@Override
+	public ArrayList<Item> getItemsToPreserveFromSealedResurrect() {
+		ArrayList<Item> items = super.getItemsToPreserveFromSealedResurrect();
+
+		items.addAll(storedItems);
+
+		for (Item i : items.toArray(new Item[0])){
+			if (i instanceof Tengu.BombAbility.BombItem || i instanceof Tengu.ShockerAbility.ShockerItem){
+				items.remove(i);
+			}
+		}
+
+		return items;
+	}
+
 	private int randomPrisonCellPos(){
 		Rect room = startCells[Random.Int(startCells.length)];
 		

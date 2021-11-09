@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Shadows;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -64,6 +65,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.HeavyBoomerang;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.HighGrass;
@@ -479,6 +481,22 @@ public abstract class Level implements Bundlable {
 				Dungeon.hero.buff(LockedFloor.class).detach();
 			}
 		}
+	}
+
+	public ArrayList<Item> getItemsToPreserveFromSealedResurrect(){
+		ArrayList<Item> items = new ArrayList<>();
+		for (Heap h : heaps.valueList()){
+			if (h.type == Heap.Type.HEAP) items.addAll(h.items);
+		}
+		for (Mob m : mobs){
+			for (PinCushion b : m.buffs(PinCushion.class)){
+				items.addAll(b.getStuckItems());
+			}
+		}
+		for (HeavyBoomerang.CircleBack b : Dungeon.hero.buffs(HeavyBoomerang.CircleBack.class)){
+			if (b.activeDepth() == Dungeon.depth) items.add(b.cancel());
+		}
+		return items;
 	}
 
 	public Group addVisuals() {
