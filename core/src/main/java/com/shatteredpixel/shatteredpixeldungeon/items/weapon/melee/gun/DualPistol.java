@@ -19,64 +19,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
+package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SmokeParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.ArcaneResin;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
-import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Firebomb;
-import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Flashbang;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticGas;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfPurity;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.BlizzardBrew;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.CausticBrew;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.InfernalBrew;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.ShockingBrew;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCleansing;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCorrosiveGas;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfDragonsBreath;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfEarthenArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfHolyFuror;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfMagicalSight;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfShielding;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfShroudingFog;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfSnapFreeze;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfStamina;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfStormClouds;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfReload;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
-import com.shatteredpixel.shatteredpixeldungeon.items.spells.ArcaneCatalyst;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ForceCube;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TenguDartTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -84,12 +44,11 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class RocketLauncher extends MeleeWeapon {
+public class DualPistol extends GunsWeapon {
 
     public static final String AC_SHOOT		= "SHOOT";
     public static final String AC_RELOAD = "RELOAD";
@@ -104,11 +63,11 @@ public class RocketLauncher extends MeleeWeapon {
         defaultAction = AC_SHOOT;
         usesTargeting = true;
 
-        image = ItemSpriteSheet.ROCKET_LAUNCHER;                                  //if you make something different guns, you should change this
+        image = ItemSpriteSheet.DUAL_PISTOL;                                  //if you make something different guns, you should change this
         hitSound = Assets.Sounds.HIT_CRUSH;
         hitSoundPitch = 0.8f;
 
-        tier = 6;                                                               //if you make something different guns, you should change this
+        tier = 2;                                                               //if you make something different guns, you should change this
     }
 
     private static final String ROUND = "round";
@@ -168,7 +127,7 @@ public class RocketLauncher extends MeleeWeapon {
             }
         }
         if (action.equals(AC_RELOAD)) {
-            max_round = 1;                                                                  //if you make something different guns, you should change this
+            max_round = 8;                                                                  //if you make something different guns, you should change this
             if (round == max_round){
                 GLog.w(Messages.get(this, "already_loaded"));
             }
@@ -177,7 +136,7 @@ public class RocketLauncher extends MeleeWeapon {
     }
 
     public void reload() {
-        max_round = 1;                                                                      //if you make something different guns, you should change this
+        max_round = 8;                                                                      //if you make something different guns, you should change this
         curUser.spend(reload_time);
         curUser.busy();
         Sample.INSTANCE.play(Assets.Sounds.UNLOCK, 2, 1.1f);
@@ -194,7 +153,7 @@ public class RocketLauncher extends MeleeWeapon {
 
     @Override
     public String status() {
-        max_round = 1;                                                                      //if you make something different guns, you should change this
+        max_round = 8;                                                                      //if you make something different guns, you should change this
         return Messages.format(TXT_STATUS, round, max_round);
     }
 
@@ -205,31 +164,31 @@ public class RocketLauncher extends MeleeWeapon {
 
     public int min(int lvl) {
         return tier +                                                                      //if you make something different guns, you should change this
-                lvl;                                                                        //if you make something different guns, you should change this
+               lvl;                                                                        //if you make something different guns, you should change this
     }
 
     public int max(int lvl) {
         return 3 * (tier + 1) +                                                            //if you make something different guns, you should change this
-                lvl;                                                           //if you make something different guns, you should change this
+               lvl;                                                           //if you make something different guns, you should change this
     }
 
     public int Bulletmin(int lvl) {
-        return (tier+1) +                                                                  //if you make something different guns, you should change this
-                lvl      +                                                                  //if you make something different guns, you should change this
-                RingOfSharpshooting.levelDamageBonus(Dungeon.hero);
+        return tier +                                                                  //if you make something different guns, you should change this
+               lvl +                                                                  //if you make something different guns, you should change this
+               RingOfSharpshooting.levelDamageBonus(Dungeon.hero);
     }
 
     public int Bulletmax(int lvl) {
-        return 5 * (tier-2)   +                                                           //if you make something different guns, you should change this
-                lvl * (tier-2) +                                                           //if you make something different guns, you should change this
-                RingOfSharpshooting.levelDamageBonus(Dungeon.hero);
+        return 2 * (tier)   +                                                           //if you make something different guns, you should change this
+               lvl * (tier) +                                                           //if you make something different guns, you should change this
+               RingOfSharpshooting.levelDamageBonus(Dungeon.hero);
     }
 
     @Override
     public String info() {
 
-        max_round = 1;                                                                       //if you make something different guns, you should change this
-        reload_time = 3f* RingOfReload.reloadMultiplier(Dungeon.hero);         //if you make something different guns, you should change this;
+        max_round = 8;                                                                       //if you make something different guns, you should change this
+        reload_time = 2f* RingOfReload.reloadMultiplier(Dungeon.hero);         //if you make something different guns, you should change this;
 
         String info = desc();
 
@@ -240,16 +199,16 @@ public class RocketLauncher extends MeleeWeapon {
             } else if (Dungeon.hero.STR() > STRReq()){
                 info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR() - STRReq());
             }
-            info += "\n\n" + Messages.get(RocketLauncher.class, "stats_known",
-                    Bulletmin(RocketLauncher.this.buffedLvl()),
-                    Bulletmax(RocketLauncher.this.buffedLvl()),
+            info += "\n\n" + Messages.get(DualPistol.class, "stats_known",
+                    Bulletmin(DualPistol.this.buffedLvl()),
+                    Bulletmax(DualPistol.this.buffedLvl()),
                     round, max_round, reload_time);
         } else {
             info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_unknown", tier, min(0), max(0), STRReq(0));
             if (STRReq(0) > Dungeon.hero.STR()) {
                 info += " " + Messages.get(MeleeWeapon.class, "probably_too_heavy");
             }
-            info += "\n\n" + Messages.get(RocketLauncher.class, "stats_unknown",
+            info += "\n\n" + Messages.get(DualPistol.class, "stats_unknown",
                     Bulletmin(0),
                     Bulletmax(0),
                     round, max_round, reload_time);
@@ -310,92 +269,67 @@ public class RocketLauncher extends MeleeWeapon {
         return super.baseDelay(owner);
     }                   //공격 속도
 
-    public RocketLauncher.Rocket knockBullet(){
-        return new RocketLauncher.Rocket();
+    public DualPistol.Bullet knockBullet(){
+        return new DualPistol.Bullet();
     }
-    public class Rocket extends MissileWeapon {
+    public class Bullet extends MissileWeapon {
 
         {
-            image = ItemSpriteSheet.ROCKET;
+            image = ItemSpriteSheet.DUAL_BULLET;
 
             hitSound = Assets.Sounds.PUFF;
-            tier = 6;                                                                            //if you make something different guns, you should change this
+            tier = 2;                                                                            //if you make something different guns, you should change this
         }
 
         @Override
         public int damageRoll(Char owner) {
+            int bulletdamage;
             if (owner.buff(Momentum.class) != null && owner.buff(Momentum.class).freerunning()) {
-                return Math.round(Random.NormalIntRange(Bulletmin(RocketLauncher.this.buffedLvl()), Bulletmax(RocketLauncher.this.buffedLvl())) * (1f + 0.15f * ((Hero) owner).pointsInTalent(Talent.PROJECTILE_MOMENTUM)));
+                bulletdamage = Math.round(Random.NormalIntRange(Bulletmin(DualPistol.this.buffedLvl()), Bulletmax(DualPistol.this.buffedLvl())) * (1f + 0.15f * ((Hero) owner).pointsInTalent(Talent.PROJECTILE_MOMENTUM)));
             } else {
-                return Random.NormalIntRange(Bulletmin(RocketLauncher.this.buffedLvl()), Bulletmax(RocketLauncher.this.buffedLvl()));
+                bulletdamage = Random.NormalIntRange(Bulletmin(DualPistol.this.buffedLvl()), Bulletmax(DualPistol.this.buffedLvl()));
             }
+            bulletdamage *= (1 + 0.1f * Dungeon.hero.pointsInTalent(Talent.ARM_ENHANCE));
+            return bulletdamage;
         }
 
         @Override
         public boolean hasEnchant(Class<? extends Enchantment> type, Char owner) {
-            return RocketLauncher.this.hasEnchant(type, owner);
+            return DualPistol.this.hasEnchant(type, owner);
         }
 
         @Override
         public int proc(Char attacker, Char defender, int damage) {
-            return RocketLauncher.this.proc(attacker, defender, damage);
+            return DualPistol.this.proc(attacker, defender, damage);
         }
 
         @Override
         public float delayFactor(Char user) {
-            return RocketLauncher.this.delayFactor(user);
+            return DualPistol.this.delayFactor(user);
         }
 
         @Override
         public int STRReq(int lvl) {
-            return STRReq(tier, RocketLauncher.this.buffedLvl());
+            return STRReq(tier, DualPistol.this.buffedLvl());
         }
 
         @Override
-        protected void onThrow(int cell) {
-            Char enemy = Actor.findChar( cell );
-            ArrayList<Char> targets = new ArrayList<>();
-            if (Actor.findChar(cell) != null) targets.add(Actor.findChar(cell));
-            for (int i : PathFinder.NEIGHBOURS8){
-                if (Actor.findChar(cell + i) != null) targets.add(Actor.findChar(cell + i));
-            }
-            for (Char target : targets){
-                curUser.shoot(target, this);
-                if (target == Dungeon.hero && !target.isAlive()){
-                    Dungeon.fail(getClass());
-                    GLog.n(Messages.get(RocketLauncher.class, "ondeath"));
-                }
-            }
-            CellEmitter.get(cell).burst(SmokeParticle.FACTORY, 2);
-            CellEmitter.center(cell).burst(BlastParticle.FACTORY, 2);
-            boolean terrainAffected = false;
-            ArrayList<Char> affected = new ArrayList<>();
-            for (int n : PathFinder.NEIGHBOURS9) {
-                int c = cell + n;
-                if (c >= 0 && c < Dungeon.level.length()) {
-                    if (Dungeon.level.heroFOV[c]) {
-                        CellEmitter.get(c).burst(SmokeParticle.FACTORY, 4);
-                        CellEmitter.center(cell).burst(BlastParticle.FACTORY, 4);
-                    }
-                    if (Dungeon.level.flamable[c]) {
-                        Dungeon.level.destroy(c);
-                        GameScene.updateMap(c);
-                        terrainAffected = true;
-                    }
-                    //destroys items / triggers bombs caught in the blast.
-                    Heap heap = Dungeon.level.heaps.get(c);
-                    if (heap != null)
-                        heap.explode();
-
-                    Char ch = Actor.findChar(c);
-                    if (ch != null) {
-                        affected.add(ch);
+        protected void onThrow( int cell ) {
+            for (int i=1; i<=2; i++) {                                                           //i<=n에서 n이 반복하는 횟수, 즉 발사 횟수
+                Char enemy = Actor.findChar(cell);
+                if (enemy == null || enemy == curUser) {
+                    parent = null;
+                    CellEmitter.get(cell).burst(SmokeParticle.FACTORY, 2);
+                    CellEmitter.center(cell).burst(BlastParticle.FACTORY, 2);
+                } else {
+                    if (!curUser.shoot(enemy, this)) {
+                        CellEmitter.get(cell).burst(SmokeParticle.FACTORY, 2);
+                        CellEmitter.center(cell).burst(BlastParticle.FACTORY, 2);
                     }
                 }
+                round--;
+                updateQuickslot();
             }
-            Sample.INSTANCE.play( Assets.Sounds.BLAST );
-            round --;
-            updateQuickslot();
         }
 
         @Override
