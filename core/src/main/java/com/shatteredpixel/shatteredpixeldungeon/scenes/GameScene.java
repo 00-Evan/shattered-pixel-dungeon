@@ -963,6 +963,10 @@ public class GameScene extends PixelScene {
 	public static void flashForDocument( String page ){
 		if (scene != null) scene.pane.flashForPage( page );
 	}
+
+	public static void showlevelUpStars(){
+		if (scene != null) scene.pane.showStarParticles();
+	}
 	
 	public static void updateKeyDisplay(){
 		if (scene != null) scene.pane.updateKeys();

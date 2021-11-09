@@ -792,7 +792,7 @@ public class ItemSpriteSheet {
 			assignIconRect( SCROLL_CHALLENGE,   7, 7 );
 			assignIconRect( SCROLL_PSIBLAST,    5, 6 );
 			assignIconRect( SCROLL_DREAD,       5, 7 );
-			assignIconRect( SCROLL_POLYMORPH,   7, 6 );
+			assignIconRect( SCROLL_POLYMORPH,   7, 7 );
 		}
 
 		                                                                                //16 free slots
@@ -837,7 +837,7 @@ public class ItemSpriteSheet {
 		public static final int POTION_STRMCLOUD= EXOTIC_POTIONS+8;
 		public static final int POTION_EARTHARMR= EXOTIC_POTIONS+9;
 		public static final int POTION_CLEANSE  = EXOTIC_POTIONS+10;
-		public static final int POTION_HOLYFUROR= EXOTIC_POTIONS+11;
+		public static final int POTION_DIVINE   = EXOTIC_POTIONS+11;
 		static {
 			assignIconRect( POTION_ARENSURGE,   7, 7 );
 			assignIconRect( POTION_SHIELDING,   6, 6 );
@@ -850,7 +850,7 @@ public class ItemSpriteSheet {
 			assignIconRect( POTION_STRMCLOUD,   7, 7 );
 			assignIconRect( POTION_EARTHARMR,   6, 6 );
 			assignIconRect( POTION_CLEANSE,     7, 7 );
-			assignIconRect( POTION_HOLYFUROR,   5, 7 );
+			assignIconRect( POTION_DIVINE,      7, 7 );
 		}
 
 		                                                                                //16 free slots

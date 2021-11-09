@@ -92,6 +92,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMight;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfDivineInspiration;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEvasion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
@@ -343,14 +344,27 @@ public class Hero extends Char {
 	}
 
 	public int talentPointsAvailable(int tier){
-		if (lvl < Talent.tierLevelThresholds[tier]
+		if (lvl < (Talent.tierLevelThresholds[tier] - 1)
 			|| (tier == 3 && subClass == HeroSubClass.NONE)
-			|| (tier == 4 && armorAbility == null)){
+			|| (tier == 4 && armorAbility == null)) {
 			return 0;
 		} else if (lvl >= Talent.tierLevelThresholds[tier+1]){
-			return Talent.tierLevelThresholds[tier+1] - Talent.tierLevelThresholds[tier] - talentPointsSpent(tier);
+			return Talent.tierLevelThresholds[tier+1] - Talent.tierLevelThresholds[tier] - talentPointsSpent(tier) + bonusTalentPoints(tier);
 		} else {
-			return 1 + lvl - Talent.tierLevelThresholds[tier] - talentPointsSpent(tier);
+			return 1 + lvl - Talent.tierLevelThresholds[tier] - talentPointsSpent(tier) + bonusTalentPoints(tier);
+		}
+	}
+
+	public int bonusTalentPoints(int tier){
+		if (lvl < (Talent.tierLevelThresholds[tier]-1)
+				|| (tier == 3 && subClass == HeroSubClass.NONE)
+				|| (tier == 4 && armorAbility == null)) {
+			return 0;
+		} else if (buff(PotionOfDivineInspiration.DivineInspirationTracker.class) != null
+					&& buff(PotionOfDivineInspiration.DivineInspirationTracker.class).isBoosted(tier)) {
+			return 2;
+		} else {
+			return 0;
 		}
 	}
 	
