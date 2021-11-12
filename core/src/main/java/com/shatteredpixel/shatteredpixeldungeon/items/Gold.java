@@ -93,18 +93,5 @@ public class Gold extends Item {
 		quantity = Random.Int( 30 + Dungeon.depth * 10, 60 + Dungeon.depth * 20 );
 		return this;
 	}
-	
-	private static final String VALUE	= "value";
-	
-	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		bundle.put( VALUE, quantity );
-	}
-	
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle(bundle);
-		quantity = bundle.getInt( VALUE );
-	}
+
 }

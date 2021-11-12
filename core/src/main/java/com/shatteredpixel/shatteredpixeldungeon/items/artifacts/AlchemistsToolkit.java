@@ -73,8 +73,9 @@ public class AlchemistsToolkit extends Artifact {
 			else if (!alchemyReady)                                         GLog.i( Messages.get(this, "not_ready") );
 			else if (hero.visibleEnemies() > hero.mindVisionEnemies.size()) GLog.i( Messages.get(this, "enemy_near") );
 			else {
-				
-				AlchemyScene.setProvider(hero.buff(kitEnergy.class));
+
+				//TODO notify scene we're using a toolkit here instead
+				//AlchemyScene.setProvider(hero.buff(kitEnergy.class));
 				Game.switchScene(AlchemyScene.class);
 			}
 			
@@ -164,7 +165,7 @@ public class AlchemistsToolkit extends Artifact {
 		alchemyReady = bundle.getBoolean(READY);
 	}
 	
-	public class kitEnergy extends ArtifactBuff implements AlchemyScene.AlchemyProvider {
+	public class kitEnergy extends ArtifactBuff {
 		
 		public void gainCharge(float levelPortion) {
 			alchemyReady = true;
@@ -197,32 +198,22 @@ public class AlchemistsToolkit extends Artifact {
 			} else
 				partialCharge = 0;
 		}
-		
-		@Override
-		public int getEnergy() {
-			return charge;
-		}
-		
-		@Override
-		public void spendEnergy(int reduction) {
-			charge = Math.max(0, charge - reduction);
-			Talent.onArtifactUsed(Dungeon.hero);
-		}
+
 	}
-	
+
+	//TODO this isn't working with new energy yet, atm it's just sucking up all energy possible
 	public static class upgradeKit extends Recipe {
 		
 		@Override
 		public boolean testIngredients(ArrayList<Item> ingredients) {
-			return ingredients.get(0) instanceof AlchemistsToolkit
-					&& !AlchemyScene.providerIsToolkit();
+			return ingredients.get(0) instanceof AlchemistsToolkit;
 		}
 		
 		private static int lastCost;
 		
 		@Override
 		public int cost(ArrayList<Item> ingredients) {
-			return lastCost = Math.max(1, AlchemyScene.availableEnergy());
+			return lastCost = Math.max(1, Dungeon.energy);
 		}
 		
 		@Override
@@ -245,7 +236,7 @@ public class AlchemistsToolkit extends Artifact {
 			sample.partialCharge = existing.partialCharge;
 			sample.exp = existing.exp;
 			sample.level(existing.level());
-			sample.absorbEnergy(AlchemyScene.availableEnergy());
+			sample.absorbEnergy(Dungeon.energy);
 			return sample;
 		}
 	}

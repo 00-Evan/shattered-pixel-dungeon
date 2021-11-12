@@ -139,7 +139,7 @@ public class Toolbar extends Component {
 		});
 		
 		add(btnInventory = new Tool(0, 0, 24, 26) {
-			private GoldIndicator gold;
+			private CurrencyIndicator ind;
 
 			@Override
 			protected void onClick() {
@@ -160,14 +160,14 @@ public class Toolbar extends Component {
 			@Override
 			protected void createChildren() {
 				super.createChildren();
-				gold = new GoldIndicator();
-				add(gold);
+				ind = new CurrencyIndicator();
+				add(ind);
 			}
 
 			@Override
 			protected void layout() {
 				super.layout();
-				gold.fill(this);
+				ind.fill(this);
 			}
 		});
 

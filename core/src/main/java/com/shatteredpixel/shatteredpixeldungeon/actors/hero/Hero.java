@@ -832,11 +832,6 @@ public class Hero extends Char {
 				return false;
 			}
 			
-			Alchemy alch = (Alchemy) Dungeon.level.blobs.get(Alchemy.class);
-			if (alch != null) {
-				alch.alchPos = dst;
-				AlchemyScene.setProvider( alch );
-			}
 			ShatteredPixelDungeon.switchScene(AlchemyScene.class);
 			return false;
 

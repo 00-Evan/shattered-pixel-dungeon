@@ -29,7 +29,8 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.AlchemyScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
-public class Alchemize extends Spell implements AlchemyScene.AlchemyProvider {
+//TODO redesign
+public class Alchemize extends Spell {
 	
 	{
 		image = ItemSpriteSheet.ALCHEMIZE;
@@ -43,18 +44,8 @@ public class Alchemize extends Spell implements AlchemyScene.AlchemyProvider {
 		}
 		detach( curUser.belongings.backpack );
 		updateQuickslot();
-		AlchemyScene.setProvider(this);
+		//AlchemyScene.setProvider(this);
 		ShatteredPixelDungeon.switchScene(AlchemyScene.class);
-	}
-	
-	@Override
-	public int getEnergy() {
-		return 0;
-	}
-	
-	@Override
-	public void spendEnergy(int reduction) {
-		//do nothing
 	}
 	
 	@Override

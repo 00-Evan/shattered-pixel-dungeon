@@ -133,7 +133,7 @@ public class QuickRecipe extends Component {
 		
 		if (cost > 0) {
 			arrow = new arrow(Icons.get(Icons.ARROW), cost);
-			arrow.hardlightText(0x00CCFF);
+			arrow.hardlightText(0x44CCFF);
 		} else {
 			arrow = new arrow(Icons.get(Icons.ARROW));
 		}

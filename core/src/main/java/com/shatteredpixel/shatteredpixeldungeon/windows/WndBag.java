@@ -167,26 +167,64 @@ public class WndBag extends WndTabbed {
 	}
 	
 	protected void placeTitle( Bag bag, int width ){
-		
-		ItemSprite gold = new ItemSprite(ItemSpriteSheet.GOLD, null);
-		gold.x = width - gold.width() - 1;
-		gold.y = (TITLE_HEIGHT - gold.height())/2f - 1;
-		PixelScene.align(gold);
-		add(gold);
-		
-		BitmapText amt = new BitmapText( Integer.toString(Dungeon.gold), PixelScene.pixelFont );
-		amt.hardlight(TITLE_COLOR);
-		amt.measure();
-		amt.x = width - gold.width() - amt.width() - 2;
-		amt.y = (TITLE_HEIGHT - amt.baseLine())/2f - 1;
-		PixelScene.align(amt);
-		add(amt);
+
+		float titleWidth;
+		if (Dungeon.energy == 0) {
+			ItemSprite gold = new ItemSprite(ItemSpriteSheet.GOLD, null);
+			gold.x = width - gold.width();
+			gold.y = (TITLE_HEIGHT - gold.height()) / 2f;
+			PixelScene.align(gold);
+			add(gold);
+
+			BitmapText amt = new BitmapText(Integer.toString(Dungeon.gold), PixelScene.pixelFont);
+			amt.hardlight(TITLE_COLOR);
+			amt.measure();
+			amt.x = width - gold.width() - amt.width() - 1;
+			amt.y = (TITLE_HEIGHT - amt.baseLine()) / 2f - 1;
+			PixelScene.align(amt);
+			add(amt);
+
+			titleWidth = amt.x;
+		} else {
+
+			Image gold = Icons.get(Icons.COIN_SML);
+			gold.x = width - gold.width() - 0.5f;
+			gold.y = 0;
+			PixelScene.align(gold);
+			add(gold);
+
+			BitmapText amt = new BitmapText(Integer.toString(Dungeon.gold), PixelScene.pixelFont);
+			amt.hardlight(TITLE_COLOR);
+			amt.measure();
+			amt.x = width - gold.width() - amt.width() - 2f;
+			amt.y = 0;
+			PixelScene.align(amt);
+			add(amt);
+
+			titleWidth = amt.x;
+
+			Image energy = Icons.get(Icons.ENERGY_SML);
+			energy.x = width - energy.width();
+			energy.y = gold.height();
+			PixelScene.align(energy);
+			add(energy);
+
+			amt = new BitmapText(Integer.toString(Dungeon.energy), PixelScene.pixelFont);
+			amt.hardlight(0x44CCFF);
+			amt.measure();
+			amt.x = width - energy.width() - amt.width() - 1;
+			amt.y = energy.y;
+			PixelScene.align(amt);
+			add(amt);
+
+			titleWidth = Math.min(titleWidth, amt.x);
+		}
 
 		String title = selector != null ? selector.textPrompt() : null;
 		RenderedTextBlock txtTitle = PixelScene.renderTextBlock(
 				title != null ? Messages.titleCase(title) : Messages.titleCase( bag.name() ), 8 );
 		txtTitle.hardlight( TITLE_COLOR );
-		txtTitle.maxWidth( (int)amt.x - 2 );
+		txtTitle.maxWidth( (int)titleWidth - 2 );
 		txtTitle.setPos(
 				1,
 				(TITLE_HEIGHT - txtTitle.height()) / 2f - 1

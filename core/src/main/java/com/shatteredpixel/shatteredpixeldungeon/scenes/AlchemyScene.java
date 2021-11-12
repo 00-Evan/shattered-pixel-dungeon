@@ -73,8 +73,11 @@ public class AlchemyScene extends PixelScene {
 	
 	private Emitter lowerBubbles;
 	private SkinnedBlock water;
-	
+
+	private Image energyIcon;
 	private RenderedTextBlock energyLeft;
+	private IconButton energyAdd;
+
 	private RenderedTextBlock energyCost;
 	
 	private RedButton btnCombine;
@@ -287,12 +290,24 @@ public class AlchemyScene extends PixelScene {
 		btnGuide.setRect(0, 0, 20, 20);
 		add(btnGuide);
 		
-		energyLeft = PixelScene.renderTextBlock(Messages.get(AlchemyScene.class, "energy", availableEnergy()), 9);
+		energyLeft = PixelScene.renderTextBlock(Messages.get(AlchemyScene.class, "energy", Dungeon.energy), 9);
 		energyLeft.setPos(
 				(Camera.main.width - energyLeft.width())/2,
-				Camera.main.height - 5 - energyLeft.height()
+				Camera.main.height - 8 - energyLeft.height()
 		);
+		energyLeft.hardlight(0x44CCFF);
 		add(energyLeft);
+
+		energyIcon = Icons.get(Icons.ENERGY);
+		energyIcon.x = energyLeft.left() - energyIcon.width();
+		energyIcon.y = energyLeft.top() - (energyIcon.height() - energyLeft.height())/2;
+		align(energyIcon);
+		add(energyIcon);
+
+		//TODO does nothing currently
+		energyAdd = new IconButton(Icons.get(Icons.PLUS));
+		energyAdd.setRect(energyLeft.right(), energyIcon.y, 16, 16);
+		add(energyAdd);
 		
 		energyCost = PixelScene.renderTextBlock(6);
 		add(energyCost);
@@ -384,9 +399,9 @@ public class AlchemyScene extends PixelScene {
 			
 			energyCost.visible = (cost > 0);
 			
-			if (cost <= availableEnergy()) {
+			if (cost <= Dungeon.energy) {
 				btnCombine.enable(true);
-				energyCost.resetColor();
+				energyCost.hardlight(0x44CCFF);
 			} else {
 				btnCombine.enable(false);
 				energyCost.hardlight(0xFF0000);
@@ -408,12 +423,18 @@ public class AlchemyScene extends PixelScene {
 		Item result = null;
 		
 		if (recipe != null){
-			provider.spendEnergy(recipe.cost(ingredients));
-			energyLeft.text(Messages.get(AlchemyScene.class, "energy", availableEnergy()));
+			Dungeon.energy -= recipe.cost(ingredients);
+			energyLeft.text(Messages.get(AlchemyScene.class, "energy", Dungeon.energy));
 			energyLeft.setPos(
 					(Camera.main.width - energyLeft.width())/2,
-					Camera.main.height - 5 - energyLeft.height()
+					Camera.main.height - 8 - energyLeft.height()
 			);
+
+			energyIcon.x = energyLeft.left() - energyIcon.width();
+			energyIcon.y = energyLeft.top() - (energyIcon.height() - energyLeft.height())/2;
+			align(energyIcon);
+
+			energyAdd.setRect(energyLeft.right(), energyIcon.y, 16, 16);
 			
 			result = recipe.brew(ingredients);
 		}
@@ -572,26 +593,7 @@ public class AlchemyScene extends PixelScene {
 			slot.item( this.item = item );
 		}
 	}
-	
-	private static AlchemyProvider provider;
-	
-	public static void setProvider( AlchemyProvider p ){
-		provider = p;
-	}
-	
-	public static int availableEnergy(){
-		return provider == null ? 0 : provider.getEnergy();
-	}
-	
-	public static boolean providerIsToolkit(){
-		return provider instanceof AlchemistsToolkit.kitEnergy;
-	}
-	
-	public interface AlchemyProvider {
-	
-		int getEnergy();
-		
-		void spendEnergy(int reduction);
-	
-	}
+
+	//TODO add code here for the toolkit's energy
+
 }
