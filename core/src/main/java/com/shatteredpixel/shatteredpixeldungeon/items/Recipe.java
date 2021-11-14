@@ -171,6 +171,8 @@ public abstract class Recipe {
 	
 	private static Recipe[] oneIngredientRecipes = new Recipe[]{
 		new AlchemistsToolkit.upgradeKit(),
+		new ExoticPotion.PotionToExotic(),
+		new ExoticScroll.ScrollToExotic(),
 		new Scroll.ScrollToStone(),
 		new ArcaneResin.Recipe(),
 		new StewedMeat.oneMeat()
@@ -208,8 +210,8 @@ public abstract class Recipe {
 	
 	private static Recipe[] threeIngredientRecipes = new Recipe[]{
 		new Potion.SeedToPotion(),
-		new ExoticPotion.PotionToExotic(),
-		new ExoticScroll.ScrollToExotic(),
+		//new ExoticPotion.PotionToExotic(),
+		//new ExoticScroll.ScrollToExotic(),
 		new StewedMeat.threeMeat(),
 		new MeatPie.Recipe()
 	};

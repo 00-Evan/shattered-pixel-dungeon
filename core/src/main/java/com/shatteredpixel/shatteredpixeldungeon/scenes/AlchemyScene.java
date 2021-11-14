@@ -563,6 +563,8 @@ public class AlchemyScene extends PixelScene {
 		bubbleEmitter.start(Speck.factory( Speck.BUBBLE ), 0.01f, 100 );
 		sparkEmitter.burst(SparkParticle.FACTORY, 20);
 		Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
+
+		updateState();
 	}
 	
 	public static class ItemButton extends Component {
