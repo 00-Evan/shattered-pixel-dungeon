@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
@@ -44,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndEnergizeItem;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoItem;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal;
 import com.watabou.gltextures.TextureCache;
@@ -70,6 +72,7 @@ public class AlchemyScene extends PixelScene {
 	
 	private Emitter smokeEmitter;
 	private Emitter bubbleEmitter;
+	private Emitter sparkEmitter;
 	
 	private Emitter lowerBubbles;
 	private SkinnedBlock water;
@@ -304,13 +307,22 @@ public class AlchemyScene extends PixelScene {
 		align(energyIcon);
 		add(energyIcon);
 
-		//TODO does nothing currently
-		energyAdd = new IconButton(Icons.get(Icons.PLUS));
+		energyAdd = new IconButton(Icons.get(Icons.PLUS)){
+			@Override
+			protected void onClick() {
+				WndEnergizeItem.openItemSelector();
+			}
+		};
 		energyAdd.setRect(energyLeft.right(), energyIcon.y, 16, 16);
 		add(energyAdd);
 		
 		energyCost = PixelScene.renderTextBlock(6);
 		add(energyCost);
+
+		sparkEmitter = new Emitter();
+		sparkEmitter.pos(energyLeft.left(), energyLeft.top(), energyLeft.width(), energyLeft.height());
+		sparkEmitter.autoKill = false;
+		add(sparkEmitter);
 		
 		fadeIn();
 		
@@ -533,6 +545,24 @@ public class AlchemyScene extends PixelScene {
 				}
 			}
 		}
+	}
+
+	public void createEnergy(){
+		energyLeft.text(Messages.get(AlchemyScene.class, "energy", Dungeon.energy));
+		energyLeft.setPos(
+				(Camera.main.width - energyLeft.width())/2,
+				Camera.main.height - 8 - energyLeft.height()
+		);
+
+		energyIcon.x = energyLeft.left() - energyIcon.width();
+		energyIcon.y = energyLeft.top() - (energyIcon.height() - energyLeft.height())/2;
+		align(energyIcon);
+
+		energyAdd.setRect(energyLeft.right(), energyIcon.y, 16, 16);
+
+		bubbleEmitter.start(Speck.factory( Speck.BUBBLE ), 0.01f, 100 );
+		sparkEmitter.burst(SparkParticle.FACTORY, 20);
+		Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
 	}
 	
 	public static class ItemButton extends Component {
