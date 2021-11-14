@@ -258,6 +258,11 @@ public abstract class Scroll extends Item {
 	public int value() {
 		return 30 * quantity;
 	}
+
+	@Override
+	public int energyVal() {
+		return 6 * quantity;
+	}
 	
 	public static class PlaceHolder extends Scroll {
 		
