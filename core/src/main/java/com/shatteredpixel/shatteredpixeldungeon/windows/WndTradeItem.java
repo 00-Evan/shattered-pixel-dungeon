@@ -170,7 +170,7 @@ public class WndTradeItem extends WndInfoItem {
 		}
 	}
 	
-	private void sell( Item item ) {
+	public static void sell( Item item ) {
 		
 		Hero hero = Dungeon.hero;
 		
@@ -184,8 +184,8 @@ public class WndTradeItem extends WndInfoItem {
 
 		new Gold( item.value() ).doPickUp( hero );
 	}
-	
-	private void sellOne( Item item ) {
+
+	public static void sellOne( Item item ) {
 		
 		if (item.quantity() <= 1) {
 			sell( item );

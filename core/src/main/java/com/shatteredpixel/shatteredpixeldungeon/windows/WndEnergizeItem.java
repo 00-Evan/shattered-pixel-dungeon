@@ -87,7 +87,7 @@ public class WndEnergizeItem extends WndInfoItem {
 		}
 	}
 
-	private void energize( Item item ) {
+	public static void energize( Item item ) {
 
 		Hero hero = Dungeon.hero;
 
@@ -111,7 +111,7 @@ public class WndEnergizeItem extends WndInfoItem {
 		}
 	}
 
-	private void energizeOne( Item item ) {
+	public static void energizeOne( Item item ) {
 
 		if (item.quantity() <= 1) {
 			energize( item );

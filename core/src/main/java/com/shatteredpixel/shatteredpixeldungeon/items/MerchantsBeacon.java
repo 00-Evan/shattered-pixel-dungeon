@@ -29,6 +29,7 @@ import com.watabou.noosa.audio.Sample;
 
 import java.util.ArrayList;
 
+//TODO no longer sold in stores, decide what to do with this
 public class MerchantsBeacon extends Item {
 
 	private static final String AC_USE = "USE";
