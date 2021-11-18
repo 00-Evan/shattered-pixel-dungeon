@@ -43,7 +43,7 @@ public class Alchemy extends Blob {
 					off[cell] = cur[cell];
 
 					//for pre-v1.1.0 saves, drops 1/4 the pot's old energy contents in crystals
-					if (off[cell] >= 1){
+					if (off[cell] >= 4){
 						int n;
 						do {
 							n = cell + PathFinder.NEIGHBOURS8[Random.Int( 8 )];

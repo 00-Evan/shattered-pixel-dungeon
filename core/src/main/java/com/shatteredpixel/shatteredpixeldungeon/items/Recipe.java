@@ -170,7 +170,6 @@ public abstract class Recipe {
 	};
 	
 	private static Recipe[] oneIngredientRecipes = new Recipe[]{
-		new AlchemistsToolkit.upgradeKit(),
 		new ExoticPotion.PotionToExotic(),
 		new ExoticScroll.ScrollToExotic(),
 		new Scroll.ScrollToStone(),
@@ -250,10 +249,7 @@ public abstract class Recipe {
 	}
 	
 	public static boolean usableInRecipe(Item item){
-		return !item.cursed
-				&& (!(item instanceof EquipableItem)
-					|| (item instanceof AlchemistsToolkit && item.isIdentified())
-					|| item instanceof MissileWeapon);
+		return !item.cursed && (!(item instanceof EquipableItem) || item instanceof MissileWeapon);
 	}
 }
 

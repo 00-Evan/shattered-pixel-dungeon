@@ -92,6 +92,7 @@ public class WndOptions extends Window {
 					onSelect( index );
 				}
 			};
+			if (hasIcon(i)) btn.icon(getIcon(i));
 			btn.enable(enabled(i));
 			add( btn );
 
@@ -121,9 +122,17 @@ public class WndOptions extends Window {
 	
 	protected void onSelect( int index ) {}
 
-	protected boolean hasInfo( int index) {
+	protected boolean hasInfo( int index ) {
 		return false;
 	}
 
 	protected void onInfo( int index ) {}
+
+	protected boolean hasIcon( int index ) {
+		return false;
+	}
+
+	protected Image getIcon( int index ) {
+		return null;
+	}
 }

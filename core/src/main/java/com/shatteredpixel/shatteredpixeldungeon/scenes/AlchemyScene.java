@@ -292,8 +292,13 @@ public class AlchemyScene extends PixelScene {
 		};
 		btnGuide.setRect(0, 0, 20, 20);
 		add(btnGuide);
-		
-		energyLeft = PixelScene.renderTextBlock(Messages.get(AlchemyScene.class, "energy", Dungeon.energy), 9);
+
+		String energyText = Messages.get(AlchemyScene.class, "energy") + " " + Dungeon.energy;
+		if (toolkit != null){
+			energyText += "+" + toolkit.availableEnergy();
+		}
+
+		energyLeft = PixelScene.renderTextBlock(energyText, 9);
 		energyLeft.setPos(
 				(Camera.main.width - energyLeft.width())/2,
 				Camera.main.height - 8 - energyLeft.height()
@@ -301,7 +306,7 @@ public class AlchemyScene extends PixelScene {
 		energyLeft.hardlight(0x44CCFF);
 		add(energyLeft);
 
-		energyIcon = Icons.get(Icons.ENERGY);
+		energyIcon = new ItemSprite( toolkit != null ? ItemSpriteSheet.ARTIFACT_TOOLKIT : ItemSpriteSheet.ENERGY);
 		energyIcon.x = energyLeft.left() - energyIcon.width();
 		energyIcon.y = energyLeft.top() - (energyIcon.height() - energyLeft.height())/2;
 		align(energyIcon);
@@ -313,7 +318,8 @@ public class AlchemyScene extends PixelScene {
 				WndEnergizeItem.openItemSelector();
 			}
 		};
-		energyAdd.setRect(energyLeft.right(), energyIcon.y, 16, 16);
+		energyAdd.setRect(energyLeft.right(), energyLeft.top() - (16 - energyLeft.height())/2, 16, 16);
+		align(energyAdd);
 		add(energyAdd);
 		
 		energyCost = PixelScene.renderTextBlock(6);
@@ -403,15 +409,20 @@ public class AlchemyScene extends PixelScene {
 			output.item(recipe.sampleOutput(ingredients));
 			output.visible = true;
 			
-			energyCost.text( Messages.get(AlchemyScene.class, "cost", cost) );
+			energyCost.text( Messages.get(AlchemyScene.class, "energy") + " " + cost );
 			energyCost.setPos(
 					btnCombine.left() + (btnCombine.width() - energyCost.width())/2,
 					btnCombine.top() - energyCost.height()
 			);
 			
 			energyCost.visible = (cost > 0);
-			
-			if (cost <= Dungeon.energy) {
+
+			int availableEnergy = Dungeon.energy;
+			if (toolkit != null){
+				availableEnergy += toolkit.availableEnergy();
+			}
+
+			if (cost <= availableEnergy) {
 				btnCombine.enable(true);
 				energyCost.hardlight(0x44CCFF);
 			} else {
@@ -435,18 +446,27 @@ public class AlchemyScene extends PixelScene {
 		Item result = null;
 		
 		if (recipe != null){
-			Dungeon.energy -= recipe.cost(ingredients);
-			energyLeft.text(Messages.get(AlchemyScene.class, "energy", Dungeon.energy));
+			int cost = recipe.cost(ingredients);
+			if (toolkit != null){
+				cost = toolkit.consumeEnergy(cost);
+			}
+			Dungeon.energy -= cost;
+
+			String energyText = Messages.get(AlchemyScene.class, "energy") + " " + Dungeon.energy;
+			if (toolkit != null){
+				energyText += "+" + toolkit.availableEnergy();
+			}
+			energyLeft.text(energyText);
 			energyLeft.setPos(
 					(Camera.main.width - energyLeft.width())/2,
 					Camera.main.height - 8 - energyLeft.height()
 			);
 
 			energyIcon.x = energyLeft.left() - energyIcon.width();
-			energyIcon.y = energyLeft.top() - (energyIcon.height() - energyLeft.height())/2;
 			align(energyIcon);
 
-			energyAdd.setRect(energyLeft.right(), energyIcon.y, 16, 16);
+			energyAdd.setPos(energyLeft.right(), energyAdd.top());
+			align(energyAdd);
 			
 			result = recipe.brew(ingredients);
 		}
@@ -548,17 +568,21 @@ public class AlchemyScene extends PixelScene {
 	}
 
 	public void createEnergy(){
-		energyLeft.text(Messages.get(AlchemyScene.class, "energy", Dungeon.energy));
+		String energyText = Messages.get(AlchemyScene.class, "energy") + " " + Dungeon.energy;
+		if (toolkit != null){
+			energyText += "+" + toolkit.availableEnergy();
+		}
+		energyLeft.text(energyText);
 		energyLeft.setPos(
 				(Camera.main.width - energyLeft.width())/2,
 				Camera.main.height - 8 - energyLeft.height()
 		);
 
 		energyIcon.x = energyLeft.left() - energyIcon.width();
-		energyIcon.y = energyLeft.top() - (energyIcon.height() - energyLeft.height())/2;
 		align(energyIcon);
 
-		energyAdd.setRect(energyLeft.right(), energyIcon.y, 16, 16);
+		energyAdd.setPos(energyLeft.right(), energyAdd.top());
+		align(energyAdd);
 
 		bubbleEmitter.start(Speck.factory( Speck.BUBBLE ), 0.01f, 100 );
 		sparkEmitter.burst(SparkParticle.FACTORY, 20);
@@ -626,6 +650,14 @@ public class AlchemyScene extends PixelScene {
 		}
 	}
 
-	//TODO add code here for the toolkit's energy
+	private static AlchemistsToolkit toolkit;
+
+	public static void assignToolkit( AlchemistsToolkit toolkit ){
+		AlchemyScene.toolkit = toolkit;
+	}
+
+	public static void clearToolkit(){
+		AlchemyScene.toolkit = null;
+	}
 
 }

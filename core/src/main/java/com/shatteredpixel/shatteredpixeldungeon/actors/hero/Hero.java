@@ -831,7 +831,8 @@ public class Hero extends Char {
 				GLog.w( Messages.get(AlchemistsToolkit.class, "cursed"));
 				return false;
 			}
-			
+
+			AlchemyScene.clearToolkit();
 			ShatteredPixelDungeon.switchScene(AlchemyScene.class);
 			return false;
 
