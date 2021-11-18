@@ -61,7 +61,7 @@ public class InfernalBrew extends Brew {
 			inputs =  new Class[]{PotionOfLiquidFlame.class, AlchemicalCatalyst.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 6;
+			cost = 5;
 			
 			output = InfernalBrew.class;
 			outQuantity = 1;

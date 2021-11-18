@@ -66,7 +66,7 @@ public class ShockingBrew extends Brew {
 			inputs =  new Class[]{PotionOfParalyticGas.class, AlchemicalCatalyst.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 8;
+			cost = 6;
 			
 			output = ShockingBrew.class;
 			outQuantity = 1;

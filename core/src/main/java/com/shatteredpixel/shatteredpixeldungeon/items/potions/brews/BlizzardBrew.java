@@ -60,7 +60,7 @@ public class BlizzardBrew extends Brew {
 			inputs =  new Class[]{PotionOfFrost.class, AlchemicalCatalyst.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 6;
+			cost = 4;
 			
 			output = BlizzardBrew.class;
 			outQuantity = 1;

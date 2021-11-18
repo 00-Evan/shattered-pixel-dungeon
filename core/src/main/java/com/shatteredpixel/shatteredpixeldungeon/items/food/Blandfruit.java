@@ -273,7 +273,7 @@ public class Blandfruit extends Food {
 		
 		@Override
 		public int cost(ArrayList<Item> ingredients) {
-			return 3;
+			return 2;
 		}
 		
 		@Override
