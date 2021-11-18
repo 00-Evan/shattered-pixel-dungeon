@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 import java.util.ArrayList;
 
+//beacon was removed from drops, here for pre-1.1.0 saves
 public class MagicalPorter extends InventorySpell {
 	
 	{
