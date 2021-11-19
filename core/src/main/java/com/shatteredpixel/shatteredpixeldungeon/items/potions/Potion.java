@@ -524,9 +524,6 @@ public class Potion extends Item {
 				Dungeon.LimitedDrops.COOKING_HP.count++;
 			}
 			
-			Statistics.potionsCooked++;
-			Badges.validatePotionsCooked();
-			
 			return result;
 		}
 		
