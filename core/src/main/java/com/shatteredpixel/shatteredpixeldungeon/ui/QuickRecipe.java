@@ -169,10 +169,12 @@ public class QuickRecipe extends Component {
 		
 		height = 16;
 		width = 0;
-		
+
+		int padding = inputs.size() == 1 ? 8 : 0;
+
 		for (ItemSlot item : inputs){
-			item.setRect(x + width, y, 16, 16);
-			width += 16;
+			item.setRect(x + width + padding, y, 16, 16);
+			width += 16 + padding;
 		}
 		
 		arrow.setRect(x + width, y, 14, 16);
@@ -180,6 +182,8 @@ public class QuickRecipe extends Component {
 		
 		output.setRect(x + width, y, 16, 16);
 		width += 16;
+
+		width += padding;
 	}
 	
 	//used to ensure that un-IDed items are not spoiled
@@ -361,8 +365,6 @@ public class QuickRecipe extends Component {
 				result.add(null);
 				result.add(new QuickRecipe(new ElixirOfHoneyedHealing.Recipe()));
 				result.add(new QuickRecipe(new ElixirOfAquaticRejuvenation.Recipe()));
-				result.add(null);
-				result.add(null);
 				result.add(new QuickRecipe(new ElixirOfMight.Recipe()));
 				result.add(new QuickRecipe(new ElixirOfDragonsBlood.Recipe()));
 				result.add(new QuickRecipe(new ElixirOfIcyTouch.Recipe()));
@@ -376,13 +378,13 @@ public class QuickRecipe extends Component {
 				result.add(null);
 				result.add(null);
 				result.add(new QuickRecipe(new AquaBlast.Recipe()));
-				result.add(new QuickRecipe(new FeatherFall.Recipe()));
 				result.add(new QuickRecipe(new ReclaimTrap.Recipe()));
+				result.add(new QuickRecipe(new FeatherFall.Recipe()));
 				result.add(null);
 				result.add(null);
-				result.add(new QuickRecipe(new CurseInfusion.Recipe()));
-				result.add(new QuickRecipe(new MagicalInfusion.Recipe()));
 				result.add(new QuickRecipe(new Alchemize.Recipe()));
+				result.add(new QuickRecipe(new MagicalInfusion.Recipe()));
+				result.add(new QuickRecipe(new CurseInfusion.Recipe()));
 				result.add(new QuickRecipe(new Recycle.Recipe()));
 				return result;
 		}
