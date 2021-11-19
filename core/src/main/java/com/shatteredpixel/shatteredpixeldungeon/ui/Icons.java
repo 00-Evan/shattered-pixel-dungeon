@@ -91,7 +91,7 @@ public enum Icons {
 	//16x16
 	ALEKS,
 	//32x32
-	CHARLIE,
+	CELESTI,
 	KRISTJAN,
 	CUBE_CODE,
 	PURIGRO,
@@ -257,7 +257,7 @@ public enum Icons {
 			icon.frame( icon.texture.uvRect( 48, 80, 64, 96 ) );
 			break;
 		//32*32 icons are scaled down to match game's size
-		case CHARLIE:
+		case CELESTI:
 			icon.frame( icon.texture.uvRect( 0, 96, 32, 128 ) );
 			icon.scale.set(PixelScene.align(0.49f));
 			break;
