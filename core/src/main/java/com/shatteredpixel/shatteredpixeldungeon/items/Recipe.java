@@ -170,9 +170,9 @@ public abstract class Recipe {
 	};
 	
 	private static Recipe[] oneIngredientRecipes = new Recipe[]{
+		new Scroll.ScrollToStone(),
 		new ExoticPotion.PotionToExotic(),
 		new ExoticScroll.ScrollToExotic(),
-		new Scroll.ScrollToStone(),
 		new ArcaneResin.Recipe(),
 		new StewedMeat.oneMeat()
 	};
@@ -215,37 +215,39 @@ public abstract class Recipe {
 		new MeatPie.Recipe()
 	};
 	
-	public static Recipe findRecipe(ArrayList<Item> ingredients){
+	public static ArrayList<Recipe> findRecipes(ArrayList<Item> ingredients){
+
+		ArrayList<Recipe> result = new ArrayList<>();
 
 		for (Recipe recipe : variableRecipes){
 			if (recipe.testIngredients(ingredients)){
-				return recipe;
+				result.add(recipe);
 			}
 		}
 
 		if (ingredients.size() == 1){
 			for (Recipe recipe : oneIngredientRecipes){
 				if (recipe.testIngredients(ingredients)){
-					return recipe;
+					result.add(recipe);
 				}
 			}
 			
 		} else if (ingredients.size() == 2){
 			for (Recipe recipe : twoIngredientRecipes){
 				if (recipe.testIngredients(ingredients)){
-					return recipe;
+					result.add(recipe);
 				}
 			}
 			
 		} else if (ingredients.size() == 3){
 			for (Recipe recipe : threeIngredientRecipes){
 				if (recipe.testIngredients(ingredients)){
-					return recipe;
+					result.add(recipe);
 				}
 			}
 		}
 		
-		return null;
+		return result;
 	}
 	
 	public static boolean usableInRecipe(Item item){

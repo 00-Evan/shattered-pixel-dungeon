@@ -67,10 +67,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class AlchemyScene extends PixelScene {
-	
+
+	//max of 3 inputs, and 3 potential recipe outputs
 	private static final InputButton[] inputs = new InputButton[3];
-	private CombineButton btnCombine;
-	private OutputSlot output;
+	private static final CombineButton[] combines = new CombineButton[3];
+	private static final OutputSlot[] outputs = new OutputSlot[3];
 	
 	private Emitter smokeEmitter;
 	private Emitter bubbleEmitter;
@@ -149,7 +150,15 @@ public class AlchemyScene extends PixelScene {
 		add(desc);
 		
 		pos += desc.height() + 6;
-		
+
+		NinePatch inputBG = Chrome.get(Chrome.Type.TOAST_TR);
+		inputBG.x = left + 6;
+		inputBG.y = pos;
+		inputBG.size(BTN_SIZE+8, 3*BTN_SIZE + 4 + 8);
+		add(inputBG);
+
+		pos += 4;
+
 		synchronized (inputs) {
 			for (int i = 0; i < inputs.length; i++) {
 				inputs[i] = new InputButton();
@@ -158,21 +167,29 @@ public class AlchemyScene extends PixelScene {
 				pos += BTN_SIZE + 2;
 			}
 		}
-		
-		btnCombine = new CombineButton();
-		btnCombine.enable(false);
-		btnCombine.setRect(left + (w-30)/2f, inputs[1].top()+5, 30, inputs[1].height()-10);
-		add(btnCombine);
 
-		output = new OutputSlot();
-		output.setRect(left + w - BTN_SIZE - 10, inputs[1].top(), BTN_SIZE, BTN_SIZE);
+		for (int i = 0; i < inputs.length; i++){
+			combines[i] = new CombineButton(i);
+			combines[i].enable(false);
 
-		add(output);
-		output.item(null);
+			outputs[i] = new OutputSlot();
+			outputs[i].item(null);
 
+			if (i == 0){
+				//first ones are always visible
+				combines[i].setRect(left + (w-30)/2f, inputs[1].top()+5, 30, inputs[1].height()-10);
+				outputs[i].setRect(left + w - BTN_SIZE - 10, inputs[1].top(), BTN_SIZE, BTN_SIZE);
+			} else {
+				combines[i].visible = false;
+				outputs[i].visible = false;
+			}
+
+			add(combines[i]);
+			add(outputs[i]);
+		}
 
 		smokeEmitter = new Emitter();
-		smokeEmitter.pos(output.left() + (BTN_SIZE-16)/2f, output.top() + (BTN_SIZE-16)/2f, 16, 16);
+		smokeEmitter.pos(outputs[0].left() + (BTN_SIZE-16)/2f, outputs[0].top() + (BTN_SIZE-16)/2f, 16, 16);
 		smokeEmitter.autoKill = false;
 		add(smokeEmitter);
 		
@@ -315,31 +332,64 @@ public class AlchemyScene extends PixelScene {
 	private void updateState(){
 		
 		ArrayList<Item> ingredients = filterInput(Item.class);
-		Recipe recipe = Recipe.findRecipe(ingredients);
-		
-		if (recipe != null){
+		ArrayList<Recipe> recipes = Recipe.findRecipes(ingredients);
+
+		//disables / hides unneeded buttons
+		for (int i = recipes.size(); i < combines.length; i++){
+			combines[i].enable(false);
+			outputs[i].item(null);
+
+			if (i != 0){
+				combines[i].visible = false;
+				outputs[i].visible = false;
+			}
+		}
+
+		if (recipes.isEmpty()){
+			combines[0].setPos(combines[0].left(), inputs[1].top()+5);
+			outputs[0].setPos(outputs[0].left(), inputs[1].top());
+			return;
+		}
+
+		//positions active buttons
+		float gap = recipes.size() == 2 ? 6 : 2;
+
+		float height = inputs[2].bottom() - inputs[0].top();
+		height -= recipes.size()*BTN_SIZE + (recipes.size()-1)*gap;
+		float top = inputs[0].top() + height/2;
+
+		//positions and enables active buttons
+		for (int i = 0; i < recipes.size(); i++){
+
+			Recipe recipe = recipes.get(i);
+
 			int cost = recipe.cost(ingredients);
-			
-			output.item(recipe.sampleOutput(ingredients));
+
+			outputs[i].visible = true;
+			outputs[i].setRect(outputs[0].left(), top, BTN_SIZE, BTN_SIZE);
+			outputs[i].item(recipe.sampleOutput(ingredients));
+			top += BTN_SIZE+gap;
 
 			int availableEnergy = Dungeon.energy;
 			if (toolkit != null){
 				availableEnergy += toolkit.availableEnergy();
 			}
 
-			btnCombine.enable(cost <= availableEnergy, cost);
-			
-		} else {
-			btnCombine.enable(false);
-			output.item(null);
+			combines[i].visible = true;
+			combines[i].setRect(combines[0].left(), outputs[i].top()+5, 30, 20);
+			combines[i].enable(cost <= availableEnergy, cost);
+
 		}
 		
 	}
 	
-	private void combine(){
+	private void combine( int slot ){
 		
 		ArrayList<Item> ingredients = filterInput(Item.class);
-		Recipe recipe = Recipe.findRecipe(ingredients);
+
+		if (ingredients.isEmpty()) return;
+
+		Recipe recipe = Recipe.findRecipes(ingredients).get(slot);
 		
 		Item result = null;
 		
@@ -373,8 +423,7 @@ public class AlchemyScene extends PixelScene {
 			bubbleEmitter.start(Speck.factory( Speck.BUBBLE ), 0.01f, 100 );
 			smokeEmitter.burst(Speck.factory( Speck.WOOL ), 10 );
 			Sample.INSTANCE.play( Assets.Sounds.PUFF );
-			
-			output.item(result);
+
 			if (!result.collect()){
 				Dungeon.level.drop(result, Dungeon.hero.pos);
 			}
@@ -401,7 +450,8 @@ public class AlchemyScene extends PixelScene {
 				}
 			}
 			
-			btnCombine.enable(false);
+			updateState();
+			outputs[0].item(result);
 		}
 		
 	}
@@ -567,8 +617,16 @@ public class AlchemyScene extends PixelScene {
 
 	private class CombineButton extends Component {
 
+		protected int slot;
+
 		protected RedButton button;
 		protected RenderedTextBlock costText;
+
+		private CombineButton(int slot){
+			super();
+
+			this.slot = slot;
+		}
 
 		@Override
 		protected void createChildren() {
@@ -578,7 +636,7 @@ public class AlchemyScene extends PixelScene {
 				@Override
 				protected void onClick() {
 					super.onClick();
-					combine();
+					combine(slot);
 				}
 			};
 			button.icon(Icons.get(Icons.ARROW));
@@ -630,13 +688,13 @@ public class AlchemyScene extends PixelScene {
 
 	private class OutputSlot extends Component {
 
-		protected ColorBlock bg;
+		protected NinePatch bg;
 		protected ItemSlot slot;
 
 		@Override
 		protected void createChildren() {
 
-			bg = new ColorBlock(1, 1, 0x9991938C);
+			bg = Chrome.get(Chrome.Type.TOAST_TR);
 			add(bg);
 
 			slot = new ItemSlot() {
@@ -660,7 +718,7 @@ public class AlchemyScene extends PixelScene {
 			bg.y = y;
 			bg.size(width(), height());
 
-			slot.setRect(x, y, width(), height());
+			slot.setRect(x+2, y+2, width()-4, height()-4);
 		}
 
 		public void item( Item item ) {
