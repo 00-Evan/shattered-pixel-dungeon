@@ -63,7 +63,7 @@ public class Starflower extends Plant {
 
 		@Override
 		public int energyVal() {
-			return 3;
+			return 3 * quantity;
 		}
 	}
 }

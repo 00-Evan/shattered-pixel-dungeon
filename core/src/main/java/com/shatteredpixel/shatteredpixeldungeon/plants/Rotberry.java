@@ -74,7 +74,7 @@ public class Rotberry extends Plant {
 
 		@Override
 		public int energyVal() {
-			return 3;
+			return 3 * quantity;
 		}
 	}
 }

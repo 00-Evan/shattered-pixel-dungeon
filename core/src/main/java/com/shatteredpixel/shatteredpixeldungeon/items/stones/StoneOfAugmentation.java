@@ -77,7 +77,7 @@ public class StoneOfAugmentation extends InventoryStone {
 
 	@Override
 	public int energyVal() {
-		return 4;
+		return 4 * quantity;
 	}
 	
 	public class WndAugment extends Window {
