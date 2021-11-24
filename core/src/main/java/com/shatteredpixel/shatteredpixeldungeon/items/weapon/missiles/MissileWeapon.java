@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
@@ -369,9 +368,9 @@ abstract public class MissileWeapon extends Weapon {
 	}
 	
 	@Override
-	public boolean doPickUp(Hero hero) {
+	public boolean doPickUp(Hero hero, int pos) {
 		parent = null;
-		return super.doPickUp(hero);
+		return super.doPickUp(hero, pos);
 	}
 	
 	@Override

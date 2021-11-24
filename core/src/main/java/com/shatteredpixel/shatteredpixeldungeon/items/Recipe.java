@@ -54,6 +54,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicalPorter;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.PhaseShift;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.ReclaimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Recycle;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.SummonElemental;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.TelekineticGrab;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.WildEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
@@ -174,6 +176,7 @@ public abstract class Recipe {
 		new ExoticPotion.PotionToExotic(),
 		new ExoticScroll.ScrollToExotic(),
 		new ArcaneResin.Recipe(),
+		new Alchemize.Recipe(),
 		new StewedMeat.oneMeat()
 	};
 	
@@ -193,7 +196,6 @@ public abstract class Recipe {
 		new InfernalBrew.Recipe(),
 		new ShockingBrew.Recipe(),
 		new CausticBrew.Recipe(),
-		new Alchemize.Recipe(),
 		new AquaBlast.Recipe(),
 		new BeaconOfReturning.Recipe(),
 		new CurseInfusion.Recipe(),
@@ -204,13 +206,13 @@ public abstract class Recipe {
 		new ReclaimTrap.Recipe(),
 		new Recycle.Recipe(),
 		new WildEnergy.Recipe(),
+		new TelekineticGrab.Recipe(),
+		new SummonElemental.Recipe(),
 		new StewedMeat.twoMeat()
 	};
 	
 	private static Recipe[] threeIngredientRecipes = new Recipe[]{
 		new Potion.SeedToPotion(),
-		//new ExoticPotion.PotionToExotic(),
-		//new ExoticScroll.ScrollToExotic(),
 		new StewedMeat.threeMeat(),
 		new MeatPie.Recipe()
 	};

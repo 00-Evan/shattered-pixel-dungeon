@@ -33,13 +33,13 @@ public class EnergyCrystal extends Item {
 	}
 
 	@Override
-	public boolean doPickUp( Hero hero ) {
+	public boolean doPickUp(Hero hero, int pos) {
 
 		Dungeon.energy += quantity;
 		//TODO Statistics.goldCollected += quantity;
 		//Badges.validateGoldCollected();
 
-		GameScene.pickUp( this, hero.pos );
+		GameScene.pickUp( this, pos );
 		hero.sprite.showStatus( 0x44CCFF, TXT_VALUE, quantity );
 		hero.spendAndNext( TIME_TO_PICK_UP );
 

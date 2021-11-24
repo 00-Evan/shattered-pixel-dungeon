@@ -62,6 +62,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicalPorter;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.PhaseShift;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.ReclaimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Recycle;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.SummonElemental;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.TelekineticGrab;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.WildEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
@@ -372,15 +374,15 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new ElixirOfArcaneArmor.Recipe()));
 				return result;
 			case 9:
+				result.add(new QuickRecipe(new TelekineticGrab.Recipe()));
 				result.add(new QuickRecipe(new PhaseShift.Recipe()));
 				result.add(new QuickRecipe(new WildEnergy.Recipe()));
 				result.add(new QuickRecipe(new BeaconOfReturning.Recipe()));
-				result.add(null);
+				result.add(new QuickRecipe(new SummonElemental.Recipe()));
 				result.add(null);
 				result.add(new QuickRecipe(new AquaBlast.Recipe()));
 				result.add(new QuickRecipe(new ReclaimTrap.Recipe()));
 				result.add(new QuickRecipe(new FeatherFall.Recipe()));
-				result.add(null);
 				result.add(null);
 				result.add(new QuickRecipe(new Alchemize.Recipe()));
 				result.add(new QuickRecipe(new MagicalInfusion.Recipe()));

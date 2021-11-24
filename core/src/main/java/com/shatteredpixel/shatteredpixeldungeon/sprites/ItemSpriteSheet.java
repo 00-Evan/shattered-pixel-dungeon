@@ -596,22 +596,26 @@ public class ItemSpriteSheet {
 	private static final int SPELLS         =                               xy(1, 27);  //16 slots
 	public static final int MAGIC_PORTER    = SPELLS+0;
 	public static final int PHASE_SHIFT     = SPELLS+1;
-	public static final int WILD_ENERGY = SPELLS+2;
-	public static final int RETURN_BEACON   = SPELLS+3;
+	public static final int TELE_GRAB       = SPELLS+2;
+	public static final int WILD_ENERGY     = SPELLS+3;
+	public static final int RETURN_BEACON   = SPELLS+4;
+	public static final int SUMMON_ELE      = SPELLS+5;
 	
-	public static final int AQUA_BLAST      = SPELLS+5;
-	public static final int FEATHER_FALL    = SPELLS+6;
-	public static final int RECLAIM_TRAP    = SPELLS+7;
+	public static final int AQUA_BLAST      = SPELLS+7;
+	public static final int FEATHER_FALL    = SPELLS+8;
+	public static final int RECLAIM_TRAP    = SPELLS+9;
 	
-	public static final int CURSE_INFUSE    = SPELLS+9;
-	public static final int MAGIC_INFUSE    = SPELLS+10;
-	public static final int ALCHEMIZE       = SPELLS+11;
-	public static final int RECYCLE         = SPELLS+12;
+	public static final int CURSE_INFUSE    = SPELLS+11;
+	public static final int MAGIC_INFUSE    = SPELLS+12;
+	public static final int ALCHEMIZE       = SPELLS+13;
+	public static final int RECYCLE         = SPELLS+14;
 	static{
 		assignItemRect(MAGIC_PORTER,    12, 11);
 		assignItemRect(PHASE_SHIFT,     12, 11);
+		assignItemRect(TELE_GRAB,       12, 11);
 		assignItemRect(WILD_ENERGY,      8, 16);
 		assignItemRect(RETURN_BEACON,    8, 16);
+		assignItemRect(SUMMON_ELE,       8, 16);
 		
 		assignItemRect(AQUA_BLAST,      11, 11);
 		assignItemRect(FEATHER_FALL,    11, 11);
