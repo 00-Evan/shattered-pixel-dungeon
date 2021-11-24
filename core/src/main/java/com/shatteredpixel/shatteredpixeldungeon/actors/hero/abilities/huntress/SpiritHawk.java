@@ -168,7 +168,7 @@ public class SpiritHawk extends ArmorAbility {
 		}
 
 		private int dodgesUsed = 0;
-		private float timeRemaining = 60f;
+		private float timeRemaining = 100f;
 
 		@Override
 		public int defenseSkill(Char enemy) {

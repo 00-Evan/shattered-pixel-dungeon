@@ -45,7 +45,7 @@ import java.util.ArrayList;
 public class WildMagic extends ArmorAbility {
 
 	{
-		baseChargeUse = 35f;
+		baseChargeUse = 25f;
 	}
 
 	@Override
