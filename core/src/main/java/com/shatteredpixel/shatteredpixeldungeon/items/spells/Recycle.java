@@ -27,6 +27,8 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Transmuting;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Stone;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.Brew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.Elixir;
@@ -35,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.TippedDart;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -49,10 +52,11 @@ public class Recycle extends InventorySpell {
 
 	@Override
 	protected boolean usableOnItem(Item item) {
-		return (item instanceof Potion && !(item instanceof Elixir || item instanceof Brew)) ||
+		return (item instanceof Potion && !(item instanceof Elixir || item instanceof Brew || item instanceof AlchemicalCatalyst)) ||
 				item instanceof Scroll ||
 				item instanceof Plant.Seed ||
-				item instanceof Runestone;
+				item instanceof Runestone ||
+				item instanceof TippedDart;
 	}
 
 	@Override
@@ -71,8 +75,10 @@ public class Recycle extends InventorySpell {
 				}
 			} else if (item instanceof Plant.Seed) {
 				result = Generator.random(Generator.Category.SEED);
-			} else {
+			} else if (item instanceof Runestone) {
 				result = Generator.random(Generator.Category.STONE);
+			} else {
+				result = TippedDart.randomTipped(1);
 			}
 		} while (result.getClass() == item.getClass() || Challenges.isItemBlocked(result));
 		
