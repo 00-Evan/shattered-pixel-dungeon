@@ -834,7 +834,7 @@ public class ItemSpriteSheet {
 		}
 
 		private static final int EXOTIC_POTIONS =                            xy(1, 7);  //16 slots
-		public static final int POTION_ARENSURGE= EXOTIC_POTIONS+0;
+		public static final int POTION_MASTERY  = EXOTIC_POTIONS+0;
 		public static final int POTION_SHIELDING= EXOTIC_POTIONS+1;
 		public static final int POTION_MAGISIGHT= EXOTIC_POTIONS+2;
 		public static final int POTION_SNAPFREEZ= EXOTIC_POTIONS+3;
@@ -847,7 +847,7 @@ public class ItemSpriteSheet {
 		public static final int POTION_CLEANSE  = EXOTIC_POTIONS+10;
 		public static final int POTION_DIVINE   = EXOTIC_POTIONS+11;
 		static {
-			assignIconRect( POTION_ARENSURGE,   7, 7 );
+			assignIconRect( POTION_MASTERY,     7, 7 );
 			assignIconRect( POTION_SHIELDING,   6, 6 );
 			assignIconRect( POTION_MAGISIGHT,   7, 5 );
 			assignIconRect( POTION_SNAPFREEZ,   7, 7 );

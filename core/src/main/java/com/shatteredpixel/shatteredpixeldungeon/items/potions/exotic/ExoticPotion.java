@@ -37,7 +37,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticG
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfPurity;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
@@ -58,8 +57,8 @@ public class ExoticPotion extends Potion {
 		regToExo.put(PotionOfToxicGas.class, PotionOfCorrosiveGas.class);
 		exoToReg.put(PotionOfCorrosiveGas.class, PotionOfToxicGas.class);
 		
-		regToExo.put(PotionOfStrength.class, PotionOfAdrenalineSurge.class);
-		exoToReg.put(PotionOfAdrenalineSurge.class, PotionOfStrength.class);
+		regToExo.put(PotionOfStrength.class, PotionOfMastery.class);
+		exoToReg.put(PotionOfMastery.class, PotionOfStrength.class);
 		
 		regToExo.put(PotionOfFrost.class, PotionOfSnapFreeze.class);
 		exoToReg.put(PotionOfSnapFreeze.class, PotionOfFrost.class);
