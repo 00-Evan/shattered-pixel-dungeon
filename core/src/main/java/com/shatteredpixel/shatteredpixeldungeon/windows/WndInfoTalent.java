@@ -37,7 +37,7 @@ public class WndInfoTalent extends Window {
 
 	private static final int WIDTH = 120;
 
-	public WndInfoTalent(Talent talent, int points, Callback onUpgradeButton){
+	public WndInfoTalent(Talent talent, int points, TalentButtonCallback buttonCallback){
 		super();
 
 		IconTitle titlebar = new IconTitle();
@@ -58,20 +58,26 @@ public class WndInfoTalent extends Window {
 
 		resize( WIDTH, (int)(txtInfo.bottom() + GAP) );
 
-		if (onUpgradeButton != null) {
-			RedButton upgrade = new RedButton( Messages.get(this, "upgrade") ) {
+		if (buttonCallback != null) {
+			RedButton button = new RedButton( buttonCallback.prompt() ) {
 				@Override
 				protected void onClick() {
 					super.onClick();
 					hide();
-					onUpgradeButton.call();
+					buttonCallback.call();
 				}
 			};
-			upgrade.icon(Icons.get(Icons.TALENT));
-			upgrade.setRect(0, txtInfo.bottom() + 2*GAP, WIDTH, 18);
-			add(upgrade);
-			resize( WIDTH, (int)upgrade.bottom()+1 );
+			button.icon(Icons.get(Icons.TALENT));
+			button.setRect(0, txtInfo.bottom() + 2*GAP, WIDTH, 18);
+			add(button);
+			resize( WIDTH, (int)button.bottom()+1 );
 		}
+
+	}
+
+	public static abstract class TalentButtonCallback implements Callback {
+
+		public abstract String prompt();
 
 	}
 

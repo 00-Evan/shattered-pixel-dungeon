@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoTalent;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
@@ -44,16 +45,16 @@ public class TalentsPane extends ScrollPane {
 	ColorBlock blocker;
 	RenderedTextBlock blockText;
 
-	public TalentsPane( boolean canUpgrade ) {
-		this( canUpgrade, Dungeon.hero.talents );
+	public TalentsPane( TalentButton.Mode mode ) {
+		this( mode, Dungeon.hero.talents );
 	}
 
-	public TalentsPane( boolean canUpgrade, ArrayList<LinkedHashMap<Talent, Integer>> talents ) {
+	public TalentsPane( TalentButton.Mode mode, ArrayList<LinkedHashMap<Talent, Integer>> talents ) {
 		super(new Component());
 
 		int tiersAvailable = 1;
 
-		if (!canUpgrade){
+		if (mode == TalentButton.Mode.INFO){
 			if (!Badges.isUnlocked(Badges.Badge.LEVEL_REACHED_1)){
 				tiersAvailable = 1;
 			} else if (!Badges.isUnlocked(Badges.Badge.LEVEL_REACHED_2) || !Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_2)){
@@ -80,7 +81,7 @@ public class TalentsPane extends ScrollPane {
 		for (int i = 0; i < Math.min(tiersAvailable, talents.size()); i++){
 			if (talents.get(i).isEmpty()) continue;
 
-			TalentTierPane pane = new TalentTierPane(talents.get(i), i+1, canUpgrade);
+			TalentTierPane pane = new TalentTierPane(talents.get(i), i+1, mode);
 			panes.add(pane);
 			content.add(pane);
 
@@ -156,7 +157,7 @@ public class TalentsPane extends ScrollPane {
 
 		ArrayList<Image> stars = new ArrayList<>();
 
-		public TalentTierPane(LinkedHashMap<Talent, Integer> talents, int tier, boolean canUpgrade){
+		public TalentTierPane(LinkedHashMap<Talent, Integer> talents, int tier, TalentButton.Mode mode){
 			super();
 
 			this.tier = tier;
@@ -165,11 +166,11 @@ public class TalentsPane extends ScrollPane {
 			title.hardlight(Window.TITLE_COLOR);
 			add(title);
 
-			if (canUpgrade) setupStars();
+			if (mode == TalentButton.Mode.UPGRADE) setupStars();
 
 			buttons = new ArrayList<>();
 			for (Talent talent : talents.keySet()){
-				TalentButton btn = new TalentButton(tier, talent, talents.get(talent), canUpgrade){
+				TalentButton btn = new TalentButton(tier, talent, talents.get(talent), mode){
 					@Override
 					public void upgradeTalent() {
 						super.upgradeTalent();

@@ -147,6 +147,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class Hero extends Char {
@@ -169,6 +170,7 @@ public class Hero extends Char {
 	public HeroSubClass subClass = HeroSubClass.NONE;
 	public ArmorAbility armorAbility = null;
 	public ArrayList<LinkedHashMap<Talent, Integer>> talents = new ArrayList<>();
+	public LinkedHashMap<Talent, Talent> metamorphedTalents = new LinkedHashMap<>();
 	
 	private int attackSkill = 10;
 	private int defenseSkill = 5;

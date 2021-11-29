@@ -39,6 +39,7 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -70,6 +71,10 @@ public class Bundle {
 	
 	public boolean contains( String key ) {
 		return !data.isNull( key );
+	}
+
+	public Set<String> getKeys(){
+		return data.keySet();
 	}
 	
 	public boolean getBoolean( String key ) {

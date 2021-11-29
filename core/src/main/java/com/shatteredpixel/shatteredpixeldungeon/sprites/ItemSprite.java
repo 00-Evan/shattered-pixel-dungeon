@@ -96,10 +96,6 @@ public class ItemSprite extends MovieClip {
 		view(image, glowing);
 	}
 	
-	public void originToCenter() {
-		origin.set(width / 2, height / 2);
-	}
-	
 	public void link() {
 		link(heap);
 	}

@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StatusPane;
+import com.shatteredpixel.shatteredpixeldungeon.ui.TalentButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TalentsPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.gltextures.SmartTexture;
@@ -189,7 +190,7 @@ public class WndHero extends WndTabbed {
 		@Override
 		protected void createChildren() {
 			super.createChildren();
-			pane = new TalentsPane(true);
+			pane = new TalentsPane(TalentButton.Mode.UPGRADE);
 			add(pane);
 		}
 
