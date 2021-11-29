@@ -75,7 +75,7 @@ public abstract class Elemental extends Mob {
 		return Random.NormalIntRange(0, 5);
 	}
 	
-	private int rangedCooldown = Random.NormalIntRange( 3, 5 );
+	protected int rangedCooldown = Random.NormalIntRange( 3, 5 );
 	
 	@Override
 	protected boolean act() {
@@ -215,12 +215,15 @@ public abstract class Elemental extends Mob {
 			EXP = 7;
 			
 			properties.add(Property.MINIBOSS);
+
+			//newborn elementals do not have ranged attacks
+			rangedCooldown = Integer.MAX_VALUE;
 		}
 
 		@Override
 		public void die(Object cause) {
 			super.die(cause);
-			Dungeon.level.drop( new Embers(), pos ).sprite.drop();
+			if (alignment == Alignment.ENEMY) Dungeon.level.drop( new Embers(), pos ).sprite.drop();
 		}
 
 		@Override
@@ -228,6 +231,20 @@ public abstract class Elemental extends Mob {
 			return true;
 		}
 		
+	}
+
+	//not a miniboss, otherwise a newborn elemental
+	public static class AllyNewBornElemental extends NewbornFireElemental {
+
+		{
+			properties.remove(Property.MINIBOSS);
+		}
+
+		@Override
+		public boolean reset() {
+			return false;
+		}
+
 	}
 	
 	public static class FrostElemental extends Elemental {
