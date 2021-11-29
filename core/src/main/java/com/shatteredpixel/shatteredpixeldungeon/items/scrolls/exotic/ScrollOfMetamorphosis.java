@@ -23,18 +23,11 @@ package com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Transmuting;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.InventoryScroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -43,7 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TalentButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TalentsPane;
-import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
@@ -55,7 +47,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
-//TODO currently lots of talents that do nothing
 public class ScrollOfMetamorphosis extends ExoticScroll {
 	
 	{
@@ -158,6 +149,24 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 
 	public static class WndMetamorphReplace extends Window {
 
+		//talents that can only be used by one hero class
+		//TODO could some of these be made more generic?
+		private static HashMap<Talent, HeroClass> restrictedTalents = new HashMap<>();
+		static {
+			restrictedTalents.put(Talent.IRON_WILL, HeroClass.WARRIOR);
+			restrictedTalents.put(Talent.RESTORED_WILLPOWER, HeroClass.WARRIOR);
+			restrictedTalents.put(Talent.RUNIC_TRANSFERENCE, HeroClass.WARRIOR);
+
+			restrictedTalents.put(Talent.BACKUP_BARRIER, HeroClass.MAGE);
+			restrictedTalents.put(Talent.ENERGIZING_UPGRADE, HeroClass.MAGE);
+			restrictedTalents.put(Talent.WAND_PRESERVATION, HeroClass.MAGE);
+
+			restrictedTalents.put(Talent.PROTECTIVE_SHADOWS, HeroClass.ROGUE);
+			restrictedTalents.put(Talent.MYSTICAL_UPGRADE, HeroClass.ROGUE);
+
+			restrictedTalents.put(Talent.SEER_SHOT, HeroClass.HUNTRESS);
+		}
+
 		public static WndMetamorphReplace INSTANCE;
 
 		public Talent replacing;
@@ -202,6 +211,10 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 						break;
 					} else {
 						if (curTalentsAtTier.contains(talent)){
+							clsTalentsAtTier.remove(talent);
+						}
+						if (restrictedTalents.containsKey(talent)
+								&& restrictedTalents.get(talent) != curUser.heroClass){
 							clsTalentsAtTier.remove(talent);
 						}
 					}
