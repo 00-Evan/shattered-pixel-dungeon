@@ -121,7 +121,9 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 
 			top = text.bottom() + 2;
 
-			TalentsPane p = new TalentsPane(TalentButton.Mode.METAMORPH_CHOOSE);
+			ArrayList<LinkedHashMap<Talent, Integer>> talents = new ArrayList<>();
+			Talent.initClassTalents(Dungeon.hero.heroClass, talents);
+			TalentsPane p = new TalentsPane(TalentButton.Mode.METAMORPH_CHOOSE, talents);
 			add(p);
 			p.setPos(0, top);
 			p.setSize(120, p.content().height());
@@ -163,6 +165,7 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 
 			restrictedTalents.put(Talent.PROTECTIVE_SHADOWS, HeroClass.ROGUE);
 			restrictedTalents.put(Talent.MYSTICAL_UPGRADE, HeroClass.ROGUE);
+			restrictedTalents.put(Talent.LIGHT_CLOAK, HeroClass.ROGUE);
 
 			restrictedTalents.put(Talent.SEER_SHOT, HeroClass.HUNTRESS);
 		}

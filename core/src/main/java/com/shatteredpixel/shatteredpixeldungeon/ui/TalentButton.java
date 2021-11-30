@@ -192,7 +192,7 @@ public class TalentButton extends Button {
 									newTier.put(t, tier.get(t));
 								}
 							}
-							Dungeon.hero.talents.add(ScrollOfMetamorphosis.WndMetamorphReplace.INSTANCE.tier-1, newTier);
+							Dungeon.hero.talents.set(ScrollOfMetamorphosis.WndMetamorphReplace.INSTANCE.tier-1, newTier);
 							break;
 						}
 					}
