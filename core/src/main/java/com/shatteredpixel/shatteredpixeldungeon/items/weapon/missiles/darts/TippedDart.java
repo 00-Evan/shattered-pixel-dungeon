@@ -115,7 +115,7 @@ public abstract class TippedDart extends Dart {
 		if (durability <= 0){
 			//attempt to stick the dart to the enemy, just drop it if we can't.
 			Dart d = new Dart();
-			if (enemy.isAlive() && sticky) {
+			if (sticky && enemy != null && enemy.isAlive() && enemy.alignment != Char.Alignment.ALLY){
 				PinCushion p = Buff.affect(enemy, PinCushion.class);
 				if (p.target == enemy){
 					p.stick(d);
