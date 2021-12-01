@@ -70,7 +70,7 @@ public class Inferno extends Blob {
 						|| cur[cell-Dungeon.level.width()] > 0
 						|| cur[cell+Dungeon.level.width()] > 0)) {
 
-					if (fire == null || fire.cur[cell] == 0) {
+					if (fire == null || fire.cur == null || fire.cur[cell] == 0) {
 						GameScene.add(Fire.seed(cell, 4, Fire.class));
 					}
 
