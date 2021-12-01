@@ -8,7 +8,4 @@ dependencies {
     //in order to do this I have to remove 100% of libGDX API access from core
     api "com.badlogicgames.gdx:gdx:$gdxVersion"
     implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-
-    //noinspection GradleDependency , later JSON versions cause crashes on old versions of android
-    implementation "org.json:json:20170516"
 }
