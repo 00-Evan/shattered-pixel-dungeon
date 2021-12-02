@@ -789,10 +789,15 @@ public abstract class Char extends Actor {
 	public float stealth() {
 		return 0;
 	}
-	
-	public void move( int step ) {
 
-		if (Dungeon.level.adjacent( step, pos ) && buff( Vertigo.class ) != null) {
+	public void move( int step ) {
+		move( step, true );
+	}
+
+	//travelling may be false when a character is moving instantaneously, such as via teleportation
+	public void move( int step, boolean travelling ) {
+
+		if (travelling && Dungeon.level.adjacent( step, pos ) && buff( Vertigo.class ) != null) {
 			sprite.interruptMotion();
 			int newPos = pos + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
 			if (!(Dungeon.level.passable[newPos] || Dungeon.level.avoid[newPos])

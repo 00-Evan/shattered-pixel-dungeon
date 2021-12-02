@@ -354,7 +354,7 @@ public class Ghost extends NPC {
 		}
 		
 		public static boolean completed(){
-			return processed() && weapon == null && armor == null;
+			return true;
 		}
 	}
 }

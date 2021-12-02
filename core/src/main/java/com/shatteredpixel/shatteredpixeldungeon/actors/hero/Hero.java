@@ -1773,12 +1773,12 @@ public class Hero extends Char {
 	}
 
 	@Override
-	public void move( int step ) {
+	public void move(int step, boolean travelling) {
 		boolean wasHighGrass = Dungeon.level.map[step] == Terrain.HIGH_GRASS;
 
-		super.move( step );
+		super.move( step, travelling);
 		
-		if (!flying) {
+		if (!flying && travelling) {
 			if (Dungeon.level.water[pos]) {
 				Sample.INSTANCE.play( Assets.Sounds.WATER, 1, Random.Float( 0.8f, 1.25f ) );
 			} else if (Dungeon.level.map[pos] == Terrain.EMPTY_SP) {

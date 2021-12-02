@@ -276,7 +276,7 @@ public class ScrollOfTeleportation extends Scroll {
 			Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 		}
 
-		ch.move( pos );
+		ch.move( pos, false );
 		if (ch.pos == pos) ch.sprite.place( pos );
 
 		if (ch.invisible == 0) {
