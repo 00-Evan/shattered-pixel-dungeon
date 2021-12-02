@@ -123,6 +123,13 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 
 			ArrayList<LinkedHashMap<Talent, Integer>> talents = new ArrayList<>();
 			Talent.initClassTalents(Dungeon.hero.heroClass, talents, Dungeon.hero.metamorphedTalents);
+
+			for (LinkedHashMap<Talent, Integer> tier : talents){
+				for (Talent talent : tier.keySet()){
+					tier.put(talent, Dungeon.hero.pointsInTalent(talent));
+				}
+			}
+
 			TalentsPane p = new TalentsPane(TalentButton.Mode.METAMORPH_CHOOSE, talents);
 			add(p);
 			p.setPos(0, top);
