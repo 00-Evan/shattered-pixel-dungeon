@@ -65,7 +65,7 @@ public class PotionOfDivineInspiration extends ExoticPotion {
 			}
 
 			if (allBoosted){
-				GLog.w(Messages.get(this, "no_more_bonus"));
+				GLog.w(Messages.get(this, "no_more_points"));
 				return;
 			}
 		}
