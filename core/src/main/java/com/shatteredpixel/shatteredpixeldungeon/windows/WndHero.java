@@ -279,10 +279,12 @@ public class WndHero extends WndTabbed {
 			protected void layout() {
 				super.layout();
 				icon.y = this.y;
+				txt.maxWidth((int)(width - icon.width()));
 				txt.setPos(
 						icon.width + GAP,
 						this.y + (icon.height - txt.height()) / 2
 				);
+				PixelScene.align(txt);
 			}
 			
 			protected boolean onClick ( float x, float y ) {
