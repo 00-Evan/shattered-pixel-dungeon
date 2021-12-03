@@ -790,7 +790,7 @@ public abstract class Char extends Actor {
 		return 0;
 	}
 
-	public void move( int step ) {
+	public final void move( int step ) {
 		move( step, true );
 	}
 

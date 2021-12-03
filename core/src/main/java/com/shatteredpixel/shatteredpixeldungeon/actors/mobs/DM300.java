@@ -309,7 +309,7 @@ public class DM300 extends Mob {
 
 	@Override
 	public void move(int step, boolean travelling) {
-		super.move(step);
+		super.move(step, travelling);
 
 		if (travelling) Camera.main.shake( supercharged ? 3 : 1, 0.25f );
 

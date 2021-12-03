@@ -130,8 +130,8 @@ public class Spinner extends Mob {
 	private boolean shotWebVisually = false;
 
 	@Override
-	public void move(int step) {
-		if (enemySeen && webCoolDown <= 0 && lastEnemyPos != -1){
+	public void move(int step, boolean travelling) {
+		if (travelling && enemySeen && webCoolDown <= 0 && lastEnemyPos != -1){
 			if (webPos() != -1){
 				if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
 					sprite.zap( webPos() );
@@ -141,7 +141,7 @@ public class Spinner extends Mob {
 				}
 			}
 		}
-		super.move(step);
+		super.move(step, travelling);
 	}
 	
 	public int webPos(){
