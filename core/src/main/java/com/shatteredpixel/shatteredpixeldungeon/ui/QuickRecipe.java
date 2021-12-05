@@ -230,6 +230,11 @@ public class QuickRecipe extends Component {
 		}
 		
 		@Override
+		protected void onPointerUp() {
+			icon.brightness(1f);
+		}
+
+		@Override
 		protected void onClick() {
 			super.onClick();
 			
