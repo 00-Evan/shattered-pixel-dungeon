@@ -1027,6 +1027,16 @@ public class GameScene extends PixelScene {
 		}
 	}
 
+	public static boolean isShowingWindow(){
+		if (scene == null) return false;
+
+		for (Gizmo g : scene.members){
+			if (g instanceof Window) return true;
+		}
+
+		return false;
+	}
+
 	public static void updateFog(){
 		if (scene != null) {
 			scene.fog.updateFog();
@@ -1097,8 +1107,10 @@ public class GameScene extends PixelScene {
 			cellSelector.listener.onSelect(null);
 		}
 		cellSelector.listener = listener;
-		if (scene != null)
-			scene.prompt( listener.prompt() );
+		cellSelector.enabled = Dungeon.hero.ready;
+		if (scene != null) {
+			scene.prompt(listener.prompt());
+		}
 	}
 	
 	private static boolean cancelCellSelector() {
