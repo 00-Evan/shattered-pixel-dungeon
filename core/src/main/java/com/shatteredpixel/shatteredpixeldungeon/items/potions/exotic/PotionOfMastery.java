@@ -57,7 +57,7 @@ public class PotionOfMastery extends ExoticPotion {
 
 		@Override
 		public String textPrompt() {
-			return "Master an Item";
+			return Messages.get(PotionOfMastery.class, "prompt");
 		}
 
 		@Override
@@ -94,10 +94,10 @@ public class PotionOfMastery extends ExoticPotion {
 
 				if (item instanceof Weapon) {
 					((Weapon) item).masteryPotionBonus = true;
-					GLog.p( "Your weapon becomes easier to wield!" );
+					GLog.p( Messages.get(PotionOfMastery.class, "weapon_easier") );
 				} else if (item instanceof Armor) {
 					((Armor) item).masteryPotionBonus = true;
-					GLog.p( "Your weapon becomes easier to wear!" );
+					GLog.p( Messages.get(PotionOfMastery.class, "armor_easier") );
 				}
 				updateQuickslot();
 
