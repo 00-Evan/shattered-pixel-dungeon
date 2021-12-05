@@ -699,7 +699,7 @@ public class Dungeon {
 
 	//default to recomputing based on max hero vision, in case vision just shrank/grew
 	public static void observe(){
-		int dist = 8;
+		int dist = Math.max(Dungeon.hero.viewDistance, 8);
 		dist *= 1f + 0.25f*Dungeon.hero.pointsInTalent(Talent.FARSIGHT);
 
 		if (Dungeon.hero.buff(MagicalSight.class) != null){
