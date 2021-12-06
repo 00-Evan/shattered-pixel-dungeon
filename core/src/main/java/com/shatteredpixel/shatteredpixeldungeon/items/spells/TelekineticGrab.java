@@ -6,6 +6,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -36,6 +37,14 @@ public class TelekineticGrab extends TargetedSpell {
 	@Override
 	protected void affectTarget(Ballistica bolt, Hero hero) {
 		Char ch = Actor.findChar(bolt.collisionPos);
+
+		//special logic for DK when he is on his throne
+		if (ch == null && bolt.path.size() > bolt.dist+1){
+			ch = Actor.findChar(bolt.path.get(bolt.dist+1));
+			if (!(ch instanceof DwarfKing && Dungeon.level.solid[ch.pos])){
+				ch = null;
+			}
+		}
 
 		if (ch != null && ch.buff(PinCushion.class) != null){
 
