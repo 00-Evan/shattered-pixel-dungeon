@@ -26,6 +26,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
@@ -39,30 +41,16 @@ public class Displacing extends Weapon.Enchantment {
 
 		float procChance = 1/12f * procChanceMultiplier(attacker);
 		if (Random.Float() < procChance && !defender.properties().contains(Char.Property.IMMOVABLE)){
-			int count = 20;
-			int newPos;
-			do {
-				newPos = Dungeon.level.randomRespawnCell( defender );
-				if (count-- <= 0) {
-					break;
-				}
-			} while (newPos == -1 || Dungeon.level.secret[newPos]);
 
-			if (newPos != -1 && !Dungeon.bossLevel()) {
-
-				if (Dungeon.level.heroFOV[defender.pos]) {
-					CellEmitter.get( defender.pos ).start( Speck.factory( Speck.LIGHT ), 0.2f, 3 );
+			int oldpos = defender.pos;
+			if (ScrollOfTeleportation.teleportChar(defender)){
+				if (Dungeon.level.heroFOV[oldpos]) {
+					CellEmitter.get( oldpos ).start( Speck.factory( Speck.LIGHT ), 0.2f, 3 );
 				}
 
-				defender.pos = newPos;
 				if (defender instanceof Mob && ((Mob) defender).state == ((Mob) defender).HUNTING){
 					((Mob) defender).state = ((Mob) defender).WANDERING;
 				}
-				defender.sprite.place( defender.pos );
-				defender.sprite.visible = Dungeon.level.heroFOV[defender.pos];
-
-				return 0;
-
 			}
 		}
 

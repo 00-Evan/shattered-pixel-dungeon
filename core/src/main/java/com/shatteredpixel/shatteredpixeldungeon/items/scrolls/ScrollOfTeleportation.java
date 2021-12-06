@@ -61,9 +61,6 @@ public class ScrollOfTeleportation extends Scroll {
 		}
 		identify();
 
-		if (!Dungeon.bossLevel()) {
-			readAnimation();
-		}
 	}
 	
 	public static boolean teleportToLocation(Char ch, int pos){

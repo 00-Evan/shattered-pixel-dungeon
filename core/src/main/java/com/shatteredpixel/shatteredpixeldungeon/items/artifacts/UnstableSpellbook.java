@@ -125,8 +125,6 @@ public class UnstableSpellbook extends Artifact {
 						||((scroll instanceof ScrollOfIdentify ||
 							scroll instanceof ScrollOfRemoveCurse ||
 							scroll instanceof ScrollOfMagicMapping) && Random.Int(2) == 0)
-						//don't roll teleportation scrolls on boss floors
-						|| (scroll instanceof ScrollOfTeleportation && Dungeon.bossLevel())
 						//cannot roll transmutation
 						|| (scroll instanceof ScrollOfTransmutation));
 				
