@@ -49,6 +49,7 @@ public class GatewayTrap extends Trap {
 
 					if (cell != -1) {
 						Dungeon.level.drop( item, cell );
+						telePos = cell;
 						break;
 					}
 				}
