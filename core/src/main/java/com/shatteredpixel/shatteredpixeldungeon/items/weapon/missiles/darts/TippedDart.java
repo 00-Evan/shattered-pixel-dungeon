@@ -93,6 +93,9 @@ public abstract class TippedDart extends Dart {
 					} else if (index == 1){
 						detach(hero.belongings.backpack);
 						if (!new Dart().collect()) Dungeon.level.drop(new Dart(), hero.pos).sprite.drop();
+
+						//reset durability if there are darts left in the stack
+						durability = MAX_DURABILITY;
 						
 						hero.spend( 1f );
 						hero.busy();
