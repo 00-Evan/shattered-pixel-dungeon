@@ -59,6 +59,26 @@ public class v1_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("v1.1.1", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Updated translations and translator credits"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by v1.1.0):\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Various rare cases of save corruption on Android\n" +
+				"_-_ Holding keys to move not working on Desktop\n\n" +
+				"Fixed (existed prior to v1.1.0):\n" +
+				"_-_ Specific cases where guidebook windows could be stacked\n" +
+				"_-_ Remove curse stating nothing was cleansed when it removed the degrade debuff"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
