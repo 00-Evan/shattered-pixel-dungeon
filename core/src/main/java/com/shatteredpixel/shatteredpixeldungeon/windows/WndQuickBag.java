@@ -67,11 +67,6 @@ public class WndQuickBag extends Window {
 
 		Collections.sort(items, quickBagComparator);
 
-		if (items.isEmpty()){
-			hide();
-			return;
-		}
-
 		int btnWidth = 16;
 		int btnHeight = 20;
 
