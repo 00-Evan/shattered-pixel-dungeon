@@ -54,12 +54,21 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 		icon = ItemSpriteSheet.Icons.POTION_DRGBREATH;
 	}
 
+	protected static boolean identifiedByUse = false;
+
 	@Override
 	//need to override drink so that time isn't spent right away
 	protected void drink(final Hero hero) {
 		curUser = hero;
 		curItem = this;
-		
+
+		if (!isKnown()) {
+			identify();
+			identifiedByUse = true;
+		} else {
+			identifiedByUse = false;
+		}
+
 		GameScene.selectCell(targeter);
 	}
 	
@@ -74,7 +83,7 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 				return;
 			}
 
-			if (cell == null && !isKnown()){
+			if (cell == null && identifiedByUse){
 				showingWindow = true;
 				GameScene.show( new WndOptions(new ItemSprite(PotionOfDragonsBreath.this),
 						Messages.titleCase(name()),
@@ -97,7 +106,7 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 					public void onBackPressed() {}
 				} );
 			} else if (cell != null) {
-				identify();
+				identifiedByUse = false;
 				curUser.busy();
 				Sample.INSTANCE.play( Assets.Sounds.DRINK );
 				curUser.sprite.operate(curUser.pos, new Callback() {

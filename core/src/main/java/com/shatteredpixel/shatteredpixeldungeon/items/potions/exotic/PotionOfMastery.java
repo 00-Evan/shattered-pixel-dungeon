@@ -44,11 +44,20 @@ public class PotionOfMastery extends ExoticPotion {
 		unique = true;
 	}
 
+	protected static boolean identifiedByUse = false;
+
 	@Override
 	//need to override drink so that time isn't spent right away
 	protected void drink(final Hero hero) {
 		curUser = hero;
 		curItem = this;
+
+		if (!isKnown()) {
+			identify();
+			identifiedByUse = true;
+		} else {
+			identifiedByUse = false;
+		}
 
 		GameScene.selectItem(itemSelector);
 	}
@@ -70,7 +79,7 @@ public class PotionOfMastery extends ExoticPotion {
 		@Override
 		public void onSelect(Item item) {
 
-			if (item == null && !isKnown()){
+			if (item == null && identifiedByUse){
 				GameScene.show( new WndOptions(new ItemSprite(PotionOfMastery.this),
 						Messages.titleCase(name()),
 						Messages.get(ExoticPotion.class, "warning"),
@@ -101,7 +110,6 @@ public class PotionOfMastery extends ExoticPotion {
 				}
 				updateQuickslot();
 
-				identify();
 				Sample.INSTANCE.play( Assets.Sounds.DRINK );
 				curUser.sprite.operate(curUser.pos);
 				curItem.detach(curUser.belongings.backpack);
