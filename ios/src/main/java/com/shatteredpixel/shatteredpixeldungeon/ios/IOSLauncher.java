@@ -18,9 +18,11 @@ import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.foundation.NSBundle;
 import org.robovm.apple.foundation.NSDictionary;
 import org.robovm.apple.foundation.NSException;
+import org.robovm.apple.foundation.NSProcessInfo;
 import org.robovm.apple.glkit.GLKViewDrawableColorFormat;
 import org.robovm.apple.glkit.GLKViewDrawableDepthFormat;
 import org.robovm.apple.uikit.UIApplication;
+import org.robovm.apple.uikit.UIScreen;
 
 public class IOSLauncher extends IOSApplication.Delegate {
 	@Override
@@ -58,6 +60,10 @@ public class IOSLauncher extends IOSApplication.Delegate {
 		config.colorFormat = GLKViewDrawableColorFormat.RGBA8888;
 		config.depthFormat = GLKViewDrawableDepthFormat.None;
 		config.hdpiMode = HdpiMode.Pixels;
+
+		if (NSProcessInfo.getSharedProcessInfo().getOperatingSystemVersion().getMajorVersion() >= 11) {
+			config.preferredFramesPerSecond = (int)(UIScreen.getMainScreen().getMaximumFramesPerSecond());
+		}
 
 		CGRect statusBarFrame = UIApplication.getSharedApplication().getStatusBarFrame();
 		double statusBarHeight = Math.min(statusBarFrame.getWidth(), statusBarFrame.getHeight());
