@@ -23,6 +23,7 @@ package com.watabou.utils;
 
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.JsonWriter;
 import com.watabou.noosa.Game;
 
 import java.io.BufferedInputStream;
@@ -452,7 +453,7 @@ public class Bundle {
 			if (compressed) writer = new BufferedWriter( new OutputStreamWriter( new GZIPOutputStream(stream, GZIP_BUFFER ) ) );
 			else writer = new BufferedWriter( new OutputStreamWriter( stream ) );
 
-			writer.write( bundle.toString() );
+			bundle.data.prettyPrint(JsonWriter.OutputType.json, writer);
 			writer.close();
 
 			return true;
