@@ -264,7 +264,7 @@ public class DriedRose extends Artifact {
 		if (ghost == null){
 			return super.status();
 		} else {
-			return (int)((ghost.HP+partialCharge)*100) / ghost.HT + "%";
+			return ((ghost.HP*100) / ghost.HT) + "%";
 		}
 	}
 	
