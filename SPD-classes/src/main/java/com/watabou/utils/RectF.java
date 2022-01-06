@@ -143,5 +143,9 @@ public class RectF {
 	public RectF shrink() {
 		return shrink( 1 );
 	}
+
+	public RectF scale( float d ){
+		return new RectF( left * d, top * d, right * d, bottom * d );
+	}
 	
 }

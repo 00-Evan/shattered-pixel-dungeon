@@ -148,6 +148,10 @@ public class Rect {
 		return shrink( 1 );
 	}
 
+	public Rect scale( int d ){
+		return new Rect( left * d, top * d, right * d, bottom * d );
+	}
+
 	public ArrayList<Point> getPoints() {
 		ArrayList<Point> points = new ArrayList<>();
 		for (int i = left; i <= right; i++)
