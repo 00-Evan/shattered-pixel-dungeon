@@ -634,6 +634,8 @@ public class WndSettings extends WndTabbed {
 		ColorBlock sep2;
 		OptionSlider optSFX;
 		CheckBox chkMuteSFX;
+		ColorBlock sep3;
+		CheckBox chkIgnoreSilent;
 
 		@Override
 		protected void createChildren() {
@@ -695,6 +697,23 @@ public class WndSettings extends WndTabbed {
 			};
 			chkMuteSFX.checked(!SPDSettings.soundFx());
 			add( chkMuteSFX );
+
+			//TODO translate for v1.2.0!
+			if (DeviceCompat.isiOS() && Messages.lang() == Languages.ENGLISH){
+
+				sep3 = new ColorBlock(1, 1, 0xFF000000);
+				add(sep3);
+
+				chkIgnoreSilent = new CheckBox( "Ignore Silent Mode" ){
+					@Override
+					protected void onClick() {
+						super.onClick();
+						SPDSettings.ignoreSilentMode(checked());
+					}
+				};
+				chkIgnoreSilent.checked(SPDSettings.ignoreSilentMode());
+				add(chkIgnoreSilent);
+			}
 		}
 
 		@Override
@@ -703,16 +722,36 @@ public class WndSettings extends WndTabbed {
 			sep1.size(width, 1);
 			sep1.y = title.bottom() + 2*GAP;
 
-			optMusic.setRect(0, sep1.y + 1 + GAP, width, SLIDER_HEIGHT);
-			chkMusicMute.setRect(0, optMusic.bottom() + GAP, width, BTN_HEIGHT);
+			if (width > 200) {
+				optMusic.setRect(0, sep1.y + 1 + GAP, width/2-1, SLIDER_HEIGHT);
+				chkMusicMute.setRect(0, optMusic.bottom() + GAP, width/2-1, BTN_HEIGHT);
 
-			sep2.size(width, 1);
-			sep2.y = chkMusicMute.bottom() + GAP;
+				sep2.size(width, 1);
+				sep2.y = sep1.y; //just have them overlap
 
-			optSFX.setRect(0, sep2.y + 1 + GAP, width, SLIDER_HEIGHT);
-			chkMuteSFX.setRect(0, optSFX.bottom() + GAP, width, BTN_HEIGHT);
+				optSFX.setRect(optMusic.right()+2, sep2.y + 1 + GAP, width/2-1, SLIDER_HEIGHT);
+				chkMuteSFX.setRect(chkMusicMute.right()+2, optSFX.bottom() + GAP, width/2-1, BTN_HEIGHT);
+
+			} else {
+				optMusic.setRect(0, sep1.y + 1 + GAP, width, SLIDER_HEIGHT);
+				chkMusicMute.setRect(0, optMusic.bottom() + GAP, width, BTN_HEIGHT);
+
+				sep2.size(width, 1);
+				sep2.y = chkMusicMute.bottom() + GAP;
+
+				optSFX.setRect(0, sep2.y + 1 + GAP, width, SLIDER_HEIGHT);
+				chkMuteSFX.setRect(0, optSFX.bottom() + GAP, width, BTN_HEIGHT);
+			}
 
 			height = chkMuteSFX.bottom();
+
+			if (chkIgnoreSilent != null){
+				sep3.size(width, 1);
+				sep3.y = chkMuteSFX.bottom() + GAP;
+
+				chkIgnoreSilent.setRect(0, sep3.y + 1 + GAP, width, BTN_HEIGHT);
+				height = chkIgnoreSilent.bottom();
+			}
 		}
 
 	}
