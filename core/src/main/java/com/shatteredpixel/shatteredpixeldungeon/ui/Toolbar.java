@@ -85,8 +85,10 @@ public class Toolbar extends Component {
 		add(btnWait = new Tool(24, 0, 20, 26) {
 			@Override
 			protected void onClick() {
-				examining = false;
-				Dungeon.hero.rest(false);
+				if (!GameScene.cancel()) {
+					examining = false;
+					Dungeon.hero.rest(false);
+				}
 			}
 			
 			@Override
@@ -95,8 +97,10 @@ public class Toolbar extends Component {
 			}
 			
 			protected boolean onLongClick() {
-				examining = false;
-				Dungeon.hero.rest(true);
+				if (!GameScene.cancel()) {
+					examining = false;
+					Dungeon.hero.rest(true);
+				}
 				return true;
 			}
 		});
