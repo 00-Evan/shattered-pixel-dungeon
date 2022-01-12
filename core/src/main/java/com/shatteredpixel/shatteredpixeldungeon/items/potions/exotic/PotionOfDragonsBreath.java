@@ -60,7 +60,7 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 	//need to override drink so that time isn't spent right away
 	protected void drink(final Hero hero) {
 		curUser = hero;
-		curItem = this;
+		curItem = detach( hero.belongings.backpack );
 
 		if (!isKnown()) {
 			identify();
@@ -96,7 +96,7 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 						switch (index) {
 							case 0:
 								curUser.spendAndNext(1f);
-								detach(curUser.belongings.backpack);
+								identifiedByUse = false;
 								break;
 							case 1:
 								GameScene.selectCell( targeter );
@@ -105,6 +105,8 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 					}
 					public void onBackPressed() {}
 				} );
+			} else if (cell == null && !anonymous){
+				curItem.collect( curUser.belongings.backpack );
 			} else if (cell != null) {
 				identifiedByUse = false;
 				curUser.busy();
