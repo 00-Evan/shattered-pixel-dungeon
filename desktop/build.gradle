@@ -1,4 +1,6 @@
-apply plugin: "java"
+plugins {
+    id 'org.beryx.runtime' version '1.12.7'
+}
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 sourceCompatibility = targetCompatibility = appJavaCompatibility
@@ -9,36 +11,21 @@ processResources {
     from new File(project(':desktop').projectDir,"/src/main/assets")
 }
 
-sourceSets {
-    debug
-    release
-}
-
-task debug(dependsOn: classes, type: JavaExec) {
-    classpath = sourceSets.debug.runtimeClasspath + sourceSets.main.runtimeClasspath
+task debug(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
     ignoreExitValue = true
 
     main = appMainClass
     systemProperty 'Specification-Title', appName
     systemProperty 'Specification-Version', appVersionName + "-INDEV"
     systemProperty 'Implementation-Version', appVersionCode
-
-    dependencies {
-        debugImplementation project(':services:updates:debugUpdates')
-        debugImplementation project(':services:news:debugNews')
-    }
 }
 
-//need a separate task to compile dependencies first, seeing as we're setting them up in an odd way
-task compileForRelease(dependsOn: classes, type: JavaCompile){
-    classpath = sourceSets.release.runtimeClasspath + sourceSets.main.runtimeClasspath
-}
-
-task release(dependsOn: compileForRelease, type: Jar) {
+task release(type: Jar) {
     //FIXME this is now needed as of gradle 7.0, due to our weird sourceSets setup. Should see if there's a better way to do this
     setDuplicatesStrategy(DuplicatesStrategy.INCLUDE)
     from sourceSets.main.output
-    from { sourceSets.release.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) } }
+    dependsOn configurations.runtimeClasspath
     from { configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) } }
 
     manifest {
@@ -47,11 +34,65 @@ task release(dependsOn: compileForRelease, type: Jar) {
         attributes 'Specification-Version': appVersionName
         attributes 'Implementation-Version': appVersionCode
     }
+}
+installDist.dependsOn release
+startScripts.dependsOn release
+jpackageImage.dependsOn release
 
-    dependencies {
-        releaseImplementation project(':services:updates:githubUpdates')
-        releaseImplementation project(':services:news:shatteredNews')
+def osName = System.getProperty('os.name').toLowerCase(Locale.ROOT)
+runtime {
+    modules = ['java.base',
+               'java.desktop',
+               'jdk.unsupported',
+               'jdk.crypto.cryptoki']
+    options = ['--strip-debug',
+               '--compress', '2',
+               '--no-header-files',
+               '--no-man-pages',
+               '--strip-native-commands',
+               '--vm', 'server']
+
+    jpackage {
+        mainClass = appMainClass
+        appVersion = (appVersionName =~ /\d+\.\d+\.\d+/)[0]
+        imageName = appName
     }
+
+    if (osName.contains('windows')) {
+        targetPlatform("win") {
+            jdkHome = jdkDownload("https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk-16.0.1%2B9/OpenJDK16U-jdk_x64_windows_hotspot_16.0.1_9.zip")
+            javaHome = file("./build/jdks/win/jdk-16.0.1+9").getAbsolutePath()
+            jpackage {
+                jpackageHome = file("./build/jdks/win/jdk-16.0.1+9")
+                imageOptions = ["--icon", file("./src/main/assets/icons/windows.ico")]
+
+                installerType = "msi"
+                installerName = appName
+                installerOptions = ["--win-dir-chooser", "--win-menu"]
+            }
+        }
+    } else if (osName.contains('linux')) {
+        //TODO testing
+        targetPlatform("linux") {
+            jdkHome = jdkDownload("https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk-16.0.1%2B9/OpenJDK16U-jdk_x64_linux_hotspot_16.0.1_9.tar.gz")
+            javaHome = file("./build/jdks/linux/jdk-16.0.1+9").getAbsolutePath()
+            jpackage {
+                jpackageHome = file("./build/jdks/linux/jdk-16.0.1+9")
+                //TODO config options
+            }
+        }
+    } else if (osName.contains('mac')) {
+        //TODO testing
+        targetPlatform("mac") {
+            jdkHome = jdkDownload("https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk-16.0.1%2B9/OpenJDK16U-jdk_x64_mac_hotspot_16.0.1_9.tar.gz")
+            javaHome = file("./build/jdks/mac/jdk-16.0.1+9").getAbsolutePath()
+            jpackage {
+                jpackageHome = file("./build/jdks/mac/jdk-16.0.1+9")
+                //TODO config options
+            }
+        }
+    }
+
 }
 
 dependencies {
@@ -68,8 +109,6 @@ dependencies {
     implementation "org.lwjgl:lwjgl-tinyfd:3.2.3:natives-macos"
     implementation "org.lwjgl:lwjgl-tinyfd:3.2.3:natives-linux"
 
-    //Need these at compile time to prevent errors there.
-    // The actual dependency used at runtime will vary based on source set.
-    compileOnly project(':services:updates:debugUpdates')
-    compileOnly project(':services:news:debugNews')
+    implementation project(':services:updates:githubUpdates')
+    implementation project(':services:news:shatteredNews')
 }
