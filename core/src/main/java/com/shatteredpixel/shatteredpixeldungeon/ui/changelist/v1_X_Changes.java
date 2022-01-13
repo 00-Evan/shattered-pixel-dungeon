@@ -59,9 +59,28 @@ public class v1_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v1.1.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"Various small improvements for iOS Devices:\n" +
+				"_-_ Game can now run at higher framerates than 60\n" +
+				"_-_ Ingame UI elements now move inward if notched devices are used in landscape\n" +
+				"_-_ There is now an option to override silent mode\n\n" +
+				"_-_ Updated translations and translator credits"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by v1.1.0):\n" +
+				"_-_ Further rare cases of save corruption on Android 12\n" +
+				"_-_ Quickslotted bags freezing the game if used while empty\n" +
+				"_-_ Potions of Dragon's Breath and Mastery not being IDed if they were cancelled\n\n" +
+				"Fixed (existed prior to v1.1.0):\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Various minor textual and visual errors\n" +
+				"_-_ Gateway traps rarely teleporting immovable characters\n" +
+				"_-_ Monks never losing focus if attacked out of hero vision range\n" +
+				"_-_ Wild magic continuing to activate if the hero dies during it"));
 
 		changes = new ChangeInfo("v1.1.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
