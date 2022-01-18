@@ -67,8 +67,8 @@ public class LootIndicator extends Tag {
 	protected void layout() {
 		super.layout();
 
-		if (!flipped)   slot.setRect( x + 1, y, SIZE, height );
-		else	        slot.setRect( x + (width() - SIZE) - 1, y, SIZE, height );
+		if (!flipped)   slot.setRect( x+2, y+2, SIZE-3, height-4 );
+		else	        slot.setRect( x+(width()-SIZE)+1, y+2, SIZE-3, height-4 );
 
 	}
 	
