@@ -44,7 +44,8 @@ runtime {
     modules = ['java.base',
                'java.desktop',
                'jdk.unsupported',
-               'jdk.crypto.cryptoki']
+               'jdk.crypto.cryptoki',
+               'jdk.managment']
     options = ['--strip-debug',
                '--compress', '2',
                '--no-header-files',
@@ -58,6 +59,8 @@ runtime {
         imageName = appName
     }
 
+    //TODO everything works but there is some jank and default icons, esp. for installers and linux
+    // look into --resource-dir flag for further improvements
     if (osName.contains('windows')) {
         targetPlatform("win") {
             jdkHome = jdkDownload("https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk-16.0.1%2B9/OpenJDK16U-jdk_x64_windows_hotspot_16.0.1_9.zip")
@@ -72,23 +75,28 @@ runtime {
             }
         }
     } else if (osName.contains('linux')) {
-        //TODO testing
         targetPlatform("linux") {
             jdkHome = jdkDownload("https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk-16.0.1%2B9/OpenJDK16U-jdk_x64_linux_hotspot_16.0.1_9.tar.gz")
             javaHome = file("./build/jdks/linux/jdk-16.0.1+9").getAbsolutePath()
             jpackage {
                 jpackageHome = file("./build/jdks/linux/jdk-16.0.1+9")
-                //TODO config options
+                imageOptions = ["--icon", file("./src/main/assets/icons/icon_256.png")]
+                //assumes ubuntu linux, changes needed to generate .rpm files
+                installerType = "deb"
+                installerName = appName
+                installerOptions = ["--linux-shortcut"]
             }
         }
     } else if (osName.contains('mac')) {
-        //TODO testing
         targetPlatform("mac") {
             jdkHome = jdkDownload("https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk-16.0.1%2B9/OpenJDK16U-jdk_x64_mac_hotspot_16.0.1_9.tar.gz")
-            javaHome = file("./build/jdks/mac/jdk-16.0.1+9").getAbsolutePath()
+            javaHome = file("./build/jdks/mac/jdk-16.0.1+9/Contents/Home/").getAbsolutePath()
             jpackage {
-                jpackageHome = file("./build/jdks/mac/jdk-16.0.1+9")
-                //TODO config options
+                jpackageHome = file("./build/jdks/mac/jdk-16.0.1+9/Contents/Home/")
+                imageOptions = ["--icon", file("./src/main/assets/icons/mac.icns"), "--java-options", "-XstartOnFirstThread"]
+
+                installerType = "dmg"
+                installerName = appName
             }
         }
     }
