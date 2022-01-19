@@ -76,6 +76,10 @@ public class ArtifactRecharge extends Buff {
 		left += amount;
 		return this;
 	}
+
+	public float left(){
+		return left;
+	}
 	
 	@Override
 	public int icon() {
