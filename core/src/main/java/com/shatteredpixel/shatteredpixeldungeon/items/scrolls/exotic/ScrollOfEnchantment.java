@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Enchanting;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.InventoryScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
@@ -38,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
@@ -52,16 +54,44 @@ public class ScrollOfEnchantment extends ExoticScroll {
 
 		unique = true;
 	}
+
+	protected static boolean identifiedByUse = false;
 	
 	@Override
 	public void doRead() {
-		identify();
-		
+		if (!isKnown()) {
+			identify();
+			identifiedByUse = true;
+		} else {
+			identifiedByUse = false;
+		}
 		GameScene.selectItem( itemSelector );
 	}
 
 	public static boolean enchantable( Item item ){
 		return (item instanceof MeleeWeapon || item instanceof SpiritBow || item instanceof Armor);
+	}
+
+	private void confirmCancelation() {
+		GameScene.show( new WndOptions(new ItemSprite(this),
+				Messages.titleCase(name()),
+				Messages.get(InventoryScroll.class, "warning"),
+				Messages.get(InventoryScroll.class, "yes"),
+				Messages.get(InventoryScroll.class, "no") ) {
+			@Override
+			protected void onSelect( int index ) {
+				switch (index) {
+					case 0:
+						curUser.spendAndNext( TIME_TO_READ );
+						identifiedByUse = false;
+						break;
+					case 1:
+						GameScene.selectItem(itemSelector);
+						break;
+				}
+			}
+			public void onBackPressed() {}
+		} );
 	}
 	
 	protected WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
@@ -186,8 +216,11 @@ public class ScrollOfEnchantment extends ExoticScroll {
 					}
 				});
 			} else {
-				//TODO if this can ever be found un-IDed, need logic for that
-				curItem.collect();
+				if (!identifiedByUse){
+					curItem.collect();
+				} else {
+					((ScrollOfEnchantment)curItem).confirmCancelation();
+				}
 			}
 		}
 	};
