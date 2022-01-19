@@ -84,6 +84,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.CharHealthIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.LootIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.MenuPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ResumeIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StatusPane;
@@ -140,7 +141,8 @@ public class GameScene extends PixelScene {
 	private FogOfWar fog;
 	private HeroSprite hero;
 
-	private StatusPane pane;
+	private MenuPane menu;
+	private StatusPane status;
 	
 	private GameLog log;
 	
@@ -348,10 +350,15 @@ public class GameScene extends PixelScene {
 		
 		add( cellSelector = new CellSelector( tiles ) );
 
-		pane = new StatusPane();
-		pane.camera = uiCamera;
-		pane.setSize( uiCamera.width, 0 );
-		add( pane );
+		menu = new MenuPane();
+		menu.camera = uiCamera;
+		menu.setPos( uiCamera.width-50, 1);
+		add(menu);
+
+		status = new StatusPane();
+		status.camera = uiCamera;
+		status.setSize( uiCamera.width, 0 );
+		add(status);
 		
 		toolbar = new Toolbar();
 		toolbar.camera = uiCamera;
@@ -384,7 +391,7 @@ public class GameScene extends PixelScene {
 		busy = new BusyIndicator();
 		busy.camera = uiCamera;
 		busy.x = 1;
-		busy.y = pane.bottom() + 1;
+		busy.y = status.bottom() + 1;
 		add( busy );
 		
 		counter = new CircleArc(18, 4.25f);
@@ -964,20 +971,20 @@ public class GameScene extends PixelScene {
 	}
 
 	public static void pickUpJournal( Item item, int pos ) {
-		if (scene != null) scene.pane.pickup( item, pos );
+		if (scene != null) scene.menu.pickup( item, pos );
 	}
 
 	//TODO currently only works with guidebooks
 	public static void flashForDocument( String page ){
-		if (scene != null) scene.pane.flashForPage( page );
-	}
-
-	public static void showlevelUpStars(){
-		if (scene != null) scene.pane.showStarParticles();
+		if (scene != null) scene.menu.flashForPage( page );
 	}
 	
 	public static void updateKeyDisplay(){
-		if (scene != null) scene.pane.updateKeys();
+		if (scene != null) scene.menu.updateKeys();
+	}
+
+	public static void showlevelUpStars(){
+		if (scene != null) scene.status.showStarParticles();
 	}
 
 	public static void resetMap() {

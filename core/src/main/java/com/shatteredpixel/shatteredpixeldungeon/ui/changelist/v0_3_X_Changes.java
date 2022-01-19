@@ -245,7 +245,7 @@ public class v0_3_X_Changes {
 				"_-_ Traps now get trickier deeper in the dungeon\n" +
 				"_-_ Trap room reworked to make use of new traps"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.Interfaces.MENU, 15, 0, 16, 15), "Interface Improvements",
+		changes.addButton( new ChangeButton(new Image(Assets.Interfaces.MENU_BTN, 15, 0, 16, 15), "Interface Improvements",
 				"_-_ Adjusted display scaling\n" +
 				"_-_ Search and Examine merged into one button (double tap to search)\n" +
 				"_-_ New max of 4 Quickslots!\n" +

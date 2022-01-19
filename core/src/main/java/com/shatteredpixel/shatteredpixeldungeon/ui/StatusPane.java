@@ -54,7 +54,7 @@ public class StatusPane extends Component {
 	public static float talentBlink;
 	private float warning;
 
-	private static final float FLASH_RATE = (float)(Math.PI*1.5f); //1.5 blinks per second
+	public static final float FLASH_RATE = (float)(Math.PI*1.5f); //1.5 blinks per second
 
 	private int lastTier = 0;
 
@@ -70,18 +70,9 @@ public class StatusPane extends Component {
 	private int lastLvl = -1;
 
 	private BitmapText level;
-	private BitmapText depth;
 
-	private DangerIndicator danger;
 	private BuffIndicator buffs;
 	private Compass compass;
-
-	private JournalButton btnJournal;
-	private MenuButton btnMenu;
-
-	private Toolbar.PickedUpItem pickedUp;
-	
-	private BitmapText version;
 
 	@Override
 	protected void createChildren() {
@@ -101,12 +92,6 @@ public class StatusPane extends Component {
 				return SPDAction.HERO_INFO;
 			}
 		}.setRect( 0, 1, 30, 30 ));
-
-		btnJournal = new JournalButton();
-		add( btnJournal );
-
-		btnMenu = new MenuButton();
-		add( btnMenu );
 
 		avatar = HeroSprite.avatar( Dungeon.hero.heroClass, lastTier );
 		add( avatar );
@@ -140,22 +125,8 @@ public class StatusPane extends Component {
 		level.hardlight( 0xFFFFAA );
 		add( level );
 
-		depth = new BitmapText( Integer.toString( Dungeon.depth ), PixelScene.pixelFont);
-		depth.hardlight( 0xCACFC2 );
-		depth.measure();
-		add( depth );
-
-		danger = new DangerIndicator();
-		add( danger );
-
 		buffs = new BuffIndicator( Dungeon.hero );
 		add( buffs );
-
-		add( pickedUp = new Toolbar.PickedUpItem());
-		
-		version = new BitmapText( "v" + Game.version, PixelScene.pixelFont);
-		version.alpha( 0.5f );
-		add(version);
 	}
 
 	@Override
@@ -184,23 +155,7 @@ public class StatusPane extends Component {
 
 		bossHP.setPos( 6 + (width - bossHP.width())/2, 20);
 
-		depth.x = width - 35.5f - depth.width() / 2f;
-		depth.y = 8f - depth.baseLine() / 2f;
-		PixelScene.align(depth);
-
-		danger.setPos( width - danger.width(), 20 );
-
 		buffs.setPos( 31, 9 );
-
-		btnJournal.setPos( width - 42, 1 );
-
-		btnMenu.setPos( width - btnMenu.width(), 1 );
-		
-		version.scale.set(PixelScene.align(0.5f));
-		version.measure();
-		version.x = width - version.width();
-		version.y = btnMenu.bottom() + (4 - version.baseLine());
-		PixelScene.align(version);
 	}
 	
 	private static final int[] warningColors = new int[]{0x660000, 0xCC0000, 0x660000};
@@ -266,177 +221,4 @@ public class StatusPane extends Component {
 		emitter.burst( Speck.factory( Speck.STAR ), 12 );
 	}
 
-	public void pickup( Item item, int cell) {
-		pickedUp.reset( item,
-			cell,
-			btnJournal.journalIcon.x + btnJournal.journalIcon.width()/2f,
-			btnJournal.journalIcon.y + btnJournal.journalIcon.height()/2f);
-	}
-
-	public void flashForPage( String page ){
-		btnJournal.flashingPage = page;
-	}
-	
-	public void updateKeys(){
-		btnJournal.updateKeyDisplay();
-	}
-
-	private static class JournalButton extends Button {
-
-		private Image bg;
-		private Image journalIcon;
-		private KeyDisplay keyIcon;
-		
-		private String flashingPage = null;
-
-		public JournalButton() {
-			super();
-
-			width = bg.width + 13; //includes the depth display to the left
-			height = bg.height + 4;
-		}
-		
-		@Override
-		public GameAction keyAction() {
-			return SPDAction.JOURNAL;
-		}
-		
-		@Override
-		protected void createChildren() {
-			super.createChildren();
-
-			bg = new Image( Assets.Interfaces.MENU, 2, 2, 13, 11 );
-			add( bg );
-			
-			journalIcon = new Image( Assets.Interfaces.MENU, 31, 0, 11, 7);
-			add( journalIcon );
-			
-			keyIcon = new KeyDisplay();
-			add(keyIcon);
-			updateKeyDisplay();
-		}
-
-		@Override
-		protected void layout() {
-			super.layout();
-
-			bg.x = x + 13;
-			bg.y = y + 2;
-			
-			journalIcon.x = bg.x + (bg.width() - journalIcon.width())/2f;
-			journalIcon.y = bg.y + (bg.height() - journalIcon.height())/2f;
-			PixelScene.align(journalIcon);
-			
-			keyIcon.x = bg.x + 1;
-			keyIcon.y = bg.y + 1;
-			keyIcon.width = bg.width - 2;
-			keyIcon.height = bg.height - 2;
-			PixelScene.align(keyIcon);
-		}
-
-		private float time;
-		
-		@Override
-		public void update() {
-			super.update();
-			
-			if (flashingPage != null){
-				journalIcon.am = (float)Math.abs(Math.cos( FLASH_RATE * (time += Game.elapsed) ));
-				keyIcon.am = journalIcon.am;
-				if (time >= Math.PI/FLASH_RATE) {
-					time = 0;
-				}
-			}
-		}
-
-		public void updateKeyDisplay() {
-			keyIcon.updateKeys();
-			keyIcon.visible = keyIcon.keyCount() > 0;
-			journalIcon.visible = !keyIcon.visible;
-			if (keyIcon.keyCount() > 0) {
-				bg.brightness(.8f - (Math.min(6, keyIcon.keyCount()) / 20f));
-			} else {
-				bg.resetColor();
-			}
-		}
-
-		@Override
-		protected void onPointerDown() {
-			bg.brightness( 1.5f );
-			Sample.INSTANCE.play( Assets.Sounds.CLICK );
-		}
-
-		@Override
-		protected void onPointerUp() {
-			if (keyIcon.keyCount() > 0) {
-				bg.brightness(.8f - (Math.min(6, keyIcon.keyCount()) / 20f));
-			} else {
-				bg.resetColor();
-			}
-		}
-
-		@Override
-		protected void onClick() {
-			time = 0;
-			keyIcon.am = journalIcon.am = 1;
-			if (flashingPage != null){
-				if (Document.ADVENTURERS_GUIDE.pageNames().contains(flashingPage)){
-					GameScene.show( new WndStory( WndJournal.GuideTab.iconForPage(flashingPage),
-							Document.ADVENTURERS_GUIDE.pageTitle(flashingPage),
-							Document.ADVENTURERS_GUIDE.pageBody(flashingPage) ));
-					Document.ADVENTURERS_GUIDE.readPage(flashingPage);
-				} else {
-					GameScene.show( new WndJournal() );
-				}
-				flashingPage = null;
-			} else {
-				GameScene.show( new WndJournal() );
-			}
-		}
-
-	}
-
-	private static class MenuButton extends Button {
-
-		private Image image;
-
-		public MenuButton() {
-			super();
-
-			width = image.width + 4;
-			height = image.height + 4;
-		}
-
-		@Override
-		protected void createChildren() {
-			super.createChildren();
-
-			image = new Image( Assets.Interfaces.MENU, 17, 2, 12, 11 );
-			add( image );
-		}
-
-		@Override
-		protected void layout() {
-			super.layout();
-
-			image.x = x + 2;
-			image.y = y + 2;
-		}
-
-		@Override
-		protected void onPointerDown() {
-			image.brightness( 1.5f );
-			Sample.INSTANCE.play( Assets.Sounds.CLICK );
-		}
-
-		@Override
-		protected void onPointerUp() {
-			image.resetColor();
-		}
-
-		@Override
-		protected void onClick() {
-			GameScene.show( new WndGame() );
-		}
-	}
 }
