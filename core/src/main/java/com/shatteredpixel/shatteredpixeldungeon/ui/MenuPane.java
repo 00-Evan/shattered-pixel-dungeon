@@ -94,9 +94,9 @@ public class MenuPane extends Component {
 		depth.y = y + 7f - depth.baseLine() / 2f;
 		PixelScene.align(depth);
 
-		btnJournal.setPos( x + WIDTH - 42, 1 );
+		btnJournal.setPos( x + WIDTH - 42, y );
 
-		btnMenu.setPos( x + WIDTH - btnMenu.width(), 1 );
+		btnMenu.setPos( x + WIDTH - btnMenu.width(), y );
 
 		version.scale.set(PixelScene.align(0.5f));
 		version.measure();

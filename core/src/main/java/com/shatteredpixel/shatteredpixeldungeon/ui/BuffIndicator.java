@@ -192,7 +192,7 @@ public class BuffIndicator extends Component {
 		for (BuffButton icon : buffButtons.values()){
 			icon.updateIcon();
 			//button areas are slightly oversized, especially on small buttons
-			icon.setRect(x + pos * (size + 2), y, size + 2, size + (large ? 2 : 5));
+			icon.setRect(x + pos * (size + (large ? 1 : 2)), y, size + (large ? 1 : 2), size + (large ? 0 : 5));
 			PixelScene.align(icon);
 			pos++;
 		}
@@ -202,6 +202,8 @@ public class BuffIndicator extends Component {
 
 		private Buff buff;
 
+		private boolean large;
+
 		//Todo maybe move into buff icon?
 		public Image grey;
 
@@ -209,6 +211,7 @@ public class BuffIndicator extends Component {
 		public BuffButton( Buff buff, boolean large ){
 			super( new BuffIcon(buff, large));
 			this.buff = buff;
+			this.large = large;
 
 			bringToFront(grey);
 		}
@@ -235,8 +238,8 @@ public class BuffIndicator extends Component {
 		@Override
 		protected void layout() {
 			super.layout();
-			grey.x = icon.x = this.x + 1;
-			grey.y = icon.y = this.y + 2;
+			grey.x = icon.x = this.x + (large ? 0 : 1);
+			grey.y = icon.y = this.y + (large ? 0 : 2);
 		}
 
 		@Override

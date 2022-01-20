@@ -66,6 +66,7 @@ public class StatusPane extends Component {
 	private BitmapText hpText;
 
 	private Image exp;
+	private BitmapText expText;
 
 	private int lastLvl = -1;
 
@@ -79,10 +80,16 @@ public class StatusPane extends Component {
 
 	private static String asset = Assets.Interfaces.STATUS;
 
-	@Override
-	protected void createChildren() {
+	//TODO improve large mode texturing
+	private boolean large;
 
-		bg = new NinePatch( asset, 0, 0, 128, 36, 85, 0, 45, 0 );
+	public StatusPane( boolean large ){
+		super();
+
+		this.large = large;
+
+		if (large)  bg = new NinePatch( asset, 0, 64, 41, 39, 33, 0, 4, 0 );
+		else        bg = new NinePatch( asset, 0, 0, 128, 36, 85, 0, 45, 0 );
 		add( bg );
 
 		add( new Button(){
@@ -96,7 +103,7 @@ public class StatusPane extends Component {
 			public GameAction keyAction() {
 				return SPDAction.HERO_INFO;
 			}
-		}.setRect( 0, 1, 30, 30 ));
+		}.setRect( x, y+(large ? 0 : 1), 30, 30 ));
 
 		avatar = HeroSprite.avatar( Dungeon.hero.heroClass, lastTier );
 		add( avatar );
@@ -106,28 +113,39 @@ public class StatusPane extends Component {
 		compass = new Compass( Statistics.amuletObtained ? Dungeon.level.entrance : Dungeon.level.exit );
 		add( compass );
 
-		rawShielding = new Image(asset, 0, 40, 50, 4);
+		if (large)  rawShielding = new Image(asset, 0, 112, 128, 9);
+		else        rawShielding = new Image(asset, 0, 40, 50, 4);
 		rawShielding.alpha(0.5f);
 		add(rawShielding);
 
-		shieldedHP = new Image(asset, 0, 40, 50, 4);
+		if (large)  shieldedHP = new Image(asset, 0, 112, 128, 9);
+		else        shieldedHP = new Image(asset, 0, 40, 50, 4);
 		add(shieldedHP);
 
-		hp = new Image(asset, 0, 36, 50, 4);
+		if (large)  hp = new Image(asset, 0, 103, 128, 9);
+		else        hp = new Image(asset, 0, 36, 50, 4);
 		add( hp );
 
 		hpText = new BitmapText(PixelScene.pixelFont);
 		hpText.alpha(0.6f);
 		add(hpText);
 
-		exp = new Image(asset, 0, 44, 16, 1);
+		if (large)  exp = new Image(asset, 0, 121, 128, 7);
+		else        exp = new Image(asset, 0, 44, 16, 1);
 		add( exp );
+
+		if (large){
+			expText = new BitmapText(PixelScene.pixelFont);
+			expText.hardlight( 0xFFFFAA );
+			expText.alpha(0.6f);
+			add(expText);
+		}
 
 		level = new BitmapText( PixelScene.pixelFont);
 		level.hardlight( 0xFFFFAA );
 		add( level );
 
-		buffs = new BuffIndicator( Dungeon.hero, false );
+		buffs = new BuffIndicator( Dungeon.hero, large );
 		add( buffs );
 
 		busy = new BusyIndicator();
@@ -141,33 +159,58 @@ public class StatusPane extends Component {
 	@Override
 	protected void layout() {
 
-		height = 32;
+		height = large ? 39 : 32;
 
 		bg.x = x;
 		bg.y = y;
-		bg.size( width, bg.height );
+		if (large)  bg.size( 160, bg.height ); //HP bars must be 128px wide atm
+		else        bg.size( width, bg.height );
 
-		avatar.x = bg.x + 15 - avatar.width / 2f;
-		avatar.y = bg.y + 16 - avatar.height / 2f;
+		avatar.x = bg.x - avatar.width / 2f + 15;
+		avatar.y = bg.y - avatar.height / 2f + (large ? 15 : 16);
 		PixelScene.align(avatar);
 
 		compass.x = avatar.x + avatar.width / 2f - compass.origin.x;
 		compass.y = avatar.y + avatar.height / 2f - compass.origin.y;
 		PixelScene.align(compass);
 
-		hp.x = shieldedHP.x = rawShielding.x = x + 30;
-		hp.y = shieldedHP.y = rawShielding.y = y + 3;
+		if (large) {
+			exp.x = x + 30;
+			exp.y = y + 30;
 
-		hpText.scale.set(PixelScene.align(0.5f));
-		hpText.x = hp.x + 1;
-		hpText.y = hp.y + (hp.height - (hpText.baseLine()+hpText.scale.y))/2f;
-		hpText.y -= 0.001f; //prefer to be slightly higher
-		PixelScene.align(hpText);
+			hp.x = shieldedHP.x = rawShielding.x = x + 30;
+			hp.y = shieldedHP.y = rawShielding.y = y + 19;
 
-		buffs.setPos( x + 31, y + 9 );
+			hpText.x = hp.x + (128 - hpText.width())/2f;
+			hpText.y = hp.y + 1;
+			PixelScene.align(hpText);
 
-		busy.x = x + 1;
-		busy.y = y + 33;
+			expText.x = exp.x + (128 - expText.width())/2f;
+			expText.y = exp.y;
+			PixelScene.align(expText);
+
+			buffs.setPos( x + 31, y );
+
+			busy.x = x + bg.width + 1;
+			busy.y = y + bg.height - 9;
+		} else {
+			exp.x = x;
+			exp.y = y;
+
+			hp.x = shieldedHP.x = rawShielding.x = x + 30;
+			hp.y = shieldedHP.y = rawShielding.y = y + 3;
+
+			hpText.scale.set(PixelScene.align(0.5f));
+			hpText.x = hp.x + 1;
+			hpText.y = hp.y + (hp.height - (hpText.baseLine()+hpText.scale.y))/2f;
+			hpText.y -= 0.001f; //prefer to be slightly higher
+			PixelScene.align(hpText);
+
+			buffs.setPos( x + 31, y + 9 );
+
+			busy.x = x + 1;
+			busy.y = y + 33;
+		}
 
 		counter.point(busy.center());
 	}
@@ -197,7 +240,12 @@ public class StatusPane extends Component {
 
 		hp.scale.x = Math.max( 0, (health-shield)/(float)max);
 		shieldedHP.scale.x = health/(float)max;
-		rawShielding.scale.x = shield/(float)max;
+
+		if (shield > health) {
+			rawShielding.scale.x = shield / (float) max;
+		} else {
+			rawShielding.scale.x = 0;
+		}
 
 		if (shield <= 0){
 			hpText.text(health + "/" + max);
@@ -205,7 +253,19 @@ public class StatusPane extends Component {
 			hpText.text(health + "+" + shield +  "/" + max);
 		}
 
-		exp.scale.x = (width / exp.width) * Dungeon.hero.exp / Dungeon.hero.maxExp();
+		if (large) {
+			exp.scale.x = (128 / exp.width) * Dungeon.hero.exp / Dungeon.hero.maxExp();
+
+			hpText.measure();
+			hpText.x = hp.x + (128 - hpText.width())/2f;
+
+			expText.text(Dungeon.hero.exp + "/" + Dungeon.hero.maxExp());
+			expText.measure();
+			expText.x = hp.x + (128 - expText.width())/2f;
+
+		} else {
+			exp.scale.x = (width / exp.width) * Dungeon.hero.exp / Dungeon.hero.maxExp();
+		}
 
 		if (Dungeon.hero.lvl != lastLvl) {
 
@@ -214,10 +274,18 @@ public class StatusPane extends Component {
 			}
 
 			lastLvl = Dungeon.hero.lvl;
-			level.text( Integer.toString( lastLvl ) );
-			level.measure();
-			level.x = x + 27.5f - level.width() / 2f;
-			level.y = y + 28.0f - level.baseLine() / 2f;
+
+			if (large){
+				level.text( "lv. " + lastLvl );
+				level.measure();
+				level.x = x + (30f - level.width()) / 2f;
+				level.y = y + 33f - level.baseLine() / 2f;
+			} else {
+				level.text( Integer.toString( lastLvl ) );
+				level.measure();
+				level.x = x + 27.5f - level.width() / 2f;
+				level.y = y + 28.0f - level.baseLine() / 2f;
+			}
 			PixelScene.align(level);
 		}
 

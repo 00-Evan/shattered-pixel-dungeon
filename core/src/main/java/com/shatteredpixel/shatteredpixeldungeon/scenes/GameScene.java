@@ -354,7 +354,7 @@ public class GameScene extends PixelScene {
 		menu.setPos( uiCamera.width-50, 1);
 		add(menu);
 
-		status = new StatusPane();
+		status = new StatusPane( false );
 		status.camera = uiCamera;
 		status.setRect(0, 0, uiCamera.width, 0 );
 		add(status);
