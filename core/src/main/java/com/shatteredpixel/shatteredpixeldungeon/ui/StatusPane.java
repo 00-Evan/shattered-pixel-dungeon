@@ -77,10 +77,12 @@ public class StatusPane extends Component {
 	private BusyIndicator busy;
 	private CircleArc counter;
 
+	private static String asset = Assets.Interfaces.STATUS;
+
 	@Override
 	protected void createChildren() {
 
-		bg = new NinePatch( Assets.Interfaces.STATUS, 0, 0, 128, 36, 85, 0, 45, 0 );
+		bg = new NinePatch( asset, 0, 0, 128, 36, 85, 0, 45, 0 );
 		add( bg );
 
 		add( new Button(){
@@ -104,21 +106,21 @@ public class StatusPane extends Component {
 		compass = new Compass( Statistics.amuletObtained ? Dungeon.level.entrance : Dungeon.level.exit );
 		add( compass );
 
-		rawShielding = new Image( Assets.Interfaces.SHLD_BAR );
+		rawShielding = new Image(asset, 0, 40, 50, 4);
 		rawShielding.alpha(0.5f);
 		add(rawShielding);
 
-		shieldedHP = new Image( Assets.Interfaces.SHLD_BAR );
+		shieldedHP = new Image(asset, 0, 40, 50, 4);
 		add(shieldedHP);
 
-		hp = new Image( Assets.Interfaces.HP_BAR );
+		hp = new Image(asset, 0, 36, 50, 4);
 		add( hp );
 
 		hpText = new BitmapText(PixelScene.pixelFont);
 		hpText.alpha(0.6f);
 		add(hpText);
 
-		exp = new Image( Assets.Interfaces.XP_BAR );
+		exp = new Image(asset, 0, 44, 16, 1);
 		add( exp );
 
 		level = new BitmapText( PixelScene.pixelFont);
