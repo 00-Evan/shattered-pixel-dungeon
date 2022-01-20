@@ -25,6 +25,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CircleArc;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
@@ -65,14 +67,15 @@ public class StatusPane extends Component {
 
 	private Image exp;
 
-	private BossHealthBar bossHP;
-
 	private int lastLvl = -1;
 
 	private BitmapText level;
 
 	private BuffIndicator buffs;
 	private Compass compass;
+
+	private BusyIndicator busy;
+	private CircleArc counter;
 
 	@Override
 	protected void createChildren() {
@@ -118,15 +121,19 @@ public class StatusPane extends Component {
 		exp = new Image( Assets.Interfaces.XP_BAR );
 		add( exp );
 
-		bossHP = new BossHealthBar();
-		add( bossHP );
-
 		level = new BitmapText( PixelScene.pixelFont);
 		level.hardlight( 0xFFFFAA );
 		add( level );
 
 		buffs = new BuffIndicator( Dungeon.hero, false );
 		add( buffs );
+
+		busy = new BusyIndicator();
+		add( busy );
+
+		counter = new CircleArc(18, 4.25f);
+		counter.color( 0x808080, true );
+		counter.show(this, busy.center(), 0f);
 	}
 
 	@Override
@@ -134,6 +141,8 @@ public class StatusPane extends Component {
 
 		height = 32;
 
+		bg.x = x;
+		bg.y = y;
 		bg.size( width, bg.height );
 
 		avatar.x = bg.x + 15 - avatar.width / 2f;
@@ -144,8 +153,8 @@ public class StatusPane extends Component {
 		compass.y = avatar.y + avatar.height / 2f - compass.origin.y;
 		PixelScene.align(compass);
 
-		hp.x = shieldedHP.x = rawShielding.x = 30;
-		hp.y = shieldedHP.y = rawShielding.y = 3;
+		hp.x = shieldedHP.x = rawShielding.x = x + 30;
+		hp.y = shieldedHP.y = rawShielding.y = y + 3;
 
 		hpText.scale.set(PixelScene.align(0.5f));
 		hpText.x = hp.x + 1;
@@ -153,9 +162,12 @@ public class StatusPane extends Component {
 		hpText.y -= 0.001f; //prefer to be slightly higher
 		PixelScene.align(hpText);
 
-		bossHP.setPos( 6 + (width - bossHP.width())/2, 20);
+		buffs.setPos( x + 31, y + 9 );
 
-		buffs.setPos( 31, 9 );
+		busy.x = x + 1;
+		busy.y = y + 33;
+
+		counter.point(busy.center());
 	}
 	
 	private static final int[] warningColors = new int[]{0x660000, 0xCC0000, 0x660000};
@@ -202,8 +214,8 @@ public class StatusPane extends Component {
 			lastLvl = Dungeon.hero.lvl;
 			level.text( Integer.toString( lastLvl ) );
 			level.measure();
-			level.x = 27.5f - level.width() / 2f;
-			level.y = 28.0f - level.baseLine() / 2f;
+			level.x = x + 27.5f - level.width() / 2f;
+			level.y = y + 28.0f - level.baseLine() / 2f;
 			PixelScene.align(level);
 		}
 
@@ -212,6 +224,8 @@ public class StatusPane extends Component {
 			lastTier = tier;
 			avatar.copy( HeroSprite.avatar( Dungeon.hero.heroClass, tier ) );
 		}
+
+		counter.setSweep((1f - Actor.now()%1f)%1f);
 	}
 
 	public void showStarParticles(){

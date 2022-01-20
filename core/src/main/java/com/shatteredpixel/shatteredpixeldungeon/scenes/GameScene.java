@@ -79,7 +79,7 @@ import com.shatteredpixel.shatteredpixeldungeon.tiles.WallBlockingTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Banner;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BusyIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.ui.CharHealthIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
@@ -143,11 +143,10 @@ public class GameScene extends PixelScene {
 
 	private MenuPane menu;
 	private StatusPane status;
-	
+
+	private BossHealthBar boss;
+
 	private GameLog log;
-	
-	private BusyIndicator busy;
-	private CircleArc counter;
 	
 	private static CellSelector cellSelector;
 	
@@ -357,8 +356,13 @@ public class GameScene extends PixelScene {
 
 		status = new StatusPane();
 		status.camera = uiCamera;
-		status.setSize( uiCamera.width, 0 );
+		status.setRect(0, 0, uiCamera.width, 0 );
 		add(status);
+
+		boss = new BossHealthBar();
+		boss.camera = uiCamera;
+		boss.setPos( 6 + (uiCamera.width - boss.width())/2, 20);
+		add(boss);
 		
 		toolbar = new Toolbar();
 		toolbar.camera = uiCamera;
@@ -387,17 +391,6 @@ public class GameScene extends PixelScene {
 		add( log );
 
 		layoutTags();
-
-		busy = new BusyIndicator();
-		busy.camera = uiCamera;
-		busy.x = 1;
-		busy.y = status.bottom() + 1;
-		add( busy );
-		
-		counter = new CircleArc(18, 4.25f);
-		counter.color( 0x808080, true );
-		counter.camera = uiCamera;
-		counter.show(this, busy.center(), 0f);
 		
 		switch (InterlevelScene.mode) {
 			case RESURRECT:
@@ -693,8 +686,6 @@ public class GameScene extends PixelScene {
 			}
 		}
 
-		counter.setSweep((1f - Actor.now()%1f)%1f);
-		
 		if (Dungeon.hero.ready && Dungeon.hero.paralysed == 0) {
 			log.newLine();
 		}

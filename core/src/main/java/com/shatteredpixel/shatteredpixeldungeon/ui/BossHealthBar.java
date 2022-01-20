@@ -47,7 +47,7 @@ public class BossHealthBar extends Component {
 	private static BossHealthBar instance;
 	private static boolean bleeding;
 
-	BossHealthBar() {
+	public BossHealthBar() {
 		super();
 		visible = active = (boss != null);
 		instance = this;
