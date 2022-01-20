@@ -60,7 +60,7 @@ public class WndInfoMob extends WndTitledMessage {
 			health.level(mob);
 			add( health );
 
-			buffs = new BuffIndicator( mob );
+			buffs = new BuffIndicator( mob, false );
 			add( buffs );
 		}
 		
@@ -80,7 +80,7 @@ public class WndInfoMob extends WndTitledMessage {
 
 			buffs.setPos(
 				name.right() + GAP-1,
-				name.bottom() - BuffIndicator.SIZE-2
+				name.bottom() - BuffIndicator.SIZE_SMALL-2
 			);
 
 			height = health.bottom();

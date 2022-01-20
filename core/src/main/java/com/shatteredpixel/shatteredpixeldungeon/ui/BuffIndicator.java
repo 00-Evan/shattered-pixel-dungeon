@@ -101,18 +101,22 @@ public class BuffIndicator extends Component {
 	public static final int ANKH        = 52;
 	public static final int NOINV       = 53;
 
-	public static final int SIZE    = 7;
+	public static final int SIZE_SMALL  = 7;
+	public static final int SIZE_LARGE  = 16;
 	
 	private static BuffIndicator heroInstance;
 	
 	private LinkedHashMap<Buff, BuffButton> buffButtons = new LinkedHashMap<>();
 	private boolean needsRefresh;
 	private Char ch;
+
+	private boolean large = false;
 	
-	public BuffIndicator( Char ch ) {
+	public BuffIndicator( Char ch, boolean large ) {
 		super();
 		
 		this.ch = ch;
+		this.large = large;
 		if (ch == Dungeon.hero) {
 			heroInstance = this;
 		}
@@ -138,19 +142,21 @@ public class BuffIndicator extends Component {
 	
 	@Override
 	protected void layout() {
-		
+
 		ArrayList<Buff> newBuffs = new ArrayList<>();
 		for (Buff buff : ch.buffs()) {
 			if (buff.icon() != NONE) {
 				newBuffs.add(buff);
 			}
 		}
-		
+
+		int size = large ? SIZE_LARGE : SIZE_SMALL;
+
 		//remove any icons no longer present
 		for (Buff buff : buffButtons.keySet().toArray(new Buff[0])){
 			if (!newBuffs.contains(buff)){
 				Image icon = buffButtons.get( buff ).icon;
-				icon.origin.set( SIZE / 2f );
+				icon.originToCenter();
 				icon.alpha(0.6f);
 				add( icon );
 				add( new AlphaTweener( icon, 0, 0.6f ) {
@@ -175,7 +181,7 @@ public class BuffIndicator extends Component {
 		//add new icons
 		for (Buff buff : newBuffs) {
 			if (!buffButtons.containsKey(buff)) {
-				BuffButton icon = new BuffButton(buff);
+				BuffButton icon = new BuffButton(buff, large);
 				add(icon);
 				buffButtons.put( buff, icon );
 			}
@@ -185,7 +191,8 @@ public class BuffIndicator extends Component {
 		int pos = 0;
 		for (BuffButton icon : buffButtons.values()){
 			icon.updateIcon();
-			icon.setRect(x + pos * (SIZE + 2), y, 9, 12);
+			//button areas are slightly oversized, especially on small buttons
+			icon.setRect(x + pos * (size + 2), y, size + 2, size + (large ? 2 : 5));
 			PixelScene.align(icon);
 			pos++;
 		}
@@ -198,8 +205,9 @@ public class BuffIndicator extends Component {
 		//Todo maybe move into buff icon?
 		public Image grey;
 
-		public BuffButton(Buff buff ){
-			super( new BuffIcon(buff, false));
+		//TODO for large buffs there is room to have text instead of fading
+		public BuffButton( Buff buff, boolean large ){
+			super( new BuffIcon(buff, large));
 			this.buff = buff;
 
 			bringToFront(grey);
