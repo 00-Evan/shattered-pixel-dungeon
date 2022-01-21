@@ -53,6 +53,7 @@ public class StatusPane extends Component {
 
 	private NinePatch bg;
 	private Image avatar;
+	private Button heroInfo;
 	public static float talentBlink;
 	private float warning;
 
@@ -92,7 +93,7 @@ public class StatusPane extends Component {
 		else        bg = new NinePatch( asset, 0, 0, 128, 36, 85, 0, 45, 0 );
 		add( bg );
 
-		add( new Button(){
+		heroInfo = new Button(){
 			@Override
 			protected void onClick () {
 				Camera.main.panTo( Dungeon.hero.sprite.center(), 5f );
@@ -103,7 +104,8 @@ public class StatusPane extends Component {
 			public GameAction keyAction() {
 				return SPDAction.HERO_INFO;
 			}
-		}.setRect( x, y+(large ? 0 : 1), 30, 30 ));
+		};
+		add(heroInfo);
 
 		avatar = HeroSprite.avatar( Dungeon.hero.heroClass, lastTier );
 		add( avatar );
@@ -169,6 +171,8 @@ public class StatusPane extends Component {
 		avatar.x = bg.x - avatar.width / 2f + 15;
 		avatar.y = bg.y - avatar.height / 2f + (large ? 15 : 16);
 		PixelScene.align(avatar);
+
+		heroInfo.setRect( x, y+(large ? 0 : 1), 30, 30 );
 
 		compass.x = avatar.x + avatar.width / 2f - compass.origin.x;
 		compass.y = avatar.y + avatar.height / 2f - compass.origin.y;
