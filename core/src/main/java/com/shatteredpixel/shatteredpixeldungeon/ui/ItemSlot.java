@@ -131,6 +131,12 @@ public class ItemSlot extends Button {
 			extra.x = x + (width - extra.width());
 			extra.y = y;
 			PixelScene.align(extra);
+
+			if ((status.width() + extra.width()) > width){
+				extra.visible = false;
+			} else {
+				extra.visible = true;
+			}
 		}
 
 		if (itemIcon != null){
