@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.ui.InventorySlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
@@ -270,8 +271,43 @@ public class WndBag extends WndTabbed {
 		
 		int x = col * (slotWidth + SLOT_MARGIN);
 		int y = TITLE_HEIGHT + row * (slotHeight + SLOT_MARGIN);
-		
-		add( new ItemButton( item ).setPos( x, y ) );
+
+		InventorySlot slot = new InventorySlot( item ){
+			@Override
+			protected void onClick() {
+				if (lastBag != item && !lastBag.contains(item) && !item.isEquipped(Dungeon.hero)){
+
+					hide();
+
+				} else if (selector != null) {
+
+					hide();
+					selector.onSelect( item );
+
+				} else {
+
+					Game.scene().addToFront(new WndUseItem( WndBag.this, item ) );
+
+				}
+			}
+
+			@Override
+			protected boolean onLongClick() {
+				if (selector == null && item.defaultAction != null) {
+					hide();
+					Dungeon.quickslot.setSlot( 0 , item );
+					QuickSlotButton.refresh();
+					return true;
+				} else if (selector != null) {
+					Game.scene().addToFront(new WndInfoItem(item));
+					return true;
+				} else {
+					return false;
+				}
+			}
+		};
+		slot.setRect( x, y, slotWidth, slotHeight );
+		add(slot);
 		
 		if (++col >= nCols) {
 			col = 0;
@@ -362,120 +398,6 @@ public class WndBag extends WndTabbed {
 		@Override
 		public boolean isEquipped( Hero hero ) {
 			return true;
-		}
-	}
-	
-	private class ItemButton extends ItemSlot {
-		
-		private static final int NORMAL		= 0x9953564D;
-		private static final int EQUIPPED	= 0x9991938C;
-		
-		private Item item;
-		private ColorBlock bg;
-		
-		public ItemButton( Item item ) {
-			
-			super( item );
-
-			this.item = item;
-			if (item instanceof Gold || item instanceof Bag) {
-				bg.visible = false;
-			}
-			
-			width = slotWidth;
-			height = slotHeight;
-		}
-		
-		@Override
-		protected void createChildren() {
-			bg = new ColorBlock( 1, 1, NORMAL );
-			add( bg );
-			
-			super.createChildren();
-		}
-		
-		@Override
-		protected void layout() {
-			bg.size(width, height);
-			bg.x = x;
-			bg.y = y;
-			
-			super.layout();
-		}
-		
-		@Override
-		public void item( Item item ) {
-			
-			super.item( item );
-			if (item != null) {
-
-				bg.texture( TextureCache.createSolid( item.isEquipped( Dungeon.hero ) ? EQUIPPED : NORMAL ) );
-				if (item.cursed && item.cursedKnown) {
-					bg.ra = +0.3f;
-					bg.ga = -0.15f;
-				} else if (!item.isIdentified()) {
-					if ((item instanceof EquipableItem || item instanceof Wand) && item.cursedKnown){
-						bg.ba = 0.3f;
-					} else {
-						bg.ra = 0.3f;
-						bg.ba = 0.3f;
-					}
-				}
-				
-				if (item.name() == null) {
-					enable( false );
-				} else if (selector != null && !selector.itemSelectable(item)) {
-					enable(false);
-				} else if (Dungeon.hero.buff(LostInventory.class) != null
-						&& !item.keptThoughLostInvent){
-					enable(false);
-				}
-			} else {
-				bg.color( NORMAL );
-			}
-		}
-		
-		@Override
-		protected void onPointerDown() {
-			bg.brightness( 1.5f );
-			Sample.INSTANCE.play( Assets.Sounds.CLICK, 0.7f, 0.7f, 1.2f );
-		}
-		
-		protected void onPointerUp() {
-			bg.brightness( 1.0f );
-		}
-		
-		@Override
-		protected void onClick() {
-			if (lastBag != item && !lastBag.contains(item) && !item.isEquipped(Dungeon.hero)){
-
-				hide();
-
-			} else if (selector != null) {
-				
-				hide();
-				selector.onSelect( item );
-				
-			} else {
-				
-				Game.scene().addToFront(new WndUseItem( WndBag.this, item ) );
-				
-			}
-		}
-		
-		@Override
-		protected boolean onLongClick() {
-			if (selector == null && item.defaultAction != null) {
-				hide();
-				Dungeon.quickslot.setSlot( 0 , item );
-				QuickSlotButton.refresh();
-				return true;
-			} else if (selector != null) {
-				Game.scene().addToFront(new WndInfoItem(item));
-				return true;
-			} else {
-				return false;
-			}
 		}
 	}
 

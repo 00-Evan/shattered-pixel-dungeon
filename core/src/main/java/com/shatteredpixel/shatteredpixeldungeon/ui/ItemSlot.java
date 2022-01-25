@@ -134,7 +134,7 @@ public class ItemSlot extends Button {
 
 			if ((status.width() + extra.width()) > width){
 				extra.visible = false;
-			} else {
+			} else if (item != null) {
 				extra.visible = true;
 			}
 		}
