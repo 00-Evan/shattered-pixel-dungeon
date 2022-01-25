@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.ui.InventorySlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
@@ -101,12 +102,35 @@ public class WndQuickBag extends Window {
 		}
 
 		for (Item i : items){
-			QuickItemButton btn = new QuickItemButton(i);
-			btn.setRect(left, top, btnWidth, btnHeight);
-			add(btn);
+			InventorySlot slot = new InventorySlot(i){
+				@Override
+				protected void onClick() {
+					if (Dungeon.hero == null || !Dungeon.hero.isAlive() || !Dungeon.hero.belongings.contains(item)){
+						Game.scene().addToFront(new WndUseItem(WndQuickBag.this, item));
+						return;
+					}
 
-			if (width < btn.right()) width = btn.right();
-			if (height < btn.bottom()) height = btn.bottom();
+					hide();
+					item.execute(Dungeon.hero);
+					if (item.usesTargeting && bag != null){
+						int idx = Dungeon.quickslot.getSlot(WndQuickBag.bag);
+						if (idx != -1){
+							QuickSlotButton.useTargeting(idx);
+						}
+					}
+				}
+
+				@Override
+				protected boolean onLongClick() {
+					Game.scene().addToFront(new WndUseItem(WndQuickBag.this, item));
+					return true;
+				}
+			};
+			slot.setRect(left, top, btnWidth, btnHeight);
+			add(slot);
+
+			if (width < slot.right()) width = slot.right();
+			if (height < slot.bottom()) height = slot.bottom();
 
 			left += btnWidth+1;
 
@@ -160,103 +184,6 @@ public class WndQuickBag extends Window {
 		if (WndBag.INSTANCE == this){
 			WndBag.INSTANCE = null;
 		}
-	}
-
-	private class QuickItemButton extends ItemSlot {
-
-		private static final int NORMAL = 0x9953564D;
-		private static final int EQUIPPED	= 0x9991938C;
-		private Item item;
-		private ColorBlock bg;
-
-		public QuickItemButton(Item item) {
-
-			super(item);
-			showExtraInfo(false);
-
-			this.item = item;
-
-		}
-
-		@Override
-		protected void createChildren() {
-			bg = new ColorBlock(1, 1, NORMAL);
-			add(bg);
-
-			super.createChildren();
-		}
-
-		@Override
-		protected void layout() {
-			bg.size(width, height);
-			bg.x = x;
-			bg.y = y;
-
-			super.layout();
-		}
-
-		@Override
-		public void item(Item item) {
-
-			super.item(item);
-			if (item != null) {
-
-				bg.texture( TextureCache.createSolid( item.isEquipped( Dungeon.hero ) ? EQUIPPED : NORMAL ) );
-				if (item.cursed && item.cursedKnown) {
-					bg.ra = +0.3f;
-					bg.ga = -0.15f;
-				} else if (!item.isIdentified()) {
-					if ((item instanceof EquipableItem || item instanceof Wand) && item.cursedKnown) {
-						bg.ba = 0.3f;
-					} else {
-						bg.ra = 0.3f;
-						bg.ba = 0.3f;
-					}
-				}
-
-				if (Dungeon.hero.buff(LostInventory.class) != null
-						&& !item.keptThoughLostInvent){
-					enable(false);
-				}
-
-			} else {
-				bg.color(NORMAL);
-			}
-		}
-
-		@Override
-		protected void onPointerDown() {
-			bg.brightness(1.5f);
-			Sample.INSTANCE.play(Assets.Sounds.CLICK, 0.7f, 0.7f, 1.2f);
-		}
-
-		protected void onPointerUp() {
-			bg.brightness(1.0f);
-		}
-
-		@Override
-		protected void onClick() {
-			if (Dungeon.hero == null || !Dungeon.hero.isAlive() || !Dungeon.hero.belongings.contains(item)){
-				Game.scene().addToFront(new WndUseItem(WndQuickBag.this, item));
-				return;
-			}
-
-			hide();
-			item.execute(Dungeon.hero);
-			if (item.usesTargeting && bag != null){
-				int idx = Dungeon.quickslot.getSlot(WndQuickBag.bag);
-				if (idx != -1){
-					QuickSlotButton.useTargeting(idx);
-				}
-			}
-		}
-
-		@Override
-		protected boolean onLongClick() {
-			Game.scene().addToFront(new WndUseItem(WndQuickBag.this, item));
-			return true;
-		}
-
 	}
 
 }
