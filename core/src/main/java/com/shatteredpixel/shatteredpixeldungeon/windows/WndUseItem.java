@@ -53,6 +53,7 @@ public class WndUseItem extends WndInfoItem {
 						if (Dungeon.hero.isAlive() && Dungeon.hero.belongings.contains(item)){
 							item.execute( Dungeon.hero, action );
 						}
+						Item.updateQuickslot();
 					}
 				};
 				btn.setSize( btn.reqWidth(), BUTTON_HEIGHT );

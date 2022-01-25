@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.InventoryPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
@@ -227,8 +228,8 @@ public class Item implements Bundlable {
 
 		items.add( this );
 		Dungeon.quickslot.replacePlaceholder(this);
-		updateQuickslot();
 		Collections.sort( items, itemComparator );
+		updateQuickslot();
 		return true;
 
 	}
@@ -287,13 +288,13 @@ public class Item implements Bundlable {
 	
 	public final Item detachAll( Bag container ) {
 		Dungeon.quickslot.clearItem( this );
-		updateQuickslot();
 
 		for (Item item : container.items) {
 			if (item == this) {
 				container.items.remove(this);
 				item.onDetach();
 				container.grabItems(); //try to put more items into the bag as it now has free space
+				updateQuickslot();
 				return this;
 			} else if (item instanceof Bag) {
 				Bag bag = (Bag)item;
@@ -302,7 +303,8 @@ public class Item implements Bundlable {
 				}
 			}
 		}
-		
+
+		updateQuickslot();
 		return this;
 	}
 	
@@ -489,6 +491,7 @@ public class Item implements Bundlable {
 
 	public static void updateQuickslot() {
 		QuickSlotButton.refresh();
+		InventoryPane.refresh();
 	}
 	
 	private static final String QUANTITY		= "quantity";

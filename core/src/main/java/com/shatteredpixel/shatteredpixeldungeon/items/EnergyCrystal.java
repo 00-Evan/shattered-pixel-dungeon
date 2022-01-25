@@ -66,6 +66,8 @@ public class EnergyCrystal extends Item {
 
 		Sample.INSTANCE.play( Assets.Sounds.ITEM );
 
+		updateQuickslot();
+
 		return true;
 	}
 
