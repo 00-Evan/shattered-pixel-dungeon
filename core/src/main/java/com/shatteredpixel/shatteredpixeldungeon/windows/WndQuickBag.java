@@ -140,13 +140,8 @@ public class WndQuickBag extends Window {
 			}
 		}
 
-		//TODO translate this!
 		RenderedTextBlock txtTitle;
-		if ( Messages.lang() == Languages.ENGLISH){
-			txtTitle = PixelScene.renderTextBlock( "Quick-use an Item", 8 );
-		} else {
-			txtTitle = PixelScene.renderTextBlock( Messages.titleCase(bag != null ? bag.name() : Dungeon.hero.belongings.backpack.name()), 8 );
-		}
+		txtTitle = PixelScene.renderTextBlock( Messages.titleCase(Messages.get(this, "title")), 8 );
 		txtTitle.hardlight( TITLE_COLOR );
 		if (txtTitle.width() > width) width = txtTitle.width();
 

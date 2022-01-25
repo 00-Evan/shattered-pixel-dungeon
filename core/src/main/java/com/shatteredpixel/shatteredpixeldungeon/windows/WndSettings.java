@@ -698,13 +698,12 @@ public class WndSettings extends WndTabbed {
 			chkMuteSFX.checked(!SPDSettings.soundFx());
 			add( chkMuteSFX );
 
-			//TODO translate for v1.2.0!
 			if (DeviceCompat.isiOS() && Messages.lang() == Languages.ENGLISH){
 
 				sep3 = new ColorBlock(1, 1, 0xFF000000);
 				add(sep3);
 
-				chkIgnoreSilent = new CheckBox( "Ignore Silent Mode" ){
+				chkIgnoreSilent = new CheckBox( Messages.get(this, "ignore_silent") ){
 					@Override
 					protected void onClick() {
 						super.onClick();
