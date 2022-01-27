@@ -63,10 +63,6 @@ public class DeviceCompat {
 		return Game.version.contains("INDEV");
 	}
 	
-	public static void openURI( String URI ){
-		Gdx.net.openURI(URI);
-	}
-	
 	public static void log( String tag, String message ){
 		Gdx.app.log( tag, message );
 	}

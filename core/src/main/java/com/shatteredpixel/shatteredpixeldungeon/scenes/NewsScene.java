@@ -151,7 +151,7 @@ public class NewsScene extends PixelScene {
 				link += "?utm_source=shatteredpd";
 				link += "&utm_medium=news_page";
 				link += "&utm_campaign=ingame_link";
-				DeviceCompat.openURI(link);
+				ShatteredPixelDungeon.platform.openURI(link);
 			}
 		};
 		btnSite.icon(Icons.get(Icons.NEWS));
@@ -323,7 +323,7 @@ public class NewsScene extends PixelScene {
 					link += "?utm_source=shatteredpd";
 					link += "&utm_medium=news_page";
 					link += "&utm_campaign=ingame_link";
-					DeviceCompat.openURI(link);
+					ShatteredPixelDungeon.platform.openURI(link);
 				}
 			};
 			link.setRect(0, height + 2, width, BTN_HEIGHT);

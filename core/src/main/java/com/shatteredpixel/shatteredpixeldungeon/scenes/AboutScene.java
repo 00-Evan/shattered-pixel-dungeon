@@ -315,7 +315,7 @@ public class AboutScene extends PixelScene {
 				linkButton = new PointerArea(0, 0, 0, 0){
 					@Override
 					protected void onClick( PointerEvent event ) {
-						DeviceCompat.openURI( linkUrl );
+						ShatteredPixelDungeon.platform.openURI( linkUrl );
 					}
 				};
 				add(linkButton);

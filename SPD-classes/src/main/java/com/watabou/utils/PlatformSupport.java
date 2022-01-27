@@ -47,6 +47,10 @@ public abstract class PlatformSupport {
 		//does nothing by default
 	}
 
+	public boolean openURI( String uri ){
+		return Gdx.net.openURI( uri );
+	}
+
 	//TODO should consider spinning this into its own class, rather than platform support getting ever bigger
 	protected static HashMap<FreeTypeFontGenerator, HashMap<Integer, BitmapFont>> fonts;
 

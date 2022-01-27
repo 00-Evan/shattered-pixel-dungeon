@@ -125,7 +125,7 @@ public class GitHubUpdates extends UpdateService {
 
 	@Override
 	public void initializeUpdate(AvailableUpdateData update) {
-		DeviceCompat.openURI( update.URL );
+		Game.platform.openURI( update.URL );
 	}
 
 	@Override
