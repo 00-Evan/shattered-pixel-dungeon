@@ -300,6 +300,7 @@ public class CellSelector extends ScrollArea {
 			Dungeon.observe();
 			heldTurns++;
 			moveFromAction(heldAction);
+			Dungeon.hero.ready = false;
 		}
 	}
 	

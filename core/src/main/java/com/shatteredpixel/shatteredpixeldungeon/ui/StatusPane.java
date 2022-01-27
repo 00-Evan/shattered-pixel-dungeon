@@ -65,6 +65,7 @@ public class StatusPane extends Component {
 	private Image shieldedHP;
 	private Image hp;
 	private BitmapText hpText;
+	private Button heroInfoOnBar;
 
 	private Image exp;
 	private BitmapText expText;
@@ -81,7 +82,6 @@ public class StatusPane extends Component {
 
 	private static String asset = Assets.Interfaces.STATUS;
 
-	//TODO improve large mode texturing
 	private boolean large;
 
 	public StatusPane( boolean large ){
@@ -132,6 +132,15 @@ public class StatusPane extends Component {
 		hpText.alpha(0.6f);
 		add(hpText);
 
+		heroInfoOnBar = new Button(){
+			@Override
+			protected void onClick () {
+				Camera.main.panTo( Dungeon.hero.sprite.center(), 5f );
+				GameScene.show( new WndHero() );
+			}
+		};
+		add(heroInfoOnBar);
+
 		if (large)  exp = new Image(asset, 0, 121, 128, 7);
 		else        exp = new Image(asset, 0, 44, 16, 1);
 		add( exp );
@@ -172,7 +181,7 @@ public class StatusPane extends Component {
 		avatar.y = bg.y - avatar.height / 2f + (large ? 15 : 16);
 		PixelScene.align(avatar);
 
-		heroInfo.setRect( x, y+(large ? 0 : 1), 30, 30 );
+		heroInfo.setRect( x, y+(large ? 0 : 1), 30, large ? 40 : 30 );
 
 		compass.x = avatar.x + avatar.width / 2f - compass.origin.x;
 		compass.y = avatar.y + avatar.height / 2f - compass.origin.y;
@@ -193,6 +202,8 @@ public class StatusPane extends Component {
 			expText.y = exp.y;
 			PixelScene.align(expText);
 
+			heroInfoOnBar.setRect(heroInfo.right(), y + 19, 130, 20);
+
 			buffs.setPos( x + 31, y );
 
 			busy.x = x + bg.width + 1;
@@ -209,6 +220,8 @@ public class StatusPane extends Component {
 			hpText.y = hp.y + (hp.height - (hpText.baseLine()+hpText.scale.y))/2f;
 			hpText.y -= 0.001f; //prefer to be slightly higher
 			PixelScene.align(hpText);
+
+			heroInfoOnBar.setRect(heroInfo.right(), y, 50, 9);
 
 			buffs.setPos( x + 31, y + 9 );
 
@@ -305,7 +318,7 @@ public class StatusPane extends Component {
 	public void showStarParticles(){
 		Emitter emitter = (Emitter)recycle( Emitter.class );
 		emitter.revive();
-		emitter.pos( 27, 27 );
+		emitter.pos( avatar.center() );
 		emitter.burst( Speck.factory( Speck.STAR ), 12 );
 	}
 

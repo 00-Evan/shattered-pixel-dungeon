@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
 import com.watabou.gltextures.TextureCache;
@@ -93,8 +94,6 @@ public class InventoryPane extends Component {
 
 	@Override
 	protected void createChildren() {
-
-		//TODO capture inputs tapped on BG
 
 		bg = Chrome.get(Chrome.Type.TOAST_TR);
 		add(bg);
@@ -156,6 +155,7 @@ public class InventoryPane extends Component {
 			add(btn);
 		}
 
+		lastEnabled = true;
 		updateInventory();
 
 		width = WIDTH;
@@ -274,6 +274,11 @@ public class InventoryPane extends Component {
 			b.enable(lastEnabled);
 		}
 
+		goldTxt.alpha( lastEnabled ? 1f : 0.3f );
+		gold.alpha( lastEnabled ? 1f : 0.3f );
+		energyTxt.alpha( lastEnabled ? 1f : 0.3f );
+		energy.alpha( lastEnabled ? 1f : 0.3f );
+
 		layout();
 	}
 
@@ -293,6 +298,11 @@ public class InventoryPane extends Component {
 			for (BagButton b : bags){
 				b.enable(lastEnabled);
 			}
+
+			goldTxt.alpha( lastEnabled ? 1f : 0.3f );
+			gold.alpha( lastEnabled ? 1f : 0.3f );
+			energyTxt.alpha( lastEnabled ? 1f : 0.3f );
+			energy.alpha( lastEnabled ? 1f : 0.3f );
 		}
 
 	}
