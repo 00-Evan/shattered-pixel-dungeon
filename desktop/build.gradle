@@ -45,7 +45,7 @@ runtime {
                'java.desktop',
                'jdk.unsupported',
                'jdk.crypto.cryptoki',
-               'jdk.managment']
+               'jdk.management']
     options = ['--strip-debug',
                '--compress', '2',
                '--no-header-files',
