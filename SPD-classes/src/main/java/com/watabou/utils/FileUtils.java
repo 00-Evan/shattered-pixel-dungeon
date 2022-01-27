@@ -68,6 +68,50 @@ public class FileUtils {
 	}
 	
 	// Files
+
+	//looks to see if there is any evidence of interrupted saving
+	public static boolean cleanTempFiles(){
+		return cleanTempFiles("");
+	}
+
+	public static boolean cleanTempFiles( String dirName ){
+		FileHandle dir = getFileHandle(dirName);
+		boolean foundTemp = false;
+		for (FileHandle file : dir.list()){
+			if (file.isDirectory()){
+				foundTemp = cleanTempFiles(dirName + file.name()) || foundTemp;
+			} else {
+				if (file.name().endsWith(".tmp")){
+					FileHandle temp = file;
+					FileHandle original = getFileHandle( defaultFileType, "", temp.path().replace(".tmp", "") );
+
+					//replace the base file with the temp one if base is invalid or temp is valid and newer
+					try {
+						bundleFromStream(temp.read());
+
+						try {
+							bundleFromStream(original.read());
+
+							if (temp.lastModified() > original.lastModified()) {
+								temp.moveTo(original);
+							} else {
+								temp.delete();
+							}
+
+						} catch (Exception e) {
+							temp.moveTo(original);
+						}
+
+					} catch (Exception e) {
+						temp.delete();
+					}
+
+					foundTemp = true;
+				}
+			}
+		}
+		return foundTemp;
+	}
 	
 	public static boolean fileExists( String name ){
 		FileHandle file = getFileHandle( name );
@@ -119,7 +163,19 @@ public class FileUtils {
 	//only works for base path
 	public static void bundleToFile( String fileName, Bundle bundle ) throws IOException{
 		try {
-			bundleToStream(getFileHandle( fileName ).write(false), bundle);
+			FileHandle file = getFileHandle(fileName);
+
+			//write to a temp file, then move the files.
+			// This helps prevent save corruption if writing is interrupted
+			if (file.exists()){
+				FileHandle temp = getFileHandle(fileName + ".tmp");
+				bundleToStream(temp.write(false), bundle);
+				file.delete();
+				temp.moveTo(file);
+			} else {
+				bundleToStream(file.write(false), bundle);
+			}
+
 		} catch (GdxRuntimeException e){
 			//game classes expect an IO exception, so wrap the GDX exception in that
 			throw new IOException(e);

@@ -38,6 +38,9 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndHardNotification;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.ColorBlock;
@@ -57,6 +60,21 @@ public class WelcomeScene extends PixelScene {
 		super.create();
 
 		final int previousVersion = SPDSettings.version();
+
+		if (FileUtils.cleanTempFiles()){
+			add(new WndHardNotification(Icons.get(Icons.WARNING),
+					Messages.get(WndError.class, "title"),
+					Messages.get(this, "save_warning"),
+					Messages.get(this, "continue"),
+					5){
+				@Override
+				public void hide() {
+					super.hide();
+					ShatteredPixelDungeon.resetScene();
+				}
+			});
+			return;
+		}
 
 		if (ShatteredPixelDungeon.versionCode == previousVersion && !SPDSettings.intro()) {
 			ShatteredPixelDungeon.switchNoFade(TitleScene.class);
