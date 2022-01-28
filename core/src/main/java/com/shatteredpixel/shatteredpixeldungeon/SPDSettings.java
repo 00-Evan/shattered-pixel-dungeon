@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameSettings;
 import com.watabou.utils.Point;
 
@@ -125,11 +126,30 @@ public class SPDSettings extends GameSettings {
 	}
 	
 	//Interface
-	
+
+	public static final String KEY_UI_SIZE 	    = "full_ui";
 	public static final String KEY_QUICKSLOTS	= "quickslots";
 	public static final String KEY_FLIPTOOLBAR	= "flipped_ui";
 	public static final String KEY_FLIPTAGS 	= "flip_tags";
 	public static final String KEY_BARMODE		= "toolbar_mode";
+
+	//0 = mobile, 1 = mixed (large without inventory in main UI), 2 = large
+	public static void interfaceSize( int value ){
+		put( KEY_UI_SIZE, value );
+	}
+
+	public static int interfaceSize(){
+		int size = getInt( KEY_UI_SIZE, DeviceCompat.isDesktop() ? 2 : 0 );
+		if (size > 0){
+			//force mobile UI if there is not enough space for full UI
+			float wMin = Game.width / PixelScene.MIN_WIDTH_FULL;
+			float hMin = Game.height / PixelScene.MIN_HEIGHT_FULL;
+			if (Math.min(wMin, hMin) < 2*Game.density){
+				size = 0;
+			}
+		}
+		return size;
+	}
 	
 	public static void quickSlots( int value ){ put( KEY_QUICKSLOTS, value ); }
 	
@@ -337,8 +357,8 @@ public class SPDSettings extends GameSettings {
 	
 	public static Point windowResolution(){
 		return new Point(
-				getInt( KEY_WINDOW_WIDTH, 960, 480, Integer.MAX_VALUE ),
-				getInt( KEY_WINDOW_HEIGHT, 640, 320, Integer.MAX_VALUE )
+				getInt( KEY_WINDOW_WIDTH, 800, 720, Integer.MAX_VALUE ),
+				getInt( KEY_WINDOW_HEIGHT, 600, 400, Integer.MAX_VALUE )
 		);
 	}
 	

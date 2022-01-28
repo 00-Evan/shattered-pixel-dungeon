@@ -48,13 +48,20 @@ import java.util.ArrayList;
 
 public class PixelScene extends Scene {
 
-	// Minimum virtual display size for portrait orientation
-	public static final float MIN_WIDTH_P        = 135;
-	public static final float MIN_HEIGHT_P        = 225;
+	// Minimum virtual display size for mobile portrait orientation
+	public static final float MIN_WIDTH_P = 135;
+	public static final float MIN_HEIGHT_P = 225;
 
-	// Minimum virtual display size for landscape orientation
-	public static final float MIN_WIDTH_L        = 240;
-	public static final float MIN_HEIGHT_L        = 160;
+	// Minimum virtual display size for mobile landscape orientation
+	public static final float MIN_WIDTH_L = 240;
+	public static final float MIN_HEIGHT_L = 160;
+
+	// Minimum virtual display size for full desktop UI (landscape only)
+	//TODO maybe include another scale for mixed UI? might make it more accessible to mobile devices
+	// mixed UI has similar requirements to mobile landscape tbh... Maybe just merge them?
+	// mixed UI can possible be used on mobile portrait for tablets though.. Does that happen often?
+	public static final float MIN_WIDTH_FULL = 360;
+	public static final float MIN_HEIGHT_FULL = 200;
 
 	public static int defaultZoom = 0;
 	public static int maxDefaultZoom = 0;
@@ -82,13 +89,21 @@ public class PixelScene extends Scene {
 			TextureCache.clear();
 		}
 
-		float minWidth, minHeight;
-		if (landscape()) {
+		float minWidth, minHeight, scaleFactor;
+		if (SPDSettings.interfaceSize() > 0){
+			minWidth = MIN_WIDTH_FULL;
+			minHeight = MIN_HEIGHT_FULL;
+			//TODO not perfect in all cases, especially for big monitors
+			// Perhaps look at max zoom and increase if default is less than half of max?
+			scaleFactor = 3.75f;
+		} else if (landscape()) {
 			minWidth = MIN_WIDTH_L;
 			minHeight = MIN_HEIGHT_L;
+			scaleFactor = 2.5f;
 		} else {
 			minWidth = MIN_WIDTH_P;
 			minHeight = MIN_HEIGHT_P;
+			scaleFactor = 2.5f;
 		}
 
 		maxDefaultZoom = (int)Math.min(Game.width/minWidth, Game.height/minHeight);
@@ -96,7 +111,7 @@ public class PixelScene extends Scene {
 		defaultZoom = SPDSettings.scale();
 
 		if (defaultZoom < Math.ceil( Game.density * 2 ) || defaultZoom > maxDefaultZoom){
-			defaultZoom = (int)GameMath.gate(2, (int)Math.ceil( Game.density * 2.5 ), maxDefaultZoom);
+			defaultZoom = (int)GameMath.gate(2, (int)Math.ceil( Game.density * scaleFactor ), maxDefaultZoom);
 		}
 
 		minZoom = 1;
@@ -167,6 +182,11 @@ public class PixelScene extends Scene {
 		super.destroy();
 		PointerEvent.clearListeners();
 	}
+
+	public static boolean landscape(){
+		return SPDSettings.interfaceSize() > 0 || Game.width > Game.height;
+	}
+
 
 	public static RenderedTextBlock renderTextBlock(int size ){
 		return renderTextBlock("", size);

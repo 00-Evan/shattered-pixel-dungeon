@@ -83,6 +83,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.ui.CharHealthIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.ui.InventoryPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.LootIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.MenuPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
@@ -168,7 +169,10 @@ public class GameScene extends PixelScene {
 	private Group emoicons;
 	private Group overFogEffects;
 	private Group healthIndicators;
-	
+
+	private InventoryPane inventory;
+	private static boolean invVisible = true;
+
 	private Toolbar toolbar;
 	private Toast prompt;
 
@@ -349,14 +353,16 @@ public class GameScene extends PixelScene {
 		
 		add( cellSelector = new CellSelector( tiles ) );
 
+		int uiSize = SPDSettings.interfaceSize();
+
 		menu = new MenuPane();
 		menu.camera = uiCamera;
-		menu.setPos( uiCamera.width-50, 1);
+		menu.setPos( uiCamera.width-50, uiSize > 0 ? 0 : 1);
 		add(menu);
 
-		status = new StatusPane( false );
+		status = new StatusPane( SPDSettings.interfaceSize() > 0 );
 		status.camera = uiCamera;
-		status.setRect(0, 0, uiCamera.width, 0 );
+		status.setRect(0, uiSize > 0 ? uiCamera.height-39 : 0, uiCamera.width, 0 );
 		add(status);
 
 		boss = new BossHealthBar();
@@ -366,7 +372,17 @@ public class GameScene extends PixelScene {
 		
 		toolbar = new Toolbar();
 		toolbar.camera = uiCamera;
-		toolbar.setRect( 0,uiCamera.height - toolbar.height(), uiCamera.width, toolbar.height() );
+
+		if (uiSize == 2) {
+			inventory = new InventoryPane();
+			inventory.camera = uiCamera;
+			inventory.setPos(uiCamera.width - inventory.width(), uiCamera.height - inventory.height());
+			add(inventory);
+
+			toolbar.setRect( 0, uiCamera.height - toolbar.height() - inventory.height(), uiCamera.width, toolbar.height() );
+		} else {
+			toolbar.setRect( 0, uiCamera.height - toolbar.height(), uiCamera.width, toolbar.height() );
+		}
 		add( toolbar );
 		
 		attack = new AttackIndicator();
@@ -568,7 +584,8 @@ public class GameScene extends PixelScene {
 			GLog.p(Messages.get(Guidebook.class, "hint"));
 			GameScene.flashForDocument(Document.GUIDE_DIEING);
 		}
-		
+
+		if (!invVisible) toggleInvPane();
 		fadeIn();
 
 		//re-show WndResurrect if needed
@@ -735,13 +752,17 @@ public class GameScene extends PixelScene {
 		float tagWidth = Tag.SIZE + (tagsOnLeft ? insets.left : insets.right);
 		float tagLeft = tagsOnLeft ? 0 : uiCamera.width - tagWidth;
 
-		if (SPDSettings.flipTags()) {
-			scene.log.setRect(tagWidth, scene.toolbar.top()-2, uiCamera.width - tagWidth - insets.right, 0);
+		float y = SPDSettings.interfaceSize() == 0 ? scene.toolbar.top()-2 : scene.status.top()-2;
+		if (tagsOnLeft) {
+			scene.log.setRect(tagWidth, y, uiCamera.width - tagWidth - insets.right, 0);
 		} else {
-			scene.log.setRect(insets.left, scene.toolbar.top()-2, uiCamera.width - tagWidth - insets.left, 0);
+			scene.log.setRect(insets.left, y, uiCamera.width - tagWidth - insets.left, 0);
 		}
 
 		float pos = scene.toolbar.top();
+		if (tagsOnLeft && SPDSettings.interfaceSize() > 0){
+			pos = scene.status.top();
+		}
 
 		if (scene.tagAttack){
 			scene.attack.setRect( tagLeft, pos - Tag.SIZE, tagWidth, Tag.SIZE );
@@ -1041,6 +1062,19 @@ public class GameScene extends PixelScene {
 		}
 
 		return false;
+	}
+
+	public static void toggleInvPane(){
+		if (scene != null && scene.inventory != null){
+			if (scene.inventory.visible){
+				scene.inventory.visible = scene.inventory.active = invVisible = false;
+				scene.toolbar.setPos(scene.toolbar.left(), uiCamera.height-scene.toolbar.height());
+			} else {
+				scene.inventory.visible = scene.inventory.active = invVisible = true;
+				scene.toolbar.setPos(scene.toolbar.left(), scene.inventory.top()-scene.toolbar.height());
+			}
+			layoutTags();
+		}
 	}
 
 	public static void updateFog(){

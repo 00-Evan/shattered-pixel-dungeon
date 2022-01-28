@@ -147,7 +147,11 @@ public class Toolbar extends Component {
 
 			@Override
 			protected void onClick() {
-				GameScene.show(new WndBag(Dungeon.hero.belongings.backpack));
+				if (SPDSettings.interfaceSize() == 2){
+					GameScene.toggleInvPane();
+				} else {
+					GameScene.show(new WndBag(Dungeon.hero.belongings.backpack));
+				}
 			}
 			
 			@Override
@@ -181,6 +185,32 @@ public class Toolbar extends Component {
 	@Override
 	protected void layout() {
 
+		float right = width;
+
+		if (SPDSettings.interfaceSize() > 0){
+			btnInventory.setPos(right - btnInventory.width(), y);
+			btnWait.setPos(btnInventory.left() - btnWait.width(), y);
+			btnSearch.setPos(btnWait.left() - btnSearch.width(), y);
+
+			right = btnSearch.left();
+			for(int i = 3; i >= 0; i--) {
+				if (i == 3){
+					btnQuick[i].border(0, 2);
+					btnQuick[i].frame(106, 0, 19, 24);
+				} else if (i == 0){
+					btnQuick[i].border(2, 1);
+					btnQuick[i].frame(86, 0, 20, 24);
+				} else {
+					btnQuick[i].border(0, 1);
+					btnQuick[i].frame(88, 0, 18, 24);
+				}
+				btnQuick[i].setPos(right-btnQuick[i].width(), y+2);
+				right = btnQuick[i].left();
+			}
+
+			return;
+		}
+
 		for(int i = 0; i <= 3; i++) {
 			if (i == 0 && !SPDSettings.flipToolbar() ||
 				i == 3 && SPDSettings.flipToolbar()){
@@ -196,7 +226,6 @@ public class Toolbar extends Component {
 			}
 		}
 
-		float right = width;
 		switch(Mode.valueOf(SPDSettings.toolbarMode())){
 			case SPLIT:
 				btnWait.setPos(x, y);
