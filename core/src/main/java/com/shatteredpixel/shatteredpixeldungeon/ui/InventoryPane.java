@@ -112,7 +112,20 @@ public class InventoryPane extends Component {
 					if (lastBag != item && !lastBag.contains(item) && !item.isEquipped(Dungeon.hero)){
 						updateInventory();
 					} else {
-						Game.scene().addToFront(new WndUseItem( null, item ) );
+						Window w = new WndUseItem( null, item );
+						int xOfs, yOfs;
+						if (w.height > InventoryPane.this.height - 15){
+							yOfs = (camera.height - w.height)/2 - 9;
+						} else {
+							yOfs = (int)(InventoryPane.this.y)/2;
+						}
+						if (w.width > InventoryPane.this.width - 15){
+							xOfs = (camera.width - w.width)/2 - 9;
+						} else {
+							xOfs = (int)(InventoryPane.this.x)/2;
+						}
+						w.offset(xOfs, yOfs);
+						Game.scene().addToFront(w);
 					}
 				}
 			};
@@ -140,7 +153,20 @@ public class InventoryPane extends Component {
 					if (lastBag != item && !lastBag.contains(item) && !item.isEquipped(Dungeon.hero)){
 						updateInventory();
 					} else {
-						Game.scene().addToFront(new WndUseItem( null, item ) );
+						Window w = new WndUseItem( null, item );
+						int xOfs, yOfs;
+						if (w.height > InventoryPane.this.height - 15){
+							yOfs = (camera.height - w.height)/2 - 9;
+						} else {
+							yOfs = (int)(InventoryPane.this.y)/2;
+						}
+						if (w.width > InventoryPane.this.width - 15){
+							xOfs = (camera.width - w.width)/2 - 9;
+						} else {
+							xOfs = (int)(InventoryPane.this.x)/2;
+						}
+						w.offset(xOfs, yOfs);
+						Game.scene().addToFront(w);
 					}
 				}
 			};

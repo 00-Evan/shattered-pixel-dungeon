@@ -909,7 +909,7 @@ public class WndSettings extends WndTabbed {
 							index += 2;
 						}
 
-						Window credits = new Window(0, 0, 0, Chrome.get(Chrome.Type.TOAST));
+						Window credits = new Window(0, 0, Chrome.get(Chrome.Type.TOAST));
 
 						int w = PixelScene.landscape() ? 120 : 80;
 						if (totalCredits >= 25) w *= 1.5f;

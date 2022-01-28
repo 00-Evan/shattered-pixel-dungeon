@@ -56,7 +56,7 @@ public class WndQuickBag extends Window {
 	private static Item bag;
 
 	public WndQuickBag(Bag bag){
-		super(0, 0, 0, Chrome.get(Chrome.Type.TOAST_TR));
+		super(0, 0, Chrome.get(Chrome.Type.TOAST_TR));
 
 		if( WndBag.INSTANCE != null ){
 			WndBag.INSTANCE.hide();
@@ -156,7 +156,7 @@ public class WndQuickBag extends Window {
 		int bottom = GameScene.uiCamera.height;
 
 		//offset to be above the toolbar
-		offset((int) (bottom/2 - 30 - height/2));
+		offset(0, (int) (bottom/2 - 30 - height/2));
 
 	}
 

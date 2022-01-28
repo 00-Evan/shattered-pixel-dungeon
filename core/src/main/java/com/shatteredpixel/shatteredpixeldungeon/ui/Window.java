@@ -40,6 +40,7 @@ public class Window extends Group implements Signal.Listener<KeyEvent> {
 	protected int width;
 	protected int height;
 
+	protected int xOffset;
 	protected int yOffset;
 	
 	protected PointerArea blocker;
@@ -51,21 +52,15 @@ public class Window extends Group implements Signal.Listener<KeyEvent> {
 	public static final int SHPX_COLOR = 0x33BB33;
 	
 	public Window() {
-		this( 0, 0, 0, Chrome.get( Chrome.Type.WINDOW ) );
+		this( 0, 0, Chrome.get( Chrome.Type.WINDOW ) );
 	}
 	
 	public Window( int width, int height ) {
-		this( width, height, 0, Chrome.get( Chrome.Type.WINDOW ) );
+		this( width, height, Chrome.get( Chrome.Type.WINDOW ) );
 	}
 
 	public Window( int width, int height, NinePatch chrome ) {
-		this(width, height, 0, chrome);
-	}
-			
-	public Window( int width, int height, int yOffset, NinePatch chrome ) {
 		super();
-
-		this.yOffset = yOffset;
 		
 		blocker = new PointerArea( 0, 0, PixelScene.uiCamera.width, PixelScene.uiCamera.height ) {
 			@Override
@@ -126,14 +121,21 @@ public class Window extends Group implements Signal.Listener<KeyEvent> {
 			height + chrome.marginVer() );
 		
 		camera.resize( (int)chrome.width, (int)chrome.height );
+
 		camera.x = (int)(Game.width - camera.screenWidth()) / 2;
+		camera.x += xOffset * camera.zoom;
+
 		camera.y = (int)(Game.height - camera.screenHeight()) / 2;
 		camera.y += yOffset * camera.zoom;
 
 		shadow.boxRect( camera.x / camera.zoom, camera.y / camera.zoom, chrome.width(), chrome.height );
 	}
 
-	public void offset( int yOffset ){
+	public void offset( int xOffset, int yOffset ){
+		camera.x -= this.xOffset * camera.zoom;
+		this.xOffset = xOffset;
+		camera.x += xOffset * camera.zoom;
+
 		camera.y -= this.yOffset * camera.zoom;
 		this.yOffset = yOffset;
 		camera.y += yOffset * camera.zoom;

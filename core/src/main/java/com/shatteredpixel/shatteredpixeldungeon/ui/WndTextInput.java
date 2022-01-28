@@ -40,9 +40,9 @@ public class WndTextInput extends Window {
 		//need to offset to give space for the soft keyboard
 		if (!DeviceCompat.isDesktop()) {
 			if (PixelScene.landscape()) {
-				offset(-45);
+				offset(0, -45);
 			} else {
-				offset(multiLine ? -60 : -45);
+				offset(0, multiLine ? -60 : -45);
 			}
 		}
 
