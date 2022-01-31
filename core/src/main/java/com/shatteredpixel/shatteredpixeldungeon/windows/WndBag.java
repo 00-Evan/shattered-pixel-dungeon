@@ -308,6 +308,10 @@ public class WndBag extends WndTabbed {
 		};
 		slot.setRect( x, y, slotWidth, slotHeight );
 		add(slot);
+
+		if (item == null || (selector != null && !selector.itemSelectable(item))){
+			slot.enable(false);
+		}
 		
 		if (++col >= nCols) {
 			col = 0;
