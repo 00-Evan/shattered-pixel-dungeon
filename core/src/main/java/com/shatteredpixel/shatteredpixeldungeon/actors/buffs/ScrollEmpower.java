@@ -66,6 +66,16 @@ public class ScrollEmpower extends Buff {
 	}
 
 	@Override
+	public float iconFadePercent() {
+		return Math.max(0, (2f - left) / 2f);
+	}
+
+	@Override
+	public String iconTextDisplay() {
+		return Integer.toString(left);
+	}
+
+	@Override
 	public String toString() {
 		return Messages.get(this, "name");
 	}

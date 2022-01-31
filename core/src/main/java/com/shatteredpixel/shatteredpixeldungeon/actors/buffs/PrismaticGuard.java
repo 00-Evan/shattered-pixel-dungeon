@@ -121,6 +121,11 @@ public class PrismaticGuard extends Buff {
 	}
 
 	@Override
+	public String iconTextDisplay() {
+		return Integer.toString((int)HP);
+	}
+
+	@Override
 	public String toString() {
 		return Messages.get(this, "name");
 	}

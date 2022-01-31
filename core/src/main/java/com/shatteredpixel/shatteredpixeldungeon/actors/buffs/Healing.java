@@ -109,6 +109,11 @@ public class Healing extends Buff {
 	public int icon() {
 		return BuffIndicator.HEALING;
 	}
+
+	@Override
+	public String iconTextDisplay() {
+		return Integer.toString(healingLeft);
+	}
 	
 	@Override
 	public String toString() {

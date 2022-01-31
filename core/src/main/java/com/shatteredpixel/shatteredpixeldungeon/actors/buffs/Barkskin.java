@@ -83,6 +83,11 @@ public class Barkskin extends Buff {
 	}
 
 	@Override
+	public String iconTextDisplay() {
+		return Integer.toString(level);
+	}
+
+	@Override
 	public String toString() {
 		return Messages.get(this, "name");
 	}

@@ -136,6 +136,17 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 	}
 
 	@Override
+	public String iconTextDisplay() {
+		if (freerunTurns > 0){
+			return Integer.toString(freerunTurns);
+		} else if (freerunCooldown > 0){
+			return Integer.toString(freerunCooldown);
+		} else {
+			return Integer.toString(momentumStacks);
+		}
+	}
+
+	@Override
 	public String toString() {
 		if (freerunTurns > 0){
 			return Messages.get(this, "running");

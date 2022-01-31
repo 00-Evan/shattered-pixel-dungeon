@@ -69,6 +69,11 @@ public class WellFed extends Buff {
 	public float iconFadePercent() {
 		return Math.max(0, (Hunger.STARVING - left) / Hunger.STARVING);
 	}
+
+	@Override
+	public String iconTextDisplay() {
+		return Integer.toString(left);
+	}
 	
 	@Override
 	public String toString() {

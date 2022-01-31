@@ -44,6 +44,11 @@ public class Drowsy extends Buff {
 		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 	}
 
+	@Override
+	public String iconTextDisplay() {
+		return Integer.toString((int)visualcooldown());
+	}
+
 	public boolean attachTo(Char target ) {
 		if (!target.isImmune(Sleep.class) && super.attachTo(target)) {
 			if (cooldown() == 0) {

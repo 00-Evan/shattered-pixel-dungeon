@@ -111,6 +111,11 @@ public class ElixirOfAquaticRejuvenation extends Elixir {
 			float max = Math.round(target.HT * 1.5f);
 			return Math.max(0, (max - left) / max);
 		}
+
+		@Override
+		public String iconTextDisplay() {
+			return Integer.toString(left);
+		}
 		
 		@Override
 		public String toString() {

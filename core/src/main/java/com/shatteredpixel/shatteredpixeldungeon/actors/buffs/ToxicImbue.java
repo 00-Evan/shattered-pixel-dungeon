@@ -82,6 +82,11 @@ public class ToxicImbue extends Buff {
 	}
 
 	@Override
+	public String iconTextDisplay() {
+		return Integer.toString((int)left);
+	}
+
+	@Override
 	public String toString() {
 		return Messages.get(this, "name");
 	}

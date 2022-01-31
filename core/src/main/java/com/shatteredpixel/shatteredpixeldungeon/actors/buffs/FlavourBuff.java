@@ -34,4 +34,9 @@ public class FlavourBuff extends Buff {
 	protected String dispTurns() {
 		return dispTurns(visualcooldown());
 	}
+
+	@Override
+	public String iconTextDisplay() {
+		return Integer.toString((int)visualcooldown());
+	}
 }

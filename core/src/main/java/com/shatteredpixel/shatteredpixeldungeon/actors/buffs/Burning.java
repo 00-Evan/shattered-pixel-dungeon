@@ -183,6 +183,11 @@ public class Burning extends Buff implements Hero.Doom {
 	}
 
 	@Override
+	public String iconTextDisplay() {
+		return Integer.toString((int)left);
+	}
+
+	@Override
 	public void fx(boolean on) {
 		if (on) target.sprite.add(CharSprite.State.BURNING);
 		else target.sprite.remove(CharSprite.State.BURNING);

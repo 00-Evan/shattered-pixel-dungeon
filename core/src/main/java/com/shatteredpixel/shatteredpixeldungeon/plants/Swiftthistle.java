@@ -89,6 +89,11 @@ public class Swiftthistle extends Plant {
 		public float iconFadePercent() {
 			return Math.max(0, (6f - left) / 6f);
 		}
+
+		@Override
+		public String iconTextDisplay() {
+			return Integer.toString((int)left);
+		}
 		
 		public void reset(){
 			left = 7f;

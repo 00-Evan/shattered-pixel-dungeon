@@ -103,6 +103,11 @@ public class Buff extends Actor {
 		return 0;
 	}
 
+	//text to display on large buff icons in the desktop UI
+	public String iconTextDisplay(){
+		return "";
+	}
+
 	//visual effect usually attached to the sprite of the character the buff is attacked to
 	public void fx(boolean on) {
 		//do nothing by default

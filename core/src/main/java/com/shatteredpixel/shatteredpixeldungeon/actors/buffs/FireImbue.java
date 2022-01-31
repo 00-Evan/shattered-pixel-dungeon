@@ -91,7 +91,12 @@ public class FireImbue extends Buff {
 
 	@Override
 	public float iconFadePercent() {
-		return Math.max(0, (DURATION - left+1) / DURATION);
+		return Math.max(0, (DURATION - left) / DURATION);
+	}
+
+	@Override
+	public String iconTextDisplay() {
+		return Integer.toString((int)left);
 	}
 
 	@Override

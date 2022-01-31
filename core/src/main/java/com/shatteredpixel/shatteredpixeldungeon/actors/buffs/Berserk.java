@@ -35,6 +35,8 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 
+import java.text.DecimalFormat;
+
 public class Berserk extends Buff {
 
 	private enum State{
@@ -189,6 +191,15 @@ public class Berserk extends Buff {
 				return 0f;
 			case RECOVERING:
 				return 1f - levelRecovery/LEVEL_RECOVER_START;
+		}
+	}
+
+	public String iconTextDisplay(){
+		switch (state){
+			case NORMAL: case BERSERK: default:
+				return (int)(power*100) + "%";
+			case RECOVERING:
+				return new DecimalFormat("#.#").format(levelRecovery);
 		}
 	}
 

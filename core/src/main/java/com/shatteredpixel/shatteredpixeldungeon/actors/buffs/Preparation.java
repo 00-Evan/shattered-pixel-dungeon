@@ -196,6 +196,11 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 	}
 
 	@Override
+	public String iconTextDisplay() {
+		return Integer.toString(turnsInvis);
+	}
+
+	@Override
 	public String toString() {
 		return Messages.get(this, "name");
 	}

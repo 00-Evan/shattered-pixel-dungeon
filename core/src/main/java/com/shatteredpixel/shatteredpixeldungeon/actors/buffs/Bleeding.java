@@ -67,6 +67,11 @@ public class Bleeding extends Buff {
 	public int icon() {
 		return BuffIndicator.BLEEDING;
 	}
+
+	@Override
+	public String iconTextDisplay() {
+		return Integer.toString(Math.round(level));
+	}
 	
 	@Override
 	public String toString() {

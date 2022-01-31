@@ -259,6 +259,11 @@ public class WandOfLivingEarth extends DamageWand {
 		}
 
 		@Override
+		public String iconTextDisplay() {
+			return Integer.toString(armor);
+		}
+
+		@Override
 		public String toString() {
 			return Messages.get(this, "name");
 		}

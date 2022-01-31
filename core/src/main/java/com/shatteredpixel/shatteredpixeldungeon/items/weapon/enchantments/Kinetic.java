@@ -74,6 +74,11 @@ public class Kinetic extends Weapon.Enchantment {
 				icon.hardlight(1f, 1f, 1f - preservedDamage*.2f);
 			}
 		}
+
+		@Override
+		public String iconTextDisplay() {
+			return Integer.toString(damageBonus());
+		}
 		
 		private float preservedDamage;
 		

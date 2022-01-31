@@ -125,7 +125,12 @@ public class ElixirOfMight extends Elixir {
 		public float iconFadePercent() {
 			return (5f - left) / 5f;
 		}
-		
+
+		@Override
+		public String iconTextDisplay() {
+			return Integer.toString(left);
+		}
+
 		@Override
 		public String toString() {
 			return Messages.get(this, "name");

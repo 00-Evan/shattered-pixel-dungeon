@@ -25,11 +25,14 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoBuff;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
+import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
@@ -204,8 +207,8 @@ public class BuffIndicator extends Component {
 
 		private boolean large;
 
-		//Todo maybe move into buff icon?
-		public Image grey;
+		public Image grey; //only for small
+		public BitmapText text; //only for large
 
 		//TODO for large buffs there is room to have text instead of fading
 		public BuffButton( Buff buff, boolean large ){
@@ -214,6 +217,7 @@ public class BuffIndicator extends Component {
 			this.large = large;
 
 			bringToFront(grey);
+			bringToFront(text);
 		}
 
 		@Override
@@ -221,17 +225,31 @@ public class BuffIndicator extends Component {
 			super.createChildren();
 			grey = new Image( TextureCache.createSolid(0xCC666666));
 			add( grey );
+
+			text = new BitmapText(PixelScene.pixelFont);
+			add( text );
 		}
 
 		public void updateIcon(){
 			((BuffIcon)icon).refresh(buff);
 			//round up to the nearest pixel if <50% faded, otherwise round down
-			float fadeHeight = buff.iconFadePercent() * icon.height();
-			float zoom = (camera() != null) ? camera().zoom : 1;
-			if (fadeHeight < icon.height()/2f){
-				grey.scale.set( icon.width(), (float)Math.ceil(zoom*fadeHeight)/zoom);
-			} else {
-				grey.scale.set( icon.width(), (float)Math.floor(zoom*fadeHeight)/zoom);
+			if (!large) {
+				text.visible = false;
+				float fadeHeight = buff.iconFadePercent() * icon.height();
+				float zoom = (camera() != null) ? camera().zoom : 1;
+				if (fadeHeight < icon.height() / 2f) {
+					grey.scale.set(icon.width(), (float) Math.ceil(zoom * fadeHeight) / zoom);
+				} else {
+					grey.scale.set(icon.width(), (float) Math.floor(zoom * fadeHeight) / zoom);
+				}
+			} else if (!buff.iconTextDisplay().isEmpty()) {
+				grey.visible = false;
+				if (buff.type == Buff.buffType.POSITIVE)        text.hardlight(CharSprite.POSITIVE);
+				else if (buff.type == Buff.buffType.NEGATIVE)   text.hardlight(CharSprite.NEGATIVE);
+				text.alpha(0.6f);
+
+				text.text(buff.iconTextDisplay());
+				text.measure();
 			}
 		}
 
@@ -240,6 +258,14 @@ public class BuffIndicator extends Component {
 			super.layout();
 			grey.x = icon.x = this.x + (large ? 0 : 1);
 			grey.y = icon.y = this.y + (large ? 0 : 2);
+
+			if (text.width > width()){
+				text.scale.set(PixelScene.align(0.5f));
+			} else {
+				text.scale.set(1f);
+			}
+			text.x = this.x + width() - text.width() - 1;
+			text.y = this.y + width() - text.baseLine() - 2;
 		}
 
 		@Override

@@ -61,6 +61,11 @@ public class Ooze extends Buff {
 	public float iconFadePercent() {
 		return Math.max(0, (DURATION - left) / DURATION);
 	}
+
+	@Override
+	public String iconTextDisplay() {
+		return Integer.toString((int)left);
+	}
 	
 	@Override
 	public String toString() {

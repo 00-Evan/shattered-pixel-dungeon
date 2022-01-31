@@ -81,6 +81,11 @@ public class Barrier extends ShieldBuff {
 	public void tintIcon(Image icon) {
 		icon.hardlight(0.5f, 1f, 2f);
 	}
+
+	@Override
+	public String iconTextDisplay() {
+		return Integer.toString(shielding());
+	}
 	
 	@Override
 	public String toString() {

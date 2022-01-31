@@ -103,6 +103,11 @@ public class Dread extends Buff {
 	}
 
 	@Override
+	public String iconTextDisplay() {
+		return Integer.toString(left);
+	}
+
+	@Override
 	public void tintIcon(Image icon) {
 		icon.hardlight(1, 0, 0);
 	}

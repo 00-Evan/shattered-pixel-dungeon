@@ -126,6 +126,11 @@ public class Earthroot extends Plant {
 		public float iconFadePercent() {
 			return Math.max(0, (target.HT - level) / (float) target.HT);
 		}
+
+		@Override
+		public String iconTextDisplay() {
+			return Integer.toString(level);
+		}
 		
 		@Override
 		public String toString() {

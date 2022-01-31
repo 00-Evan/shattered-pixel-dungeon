@@ -127,6 +127,11 @@ public class Viscosity extends Glyph {
 		public int icon() {
 			return BuffIndicator.DEFERRED;
 		}
+
+		@Override
+		public String iconTextDisplay() {
+			return Integer.toString(damage);
+		}
 		
 		@Override
 		public String toString() {
