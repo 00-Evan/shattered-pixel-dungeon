@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
@@ -137,7 +138,7 @@ public class WndWandmaker extends Window {
 				@Override
 				protected void onClick() {
 					if (Dungeon.hero.belongings.contains(questItem)) {
-						ShatteredPixelDungeon.scene().addToFront(new RewardWindow(item));
+						GameScene.show(new RewardWindow(item));
 					} else {
 						hide();
 					}

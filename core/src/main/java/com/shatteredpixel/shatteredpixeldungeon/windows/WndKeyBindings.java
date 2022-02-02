@@ -157,6 +157,12 @@ public class WndKeyBindings extends Window {
 	}
 
 	@Override
+	public void offset(int xOffset, int yOffset) {
+		super.offset(xOffset, yOffset);
+		bindingsList.setPos(bindingsList.left(), bindingsList.top()); //calls layout
+	}
+
+	@Override
 	public void onBackPressed() {
 		//do nothing, avoids accidental back presses which would lose progress.
 	}

@@ -117,12 +117,13 @@ public class TalentButton extends Button {
 	protected void onClick() {
 		super.onClick();
 
+		Window toAdd;
 		if (mode == Mode.UPGRADE
 				&& Dungeon.hero != null
 				&& Dungeon.hero.isAlive()
 				&& Dungeon.hero.talentPointsAvailable(tier) > 0
 				&& Dungeon.hero.pointsInTalent(talent) < talent.maxPoints()){
-			ShatteredPixelDungeon.scene().addToFront(new WndInfoTalent(talent, pointsInTalent, new WndInfoTalent.TalentButtonCallback() {
+			toAdd = new WndInfoTalent(talent, pointsInTalent, new WndInfoTalent.TalentButtonCallback() {
 
 				@Override
 				public String prompt() {
@@ -133,9 +134,9 @@ public class TalentButton extends Button {
 				public void call() {
 					upgradeTalent();
 				}
-			}));
+			});
 		} else if (mode == Mode.METAMORPH_CHOOSE && Dungeon.hero != null && Dungeon.hero.isAlive()) {
-			ShatteredPixelDungeon.scene().addToFront(new WndInfoTalent(talent, pointsInTalent, new WndInfoTalent.TalentButtonCallback() {
+			toAdd = new WndInfoTalent(talent, pointsInTalent, new WndInfoTalent.TalentButtonCallback() {
 
 				@Override
 				public String prompt() {
@@ -149,9 +150,9 @@ public class TalentButton extends Button {
 					}
 					GameScene.show(new ScrollOfMetamorphosis.WndMetamorphReplace(talent, tier));
 				}
-			}));
+			});
 		} else if (mode == Mode.METAMORPH_REPLACE && Dungeon.hero != null && Dungeon.hero.isAlive()) {
-			ShatteredPixelDungeon.scene().addToFront(new WndInfoTalent(talent, pointsInTalent, new WndInfoTalent.TalentButtonCallback() {
+			toAdd = new WndInfoTalent(talent, pointsInTalent, new WndInfoTalent.TalentButtonCallback() {
 
 				@Override
 				public String prompt() {
@@ -204,9 +205,15 @@ public class TalentButton extends Button {
 					}
 
 				}
-			}));
+			});
 		} else {
-			ShatteredPixelDungeon.scene().addToFront(new WndInfoTalent(talent, pointsInTalent, null));
+			toAdd = new WndInfoTalent(talent, pointsInTalent, null);
+		}
+
+		if (ShatteredPixelDungeon.scene() instanceof GameScene){
+			GameScene.show(toAdd);
+		} else {
+			ShatteredPixelDungeon.scene().addToFront(toAdd);
 		}
 	}
 

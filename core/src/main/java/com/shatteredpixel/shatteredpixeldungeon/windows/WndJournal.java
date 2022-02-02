@@ -134,7 +134,16 @@ public class WndJournal extends WndTabbed {
 		
 		select(last_index);
 	}
-	
+
+	@Override
+	public void offset(int xOffset, int yOffset) {
+		super.offset(xOffset, yOffset);
+		guideTab.layout();
+		alchemyTab.layout();
+		catalogTab.layout();
+		notesTab.layout();
+	}
+
 	private static class ListItem extends Component {
 		
 		protected RenderedTextBlock label;

@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.FetidRatSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollTricksterSprite;
@@ -143,7 +144,7 @@ public class WndSadGhost extends Window {
 				}
 				@Override
 				protected void onClick() {
-					ShatteredPixelDungeon.scene().addToFront(new RewardWindow(item));
+					GameScene.show(new RewardWindow(item));
 				}
 			};
 			add(slot);

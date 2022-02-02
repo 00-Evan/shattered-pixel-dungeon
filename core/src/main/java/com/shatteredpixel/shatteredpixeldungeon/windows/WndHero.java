@@ -112,6 +112,13 @@ public class WndHero extends WndTabbed {
 		select( lastIdx );
 	}
 
+	@Override
+	public void offset(int xOffset, int yOffset) {
+		super.offset(xOffset, yOffset);
+		talents.layout();
+		buffs.layout();
+	}
+
 	private class StatsTab extends Group {
 		
 		private static final int GAP = 6;
@@ -136,7 +143,11 @@ public class WndHero extends WndTabbed {
 				@Override
 				protected void onClick() {
 					super.onClick();
-					ShatteredPixelDungeon.scene().addToFront(new WndHeroInfo(hero.heroClass));
+					if (ShatteredPixelDungeon.scene() instanceof GameScene){
+						GameScene.show(new WndHeroInfo(hero.heroClass));
+					} else {
+						ShatteredPixelDungeon.scene().addToFront(new WndHeroInfo(hero.heroClass));
+					}
 				}
 			};
 			infoButton.setRect(title.right(), 0, 16, 16);
