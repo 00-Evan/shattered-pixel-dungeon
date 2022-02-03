@@ -146,7 +146,7 @@ public class MenuPane extends Component {
 		protected void createChildren() {
 			super.createChildren();
 
-			bg = new Image( Assets.Interfaces.MENU, 2, 2, 13, 11 );
+			bg = new Image( Assets.Interfaces.MENU_BTN, 2, 2, 13, 11 );
 			add( bg );
 
 			journalIcon = new Image( Assets.Interfaces.MENU_BTN, 31, 0, 11, 7);
