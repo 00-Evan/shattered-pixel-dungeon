@@ -104,6 +104,7 @@ public class Shopkeeper extends NPC {
 	}
 	
 	public static WndBag sell() {
+		//FIXME currently doesn't allow for repeated sales on new inventory pane
 		return GameScene.selectItem( itemSelector );
 	}
 

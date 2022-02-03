@@ -89,6 +89,7 @@ public class Alchemize extends Spell {
 		@Override
 		public void onSelect( Item item ) {
 			if (item != null) {
+				//FIXME currently doesn't allow for repeated alchemizes on new inventory pane
 				WndBag parentWnd = GameScene.selectItem( itemSelector );
 				GameScene.show( new WndAlchemizeItem( item, parentWnd ) );
 			}
@@ -214,8 +215,10 @@ public class Alchemize extends Spell {
 			Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 			if (curItem.quantity() <= 1){
 				curItem.detachAll(Dungeon.hero.belongings.backpack);
-				owner.hide();
-				owner = null;
+				if (owner != null) {
+					owner.hide();
+					owner = null;
+				}
 			} else {
 				curItem.detach(Dungeon.hero.belongings.backpack);
 			}

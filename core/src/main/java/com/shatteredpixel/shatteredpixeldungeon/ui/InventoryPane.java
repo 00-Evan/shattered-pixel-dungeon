@@ -30,11 +30,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
 import com.watabou.gltextures.TextureCache;
+import com.watabou.input.PointerEvent;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
@@ -42,6 +44,7 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.Point;
 
 import java.util.ArrayList;
 
@@ -49,6 +52,9 @@ public class InventoryPane extends Component {
 
 	private NinePatch bg;
 	private NinePatch bg2; //2 backgrounds to reduce transparency
+
+	//used to prevent clicks through the BG normally, or to cancel selectors if they're enabled
+	private PointerArea blocker;
 
 	private static InventoryPane instance;
 
@@ -59,6 +65,7 @@ public class InventoryPane extends Component {
 	private BitmapText goldTxt;
 	private Image energy;
 	private BitmapText energyTxt;
+	private RenderedTextBlock promptTxt;
 
 	private ArrayList<BagButton> bags;
 
@@ -67,6 +74,8 @@ public class InventoryPane extends Component {
 
 	private static final int SLOT_WIDTH = 17;
 	private static final int SLOT_HEIGHT = 24;
+
+	private WndBag.ItemSelector selector;
 
 	public static Bag lastBag;
 
@@ -92,22 +101,34 @@ public class InventoryPane extends Component {
 		bg2 = Chrome.get(Chrome.Type.TOAST_TR);
 		add(bg2);
 
-		//blocks touches from going through BG into game scene
-		add (new PointerArea(bg));
+		blocker = new PointerArea(0, 0, PixelScene.uiCamera.width, PixelScene.uiCamera.height){
+			@Override
+			protected void onClick(PointerEvent event) {
+				if (selector != null){
+					selector = null;
+					updateInventory();
+				}
+			}
+		};
+		blocker.target = bg; //targets bg when there is no selector, otherwise targets itself
+		add (blocker);
 
 		equipped = new ArrayList<>();
 		for (int i = 0; i < 5; i++){
 			InventorySlot btn = new InventorySlot(null){
 				@Override
 				protected void onClick() {
+					//any windows opened as a consequence of this button should be centered on the inventory
+					GameScene.lastOffset = new Point((int)InventoryPane.this.centerX() - camera.width/2,
+							(int)InventoryPane.this.centerY() - camera.height/2);
 					if (lastBag != item && !lastBag.contains(item) && !item.isEquipped(Dungeon.hero)){
 						updateInventory();
+					} else if (selector != null) {
+						selector.onSelect( item );
+						selector = null;
+						updateInventory();
 					} else {
-						Window w = new WndUseItem( null, item );
-						w.offset( (int)InventoryPane.this.centerX() - camera.width/2,
-								(int)InventoryPane.this.centerY() - camera.height/2 );
-						w.boundOffsetWithMargin(3);
-						Game.scene().addToFront(w);
+						GameScene.show(new WndUseItem( null, item ));
 					}
 				}
 			};
@@ -127,28 +148,26 @@ public class InventoryPane extends Component {
 		energyTxt.hardlight(0x44CCFF);
 		add(energyTxt);
 
+		promptTxt = PixelScene.renderTextBlock(6);
+		promptTxt.hardlight(Window.TITLE_COLOR);
+		add(promptTxt);
+
 		bagItems = new ArrayList<>();
 		for (int i = 0; i < 20; i++){
 			InventorySlot btn = new InventorySlot(null){
 				@Override
 				protected void onClick() {
+					//any windows opened as a consequence of this button should be centered on the inventory
+					GameScene.lastOffset = new Point((int)InventoryPane.this.centerX() - camera.width/2,
+							(int)InventoryPane.this.centerY() - camera.height/2);
 					if (lastBag != item && !lastBag.contains(item) && !item.isEquipped(Dungeon.hero)){
 						updateInventory();
+					} else if (selector != null) {
+						selector.onSelect( item );
+						selector = null;
+						updateInventory();
 					} else {
-						Window w = new WndUseItem( null, item );
-						int xOfs, yOfs;
-						if (w.height > InventoryPane.this.height - 15){
-							yOfs = (camera.height - w.height)/2 - 9;
-						} else {
-							yOfs = (int)(InventoryPane.this.y)/2;
-						}
-						if (w.width > InventoryPane.this.width - 15){
-							xOfs = (camera.width - w.width)/2 - 9;
-						} else {
-							xOfs = (int)(InventoryPane.this.x)/2;
-						}
-						w.offset(xOfs, yOfs);
-						Game.scene().addToFront(w);
+						GameScene.show(new WndUseItem( null, item ));
 					}
 				}
 			};
@@ -184,6 +203,13 @@ public class InventoryPane extends Component {
 		for (InventorySlot i : equipped){
 			i.setRect(left, y+4, SLOT_WIDTH, SLOT_HEIGHT);
 			left = i.right()+1;
+		}
+
+		promptTxt.maxWidth((int) (width - (left - x) - bg.marginRight()));
+		if (promptTxt.height() > 10){
+			promptTxt.setPos(left, y + 2 + (12 - promptTxt.height()) / 2);
+		} else {
+			promptTxt.setPos(left, y + 4 + (10 - promptTxt.height()) / 2);
 		}
 
 		goldTxt.x = left;
@@ -224,6 +250,12 @@ public class InventoryPane extends Component {
 	}
 
 	public void updateInventory(){
+		if (selector == null){
+			blocker.target = bg;
+		} else {
+			blocker.target = blocker;
+		}
+
 		Belongings stuff = Dungeon.hero.belongings;
 
 		if (lastBag == null || !stuff.contains(lastBag)){
@@ -256,12 +288,23 @@ public class InventoryPane extends Component {
 			}
 		}
 
-		goldTxt.text(Integer.toString(Dungeon.gold));
-		goldTxt.measure();
+		if (selector == null) {
+			promptTxt.visible = false;
 
-		energyTxt.text(Integer.toString(Dungeon.energy));
-		energyTxt.measure();
-		energyTxt.visible = energy.visible = Dungeon.energy > 0;
+			goldTxt.text(Integer.toString(Dungeon.gold));
+			goldTxt.measure();
+			goldTxt.visible = gold.visible = true;
+
+			energyTxt.text(Integer.toString(Dungeon.energy));
+			energyTxt.measure();
+			energyTxt.visible = energy.visible = Dungeon.energy > 0;
+		} else {
+			promptTxt.text(selector.textPrompt());
+			promptTxt.visible = true;
+
+			goldTxt.visible = gold.visible = false;
+			energyTxt.visible = energy.visible = false;
+		}
 
 		ArrayList<Bag> inventBags = stuff.getBags();
 		for (int i = 0; i < bags.size(); i++){
@@ -273,10 +316,14 @@ public class InventoryPane extends Component {
 		}
 
 		for (InventorySlot b : equipped){
-			b.enable(lastEnabled && !(b.item() instanceof WndBag.Placeholder));
+			b.enable(lastEnabled
+					&& !(b.item() instanceof WndBag.Placeholder)
+					&& (selector == null || selector.itemSelectable(b.item())));
 		}
 		for (InventorySlot b : bagItems){
-			b.enable(lastEnabled && b.item() != null);
+			b.enable(lastEnabled
+					&& b.item() != null
+					&& (selector == null || selector.itemSelectable(b.item())));
 		}
 		for (BagButton b : bags){
 			b.enable(lastEnabled);
@@ -288,6 +335,15 @@ public class InventoryPane extends Component {
 		energy.alpha( lastEnabled ? 1f : 0.3f );
 
 		layout();
+	}
+
+	public void setSelector(WndBag.ItemSelector selector){
+		this.selector = selector;
+		if (selector.preferredBag() != null) {
+			Bag preferred = Dungeon.hero.belongings.getItem(selector.preferredBag());
+			if (preferred != null) lastBag = preferred;
+		}
+		updateInventory();
 	}
 
 	@Override

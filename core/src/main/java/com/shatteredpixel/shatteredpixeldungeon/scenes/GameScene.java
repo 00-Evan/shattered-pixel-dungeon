@@ -369,22 +369,7 @@ public class GameScene extends PixelScene {
 		boss.camera = uiCamera;
 		boss.setPos( 6 + (uiCamera.width - boss.width())/2, 20);
 		add(boss);
-		
-		toolbar = new Toolbar();
-		toolbar.camera = uiCamera;
 
-		if (uiSize == 2) {
-			inventory = new InventoryPane();
-			inventory.camera = uiCamera;
-			inventory.setPos(uiCamera.width - inventory.width(), uiCamera.height - inventory.height());
-			add(inventory);
-
-			toolbar.setRect( 0, uiCamera.height - toolbar.height() - inventory.height(), uiCamera.width, toolbar.height() );
-		} else {
-			toolbar.setRect( 0, uiCamera.height - toolbar.height(), uiCamera.width, toolbar.height() );
-		}
-		add( toolbar );
-		
 		attack = new AttackIndicator();
 		attack.camera = uiCamera;
 		add( attack );
@@ -405,6 +390,21 @@ public class GameScene extends PixelScene {
 		log.camera = uiCamera;
 		log.newLine();
 		add( log );
+
+		toolbar = new Toolbar();
+		toolbar.camera = uiCamera;
+		add( toolbar );
+
+		if (uiSize == 2) {
+			inventory = new InventoryPane();
+			inventory.camera = uiCamera;
+			inventory.setPos(uiCamera.width - inventory.width(), uiCamera.height - inventory.height());
+			add(inventory);
+
+			toolbar.setRect( 0, uiCamera.height - toolbar.height() - inventory.height(), uiCamera.width, toolbar.height() );
+		} else {
+			toolbar.setRect( 0, uiCamera.height - toolbar.height(), uiCamera.width, toolbar.height() );
+		}
 
 		layoutTags();
 		
@@ -736,7 +736,7 @@ public class GameScene extends PixelScene {
 		toDestroy.clear();
 	}
 
-	private Point lastOffset = null;
+	public static Point lastOffset = null;
 
 	@Override
 	public synchronized Gizmo erase (Gizmo g) {
@@ -1196,11 +1196,18 @@ public class GameScene extends PixelScene {
 	public static WndBag selectItem( WndBag.ItemSelector listener ) {
 		cancelCellSelector();
 
-		WndBag wnd = WndBag.getBag( listener );
-
-		if (scene != null) scene.addToFront( wnd );
+		if (scene != null) {
+			if (scene.inventory != null && scene.inventory.visible){
+				scene.inventory.setSelector(listener);
+				return null;
+			} else {
+				WndBag wnd = WndBag.getBag( listener );
+				show(wnd);
+				return wnd;
+			}
+		}
 		
-		return wnd;
+		return null;
 	}
 	
 	public static boolean cancel() {
