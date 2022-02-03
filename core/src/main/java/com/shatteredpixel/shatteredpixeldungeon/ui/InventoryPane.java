@@ -124,8 +124,9 @@ public class InventoryPane extends Component {
 					if (lastBag != item && !lastBag.contains(item) && !item.isEquipped(Dungeon.hero)){
 						updateInventory();
 					} else if (selector != null) {
-						selector.onSelect( item );
+						WndBag.ItemSelector activating = selector;
 						selector = null;
+						activating.onSelect( item );
 						updateInventory();
 					} else {
 						GameScene.show(new WndUseItem( null, item ));
@@ -163,8 +164,9 @@ public class InventoryPane extends Component {
 					if (lastBag != item && !lastBag.contains(item) && !item.isEquipped(Dungeon.hero)){
 						updateInventory();
 					} else if (selector != null) {
-						selector.onSelect( item );
+						WndBag.ItemSelector activating = selector;
 						selector = null;
+						activating.onSelect( item );
 						updateInventory();
 					} else {
 						GameScene.show(new WndUseItem( null, item ));
@@ -354,10 +356,14 @@ public class InventoryPane extends Component {
 			lastEnabled = (Dungeon.hero.ready || !Dungeon.hero.isAlive());
 
 			for (InventorySlot b : equipped){
-				b.enable(lastEnabled && !(b.item() instanceof WndBag.Placeholder));
+				b.enable(lastEnabled
+						&& !(b.item() instanceof WndBag.Placeholder)
+						&& (selector == null || selector.itemSelectable(b.item())));
 			}
 			for (InventorySlot b : bagItems){
-				b.enable(lastEnabled && b.item() != null);
+				b.enable(lastEnabled
+						&& b.item() != null
+						&& (selector == null || selector.itemSelectable(b.item())));
 			}
 			for (BagButton b : bags){
 				b.enable(lastEnabled);

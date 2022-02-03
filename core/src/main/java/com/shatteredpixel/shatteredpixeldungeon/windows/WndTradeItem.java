@@ -166,8 +166,8 @@ public class WndTradeItem extends WndInfoItem {
 		
 		if (owner != null) {
 			owner.hide();
-			Shopkeeper.sell();
 		}
+		Shopkeeper.sell();
 	}
 	
 	public static void sell( Item item ) {
