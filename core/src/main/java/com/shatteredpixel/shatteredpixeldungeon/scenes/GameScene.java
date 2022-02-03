@@ -39,7 +39,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Snake;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CircleArc;
 import com.shatteredpixel.shatteredpixeldungeon.effects.EmoIcon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
@@ -121,6 +120,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.RectF;
 
@@ -667,6 +667,8 @@ public class GameScene extends PixelScene {
 	
 	@Override
 	public synchronized void update() {
+		lastOffset = null;
+
 		if (Dungeon.hero == null || scene == null) {
 			return;
 		}
@@ -732,6 +734,17 @@ public class GameScene extends PixelScene {
 			g.destroy();
 		}
 		toDestroy.clear();
+	}
+
+	private Point lastOffset = null;
+
+	@Override
+	public synchronized Gizmo erase (Gizmo g) {
+		Gizmo result = super.erase(g);
+		if (result instanceof Window){
+			lastOffset = ((Window) result).getOffset();
+		}
+		return result;
 	}
 
 	private boolean tagAttack    = false;
@@ -1050,6 +1063,23 @@ public class GameScene extends PixelScene {
 	public static void show( Window wnd ) {
 		if (scene != null) {
 			cancelCellSelector();
+
+			//If a window is already present (or was just present)
+			// then inherit the offset it had
+			if (scene.inventory != null && scene.inventory.visible){
+				Point offsetToInherit = null;
+				for (Gizmo g : scene.members){
+					if (g instanceof Window) offsetToInherit = ((Window) g).getOffset();
+				}
+				if (scene.lastOffset != null && offsetToInherit == null) {
+					offsetToInherit = scene.lastOffset;
+				}
+				if (offsetToInherit != null) {
+					wnd.offset(offsetToInherit);
+					wnd.boundOffsetWithMargin(3);
+				}
+			}
+
 			scene.addToFront(wnd);
 		}
 	}

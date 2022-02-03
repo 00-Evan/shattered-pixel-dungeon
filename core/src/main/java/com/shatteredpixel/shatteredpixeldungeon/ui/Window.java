@@ -33,6 +33,7 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.PointerArea;
+import com.watabou.utils.Point;
 import com.watabou.utils.Signal;
 
 public class Window extends Group implements Signal.Listener<KeyEvent> {
@@ -131,6 +132,14 @@ public class Window extends Group implements Signal.Listener<KeyEvent> {
 		shadow.boxRect( camera.x / camera.zoom, camera.y / camera.zoom, chrome.width(), chrome.height );
 	}
 
+	public Point getOffset(){
+		return new Point(xOffset, yOffset);
+	}
+
+	public final void offset( Point offset ){
+		offset(offset.x, offset.y);
+	}
+
 	//windows with scroll panes will likely need to override this and refresh them when offset changes
 	public void offset( int xOffset, int yOffset ){
 		camera.x -= this.xOffset * camera.zoom;
@@ -142,6 +151,30 @@ public class Window extends Group implements Signal.Listener<KeyEvent> {
 		camera.y += yOffset * camera.zoom;
 
 		shadow.boxRect( camera.x / camera.zoom, camera.y / camera.zoom, chrome.width(), chrome.height );
+	}
+
+	//ensures the window, with offset, does not go beyond a given margin
+	public void boundOffsetWithMargin( int margin ){
+		float x = camera.x / camera.zoom;
+		float y = camera.y / camera.zoom;
+
+		Camera sceneCam = PixelScene.uiCamera.visible ? PixelScene.uiCamera : Camera.main;
+
+		int newXOfs = xOffset;
+		if (x < margin){
+			newXOfs += margin - x;
+		} else if (x + camera.width > sceneCam.width - margin){
+			newXOfs += (sceneCam.width - margin) - (x + camera.width);
+		}
+
+		int newYOfs = yOffset;
+		if (y < margin){
+			newYOfs += margin - y;
+		} else if (y + camera.height > sceneCam.height - margin){
+			newYOfs += (sceneCam.height - margin) - (y + camera.height);
+		}
+
+		offset(newXOfs, newYOfs);
 	}
 	
 	public void hide() {
