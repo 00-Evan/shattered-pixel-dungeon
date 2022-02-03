@@ -137,14 +137,20 @@ public class DesktopLauncher {
 		} else if (SharedLibraryLoader.isMac) {
 			basePath = "Library/Application Support/Shattered Pixel Dungeon/";
 		} else if (SharedLibraryLoader.isLinux) {
-			basePath = ".shatteredpixel/shattered-pixel-dungeon/";
-		}
+			String XDGHome = System.getenv().get("XDG_DATA_HOME");
+			if (XDGHome == null) XDGHome = ".local/share/";
+			basePath = XDGHome + ".shatteredpixel/shattered-pixel-dungeon/";
 
-		//copy over prefs from old file location from legacy desktop codebase
-		FileHandle oldPrefs = new Lwjgl3FileHandle(basePath + "pd-prefs", Files.FileType.External);
-		FileHandle newPrefs = new Lwjgl3FileHandle(basePath + SPDSettings.DEFAULT_PREFS_FILE, Files.FileType.External);
-		if (oldPrefs.exists() && !newPrefs.exists()){
-			oldPrefs.copyTo(newPrefs);
+			//copy over files from old linux save DIR, pre-1.2.0
+			FileHandle oldBase = new Lwjgl3FileHandle(".shatteredpixel/", Files.FileType.External);
+			FileHandle newBase = new Lwjgl3FileHandle(XDGHome + ".shatteredpixel/", Files.FileType.External);
+			if (oldBase.exists()){
+				if (newBase.exists()){
+					oldBase.deleteDirectory();
+				} else {
+					oldBase.moveTo(newBase);
+				}
+			}
 		}
 
 		config.setPreferencesConfig( basePath, Files.FileType.External );
