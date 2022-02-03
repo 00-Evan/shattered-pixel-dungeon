@@ -23,7 +23,7 @@ task debug(type: JavaExec) {
 
 task release(type: Jar) {
     //FIXME this is now needed as of gradle 7.0, due to our weird sourceSets setup. Should see if there's a better way to do this
-    setDuplicatesStrategy(DuplicatesStrategy.INCLUDE)
+    setDuplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     from sourceSets.main.output
     dependsOn configurations.runtimeClasspath
     from { configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) } }
@@ -93,7 +93,11 @@ runtime {
             javaHome = file("./build/jdks/mac/jdk-16.0.1+9/Contents/Home/").getAbsolutePath()
             jpackage {
                 jpackageHome = file("./build/jdks/mac/jdk-16.0.1+9/Contents/Home/")
-                imageOptions = ["--icon", file("./src/main/assets/icons/mac.icns"), "--java-options", "-XstartOnFirstThread"]
+                imageOptions = ["--icon", file("./src/main/assets/icons/mac.icns"),
+                                "--java-options", "-XstartOnFirstThread",
+                                //append .apple because com.shatteredpixel.shatteredpixeldungeon was taken =(
+                                "--mac-package-identifier", appPackageName + ".apple",
+                                "--mac-package-name", "ShattererdPD"]
 
                 installerType = "dmg"
                 installerName = appName
