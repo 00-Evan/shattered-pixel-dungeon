@@ -1239,6 +1239,7 @@ public class GameScene extends PixelScene {
 	public static void ready() {
 		selectCell( defaultCellListener );
 		QuickSlotButton.cancel();
+		InventoryPane.cancelTargeting();
 		if (scene != null && scene.toolbar != null) scene.toolbar.examining = false;
 	}
 	

@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.ui.InventoryPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
@@ -54,6 +55,9 @@ public class WndUseItem extends WndInfoItem {
 							item.execute( Dungeon.hero, action );
 						}
 						Item.updateQuickslot();
+						if (action == item.defaultAction && item.usesTargeting && owner == null){
+							InventoryPane.useTargeting();
+						}
 					}
 				};
 				btn.setSize( btn.reqWidth(), BUTTON_HEIGHT );

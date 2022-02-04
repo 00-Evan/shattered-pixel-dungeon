@@ -23,6 +23,8 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
@@ -32,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
@@ -81,6 +84,13 @@ public class InventoryPane extends Component {
 
 	private boolean lastEnabled = true;
 
+	private static Image crossB;
+	private static Image crossM;
+
+	private static boolean targeting = false;
+	private static InventorySlot targetingSlot = null;
+	public static Char lastTarget = null;
+
 	public InventoryPane(){
 		super();
 		instance = this;
@@ -118,17 +128,37 @@ public class InventoryPane extends Component {
 			InventorySlot btn = new InventorySlot(null){
 				@Override
 				protected void onClick() {
+					if (lastBag != item && !lastBag.contains(item) && !item.isEquipped(Dungeon.hero)){
+						updateInventory();
+						return;
+					}
+
+					if (targeting){
+						if (targetingSlot == this){
+							int cell = QuickSlotButton.autoAim(lastTarget, item());
+
+							if (cell != -1){
+								GameScene.handleCell(cell);
+							} else {
+								//couldn't auto-aim, just target the position and hope for the best.
+								GameScene.handleCell( lastTarget.pos );
+							}
+							return;
+						} else {
+							cancelTargeting();
+						}
+					}
+
 					//any windows opened as a consequence of this button should be centered on the inventory
 					GameScene.lastOffset = new Point((int)InventoryPane.this.centerX() - camera.width/2,
 							(int)InventoryPane.this.centerY() - camera.height/2);
-					if (lastBag != item && !lastBag.contains(item) && !item.isEquipped(Dungeon.hero)){
-						updateInventory();
-					} else if (selector != null) {
+					if (selector != null) {
 						WndBag.ItemSelector activating = selector;
 						selector = null;
 						activating.onSelect( item );
 						updateInventory();
 					} else {
+						targetingSlot = this;
 						GameScene.show(new WndUseItem( null, item ));
 					}
 				}
@@ -158,17 +188,37 @@ public class InventoryPane extends Component {
 			InventorySlot btn = new InventorySlot(null){
 				@Override
 				protected void onClick() {
+					if (lastBag != item && !lastBag.contains(item) && !item.isEquipped(Dungeon.hero)){
+						updateInventory();
+						return;
+					}
+
+					if (targeting){
+						if (targetingSlot == this){
+							int cell = QuickSlotButton.autoAim(lastTarget, item());
+
+							if (cell != -1){
+								GameScene.handleCell(cell);
+							} else {
+								//couldn't auto-aim, just target the position and hope for the best.
+								GameScene.handleCell( lastTarget.pos );
+							}
+							return;
+						} else {
+							cancelTargeting();
+						}
+					}
+
 					//any windows opened as a consequence of this button should be centered on the inventory
 					GameScene.lastOffset = new Point((int)InventoryPane.this.centerX() - camera.width/2,
 							(int)InventoryPane.this.centerY() - camera.height/2);
-					if (lastBag != item && !lastBag.contains(item) && !item.isEquipped(Dungeon.hero)){
-						updateInventory();
-					} else if (selector != null) {
+					if (selector != null) {
 						WndBag.ItemSelector activating = selector;
 						selector = null;
 						activating.onSelect( item );
 						updateInventory();
 					} else {
+						targetingSlot = this;
 						GameScene.show(new WndUseItem( null, item ));
 					}
 				}
@@ -183,6 +233,13 @@ public class InventoryPane extends Component {
 			bags.add(btn);
 			add(btn);
 		}
+
+		crossB = Icons.TARGET.get();
+		crossB.visible = false;
+		add( crossB );
+
+		crossM = new Image();
+		crossM.copy( crossB );
 
 		lastEnabled = true;
 		updateInventory();
@@ -350,6 +407,40 @@ public class InventoryPane extends Component {
 
 	public boolean isSelecting(){
 		return selector != null;
+	}
+
+	public static void useTargeting(){
+		if (lastTarget != null &&
+				Actor.chars().contains( lastTarget ) &&
+				lastTarget.isAlive() &&
+				lastTarget.alignment != Char.Alignment.ALLY &&
+				Dungeon.level.heroFOV[lastTarget.pos]) {
+
+			targeting = true;
+			CharSprite sprite = lastTarget.sprite;
+
+			if (sprite.parent != null) {
+				sprite.parent.addToFront(crossM);
+				crossM.point(sprite.center(crossM));
+			}
+
+			crossB.point(targetingSlot.sprite.center(crossB));
+			crossB.visible = true;
+
+		} else {
+
+			lastTarget = null;
+			targeting = false;
+
+		}
+	}
+
+	public static void cancelTargeting(){
+		if (targeting){
+			crossB.visible = false;
+			crossM.remove();
+			targeting = false;
+		}
 	}
 
 	@Override
