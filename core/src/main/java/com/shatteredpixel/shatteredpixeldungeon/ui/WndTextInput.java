@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.TextInput;
@@ -32,6 +33,8 @@ public class WndTextInput extends Window {
 	private static final int W_LAND_MULTI = 200; //in the specific case of multiline in landscape
 	private static final int MARGIN = 2;
 	private static final int BUTTON_HEIGHT = 16;
+
+	private TextInput textBox;
 
 	public WndTextInput(final String title, final String initialValue, final int maxLength,
 	                           final boolean multiLine, final String posTxt, final String negTxt) {
@@ -60,7 +63,7 @@ public class WndTextInput extends Window {
 		add(txtTitle);
 
 		int textSize = (int)PixelScene.uiCamera.zoom * (multiLine ? 6 : 9);
-		final TextInput textBox = new TextInput(Chrome.get(Chrome.Type.TOAST_WHITE), multiLine, textSize){
+		textBox = new TextInput(Chrome.get(Chrome.Type.TOAST_WHITE), multiLine, textSize){
 			@Override
 			public void enterPressed() {
 				//triggers positive action on enter pressed, only with non-multiline though.
@@ -123,6 +126,12 @@ public class WndTextInput extends Window {
 
 		textBox.setRect(MARGIN, textBox.top(), width-2*MARGIN, inputHeight);
 
+	}
+
+	@Override
+	public void offset(int xOffset, int yOffset) {
+		super.offset(xOffset, yOffset);
+		textBox.setRect(textBox.left(), textBox.top(), textBox.width(), textBox.height());
 	}
 
 	public void onSelect(boolean positive, String text){ }
