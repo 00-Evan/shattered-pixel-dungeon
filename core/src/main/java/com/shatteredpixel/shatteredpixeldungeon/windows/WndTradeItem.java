@@ -42,10 +42,14 @@ public class WndTradeItem extends WndInfoItem {
 
 	private WndBag owner;
 
+	private boolean selling = false;
+
 	//selling
 	public WndTradeItem( final Item item, WndBag owner ) {
 
 		super(item);
+
+		selling = true;
 
 		this.owner = owner;
 
@@ -101,6 +105,8 @@ public class WndTradeItem extends WndInfoItem {
 	public WndTradeItem( final Heap heap ) {
 
 		super(heap);
+
+		selling = false;
 
 		Item item = heap.peek();
 
@@ -167,7 +173,7 @@ public class WndTradeItem extends WndInfoItem {
 		if (owner != null) {
 			owner.hide();
 		}
-		Shopkeeper.sell();
+		if (selling) Shopkeeper.sell();
 	}
 	
 	public static void sell( Item item ) {

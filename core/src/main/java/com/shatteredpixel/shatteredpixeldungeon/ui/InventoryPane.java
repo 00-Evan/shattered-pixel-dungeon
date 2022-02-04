@@ -348,6 +348,10 @@ public class InventoryPane extends Component {
 		updateInventory();
 	}
 
+	public boolean isSelecting(){
+		return selector != null;
+	}
+
 	@Override
 	public synchronized void update() {
 		super.update();

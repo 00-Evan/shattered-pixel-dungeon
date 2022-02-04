@@ -664,10 +664,18 @@ public class GameScene extends PixelScene {
 	//the actor thread processes at a maximum of 60 times a second
 	//this caps the speed of resting for higher refresh rate displays
 	private float notifyDelay = 1/60f;
+
+	public static boolean updateItemDisplays = false;
 	
 	@Override
 	public synchronized void update() {
 		lastOffset = null;
+
+		if (updateItemDisplays){
+			updateItemDisplays = false;
+			QuickSlotButton.refresh();
+			InventoryPane.refresh();
+		}
 
 		if (Dungeon.hero == null || scene == null) {
 			return;
@@ -1084,11 +1092,15 @@ public class GameScene extends PixelScene {
 		}
 	}
 
-	public static boolean isShowingWindow(){
+	public static boolean InterfaceBlockingHero(){
 		if (scene == null) return false;
 
 		for (Gizmo g : scene.members){
 			if (g instanceof Window) return true;
+		}
+
+		if (scene.inventory != null && scene.inventory.isSelecting()){
+			return true;
 		}
 
 		return false;

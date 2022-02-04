@@ -490,8 +490,7 @@ public class Item implements Bundlable {
 	}
 
 	public static void updateQuickslot() {
-		QuickSlotButton.refresh();
-		InventoryPane.refresh();
+		GameScene.updateItemDisplays = true;
 	}
 	
 	private static final String QUANTITY		= "quantity";
