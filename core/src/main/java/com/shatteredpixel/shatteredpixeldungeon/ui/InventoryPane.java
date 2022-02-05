@@ -114,7 +114,11 @@ public class InventoryPane extends Component {
 		blocker = new PointerArea(0, 0, PixelScene.uiCamera.width, PixelScene.uiCamera.height){
 			@Override
 			protected void onClick(PointerEvent event) {
-				if (selector != null){
+				if (selector != null && !bg.overlapsScreenPoint((int)event.current.x, (int)event.current.y)){
+					//any windows opened as a consequence of this should be centered on the inventory
+					GameScene.lastOffset = new Point((int)InventoryPane.this.centerX() - camera.width/2,
+							(int)InventoryPane.this.centerY() - camera.height/2);
+					selector.onSelect(null);
 					selector = null;
 					updateInventory();
 				}
