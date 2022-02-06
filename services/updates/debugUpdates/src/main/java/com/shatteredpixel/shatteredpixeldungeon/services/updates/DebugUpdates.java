@@ -72,7 +72,7 @@ public class DebugUpdates extends UpdateService {
 
 	@Override
 	public boolean supportsReviews() {
-		return true;
+		return false; //turn on to debug review prompts
 	}
 
 	@Override
