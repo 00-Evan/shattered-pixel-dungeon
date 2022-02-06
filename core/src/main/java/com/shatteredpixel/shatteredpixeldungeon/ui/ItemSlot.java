@@ -164,8 +164,7 @@ public class ItemSlot extends Button {
 	public void item( Item item ) {
 		if (this.item == item) {
 			if (item != null) {
-				sprite.frame(item.image());
-				sprite.glow(item.glowing());
+				sprite.view( item );
 			}
 			updateText();
 			return;
