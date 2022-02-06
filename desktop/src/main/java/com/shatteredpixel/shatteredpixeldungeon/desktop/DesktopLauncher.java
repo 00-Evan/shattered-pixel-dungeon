@@ -163,11 +163,12 @@ public class DesktopLauncher {
 
 		config.setMaximized(SPDSettings.windowMaximized());
 
-		if (SPDSettings.fullscreen()) {
+		//going fullscreen on launch is still buggy on macOS, so game enters it slightly later
+		if (SPDSettings.fullscreen() && !SharedLibraryLoader.isMac) {
 			config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
 		}
 		
-		//we set fullscreen/maximized in the listener as doing it through the config seems to be buggy
+		//records whether window is maximized or not for settings
 		DesktopWindowListener listener = new DesktopWindowListener();
 		config.setWindowListener( listener );
 		
