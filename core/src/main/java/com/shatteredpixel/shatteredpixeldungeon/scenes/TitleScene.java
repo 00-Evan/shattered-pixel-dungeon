@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.services.updates.AvailableUpdate
 import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
@@ -207,6 +208,12 @@ public class TitleScene extends PixelScene {
 		version.x = w - version.width() - 4;
 		version.y = h - version.height() - 2;
 		add( version );
+
+		if (DeviceCompat.isDesktop()) {
+			ExitButton btnExit = new ExitButton();
+			btnExit.setPos( w - btnExit.width(), 0 );
+			add( btnExit );
+		}
 
 		fadeIn();
 	}
