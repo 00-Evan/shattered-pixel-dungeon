@@ -145,6 +145,8 @@ public class Toolbar extends Component {
 		add(btnInventory = new Tool(0, 0, 24, 26) {
 			private CurrencyIndicator ind;
 
+			private Image arrow;
+
 			@Override
 			protected void onClick() {
 				if (SPDSettings.interfaceSize() == 2){
@@ -170,12 +172,22 @@ public class Toolbar extends Component {
 				super.createChildren();
 				ind = new CurrencyIndicator();
 				add(ind);
+
+				arrow = Icons.get(Icons.COMPASS);
+				arrow.originToCenter();
+				arrow.visible = SPDSettings.interfaceSize() == 2;
+				arrow.tint(0x3D2E18, 1f);
+				add(arrow);
 			}
 
 			@Override
 			protected void layout() {
 				super.layout();
 				ind.fill(this);
+
+				arrow.x = left() + (width - arrow.width())/2;
+				arrow.y = bottom()-arrow.height-1;
+				arrow.angle = bottom() == camera().height ? 0 : 180;
 			}
 		});
 
