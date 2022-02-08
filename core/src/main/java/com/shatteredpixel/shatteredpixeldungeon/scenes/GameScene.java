@@ -764,6 +764,15 @@ public class GameScene extends PixelScene {
 
 		if (scene == null) return;
 
+		//move the camera center up a bit if we're on full UI and it is taking up lots of space
+		if (scene.inventory != null && scene.inventory.visible
+				&& (uiCamera.width < 460 && uiCamera.height < 300)){
+			Camera.main.setCenterOffset(0, Math.min(300-uiCamera.height, 460-uiCamera.width) / Camera.main.zoom);
+		} else {
+			Camera.main.setCenterOffset(0, 0);
+		}
+		//Camera.main.panTo(Dungeon.hero.sprite.center(), 5f);
+
 		//primarily for phones displays with notches
 		//TODO Android never draws into notch atm, perhaps allow it for center notches?
 		RectF insets = DeviceCompat.getSafeInsets();
