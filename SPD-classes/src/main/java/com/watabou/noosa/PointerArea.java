@@ -30,6 +30,7 @@ public class PointerArea extends Visual implements Signal.Listener<PointerEvent>
 	public Visual target;
 	
 	protected PointerEvent curEvent = null;
+	protected boolean hovered = false;
 
 	public int blockLevel = BLOCK_WHEN_ACTIVE;
 	public static final int ALWAYS_BLOCK = 0;       //Always block input to overlapping elements
@@ -54,7 +55,7 @@ public class PointerArea extends Visual implements Signal.Listener<PointerEvent>
 	
 	@Override
 	public boolean onSignal( PointerEvent event ) {
-		
+
 		boolean hit = event != null && target.overlapsScreenPoint( (int)event.current.x, (int)event.current.y );
 		
 		if (!isActive()) {
@@ -63,16 +64,16 @@ public class PointerArea extends Visual implements Signal.Listener<PointerEvent>
 		
 		if (hit) {
 			
-			boolean returnValue = (event.down || event == curEvent);
+			boolean returnValue = (event.type == PointerEvent.Type.DOWN || event == curEvent);
 			
-			if (event.down) {
+			if (event.type == PointerEvent.Type.DOWN) {
 				
 				if (curEvent == null) {
 					curEvent = event;
 				}
 				onPointerDown( event );
 				
-			} else {
+			} else if (event.type == PointerEvent.Type.UP) {
 				
 				onPointerUp( event );
 				
@@ -81,6 +82,15 @@ public class PointerArea extends Visual implements Signal.Listener<PointerEvent>
 					onClick( event );
 				}
 				
+			} else if (event.type == PointerEvent.Type.HOVER) {
+				if (event.handled && hovered){
+					hovered = false;
+					onHoverEnd(event);
+				} else if (!event.handled && !hovered){
+					hovered = true;
+					onHoverStart(event);
+				}
+				event.handle();
 			}
 			
 			return returnValue && blockLevel != NEVER_BLOCK;
@@ -89,11 +99,14 @@ public class PointerArea extends Visual implements Signal.Listener<PointerEvent>
 			
 			if (event == null && curEvent != null) {
 				onDrag(curEvent);
-			}
-			
-			else if (curEvent != null && !event.down) {
+
+			} else if (curEvent != null && event.type == PointerEvent.Type.UP) {
 				onPointerUp( event );
 				curEvent = null;
+
+			} else if (event != null && event.type == PointerEvent.Type.HOVER && hovered){
+				hovered = false;
+				onHoverEnd(event);
 			}
 			
 			return false;
@@ -108,6 +121,10 @@ public class PointerArea extends Visual implements Signal.Listener<PointerEvent>
 	protected void onClick( PointerEvent event ) { }
 	
 	protected void onDrag( PointerEvent event ) { }
+
+	protected void onHoverStart( PointerEvent event ) { }
+
+	protected void onHoverEnd( PointerEvent event ) { }
 	
 	public void reset() {
 		curEvent = null;

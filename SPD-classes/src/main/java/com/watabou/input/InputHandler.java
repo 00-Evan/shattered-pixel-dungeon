@@ -27,7 +27,6 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.watabou.noosa.Game;
-import com.watabou.utils.PointF;
 
 public class InputHandler extends InputAdapter {
 
@@ -91,29 +90,25 @@ public class InputHandler extends InputAdapter {
 	@Override
 	public synchronized boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		Gdx.input.setOnscreenKeyboardVisible(false); //in-game events never need keyboard, so hide it
-		PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, pointer, true));
+		PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, pointer, PointerEvent.Type.DOWN));
 		return true;
 	}
 	
 	@Override
 	public synchronized boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, pointer, false));
+		PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, pointer, PointerEvent.Type.UP));
 		return true;
 	}
 	
 	@Override
 	public synchronized boolean touchDragged(int screenX, int screenY, int pointer) {
-		PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, pointer, true));
+		PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, pointer, PointerEvent.Type.DOWN));
 		return true;
 	}
 	
-	//TODO tracking this should probably be in PointerEvent
-	private static PointF pointerHoverPos = new PointF();
-	
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
-		pointerHoverPos.x = screenX;
-		pointerHoverPos.y = screenY;
+		PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, -1, PointerEvent.Type.HOVER));
 		return true;
 	}
 	
@@ -147,7 +142,7 @@ public class InputHandler extends InputAdapter {
 	
 	@Override
 	public boolean scrolled(float amountX, float amountY) {
-		ScrollEvent.addScrollEvent( new ScrollEvent(pointerHoverPos, amountY));
+		ScrollEvent.addScrollEvent( new ScrollEvent(PointerEvent.lastHoverPos, amountY));
 		return true;
 	}
 }

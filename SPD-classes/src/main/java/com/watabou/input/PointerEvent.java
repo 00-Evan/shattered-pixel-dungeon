@@ -28,16 +28,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PointerEvent {
-	
+
+	public enum Type {
+		DOWN,
+		UP,
+		HOVER
+	}
+
 	public PointF start;
 	public PointF current;
 	public int id;
-	public boolean down;
+	public Type type;
+	public boolean handled; //for hover events, to ensure hover always ends even with overlapping elements
 	
-	public PointerEvent( int x, int y, int id, boolean down){
+	public PointerEvent( int x, int y, int id, Type type){
 		start = current = new PointF(x, y);
 		this.id = id;
-		this.down = down;
+		this.type = type;
+		handled = false;
 	}
 	
 	public void update( PointerEvent other ){
@@ -49,7 +57,12 @@ public class PointerEvent {
 	}
 	
 	public PointerEvent up() {
-		down = false;
+		if (type == Type.DOWN) type = Type.UP;
+		return this;
+	}
+
+	public PointerEvent handle(){
+		handled = true;
 		return this;
 	}
 	
@@ -74,6 +87,7 @@ public class PointerEvent {
 	// Accumulated pointer events
 	private static ArrayList<PointerEvent> pointerEvents = new ArrayList<>();
 	private static HashMap<Integer, PointerEvent> activePointers = new HashMap<>();
+	static PointF lastHoverPos = new PointF();
 	
 	public static synchronized void addPointerEvent( PointerEvent event ){
 		pointerEvents.add( event );
@@ -81,19 +95,22 @@ public class PointerEvent {
 	
 	public static synchronized void processPointerEvents(){
 		for (PointerEvent p : pointerEvents){
+			if (p.type == Type.HOVER){
+				lastHoverPos.set(p.current);
+			}
 			if (activePointers.containsKey(p.id)){
 				PointerEvent existing = activePointers.get(p.id);
 				existing.current = p.current;
-				if (existing.down == p.down){
+				if (existing.type == p.type){
 					pointerSignal.dispatch( null );
-				} else if (p.down) {
+				} else if (p.type == Type.DOWN) {
 					pointerSignal.dispatch( existing );
 				} else {
 					activePointers.remove(existing.id);
 					pointerSignal.dispatch(existing.up());
 				}
 			} else {
-				if (p.down) {
+				if (p.type == Type.DOWN) {
 					activePointers.put(p.id, p);
 				}
 				pointerSignal.dispatch(p);

@@ -166,7 +166,7 @@ public class CellSelector extends ScrollArea {
 
 		if (event != curEvent && another == null) {
 					
-			if (!curEvent.down) {
+			if (curEvent.type == PointerEvent.Type.UP) {
 				curEvent = event;
 				onPointerDown( event );
 				return;
