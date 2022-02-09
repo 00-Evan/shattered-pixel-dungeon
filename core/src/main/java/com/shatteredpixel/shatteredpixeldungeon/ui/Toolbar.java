@@ -39,7 +39,6 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.PointerArea;
-import com.watabou.noosa.ui.Button;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
@@ -170,14 +169,14 @@ public class Toolbar extends Component {
 			@Override
 			protected void createChildren() {
 				super.createChildren();
-				ind = new CurrencyIndicator();
-				add(ind);
-
 				arrow = Icons.get(Icons.COMPASS);
 				arrow.originToCenter();
 				arrow.visible = SPDSettings.interfaceSize() == 2;
 				arrow.tint(0x3D2E18, 1f);
 				add(arrow);
+
+				ind = new CurrencyIndicator();
+				add(ind);
 			}
 
 			@Override
