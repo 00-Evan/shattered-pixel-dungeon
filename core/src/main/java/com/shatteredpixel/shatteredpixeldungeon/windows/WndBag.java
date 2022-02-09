@@ -380,7 +380,11 @@ public class WndBag extends WndTabbed {
 			
 			this.bag = bag;
 		}
-		
+
+		@Override
+		protected String hoverText() {
+			return Messages.titleCase(bag.name());
+		}
 	}
 	
 	public static class Placeholder extends Item {

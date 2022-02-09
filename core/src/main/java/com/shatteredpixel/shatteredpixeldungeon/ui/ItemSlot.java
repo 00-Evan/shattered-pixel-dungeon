@@ -33,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.ui.Button;
 
 public class ItemSlot extends Button {
 
@@ -273,5 +272,11 @@ public class ItemSlot extends Button {
 			remove(extra);
 		}
 
+	}
+
+	@Override
+	protected String hoverText() {
+		if (item != null) return Messages.titleCase(item.name());
+		else return super.hoverText();
 	}
 }

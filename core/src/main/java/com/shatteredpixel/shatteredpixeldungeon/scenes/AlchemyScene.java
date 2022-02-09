@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.LiquidMetal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -230,6 +231,11 @@ public class AlchemyScene extends PixelScene {
 					}
 				
 				});
+			}
+
+			@Override
+			protected String hoverText() {
+				return Messages.titleCase(Document.ALCHEMY_GUIDE.title());
 			}
 		};
 		btnGuide.setRect(0, 0, 20, 20);

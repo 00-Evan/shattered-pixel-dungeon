@@ -149,6 +149,12 @@ public class WndHero extends WndTabbed {
 						ShatteredPixelDungeon.scene().addToFront(new WndHeroInfo(hero.heroClass));
 					}
 				}
+
+				@Override
+				protected String hoverText() {
+					return Messages.titleCase(Messages.get(WndKeyBindings.class, "hero_info"));
+				}
+
 			};
 			infoButton.setRect(title.right(), 0, 16, 16);
 			add(infoButton);

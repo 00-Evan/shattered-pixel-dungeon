@@ -30,7 +30,7 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.noosa.ui.Button;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Button;
 import com.watabou.utils.RectF;
 
 import java.util.ArrayList;
@@ -153,6 +153,8 @@ public class WndTabbed extends Window {
 		protected void select( boolean value ) {
 			
 			active = !(selected = value);
+
+			if (!active) killTooltip();
 			
 			if (bg != null) {
 				remove( bg );

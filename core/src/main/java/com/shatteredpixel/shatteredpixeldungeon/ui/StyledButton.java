@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.noosa.ui.Button;
 
 //simple button which support a background chrome, text, and an icon.
 public class StyledButton extends Button {

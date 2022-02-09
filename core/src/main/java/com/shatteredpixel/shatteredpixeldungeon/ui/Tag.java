@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.NinePatch;
-import com.watabou.noosa.ui.Button;
 
 public class Tag extends Button {
 

@@ -23,7 +23,9 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndKeyBindings;
 import com.watabou.input.GameAction;
 import com.watabou.noosa.Image;
 
@@ -98,6 +100,12 @@ public class ActionIndicator extends Tag {
 	protected void onClick() {
 		if (action != null && Dungeon.hero.ready)
 			action.doAction();
+	}
+
+	@Override
+	protected String hoverText() {
+		//TODO each special action should probably have its own title
+		return Messages.titleCase(Messages.get(WndKeyBindings.class, "tag_action"));
 	}
 
 	public static void setAction(Action action){

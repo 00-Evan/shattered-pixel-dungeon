@@ -33,9 +33,9 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndKeyBindings;
 import com.watabou.input.GameAction;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.ui.Button;
 import com.watabou.utils.PathFinder;
 
 public class QuickSlotButton extends Button {
@@ -118,6 +118,15 @@ public class QuickSlotButton extends Button {
 			protected void onPointerUp() {
 				sprite.resetColor();
 			}
+
+			@Override
+			protected String hoverText() {
+				if (item == null){
+					return Messages.titleCase(Messages.get(WndKeyBindings.class, "quickslot_" + (slotNum+1)));
+				} else {
+					return super.hoverText();
+				}
+			}
 		};
 		slot.showExtraInfo( false );
 		add( slot );
@@ -162,6 +171,15 @@ public class QuickSlotButton extends Button {
 				return SPDAction.QUICKSLOT_4;
 			default:
 				return super.keyAction();
+		}
+	}
+
+	@Override
+	protected String hoverText() {
+		if (slot.item == null){
+			return Messages.titleCase(Messages.get(WndKeyBindings.class, "quickslot_" + (slotNum+1)));
+		} else {
+			return super.hoverText();
 		}
 	}
 	

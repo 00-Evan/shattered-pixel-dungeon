@@ -108,6 +108,10 @@ public class TalentsPane extends ScrollPane {
 		} else {
 			blockText = null;
 		}
+
+		for (TalentTierPane p : panes){
+			content.bringToFront(p);
+		}
 	}
 
 	@Override

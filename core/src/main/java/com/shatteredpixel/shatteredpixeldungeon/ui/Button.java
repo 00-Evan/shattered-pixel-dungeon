@@ -19,21 +19,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.watabou.noosa.ui;
+package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.watabou.input.GameAction;
 import com.watabou.input.KeyBindings;
 import com.watabou.input.KeyEvent;
 import com.watabou.input.PointerEvent;
+import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.PointerArea;
+import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Signal;
+
+import java.util.ArrayList;
 
 public class Button extends Component {
 
 	public static float longClick = 0.5f;
 	
 	protected PointerArea hotArea;
+	protected Tooltip hoverTip;
 	
 	protected boolean pressed;
 	protected float pressTime;
@@ -59,6 +64,28 @@ public class Button extends Component {
 				if (!processed) {
 					Button.this.onClick();
 				}
+			}
+
+			@Override
+			protected void onHoverStart(PointerEvent event) {
+				String text = hoverText();
+				if (text != null){
+					if (keyAction() != null){
+						ArrayList<Integer> bindings = KeyBindings.getBoundKeysForAction(keyAction());
+						if (!bindings.isEmpty()){
+							text += " _(" + KeyBindings.getKeyName(bindings.get(0)) + ")_";
+						}
+					}
+					hoverTip = new Tooltip(text, 80);
+					Button.this.parent.addToFront(hoverTip);
+					hoverTip.camera = camera();
+					alignTooltip(hoverTip);
+				}
+			}
+
+			@Override
+			protected void onHoverEnd(PointerEvent event) {
+				killTooltip();
 			}
 		};
 		add( hotArea );
@@ -107,6 +134,31 @@ public class Button extends Component {
 	protected void onClick() {}
 	protected boolean onLongClick() {
 		return false;
+	}
+
+	protected String hoverText() {
+		return null;
+	}
+
+	//TODO might be nice for more flexibility here
+	private void alignTooltip( Tooltip tip ){
+		tip.setPos(x, y-tip.height()-1);
+		Camera cam = camera();
+		//shift left if there's no room on the right
+		if (tip.right() > (cam.width+cam.scroll.x)){
+			tip.setPos(tip.left() - (tip.right() - (cam.width+cam.scroll.x)), tip.top());
+		}
+		//move to the bottom if there's no room on top
+		if (tip.top() < 0){
+			tip.setPos(tip.left(), bottom()+1);
+		}
+	}
+
+	public void killTooltip(){
+		if (hoverTip != null){
+			hoverTip.killAndErase();
+			hoverTip = null;
+		}
 	}
 	
 	@Override

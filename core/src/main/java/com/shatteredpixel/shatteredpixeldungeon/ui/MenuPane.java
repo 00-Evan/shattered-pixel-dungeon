@@ -26,17 +26,18 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndGame;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndKeyBindings;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
 import com.watabou.input.GameAction;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.noosa.ui.Button;
 import com.watabou.noosa.ui.Component;
 
 public class MenuPane extends Component {
@@ -235,6 +236,10 @@ public class MenuPane extends Component {
 			}
 		}
 
+		@Override
+		protected String hoverText() {
+			return Messages.titleCase(Messages.get(WndKeyBindings.class, "journal"));
+		}
 	}
 
 	private static class MenuButton extends Button {
@@ -278,6 +283,16 @@ public class MenuPane extends Component {
 		@Override
 		protected void onClick() {
 			GameScene.show( new WndGame() );
+		}
+
+		@Override
+		public GameAction keyAction() {
+			return GameAction.BACK;
+		}
+
+		@Override
+		protected String hoverText() {
+			return Messages.titleCase(Messages.get(WndKeyBindings.class, "menu"));
 		}
 	}
 }

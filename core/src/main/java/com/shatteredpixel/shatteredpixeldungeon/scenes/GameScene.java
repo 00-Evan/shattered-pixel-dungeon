@@ -391,6 +391,10 @@ public class GameScene extends PixelScene {
 		log.newLine();
 		add( log );
 
+		if (uiSize > 0){
+			bringToFront(status);
+		}
+
 		toolbar = new Toolbar();
 		toolbar.camera = uiCamera;
 		add( toolbar );

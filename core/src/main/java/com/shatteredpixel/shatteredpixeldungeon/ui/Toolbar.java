@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTerrainTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndKeyBindings;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuickBag;
 import com.watabou.input.GameAction;
 import com.watabou.noosa.Camera;
@@ -94,7 +95,12 @@ public class Toolbar extends Component {
 			public GameAction keyAction() {
 				return SPDAction.WAIT;
 			}
-			
+
+			@Override
+			protected String hoverText() {
+				return Messages.titleCase(Messages.get(WndKeyBindings.class, "wait"));
+			}
+
 			protected boolean onLongClick() {
 				if (!GameScene.cancel()) {
 					examining = false;
@@ -133,6 +139,11 @@ public class Toolbar extends Component {
 			public GameAction keyAction() {
 				return SPDAction.SEARCH;
 			}
+
+			@Override
+			protected String hoverText() {
+				return Messages.titleCase(Messages.get(WndKeyBindings.class, "search"));
+			}
 			
 			@Override
 			protected boolean onLongClick() {
@@ -158,6 +169,11 @@ public class Toolbar extends Component {
 			@Override
 			public GameAction keyAction() {
 				return SPDAction.INVENTORY;
+			}
+
+			@Override
+			protected String hoverText() {
+				return Messages.titleCase(Messages.get(WndKeyBindings.class, "inventory"));
 			}
 			
 			@Override
