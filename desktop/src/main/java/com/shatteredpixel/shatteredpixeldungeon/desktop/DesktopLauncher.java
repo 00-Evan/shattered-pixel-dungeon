@@ -101,7 +101,7 @@ public class DesktopLauncher {
 									exceptionMsg,
 							"ok", "error", false);
 				}
-				if (Gdx.app != null) Gdx.app.exit();
+				System.exit(1);
 			}
 		});
 		
