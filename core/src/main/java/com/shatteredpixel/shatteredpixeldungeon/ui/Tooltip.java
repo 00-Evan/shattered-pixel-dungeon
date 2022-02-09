@@ -31,9 +31,14 @@ import com.watabou.utils.GameMath;
 public class Tooltip extends Component {
 
 	//tooltips require .5 seconds to appear, fade in over .1 second
-	//they then persist until none are visible for .5 seconds or more
+	//they then persist until none are visible for .25 seconds or more
 	private static float tooltipAlpha = -5f;
 	private static float lastUsedTime = -1;
+
+	public static void resetLastUsedTime(){
+		lastUsedTime = -1;
+		tooltipAlpha = -5;
+	}
 
 	private NinePatch bg;
 	private RenderedTextBlock text;
@@ -43,13 +48,16 @@ public class Tooltip extends Component {
 		text.text(msg, maxWidth);
 		layout();
 
-		if (lastUsedTime != -1){
+		if (lastUsedTime == -1 || lastUsedTime > Game.timeTotal){
+			tooltipAlpha = -5f;
+
+		} else {
 			float elapsed = Game.timeTotal - lastUsedTime;
-			if (elapsed >= 0.5f || tooltipAlpha < 1f){
+			if (elapsed >= 0.25f || tooltipAlpha < 1f){
 				tooltipAlpha = -5f;
 			}
-			lastUsedTime = Game.timeTotal;
 		}
+		lastUsedTime = Game.timeTotal;
 		bg.alpha(GameMath.gate(0, tooltipAlpha, 1));
 		text.alpha(GameMath.gate(0, tooltipAlpha, 1));
 	}

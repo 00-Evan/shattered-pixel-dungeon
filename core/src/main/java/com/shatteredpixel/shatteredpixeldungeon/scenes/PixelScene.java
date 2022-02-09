@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Tooltip;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
@@ -147,7 +148,9 @@ public class PixelScene extends Scene {
 			renderedTextPageSize *= 2;
 		}
 		Game.platform.setupFontGenerators(renderedTextPageSize, SPDSettings.systemFont());
-		
+
+		Tooltip.resetLastUsedTime();
+
 	}
 	
 	//FIXME this system currently only works for a subset of windows
