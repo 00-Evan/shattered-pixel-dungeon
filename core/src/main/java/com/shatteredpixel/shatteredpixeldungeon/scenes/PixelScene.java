@@ -93,8 +93,6 @@ public class PixelScene extends Scene {
 		if (SPDSettings.interfaceSize() > 0){
 			minWidth = MIN_WIDTH_FULL;
 			minHeight = MIN_HEIGHT_FULL;
-			//TODO not perfect in all cases, especially for big monitors
-			// Perhaps look at max zoom and increase if default is less than half of max?
 			scaleFactor = 3.75f;
 		} else if (landscape()) {
 			minWidth = MIN_WIDTH_L;
@@ -112,6 +110,10 @@ public class PixelScene extends Scene {
 
 		if (defaultZoom < Math.ceil( Game.density * 2 ) || defaultZoom > maxDefaultZoom){
 			defaultZoom = (int)GameMath.gate(2, (int)Math.ceil( Game.density * scaleFactor ), maxDefaultZoom);
+
+			if (SPDSettings.interfaceSize() > 0 && defaultZoom < (maxDefaultZoom+1)/2){
+				defaultZoom = (maxDefaultZoom+1)/2;
+			}
 		}
 
 		minZoom = 1;
