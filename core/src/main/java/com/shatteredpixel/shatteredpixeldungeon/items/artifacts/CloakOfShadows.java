@@ -274,6 +274,11 @@ public class CloakOfShadows extends Artifact {
 		}
 
 		@Override
+		public String iconTextDisplay() {
+			return Integer.toString(turnsToCost);
+		}
+
+		@Override
 		public boolean attachTo( Char target ) {
 			if (super.attachTo( target )) {
 				target.invisible++;
