@@ -306,6 +306,7 @@ public class Belongings implements Iterable<Item> {
 				item.cursedKnown = true;
 			}
 		}
+		Item.updateQuickslot();
 	}
 	
 	public void uncurseEquipped() {
