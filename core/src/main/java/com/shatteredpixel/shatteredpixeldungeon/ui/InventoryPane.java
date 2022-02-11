@@ -49,6 +49,7 @@ import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Point;
+import com.watabou.utils.PointF;
 
 import java.util.ArrayList;
 
@@ -130,44 +131,7 @@ public class InventoryPane extends Component {
 
 		equipped = new ArrayList<>();
 		for (int i = 0; i < 5; i++){
-			InventorySlot btn = new InventorySlot(null){
-				@Override
-				protected void onClick() {
-					if (lastBag != item && !lastBag.contains(item) && !item.isEquipped(Dungeon.hero)){
-						updateInventory();
-						return;
-					}
-
-					if (targeting){
-						if (targetingSlot == this){
-							int cell = QuickSlotButton.autoAim(lastTarget, item());
-
-							if (cell != -1){
-								GameScene.handleCell(cell);
-							} else {
-								//couldn't auto-aim, just target the position and hope for the best.
-								GameScene.handleCell( lastTarget.pos );
-							}
-							return;
-						} else {
-							cancelTargeting();
-						}
-					}
-
-					//any windows opened as a consequence of this button should be centered on the inventory
-					GameScene.lastOffset = new Point((int)InventoryPane.this.centerX() - camera.width/2,
-							(int)InventoryPane.this.centerY() - camera.height/2);
-					if (selector != null) {
-						WndBag.ItemSelector activating = selector;
-						selector = null;
-						activating.onSelect( item );
-						updateInventory();
-					} else {
-						targetingSlot = this;
-						GameScene.show(new WndUseItem( null, item ));
-					}
-				}
-			};
+			InventorySlot btn = new InventoryPaneSlot(null);
 			equipped.add(btn);
 			add(btn);
 		}
@@ -190,44 +154,7 @@ public class InventoryPane extends Component {
 
 		bagItems = new ArrayList<>();
 		for (int i = 0; i < 20; i++){
-			InventorySlot btn = new InventorySlot(null){
-				@Override
-				protected void onClick() {
-					if (lastBag != item && !lastBag.contains(item) && !item.isEquipped(Dungeon.hero)){
-						updateInventory();
-						return;
-					}
-
-					if (targeting){
-						if (targetingSlot == this){
-							int cell = QuickSlotButton.autoAim(lastTarget, item());
-
-							if (cell != -1){
-								GameScene.handleCell(cell);
-							} else {
-								//couldn't auto-aim, just target the position and hope for the best.
-								GameScene.handleCell( lastTarget.pos );
-							}
-							return;
-						} else {
-							cancelTargeting();
-						}
-					}
-
-					//any windows opened as a consequence of this button should be centered on the inventory
-					GameScene.lastOffset = new Point((int)InventoryPane.this.centerX() - camera.width/2,
-							(int)InventoryPane.this.centerY() - camera.height/2);
-					if (selector != null) {
-						WndBag.ItemSelector activating = selector;
-						selector = null;
-						activating.onSelect( item );
-						updateInventory();
-					} else {
-						targetingSlot = this;
-						GameScene.show(new WndUseItem( null, item ));
-					}
-				}
-			};
+			InventorySlot btn = new InventoryPaneSlot(null);
 			bagItems.add(btn);
 			add(btn);
 		}
@@ -488,6 +415,103 @@ public class InventoryPane extends Component {
 			return Icons.get( Icons.POTION_BANDOLIER );
 		} else {
 			return Icons.get( Icons.BACKPACK );
+		}
+	}
+
+	private class InventoryPaneSlot extends InventorySlot {
+
+		private InventoryPaneSlot( Item item ){
+			super(item);
+		}
+
+		@Override
+		protected void onClick() {
+			if (lastBag != item && !lastBag.contains(item) && !item.isEquipped(Dungeon.hero)){
+				updateInventory();
+				return;
+			}
+
+			if (targeting){
+				if (targetingSlot == this){
+					int cell = QuickSlotButton.autoAim(lastTarget, item());
+
+					if (cell != -1){
+						GameScene.handleCell(cell);
+					} else {
+						//couldn't auto-aim, just target the position and hope for the best.
+						GameScene.handleCell( lastTarget.pos );
+					}
+					return;
+				} else {
+					cancelTargeting();
+				}
+			}
+
+			//any windows opened as a consequence of this button should be centered on the inventory
+			GameScene.lastOffset = new Point((int)InventoryPane.this.centerX() - camera.width/2,
+					(int)InventoryPane.this.centerY() - camera.height/2);
+			if (selector != null) {
+				WndBag.ItemSelector activating = selector;
+				selector = null;
+				activating.onSelect( item );
+				updateInventory();
+			} else {
+				targetingSlot = this;
+				GameScene.show(new WndUseItem( null, item ));
+			}
+		}
+
+		@Override
+		protected void onMiddleClick() {
+			if (lastBag != item && !lastBag.contains(item) && !item.isEquipped(Dungeon.hero)){
+				updateInventory();
+				return;
+			}
+
+			if (targeting){
+				if (targetingSlot == this){
+					onClick();
+				} else{
+					cancelTargeting();
+				}
+			}
+
+			if (selector == null && item.defaultAction != null){
+				item.execute(Dungeon.hero);
+				if (item.usesTargeting) {
+					targetingSlot = this;
+					InventoryPane.useTargeting();
+				}
+			} else {
+				super.onMiddleClick();
+			}
+		}
+
+		@Override
+		protected void onRightClick() {
+			if (lastBag != item && !lastBag.contains(item) && !item.isEquipped(Dungeon.hero)){
+				updateInventory();
+				return;
+			}
+
+			if (targeting){
+				if (targetingSlot == this){
+					onClick();
+				} else{
+					cancelTargeting();
+				}
+			}
+
+			if (selector == null){
+				RightClickMenu r = new RightClickMenu(item);
+				parent.addToFront(r);
+				r.camera = camera();
+				PointF mousePos = PointerEvent.currentHoverPos();
+				mousePos = camera.screenToCamera((int)mousePos.x, (int)mousePos.y);
+				r.setPos(mousePos.x-3, mousePos.y-3);
+			} else {
+				super.onRightClick();
+			}
 		}
 	}
 
