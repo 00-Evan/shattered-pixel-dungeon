@@ -90,13 +90,13 @@ public class InputHandler extends InputAdapter {
 	@Override
 	public synchronized boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		Gdx.input.setOnscreenKeyboardVisible(false); //in-game events never need keyboard, so hide it
-		PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, pointer, PointerEvent.Type.DOWN));
+		PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, pointer, PointerEvent.Type.DOWN, button));
 		return true;
 	}
 	
 	@Override
 	public synchronized boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, pointer, PointerEvent.Type.UP));
+		PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, pointer, PointerEvent.Type.UP, button));
 		return true;
 	}
 	
@@ -142,7 +142,7 @@ public class InputHandler extends InputAdapter {
 	
 	@Override
 	public boolean scrolled(float amountX, float amountY) {
-		ScrollEvent.addScrollEvent( new ScrollEvent(PointerEvent.lastHoverPos, amountY));
+		ScrollEvent.addScrollEvent( new ScrollEvent(PointerEvent.currentHoverPos(), amountY));
 		return true;
 	}
 }

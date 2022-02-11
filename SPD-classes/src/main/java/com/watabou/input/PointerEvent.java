@@ -21,6 +21,7 @@
 
 package com.watabou.input;
 
+import com.badlogic.gdx.Input;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Signal;
 
@@ -35,17 +36,29 @@ public class PointerEvent {
 		HOVER
 	}
 
+	//buttons
+	public static final int NONE = -1;
+	public static final int LEFT = Input.Buttons.LEFT;
+	public static final int RIGHT = Input.Buttons.RIGHT;
+	public static final int MIDDLE = Input.Buttons.MIDDLE;
+
 	public PointF start;
 	public PointF current;
 	public int id;
 	public Type type;
+	public int button;
 	public boolean handled; //for hover events, to ensure hover always ends even with overlapping elements
-	
+
 	public PointerEvent( int x, int y, int id, Type type){
+		this(x, y, id, type, NONE);
+	}
+
+	public PointerEvent( int x, int y, int id, Type type, int button){
 		start = current = new PointF(x, y);
 		this.id = id;
 		this.type = type;
 		handled = false;
+		this.button = button;
 	}
 	
 	public void update( PointerEvent other ){
@@ -87,7 +100,12 @@ public class PointerEvent {
 	// Accumulated pointer events
 	private static ArrayList<PointerEvent> pointerEvents = new ArrayList<>();
 	private static HashMap<Integer, PointerEvent> activePointers = new HashMap<>();
-	static PointF lastHoverPos = new PointF();
+
+	private static PointF lastHoverPos = new PointF();
+
+	public static PointF currentHoverPos(){
+		return lastHoverPos.clone();
+	}
 	
 	public static synchronized void addPointerEvent( PointerEvent event ){
 		pointerEvents.add( event );

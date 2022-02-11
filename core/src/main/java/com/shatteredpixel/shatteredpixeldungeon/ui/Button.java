@@ -62,7 +62,19 @@ public class Button extends Component {
 			@Override
 			protected void onClick( PointerEvent event ) {
 				if (!processed) {
-					Button.this.onClick();
+					killTooltip();
+					switch (event.button){
+						case PointerEvent.LEFT: default:
+							Button.this.onClick();
+							break;
+						case PointerEvent.RIGHT:
+							Button.this.onRightClick();
+							break;
+						case PointerEvent.MIDDLE:
+							Button.this.onMiddleClick();
+							break;
+					}
+
 				}
 			}
 
@@ -131,7 +143,13 @@ public class Button extends Component {
 	
 	protected void onPointerDown() {}
 	protected void onPointerUp() {}
-	protected void onClick() {}
+	protected void onClick() {} //left click, default key type
+	protected void onRightClick() {
+		onClick();
+	}
+	protected void onMiddleClick() {
+		onClick();
+	}
 	protected boolean onLongClick() {
 		return false;
 	}
