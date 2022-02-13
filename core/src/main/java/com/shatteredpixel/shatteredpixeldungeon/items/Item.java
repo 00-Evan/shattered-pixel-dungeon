@@ -400,6 +400,7 @@ public class Item implements Bundlable {
 
 		levelKnown = true;
 		cursedKnown = true;
+		Item.updateQuickslot();
 		
 		return this;
 	}
