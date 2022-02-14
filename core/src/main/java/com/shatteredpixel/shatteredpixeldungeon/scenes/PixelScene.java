@@ -42,6 +42,7 @@ import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.Scene;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.ui.Component;
+import com.watabou.noosa.ui.Cursor;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Reflection;
 
@@ -150,6 +151,8 @@ public class PixelScene extends Scene {
 		Game.platform.setupFontGenerators(renderedTextPageSize, SPDSettings.systemFont());
 
 		Tooltip.resetLastUsedTime();
+
+		Cursor.setCustomCursor(Cursor.Type.DEFAULT, defaultZoom);
 
 	}
 	
