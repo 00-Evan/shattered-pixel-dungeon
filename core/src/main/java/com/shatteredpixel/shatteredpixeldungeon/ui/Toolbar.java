@@ -74,9 +74,16 @@ public class Toolbar extends Component {
 	
 	@Override
 	protected void createChildren() {
-		
-		btnQuick = new QuickslotTool[4];
-		
+
+		if (SPDSettings.interfaceSize() > 0) {
+			btnQuick = new QuickslotTool[6];
+
+			add( btnQuick[5] = new QuickslotTool(64, 0, 22, 24, 5) );
+			add( btnQuick[4] = new QuickslotTool(64, 0, 22, 24, 4) );
+		} else {
+			//TODO add functionality for 6 slots on mobile
+			btnQuick = new QuickslotTool[4];
+		}
 		add( btnQuick[3] = new QuickslotTool(64, 0, 22, 24, 3) );
 		add( btnQuick[2] = new QuickslotTool(64, 0, 22, 24, 2) );
 		add( btnQuick[1] = new QuickslotTool(64, 0, 22, 24, 1) );
@@ -220,8 +227,8 @@ public class Toolbar extends Component {
 			btnSearch.setPos(btnWait.left() - btnSearch.width(), y);
 
 			right = btnSearch.left();
-			for(int i = 3; i >= 0; i--) {
-				if (i == 3){
+			for(int i = btnQuick.length-1; i >= 0; i--) {
+				if (i == btnQuick.length-1){
 					btnQuick[i].border(0, 2);
 					btnQuick[i].frame(106, 0, 19, 24);
 				} else if (i == 0){
@@ -238,13 +245,13 @@ public class Toolbar extends Component {
 			return;
 		}
 
-		for(int i = 0; i <= 3; i++) {
+		for(int i = 0; i < btnQuick.length; i++) {
 			if (i == 0 && !SPDSettings.flipToolbar() ||
-				i == 3 && SPDSettings.flipToolbar()){
+				i == btnQuick.length-1 && SPDSettings.flipToolbar()){
 				btnQuick[i].border(0, 2);
 				btnQuick[i].frame(106, 0, 19, 24);
 			} else if (i == 0 && SPDSettings.flipToolbar() ||
-					i == 3 && !SPDSettings.flipToolbar()){
+					i == btnQuick.length-1 && !SPDSettings.flipToolbar()){
 				btnQuick[i].border(2, 1);
 				btnQuick[i].frame(86, 0, 20, 24);
 			} else {

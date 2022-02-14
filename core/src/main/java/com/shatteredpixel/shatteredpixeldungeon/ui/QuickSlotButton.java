@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -40,7 +41,7 @@ import com.watabou.utils.PathFinder;
 
 public class QuickSlotButton extends Button {
 	
-	private static QuickSlotButton[] instance = new QuickSlotButton[4];
+	private static QuickSlotButton[] instance = new QuickSlotButton[QuickSlot.SIZE];
 	private int slotNum;
 
 	private ItemSlot slot;
@@ -67,7 +68,7 @@ public class QuickSlotButton extends Button {
 	}
 
 	public static void reset() {
-		instance = new QuickSlotButton[4];
+		instance = new QuickSlotButton[QuickSlot.SIZE];
 
 		lastTarget = null;
 	}
@@ -169,6 +170,10 @@ public class QuickSlotButton extends Button {
 				return SPDAction.QUICKSLOT_3;
 			case 3:
 				return SPDAction.QUICKSLOT_4;
+			case 4:
+				return SPDAction.QUICKSLOT_5;
+			case 5:
+				return SPDAction.QUICKSLOT_6;
 			default:
 				return super.keyAction();
 		}
