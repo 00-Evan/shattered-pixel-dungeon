@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
 import com.watabou.gltextures.TextureCache;
+import com.watabou.input.KeyEvent;
 import com.watabou.input.PointerEvent;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
@@ -50,6 +51,7 @@ import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
+import com.watabou.utils.Signal;
 
 import java.util.ArrayList;
 
@@ -60,6 +62,8 @@ public class InventoryPane extends Component {
 
 	//used to prevent clicks through the BG normally, or to cancel selectors if they're enabled
 	private PointerArea blocker;
+
+	private Signal.Listener keyBlocker;
 
 	private static InventoryPane instance;
 
@@ -128,6 +132,18 @@ public class InventoryPane extends Component {
 		};
 		blocker.target = bg; //targets bg when there is no selector, otherwise targets itself
 		add (blocker);
+
+		keyBlocker = new Signal.Listener<KeyEvent>(){
+			@Override
+			public boolean onSignal(KeyEvent keyEvent) {
+				if (keyEvent.pressed && isSelecting()){
+					selector = null;
+					updateInventory();
+					return true;
+				}
+				return false;
+			}
+		};
 
 		equipped = new ArrayList<>();
 		for (int i = 0; i < 5; i++){
@@ -243,8 +259,10 @@ public class InventoryPane extends Component {
 	public void updateInventory(){
 		if (selector == null){
 			blocker.target = bg;
+			KeyEvent.removeKeyListener(keyBlocker);
 		} else {
 			blocker.target = blocker;
+			KeyEvent.addKeyListener(keyBlocker);
 		}
 
 		Belongings stuff = Dungeon.hero.belongings;
