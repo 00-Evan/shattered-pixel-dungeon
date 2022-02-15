@@ -195,6 +195,28 @@ public class WelcomeScene extends PixelScene {
 		text.setPos((w - text.width()) / 2f, (topRegion + 2) + (textSpace - text.height())/2);
 		add(text);
 
+		if (previousVersion <= 593){
+			//TODO translate!
+			add(new WndHardNotification(Icons.get(Icons.INFO),
+					"Key Bindings",
+					"Shattered Pixel Dungeon's default keybindings have changed based on early demo feedback!\n\n" +
+							"Here's a quick summary of what's been adjusted:\n" +
+							"_-_ The WASD and QEZC keys are now used for movement\n" +
+							"_-_ Quickslots now use the number keys\n" +
+							"_-_ Several game action bindings have been moved to the right of WASD\n" +
+							"_-_ Inventory bags can now be tabbed through with F1-F5\n" +
+							"_-_ Other binding (including numpad and arrow keys to move) are unchanged." +
+							"Please let me know if these new bindings work well for you, I am open to further adjustments. All keybinds can still be customized via the settings menu.",
+					Messages.get(this, "continue"),
+					2){
+				@Override
+				public void hide() {
+					super.hide();
+					ShatteredPixelDungeon.resetScene();
+				}
+			});
+		}
+
 	}
 
 	private void placeTorch( float x, float y ) {
