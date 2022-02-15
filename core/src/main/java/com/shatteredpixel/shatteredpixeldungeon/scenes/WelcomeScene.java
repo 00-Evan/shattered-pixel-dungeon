@@ -205,14 +205,13 @@ public class WelcomeScene extends PixelScene {
 							"_-_ Quickslots now use the number keys\n" +
 							"_-_ Several game action bindings have been moved to the right of WASD\n" +
 							"_-_ Inventory bags can now be tabbed through with F1-F5\n" +
-							"_-_ Other bindings (including numpad and arrow keys to move) are unchanged." +
+							"_-_ Other bindings (including numpad and arrow keys to move) are unchanged.\n\n" +
 							"Please let me know if these new bindings work well for you, I am open to further adjustments. All keybinds can still be customized via the settings menu.",
 					Messages.get(this, "continue"),
 					2){
 				@Override
 				public void hide() {
 					super.hide();
-					ShatteredPixelDungeon.resetScene();
 				}
 			});
 		}
