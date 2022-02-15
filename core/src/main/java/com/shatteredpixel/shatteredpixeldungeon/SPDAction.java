@@ -144,52 +144,66 @@ public class SPDAction extends GameAction {
 
 			Bundle firstKeys = b.getBundle("first_keys");
 			Bundle secondKeys = b.getBundle("second_keys");
+			Bundle thirdKeys = b.getBundle("third_keys");
 
 			LinkedHashMap<Integer, GameAction> defaults = getDefaults();
-			LinkedHashMap<Integer, GameAction> custom = new LinkedHashMap<>();
+			LinkedHashMap<Integer, GameAction> merged = new LinkedHashMap<>();
 
 			for (GameAction a : allActions()) {
 				if (firstKeys.contains(a.name())) {
 					if (firstKeys.getInt(a.name()) == 0){
-						for (int i : defaults.keySet()){
-							if (defaults.get(i) == a){
-								defaults.remove(i);
-								break;
-							}
-						}
+						continue; //we have no keys assigned to this action, move to the next one
 					} else {
-						custom.put(firstKeys.getInt(a.name()), a);
-						defaults.remove(firstKeys.getInt(a.name()));
+						merged.put(firstKeys.getInt(a.name()), a);
+						defaults.remove(firstKeys.getInt(a.name())); //prevent duplicates in other actions
+					}
+				} else {
+					//if we have no custom key here, find the first one from defaults and merge it
+					for (int i : defaults.keySet()){
+						if (defaults.get(i) == a){
+							merged.put(i, defaults.remove(i));
+							break;
+						}
 					}
 				}
 
-				//we store any custom second keys in defaults for the moment to preserve order
-				//incase the 2nd key is custom but the first one isn't
 				if (secondKeys.contains(a.name())) {
 					if (secondKeys.getInt(a.name()) == 0){
-						int last = 0;
-						for (int i : defaults.keySet()){
-							if (defaults.get(i) == a){
-								last = i;
-							}
-						}
-						defaults.remove(last);
+						continue; //we have no more keys assigned to this action, move to the next one
 					} else {
+						merged.put(secondKeys.getInt(a.name()), a);
 						defaults.remove(secondKeys.getInt(a.name()));
-						defaults.put(secondKeys.getInt(a.name()), a);
+					}
+				} else {
+					//if we have no custom key here, find the next one from defaults and merge it
+					for (int i : defaults.keySet()){
+						if (defaults.get(i) == a){
+							merged.put(i, defaults.remove(i));
+							break;
+						}
+					}
+				}
+
+				if (thirdKeys.contains(a.name())) {
+					if (thirdKeys.getInt(a.name()) == 0){
+						continue; //we have no more keys assigned to this action, move to the next one
+					} else {
+						merged.put(thirdKeys.getInt(a.name()), a);
+						defaults.remove(thirdKeys.getInt(a.name()));
+					}
+				} else {
+					//if we have no custom key here, find the next one from defaults and merge it
+					for (int i : defaults.keySet()){
+						if (defaults.get(i) == a){
+							merged.put(i, defaults.remove(i));
+							break;
+						}
 					}
 				}
 
 			}
 
-			//now merge them and store
-			for( int i : defaults.keySet()){
-				if (i != 0) {
-					custom.put(i, defaults.get(i));
-				}
-			}
-
-			KeyBindings.setAllBindings(custom);
+			KeyBindings.setAllBindings(merged);
 
 		} catch (Exception e){
 			KeyBindings.setAllBindings(getDefaults());
@@ -203,19 +217,24 @@ public class SPDAction extends GameAction {
 
 		Bundle firstKeys = new Bundle();
 		Bundle secondKeys = new Bundle();
+		Bundle thirdKeys = new Bundle();
 
 		for (GameAction a : allActions()){
 			int firstCur = 0;
 			int secondCur = 0;
+			int thirdCur = 0;
 			int firstDef = 0;
 			int secondDef = 0;
+			int thirdDef = 0;
 
 			for (int i : defaultBindings.keySet()){
 				if (defaultBindings.get(i) == a){
-					if(firstDef == 0){
+					if (firstDef == 0) {
 						firstDef = i;
-					} else {
+					} else if (secondDef == 0) {
 						secondDef = i;
+					} else {
+						thirdDef = i;
 					}
 				}
 			}
@@ -223,10 +242,12 @@ public class SPDAction extends GameAction {
 			LinkedHashMap<Integer, GameAction> curBindings = KeyBindings.getAllBindings();
 			for (int i : curBindings.keySet()){
 				if (curBindings.get(i) == a){
-					if(firstCur == 0){
+					if (firstCur == 0) {
 						firstCur = i;
-					} else {
+					} else if (secondCur == 0) {
 						secondCur = i;
+					} else {
+						thirdCur = i;
 					}
 				}
 			}
@@ -237,11 +258,15 @@ public class SPDAction extends GameAction {
 			if (secondCur != secondDef){
 				secondKeys.put(a.name(), secondCur);
 			}
+			if (thirdCur != thirdDef){
+				thirdKeys.put(a.name(), thirdCur);
+			}
 
 		}
 
 		b.put("first_keys", firstKeys);
 		b.put("second_keys", secondKeys);
+		b.put("third_keys", thirdKeys);
 
 		try {
 			FileUtils.bundleToFile(BINDINGS_FILE, b);

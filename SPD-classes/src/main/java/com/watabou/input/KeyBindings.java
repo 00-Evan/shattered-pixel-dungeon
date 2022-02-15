@@ -81,7 +81,7 @@ public class KeyBindings {
 		} else if (keyCode == Input.Keys.PLUS){
 			return "+";
 		} else if (keyCode == Input.Keys.BACKSPACE) {
-			return "Backspace";
+			return "Backspc";
 		} else if (keyCode == Input.Keys.FORWARD_DEL) {
 			return "Delete";
 		} else {

@@ -160,7 +160,7 @@ public class Group extends Gizmo {
 			g.parent.remove( g );
 		}
 		
-		if (members.get( 0 ) == null) {
+		if (!members.isEmpty() && members.get( 0 ) == null) {
 			members.set( 0, g );
 			g.parent = this;
 			return g;
