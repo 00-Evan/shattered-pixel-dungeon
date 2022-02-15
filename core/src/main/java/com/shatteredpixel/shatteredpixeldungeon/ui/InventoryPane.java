@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
@@ -40,6 +41,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
 import com.watabou.gltextures.TextureCache;
+import com.watabou.input.GameAction;
+import com.watabou.input.KeyBindings;
 import com.watabou.input.KeyEvent;
 import com.watabou.input.PointerEvent;
 import com.watabou.noosa.BitmapText;
@@ -136,7 +139,12 @@ public class InventoryPane extends Component {
 		keyBlocker = new Signal.Listener<KeyEvent>(){
 			@Override
 			public boolean onSignal(KeyEvent keyEvent) {
-				if (keyEvent.pressed && isSelecting()){
+				if (keyEvent.pressed && isSelecting()
+						&& KeyBindings.getActionForKey(keyEvent) != SPDAction.BAG_1
+						&& KeyBindings.getActionForKey(keyEvent) != SPDAction.BAG_2
+						&& KeyBindings.getActionForKey(keyEvent) != SPDAction.BAG_3
+						&& KeyBindings.getActionForKey(keyEvent) != SPDAction.BAG_4
+						&& KeyBindings.getActionForKey(keyEvent) != SPDAction.BAG_5){
 					selector = null;
 					updateInventory();
 					return true;
@@ -177,7 +185,7 @@ public class InventoryPane extends Component {
 
 		bags = new ArrayList<>();
 		for (int i = 0; i < 5; i++){
-			BagButton btn = new BagButton(null);
+			BagButton btn = new BagButton(null, i+1);
 			bags.add(btn);
 			add(btn);
 		}
@@ -542,10 +550,12 @@ public class InventoryPane extends Component {
 		private ColorBlock bgBottom;
 
 		private Bag bag;
+		private int index;
 
-		public BagButton( Bag bag ){
+		public BagButton( Bag bag, int index ){
 			super( bagIcon(bag) );
 			this.bag = bag;
+			this.index = index;
 			visible = active = bag != null;
 		}
 
@@ -592,6 +602,22 @@ public class InventoryPane extends Component {
 			super.onClick();
 			lastBag = bag;
 			refresh();
+		}
+
+		@Override
+		public GameAction keyAction() {
+			switch (index){
+				case 1: default:
+					return SPDAction.BAG_1;
+				case 2:
+					return SPDAction.BAG_2;
+				case 3:
+					return SPDAction.BAG_3;
+				case 4:
+					return SPDAction.BAG_4;
+				case 5:
+					return SPDAction.BAG_5;
+			}
 		}
 
 		@Override

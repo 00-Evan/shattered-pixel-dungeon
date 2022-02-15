@@ -201,11 +201,11 @@ public class WelcomeScene extends PixelScene {
 					"Key Bindings",
 					"Shattered Pixel Dungeon's default keybindings have changed based on early demo feedback!\n\n" +
 							"Here's a quick summary of what's been adjusted:\n" +
-							"_-_ The WASD and QEZC keys are now used for movement\n" +
+							"_-_ The WAXD and QEZC keys are now used for movement, S is used for waiting\n" +
 							"_-_ Quickslots now use the number keys\n" +
 							"_-_ Several game action bindings have been moved to the right of WASD\n" +
 							"_-_ Inventory bags can now be tabbed through with F1-F5\n" +
-							"_-_ Other binding (including numpad and arrow keys to move) are unchanged." +
+							"_-_ Other bindings (including numpad and arrow keys to move) are unchanged." +
 							"Please let me know if these new bindings work well for you, I am open to further adjustments. All keybinds can still be customized via the settings menu.",
 					Messages.get(this, "continue"),
 					2){

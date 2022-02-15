@@ -48,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RightClickMenu;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.gltextures.TextureCache;
+import com.watabou.input.GameAction;
 import com.watabou.input.KeyBindings;
 import com.watabou.input.KeyEvent;
 import com.watabou.input.PointerEvent;
@@ -134,9 +135,10 @@ public class WndBag extends WndTabbed {
 
 		resize( windowWidth, windowHeight );
 
+		int i = 1;
 		for (Bag b : Dungeon.hero.belongings.getBags()) {
 			if (b != null) {
-				BagTab tab = new BagTab( b );
+				BagTab tab = new BagTab( b, i++ );
 				add( tab );
 				tab.select( b == bag );
 			}
@@ -405,11 +407,29 @@ public class WndBag extends WndTabbed {
 	private class BagTab extends IconTab {
 
 		private Bag bag;
+		private int index;
 		
-		public BagTab( Bag bag ) {
+		public BagTab( Bag bag, int index ) {
 			super( icon(bag) );
 			
 			this.bag = bag;
+			this.index = index;
+		}
+
+		@Override
+		public GameAction keyAction() {
+			switch (index){
+				case 1: default:
+					return SPDAction.BAG_1;
+				case 2:
+					return SPDAction.BAG_2;
+				case 3:
+					return SPDAction.BAG_3;
+				case 4:
+					return SPDAction.BAG_4;
+				case 5:
+					return SPDAction.BAG_5;
+			}
 		}
 
 		@Override

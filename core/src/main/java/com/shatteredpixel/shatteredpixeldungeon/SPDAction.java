@@ -59,6 +59,12 @@ public class SPDAction extends GameAction {
 	public static final GameAction QUICKSLOT_5 = new SPDAction("quickslot_5");
 	public static final GameAction QUICKSLOT_6 = new SPDAction("quickslot_6");
 
+	public static final GameAction BAG_1 = new SPDAction("bag_1");
+	public static final GameAction BAG_2 = new SPDAction("bag_2");
+	public static final GameAction BAG_3 = new SPDAction("bag_3");
+	public static final GameAction BAG_4 = new SPDAction("bag_4");
+	public static final GameAction BAG_5 = new SPDAction("bag_5");
+
 	public static final GameAction SEARCH      = new SPDAction("search");
 	public static final GameAction REST        = new SPDAction("rest");
 
@@ -81,13 +87,13 @@ public class SPDAction extends GameAction {
 
 		defaultBindings.put( Input.Keys.W,              SPDAction.N );
 		defaultBindings.put( Input.Keys.A,              SPDAction.W );
-		defaultBindings.put( Input.Keys.S,              SPDAction.S );
+		defaultBindings.put( Input.Keys.X,              SPDAction.S );
 		defaultBindings.put( Input.Keys.D,              SPDAction.E );
 		defaultBindings.put( Input.Keys.Q,              SPDAction.NW );
 		defaultBindings.put( Input.Keys.E,              SPDAction.NE );
 		defaultBindings.put( Input.Keys.Z,              SPDAction.SW );
 		defaultBindings.put( Input.Keys.C,              SPDAction.SE );
-		defaultBindings.put( Input.Keys.X,              SPDAction.WAIT );
+		defaultBindings.put( Input.Keys.S,              SPDAction.WAIT );
 
 		defaultBindings.put( Input.Keys.NUMPAD_8,       SPDAction.N );
 		defaultBindings.put( Input.Keys.NUMPAD_4,       SPDAction.W );
@@ -112,6 +118,12 @@ public class SPDAction extends GameAction {
 		defaultBindings.put( Input.Keys.NUM_4,          SPDAction.QUICKSLOT_4 );
 		defaultBindings.put( Input.Keys.NUM_5,          SPDAction.QUICKSLOT_5 );
 		defaultBindings.put( Input.Keys.NUM_6,          SPDAction.QUICKSLOT_6 );
+
+		defaultBindings.put( Input.Keys.F1,             SPDAction.BAG_1 );
+		defaultBindings.put( Input.Keys.F2,             SPDAction.BAG_2 );
+		defaultBindings.put( Input.Keys.F3,             SPDAction.BAG_3 );
+		defaultBindings.put( Input.Keys.F4,             SPDAction.BAG_4 );
+		defaultBindings.put( Input.Keys.F5,             SPDAction.BAG_5 );
 
 		defaultBindings.put( Input.Keys.G,              SPDAction.SEARCH );
 		defaultBindings.put( Input.Keys.B,              SPDAction.REST );
