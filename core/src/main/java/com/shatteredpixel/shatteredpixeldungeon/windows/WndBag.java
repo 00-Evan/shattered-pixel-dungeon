@@ -45,15 +45,18 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.InventorySlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RightClickMenu;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.input.KeyBindings;
 import com.watabou.input.KeyEvent;
+import com.watabou.input.PointerEvent;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PointF;
 
 public class WndBag extends WndTabbed {
 	
@@ -287,6 +290,34 @@ public class WndBag extends WndTabbed {
 				} else {
 
 					Game.scene().addToFront(new WndUseItem( WndBag.this, item ) );
+
+				}
+			}
+
+			@Override
+			protected void onRightClick() {
+				if (lastBag != item && !lastBag.contains(item) && !item.isEquipped(Dungeon.hero)){
+
+					hide();
+
+				} else if (selector != null) {
+
+					hide();
+					selector.onSelect( item );
+
+				} else {
+
+					RightClickMenu r = new RightClickMenu(item){
+						@Override
+						public void onSelect(int index) {
+							WndBag.this.hide();
+						}
+					};
+					parent.addToFront(r);
+					r.camera = camera();
+					PointF mousePos = PointerEvent.currentHoverPos();
+					mousePos = camera.screenToCamera((int)mousePos.x, (int)mousePos.y);
+					r.setPos(mousePos.x-3, mousePos.y-3);
 
 				}
 			}

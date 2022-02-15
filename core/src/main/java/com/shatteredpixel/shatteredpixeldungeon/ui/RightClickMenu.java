@@ -88,9 +88,8 @@ public class RightClickMenu extends Component {
 					super.onClick();
 					if (item != null){
 						item.execute(Dungeon.hero, options[finalI]);
-					} else {
-						onSelect(finalI);
 					}
+					onSelect(finalI);
 					RightClickMenu.this.destroy();
 					RightClickMenu.this.killAndErase();
 				}
@@ -128,11 +127,11 @@ public class RightClickMenu extends Component {
 
 		width = icon.width + 2 + titleText.width()+bg.marginVer();
 
-		if (x + width > camera.width){
-			x -= (x + width - camera.width);
+		if (x + width > (camera.width + camera.scroll.x)){
+			x -= (x + width - (camera.width + camera.scroll.x));
 		}
-		if (y + height > camera.height){
-			y -= (y + height - camera.height);
+		if (y + height > (camera.height + camera.scroll.y)){
+			y -= (y + height - (camera.height + camera.scroll.y));
 		}
 
 		bg.x = x;
