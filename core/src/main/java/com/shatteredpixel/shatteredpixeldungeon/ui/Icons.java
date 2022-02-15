@@ -135,7 +135,11 @@ public enum Icons {
 			icon.frame( icon.texture.uvRect( 16, 16, 27, 27 ) );
 			break;
 		case DISPLAY:
-			icon.frame( icon.texture.uvRect( 32, 16, 45, 32 ) );
+			if (PixelScene.landscape()){
+				icon.frame( icon.texture.uvRect( 80, 48, 96, 61 ) );
+			} else {
+				icon.frame( icon.texture.uvRect( 32, 16, 45, 32 ) );
+			}
 			break;
 		case DATA:
 			icon.frame( icon.texture.uvRect( 48, 16, 64, 31 ) );
