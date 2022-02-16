@@ -66,7 +66,7 @@ public class InventoryPane extends Component {
 	//used to prevent clicks through the BG normally, or to cancel selectors if they're enabled
 	private PointerArea blocker;
 
-	private Signal.Listener keyBlocker;
+	private Signal.Listener<KeyEvent> keyBlocker;
 
 	private static InventoryPane instance;
 
@@ -107,6 +107,7 @@ public class InventoryPane extends Component {
 
 	@Override
 	public synchronized void destroy() {
+		KeyEvent.removeKeyListener(keyBlocker);
 		super.destroy();
 		if (instance == this) instance = null;
 	}
@@ -139,7 +140,7 @@ public class InventoryPane extends Component {
 		keyBlocker = new Signal.Listener<KeyEvent>(){
 			@Override
 			public boolean onSignal(KeyEvent keyEvent) {
-				if (keyEvent.pressed && isSelecting()
+				if (keyEvent.pressed && isSelecting() && InventoryPane.this.visible
 						&& KeyBindings.getActionForKey(keyEvent) != SPDAction.BAG_1
 						&& KeyBindings.getActionForKey(keyEvent) != SPDAction.BAG_2
 						&& KeyBindings.getActionForKey(keyEvent) != SPDAction.BAG_3
