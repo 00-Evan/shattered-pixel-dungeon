@@ -125,6 +125,11 @@ public class WndQuickBag extends Window {
 					Game.scene().addToFront(new WndUseItem(WndQuickBag.this, item));
 					return true;
 				}
+
+				@Override
+				protected String hoverText() {
+					return null; //no tooltips here
+ 				}
 			};
 			slot.setRect(left, top, btnWidth, btnHeight);
 			add(slot);
