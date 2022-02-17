@@ -498,9 +498,8 @@ public class InventoryPane extends Component {
 			if (targeting){
 				if (targetingSlot == this){
 					onClick();
-				} else{
-					cancelTargeting();
 				}
+				return;
 			}
 
 			if (selector == null && item.defaultAction != null){
@@ -510,7 +509,7 @@ public class InventoryPane extends Component {
 					InventoryPane.useTargeting();
 				}
 			} else {
-				super.onMiddleClick();
+				onClick();
 			}
 		}
 
@@ -522,11 +521,8 @@ public class InventoryPane extends Component {
 			}
 
 			if (targeting){
-				if (targetingSlot == this){
-					onClick();
-				} else{
-					cancelTargeting();
-				}
+				//do nothing
+				return;
 			}
 
 			if (selector == null){
@@ -537,7 +533,7 @@ public class InventoryPane extends Component {
 				mousePos = camera.screenToCamera((int)mousePos.x, (int)mousePos.y);
 				r.setPos(mousePos.x-3, mousePos.y-3);
 			} else {
-				super.onRightClick();
+				//do nothing
 			}
 		}
 	}

@@ -144,12 +144,8 @@ public class Button extends Component {
 	protected void onPointerDown() {}
 	protected void onPointerUp() {}
 	protected void onClick() {} //left click, default key type
-	protected void onRightClick() {
-		onClick();
-	}
-	protected void onMiddleClick() {
-		onClick();
-	}
+	protected void onRightClick() {}
+	protected void onMiddleClick() {}
 	protected boolean onLongClick() {
 		return false;
 	}
