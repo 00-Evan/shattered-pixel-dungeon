@@ -126,6 +126,11 @@ public class RightClickMenu extends Component {
 		height += 13*buttons.length;
 
 		width = icon.width + 2 + titleText.width()+bg.marginVer();
+		for (RedButton button : buttons){
+			if (width < button.reqWidth()+bg.marginHor()){
+				width = button.reqWidth()+bg.marginHor();
+			}
+		}
 
 		if (x + width > (camera.width + camera.scroll.x)){
 			x -= (x + width - (camera.width + camera.scroll.x));

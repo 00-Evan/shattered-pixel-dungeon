@@ -90,7 +90,7 @@ public class CellSelector extends ScrollArea {
 			if (Dungeon.hero.sprite != null && Dungeon.hero.sprite.overlapsPoint( p.x, p.y )){
 				PointF c = DungeonTilemap.tileCenterToWorld(Dungeon.hero.pos);
 				if (Math.abs(p.x - c.x) <= 12 && Math.abs(p.y - c.y) <= 12) {
-					select(Dungeon.hero.pos);
+					select(Dungeon.hero.pos, event.button);
 					return;
 				}
 			}
@@ -100,7 +100,7 @@ public class CellSelector extends ScrollArea {
 				if (mob.sprite != null && mob.sprite.overlapsPoint( p.x, p.y )){
 					PointF c = DungeonTilemap.tileCenterToWorld(mob.pos);
 					if (Math.abs(p.x - c.x) <= 12 && Math.abs(p.y - c.y) <= 12) {
-						select(mob.pos);
+						select(mob.pos, event.button);
 						return;
 					}
 				}
@@ -111,7 +111,7 @@ public class CellSelector extends ScrollArea {
 				if (heap.sprite != null && heap.sprite.overlapsPoint( p.x, p.y)){
 					PointF c = DungeonTilemap.tileCenterToWorld(heap.pos);
 					if (Math.abs(p.x - c.x) <= 12 && Math.abs(p.y - c.y) <= 12) {
-						select(heap.pos);
+						select(heap.pos, event.button);
 						return;
 					}
 				}
@@ -120,7 +120,7 @@ public class CellSelector extends ScrollArea {
 			select( ((DungeonTilemap)target).screenToTile(
 				(int) event.current.x,
 				(int) event.current.y,
-					true ) );
+					true ), event.button );
 		}
 	}
 
@@ -142,11 +142,18 @@ public class CellSelector extends ScrollArea {
 		return value;
 	}
 	
-	public void select( int cell ) {
+	public void select( int cell, int button ) {
 		if (enabled && Dungeon.hero.ready && !GameScene.InterfaceBlockingHero()
 				&& listener != null && cell != -1) {
-			
-			listener.onSelect( cell );
+
+			switch (button){
+				default:
+					listener.onSelect( cell );
+					break;
+				case PointerEvent.RIGHT:
+					listener.onRightClick( cell );
+					break;
+			}
 			GameScene.ready();
 			
 		} else {
@@ -285,7 +292,7 @@ public class CellSelector extends ScrollArea {
 			// this is to make it easier to move 1 or 2 steps without overshooting
 			CharSprite.setMoveInterval( CharSprite.DEFAULT_MOVE_INTERVAL +
 			                            Math.max(0, 0.05f - heldTurns *0.025f));
-			select(cell);
+			select(cell, PointerEvent.LEFT);
 			return true;
 
 		} else {
@@ -342,8 +349,11 @@ public class CellSelector extends ScrollArea {
 		KeyEvent.removeKeyListener( keyListener );
 	}
 	
-	public interface Listener {
-		void onSelect( Integer cell );
-		String prompt();
+	public static abstract class Listener {
+		public abstract void onSelect( Integer cell );
+
+		public void onRightClick( Integer cell ){} //do nothing by default
+
+		public abstract String prompt();
 	}
 }

@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DemonSpawner;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -87,6 +88,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.LootIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.MenuPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ResumeIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RightClickMenu;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StatusPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Tag;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
@@ -107,10 +109,12 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
 import com.watabou.glwrap.Blending;
+import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.Group;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.NoosaScriptNoLighting;
 import com.watabou.noosa.SkinnedBlock;
@@ -121,6 +125,7 @@ import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Point;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 import com.watabou.utils.RectF;
 
@@ -1194,7 +1199,7 @@ public class GameScene extends PixelScene {
 	}
 	
 	public static void handleCell( int cell ) {
-		cellSelector.select( cell );
+		cellSelector.select( cell, PointerEvent.LEFT );
 	}
 	
 	public static void selectCell( CellSelector.Listener listener ) {
@@ -1272,49 +1277,19 @@ public class GameScene extends PixelScene {
 			return;
 		}
 
-		ArrayList<String> names = new ArrayList<>();
-		final ArrayList<Object> objects = new ArrayList<>();
-
-		if (cell == Dungeon.hero.pos) {
-			objects.add(Dungeon.hero);
-			names.add(Dungeon.hero.className().toUpperCase(Locale.ENGLISH));
-		} else {
-			if (Dungeon.level.heroFOV[cell]) {
-				Mob mob = (Mob) Actor.findChar(cell);
-				if (mob != null) {
-					objects.add(mob);
-					names.add(Messages.titleCase( mob.name() ));
-				}
-			}
-		}
-
-		Heap heap = Dungeon.level.heaps.get(cell);
-		if (heap != null && heap.seen) {
-			objects.add(heap);
-			names.add(Messages.titleCase( heap.toString() ));
-		}
-
-		Plant plant = Dungeon.level.plants.get( cell );
-		if (plant != null) {
-			objects.add(plant);
-			names.add(Messages.titleCase( plant.plantName ));
-		}
-
-		Trap trap = Dungeon.level.traps.get( cell );
-		if (trap != null && trap.visible) {
-			objects.add(trap);
-			names.add(Messages.titleCase( trap.name() ));
-		}
+		ArrayList<Object> objects = getObjectsAtCell(cell);
 
 		if (objects.isEmpty()) {
 			GameScene.show(new WndInfoCell(cell));
 		} else if (objects.size() == 1){
 			examineObject(objects.get(0));
 		} else {
+			String[] names = getObjectNames(objects).toArray(new String[0]);
+
 			GameScene.show(new WndOptions(Icons.get(Icons.INFO),
 					Messages.get(GameScene.class, "choose_examine"),
 					Messages.get(GameScene.class, "multiple_examine"),
-					names.toArray(new String[names.size()])){
+					names){
 				@Override
 				protected void onSelect(int index) {
 					examineObject(objects.get(index));
@@ -1322,6 +1297,41 @@ public class GameScene extends PixelScene {
 			});
 
 		}
+	}
+
+	private static ArrayList<Object> getObjectsAtCell( int cell ){
+		ArrayList<Object> objects = new ArrayList<>();
+
+		if (cell == Dungeon.hero.pos) {
+			objects.add(Dungeon.hero);
+
+		} else if (Dungeon.level.heroFOV[cell]) {
+			Mob mob = (Mob) Actor.findChar(cell);
+			if (mob != null) objects.add(mob);
+		}
+
+		Heap heap = Dungeon.level.heaps.get(cell);
+		if (heap != null && heap.seen) objects.add(heap);
+
+		Plant plant = Dungeon.level.plants.get( cell );
+		if (plant != null) objects.add(plant);
+
+		Trap trap = Dungeon.level.traps.get( cell );
+		if (trap != null && trap.visible) objects.add(trap);
+
+		return objects;
+	}
+
+	private static ArrayList<String> getObjectNames( ArrayList<Object> objects ){
+		ArrayList<String> names = new ArrayList<>();
+		for (Object obj : objects){
+			if (obj instanceof Hero)        names.add(((Hero) obj).className().toUpperCase(Locale.ENGLISH));
+			else if (obj instanceof Mob)    names.add(Messages.titleCase( ((Mob)obj).name() ));
+			else if (obj instanceof Heap)   names.add(Messages.titleCase( ((Heap)obj).toString() ));
+			else if (obj instanceof Plant)  names.add(Messages.titleCase( ((Plant) obj).plantName ));
+			else if (obj instanceof Trap)   names.add(Messages.titleCase( ((Trap) obj).name() ));
+		}
+		return names;
 	}
 
 	public static void examineObject(Object o){
@@ -1352,6 +1362,104 @@ public class GameScene extends PixelScene {
 				Dungeon.hero.next();
 			}
 		}
+
+		@Override
+		public void onRightClick(Integer cell) {
+			if (cell == null
+					|| cell < 0
+					|| cell > Dungeon.level.length()
+					|| (!Dungeon.level.visited[cell] && !Dungeon.level.mapped[cell])) {
+				return;
+			}
+
+			ArrayList<Object> objects = getObjectsAtCell(cell);
+			ArrayList<String> textLines = getObjectNames(objects);
+
+			//determine title and image
+			String title = null;
+			Image image = null;
+			if (objects.isEmpty()) {
+				title = WndInfoCell.cellName(cell);
+				image = WndInfoCell.cellImage(cell);
+			} else if (objects.size() > 1){
+				title = "Multiple Objects";
+				image = Icons.get(Icons.INFO);
+			} else if (objects.get(0) instanceof Mob) {
+				title = textLines.remove(0);
+				image = new Image(((Mob) objects.get(0)).sprite);
+			} else if (objects.get(0) instanceof Heap) {
+				title = textLines.remove(0);
+				image = new ItemSprite((Heap) objects.get(0));
+			} else if (objects.get(0) instanceof Plant) {
+				title = textLines.remove(0);
+				image = TerrainFeaturesTilemap.tile(cell, Dungeon.level.map[cell]);
+			} else if (objects.get(0) instanceof Trap) {
+				title = textLines.remove(0);
+				image = TerrainFeaturesTilemap.tile(cell, Dungeon.level.map[cell]);
+			}
+
+			//determine first text line
+			if (objects.isEmpty()) {
+				textLines.add(0, "Go Here");
+			} else if (objects.get(0) instanceof Mob) {
+				if (((Mob) objects.get(0)).alignment != Char.Alignment.ENEMY) {
+					textLines.add(0, "Interact");
+				} else {
+					textLines.add(0, "Attack");
+				}
+			} else if (objects.get(0) instanceof Heap) {
+				switch (((Heap) objects.get(0)).type) {
+					case HEAP:
+						textLines.add(0, "Pick Up");
+						break;
+					case FOR_SALE:
+						textLines.add(0, "Purchase");
+						break;
+					default:
+						textLines.add(0, "Interact");
+						break;
+				}
+			} else if (objects.get(0) instanceof Plant) {
+				textLines.add(0, "Trample");
+			} else if (objects.get(0) instanceof Trap) {
+				textLines.add(0, "Interact");
+			}
+
+			//final text formatting
+			if (objects.size() > 1){
+				textLines.add(0, "_" + textLines.remove(0) + ":_ " + textLines.get(0));
+				for (int i = 1; i < textLines.size(); i++){
+					textLines.add(i, "_Examine:_ " + textLines.remove(i));
+				}
+			} else {
+				textLines.add(0, "_" + textLines.remove(0) + "_");
+				textLines.add(1, "_Examine_");
+			}
+
+			RightClickMenu menu = new RightClickMenu(image,
+					title,
+					textLines.toArray(new String[0])){
+				@Override
+				public void onSelect(int index) {
+					if (index == 0){
+						handleCell(cell);
+					} else {
+						if (objects.size() == 0){
+							GameScene.show(new WndInfoCell(cell));
+						} else {
+							examineObject(objects.get(index-1));
+						}
+					}
+				}
+			};
+			scene.addToFront(menu);
+			menu.camera = PixelScene.uiCamera;
+			PointF mousePos = PointerEvent.currentHoverPos();
+			mousePos = menu.camera.screenToCamera((int)mousePos.x, (int)mousePos.y);
+			menu.setPos(mousePos.x-3, mousePos.y-3);
+
+		}
+
 		@Override
 		public String prompt() {
 			return null;
