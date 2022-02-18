@@ -186,7 +186,7 @@ public class WndKeyBindings extends Window {
 
 	private class BindingItem extends Component {
 
-		private static final int HEIGHT = 12;
+		private static final int HEIGHT = 13;
 
 		private static final int CHANGED = TITLE_COLOR;
 		private static final int DEFAULT = 0xFFFFFF;
@@ -284,13 +284,13 @@ public class WndKeyBindings extends Window {
 
 			actionName.maxWidth((int) (2*width/5));
 			key1Name.maxWidth((int) (width/5) - 2);
-			key2Name.maxWidth((int) (width/5));
-			key3Name.maxWidth((int) (width/5));
+			key2Name.maxWidth((int) (width/5) - 2);
+			key3Name.maxWidth((int) (width/5) - 2);
 
 			actionName.setPos( x, y + (height() - actionName.height())/2);
-			key1Name.setPos(x + 2*width()/5 + 1, y + (height() - key1Name.height())/2);
-			key2Name.setPos(x + 3*width()/5 + 1, y + (height() - key2Name.height())/2);
-			key3Name.setPos(x + 4*width()/5 + 1, y + (height() - key3Name.height())/2);
+			key1Name.setPos(x + 2*width()/5 + 1, y + 0.5f + (height() - key1Name.height())/2f);
+			key2Name.setPos(x + 3*width()/5 + 1, y + 0.5f + (height() - key2Name.height())/2f);
+			key3Name.setPos(x + 4*width()/5 + 1, y + 0.5f + (height() - key3Name.height())/2f);
 
 			sep1.size(width, 1);
 			sep1.x = x;
@@ -312,11 +312,11 @@ public class WndKeyBindings extends Window {
 		private boolean onClick( float x, float y ){
 			if (inside(x, y)){
 				//assigning third key
-				if (x >= this.x + 4*width()/5 && key2 != 0) {
+				if (x >= this.x + 4*width()/5 - 1 && key2 != 0) {
 					ShatteredPixelDungeon.scene().addToFront( new WndChangeBinding(gameAction, this, 3, key3, key1, key2));
 
 				//assigning second key
-				} else if (x >= this.x + 3*width()/5 && key1 != 0) {
+				} else if (x >= this.x + 3*width()/5 - 1 && key1 != 0) {
 					ShatteredPixelDungeon.scene().addToFront( new WndChangeBinding(gameAction, this, 2, key2, key1, key3));
 
 				//assigning first key

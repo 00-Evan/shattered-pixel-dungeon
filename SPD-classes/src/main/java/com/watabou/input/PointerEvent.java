@@ -41,6 +41,8 @@ public class PointerEvent {
 	public static final int LEFT = Input.Buttons.LEFT;
 	public static final int RIGHT = Input.Buttons.RIGHT;
 	public static final int MIDDLE = Input.Buttons.MIDDLE;
+	public static final int BACK = Input.Buttons.BACK; //currently unused
+	public static final int FORWARD = Input.Buttons.FORWARD;//currently unused
 
 	public PointF start;
 	public PointF current;
@@ -106,15 +108,43 @@ public class PointerEvent {
 	public static PointF currentHoverPos(){
 		return lastHoverPos.clone();
 	}
+
+
+	public static synchronized void emulateMouseButton( int button, boolean down ){
+		if (down){
+			addPointerEvent(new PointerEvent((int)lastHoverPos.x, (int)lastHoverPos.y, 1000+button, Type.DOWN, button));
+		} else {
+			addPointerEvent(new PointerEvent((int)lastHoverPos.x, (int)lastHoverPos.y, 1000+button, Type.UP, button));
+		}
+	}
 	
 	public static synchronized void addPointerEvent( PointerEvent event ){
 		pointerEvents.add( event );
 	}
 	
 	public static synchronized void processPointerEvents(){
+		//handle any hover events separately first as we may need to add drag events
+		boolean hovered = false;
 		for (PointerEvent p : pointerEvents){
 			if (p.type == Type.HOVER){
 				lastHoverPos.set(p.current);
+				pointerSignal.dispatch(p);
+				hovered = true;
+			}
+		}
+
+		//add drag events for any emulated presses
+		if (hovered){
+			for (int i = 1000+LEFT; i <= 1000+FORWARD; i++){
+				if (activePointers.containsKey(i)){
+					addPointerEvent(new PointerEvent((int)lastHoverPos.x, (int)lastHoverPos.y, i, Type.DOWN, i));
+				}
+			}
+		}
+
+		for (PointerEvent p : pointerEvents){
+			if (p.type == Type.HOVER){
+				continue;
 			}
 			if (activePointers.containsKey(p.id)){
 				PointerEvent existing = activePointers.get(p.id);

@@ -39,6 +39,10 @@ public class SPDAction extends GameAction {
 	//--New references to existing actions from GameAction
 	public static final GameAction NONE  = GameAction.NONE;
 	public static final GameAction BACK  = GameAction.BACK;
+
+	public static final GameAction LEFT_CLICK   = GameAction.LEFT_CLICK;
+	public static final GameAction RIGHT_CLICK  = GameAction.RIGHT_CLICK;
+	public static final GameAction MIDDLE_CLICK = GameAction.MIDDLE_CLICK;
 	//--
 
 	public static final GameAction N            = new SPDAction("n");

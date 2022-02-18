@@ -62,7 +62,15 @@ public class KeyEvent {
 	
 	public static synchronized void processKeyEvents(){
 		for (KeyEvent k : keyEvents){
-			keySignal.dispatch(k);
+			if (KeyBindings.getActionForKey(k) == GameAction.LEFT_CLICK){
+				PointerEvent.emulateMouseButton(PointerEvent.LEFT, k.pressed);
+			} else if (KeyBindings.getActionForKey(k) == GameAction.RIGHT_CLICK){
+				PointerEvent.emulateMouseButton(PointerEvent.RIGHT, k.pressed);
+			} else if (KeyBindings.getActionForKey(k) == GameAction.MIDDLE_CLICK){
+				PointerEvent.emulateMouseButton(PointerEvent.MIDDLE, k.pressed);
+			} else {
+				keySignal.dispatch(k);
+			}
 		}
 		keyEvents.clear();
 	}
