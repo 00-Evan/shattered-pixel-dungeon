@@ -109,7 +109,6 @@ public class PointerEvent {
 		return lastHoverPos.clone();
 	}
 
-
 	public static synchronized void emulateMouseButton( int button, boolean down ){
 		if (down){
 			addPointerEvent(new PointerEvent((int)lastHoverPos.x, (int)lastHoverPos.y, 1000+button, Type.DOWN, button));
@@ -137,7 +136,8 @@ public class PointerEvent {
 		if (hovered){
 			for (int i = 1000+LEFT; i <= 1000+FORWARD; i++){
 				if (activePointers.containsKey(i)){
-					addPointerEvent(new PointerEvent((int)lastHoverPos.x, (int)lastHoverPos.y, i, Type.DOWN, i));
+					//add to front in case pointer is also being released this frame
+					pointerEvents.add(0, new PointerEvent((int)lastHoverPos.x, (int)lastHoverPos.y, i, Type.DOWN, i));
 				}
 			}
 		}
