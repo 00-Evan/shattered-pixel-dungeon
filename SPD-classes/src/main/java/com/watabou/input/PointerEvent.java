@@ -22,6 +22,7 @@
 package com.watabou.input;
 
 import com.badlogic.gdx.Input;
+import com.watabou.noosa.Game;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Signal;
 
@@ -106,6 +107,10 @@ public class PointerEvent {
 	private static PointF lastHoverPos = new PointF();
 
 	public static PointF currentHoverPos(){
+		if (lastHoverPos.x == 0 && lastHoverPos.y == 0){
+			lastHoverPos.x = Game.width/2;
+			lastHoverPos.y = Game.height/2;
+		}
 		return lastHoverPos.clone();
 	}
 

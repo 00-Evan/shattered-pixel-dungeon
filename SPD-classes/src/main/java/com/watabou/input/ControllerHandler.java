@@ -29,9 +29,28 @@ import com.badlogic.gdx.controllers.ControllerMapping;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.PointF;
 
-import java.lang.annotation.Target;
-
 public class ControllerHandler implements ControllerListener {
+
+	public static enum ControllerType {
+		XBOX,
+		PLAYSTATION,
+		NINTENDO,
+		OTHER
+	}
+
+	public static ControllerType lastUsedType = ControllerType.OTHER;
+
+	private static void setControllerType(Controller controller){
+		if (controller.getName().contains("Xbox")){
+			lastUsedType = ControllerType.XBOX;
+		} else if (controller.getName().contains("PS")){
+			lastUsedType = ControllerType.PLAYSTATION;
+		} else if (controller.getName().contains("Nintendo")){
+			lastUsedType = ControllerType.NINTENDO;
+		} else {
+			lastUsedType = ControllerType.OTHER;
+		}
+	}
 
 	public static boolean controllersSupported() {
 		if (DeviceCompat.isAndroid() && Gdx.app.getVersion() < 16) {
@@ -43,7 +62,7 @@ public class ControllerHandler implements ControllerListener {
 
 	@Override
 	public void connected(Controller controller) {
-
+		setControllerType(controller);
 	}
 
 	@Override
@@ -53,6 +72,7 @@ public class ControllerHandler implements ControllerListener {
 
 	@Override
 	public boolean buttonDown(Controller controller, int buttonCode) {
+		setControllerType(controller);
 		int keyCode = buttonToKey(controller, buttonCode);
 		if (keyCode != Input.Keys.UNKNOWN){
 			KeyEvent.addKeyEvent(new KeyEvent(keyCode, true));
@@ -63,6 +83,7 @@ public class ControllerHandler implements ControllerListener {
 
 	@Override
 	public boolean buttonUp(Controller controller, int buttonCode) {
+		setControllerType(controller);
 		int keyCode = buttonToKey(controller, buttonCode);
 		if (keyCode != Input.Keys.UNKNOWN){
 			KeyEvent.addKeyEvent(new KeyEvent(keyCode, false));
@@ -79,6 +100,7 @@ public class ControllerHandler implements ControllerListener {
 
 	@Override
 	public boolean axisMoved(Controller controller, int axisCode, float value) {
+		setControllerType(controller);
 		ControllerMapping mapping = controller.getMapping();
 		if (mapping.axisRightX == axisCode)         rightStickPosition.x = value;
 		else if (mapping.axisRightY == axisCode)    rightStickPosition.y = value;
@@ -109,29 +131,45 @@ public class ControllerHandler implements ControllerListener {
 	}
 
 	//converts controller button codes to keyEvent codes
-	public static int buttonToKey(Controller controller, int keyCode){
+	public static int buttonToKey(Controller controller, int btnCode){
 		ControllerMapping mapping = controller.getMapping();
-		if (keyCode == mapping.buttonA)     return Input.Keys.BUTTON_A;
-		if (keyCode == mapping.buttonB)     return Input.Keys.BUTTON_B;
+		if (btnCode == mapping.buttonA)         return Input.Keys.BUTTON_A;
+		if (btnCode == mapping.buttonB)         return Input.Keys.BUTTON_B;
 		//C button?
-		if (keyCode == mapping.buttonX)     return Input.Keys.BUTTON_X;
-		if (keyCode == mapping.buttonY)     return Input.Keys.BUTTON_Y;
-		if (keyCode == mapping.buttonBack)  return Input.Keys.BUTTON_SELECT;
-		if (keyCode == mapping.buttonStart) return Input.Keys.BUTTON_START;
+		if (btnCode == mapping.buttonX)         return Input.Keys.BUTTON_X;
+		if (btnCode == mapping.buttonY)         return Input.Keys.BUTTON_Y;
+		if (btnCode == mapping.buttonBack)      return Input.Keys.BUTTON_SELECT;
+		if (btnCode == mapping.buttonStart)     return Input.Keys.BUTTON_START;
 
-		if (keyCode == mapping.buttonL1)     return Input.Keys.BUTTON_L1;
-		if (keyCode == mapping.buttonL2)     return Input.Keys.BUTTON_L2;
-		if (keyCode == mapping.buttonR1)     return Input.Keys.BUTTON_R1;
-		if (keyCode == mapping.buttonR2)     return Input.Keys.BUTTON_R2;
+		if (btnCode == mapping.buttonL1)        return Input.Keys.BUTTON_L1;
+		if (btnCode == mapping.buttonL2)        return Input.Keys.BUTTON_L2;
+		if (btnCode == mapping.buttonR1)        return Input.Keys.BUTTON_R1;
+		if (btnCode == mapping.buttonR2)        return Input.Keys.BUTTON_R2;
 
-		if (keyCode == mapping.buttonDpadUp)    return Input.Keys.DPAD_UP;
-		if (keyCode == mapping.buttonDpadLeft)  return Input.Keys.DPAD_LEFT;
-		if (keyCode == mapping.buttonDpadDown)  return Input.Keys.DPAD_DOWN;
-		if (keyCode == mapping.buttonDpadRight) return Input.Keys.DPAD_RIGHT;
+		if (btnCode == mapping.buttonDpadUp)    return Input.Keys.DPAD_UP;
+		if (btnCode == mapping.buttonDpadLeft)  return Input.Keys.DPAD_LEFT;
+		if (btnCode == mapping.buttonDpadDown)  return Input.Keys.DPAD_DOWN;
+		if (btnCode == mapping.buttonDpadRight) return Input.Keys.DPAD_RIGHT;
 
-		if (keyCode == mapping.buttonLeftStick)     return Input.Keys.BUTTON_THUMBL;
-		if (keyCode == mapping.buttonRightStick)    return Input.Keys.BUTTON_THUMBR;
+		if (btnCode == mapping.buttonLeftStick) return Input.Keys.BUTTON_THUMBL;
+		if (btnCode == mapping.buttonRightStick)return Input.Keys.BUTTON_THUMBR;
 
 		return Input.Keys.UNKNOWN;
+	}
+
+	public static String customButtonName(int keyCode){
+		if (lastUsedType == ControllerType.PLAYSTATION){
+			if (keyCode == Input.Keys.BUTTON_A){
+				return "Circle Button";
+			} else if (keyCode == Input.Keys.BUTTON_B){
+				return "Cross Button";
+			} else if (keyCode == Input.Keys.BUTTON_X){
+				return "Square Button";
+			} else if (keyCode == Input.Keys.BUTTON_Y){
+				return "Triangle Button";
+			}
+		}
+
+		return null;
 	}
 }

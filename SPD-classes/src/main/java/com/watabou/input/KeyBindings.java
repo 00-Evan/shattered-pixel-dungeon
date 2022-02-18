@@ -76,6 +76,10 @@ public class KeyBindings {
 	}
 
 	public static String getKeyName( int keyCode ){
+		if (ControllerHandler.customButtonName(keyCode) != null){
+			return ControllerHandler.customButtonName(keyCode);
+		}
+
 		if (keyCode == Input.Keys.UNKNOWN){
 			return "None";
 		} else if (keyCode == Input.Keys.PLUS){
