@@ -323,18 +323,30 @@ public class CellSelector extends ScrollArea {
 		}
 	};
 
+	private GameAction leftStickAction = SPDAction.NONE;
+
 	@Override
 	public void update() {
 		super.update();
 
-		//check if stick is neutral or not
+		GameAction newLeftStick = actionFromStick(ControllerHandler.leftStickPosition.x,
+				ControllerHandler.leftStickPosition.y);
+
+		if (newLeftStick != leftStickAction){
+			if (leftStickAction == SPDAction.NONE){
+				heldDelay = 0.05f;
+			} else if (newLeftStick == SPDAction.NONE && heldDelay > 0f){
+				heldDelay = 0f;
+				moveFromActions(leftStickAction);
+			}
+			leftStickAction = newLeftStick;
+		}
+
 		if (heldDelay > 0){
 			heldDelay -= Game.elapsed;
 		}
-		boolean leftStickActive = Math.abs(ControllerHandler.leftStickPosition.x) >= .5f
-				|| Math.abs(ControllerHandler.leftStickPosition.y) >= 0.5f;
-		leftStickActive = leftStickActive && !GameScene.InterfaceBlockingHero();
-		if ((heldAction1 != SPDAction.NONE || leftStickActive) && Dungeon.hero.ready){
+
+		if ((heldAction1 != SPDAction.NONE || leftStickAction != SPDAction.NONE) && Dungeon.hero.ready){
 			processKeyHold();
 		} else if (Dungeon.hero.ready) {
 			lastCellMoved = -1;
@@ -377,36 +389,39 @@ public class CellSelector extends ScrollArea {
 		else                        return 0;
 	}
 
-	//TODO controller stick movement would probably be improved if it used the 50ms delay, like key movement
+	//~80% deadzone
+	private GameAction actionFromStick(float x, float y){
+		if (x > 0.5f){
+			if (y < -0.5f){
+				return SPDAction.NE;
+			} else if (y > 0.5f){
+				return SPDAction.SE;
+			} else if (x > 0.8f){
+				return SPDAction.E;
+			}
+		} else if (x < -0.5f){
+			if (y < -0.5f){
+				return SPDAction.NW;
+			} else if (y > 0.5f){
+				return SPDAction.SW;
+			} else if (x < -0.8f){
+				return SPDAction.W;
+			}
+		} else if (y > 0.8f){
+			return SPDAction.S;
+		} else if (y < -0.8f){
+			return SPDAction.N;
+		}
+		return SPDAction.NONE;
+	}
+
 	public void processKeyHold() {
 		//prioritize moving by controller stick over moving via keys
-		PointF leftStick = ControllerHandler.leftStickPosition;
-		boolean leftStickActive = Math.abs(leftStick.x) > 0.5f || Math.abs(leftStick.y) > 0.5f;
-		leftStickActive = leftStickActive && !GameScene.InterfaceBlockingHero();
-		if (leftStickActive) {
+		if (directionFromAction(leftStickAction) != 0 && heldDelay < 0) {
 			enabled = Dungeon.hero.ready = true;
 			Dungeon.observe();
-			//determine which direction to move in.
-			if (leftStick.x > 0.5f){
-				if (leftStick.y < -0.5f){
-					if (moveFromActions(SPDAction.NE)) Dungeon.hero.ready = false;
-				} else if (leftStick.y > 0.5f){
-					if (moveFromActions(SPDAction.SE)) Dungeon.hero.ready = false;
-				} else if (leftStick.x > 0.8f){
-					if (moveFromActions(SPDAction.E)) Dungeon.hero.ready = false;
-				}
-			} else if (leftStick.x < -0.5f){
-				if (leftStick.y < -0.5f){
-					if (moveFromActions(SPDAction.NW)) Dungeon.hero.ready = false;
-				} else if (leftStick.y > 0.5f){
-					if (moveFromActions(SPDAction.SW)) Dungeon.hero.ready = false;
-				} else if (leftStick.x < -0.8f){
-					if (moveFromActions(SPDAction.W)) Dungeon.hero.ready = false;
-				}
-			} else if (leftStick.y > 0.8f){
-				if (moveFromActions(SPDAction.S)) Dungeon.hero.ready = false;
-			} else if (leftStick.y < -0.8f){
-				if (moveFromActions(SPDAction.N)) Dungeon.hero.ready = false;
+			if (moveFromActions(leftStickAction)) {
+				Dungeon.hero.ready = false;
 			}
 		} else if (directionFromAction(heldAction1) + directionFromAction(heldAction2) != 0
 				&& heldDelay <= 0){
