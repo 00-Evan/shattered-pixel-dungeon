@@ -164,15 +164,17 @@ public class PixelScene extends Scene {
 	@Override
 	public void update() {
 		super.update();
-		if (Math.abs(ControllerHandler.rightStickPosition.x) >= 0.1f
-				|| Math.abs(ControllerHandler.rightStickPosition.y) >= 0.1f) {
+		//15% deadzone
+		if (Math.abs(ControllerHandler.rightStickPosition.x) >= 0.15f
+				|| Math.abs(ControllerHandler.rightStickPosition.y) >= 0.15f) {
 			PointF curMouse = PointerEvent.currentHoverPos();
-			//cursor moves 500 scaled pixels per second at full speed, 50 at minimum speed
+			//cursor moves 500 scaled pixels per second at full speed, 75 at minimum speed
 			fractionalMovement.x += defaultZoom * 500 * Game.elapsed * ControllerHandler.rightStickPosition.x;
 			fractionalMovement.y += defaultZoom * 500 * Game.elapsed * ControllerHandler.rightStickPosition.y;
 			curMouse.x += (int)fractionalMovement.x;
 			curMouse.y += (int)fractionalMovement.y;
 			Gdx.input.setCursorPosition((int) curMouse.x, (int) curMouse.y);
+			PointerEvent.addPointerEvent(new PointerEvent((int) curMouse.x, (int) curMouse.y, 10_000, PointerEvent.Type.HOVER, PointerEvent.NONE));
 			fractionalMovement.x -= (int)fractionalMovement.x;
 			fractionalMovement.y -= (int)fractionalMovement.y;
 		} else {
