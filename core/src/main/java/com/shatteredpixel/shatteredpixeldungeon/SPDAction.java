@@ -88,6 +88,12 @@ public class SPDAction extends GameAction {
 	static {
 		defaultBindings.put( Input.Keys.ESCAPE,         SPDAction.BACK );
 		defaultBindings.put( Input.Keys.BACKSPACE,      SPDAction.BACK );
+		defaultBindings.put( Input.Keys.BUTTON_START,   SPDAction.BACK );
+
+		defaultBindings.put( Input.Keys.BUTTON_R2,      SPDAction.LEFT_CLICK );
+		defaultBindings.put( Input.Keys.BUTTON_THUMBR,  SPDAction.LEFT_CLICK );
+		defaultBindings.put( Input.Keys.BUTTON_L2,      SPDAction.RIGHT_CLICK );
+		defaultBindings.put( Input.Keys.BUTTON_SELECT,  SPDAction.MIDDLE_CLICK );
 
 		defaultBindings.put( Input.Keys.W,              SPDAction.N );
 		defaultBindings.put( Input.Keys.A,              SPDAction.W );
@@ -110,12 +116,19 @@ public class SPDAction extends GameAction {
 		defaultBindings.put( Input.Keys.NUMPAD_3,       SPDAction.SE );
 		defaultBindings.put( Input.Keys.NUMPAD_5,       SPDAction.WAIT );
 
+		defaultBindings.put( Input.Keys.BUTTON_THUMBL,  SPDAction.WAIT );
+
 		defaultBindings.put( Input.Keys.F,              SPDAction.INVENTORY );
 		defaultBindings.put( Input.Keys.I,              SPDAction.INVENTORY );
+		defaultBindings.put( Input.Keys.BUTTON_R1,      SPDAction.INVENTORY );
 		defaultBindings.put( Input.Keys.NUM_1,          SPDAction.QUICKSLOT_1 );
+		defaultBindings.put( Input.Keys.BUTTON_Y,       SPDAction.QUICKSLOT_1 );
 		defaultBindings.put( Input.Keys.NUM_2,          SPDAction.QUICKSLOT_2 );
+		defaultBindings.put( Input.Keys.BUTTON_B,       SPDAction.QUICKSLOT_2 );
 		defaultBindings.put( Input.Keys.NUM_3,          SPDAction.QUICKSLOT_3 );
+		defaultBindings.put( Input.Keys.BUTTON_X,       SPDAction.QUICKSLOT_3 );
 		defaultBindings.put( Input.Keys.NUM_4,          SPDAction.QUICKSLOT_4 );
+		defaultBindings.put( Input.Keys.BUTTON_A,       SPDAction.QUICKSLOT_4 );
 		defaultBindings.put( Input.Keys.NUM_5,          SPDAction.QUICKSLOT_5 );
 		defaultBindings.put( Input.Keys.NUM_6,          SPDAction.QUICKSLOT_6 );
 
@@ -126,6 +139,7 @@ public class SPDAction extends GameAction {
 		defaultBindings.put( Input.Keys.F5,             SPDAction.BAG_5 );
 
 		defaultBindings.put( Input.Keys.E,              SPDAction.EXAMINE );
+		defaultBindings.put( Input.Keys.BUTTON_L1,      SPDAction.EXAMINE );
 		defaultBindings.put( Input.Keys.Z,              SPDAction.REST );
 
 		defaultBindings.put( Input.Keys.Q,              SPDAction.TAG_ATTACK );
