@@ -36,6 +36,7 @@ import com.watabou.input.KeyEvent;
 import com.watabou.input.PointerEvent;
 import com.watabou.input.ScrollEvent;
 import com.watabou.noosa.Camera;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.ScrollArea;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PointF;
@@ -237,61 +238,114 @@ public class CellSelector extends ScrollArea {
 		}
 		
 	}
-	
-	private GameAction heldAction = SPDAction.NONE;
-	private int heldTurns = 0;
+
+	//used for movement
+	private GameAction heldAction1 = SPDAction.NONE;
+	private GameAction heldAction2 = SPDAction.NONE;
+	//not used for movement, but helpful if the player holds 3 keys briefly
+	private GameAction heldAction3 = SPDAction.NONE;
+
+	private float heldDelay = 0f;
+	private boolean delayingForRelease = false;
 	
 	private Signal.Listener<KeyEvent> keyListener = new Signal.Listener<KeyEvent>() {
 		@Override
 		public boolean onSignal(KeyEvent event) {
 			GameAction action = KeyBindings.getActionForKey( event );
 			if (!event.pressed){
+
+				if (action == SPDAction.ZOOM_IN){
+					zoom( camera.zoom+1 );
+					mouseZoom = camera.zoom;
+					return true;
+
+				} else if (action == SPDAction.ZOOM_OUT){
+					zoom( camera.zoom-1 );
+					mouseZoom = camera.zoom;
+					return true;
+				}
 				
-				if (heldAction != SPDAction.NONE && heldAction == action) {
+				if (heldAction1 != SPDAction.NONE && heldAction1 == action) {
+					heldAction1 = SPDAction.NONE;
+					if (heldAction2 != SPDAction.NONE){
+						heldAction1 = heldAction2;
+						heldAction2 = SPDAction.NONE;
+						if (heldAction3 != SPDAction.NONE){
+							heldAction2 = heldAction3;
+							heldAction3 = SPDAction.NONE;
+						}
+					}
+				} else if (heldAction2 != SPDAction.NONE && heldAction2 == action){
+					heldAction2 = SPDAction.NONE;
+					if (heldAction3 != SPDAction.NONE){
+						heldAction2 = heldAction3;
+						heldAction3 = SPDAction.NONE;
+					}
+				} else if (heldAction3 != SPDAction.NONE && heldAction3 == action){
+					heldAction3 = SPDAction.NONE;
+				}
+
+				//move from the action immediately if it was being delayed
+				// and another key wasn't recently released
+				if (heldDelay > 0f && !delayingForRelease){
+					heldDelay = 0f;
+					moveFromActions(action, heldAction1, heldAction2);
+				}
+
+				if (heldAction1 == GameAction.NONE && heldAction2 == GameAction.NONE) {
 					resetKeyHold();
 					return true;
 				} else {
-					if (action == SPDAction.ZOOM_IN){
-						zoom( camera.zoom+1 );
-						mouseZoom = camera.zoom;
-						return true;
-
-					} else if (action == SPDAction.ZOOM_OUT){
-						zoom( camera.zoom-1 );
-						mouseZoom = camera.zoom;
-						return true;
-					}
+					delayingForRelease = true;
+					//in case more keys are being released
+					//note that this delay can tick down while the hero is moving
+					heldDelay = 0.05f;
 				}
-			} else if (moveFromAction(action)) {
-				heldAction = action;
+
+			} else if (directionFromAction(action) != 0) {
+
+				if (heldAction1 == SPDAction.NONE){
+					heldAction1 = action;
+					heldDelay = 0.05f;
+					delayingForRelease = false;
+				} else if (heldAction2 == SPDAction.NONE){
+					heldAction2 = action;
+				} else {
+					heldAction3 = action;
+				}
+
 				return true;
 			}
 			
 			return false;
 		}
 	};
-	
-	private boolean moveFromAction(GameAction action){
+
+	@Override
+	public void update() {
+		super.update();
+
+		//check if stick is neutral or not
+		if (heldDelay > 0){
+			heldDelay -= Game.elapsed;
+		}
+
+		if (heldAction1 != SPDAction.NONE && Dungeon.hero.ready){
+			processKeyHold();
+		}
+	}
+
+	private boolean moveFromActions(GameAction... actions){
 		if (Dungeon.hero == null){
 			return false;
 		}
 
 		int cell = Dungeon.hero.pos;
-
-		if (action == SPDAction.N)  cell += -Dungeon.level.width();
-		if (action == SPDAction.NE) cell += +1-Dungeon.level.width();
-		if (action == SPDAction.E)  cell += +1;
-		if (action == SPDAction.SE) cell += +1+Dungeon.level.width();
-		if (action == SPDAction.S)  cell += +Dungeon.level.width();
-		if (action == SPDAction.SW) cell += -1+Dungeon.level.width();
-		if (action == SPDAction.W)  cell += -1;
-		if (action == SPDAction.NW) cell += -1-Dungeon.level.width();
+		for (GameAction action : actions) {
+			cell += directionFromAction(action);
+		}
 		
 		if (cell != Dungeon.hero.pos){
-			//each step when keyboard moving takes 0.15s, 0.125s, 0.1s, 0.1s, ...
-			// this is to make it easier to move 1 or 2 steps without overshooting
-			CharSprite.setMoveInterval( CharSprite.DEFAULT_MOVE_INTERVAL +
-			                            Math.max(0, 0.05f - heldTurns *0.025f));
 			select(cell, PointerEvent.LEFT);
 			return true;
 
@@ -300,21 +354,31 @@ public class CellSelector extends ScrollArea {
 		}
 
 	}
+
+	private int directionFromAction(GameAction action){
+		if (action == SPDAction.N)  return -Dungeon.level.width();
+		if (action == SPDAction.NE) return +1-Dungeon.level.width();
+		if (action == SPDAction.E)  return +1;
+		if (action == SPDAction.SE) return +1+Dungeon.level.width();
+		if (action == SPDAction.S)  return +Dungeon.level.width();
+		if (action == SPDAction.SW) return -1+Dungeon.level.width();
+		if (action == SPDAction.W)  return -1;
+		if (action == SPDAction.NW) return -1-Dungeon.level.width();
+		else                        return 0;
+	}
 	
-	public void processKeyHold(){
-		if (heldAction != SPDAction.NONE){
+	public void processKeyHold() {
+		if (directionFromAction(heldAction1) + directionFromAction(heldAction2) != 0
+				&& heldDelay <= 0){
 			enabled = Dungeon.hero.ready = true;
 			Dungeon.observe();
-			heldTurns++;
-			moveFromAction(heldAction);
+			moveFromActions(heldAction1, heldAction2);
 			Dungeon.hero.ready = false;
 		}
 	}
 	
 	public void resetKeyHold(){
-		heldAction = SPDAction.NONE;
-		heldTurns = 0;
-		CharSprite.setMoveInterval( CharSprite.DEFAULT_MOVE_INTERVAL );
+		heldAction1 = heldAction2 = heldAction3 = SPDAction.NONE;
 	}
 	
 	public void cancel() {
