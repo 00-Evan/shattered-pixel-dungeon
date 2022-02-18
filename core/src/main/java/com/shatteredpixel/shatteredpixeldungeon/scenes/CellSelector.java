@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.watabou.input.ControllerHandler;
 import com.watabou.input.GameAction;
 import com.watabou.input.KeyBindings;
 import com.watabou.input.KeyEvent;
@@ -330,8 +331,10 @@ public class CellSelector extends ScrollArea {
 		if (heldDelay > 0){
 			heldDelay -= Game.elapsed;
 		}
-
-		if (heldAction1 != SPDAction.NONE && Dungeon.hero.ready){
+		boolean leftStickActive = Math.abs(ControllerHandler.leftStickPosition.x) >= .5f
+				|| Math.abs(ControllerHandler.leftStickPosition.y) >= 0.5f;
+		leftStickActive = leftStickActive && !GameScene.InterfaceBlockingHero();
+		if ((heldAction1 != SPDAction.NONE || leftStickActive) && Dungeon.hero.ready){
 			processKeyHold();
 		} else if (Dungeon.hero.ready) {
 			lastCellMoved = -1;
@@ -350,7 +353,7 @@ public class CellSelector extends ScrollArea {
 		for (GameAction action : actions) {
 			cell += directionFromAction(action);
 		}
-		
+
 		if (cell != Dungeon.hero.pos && cell != lastCellMoved){
 			lastCellMoved = cell;
 			select(cell, PointerEvent.LEFT);
@@ -373,9 +376,39 @@ public class CellSelector extends ScrollArea {
 		if (action == SPDAction.NW) return -1-Dungeon.level.width();
 		else                        return 0;
 	}
-	
+
+	//TODO controller stick movement would probably be improved if it used the 50ms delay, like key movement
 	public void processKeyHold() {
-		if (directionFromAction(heldAction1) + directionFromAction(heldAction2) != 0
+		//prioritize moving by controller stick over moving via keys
+		PointF leftStick = ControllerHandler.leftStickPosition;
+		boolean leftStickActive = Math.abs(leftStick.x) > 0.5f || Math.abs(leftStick.y) > 0.5f;
+		leftStickActive = leftStickActive && !GameScene.InterfaceBlockingHero();
+		if (leftStickActive) {
+			enabled = Dungeon.hero.ready = true;
+			Dungeon.observe();
+			//determine which direction to move in.
+			if (leftStick.x > 0.5f){
+				if (leftStick.y < -0.5f){
+					if (moveFromActions(SPDAction.NE)) Dungeon.hero.ready = false;
+				} else if (leftStick.y > 0.5f){
+					if (moveFromActions(SPDAction.SE)) Dungeon.hero.ready = false;
+				} else if (leftStick.x > 0.8f){
+					if (moveFromActions(SPDAction.E)) Dungeon.hero.ready = false;
+				}
+			} else if (leftStick.x < -0.5f){
+				if (leftStick.y < -0.5f){
+					if (moveFromActions(SPDAction.NW)) Dungeon.hero.ready = false;
+				} else if (leftStick.y > 0.5f){
+					if (moveFromActions(SPDAction.SW)) Dungeon.hero.ready = false;
+				} else if (leftStick.x < -0.8f){
+					if (moveFromActions(SPDAction.W)) Dungeon.hero.ready = false;
+				}
+			} else if (leftStick.y > 0.8f){
+				if (moveFromActions(SPDAction.S)) Dungeon.hero.ready = false;
+			} else if (leftStick.y < -0.8f){
+				if (moveFromActions(SPDAction.N)) Dungeon.hero.ready = false;
+			}
+		} else if (directionFromAction(heldAction1) + directionFromAction(heldAction2) != 0
 				&& heldDelay <= 0){
 			enabled = Dungeon.hero.ready = true;
 			Dungeon.observe();

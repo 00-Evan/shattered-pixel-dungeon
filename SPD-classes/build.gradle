@@ -7,5 +7,6 @@ dependencies {
     //TODO migrate this to implementation from api
     //in order to do this I have to remove 100% of libGDX API access from core
     api "com.badlogicgames.gdx:gdx:$gdxVersion"
+    api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
     implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
 }

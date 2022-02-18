@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
+import com.badlogic.gdx.Gdx;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
@@ -32,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Tooltip;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
+import com.watabou.input.ControllerHandler;
 import com.watabou.input.PointerEvent;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.BitmapText.Font;
@@ -44,6 +46,7 @@ import com.watabou.noosa.Visual;
 import com.watabou.noosa.ui.Component;
 import com.watabou.noosa.ui.Cursor;
 import com.watabou.utils.GameMath;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
@@ -155,7 +158,28 @@ public class PixelScene extends Scene {
 		Cursor.setCustomCursor(Cursor.Type.DEFAULT, defaultZoom);
 
 	}
-	
+
+	private PointF fractionalMovement = new PointF();
+
+	@Override
+	public void update() {
+		super.update();
+		if (Math.abs(ControllerHandler.rightStickPosition.x) >= 0.1f
+				|| Math.abs(ControllerHandler.rightStickPosition.y) >= 0.1f) {
+			PointF curMouse = PointerEvent.currentHoverPos();
+			//cursor moves 500 scaled pixels per second at full speed, 50 at minimum speed
+			fractionalMovement.x += defaultZoom * 500 * Game.elapsed * ControllerHandler.rightStickPosition.x;
+			fractionalMovement.y += defaultZoom * 500 * Game.elapsed * ControllerHandler.rightStickPosition.y;
+			curMouse.x += (int)fractionalMovement.x;
+			curMouse.y += (int)fractionalMovement.y;
+			Gdx.input.setCursorPosition((int) curMouse.x, (int) curMouse.y);
+			fractionalMovement.x -= (int)fractionalMovement.x;
+			fractionalMovement.y -= (int)fractionalMovement.y;
+		} else {
+			fractionalMovement.set(0);
+		}
+	}
+
 	//FIXME this system currently only works for a subset of windows
 	private static ArrayList<Class<?extends Window>> savedWindows = new ArrayList<>();
 	private static Class<?extends PixelScene> savedClass = null;
