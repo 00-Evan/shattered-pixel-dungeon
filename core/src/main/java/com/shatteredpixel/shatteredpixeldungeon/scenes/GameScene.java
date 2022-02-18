@@ -1384,6 +1384,9 @@ public class GameScene extends PixelScene {
 			} else if (objects.size() > 1){
 				title = "Multiple Objects";
 				image = Icons.get(Icons.INFO);
+			} else if (objects.get(0) instanceof Hero) {
+				title = textLines.remove(0);
+				image = new Image(((Hero) objects.get(0)).sprite);
 			} else if (objects.get(0) instanceof Mob) {
 				title = textLines.remove(0);
 				image = new Image(((Mob) objects.get(0)).sprite);
@@ -1400,6 +1403,8 @@ public class GameScene extends PixelScene {
 
 			//determine first text line
 			if (objects.isEmpty()) {
+				textLines.add(0, "Go Here");
+			} else if (objects.get(0) instanceof Hero) {
 				textLines.add(0, "Go Here");
 			} else if (objects.get(0) instanceof Mob) {
 				if (((Mob) objects.get(0)).alignment != Char.Alignment.ENEMY) {
