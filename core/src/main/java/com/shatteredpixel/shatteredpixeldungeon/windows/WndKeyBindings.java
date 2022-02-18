@@ -443,7 +443,7 @@ public class WndKeyBindings extends Window {
 			add(btnCancel);
 
 			resize(WIDTH, (int)btnCancel.bottom());
-			KeyBindings.acceptUnbound = true;
+			KeyBindings.bindingKey = true;
 
 		}
 
@@ -484,7 +484,7 @@ public class WndKeyBindings extends Window {
 		@Override
 		public void destroy() {
 			super.destroy();
-			KeyBindings.acceptUnbound = false;
+			KeyBindings.bindingKey = false;
 		}
 
 	}

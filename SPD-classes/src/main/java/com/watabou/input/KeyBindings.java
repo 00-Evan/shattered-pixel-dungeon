@@ -47,13 +47,13 @@ public class KeyBindings {
 		hardBindings.put(keyCode, action);
 	}
 
-	public static boolean acceptUnbound = false;
+	public static boolean bindingKey = false;
 
 	public static boolean isKeyBound(int keyCode){
 		if (keyCode <= 0 || keyCode > 255){
 			return false;
 		}
-		return acceptUnbound || bindings.containsKey( keyCode ) || hardBindings.containsKey( keyCode );
+		return bindingKey || bindings.containsKey( keyCode ) || hardBindings.containsKey( keyCode );
 	}
 	
 	public static GameAction getActionForKey(KeyEvent event){

@@ -64,10 +64,13 @@ public class KeyEvent {
 		for (KeyEvent k : keyEvents){
 			if (KeyBindings.getActionForKey(k) == GameAction.LEFT_CLICK){
 				PointerEvent.emulateMouseButton(PointerEvent.LEFT, k.pressed);
+				if (KeyBindings.bindingKey) keySignal.dispatch(k);
 			} else if (KeyBindings.getActionForKey(k) == GameAction.RIGHT_CLICK){
 				PointerEvent.emulateMouseButton(PointerEvent.RIGHT, k.pressed);
+				if (KeyBindings.bindingKey) keySignal.dispatch(k);
 			} else if (KeyBindings.getActionForKey(k) == GameAction.MIDDLE_CLICK){
 				PointerEvent.emulateMouseButton(PointerEvent.MIDDLE, k.pressed);
+				if (KeyBindings.bindingKey) keySignal.dispatch(k);
 			} else {
 				keySignal.dispatch(k);
 			}
