@@ -144,12 +144,12 @@ public class Toolbar extends Component {
 			
 			@Override
 			public GameAction keyAction() {
-				return SPDAction.SEARCH;
+				return SPDAction.EXAMINE;
 			}
 
 			@Override
 			protected String hoverText() {
-				return Messages.titleCase(Messages.get(WndKeyBindings.class, "search"));
+				return Messages.titleCase(Messages.get(WndKeyBindings.class, "examine"));
 			}
 			
 			@Override

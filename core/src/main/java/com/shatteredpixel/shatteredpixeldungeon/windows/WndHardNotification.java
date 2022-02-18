@@ -58,15 +58,19 @@ public class WndHardNotification extends WndTitledMessage{
 		resize(width, (int) btnOkay.bottom());
 	}
 
+	float incTime = 0;
+
 	@Override
 	public void update() {
 		super.update();
 
-		timeLeft -= Game.elapsed;
-		if (timeLeft <= 0 ){
+		incTime += Game.elapsed;
+		if (timeLeft <= 0 && !btnOkay.active){
 			btnOkay.enable(true);
 			btnOkay.text(btnMessage);
-		} else {
+		} else if (timeLeft > 0 && incTime >= 1) {
+			timeLeft -= incTime;
+			incTime = 0;
 			btnOkay.text(btnMessage + " (" + (int)Math.ceil(timeLeft) + ")");
 		}
 

@@ -41,44 +41,44 @@ public class SPDAction extends GameAction {
 	public static final GameAction BACK  = GameAction.BACK;
 	//--
 
-	public static final GameAction N           = new SPDAction("n");
-	public static final GameAction W           = new SPDAction("w");
-	public static final GameAction S           = new SPDAction("s");
-	public static final GameAction E           = new SPDAction("e");
-	public static final GameAction NW          = new SPDAction("nw");
-	public static final GameAction NE          = new SPDAction("ne");
-	public static final GameAction SW          = new SPDAction("sw");
-	public static final GameAction SE          = new SPDAction("se");
-	public static final GameAction WAIT        = new SPDAction("wait");
+	public static final GameAction N            = new SPDAction("n");
+	public static final GameAction W            = new SPDAction("w");
+	public static final GameAction S            = new SPDAction("s");
+	public static final GameAction E            = new SPDAction("e");
+	public static final GameAction NW           = new SPDAction("nw");
+	public static final GameAction NE           = new SPDAction("ne");
+	public static final GameAction SW           = new SPDAction("sw");
+	public static final GameAction SE           = new SPDAction("se");
+	public static final GameAction WAIT         = new SPDAction("wait");
 
-	public static final GameAction INVENTORY   = new SPDAction("inventory");
-	public static final GameAction QUICKSLOT_1 = new SPDAction("quickslot_1");
-	public static final GameAction QUICKSLOT_2 = new SPDAction("quickslot_2");
-	public static final GameAction QUICKSLOT_3 = new SPDAction("quickslot_3");
-	public static final GameAction QUICKSLOT_4 = new SPDAction("quickslot_4");
-	public static final GameAction QUICKSLOT_5 = new SPDAction("quickslot_5");
-	public static final GameAction QUICKSLOT_6 = new SPDAction("quickslot_6");
+	public static final GameAction INVENTORY    = new SPDAction("inventory");
+	public static final GameAction QUICKSLOT_1  = new SPDAction("quickslot_1");
+	public static final GameAction QUICKSLOT_2  = new SPDAction("quickslot_2");
+	public static final GameAction QUICKSLOT_3  = new SPDAction("quickslot_3");
+	public static final GameAction QUICKSLOT_4  = new SPDAction("quickslot_4");
+	public static final GameAction QUICKSLOT_5  = new SPDAction("quickslot_5");
+	public static final GameAction QUICKSLOT_6  = new SPDAction("quickslot_6");
 
-	public static final GameAction BAG_1 = new SPDAction("bag_1");
-	public static final GameAction BAG_2 = new SPDAction("bag_2");
-	public static final GameAction BAG_3 = new SPDAction("bag_3");
-	public static final GameAction BAG_4 = new SPDAction("bag_4");
-	public static final GameAction BAG_5 = new SPDAction("bag_5");
+	public static final GameAction BAG_1        = new SPDAction("bag_1");
+	public static final GameAction BAG_2        = new SPDAction("bag_2");
+	public static final GameAction BAG_3        = new SPDAction("bag_3");
+	public static final GameAction BAG_4        = new SPDAction("bag_4");
+	public static final GameAction BAG_5        = new SPDAction("bag_5");
 
-	public static final GameAction SEARCH      = new SPDAction("search");
-	public static final GameAction REST        = new SPDAction("rest");
+	public static final GameAction EXAMINE      = new SPDAction("examine");
+	public static final GameAction REST         = new SPDAction("rest");
 
-	public static final GameAction TAG_ATTACK  = new SPDAction("tag_attack");
-	public static final GameAction TAG_DANGER  = new SPDAction("tag_danger");
-	public static final GameAction TAG_ACTION  = new SPDAction("tag_action");
-	public static final GameAction TAG_LOOT    = new SPDAction("tag_loot");
-	public static final GameAction TAG_RESUME  = new SPDAction("tag_resume");
+	public static final GameAction TAG_ATTACK   = new SPDAction("tag_attack");
+	public static final GameAction TAG_DANGER   = new SPDAction("tag_danger");
+	public static final GameAction TAG_ACTION   = new SPDAction("tag_action");
+	public static final GameAction TAG_LOOT     = new SPDAction("tag_loot");
+	public static final GameAction TAG_RESUME   = new SPDAction("tag_resume");
 
-	public static final GameAction HERO_INFO   = new SPDAction("hero_info");
-	public static final GameAction JOURNAL     = new SPDAction("journal");
+	public static final GameAction HERO_INFO    = new SPDAction("hero_info");
+	public static final GameAction JOURNAL      = new SPDAction("journal");
 
-	public static final GameAction ZOOM_IN     = new SPDAction("zoom_in");
-	public static final GameAction ZOOM_OUT    = new SPDAction("zoom_out");
+	public static final GameAction ZOOM_IN      = new SPDAction("zoom_in");
+	public static final GameAction ZOOM_OUT     = new SPDAction("zoom_out");
 
 	private static final LinkedHashMap<Integer, GameAction> defaultBindings = new LinkedHashMap<>();
 	static {
@@ -87,13 +87,14 @@ public class SPDAction extends GameAction {
 
 		defaultBindings.put( Input.Keys.W,              SPDAction.N );
 		defaultBindings.put( Input.Keys.A,              SPDAction.W );
-		defaultBindings.put( Input.Keys.X,              SPDAction.S );
+		defaultBindings.put( Input.Keys.S,              SPDAction.S );
 		defaultBindings.put( Input.Keys.D,              SPDAction.E );
-		defaultBindings.put( Input.Keys.Q,              SPDAction.NW );
-		defaultBindings.put( Input.Keys.E,              SPDAction.NE );
-		defaultBindings.put( Input.Keys.Z,              SPDAction.SW );
-		defaultBindings.put( Input.Keys.C,              SPDAction.SE );
-		defaultBindings.put( Input.Keys.S,              SPDAction.WAIT );
+		defaultBindings.put( Input.Keys.SPACE,          SPDAction.WAIT );
+
+		defaultBindings.put( Input.Keys.UP,             SPDAction.N );
+		defaultBindings.put( Input.Keys.LEFT,           SPDAction.W );
+		defaultBindings.put( Input.Keys.DOWN,           SPDAction.S );
+		defaultBindings.put( Input.Keys.RIGHT,          SPDAction.E );
 
 		defaultBindings.put( Input.Keys.NUMPAD_8,       SPDAction.N );
 		defaultBindings.put( Input.Keys.NUMPAD_4,       SPDAction.W );
@@ -105,12 +106,7 @@ public class SPDAction extends GameAction {
 		defaultBindings.put( Input.Keys.NUMPAD_3,       SPDAction.SE );
 		defaultBindings.put( Input.Keys.NUMPAD_5,       SPDAction.WAIT );
 
-		defaultBindings.put( Input.Keys.UP,             SPDAction.N );
-		defaultBindings.put( Input.Keys.LEFT,           SPDAction.W );
-		defaultBindings.put( Input.Keys.DOWN,           SPDAction.S );
-		defaultBindings.put( Input.Keys.RIGHT,          SPDAction.E );
-
-		defaultBindings.put( Input.Keys.T,              SPDAction.INVENTORY );
+		defaultBindings.put( Input.Keys.F,              SPDAction.INVENTORY );
 		defaultBindings.put( Input.Keys.I,              SPDAction.INVENTORY );
 		defaultBindings.put( Input.Keys.NUM_1,          SPDAction.QUICKSLOT_1 );
 		defaultBindings.put( Input.Keys.NUM_2,          SPDAction.QUICKSLOT_2 );
@@ -125,16 +121,15 @@ public class SPDAction extends GameAction {
 		defaultBindings.put( Input.Keys.F4,             SPDAction.BAG_4 );
 		defaultBindings.put( Input.Keys.F5,             SPDAction.BAG_5 );
 
-		defaultBindings.put( Input.Keys.G,              SPDAction.SEARCH );
-		defaultBindings.put( Input.Keys.B,              SPDAction.REST );
+		defaultBindings.put( Input.Keys.E,              SPDAction.EXAMINE );
+		defaultBindings.put( Input.Keys.Z,              SPDAction.REST );
 
-		defaultBindings.put( Input.Keys.R,              SPDAction.TAG_ATTACK );
-		defaultBindings.put( Input.Keys.CONTROL_LEFT,   SPDAction.TAG_ATTACK );
+		defaultBindings.put( Input.Keys.Q,              SPDAction.TAG_ATTACK );
 		defaultBindings.put( Input.Keys.TAB,            SPDAction.TAG_DANGER );
-		defaultBindings.put( Input.Keys.F,              SPDAction.TAG_ACTION );
-		defaultBindings.put( Input.Keys.V,              SPDAction.TAG_LOOT );
+		defaultBindings.put( Input.Keys.X,              SPDAction.TAG_ACTION );
+		defaultBindings.put( Input.Keys.C,              SPDAction.TAG_LOOT );
 		defaultBindings.put( Input.Keys.ENTER,          SPDAction.TAG_LOOT );
-		defaultBindings.put( Input.Keys.SPACE,          SPDAction.TAG_RESUME );
+		defaultBindings.put( Input.Keys.R,              SPDAction.TAG_RESUME );
 
 		defaultBindings.put( Input.Keys.H,              SPDAction.HERO_INFO );
 		defaultBindings.put( Input.Keys.J,              SPDAction.JOURNAL );
