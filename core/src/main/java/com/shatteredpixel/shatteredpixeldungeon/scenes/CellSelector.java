@@ -373,7 +373,9 @@ public class CellSelector extends ScrollArea {
 
 		if (cell != Dungeon.hero.pos && cell != lastCellMoved){
 			lastCellMoved = cell;
-			select(cell, PointerEvent.LEFT);
+			if (Dungeon.hero.handle( cell )) {
+				Dungeon.hero.next();
+			}
 			return true;
 
 		} else {
