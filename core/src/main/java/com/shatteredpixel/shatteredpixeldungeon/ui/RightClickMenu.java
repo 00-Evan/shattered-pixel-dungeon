@@ -79,6 +79,22 @@ public class RightClickMenu extends Component {
 		separator = new ColorBlock(1, 1, 0xFF000000);
 		add(separator);
 
+		blocker = new PointerArea(0, 0, 0, 0){
+			@Override
+			public boolean onSignal(PointerEvent event) {
+				boolean hit = event != null && target.overlapsScreenPoint( (int)event.current.x, (int)event.current.y );
+				if (event != null && event.type == PointerEvent.Type.HOVER && !hit){
+					RightClickMenu.this.destroy();
+					RightClickMenu.this.killAndErase();
+				} else if (hit){
+					return true;
+				}
+				return false;
+			}
+		};
+		blocker.target = bg;
+		add(blocker);
+
 		buttons = new RedButton[options.length];
 		for (int i = 0; i < options.length; i++){
 			int finalI = i;
@@ -99,17 +115,6 @@ public class RightClickMenu extends Component {
 			}
 			add(buttons[i]);
 		}
-
-		blocker = new PointerArea(0, 0, 0, 0){
-			@Override
-			protected void onHoverEnd(PointerEvent event) {
-				RightClickMenu.this.destroy();
-				RightClickMenu.this.killAndErase();
-			}
-		};
-		blocker.blockLevel = PointerArea.NEVER_BLOCK;
-		blocker.target = bg;
-		add(blocker);
 
 	}
 
