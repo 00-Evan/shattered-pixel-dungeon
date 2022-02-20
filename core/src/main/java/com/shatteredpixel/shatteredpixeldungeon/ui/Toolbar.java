@@ -126,7 +126,8 @@ public class Toolbar extends Component {
 
 			@Override
 			public GameAction keyAction() {
-				return SPDAction.REST;
+				if (btnWait.active) return SPDAction.REST;
+				else				return null;
 			}
 		});
 		

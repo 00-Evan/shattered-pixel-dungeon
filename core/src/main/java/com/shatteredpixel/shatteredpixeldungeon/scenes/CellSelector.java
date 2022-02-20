@@ -305,6 +305,7 @@ public class CellSelector extends ScrollArea {
 
 			} else if (directionFromAction(action) != 0) {
 
+				Dungeon.hero.resting = false;
 				lastCellMoved = -1;
 				if (heldAction1 == SPDAction.NONE){
 					heldAction1 = action;
@@ -316,6 +317,9 @@ public class CellSelector extends ScrollArea {
 					heldAction3 = action;
 				}
 
+				return true;
+			} else if (Dungeon.hero.resting){
+				Dungeon.hero.resting = false;
 				return true;
 			}
 			
@@ -335,6 +339,7 @@ public class CellSelector extends ScrollArea {
 		if (newLeftStick != leftStickAction){
 			if (leftStickAction == SPDAction.NONE){
 				heldDelay = 0.05f;
+				Dungeon.hero.resting = false;
 			} else if (newLeftStick == SPDAction.NONE && heldDelay > 0f){
 				heldDelay = 0f;
 				moveFromActions(leftStickAction);
