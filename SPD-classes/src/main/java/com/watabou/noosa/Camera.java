@@ -209,11 +209,11 @@ public class Camera extends Gizmo {
 	}
 
 	public void setCenterOffset( float x, float y ){
-		scroll.x += x - centerOffset.x;
-		scroll.y += y - centerOffset.y;
+		scroll.x    += x - centerOffset.x;
+		scroll.y    += y - centerOffset.y;
+		panTarget.x += x - centerOffset.x;
+		panTarget.y += y - centerOffset.y;
 		centerOffset.set(x, y);
-		panIntensity = 0f;
-		followTarget = null;
 	}
 	
 	public void snapTo(float x, float y ) {
