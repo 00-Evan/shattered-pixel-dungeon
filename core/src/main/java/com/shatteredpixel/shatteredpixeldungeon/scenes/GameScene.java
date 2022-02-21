@@ -1110,7 +1110,7 @@ public class GameScene extends PixelScene {
 		}
 	}
 
-	public static boolean InterfaceBlockingHero(){
+	public static boolean interfaceBlockingHero(){
 		if (scene == null) return false;
 
 		for (Gizmo g : scene.members){
@@ -1227,7 +1227,8 @@ public class GameScene extends PixelScene {
 		cancelCellSelector();
 
 		if (scene != null) {
-			if (scene.inventory != null && scene.inventory.visible){
+			//TODO can the inventory pane work in these cases? bad to fallback to mobile window
+			if (scene.inventory != null && scene.inventory.visible && !interfaceBlockingHero()){
 				scene.inventory.setSelector(listener);
 				return null;
 			} else {
