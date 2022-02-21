@@ -247,6 +247,9 @@ public class CellSelector extends ScrollArea {
 	private GameAction heldAction3 = SPDAction.NONE;
 
 	private float heldDelay = 0f;
+	//note that delay starts ticking down on the frame it is processed
+	// so in most cases the actual wait is 50-58ms
+	private static final float INITIAL_DELAY = 0.06f;
 	private boolean delayingForRelease = false;
 	
 	private Signal.Listener<KeyEvent> keyListener = new Signal.Listener<KeyEvent>() {
@@ -300,7 +303,7 @@ public class CellSelector extends ScrollArea {
 					delayingForRelease = true;
 					//in case more keys are being released
 					//note that this delay can tick down while the hero is moving
-					heldDelay = 0.05f;
+					heldDelay = INITIAL_DELAY;
 				}
 
 			} else if (directionFromAction(action) != 0) {
@@ -309,7 +312,7 @@ public class CellSelector extends ScrollArea {
 				lastCellMoved = -1;
 				if (heldAction1 == SPDAction.NONE){
 					heldAction1 = action;
-					heldDelay = 0.05f;
+					heldDelay = INITIAL_DELAY;
 					delayingForRelease = false;
 				} else if (heldAction2 == SPDAction.NONE){
 					heldAction2 = action;
@@ -338,7 +341,7 @@ public class CellSelector extends ScrollArea {
 
 		if (newLeftStick != leftStickAction){
 			if (leftStickAction == SPDAction.NONE){
-				heldDelay = 0.05f;
+				heldDelay = INITIAL_DELAY;
 				Dungeon.hero.resting = false;
 			} else if (newLeftStick == SPDAction.NONE && heldDelay > 0f){
 				heldDelay = 0f;
