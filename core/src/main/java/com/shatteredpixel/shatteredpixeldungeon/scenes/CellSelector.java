@@ -335,6 +335,10 @@ public class CellSelector extends ScrollArea {
 	public void update() {
 		super.update();
 
+		if (GameScene.interfaceBlockingHero()){
+			return;
+		}
+
 		GameAction newLeftStick = actionFromStick(ControllerHandler.leftStickPosition.x,
 				ControllerHandler.leftStickPosition.y);
 
