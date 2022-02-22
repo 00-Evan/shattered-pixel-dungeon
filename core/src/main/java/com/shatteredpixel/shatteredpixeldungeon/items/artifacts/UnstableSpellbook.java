@@ -156,6 +156,7 @@ public class UnstableSpellbook extends Artifact {
 								fScroll.doRead();
 								Talent.onArtifactUsed(Dungeon.hero);
 							}
+							updateQuickslot();
 						}
 						
 						@Override
@@ -190,6 +191,7 @@ public class UnstableSpellbook extends Artifact {
 				@Override
 				public void call() {
 					scroll.doRead();
+					Item.updateQuickslot();
 				}
 			});
 			detach();
