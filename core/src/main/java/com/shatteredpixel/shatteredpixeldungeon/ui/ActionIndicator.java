@@ -98,8 +98,9 @@ public class ActionIndicator extends Tag {
 
 	@Override
 	protected void onClick() {
-		if (action != null && Dungeon.hero.ready)
+		if (action != null && Dungeon.hero.ready) {
 			action.doAction();
+		}
 	}
 
 	@Override

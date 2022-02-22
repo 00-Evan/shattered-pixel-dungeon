@@ -92,7 +92,7 @@ public class Toolbar extends Component {
 		add(btnWait = new Tool(24, 0, 20, 26) {
 			@Override
 			protected void onClick() {
-				if (!GameScene.cancel()) {
+				if (Dungeon.hero.ready && !GameScene.cancel()) {
 					examining = false;
 					Dungeon.hero.rest(false);
 				}
@@ -109,7 +109,7 @@ public class Toolbar extends Component {
 			}
 
 			protected boolean onLongClick() {
-				if (!GameScene.cancel()) {
+				if (Dungeon.hero.ready && !GameScene.cancel()) {
 					examining = false;
 					Dungeon.hero.rest(true);
 				}
@@ -120,8 +120,10 @@ public class Toolbar extends Component {
 		add(new Button(){
 			@Override
 			protected void onClick() {
-				examining = false;
-				Dungeon.hero.rest(true);
+				if (Dungeon.hero.ready) {
+					examining = false;
+					Dungeon.hero.rest(true);
+				}
 			}
 
 			@Override
@@ -134,12 +136,14 @@ public class Toolbar extends Component {
 		add(btnSearch = new Tool(44, 0, 20, 26) {
 			@Override
 			protected void onClick() {
-				if (!examining) {
-					GameScene.selectCell(informer);
-					examining = true;
-				} else {
-					informer.onSelect(null);
-					Dungeon.hero.search(true);
+				if (Dungeon.hero.ready) {
+					if (!examining) {
+						GameScene.selectCell(informer);
+						examining = true;
+					} else {
+						informer.onSelect(null);
+						Dungeon.hero.search(true);
+					}
 				}
 			}
 			
@@ -167,10 +171,12 @@ public class Toolbar extends Component {
 
 			@Override
 			protected void onClick() {
-				if (SPDSettings.interfaceSize() == 2){
-					GameScene.toggleInvPane();
-				} else {
-					GameScene.show(new WndBag(Dungeon.hero.belongings.backpack));
+				if (Dungeon.hero.ready || !Dungeon.hero.isAlive()) {
+					if (SPDSettings.interfaceSize() == 2) {
+						GameScene.toggleInvPane();
+					} else {
+						GameScene.show(new WndBag(Dungeon.hero.belongings.backpack));
+					}
 				}
 			}
 			

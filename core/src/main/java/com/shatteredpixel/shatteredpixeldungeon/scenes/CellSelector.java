@@ -368,7 +368,7 @@ public class CellSelector extends ScrollArea {
 	private int lastCellMoved = 0;
 
 	private boolean moveFromActions(GameAction... actions){
-		if (Dungeon.hero == null){
+		if (Dungeon.hero == null || !Dungeon.hero.ready){
 			return false;
 		}
 
