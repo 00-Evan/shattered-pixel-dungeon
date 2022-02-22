@@ -253,7 +253,15 @@ public abstract class Recipe {
 	}
 	
 	public static boolean usableInRecipe(Item item){
-		return !item.cursed && (!(item instanceof EquipableItem) || item instanceof MissileWeapon);
+		if (item instanceof EquipableItem){
+			//only thrown weapons and wands allowed among equipment items
+			return item.isIdentified() && !item.cursed && item instanceof MissileWeapon;
+		} else if (item instanceof Wand) {
+			return item.isIdentified() && !item.cursed;
+		} else {
+			//other items can be unidentified, but not cursed
+			return !item.cursed;
+		}
 	}
 }
 
