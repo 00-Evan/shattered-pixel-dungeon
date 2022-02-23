@@ -126,8 +126,7 @@ public class InventoryPane extends Component {
 			protected void onClick(PointerEvent event) {
 				if (selector != null && !bg.overlapsScreenPoint((int)event.current.x, (int)event.current.y)){
 					//any windows opened as a consequence of this should be centered on the inventory
-					GameScene.lastOffset = new Point((int)InventoryPane.this.centerX() - camera.width/2,
-							(int)InventoryPane.this.centerY() - camera.height/2);
+					GameScene.centerNextWndOnInvPane();
 					selector.onSelect(null);
 					selector = null;
 					updateInventory();
@@ -475,8 +474,7 @@ public class InventoryPane extends Component {
 			}
 
 			//any windows opened as a consequence of this button should be centered on the inventory
-			GameScene.lastOffset = new Point((int)InventoryPane.this.centerX() - camera.width/2,
-					(int)InventoryPane.this.centerY() - camera.height/2);
+			GameScene.centerNextWndOnInvPane();
 			if (selector != null) {
 				WndBag.ItemSelector activating = selector;
 				selector = null;

@@ -753,7 +753,7 @@ public class GameScene extends PixelScene {
 		toDestroy.clear();
 	}
 
-	public static Point lastOffset = null;
+	private static Point lastOffset = null;
 
 	@Override
 	public synchronized Gizmo erase (Gizmo g) {
@@ -1134,6 +1134,13 @@ public class GameScene extends PixelScene {
 				scene.toolbar.setPos(scene.toolbar.left(), scene.inventory.top()-scene.toolbar.height());
 			}
 			layoutTags();
+		}
+	}
+
+	public static void centerNextWndOnInvPane(){
+		if (scene != null && scene.inventory != null && scene.inventory.visible){
+			lastOffset = new Point((int)scene.inventory.centerX() - uiCamera.width/2,
+					(int)scene.inventory.centerY() - uiCamera.height/2);
 		}
 	}
 
