@@ -1329,7 +1329,7 @@ public class GameScene extends PixelScene {
 			if (obj instanceof Hero)        names.add(((Hero) obj).className().toUpperCase(Locale.ENGLISH));
 			else if (obj instanceof Mob)    names.add(Messages.titleCase( ((Mob)obj).name() ));
 			else if (obj instanceof Heap)   names.add(Messages.titleCase( ((Heap)obj).toString() ));
-			else if (obj instanceof Plant)  names.add(Messages.titleCase( ((Plant) obj).plantName ));
+			else if (obj instanceof Plant)  names.add(Messages.titleCase( ((Plant) obj).name() ));
 			else if (obj instanceof Trap)   names.add(Messages.titleCase( ((Trap) obj).name() ));
 		}
 		return names;

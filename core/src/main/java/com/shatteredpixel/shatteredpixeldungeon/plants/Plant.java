@@ -50,8 +50,6 @@ import com.watabou.utils.Reflection;
 import java.util.ArrayList;
 
 public abstract class Plant implements Bundlable {
-
-	public String plantName = Messages.get(this, "name");
 	
 	public int image;
 	public int pos;
@@ -113,7 +111,11 @@ public abstract class Plant implements Bundlable {
 	public void storeInBundle( Bundle bundle ) {
 		bundle.put( POS, pos );
 	}
-	
+
+	public String name(){
+		return Messages.get(this, "name");
+	}
+
 	public String desc() {
 		String desc = Messages.get(this, "desc");
 		if (Dungeon.hero.subClass == HeroSubClass.WARDEN){
