@@ -55,7 +55,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 			freerunCooldown--;
 		}
 
-		if (freerunCooldown == 0 && target.invisible > 0 && Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH) >= 1){
+		if (freerunCooldown == 0 && !freerunning() && target.invisible > 0 && Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH) >= 1){
 			momentumStacks = Math.min(momentumStacks + 2, 10);
 			movedLastTurn = true;
 		}
@@ -79,7 +79,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 	
 	public void gainStack(){
 		movedLastTurn = true;
-		if (freerunCooldown <= 0){
+		if (freerunCooldown <= 0 && !freerunning()){
 			postpone(target.cooldown()+(1/target.speed()));
 			momentumStacks = Math.min(momentumStacks + 1, 10);
 			ActionIndicator.setAction(this);
