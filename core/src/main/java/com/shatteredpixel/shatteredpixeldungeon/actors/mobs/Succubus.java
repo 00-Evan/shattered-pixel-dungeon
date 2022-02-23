@@ -68,7 +68,7 @@ public class Succubus extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 25, 30 );
+		return Random.NormalIntRange( 2, 3 );
 	}
 	
 	@Override
@@ -104,9 +104,12 @@ public class Succubus extends Mob {
 	protected boolean getCloser( int target ) {
 		if (fieldOfView[target] && Dungeon.level.distance( pos, target ) > 2 && blinkCooldown <= 0) {
 			
-			blink( target );
-			spend( -1 / speed() );
-			return true;
+			if (blink( target )) {
+				spend(-1 / speed());
+				return true;
+			} else {
+				return false;
+			}
 			
 		} else {
 
@@ -116,7 +119,7 @@ public class Succubus extends Mob {
 		}
 	}
 	
-	private void blink( int target ) {
+	private boolean blink( int target ) {
 		
 		Ballistica route = new Ballistica( pos, target, Ballistica.PROJECTILE);
 		int cell = route.collisionPos;
@@ -125,7 +128,7 @@ public class Succubus extends Mob {
 		if (Actor.findChar( cell ) != null && cell != this.pos)
 			cell = route.path.get(route.dist-1);
 
-		if (Dungeon.level.avoid[ cell ] && (!properties().contains(Property.LARGE) || Dungeon.level.openSpace[cell])){
+		if (Dungeon.level.avoid[ cell ] || (properties().contains(Property.LARGE) && !Dungeon.level.openSpace[cell])){
 			ArrayList<Integer> candidates = new ArrayList<>();
 			for (int n : PathFinder.NEIGHBOURS8) {
 				cell = route.collisionPos + n;
@@ -139,13 +142,14 @@ public class Succubus extends Mob {
 				cell = Random.element(candidates);
 			else {
 				blinkCooldown = Random.IntRange(4, 6);
-				return;
+				return false;
 			}
 		}
 		
 		ScrollOfTeleportation.appear( this, cell );
 
 		blinkCooldown = Random.IntRange(4, 6);
+		return true;
 	}
 	
 	@Override
