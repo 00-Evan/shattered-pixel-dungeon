@@ -45,31 +45,22 @@ public class WildEnergy extends TargetedSpell {
 	//we rely on cursedWand to do fx instead
 	@Override
 	protected void fx(Ballistica bolt, Callback callback) {
-		affectTarget(bolt, curUser);
+		CursedWand.cursedZap(this, curUser, bolt, callback);
 	}
 	
 	@Override
 	protected void affectTarget(Ballistica bolt, final Hero hero) {
-		CursedWand.cursedZap(this, hero, bolt, new Callback() {
-			@Override
-			public void call() {
-				Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
-				Sample.INSTANCE.play( Assets.Sounds.CHARGEUP );
-				ScrollOfRecharging.charge(hero);
+		Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
+		Sample.INSTANCE.play( Assets.Sounds.CHARGEUP );
+		ScrollOfRecharging.charge(hero);
 
-				hero.belongings.charge(1f);
-				for (Buff b : hero.buffs()){
-					if (b instanceof Artifact.ArtifactBuff) ((Artifact.ArtifactBuff) b).charge(hero, 4);
-				}
+		hero.belongings.charge(1f);
+		for (Buff b : hero.buffs()){
+			if (b instanceof Artifact.ArtifactBuff) ((Artifact.ArtifactBuff) b).charge(hero, 4);
+		}
 
-				Buff.affect(hero, Recharging.class, 8f);
-				Buff.affect(hero, ArtifactRecharge.class).prolong( 8 ).ignoreHornOfPlenty = false;
-				
-				detach( curUser.belongings.backpack );
-				updateQuickslot();
-				curUser.spendAndNext( 1f );
-			}
-		});
+		Buff.affect(hero, Recharging.class, 8f);
+		Buff.affect(hero, ArtifactRecharge.class).prolong( 8 ).ignoreHornOfPlenty = false;
 	}
 	
 	@Override
