@@ -91,13 +91,15 @@ public class AttackIndicator extends Tag {
 		super.update();
 
 		if (!bg.visible){
+			if (sprite != null) sprite.visible = false;
 			enable(false);
 			if (delay > 0f) delay -= Game.elapsed;
 			if (delay <= 0f) active = false;
 		} else {
 			delay = 0.75f;
 			active = true;
-		
+			if (bg.width > 0 && sprite != null)sprite.visible = true;
+
 			if (Dungeon.hero.isAlive()) {
 
 				enable(Dungeon.hero.ready);
@@ -168,9 +170,6 @@ public class AttackIndicator extends Tag {
 	
 	private synchronized void visible( boolean value ) {
 		bg.visible = value;
-		if (sprite != null) {
-			sprite.visible = value;
-		}
 	}
 	
 	@Override
