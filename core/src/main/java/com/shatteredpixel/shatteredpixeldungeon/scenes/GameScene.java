@@ -1110,12 +1110,20 @@ public class GameScene extends PixelScene {
 		}
 	}
 
-	public static boolean interfaceBlockingHero(){
+	public static boolean showingWindow(){
 		if (scene == null) return false;
 
 		for (Gizmo g : scene.members){
 			if (g instanceof Window) return true;
 		}
+
+		return false;
+	}
+
+	public static boolean interfaceBlockingHero(){
+		if (scene == null) return false;
+
+		if (showingWindow()) return true;
 
 		if (scene.inventory != null && scene.inventory.isSelecting()){
 			return true;
@@ -1235,7 +1243,7 @@ public class GameScene extends PixelScene {
 
 		if (scene != null) {
 			//TODO can the inventory pane work in these cases? bad to fallback to mobile window
-			if (scene.inventory != null && scene.inventory.visible && !interfaceBlockingHero()){
+			if (scene.inventory != null && scene.inventory.visible && !showingWindow()){
 				scene.inventory.setSelector(listener);
 				return null;
 			} else {

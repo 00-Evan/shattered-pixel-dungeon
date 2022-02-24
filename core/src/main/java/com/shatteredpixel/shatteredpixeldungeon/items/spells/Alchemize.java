@@ -117,8 +117,8 @@ public class Alchemize extends Spell {
 						@Override
 						protected void onClick() {
 							WndTradeItem.sell(item);
-							consumeAlchemize();
 							hide();
+							consumeAlchemize();
 						}
 					};
 					btnSell.setRect(0, pos + GAP, width, BTN_HEIGHT);
@@ -134,8 +134,8 @@ public class Alchemize extends Spell {
 						@Override
 						protected void onClick() {
 							WndTradeItem.sellOne(item);
-							consumeAlchemize();
 							hide();
+							consumeAlchemize();
 						}
 					};
 					btnSell1.setRect(0, pos + GAP, width, BTN_HEIGHT);
@@ -145,8 +145,8 @@ public class Alchemize extends Spell {
 						@Override
 						protected void onClick() {
 							WndTradeItem.sell(item);
-							consumeAlchemize();
 							hide();
+							consumeAlchemize();
 						}
 					};
 					btnSellAll.setRect(0, btnSell1.bottom() + 1, width, BTN_HEIGHT);
@@ -165,8 +165,8 @@ public class Alchemize extends Spell {
 						@Override
 						protected void onClick() {
 							WndEnergizeItem.energize(item);
-							consumeAlchemize();
 							hide();
+							consumeAlchemize();
 						}
 					};
 					btnEnergize.setRect(0, pos + GAP, width, BTN_HEIGHT);
@@ -182,8 +182,8 @@ public class Alchemize extends Spell {
 						@Override
 						protected void onClick() {
 							WndEnergizeItem.energizeOne(item);
-							consumeAlchemize();
 							hide();
+							consumeAlchemize();
 						}
 					};
 					btnEnergize1.setRect(0, pos + GAP, width, BTN_HEIGHT);
@@ -193,8 +193,8 @@ public class Alchemize extends Spell {
 						@Override
 						protected void onClick() {
 							WndEnergizeItem.energize(item);
-							consumeAlchemize();
 							hide();
+							consumeAlchemize();
 						}
 					};
 					btnEnergizeAll.setRect(0, btnEnergize1.bottom() + 1, width, BTN_HEIGHT);
