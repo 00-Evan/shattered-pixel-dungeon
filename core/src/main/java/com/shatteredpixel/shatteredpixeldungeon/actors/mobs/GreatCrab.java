@@ -70,17 +70,29 @@ public class GreatCrab extends Crab {
 
 	@Override
 	public void damage( int dmg, Object src ){
-		//crab blocks all attacks originating from its current enemy if it sees them.
-		//All direct damage is negated, no exceptions. environmental effects go through as normal.
+		//crab blocks all wand damage from the hero if it sees them.
+		//Direct damage is negated, but add-on effects and environmental effects go through as normal.
 		if ((enemySeen && state != SLEEPING && paralysed == 0)
-				&& ((src instanceof Wand && enemy == Dungeon.hero)
-				|| (src instanceof Char && enemy == src))){
+				&& (src instanceof Wand && enemy == Dungeon.hero)){
 			GLog.n( Messages.get(this, "noticed") );
-			sprite.showStatus( CharSprite.NEUTRAL, Messages.get(this, "blocked") );
+			sprite.showStatus( CharSprite.NEUTRAL, Messages.get(this, "def_verb") );
 			Sample.INSTANCE.play( Assets.Sounds.HIT_PARRY, 1, Random.Float(0.96f, 1.05f));
 		} else {
 			super.damage( dmg, src );
 		}
+	}
+
+	@Override
+	public int defenseSkill( Char enemy ) {
+		//crab blocks all melee attacks from its current target
+		if (enemySeen && state != SLEEPING && paralysed == 0 && enemy == this.enemy){
+			if (sprite != null && sprite.visible) {
+				Sample.INSTANCE.play(Assets.Sounds.HIT_PARRY, 1, Random.Float(0.96f, 1.05f));
+				GLog.n( Messages.get(this, "noticed") );
+			}
+			return INFINITE_EVASION;
+		}
+		return super.defenseSkill( enemy );
 	}
 
 	@Override
