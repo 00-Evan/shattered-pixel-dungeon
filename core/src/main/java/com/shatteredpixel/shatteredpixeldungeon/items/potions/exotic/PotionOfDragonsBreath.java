@@ -74,17 +74,22 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 	
 	private CellSelector.Listener targeter = new CellSelector.Listener() {
 
-		private boolean optionSelected = false;
+		private boolean showingWindow = false;
+		private boolean potionAlreadyUsed = false;
 
 		@Override
 		public void onSelect(final Integer cell) {
 
-			if (optionSelected){
+			if (showingWindow){
+				return;
+			}
+			if (potionAlreadyUsed){
+				potionAlreadyUsed = false;
 				return;
 			}
 
 			if (cell == null && identifiedByUse){
-				optionSelected = true;
+				showingWindow = true;
 				GameScene.show( new WndOptions(new ItemSprite(PotionOfDragonsBreath.this),
 						Messages.titleCase(name()),
 						Messages.get(ExoticPotion.class, "warning"),
@@ -92,7 +97,7 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 						Messages.get(ExoticPotion.class, "no") ) {
 					@Override
 					protected void onSelect( int index ) {
-						optionSelected = false;
+						showingWindow = false;
 						switch (index) {
 							case 0:
 								curUser.spendAndNext(1f);
@@ -108,7 +113,7 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 			} else if (cell == null && !anonymous){
 				curItem.collect( curUser.belongings.backpack );
 			} else if (cell != null) {
-				optionSelected = true;
+				potionAlreadyUsed = true;
 				identifiedByUse = false;
 				curUser.busy();
 				Sample.INSTANCE.play( Assets.Sounds.DRINK );

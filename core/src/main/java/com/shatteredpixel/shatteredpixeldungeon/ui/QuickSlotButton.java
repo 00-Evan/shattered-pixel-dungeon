@@ -94,7 +94,7 @@ public class QuickSlotButton extends Button {
 					}
 				} else {
 					Item item = select(slotNum);
-					if (Dungeon.hero.belongings.contains(item)) {
+					if (Dungeon.hero.belongings.contains(item) && !GameScene.cancel()) {
 						GameScene.centerNextWndOnInvPane();
 						item.execute(Dungeon.hero);
 						if (item.usesTargeting) {
@@ -191,12 +191,16 @@ public class QuickSlotButton extends Button {
 	
 	@Override
 	protected void onClick() {
-		GameScene.selectItem( itemSelector );
+		if (Dungeon.hero.ready && !GameScene.cancel()) {
+			GameScene.selectItem(itemSelector);
+		}
 	}
 	
 	@Override
 	protected boolean onLongClick() {
-		GameScene.selectItem( itemSelector );
+		if (Dungeon.hero.ready && !GameScene.cancel()) {
+			GameScene.selectItem(itemSelector);
+		}
 		return true;
 	}
 

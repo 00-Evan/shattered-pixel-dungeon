@@ -120,7 +120,7 @@ public class Toolbar extends Component {
 		add(new Button(){
 			@Override
 			protected void onClick() {
-				if (Dungeon.hero.ready) {
+				if (Dungeon.hero.ready && !GameScene.cancel()) {
 					examining = false;
 					Dungeon.hero.rest(true);
 				}
@@ -136,7 +136,7 @@ public class Toolbar extends Component {
 		add(btnSearch = new Tool(44, 0, 20, 26) {
 			@Override
 			protected void onClick() {
-				if (Dungeon.hero.ready) {
+				if (Dungeon.hero.ready && !GameScene.cancel()) {
 					if (!examining) {
 						GameScene.selectCell(informer);
 						examining = true;
@@ -175,7 +175,9 @@ public class Toolbar extends Component {
 					if (SPDSettings.interfaceSize() == 2) {
 						GameScene.toggleInvPane();
 					} else {
-						GameScene.show(new WndBag(Dungeon.hero.belongings.backpack));
+						if (!GameScene.cancel()) {
+							GameScene.show(new WndBag(Dungeon.hero.belongings.backpack));
+						}
 					}
 				}
 			}
