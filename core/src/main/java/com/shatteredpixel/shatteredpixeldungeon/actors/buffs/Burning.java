@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Thief;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
@@ -91,7 +92,7 @@ public class Burning extends Buff implements Hero.Doom {
 			int damage = Random.NormalIntRange( 1, 3 + Dungeon.depth/4 );
 			Buff.detach( target, Chill.class);
 
-			if (target instanceof Hero) {
+			if (target instanceof Hero && target.buff(TimekeepersHourglass.timeStasis.class) == null) {
 				
 				Hero hero = (Hero)target;
 
