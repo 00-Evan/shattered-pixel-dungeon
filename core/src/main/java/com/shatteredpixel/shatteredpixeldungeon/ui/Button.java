@@ -105,8 +105,17 @@ public class Button extends Component {
 		KeyEvent.addKeyListener( keyListener = new Signal.Listener<KeyEvent>() {
 			@Override
 			public boolean onSignal ( KeyEvent event ) {
-				if ( active && event.pressed && KeyBindings.getActionForKey( event ) == keyAction()){
-					onClick();
+				if ( active && KeyBindings.getActionForKey( event ) == keyAction()){
+					if (event.pressed){
+						pressed = true;
+						pressTime = 0;
+						processed = false;
+						Button.this.onPointerDown();
+					} else {
+						Button.this.onPointerUp();
+						if (pressed && !processed) onClick();
+						pressed = false;
+					}
 					return true;
 				}
 				return false;
