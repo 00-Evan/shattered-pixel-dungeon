@@ -103,7 +103,12 @@ public class QuickSlotButton extends Button {
 					}
 				}
 			}
-			
+
+			@Override
+			protected void onRightClick() {
+				QuickSlotButton.this.onLongClick();
+			}
+
 			@Override
 			public GameAction keyAction() {
 				return QuickSlotButton.this.keyAction();
