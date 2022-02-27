@@ -11,6 +11,8 @@ processResources {
     from new File(project(':desktop').projectDir,"/src/main/assets")
 }
 
+def osName = System.getProperty('os.name').toLowerCase(Locale.ROOT)
+
 task debug(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     ignoreExitValue = true
@@ -19,6 +21,10 @@ task debug(type: JavaExec) {
     systemProperty 'Specification-Title', appName
     systemProperty 'Specification-Version', appVersionName + "-INDEV"
     systemProperty 'Implementation-Version', appVersionCode
+
+    if (osName.contains('mac')) {
+        jvmArgs '-XstartOnFirstThread'
+    }
 }
 
 task release(type: Jar) {
@@ -39,7 +45,6 @@ installDist.dependsOn release
 startScripts.dependsOn release
 jpackageImage.dependsOn release
 
-def osName = System.getProperty('os.name').toLowerCase(Locale.ROOT)
 runtime {
     modules = ['java.base',
                'java.desktop',
