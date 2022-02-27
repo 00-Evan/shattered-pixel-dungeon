@@ -31,7 +31,7 @@ import com.watabou.utils.PointF;
 
 public class ControllerHandler implements ControllerListener {
 
-	public static enum ControllerType {
+	public enum ControllerType {
 		XBOX,
 		PLAYSTATION,
 		NINTENDO,
@@ -98,6 +98,7 @@ public class ControllerHandler implements ControllerListener {
 	private float L2Trigger = 0f;
 	private float R2Trigger = 0f;
 
+	//FIXME these axis mappings seem to be wrong on Android (and iOS?) in some cases
 	@Override
 	public boolean axisMoved(Controller controller, int axisCode, float value) {
 		setControllerType(controller);
@@ -128,6 +129,18 @@ public class ControllerHandler implements ControllerListener {
 
 		}
 		return true;
+	}
+
+	//we use a separate variable as Gdx.input.isCursorCatched only works on desktop
+	private static boolean controllerPointerActive = false;
+
+	public static void setControllerPointer( boolean active ){
+		Gdx.input.setCursorCatched(active);
+		controllerPointerActive = active;
+	}
+
+	public static boolean controllerPointerActive(){
+		return controllerPointerActive;
 	}
 
 	//converts controller button codes to keyEvent codes

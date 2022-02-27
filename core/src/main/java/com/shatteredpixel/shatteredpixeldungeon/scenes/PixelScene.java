@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
-import com.badlogic.gdx.Gdx;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
@@ -41,6 +40,7 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Gizmo;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.Scene;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.ui.Component;
@@ -159,7 +159,7 @@ public class PixelScene extends Scene {
 
 	}
 
-	private PointF fractionalMovement = new PointF();
+	private static PointF virtualCursorPos;
 
 	@Override
 	public void update() {
@@ -167,18 +167,36 @@ public class PixelScene extends Scene {
 		//15% deadzone
 		if (Math.abs(ControllerHandler.rightStickPosition.x) >= 0.15f
 				|| Math.abs(ControllerHandler.rightStickPosition.y) >= 0.15f) {
-			PointF curMouse = PointerEvent.currentHoverPos();
+			if (!ControllerHandler.controllerPointerActive()) {
+				ControllerHandler.setControllerPointer(true);
+				virtualCursorPos = PointerEvent.currentHoverPos();
+			}
 			//cursor moves 500 scaled pixels per second at full speed, 75 at minimum speed
-			fractionalMovement.x += defaultZoom * 500 * Game.elapsed * ControllerHandler.rightStickPosition.x;
-			fractionalMovement.y += defaultZoom * 500 * Game.elapsed * ControllerHandler.rightStickPosition.y;
-			curMouse.x += (int)fractionalMovement.x;
-			curMouse.y += (int)fractionalMovement.y;
-			Gdx.input.setCursorPosition((int) curMouse.x, (int) curMouse.y);
-			PointerEvent.addPointerEvent(new PointerEvent((int) curMouse.x, (int) curMouse.y, 10_000, PointerEvent.Type.HOVER, PointerEvent.NONE));
-			fractionalMovement.x -= (int)fractionalMovement.x;
-			fractionalMovement.y -= (int)fractionalMovement.y;
-		} else {
-			fractionalMovement.set(0);
+			virtualCursorPos.x += defaultZoom * 500 * Game.elapsed * ControllerHandler.rightStickPosition.x;
+			virtualCursorPos.y += defaultZoom * 500 * Game.elapsed * ControllerHandler.rightStickPosition.y;
+			virtualCursorPos.x = GameMath.gate(0, virtualCursorPos.x, Game.width);
+			virtualCursorPos.y = GameMath.gate(0, virtualCursorPos.y, Game.height);
+			PointerEvent.addPointerEvent(new PointerEvent((int) virtualCursorPos.x, (int) virtualCursorPos.y, 10_000, PointerEvent.Type.HOVER, PointerEvent.NONE));
+		}
+	}
+
+	private Image cursor = null;
+
+	@Override
+	public synchronized void draw() {
+		super.draw();
+
+		//cursor is separate from the rest of the scene, always appears above
+		if (ControllerHandler.controllerPointerActive()){
+			if (cursor == null){
+				cursor = new Image(Cursor.Type.CONTROLLER.file);
+			}
+
+			cursor.x = (virtualCursorPos.x / defaultZoom) - cursor.width()/2f;
+			cursor.y = (virtualCursorPos.y / defaultZoom) - cursor.height()/2f;
+			cursor.camera = uiCamera;
+			align(cursor);
+			cursor.draw();
 		}
 	}
 
@@ -215,6 +233,9 @@ public class PixelScene extends Scene {
 	public void destroy() {
 		super.destroy();
 		PointerEvent.clearListeners();
+		if (cursor != null){
+			cursor.destroy();
+		}
 	}
 
 	public static boolean landscape(){

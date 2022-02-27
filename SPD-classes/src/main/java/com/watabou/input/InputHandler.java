@@ -108,6 +108,7 @@ public class InputHandler extends InputAdapter {
 	
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
+		ControllerHandler.setControllerPointer(false);
 		PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, -1, PointerEvent.Type.HOVER));
 		return true;
 	}

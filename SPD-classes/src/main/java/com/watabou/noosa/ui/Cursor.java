@@ -33,9 +33,10 @@ public class Cursor {
 	public enum Type {
 
 		//TODO if we ever add more cursors, should cache their pixmaps rather than always remaking
-		DEFAULT("gdx/cursor.png");
+		DEFAULT("gdx/cursor_mouse.png"),
+		CONTROLLER("gdx/cursor_controller.png");
 
-		private String file;
+		public final String file;
 
 		Type(String file){
 			this.file = file;
