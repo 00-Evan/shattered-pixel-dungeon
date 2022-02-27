@@ -62,6 +62,8 @@ public class WndTitledMessage extends Window {
 			text.maxWidth(width);
 		}
 
+		bringToFront(titlebar);
+
 		resize( width, (int)text.bottom() + 2 );
 	}
 }
