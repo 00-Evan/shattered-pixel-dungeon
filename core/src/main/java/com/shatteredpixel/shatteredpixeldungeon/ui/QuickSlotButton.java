@@ -254,6 +254,10 @@ public class QuickSlotButton extends Button {
 				&& (Dungeon.hero.buff(LostInventory.class) == null || Dungeon.quickslot.getItem(slotNum).keptThoughLostInvent));
 	}
 
+	public void slotMargins( int left, int top, int right, int bottom){
+		slot.setMargins(left, top, right, bottom);
+	}
+
 	public static void useTargeting(int idx){
 		instance[idx].useTargeting();
 	}

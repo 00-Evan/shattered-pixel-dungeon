@@ -460,7 +460,8 @@ public class Toolbar extends Component {
 		@Override
 		protected void layout() {
 			super.layout();
-			slot.setRect( x + borderLeft, y + 2, width - borderLeft-borderRight, height - 4 );
+			slot.setRect( x, y, width, height );
+			slot.slotMargins(borderLeft, 2, borderRight, 2);
 		}
 		
 		@Override
