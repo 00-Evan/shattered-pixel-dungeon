@@ -43,7 +43,7 @@ public class AlbinoSprite extends MobSprite {
 		attack.frames( frames, 18, 19, 20, 21 );
 		
 		die = new Animation( 10, false );
-		die.frames( frames, 0 );
+		die.frames( frames, 16 );
 		
 		play( idle );
 	}

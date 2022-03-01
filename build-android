@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+set -e -x
+
+export JAVA_HOME=/Applications/Android\ Studio.app/Contents/jre/Contents/Home
+
+./gradlew android:assembleRelease
+#-Pandroid.injected.signing.store.file

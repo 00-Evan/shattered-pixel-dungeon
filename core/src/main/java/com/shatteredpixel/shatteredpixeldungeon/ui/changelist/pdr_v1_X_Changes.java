@@ -22,7 +22,19 @@ public class pdr_v1_X_Changes {
 	}
 
 	public static void add_v1_0_Changes( ArrayList<ChangeInfo> changeInfos ) {
-		ChangeInfo changes = new ChangeInfo("v1.0.1", true, "");
+		ChangeInfo changes = new ChangeInfo("v1.0.2", true, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		changes.addButton(new ChangeButton(Icons.get(Icons.BRIAN), Messages.get(ChangesScene.class, "new"),
+				"_-_ Bugfix: Bandit, Acidic Scorpio, Albino Rat now use correct beam-up sprite\n" +
+						"_-_ Bugfix: Game Over scene has correct avatars\n" +
+						"_-_ Assassins are now Ninjas\n" +
+						"_-_ Corpse dust is now bone dust\n" +
+						"_-_ Chalice of blood is now goblet of life\n" +
+						"_-_ Goo (level 5 boss) is now Licorice Jello\n" +
+						"_-_ Corruption is now Mesmerization\n"));
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("v1.0.1", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changes.addButton(new ChangeButton(Icons.get(Icons.BRIAN), Messages.get(ChangesScene.class, "new"),
 						"_-_ New news feed! (Used to pull Shattered's news.)\n" +

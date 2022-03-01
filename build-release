@@ -1,5 +1,12 @@
 #!/usr/bin/env zsh
-set -e
+set -e -x
+
+if (( # < 2 )); then
+   print >&2 "Usage: $0 version destination"
+   exit 1
+fi
+
+export JAVA_HOME=/Applications/Android\ Studio.app/Contents/jre/Contents/Home
 
 # these should be parameters, or in a config file
 export ARCHS=thumbv7:arm64:x86_64
@@ -7,5 +14,10 @@ export PROFILE="iOS Team Provisioning Profile: net.casiello.pixeldungeonrescue-a
 export SIGNER=FEA20DC19A9659F28A81D1775EA815F9B976691A
 
 ./gradlew desktop:release
-./gradlew android:assembleRelease -Pandroid.injected.signing.store.file
+cp desktop/build/libs/desktop-$1.jar $2/PixelDungeonRescue-$1.jar
+
+./gradlew android:assembleRelease
+cp android/build/outputs/apk/release/android-release.apk $2/PixelDungeonRescue-$1.apk
+
 ./gradlew -Probovm.archs=$ARCHS -Probovm.iosProvisioningProfile=$PROFILE -Probovm.iosSignIdentity=$SIGNER ios:createIpa
+cp ios/build/robovm//IOSLauncher.ipa $2/PixelDungeonRescue-$1.ipa

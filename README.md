@@ -73,7 +73,7 @@ So Pixel Dungeon Rescue was born. You're not killing creatures, you're curing th
 to the surface for rehabilitation! You don't die, if you're defeated you get beamed to the surface
 and patched up ready to go again! So you lose all your stuff, and you're back at level 1. No biggie!
 
-Like any good software project, soon the entire user base (two kids)were sending in bug reports and
+Like any good software project, soon the entire user base (two kids) were sending in bug reports and
 change requests: "I want to be a girl mage!" "I want to be a boy hunter!" "Miso soup should heal
 you, it always makes me feel better when I have tummy ache!" "I should be able to bash down
 bookshelves!" (Okay, I worry about that kid a bit :-)

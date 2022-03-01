@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-set -e
+set -e -x
 
 if (( # < 2 )); then
    print >&2 "Usage: $0 version destination"
@@ -9,5 +9,5 @@ fi
 ./build-release
 
 cp desktop/build/libs/desktop-$1.jar                     $2/PixelDungeonRescue-$1.jar
-cp android/build/outputs/apk/release/android-release.apk $2/PixelDungeonRescue-$1.apk
+#cp android/build/outputs/apk/release/android-release.apk $2/PixelDungeonRescue-$1.apk
 cp ios-ipa/IOSLauncher.ipa                               $2/PixelDungeonRescue-$1.ipa

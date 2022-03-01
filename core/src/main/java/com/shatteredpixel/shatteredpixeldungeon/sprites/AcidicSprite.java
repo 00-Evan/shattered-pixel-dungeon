@@ -45,7 +45,7 @@ public class AcidicSprite extends ScorpioSprite {
 		zap = attack.clone();
 		
 		die = new Animation( 12, false );
-		die.frames( frames, 0 );
+		die.frames( frames, 14 );
 		
 		play( idle );
 	}
