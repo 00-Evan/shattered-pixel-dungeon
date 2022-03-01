@@ -136,11 +136,11 @@ public class Toolbar extends Component {
 		add(btnSearch = new Tool(44, 0, 20, 26) {
 			@Override
 			protected void onClick() {
-				if (Dungeon.hero.ready && !GameScene.cancel()) {
-					if (!examining) {
+				if (Dungeon.hero.ready) {
+					if (!examining && !GameScene.cancel()) {
 						GameScene.selectCell(informer);
 						examining = true;
-					} else {
+					} else if (examining) {
 						informer.onSelect(null);
 						Dungeon.hero.search(true);
 					}
