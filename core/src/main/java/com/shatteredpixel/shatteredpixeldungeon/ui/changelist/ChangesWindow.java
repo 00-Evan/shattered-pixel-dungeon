@@ -35,7 +35,7 @@ public class ChangesWindow extends WndTitledMessage {
 		PointerArea blocker = new PointerArea( 0, 0, PixelScene.uiCamera.width, PixelScene.uiCamera.height ) {
 			@Override
 			protected void onClick( PointerEvent event ) {
-				hide();
+				onBackPressed();
 			}
 		};
 		blocker.camera = PixelScene.uiCamera;

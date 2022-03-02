@@ -84,7 +84,7 @@ public class WildEnergy extends TargetedSpell {
 			inputs =  new Class[]{ScrollOfMysticalEnergy.class, MetalShard.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 8;
+			cost = 6;
 			
 			output = WildEnergy.class;
 			outQuantity = 5;

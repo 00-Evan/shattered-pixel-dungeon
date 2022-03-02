@@ -154,6 +154,10 @@ public class Visual extends Gizmo {
 				y + (height() - v.height())/2f
 		);
 	}
+
+	public void originToCenter() {
+		origin.set(width / 2, height / 2);
+	}
 	
 	public float width() {
 		return width * scale.x;

@@ -72,7 +72,7 @@ public class AquaBlast extends TargetedSpell {
 			inputs =  new Class[]{PotionOfStormClouds.class, ArcaneCatalyst.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 4;
+			cost = 2;
 			
 			output = AquaBlast.class;
 			outQuantity = 12;

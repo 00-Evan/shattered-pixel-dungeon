@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Web;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
@@ -107,7 +108,7 @@ public class Spinner extends Mob {
 			}
 		}
 		
-		if (state == FLEEING && buff( Terror.class ) == null &&
+		if (state == FLEEING && buff( Terror.class ) == null && buff( Dread.class ) == null &&
 				enemy != null && enemySeen && enemy.buff( Poison.class ) == null) {
 			state = HUNTING;
 		}
@@ -129,8 +130,8 @@ public class Spinner extends Mob {
 	private boolean shotWebVisually = false;
 
 	@Override
-	public void move(int step) {
-		if (enemySeen && webCoolDown <= 0 && lastEnemyPos != -1){
+	public void move(int step, boolean travelling) {
+		if (travelling && enemySeen && webCoolDown <= 0 && lastEnemyPos != -1){
 			if (webPos() != -1){
 				if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
 					sprite.zap( webPos() );
@@ -140,7 +141,7 @@ public class Spinner extends Mob {
 				}
 			}
 		}
-		super.move(step);
+		super.move(step, travelling);
 	}
 	
 	public int webPos(){
@@ -228,7 +229,7 @@ public class Spinner extends Mob {
 	private class Fleeing extends Mob.Fleeing {
 		@Override
 		protected void nowhereToRun() {
-			if (buff(Terror.class) == null) {
+			if (buff(Terror.class) == null && buff(Dread.class) == null) {
 				state = HUNTING;
 			} else {
 				super.nowhereToRun();

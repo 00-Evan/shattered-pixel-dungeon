@@ -94,7 +94,7 @@ public class Endure extends ArmorAbility {
 
 		public void setup(Hero hero){
 			enduring = true;
-			maxDmgTaken = (int) (hero.HT * Math.pow(0.707f, hero.pointsInTalent(Talent.SHRUG_IT_OFF)));
+			maxDmgTaken = (int) (hero.HT * Math.pow(0.67f, hero.pointsInTalent(Talent.SHRUG_IT_OFF)));
 			damageBonus = 0;
 			hitsLeft = 0;
 		}

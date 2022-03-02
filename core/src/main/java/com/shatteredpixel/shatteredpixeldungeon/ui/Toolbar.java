@@ -85,8 +85,10 @@ public class Toolbar extends Component {
 		add(btnWait = new Tool(24, 0, 20, 26) {
 			@Override
 			protected void onClick() {
-				examining = false;
-				Dungeon.hero.rest(false);
+				if (!GameScene.cancel()) {
+					examining = false;
+					Dungeon.hero.rest(false);
+				}
 			}
 			
 			@Override
@@ -95,8 +97,10 @@ public class Toolbar extends Component {
 			}
 			
 			protected boolean onLongClick() {
-				examining = false;
-				Dungeon.hero.rest(true);
+				if (!GameScene.cancel()) {
+					examining = false;
+					Dungeon.hero.rest(true);
+				}
 				return true;
 			}
 		});
@@ -139,7 +143,7 @@ public class Toolbar extends Component {
 		});
 		
 		add(btnInventory = new Tool(0, 0, 24, 26) {
-			private GoldIndicator gold;
+			private CurrencyIndicator ind;
 
 			@Override
 			protected void onClick() {
@@ -160,14 +164,14 @@ public class Toolbar extends Component {
 			@Override
 			protected void createChildren() {
 				super.createChildren();
-				gold = new GoldIndicator();
-				add(gold);
+				ind = new CurrencyIndicator();
+				add(ind);
 			}
 
 			@Override
 			protected void layout() {
 				super.layout();
-				gold.fill(this);
+				ind.fill(this);
 			}
 		});
 

@@ -87,6 +87,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.LootIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ResumeIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StatusPane;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Tag;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Toast;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
@@ -116,8 +117,10 @@ import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
+import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
+import com.watabou.utils.RectF;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -184,11 +187,33 @@ public class GameScene extends PixelScene {
 			ShatteredPixelDungeon.switchNoFade(TitleScene.class);
 			return;
 		}
-		
-		Music.INSTANCE.playTracks(
-				new String[]{Assets.Music.SEWERS_1, Assets.Music.SEWERS_2, Assets.Music.SEWERS_2},
-				new float[]{1, 1, 0.5f},
-				false);
+
+		if (Dungeon.depth <= 5) {
+			Music.INSTANCE.playTracks(
+					new String[]{Assets.Music.SEWERS_1, Assets.Music.SEWERS_2, Assets.Music.SEWERS_2},
+					new float[]{1, 1, 0.5f},
+					false);
+		} else if (Dungeon.depth <= 10) {
+			Music.INSTANCE.playTracks(
+					new String[]{Assets.Music.PRISON_1, Assets.Music.PRISON_2, Assets.Music.PRISON_2},
+					new float[]{1, 1, 0.5f},
+					false);
+		} else if (Dungeon.depth <= 15) {
+			Music.INSTANCE.playTracks(
+					new String[]{Assets.Music.CAVES_1, Assets.Music.CAVES_2, Assets.Music.CAVES_2},
+					new float[]{1, 1, 0.5f},
+					false);
+		} else if (Dungeon.depth <= 20) {
+			Music.INSTANCE.playTracks(
+					new String[]{Assets.Music.CITY_1, Assets.Music.CITY_2, Assets.Music.CITY_2},
+					new float[]{1, 1, 0.5f},
+					false);
+		} else {
+			Music.INSTANCE.playTracks(
+					new String[]{Assets.Music.HALLS_1, Assets.Music.HALLS_2, Assets.Music.HALLS_2},
+					new float[]{1, 1, 0.5f},
+					false);
+		}
 
 		SPDSettings.lastClass(Dungeon.hero.heroClass.ordinal());
 		
@@ -549,14 +574,14 @@ public class GameScene extends PixelScene {
 		//re-show WndResurrect if needed
 		if (!Dungeon.hero.isAlive()){
 			//check if hero has an unblessed ankh
-			boolean hasAnkh = false;
+			Ankh ankh = null;
 			for (Ankh i : Dungeon.hero.belongings.getAllItems(Ankh.class)){
 				if (!i.isBlessed()){
-					hasAnkh = true;
+					ankh = i;
 				}
 			}
-			if (hasAnkh) {
-				add(new WndResurrect());
+			if (ankh != null) {
+				add(new WndResurrect(ankh));
 			}
 		}
 
@@ -565,7 +590,7 @@ public class GameScene extends PixelScene {
 	public void destroy() {
 		
 		//tell the actor thread to finish, then wait for it to complete any actions it may be doing.
-		if (!waitForActorThread( 4500 )){
+		if (!waitForActorThread( 4500, true )){
 			Throwable t = new Throwable();
 			t.setStackTrace(actorThread.getStackTrace());
 			throw new RuntimeException("timeout waiting for actor thread! ", t);
@@ -587,12 +612,12 @@ public class GameScene extends PixelScene {
 		}
 	}
 
-	public boolean waitForActorThread(int msToWait ){
+	public boolean waitForActorThread(int msToWait, boolean interrupt){
 		if (actorThread == null || !actorThread.isAlive()) {
 			return true;
 		}
 		synchronized (actorThread) {
-			actorThread.interrupt();
+			if (interrupt) actorThread.interrupt();
 			try {
 				actorThread.wait(msToWait);
 			} catch (InterruptedException e) {
@@ -605,7 +630,6 @@ public class GameScene extends PixelScene {
 	@Override
 	public synchronized void onPause() {
 		try {
-			waitForActorThread(500);
 			Dungeon.saveAll();
 			Badges.saveGlobal();
 			Journal.saveGlobal();
@@ -704,38 +728,44 @@ public class GameScene extends PixelScene {
 
 		if (scene == null) return;
 
-		float tagLeft = SPDSettings.flipTags() ? 0 : uiCamera.width - scene.attack.width();
+		//primarily for phones displays with notches
+		//TODO Android never draws into notch atm, perhaps allow it for center notches?
+		RectF insets = DeviceCompat.getSafeInsets();
+		insets = insets.scale(1f / uiCamera.zoom);
+
+		boolean tagsOnLeft = SPDSettings.flipTags();
+		float tagWidth = Tag.SIZE + (tagsOnLeft ? insets.left : insets.right);
+		float tagLeft = tagsOnLeft ? 0 : uiCamera.width - tagWidth;
 
 		if (SPDSettings.flipTags()) {
-			scene.log.setRect(scene.attack.width(), scene.toolbar.top()-2, uiCamera.width - scene.attack.width(), 0);
+			scene.log.setRect(tagWidth, scene.toolbar.top()-2, uiCamera.width - tagWidth - insets.right, 0);
 		} else {
-			scene.log.setRect(0, scene.toolbar.top()-2, uiCamera.width - scene.attack.width(),  0 );
+			scene.log.setRect(insets.left, scene.toolbar.top()-2, uiCamera.width - tagWidth - insets.left, 0);
 		}
 
 		float pos = scene.toolbar.top();
 
-		//FIXME adjusting this to position even without visibility resulted in deadlocks
 		if (scene.tagAttack){
-			scene.attack.setPos( tagLeft, pos - scene.attack.height());
-			scene.attack.flip(tagLeft == 0);
+			scene.attack.setRect( tagLeft, pos - Tag.SIZE, tagWidth, Tag.SIZE );
+			scene.attack.flip(tagsOnLeft);
 			pos = scene.attack.top();
 		}
 
 		if (scene.tagLoot) {
-			scene.loot.setPos( tagLeft, pos - scene.loot.height() );
-			scene.loot.flip(tagLeft == 0);
+			scene.loot.setRect( tagLeft, pos - Tag.SIZE, tagWidth, Tag.SIZE );
+			scene.loot.flip(tagsOnLeft);
 			pos = scene.loot.top();
 		}
 
 		if (scene.tagAction) {
-			scene.action.setPos( tagLeft, pos - scene.action.height() );
-			scene.action.flip(tagLeft == 0);
+			scene.action.setRect( tagLeft, pos - Tag.SIZE, tagWidth, Tag.SIZE );
+			scene.action.flip(tagsOnLeft);
 			pos = scene.action.top();
 		}
 
 		if (scene.tagResume) {
-			scene.resume.setPos(tagLeft, pos - scene.resume.height());
-			scene.resume.flip(tagLeft == 0);
+			scene.resume.setRect( tagLeft, pos - Tag.SIZE, tagWidth, Tag.SIZE );
+			scene.resume.flip(tagsOnLeft);
 		}
 	}
 	
@@ -941,6 +971,10 @@ public class GameScene extends PixelScene {
 	public static void flashForDocument( String page ){
 		if (scene != null) scene.pane.flashForPage( page );
 	}
+
+	public static void showlevelUpStars(){
+		if (scene != null) scene.pane.showStarParticles();
+	}
 	
 	public static void updateKeyDisplay(){
 		if (scene != null) scene.pane.updateKeys();
@@ -999,6 +1033,16 @@ public class GameScene extends PixelScene {
 			cancelCellSelector();
 			scene.addToFront(wnd);
 		}
+	}
+
+	public static boolean isShowingWindow(){
+		if (scene == null) return false;
+
+		for (Gizmo g : scene.members){
+			if (g instanceof Window) return true;
+		}
+
+		return false;
 	}
 
 	public static void updateFog(){
@@ -1071,8 +1115,10 @@ public class GameScene extends PixelScene {
 			cellSelector.listener.onSelect(null);
 		}
 		cellSelector.listener = listener;
-		if (scene != null)
-			scene.prompt( listener.prompt() );
+		cellSelector.enabled = Dungeon.hero.ready;
+		if (scene != null) {
+			scene.prompt(listener.prompt());
+		}
 	}
 	
 	private static boolean cancelCellSelector() {

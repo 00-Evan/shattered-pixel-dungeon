@@ -22,8 +22,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
@@ -50,7 +52,10 @@ public class Levitation extends FlavourBuff {
 	public void detach() {
 		target.flying = false;
 		super.detach();
-		Dungeon.level.occupyCell(target );
+		//only press tiles if we're current in the game screen
+		if (ShatteredPixelDungeon.scene() instanceof GameScene) {
+			Dungeon.level.occupyCell(target );
+		}
 	}
 	
 	@Override

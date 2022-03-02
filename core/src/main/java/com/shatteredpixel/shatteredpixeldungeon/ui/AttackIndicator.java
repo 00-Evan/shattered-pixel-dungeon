@@ -56,7 +56,7 @@ public class AttackIndicator extends Tag {
 			instance = this;
 			lastTarget = null;
 
-			setSize(24, 24);
+			setSize(SIZE, SIZE);
 			visible(false);
 			enable(false);
 		}
@@ -75,10 +75,11 @@ public class AttackIndicator extends Tag {
 	@Override
 	protected synchronized void layout() {
 		super.layout();
-		
+
 		if (sprite != null) {
-			sprite.x = x + (width - sprite.width()) / 2 + 1;
-			sprite.y = y + (height - sprite.height()) / 2;
+			if (!flipped)   sprite.x = x + (SIZE - sprite.width()) / 2f + 1;
+			else            sprite.x = x + width - (SIZE + sprite.width()) / 2f - 1;
+			sprite.y = y + (height - sprite.height()) / 2f;
 			PixelScene.align(sprite);
 		}
 	}

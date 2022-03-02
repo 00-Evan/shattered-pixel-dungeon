@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -43,7 +42,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundlable;
@@ -111,11 +109,15 @@ public class Item implements Bundlable {
 	public String actionName(String action, Hero hero){
 		return Messages.get(this, "ac_" + action);
 	}
-	
-	public boolean doPickUp( Hero hero ) {
+
+	public final boolean doPickUp( Hero hero ) {
+		return doPickUp( hero, hero.pos );
+	}
+
+	public boolean doPickUp(Hero hero, int pos) {
 		if (collect( hero.belongings.backpack )) {
 			
-			GameScene.pickUp( this, hero.pos );
+			GameScene.pickUp( this, pos );
 			Sample.INSTANCE.play( Assets.Sounds.ITEM );
 			hero.spendAndNext( TIME_TO_PICK_UP );
 			return true;
@@ -457,8 +459,14 @@ public class Item implements Bundlable {
 		quantity = value;
 		return this;
 	}
-	
+
+	//item's value in gold coins
 	public int value() {
+		return 0;
+	}
+
+	//item's value in energy crystals
+	public int energyVal() {
 		return 0;
 	}
 	

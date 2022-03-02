@@ -43,6 +43,10 @@ public abstract class PlatformSupport {
 		Gdx.input.vibrate( millis );
 	}
 
+	public void setHonorSilentSwitch( boolean value ){
+		//does nothing by default
+	}
+
 	//TODO should consider spinning this into its own class, rather than platform support getting ever bigger
 	protected static HashMap<FreeTypeFontGenerator, HashMap<Integer, BitmapFont>> fonts;
 

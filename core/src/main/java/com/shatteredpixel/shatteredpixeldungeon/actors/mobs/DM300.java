@@ -308,10 +308,10 @@ public class DM300 extends Mob {
 	}
 
 	@Override
-	public void move(int step) {
-		super.move(step);
+	public void move(int step, boolean travelling) {
+		super.move(step, travelling);
 
-		Camera.main.shake( supercharged ? 3 : 1, 0.25f );
+		if (travelling) Camera.main.shake( supercharged ? 3 : 1, 0.25f );
 
 		if (Dungeon.level.map[step] == Terrain.INACTIVE_TRAP && state == HUNTING) {
 

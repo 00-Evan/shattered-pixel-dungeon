@@ -65,8 +65,8 @@ public class CorpseDust extends Item {
 	}
 
 	@Override
-	public boolean doPickUp(Hero hero) {
-		if (super.doPickUp(hero)){
+	public boolean doPickUp(Hero hero, int pos) {
+		if (super.doPickUp(hero, pos)){
 			GLog.n( Messages.get( this, "chill") );
 			Buff.affect(hero, DustGhostSpawner.class);
 			return true;
@@ -86,8 +86,19 @@ public class CorpseDust extends Item {
 
 		int spawnPower = 0;
 
+		{
+			//not cleansed by reviving, but does check to ensure the dust is still present
+			revivePersists = true;
+		}
+
 		@Override
 		public boolean act() {
+			if (target instanceof Hero && ((Hero) target).belongings.getItem(CorpseDust.class) == null){
+				spawnPower = 0;
+				spend(TICK);
+				return true;
+			}
+
 			spawnPower++;
 			int wraiths = 1; //we include the wraith we're trying to spawn
 			for (Mob mob : Dungeon.level.mobs){
@@ -101,6 +112,7 @@ public class CorpseDust extends Item {
 			if (powerNeeded <= spawnPower){
 				spawnPower -= powerNeeded;
 				int pos = 0;
+				//FIXME this seems like old bad code (why not more checks at least?) but corpse dust may be balanced around it
 				int tries = 20;
 				do{
 					pos = Random.Int(Dungeon.level.length());

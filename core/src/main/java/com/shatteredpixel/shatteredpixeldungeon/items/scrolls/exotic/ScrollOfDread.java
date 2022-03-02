@@ -24,57 +24,37 @@ package com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Random;
 
-public class ScrollOfPolymorph extends ExoticScroll {
+public class ScrollOfDread extends ExoticScroll {
 	
 	{
-		icon = ItemSpriteSheet.Icons.SCROLL_POLYMORPH;
+		icon = ItemSpriteSheet.Icons.SCROLL_DREAD;
 	}
 	
 	@Override
 	public void doRead() {
-		
-		new Flare( 5, 32 ).color( 0xFFFFFF, true ).show( curUser.sprite, 2f );
+		new Flare( 5, 32 ).color( 0xFF0000, true ).show( curUser.sprite, 2f );
 		Sample.INSTANCE.play( Assets.Sounds.READ );
-		
+
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 			if (mob.alignment != Char.Alignment.ALLY && Dungeon.level.heroFOV[mob.pos]) {
-				if (!mob.properties().contains(Char.Property.BOSS)
-						&& !mob.properties().contains(Char.Property.MINIBOSS)){
-					Sheep sheep = new Sheep();
-					sheep.lifespan = 10;
-					sheep.pos = mob.pos;
-					
-					//awards half exp for each sheep-ified mob
-					//50% chance to round up, 50% to round down
-					if (mob.EXP % 2 == 1) mob.EXP += Random.Int(2);
-					mob.EXP /= 2;
-					
-					mob.destroy();
-					mob.sprite.killAndErase();
-					Dungeon.level.mobs.remove(mob);
-					TargetHealthIndicator.instance.target(null);
-					GameScene.add(sheep);
-					CellEmitter.get(sheep.pos).burst(Speck.factory(Speck.WOOL), 4);
-					Sample.INSTANCE.play(Assets.Sounds.PUFF);
-					Sample.INSTANCE.play(Assets.Sounds.SHEEP);
+				if (!mob.isImmune(Dread.class)){
+					Buff.affect( mob, Dread.class ).object = curUser.id();
+				} else {
+					Buff.affect( mob, Terror.class, Terror.DURATION ).object = curUser.id();
 				}
 			}
 		}
+
 		identify();
 		
 		readAnimation();
-		
 	}
-	
 }

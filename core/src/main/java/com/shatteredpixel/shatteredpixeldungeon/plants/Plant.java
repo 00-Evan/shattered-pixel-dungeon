@@ -206,6 +206,11 @@ public abstract class Plant implements Bundlable {
 		}
 
 		@Override
+		public int energyVal() {
+			return 2 * quantity;
+		}
+
+		@Override
 		public String desc() {
 			String desc = Messages.get(plantClass, "desc");
 			if (Dungeon.hero.subClass == HeroSubClass.WARDEN){

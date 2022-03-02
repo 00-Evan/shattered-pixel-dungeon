@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.MetalShard;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
@@ -79,6 +80,8 @@ public class CurseInfusion extends InventorySpell {
 		} else if (item instanceof Wand){
 			((Wand) item).curseInfusionBonus = true;
 			((Wand) item).updateLevel();
+		} else if (item instanceof RingOfMight){
+			curUser.updateHT(false);
 		}
 		Badges.validateItemLevelAquired(item);
 		updateQuickslot();

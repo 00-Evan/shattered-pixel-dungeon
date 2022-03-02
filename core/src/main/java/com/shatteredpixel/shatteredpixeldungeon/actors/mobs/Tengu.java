@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -100,7 +101,7 @@ public class Tengu extends Mob {
 	protected void onAdd() {
 		//when he's removed and re-added to the fight, his time is always set to now.
 		if (cooldown() > TICK) {
-			spend(-cooldown());
+			timeToNow();
 			spendToWhole();
 		}
 		super.onAdd();
@@ -333,6 +334,7 @@ public class Tengu extends Mob {
 	
 	{
 		immunities.add( Blindness.class );
+		immunities.add( Dread.class );
 		immunities.add( Terror.class );
 	}
 	
@@ -681,7 +683,7 @@ public class Tengu extends Mob {
 			}
 			
 			@Override
-			public boolean doPickUp( Hero hero ) {
+			public boolean doPickUp(Hero hero, int pos) {
 				GLog.w( Messages.get(this, "cant_pickup") );
 				return false;
 			}
@@ -1056,7 +1058,7 @@ public class Tengu extends Mob {
 			}
 			
 			@Override
-			public boolean doPickUp( Hero hero ) {
+			public boolean doPickUp(Hero hero, int pos) {
 				GLog.w( Messages.get(this, "cant_pickup") );
 				return false;
 			}

@@ -45,7 +45,7 @@ import java.util.ArrayList;
 public class WildMagic extends ArmorAbility {
 
 	{
-		baseChargeUse = 35f;
+		baseChargeUse = 25f;
 	}
 
 	@Override
@@ -158,7 +158,7 @@ public class WildMagic extends ArmorAbility {
 			cur.partialCharge++;
 			cur.curCharges--;
 		}
-		if (!wands.isEmpty()) {
+		if (!wands.isEmpty() && hero.isAlive()) {
 			zapWand(wands, hero, target);
 		} else {
 			if (hero.buff(WildMagicTracker.class) != null) {

@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.Image;
 
+//TODO the icons asset is getting pretty bloated, should expand the texture and reorganize
 public enum Icons {
 	
 	//button icons
@@ -44,6 +45,9 @@ public enum Icons {
 	AUDIO,
 	TALENT,
 	MAGNIFY,
+	BUFFS,
+	BACKPACK_LRG,
+	PLUS,
 	
 	//ingame UI icons
 	SKULL,
@@ -56,8 +60,11 @@ public enum Icons {
 	BACKPACK,
 	SEED_POUCH,
 	SCROLL_HOLDER,
-	POTION_BANDOLIER,
 	WAND_HOLSTER,
+	POTION_BANDOLIER,
+	ENERGY,
+	COIN_SML,
+	ENERGY_SML,
 	
 	//hero & rankings icons
 	DEPTH,
@@ -85,7 +92,7 @@ public enum Icons {
 	ALEKS,
 	BRIAN,
 	//32x32
-	CHARLIE,
+	CELESTI,
 	KRISTJAN,
 	CUBE_CODE,
 	PURIGRO,
@@ -143,6 +150,16 @@ public enum Icons {
 		case MAGNIFY:
 			icon.frame( icon.texture.uvRect( 96, 16, 110, 30 ) );
 			break;
+		case BUFFS:
+			icon.frame( icon.texture.uvRect( 110, 16, 128, 31 ) );
+			break;
+		case BACKPACK_LRG:
+			icon.frame( icon.texture.uvRect( 64, 80, 80, 96 ) );
+			break;
+		case PLUS:
+			icon.frame( icon.texture.uvRect( 80, 80, 91, 91 ) );
+			break;
+
 		case SKULL:
 			icon.frame( icon.texture.uvRect( 0, 32, 8, 40 ) );
 			break;
@@ -178,6 +195,15 @@ public enum Icons {
 			break;
 		case POTION_BANDOLIER:
 			icon.frame( icon.texture.uvRect( 88, 32, 98, 42 ) );
+			break;
+		case ENERGY:
+			icon.frame( icon.texture.uvRect( 96, 80, 112, 96 ) );
+			break;
+		case COIN_SML:
+			icon.frame( icon.texture.uvRect( 112, 80, 119, 87 ) );
+			break;
+		case ENERGY_SML:
+			icon.frame( icon.texture.uvRect( 112, 88, 120, 95 ) );
 			break;
 			
 		case DEPTH:
@@ -235,7 +261,7 @@ public enum Icons {
 			icon.frame( icon.texture.uvRect( 65, 80, 80, 96 ) );
 			break;
 		//32*32 icons are scaled down to match game's size
-		case CHARLIE:
+		case CELESTI:
 			icon.frame( icon.texture.uvRect( 0, 96, 32, 128 ) );
 			icon.scale.set(PixelScene.align(0.49f));
 			break;

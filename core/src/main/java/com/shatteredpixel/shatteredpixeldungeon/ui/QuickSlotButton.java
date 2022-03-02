@@ -79,7 +79,7 @@ public class QuickSlotButton extends Button {
 		slot = new ItemSlot() {
 			@Override
 			protected void onClick() {
-				if (!Dungeon.hero.isAlive()){
+				if (!Dungeon.hero.isAlive() || !Dungeon.hero.ready){
 					return;
 				}
 				if (targeting) {

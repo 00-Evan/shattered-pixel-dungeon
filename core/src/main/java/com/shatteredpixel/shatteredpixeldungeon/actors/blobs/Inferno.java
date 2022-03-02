@@ -56,17 +56,24 @@ public class Inferno extends Blob {
 					}
 					
 					Fire.burn(cell);
+
+					if (Dungeon.level.flamable[cell]){
+						Dungeon.level.destroy( cell );
+
+						observe = true;
+						GameScene.updateMap( cell );
+					}
 					
 				} else if (Dungeon.level.flamable[cell]
 						&& (cur[cell-1] > 0
 						|| cur[cell+1] > 0
 						|| cur[cell-Dungeon.level.width()] > 0
 						|| cur[cell+Dungeon.level.width()] > 0)) {
-					Fire.burn(cell);
-					Dungeon.level.destroy( cell );
-					
-					observe = true;
-					GameScene.updateMap( cell );
+
+					if (fire == null || fire.cur == null || fire.cur[cell] == 0) {
+						GameScene.add(Fire.seed(cell, 4, Fire.class));
+					}
+
 				}
 			}
 		}

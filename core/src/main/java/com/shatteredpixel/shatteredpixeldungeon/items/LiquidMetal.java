@@ -9,6 +9,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.TippedDart;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -103,7 +104,7 @@ public class LiquidMetal extends Item {
 
 		@Override
 		public boolean itemSelectable(Item item) {
-			return item instanceof MissileWeapon && !(item instanceof TippedDart);
+			return item instanceof MissileWeapon && !(item instanceof Dart);
 		}
 
 		@Override
@@ -119,7 +120,9 @@ public class LiquidMetal extends Item {
 				//we remove a tiny amount here to account for rounding errors
 				float percentDurabilityLost = 0.999f - (m.durabilityLeft()/100f);
 				maxToUse = (int)Math.ceil(maxToUse*percentDurabilityLost);
-				if (maxToUse == 0 || percentDurabilityLost < m.durabilityPerUse()/100f){
+				float durPerUse = m.durabilityPerUse()/100f;
+				if (maxToUse == 0 ||
+						Math.ceil(m.durabilityLeft()/ m.durabilityPerUse()) >= Math.ceil(m.MAX_DURABILITY/ m.durabilityPerUse()) ){
 					GLog.w(Messages.get(LiquidMetal.class, "already_fixed"));
 					return;
 				} else if (maxToUse < quantity()) {
@@ -182,7 +185,7 @@ public class LiquidMetal extends Item {
 				MissileWeapon m = (MissileWeapon) i;
 				float quantity = m.quantity()-1;
 				quantity += 0.25f + 0.0075f*m.durabilityLeft();
-				quantity *= Math.pow(2, m.level());
+				quantity *= Math.pow(2, Math.min(3, m.level()));
 				metalQuantity += Math.round((5*(m.tier+1))*quantity);
 			}
 

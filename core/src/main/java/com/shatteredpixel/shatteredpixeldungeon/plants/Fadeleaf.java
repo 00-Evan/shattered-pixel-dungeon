@@ -70,32 +70,12 @@ public class Fadeleaf extends Plant {
 				Game.switchScene( InterlevelScene.class );
 				
 			} else {
-				ScrollOfTeleportation.teleportHero((Hero) ch);
+				ScrollOfTeleportation.teleportChar((Hero) ch);
 			}
 			
 		} else if (ch instanceof Mob && !ch.properties().contains(Char.Property.IMMOVABLE)) {
 
-			if (!Dungeon.bossLevel()) {
-
-				int count = 20;
-				int newPos;
-				do {
-					newPos = Dungeon.level.randomRespawnCell(ch);
-					if (count-- <= 0) {
-						break;
-					}
-				} while (newPos == -1 || Dungeon.level.secret[newPos]);
-
-				if (newPos != -1) {
-
-					ch.pos = newPos;
-					if (((Mob) ch).state == ((Mob) ch).HUNTING)
-						((Mob) ch).state = ((Mob) ch).WANDERING;
-					ch.sprite.place(ch.pos);
-					ch.sprite.visible = Dungeon.level.heroFOV[ch.pos];
-
-				}
-			}
+			ScrollOfTeleportation.teleportChar(ch);
 
 		}
 		

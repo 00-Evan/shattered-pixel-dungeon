@@ -75,7 +75,6 @@ public class PrisonBossLevel extends Level {
 	public enum State {
 		START,
 		FIGHT_START,
-		TRAP_MAZES, //pre-0.8.1 saves
 		FIGHT_PAUSE,
 		FIGHT_ARENA,
 		WON
@@ -118,7 +117,7 @@ public class PrisonBossLevel extends Level {
 		state = bundle.getEnum( STATE, State.class );
 		
 		//in some states tengu won't be in the world, in others he will be.
-		if (state == State.START || state == State.TRAP_MAZES || state == State.FIGHT_PAUSE) {
+		if (state == State.START || state == State.FIGHT_PAUSE) {
 			tengu = (Tengu)bundle.get( TENGU );
 		} else {
 			for (Mob mob : mobs){
@@ -308,7 +307,8 @@ public class PrisonBossLevel extends Level {
 		}
 		
 		for (HeavyBoomerang.CircleBack b : Dungeon.hero.buffs(HeavyBoomerang.CircleBack.class)){
-			if (safeArea == null || !safeArea.inside(cellToPoint(b.returnPos()))){
+			if (b.activeDepth() == Dungeon.depth
+					&& (safeArea == null || !safeArea.inside(cellToPoint(b.returnPos())))){
 				storedItems.add(b.cancel());
 			}
 		}
@@ -417,7 +417,6 @@ public class PrisonBossLevel extends Level {
 				state = State.FIGHT_PAUSE;
 				break;
 
-			case TRAP_MAZES: //for pre-0.8.1 saves
 			case FIGHT_PAUSE:
 				
 				Dungeon.hero.interrupt();
@@ -503,7 +502,6 @@ public class PrisonBossLevel extends Level {
 						progress();
 					}
 					break;
-				case TRAP_MAZES: //pre-0.8.1
 				case FIGHT_PAUSE:
 					
 					if (cellToPoint(ch.pos).y <= startHallway.top+1){
@@ -531,7 +529,22 @@ public class PrisonBossLevel extends Level {
 		}
 		drop(new IronKey(10), randomPrisonCellPos());
 	}
-	
+
+	@Override
+	public ArrayList<Item> getItemsToPreserveFromSealedResurrect() {
+		ArrayList<Item> items = super.getItemsToPreserveFromSealedResurrect();
+
+		items.addAll(storedItems);
+
+		for (Item i : items.toArray(new Item[0])){
+			if (i instanceof Tengu.BombAbility.BombItem || i instanceof Tengu.ShockerAbility.ShockerItem){
+				items.remove(i);
+			}
+		}
+
+		return items;
+	}
+
 	private int randomPrisonCellPos(){
 		Rect room = startCells[Random.Int(startCells.length)];
 		

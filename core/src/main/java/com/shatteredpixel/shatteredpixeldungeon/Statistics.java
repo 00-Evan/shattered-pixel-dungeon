@@ -29,7 +29,7 @@ public class Statistics {
 	public static int deepestFloor;
 	public static int enemiesSlain;
 	public static int foodEaten;
-	public static int potionsCooked;
+	public static int itemsCrafted;
 	public static int piranhasKilled;
 	public static int ankhsUsed;
 	
@@ -53,7 +53,7 @@ public class Statistics {
 		deepestFloor	= 0;
 		enemiesSlain	= 0;
 		foodEaten		= 0;
-		potionsCooked	= 0;
+		itemsCrafted    = 0;
 		piranhasKilled	= 0;
 		ankhsUsed		= 0;
 		
@@ -96,7 +96,7 @@ public class Statistics {
 		bundle.put( DEEPEST,	deepestFloor );
 		bundle.put( SLAIN,		enemiesSlain );
 		bundle.put( FOOD,		foodEaten );
-		bundle.put( ALCHEMY,	potionsCooked );
+		bundle.put( ALCHEMY,    itemsCrafted );
 		bundle.put( PIRANHAS,	piranhasKilled );
 		bundle.put( ANKHS,		ankhsUsed );
 		
@@ -118,7 +118,7 @@ public class Statistics {
 		deepestFloor	= bundle.getInt( DEEPEST );
 		enemiesSlain	= bundle.getInt( SLAIN );
 		foodEaten		= bundle.getInt( FOOD );
-		potionsCooked	= bundle.getInt( ALCHEMY );
+		itemsCrafted    = bundle.getInt( ALCHEMY );
 		piranhasKilled	= bundle.getInt( PIRANHAS );
 		ankhsUsed		= bundle.getInt( ANKHS );
 		

@@ -43,33 +43,14 @@ public class PhaseShift extends TargetedSpell {
 		final Char ch = Actor.findChar(bolt.collisionPos);
 		
 		if (ch == hero){
-			ScrollOfTeleportation.teleportHero(curUser);
+			//TODO probably want this to not work on the hero for balance reasons?
+			ScrollOfTeleportation.teleportChar(curUser);
 		} else if (ch != null) {
-			int count = 20;
-			int pos;
-			do {
-				pos = Dungeon.level.randomRespawnCell( hero );
-				if (count-- <= 0) {
-					break;
-				}
-			} while (pos == -1 || Dungeon.level.secret[pos]);
-			
-			if (pos == -1 || Dungeon.bossLevel()) {
-				
-				GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
-				
-			} else if (ch.properties().contains(Char.Property.IMMOVABLE)) {
-				
-				GLog.w( Messages.get(this, "tele_fail") );
-				
-			} else  {
-				
-				ch.pos = pos;
+			if (ScrollOfTeleportation.teleportChar(ch)){
+
 				if (ch instanceof Mob && ((Mob) ch).state == ((Mob) ch).HUNTING){
 					((Mob) ch).state = ((Mob) ch).WANDERING;
 				}
-				ch.sprite.place(ch.pos);
-				ch.sprite.visible = Dungeon.level.heroFOV[pos];
 				
 			}
 		}

@@ -125,13 +125,13 @@ public class ReclaimTrap extends TargetedSpell {
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
-		bundle.put(STORED_TRAP, storedTrap);
+		if (storedTrap != null) bundle.put(STORED_TRAP, storedTrap);
 	}
 	
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
-		storedTrap = bundle.getClass(STORED_TRAP);
+		if (bundle.contains(STORED_TRAP)) storedTrap = bundle.getClass(STORED_TRAP);
 	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {

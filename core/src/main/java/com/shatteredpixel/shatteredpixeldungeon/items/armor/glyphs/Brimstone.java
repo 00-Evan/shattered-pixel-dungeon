@@ -31,7 +31,7 @@ public class Brimstone extends Armor.Glyph {
 
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
-		//no proc effect, see Hero.isImmune and GhostHero.isImmune
+		//no proc effect, see Hero.isImmune and GhostHero.isImmune and ArmoredStatue.isImmune
 		return damage;
 	}
 

@@ -93,6 +93,10 @@ public class HeavyBoomerang extends MissileWeapon {
 			detach();
 			return boomerang;
 		}
+
+		public int activeDepth(){
+			return returnDepth;
+		}
 		
 		@Override
 		public boolean act() {

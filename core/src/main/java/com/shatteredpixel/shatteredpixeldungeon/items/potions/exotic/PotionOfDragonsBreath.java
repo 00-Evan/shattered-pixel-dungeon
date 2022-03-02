@@ -39,7 +39,9 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
@@ -52,24 +54,61 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 		icon = ItemSpriteSheet.Icons.POTION_DRGBREATH;
 	}
 
+	protected static boolean identifiedByUse = false;
+
 	@Override
 	//need to override drink so that time isn't spent right away
 	protected void drink(final Hero hero) {
 		curUser = hero;
-		curItem = this;
-		
+		curItem = detach( hero.belongings.backpack );
+
+		if (!isKnown()) {
+			identify();
+			identifiedByUse = true;
+		} else {
+			identifiedByUse = false;
+		}
+
 		GameScene.selectCell(targeter);
 	}
 	
 	private CellSelector.Listener targeter = new CellSelector.Listener() {
+
+		private boolean showingWindow = false;
+
 		@Override
 		public void onSelect(final Integer cell) {
 
-			if (cell == null && !isKnown()){
-				identify();
-				detach(curUser.belongings.backpack);
+			if (showingWindow){
+				return;
+			}
+
+			if (cell == null && identifiedByUse){
+				showingWindow = true;
+				GameScene.show( new WndOptions(new ItemSprite(PotionOfDragonsBreath.this),
+						Messages.titleCase(name()),
+						Messages.get(ExoticPotion.class, "warning"),
+						Messages.get(ExoticPotion.class, "yes"),
+						Messages.get(ExoticPotion.class, "no") ) {
+					@Override
+					protected void onSelect( int index ) {
+						showingWindow = false;
+						switch (index) {
+							case 0:
+								curUser.spendAndNext(1f);
+								identifiedByUse = false;
+								break;
+							case 1:
+								GameScene.selectCell( targeter );
+								break;
+						}
+					}
+					public void onBackPressed() {}
+				} );
+			} else if (cell == null && !anonymous){
+				curItem.collect( curUser.belongings.backpack );
 			} else if (cell != null) {
-				identify();
+				identifiedByUse = false;
 				curUser.busy();
 				Sample.INSTANCE.play( Assets.Sounds.DRINK );
 				curUser.sprite.operate(curUser.pos, new Callback() {

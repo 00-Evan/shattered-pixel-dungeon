@@ -31,12 +31,14 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 
 public class WndTradeItem extends WndInfoItem {
 
 	private static final float GAP		= 2;
-	private static final int BTN_HEIGHT	= 16;
+	private static final int BTN_HEIGHT	= 18;
 
 	private WndBag owner;
 
@@ -59,6 +61,7 @@ public class WndTradeItem extends WndInfoItem {
 				}
 			};
 			btnSell.setRect( 0, pos + GAP, width, BTN_HEIGHT );
+			btnSell.icon(new ItemSprite(ItemSpriteSheet.GOLD));
 			add( btnSell );
 
 			pos = btnSell.bottom();
@@ -74,6 +77,7 @@ public class WndTradeItem extends WndInfoItem {
 				}
 			};
 			btnSell1.setRect( 0, pos + GAP, width, BTN_HEIGHT );
+			btnSell1.icon(new ItemSprite(ItemSpriteSheet.GOLD));
 			add( btnSell1 );
 			RedButton btnSellAll = new RedButton( Messages.get(this, "sell_all", priceAll ) ) {
 				@Override
@@ -83,6 +87,7 @@ public class WndTradeItem extends WndInfoItem {
 				}
 			};
 			btnSellAll.setRect( 0, btnSell1.bottom() + 1, width, BTN_HEIGHT );
+			btnSellAll.icon(new ItemSprite(ItemSpriteSheet.GOLD));
 			add( btnSellAll );
 
 			pos = btnSellAll.bottom();
@@ -111,6 +116,7 @@ public class WndTradeItem extends WndInfoItem {
 			}
 		};
 		btnBuy.setRect( 0, pos + GAP, width, BTN_HEIGHT );
+		btnBuy.icon(new ItemSprite(ItemSpriteSheet.GOLD));
 		btnBuy.enable( price <= Dungeon.gold );
 		add( btnBuy );
 
@@ -143,6 +149,7 @@ public class WndTradeItem extends WndInfoItem {
 				}
 			};
 			btnSteal.setRect(0, pos + 1, width, BTN_HEIGHT);
+			btnSteal.icon(new ItemSprite(ItemSpriteSheet.ARTIFACT_ARMBAND));
 			add(btnSteal);
 
 			pos = btnSteal.bottom();
@@ -163,7 +170,7 @@ public class WndTradeItem extends WndInfoItem {
 		}
 	}
 	
-	private void sell( Item item ) {
+	public static void sell( Item item ) {
 		
 		Hero hero = Dungeon.hero;
 		
@@ -177,8 +184,8 @@ public class WndTradeItem extends WndInfoItem {
 
 		new Gold( item.value() ).doPickUp( hero );
 	}
-	
-	private void sellOne( Item item ) {
+
+	public static void sellOne( Item item ) {
 		
 		if (item.quantity() <= 1) {
 			sell( item );

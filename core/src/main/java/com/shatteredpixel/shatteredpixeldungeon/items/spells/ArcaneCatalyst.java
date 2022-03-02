@@ -107,12 +107,12 @@ public class ArcaneCatalyst extends Spell {
 		public int cost(ArrayList<Item> ingredients) {
 			for (Item i : ingredients){
 				if (i instanceof Plant.Seed){
-					return 2;
-				} else if (i instanceof Runestone){
 					return 1;
+				} else if (i instanceof Runestone){
+					return 0;
 				}
 			}
-			return 1;
+			return 0;
 		}
 		
 		@Override

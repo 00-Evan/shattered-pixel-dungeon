@@ -157,20 +157,6 @@ public class CavesBossLevel extends Level {
 				customArenaVisuals = (ArenaVisuals) c;
 			}
 		}
-
-		//pre-0.8.1 saves that may not have had pylons added
-		int gatePos = pointToCell(new Point(gate.left, gate.top));
-		if (!locked && solid[gatePos]){
-
-			for (int i : pylonPositions) {
-				if (findMob(i) == null) {
-					Pylon pylon = new Pylon();
-					pylon.pos = i;
-					mobs.add(pylon);
-				}
-			}
-
-		}
 	}
 
 	@Override

@@ -202,7 +202,7 @@ public class BeaconOfReturning extends Spell {
 			inputs =  new Class[]{ScrollOfPassage.class, ArcaneCatalyst.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 10;
+			cost = 8;
 			
 			output = BeaconOfReturning.class;
 			outQuantity = 5;

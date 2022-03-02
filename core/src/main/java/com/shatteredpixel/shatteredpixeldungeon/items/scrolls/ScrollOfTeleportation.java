@@ -56,12 +56,11 @@ public class ScrollOfTeleportation extends Scroll {
 
 		Sample.INSTANCE.play( Assets.Sounds.READ );
 		
-		teleportPreferringUnseen( curUser );
-		identify();
-
-		if (!Dungeon.bossLevel()) {
+		if (teleportPreferringUnseen( curUser )){
 			readAnimation();
 		}
+		identify();
+
 	}
 	
 	public static boolean teleportToLocation(Char ch, int pos){
@@ -91,7 +90,11 @@ public class ScrollOfTeleportation extends Scroll {
 	
 	public static boolean teleportChar( Char ch ) {
 
-		if (Dungeon.bossLevel()){
+		if (!(Dungeon.level instanceof RegularLevel)){
+			return teleportInNonRegularLevel( ch, false );
+		}
+
+		if (Char.hasProp(ch, Char.Property.IMMOVABLE)){
 			GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 			return false;
 		}
@@ -127,11 +130,10 @@ public class ScrollOfTeleportation extends Scroll {
 		}
 	}
 	
-	public static void teleportPreferringUnseen( Hero hero ){
+	public static boolean teleportPreferringUnseen( Hero hero ){
 		
-		if (Dungeon.bossLevel() || !(Dungeon.level instanceof RegularLevel)){
-			teleportHero( hero );
-			return;
+		if (!(Dungeon.level instanceof RegularLevel)){
+			return teleportInNonRegularLevel( hero, true );
 		}
 		
 		RegularLevel level = (RegularLevel) Dungeon.level;
@@ -163,7 +165,7 @@ public class ScrollOfTeleportation extends Scroll {
 		}
 		
 		if (candidates.isEmpty()){
-			teleportHero( hero );
+			return teleportChar( hero );
 		} else {
 			int pos = Random.element(candidates);
 			boolean secretDoor = false;
@@ -195,8 +197,72 @@ public class ScrollOfTeleportation extends Scroll {
 			}
 			Dungeon.observe();
 			GameScene.updateFog();
+			return true;
 		}
 		
+	}
+
+	//teleports to a random pathable location on the floor
+	//prefers not seen(optional) > not visible > visible
+	public static boolean teleportInNonRegularLevel(Char ch, boolean preferNotSeen ){
+
+		if (Char.hasProp(ch, Char.Property.IMMOVABLE)){
+			GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
+			return false;
+		}
+
+		ArrayList<Integer> visibleValid = new ArrayList<>();
+		ArrayList<Integer> notVisibleValid = new ArrayList<>();
+		ArrayList<Integer> notSeenValid = new ArrayList<>();
+
+		boolean[] passable = Dungeon.level.passable;
+
+		if (Char.hasProp(ch, Char.Property.LARGE)){
+			passable = BArray.or(passable, Dungeon.level.openSpace, null);
+		}
+
+		PathFinder.buildDistanceMap(ch.pos, passable);
+
+		for (int i = 0; i < Dungeon.level.length(); i++){
+			if (PathFinder.distance[i] < Integer.MAX_VALUE
+					&& !Dungeon.level.secret[i]
+					&& Actor.findChar(i) == null){
+				if (preferNotSeen && !Dungeon.level.visited[i]){
+					notSeenValid.add(i);
+				} else if (Dungeon.level.heroFOV[i]){
+					visibleValid.add(i);
+				} else {
+					notVisibleValid.add(i);
+				}
+			}
+		}
+
+		int pos;
+
+		if (!notSeenValid.isEmpty()){
+			pos = Random.element(notSeenValid);
+		} else if (!notVisibleValid.isEmpty()){
+			pos = Random.element(notVisibleValid);
+		} else if (!visibleValid.isEmpty()){
+			pos = Random.element(visibleValid);
+		} else {
+			GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
+			return false;
+		}
+
+		appear( ch, pos );
+		Dungeon.level.occupyCell( ch );
+
+		if (ch == Dungeon.hero) {
+			GLog.i( Messages.get(ScrollOfTeleportation.class, "tele") );
+
+			Dungeon.observe();
+			GameScene.updateFog();
+			Dungeon.hero.interrupt();
+		}
+
+		return true;
+
 	}
 
 	public static void appear( Char ch, int pos ) {
@@ -207,7 +273,7 @@ public class ScrollOfTeleportation extends Scroll {
 			Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 		}
 
-		ch.move( pos );
+		ch.move( pos, false );
 		if (ch.pos == pos) ch.sprite.place( pos );
 
 		if (ch.invisible == 0) {

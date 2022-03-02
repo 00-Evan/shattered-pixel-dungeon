@@ -68,7 +68,10 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 
 		boolean procced = uncurse( curUser, item );
 
-		Degrade.detach( curUser, Degrade.class );
+		if (curUser.buff(Degrade.class) != null) {
+			Degrade.detach(curUser, Degrade.class);
+			procced = true;
+		}
 
 		if (procced) {
 			GLog.p( Messages.get(this, "cleansed") );

@@ -117,8 +117,8 @@ public class AboutScene extends PixelScene {
 
 		CreditsBlock charlie = new CreditsBlock(false, Window.SHPX_COLOR,
 				"Sound Effects:",
-				Icons.CHARLIE.get(),
-				"Charlie",
+				Icons.CELESTI.get(),
+				"Celesti",
 				"s9menine.itch.io",
 				"https://s9menine.itch.io");
 		charlie.setRect(alex.right(), alex.top(), colWidth/2f, 0);

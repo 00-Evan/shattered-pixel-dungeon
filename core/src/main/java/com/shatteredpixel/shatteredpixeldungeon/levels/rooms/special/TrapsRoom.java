@@ -106,7 +106,7 @@ public class TrapsRoom extends SpecialRoom {
 			level.drop( prize( level ), pos ).type = Heap.Type.CHEST;
 		} else {
 			Painter.set( level, pos, Terrain.PEDESTAL );
-			level.drop( prize( level ), pos );
+			level.drop( prize( level ), pos ).type = Heap.Type.CHEST;
 		}
 		
 		level.addItemToSpawn( new PotionOfLevitation() );

@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity;
@@ -158,7 +159,7 @@ public class SpiritHawk extends ArmorAbility {
 			attacksAutomatically = false;
 
 			immunities.addAll(new BlobImmunity().immunities());
-			immunities.add(Corruption.class);
+			immunities.add(AllyBuff.class);
 		}
 
 		@Override
@@ -167,7 +168,7 @@ public class SpiritHawk extends ArmorAbility {
 		}
 
 		private int dodgesUsed = 0;
-		private float timeRemaining = 60f;
+		private float timeRemaining = 100f;
 
 		@Override
 		public int defenseSkill(Char enemy) {

@@ -28,8 +28,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -264,7 +264,7 @@ public class DriedRose extends Artifact {
 		if (ghost == null){
 			return super.status();
 		} else {
-			return (int)((ghost.HP+partialCharge)*100) / ghost.HT + "%";
+			return ((ghost.HP*100) / ghost.HT) + "%";
 		}
 	}
 	
@@ -373,10 +373,10 @@ public class DriedRose extends Artifact {
 			if (ghost != null){
 				defaultAction = AC_DIRECT;
 				
-				//heals to full over 1000 turns
+				//heals to full over 500 turns
 				LockedFloor lock = target.buff(LockedFloor.class);
 				if (ghost.HP < ghost.HT && (lock == null || lock.regenOn())) {
-					partialCharge += (ghost.HT / 1000f) * RingOfEnergy.artifactChargeMultiplier(target);
+					partialCharge += (ghost.HT / 500f) * RingOfEnergy.artifactChargeMultiplier(target);
 					updateQuickslot();
 					
 					if (partialCharge > 1) {
@@ -456,7 +456,7 @@ public class DriedRose extends Artifact {
 		}
 
 		@Override
-		public boolean doPickUp( Hero hero ) {
+		public boolean doPickUp(Hero hero, int pos) {
 			DriedRose rose = hero.belongings.getItem( DriedRose.class );
 
 			if (rose == null){
@@ -475,6 +475,7 @@ public class DriedRose extends Artifact {
 					GLog.i( Messages.get(this, "levelup") );
 
 				Sample.INSTANCE.play( Assets.Sounds.DEWDROP );
+				GameScene.pickUp(this, pos);
 				hero.spendAndNext(TIME_TO_PICK_UP);
 				return true;
 
@@ -615,10 +616,9 @@ public class DriedRose extends Artifact {
 		@Override
 		public int defenseProc(Char enemy, int damage) {
 			if (rose != null && rose.armor != null) {
-				return rose.armor.proc( enemy, this, damage );
-			} else {
-				return super.defenseProc(enemy, damage);
+				damage = rose.armor.proc( enemy, this, damage );
 			}
+			return super.defenseProc(enemy, damage);
 		}
 		
 		@Override
@@ -626,7 +626,7 @@ public class DriedRose extends Artifact {
 			//TODO improve this when I have proper damage source logic
 			if (rose != null && rose.armor != null && rose.armor.hasGlyph(AntiMagic.class, this)
 					&& AntiMagic.RESISTS.contains(src.getClass())){
-				dmg -= AntiMagic.drRoll(rose.armor.level());
+				dmg -= AntiMagic.drRoll(rose.armor.buffedLvl());
 			}
 			
 			super.damage( dmg, src );
@@ -683,6 +683,15 @@ public class DriedRose extends Artifact {
 				block += Random.NormalIntRange( 0, rose.weapon.defenseFactor( this ));
 			}
 			return block;
+		}
+
+		//used in some glyph calculations
+		public Armor armor(){
+			if (rose != null){
+				return rose.armor;
+			} else {
+				return null;
+			}
 		}
 
 		@Override
@@ -809,7 +818,7 @@ public class DriedRose extends Artifact {
 			immunities.add( Burning.class );
 			immunities.add( ScrollOfRetribution.class );
 			immunities.add( ScrollOfPsionicBlast.class );
-			immunities.add( Corruption.class );
+			immunities.add( AllyBuff.class );
 		}
 
 	}

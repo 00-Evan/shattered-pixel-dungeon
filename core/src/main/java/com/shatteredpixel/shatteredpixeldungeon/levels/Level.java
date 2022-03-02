@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Shadows;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -46,7 +47,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpiritHawk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bestiary;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogFist;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
@@ -68,6 +68,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.HeavyBoomerang;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.HighGrass;
@@ -323,8 +324,8 @@ public abstract class Level implements Bundlable {
 
 		version = bundle.getInt( VERSION );
 		
-		//saves from before v0.8.0b are not supported
-		if (version < ShatteredPixelDungeon.v0_8_0b){
+		//saves from before v0.9.0b are not supported
+		if (version < ShatteredPixelDungeon.v0_9_0b){
 			throw new RuntimeException("old save");
 		}
 
@@ -495,6 +496,22 @@ public abstract class Level implements Bundlable {
 		}
 	}
 
+	public ArrayList<Item> getItemsToPreserveFromSealedResurrect(){
+		ArrayList<Item> items = new ArrayList<>();
+		for (Heap h : heaps.valueList()){
+			if (h.type == Heap.Type.HEAP) items.addAll(h.items);
+		}
+		for (Mob m : mobs){
+			for (PinCushion b : m.buffs(PinCushion.class)){
+				items.addAll(b.getStuckItems());
+			}
+		}
+		for (HeavyBoomerang.CircleBack b : Dungeon.hero.buffs(HeavyBoomerang.CircleBack.class)){
+			if (b.activeDepth() == Dungeon.depth) items.add(b.cancel());
+		}
+		return items;
+	}
+
 	public Group addVisuals() {
 		if (visuals == null || visuals.parent == null){
 			visuals = new Group();
@@ -652,13 +669,6 @@ public abstract class Level implements Bundlable {
 			water[i]		= (flags & Terrain.LIQUID) != 0;
 			pit[i]			= (flags & Terrain.PIT) != 0;
 		}
-		
-		SmokeScreen s = (SmokeScreen)blobs.get(SmokeScreen.class);
-		if (s != null && s.volume > 0){
-			for (int i=0; i < length(); i++) {
-				losBlocking[i] = losBlocking[i] || s.cur[i] > 0;
-			}
-		}
 
 		Web w = (Web) blobs.get(Web.class);
 		if (w != null && w.volume > 0){
@@ -756,11 +766,6 @@ public abstract class Level implements Bundlable {
 		level.avoid[cell]			= (flags & Terrain.AVOID) != 0;
 		level.pit[cell]			    = (flags & Terrain.PIT) != 0;
 		level.water[cell]			= terrain == Terrain.WATER;
-
-		SmokeScreen s = (SmokeScreen)level.blobs.get(SmokeScreen.class);
-		if (s != null && s.volume > 0){
-			level.losBlocking[cell] = level.losBlocking[cell] || s.cur[cell] > 0;
-		}
 
 		for (int i : PathFinder.NEIGHBOURS9){
 			i = cell + i;
@@ -1079,6 +1084,8 @@ public abstract class Level implements Bundlable {
 
 	private static boolean[] heroMindFov;
 
+	private static boolean[] modifiableBlocking;
+
 	public void updateFieldOfView( Char c, boolean[] fieldOfView ) {
 
 		int cx = c.pos % width();
@@ -1088,13 +1095,29 @@ public abstract class Level implements Bundlable {
 						&& c.buff( TimekeepersHourglass.timeStasis.class ) == null && c.isAlive();
 		if (sighted) {
 			boolean[] blocking;
+
+			if (modifiableBlocking == null || modifiableBlocking.length != Dungeon.level.losBlocking.length){
+				modifiableBlocking = new boolean[Dungeon.level.losBlocking.length];
+			}
 			
 			if ((c instanceof Hero && ((Hero) c).subClass == HeroSubClass.WARDEN)
 				|| c instanceof YogFist.SoiledFist) {
-				blocking = Dungeon.level.losBlocking.clone();
+				System.arraycopy(Dungeon.level.losBlocking, 0, modifiableBlocking, 0, modifiableBlocking.length);
+				blocking = modifiableBlocking;
 				for (int i = 0; i < blocking.length; i++){
 					if (blocking[i] && (Dungeon.level.map[i] == Terrain.HIGH_GRASS || Dungeon.level.map[i] == Terrain.FURROWED_GRASS)){
 						blocking[i] = false;
+					}
+				}
+			} else if (c.alignment == Char.Alignment.ENEMY
+					&& Dungeon.level.blobs.containsKey(SmokeScreen.class)
+					&& Dungeon.level.blobs.get(SmokeScreen.class).volume > 0) {
+				System.arraycopy(Dungeon.level.losBlocking, 0, modifiableBlocking, 0, modifiableBlocking.length);
+				blocking = modifiableBlocking;
+				Blob s = Dungeon.level.blobs.get(SmokeScreen.class);
+				for (int i = 0; i < blocking.length; i++){
+					if (!blocking[i] && s.cur[i] > 0){
+						blocking[i] = true;
 					}
 				}
 			} else {
@@ -1118,8 +1141,7 @@ public abstract class Level implements Bundlable {
 				sense = Math.max( ((MindVision)b).distance, sense );
 			}
 			if (c.buff(MagicalSight.class) != null){
-				sense = 8;
-				sense *= 1f + 0.25f*((Hero) c).pointsInTalent(Talent.FARSIGHT);
+				sense = Math.max( MagicalSight.DISTANCE, sense );
 			}
 		}
 		

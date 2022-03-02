@@ -241,10 +241,7 @@ public class StatusPane extends Component {
 		if (Dungeon.hero.lvl != lastLvl) {
 
 			if (lastLvl != -1) {
-				Emitter emitter = (Emitter)recycle( Emitter.class );
-				emitter.revive();
-				emitter.pos( 27, 27 );
-				emitter.burst( Speck.factory( Speck.STAR ), 12 );
+				showStarParticles();
 			}
 
 			lastLvl = Dungeon.hero.lvl;
@@ -260,6 +257,13 @@ public class StatusPane extends Component {
 			lastTier = tier;
 			avatar.copy( HeroSprite.avatar( Dungeon.hero.heroClass, tier ) );
 		}
+	}
+
+	public void showStarParticles(){
+		Emitter emitter = (Emitter)recycle( Emitter.class );
+		emitter.revive();
+		emitter.pos( 27, 27 );
+		emitter.burst( Speck.factory( Speck.STAR ), 12 );
 	}
 
 	public void pickup( Item item, int cell) {

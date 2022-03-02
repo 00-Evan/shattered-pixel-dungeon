@@ -128,7 +128,10 @@ public class ArcaneResin extends Item {
 
 		@Override
 		public boolean testIngredients(ArrayList<Item> ingredients) {
-			return ingredients.size() == 1 && ingredients.get(0) instanceof Wand && ingredients.get(0).isIdentified();
+			return ingredients.size() == 1
+					&& ingredients.get(0) instanceof Wand
+					&& ingredients.get(0).isIdentified()
+					&& !ingredients.get(0).cursed;
 		}
 
 		@Override

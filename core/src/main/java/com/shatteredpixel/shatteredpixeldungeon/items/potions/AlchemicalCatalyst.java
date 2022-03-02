@@ -83,8 +83,13 @@ public class AlchemicalCatalyst extends Potion {
 	@Override
 	public int value() {
 		return 40 * quantity;
+}
+
+	@Override
+	public int energyVal() {
+		return 8 * quantity;
 	}
-	
+
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe {
 		
 		@Override
@@ -109,12 +114,12 @@ public class AlchemicalCatalyst extends Potion {
 		public int cost(ArrayList<Item> ingredients) {
 			for (Item i : ingredients){
 				if (i instanceof Plant.Seed){
-					return 1;
+					return 0;
 				} else if (i instanceof Runestone){
-					return 2;
+					return 1;
 				}
 			}
-			return 1;
+			return 0;
 		}
 		
 		@Override

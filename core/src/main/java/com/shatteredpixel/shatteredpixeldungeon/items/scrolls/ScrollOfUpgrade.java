@@ -101,7 +101,7 @@ public class ScrollOfUpgrade extends InventoryScroll {
 
 			item.upgrade();
 
-			if (wasCursed && !item.cursed){
+			if (item.cursedKnown && wasCursed && !item.cursed){
 				removeCurse( Dungeon.hero );
 			}
 
@@ -133,5 +133,10 @@ public class ScrollOfUpgrade extends InventoryScroll {
 	@Override
 	public int value() {
 		return isKnown() ? 50 * quantity : super.value();
+	}
+
+	@Override
+	public int energyVal() {
+		return isKnown() ? 8 * quantity : super.energyVal();
 	}
 }

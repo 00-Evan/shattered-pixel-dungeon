@@ -96,11 +96,11 @@ public class Monk extends Mob {
 	}
 	
 	@Override
-	public void move( int step ) {
+	public void move( int step, boolean travelling) {
 		// moving reduces cooldown by an additional 0.67, giving a total reduction of 1.67f.
 		// basically monks will become focused notably faster if you kite them.
-		focusCooldown -= 0.67f;
-		super.move( step );
+		if (travelling) focusCooldown -= 0.67f;
+		super.move( step, travelling);
 	}
 	
 	@Override

@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -59,7 +58,7 @@ public class Gold extends Item {
 	}
 	
 	@Override
-	public boolean doPickUp( Hero hero ) {
+	public boolean doPickUp(Hero hero, int pos) {
 		
 		Dungeon.gold += quantity;
 		Statistics.goldCollected += quantity;
@@ -69,7 +68,7 @@ public class Gold extends Item {
 		if (thievery != null)
 			thievery.collect(quantity);
 
-		GameScene.pickUp( this, hero.pos );
+		GameScene.pickUp( this, pos );
 		hero.sprite.showStatus( CharSprite.NEUTRAL, TXT_VALUE, quantity );
 		hero.spendAndNext( TIME_TO_PICK_UP );
 		
@@ -93,18 +92,5 @@ public class Gold extends Item {
 		quantity = Random.Int( 30 + Dungeon.depth * 10, 60 + Dungeon.depth * 20 );
 		return this;
 	}
-	
-	private static final String VALUE	= "value";
-	
-	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		bundle.put( VALUE, quantity );
-	}
-	
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle(bundle);
-		quantity = bundle.getInt( VALUE );
-	}
+
 }

@@ -78,22 +78,43 @@ public abstract class SpecialRoom extends Room {
 			entrance = (Door)bundle.get(ENTRANCE);
 		}
 	}
-	
-	private static final ArrayList<Class<? extends SpecialRoom>> ALL_SPEC = new ArrayList<>( Arrays.asList(
-			WeakFloorRoom.class, MagicWellRoom.class, CryptRoom.class, PoolRoom.class, GardenRoom.class, LibraryRoom.class, ArmoryRoom.class,
-			TreasuryRoom.class, TrapsRoom.class, StorageRoom.class, StatueRoom.class, VaultRoom.class, RunestoneRoom.class
+
+	//special rooms which give an equipment reward
+	private static final ArrayList<Class<? extends SpecialRoom>> EQUIP_SPECIALS = new ArrayList<>( Arrays.asList(
+			WeakFloorRoom.class, CryptRoom.class, PoolRoom.class, ArmoryRoom.class, TrapsRoom.class, StatueRoom.class, VaultRoom.class
+	));
+
+	//special rooms which give a consumable reward
+	//note that alchemy rooms are spawned separately
+	private static final ArrayList<Class<? extends SpecialRoom>> CONSUMABLES_SPECIALS = new ArrayList<>( Arrays.asList(
+			RunestoneRoom.class, GardenRoom.class, LibraryRoom.class, StorageRoom.class, TreasuryRoom.class, MagicWellRoom.class
 	) );
-	
+
 	public static ArrayList<Class<? extends Room>> runSpecials = new ArrayList<>();
 	public static ArrayList<Class<? extends Room>> floorSpecials = new ArrayList<>();
 	
 	private static int pitNeededDepth = -1;
 	
 	public static void initForRun() {
-		runSpecials = (ArrayList<Class<?extends Room>>)ALL_SPEC.clone();
-		
+		runSpecials = new ArrayList<>();
+
+		ArrayList<Class<?extends Room>> runEquipSpecials = (ArrayList<Class<?extends Room>>)EQUIP_SPECIALS.clone();
+		ArrayList<Class<?extends Room>> runConsSpecials = (ArrayList<Class<?extends Room>>)CONSUMABLES_SPECIALS.clone();
+
+		Random.shuffle(runEquipSpecials);
+		Random.shuffle(runConsSpecials);
+
+		// TODO currently always an equip special first as there's 1 more of them, adjust as needed if adding more
+		/*if (Random.Int(2) == 0){
+			runSpecials.add(runConsSpecials.remove(0));
+		}*/
+
+		while (!runEquipSpecials.isEmpty() || !runConsSpecials.isEmpty()){
+			if (!runEquipSpecials.isEmpty())    runSpecials.add(runEquipSpecials.remove(0));
+			if (!runConsSpecials.isEmpty())     runSpecials.add(runConsSpecials.remove(0));
+		}
+
 		pitNeededDepth = -1;
-		Random.shuffle(runSpecials);
 	}
 	
 	public static void initForFloor(){
@@ -141,16 +162,13 @@ public abstract class SpecialRoom extends Room {
 			if (Dungeon.bossLevel(Dungeon.depth + 1)){
 				floorSpecials.remove(WeakFloorRoom.class);
 			}
-			
-			Room r = null;
-			int index = floorSpecials.size();
-			for (int i = 0; i < 4; i++){
-				int newidx = Random.Int( floorSpecials.size() );
-				if (newidx < index) index = newidx;
-			}
-			
-			r = Reflection.newInstance(floorSpecials.get( index ));
-			
+
+			//60% chance for front of queue, 30% chance for next, 10% for one after that
+			int index = Random.chances(new float[]{6, 3, 1});
+			while (index >= floorSpecials.size()) index--;
+
+			Room r = Reflection.newInstance(floorSpecials.get( index ));
+
 			if (r instanceof WeakFloorRoom){
 				pitNeededDepth = Dungeon.depth + 1;
 			}

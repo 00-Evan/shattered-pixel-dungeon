@@ -43,6 +43,11 @@ public class MetalShard extends Item {
 	
 	@Override
 	public int value() {
-		return quantity * 100;
+		return quantity * 50;
+	}
+
+	@Override
+	public int energyVal() {
+		return quantity * 6;
 	}
 }

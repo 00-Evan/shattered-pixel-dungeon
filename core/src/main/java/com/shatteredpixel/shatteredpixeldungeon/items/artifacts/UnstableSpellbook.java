@@ -125,8 +125,6 @@ public class UnstableSpellbook extends Artifact {
 						||((scroll instanceof ScrollOfIdentify ||
 							scroll instanceof ScrollOfRemoveCurse ||
 							scroll instanceof ScrollOfMagicMapping) && Random.Int(2) == 0)
-						//don't roll teleportation scrolls on boss floors
-						|| (scroll instanceof ScrollOfTeleportation && Dungeon.bossLevel())
 						//cannot roll transmutation
 						|| (scroll instanceof ScrollOfTransmutation));
 				
@@ -320,7 +318,7 @@ public class UnstableSpellbook extends Artifact {
 
 		@Override
 		public boolean itemSelectable(Item item) {
-			return item instanceof Scroll && scrolls.contains(item.getClass());
+			return item instanceof Scroll && item.isIdentified() && scrolls.contains(item.getClass());
 		}
 
 		@Override

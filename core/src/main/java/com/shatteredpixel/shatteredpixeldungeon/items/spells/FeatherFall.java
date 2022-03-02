@@ -68,7 +68,7 @@ public class FeatherFall extends Spell {
 			inputs =  new Class[]{PotionOfLevitation.class, ArcaneCatalyst.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 6;
+			cost = 8;
 			
 			output = FeatherFall.class;
 			outQuantity = 2;

@@ -50,7 +50,7 @@ import java.util.ArrayList;
 
 public class WelcomeScene extends PixelScene {
 
-	private static final int LATEST_UPDATE = ShatteredPixelDungeon.v1_0_0;
+	private static final int LATEST_UPDATE = ShatteredPixelDungeon.v1_1_0;
 
 	@Override
 	public void create() {
@@ -166,7 +166,7 @@ public class WelcomeScene extends PixelScene {
 				message += "\n";
 				//message += "\n" + Messages.get(this, "patch_balance");
 				message += "\n" + Messages.get(this, "patch_bugfixes");
-				//message += "\n" + Messages.get(this, "patch_translations");
+				message += "\n" + Messages.get(this, "patch_translations");
 
 			}
 		} else {

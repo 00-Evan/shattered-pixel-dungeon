@@ -27,11 +27,26 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
+import com.watabou.utils.Bundle;
 
 public class ScrollEmpower extends Buff {
 
 	{
 		type = buffType.POSITIVE;
+	}
+
+	private int left;
+
+	public void reset(){
+		left = 2;
+		Item.updateQuickslot();
+	}
+
+	public void use(){
+		left--;
+		if (left <= 0){
+			detach();
+		}
 	}
 
 	@Override
@@ -57,7 +72,25 @@ public class ScrollEmpower extends Buff {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", Dungeon.hero.pointsInTalent(Talent.EMPOWERING_SCROLLS));
+		return Messages.get(this, "desc", Dungeon.hero.pointsInTalent(Talent.EMPOWERING_SCROLLS), left);
 	}
 
+	private static final String LEFT = "left";
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put(LEFT, left);
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		//pre-1.1.0 saves
+		if (bundle.contains(LEFT)){
+			left = bundle.getInt(LEFT);
+		} else {
+			left = 2;
+		}
+	}
 }

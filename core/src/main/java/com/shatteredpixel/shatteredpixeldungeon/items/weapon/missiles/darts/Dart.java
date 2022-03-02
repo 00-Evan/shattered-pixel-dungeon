@@ -126,7 +126,13 @@ public class Dart extends MissileWeapon {
 
 		return super.proc(attacker, defender, damage);
 	}
-	
+
+	@Override
+	public int throwPos(Hero user, int dst) {
+		updateCrossbow();
+		return super.throwPos(user, dst);
+	}
+
 	@Override
 	protected void onThrow(int cell) {
 		updateCrossbow();

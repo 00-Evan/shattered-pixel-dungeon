@@ -143,7 +143,8 @@ public class CellSelector extends ScrollArea {
 	}
 	
 	public void select( int cell ) {
-		if (enabled && listener != null && cell != -1) {
+		if (enabled && Dungeon.hero.ready && !GameScene.isShowingWindow()
+				&& listener != null && cell != -1) {
 			
 			listener.onSelect( cell );
 			GameScene.ready();
@@ -295,7 +296,8 @@ public class CellSelector extends ScrollArea {
 	
 	public void processKeyHold(){
 		if (heldAction != SPDAction.NONE){
-			enabled = true;
+			enabled = Dungeon.hero.ready = true;
+			Dungeon.observe();
 			heldTurns++;
 			moveFromAction(heldAction);
 		}

@@ -29,11 +29,13 @@ import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
@@ -188,7 +190,7 @@ public abstract class Mob extends Char {
 			return true;
 		}
 
-		if (buff(Terror.class) != null){
+		if (buff(Terror.class) != null || buff(Dread.class) != null ){
 			state = FLEEING;
 		}
 		
@@ -203,6 +205,14 @@ public abstract class Mob extends Char {
 	protected boolean intelligentAlly = false;
 	
 	protected Char chooseEnemy() {
+
+		Dread dread = buff( Dread.class );
+		if (dread != null) {
+			Char source = (Char)Actor.findById( dread.object );
+			if (source != null) {
+				return source;
+			}
+		}
 
 		Terror terror = buff( Terror.class );
 		if (terror != null) {
@@ -338,9 +348,9 @@ public abstract class Mob extends Char {
 	@Override
 	public void add( Buff buff ) {
 		super.add( buff );
-		if (buff instanceof Amok || buff instanceof Corruption) {
+		if (buff instanceof Amok || buff instanceof AllyBuff) {
 			state = HUNTING;
-		} else if (buff instanceof Terror) {
+		} else if (buff instanceof Terror || buff instanceof Dread) {
 			state = FLEEING;
 		} else if (buff instanceof Sleep) {
 			state = SLEEPING;
@@ -351,7 +361,8 @@ public abstract class Mob extends Char {
 	@Override
 	public void remove( Buff buff ) {
 		super.remove( buff );
-		if (buff instanceof Terror) {
+		if ((buff instanceof Terror && buff(Dread.class) == null)
+				|| (buff instanceof Dread && buff(Terror.class) == null)) {
 			if (enemySeen) {
 				sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "rage"));
 				state = HUNTING;
@@ -538,7 +549,6 @@ public abstract class Mob extends Char {
 		
 		if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
 			sprite.attack( enemy.pos );
-			spend( attackDelay() );
 			return false;
 			
 		} else {
@@ -551,6 +561,7 @@ public abstract class Mob extends Char {
 	@Override
 	public void onAttackComplete() {
 		attack( enemy );
+		spend( attackDelay() );
 		super.onAttackComplete();
 	}
 	
@@ -743,7 +754,7 @@ public abstract class Mob extends Char {
 		}
 		
 		//lucky enchant logic
-		if (Dungeon.hero.lvl <= maxLvl && buff(Lucky.LuckProc.class) != null){
+		if (buff(Lucky.LuckProc.class) != null){
 			Dungeon.level.drop(Lucky.genLoot(), pos).sprite.drop();
 			Lucky.showFlare(sprite);
 		}

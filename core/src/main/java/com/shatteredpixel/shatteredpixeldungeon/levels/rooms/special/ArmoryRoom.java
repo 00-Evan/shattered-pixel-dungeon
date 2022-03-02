@@ -55,6 +55,7 @@ public class ArmoryRoom extends SpecialRoom {
 		}
 		
 		int n = Random.IntRange( 2, 3 );
+		prizeCats = new float[]{1,1,1,1};
 		for (int i=0; i < n; i++) {
 			int pos;
 			do {
@@ -66,9 +67,13 @@ public class ArmoryRoom extends SpecialRoom {
 		entrance.set( Door.Type.LOCKED );
 		level.addItemToSpawn( new IronKey( Dungeon.depth ) );
 	}
-	
+
+	//only a max of 1 prize from each category can be dropped at a time
+	private static float[] prizeCats;
 	private static Item prize( Level level ) {
-		switch (Random.Int( 4 )){
+		int index = Random.chances(prizeCats);
+		prizeCats[index] = 0;
+		switch (index){
 			case 0:
 				return new Bomb().random();
 			case 1:
