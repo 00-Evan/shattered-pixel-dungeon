@@ -26,71 +26,74 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.Image;
 
-//TODO the icons asset is getting pretty bloated, should expand the texture and reorganize
 public enum Icons {
-	
-	//button icons
-	CHECKED,
-	UNCHECKED,
-	INFO,
-	CHALLENGE_OFF,
-	CHALLENGE_ON,
-	PREFS,
-	LANGS,
-	EXIT,
-	CLOSE,
-	ARROW,
-	DISPLAY,
-	DATA,
-	AUDIO,
-	TALENT,
-	MAGNIFY,
-	BUFFS,
-	BACKPACK_LRG,
-	PLUS,
-	
-	//ingame UI icons
-	SKULL,
-	BUSY,
-	COMPASS,
-	SLEEP,
-	ALERT,
-	LOST,
-	TARGET,
-	BACKPACK,
-	SEED_POUCH,
-	SCROLL_HOLDER,
-	WAND_HOLSTER,
-	POTION_BANDOLIER,
-	ENERGY,
-	COIN_SML,
-	ENERGY_SML,
-	
-	//hero & rankings icons
-	DEPTH,
-	WARRIOR,
-	MAGE,
-	ROGUE,
-	HUNTRESS,
-	
-	//main menu icons
+
+	//title screen icons, variable sizes, spacing for 17x16
 	ENTER,
 	GOLD,
 	RANKINGS,
 	BADGES,
 	NEWS,
 	CHANGES,
+	PREFS,
 	SHPX,
-	
-	//misc icons
-	LIBGDX,
-	WATA,
-	WARNING,
 
-	//credits icons:
-	//16x16
+	//rankings and hero select icons, spacing for 16x16
+	DEPTH,
+	WARRIOR,
+	MAGE,
+	ROGUE,
+	HUNTRESS,
+
+	//grey icons, mainly used for buttons, spacing for 16x16
+	EXIT,
+	DISPLAY, //2 separate images, changes based on orientation
+	DATA,
+	AUDIO,
+	LANGS,
+	CONTROLLER,
+	STATS,
+	CHALLENGE_OFF,
+	CHALLENGE_ON,
+	RENAME_OFF,
+	RENAME_ON,
+	LEFTARROW,
+	RIGHTARROW,
+
+	//misc icons, mainly used for buttons, spacing for 16x16 until the smaller icons at the end
+	UNCHECKED,
+	CHECKED,
+	CLOSE,
+	PLUS,
+	ARROW,
+	INFO,
+	WARNING,
+	BACKPACK_LRG,
+	TALENT,
+	MAGNIFY,
+	BUFFS,
+	ENERGY,
+	COIN_SML,
+	ENERGY_SML,
+	BACKPACK,
+	SEED_POUCH,
+	SCROLL_HOLDER,
+	WAND_HOLSTER,
+	POTION_BANDOLIER,
+
+	//icons that appear in the game itself, variable spacing
+	TARGET,
+	SKULL,
+	BUSY,
+	COMPASS,
+	SLEEP,
+	ALERT,
+	LOST,
+
+	//icons that appear in the about screen, variable spacing
+	LIBGDX,
 	ALEKS,
-	//32x32
+	WATA,
 	CELESTI,
 	KRISTJAN,
 	CUBE_CODE,
@@ -104,183 +107,203 @@ public enum Icons {
 	public static Image get( Icons type ) {
 		Image icon = new Image( Assets.Interfaces.ICONS );
 		switch (type) {
-		case CHECKED:
-			icon.frame( icon.texture.uvRect( 0, 0, 12, 12 ) );
-			break;
-		case UNCHECKED:
-			icon.frame( icon.texture.uvRect( 16, 0, 28, 12 ) );
-			break;
-		case INFO:
-			icon.frame( icon.texture.uvRect( 32, 0, 46, 14 ) );
-			break;
-		case CHALLENGE_ON:
-			icon.frame( icon.texture.uvRect( 48, 0, 62, 12 ) );
-			break;
-		case CHALLENGE_OFF:
-			icon.frame( icon.texture.uvRect( 64, 0, 78, 12 ) );
-			break;
-		case PREFS:
-			icon.frame( icon.texture.uvRect( 80, 0, 94, 14 ) );
-			break;
-		case LANGS:
-			icon.frame( icon.texture.uvRect( 96, 0, 110, 11 ) );
-			break;
-		case EXIT:
-			icon.frame( icon.texture.uvRect( 112, 0, 127, 11 ) );
-			break;
-		case CLOSE:
-			icon.frame( icon.texture.uvRect( 0, 16, 11, 27 ) );
-			break;
-		case ARROW:
-			icon.frame( icon.texture.uvRect( 16, 16, 27, 27 ) );
-			break;
-		case DISPLAY:
-			if (PixelScene.landscape()){
-				icon.frame( icon.texture.uvRect( 80, 48, 96, 61 ) );
-			} else {
-				icon.frame( icon.texture.uvRect( 32, 16, 45, 32 ) );
-			}
-			break;
-		case DATA:
-			icon.frame( icon.texture.uvRect( 48, 16, 64, 31 ) );
-			break;
-		case AUDIO:
-			icon.frame( icon.texture.uvRect( 64, 16, 78, 30 ) );
-			break;
-		case TALENT:
-			icon.frame( icon.texture.uvRect( 80, 16, 93, 29 ) );
-			break;
-		case MAGNIFY:
-			icon.frame( icon.texture.uvRect( 96, 16, 110, 30 ) );
-			break;
-		case BUFFS:
-			icon.frame( icon.texture.uvRect( 110, 16, 128, 31 ) );
-			break;
-		case BACKPACK_LRG:
-			icon.frame( icon.texture.uvRect( 64, 80, 80, 96 ) );
-			break;
-		case PLUS:
-			icon.frame( icon.texture.uvRect( 80, 80, 91, 91 ) );
-			break;
 
-		case SKULL:
-			icon.frame( icon.texture.uvRect( 0, 32, 8, 40 ) );
-			break;
-		case BUSY:
-			icon.frame( icon.texture.uvRect( 8, 32, 16, 40 ) );
-			break;
-		case COMPASS:
-			icon.frame( icon.texture.uvRect( 0, 40, 7, 45 ) );
-			break;
-		case SLEEP:
-			icon.frame( icon.texture.uvRect( 16, 32, 25, 40 ) );
-			break;
-		case ALERT:
-			icon.frame( icon.texture.uvRect( 16, 40, 24, 48 ) );
-			break;
-		case LOST:
-			icon.frame( icon.texture.uvRect( 24, 40, 32, 48 ) );
-			break;
-		case TARGET:
-			icon.frame( icon.texture.uvRect( 32, 32, 48, 48 ) );
-			break;
-		case BACKPACK:
-			icon.frame( icon.texture.uvRect( 48, 32, 58, 42 ) );
-			break;
-		case SCROLL_HOLDER:
-			icon.frame( icon.texture.uvRect( 58, 32, 68, 42 ) );
-			break;
-		case SEED_POUCH:
-			icon.frame( icon.texture.uvRect( 68, 32, 78, 42 ) );
-			break;
-		case WAND_HOLSTER:
-			icon.frame( icon.texture.uvRect( 78, 32, 88, 42 ) );
-			break;
-		case POTION_BANDOLIER:
-			icon.frame( icon.texture.uvRect( 88, 32, 98, 42 ) );
-			break;
-		case ENERGY:
-			icon.frame( icon.texture.uvRect( 96, 80, 112, 96 ) );
-			break;
-		case COIN_SML:
-			icon.frame( icon.texture.uvRect( 112, 80, 119, 87 ) );
-			break;
-		case ENERGY_SML:
-			icon.frame( icon.texture.uvRect( 112, 88, 120, 95 ) );
-			break;
-			
-		case DEPTH:
-			icon.frame( icon.texture.uvRect( 0, 48, 13, 64 ) );
-			break;
-		case WARRIOR:
-			icon.frame( icon.texture.uvRect( 16, 48, 25, 63 ) );
-			break;
-		case MAGE:
-			icon.frame( icon.texture.uvRect( 32, 48, 47, 62 ) );
-			break;
-		case ROGUE:
-			icon.frame( icon.texture.uvRect( 48, 48, 57, 63 ) );
-			break;
-		case HUNTRESS:
-			icon.frame( icon.texture.uvRect( 64, 48, 80, 64 ) );
-			break;
-		
-		case ENTER:
-			icon.frame( icon.texture.uvRect( 0, 64, 16, 80 ) );
-			break;
-		case RANKINGS:
-			icon.frame( icon.texture.uvRect( 17, 64, 34, 80 ) );
-			break;
-		case BADGES:
-			icon.frame( icon.texture.uvRect( 34, 64, 50, 80 ) );
-			break;
-		case NEWS:
-			icon.frame( icon.texture.uvRect( 51, 64, 67, 79 ) );
-			break;
-		case CHANGES:
-			icon.frame( icon.texture.uvRect( 68, 64, 83, 79 ) );
-			break;
-		case SHPX:
-			icon.frame( icon.texture.uvRect( 85, 64, 101, 80 ) );
-			break;
-		case GOLD:
-			icon.frame( icon.texture.uvRect( 102, 64, 119, 80 ) );
-			break;
-		
-		case LIBGDX:
-			icon.frame( icon.texture.uvRect( 0, 81, 16, 94 ) );
-			break;
-		case WATA:
-			icon.frame( icon.texture.uvRect( 17, 81, 34, 93 ) );
-			break;
-		case WARNING:
-			icon.frame( icon.texture.uvRect( 34, 81, 48, 95 ) );
-			break;
+			case ENTER:
+				icon.frame( icon.texture.uvRectBySize( 0, 0, 16, 16 ) );
+				break;
+			case GOLD:
+				icon.frame( icon.texture.uvRectBySize( 17, 0, 17, 16 ) );
+				break;
+			case RANKINGS:
+				icon.frame( icon.texture.uvRectBySize( 34, 0, 17, 16 ) );
+				break;
+			case BADGES:
+				icon.frame( icon.texture.uvRectBySize( 51, 0, 16, 16 ) );
+				break;
+			case NEWS:
+				icon.frame( icon.texture.uvRectBySize( 68, 0, 15, 15 ) );
+				break;
+			case CHANGES:
+				icon.frame( icon.texture.uvRectBySize( 85, 0, 15, 15 ) );
+				break;
+			case PREFS:
+				icon.frame( icon.texture.uvRectBySize( 102, 0, 14, 14 ) );
+				break;
+			case SHPX:
+				icon.frame( icon.texture.uvRectBySize( 119, 0, 16, 16 ) );
+				break;
 
-		case ALEKS:
-			icon.frame( icon.texture.uvRect( 48, 80, 64, 96 ) );
-			break;
-		//32*32 icons are scaled down to match game's size
-		case CELESTI:
-			icon.frame( icon.texture.uvRect( 0, 96, 32, 128 ) );
-			icon.scale.set(PixelScene.align(0.49f));
-			break;
-		case KRISTJAN:
-			icon.frame( icon.texture.uvRect( 32, 96, 64, 128 ) );
-			icon.scale.set(PixelScene.align(0.49f));
-			break;
-		case ARCNOR:
-			icon.frame( icon.texture.uvRect( 64, 96, 96, 128 ) );
-			icon.scale.set(PixelScene.align(0.49f));
-			break;
-		case PURIGRO:
-			icon.frame( icon.texture.uvRect( 96, 96, 128, 128 ) );
-			icon.scale.set(PixelScene.align(0.49f));
-			break;
-		case CUBE_CODE:
-			icon.frame( icon.texture.uvRect( 101, 32, 128, 62 ) );
-			icon.scale.set(PixelScene.align(0.49f));
-			break;
+			case DEPTH:
+				icon.frame( icon.texture.uvRectBySize( 0, 16, 13, 16 ) );
+				break;
+			case WARRIOR:
+				icon.frame( icon.texture.uvRectBySize( 16, 16, 9, 15 ) );
+				break;
+			case MAGE:
+				icon.frame( icon.texture.uvRectBySize( 32, 16, 15, 14 ) );
+				break;
+			case ROGUE:
+				icon.frame( icon.texture.uvRectBySize( 48, 16, 9, 15 ) );
+				break;
+			case HUNTRESS:
+				icon.frame( icon.texture.uvRectBySize( 64, 16, 16, 16 ) );
+				break;
+
+			case EXIT:
+				icon.frame( icon.texture.uvRectBySize( 0, 32, 15, 11 ) );
+				break;
+			case DISPLAY:
+				if (!PixelScene.landscape()){
+					icon.frame( icon.texture.uvRectBySize( 16, 32, 13, 16 ) );
+				} else {
+					icon.frame( icon.texture.uvRectBySize( 32, 32, 16, 13 ) );
+				}
+				break;
+			case DATA:
+				icon.frame( icon.texture.uvRectBySize( 48, 32, 16, 15 ) );
+				break;
+			case AUDIO:
+				icon.frame( icon.texture.uvRectBySize( 64, 32, 14, 14 ) );
+				break;
+			case LANGS:
+				icon.frame( icon.texture.uvRectBySize( 80, 32, 14, 11 ) );
+				break;
+			case CONTROLLER:
+				icon.frame( icon.texture.uvRectBySize( 96, 32, 16, 12 ) );
+				break;
+			case STATS:
+				icon.frame( icon.texture.uvRectBySize( 112, 32, 16, 13 ) );
+				break;
+			case CHALLENGE_OFF:
+				icon.frame( icon.texture.uvRectBySize( 128, 32, 14, 12 ) );
+				break;
+			case CHALLENGE_ON:
+				icon.frame( icon.texture.uvRectBySize( 144, 32, 14, 12 ) );
+				break;
+			case RENAME_OFF:
+				icon.frame( icon.texture.uvRectBySize( 160, 32, 15, 14 ) );
+				break;
+			case RENAME_ON:
+				icon.frame( icon.texture.uvRectBySize( 176, 32, 15, 14 ) );
+				break;
+			case LEFTARROW:
+				icon.frame( icon.texture.uvRectBySize( 192, 32, 14, 8 ) );
+				break;
+			case RIGHTARROW:
+				icon.frame( icon.texture.uvRectBySize( 208, 32, 14, 8 ) );
+				break;
+
+			case UNCHECKED:
+				icon.frame( icon.texture.uvRectBySize( 0, 48, 12, 12 ) );
+				break;
+			case CHECKED:
+				icon.frame( icon.texture.uvRectBySize( 16, 48, 12, 12 ) );
+				break;
+			case CLOSE:
+				icon.frame( icon.texture.uvRectBySize( 32, 48, 11, 11 ) );
+				break;
+			case PLUS:
+				icon.frame( icon.texture.uvRectBySize( 48, 48, 11, 11 ) );
+				break;
+			case ARROW:
+				icon.frame( icon.texture.uvRectBySize( 64, 48, 11, 11 ) );
+				break;
+			case INFO:
+				icon.frame( icon.texture.uvRectBySize( 80, 48, 14, 14 ) );
+				break;
+			case WARNING:
+				icon.frame( icon.texture.uvRectBySize( 96, 48, 14, 14 ) );
+				break;
+			case BACKPACK_LRG:
+				icon.frame( icon.texture.uvRectBySize( 112, 48, 16, 16 ) );
+				break;
+			case TALENT:
+				icon.frame( icon.texture.uvRectBySize( 128, 48, 13, 13 ) );
+				break;
+			case MAGNIFY:
+				icon.frame( icon.texture.uvRectBySize( 144, 48, 14, 14 ) );
+				break;
+			case BUFFS:
+				icon.frame( icon.texture.uvRectBySize( 160, 48, 16, 15 ) );
+				break;
+			case ENERGY:
+				icon.frame( icon.texture.uvRectBySize( 176, 48, 16, 16 ) );
+				break;
+			case COIN_SML:
+				icon.frame( icon.texture.uvRectBySize( 192, 48, 7, 7 ) );
+				break;
+			case ENERGY_SML:
+				icon.frame( icon.texture.uvRectBySize( 192, 56, 8, 7 ) );
+				break;
+			case BACKPACK:
+				icon.frame( icon.texture.uvRectBySize( 201, 48, 10, 10 ) );
+				break;
+			case SCROLL_HOLDER:
+				icon.frame( icon.texture.uvRectBySize( 211, 48, 10, 10 ) );
+				break;
+			case SEED_POUCH:
+				icon.frame( icon.texture.uvRectBySize( 221, 48, 10, 10 ) );
+				break;
+			case WAND_HOLSTER:
+				icon.frame( icon.texture.uvRectBySize( 231, 48, 10, 10 ) );
+				break;
+			case POTION_BANDOLIER:
+				icon.frame( icon.texture.uvRectBySize( 241, 48, 10, 10 ) );
+				break;
+
+			case TARGET:
+				icon.frame( icon.texture.uvRectBySize( 0, 64, 16, 16 ) );
+				break;
+			case SKULL:
+				icon.frame( icon.texture.uvRectBySize( 16, 64, 8, 8 ) );
+				break;
+			case BUSY:
+				icon.frame( icon.texture.uvRectBySize( 24, 64, 8, 8 ) );
+				break;
+			case COMPASS:
+				icon.frame( icon.texture.uvRectBySize( 16, 72, 7, 5 ) );
+				break;
+			case SLEEP:
+				icon.frame( icon.texture.uvRectBySize( 32, 64, 9, 8 ) );
+				break;
+			case ALERT:
+				icon.frame( icon.texture.uvRectBySize( 32, 72, 8, 8 ) );
+				break;
+			case LOST:
+				icon.frame( icon.texture.uvRectBySize( 32, 72, 8, 8 ) );
+				break;
+		
+			case LIBGDX:
+				icon.frame( icon.texture.uvRectBySize( 0, 96, 16, 13 ) );
+				break;
+			case ALEKS:
+				icon.frame( icon.texture.uvRectBySize( 16, 96, 16, 13 ) );
+				break;
+			case WATA:
+				icon.frame( icon.texture.uvRectBySize( 0, 112, 17, 12 ) );
+				break;
+
+			//large icons are scaled down to match game's size
+			case CELESTI:
+				icon.frame( icon.texture.uvRectBySize( 32, 96, 32, 32 ) );
+				icon.scale.set(PixelScene.align(0.49f));
+				break;
+			case KRISTJAN:
+				icon.frame( icon.texture.uvRectBySize( 64, 96, 32, 32 ) );
+				icon.scale.set(PixelScene.align(0.49f));
+				break;
+			case ARCNOR:
+				icon.frame( icon.texture.uvRectBySize( 96, 96, 32, 32 ) );
+				icon.scale.set(PixelScene.align(0.49f));
+				break;
+			case PURIGRO:
+				icon.frame( icon.texture.uvRectBySize( 128, 96, 32, 32 ) );
+				icon.scale.set(PixelScene.align(0.49f));
+				break;
+			case CUBE_CODE:
+				icon.frame( icon.texture.uvRectBySize( 160, 96, 27, 30 ) );
+				icon.scale.set(PixelScene.align(0.49f));
+				break;
 
 		}
 		return icon;
