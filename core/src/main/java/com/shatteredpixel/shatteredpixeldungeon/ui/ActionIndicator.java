@@ -105,8 +105,7 @@ public class ActionIndicator extends Tag {
 
 	@Override
 	protected String hoverText() {
-		//TODO each special action should probably have its own title
-		return Messages.titleCase(Messages.get(WndKeyBindings.class, "tag_action"));
+		return Messages.titleCase(action.actionName());
 	}
 
 	public static void setAction(Action action){
@@ -127,7 +126,7 @@ public class ActionIndicator extends Tag {
 					instance.icon = null;
 				}
 				if (action != null) {
-					instance.icon = action.getIcon();
+					instance.icon = action.actionIcon();
 					instance.needsLayout = true;
 				}
 			}
@@ -136,7 +135,9 @@ public class ActionIndicator extends Tag {
 
 	public interface Action{
 
-		public Image getIcon();
+		public String actionName();
+
+		public Image actionIcon();
 
 		public void doAction();
 

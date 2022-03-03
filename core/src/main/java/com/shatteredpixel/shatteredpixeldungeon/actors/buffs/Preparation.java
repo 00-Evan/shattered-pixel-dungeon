@@ -248,9 +248,14 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 		super.storeInBundle(bundle);
 		bundle.put(TURNS, turnsInvis);
 	}
+
+	@Override
+	public String actionName() {
+		return Messages.get(this, "action_name");
+	}
 	
 	@Override
-	public Image getIcon() {
+	public Image actionIcon() {
 		Image actionIco = Effects.get(Effects.Type.WOUND);
 		tintIcon(actionIco);
 		return actionIco;

@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
+import com.watabou.input.ControllerHandler;
 import com.watabou.input.GameAction;
 import com.watabou.input.KeyBindings;
 import com.watabou.input.KeyEvent;
@@ -85,7 +86,17 @@ public class Button extends Component {
 					if (keyAction() != null){
 						ArrayList<Integer> bindings = KeyBindings.getBoundKeysForAction(keyAction());
 						if (!bindings.isEmpty()){
-							text += " _(" + KeyBindings.getKeyName(bindings.get(0)) + ")_";
+							int key = bindings.get(0);
+							//prefer controller buttons if we are using a controller
+							if (ControllerHandler.controllerPointerActive()){
+								for (int code : bindings){
+									if (ControllerHandler.icControllerKey(code)){
+										key = code;
+										break;
+									}
+								}
+							}
+							text += " _(" + KeyBindings.getKeyName(key) + ")_";
 						}
 					}
 					hoverTip = new Tooltip(text, 80);

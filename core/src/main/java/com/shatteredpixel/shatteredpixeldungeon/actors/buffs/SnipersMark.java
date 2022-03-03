@@ -102,7 +102,23 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 	}
 	
 	@Override
-	public Image getIcon() {
+	public String actionName() {
+		SpiritBow bow = Dungeon.hero.belongings.getItem(SpiritBow.class);
+
+		if (bow == null) return null;
+
+		switch (bow.augment){
+			case NONE: default:
+				return Messages.get(this, "action_name_snapshot");
+			case SPEED:
+				return Messages.get(this, "action_name_volley");
+			case DAMAGE:
+				return Messages.get(this, "action_name_sniper");
+		}
+	}
+
+	@Override
+	public Image actionIcon() {
 		return new ItemSprite(ItemSpriteSheet.SPIRIT_BOW, null);
 	}
 	

@@ -193,7 +193,12 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 	}
 
 	@Override
-	public Image getIcon() {
+	public String actionName() {
+		return Messages.get(this, "action_name");
+	}
+
+	@Override
+	public Image actionIcon() {
 		Image im = new BuffIcon(BuffIndicator.HASTE, true);
 		im.hardlight(0x99992E);
 		return im;

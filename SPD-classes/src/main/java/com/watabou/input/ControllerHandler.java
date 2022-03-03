@@ -170,6 +170,18 @@ public class ControllerHandler implements ControllerListener {
 		return Input.Keys.UNKNOWN;
 	}
 
+	public static boolean icControllerKey(int keyCode){
+		if (keyCode >= Input.Keys.BUTTON_A && keyCode <= Input.Keys.BUTTON_MODE){
+			return true;
+		}
+
+		else if (keyCode >= Input.Keys.DPAD_UP && keyCode <= Input.Keys.DPAD_LEFT){
+			return true;
+		}
+
+		return false;
+	}
+
 	public static String customButtonName(int keyCode){
 		if (lastUsedType == ControllerType.PLAYSTATION){
 			if (keyCode == Input.Keys.BUTTON_A){
