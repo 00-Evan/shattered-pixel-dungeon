@@ -42,20 +42,28 @@ public class WndBadge extends Window {
 		if (!unlocked) icon.brightness(0.4f);
 		add( icon );
 
-		RenderedTextBlock info = PixelScene.renderTextBlock( badge.desc(), 8 );
+		RenderedTextBlock title = PixelScene.renderTextBlock( badge.title(), 9 );
+		title.hardlight(TITLE_COLOR);
+		if (!unlocked) title.hardlight( 0x888822 );
+		add(title);
+
+		RenderedTextBlock info = PixelScene.renderTextBlock( badge.desc(), 6 );
 		info.maxWidth(WIDTH - MARGIN * 2);
 		info.align(RenderedTextBlock.CENTER_ALIGN);
-		PixelScene.align(info);
 		if (!unlocked) info.hardlight( 0x888888 );
 		add(info);
 		
-		float w = Math.max( icon.width(), info.width() ) + MARGIN * 2;
+		float w = Math.max( icon.width(), Math.max(title.width(), info.width()) ) + MARGIN * 2;
 		
 		icon.x = (w - icon.width()) / 2f;
 		icon.y = MARGIN;
 		PixelScene.align(icon);
 
-		info.setPos((w - info.width()) / 2, icon.y + icon.height() + MARGIN);
+		title.setPos((w - title.width()) / 2, icon.y + icon.height() + MARGIN);
+		PixelScene.align(title);
+
+		info.setPos((w - info.width()) / 2, title.bottom() + MARGIN);
+		PixelScene.align(info);
 		resize( (int)w, (int)(info.bottom() + MARGIN) );
 		
 		if (unlocked) BadgeBanner.highlight( icon, badge.image );

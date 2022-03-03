@@ -154,7 +154,7 @@ public class BadgesGrid extends Component {
 
 		@Override
 		protected String hoverText() {
-			return badge.desc();
+			return badge.title();
 		}
 	}
 

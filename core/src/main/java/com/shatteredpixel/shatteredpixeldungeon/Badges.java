@@ -162,8 +162,12 @@ public class Badges {
 			this.meta = meta;
 		}
 
+		public String title(){
+			return Messages.get(this, name()+".title");
+		}
+
 		public String desc(){
-			return Messages.get(this, name());
+			return Messages.get(this, name()+".desc");
 		}
 		
 		Badge() {
@@ -853,7 +857,7 @@ public class Badges {
 		if (global.contains( badge )) {
 			
 			if (!badge.meta) {
-				GLog.h( Messages.get(Badges.class, "endorsed", badge.desc()) );
+				GLog.h( Messages.get(Badges.class, "endorsed", badge.title()) );
 			}
 			
 		} else {
@@ -861,11 +865,7 @@ public class Badges {
 			global.add( badge );
 			saveNeeded = true;
 			
-			if (badge.meta) {
-				GLog.h( Messages.get(Badges.class, "new_super", badge.desc()) );
-			} else {
-				GLog.h( Messages.get(Badges.class, "new", badge.desc()) );
-			}
+			GLog.h( Messages.get(Badges.class, "new", badge.title() + " (" + badge.desc() + ")") );
 			PixelScene.showBadge( badge );
 		}
 	}
