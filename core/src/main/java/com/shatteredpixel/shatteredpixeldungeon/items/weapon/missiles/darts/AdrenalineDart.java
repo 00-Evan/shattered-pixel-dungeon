@@ -35,7 +35,7 @@ public class AdrenalineDart extends TippedDart {
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
 		
-		Buff.prolong( defender, Adrenaline.class, Adrenaline.DURATION);
+		Buff.prolong( defender, Adrenaline.class, 3*Adrenaline.DURATION);
 		
 		if (attacker.alignment == defender.alignment){
 			return 0;

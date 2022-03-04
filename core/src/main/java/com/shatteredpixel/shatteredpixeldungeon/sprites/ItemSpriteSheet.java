@@ -332,7 +332,7 @@ public class ItemSpriteSheet {
 	public static final int CHILLING_DART   = TIPPED_DARTS+4;
 	public static final int SHOCKING_DART   = TIPPED_DARTS+5;
 	public static final int POISON_DART     = TIPPED_DARTS+6;
-	public static final int SLEEP_DART      = TIPPED_DARTS+7;
+	public static final int CLEANSING_DART  = TIPPED_DARTS+7;
 	public static final int PARALYTIC_DART  = TIPPED_DARTS+8;
 	public static final int HOLY_DART       = TIPPED_DARTS+9;
 	public static final int DISPLACING_DART = TIPPED_DARTS+10;

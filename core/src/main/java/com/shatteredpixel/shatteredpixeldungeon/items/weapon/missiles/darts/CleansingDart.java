@@ -22,29 +22,24 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCleansing;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-public class SleepDart extends TippedDart {
+public class CleansingDart extends TippedDart {
 	
 	{
-		image = ItemSpriteSheet.SLEEP_DART;
+		image = ItemSpriteSheet.CLEANSING_DART;
 	}
 	
 	@Override
 	public int proc(Char attacker, final Char defender, int damage) {
-		
-		//need to delay this so damage from the dart doesn't break the sleep
-		new FlavourBuff(){
-			{actPriority = VFX_PRIO;}
-			public boolean act() {
-				Buff.affect( defender, Sleep.class );
-				return super.act();
-			}
-		}.attachTo(defender);
-		
+
+		PotionOfCleansing.cleanse(defender, PotionOfCleansing.Cleanse.DURATION*2f);
+
+		if (attacker.alignment == defender.alignment){
+			return 0;
+		}
+
 		return super.proc(attacker, defender, damage);
 	}
 }

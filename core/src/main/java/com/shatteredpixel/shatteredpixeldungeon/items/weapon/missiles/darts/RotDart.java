@@ -49,6 +49,6 @@ public class RotDart extends TippedDart {
 	
 	@Override
 	public float durabilityPerUse() {
-		return 100f;
+		return 20f;
 	}
 }

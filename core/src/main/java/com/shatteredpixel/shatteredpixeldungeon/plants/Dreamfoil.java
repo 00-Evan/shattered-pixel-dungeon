@@ -44,16 +44,14 @@ public class Dreamfoil extends Plant {
 	public void activate( Char ch ) {
 
 		if (ch != null) {
-			if (ch instanceof Mob) {
-				Buff.affect(ch, MagicalSleep.class);
-			} else if (ch instanceof Hero){
+			PotionOfHealing.cure(ch);
+
+			if (ch instanceof Hero) {
 				GLog.i( Messages.get(this, "refreshed") );
-				PotionOfHealing.cure(ch);
-				
+
 				if (((Hero) ch).subClass == HeroSubClass.WARDEN){
 					Buff.affect(ch, BlobImmunity.class, BlobImmunity.DURATION/2f);
 				}
-				
 			}
 		}
 	}

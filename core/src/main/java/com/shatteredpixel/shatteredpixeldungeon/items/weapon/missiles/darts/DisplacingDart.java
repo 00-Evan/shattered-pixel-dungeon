@@ -24,6 +24,8 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -40,50 +42,58 @@ public class DisplacingDart extends TippedDart {
 		image = ItemSpriteSheet.DISPLACING_DART;
 	}
 	
-	int distance = 8;
-	
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
-		
+
+		//attempts to teleport the enemy to a position 8-10 cells away from the hero
+		//prioritizes the closest visible cell to the defender, or closest non-visible if no visible are present
+		//grants vision on the defender if teleport goes to non-visible
 		if (!defender.properties().contains(Char.Property.IMMOVABLE)){
 			
-			int startDist = Dungeon.level.distance(attacker.pos, defender.pos);
-			
-			HashMap<Integer, ArrayList<Integer>> positions = new HashMap<>();
+			ArrayList<Integer> visiblePositions = new ArrayList<>();
+			ArrayList<Integer> nonVisiblePositions = new ArrayList<>();
 
-			PathFinder.buildDistanceMap(defender.pos, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null));
+			PathFinder.buildDistanceMap(attacker.pos, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null));
 
 			for (int pos = 0; pos < Dungeon.level.length(); pos++){
-				if (Dungeon.level.heroFOV[pos]
-						&& Dungeon.level.passable[pos]
-						&& PathFinder.distance[pos] != Integer.MAX_VALUE
+				if (Dungeon.level.passable[pos]
+						&& PathFinder.distance[pos] >= 8
+						&& PathFinder.distance[pos] <= 10
 						&& (!Char.hasProp(defender, Char.Property.LARGE) || Dungeon.level.openSpace[pos])
 						&& Actor.findChar(pos) == null){
-					
-					int dist = Dungeon.level.distance(attacker.pos, pos);
-					if (dist > startDist){
-						if (positions.get(dist) == null){
-							positions.put(dist, new ArrayList<Integer>());
-						}
-						positions.get(dist).add(pos);
+
+					if (Dungeon.level.heroFOV[pos]){
+						visiblePositions.add(pos);
+					} else {
+						nonVisiblePositions.add(pos);
 					}
-					
+
+				}
+			}
+
+			int chosenPos = -1;
+
+			if (!visiblePositions.isEmpty()) {
+				for (int pos : visiblePositions) {
+					if (chosenPos == -1 || Dungeon.level.trueDistance(defender.pos, chosenPos)
+							> Dungeon.level.trueDistance(defender.pos, pos)){
+						chosenPos = pos;
+					}
+				}
+			} else {
+				for (int pos : nonVisiblePositions) {
+					if (chosenPos == -1 || Dungeon.level.trueDistance(defender.pos, chosenPos)
+							> Dungeon.level.trueDistance(defender.pos, pos)){
+						chosenPos = pos;
+					}
 				}
 			}
 			
-			float[] probs = new float[distance+1];
-			
-			for (int i = 0; i <= distance; i++){
-				if (positions.get(i) != null){
-					probs[i] = i - startDist;
+			if (chosenPos != -1){
+				ScrollOfTeleportation.appear( defender, chosenPos );
+				if (!Dungeon.level.heroFOV[chosenPos]){
+					Buff.affect(attacker, TalismanOfForesight.CharAwareness.class, 5f).charID = defender.id();
 				}
-			}
-			
-			int chosenDist = Random.chances(probs);
-			
-			if (chosenDist != -1){
-				int pos = positions.get(chosenDist).get(Random.index(positions.get(chosenDist)));
-				ScrollOfTeleportation.appear( defender, pos );
 				Dungeon.level.occupyCell(defender );
 			}
 		

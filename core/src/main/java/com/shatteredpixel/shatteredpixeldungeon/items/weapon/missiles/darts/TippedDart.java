@@ -173,7 +173,7 @@ public abstract class TippedDart extends Dart {
 	private static HashMap<Class<?extends Plant.Seed>, Class<?extends TippedDart>> types = new HashMap<>();
 	static {
 		types.put(Blindweed.Seed.class,     BlindingDart.class);
-		types.put(Dreamfoil.Seed.class,     SleepDart.class);
+		types.put(Dreamfoil.Seed.class,     CleansingDart.class);
 		types.put(Earthroot.Seed.class,     ParalyticDart.class);
 		types.put(Fadeleaf.Seed.class,      DisplacingDart.class);
 		types.put(Firebloom.Seed.class,     IncendiaryDart.class);
