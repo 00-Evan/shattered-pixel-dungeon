@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.ArcaneResin;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
@@ -207,11 +208,9 @@ public class MagesStaff extends MeleeWeapon {
 
 		int oldStaffcharges = this.wand.curCharges;
 
-		if (owner == Dungeon.hero && Dungeon.hero.hasTalent(Talent.WAND_PRESERVATION)
-				&& Random.Float() < 0.34f + 0.33f*Dungeon.hero.pointsInTalent(Talent.WAND_PRESERVATION)){
-
+		if (owner == Dungeon.hero && Dungeon.hero.hasTalent(Talent.WAND_PRESERVATION)){
 			Talent.WandPreservationCounter counter = Buff.affect(Dungeon.hero, Talent.WandPreservationCounter.class);
-			if (counter.count() < 3) {
+			if (counter.count() < 5 && Random.Float() < 0.5f*Dungeon.hero.pointsInTalent(Talent.WAND_PRESERVATION)){
 				counter.countUp(1);
 				this.wand.level(0);
 				if (!this.wand.collect()) {
@@ -219,6 +218,13 @@ public class MagesStaff extends MeleeWeapon {
 				}
 				GLog.newLine();
 				GLog.p(Messages.get(this, "preserved"));
+			} else {
+				ArcaneResin resin = new ArcaneResin();
+				if (!resin.collect()) {
+					Dungeon.level.drop(resin, owner.pos);
+				}
+				GLog.newLine();
+				GLog.p(Messages.get(this, "preserved_resin"));
 			}
 		}
 
@@ -420,12 +426,12 @@ public class MagesStaff extends MeleeWeapon {
 					}
 
 					String bodyText = Messages.get(MagesStaff.class, "imbue_desc", newLevel);
-					int preservesLeft = Dungeon.hero.hasTalent(Talent.WAND_PRESERVATION) ? 3 : 0;
+					int preservesLeft = Dungeon.hero.hasTalent(Talent.WAND_PRESERVATION) ? 5 : 0;
 					if (Dungeon.hero.buff(Talent.WandPreservationCounter.class) != null){
 						preservesLeft -= Dungeon.hero.buff(Talent.WandPreservationCounter.class).count();
 					}
-					if (preservesLeft > 0){
-						int preserveChance = Dungeon.hero.pointsInTalent(Talent.WAND_PRESERVATION) == 1 ? 67 : 100;
+					if (Dungeon.hero.hasTalent(Talent.WAND_PRESERVATION)){
+						int preserveChance = Dungeon.hero.pointsInTalent(Talent.WAND_PRESERVATION) == 1 ? 50 : 100;
 						bodyText += "\n\n" + Messages.get(MagesStaff.class, "imbue_talent", preserveChance, preservesLeft);
 					} else {
 						bodyText += "\n\n" + Messages.get(MagesStaff.class, "imbue_lost");
