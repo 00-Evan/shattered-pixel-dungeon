@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroType;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Transmuting;
@@ -160,21 +161,21 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 
 		//talents that can only be used by one hero class
 		//TODO could some of these be made more generic?
-		private static HashMap<Talent, HeroClass> restrictedTalents = new HashMap<>();
+		private static HashMap<Talent, HeroType> restrictedTalents = new HashMap<>();
 		static {
-			restrictedTalents.put(Talent.IRON_WILL, HeroClass.WARRIOR);
-			restrictedTalents.put(Talent.RESTORED_WILLPOWER, HeroClass.WARRIOR);
-			restrictedTalents.put(Talent.RUNIC_TRANSFERENCE, HeroClass.WARRIOR);
+			restrictedTalents.put(Talent.IRON_WILL, HeroType.WARRIOR);
+			restrictedTalents.put(Talent.RESTORED_WILLPOWER, HeroType.WARRIOR);
+			restrictedTalents.put(Talent.RUNIC_TRANSFERENCE, HeroType.WARRIOR);
 
-			restrictedTalents.put(Talent.BACKUP_BARRIER, HeroClass.MAGE);
-			restrictedTalents.put(Talent.ENERGIZING_UPGRADE, HeroClass.MAGE);
-			restrictedTalents.put(Talent.WAND_PRESERVATION, HeroClass.MAGE);
+			restrictedTalents.put(Talent.BACKUP_BARRIER, HeroType.MAGE);
+			restrictedTalents.put(Talent.ENERGIZING_UPGRADE, HeroType.MAGE);
+			restrictedTalents.put(Talent.WAND_PRESERVATION, HeroType.MAGE);
 
-			restrictedTalents.put(Talent.PROTECTIVE_SHADOWS, HeroClass.ROGUE);
-			restrictedTalents.put(Talent.MYSTICAL_UPGRADE, HeroClass.ROGUE);
-			restrictedTalents.put(Talent.LIGHT_CLOAK, HeroClass.ROGUE);
+			restrictedTalents.put(Talent.PROTECTIVE_SHADOWS, HeroType.ROGUE);
+			restrictedTalents.put(Talent.MYSTICAL_UPGRADE, HeroType.ROGUE);
+			restrictedTalents.put(Talent.LIGHT_CLOAK, HeroType.ROGUE);
 
-			restrictedTalents.put(Talent.SEER_SHOT, HeroClass.HUNTRESS);
+			restrictedTalents.put(Talent.SEER_SHOT, HeroType.HUNTRESS);
 		}
 
 		public static WndMetamorphReplace INSTANCE;
@@ -224,7 +225,7 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 							clsTalentsAtTier.remove(talent);
 						}
 						if (restrictedTalents.containsKey(talent)
-								&& restrictedTalents.get(talent) != curUser.heroClass){
+								&& restrictedTalents.get(talent) != curUser.heroClass.heroType()){
 							clsTalentsAtTier.remove(talent);
 						}
 					}

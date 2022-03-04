@@ -258,7 +258,7 @@ public enum Icons {
 			icon.frame( icon.texture.uvRect( 48, 80, 64, 96 ) );
 			break;
 		case BRIAN:
-			icon.frame( icon.texture.uvRect( 65, 80, 80, 96 ) );
+			icon.frame( icon.texture.uvRect( 82, 48, 100, 62 ) );
 			break;
 		//32*32 icons are scaled down to match game's size
 		case CELESTI:

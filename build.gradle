@@ -15,7 +15,7 @@ allprojects {
         appPackageName = 'net.casiello.pixeldungeonrescue'
 
         appVersionCode = 577
-        appVersionName = '1.1.2'
+        appVersionName = '1.1.0'
 
         appJavaCompatibility = JavaVersion.VERSION_1_8
 
