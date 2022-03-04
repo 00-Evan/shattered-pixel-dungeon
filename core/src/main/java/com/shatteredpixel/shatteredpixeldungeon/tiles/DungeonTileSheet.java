@@ -83,7 +83,7 @@ public class DungeonTileSheet {
 			Terrain.BARRICADE, Terrain.HIGH_GRASS, Terrain.FURROWED_GRASS, Terrain.SECRET_TRAP,
 			Terrain.TRAP, Terrain.INACTIVE_TRAP, Terrain.EMPTY_DECO,
 			Terrain.SIGN, Terrain.WELL, Terrain.STATUE, Terrain.ALCHEMY,
-			Terrain.DOOR, Terrain.OPEN_DOOR, Terrain.LOCKED_DOOR
+			Terrain.DOOR, Terrain.OPEN_DOOR, Terrain.LOCKED_DOOR, Terrain.CRYSTAL_DOOR
 	));
 
 	//+1 for ground above, +2 for ground right, +4 for ground below, +8 for ground left.
@@ -172,8 +172,9 @@ public class DungeonTileSheet {
 	public static final int FLAT_DOOR           = FLAT_DOORS+0;
 	public static final int FLAT_DOOR_OPEN      = FLAT_DOORS+1;
 	public static final int FLAT_DOOR_LOCKED    = FLAT_DOORS+2;
-	public static final int UNLOCKED_EXIT       = FLAT_DOORS+3;
-	public static final int LOCKED_EXIT         = FLAT_DOORS+4;
+	public static final int FLAT_DOOR_CRYSTAL   = FLAT_DOORS+3;
+	public static final int UNLOCKED_EXIT       = FLAT_DOORS+4;
+	public static final int LOCKED_EXIT         = FLAT_DOORS+5;
 
 	public static final int FLAT_OTHER          =                           xy(1, 7);   //16 slots
 	public static final int FLAT_SIGN           = FLAT_OTHER+0;
@@ -241,8 +242,9 @@ public class DungeonTileSheet {
 	public static final int RAISED_DOOR             = RAISED_DOORS+0;
 	public static final int RAISED_DOOR_OPEN        = RAISED_DOORS+1;
 	public static final int RAISED_DOOR_LOCKED      = RAISED_DOORS+2;
+	public static final int RAISED_DOOR_CRYSTAL     = RAISED_DOORS+3;
 	//floor tile that appears on a top/bottom doorway
-	public static final int RAISED_DOOR_SIDEWAYS    = RAISED_DOORS+3;
+	public static final int RAISED_DOOR_SIDEWAYS    = RAISED_DOORS+4;
 
 
 	public static int getRaisedDoorTile(int tile, int below){
@@ -250,11 +252,12 @@ public class DungeonTileSheet {
 		else if (tile == Terrain.DOOR)          return DungeonTileSheet.RAISED_DOOR;
 		else if (tile == Terrain.OPEN_DOOR)     return DungeonTileSheet.RAISED_DOOR_OPEN;
 		else if (tile == Terrain.LOCKED_DOOR)   return DungeonTileSheet.RAISED_DOOR_LOCKED;
+		else if (tile == Terrain.CRYSTAL_DOOR)   return DungeonTileSheet.RAISED_DOOR_CRYSTAL;
 		else return -1;
 	}
 
 	private static int[] doorTiles = new int[]{
-			Terrain.DOOR, Terrain.LOCKED_DOOR, Terrain.OPEN_DOOR
+			Terrain.DOOR, Terrain.LOCKED_DOOR, Terrain.CRYSTAL_DOOR, Terrain.OPEN_DOOR
 	};
 
 	public static boolean doorTile(int tile){
@@ -306,13 +309,15 @@ public class DungeonTileSheet {
 	public static final int DOOR_SIDEWAYS_OVERHANG          = WALLS_OVERHANG+4;
 	public static final int DOOR_SIDEWAYS_OVERHANG_OPEN     = WALLS_OVERHANG+8;
 	public static final int DOOR_SIDEWAYS_OVERHANG_LOCKED   = WALLS_OVERHANG+12;
-	public static final int WALL_OVERHANG_WOODEN            = WALLS_OVERHANG+16;
+	public static final int DOOR_SIDEWAYS_OVERHANG_CRYSTAL  = WALLS_OVERHANG+16;
+	public static final int WALL_OVERHANG_WOODEN            = WALLS_OVERHANG+20;
 
 	public static int stitchWallOverhangTile(int tile, int rightBelow, int below, int leftBelow){
 		int visual;
 		if (tile == Terrain.DOOR)                                   visual = DOOR_SIDEWAYS_OVERHANG;
 		else if (tile == Terrain.OPEN_DOOR)                         visual = DOOR_SIDEWAYS_OVERHANG_OPEN;
 		else if (tile == Terrain.LOCKED_DOOR)                       visual = DOOR_SIDEWAYS_OVERHANG_LOCKED;
+		else if (tile == Terrain.CRYSTAL_DOOR)                      visual = DOOR_SIDEWAYS_OVERHANG_CRYSTAL;
 		else if (below == Terrain.BOOKSHELF)                        visual = WALL_OVERHANG_WOODEN;
 		else                                                        visual = WALL_OVERHANG;
 
@@ -323,10 +328,12 @@ public class DungeonTileSheet {
 	}
 
 	//no attachment to adjacent walls
-	public static final int DOOR_OVERHANG               = WALL_OVERHANG+21;
-	public static final int DOOR_OVERHANG_OPEN          = WALL_OVERHANG+22;
-	public static final int DOOR_SIDEWAYS               = WALL_OVERHANG+23;
-	public static final int DOOR_SIDEWAYS_LOCKED        = WALL_OVERHANG+24;
+	public static final int DOOR_OVERHANG               = WALL_OVERHANG+25;
+	public static final int DOOR_OVERHANG_OPEN          = WALL_OVERHANG+26;
+	public static final int DOOR_OVERHANG_CRYSTAL       = WALL_OVERHANG+27;
+	public static final int DOOR_SIDEWAYS               = WALL_OVERHANG+28;
+	public static final int DOOR_SIDEWAYS_LOCKED        = WALL_OVERHANG+29;
+	public static final int DOOR_SIDEWAYS_CRYSTAL       = WALL_OVERHANG+30;
 
 	public static final int STATUE_OVERHANG             = WALL_OVERHANG+32;
 	public static final int ALCHEMY_POT_OVERHANG        = WALL_OVERHANG+33;
@@ -371,6 +378,7 @@ public class DungeonTileSheet {
 		directFlatVisuals.put(Terrain.DOOR,             FLAT_DOOR);
 		directFlatVisuals.put(Terrain.OPEN_DOOR,        FLAT_DOOR_OPEN);
 		directFlatVisuals.put(Terrain.LOCKED_DOOR,      FLAT_DOOR_LOCKED);
+		directFlatVisuals.put(Terrain.CRYSTAL_DOOR,     FLAT_DOOR_CRYSTAL);
 		directFlatVisuals.put(Terrain.WALL_DECO,        FLAT_WALL_DECO);
 		directFlatVisuals.put(Terrain.BOOKSHELF,        FLAT_BOOKSHELF);
 		directFlatVisuals.put(Terrain.SIGN,             FLAT_SIGN);

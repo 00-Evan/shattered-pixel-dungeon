@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.CrystalKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -37,9 +38,11 @@ public class PitRoom extends SpecialRoom {
 
 	@Override //increase min size slightly to prevent tiny 3x3 wraith fights
 	public int minWidth() { return 6; }
-	public int minHeight() {
-		return 6;
-	}
+	public int minHeight() { return 6; }
+
+	@Override //reduce max size to ensure well is visible in normal circumstances
+	public int maxWidth() { return 9; }
+	public int maxHeight() { return 9; }
 
 	public void paint( Level level ) {
 		
@@ -47,7 +50,7 @@ public class PitRoom extends SpecialRoom {
 		Painter.fill( level, this, 1, Terrain.EMPTY );
 		
 		Door entrance = entrance();
-		entrance.set( Door.Type.LOCKED );
+		entrance.set( Door.Type.CRYSTAL );
 		
 		Point well = null;
 		if (entrance.x == left) {
@@ -61,12 +64,9 @@ public class PitRoom extends SpecialRoom {
 		}
 		Painter.set( level, well, Terrain.EMPTY_WELL );
 		
-		int remains = level.pointToCell(random());
-		while (level.map[remains] == Terrain.EMPTY_WELL) {
-			remains = level.pointToCell(random());
-		}
+		int remains = level.pointToCell(center());
 		
-		level.drop( new IronKey( Dungeon.depth ), remains ).type = Heap.Type.SKELETON;
+		level.drop( new CrystalKey( Dungeon.depth ), remains ).type = Heap.Type.SKELETON;
 		Item mainLoot = null;
 		do {
 			switch (Random.Int(3)){
@@ -92,13 +92,6 @@ public class PitRoom extends SpecialRoom {
 	}
 	
 	private static Item prize( Level level ) {
-		
-		if (Random.Int(2) != 0){
-			Item prize = level.findPrizeItem();
-			if (prize != null)
-				return prize;
-		}
-		
 		return Generator.random( Random.oneOf(
 			Generator.Category.POTION,
 			Generator.Category.SCROLL,
@@ -112,5 +105,10 @@ public class PitRoom extends SpecialRoom {
 		//the player is already weak after landing, and will likely need to kite the ghost.
 		//having traps here just seems unfair
 		return false;
+	}
+
+	@Override
+	public boolean canPlaceGrass(Point p) {
+		return false; //We want the player to be able to see the well through the door
 	}
 }

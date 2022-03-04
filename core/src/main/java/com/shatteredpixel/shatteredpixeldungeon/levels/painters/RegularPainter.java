@@ -244,6 +244,9 @@ public abstract class RegularPainter extends Painter {
 					case LOCKED:
 						l.map[door] = Terrain.LOCKED_DOOR;
 						break;
+					case CRYSTAL:
+						l.map[door] = Terrain.CRYSTAL_DOOR;
+						break;
 				}
 			}
 		}

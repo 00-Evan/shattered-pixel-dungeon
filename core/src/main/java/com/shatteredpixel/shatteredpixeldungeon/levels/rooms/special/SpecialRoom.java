@@ -90,6 +90,11 @@ public abstract class SpecialRoom extends Room {
 			RunestoneRoom.class, GardenRoom.class, LibraryRoom.class, StorageRoom.class, TreasuryRoom.class, MagicWellRoom.class
 	) );
 
+	//only one special that uses crystal keys per floor
+	private static final ArrayList<Class<? extends SpecialRoom>> CRYSTAL_KEY_SPECIALS = new ArrayList<>( Arrays.asList(
+			PitRoom.class, VaultRoom.class
+	) );
+
 	public static ArrayList<Class<? extends Room>> runSpecials = new ArrayList<>();
 	public static ArrayList<Class<? extends Room>> floorSpecials = new ArrayList<>();
 	
@@ -114,6 +119,8 @@ public abstract class SpecialRoom extends Room {
 			if (!runConsSpecials.isEmpty())     runSpecials.add(runConsSpecials.remove(0));
 		}
 
+		runSpecials.add(0, WeakFloorRoom.class);
+
 		pitNeededDepth = -1;
 	}
 	
@@ -128,6 +135,9 @@ public abstract class SpecialRoom extends Room {
 	
 	private static void useType( Class<?extends Room> type ) {
 		floorSpecials.remove( type );
+		if (CRYSTAL_KEY_SPECIALS.contains(type)){
+			floorSpecials.removeAll(CRYSTAL_KEY_SPECIALS);
+		}
 		if (runSpecials.remove( type )) {
 			runSpecials.add( type );
 		}
@@ -141,15 +151,7 @@ public abstract class SpecialRoom extends Room {
 		if (Dungeon.depth == pitNeededDepth){
 			pitNeededDepth = -1;
 			
-			floorSpecials.remove( ArmoryRoom.class );
-			floorSpecials.remove( CryptRoom.class );
-			floorSpecials.remove( LibraryRoom.class );
-			floorSpecials.remove( RunestoneRoom.class );
-			floorSpecials.remove( StatueRoom.class );
-			floorSpecials.remove( TreasuryRoom.class );
-			floorSpecials.remove( VaultRoom.class );
-			floorSpecials.remove( WeakFloorRoom.class );
-			
+			useType( PitRoom.class );
 			return new PitRoom();
 			
 		} else if (floorSpecials.contains(LaboratoryRoom.class)) {

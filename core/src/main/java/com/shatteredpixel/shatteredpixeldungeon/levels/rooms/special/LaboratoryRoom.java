@@ -116,13 +116,9 @@ public class LaboratoryRoom extends SpecialRoom {
 				level.drop(p, pos);
 			}
 		}
-		
-		if (level instanceof RegularLevel && ((RegularLevel)level).hasPitRoom()){
-			entrance.set( Door.Type.REGULAR );
-		} else {
-			entrance.set( Door.Type.LOCKED );
-			level.addItemToSpawn( new IronKey( Dungeon.depth ) );
-		}
+
+		entrance.set( Door.Type.LOCKED );
+		level.addItemToSpawn( new IronKey( Dungeon.depth ) );
 		
 	}
 	
