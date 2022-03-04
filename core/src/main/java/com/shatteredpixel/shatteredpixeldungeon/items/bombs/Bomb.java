@@ -352,20 +352,20 @@ public class Bomb extends Item {
 		
 		private static final HashMap<Class<?extends Bomb>, Integer> bombCosts = new HashMap<>();
 		static {
-			bombCosts.put(FrostBomb.class,      2);
-			bombCosts.put(WoollyBomb.class,     2);
+			bombCosts.put(FrostBomb.class,      0);
+			bombCosts.put(WoollyBomb.class,     0);
 			
-			bombCosts.put(Firebomb.class,       4);
-			bombCosts.put(Noisemaker.class,     4);
+			bombCosts.put(Firebomb.class,       1);
+			bombCosts.put(Noisemaker.class,     1);
 			
-			bombCosts.put(Flashbang.class,      6);
-			bombCosts.put(ShockBomb.class,      6);
+			bombCosts.put(Flashbang.class,      2);
+			bombCosts.put(ShockBomb.class,      2);
 
-			bombCosts.put(RegrowthBomb.class,   8);
-			bombCosts.put(HolyBomb.class,       8);
+			bombCosts.put(RegrowthBomb.class,   3);
+			bombCosts.put(HolyBomb.class,       3);
 			
-			bombCosts.put(ArcaneBomb.class,     10);
-			bombCosts.put(ShrapnelBomb.class,   10);
+			bombCosts.put(ArcaneBomb.class,     6);
+			bombCosts.put(ShrapnelBomb.class,   6);
 		}
 		
 		@Override
