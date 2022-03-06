@@ -364,6 +364,7 @@ public abstract class YogFist extends Mob {
 		@Override
 		public void damage(int dmg, Object src) {
 			if (!isInvulnerable(src.getClass()) && !(src instanceof Bleeding)){
+				dmg = Math.round( dmg * resist( src.getClass() ));
 				if (dmg < 0){
 					return;
 				}
@@ -421,6 +422,7 @@ public abstract class YogFist extends Mob {
 		@Override
 		public void damage(int dmg, Object src) {
 			if (!isInvulnerable(src.getClass()) && !(src instanceof Viscosity.DeferedDamage)){
+				dmg = Math.round( dmg * resist( src.getClass() ));
 				if (dmg >= 0) {
 					Buff.affect(this, Viscosity.DeferedDamage.class).prolong(dmg);
 					sprite.showStatus(CharSprite.WARNING, Messages.get(Viscosity.class, "deferred", dmg));
