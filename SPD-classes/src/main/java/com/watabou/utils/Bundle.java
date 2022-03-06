@@ -42,6 +42,7 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -481,6 +482,7 @@ public class Bundle {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				jsonBuilder.append(line);
+				jsonBuilder.append("\n");
 			}
 			String jsonString = jsonBuilder.toString();
 
@@ -488,10 +490,13 @@ public class Bundle {
 			try {
 				json = new JSONTokener(jsonString).nextValue();
 			} catch (Exception e){
-				//if the string can't be tokenized, it may be written by v1.1.0 or v1.1.1,
-				// which used a 'minified' format. use libGDX JSON to read it.
-				JsonValue minJson = new JsonReader().parse(jsonString);
-				json = new JSONTokener(minJson.prettyPrint(JsonWriter.OutputType.json, 0)).nextValue();
+				//if the string can't be tokenized, it may be written by v1.1.X, which used libGDX JSON.
+				// Some of these are written in a 'minified' format, some have duplicate keys.
+				// We read them in with the libGDX JSON code, fix duplicates, write as full JSON
+				// and then try to read again with org.json
+				JsonValue gdxJSON = new JsonReader().parse(jsonString);
+				killDuplicateKeysInLibGDXJSON(gdxJSON);
+				json = new JSONTokener(gdxJSON.prettyPrint(JsonWriter.OutputType.json, 0)).nextValue();
 			}
 			reader.close();
 
@@ -504,6 +509,24 @@ public class Bundle {
 		} catch (Exception e) {
 			Game.reportException(e);
 			throw new IOException();
+		}
+	}
+
+	private static void killDuplicateKeysInLibGDXJSON(JsonValue val){
+		HashSet<String> keys = new HashSet<>();
+		while(val != null) {
+			if (val.name != null && keys.contains(val.name)){
+				//delete the duplicate key
+				val.prev.next = val.next;
+				if (val.next != null) val.next.prev = val.prev;
+				val.parent.size--;
+			} else {
+				keys.add(val.name);
+				if (val.child != null){
+					killDuplicateKeysInLibGDXJSON(val.child);
+				}
+			}
+			val = val.next;
 		}
 	}
 
