@@ -66,7 +66,7 @@ public class Alchemize extends Spell {
 			inputs =  new Class[]{ArcaneCatalyst.class};
 			inQuantity = new int[]{1};
 			
-			cost = 3;
+			cost = 2;
 			
 			output = Alchemize.class;
 			outQuantity = 8;

@@ -54,7 +54,7 @@ public abstract class TargetedSpell extends Spell {
 		Sample.INSTANCE.play( Assets.Sounds.ZAP );
 	}
 	
-	private  static CellSelector.Listener targeter = new  CellSelector.Listener(){
+	private static CellSelector.Listener targeter = new  CellSelector.Listener(){
 		
 		@Override
 		public void onSelect( Integer target ) {

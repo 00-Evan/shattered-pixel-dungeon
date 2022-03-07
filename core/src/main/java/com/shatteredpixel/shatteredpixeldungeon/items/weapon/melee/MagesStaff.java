@@ -234,10 +234,10 @@ public class MagesStaff extends MeleeWeapon {
 		wand.updateLevel();
 
 		//syncs the level of the two items.
-		int targetLevel = Math.max(this.level() - (curseInfusionBonus ? 1 : 0), wand.level());
+		int targetLevel = Math.max(this.trueLevel(), wand.trueLevel());
 
 		//if the staff's level is being overridden by the wand, preserve 1 upgrade
-		if (wand.level() >= this.level() && this.level() > (curseInfusionBonus ? 1 : 0)) targetLevel++;
+		if (wand.trueLevel() >= this.trueLevel() && this.trueLevel() > 0) targetLevel++;
 		
 		level(targetLevel);
 		this.wand = wand;
@@ -416,13 +416,12 @@ public class MagesStaff extends MeleeWeapon {
 					applyWand((Wand)item);
 				} else {
 					int newLevel;
-					int itemLevel = item.level();
-					itemLevel -= ((Wand)item).resinBonus;
-					if (itemLevel >= level()){
-						if (level() > 0)    newLevel = itemLevel + 1;
-						else                newLevel = itemLevel;
+					int itemLevel = item.trueLevel();
+					if (itemLevel >= trueLevel()){
+						if (trueLevel() > 0)    newLevel = itemLevel + 1;
+						else                    newLevel = itemLevel;
 					} else {
-						newLevel = level();
+						newLevel = trueLevel();
 					}
 
 					String bodyText = Messages.get(MagesStaff.class, "imbue_desc", newLevel);

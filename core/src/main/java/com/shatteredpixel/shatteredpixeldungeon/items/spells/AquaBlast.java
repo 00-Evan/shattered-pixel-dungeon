@@ -21,49 +21,33 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfStormClouds;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GeyserTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.watabou.utils.PathFinder;
-import com.watabou.utils.Random;
 
 public class AquaBlast extends TargetedSpell {
 	
 	{
 		image = ItemSpriteSheet.AQUA_BLAST;
+		usesTargeting = true;
 	}
 	
 	@Override
 	protected void affectTarget(Ballistica bolt, Hero hero) {
 		int cell = bolt.collisionPos;
-		
-		Splash.at(cell, 0x00AAFF, 10);
-		
-		for (int i : PathFinder.NEIGHBOURS9){
-			if (i == 0 || Random.Int(5) != 0){
-				Dungeon.level.setCellToWater(false, cell+i);
-			}
-		}
-		
-		Char target = Actor.findChar(cell);
-		
-		if (target != null && target != hero){
-			//just enough to skip their current turn
-			Buff.affect(target, Paralysis.class, target.cooldown());
-		}
+
+		GeyserTrap geyser = new GeyserTrap();
+		geyser.pos = cell;
+		geyser.centerKnockBackDirection = bolt.path.get(bolt.dist+1);
+		geyser.activate();
 	}
 	
 	@Override
 	public int value() {
 		//prices of ingredients, divided by output quantity
-		return Math.round(quantity * ((60 + 40) / 12f));
+		return Math.round(quantity * ((60 + 40) / 8f));
 	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
@@ -75,7 +59,7 @@ public class AquaBlast extends TargetedSpell {
 			cost = 2;
 			
 			output = AquaBlast.class;
-			outQuantity = 12;
+			outQuantity = 8;
 		}
 		
 	}

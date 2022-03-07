@@ -40,6 +40,7 @@ public class WildEnergy extends TargetedSpell {
 	
 	{
 		image = ItemSpriteSheet.WILD_ENERGY;
+		usesTargeting = true;
 	}
 	
 	//we rely on cursedWand to do fx instead
@@ -75,7 +76,7 @@ public class WildEnergy extends TargetedSpell {
 			inputs =  new Class[]{ScrollOfMysticalEnergy.class, MetalShard.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 6;
+			cost = 4;
 			
 			output = WildEnergy.class;
 			outQuantity = 5;

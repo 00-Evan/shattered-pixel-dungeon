@@ -111,16 +111,16 @@ public class TelekineticGrab extends TargetedSpell {
 	@Override
 	public int value() {
 		//prices of ingredients, divided by output quantity (rounded up slightly)
-		return Math.round(quantity * ((48) / 6f));
+		return Math.round(quantity * ((5 + 40) / 6f));
 	}
 
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 
 		{
 			inputs =  new Class[]{LiquidMetal.class, ArcaneCatalyst.class};
-			inQuantity = new int[]{15, 1};
+			inQuantity = new int[]{10, 1};
 
-			cost = 4;
+			cost = 2;
 
 			output = TelekineticGrab.class;
 			outQuantity = 6;

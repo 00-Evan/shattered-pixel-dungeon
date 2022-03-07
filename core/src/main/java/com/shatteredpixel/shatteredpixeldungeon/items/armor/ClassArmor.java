@@ -104,7 +104,7 @@ abstract public class ClassArmor extends Armor {
 			break;
 		}
 		
-		classArmor.level(armor.level() - (armor.curseInfusionBonus ? 1 : 0));
+		classArmor.level(armor.trueLevel());
 		classArmor.tier = armor.tier;
 		classArmor.augment = armor.augment;
 		classArmor.inscribe( armor.glyph );

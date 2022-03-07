@@ -170,8 +170,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 			n = (Weapon) Reflection.newInstance(c.classes[Random.chances(c.probs)]);
 		} while (Challenges.isItemBlocked(n) || n.getClass() == w.getClass());
 		
-		int level = w.level();
-		if (w.curseInfusionBonus) level--;
+		int level = w.trueLevel();
 		if (level > 0) {
 			n.upgrade( level );
 		} else if (level < 0) {
@@ -234,9 +233,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		} while ( Challenges.isItemBlocked(n) || n.getClass() == w.getClass());
 		
 		n.level( 0 );
-		int level = w.level();
-		if (w.curseInfusionBonus) level--;
-		level -= w.resinBonus;
+		int level = w.trueLevel();
 		n.upgrade( level );
 
 		n.levelKnown = w.levelKnown;
