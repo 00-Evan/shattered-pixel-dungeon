@@ -117,7 +117,7 @@ public class ReclaimTrap extends TargetedSpell {
 	@Override
 	public int value() {
 		//prices of ingredients, divided by output quantity
-		return Math.round(quantity * ((40 + 100) / 3f));
+		return Math.round(quantity * ((40 + 50) / 3f));
 	}
 	
 	private static final String STORED_TRAP = "stored_trap";
