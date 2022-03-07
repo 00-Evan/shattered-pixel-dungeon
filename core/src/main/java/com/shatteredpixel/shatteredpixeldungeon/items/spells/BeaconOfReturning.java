@@ -107,7 +107,7 @@ public class BeaconOfReturning extends Spell {
 	}
 	
 	private void returnBeacon( Hero hero ){
-		if (Dungeon.bossLevel()) {
+		if (Dungeon.level.locked) {
 			GLog.w( Messages.get(this, "preventing") );
 			return;
 		}
