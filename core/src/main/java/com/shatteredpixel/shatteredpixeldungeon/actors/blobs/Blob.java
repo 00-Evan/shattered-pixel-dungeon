@@ -218,6 +218,10 @@ public class Blob extends Actor {
 		cur = new int[Dungeon.level.length()];
 		off = new int[Dungeon.level.length()];
 	}
+
+	public void onBuildFlagMaps( Level l ){
+		//do nothing by default, only some blobs affect flags
+	}
 	
 	public String tileDesc() {
 		return null;

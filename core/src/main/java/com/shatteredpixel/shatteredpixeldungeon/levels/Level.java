@@ -657,12 +657,8 @@ public abstract class Level implements Bundlable {
 			pit[i]			= (flags & Terrain.PIT) != 0;
 		}
 
-		Web w = (Web) blobs.get(Web.class);
-		if (w != null && w.volume > 0){
-			for (int i=0; i < length(); i++) {
-				solid[i] = solid[i] || w.cur[i] > 0;
-				flamable[i] = flamable[i] || w.cur[i] > 0;
-			}
+		for (Blob b : blobs.values()){
+			b.onBuildFlagMaps(this);
 		}
 		
 		int lastRow = length() - width();
@@ -680,7 +676,7 @@ public abstract class Level implements Bundlable {
 		}
 
 		//an open space is large enough to fit large mobs. A space is open when it is not solid
-		// and there is and open corner with both adjacent cells opens
+		// and there is an open corner with both adjacent cells opens
 		for (int i=0; i < length(); i++) {
 			if (solid[i]){
 				openSpace[i] = false;

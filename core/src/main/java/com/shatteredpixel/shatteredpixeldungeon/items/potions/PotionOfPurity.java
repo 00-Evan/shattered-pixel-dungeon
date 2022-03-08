@@ -67,16 +67,7 @@ public class PotionOfPurity extends Potion {
 			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
 				
 				for (Blob blob : blobs) {
-					
-					int value = blob.cur[i];
-					if (value > 0) {
-						
-						blob.clear(i);
-						blob.cur[i] = 0;
-						blob.volume -= value;
-						
-					}
-					
+					blob.clear(i);
 				}
 				
 				if (Dungeon.level.heroFOV[i]) {
