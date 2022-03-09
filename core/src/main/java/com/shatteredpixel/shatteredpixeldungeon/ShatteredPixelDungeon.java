@@ -52,6 +52,10 @@ public class ShatteredPixelDungeon extends Game {
 				com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.CleansingDart.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.SleepDart" );
 
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.CrystalVaultRoom.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.VaultRoom" );
+
 		//v1.1.0
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfDread.class,

@@ -81,7 +81,7 @@ public abstract class SpecialRoom extends Room {
 
 	//special rooms which give an equipment reward
 	private static final ArrayList<Class<? extends SpecialRoom>> EQUIP_SPECIALS = new ArrayList<>( Arrays.asList(
-			WeakFloorRoom.class, CryptRoom.class, PoolRoom.class, ArmoryRoom.class, TrapsRoom.class, StatueRoom.class, VaultRoom.class
+			WeakFloorRoom.class, CryptRoom.class, PoolRoom.class, ArmoryRoom.class, TrapsRoom.class, StatueRoom.class, CrystalVaultRoom.class
 	));
 
 	//special rooms which give a consumable reward
@@ -92,7 +92,7 @@ public abstract class SpecialRoom extends Room {
 
 	//only one special that uses crystal keys per floor
 	private static final ArrayList<Class<? extends SpecialRoom>> CRYSTAL_KEY_SPECIALS = new ArrayList<>( Arrays.asList(
-			PitRoom.class, VaultRoom.class, CrystalDoorChoiceRoom.class
+			PitRoom.class, CrystalVaultRoom.class, CrystalDoorChoiceRoom.class
 	) );
 
 	public static ArrayList<Class<? extends Room>> runSpecials = new ArrayList<>();

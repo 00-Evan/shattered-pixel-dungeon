@@ -39,7 +39,7 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class VaultRoom extends SpecialRoom {
+public class CrystalVaultRoom extends SpecialRoom {
 
 	//fixed size to improve presentation and provide space for crystal mimics
 	@Override
