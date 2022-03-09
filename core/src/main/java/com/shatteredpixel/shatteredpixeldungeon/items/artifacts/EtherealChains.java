@@ -202,7 +202,8 @@ public class EtherealChains extends Artifact {
 		}
 
 		//don't pull if the collision spot is in a wall
-		if (Dungeon.level.solid[chain.collisionPos]){
+		if (Dungeon.level.solid[chain.collisionPos]
+			|| !(Dungeon.level.passable[chain.collisionPos] || Dungeon.level.avoid[chain.collisionPos])){
 			GLog.i( Messages.get(this, "inside_wall"));
 			return;
 		}
