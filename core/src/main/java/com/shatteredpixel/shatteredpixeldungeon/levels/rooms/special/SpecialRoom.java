@@ -92,7 +92,7 @@ public abstract class SpecialRoom extends Room {
 
 	//only one special that uses crystal keys per floor
 	private static final ArrayList<Class<? extends SpecialRoom>> CRYSTAL_KEY_SPECIALS = new ArrayList<>( Arrays.asList(
-			PitRoom.class, CrystalVaultRoom.class, CrystalDoorChoiceRoom.class
+			PitRoom.class, CrystalVaultRoom.class, CrystalChoiceRoom.class
 	) );
 
 	public static ArrayList<Class<? extends Room>> runSpecials = new ArrayList<>();

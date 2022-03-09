@@ -33,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRo
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
-public class CrystalDoorChoiceRoom extends SpecialRoom {
+public class CrystalChoiceRoom extends SpecialRoom {
 
 	@Override
 	public int minWidth() { return 7; }
