@@ -60,6 +60,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FrostTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WornDartTrap;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -298,10 +299,13 @@ public abstract class RegularLevel extends Level {
 			if (room == null) {
 				continue;
 			}
-			
-			cell = pointToCell(room.random());
-			if (passable[cell] && (!Char.hasProp(ch, Char.Property.LARGE) || openSpace[cell])) {
-				return cell;
+
+			ArrayList<Point> points = room.charWanderablePoints(this);
+			if (!points.isEmpty()){
+				cell = pointToCell(Random.element(points));
+				if (passable[cell] && (!Char.hasProp(ch, Char.Property.LARGE) || openSpace[cell])) {
+					return cell;
+				}
 			}
 			
 		}

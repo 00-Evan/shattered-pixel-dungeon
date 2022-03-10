@@ -344,6 +344,23 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 		}
 		return points;
 	}
+
+	//whether or not a character can wander here
+	public boolean canCharacterWander(Point p, Level l) {
+		return inside(p);
+	}
+
+	public final ArrayList<Point> charWanderablePoints(Level l){
+		ArrayList<Point> points = new ArrayList<>();
+		for (int i = left; i <= right; i++) {
+			for (int j = top; j <= bottom; j++) {
+				Point p = new Point(i, j);
+				if (canCharacterWander(p, l)) points.add(p);
+			}
+		}
+		return points;
+	}
+
 	
 	// **** Graph.Node interface ****
 
