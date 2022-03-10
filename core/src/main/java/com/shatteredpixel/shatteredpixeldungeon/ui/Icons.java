@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.Image;
 
@@ -39,7 +40,7 @@ public enum Icons {
 	SHPX,
 
 	//rankings and hero select icons, spacing for 16x16
-	DEPTH,
+	STAIRS,
 	WARRIOR,
 	MAGE,
 	ROGUE,
@@ -89,6 +90,15 @@ public enum Icons {
 	SLEEP,
 	ALERT,
 	LOST,
+	DEPTH,
+	DEPTH_CHASM,
+	DEPTH_WATER,
+	DEPTH_GRASS,
+	DEPTH_DARK,
+	DEPTH_LARGE,
+	DEPTH_TRAPS,
+	DEPTH_SECRETS,
+	CHAL_COUNT,
 
 	//icons that appear in the about screen, variable spacing
 	LIBGDX,
@@ -133,7 +143,7 @@ public enum Icons {
 				icon.frame( icon.texture.uvRectBySize( 119, 0, 16, 16 ) );
 				break;
 
-			case DEPTH:
+			case STAIRS:
 				icon.frame( icon.texture.uvRectBySize( 0, 16, 13, 16 ) );
 				break;
 			case WARRIOR:
@@ -270,7 +280,34 @@ public enum Icons {
 				icon.frame( icon.texture.uvRectBySize( 32, 72, 8, 8 ) );
 				break;
 			case LOST:
-				icon.frame( icon.texture.uvRectBySize( 32, 72, 8, 8 ) );
+				icon.frame( icon.texture.uvRectBySize( 40, 72, 8, 8 ) );
+				break;
+			case DEPTH:
+				icon.frame( icon.texture.uvRectBySize( 48, 64, 6, 7 ) );
+				break;
+			case DEPTH_CHASM:
+				icon.frame( icon.texture.uvRectBySize( 56, 64, 7, 7 ) );
+				break;
+			case DEPTH_WATER:
+				icon.frame( icon.texture.uvRectBySize( 64, 64, 7, 7 ) );
+				break;
+			case DEPTH_GRASS:
+				icon.frame( icon.texture.uvRectBySize( 72, 64, 7, 7 ) );
+				break;
+			case DEPTH_DARK:
+				icon.frame( icon.texture.uvRectBySize( 80, 64, 7, 7 ) );
+				break;
+			case DEPTH_LARGE:
+				icon.frame( icon.texture.uvRectBySize( 88, 64, 7, 7 ) );
+				break;
+			case DEPTH_TRAPS:
+				icon.frame( icon.texture.uvRectBySize( 96, 64, 7, 7 ) );
+				break;
+			case DEPTH_SECRETS:
+				icon.frame( icon.texture.uvRectBySize( 104, 64, 7, 7 ) );
+				break;
+			case CHAL_COUNT:
+				icon.frame( icon.texture.uvRectBySize( 48, 72, 7, 7 ) );
 				break;
 		
 			case LIBGDX:
@@ -321,6 +358,27 @@ public enum Icons {
 			return get( HUNTRESS );
 		default:
 			return null;
+		}
+	}
+
+	public static Image get(Level.Feeling feeling){
+		switch (feeling){
+			case NONE: default:
+				return get(DEPTH);
+			case CHASM:
+				return get(DEPTH_CHASM);
+			case WATER:
+				return get(DEPTH_WATER);
+			case GRASS:
+				return get(DEPTH_GRASS);
+			case DARK:
+				return get(DEPTH_DARK);
+			case LARGE:
+				return get(DEPTH_LARGE);
+			case TRAPS:
+				return get(DEPTH_TRAPS);
+			case SECRETS:
+				return get(DEPTH_SECRETS);
 		}
 	}
 }

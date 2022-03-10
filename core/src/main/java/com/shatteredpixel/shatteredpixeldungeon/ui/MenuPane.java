@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -29,6 +30,8 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndChallenges;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndGame;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndKeyBindings;
@@ -44,7 +47,14 @@ public class MenuPane extends Component {
 
 	private Image bg;
 
-	private BitmapText depth;
+	private Image depthIcon;
+	private BitmapText depthText;
+	private Button depthButton;
+
+	private Image challengeIcon;
+	private BitmapText challengeText;
+	private Button challengeButton;
+
 	private JournalButton btnJournal;
 	private MenuButton btnMenu;
 
@@ -54,7 +64,7 @@ public class MenuPane extends Component {
 
 	private DangerIndicator danger;
 
-	public static final int WIDTH = 50;
+	public static final int WIDTH = 32;
 
 	@Override
 	protected void createChildren() {
@@ -63,10 +73,60 @@ public class MenuPane extends Component {
 		bg = new Image(Assets.Interfaces.MENU);
 		add(bg);
 
-		depth = new BitmapText( Integer.toString( Dungeon.depth ), PixelScene.pixelFont);
-		depth.hardlight( 0xCACFC2 );
-		depth.measure();
-		add( depth );
+		depthIcon = Icons.get(Dungeon.level.feeling);
+		add(depthIcon);
+
+		depthText = new BitmapText( Integer.toString( Dungeon.depth ), PixelScene.pixelFont);
+		depthText.hardlight( 0xCACFC2 );
+		depthText.measure();
+		add( depthText );
+
+		depthButton = new Button(){
+			@Override
+			protected String hoverText() {
+				switch (Dungeon.level.feeling) {
+					case CHASM:     return Messages.get(GameScene.class, "chasm");
+					case WATER:     return Messages.get(GameScene.class, "water");
+					case GRASS:     return Messages.get(GameScene.class, "grass");
+					case DARK:      return Messages.get(GameScene.class, "dark");
+					case LARGE:     return Messages.get(GameScene.class, "large");
+					case TRAPS:     return Messages.get(GameScene.class, "traps");
+					case SECRETS:   return Messages.get(GameScene.class, "secrets");
+				}
+				return null;
+			}
+
+			@Override
+			protected void onClick() {
+				super.onClick();
+				//just open journal for now, maybe have it open landmarks after expanding that page?
+				GameScene.show( new WndJournal() );
+			}
+		};
+		add(depthButton);
+
+		if (Challenges.activeChallenges() > 0){
+			challengeIcon = Icons.get(Icons.CHAL_COUNT);
+			add(challengeIcon);
+
+			challengeText = new BitmapText( Integer.toString( Challenges.activeChallenges() ), PixelScene.pixelFont);
+			challengeText.hardlight( 0xCACFC2 );
+			challengeText.measure();
+			add( challengeText );
+
+			challengeButton = new Button(){
+				@Override
+				protected void onClick() {
+					GameScene.show(new WndChallenges(Dungeon.challenges, false));
+				}
+
+				@Override
+				protected String hoverText() {
+					return Messages.get(WndChallenges.class, "title");
+				}
+			};
+			add(challengeButton);
+		}
 
 		btnJournal = new JournalButton();
 		add( btnJournal );
@@ -91,13 +151,33 @@ public class MenuPane extends Component {
 		bg.x = x;
 		bg.y = y;
 
-		depth.x = x + 14.5f - depth.width() / 2f;
-		depth.y = y + 7f - depth.baseLine() / 2f;
-		PixelScene.align(depth);
-
-		btnJournal.setPos( x + WIDTH - 42, y );
-
 		btnMenu.setPos( x + WIDTH - btnMenu.width(), y );
+
+		btnJournal.setPos( btnMenu.left() - btnJournal.width() + 2, y );
+
+		depthIcon.x = btnJournal.left() - 7 + (7 - depthIcon.width())/2f - 0.1f;
+		depthIcon.y = y + 2;
+		PixelScene.align(depthIcon);
+
+		depthText.scale.set(PixelScene.align(0.5f));
+		depthText.x = depthIcon.x + (depthIcon.width() - depthText.width())/2f;
+		depthText.y = depthIcon.y + depthIcon.height();
+		PixelScene.align(depthText);
+
+		depthButton.setRect(depthIcon.x, depthIcon.y, depthIcon.width(), depthIcon.height() + depthText.height());
+
+		if (challengeIcon != null){
+			challengeIcon.x = btnJournal.left() - 14 + (7 - challengeIcon.width())/2f - 0.1f;
+			challengeIcon.y = y + 2;
+			PixelScene.align(challengeIcon);
+
+			challengeText.scale.set(PixelScene.align(0.5f));
+			challengeText.x = challengeIcon.x + (challengeIcon.width() - challengeText.width())/2f;
+			challengeText.y = challengeIcon.y + challengeIcon.height();
+			PixelScene.align(challengeText);
+
+			challengeButton.setRect(challengeIcon.x, challengeIcon.y, challengeIcon.width(), challengeIcon.height() + challengeText.height());
+		}
 
 		version.scale.set(PixelScene.align(0.5f));
 		version.measure();
@@ -134,7 +214,7 @@ public class MenuPane extends Component {
 		public JournalButton() {
 			super();
 
-			width = bg.width + 13; //includes the depth display to the left
+			width = bg.width + 4;
 			height = bg.height + 4;
 		}
 
@@ -162,7 +242,7 @@ public class MenuPane extends Component {
 		protected void layout() {
 			super.layout();
 
-			bg.x = x + 13;
+			bg.x = x + 2;
 			bg.y = y + 2;
 
 			journalIcon.x = bg.x + (bg.width() - journalIcon.width())/2f;

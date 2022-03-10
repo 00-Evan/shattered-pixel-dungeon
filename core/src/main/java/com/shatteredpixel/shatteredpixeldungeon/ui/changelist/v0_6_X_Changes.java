@@ -513,7 +513,7 @@ public class v0_6_X_Changes {
 				"\n" +
 				"Lastly, v0.6.2 (and v0.6.1) included some important AI changes that made character behaviour much more consistent when allies are concerned. This paved the way for ally additions in future updates."));
 		
-		changes.addButton( new ChangeButton( Icons.get(Icons.DEPTH), "Dungeon Secrets!",
+		changes.addButton( new ChangeButton( Icons.get(Icons.STAIRS), "Dungeon Secrets!",
 				"The secrets of the dungeon have been totally redesigned!\n\n" +
 				"_-_ Regular rooms can no longer be totally hidden\n\n" +
 				"_-_ 12 new secret rooms added, which are always hidden\n\n" +
@@ -711,7 +711,7 @@ public class v0_6_X_Changes {
 				"_-_ Reduced the numbers of games needed for the 'games played' badges from 10/100/500/2000 to 10/50/250/1000\n\n" +
 				"_-_ Blank badges shown in the badges menu are now accurate to how many badges you have left to unlock."));
 		
-		changes.addButton( new ChangeButton( Icons.get(Icons.DEPTH), "Dungeon Changes",
+		changes.addButton( new ChangeButton( Icons.get(Icons.STAIRS), "Dungeon Changes",
 				"_-_ Added 5 new regional rooms\n" +
 				"_-_ Added two new uncommon room types\n" +
 				"_-_ Added a new type of tunnel room\n\n" +
@@ -869,7 +869,7 @@ public class v0_6_X_Changes {
 				"\n" +
 				"I feel v0.6.0 also represents the start of another era in Shattered's development. While Shattered was still missing some big updates (most notably v0.8.0), after v0.6.0 Shattered started to resemble its current incarnation more than the original Pixel Dungeon."));
 		
-		changes.addButton( new ChangeButton( Icons.get(Icons.DEPTH), "Levelgen Overhaul!",
+		changes.addButton( new ChangeButton( Icons.get(Icons.STAIRS), "Levelgen Overhaul!",
 				"Level creation algorithm overhauled!\n\n" +
 				"_-_ Levels are now much less box-shaped\n" +
 				"_-_ Sewers are now smaller, caves+ are now larger\n" +
