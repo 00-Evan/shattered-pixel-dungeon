@@ -131,7 +131,7 @@ public enum Icons {
 				icon.frame( icon.texture.uvRectBySize( 51, 0, 16, 16 ) );
 				break;
 			case NEWS:
-				icon.frame( icon.texture.uvRectBySize( 68, 0, 15, 15 ) );
+				icon.frame( icon.texture.uvRectBySize( 68, 0, 16, 15 ) );
 				break;
 			case CHANGES:
 				icon.frame( icon.texture.uvRectBySize( 85, 0, 15, 15 ) );
@@ -164,9 +164,9 @@ public enum Icons {
 				break;
 			case DISPLAY:
 				if (!PixelScene.landscape()){
-					icon.frame( icon.texture.uvRectBySize( 16, 32, 13, 16 ) );
+					icon.frame( icon.texture.uvRectBySize( 16, 32, 12, 16 ) );
 				} else {
-					icon.frame( icon.texture.uvRectBySize( 32, 32, 16, 13 ) );
+					icon.frame( icon.texture.uvRectBySize( 32, 32, 16, 12 ) );
 				}
 				break;
 			case DATA:
