@@ -897,6 +897,7 @@ public class Badges {
 			
 			if (!badge.meta) {
 				GLog.h( Messages.get(Badges.class, "endorsed", badge.title()) );
+				GLog.newLine();
 			}
 			
 		} else {
@@ -905,6 +906,7 @@ public class Badges {
 			saveNeeded = true;
 			
 			GLog.h( Messages.get(Badges.class, "new", badge.title() + " (" + badge.desc() + ")") );
+			GLog.newLine();
 			PixelScene.showBadge( badge );
 		}
 	}

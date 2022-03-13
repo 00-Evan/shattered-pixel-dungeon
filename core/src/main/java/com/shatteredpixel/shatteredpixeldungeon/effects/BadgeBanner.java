@@ -42,9 +42,9 @@ public class BadgeBanner extends Image {
 	
 	private static final float DEFAULT_SCALE	= 3;
 	
-	private static final float FADE_IN_TIME		= 0.2f;
+	private static final float FADE_IN_TIME		= 0.25f;
 	private static final float STATIC_TIME		= 1f;
-	private static final float FADE_OUT_TIME	= 1.0f;
+	private static final float FADE_OUT_TIME	= 1.75f;
 	
 	private int index;
 	private float time;
