@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blizzard;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
@@ -56,8 +57,6 @@ public class MagicalFireRoom extends SpecialRoom {
 		Door door = entrance();
 		door.set( Door.Type.REGULAR );
 
-		int x = -1;
-		int y = -1;
 		Point firePos = center();
 		Room behindFire = new EmptyRoom();
 
@@ -114,6 +113,25 @@ public class MagicalFireRoom extends SpecialRoom {
 		return false;
 	}
 
+	@Override
+	public boolean canPlaceCharacter(Point p, Level l) {
+		Blob fire = l.blobs.get(EternalFire.class);
+
+		//disallow placing on special tiles or next to fire if fire is present.
+		//note that this is slightly brittle, assumes the fire is either all there or totally gone
+		if (fire != null && fire.volume > 0){
+			int cell = l.pointToCell(p);
+			if (l.map[cell] == Terrain.EMPTY_SP) return false;
+
+			if (fire.cur[cell] > 0)     return false;
+			for (int i : PathFinder.NEIGHBOURS4){
+				if (fire.cur[cell+i] > 0)   return false;
+			}
+		}
+
+		return super.canPlaceCharacter(p, l);
+	}
+
 	public static class EternalFire extends Fire {
 		@Override
 		protected void evolve() {
@@ -122,6 +140,10 @@ public class MagicalFireRoom extends SpecialRoom {
 
 			Freezing freeze = (Freezing)Dungeon.level.blobs.get( Freezing.class );
 			Blizzard bliz = (Blizzard)Dungeon.level.blobs.get( Blizzard.class );
+
+			//if any part of the fire is cleared, cleanse the whole thing
+			//Note that this is a bit brittle atm, it assumes only one group of eternal fire per floor
+			boolean clearAll = false;
 
 			Level l = Dungeon.level;
 			for (int i = area.left; i < area.right; i++){
@@ -136,23 +158,25 @@ public class MagicalFireRoom extends SpecialRoom {
 					//potion of purity can cleanse it though
 					if (l.water[cell]){
 						cur[cell] = 0;
+						clearAll = true;
 					}
 					if (freeze != null && freeze.volume > 0 && freeze.cur[cell] > 0){
 						freeze.clear(cell);
 						cur[cell] = 0;
+						clearAll = true;
 					}
 					if (bliz != null && bliz.volume > 0 && bliz.cur[cell] > 0){
 						bliz.clear(cell);
 						cur[cell] = 0;
+						clearAll = true;
 					}
 
-					//if the hero is adjacent, set them on fire briefly
-					//TODO all chars, but prevent random wandering into the fire?
+					//if a char is adjacent, set them on fire briefly
 					if (cur[cell] > 0){
 						for (int k : PathFinder.NEIGHBOURS4){
-							if (Actor.findChar(cell+k) == Dungeon.hero
-								&& !Dungeon.hero.isImmune(getClass())){
-								Buff.affect(Dungeon.hero, Burning.class).reignite(Dungeon.hero, 4f);
+							Char ch = Actor.findChar(cell+k);
+							if (ch != null && !ch.isImmune(getClass())){
+								Buff.affect(ch, Burning.class).reignite(ch, 4f);
 							}
 						}
 					}
@@ -160,6 +184,12 @@ public class MagicalFireRoom extends SpecialRoom {
 					l.passable[cell] = cur[cell] == 0 && (Terrain.flags[l.map[cell]] & Terrain.PASSABLE) != 0;
 				}
 			}
+
+			if (clearAll){
+				fullyClear();
+				return;
+			}
+
 			super.evolve();
 		}
 
@@ -171,10 +201,7 @@ public class MagicalFireRoom extends SpecialRoom {
 
 		@Override
 		public void clear(int cell) {
-			super.clear(cell);
-			if (cur == null) return;
-			Level l = Dungeon.level;
-			l.passable[cell] = cur[cell] == 0 && (Terrain.flags[l.map[cell]] & Terrain.PASSABLE) != 0;
+			fullyClear();
 		}
 
 		@Override

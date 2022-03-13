@@ -300,7 +300,7 @@ public abstract class RegularLevel extends Level {
 				continue;
 			}
 
-			ArrayList<Point> points = room.charWanderablePoints(this);
+			ArrayList<Point> points = room.charPlaceablePoints(this);
 			if (!points.isEmpty()){
 				cell = pointToCell(Random.element(points));
 				if (passable[cell] && (!Char.hasProp(ch, Char.Property.LARGE) || openSpace[cell])) {
