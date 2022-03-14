@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
@@ -275,7 +276,7 @@ public class InventoryPane extends Component {
 
 		Belongings stuff = Dungeon.hero.belongings;
 
-		if (lastBag == null || !stuff.contains(lastBag)){
+		if (lastBag == null || !stuff.getBags().contains(lastBag)){
 			lastBag = stuff.backpack;
 		}
 
@@ -332,15 +333,18 @@ public class InventoryPane extends Component {
 			}
 		}
 
+		boolean lostInvent = Dungeon.hero.buff(LostInventory.class) != null;
 		for (InventorySlot b : equipped){
 			b.enable(lastEnabled
 					&& !(b.item() instanceof WndBag.Placeholder)
-					&& (selector == null || selector.itemSelectable(b.item())));
+					&& (selector == null || selector.itemSelectable(b.item()))
+					&& (!lostInvent || b.item().keptThoughLostInvent));
 		}
 		for (InventorySlot b : bagItems){
 			b.enable(lastEnabled
 					&& b.item() != null
-					&& (selector == null || selector.itemSelectable(b.item())));
+					&& (selector == null || selector.itemSelectable(b.item()))
+					&& (!lostInvent || b.item().keptThoughLostInvent));
 		}
 		for (BagButton b : bags){
 			b.enable(lastEnabled);
@@ -408,15 +412,18 @@ public class InventoryPane extends Component {
 		if (lastEnabled != (Dungeon.hero.ready || !Dungeon.hero.isAlive())) {
 			lastEnabled = (Dungeon.hero.ready || !Dungeon.hero.isAlive());
 
+			boolean lostInvent = Dungeon.hero.buff(LostInventory.class) != null;
 			for (InventorySlot b : equipped){
 				b.enable(lastEnabled
 						&& !(b.item() instanceof WndBag.Placeholder)
-						&& (selector == null || selector.itemSelectable(b.item())));
+						&& (selector == null || selector.itemSelectable(b.item()))
+						&& (!lostInvent || b.item().keptThoughLostInvent));
 			}
 			for (InventorySlot b : bagItems){
 				b.enable(lastEnabled
 						&& b.item() != null
-						&& (selector == null || selector.itemSelectable(b.item())));
+						&& (selector == null || selector.itemSelectable(b.item()))
+						&& (!lostInvent || b.item().keptThoughLostInvent));
 			}
 			for (BagButton b : bags){
 				b.enable(lastEnabled);
