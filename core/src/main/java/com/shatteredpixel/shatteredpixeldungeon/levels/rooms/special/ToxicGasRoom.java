@@ -24,6 +24,9 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfPurity;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -31,6 +34,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.utils.Point;
+
+import java.util.ArrayList;
 
 public class ToxicGasRoom extends SpecialRoom {
 
@@ -43,6 +48,8 @@ public class ToxicGasRoom extends SpecialRoom {
 
 		Painter.fill( level, this, Terrain.WALL );
 		Painter.fill( level, this, 1, Terrain.EMPTY );
+
+		Painter.set( level, center(), Terrain.STATUE );
 
 		for (Point p : getPoints()){
 			int cell = level.pointToCell(p);
@@ -58,14 +65,40 @@ public class ToxicGasRoom extends SpecialRoom {
 			int cell;
 			do {
 				cell = level.pointToCell(random(2));
-			} while (level.map[cell] == Terrain.INACTIVE_TRAP);
+			} while (level.map[cell] != Terrain.EMPTY);
 			level.setTrap(new ToxicVent().reveal(), cell);
 			Blob.seed(cell, 12, ToxicGasSeed.class, level);
 			Painter.set(level, cell, Terrain.INACTIVE_TRAP);
 		}
 
-		//TODO loot!
-		//perhaps 2-3 items around the center?
+		//skeleton with 2x gold, somewhat far from entry
+		//then 2 chests with regular gold (no mimics here)
+		//we generate excess positions to ensure skull is far from entrance
+		ArrayList<Integer> goldPositions = new ArrayList<>();
+		for (int i = 0; i < 8; i++){
+			int posToAdd;
+			do {
+				posToAdd = level.pointToCell(random(2));
+			} while (level.map[posToAdd] == Terrain.STATUE || goldPositions.contains(posToAdd));
+			goldPositions.add(posToAdd);
+		}
+
+		int furthestPos = -1;
+		int entryPos = level.pointToCell(entrance());
+		for (int i : goldPositions){
+			if (furthestPos == -1 || level.trueDistance(entryPos, i) > level.trueDistance(entryPos, furthestPos)){
+				furthestPos = i;
+			}
+		}
+
+		goldPositions.remove((Integer) furthestPos);
+		Item mainGold = new Gold().random();
+		mainGold.quantity(mainGold.quantity()*2);
+		level.drop(mainGold, furthestPos).type = Heap.Type.SKELETON;
+
+		for (int i = 0; i < 2; i++){
+			level.drop(new Gold().random(), goldPositions.remove(0)).type = Heap.Type.CHEST;
+		}
 
 		level.addItemToSpawn(new PotionOfPurity());
 

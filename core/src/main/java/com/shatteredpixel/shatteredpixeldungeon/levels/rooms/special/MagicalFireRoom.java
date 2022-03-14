@@ -33,7 +33,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -88,24 +90,41 @@ public class MagicalFireRoom extends SpecialRoom {
 
 		Painter.fill(level, behindFire, Terrain.EMPTY_SP);
 
-		int pos = level.pointToCell(Random.element(behindFire.getPoints()));
-		if (Random.Int( 3 ) == 0) {
-			level.drop( prize( level ), pos ).type = Heap.Type.CHEST;
-		} else {
-			level.drop( prize( level ), pos ).type = Heap.Type.CHEST;
+		boolean honeyPot = Random.Int( 2 ) == 0;
+
+		int n = Random.IntRange( 3, 4 );
+		n = Math.min(behindFire.square(), n);
+
+		for (int i=0; i < n; i++) {
+			int pos;
+			do {
+				pos = level.pointToCell(behindFire.random(0));
+			} while (level.heaps.get(pos) != null);
+			if (honeyPot){
+				level.drop( new Honeypot(), pos);
+				honeyPot = false;
+			} else
+				level.drop( prize( level ), pos );
 		}
 
 		level.addItemToSpawn(new PotionOfFrost());
 
 	}
 
-	private static Item prize(Level level ) {
+	private static Item prize( Level level ) {
 
-		Item prize = level.findPrizeItem();
+		if (Random.Int(3) != 0){
+			Item prize = level.findPrizeItem();
+			if (prize != null)
+				return prize;
+		}
 
-		//TODO prize!
-
-		return prize;
+		return Generator.random( Random.oneOf(
+				Generator.Category.POTION,
+				Generator.Category.SCROLL,
+				Generator.Category.FOOD,
+				Generator.Category.GOLD
+		) );
 	}
 
 	@Override

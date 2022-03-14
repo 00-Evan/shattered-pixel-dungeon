@@ -102,6 +102,7 @@ public class PoolRoom extends SpecialRoom {
 
 		Item prize;
 
+		//33% chance for prize item
 		if (Random.Int(3) == 0){
 			prize = level.findPrizeItem();
 			if (prize != null)

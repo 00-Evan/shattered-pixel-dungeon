@@ -22,6 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.CrystalKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -30,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
 import com.watabou.utils.Point;
+import com.watabou.utils.Random;
 
 public class CrystalPathRoom extends SpecialRoom {
 
@@ -123,7 +127,39 @@ public class CrystalPathRoom extends SpecialRoom {
 
 		for (int i = 0; i < 4; i++){
 			int pos = level.pointToCell(rooms[idx].center());
-			//TODO drop loot
+			Item item;
+			switch (i){
+				case 0: default:
+					item = new Gold(Random.NormalIntRange(5, 12));
+					break;
+				case 1:
+					if (Random.Int(3) == 0){
+						item = level.findPrizeItem();
+						if (item != null) break;
+					}
+					item = Generator.random(Random.oneOf(
+							Generator.Category.SEED,
+							Generator.Category.STONE)
+					);
+					break;
+				case 2:
+					if (Random.Int(3) == 0){
+						item = level.findPrizeItem();
+						if (item != null) break;
+					}
+					item = Generator.random(Random.oneOf(
+							Generator.Category.POTION,
+							Generator.Category.SCROLL)
+					);
+					break;
+				case 3:
+					item = Generator.random(Random.oneOf(
+							Generator.Category.WEAPON,
+							Generator.Category.ARMOR)
+					);
+					break;
+			}
+			level.drop(item, pos);
 			if (clockwise){
 				idx++;
 				if (idx > 3) idx = 0;

@@ -22,6 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.CrystalKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -94,7 +97,36 @@ public class CrystalChoiceRoom extends SpecialRoom {
 		Painter.fill(level, room1, Terrain.EMPTY_SP);
 		Painter.fill(level, room2, Terrain.EMPTY_SP);
 
-		//TODO rewards
+		if (Random.Int(2) == 0){
+			Room tmp = room1;
+			room1 = room2;
+			room2 = tmp;
+		}
+
+		int n = Random.NormalIntRange(3, 4);
+		for (int i = 0; i < n; i++){
+			Item reward = Generator.random(Random.oneOf(
+					Generator.Category.POTION,
+					Generator.Category.SCROLL
+			));
+			int pos;
+			do {
+				if (room1.square() >= 16){
+					pos = level.pointToCell(room1.random(1));
+				} else {
+					pos = level.pointToCell(room1.random(0));
+				}
+			} while (level.heaps.get(pos) != null);
+			level.drop(reward, pos);
+		}
+
+		Item hidden = Generator.random(Random.oneOf(
+				Generator.Category.WAND,
+				Generator.Category.RING,
+				Generator.Category.ARTIFACT,
+				Generator.Category.GOLD     //*evil laughter*
+		));
+		level.drop(hidden, level.pointToCell(room2.center())).type = Heap.Type.CHEST;
 
 		level.addItemToSpawn( new CrystalKey( Dungeon.depth ) );
 

@@ -116,6 +116,7 @@ public class TrapsRoom extends SpecialRoom {
 
 		Item prize;
 
+		//67% chance for prize item
 		if (Random.Int(3) != 0){
 			prize = level.findPrizeItem();
 			if (prize != null)

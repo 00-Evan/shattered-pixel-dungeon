@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -30,6 +31,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Eye;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -153,9 +157,38 @@ public class SentryRoom extends SpecialRoom {
 		level.mobs.add( sentry );
 
 		Painter.set(level, treasurePos, Terrain.PEDESTAL);
-		//TODO reward
+		level.drop( prize( level ), level.pointToCell(treasurePos) ).type = Heap.Type.CHEST;
 
 		entrance.set( Door.Type.REGULAR );
+	}
+
+	private static Item prize(Level level ) {
+
+		Item prize;
+
+		//50% chance for prize item
+		if (Random.Int(2) == 0){
+			prize = level.findPrizeItem();
+			if (prize != null)
+				return prize;
+		}
+
+		//1 floor set higher in probability, never cursed
+		do {
+			if (Random.Int(2) == 0) {
+				prize = Generator.randomWeapon((Dungeon.depth / 5) + 1);
+			} else {
+				prize = Generator.randomArmor((Dungeon.depth / 5) + 1);
+			}
+		} while (prize.cursed || Challenges.isItemBlocked(prize));
+		prize.cursedKnown = true;
+
+		//33% chance for an extra update.
+		if (Random.Int(3) == 0){
+			prize.upgrade();
+		}
+
+		return prize;
 	}
 
 	@Override
