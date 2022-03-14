@@ -1,0 +1,162 @@
+/*
+ * Pixel Dungeon
+ * Copyright (C) 2012-2015 Oleg Dolya
+ *
+ * Shattered Pixel Dungeon
+ * Copyright (C) 2014-2022 Evan Debenham
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ */
+
+package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
+
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bee;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Piranha;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Statue;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
+import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SacrificialParticle;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SacrificeRoom;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
+
+public class SacrificialFire extends Blob {
+
+	BlobEmitter curEmitter;
+
+	{
+		//acts after mobs, so they can get marked as they move
+		actPriority = MOB_PRIO-1;
+	}
+
+	@Override
+	protected void evolve() {
+		int cell;
+		for (int i=area.top-1; i <= area.bottom; i++) {
+			for (int j = area.left-1; j <= area.right; j++) {
+				cell = j + i* Dungeon.level.width();
+				if (Dungeon.level.insideMap(cell)) {
+					off[cell] = cur[cell];
+					volume += off[cell];
+
+					Char ch = Actor.findChar( cell );
+					if (ch != null && off[cell] > 0){
+						if (Dungeon.level.heroFOV[cell] && ch.buff( Marked.class ) == null) {
+							CellEmitter.get(cell).burst( SacrificialParticle.FACTORY, 5 );
+						}
+						Buff.prolong( ch, Marked.class, Marked.DURATION );
+					}
+				}
+			}
+		}
+
+		//a bit brittle, assumes only one tile of sacrificial fire can exist per floor
+		int max = 5 + Dungeon.depth * 5;
+		curEmitter.pour( SacrificialParticle.FACTORY, 0.01f + ((volume / (float)max) * 0.09f) );
+	}
+
+	@Override
+	public void use( BlobEmitter emitter ) {
+		super.use( emitter );
+		curEmitter = emitter;
+
+		//a bit brittle, assumes only one tile of sacrificial fire can exist per floor
+		int max = 5 + Dungeon.depth * 5;
+		curEmitter.pour( SacrificialParticle.FACTORY, 0.01f + ((volume / (float)max) * 0.09f) );
+	}
+
+	@Override
+	public String tileDesc() {
+		return Messages.get(this, "desc");
+	}
+
+	public static void sacrifice( Char ch ) {
+
+		SacrificialFire fire = (SacrificialFire)Dungeon.level.blobs.get( SacrificialFire.class );
+
+		if (fire != null && fire.cur[ch.pos] > 0) {
+
+			int exp = 0;
+			if (ch instanceof Mob) {
+				//same rates as used in wand of corruption
+				if (ch instanceof Statue || ch instanceof Mimic){
+					exp = 1 + Dungeon.depth;
+				} else if (ch instanceof Piranha || ch instanceof Bee) {
+					exp = 1 + Dungeon.depth/2;
+				} else if (ch instanceof Wraith) {
+					exp = 1 + Dungeon.depth/3;
+				} else {
+					exp = ((Mob)ch).EXP;
+				}
+				exp *= Random.IntRange( 2, 3 );
+			} else if (ch instanceof Hero) {
+				exp = 1_000_000; //always enough to activate the reward, if you can somehow get it
+			}
+
+			if (exp > 0) {
+
+				int volume = fire.cur[ch.pos] - exp;
+				if (volume > 0) {
+					fire.cur[ch.pos] -= exp;
+					fire.volume -= exp;
+					CellEmitter.get(ch.pos).burst( SacrificialParticle.FACTORY, 20 );
+					Sample.INSTANCE.play(Assets.Sounds.BURNING );
+					GLog.w( Messages.get(SacrificialFire.class, "worthy"));
+				} else {
+					fire.clear(ch.pos);
+
+					for (int i : PathFinder.NEIGHBOURS9){
+						CellEmitter.get(ch.pos+i).burst( SacrificialParticle.FACTORY, 20 );
+					}
+					Sample.INSTANCE.play(Assets.Sounds.BURNING );
+					Sample.INSTANCE.play(Assets.Sounds.BURNING );
+					Sample.INSTANCE.play(Assets.Sounds.BURNING );
+					GLog.w( Messages.get(SacrificialFire.class, "reward"));
+					Dungeon.level.drop( SacrificeRoom.prize( Dungeon.level ), ch.pos ).sprite.drop();
+				}
+			} else {
+
+				GLog.w( Messages.get(SacrificialFire.class, "unworthy"));
+
+			}
+		}
+	}
+
+	public static class Marked extends FlavourBuff {
+
+		public static final float DURATION	= 2f;
+
+		@Override
+		public void detach() {
+			if (!target.isAlive()) {
+				sacrifice( target );
+			}
+			super.detach();
+		}
+	}
+
+}
