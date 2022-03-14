@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
@@ -245,6 +246,10 @@ public abstract class YogFist extends Mob {
 
 		}
 
+		{
+			immunities.add(Frost.class);
+		}
+
 	}
 
 	public static class SoiledFist extends YogFist {
@@ -294,6 +299,11 @@ public abstract class YogFist extends Mob {
 			}
 			if (grassCells > 0) dmg = Math.round(dmg * (6-grassCells)/6f);
 
+			//can be ignited, but takes no damage from burning
+			if (src.getClass() == Burning.class){
+				return;
+			}
+
 			super.damage(dmg, src);
 		}
 
@@ -332,11 +342,6 @@ public abstract class YogFist extends Mob {
 			return Dungeon.level.distance(cell, yogPos) > 4 && !Dungeon.level.solid[cell]
 					&& !(Dungeon.level.map[cell] == Terrain.FURROWED_GRASS || Dungeon.level.map[cell] == Terrain.HIGH_GRASS);
 		}
-
-		{
-			resistances.add(Burning.class);
-		}
-
 
 	}
 

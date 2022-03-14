@@ -70,9 +70,13 @@ public class Freezing extends Blob {
 			if (ch.buff(Frost.class) != null){
 				Buff.affect(ch, Frost.class, 2f);
 			} else {
-				Buff.affect(ch, Chill.class, Dungeon.level.water[cell] ? 5f : 3f);
 				Chill chill = ch.buff(Chill.class);
-				if (chill != null && chill.cooldown() >= Chill.DURATION){
+				if (chill == null || chill.cooldown() <= Chill.DURATION - 3f) {
+					Buff.affect(ch, Chill.class, Dungeon.level.water[cell] ? 5f : 3f);
+				}
+				if (chill != null
+						&& chill.cooldown() >= Chill.DURATION &&
+						!ch.isImmune(Frost.class)){
 					Buff.affect(ch, Frost.class, Frost.DURATION);
 				}
 			}
