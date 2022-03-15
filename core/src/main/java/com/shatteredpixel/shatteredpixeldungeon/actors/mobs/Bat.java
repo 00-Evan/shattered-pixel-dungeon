@@ -44,7 +44,7 @@ public class Bat extends Mob {
 		flying = true;
 		
 		loot = new PotionOfHealing();
-		lootChance = 0.1667f; //by default, see rollToDropLoot()
+		lootChance = 0.1667f; //by default, see lootChance()
 	}
 	
 	@Override
@@ -76,13 +76,12 @@ public class Bat extends Mob {
 	}
 	
 	@Override
-	public void rollToDropLoot() {
-		lootChance *= ((7f - Dungeon.LimitedDrops.BAT_HP.count) / 7f);
-		super.rollToDropLoot();
+	public float lootChance(){
+		return super.lootChance() * ((7f - Dungeon.LimitedDrops.BAT_HP.count) / 7f);
 	}
 	
 	@Override
-	protected Item createLoot(){
+	public Item createLoot(){
 		Dungeon.LimitedDrops.BAT_HP.count++;
 		return super.createLoot();
 	}

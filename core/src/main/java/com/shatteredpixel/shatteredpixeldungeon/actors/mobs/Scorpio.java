@@ -103,7 +103,7 @@ public class Scorpio extends Mob {
 	}
 
 	@Override
-	protected Item createLoot() {
+	public Item createLoot() {
 		Class<?extends Potion> loot;
 		do{
 			loot = (Class<? extends Potion>) Random.oneOf(Generator.Category.POTION.classes);

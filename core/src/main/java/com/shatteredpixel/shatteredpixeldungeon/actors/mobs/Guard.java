@@ -54,7 +54,7 @@ public class Guard extends Mob {
 		maxLvl = 14;
 
 		loot = Generator.Category.ARMOR;
-		lootChance = 0.2f; //by default, see rollToDropLoot()
+		lootChance = 0.2f; //by default, see lootChance()
 
 		properties.add(Property.UNDEAD);
 		
@@ -137,15 +137,14 @@ public class Guard extends Mob {
 	}
 
 	@Override
-	public void rollToDropLoot() {
+	public float lootChance() {
 		//each drop makes future drops 1/2 as likely
 		// so loot chance looks like: 1/5, 1/10, 1/20, 1/40, etc.
-		lootChance *= Math.pow(1/2f, Dungeon.LimitedDrops.GUARD_ARM.count);
-		super.rollToDropLoot();
+		return super.lootChance() * (float)Math.pow(1/2f, Dungeon.LimitedDrops.GUARD_ARM.count);
 	}
 
 	@Override
-	protected Item createLoot() {
+	public Item createLoot() {
 		Dungeon.LimitedDrops.GUARD_ARM.count++;
 		return super.createLoot();
 	}

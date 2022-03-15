@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -54,7 +53,7 @@ public class Necromancer extends Mob {
 		maxLvl = 14;
 		
 		loot = new PotionOfHealing();
-		lootChance = 0.2f; //see createloot
+		lootChance = 0.2f; //see lootChance()
 		
 		properties.add(Property.UNDEAD);
 		
@@ -84,13 +83,12 @@ public class Necromancer extends Mob {
 	}
 	
 	@Override
-	public void rollToDropLoot() {
-		lootChance *= ((6f - Dungeon.LimitedDrops.NECRO_HP.count) / 6f);
-		super.rollToDropLoot();
+	public float lootChance() {
+		return super.lootChance() * ((6f - Dungeon.LimitedDrops.NECRO_HP.count) / 6f);
 	}
 	
 	@Override
-	protected Item createLoot(){
+	public Item createLoot(){
 		Dungeon.LimitedDrops.NECRO_HP.count++;
 		return super.createLoot();
 	}

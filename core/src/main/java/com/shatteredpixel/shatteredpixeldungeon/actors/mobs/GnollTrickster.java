@@ -111,7 +111,7 @@ public class GnollTrickster extends Gnoll {
 	}
 	
 	@Override
-	protected Item createLoot() {
+	public Item createLoot() {
 		MissileWeapon drop = (MissileWeapon)super.createLoot();
 		//half quantity, rounded up
 		drop.quantity((drop.quantity()+1)/2);

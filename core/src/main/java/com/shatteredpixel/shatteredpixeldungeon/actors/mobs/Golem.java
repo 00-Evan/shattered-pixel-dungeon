@@ -47,7 +47,7 @@ public class Golem extends Mob {
 		maxLvl = 22;
 
 		loot = Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR);
-		lootChance = 0.125f; //initially, see rollToDropLoot
+		lootChance = 0.125f; //initially, see lootChance()
 
 		properties.add(Property.INORGANIC);
 		properties.add(Property.LARGE);
@@ -72,16 +72,19 @@ public class Golem extends Mob {
 	}
 
 	@Override
-	public void rollToDropLoot() {
-		Imp.Quest.process( this );
-
+	public float lootChance() {
 		//each drop makes future drops 1/2 as likely
 		// so loot chance looks like: 1/8, 1/16, 1/32, 1/64, etc.
-		lootChance *= Math.pow(1/2f, Dungeon.LimitedDrops.GOLEM_EQUIP.count);
+		return super.lootChance() * (float)Math.pow(1/2f, Dungeon.LimitedDrops.GOLEM_EQUIP.count);
+	}
+
+	@Override
+	public void rollToDropLoot() {
+		Imp.Quest.process( this );
 		super.rollToDropLoot();
 	}
 
-	protected Item createLoot() {
+	public Item createLoot() {
 		Dungeon.LimitedDrops.GOLEM_EQUIP.count++;
 		//uses probability tables for demon halls
 		if (loot == Generator.Category.WEAPON){
