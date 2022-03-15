@@ -59,15 +59,35 @@ public abstract class Elemental extends Mob {
 		
 		flying = true;
 	}
+
+	private boolean summonedALly;
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 20, 25 );
+		if (!summonedALly) {
+			return Random.NormalIntRange(20, 25);
+		} else {
+			int regionScale = Math.max(2, (1 + Dungeon.depth/5));
+			return Random.NormalIntRange(5*regionScale, 5 + 5*regionScale);
+		}
 	}
 	
 	@Override
 	public int attackSkill( Char target ) {
-		return 25;
+		if (!summonedALly) {
+			return 25;
+		} else {
+			int regionScale = Math.max(2, (1 + Dungeon.depth/5));
+			return 5 + 5*regionScale;
+		}
+	}
+
+	public void setSummonedALly(){
+		summonedALly = true;
+		//sewers are prison are equivalent, otherwise scales as normal (2/2/3/4/5)
+		int regionScale = Math.max(2, (1 + Dungeon.depth/5));
+		defenseSkill = 5*regionScale;
+		HT = 15*regionScale;
 	}
 	
 	@Override
@@ -155,11 +175,13 @@ public abstract class Elemental extends Mob {
 	protected ArrayList<Class<? extends Buff>> harmfulBuffs = new ArrayList<>();
 	
 	private static final String COOLDOWN = "cooldown";
+	private static final String SUMMONED_ALLY = "summoned_ally";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( COOLDOWN, rangedCooldown );
+		bundle.put( SUMMONED_ALLY, summonedALly);
 	}
 	
 	@Override
@@ -167,6 +189,10 @@ public abstract class Elemental extends Mob {
 		super.restoreFromBundle( bundle );
 		if (bundle.contains( COOLDOWN )){
 			rangedCooldown = bundle.getInt( COOLDOWN );
+		}
+		summonedALly = bundle.getBoolean( SUMMONED_ALLY );
+		if (summonedALly){
+			setSummonedALly();
 		}
 	}
 	
@@ -233,10 +259,11 @@ public abstract class Elemental extends Mob {
 		
 	}
 
-	//not a miniboss, otherwise a newborn elemental
+	//not a miniboss, fully HP, otherwise a newborn elemental
 	public static class AllyNewBornElemental extends NewbornFireElemental {
 
 		{
+			HP = HT;
 			properties.remove(Property.MINIBOSS);
 		}
 

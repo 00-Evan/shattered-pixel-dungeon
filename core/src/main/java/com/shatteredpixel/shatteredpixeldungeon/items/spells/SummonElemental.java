@@ -87,13 +87,6 @@ public class SummonElemental extends Spell {
 	@Override
 	protected void onCast(Hero hero) {
 
-		for (Char ch : Actor.chars()){
-			if (ch instanceof Elemental && ch.buff(InvisAlly.class) != null){
-				GLog.w(Messages.get(this, "summon_limit"));
-				return;
-			}
-		}
-
 		ArrayList<Integer> spawnPoints = new ArrayList<>();
 
 		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
@@ -105,10 +98,22 @@ public class SummonElemental extends Spell {
 
 		if (!spawnPoints.isEmpty()){
 
+			for (Char ch : Actor.chars()){
+				if (ch instanceof Elemental && ch.buff(InvisAlly.class) != null){
+					ScrollOfTeleportation.appear( ch, Random.element(spawnPoints) );
+					((Elemental) ch).state = ((Elemental) ch).HUNTING;
+					curUser.spendAndNext(Actor.TICK);
+					return;
+				}
+			}
+
 			Elemental elemental = Reflection.newInstance(summonClass);
 			GameScene.add( elemental );
 			Buff.affect(elemental, InvisAlly.class);
+			elemental.setSummonedALly();
+			elemental.HP = elemental.HT;
 			ScrollOfTeleportation.appear( elemental, Random.element(spawnPoints) );
+			curUser.spendAndNext(Actor.TICK);
 
 			summonClass = Elemental.AllyNewBornElemental.class;
 
@@ -223,10 +228,10 @@ public class SummonElemental extends Spell {
 			inputs =  new Class[]{Embers.class, ArcaneCatalyst.class};
 			inQuantity = new int[]{1, 1};
 
-			cost = 8;
+			cost = 6;
 
 			output = SummonElemental.class;
-			outQuantity = 3;
+			outQuantity = 5;
 		}
 
 	}
