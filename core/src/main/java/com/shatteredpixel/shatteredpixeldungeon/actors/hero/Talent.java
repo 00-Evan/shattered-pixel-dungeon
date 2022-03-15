@@ -661,10 +661,6 @@ public enum Talent {
 		for (int i = 0; i < MAX_TALENT_TIERS; i++){
 			LinkedHashMap<Talent, Integer> tier = hero.talents.get(i);
 			Bundle tierBundle = bundle.contains(TALENT_TIER+(i+1)) ? bundle.getBundle(TALENT_TIER+(i+1)) : null;
-			//pre-0.9.1 saves
-			if (tierBundle == null && i == 0 && bundle.contains("talents")){
-				tierBundle = bundle.getBundle("talents");
-			}
 
 			if (tierBundle != null){
 				for (Talent talent : tier.keySet()){

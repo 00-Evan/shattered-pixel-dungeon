@@ -160,9 +160,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		count = bundle.getInt( COUNT );
 		comboTime = bundle.getFloat( TIME );
 
-		//pre-0.9.2
-		if (bundle.contains(INITIAL_TIME))  initialComboTime = bundle.getFloat( INITIAL_TIME );
-		else                                initialComboTime = 5;
+		initialComboTime = bundle.getFloat( INITIAL_TIME );
 
 		clobberUsed = bundle.getBoolean(CLOBBER_USED);
 		parryUsed = bundle.getBoolean(PARRY_USED);

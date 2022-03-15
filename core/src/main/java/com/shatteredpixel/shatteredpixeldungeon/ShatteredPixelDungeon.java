@@ -35,9 +35,7 @@ import com.watabou.utils.PlatformSupport;
 public class ShatteredPixelDungeon extends Game {
 
 	//variable constants for specific older versions of shattered, used for data conversion
-	//versions older than v0.9.0b are no longer supported, and data from them is ignored
-	public static final int v0_9_0b  = 489;
-	public static final int v0_9_1d  = 511;
+	//versions older than v0.9.2b are no longer supported, and data from them is ignored
 	public static final int v0_9_2b  = 531;
 	public static final int v0_9_3c  = 557; //557 on iOS, 554 on other platforms
 
