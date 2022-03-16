@@ -131,7 +131,9 @@ public class WndTextInput extends Window {
 	@Override
 	public void offset(int xOffset, int yOffset) {
 		super.offset(xOffset, yOffset);
-		textBox.setRect(textBox.left(), textBox.top(), textBox.width(), textBox.height());
+		if (textBox != null){
+			textBox.setRect(textBox.left(), textBox.top(), textBox.width(), textBox.height());
+		}
 	}
 
 	public void onSelect(boolean positive, String text){ }
