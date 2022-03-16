@@ -305,6 +305,10 @@ public abstract class Level implements Bundlable {
 		}
 		createMobs();
 	}
+
+	public void playLevelMusic(){
+		//do nothing by default
+	}
 	
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {

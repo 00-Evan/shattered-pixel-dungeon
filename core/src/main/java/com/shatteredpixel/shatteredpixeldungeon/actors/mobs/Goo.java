@@ -228,6 +228,7 @@ public class Goo extends Mob {
 	public void damage(int dmg, Object src) {
 		if (!BossHealthBar.isAssigned()){
 			BossHealthBar.assignBoss( this );
+			Dungeon.level.seal();
 		}
 		boolean bleeding = (HP*2 <= HT);
 		super.damage(dmg, src);
@@ -271,6 +272,7 @@ public class Goo extends Mob {
 		super.notice();
 		if (!BossHealthBar.isAssigned()) {
 			BossHealthBar.assignBoss(this);
+			Dungeon.level.seal();
 			yell(Messages.get(this, "notice"));
 			for (Char ch : Actor.chars()){
 				if (ch instanceof DriedRose.GhostHero){

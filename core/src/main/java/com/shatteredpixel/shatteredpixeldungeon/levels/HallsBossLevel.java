@@ -37,9 +37,12 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Tilemap;
+import com.watabou.noosa.audio.Music;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
@@ -59,6 +62,21 @@ public class HallsBossLevel extends Level {
 	private static final int ROOM_RIGHT		= WIDTH / 2 + 4;
 	private static final int ROOM_TOP		= 8;
 	private static final int ROOM_BOTTOM	= ROOM_TOP + 8;
+
+	@Override
+	public void playLevelMusic() {
+		if (locked){
+			Music.INSTANCE.play(Assets.Music.HALLS_BOSS, true);
+		//if exit isn't unlocked
+		} else if (map[exit] != Terrain.EXIT){
+			Music.INSTANCE.stop();
+		} else {
+			Music.INSTANCE.playTracks(
+					new String[]{Assets.Music.HALLS_1, Assets.Music.HALLS_2, Assets.Music.HALLS_2},
+					new float[]{1, 1, 0.5f},
+					false);
+		}
+	}
 
 	@Override
 	public String tilesTex() {
@@ -230,6 +248,13 @@ public class HallsBossLevel extends Level {
 		}
 
 		Dungeon.observe();
+
+		Game.runOnRenderThread(new Callback() {
+			@Override
+			public void call() {
+				Music.INSTANCE.stop();
+			}
+		});
 	}
 
 	@Override

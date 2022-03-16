@@ -49,6 +49,8 @@ public enum Icons {
 	//grey icons, mainly used for buttons, spacing for 16x16
 	EXIT,
 	DISPLAY, //2 separate images, changes based on orientation
+	DISPLAY_LAND,
+	DISPLAY_PORT,
 	DATA,
 	AUDIO,
 	LANGS,
@@ -164,10 +166,15 @@ public enum Icons {
 				break;
 			case DISPLAY:
 				if (!PixelScene.landscape()){
-					icon.frame( icon.texture.uvRectBySize( 16, 32, 12, 16 ) );
+					return get(DISPLAY_PORT);
 				} else {
-					icon.frame( icon.texture.uvRectBySize( 32, 32, 16, 12 ) );
+					return get(DISPLAY_LAND);
 				}
+			case DISPLAY_PORT:
+				icon.frame( icon.texture.uvRectBySize( 16, 32, 12, 16 ) );
+				break;
+			case DISPLAY_LAND:
+				icon.frame( icon.texture.uvRectBySize( 32, 32, 16, 12 ) );
 				break;
 			case DATA:
 				icon.frame( icon.texture.uvRectBySize( 48, 32, 16, 15 ) );
