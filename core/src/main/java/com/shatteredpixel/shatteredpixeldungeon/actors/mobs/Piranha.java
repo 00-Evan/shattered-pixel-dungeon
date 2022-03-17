@@ -97,7 +97,7 @@ public class Piranha extends Mob {
 			}
 			return state == SLEEPING || !fieldOfView[enemy.pos] || enemy.invisible > 0;
 		}
-		return super.surprisedBy(enemy);
+		return super.surprisedBy(enemy, attacking);
 	}
 	
 	@Override
