@@ -111,10 +111,6 @@ public class CrystalPathRoom extends SpecialRoom {
 			door.y += center.y;
 		}
 
-		level.addItemToSpawn( new CrystalKey( Dungeon.depth ) );
-		level.addItemToSpawn( new CrystalKey( Dungeon.depth ) );
-		level.addItemToSpawn( new CrystalKey( Dungeon.depth ) );
-
 		//figure out room order for loot, and start generating it!
 		int idx = 0;
 		for (int i = 0; i < rooms.length; i++){
@@ -168,6 +164,10 @@ public class CrystalPathRoom extends SpecialRoom {
 				if (idx < 0) idx = 3;
 			}
 		}
+
+		level.addItemToSpawn( new CrystalKey( Dungeon.depth ) );
+		level.addItemToSpawn( new CrystalKey( Dungeon.depth ) );
+		level.addItemToSpawn( new CrystalKey( Dungeon.depth ) );
 
 		entrance().set( Door.Type.LOCKED );
 		level.addItemToSpawn( new IronKey( Dungeon.depth ) );
