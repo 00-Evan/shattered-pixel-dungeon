@@ -59,6 +59,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.En
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Snake;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CheckedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -1278,7 +1279,7 @@ public class Hero extends Char {
 
 		Mob target = null;
 		for (Mob m : Dungeon.level.mobs.toArray(new Mob[0])) {
-			if (fieldOfView[ m.pos ] && m.alignment == Alignment.ENEMY) {
+			if (fieldOfView[ m.pos ] && m.alignment == Alignment.ENEMY && !(m instanceof NPC)) {
 				visible.add(m);
 				if (!visibleEnemies.contains( m )) {
 					newMob = true;

@@ -39,8 +39,10 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MobSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
@@ -215,6 +217,7 @@ public class SentryRoom extends SpecialRoom {
 			spriteClass = SentrySprite.class;
 
 			properties.add(Property.IMMOVABLE);
+			alignment = Alignment.ENEMY;
 		}
 
 		private float initialChargeDelay;
@@ -224,9 +227,18 @@ public class SentryRoom extends SpecialRoom {
 
 		@Override
 		protected boolean act() {
-			if (Dungeon.hero != null){
+			if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
+				fieldOfView = new boolean[Dungeon.level.length()];
+			}
+			Dungeon.level.updateFieldOfView( this, fieldOfView );
 
-				if (Dungeon.level.map[Dungeon.hero.pos] == Terrain.EMPTY_SP
+			if (properties().contains(Property.IMMOVABLE)){
+				throwItems();
+			}
+
+			if (Dungeon.hero != null){
+				if (fieldOfView[Dungeon.hero.pos]
+						&& Dungeon.level.map[Dungeon.hero.pos] == Terrain.EMPTY_SP
 						&& room.inside(Dungeon.level.cellToPoint(Dungeon.hero.pos))){
 
 					if (curChargeDelay > 0.001f){ //helps prevent rounding errors
@@ -264,6 +276,7 @@ public class SentryRoom extends SpecialRoom {
 		public void onZapComplete(){
 			Dungeon.hero.damage(Random.NormalIntRange(2+Dungeon.depth/2, 4+Dungeon.depth), new Eye.DeathGaze());
 			if (!Dungeon.hero.isAlive()){
+				GLog.n( Messages.capitalize(Messages.get(Char.class, "kill", name())) );
 				Dungeon.fail( getClass() );
 			}
 		}
