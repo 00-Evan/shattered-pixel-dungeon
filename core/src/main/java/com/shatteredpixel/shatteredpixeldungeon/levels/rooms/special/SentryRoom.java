@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -155,6 +156,8 @@ public class SentryRoom extends SpecialRoom {
 		sentry.room.set((Rect)this);
 		sentry.initialChargeDelay = dangerDist / 3f + 0.1f;
 		level.mobs.add( sentry );
+
+		level.addItemToSpawn(new PotionOfHaste());
 
 		Painter.set(level, treasurePos, Terrain.PEDESTAL);
 		level.drop( prize( level ), level.pointToCell(treasurePos) ).type = Heap.Type.CHEST;
