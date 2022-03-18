@@ -165,7 +165,6 @@ public class PixelScene extends Scene {
 	public void update() {
 		super.update();
 		//20% deadzone
-		System.out.println("x: " + ControllerHandler.rightStickPosition.x + " y: " + ControllerHandler.rightStickPosition.y);
 		if (Math.abs(ControllerHandler.rightStickPosition.x) >= 0.2f
 				|| Math.abs(ControllerHandler.rightStickPosition.y) >= 0.2f) {
 			if (!ControllerHandler.controllerPointerActive()) {
