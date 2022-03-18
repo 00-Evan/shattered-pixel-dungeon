@@ -164,14 +164,15 @@ public class PixelScene extends Scene {
 	@Override
 	public void update() {
 		super.update();
-		//15% deadzone
-		if (Math.abs(ControllerHandler.rightStickPosition.x) >= 0.15f
-				|| Math.abs(ControllerHandler.rightStickPosition.y) >= 0.15f) {
+		//20% deadzone
+		System.out.println("x: " + ControllerHandler.rightStickPosition.x + " y: " + ControllerHandler.rightStickPosition.y);
+		if (Math.abs(ControllerHandler.rightStickPosition.x) >= 0.2f
+				|| Math.abs(ControllerHandler.rightStickPosition.y) >= 0.2f) {
 			if (!ControllerHandler.controllerPointerActive()) {
 				ControllerHandler.setControllerPointer(true);
 				virtualCursorPos = PointerEvent.currentHoverPos();
 			}
-			//cursor moves 500 scaled pixels per second at full speed, 75 at minimum speed
+			//cursor moves 500 scaled pixels per second at full speed, 100 at minimum speed
 			virtualCursorPos.x += defaultZoom * 500 * Game.elapsed * ControllerHandler.rightStickPosition.x;
 			virtualCursorPos.y += defaultZoom * 500 * Game.elapsed * ControllerHandler.rightStickPosition.y;
 			virtualCursorPos.x = GameMath.gate(0, virtualCursorPos.x, Game.width);
