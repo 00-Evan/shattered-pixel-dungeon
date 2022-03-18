@@ -51,6 +51,10 @@ import com.watabou.utils.Rect;
 public class MagicalFireRoom extends SpecialRoom {
 
 	@Override
+	public int minWidth() { return 7; }
+	public int minHeight() { return 7; }
+
+	@Override
 	public void paint(Level level) {
 
 		Painter.fill( level, this, Terrain.WALL );
@@ -93,7 +97,6 @@ public class MagicalFireRoom extends SpecialRoom {
 		boolean honeyPot = Random.Int( 2 ) == 0;
 
 		int n = Random.IntRange( 3, 4 );
-		n = Math.min(behindFire.square(), n);
 
 		for (int i=0; i < n; i++) {
 			int pos;
