@@ -89,7 +89,7 @@ public class CityBossLevel extends Level {
 			Music.INSTANCE.play(Assets.Music.CITY_BOSS, true);
 		//if top door isn't unlocked
 		} else if (map[topDoor] == Terrain.LOCKED_DOOR){
-			Music.INSTANCE.stop();
+			Music.INSTANCE.end();
 		} else {
 			Music.INSTANCE.playTracks(
 					new String[]{Assets.Music.CITY_1, Assets.Music.CITY_2, Assets.Music.CITY_2},
@@ -335,7 +335,7 @@ public class CityBossLevel extends Level {
 		Game.runOnRenderThread(new Callback() {
 			@Override
 			public void call() {
-				Music.INSTANCE.stop();
+				Music.INSTANCE.end();
 			}
 		});
 	}

@@ -183,8 +183,9 @@ public enum Music {
 		}
 	}
 	
-	public synchronized void mute() {
+	public synchronized void end() {
 		lastPlayed = null;
+		trackList = null;
 		stop();
 	}
 	
@@ -228,7 +229,7 @@ public enum Music {
 		if (!isPlaying() && value) {
 			if (trackList != null){
 				playTracks(trackList, trackChances, shuffle);
-			} else {
+			} else if (lastPlayed != null) {
 				play(lastPlayed, looping);
 			}
 		}

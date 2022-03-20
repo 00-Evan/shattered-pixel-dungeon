@@ -89,7 +89,7 @@ public class PrisonBossLevel extends Level {
 	@Override
 	public void playLevelMusic() {
 		if (state == State.START){
-			Music.INSTANCE.stop();
+			Music.INSTANCE.end();
 		} else if (state == State.WON) {
 			Music.INSTANCE.playTracks(
 					new String[]{Assets.Music.PRISON_1, Assets.Music.PRISON_2, Assets.Music.PRISON_2},
@@ -512,7 +512,7 @@ public class PrisonBossLevel extends Level {
 				Game.runOnRenderThread(new Callback() {
 					@Override
 					public void call() {
-						Music.INSTANCE.stop();
+						Music.INSTANCE.end();
 					}
 				});
 				break;

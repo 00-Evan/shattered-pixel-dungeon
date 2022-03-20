@@ -69,7 +69,7 @@ public class HallsBossLevel extends Level {
 			Music.INSTANCE.play(Assets.Music.HALLS_BOSS, true);
 		//if exit isn't unlocked
 		} else if (map[exit] != Terrain.EXIT){
-			Music.INSTANCE.stop();
+			Music.INSTANCE.end();
 		} else {
 			Music.INSTANCE.playTracks(
 					new String[]{Assets.Music.HALLS_1, Assets.Music.HALLS_2, Assets.Music.HALLS_2},
@@ -252,7 +252,7 @@ public class HallsBossLevel extends Level {
 		Game.runOnRenderThread(new Callback() {
 			@Override
 			public void call() {
-				Music.INSTANCE.stop();
+				Music.INSTANCE.end();
 			}
 		});
 	}

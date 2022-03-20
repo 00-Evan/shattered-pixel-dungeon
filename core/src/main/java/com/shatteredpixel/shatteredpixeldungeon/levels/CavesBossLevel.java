@@ -77,7 +77,7 @@ public class CavesBossLevel extends Level {
 			Music.INSTANCE.play(Assets.Music.CAVES_BOSS, true);
 		//if wall isn't broken
 		} else if (map[14 + 13*width()] == Terrain.SIGN){
-			Music.INSTANCE.stop();
+			Music.INSTANCE.end();
 		} else {
 			Music.INSTANCE.playTracks(
 					new String[]{Assets.Music.CAVES_1, Assets.Music.CAVES_2, Assets.Music.CAVES_2},
@@ -316,7 +316,7 @@ public class CavesBossLevel extends Level {
 		Game.runOnRenderThread(new Callback() {
 			@Override
 			public void call() {
-				Music.INSTANCE.stop();
+				Music.INSTANCE.end();
 			}
 		});
 
