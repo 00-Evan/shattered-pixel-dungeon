@@ -47,10 +47,12 @@ public class Alchemize extends Spell {
 	{
 		image = ItemSpriteSheet.ALCHEMIZE;
 	}
+
+	private static WndBag parentWnd;
 	
 	@Override
 	protected void onCast(Hero hero) {
-		GameScene.selectItem( itemSelector );
+		parentWnd = GameScene.selectItem( itemSelector );
 	}
 	
 	@Override
@@ -89,7 +91,9 @@ public class Alchemize extends Spell {
 		@Override
 		public void onSelect( Item item ) {
 			if (item != null) {
-				WndBag parentWnd = GameScene.selectItem( itemSelector );
+				if (parentWnd != null) {
+					parentWnd = GameScene.selectItem(itemSelector);
+				}
 				GameScene.show( new WndAlchemizeItem( item, parentWnd ) );
 			}
 		}
@@ -216,25 +220,15 @@ public class Alchemize extends Spell {
 				curItem.detachAll(Dungeon.hero.belongings.backpack);
 				if (owner != null) {
 					owner.hide();
-					owner = null;
 				}
 			} else {
 				curItem.detach(Dungeon.hero.belongings.backpack);
-				if (owner == null){
-					GameScene.selectItem(itemSelector);
+				if (owner != null){
+					owner.hide();
 				}
-			}
-		}
-
-		@Override
-		public void hide() {
-
-			super.hide();
-
-			if (owner != null) {
-				owner.hide();
 				GameScene.selectItem(itemSelector);
 			}
 		}
+
 	}
 }
