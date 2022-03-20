@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GolemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -169,6 +170,16 @@ public class Golem extends Mob {
 		enemyTeleCooldown = 20;
 	}
 
+	private boolean canTele(int target){
+		if (enemyTeleCooldown > 0) return false;
+		PathFinder.buildDistanceMap(target, BArray.not(Dungeon.level.solid, null), Dungeon.level.distance(pos, target)+1);
+		//zaps can go around blocking terrain, but not through it
+		if (PathFinder.distance[pos] == Integer.MAX_VALUE){
+			return false;
+		}
+		return true;
+	}
+
 	private class Wandering extends Mob.Wandering{
 
 		@Override
@@ -204,8 +215,8 @@ public class Golem extends Mob {
 
 				int oldPos = pos;
 
-				if (enemyTeleCooldown <= 0 && distance(enemy) >= 1 && Random.Int(100/distance(enemy)) == 0
-						&& !Char.hasProp(enemy, Property.IMMOVABLE)){
+				if (distance(enemy) >= 1 && Random.Int(100/distance(enemy)) == 0
+						&& !Char.hasProp(enemy, Property.IMMOVABLE) && canTele(target)){
 					if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
 						sprite.zap( enemy.pos );
 						return false;
@@ -218,7 +229,7 @@ public class Golem extends Mob {
 					spend( 1 / speed() );
 					return moveSprite( oldPos,  pos );
 
-				} else if (enemyTeleCooldown <= 0 && !Char.hasProp(enemy, Property.IMMOVABLE)) {
+				} else if (!Char.hasProp(enemy, Property.IMMOVABLE) && canTele(target)) {
 					if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
 						sprite.zap( enemy.pos );
 						return false;
