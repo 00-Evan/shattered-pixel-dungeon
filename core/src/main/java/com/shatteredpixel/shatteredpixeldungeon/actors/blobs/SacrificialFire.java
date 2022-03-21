@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SacrificeRo
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
@@ -52,6 +53,10 @@ public class SacrificialFire extends Blob {
 		//acts after mobs, so they can get marked as they move
 		actPriority = MOB_PRIO-1;
 	}
+
+	//Can spawn extra mobs to make sacrificing less tedious
+	// The limit is to prevent farming
+	private int bonusSpawns = 3;
 
 	@Override
 	protected void evolve() {
@@ -69,6 +74,15 @@ public class SacrificialFire extends Blob {
 							CellEmitter.get(cell).burst( SacrificialParticle.FACTORY, 5 );
 						}
 						Buff.prolong( ch, Marked.class, Marked.DURATION );
+					}
+
+					if (off[cell] > 0
+							&& Dungeon.level.heroFOV[cell]
+							&& Dungeon.level.mobCount() == 0
+							&& bonusSpawns > 0){
+						if (Dungeon.level.spawnMob(4)) {
+							bonusSpawns--;
+						}
 					}
 				}
 			}
@@ -92,6 +106,20 @@ public class SacrificialFire extends Blob {
 	@Override
 	public String tileDesc() {
 		return Messages.get(this, "desc");
+	}
+
+	private static final String BONUS_SPAWNS = "bonus_spawns";
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put(BONUS_SPAWNS, bonusSpawns);
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		bonusSpawns = bundle.getInt(BONUS_SPAWNS);
 	}
 
 	public static void sacrifice( Char ch ) {
@@ -123,6 +151,7 @@ public class SacrificialFire extends Blob {
 				if (volume > 0) {
 					fire.cur[ch.pos] -= exp;
 					fire.volume -= exp;
+					fire.bonusSpawns++;
 					CellEmitter.get(ch.pos).burst( SacrificialParticle.FACTORY, 20 );
 					Sample.INSTANCE.play(Assets.Sounds.BURNING );
 					GLog.w( Messages.get(SacrificialFire.class, "worthy"));

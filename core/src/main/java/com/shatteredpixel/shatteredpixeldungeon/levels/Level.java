@@ -521,8 +521,18 @@ public abstract class Level implements Bundlable {
 		return visuals;
 	}
 	
-	public int nMobs() {
+	public int mobLimit() {
 		return 0;
+	}
+
+	public int mobCount(){
+		int count = 0;
+		for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])){
+			if (mob.alignment == Char.Alignment.ENEMY && !mob.properties().contains(Char.Property.MINIBOSS)) {
+				count += mob.spawningWeight();
+			}
+		}
+		return count;
 	}
 
 	public Mob findMob( int pos ){
@@ -553,34 +563,16 @@ public abstract class Level implements Bundlable {
 
 		@Override
 		protected boolean act() {
-			float count = 0;
 
-			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])){
-				if (mob.alignment == Char.Alignment.ENEMY && !mob.properties().contains(Char.Property.MINIBOSS)) {
-					count += mob.spawningWeight();
-				}
-			}
+			if (Dungeon.level.mobCount() < Dungeon.level.mobLimit()) {
 
-			if (count < Dungeon.level.nMobs()) {
-
-				PathFinder.buildDistanceMap(Dungeon.hero.pos, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null));
-
-				Mob mob = Dungeon.level.createMob();
-				mob.state = mob.WANDERING;
-				mob.pos = Dungeon.level.randomRespawnCell( mob );
-				if (Dungeon.hero.isAlive() && mob.pos != -1 && PathFinder.distance[mob.pos] >= 12) {
-					GameScene.add( mob );
-					if (Statistics.amuletObtained) {
-						mob.beckon( Dungeon.hero.pos );
-					}
-					if (!mob.buffs(ChampionEnemy.class).isEmpty()){
-						GLog.w(Messages.get(ChampionEnemy.class, "warn"));
-					}
+				if (Dungeon.level.spawnMob(12)){
 					spend(Dungeon.level.respawnCooldown());
 				} else {
 					//try again in 1 turn
 					spend(TICK);
 				}
+
 			} else {
 				spend(Dungeon.level.respawnCooldown());
 			}
@@ -596,6 +588,26 @@ public abstract class Level implements Bundlable {
 			return 2*TIME_TO_RESPAWN/3f;
 		} else {
 			return TIME_TO_RESPAWN;
+		}
+	}
+
+	public boolean spawnMob(int disLimit){
+		PathFinder.buildDistanceMap(Dungeon.hero.pos, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null));
+
+		Mob mob = Dungeon.level.createMob();
+		mob.state = mob.WANDERING;
+		mob.pos = Dungeon.level.randomRespawnCell( mob );
+		if (Dungeon.hero.isAlive() && mob.pos != -1 && PathFinder.distance[mob.pos] >= disLimit) {
+			GameScene.add( mob );
+			if (Statistics.amuletObtained) {
+				mob.beckon( Dungeon.hero.pos );
+			}
+			if (!mob.buffs(ChampionEnemy.class).isEmpty()){
+				GLog.w(Messages.get(ChampionEnemy.class, "warn"));
+			}
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
