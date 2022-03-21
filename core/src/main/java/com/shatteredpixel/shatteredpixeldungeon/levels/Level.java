@@ -1093,7 +1093,7 @@ public abstract class Level implements Bundlable {
 						blocking[i] = false;
 					}
 				}
-			} else if (c.alignment == Char.Alignment.ENEMY
+			} else if (c.alignment != Char.Alignment.ALLY
 					&& Dungeon.level.blobs.containsKey(SmokeScreen.class)
 					&& Dungeon.level.blobs.get(SmokeScreen.class).volume > 0) {
 				System.arraycopy(Dungeon.level.losBlocking, 0, modifiableBlocking, 0, modifiableBlocking.length);

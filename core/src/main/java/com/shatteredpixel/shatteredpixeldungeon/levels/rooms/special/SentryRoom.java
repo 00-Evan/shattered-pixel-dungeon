@@ -217,7 +217,6 @@ public class SentryRoom extends SpecialRoom {
 			spriteClass = SentrySprite.class;
 
 			properties.add(Property.IMMOVABLE);
-			alignment = Alignment.ENEMY;
 		}
 
 		private float initialChargeDelay;
