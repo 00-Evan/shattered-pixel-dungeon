@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -156,10 +157,11 @@ public class MenuPane extends Component {
 		btnJournal.setPos( btnMenu.left() - btnJournal.width() + 2, y );
 
 		depthIcon.x = btnJournal.left() - 7 + (7 - depthIcon.width())/2f - 0.1f;
-		depthIcon.y = y + 2;
+		depthIcon.y = y + 1;
+		if (SPDSettings.interfaceSize() == 0) depthIcon.y++;
 		PixelScene.align(depthIcon);
 
-		depthText.scale.set(PixelScene.align(0.5f));
+		depthText.scale.set(PixelScene.align(0.67f));
 		depthText.x = depthIcon.x + (depthIcon.width() - depthText.width())/2f;
 		depthText.y = depthIcon.y + depthIcon.height();
 		PixelScene.align(depthText);
@@ -168,10 +170,11 @@ public class MenuPane extends Component {
 
 		if (challengeIcon != null){
 			challengeIcon.x = btnJournal.left() - 14 + (7 - challengeIcon.width())/2f - 0.1f;
-			challengeIcon.y = y + 2;
+			challengeIcon.y = y + 1;
+			if (SPDSettings.interfaceSize() == 0) challengeIcon.y++;
 			PixelScene.align(challengeIcon);
 
-			challengeText.scale.set(PixelScene.align(0.5f));
+			challengeText.scale.set(PixelScene.align(0.67f));
 			challengeText.x = challengeIcon.x + (challengeIcon.width() - challengeText.width())/2f;
 			challengeText.y = challengeIcon.y + challengeIcon.height();
 			PixelScene.align(challengeText);
