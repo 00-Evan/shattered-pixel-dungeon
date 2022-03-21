@@ -155,6 +155,7 @@ public class WarpBeacon extends ArmorAbility {
 
 							Invisibility.dispel();
 							Dungeon.observe();
+							GameScene.updateFog();
 
 						} else {
 
