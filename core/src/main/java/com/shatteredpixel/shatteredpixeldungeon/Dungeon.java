@@ -672,12 +672,9 @@ public class Dungeon {
 					FileUtils.deleteFile(folder + "/" + file);
 				}
 			}
-			ArrayList<String> files = FileUtils.filesInDir(GamesInProgress.gameFolder(save));
-			FileUtils.deleteDir(GamesInProgress.gameFolder(save));
 		}
 
-		//we empty this file instead of delete due to steam cloud only persisting file deletions locally
-		FileUtils.setFileEmpty(GamesInProgress.gameFile(save));
+		FileUtils.zeroFile(GamesInProgress.gameFile(save), 1);
 		
 		GamesInProgress.delete( save );
 	}

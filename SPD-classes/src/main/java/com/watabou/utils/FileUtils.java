@@ -118,13 +118,25 @@ public class FileUtils {
 		FileHandle file = getFileHandle( name );
 		return file.exists() && !file.isDirectory() && file.length() > 0;
 	}
+
+	//returns length of a file in bytes, or 0 if file does not exist
+	public static long fileLength( String name ){
+		FileHandle file = getFileHandle( name );
+		if (!file.exists() || file.isDirectory()){
+			return 0;
+		} else {
+			return file.length();
+		}
+	}
 	
 	public static boolean deleteFile( String name ){
 		return getFileHandle( name ).delete();
 	}
 
-	public static void setFileEmpty(String name ){
-		getFileHandle( name ).writeBytes(new byte[0], true);
+	//replaces a file with zeroes, for as many bytes as given
+	//This is helpful as some cloud sync systems do not persist deleted or empty files
+	public static void zeroFile( String name, int bytes ){
+		getFileHandle( name ).writeBytes(new byte[bytes], false);
 	}
 	
 	// Directories

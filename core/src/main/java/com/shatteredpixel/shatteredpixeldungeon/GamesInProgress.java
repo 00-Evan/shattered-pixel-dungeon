@@ -50,7 +50,7 @@ public class GamesInProgress {
 	
 	public static boolean gameExists( int slot ){
 		return FileUtils.dirExists(gameFolder(slot))
-				&& FileUtils.fileExists(gameFile(slot));
+				&& FileUtils.fileLength(gameFile(slot)) > 1;
 	}
 	
 	public static String gameFolder( int slot ){
@@ -74,7 +74,7 @@ public class GamesInProgress {
 	
 	public static ArrayList<Info> checkAll(){
 		ArrayList<Info> result = new ArrayList<>();
-		for (int i = 0; i <= MAX_SLOTS; i++){
+		for (int i = 1; i <= MAX_SLOTS; i++){
 			Info curr = check(i);
 			if (curr != null) result.add(curr);
 		}
