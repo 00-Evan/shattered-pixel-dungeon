@@ -142,8 +142,8 @@ public class DesktopLauncher {
 			basePath = XDGHome + ".shatteredpixel/shattered-pixel-dungeon/";
 
 			//copy over files from old linux save DIR, pre-1.2.0
-			FileHandle oldBase = new Lwjgl3FileHandle(".shatteredpixel/", Files.FileType.External);
-			FileHandle newBase = new Lwjgl3FileHandle(XDGHome + ".shatteredpixel/", Files.FileType.External);
+			FileHandle oldBase = new Lwjgl3FileHandle(".shatteredpixel/shattered-pixel-dungeon/", Files.FileType.External);
+			FileHandle newBase = new Lwjgl3FileHandle(XDGHome + ".shatteredpixel/shattered-pixel-dungeon/", Files.FileType.External);
 			if (oldBase.exists()){
 				if (newBase.exists()){
 					oldBase.deleteDirectory();
