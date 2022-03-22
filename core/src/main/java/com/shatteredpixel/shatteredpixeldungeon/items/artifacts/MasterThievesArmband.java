@@ -201,7 +201,7 @@ public class MasterThievesArmband extends Artifact {
 	public void charge(Hero target, float amount) {
 		partialCharge += 0.1f * amount;
 		partialCharge = Math.min(partialCharge, chargeCap - charge);
-		while (partialCharge > 1f){
+		while (partialCharge >= 1f){
 			charge++;
 			partialCharge--;
 			updateQuickslot();
