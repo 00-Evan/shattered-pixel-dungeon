@@ -1373,7 +1373,7 @@ public class GameScene extends PixelScene {
 				title = WndInfoCell.cellName(cell);
 				image = WndInfoCell.cellImage(cell);
 			} else if (objects.size() > 1){
-				title = "Multiple Objects";
+				title = Messages.get(GameScene.class, "multiple");
 				image = Icons.get(Icons.INFO);
 			} else if (objects.get(0) instanceof Hero) {
 				title = textLines.remove(0);
@@ -1394,42 +1394,42 @@ public class GameScene extends PixelScene {
 
 			//determine first text line
 			if (objects.isEmpty()) {
-				textLines.add(0, "Go Here");
+				textLines.add(0, Messages.get(GameScene.class, "go_here"));
 			} else if (objects.get(0) instanceof Hero) {
-				textLines.add(0, "Go Here");
+				textLines.add(0, Messages.get(GameScene.class, "go_here"));
 			} else if (objects.get(0) instanceof Mob) {
 				if (((Mob) objects.get(0)).alignment != Char.Alignment.ENEMY) {
-					textLines.add(0, "Interact");
+					textLines.add(0, Messages.get(GameScene.class, "interact"));
 				} else {
-					textLines.add(0, "Attack");
+					textLines.add(0, Messages.get(GameScene.class, "attack"));
 				}
 			} else if (objects.get(0) instanceof Heap) {
 				switch (((Heap) objects.get(0)).type) {
 					case HEAP:
-						textLines.add(0, "Pick Up");
+						textLines.add(0, Messages.get(GameScene.class, "pick_up"));
 						break;
 					case FOR_SALE:
-						textLines.add(0, "Purchase");
+						textLines.add(0, Messages.get(GameScene.class, "purchase"));
 						break;
 					default:
-						textLines.add(0, "Interact");
+						textLines.add(0, Messages.get(GameScene.class, "interact"));
 						break;
 				}
 			} else if (objects.get(0) instanceof Plant) {
-				textLines.add(0, "Trample");
+				textLines.add(0, Messages.get(GameScene.class, "trample"));
 			} else if (objects.get(0) instanceof Trap) {
-				textLines.add(0, "Interact");
+				textLines.add(0, Messages.get(GameScene.class, "interact"));
 			}
 
 			//final text formatting
 			if (objects.size() > 1){
 				textLines.add(0, "_" + textLines.remove(0) + ":_ " + textLines.get(0));
 				for (int i = 1; i < textLines.size(); i++){
-					textLines.add(i, "_Examine:_ " + textLines.remove(i));
+					textLines.add(i, "_" + Messages.get(GameScene.class, "examine") + ":_ " + textLines.remove(i));
 				}
 			} else {
 				textLines.add(0, "_" + textLines.remove(0) + "_");
-				textLines.add(1, "_Examine_");
+				textLines.add(1, "_" + Messages.get(GameScene.class, "examine") + "_");
 			}
 
 			RightClickMenu menu = new RightClickMenu(image,

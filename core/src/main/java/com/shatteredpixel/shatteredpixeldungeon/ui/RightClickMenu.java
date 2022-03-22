@@ -110,8 +110,11 @@ public class RightClickMenu extends Component {
 					RightClickMenu.this.killAndErase();
 				}
 			};
-			if (item != null && options[i].equals(item.defaultAction)){
-				buttons[i].textColor(Window.TITLE_COLOR);
+			if (item != null){
+				if (options[i].equals(item.defaultAction)) {
+					buttons[i].textColor(Window.TITLE_COLOR);
+				}
+				buttons[i].text(item.actionName(options[i], Dungeon.hero));
 			}
 			add(buttons[i]);
 		}
