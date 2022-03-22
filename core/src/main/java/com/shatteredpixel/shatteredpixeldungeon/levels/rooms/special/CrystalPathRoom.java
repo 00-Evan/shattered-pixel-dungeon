@@ -129,20 +129,12 @@ public class CrystalPathRoom extends SpecialRoom {
 					item = new Gold(Random.NormalIntRange(5, 12));
 					break;
 				case 1:
-					if (Random.Int(3) == 0){
-						item = level.findPrizeItem();
-						if (item != null) break;
-					}
 					item = Generator.random(Random.oneOf(
 							Generator.Category.SEED,
 							Generator.Category.STONE)
 					);
 					break;
 				case 2:
-					if (Random.Int(3) == 0){
-						item = level.findPrizeItem();
-						if (item != null) break;
-					}
 					item = Generator.random(Random.oneOf(
 							Generator.Category.POTION,
 							Generator.Category.SCROLL)

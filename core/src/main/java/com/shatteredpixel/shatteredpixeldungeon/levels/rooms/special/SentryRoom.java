@@ -159,10 +159,10 @@ public class SentryRoom extends SpecialRoom {
 		sentry.initialChargeDelay = dangerDist / 3f + 0.1f;
 		level.mobs.add( sentry );
 
-		level.addItemToSpawn(new PotionOfHaste());
-
 		Painter.set(level, treasurePos, Terrain.PEDESTAL);
 		level.drop( prize( level ), level.pointToCell(treasurePos) ).type = Heap.Type.CHEST;
+
+		level.addItemToSpawn(new PotionOfHaste());
 
 		entrance.set( Door.Type.REGULAR );
 	}
