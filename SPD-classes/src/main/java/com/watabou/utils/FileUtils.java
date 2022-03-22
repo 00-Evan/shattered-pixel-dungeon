@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class FileUtils {
 	
@@ -133,10 +134,12 @@ public class FileUtils {
 		return getFileHandle( name ).delete();
 	}
 
-	//replaces a file with zeroes, for as many bytes as given
-	//This is helpful as some cloud sync systems do not persist deleted or empty files
+	//replaces a file with junk data, for as many bytes as given
+	//This is helpful as some cloud sync systems do not persist deleted, empty, or zeroed files
 	public static void zeroFile( String name, int bytes ){
-		getFileHandle( name ).writeBytes(new byte[bytes], false);
+		byte[] data = new byte[bytes];
+		Arrays.fill(data, (byte)1);
+		getFileHandle( name ).writeBytes(data, false);
 	}
 	
 	// Directories
