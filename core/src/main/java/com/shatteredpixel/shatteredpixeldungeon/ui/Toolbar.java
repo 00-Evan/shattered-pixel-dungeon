@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTerrainTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
@@ -75,19 +76,15 @@ public class Toolbar extends Component {
 	@Override
 	protected void createChildren() {
 
-		if (SPDSettings.interfaceSize() > 0) {
-			btnQuick = new QuickslotTool[6];
+		//TODO add a changer function to the 4th quickslot if there isn't room for 6?
+		int quickSlots = 4;
+		if (PixelScene.uiCamera.width > 152) quickSlots ++;
+		if (PixelScene.uiCamera.width > 170) quickSlots ++;
 
-			add( btnQuick[5] = new QuickslotTool(64, 0, 22, 24, 5) );
-			add( btnQuick[4] = new QuickslotTool(64, 0, 22, 24, 4) );
-		} else {
-			//TODO add functionality for 6 slots on mobile
-			btnQuick = new QuickslotTool[4];
+		btnQuick = new QuickslotTool[quickSlots];
+		for (int i = 0; i < quickSlots; i++){
+			add( btnQuick[i] = new QuickslotTool(64, 0, 22, 24, i) );
 		}
-		add( btnQuick[3] = new QuickslotTool(64, 0, 22, 24, 3) );
-		add( btnQuick[2] = new QuickslotTool(64, 0, 22, 24, 2) );
-		add( btnQuick[1] = new QuickslotTool(64, 0, 22, 24, 1) );
-		add( btnQuick[0] = new QuickslotTool(64, 0, 22, 24, 0) );
 		
 		add(btnWait = new Tool(24, 0, 20, 26) {
 			@Override
@@ -276,15 +273,15 @@ public class Toolbar extends Component {
 
 				btnInventory.setPos(right - btnInventory.width(), y);
 
-				btnQuick[0].setPos(btnInventory.left() - btnQuick[0].width(), y+2);
-				btnQuick[1].setPos(btnQuick[0].left() - btnQuick[1].width(), y+2);
-				btnQuick[2].setPos(btnQuick[1].left() - btnQuick[2].width(), y+2);
-				btnQuick[3].setPos(btnQuick[2].left() - btnQuick[3].width(), y+2);
+				btnQuick[0].setPos(btnInventory.left() - btnQuick[0].width(), y + 2);
+				for (int i = 1; i < btnQuick.length; i++) {
+					btnQuick[i].setPos(btnQuick[i-1].left() - btnQuick[i].width(), y + 2);
+				}
 				
 				//center the quickslots if they
-				if (btnQuick[3].left() < btnSearch.right()){
-					float diff = Math.round(btnSearch.right() - btnQuick[3].left())/2;
-					for( int i = 0; i < 4; i++){
+				if (btnQuick[btnQuick.length-1].left() < btnSearch.right()){
+					float diff = Math.round(btnSearch.right() - btnQuick[btnQuick.length-1].left())/2;
+					for( int i = 0; i < btnQuick.length; i++){
 						btnQuick[i].setPos( btnQuick[i].left()+diff, btnQuick[i].top() );
 					}
 				}
@@ -304,14 +301,14 @@ public class Toolbar extends Component {
 				btnSearch.setPos(btnWait.left() - btnSearch.width(), y);
 				btnInventory.setPos(btnSearch.left() - btnInventory.width(), y);
 
-				btnQuick[0].setPos(btnInventory.left() - btnQuick[0].width(), y+2);
-				btnQuick[1].setPos(btnQuick[0].left() - btnQuick[1].width(), y+2);
-				btnQuick[2].setPos(btnQuick[1].left() - btnQuick[2].width(), y+2);
-				btnQuick[3].setPos(btnQuick[2].left() - btnQuick[3].width(), y+2);
+				btnQuick[0].setPos(btnInventory.left() - btnQuick[0].width(), y + 2);
+				for (int i = 1; i < btnQuick.length; i++) {
+					btnQuick[i].setPos(btnQuick[i-1].left() - btnQuick[i].width(), y + 2);
+				}
 				
-				if (btnQuick[3].left() < 0){
-					float diff = -Math.round(btnQuick[3].left())/2;
-					for( int i = 0; i < 4; i++){
+				if (btnQuick[btnQuick.length-1].left() < 0){
+					float diff = -Math.round(btnQuick[btnQuick.length-1].left())/2;
+					for( int i = 0; i < btnQuick.length; i++){
 						btnQuick[i].setPos( btnQuick[i].left()+diff, btnQuick[i].top() );
 					}
 				}
@@ -326,7 +323,7 @@ public class Toolbar extends Component {
 			btnSearch.setPos( (right - btnSearch.right()), y);
 			btnInventory.setPos( (right - btnInventory.right()), y);
 
-			for(int i = 0; i <= 3; i++) {
+			for(int i = 0; i <= btnQuick.length; i++) {
 				btnQuick[i].setPos( right - btnQuick[i].right(), y+2);
 			}
 
