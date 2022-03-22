@@ -29,6 +29,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 public class FileUtils {
 	
@@ -115,11 +116,15 @@ public class FileUtils {
 	
 	public static boolean fileExists( String name ){
 		FileHandle file = getFileHandle( name );
-		return file.exists() && !file.isDirectory();
+		return file.exists() && !file.isDirectory() && file.length() > 0;
 	}
 	
 	public static boolean deleteFile( String name ){
 		return getFileHandle( name ).delete();
+	}
+
+	public static void setFileEmpty(String name ){
+		getFileHandle( name ).writeBytes(new byte[0], true);
 	}
 	
 	// Directories
@@ -137,6 +142,17 @@ public class FileUtils {
 		} else {
 			return dir.deleteDirectory();
 		}
+	}
+
+	public static ArrayList<String> filesInDir( String name ){
+		FileHandle dir = getFileHandle( name );
+		ArrayList result = new ArrayList();
+		if (dir != null && dir.isDirectory()){
+			for (FileHandle file : dir.list()){
+				result.add(file.name());
+			}
+		}
+		return result;
 	}
 	
 	// bundle reading

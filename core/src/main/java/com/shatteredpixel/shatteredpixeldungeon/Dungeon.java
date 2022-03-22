@@ -37,7 +37,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
-import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -53,7 +52,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.CityLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.DeadEndLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.HallsLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.LastLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.LastShopLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
@@ -666,12 +664,20 @@ public class Dungeon {
 	}
 	
 	public static void deleteGame( int save, boolean deleteLevels ) {
-		
-		FileUtils.deleteFile(GamesInProgress.gameFile(save));
-		
+
 		if (deleteLevels) {
+			String folder = GamesInProgress.gameFolder(save);
+			for (String file : FileUtils.filesInDir(folder)){
+				if (file.contains("depth")){
+					FileUtils.deleteFile(folder + "/" + file);
+				}
+			}
+			ArrayList<String> files = FileUtils.filesInDir(GamesInProgress.gameFolder(save));
 			FileUtils.deleteDir(GamesInProgress.gameFolder(save));
 		}
+
+		//we empty this file instead of delete due to steam cloud only persisting file deletions locally
+		FileUtils.setFileEmpty(GamesInProgress.gameFile(save));
 		
 		GamesInProgress.delete( save );
 	}

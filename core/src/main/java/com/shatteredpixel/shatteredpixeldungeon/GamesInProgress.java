@@ -49,7 +49,8 @@ public class GamesInProgress {
 	private static final String DEPTH_FILE	= "depth%d.dat";
 	
 	public static boolean gameExists( int slot ){
-		return FileUtils.dirExists(Messages.format(GAME_FOLDER, slot));
+		return FileUtils.dirExists(gameFolder(slot))
+				&& FileUtils.fileExists(gameFile(slot));
 	}
 	
 	public static String gameFolder( int slot ){

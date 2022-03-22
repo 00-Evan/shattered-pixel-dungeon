@@ -149,8 +149,7 @@ public class WndGameInProgress extends Window {
 					@Override
 					protected void onSelect( int index ) {
 						if (index == 0) {
-							FileUtils.deleteDir(GamesInProgress.gameFolder(slot));
-							GamesInProgress.setUnknown(slot);
+							Dungeon.deleteGame(slot, true);
 							ShatteredPixelDungeon.switchNoFade(StartScene.class);
 						}
 					}
