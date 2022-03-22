@@ -119,7 +119,7 @@ public class ItemSlot extends Button {
 		
 		if (status != null) {
 			status.measure();
-			if (status.width > width){
+			if (status.width > width - (margin.left + margin.right)){
 				status.scale.set(PixelScene.align(0.8f));
 			} else {
 				status.scale.set(1f);
