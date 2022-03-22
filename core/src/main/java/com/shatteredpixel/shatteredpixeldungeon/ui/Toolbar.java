@@ -323,7 +323,7 @@ public class Toolbar extends Component {
 			btnSearch.setPos( (right - btnSearch.right()), y);
 			btnInventory.setPos( (right - btnInventory.right()), y);
 
-			for(int i = 0; i <= btnQuick.length; i++) {
+			for(int i = 0; i < btnQuick.length; i++) {
 				btnQuick[i].setPos( right - btnQuick[i].right(), y+2);
 			}
 
