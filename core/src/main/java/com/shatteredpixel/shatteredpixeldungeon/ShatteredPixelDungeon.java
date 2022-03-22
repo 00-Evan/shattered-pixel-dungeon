@@ -40,7 +40,8 @@ public class ShatteredPixelDungeon extends Game {
 	public static final int v0_9_3c  = 557; //557 on iOS, 554 on other platforms
 
 	public static final int v1_0_3   = 574;
-	public static final int v1_1_0   = 583;
+	public static final int v1_1_2   = 587;
+	public static final int v1_2_0   = 609;
 	
 	public ShatteredPixelDungeon( PlatformSupport platform ) {
 		super( sceneClass == null ? WelcomeScene.class : sceneClass, platform );

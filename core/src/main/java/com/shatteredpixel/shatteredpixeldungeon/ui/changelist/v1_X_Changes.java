@@ -22,14 +22,17 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.WoollyBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Dreamfoil;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -46,6 +49,7 @@ public class v1_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
 		add_Coming_Soon(changeInfos);
+		add_v1_2_Changes(changeInfos);
 		add_v1_1_Changes(changeInfos);
 		add_v1_0_Changes(changeInfos);
 	}
@@ -57,20 +61,179 @@ public class v1_X_Changes {
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Overview",
-			"The next Shattered update will be v1.2.0, and will focus on a variety of smaller improvements, including working on proper support for desktop users in anticipation of the game's upcoming Steam release. Unfortunately I'm spread a bit thin right now with Steam and real-life obligations, so v1.2.0 will be light on content additions. I do hope to release it in less than 4 months though!\n\n" +
-			"Expect to hear more details about v1.2.0 in a future news post, likely in January."));
+			"The next Shattered update will be v1.3.0! Like v1.2.0, I'm aiming for v1.3.0 to be an update that focused on a variety of smaller improvements and additions. In particular I want this to be a smaller and faster update so that I can respond to the reception the game gets after the Steam release. That being said, I do hope to fulfill some long-requested feature additions with v1.3.0!\n\n" +
+			"Ideally I'll be sharing more info on v1.3.0 sometime around the end of April or beginning of May."));
 
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ENERGY), "Further Alchemy Tweaks",
-				"v1.1.0 focused pretty heavily on the alchemy system itself and exotic potions/scrolls, but there are definitely improvements to be made to other alchemy items too! Once the dust has settled a bit from 1.1.0 I intend to do a full evaluation and balance pass on alchemy produce. That may mean some nerfs, but I expect the majority of item changes from this will be buffs."));
+		changes.addButton( new ChangeButton(Icons.get(Icons.RANKINGS), "Seeded runs!",
+			"The most significant addition in v1.3.0 will be support for custom seeded runs, and possibly the addition of dailies/weeklies as well! One thing worth noting is that this update will not include online leaderboards for daily/weekly runs due to technical limitations, but I will be open to adding them in the future."));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.DISPLAY), "Desktop Enhancements",
-				"The other major focus for v1.2.0 will be new and enhanced features for desktop users! I wrote a blog post about this in detail already, but in summary I want to make it easier to install and run the desktop game, and improve the interface to better take advantage of mice, controllers, and larger screens."));
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.AUDIO), "Boss Music",
-				"v1.1.0 includes a bunch of new music, but Kristjan and I aren't finished yet! We're currently working on a boss track for Yog-Dzewa, and might add some music for the other bosses too."));
+		changes.addButton( new ChangeButton(Icons.get(Icons.DISPLAY_LAND), "UI/UX Improvements",
+			"I also plan to make more improvements to the game's UI/UX with an emphasis on Steam users. This won't be the core focus like it was in v1.3.0, but expect more interface improvements, tweaks based on feedback, and possibly some additions to help controller users better play with their more limited button count."));
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"Lastly, there will be some smaller miscellaneous changes in v1.2.0 as well. Alchemy items will get the most adjustments, but I also plan to look into improvements to a few other items, such as the master thieves' armband. There will be the usual round of balance improvements too."));
+			"v1.3.0 will also include a variety of miscellaneous adjustments. This will include balance tweaks to items and game mechanics, and maybe another item rework. I'd like to also include some more badges focused around more specific accomplishments!"));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.ENTER), "Technical Improvements",
+			"Finally, I also hope to make some behind the scenes technical improvements to the way the game handles loading and storing floors of the dungeon. I plan to use this functionality in the near future to give quests their own sub-levels!"));
+
+	}
+
+	public static void add_v1_2_Changes( ArrayList<ChangeInfo> changeInfos ) {
+		ChangeInfo changes = new ChangeInfo("v1.2", true, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released March 23rd, 2022\n" +
+				"_-_ 103 days after Shattered v1.1.0\n" +
+				"Expect dev commentary here in the future."));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.DISPLAY_LAND), "Desktop Enhancements and Steam Release!",
+				"_Shattered Pixel Dungeon has received a bunch of new features in preparation for its release on Steam!_\n\n" +
+				"These features include:\n" +
+				"_-_ A new main UI for larger displays, which places the inventory in the main game screen\n" +
+				"_-_ Full controller support, including button bindings and an analog stick cursor.\n" +
+				"_-_ Better keyboard controls, including combining keys to move diagonally.\n" +
+				"_-_ Better mouse support, including hover tooltips and right-click menus.\n" +
+				"_-_ Two additional quickslots on the new UI, and on mobile UI if there is enough space.\n" +
+				"_-_ Integration with Steamworks for achievements and cloud sync.\n\n" +
+				"Users on mobile devices will be able to benefit from most of these features as well! (some feature require a large enough display)"));
+
+		changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_SEWERS, 48, 80, 16, 16 ), "Special Rooms Additions!",
+				"_Six new special rooms have been added!_\n\n" +
+				"Two of these rooms (and one existing room) use new crystal doors, which let you see through them before you find a crystal key to unlock them.\n\n" +
+				"Three of these rooms include new terrain hazards, which will require the right tools to get past.\n\n" +
+				"The final new room is the sacrificial room from the original Pixel Dungeon! It returns with a few tweaks to its mechanics and loot (sorry, no scroll of wipe out)."));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_ARMBAND), "Armband Rework!",
+				"_The Master Thieves' Armband has been reworked!_\n\n" +
+				"This rework focuses on giving the armband usefulness outside of shops. You can now use it to steal from enemies as well as shopkeepers, and it gains charge as you gain exp, instead of when you collect gold."));
+
+		changes.addButton( new ChangeButton(BadgeBanner.image(Badges.Badge.MONSTERS_SLAIN_5.image), "New Badges!",
+				"_Badges now have names, and 8 new badges have been added!_\n\n" +
+				"These new badges are all part of the existing series badges (e.g. defeat X enemies), and primarily exist around the gold badge level.\n\n" +
+				"The 'games played' badges have also been adjusted to unlock either on a large number of games played, or a smaller number of games won."));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.AUDIO), "New Boss Music!",
+				"_Each of the game's five bosses now have their own music track!_\n\n" +
+				"Just as before, these tracks are all composed by Kristjan Harristo, check the about scene for more details on them.\n\n" +
+				"All of the boss tracks take cues from the region tracks, but add enough to be more than simple remixes."));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
+		changes.hardlight(CharSprite.WARNING);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Improved the blinking behaviour of the journal button, to make it easier to notice on desktop displays.\n" +
+				"_-_ Improved the depth display to include icons for level feelings\n" +
+				"_-_ Added an icon next to depth display showing enabled challenges\n\n" +
+				"_-_ Adjusted the secrets level feeling to be less extreme in what rooms it can hide\n\n" +
+				"_-_ Improved the resilience of the game's save system"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 1",
+				"Fixed:\n" +
+				"_-_ Various rare cases of save corruption on Android\n" +
+				"_-_ Various minor textual and visual errors\n" +
+				"_-_ Unidentified wands being usable in alchemy\n" +
+				"_-_ Various rare cases where the hero could perform two actions at once\n" +
+				"_-_ Pharmacophobia challenge incorrectly blocking some alchemy recipes\n" +
+				"_-_ Various rare cases where giant enemies could enter enclosed spaces\n" +
+				"_-_ Wild energy spell not cancelling invisibility or time freeze\n" +
+				"_-_ Rare cases where the Freerunner could gain momentum while freerunninng\n" +
+				"_-_ Gladiator's parry move not cancelling invisibility or time freeze\n" +
+				"_-_ On-hit effects still triggering when the great crab blocks\n" +
+				"_-_ Various rare bugs with the timekeeper's hourglass\n" +
+				"_-_ Various bugs with the potion of dragon's breath\n" +
+				"_-_ Assassinate killing enemies right after they were corrupted by a corrupting weapon"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 2",
+				"Fixed:\n" +
+				"_-_ Layout issues with the loot indicator\n" +
+				"_-_ Artifact recharging not charging the horn of plenty in some cases when it should\n" +
+				"_-_ Some items rarely not being consumed when they should be\n" +
+				"_-_ Player being able to self-target with assassinate ability\n" +
+				"_-_ Arcane catalysts not being able to be turned into energy\n" +
+				"_-_ Fog of War not properly updating when warp beacon is used"));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
+		changes.hardlight(CharSprite.POSITIVE);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.FIRE_BOMB), "Recipe Cost Reductions",
+				"I've made a bunch of cost adjustments to alchemy recipes to help counteract energy becoming more expensive after v1.1.0:\n\n" +
+				"_- Bomb Recipe_ energy costs down across the board\n\n" +
+				"_- Infernal, Blizzard, and Caustic Brew_ energy costs down by 1\n\n" +
+				"_- Telekinetic Grab_ energy cost down to 2 from 4, liquid metal cost reduced to 10 from 15\n" +
+				"_- Phase Shift_ energy cost down to 4 from 6\n" +
+				"_- Wild Energy_ energy cost down to 4 from 6\n" +
+				"_- Beacon of Returning_ energy cost down to 6 from 8\n" +
+				"_- Summon Elemental_ energy cost down to 6 from 8\n" +
+				"_- Alchemize_ energy cost down to 2 from 3"));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.AQUA_BLAST), "Alchemy Buffs",
+				"Several recipes have also been buffed, in addition to the cost reductions:\n\n" +
+				"_- Scroll of Foresight_ duration up to 400 from 250\n" +
+				"_- Scroll of Dread_ now grants 1/2 exp for defeated enemies\n" +
+				"_- Potion of Shrouding Fog_ gas quantity increased bt 50%\n\n" +
+				"_-_ Items and effects which create water now douse fire\n\n" +
+				"_- Caustic Brew_ damage per turn increased by 1\n" +
+				"_- Infernal and Blizzard Brew_ now start their gas in a 3x3 AOE\n" +
+				"_- Shocking Brew_ AOE up to 7x7 from 5x5\n\n" +
+				"_- Phase Shift_ now stuns whatever it teleports\n" +
+				"_- Summon Elemental_ quantity up to 5 from 3, elemental's stats now scale with depth, and elementals can be re-summoned\n" +
+				"_- Aqua Blast_ now acts like a geyser trap, quantity down to 8 from 12\n" +
+				"_- Reclaim Trap_ quantity up to 4 from 3\n" +
+				"_- Curse Infusion_ now boosts highly levelled gear by more than +1, quantity up to 4 from 3.\n" +
+				"_- Recycle_ quantity up to 12 from 8, cost up to 8 from 6"));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ROT_DART), "Dart Buffs",
+				"While they don't tie into v1.1.0's energy changes in particular, I am also handing out several buffs to tipped darts:\n\n" +
+				"_- Rot Dart_ uses increased to 5 from 1\n" +
+				"_- Adrenaline Dart_ duration up to 30 from 10\n" +
+				"_- Shocking Dart_ damage now slightly scales with depth\n" +
+				"_- Poison Dart_ damage scaling increased\n" +
+				"_- Sleep Dart_ is now _Cleansing Dart_, makes allies immune to debuffs for several turns\n" +
+				"_- Holy Dart_ duration up to 100 from 30\n" +
+				"_- Displacing Dart_ now much more consistently teleports enemies away"));
+
+		changes.addButton( new ChangeButton(new TalentIcon(Talent.LIGHT_CLOAK.icon()), "Talent Buffs",
+				"I'm handing out a few buffs to help better balance the Mage's T2 talents and the Rogue's class-based T3 talents. I'm also making one bugfix that counts as a buff:\n\n" +
+				"_- Energizing Upgrade_ charge boost up to 4/6, from 3/5\n" +
+				"_- Wand Preservation_ chance at +1 reduced to 50%, but now grants 1 arcane resin if it fails to preserve\n" +
+				"_- Wand Preservation_ max uses up to 5 from 3\n" +
+				"_- Empowering Scrolls_ now grants +3 on the next 1/2/3 wand zaps\n\n" +
+				"_- Light Cloak_ charging rate boosted to 25%/50%/75%, from 17%/33%/50%\n\n" +
+				"_- Shared Enchantments_ bugfixed to give the bonus damage stated in the description, instead of slightly less."));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
+		changes.hardlight(CharSprite.NEGATIVE);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.MAGIC_INFUSE), "Alchemy Nerfs",
+				"v1.2.0 is mostly about alchemy buffs, but a few alchemy items have had their power reduced as well:\n\n" +
+				"_- Magical Infusion_ energy cost up to 4 from 3\n" +
+				"_- Holy Bomb_ bonus damage reduced to 50% from 67%\n" +
+				"_- Goo Blob and Metal Shard_ energy value reduced to 3\n" +
+				"_- Alchemize_ quantity in shops reduced by 1\n\n" +
+				"While not a direct alchemy item nerf, I've also made some of the final bosses' fists less susceptible to certain mechanics:\n" +
+				"_- Soiled Fist_ is now immune to burning, but the grass it generates still burns\n" +
+				"_- Burning Fist_ is now immune to freezing, but it can still be chilled\n" +
+				"_- Rotting and Rusted Fists_ now take less damage from retribution, grim, and psionic blast"));
+
+		changes.addButton( new ChangeButton( new Image(Assets.Environment.TERRAIN_FEATURES, 112, 112, 16, 16), new Dreamfoil().name(),
+				"Dreamfoil has always had great utility as a debuff-cleanser, and with the recent addition of stones of deep sleep its enemy sleeping functionality was feeling a bit unnecessary:\n\n" +
+				"_- Dreamfoil_ no longer puts enemies into magical sleep\n\n" +
+				"Sleep darts (made from dreamfoil) have also been changed into cleansing darts to go along with this change. These darts will make an ally temporarily immune to harmful effects."));
+
+		changes.addButton( new ChangeButton(new TalentIcon(Talent.SHIELD_BATTERY.icon()), "Talent Nerfs",
+				"I'm making a few talent nerfs to better balance the Mage's T2 talents, and to pull in the power of the Berserker a little:\n\n" +
+				"_- Shield Battery_ shielding per charge down to 4%/6%, from 5%/7.5%\n\n" +
+				"_- Endless Rage_ max rage boost reduced to 10%/20%/30% from 15%/30%/45%\n" +
+				"_- Enraged Catalyst_ proc rate boost reduced to 15%/30%/45% from 17%/33%/50%"));
 
 	}
 
@@ -80,51 +243,12 @@ public class v1_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("v1.1.2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"Various small improvements for iOS Devices:\n" +
-				"_-_ Game can now run at higher framerates than 60\n" +
-				"_-_ Ingame UI elements now move inward if notched devices are used in landscape\n" +
-				"_-_ There is now an option to override silent mode\n\n" +
-				"_-_ Updated translations and translator credits"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by v1.1.0):\n" +
-				"_-_ Further rare cases of save corruption on Android 12\n" +
-				"_-_ Quickslotted bags freezing the game if used while empty\n" +
-				"_-_ Potions of Dragon's Breath and Mastery not being IDed if they were cancelled\n\n" +
-				"Fixed (existed prior to v1.1.0):\n" +
-				"_-_ Various rare crash bugs\n" +
-				"_-_ Various minor textual and visual errors\n" +
-				"_-_ Gateway traps rarely teleporting immovable characters\n" +
-				"_-_ Monks never losing focus if attacked out of hero vision range\n" +
-				"_-_ Wild magic continuing to activate if the hero dies during it"));
-
-		changes = new ChangeInfo("v1.1.1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Updated translations and translator credits"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by v1.1.0):\n" +
-				"_-_ Various rare crash bugs\n" +
-				"_-_ Various rare cases of save corruption on Android\n" +
-				"_-_ Holding keys to move not working on Desktop\n\n" +
-				"Fixed (existed prior to v1.1.0):\n" +
-				"_-_ Specific cases where guidebook windows could be stacked\n" +
-				"_-_ Remove curse stating nothing was cleansed when it removed the degrade debuff"));
-
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
-				"_-_ Released December 10th, 2021\n" +
+				"_-_ v1.1.0 released December 10th, 2021\n" +
 				"_-_ 115 days after Shattered v1.0.0\n" +
 				"Expect dev commentary here in the future."));
 
@@ -161,7 +285,7 @@ public class v1_X_Changes {
 				"_- Scroll of Confusion_ is now _Scroll of Challenge_, which attracts enemies but creates an arena where you take reduced damage.\n" +
 				"_- Scroll of Polymorph_ is now _Scroll of Metamorphosis_, which lets you swap out a talent to one from another class." ));
 
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 1",
 				"_-_ Item drops and special room spawns are now more consistent. Getting loads of the same item is now much less likely.\n" +
 				"_-_ Items present on boss floors are now preserved if the hero is revived from an unblessed ankh\n" +
 				"_-_ Teleport mechanics now work on boss levels\n" +
@@ -170,15 +294,24 @@ public class v1_X_Changes {
 
 				"_-_ Tipped darts can now be transmuted and recycled\n" +
 				"_-_ Thrown weapons no longer stick to allies\n" +
-				"_-_ Liquid metal production from upgraded thrown weapons now caps at +3\n\n" +
+				"_-_ Liquid metal production from upgraded thrown weapons now caps at +3"));
 
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 2",
 				"_-_ Updated game icons on Android and Desktop platforms\n" +
 				"_-_ Tabs in rankings and hero info windows now use icons, not text\n" +
 				"_-_ 'potions cooked' badge and stats are now 'items crafted'\n\n" +
 
-				"_-_ Newborn elementals no longer have a ranged attack"));
+				"_-_ Newborn elementals no longer have a ranged attack\n\n" +
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Various small improvements for iOS Devices:\n" +
+				"_-_ Game can now run at higher framerates than 60\n" +
+				"_-_ Ingame UI elements now move inward if notched devices are used in landscape\n" +
+				"_-_ There is now an option to override silent mode\n\n" +
+
+				"_-_ Updated translations and translator credits"));
+
+		//TODO condense to two bugfix entries
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 1",
 				"Fixed:\n" +
 				"_-_ Various minor/rare visual and textual errors\n" +
 				"_-_ Cases where pausing/resuming the game at precise moments would cancel animations or attacks\n" +
@@ -197,7 +330,7 @@ public class v1_X_Changes {
 				"_-_ Vertigo and teleportation effects rarely interfering\n" +
 				"_-_ Layout issues in the hero info window with long buff names"));
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 2",
 				"Fixed:\n" +
 				"_-_ Cursed wands being usable to create arcane resin\n" +
 				"_-_ Unblessed ankh revival rarely causing crashes or placing the player on hazards\n" +
@@ -214,6 +347,16 @@ public class v1_X_Changes {
 				"_-_ Various rare errors when multiple inputs were given in the same frame\n" +
 				"_-_ Fog of War errors in Tengu's arena\n" +
 				"_-_ Rare errors with sheep spawning items and traps"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 3",
+				"Fixed:\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Various minor textual and visual errors\n" +
+				"_-_ Gateway traps rarely teleporting immovable characters\n" +
+				"_-_ Monks never losing focus if attacked out of hero vision range\n" +
+				"_-_ Wild magic continuing to activate if the hero dies during it\n" +
+				"_-_ Specific cases where guidebook windows could be stacked\n" +
+				"_-_ Remove curse stating nothing was cleansed when it removed the degrade debuff"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight(CharSprite.POSITIVE);
@@ -293,7 +436,7 @@ public class v1_X_Changes {
 				"Shattered will also now use the _major.minor.patch_ version naming scheme moving forward. So, the next patch will be v1.0.1, and the next update will be v1.1.0. _This change does not affect my plans for future updates!_\n\n" +
 				"Expect more dev commentary here in the future."));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.DISPLAY), "iOS Release!",
+		changes.addButton( new ChangeButton(Icons.get(Icons.DISPLAY_PORT), "iOS Release!",
 				"_Shattered Pixel Dungeon is now available on the iOS App Store!_\n\n" +
 				"After years of requests, Shattered is finally available on Apple devices! The iOS version of the game will release in lockstep with the Android version moving forward, with some small variance due to different update approval processes.\n\n" +
 				"Note that the iOS version costs $5, but comes with some supporter features built-in. I have no plans to make any changes to the monetization of the Android version."));
