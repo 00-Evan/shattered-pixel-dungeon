@@ -223,7 +223,9 @@ public class MagicalFireRoom extends SpecialRoom {
 
 		@Override
 		public void clear(int cell) {
-			fullyClear();
+			if (volume > 0 && cur[cell] > 0) {
+				fullyClear();
+			}
 		}
 
 		@Override
