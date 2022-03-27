@@ -207,7 +207,7 @@ public class v1_X_Changes {
 				"_- Wand Preservation_ max uses up to 5 from 3\n" +
 				"_- Empowering Scrolls_ now grants +3 on the next 1/2/3 wand zaps\n\n" +
 				"_- Light Cloak_ charging rate boosted to 25%/50%/75%, from 17%/33%/50%\n\n" +
-				"_- Shared Enchantments_ bugfixed to give the bonus damage stated in the description, instead of slightly less."));
+				"_- Shared Upgrades_ bugfixed to give the bonus damage stated in the description, instead of slightly less."));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
 		changes.hardlight(CharSprite.NEGATIVE);
