@@ -624,7 +624,11 @@ public class InventoryPane extends Component {
 
 		@Override
 		protected String hoverText() {
-			return Messages.titleCase(bag.name());
+			if (bag != null) {
+				return Messages.titleCase(bag.name());
+			} else {
+				return null;
+			}
 		}
 	}
 
