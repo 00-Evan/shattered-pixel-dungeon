@@ -123,8 +123,7 @@ public class CrystalChoiceRoom extends SpecialRoom {
 		Item hidden = Generator.random(Random.oneOf(
 				Generator.Category.WAND,
 				Generator.Category.RING,
-				Generator.Category.ARTIFACT,
-				Generator.Category.GOLD     //*evil laughter*
+				Generator.Category.ARTIFACT
 		));
 		level.drop(hidden, level.pointToCell(room2.center())).type = Heap.Type.CHEST;
 
