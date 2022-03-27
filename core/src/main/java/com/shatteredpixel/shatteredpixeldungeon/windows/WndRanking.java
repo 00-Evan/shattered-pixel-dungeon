@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
@@ -287,21 +288,28 @@ public class WndRanking extends WndTabbed {
 			}
 
 			pos = 0;
-			for (int i = 0; i < 4; i++){
-				if (Dungeon.quickslot.getItem(i) != null){
+
+			int slotsActive = 0;
+			for (int i = 0; i < QuickSlot.SIZE; i++){
+				if (Dungeon.quickslot.isNonePlaceholder(i)){
+					slotsActive++;
+				}
+			}
+
+			float slotWidth = Math.min(28, ((WIDTH - slotsActive + 1) / (float)slotsActive));
+
+			for (int i = 0; i < slotsActive; i++){
+				if (Dungeon.quickslot.isNonePlaceholder(i)){
 					QuickSlotButton slot = new QuickSlotButton(Dungeon.quickslot.getItem(i));
 
-					slot.setRect( pos, 120, 28, 23 );
+					slot.setRect( pos, 120, slotWidth, 23 );
+					PixelScene.align(slot);
 
 					add(slot);
 
-				} else {
-					ColorBlock bg = new ColorBlock( 28, 23, 0x9953564D );
-					bg.x = pos;
-					bg.y = 120;
-					add(bg);
+					pos += slotWidth + 1;
+
 				}
-				pos += 29;
 			}
 		}
 		
@@ -410,8 +418,6 @@ public class WndRanking extends WndTabbed {
 
 	private class QuickSlotButton extends ItemSlot{
 
-		public static final int HEIGHT	= 23;
-
 		private Item item;
 		private ColorBlock bg;
 
@@ -422,7 +428,7 @@ public class WndRanking extends WndTabbed {
 
 		@Override
 		protected void createChildren() {
-			bg = new ColorBlock( 28, HEIGHT, 0x9953564D );
+			bg = new ColorBlock( 1, 1, 0x9953564D );
 			add( bg );
 
 			super.createChildren();
@@ -432,6 +438,8 @@ public class WndRanking extends WndTabbed {
 		protected void layout() {
 			bg.x = x;
 			bg.y = y;
+
+			bg.size( width(), height() );
 
 			super.layout();
 		}
