@@ -109,8 +109,8 @@ public class TalentsPane extends ScrollPane {
 			blockText = null;
 		}
 
-		for (TalentTierPane p : panes){
-			content.bringToFront(p);
+		for (int i = panes.size()-1; i >= 0; i--){
+			content.bringToFront(panes.get(i));
 		}
 	}
 
