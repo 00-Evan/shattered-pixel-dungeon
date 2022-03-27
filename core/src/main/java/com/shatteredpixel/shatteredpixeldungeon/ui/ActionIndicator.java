@@ -105,7 +105,12 @@ public class ActionIndicator extends Tag {
 
 	@Override
 	protected String hoverText() {
-		return Messages.titleCase(action.actionName());
+		String text = action.actionName();
+		if (text != null){
+			return Messages.titleCase(text);
+		} else {
+			return null;
+		}
 	}
 
 	public static void setAction(Action action){
