@@ -539,16 +539,18 @@ public class Badges {
 			}
 		}
 		
-		if (!global.contains( Badge.ALL_ITEMS_IDENTIFIED ) &&
-			global.contains( Badge.ALL_WEAPONS_IDENTIFIED ) &&
-			global.contains( Badge.ALL_ARMOR_IDENTIFIED ) &&
-			global.contains( Badge.ALL_WANDS_IDENTIFIED ) &&
-			global.contains( Badge.ALL_RINGS_IDENTIFIED ) &&
-			global.contains( Badge.ALL_ARTIFACTS_IDENTIFIED ) &&
-			global.contains( Badge.ALL_POTIONS_IDENTIFIED ) &&
-			global.contains( Badge.ALL_SCROLLS_IDENTIFIED )) {
-			
-			displayBadge( Badge.ALL_ITEMS_IDENTIFIED );
+		if (isUnlocked( Badge.ALL_WEAPONS_IDENTIFIED ) &&
+				isUnlocked( Badge.ALL_ARMOR_IDENTIFIED ) &&
+				isUnlocked( Badge.ALL_WANDS_IDENTIFIED ) &&
+				isUnlocked( Badge.ALL_RINGS_IDENTIFIED ) &&
+				isUnlocked( Badge.ALL_ARTIFACTS_IDENTIFIED ) &&
+				isUnlocked( Badge.ALL_POTIONS_IDENTIFIED ) &&
+				isUnlocked( Badge.ALL_SCROLLS_IDENTIFIED )) {
+
+			Badge badge = Badge.ALL_ITEMS_IDENTIFIED;
+			if (!isUnlocked( badge )) {
+				displayBadge( badge );
+			}
 		}
 	}
 	
@@ -601,15 +603,17 @@ public class Badges {
 	}
 	
 	private static void validateYASD() {
-		if (global.contains( Badge.DEATH_FROM_FIRE ) &&
-			global.contains( Badge.DEATH_FROM_POISON ) &&
-			global.contains( Badge.DEATH_FROM_GAS ) &&
-			global.contains( Badge.DEATH_FROM_HUNGER) &&
-			global.contains( Badge.DEATH_FROM_GLYPH) &&
-			global.contains( Badge.DEATH_FROM_FALLING)) {
-			
+		if (isUnlocked( Badge.DEATH_FROM_FIRE ) &&
+				isUnlocked( Badge.DEATH_FROM_POISON ) &&
+				isUnlocked( Badge.DEATH_FROM_GAS ) &&
+				isUnlocked( Badge.DEATH_FROM_HUNGER) &&
+				isUnlocked( Badge.DEATH_FROM_GLYPH) &&
+				isUnlocked( Badge.DEATH_FROM_FALLING)) {
+
 			Badge badge = Badge.YASD;
-			displayBadge( badge );
+			if (!isUnlocked( badge )) {
+				displayBadge( badge );
+			}
 		}
 	}
 	
@@ -650,21 +654,16 @@ public class Badges {
 					break;
 				}
 				local.add( badge );
-				if (!global.contains( badge )) {
-					global.add( badge );
-					saveNeeded = true;
-				}
+				addGlobal(badge);
 				
-				if (global.contains( Badge.BOSS_SLAIN_1_WARRIOR ) &&
-					global.contains( Badge.BOSS_SLAIN_1_MAGE ) &&
-					global.contains( Badge.BOSS_SLAIN_1_ROGUE ) &&
-					global.contains( Badge.BOSS_SLAIN_1_HUNTRESS)) {
+				if (isUnlocked( Badge.BOSS_SLAIN_1_WARRIOR ) &&
+						isUnlocked( Badge.BOSS_SLAIN_1_MAGE ) &&
+						isUnlocked( Badge.BOSS_SLAIN_1_ROGUE ) &&
+						isUnlocked( Badge.BOSS_SLAIN_1_HUNTRESS)) {
 					
 					badge = Badge.BOSS_SLAIN_1_ALL_CLASSES;
-					if (!global.contains( badge )) {
+					if (!isUnlocked( badge )) {
 						displayBadge( badge );
-						global.add( badge );
-						saveNeeded = true;
 					}
 				}
 			} else
@@ -698,25 +697,20 @@ public class Badges {
 					return;
 				}
 				local.add( badge );
-				if (!global.contains( badge )) {
-					global.add( badge );
-					saveNeeded = true;
-				}
+				addGlobal(badge);
 				
-				if (global.contains( Badge.BOSS_SLAIN_3_GLADIATOR ) &&
-					global.contains( Badge.BOSS_SLAIN_3_BERSERKER ) &&
-					global.contains( Badge.BOSS_SLAIN_3_WARLOCK ) &&
-					global.contains( Badge.BOSS_SLAIN_3_BATTLEMAGE ) &&
-					global.contains( Badge.BOSS_SLAIN_3_FREERUNNER ) &&
-					global.contains( Badge.BOSS_SLAIN_3_ASSASSIN ) &&
-					global.contains( Badge.BOSS_SLAIN_3_SNIPER ) &&
-					global.contains( Badge.BOSS_SLAIN_3_WARDEN )) {
+				if (isUnlocked( Badge.BOSS_SLAIN_3_GLADIATOR ) &&
+						isUnlocked( Badge.BOSS_SLAIN_3_BERSERKER ) &&
+						isUnlocked( Badge.BOSS_SLAIN_3_WARLOCK ) &&
+						isUnlocked( Badge.BOSS_SLAIN_3_BATTLEMAGE ) &&
+						isUnlocked( Badge.BOSS_SLAIN_3_FREERUNNER ) &&
+						isUnlocked( Badge.BOSS_SLAIN_3_ASSASSIN ) &&
+						isUnlocked( Badge.BOSS_SLAIN_3_SNIPER ) &&
+						isUnlocked( Badge.BOSS_SLAIN_3_WARDEN )) {
 					
 					badge = Badge.BOSS_SLAIN_3_ALL_SUBCLASSES;
-					if (!global.contains( badge )) {
+					if (!isUnlocked( badge )) {
 						displayBadge( badge );
-						global.add( badge );
-						saveNeeded = true;
 					}
 				}
 			}
@@ -741,33 +735,27 @@ public class Badges {
 			break;
 		}
 		
-		if (!global.contains( badge )) {
-			global.add( badge );
-			saveNeeded = true;
-		}
+		addGlobal(badge);
 	}
 
 	public static void validateRatmogrify(){
-		if (!global.contains( Badge.FOUND_RATMOGRIFY )) {
-			global.add( Badge.FOUND_RATMOGRIFY );
-			saveNeeded = true;
-		}
+		addGlobal(Badge.FOUND_RATMOGRIFY);
 	}
 	
 	public static void validateMageUnlock(){
-		if (Statistics.upgradesUsed >= 1 && !global.contains(Badge.UNLOCK_MAGE)){
+		if (Statistics.upgradesUsed >= 1 && !isUnlocked(Badge.UNLOCK_MAGE)){
 			displayBadge( Badge.UNLOCK_MAGE );
 		}
 	}
 	
 	public static void validateRogueUnlock(){
-		if (Statistics.sneakAttacks >= 10 && !global.contains(Badge.UNLOCK_ROGUE)){
+		if (Statistics.sneakAttacks >= 10 && !isUnlocked(Badge.UNLOCK_ROGUE)){
 			displayBadge( Badge.UNLOCK_ROGUE );
 		}
 	}
 	
 	public static void validateHuntressUnlock(){
-		if (Statistics.thrownAssists >= 10 && !global.contains(Badge.UNLOCK_HUNTRESS)){
+		if (Statistics.thrownAssists >= 10 && !isUnlocked(Badge.UNLOCK_HUNTRESS)){
 			displayBadge( Badge.UNLOCK_HUNTRESS );
 		}
 	}
@@ -800,15 +788,12 @@ public class Badges {
 			break;
 		}
 		local.add( badge );
-		if (!global.contains( badge )) {
-			global.add( badge );
-			saveNeeded = true;
-		}
+		addGlobal(badge);
 		
-		if (global.contains( Badge.VICTORY_WARRIOR ) &&
-			global.contains( Badge.VICTORY_MAGE ) &&
-			global.contains( Badge.VICTORY_ROGUE ) &&
-			global.contains( Badge.VICTORY_HUNTRESS )) {
+		if (isUnlocked( Badge.VICTORY_WARRIOR ) &&
+				isUnlocked( Badge.VICTORY_MAGE ) &&
+				isUnlocked( Badge.VICTORY_ROGUE ) &&
+				isUnlocked( Badge.VICTORY_HUNTRESS )) {
 			
 			badge = Badge.VICTORY_ALL_CLASSES;
 			displayBadge( badge );
@@ -870,17 +855,11 @@ public class Badges {
 			badge = Badge.CHAMPION_1;
 		}
 		if (challenges >= 3){
-			if (!global.contains(badge)){
-				global.add(badge);
-				saveNeeded = true;
-			}
+			addGlobal(badge);
 			badge = Badge.CHAMPION_2;
 		}
 		if (challenges >= 6){
-			if (!global.contains(badge)){
-				global.add(badge);
-				saveNeeded = true;
-			}
+			addGlobal(badge);
 			badge = Badge.CHAMPION_3;
 		}
 		local.add(badge);
