@@ -45,6 +45,7 @@ import com.watabou.noosa.Scene;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.ui.Component;
 import com.watabou.noosa.ui.Cursor;
+import com.watabou.utils.Callback;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Reflection;
@@ -289,12 +290,17 @@ public class PixelScene extends Scene {
 	}
 	
 	public static void showBadge( Badges.Badge badge ) {
-		BadgeBanner banner = BadgeBanner.show( badge.image );
-		banner.camera = uiCamera;
-		banner.x = align( banner.camera, (banner.camera.width - banner.width) / 2 );
-		banner.y = align( banner.camera, (banner.camera.height - banner.height) / 3 );
-		Scene s = Game.scene();
-		if (s != null) s.add( banner );
+		Game.runOnRenderThread(new Callback() {
+			@Override
+			public void call() {
+				BadgeBanner banner = BadgeBanner.show( badge.image );
+				banner.camera = uiCamera;
+				banner.x = align( banner.camera, (banner.camera.width - banner.width) / 2 );
+				banner.y = align( banner.camera, (banner.camera.height - banner.height) / 3 );
+				Scene s = Game.scene();
+				if (s != null) s.add( banner );
+			}
+		});
 	}
 	
 	protected static class Fader extends ColorBlock {
