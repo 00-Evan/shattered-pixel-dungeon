@@ -360,7 +360,9 @@ public class InventoryPane extends Component {
 
 	public void setSelector(WndBag.ItemSelector selector){
 		this.selector = selector;
-		if (selector.preferredBag() != null) {
+		if (selector.preferredBag() == Belongings.Backpack.class){
+			lastBag = Dungeon.hero.belongings.backpack;
+		} else if (selector.preferredBag() != null) {
 			Bag preferred = Dungeon.hero.belongings.getItem(selector.preferredBag());
 			if (preferred != null) lastBag = preferred;
 		}
