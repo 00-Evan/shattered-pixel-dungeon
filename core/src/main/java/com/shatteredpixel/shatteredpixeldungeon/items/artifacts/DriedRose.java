@@ -368,6 +368,10 @@ public class DriedRose extends Artifact {
 					ghostID = 0;
 				}
 			}
+
+			if (ghost != null && !ghost.isAlive()){
+				ghost = null;
+			}
 			
 			//rose does not charge while ghost hero is alive
 			if (ghost != null){
