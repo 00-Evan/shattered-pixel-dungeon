@@ -146,6 +146,9 @@ public class InventoryPane extends Component {
 						&& KeyBindings.getActionForKey(keyEvent) != SPDAction.BAG_3
 						&& KeyBindings.getActionForKey(keyEvent) != SPDAction.BAG_4
 						&& KeyBindings.getActionForKey(keyEvent) != SPDAction.BAG_5){
+					//any windows opened as a consequence of this should be centered on the inventory
+					GameScene.centerNextWndOnInvPane();
+					selector.onSelect(null);
 					selector = null;
 					updateInventory();
 					return true;
