@@ -766,9 +766,13 @@ public class GameScene extends PixelScene {
 		float tagWidth = Tag.SIZE + (tagsOnLeft ? insets.left : insets.right);
 		float tagLeft = tagsOnLeft ? 0 : uiCamera.width - tagWidth;
 
+		float invWidth = (scene.inventory != null && scene.inventory.visible) ? scene.inventory.width() : 0;
+
 		float y = SPDSettings.interfaceSize() == 0 ? scene.toolbar.top()-2 : scene.status.top()-2;
 		if (tagsOnLeft) {
-			scene.log.setRect(tagWidth, y, uiCamera.width - tagWidth - insets.right, 0);
+			scene.log.setRect(tagWidth, y, uiCamera.width - tagWidth - insets.right - invWidth, 0);
+		} else if (invWidth > 0) {
+			scene.log.setRect(insets.left, y, uiCamera.width - invWidth, 0);
 		} else {
 			scene.log.setRect(insets.left, y, uiCamera.width - tagWidth - insets.left, 0);
 		}
