@@ -873,6 +873,11 @@ public class GameScene extends PixelScene {
 			};
 			prompt.camera = uiCamera;
 			prompt.setPos( (uiCamera.width - prompt.width()) / 2, uiCamera.height - 60 );
+
+			if (inventory != null && inventory.visible && prompt.right() > inventory.left() - 10){
+				prompt.setPos(inventory.left() - prompt.width() - 10, prompt.top());
+			}
+
 			add( prompt );
 		}
 	}
