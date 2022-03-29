@@ -73,7 +73,14 @@ public class InventorySlot extends ItemSlot {
 
 		if (item != null) {
 
-			bg.texture( TextureCache.createSolid( item.isEquipped( Dungeon.hero ) ? EQUIPPED : NORMAL ) );
+			boolean equipped = item.isEquipped(Dungeon.hero) ||
+					item == Dungeon.hero.belongings.weapon ||
+					item == Dungeon.hero.belongings.armor ||
+					item == Dungeon.hero.belongings.artifact ||
+					item == Dungeon.hero.belongings.misc ||
+					item == Dungeon.hero.belongings.ring;
+
+			bg.texture( TextureCache.createSolid( equipped ? EQUIPPED : NORMAL ) );
 			bg.resetColor();
 			if (item.cursed && item.cursedKnown) {
 				bg.ra = +0.3f;
