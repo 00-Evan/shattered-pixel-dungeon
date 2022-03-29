@@ -40,7 +40,9 @@ public class AquaBlast extends TargetedSpell {
 
 		GeyserTrap geyser = new GeyserTrap();
 		geyser.pos = cell;
-		geyser.centerKnockBackDirection = bolt.path.get(bolt.dist+1);
+		if (bolt.path.size() > bolt.dist+1) {
+			geyser.centerKnockBackDirection = bolt.path.get(bolt.dist + 1);
+		}
 		geyser.activate();
 	}
 	
