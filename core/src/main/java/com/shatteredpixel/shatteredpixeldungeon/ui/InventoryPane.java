@@ -372,7 +372,9 @@ public class InventoryPane extends Component {
 	}
 
 	public static void useTargeting(){
-		if (lastTarget != null &&
+		if (instance != null &&
+				instance.visible &&
+				lastTarget != null &&
 				Actor.chars().contains( lastTarget ) &&
 				lastTarget.isAlive() &&
 				lastTarget.alignment != Char.Alignment.ALLY &&
@@ -531,6 +533,7 @@ public class InventoryPane extends Component {
 			}
 
 			if (selector == null){
+				targetingSlot = this;
 				RightClickMenu r = new RightClickMenu(item);
 				parent.addToFront(r);
 				r.camera = camera();
