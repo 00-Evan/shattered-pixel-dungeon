@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Transmuting;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
@@ -83,14 +84,25 @@ public class ScrollOfTransmutation extends InventoryScroll {
 			GLog.n( Messages.get(this, "nothing") );
 			curItem.collect( curUser.belongings.backpack );
 		} else {
-			if (item.isEquipped(Dungeon.hero)){
-				item.cursed = false; //to allow it to be unequipped
-				((EquipableItem)item).doUnequip(Dungeon.hero, false);
-				((EquipableItem)result).doEquip(Dungeon.hero);
-			} else {
-				item.detach(Dungeon.hero.belongings.backpack);
-				if (!result.collect()){
-					Dungeon.level.drop(result, curUser.pos).sprite.drop();
+			if (result != item) {
+				int slot = Dungeon.quickslot.getSlot(item);
+				if (item.isEquipped(Dungeon.hero)) {
+					item.cursed = false; //to allow it to be unequipped
+					((EquipableItem) item).doUnequip(Dungeon.hero, false);
+					((EquipableItem) result).doEquip(Dungeon.hero);
+				} else {
+					item.detach(Dungeon.hero.belongings.backpack);
+					if (!result.collect()) {
+						Dungeon.level.drop(result, curUser.pos).sprite.drop();
+					} else if (Dungeon.hero.belongings.getSimilar(result) != null){
+						result = Dungeon.hero.belongings.getSimilar(result);
+					}
+				}
+				if (slot != -1
+						&& result.defaultAction != null
+						&& !Dungeon.quickslot.isNonePlaceholder(slot)
+						&& Dungeon.hero.belongings.contains(result)){
+					Dungeon.quickslot.setSlot(slot, result);
 				}
 			}
 			if (result.isIdentified()){
