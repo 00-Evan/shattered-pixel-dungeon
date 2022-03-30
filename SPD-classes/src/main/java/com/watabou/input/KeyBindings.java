@@ -50,7 +50,7 @@ public class KeyBindings {
 	public static boolean bindingKey = false;
 
 	public static boolean isKeyBound(int keyCode){
-		if (keyCode <= 0 || keyCode > 255){
+		if (keyCode < 0 || (keyCode > 255 && keyCode < 1000)){
 			return false;
 		}
 		return bindingKey || bindings.containsKey( keyCode ) || hardBindings.containsKey( keyCode );
@@ -78,6 +78,13 @@ public class KeyBindings {
 	public static String getKeyName( int keyCode ){
 		if (ControllerHandler.customButtonName(keyCode) != null){
 			return ControllerHandler.customButtonName(keyCode);
+		}
+
+		//custom codes for mouse buttons
+		if (keyCode == 1003){
+			return "Mouse 4";
+		} else if (keyCode == 1004) {
+			return "Mouse 5";
 		}
 
 		if (keyCode == Input.Keys.UNKNOWN){

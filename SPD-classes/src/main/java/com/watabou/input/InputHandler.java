@@ -91,19 +91,29 @@ public class InputHandler extends InputAdapter {
 	public synchronized boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		ControllerHandler.setControllerPointer(false);
 		Gdx.input.setOnscreenKeyboardVisible(false); //in-game events never need keyboard, so hide it
-		PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, pointer, PointerEvent.Type.DOWN, button));
+
+		if (button >= 3 && KeyBindings.isKeyBound( button + 1000 )) {
+			KeyEvent.addKeyEvent( new KeyEvent( button + 1000, true ) );
+		} else if (button < 3) {
+			PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, pointer, PointerEvent.Type.DOWN, button));
+		}
 		return true;
 	}
 	
 	@Override
 	public synchronized boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, pointer, PointerEvent.Type.UP, button));
+
+		if (button >= 3 && KeyBindings.isKeyBound( button + 1000 )) {
+			KeyEvent.addKeyEvent( new KeyEvent( button + 1000, true ) );
+		} else if (button < 3) {
+			PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, pointer, PointerEvent.Type.UP, button));
+		}
 		return true;
 	}
 	
 	@Override
 	public synchronized boolean touchDragged(int screenX, int screenY, int pointer) {
-		PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, pointer, PointerEvent.Type.DOWN));
+		PointerEvent.addIfExisting(new PointerEvent(screenX, screenY, pointer, PointerEvent.Type.DOWN));
 		return true;
 	}
 	

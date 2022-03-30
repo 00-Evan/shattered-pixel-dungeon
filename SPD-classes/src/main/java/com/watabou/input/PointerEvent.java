@@ -125,6 +125,12 @@ public class PointerEvent {
 	public static synchronized void addPointerEvent( PointerEvent event ){
 		pointerEvents.add( event );
 	}
+
+	public static synchronized void addIfExisting( PointerEvent event ){
+		if (activePointers.containsKey(event.id)) {
+			pointerEvents.add(event);
+		}
+	}
 	
 	public static synchronized void processPointerEvents(){
 		//handle any hover events separately first as we may need to add drag events
