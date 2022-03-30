@@ -48,7 +48,7 @@ public class ScrollOfSirensSong extends ExoticScroll {
 	
 	@Override
 	public void doRead() {
-		curItem.collect(); //we detach it later
+		if (!anonymous) curItem.collect(); //we detach it later
 		GameScene.selectCell(targeter);
 	}
 
