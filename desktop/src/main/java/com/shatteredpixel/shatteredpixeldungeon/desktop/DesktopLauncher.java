@@ -145,11 +145,11 @@ public class DesktopLauncher {
 			FileHandle oldBase = new Lwjgl3FileHandle(".shatteredpixel/shattered-pixel-dungeon/", Files.FileType.External);
 			FileHandle newBase = new Lwjgl3FileHandle(XDGHome + ".shatteredpixel/shattered-pixel-dungeon/", Files.FileType.External);
 			if (oldBase.exists()){
-				if (newBase.exists()){
-					oldBase.deleteDirectory();
-				} else {
-					oldBase.moveTo(newBase);
+				if (!newBase.exists()) {
+					oldBase.copyTo(newBase.parent());
 				}
+				oldBase.deleteDirectory();
+				oldBase.parent().delete(); //only regular delete, in case of saves from other PD versions
 			}
 		}
 
