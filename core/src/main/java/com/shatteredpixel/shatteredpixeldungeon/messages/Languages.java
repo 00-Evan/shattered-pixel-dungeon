@@ -42,8 +42,9 @@ public enum Languages {
 	JAPANESE("日本語",       "ja", Status.INCOMPLETE, null, new String[]{"Gosamaru", "amama", "daingewuvzeevisiddfddd", "kiyofumimanabe", "librada", "mocklike", "tomofumikitano"}),
 	UKRANIAN("українська",  "uk", Status.INCOMPLETE, new String[]{"Oster"}, new String[]{"Lyttym", "Sadsaltan1", "TarasUA", "TheGuyBill", "Tomfire", "Volkov", "ZverWolf", "_bor_", "ddmaster3463", "ingvarfed", "iu0v1", "oliolioxinfree", "romanokurg", "vlisivka"}),
 	GREEK("ελληνικά",       "el", Status.REVIEWED,   new String[]{"Aeonius", "Saxy"}, new String[]{"DU_Clouds", "VasKyr", "YiorgosH", "fr3sh", "stefboi", "val.exe"}),
-	CATALAN("català",       "ca", Status.INCOMPLETE, new String[]{"Illyatwo2"}, new String[]{"Elosy", "n1ngu"}),
+	//CATALAN("català",     "ca", Status.INCOMPLETE, new String[]{"Illyatwo2"}, new String[]{"Elosy", "n1ngu"}),
 	BASQUE("euskara",       "eu", Status.INCOMPLETE, new String[]{"Deathrevenge", "Osoitz"}, null),
+	GALICIAN("galego",      "gl", Status.UNREVIEWED, new String[]{"xecarballido"}, null),
 	ESPERANTO("esperanto",  "eo", Status.INCOMPLETE, new String[]{"Verdulo"}, new String[]{"Raizin"});
 
 	public enum Status{
