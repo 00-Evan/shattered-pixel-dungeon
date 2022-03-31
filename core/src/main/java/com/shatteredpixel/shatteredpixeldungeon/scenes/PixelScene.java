@@ -295,8 +295,9 @@ public class PixelScene extends Scene {
 			public void call() {
 				BadgeBanner banner = BadgeBanner.show( badge.image );
 				banner.camera = uiCamera;
+				float offset = Camera.main.centerOffset.y;
 				banner.x = align( banner.camera, (banner.camera.width - banner.width) / 2 );
-				banner.y = align( banner.camera, (banner.camera.height - banner.height) / 3 );
+				banner.y = align( uiCamera, (uiCamera.height - banner.height) / 2 - banner.height/2 - 16 - offset );
 				Scene s = Game.scene();
 				if (s != null) s.add( banner );
 			}
