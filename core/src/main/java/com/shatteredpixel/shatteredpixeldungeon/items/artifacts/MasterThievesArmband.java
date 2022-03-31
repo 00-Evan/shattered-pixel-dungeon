@@ -137,7 +137,14 @@ public class MasterThievesArmband extends Artifact {
 							}
 
 							float lootChance = ((Mob) ch).lootChance() * lootMultiplier;
-							if (ch.buff(StolenTracker.class) != null || lootChance == 0){
+
+							if (Dungeon.hero.lvl > ((Mob) ch).maxLvl + 2) {
+								lootChance = 0;
+							} else if (ch.buff(StolenTracker.class) != null){
+								lootChance = 0;
+							}
+
+							if (lootChance == 0){
 								GLog.w(Messages.get(MasterThievesArmband.class, "no_steal"));
 							} else if (Random.Float() <= lootChance){
 								Item loot = ((Mob) ch).createLoot();
