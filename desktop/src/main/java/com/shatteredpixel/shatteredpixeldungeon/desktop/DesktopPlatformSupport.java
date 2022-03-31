@@ -38,12 +38,22 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DesktopPlatformSupport extends PlatformSupport {
-	
+
+	//we recall previous window sizes as a workaround to not save maximized size to settings
+	//have to do this as updateDisplaySize is called before maximized is set =S
+	protected static Point[] previousSizes = null;
+
 	@Override
 	public void updateDisplaySize() {
-		//FIXME we still set window resolution when game becomes maximized =/
+		if (previousSizes == null){
+			previousSizes = new Point[2];
+			previousSizes[0] = previousSizes[1] = new Point(Game.width, Game.height);
+		} else {
+			previousSizes[1] = previousSizes[0];
+			previousSizes[0] = new Point(Game.width, Game.height);
+		}
 		if (!SPDSettings.fullscreen()) {
-			SPDSettings.windowResolution( new Point( Game.width, Game.height ) );
+			SPDSettings.windowResolution( previousSizes[0] );
 		}
 	}
 	
