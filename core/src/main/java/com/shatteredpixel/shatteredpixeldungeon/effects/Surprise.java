@@ -31,7 +31,7 @@ import com.watabou.noosa.Visual;
 
 public class Surprise extends Image {
 
-	private static final float TIME_TO_FADE = 0.8f;
+	private static final float TIME_TO_FADE = 1f;
 
 	private float time;
 
@@ -65,8 +65,9 @@ public class Surprise extends Image {
 			kill();
 		} else {
 			float p = time / TIME_TO_FADE;
-			alpha(p);
-			scale.y = 1 + p/2;
+			alpha((float) Math.sqrt(p));
+			scale.y = 1f + p;
+			scale.x = 1f + p/4f;
 		}
 	}
 

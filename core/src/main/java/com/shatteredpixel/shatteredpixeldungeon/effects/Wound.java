@@ -31,7 +31,7 @@ import com.watabou.noosa.Visual;
 
 public class Wound extends Image {
 
-	private static final float TIME_TO_FADE = 0.8f;
+	private static final float TIME_TO_FADE = 1f;
 	
 	private float time;
 	
@@ -66,7 +66,7 @@ public class Wound extends Image {
 			kill();
 		} else {
 			float p = time / TIME_TO_FADE;
-			alpha( p );
+			alpha((float) Math.sqrt(p));
 			scale.x = 1 + p;
 		}
 	}
