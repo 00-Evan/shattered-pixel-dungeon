@@ -41,6 +41,7 @@ public class Splash {
 		}
 		
 		Emitter emitter = GameScene.emitter();
+		if (emitter == null) return;
 		emitter.pos( p );
 		
 		FACTORY.color = color;
@@ -56,6 +57,7 @@ public class Splash {
 		}
 		
 		Emitter emitter = GameScene.emitter();
+		if (emitter == null) return;
 		emitter.pos( p );
 		
 		FACTORY.color = color;
@@ -71,6 +73,7 @@ public class Splash {
 		}
 
 		Emitter emitter = GameScene.emitter();
+		if (emitter == null) return;
 		emitter.pos( p );
 
 		FACTORY.color = color;
