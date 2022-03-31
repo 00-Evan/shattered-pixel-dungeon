@@ -310,6 +310,8 @@ public class PixelScene extends Scene {
 		private boolean light;
 		
 		private float time;
+
+		private static Fader INSTANCE;
 		
 		public Fader( int color, boolean light ) {
 			super( uiCamera.width, uiCamera.height, color );
@@ -320,6 +322,11 @@ public class PixelScene extends Scene {
 			
 			alpha( 1f );
 			time = FADE_TIME;
+
+			if (INSTANCE != null){
+				INSTANCE.killAndErase();
+			}
+			INSTANCE = this;
 		}
 		
 		@Override
@@ -331,6 +338,9 @@ public class PixelScene extends Scene {
 				alpha( 0f );
 				parent.remove( this );
 				destroy();
+				if (INSTANCE == this) {
+					INSTANCE = null;
+				}
 			} else {
 				alpha( time / FADE_TIME );
 			}
