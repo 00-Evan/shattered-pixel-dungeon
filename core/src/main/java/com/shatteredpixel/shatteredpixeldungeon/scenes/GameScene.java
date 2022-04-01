@@ -1190,7 +1190,7 @@ public class GameScene extends PixelScene {
 
 	public static void gameOver() {
 		Banner gameOver = new Banner( BannerSprites.get( BannerSprites.Type.GAME_OVER ) );
-		gameOver.show( 0x000000, 1f );
+		gameOver.show( 0x000000, 2f );
 		scene.showBanner( gameOver );
 
 		StyledButton restart = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(StartScene.class, "new"), 9){
@@ -1204,13 +1204,13 @@ public class GameScene extends PixelScene {
 
 			@Override
 			public void update() {
-				bg.alpha(gameOver.am);
-				icon.alpha(gameOver.am);
-				text.alpha(gameOver.am);
+				alpha(gameOver.am);
+				super.update();
 			}
 		};
-		restart.camera = uiCamera;
 		restart.icon(Icons.get(Icons.ENTER));
+		restart.alpha(0);
+		restart.camera = uiCamera;
 		float offset = Camera.main.centerOffset.y;
 		restart.setSize(Math.max(80, restart.reqWidth()), 20);
 		restart.setPos(
@@ -1227,13 +1227,13 @@ public class GameScene extends PixelScene {
 
 			@Override
 			public void update() {
-				bg.alpha(gameOver.am);
-				icon.alpha(gameOver.am);
-				text.alpha(gameOver.am);
+				alpha(gameOver.am);
+				super.update();
 			}
 		};
-		menu.camera = uiCamera;
 		menu.icon(Icons.get(Icons.PREFS));
+		menu.alpha(0);
+		menu.camera = uiCamera;
 		menu.setSize(Math.max(80, menu.reqWidth()), 20);
 		menu.setPos(
 				align(uiCamera, (menu.camera.width - menu.width()) / 2),
