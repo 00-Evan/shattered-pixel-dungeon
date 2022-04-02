@@ -27,6 +27,7 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.GameMath;
+import com.watabou.utils.RectF;
 
 public class Tooltip extends Component {
 
@@ -40,13 +41,19 @@ public class Tooltip extends Component {
 		tooltipAlpha = -5;
 	}
 
+	private Component parent;
+	private RectF parentDims;
+
 	private NinePatch bg;
 	private RenderedTextBlock text;
 
-	public Tooltip(String msg, int maxWidth){
+	public Tooltip(Component parent, String msg, int maxWidth){
 		super();
 		text.text(msg, maxWidth);
 		layout();
+
+		this.parent = parent;
+		parentDims = new RectF(parent.left(), parent.top(), parent.right(), parent.bottom());
 
 		if (lastUsedTime == -1 || lastUsedTime > Game.timeTotal){
 			tooltipAlpha = -5f;
@@ -75,6 +82,18 @@ public class Tooltip extends Component {
 
 	@Override
 	public synchronized void update() {
+		//kill this tooltip if the parent is removed or moved in any way
+		if (!parent.exists ||
+				!parent.isActive() ||
+				!parent.isVisible() ||
+				parentDims.left != parent.left() ||
+				parentDims.top != parent.top() ||
+				parentDims.right != parent.right() ||
+				parentDims.bottom != parent.bottom()){
+			killAndErase();
+			return;
+		}
+
 		super.update();
 		tooltipAlpha = Math.min(1f, tooltipAlpha + 10f*Game.elapsed);
 		lastUsedTime = Game.timeTotal;

@@ -99,7 +99,7 @@ public class Button extends Component {
 							text += " _(" + KeyBindings.getKeyName(key) + ")_";
 						}
 					}
-					hoverTip = new Tooltip(text, 80);
+					hoverTip = new Tooltip(Button.this, text, 80);
 					Button.this.parent.addToFront(hoverTip);
 					hoverTip.camera = camera();
 					alignTooltip(hoverTip);
