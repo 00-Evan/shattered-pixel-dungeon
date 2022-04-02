@@ -1203,7 +1203,7 @@ public abstract class Level implements Bundlable {
 
 			for (TalismanOfForesight.CharAwareness a : c.buffs(TalismanOfForesight.CharAwareness.class)){
 				Char ch = (Char) Actor.findById(a.charID);
-				if (ch == null) {
+				if (ch == null || !ch.isAlive()) {
 					continue;
 				}
 				int p = ch.pos;
