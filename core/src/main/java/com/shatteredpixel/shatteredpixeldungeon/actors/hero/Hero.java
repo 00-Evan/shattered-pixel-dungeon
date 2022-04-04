@@ -2083,6 +2083,8 @@ public class Hero extends Char {
 				((MagesStaff) i).applyWandChargeBuff(this);
 			}
 		}
+
+		updateHT(false);
 	}
 
 	@Override
