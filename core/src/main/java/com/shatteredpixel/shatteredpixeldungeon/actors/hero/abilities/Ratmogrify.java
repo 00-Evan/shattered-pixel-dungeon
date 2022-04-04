@@ -57,6 +57,9 @@ public class Ratmogrify extends ArmorAbility {
 		baseChargeUse = 50f;
 	}
 
+	//this is sort of hacky, but we need it to know when to use alternate name/icon for heroic energy
+	public static boolean useRatroicEnergy = false;
+
 	@Override
 	public String targetingPrompt() {
 		return Messages.get(this, "prompt");
