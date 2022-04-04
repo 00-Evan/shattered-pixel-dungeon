@@ -243,7 +243,11 @@ public class MagesStaff extends MeleeWeapon {
 		this.wand = wand;
 		updateWand(false);
 		wand.curCharges = Math.min(wand.maxCharges, wand.curCharges+oldStaffcharges);
-		if (owner != null) wand.charge(owner);
+		if (owner != null){
+			applyWandChargeBuff(owner);
+ 		} else if (Dungeon.hero.belongings.contains(this)){
+			applyWandChargeBuff(Dungeon.hero);
+		}
 
 		//This is necessary to reset any particles.
 		//FIXME this is gross, should implement a better way to fully reset quickslot visuals
