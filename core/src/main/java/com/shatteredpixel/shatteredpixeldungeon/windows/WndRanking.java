@@ -424,6 +424,14 @@ public class WndRanking extends WndTabbed {
 		QuickSlotButton(Item item){
 			super(item);
 			this.item = item;
+
+			if (item.cursed && item.cursedKnown) {
+				bg.ra = +0.2f;
+				bg.ga = -0.1f;
+			} else if (!item.isIdentified()) {
+				bg.ra = 0.1f;
+				bg.ba = 0.1f;
+			}
 		}
 
 		@Override
