@@ -184,7 +184,11 @@ public class Blacksmith extends NPC {
 			return Messages.get(Blacksmith.class, "un_ided");
 		}
 		
-		if (item1.cursed || item2.cursed) {
+		if (item1.cursed || item2.cursed ||
+				(item1 instanceof Armor && ((Armor) item1).hasCurseGlyph()) ||
+				(item2 instanceof Armor && ((Armor) item2).hasCurseGlyph()) ||
+				(item1 instanceof Weapon && ((Weapon) item1).hasCurseEnchant()) ||
+				(item2 instanceof Weapon && ((Weapon) item2).hasCurseEnchant())) {
 			return Messages.get(Blacksmith.class, "cursed");
 		}
 		
