@@ -57,7 +57,9 @@ public class WildEnergy extends TargetedSpell {
 
 		hero.belongings.charge(1f);
 		for (Buff b : hero.buffs()){
-			if (b instanceof Artifact.ArtifactBuff) ((Artifact.ArtifactBuff) b).charge(hero, 4);
+			if (b instanceof Artifact.ArtifactBuff){
+				if (!((Artifact.ArtifactBuff) b).isCursed()) ((Artifact.ArtifactBuff) b).charge(hero, 4);
+			}
 		}
 
 		Buff.affect(hero, Recharging.class, 8f);
