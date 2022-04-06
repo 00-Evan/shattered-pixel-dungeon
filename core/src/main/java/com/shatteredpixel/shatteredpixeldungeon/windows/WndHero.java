@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.TalentsPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
+import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
@@ -83,7 +84,12 @@ public class WndHero extends WndTabbed {
 		add( new IconTab( Icons.get(Icons.RANKINGS) ) {
 			protected void select( boolean value ) {
 				super.select( value );
-				if (selected) lastIdx = 0;
+				if (selected) {
+					lastIdx = 0;
+					if (!stats.visible) {
+						stats.initialize();
+					}
+				}
 				stats.visible = stats.active = selected;
 			}
 		} );
@@ -126,6 +132,15 @@ public class WndHero extends WndTabbed {
 		private float pos;
 		
 		public StatsTab() {
+			initialize();
+		}
+
+		public void initialize(){
+
+			for (Gizmo g : members){
+				if (g != null) g.destroy();
+			}
+			clear();
 			
 			Hero hero = Dungeon.hero;
 
