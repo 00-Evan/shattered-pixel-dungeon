@@ -99,6 +99,11 @@ public abstract class SpecialRoom extends Room {
 			PitRoom.class, CrystalVaultRoom.class, CrystalChoiceRoom.class, CrystalPathRoom.class
 	) );
 
+	//only one special that generates a potion per floor
+	private static final ArrayList<Class<? extends SpecialRoom>> POTION_SPAWN_ROOMS = new ArrayList<>( Arrays.asList(
+			PoolRoom.class, SentryRoom.class, StorageRoom.class, ToxicGasRoom.class, MagicalFireRoom.class, TrapsRoom.class
+	) );
+
 	public static ArrayList<Class<? extends Room>> runSpecials = new ArrayList<>();
 	public static ArrayList<Class<? extends Room>> floorSpecials = new ArrayList<>();
 	
@@ -139,6 +144,9 @@ public abstract class SpecialRoom extends Room {
 		floorSpecials.remove( type );
 		if (CRYSTAL_KEY_SPECIALS.contains(type)){
 			floorSpecials.removeAll(CRYSTAL_KEY_SPECIALS);
+		}
+		if (POTION_SPAWN_ROOMS.contains(type)){
+			floorSpecials.removeAll(POTION_SPAWN_ROOMS);
 		}
 		if (runSpecials.remove( type )) {
 			runSpecials.add( type );
