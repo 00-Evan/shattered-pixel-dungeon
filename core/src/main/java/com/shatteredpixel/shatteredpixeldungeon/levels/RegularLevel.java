@@ -425,16 +425,22 @@ public abstract class RegularLevel extends Level {
 			if (dropped.count() < 2 + 2*Dungeon.hero.pointsInTalent(Talent.CACHED_RATIONS)){
 				int cell;
 				int tries = 100;
+				boolean valid;
 				do {
 					cell = randomDropCell(SpecialRoom.class);
-				} while (tries-- > 0 && (room(cell) instanceof SecretRoom || room(cell) instanceof ShopRoom));
-				if (!(room(cell) instanceof SecretRoom || room(cell) instanceof ShopRoom) && cell != -1) {
+					valid = !(room(cell) instanceof SecretRoom)
+							&& !(room(cell) instanceof ShopRoom)
+							&& map[cell] != Terrain.EMPTY_SP
+							&& map[cell] != Terrain.WATER
+							&& map[cell] != Terrain.PEDESTAL;
+ 				} while (tries-- > 0 && !valid);
+				if (valid) {
 					if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
 						map[cell] = Terrain.GRASS;
 						losBlocking[cell] = false;
 					}
 					drop(new SmallRation(), cell).type = Heap.Type.CHEST;
-					dropped.countUp(1);
+					//dropped.countUp(1);
 				}
 			}
 		}
