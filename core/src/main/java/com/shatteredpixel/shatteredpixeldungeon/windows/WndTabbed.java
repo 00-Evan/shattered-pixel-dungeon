@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
+import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Button;
 import com.watabou.utils.RectF;
@@ -138,6 +139,10 @@ public class WndTabbed extends Window {
 		protected boolean selected;
 		
 		protected NinePatch bg;
+
+		{
+			hotArea.blockLevel = PointerArea.ALWAYS_BLOCK;
+		}
 		
 		@Override
 		protected void layout() {
