@@ -104,6 +104,7 @@ public class v1_X_Changes {
 				"_-_ Various minor visual bugs\n" +
 				"_-_ Ring of might health boost not being affected by lost inventory debuff\n" +
 				"_-_ Cases where ghoul sprites could become glitched\n" +
+				"_-_ Items that spawn identified counting as being IDed by the player\n" +
 				"_-_ Cases where heroic energy talent would use the wrong name/icon\n" +
 				"_-_ Curse status of quickslot items not showing in rankings\n" +
 				"_-_ Some sources of artifact recharging affecting cursed artifacts\n" +
