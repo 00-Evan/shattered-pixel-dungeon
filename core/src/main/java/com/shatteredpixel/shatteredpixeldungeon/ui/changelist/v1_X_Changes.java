@@ -83,9 +83,31 @@ public class v1_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v1.2.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Sacrifice rooms now require slightly fewer enemies at lower depths\n" +
+				"_-_ Sacrifice rooms now accept sacrifices that are adjacent to the fire\n\n" +
+				"_-_ The game can now only spawn one room that requires a solution potion per floor\n\n" +
+				"_-_ Moved Steam notification location to bottom-left from top-left\n\n" +
+				"_-_ Updated Translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by v1.2.0):\n" +
+				"_-_ Some crashes on launch for Steam users\n" +
+				"_-_ Transmuted mage's staff not recharging\n" +
+				"_-_ Great crab being able to block attacks from invisible heroes\n" +
+				"_-_ Wand of frost not clearing magical fire\n\n" +
+				"Fixed (existed prior to v1.2.0)\n" +
+				"_-_ Various minor visual bugs\n" +
+				"_-_ Ring of might health boost not being affected by lost inventory debuff\n" +
+				"_-_ Cases where ghoul sprites could become glitched\n" +
+				"_-_ Cases where heroic energy talent would use the wrong name/icon\n" +
+				"_-_ Curse status of quickslot items not showing in rankings\n" +
+				"_-_ Some sources of artifact recharging affecting cursed artifacts\n" +
+				"_-_ Blacksmith not refusing to work with cursed items in specific cases" ));
 
 		changes = new ChangeInfo("v1.2.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
