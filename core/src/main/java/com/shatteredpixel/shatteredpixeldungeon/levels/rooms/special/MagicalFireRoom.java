@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
@@ -249,6 +250,11 @@ public class MagicalFireRoom extends SpecialRoom {
 		public void use( BlobEmitter emitter ) {
 			super.use( emitter );
 			emitter.pour( ElmoParticle.FACTORY, 0.02f );
+		}
+
+		@Override
+		public String tileDesc() {
+			return Messages.get(this, "desc");
 		}
 
 		@Override

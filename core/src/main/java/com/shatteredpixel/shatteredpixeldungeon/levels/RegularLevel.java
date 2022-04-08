@@ -428,7 +428,7 @@ public abstract class RegularLevel extends Level {
 				boolean valid;
 				do {
 					cell = randomDropCell(SpecialRoom.class);
-					valid = !(room(cell) instanceof SecretRoom)
+					valid = cell != -1 && !(room(cell) instanceof SecretRoom)
 							&& !(room(cell) instanceof ShopRoom)
 							&& map[cell] != Terrain.EMPTY_SP
 							&& map[cell] != Terrain.WATER
