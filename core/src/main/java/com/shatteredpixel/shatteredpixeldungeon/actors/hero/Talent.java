@@ -219,7 +219,7 @@ public enum Talent {
 	}
 
 	public String title(){
-		if (Ratmogrify.useRatroicEnergy){
+		if (this == HEROIC_ENERGY && Ratmogrify.useRatroicEnergy){
 			return Messages.get(this, name() + ".rat_title");
 		}
 		return Messages.get(this, name() + ".title");
