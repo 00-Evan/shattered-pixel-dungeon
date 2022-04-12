@@ -265,6 +265,7 @@ public class MasterThievesArmband extends Artifact {
 
 			if (charge < chargeCap){
 				float chargeGain = 3f * levelPortion;
+				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
 
 				partialCharge += chargeGain;
 				while (partialCharge > 1f){
