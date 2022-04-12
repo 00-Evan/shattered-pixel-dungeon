@@ -72,7 +72,7 @@ public class WandOfFrost extends DamageWand {
 		if (eternalFire != null && eternalFire.volume > 0) {
 			eternalFire.clear( bolt.collisionPos );
 			//bolt ends 1 tile short of fire, so check next tile too
-			if (bolt.path.size() > bolt.dist){
+			if (bolt.path.size() > bolt.dist+1){
 				eternalFire.clear( bolt.path.get(bolt.dist+1) );
 			}
 

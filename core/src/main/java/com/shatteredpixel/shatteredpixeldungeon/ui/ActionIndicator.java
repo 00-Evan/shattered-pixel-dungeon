@@ -105,7 +105,7 @@ public class ActionIndicator extends Tag {
 
 	@Override
 	protected String hoverText() {
-		String text = action.actionName();
+		String text = (action == null ? null : action.actionName());
 		if (text != null){
 			return Messages.titleCase(text);
 		} else {

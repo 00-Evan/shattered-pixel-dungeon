@@ -60,16 +60,6 @@ public class GhoulSprite extends MobSprite {
 	}
 
 	@Override
-	public void move(int from, int to) {
-		if (parent == null){
-			//TODO this should be fixed as of v1.2.2, monitor for more reports and remove if we're clear
-			Game.reportException(new RuntimeException("ghoul sprite tried to move with null parent! ghoul HP: " + ch.HP));
-			return;
-		}
-		super.move(from, to);
-	}
-
-	@Override
 	public void die() {
 		if (curAnim == crumple){
 			//causes the sprite to not rise then fall again when dieing.

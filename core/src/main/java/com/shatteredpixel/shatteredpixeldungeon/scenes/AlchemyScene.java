@@ -397,10 +397,12 @@ public class AlchemyScene extends PixelScene {
 	private void combine( int slot ){
 		
 		ArrayList<Item> ingredients = filterInput(Item.class);
-
 		if (ingredients.isEmpty()) return;
 
-		Recipe recipe = Recipe.findRecipes(ingredients).get(slot);
+		ArrayList<Recipe> recipes = Recipe.findRecipes(ingredients);
+		if (recipes.size() <= slot) return;
+
+		Recipe recipe = recipes.get(slot);
 		
 		Item result = null;
 		

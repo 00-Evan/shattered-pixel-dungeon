@@ -88,6 +88,8 @@ public class Invisibility extends FlavourBuff {
 	}
 
 	public static void dispel() {
+		if (Dungeon.hero == null) return;
+
 		for ( Buff invis : Dungeon.hero.buffs( Invisibility.class )){
 			invis.detach();
 		}
