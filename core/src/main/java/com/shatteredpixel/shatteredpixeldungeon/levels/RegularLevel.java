@@ -440,7 +440,7 @@ public abstract class RegularLevel extends Level {
 						losBlocking[cell] = false;
 					}
 					drop(new SmallRation(), cell).type = Heap.Type.CHEST;
-					//dropped.countUp(1);
+					dropped.countUp(1);
 				}
 			}
 		}
