@@ -83,6 +83,29 @@ public class v1_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("v1.2.3", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Swarms that were spawned by splitting now give a little sacrifice progress if sacrificed, instead of 0.\n\n" +
+				"_-_ Updated Translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by v1.2.0):\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Textual errors with talents and 13th armor ability\n" +
+				"_-_ Armband not benefiting from ring of energy\n" +
+				"_-_ v1.2.0 light cloak buff not applying in all cases\n" +
+				"_-_ Inconsistencies in freezing logic\n" +
+				"_-_ Cached rations talent not capping at 4/6 rations as intended\n\n" +
+				"Fixed (existed prior to v1.2.0)\n" +
+				"_-_ An exploit where unblessed ankhs could be used with a lost inventory" ));
+
 		changes = new ChangeInfo("v1.2.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
