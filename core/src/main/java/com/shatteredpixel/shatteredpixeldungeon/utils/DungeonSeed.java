@@ -26,7 +26,7 @@ import com.watabou.utils.Random;
 //This class defines the parameters for seeds in ShatteredPD and contains a few convenience methods
 public class DungeonSeed {
 
-	private static long TOTAL_SEEDS = 5429503678976L; //26^9 possible seeds
+	public static long TOTAL_SEEDS = 5429503678976L; //26^9 possible seeds
 
 	public static long randomSeed(){
 		return Random.Long( TOTAL_SEEDS );
@@ -41,8 +41,12 @@ public class DungeonSeed {
 
 	//Takes a seed code (@@@@@@@@@) and converts it to the equivalent long value
 	public static long convertFromCode( String code ){
-		if (code.length() != 9)
+		//ignore whitespace characters and dashes
+		code = code.replaceAll("[-\\s]", "");
+
+		if (code.length() != 9) {
 			throw new IllegalArgumentException("codes must be 9 A-Z characters.");
+		}
 
 		long result = 0;
 		for (int i = 8; i >= 0; i--) {
@@ -57,12 +61,13 @@ public class DungeonSeed {
 
 	//Takes a long value and converts it to the equivalent seed code
 	public static String convertToCode( long seed ){
-		if (seed < 0 || seed >= TOTAL_SEEDS)
+		if (seed < 0 || seed >= TOTAL_SEEDS) {
 			throw new IllegalArgumentException("seeds must be within the range [0, TOTAL_SEEDS)");
+		}
 
 		//this almost gives us the right answer, but its 0-p instead of A-Z
 		String interrim = Long.toString(seed, 26);
-		String result = "";
+		StringBuilder result = new StringBuilder();
 
 		//so we convert
 		for (int i = 0; i < 9; i++) {
@@ -72,21 +77,42 @@ public class DungeonSeed {
 				if (c <= '9') c += 17; //convert 0-9 to A-J
 				else          c -= 22; //convert a-p to K-Z
 
-				result += c;
+				result.append(c);
 
 			} else {
-				result = 'A' + result; //pad with A (zeroes) until we reach length of 9
+				result.insert(0, 'A'); //pad with A (zeroes) until we reach length of 9
 
 			}
 		}
 
-		return result;
+		//insert dashes for readability
+		result.insert(3, '-');
+		result.insert(7, '-');
+
+		return result.toString();
 	}
 
-	//Using this we can let users input 'fun' plaintext seeds and convert them to a long equivalent.
-	// This is basically the same as string.hashcode except with long, and accounting for overflow
-	// to ensure the produced seed is always in the range [0, TOTAL_SEEDS)
+	//Creates a seed from arbitrary user text input
 	public static long convertFromText( String inputText ){
+		if (inputText.isEmpty()) return -1;
+
+		//First see if input is a seed code, use that format if it is
+		try {
+			return convertFromCode(inputText);
+		} catch (IllegalArgumentException e){
+
+		}
+
+		//Then see if input is a number (ignoring spaces), if so parse as a long seed (with overflow)
+		try {
+			return Long.parseLong(inputText.replaceAll("\\s", "")) % TOTAL_SEEDS;
+		} catch (NumberFormatException e){
+
+		}
+
+		//Finally, if the user has entered unformatted text, convert it to a long seed equivalent
+		// This is basically the same as string.hashcode except with long, and overflow
+		// this lets the user input 'fun' seeds, like names or places
 		long total = 0;
 		for (char c : inputText.toCharArray()){
 			total = 31 * total + c;

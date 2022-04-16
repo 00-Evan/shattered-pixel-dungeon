@@ -21,8 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -40,6 +38,8 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.ui.WndTextInput;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndChallenges;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndHeroInfo;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndKeyBindings;
@@ -64,6 +64,7 @@ public class HeroSelectScene extends PixelScene {
 	private ArrayList<StyledButton> heroBtns = new ArrayList<>();
 	private StyledButton startBtn;
 	private IconButton infoButton;
+	private IconButton seedButton;
 	private IconButton challengeButton;
 	private IconButton btnExit;
 
@@ -146,7 +147,7 @@ public class HeroSelectScene extends PixelScene {
 			}
 		};
 		infoButton.visible = false;
-		infoButton.setSize(21, 21);
+		infoButton.setSize(20, 21);
 		add(infoButton);
 
 		HeroClass[] classes = HeroClass.values();
@@ -192,14 +193,67 @@ public class HeroSelectScene extends PixelScene {
 				return Messages.titleCase(Messages.get(WndChallenges.class, "title"));
 			}
 		};
-		challengeButton.setRect(heroBtnleft + 16, Camera.main.height-HeroBtn.HEIGHT-16, 21, 21);
+		challengeButton.setRect(heroBtnleft + 16, Camera.main.height-HeroBtn.HEIGHT-16, 20, 21);
 		challengeButton.visible = false;
 
+		seedButton = new IconButton( Icons.get(Icons.SEED)){
+			@Override
+			protected void onClick() {
+				String existingSeedtext = SPDSettings.customSeed() == -1 ? "" : DungeonSeed.convertToCode(SPDSettings.customSeed());
+				ShatteredPixelDungeon.scene().addToFront( new WndTextInput(Messages.get(HeroSelectScene.class, "custom_seed_title"),
+						Messages.get(HeroSelectScene.class, "custom_seed_desc"),
+						existingSeedtext,
+						30,
+						false,
+						Messages.get(HeroSelectScene.class, "custom_seed_set"),
+						Messages.get(HeroSelectScene.class, "custom_seed_clear")){
+					@Override
+					public void onSelect(boolean positive, String text) {
+						long seed = DungeonSeed.convertFromText(text);
+						if (positive && seed != -1){
+							SPDSettings.customSeed(seed);
+							icon.hardlight(1f, 1.5f, 0.67f);
+						} else {
+							SPDSettings.customSeed(-1);
+							icon.resetColor();
+						}
+					}
+				});
+			}
+
+			@Override
+			protected void onPointerUp() {
+				if (SPDSettings.customSeed() != -1){
+					icon.hardlight(1f, 1.5f, 0.67f);
+				} else {
+					icon.resetColor();
+				}
+			}
+
+			@Override
+			public void update() {
+				if( !visible && GamesInProgress.selectedClass != null){
+					visible = true;
+				}
+				super.update();
+			}
+
+			@Override
+			protected String hoverText() {
+				return Messages.get(HeroSelectScene.class, "custom_seed_title");
+			}
+		};
+		if (SPDSettings.customSeed() != -1) seedButton.icon().hardlight(1f, 1.5f, 0.67f);
+		seedButton.setRect(challengeButton.left()-16, challengeButton.top(), 16, 21);
+		seedButton.visible = false;
+
 		if (DeviceCompat.isDebug() || Badges.isUnlocked(Badges.Badge.VICTORY)){
+			add(seedButton);
 			add(challengeButton);
 		} else {
 			Dungeon.challenges = 0;
 			SPDSettings.challenges(0);
+			SPDSettings.customSeed(-1);
 		}
 
 		btnExit = new ExitButton();
@@ -251,6 +305,9 @@ public class HeroSelectScene extends PixelScene {
 
 		challengeButton.visible = true;
 		challengeButton.setPos(startBtn.left()-challengeButton.width(), startBtn.top());
+
+		seedButton.visible = true;
+		seedButton.setPos(challengeButton.left()-seedButton.width(), challengeButton.top());
 	}
 
 	private float uiAlpha;
@@ -274,6 +331,7 @@ public class HeroSelectScene extends PixelScene {
 			startBtn.alpha(alpha);
 			btnExit.icon().alpha(alpha);
 			challengeButton.icon().alpha(alpha);
+			seedButton.icon().alpha(alpha);
 			infoButton.icon().alpha(alpha);
 		}
 	}

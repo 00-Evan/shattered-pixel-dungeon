@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.noosa.Game;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Button;
 import com.watabou.utils.Bundle;
@@ -70,23 +71,6 @@ public class WndGameInProgress extends Window {
 		title.setRect( 0, 0, WIDTH, 0 );
 		add(title);
 		
-		//manually produces debug information about a run, mainly useful for levelgen errors
-		Button debug = new Button(){
-			@Override
-			protected boolean onLongClick() {
-				try {
-					Bundle bundle = FileUtils.bundleFromFile(GamesInProgress.gameFile(slot));
-					ShatteredPixelDungeon.scene().addToFront(new WndMessage("_Debug Info:_\n\n" +
-							"Version: " + Game.version + " (" + Game.versionCode + ")\n" +
-							"Seed: " + bundle.getLong("seed") + "\n" +
-							"Challenge Mask: " + info.challenges));
-				} catch (IOException ignored) { }
-				return true;
-			}
-		};
-		debug.setRect(0, 0, title.imIcon.width(), title.imIcon.height);
-		add(debug);
-		
 		if (info.challenges > 0) GAP -= 2;
 		
 		pos = title.bottom() + GAP;
@@ -119,6 +103,11 @@ public class WndGameInProgress extends Window {
 		pos += GAP;
 		statSlot( Messages.get(this, "gold"), info.goldCollected );
 		statSlot( Messages.get(this, "depth"), info.maxDepth );
+		if (info.customSeed){
+			statSlot( Messages.get(this, "custom_seed"), "_" + DungeonSeed.convertToCode(info.seed) + "_" );
+		} else {
+			statSlot( Messages.get(this, "dungeon_seed"), DungeonSeed.convertToCode(info.seed) );
+		}
 		
 		pos += GAP;
 		
@@ -175,7 +164,7 @@ public class WndGameInProgress extends Window {
 		add( txt );
 		
 		txt = PixelScene.renderTextBlock( value, 8 );
-		txt.setPos(WIDTH * 0.6f, pos);
+		txt.setPos(WIDTH * 0.55f, pos);
 		PixelScene.align(txt);
 		add( txt );
 		

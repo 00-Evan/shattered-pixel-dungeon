@@ -283,7 +283,7 @@ public class Badges {
 		}
 	}
 
-	public static int unlocked(boolean global){
+	public static int totalUnlocked(boolean global){
 		if (global) return Badges.global.size();
 		else        return Badges.local.size();
 	}
@@ -533,7 +533,7 @@ public class Badges {
 		for (Catalog cat : Catalog.values()){
 			if (cat.allSeen()){
 				Badge b = Catalog.catalogBadges.get(cat);
-				if (!global.contains(b)){
+				if (!isUnlocked(b)){
 					displayBadge(b);
 				}
 			}
@@ -654,7 +654,7 @@ public class Badges {
 					break;
 				}
 				local.add( badge );
-				addGlobal(badge);
+				unlock(badge);
 				
 				if (isUnlocked( Badge.BOSS_SLAIN_1_WARRIOR ) &&
 						isUnlocked( Badge.BOSS_SLAIN_1_MAGE ) &&
@@ -697,7 +697,7 @@ public class Badges {
 					return;
 				}
 				local.add( badge );
-				addGlobal(badge);
+				unlock(badge);
 				
 				if (isUnlocked( Badge.BOSS_SLAIN_3_GLADIATOR ) &&
 						isUnlocked( Badge.BOSS_SLAIN_3_BERSERKER ) &&
@@ -735,11 +735,11 @@ public class Badges {
 			break;
 		}
 		
-		addGlobal(badge);
+		unlock(badge);
 	}
 
 	public static void validateRatmogrify(){
-		addGlobal(Badge.FOUND_RATMOGRIFY);
+		unlock(Badge.FOUND_RATMOGRIFY);
 	}
 	
 	public static void validateMageUnlock(){
@@ -788,7 +788,7 @@ public class Badges {
 			break;
 		}
 		local.add( badge );
-		addGlobal(badge);
+		unlock(badge);
 		
 		if (isUnlocked( Badge.VICTORY_WARRIOR ) &&
 				isUnlocked( Badge.VICTORY_MAGE ) &&
@@ -855,11 +855,11 @@ public class Badges {
 			badge = Badge.CHAMPION_1;
 		}
 		if (challenges >= 3){
-			addGlobal(badge);
+			unlock(badge);
 			badge = Badge.CHAMPION_2;
 		}
 		if (challenges >= 6){
-			addGlobal(badge);
+			unlock(badge);
 			badge = Badge.CHAMPION_3;
 		}
 		local.add(badge);
@@ -868,11 +868,11 @@ public class Badges {
 	
 	private static void displayBadge( Badge badge ) {
 		
-		if (badge == null) {
+		if (badge == null || Dungeon.usingCustomSeed) {
 			return;
 		}
 		
-		if (global.contains( badge )) {
+		if (isUnlocked( badge )) {
 			
 			if (!badge.meta) {
 				GLog.h( Messages.get(Badges.class, "endorsed", badge.title()) );
@@ -881,8 +881,7 @@ public class Badges {
 			
 		} else {
 			
-			global.add( badge );
-			saveNeeded = true;
+			unlock(badge);
 			
 			GLog.h( Messages.get(Badges.class, "new", badge.title() + " (" + badge.desc() + ")") );
 			GLog.newLine();
@@ -905,8 +904,8 @@ public class Badges {
 		saveNeeded = true;
 	}
 	
-	public static void addGlobal( Badge badge ){
-		if (!global.contains(badge)){
+	public static void unlock( Badge badge ){
+		if (!isUnlocked(badge) && !Dungeon.usingCustomSeed){
 			global.add( badge );
 			saveNeeded = true;
 		}
