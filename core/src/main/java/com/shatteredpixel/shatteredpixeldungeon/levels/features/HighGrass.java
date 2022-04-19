@@ -88,10 +88,21 @@ public class HighGrass {
 				}
 
 				//berries try to drop on floors 2/3/4/6/7/8, to a max of 4/6
-				Talent.NatureBerriesAvailable berries = ch.buff(Talent.NatureBerriesAvailable.class);
-				if (berries != null) {
+				if (ch instanceof Hero && ((Hero) ch).hasTalent(Talent.NATURES_BOUNTY)){
+					int berriesAvailable = 2 + 2*((Hero) ch).pointsInTalent(Talent.NATURES_BOUNTY);
+
+					//pre-1.3.0 saves
+					Talent.NatureBerriesAvailable oldAvailable = ch.buff(Talent.NatureBerriesAvailable.class);
+					if (oldAvailable != null){
+						Buff.affect(ch, Talent.NatureBerriesDropped.class).countUp(berriesAvailable - oldAvailable.count());
+						oldAvailable.detach();
+					}
+
+					Talent.NatureBerriesDropped dropped = Buff.affect(ch, Talent.NatureBerriesDropped.class);
+					berriesAvailable -= dropped.count();
+
 					int targetFloor = 2 + 2*((Hero)ch).pointsInTalent(Talent.NATURES_BOUNTY);
-					targetFloor -= berries.count();
+					targetFloor -= berriesAvailable;
 					targetFloor += (targetFloor >= 5) ? 3 : 2;
 
 					//If we're behind: 1/10, if we're on page: 1/30, if we're ahead: 1/90
@@ -101,11 +112,8 @@ public class HighGrass {
 					else if (Dungeon.depth < targetFloor)   droppingBerry = Random.Int(90) == 0;
 
 					if (droppingBerry){
-						berries.countDown(1);
+						dropped.countUp(1);
 						level.drop(new Berry(), pos).sprite.drop();
-						if (berries.count() <= 0){
-							berries.detach();
-						}
 					}
 
 				}
