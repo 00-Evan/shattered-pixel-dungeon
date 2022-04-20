@@ -71,6 +71,10 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 		Sample.INSTANCE.play( Assets.Sounds.READ );
 		curUser.sprite.emitter().start(Speck.factory(Speck.CHANGE), 0.2f, 10);
 		Transmuting.show(curUser, oldTalent, newTalent);
+
+		if (Dungeon.hero.hasTalent(newTalent)) {
+			Talent.onTalentUpgraded(Dungeon.hero, newTalent);
+		}
 	}
 
 	private void confirmCancelation( Window chooseWindow ) {
@@ -167,22 +171,10 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 	public static class WndMetamorphReplace extends Window {
 
 		//talents that can only be used by one hero class
-		//TODO could some of these be made more generic?
 		private static HashMap<Talent, HeroClass> restrictedTalents = new HashMap<>();
 		static {
-			restrictedTalents.put(Talent.IRON_WILL, HeroClass.WARRIOR);
-			restrictedTalents.put(Talent.RESTORED_WILLPOWER, HeroClass.WARRIOR);
 			restrictedTalents.put(Talent.RUNIC_TRANSFERENCE, HeroClass.WARRIOR);
-
-			restrictedTalents.put(Talent.BACKUP_BARRIER, HeroClass.MAGE);
-			restrictedTalents.put(Talent.ENERGIZING_UPGRADE, HeroClass.MAGE);
 			restrictedTalents.put(Talent.WAND_PRESERVATION, HeroClass.MAGE);
-
-			restrictedTalents.put(Talent.PROTECTIVE_SHADOWS, HeroClass.ROGUE);
-			restrictedTalents.put(Talent.MYSTICAL_UPGRADE, HeroClass.ROGUE);
-			restrictedTalents.put(Talent.LIGHT_CLOAK, HeroClass.ROGUE);
-
-			restrictedTalents.put(Talent.SEER_SHOT, HeroClass.HUNTRESS);
 		}
 
 		public static WndMetamorphReplace INSTANCE;

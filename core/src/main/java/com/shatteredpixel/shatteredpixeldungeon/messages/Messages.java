@@ -45,6 +45,8 @@ public class Messages {
 	private static ArrayList<I18NBundle> bundles;
 	private static Languages lang;
 
+	public static final String NO_TEXT_FOUND = "!!!NO TEXT FOUND!!!";
+
 	public static Languages lang(){
 		return lang;
 	}
@@ -117,7 +119,7 @@ public class Messages {
 			if (c != null && c.getSuperclass() != null){
 				return get(c.getSuperclass(), k, args);
 			} else {
-				return "!!!NO TEXT FOUND!!!";
+				return NO_TEXT_FOUND;
 			}
 		}
 	}

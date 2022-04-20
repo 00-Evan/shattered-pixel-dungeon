@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -51,11 +52,13 @@ public class WndInfoTalent extends Window {
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
 
-		RenderedTextBlock txtInfo = PixelScene.renderTextBlock(talent.desc(), 6);
+		boolean metaDesc = (buttonCallback != null && buttonCallback.metamorphDesc()) ||
+				(Dungeon.hero != null && Dungeon.hero.metamorphedTalents.containsValue(talent));
+
+		RenderedTextBlock txtInfo = PixelScene.renderTextBlock(talent.desc(metaDesc), 6);
 		txtInfo.maxWidth(WIDTH);
 		txtInfo.setPos(titlebar.left(), titlebar.bottom() + 2*GAP);
 		add( txtInfo );
-
 		resize( WIDTH, (int)(txtInfo.bottom() + GAP) );
 
 		if (buttonCallback != null) {
@@ -78,6 +81,10 @@ public class WndInfoTalent extends Window {
 	public static abstract class TalentButtonCallback implements Callback {
 
 		public abstract String prompt();
+
+		public boolean metamorphDesc(){
+			return false;
+		}
 
 	}
 

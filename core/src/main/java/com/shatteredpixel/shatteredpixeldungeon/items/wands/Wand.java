@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ScrollEmpower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.WildMagic;
@@ -405,19 +406,35 @@ public abstract class Wand extends Item {
 			}
 		}
 
-		//if the wand is owned by the hero, but not in their inventory, it must be in the staff
 		if (charger != null
-				&& charger.target == Dungeon.hero
-				&& !Dungeon.hero.belongings.contains(this)) {
-			if (curCharges == 0 && Dungeon.hero.hasTalent(Talent.BACKUP_BARRIER)) {
-				//grants 3/5 shielding
-				Buff.affect(Dungeon.hero, Barrier.class).setShield(1 + 2 * Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER));
-			}
-			if (Dungeon.hero.hasTalent(Talent.EMPOWERED_STRIKE)){
-				Buff.prolong(Dungeon.hero, Talent.EmpoweredStrikeTracker.class, 10f);
+				&& charger.target == Dungeon.hero){
+
+			//if the wand is owned by the hero, but not in their inventory, it must be in the staff
+			if (!Dungeon.hero.belongings.contains(this)) {
+				if (curCharges == 0 && Dungeon.hero.hasTalent(Talent.BACKUP_BARRIER)) {
+					//grants 3/5 shielding
+					Buff.affect(Dungeon.hero, Barrier.class).setShield(1 + 2 * Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER));
+				}
+				if (Dungeon.hero.hasTalent(Talent.EMPOWERED_STRIKE)) {
+					Buff.prolong(Dungeon.hero, Talent.EmpoweredStrikeTracker.class, 10f);
+				}
+
+			//otherwise process logic for metamorphed backup barrier
+			} else if (curCharges == 0
+					&& Dungeon.hero.heroClass != HeroClass.MAGE
+					&& Dungeon.hero.hasTalent(Talent.BACKUP_BARRIER)){
+				boolean highest = true;
+				for (Item i : Dungeon.hero.belongings.getAllItems(Wand.class)){
+					if (i.level() > level()){
+						highest = false;
+					}
+				}
+				if (highest){
+					//grants 3/5 shielding
+					Buff.affect(Dungeon.hero, Barrier.class).setShield(1 + 2 * Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER));
+				}
 			}
 		}
-
 		Invisibility.dispel();
 		updateQuickslot();
 
