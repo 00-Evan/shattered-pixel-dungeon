@@ -75,61 +75,71 @@ public class Badges {
 
 		//silver
 		NO_MONSTERS_SLAIN           ( 32 ),
-		GRIM_WEAPON                 ( 33 ),
-		MONSTERS_SLAIN_3            ( 34 ),
-		MONSTERS_SLAIN_4            ( 35 ),
-		GOLD_COLLECTED_3            ( 36 ),
-		GOLD_COLLECTED_4            ( 37 ),
-		ITEM_LEVEL_2                ( 38 ),
-		ITEM_LEVEL_3                ( 39 ),
-		LEVEL_REACHED_2             ( 40 ),
-		LEVEL_REACHED_3             ( 41 ),
-		STRENGTH_ATTAINED_2         ( 42 ),
-		STRENGTH_ATTAINED_3         ( 43 ),
-		FOOD_EATEN_2                ( 44 ),
-		FOOD_EATEN_3                ( 45 ),
-		ITEMS_CRAFTED_2             ( 46 ),
-		ITEMS_CRAFTED_3             ( 47 ),
-		BOSS_SLAIN_2                ( 48 ),
-		BOSS_SLAIN_3                ( 49 ),
-		ALL_POTIONS_IDENTIFIED      ( 50 ),
-		ALL_SCROLLS_IDENTIFIED      ( 51 ),
-		DEATH_FROM_GLYPH            ( 52 ),
+		MONSTERS_SLAIN_3            ( 33 ),
+		MONSTERS_SLAIN_4            ( 34 ),
+		GOLD_COLLECTED_3            ( 35 ),
+		GOLD_COLLECTED_4            ( 36 ),
+		ITEM_LEVEL_2                ( 37 ),
+		ITEM_LEVEL_3                ( 38 ),
+		LEVEL_REACHED_2             ( 39 ),
+		LEVEL_REACHED_3             ( 40 ),
+		STRENGTH_ATTAINED_2         ( 41 ),
+		STRENGTH_ATTAINED_3         ( 42 ),
+		FOOD_EATEN_2                ( 43 ),
+		FOOD_EATEN_3                ( 44 ),
+		ITEMS_CRAFTED_2             ( 45 ),
+		ITEMS_CRAFTED_3             ( 46 ),
+		BOSS_SLAIN_2                ( 47 ),
+		BOSS_SLAIN_3                ( 48 ),
+		ALL_POTIONS_IDENTIFIED      ( 49 ),
+		ALL_SCROLLS_IDENTIFIED      ( 50 ),
+		DEATH_FROM_GLYPH            ( 51 ),
 		BOSS_SLAIN_1_WARRIOR,
 		BOSS_SLAIN_1_MAGE,
 		BOSS_SLAIN_1_ROGUE,
 		BOSS_SLAIN_1_HUNTRESS,
-		BOSS_SLAIN_1_ALL_CLASSES    ( 53, true ),
-		GAMES_PLAYED_2              ( 54, true ),
+		BOSS_SLAIN_1_ALL_CLASSES    ( 52, true ),
+		GAMES_PLAYED_2              ( 53, true ),
 
 		//gold
 		PIRANHAS                    ( 64 ),
+		GRIM_WEAPON                 ( 65 ),
 		BAG_BOUGHT_VELVET_POUCH,
 		BAG_BOUGHT_SCROLL_HOLDER,
 		BAG_BOUGHT_POTION_BANDOLIER,
 		BAG_BOUGHT_MAGICAL_HOLSTER,
-		ALL_BAGS_BOUGHT             ( 65 ),
-		MASTERY_COMBO               ( 66 ),
-		MONSTERS_SLAIN_5            ( 67 ),
-		GOLD_COLLECTED_5            ( 68 ),
-		ITEM_LEVEL_4                ( 69 ),
-		ITEM_LEVEL_5                ( 70 ),
+		ALL_BAGS_BOUGHT             ( 66 ),
+		MASTERY_COMBO               ( 67 ),
+		MONSTERS_SLAIN_5            ( 68 ),
+		GOLD_COLLECTED_5            ( 69 ),
+		ITEM_LEVEL_4                ( 70 ),
 		LEVEL_REACHED_4             ( 71 ),
-		LEVEL_REACHED_5             ( 72 ),
-		STRENGTH_ATTAINED_4         ( 73 ),
-		STRENGTH_ATTAINED_5         ( 74 ),
-		FOOD_EATEN_4                ( 75 ),
-		FOOD_EATEN_5                ( 76 ),
-		ITEMS_CRAFTED_4             ( 77 ),
-		ITEMS_CRAFTED_5             ( 78 ),
-		BOSS_SLAIN_4                ( 79 ),
-		ALL_WEAPONS_IDENTIFIED      ( 80 ),
-		ALL_ARMOR_IDENTIFIED        ( 81 ),
-		ALL_WANDS_IDENTIFIED        ( 82 ),
-		ALL_RINGS_IDENTIFIED        ( 83 ),
-		ALL_ARTIFACTS_IDENTIFIED    ( 84 ),
-		VICTORY                     ( 85 ),
-		YASD                        ( 86, true ),
+		STRENGTH_ATTAINED_4         ( 72 ),
+		STRENGTH_ATTAINED_5         ( 73 ),
+		FOOD_EATEN_4                ( 74 ),
+		FOOD_EATEN_5                ( 75 ),
+		ITEMS_CRAFTED_4             ( 76 ),
+		ITEMS_CRAFTED_5             ( 77 ),
+		BOSS_SLAIN_4                ( 78 ),
+		ALL_RINGS_IDENTIFIED        ( 79 ),
+		ALL_ARTIFACTS_IDENTIFIED    ( 80 ),
+		VICTORY                     ( 81 ),
+		GAMES_PLAYED_3              ( 82, true ),
+
+		//platinum
+		ITEM_LEVEL_5                ( 96 ),
+		LEVEL_REACHED_5             ( 97 ),
+		HAPPY_END                   ( 98 ),
+		ALL_WEAPONS_IDENTIFIED      ( 99 ),
+		ALL_ARMOR_IDENTIFIED        ( 100 ),
+		ALL_WANDS_IDENTIFIED        ( 101 ),
+		ALL_ITEMS_IDENTIFIED        ( 102, true ),
+		VICTORY_WARRIOR,
+		VICTORY_MAGE,
+		VICTORY_ROGUE,
+		VICTORY_HUNTRESS,
+		VICTORY_ALL_CLASSES         ( 103, true ),
+		YASD                        ( 104, true ),
 		BOSS_SLAIN_3_GLADIATOR,
 		BOSS_SLAIN_3_BERSERKER,
 		BOSS_SLAIN_3_WARLOCK,
@@ -138,19 +148,9 @@ public class Badges {
 		BOSS_SLAIN_3_ASSASSIN,
 		BOSS_SLAIN_3_SNIPER,
 		BOSS_SLAIN_3_WARDEN,
-		BOSS_SLAIN_3_ALL_SUBCLASSES ( 87, true ),
-		GAMES_PLAYED_3              ( 88, true ),
-
-		//platinum
-		HAPPY_END                   ( 96 ),
-		ALL_ITEMS_IDENTIFIED        ( 97, true ),
-		VICTORY_WARRIOR,
-		VICTORY_MAGE,
-		VICTORY_ROGUE,
-		VICTORY_HUNTRESS,
-		VICTORY_ALL_CLASSES         ( 98, true ),
-		GAMES_PLAYED_4              ( 99, true ),
-		CHAMPION_1                  ( 100 ),
+		BOSS_SLAIN_3_ALL_SUBCLASSES ( 105, true ),
+		GAMES_PLAYED_4              ( 106, true ),
+		CHAMPION_1                  ( 107 ),
 
 		//diamond
 		GAMES_PLAYED_5              ( 112, true ),
@@ -303,11 +303,11 @@ public class Badges {
 			badge = Badge.MONSTERS_SLAIN_3;
 			local.add( badge );
 		}
-		if (!local.contains( Badge.MONSTERS_SLAIN_4 ) && Statistics.enemiesSlain >= 200) {
+		if (!local.contains( Badge.MONSTERS_SLAIN_4 ) && Statistics.enemiesSlain >= 250) {
 			badge = Badge.MONSTERS_SLAIN_4;
 			local.add( badge );
 		}
-		if (!local.contains( Badge.MONSTERS_SLAIN_5 ) && Statistics.enemiesSlain >= 300) {
+		if (!local.contains( Badge.MONSTERS_SLAIN_5 ) && Statistics.enemiesSlain >= 500) {
 			badge = Badge.MONSTERS_SLAIN_5;
 			local.add( badge );
 		}
@@ -330,11 +330,11 @@ public class Badges {
 			badge = Badge.GOLD_COLLECTED_3;
 			local.add( badge );
 		}
-		if (!local.contains( Badge.GOLD_COLLECTED_4 ) && Statistics.goldCollected >= 5000) {
+		if (!local.contains( Badge.GOLD_COLLECTED_4 ) && Statistics.goldCollected >= 7500) {
 			badge = Badge.GOLD_COLLECTED_4;
 			local.add( badge );
 		}
-		if (!local.contains( Badge.GOLD_COLLECTED_5 ) && Statistics.goldCollected >= 10_000) {
+		if (!local.contains( Badge.GOLD_COLLECTED_5 ) && Statistics.goldCollected >= 15_000) {
 			badge = Badge.GOLD_COLLECTED_5;
 			local.add( badge );
 		}
@@ -426,11 +426,11 @@ public class Badges {
 	public static void validateItemsCrafted() {
 		Badge badge = null;
 		
-		if (!local.contains( Badge.ITEMS_CRAFTED_1 ) && Statistics.itemsCrafted >= 5) {
+		if (!local.contains( Badge.ITEMS_CRAFTED_1 ) && Statistics.itemsCrafted >= 3) {
 			badge = Badge.ITEMS_CRAFTED_1;
 			local.add( badge );
 		}
-		if (!local.contains( Badge.ITEMS_CRAFTED_2 ) && Statistics.itemsCrafted >= 10) {
+		if (!local.contains( Badge.ITEMS_CRAFTED_2 ) && Statistics.itemsCrafted >= 8) {
 			badge = Badge.ITEMS_CRAFTED_2;
 			local.add( badge );
 		}
@@ -438,11 +438,11 @@ public class Badges {
 			badge = Badge.ITEMS_CRAFTED_3;
 			local.add( badge );
 		}
-		if (!local.contains( Badge.ITEMS_CRAFTED_4 ) && Statistics.itemsCrafted >= 20) {
+		if (!local.contains( Badge.ITEMS_CRAFTED_4 ) && Statistics.itemsCrafted >= 24) {
 			badge = Badge.ITEMS_CRAFTED_4;
 			local.add( badge );
 		}
-		if (!local.contains( Badge.ITEMS_CRAFTED_5 ) && Statistics.itemsCrafted >= 25) {
+		if (!local.contains( Badge.ITEMS_CRAFTED_5 ) && Statistics.itemsCrafted >= 35) {
 			badge = Badge.ITEMS_CRAFTED_5;
 			local.add( badge );
 		}
@@ -755,7 +755,7 @@ public class Badges {
 	}
 	
 	public static void validateHuntressUnlock(){
-		if (Statistics.thrownAssists >= 10 && !isUnlocked(Badge.UNLOCK_HUNTRESS)){
+		if (Statistics.thrownAttacks >= 10 && !isUnlocked(Badge.UNLOCK_HUNTRESS)){
 			displayBadge( Badge.UNLOCK_HUNTRESS );
 		}
 	}
@@ -821,16 +821,16 @@ public class Badges {
 		if (Rankings.INSTANCE.totalNumber >= 10 || Rankings.INSTANCE.wonNumber >= 1) {
 			badge = Badge.GAMES_PLAYED_1;
 		}
-		if (Rankings.INSTANCE.totalNumber >= 50 || Rankings.INSTANCE.wonNumber >= 5) {
+		if (Rankings.INSTANCE.totalNumber >= 25 || Rankings.INSTANCE.wonNumber >= 3) {
 			badge = Badge.GAMES_PLAYED_2;
 		}
-		if (Rankings.INSTANCE.totalNumber >= 100 || Rankings.INSTANCE.wonNumber >= 10) {
+		if (Rankings.INSTANCE.totalNumber >= 50 || Rankings.INSTANCE.wonNumber >= 5) {
 			badge = Badge.GAMES_PLAYED_3;
 		}
-		if (Rankings.INSTANCE.totalNumber >= 250 || Rankings.INSTANCE.wonNumber >= 25) {
+		if (Rankings.INSTANCE.totalNumber >= 100 || Rankings.INSTANCE.wonNumber >= 10) {
 			badge = Badge.GAMES_PLAYED_4;
 		}
-		if (Rankings.INSTANCE.totalNumber >= 1000 || Rankings.INSTANCE.wonNumber >= 100) {
+		if (Rankings.INSTANCE.totalNumber >= 250 || Rankings.INSTANCE.wonNumber >= 25) {
 			badge = Badge.GAMES_PLAYED_5;
 		}
 		

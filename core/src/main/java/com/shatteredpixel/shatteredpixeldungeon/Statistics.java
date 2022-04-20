@@ -36,7 +36,7 @@ public class Statistics {
 	//used for hero unlock badges
 	public static int upgradesUsed;
 	public static int sneakAttacks;
-	public static int thrownAssists;
+	public static int thrownAttacks;
 
 	public static int spawnersAlive;
 	
@@ -59,7 +59,7 @@ public class Statistics {
 		
 		upgradesUsed    = 0;
 		sneakAttacks    = 0;
-		thrownAssists   = 0;
+		thrownAttacks   = 0;
 
 		spawnersAlive   = 0;
 		
@@ -102,7 +102,7 @@ public class Statistics {
 		
 		bundle.put( UPGRADES,   upgradesUsed );
 		bundle.put( SNEAKS,		sneakAttacks );
-		bundle.put( THROWN,		thrownAssists );
+		bundle.put( THROWN,     thrownAttacks);
 
 		bundle.put( SPAWNERS,	spawnersAlive );
 		
@@ -124,7 +124,7 @@ public class Statistics {
 		
 		upgradesUsed    = bundle.getInt( UPGRADES );
 		sneakAttacks    = bundle.getInt( SNEAKS );
-		thrownAssists   = bundle.getInt( THROWN );
+		thrownAttacks   = bundle.getInt( THROWN );
 
 		spawnersAlive   = bundle.getInt( SPAWNERS );
 		

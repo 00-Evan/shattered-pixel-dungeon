@@ -576,16 +576,12 @@ public abstract class Mob extends Char {
 		}
 	}
 	
-	protected boolean hitWithRanged = false;
-	
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
 		
 		if (enemy instanceof Hero
-				&& ((Hero) enemy).belongings.weapon() instanceof MissileWeapon
-				&& !hitWithRanged){
-			hitWithRanged = true;
-			Statistics.thrownAssists++;
+				&& ((Hero) enemy).belongings.weapon() instanceof MissileWeapon){
+			Statistics.thrownAttacks++;
 			Badges.validateHuntressUnlock();
 		}
 		
