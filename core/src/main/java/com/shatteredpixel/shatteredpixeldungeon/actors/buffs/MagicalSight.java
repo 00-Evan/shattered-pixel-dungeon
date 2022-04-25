@@ -35,7 +35,6 @@ public class MagicalSight extends FlavourBuff {
 	
 	{
 		type = buffType.POSITIVE;
-		announced = true;
 	}
 	
 	@Override

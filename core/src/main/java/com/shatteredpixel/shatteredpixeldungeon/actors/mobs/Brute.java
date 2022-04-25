@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -93,7 +94,7 @@ public class Brute extends Mob {
 	protected void triggerEnrage(){
 		Buff.affect(this, BruteRage.class).setShield(HT/2 + 4);
 		if (Dungeon.level.heroFOV[pos]) {
-			sprite.showStatus( CharSprite.NEGATIVE, Messages.get(this, "enraged") );
+			SpellSprite.show( this, SpellSprite.BERSERK);
 		}
 		spend( TICK );
 		hasRaged = true;

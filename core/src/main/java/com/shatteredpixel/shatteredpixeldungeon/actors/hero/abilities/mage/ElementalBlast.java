@@ -48,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbili
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
@@ -366,6 +367,7 @@ public class ElementalBlast extends ArmorAbility {
 						//*** Wand of Magic Missile ***
 						if (finalWandCls == WandOfMagicMissile.class) {
 							Buff.affect(hero, Recharging.class, effectMulti* Recharging.DURATION / 2f);
+							SpellSprite.show( hero, SpellSprite.CHARGE );
 
 						//*** Wand of Living Earth ***
 						} else if (finalWandCls == WandOfLivingEarth.class && charsHit > 0){

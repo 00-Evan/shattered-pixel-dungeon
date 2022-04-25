@@ -149,6 +149,7 @@ public class Endure extends ArmorAbility {
 			if (damageBonus > 0) {
 				target.sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
 				Sample.INSTANCE.play(Assets.Sounds.CHALLENGE);
+				SpellSprite.show(target, SpellSprite.BERSERK);
 			} else {
 				detach();
 			}

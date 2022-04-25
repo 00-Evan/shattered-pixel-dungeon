@@ -36,9 +36,11 @@ public class SpellSprite extends Image {
 	public static final int FOOD		= 0;
 	public static final int MAP			= 1;
 	public static final int CHARGE		= 2;
-	public static final int MASTERY		= 3;
-	public static final int BERSERK     = 4;
-	public static final int ANKH        = 5;
+	public static final int BERSERK     = 3;
+	public static final int ANKH        = 4;
+	public static final int HASTE       = 5;
+	public static final int VISION      = 6;
+	public static final int PURITY      = 7;
 	
 	private static final int SIZE	= 16;
 	
@@ -129,6 +131,10 @@ public class SpellSprite extends Image {
 	}
 	
 	public static void show( Char ch, int index ) {
+		show(ch, index, 1, 1, 1);
+	}
+	
+	public static void show( Char ch, int index, float r, float g, float b ) {
 		
 		if (!ch.sprite.visible) {
 			return;
@@ -142,6 +148,7 @@ public class SpellSprite extends Image {
 		SpellSprite sprite = GameScene.spellSprite();
 		sprite.target = ch;
 		sprite.reset( index );
+		sprite.hardlight(r, g, b);
 		sprite.revive();
 		all.put( ch, sprite );
 	}

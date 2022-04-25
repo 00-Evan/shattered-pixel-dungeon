@@ -34,7 +34,6 @@ public class Foresight extends FlavourBuff {
 
 	{
 		type = buffType.POSITIVE;
-		announced = true;
 	}
 	
 	@Override

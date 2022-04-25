@@ -346,6 +346,7 @@ public enum Talent {
 			//5/8 turns of recharging
 			Buff.prolong( hero, Recharging.class, 2 + 3*(hero.pointsInTalent(ENERGIZING_MEAL)) );
 			ScrollOfRecharging.charge( hero );
+			SpellSprite.show(hero, SpellSprite.CHARGE);
 		}
 		if (hero.hasTalent(MYSTICAL_MEAL)){
 			//3/5 turns of recharging
@@ -354,6 +355,7 @@ public enum Talent {
 				Buff.affect( hero, ArtifactRecharge.class).set(1 + 2*(hero.pointsInTalent(MYSTICAL_MEAL))).ignoreHornOfPlenty = foodSource instanceof HornOfPlenty;
 			}
 			ScrollOfRecharging.charge( hero );
+			SpellSprite.show(hero, SpellSprite.CHARGE, 0, 1, 1);
 		}
 		if (hero.hasTalent(INVIGORATING_MEAL)){
 			//effectively 1/2 turns of haste
@@ -453,10 +455,12 @@ public enum Talent {
 				if (cloak != null) {
 					cloak.overCharge(1 + hero.pointsInTalent(MYSTICAL_UPGRADE));
 					ScrollOfRecharging.charge(Dungeon.hero);
-					SpellSprite.show(hero, SpellSprite.CHARGE);
+					SpellSprite.show(hero, SpellSprite.CHARGE, 0, 1, 1);
 				}
 			} else {
 				Buff.affect(hero, ArtifactRecharge.class).set( 2 + 4*hero.pointsInTalent(MYSTICAL_UPGRADE) ).ignoreHornOfPlenty = false;
+				ScrollOfRecharging.charge(Dungeon.hero);
+				SpellSprite.show(hero, SpellSprite.CHARGE, 0, 1, 1);
 			}
 		}
 	}

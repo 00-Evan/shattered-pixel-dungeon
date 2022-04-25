@@ -44,7 +44,7 @@ public class ScrollOfMysticalEnergy extends ExoticScroll {
 		Sample.INSTANCE.play( Assets.Sounds.READ );
 		Sample.INSTANCE.play( Assets.Sounds.CHARGEUP );
 		
-		SpellSprite.show( curUser, SpellSprite.CHARGE );
+		SpellSprite.show( curUser, SpellSprite.CHARGE, 0, 1, 1 );
 		identify();
 		ScrollOfRecharging.charge(curUser);
 		
