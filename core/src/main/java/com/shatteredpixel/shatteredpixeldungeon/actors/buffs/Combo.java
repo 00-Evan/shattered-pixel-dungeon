@@ -52,6 +52,10 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class Combo extends Buff implements ActionIndicator.Action {
+
+	{
+		type = buffType.POSITIVE;
+	}
 	
 	private int count = 0;
 	private float comboTime = 0f;

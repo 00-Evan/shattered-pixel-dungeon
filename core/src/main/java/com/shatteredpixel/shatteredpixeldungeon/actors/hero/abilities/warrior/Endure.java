@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
@@ -66,6 +67,10 @@ public class Endure extends ArmorAbility {
 
 	public static class EndureTracker extends FlavourBuff {
 
+		{
+			type = buffType.POSITIVE;
+		}
+
 		public boolean enduring;
 
 		public int damageBonus;
@@ -74,7 +79,12 @@ public class Endure extends ArmorAbility {
 
 		@Override
 		public int icon() {
-			return enduring ? BuffIndicator.NONE : BuffIndicator.AMOK;
+			return enduring ? BuffIndicator.NONE : BuffIndicator.ARMOR;
+		}
+
+		@Override
+		public void tintIcon(Image icon) {
+			super.tintIcon(icon);
 		}
 
 		@Override

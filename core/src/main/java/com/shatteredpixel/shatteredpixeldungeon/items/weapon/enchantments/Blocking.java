@@ -52,6 +52,10 @@ public class Blocking extends Weapon.Enchantment {
 	}
 	
 	public static class BlockBuff extends FlavourBuff {
+
+		{
+			type = buffType.POSITIVE;
+		}
 		
 		private int blocking = 0;
 		

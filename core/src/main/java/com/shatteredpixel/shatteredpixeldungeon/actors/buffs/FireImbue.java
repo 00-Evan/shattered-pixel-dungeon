@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -86,7 +87,12 @@ public class FireImbue extends Buff {
 
 	@Override
 	public int icon() {
-		return BuffIndicator.FIRE;
+		return BuffIndicator.IMBUE;
+	}
+
+	@Override
+	public void tintIcon(Image icon) {
+		icon.hardlight(2f, 0.75f, 0f);
 	}
 
 	@Override

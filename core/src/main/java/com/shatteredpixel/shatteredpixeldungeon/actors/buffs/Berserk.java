@@ -39,6 +39,10 @@ import java.text.DecimalFormat;
 
 public class Berserk extends Buff {
 
+	{
+		type = buffType.POSITIVE;
+	}
+
 	private enum State{
 		NORMAL, BERSERK, RECOVERING
 	}

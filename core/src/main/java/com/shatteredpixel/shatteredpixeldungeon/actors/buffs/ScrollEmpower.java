@@ -62,7 +62,7 @@ public class ScrollEmpower extends Buff {
 
 	@Override
 	public void tintIcon(Image icon) {
-		icon.hardlight(1, 1, 0);
+		icon.hardlight(0.84f, 0.79f, 0.65f); //scroll colors
 	}
 
 	@Override

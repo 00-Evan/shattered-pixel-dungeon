@@ -58,6 +58,10 @@ public class Kinetic extends Weapon.Enchantment {
 	}
 	
 	public static class ConservedDamage extends Buff {
+
+		{
+			type = buffType.POSITIVE;
+		}
 		
 		@Override
 		public int icon() {

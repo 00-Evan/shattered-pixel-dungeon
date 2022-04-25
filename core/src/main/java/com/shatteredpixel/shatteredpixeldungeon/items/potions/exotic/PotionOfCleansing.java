@@ -87,6 +87,10 @@ public class PotionOfCleansing extends ExoticPotion {
 
 	public static class Cleanse extends FlavourBuff {
 
+		{
+			type = buffType.POSITIVE;
+		}
+
 		public static final float DURATION = 5f;
 
 		@Override

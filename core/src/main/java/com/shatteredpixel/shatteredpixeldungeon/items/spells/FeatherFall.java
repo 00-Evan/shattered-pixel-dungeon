@@ -29,7 +29,9 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 
 public class FeatherFall extends Spell {
@@ -40,7 +42,7 @@ public class FeatherFall extends Spell {
 	
 	@Override
 	protected void onCast(Hero hero) {
-		Buff.append(hero, FeatherBuff.class, 30f);
+		Buff.append(hero, FeatherBuff.class, FeatherBuff.DURATION);
 		hero.sprite.operate(hero.pos);
 		Sample.INSTANCE.play(Assets.Sounds.READ );
 		hero.sprite.emitter().burst( Speck.factory( Speck.JET ), 20);
@@ -54,6 +56,36 @@ public class FeatherFall extends Spell {
 	
 	public static class FeatherBuff extends FlavourBuff {
 		//does nothing, just waits to be triggered by chasm falling
+		{
+			type = buffType.POSITIVE;
+		}
+
+		public static final float DURATION	= 30f;
+
+		@Override
+		public int icon() {
+			return BuffIndicator.LEVITATION;
+		}
+
+		@Override
+		public void tintIcon(Image icon) {
+			icon.hardlight(1f, 2f, 1.25f);
+		}
+
+		@Override
+		public float iconFadePercent() {
+			return Math.max(0, (DURATION - visualcooldown()) / DURATION);
+		}
+
+		@Override
+		public String toString() {
+			return Messages.get(this, "name");
+		}
+
+		@Override
+		public String desc() {
+			return Messages.get(this, "desc", dispTurns());
+		}
 	}
 	
 	@Override

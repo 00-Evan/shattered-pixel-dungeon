@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 
 public class AdrenalineSurge extends Buff {
@@ -59,7 +60,12 @@ public class AdrenalineSurge extends Buff {
 	
 	@Override
 	public int icon() {
-		return BuffIndicator.FURY;
+		return BuffIndicator.UPGRADE;
+	}
+
+	@Override
+	public void tintIcon(Image icon) {
+		icon.hardlight(1f, 0.5f, 0);
 	}
 
 	@Override

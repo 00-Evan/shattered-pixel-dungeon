@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
@@ -73,17 +74,21 @@ public class StoneOfAggression extends Runestone {
 			type = buffType.NEGATIVE;
 			announced = true;
 		}
-		
+
 		@Override
-		public void storeInBundle( Bundle bundle ) {
-			super.storeInBundle(bundle);
+		public int icon() {
+			return BuffIndicator.TARGETED;
 		}
-		
+
 		@Override
-		public void restoreFromBundle( Bundle bundle ) {
-			super.restoreFromBundle( bundle );
+		public float iconFadePercent() {
+			if (target.alignment == Char.Alignment.ENEMY){
+				return Math.max(0, (DURATION/4f - visualcooldown()) / (DURATION/4f));
+			} else {
+				return Math.max(0, (DURATION - visualcooldown()) / DURATION);
+			}
 		}
-		
+
 		@Override
 		public void detach() {
 			//if our target is an enemy, reset the aggro of any enemies targeting it
@@ -103,6 +108,11 @@ public class StoneOfAggression extends Runestone {
 		@Override
 		public String toString() {
 			return Messages.get(this, "name");
+		}
+
+		@Override
+		public String desc() {
+			return Messages.get(this, "desc", dispTurns());
 		}
 		
 	}

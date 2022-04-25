@@ -37,12 +37,12 @@ public class SoulMark extends FlavourBuff {
 
 	@Override
 	public int icon() {
-		return BuffIndicator.CORRUPT;
+		return BuffIndicator.INVERT_MARK;
 	}
 
 	@Override
 	public void tintIcon(Image icon) {
-		icon.hardlight(0.5f, 0.5f, 0.5f);
+		icon.hardlight(0.5f, 0.2f, 1f);
 	}
 
 	@Override
