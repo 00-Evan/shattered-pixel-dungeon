@@ -136,7 +136,7 @@ public class FileUtils {
 
 	//replaces a file with junk data, for as many bytes as given
 	//This is helpful as some cloud sync systems do not persist deleted, empty, or zeroed files
-	public static void zeroFile( String name, int bytes ){
+	public static void overwriteFile( String name, int bytes ){
 		byte[] data = new byte[bytes];
 		Arrays.fill(data, (byte)1);
 		getFileHandle( name ).writeBytes(data, false);

@@ -160,6 +160,10 @@ public class Dungeon {
 	public static QuickSlot quickslot = new QuickSlot();
 	
 	public static int depth;
+	//determines path the hero is on. Current uses:
+	// 0 is the default path
+	// Other numbers are currently unused
+	public static int branch;
 
 	public static int gold;
 	public static int energy;
@@ -212,6 +216,8 @@ public class Dungeon {
 		QuickSlotButton.reset();
 		
 		depth = 0;
+		branch = 0;
+
 		gold = 0;
 		energy = 0;
 
@@ -256,56 +262,61 @@ public class Dungeon {
 		}
 		
 		Level level;
-		switch (depth) {
-		case 1:
-		case 2:
-		case 3:
-		case 4:
-			level = new SewerLevel();
-			break;
-		case 5:
-			level = new SewerBossLevel();
-			break;
-		case 6:
-		case 7:
-		case 8:
-		case 9:
-			level = new PrisonLevel();
-			break;
-		case 10:
-			level = new PrisonBossLevel();
-			break;
-		case 11:
-		case 12:
-		case 13:
-		case 14:
-			level = new CavesLevel();
-			break;
-		case 15:
-			level = new CavesBossLevel();
-			break;
-		case 16:
-		case 17:
-		case 18:
-		case 19:
-			level = new CityLevel();
-			break;
-		case 20:
-			level = new CityBossLevel();
-			break;
-		case 21:
-		case 22:
-		case 23:
-		case 24:
-			level = new HallsLevel();
-			break;
-		case 25:
-			level = new HallsBossLevel();
-			break;
-		case 26:
-			level = new LastLevel();
-			break;
-		default:
+		if (branch == 0) {
+			switch (depth) {
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+					level = new SewerLevel();
+					break;
+				case 5:
+					level = new SewerBossLevel();
+					break;
+				case 6:
+				case 7:
+				case 8:
+				case 9:
+					level = new PrisonLevel();
+					break;
+				case 10:
+					level = new PrisonBossLevel();
+					break;
+				case 11:
+				case 12:
+				case 13:
+				case 14:
+					level = new CavesLevel();
+					break;
+				case 15:
+					level = new CavesBossLevel();
+					break;
+				case 16:
+				case 17:
+				case 18:
+				case 19:
+					level = new CityLevel();
+					break;
+				case 20:
+					level = new CityBossLevel();
+					break;
+				case 21:
+				case 22:
+				case 23:
+				case 24:
+					level = new HallsLevel();
+					break;
+				case 25:
+					level = new HallsBossLevel();
+					break;
+				case 26:
+					level = new LastLevel();
+					break;
+				default:
+					level = new DeadEndLevel();
+					Statistics.deepestFloor--;
+			}
+		} else {
 			level = new DeadEndLevel();
 			Statistics.deepestFloor--;
 		}
@@ -326,13 +337,16 @@ public class Dungeon {
 	}
 
 	public static long seedCurDepth(){
-		return seedForDepth(depth);
+		return seedForDepth(depth, branch);
 	}
 
-	public static long seedForDepth(int depth){
+	public static long seedForDepth(int depth, int branch){
+		int lookAhead = depth;
+		lookAhead += 30*branch; //Assumes depth is always 1-30, and branch is always 0 or higher
+
 		Random.pushGenerator( seed );
 
-			for (int i = 0; i < depth; i ++) {
+			for (int i = 0; i < lookAhead; i ++) {
 				Random.Long(); //we don't care about these values, just need to go through them
 			}
 			long result = Random.Long();
@@ -455,6 +469,7 @@ public class Dungeon {
 	private static final String MOBS_TO_CHAMPION	= "mobs_to_champion";
 	private static final String HERO		= "hero";
 	private static final String DEPTH		= "depth";
+	private static final String BRANCH		= "branch";
 	private static final String GOLD		= "gold";
 	private static final String ENERGY		= "energy";
 	private static final String DROPPED     = "dropped%d";
@@ -477,6 +492,7 @@ public class Dungeon {
 			bundle.put( MOBS_TO_CHAMPION, mobsToChampion );
 			bundle.put( HERO, hero );
 			bundle.put( DEPTH, depth );
+			bundle.put( BRANCH, branch );
 
 			bundle.put( GOLD, gold );
 			bundle.put( ENERGY, energy );
@@ -538,7 +554,7 @@ public class Dungeon {
 		Bundle bundle = new Bundle();
 		bundle.put( LEVEL, level );
 		
-		FileUtils.bundleToFile(GamesInProgress.depthFile( save, depth), bundle);
+		FileUtils.bundleToFile(GamesInProgress.depthFile( save, depth, branch ), bundle);
 	}
 	
 	public static void saveAll() throws IOException {
@@ -626,6 +642,7 @@ public class Dungeon {
 		hero = (Hero)bundle.get( HERO );
 		
 		depth = bundle.getInt( DEPTH );
+		branch = bundle.getInt( BRANCH );
 
 		gold = bundle.getInt( GOLD );
 		energy = bundle.getInt( ENERGY );
@@ -664,7 +681,7 @@ public class Dungeon {
 		Dungeon.level = null;
 		Actor.clear();
 		
-		Bundle bundle = FileUtils.bundleFromFile( GamesInProgress.depthFile( save, depth)) ;
+		Bundle bundle = FileUtils.bundleFromFile( GamesInProgress.depthFile( save, depth, branch ));
 		
 		Level level = (Level)bundle.get( LEVEL );
 		
@@ -686,7 +703,7 @@ public class Dungeon {
 			}
 		}
 
-		FileUtils.zeroFile(GamesInProgress.gameFile(save), 1);
+		FileUtils.overwriteFile(GamesInProgress.gameFile(save), 1);
 		
 		GamesInProgress.delete( save );
 	}
