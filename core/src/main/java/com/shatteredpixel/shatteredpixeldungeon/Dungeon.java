@@ -190,8 +190,9 @@ public class Dungeon {
 
 		Actor.clear();
 		Actor.resetNextID();
-		
-		Random.pushGenerator( seed );
+
+		//offset seed slightly to avoid output patterns
+		Random.pushGenerator( seed+1 );
 
 			Scroll.initLabels();
 			Potion.initColors();

@@ -49,7 +49,20 @@ public class Random {
 	}
 
 	public static synchronized void pushGenerator( long seed ){
-		generators.push( new java.util.Random( seed ) );
+		generators.push( new java.util.Random( scrambleSeed(seed) ) );
+	}
+
+	//scrambles a given seed, this helps eliminate patterns between the outputs of similar seeds
+	//Algorithm used is MX3 by Jon Maiga (jonkagstrom.com), CC0 license.
+	private static synchronized long scrambleSeed( long seed ){
+		seed ^= seed >>> 32;
+		seed *= 0xbea225f9eb34556dL;
+		seed ^= seed >>> 29;
+		seed *= 0xbea225f9eb34556dL;
+		seed ^= seed >>> 32;
+		seed *= 0xbea225f9eb34556dL;
+		seed ^= seed >>> 29;
+		return seed;
 	}
 
 	public static synchronized void popGenerator(){

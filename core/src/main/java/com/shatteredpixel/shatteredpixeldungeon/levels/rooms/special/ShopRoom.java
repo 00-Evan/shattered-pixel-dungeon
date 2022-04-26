@@ -270,10 +270,12 @@ public class ShopRoom extends SpecialRoom {
 		itemsToSpawn.add( rare );
 
 		//hard limit is 63 items + 1 shopkeeper, as shops can't be bigger than 8x8=64 internally
-		if (itemsToSpawn.size() > 63)
+		if (itemsToSpawn.size() > 63) {
 			throw new RuntimeException("Shop attempted to carry more than 63 items!");
+		}
 
 		//use a new generator here to prevent items in shop stock affecting levelgen RNG (e.g. sandbags)
+		//we can use a random long for the seed as it will be the same long every time
 		Random.pushGenerator(Random.Long());
 			Random.shuffle(itemsToSpawn);
 		Random.popGenerator();
