@@ -65,9 +65,25 @@ public class Chasm implements Hero.Doom {
 								Messages.get(Chasm.class, "jump"),
 								Messages.get(Chasm.class, "yes"),
 								Messages.get(Chasm.class, "no") ) {
+
+							private float elapsed = 0f;
+
+							@Override
+							public synchronized void update() {
+								super.update();
+								elapsed += Game.elapsed;
+							}
+
+							@Override
+							public void hide() {
+								if (elapsed > 0.2f){
+									super.hide();
+								}
+							}
+
 							@Override
 							protected void onSelect( int index ) {
-								if (index == 0) {
+								if (index == 0 && elapsed > 0.2f) {
 									if (Dungeon.hero.pos == heroPos) {
 										jumpConfirmed = true;
 										hero.resume();
