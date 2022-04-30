@@ -50,12 +50,14 @@ public class Badges {
 		MASTERY_MAGE,
 		MASTERY_ROGUE,
 		MASTERY_HUNTRESS,
+		MASTERY_ALCHEMIST,
 		FOUND_RATMOGRIFY,
 
 		//bronze
 		UNLOCK_MAGE                 ( 1 ),
 		UNLOCK_ROGUE                ( 2 ),
 		UNLOCK_HUNTRESS             ( 3 ),
+		UNLOCK_ALCHEMIST			( 20 ),
 		MONSTERS_SLAIN_1            ( 4 ),
 		MONSTERS_SLAIN_2            ( 5 ),
 		GOLD_COLLECTED_1            ( 6 ),
@@ -99,6 +101,7 @@ public class Badges {
 		BOSS_SLAIN_1_MAGE,
 		BOSS_SLAIN_1_ROGUE,
 		BOSS_SLAIN_1_HUNTRESS,
+		BOSS_SLAIN_1_ALCHEMIST,
 		BOSS_SLAIN_1_ALL_CLASSES    ( 53, true ),
 		GAMES_PLAYED_2              ( 54, true ),
 
@@ -140,6 +143,7 @@ public class Badges {
 		BOSS_SLAIN_3_WARDEN,
 		BOSS_SLAIN_3_ALL_SUBCLASSES ( 87, true ),
 		GAMES_PLAYED_3              ( 88, true ),
+		TOMBS              			( 89),
 
 		//platinum
 		HAPPY_END                   ( 96 ),
@@ -148,6 +152,7 @@ public class Badges {
 		VICTORY_MAGE,
 		VICTORY_ROGUE,
 		VICTORY_HUNTRESS,
+		VICTORY_ALCHEMIST,
 		VICTORY_ALL_CLASSES         ( 98, true ),
 		GAMES_PLAYED_4              ( 99, true ),
 		CHAMPION_1                  ( 100 ),
@@ -460,6 +465,17 @@ public class Badges {
 		
 		displayBadge( badge );
 	}
+
+	public static void validateTombsBusted() {
+		Badge badge = null;
+
+		if (!local.contains( Badge.TOMBS ) && Statistics.tombsBusted >= 8) {
+			badge = Badge.TOMBS;
+			local.add( badge );
+		}
+
+		displayBadge( badge );
+	}
 	
 	public static void validateItemLevelAquired( Item item ) {
 		
@@ -733,6 +749,9 @@ public class Badges {
 		case HUNTRESS:
 			badge = Badge.MASTERY_HUNTRESS;
 			break;
+		case ALCHEMIST:
+			badge = Badge.MASTERY_ALCHEMIST;
+			break;
 		}
 		
 		addGlobal(badge);
@@ -757,6 +776,12 @@ public class Badges {
 	public static void validateHuntressUnlock(){
 		if (Statistics.thrownAssists >= 10 && !isUnlocked(Badge.UNLOCK_HUNTRESS)){
 			displayBadge( Badge.UNLOCK_HUNTRESS );
+		}
+	}
+
+	public static void validateAlchemistUnlock(){
+		if (Statistics.itemsCrafted >= 15 && !isUnlocked(Badge.UNLOCK_ALCHEMIST)){
+			displayBadge( Badge.UNLOCK_ALCHEMIST );
 		}
 	}
 	
@@ -786,6 +811,9 @@ public class Badges {
 		case HUNTRESS:
 			badge = Badge.VICTORY_HUNTRESS;
 			break;
+		case ALCHEMIST:
+			badge = Badge.VICTORY_ALCHEMIST;
+			break;
 		}
 		local.add( badge );
 		addGlobal(badge);
@@ -793,7 +821,8 @@ public class Badges {
 		if (isUnlocked( Badge.VICTORY_WARRIOR ) &&
 				isUnlocked( Badge.VICTORY_MAGE ) &&
 				isUnlocked( Badge.VICTORY_ROGUE ) &&
-				isUnlocked( Badge.VICTORY_HUNTRESS )) {
+				isUnlocked( Badge.VICTORY_HUNTRESS ) &&
+				isUnlocked( Badge.VICTORY_ALCHEMIST )) {
 			
 			badge = Badge.VICTORY_ALL_CLASSES;
 			displayBadge( badge );

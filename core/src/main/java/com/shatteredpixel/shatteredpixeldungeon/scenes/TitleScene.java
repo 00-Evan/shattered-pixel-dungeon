@@ -101,7 +101,7 @@ public class TitleScene extends PixelScene {
 				Blending.setNormalMode();
 			}
 		};
-		signs.x = title.x + (title.width() - signs.width())/2f;
+		signs.x = (title.x + (title.width() - signs.width())/2f)-0.5f;//Specifically for combusted only.
 		signs.y = title.y;
 		add( signs );
 
@@ -172,7 +172,7 @@ public class TitleScene extends PixelScene {
 				ShatteredPixelDungeon.switchScene( AboutScene.class );
 			}
 		};
-		btnAbout.icon(Icons.get(Icons.SHPX));
+		btnAbout.icon(Icons.get(Icons.CBPX));
 		add(btnAbout);
 		
 		final int BTN_HEIGHT = 20;

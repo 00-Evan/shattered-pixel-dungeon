@@ -126,7 +126,7 @@ public class WelcomeScene extends PixelScene {
 				Blending.setNormalMode();
 			}
 		};
-		signs.x = title.x + (title.width() - signs.width())/2f;
+		signs.x = (title.x + (title.width() - signs.width())/2f)-0.5f;
 		signs.y = title.y;
 		add( signs );
 		

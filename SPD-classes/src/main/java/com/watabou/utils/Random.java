@@ -219,4 +219,10 @@ public class Random {
 			}
 		}
 	}
+
+	private static java.util.Random rand = new java.util.Random();
+
+	public static boolean Boolean() {
+		return Float() < 0.5f;
+	}
 }

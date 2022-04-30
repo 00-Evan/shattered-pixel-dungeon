@@ -31,6 +31,7 @@ public class Statistics {
 	public static int foodEaten;
 	public static int itemsCrafted;
 	public static int piranhasKilled;
+	public static int tombsBusted;
 	public static int ankhsUsed;
 	
 	//used for hero unlock badges
@@ -55,6 +56,7 @@ public class Statistics {
 		foodEaten		= 0;
 		itemsCrafted    = 0;
 		piranhasKilled	= 0;
+		tombsBusted		= 0;
 		ankhsUsed		= 0;
 		
 		upgradesUsed    = 0;
@@ -77,6 +79,7 @@ public class Statistics {
 	private static final String FOOD		= "foodEaten";
 	private static final String ALCHEMY		= "potionsCooked";
 	private static final String PIRANHAS	= "priranhas";
+	private static final String TOMBS		= "tombs";
 	private static final String ANKHS		= "ankhsUsed";
 	
 	private static final String UPGRADES	= "upgradesUsed";
@@ -98,6 +101,7 @@ public class Statistics {
 		bundle.put( FOOD,		foodEaten );
 		bundle.put( ALCHEMY,    itemsCrafted );
 		bundle.put( PIRANHAS,	piranhasKilled );
+		bundle.put( TOMBS,	tombsBusted );
 		bundle.put( ANKHS,		ankhsUsed );
 		
 		bundle.put( UPGRADES,   upgradesUsed );
@@ -120,6 +124,7 @@ public class Statistics {
 		foodEaten		= bundle.getInt( FOOD );
 		itemsCrafted    = bundle.getInt( ALCHEMY );
 		piranhasKilled	= bundle.getInt( PIRANHAS );
+		tombsBusted		= bundle.getInt( TOMBS );
 		ankhsUsed		= bundle.getInt( ANKHS );
 		
 		upgradesUsed    = bundle.getInt( UPGRADES );

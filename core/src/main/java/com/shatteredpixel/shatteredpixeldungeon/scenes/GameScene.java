@@ -585,7 +585,7 @@ public class GameScene extends PixelScene {
 					ankh = i;
 				}
 			}
-			if (ankh != null && GamesInProgress.gameExists(GamesInProgress.curSlot)) {
+			if (ankh != null) {
 				add(new WndResurrect(ankh));
 			} else {
 				gameOver();
@@ -1168,8 +1168,9 @@ public class GameScene extends PixelScene {
 	
 	public static void afterObserve() {
 		if (scene != null) {
-			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
-				if (mob.sprite != null) mob.sprite.visible = Dungeon.level.heroFOV[mob.pos];
+			for (Mob mob : Dungeon.level.mobs) {
+				if (mob.sprite != null)
+					mob.sprite.visible = Dungeon.level.heroFOV[mob.pos];
 			}
 		}
 	}

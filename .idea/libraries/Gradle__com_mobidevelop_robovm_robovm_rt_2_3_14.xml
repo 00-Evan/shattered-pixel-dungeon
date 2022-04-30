@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.mobidevelop.robovm:robovm-rt:2.3.14">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mobidevelop.robovm/robovm-rt/2.3.14/112fa270c7cc77eeb2d0983d3387471bee4b51b7/robovm-rt-2.3.14.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mobidevelop.robovm/robovm-rt/2.3.14/a0997038f4eb2d5ed3da672af697363d54e8473d/robovm-rt-2.3.14-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -183,6 +183,11 @@ public class Item implements Bundlable {
 		}
 		return this;
 	}
+
+	public Item duplicate(Item other, int num){
+		quantity += num;
+		return this;
+	}
 	
 	public boolean collect( Bag container ) {
 
@@ -214,9 +219,7 @@ public class Item implements Bundlable {
 					item.merge( this );
 					item.updateQuickslot();
 					if (Dungeon.hero != null && Dungeon.hero.isAlive()) {
-						Badges.validateItemLevelAquired( this );
 						Talent.onItemCollected(Dungeon.hero, item);
-						if (isIdentified()) Catalog.setSeen(getClass());
 					}
 					return true;
 				}
@@ -226,7 +229,6 @@ public class Item implements Bundlable {
 		if (Dungeon.hero != null && Dungeon.hero.isAlive()) {
 			Badges.validateItemLevelAquired( this );
 			Talent.onItemCollected( Dungeon.hero, this );
-			if (isIdentified()) Catalog.setSeen(getClass());
 		}
 
 		items.add( this );
@@ -398,14 +400,10 @@ public class Item implements Bundlable {
 	public boolean isEquipped( Hero hero ) {
 		return false;
 	}
+	
+	public Item identify() {
 
-	public final Item identify(){
-		return identify(true);
-	}
-
-	public Item identify( boolean byHero ) {
-
-		if (byHero && Dungeon.hero != null && Dungeon.hero.isAlive()){
+		if (Dungeon.hero != null && Dungeon.hero.isAlive()){
 			Catalog.setSeen(getClass());
 			if (!isIdentified()) Talent.onItemIdentified(Dungeon.hero, this);
 		}

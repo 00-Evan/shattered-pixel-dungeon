@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -291,6 +292,7 @@ public class Potion extends Item {
 		hero.spend( TIME_TO_DRINK );
 		hero.busy();
 		apply( hero );
+		Talent.onUse( hero, this );
 		
 		Sample.INSTANCE.play( Assets.Sounds.DRINK );
 		
@@ -352,8 +354,8 @@ public class Potion extends Item {
 	}
 	
 	@Override
-	public Item identify( boolean byHero ) {
-		super.identify(byHero);
+	public Item identify() {
+		super.identify();
 
 		if (!isKnown()) {
 			setKnown();

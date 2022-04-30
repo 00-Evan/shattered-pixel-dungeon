@@ -51,15 +51,21 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.CavesLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.DeadEndLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.HallsLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.IceCavesBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.IceCavesLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.LastLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.NecropolisBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.NecropolisLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.SpiderNestBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.SpiderNestLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -68,6 +74,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndSupportPrompt;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -79,6 +86,14 @@ import com.watabou.utils.SparseArray;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+
+
+//import com.shatteredpixel.shatteredpixeldungeon.levels.IceCavesBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.IceCavesLevel;
+//import com.shatteredpixel.shatteredpixeldungeon.levels.NecropolisBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.NecropolisLevel;
+//import com.shatteredpixel.shatteredpixeldungeon.levels.SpiderNestBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.SpiderNestLevel;
 
 public class Dungeon {
 
@@ -163,6 +178,10 @@ public class Dungeon {
 
 	public static int gold;
 	public static int energy;
+
+	public static boolean first_alterlocation;
+	public static boolean second_alterlocation;
+	public static boolean third_alterlocation;
 	
 	public static HashSet<Integer> chapters;
 
@@ -204,6 +223,10 @@ public class Dungeon {
 		depth = 0;
 		gold = 0;
 		energy = 0;
+
+		first_alterlocation = Random.Boolean();
+		second_alterlocation = Random.Boolean();
+		third_alterlocation = Random.Boolean();
 
 		droppedItems = new SparseArray<>();
 		portedItems = new SparseArray<>();
@@ -261,28 +284,28 @@ public class Dungeon {
 		case 7:
 		case 8:
 		case 9:
-			level = new PrisonLevel();
+			level = first_alterlocation ? new NecropolisLevel() : new PrisonLevel();
 			break;
 		case 10:
-			level = new PrisonBossLevel();
+			level = first_alterlocation ? new NecropolisBossLevel() : new PrisonBossLevel();
 			break;
 		case 11:
 		case 12:
 		case 13:
 		case 14:
-			level = new CavesLevel();
+			level = second_alterlocation ? new IceCavesLevel() : new CavesLevel();
 			break;
 		case 15:
-			level = new CavesBossLevel();
+			level = second_alterlocation ? new IceCavesBossLevel() : new CavesBossLevel();
 			break;
 		case 16:
 		case 17:
 		case 18:
 		case 19:
-			level = new CityLevel();
+			level = third_alterlocation ? new SpiderNestLevel() : new CityLevel();
 			break;
 		case 20:
-			level = new CityBossLevel();
+			level = third_alterlocation ? new SpiderNestBossLevel() : new CityBossLevel();
 			break;
 		case 21:
 		case 22:

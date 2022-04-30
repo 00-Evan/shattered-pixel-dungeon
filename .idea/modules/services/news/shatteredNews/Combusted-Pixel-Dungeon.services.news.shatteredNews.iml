@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id=":services:news:shatteredNews" external.linked.project.path="$MODULE_DIR$/../../../../../services/news/shatteredNews" external.root.project.path="$MODULE_DIR$/../../../../.." external.system.id="GRADLE" external.system.module.group="Combusted-Pixel-Dungeon.services.news" external.system.module.version="0.0.1" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="java-gradle" name="Java-Gradle">
+      <configuration>
+        <option name="BUILDABLE" value="true" />
+      </configuration>
+    </facet>
+    <facet type="android-gradle" name="Android-Gradle">
+      <configuration>
+        <option name="GRADLE_PROJECT_PATH" value=":services:news:shatteredNews" />
+        <option name="LAST_SUCCESSFUL_SYNC_AGP_VERSION" />
+        <option name="LAST_KNOWN_AGP_VERSION" />
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager">
+    <output url="file://$MODULE_DIR$/../../../../../services/news/shatteredNews/build/classes/java/main" />
+    <output-test url="file://$MODULE_DIR$/../../../../../services/news/shatteredNews/build/classes/java/test" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../../../../services/news/shatteredNews">
+      <sourceFolder url="file://$MODULE_DIR$/../../../../../services/news/shatteredNews/src/main/java" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../../../services/news/shatteredNews/.gradle" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../../../services/news/shatteredNews/build" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="Combusted-Pixel-Dungeon.services" />
+    <orderEntry type="module" module-name="Combusted-Pixel-Dungeon.SPD-classes" />
+    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx:1.10.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx-controllers:gdx-controllers-core:2.2.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.badlogicgames.gdx:gdx-freetype:1.10.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.json:json:20170516" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.badlogicgames.gdx:gdx-freetype:1.10.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.json:json:20170516" level="project" />
+  </component>
+</module>

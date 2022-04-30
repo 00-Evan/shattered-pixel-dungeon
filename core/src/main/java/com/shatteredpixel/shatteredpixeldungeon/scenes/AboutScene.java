@@ -63,6 +63,30 @@ public class AboutScene extends PixelScene {
 		Component content = list.content();
 		content.clear();
 
+		//*** Combusted Pixel Dungeon Credits ***
+
+		String cbpxLink = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+		//tracking codes, so that the website knows where this pageview came from
+//		shpxLink += "?utm_source=shatteredpd";
+//		shpxLink += "&utm_medium=about_page";
+//		shpxLink += "&utm_campaign=ingame_link";
+
+		final int CBPX_COLOR = 0xFF9021;
+		CreditsBlock cbpx = new CreditsBlock(true, CBPX_COLOR,
+				"Combusted Pixel Dungeon",
+				Icons.CBPX.get(),
+				"Developed by: _Inferno214221_\nBased on Shattered Pixel Dungeon's open source",
+				"CombustedPixel.com",
+				cbpxLink);
+		if (landscape()){
+			cbpx.setRect((w - fullWidth)/2f - 6, 10, 120, 0);
+		} else {
+			cbpx.setRect((w - fullWidth)/2f, 6, 120, 0);
+		}
+		content.add(cbpx);
+
+		addLine(cbpx.bottom() + 4, content);
+
 		//*** Shattered Pixel Dungeon Credits ***
 
 		String shpxLink = "https://ShatteredPixel.com";
@@ -78,9 +102,9 @@ public class AboutScene extends PixelScene {
 				"ShatteredPixel.com",
 				shpxLink);
 		if (landscape()){
-			shpx.setRect((w - fullWidth)/2f - 6, 10, 120, 0);
+			shpx.setRect((w - fullWidth)/2f - 6, cbpx.bottom()+8, 120, 0);
 		} else {
-			shpx.setRect((w - fullWidth)/2f, 6, 120, 0);
+			shpx.setRect((w - fullWidth)/2f, cbpx.bottom()+8, 120, 0);
 		}
 		content.add(shpx);
 

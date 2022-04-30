@@ -33,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Piranha;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Statue;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Swarm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -69,23 +68,20 @@ public class SacrificialFire extends Blob {
 					off[cell] = cur[cell];
 					volume += off[cell];
 
-					if (off[cell] > 0){
-						for (int k : PathFinder.NEIGHBOURS9){
-							Char ch = Actor.findChar( cell+k );
-							if (ch != null){
-								if (Dungeon.level.heroFOV[cell+k] && ch.buff( Marked.class ) == null) {
-									CellEmitter.get(cell+k).burst( SacrificialParticle.FACTORY, 5 );
-								}
-								Buff.prolong( ch, Marked.class, Marked.DURATION );
-							}
+					Char ch = Actor.findChar( cell );
+					if (ch != null && off[cell] > 0){
+						if (Dungeon.level.heroFOV[cell] && ch.buff( Marked.class ) == null) {
+							CellEmitter.get(cell).burst( SacrificialParticle.FACTORY, 5 );
 						}
+						Buff.prolong( ch, Marked.class, Marked.DURATION );
+					}
 
-						if (Dungeon.level.heroFOV[cell]
-								&& Dungeon.level.mobCount() == 0
-								&& bonusSpawns > 0) {
-							if (Dungeon.level.spawnMob(4)) {
-								bonusSpawns--;
-							}
+					if (off[cell] > 0
+							&& Dungeon.level.heroFOV[cell]
+							&& Dungeon.level.mobCount() == 0
+							&& bonusSpawns > 0){
+						if (Dungeon.level.spawnMob(4)) {
+							bonusSpawns--;
 						}
 					}
 				}
@@ -93,7 +89,7 @@ public class SacrificialFire extends Blob {
 		}
 
 		//a bit brittle, assumes only one tile of sacrificial fire can exist per floor
-		int max = 6 + Dungeon.depth * 4;
+		int max = 5 + Dungeon.depth * 5;
 		curEmitter.pour( SacrificialParticle.FACTORY, 0.01f + ((volume / (float)max) * 0.09f) );
 	}
 
@@ -103,7 +99,7 @@ public class SacrificialFire extends Blob {
 		curEmitter = emitter;
 
 		//a bit brittle, assumes only one tile of sacrificial fire can exist per floor
-		int max = 6 + Dungeon.depth * 4;
+		int max = 5 + Dungeon.depth * 5;
 		curEmitter.pour( SacrificialParticle.FACTORY, 0.01f + ((volume / (float)max) * 0.09f) );
 	}
 
@@ -129,28 +125,18 @@ public class SacrificialFire extends Blob {
 	public static void sacrifice( Char ch ) {
 
 		SacrificialFire fire = (SacrificialFire)Dungeon.level.blobs.get( SacrificialFire.class );
-		int firePos = -1;
-		for (int i : PathFinder.NEIGHBOURS9){
-			if (fire != null && fire.cur[ch.pos+i] > 0){
-				firePos = ch.pos+i;
-				break;
-			}
-		}
 
-		if (firePos != -1) {
+		if (fire != null && fire.cur[ch.pos] > 0) {
 
 			int exp = 0;
 			if (ch instanceof Mob) {
-				//same rates as used in wand of corruption, except for swarms
+				//same rates as used in wand of corruption
 				if (ch instanceof Statue || ch instanceof Mimic){
 					exp = 1 + Dungeon.depth;
 				} else if (ch instanceof Piranha || ch instanceof Bee) {
 					exp = 1 + Dungeon.depth/2;
 				} else if (ch instanceof Wraith) {
 					exp = 1 + Dungeon.depth/3;
-				} else if (ch instanceof Swarm && ((Swarm) ch).EXP == 0){
-					//give 1 exp for child swarms, instead of 0
-					exp = 1;
 				} else {
 					exp = ((Mob)ch).EXP;
 				}
@@ -161,25 +147,25 @@ public class SacrificialFire extends Blob {
 
 			if (exp > 0) {
 
-				int volume = fire.cur[firePos] - exp;
+				int volume = fire.cur[ch.pos] - exp;
 				if (volume > 0) {
-					fire.cur[firePos] -= exp;
+					fire.cur[ch.pos] -= exp;
 					fire.volume -= exp;
 					fire.bonusSpawns++;
-					CellEmitter.get(firePos).burst( SacrificialParticle.FACTORY, 20 );
+					CellEmitter.get(ch.pos).burst( SacrificialParticle.FACTORY, 20 );
 					Sample.INSTANCE.play(Assets.Sounds.BURNING );
 					GLog.w( Messages.get(SacrificialFire.class, "worthy"));
 				} else {
-					fire.clear(firePos);
+					fire.clear(ch.pos);
 
 					for (int i : PathFinder.NEIGHBOURS9){
-						CellEmitter.get(firePos+i).burst( SacrificialParticle.FACTORY, 20 );
+						CellEmitter.get(ch.pos+i).burst( SacrificialParticle.FACTORY, 20 );
 					}
 					Sample.INSTANCE.play(Assets.Sounds.BURNING );
 					Sample.INSTANCE.play(Assets.Sounds.BURNING );
 					Sample.INSTANCE.play(Assets.Sounds.BURNING );
 					GLog.w( Messages.get(SacrificialFire.class, "reward"));
-					Dungeon.level.drop( SacrificeRoom.prize( Dungeon.level ), firePos ).sprite.drop();
+					Dungeon.level.drop( SacrificeRoom.prize( Dungeon.level ), ch.pos ).sprite.drop();
 				}
 			} else {
 

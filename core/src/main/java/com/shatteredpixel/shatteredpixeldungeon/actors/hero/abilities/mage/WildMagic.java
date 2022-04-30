@@ -37,8 +37,6 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.watabou.noosa.Game;
-import com.watabou.noosa.tweeners.Delayer;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
@@ -126,48 +124,29 @@ public class WildMagic extends ArmorAbility {
 
 	public static class WildMagicTracker extends FlavourBuff{};
 
-	private void zapWand( ArrayList<Wand> wands, Hero hero, int cell){
+	private void zapWand( ArrayList<Wand> wands, Hero hero, int target){
 		Wand cur = wands.remove(0);
 
-		Ballistica aim = new Ballistica(hero.pos, cell, cur.collisionProperties(cell));
+		Ballistica aim = new Ballistica(hero.pos, target, cur.collisionProperties(target));
 
-		hero.sprite.zap(cell);
+		hero.sprite.zap(target);
 
-		float startTime = Game.timeTotal;
 		if (!cur.cursed) {
 			cur.fx(aim, new Callback() {
 				@Override
 				public void call() {
 					cur.onZap(aim);
-					if (Game.timeTotal - startTime < 0.33f){
-						hero.sprite.parent.add(new Delayer(0.33f - (Game.timeTotal - startTime)) {
-							@Override
-							protected void onComplete() {
-								afterZap(cur, wands, hero, cell);
-							}
-						});
-					} else {
-						afterZap(cur, wands, hero, cell);
-					}
+					afterZap(cur, wands, hero, target);
 				}
 			});
 		} else {
 			CursedWand.cursedZap(cur,
 					hero,
-					new Ballistica(hero.pos, cell, Ballistica.MAGIC_BOLT),
+					new Ballistica(hero.pos, target, Ballistica.MAGIC_BOLT),
 					new Callback() {
 						@Override
 						public void call() {
-							if (Game.timeTotal - startTime < 0.33f){
-								hero.sprite.parent.add(new Delayer(0.33f - (Game.timeTotal - startTime)) {
-									@Override
-									protected void onComplete() {
-										afterZap(cur, wands, hero, cell);
-									}
-								});
-							} else {
-								afterZap(cur, wands, hero, cell);
-							}
+							afterZap(cur, wands, hero, target);
 						}
 					});
 		}

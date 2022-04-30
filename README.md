@@ -1,16 +1,33 @@
-# Shattered Pixel Dungeon
+# Combusted Pixel Dungeon
 
-A Roguelike RPG, with randomly generated levels, items, enemies, and traps! Based on the [source code of Pixel Dungeon](https://github.com/00-Evan/pixel-dungeon-gradle), by [Watabou](https://www.watabou.ru).
+Combusted Pixel Dungeon is a Roguelike RPG, with randomly generated levels, items, enemies, and traps! Based on the [source code of Shattered Pixel Dungeon](https://github.com/00-Evan/shattered-pixel-dungeon), by [Evan-00](https://www.patreon.com/ShatteredPixel) which is based on the [source code of Pixel Dungeon](https://github.com/00-Evan/pixel-dungeon-gradle), by [Watabou](https://www.watabou.ru).
 
-Shattered Pixel Dungeon currently compiles for Android, iOS and Desktop platforms. It is available from [Google Play](https://play.google.com/store/apps/details?id=com.shatteredpixel.shatteredpixeldungeon), [the App Store](https://apps.apple.com/app/shattered-pixel-dungeon/id1563121109), and right here on [GitHub](https://github.com/00-Evan/shattered-pixel-dungeon/releases).
+Ideas, Assets, and code have been implemented from:
+- [Summoning Pixel Dungeon](https://github.com/TrashboxBobylev/Summoning-Pixel-Dungeon).
+- [Re-Remixed Dungeon](https://github.com/QuasiStellar/Re-Remixed_Dungeon).
 
-If you like this game, please consider [supporting me on Patreon](https://www.patreon.com/ShatteredPixel)!
+Combusted Pixel Dungeon implements the following features to Shattered Pixel Dungeon:
+- New Spells
+- Minor UI Improvements
 
-There is an official blog for this project at [ShatteredPixel.com](https://www.shatteredpixel.com).
+Potential future changes might implement:
+- More Weapons
+- Throwable Melee Weapons
+- New Potions, Scrolls & Alchemy Options
+- New Playable Classes:
+  - Alchemist
+  - Cleric?
+- A Story Mode (Preset large, open-world map)
 
-The game also has a translation project hosted on [Transifex](https://www.transifex.com/shattered-pixel/shattered-pixel-dungeon/).
+Check out Shattered Pixel Dungeon at [ShatteredPixel.com](https://www.shatteredpixel.com) and [support it's creator on Patreon](https://www.patreon.com/ShatteredPixel)!
+
+Shattered Pixel Dungeon currently compiles for Android and Desktop platforms. It is available from [Google Play](https://play.google.com/store/apps/details?id=com.shatteredpixel.shatteredpixeldungeon), [the App Store](https://apps.apple.com/app/shattered-pixel-dungeon/id1563121109), and on [GitHub](https://github.com/00-Evan/shattered-pixel-dungeon/releases).
 
 Note that **this repository does not accept pull requests!** The code here is provided in hopes that others may find it useful for their own projects, not to allow community contribution. Issue reports of all kinds (bug reports, feature requests, etc.) are welcome.
+
+[Downloads are avaiable here.](https://github.com/Inferno214221/combusted-pixel-dungeon-master/releases)
+
+# Modding the Game
 
 If you'd like to work with the code, you can find the following guides in `/docs`:
 - [Compiling for Android.](docs/getting-started-android.md)

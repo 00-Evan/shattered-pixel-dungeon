@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CounterBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EnhancedRings;
@@ -45,12 +46,18 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
+import com.shatteredpixel.shatteredpixeldungeon.items.EnergyCrystal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.Brew;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.Elixir;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
@@ -63,6 +70,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.HeroSelectScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
@@ -144,6 +152,23 @@ public enum Talent {
 	//Spirit Hawk T4
 	EAGLE_EYE(119, 4), GO_FOR_THE_EYES(120, 4), SWIFT_SPIRIT(121, 4),
 
+	//Alchemist T1
+	/*One(128),*/ BREWING_KNOWLEDGE(129), //Three(130), //Four(131),
+	//Alchemist T2
+	/*Five(132),*/ ALCHEMY_THEORIES(133), SHIELDING_ELIXIRS(134), RUNE_CRAFTING(135), //Nine(136),
+	//Alchemist T3
+	/*Ten(137, 3),*/ EMPTY(138, 3),
+	//SubclassA T3
+	//Twelve(139, 3), //Thirteen(140, 3), //Fourteen(141, 3),
+	//SubclassB T3
+	//Fifteen(142, 3), //Sixteen(143, 3), //Seventeen(144, 3),
+	//AbilityA T4
+	//Eighteen(145, 4), //Ninteen(146, 4), //Twenty(147, 4),
+	//AbilityB T4
+	//TwentyOne(148, 4), //TwentyTwo(149, 4), //TwentyThree(150, 4),
+	//AbilityC T4
+	//TwentyFour(151, 4), //TwentyFive(152, 4), //TwentySix(153, 4),
+
 	//universal T4
 	HEROIC_ENERGY(26, 4), //See icon() and title() for special logic for this one
 	//Ratmogrify T4
@@ -195,7 +220,7 @@ public enum Talent {
 
 	public int icon(){
 		if (this == HEROIC_ENERGY){
-			if (Ratmogrify.useRatroicEnergy){
+			if (Dungeon.hero != null && Dungeon.hero.armorAbility instanceof Ratmogrify){
 				return 127;
 			}
 			HeroClass cls = Dungeon.hero != null ? Dungeon.hero.heroClass : GamesInProgress.selectedClass;
@@ -219,7 +244,9 @@ public enum Talent {
 	}
 
 	public String title(){
-		if (this == HEROIC_ENERGY && Ratmogrify.useRatroicEnergy){
+		if (this == HEROIC_ENERGY
+				&& Dungeon.hero != null
+				&& Dungeon.hero.armorAbility instanceof Ratmogrify){
 			return Messages.get(this, name() + ".rat_title");
 		}
 		return Messages.get(this, name() + ".title");
@@ -429,15 +456,17 @@ public enum Talent {
 		if (hero.hasTalent(TEST_SUBJECT)){
 			//heal for 2/3 HP
 			hero.HP = Math.min(hero.HP + 1 + hero.pointsInTalent(TEST_SUBJECT), hero.HT);
-			if (hero.sprite != null) {
-				Emitter e = hero.sprite.emitter();
-				if (e != null) e.burst(Speck.factory(Speck.HEALING), hero.pointsInTalent(TEST_SUBJECT));
-			}
+			Emitter e = hero.sprite.emitter();
+			if (e != null) e.burst(Speck.factory(Speck.HEALING), hero.pointsInTalent(TEST_SUBJECT));
 		}
 		if (hero.hasTalent(TESTED_HYPOTHESIS)){
 			//2/3 turns of wand recharging
 			Buff.affect(hero, Recharging.class, 1f + hero.pointsInTalent(TESTED_HYPOTHESIS));
 			ScrollOfRecharging.charge(hero);
+		}
+		if (hero.hasTalent(ALCHEMY_THEORIES) && (item instanceof Potion || item instanceof Scroll)){
+			Dungeon.energy++;
+			if (hero.pointsInTalent(Talent.ALCHEMY_THEORIES) >= 2) Buff.affect(Dungeon.hero, Barrier.class).setShield(2);
 		}
 	}
 
@@ -462,6 +491,37 @@ public enum Talent {
 		}
 
 		return dmg;
+	}
+
+	public static void onItemCrafted ( Hero hero, Item item) {
+		if (hero.hasTalent(Talent.BREWING_KNOWLEDGE) && item instanceof Potion){
+			switch (Random.IntRange(1, 8)){
+				case 1:
+					item.identify();
+					break;
+				case 2:
+					if (hero.pointsInTalent(Talent.BREWING_KNOWLEDGE) >= 2) item.identify();
+					break;
+				default:
+					break;
+			}
+		}
+		if (hero.hasTalent(Talent.RUNE_CRAFTING) && item instanceof Runestone){
+			switch (Random.IntRange(1, 8)){
+				case 1:
+					hero.belongings.getSimilar(item).duplicate(item, 1);
+					break;
+				case 2:
+					if (hero.pointsInTalent(Talent.RUNE_CRAFTING) >= 2) hero.belongings.getSimilar(item).duplicate(item, 1);
+					break;
+				default:
+					break;
+			}
+		}
+	}
+	
+	public static void onUse (Hero hero, Item item) {
+		if (hero.hasTalent(Talent.SHIELDING_ELIXIRS) && (item instanceof Elixir || item instanceof Brew)) Buff.affect(Dungeon.hero, Barrier.class).setShield(2 * hero.pointsInTalent(Talent.SHIELDING_ELIXIRS));
 	}
 
 	public static class SuckerPunchTracker extends Buff{};
@@ -498,6 +558,9 @@ public enum Talent {
 			case HUNTRESS:
 				Collections.addAll(tierTalents, NATURES_BOUNTY, SURVIVALISTS_INTUITION, FOLLOWUP_STRIKE, NATURES_AID);
 				break;
+			case ALCHEMIST:
+				Collections.addAll(tierTalents, EMPTY, BREWING_KNOWLEDGE, EMPTY, EMPTY);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -520,6 +583,9 @@ public enum Talent {
 				break;
 			case HUNTRESS:
 				Collections.addAll(tierTalents, INVIGORATING_MEAL, RESTORED_NATURE, REJUVENATING_STEPS, HEIGHTENED_SENSES, DURABLE_PROJECTILES);
+				break;
+			case ALCHEMIST:
+				Collections.addAll(tierTalents, EMPTY, ALCHEMY_THEORIES, SHIELDING_ELIXIRS, RUNE_CRAFTING, EMPTY);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -544,6 +610,8 @@ public enum Talent {
 			case HUNTRESS:
 				Collections.addAll(tierTalents, POINT_BLANK, SEER_SHOT);
 				break;
+			case ALCHEMIST:
+				Collections.addAll(tierTalents, EMPTY, EMPTY);
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){

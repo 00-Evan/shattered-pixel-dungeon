@@ -156,26 +156,26 @@ public class ShopRoom extends SpecialRoom {
 		switch (Dungeon.depth) {
 		case 6: default:
 			w = (MeleeWeapon) Generator.random(Generator.wepTiers[1]);
-			itemsToSpawn.add( Generator.random(Generator.misTiers[1]).quantity(2).identify(false) );
-			itemsToSpawn.add( new LeatherArmor().identify(false) );
+			itemsToSpawn.add( Generator.random(Generator.misTiers[1]).quantity(2).identify() );
+			itemsToSpawn.add( new LeatherArmor().identify() );
 			break;
 			
 		case 11:
 			w = (MeleeWeapon) Generator.random(Generator.wepTiers[2]);
-			itemsToSpawn.add( Generator.random(Generator.misTiers[2]).quantity(2).identify(false) );
-			itemsToSpawn.add( new MailArmor().identify(false) );
+			itemsToSpawn.add( Generator.random(Generator.misTiers[2]).quantity(2).identify() );
+			itemsToSpawn.add( new MailArmor().identify() );
 			break;
 			
 		case 16:
 			w = (MeleeWeapon) Generator.random(Generator.wepTiers[3]);
-			itemsToSpawn.add( Generator.random(Generator.misTiers[3]).quantity(2).identify(false) );
-			itemsToSpawn.add( new ScaleArmor().identify(false) );
+			itemsToSpawn.add( Generator.random(Generator.misTiers[3]).quantity(2).identify() );
+			itemsToSpawn.add( new ScaleArmor().identify() );
 			break;
 
 		case 20: case 21:
 			w = (MeleeWeapon) Generator.random(Generator.wepTiers[4]);
-			itemsToSpawn.add( Generator.random(Generator.misTiers[4]).quantity(2).identify(false) );
-			itemsToSpawn.add( new PlateArmor().identify(false) );
+			itemsToSpawn.add( Generator.random(Generator.misTiers[4]).quantity(2).identify() );
+			itemsToSpawn.add( new PlateArmor().identify() );
 			itemsToSpawn.add( new Torch() );
 			itemsToSpawn.add( new Torch() );
 			itemsToSpawn.add( new Torch() );
@@ -184,7 +184,7 @@ public class ShopRoom extends SpecialRoom {
 		w.enchant(null);
 		w.cursed = false;
 		w.level(0);
-		w.identify(false);
+		w.identify();
 		itemsToSpawn.add(w);
 		
 		itemsToSpawn.add( TippedDart.randomTipped(2) );

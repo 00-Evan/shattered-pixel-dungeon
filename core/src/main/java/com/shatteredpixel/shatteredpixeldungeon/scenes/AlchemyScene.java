@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -397,12 +398,10 @@ public class AlchemyScene extends PixelScene {
 	private void combine( int slot ){
 		
 		ArrayList<Item> ingredients = filterInput(Item.class);
+
 		if (ingredients.isEmpty()) return;
 
-		ArrayList<Recipe> recipes = Recipe.findRecipes(ingredients);
-		if (recipes.size() <= slot) return;
-
-		Recipe recipe = recipes.get(slot);
+		Recipe recipe = Recipe.findRecipes(ingredients).get(slot);
 		
 		Item result = null;
 		
@@ -444,6 +443,7 @@ public class AlchemyScene extends PixelScene {
 
 			Statistics.itemsCrafted++;
 			Badges.validateItemsCrafted();
+			Talent.onItemCrafted(Dungeon.hero, result);
 			
 			try {
 				Dungeon.saveAll();

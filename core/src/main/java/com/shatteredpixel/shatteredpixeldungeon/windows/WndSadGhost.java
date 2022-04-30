@@ -110,7 +110,7 @@ public class WndSadGhost extends Window {
 			((Armor) reward).inscribe(Ghost.Quest.glyph);
 		}
 		
-		reward.identify(false);
+		reward.identify();
 		if (reward.doPickUp( Dungeon.hero )) {
 			GLog.i( Messages.get(Dungeon.hero, "you_now_have", reward.name()) );
 		} else {

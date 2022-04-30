@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.lwjgl:lwjgl-tinyfd:3.2.3:natives-windows">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-tinyfd/3.2.3/d7d0760c9c904e7810fef96449ae03f33d4caee0/lwjgl-tinyfd-3.2.3-natives-windows.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-tinyfd/3.2.3/d0aef5d3d657d1409b968c30e5ea4293ef98c451/lwjgl-tinyfd-3.2.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -41,12 +41,18 @@ public class Assets {
 		public static final String TILES_CAVES  = "environment/tiles_caves.png";
 		public static final String TILES_CITY   = "environment/tiles_city.png";
 		public static final String TILES_HALLS  = "environment/tiles_halls.png";
+		public static final String TILES_NECROPOLIS = "environment/tiles_necropolis.png";
+		public static final String TILES_ICE_CAVES	= "environment/tiles_ice_caves.png";
+		public static final String TILES_SPIDER_NEST= "environment/tiles_spider_nest.png";
 
 		public static final String WATER_SEWERS = "environment/water0.png";
 		public static final String WATER_PRISON = "environment/water1.png";
 		public static final String WATER_CAVES  = "environment/water2.png";
 		public static final String WATER_CITY   = "environment/water3.png";
 		public static final String WATER_HALLS  = "environment/water4.png";
+		public static final String WATER_NECROPOLIS = "environment/water_necropolis.png";
+		public static final String WATER_ICE_CAVES  = "environment/water_ice_caves.png";
+		public static final String WATER_SPIDER_NEST= "environment/water_spider_nest.png";
 
 		public static final String WEAK_FLOOR       = "environment/custom_tiles/weak_floor.png";
 		public static final String SEWER_BOSS       = "environment/custom_tiles/sewer_boss.png";
@@ -225,6 +231,7 @@ public class Assets {
 		public static final String MAGE     = "splashes/mage.jpg";
 		public static final String ROGUE    = "splashes/rogue.jpg";
 		public static final String HUNTRESS = "splashes/huntress.jpg";
+		public static final String ALCHEMIST= "splashes/alchemist.jpg";
 	}
 
 	public static class Sprites {
@@ -235,6 +242,7 @@ public class Assets {
 		public static final String MAGE     = "sprites/mage.png";
 		public static final String ROGUE    = "sprites/rogue.png";
 		public static final String HUNTRESS = "sprites/huntress.png";
+		public static final String ALCHEMIST= "sprites/alchemist.png";
 		public static final String AVATARS  = "sprites/avatars.png";
 		public static final String PET      = "sprites/pet.png";
 		public static final String AMULET   = "sprites/amulet.png";

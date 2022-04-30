@@ -211,8 +211,8 @@ public abstract class Scroll extends Item {
 	}
 	
 	@Override
-	public Item identify( boolean byHero ) {
-		super.identify(byHero);
+	public Item identify() {
+		super.identify();
 
 		if (!isKnown()) {
 			setKnown();

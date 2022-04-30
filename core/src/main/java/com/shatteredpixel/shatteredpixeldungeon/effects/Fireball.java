@@ -66,7 +66,7 @@ public class Fireball extends Component {
 			public void emit(Emitter emitter, int index, float x, float y) {
 				Flame p = (Flame)emitter.recycle( Flame.class );
 				p.reset();
-				p.heightLimit(Fireball.this.y - 30);
+				p.heightLimit(Fireball.this.y - 50);
 				p.x = x - p.width / 2;
 				p.y = y - p.height / 2;
 			}

@@ -352,6 +352,7 @@ public class ItemSpriteSheet {
 	public static final int ARMOR_MAGE      = ARMOR+6;
 	public static final int ARMOR_ROGUE     = ARMOR+7;
 	public static final int ARMOR_HUNTRESS  = ARMOR+8;
+	public static final int ARMOR_ALCHEMIST = ARMOR+9;
 	static{
 		assignItemRect(ARMOR_CLOTH,     15, 12);
 		assignItemRect(ARMOR_LEATHER,   14, 13);
@@ -362,6 +363,7 @@ public class ItemSpriteSheet {
 		assignItemRect(ARMOR_MAGE,      15, 15);
 		assignItemRect(ARMOR_ROGUE,     14, 12);
 		assignItemRect(ARMOR_HUNTRESS,  13, 15);
+		assignItemRect(ARMOR_ALCHEMIST, 13, 15);
 	}
 
 	                                                                                    //16 free slots
@@ -600,11 +602,11 @@ public class ItemSpriteSheet {
 	public static final int WILD_ENERGY     = SPELLS+3;
 	public static final int RETURN_BEACON   = SPELLS+4;
 	public static final int SUMMON_ELE      = SPELLS+5;
-	
+	public static final int DUPLICATE_ITEM  = SPELLS+6;/////////////////////////////////////////////////////////////////
 	public static final int AQUA_BLAST      = SPELLS+7;
 	public static final int FEATHER_FALL    = SPELLS+8;
 	public static final int RECLAIM_TRAP    = SPELLS+9;
-	
+	public static final int REWIND          = SPELLS+10;
 	public static final int CURSE_INFUSE    = SPELLS+11;
 	public static final int MAGIC_INFUSE    = SPELLS+12;
 	public static final int ALCHEMIZE       = SPELLS+13;
@@ -616,11 +618,11 @@ public class ItemSpriteSheet {
 		assignItemRect(WILD_ENERGY,      8, 16);
 		assignItemRect(RETURN_BEACON,    8, 16);
 		assignItemRect(SUMMON_ELE,       8, 16);
-		
+		assignItemRect(DUPLICATE_ITEM,  16, 11);
 		assignItemRect(AQUA_BLAST,      11, 11);
 		assignItemRect(FEATHER_FALL,    11, 11);
 		assignItemRect(RECLAIM_TRAP,    11, 11);
-		
+		assignItemRect(REWIND,          10, 15);
 		assignItemRect(CURSE_INFUSE,    10, 15);
 		assignItemRect(MAGIC_INFUSE,    10, 15);
 		assignItemRect(ALCHEMIZE,       10, 15);

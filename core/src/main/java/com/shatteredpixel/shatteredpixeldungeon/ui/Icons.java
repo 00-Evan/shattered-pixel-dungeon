@@ -38,6 +38,7 @@ public enum Icons {
 	CHANGES,
 	PREFS,
 	SHPX,
+	CBPX,
 
 	//rankings and hero select icons, spacing for 16x16
 	STAIRS,
@@ -45,6 +46,7 @@ public enum Icons {
 	MAGE,
 	ROGUE,
 	HUNTRESS,
+	ALCHEMIST,
 
 	//grey icons, mainly used for buttons, spacing for 16x16
 	EXIT,
@@ -144,6 +146,9 @@ public enum Icons {
 			case SHPX:
 				icon.frame( icon.texture.uvRectBySize( 119, 0, 16, 16 ) );
 				break;
+			case CBPX:
+				icon.frame( icon.texture.uvRectBySize( /*135*/153, 0, 16, 16 ) );
+				break;
 
 			case STAIRS:
 				icon.frame( icon.texture.uvRectBySize( 0, 16, 13, 16 ) );
@@ -159,6 +164,9 @@ public enum Icons {
 				break;
 			case HUNTRESS:
 				icon.frame( icon.texture.uvRectBySize( 64, 16, 16, 16 ) );
+				break;
+			case ALCHEMIST:
+				icon.frame( icon.texture.uvRectBySize( 80, 16, 16, 16 ) );
 				break;
 
 			case EXIT:
@@ -363,6 +371,8 @@ public enum Icons {
 			return get( ROGUE );
 		case HUNTRESS:
 			return get( HUNTRESS );
+		case ALCHEMIST:
+			return get( ALCHEMIST );
 		default:
 			return null;
 		}
