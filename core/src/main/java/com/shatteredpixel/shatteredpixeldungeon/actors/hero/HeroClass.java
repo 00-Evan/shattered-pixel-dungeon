@@ -62,11 +62,15 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMappi
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfDivination;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfMetamorphosis;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.Confusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.DuplicateItem;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.Petrification;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.Polymorph;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Rewind;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
@@ -248,8 +252,6 @@ public enum HeroClass {
 
 		new PotionOfLiquidFlame().identify();
 		new PotionOfHealing().identify();
-		new ElixirOfDragonsBlood().collect();new InfernalBrew().collect();new InfernalBrew().collect();new ScrollOfTeleportation().collect();new ScrollOfTeleportation().collect();new ScrollOfTeleportation().collect();new ScrollOfTeleportation().collect();new ScrollOfTeleportation().collect();new ScrollOfTeleportation().collect();new ScrollOfTeleportation().collect();new ScrollOfTeleportation().collect();
-		hero.exp+=500;
 	}
 
 	public String title() {
