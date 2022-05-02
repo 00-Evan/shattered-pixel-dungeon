@@ -600,6 +600,7 @@ public class ItemSpriteSheet {
 	public static final int POLYMORPH       = NEW_SPELLS+2;
 	public static final int PETRIFICATION	= NEW_SPELLS+3;
 	public static final int CONFUSION		= NEW_SPELLS+4;
+	public static final int ENCHANT			= NEW_SPELLS+5;
 	static {
 		for (int i = NEW_SPELLS; i < NEW_SPELLS+16; i++)
 			assignItemRect(i, 15, 14);

@@ -7,15 +7,17 @@ Ideas, Assets, and code have been implemented from:
 - [Re-Remixed Dungeon](https://github.com/QuasiStellar/Re-Remixed_Dungeon).
 
 Combusted Pixel Dungeon implements the following features to Shattered Pixel Dungeon:
-- New Spells
-- Minor UI Improvements
+- 5 New Spells
+- Minor UI & Graphics Improvements
+- Alternate Map Graphics for the Prison, Caves and City. (Using Graphic Assets from Re-Remixed Dungeon)
+- New Class:
+  - Alchemist (WIP)
 
 Potential future changes might implement:
 - More Weapons
 - Throwable Melee Weapons
 - New Potions, Scrolls & Alchemy Options
 - New Playable Classes:
-  - Alchemist
   - Cleric?
 - A Story Mode (Preset large, open-world map)
 

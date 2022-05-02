@@ -56,14 +56,14 @@ public class Petrification extends Spell {
 	@Override
 	public int value() {
 		//prices of ingredients, divided by output quantity
-		return Math.round(quantity * (100 / 2f));
+		return Math.round(quantity * (100));
 	}
 
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 
 		{
-			inputs =  new Class[]{ScrollOfTerror.class, StoneOfDeepSleep.class, StoneOfDeepSleep.class};
-			inQuantity = new int[]{1, 1, 1};
+			inputs =  new Class[]{ScrollOfTerror.class, StoneOfDeepSleep.class};
+			inQuantity = new int[]{1, 2};
 
 			cost = 4;
 

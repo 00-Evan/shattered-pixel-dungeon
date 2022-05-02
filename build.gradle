@@ -14,8 +14,8 @@ allprojects {
         appName = 'Combusted Pixel Dungeon'
         appPackageName = 'com.inferno.combustedpixeldungeon'
 
-        appVersionCode = 616
-        appVersionName = '0.0.1'
+        appVersionCode = 630
+        appVersionName = '0.0.16'
 
         appJavaCompatibility = JavaVersion.VERSION_1_8
 

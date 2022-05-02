@@ -58,6 +58,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.spells.BeaconOfReturning;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Confusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.CurseInfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.DuplicateItem;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.EnchantParchment;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.FeatherFall;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicalInfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicalPorter;
@@ -387,11 +388,10 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new WildEnergy.Recipe()));
 				result.add(new QuickRecipe(new BeaconOfReturning.Recipe()));
 				result.add(new QuickRecipe(new SummonElemental.Recipe()));
-				result.add(null);
+//				result.add(null);
 				result.add(new QuickRecipe(new AquaBlast.Recipe()));
 				result.add(new QuickRecipe(new ReclaimTrap.Recipe()));
 				result.add(new QuickRecipe(new FeatherFall.Recipe()));
-				result.add(null);
 				result.add(new QuickRecipe(new Alchemize.Recipe()));
 				result.add(new QuickRecipe(new MagicalInfusion.Recipe()));
 				result.add(new QuickRecipe(new CurseInfusion.Recipe()));
@@ -402,6 +402,7 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new Polymorph.Recipe()));
 				result.add(new QuickRecipe(new Confusion.Recipe()));
 				result.add(new QuickRecipe(new Petrification.Recipe()));
+				result.add(new QuickRecipe(new EnchantParchment.Recipe()));
 				return result;
 		}
 	}

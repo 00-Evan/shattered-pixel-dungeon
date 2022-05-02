@@ -77,14 +77,14 @@ public class Polymorph extends Spell {
 	@Override
 	public int value() {
 		//prices of ingredients, divided by output quantity
-		return Math.round(quantity * (100 / 2f));
+		return Math.round(quantity * (100));
 	}
 
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 
 		{
-			inputs =  new Class[]{ScrollOfTransmutation.class, StoneOfFlock.class, StoneOfFlock.class};
-			inQuantity = new int[]{1, 1, 1};
+			inputs =  new Class[]{ScrollOfTransmutation.class, StoneOfFlock.class};
+			inQuantity = new int[]{1, 2};
 
 			cost = 4;
 
