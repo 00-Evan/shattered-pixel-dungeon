@@ -37,6 +37,7 @@ public class ShockingBrew extends Brew {
 	
 	{
 		image = ItemSpriteSheet.BREW_SHOCKING;
+		icon = ItemSpriteSheet.Icons.POTION_PARAGAS;
 	}
 	
 	@Override

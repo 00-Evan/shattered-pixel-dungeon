@@ -32,6 +32,7 @@ public class ElixirOfArcaneArmor extends Elixir {
 	
 	{
 		image = ItemSpriteSheet.ELIXIR_ARCANE;
+		icon = ItemSpriteSheet.Icons.POTION_SHIELDING;
 	}
 	
 	@Override

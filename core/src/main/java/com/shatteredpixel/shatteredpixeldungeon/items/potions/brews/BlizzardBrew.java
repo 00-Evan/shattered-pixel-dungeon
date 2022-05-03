@@ -36,6 +36,7 @@ public class BlizzardBrew extends Brew {
 	
 	{
 		image = ItemSpriteSheet.BREW_BLIZZARD;
+		icon = ItemSpriteSheet.Icons.POTION_FROST;
 	}
 	
 	@Override

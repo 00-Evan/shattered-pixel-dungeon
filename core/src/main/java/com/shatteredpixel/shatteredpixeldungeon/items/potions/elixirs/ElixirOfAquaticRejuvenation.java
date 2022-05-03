@@ -41,6 +41,7 @@ public class ElixirOfAquaticRejuvenation extends Elixir {
 	
 	{
 		image = ItemSpriteSheet.ELIXIR_AQUA;
+		icon = ItemSpriteSheet.Icons.POTION_HEALING;
 	}
 	
 	@Override

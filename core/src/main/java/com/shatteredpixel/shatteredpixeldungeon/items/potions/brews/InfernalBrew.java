@@ -36,6 +36,7 @@ public class InfernalBrew extends Brew {
 	
 	{
 		image = ItemSpriteSheet.BREW_INFERNAL;
+		icon = ItemSpriteSheet.Icons.POTION_LIQFLAME;
 	}
 	
 	@Override

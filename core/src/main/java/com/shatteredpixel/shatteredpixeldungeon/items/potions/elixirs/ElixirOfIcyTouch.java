@@ -33,6 +33,7 @@ public class ElixirOfIcyTouch extends Elixir {
 	
 	{
 		image = ItemSpriteSheet.ELIXIR_ICY;
+		icon = ItemSpriteSheet.Icons.POTION_SNAPFREEZ;
 	}
 	
 	@Override

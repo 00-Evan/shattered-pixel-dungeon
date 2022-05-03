@@ -35,6 +35,7 @@ public class ElixirOfDragonsBlood extends Elixir {
 	
 	{
 		image = ItemSpriteSheet.ELIXIR_DRAGON;
+		icon = ItemSpriteSheet.Icons.POTION_DRGBREATH;
 	}
 	
 	@Override

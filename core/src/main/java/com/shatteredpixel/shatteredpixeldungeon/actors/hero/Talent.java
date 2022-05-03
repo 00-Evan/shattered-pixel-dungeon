@@ -153,7 +153,7 @@ public enum Talent {
 	EAGLE_EYE(119, 4), GO_FOR_THE_EYES(120, 4), SWIFT_SPIRIT(121, 4),
 
 	//Alchemist T1
-	/*One(128),*/ BREWING_KNOWLEDGE(129), //Three(130), //Four(131),
+	/*One(128),*/ BREWING_KNOWLEDGE(129), SCROLL_KNOWLEDGE(130), //Four(131),
 	//Alchemist T2
 	/*Five(132),*/ ALCHEMY_THEORIES(133), SHIELDING_ELIXIRS(134), RUNE_CRAFTING(135), //Nine(136),
 	//Alchemist T3
@@ -506,6 +506,18 @@ public enum Talent {
 					break;
 			}
 		}
+		if (hero.hasTalent(Talent.SCROLL_KNOWLEDGE) && item instanceof Potion){
+			switch (Random.IntRange(1, 8)){
+				case 1:
+					item.identify();
+					break;
+				case 2:
+					if (hero.pointsInTalent(Talent.SCROLL_KNOWLEDGE) >= 2) item.identify();
+					break;
+				default:
+					break;
+			}
+		}
 		if (hero.hasTalent(Talent.RUNE_CRAFTING) && item instanceof Runestone){
 			switch (Random.IntRange(1, 8)){
 				case 1:
@@ -559,7 +571,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, NATURES_BOUNTY, SURVIVALISTS_INTUITION, FOLLOWUP_STRIKE, NATURES_AID);
 				break;
 			case ALCHEMIST:
-				Collections.addAll(tierTalents, EMPTY, BREWING_KNOWLEDGE, EMPTY, EMPTY);
+				Collections.addAll(tierTalents, EMPTY, BREWING_KNOWLEDGE, SCROLL_KNOWLEDGE, EMPTY);
 				break;
 		}
 		for (Talent talent : tierTalents){

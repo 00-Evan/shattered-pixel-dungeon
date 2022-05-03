@@ -33,6 +33,7 @@ public class ElixirOfToxicEssence extends Elixir {
 	
 	{
 		image = ItemSpriteSheet.ELIXIR_TOXIC;
+		icon = ItemSpriteSheet.Icons.POTION_TOXICGAS;
 	}
 	
 	@Override

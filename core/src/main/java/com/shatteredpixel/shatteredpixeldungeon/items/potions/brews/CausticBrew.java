@@ -39,6 +39,7 @@ public class CausticBrew extends Brew {
 	
 	{
 		image = ItemSpriteSheet.BREW_CAUSTIC;
+		icon = ItemSpriteSheet.Icons.POTION_SHROUDFOG;
 	}
 	
 	@Override
