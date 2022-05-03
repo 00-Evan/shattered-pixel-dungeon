@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -70,9 +70,7 @@ public class Electricity extends Blob {
 				if (cur[cell] > 0) {
 					Char ch = Actor.findChar( cell );
 					if (ch != null && !ch.isImmune(this.getClass())) {
-						if (ch.buff(Paralysis.class) == null){
-							Buff.prolong( ch, Paralysis.class, cur[cell]);
-						}
+						Buff.prolong( ch, Paralysis.class, 1f);
 						if (cur[cell] % 2 == 1) {
 							ch.damage(Math.round(Random.Float(2 + Dungeon.depth / 5f)), this);
 							if (!ch.isAlive() && ch == Dungeon.hero){

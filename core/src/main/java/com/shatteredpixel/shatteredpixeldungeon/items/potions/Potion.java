@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,6 +57,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Firebloom;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Icecap;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
+import com.shatteredpixel.shatteredpixeldungeon.plants.SkyBlueFireBloom;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sorrowmoss;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Starflower;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Stormvine;
@@ -101,6 +102,7 @@ public class Potion extends Item {
 			put("charcoal",ItemSpriteSheet.POTION_CHARCOAL);
 			put("silver",ItemSpriteSheet.POTION_SILVER);
 			put("ivory",ItemSpriteSheet.POTION_IVORY);
+			put("skyblue",ItemSpriteSheet.POTION_SKYBLUE);
 		}
 	};
 	
@@ -110,6 +112,7 @@ public class Potion extends Item {
 		mustThrowPots.add(PotionOfLiquidFlame.class);
 		mustThrowPots.add(PotionOfParalyticGas.class);
 		mustThrowPots.add(PotionOfFrost.class);
+		mustThrowPots.add(PotionOfLiquidFlameX.class);
 		
 		//exotic
 		mustThrowPots.add(PotionOfCorrosiveGas.class);
@@ -238,8 +241,7 @@ public class Potion extends Item {
 			if (isKnown() && mustThrowPots.contains(getClass())) {
 				
 					GameScene.show(
-						new WndOptions(new ItemSprite(this),
-								Messages.get(Potion.class, "harmful"),
+						new WndOptions( Messages.get(Potion.class, "harmful"),
 								Messages.get(Potion.class, "sure_drink"),
 								Messages.get(Potion.class, "yes"), Messages.get(Potion.class, "no") ) {
 							@Override
@@ -266,8 +268,7 @@ public class Potion extends Item {
 				&& !canThrowPots.contains(this.getClass())) {
 		
 			GameScene.show(
-				new WndOptions(new ItemSprite(this),
-						Messages.get(Potion.class, "beneficial"),
+				new WndOptions( Messages.get(Potion.class, "beneficial"),
 						Messages.get(Potion.class, "sure_throw"),
 						Messages.get(Potion.class, "yes"), Messages.get(Potion.class, "no") ) {
 					@Override
@@ -352,8 +353,8 @@ public class Potion extends Item {
 	}
 	
 	@Override
-	public Item identify( boolean byHero ) {
-		super.identify(byHero);
+	public Item identify() {
+		super.identify();
 
 		if (!isKnown()) {
 			setKnown();
@@ -419,12 +420,7 @@ public class Potion extends Item {
 	public int value() {
 		return 30 * quantity;
 	}
-
-	@Override
-	public int energyVal() {
-		return 6 * quantity;
-	}
-
+	
 	public static class PlaceHolder extends Potion {
 		
 		{
@@ -452,6 +448,7 @@ public class Potion extends Item {
 			types.put(Earthroot.Seed.class,     PotionOfParalyticGas.class);
 			types.put(Fadeleaf.Seed.class,      PotionOfMindVision.class);
 			types.put(Firebloom.Seed.class,     PotionOfLiquidFlame.class);
+			types.put(SkyBlueFireBloom.Seed.class,     PotionOfLiquidFlameX.class);
 			types.put(Icecap.Seed.class,        PotionOfFrost.class);
 			types.put(Rotberry.Seed.class,      PotionOfStrength.class);
 			types.put(Sorrowmoss.Seed.class,    PotionOfToxicGas.class);
@@ -514,7 +511,8 @@ public class Potion extends Item {
 			}
 
 			while (result instanceof PotionOfHealing
-					&& Random.Int(10) < Dungeon.LimitedDrops.COOKING_HP.count) {
+					&& (Dungeon.isChallenged(Challenges.NO_HEALING)
+					|| Random.Int(10) < Dungeon.LimitedDrops.COOKING_HP.count)) {
 
 				result = (Potion) Generator.randomUsingDefaults(Generator.Category.POTION);
 			}
@@ -522,6 +520,9 @@ public class Potion extends Item {
 			if (result instanceof PotionOfHealing) {
 				Dungeon.LimitedDrops.COOKING_HP.count++;
 			}
+			
+			Statistics.potionsCooked++;
+			Badges.validatePotionsCooked();
 			
 			return result;
 		}

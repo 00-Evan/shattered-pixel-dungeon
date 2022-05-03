@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Alchemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
-import com.shatteredpixel.shatteredpixeldungeon.items.EnergyCrystal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.AlchemyPage;
@@ -44,12 +43,12 @@ import java.util.Collection;
 public class LaboratoryRoom extends SpecialRoom {
 
 	public void paint( Level level ) {
-		
+
 		Painter.fill( level, this, Terrain.WALL );
 		Painter.fill( level, this, 1, Terrain.EMPTY_SP );
-		
+
 		Door entrance = entrance();
-		
+
 		Point pot = null;
 		if (entrance.x == left) {
 			pot = new Point( right-1, Random.Int( 2 ) == 0 ? top + 1 : bottom - 1 );
@@ -61,53 +60,49 @@ public class LaboratoryRoom extends SpecialRoom {
 			pot = new Point( Random.Int( 2 ) == 0 ? left + 1 : right - 1, top+1 );
 		}
 		Painter.set( level, pot, Terrain.ALCHEMY );
-		
+
 		int chapter = 1 + Dungeon.depth/5;
-		Blob.seed( pot.x + level.width() * pot.y, 1, Alchemy.class, level );
+		Blob.seed( pot.x + level.width() * pot.y, 1 + chapter*10 + Random.NormalIntRange(0, 10), Alchemy.class, level );
 
-		int pos;
-		do {
-			pos = level.pointToCell(random());
-		} while (
-				level.map[pos] != Terrain.EMPTY_SP ||
-						level.heaps.get( pos ) != null);
-		level.drop( new EnergyCrystal().random(), pos );
-
-		int n = Random.NormalIntRange( 1, 2 );
+		int n = Random.NormalIntRange( 1, 3 );
 		for (int i=0; i < n; i++) {
+			int pos;
 			do {
 				pos = level.pointToCell(random());
 			} while (
-				level.map[pos] != Terrain.EMPTY_SP ||
-				level.heaps.get( pos ) != null);
+					level.map[pos] != Terrain.EMPTY_SP ||
+							level.heaps.get( pos ) != null);
 			level.drop( prize( level ), pos );
 		}
-		
+
 		//guide pages
-		Collection<String> allPages = Document.ALCHEMY_GUIDE.pageNames();
+		Collection<String> allPages = Document.ALCHEMY_GUIDE.pages();
 		ArrayList<String> missingPages = new ArrayList<>();
 		for ( String page : allPages){
-			if (!Document.ALCHEMY_GUIDE.isPageFound(page)){
+			if (!Document.ALCHEMY_GUIDE.hasPage(page)){
 				missingPages.add(page);
 			}
 		}
-		
-		//5 pages in sewers, 10 in prison+
+
+		//4 pages in sewers, 6 in prison, 9 in caves+
 		int chapterTarget;
-		if (missingPages.size() <= 5){
+		if (missingPages.size() <= 3){
+			chapterTarget = 3;
+		} else if (missingPages.size() <= 5){
 			chapterTarget = 2;
 		} else {
 			chapterTarget = 1;
 		}
-		
+
 		if(!missingPages.isEmpty() && chapter >= chapterTarget){
-			
+
 			//for each chapter ahead of the target chapter, drop 1 additional page
 			int pagesToDrop = Math.min(missingPages.size(), (chapter - chapterTarget) + 1);
-			
+
 			for (int i = 0; i < pagesToDrop; i++) {
 				AlchemyPage p = new AlchemyPage();
 				p.page(missingPages.remove(0));
+				int pos;
 				do {
 					pos = level.pointToCell(random());
 				} while (
@@ -117,11 +112,15 @@ public class LaboratoryRoom extends SpecialRoom {
 			}
 		}
 
-		entrance.set( Door.Type.LOCKED );
-		level.addItemToSpawn( new IronKey( Dungeon.depth ) );
-		
+		if (level instanceof RegularLevel && ((RegularLevel)level).hasPitRoom()){
+			entrance.set( Door.Type.REGULAR );
+		} else {
+			entrance.set( Door.Type.LOCKED );
+			level.addItemToSpawn( new IronKey( Dungeon.depth ) );
+		}
+
 	}
-	
+
 	private static Item prize( Level level ) {
 
 		Item prize = level.findPrizeItem( Potion.class );

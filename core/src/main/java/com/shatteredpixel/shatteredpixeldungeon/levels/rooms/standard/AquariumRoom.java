@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,12 +30,12 @@ public class AquariumRoom extends StandardRoom {
 	
 	@Override
 	public int minWidth() {
-		return Math.max(super.minWidth(), 7);
+		return Math.max(super.minWidth(), 5);
 	}
 	
 	@Override
 	public int minHeight() {
-		return Math.max(super.minHeight(), 7);
+		return Math.max(super.minHeight(), 5);
 	}
 	
 	@Override
@@ -48,7 +48,7 @@ public class AquariumRoom extends StandardRoom {
 		Painter.fill( level, this, Terrain.WALL );
 		Painter.fill( level, this, 1, Terrain.EMPTY );
 		Painter.fill( level, this, 2, Terrain.EMPTY_SP );
-		Painter.fill( level, this, 3, Terrain.WATER );
+		Painter.fill( level, this, 1, Terrain.WATER );
 		
 		int minDim = Math.min(width(), height());
 		int numFish = (minDim - 4)/3; //1-3 fish, depending on room size

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,9 +21,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
+import static com.shatteredpixel.shatteredpixeldungeon.Challenges.RLPT;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.RedDragon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.CavesPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
@@ -31,8 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ConfusionTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CorrosionTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FrostTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GatewayTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GeyserTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrippingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GuardianTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PitfallTrap;
@@ -45,7 +46,6 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
-import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
@@ -60,30 +60,39 @@ public class CavesLevel extends RegularLevel {
 	}
 
 	@Override
-	public void playLevelMusic() {
-		Music.INSTANCE.playTracks(
-				new String[]{Assets.Music.CAVES_1, Assets.Music.CAVES_2, Assets.Music.CAVES_2},
-				new float[]{1, 1, 0.5f},
-				false);
-	}
-
-	@Override
 	protected ArrayList<Room> initRooms() {
 		return Blacksmith.Quest.spawn(super.initRooms());
 	}
-	
+
+
 	@Override
 	protected int standardRooms(boolean forceMax) {
-		if (forceMax) return 7;
-		//6 to 7, average 6.333
-		return 6+Random.chances(new float[]{2, 1});
+		if (forceMax) return 1;
+		//5 to 7, average 5.57
+		return 1+Random.chances(new float[]{1, 1, 1});
 	}
 	
 	@Override
 	protected int specialRooms(boolean forceMax) {
 		if (forceMax) return 3;
-		//2 to 3, average 2.2
-		return 2+Random.chances(new float[]{4, 1});
+		//1 to 3, average 2.2
+		return 1+Random.chances(new float[]{2, 4, 4});
+	}
+
+	//红龙的试炼
+	@Override
+	protected void createItems() {
+		if (Dungeon.isChallenged(RLPT)) {
+			super.createItems();
+		} else {
+			RedDragon.Quest.spawn(this);
+			super.createItems();
+		}
+	}
+
+	@Override
+	public int nMobs(){
+		return 8;
 	}
 	
 	@Override
@@ -96,20 +105,20 @@ public class CavesLevel extends RegularLevel {
 	
 	@Override
 	public String tilesTex() {
-		return Assets.Environment.TILES_CAVES;
+		return Assets.Environment.TILES_COLD;
 	}
 	
 	@Override
 	public String waterTex() {
-		return Assets.Environment.WATER_CAVES;
+		return Assets.Environment.WATER_COLD;
 	}
-	
+
 	@Override
 	protected Class<?>[] trapClasses() {
 		return new Class[]{
 				BurningTrap.class, PoisonDartTrap.class, FrostTrap.class, StormTrap.class, CorrosionTrap.class,
 				GrippingTrap.class, RockfallTrap.class,  GuardianTrap.class,
-				ConfusionTrap.class, SummoningTrap.class, WarpingTrap.class, PitfallTrap.class, GatewayTrap.class, GeyserTrap.class };
+				ConfusionTrap.class, SummoningTrap.class, WarpingTrap.class, PitfallTrap.class };
 	}
 
 	@Override
@@ -117,9 +126,9 @@ public class CavesLevel extends RegularLevel {
 		return new float[]{
 				4, 4, 4, 4, 4,
 				2, 2, 2,
-				1, 1, 1, 1, 1, 1 };
+				1, 1, 1, 1 };
 	}
-	
+
 	@Override
 	public String tileName( int tile ) {
 		switch (tile) {
@@ -147,6 +156,9 @@ public class CavesLevel extends RegularLevel {
 				return Messages.get(CavesLevel.class, "wall_deco_desc");
 			case Terrain.BOOKSHELF:
 				return Messages.get(CavesLevel.class, "bookshelf_desc");
+			case Terrain.WATER:
+				return Messages.get(CavesLevel.class,
+						"water_desc");
 			default:
 				return super.tileDesc( tile );
 		}

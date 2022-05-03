@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM300;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewDM300;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
@@ -54,8 +54,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ShamanSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SpawnerSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.StatueSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.YogSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIcon;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Image;
@@ -285,7 +283,7 @@ public class v0_8_X_Changes {
 				"_-_ Some misc sounds have also been added for: gas spewing, chains being thrown, magical effects charging up, and the player being hit to low health.\n\n" +
 				"I've also remastered the title and ending music tracks to improve their quality and volume."));
 
-		changes.addButton( new ChangeButton(new BuffIcon(BuffIndicator.MIND_VISION, true), "Item and Buff Icons",
+		changes.addButton( new ChangeButton(new Image(Assets.Interfaces.BUFFS_LARGE, 0, 0, 16, 16), "Item and Buff Icons",
 				"_Buff icons now have a new fading behaviour_ that much more accurately communicates how much of their duration is left. Several duplicated buff icons have also been recolored so they are distinct.\n\n" +
 				"_Item icons have been added to rings!_ To accommodate this, item icons now appear in the top-right of an item's inventory slot. Several existing item icons have also been improved."));
 
@@ -499,7 +497,7 @@ public class v0_8_X_Changes {
 
 		Image i = new Image(new DM300Sprite());
 		i.scale.set(PixelScene.align(0.74f));
-		changes.addButton( new ChangeButton(i, Messages.get(DM300.class, "name"),
+		changes.addButton( new ChangeButton(i, Messages.get(NewDM300.class, "name"),
 				"The DM-300 fight has been reworked! DM-300 now has redesigned abilities, a new boss arena, and multiple phases!\n\n" +
 				"As a part of this rework, DM-300's direct stats have been adjusted:\n" +
 				"_-_ Health increased to 300 from 200\n" +
@@ -684,7 +682,7 @@ public class v0_8_X_Changes {
 				"_-_ Doubled corruption resistance reduction from debuffs, as it was 50% weaker than intended. It is now as strong as listed in 0.7.5 changelog (50% for major debuffs, 25% for minor)\n\n" +
 				"Additionally, corruption is getting access to two of the new debuffs added in 0.8.0: _Hex,_ and _Weakness._"));
 
-		changes.addButton( new ChangeButton(new BuffIcon(BuffIndicator.BLESS, true), "Bless changes",
+		changes.addButton( new ChangeButton(new Image(Assets.Interfaces.BUFFS_LARGE, 80, 32, 16, 16), "Bless changes",
 				"Accuracy and evasion bonuses from blessed buff increased to 25% from 20%." ));
 
 		changes.addButton( new ChangeButton(new StoneOfAugmentation(),

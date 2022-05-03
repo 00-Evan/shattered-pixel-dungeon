@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ public class Viscosity extends Glyph {
 
 		//account for huntress armor piercing
 		if (attacker instanceof Hero
-				&& ((Hero) attacker).belongings.weapon() instanceof MissileWeapon
+				&& ((Hero) attacker).belongings.weapon instanceof MissileWeapon
 				&& ((Hero) attacker).subClass == HeroSubClass.SNIPER
 				&& !Dungeon.level.adjacent(attacker.pos, defender.pos)){
 			realDamage = damage;
@@ -126,11 +126,6 @@ public class Viscosity extends Glyph {
 		@Override
 		public int icon() {
 			return BuffIndicator.DEFERRED;
-		}
-
-		@Override
-		public String iconTextDisplay() {
-			return Integer.toString(damage);
 		}
 		
 		@Override

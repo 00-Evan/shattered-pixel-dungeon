@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -89,15 +89,15 @@ public class Piranha extends Mob {
 	}
 
 	@Override
-	public boolean surprisedBy(Char enemy, boolean attacking) {
-		if (enemy == Dungeon.hero && (!attacking || ((Hero)enemy).canSurpriseAttack())){
+	public boolean surprisedBy(Char enemy) {
+		if (enemy == Dungeon.hero && ((Hero)enemy).canSurpriseAttack()){
 			if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
 				fieldOfView = new boolean[Dungeon.level.length()];
 				Dungeon.level.updateFieldOfView( this, fieldOfView );
 			}
 			return state == SLEEPING || !fieldOfView[enemy.pos] || enemy.invisible > 0;
 		}
-		return super.surprisedBy(enemy, attacking);
+		return super.surprisedBy(enemy);
 	}
 	
 	@Override

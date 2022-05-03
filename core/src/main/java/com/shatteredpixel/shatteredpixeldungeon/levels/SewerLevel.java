@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,8 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.AlarmTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ConfusionTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FlockTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GatewayTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GeyserTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.OozeTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ShockingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
@@ -44,7 +42,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
-import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.utils.ColorMath;
@@ -58,27 +55,25 @@ public class SewerLevel extends RegularLevel {
 		color2 = 0x59994a;
 	}
 
-	public void playLevelMusic(){
-		Music.INSTANCE.playTracks(
-				new String[]{Assets.Music.SEWERS_1, Assets.Music.SEWERS_2, Assets.Music.SEWERS_2},
-				new float[]{1, 1, 0.5f},
-				false);
+	@Override
+	public int nMobs(){
+		return 8;
 	}
-	
+
 	@Override
 	protected int standardRooms(boolean forceMax) {
 		if (forceMax) return 6;
 		//4 to 6, average 5
 		return 4+Random.chances(new float[]{1, 3, 1});
 	}
-	
+
 	@Override
 	protected int specialRooms(boolean forceMax) {
 		if (forceMax) return 2;
 		//1 to 2, average 1.8
 		return 1+Random.chances(new float[]{1, 4});
 	}
-	
+
 	@Override
 	protected Painter painter() {
 		return new SewerPainter()
@@ -86,17 +81,17 @@ public class SewerLevel extends RegularLevel {
 				.setGrass(feeling == Feeling.GRASS ? 0.80f : 0.20f, 4)
 				.setTraps(nTraps(), trapClasses(), trapChances());
 	}
-	
+
 	@Override
 	public String tilesTex() {
 		return Assets.Environment.TILES_SEWERS;
 	}
-	
+
 	@Override
 	public String waterTex() {
-		return Assets.Environment.WATER_SEWERS;
+		return Assets.Environment.WATER_COLD;
 	}
-	
+
 	@Override
 	protected Class<?>[] trapClasses() {
 		return Dungeon.depth == 1 ?
@@ -104,8 +99,8 @@ public class SewerLevel extends RegularLevel {
 				new Class<?>[]{
 						ChillingTrap.class, ShockingTrap.class, ToxicTrap.class, WornDartTrap.class,
 						AlarmTrap.class, OozeTrap.class,
-						ConfusionTrap.class, FlockTrap.class, SummoningTrap.class, TeleportationTrap.class, GatewayTrap.class };
-}
+						ConfusionTrap.class, FlockTrap.class, SummoningTrap.class, TeleportationTrap.class };
+	}
 
 	@Override
 	protected float[] trapChances() {
@@ -114,23 +109,23 @@ public class SewerLevel extends RegularLevel {
 				new float[]{
 						4, 4, 4, 4,
 						2, 2,
-						1, 1, 1, 1, 1};
+						1, 1, 1, 1};
 	}
-	
+
 	@Override
 	protected void createItems() {
 		Ghost.Quest.spawn( this );
-		
+
 		super.createItems();
 	}
-	
+
 	@Override
 	public Group addVisuals() {
 		super.addVisuals();
 		addSewerVisuals(this, visuals);
 		return visuals;
 	}
-	
+
 	public static void addSewerVisuals( Level level, Group group ) {
 		for (int i=0; i < level.length(); i++) {
 			if (level.map[i] == Terrain.WALL_DECO) {
@@ -138,7 +133,7 @@ public class SewerLevel extends RegularLevel {
 			}
 		}
 	}
-	
+
 	@Override
 	public String tileName( int tile ) {
 		switch (tile) {
@@ -148,7 +143,7 @@ public class SewerLevel extends RegularLevel {
 				return super.tileName( tile );
 		}
 	}
-	
+
 	@Override
 	public String tileDesc(int tile) {
 		switch (tile) {
@@ -156,42 +151,45 @@ public class SewerLevel extends RegularLevel {
 				return Messages.get(SewerLevel.class, "empty_deco_desc");
 			case Terrain.BOOKSHELF:
 				return Messages.get(SewerLevel.class, "bookshelf_desc");
+			case Terrain.WATER:
+				return Messages.get(SewerLevel.class,
+					"water_desc");
 			default:
 				return super.tileDesc( tile );
 		}
 	}
-	
+
 	private static class Sink extends Emitter {
-		
+
 		private int pos;
 		private float rippleDelay = 0;
-		
+
 		private static final Emitter.Factory factory = new Factory() {
-			
+
 			@Override
 			public void emit( Emitter emitter, int index, float x, float y ) {
 				WaterParticle p = (WaterParticle)emitter.recycle( WaterParticle.class );
 				p.reset( x, y );
 			}
 		};
-		
+
 		public Sink( int pos ) {
 			super();
-			
+
 			this.pos = pos;
-			
+
 			PointF p = DungeonTilemap.tileCenterToWorld( pos );
 			pos( p.x - 2, p.y + 3, 4, 0 );
-			
+
 			pour( factory, 0.1f );
 		}
-		
+
 		@Override
 		public void update() {
 			if (visible = (pos < Dungeon.level.heroFOV.length && Dungeon.level.heroFOV[pos])) {
-				
+
 				super.update();
-				
+
 				if (!isFrozen() && (rippleDelay -= Game.elapsed) <= 0) {
 					Ripple ripple = GameScene.ripple( pos + Dungeon.level.width() );
 					if (ripple != null) {
@@ -202,27 +200,27 @@ public class SewerLevel extends RegularLevel {
 			}
 		}
 	}
-	
+
 	public static final class WaterParticle extends PixelParticle {
-		
+
 		public WaterParticle() {
 			super();
-			
+
 			acc.y = 50;
 			am = 0.5f;
-			
-			color( ColorMath.random( 0xb6ccc2, 0x3b6653 ) );
+
+			color( ColorMath.random( 0x00bbbb, 0x006666 ) );
 			size( 2 );
 		}
-		
+
 		public void reset( float x, float y ) {
 			revive();
-			
+
 			this.x = x;
 			this.y = y;
-			
+
 			speed.set( Random.Float( -2, +2 ), 0 );
-			
+
 			left = lifespan = 0.4f;
 		}
 	}

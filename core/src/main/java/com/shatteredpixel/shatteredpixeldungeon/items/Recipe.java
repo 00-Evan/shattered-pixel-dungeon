@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,12 +29,14 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.MeatPie;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.StewedMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfNoWater;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.BlizzardBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.CausticBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.InfernalBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.ShockingBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfAquaticRejuvenation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfArcaneArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfDragonKing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfDragonsBlood;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfHoneyedHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfIcyTouch;
@@ -42,7 +44,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMi
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfToxicEssence;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfFlameCursed;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfRoseShiled;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Alchemize;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.AquaBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.ArcaneCatalyst;
@@ -54,11 +58,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicalPorter;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.PhaseShift;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.ReclaimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Recycle;
-import com.shatteredpixel.shatteredpixeldungeon.items.spells.SummonElemental;
-import com.shatteredpixel.shatteredpixeldungeon.items.spells.TelekineticGrab;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.WildEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlueFuck;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
@@ -166,18 +168,12 @@ public abstract class Recipe {
 	//*******
 	// Static members
 	//*******
-
-	private static Recipe[] variableRecipes = new Recipe[]{
-			new LiquidMetal.Recipe()
-	};
 	
 	private static Recipe[] oneIngredientRecipes = new Recipe[]{
+		new AlchemistsToolkit.upgradeKit(),
 		new Scroll.ScrollToStone(),
-		new ExoticPotion.PotionToExotic(),
-		new ExoticScroll.ScrollToExotic(),
-		new ArcaneResin.Recipe(),
-		new Alchemize.Recipe(),
-		new StewedMeat.oneMeat()
+		new StewedMeat.oneMeat(),
+
 	};
 	
 	private static Recipe[] twoIngredientRecipes = new Recipe[]{
@@ -188,6 +184,7 @@ public abstract class Recipe {
 		new ElixirOfArcaneArmor.Recipe(),
 		new ElixirOfAquaticRejuvenation.Recipe(),
 		new ElixirOfDragonsBlood.Recipe(),
+		new ElixirOfDragonKing.Recipe(),
 		new ElixirOfIcyTouch.Recipe(),
 		new ElixirOfMight.Recipe(),
 		new ElixirOfHoneyedHealing.Recipe(),
@@ -196,6 +193,7 @@ public abstract class Recipe {
 		new InfernalBrew.Recipe(),
 		new ShockingBrew.Recipe(),
 		new CausticBrew.Recipe(),
+		new Alchemize.Recipe(),
 		new AquaBlast.Recipe(),
 		new BeaconOfReturning.Recipe(),
 		new CurseInfusion.Recipe(),
@@ -206,62 +204,52 @@ public abstract class Recipe {
 		new ReclaimTrap.Recipe(),
 		new Recycle.Recipe(),
 		new WildEnergy.Recipe(),
-		new TelekineticGrab.Recipe(),
-		new SummonElemental.Recipe(),
-		new StewedMeat.twoMeat()
+		new StewedMeat.twoMeat(),
+			new PotionOfNoWater.Recipe(),
+			new ScrollOfFlameCursed.Recipe(),
 	};
 	
 	private static Recipe[] threeIngredientRecipes = new Recipe[]{
 		new Potion.SeedToPotion(),
+		new ExoticPotion.PotionToExotic(),
+		new ExoticScroll.ScrollToExotic(),
 		new StewedMeat.threeMeat(),
-		new MeatPie.Recipe()
+		new MeatPie.Recipe(),
+		new ScrollOfRoseShiled.Recipe(),
+			new WandOfBlueFuck.Recipe(),
 	};
 	
-	public static ArrayList<Recipe> findRecipes(ArrayList<Item> ingredients){
-
-		ArrayList<Recipe> result = new ArrayList<>();
-
-		for (Recipe recipe : variableRecipes){
-			if (recipe.testIngredients(ingredients)){
-				result.add(recipe);
-			}
-		}
-
+	public static Recipe findRecipe(ArrayList<Item> ingredients){
+		
 		if (ingredients.size() == 1){
 			for (Recipe recipe : oneIngredientRecipes){
 				if (recipe.testIngredients(ingredients)){
-					result.add(recipe);
+					return recipe;
 				}
 			}
 			
 		} else if (ingredients.size() == 2){
 			for (Recipe recipe : twoIngredientRecipes){
 				if (recipe.testIngredients(ingredients)){
-					result.add(recipe);
+					return recipe;
 				}
 			}
 			
 		} else if (ingredients.size() == 3){
 			for (Recipe recipe : threeIngredientRecipes){
 				if (recipe.testIngredients(ingredients)){
-					result.add(recipe);
+					return recipe;
 				}
 			}
 		}
 		
-		return result;
+		return null;
 	}
 	
 	public static boolean usableInRecipe(Item item){
-		if (item instanceof EquipableItem){
-			//only thrown weapons and wands allowed among equipment items
-			return item.isIdentified() && !item.cursed && item instanceof MissileWeapon;
-		} else if (item instanceof Wand) {
-			return item.isIdentified() && !item.cursed;
-		} else {
-			//other items can be unidentified, but not cursed
-			return !item.cursed;
-		}
+		return !item.cursed
+				&& (!(item instanceof EquipableItem) || (item instanceof AlchemistsToolkit && item.isIdentified()))
+				&& !(item instanceof Wand);
 	}
 }
 

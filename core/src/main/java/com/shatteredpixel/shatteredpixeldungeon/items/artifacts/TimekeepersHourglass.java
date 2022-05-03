@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,18 +26,15 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
@@ -70,9 +67,8 @@ public class TimekeepersHourglass extends Artifact {
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		if (isEquipped( hero ) && !cursed && (charge > 0 || activeBuff != null)) {
+		if (isEquipped( hero ) && charge > 0 && !cursed)
 			actions.add(AC_ACTIVATE);
-		}
 		return actions;
 	}
 
@@ -93,8 +89,7 @@ public class TimekeepersHourglass extends Artifact {
 			} else if (charge <= 0)         GLog.i( Messages.get(this, "no_charge") );
 			else if (cursed)                GLog.i( Messages.get(this, "cursed") );
 			else GameScene.show(
-						new WndOptions(new ItemSprite(this),
-								Messages.titleCase(name()),
+						new WndOptions( Messages.get(this, "name"),
 								Messages.get(this, "prompt"),
 								Messages.get(this, "stasis"),
 								Messages.get(this, "freeze")) {
@@ -251,7 +246,6 @@ public class TimekeepersHourglass extends Artifact {
 		
 		{
 			type = buffType.POSITIVE;
-			actPriority = BUFF_PRIO-3; //acts after all other buffs, so they are prevented
 		}
 
 		@Override
@@ -259,29 +253,23 @@ public class TimekeepersHourglass extends Artifact {
 
 			if (super.attachTo(target)) {
 
-				Invisibility.dispel();
-
 				int usedCharge = Math.min(charge, 2);
 				//buffs always act last, so the stasis buff should end a turn early.
-				spend(5*usedCharge);
+				spend((5*usedCharge) - 1);
+				((Hero) target).spendAndNext(5*usedCharge);
 
 				//shouldn't punish the player for going into stasis frequently
 				Hunger hunger = Buff.affect(target, Hunger.class);
-				if (hunger != null && !hunger.isStarving()) {
-					hunger.satisfy(5 * usedCharge);
-				}
+				if (hunger != null && !hunger.isStarving())
+					hunger.satisfy(5*usedCharge);
 
 				charge -= usedCharge;
 
 				target.invisible++;
-				target.paralysed++;
-				target.next();
 
 				updateQuickslot();
 
-				if (Dungeon.hero != null) {
-					Dungeon.observe();
-				}
+				Dungeon.observe();
 
 				return true;
 			} else {
@@ -297,8 +285,8 @@ public class TimekeepersHourglass extends Artifact {
 
 		@Override
 		public void detach() {
-			if (target.invisible > 0) target.invisible--;
-			if (target.paralysed > 0) target.paralysed--;
+			if (target.invisible > 0)
+				target.invisible --;
 			super.detach();
 			activeBuff = null;
 			Dungeon.observe();
@@ -344,18 +332,9 @@ public class TimekeepersHourglass extends Artifact {
 				presses.add(cell);
 		}
 
-		public void triggerPresses(){
+		private void triggerPresses(){
 			for (int cell : presses)
 				Dungeon.level.pressCell(cell);
-
-			presses = new ArrayList<>();
-		}
-
-		public void disarmPressedTraps(){
-			for (int cell : presses){
-				Trap t = Dungeon.level.traps.get(cell);
-				if (t != null && t.disarmedByActivation) t.disarm();
-			}
 
 			presses = new ArrayList<>();
 		}
@@ -417,7 +396,7 @@ public class TimekeepersHourglass extends Artifact {
 		}
 
 		@Override
-		public boolean doPickUp(Hero hero, int pos) {
+		public boolean doPickUp( Hero hero ) {
 			TimekeepersHourglass hourglass = hero.belongings.getItem( TimekeepersHourglass.class );
 			if (hourglass != null && !hourglass.cursed) {
 				hourglass.upgrade();
@@ -426,7 +405,6 @@ public class TimekeepersHourglass extends Artifact {
 					GLog.p( Messages.get(this, "maxlevel") );
 				else
 					GLog.i( Messages.get(this, "levelup") );
-				GameScene.pickUp(this, pos);
 				hero.spendAndNext(TIME_TO_PICK_UP);
 				return true;
 			} else {
@@ -438,16 +416,6 @@ public class TimekeepersHourglass extends Artifact {
 		@Override
 		public int value() {
 			return 20;
-		}
-
-		@Override
-		public boolean isUpgradable() {
-			return false;
-		}
-
-		@Override
-		public boolean isIdentified() {
-			return true;
 		}
 	}
 

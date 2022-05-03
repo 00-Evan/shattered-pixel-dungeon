@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,16 +35,26 @@ import com.watabou.utils.Random;
 
 public class LibraryRoom extends SpecialRoom {
 
+	@Override
+	public int minWidth() { return 8; }
+	public int maxWidth() { return 10; }
+
+	@Override
+	public int minHeight() {
+		return 8;
+	}
+	public int maxHeight() { return 10; }
+
 	public void paint( Level level ) {
-		
-		Painter.fill( level, this, Terrain.WALL );
-		Painter.fill( level, this, 1, Terrain.EMPTY_SP );
-		
+
+		Painter.fill( level, this, 1,Terrain.WALL );
+		Painter.fill( level, this,1, Terrain.EMPTY_SP );
+
 		Door entrance = entrance();
-		
+
 		Painter.fill( level, left + 1, top+1, width() - 2, 1 , Terrain.BOOKSHELF );
 		Painter.drawInside(level, this, entrance, 1, Terrain.EMPTY_SP );
-		
+
 		int n = Random.NormalIntRange( 1, 3 );
 		for (int i=0; i < n; i++) {
 			int pos;
@@ -58,18 +68,18 @@ public class LibraryRoom extends SpecialRoom {
 				item = prize( level );
 			level.drop( item, pos );
 		}
-		
+
 		entrance.set( Door.Type.LOCKED );
-		
+
 		level.addItemToSpawn( new IronKey( Dungeon.depth ) );
 	}
-	
+
 	private static Item prize( Level level ) {
-		
+
 		Item prize = level.findPrizeItem( Scroll.class );
 		if (prize == null)
 			prize = Generator.random( Generator.Category.SCROLL );
-		
+
 		return prize;
 	}
 }

@@ -1,31 +1,9 @@
-/*
- * Pixel Dungeon
- * Copyright (C) 2012-2015 Oleg Dolya
- *
- * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>
- */
-
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -54,7 +32,7 @@ public class WandOfWarding extends Wand {
 	}
 
 	@Override
-	public int collisionProperties(int target) {
+	protected int collisionProperties(int target) {
 		if (Dungeon.level.heroFOV[target])  return Ballistica.STOP_TARGET;
 		else                                return Ballistica.PROJECTILE;
 	}
@@ -99,7 +77,7 @@ public class WandOfWarding extends Wand {
 	}
 	
 	@Override
-	public void onZap(Ballistica bolt) {
+	protected void onZap(Ballistica bolt) {
 
 		int target = bolt.collisionPos;
 		Char ch = Actor.findChar(target);
@@ -144,7 +122,7 @@ public class WandOfWarding extends Wand {
 	}
 
 	@Override
-	public void fx(Ballistica bolt, Callback callback) {
+	protected void fx(Ballistica bolt, Callback callback) {
 		MagicMissile m = MagicMissile.boltFromChar(curUser.sprite.parent,
 				MagicMissile.WARD,
 				curUser.sprite,
@@ -254,11 +232,7 @@ public class WandOfWarding extends Wand {
 
 		}
 
-		public void wandHeal( int wandLevel ){
-			wandHeal( wandLevel, 1f );
-		}
-
-		public void wandHeal( int wandLevel, float healFactor ){
+		private void wandHeal( int wandLevel ){
 			if (this.wandLevel < wandLevel){
 				this.wandLevel = wandLevel;
 			}
@@ -268,13 +242,13 @@ public class WandOfWarding extends Wand {
 				default:
 					return;
 				case 4:
-					heal = Math.round(9 * healFactor);
+					heal = 9;
 					break;
 				case 5:
-					heal = Math.round(12 * healFactor);
+					heal = 12;
 					break;
 				case 6:
-					heal = Math.round(16 * healFactor);
+					heal = 16;
 					break;
 			}
 
@@ -297,6 +271,15 @@ public class WandOfWarding extends Wand {
 				return Math.round(Random.NormalIntRange(0, 3 + Dungeon.depth/2) / (7f - tier));
 			} else {
 				return 0;
+			}
+		}
+
+		@Override
+		public float attackDelay() {
+			if (tier > 3){
+				return 1f;
+			} else {
+				return 2f;
 			}
 		}
 
@@ -324,7 +307,7 @@ public class WandOfWarding extends Wand {
 			int dmg = Random.NormalIntRange( 2 + wandLevel, 8 + 4*wandLevel );
 			enemy.damage( dmg, this );
 			if (enemy.isAlive()){
-				Wand.wandProc(enemy, wandLevel, 1);
+				Wand.processSoulMark(enemy, wandLevel, 1);
 			}
 
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {
@@ -399,8 +382,7 @@ public class WandOfWarding extends Wand {
 			Game.runOnRenderThread(new Callback() {
 				@Override
 				public void call() {
-					GameScene.show(new WndOptions( sprite(),
-							Messages.get(Ward.this, "dismiss_title"),
+					GameScene.show(new WndOptions( Messages.get(Ward.this, "dismiss_title"),
 							Messages.get(Ward.this, "dismiss_body"),
 							Messages.get(Ward.this, "dismiss_confirm"),
 							Messages.get(Ward.this, "dismiss_cancel") ){
@@ -422,7 +404,7 @@ public class WandOfWarding extends Wand {
 		}
 		
 		{
-			immunities.add( AllyBuff.class );
+			immunities.add( Corruption.class );
 		}
 
 		private static final String TIER = "tier";

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,8 +47,8 @@ public abstract class Key extends Item {
 	}
 
 	@Override
-	public boolean doPickUp(Hero hero, int pos) {
-		GameScene.pickUpJournal(this, pos);
+	public boolean doPickUp(Hero hero) {
+		GameScene.pickUpJournal(this, hero.pos);
 		WndJournal.last_index = 2;
 		Notes.add(this);
 		Sample.INSTANCE.play( Assets.Sounds.ITEM );

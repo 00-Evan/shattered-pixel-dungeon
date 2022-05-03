@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -130,9 +130,7 @@ public class Bones {
 				Bundle bundle = FileUtils.bundleFromFile(BONES_FILE);
 
 				depth = bundle.getInt( LEVEL );
-				if (depth > 0) {
-					item = (Item) bundle.get(ITEM);
-				}
+				item = (Item)bundle.get( ITEM );
 
 				return get();
 
@@ -143,13 +141,7 @@ public class Bones {
 		} else {
 			//heroes who are challenged cannot find bones
 			if (depth == Dungeon.depth && Dungeon.challenges == 0) {
-				Bundle emptyBones = new Bundle();
-				emptyBones.put(LEVEL, 0);
-				try {
-					FileUtils.bundleToFile( BONES_FILE, emptyBones );
-				} catch (IOException e) {
-					ShatteredPixelDungeon.reportException(e);
-				}
+				FileUtils.deleteFile( BONES_FILE );
 				depth = 0;
 				
 				if (item == null) return null;

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 
@@ -85,8 +84,7 @@ public abstract class KindofMisc extends EquipableItem {
 			}
 
 			GameScene.show(
-					new WndOptions(new ItemSprite(this),
-							Messages.get(KindofMisc.class, "unequip_title"),
+					new WndOptions(Messages.get(KindofMisc.class, "unequip_title"),
 							Messages.get(KindofMisc.class, "unequip_message"),
 							miscs[0] == null ? "---" : Messages.titleCase(miscs[0].toString()),
 							miscs[1] == null ? "---" : Messages.titleCase(miscs[1].toString()),
@@ -96,11 +94,8 @@ public abstract class KindofMisc extends EquipableItem {
 						protected void onSelect(int index) {
 
 							KindofMisc equipped = miscs[index];
-							//we directly remove the item because we want to have inventory capacity
-							// to unequip the equipped one, but don't want to trigger any other
-							// item detaching logic
 							int slot = Dungeon.quickslot.getSlot(KindofMisc.this);
-							Dungeon.hero.belongings.backpack.items.remove(KindofMisc.this);
+							detach(hero.belongings.backpack);
 							if (equipped.doUnequip(hero, true, false)) {
 								//swap out equip in misc slot if needed
 								if (index == 0 && KindofMisc.this instanceof Ring){
@@ -110,10 +105,9 @@ public abstract class KindofMisc extends EquipableItem {
 									hero.belongings.ring = (Ring) hero.belongings.misc;
 									hero.belongings.misc = null;
 								}
-								Dungeon.hero.belongings.backpack.items.add(KindofMisc.this);
 								doEquip(hero);
 							} else {
-								Dungeon.hero.belongings.backpack.items.add(KindofMisc.this);
+								collect();
 							}
 							if (slot != -1) Dungeon.quickslot.setSlot(slot, KindofMisc.this);
 							updateQuickslot();
@@ -178,9 +172,9 @@ public abstract class KindofMisc extends EquipableItem {
 
 	@Override
 	public boolean isEquipped( Hero hero ) {
-		return hero.belongings.artifact() == this
-				|| hero.belongings.misc() == this
-				|| hero.belongings.ring() == this;
+		return hero.belongings.artifact == this
+				|| hero.belongings.misc == this
+				|| hero.belongings.ring == this;
 	}
 
 }

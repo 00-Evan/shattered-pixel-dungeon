@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,18 +43,18 @@ public class ScrollOfPassage extends ExoticScroll {
 
 		identify();
 		
-		if (Dungeon.level.locked) {
+		if (Dungeon.bossLevel()) {
 			
 			GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 			return;
 			
 		}
-
-		TimekeepersHourglass.timeFreeze timeFreeze = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
-		if (timeFreeze != null) timeFreeze.disarmPressedTraps();
-		Swiftthistle.TimeBubble timeBubble = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
-		if (timeBubble != null) timeBubble.disarmPressedTraps();
-
+		
+		Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+		if (buff != null) buff.detach();
+		buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
+		if (buff != null) buff.detach();
+		
 		InterlevelScene.mode = InterlevelScene.Mode.RETURN;
 		InterlevelScene.returnDepth = Math.max(1, (Dungeon.depth - 1 - (Dungeon.depth-2)%5));
 		InterlevelScene.returnPos = -1;

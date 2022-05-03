@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,8 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -38,28 +36,42 @@ public class PhaseShift extends TargetedSpell {
 	
 	{
 		image = ItemSpriteSheet.PHASE_SHIFT;
-
-		usesTargeting = true;
 	}
 	
 	@Override
 	protected void affectTarget(Ballistica bolt, Hero hero) {
 		final Char ch = Actor.findChar(bolt.collisionPos);
 		
-		if (ch != null) {
-			if (ScrollOfTeleportation.teleportChar(ch)){
-
-				if (ch instanceof Mob) {
-					if (((Mob) ch).state == ((Mob) ch).HUNTING) ((Mob) ch).state = ((Mob) ch).WANDERING;
-					((Mob) ch).beckon(Dungeon.level.randomDestination( ch ));
+		if (ch == hero){
+			ScrollOfTeleportation.teleportHero(curUser);
+		} else if (ch != null) {
+			int count = 20;
+			int pos;
+			do {
+				pos = Dungeon.level.randomRespawnCell( hero );
+				if (count-- <= 0) {
+					break;
 				}
-				if (!Char.hasProp(ch, Char.Property.BOSS) && !Char.hasProp(ch, Char.Property.MINIBOSS)) {
-					Buff.affect(ch, Paralysis.class, Paralysis.DURATION);
+			} while (pos == -1 || Dungeon.level.secret[pos]);
+			
+			if (pos == -1 || Dungeon.bossLevel()) {
+				
+				GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
+				
+			} else if (ch.properties().contains(Char.Property.IMMOVABLE)) {
+				
+				GLog.w( Messages.get(this, "tele_fail") );
+				
+			} else  {
+				
+				ch.pos = pos;
+				if (ch instanceof Mob && ((Mob) ch).state == ((Mob) ch).HUNTING){
+					((Mob) ch).state = ((Mob) ch).WANDERING;
 				}
+				ch.sprite.place(ch.pos);
+				ch.sprite.visible = Dungeon.level.heroFOV[pos];
 				
 			}
-		} else {
-			GLog.w( Messages.get(this, "no_target") );
 		}
 	}
 	
@@ -75,7 +87,7 @@ public class PhaseShift extends TargetedSpell {
 			inputs =  new Class[]{ScrollOfTeleportation.class, ArcaneCatalyst.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 4;
+			cost = 6;
 			
 			output = PhaseShift.class;
 			outQuantity = 8;

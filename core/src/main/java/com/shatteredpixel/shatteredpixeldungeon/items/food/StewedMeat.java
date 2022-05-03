@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.food;
 
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class StewedMeat extends Food {
@@ -31,7 +36,18 @@ public class StewedMeat extends Food {
 		image = ItemSpriteSheet.STEWED;
 		energy = Hunger.HUNGRY/2f;
 	}
-	
+
+	@Override
+	protected void satisfy(Hero hero) {
+		super.satisfy( hero );
+		if (Dungeon.isChallenged(Challenges.EXSG)){
+			hero.earnExp( hero.maxExp(), getClass() );
+			hero.sprite.showStatus( CharSprite.POSITIVE, (Messages.get(StewedMeat.class, "upgrade")));
+		} else {
+			System.out.println("Hello World");
+		}
+	}
+
 	@Override
 	public int value() {
 		return 8 * quantity;
@@ -42,7 +58,7 @@ public class StewedMeat extends Food {
 			inputs =  new Class[]{MysteryMeat.class};
 			inQuantity = new int[]{1};
 			
-			cost = 1;
+			cost = 2;
 			
 			output = StewedMeat.class;
 			outQuantity = 1;
@@ -54,7 +70,7 @@ public class StewedMeat extends Food {
 			inputs =  new Class[]{MysteryMeat.class};
 			inQuantity = new int[]{2};
 			
-			cost = 2;
+			cost = 3;
 			
 			output = StewedMeat.class;
 			outQuantity = 2;
@@ -69,7 +85,7 @@ public class StewedMeat extends Food {
 			inputs =  new Class[]{MysteryMeat.class};
 			inQuantity = new int[]{3};
 			
-			cost = 2;
+			cost = 4;
 			
 			output = StewedMeat.class;
 			outQuantity = 3;

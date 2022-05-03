@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -90,17 +90,7 @@ public class Web extends Blob {
 		super.fullyClear();
 		Dungeon.level.buildFlagMaps();
 	}
-
-	@Override
-	public void onBuildFlagMaps(Level l) {
-		if (volume > 0){
-			for (int i=0; i < l.length(); i++) {
-				l.solid[i] = l.solid[i] || cur[i] > 0;
-				l.flamable[i] = l.flamable[i] || cur[i] > 0;
-			}
-		}
-	}
-
+	
 	@Override
 	public String tileDesc() {
 		return Messages.get(this, "desc");

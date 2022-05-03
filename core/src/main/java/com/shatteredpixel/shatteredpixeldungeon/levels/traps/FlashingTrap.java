@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,11 +40,19 @@ public class FlashingTrap extends Trap {
 	{
 		color = GREY;
 		shape = STARS;
-
-		disarmedByActivation = false;
-		avoidsHallways = true;
 	}
-
+	
+	@Override
+	public void trigger() {
+		if (Dungeon.level.heroFOV[pos]){
+			Sample.INSTANCE.play(Assets.Sounds.TRAP);
+		}
+		//this trap is not disarmed by being triggered
+		reveal();
+		Level.set(pos, Terrain.TRAP);
+		activate();
+	}
+	
 	@Override
 	public void activate() {
 		

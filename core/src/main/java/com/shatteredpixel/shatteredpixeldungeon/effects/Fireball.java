@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ public class Fireball extends Component {
 	private static final RectF FLAME1 = new RectF( 0.50f, 0, 0.75f, 1 );
 	private static final RectF FLAME2 = new RectF( 0.75f, 0, 1.00f, 1 );
 	
-	private static final int COLOR = 0xFF66FF;
+	private static final int COLOR = 0x006666;
 	
 	private Image bLight;
 	private Image fLight;
@@ -105,7 +105,7 @@ public class Fireball extends Component {
 		
 		if (Random.Float() < Game.elapsed) {
 			PixelParticle spark = (PixelParticle)sparks.recycle( PixelParticle.Shrinking.class );
-			spark.reset( x, y, ColorMath.random( COLOR, 0x66FF66 ), 2, Random.Float( 0.5f, 1.0f ) );
+			spark.reset( x, y, ColorMath.random( COLOR, 0x006666 ), 2, Random.Float( 0.5f, 1.0f ) );
 			spark.speed.set(
 				Random.Float( -40, +40 ),
 				Random.Float( -60, +20 ) );

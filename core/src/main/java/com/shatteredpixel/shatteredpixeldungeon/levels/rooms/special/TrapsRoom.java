@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ import com.watabou.utils.Reflection;
 public class TrapsRoom extends SpecialRoom {
 
 	public void paint( Level level ) {
-		 
+
 		Painter.fill( level, this, Terrain.WALL );
 
 		Class<? extends Trap> trapClass;
@@ -65,10 +65,10 @@ public class TrapsRoom extends SpecialRoom {
 		} else {
 			Painter.fill(level, this, 1, Terrain.TRAP);
 		}
-		
+
 		Door door = entrance();
 		door.set( Door.Type.REGULAR );
-		
+
 		int lastRow = level.map[left + 1 + (top + 1) * level.width()] == Terrain.CHASM ? Terrain.CHASM : Terrain.EMPTY;
 
 		int x = -1;
@@ -97,7 +97,7 @@ public class TrapsRoom extends SpecialRoom {
 				level.setTrap(Reflection.newInstance(trapClass).reveal(), cell);
 			}
 		}
-		
+
 		int pos = x + y * level.width();
 		if (Random.Int( 3 ) == 0) {
 			if (lastRow == Terrain.CHASM) {
@@ -108,21 +108,20 @@ public class TrapsRoom extends SpecialRoom {
 			Painter.set( level, pos, Terrain.PEDESTAL );
 			level.drop( prize( level ), pos ).type = Heap.Type.CHEST;
 		}
-		
+
 		level.addItemToSpawn( new PotionOfLevitation() );
 	}
-	
+
 	private static Item prize( Level level ) {
 
 		Item prize;
 
-		//67% chance for prize item
 		if (Random.Int(3) != 0){
 			prize = level.findPrizeItem();
 			if (prize != null)
 				return prize;
 		}
-		
+
 		//1 floor set higher in probability, never cursed
 		do {
 			if (Random.Int(2) == 0) {
@@ -137,7 +136,7 @@ public class TrapsRoom extends SpecialRoom {
 		if (Random.Int(3) == 0){
 			prize.upgrade();
 		}
-		
+
 		return prize;
 	}
 

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,19 +25,14 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoBuff;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
-import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
-import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.AlphaTweener;
+import com.watabou.noosa.ui.Button;
 import com.watabou.noosa.ui.Component;
 
 import java.util.ArrayList;
@@ -46,50 +41,50 @@ import java.util.LinkedHashMap;
 public class BuffIndicator extends Component {
 	
 	//transparent icon
-	public static final int NONE    = 63;
+	public static final int NONE	= 63;
 
 	//FIXME this is becoming a mess, should do a big cleaning pass on all of these
 	//and think about tinting options
-	public static final int MIND_VISION = 0;
-	public static final int LEVITATION  = 1;
-	public static final int FIRE        = 2;
-	public static final int POISON      = 3;
-	public static final int PARALYSIS   = 4;
-	public static final int HUNGER      = 5;
-	public static final int STARVATION  = 6;
-	public static final int TIME        = 7;
-	public static final int OOZE        = 8;
-	public static final int AMOK        = 9;
-	public static final int TERROR      = 10;
-	public static final int ROOTS       = 11;
-	public static final int INVISIBLE   = 12;
-	public static final int SHADOWS     = 13;
-	public static final int WEAKNESS    = 14;
-	public static final int FROST       = 15;
-	public static final int BLINDNESS   = 16;
-	public static final int COMBO       = 17;
-	public static final int FURY        = 18;
+	public static final int MIND_VISION	= 0;
+	public static final int LEVITATION	= 1;
+	public static final int FIRE		= 2;
+	public static final int POISON		= 3;
+	public static final int PARALYSIS	= 4;
+	public static final int HUNGER		= 5;
+	public static final int STARVATION	= 6;
+	public static final int SLOW		= 7;
+	public static final int OOZE		= 8;
+	public static final int AMOK		= 9;
+	public static final int TERROR		= 10;
+	public static final int ROOTS		= 11;
+	public static final int INVISIBLE	= 12;
+	public static final int SHADOWS		= 13;
+	public static final int WEAKNESS	= 14;
+	public static final int FROST		= 15;
+	public static final int BLINDNESS	= 16;
+	public static final int COMBO		= 17;
+	public static final int FURY		= 18;
 	public static final int HERB_HEALING= 19;
-	public static final int ARMOR       = 20;
-	public static final int HEART       = 21;
-	public static final int LIGHT       = 22;
-	public static final int CRIPPLE     = 23;
-	public static final int BARKSKIN    = 24;
-	public static final int IMMUNITY    = 25;
-	public static final int BLEEDING    = 26;
-	public static final int MARK        = 27;
-	public static final int DEFERRED    = 28;
+	public static final int ARMOR		= 20;
+	public static final int HEART		= 21;
+	public static final int LIGHT		= 22;
+	public static final int CRIPPLE		= 23;
+	public static final int BARKSKIN	= 24;
+	public static final int IMMUNITY	= 25;
+	public static final int BLEEDING	= 26;
+	public static final int MARK		= 27;
+	public static final int DEFERRED	= 28;
 	public static final int DROWSY      = 29;
 	public static final int MAGIC_SLEEP = 30;
 	public static final int THORNS      = 31;
 	public static final int FORESIGHT   = 32;
 	public static final int VERTIGO     = 33;
-	public static final int RECHARGING  = 34;
+	public static final int RECHARGING 	= 34;
 	public static final int LOCKED_FLOOR= 35;
 	public static final int CORRUPT     = 36;
 	public static final int BLESS       = 37;
-	public static final int RAGE        = 38;
-	public static final int SACRIFICE   = 39;
+	public static final int RAGE		= 38;
+	public static final int SACRIFICE	= 39;
 	public static final int BERSERK     = 40;
 	public static final int HASTE       = 41;
 	public static final int PREPARATION = 42;
@@ -102,25 +97,26 @@ public class BuffIndicator extends Component {
 	public static final int PINCUSHION  = 49;
 	public static final int UPGRADE     = 50;
 	public static final int MOMENTUM    = 51;
-	public static final int ANKH        = 52;
-	public static final int NOINV       = 53;
+	public static final int ROSEBARRIER    = 52;
+	public static final int HALOMETHANEBURNING = 53;
+	public static final int RANDOM = 54;
+	public static final int BUTTER      = 55;
 
-	public static final int SIZE_SMALL  = 7;
-	public static final int SIZE_LARGE  = 16;
+	public static final int SIZE	= 7;
 	
 	private static BuffIndicator heroInstance;
 	
-	private LinkedHashMap<Buff, BuffButton> buffButtons = new LinkedHashMap<>();
+	private SmartTexture texture;
+	private TextureFilm film;
+	
+	private LinkedHashMap<Buff, BuffIcon> buffIcons = new LinkedHashMap<>();
 	private boolean needsRefresh;
 	private Char ch;
-
-	private boolean large = false;
 	
-	public BuffIndicator( Char ch, boolean large ) {
+	public BuffIndicator( Char ch ) {
 		super();
 		
 		this.ch = ch;
-		this.large = large;
 		if (ch == Dungeon.hero) {
 			heroInstance = this;
 		}
@@ -134,7 +130,13 @@ public class BuffIndicator extends Component {
 			heroInstance = null;
 		}
 	}
-
+	
+	@Override
+	protected void createChildren() {
+		texture = TextureCache.get( Assets.Interfaces.BUFFS_SMALL );
+		film = new TextureFilm( texture, SIZE, SIZE );
+	}
+	
 	@Override
 	public synchronized void update() {
 		super.update();
@@ -146,21 +148,19 @@ public class BuffIndicator extends Component {
 	
 	@Override
 	protected void layout() {
-
+		
 		ArrayList<Buff> newBuffs = new ArrayList<>();
 		for (Buff buff : ch.buffs()) {
 			if (buff.icon() != NONE) {
 				newBuffs.add(buff);
 			}
 		}
-
-		int size = large ? SIZE_LARGE : SIZE_SMALL;
-
+		
 		//remove any icons no longer present
-		for (Buff buff : buffButtons.keySet().toArray(new Buff[0])){
+		for (Buff buff : buffIcons.keySet().toArray(new Buff[0])){
 			if (!newBuffs.contains(buff)){
-				Image icon = buffButtons.get( buff ).icon;
-				icon.originToCenter();
+				Image icon = buffIcons.get( buff ).icon;
+				icon.origin.set( SIZE / 2f );
 				icon.alpha(0.6f);
 				add( icon );
 				add( new AlphaTweener( icon, 0, 0.6f ) {
@@ -176,118 +176,73 @@ public class BuffIndicator extends Component {
 					}
 				} );
 				
-				buffButtons.get( buff ).destroy();
-				remove(buffButtons.get( buff ));
-				buffButtons.remove( buff );
+				buffIcons.get( buff ).destroy();
+				remove(buffIcons.get( buff ));
+				buffIcons.remove( buff );
 			}
 		}
 		
 		//add new icons
 		for (Buff buff : newBuffs) {
-			if (!buffButtons.containsKey(buff)) {
-				BuffButton icon = new BuffButton(buff, large);
+			if (!buffIcons.containsKey(buff)) {
+				BuffIcon icon = new BuffIcon( buff );
 				add(icon);
-				buffButtons.put( buff, icon );
+				buffIcons.put( buff, icon );
 			}
 		}
 		
 		//layout
 		int pos = 0;
-		for (BuffButton icon : buffButtons.values()){
+		for (BuffIcon icon : buffIcons.values()){
 			icon.updateIcon();
-			//button areas are slightly oversized, especially on small buttons
-			icon.setRect(x + pos * (size + (large ? 1 : 2)), y, size + (large ? 1 : 2), size + (large ? 0 : 5));
-			PixelScene.align(icon);
+			icon.setRect(x + pos * (SIZE + 2), y, 9, 12);
 			pos++;
 		}
 	}
 
-	private static class BuffButton extends IconButton {
+	private class BuffIcon extends Button {
 
 		private Buff buff;
 
-		private boolean large;
+		public Image icon;
+		public Image grey;
 
-		public Image grey; //only for small
-		public BitmapText text; //only for large
-
-		//TODO for large buffs there is room to have text instead of fading
-		public BuffButton( Buff buff, boolean large ){
-			super( new BuffIcon(buff, large));
+		public BuffIcon( Buff buff ){
+			super();
 			this.buff = buff;
-			this.large = large;
 
-			bringToFront(grey);
-			bringToFront(text);
-		}
+			icon = new Image( texture );
+			icon.frame( film.get( buff.icon() ) );
+			add( icon );
 
-		@Override
-		protected void createChildren() {
-			super.createChildren();
 			grey = new Image( TextureCache.createSolid(0xCC666666));
 			add( grey );
-
-			text = new BitmapText(PixelScene.pixelFont);
-			add( text );
 		}
-
+		
 		public void updateIcon(){
-			((BuffIcon)icon).refresh(buff);
+			icon.frame( film.get( buff.icon() ) );
+			buff.tintIcon(icon);
 			//round up to the nearest pixel if <50% faded, otherwise round down
-			if (!large) {
-				text.visible = false;
-				float fadeHeight = buff.iconFadePercent() * icon.height();
-				float zoom = (camera() != null) ? camera().zoom : 1;
-				if (fadeHeight < icon.height() / 2f) {
-					grey.scale.set(icon.width(), (float) Math.ceil(zoom * fadeHeight) / zoom);
-				} else {
-					grey.scale.set(icon.width(), (float) Math.floor(zoom * fadeHeight) / zoom);
-				}
-			} else if (!buff.iconTextDisplay().isEmpty()) {
-				grey.visible = false;
-				if (buff.type == Buff.buffType.POSITIVE)        text.hardlight(CharSprite.POSITIVE);
-				else if (buff.type == Buff.buffType.NEGATIVE)   text.hardlight(CharSprite.NEGATIVE);
-				text.alpha(0.6f);
-
-				text.text(buff.iconTextDisplay());
-				text.measure();
+			float fadeHeight = buff.iconFadePercent() * icon.height();
+			float zoom = (camera() != null) ? camera().zoom : 1;
+			if (fadeHeight < icon.height()/2f){
+				grey.scale.set( icon.width(), (float)Math.ceil(zoom*fadeHeight)/zoom);
+			} else {
+				grey.scale.set( icon.width(), (float)Math.floor(zoom*fadeHeight)/zoom);
 			}
 		}
 
 		@Override
 		protected void layout() {
 			super.layout();
-			grey.x = icon.x = this.x + (large ? 0 : 1);
-			grey.y = icon.y = this.y + (large ? 0 : 2);
-
-			if (text.width > width()){
-				text.scale.set(PixelScene.align(0.5f));
-			} else {
-				text.scale.set(1f);
-			}
-			text.x = this.x + width() - text.width() - 1;
-			text.y = this.y + width() - text.baseLine() - 2;
+			grey.x = icon.x = this.x+1;
+			grey.y = icon.y = this.y+2;
 		}
 
 		@Override
 		protected void onClick() {
-			if (buff.icon() != NONE) GameScene.show(new WndInfoBuff(buff));
-		}
-
-		@Override
-		protected void onPointerDown() {
-			//don't affect buff color
-			Sample.INSTANCE.play( Assets.Sounds.CLICK );
-		}
-
-		@Override
-		protected void onPointerUp() {
-			//don't affect buff color
-		}
-
-		@Override
-		protected String hoverText() {
-			return Messages.titleCase(buff.toString());
+			if (buff.icon() != NONE)
+				GameScene.show(new WndInfoBuff(buff));
 		}
 	}
 	

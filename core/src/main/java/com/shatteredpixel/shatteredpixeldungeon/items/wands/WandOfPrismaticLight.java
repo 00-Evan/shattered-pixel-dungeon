@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,7 +65,7 @@ public class WandOfPrismaticLight extends DamageWand {
 	}
 
 	@Override
-	public void onZap(Ballistica beam) {
+	protected void onZap(Ballistica beam) {
 		affectMap(beam);
 		
 		if (Dungeon.level.viewDistance < 6 ){
@@ -78,7 +78,7 @@ public class WandOfPrismaticLight extends DamageWand {
 		
 		Char ch = Actor.findChar(beam.collisionPos);
 		if (ch != null){
-			wandProc(ch, chargesPerCast());
+			processSoulMark(ch, chargesPerCast());
 			affectTarget(ch);
 		}
 	}
@@ -138,7 +138,7 @@ public class WandOfPrismaticLight extends DamageWand {
 	}
 
 	@Override
-	public void fx(Ballistica beam, Callback callback) {
+	protected void fx( Ballistica beam, Callback callback ) {
 		curUser.sprite.parent.add(
 				new Beam.LightRay(curUser.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(beam.collisionPos)));
 		callback.call();

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ public class WandOfLightning extends DamageWand {
 	}
 	
 	@Override
-	public void onZap(Ballistica bolt) {
+	protected void onZap( Ballistica bolt ) {
 
 		//lightning deals less damage per-target, the more targets that are hit.
 		float multipler = 0.4f + (0.6f/affected.size());
@@ -78,7 +78,7 @@ public class WandOfLightning extends DamageWand {
 			if (ch != curUser && ch.alignment == curUser.alignment && ch.pos != bolt.collisionPos){
 				continue;
 			}
-			wandProc(ch, chargesPerCast());
+			processSoulMark(ch, chargesPerCast());
 			if (ch == curUser) {
 				ch.damage(Math.round(damageRoll() * multipler * 0.5f), this);
 			} else {
@@ -124,7 +124,7 @@ public class WandOfLightning extends DamageWand {
 	}
 	
 	@Override
-	public void fx(Ballistica bolt, Callback callback) {
+	protected void fx( Ballistica bolt, Callback callback ) {
 
 		affected.clear();
 		arcs.clear();

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,17 +25,17 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class GooBlob extends Item {
-	
+
 	{
 		image = ItemSpriteSheet.BLOB;
 		stackable = true;
 	}
-	
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isIdentified() {
 		return true;
@@ -43,11 +43,6 @@ public class GooBlob extends Item {
 
 	@Override
 	public int value() {
-		return quantity * 30;
-	}
-
-	@Override
-	public int energyVal() {
-		return quantity * 3;
+		return quantity * 50;
 	}
 }

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -61,11 +61,6 @@ public class Ooze extends Buff {
 	public float iconFadePercent() {
 		return Math.max(0, (DURATION - left) / DURATION);
 	}
-
-	@Override
-	public String iconTextDisplay() {
-		return Integer.toString((int)left);
-	}
 	
 	@Override
 	public String toString() {
@@ -89,14 +84,10 @@ public class Ooze extends Buff {
 	@Override
 	public boolean act() {
 		if (target.isAlive()) {
-			if (Dungeon.depth > 5) {
-				target.damage(1 + Dungeon.depth / 5, this);
-			} else if (Dungeon.depth == 5){
-				target.damage(1, this); //1 dmg per turn vs Goo
-			} else if (Random.Int(2) == 0) {
-				target.damage(1, this); //0.5 dmg per turn in sewers
-			}
-
+			if (Dungeon.depth > 4)
+				target.damage( Dungeon.depth/5, this );
+			else if (Random.Int(2) == 0)
+				target.damage( 1, this );
 			if (!target.isAlive() && target == Dungeon.hero) {
 				Dungeon.fail( getClass() );
 				GLog.n( Messages.get(this, "ondeath") );

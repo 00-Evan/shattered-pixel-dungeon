@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,11 +32,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlameX;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticGas;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfPurity;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
@@ -57,8 +59,8 @@ public class ExoticPotion extends Potion {
 		regToExo.put(PotionOfToxicGas.class, PotionOfCorrosiveGas.class);
 		exoToReg.put(PotionOfCorrosiveGas.class, PotionOfToxicGas.class);
 		
-		regToExo.put(PotionOfStrength.class, PotionOfMastery.class);
-		exoToReg.put(PotionOfMastery.class, PotionOfStrength.class);
+		regToExo.put(PotionOfStrength.class, PotionOfAdrenalineSurge.class);
+		exoToReg.put(PotionOfAdrenalineSurge.class, PotionOfStrength.class);
 		
 		regToExo.put(PotionOfFrost.class, PotionOfSnapFreeze.class);
 		exoToReg.put(PotionOfSnapFreeze.class, PotionOfFrost.class);
@@ -68,6 +70,9 @@ public class ExoticPotion extends Potion {
 		
 		regToExo.put(PotionOfLiquidFlame.class, PotionOfDragonsBreath.class);
 		exoToReg.put(PotionOfDragonsBreath.class, PotionOfLiquidFlame.class);
+
+		regToExo.put(PotionOfLiquidFlameX.class, PotionOfDragonKingBreath.class);
+		exoToReg.put(PotionOfDragonKingBreath.class, PotionOfLiquidFlameX.class);
 		
 		regToExo.put(PotionOfInvisibility.class, PotionOfShroudingFog.class);
 		exoToReg.put(PotionOfShroudingFog.class, PotionOfInvisibility.class);
@@ -78,8 +83,8 @@ public class ExoticPotion extends Potion {
 		regToExo.put(PotionOfLevitation.class, PotionOfStormClouds.class);
 		exoToReg.put(PotionOfStormClouds.class, PotionOfLevitation.class);
 		
-		regToExo.put(PotionOfExperience.class, PotionOfDivineInspiration.class);
-		exoToReg.put(PotionOfDivineInspiration.class, PotionOfExperience.class);
+		regToExo.put(PotionOfExperience.class, PotionOfHolyFuror.class);
+		exoToReg.put(PotionOfHolyFuror.class, PotionOfExperience.class);
 		
 		regToExo.put(PotionOfPurity.class, PotionOfCleansing.class);
 		exoToReg.put(PotionOfCleansing.class, PotionOfPurity.class);
@@ -119,41 +124,52 @@ public class ExoticPotion extends Potion {
 	public int value() {
 		return (Reflection.newInstance(exoToReg.get(getClass())).value() + 20) * quantity;
 	}
-
-	@Override
-	//4 more energy than its none-exotic equivalent
-	public int energyVal() {
-		return (Reflection.newInstance(exoToReg.get(getClass())).energyVal() + 4) * quantity;
-	}
-
+	
 	public static class PotionToExotic extends Recipe{
-
+		
 		@Override
 		public boolean testIngredients(ArrayList<Item> ingredients) {
-			if (ingredients.size() == 1 && regToExo.containsKey(ingredients.get(0).getClass())){
-				return true;
+			int s = 0;
+			Potion p = null;
+			
+			for (Item i : ingredients){
+				if (i instanceof Plant.Seed){
+					s++;
+				} else if (regToExo.containsKey(i.getClass())) {
+					p = (Potion)i;
+				}
 			}
-
-			return false;
+			
+			return p != null && s == 2;
 		}
 		
 		@Override
 		public int cost(ArrayList<Item> ingredients) {
-			return 4;
+			return 0;
 		}
-
+		
 		@Override
 		public Item brew(ArrayList<Item> ingredients) {
+			Item result = null;
+			
 			for (Item i : ingredients){
 				i.quantity(i.quantity()-1);
+				if (regToExo.containsKey(i.getClass())) {
+					result = Reflection.newInstance(regToExo.get(i.getClass()));
+				}
 			}
-
-			return Reflection.newInstance(regToExo.get(ingredients.get(0).getClass()));
+			return result;
 		}
-
+		
 		@Override
 		public Item sampleOutput(ArrayList<Item> ingredients) {
-			return Reflection.newInstance(regToExo.get(ingredients.get(0).getClass()));
+			for (Item i : ingredients){
+				if (regToExo.containsKey(i.getClass())) {
+					return Reflection.newInstance(regToExo.get(i.getClass()));
+				}
+			}
+			return null;
+			
 		}
 	}
 }

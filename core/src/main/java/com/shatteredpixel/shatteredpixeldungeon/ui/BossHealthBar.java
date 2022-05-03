@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +21,17 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
+import static com.shatteredpixel.shatteredpixeldungeon.ui.Window.CYELLOW;
+import static com.shatteredpixel.shatteredpixeldungeon.ui.Window.G_COLOR;
+import static com.shatteredpixel.shatteredpixeldungeon.ui.Window.R_COLOR;
+import static com.shatteredpixel.shatteredpixeldungeon.ui.Window.TITLE_COLOR;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BloodParticle;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.ui.Component;
@@ -36,6 +43,7 @@ public class BossHealthBar extends Component {
 	private Image rawShielding;
 	private Image shieldedHP;
 	private Image hp;
+	private BitmapText hpText;
 
 	private static Mob boss;
 
@@ -47,7 +55,7 @@ public class BossHealthBar extends Component {
 	private static BossHealthBar instance;
 	private static boolean bleeding;
 
-	public BossHealthBar() {
+	BossHealthBar() {
 		super();
 		visible = active = (boss != null);
 		instance = this;
@@ -71,6 +79,10 @@ public class BossHealthBar extends Component {
 		hp = new Image(asset, 15, 19, 47, 4);
 		add(hp);
 
+		hpText = new BitmapText(PixelScene.pixelFont);
+		hpText.alpha(0.6f);
+		add(hpText);
+
 		skull = new Image(asset, 5, 18, 6, 6);
 		add(skull);
 
@@ -90,6 +102,13 @@ public class BossHealthBar extends Component {
 		hp.x = shieldedHP.x = rawShielding.x = bar.x+15;
 		hp.y = shieldedHP.y = rawShielding.y = bar.y+6;
 
+		hpText.scale.set(PixelScene.align(0.5f));
+		hpText.x = hp.x + 1;
+		hpText.y = hp.y + (hp.height - (hpText.baseLine()+hpText.scale.y))/2f;
+		hpText.y -= 0.001f; //prefer to be slightly higher
+		hpText.hardlight( G_COLOR );
+		PixelScene.align(hpText);
+
 		skull.x = bar.x+5;
 		skull.y = bar.y+5;
 	}
@@ -97,6 +116,8 @@ public class BossHealthBar extends Component {
 	@Override
 	public void update() {
 		super.update();
+
+
 		if (boss != null){
 			if (!boss.isAlive() || !Dungeon.level.mobs.contains(boss)){
 				boss = null;
@@ -106,17 +127,34 @@ public class BossHealthBar extends Component {
 				float health = boss.HP;
 				float shield = boss.shielding();
 				float max = boss.HT;
-
+				int maxHp = boss.HP;
 				hp.scale.x = Math.max( 0, (health-shield)/max);
 				shieldedHP.scale.x = health/max;
 				rawShielding.scale.x = shield/max;
 
-				if (hp.scale.x < 0.25f) bleed( true );
+				if (shield <= 0){
+					hpText.text(health + "/" + max);
+				}
+				else {
+					hpText.text(health + "+" + shield +  "/" + max);
+				}
+
+				//低于75%渲染成蓝色 低于35%渲染成红色
+				//Boss血量文本显示
+				//完全不符合更新为蓝色颜色
+				if (hp.scale.x > 0.75f) {
+
+					hpText.hardlight( TITLE_COLOR );
+				} else if (hp.scale.x > 0.35f){
+					bleed(true);
+					hpText.hardlight( CYELLOW );
+				} else {
+					hpText.hardlight( R_COLOR );
+				}
 
 				if (bleeding != blood.on){
 					if (bleeding)   skull.tint( 0xcc0000, 0.6f );
 					else            skull.resetColor();
-					blood.on = bleeding;
 				}
 			}
 		}

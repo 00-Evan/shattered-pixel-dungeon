@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Pasty;
@@ -53,6 +54,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlameX;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticGas;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfPurity;
@@ -84,13 +86,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFear;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAffection;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlink;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfClairvoyance;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDeepSleep;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDeepenedSleep;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDisarming;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFlock;
@@ -108,13 +110,18 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfPrismaticLight;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfScale;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTransfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.AssassinsBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BattleAxe;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BlackDog;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BoomSword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dairikyan;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dirk;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.FireFishSword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gauntlet;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Glaive;
@@ -122,7 +129,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gloves;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greataxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatshield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatsword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.GreenSword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HandAxe;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.IceFishSword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Mace;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
@@ -133,6 +142,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sai;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shortsword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.SkyShield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Spear;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WarHammer;
@@ -161,6 +171,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Firebloom;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Icecap;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
+import com.shatteredpixel.shatteredpixeldungeon.plants.SkyBlueFireBloom;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sorrowmoss;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Starflower;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Stormvine;
@@ -177,35 +188,38 @@ import java.util.LinkedHashMap;
 public class Generator {
 
 	public enum Category {
-		WEAPON	( 2, 2, MeleeWeapon.class),
-		WEP_T1	( 0, 0, MeleeWeapon.class),
-		WEP_T2	( 0, 0, MeleeWeapon.class),
-		WEP_T3	( 0, 0, MeleeWeapon.class),
-		WEP_T4	( 0, 0, MeleeWeapon.class),
-		WEP_T5	( 0, 0, MeleeWeapon.class),
+		WEAPON	( 4,    MeleeWeapon.class),
+		WEP_T1	( 0,    MeleeWeapon.class),
+		WEP_T2	( 0,    MeleeWeapon.class),
+		WEP_T3	( 0,    MeleeWeapon.class),
+		WEP_T4	( 0,    MeleeWeapon.class),
+		WEP_T5	( 0,    MeleeWeapon.class),
+		WEP_T6	( 0,    MeleeWeapon.class),
 		
-		ARMOR	( 2, 1, Armor.class ),
+		ARMOR	( 3,    Armor.class ),
 		
-		MISSILE ( 1, 2, MissileWeapon.class ),
-		MIS_T1  ( 0, 0, MissileWeapon.class ),
-		MIS_T2  ( 0, 0, MissileWeapon.class ),
-		MIS_T3  ( 0, 0, MissileWeapon.class ),
-		MIS_T4  ( 0, 0, MissileWeapon.class ),
-		MIS_T5  ( 0, 0, MissileWeapon.class ),
+		MISSILE ( 3,    MissileWeapon.class ),
+		MIS_T1  ( 0,    MissileWeapon.class ),
+		MIS_T2  ( 0,    MissileWeapon.class ),
+		MIS_T3  ( 0,    MissileWeapon.class ),
+		MIS_T4  ( 0,    MissileWeapon.class ),
+		MIS_T5  ( 0,    MissileWeapon.class ),
 		
-		WAND	( 1, 1, Wand.class ),
-		RING	( 1, 0, Ring.class ),
-		ARTIFACT( 0, 1, Artifact.class),
+		WAND	( 2,    Wand.class ),
+		RING	( 1,    Ring.class ),
+		ARTIFACT( 1,    Artifact.class),
 		
-		FOOD	( 0, 0, Food.class ),
+		FOOD	( 0,    Food.class ),
 		
-		POTION	( 8, 8, Potion.class ),
-		SEED	( 1, 1, Plant.Seed.class ),
+		POTION	( 16,   Potion.class ),
+		SEED	( 2,    Plant.Seed.class ),
 		
-		SCROLL	( 8, 8, Scroll.class ),
-		STONE   ( 1, 1, Runestone.class),
+		SCROLL	( 16,   Scroll.class ),
+
+		STONE   ( 2,    Runestone.class),
 		
-		GOLD	( 10, 10,   Gold.class );
+		GOLD	( 20,   Gold.class );
+
 		
 		public Class<?>[] classes;
 
@@ -215,16 +229,12 @@ public class Generator {
 		//Artifacts in particular don't reset, no duplicates!
 		public float[] probs;
 		public float[] defaultProbs = null;
-
-		//game has two decks of 35 items for overall category probs
-		//one deck has a ring and extra armor, the other has an artifact and extra thrown weapon
-		public float firstProb;
-		public float secondProb;
+		
+		public float prob;
 		public Class<? extends Item> superClass;
 		
-		private Category( float firstProb, float secondProb, Class<? extends Item> superClass ) {
-			this.firstProb = firstProb;
-			this.secondProb = secondProb;
+		private Category( float prob, Class<? extends Item> superClass ) {
+			this.prob = prob;
 			this.superClass = superClass;
 		}
 		
@@ -234,9 +244,8 @@ public class Generator {
 					return i;
 				}
 			}
-
-			//items without a category-defined order are sorted based on the spritesheet
-			return Short.MAX_VALUE+item.image();
+			
+			return item instanceof Bag ? Integer.MAX_VALUE : Integer.MAX_VALUE - 1;
 		}
 
 		static {
@@ -256,8 +265,9 @@ public class Generator {
 					PotionOfLevitation.class,
 					PotionOfParalyticGas.class,
 					PotionOfPurity.class,
-					PotionOfExperience.class};
-			POTION.defaultProbs = new float[]{ 0, 6, 4, 3, 3, 3, 2, 2, 2, 2, 2, 1 };
+					PotionOfExperience.class,
+					PotionOfLiquidFlameX.class,};
+			POTION.defaultProbs = new float[]{ 0, 6, 4, 3, 3, 3, 2, 2, 2, 2, 2, 1, 3 };
 			POTION.probs = POTION.defaultProbs.clone();
 			
 			SEED.classes = new Class<?>[]{
@@ -266,6 +276,7 @@ public class Generator {
 					Fadeleaf.Seed.class,
 					Icecap.Seed.class,
 					Firebloom.Seed.class,
+					SkyBlueFireBloom.Seed.class,
 					Sorrowmoss.Seed.class,
 					Swiftthistle.Seed.class,
 					Blindweed.Seed.class,
@@ -273,7 +284,7 @@ public class Generator {
 					Earthroot.Seed.class,
 					Dreamfoil.Seed.class,
 					Starflower.Seed.class};
-			SEED.defaultProbs = new float[]{ 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 2 };
+			SEED.defaultProbs = new float[]{ 0, 5, 5, 5, 5, 9, 5, 5, 5, 5, 5, 5, 2 };
 			SEED.probs = SEED.defaultProbs.clone();
 			
 			SCROLL.classes = new Class<?>[]{
@@ -300,11 +311,11 @@ public class Generator {
 					StoneOfFlock.class,
 					StoneOfShock.class,
 					StoneOfBlink.class,
-					StoneOfDeepSleep.class,
+					StoneOfDeepenedSleep.class,
 					StoneOfClairvoyance.class,
 					StoneOfAggression.class,
 					StoneOfBlast.class,
-					StoneOfFear.class,
+					StoneOfAffection.class,
 					StoneOfAugmentation.class  //1 is sold in each shop
 			};
 			STONE.defaultProbs = new float[]{ 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0 };
@@ -323,8 +334,9 @@ public class Generator {
 					WandOfWarding.class,
 					WandOfTransfusion.class,
 					WandOfCorruption.class,
-					WandOfRegrowth.class };
-			WAND.probs = new float[]{ 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3 };
+					WandOfRegrowth.class,
+					WandOfScale.class,};
+			WAND.probs = new float[]{ 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 1 };
 			
 			//see generator.randomWeapon
 			WEAPON.classes = new Class<?>[]{};
@@ -334,9 +346,10 @@ public class Generator {
 					WornShortsword.class,
 					Gloves.class,
 					Dagger.class,
-					MagesStaff.class
+					MagesStaff.class,
+					BlackDog.class,
 			};
-			WEP_T1.probs = new float[]{ 1, 1, 1, 0 };
+			WEP_T1.probs = new float[]{ 1, 1, 1, 0, 4 };
 			
 			WEP_T2.classes = new Class<?>[]{
 					Shortsword.class,
@@ -353,9 +366,13 @@ public class Generator {
 					Scimitar.class,
 					RoundShield.class,
 					Sai.class,
-					Whip.class
+					Whip.class,
+					SkyShield.class,
+					BoomSword.class,
+					Dairikyan.class,
+					GreenSword.class,
 			};
-			WEP_T3.probs = new float[]{ 6, 5, 5, 4, 4, 4 };
+			WEP_T3.probs = new float[]{ 6, 5, 5, 4, 0, 4 ,3,4,8,0};
 			
 			WEP_T4.classes = new Class<?>[]{
 					Longsword.class,
@@ -363,9 +380,10 @@ public class Generator {
 					Flail.class,
 					RunicBlade.class,
 					AssassinsBlade.class,
-					Crossbow.class
+					Crossbow.class,
+					Sai.class
 			};
-			WEP_T4.probs = new float[]{ 6, 5, 5, 4, 4, 4 };
+			WEP_T4.probs = new float[]{ 6, 5, 5, 4, 4, 4, 3 };
 			
 			WEP_T5.classes = new Class<?>[]{
 					Greatsword.class,
@@ -376,6 +394,12 @@ public class Generator {
 					Gauntlet.class
 			};
 			WEP_T5.probs = new float[]{ 6, 5, 5, 4, 4, 4 };
+
+			WEP_T6.classes = new Class<?>[]{
+					FireFishSword.class,
+					IceFishSword.class,
+			};
+			WEP_T6.probs = new float[]{ 0,0 };
 			
 			//see Generator.randomArmor
 			ARMOR.classes = new Class<?>[]{
@@ -429,7 +453,8 @@ public class Generator {
 					Pasty.class,
 					MysteryMeat.class };
 			FOOD.probs = new float[]{ 4, 1, 0 };
-			
+			//注释
+			/* 注释*/
 			RING.classes = new Class<?>[]{
 					RingOfAccuracy.class,
 					RingOfEvasion.class,
@@ -442,7 +467,7 @@ public class Generator {
 					RingOfSharpshooting.class,
 					RingOfTenacity.class,
 					RingOfWealth.class};
-			RING.probs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+			RING.probs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 };
 			
 			ARTIFACT.classes = new Class<?>[]{
 					CapeOfThorns.class,
@@ -459,7 +484,7 @@ public class Generator {
 					LloydsBeacon.class,
 					EtherealChains.class
 			};
-			ARTIFACT.defaultProbs = new float[]{ 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1};
+			ARTIFACT.defaultProbs = new float[]{ 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1};
 			ARTIFACT.probs = ARTIFACT.defaultProbs.clone();
 		}
 	}
@@ -471,12 +496,10 @@ public class Generator {
 			{0,  0, 20, 40, 40},
 			{0,  0,  0, 20, 80}
 	};
-
-	private static boolean usingFirstDeck = false;
+	
 	private static HashMap<Category,Float> categoryProbs = new LinkedHashMap<>();
 
 	public static void fullReset() {
-		usingFirstDeck = Random.Int(2) == 0;
 		generalReset();
 		for (Category cat : Category.values()) {
 			reset(cat);
@@ -485,7 +508,7 @@ public class Generator {
 
 	public static void generalReset(){
 		for (Category cat : Category.values()) {
-			categoryProbs.put( cat, usingFirstDeck ? cat.firstProb : cat.secondProb );
+			categoryProbs.put( cat, cat.prob );
 		}
 	}
 
@@ -496,7 +519,6 @@ public class Generator {
 	public static Item random() {
 		Category cat = Random.chances( categoryProbs );
 		if (cat == null){
-			usingFirstDeck = !usingFirstDeck;
 			generalReset();
 			cat = Random.chances( categoryProbs );
 		}
@@ -558,7 +580,8 @@ public class Generator {
 			Category.WEP_T2,
 			Category.WEP_T3,
 			Category.WEP_T4,
-			Category.WEP_T5
+			Category.WEP_T5,
+			Category.WEP_T6,
 	};
 
 	public static MeleeWeapon randomWeapon(){
@@ -624,13 +647,10 @@ public class Generator {
 		return false;
 	}
 
-	private static final String FIRST_DECK = "first_deck";
 	private static final String GENERAL_PROBS = "general_probs";
 	private static final String CATEGORY_PROBS = "_probs";
 	
 	public static void storeInBundle(Bundle bundle) {
-		bundle.put(FIRST_DECK, usingFirstDeck);
-
 		Float[] genProbs = categoryProbs.values().toArray(new Float[0]);
 		float[] storeProbs = new float[genProbs.length];
 		for (int i = 0; i < storeProbs.length; i++){
@@ -657,8 +677,6 @@ public class Generator {
 	public static void restoreFromBundle(Bundle bundle) {
 		fullReset();
 
-		usingFirstDeck = bundle.getBoolean(FIRST_DECK);
-
 		if (bundle.contains(GENERAL_PROBS)){
 			float[] probs = bundle.getFloatArray(GENERAL_PROBS);
 			for (int i = 0; i < probs.length; i++){
@@ -671,6 +689,18 @@ public class Generator {
 				float[] probs = bundle.getFloatArray(cat.name().toLowerCase() + CATEGORY_PROBS);
 				if (cat.defaultProbs != null && probs.length == cat.defaultProbs.length){
 					cat.probs = probs;
+				}
+			}
+		}
+
+		//pre-0.8.1
+		if (bundle.contains("spawned_artifacts")) {
+			for (Class<? extends Artifact> artifact : bundle.getClassArray("spawned_artifacts")) {
+				Category cat = Category.ARTIFACT;
+				for (int i = 0; i < cat.classes.length; i++) {
+					if (cat.classes[i].equals(artifact)) {
+						cat.probs[i] = 0;
+					}
 				}
 			}
 		}

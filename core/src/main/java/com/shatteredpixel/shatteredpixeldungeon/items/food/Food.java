@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,8 +41,8 @@ import java.util.ArrayList;
 
 public class Food extends Item {
 
-	public static final float TIME_TO_EAT	= 3f;
-	
+	public static final float TIME_TO_EAT	= 2f;
+
 	public static final String AC_EAT	= "EAT";
 	
 	public float energy = Hunger.HUNGRY;
@@ -50,16 +50,15 @@ public class Food extends Item {
 	{
 		stackable = true;
 		image = ItemSpriteSheet.RATION;
-
+		//赋予快捷栏
 		defaultAction = AC_EAT;
-
 		bones = true;
 	}
 	
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		actions.add( AC_EAT );
+		actions.add(AC_EAT);
 		return actions;
 	}
 	
@@ -69,24 +68,22 @@ public class Food extends Item {
 		super.execute( hero, action );
 
 		if (action.equals( AC_EAT )) {
-			
 			detach( hero.belongings.backpack );
-			
+
 			satisfy(hero);
 			GLog.i( Messages.get(this, "eat_msg") );
-			
+
 			hero.sprite.operate( hero.pos );
 			hero.busy();
 			SpellSprite.show( hero, SpellSprite.FOOD );
 			Sample.INSTANCE.play( Assets.Sounds.EAT );
-			
+
 			hero.spend( eatingTime() );
 
 			Talent.onFoodEaten(hero, energy, this);
-			
+
 			Statistics.foodEaten++;
 			Badges.validateFoodEaten();
-			
 		}
 	}
 

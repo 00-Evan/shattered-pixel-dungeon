@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,7 +65,7 @@ public class CausticBrew extends Brew {
 	@Override
 	public int value() {
 		//prices of ingredients
-		return quantity * (30 + 30);
+		return quantity * (30 + 50);
 	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
@@ -74,7 +74,7 @@ public class CausticBrew extends Brew {
 			inputs =  new Class[]{PotionOfToxicGas.class, GooBlob.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 2;
+			cost = 4;
 			
 			output = CausticBrew.class;
 			outQuantity = 1;

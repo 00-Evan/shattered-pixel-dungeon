@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,10 +49,12 @@ public class PotionOfSnapFreeze extends ExoticPotion {
 			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 		}
 		
+		Fire fire = (Fire)Dungeon.level.blobs.get( Fire.class );
+		
 		for (int offset : PathFinder.NEIGHBOURS9){
 			if (!Dungeon.level.solid[cell+offset]) {
 				
-				Freezing.affect( cell + offset );
+				Freezing.affect( cell + offset, fire );
 				
 				Char ch = Actor.findChar( cell + offset);
 				if (ch != null){

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -177,10 +177,10 @@ public class LloydsBeacon extends Artifact {
 				GameScene.updateFog();
 			} else {
 
-				TimekeepersHourglass.timeFreeze timeFreeze = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
-				if (timeFreeze != null) timeFreeze.disarmPressedTraps();
-				Swiftthistle.TimeBubble timeBubble = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
-				if (timeBubble != null) timeBubble.disarmPressedTraps();
+				Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+				if (buff != null) buff.detach();
+				buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
+				if (buff != null) buff.detach();
 
 				InterlevelScene.mode = InterlevelScene.Mode.RETURN;
 				InterlevelScene.returnDepth = returnDepth;
@@ -204,14 +204,14 @@ public class LloydsBeacon extends Artifact {
 			updateQuickslot();
 
 			if (Actor.findChar(target) == curUser){
-				ScrollOfTeleportation.teleportChar(curUser);
+				ScrollOfTeleportation.teleportHero(curUser);
 				curUser.spendAndNext(1f);
 			} else {
 				final Ballistica bolt = new Ballistica( curUser.pos, target, Ballistica.MAGIC_BOLT );
 				final Char ch = Actor.findChar(bolt.collisionPos);
 
 				if (ch == curUser){
-					ScrollOfTeleportation.teleportChar(curUser);
+					ScrollOfTeleportation.teleportHero(curUser);
 					curUser.spendAndNext( 1f );
 				} else {
 					Sample.INSTANCE.play( Assets.Sounds.ZAP );

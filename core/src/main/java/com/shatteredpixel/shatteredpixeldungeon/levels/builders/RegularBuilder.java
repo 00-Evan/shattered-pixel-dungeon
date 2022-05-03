@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,8 +60,8 @@ public abstract class RegularBuilder extends Builder {
 		return this;
 	}
 	
-	protected float[] pathTunnelChances = new float[]{2, 2, 1};
-	protected float[] branchTunnelChances = new float[]{1, 1, 0};
+	protected float[] pathTunnelChances = new float[]{1, 3, 1};
+	protected float[] branchTunnelChances = new float[]{2, 2, 1};
 	
 	public RegularBuilder setTunnelLength( float[] path, float[] branch){
 		pathTunnelChances = path;

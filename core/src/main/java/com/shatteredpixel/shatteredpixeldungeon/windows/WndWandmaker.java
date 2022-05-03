@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,16 +22,20 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Pasty;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.Red;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfScale;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
@@ -51,14 +55,14 @@ public class WndWandmaker extends Window {
 	private static final int GAP		= 2;
 
 	Wandmaker wandmaker;
-	Item questItem;
+	Item item;
 
 	public WndWandmaker( final Wandmaker wandmaker, final Item item ) {
 		
 		super();
 
 		this.wandmaker = wandmaker;
-		this.questItem = item;
+		this.item = item;
 		
 		IconTitle titlebar = new IconTitle();
 		titlebar.icon(new ItemSprite(item.image(), null));
@@ -68,11 +72,14 @@ public class WndWandmaker extends Window {
 
 		String msg = "";
 		if (item instanceof CorpseDust){
+			Badges.GET_SC();
 			msg = Messages.get(this, "dust");
 		} else if (item instanceof Embers){
 			msg = Messages.get(this, "ember");
 		} else if (item instanceof Rotberry.Seed){
 			msg = Messages.get(this, "berry");
+		}	else if (item instanceof Red) {
+			msg = Messages.get(this, "red");
 		}
 
 		RenderedTextBlock message = PixelScene.renderTextBlock( msg, 6 );
@@ -89,6 +96,7 @@ public class WndWandmaker extends Window {
 		add(btnWand2);
 		
 		resize(WIDTH, (int) btnWand2.bottom());
+
 	}
 	
 	private void selectReward( Item reward ) {
@@ -99,20 +107,30 @@ public class WndWandmaker extends Window {
 
 		hide();
 
-		questItem.detach( Dungeon.hero.belongings.backpack );
+		item.detach( Dungeon.hero.belongings.backpack );
 
-		reward.identify(false);
+		reward.identify();
 		if (reward.doPickUp( Dungeon.hero )) {
 			GLog.i( Messages.get(Dungeon.hero, "you_now_have", reward.name()) );
 		} else {
 			Dungeon.level.drop( reward, wandmaker.pos ).sprite.drop();
-		}
-		
+		} if (item instanceof Red) {
+			new WandOfScale().quantity(1).identify().collect();
+			new PotionOfHealing().quantity(5).identify().collect();
+			new Pasty().quantity(5).identify().collect();
+
+		wandmaker.yell( Messages.get(this, "farewell2", Dungeon.hero.name()) );
+		wandmaker.destroy();
+
+		wandmaker.sprite.die();
+
+		Wandmaker.Quest.complete();
+	}
 		wandmaker.yell( Messages.get(this, "farewell", Dungeon.hero.name()) );
 		wandmaker.destroy();
-		
+
 		wandmaker.sprite.die();
-		
+
 		Wandmaker.Quest.complete();
 	}
 
@@ -137,11 +155,7 @@ public class WndWandmaker extends Window {
 				}
 				@Override
 				protected void onClick() {
-					if (Dungeon.hero.belongings.contains(questItem)) {
-						GameScene.show(new RewardWindow(item));
-					} else {
-						hide();
-					}
+					ShatteredPixelDungeon.scene().addToFront(new RewardWindow(item));
 				}
 			};
 			add(slot);

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -33,13 +36,25 @@ public class PotionOfHaste extends Potion {
 	{
 		icon = ItemSpriteSheet.Icons.POTION_HASTE;
 	}
+
+	@Override
+	public String info() {
+		if(Dungeon.isChallenged(Challenges.EXSG)){
+			return isKnown() ? baddesc() : Messages.get(this, "unknown_desc");
+		} else {
+			return isKnown() ? desc() : Messages.get(this, "unknown_desc");
+		}
+	}
 	
 	@Override
 	public void apply(Hero hero) {
 		identify();
-		
-		GLog.w( Messages.get(this, "energetic") );
-		Buff.prolong( hero, Haste.class, Haste.DURATION);
+		if (Dungeon.isChallenged(Challenges.EXSG)){
+			Buff.affect( hero, Cripple.class, 16f );
+		} else {
+			GLog.w( Messages.get(this, "energetic") );
+			Buff.prolong( hero, Haste.class, Haste.DURATION);
+		}
 	}
 	
 	@Override

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,11 +21,15 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
+import static com.shatteredpixel.shatteredpixeldungeon.Challenges.ALLBOSS;
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RandomBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoldenMimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
@@ -45,12 +49,16 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LoopBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.IceCrystalLRRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.NxhyShopRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.NyzBombAndBooksRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.PitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StudyRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BlazingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
@@ -60,7 +68,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FrostTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WornDartTrap;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -115,8 +122,24 @@ public abstract class RegularLevel extends Level {
 			initRooms.add(s);
 		}
 		
-		if (Dungeon.shopOnLevel())
+		if (Dungeon.shopOnLevel() && (!Dungeon.isChallenged(ALLBOSS)))
 			initRooms.add(new ShopRoom());
+
+		if (Dungeon.BooksRTD() && (!Dungeon.isChallenged(ALLBOSS)))
+			initRooms.add(new StudyRoom());
+
+		if (Dungeon.iceCursedLevel() && (!Dungeon.isChallenged(ALLBOSS)))
+			initRooms.add(new IceCrystalLRRoom());
+
+		if (Dungeon.NxhyshopOnLevel() && (!Dungeon.isChallenged(ALLBOSS)))
+			initRooms.add(new NxhyShopRoom());
+
+		if (Dungeon.NyzshopOnLevel() && (!Dungeon.isChallenged(ALLBOSS))) {
+			Buff.affect(hero, RandomBuff.class).set( (3 + Random.Int(9)+hero.STR/6+hero.HP/30)/Random.Int(1,2)+5, 1 );
+			System.out.println(RandomBuff.level);
+			initRooms.add(new NyzBombAndBooksRoom());
+		}
+
 
 		//force max special rooms and add one more for large levels
 		int specials = specialRooms(feeling == Feeling.LARGE);
@@ -178,7 +201,7 @@ public abstract class RegularLevel extends Level {
 	}
 	
 	@Override
-	public int mobLimit() {
+	public int nMobs() {
 		if (Dungeon.depth <= 1) return 0;
 
 		int mobs = 3 + Dungeon.depth % 5 + Random.Int(3);
@@ -191,7 +214,7 @@ public abstract class RegularLevel extends Level {
 	@Override
 	protected void createMobs() {
 		//on floor 1, 8 pre-set mobs are created so the player can get level 2.
-		int mobsToSpawn = Dungeon.depth == 1 ? 8 : mobLimit();
+		int mobsToSpawn = Dungeon.depth == 1 ? 8 : nMobs();
 
 		ArrayList<Room> stdRooms = new ArrayList<>();
 		for (Room room : rooms) {
@@ -224,8 +247,8 @@ public abstract class RegularLevel extends Level {
 				mobsToSpawn--;
 				mobs.add(mob);
 
-				//chance to add a second mob to this room, except on floor 1
-				if (Dungeon.depth > 1 && mobsToSpawn > 0 && Random.Int(4) == 0){
+				//add a second mob to this room
+				if (mobsToSpawn > 0 && Random.Int(4) == 0){
 					mob = createMob();
 
 					tries = 30;
@@ -299,13 +322,10 @@ public abstract class RegularLevel extends Level {
 			if (room == null) {
 				continue;
 			}
-
-			ArrayList<Point> points = room.charPlaceablePoints(this);
-			if (!points.isEmpty()){
-				cell = pointToCell(Random.element(points));
-				if (passable[cell] && (!Char.hasProp(ch, Char.Property.LARGE) || openSpace[cell])) {
-					return cell;
-				}
+			
+			cell = pointToCell(room.random());
+			if (passable[cell] && (!Char.hasProp(ch, Char.Property.LARGE) || openSpace[cell])) {
+				return cell;
 			}
 			
 		}
@@ -399,7 +419,7 @@ public abstract class RegularLevel extends Level {
 			drop( item, cell ).setHauntedIfCursed().type = Heap.Type.REMAINS;
 		}
 
-		DriedRose rose = Dungeon.hero.belongings.getItem( DriedRose.class );
+		DriedRose rose = hero.belongings.getItem( DriedRose.class );
 		if (rose != null && rose.isIdentified() && !rose.cursed){
 			//aim to drop 1 petal every 2 floors
 			int petalsNeeded = (int) Math.ceil((float)((Dungeon.depth / 2) - rose.droppedPetals) / 3);
@@ -420,21 +440,15 @@ public abstract class RegularLevel extends Level {
 		}
 
 		//cached rations try to drop in a special room on floors 2/3/4/6/7/8, to a max of 4/6
-		if (Dungeon.hero.hasTalent(Talent.CACHED_RATIONS)){
-			Talent.CachedRationsDropped dropped = Buff.affect(Dungeon.hero, Talent.CachedRationsDropped.class);
-			if (dropped.count() < 2 + 2*Dungeon.hero.pointsInTalent(Talent.CACHED_RATIONS)){
+		if (hero.hasTalent(Talent.CACHED_RATIONS)){
+			Talent.CachedRationsDropped dropped = Buff.affect(hero, Talent.CachedRationsDropped.class);
+			if (dropped.count() < 2 + 2* hero.pointsInTalent(Talent.CACHED_RATIONS)){
 				int cell;
 				int tries = 100;
-				boolean valid;
 				do {
 					cell = randomDropCell(SpecialRoom.class);
-					valid = cell != -1 && !(room(cell) instanceof SecretRoom)
-							&& !(room(cell) instanceof ShopRoom)
-							&& map[cell] != Terrain.EMPTY_SP
-							&& map[cell] != Terrain.WATER
-							&& map[cell] != Terrain.PEDESTAL;
- 				} while (tries-- > 0 && !valid);
-				if (valid) {
+				} while (tries-- > 0 && (room(cell) instanceof SecretRoom || room(cell) instanceof ShopRoom));
+				if (!(room(cell) instanceof SecretRoom || room(cell) instanceof ShopRoom) && cell != -1) {
 					if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
 						map[cell] = Terrain.GRASS;
 						losBlocking[cell] = false;
@@ -446,19 +460,20 @@ public abstract class RegularLevel extends Level {
 		}
 
 		//guide pages
-		Collection<String> allPages = Document.ADVENTURERS_GUIDE.pageNames();
+		Collection<String> allPages = Document.ADVENTURERS_GUIDE.pages();
 		ArrayList<String> missingPages = new ArrayList<>();
 		for ( String page : allPages){
-			if (!Document.ADVENTURERS_GUIDE.isPageFound(page)){
+			if (!Document.ADVENTURERS_GUIDE.hasPage(page)){
 				missingPages.add(page);
 			}
 		}
 
-		//a total of 6 pages drop randomly, the rest are specially dropped or are given at the start
-		missingPages.remove(Document.GUIDE_SEARCHING);
+		//a total of 8 pages drop randomly, 2 pages are specially dropped
+		missingPages.remove(Document.GUIDE_INTRO_PAGE);
+		missingPages.remove(Document.GUIDE_SEARCH_PAGE);
 
-		//chance to find a page is 0/25/50/75/100% for floors 1/2/3/4/5+
-		float dropChance = 0.25f*(Dungeon.depth-1);
+		//chance to find a page scales with pages missing and depth
+		float dropChance = (missingPages.size() + Dungeon.depth - 1) / (float)(allPages.size() - 2);
 		if (!missingPages.isEmpty() && Random.Float() < dropChance){
 			GuidePage p = new GuidePage();
 			p.page(missingPages.get(0));

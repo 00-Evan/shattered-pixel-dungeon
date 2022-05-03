@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,6 +50,8 @@ import com.watabou.utils.Reflection;
 import java.util.ArrayList;
 
 public abstract class Plant implements Bundlable {
+
+	public String plantName = Messages.get(this, "name");
 	
 	public int image;
 	public int pos;
@@ -64,13 +66,13 @@ public abstract class Plant implements Bundlable {
 			((Hero) ch).interrupt();
 		}
 
+		wither();
+		activate( ch );
+
 		if (Dungeon.level.heroFOV[pos] && Dungeon.hero.hasTalent(Talent.NATURES_AID)){
 			// 3/5 turns based on talent points spent
 			Buff.affect(Dungeon.hero, Barkskin.class).set(2, 1 + 2*(Dungeon.hero.pointsInTalent(Talent.NATURES_AID)));
 		}
-
-		wither();
-		activate( ch );
 	}
 	
 	public abstract void activate( Char ch );
@@ -111,11 +113,7 @@ public abstract class Plant implements Bundlable {
 	public void storeInBundle( Bundle bundle ) {
 		bundle.put( POS, pos );
 	}
-
-	public String name(){
-		return Messages.get(this, "name");
-	}
-
+	
 	public String desc() {
 		String desc = Messages.get(this, "desc");
 		if (Dungeon.hero.subClass == HeroSubClass.WARDEN){
@@ -173,11 +171,11 @@ public abstract class Plant implements Bundlable {
 			super.execute (hero, action );
 
 			if (action.equals( AC_PLANT )) {
-
+							
+				hero.spend( TIME_TO_PLANT );
 				hero.busy();
 				((Seed)detach( hero.belongings.backpack )).onThrow( hero.pos );
-				hero.spend( TIME_TO_PLANT );
-
+				
 				hero.sprite.operate( hero.pos );
 				
 			}
@@ -205,11 +203,6 @@ public abstract class Plant implements Bundlable {
 		@Override
 		public int value() {
 			return 10 * quantity;
-		}
-
-		@Override
-		public int energyVal() {
-			return 2 * quantity;
 		}
 
 		@Override

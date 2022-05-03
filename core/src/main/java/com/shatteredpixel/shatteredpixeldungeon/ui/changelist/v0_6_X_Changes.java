@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
+import com.shatteredpixel.shatteredpixeldungeon.items.DewVial;
 import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Bulk;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
@@ -55,8 +56,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIcon;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Image;
@@ -87,9 +86,7 @@ public class v0_6_X_Changes {
 				"_-_ Released May 3rd, 2018\n" +
 				"_-_ 32 days after Shattered v0.6.4\n" +
 				"\n" +
-				"v0.6.5 was the third major design iteration for glyphs, with the first being from Pixel Dungeon and the second from v0.4.0. In both of these earlier iterations glyphs had big trade-offs, which led many players to dislike or outright ignore them. I finally just decided to make them like enchantments. With that, plus the new augmentation functionality, armor finally had some of the variability in stats and effects that weapons had, though adding full blown armor types is still a common suggestion.\n" +
-				"\n" +
-				"I also made another attempt at designing the Berserker in v0.6.5. Prior to this update his death-defying rage would always trigger if it was available. That built-in safety net translated to a win rate that was hugely higher than the other subclasses, so I decided to make building rage and cheating death much harder to access. The Berserker retained his simple up-front gameplay, but started requiring investment in armor and rage management to access his power."));
+				"Dev commentary will be added here in v0.9.3."));
 		
 		changes.addButton( new ChangeButton(new StoneOfAugmentation(),
 				"The weightstone is now the runestone of augmentation!\n\n" +
@@ -214,9 +211,7 @@ public class v0_6_X_Changes {
 				"_-_ Released April 1st, 2018\n" +
 				"_-_ 46 days after Shattered v0.6.3\n" +
 				"\n" +
-				"v0.6.4 was a smaller update, mostly focused on additions and fixes following v0.6.3. Probably the most interesting content that came in v0.6.4 was the crossbow! This weapon was an attempt to fulfill the common request for an ammo-based ranged weapon, without actually having an ammo system in the game. I felt that an ammo system would be more cumbersome than it would be worth. Letting darts piggyback on an equipped weapon seemed like a great compromise.\n" +
-				"\n" +
-				"I also made some important changes to challenges in v0.6.4, primarily to make stacked challenge games a bit easier. This made high-challenge games more feasible without extreme luck, which led to a big increase in challenge interest among highly skilled players."));
+				"Dev commentary will be added here in v0.9.3."));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.CHALLENGE_ON), "Challenges",
 				"Challenges have received several major changes, with the goal of making them more fair and interesting.\n" +
@@ -314,7 +309,7 @@ public class v0_6_X_Changes {
 		changes.hardlight( CharSprite.NEGATIVE );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(new BuffIcon(BuffIndicator.PARALYSIS, true), "Paralysis changes",
+		changes.addButton( new ChangeButton(new Image(Assets.Interfaces.BUFFS_LARGE, 64, 0, 16, 16), "Paralysis changes",
 				"Paralysis is an extremely powerful debuff, and its ability to completely immobilize the player or an enemy while they are killed needs to be adjusted.\n" +
 				"\n" +
 				"Chance to resist paralysis is now based on all recent damage taken while paralyzed, instead of each specific instance of damage separately.\n" +
@@ -358,11 +353,7 @@ public class v0_6_X_Changes {
 				"_-_ Released February 14th, 2018\n" +
 				"_-_ 113 days after Shattered v0.6.2\n" +
 				"\n" +
-				"Prior to v0.6.3 thrown weapons broke on a single hit each and so weren't useful for much. I didn't want to just amp up their quantity though, as players would just horde them and use them against bosses. By lowering quantity but also giving thrown weapons durability, I was able to make them much more useful without making hoarding problematic.\n" +
-				"\n" +
-				"v0.6.3 is also an excellent case for why I run betas for every Shattered update. In the original beta for v0.6.3 thrown weapons were seriously overpowered, and threatened to make regular weapons pointless. I ended up significantly reducing their stats and quantity before the full release.\n" +
-				"\n" +
-				"This update also demonstrates Shattered's ever-increasing scope and update size. Despite reworking a whole category of items, I ended up just calling this a minor update."));
+				"Dev commentary will be added here in v0.9.3."));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.TRIDENT, null), "Ranged Weapons Overhaul!",
 				"Ranged weapons have been completely overhauled!\n\n" +
@@ -397,7 +388,7 @@ public class v0_6_X_Changes {
 		changes.hardlight( CharSprite.WARNING );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(new BuffIcon(BuffIndicator.FIRE, true), "Changes to debuffs and resistances",
+		changes.addButton( new ChangeButton(new Image(Assets.Interfaces.BUFFS_LARGE, 32, 0, 16, 16), "Changes to debuffs and resistances",
 				"The game's resistance system has been totally overhauled, to allow for more flexibility and consistency.\n\n" +
 				"Previously, if a character was resistant to something, its effect would be reduced by a random amount between 0% and 100%.\n\n" +
 				"Now, resistances are much less random, applying a specific reduction to harmful effects. Currently all resistances are 50%.\n\n" +
@@ -507,13 +498,9 @@ public class v0_6_X_Changes {
 				"_-_ Released October 24th, 2017\n" +
 				"_-_ 70 days after Shattered v0.6.1\n" +
 				"\n" +
-				"Before v0.6.2 secret rooms weren't a purposeful part of level generation, they occurred when the levelgen algorithm randomly hid all of the doors leading to a room. This caused a lot of problems, as secrets were often easy to find, but could also sometimes hide important progression items! I changed this to make secret rooms more deliberate, which let me fine tune their rewards and difficulty of discovery.\n" +
-				"\n" +
-				"This update also featured a proper rework for the Rogue! The cloak of shadows from v0.2.0 was kept, and I made a bunch of changes focused on consolidating his benefits, which did a lot to make the Rogue's strengths more pronounced and focused.\n" +
-				"\n" +
-				"Lastly, v0.6.2 (and v0.6.1) included some important AI changes that made character behaviour much more consistent when allies are concerned. This paved the way for ally additions in future updates."));
+				"Dev commentary will be added here in v0.9.3."));
 		
-		changes.addButton( new ChangeButton( Icons.get(Icons.STAIRS), "Dungeon Secrets!",
+		changes.addButton( new ChangeButton( Icons.get(Icons.DEPTH), "Dungeon Secrets!",
 				"The secrets of the dungeon have been totally redesigned!\n\n" +
 				"_-_ Regular rooms can no longer be totally hidden\n\n" +
 				"_-_ 12 new secret rooms added, which are always hidden\n\n" +
@@ -694,9 +681,7 @@ public class v0_6_X_Changes {
 				"_-_ Released August 15th, 2017\n" +
 				"_-_ 72 days after Shattered v0.6.0\n" +
 				"\n" +
-				"v0.6.1 was light on core game content, but made some critical improvements to the new player experience by expanding the journal system. I really wanted to make the player feel less compelled to seek out external guides for Shattered, and so I wrote up an in-game guide that pointed the player in the right direction without spoiling too much.  The previous system used signposts at the start of each floor, which were the same every run and couldn't be read at any time.\n" +
-				"\n" +
-				"v0.6.1 also overhauled the changes screen, which you're viewing right now! Long text-based changelogs just don't work on mobile screens, as there's much less screen real-estate to work with. I didn't want Shattered's changelog to be a big wall of text, but I also didn't want to abbreviate lots of details. The solution was to keep the full text, but hide it behind categories and icons!"));
+				"Dev commentary will be added here in v0.9.3."));
 		
 		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.GUIDE_PAGE, null), "Journal Additions",
 				"_-_ Overhauled the Journal window with loads of new functionality\n\n" +
@@ -711,7 +696,7 @@ public class v0_6_X_Changes {
 				"_-_ Reduced the numbers of games needed for the 'games played' badges from 10/100/500/2000 to 10/50/250/1000\n\n" +
 				"_-_ Blank badges shown in the badges menu are now accurate to how many badges you have left to unlock."));
 		
-		changes.addButton( new ChangeButton( Icons.get(Icons.STAIRS), "Dungeon Changes",
+		changes.addButton( new ChangeButton( Icons.get(Icons.DEPTH), "Dungeon Changes",
 				"_-_ Added 5 new regional rooms\n" +
 				"_-_ Added two new uncommon room types\n" +
 				"_-_ Added a new type of tunnel room\n\n" +
@@ -752,7 +737,7 @@ public class v0_6_X_Changes {
 				"_-_ Health potions now heal more than max HP at low levels, and slightly less than max HP at high levels.\n\n" +
 				"Make sure to read the dew vial changes as well."));
 		
-		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.VIAL, null), "Dew Vial",
+		changes.addButton( new ChangeButton( new DewVial(),
 				"The dew vial (and dew) are having their healing abilities enhanced to improve the availability of healing in the sewers, and to help offset the health potion changes.\n\n" +
 				"_-_ Dew drops now heal 5% of max HP\n\n" +
 				"_-_ Dew vial now always spawns on floor 1\n\n" +
@@ -863,13 +848,9 @@ public class v0_6_X_Changes {
 				"_-_ Released June 4th, 2017\n" +
 				"_-_ 116 days after Shattered v0.5.0\n" +
 				"\n" +
-				"v0.6.0 was another major content change focused on the dungeon, this time to level generation! After v0.6.0 rooms were able to specify their own shape and size before the levelgen algorithm then tried to fit them all together. Previously levelgen would create the shape of a level first and then try to place rooms in that shape.\n" +
-				"\n" +
-				"I'm really proud of this levelgen algorithm even to this day. v0.6.0 both improved levelgen on its own and paved the way for future improvements in updates like v0.6.2 and v0.9.1.\n" +
-				"\n" +
-				"I feel v0.6.0 also represents the start of another era in Shattered's development. While Shattered was still missing some big updates (most notably v0.8.0), after v0.6.0 Shattered started to resemble its current incarnation more than the original Pixel Dungeon."));
+				"Dev commentary will be added here in v0.9.3."));
 		
-		changes.addButton( new ChangeButton( Icons.get(Icons.STAIRS), "Levelgen Overhaul!",
+		changes.addButton( new ChangeButton( Icons.get(Icons.DEPTH), "Levelgen Overhaul!",
 				"Level creation algorithm overhauled!\n\n" +
 				"_-_ Levels are now much less box-shaped\n" +
 				"_-_ Sewers are now smaller, caves+ are now larger\n" +

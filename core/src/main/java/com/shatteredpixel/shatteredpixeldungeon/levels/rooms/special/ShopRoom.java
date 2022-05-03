@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,7 +49,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
-import com.shatteredpixel.shatteredpixeldungeon.items.spells.Alchemize;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.TippedDart;
@@ -94,12 +93,14 @@ public class ShopRoom extends SpecialRoom {
 			door.set( Door.Type.REGULAR );
 		}
 
+
+
+
 	}
 
 	protected void placeShopkeeper( Level level ) {
 
 		int pos = level.pointToCell(center());
-
 		Mob shopkeeper = new Shopkeeper();
 		shopkeeper.pos = pos;
 		level.mobs.add( shopkeeper );
@@ -156,26 +157,26 @@ public class ShopRoom extends SpecialRoom {
 		switch (Dungeon.depth) {
 		case 6: default:
 			w = (MeleeWeapon) Generator.random(Generator.wepTiers[1]);
-			itemsToSpawn.add( Generator.random(Generator.misTiers[1]).quantity(2).identify(false) );
-			itemsToSpawn.add( new LeatherArmor().identify(false) );
+			itemsToSpawn.add( Generator.random(Generator.misTiers[1]).quantity(2).identify() );
+			itemsToSpawn.add( new LeatherArmor().identify() );
 			break;
 			
 		case 11:
 			w = (MeleeWeapon) Generator.random(Generator.wepTiers[2]);
-			itemsToSpawn.add( Generator.random(Generator.misTiers[2]).quantity(2).identify(false) );
-			itemsToSpawn.add( new MailArmor().identify(false) );
+			itemsToSpawn.add( Generator.random(Generator.misTiers[2]).quantity(2).identify() );
+			itemsToSpawn.add( new MailArmor().identify() );
 			break;
 			
 		case 16:
 			w = (MeleeWeapon) Generator.random(Generator.wepTiers[3]);
-			itemsToSpawn.add( Generator.random(Generator.misTiers[3]).quantity(2).identify(false) );
-			itemsToSpawn.add( new ScaleArmor().identify(false) );
+			itemsToSpawn.add( Generator.random(Generator.misTiers[3]).quantity(2).identify() );
+			itemsToSpawn.add( new ScaleArmor().identify() );
 			break;
 
 		case 20: case 21:
 			w = (MeleeWeapon) Generator.random(Generator.wepTiers[4]);
-			itemsToSpawn.add( Generator.random(Generator.misTiers[4]).quantity(2).identify(false) );
-			itemsToSpawn.add( new PlateArmor().identify(false) );
+			itemsToSpawn.add( Generator.random(Generator.misTiers[4]).quantity(2).identify() );
+			itemsToSpawn.add( new PlateArmor().identify() );
 			itemsToSpawn.add( new Torch() );
 			itemsToSpawn.add( new Torch() );
 			itemsToSpawn.add( new Torch() );
@@ -184,12 +185,13 @@ public class ShopRoom extends SpecialRoom {
 		w.enchant(null);
 		w.cursed = false;
 		w.level(0);
-		w.identify(false);
+		w.identify();
 		itemsToSpawn.add(w);
 		
 		itemsToSpawn.add( TippedDart.randomTipped(2) );
 
-		itemsToSpawn.add( new Alchemize().quantity(Random.IntRange(2, 3)));
+		itemsToSpawn.add( new MerchantsBeacon() );
+
 
 		itemsToSpawn.add(ChooseBag(Dungeon.hero.belongings));
 

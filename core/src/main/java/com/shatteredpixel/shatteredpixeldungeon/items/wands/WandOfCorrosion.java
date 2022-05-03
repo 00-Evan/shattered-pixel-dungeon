@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ public class WandOfCorrosion extends Wand {
 	}
 
 	@Override
-	public void onZap(Ballistica bolt) {
+	protected void onZap(Ballistica bolt) {
 		CorrosiveGas gas = Blob.seed(bolt.collisionPos, 50 + 10 * buffedLvl(), CorrosiveGas.class);
 		CellEmitter.get(bolt.collisionPos).burst(Speck.factory(Speck.CORROSION), 10 );
 		gas.setStrength(2 + buffedLvl());
@@ -63,7 +63,7 @@ public class WandOfCorrosion extends Wand {
 		for (int i : PathFinder.NEIGHBOURS9) {
 			Char ch = Actor.findChar(bolt.collisionPos + i);
 			if (ch != null) {
-				wandProc(ch, chargesPerCast());
+				processSoulMark(ch, chargesPerCast());
 			}
 		}
 		
@@ -73,7 +73,7 @@ public class WandOfCorrosion extends Wand {
 	}
 
 	@Override
-	public void fx(Ballistica bolt, Callback callback) {
+	protected void fx(Ballistica bolt, Callback callback) {
 		MagicMissile.boltFromChar(
 				curUser.sprite.parent,
 				MagicMissile.CORROSION,

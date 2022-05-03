@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ public class Bat extends Mob {
 		flying = true;
 		
 		loot = new PotionOfHealing();
-		lootChance = 0.1667f; //by default, see lootChance()
+		lootChance = 0.1667f; //by default, see rollToDropLoot()
 	}
 	
 	@Override
@@ -76,12 +76,13 @@ public class Bat extends Mob {
 	}
 	
 	@Override
-	public float lootChance(){
-		return super.lootChance() * ((7f - Dungeon.LimitedDrops.BAT_HP.count) / 7f);
+	public void rollToDropLoot() {
+		lootChance *= ((7f - Dungeon.LimitedDrops.BAT_HP.count) / 7f);
+		super.rollToDropLoot();
 	}
 	
 	@Override
-	public Item createLoot(){
+	protected Item createLoot(){
 		Dungeon.LimitedDrops.BAT_HP.count++;
 		return super.createLoot();
 	}

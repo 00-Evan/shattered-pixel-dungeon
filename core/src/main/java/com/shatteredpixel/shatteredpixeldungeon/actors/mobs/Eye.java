@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -202,7 +202,7 @@ public class Eye extends Mob {
 
 	//generates an average of 1 dew, 0.25 seeds, and 0.25 stones
 	@Override
-	public Item createLoot() {
+	protected Item createLoot() {
 		Item loot;
 		switch(Random.Int(4)){
 			case 0: case 1: default:

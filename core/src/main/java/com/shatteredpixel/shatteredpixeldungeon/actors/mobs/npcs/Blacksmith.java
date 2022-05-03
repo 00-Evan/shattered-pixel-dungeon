@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -184,11 +184,7 @@ public class Blacksmith extends NPC {
 			return Messages.get(Blacksmith.class, "un_ided");
 		}
 		
-		if (item1.cursed || item2.cursed ||
-				(item1 instanceof Armor && ((Armor) item1).hasCurseGlyph()) ||
-				(item2 instanceof Armor && ((Armor) item2).hasCurseGlyph()) ||
-				(item1 instanceof Weapon && ((Weapon) item1).hasCurseEnchant()) ||
-				(item2 instanceof Weapon && ((Weapon) item2).hasCurseEnchant())) {
+		if (item1.cursed || item2.cursed) {
 			return Messages.get(Blacksmith.class, "cursed");
 		}
 		

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.watabou.noosa.Image;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 public class News {
@@ -101,32 +100,19 @@ public class News {
 			//"ICON: <name of enum constant in Icons.java>"
 			if (article.icon.startsWith("ICON: ")){
 				return Icons.get(Icons.valueOf(article.icon.replace("ICON: ", "")));
-			//"ITEM: <integer constant corresponding to values in ItemSpriteSheet.java>"
+				//"ITEM: <integer constant corresponding to values in ItemSpriteSheet.java>"
 			} else if (article.icon.startsWith("ITEM: ")){
 				return new ItemSprite(Integer.parseInt(article.icon.replace("ITEM: ", "")));
-			//"<asset filename>, <tx left>, <tx top>, <width>, <height>"
+				//"<asset filename>, <tx left>, <tx top>, <width>, <height>"
 			} else {
-				String[] split = article.icon.split(", ");
-				return new Image( split[0],
-						Integer.parseInt(split[1]),
-						Integer.parseInt(split[2]),
-						Integer.parseInt(split[3]),
-						Integer.parseInt(split[4]));
+				return new ItemSprite(Integer.parseInt(article.icon.replace("ITEM: ", "")));
 			}
 
-		//if we run into any formatting errors (or icon is null), default to the news icon
+			//if we run into any formatting errors (or icon is null), default to the news icon
 		} catch (Exception e){
 			if (article.icon != null) ShatteredPixelDungeon.reportException(e);
 			return Icons.get(Icons.NEWS);
 		}
-	}
-
-	public static String parseArticleDate(NewsArticle article){
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(article.date);
-		return cal.get(Calendar.YEAR)
-				+ "-" + String.format("%02d", cal.get(Calendar.MONTH)+1)
-				+ "-" + String.format("%02d", cal.get(Calendar.DAY_OF_MONTH));
 	}
 
 }

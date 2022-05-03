@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,8 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -54,7 +53,7 @@ public class Thief extends Mob {
 		maxLvl = 11;
 
 		loot = Random.oneOf(Generator.Category.RING, Generator.Category.ARTIFACT);
-		lootChance = 0.03f; //initially, see lootChance()
+		lootChance = 0.03f; //initially, see rollToDropLoot
 
 		WANDERING = new Wandering();
 		FLEEING = new Fleeing();
@@ -88,17 +87,10 @@ public class Thief extends Mob {
 	}
 
 	@Override
-	public float attackDelay() {
+    public float attackDelay() {
 		return super.attackDelay()*0.5f;
 	}
-
-	@Override
-	public float lootChance() {
-		//each drop makes future drops 1/3 as likely
-		// so loot chance looks like: 1/33, 1/100, 1/300, 1/900, etc.
-		return super.lootChance() * (float)Math.pow(1/3f, Dungeon.LimitedDrops.THEIF_MISC.count);
-	}
-
+	
 	@Override
 	public void rollToDropLoot() {
 		if (item != null) {
@@ -107,11 +99,14 @@ public class Thief extends Mob {
 			if (item instanceof Honeypot.ShatteredPot) ((Honeypot.ShatteredPot)item).dropPot( this, pos );
 			item = null;
 		}
+		//each drop makes future drops 1/3 as likely
+		// so loot chance looks like: 1/33, 1/100, 1/300, 1/900, etc.
+		lootChance *= Math.pow(1/3f, Dungeon.LimitedDrops.THEIF_MISC.count);
 		super.rollToDropLoot();
 	}
 
 	@Override
-	public Item createLoot() {
+	protected Item createLoot() {
 		Dungeon.LimitedDrops.THEIF_MISC.count++;
 		return super.createLoot();
 	}
@@ -201,9 +196,7 @@ public class Thief extends Mob {
 	private class Fleeing extends Mob.Fleeing {
 		@Override
 		protected void nowhereToRun() {
-			if (buff( Terror.class ) == null
-					&& buff( Dread.class ) == null
-					&& buffs( AllyBuff.class ).isEmpty() ) {
+			if (buff( Terror.class ) == null && buff( Corruption.class ) == null) {
 				if (enemySeen) {
 					sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Mob.class, "rage"));
 					state = HUNTING;

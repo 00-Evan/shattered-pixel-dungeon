@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,16 +25,11 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 
 public class PotionOfCleansing extends ExoticPotion {
@@ -66,53 +61,15 @@ public class PotionOfCleansing extends ExoticPotion {
 			}
 		}
 	}
-
+	
 	public static void cleanse(Char ch){
-		cleanse(ch, Cleanse.DURATION);
-	}
-
-	public static void cleanse(Char ch, float duration){
 		for (Buff b : ch.buffs()){
-			if (b.type == Buff.buffType.NEGATIVE
-					&& !(b instanceof AllyBuff)
-					&& !(b instanceof LostInventory)){
+			if (b.type == Buff.buffType.NEGATIVE && !(b instanceof Corruption)){
 				b.detach();
 			}
 			if (b instanceof Hunger){
 				((Hunger) b).satisfy(Hunger.STARVING);
 			}
 		}
-		Buff.affect(ch, Cleanse.class, duration);
-	}
-
-	public static class Cleanse extends FlavourBuff {
-
-		public static final float DURATION = 5f;
-
-		@Override
-		public int icon() {
-			return BuffIndicator.IMMUNITY;
-		}
-
-		@Override
-		public void tintIcon(Image icon) {
-			icon.hardlight(1f, 0f, 2f);
-		}
-
-		@Override
-		public float iconFadePercent() {
-			return Math.max(0, (DURATION - visualcooldown()) / DURATION);
-		}
-
-		@Override
-		public String toString() {
-			return Messages.get(this, "name");
-		}
-
-		@Override
-		public String desc() {
-			return Messages.get(this, "desc", dispTurns(visualcooldown()));
-		}
-
 	}
 }

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,15 +22,13 @@
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.TalentIcon;
 import com.watabou.noosa.Game;
-import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
 
 public class Transmuting extends Component {
+	private static final int SIZE	= 16;
 
 	private enum Phase {
 		FADE_IN, TRANSMUTING, FADE_OUT
@@ -42,8 +40,8 @@ public class Transmuting extends Component {
 
 	private static final float ALPHA	= 0.6f;
 
-	Image oldSprite;
-	Image newSprite;
+	ItemSprite oldSprite;
+	ItemSprite newSprite;
 
 	private Char target;
 
@@ -67,33 +65,12 @@ public class Transmuting extends Component {
 		passed = 0;
 	}
 
-	public Transmuting( Talent oldTalent, Talent newTalent ){
-		oldSprite = new TalentIcon(oldTalent);
-		oldSprite.originToCenter();
-		add(oldSprite);
-		newSprite = new TalentIcon(newTalent);
-		newSprite.originToCenter();
-		add(newSprite);
-
-		oldSprite.alpha(0f);
-		newSprite.alpha(0f);
-
-		phase = Phase.FADE_IN;
-		duration = FADE_IN_TIME;
-		passed = 0;
-	}
-
 	@Override
 	public void update() {
 		super.update();
 
-		if (passed == 0) {
-			oldSprite.x = target.sprite.center().x - oldSprite.width() / 2;
-			oldSprite.y = target.sprite.y - oldSprite.height();
-
-			newSprite.x = target.sprite.center().x - newSprite.width() / 2;
-			newSprite.y = target.sprite.y - newSprite.height();
-		}
+		oldSprite.x = newSprite.x = target.sprite.center().x - SIZE / 2;
+		oldSprite.y = newSprite.y = target.sprite.y - SIZE;
 
 		switch (phase) {
 			case FADE_IN:
@@ -136,17 +113,6 @@ public class Transmuting extends Component {
 		}
 
 		Transmuting sprite = new Transmuting( oldItem, newItem );
-		sprite.target = ch;
-		ch.sprite.parent.add( sprite );
-	}
-
-	public static void show( Char ch, Talent oldTalent, Talent newTalent ) {
-
-		if (!ch.sprite.visible) {
-			return;
-		}
-
-		Transmuting sprite = new Transmuting( oldTalent, newTalent );
 		sprite.target = ch;
 		ch.sprite.parent.add( sprite );
 	}

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,8 +46,8 @@ public class RingOfFuror extends Ring {
 		return new Furor();
 	}
 	
-	public static float attackSpeedMultiplier(Char target ){
-		return (float)Math.pow(1.105, getBuffedBonus(target, Furor.class));
+	public static float attackDelayMultiplier(Char target ){
+		return 1f / (float)Math.pow(1.105, getBuffedBonus(target, Furor.class));
 	}
 
 	public class Furor extends RingBuff {

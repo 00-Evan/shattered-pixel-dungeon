@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,13 +46,18 @@ public class WndInfoMob extends WndTitledMessage {
 		private RenderedTextBlock name;
 		private HealthBar health;
 		private BuffIndicator buffs;
-		
+		private RenderedTextBlock hpname;
+
 		public MobTitle( Mob mob ) {
-			
+
 			name = PixelScene.renderTextBlock( Messages.titleCase( mob.name() ), 9 );
 			name.hardlight( TITLE_COLOR );
 			add( name );
-			
+
+			hpname= PixelScene.renderTextBlock( Messages.titleCase(Messages.get(WndInfoMob.class, "mobhealth") + (mob.HP) + "/" + mob.HT ),7);
+			hpname.hardlight( Pink_COLOR );
+			add( hpname );
+
 			image = mob.sprite();
 			add( image );
 
@@ -60,27 +65,29 @@ public class WndInfoMob extends WndTitledMessage {
 			health.level(mob);
 			add( health );
 
-			buffs = new BuffIndicator( mob, false );
+			buffs = new BuffIndicator( mob );
 			add( buffs );
 		}
 		
 		@Override
 		protected void layout() {
-			
+
 			image.x = 0;
 			image.y = Math.max( 0, name.height() + health.height() - image.height() );
 
+			name.setPos(x + image.width + GAP,
+					image.height() > name.height() ? y +(image.height() - name.height()) / 2 : y+5);
+
+			hpname.setPos(x + image.width + GAP,
+					image.height() > hpname.height() ? y+14 +(image.height() - hpname.height()) / 2 : y);
+
 			float w = width - image.width() - GAP;
 
-			name.maxWidth((int)w);
-			name.setPos(x + image.width + GAP,
-					image.height() > name.height() ? y +(image.height() - name.height()) / 2 : y);
-
-			health.setRect(image.width() + GAP, name.bottom() + GAP, w, health.height());
+			health.setRect(image.width() + GAP, hpname.bottom() + GAP, w, health.height()+4);
 
 			buffs.setPos(
-				name.right() + GAP-1,
-				name.bottom() - BuffIndicator.SIZE_SMALL-2
+					hpname.right() + GAP-1,
+					hpname.bottom() - BuffIndicator.SIZE-2
 			);
 
 			height = health.bottom();

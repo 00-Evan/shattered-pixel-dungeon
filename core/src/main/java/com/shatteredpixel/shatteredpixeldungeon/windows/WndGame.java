@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,12 +21,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.HeroSelectScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.RankingsScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.Image;
 
 import java.io.IOException;
 
@@ -50,7 +51,6 @@ public class WndGame extends Window {
 		
 		super();
 
-		//settings
 		RedButton curBtn;
 		addButton( curBtn = new RedButton( Messages.get(this, "settings") ) {
 			@Override
@@ -86,20 +86,19 @@ public class WndGame extends Window {
 		}
 
 		// Restart
-		if (Dungeon.hero == null || !Dungeon.hero.isAlive()) {
+		if (!Dungeon.hero.isAlive()) {
 
-			addButton( curBtn = new RedButton( Messages.get(this, "start") ) {
+			RedButton btnStart;
+			addButton( btnStart = new RedButton( Messages.get(this, "start") ) {
 				@Override
 				protected void onClick() {
-					InterlevelScene.noStory = true;
 					GamesInProgress.selectedClass = Dungeon.hero.heroClass;
-					GamesInProgress.curSlot = GamesInProgress.firstEmpty();
-					ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
+					InterlevelScene.noStory = false;
+					GameScene.show(new WndStartGame(GamesInProgress.firstEmpty()));
 				}
 			} );
-			curBtn.icon(Icons.get(Icons.ENTER));
-			curBtn.textColor(Window.TITLE_COLOR);
-			
+			btnStart.textColor(Window.TITLE_COLOR);
+
 			addButton( curBtn = new RedButton( Messages.get(this, "rankings") ) {
 				@Override
 				protected void onClick() {
@@ -110,20 +109,57 @@ public class WndGame extends Window {
 			curBtn.icon(Icons.get(Icons.RANKINGS));
 		}
 
-		// Main menu
-		addButton(curBtn = new RedButton( Messages.get(this, "menu") ) {
+		addButtons(
+				// Main menu
+				//抢劫期间 退出游戏 存档给你说拜拜
+				new RedButton( Messages.get(this, "menu") ) {
+					@Override
+					protected void onClick() {
+							try {
+								Dungeon.saveAll();
+							} catch (IOException e) {
+								ShatteredPixelDungeon.reportException(e);
+							}
+							Game.switchScene(TitleScene.class);
+						}
+				},
+				// Quit
+				new RedButton( Messages.get(this, "exit") ) {
+					@Override
+					protected void onClick() {
+						//抢劫期间 退出游戏 存档给你说拜拜
+							Game.switchScene( TitleScene.class );
+							try {
+								Dungeon.saveAll();
+							} catch (IOException e) {
+								ShatteredPixelDungeon.reportException(e);
+							}
+							Game.instance.finish();
+						}
+				}
+
+		);
+
+		// Cancel
+		addButton( new RedButton( Messages.get(this, "return") ) {
 			@Override
 			protected void onClick() {
-				try {
-					Dungeon.saveAll();
-				} catch (IOException e) {
-					ShatteredPixelDungeon.reportException(e);
-				}
-				Game.switchScene(TitleScene.class);
+				hide();
 			}
 		} );
-		curBtn.icon(Icons.get(Icons.DISPLAY));
 
+		//如果回合未完成 显示该按钮
+		if(!Dungeon.hero.ready) {
+			// Debug
+			addButton(curBtn = new RedButton(Messages.get(this, "debug")) {
+				@Override
+				protected void onClick() {
+					GameScene.logActorThread = true;
+				}
+			});
+			curBtn.icon(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16));
+		}
+		
 		resize( WIDTH, pos );
 	}
 	

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,8 +38,11 @@ public class WndInfoCell extends Window {
 	private static final float GAP	= 2;
 	
 	private static final int WIDTH = 120;
-
-	public static Image cellImage( int cell ){
+	
+	public WndInfoCell( int cell ) {
+		
+		super();
+		
 		int tile = Dungeon.level.map[cell];
 		if (Dungeon.level.water[cell]) {
 			tile = Terrain.WATER;
@@ -47,6 +50,7 @@ public class WndInfoCell extends Window {
 			tile = Terrain.CHASM;
 		}
 
+		CustomTilemap customTile = null;
 		Image customImage = null;
 		int x = cell % Dungeon.level.width();
 		int y = cell / Dungeon.level.width();
@@ -54,60 +58,6 @@ public class WndInfoCell extends Window {
 			if ((x >= i.tileX && x < i.tileX+i.tileW) &&
 					(y >= i.tileY && y < i.tileY+i.tileH)){
 				if ((customImage = i.image(x - i.tileX, y - i.tileY)) != null) {
-					break;
-				}
-			}
-		}
-
-		if (customImage != null){
-			return customImage;
-		} else {
-
-			if (tile == Terrain.WATER) {
-				Image water = new Image(Dungeon.level.waterTex());
-				water.frame(0, 0, DungeonTilemap.SIZE, DungeonTilemap.SIZE);
-				return water;
-			} else {
-				return DungeonTerrainTilemap.tile(cell, tile);
-			}
-		}
-	}
-
-	public static String cellName( int cell ){
-
-		CustomTilemap customTile = null;
-		int x = cell % Dungeon.level.width();
-		int y = cell / Dungeon.level.width();
-		for (CustomTilemap i : Dungeon.level.customTiles){
-			if ((x >= i.tileX && x < i.tileX+i.tileW) &&
-					(y >= i.tileY && y < i.tileY+i.tileH)){
-				if (i.image(x - i.tileX, y - i.tileY) != null) {
-					x -= i.tileX;
-					y -= i.tileY;
-					customTile = i;
-					break;
-				}
-			}
-		}
-
-		if (customTile != null && customTile.name(x, y) != null){
-			return customTile.name(x, y);
-		} else {
-			return Dungeon.level.tileName(Dungeon.level.map[cell]);
-		}
-	}
-	
-	public WndInfoCell( int cell ) {
-		
-		super();
-
-		CustomTilemap customTile = null;
-		int x = cell % Dungeon.level.width();
-		int y = cell / Dungeon.level.width();
-		for (CustomTilemap i : Dungeon.level.customTiles){
-			if ((x >= i.tileX && x < i.tileX+i.tileW) &&
-					(y >= i.tileY && y < i.tileY+i.tileH)){
-				if (i.image(x - i.tileX, y - i.tileY) != null) {
 					x -= i.tileX;
 					y -= i.tileY;
 					customTile = i;
@@ -120,20 +70,35 @@ public class WndInfoCell extends Window {
 		String desc = "";
 
 		IconTitle titlebar = new IconTitle();
-		titlebar.icon(cellImage(cell));
-		titlebar.label(cellName(cell));
-
 		if (customTile != null){
+			titlebar.icon(customImage);
+
+			String customName = customTile.name(x, y);
+			if (customName != null) {
+				titlebar.label(customName);
+			} else {
+				titlebar.label(Dungeon.level.tileName(tile));
+			}
+
 			String customDesc = customTile.desc(x, y);
 			if (customDesc != null) {
 				desc += customDesc;
 			} else {
-				desc += Dungeon.level.tileDesc(Dungeon.level.map[cell]);
+				desc += Dungeon.level.tileDesc(tile);
 			}
 
 		} else {
 
-			desc += Dungeon.level.tileDesc(Dungeon.level.map[cell]);
+			if (tile == Terrain.WATER) {
+				Image water = new Image(Dungeon.level.waterTex());
+				water.frame(0, 0, DungeonTilemap.SIZE, DungeonTilemap.SIZE);
+				titlebar.icon(water);
+			} else {
+				titlebar.icon(DungeonTerrainTilemap.tile( cell, tile ));
+			}
+			titlebar.label(Dungeon.level.tileName(tile));
+			desc += Dungeon.level.tileDesc(tile);
+
 		}
 		titlebar.setRect(0, 0, WIDTH, 0);
 		add(titlebar);

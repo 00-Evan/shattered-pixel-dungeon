@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,10 +25,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndKeyBindings;
 import com.watabou.input.GameAction;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Random;
@@ -36,7 +34,6 @@ import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
-//FIXME needs a refactor, lots of weird thread interaction here.
 public class AttackIndicator extends Tag {
 	
 	private static final float ENABLED	= 1.0f;
@@ -58,7 +55,7 @@ public class AttackIndicator extends Tag {
 			instance = this;
 			lastTarget = null;
 
-			setSize(SIZE, SIZE);
+			setSize(24, 24);
 			visible(false);
 			enable(false);
 		}
@@ -77,11 +74,10 @@ public class AttackIndicator extends Tag {
 	@Override
 	protected synchronized void layout() {
 		super.layout();
-
+		
 		if (sprite != null) {
-			if (!flipped)   sprite.x = x + (SIZE - sprite.width()) / 2f + 1;
-			else            sprite.x = x + width - (SIZE + sprite.width()) / 2f - 1;
-			sprite.y = y + (height - sprite.height()) / 2f;
+			sprite.x = x + (width - sprite.width()) / 2 + 1;
+			sprite.y = y + (height - sprite.height()) / 2;
 			PixelScene.align(sprite);
 		}
 	}
@@ -91,15 +87,13 @@ public class AttackIndicator extends Tag {
 		super.update();
 
 		if (!bg.visible){
-			if (sprite != null) sprite.visible = false;
 			enable(false);
 			if (delay > 0f) delay -= Game.elapsed;
 			if (delay <= 0f) active = false;
 		} else {
 			delay = 0.75f;
 			active = true;
-			if (bg.width > 0 && sprite != null)sprite.visible = true;
-
+		
 			if (Dungeon.hero.isAlive()) {
 
 				enable(Dungeon.hero.ready);
@@ -170,23 +164,21 @@ public class AttackIndicator extends Tag {
 	
 	private synchronized void visible( boolean value ) {
 		bg.visible = value;
+		if (sprite != null) {
+			sprite.visible = value;
+		}
 	}
 	
 	@Override
 	protected void onClick() {
-		if (enabled && Dungeon.hero.ready) {
+		if (enabled) {
 			if (Dungeon.hero.handle( lastTarget.pos )) {
 				Dungeon.hero.next();
 			}
 		}
 	}
-
-	@Override
-	protected String hoverText() {
-		return Messages.titleCase(Messages.get(WndKeyBindings.class, "tag_attack"));
-	}
-
-	public static void target(Char target ) {
+	
+	public static void target( Char target ) {
 		synchronized (instance) {
 			instance.lastTarget = (Mob) target;
 			instance.updateImage();

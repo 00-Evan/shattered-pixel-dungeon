@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,7 +55,6 @@ public class ArmoryRoom extends SpecialRoom {
 		}
 		
 		int n = Random.IntRange( 2, 3 );
-		prizeCats = new float[]{1,1,1,1};
 		for (int i=0; i < n; i++) {
 			int pos;
 			do {
@@ -67,13 +66,9 @@ public class ArmoryRoom extends SpecialRoom {
 		entrance.set( Door.Type.LOCKED );
 		level.addItemToSpawn( new IronKey( Dungeon.depth ) );
 	}
-
-	//only a max of 1 prize from each category can be dropped at a time
-	private static float[] prizeCats;
+	
 	private static Item prize( Level level ) {
-		int index = Random.chances(prizeCats);
-		prizeCats[index] = 0;
-		switch (index){
+		switch (Random.Int( 4 )){
 			case 0:
 				return new Bomb().random();
 			case 1:

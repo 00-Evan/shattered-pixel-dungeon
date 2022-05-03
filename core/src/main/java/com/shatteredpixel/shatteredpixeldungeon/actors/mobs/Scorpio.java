@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
 public class Scorpio extends Mob {
-	
+	//驼峰命名法
 	{
 		spriteClass = ScorpioSprite.class;
 		
@@ -95,15 +95,7 @@ public class Scorpio extends Mob {
 	}
 	
 	@Override
-	public void aggro(Char ch) {
-		//cannot be aggroed to something it can't see
-		if (ch == null || fieldOfView == null || fieldOfView[ch.pos]) {
-			super.aggro(ch);
-		}
-	}
-
-	@Override
-	public Item createLoot() {
+	protected Item createLoot() {
 		Class<?extends Potion> loot;
 		do{
 			loot = (Class<? extends Potion>) Random.oneOf(Generator.Category.POTION.classes);

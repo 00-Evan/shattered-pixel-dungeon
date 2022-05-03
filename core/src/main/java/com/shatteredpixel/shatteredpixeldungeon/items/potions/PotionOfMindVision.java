@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -36,15 +38,31 @@ public class PotionOfMindVision extends Potion {
 	}
 
 	@Override
+	public String info() {
+		if(Dungeon.isChallenged(Challenges.EXSG)){
+			return isKnown() ? baddesc() : Messages.get(this, "unknown_desc");
+		} else {
+			return isKnown() ? desc() : Messages.get(this, "unknown_desc");
+		}
+	}
+
+	@Override
 	public void apply( Hero hero ) {
 		identify();
-		Buff.affect( hero, MindVision.class, MindVision.DURATION );
-		Dungeon.observe();
-		
-		if (Dungeon.level.mobs.size() > 0) {
-			GLog.i( Messages.get(this, "see_mobs") );
+
+		if(Dungeon.isChallenged(Challenges.EXSG)){
+			Buff.affect(hero, Blindness.class, 5f);
+			GLog.n(Messages.get(this, "bsg_1"));
 		} else {
-			GLog.i( Messages.get(this, "see_none") );
+
+			Buff.affect(hero, MindVision.class, MindVision.DURATION);
+			Dungeon.observe();
+
+			if (Dungeon.level.mobs.size() > 0) {
+				GLog.i(Messages.get(this, "see_mobs"));
+			} else {
+				GLog.i(Messages.get(this, "see_none"));
+			}
 		}
 	}
 	

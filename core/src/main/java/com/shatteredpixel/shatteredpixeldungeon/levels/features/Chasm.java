@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,8 +27,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.WhiteNPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.FeatherFall;
@@ -42,9 +44,9 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MobSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
-import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
@@ -52,26 +54,31 @@ import com.watabou.utils.Random;
 public class Chasm implements Hero.Doom {
 
 	public static boolean jumpConfirmed = false;
-	private static int heroPos;
-	
+	private static void tell(String text) {
+		Game.runOnRenderThread(new Callback() {
+								   @Override
+								   public void call() {
+									   GameScene.show(new WndQuest(new WhiteNPC(), text));
+								   }
+							   }
+		);
+	}
 	public static void heroJump( final Hero hero ) {
-		heroPos = hero.pos;
 		Game.runOnRenderThread(new Callback() {
 			@Override
 			public void call() {
 				GameScene.show(
-						new WndOptions( new Image(Dungeon.level.tilesTex(), 48, 48, 16, 16),
-								Messages.get(Chasm.class, "chasm"),
+						new WndOptions( Messages.get(Chasm.class, "chasm"),
 								Messages.get(Chasm.class, "jump"),
 								Messages.get(Chasm.class, "yes"),
 								Messages.get(Chasm.class, "no") ) {
 							@Override
 							protected void onSelect( int index ) {
-								if (index == 0) {
-									if (Dungeon.hero.pos == heroPos) {
-										jumpConfirmed = true;
-										hero.resume();
-									}
+								if(Dungeon.hero.buff(LockedFloor.class) != null){
+									tell(Messages.get(WhiteNPC.class, "nonono"));
+								} else if (index == 0) {
+									jumpConfirmed = true;
+									hero.resume();
 								}
 							}
 						}
@@ -86,10 +93,10 @@ public class Chasm implements Hero.Doom {
 				
 		Sample.INSTANCE.play( Assets.Sounds.FALLING );
 
-		TimekeepersHourglass.timeFreeze timeFreeze = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
-		if (timeFreeze != null) timeFreeze.disarmPressedTraps();
-		Swiftthistle.TimeBubble timeBubble = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
-		if (timeBubble != null) timeBubble.disarmPressedTraps();
+		Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+		if (buff != null) buff.detach();
+		buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
+		if (buff != null) buff.detach();
 		
 		if (Dungeon.hero.isAlive()) {
 			Dungeon.hero.interrupt();
@@ -140,7 +147,7 @@ public class Chasm implements Hero.Doom {
 	public static void mobFall( Mob mob ) {
 		if (mob.isAlive()) mob.die( Chasm.class );
 		
-		if (mob.sprite != null) ((MobSprite)mob.sprite).fall();
+		((MobSprite)mob.sprite).fall();
 	}
 	
 	public static class Falling extends Buff {

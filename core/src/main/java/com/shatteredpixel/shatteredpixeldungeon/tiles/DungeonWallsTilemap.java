@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,8 +43,6 @@ public class DungeonWallsTilemap extends DungeonTilemap {
 					return DungeonTileSheet.DOOR_SIDEWAYS;
 				} else if (map[pos + mapWidth] == Terrain.LOCKED_DOOR){
 					return DungeonTileSheet.DOOR_SIDEWAYS_LOCKED;
-				} else if (map[pos + mapWidth] == Terrain.CRYSTAL_DOOR){
-					return DungeonTileSheet.DOOR_SIDEWAYS_CRYSTAL;
 				} else if (map[pos + mapWidth] == Terrain.OPEN_DOOR){
 					return DungeonTileSheet.NULL_TILE;
 				}
@@ -75,8 +73,6 @@ public class DungeonWallsTilemap extends DungeonTilemap {
 			return DungeonTileSheet.DOOR_OVERHANG;
 		} else if (Dungeon.level.insideMap(pos) && map[pos+mapWidth] == Terrain.OPEN_DOOR ) {
 			return DungeonTileSheet.DOOR_OVERHANG_OPEN;
-		} else if (Dungeon.level.insideMap(pos) && map[pos+mapWidth] == Terrain.CRYSTAL_DOOR ) {
-			return DungeonTileSheet.DOOR_OVERHANG_CRYSTAL;
 		} else if (pos + mapWidth < size && (map[pos+mapWidth] == Terrain.STATUE || map[pos+mapWidth] == Terrain.STATUE_SP)){
 			return DungeonTileSheet.STATUE_OVERHANG;
 		} else if (pos + mapWidth < size && map[pos+mapWidth] == Terrain.ALCHEMY){

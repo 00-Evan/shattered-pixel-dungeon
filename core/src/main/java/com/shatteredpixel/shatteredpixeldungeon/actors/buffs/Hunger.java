@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,14 +26,11 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
-import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfChallenge;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
+
 
 public class Hunger extends Buff implements Hero.Doom {
 
@@ -41,6 +38,8 @@ public class Hunger extends Buff implements Hero.Doom {
 
 	public static final float HUNGRY	= 300f;
 	public static final float STARVING	= 450f;
+	public static final float STARVINGR	= 20f;
+	public static final float DEWEFFECT	= 20f;
 
 	private float level;
 	private float partialDamage;
@@ -64,60 +63,50 @@ public class Hunger extends Buff implements Hero.Doom {
 
 	@Override
 	public boolean act() {
-
-		if (Dungeon.level.locked
-				|| target.buff(WellFed.class) != null
-				|| target.buff(ScrollOfChallenge.ChallengeArena.class) != null){
-			spend(STEP);
+		float f = 10.0f;
+		if (Dungeon.level.locked || Dungeon.depth == 0 || this.target.buff(WellFed.class) != null) {
+			spend(10.0f);
 			return true;
 		}
-
-		if (target.isAlive() && target instanceof Hero) {
-
-			Hero hero = (Hero)target;
-
-			if (isStarving()) {
-
-				partialDamage += STEP * target.HT/1000f;
-
-				if (partialDamage > 1){
-					target.damage( (int)partialDamage, this);
-					partialDamage -= (int)partialDamage;
-				}
-				
-			} else {
-
-				float newLevel = level + STEP;
-				if (newLevel >= STARVING) {
-
-					GLog.n( Messages.get(this, "onstarving") );
-					hero.resting = false;
-					hero.damage( 1, this );
-
-					hero.interrupt();
-
-				} else if (newLevel >= HUNGRY && level < HUNGRY) {
-
-					GLog.w( Messages.get(this, "onhungry") );
-
-					if (!Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_FOOD)){
-						GLog.p(Messages.get(Guidebook.class, "hint"));
-						GameScene.flashForDocument(Document.GUIDE_FOOD);
-					}
-
-				}
-				level = newLevel;
-
-			}
-			
-			spend( target.buff( Shadows.class ) == null ? STEP : STEP * 1.5f );
-
-		} else {
-
+		if (!this.target.isAlive() || !(this.target instanceof Hero)) {
 			diactivate();
-
+		} else {
+			Hero hero = (Hero) this.target;
+			if (Dungeon.isChallenged(1024) && isStarving()) {
+				GLog.b(Messages.get(this, "warning", new Object[0]), new Object[0]);
+				float f2 = this.partialDamage + ((((float) this.target.HT) * 20.0f) / 80.0f);
+				this.partialDamage = f2;
+				if (f2 > 1.0f) {
+					this.target.damage((int) this.partialDamage, this);
+					float f3 = this.partialDamage;
+					this.partialDamage = f3 - ((float) ((int) f3));
+				}
+			} else if (isStarving()) {
+				float f4 = this.partialDamage + ((((float) this.target.HT) * 10.0f) / 1000.0f);
+				this.partialDamage = f4;
+				if (f4 > 1.0f) {
+					this.target.damage((int) this.partialDamage, this);
+					float f5 = this.partialDamage;
+					this.partialDamage = f5 - ((float) ((int) f5));
+				}
+			} else {
+				float f6 = this.level;
+				float newLevel = 10.0f + f6;
+				if (newLevel >= 450.0f) {
+					GLog.n(Messages.get(this, "onstarving", new Object[0]), new Object[0]);
+					hero.resting = false;
+					hero.damage(1, this);
+					hero.interrupt();
+				} else if (newLevel >= 300.0f && f6 < 300.0f) {
+					GLog.w(Messages.get(this, "onhungry", new Object[0]), new Object[0]);
+				}
+				this.level = newLevel;
+			}
+			if (this.target.buff(Shadows.class) != null) {
+				f = 15.0f;
+			}
+			spend(f);
 		}
-
 		return true;
 	}
 

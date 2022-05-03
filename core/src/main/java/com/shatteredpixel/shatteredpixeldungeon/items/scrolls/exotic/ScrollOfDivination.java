@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,6 +62,11 @@ public class ScrollOfDivination extends ExoticScroll {
 		
 		int total = potions.size() + scrolls.size() + rings.size();
 		
+		if (total == 0){
+			GLog.n( Messages.get(this, "nothing_left") );
+			return;
+		}
+		
 		ArrayList<Item> IDed = new ArrayList<>();
 		int left = 4;
 		
@@ -110,12 +115,8 @@ public class ScrollOfDivination extends ExoticScroll {
 			left --;
 			total --;
 		}
-
-		if (left == 4){
-			GLog.n( Messages.get(this, "nothing_left") );
-		} else {
-			GameScene.show(new WndDivination(IDed));
-		}
+		
+		GameScene.show(new WndDivination( IDed ));
 
 		readAnimation();
 		identify();

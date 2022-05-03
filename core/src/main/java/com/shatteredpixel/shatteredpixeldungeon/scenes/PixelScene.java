@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,11 +28,9 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Tooltip;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
-import com.watabou.input.ControllerHandler;
 import com.watabou.input.PointerEvent;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.BitmapText.Font;
@@ -40,34 +38,23 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Gizmo;
-import com.watabou.noosa.Image;
 import com.watabou.noosa.Scene;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.ui.Component;
-import com.watabou.noosa.ui.Cursor;
-import com.watabou.utils.Callback;
 import com.watabou.utils.GameMath;
-import com.watabou.utils.PointF;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
 public class PixelScene extends Scene {
 
-	// Minimum virtual display size for mobile portrait orientation
-	public static final float MIN_WIDTH_P = 135;
-	public static final float MIN_HEIGHT_P = 225;
+	// Minimum virtual display size for portrait orientation
+	public static final float MIN_WIDTH_P        = 135;
+	public static final float MIN_HEIGHT_P        = 225;
 
-	// Minimum virtual display size for mobile landscape orientation
-	public static final float MIN_WIDTH_L = 240;
-	public static final float MIN_HEIGHT_L = 160;
-
-	// Minimum virtual display size for full desktop UI (landscape only)
-	//TODO maybe include another scale for mixed UI? might make it more accessible to mobile devices
-	// mixed UI has similar requirements to mobile landscape tbh... Maybe just merge them?
-	// mixed UI can possible be used on mobile portrait for tablets though.. Does that happen often?
-	public static final float MIN_WIDTH_FULL = 360;
-	public static final float MIN_HEIGHT_FULL = 200;
+	// Minimum virtual display size for landscape orientation
+	public static final float MIN_WIDTH_L        = 240;
+	public static final float MIN_HEIGHT_L        = 160;
 
 	public static int defaultZoom = 0;
 	public static int maxDefaultZoom = 0;
@@ -80,8 +67,6 @@ public class PixelScene extends Scene {
 	//stylized 3x5 bitmapped pixel font. Only latin characters supported.
 	public static BitmapText.Font pixelFont;
 
-	protected boolean inGameScene = false;
-
 	@Override
 	public void create() {
 
@@ -89,25 +74,13 @@ public class PixelScene extends Scene {
 
 		GameScene.scene = null;
 
-		//flush the texture cache whenever moving from ingame to menu, helps reduce memory load
-		if (!inGameScene && InterlevelScene.lastRegion != -1){
-			InterlevelScene.lastRegion = -1;
-			TextureCache.clear();
-		}
-
-		float minWidth, minHeight, scaleFactor;
-		if (SPDSettings.interfaceSize() > 0){
-			minWidth = MIN_WIDTH_FULL;
-			minHeight = MIN_HEIGHT_FULL;
-			scaleFactor = 3.75f;
-		} else if (landscape()) {
+		float minWidth, minHeight;
+		if (landscape()) {
 			minWidth = MIN_WIDTH_L;
 			minHeight = MIN_HEIGHT_L;
-			scaleFactor = 2.5f;
 		} else {
 			minWidth = MIN_WIDTH_P;
 			minHeight = MIN_HEIGHT_P;
-			scaleFactor = 2.5f;
 		}
 
 		maxDefaultZoom = (int)Math.min(Game.width/minWidth, Game.height/minHeight);
@@ -115,11 +88,7 @@ public class PixelScene extends Scene {
 		defaultZoom = SPDSettings.scale();
 
 		if (defaultZoom < Math.ceil( Game.density * 2 ) || defaultZoom > maxDefaultZoom){
-			defaultZoom = (int)GameMath.gate(2, (int)Math.ceil( Game.density * scaleFactor ), maxDefaultZoom);
-
-			if (SPDSettings.interfaceSize() > 0 && defaultZoom < (maxDefaultZoom+1)/2){
-				defaultZoom = (maxDefaultZoom+1)/2;
-			}
+			defaultZoom = (int)GameMath.gate(2, (int)Math.ceil( Game.density * 2.5 ), maxDefaultZoom);
 		}
 
 		minZoom = 1;
@@ -131,11 +100,15 @@ public class PixelScene extends Scene {
 		uiCamera = Camera.createFullscreen( uiZoom );
 		Camera.add( uiCamera );
 
-		// 3x5 (6)
-		pixelFont = Font.colorMarked(
-			TextureCache.get( Assets.Fonts.PIXELFONT), 0x00000000, BitmapText.Font.LATIN_FULL );
-		pixelFont.baseLine = 6;
-		pixelFont.tracking = -1;
+		if (pixelFont == null) {
+
+			// 3x5 (6)
+			pixelFont = Font.colorMarked(
+				TextureCache.get( Assets.Fonts.PIXELFONT), 0x00000000, BitmapText.Font.LATIN_FULL );
+			pixelFont.baseLine = 6;
+			pixelFont.tracking = -1;
+			
+		}
 		
 		//set up the texture size which rendered text will use for any new glyphs.
 		int renderedTextPageSize;
@@ -147,60 +120,14 @@ public class PixelScene extends Scene {
 			renderedTextPageSize = 1024;
 		}
 		//asian languages have many more unique characters, so increase texture size to anticipate that
-		if (Messages.lang() == Languages.KOREAN ||
-				Messages.lang() == Languages.CHINESE ||
-				Messages.lang() == Languages.JAPANESE){
+		if (
+				Messages.lang() == Languages.CHINESE ){
 			renderedTextPageSize *= 2;
 		}
 		Game.platform.setupFontGenerators(renderedTextPageSize, SPDSettings.systemFont());
-
-		Tooltip.resetLastUsedTime();
-
-		Cursor.setCustomCursor(Cursor.Type.DEFAULT, defaultZoom);
-
+		
 	}
-
-	private static PointF virtualCursorPos;
-
-	@Override
-	public void update() {
-		super.update();
-		//20% deadzone
-		if (Math.abs(ControllerHandler.rightStickPosition.x) >= 0.2f
-				|| Math.abs(ControllerHandler.rightStickPosition.y) >= 0.2f) {
-			if (!ControllerHandler.controllerPointerActive()) {
-				ControllerHandler.setControllerPointer(true);
-				virtualCursorPos = PointerEvent.currentHoverPos();
-			}
-			//cursor moves 500 scaled pixels per second at full speed, 100 at minimum speed
-			virtualCursorPos.x += defaultZoom * 500 * Game.elapsed * ControllerHandler.rightStickPosition.x;
-			virtualCursorPos.y += defaultZoom * 500 * Game.elapsed * ControllerHandler.rightStickPosition.y;
-			virtualCursorPos.x = GameMath.gate(0, virtualCursorPos.x, Game.width);
-			virtualCursorPos.y = GameMath.gate(0, virtualCursorPos.y, Game.height);
-			PointerEvent.addPointerEvent(new PointerEvent((int) virtualCursorPos.x, (int) virtualCursorPos.y, 10_000, PointerEvent.Type.HOVER, PointerEvent.NONE));
-		}
-	}
-
-	private Image cursor = null;
-
-	@Override
-	public synchronized void draw() {
-		super.draw();
-
-		//cursor is separate from the rest of the scene, always appears above
-		if (ControllerHandler.controllerPointerActive()){
-			if (cursor == null){
-				cursor = new Image(Cursor.Type.CONTROLLER.file);
-			}
-
-			cursor.x = (virtualCursorPos.x / defaultZoom) - cursor.width()/2f;
-			cursor.y = (virtualCursorPos.y / defaultZoom) - cursor.height()/2f;
-			cursor.camera = uiCamera;
-			align(cursor);
-			cursor.draw();
-		}
-	}
-
+	
 	//FIXME this system currently only works for a subset of windows
 	private static ArrayList<Class<?extends Window>> savedWindows = new ArrayList<>();
 	private static Class<?extends PixelScene> savedClass = null;
@@ -234,15 +161,7 @@ public class PixelScene extends Scene {
 	public void destroy() {
 		super.destroy();
 		PointerEvent.clearListeners();
-		if (cursor != null){
-			cursor.destroy();
-		}
 	}
-
-	public static boolean landscape(){
-		return SPDSettings.interfaceSize() > 0 || Game.width > Game.height;
-	}
-
 
 	public static RenderedTextBlock renderTextBlock(int size ){
 		return renderTextBlock("", size);
@@ -290,18 +209,12 @@ public class PixelScene extends Scene {
 	}
 	
 	public static void showBadge( Badges.Badge badge ) {
-		Game.runOnRenderThread(new Callback() {
-			@Override
-			public void call() {
-				BadgeBanner banner = BadgeBanner.show( badge.image );
-				banner.camera = uiCamera;
-				float offset = Camera.main.centerOffset.y;
-				banner.x = align( banner.camera, (banner.camera.width - banner.width) / 2 );
-				banner.y = align( uiCamera, (uiCamera.height - banner.height) / 2 - banner.height/2 - 16 - offset );
-				Scene s = Game.scene();
-				if (s != null) s.add( banner );
-			}
-		});
+		BadgeBanner banner = BadgeBanner.show( badge.image );
+		banner.camera = uiCamera;
+		banner.x = align( banner.camera, (banner.camera.width - banner.width) / 2 );
+		banner.y = align( banner.camera, (banner.camera.height - banner.height) / 3 );
+		Scene s = Game.scene();
+		if (s != null) s.add( banner );
 	}
 	
 	protected static class Fader extends ColorBlock {
@@ -311,8 +224,6 @@ public class PixelScene extends Scene {
 		private boolean light;
 		
 		private float time;
-
-		private static Fader INSTANCE;
 		
 		public Fader( int color, boolean light ) {
 			super( uiCamera.width, uiCamera.height, color );
@@ -323,11 +234,6 @@ public class PixelScene extends Scene {
 			
 			alpha( 1f );
 			time = FADE_TIME;
-
-			if (INSTANCE != null){
-				INSTANCE.killAndErase();
-			}
-			INSTANCE = this;
 		}
 		
 		@Override
@@ -338,10 +244,6 @@ public class PixelScene extends Scene {
 			if ((time -= Game.elapsed) <= 0) {
 				alpha( 0f );
 				parent.remove( this );
-				destroy();
-				if (INSTANCE == this) {
-					INSTANCE = null;
-				}
 			} else {
 				alpha( time / FADE_TIME );
 			}

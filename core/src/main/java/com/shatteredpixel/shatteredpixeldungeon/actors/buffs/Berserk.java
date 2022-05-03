@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,8 +35,6 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 
-import java.text.DecimalFormat;
-
 public class Berserk extends Buff {
 
 	private enum State{
@@ -46,21 +44,18 @@ public class Berserk extends Buff {
 
 	private static final float LEVEL_RECOVER_START = 2f;
 	private float levelRecovery;
-
-	public int powerLossBuffer = 0;
+	
 	private float power = 0;
 
 	private static final String STATE = "state";
 	private static final String LEVEL_RECOVERY = "levelrecovery";
 	private static final String POWER = "power";
-	private static final String POWER_BUFFER = "power_buffer";
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
 		bundle.put(STATE, state);
 		bundle.put(POWER, power);
-		bundle.put(POWER_BUFFER, powerLossBuffer);
 		if (state == State.RECOVERING) bundle.put(LEVEL_RECOVERY, levelRecovery);
 	}
 
@@ -70,7 +65,6 @@ public class Berserk extends Buff {
 
 		state = bundle.getEnum(STATE, State.class);
 		power = bundle.getFloat(POWER);
-		powerLossBuffer = bundle.getInt(POWER_BUFFER);
 		if (state == State.RECOVERING) levelRecovery = bundle.getFloat(LEVEL_RECOVERY);
 	}
 
@@ -100,14 +94,10 @@ public class Berserk extends Buff {
 				power = 0f;
 			}
 		} else if (state == State.NORMAL) {
-			if (powerLossBuffer > 0){
-				powerLossBuffer--;
-			} else {
-				power -= GameMath.gate(0.1f, power, 1f) * 0.067f * Math.pow((target.HP / (float) target.HT), 2);
-
-				if (power <= 0) {
-					detach();
-				}
+			power -= GameMath.gate(0.1f, power, 1f) * 0.067f * Math.pow((target.HP/(float)target.HT), 2);
+			
+			if (power <= 0){
+				detach();
 			}
 		}
 		spend(TICK);
@@ -130,7 +120,7 @@ public class Berserk extends Buff {
 			if (shield != null){
 				state = State.BERSERK;
 				int shieldAmount = shield.maxShield() * 8;
-				shieldAmount = Math.round(shieldAmount * (1f + Dungeon.hero.pointsInTalent(Talent.BERSERKING_STAMINA)/4f));
+				shieldAmount = Math.round(shieldAmount * (1f + Dungeon.hero.pointsInTalent(Talent.BERSERKING_STAMINA)/6f));
 				shield.supercharge(shieldAmount);
 
 				SpellSprite.show(target, SpellSprite.BERSERK);
@@ -145,10 +135,9 @@ public class Berserk extends Buff {
 	
 	public void damage(int damage){
 		if (state == State.RECOVERING) return;
-		float maxPower = 1f + 0.1f*((Hero)target).pointsInTalent(Talent.ENDLESS_RAGE);
+		float maxPower = 1f + 0.15f*((Hero)target).pointsInTalent(Talent.ENDLESS_RAGE);
 		power = Math.min(maxPower, power + (damage/(float)target.HT)/3f );
 		BuffIndicator.refreshHero(); //show new power immediately
-		powerLossBuffer = 3; //2 turns until rage starts dropping
 	}
 
 	public void recover(float percent){
@@ -191,15 +180,6 @@ public class Berserk extends Buff {
 				return 0f;
 			case RECOVERING:
 				return 1f - levelRecovery/LEVEL_RECOVER_START;
-		}
-	}
-
-	public String iconTextDisplay(){
-		switch (state){
-			case NORMAL: case BERSERK: default:
-				return (int)(power*100) + "%";
-			case RECOVERING:
-				return new DecimalFormat("#.#").format(levelRecovery);
 		}
 	}
 

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.WildMagic;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
@@ -44,7 +43,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
-import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 
 import java.util.ArrayList;
@@ -54,8 +52,7 @@ public class WandOfFireblast extends DamageWand {
 	{
 		image = ItemSpriteSheet.WAND_FIREBOLT;
 
-		//only used for targeting, actual projectile logic is Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID
-		collisionProperties = Ballistica.WONT_STOP;
+		collisionProperties = Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID;
 	}
 
 	//1x/2x/3x damage
@@ -71,7 +68,7 @@ public class WandOfFireblast extends DamageWand {
 	ConeAOE cone;
 
 	@Override
-	public void onZap(Ballistica bolt) {
+	protected void onZap( Ballistica bolt ) {
 
 		ArrayList<Char> affectedChars = new ArrayList<>();
 		ArrayList<Integer> adjacentCells = new ArrayList<>();
@@ -114,7 +111,7 @@ public class WandOfFireblast extends DamageWand {
 		}
 
 		for ( Char ch : affectedChars ){
-			wandProc(ch, chargesPerCast());
+			processSoulMark(ch, chargesPerCast());
 			ch.damage(damageRoll(), this);
 			if (ch.isAlive()) {
 				Buff.affect(ch, Burning.class).reignite(ch);
@@ -139,7 +136,7 @@ public class WandOfFireblast extends DamageWand {
 	}
 
 	@Override
-	public void fx(Ballistica bolt, Callback callback) {
+	protected void fx( Ballistica bolt, Callback callback ) {
 		//need to perform flame spread logic here so we can determine what cells to put flames in.
 
 		// 5/7/9 distance
@@ -149,10 +146,10 @@ public class WandOfFireblast extends DamageWand {
 		cone = new ConeAOE( bolt,
 				maxDist,
 				30 + 20*chargesPerCast(),
-				Ballistica.STOP_TARGET | Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID);
+				collisionProperties | Ballistica.STOP_TARGET);
 
 		//cast to cells at the tip, rather than all cells, better performance.
-		for (Ballistica ray : cone.outerRays){
+		for (Ballistica ray : cone.rays){
 			((MagicMissile)curUser.sprite.parent.recycle( MagicMissile.class )).reset(
 					MagicMissile.FIRE_CONE,
 					curUser.sprite,
@@ -173,11 +170,8 @@ public class WandOfFireblast extends DamageWand {
 
 	@Override
 	protected int chargesPerCast() {
-		if (charger != null && charger.target.buff(WildMagic.WildMagicTracker.class) != null){
-			return 1;
-		}
-		//consumes 30% of current charges, rounded up, with a min of 1 and a max of 3.
-		return (int) GameMath.gate(1, (int)Math.ceil(curCharges*0.3f), 3);
+		//consumes 30% of current charges, rounded up, with a minimum of one.
+		return Math.max(1, (int)Math.ceil(curCharges*0.3f));
 	}
 
 	@Override

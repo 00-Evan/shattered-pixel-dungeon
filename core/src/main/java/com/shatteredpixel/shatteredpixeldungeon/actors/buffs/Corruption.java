@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
-public class Corruption extends AllyBuff {
+public class Corruption extends Buff {
 
 	{
 		type = buffType.NEGATIVE;
@@ -34,15 +34,14 @@ public class Corruption extends AllyBuff {
 	}
 
 	private float buildToDamage = 0f;
-
-	//corrupted enemies are usually fully healed and cleansed of most debuffs
-	public static void corruptionHeal(Char target){
-		target.HP = target.HT;
-		for (Buff buff : target.buffs()) {
-			if (buff.type == Buff.buffType.NEGATIVE
-					&& !(buff instanceof SoulMark)) {
-				buff.detach();
-			}
+	
+	@Override
+	public boolean attachTo(Char target) {
+		if (super.attachTo(target)){
+			target.alignment = Char.Alignment.ALLY;
+			return true;
+		} else {
+			return false;
 		}
 	}
 	

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,11 +53,9 @@ public class DisarmingTrap extends Trap{
 
 			if (cell != -1) {
 				Item item = heap.pickUp();
-				Heap dropped = Dungeon.level.drop( item, cell );
-				dropped.type = heap.type;
-				dropped.sprite.view( dropped );
-				dropped.seen = true;
-				for (int i : PathFinder.NEIGHBOURS9) Dungeon.level.visited[cell+i] = true;
+				Dungeon.level.drop( item, cell ).seen = true;
+				for (int i : PathFinder.NEIGHBOURS9)
+					Dungeon.level.visited[cell+i] = true;
 				GameScene.updateFog();
 
 				Sample.INSTANCE.play(Assets.Sounds.TELEPORT);

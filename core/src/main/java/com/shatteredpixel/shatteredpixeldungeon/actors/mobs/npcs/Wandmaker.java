@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,13 +29,15 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CeremonialCandle;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.Red;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MassGraveRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.RedRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.RitualSiteRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.RotGardenRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.RitualSiteRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -54,6 +56,7 @@ public class Wandmaker extends NPC {
 
 	{
 		spriteClass = WandmakerSprite.class;
+
 
 		properties.add(Property.IMMOVABLE);
 	}
@@ -106,6 +109,9 @@ public class Wandmaker extends NPC {
 				case 3:
 					item = Dungeon.hero.belongings.getItem(Rotberry.Seed.class);
 					break;
+				case 4:
+					item = Dungeon.hero.belongings.getItem(Red.class);
+					break;
 			}
 
 			if (item != null) {
@@ -126,6 +132,9 @@ public class Wandmaker extends NPC {
 						break;
 					case 3:
 						msg = Messages.get(this, "reminder_berry", Dungeon.hero.name());
+						break;
+					case 4:
+						msg = Messages.get(this, "red_szj", Dungeon.hero.name());
 						break;
 				}
 				Game.runOnRenderThread(new Callback() {
@@ -167,6 +176,9 @@ public class Wandmaker extends NPC {
 				case 3:
 					msg2 += Messages.get(this, "intro_berry");
 					break;
+				case 4:
+					msg2 += Messages.get(this, "intro_red");
+					break;
 			}
 
 			msg2 += Messages.get(this, "intro_2");
@@ -206,6 +218,7 @@ public class Wandmaker extends NPC {
 		
 		public static Wand wand1;
 		public static Wand wand2;
+		public static Wand wand3;
 		
 		public static void reset() {
 			spawned = false;
@@ -213,6 +226,7 @@ public class Wandmaker extends NPC {
 
 			wand1 = null;
 			wand2 = null;
+			wand3 =	null;
 		}
 		
 		private static final String NODE		= "wandmaker";
@@ -222,6 +236,7 @@ public class Wandmaker extends NPC {
 		private static final String GIVEN		= "given";
 		private static final String WAND1		= "wand1";
 		private static final String WAND2		= "wand2";
+		private static final String WAND3		= "wand3";
 
 		private static final String RITUALPOS	= "ritualpos";
 		
@@ -239,6 +254,7 @@ public class Wandmaker extends NPC {
 				
 				node.put( WAND1, wand1 );
 				node.put( WAND2, wand2 );
+				node.put( WAND3, wand3 );
 
 				if (type == 2){
 					node.put( RITUALPOS, CeremonialCandle.ritualPos );
@@ -261,8 +277,9 @@ public class Wandmaker extends NPC {
 				
 				wand1 = (Wand)node.get( WAND1 );
 				wand2 = (Wand)node.get( WAND2 );
+				wand3 = (Wand)node.get( WAND3 );
 
-				if (type == 2){
+				if (type == 3){
 					CeremonialCandle.ritualPos = node.getInt( RITUALPOS );
 				}
 
@@ -305,11 +322,15 @@ public class Wandmaker extends NPC {
 				wand1.cursed = false;
 				wand1.upgrade();
 
-				do {
-					wand2 = (Wand) Generator.random(Generator.Category.WAND);
-				} while (wand2.getClass().equals(wand1.getClass()));
+				given = false;
+				wand2 = (Wand) Generator.random(Generator.Category.WAND);
 				wand2.cursed = false;
 				wand2.upgrade();
+
+				given = false;
+				wand3 = (Wand) Generator.random(Generator.Category.WAND);
+				wand3.cursed = false;
+				wand3.upgrade();
 				
 			}
 		}
@@ -319,7 +340,7 @@ public class Wandmaker extends NPC {
 			if (!spawned && (type != 0 || (Dungeon.depth > 6 && Random.Int( 10 - Dungeon.depth ) == 0))) {
 				
 				// decide between 1,2, or 3 for quest type.
-				if (type == 0) type = Random.Int(3)+1;
+				if (type == 0) type = Random.Int(4)+1;
 				
 				switch (type){
 					case 1: default:
@@ -330,6 +351,9 @@ public class Wandmaker extends NPC {
 						break;
 					case 3:
 						rooms.add(new RotGardenRoom());
+						break;
+					case 4:
+						rooms.add(new RedRoom());
 						break;
 				}
 		

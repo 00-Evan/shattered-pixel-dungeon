@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,11 @@ public abstract class Actor implements Bundlable {
 	//used to determine what order actors act in if their time is equal. Higher values act earlier.
 	protected int actPriority = DEFAULT;
 
-	protected abstract boolean act();
+	public static synchronized Class<? extends Actor> getCurrentActorClass() {
+		return current == null ? null : current.getClass();
+	}
+
+    protected abstract boolean act();
 	
 	protected void spend( float time ) {
 		this.time += time;
@@ -81,14 +85,6 @@ public abstract class Actor implements Bundlable {
 	
 	public float cooldown() {
 		return time - now;
-	}
-
-	public void clearTime() {
-		time = 0;
-	}
-
-	public void timeToNow() {
-		time = now;
 	}
 	
 	protected void diactivate() {
@@ -119,6 +115,7 @@ public abstract class Actor implements Bundlable {
 		}
 	}
 
+	private static int nextID = 1;
 	public int id() {
 		if (id > 0) {
 			return id;
@@ -136,9 +133,8 @@ public abstract class Actor implements Bundlable {
 	private static volatile Actor current;
 
 	private static SparseArray<Actor> ids = new SparseArray<>();
-	private static int nextID = 1;
 
-	private static float now = 0;
+	public static float now = 0;
 	
 	public static float now(){
 		return now;
@@ -313,7 +309,7 @@ public abstract class Actor implements Bundlable {
 		add( actor, now + delay );
 	}
 	
-	private static synchronized void add( Actor actor, float time ) {
+	public static synchronized void add(Actor actor, float time) {
 		
 		if (all.contains( actor )) {
 			return;

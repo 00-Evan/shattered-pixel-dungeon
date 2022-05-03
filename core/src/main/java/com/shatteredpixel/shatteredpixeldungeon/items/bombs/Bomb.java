@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -123,12 +123,12 @@ public class Bomb extends Item {
 	}
 
 	@Override
-	public boolean doPickUp(Hero hero, int pos) {
+	public boolean doPickUp(Hero hero) {
 		if (fuse != null) {
 			GLog.w( Messages.get(this, "snuff_fuse") );
 			fuse = null;
 		}
-		return super.doPickUp(hero, pos);
+		return super.doPickUp(hero);
 	}
 
 	public void explode(int cell){
@@ -262,7 +262,7 @@ public class Bomb extends Item {
 			actPriority = BLOB_PRIO+1; //after hero, before other actors
 		}
 
-		private Bomb bomb;
+		public Bomb bomb;
 
 		public Fuse ignite(Bomb bomb){
 			this.bomb = bomb;
@@ -317,12 +317,12 @@ public class Bomb extends Item {
 		}
 
 		@Override
-		public boolean doPickUp(Hero hero, int pos) {
+		public boolean doPickUp(Hero hero) {
 			Bomb bomb = new Bomb();
 			bomb.quantity(2);
-			if (bomb.doPickUp(hero, pos)) {
+			if (bomb.doPickUp(hero)) {
 				//isaaaaac.... (don't bother doing this when not in english)
-				if (SPDSettings.language() == Languages.ENGLISH)
+				if (SPDSettings.language() == Languages.CHINESE)
 					hero.sprite.showStatus(CharSprite.NEUTRAL, "1+1 free!");
 				return true;
 			}
@@ -352,20 +352,20 @@ public class Bomb extends Item {
 		
 		private static final HashMap<Class<?extends Bomb>, Integer> bombCosts = new HashMap<>();
 		static {
-			bombCosts.put(FrostBomb.class,      0);
-			bombCosts.put(WoollyBomb.class,     0);
+			bombCosts.put(FrostBomb.class,      2);
+			bombCosts.put(WoollyBomb.class,     2);
 			
-			bombCosts.put(Firebomb.class,       1);
-			bombCosts.put(Noisemaker.class,     1);
+			bombCosts.put(Firebomb.class,       4);
+			bombCosts.put(Noisemaker.class,     4);
 			
-			bombCosts.put(Flashbang.class,      2);
-			bombCosts.put(ShockBomb.class,      2);
+			bombCosts.put(Flashbang.class,      6);
+			bombCosts.put(ShockBomb.class,      6);
 
-			bombCosts.put(RegrowthBomb.class,   3);
-			bombCosts.put(HolyBomb.class,       3);
+			bombCosts.put(RegrowthBomb.class,   8);
+			bombCosts.put(HolyBomb.class,       8);
 			
-			bombCosts.put(ArcaneBomb.class,     6);
-			bombCosts.put(ShrapnelBomb.class,   6);
+			bombCosts.put(ArcaneBomb.class,     10);
+			bombCosts.put(ShrapnelBomb.class,   10);
 		}
 		
 		@Override

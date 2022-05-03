@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
@@ -59,10 +58,31 @@ public class Corrupting extends Weapon.Enchantment {
 			
 			Mob enemy = (Mob) defender;
 			Hero hero = (attacker instanceof Hero) ? (Hero) attacker : Dungeon.hero;
-
-			Corruption.corruptionHeal(enemy);
-
-			AllyBuff.affectAndLoot(enemy, hero, Corruption.class);
+			
+			enemy.HP = enemy.HT;
+			for (Buff buff : enemy.buffs()) {
+				if (buff.type == Buff.buffType.NEGATIVE
+						&& !(buff instanceof SoulMark)) {
+					buff.detach();
+				} else if (buff instanceof PinCushion){
+					buff.detach();
+				}
+			}
+			if (enemy.alignment == Char.Alignment.ENEMY){
+				enemy.rollToDropLoot();
+			}
+			
+			Buff.affect(enemy, Corruption.class);
+			
+			Statistics.enemiesSlain++;
+			Badges.validateMonstersSlain();
+			Statistics.qualifiedForNoKilling = false;
+			if (enemy.EXP > 0 && hero.lvl <= enemy.maxLvl) {
+				hero.sprite.showStatus(CharSprite.POSITIVE, Messages.get(enemy, "exp", enemy.EXP));
+				hero.earnExp(enemy.EXP, enemy.getClass());
+			} else {
+				hero.earnExp(0, enemy.getClass());
+			}
 			
 			return 0;
 		}

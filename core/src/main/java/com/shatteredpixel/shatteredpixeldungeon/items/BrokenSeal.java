@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,11 +24,9 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -69,10 +67,6 @@ public class BrokenSeal extends Item {
 		this.glyph = glyph;
 	}
 
-	public int maxShield( int armTier, int armLvl ){
-		return armTier + armLvl + Dungeon.hero.pointsInTalent(Talent.IRON_WILL);
-	}
-
 	@Override
 	public ItemSprite.Glowing glowing() {
 		return glyph != null ? glyph.glowing() : null;
@@ -92,7 +86,7 @@ public class BrokenSeal extends Item {
 
 		if (action.equals(AC_AFFIX)){
 			curItem = this;
-			GameScene.selectItem(armorSelector);
+			GameScene.selectItem(armorSelector, WndBag.Mode.ARMOR, Messages.get(this, "prompt"));
 		} else if (action.equals(AC_INFO)) {
 			GameScene.show(new WndUseItem(null, this));
 		}
@@ -104,23 +98,7 @@ public class BrokenSeal extends Item {
 		return level() == 0;
 	}
 
-	protected static WndBag.ItemSelector armorSelector = new WndBag.ItemSelector() {
-
-		@Override
-		public String textPrompt() {
-			return  Messages.get(BrokenSeal.class, "prompt");
-		}
-
-		@Override
-		public Class<?extends Bag> preferredBag(){
-			return Belongings.Backpack.class;
-		}
-
-		@Override
-		public boolean itemSelectable(Item item) {
-			return item instanceof Armor;
-		}
-
+	protected static WndBag.Listener armorSelector = new WndBag.Listener() {
 		@Override
 		public void onSelect( Item item ) {
 			BrokenSeal seal = (BrokenSeal) curItem;
@@ -135,8 +113,7 @@ public class BrokenSeal extends Item {
 
 				} else if (armor.glyph != null && seal.getGlyph() != null
 						&& armor.glyph.getClass() != seal.getGlyph().getClass()) {
-					GameScene.show(new WndOptions(new ItemSprite(seal),
-							Messages.get(BrokenSeal.class, "choose_title"),
+					GameScene.show(new WndOptions(Messages.get(BrokenSeal.class, "choose_title"),
 							Messages.get(BrokenSeal.class, "choose_desc"),
 							armor.glyph.name(),
 							seal.getGlyph().name()){
@@ -213,8 +190,8 @@ public class BrokenSeal extends Item {
 		}
 
 		public synchronized int maxShield() {
-			if (armor != null && armor.isEquipped((Hero)target) && armor.checkSeal() != null) {
-				return armor.checkSeal().maxShield(armor.tier, armor.level());
+			if (armor != null && armor.isEquipped((Hero)target)) {
+				return armor.tier + armor.level() + ((Hero) target).pointsInTalent(Talent.IRON_WILL) + Dungeon.depth/5;
 			} else {
 				return 0;
 			}

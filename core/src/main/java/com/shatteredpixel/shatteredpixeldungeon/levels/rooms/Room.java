@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -329,7 +329,7 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 		return points;
 	}
 	
-	//whether or not a character can be placed here (usually via spawn, tele, or wander)
+	//whether or not a character (usually spawned) can be placed here
 	public boolean canPlaceCharacter(Point p, Level l){
 		return inside(p);
 	}
@@ -344,7 +344,6 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 		}
 		return points;
 	}
-
 	
 	// **** Graph.Node interface ****
 
@@ -406,7 +405,7 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 	public static class Door extends Point implements Bundlable {
 		
 		public enum Type {
-			EMPTY, TUNNEL, WATER, REGULAR, UNLOCKED, HIDDEN, BARRICADE, LOCKED, CRYSTAL
+			EMPTY, TUNNEL, WATER, REGULAR, UNLOCKED, HIDDEN, BARRICADE, LOCKED
 		}
 		public Type type = Type.EMPTY;
 		

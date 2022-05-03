@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -100,15 +100,14 @@ public class Wraith extends Mob {
 	}
 	
 	public static Wraith spawnAt( int pos ) {
-		if ((!Dungeon.level.solid[pos] || Dungeon.level.passable[pos]) && Actor.findChar( pos ) == null) {
+		if (!Dungeon.level.solid[pos] && Actor.findChar( pos ) == null) {
 			
 			Wraith w = new Wraith();
 			w.adjustStats( Dungeon.depth );
 			w.pos = pos;
 			w.state = w.HUNTING;
 			GameScene.add( w, SPAWN_DELAY );
-			Dungeon.level.occupyCell(w);
-
+			
 			w.sprite.alpha( 0 );
 			w.sprite.parent.add( new AlphaTweener( w.sprite, 1, 0.5f ) );
 			

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class PotionOfExperience extends Potion {
@@ -31,20 +36,30 @@ public class PotionOfExperience extends Potion {
 
 		bones = true;
 	}
+
+	@Override
+	public String info() {
+		if(Dungeon.isChallenged(Challenges.EXSG)){
+			return isKnown() ? baddesc() : Messages.get(this, "unknown_desc");
+		} else {
+			return isKnown() ? desc() : Messages.get(this, "unknown_desc");
+		}
+	}
 	
 	@Override
 	public void apply( Hero hero ) {
 		identify();
-		hero.earnExp( hero.maxExp(), getClass() );
+
+		if (Dungeon.isChallenged(Challenges.EXSG)){
+			Buff.affect(hero, Bleeding.class).set( 6 );
+		} else {
+			hero.earnExp( hero.maxExp(), getClass() );
+		}
+
 	}
 	
 	@Override
 	public int value() {
 		return isKnown() ? 50 * quantity : super.value();
-	}
-
-	@Override
-	public int energyVal() {
-		return isKnown() ? 8 * quantity : super.energyVal();
 	}
 }

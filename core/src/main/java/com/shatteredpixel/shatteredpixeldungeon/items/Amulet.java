@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,99 +21,57 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Statistics;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.AmuletScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.Game;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Amulet extends Item {
-	
-	private static final String AC_END = "END";
-	
+
+	private static final String AC_ENDS = "END";
+
 	{
 		image = ItemSpriteSheet.AMULET;
-		
+
 		unique = true;
 	}
-	
+
+	@Override
+	public ItemSprite.Glowing glowing() {
+		return new ItemSprite.Glowing(0x008888, 6f);
+	}
+
+
+
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		actions.add( AC_END );
+		actions.add( AC_ENDS );
 		return actions;
 	}
-	
+
 	@Override
 	public void execute( Hero hero, String action ) {
 
 		super.execute( hero, action );
 
-		if (action.equals(AC_END)) {
-			showAmuletScene( false );
+		if (action.equals(AC_ENDS)) {
+			InterlevelScene.mode = InterlevelScene.Mode.RETURN;
+			InterlevelScene.returnDepth = Math.max(1, (Dungeon.depth - 1 - (Dungeon.depth-2)));
+			InterlevelScene.returnPos = -1;
+			Game.switchScene( InterlevelScene.class );
 		}
 	}
-	
-	@Override
-	public boolean doPickUp(Hero hero, int pos) {
-		if (super.doPickUp( hero, pos )) {
-			
-			if (!Statistics.amuletObtained) {
-				Statistics.amuletObtained = true;
-				hero.spend(-TIME_TO_PICK_UP);
 
-				//add a delayed actor here so pickup behaviour can fully process.
-				Actor.addDelayed(new Actor(){
-					@Override
-					protected boolean act() {
-						Actor.remove(this);
-						showAmuletScene( true );
-						return false;
-					}
-				}, -5);
-			}
-			
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	private void showAmuletScene( boolean showText ) {
-		try {
-			Dungeon.saveAll();
-			AmuletScene.noText = !showText;
-			Game.switchScene( AmuletScene.class, new Game.SceneChangeCallback() {
-				@Override
-				public void beforeCreate() {
-
-				}
-
-				@Override
-				public void afterCreate() {
-					Badges.validateVictory();
-					Badges.validateChampion(Challenges.activeChallenges());
-					Badges.saveGlobal();
-				}
-			});
-		} catch (IOException e) {
-			ShatteredPixelDungeon.reportException(e);
-		}
-	}
-	
 	@Override
 	public boolean isIdentified() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean isUpgradable() {
 		return false;

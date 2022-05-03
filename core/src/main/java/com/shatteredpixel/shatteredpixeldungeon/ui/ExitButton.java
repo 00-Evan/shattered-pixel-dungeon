@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,10 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndKeyBindings;
-import com.watabou.input.GameAction;
 import com.watabou.noosa.Game;
 
 public class ExitButton extends IconButton {
@@ -44,15 +41,5 @@ public class ExitButton extends IconButton {
 		} else {
 			ShatteredPixelDungeon.switchNoFade( TitleScene.class );
 		}
-	}
-
-	@Override
-	public GameAction keyAction() {
-		return GameAction.BACK;
-	}
-
-	@Override
-	protected String hoverText() {
-		return Messages.titleCase(Messages.get(WndKeyBindings.class, "back"));
 	}
 }

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,24 +56,17 @@ public class Inferno extends Blob {
 					}
 					
 					Fire.burn(cell);
-
-					if (Dungeon.level.flamable[cell]){
-						Dungeon.level.destroy( cell );
-
-						observe = true;
-						GameScene.updateMap( cell );
-					}
 					
 				} else if (Dungeon.level.flamable[cell]
 						&& (cur[cell-1] > 0
 						|| cur[cell+1] > 0
 						|| cur[cell-Dungeon.level.width()] > 0
 						|| cur[cell+Dungeon.level.width()] > 0)) {
-
-					if (fire == null || fire.cur == null || fire.cur[cell] == 0) {
-						GameScene.add(Fire.seed(cell, 4, Fire.class));
-					}
-
+					Fire.burn(cell);
+					Dungeon.level.destroy( cell );
+					
+					observe = true;
+					GameScene.updateMap( cell );
 				}
 			}
 		}

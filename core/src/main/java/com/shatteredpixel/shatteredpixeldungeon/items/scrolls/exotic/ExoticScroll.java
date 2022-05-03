@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportat
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
@@ -53,17 +54,20 @@ public abstract class ExoticScroll extends Scroll {
 		regToExo.put(ScrollOfUpgrade.class, ScrollOfEnchantment.class);
 		exoToReg.put(ScrollOfEnchantment.class, ScrollOfUpgrade.class);
 		
+		regToExo.put(ScrollOfTerror.class, ScrollOfPetrification.class);
+		exoToReg.put(ScrollOfPetrification.class, ScrollOfTerror.class);
+		
 		regToExo.put(ScrollOfRemoveCurse.class, ScrollOfAntiMagic.class);
 		exoToReg.put(ScrollOfAntiMagic.class, ScrollOfRemoveCurse.class);
 		
-		regToExo.put(ScrollOfLullaby.class, ScrollOfSirensSong.class);
-		exoToReg.put(ScrollOfSirensSong.class, ScrollOfLullaby.class);
+		regToExo.put(ScrollOfLullaby.class, ScrollOfAffection.class);
+		exoToReg.put(ScrollOfAffection.class, ScrollOfLullaby.class);
 		
-		regToExo.put(ScrollOfRage.class, ScrollOfChallenge.class);
-		exoToReg.put(ScrollOfChallenge.class, ScrollOfRage.class);
+		regToExo.put(ScrollOfRage.class, ScrollOfConfusion.class);
+		exoToReg.put(ScrollOfConfusion.class, ScrollOfRage.class);
 		
-		regToExo.put(ScrollOfTerror.class, ScrollOfDread.class);
-		exoToReg.put(ScrollOfDread.class, ScrollOfTerror.class);
+		regToExo.put(ScrollOfTerror.class, ScrollOfPetrification.class);
+		exoToReg.put(ScrollOfPetrification.class, ScrollOfTerror.class);
 		
 		regToExo.put(ScrollOfRecharging.class, ScrollOfMysticalEnergy.class);
 		exoToReg.put(ScrollOfMysticalEnergy.class, ScrollOfRecharging.class);
@@ -80,8 +84,8 @@ public abstract class ExoticScroll extends Scroll {
 		regToExo.put(ScrollOfMirrorImage.class, ScrollOfPrismaticImage.class);
 		exoToReg.put(ScrollOfPrismaticImage.class, ScrollOfMirrorImage.class);
 		
-		regToExo.put(ScrollOfTransmutation.class, ScrollOfMetamorphosis.class);
-		exoToReg.put(ScrollOfMetamorphosis.class, ScrollOfTransmutation.class);
+		regToExo.put(ScrollOfTransmutation.class, ScrollOfPolymorph.class);
+		exoToReg.put(ScrollOfPolymorph.class, ScrollOfTransmutation.class);
 	}
 	
 	@Override
@@ -109,43 +113,54 @@ public abstract class ExoticScroll extends Scroll {
 	@Override
 	//20 gold more than its none-exotic equivalent
 	public int value() {
-		return (Reflection.newInstance(exoToReg.get(getClass())).value() + 30) * quantity;
-	}
-
-	@Override
-	//6 more energy than its none-exotic equivalent
-	public int energyVal() {
-		return (Reflection.newInstance(exoToReg.get(getClass())).energyVal() + 6) * quantity;
+		return (Reflection.newInstance(exoToReg.get(getClass())).value() + 20) * quantity;
 	}
 	
 	public static class ScrollToExotic extends Recipe {
 		
 		@Override
 		public boolean testIngredients(ArrayList<Item> ingredients) {
-			if (ingredients.size() == 1 && regToExo.containsKey(ingredients.get(0).getClass())){
-				return true;
+			int r = 0;
+			Scroll s = null;
+			
+			for (Item i : ingredients){
+				if (i instanceof Runestone){
+					r++;
+				} else if (regToExo.containsKey(i.getClass())) {
+					s = (Scroll)i;
+				}
 			}
-
-			return false;
+			
+			return s != null && r == 2;
 		}
 		
 		@Override
 		public int cost(ArrayList<Item> ingredients) {
-			return 6;
+			return 0;
 		}
 		
 		@Override
 		public Item brew(ArrayList<Item> ingredients) {
+			Item result = null;
+			
 			for (Item i : ingredients){
 				i.quantity(i.quantity()-1);
+				if (regToExo.containsKey(i.getClass())) {
+					result = Reflection.newInstance(regToExo.get(i.getClass()));
+				}
 			}
-
-			return Reflection.newInstance(regToExo.get(ingredients.get(0).getClass()));
+			return result;
 		}
 		
 		@Override
 		public Item sampleOutput(ArrayList<Item> ingredients) {
-			return Reflection.newInstance(regToExo.get(ingredients.get(0).getClass()));
+			for (Item i : ingredients){
+				if (regToExo.containsKey(i.getClass())) {
+					return Reflection.newInstance(regToExo.get(i.getClass()));
+				}
+			}
+			return null;
+			
 		}
 	}
 }

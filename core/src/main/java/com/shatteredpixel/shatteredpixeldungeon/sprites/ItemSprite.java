@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,6 +44,7 @@ import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.nio.Buffer;
+import java.util.ArrayList;
 
 public class ItemSprite extends MovieClip {
 
@@ -71,7 +72,7 @@ public class ItemSprite extends MovieClip {
 	protected float shadowWidth     = 1f;
 	protected float shadowHeight    = 0.25f;
 	protected float shadowOffset    = 0.5f;
-	
+	public ArrayList<Emitter> emitters = new ArrayList<>();
 	public ItemSprite() {
 		this( ItemSpriteSheet.SOMETHING, null );
 	}
@@ -79,6 +80,17 @@ public class ItemSprite extends MovieClip {
 	public ItemSprite( Heap heap ){
 		super(Assets.Sprites.ITEMS);
 		view( heap );
+	}
+
+	protected final void killEmitters() {
+		if (!emitters.isEmpty()) {
+			for (Emitter emitter : emitters.toArray(new Emitter[0])) {
+				if (emitter != null) {
+					emitter.killAndErase();
+					emitters.remove(emitter);
+				}
+			}
+		}
 	}
 	
 	public ItemSprite( Item item ) {
@@ -94,6 +106,10 @@ public class ItemSprite extends MovieClip {
 		super( Assets.Sprites.ITEMS );
 		
 		view(image, glowing);
+	}
+	
+	public void originToCenter() {
+		origin.set(width / 2, height / 2);
 	}
 	
 	public void link() {
@@ -204,6 +220,7 @@ public class ItemSprite extends MovieClip {
 			case HEAP: case FOR_SALE:
 				return view( heap.peek() );
 			case CHEST:
+			case MIMIC:
 				return view( ItemSpriteSheet.CHEST, null );
 			case LOCKED_CHEST:
 				return view( ItemSpriteSheet.LOCKED_CHEST, null );
@@ -246,10 +263,7 @@ public class ItemSprite extends MovieClip {
 	@Override
 	public void kill() {
 		super.kill();
-		if (emitter != null) {
-			emitter.on = false;
-			emitter.autoKill = true;
-		}
+		if (emitter != null) emitter.killAndErase();
 		emitter = null;
 	}
 

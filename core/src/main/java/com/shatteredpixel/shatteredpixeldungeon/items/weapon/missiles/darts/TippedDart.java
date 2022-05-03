@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,13 +39,13 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Firebloom;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Icecap;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
+import com.shatteredpixel.shatteredpixeldungeon.plants.SkyBlueFireBloom;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sorrowmoss;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Starflower;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Stormvine;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.utils.Reflection;
 
@@ -75,8 +75,7 @@ public abstract class TippedDart extends Dart {
 		super.execute(hero, action);
 		if (action.equals( AC_CLEAN )){
 			
-			GameScene.show(new WndOptions(new ItemSprite(this),
-					Messages.titleCase(name()),
+			GameScene.show(new WndOptions(Messages.get(this, "clean_title"),
 					Messages.get(this, "clean_desc"),
 					Messages.get(this, "clean_all"),
 					Messages.get(this, "clean_one"),
@@ -93,9 +92,6 @@ public abstract class TippedDart extends Dart {
 					} else if (index == 1){
 						detach(hero.belongings.backpack);
 						if (!new Dart().collect()) Dungeon.level.drop(new Dart(), hero.pos).sprite.drop();
-
-						//reset durability if there are darts left in the stack
-						durability = MAX_DURABILITY;
 						
 						hero.spend( 1f );
 						hero.busy();
@@ -118,7 +114,7 @@ public abstract class TippedDart extends Dart {
 		if (durability <= 0){
 			//attempt to stick the dart to the enemy, just drop it if we can't.
 			Dart d = new Dart();
-			if (sticky && enemy != null && enemy.isAlive() && enemy.alignment != Char.Alignment.ALLY){
+			if (enemy.isAlive() && sticky) {
 				PinCushion p = Buff.affect(enemy, PinCushion.class);
 				if (p.target == enemy){
 					p.stick(d);
@@ -132,7 +128,7 @@ public abstract class TippedDart extends Dart {
 	private static int targetPos = -1;
 
 	@Override
-	public float durabilityPerUse() {
+	protected float durabilityPerUse() {
 		float use = super.durabilityPerUse();
 		
 		use /= (1 + Dungeon.hero.pointsInTalent(Talent.DURABLE_TIPS));
@@ -173,7 +169,7 @@ public abstract class TippedDart extends Dart {
 	private static HashMap<Class<?extends Plant.Seed>, Class<?extends TippedDart>> types = new HashMap<>();
 	static {
 		types.put(Blindweed.Seed.class,     BlindingDart.class);
-		types.put(Dreamfoil.Seed.class,     CleansingDart.class);
+		types.put(Dreamfoil.Seed.class,     SleepDart.class);
 		types.put(Earthroot.Seed.class,     ParalyticDart.class);
 		types.put(Fadeleaf.Seed.class,      DisplacingDart.class);
 		types.put(Firebloom.Seed.class,     IncendiaryDart.class);
@@ -184,6 +180,7 @@ public abstract class TippedDart extends Dart {
 		types.put(Stormvine.Seed.class,     ShockingDart.class);
 		types.put(Sungrass.Seed.class,      HealingDart.class);
 		types.put(Swiftthistle.Seed.class,  AdrenalineDart.class);
+		types.put(SkyBlueFireBloom.Seed.class,  HaloDart.class);
 	}
 	
 	public static TippedDart getTipped( Plant.Seed s, int quantity ){

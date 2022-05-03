@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
@@ -88,14 +87,6 @@ public class MagicalSleep extends Buff {
 	@Override
 	public int icon() {
 		return BuffIndicator.MAGIC_SLEEP;
-	}
-
-	@Override
-	public void fx(boolean on) {
-		if (!on && (target.paralysed <= 1) ) {
-			//in case the character has visual paralysis from another source
-			target.sprite.remove(CharSprite.State.PARALYSED);
-		}
 	}
 
 	@Override

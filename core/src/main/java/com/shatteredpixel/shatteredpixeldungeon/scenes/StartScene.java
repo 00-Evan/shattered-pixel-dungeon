@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,18 +34,19 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndGameInProgress;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndStartGame;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Button;
+import com.watabou.noosa.ui.Button;
 
 import java.util.ArrayList;
 
 public class StartScene extends PixelScene {
 	
 	private static final int SLOT_WIDTH = 120;
-	private static final int SLOT_HEIGHT = 30;
+	private static final int SLOT_HEIGHT = 25;
 	
 	@Override
 	public void create() {
@@ -129,12 +130,12 @@ public class StartScene extends PixelScene {
 		
 		private int slot;
 		private boolean newGame;
-		
+
 		@Override
 		protected void createChildren() {
 			super.createChildren();
 			
-			bg = Chrome.get(Chrome.Type.GEM);
+			bg = Chrome.get(Chrome.Type.SCROLL);
 			add( bg);
 			
 			name = PixelScene.renderTextBlock(9);
@@ -172,7 +173,7 @@ public class StartScene extends PixelScene {
 					hero = new Image(info.heroClass.spritesheet(), 0, 15*info.armorTier, 12, 15);
 					add(hero);
 					
-					steps = new Image(Icons.get(Icons.STAIRS));
+					steps = new Image(Icons.get(Icons.DEPTH));
 					add(steps);
 					depth = new BitmapText(PixelScene.pixelFont);
 					add(depth);
@@ -194,9 +195,9 @@ public class StartScene extends PixelScene {
 				level.measure();
 				
 				if (info.challenges > 0){
-					name.hardlight(Window.TITLE_COLOR);
+					name.hardlight(Window.WHITE);
 					depth.hardlight(Window.TITLE_COLOR);
-					level.hardlight(Window.TITLE_COLOR);
+					level.hardlight(Window.WATA_COLOR);
 				} else {
 					name.resetColor();
 					depth.resetColor();
@@ -257,9 +258,7 @@ public class StartScene extends PixelScene {
 		@Override
 		protected void onClick() {
 			if (newGame) {
-				GamesInProgress.selectedClass = null;
-				GamesInProgress.curSlot = slot;
-				ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
+				ShatteredPixelDungeon.scene().add( new WndStartGame(slot));
 			} else {
 				ShatteredPixelDungeon.scene().add( new WndGameInProgress(slot));
 			}

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,9 +24,9 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
@@ -108,9 +108,7 @@ public class Ghoul extends Mob {
 			
 			int[] neighbours = {pos + 1, pos - 1, pos + Dungeon.level.width(), pos - Dungeon.level.width()};
 			for (int n : neighbours) {
-				if (Dungeon.level.passable[n]
-						&& Actor.findChar( n ) == null
-						&& (!Char.hasProp(this, Property.LARGE) || Dungeon.level.openSpace[n])) {
+				if (Dungeon.level.passable[n] && Actor.findChar( n ) == null) {
 					candidates.add( n );
 				}
 			}
@@ -124,10 +122,10 @@ public class Ghoul extends Mob {
 				}
 				
 				child.pos = Random.element( candidates );
-
-				GameScene.add( child );
+				
 				Dungeon.level.occupyCell(child);
 				
+				GameScene.add( child );
 				if (sprite.visible) {
 					Actor.addDelayed( new Pushing( child, pos, child.pos ), -1 );
 				}
@@ -167,8 +165,8 @@ public class Ghoul extends Mob {
 	protected synchronized void onRemove() {
 		if (beingLifeLinked) {
 			for (Buff buff : buffs()) {
-				//ally buffs, champion, and king damager are preserved when removed via life link
-				if (!(buff instanceof AllyBuff)
+				//corruption, champion, and king damager are preserved when removed via life link
+				if (!(buff instanceof Corruption)
 						&& (!(buff instanceof ChampionEnemy))
 						&& !(buff instanceof DwarfKing.KingDamager)) {
 					buff.detach();
@@ -248,13 +246,12 @@ public class Ghoul extends Mob {
 
 			turnsToRevive--;
 			if (turnsToRevive <= 0){
+				ghoul.HP = Math.round(ghoul.HT/10f);
 				if (Actor.findChar( ghoul.pos ) != null) {
 					ArrayList<Integer> candidates = new ArrayList<>();
 					for (int n : PathFinder.NEIGHBOURS8) {
 						int cell = ghoul.pos + n;
-						if (Dungeon.level.passable[cell]
-								&& Actor.findChar( cell ) == null
-								&& (!Char.hasProp(ghoul, Property.LARGE) || Dungeon.level.openSpace[cell])) {
+						if (Dungeon.level.passable[cell] && Actor.findChar( cell ) == null) {
 							candidates.add( cell );
 						}
 					}
@@ -268,9 +265,8 @@ public class Ghoul extends Mob {
 						return true;
 					}
 				}
-				ghoul.HP = Math.round(ghoul.HT/10f);
 				Actor.add(ghoul);
-				ghoul.timeToNow();
+				ghoul.spend(-ghoul.cooldown());
 				Dungeon.level.mobs.add(ghoul);
 				Dungeon.level.occupyCell( ghoul );
 				ghoul.sprite.idle();
@@ -301,7 +297,7 @@ public class Ghoul extends Mob {
 			Ghoul newHost = searchForHost(ghoul);
 			if (newHost != null){
 				attachTo(newHost);
-				timeToNow();
+				spend(-cooldown());
 			} else {
 				ghoul.die(this);
 			}

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,10 +65,6 @@ public class HeavyBoomerang extends MissileWeapon {
 	}
 	
 	public static class CircleBack extends Buff {
-
-		{
-			revivePersists = true;
-		}
 		
 		private MissileWeapon boomerang;
 		private int thrownPos;
@@ -92,10 +88,6 @@ public class HeavyBoomerang extends MissileWeapon {
 		public MissileWeapon cancel(){
 			detach();
 			return boomerang;
-		}
-
-		public int activeDepth(){
-			return returnDepth;
 		}
 		
 		@Override

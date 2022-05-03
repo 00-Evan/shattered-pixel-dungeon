@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -102,23 +102,7 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 	}
 	
 	@Override
-	public String actionName() {
-		SpiritBow bow = Dungeon.hero.belongings.getItem(SpiritBow.class);
-
-		if (bow == null) return null;
-
-		switch (bow.augment){
-			case NONE: default:
-				return Messages.get(this, "action_name_snapshot");
-			case SPEED:
-				return Messages.get(this, "action_name_volley");
-			case DAMAGE:
-				return Messages.get(this, "action_name_sniper");
-		}
-	}
-
-	@Override
-	public Image actionIcon() {
+	public Image getIcon() {
 		return new ItemSprite(ItemSpriteSheet.SPIRIT_BOW, null);
 	}
 	
@@ -141,7 +125,7 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 		if (cell == -1) return;
 		
 		bow.sniperSpecial = true;
-		bow.sniperSpecialBonusDamage = level*Dungeon.hero.pointsInTalent(Talent.SHARED_UPGRADES)/10f;
+		bow.sniperSpecialBonusDamage = level*Dungeon.hero.pointsInTalent(Talent.SHARED_UPGRADES)/15f;
 		
 		arrow.cast(hero, cell);
 		detach();

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,8 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ConfusionTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FlockTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GatewayTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GeyserTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrippingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.OozeTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PoisonDartTrap;
@@ -46,7 +44,6 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Halo;
-import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
@@ -61,25 +58,21 @@ public class PrisonLevel extends RegularLevel {
 	}
 
 	@Override
-	public void playLevelMusic() {
-		Music.INSTANCE.playTracks(
-				new String[]{Assets.Music.PRISON_1, Assets.Music.PRISON_2, Assets.Music.PRISON_2},
-				new float[]{1, 1, 0.5f},
-				false);
-	}
-
-	@Override
 	protected ArrayList<Room> initRooms() {
 		return Wandmaker.Quest.spawnRoom(super.initRooms());
 	}
-	
 	@Override
 	protected int standardRooms(boolean forceMax) {
-		if (forceMax) return 6;
-		//5 to 6, average 5.5
-		return 5+Random.chances(new float[]{1, 1});
+		if (forceMax) return 3;
+		//6 to 8, average 6.75
+		return 1+Random.chances(new float[]{1, 3, 1});
 	}
-	
+
+	@Override
+	public int nMobs(){
+		return  10;
+	}
+
 	@Override
 	protected int specialRooms(boolean forceMax) {
 		if (forceMax) return 3;
@@ -110,7 +103,7 @@ public class PrisonLevel extends RegularLevel {
 		return new Class[]{
 				ChillingTrap.class, ShockingTrap.class, ToxicTrap.class, BurningTrap.class, PoisonDartTrap.class,
 				AlarmTrap.class, OozeTrap.class, GrippingTrap.class,
-				ConfusionTrap.class, FlockTrap.class, SummoningTrap.class, TeleportationTrap.class, GatewayTrap.class, GeyserTrap.class };
+				ConfusionTrap.class, FlockTrap.class, SummoningTrap.class, TeleportationTrap.class, };
 	}
 
 	@Override
@@ -118,7 +111,7 @@ public class PrisonLevel extends RegularLevel {
 		return new float[]{
 				4, 4, 4, 4, 4,
 				2, 2, 2,
-				1, 1, 1, 1, 1, 1 };
+				1, 1, 1, 1 };
 	}
 
 	@Override
@@ -138,6 +131,8 @@ public class PrisonLevel extends RegularLevel {
 				return Messages.get(PrisonLevel.class, "empty_deco_desc");
 			case Terrain.BOOKSHELF:
 				return Messages.get(PrisonLevel.class, "bookshelf_desc");
+			case Terrain.WATER:
+				return Messages.get(PrisonLevel.class, "water_desc");
 			default:
 				return super.tileDesc( tile );
 		}

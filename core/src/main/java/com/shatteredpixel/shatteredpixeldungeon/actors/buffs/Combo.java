@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndCombo;
 import com.watabou.noosa.Image;
@@ -78,11 +77,6 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	}
 
 	@Override
-	public String iconTextDisplay() {
-		return Integer.toString((int)comboTime);
-	}
-
-	@Override
 	public String toString() {
 		return Messages.get(this, "name");
 	}
@@ -93,7 +87,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		comboTime = 5f;
 
 		if (!enemy.isAlive() || (enemy.buff(Corruption.class) != null && enemy.HP == enemy.HT)){
-			comboTime = Math.max(comboTime, 15*((Hero)target).pointsInTalent(Talent.CLEAVE));
+			comboTime = Math.max(comboTime, 10*((Hero)target).pointsInTalent(Talent.CLEAVE));
 		}
 
 		initialComboTime = comboTime;
@@ -109,10 +103,6 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 		BuffIndicator.refreshHero(); //refresh the buff visually on-hit
 
-	}
-
-	public void addTime( float time ){
-		comboTime += time;
 	}
 
 	@Override
@@ -133,7 +123,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", count, dispTurns(comboTime));
+		return Messages.get(this, "desc");
 	}
 
 	private static final String COUNT = "count";
@@ -160,7 +150,9 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		count = bundle.getInt( COUNT );
 		comboTime = bundle.getFloat( TIME );
 
-		initialComboTime = bundle.getFloat( INITIAL_TIME );
+		//pre-0.9.2
+		if (bundle.contains(INITIAL_TIME))  initialComboTime = bundle.getFloat( INITIAL_TIME );
+		else                                initialComboTime = 5;
 
 		clobberUsed = bundle.getBoolean(CLOBBER_USED);
 		parryUsed = bundle.getBoolean(PARRY_USED);
@@ -169,15 +161,10 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	}
 
 	@Override
-	public String actionName() {
-		return Messages.get(this, "action_name");
-	}
-
-	@Override
-	public Image actionIcon() {
+	public Image getIcon() {
 		Image icon;
-		if (((Hero)target).belongings.weapon() != null){
-			icon = new ItemSprite(((Hero)target).belongings.weapon().image, null);
+		if (((Hero)target).belongings.weapon != null){
+			icon = new ItemSprite(((Hero)target).belongings.weapon.image, null);
 		} else {
 			icon = new ItemSprite(new Item(){ {image = ItemSpriteSheet.WEAPON_HOLDER; }});
 		}
@@ -205,16 +192,8 @@ public class Combo extends Buff implements ActionIndicator.Action {
 			this.tintColor = tintColor;
 		}
 
-		public String desc(int count){
-			switch (this){
-				default:
-					return Messages.get(this, name()+"_desc");
-				case SLAM:
-					return Messages.get(this, name()+"_desc", count*20);
-				case CRUSH:
-					return Messages.get(this, name()+"_desc", count*25);
-			}
-
+		public String desc(){
+			return Messages.get(this, name()+"_desc");
 		}
 
 	}
@@ -246,7 +225,6 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		if (move == ComboMove.PARRY){
 			parryUsed = true;
 			comboTime = 5f;
-			Invisibility.dispel();
 			Buff.affect(target, ParryTracker.class, Actor.TICK);
 			((Hero)target).spendAndNext(Actor.TICK);
 			Dungeon.hero.busy();
@@ -295,75 +273,95 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 	private static ComboMove moveBeingUsed;
 
-	private void doAttack(final Char enemy) {
+	private void doAttack(final Char enemy){
 
 		AttackIndicator.target(enemy);
 
 		boolean wasAlly = enemy.alignment == target.alignment;
-		Hero hero = (Hero) target;
+		Hero hero = (Hero)target;
 
-		float dmgMulti = 1f;
-		int dmgBonus = 0;
+		if (enemy.defenseSkill(target) >= Char.INFINITE_EVASION){
+			enemy.sprite.showStatus( CharSprite.NEUTRAL, enemy.defenseVerb() );
+			Sample.INSTANCE.play(Assets.Sounds.MISS);
 
-		//variance in damage dealt
-		switch (moveBeingUsed) {
-			case CLOBBER:
-				dmgMulti = 0;
-				break;
-			case SLAM:
-				dmgBonus = Math.round(target.drRoll() * count / 5f);
-				break;
-			case CRUSH:
-				dmgMulti = 0.25f * count;
-				break;
-			case FURY:
-				dmgMulti = 0.6f;
-				break;
-		}
+		} else if (enemy.isInvulnerable(target.getClass())){
+			enemy.sprite.showStatus( CharSprite.POSITIVE, Messages.get(Char.class, "invulnerable") );
+			Sample.INSTANCE.play(Assets.Sounds.MISS);
 
-		if (hero.attack(enemy, dmgMulti, dmgBonus, Char.INFINITE_ACCURACY)){
-			//special on-hit effects
+		} else {
+
+			int dmg = target.damageRoll();
+
+			//variance in damage dealt
 			switch (moveBeingUsed) {
 				case CLOBBER:
-					hit(enemy);
-					//trace a ballistica to our target (which will also extend past them
-					Ballistica trajectory = new Ballistica(target.pos, enemy.pos, Ballistica.STOP_TARGET);
-					//trim it to just be the part that goes past them
-					trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
-					//knock them back along that ballistica, ensuring they don't fall into a pit
-					int dist = 2;
-					if (enemy.isAlive() && count >= 7 && hero.pointsInTalent(Talent.ENHANCED_COMBO) >= 1) {
-						dist++;
-						Buff.prolong(enemy, Vertigo.class, 3);
-					} else if (!enemy.flying) {
-						while (dist > trajectory.dist ||
-								(dist > 0 && Dungeon.level.pit[trajectory.path.get(dist)])) {
-							dist--;
+					dmg = 0;
+					break;
+				case SLAM:
+					dmg += Math.round(target.drRoll() * count/5f);
+					break;
+				case CRUSH:
+					dmg = Math.round(dmg * 0.25f*count);
+					break;
+				case FURY:
+					dmg = Math.round(dmg * 0.6f);
+					break;
+			}
+
+			dmg = enemy.defenseProc(target, dmg);
+			dmg -= enemy.drRoll();
+
+			if (enemy.buff(Vulnerable.class) != null) {
+				dmg *= 1.33f;
+			}
+
+			dmg = target.attackProc(enemy, dmg);
+			enemy.damage(dmg, target);
+
+			//special effects
+			switch (moveBeingUsed) {
+				case CLOBBER:
+					hit( enemy );
+					if (enemy.isAlive()) {
+						//trace a ballistica to our target (which will also extend past them
+						Ballistica trajectory = new Ballistica(target.pos, enemy.pos, Ballistica.STOP_TARGET);
+						//trim it to just be the part that goes past them
+						trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
+						//knock them back along that ballistica, ensuring they don't fall into a pit
+						int dist = 2;
+						if (count >= 7 && hero.pointsInTalent(Talent.ENHANCED_COMBO) >= 1){
+							dist ++;
+							Buff.prolong(enemy, Vertigo.class, 3);
+						} else if (!enemy.flying) {
+							while (dist > trajectory.dist ||
+									(dist > 0 && Dungeon.level.pit[trajectory.path.get(dist)])) {
+								dist--;
+							}
 						}
+						WandOfBlastWave.throwChar(enemy, trajectory, dist, true, false);
 					}
-					WandOfBlastWave.throwChar(enemy, trajectory, dist, true, false);
 					break;
 				case PARRY:
-					hit(enemy);
+					hit( enemy );
 					break;
 				case CRUSH:
 					WandOfBlastWave.BlastWave.blast(enemy.pos);
-					PathFinder.buildDistanceMap(target.pos, BArray.not(Dungeon.level.solid, null), 3);
-					for (Char ch : Actor.chars()) {
+					PathFinder.buildDistanceMap(target.pos, Dungeon.level.passable, 3);
+					for (Char ch : Actor.chars()){
 						if (ch != enemy && ch.alignment == Char.Alignment.ENEMY
-								&& PathFinder.distance[ch.pos] < Integer.MAX_VALUE) {
-							int aoeHit = Math.round(target.damageRoll() * 0.25f * count);
+								&& PathFinder.distance[ch.pos] < Integer.MAX_VALUE){
+							int aoeHit = Math.round(target.damageRoll() * 0.25f*count);
 							aoeHit /= 2;
 							aoeHit -= ch.drRoll();
 							if (ch.buff(Vulnerable.class) != null) aoeHit *= 1.33f;
 							ch.damage(aoeHit, target);
-							ch.sprite.bloodBurstA(target.sprite.center(), aoeHit);
+							ch.sprite.bloodBurstA(target.sprite.center(), dmg);
 							ch.sprite.flash();
 
 							if (!ch.isAlive()) {
-								if (hero.hasTalent(Talent.LETHAL_DEFENSE) && hero.buff(BrokenSeal.WarriorShield.class) != null) {
+								if (hero.hasTalent(Talent.LETHAL_DEFENSE) && hero.buff(BrokenSeal.WarriorShield.class) != null){
 									BrokenSeal.WarriorShield shield = hero.buff(BrokenSeal.WarriorShield.class);
-									shield.supercharge(Math.round(shield.maxShield() * hero.pointsInTalent(Talent.LETHAL_DEFENSE) / 3f));
+									shield.supercharge(Math.round(shield.maxShield() * hero.pointsInTalent(Talent.LETHAL_DEFENSE)/3f));
 								}
 							}
 						}
@@ -373,6 +371,19 @@ public class Combo extends Buff implements ActionIndicator.Action {
 					//nothing
 					break;
 			}
+
+			if (target.buff(FireImbue.class) != null)   target.buff(FireImbue.class).proc(enemy);
+			if (target.buff(FrostImbue.class) != null)  target.buff(FrostImbue.class).proc(enemy);
+
+			target.hitSound(Random.Float(0.87f, 1.15f));
+			if (moveBeingUsed != ComboMove.FURY) Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+			enemy.sprite.bloodBurstA(target.sprite.center(), dmg);
+			enemy.sprite.flash();
+
+			if (!enemy.isAlive()) {
+				GLog.i(Messages.capitalize(Messages.get(Char.class, "defeat", enemy.name())));
+			}
+
 		}
 
 		Invisibility.dispel();

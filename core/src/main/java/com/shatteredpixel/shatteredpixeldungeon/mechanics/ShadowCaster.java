@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 //based on: http://www.roguebasin.com/index.php?title=FOV_using_recursive_shadowcasting
 public final class ShadowCaster {
 
-	public static final int MAX_DISTANCE = 20;
+	public static final int MAX_DISTANCE = 14;
 	
 	//max length of rows as FOV moves out, for each FOV distance
 	//This is used to make the overall FOV circular, instead of square

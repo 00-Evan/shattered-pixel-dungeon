@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,10 +48,7 @@ public class CheckedCell extends Image {
 		this( pos );
 		delay = (Dungeon.level.trueDistance(pos, visSource)-1f);
 		//steadily accelerates as distance increases
-		if (delay > 0) {
-			delay = (float)Math.pow(delay, 0.67f)/10f;
-			alpha( 0 );
-		}
+		if (delay > 0) delay = (float)Math.pow(delay, 0.67f)/10f;
 	}
 	
 	@Override

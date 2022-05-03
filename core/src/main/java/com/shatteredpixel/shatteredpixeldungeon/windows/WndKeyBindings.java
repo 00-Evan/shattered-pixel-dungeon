@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.badlogic.gdx.Gdx;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -31,9 +31,11 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.input.GameAction;
+import com.watabou.input.InputHandler;
 import com.watabou.input.KeyBindings;
 import com.watabou.input.KeyEvent;
 import com.watabou.noosa.ColorBlock;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.ui.Component;
 
 import java.util.ArrayList;
@@ -41,14 +43,13 @@ import java.util.LinkedHashMap;
 
 public class WndKeyBindings extends Window {
 
-	private static final int WIDTH = 135;
+	private static final int WIDTH = 120;
 
 	private static final int BTN_HEIGHT = 16;
 
-	private static final int COL1_CENTER = WIDTH/5;
-	private static final int COL2_CENTER = 5*WIDTH/10;
-	private static final int COL3_CENTER = 7*WIDTH/10;
-	private static final int COL4_CENTER = 9*WIDTH/10;
+	private static final int COL1_CENTER = WIDTH/4;
+	private static final int COL2_CENTER = 5*WIDTH/8;
+	private static final int COL3_CENTER = 7*WIDTH/8;
 
 	private Component bindingsList;
 	private ArrayList<BindingItem> listItems = new ArrayList<>();
@@ -64,38 +65,24 @@ public class WndKeyBindings extends Window {
 		add(ttlAction);
 
 		ColorBlock ttlSep1 = new ColorBlock(1, BTN_HEIGHT, 0xFF222222);
-		ttlSep1.x = 0.4f*WIDTH - 1;
+		ttlSep1.x = WIDTH/2;
 		add(ttlSep1);
 
-		RenderedTextBlock ttlKey1 = PixelScene.renderTextBlock(Messages.get(this, "ttl_key1"), 6);
-		ttlKey1.maxWidth(WIDTH/5);
-		ttlKey1.align(RenderedTextBlock.CENTER_ALIGN);
+		RenderedTextBlock ttlKey1 = PixelScene.renderTextBlock(Messages.get(this, "ttl_key1"), 9);
 		ttlKey1.setPos(COL2_CENTER - ttlKey1.width()/2, (BTN_HEIGHT - ttlKey1.height())/2);
 		add(ttlKey1);
 
 		ColorBlock ttlSep2 = new ColorBlock(1, BTN_HEIGHT, 0xFF222222);
-		ttlSep2.x = 0.6f*WIDTH - 1;
+		ttlSep2.x = 3*WIDTH/4;
 		add(ttlSep2);
 
-		RenderedTextBlock ttlKey2 = PixelScene.renderTextBlock(Messages.get(this, "ttl_key2"), 6);
-		ttlKey2.maxWidth(WIDTH/5);
-		ttlKey2.align(RenderedTextBlock.CENTER_ALIGN);
+		RenderedTextBlock ttlKey2 = PixelScene.renderTextBlock(Messages.get(this, "ttl_key2"), 9);
 		ttlKey2.setPos(COL3_CENTER - ttlKey2.width()/2, (BTN_HEIGHT - ttlKey2.height())/2);
 		add(ttlKey2);
 
-		ColorBlock ttlSep3 = new ColorBlock(1, BTN_HEIGHT, 0xFF222222);
-		ttlSep3.x = 0.8f*WIDTH - 1;
+		ColorBlock ttlSep3 = new ColorBlock(WIDTH, 1, 0xFF222222);
+		ttlSep3.y = BTN_HEIGHT;
 		add(ttlSep3);
-
-		RenderedTextBlock ttlKey3 = PixelScene.renderTextBlock(Messages.get(this, "ttl_key3"), 6);
-		ttlKey3.maxWidth(WIDTH/5);
-		ttlKey3.align(RenderedTextBlock.CENTER_ALIGN);
-		ttlKey3.setPos(COL4_CENTER - ttlKey2.width()/2, (BTN_HEIGHT - ttlKey2.height())/2);
-		add(ttlKey3);
-
-		ColorBlock ttlSep4 = new ColorBlock(WIDTH, 1, 0xFF222222);
-		ttlSep4.y = BTN_HEIGHT;
-		add(ttlSep4);
 
 		bindingsList = new Component();
 
@@ -119,7 +106,7 @@ public class WndKeyBindings extends Window {
 
 			BindingItem item = new BindingItem(action);
 			item.setRect(0, y, WIDTH, BindingItem.HEIGHT);
-			bindingsList.addToBack(item);
+			bindingsList.add(item);
 			listItems.add(item);
 			y += item.height();
 		}
@@ -134,15 +121,13 @@ public class WndKeyBindings extends Window {
 				for (BindingItem i : listItems){
 					int key1 = 0;
 					int key2 = 0;
-					int key3 = 0;
 					for( int k : changedBindings.keySet()){
 						if (changedBindings.get(k) == i.gameAction){
-							if (key1 == 0)          key1 = k;
-							else if (key2 == 0)     key2 = k;
-							else                    key3 = k;
+							if (key1 == 0) key1 = k;
+							else           key2 = k;
 						}
 					}
-					i.updateBindings(key1, key2, key3);
+					i.updateBindings(key1, key2);
 				}
 			}
 		};
@@ -153,11 +138,12 @@ public class WndKeyBindings extends Window {
 			@Override
 			protected void onClick() {
 				KeyBindings.setAllBindings(changedBindings);
+				InputHandler.updateEventCatching(Gdx.input);
 				SPDAction.saveBindings();
 				hide();
 			}
 		};
-		btnConfirm.setRect(0, height - BTN_HEIGHT, WIDTH/2, BTN_HEIGHT);
+		btnConfirm.setRect(0, height - BTN_HEIGHT, WIDTH/2f, BTN_HEIGHT);
 		add(btnConfirm);
 
 		RedButton btnCancel = new RedButton(Messages.get(this, "cancel"), 9){
@@ -166,17 +152,11 @@ public class WndKeyBindings extends Window {
 				hide(); //close and don't save
 			}
 		};
-		btnCancel.setRect(WIDTH/2 + 1, height - BTN_HEIGHT, WIDTH/2 - 1, BTN_HEIGHT);
+		btnCancel.setRect(WIDTH/2f + 1, height - BTN_HEIGHT, WIDTH/2f - 1, BTN_HEIGHT);
 		add(btnCancel);
 
 		scrollingList.setRect(0, BTN_HEIGHT +1, WIDTH, btnDefaults.top()- BTN_HEIGHT - 1);
 
-	}
-
-	@Override
-	public void offset(int xOffset, int yOffset) {
-		super.offset(xOffset, yOffset);
-		bindingsList.setPos(bindingsList.left(), bindingsList.top()); //calls layout
 	}
 
 	@Override
@@ -186,7 +166,7 @@ public class WndKeyBindings extends Window {
 
 	private class BindingItem extends Component {
 
-		private static final int HEIGHT = 13;
+		private static final int HEIGHT = 12;
 
 		private static final int CHANGED = TITLE_COLOR;
 		private static final int DEFAULT = 0xFFFFFF;
@@ -196,21 +176,17 @@ public class WndKeyBindings extends Window {
 		private GameAction gameAction;
 		private int key1;
 		private int key2;
-		private int key3;
 
 		private int origKey1;
 		private int origKey2;
-		private int origKey3;
 
 		private RenderedTextBlock actionName;
 		private RenderedTextBlock key1Name;
 		private RenderedTextBlock key2Name;
-		private RenderedTextBlock key3Name;
 
 		private ColorBlock sep1;
 		private ColorBlock sep2;
 		private ColorBlock sep3;
-		private ColorBlock sep4;
 
 		public BindingItem( GameAction action ){
 			gameAction = action;
@@ -222,7 +198,6 @@ public class WndKeyBindings extends Window {
 			ArrayList<Integer> keys = KeyBindings.getBoundKeysForAction(action);
 			origKey1 = key1 = keys.isEmpty() ? 0 : keys.remove(0);
 			origKey2 = key2 = keys.isEmpty() ? 0 : keys.remove(0);
-			origKey3 = key3 = keys.isEmpty() ? 0 : keys.remove(0);
 
 			key1Name = PixelScene.renderTextBlock( KeyBindings.getKeyName(key1), 6 );
 			if (key1 == 0) key1Name.hardlight(UNBOUND);
@@ -232,10 +207,6 @@ public class WndKeyBindings extends Window {
 			if (key2 == 0) key2Name.hardlight(UNBOUND);
 			add(key2Name);
 
-			key3Name = PixelScene.renderTextBlock( KeyBindings.getKeyName(key3), 6 );
-			if (key3 == 0) key3Name.hardlight(UNBOUND);
-			add(key3Name);
-
 			sep1 = new ColorBlock(1, 1, 0xFF222222);
 			add(sep1);
 
@@ -244,24 +215,16 @@ public class WndKeyBindings extends Window {
 
 			sep3 = new ColorBlock(1, 1, 0xFF222222);
 			add(sep3);
-
-			sep4 = new ColorBlock(1, 1, 0xFF222222);
-			add(sep4);
 		}
 
-		public void updateBindings(int first, int second, int third){
-			if (second == 0 && third != 0){
-				second = third;
-				third = 0;
+		public void updateBindings(int first, int second){
+			if (first == 0){
+				key1 = second;
+				key2 = first;
+			} else {
+				key1 = first;
+				key2 = second;
 			}
-			if (first == 0 && second != 0){
-				first = second;
-				second = 0;
-			}
-
-			key1 = first;
-			key2 = second;
-			key3 = third;
 
 			key1Name.text(KeyBindings.getKeyName(key1));
 			if (key1 != origKey1) key1Name.hardlight( key1 == 0 ? UNBOUND_CHANGED : CHANGED);
@@ -271,10 +234,6 @@ public class WndKeyBindings extends Window {
 			if (key2 != origKey2) key2Name.hardlight( key2 == 0 ? UNBOUND_CHANGED : CHANGED);
 			else                  key2Name.hardlight( key2 == 0 ? UNBOUND : DEFAULT);
 
-			key3Name.text(KeyBindings.getKeyName(key3));
-			if (key3 != origKey3) key3Name.hardlight( key3 == 0 ? UNBOUND_CHANGED : CHANGED);
-			else                  key3Name.hardlight( key3 == 0 ? UNBOUND : DEFAULT);
-
 			layout();
 		}
 
@@ -282,15 +241,9 @@ public class WndKeyBindings extends Window {
 		protected void layout() {
 			super.layout();
 
-			actionName.maxWidth((int) (2*width/5));
-			key1Name.maxWidth((int) (width/5) - 2);
-			key2Name.maxWidth((int) (width/5) - 2);
-			key3Name.maxWidth((int) (width/5) - 2);
-
 			actionName.setPos( x, y + (height() - actionName.height())/2);
-			key1Name.setPos(x + 2*width()/5 + 1, y + 0.5f + (height() - key1Name.height())/2f);
-			key2Name.setPos(x + 3*width()/5 + 1, y + 0.5f + (height() - key2Name.height())/2f);
-			key3Name.setPos(x + 4*width()/5 + 1, y + 0.5f + (height() - key3Name.height())/2f);
+			key1Name.setPos(x + width()/2 + 2, y + (height() - key1Name.height())/2);
+			key2Name.setPos(x + 3*width()/4 + 2, y + (height() - key2Name.height())/2);
 
 			sep1.size(width, 1);
 			sep1.x = x;
@@ -303,25 +256,17 @@ public class WndKeyBindings extends Window {
 			sep3.size(1, height);
 			sep3.x = key2Name.left()-2;
 			sep3.y = y;
-
-			sep4.size(1, height);
-			sep4.x = key3Name.left()-2;
-			sep4.y = y;
 		}
 
 		private boolean onClick( float x, float y ){
 			if (inside(x, y)){
-				//assigning third key
-				if (x >= this.x + 4*width()/5 - 1 && key2 != 0) {
-					ShatteredPixelDungeon.scene().addToFront( new WndChangeBinding(gameAction, this, 3, key3, key1, key2));
-
 				//assigning second key
-				} else if (x >= this.x + 3*width()/5 - 1 && key1 != 0) {
-					ShatteredPixelDungeon.scene().addToFront( new WndChangeBinding(gameAction, this, 2, key2, key1, key3));
+				if (x >= this.x + 3*width()/4 && key1 != 0) {
+					Game.scene().addToFront( new WndChangeBinding(gameAction, this, false, key2, key1));
 
-				//assigning first key
-				} else if (x >= this.x + 2*width()/5){
-					ShatteredPixelDungeon.scene().addToFront( new WndChangeBinding(gameAction, this, 1, key1, key2, key3));
+					//assigning first key
+				} else if (x >= this.x + width()/2){
+					Game.scene().addToFront( new WndChangeBinding(gameAction, this, true, key1, key2));
 
 				}
 				return true;
@@ -336,8 +281,7 @@ public class WndKeyBindings extends Window {
 	private class WndChangeBinding extends Window {
 
 		private int curKeyCode;
-		private int otherBoundKey1;
-		private int otherBoundKey2;
+		private int otherBoundKey;
 		private int changedKeyCode = -1;
 
 		private BindingItem changedAction;
@@ -346,19 +290,14 @@ public class WndKeyBindings extends Window {
 
 		private RedButton btnConfirm;
 
-		public WndChangeBinding(GameAction action, BindingItem listItem, int keyAssigning, int curKeyCode, int otherBoundKey1, int otherBoundKey2 ){
+		public WndChangeBinding(GameAction action, BindingItem listItem, boolean firstKey, int curKeyCode, int otherBoundKey ){
 
 			this.curKeyCode = curKeyCode;
-			this.otherBoundKey1 = otherBoundKey1;
-			this.otherBoundKey2 = otherBoundKey2;
+			this.otherBoundKey = otherBoundKey;
 
-			String descKey = "";
-			if (keyAssigning == 1) descKey = "desc_first";
-			else if (keyAssigning == 2) descKey = "desc_second";
-			else if (keyAssigning == 3) descKey = "desc_third";
-			RenderedTextBlock desc = PixelScene.renderTextBlock( Messages.get(this, descKey,
-						Messages.get(WndKeyBindings.class, action.name()),
-						KeyBindings.getKeyName(curKeyCode)), 6 );
+			RenderedTextBlock desc = PixelScene.renderTextBlock( Messages.get(this, firstKey ? "desc_first" : "desc_second",
+					Messages.get(WndKeyBindings.class, action.name()),
+					KeyBindings.getKeyName(curKeyCode)), 6 );
 			desc.maxWidth(WIDTH);
 			desc.setRect(0, 0, WIDTH, desc.height());
 			add(desc);
@@ -396,32 +335,24 @@ public class WndKeyBindings extends Window {
 						changedBindings.remove(changedKeyCode);
 						changedBindings.remove(listItem.key1);
 						changedBindings.remove(listItem.key2);
-						changedBindings.remove(listItem.key3);
 
-						if (keyAssigning == 1){
+						if (firstKey){
 							if (changedKeyCode != 0) changedBindings.put(changedKeyCode, action);
 							if (listItem.key2 != 0) changedBindings.put(listItem.key2, action);
-							if (listItem.key3 != 0) changedBindings.put(listItem.key3, action);
-							listItem.updateBindings(changedKeyCode, listItem.key2, listItem.key3);
-						} else if (keyAssigning == 2) {
-							if (listItem.key1 != 0) changedBindings.put(listItem.key1, action);
-							if (changedKeyCode != 0) changedBindings.put(changedKeyCode, action);
-							if (listItem.key3 != 0) changedBindings.put(listItem.key3, action);
-							listItem.updateBindings(listItem.key1, changedKeyCode, listItem.key3);
+							listItem.updateBindings(changedKeyCode, listItem.key2);
 						} else {
 							if (listItem.key1 != 0) changedBindings.put(listItem.key1, action);
-							if (listItem.key2 != 0) changedBindings.put(listItem.key2, action);
 							if (changedKeyCode != 0) changedBindings.put(changedKeyCode, action);
-							listItem.updateBindings(listItem.key1, listItem.key2, changedKeyCode);
+							listItem.updateBindings(listItem.key1, changedKeyCode);
 						}
 
 						if (changedAction != null){
-							if (changedAction.key1 == changedKeyCode){
-								changedAction.updateBindings(0, changedAction.key2, changedAction.key3);
-							} else if (changedAction.key2 == changedKeyCode){
-								changedAction.updateBindings(changedAction.key1, 0, changedAction.key3);
-							} else if (changedAction.key3 == changedKeyCode){
-								changedAction.updateBindings(changedAction.key1, changedAction.key2, 0);
+							if (changedAction.key1 != changedKeyCode){
+								changedAction.updateBindings(changedAction.key1, 0);
+							} else if (changedAction.key2 != changedKeyCode){
+								changedAction.updateBindings(changedAction.key2, 0);
+							} else {
+								changedAction.updateBindings(0, 0);
 							}
 						}
 					}
@@ -443,7 +374,7 @@ public class WndKeyBindings extends Window {
 			add(btnCancel);
 
 			resize(WIDTH, (int)btnCancel.bottom());
-			KeyBindings.bindingKey = true;
+			KeyBindings.acceptUnbound = true;
 
 		}
 
@@ -456,7 +387,7 @@ public class WndKeyBindings extends Window {
 				changedKeyCode = event.code;
 				changedAction = null;
 
-				if (event.code != 0 && (event.code == curKeyCode || event.code == otherBoundKey1 || event.code == otherBoundKey2)){
+				if (event.code != 0 && (event.code == curKeyCode || event.code == otherBoundKey)){
 					warnErr.text(Messages.get(this, "error"));
 					warnErr.hardlight(CharSprite.NEGATIVE);
 					btnConfirm.enable(false);
@@ -484,7 +415,7 @@ public class WndKeyBindings extends Window {
 		@Override
 		public void destroy() {
 			super.destroy();
-			KeyBindings.bindingKey = false;
+			KeyBindings.acceptUnbound = false;
 		}
 
 	}

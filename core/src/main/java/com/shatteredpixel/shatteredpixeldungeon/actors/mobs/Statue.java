@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon.Enchantment;
@@ -42,8 +41,7 @@ public class Statue extends Mob {
 		spriteClass = StatueSprite.class;
 
 		EXP = 0;
-		state = PASSIVE;
-		
+		properties.add(Property.NOBIG);
 		properties.add(Property.INORGANIC);
 	}
 	
@@ -95,8 +93,8 @@ public class Statue extends Mob {
 	}
 	
 	@Override
-	public float attackDelay() {
-		return super.attackDelay()*weapon.delayFactor( this );
+    public float attackDelay() {
+		return super.attackDelay()*weapon.speedFactor( this );
 	}
 
 	@Override
@@ -109,14 +107,6 @@ public class Statue extends Mob {
 		return Random.NormalIntRange(0, Dungeon.depth + weapon.defenseFactor(this));
 	}
 	
-	@Override
-	public void add(Buff buff) {
-		super.add(buff);
-		if (state == PASSIVE && buff.type == Buff.buffType.NEGATIVE){
-			state = HUNTING;
-		}
-	}
-
 	@Override
 	public void damage( int dmg, Object src ) {
 
@@ -145,7 +135,7 @@ public class Statue extends Mob {
 	
 	@Override
 	public void die( Object cause ) {
-		weapon.identify(false);
+		weapon.identify();
 		Dungeon.level.drop( weapon, pos ).sprite.drop();
 		super.die( cause );
 	}

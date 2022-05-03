@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Thief;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
@@ -92,7 +91,7 @@ public class Burning extends Buff implements Hero.Doom {
 			int damage = Random.NormalIntRange( 1, 3 + Dungeon.depth/4 );
 			Buff.detach( target, Chill.class);
 
-			if (target instanceof Hero && target.buff(TimekeepersHourglass.timeStasis.class) == null) {
+			if (target instanceof Hero) {
 				
 				Hero hero = (Hero)target;
 
@@ -105,11 +104,9 @@ public class Burning extends Buff implements Hero.Doom {
 
 					ArrayList<Item> burnable = new ArrayList<>();
 					//does not reach inside of containers
-					if (hero.buff(LostInventory.class) == null) {
-						for (Item i : hero.belongings.backpack.items) {
-							if (!i.unique && (i instanceof Scroll || i instanceof MysteryMeat || i instanceof FrozenCarpaccio)) {
-								burnable.add(i);
-							}
+					for (Item i : hero.belongings.backpack.items){
+						if (!i.unique && (i instanceof Scroll || i instanceof MysteryMeat || i instanceof FrozenCarpaccio)){
+							burnable.add(i);
 						}
 					}
 
@@ -181,11 +178,6 @@ public class Burning extends Buff implements Hero.Doom {
 	@Override
 	public float iconFadePercent() {
 		return Math.max(0, (DURATION - left) / DURATION);
-	}
-
-	@Override
-	public String iconTextDisplay() {
-		return Integer.toString((int)left);
 	}
 
 	@Override

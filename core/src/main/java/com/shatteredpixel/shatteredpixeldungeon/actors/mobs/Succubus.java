@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -104,12 +104,9 @@ public class Succubus extends Mob {
 	protected boolean getCloser( int target ) {
 		if (fieldOfView[target] && Dungeon.level.distance( pos, target ) > 2 && blinkCooldown <= 0) {
 			
-			if (blink( target )) {
-				spend(-1 / speed());
-				return true;
-			} else {
-				return false;
-			}
+			blink( target );
+			spend( -1 / speed() );
+			return true;
 			
 		} else {
 
@@ -119,7 +116,7 @@ public class Succubus extends Mob {
 		}
 	}
 	
-	private boolean blink( int target ) {
+	private void blink( int target ) {
 		
 		Ballistica route = new Ballistica( pos, target, Ballistica.PROJECTILE);
 		int cell = route.collisionPos;
@@ -128,13 +125,11 @@ public class Succubus extends Mob {
 		if (Actor.findChar( cell ) != null && cell != this.pos)
 			cell = route.path.get(route.dist-1);
 
-		if (Dungeon.level.avoid[ cell ] || (properties().contains(Property.LARGE) && !Dungeon.level.openSpace[cell])){
+		if (Dungeon.level.avoid[ cell ]){
 			ArrayList<Integer> candidates = new ArrayList<>();
 			for (int n : PathFinder.NEIGHBOURS8) {
 				cell = route.collisionPos + n;
-				if (Dungeon.level.passable[cell]
-						&& Actor.findChar( cell ) == null
-						&& (!properties().contains(Property.LARGE) || Dungeon.level.openSpace[cell])) {
+				if (Dungeon.level.passable[cell] && Actor.findChar( cell ) == null) {
 					candidates.add( cell );
 				}
 			}
@@ -142,14 +137,13 @@ public class Succubus extends Mob {
 				cell = Random.element(candidates);
 			else {
 				blinkCooldown = Random.IntRange(4, 6);
-				return false;
+				return;
 			}
 		}
 		
 		ScrollOfTeleportation.appear( this, cell );
 
 		blinkCooldown = Random.IntRange(4, 6);
-		return true;
 	}
 	
 	@Override
@@ -163,11 +157,11 @@ public class Succubus extends Mob {
 	}
 
 	@Override
-	public Item createLoot() {
+	protected Item createLoot() {
 		Class<?extends Scroll> loot;
 		do{
 			loot = (Class<? extends Scroll>) Random.oneOf(Generator.Category.SCROLL.classes);
-		} while (loot == ScrollOfIdentify.class || loot == ScrollOfUpgrade.class);
+		} while (loot == ScrollOfIdentify.class || loot == ScrollOfUpgrade.class|| loot == ScrollOfUpgrade.class);
 
 		return Reflection.newInstance(loot);
 	}

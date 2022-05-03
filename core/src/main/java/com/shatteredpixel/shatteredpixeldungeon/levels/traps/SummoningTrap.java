@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -90,7 +90,7 @@ public class SummoningTrap extends Trap {
 		for (Mob mob : mobs){
 			//manually trigger traps first to avoid sfx spam
 			if ((t = Dungeon.level.traps.get(mob.pos)) != null && t.active){
-				if (t.disarmedByActivation) t.disarm();
+				t.disarm();
 				t.reveal();
 				t.activate();
 			}

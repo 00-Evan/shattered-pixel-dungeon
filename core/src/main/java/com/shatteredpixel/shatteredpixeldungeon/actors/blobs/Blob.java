@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -217,10 +217,6 @@ public class Blob extends Actor {
 		area.setEmpty();
 		cur = new int[Dungeon.level.length()];
 		off = new int[Dungeon.level.length()];
-	}
-
-	public void onBuildFlagMaps( Level l ){
-		//do nothing by default, only some blobs affect flags
 	}
 	
 	public String tileDesc() {

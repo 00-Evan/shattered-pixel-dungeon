@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,11 +32,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
@@ -82,13 +80,6 @@ public abstract class YogFist extends Mob {
 	@Override
 	protected boolean act() {
 		if (paralysed <= 0 && rangedCooldown > 0) rangedCooldown--;
-
-		if (Dungeon.hero.invisible <= 0 && state == WANDERING){
-			beckon(Dungeon.hero.pos);
-			state = HUNTING;
-			enemy = Dungeon.hero;
-		}
-
 		return super.act();
 	}
 
@@ -159,10 +150,6 @@ public abstract class YogFist extends Mob {
 		return Random.NormalIntRange(0, 15);
 	}
 
-	{
-		immunities.add( Sleep.class );
-	}
-
 	@Override
 	public String description() {
 		return Messages.get(YogFist.class, "desc") + "\n\n" + Messages.get(this, "desc");
@@ -201,8 +188,8 @@ public abstract class YogFist extends Mob {
 				CellEmitter.get( pos ).burst( Speck.factory( Speck.STEAM ), 10 );
 			}
 
-			//1.67 evaporated tiles on average
-			int evaporatedTiles = Random.chances(new float[]{0, 1, 2});
+			//1.33 evaporated tiles on average
+			int evaporatedTiles = Random.chances(new float[]{0, 2, 1});
 
 			for (int i = 0; i < evaporatedTiles; i++) {
 				int cell = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
@@ -244,10 +231,6 @@ public abstract class YogFist extends Mob {
 				}
 			}
 
-		}
-
-		{
-			immunities.add(Frost.class);
 		}
 
 	}
@@ -299,11 +282,6 @@ public abstract class YogFist extends Mob {
 			}
 			if (grassCells > 0) dmg = Math.round(dmg * (6-grassCells)/6f);
 
-			//can be ignited, but takes no damage from burning
-			if (src.getClass() == Burning.class){
-				return;
-			}
-
 			super.damage(dmg, src);
 		}
 
@@ -343,6 +321,11 @@ public abstract class YogFist extends Mob {
 					&& !(Dungeon.level.map[cell] == Terrain.FURROWED_GRASS || Dungeon.level.map[cell] == Terrain.HIGH_GRASS);
 		}
 
+		{
+			resistances.add(Burning.class);
+		}
+
+
 	}
 
 	public static class RottingFist extends YogFist {
@@ -369,7 +352,6 @@ public abstract class YogFist extends Mob {
 		@Override
 		public void damage(int dmg, Object src) {
 			if (!isInvulnerable(src.getClass()) && !(src instanceof Bleeding)){
-				dmg = Math.round( dmg * resist( src.getClass() ));
 				if (dmg < 0){
 					return;
 				}
@@ -378,7 +360,7 @@ public abstract class YogFist extends Mob {
 					b = new Bleeding();
 				}
 				b.announced = false;
-				b.set(dmg*.6f);
+				b.set(dmg*.67f);
 				b.attachTo(this);
 				sprite.showStatus(CharSprite.WARNING, b.toString() + " " + (int)b.level());
 			} else{
@@ -427,7 +409,6 @@ public abstract class YogFist extends Mob {
 		@Override
 		public void damage(int dmg, Object src) {
 			if (!isInvulnerable(src.getClass()) && !(src instanceof Viscosity.DeferedDamage)){
-				dmg = Math.round( dmg * resist( src.getClass() ));
 				if (dmg >= 0) {
 					Buff.affect(this, Viscosity.DeferedDamage.class).prolong(dmg);
 					sprite.showStatus(CharSprite.WARNING, Messages.get(Viscosity.class, "deferred", dmg));

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,36 +40,42 @@ public class WildEnergy extends TargetedSpell {
 	
 	{
 		image = ItemSpriteSheet.WILD_ENERGY;
-		usesTargeting = true;
 	}
 	
 	//we rely on cursedWand to do fx instead
 	@Override
 	protected void fx(Ballistica bolt, Callback callback) {
-		CursedWand.cursedZap(this, curUser, bolt, callback);
+		affectTarget(bolt, curUser);
 	}
 	
 	@Override
 	protected void affectTarget(Ballistica bolt, final Hero hero) {
-		Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
-		Sample.INSTANCE.play( Assets.Sounds.CHARGEUP );
-		ScrollOfRecharging.charge(hero);
+		CursedWand.cursedZap(this, hero, bolt, new Callback() {
+			@Override
+			public void call() {
+				Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
+				Sample.INSTANCE.play( Assets.Sounds.CHARGEUP );
+				ScrollOfRecharging.charge(hero);
 
-		hero.belongings.charge(1f);
-		for (Buff b : hero.buffs()){
-			if (b instanceof Artifact.ArtifactBuff){
-				if (!((Artifact.ArtifactBuff) b).isCursed()) ((Artifact.ArtifactBuff) b).charge(hero, 4);
+				hero.belongings.charge(1f);
+				for (Buff b : hero.buffs()){
+					if (b instanceof Artifact.ArtifactBuff) ((Artifact.ArtifactBuff) b).charge(hero, 4);
+				}
+
+				Buff.affect(hero, Recharging.class, 8f);
+				Buff.affect(hero, ArtifactRecharge.class).prolong( 8 ).ignoreHornOfPlenty = false;
+				
+				detach( curUser.belongings.backpack );
+				updateQuickslot();
+				curUser.spendAndNext( 1f );
 			}
-		}
-
-		Buff.affect(hero, Recharging.class, 8f);
-		Buff.affect(hero, ArtifactRecharge.class).prolong( 8 ).ignoreHornOfPlenty = false;
+		});
 	}
 	
 	@Override
 	public int value() {
 		//prices of ingredients, divided by output quantity
-		return Math.round(quantity * ((50 + 50) / 5f));
+		return Math.round(quantity * ((50 + 100) / 5f));
 	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
@@ -78,7 +84,7 @@ public class WildEnergy extends TargetedSpell {
 			inputs =  new Class[]{ScrollOfMysticalEnergy.class, MetalShard.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 4;
+			cost = 8;
 			
 			output = WildEnergy.class;
 			outQuantity = 5;

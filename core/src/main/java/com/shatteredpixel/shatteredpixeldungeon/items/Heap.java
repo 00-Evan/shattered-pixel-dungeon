@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,12 +37,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.DocumentPage;
-import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -65,7 +63,8 @@ public class Heap implements Bundlable {
 		CRYSTAL_CHEST,
 		TOMB,
 		SKELETON,
-		REMAINS
+		REMAINS,
+		MIMIC //remains for pre-0.8.0 compatibility. There are converted to mimics on level load
 	}
 	public Type type = Type.HEAP;
 	
@@ -79,6 +78,9 @@ public class Heap implements Bundlable {
 	
 	public void open( Hero hero ) {
 		switch (type) {
+		case MIMIC:
+			type = Type.CHEST;
+			break;
 		case TOMB:
 			Wraith.spawnAround( hero.pos );
 			break;
@@ -97,14 +99,16 @@ public class Heap implements Bundlable {
 			Sample.INSTANCE.play( Assets.Sounds.CURSED );
 		}
 
-		type = Type.HEAP;
-		ArrayList<Item> bonus = RingOfWealth.tryForBonusDrop(hero, 1);
-		if (bonus != null && !bonus.isEmpty()) {
-			items.addAll(0, bonus);
-			RingOfWealth.showFlareForBonusDrop(sprite);
+		if (type != Type.MIMIC) {
+			type = Type.HEAP;
+			ArrayList<Item> bonus = RingOfWealth.tryForBonusDrop(hero, 1);
+			if (bonus != null && !bonus.isEmpty()) {
+				items.addAll(0, bonus);
+				RingOfWealth.showFlareForBonusDrop(sprite);
+			}
+			sprite.link();
+			sprite.drop();
 		}
-		sprite.link();
-		sprite.drop();
 	}
 	
 	public Heap setHauntedIfCursed(){
@@ -155,9 +159,8 @@ public class Heap implements Bundlable {
 			items.remove( item );
 			
 		}
-
-		//lost backpack must always be on top of a heap
-		if ((item.dropsDownHeap && type != Type.FOR_SALE) || peek() instanceof LostBackpack) {
+		
+		if (item.dropsDownHeap && type != Type.FOR_SALE) {
 			items.add( item );
 		} else {
 			items.addFirst( item );
@@ -245,7 +248,7 @@ public class Heap implements Bundlable {
 	public void explode() {
 
 		//breaks open most standard containers, mimics die.
-		if (type == Type.CHEST || type == Type.SKELETON) {
+		if (type == Type.MIMIC || type == Type.CHEST || type == Type.SKELETON) {
 			type = Type.HEAP;
 			sprite.link();
 			sprite.drop();
@@ -358,6 +361,7 @@ public class Heap implements Bundlable {
 					return i.toString();
 				}
 			case CHEST:
+			case MIMIC:
 				return Messages.get(this, "chest");
 			case LOCKED_CHEST:
 				return Messages.get(this, "locked_chest");
@@ -377,6 +381,7 @@ public class Heap implements Bundlable {
 	public String info(){
 		switch(type){
 			case CHEST:
+			case MIMIC:
 				return Messages.get(this, "chest_desc");
 			case LOCKED_CHEST:
 				return Messages.get(this, "locked_chest_desc");
@@ -417,11 +422,8 @@ public class Heap implements Bundlable {
 		//remove any document pages that either don't exist anymore or that the player already has
 		for (Item item : items.toArray(new Item[0])){
 			if (item instanceof DocumentPage
-					&& ( !((DocumentPage) item).document().pageNames().contains(((DocumentPage) item).page())
-					||    ((DocumentPage) item).document().isPageFound(((DocumentPage) item).page()))){
-				items.remove(item);
-			}
-			if (item instanceof Guidebook && Document.ADVENTURERS_GUIDE.isPageRead(0)){
+					&& ( !((DocumentPage) item).document().pages().contains(((DocumentPage) item).page())
+					||    ((DocumentPage) item).document().hasPage(((DocumentPage) item).page()))){
 				items.remove(item);
 			}
 		}

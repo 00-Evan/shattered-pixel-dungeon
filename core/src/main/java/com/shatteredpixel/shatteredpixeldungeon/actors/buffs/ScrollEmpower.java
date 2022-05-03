@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,26 +27,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
-import com.watabou.utils.Bundle;
 
-public class ScrollEmpower extends Buff {
+public class ScrollEmpower extends FlavourBuff {
 
 	{
 		type = buffType.POSITIVE;
-	}
-
-	private int left;
-
-	public void reset(){
-		left = Dungeon.hero.pointsInTalent(Talent.EMPOWERING_SCROLLS);
-		Item.updateQuickslot();
-	}
-
-	public void use(){
-		left--;
-		if (left <= 0){
-			detach();
-		}
 	}
 
 	@Override
@@ -67,12 +52,7 @@ public class ScrollEmpower extends Buff {
 
 	@Override
 	public float iconFadePercent() {
-		return Math.max(0, (3f - left) / 3f);
-	}
-
-	@Override
-	public String iconTextDisplay() {
-		return Integer.toString(left);
+		return Math.max(0, (20-visualcooldown()) / 20f);
 	}
 
 	@Override
@@ -82,20 +62,7 @@ public class ScrollEmpower extends Buff {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", Dungeon.hero.pointsInTalent(Talent.EMPOWERING_SCROLLS), left);
+		return Messages.get(this, "desc", (int)visualcooldown(), Dungeon.hero.pointsInTalent(Talent.EMPOWERING_SCROLLS));
 	}
 
-	private static final String LEFT = "left";
-
-	@Override
-	public void storeInBundle(Bundle bundle) {
-		super.storeInBundle(bundle);
-		bundle.put(LEFT, left);
-	}
-
-	@Override
-	public void restoreFromBundle(Bundle bundle) {
-		super.restoreFromBundle(bundle);
-		left = bundle.getInt(LEFT);
-	}
 }

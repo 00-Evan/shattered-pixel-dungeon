@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
@@ -35,24 +33,7 @@ public class WndOptions extends Window {
 	private static final int WIDTH_L = 144;
 
 	private static final int MARGIN 		= 2;
-	private static final int BUTTON_HEIGHT	= 18;
-
-	public WndOptions(Image icon, String title, String message, String... options) {
-		super();
-
-		int width = PixelScene.landscape() ? WIDTH_L : WIDTH_P;
-
-		float pos = 0;
-		if (title != null) {
-			IconTitle tfTitle = new IconTitle(icon, title);
-			tfTitle.setRect(0, pos, width, 0);
-			add(tfTitle);
-
-			pos = tfTitle.bottom() + 2*MARGIN;
-		}
-
-		layoutBody(pos, message, options);
-	}
+	private static final int BUTTON_HEIGHT	= 20;
 	
 	public WndOptions( String title, String message, String... options ) {
 		super();
@@ -67,22 +48,16 @@ public class WndOptions extends Window {
 			tfTitle.maxWidth(width - MARGIN * 2);
 			add(tfTitle);
 
-			pos = tfTitle.bottom() + 2*MARGIN;
+			pos = tfTitle.bottom() + 3*MARGIN;
 		}
 		
-		layoutBody(pos, message, options);
-	}
-
-	private void layoutBody(float pos, String message, String... options){
-		int width = PixelScene.landscape() ? WIDTH_L : WIDTH_P;
-
 		RenderedTextBlock tfMesage = PixelScene.renderTextBlock( 6 );
-		tfMesage.text(message, width);
-		tfMesage.setPos( 0, pos );
+		tfMesage.text(message, width - MARGIN * 2);
+		tfMesage.setPos( MARGIN, pos );
 		add( tfMesage );
-
+		
 		pos = tfMesage.bottom() + 2*MARGIN;
-
+		
 		for (int i=0; i < options.length; i++) {
 			final int index = i;
 			RedButton btn = new RedButton( options[i] ) {
@@ -92,47 +67,22 @@ public class WndOptions extends Window {
 					onSelect( index );
 				}
 			};
-			if (hasIcon(i)) btn.icon(getIcon(i));
 			btn.enable(enabled(i));
+			btn.setRect( MARGIN, pos, width - MARGIN * 2, BUTTON_HEIGHT );
 			add( btn );
-
-			if (!hasInfo(i)) {
-				btn.setRect(0, pos, width, BUTTON_HEIGHT);
-			} else {
-				btn.setRect(0, pos, width - BUTTON_HEIGHT, BUTTON_HEIGHT);
-				IconButton info = new IconButton(Icons.get(Icons.INFO)){
-					@Override
-					protected void onClick() {
-						onInfo( index );
-					}
-				};
-				info.setRect(width-BUTTON_HEIGHT, pos, BUTTON_HEIGHT, BUTTON_HEIGHT);
-				add(info);
-			}
-
+			
 			pos += BUTTON_HEIGHT + MARGIN;
 		}
-
-		resize( width, (int)(pos - MARGIN) );
+		
+		resize( width, (int)pos );
 	}
 
-	protected boolean enabled( int index ){
+    public WndOptions(Image image, String message, String desc, String update, String changes) {
+    }
+
+    protected boolean enabled( int index ){
 		return true;
 	}
 	
 	protected void onSelect( int index ) {}
-
-	protected boolean hasInfo( int index ) {
-		return false;
-	}
-
-	protected void onInfo( int index ) {}
-
-	protected boolean hasIcon( int index ) {
-		return false;
-	}
-
-	protected Image getIcon( int index ) {
-		return null;
-	}
 }

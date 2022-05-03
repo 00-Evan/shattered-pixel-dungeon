@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
@@ -55,7 +54,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 			freerunCooldown--;
 		}
 
-		if (freerunCooldown == 0 && !freerunning() && target.invisible > 0 && Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH) >= 1){
+		if (freerunCooldown == 0 && target.invisible > 0 && Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH) >= 1){
 			momentumStacks = Math.min(momentumStacks + 2, 10);
 			movedLastTurn = true;
 		}
@@ -79,7 +78,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 	
 	public void gainStack(){
 		movedLastTurn = true;
-		if (freerunCooldown <= 0 && !freerunning()){
+		if (freerunCooldown <= 0){
 			postpone(target.cooldown()+(1/target.speed()));
 			momentumStacks = Math.min(momentumStacks + 1, 10);
 			ActionIndicator.setAction(this);
@@ -136,17 +135,6 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 	}
 
 	@Override
-	public String iconTextDisplay() {
-		if (freerunTurns > 0){
-			return Integer.toString(freerunTurns);
-		} else if (freerunCooldown > 0){
-			return Integer.toString(freerunCooldown);
-		} else {
-			return Integer.toString(momentumStacks);
-		}
-	}
-
-	@Override
 	public String toString() {
 		if (freerunTurns > 0){
 			return Messages.get(this, "running");
@@ -193,13 +181,8 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 	}
 
 	@Override
-	public String actionName() {
-		return Messages.get(this, "action_name");
-	}
-
-	@Override
-	public Image actionIcon() {
-		Image im = new BuffIcon(BuffIndicator.HASTE, true);
+	public Image getIcon() {
+		Image im = new Image(Assets.Interfaces.BUFFS_LARGE, 144, 32, 16, 16);
 		im.hardlight(0x99992E);
 		return im;
 	}

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ public class Skeleton extends Mob {
 		maxLvl = 10;
 
 		loot = Generator.Category.WEAPON;
-		lootChance = 0.1667f; //by default, see lootChance()
+		lootChance = 0.1667f; //by default, see rollToDropLoot()
 
 		properties.add(Property.UNDEAD);
 		properties.add(Property.INORGANIC);
@@ -88,14 +88,15 @@ public class Skeleton extends Mob {
 	}
 
 	@Override
-	public float lootChance() {
+	public void rollToDropLoot() {
 		//each drop makes future drops 1/2 as likely
 		// so loot chance looks like: 1/6, 1/12, 1/24, 1/48, etc.
-		return super.lootChance() * (float)Math.pow(1/2f, Dungeon.LimitedDrops.SKELE_WEP.count);
+		lootChance *= Math.pow(1/2f, Dungeon.LimitedDrops.SKELE_WEP.count);
+		super.rollToDropLoot();
 	}
 
 	@Override
-	public Item createLoot() {
+	protected Item createLoot() {
 		Dungeon.LimitedDrops.SKELE_WEP.count++;
 		return super.createLoot();
 	}

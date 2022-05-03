@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,14 +45,14 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Button;
+import com.watabou.noosa.ui.Button;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.DeviceCompat;
 
 public class WndStartGame extends Window {
 	
 	private static final int WIDTH    = 120;
-	private static final int HEIGHT   = 140;
+	private static final int HEIGHT   = 160;
 
 	public WndStartGame(final int slot){
 		
@@ -91,7 +91,7 @@ public class WndStartGame extends Window {
 				if (GamesInProgress.selectedClass == null) return;
 				
 				super.onClick();
-				
+
 				GamesInProgress.curSlot = slot;
 				Dungeon.hero = null;
 				ActionIndicator.action = null;
@@ -117,7 +117,7 @@ public class WndStartGame extends Window {
 		start.setRect(0, HEIGHT - 20, WIDTH, 20);
 		add(start);
 		
-		if (DeviceCompat.isDebug() || Badges.isUnlocked(Badges.Badge.VICTORY)){
+		if (DeviceCompat.isDebug() || Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_1)){
 			IconButton challengeButton = new IconButton(
 					Icons.get( SPDSettings.challenges() > 0 ? Icons.CHALLENGE_ON :Icons.CHALLENGE_OFF)){
 				@Override
@@ -218,6 +218,7 @@ public class WndStartGame extends Window {
 		private IconButton heroLoadout;
 		private IconButton heroMisc;
 		private IconButton heroSubclass;
+		private IconButton Telnetsc;
 		
 		private RenderedTextBlock name;
 		
@@ -267,13 +268,23 @@ public class WndStartGame extends Window {
 					if (cl == null) return;
 					String msg = Messages.get(cl, cl.name() + "_desc_subclasses");
 					for (HeroSubClass sub : cl.subClasses()){
-						msg += "\n\n" + sub.shortDesc();
+						msg += "\n\n" + sub.desc();
 					}
 					ShatteredPixelDungeon.scene().addToFront(new WndMessage(msg));
 				}
 			};
 			heroSubclass.setSize(BTN_SIZE, BTN_SIZE);
 			add(heroSubclass);
+
+			Telnetsc = new IconButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_SPELLBOOK, null)){
+				@Override
+				protected void onClick() {
+					if (cl == null) return;
+					ShatteredPixelDungeon.scene().addToFront(new WndMessage(Messages.get(cl, cl.name() + "_story")));
+				}
+			};
+			Telnetsc.setSize(BTN_SIZE, BTN_SIZE);
+			add(Telnetsc);
 			
 			name = PixelScene.renderTextBlock(12);
 			add(name);
@@ -299,6 +310,7 @@ public class WndStartGame extends Window {
 			heroLoadout.setPos(x + width - BTN_SIZE, heroItem.bottom());
 			heroMisc.setPos(x + width - BTN_SIZE, heroLoadout.bottom());
 			heroSubclass.setPos(x + width - BTN_SIZE, heroMisc.bottom());
+			Telnetsc.setPos(x + width - BTN_SIZE, heroSubclass.bottom());
 		}
 		
 		@Override
@@ -325,7 +337,7 @@ public class WndStartGame extends Window {
 						case ROGUE:
 							heroItem.icon(new ItemSprite(ItemSpriteSheet.ARTIFACT_CLOAK, null));
 							heroLoadout.icon(new ItemSprite(ItemSpriteSheet.DAGGER, null));
-							heroMisc.icon(Icons.get(Icons.STAIRS));
+							heroMisc.icon(Icons.get(Icons.DEPTH));
 							break;
 						case HUNTRESS:
 							heroItem.icon(new ItemSprite(ItemSpriteSheet.SPIRIT_BOW, null));

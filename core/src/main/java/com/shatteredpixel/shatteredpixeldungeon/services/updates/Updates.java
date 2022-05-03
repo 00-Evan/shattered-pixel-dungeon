@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,20 +41,11 @@ public class Updates {
 		return supportsUpdates() && service.isUpdateable();
 	}
 
-	public static boolean supportsBetaChannel(){
-		return supportsUpdates() && service.supportsBetaChannel();
-	}
-
 	public static void checkForUpdate(){
 		if (!isUpdateable()) return;
 		if (lastCheck != null && (new Date().getTime() - lastCheck.getTime()) < CHECK_DELAY) return;
 
-		//We do this so that automatically enabled beta checking (for users who DLed a beta) persists afterward
-		if (SPDSettings.betas()){
-			SPDSettings.betas(true);
-		}
-
-		service.checkForUpdate(!SPDSettings.WiFi(), SPDSettings.betas(), new UpdateService.UpdateResultCallback() {
+		service.checkForUpdate(!SPDSettings.WiFi(), new UpdateService.UpdateResultCallback() {
 			@Override
 			public void onUpdateAvailable(AvailableUpdateData update) {
 				lastCheck = new Date();
@@ -102,10 +93,6 @@ public class Updates {
 		}
 	}
 
-	public static boolean supportsReviews() {
-		return supportsUpdates() && service.supportsReviews();
-	}
-
 	public static void launchReview(Callback callback){
 		if (supportsUpdates()){
 			service.initializeReview(new UpdateService.ReviewResultCallback() {
@@ -116,12 +103,6 @@ public class Updates {
 			});
 		} else {
 			callback.call();
-		}
-	}
-
-	public static void openReviewURI(){
-		if (supportsUpdates()){
-			service.openReviewURI();
 		}
 	}
 

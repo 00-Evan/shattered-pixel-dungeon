@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2019 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,50 +22,56 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SnakeSprite;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Random;
 
 public class Snake extends Mob {
-	
-	{
-		spriteClass = SnakeSprite.class;
-		
-		HP = HT = 4;
-		defenseSkill = 25;
-		
-		EXP = 2;
-		maxLvl = 7;
-		
-		loot = Generator.Category.SEED;
-		lootChance = 0.25f;
+	private static final String COMBO = "combo";
+	private String[] attackCurse = {"你杀了我的女儿，我要复仇！", "不要再前进了！", "雕虫小技竟敢班门弄斧？", "你们毁了我的家园！", "她一定会复仇的！", "人类，肮脏的人类！", "去死吧！！！", "300年前，这里曾经是一片祥和。"};
+	private int combo = 0;
+	private String[] deathCurse = {"快停下...", "猎杀结束了", "啊...你这个怪物", "你这怪物", "神啊...帮帮我吧...", "四周好冷", "诅咒你这怪物", "相信我的主会为我复仇"};
+	public  Snake() {
+		this.spriteClass = SnakeSprite.class;
+		this.HT = 4;
+		this.HP = 4;
+		this.defenseSkill = 700;
+		this.EXP = 6;
+		this.maxLvl = 15;
+		this.state = this.SLEEPING;
 	}
-	
+
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 1, 4 );
+		return Random.NormalIntRange( 1, 2 );
 	}
-	
+
+	public int attackProc(Char enemy, int damage) {
+		if (Random.Int(0, 10) > 7) {
+			this.sprite.showStatus(0xff00ff, this.attackCurse[Random.Int(this.attackCurse.length)],
+					new Object[0]);
+		}
+		int damage2 =  Snake.super.attackProc(enemy, this.combo + damage);
+		this.combo++;
+		return damage2;
+	}
+
+	public void die(Object cause) {
+		Snake.super.die(cause);
+		if (cause != Chasm.class) {
+			this.sprite.showStatus(16711680, this.deathCurse[Random.Int(this.deathCurse.length)], new Object[0]);
+
+		}
+	}
+
 	@Override
 	public int attackSkill( Char target ) {
-		return 10;
+		return 8;
 	}
-
-	private static int dodges = 0;
 
 	@Override
-	public String defenseVerb() {
-		dodges++;
-		if (dodges >= 2 && !Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_SURPRISE_ATKS)){
-			GLog.p(Messages.get(Guidebook.class, "hint"));
-			GameScene.flashForDocument(Document.GUIDE_SURPRISE_ATKS);
-			dodges = 0;
-		}
-		return super.defenseVerb();
+	public int drRoll() {
+		return Random.NormalIntRange(0, 1);
 	}
 }
+

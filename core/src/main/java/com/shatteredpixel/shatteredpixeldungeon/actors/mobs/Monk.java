@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,7 +62,7 @@ public class Monk extends Mob {
 	}
 	
 	@Override
-	public float attackDelay() {
+    public float attackDelay() {
 		return super.attackDelay()*0.5f;
 	}
 	
@@ -96,11 +96,11 @@ public class Monk extends Mob {
 	}
 	
 	@Override
-	public void move( int step, boolean travelling) {
+	public void move( int step ) {
 		// moving reduces cooldown by an additional 0.67, giving a total reduction of 1.67f.
 		// basically monks will become focused notably faster if you kite them.
-		if (travelling) focusCooldown -= 0.67f;
-		super.move( step, travelling);
+		focusCooldown -= 0.67f;
+		super.move( step );
 	}
 	
 	@Override
@@ -118,9 +118,7 @@ public class Monk extends Mob {
 			return super.defenseVerb();
 		} else {
 			f.detach();
-			if (sprite != null && sprite.visible) {
-				Sample.INSTANCE.play(Assets.Sounds.HIT_PARRY, 1, Random.Float(0.96f, 1.05f));
-			}
+			Sample.INSTANCE.play( Assets.Sounds.HIT_PARRY, 1, Random.Float(0.96f, 1.05f));
 			focusCooldown = Random.NormalFloat( 6, 7 );
 			return Messages.get(this, "parried");
 		}

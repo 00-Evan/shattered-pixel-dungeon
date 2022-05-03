@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,22 +21,28 @@
 
 package com.shatteredpixel.shatteredpixeldungeon;
 
+import static com.shatteredpixel.shatteredpixeldungeon.Challenges.ALLBOSS;
+import static com.shatteredpixel.shatteredpixeldungeon.Challenges.RLPT;
+
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpiritHawk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.RedDragon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
+import com.shatteredpixel.shatteredpixeldungeon.custom.utils.CustomGameSettings;
+import com.shatteredpixel.shatteredpixeldungeon.custom.utils.SeedUtil;
+import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
+import com.shatteredpixel.shatteredpixeldungeon.items.DewVial;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -44,22 +50,28 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesi
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
+import com.shatteredpixel.shatteredpixeldungeon.levels.CaveTwoBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.CavesGirlDeadLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CavesLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.DM920BossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.DeadEndLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.DimandKingLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.HallsLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.ItemLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.LastLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.LastShopLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.NewCityBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.NewHallsBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.NewPrisonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.SLMKingLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.YogGodHardBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.ZeroLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -67,7 +79,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -81,6 +92,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Dungeon {
+
+
 
 	//enum of items which have limited spawns, records how many have spawned
 	//could all be their own separate numbers, but this allows iterating, much nicer for bundling/initializing.
@@ -111,6 +124,7 @@ public class Dungeon {
 		GOLEM_EQUIP,
 
 		//containers
+		DEW_VIAL,
 		VELVET_POUCH,
 		SCROLL_HOLDER,
 		POTION_BANDOLIER,
@@ -119,51 +133,69 @@ public class Dungeon {
 		public int count = 0;
 
 		//for items which can only be dropped once, should directly access count otherwise.
-		public boolean dropped(){
+		public boolean dropped() {
 			return count != 0;
 		}
-		public void drop(){
+
+		public void drop() {
 			count = 1;
 		}
 
-		public static void reset(){
-			for (LimitedDrops lim : values()){
+		public static void reset() {
+			for (LimitedDrops lim : values()) {
 				lim.count = 0;
 			}
 		}
 
-		public static void store( Bundle bundle ){
-			for (LimitedDrops lim : values()){
+		public static void store(Bundle bundle) {
+			for (LimitedDrops lim : values()) {
 				bundle.put(lim.name(), lim.count);
 			}
 		}
 
-		public static void restore( Bundle bundle ){
-			for (LimitedDrops lim : values()){
-				if (bundle.contains(lim.name())){
+		public static void restore(Bundle bundle) {
+			for (LimitedDrops lim : values()) {
+				if (bundle.contains(lim.name())) {
 					lim.count = bundle.getInt(lim.name());
 				} else {
 					lim.count = 0;
 				}
-				
+
 			}
 		}
 
 	}
 
 	public static int challenges;
+	public static int hard;
 	public static int mobsToChampion;
-
+	public static DewVial View;
 	public static Hero hero;
 	public static Level level;
 
 	public static QuickSlot quickslot = new QuickSlot();
-	
-	public static int depth;
 
+	public static int depth;
 	public static int gold;
-	public static int energy;
-	
+	public static int cycle;
+	public static int nyzbuy;
+
+	public static int escalatingDepth() {
+		switch (cycle) {
+			case 0:
+				return depth;
+			case 1:
+				return (int) (depth * 1.4f + 31);
+			case 2:
+				return depth * 5 + 200;
+			case 3:
+				return depth * 50 + 2500;
+			case 4:
+				return depth * 100 + 4300;
+		}
+		return depth;
+	}
+
 	public static HashSet<Integer> chapters;
 
 	public static SparseArray<ArrayList<Item>> droppedItems;
@@ -172,47 +204,48 @@ public class Dungeon {
 	public static int version;
 
 	public static long seed;
-	
+
 	public static void init() {
 
 		version = Game.versionCode;
 		challenges = SPDSettings.challenges();
 		mobsToChampion = -1;
 
-		seed = DungeonSeed.randomSeed();
+		String str = CustomGameSettings.getSeedString();
+		seed = str.equals("")?DungeonSeed.randomSeed(): SeedUtil.directConvert(str, 'A', 26);//DungeonSeed.randomSeed();
 
 		Actor.clear();
 		Actor.resetNextID();
-		
-		Random.pushGenerator( seed );
 
-			Scroll.initLabels();
-			Potion.initColors();
-			Ring.initGems();
+		Random.pushGenerator(seed);
 
-			SpecialRoom.initForRun();
-			SecretRoom.initForRun();
+		Scroll.initLabels();
+		Potion.initColors();
+		Ring.initGems();
+
+		SpecialRoom.initForRun();
+		SecretRoom.initForRun();
 
 		Random.resetGenerators();
-		
+
 		Statistics.reset();
 		Notes.reset();
 
 		quickslot.reset();
 		QuickSlotButton.reset();
-		
-		depth = 0;
-		gold = 0;
-		energy = 0;
 
+		depth = -1;
+		gold = 0;
+		nyzbuy = 1;
 		droppedItems = new SparseArray<>();
 		portedItems = new SparseArray<>();
 
 		LimitedDrops.reset();
-		
+
 		chapters = new HashSet<>();
-		
+
 		Ghost.Quest.reset();
+		RedDragon.Quest.reset();
 		Wandmaker.Quest.reset();
 		Blacksmith.Quest.reset();
 		Imp.Quest.reset();
@@ -220,93 +253,279 @@ public class Dungeon {
 		Generator.fullReset();
 		hero = new Hero();
 		hero.live();
-		
+
 		Badges.reset();
-		
-		GamesInProgress.selectedClass.initHero( hero );
+
+		GamesInProgress.selectedClass.initHero(hero);
 	}
 
-	public static boolean isChallenged( int mask ) {
+	public static boolean isChallenged(int mask) {
 		return (challenges & mask) != 0;
 	}
-	
+
 	public static Level newLevel() {
-		
+
 		Dungeon.level = null;
 		Actor.clear();
-		
+
 		depth++;
 		if (depth > Statistics.deepestFloor) {
 			Statistics.deepestFloor = depth;
-			
+
 			if (Statistics.qualifiedForNoKilling) {
 				Statistics.completedWithNoKilling = true;
 			} else {
 				Statistics.completedWithNoKilling = false;
 			}
 		}
-		
+
 		Level level;
+		if (Dungeon.isChallenged(ALLBOSS)) {
+			//Boss Rush
+			switch (depth) {
+				case 0:
+					level = new ZeroLevel();
+					break;
+				case 1:
+					level = new ItemLevel();
+					break;
+				case 2:
+					level = new SewerBossLevel();
+					break;
+				case 13:
+					level = new DM920BossLevel();
+					break;
+				default:
+					level = new DeadEndLevel();
+					Statistics.deepestFloor--;
+			}
+		} else if (Dungeon.isChallenged(RLPT)) {
+			switch (depth) {
+				case 0:
+					level = new ZeroLevel();
+					break;
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+					level = new SewerLevel();
+					break;
+				case 5:
+					switch (Random.Int(1)) {
+						case 0:
+						default:
+							level = new SewerBossLevel();
+							break;
+						case 1:
+							level = new SLMKingLevel();
+					}
+					break;
+				case 6:
+				case 7:
+				case 8:
+				case 9:
+					switch (Random.Int(2)) {
+						case 0:
+						default:
+							level = new PrisonLevel();
+							//Random
+							break;
+						case 1:
+							//Random
+							level = new CavesLevel();
+							break;
+					}
+					break;
+				case 10:
+							level = new NewPrisonBossLevel();
+					break;
+				case 11:
+				case 12:
+				case 13:
+				case 14:
+					switch (Random.Int(2)) {
+						case 0:
+						default:
+							level = new CavesLevel();
+							break;
+						case 1:
+							level = new CityLevel();
+							break;
+					}
+					break;
+				case 15:
+						level = new CaveTwoBossLevel();
+						break;
+				case 16:
+				case 17:
+				case 18:
+				case 19:
+					switch (Random.Int(2)) {
+						case 0:
+						default:
+							level = new CityLevel();
+							break;
+						case 1:
+							level = new CavesLevel();
+							break;
+					}
+					break;
+				case 20:
+					level = new NewCityBossLevel();
+					break;
+				case 21:
+					//logic for old city boss levels, need to spawn a shop on floor 21
+					try {
+						Bundle bundle = FileUtils.bundleFromFile(GamesInProgress.depthFile(GamesInProgress.curSlot, 20));
+						Class cls = bundle.getBundle(LEVEL).getClass("__className");
+						if (cls == NewCityBossLevel.class) {
+							level = new HallsLevel();
+						} else {
+							level = new LastShopLevel();
+						}
+					} catch (Exception e) {
+						ShatteredPixelDungeon.reportException(e);
+						level = new HallsLevel();
+					}
+					break;
+				case 22:
+				case 23:
+				case 24:
+					switch (Random.Int(1)) {
+						case 0:
+						default:
+							level = new HallsLevel();
+							break;
+					}
+					break;
+				case 25:
+					level = new NewHallsBossLevel();
+					break;
+				case 26:
+					level = new LastLevel();
+					break;
+				default:
+					level = new DeadEndLevel();
+					Statistics.deepestFloor--;
+			}
+		} else
+			//正常模式
 		switch (depth) {
-		case 1:
-		case 2:
-		case 3:
-		case 4:
-			level = new SewerLevel();
-			break;
-		case 5:
-			level = new SewerBossLevel();
-			break;
-		case 6:
-		case 7:
-		case 8:
-		case 9:
-			level = new PrisonLevel();
-			break;
-		case 10:
-			level = new PrisonBossLevel();
-			break;
-		case 11:
-		case 12:
-		case 13:
-		case 14:
-			level = new CavesLevel();
-			break;
-		case 15:
-			level = new CavesBossLevel();
-			break;
-		case 16:
-		case 17:
-		case 18:
-		case 19:
-			level = new CityLevel();
-			break;
-		case 20:
-			level = new CityBossLevel();
-			break;
-		case 21:
-		case 22:
-		case 23:
-		case 24:
-			level = new HallsLevel();
-			break;
-		case 25:
-			level = new HallsBossLevel();
-			break;
-		case 26:
-			level = new LastLevel();
-			break;
-		default:
-			level = new DeadEndLevel();
-			Statistics.deepestFloor--;
+			case 0:
+				level = new ZeroLevel();
+				break;
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+				level = new SewerLevel();
+				break;
+			case 5:
+				switch (Random.Int(2)) {
+					case 0:
+					default:
+						level = new SewerBossLevel();
+						//天痕粘咕
+						break;
+					case 1:
+						//史莱姆王
+						level = new SLMKingLevel();
+				}
+				break;
+			case 6:
+			case 7:
+			case 8:
+			case 9:
+				level = new PrisonLevel();
+				break;
+			case 10:
+				switch (Random.Int(6)) {
+					case 0:
+					default:
+						level = new NewPrisonBossLevel();
+						//Statistics.spawnersDK++;
+						break;
+					case 1:case 2:case 3:
+						level = new NewPrisonBossLevel();
+						break;
+					case 4:case 5:case 6:
+						level =  new DimandKingLevel();
+						break;
+				}
+				break;
+			case 11:
+			case 12:
+			case 13:
+			case 14:
+				level = new CavesLevel();
+				break;
+				//没有摧毁冰雪结晶必定刷魔女层
+			case 15:
+				if (Statistics.spawnersIce > 0) {
+					level = new CavesGirlDeadLevel();
+					break;
+				} else {
+					level = new CaveTwoBossLevel();
+					break;
+
+				}
+			case 16:
+			case 17:
+			case 18:
+			case 19:
+				level = new CityLevel();
+				break;
+			case 20:
+				level = new NewCityBossLevel();
+				break;
+			case 21:
+				//logic for old city boss levels, need to spawn a shop on floor 21
+				try {
+					Bundle bundle = FileUtils.bundleFromFile(GamesInProgress.depthFile(GamesInProgress.curSlot, 20));
+					Class cls = bundle.getBundle(LEVEL).getClass("__className");
+					if (cls == NewCityBossLevel.class) {
+						level = new HallsLevel();
+					} else {
+						level = new LastShopLevel();
+					}
+				} catch (Exception e) {
+					ShatteredPixelDungeon.reportException(e);
+					level = new HallsLevel();
+				}
+				break;
+			case 22:
+			case 23:
+			case 24:
+				level = new HallsLevel();
+				break;
+			case 25:
+				if (Statistics.spawnersAlive > 0) {
+					level = new YogGodHardBossLevel();
+					break;
+				} else
+					switch (Random.Int(2)) {
+						case 0:
+						default:
+							level = new NewHallsBossLevel();
+							//YOG EAYS
+							break;
+					}
+				break;
+			case 26:
+				level = new LastLevel();
+				break;
+			default:
+				level = new DeadEndLevel();
+				Statistics.deepestFloor--;
 		}
-		
+
 		level.create();
-		
+
 		Statistics.qualifiedForNoKilling = !bossLevel();
-		
+
 		return level;
 	}
+
 	
 	public static void resetLevel() {
 		
@@ -335,12 +554,75 @@ public class Dungeon {
 	public static boolean shopOnLevel() {
 		return depth == 6 || depth == 11 || depth == 16;
 	}
+	//图书馆
+	public static boolean BooksRTD() {
+		return depth == 3 ||  depth == 7 || depth == 12 || depth == 18;
+	}
+
+
+	//冰雪结界
+	public static boolean iceCursedLevel() {
+		return depth == 11 || depth == 12|| depth == 13|| depth == 14;
+	}
+
+	public static boolean iceCursedLevelBoss() {
+		return depth == 15;
+	}
+	//冰雪结界
+
+	public static boolean NxhyshopOnLevel() {
+		return depth == 9 || depth == 18;
+	}
+
+	public static boolean NyzshopOnLevel() {
+		return depth == 12;
+	}
+
+	public static boolean BlueS() {
+		return depth == 19;
+	}
+
+	//圣域保护
+	public static boolean GodWaterLevel() {
+		return depth == 1 ||depth == 2||depth == 3||depth == 4;
+	}
+
+	//监狱保护
+	public static boolean PrisonWaterLevel() {
+		return depth == 6 ||depth == 7||depth == 8||depth == 9;
+	}
+
+	//冰雪诅咒
+	public static boolean ColdWaterLevel() {
+		return depth == 11 ||depth == 12||depth == 13||depth == 14;
+	}
+
+	//矮人诅咒
+	public static boolean DeadLevel() {
+		return depth == 16 ||depth == 17||depth == 18||depth == 19;
+	}
+
+	public static boolean MagicStonePark() {
+		return depth == 15;
+	}
 	
 	public static boolean bossLevel() {
 		return bossLevel( depth );
 	}
 	
 	public static boolean bossLevel( int depth ) {
+		return depth == 5 || depth == 10 || depth == 15 || depth == 20 || depth == 25;
+	}
+
+	/*
+	=======================================================================
+	 */
+
+	public static boolean rushbossLevel() {
+		return rushbossLevel( depth );
+	}
+
+	public static boolean rushbossLevel( int depth ) {
 		return depth == 5 || depth == 10 || depth == 15 || depth == 20 || depth == 25;
 	}
 	
@@ -378,7 +660,7 @@ public class Dungeon {
 		hero.viewDistance = light == null ? level.viewDistance : Math.max( Light.DISTANCE, level.viewDistance );
 		
 		hero.curAction = hero.lastAction = null;
-
+		
 		observe();
 		try {
 			saveAll();
@@ -444,9 +726,8 @@ public class Dungeon {
 	private static final String CHALLENGES	= "challenges";
 	private static final String MOBS_TO_CHAMPION	= "mobs_to_champion";
 	private static final String HERO		= "hero";
-	private static final String DEPTH		= "depth";
 	private static final String GOLD		= "gold";
-	private static final String ENERGY		= "energy";
+	private static final String DEPTH		= "depth";
 	private static final String DROPPED     = "dropped%d";
 	private static final String PORTED      = "ported%d";
 	private static final String LEVEL		= "level";
@@ -465,10 +746,8 @@ public class Dungeon {
 			bundle.put( CHALLENGES, challenges );
 			bundle.put( MOBS_TO_CHAMPION, mobsToChampion );
 			bundle.put( HERO, hero );
-			bundle.put( DEPTH, depth );
-
 			bundle.put( GOLD, gold );
-			bundle.put( ENERGY, energy );
+			bundle.put( DEPTH, depth );
 
 			for (int d : droppedItems.keyArray()) {
 				bundle.put(Messages.format(DROPPED, d), droppedItems.get(d));
@@ -493,6 +772,7 @@ public class Dungeon {
 			
 			Bundle quests = new Bundle();
 			Ghost		.Quest.storeInBundle( quests );
+			RedDragon	.Quest.storeInBundle( quests );
 			Wandmaker	.Quest.storeInBundle( quests );
 			Blacksmith	.Quest.storeInBundle( quests );
 			Imp			.Quest.storeInBundle( quests );
@@ -531,7 +811,7 @@ public class Dungeon {
 	}
 	
 	public static void saveAll() throws IOException {
-		if (hero != null && (hero.isAlive() || WndResurrect.instance != null)) {
+		if (hero != null && hero.isAlive()) {
 			
 			Actor.fixTime();
 			saveGame( GamesInProgress.curSlot );
@@ -554,7 +834,6 @@ public class Dungeon {
 
 		seed = bundle.contains( SEED ) ? bundle.getLong( SEED ) : DungeonSeed.randomSeed();
 
-		Actor.clear();
 		Actor.restoreNextID( bundle );
 
 		quickslot.reset();
@@ -587,11 +866,13 @@ public class Dungeon {
 			Bundle quests = bundle.getBundle( QUESTS );
 			if (!quests.isNull()) {
 				Ghost.Quest.restoreFromBundle( quests );
+				RedDragon.Quest.restoreFromBundle( quests );
 				Wandmaker.Quest.restoreFromBundle( quests );
 				Blacksmith.Quest.restoreFromBundle( quests );
 				Imp.Quest.restoreFromBundle( quests );
 			} else {
 				Ghost.Quest.reset();
+				RedDragon.Quest.reset();
 				Wandmaker.Quest.reset();
 				Blacksmith.Quest.reset();
 				Imp.Quest.reset();
@@ -613,11 +894,9 @@ public class Dungeon {
 		hero = null;
 		hero = (Hero)bundle.get( HERO );
 		
-		depth = bundle.getInt( DEPTH );
-
 		gold = bundle.getInt( GOLD );
-		energy = bundle.getInt( ENERGY );
-
+		depth = bundle.getInt( DEPTH );
+		
 		Statistics.restoreFromBundle( bundle );
 		Generator.restoreFromBundle( bundle );
 
@@ -664,17 +943,12 @@ public class Dungeon {
 	}
 	
 	public static void deleteGame( int save, boolean deleteLevels ) {
-
+		
+		FileUtils.deleteFile(GamesInProgress.gameFile(save));
+		
 		if (deleteLevels) {
-			String folder = GamesInProgress.gameFolder(save);
-			for (String file : FileUtils.filesInDir(folder)){
-				if (file.contains("depth")){
-					FileUtils.deleteFile(folder + "/" + file);
-				}
-			}
+			FileUtils.deleteDir(GamesInProgress.gameFolder(save));
 		}
-
-		FileUtils.zeroFile(GamesInProgress.gameFile(save), 1);
 		
 		GamesInProgress.delete( save );
 	}
@@ -688,7 +962,7 @@ public class Dungeon {
 	}
 	
 	public static void fail( Class cause ) {
-		if (WndResurrect.instance == null) {
+		if (hero.belongings.getItem( Ankh.class ) == null) {
 			Rankings.INSTANCE.submit( false, cause );
 		}
 	}
@@ -700,15 +974,8 @@ public class Dungeon {
 		Rankings.INSTANCE.submit( true, cause );
 	}
 
-	//default to recomputing based on max hero vision, in case vision just shrank/grew
 	public static void observe(){
-		int dist = Math.max(Dungeon.hero.viewDistance, 8);
-		dist *= 1f + 0.25f*Dungeon.hero.pointsInTalent(Talent.FARSIGHT);
-
-		if (Dungeon.hero.buff(MagicalSight.class) != null){
-			dist = Math.max( dist, MagicalSight.DISTANCE );
-		}
-
+		int dist = 8 + 2*Dungeon.hero.pointsInTalent(Talent.FARSIGHT);
 		observe( dist+1 );
 	}
 	
@@ -761,8 +1028,9 @@ public class Dungeon {
 		}
 
 		for (TalismanOfForesight.CharAwareness c : hero.buffs(TalismanOfForesight.CharAwareness.class)){
+			if (Dungeon.depth != c.depth) continue;
 			Char ch = (Char) Actor.findById(c.charID);
-			if (ch == null || !ch.isAlive()) continue;
+			if (ch == null) continue;
 			BArray.or( level.visited, level.heroFOV, ch.pos - 1 - level.width(), 3, level.visited );
 			BArray.or( level.visited, level.heroFOV, ch.pos - 1, 3, level.visited );
 			BArray.or( level.visited, level.heroFOV, ch.pos - 1 + level.width(), 3, level.visited );
@@ -783,33 +1051,6 @@ public class Dungeon {
 			BArray.or( level.visited, level.heroFOV, a.pos - 1, 3, level.visited );
 			BArray.or( level.visited, level.heroFOV, a.pos - 1 + level.width(), 3, level.visited );
 			GameScene.updateFog(a.pos, 2);
-		}
-
-		for (Char ch : Actor.chars()){
-			if (ch instanceof WandOfWarding.Ward
-					|| ch instanceof WandOfRegrowth.Lotus
-					|| ch instanceof SpiritHawk.HawkAlly){
-				x = ch.pos % level.width();
-				y = ch.pos / level.width();
-
-				//left, right, top, bottom
-				dist = ch.viewDistance+1;
-				l = Math.max( 0, x - dist );
-				r = Math.min( x + dist, level.width() - 1 );
-				t = Math.max( 0, y - dist );
-				b = Math.min( y + dist, level.height() - 1 );
-
-				width = r - l + 1;
-				height = b - t + 1;
-
-				pos = l + t * level.width();
-
-				for (int i = t; i <= b; i++) {
-					BArray.or( level.visited, level.heroFOV, pos, width, level.visited );
-					pos+=level.width();
-				}
-				GameScene.updateFog(ch.pos, dist);
-			}
 		}
 
 		GameScene.afterObserve();

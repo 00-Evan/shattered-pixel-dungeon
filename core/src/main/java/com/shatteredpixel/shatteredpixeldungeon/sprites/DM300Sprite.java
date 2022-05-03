@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM300;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewDM300;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
@@ -94,7 +94,7 @@ public class DM300Sprite extends MobSprite {
 				new Callback() {
 					@Override
 					public void call() {
-						((DM300)ch).onZapComplete();
+						((NewDM300)ch).onZapComplete();
 					}
 				} );
 		Sample.INSTANCE.play( Assets.Sounds.GAS );
@@ -119,7 +119,7 @@ public class DM300Sprite extends MobSprite {
 		}
 
 		if (anim == slam){
-			((DM300)ch).onSlamComplete();
+			((NewDM300)ch).onSlamComplete();
 		}
 
 		super.onComplete( anim );
@@ -146,7 +146,7 @@ public class DM300Sprite extends MobSprite {
 		superchargeSparks.pour(SparkParticle.STATIC, 0.05f);
 		superchargeSparks.on = false;
 
-		if (ch instanceof DM300 && ((DM300) ch).isSupercharged()){
+		if (ch instanceof NewDM300 && ((NewDM300) ch).isSupercharged()){
 			updateChargeState(true);
 		}
 	}

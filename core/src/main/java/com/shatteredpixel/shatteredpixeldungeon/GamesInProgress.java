@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ import java.util.HashMap;
 
 public class GamesInProgress {
 	
-	public static final int MAX_SLOTS = 4;
+	public static final int MAX_SLOTS = 5;
 	
 	//null means we have loaded info and it is empty, no entry means unknown.
 	private static HashMap<Integer, Info> slotStates = new HashMap<>();
@@ -49,8 +49,7 @@ public class GamesInProgress {
 	private static final String DEPTH_FILE	= "depth%d.dat";
 	
 	public static boolean gameExists( int slot ){
-		return FileUtils.dirExists(gameFolder(slot))
-				&& FileUtils.fileLength(gameFile(slot)) > 1;
+		return FileUtils.dirExists(Messages.format(GAME_FOLDER, slot));
 	}
 	
 	public static String gameFolder( int slot ){
@@ -74,7 +73,7 @@ public class GamesInProgress {
 	
 	public static ArrayList<Info> checkAll(){
 		ArrayList<Info> result = new ArrayList<>();
-		for (int i = 1; i <= MAX_SLOTS; i++){
+		for (int i = 0; i <= MAX_SLOTS; i++){
 			Info curr = check(i);
 			if (curr != null) result.add(curr);
 		}
@@ -103,8 +102,8 @@ public class GamesInProgress {
 				info.slot = slot;
 				Dungeon.preview(info, bundle);
 				
-				//saves from before v0.9.2b are not supported
-				if (info.version < ShatteredPixelDungeon.v0_9_2b) {
+				//saves from before v0.7.5e are not supported
+				if (info.version < ShatteredPixelDungeon.v0_7_5e) {
 					info = null;
 				}
 
@@ -131,7 +130,6 @@ public class GamesInProgress {
 		
 		info.level = hero.lvl;
 		info.str = hero.STR;
-		info.strBonus = hero.STR() - hero.STR;
 		info.exp = hero.exp;
 		info.hp = hero.HP;
 		info.ht = hero.HT;
@@ -139,6 +137,8 @@ public class GamesInProgress {
 		info.heroClass = hero.heroClass;
 		info.subClass = hero.subClass;
 		info.armorTier = hero.tier();
+		info.nyzshop = hero.nyzshop;
+
 		
 		info.goldCollected = Statistics.goldCollected;
 		info.maxDepth = Statistics.deepestFloor;
@@ -163,7 +163,6 @@ public class GamesInProgress {
 		
 		public int level;
 		public int str;
-		public int strBonus;
 		public int exp;
 		public int hp;
 		public int ht;
@@ -171,6 +170,7 @@ public class GamesInProgress {
 		public HeroClass heroClass;
 		public HeroSubClass subClass;
 		public int armorTier;
+		public int nyzshop;
 		
 		public int goldCollected;
 		public int maxDepth;

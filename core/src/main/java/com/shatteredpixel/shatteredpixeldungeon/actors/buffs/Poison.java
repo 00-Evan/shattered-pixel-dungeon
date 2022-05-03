@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 
 public class Poison extends Buff implements Hero.Doom {
-	
+	public static final float DURATION = 4f;
 	protected float left;
 	
 	private static final String LEFT	= "left";
@@ -50,7 +50,7 @@ public class Poison extends Buff implements Hero.Doom {
 		bundle.put( LEFT, left );
 		
 	}
-	
+
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
@@ -73,10 +73,6 @@ public class Poison extends Buff implements Hero.Doom {
 	@Override
 	public void tintIcon(Image icon) {
 		icon.hardlight(0.6f, 0.2f, 0.6f);
-	}
-
-	public String iconTextDisplay(){
-		return Integer.toString((int) left);
 	}
 	
 	@Override

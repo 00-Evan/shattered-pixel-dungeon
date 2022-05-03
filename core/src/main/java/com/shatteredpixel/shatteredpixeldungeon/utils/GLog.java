@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.utils;
 
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.Signal;
@@ -28,11 +30,41 @@ import com.watabou.utils.Signal;
 public class GLog {
 
 	public static final String TAG = "GAME";
-	
+	public static final String DEBUG   		= "[DEBUG]: ";
 	public static final String POSITIVE		= "++ ";
+	public static final String BLUETEXT		= "$$ ";
+	public static final String PINKTEXT		= "// ";
 	public static final String NEGATIVE		= "-- ";
 	public static final String WARNING		= "** ";
 	public static final String HIGHLIGHT	= "@@ ";
+
+	public static void debug(String text, Object... args ) {
+		StackTraceElement[] trace = Thread.currentThread().getStackTrace();
+		StringBuilder addToLog = new StringBuilder(DEBUG + text);
+		addToLog.append("\n" + "Trace:\n");
+		for (StackTraceElement element : trace) {
+			addToLog.append(element.toString()).append("\n");
+		}
+		ShatteredPixelDungeon.appendLog(addToLog.toString());
+
+		if (SPDSettings.debugReport()) {
+			info(DEBUG + text, args);
+		}
+	}
+
+	public static void info(String text, Object... args ) {
+
+		if (args.length > 0) {
+			text = Messages.format( text, args );
+		}
+
+		DeviceCompat.log( TAG, text );
+		update.dispatch( text );
+	}
+
+	public static void negative(String text, Object... args ) {
+		info( NEGATIVE + text, args );
+	}
 
 	public static final String NEW_LINE	    = "\n";
 	
@@ -55,6 +87,16 @@ public class GLog {
 	public static void p( String text, Object... args ) {
 		i( POSITIVE + text, args );
 	}
+
+	public static void b( String text, Object... args ) {
+		i( BLUETEXT + text, args );
+	}
+	//蓝色文本渲染
+
+	public static void pink( String text, Object... args ) {
+		i( PINKTEXT + text, args );
+	}
+	//粉色文本渲染
 	
 	public static void n( String text, Object... args ) {
 		i( NEGATIVE + text, args );

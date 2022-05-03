@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndSupportPrompt;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Callback;
 
@@ -48,14 +47,13 @@ public class SkeletonKey extends Key {
 	}
 
 	@Override
-	public boolean doPickUp(Hero hero, int pos) {
+	public boolean doPickUp(Hero hero) {
 		if(!SPDSettings.supportNagged()){
 			try {
 				Dungeon.saveAll();
 				Game.runOnRenderThread(new Callback() {
 					@Override
 					public void call() {
-						ShatteredPixelDungeon.scene().add(new WndSupportPrompt());
 					}
 				});
 			} catch (IOException e) {
@@ -64,7 +62,7 @@ public class SkeletonKey extends Key {
 			
 		}
 		
-		return super.doPickUp(hero, pos);
+		return super.doPickUp(hero);
 	}
 
 }

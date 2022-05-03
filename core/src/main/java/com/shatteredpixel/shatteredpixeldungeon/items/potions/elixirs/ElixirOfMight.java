@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -76,7 +76,7 @@ public class ElixirOfMight extends Elixir {
 			inputs =  new Class[]{PotionOfStrength.class, AlchemicalCatalyst.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 6;
+			cost = 5;
 			
 			output = ElixirOfMight.class;
 			outQuantity = 1;
@@ -125,12 +125,7 @@ public class ElixirOfMight extends Elixir {
 		public float iconFadePercent() {
 			return (5f - left) / 5f;
 		}
-
-		@Override
-		public String iconTextDisplay() {
-			return Integer.toString(left);
-		}
-
+		
 		@Override
 		public String toString() {
 			return Messages.get(this, "name");

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.gltextures.SmartTexture;
@@ -39,12 +38,20 @@ public class WndInfoBuff extends Window {
 
 	private static final int WIDTH = 120;
 
+	private SmartTexture icons;
+	private TextureFilm film;
+
 	public WndInfoBuff(Buff buff){
 		super();
 
 		IconTitle titlebar = new IconTitle();
 
-		Image buffIcon = new BuffIcon( buff, true );
+		icons = TextureCache.get( Assets.Interfaces.BUFFS_LARGE );
+		film = new TextureFilm( icons, 16, 16 );
+
+		Image buffIcon = new Image( icons );
+		buffIcon.frame( film.get(buff.icon()) );
+		buff.tintIcon(buffIcon);
 
 		titlebar.icon( buffIcon );
 		titlebar.label( Messages.titleCase(buff.toString()), Window.TITLE_COLOR );

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
@@ -39,7 +40,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projecting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -60,7 +60,7 @@ abstract public class MissileWeapon extends Weapon {
 	
 	protected boolean sticky = true;
 	
-	public static final float MAX_DURABILITY = 100;
+	protected static final float MAX_DURABILITY = 100;
 	protected float durability = MAX_DURABILITY;
 	protected float baseUses = 10;
 	
@@ -120,9 +120,7 @@ abstract public class MissileWeapon extends Weapon {
 				Item similar = Dungeon.hero.belongings.getSimilar(this);
 				if (similar != null){
 					detach(Dungeon.hero.belongings.backpack);
-					Item result = similar.merge(this);
-					updateQuickslot();
-					return result;
+					return similar.merge(this);
 				}
 				updateQuickslot();
 				return this;
@@ -235,14 +233,14 @@ abstract public class MissileWeapon extends Weapon {
 	
 	@Override
 	public float castDelay(Char user, int dst) {
-		return delayFactor( user );
+		return speedFactor( user );
 	}
 	
 	protected void rangedHit( Char enemy, int cell ){
 		decrementDurability();
 		if (durability > 0){
 			//attempt to stick the missile weapon to the enemy, just drop it if we can't.
-			if (sticky && enemy != null && enemy.isAlive() && enemy.alignment != Char.Alignment.ALLY){
+			if (sticky && enemy != null && enemy.isAlive() && enemy.buff(Corruption.class) == null){
 				PinCushion p = Buff.affect(enemy, PinCushion.class);
 				if (p.target == enemy){
 					p.stick(this);
@@ -257,17 +255,8 @@ abstract public class MissileWeapon extends Weapon {
 		parent = null;
 		super.onThrow(cell);
 	}
-
-	public float durabilityLeft(){
-		return durability;
-	}
-
-	public void repair( float amount ){
-		durability += amount;
-		durability = Math.min(durability, MAX_DURABILITY);
-	}
 	
-	public float durabilityPerUse(){
+	protected float durabilityPerUse(){
 		float usages = baseUses * (float)(Math.pow(3, level()));
 
 		//+50%/75% durability
@@ -368,9 +357,9 @@ abstract public class MissileWeapon extends Weapon {
 	}
 	
 	@Override
-	public boolean doPickUp(Hero hero, int pos) {
+	public boolean doPickUp(Hero hero) {
 		parent = null;
-		return super.doPickUp(hero, pos);
+		return super.doPickUp(hero);
 	}
 	
 	@Override
@@ -444,23 +433,6 @@ abstract public class MissileWeapon extends Weapon {
 		bundleRestoring = true;
 		super.restoreFromBundle(bundle);
 		bundleRestoring = false;
-		durability = bundle.getFloat(DURABILITY);
-	}
-
-	public static class PlaceHolder extends MissileWeapon {
-
-		{
-			image = ItemSpriteSheet.MISSILE_HOLDER;
-		}
-
-		@Override
-		public boolean isSimilar(Item item) {
-			return item instanceof MissileWeapon;
-		}
-
-		@Override
-		public String info() {
-			return "";
-		}
+		durability = bundle.getInt(DURABILITY);
 	}
 }

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,10 +22,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
@@ -37,7 +38,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corrosion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
@@ -45,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
@@ -64,6 +65,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -77,11 +79,11 @@ public class WandOfCorruption extends Wand {
 	{
 		image = ItemSpriteSheet.WAND_CORRUPTION;
 	}
-	
+
 	//Note that some debuffs here have a 0% chance to be applied.
 	// This is because the wand of corruption considers them to be a certain level of harmful
 	// for the purposes of reducing resistance, but does not actually apply them itself
-	
+
 	private static final float MINOR_DEBUFF_WEAKEN = 1/4f;
 	private static final HashMap<Class<? extends Buff>, Float> MINOR_DEBUFFS = new HashMap<>();
 	static{
@@ -90,7 +92,7 @@ public class WandOfCorruption extends Wand {
 		MINOR_DEBUFFS.put(Cripple.class,        1f);
 		MINOR_DEBUFFS.put(Blindness.class,      1f);
 		MINOR_DEBUFFS.put(Terror.class,         1f);
-		
+
 		MINOR_DEBUFFS.put(Chill.class,          0f);
 		MINOR_DEBUFFS.put(Ooze.class,           0f);
 		MINOR_DEBUFFS.put(Roots.class,          0f);
@@ -100,7 +102,7 @@ public class WandOfCorruption extends Wand {
 		MINOR_DEBUFFS.put(Burning.class,        0f);
 		MINOR_DEBUFFS.put(Poison.class,         0f);
 	}
-	
+
 	private static final float MAJOR_DEBUFF_WEAKEN = 1/2f;
 	private static final HashMap<Class<? extends Buff>, Float> MAJOR_DEBUFFS = new HashMap<>();
 	static{
@@ -109,7 +111,6 @@ public class WandOfCorruption extends Wand {
 		MAJOR_DEBUFFS.put(Hex.class,            2f);
 		MAJOR_DEBUFFS.put(Paralysis.class,      1f);
 
-		MAJOR_DEBUFFS.put(Dread.class,          0f);
 		MAJOR_DEBUFFS.put(Charm.class,          0f);
 		MAJOR_DEBUFFS.put(MagicalSleep.class,   0f);
 		MAJOR_DEBUFFS.put(SoulMark.class,       0f);
@@ -117,13 +118,13 @@ public class WandOfCorruption extends Wand {
 		MAJOR_DEBUFFS.put(Frost.class,          0f);
 		MAJOR_DEBUFFS.put(Doom.class,           0f);
 	}
-	
+
 	@Override
 	public void onZap(Ballistica bolt) {
 		Char ch = Actor.findChar(bolt.collisionPos);
 
 		if (ch != null){
-			
+
 			if (!(ch instanceof Mob)){
 				return;
 			}
@@ -131,7 +132,7 @@ public class WandOfCorruption extends Wand {
 			Mob enemy = (Mob) ch;
 
 			float corruptingPower = 3 + buffedLvl()/2f;
-			
+
 			//base enemy resistance is usually based on their exp, but in special cases it is based on other criteria
 			float enemyResist = 1 + enemy.EXP;
 			if (ch instanceof Mimic || ch instanceof Statue){
@@ -145,22 +146,22 @@ public class WandOfCorruption extends Wand {
 				//child swarms don't give exp, so we force this here.
 				enemyResist = 1 + 3;
 			}
-			
+
 			//100% health: 5x resist   75%: 3.25x resist   50%: 2x resist   25%: 1.25x resist
 			enemyResist *= 1 + 4*Math.pow(enemy.HP/(float)enemy.HT, 2);
-			
+
 			//debuffs placed on the enemy reduce their resistance
 			for (Buff buff : enemy.buffs()){
 				if (MAJOR_DEBUFFS.containsKey(buff.getClass()))         enemyResist *= (1f-MAJOR_DEBUFF_WEAKEN);
 				else if (MINOR_DEBUFFS.containsKey(buff.getClass()))    enemyResist *= (1f-MINOR_DEBUFF_WEAKEN);
 				else if (buff.type == Buff.buffType.NEGATIVE)           enemyResist *= (1f-MINOR_DEBUFF_WEAKEN);
 			}
-			
+
 			//cannot re-corrupt or doom an enemy, so give them a major debuff instead
 			if(enemy.buff(Corruption.class) != null || enemy.buff(Doom.class) != null){
 				corruptingPower = enemyResist - 0.001f;
 			}
-			
+
 			if (corruptingPower > enemyResist){
 				corruptEnemy( enemy );
 			} else {
@@ -172,16 +173,16 @@ public class WandOfCorruption extends Wand {
 				}
 			}
 
-			wandProc(ch, chargesPerCast());
+			processSoulMark(ch, chargesPerCast());
 			Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, 0.8f * Random.Float(0.87f, 1.15f) );
-			
+
 		} else {
 			Dungeon.level.pressCell(bolt.collisionPos);
 		}
 	}
-	
+
 	private void debuffEnemy( Mob enemy, HashMap<Class<? extends Buff>, Float> category ){
-		
+
 		//do not consider buffs which are already assigned, or that the enemy is immune to.
 		HashMap<Class<? extends Buff>, Float> debuffs = new HashMap<>(category);
 		for (Buff existing : enemy.buffs()){
@@ -190,14 +191,14 @@ public class WandOfCorruption extends Wand {
 			}
 		}
 		for (Class<?extends Buff> toAssign : debuffs.keySet()){
-			 if (debuffs.get(toAssign) > 0 && enemy.isImmune(toAssign)){
-			 	debuffs.put(toAssign, 0f);
-			 }
+			if (debuffs.get(toAssign) > 0 && enemy.isImmune(toAssign)){
+				debuffs.put(toAssign, 0f);
+			}
 		}
-		
+
 		//all buffs with a > 0 chance are flavor buffs
 		Class<?extends FlavourBuff> debuffCls = (Class<? extends FlavourBuff>) Random.chances(debuffs);
-		
+
 		if (debuffCls != null){
 			Buff.append(enemy, debuffCls, 6 + buffedLvl()*3);
 		} else {
@@ -206,18 +207,40 @@ public class WandOfCorruption extends Wand {
 			else if (category == MAJOR_DEBUFFS)     corruptEnemy( enemy );
 		}
 	}
-	
+
 	private void corruptEnemy( Mob enemy ){
 		//cannot re-corrupt or doom an enemy, so give them a major debuff instead
 		if(enemy.buff(Corruption.class) != null || enemy.buff(Doom.class) != null){
 			GLog.w( Messages.get(this, "already_corrupted") );
 			return;
 		}
-		
-		if (!enemy.isImmune(Corruption.class)){
-			Corruption.corruptionHeal(enemy);
 
-			AllyBuff.affectAndLoot(enemy, curUser, Corruption.class);
+		if (!enemy.isImmune(Corruption.class)){
+			enemy.HP = enemy.HT;
+			for (Buff buff : enemy.buffs()) {
+				if (buff.type == Buff.buffType.NEGATIVE
+						&& !(buff instanceof SoulMark)) {
+					buff.detach();
+				} else if (buff instanceof PinCushion){
+					buff.detach();
+				}
+			}
+
+			boolean droppingLoot = enemy.alignment != Char.Alignment.ALLY;
+			Buff.affect(enemy, Corruption.class);
+
+			if (enemy.buff(Corruption.class) != null){
+				if (droppingLoot) enemy.rollToDropLoot();
+				Statistics.enemiesSlain++;
+				Badges.validateMonstersSlain();
+				Statistics.qualifiedForNoKilling = false;
+				if (enemy.EXP > 0 && curUser.lvl <= enemy.maxLvl) {
+					curUser.sprite.showStatus(CharSprite.POSITIVE, Messages.get(enemy, "exp", enemy.EXP));
+					curUser.earnExp(enemy.EXP, enemy.getClass());
+				} else {
+					curUser.earnExp(0, enemy.getClass());
+				}
+			}
 		} else {
 			Buff.affect(enemy, Doom.class);
 		}

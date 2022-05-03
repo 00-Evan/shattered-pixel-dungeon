@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
@@ -39,9 +40,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutat
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ElementalSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -59,35 +62,15 @@ public abstract class Elemental extends Mob {
 		
 		flying = true;
 	}
-
-	private boolean summonedALly;
 	
 	@Override
 	public int damageRoll() {
-		if (!summonedALly) {
-			return Random.NormalIntRange(20, 25);
-		} else {
-			int regionScale = Math.max(2, (1 + Dungeon.depth/5));
-			return Random.NormalIntRange(5*regionScale, 5 + 5*regionScale);
-		}
+		return Random.NormalIntRange( 20, 25 );
 	}
 	
 	@Override
 	public int attackSkill( Char target ) {
-		if (!summonedALly) {
-			return 25;
-		} else {
-			int regionScale = Math.max(2, (1 + Dungeon.depth/5));
-			return 5 + 5*regionScale;
-		}
-	}
-
-	public void setSummonedALly(){
-		summonedALly = true;
-		//sewers are prison are equivalent, otherwise scales as normal (2/2/3/4/5)
-		int regionScale = Math.max(2, (1 + Dungeon.depth/5));
-		defenseSkill = 5*regionScale;
-		HT = 15*regionScale;
+		return 25;
 	}
 	
 	@Override
@@ -95,7 +78,7 @@ public abstract class Elemental extends Mob {
 		return Random.NormalIntRange(0, 5);
 	}
 	
-	protected int rangedCooldown = Random.NormalIntRange( 3, 5 );
+	private int rangedCooldown = Random.NormalIntRange( 3, 5 );
 	
 	@Override
 	protected boolean act() {
@@ -175,13 +158,11 @@ public abstract class Elemental extends Mob {
 	protected ArrayList<Class<? extends Buff>> harmfulBuffs = new ArrayList<>();
 	
 	private static final String COOLDOWN = "cooldown";
-	private static final String SUMMONED_ALLY = "summoned_ally";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( COOLDOWN, rangedCooldown );
-		bundle.put( SUMMONED_ALLY, summonedALly);
 	}
 	
 	@Override
@@ -189,10 +170,6 @@ public abstract class Elemental extends Mob {
 		super.restoreFromBundle( bundle );
 		if (bundle.contains( COOLDOWN )){
 			rangedCooldown = bundle.getInt( COOLDOWN );
-		}
-		summonedALly = bundle.getBoolean( SUMMONED_ALLY );
-		if (summonedALly){
-			setSummonedALly();
 		}
 	}
 	
@@ -233,47 +210,88 @@ public abstract class Elemental extends Mob {
 		{
 			spriteClass = ElementalSprite.NewbornFire.class;
 			
-			HT = 60;
-			HP = HT/2; //30
+			HT = 120;
+			HP = HT; //^0
 			
 			defenseSkill = 12;
 			
 			EXP = 7;
 			
 			properties.add(Property.MINIBOSS);
-
-			//newborn elementals do not have ranged attacks
-			rangedCooldown = Integer.MAX_VALUE;
 		}
 
 		@Override
 		public void die(Object cause) {
 			super.die(cause);
-			if (alignment == Alignment.ENEMY) Dungeon.level.drop( new Embers(), pos ).sprite.drop();
+			for (Mob mob : (Iterable<Mob>)Dungeon.level.mobs.clone()) {
+				if (mob instanceof NewbornFireElementals) {
+					mob.die( cause );
+				}
+			}
+			Badges.KILL_COLDELE();
+			Dungeon.level.drop( new Embers(), pos ).sprite.drop();
 		}
 
 		@Override
 		public boolean reset() {
 			return true;
 		}
-		
+
 	}
 
-	//not a miniboss, fully HP, otherwise a newborn elemental
-	public static class AllyNewBornElemental extends NewbornFireElemental {
+
+	public static class NewbornFireElementals extends FrostElemental {
 
 		{
+			spriteClass = ElementalSprite.Frost.class;
+			HT = 12;
 			HP = HT;
-			properties.remove(Property.MINIBOSS);
+
+			defenseSkill = 32;
+
+			EXP = 7;
+
+			properties.add(Property.MINIBOSS);
+		}
+
+		@Override
+		public void die(Object cause) {
+
+			super.die(cause);
+		}
+
+		@Override
+		public int damageRoll() {
+			return Random.NormalIntRange( 1, 5 );
+		}
+
+		@Override
+		public int attackSkill( Char target ) {
+			return 0;
+		}
+		@Override
+		public int drRoll() {
+			return Random.NormalIntRange(0, 1);
+		}
+		private static int dodges = 0;
+		@Override
+		public String defenseVerb() {
+			dodges++;
+			if (dodges >= 3 ){
+				GLog.h(Messages.get(this, "hint"));
+				dodges = 0;
+			}
+			return super.defenseVerb();
 		}
 
 		@Override
 		public boolean reset() {
-			return false;
+			return true;
 		}
 
+
 	}
-	
+
 	public static class FrostElemental extends Elemental {
 		
 		{

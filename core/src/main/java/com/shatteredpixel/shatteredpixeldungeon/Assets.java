@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,37 +22,59 @@
 package com.shatteredpixel.shatteredpixeldungeon;
 
 public class Assets {
+	public static final String BGM_1 = "music/Level1.ogg";
+	public static final String BGM_2 = "music/Level2.ogg";
+	public static final String BGM_3 = "music/Level3.ogg";
+	public static final String BGM_4 = "music/Level4.ogg";
+	public static final String BGM_5 = "music/Level5.ogg";
+	public static final String BGM_0 = "music/Level0.ogg";
+	public static final String DEATHA	= "sounds/death.mp3";
+	public static final String TOWN = "music/town.ogg";
+	public static final String BGM_BOSSA = "music/Boss1.ogg";
+	public static final String BGM_BOSSB = "music/Boss2.ogg";
+	public static final String BGM_BOSSC = "music/Boss3.ogg";
+	public static final String BGM_BOSSC3 = "music/Ice.ogg";
+	public static final String BGM_BOSSD = "music/Boss4.ogg";
+	public static final String BGM_BOSSE = "music/Boss5.ogg";
+	public static final String BGM_BOSSE3 = "music/Yogdead.ogg";
+	public static final String RUN = "music/Run.ogg";
+	public static final String NYZSHOP = "music/nyzshop2.ogg";
 
 	public static class Effects {
-		public static final String EFFECTS      = "effects/effects.png";
-		public static final String FIREBALL     = "effects/fireball.png";
-		public static final String SPECKS       = "effects/specks.png";
-		public static final String SPELL_ICONS  = "effects/spell_icons.png";
+		public static final String EFFECTS		= "effects/effects.png";
+		public static final String FIREBALL		= "effects/fireball.png";
+		public static final String SPECKS		= "effects/specks.png";
+		public static final String SPELL_ICONS	= "effects/spell_icons.png";
 	}
 
 	public static class Environment {
-		public static final String TERRAIN_FEATURES = "environment/terrain_features.png";
+		public static final String TILES_COLD	= "environment/Reload.png";
+		public static final String TERRAIN_FEATURES	= "environment/terrain_features.png";
 
-		public static final String VISUAL_GRID  = "environment/visual_grid.png";
+		public static final String VISUAL_GRID	= "environment/visual_grid.png";
 		public static final String WALL_BLOCKING= "environment/wall_blocking.png";
 
-		public static final String TILES_SEWERS = "environment/tiles_sewers.png";
-		public static final String TILES_PRISON = "environment/tiles_prison.png";
-		public static final String TILES_CAVES  = "environment/tiles_caves.png";
-		public static final String TILES_CITY   = "environment/tiles_city.png";
-		public static final String TILES_HALLS  = "environment/tiles_halls.png";
+		public static final String TILES_SEWERS	= "environment/tiles_sewers.png";
+		public static final String TILES_PRISON	= "environment/tiles_prison.png";
+		public static final String TILES_CAVES	= "environment/Reload.png";
+		public static final String TILES_CITY	= "environment/tiles_city.png";
+		public static final String TILES_HALLS	= "environment/tiles_halls.png";
+		public static final String TILES_DIED	= "environment/tiles_died.png";
 
-		public static final String WATER_SEWERS = "environment/water0.png";
-		public static final String WATER_PRISON = "environment/water1.png";
-		public static final String WATER_CAVES  = "environment/water2.png";
-		public static final String WATER_CITY   = "environment/water3.png";
-		public static final String WATER_HALLS  = "environment/water4.png";
+		public static final String WATER_COLD= "environment/water-1.png";
+		public static final String WATER_SEWERS	= "environment/water0.png";
+		public static final String WATER_PRISON	= "environment/water1.png";
+		public static final String WATER_CAVES	= "environment/water-1.png";
+		public static final String WATER_CITY	= "environment/water3.png";
+		public static final String WATER_HALLS	= "environment/water4.png";
 
 		public static final String WEAK_FLOOR       = "environment/custom_tiles/weak_floor.png";
 		public static final String SEWER_BOSS       = "environment/custom_tiles/sewer_boss.png";
 		public static final String PRISON_QUEST     = "environment/custom_tiles/prison_quests.png";
-		public static final String PRISON_EXIT      = "environment/custom_tiles/prison_exit.png";
+		public static final String PRISON_EXIT_OLD  = "environment/custom_tiles/prison_exit_old.png";
+		public static final String PRISON_EXIT_NEW  = "environment/custom_tiles/prison_exit_new.png";
 		public static final String CAVES_BOSS       = "environment/custom_tiles/caves_boss.png";
+		public static final String P_BOSS       = "environment/custom_tiles/p_boss.png";
 		public static final String CITY_BOSS        = "environment/custom_tiles/city_boss.png";
 		public static final String HALLS_SP         = "environment/custom_tiles/halls_special.png";
 	}
@@ -66,34 +88,39 @@ public class Assets {
 		public static final String ARCS_BG  = "interfaces/arcs1.png";
 		public static final String ARCS_FG  = "interfaces/arcs2.png";
 
-		public static final String BANNERS  = "interfaces/banners.png";
-		public static final String BADGES   = "interfaces/badges.png";
-		public static final String LOCKED   = "interfaces/locked_badge.png";
+		public static final String BANNERS	= "interfaces/banners.png";
+		public static final String BADGES	= "interfaces/badges.png";
+		public static final String LOCKED	= "interfaces/locked_badge.png";
 
-		public static final String CHROME   = "interfaces/chrome.png";
-		public static final String ICONS    = "interfaces/icons.png";
-		public static final String STATUS   = "interfaces/status_pane.png";
-		public static final String MENU     = "interfaces/menu_pane.png";
-		public static final String MENU_BTN = "interfaces/menu_button.png";
-		public static final String TOOLBAR  = "interfaces/toolbar.png";
+		public static final String CHROME	= "interfaces/chrome.png";
+		public static final String CHROME_DARK	= "interfaces/chrome_normal.png";
+		public static final String ICONS	= "interfaces/icons.png";
+		public static final String STATUS	= "interfaces/status_pane.png";
+		public static final String STATUS_DARK	= "interfaces/status_pane_normal.png";
+		public static final String MENU		= "interfaces/menu_button.png";
+		public static final String HP_BAR	= "interfaces/hp_bar.png";
+		public static final String HG_BAR	= "interfaces/hunger_bar.png";
+		public static final String SHLD_BAR = "interfaces/shield_bar.png";
+		public static final String XP_BAR	= "interfaces/exp_bar.png";
+		public static final String TOOLBAR	= "interfaces/toolbar.png";
+		public static final String TOOLBARDRAK	= "interfaces/toolbar_normal.png";
 		public static final String SHADOW   = "interfaces/shadow.png";
 		public static final String BOSSHP   = "interfaces/boss_hp.png";
 
-		public static final String SURFACE  = "interfaces/surface.png";
+		public static final String SURFACE	= "interfaces/surface.png";
 
-		public static final String LOADING_SEWERS   = "interfaces/loading_sewers.png";
-		public static final String LOADING_PRISON   = "interfaces/loading_prison.png";
-		public static final String LOADING_CAVES    = "interfaces/loading_caves.png";
-		public static final String LOADING_CITY     = "interfaces/loading_city.png";
-		public static final String LOADING_HALLS    = "interfaces/loading_halls.png";
+		public static final String LOADING_COLD	= "interfaces/loading_cold.png";
+		public static final String LOADING_PRISON	= "interfaces/loading_prison.png";
+		public static final String LOADING_CAVES	= "interfaces/loading_caves.png";
+		public static final String LOADING_CITY	    = "interfaces/loading_city.png";
+		public static final String LOADING_HALLS	= "interfaces/loading_halls.png";
 
-		public static final String BUFFS_SMALL  = "interfaces/buffs.png";
-		public static final String BUFFS_LARGE  = "interfaces/large_buffs.png";
+		public static final String BUFFS_SMALL	= "interfaces/buffs.png";
+		public static final String BUFFS_LARGE	= "interfaces/large_buffs.png";
 
-		public static final String TALENT_ICONS  = "interfaces/talent_icons.png";
+		public static final String TALENT_ICONS	 = "interfaces/talent_icons.png";
 		public static final String TALENT_BUTTON = "interfaces/talent_button.png";
-
-		public static final String HERO_ICONS   = "interfaces/hero_icons.png";
+		public static final String TALENT_BUTTON_DARK = "interfaces/talent_button_dark.png";
 	}
 
 	//these points to resource bundles, not raw asset files
@@ -110,47 +137,32 @@ public class Assets {
 	}
 
 	public static class Music {
-		public static final String THEME_1      = "music/theme_1.ogg";
-		public static final String THEME_2      = "music/theme_2.ogg";
-
-		public static final String SEWERS_1     = "music/sewers_1.ogg";
-		public static final String SEWERS_2     = "music/sewers_2.ogg";
-		public static final String SEWERS_BOSS  = "music/sewers_boss.ogg";
-
-		public static final String PRISON_1     = "music/prison_1.ogg";
-		public static final String PRISON_2     = "music/prison_2.ogg";
-		public static final String PRISON_BOSS  = "music/prison_boss.ogg";
-
-		public static final String CAVES_1      = "music/caves_1.ogg";
-		public static final String CAVES_2      = "music/caves_2.ogg";
-		public static final String CAVES_BOSS   = "music/caves_boss.ogg";
-
-		public static final String CITY_1       = "music/city_1.ogg";
-		public static final String CITY_2       = "music/city_2.ogg";
-		public static final String CITY_BOSS    = "music/city_boss.ogg";
-
-		public static final String HALLS_1      = "music/halls_1.ogg";
-		public static final String HALLS_2      = "music/halls_2.ogg";
-		public static final String HALLS_BOSS   = "music/halls_boss.ogg";
+		public static final String GAME		= "music/game.ogg";
+		public static final String SURFACE	= "music/surface.ogg";
+		public static final String THEME	= "music/theme.ogg";
+		public static final String NBPL	= "music/nbpl.ogg";
+		public static final String SHOP	= "music/shop.ogg";
+		public static final String RENSHOP	= "music/RENSHOP.ogg";
+		public static final String Dragon	= "music/dragon.ogg";
 	}
 
 	public static class Sounds {
-		public static final String CLICK    = "sounds/click.mp3";
-		public static final String BADGE    = "sounds/badge.mp3";
-		public static final String GOLD     = "sounds/gold.mp3";
+		public static final String CLICK	= "sounds/click.mp3";
+		public static final String BADGE	= "sounds/badge.mp3";
+		public static final String GOLD		= "sounds/gold.mp3";
 
-		public static final String OPEN     = "sounds/door_open.mp3";
-		public static final String UNLOCK   = "sounds/unlock.mp3";
-		public static final String ITEM     = "sounds/item.mp3";
-		public static final String DEWDROP  = "sounds/dewdrop.mp3";
-		public static final String STEP     = "sounds/step.mp3";
-		public static final String WATER    = "sounds/water.mp3";
-		public static final String GRASS    = "sounds/grass.mp3";
-		public static final String TRAMPLE  = "sounds/trample.mp3";
-		public static final String STURDY   = "sounds/sturdy.mp3";
+		public static final String OPEN		= "sounds/door_open.mp3";
+		public static final String UNLOCK	= "sounds/unlock.mp3";
+		public static final String ITEM		= "sounds/item.mp3";
+		public static final String DEWDROP	= "sounds/dewdrop.mp3";
+		public static final String STEP		= "sounds/step.mp3";
+		public static final String WATER	= "sounds/water.mp3";
+		public static final String GRASS	= "sounds/grass.mp3";
+		public static final String TRAMPLE	= "sounds/trample.mp3";
+		public static final String STURDY	= "sounds/sturdy.mp3";
 
-		public static final String HIT              = "sounds/hit.mp3";
-		public static final String MISS             = "sounds/miss.mp3";
+		public static final String HIT		        = "sounds/hit.mp3";
+		public static final String MISS		        = "sounds/miss.mp3";
 		public static final String HIT_SLASH        = "sounds/hit_slash.mp3";
 		public static final String HIT_STAB         = "sounds/hit_stab.mp3";
 		public static final String HIT_CRUSH        = "sounds/hit_crush.mp3";
@@ -163,38 +175,38 @@ public class Assets {
 		public static final String HEALTH_WARN      = "sounds/health_warn.mp3";
 		public static final String HEALTH_CRITICAL  = "sounds/health_critical.mp3";
 
-		public static final String DESCEND  = "sounds/descend.mp3";
-		public static final String EAT      = "sounds/eat.mp3";
-		public static final String READ     = "sounds/read.mp3";
-		public static final String LULLABY  = "sounds/lullaby.mp3";
-		public static final String DRINK    = "sounds/drink.mp3";
-		public static final String SHATTER  = "sounds/shatter.mp3";
-		public static final String ZAP      = "sounds/zap.mp3";
+		public static final String DESCEND	= "sounds/descend.mp3";
+		public static final String EAT		= "sounds/eat.mp3";
+		public static final String READ		= "sounds/read.mp3";
+		public static final String LULLABY	= "sounds/lullaby.mp3";
+		public static final String DRINK	= "sounds/drink.mp3";
+		public static final String SHATTER	= "sounds/shatter.mp3";
+		public static final String ZAP		= "sounds/zap.mp3";
 		public static final String LIGHTNING= "sounds/lightning.mp3";
-		public static final String LEVELUP  = "sounds/levelup.mp3";
-		public static final String DEATH    = "sounds/death.mp3";
+		public static final String LEVELUP	= "sounds/levelup.mp3";
+		public static final String DEATH	= "sounds/death.mp3";
 		public static final String CHALLENGE= "sounds/challenge.mp3";
-		public static final String CURSED   = "sounds/cursed.mp3";
-		public static final String TRAP     = "sounds/trap.mp3";
-		public static final String EVOKE    = "sounds/evoke.mp3";
-		public static final String TOMB     = "sounds/tomb.mp3";
-		public static final String ALERT    = "sounds/alert.mp3";
-		public static final String MELD     = "sounds/meld.mp3";
-		public static final String BOSS     = "sounds/boss.mp3";
-		public static final String BLAST    = "sounds/blast.mp3";
-		public static final String PLANT    = "sounds/plant.mp3";
-		public static final String RAY      = "sounds/ray.mp3";
-		public static final String BEACON   = "sounds/beacon.mp3";
-		public static final String TELEPORT = "sounds/teleport.mp3";
-		public static final String CHARMS   = "sounds/charms.mp3";
-		public static final String MASTERY  = "sounds/mastery.mp3";
-		public static final String PUFF     = "sounds/puff.mp3";
-		public static final String ROCKS    = "sounds/rocks.mp3";
-		public static final String BURNING  = "sounds/burning.mp3";
-		public static final String FALLING  = "sounds/falling.mp3";
-		public static final String GHOST    = "sounds/ghost.mp3";
-		public static final String SECRET   = "sounds/secret.mp3";
-		public static final String BONES    = "sounds/bones.mp3";
+		public static final String CURSED	= "sounds/cursed.mp3";
+		public static final String TRAP		= "sounds/trap.mp3";
+		public static final String EVOKE	= "sounds/evoke.mp3";
+		public static final String TOMB		= "sounds/tomb.mp3";
+		public static final String ALERT	= "sounds/alert.mp3";
+		public static final String MELD		= "sounds/meld.mp3";
+		public static final String BOSS		= "sounds/boss.mp3";
+		public static final String BLAST	= "sounds/blast.mp3";
+		public static final String PLANT	= "sounds/plant.mp3";
+		public static final String RAY		= "sounds/ray.mp3";
+		public static final String BEACON	= "sounds/beacon.mp3";
+		public static final String TELEPORT	= "sounds/teleport.mp3";
+		public static final String CHARMS	= "sounds/charms.mp3";
+		public static final String MASTERY	= "sounds/mastery.mp3";
+		public static final String PUFF		= "sounds/puff.mp3";
+		public static final String ROCKS	= "sounds/rocks.mp3";
+		public static final String BURNING	= "sounds/burning.mp3";
+		public static final String FALLING	= "sounds/falling.mp3";
+		public static final String GHOST	= "sounds/ghost.mp3";
+		public static final String SECRET	= "sounds/secret.mp3";
+		public static final String BONES	= "sounds/bones.mp3";
 		public static final String BEE      = "sounds/bee.mp3";
 		public static final String DEGRADE  = "sounds/degrade.mp3";
 		public static final String MIMIC    = "sounds/mimic.mp3";
@@ -221,78 +233,100 @@ public class Assets {
 	}
 
 	public static class Splashes {
-		public static final String WARRIOR  = "splashes/warrior.jpg";
-		public static final String MAGE     = "splashes/mage.jpg";
-		public static final String ROGUE    = "splashes/rogue.jpg";
-		public static final String HUNTRESS = "splashes/huntress.jpg";
+		public static final String WARRIOR	= "splashes/warrior.jpg";
+		public static final String MAGE		= "splashes/mage.jpg";
+		public static final String ROGUE	= "splashes/rogue.jpg";
+		public static final String HUNTRESS	= "splashes/huntress.jpg";
 	}
 
 	public static class Sprites {
-		public static final String ITEMS        = "sprites/items.png";
+		public static final String ITEMS	    = "sprites/items.png";
 		public static final String ITEM_ICONS   = "sprites/item_icons.png";
 
-		public static final String WARRIOR  = "sprites/warrior.png";
-		public static final String MAGE     = "sprites/mage.png";
-		public static final String ROGUE    = "sprites/rogue.png";
-		public static final String HUNTRESS = "sprites/huntress.png";
-		public static final String AVATARS  = "sprites/avatars.png";
-		public static final String PET      = "sprites/pet.png";
-		public static final String AMULET   = "sprites/amulet.png";
+		public static final String MGAS	= "sprites/icemagicgirl.png";
 
-		public static final String RAT      = "sprites/rat.png";
-		public static final String BRUTE    = "sprites/brute.png";
-		public static final String SPINNER  = "sprites/spinner.png";
-		public static final String DM300    = "sprites/dm300.png";
-		public static final String WRAITH   = "sprites/wraith.png";
-		public static final String UNDEAD   = "sprites/undead.png";
-		public static final String KING     = "sprites/king.png";
-		public static final String PIRANHA  = "sprites/piranha.png";
-		public static final String EYE      = "sprites/eye.png";
-		public static final String GNOLL    = "sprites/gnoll.png";
-		public static final String CRAB     = "sprites/crab.png";
-		public static final String GOO      = "sprites/goo.png";
-		public static final String SWARM    = "sprites/swarm.png";
-		public static final String SKELETON = "sprites/skeleton.png";
-		public static final String SHAMAN   = "sprites/shaman.png";
-		public static final String THIEF    = "sprites/thief.png";
-		public static final String TENGU    = "sprites/tengu.png";
-		public static final String SHEEP    = "sprites/sheep.png";
-		public static final String KEEPER   = "sprites/shopkeeper.png";
-		public static final String BAT      = "sprites/bat.png";
+		public static final String FRAS	= "sprites/FireMagicGirl.png";
+
+		public static final String WARRIOR	= "sprites/warrior.png";
+		public static final String MAGE		= "sprites/mage.png";
+		public static final String ROGUE	= "sprites/rogue.png";
+		public static final String HUNTRESS	= "sprites/huntress.png";
+		public static final String UNKOWN	= "sprites/unkown.png";
+		public static final String AVATARS	= "sprites/avatars.png";
+		public static final String PET		= "sprites/pet.png";
+		public static final String AMULET	= "sprites/amulet.png";
+		public static final String JAMULET	= "sprites/jamulet.png";
+		public static final String COLDRAT	= "sprites/coldrat.png";
+		public static final String REDSWARM	= "sprites/RedSearm.png";
+		public static final String REN		= "Ren/ren.png";
+		public static final String WHITE		= "Npcs/White.png";
+
+		public static final String RAT		= "sprites/rat.png";
+		public static final String BRUTE	= "sprites/brute.png";
+		public static final String SPINNER	= "sprites/spinner.png";
+		public static final String ASDW	= "sprites/Viaw.png";
+		public static final String ASDWX	= "sprites/FireBallMob.png";
+		public static final String DM300	= "sprites/dm300.png";
+		public static final String DM720	= "sprites/dm720.png";
+		public static final String WRAITH	= "sprites/wraith.png";
+		public static final String UNDEAD	= "sprites/undead.png";
+		public static final String KING		= "sprites/king.png";
+		public static final String PIRANHA	= "sprites/piranha.png";
+		public static final String EYE		= "sprites/eye.png";
+		public static final String GNOLL	= "sprites/gnoll.png";
+		public static final String CRAB		= "sprites/crab.png";
+		public static final String GOO		= "sprites/goo.png";
+		public static final String SWARM	= "sprites/swarm.png";
+		public static final String SKELETON	= "sprites/skeleton.png";
+		public static final String SHAMAN	= "sprites/shaman.png";
+		public static final String THIEF	= "sprites/thief.png";
+		public static final String MUDTHIEF	= "sprites/thief2.png";
+		public static final String TENGU	= "sprites/tengu.png";
+		public static final String SHEEP	= "sprites/sheep.png";
+		public static final String KEEPER	= "sprites/shopkeeper.png";
+		public static final String BAT		= "sprites/bat.png";
+		public static final String BATEX		= "sprites/BrownBat.png";
 		public static final String ELEMENTAL= "sprites/elemental.png";
-		public static final String MONK     = "sprites/monk.png";
-		public static final String WARLOCK  = "sprites/warlock.png";
-		public static final String GOLEM    = "sprites/golem.png";
-		public static final String STATUE   = "sprites/statue.png";
-		public static final String SUCCUBUS = "sprites/succubus.png";
-		public static final String SCORPIO  = "sprites/scorpio.png";
-		public static final String FISTS    = "sprites/yog_fists.png";
-		public static final String YOG      = "sprites/yog.png";
-		public static final String LARVA    = "sprites/larva.png";
-		public static final String GHOST    = "sprites/ghost.png";
-		public static final String MAKER    = "sprites/wandmaker.png";
-		public static final String TROLL    = "sprites/blacksmith.png";
-		public static final String IMP      = "sprites/demon.png";
-		public static final String RATKING  = "sprites/ratking.png";
+		public static final String REDDRAGONPET = "sprites/petreddragon.png";
+		public static final String MONK		= "sprites/monk.png";
+		public static final String WARLOCK	= "sprites/warlock.png";
+		public static final String GOLEM	= "sprites/golem.png";
+		public static final String ICEGOLEM	= "sprites/icegolem.png";
+		public static final String STATUE	= "sprites/statue.png";
+		public static final String SUCCUBUS	= "sprites/succubus.png";
+		public static final String IFE_SCORPIO	= "sprites/ife_scriopi.png";
+		public static final String SCORPIO	= "sprites/scorpio.png";
+		public static final String FISTS	= "sprites/yog_fists.png";
+		public static final String YOG		= "sprites/yog.png";
+		public static final String LARVA	= "sprites/larva.png";
+		public static final String GHOST	= "sprites/ghost.png";
+		public static final String MAKER	= "sprites/wandmaker.png";
+		public static final String NYZD	= "Npcs/nyz.png";
+		public static final String TROLL	= "sprites/blacksmith.png";
+		public static final String IMP		= "sprites/demon.png";
+		public static final String RATKING	= "sprites/ratking.png";
 		public static final String BEE      = "sprites/bee.png";
 		public static final String MIMIC    = "sprites/mimic.png";
 		public static final String ROT_LASH = "sprites/rot_lasher.png";
 		public static final String ROT_HEART= "sprites/rot_heart.png";
 		public static final String GUARD    = "sprites/guard.png";
 		public static final String WARDS    = "sprites/wards.png";
-		public static final String GUARDIAN = "sprites/guardian.png";
-		public static final String SLIME    = "sprites/slime.png";
-		public static final String SNAKE    = "sprites/snake.png";
-		public static final String NECRO    = "sprites/necromancer.png";
-		public static final String GHOUL    = "sprites/ghoul.png";
-		public static final String RIPPER   = "sprites/ripper.png";
-		public static final String SPAWNER  = "sprites/spawner.png";
-		public static final String DM100    = "sprites/dm100.png";
-		public static final String PYLON    = "sprites/pylon.png";
-		public static final String DM200    = "sprites/dm200.png";
-		public static final String LOTUS    = "sprites/lotus.png";
-		public static final String NINJA_LOG= "sprites/ninja_log.png";
-		public static final String SPIRIT_HAWK= "sprites/spirit_hawk.png";
-		public static final String RED_SENTRY= "sprites/red_sentry.png";
-	}
+		public static final String GUARDIAN	= "sprites/guardian.png";
+		public static final String SLIME	= "sprites/slime.png";
+		public static final String SNAKE	= "sprites/snake.png";
+		public static final String NECRO	= "sprites/necromancer.png";
+		public static final String NECRORED	= "sprites/rednecromancer.png";
+		public static final String GHOUL	= "sprites/ghoul.png";
+		public static final String RIPPER	= "sprites/ripper.png";
+		public static final String SPAWNER	= "sprites/spawner.png";
+		public static final String DM100	= "sprites/dm100.png";
+		public static final String DM275	= "mobs/dm300special.png";
+		public static final String PYLON	= "sprites/pylon.png";
+		public static final String PYLONCS	= "sprites/pylonks.png";
+		public static final String CRSTAL	= "sprites/crstal.png";
+		public static final String DM200	= "sprites/dm200.png";
+		public static final String LOTUS	= "sprites/lotus.png";
+		public static final String CRSTA	= "sprites/crstalspawn.png";
+        public static final Object NECROBLUE =  "sprites/bluenecromancer.png";
+    }
 }

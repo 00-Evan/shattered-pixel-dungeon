@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,21 +27,17 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public abstract class Runestone extends Item {
-	
+
 	{
 		stackable = true;
 		defaultAction = AC_THROW;
 	}
-
-	//runestones press the cell they're thrown to by default, but a couple stones override this
-	protected boolean pressesCell = true;
-
+	
 	@Override
 	protected void onThrow(int cell) {
 		if (Dungeon.level.pit[cell] || !defaultAction.equals(AC_THROW)){
 			super.onThrow( cell );
 		} else {
-			if (pressesCell) Dungeon.level.pressCell( cell );
 			activate(cell);
 			Invisibility.dispel();
 		}
@@ -61,14 +57,9 @@ public abstract class Runestone extends Item {
 	
 	@Override
 	public int value() {
-		return 15 * quantity;
+		return 10 * quantity;
 	}
-
-	@Override
-	public int energyVal() {
-		return 3 * quantity;
-	}
-
+	
 	public static class PlaceHolder extends Runestone {
 		
 		{

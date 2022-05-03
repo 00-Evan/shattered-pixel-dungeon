@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,15 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoTalent;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
@@ -46,35 +44,25 @@ public class TalentsPane extends ScrollPane {
 	ColorBlock blocker;
 	RenderedTextBlock blockText;
 
-	public TalentsPane( TalentButton.Mode mode ) {
-		this( mode, Dungeon.hero.talents );
+	public TalentsPane( boolean canUpgrade ) {
+		this( canUpgrade, hero.talents );
 	}
 
-	public TalentsPane( TalentButton.Mode mode, ArrayList<LinkedHashMap<Talent, Integer>> talents ) {
+	public TalentsPane( boolean canUpgrade, ArrayList<LinkedHashMap<Talent, Integer>> talents ) {
 		super(new Component());
-
-		Ratmogrify.useRatroicEnergy = Dungeon.hero != null && Dungeon.hero.armorAbility instanceof Ratmogrify;
 
 		int tiersAvailable = 1;
 
-		if (mode == TalentButton.Mode.INFO){
-			if (!Badges.isUnlocked(Badges.Badge.LEVEL_REACHED_1)){
-				tiersAvailable = 1;
-			} else if (!Badges.isUnlocked(Badges.Badge.LEVEL_REACHED_2) || !Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_2)){
-				tiersAvailable = 2;
-			} else if (!Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_4)){
-				tiersAvailable = 3;
-			} else {
-				tiersAvailable = Talent.MAX_TALENT_TIERS;
-			}
+		if (!canUpgrade){
+			tiersAvailable = Talent.MAX_TALENT_TIERS;
 		} else {
 			while (tiersAvailable < Talent.MAX_TALENT_TIERS
-					&& Dungeon.hero.lvl+1 >= Talent.tierLevelThresholds[tiersAvailable+1]){
+					&& hero.lvl+1 >= Talent.tierLevelThresholds[tiersAvailable+1]){
 				tiersAvailable++;
 			}
-			if (tiersAvailable > 2 && Dungeon.hero.subClass == HeroSubClass.NONE){
+			if (tiersAvailable > 2 && hero.subClass == HeroSubClass.NONE){
 				tiersAvailable = 2;
-			} else if (tiersAvailable > 3 && Dungeon.hero.armorAbility == null){
+			} else if(tiersAvailable > 3 && hero.subClass == HeroSubClass.NONE){
 				tiersAvailable = 3;
 			}
 		}
@@ -84,7 +72,7 @@ public class TalentsPane extends ScrollPane {
 		for (int i = 0; i < Math.min(tiersAvailable, talents.size()); i++){
 			if (talents.get(i).isEmpty()) continue;
 
-			TalentTierPane pane = new TalentTierPane(talents.get(i), i+1, mode);
+			TalentTierPane pane = new TalentTierPane(talents.get(i), i+1, canUpgrade);
 			panes.add(pane);
 			content.add(pane);
 
@@ -101,20 +89,14 @@ public class TalentsPane extends ScrollPane {
 
 		if (tiersAvailable == 1) {
 			blockText = PixelScene.renderTextBlock(Messages.get(this, "unlock_tier2"), 6);
-			content.add(blockText);
 		} else if (tiersAvailable == 2) {
 			blockText = PixelScene.renderTextBlock(Messages.get(this, "unlock_tier3"), 6);
-			content.add(blockText);
 		} else if (tiersAvailable == 3) {
 			blockText = PixelScene.renderTextBlock(Messages.get(this, "unlock_tier4"), 6);
-			content.add(blockText);
 		} else {
-			blockText = null;
+			blockText = PixelScene.renderTextBlock(Messages.get(this, "magic"), 6);
 		}
-
-		for (int i = panes.size()-1; i >= 0; i--){
-			content.bringToFront(panes.get(i));
-		}
+		content.add(blockText);
 	}
 
 	@Override
@@ -135,22 +117,15 @@ public class TalentsPane extends ScrollPane {
 
 		}
 
-		float bottom;
-		if (blockText != null) {
-			bottom = Math.max(height, top + 20);
+		float bottom = Math.max(height, top + 20);
 
-			blocker.x = 0;
-			blocker.y = top;
-			blocker.size(width, bottom - top);
+		blocker.x = 0;
+		blocker.y = top;
+		blocker.size(width, bottom - top);
 
-			blockText.maxWidth((int) width);
-			blockText.align(RenderedTextBlock.CENTER_ALIGN);
-			blockText.setPos((width - blockText.width()) / 2f, blocker.y + (bottom - blocker.y - blockText.height()) / 2);
-		} else {
-			bottom = Math.max(height, top);
-
-			blocker.visible = false;
-		}
+		blockText.maxWidth((int)width);
+		blockText.align(RenderedTextBlock.CENTER_ALIGN);
+		blockText.setPos((width - blockText.width())/2f, blocker.y + (bottom - blocker.y - blockText.height())/2);
 
 		content.setSize(width, bottom);
 	}
@@ -159,12 +134,12 @@ public class TalentsPane extends ScrollPane {
 
 		private int tier;
 
-		public RenderedTextBlock title;
+		RenderedTextBlock title;
 		ArrayList<TalentButton> buttons;
 
 		ArrayList<Image> stars = new ArrayList<>();
 
-		public TalentTierPane(LinkedHashMap<Talent, Integer> talents, int tier, TalentButton.Mode mode){
+		public TalentTierPane(LinkedHashMap<Talent, Integer> talents, int tier, boolean canUpgrade){
 			super();
 
 			this.tier = tier;
@@ -173,11 +148,11 @@ public class TalentsPane extends ScrollPane {
 			title.hardlight(Window.TITLE_COLOR);
 			add(title);
 
-			if (mode == TalentButton.Mode.UPGRADE) setupStars();
+			if (canUpgrade) setupStars();
 
 			buttons = new ArrayList<>();
 			for (Talent talent : talents.keySet()){
-				TalentButton btn = new TalentButton(tier, talent, talents.get(talent), mode){
+				TalentButton btn = new TalentButton(tier, talent, talents.get(talent), canUpgrade){
 					@Override
 					public void upgradeTalent() {
 						super.upgradeTalent();
@@ -201,9 +176,9 @@ public class TalentsPane extends ScrollPane {
 				stars.clear();
 			}
 
-			int totStars = Talent.tierLevelThresholds[tier+1] - Talent.tierLevelThresholds[tier] + Dungeon.hero.bonusTalentPoints(tier);
-			int openStars = Dungeon.hero.talentPointsAvailable(tier);
-			int usedStars = Dungeon.hero.talentPointsSpent(tier);
+			int totStars = Talent.tierLevelThresholds[tier+1] - Talent.tierLevelThresholds[tier];
+			int openStars = hero.talentPointsAvailable(tier);
+			int usedStars = hero.talentPointsSpent(tier);
 			for (int i = 0; i < totStars; i++){
 				Image im = new Speck().image(Speck.STAR);
 				stars.add(im);
@@ -220,27 +195,16 @@ public class TalentsPane extends ScrollPane {
 		protected void layout() {
 			super.layout();
 
-			int regStars = Talent.tierLevelThresholds[tier+1] - Talent.tierLevelThresholds[tier];
-
 			float titleWidth = title.width();
-			titleWidth += 2 + Math.min(stars.size(), regStars)*6;
+			titleWidth += 2 + stars.size()*6;
 			title.setPos(x + (width - titleWidth)/2f, y);
 
 			float left = title.right() + 2;
-
-			float starTop = title.top();
-			if (regStars < stars.size()) starTop -= 2;
-
 			for (Image star : stars){
 				star.x = left;
-				star.y = starTop;
+				star.y = title.top();
 				PixelScene.align(star);
 				left += 6;
-				regStars--;
-				if (regStars == 0){
-					starTop += 6;
-					left = title.right() + 2;
-				}
 			}
 
 			float gap = (width - buttons.size()*TalentButton.WIDTH)/(buttons.size()+1);

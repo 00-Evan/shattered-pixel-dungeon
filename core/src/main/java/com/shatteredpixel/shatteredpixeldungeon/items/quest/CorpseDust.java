@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.quest;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -65,8 +66,8 @@ public class CorpseDust extends Item {
 	}
 
 	@Override
-	public boolean doPickUp(Hero hero, int pos) {
-		if (super.doPickUp(hero, pos)){
+	public boolean doPickUp(Hero hero) {
+		if (super.doPickUp(hero)){
 			GLog.n( Messages.get( this, "chill") );
 			Buff.affect(hero, DustGhostSpawner.class);
 			return true;
@@ -86,19 +87,8 @@ public class CorpseDust extends Item {
 
 		int spawnPower = 0;
 
-		{
-			//not cleansed by reviving, but does check to ensure the dust is still present
-			revivePersists = true;
-		}
-
 		@Override
 		public boolean act() {
-			if (target instanceof Hero && ((Hero) target).belongings.getItem(CorpseDust.class) == null){
-				spawnPower = 0;
-				spend(TICK);
-				return true;
-			}
-
 			spawnPower++;
 			int wraiths = 1; //we include the wraith we're trying to spawn
 			for (Mob mob : Dungeon.level.mobs){
@@ -112,7 +102,6 @@ public class CorpseDust extends Item {
 			if (powerNeeded <= spawnPower){
 				spawnPower -= powerNeeded;
 				int pos = 0;
-				//FIXME this seems like old bad code (why not more checks at least?) but corpse dust may be balanced around it
 				int tries = 20;
 				do{
 					pos = Random.Int(Dungeon.level.length());
@@ -132,6 +121,8 @@ public class CorpseDust extends Item {
 			detach();
 			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])){
 				if (mob instanceof Wraith){
+
+
 					mob.die(null);
 				}
 			}

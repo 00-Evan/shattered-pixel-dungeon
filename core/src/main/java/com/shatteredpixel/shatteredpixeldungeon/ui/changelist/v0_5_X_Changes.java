@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,7 +52,7 @@ public class v0_5_X_Changes {
 						"\n" +
 						"v0.5.0 was also Shattered's longest-developed update yet. While I don't think there was much I could do about this for v0.5.0 and v0.6.0, it started an unfortunate trend of major updates taking up to half a year! I eventually broke this trend in v0.9.0 by splitting these larger updates into smaller parts."));
 		
-		changes.addButton( new ChangeButton( Icons.get(Icons.STAIRS), "New Dungeon Visual Style!",
+		changes.addButton( new ChangeButton( Icons.get(Icons.DEPTH), "New Dungeon Visual Style!",
 				"_-_ Walls and some terrain now have depth\n" +
 				"_-_ Characters & items are raised & cast shadows\n" +
 				"_-_ Added a visible tile grid in the settings menu"));

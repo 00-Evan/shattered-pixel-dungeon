@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,52 +24,55 @@ package com.shatteredpixel.shatteredpixeldungeon.items.stones;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
-
-import java.util.ArrayList;
 
 public class StoneOfFlock extends Runestone {
 	
 	{
 		image = ItemSpriteSheet.STONE_FLOCK;
+	}
 
-		//the sheep will press the cell instead
-		pressesCell = false;
+	@Override
+	protected void onThrow(int cell) {
+		if (Shopkeeper.seenBefore == true) {
+			GLog.p( Messages.get(StoneOfFlock.class, "no-magic") );
+		} else if (Dungeon.level.pit[cell] || !defaultAction.equals(AC_THROW)){
+			super.onThrow( cell );
+		} else {
+			activate(cell);
+			Invisibility.dispel();
+		}
 	}
 	
 	@Override
 	protected void activate(int cell) {
-
-		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
-		ArrayList<Integer> spawnPoints = new ArrayList<>();
-		for (int i = 0; i < PathFinder.distance.length; i++) {
-			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-				spawnPoints.add(i);
-			}
-		}
-
-		for (int i : spawnPoints){
-			if (Dungeon.level.insideMap(i)
-					&& Actor.findChar(i) == null
-					&& !(Dungeon.level.pit[i])) {
+	
+		for (int i : PathFinder.NEIGHBOURS9){
+			
+			if (!Dungeon.level.solid[cell + i]
+					&& !Dungeon.level.pit[cell + i]
+					&& Actor.findChar(cell + i) == null) {
+				
 				Sheep sheep = new Sheep();
-				sheep.lifespan = Random.NormalIntRange( 6, 8 );
-				sheep.pos = i;
+				sheep.lifespan = Random.IntRange(5, 8);
+				sheep.pos = cell + i;
 				GameScene.add(sheep);
 				Dungeon.level.occupyCell(sheep);
-				CellEmitter.get(i).burst(Speck.factory(Speck.WOOL), 4);
+				
+				CellEmitter.get(sheep.pos).burst(Speck.factory(Speck.WOOL), 4);
 			}
 		}
-
 		CellEmitter.get(cell).burst(Speck.factory(Speck.WOOL), 4);
 		Sample.INSTANCE.play(Assets.Sounds.PUFF);
 		Sample.INSTANCE.play(Assets.Sounds.SHEEP);

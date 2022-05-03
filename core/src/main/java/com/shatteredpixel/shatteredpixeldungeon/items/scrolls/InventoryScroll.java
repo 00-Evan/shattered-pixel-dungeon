@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,18 +23,17 @@ package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 
 public abstract class InventoryScroll extends Scroll {
 
-	protected static boolean identifiedByUse = false;
-
+	protected String inventoryTitle = Messages.get(this, "inv_title");
+	protected WndBag.Mode mode = WndBag.Mode.ALL;
+	
 	@Override
 	public void doRead() {
 		
@@ -45,15 +44,12 @@ public abstract class InventoryScroll extends Scroll {
 			identifiedByUse = false;
 		}
 		
-		GameScene.selectItem( itemSelector );
+		GameScene.selectItem( itemSelector, mode, inventoryTitle );
 	}
 	
 	private void confirmCancelation() {
-		GameScene.show( new WndOptions(new ItemSprite(this),
-				Messages.titleCase(name()),
-				Messages.get(this, "warning"),
-				Messages.get(this, "yes"),
-				Messages.get(this, "no") ) {
+		GameScene.show( new WndOptions( Messages.titleCase(name()), Messages.get(this, "warning"),
+				Messages.get(this, "yes"), Messages.get(this, "no") ) {
 			@Override
 			protected void onSelect( int index ) {
 				switch (index) {
@@ -62,43 +58,18 @@ public abstract class InventoryScroll extends Scroll {
 					identifiedByUse = false;
 					break;
 				case 1:
-					GameScene.selectItem( itemSelector );
+					GameScene.selectItem( itemSelector, mode, inventoryTitle );
 					break;
 				}
 			}
 			public void onBackPressed() {}
 		} );
 	}
-
-	private String inventoryTitle(){
-		return Messages.get(this, "inv_title");
-	}
-
-	protected Class<?extends Bag> preferredBag = null;
-
-	protected boolean usableOnItem( Item item ){
-		return true;
-	}
 	
 	protected abstract void onItemSelected( Item item );
 	
-	protected WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
-
-		@Override
-		public String textPrompt() {
-			return inventoryTitle();
-		}
-
-		@Override
-		public Class<? extends Bag> preferredBag() {
-			return preferredBag;
-		}
-
-		@Override
-		public boolean itemSelectable(Item item) {
-			return usableOnItem(item);
-		}
-
+	protected static boolean identifiedByUse = false;
+	protected static WndBag.Listener itemSelector = new WndBag.Listener() {
 		@Override
 		public void onSelect( Item item ) {
 			

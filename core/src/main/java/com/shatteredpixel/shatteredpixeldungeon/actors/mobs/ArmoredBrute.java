@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ public class ArmoredBrute extends Brute {
 	}
 	
 	@Override
-	public Item createLoot() {
+	protected Item createLoot () {
 		if (Random.Int( 4 ) == 0) {
 			return new PlateArmor().random();
 		}

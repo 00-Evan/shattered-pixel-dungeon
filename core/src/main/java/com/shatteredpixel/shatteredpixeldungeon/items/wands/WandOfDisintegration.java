@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ public class WandOfDisintegration extends DamageWand {
 	}
 
 	@Override
-	public void onZap(Ballistica beam) {
+	protected void onZap( Ballistica beam ) {
 		
 		boolean terrainAffected = false;
 		
@@ -110,7 +110,7 @@ public class WandOfDisintegration extends DamageWand {
 		
 		int lvl = level + (chars.size()-1) + terrainBonus;
 		for (Char ch : chars) {
-			wandProc(ch, chargesPerCast());
+			processSoulMark(ch, chargesPerCast());
 			ch.damage( damageRoll(lvl), this );
 			ch.sprite.centerEmitter().burst( PurpleParticle.BURST, Random.IntRange( 1, 2 ) );
 			ch.sprite.flash();
@@ -127,7 +127,7 @@ public class WandOfDisintegration extends DamageWand {
 	}
 	
 	@Override
-	public void fx(Ballistica beam, Callback callback) {
+	protected void fx( Ballistica beam, Callback callback ) {
 		
 		int cell = beam.path.get(Math.min(beam.dist, distance()));
 		curUser.sprite.parent.add(new Beam.DeathRay(curUser.sprite.center(), DungeonTilemap.raisedTileCenterToWorld( cell )));

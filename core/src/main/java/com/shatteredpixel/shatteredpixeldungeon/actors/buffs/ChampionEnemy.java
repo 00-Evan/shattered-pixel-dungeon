@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,22 +22,21 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.HalomethaneFire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public abstract class ChampionEnemy extends Buff {
-
+	public static final float shopDURATION	= 2000000000f;
 	{
 		type = buffType.POSITIVE;
 	}
@@ -91,7 +90,7 @@ public abstract class ChampionEnemy extends Buff {
 	}
 
 	{
-		immunities.add(AllyBuff.class);
+		immunities.add(Corruption.class);
 	}
 
 	public static void rollForChampion(Mob m){
@@ -100,13 +99,14 @@ public abstract class ChampionEnemy extends Buff {
 		Dungeon.mobsToChampion--;
 
 		if (Dungeon.mobsToChampion <= 0){
-			switch (Random.Int(6)){
+			switch (Random.Int(7)){
 				case 0: default:    Buff.affect(m, Blazing.class);      break;
 				case 1:             Buff.affect(m, Projecting.class);   break;
 				case 2:             Buff.affect(m, AntiMagic.class);    break;
 				case 3:             Buff.affect(m, Giant.class);        break;
 				case 4:             Buff.affect(m, Blessed.class);      break;
 				case 5:             Buff.affect(m, Growing.class);      break;
+				case 6:             Buff.affect(m, Halo.class);      break;
 			}
 			m.state = m.WANDERING;
 		}
@@ -139,6 +139,38 @@ public abstract class ChampionEnemy extends Buff {
 		}
 
 		{
+			immunities.add(Burning.class);
+		}
+	}
+
+	public static class Halo extends ChampionEnemy {
+
+		{
+			color = 0x00FFFF;
+		}
+
+		@Override
+		public void onAttackProc(Char enemy) {
+			Buff.affect(enemy, HalomethaneBurning.class).reignite(enemy);
+		}
+
+		@Override
+		public void detach() {
+			for (int i : PathFinder.NEIGHBOURS9){
+				if (!Dungeon.level.solid[target.pos+i]){
+					GameScene.add(Blob.seed(target.pos+i, 4, HalomethaneFire.class));
+				}
+			}
+			super.detach();
+		}
+
+		@Override
+		public float meleeDamageFactor() {
+			return 1.65f;
+		}
+
+		{
+			immunities.add(HalomethaneBurning.class);
 			immunities.add(Burning.class);
 		}
 	}
@@ -191,18 +223,8 @@ public abstract class ChampionEnemy extends Buff {
 
 		@Override
 		public boolean canAttackWithExtraReach(Char enemy) {
-			if (Dungeon.level.distance( target.pos, enemy.pos ) > 2){
-				return false;
-			} else {
-				boolean[] passable = BArray.not(Dungeon.level.solid, null);
-				for (Char ch : Actor.chars()) {
-					if (ch != target) passable[ch.pos] = false;
-				}
-
-				PathFinder.buildDistanceMap(enemy.pos, passable, 2);
-
-				return PathFinder.distance[target.pos] <= 2;
-			}
+			//attack range of 2
+			return target.fieldOfView[enemy.pos] && Dungeon.level.distance(target.pos, enemy.pos) <= 2;
 		}
 	}
 

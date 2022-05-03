@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -61,11 +61,9 @@ public class Frost extends FlavourBuff {
 				Hero hero = (Hero)target;
 				ArrayList<Item> freezable = new ArrayList<>();
 				//does not reach inside of containers
-				if (hero.buff(LostInventory.class) == null) {
-					for (Item i : hero.belongings.backpack.items) {
-						if (!i.unique && (i instanceof Potion || i instanceof MysteryMeat)) {
-							freezable.add(i);
-						}
+				for (Item i : hero.belongings.backpack.items){
+					if (!i.unique && (i instanceof Potion || i instanceof MysteryMeat)){
+						freezable.add(i);
 					}
 				}
 				
@@ -150,5 +148,7 @@ public class Frost extends FlavourBuff {
 		//can't chill what's frozen!
 		immunities.add( Chill.class );
 	}
-
+	public static float duration( Char ch ) {
+		return DURATION;
+	}
 }

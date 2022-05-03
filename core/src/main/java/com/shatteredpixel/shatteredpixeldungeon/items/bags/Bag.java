@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,11 +24,10 @@ package com.shatteredpixel.shatteredpixeldungeon.items.bags;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuickBag;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 
@@ -52,7 +51,7 @@ public class Bag extends Item implements Iterable<Item> {
 	public ArrayList<Item> items = new ArrayList<>();
 
 	public int capacity(){
-		return 20; // default container size
+		return 44; // default container size
 	}
 	
 	@Override
@@ -60,9 +59,9 @@ public class Bag extends Item implements Iterable<Item> {
 
 		super.execute( hero, action );
 
-		if (action.equals( AC_OPEN ) && !items.isEmpty()) {
+		if (action.equals( AC_OPEN )) {
 			
-			GameScene.show( new WndQuickBag( this ) );
+			GameScene.show( new WndBag( this, null, WndBag.Mode.ALL, null ) );
 			
 		}
 	}
@@ -141,18 +140,12 @@ public class Bag extends Item implements Iterable<Item> {
 		bundle.put( ITEMS, items );
 	}
 
-	//temp variable so that bags can load contents even with lost inventory debuff
-	private boolean loading;
-
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
-
-		loading = true;
 		for (Bundlable item : bundle.getCollection( ITEMS )) {
 			if (item != null) ((Item)item).collect( this );
 		}
-		loading = false;
 	}
 	
 	public boolean contains( Item item ) {
@@ -167,11 +160,6 @@ public class Bag extends Item implements Iterable<Item> {
 	}
 
 	public boolean canHold( Item item ){
-		if (!loading && owner != null && owner.buff(LostInventory.class) != null
-			&& !item.keptThoughLostInvent){
-			return false;
-		}
-
 		if (items.contains(item) || item instanceof Bag || items.size() < capacity()){
 			return true;
 		} else if (item.stackable) {

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ public class StoneOfAggression extends Runestone {
 		
 		if (ch != null) {
 			if (ch.alignment == Char.Alignment.ENEMY) {
-				Buff.prolong(ch, Aggression.class, Aggression.DURATION / 4f);
+				Buff.prolong(ch, Aggression.class, Aggression.DURATION / 5f);
 			} else {
 				Buff.prolong(ch, Aggression.class, Aggression.DURATION);
 			}
@@ -64,7 +64,7 @@ public class StoneOfAggression extends Runestone {
 		}
 		
 	}
-
+	
 	public static class Aggression extends FlavourBuff {
 		
 		public static final float DURATION = 20f;

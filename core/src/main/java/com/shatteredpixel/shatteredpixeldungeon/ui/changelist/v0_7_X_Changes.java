@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -79,7 +79,7 @@ public class v0_7_X_Changes {
 				"_-_ Released October 2nd, 2019\n" +
 				"_-_ 76 days after Shattered v0.7.4\n" +
 				"\n" +
-				"Dev commentary will be added here in the next update."));
+				"Dev commentary will be added here in the future."));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SNAKE, 12, 0, 12, 11), "Sewer Enemies",
 				"Two new enemies have been added to the sewers!\n\n" +
@@ -193,7 +193,7 @@ public class v0_7_X_Changes {
 				"_-_ Released July 18th, 2019\n" +
 				"_-_ 56 days after Shattered v0.7.3\n" +
 				"\n" +
-				"Dev commentary will be added here in the next update."));
+				"Dev commentary will be added here in the future."));
 
 		changes.addButton( new ChangeButton(new WandOfWarding(),
 				"This brand new wand spawns autonomous wards which attack enemies. Wards can be upgraded by being zapped again, and eventually form up into sentry turrets.\n\n" +
@@ -319,7 +319,7 @@ public class v0_7_X_Changes {
 				"_-_ Released May 23rd, 2019\n" +
 				"_-_ 66 days after Shattered v0.7.2\n" +
 				"\n" +
-				"Dev commentary will be added here in the next update."));
+				"Dev commentary will be added here in the future."));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.LONGSWORD, new ItemSprite.Glowing(0xFFFF00)), "Enchantment Changes",
 				"Several changes have been made to enchantments, based on feedback from 0.7.2:\n\n" +
@@ -449,9 +449,7 @@ public class v0_7_X_Changes {
 				"_-_ Released Mar 18th, 2019\n" +
 				"_-_ 90 days after Shattered v0.7.1\n" +
 				"\n" +
-				"v0.7.2 focused on a variety of smaller changes, but the most significant adjustments were to alchemy. Prior to this update a lot of the higher end alchemy recipes required very specific ingredients, so I introduced catalysts to make these recipes more flexible. While more work was still needed, this went a long way toward streamlining the most complex part of the alchemy system.\n" +
-				"\n" +
-				"This update also made some substantial design changes to enchantments. Since enchantments were more accessible after v0.7.0, I wanted to adjust them to be more about gameplay variety and less about raw damage. Prior to this update several of the most common enchantments were essentially direct increases to damage. Changing this was a good overall direction, but some of the specific changes in v0.7.2 missed the mark, and so I had to revisit enchantment mechanics shortly after."));
+				"Dev commentary will be added here in the future."));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.POTION_CATALYST, null), "Catalysts!",
 				"Added two new recipes: _Alchemical Catalysts_ and _Arcane Catalysts._\n\n" +
@@ -607,9 +605,7 @@ public class v0_7_X_Changes {
 				"_-_ Released Dec 18th, 2018\n" +
 				"_-_ 61 days after Shattered v0.7.0\n" +
 				"\n" +
-				"v0.7.1 featured the last of Shattered's hero reworks, this time to the Huntress! I wanted to keep her theme of ranged combat, but expand on how her range could interact with the environment. This led to her being able to 'furrow' grass, which creates all sorts of interesting gameplay. Her primary ranged weapon was also changed to no longer be upgradeable, which was important to make her power more consistent, and her item builds more variable from run to run.\n" +
-				"\n" +
-				"I also finally made throwing weapons proper equipment in v0.7.1 by letting the player upgrade them! Upgraded thrown weapons are pretty niche, but its great to let the player invest in these items just like other pieces of equipment."));
+				"Dev commentary will be added here in the future."));
 		
 		changes.addButton( new ChangeButton( new Image(Assets.Sprites.HUNTRESS, 0, 15, 12, 15), "Huntress Reworked!",
 				"The Huntress has received a class overhaul!\n\n" +
@@ -742,11 +738,7 @@ public class v0_7_X_Changes {
 				"_-_ 501 days after Shattered v0.6.0\n" +
 				"_-_ 168 days after Shattered v0.6.5\n" +
 				"\n" +
-				"v0.7.0 was Shattered's second longest-developed update at almost 6 months! This update took so long because it included my first attempt at an entirely new gameplay system: item crafting via alchemy!\n" +
-				"\n" +
-				"Crafting was actually something I wanted to do for years but I kept ended up scrapping my plans because they were too complex. Finally I settled on a system that was aimed at giving consumable items new uses, and that didn't interact with equipment at all. Despite my best efforts the system still ended up not quite doing its job while also being too complex. I've ended up steadily improving the system over future updates.\n" +
-				"\n" +
-				"Also, before v0.7.0 there were a few unique artifacts which only dropped from particular enemies. I standardized these items in v0.7.0 to either be universal, or scrapped them entirely and put some of their functionality into other game systems."));
+				"Dev commentary will be added here in the future."));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_SEWERS, 48, 96, 16, 16 ), "Alchemy Overhaul!",
 				"The game's alchemy system has been entirely overhauled!\n\n" +

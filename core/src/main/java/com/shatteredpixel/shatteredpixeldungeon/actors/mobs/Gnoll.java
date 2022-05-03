@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,6 +40,20 @@ public class Gnoll extends Mob {
 		loot = Gold.class;
 		lootChance = 0.5f;
 	}
+
+	/*@Override
+	public void damage( int dmg, Object src ) {
+		//半血狂暴
+		super.damage( dmg, src );
+		if (HP <= HT / 2) {
+			destroy();
+			Mob mob = new OGPDLLS();
+			mob.HP = mob.HT / 2;
+			mob.pos = pos;
+			GameScene.add(mob);
+		}
+	}*/
+
 	
 	@Override
 	public int damageRoll() {

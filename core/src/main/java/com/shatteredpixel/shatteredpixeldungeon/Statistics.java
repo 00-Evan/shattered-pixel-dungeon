@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,39 +21,45 @@
 
 package com.shatteredpixel.shatteredpixeldungeon;
 
+import com.shatteredpixel.shatteredpixeldungeon.custom.utils.CustomGameSettings;
 import com.watabou.utils.Bundle;
 
 public class Statistics {
-	
+	public static long real_seconds = 0;
 	public static int goldCollected;
+
+	public static int naiyaziCollected;
+
 	public static int deepestFloor;
 	public static int enemiesSlain;
 	public static int foodEaten;
-	public static int itemsCrafted;
+	public static int potionsCooked;
 	public static int piranhasKilled;
 	public static int ankhsUsed;
-	
+	public static boolean isCustomSeed = false;
 	//used for hero unlock badges
 	public static int upgradesUsed;
 	public static int sneakAttacks;
 	public static int thrownAssists;
 
 	public static int spawnersAlive;
-	
+	public static int spawnersIce;
+	public static int spawnersDK;
 	public static float duration;
 	
 	public static boolean qualifiedForNoKilling = false;
 	public static boolean completedWithNoKilling = false;
 	
 	public static boolean amuletObtained = false;
-	
+
+
 	public static void reset() {
 		
 		goldCollected	= 0;
-		deepestFloor	= 0;
+		deepestFloor	= -1;
 		enemiesSlain	= 0;
 		foodEaten		= 0;
-		itemsCrafted    = 0;
+		potionsCooked	= 0;
 		piranhasKilled	= 0;
 		ankhsUsed		= 0;
 		
@@ -96,7 +102,7 @@ public class Statistics {
 		bundle.put( DEEPEST,	deepestFloor );
 		bundle.put( SLAIN,		enemiesSlain );
 		bundle.put( FOOD,		foodEaten );
-		bundle.put( ALCHEMY,    itemsCrafted );
+		bundle.put( ALCHEMY,	potionsCooked );
 		bundle.put( PIRANHAS,	piranhasKilled );
 		bundle.put( ANKHS,		ankhsUsed );
 		
@@ -118,7 +124,7 @@ public class Statistics {
 		deepestFloor	= bundle.getInt( DEEPEST );
 		enemiesSlain	= bundle.getInt( SLAIN );
 		foodEaten		= bundle.getInt( FOOD );
-		itemsCrafted    = bundle.getInt( ALCHEMY );
+		potionsCooked	= bundle.getInt( ALCHEMY );
 		piranhasKilled	= bundle.getInt( PIRANHAS );
 		ankhsUsed		= bundle.getInt( ANKHS );
 		
@@ -133,6 +139,12 @@ public class Statistics {
 		qualifiedForNoKilling = bundle.getBoolean( NO_KILLING_QUALIFIED );
 		
 		amuletObtained	= bundle.getBoolean( AMULET );
+	}
+
+	private static void resetCustom(){
+		real_seconds = 0;
+		//Dungeon has been inited, so write directly.
+		isCustomSeed = !CustomGameSettings.getSeedString().equals("");
 	}
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ){

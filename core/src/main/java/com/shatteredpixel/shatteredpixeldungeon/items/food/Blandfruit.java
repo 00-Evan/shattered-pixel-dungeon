@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlameX;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticGas;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfPurity;
@@ -44,11 +45,9 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant.Seed;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Reflection;
 
@@ -86,13 +85,6 @@ public class Blandfruit extends Food {
 	@Override
 	public void execute( Hero hero, String action ) {
 
-		if (action.equals( Potion.AC_CHOOSE )){
-
-			GameScene.show(new WndUseItem(null, this) );
-			return;
-
-		}
-
 		if (action.equals( AC_EAT ) && potionAttrib == null) {
 
 			GLog.w( Messages.get(this, "raw"));
@@ -123,6 +115,7 @@ public class Blandfruit extends Food {
 		if (potionAttrib instanceof PotionOfPurity)         return Messages.get(this, "dreamfruit");
 		if (potionAttrib instanceof PotionOfExperience)     return Messages.get(this, "starfruit");
 		if (potionAttrib instanceof PotionOfHaste)          return Messages.get(this, "swiftfruit");
+		if (potionAttrib instanceof PotionOfLiquidFlameX)          return Messages.get(this, "halofruit");
 		return super.name();
 	}
 
@@ -135,7 +128,8 @@ public class Blandfruit extends Food {
 			if (potionAttrib instanceof PotionOfFrost
 				|| potionAttrib instanceof PotionOfLiquidFlame
 				|| potionAttrib instanceof PotionOfToxicGas
-				|| potionAttrib instanceof PotionOfParalyticGas) {
+				|| potionAttrib instanceof PotionOfParalyticGas
+					||potionAttrib instanceof PotionOfLiquidFlameX) {
 				desc += Messages.get(this, "desc_throw");
 			} else {
 				desc += Messages.get(this, "desc_eat");
@@ -172,12 +166,7 @@ public class Blandfruit extends Food {
 		if (potionAttrib instanceof PotionOfPurity)         potionGlow = new ItemSprite.Glowing( 0xC152AA );
 		if (potionAttrib instanceof PotionOfExperience)     potionGlow = new ItemSprite.Glowing( 0x404040 );
 		if (potionAttrib instanceof PotionOfHaste)          potionGlow = new ItemSprite.Glowing( 0xCCBB00 );
-
-		potionAttrib.setAction();
-		defaultAction = potionAttrib.defaultAction;
-		if (defaultAction.equals(Potion.AC_DRINK)){
-			defaultAction = AC_EAT;
-		}
+		if (potionAttrib instanceof PotionOfLiquidFlameX)          potionGlow = new ItemSprite.Glowing( 0x00ffff );
 
 		return this;
 	}
@@ -194,7 +183,8 @@ public class Blandfruit extends Food {
 				potionAttrib instanceof PotionOfParalyticGas ||
 				potionAttrib instanceof PotionOfFrost ||
 				potionAttrib instanceof PotionOfLevitation ||
-				potionAttrib instanceof PotionOfPurity) {
+				potionAttrib instanceof PotionOfPurity||
+				potionAttrib instanceof PotionOfLiquidFlameX) {
 
 			potionAttrib.shatter( cell );
 			Dungeon.level.drop(new Chunks(), cell).sprite.drop();
@@ -206,10 +196,10 @@ public class Blandfruit extends Food {
 	
 	@Override
 	public void reset() {
-		super.reset();
-		if (potionAttrib != null) {
+		if (potionAttrib != null)
 			imbuePotion(potionAttrib);
-		}
+		else
+			super.reset();
 	}
 	
 	@Override
@@ -260,6 +250,11 @@ public class Blandfruit extends Food {
 			if (fruit.quantity() >= 1 && fruit.potionAttrib == null
 				&& seed.quantity() >= 1){
 
+				if (Dungeon.isChallenged(Challenges.NO_HEALING)
+						&& seed instanceof Sungrass.Seed){
+					return false;
+				}
+
 				return true;
 			}
 			
@@ -268,7 +263,7 @@ public class Blandfruit extends Food {
 		
 		@Override
 		public int cost(ArrayList<Item> ingredients) {
-			return 2;
+			return 3;
 		}
 		
 		@Override

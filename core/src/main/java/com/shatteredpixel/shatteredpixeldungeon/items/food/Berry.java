@@ -35,16 +35,11 @@ public class Berry extends Food {
 	{
 		image = ItemSpriteSheet.BERRY;
 		energy = Hunger.HUNGRY/3f; //100 food value
-
-		bones = false;
 	}
 
 	@Override
 	protected float eatingTime(){
-		if (Dungeon.hero.hasTalent(Talent.IRON_STOMACH)
-				|| Dungeon.hero.hasTalent(Talent.ENERGIZING_MEAL)
-				|| Dungeon.hero.hasTalent(Talent.MYSTICAL_MEAL)
-				|| Dungeon.hero.hasTalent(Talent.INVIGORATING_MEAL)){
+		if (Dungeon.hero.hasTalent(Talent.INVIGORATING_MEAL)){
 			return 0;
 		} else {
 			return 1;
@@ -66,5 +61,5 @@ public class Berry extends Food {
 		return 5 * quantity;
 	}
 
-	public static class SeedCounter extends CounterBuff{{revivePersists = true;}};
+	public static class SeedCounter extends CounterBuff{};
 }

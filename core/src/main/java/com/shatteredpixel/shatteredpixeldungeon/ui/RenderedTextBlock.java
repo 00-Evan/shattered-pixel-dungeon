@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ public class RenderedTextBlock extends Component {
 
 	private static final RenderedText SPACE = new RenderedText();
 	private static final RenderedText NEWLINE = new RenderedText();
-	
+
 	protected String text;
 	protected String[] tokens = null;
 	protected ArrayList<RenderedText> words = new ArrayList<>();
@@ -44,15 +44,27 @@ public class RenderedTextBlock extends Component {
 	private int size;
 	private float zoom;
 	private int color = -1;
-	
+
 	private int hightlightColor = Window.TITLE_COLOR;
+	private int RedColor = Window.R_COLOR;
+	private int GreenColor = Window.G_COLOR;
+	private int BlueColor = Window.B_COLOR;
+	private int PinkColor = Window.Pink_COLOR;
+	private int DeepColor = Window.DeepPK_COLOR;
+
+
 	private boolean highlightingEnabled = true;
+	private boolean RedEnabled = true;
+	private boolean GreenEnabled = true;
+	private boolean BlueEnabled = true;
+	private boolean PinkEnabled = true;
+	private boolean DeepEnabled = true;
 
 	public static final int LEFT_ALIGN = 1;
 	public static final int CENTER_ALIGN = 2;
 	public static final int RIGHT_ALIGN = 3;
 	private int alignment = LEFT_ALIGN;
-	
+
 	public RenderedTextBlock(int size){
 		this.size = size;
 	}
@@ -66,23 +78,11 @@ public class RenderedTextBlock extends Component {
 		this.text = text;
 
 		if (text != null && !text.equals("")) {
-			
+
 			tokens = Game.platform.splitforTextBlock(text, multiline);
-			
+
 			build();
 		}
-	}
-
-	//for manual text block splitting, a space between each word is assumed
-	public void tokens(String... words){
-		StringBuilder fullText = new StringBuilder();
-		for (String word : words) {
-			fullText.append(word);
-		}
-		text = fullText.toString();
-
-		tokens = words;
-		build();
 	}
 
 	public void text(String text, int maxWidth){
@@ -109,28 +109,61 @@ public class RenderedTextBlock extends Component {
 
 	private synchronized void build(){
 		if (tokens == null) return;
-		
+
 		clear();
 		words = new ArrayList<>();
 		boolean highlighting = false;
+		boolean Redhighlighting = false;
+		boolean Greenhighlighting = false;
+		boolean Bluehighlighting = false;
+		boolean Pinkhighlighting = false;
+		boolean Deeppinkhighlighting = false;
 		for (String str : tokens){
-			
+
+
+			/*
+			Γ = 红色
+			Δ = 绿色
+			Θ = 蓝色
+			Ξ = 粉色
+			Π = 紫色
+			Σ = 黑色
+			_ = 青色 */
+
 			if (str.equals("_") && highlightingEnabled){
 				highlighting = !highlighting;
+			} else if(str.equals("Γ") && RedEnabled){
+				Redhighlighting = !Redhighlighting;
+			} else if(str.equals("Δ") && GreenEnabled){
+				Greenhighlighting = !Greenhighlighting;
+			} else if(str.equals("Θ") && BlueEnabled){
+				Bluehighlighting = !Bluehighlighting;
+			} else if(str.equals("Ξ") && PinkEnabled){
+				Pinkhighlighting = !Pinkhighlighting;
+			} else if(str.equals("Π") && DeepEnabled){
+				Deeppinkhighlighting = !Deeppinkhighlighting;
+			/*} else if(str.equals("Σ") && PinkEnabled){
+				Blackhighlighting = !Blackhighlighting;*/
 			} else if (str.equals("\n")){
 				words.add(NEWLINE);
-			} else if (str.equals(" ")){
+			} else if (str.equals(" ")) {
 				words.add(SPACE);
+
 			} else {
 				RenderedText word = new RenderedText(str, size);
-				
+
 				if (highlighting) word.hardlight(hightlightColor);
 				else if (color != -1) word.hardlight(color);
+				else if (Redhighlighting) word.hardlight(RedColor);
+				else if (Greenhighlighting) word.hardlight(GreenColor);
+				else if (Bluehighlighting) word.hardlight(BlueColor);
+				else if (Pinkhighlighting) word.hardlight(PinkColor);
+				else if (Deeppinkhighlighting) word.hardlight(DeepColor);
 				word.scale.set(zoom);
-				
+
 				words.add(word);
 				add(word);
-				
+
 				if (height < word.height()) height = word.height();
 			}
 		}
@@ -151,28 +184,64 @@ public class RenderedTextBlock extends Component {
 			if (word != null) word.hardlight( color );
 		}
 	}
-	
+
 	public synchronized void resetColor(){
 		this.color = -1;
 		for (RenderedText word : words) {
 			if (word != null) word.resetColor();
 		}
 	}
-	
+
 	public synchronized void alpha(float value){
 		for (RenderedText word : words) {
 			if (word != null) word.alpha( value );
 		}
 	}
-	
+
 	public synchronized void setHightlighting(boolean enabled){
 		setHightlighting(enabled, Window.TITLE_COLOR);
 	}
-	
+
 	public synchronized void setHightlighting(boolean enabled, int color){
 		if (enabled != highlightingEnabled || color != hightlightColor) {
 			hightlightColor = color;
 			highlightingEnabled = enabled;
+			build();
+		}
+	}
+
+	public synchronized void RHightlighting(boolean enabled){
+		setHightlighting(enabled, Window.B_COLOR);
+	}
+
+	public synchronized void RHightlighting(boolean enabled, int color){
+		if (enabled != highlightingEnabled || color != hightlightColor) {
+			RedColor = color;
+			RedEnabled = enabled;
+			build();
+		}
+	}
+
+	public synchronized void GHightlighting(boolean enabled){
+		setHightlighting(enabled, Window.G_COLOR);
+	}
+
+	public synchronized void GHightlighting(boolean enabled, int color){
+		if (enabled != highlightingEnabled || color != hightlightColor) {
+			RedColor = color;
+			RedEnabled = enabled;
+			build();
+		}
+	}
+
+	public synchronized void BHightlighting(boolean enabled){
+		setHightlighting(enabled, Window.G_COLOR);
+	}
+
+	public synchronized void BHightlighting(boolean enabled, int color){
+		if (enabled != highlightingEnabled || color != hightlightColor) {
+			RedColor = color;
+			RedEnabled = enabled;
 			build();
 		}
 	}
@@ -238,7 +307,7 @@ public class RenderedTextBlock extends Component {
 				curLine.add(word);
 
 				if ((x - this.x) > width) width = (x - this.x);
-				
+
 				//TODO spacing currently doesn't factor in halfwidth and fullwidth characters
 				//(e.g. Ideographic full stop)
 				x -= 0.5f;

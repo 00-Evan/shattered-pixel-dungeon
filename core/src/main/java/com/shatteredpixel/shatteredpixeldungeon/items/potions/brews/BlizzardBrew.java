@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.PathFinder;
 
 public class BlizzardBrew extends Brew {
 	
@@ -45,17 +44,8 @@ public class BlizzardBrew extends Brew {
 			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 			Sample.INSTANCE.play( Assets.Sounds.GAS );
 		}
-
-		int centerVolume = 120;
-		for (int i : PathFinder.NEIGHBOURS8){
-			if (!Dungeon.level.solid[cell+i]){
-				GameScene.add( Blob.seed( cell+i, 120, Blizzard.class ) );
-			} else {
-				centerVolume += 120;
-			}
-		}
-
-		GameScene.add( Blob.seed( cell, centerVolume, Blizzard.class ) );
+		
+		GameScene.add( Blob.seed( cell, 1000, Blizzard.class ) );
 	}
 	
 	@Override
@@ -70,7 +60,7 @@ public class BlizzardBrew extends Brew {
 			inputs =  new Class[]{PotionOfFrost.class, AlchemicalCatalyst.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 3;
+			cost = 6;
 			
 			output = BlizzardBrew.class;
 			outQuantity = 1;

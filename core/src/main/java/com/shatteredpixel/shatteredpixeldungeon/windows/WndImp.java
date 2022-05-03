@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -73,7 +73,7 @@ public class WndImp extends Window {
 		tokens.detachAll( Dungeon.hero.belongings.backpack );
 		if (reward == null) return;
 
-		reward.identify(false);
+		reward.identify();
 		if (reward.doPickUp( Dungeon.hero )) {
 			GLog.i( Messages.get(Dungeon.hero, "you_now_have", reward.name()) );
 		} else {

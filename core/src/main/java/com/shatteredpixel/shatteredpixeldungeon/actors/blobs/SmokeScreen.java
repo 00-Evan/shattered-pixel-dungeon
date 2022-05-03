@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,18 +21,49 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 
 public class SmokeScreen extends Blob {
+	
+	@Override
+	protected void evolve() {
+		super.evolve();
+		
+		int cell;
+		
+		Level l = Dungeon.level;
+		for (int i = area.left; i < area.right; i++){
+			for (int j = area.top; j < area.bottom; j++){
+				cell = i + j*l.width();
+				l.losBlocking[cell] = off[cell] > 0 || (Terrain.flags[l.map[cell]] & Terrain.LOS_BLOCKING) != 0;
+			}
+		}
+	}
 	
 	@Override
 	public void use( BlobEmitter emitter ) {
 		super.use( emitter );
 		emitter.pour( Speck.factory( Speck.SMOKE ), 0.1f );
 	}
-
+	
+	@Override
+	public void clear(int cell) {
+		super.clear(cell);
+		Level l = Dungeon.level;
+		l.losBlocking[cell] = cur[cell] > 0 || (Terrain.flags[l.map[cell]] & Terrain.LOS_BLOCKING) != 0;
+	}
+	
+	@Override
+	public void fullyClear() {
+		super.fullyClear();
+		Dungeon.level.buildFlagMaps();
+	}
+	
 	@Override
 	public String tileDesc() {
 		return Messages.get(this, "desc");

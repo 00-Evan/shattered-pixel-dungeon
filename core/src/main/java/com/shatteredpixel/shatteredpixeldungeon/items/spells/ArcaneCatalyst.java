@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -82,12 +82,7 @@ public class ArcaneCatalyst extends Spell {
 	public int value() {
 		return 40 * quantity;
 	}
-
-	@Override
-	public int energyVal() {
-		return 8 * quantity;
-	}
-
+	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe {
 		
 		@Override
@@ -112,12 +107,12 @@ public class ArcaneCatalyst extends Spell {
 		public int cost(ArrayList<Item> ingredients) {
 			for (Item i : ingredients){
 				if (i instanceof Plant.Seed){
-					return 1;
+					return 2;
 				} else if (i instanceof Runestone){
-					return 0;
+					return 1;
 				}
 			}
-			return 0;
+			return 1;
 		}
 		
 		@Override

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.custom.utils.Constants;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -65,6 +66,7 @@ public class WndSettings extends WndTabbed {
 	private DataTab     data;
 	private AudioTab    audio;
 	private LangsTab    langs;
+	private ExtendTab    extabs;
 
 	public static int last_index = 0;
 
@@ -161,6 +163,20 @@ public class WndSettings extends WndTabbed {
 		};
 		add( langsTab );
 
+		extabs = new ExtendTab();
+		extabs.setSize(width, 0);
+		height = Math.max(height, audio.height());
+		add( extabs );
+
+		add( new IconTab(Icons.get(Icons.CHANGES)){
+			@Override
+			protected void select(boolean value) {
+				super.select(value);
+				extabs.visible = extabs.active = value;
+				if (value) last_index = 5;
+			}
+		});
+
 		resize(width, (int)Math.ceil(height));
 
 		layoutTabs();
@@ -189,7 +205,6 @@ public class WndSettings extends WndTabbed {
 
 		RenderedTextBlock title;
 		ColorBlock sep1;
-		CheckBox chkFullscreen;
 		OptionSlider optScale;
 		CheckBox chkSaver;
 		RedButton btnOrientation;
@@ -206,47 +221,14 @@ public class WndSettings extends WndTabbed {
 			sep1 = new ColorBlock(1, 1, 0xFF000000);
 			add(sep1);
 
-			chkFullscreen = new CheckBox( Messages.get(this, "fullscreen") ) {
-				@Override
-				protected void onClick() {
-					super.onClick();
-					SPDSettings.fullscreen(checked());
-				}
-			};
-			if (DeviceCompat.supportsFullScreen()){
-				chkFullscreen.checked(SPDSettings.fullscreen());
-			} else {
-				chkFullscreen.checked(true);
-				chkFullscreen.enable(false);
-			}
-			add(chkFullscreen);
-
-			if ((int)Math.ceil(2* Game.density) < PixelScene.maxDefaultZoom) {
-				optScale = new OptionSlider(Messages.get(this, "scale"),
-						(int)Math.ceil(2* Game.density)+ "X",
-						PixelScene.maxDefaultZoom + "X",
-						(int)Math.ceil(2* Game.density),
-						PixelScene.maxDefaultZoom ) {
-					@Override
-					protected void onChange() {
-						if (getSelectedValue() != SPDSettings.scale()) {
-							SPDSettings.scale(getSelectedValue());
-							ShatteredPixelDungeon.seamlessResetScene();
-						}
-					}
-				};
-				optScale.setSelectedValue(PixelScene.defaultZoom);
-				add(optScale);
-			}
-
-			if (DeviceCompat.isAndroid() && PixelScene.maxScreenZoom >= 2) {
+			if (!DeviceCompat.isDesktop() && PixelScene.maxScreenZoom >=1) {
 				chkSaver = new CheckBox(Messages.get(this, "saver")) {
 					@Override
 					protected void onClick() {
 						super.onClick();
 						if (checked()) {
 							checked(!checked());
-							ShatteredPixelDungeon.scene().add(new WndOptions(Icons.get(Icons.DISPLAY),
+							ShatteredPixelDungeon.scene().add(new WndOptions(
 									Messages.get(DisplayTab.class, "saver"),
 									Messages.get(DisplayTab.class, "saver_desc"),
 									Messages.get(DisplayTab.class, "okay"),
@@ -268,18 +250,13 @@ public class WndSettings extends WndTabbed {
 				add( chkSaver );
 			}
 
-			if (DeviceCompat.isAndroid()) {
-				Boolean landscape = SPDSettings.landscape();
-				if (landscape == null){
-					landscape = Game.width > Game.height;
-				}
-				Boolean finalLandscape = landscape;
-				btnOrientation = new RedButton(finalLandscape ?
+			if (!DeviceCompat.isDesktop()) {
+				btnOrientation = new RedButton(PixelScene.landscape() ?
 						Messages.get(this, "portrait")
 						: Messages.get(this, "landscape")) {
 					@Override
 					protected void onClick() {
-						SPDSettings.landscape(!finalLandscape);
+						SPDSettings.landscape(!PixelScene.landscape());
 					}
 				};
 				add(btnOrientation);
@@ -321,28 +298,25 @@ public class WndSettings extends WndTabbed {
 
 			bottom = sep1.y + 1;
 
-			if (width > 200 && chkSaver != null) {
-				chkFullscreen.setRect(0, bottom + GAP, width/2-1, BTN_HEIGHT);
-				chkSaver.setRect(chkFullscreen.right()+ GAP, bottom + GAP, width/2-1, BTN_HEIGHT);
-				bottom = chkFullscreen.bottom();
-			} else {
-				chkFullscreen.setRect(0, bottom + GAP, width, BTN_HEIGHT);
-				bottom = chkFullscreen.bottom();
+			if (optScale != null){
+				optScale.setRect(0, bottom + GAP, width, SLIDER_HEIGHT);
+				bottom = optScale.bottom();
+			}
 
+			if (width > 200 && chkSaver != null && btnOrientation != null) {
+				chkSaver.setRect(0, bottom + GAP, width/2-1, BTN_HEIGHT);
+				btnOrientation.setRect(chkSaver.right()+ GAP, bottom + GAP, width/2-1, BTN_HEIGHT);
+				bottom = btnOrientation.bottom();
+			} else {
 				if (chkSaver != null) {
 					chkSaver.setRect(0, bottom + GAP, width, BTN_HEIGHT);
 					bottom = chkSaver.bottom();
 				}
-			}
 
-			if (btnOrientation != null) {
-				btnOrientation.setRect(0, bottom + GAP, width, BTN_HEIGHT);
-				bottom = btnOrientation.bottom();
-			}
-
-			if (optScale != null){
-				optScale.setRect(0, bottom + GAP, width, SLIDER_HEIGHT);
-				bottom = optScale.bottom();
+				if (btnOrientation != null) {
+					btnOrientation.setRect(0, bottom + GAP, width, BTN_HEIGHT);
+					bottom = btnOrientation.bottom();
+				}
 			}
 
 			sep2.size(width, 1);
@@ -365,17 +339,17 @@ public class WndSettings extends WndTabbed {
 	private static class UITab extends Component {
 
 		RenderedTextBlock title;
-
 		ColorBlock sep1;
-		OptionSlider optUISize;
 		RenderedTextBlock barDesc;
 		RedButton btnSplit; RedButton btnGrouped; RedButton btnCentered;
 		CheckBox chkFlipToolbar;
 		CheckBox chkFlipTags;
 		ColorBlock sep2;
+		CheckBox chkFullscreen;
 		CheckBox chkFont;
 		ColorBlock sep3;
 		RedButton btnKeyBindings;
+
 
 		@Override
 		protected void createChildren() {
@@ -386,84 +360,58 @@ public class WndSettings extends WndTabbed {
 			sep1 = new ColorBlock(1, 1, 0xFF000000);
 			add(sep1);
 
-			//add slider for UI size only if device has enough space to support it
-			float wMin = Game.width / PixelScene.MIN_WIDTH_FULL;
-			float hMin = Game.height / PixelScene.MIN_HEIGHT_FULL;
-			if (Math.min(wMin, hMin) >= 2*Game.density){
-				optUISize = new OptionSlider(
-						Messages.get(this, "size"),
-						Messages.get(this, "mobile"),
-						Messages.get(this, "full"),
-						0,
-						2
-				) {
-					@Override
-					protected void onChange() {
-						SPDSettings.interfaceSize(getSelectedValue());
-						ShatteredPixelDungeon.seamlessResetScene();
-					}
-				};
-				optUISize.setSelectedValue(SPDSettings.interfaceSize());
-				add(optUISize);
-			}
+			barDesc = PixelScene.renderTextBlock(Messages.get(this, "mode"), 9);
+			add(barDesc);
 
-			if (SPDSettings.interfaceSize() == 0) {
-				barDesc = PixelScene.renderTextBlock(Messages.get(this, "mode"), 9);
-				add(barDesc);
+			btnSplit = new RedButton(Messages.get(this, "split")){
+				@Override
+				protected void onClick() {
+					textColor(TITLE_COLOR);
+					btnGrouped.textColor(WHITE);
+					btnCentered.textColor(WHITE);
+					SPDSettings.toolbarMode(Toolbar.Mode.SPLIT.name());
+					Toolbar.updateLayout();
+				}
+			};
+			if (SPDSettings.toolbarMode().equals(Toolbar.Mode.SPLIT.name())) btnSplit.textColor(TITLE_COLOR);
+			add(btnSplit);
 
-				btnSplit = new RedButton(Messages.get(this, "split")) {
-					@Override
-					protected void onClick() {
-						textColor(TITLE_COLOR);
-						btnGrouped.textColor(WHITE);
-						btnCentered.textColor(WHITE);
-						SPDSettings.toolbarMode(Toolbar.Mode.SPLIT.name());
-						Toolbar.updateLayout();
-					}
-				};
-				if (SPDSettings.toolbarMode().equals(Toolbar.Mode.SPLIT.name()))
-					btnSplit.textColor(TITLE_COLOR);
-				add(btnSplit);
+			btnGrouped = new RedButton(Messages.get(this, "group")){
+				@Override
+				protected void onClick() {
+					btnSplit.textColor(WHITE);
+					textColor(TITLE_COLOR);
+					btnCentered.textColor(WHITE);
+					SPDSettings.toolbarMode(Toolbar.Mode.GROUP.name());
+					Toolbar.updateLayout();
+				}
+			};
+			if (SPDSettings.toolbarMode().equals(Toolbar.Mode.GROUP.name())) btnGrouped.textColor(TITLE_COLOR);
+			add(btnGrouped);
 
-				btnGrouped = new RedButton(Messages.get(this, "group")) {
-					@Override
-					protected void onClick() {
-						btnSplit.textColor(WHITE);
-						textColor(TITLE_COLOR);
-						btnCentered.textColor(WHITE);
-						SPDSettings.toolbarMode(Toolbar.Mode.GROUP.name());
-						Toolbar.updateLayout();
-					}
-				};
-				if (SPDSettings.toolbarMode().equals(Toolbar.Mode.GROUP.name()))
-					btnGrouped.textColor(TITLE_COLOR);
-				add(btnGrouped);
+			btnCentered = new RedButton(Messages.get(this, "center")){
+				@Override
+				protected void onClick() {
+					btnSplit.textColor(WHITE);
+					btnGrouped.textColor(WHITE);
+					textColor(TITLE_COLOR);
+					SPDSettings.toolbarMode(Toolbar.Mode.CENTER.name());
+					Toolbar.updateLayout();
+				}
+			};
+			if (SPDSettings.toolbarMode().equals(Toolbar.Mode.CENTER.name())) btnCentered.textColor(TITLE_COLOR);
+			add(btnCentered);
 
-				btnCentered = new RedButton(Messages.get(this, "center")) {
-					@Override
-					protected void onClick() {
-						btnSplit.textColor(WHITE);
-						btnGrouped.textColor(WHITE);
-						textColor(TITLE_COLOR);
-						SPDSettings.toolbarMode(Toolbar.Mode.CENTER.name());
-						Toolbar.updateLayout();
-					}
-				};
-				if (SPDSettings.toolbarMode().equals(Toolbar.Mode.CENTER.name()))
-					btnCentered.textColor(TITLE_COLOR);
-				add(btnCentered);
-
-				chkFlipToolbar = new CheckBox(Messages.get(this, "flip_toolbar")) {
-					@Override
-					protected void onClick() {
-						super.onClick();
-						SPDSettings.flipToolbar(checked());
-						Toolbar.updateLayout();
-					}
-				};
-				chkFlipToolbar.checked(SPDSettings.flipToolbar());
-				add(chkFlipToolbar);
-			}
+			chkFlipToolbar = new CheckBox(Messages.get(this, "flip_toolbar")){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					SPDSettings.flipToolbar(checked());
+					Toolbar.updateLayout();
+				}
+			};
+			chkFlipToolbar.checked(SPDSettings.flipToolbar());
+			add(chkFlipToolbar);
 
 			chkFlipTags = new CheckBox(Messages.get(this, "flip_indicators")){
 				@Override
@@ -478,6 +426,17 @@ public class WndSettings extends WndTabbed {
 
 			sep2 = new ColorBlock(1, 1, 0xFF000000);
 			add(sep2);
+
+			chkFullscreen = new CheckBox( Messages.get(this, "fullscreen") ) {
+				@Override
+				protected void onClick() {
+					super.onClick();
+					SPDSettings.fullscreen(checked());
+				}
+			};
+			chkFullscreen.checked(SPDSettings.fullscreen());
+			chkFullscreen.enable(DeviceCompat.supportsFullScreen());
+			add(chkFullscreen);
 
 			chkFont = new CheckBox(Messages.get(this, "system_font")){
 				@Override
@@ -522,51 +481,34 @@ public class WndSettings extends WndTabbed {
 			sep1.size(width, 1);
 			sep1.y = title.bottom() + 2*GAP;
 
-			height = sep1.y + 1;
+			barDesc.setPos((width-barDesc.width())/2f, sep1.y + 1 + GAP);
+			PixelScene.align(barDesc);
 
-			if (optUISize != null){
-				optUISize.setRect(0, height + GAP, width, SLIDER_HEIGHT);
-				height = optUISize.bottom();
-			}
+			int btnWidth = (int)(width - 2* GAP)/3;
+			btnSplit.setRect(0, barDesc.bottom() + GAP, btnWidth, 16);
+			btnGrouped.setRect(btnSplit.right()+ GAP, btnSplit.top(), btnWidth, 16);
+			btnCentered.setRect(btnGrouped.right()+ GAP, btnSplit.top(), btnWidth, 16);
 
-			if (barDesc != null) {
-				barDesc.setPos((width - barDesc.width()) / 2f, height + GAP);
-				PixelScene.align(barDesc);
-
-				int btnWidth = (int) (width - 2 * GAP) / 3;
-				btnSplit.setRect(0, barDesc.bottom() + GAP, btnWidth, 16);
-				btnGrouped.setRect(btnSplit.right() + GAP, btnSplit.top(), btnWidth, 16);
-				btnCentered.setRect(btnGrouped.right() + GAP, btnSplit.top(), btnWidth, 16);
-
-				if (width > 200) {
-					chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP, width / 2 - 1, BTN_HEIGHT);
-					chkFlipTags.setRect(chkFlipToolbar.right() + GAP, chkFlipToolbar.top(), width / 2 - 1, BTN_HEIGHT);
-				} else {
-					chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP, width, BTN_HEIGHT);
-					chkFlipTags.setRect(0, chkFlipToolbar.bottom() + GAP, width, BTN_HEIGHT);
-				}
+			if (width > 200) {
+				chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP, width/2 - 1, BTN_HEIGHT);
+				chkFlipTags.setRect(chkFlipToolbar.right() + GAP, chkFlipToolbar.top(), width/2 -1, BTN_HEIGHT);
+				sep2.size(width, 1);
+				sep2.y = chkFlipTags.bottom() + 2;
+				chkFullscreen.setRect(0, sep2.y + 1 + GAP, width/2 - 1, BTN_HEIGHT);
+				chkFont.setRect(chkFullscreen.right() + GAP, chkFullscreen.top(), width/2 - 1, BTN_HEIGHT);
 			} else {
-				chkFlipTags.setRect(0, height + GAP, width, BTN_HEIGHT);
+				chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP, width, BTN_HEIGHT);
+				chkFlipTags.setRect(0, chkFlipToolbar.bottom() + GAP, width, BTN_HEIGHT);
+				sep2.size(width, 1);
+				sep2.y = chkFlipTags.bottom() + 2;
+				chkFullscreen.setRect(0, sep2.y + 1 + GAP, width, BTN_HEIGHT);
+				chkFont.setRect(0, chkFullscreen.bottom() + GAP, width, BTN_HEIGHT);
 			}
-
-			sep2.size(width, 1);
-			sep2.y = chkFlipTags.bottom() + 2;
-
-			chkFont.setRect(0, sep2.y + 1 + GAP, width, BTN_HEIGHT);
 
 			if (btnKeyBindings != null){
-				if (width > 200){
-					chkFont.setSize(width/2-1, BTN_HEIGHT);
-					sep3.size(1, BTN_HEIGHT + 2*GAP);
-					sep3.x = chkFont.right() + 0.5f;
-					sep3.y = sep2.y+1;
-					PixelScene.align(sep3);
-					btnKeyBindings.setRect(chkFont.right()+2, chkFont.top(), width/2 - 1, BTN_HEIGHT);
-				} else {
-					sep3.size(width, 1);
-					sep3.y = chkFont.bottom() + 2;
-					btnKeyBindings.setRect(0, sep3.y + 1 + GAP, width, BTN_HEIGHT);
-				}
+				sep3.size(width, 1);
+				sep3.y = chkFont.bottom() + 2;
+				btnKeyBindings.setRect(0, sep3.y + 1 + GAP, width, BTN_HEIGHT);
 				height = btnKeyBindings.bottom();
 			} else {
 				height = chkFont.bottom();
@@ -581,7 +523,6 @@ public class WndSettings extends WndTabbed {
 		ColorBlock sep1;
 		CheckBox chkNews;
 		CheckBox chkUpdates;
-		CheckBox chkBetas;
 		CheckBox chkWifi;
 
 		@Override
@@ -604,31 +545,16 @@ public class WndSettings extends WndTabbed {
 			chkNews.checked(SPDSettings.news());
 			add(chkNews);
 
-			if (Updates.supportsUpdates() && Updates.isUpdateable()) {
-				chkUpdates = new CheckBox(Messages.get(this, "updates")) {
-					@Override
-					protected void onClick() {
-						super.onClick();
-						SPDSettings.updates(checked());
-						Updates.clearUpdate();
-					}
-				};
-				chkUpdates.checked(SPDSettings.updates());
-				add(chkUpdates);
-
-				if (Updates.supportsBetaChannel()){
-					chkBetas = new CheckBox(Messages.get(this, "betas")) {
-						@Override
-						protected void onClick() {
-							super.onClick();
-							SPDSettings.updates(checked());
-							Updates.clearUpdate();
-						}
-					};
-					chkBetas.checked(SPDSettings.betas());
-					add(chkBetas);
+			chkUpdates = new CheckBox(Messages.get(this, "updates")){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					SPDSettings.updates(checked());
+					Updates.clearUpdate();
 				}
-			}
+			};
+			chkUpdates.checked(SPDSettings.updates());
+			add(chkUpdates);
 
 			if (!DeviceCompat.isDesktop()){
 				chkWifi = new CheckBox(Messages.get(this, "wifi")){
@@ -649,25 +575,15 @@ public class WndSettings extends WndTabbed {
 			sep1.size(width, 1);
 			sep1.y = title.bottom() + 2*GAP;
 
-			float pos;
-			if (width > 200 && chkUpdates != null){
+			if (width > 200){
 				chkNews.setRect(0, sep1.y + 1 + GAP, width/2-1, BTN_HEIGHT);
 				chkUpdates.setRect(chkNews.right() + GAP, chkNews.top(), width/2-1, BTN_HEIGHT);
-				pos = chkUpdates.bottom();
 			} else {
 				chkNews.setRect(0, sep1.y + 1 + GAP, width, BTN_HEIGHT);
-				pos = chkNews.bottom();
-				if (chkUpdates != null) {
-					chkUpdates.setRect(0, chkNews.bottom() + GAP, width, BTN_HEIGHT);
-					pos = chkUpdates.bottom();
-				}
+				chkUpdates.setRect(0, chkNews.bottom()+ GAP, width, BTN_HEIGHT);
 			}
 
-			if (chkBetas != null){
-				chkBetas.setRect(0, pos + GAP, width, BTN_HEIGHT);
-				pos = chkBetas.bottom();
-			}
-
+			float pos = chkUpdates.bottom();
 			if (chkWifi != null){
 				chkWifi.setRect(0, pos + GAP, width, BTN_HEIGHT);
 				pos = chkWifi.bottom();
@@ -687,8 +603,6 @@ public class WndSettings extends WndTabbed {
 		ColorBlock sep2;
 		OptionSlider optSFX;
 		CheckBox chkMuteSFX;
-		ColorBlock sep3;
-		CheckBox chkIgnoreSilent;
 
 		@Override
 		protected void createChildren() {
@@ -750,22 +664,6 @@ public class WndSettings extends WndTabbed {
 			};
 			chkMuteSFX.checked(!SPDSettings.soundFx());
 			add( chkMuteSFX );
-
-			if (DeviceCompat.isiOS() && Messages.lang() == Languages.ENGLISH){
-
-				sep3 = new ColorBlock(1, 1, 0xFF000000);
-				add(sep3);
-
-				chkIgnoreSilent = new CheckBox( Messages.get(this, "ignore_silent") ){
-					@Override
-					protected void onClick() {
-						super.onClick();
-						SPDSettings.ignoreSilentMode(checked());
-					}
-				};
-				chkIgnoreSilent.checked(SPDSettings.ignoreSilentMode());
-				add(chkIgnoreSilent);
-			}
 		}
 
 		@Override
@@ -774,46 +672,24 @@ public class WndSettings extends WndTabbed {
 			sep1.size(width, 1);
 			sep1.y = title.bottom() + 2*GAP;
 
-			if (width > 200) {
-				optMusic.setRect(0, sep1.y + 1 + GAP, width/2-1, SLIDER_HEIGHT);
-				chkMusicMute.setRect(0, optMusic.bottom() + GAP, width/2-1, BTN_HEIGHT);
+			optMusic.setRect(0, sep1.y + 1 + GAP, width, SLIDER_HEIGHT);
+			chkMusicMute.setRect(0, optMusic.bottom() + GAP, width, BTN_HEIGHT);
 
-				sep2.size(width, 1);
-				sep2.y = sep1.y; //just have them overlap
+			sep2.size(width, 1);
+			sep2.y = chkMusicMute.bottom() + GAP;
 
-				optSFX.setRect(optMusic.right()+2, sep2.y + 1 + GAP, width/2-1, SLIDER_HEIGHT);
-				chkMuteSFX.setRect(chkMusicMute.right()+2, optSFX.bottom() + GAP, width/2-1, BTN_HEIGHT);
-
-			} else {
-				optMusic.setRect(0, sep1.y + 1 + GAP, width, SLIDER_HEIGHT);
-				chkMusicMute.setRect(0, optMusic.bottom() + GAP, width, BTN_HEIGHT);
-
-				sep2.size(width, 1);
-				sep2.y = chkMusicMute.bottom() + GAP;
-
-				optSFX.setRect(0, sep2.y + 1 + GAP, width, SLIDER_HEIGHT);
-				chkMuteSFX.setRect(0, optSFX.bottom() + GAP, width, BTN_HEIGHT);
-			}
+			optSFX.setRect(0, sep2.y + 1 + GAP, width, SLIDER_HEIGHT);
+			chkMuteSFX.setRect(0, optSFX.bottom() + GAP, width, BTN_HEIGHT);
 
 			height = chkMuteSFX.bottom();
-
-			if (chkIgnoreSilent != null){
-				sep3.size(width, 1);
-				sep3.y = chkMuteSFX.bottom() + GAP;
-
-				chkIgnoreSilent.setRect(0, sep3.y + 1 + GAP, width, BTN_HEIGHT);
-				height = chkIgnoreSilent.bottom();
-			}
 		}
 
 	}
 
 	private static class LangsTab extends Component{
 
-		final static int COLS_P = 3;
-		final static int COLS_L = 4;
-
-		final static int BTN_HEIGHT = 11;
+		final static int COLS_P = 1;
+		final static int COLS_L = 2;
 
 		RenderedTextBlock title;
 		ColorBlock sep1;
@@ -850,7 +726,7 @@ public class WndSettings extends WndTabbed {
 			add(txtLangName);
 
 			txtLangInfo = PixelScene.renderTextBlock(6);
-			if (currLang == Languages.ENGLISH) txtLangInfo.text("This is the source language, written by the developer.");
+			if (currLang == Languages.CHINESE) txtLangInfo.text("这是源语言，由开发者编写！");
 			else if (currLang.status() == Languages.Status.REVIEWED) txtLangInfo.text(Messages.get(this, "completed"));
 			else if (currLang.status() == Languages.Status.UNREVIEWED) txtLangInfo.text(Messages.get(this, "unreviewed"));
 			else if (currLang.status() == Languages.Status.INCOMPLETE) txtLangInfo.text(Messages.get(this, "unfinished"));
@@ -906,79 +782,70 @@ public class WndSettings extends WndTabbed {
 			txtTranifex.text(Messages.get(this, "transifex"));
 			add(txtTranifex);
 
-			if (currLang != Languages.ENGLISH) {
+			if (currLang != Languages.CHINESE) {
 				String credText = Messages.titleCase(Messages.get(this, "credits"));
 				btnCredits = new RedButton(credText, credText.length() > 9 ? 6 : 9) {
 					@Override
 					protected void onClick() {
 						super.onClick();
+						String creds = "";
+						String creds2 = "";
 						String[] reviewers = currLang.reviewers();
 						String[] translators = currLang.translators();
 
-						int totalCredits = 2*reviewers.length + translators.length;
-						int totalTokens = 2*totalCredits; //for spaces
+						ArrayList<String> total = new ArrayList<>();
+						total.addAll(Arrays.asList(reviewers));
+						total.addAll(Arrays.asList(reviewers));
+						total.addAll(Arrays.asList(translators));
+						int translatorIdx = reviewers.length;
 
-						//additional space for titles, and newline chars
-						if (reviewers.length > 0) totalTokens+=6;
-						totalTokens +=4;
+						//we have 2 columns in wide mode
+						boolean wide = (2 * reviewers.length + translators.length) > (PixelScene.landscape() ? 15 : 30);
 
-						String[] entries = new String[totalTokens];
-						int index = 0;
-						if (reviewers.length > 0){
-							entries[0] = "_";
-							entries[1] = Messages.titleCase(Messages.get(LangsTab.this, "reviewers"));
-							entries[2] = "_";
-							entries[3] = "\n";
-							index = 4;
-							for (int i = 0; i < reviewers.length; i++){
-								entries[index] = reviewers[i];
-								if (i < reviewers.length-1) entries[index] += ", ";
-								entries[index+1] = " ";
-								index += 2;
+						int i;
+						if (reviewers.length > 0) {
+							creds += Messages.titleCase(Messages.get(LangsTab.this, "reviewers"));
+							creds2 += "";
+							boolean col2 = false;
+							for (i = 0; i < total.size(); i++) {
+								if (i == translatorIdx){
+									creds += "\n\n" + Messages.titleCase(Messages.get(LangsTab.this, "translators"));
+									creds2 += "\n\n";
+									if (col2) creds2 += "\n";
+									col2 = false;
+								}
+								if (wide && col2) {
+									creds2 += "\n-" + total.get(i);
+								} else {
+									creds += "\n-" + total.get(i);
+								}
+								col2 = !col2 && wide;
 							}
-							entries[index] = "\n";
-							entries[index+1] = "\n";
-							index += 2;
 						}
 
-						entries[index] = "_";
-						entries[index+1] = Messages.titleCase(Messages.get(LangsTab.this, "translators"));
-						entries[index+2] = "_";
-						entries[index+3] = "\n";
-						index += 4;
+						Window credits = new Window(0, 0, 0, Chrome.get(Chrome.Type.TOAST));
 
-						//reviewers are also shown as translators
-						for (int i = 0; i < reviewers.length; i++){
-							entries[index] = reviewers[i];
-							if (i < reviewers.length-1 || translators.length > 0) entries[index] += ", ";
-							entries[index+1] = " ";
-							index += 2;
-						}
+						int w = wide ? 125 : 60;
 
-						for (int i = 0; i < translators.length; i++){
-							entries[index] = translators[i];
-							if (i < translators.length-1) entries[index] += ", ";
-							entries[index+1] = " ";
-							index += 2;
-						}
-
-						Window credits = new Window(0, 0, Chrome.get(Chrome.Type.TOAST));
-
-						int w = PixelScene.landscape() ? 120 : 80;
-						if (totalCredits >= 25) w *= 1.5f;
-
-						RenderedTextBlock title = PixelScene.renderTextBlock(9);
+						RenderedTextBlock title = PixelScene.renderTextBlock(6);
 						title.text(Messages.titleCase(Messages.get(LangsTab.this, "credits")), w);
-						title.hardlight(TITLE_COLOR);
+						title.hardlight(SHPX_COLOR);
 						title.setPos((w - title.width()) / 2, 0);
 						credits.add(title);
 
-						RenderedTextBlock text = PixelScene.renderTextBlock(7);
-						text.maxWidth(w);
-						text.tokens(entries);
-
-						text.setPos(0, title.bottom() + 4);
+						RenderedTextBlock text = PixelScene.renderTextBlock(5);
+						text.setHightlighting(false);
+						text.text(creds, 65);
+						text.setPos(0, title.bottom() + 2);
 						credits.add(text);
+
+						if (wide) {
+							RenderedTextBlock rightColumn = PixelScene.renderTextBlock(5);
+							rightColumn.setHightlighting(false);
+							rightColumn.text(creds2, 65);
+							rightColumn.setPos(65, title.bottom() + 6);
+							credits.add(rightColumn);
+						}
 
 						credits.resize(w, (int) text.bottom() + 2);
 						ShatteredPixelDungeon.scene().addToFront(credits);
@@ -1043,5 +910,87 @@ public class WndSettings extends WndTabbed {
 			}
 
 		}
+	}
+
+	private static class ExtendTab extends Component {
+
+		RenderedTextBlock title;
+		ColorBlock sep1;
+		OptionSlider quickslots;
+		CheckBox ClassUI;
+
+		@Override
+		protected void createChildren() {
+			title = PixelScene.renderTextBlock(Messages.get(this, "title"), 9);
+			title.hardlight(TITLE_COLOR);
+			add(title);
+
+			sep1 = new ColorBlock(1, 1, 0xFF000000);
+			add(sep1);
+
+			quickslots = new OptionSlider(Messages.get(this, "quickslots"), "" + Constants.MIN_QUICKSLOTS,
+					"" + Constants.MAX_QUICKSLOTS, Constants.MIN_QUICKSLOTS, Constants.MAX_QUICKSLOTS) {
+				@Override
+				protected void onChange() {
+					SPDSettings.quickslots(getSelectedValue());
+					Toolbar.updateLayout();
+				}
+			};
+			quickslots.setSelectedValue(SPDSettings.quickslots());
+			add(quickslots);
+
+			ClassUI = new CheckBox( Messages.get(this, "dark_ui") ) {
+				@Override
+				protected void onClick() {
+					super.onClick();
+					SPDSettings.ClassUI(checked());
+				}
+			};
+			ClassUI.checked(SPDSettings.ClassUI());
+			add(ClassUI);
+
+		}
+
+		@Override
+		protected void layout() {
+
+			float bottom = y;
+
+			title.setPos((width - title.width())/2, bottom + GAP);
+			sep1.size(width, 1);
+			sep1.y = title.bottom() + 2*GAP;
+
+			bottom = sep1.y + 1;
+
+			if (width > 200){
+				quickslots.setRect(0, bottom, width/2-GAP/2, SLIDER_HEIGHT);
+				//横屏布局
+				if(Game.scene()!=null && Game.scene().getClass() == GameScene.class) {
+					ClassUI.setRect(quickslots.left(), quickslots.bottom(), width / 2 - GAP / 2, SLIDER_HEIGHT);
+				} else {
+					ClassUI.setRect(quickslots.left(), quickslots.bottom(), width - GAP / 2, SLIDER_HEIGHT);
+				}
+				if(Game.scene()!=null && Game.scene().getClass() == GameScene.class) {
+					quickslots.setRect(ClassUI.right() + GAP, ClassUI.top(), width / 2 - GAP / 2, SLIDER_HEIGHT);
+				} else {
+					quickslots.setRect(0 ,9000+GAP, width, SLIDER_HEIGHT);
+				}
+				//竖屏布局
+			} else {
+				quickslots.setRect(0, bottom + GAP, width, SLIDER_HEIGHT);
+				ClassUI.setRect(0, quickslots.bottom() + GAP, width, SLIDER_HEIGHT);
+				//GameScene
+				if(Game.scene()!=null && Game.scene().getClass() == GameScene.class){
+					quickslots.setRect(ClassUI.left(), ClassUI.bottom(), width  - GAP / 2, SLIDER_HEIGHT);
+
+				} else {
+					quickslots.setRect(0, 9000 + GAP, width, SLIDER_HEIGHT);
+				}
+
+			}
+
+			height = ClassUI.bottom();
+		}
+
 	}
 }

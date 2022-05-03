@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,6 @@ public class Terrain {
 	public static final int EXIT			= 8;
 	public static final int EMBERS			= 9;
 	public static final int LOCKED_DOOR		= 10;
-	public static final int CRYSTAL_DOOR	= 31;
 	public static final int PEDESTAL		= 11;
 	public static final int WALL_DECO		= 12;
 	public static final int BARRICADE		= 13;
@@ -82,7 +81,6 @@ public class Terrain {
 		flags[EXIT]			= PASSABLE;
 		flags[EMBERS]		= PASSABLE;
 		flags[LOCKED_DOOR]	= LOS_BLOCKING | SOLID;
-		flags[CRYSTAL_DOOR]	= SOLID;
 		flags[PEDESTAL]		= PASSABLE;
 		flags[WALL_DECO]	= flags[WALL];
 		flags[BARRICADE]	= FLAMABLE | SOLID | LOS_BLOCKING;

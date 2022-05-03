@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,9 +50,7 @@ public class ArtifactRecharge extends Buff {
 					if (b instanceof HornOfPlenty.hornRecharge && ignoreHornOfPlenty){
 						continue;
 					}
-					if (!((Artifact.ArtifactBuff) b).isCursed()) {
-						((Artifact.ArtifactBuff) b).charge((Hero) target, chargeAmount);
-					}
+					((Artifact.ArtifactBuff) b).charge((Hero) target, chargeAmount);
 				}
 			}
 		}
@@ -76,10 +74,6 @@ public class ArtifactRecharge extends Buff {
 		left += amount;
 		return this;
 	}
-
-	public float left(){
-		return left;
-	}
 	
 	@Override
 	public int icon() {
@@ -94,11 +88,6 @@ public class ArtifactRecharge extends Buff {
 	@Override
 	public float iconFadePercent() {
 		return Math.max(0, (DURATION - left) / DURATION);
-	}
-
-	@Override
-	public String iconTextDisplay() {
-		return Integer.toString((int)left);
 	}
 
 	@Override

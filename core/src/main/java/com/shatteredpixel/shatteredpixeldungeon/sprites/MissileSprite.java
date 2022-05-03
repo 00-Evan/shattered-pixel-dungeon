@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -149,7 +149,7 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		}
 		
 		float speed = SPEED;
-		if (item instanceof Dart && Dungeon.hero.belongings.weapon() instanceof Crossbow){
+		if (item instanceof Dart && Dungeon.hero.belongings.weapon instanceof Crossbow){
 			speed *= 3f;
 			
 		} else if (item instanceof SpiritBow.SpiritArrow

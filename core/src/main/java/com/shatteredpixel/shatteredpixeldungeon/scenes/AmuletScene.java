@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,10 +23,8 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
@@ -45,10 +43,6 @@ public class AmuletScene extends PixelScene {
 	public static boolean noText = false;
 	
 	private Image amulet;
-
-	{
-		inGameScene = true;
-	}
 	
 	@Override
 	public void create() {
@@ -67,9 +61,10 @@ public class AmuletScene extends PixelScene {
 		RedButton btnExit = new RedButton( Messages.get(this, "exit") ) {
 			@Override
 			protected void onClick() {
-				Dungeon.win( Amulet.class );
-				Dungeon.deleteGame( GamesInProgress.curSlot, true );
-				Game.switchScene( RankingsScene.class );
+				InterlevelScene.mode = InterlevelScene.Mode.RETURN;
+				InterlevelScene.returnDepth = Math.max(1, (Dungeon.depth - 1 - (Dungeon.depth-2)));
+				InterlevelScene.returnPos = -1;
+				Game.switchScene( InterlevelScene.class );
 			}
 		};
 		btnExit.setSize( WIDTH, BTN_HEIGHT );
@@ -87,14 +82,14 @@ public class AmuletScene extends PixelScene {
 		float height;
 		if (noText) {
 			height = amulet.height + LARGE_GAP + btnExit.height() + SMALL_GAP + btnStay.height();
-			
+
 			amulet.x = (Camera.main.width - amulet.width) / 2;
 			amulet.y = (Camera.main.height - height) / 2;
 			align(amulet);
 
 			btnExit.setPos( (Camera.main.width - btnExit.width()) / 2, amulet.y + amulet.height + LARGE_GAP );
 			btnStay.setPos( btnExit.left(), btnExit.bottom() + SMALL_GAP );
-			
+
 		} else {
 			height = amulet.height + LARGE_GAP + text.height() + LARGE_GAP + btnExit.height() + SMALL_GAP + btnStay.height();
 			

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
@@ -65,7 +64,7 @@ public class WandOfLivingEarth extends DamageWand {
 	}
 	
 	@Override
-	public void onZap(Ballistica bolt) {
+	protected void onZap(Ballistica bolt) {
 		Char ch = Actor.findChar(bolt.collisionPos);
 		int damage = damageRoll();
 		int armorToAdd = damage;
@@ -94,7 +93,7 @@ public class WandOfLivingEarth extends DamageWand {
 		if (guardian != null && guardian == ch){
 			guardian.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + buffedLvl() / 2);
 			guardian.setInfo(curUser, buffedLvl(), armorToAdd);
-			wandProc(guardian, chargesPerCast());
+			processSoulMark(guardian, chargesPerCast());
 			Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, 0.9f * Random.Float(0.87f, 1.15f) );
 
 		//shooting the guardian at a location
@@ -110,7 +109,7 @@ public class WandOfLivingEarth extends DamageWand {
 
 				ch.sprite.centerEmitter().burst(MagicMissile.EarthParticle.BURST, 5 + buffedLvl()/2);
 
-				wandProc(ch, chargesPerCast());
+				processSoulMark(ch, chargesPerCast());
 				ch.damage(damage, this);
 
 				int closest = -1;
@@ -154,7 +153,7 @@ public class WandOfLivingEarth extends DamageWand {
 
 				ch.sprite.centerEmitter().burst(MagicMissile.EarthParticle.BURST, 5 + buffedLvl() / 2);
 
-				wandProc(ch, chargesPerCast());
+				processSoulMark(ch, chargesPerCast());
 				ch.damage(damage, this);
 				Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, 0.8f * Random.Float(0.87f, 1.15f) );
 				
@@ -176,7 +175,7 @@ public class WandOfLivingEarth extends DamageWand {
 	}
 	
 	@Override
-	public void fx(Ballistica bolt, Callback callback) {
+	protected void fx(Ballistica bolt, Callback callback) {
 		MagicMissile.boltFromChar(curUser.sprite.parent,
 				MagicMissile.EARTH,
 				curUser.sprite,
@@ -259,11 +258,6 @@ public class WandOfLivingEarth extends DamageWand {
 		}
 
 		@Override
-		public String iconTextDisplay() {
-			return Integer.toString(armor);
-		}
-
-		@Override
 		public String toString() {
 			return Messages.get(this, "name");
 		}
@@ -309,7 +303,7 @@ public class WandOfLivingEarth extends DamageWand {
 
 		private int wandLevel = -1;
 
-		public void setInfo(Hero hero, int wandLevel, int healthToAdd){
+		private void setInfo(Hero hero, int wandLevel, int healthToAdd){
 			if (wandLevel > this.wandLevel) {
 				this.wandLevel = wandLevel;
 				HT = 16 + 8 * wandLevel;
@@ -356,7 +350,7 @@ public class WandOfLivingEarth extends DamageWand {
 		}
 		
 		{
-			immunities.add( AllyBuff.class );
+			immunities.add( Corruption.class );
 		}
 
 		private static final String DEFENSE = "defense";

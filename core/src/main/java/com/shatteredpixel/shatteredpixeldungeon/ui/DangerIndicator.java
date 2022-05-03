@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,9 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndKeyBindings;
 import com.watabou.input.GameAction;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
@@ -42,13 +40,11 @@ public class DangerIndicator extends Tag {
 	private int enemyIndex = 0;
 	
 	private int lastNumber = -1;
-
-	public static int HEIGHT = 16;
 	
 	public DangerIndicator() {
 		super( 0xFF4C4C );
 		
-		setSize( SIZE, HEIGHT );
+		setSize( 24, 16 );
 		
 		visible = false;
 	}
@@ -118,10 +114,5 @@ public class DangerIndicator extends Tag {
 
 			if (Dungeon.hero.curAction == null) Camera.main.panTo(target.sprite.center(), 5f);
 		}
-	}
-
-	@Override
-	protected String hoverText() {
-		return Messages.titleCase(Messages.get(WndKeyBindings.class, "tag_danger"));
 	}
 }

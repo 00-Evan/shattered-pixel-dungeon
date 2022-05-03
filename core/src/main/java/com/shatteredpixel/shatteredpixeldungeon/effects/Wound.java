@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ import com.watabou.noosa.Visual;
 
 public class Wound extends Image {
 
-	private static final float TIME_TO_FADE = 1f;
+	private static final float TIME_TO_FADE = 0.8f;
 	
 	private float time;
 	
@@ -66,7 +66,7 @@ public class Wound extends Image {
 			kill();
 		} else {
 			float p = time / TIME_TO_FADE;
-			alpha((float) Math.sqrt(p));
+			alpha( p );
 			scale.x = 1 + p;
 		}
 	}

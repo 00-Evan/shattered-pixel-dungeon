@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,29 +21,23 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.stones;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Enchanting;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 
 public class StoneOfEnchantment extends InventoryStone {
 	
 	{
-		preferredBag = Belongings.Backpack.class;
+		mode = WndBag.Mode.ENCHANTABLE;
 		image = ItemSpriteSheet.STONE_ENCHANT;
 
 		unique = true;
-	}
-
-	@Override
-	protected boolean usableOnItem(Item item) {
-		return ScrollOfEnchantment.enchantable(item);
 	}
 	
 	@Override
@@ -76,10 +70,4 @@ public class StoneOfEnchantment extends InventoryStone {
 	public int value() {
 		return 30 * quantity;
 	}
-
-	@Override
-	public int energyVal() {
-		return 4 * quantity;
-	}
-
 }

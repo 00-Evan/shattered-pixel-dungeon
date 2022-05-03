@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.MetalShard;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -65,7 +64,7 @@ public class ReclaimTrap extends TargetedSpell {
 			quantity++; //storing a trap doesn't consume the spell
 			Trap t = Dungeon.level.traps.get(bolt.collisionPos);
 			if (t != null && t.active && t.visible) {
-				t.disarm(); //even disarms traps that normally wouldn't be
+				t.disarm();
 				
 				Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);
 				ScrollOfRecharging.charge(hero);
@@ -117,7 +116,7 @@ public class ReclaimTrap extends TargetedSpell {
 	@Override
 	public int value() {
 		//prices of ingredients, divided by output quantity
-		return Math.round(quantity * ((40 + 50) / 4f));
+		return Math.round(quantity * ((40 + 100) / 3f));
 	}
 	
 	private static final String STORED_TRAP = "stored_trap";
@@ -125,13 +124,13 @@ public class ReclaimTrap extends TargetedSpell {
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
-		if (storedTrap != null) bundle.put(STORED_TRAP, storedTrap);
+		bundle.put(STORED_TRAP, storedTrap);
 	}
 	
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
-		if (bundle.contains(STORED_TRAP)) storedTrap = bundle.getClass(STORED_TRAP);
+		storedTrap = bundle.getClass(STORED_TRAP);
 	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
@@ -143,7 +142,7 @@ public class ReclaimTrap extends TargetedSpell {
 			cost = 6;
 			
 			output = ReclaimTrap.class;
-			outQuantity = 4;
+			outQuantity = 3;
 		}
 		
 	}

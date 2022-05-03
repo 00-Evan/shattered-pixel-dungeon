@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,11 +22,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.SupporterScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.TSSupporterScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
@@ -47,9 +46,9 @@ public class WndSupportPrompt extends Window {
 		add(title);
 
 		String message = Messages.get(WndSupportPrompt.class, "intro");
-		message += "\n\n" + Messages.get(SupporterScene.class, "patreon_msg");
-		if (Messages.lang() != Languages.ENGLISH) {
-			message += "\n" + Messages.get(SupporterScene.class, "patreon_english");
+		message += "\n\n" + Messages.get(TSSupporterScene.class, "patreon_msg");
+		if (Messages.lang() != Languages.CHINESE) {
+			message += "\n" + Messages.get(TSSupporterScene.class, "patreon_english");
 		}
 		message += "\n- Evan";
 
@@ -58,7 +57,7 @@ public class WndSupportPrompt extends Window {
 		text.setPos( title.left(), title.bottom() + 4 );
 		add( text );
 
-		RedButton link = new RedButton(Messages.get(SupporterScene.class, "supporter_link")){
+		RedButton link = new RedButton(Messages.get(TSSupporterScene.class, "supporter_link")){
 			@Override
 			protected void onClick() {
 				super.onClick();
@@ -67,7 +66,7 @@ public class WndSupportPrompt extends Window {
 				link += "?utm_source=shatteredpd";
 				link += "&utm_medium=supporter_prompt";
 				link += "&utm_campaign=ingame_link";
-				ShatteredPixelDungeon.platform.openURI(link);
+				DeviceCompat.openURI(link);
 				SPDSettings.supportNagged(true);
 				WndSupportPrompt.super.hide();
 			}

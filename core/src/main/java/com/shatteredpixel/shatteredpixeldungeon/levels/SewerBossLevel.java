@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,12 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Goo;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
@@ -40,11 +37,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.sewerboss.SewerBoss
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.sewerboss.SewerBossExitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
-import com.watabou.noosa.audio.Music;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -58,32 +52,6 @@ public class SewerBossLevel extends SewerLevel {
 	
 	private int stairs = 0;
 	
-	@Override
-	public void playLevelMusic() {
-		if (locked){
-			Music.INSTANCE.play(Assets.Music.SEWERS_BOSS, true);
-			return;
-		}
-
-		boolean gooAlive = false;
-		for (Mob m : mobs){
-			if (m instanceof Goo) {
-				gooAlive = true;
-				break;
-			}
-		}
-
-		if (gooAlive){
-			Music.INSTANCE.end();
-		} else {
-			Music.INSTANCE.playTracks(
-					new String[]{Assets.Music.SEWERS_1, Assets.Music.SEWERS_2, Assets.Music.SEWERS_2},
-					new float[]{1, 1, 0.5f},
-					false);
-		}
-
-	}
-
 	@Override
 	protected ArrayList<Room> initRooms() {
 		ArrayList<Room> initRooms = new ArrayList<>();
@@ -128,14 +96,6 @@ public class SewerBossLevel extends SewerLevel {
 				.setTraps(nTraps(), trapClasses(), trapChances());
 	}
 	
-	protected int nTraps() {
-		return 0;
-	}
-
-	@Override
-	protected void createMobs() {
-	}
-	
 	public Actor addRespawner() {
 		return null;
 	}
@@ -176,13 +136,6 @@ public class SewerBossLevel extends SewerLevel {
 			
 			stairs = entrance;
 			entrance = 0;
-
-			Game.runOnRenderThread(new Callback() {
-				@Override
-				public void call() {
-					Music.INSTANCE.play(Assets.Music.SEWERS_BOSS, true);
-				}
-			});
 		}
 	}
 	
@@ -197,12 +150,6 @@ public class SewerBossLevel extends SewerLevel {
 			set( entrance, Terrain.ENTRANCE );
 			GameScene.updateMap( entrance );
 
-			Game.runOnRenderThread(new Callback() {
-				@Override
-				public void call() {
-					Music.INSTANCE.end();
-				}
-			});
 		}
 	}
 	

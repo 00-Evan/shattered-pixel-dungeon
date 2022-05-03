@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,15 +23,19 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Goo;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.Emitter.Factory;
 import com.watabou.noosa.particles.PixelParticle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
@@ -78,6 +82,31 @@ public class GooSprite extends MobSprite {
 		spray.on = false;
 	}
 
+	public void zap( int pos ) {
+
+		Char enemy = Actor.findChar(pos);
+
+		//shoot lightning from eye, not sprite center.
+		PointF origin = center();
+		if (flipHorizontal){
+			origin.y -= 6*scale.y;
+			origin.x -= 1*scale.x;
+		} else {
+			origin.y -= 8*scale.y;
+			origin.x += 1*scale.x;
+		}
+		if (enemy != null) {
+			parent.add(new Lightning(origin, enemy.sprite.destinationCenter(), (Goo) ch));
+		} else {
+			parent.add(new Lightning(origin, pos, (Goo) ch));
+		}
+		Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
+
+		turnTo( ch.pos, pos );
+		flash();
+		play( zap );
+	}
+
 	@Override
 	public void link(Char ch) {
 		super.link(ch);
@@ -91,11 +120,9 @@ public class GooSprite extends MobSprite {
 		} else {
 			play(pump);
 			Sample.INSTANCE.play( Assets.Sounds.CHARGEUP, 1f, warnDist == 1 ? 0.8f : 1f );
-			for (int i = 0; i < Dungeon.level.length(); i++){
-				if (ch.fieldOfView != null && ch.fieldOfView[i]
-						&& Dungeon.level.distance(i, ch.pos) <= warnDist
-						&& new Ballistica( ch.pos, i, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID).collisionPos == i
-						&& new Ballistica( i, ch.pos, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID).collisionPos == ch.pos){
+			PathFinder.buildDistanceMap(ch.pos, BArray.not(Dungeon.level.solid, null), 2);
+			for (int i = 0; i < PathFinder.distance.length; i++) {
+				if (PathFinder.distance[i] <= warnDist) {
 					Emitter e = CellEmitter.get(i);
 					e.pour(GooParticle.FACTORY, 0.04f);
 					pumpUpEmitters.add(e);
@@ -195,6 +222,8 @@ public class GooSprite extends MobSprite {
 			ch.onAttackComplete();
 		} else if (anim == die) {
 			spray.killAndErase();
+		} else if (anim == zap) {
+			idle();
 		}
 	}
 }

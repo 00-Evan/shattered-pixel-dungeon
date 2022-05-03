@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ public abstract class Shaman extends Mob {
 		maxLvl = 16;
 		
 		loot = Generator.Category.WAND;
-		lootChance = 0.03f; //initially, see lootChance()
+		lootChance = 0.03f; //initially, see rollToDropLoot
 	}
 	
 	@Override
@@ -72,14 +72,15 @@ public abstract class Shaman extends Mob {
 	}
 
 	@Override
-	public float lootChance() {
+	public void rollToDropLoot() {
 		//each drop makes future drops 1/3 as likely
 		// so loot chance looks like: 1/33, 1/100, 1/300, 1/900, etc.
-		return super.lootChance() * (float)Math.pow(1/3f, Dungeon.LimitedDrops.SHAMAN_WAND.count);
+		lootChance *= Math.pow(1/3f, Dungeon.LimitedDrops.SHAMAN_WAND.count);
+		super.rollToDropLoot();
 	}
 
 	@Override
-	public Item createLoot() {
+	protected Item createLoot() {
 		Dungeon.LimitedDrops.SHAMAN_WAND.count++;
 		return super.createLoot();
 	}

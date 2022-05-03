@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.food;
 
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
@@ -29,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Random;
@@ -51,26 +55,31 @@ public class FrozenCarpaccio extends Food {
 	}
 
 	public static void effect(Hero hero){
-		switch (Random.Int( 5 )) {
-			case 0:
-				GLog.i( Messages.get(FrozenCarpaccio.class, "invis") );
-				Buff.affect( hero, Invisibility.class, Invisibility.DURATION );
-				break;
-			case 1:
-				GLog.i( Messages.get(FrozenCarpaccio.class, "hard") );
-				Buff.affect( hero, Barkskin.class ).set( hero.HT / 4, 1 );
-				break;
-			case 2:
-				GLog.i( Messages.get(FrozenCarpaccio.class, "refresh") );
-				PotionOfHealing.cure(hero);
-				break;
-			case 3:
-				GLog.i( Messages.get(FrozenCarpaccio.class, "better") );
-				if (hero.HP < hero.HT) {
-					hero.HP = Math.min( hero.HP + hero.HT / 4, hero.HT );
-					hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
-				}
-				break;
+		if (Dungeon.isChallenged(Challenges.EXSG)){
+			hero.sprite.showStatus( CharSprite.POSITIVE, (Messages.get(FrozenCarpaccio.class, "upgrade")));
+			Buff.affect(hero, Barrier.class).setShield((int) (0.3f * hero.HT + 3));
+		} else {
+			switch (Random.Int(5)) {
+				case 0:
+					GLog.i(Messages.get(FrozenCarpaccio.class, "invis"));
+					Buff.affect(hero, Invisibility.class, Invisibility.DURATION);
+					break;
+				case 1:
+					GLog.i(Messages.get(FrozenCarpaccio.class, "hard"));
+					Buff.affect(hero, Barkskin.class).set(hero.HT / 4, 1);
+					break;
+				case 2:
+					GLog.i(Messages.get(FrozenCarpaccio.class, "refresh"));
+					PotionOfHealing.cure(hero);
+					break;
+				case 3:
+					GLog.i(Messages.get(FrozenCarpaccio.class, "better"));
+					if (hero.HP < hero.HT) {
+						hero.HP = Math.min(hero.HP + hero.HT / 4, hero.HT);
+						hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+					}
+					break;
+			}
 		}
 	}
 	

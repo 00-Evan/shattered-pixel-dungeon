@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,8 +67,8 @@ public class HolyBomb extends Bomb {
 			if (ch.properties().contains(Char.Property.UNDEAD) || ch.properties().contains(Char.Property.DEMONIC)){
 				ch.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
 				
-				//bomb deals an additional 50% damage to unholy enemies in a 5x5 range
-				int damage = Math.round(Random.NormalIntRange( Dungeon.depth+5, 10 + Dungeon.depth * 2 ) * 0.5f);
+				//bomb deals an additional 67% damage to unholy enemies in a 5x5 range
+				int damage = Math.round(Random.NormalIntRange( Dungeon.depth+5, 10 + Dungeon.depth * 2 ) * 0.67f);
 				ch.damage(damage, this);
 			}
 		}

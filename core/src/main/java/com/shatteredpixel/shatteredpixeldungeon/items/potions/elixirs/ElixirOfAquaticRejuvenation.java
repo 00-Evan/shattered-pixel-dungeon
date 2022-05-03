@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ public class ElixirOfAquaticRejuvenation extends Elixir {
 	@Override
 	public int value() {
 		//prices of ingredients
-		return quantity * (30 + 30);
+		return quantity * (30 + 50);
 	}
 	
 	public static class AquaHealing extends Buff {
@@ -75,7 +75,7 @@ public class ElixirOfAquaticRejuvenation extends Elixir {
 		@Override
 		public boolean act() {
 			
-			if (!target.flying && Dungeon.level.water[target.pos] && target.HP < target.HT){
+			if (Dungeon.level.water[target.pos] && target.HP < target.HT){
 				float healAmt = GameMath.gate( 1, target.HT/50f, left );
 				healAmt = Math.min(healAmt, target.HT - target.HP);
 				if (Random.Float() < (healAmt % 1)){
@@ -110,11 +110,6 @@ public class ElixirOfAquaticRejuvenation extends Elixir {
 		public float iconFadePercent() {
 			float max = Math.round(target.HT * 1.5f);
 			return Math.max(0, (max - left) / max);
-		}
-
-		@Override
-		public String iconTextDisplay() {
-			return Integer.toString(left);
 		}
 		
 		@Override

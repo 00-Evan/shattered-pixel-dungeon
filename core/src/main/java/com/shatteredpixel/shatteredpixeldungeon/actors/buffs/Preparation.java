@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,10 +55,10 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 	}
 	
 	public enum AttackLevel{
-		LVL_1( 1, 0.10f, 1),
-		LVL_2( 3, 0.20f, 1),
-		LVL_3( 5, 0.35f, 2),
-		LVL_4( 9, 0.50f, 3);
+		LVL_1( 1, 0.15f, 1),
+		LVL_2( 3, 0.30f, 1),
+		LVL_3( 5, 0.45f, 2),
+		LVL_4( 9, 0.60f, 3);
 
 		final int turnsReq;
 		final float baseDmgBonus;
@@ -73,9 +73,9 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 		//1st index is prep level, 2nd is talent level
 		private static final float[][] KOThresholds = new float[][]{
 				{.03f, .04f, .05f, .06f},
-				{.10f, .13f, .17f, .20f},
-				{.20f, .27f, .33f, .40f},
-				{.50f, .67f, .83f, 1.0f}
+				{.10f, .12f, .14f, .16f},
+				{.20f, .25f, .30f, .35f},
+				{.40f, .60f, .80f, 1.0f}
 		};
 
 		public float KOThreshold(){
@@ -84,10 +84,10 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 
 		//1st index is prep level, 2nd is talent level
 		private static final int[][] blinkRanges = new int[][]{
-				{1, 1, 2, 2},
-				{2, 3, 4, 5},
-				{3, 4, 6, 7},
-				{4, 6, 8, 10}
+				{1, 2, 3, 4},
+				{1, 3, 4, 6},
+				{2, 4, 6, 8},
+				{2, 5, 7, 10}
 		};
 
 		public int blinkDistance(){
@@ -145,10 +145,6 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 		super.detach();
 		ActionIndicator.clearAction(this);
 	}
-
-	public int attackLevel(){
-		return AttackLevel.getLvl(turnsInvis).ordinal()+1;
-	}
 	
 	public int damageRoll( Char attacker ){
 		return AttackLevel.getLvl(turnsInvis).damageRoll(attacker);
@@ -193,11 +189,6 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 			float turnsToNext = turnsInvis - turnsForCur;
 			return Math.min(1, (turnsForNext - turnsToNext)/(turnsForNext));
 		}
-	}
-
-	@Override
-	public String iconTextDisplay() {
-		return Integer.toString(turnsInvis);
 	}
 
 	@Override
@@ -248,14 +239,9 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 		super.storeInBundle(bundle);
 		bundle.put(TURNS, turnsInvis);
 	}
-
-	@Override
-	public String actionName() {
-		return Messages.get(this, "action_name");
-	}
 	
 	@Override
-	public Image actionIcon() {
+	public Image getIcon() {
 		Image actionIco = Effects.get(Effects.Type.WOUND);
 		tintIcon(actionIco);
 		return actionIco;
@@ -272,7 +258,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 		public void onSelect(Integer cell) {
 			if (cell == null) return;
 			final Char enemy = Actor.findChar( cell );
-			if (enemy == null || Dungeon.hero.isCharmedBy(enemy) || enemy instanceof NPC || !Dungeon.level.heroFOV[cell] || enemy == Dungeon.hero){
+			if (enemy == null || Dungeon.hero.isCharmedBy(enemy) || enemy instanceof NPC || !Dungeon.level.heroFOV[cell]){
 				GLog.w(Messages.get(Preparation.class, "no_target"));
 			} else {
 
@@ -312,7 +298,6 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				Dungeon.level.occupyCell(Dungeon.hero);
 				//prevents the hero from being interrupted by seeing new enemies
 				Dungeon.observe();
-				GameScene.updateFog();
 				Dungeon.hero.checkVisibleMobs();
 				
 				Dungeon.hero.sprite.place( Dungeon.hero.pos );

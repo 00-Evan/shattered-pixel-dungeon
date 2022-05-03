@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -97,7 +97,6 @@ public class TalismanOfForesight extends Artifact {
 				partialCharge = 0;
 				GLog.p( Messages.get(TalismanOfForesight.class, "full_charge") );
 			}
-			updateQuickslot();
 		}
 	}
 
@@ -325,7 +324,6 @@ public class TalismanOfForesight extends Artifact {
 		public void charge(int boost){
 			if (!cursed) {
 				charge = Math.min((charge + boost), chargeCap);
-				updateQuickslot();
 			}
 		}
 
@@ -351,6 +349,7 @@ public class TalismanOfForesight extends Artifact {
 	public static class CharAwareness extends FlavourBuff {
 
 		public int charID;
+		public int depth = Dungeon.depth;
 
 		private static final String CHAR_ID = "char_id";
 

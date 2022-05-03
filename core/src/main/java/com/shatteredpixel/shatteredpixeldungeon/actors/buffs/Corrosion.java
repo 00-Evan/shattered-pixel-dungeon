@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,11 +69,6 @@ public class Corrosion extends Buff implements Hero.Doom {
 	@Override
 	public void tintIcon(Image icon) {
 		icon.hardlight(1f, 0.5f, 0f);
-	}
-
-	@Override
-	public String iconTextDisplay() {
-		return Integer.toString((int)damage);
 	}
 
 	@Override

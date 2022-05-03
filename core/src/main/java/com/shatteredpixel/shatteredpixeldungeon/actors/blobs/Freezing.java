@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SnowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MagicalFireRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 
 public class Freezing extends Blob {
@@ -71,15 +70,9 @@ public class Freezing extends Blob {
 			if (ch.buff(Frost.class) != null){
 				Buff.affect(ch, Frost.class, 2f);
 			} else {
+				Buff.affect(ch, Chill.class, Dungeon.level.water[cell] ? 5f : 3f);
 				Chill chill = ch.buff(Chill.class);
-				float turnsToAdd = Dungeon.level.water[cell] ? 5f : 3f;
-				if (chill != null) turnsToAdd = Math.min(turnsToAdd, Chill.DURATION - chill.cooldown());
-				if (turnsToAdd > 0f) {
-					Buff.affect(ch, Chill.class, turnsToAdd);
-				}
-				if (chill != null
-						&& chill.cooldown() >= Chill.DURATION &&
-						!ch.isImmune(Frost.class)){
+				if (chill != null && chill.cooldown() >= Chill.DURATION){
 					Buff.affect(ch, Frost.class, Frost.DURATION);
 				}
 			}
@@ -101,7 +94,7 @@ public class Freezing extends Blob {
 	}
 	
 	//legacy functionality from before this was a proper blob. Returns true if this cell is visible
-	public static boolean affect( int cell ) {
+	public static boolean affect( int cell, Fire fire ) {
 		
 		Char ch = Actor.findChar( cell );
 		if (ch != null) {
@@ -111,15 +104,9 @@ public class Freezing extends Blob {
 				Buff.prolong(ch, Frost.class, Frost.DURATION);
 			}
 		}
-
-		Fire fire = (Fire) Dungeon.level.blobs.get(Fire.class);
-		if (fire != null && fire.volume > 0) {
+		
+		if (fire != null) {
 			fire.clear( cell );
-		}
-
-		MagicalFireRoom.EternalFire eternalFire = (MagicalFireRoom.EternalFire)Dungeon.level.blobs.get(MagicalFireRoom.EternalFire.class);
-		if (eternalFire != null && eternalFire.volume > 0) {
-			eternalFire.clear( cell );
 		}
 		
 		Heap heap = Dungeon.level.heaps.get( cell );

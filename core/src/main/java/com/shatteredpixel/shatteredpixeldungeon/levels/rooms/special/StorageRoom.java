@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,10 +32,20 @@ import com.watabou.utils.Random;
 
 public class StorageRoom extends SpecialRoom {
 
+	@Override
+	public int minWidth() { return 6; }
+
+	@Override
+	public int minHeight() {
+		return 6;
+	}
+
 	public void paint( Level level ) {
 		
+		final int floor = Terrain.EMPTY_SP;
+		
 		Painter.fill( level, this, Terrain.WALL );
-		Painter.fill( level, this, 1, Terrain.EMPTY_SP );
+		Painter.fill( level, this, 1, floor );
 
 		boolean honeyPot = Random.Int( 2 ) == 0;
 		
@@ -44,13 +54,12 @@ public class StorageRoom extends SpecialRoom {
 			int pos;
 			do {
 				pos = level.pointToCell(random());
-			} while (level.map[pos] != Terrain.EMPTY_SP || level.heaps.get(pos) != null);
+			} while (level.map[pos] != floor);
 			if (honeyPot){
 				level.drop( new Honeypot(), pos);
 				honeyPot = false;
-			} else {
-				level.drop( prize(level), pos);
-			}
+			} else
+				level.drop( prize( level ), pos );
 		}
 		
 		entrance().set( Door.Type.BARRICADE );
@@ -59,7 +68,7 @@ public class StorageRoom extends SpecialRoom {
 	
 	private static Item prize( Level level ) {
 
-		if (Random.Int(3) != 0){
+		if (Random.Int(2) != 0){
 			Item prize = level.findPrizeItem();
 			if (prize != null)
 				return prize;

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,8 +35,10 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TenguDartTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
@@ -63,7 +65,7 @@ public class WandOfBlastWave extends DamageWand {
 	}
 
 	@Override
-	public void onZap(Ballistica bolt) {
+	protected void onZap(Ballistica bolt) {
 		Sample.INSTANCE.play( Assets.Sounds.BLAST );
 		BlastWave.blast(bolt.collisionPos);
 
@@ -79,25 +81,27 @@ public class WandOfBlastWave extends DamageWand {
 			Char ch = Actor.findChar(bolt.collisionPos + i);
 
 			if (ch != null){
-				wandProc(ch, chargesPerCast());
+				processSoulMark(ch, chargesPerCast());
 				if (ch.alignment != Char.Alignment.ALLY) ch.damage(damageRoll(), this);
 
-				if (ch.pos == bolt.collisionPos + i) {
+				if (ch.isAlive() && ch.pos == bolt.collisionPos + i) {
 					Ballistica trajectory = new Ballistica(ch.pos, ch.pos + i, Ballistica.MAGIC_BOLT);
 					int strength = 1 + Math.round(buffedLvl() / 2f);
 					throwChar(ch, trajectory, strength, false);
+				} else if (ch == Dungeon.hero){
+					Dungeon.fail( getClass() );
+					GLog.n( Messages.get( this, "ondeath") );
 				}
-
 			}
 		}
 
 		//throws the char at the center of the blast
 		Char ch = Actor.findChar(bolt.collisionPos);
 		if (ch != null){
-			wandProc(ch, chargesPerCast());
+			processSoulMark(ch, chargesPerCast());
 			ch.damage(damageRoll(), this);
 
-			if (bolt.path.size() > bolt.dist+1 && ch.pos == bolt.collisionPos) {
+			if (ch.isAlive() && bolt.path.size() > bolt.dist+1 && ch.pos == bolt.collisionPos) {
 				Ballistica trajectory = new Ballistica(ch.pos, bolt.path.get(bolt.dist + 1), Ballistica.MAGIC_BOLT);
 				int strength = buffedLvl() + 3;
 				throwChar(ch, trajectory, strength, false);
@@ -125,9 +129,7 @@ public class WandOfBlastWave extends DamageWand {
 
 		boolean collided = dist == trajectory.dist;
 
-		if (dist == 0
-				|| ch.rooted
-				|| ch.properties().contains(Char.Property.IMMOVABLE)) return;
+		if (dist == 0 || ch.properties().contains(Char.Property.IMMOVABLE)) return;
 
 		//large characters cannot be moved into non-open space
 		if (Char.hasProp(ch, Char.Property.LARGE)) {
@@ -186,7 +188,7 @@ public class WandOfBlastWave extends DamageWand {
 	}
 
 	@Override
-	public void fx(Ballistica bolt, Callback callback) {
+	protected void fx(Ballistica bolt, Callback callback) {
 		MagicMissile.boltFromChar( curUser.sprite.parent,
 				MagicMissile.FORCE,
 				curUser.sprite,

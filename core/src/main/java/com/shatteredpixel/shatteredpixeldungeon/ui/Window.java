@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,35 +33,62 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.PointerArea;
-import com.watabou.utils.Point;
 import com.watabou.utils.Signal;
 
 public class Window extends Group implements Signal.Listener<KeyEvent> {
 
 	protected int width;
 	protected int height;
-
-	protected int xOffset;
+	public static final int BTN_HEIGHT	= 20;
+	protected static final float GAP		= 2;
 	protected int yOffset;
 	
 	protected PointerArea blocker;
 	protected ShadowBox shadow;
 	protected NinePatch chrome;
-
+	public static final int R_COLOR = 0xFF0000;
+	public static final int G_COLOR = 0x00FF00;
+	public static final int B_COLOR = 0x0000FF;
+	public static final int Pink_COLOR = 0xFF1493;
+	public static final int DeepPK_COLOR = 0xFF0000;
 	public static final int WHITE = 0xFFFFFF;
-	public static final int TITLE_COLOR = 0xFFFF44;
 	public static final int SHPX_COLOR = 0x33BB33;
+
+	public static final int TITLE_COLOR = 0x00FFFF;
+
+	public static final int MLPD_COLOR = 0x00FFFF;
+	public static final int BALCK_COLOR = 0x000000;
+
+	public static final int GDX_COLOR = 0xE44D3C;
+	public static final int SKYBULE_COLOR = 0x00FFFF;
+	public static final int CYELLOW = 0xFFFF00;
+	public static final int CPINK = 0xFF00FF;
+	public static final int CWHITE = 0xFFFFFF;
+	public static final int WATA_COLOR = 0x55AAFF;
+	public static final int ANSDO_COLOR = 0xFF0000;
+
+	public static final int RED_COLOR = 0xFF0000;
+	public static final int GREEN_COLOR = 0x00FF00;
+	public static final int BLUE_COLOR = 0x0000FF;
+	public static final int CBLACK = 0x000000;
+
 	
 	public Window() {
-		this( 0, 0, Chrome.get( Chrome.Type.WINDOW ) );
+		this( 0, 0, 0, Chrome.get( Chrome.Type.WINDOW ) );
 	}
 	
 	public Window( int width, int height ) {
-		this( width, height, Chrome.get( Chrome.Type.WINDOW ) );
+		this( width, height, 0, Chrome.get( Chrome.Type.WINDOW ) );
 	}
 
 	public Window( int width, int height, NinePatch chrome ) {
+		this(width, height, 0, chrome);
+	}
+			
+	public Window( int width, int height, int yOffset, NinePatch chrome ) {
 		super();
+
+		this.yOffset = yOffset;
 		
 		blocker = new PointerArea( 0, 0, PixelScene.uiCamera.width, PixelScene.uiCamera.height ) {
 			@Override
@@ -122,59 +149,19 @@ public class Window extends Group implements Signal.Listener<KeyEvent> {
 			height + chrome.marginVer() );
 		
 		camera.resize( (int)chrome.width, (int)chrome.height );
-
 		camera.x = (int)(Game.width - camera.screenWidth()) / 2;
-		camera.x += xOffset * camera.zoom;
-
 		camera.y = (int)(Game.height - camera.screenHeight()) / 2;
 		camera.y += yOffset * camera.zoom;
 
 		shadow.boxRect( camera.x / camera.zoom, camera.y / camera.zoom, chrome.width(), chrome.height );
 	}
 
-	public Point getOffset(){
-		return new Point(xOffset, yOffset);
-	}
-
-	public final void offset( Point offset ){
-		offset(offset.x, offset.y);
-	}
-
-	//windows with scroll panes will likely need to override this and refresh them when offset changes
-	public void offset( int xOffset, int yOffset ){
-		camera.x -= this.xOffset * camera.zoom;
-		this.xOffset = xOffset;
-		camera.x += xOffset * camera.zoom;
-
+	public void offset( int yOffset ){
 		camera.y -= this.yOffset * camera.zoom;
 		this.yOffset = yOffset;
 		camera.y += yOffset * camera.zoom;
 
 		shadow.boxRect( camera.x / camera.zoom, camera.y / camera.zoom, chrome.width(), chrome.height );
-	}
-
-	//ensures the window, with offset, does not go beyond a given margin
-	public void boundOffsetWithMargin( int margin ){
-		float x = camera.x / camera.zoom;
-		float y = camera.y / camera.zoom;
-
-		Camera sceneCam = PixelScene.uiCamera.visible ? PixelScene.uiCamera : Camera.main;
-
-		int newXOfs = xOffset;
-		if (x < margin){
-			newXOfs += margin - x;
-		} else if (x + camera.width > sceneCam.width - margin){
-			newXOfs += (sceneCam.width - margin) - (x + camera.width);
-		}
-
-		int newYOfs = yOffset;
-		if (y < margin){
-			newYOfs += margin - y;
-		} else if (y + camera.height > sceneCam.height - margin){
-			newYOfs += (sceneCam.height - margin) - (y + camera.height);
-		}
-
-		offset(newXOfs, newYOfs);
 	}
 	
 	public void hide() {
@@ -195,8 +182,7 @@ public class Window extends Group implements Signal.Listener<KeyEvent> {
 	@Override
 	public boolean onSignal( KeyEvent event ) {
 		if (event.pressed) {
-			if (KeyBindings.getActionForKey( event ) == SPDAction.BACK
-				|| KeyBindings.getActionForKey( event ) == SPDAction.WAIT){
+			if (KeyBindings.getActionForKey( event ) == SPDAction.BACK){
 				onBackPressed();
 			}
 		}

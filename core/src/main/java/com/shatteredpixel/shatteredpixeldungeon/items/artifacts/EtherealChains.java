@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -88,18 +88,17 @@ public class EtherealChains extends Artifact {
 
 			if (!isEquipped( hero )) {
 				GLog.i( Messages.get(Artifact.class, "need_to_equip") );
-				usesTargeting = false;
+				QuickSlotButton.cancel();
 
 			} else if (charge < 1) {
 				GLog.i( Messages.get(this, "no_charge") );
-				usesTargeting = false;
+				QuickSlotButton.cancel();
 
 			} else if (cursed) {
 				GLog.w( Messages.get(this, "cursed") );
-				usesTargeting = false;
+				QuickSlotButton.cancel();
 
 			} else {
-				usesTargeting = true;
 				GameScene.selectCell(caster);
 			}
 
@@ -126,6 +125,8 @@ public class EtherealChains extends Artifact {
 				} else {
 					chainLocation( chain, curUser );
 				}
+				throwSound();
+				Sample.INSTANCE.play( Assets.Sounds.CHAINS );
 
 			}
 
@@ -174,8 +175,6 @@ public class EtherealChains extends Artifact {
 		}
 		
 		hero.busy();
-		throwSound();
-		Sample.INSTANCE.play( Assets.Sounds.CHAINS );
 		hero.sprite.parent.add(new Chains(hero.sprite.center(), enemy.sprite.center(), new Callback() {
 			public void call() {
 				Actor.add(new Pushing(enemy, enemy.pos, pulledPos, new Callback() {
@@ -202,8 +201,7 @@ public class EtherealChains extends Artifact {
 		}
 
 		//don't pull if the collision spot is in a wall
-		if (Dungeon.level.solid[chain.collisionPos]
-			|| !(Dungeon.level.passable[chain.collisionPos] || Dungeon.level.avoid[chain.collisionPos])){
+		if (Dungeon.level.solid[chain.collisionPos]){
 			GLog.i( Messages.get(this, "inside_wall"));
 			return;
 		}
@@ -234,8 +232,6 @@ public class EtherealChains extends Artifact {
 		}
 		
 		hero.busy();
-		throwSound();
-		Sample.INSTANCE.play( Assets.Sounds.CHAINS );
 		hero.sprite.parent.add(new Chains(hero.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(newHeroPos), new Callback() {
 			public void call() {
 				Actor.add(new Pushing(hero, hero.pos, newHeroPos, new Callback() {

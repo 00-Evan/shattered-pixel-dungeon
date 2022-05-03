@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ public class WandOfTransfusion extends Wand {
 	private boolean freeCharge = false;
 
 	@Override
-	public void onZap(Ballistica beam) {
+	protected void onZap(Ballistica beam) {
 
 		for (int c : beam.subPath(0, beam.dist))
 			CellEmitter.center(c).burst( BloodParticle.BURST, 1 );
@@ -69,7 +69,7 @@ public class WandOfTransfusion extends Wand {
 
 		if (ch instanceof Mob){
 			
-			wandProc(ch, chargesPerCast());
+			processSoulMark(ch, chargesPerCast());
 			
 			//this wand does different things depending on the target.
 			
@@ -101,23 +101,23 @@ public class WandOfTransfusion extends Wand {
 
 			//for enemies...
 			} else {
-
-				//grant a self-shield, and...
-				Buff.affect(curUser, Barrier.class).setShield((5 + buffedLvl()));
 				
-				//chars living enemies
+				//charms living enemies
 				if (!ch.properties().contains(Char.Property.UNDEAD)) {
 					Charm charm = Buff.affect(ch, Charm.class, Charm.DURATION/2f);
 					charm.object = curUser.id();
 					charm.ignoreHeroAllies = true;
 					ch.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 3 );
 				
-				//harm the undead
+				//harms the undead
 				} else {
 					ch.damage(Random.NormalIntRange(3 + buffedLvl()/2, 6+buffedLvl()), this);
 					ch.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10 + buffedLvl());
 					Sample.INSTANCE.play(Assets.Sounds.BURNING);
 				}
+				
+				//and grants a self shield
+				Buff.affect(curUser, Barrier.class).setShield((5 + buffedLvl()));
 
 			}
 			
@@ -141,14 +141,14 @@ public class WandOfTransfusion extends Wand {
 		if (defender.buff(Charm.class) != null && defender.buff(Charm.class).object == attacker.id()){
 			//grants a free use of the staff and shields self
 			freeCharge = true;
-			Buff.affect(attacker, Barrier.class).setShield(2*(5 + buffedLvl()));
+			Buff.affect(curUser, Barrier.class).setShield(2*(5 + buffedLvl()));
 			GLog.p( Messages.get(this, "charged") );
 			attacker.sprite.emitter().burst(BloodParticle.BURST, 20);
 		}
 	}
 
 	@Override
-	public void fx(Ballistica beam, Callback callback) {
+	protected void fx(Ballistica beam, Callback callback) {
 		curUser.sprite.parent.add(
 				new Beam.HealthRay(curUser.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(beam.collisionPos)));
 		callback.call();
