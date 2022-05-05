@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -473,6 +474,7 @@ public abstract class YogFist extends Mob {
 				Buff.prolong( enemy, Blindness.class, Blindness.DURATION/2f );
 
 				if (!enemy.isAlive() && enemy == Dungeon.hero) {
+					Badges.validateDeathFromEnemyMagic();
 					Dungeon.fail( getClass() );
 					GLog.n( Messages.get(Char.class, "kill", name()) );
 				}
@@ -540,6 +542,7 @@ public abstract class YogFist extends Mob {
 				}
 
 				if (!enemy.isAlive() && enemy == Dungeon.hero) {
+					Badges.validateDeathFromEnemyMagic();
 					Dungeon.fail( getClass() );
 					GLog.n( Messages.get(Char.class, "kill", name()) );
 				}

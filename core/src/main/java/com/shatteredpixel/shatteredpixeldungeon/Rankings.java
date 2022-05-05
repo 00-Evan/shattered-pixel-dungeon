@@ -75,6 +75,8 @@ public enum Rankings {
 		rec.herolevel	= Dungeon.hero.lvl;
 		rec.depth		= Dungeon.depth;
 		rec.score	= score( win );
+
+		Badges.validateHighScore( rec.score );
 		
 		INSTANCE.saveGameData(rec);
 

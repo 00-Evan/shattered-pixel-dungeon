@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -157,6 +158,7 @@ public class SacrificialFire extends Blob {
 				exp *= Random.IntRange( 2, 3 );
 			} else if (ch instanceof Hero) {
 				exp = 1_000_000; //always enough to activate the reward, if you can somehow get it
+				Badges.validateDeathFromSacrifice();
 			}
 
 			if (exp > 0) {

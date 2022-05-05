@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -67,6 +68,7 @@ public class Goo extends Mob {
 		int max = (HP*2 <= HT) ? 12 : 8;
 		if (pumpedUp > 0) {
 			pumpedUp = 0;
+			Statistics.qualifiedForBossChallengeBadge = false;
 			return Random.NormalIntRange( min*3, max*3 );
 		} else {
 			return Random.NormalIntRange( min, max );
@@ -96,6 +98,7 @@ public class Goo extends Mob {
 
 		if (Dungeon.level.water[pos] && HP < HT) {
 			HP += healInc;
+			Statistics.qualifiedForBossChallengeBadge = false;
 
 			LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 			if (lock != null) lock.removeTime(healInc*2);
@@ -211,7 +214,10 @@ public class Goo extends Mob {
 	@Override
 	public boolean attack( Char enemy, float dmgMulti, float dmgBonus, float accMulti ) {
 		boolean result = super.attack( enemy, dmgMulti, dmgBonus, accMulti );
-		pumpedUp = 0;
+		if (pumpedUp > 0) {
+			pumpedUp = 0;
+			Statistics.qualifiedForBossChallengeBadge = false;
+		}
 		return result;
 	}
 
@@ -263,6 +269,9 @@ public class Goo extends Mob {
 		}
 		
 		Badges.validateBossSlain();
+		if (Statistics.qualifiedForBossChallengeBadge){
+			Badges.validateBossChallengeCompleted();
+		}
 		
 		yell( Messages.get(this, "defeated") );
 	}

@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
@@ -225,6 +226,7 @@ public class YogDzewa extends Mob {
 						CellEmitter.center(pos).burst(PurpleParticle.BURST, Random.IntRange(1, 2));
 					}
 					if (!ch.isAlive() && ch == Dungeon.hero) {
+						Badges.validateDeathFromEnemyMagic();
 						Dungeon.fail(getClass());
 						GLog.n(Messages.get(Char.class, "kill", name()));
 					}
@@ -463,6 +465,13 @@ public class YogDzewa extends Mob {
 		updateVisibility(Dungeon.level);
 
 		GameScene.bossSlain();
+
+		if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES) && Statistics.spawnersAlive == 4){
+			Badges.validateBossChallengeCompleted();
+		} else {
+			Statistics.qualifiedForBossChallengeBadge = false;
+		}
+
 		Dungeon.level.unseal();
 		super.die( cause );
 

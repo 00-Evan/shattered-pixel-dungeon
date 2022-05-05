@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -275,8 +276,9 @@ public class SentryRoom extends SpecialRoom {
 		public void onZapComplete(){
 			Dungeon.hero.damage(Random.NormalIntRange(2+Dungeon.depth/2, 4+Dungeon.depth), new Eye.DeathGaze());
 			if (!Dungeon.hero.isAlive()){
-				GLog.n( Messages.capitalize(Messages.get(Char.class, "kill", name())) );
+				Badges.validateDeathFromEnemyMagic();
 				Dungeon.fail( getClass() );
+				GLog.n( Messages.capitalize(Messages.get(Char.class, "kill", name())) );
 			}
 		}
 

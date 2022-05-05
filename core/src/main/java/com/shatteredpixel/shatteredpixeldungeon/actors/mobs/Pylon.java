@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
@@ -124,9 +125,12 @@ public class Pylon extends Mob {
 			ch.sprite.flash();
 			ch.damage(Random.NormalIntRange(10, 20), new Electricity());
 
-			if (ch == Dungeon.hero && !ch.isAlive()){
-				Dungeon.fail(DM300.class);
-				GLog.n( Messages.get(Electricity.class, "ondeath") );
+			if (ch == Dungeon.hero) {
+				Statistics.qualifiedForBossChallengeBadge = false;
+				if (!ch.isAlive()) {
+					Dungeon.fail(DM300.class);
+					GLog.n(Messages.get(Electricity.class, "ondeath"));
+				}
 			}
 		}
 	}

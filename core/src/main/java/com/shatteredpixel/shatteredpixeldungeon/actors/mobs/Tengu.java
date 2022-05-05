@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
@@ -209,6 +210,9 @@ public class Tengu extends Mob {
 		super.die( cause );
 		
 		Badges.validateBossSlain();
+		if (Statistics.qualifiedForBossChallengeBadge){
+			Badges.validateBossChallengeCompleted();
+		}
 		
 		LloydsBeacon beacon = Dungeon.hero.belongings.getItem(LloydsBeacon.class);
 		if (beacon != null) {
@@ -612,8 +616,12 @@ public class Tengu extends Mob {
 								ch.damage(dmg, Bomb.class);
 							}
 
-							if (ch == Dungeon.hero && !ch.isAlive()) {
-								Dungeon.fail(Tengu.class);
+							if (ch == Dungeon.hero){
+								Statistics.qualifiedForBossChallengeBadge = false;
+
+								if (!ch.isAlive()) {
+									Dungeon.fail(Tengu.class);
+								}
 							}
 						}
 
@@ -840,6 +848,9 @@ public class Tengu extends Mob {
 							if (ch != null && !ch.isImmune(Fire.class) && !(ch instanceof Tengu)) {
 								Buff.affect( ch, Burning.class ).reignite( ch );
 							}
+							if (ch == Dungeon.hero){
+								Statistics.qualifiedForBossChallengeBadge = false;
+							}
 							
 							if (Dungeon.level.flamable[cell]){
 								Dungeon.level.destroy( cell );
@@ -1021,9 +1032,12 @@ public class Tengu extends Mob {
 							if (ch != null && !(ch instanceof Tengu)){
 								ch.damage(2 + Dungeon.depth, new Electricity());
 								
-								if (ch == Dungeon.hero && !ch.isAlive()) {
-									Dungeon.fail(Tengu.class);
-									GLog.n( Messages.get(Electricity.class, "ondeath") );
+								if (ch == Dungeon.hero){
+									Statistics.qualifiedForBossChallengeBadge = false;
+									if (!ch.isAlive()) {
+										Dungeon.fail(Tengu.class);
+										GLog.n(Messages.get(Electricity.class, "ondeath"));
+									}
 								}
 							}
 							

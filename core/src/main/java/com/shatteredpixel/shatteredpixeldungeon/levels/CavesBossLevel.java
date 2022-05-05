@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
@@ -44,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.PylonSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -794,9 +796,15 @@ public class CavesBossLevel extends Level {
 							ch.damage( Random.NormalIntRange(6, 12), Electricity.class);
 							ch.sprite.flash();
 
-							if (ch == Dungeon.hero && !ch.isAlive()) {
-								Dungeon.fail(DM300.class);
-								GLog.n( Messages.get(Electricity.class, "ondeath") );
+							if (ch == Dungeon.hero){
+								if (energySourceSprite != null && energySourceSprite instanceof PylonSprite){
+									//took damage while DM-300 was supercharged
+									Statistics.qualifiedForBossChallengeBadge = false;
+								}
+								if ( !ch.isAlive()) {
+									Dungeon.fail(DM300.class);
+									GLog.n(Messages.get(Electricity.class, "ondeath"));
+								}
 							}
 						}
 					}

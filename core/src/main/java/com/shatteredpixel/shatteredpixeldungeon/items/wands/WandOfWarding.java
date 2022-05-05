@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -328,6 +329,7 @@ public class WandOfWarding extends Wand {
 			}
 
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {
+				Badges.validateDeathFromFriendlyMagic();
 				Dungeon.fail( getClass() );
 			}
 

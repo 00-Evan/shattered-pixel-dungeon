@@ -44,6 +44,7 @@ public class Statistics {
 	
 	public static boolean qualifiedForNoKilling = false;
 	public static boolean completedWithNoKilling = false;
+	public static boolean qualifiedForBossChallengeBadge = false;
 	
 	public static boolean amuletObtained = false;
 	
@@ -66,6 +67,7 @@ public class Statistics {
 		duration	= 0;
 		
 		qualifiedForNoKilling = false;
+		qualifiedForBossChallengeBadge = false;
 		
 		amuletObtained = false;
 		
@@ -88,6 +90,7 @@ public class Statistics {
 	private static final String DURATION	= "duration";
 
 	private static final String NO_KILLING_QUALIFIED	= "qualifiedForNoKilling";
+	private static final String BOSS_CHALLENGE_QUALIFIED= "qualifiedForBossChallengeBadge";
 	
 	private static final String AMULET		= "amuletObtained";
 	
@@ -109,6 +112,8 @@ public class Statistics {
 		bundle.put( DURATION,	duration );
 
 		bundle.put(NO_KILLING_QUALIFIED, qualifiedForNoKilling);
+
+		bundle.put(BOSS_CHALLENGE_QUALIFIED, qualifiedForBossChallengeBadge);
 		
 		bundle.put( AMULET,		amuletObtained );
 	}
@@ -131,6 +136,8 @@ public class Statistics {
 		duration		= bundle.getFloat( DURATION );
 
 		qualifiedForNoKilling = bundle.getBoolean( NO_KILLING_QUALIFIED );
+
+		qualifiedForBossChallengeBadge = bundle.getBoolean( BOSS_CHALLENGE_QUALIFIED );
 		
 		amuletObtained	= bundle.getBoolean( AMULET );
 	}

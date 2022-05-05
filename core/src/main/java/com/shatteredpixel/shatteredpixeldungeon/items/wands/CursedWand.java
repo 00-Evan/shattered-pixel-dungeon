@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -223,9 +224,11 @@ public class CursedWand {
 						Sample.INSTANCE.play(Assets.Sounds.CURSED);
 						if (!toDamage.isAlive()) {
 							if (origin != null) {
+								Badges.validateDeathFromFriendlyMagic();
 								Dungeon.fail( origin.getClass() );
 								GLog.n( Messages.get( CursedWand.class, "ondeath", origin.name() ) );
 							} else {
+								Badges.validateDeathFromFriendlyMagic();
 								Dungeon.fail( toHeal.getClass() );
 							}
 						}

@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Game;
@@ -134,8 +135,7 @@ public class BadgeBanner extends Image {
 
 	//we also hardcode any special cases
 	static {
-		//combo master
-		highlightPositions.put(66, new Point(3, 7));
+		highlightPositions.put(Badges.Badge.MASTERY_COMBO.image, new Point(3, 7));
 	}
 
 	//adds a shine to an appropriate pixel on a badge

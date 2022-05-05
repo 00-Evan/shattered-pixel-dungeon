@@ -49,10 +49,20 @@ public class WndBadge extends Window {
 		if (!unlocked) title.hardlight( 0x888822 );
 		add(title);
 
-		RenderedTextBlock info = PixelScene.renderTextBlock( badge.desc(), 6 );
+		String desc = badge.desc();
+		String unlock = Badges.showCompletionProgress(badge);
+
+		if (unlock != null){
+			desc += unlock;
+		}
+
+		RenderedTextBlock info = PixelScene.renderTextBlock( desc, 6 );
 		info.maxWidth(MAX_WIDTH - MARGIN * 2);
 		info.align(RenderedTextBlock.CENTER_ALIGN);
-		if (!unlocked) info.hardlight( 0x888888 );
+		if (!unlocked) {
+			info.hardlight( 0x888888 );
+			info.setHightlighting( true, 0x888822 );
+		}
 		add(info);
 		
 		float w = Math.max( icon.width(), Math.max(title.width(), info.width()) ) + MARGIN * 2;
