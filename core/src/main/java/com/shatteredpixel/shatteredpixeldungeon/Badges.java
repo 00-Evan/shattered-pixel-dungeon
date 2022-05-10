@@ -670,6 +670,14 @@ public class Badges {
 		firstBossClassBadges.put(HeroClass.HUNTRESS, Badge.BOSS_SLAIN_1_HUNTRESS);
 	}
 
+	private static LinkedHashMap<HeroClass, Badge> victoryClassBadges = new LinkedHashMap<>();
+	static {
+		victoryClassBadges.put(HeroClass.WARRIOR, Badge.VICTORY_WARRIOR);
+		victoryClassBadges.put(HeroClass.MAGE, Badge.MASTERY_MAGE);
+		victoryClassBadges.put(HeroClass.ROGUE, Badge.VICTORY_ROGUE);
+		victoryClassBadges.put(HeroClass.HUNTRESS, Badge.VICTORY_HUNTRESS);
+	}
+
 	private static LinkedHashMap<HeroSubClass, Badge> thirdBossSubclassBadges = new LinkedHashMap<>();
 	static {
 		thirdBossSubclassBadges.put(HeroSubClass.BERSERKER, Badge.BOSS_SLAIN_3_BERSERKER);
@@ -1141,6 +1149,16 @@ public class Badges {
 			for (HeroClass cls : HeroClass.values()){
 				result += "\n";
 				if (isUnlocked(firstBossClassBadges.get(cls)))  result += "_" + Messages.titleCase(cls.title()) + "_";
+				else                                            result += Messages.titleCase(cls.title());
+			}
+
+			return result;
+
+		} else if (badge == Badge.VICTORY_ALL_CLASSES) {
+
+			for (HeroClass cls : HeroClass.values()){
+				result += "\n";
+				if (isUnlocked(victoryClassBadges.get(cls)))    result += "_" + Messages.titleCase(cls.title()) + "_";
 				else                                            result += Messages.titleCase(cls.title());
 			}
 
