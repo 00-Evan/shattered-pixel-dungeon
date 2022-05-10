@@ -455,7 +455,23 @@ public class ItemSpriteSheet {
 		assignItemRect(ARTIFACT_ROSE3,      14, 14);
 	}
 
-	                                                                                    //16 free slots
+	private static final int EXOTIC_STONES             =                           xy(1, 18);  //16 slots
+	//public static final int STONE_AGGRESSION    = EXOTIC_STONES+0;
+	//public static final int STONE_AUGMENTATION  = EXOTIC_STONES+1;
+	//public static final int STONE_FEAR          = EXOTIC_STONES+2;
+	//public static final int STONE_BLAST         = EXOTIC_STONES+3;
+	//public static final int STONE_BLINK         = EXOTIC_STONES+4;
+	//public static final int STONE_CLAIRVOYANCE  = EXOTIC_STONES+5;
+	//public static final int STONE_SLEEP         = EXOTIC_STONES+6;
+	//public static final int STONE_DISARM        = EXOTIC_STONES+7;
+	//public static final int STONE_ENCHANT       = EXOTIC_STONES+8;
+	//public static final int STONE_FLOCK         = EXOTIC_STONES+9;
+	public static final int STONE_KNOWLEDGE     = EXOTIC_STONES+10;
+	//public static final int STONE_SHOCK         = EXOTIC_STONES+11;
+	static {
+		for (int i = EXOTIC_STONES; i < EXOTIC_STONES+16; i++)
+			assignItemRect(i, 14, 12);
+	}
 
 	private static final int SCROLLS        =                               xy(1, 19);  //16 slots
 	public static final int SCROLL_KAUNAN   = SCROLLS+0;

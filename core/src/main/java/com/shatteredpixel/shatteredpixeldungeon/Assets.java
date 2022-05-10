@@ -232,6 +232,7 @@ public class Assets {
 		public static final String ROGUE    = "splashes/rogue.jpg";
 		public static final String HUNTRESS = "splashes/huntress.jpg";
 		public static final String ALCHEMIST= "splashes/alchemist.jpg";
+		public static final String DEBUG    = "splashes/debug.jpg";
 	}
 
 	public static class Sprites {

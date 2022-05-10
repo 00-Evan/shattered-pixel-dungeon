@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Sh
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.KingsCrown;
 import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
 import com.shatteredpixel.shatteredpixeldungeon.items.TengusMask;
 import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
@@ -48,6 +49,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
@@ -56,6 +58,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.InfernalBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfDragonsBlood;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
@@ -75,6 +78,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.spells.EnchantParchment;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Petrification;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Polymorph;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Rewind;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.debug.Ascend;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.debug.Descend;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
@@ -98,6 +104,7 @@ public enum HeroClass {
 	ROGUE( HeroSubClass.ASSASSIN, HeroSubClass.FREERUNNER ),
 	HUNTRESS( HeroSubClass.SNIPER, HeroSubClass.WARDEN ),
 	ALCHEMIST( HeroSubClass.NONE, HeroSubClass.NONE );
+//	DEBUG( HeroSubClass.NONE, HeroSubClass.NONE );
 
 	private HeroSubClass[] subClasses;
 
@@ -141,6 +148,10 @@ public enum HeroClass {
 			case ALCHEMIST:
 				initAlchemist( hero );
 				break;
+
+//			case DEBUG:
+//				initDebug( hero );
+//				break;
 		}
 
 		for (int s = 0; s < QuickSlot.SIZE; s++){
@@ -255,6 +266,41 @@ public enum HeroClass {
 
 		new PotionOfLiquidFlame().identify();
 		new PotionOfHealing().identify();
+	}
+
+	private static void initDebug( Hero hero ) {
+		(hero.belongings.weapon = new Dagger()).identify();
+
+		AlchemistsToolkit toolkit = new AlchemistsToolkit();
+		(hero.belongings.artifact = toolkit).identify();
+		hero.belongings.artifact.activate( hero );
+
+		ThrowingKnife knives = new ThrowingKnife();
+		knives.quantity(3).collect();
+
+		//Dungeon.quickslot.setSlot(0, toolkit);
+		Dungeon.quickslot.setSlot(0, knives);
+
+		new PotionBandolier().collect();
+		Dungeon.LimitedDrops.POTION_BANDOLIER.drop();
+
+		new VelvetPouch().collect();
+		Dungeon.LimitedDrops.VELVET_POUCH.drop();
+
+		new ScrollHolder().collect();
+		Dungeon.LimitedDrops.SCROLL_HOLDER.drop();
+
+		new MagicalHolster().collect();
+		Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
+
+		new PotionOfLiquidFlame().identify(); new PotionOfHealing().identify();
+
+		Ascend ascend = new Ascend();
+		ascend.collect();
+		Dungeon.quickslot.setSlot(2, ascend);
+		Descend descend = new Descend();
+		ascend.collect();
+		Dungeon.quickslot.setSlot(3, ascend);
 	}
 
 	public String title() {

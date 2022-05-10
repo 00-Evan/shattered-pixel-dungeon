@@ -1,9 +1,10 @@
 <component name="libraryTable">
   <library name="Gradle: com.badlogicgames.gdx-controllers:gdx-controllers-android:2.2.1@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/e76f0cea45e340207fd72461f09a1ecd/transformed/gdx-controllers-android-2.2.1/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/e76f0cea45e340207fd72461f09a1ecd/transformed/gdx-controllers-android-2.2.1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ccfd07c388a56702d6050364cb4818f0/transformed/gdx-controllers-android-2.2.1/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/e76f0cea45e340207fd72461f09a1ecd/transformed/gdx-controllers-android-2.2.1/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/e76f0cea45e340207fd72461f09a1ecd/transformed/gdx-controllers-android-2.2.1/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx-controllers/gdx-controllers-android/2.2.1/da13c561b7912865c085a88df3218ce4ae5f3975/gdx-controllers-android-2.2.1-javadoc.jar!/" />

@@ -180,6 +180,7 @@ public abstract class Recipe {
 		new Scroll.ScrollToStone(),
 		new ExoticPotion.PotionToExotic(),
 		new ExoticScroll.ScrollToExotic(),
+		new ExoticScroll.ExocticScrollToStone(),
 		new ArcaneResin.Recipe(),
 		new Alchemize.Recipe(),
 		new StewedMeat.oneMeat()

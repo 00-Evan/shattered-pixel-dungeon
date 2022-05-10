@@ -27,7 +27,7 @@ Shattered Pixel Dungeon currently compiles for Android and Desktop platforms. It
 
 Note that **this repository does not accept pull requests!** The code here is provided in hopes that others may find it useful for their own projects, not to allow community contribution. Issue reports of all kinds (bug reports, feature requests, etc.) are welcome.
 
-[Downloads are avaiable here.](https://github.com/Inferno214221/combusted-pixel-dungeon-master/releases)
+[Downloads are avaiable here.](https://github.com/Inferno214221/Combusted-Pixel-Dungeon/releases)
 
 # Modding the Game
 
