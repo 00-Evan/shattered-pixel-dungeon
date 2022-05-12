@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
@@ -74,7 +75,7 @@ public enum Rankings {
 		rec.armorTier	= Dungeon.hero.tier();
 		rec.herolevel	= Dungeon.hero.lvl;
 		rec.depth		= Dungeon.depth;
-		rec.score	= score( win );
+		rec.score       = calculateScore();
 
 		Badges.validateHighScore( rec.score );
 		
@@ -114,11 +115,73 @@ public enum Rankings {
 		return (Statistics.goldCollected + Dungeon.hero.lvl * (win ? 26 : Dungeon.depth ) * 100) * (win ? 2 : 1);
 	}
 
+	//assumes a ranking is loaded, or game is ending
+	public int calculateScore(){
+
+		if (Dungeon.initialVersion > ShatteredPixelDungeon.v1_2_3+1){
+			Statistics.progressScore = Dungeon.hero.lvl * Statistics.deepestFloor * 65;
+			Statistics.progressScore = Math.min(Statistics.progressScore, 50_000);
+
+			if (Statistics.heldItemValue == 0) {
+				for (Item i : Dungeon.hero.belongings) {
+					Statistics.heldItemValue += i.value();
+					if (i instanceof CorpseDust && Statistics.deepestFloor >= 10){
+						// in case player kept the corpse dust, for a necromancer run
+						Statistics.questScores[1] = 2000;
+					}
+				}
+			}
+			Statistics.treasureScore = Statistics.goldCollected + Statistics.heldItemValue;
+			Statistics.treasureScore = Math.min(Statistics.treasureScore, 20_000);
+
+			int scorePerFloor = Statistics.floorsExplored.size * 50;
+			for (Boolean b : Statistics.floorsExplored.valueList()){
+				if (b) Statistics.exploreScore += scorePerFloor;
+			}
+
+			for (int i : Statistics.bossScores){
+				if (i > 0) Statistics.totalBossScore += i;
+			}
+
+			for (int i : Statistics.questScores){
+				if (i > 0) Statistics.totalQuestScore += i;
+			}
+
+			Statistics.winMultiplier = 1f;
+			if (Statistics.amuletObtained)  Statistics.winMultiplier += 0.75f;
+			if (Statistics.gameWon)         Statistics.winMultiplier += 0.25f;
+			if (Statistics.ascended)        Statistics.winMultiplier += 0.25f;
+
+		//pre v1.3.0 runs have different score calculations
+		//only progress and treasure score, and they are each up to 50% bigger
+		//win multiplier is a simple 2x if run was a win, challenge multi is the same as 1.3.0
+		} else {
+			Statistics.progressScore = Dungeon.hero.lvl * Statistics.deepestFloor * 100;
+			Statistics.treasureScore = Math.min(Statistics.goldCollected, 30_000);
+
+			Statistics.exploreScore = Statistics.totalBossScore = Statistics.totalQuestScore = 0;
+
+			Statistics.winMultiplier = Statistics.gameWon ? 2 : 1;
+
+		}
+
+		Statistics.chalMultiplier = (float)Math.pow(1.25, Challenges.activeChallenges());
+		Statistics.chalMultiplier = Math.round(Statistics.chalMultiplier*20f)/20f;
+
+		Statistics.totalScore = Statistics.progressScore + Statistics.treasureScore + Statistics.exploreScore
+					+ Statistics.totalBossScore + Statistics.totalQuestScore;
+
+		Statistics.totalScore *= Statistics.winMultiplier * Statistics.chalMultiplier;
+
+		return Statistics.totalScore;
+	}
+
 	public static final String HERO = "hero";
 	public static final String STATS = "stats";
 	public static final String BADGES = "badges";
 	public static final String HANDLERS = "handlers";
 	public static final String CHALLENGES = "challenges";
+	public static final String GAME_VERSION = "game_version";
 
 	public void saveGameData(Record rec){
 		rec.gameData = new Bundle();
@@ -171,6 +234,8 @@ public enum Rankings {
 		
 		//save challenges
 		rec.gameData.put( CHALLENGES, Dungeon.challenges );
+
+		rec.gameData.put( GAME_VERSION, Dungeon.initialVersion );
 	}
 
 	public void loadGameData(Record rec){
@@ -197,6 +262,12 @@ public enum Rankings {
 		
 		Dungeon.challenges = data.getInt(CHALLENGES);
 
+		Dungeon.initialVersion = data.getInt(GAME_VERSION);
+
+		if (Dungeon.initialVersion < ShatteredPixelDungeon.v1_2_3+1){
+			Statistics.gameWon = rec.win;
+		}
+		rec.score = calculateScore();
 	}
 	
 	private static final String RECORDS	= "records";
@@ -276,6 +347,7 @@ public enum Rankings {
 		public Bundle gameData;
 		public String gameID;
 
+		//Note this is for summary purposes, visible score should be re-calculated from game data
 		public int score;
 
 		public String desc(){

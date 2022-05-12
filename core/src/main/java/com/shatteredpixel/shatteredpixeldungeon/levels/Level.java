@@ -1250,6 +1250,10 @@ public abstract class Level implements Bundlable {
 		}
 
 	}
+
+	public boolean isLevelExplored( int depth ){
+		return false;
+	}
 	
 	public int distance( int a, int b ) {
 		int ax = a % width();

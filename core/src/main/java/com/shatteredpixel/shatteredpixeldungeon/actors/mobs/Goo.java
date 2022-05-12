@@ -68,7 +68,10 @@ public class Goo extends Mob {
 		int max = (HP*2 <= HT) ? 12 : 8;
 		if (pumpedUp > 0) {
 			pumpedUp = 0;
-			Statistics.qualifiedForBossChallengeBadge = false;
+			if (enemy == Dungeon.hero) {
+				Statistics.qualifiedForBossChallengeBadge = false;
+				Statistics.bossScores[0] -= 100;
+			}
 			return Random.NormalIntRange( min*3, max*3 );
 		} else {
 			return Random.NormalIntRange( min, max );
@@ -98,6 +101,7 @@ public class Goo extends Mob {
 
 		if (Dungeon.level.water[pos] && HP < HT) {
 			HP += healInc;
+			Statistics.bossScores[0] -= 10;
 			Statistics.qualifiedForBossChallengeBadge = false;
 
 			LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
@@ -216,7 +220,10 @@ public class Goo extends Mob {
 		boolean result = super.attack( enemy, dmgMulti, dmgBonus, accMulti );
 		if (pumpedUp > 0) {
 			pumpedUp = 0;
-			Statistics.qualifiedForBossChallengeBadge = false;
+			if (enemy == Dungeon.hero) {
+				Statistics.qualifiedForBossChallengeBadge = false;
+				Statistics.bossScores[0] -= 100;
+			}
 		}
 		return result;
 	}
@@ -272,6 +279,8 @@ public class Goo extends Mob {
 		if (Statistics.qualifiedForBossChallengeBadge){
 			Badges.validateBossChallengeCompleted();
 		}
+		Statistics.bossScores[0] += 1050; //Goo has a 50 point gimme
+		Statistics.bossScores[0] = Math.min(1000, Statistics.bossScores[0]);
 		
 		yell( Messages.get(this, "defeated") );
 	}

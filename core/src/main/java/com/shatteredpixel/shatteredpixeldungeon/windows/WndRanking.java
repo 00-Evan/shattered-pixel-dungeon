@@ -225,27 +225,24 @@ public class WndRanking extends WndTabbed {
 
 			pos += GAP;
 
+			//TODO score breakdown page!
+			pos = statSlot( this, "Score", Integer.toString( Statistics.totalScore ), pos );
+
+			pos += GAP;
+
 			int strBonus = Dungeon.hero.STR() - Dungeon.hero.STR;
 			if (strBonus > 0)       pos = statSlot(this, Messages.get(this, "str"), Dungeon.hero.STR + " + " + strBonus, pos);
 			else if (strBonus < 0)  pos = statSlot(this, Messages.get(this, "str"), Dungeon.hero.STR + " - " + -strBonus, pos );
 			else                    pos = statSlot(this, Messages.get(this, "str"), Integer.toString(Dungeon.hero.STR), pos);
-			pos = statSlot( this, Messages.get(this, "health"), Integer.toString( Dungeon.hero.HT ), pos );
-			
-			pos += GAP;
-			
 			pos = statSlot( this, Messages.get(this, "duration"), Integer.toString( (int)Statistics.duration ), pos );
-			
-			pos += GAP;
-			
 			pos = statSlot( this, Messages.get(this, "depth"), Integer.toString( Statistics.deepestFloor ), pos );
+
+			pos += GAP;
+
 			pos = statSlot( this, Messages.get(this, "enemies"), Integer.toString( Statistics.enemiesSlain ), pos );
 			pos = statSlot( this, Messages.get(this, "gold"), Integer.toString( Statistics.goldCollected ), pos );
-			
-			pos += GAP;
-			
 			pos = statSlot( this, Messages.get(this, "food"), Integer.toString( Statistics.foodEaten ), pos );
 			pos = statSlot( this, Messages.get(this, "alchemy"), Integer.toString( Statistics.itemsCrafted ), pos );
-			pos = statSlot( this, Messages.get(this, "ankhs"), Integer.toString( Statistics.ankhsUsed ), pos );
 		}
 		
 		private float statSlot( Group parent, String label, String value, float pos ) {
@@ -255,7 +252,7 @@ public class WndRanking extends WndTabbed {
 			parent.add( txt );
 			
 			txt = PixelScene.renderTextBlock( value, 7 );
-			txt.setPos(WIDTH * 0.7f, pos);
+			txt.setPos(WIDTH * 0.6f, pos);
 			PixelScene.align(txt);
 			parent.add( txt );
 			

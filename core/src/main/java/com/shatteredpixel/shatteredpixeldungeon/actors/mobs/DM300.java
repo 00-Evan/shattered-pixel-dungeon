@@ -545,6 +545,7 @@ public class DM300 extends Mob {
 		if (Statistics.qualifiedForBossChallengeBadge){
 			Badges.validateBossChallengeCompleted();
 		}
+		Statistics.bossScores[2] += 3000;
 
 		LloydsBeacon beacon = Dungeon.hero.belongings.getItem(LloydsBeacon.class);
 		if (beacon != null) {
@@ -653,6 +654,9 @@ public class DM300 extends Mob {
 				Char ch = Actor.findChar(i);
 				if (ch != null && !(ch instanceof DM300)){
 					Buff.prolong( ch, Paralysis.class, Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 5 : 3 );
+					if (ch == Dungeon.hero){
+						Statistics.bossScores[2] -= 100;
+					}
 				}
 			}
 

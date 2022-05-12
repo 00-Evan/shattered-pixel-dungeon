@@ -268,7 +268,7 @@ public class v1_X_Changes {
 				"Several recipes have also been buffed, in addition to the cost reductions:\n\n" +
 				"_- Scroll of Foresight_ duration up to 400 from 250\n" +
 				"_- Scroll of Dread_ now grants 1/2 exp for defeated enemies\n" +
-				"_- Potion of Shrouding Fog_ gas quantity increased bt 50%\n\n" +
+				"_- Potion of Shrouding Fog_ gas quantity increased by 50%\n\n" +
 				"_-_ Items and effects which create water now douse fire\n\n" +
 				"_- Caustic Brew_ damage per turn increased by 1\n" +
 				"_- Infernal and Blizzard Brew_ now start their gas in a 3x3 AOE\n" +

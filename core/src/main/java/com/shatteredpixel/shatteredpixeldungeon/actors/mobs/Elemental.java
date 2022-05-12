@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
@@ -249,7 +250,10 @@ public abstract class Elemental extends Mob {
 		@Override
 		public void die(Object cause) {
 			super.die(cause);
-			if (alignment == Alignment.ENEMY) Dungeon.level.drop( new Embers(), pos ).sprite.drop();
+			if (alignment == Alignment.ENEMY) {
+				Dungeon.level.drop( new Embers(), pos ).sprite.drop();
+				Statistics.questScores[1] = 2000;
+			}
 		}
 
 		@Override

@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
@@ -101,6 +102,7 @@ public class RotHeart extends Mob {
 	public void die(Object cause) {
 		super.die(cause);
 		Dungeon.level.drop( new Rotberry.Seed(), pos ).sprite.drop();
+		Statistics.questScores[1] = 2000;
 	}
 
 	@Override

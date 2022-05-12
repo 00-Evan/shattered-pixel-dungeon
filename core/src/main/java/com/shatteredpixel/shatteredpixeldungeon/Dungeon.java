@@ -58,6 +58,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
@@ -173,6 +174,8 @@ public class Dungeon {
 	public static SparseArray<ArrayList<Item>> droppedItems;
 	public static SparseArray<ArrayList<Item>> portedItems;
 
+	//first variable is only assigned when game is started, second is updated every time game is saved
+	public static int initialVersion;
 	public static int version;
 
 	public static long seed;
@@ -180,7 +183,7 @@ public class Dungeon {
 	
 	public static void init() {
 
-		version = Game.versionCode;
+		initialVersion = version = Game.versionCode;
 		challenges = SPDSettings.challenges();
 		mobsToChampion = -1;
 
@@ -462,7 +465,8 @@ public class Dungeon {
 		//chance is floors left / scrolls left
 		return Random.Int(5 - floorThisSet) < asLeftThisSet;
 	}
-	
+
+	private static final String INIT_VER	= "init_ver";
 	private static final String VERSION		= "version";
 	private static final String SEED		= "seed";
 	private static final String CUSTOM_SEED	= "custom_seed";
@@ -485,8 +489,8 @@ public class Dungeon {
 		try {
 			Bundle bundle = new Bundle();
 
-			version = Game.versionCode;
-			bundle.put( VERSION, version );
+			bundle.put( INIT_VER, initialVersion );
+			bundle.put( VERSION, version = Game.versionCode );
 			bundle.put( SEED, seed );
 			bundle.put( CUSTOM_SEED, usingCustomSeed );
 			bundle.put( CHALLENGES, challenges );
@@ -562,6 +566,7 @@ public class Dungeon {
 		if (hero != null && (hero.isAlive() || WndResurrect.instance != null)) {
 			
 			Actor.fixTime();
+			updateLevelExplored();
 			saveGame( GamesInProgress.curSlot );
 			saveLevel( GamesInProgress.curSlot );
 
@@ -577,6 +582,13 @@ public class Dungeon {
 	public static void loadGame( int save, boolean fullLoad ) throws IOException {
 		
 		Bundle bundle = FileUtils.bundleFromFile( GamesInProgress.gameFile( save ) );
+
+		//pre-1.3.0 saves
+		if (bundle.contains(INIT_VER)){
+			initialVersion = bundle.getInt( INIT_VER );
+		} else {
+			initialVersion = bundle.getInt( VERSION );
+		}
 
 		version = bundle.getInt( VERSION );
 
@@ -722,15 +734,26 @@ public class Dungeon {
 	
 	public static void fail( Class cause ) {
 		if (WndResurrect.instance == null) {
+			updateLevelExplored();
+			Statistics.gameWon = false;
 			Rankings.INSTANCE.submit( false, cause );
 		}
 	}
 	
 	public static void win( Class cause ) {
 
+		updateLevelExplored();
+		Statistics.gameWon = true;
+
 		hero.belongings.identify();
 
 		Rankings.INSTANCE.submit( true, cause );
+	}
+
+	public static void updateLevelExplored(){
+		if (branch == 0 && level instanceof RegularLevel){
+			Statistics.floorsExplored.put( depth, level.isLevelExplored(depth));
+		}
 	}
 
 	//default to recomputing based on max hero vision, in case vision just shrank/grew

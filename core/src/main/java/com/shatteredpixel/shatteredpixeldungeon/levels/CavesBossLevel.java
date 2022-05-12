@@ -801,6 +801,7 @@ public class CavesBossLevel extends Level {
 									//took damage while DM-300 was supercharged
 									Statistics.qualifiedForBossChallengeBadge = false;
 								}
+								Statistics.bossScores[2] -= 200;
 								if ( !ch.isAlive()) {
 									Dungeon.fail(DM300.class);
 									GLog.n(Messages.get(Electricity.class, "ondeath"));

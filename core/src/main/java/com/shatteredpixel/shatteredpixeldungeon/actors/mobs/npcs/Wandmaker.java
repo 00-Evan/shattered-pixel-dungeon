@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -344,6 +345,7 @@ public class Wandmaker extends NPC {
 			wand2 = null;
 			
 			Notes.remove( Notes.Landmark.WANDMAKER );
+			Statistics.questScores[1] = 2000;
 		}
 	}
 }

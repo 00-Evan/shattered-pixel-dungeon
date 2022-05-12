@@ -213,6 +213,7 @@ public class Tengu extends Mob {
 		if (Statistics.qualifiedForBossChallengeBadge){
 			Badges.validateBossChallengeCompleted();
 		}
+		Statistics.bossScores[1] += 2000;
 		
 		LloydsBeacon beacon = Dungeon.hero.belongings.getItem(LloydsBeacon.class);
 		if (beacon != null) {
@@ -618,6 +619,7 @@ public class Tengu extends Mob {
 
 							if (ch == Dungeon.hero){
 								Statistics.qualifiedForBossChallengeBadge = false;
+								Statistics.bossScores[1] -= 100;
 
 								if (!ch.isAlive()) {
 									Dungeon.fail(Tengu.class);
@@ -850,6 +852,7 @@ public class Tengu extends Mob {
 							}
 							if (ch == Dungeon.hero){
 								Statistics.qualifiedForBossChallengeBadge = false;
+								Statistics.bossScores[1] -= 100;
 							}
 							
 							if (Dungeon.level.flamable[cell]){
@@ -1034,6 +1037,7 @@ public class Tengu extends Mob {
 								
 								if (ch == Dungeon.hero){
 									Statistics.qualifiedForBossChallengeBadge = false;
+									Statistics.bossScores[1] -= 100;
 									if (!ch.isAlive()) {
 										Dungeon.fail(Tengu.class);
 										GLog.n(Messages.get(Electricity.class, "ondeath"));

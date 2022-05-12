@@ -220,6 +220,9 @@ public class YogDzewa extends Mob {
 					} else {
 						ch.damage(Random.NormalIntRange(20, 30), new Eye.DeathGaze());
 					}
+					if (ch == Dungeon.hero){
+						Statistics.bossScores[4] -= 500;
+					}
 
 					if (Dungeon.level.heroFOV[pos]) {
 						ch.sprite.flash();
@@ -446,7 +449,7 @@ public class YogDzewa extends Mob {
 	public void aggro(Char ch) {
 		for (Mob mob : (Iterable<Mob>)Dungeon.level.mobs.clone()) {
 			if (Dungeon.level.distance(pos, mob.pos) <= 4 &&
-					(mob instanceof Larva || mob instanceof RipperDemon)) {
+					(mob instanceof Larva || mob instanceof YogRipper || mob instanceof YogEye || mob instanceof YogScorpio)) {
 				mob.aggro(ch);
 			}
 		}
@@ -457,7 +460,7 @@ public class YogDzewa extends Mob {
 	public void die( Object cause ) {
 
 		for (Mob mob : (Iterable<Mob>)Dungeon.level.mobs.clone()) {
-			if (mob instanceof Larva || mob instanceof RipperDemon) {
+			if (mob instanceof Larva || mob instanceof YogRipper || mob instanceof YogEye || mob instanceof YogScorpio) {
 				mob.die( cause );
 			}
 		}
@@ -471,6 +474,7 @@ public class YogDzewa extends Mob {
 		} else {
 			Statistics.qualifiedForBossChallengeBadge = false;
 		}
+		Statistics.bossScores[4] += 5000 + 1250*Statistics.spawnersAlive;
 
 		Dungeon.level.unseal();
 		super.die( cause );

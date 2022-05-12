@@ -524,6 +524,7 @@ public class DwarfKing extends Mob {
 		if (Statistics.qualifiedForBossChallengeBadge){
 			Badges.validateBossChallengeCompleted();
 		}
+		Statistics.bossScores[3] += 4000;
 
 		Dungeon.level.unseal();
 
@@ -569,6 +570,14 @@ public class DwarfKing extends Mob {
 	public static class DKWarlock extends Warlock {
 		{
 			state = HUNTING;
+		}
+
+		@Override
+		protected void zap() {
+			if (enemy == Dungeon.hero){
+				Statistics.bossScores[3] -= 400;
+			}
+			super.zap();
 		}
 	}
 

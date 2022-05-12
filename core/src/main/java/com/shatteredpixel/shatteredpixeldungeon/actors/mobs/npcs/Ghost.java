@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.FetidRat;
@@ -339,6 +340,7 @@ public class Ghost extends NPC {
 				GLog.n( Messages.get(Ghost.class, "find_me") );
 				Sample.INSTANCE.play( Assets.Sounds.GHOST );
 				processed = true;
+				Statistics.questScores[0] = 1000;
 			}
 		}
 		

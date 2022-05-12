@@ -922,6 +922,8 @@ public class GameScene extends PixelScene {
 	
 	public static void add( Heap heap ) {
 		if (scene != null) {
+			//heaps that aren't added as part of levelgen don't count for exploration bonus
+			heap.autoExplored = true;
 			scene.addHeapSprite( heap );
 		}
 	}

@@ -1062,6 +1062,7 @@ public class Hero extends Char {
 					});
 					ready();
 				} else {
+					Statistics.ascended = true;
 					Badges.silentValidateHappyEnd();
 					Dungeon.win( Amulet.class );
 					Dungeon.deleteGame( GamesInProgress.curSlot, true );
