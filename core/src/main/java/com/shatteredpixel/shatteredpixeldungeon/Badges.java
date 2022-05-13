@@ -901,7 +901,6 @@ public class Badges {
 		displayBadge( badge );
 	}
 
-	//TODO this is calibrated for scoring changes I plan to make
 	public static void validateHighScore( int score ){
 		Badge badge = null;
 		if (score >= 5000) {

@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BadgesGrid;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BadgesList;
+import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
@@ -50,6 +51,7 @@ import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Button;
 import com.watabou.noosa.ui.Component;
 
+import java.text.NumberFormat;
 import java.util.Locale;
 
 public class WndRanking extends WndTabbed {
@@ -225,24 +227,33 @@ public class WndRanking extends WndTabbed {
 
 			pos += GAP;
 
-			//TODO score breakdown page!
-			pos = statSlot( this, "Score", Integer.toString( Statistics.totalScore ), pos );
+			NumberFormat num = NumberFormat.getInstance(Locale.US);
+			pos = statSlot( this, Messages.get(this, "score"), num.format( Statistics.totalScore ), pos );
 
+			IconButton scoreInfo = new IconButton(Icons.get(Icons.INFO)){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					ShatteredPixelDungeon.scene().addToFront(new WndScoreBreakdown());
+				}
+			};
+			scoreInfo.setSize(16, 16);
+			scoreInfo.setPos(WIDTH-scoreInfo.width(), pos-14);
+			add(scoreInfo);
 			pos += GAP;
 
 			int strBonus = Dungeon.hero.STR() - Dungeon.hero.STR;
 			if (strBonus > 0)       pos = statSlot(this, Messages.get(this, "str"), Dungeon.hero.STR + " + " + strBonus, pos);
 			else if (strBonus < 0)  pos = statSlot(this, Messages.get(this, "str"), Dungeon.hero.STR + " - " + -strBonus, pos );
 			else                    pos = statSlot(this, Messages.get(this, "str"), Integer.toString(Dungeon.hero.STR), pos);
-			pos = statSlot( this, Messages.get(this, "duration"), Integer.toString( (int)Statistics.duration ), pos );
-			pos = statSlot( this, Messages.get(this, "depth"), Integer.toString( Statistics.deepestFloor ), pos );
-
+			pos = statSlot( this, Messages.get(this, "duration"), num.format( (int)Statistics.duration ), pos );
+			pos = statSlot( this, Messages.get(this, "depth"), num.format( Statistics.deepestFloor ), pos );
 			pos += GAP;
 
-			pos = statSlot( this, Messages.get(this, "enemies"), Integer.toString( Statistics.enemiesSlain ), pos );
-			pos = statSlot( this, Messages.get(this, "gold"), Integer.toString( Statistics.goldCollected ), pos );
-			pos = statSlot( this, Messages.get(this, "food"), Integer.toString( Statistics.foodEaten ), pos );
-			pos = statSlot( this, Messages.get(this, "alchemy"), Integer.toString( Statistics.itemsCrafted ), pos );
+			pos = statSlot( this, Messages.get(this, "enemies"), num.format( Statistics.enemiesSlain ), pos );
+			pos = statSlot( this, Messages.get(this, "gold"), num.format( Statistics.goldCollected ), pos );
+			pos = statSlot( this, Messages.get(this, "food"), num.format( Statistics.foodEaten ), pos );
+			pos = statSlot( this, Messages.get(this, "alchemy"), num.format( Statistics.itemsCrafted ), pos );
 		}
 		
 		private float statSlot( Group parent, String label, String value, float pos ) {

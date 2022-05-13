@@ -118,7 +118,7 @@ public enum Rankings {
 	//assumes a ranking is loaded, or game is ending
 	public int calculateScore(){
 
-		if (Dungeon.initialVersion > ShatteredPixelDungeon.v1_2_3+1){
+		if (Dungeon.initialVersion > ShatteredPixelDungeon.v1_2_3){
 			Statistics.progressScore = Dungeon.hero.lvl * Statistics.deepestFloor * 65;
 			Statistics.progressScore = Math.min(Statistics.progressScore, 50_000);
 
@@ -134,23 +134,25 @@ public enum Rankings {
 			Statistics.treasureScore = Statistics.goldCollected + Statistics.heldItemValue;
 			Statistics.treasureScore = Math.min(Statistics.treasureScore, 20_000);
 
+			Statistics.exploreScore = 0;
 			int scorePerFloor = Statistics.floorsExplored.size * 50;
 			for (Boolean b : Statistics.floorsExplored.valueList()){
 				if (b) Statistics.exploreScore += scorePerFloor;
 			}
 
+			Statistics.totalBossScore = 0;
 			for (int i : Statistics.bossScores){
 				if (i > 0) Statistics.totalBossScore += i;
 			}
 
+			Statistics.totalQuestScore = 0;
 			for (int i : Statistics.questScores){
 				if (i > 0) Statistics.totalQuestScore += i;
 			}
 
 			Statistics.winMultiplier = 1f;
-			if (Statistics.amuletObtained)  Statistics.winMultiplier += 0.75f;
-			if (Statistics.gameWon)         Statistics.winMultiplier += 0.25f;
-			if (Statistics.ascended)        Statistics.winMultiplier += 0.25f;
+			if (Statistics.gameWon)         Statistics.winMultiplier += 1f;
+			if (Statistics.ascended)        Statistics.winMultiplier += 0.5f;
 
 		//pre v1.3.0 runs have different score calculations
 		//only progress and treasure score, and they are each up to 50% bigger
@@ -264,7 +266,7 @@ public enum Rankings {
 
 		Dungeon.initialVersion = data.getInt(GAME_VERSION);
 
-		if (Dungeon.initialVersion < ShatteredPixelDungeon.v1_2_3+1){
+		if (Dungeon.initialVersion <= ShatteredPixelDungeon.v1_2_3){
 			Statistics.gameWon = rec.win;
 		}
 		rec.score = calculateScore();
