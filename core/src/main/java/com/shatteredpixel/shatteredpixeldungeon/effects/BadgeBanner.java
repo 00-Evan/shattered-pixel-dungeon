@@ -32,6 +32,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BadgeBanner extends Image {
@@ -40,8 +41,9 @@ public class BadgeBanner extends Image {
 		FADE_IN, STATIC, FADE_OUT
 	}
 	private State state;
-	
-	private static final float DEFAULT_SCALE	= 3;
+
+	public static final float DEFAULT_SCALE	= 3;
+	public static final int SIZE = 16;
 	
 	private static final float FADE_IN_TIME		= 0.25f;
 	private static final float STATIC_TIME		= 1f;
@@ -52,14 +54,14 @@ public class BadgeBanner extends Image {
 	
 	private static TextureFilm atlas;
 	
-	private static BadgeBanner current;
+	public static ArrayList<BadgeBanner> showing = new ArrayList<>();
 	
 	private BadgeBanner( int index ) {
 		
 		super( Assets.Interfaces.BADGES );
 		
 		if (atlas == null) {
-			atlas = new TextureFilm( texture, 16, 16 );
+			atlas = new TextureFilm( texture, SIZE, SIZE );
 		}
 		
 		setup(index);
@@ -124,10 +126,14 @@ public class BadgeBanner extends Image {
 	
 	@Override
 	public void kill() {
-		if (current == this) {
-			current = null;
-		}
+		showing.remove(this);
 		super.kill();
+	}
+
+	@Override
+	public void destroy() {
+		showing.remove(this);
+		super.destroy();
 	}
 
 	//map to cache highlight positions so we don't have to keep looking at texture pixels
@@ -192,12 +198,13 @@ public class BadgeBanner extends Image {
 	}
 	
 	public static BadgeBanner show( int image ) {
-		if (current != null) {
-			current.setup(image);
-		} else {
-			current = new BadgeBanner(image);
-		}
-		return current;
+		BadgeBanner banner = new BadgeBanner(image);
+		showing.add(banner);
+		return banner;
+	}
+
+	public static boolean isShowingBadges(){
+		return !showing.isEmpty();
 	}
 	
 	public static Image image( int index ) {

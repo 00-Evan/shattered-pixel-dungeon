@@ -293,13 +293,23 @@ public class PixelScene extends Scene {
 		Game.runOnRenderThread(new Callback() {
 			@Override
 			public void call() {
-				BadgeBanner banner = BadgeBanner.show( badge.image );
-				banner.camera = uiCamera;
-				float offset = Camera.main.centerOffset.y;
-				banner.x = align( banner.camera, (banner.camera.width - banner.width) / 2 );
-				banner.y = align( uiCamera, (uiCamera.height - banner.height) / 2 - banner.height/2 - 16 - offset );
 				Scene s = Game.scene();
-				if (s != null) s.add( banner );
+				if (s != null) {
+					BadgeBanner banner = BadgeBanner.show(badge.image);
+					s.add(banner);
+					float offset = Camera.main.centerOffset.y;
+
+					int left = uiCamera.width/2 - BadgeBanner.SIZE/2;
+					left -= (BadgeBanner.SIZE * BadgeBanner.DEFAULT_SCALE * (BadgeBanner.showing.size()-1))/2;
+					for (int i = 0; i < BadgeBanner.showing.size(); i++){
+						banner = BadgeBanner.showing.get(i);
+						banner.camera = uiCamera;
+						banner.x = align(banner.camera, left);
+						banner.y = align(uiCamera, (uiCamera.height - banner.height) / 2 - banner.height / 2 - 16 - offset);
+						left += BadgeBanner.SIZE * BadgeBanner.DEFAULT_SCALE;
+					}
+
+				}
 			}
 		});
 	}
