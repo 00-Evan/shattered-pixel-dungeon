@@ -21,15 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.android;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.ViewConfiguration;
-import android.widget.TextView;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.android.AndroidApplication;
@@ -48,12 +46,13 @@ import com.watabou.noosa.Game;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Button;
 import com.watabou.utils.FileUtils;
 
-public class AndroidGame extends AndroidApplication {
+public class AndroidLauncher extends AndroidApplication {
 	
 	public static AndroidApplication instance;
 	
 	private static AndroidPlatformSupport support;
 	
+	@SuppressLint("SetTextI18n")
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,17 +61,10 @@ public class AndroidGame extends AndroidApplication {
 			GdxNativesLoader.load();
 			FreeType.initFreeType();
 		} catch (Exception e){
-			TextView text = new TextView(this);
-			text.setText("Shattered Pixel Dungeon cannot start because some of its code is missing!\n\n" +
-					"This usually happens when the Google Play version of the game is installed from somewhere outside of Google Play.\n\n" +
-					"If you're unsure of how to fix this, please email the developer (Evan@ShatteredPixel.com), and include this error message:\n\n" +
-					e.getMessage());
-			text.setTextSize(16);
-			text.setTextColor(0xFFFFFFFF);
-			text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/pixel_font.ttf"));
-			text.setGravity(Gravity.CENTER_VERTICAL);
-			text.setPadding(10, 10, 10, 10);
-			setContentView(text);
+			AndroidMissingNativesHandler.errorMsg = e.getMessage();
+			Intent intent = new Intent(this, AndroidMissingNativesHandler.class);
+			startActivity(intent);
+			finish();
 			return;
 		}
 
