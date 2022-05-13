@@ -23,7 +23,7 @@ allprojects {
         appAndroidMinSDK = 14
         appAndroidTargetSDK = 31
 
-        gdxVersion = '1.10.0'
+        gdxVersion = '1.11.0'
         gdxControllersVersion = '2.2.1'
         robovmVersion = '2.3.16'
     }

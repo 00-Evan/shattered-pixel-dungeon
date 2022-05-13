@@ -24,15 +24,20 @@ package com.shatteredpixel.shatteredpixeldungeon.android;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.ViewConfiguration;
+import android.widget.TextView;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.AndroidAudio;
 import com.badlogic.gdx.backends.android.AsynchronousAndroidAudio;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeType;
+import com.badlogic.gdx.utils.GdxNativesLoader;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.services.news.News;
@@ -52,6 +57,24 @@ public class AndroidGame extends AndroidApplication {
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		try {
+			GdxNativesLoader.load();
+			FreeType.initFreeType();
+		} catch (Exception e){
+			TextView text = new TextView(this);
+			text.setText("Shattered Pixel Dungeon cannot start because some of its code is missing!\n\n" +
+					"This usually happens when the Google Play version of the game is installed from somewhere outside of Google Play.\n\n" +
+					"If you're unsure of how to fix this, please email the developer (Evan@ShatteredPixel.com), and include this error message:\n\n" +
+					e.getMessage());
+			text.setTextSize(16);
+			text.setTextColor(0xFFFFFFFF);
+			text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/pixel_font.ttf"));
+			text.setGravity(Gravity.CENTER_VERTICAL);
+			text.setPadding(10, 10, 10, 10);
+			setContentView(text);
+			return;
+		}
 
 		//there are some things we only need to set up on first launch
 		if (instance == null) {
