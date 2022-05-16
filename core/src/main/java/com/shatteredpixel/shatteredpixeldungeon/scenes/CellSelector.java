@@ -131,12 +131,17 @@ public class CellSelector extends ScrollArea {
 		SPDSettings.zoom((int) (value - PixelScene.defaultZoom));
 		camera.zoom( value );
 
-		//Resets character sprite positions with the new camera zoom
-		//This is important as characters are centered on a 16x16 tile, but may have any sprite size
+		//Resets char and item sprite positions with the new camera zoom
+		//This is important as sprites are centered on a 16x16 tile, but may have any sprite size
 		//This can lead to none-whole coordinate, which need to be aligned with the zoom
 		for (Char c : Actor.chars()){
 			if (c.sprite != null && !c.sprite.isMoving){
 				c.sprite.point(c.sprite.worldToCamera(c.pos));
+			}
+		}
+		for (Heap heap : Dungeon.level.heaps.valueList()){
+			if (heap.sprite != null){
+				heap.sprite.point(heap.sprite.worldToCamera(heap.pos));
 			}
 		}
 
