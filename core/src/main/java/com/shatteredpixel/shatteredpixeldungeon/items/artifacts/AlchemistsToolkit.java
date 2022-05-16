@@ -141,7 +141,7 @@ public class AlchemistsToolkit extends Artifact {
 
 	@Override
 	public String status() {
-		if (isEquipped(Dungeon.hero) && warmUpDelay > 0){
+		if (isEquipped(Dungeon.hero) && warmUpDelay > 0 && !cursed){
 			return Messages.format( "%d%%", 100 - (int)warmUpDelay );
 		} else {
 			return super.status();
