@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Inferno;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -51,7 +52,7 @@ public class InfernalBrew extends Brew {
 		int centerVolume = 120;
 		for (int i : PathFinder.NEIGHBOURS8){
 			if (!Dungeon.level.solid[cell+i]){
-				GameScene.add( Blob.seed( cell+i, 120, Inferno.class ) );
+				GameScene.add( Blob.seed( cell+i, 120 + (12 * Dungeon.hero.pointsInTalent(Talent.POTION_DURATION)), Inferno.class ) );
 			} else {
 				centerVolume += 120;
 			}

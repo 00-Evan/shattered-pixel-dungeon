@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.GooBlob;
@@ -57,7 +58,7 @@ public class CausticBrew extends Brew {
 				Char ch = Actor.findChar(i);
 				
 				if (ch != null){
-					Buff.affect(ch, Ooze.class).set( Ooze.DURATION );
+					Buff.affect(ch, Ooze.class).set( Ooze.DURATION  + (2 * Dungeon.hero.pointsInTalent(Talent.POTION_DURATION)));
 				}
 			}
 		}

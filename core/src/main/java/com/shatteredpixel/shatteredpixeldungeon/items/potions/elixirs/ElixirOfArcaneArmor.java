@@ -21,9 +21,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArcaneArmor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfEarthenArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.GooBlob;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -37,7 +39,7 @@ public class ElixirOfArcaneArmor extends Elixir {
 	
 	@Override
 	public void apply(Hero hero) {
-		Buff.affect(hero, ArcaneArmor.class).set(5 + hero.lvl/2, 80);
+		Buff.affect(hero, ArcaneArmor.class).set(5 + hero.lvl/2, 80 + (2 * Dungeon.hero.pointsInTalent(Talent.POTION_DURATION)));
 	}
 	
 	@Override

@@ -54,10 +54,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.Brew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.Elixir;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.exotic.StoneOfKnowledge;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
@@ -153,11 +156,11 @@ public enum Talent {
 	EAGLE_EYE(119, 4), GO_FOR_THE_EYES(120, 4), SWIFT_SPIRIT(121, 4),
 
 	//Alchemist T1
-	/*One(128),*/ BREWING_KNOWLEDGE(129), SCROLL_KNOWLEDGE(130), //Four(131),
+	/*One(128),*/ BREWING_KNOWLEDGE(129), EXOTIC_KNOWLEDGE(130), ALCHEMY_ENERGY(131),
 	//Alchemist T2
 	/*Five(132),*/ ALCHEMY_THEORIES(133), SHIELDING_ELIXIRS(134), RUNE_CRAFTING(135), //Nine(136),
 	//Alchemist T3
-	/*Ten(137, 3),*/ EMPTY(138, 3),
+	POTION_DURATION(137, 3), EMPTY(138, 3),
 	//SubclassA T3
 	//Twelve(139, 3), //Thirteen(140, 3), //Fourteen(141, 3),
 	//SubclassB T3
@@ -506,13 +509,13 @@ public enum Talent {
 					break;
 			}
 		}
-		if (hero.hasTalent(Talent.SCROLL_KNOWLEDGE) && item instanceof Potion){
+		if (hero.hasTalent(Talent.EXOTIC_KNOWLEDGE) && (item instanceof ExoticScroll || item instanceof ExoticPotion)){
 			switch (Random.IntRange(1, 8)){
 				case 1:
 					item.identify();
 					break;
 				case 2:
-					if (hero.pointsInTalent(Talent.SCROLL_KNOWLEDGE) >= 2) item.identify();
+					if (hero.pointsInTalent(Talent.EXOTIC_KNOWLEDGE) >= 2) item.identify();
 					break;
 				default:
 					break;
@@ -571,7 +574,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, NATURES_BOUNTY, SURVIVALISTS_INTUITION, FOLLOWUP_STRIKE, NATURES_AID);
 				break;
 			case ALCHEMIST:
-				Collections.addAll(tierTalents, EMPTY, BREWING_KNOWLEDGE, SCROLL_KNOWLEDGE, EMPTY);
+				Collections.addAll(tierTalents, EMPTY, BREWING_KNOWLEDGE, EXOTIC_KNOWLEDGE, ALCHEMY_ENERGY);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -623,7 +626,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, POINT_BLANK, SEER_SHOT);
 				break;
 			case ALCHEMIST:
-				Collections.addAll(tierTalents, EMPTY, EMPTY);
+				Collections.addAll(tierTalents, POTION_DURATION, EMPTY);
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){

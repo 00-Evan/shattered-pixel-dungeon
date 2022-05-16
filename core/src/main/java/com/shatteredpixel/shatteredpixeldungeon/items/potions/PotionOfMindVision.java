@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -38,7 +39,7 @@ public class PotionOfMindVision extends Potion {
 	@Override
 	public void apply( Hero hero ) {
 		identify();
-		Buff.affect( hero, MindVision.class, MindVision.DURATION );
+		Buff.affect( hero, MindVision.class, MindVision.DURATION + hero.pointsInTalent(Talent.POTION_DURATION));
 		Dungeon.observe();
 		
 		if (Dungeon.level.mobs.size() > 0) {

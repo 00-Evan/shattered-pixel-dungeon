@@ -10,8 +10,11 @@ Combusted Pixel Dungeon implements the following features to Shattered Pixel Dun
 - 5 New Spells
 - Minor UI & Graphics Improvements
 - Alternate Map Graphics for the Prison, Caves and City. (Using Graphic Assets from Re-Remixed Dungeon)
+
+Unfinished features (WIP):
+- Exotic Stones
 - New Class:
-  - Alchemist (WIP)
+  - Alchemist
 
 Potential future changes might implement:
 - More Weapons

@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class PotionOfMagicalSight extends ExoticPotion {
@@ -36,7 +37,7 @@ public class PotionOfMagicalSight extends ExoticPotion {
 	@Override
 	public void apply(Hero hero) {
 		identify();
-		Buff.affect(hero, MagicalSight.class, MagicalSight.DURATION);
+		Buff.affect(hero, MagicalSight.class, MagicalSight.DURATION + (2 * Dungeon.hero.pointsInTalent(Talent.POTION_DURATION)));
 		Dungeon.observe();
 		
 	}

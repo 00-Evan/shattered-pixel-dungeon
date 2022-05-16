@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.journal;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
@@ -62,6 +63,7 @@ public abstract class DocumentPage extends Item {
 		document().findPage(page);
 		Sample.INSTANCE.play( Assets.Sounds.ITEM );
 		hero.spendAndNext( TIME_TO_PICK_UP );
+		Badges.validateAlchemistUnlock(this);
 		return true;
 	}
 

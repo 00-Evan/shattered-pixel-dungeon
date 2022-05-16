@@ -21,9 +21,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class PotionOfEarthenArmor extends ExoticPotion {
@@ -36,7 +38,7 @@ public class PotionOfEarthenArmor extends ExoticPotion {
 	public void apply( Hero hero ) {
 		identify();
 		
-		Buff.affect(hero, Barkskin.class).set( 2 + hero.lvl/3, 50 );
+		Buff.affect(hero, Barkskin.class).set( 2 + hero.lvl/3, 50 + (2 * Dungeon.hero.pointsInTalent(Talent.POTION_DURATION)) );
 	}
 	
 }

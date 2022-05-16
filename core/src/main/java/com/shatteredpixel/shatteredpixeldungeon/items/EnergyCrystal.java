@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
@@ -50,18 +51,20 @@ public class EnergyCrystal extends Item {
 
 	@Override
 	public ArrayList<String> actions(Hero hero ) {
-		return new ArrayList<>();
+		//return new ArrayList<>();
+		return super.actions( hero );
 	}
 
 	@Override
 	public boolean doPickUp(Hero hero, int pos) {
 
 		Dungeon.energy += quantity;
+		Dungeon.energy += hero.pointsInTalent(Talent.ALCHEMY_ENERGY);
 		//TODO Statistics.goldCollected += quantity;
 		//Badges.validateGoldCollected();
 
 		GameScene.pickUp( this, pos );
-		hero.sprite.showStatus( 0x44CCFF, TXT_VALUE, quantity );
+		hero.sprite.showStatus( 0x44CCFF, TXT_VALUE, quantity + hero.pointsInTalent(Talent.ALCHEMY_ENERGY));
 		hero.spendAndNext( TIME_TO_PICK_UP );
 
 		Sample.INSTANCE.play( Assets.Sounds.ITEM );

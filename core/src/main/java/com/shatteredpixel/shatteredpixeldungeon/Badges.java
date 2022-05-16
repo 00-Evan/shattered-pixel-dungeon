@@ -27,7 +27,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
+import com.shatteredpixel.shatteredpixeldungeon.items.journal.AlchemyPage;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.LaboratoryRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -779,10 +782,21 @@ public class Badges {
 		}
 	}
 
-	public static void validateAlchemistUnlock(){
-		if (Statistics.itemsCrafted >= 15 && !isUnlocked(Badge.UNLOCK_ALCHEMIST)){
+	public static void validateAlchemistUnlock(Item item){
+		if(!(item instanceof AlchemyPage)) return;
+		Collection<String> allPages = Document.ALCHEMY_GUIDE.pageNames();
+		ArrayList<String> missingPages = new ArrayList<>();
+		for ( String page : allPages){
+			if (!Document.ALCHEMY_GUIDE.isPageFound(page)){
+				missingPages.add(page);
+			}
+		}
+		if (missingPages.size() <= 0 && !isUnlocked(Badge.UNLOCK_ALCHEMIST)){
 			displayBadge( Badge.UNLOCK_ALCHEMIST );
 		}
+//		if (isUnlocked(Badge.ITEMS_CRAFTED_3) && !isUnlocked(Badge.UNLOCK_ALCHEMIST)){
+//			displayBadge( Badge.UNLOCK_ALCHEMIST );
+//		}
 	}
 	
 	public static void validateMasteryCombo( int n ) {
