@@ -266,7 +266,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		Plant.Seed n;
 		
 		do {
-			n = (Plant.Seed)Generator.random( Generator.Category.SEED );
+			n = (Plant.Seed)Generator.randomUsingDefaults( Generator.Category.SEED );
 		} while (n.getClass() == s.getClass());
 		
 		return n;
@@ -277,7 +277,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		Runestone n;
 		
 		do {
-			n = (Runestone) Generator.random( Generator.Category.STONE );
+			n = (Runestone) Generator.randomUsingDefaults( Generator.Category.STONE );
 		} while (n.getClass() == r.getClass());
 		
 		return n;

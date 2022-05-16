@@ -140,11 +140,11 @@ public class Warlock extends Mob implements Callback {
 			Dungeon.LimitedDrops.WARLOCK_HP.count++;
 			return new PotionOfHealing();
 		} else {
-			Item i = Generator.random(Generator.Category.POTION);
+			Item i = Generator.randomUsingDefaults(Generator.Category.POTION);
 			int healingTried = 0;
 			while (i instanceof PotionOfHealing){
 				healingTried++;
-				i = Generator.random(Generator.Category.POTION);
+				i = Generator.randomUsingDefaults(Generator.Category.POTION);
 			}
 
 			//return the attempted healing potion drops to the pool
