@@ -157,7 +157,7 @@ public class SentryRoom extends SpecialRoom {
 		sentry.pos = level.pointToCell(sentryPos);
 		sentry.room = new EmptyRoom();
 		sentry.room.set((Rect)this);
-		sentry.initialChargeDelay = dangerDist / 3f + 0.1f;
+		sentry.initialChargeDelay = sentry.curChargeDelay = dangerDist / 3f + 0.1f;
 		level.mobs.add( sentry );
 
 		Painter.set(level, treasurePos, Terrain.PEDESTAL);
