@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
@@ -63,21 +64,27 @@ public class ItemSlot extends Button {
 	// Special "virtual items"
 	public static final Item CHEST = new Item() {
 		public int image() { return ItemSpriteSheet.CHEST; }
+		public String name() { return Messages.get(Heap.class, "chest"); }
 	};
 	public static final Item LOCKED_CHEST = new Item() {
 		public int image() { return ItemSpriteSheet.LOCKED_CHEST; }
+		public String name() { return Messages.get(Heap.class, "locked_chest"); }
 	};
 	public static final Item CRYSTAL_CHEST = new Item() {
 		public int image() { return ItemSpriteSheet.CRYSTAL_CHEST; }
+		public String name() { return Messages.get(Heap.class, "crystal_chest"); }
 	};
 	public static final Item TOMB = new Item() {
 		public int image() { return ItemSpriteSheet.TOMB; }
+		public String name() { return Messages.get(Heap.class, "tomb"); }
 	};
 	public static final Item SKELETON = new Item() {
 		public int image() { return ItemSpriteSheet.BONES; }
+		public String name() { return Messages.get(Heap.class, "skeleton"); }
 	};
 	public static final Item REMAINS = new Item() {
 		public int image() { return ItemSpriteSheet.REMAINS; }
+		public String name() { return Messages.get(Heap.class, "remains"); }
 	};
 	
 	public ItemSlot() {
