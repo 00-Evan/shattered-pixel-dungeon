@@ -579,8 +579,11 @@ public class DM300 extends Mob {
 				for (int i : PathFinder.NEIGHBOURS9){
 					if (Dungeon.level.map[pos+i] == Terrain.WALL || Dungeon.level.map[pos+i] == Terrain.WALL_DECO){
 						Point p = Dungeon.level.cellToPoint(pos+i);
-						if (p.y < gate.bottom && p.x > gate.left-2 && p.x < gate.right+2){
+						if (p.y < gate.bottom && p.x >= gate.left-2 && p.x < gate.right+2){
 							continue; //don't break the gate or walls around the gate
+						}
+						if (!CavesBossLevel.diggableArea.inside(p)){
+							continue; //Don't break any walls out of the boss arena
 						}
 						Level.set(pos+i, Terrain.EMPTY_DECO);
 						GameScene.updateMap(pos+i);
