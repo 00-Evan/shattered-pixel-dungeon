@@ -103,8 +103,8 @@ public class WndGameInProgress extends Window {
 		pos += GAP;
 		statSlot( Messages.get(this, "gold"), info.goldCollected );
 		statSlot( Messages.get(this, "depth"), info.maxDepth );
-		if (info.customSeed){
-			statSlot( Messages.get(this, "custom_seed"), "_" + DungeonSeed.convertToCode(info.seed) + "_" );
+		if (!info.customSeed.isEmpty()){
+			statSlot( Messages.get(this, "custom_seed"), "_" + info.customSeed + "_" );
 		} else {
 			statSlot( Messages.get(this, "dungeon_seed"), DungeonSeed.convertToCode(info.seed) );
 		}
@@ -162,9 +162,12 @@ public class WndGameInProgress extends Window {
 		RenderedTextBlock txt = PixelScene.renderTextBlock( label, 8 );
 		txt.setPos(0, pos);
 		add( txt );
-		
-		txt = PixelScene.renderTextBlock( value, 8 );
-		txt.setPos(WIDTH * 0.55f, pos);
+
+		int size = 8;
+		if (value.length() >= 14) size -=2;
+		if (value.length() >= 18) size -=1;
+		txt = PixelScene.renderTextBlock( value, size );
+		txt.setPos(WIDTH * 0.55f, pos + (6 - txt.height())/2);
 		PixelScene.align(txt);
 		add( txt );
 		

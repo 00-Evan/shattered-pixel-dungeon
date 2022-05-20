@@ -51,7 +51,7 @@ public class Bones {
 		depth = Dungeon.depth;
 
 		//heroes drop no bones if they have the amulet, die far above their farthest depth, are challenged, or are playing with a custom seed.
-		if (Statistics.amuletObtained || (Statistics.deepestFloor - 5) >= depth || Dungeon.challenges > 0 || Dungeon.usingCustomSeed) {
+		if (Statistics.amuletObtained || (Statistics.deepestFloor - 5) >= depth || Dungeon.challenges > 0 || !Dungeon.customSeedText.isEmpty()) {
 			depth = -1;
 			return;
 		}
@@ -142,7 +142,7 @@ public class Bones {
 
 		} else {
 			//heroes who are challenged or on a seeded run cannot find bones
-			if (depth == Dungeon.depth && Dungeon.challenges == 0 && !Dungeon.usingCustomSeed) {
+			if (depth == Dungeon.depth && Dungeon.challenges == 0 && Dungeon.customSeedText.isEmpty()) {
 				Bundle emptyBones = new Bundle();
 				emptyBones.put(LEVEL, 0);
 				try {

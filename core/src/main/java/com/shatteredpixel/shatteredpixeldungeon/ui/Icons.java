@@ -295,28 +295,28 @@ public enum Icons {
 				icon.frame( icon.texture.uvRectBySize( 40, 72, 8, 8 ) );
 				break;
 			case DEPTH:
-				icon.frame( icon.texture.uvRectBySize( 48, 64 + (Dungeon.usingCustomSeed ? 8 : 0), 6, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 48, 64 + (Dungeon.customSeedText.isEmpty() ? 0 : 8), 6, 7 ) );
 				break;
 			case DEPTH_CHASM:
-				icon.frame( icon.texture.uvRectBySize( 56, 64 + (Dungeon.usingCustomSeed ? 8 : 0), 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 56, 64 + (Dungeon.customSeedText.isEmpty() ? 0 : 8), 7, 7 ) );
 				break;
 			case DEPTH_WATER:
-				icon.frame( icon.texture.uvRectBySize( 64, 64 + (Dungeon.usingCustomSeed ? 8 : 0), 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 64, 64 + (Dungeon.customSeedText.isEmpty() ? 0 : 8), 7, 7 ) );
 				break;
 			case DEPTH_GRASS:
-				icon.frame( icon.texture.uvRectBySize( 72, 64 + (Dungeon.usingCustomSeed ? 8 : 0), 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 72, 64 + (Dungeon.customSeedText.isEmpty() ? 0 : 8), 7, 7 ) );
 				break;
 			case DEPTH_DARK:
-				icon.frame( icon.texture.uvRectBySize( 80, 64 + (Dungeon.usingCustomSeed ? 8 : 0), 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 80, 64 + (Dungeon.customSeedText.isEmpty() ? 0 : 8), 7, 7 ) );
 				break;
 			case DEPTH_LARGE:
-				icon.frame( icon.texture.uvRectBySize( 88, 64 + (Dungeon.usingCustomSeed ? 8 : 0), 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 88, 64 + (Dungeon.customSeedText.isEmpty() ? 0 : 8), 7, 7 ) );
 				break;
 			case DEPTH_TRAPS:
-				icon.frame( icon.texture.uvRectBySize( 96, 64 + (Dungeon.usingCustomSeed ? 8 : 0), 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 96, 64 + (Dungeon.customSeedText.isEmpty() ? 0 : 8), 7, 7 ) );
 				break;
 			case DEPTH_SECRETS:
-				icon.frame( icon.texture.uvRectBySize( 104, 64 + (Dungeon.usingCustomSeed ? 8 : 0), 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 104, 64 + (Dungeon.customSeedText.isEmpty() ? 0 : 8), 7, 7 ) );
 				break;
 			case CHAL_COUNT:
 				icon.frame( icon.texture.uvRectBySize( 112, 64, 7, 7 ) );

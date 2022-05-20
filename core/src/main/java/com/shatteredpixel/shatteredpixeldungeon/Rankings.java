@@ -63,7 +63,7 @@ public enum Rankings {
 	public void submit( boolean win, Class cause ) {
 
 		//games with custom seeds do not appear in rankings
-		if (Dungeon.usingCustomSeed) return;
+		if (!Dungeon.customSeedText.isEmpty()) return;
 
 		load();
 		

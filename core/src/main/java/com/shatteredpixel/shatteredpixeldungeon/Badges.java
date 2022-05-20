@@ -958,7 +958,7 @@ public class Badges {
 	
 	private static void displayBadge( Badge badge ) {
 		
-		if (badge == null || Dungeon.usingCustomSeed) {
+		if (badge == null || !Dungeon.customSeedText.isEmpty()) {
 			return;
 		}
 		
@@ -995,7 +995,7 @@ public class Badges {
 	}
 	
 	public static void unlock( Badge badge ){
-		if (!isUnlocked(badge) && !Dungeon.usingCustomSeed){
+		if (!isUnlocked(badge) && Dungeon.customSeedText.isEmpty()){
 			global.add( badge );
 			saveNeeded = true;
 		}

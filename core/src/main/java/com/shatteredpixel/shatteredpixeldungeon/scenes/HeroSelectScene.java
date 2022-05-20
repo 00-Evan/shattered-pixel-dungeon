@@ -199,22 +199,23 @@ public class HeroSelectScene extends PixelScene {
 		seedButton = new IconButton( Icons.get(Icons.SEED)){
 			@Override
 			protected void onClick() {
-				String existingSeedtext = SPDSettings.customSeed() == -1 ? "" : DungeonSeed.convertToCode(SPDSettings.customSeed());
+				String existingSeedtext = SPDSettings.customSeed();
 				ShatteredPixelDungeon.scene().addToFront( new WndTextInput(Messages.get(HeroSelectScene.class, "custom_seed_title"),
 						Messages.get(HeroSelectScene.class, "custom_seed_desc"),
 						existingSeedtext,
-						30,
+						20,
 						false,
 						Messages.get(HeroSelectScene.class, "custom_seed_set"),
 						Messages.get(HeroSelectScene.class, "custom_seed_clear")){
 					@Override
 					public void onSelect(boolean positive, String text) {
+						text = DungeonSeed.formatText(text);
 						long seed = DungeonSeed.convertFromText(text);
 						if (positive && seed != -1){
-							SPDSettings.customSeed(seed);
+							SPDSettings.customSeed(text);
 							icon.hardlight(1f, 1.5f, 0.67f);
 						} else {
-							SPDSettings.customSeed(-1);
+							SPDSettings.customSeed("");
 							icon.resetColor();
 						}
 					}
@@ -223,7 +224,7 @@ public class HeroSelectScene extends PixelScene {
 
 			@Override
 			protected void onPointerUp() {
-				if (SPDSettings.customSeed() != -1){
+				if (!SPDSettings.customSeed().isEmpty()){
 					icon.hardlight(1f, 1.5f, 0.67f);
 				} else {
 					icon.resetColor();
@@ -243,7 +244,7 @@ public class HeroSelectScene extends PixelScene {
 				return Messages.get(HeroSelectScene.class, "custom_seed_title");
 			}
 		};
-		if (SPDSettings.customSeed() != -1) seedButton.icon().hardlight(1f, 1.5f, 0.67f);
+		if (!SPDSettings.customSeed().isEmpty()) seedButton.icon().hardlight(1f, 1.5f, 0.67f);
 		seedButton.setRect(challengeButton.left()-16, challengeButton.top(), 16, 21);
 		seedButton.visible = false;
 
@@ -253,7 +254,7 @@ public class HeroSelectScene extends PixelScene {
 		} else {
 			Dungeon.challenges = 0;
 			SPDSettings.challenges(0);
-			SPDSettings.customSeed(-1);
+			SPDSettings.customSeed("");
 		}
 
 		btnExit = new ExitButton();

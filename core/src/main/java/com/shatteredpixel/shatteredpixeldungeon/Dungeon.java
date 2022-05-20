@@ -179,6 +179,7 @@ public class Dungeon {
 	public static int initialVersion;
 	public static int version;
 
+	public static String customSeedText;
 	public static long seed;
 	public static boolean usingCustomSeed;
 	
@@ -188,12 +189,12 @@ public class Dungeon {
 		challenges = SPDSettings.challenges();
 		mobsToChampion = -1;
 
-		if (SPDSettings.customSeed() != -1){
-			seed = SPDSettings.customSeed();
-			usingCustomSeed = true;
+		if (SPDSettings.customSeed() != ""){
+			customSeedText = SPDSettings.customSeed();
+			seed = DungeonSeed.convertFromText(customSeedText);
 		} else {
+			customSeedText = "";
 			seed = DungeonSeed.randomSeed();
-			usingCustomSeed = false;
 		}
 
 		Actor.clear();
@@ -495,7 +496,7 @@ public class Dungeon {
 			bundle.put( INIT_VER, initialVersion );
 			bundle.put( VERSION, version = Game.versionCode );
 			bundle.put( SEED, seed );
-			bundle.put( CUSTOM_SEED, usingCustomSeed );
+			bundle.put( CUSTOM_SEED, customSeedText );
 			bundle.put( CHALLENGES, challenges );
 			bundle.put( MOBS_TO_CHAMPION, mobsToChampion );
 			bundle.put( HERO, hero );
@@ -573,7 +574,7 @@ public class Dungeon {
 			saveGame( GamesInProgress.curSlot );
 			saveLevel( GamesInProgress.curSlot );
 
-			GamesInProgress.set( GamesInProgress.curSlot, depth, challenges, seed, usingCustomSeed, hero );
+			GamesInProgress.set( GamesInProgress.curSlot, depth, challenges, seed, customSeedText, hero );
 
 		}
 	}
@@ -596,7 +597,7 @@ public class Dungeon {
 		version = bundle.getInt( VERSION );
 
 		seed = bundle.contains( SEED ) ? bundle.getLong( SEED ) : DungeonSeed.randomSeed();
-		usingCustomSeed = bundle.getBoolean( CUSTOM_SEED );
+		customSeedText = bundle.getString( CUSTOM_SEED );
 
 		Actor.clear();
 		Actor.restoreNextID( bundle );
@@ -729,7 +730,7 @@ public class Dungeon {
 		info.version = bundle.getInt( VERSION );
 		info.challenges = bundle.getInt( CHALLENGES );
 		info.seed = bundle.getLong( SEED );
-		info.customSeed = bundle.getBoolean( CUSTOM_SEED );
+		info.customSeed = bundle.getString( CUSTOM_SEED );
 
 		Hero.preview( info, bundle.getBundle( HERO ) );
 		Statistics.preview( info, bundle );

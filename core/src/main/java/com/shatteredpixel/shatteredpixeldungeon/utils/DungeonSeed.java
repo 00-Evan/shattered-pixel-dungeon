@@ -23,6 +23,8 @@ package com.shatteredpixel.shatteredpixeldungeon.utils;
 
 import com.watabou.utils.Random;
 
+import java.util.Locale;
+
 //This class defines the parameters for seeds in ShatteredPD and contains a few convenience methods
 public class DungeonSeed {
 
@@ -120,6 +122,17 @@ public class DungeonSeed {
 		if (total < 0) total += Long.MAX_VALUE;
 		total %= TOTAL_SEEDS;
 		return total;
+	}
+
+
+	public static String formatText( String inputText ){
+		try {
+			//if the seed matches a code, then just convert it to using the code system
+			return convertToCode(convertFromCode(inputText));
+		} catch (IllegalArgumentException e){
+			//otherwise just return the input text
+			return inputText;
+		}
 	}
 
 }

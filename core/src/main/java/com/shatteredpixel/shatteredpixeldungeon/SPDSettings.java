@@ -209,12 +209,12 @@ public class SPDSettings extends GameSettings {
 		return getInt( KEY_CHALLENGES, 0, 0, Challenges.MAX_VALUE );
 	}
 
-	public static void customSeed( long value ){
+	public static void customSeed( String value ){
 		put( KEY_CUSTOM_SEED, value );
 	}
 
-	public static long customSeed() {
-		return getLong( KEY_CUSTOM_SEED, -1, -1, DungeonSeed.TOTAL_SEEDS-1);
+	public static String customSeed() {
+		return getString( KEY_CUSTOM_SEED, "", 20);
 	}
 
 	public static void supportNagged( boolean value ) {

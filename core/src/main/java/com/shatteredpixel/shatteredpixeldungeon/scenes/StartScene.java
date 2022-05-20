@@ -203,7 +203,7 @@ public class StartScene extends PixelScene {
 					level.resetColor();
 				}
 
-				if (info.customSeed){
+				if (!info.customSeed.isEmpty()){
 					steps.hardlight(1f, 1.5f, 0.67f);
 				}
 				
