@@ -91,6 +91,10 @@ public class Bundle {
 		return !data.isNull( key );
 	}
 
+	public boolean remove( String key ){
+		return data.remove(key) != null;
+	}
+
 	//JSONObject.keyset() doesn't exist on Android/iOS
 	public ArrayList<String> getKeys(){
 		Iterator<String> keys = data.keys();

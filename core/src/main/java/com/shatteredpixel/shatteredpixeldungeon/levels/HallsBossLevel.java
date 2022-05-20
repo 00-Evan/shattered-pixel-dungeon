@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -68,7 +69,7 @@ public class HallsBossLevel extends Level {
 		if (locked){
 			Music.INSTANCE.play(Assets.Music.HALLS_BOSS, true);
 		//if exit isn't unlocked
-		} else if (map[exit] != Terrain.EXIT){
+		} else if (map[exit()] != Terrain.EXIT){
 			Music.INSTANCE.end();
 		} else {
 			Music.INSTANCE.playTracks(
@@ -112,7 +113,8 @@ public class HallsBossLevel extends Level {
 			Painter.fill(this, 4 + i * 5, top, 5, bottom - top + 1, Terrain.EMPTY);
 
 			if (i == 2) {
-				entrance = (6 + i * 5) + (bottom - 1) * width();
+				int entrance = (6 + i * 5) + (bottom - 1) * width();
+				transitions.add(new LevelTransition(this, entrance, LevelTransition.Type.REGULAR_ENTRANCE));
 			}
 
 		}
@@ -124,7 +126,7 @@ public class HallsBossLevel extends Level {
 			}
 		}
 
-		map[entrance] = Terrain.ENTRANCE;
+		map[entrance()] = Terrain.ENTRANCE;
 
 		Painter.fill(this, ROOM_LEFT-1, ROOM_TOP-1, 11, 11, Terrain.EMPTY );
 
@@ -149,7 +151,12 @@ public class HallsBossLevel extends Level {
 
 		Painter.fill(this, ROOM_LEFT+3, ROOM_TOP+2, 3, 4, Terrain.EMPTY );
 
-		exit = width/2 + ((ROOM_TOP+1) * width);
+		int exitCell = width/2 + ((ROOM_TOP+1) * width);
+		LevelTransition exit = new LevelTransition(this, exitCell, LevelTransition.Type.REGULAR_EXIT);
+		exit.top--;
+		exit.left--;
+		exit.right++;
+		transitions.add(exit);
 
 		CustomTilemap vis = new CenterPieceVisuals();
 		vis.pos(ROOM_LEFT, ROOM_TOP+1);
@@ -165,7 +172,7 @@ public class HallsBossLevel extends Level {
 		}
 
 		//ensures a path to the exit exists
-		return (PathFinder.getStep(entrance, exit, passable) != -1);
+		return (PathFinder.getStep(entrance(), exit(), passable) != -1);
 	}
 
 	@Override
@@ -183,14 +190,14 @@ public class HallsBossLevel extends Level {
 			int pos;
 			do {
 				pos = randomRespawnCell(null);
-			} while (pos == entrance);
+			} while (pos == entrance());
 			drop( item, pos ).setHauntedIfCursed().type = Heap.Type.REMAINS;
 		}
 	}
 
 	@Override
 	public int randomRespawnCell( Char ch ) {
-		int pos = entrance;
+		int pos = entrance();
 		int cell;
 		do {
 			cell = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
@@ -204,8 +211,8 @@ public class HallsBossLevel extends Level {
 	public void occupyCell( Char ch ) {
 		super.occupyCell( ch );
 
-		if (map[entrance] == Terrain.ENTRANCE && map[exit] != Terrain.EXIT
-				&& ch == Dungeon.hero && Dungeon.level.distance(ch.pos, entrance) >= 2) {
+		if (map[entrance()] == Terrain.ENTRANCE && map[exit()] != Terrain.EXIT
+				&& ch == Dungeon.hero && Dungeon.level.distance(ch.pos, entrance()) >= 2) {
 			seal();
 		}
 	}
@@ -213,6 +220,7 @@ public class HallsBossLevel extends Level {
 	@Override
 	public void seal() {
 		super.seal();
+		int entrance = entrance();
 		set( entrance, Terrain.EMPTY_SP );
 		GameScene.updateMap( entrance );
 		CellEmitter.get( entrance ).start( FlameParticle.FACTORY, 0.1f, 10 );
@@ -220,22 +228,22 @@ public class HallsBossLevel extends Level {
 		Dungeon.observe();
 
 		YogDzewa boss = new YogDzewa();
-		boss.pos = exit + width*3;
+		boss.pos = exit() + width*3;
 		GameScene.add( boss );
 	}
 
 	@Override
 	public void unseal() {
 		super.unseal();
-		set( entrance, Terrain.ENTRANCE );
-		GameScene.updateMap( entrance );
+		set( entrance(), Terrain.ENTRANCE );
+		GameScene.updateMap( entrance() );
 
-		set( exit, Terrain.EXIT );
-		GameScene.updateMap( exit );
+		set( exit(), Terrain.EXIT );
+		GameScene.updateMap( exit() );
 
-		CellEmitter.get(exit-1).burst(ShadowParticle.UP, 25);
-		CellEmitter.get(exit).burst(ShadowParticle.UP, 100);
-		CellEmitter.get(exit+1).burst(ShadowParticle.UP, 25);
+		CellEmitter.get(exit()-1).burst(ShadowParticle.UP, 25);
+		CellEmitter.get(exit()).burst(ShadowParticle.UP, 100);
+		CellEmitter.get(exit()+1).burst(ShadowParticle.UP, 25);
 		for( CustomTilemap t : customTiles){
 			if (t instanceof CenterPieceVisuals){
 				((CenterPieceVisuals) t).updateState();
@@ -336,7 +344,7 @@ public class HallsBossLevel extends Level {
 		private void updateState(){
 			if (vis != null){
 				int[] data = map.clone();
-				if (Dungeon.level.map[Dungeon.level.exit] == Terrain.EXIT) {
+				if (Dungeon.level.map[Dungeon.level.exit()] == Terrain.EXIT) {
 					data[4] = 19;
 					data[12] = data[14] = 31;
 				}
@@ -375,7 +383,7 @@ public class HallsBossLevel extends Level {
 		private void updateState(){
 			if (vis != null){
 				int[] data = map.clone();
-				if (Dungeon.level.map[Dungeon.level.exit] == Terrain.EXIT) {
+				if (Dungeon.level.map[Dungeon.level.exit()] == Terrain.EXIT) {
 					data[3] = 1;
 					data[4] = 0;
 					data[5] = 2;

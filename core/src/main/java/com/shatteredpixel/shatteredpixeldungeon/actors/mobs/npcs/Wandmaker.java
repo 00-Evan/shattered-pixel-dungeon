@@ -285,7 +285,7 @@ public class Wandmaker extends NPC {
 				do {
 					validPos = true;
 					npc.pos = level.pointToCell(room.random());
-					if (npc.pos == level.entrance){
+					if (npc.pos == level.entrance()){
 						validPos = false;
 					}
 					for (Point door : room.connected.values()){

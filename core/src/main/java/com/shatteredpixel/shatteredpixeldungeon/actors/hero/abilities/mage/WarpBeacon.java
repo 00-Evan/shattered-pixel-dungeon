@@ -110,7 +110,7 @@ public class WarpBeacon extends ArmorAbility {
 						armor.charge -= chargeNeeded;
 						armor.updateQuickslot();
 
-						if (tracker.depth == Dungeon.depth){
+						if (tracker.depth == Dungeon.depth && tracker.branch == Dungeon.branch){
 							Char existing = Actor.findChar(tracker.pos);
 
 							ScrollOfTeleportation.appear(hero, tracker.pos);
@@ -172,6 +172,7 @@ public class WarpBeacon extends ArmorAbility {
 
 							InterlevelScene.mode = InterlevelScene.Mode.RETURN;
 							InterlevelScene.returnDepth = tracker.depth;
+							InterlevelScene.returnBranch = tracker.branch;
 							InterlevelScene.returnPos = tracker.pos;
 							Game.switchScene( InterlevelScene.class );
 						}
@@ -203,6 +204,7 @@ public class WarpBeacon extends ArmorAbility {
 			WarpBeaconTracker tracker = new WarpBeaconTracker();
 			tracker.pos = target;
 			tracker.depth = Dungeon.depth;
+			tracker.branch = Dungeon.branch;
 			tracker.attachTo(hero);
 
 			hero.sprite.operate(target);
@@ -220,6 +222,7 @@ public class WarpBeacon extends ArmorAbility {
 
 		int pos;
 		int depth;
+		int branch;
 
 		Emitter e;
 
@@ -234,12 +237,14 @@ public class WarpBeacon extends ArmorAbility {
 
 		public static final String POS = "pos";
 		public static final String DEPTH = "depth";
+		public static final String BRANCH = "branch";
 
 		@Override
 		public void storeInBundle(Bundle bundle) {
 			super.storeInBundle(bundle);
 			bundle.put(POS, pos);
 			bundle.put(DEPTH, depth);
+			bundle.put(BRANCH, branch);
 		}
 
 		@Override
@@ -247,6 +252,7 @@ public class WarpBeacon extends ArmorAbility {
 			super.restoreFromBundle(bundle);
 			pos = bundle.getInt(POS);
 			depth = bundle.getInt(DEPTH);
+			branch = bundle.getInt(BRANCH);
 		}
 	}
 

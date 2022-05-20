@@ -61,6 +61,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -218,7 +219,7 @@ public class Dungeon {
 		quickslot.reset();
 		QuickSlotButton.reset();
 		
-		depth = 0;
+		depth = 1;
 		branch = 0;
 
 		gold = 0;
@@ -252,8 +253,7 @@ public class Dungeon {
 		
 		Dungeon.level = null;
 		Actor.clear();
-		
-		depth++;
+
 		if (depth > Statistics.deepestFloor) {
 			Statistics.deepestFloor = depth;
 			
@@ -337,7 +337,7 @@ public class Dungeon {
 		Actor.clear();
 		
 		level.reset();
-		switchLevel( level, level.entrance );
+		switchLevel( level, level.entrance() );
 	}
 
 	public static long seedCurDepth(){
@@ -374,9 +374,12 @@ public class Dungeon {
 	public static void switchLevel( final Level level, int pos ) {
 		
 		if (pos == -2){
-			pos = level.exit;
-		} else if (pos < 0 || pos >= level.length() || (!level.passable[pos] && !level.avoid[pos])){
-			pos = level.entrance;
+			LevelTransition t = level.getTransition(LevelTransition.Type.REGULAR_EXIT);
+			if (t != null) pos = t.cell();
+		}
+
+		if (pos < 0 || pos >= level.length() || (!level.passable[pos] && !level.avoid[pos])){
+			pos = level.getTransition(null).cell();
 		}
 		
 		PathFinder.setMapSize(level.width(), level.height());

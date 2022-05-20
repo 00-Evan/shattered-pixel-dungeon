@@ -224,7 +224,7 @@ public abstract class RegularLevel extends Level {
 			do {
 				mob.pos = pointToCell(roomToSpawn.random());
 				tries--;
-			} while (tries >= 0 && (findMob(mob.pos) != null || !passable[mob.pos] || solid[mob.pos] || mob.pos == exit
+			} while (tries >= 0 && (findMob(mob.pos) != null || !passable[mob.pos] || solid[mob.pos] || mob.pos == exit()
 					|| (!openSpace[mob.pos] && mob.properties().contains(Char.Property.LARGE))));
 
 			if (tries >= 0) {
@@ -239,7 +239,7 @@ public abstract class RegularLevel extends Level {
 					do {
 						mob.pos = pointToCell(roomToSpawn.random());
 						tries--;
-					} while (tries >= 0 && (findMob(mob.pos) != null || !passable[mob.pos] || solid[mob.pos] || mob.pos == exit
+					} while (tries >= 0 && (findMob(mob.pos) != null || !passable[mob.pos] || solid[mob.pos] || mob.pos == exit()
 							|| (!openSpace[mob.pos] && mob.properties().contains(Char.Property.LARGE))));
 
 					if (tries >= 0) {
@@ -283,7 +283,7 @@ public abstract class RegularLevel extends Level {
 					&& !solid[cell]
 					&& (!Char.hasProp(ch, Char.Property.LARGE) || openSpace[cell])
 					&& room.canPlaceCharacter(cellToPoint(cell), this)
-					&& cell != exit) {
+					&& cell != exit()) {
 				return cell;
 			}
 
@@ -530,7 +530,7 @@ public abstract class RegularLevel extends Level {
 			if (room != roomEntrance) {
 				int pos = pointToCell(room.random());
 				if (passable[pos] && !solid[pos]
-						&& pos != exit
+						&& pos != exit()
 						&& heaps.get(pos) == null
 						&& findMob(pos) == null) {
 					

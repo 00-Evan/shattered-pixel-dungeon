@@ -115,7 +115,7 @@ public class StatusPane extends Component {
 
 		talentBlink = 0;
 
-		compass = new Compass( Statistics.amuletObtained ? Dungeon.level.entrance : Dungeon.level.exit );
+		compass = new Compass( Statistics.amuletObtained ? Dungeon.level.entrance() : Dungeon.level.exit() );
 		add( compass );
 
 		if (large)  rawShielding = new Image(asset, 0, 112, 128, 9);

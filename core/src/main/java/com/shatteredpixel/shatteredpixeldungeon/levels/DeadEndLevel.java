@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 
 public class DeadEndLevel extends Level {
 
@@ -64,10 +65,9 @@ public class DeadEndLevel extends Level {
 				Terrain.WATER;
 		}
 		
-		entrance = SIZE * width() + SIZE / 2 + 1;
+		int entrance = SIZE * width() + SIZE / 2 + 1;
+		transitions.add(new LevelTransition(this, entrance, LevelTransition.Type.REGULAR_ENTRANCE));
 		map[entrance] = Terrain.ENTRANCE;
-		
-		exit = 0;
 		
 		return true;
 	}
@@ -91,7 +91,7 @@ public class DeadEndLevel extends Level {
 	
 	@Override
 	public int randomRespawnCell( Char ch ) {
-		return entrance-width();
+		return entrance()-width();
 	}
 
 }

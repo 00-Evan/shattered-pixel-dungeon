@@ -69,6 +69,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.HeavyBoome
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.HighGrass;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
@@ -143,6 +144,8 @@ public abstract class Level implements Bundlable {
 	public int entrance;
 	public int exit;
 
+	public ArrayList<LevelTransition> transitions;
+
 	//when a boss level has become locked.
 	public boolean locked = false;
 	
@@ -167,8 +170,7 @@ public abstract class Level implements Bundlable {
 	private static final String MAP			= "map";
 	private static final String VISITED		= "visited";
 	private static final String MAPPED		= "mapped";
-	private static final String ENTRANCE	= "entrance";
-	private static final String EXIT		= "exit";
+	private static final String TRANSITIONS	= "transitions";
 	private static final String LOCKED      = "locked";
 	private static final String HEAPS		= "heaps";
 	private static final String PLANTS		= "plants";
@@ -248,6 +250,8 @@ public abstract class Level implements Bundlable {
 		
 		do {
 			width = height = length = 0;
+
+			transitions = new ArrayList<>();
 
 			mobs = new HashSet<>();
 			heaps = new SparseArray<>();
@@ -334,9 +338,24 @@ public abstract class Level implements Bundlable {
 
 		visited	= bundle.getBooleanArray( VISITED );
 		mapped	= bundle.getBooleanArray( MAPPED );
-		
-		entrance	= bundle.getInt( ENTRANCE );
-		exit		= bundle.getInt( EXIT );
+
+		transitions = new ArrayList<>();
+		if (bundle.contains(TRANSITIONS)){
+			for (Bundlable b : bundle.getCollection( TRANSITIONS )){
+				transitions.add((LevelTransition) b);
+			}
+		//pre-1.3.0 saves, converts old entrance/exit to new transitions
+		} else {
+			if (bundle.contains("entrance")){
+				transitions.add(new LevelTransition(
+						this,
+						bundle.getInt("entrance"),
+						Dungeon.depth == 1 ? LevelTransition.Type.SURFACE : LevelTransition.Type.REGULAR_ENTRANCE));
+			}
+			if (bundle.contains("exit")){
+				transitions.add(new LevelTransition(this, bundle.getInt("exit"), LevelTransition.Type.REGULAR_EXIT));
+			}
+		}
 
 		locked      = bundle.getBoolean( LOCKED );
 		
@@ -412,8 +431,7 @@ public abstract class Level implements Bundlable {
 		bundle.put( MAP, map );
 		bundle.put( VISITED, visited );
 		bundle.put( MAPPED, mapped );
-		bundle.put( ENTRANCE, entrance );
-		bundle.put( EXIT, exit );
+		bundle.put( TRANSITIONS, transitions );
 		bundle.put( LOCKED, locked );
 		bundle.put( HEAPS, heaps.valueList() );
 		bundle.put( PLANTS, plants.valueList() );
@@ -470,6 +488,44 @@ public abstract class Level implements Bundlable {
 	abstract protected void createMobs();
 
 	abstract protected void createItems();
+
+	public int entrance(){
+		LevelTransition l = getTransition(null);
+		if (l != null){
+			return l.cell();
+		}
+		return 0;
+	}
+
+	public int exit(){
+		LevelTransition l = getTransition(LevelTransition.Type.REGULAR_EXIT);
+		if (l != null){
+			return l.cell();
+		}
+		return 0;
+	}
+
+	public LevelTransition getTransition(LevelTransition.Type type){
+		for (LevelTransition transition : transitions){
+			//if we don't specify a type, prefer to return any entrance
+			if (type == null &&
+					(transition.type == LevelTransition.Type.REGULAR_ENTRANCE || transition.type == LevelTransition.Type.SURFACE)){
+				return transition;
+			} else if (transition.type == type){
+				return transition;
+			}
+		}
+		return (type == null && !transitions.isEmpty() ? transitions.get(0) : null);
+	}
+
+	public LevelTransition getTransition(int cell){
+		for (LevelTransition transition : transitions){
+			if (transition.inside(cell)){
+				return transition;
+			}
+		}
+		return null;
+	}
 
 	public void seal(){
 		if (!locked) {

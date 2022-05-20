@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Point;
@@ -58,10 +59,17 @@ public class EntranceRoom extends StandardRoom {
 			door.set( Room.Door.Type.REGULAR );
 		}
 
+		int entrance;
 		do {
-			level.entrance = level.pointToCell(random(2));
-		} while (level.findMob(level.entrance) != null);
-		Painter.set( level, level.entrance, Terrain.ENTRANCE );
+			entrance = level.pointToCell(random(2));
+		} while (level.findMob(entrance) != null);
+		Painter.set( level, entrance, Terrain.ENTRANCE );
+
+		if (Dungeon.depth == 1){
+			level.transitions.add(new LevelTransition(level, entrance, LevelTransition.Type.SURFACE));
+		} else {
+			level.transitions.add(new LevelTransition(level, entrance, LevelTransition.Type.REGULAR_ENTRANCE));
+		}
 
 		//use a separate generator here so meta progression doesn't affect levelgen
 		Random.pushGenerator();
@@ -73,7 +81,7 @@ public class EntranceRoom extends StandardRoom {
 				//can't be on bottom row of tiles
 				pos = level.pointToCell(new Point( Random.IntRange( left + 1, right - 1 ),
 						Random.IntRange( top + 1, bottom - 2 )));
-			} while (pos == level.entrance || level.findMob(level.entrance) != null);
+			} while (pos == level.entrance() || level.findMob(level.entrance()) != null);
 			level.drop( new Guidebook(), pos );
 		}
 
@@ -84,7 +92,7 @@ public class EntranceRoom extends StandardRoom {
 				//can't be on bottom row of tiles
 				pos = level.pointToCell(new Point( Random.IntRange( left + 1, right - 1 ),
 						Random.IntRange( top + 1, bottom - 2 )));
-			} while (pos == level.entrance || level.findMob(level.entrance) != null);
+			} while (pos == level.entrance() || level.findMob(level.entrance()) != null);
 			GuidePage p = new GuidePage();
 			p.page(Document.GUIDE_SEARCHING);
 			level.drop( p, pos );

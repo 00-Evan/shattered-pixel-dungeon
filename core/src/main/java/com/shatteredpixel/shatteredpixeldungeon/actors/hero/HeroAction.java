@@ -64,14 +64,8 @@ public class HeroAction {
 		}
 	}
 	
-	public static class Descend extends HeroAction {
-		public Descend( int stairs ) {
-			this.dst = stairs;
-		}
-	}
-	
-	public static class Ascend extends HeroAction {
-		public Ascend( int stairs ) {
+	public static class LvlTransition extends HeroAction {
+		public LvlTransition(int stairs ) {
 			this.dst = stairs;
 		}
 	}

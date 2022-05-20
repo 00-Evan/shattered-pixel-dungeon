@@ -51,6 +51,7 @@ public class BeaconOfReturning extends Spell {
 	}
 	
 	public int returnDepth	= -1;
+	public int returnBranch	= 0;
 	public int returnPos;
 	
 	@Override
@@ -94,6 +95,7 @@ public class BeaconOfReturning extends Spell {
 	
 	private void setBeacon(Hero hero ){
 		returnDepth = Dungeon.depth;
+		returnBranch = Dungeon.branch;
 		returnPos = hero.pos;
 		
 		hero.spend( 1f );
@@ -120,9 +122,9 @@ public class BeaconOfReturning extends Spell {
 			}
 		}
 		
-		if (returnDepth == Dungeon.depth) {
+		if (returnDepth == Dungeon.depth && returnBranch == Dungeon.branch) {
 			if (!Dungeon.level.passable[returnPos] && !Dungeon.level.avoid[returnPos]){
-				returnPos = Dungeon.level.entrance;
+				returnPos = Dungeon.level.entrance();
 			}
 			ScrollOfTeleportation.appear( hero, returnPos );
 			for(Mob m : Dungeon.level.mobs){
@@ -149,6 +151,7 @@ public class BeaconOfReturning extends Spell {
 			
 			InterlevelScene.mode = InterlevelScene.Mode.RETURN;
 			InterlevelScene.returnDepth = returnDepth;
+			InterlevelScene.returnBranch = returnBranch;
 			InterlevelScene.returnPos = returnPos;
 			Game.switchScene( InterlevelScene.class );
 		}

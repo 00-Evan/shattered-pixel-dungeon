@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
@@ -89,6 +90,9 @@ public class LastLevel extends Level {
 	}
 
 	private static final int ROOM_TOP = 10;
+	private static final int WIDTH = 16;
+	private static final int MID = WIDTH/2;
+	public static int AMULET_POS = 12*WIDTH + MID;
 
 	@Override
 	protected boolean build() {
@@ -103,14 +107,17 @@ public class LastLevel extends Level {
 		Painter.fill( this, MID - 2, height - 3, 5, 1, Terrain.EMPTY);
 		Painter.fill( this, MID - 3, height - 2, 7, 1, Terrain.EMPTY);
 
-		entrance = (height-ROOM_TOP) * width() + MID;
+		int entrance = (height-ROOM_TOP) * width() + MID;
 		Painter.fill(this, 0, height - ROOM_TOP, width, 2, Terrain.WALL);
 		map[entrance] = Terrain.ENTRANCE;
 		map[entrance+width] = Terrain.ENTRANCE;
+		LevelTransition entry = new LevelTransition(this, entrance, LevelTransition.Type.REGULAR_ENTRANCE);
+		entry.left--;
+		entry.right++;
+		entry.bottom += 2;
+		transitions.add(entry);
 		Painter.fill(this, 0, height - ROOM_TOP + 2, width, 8, Terrain.EMPTY);
 		Painter.fill(this, MID-1, height - ROOM_TOP + 2, 3, 1, Terrain.ENTRANCE);
-
-		exit = 12*(width()) + MID;
 
 		for (int i=0; i < length(); i++) {
 			if (map[i] == Terrain.EMPTY && Random.Int( 5 ) == 0) {
@@ -154,14 +161,14 @@ public class LastLevel extends Level {
 
 	@Override
 	protected void createItems() {
-		drop( new Amulet(), exit );
+		drop( new Amulet(), AMULET_POS );
 	}
 
 	@Override
 	public int randomRespawnCell( Char ch ) {
 		int cell;
 		do {
-			cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
+			cell = entrance() + PathFinder.NEIGHBOURS8[Random.Int(8)];
 		} while (!passable[cell]
 				|| (Char.hasProp(ch, Char.Property.LARGE) && !openSpace[cell])
 				|| Actor.findChar(cell) != null);
@@ -209,6 +216,9 @@ public class LastLevel extends Level {
 
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
+		//pre-1.3.0 saves, deletes unneeded exit
+		if (bundle.contains("exit")) bundle.remove("exit");
+
 		super.restoreFromBundle(bundle);
 		for (int i=0; i < length(); i++) {
 			int flags = Terrain.flags[map[i]];
@@ -250,7 +260,7 @@ public class LastLevel extends Level {
 		public Tilemap create() {
 			Tilemap v = super.create();
 
-			int candlesStart = Dungeon.level.exit - 3 - 3*Dungeon.level.width();
+			int candlesStart = AMULET_POS - 3 - 3*Dungeon.level.width();
 
 			int cell = tileX + tileY * Dungeon.level.width();
 			int[] map = Dungeon.level.map;

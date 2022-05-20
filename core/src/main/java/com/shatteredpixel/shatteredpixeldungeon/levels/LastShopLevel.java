@@ -121,7 +121,7 @@ public class LastShopLevel extends RegularLevel {
 			int pos;
 			do {
 				pos = pointToCell(roomEntrance.random());
-			} while (pos == entrance);
+			} while (pos == entrance());
 			drop( item, pos ).setHauntedIfCursed().type = Heap.Type.REMAINS;
 		}
 	}

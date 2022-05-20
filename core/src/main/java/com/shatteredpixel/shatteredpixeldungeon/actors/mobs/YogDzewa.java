@@ -376,9 +376,9 @@ public class YogDzewa extends Mob {
 				addFist((YogFist)Reflection.newInstance(challengeSummons.remove(0)));
 			}
 
-			CellEmitter.get(Dungeon.level.exit-1).burst(ShadowParticle.UP, 25);
-			CellEmitter.get(Dungeon.level.exit).burst(ShadowParticle.UP, 100);
-			CellEmitter.get(Dungeon.level.exit+1).burst(ShadowParticle.UP, 25);
+			CellEmitter.get(Dungeon.level.exit()-1).burst(ShadowParticle.UP, 25);
+			CellEmitter.get(Dungeon.level.exit()).burst(ShadowParticle.UP, 100);
+			CellEmitter.get(Dungeon.level.exit()+1).burst(ShadowParticle.UP, 25);
 
 			if (abilityCooldown < 5) abilityCooldown = 5;
 			if (summonCooldown < 5) summonCooldown = 5;
@@ -391,16 +391,16 @@ public class YogDzewa extends Mob {
 	}
 
 	public void addFist(YogFist fist){
-		fist.pos = Dungeon.level.exit;
+		fist.pos = Dungeon.level.exit();
 
-		CellEmitter.get(Dungeon.level.exit-1).burst(ShadowParticle.UP, 25);
-		CellEmitter.get(Dungeon.level.exit).burst(ShadowParticle.UP, 100);
-		CellEmitter.get(Dungeon.level.exit+1).burst(ShadowParticle.UP, 25);
+		CellEmitter.get(Dungeon.level.exit()-1).burst(ShadowParticle.UP, 25);
+		CellEmitter.get(Dungeon.level.exit()).burst(ShadowParticle.UP, 100);
+		CellEmitter.get(Dungeon.level.exit()+1).burst(ShadowParticle.UP, 25);
 
 		if (abilityCooldown < 5) abilityCooldown = 5;
 		if (summonCooldown < 5) summonCooldown = 5;
 
-		int targetPos = Dungeon.level.exit + Dungeon.level.width();
+		int targetPos = Dungeon.level.exit() + Dungeon.level.width();
 
 		if (!Dungeon.isChallenged(Challenges.STRONGER_BOSSES)
 				&& Actor.findChar(targetPos) == null){
@@ -414,7 +414,7 @@ public class YogDzewa extends Mob {
 		}
 
 		GameScene.add(fist, 4);
-		Actor.addDelayed( new Pushing( fist, Dungeon.level.exit, fist.pos ), -1 );
+		Actor.addDelayed( new Pushing( fist, Dungeon.level.exit(), fist.pos ), -1 );
 	}
 
 	public void updateVisibility( Level level ){
