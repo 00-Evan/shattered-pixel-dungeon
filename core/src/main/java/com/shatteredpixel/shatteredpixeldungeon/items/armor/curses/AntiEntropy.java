@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.armor.curses;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
@@ -33,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor.Glyph;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class AntiEntropy extends Glyph {
@@ -44,12 +46,13 @@ public class AntiEntropy extends Glyph {
 
 		if (Random.Int( 8 ) == 0) {
 
-			if (Dungeon.level.adjacent( attacker.pos, defender.pos )) {
-				Buff.prolong(attacker, Frost.class, Frost.DURATION);
-				CellEmitter.get(attacker.pos).start(SnowParticle.FACTORY, 0.2f, 6);
+			for (int i : PathFinder.NEIGHBOURS8){
+				Freezing.affect(defender.pos+i);
 			}
-			
-			Buff.affect( defender, Burning.class ).reignite( defender );
+
+			if (!Dungeon.level.water[defender.pos]) {
+				Buff.affect(defender, Burning.class).reignite(defender, 4);
+			}
 			defender.sprite.emitter().burst( FlameParticle.FACTORY, 5 );
 
 		}
