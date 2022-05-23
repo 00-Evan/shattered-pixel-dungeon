@@ -211,7 +211,18 @@ public class HeroSelectScene extends PixelScene {
 					public void onSelect(boolean positive, String text) {
 						text = DungeonSeed.formatText(text);
 						long seed = DungeonSeed.convertFromText(text);
+
 						if (positive && seed != -1){
+
+							for (GamesInProgress.Info info : GamesInProgress.checkAll()){
+								if (info.customSeed.isEmpty() && info.seed == seed){
+									SPDSettings.customSeed("");
+									icon.resetColor();
+									ShatteredPixelDungeon.scene().addToFront(new WndMessage(Messages.get(HeroSelectScene.class, "custom_seed_duplicate")));
+									return;
+								}
+							}
+
 							SPDSettings.customSeed(text);
 							icon.hardlight(1f, 1.5f, 0.67f);
 						} else {
