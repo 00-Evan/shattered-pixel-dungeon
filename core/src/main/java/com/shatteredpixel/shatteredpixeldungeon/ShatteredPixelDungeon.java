@@ -48,6 +48,9 @@ public class ShatteredPixelDungeon extends Game {
 
 		//v1.3.0
 		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Dazzling.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Exhausting" );
+		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Explosive.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Fragile" );
 
