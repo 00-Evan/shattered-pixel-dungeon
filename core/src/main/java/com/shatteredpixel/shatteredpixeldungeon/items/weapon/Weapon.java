@@ -176,10 +176,11 @@ abstract public class Weapon extends KindOfWeapon {
 			encumbrance = STRReq() - ((Hero)owner).STR();
 		}
 
-		if (hasEnchant(Wayward.class, owner))
-			encumbrance = Math.max(2, encumbrance+2);
-
 		float ACC = this.ACC;
+
+		if (owner.buff(Wayward.WaywardBuff.class) != null && enchantment instanceof Wayward){
+			ACC /= 5;
+		}
 
 		return encumbrance > 0 ? (float)(ACC / Math.pow( 1.5, encumbrance )) : ACC;
 	}
