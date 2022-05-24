@@ -76,7 +76,7 @@ public class GeyserTrap extends Trap {
 				//trim it to just be the part that goes past them
 				trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size()-1), Ballistica.PROJECTILE);
 				//knock them back along that ballistica
-				WandOfBlastWave.throwChar(ch, trajectory, 2, true);
+				WandOfBlastWave.throwChar(ch, trajectory, 2, true, true, getClass());
 			}
 		}
 
@@ -105,7 +105,7 @@ public class GeyserTrap extends Trap {
 				//trace a ballistica in the direction of our target
 				Ballistica trajectory = new Ballistica(pos, targetpos, Ballistica.MAGIC_BOLT);
 				//knock them back along that ballistica
-				WandOfBlastWave.throwChar(ch, trajectory, 2, true);
+				WandOfBlastWave.throwChar(ch, trajectory, 2, true, true, getClass());
 			}
 		}
 	}

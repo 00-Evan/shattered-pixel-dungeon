@@ -36,12 +36,16 @@ public class CorrosiveGas extends Blob {
 	//FIXME should have strength per-cell
 	private int strength = 0;
 
+	//used in specific cases where the source of the corrosion is important for death logic
+	private Class source;
+
 	@Override
 	protected void evolve() {
 		super.evolve();
 
 		if (volume == 0){
 			strength = 0;
+			source = null;
 		} else {
 			Char ch;
 			int cell;
@@ -59,24 +63,32 @@ public class CorrosiveGas extends Blob {
 	}
 
 	public CorrosiveGas setStrength(int str){
+		return setStrength(str, null);
+	}
+
+	public CorrosiveGas setStrength(int str, Class source){
 		if (str > strength) {
 			strength = str;
+			this.source = source;
 		}
 		return this;
 	}
 
 	private static final String STRENGTH = "strength";
+	private static final String SOURCE	= "source";
 
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		strength = bundle.getInt( STRENGTH );
+		source = bundle.getClass( SOURCE );
 	}
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
 		bundle.put( STRENGTH, strength );
+		bundle.put( SOURCE, source );
 	}
 
 	@Override

@@ -345,7 +345,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 							dist--;
 						}
 					}
-					WandOfBlastWave.throwChar(enemy, trajectory, dist, true, false);
+					WandOfBlastWave.throwChar(enemy, trajectory, dist, true, false, hero.getClass());
 					break;
 				case PARRY:
 					hit(enemy);

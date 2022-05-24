@@ -293,7 +293,9 @@ public class ElementalBlast extends ArmorAbility {
 										WandOfBlastWave.throwChar(mob,
 												new Ballistica(mob.pos, aim.collisionPos, Ballistica.MAGIC_BOLT),
 												knockback,
-												true);
+												true,
+												true,
+												ElementalBlast.this.getClass());
 									}
 
 								//*** Wand of Frost ***

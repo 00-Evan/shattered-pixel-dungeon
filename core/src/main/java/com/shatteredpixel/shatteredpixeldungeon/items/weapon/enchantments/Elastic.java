@@ -48,7 +48,12 @@ public class Elastic extends Weapon.Enchantment {
 			//trim it to just be the part that goes past them
 			trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size()-1), Ballistica.PROJECTILE);
 			//knock them back along that ballistica
-			WandOfBlastWave.throwChar(defender, trajectory, 2, !(weapon instanceof MissileWeapon || weapon instanceof SpiritBow));
+			WandOfBlastWave.throwChar(defender,
+					trajectory,
+					2,
+					!(weapon instanceof MissileWeapon || weapon instanceof SpiritBow),
+					true,
+					getClass());
 		}
 		
 		return damage;
