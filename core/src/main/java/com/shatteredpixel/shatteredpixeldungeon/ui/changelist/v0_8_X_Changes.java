@@ -84,7 +84,7 @@ public class v0_8_X_Changes {
 				"_-_ Released August 6th, 2020\n" +
 				"_-_ 40 days after Shattered v0.8.1\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"Dev commentary will be added here in the next major update."));
 
 		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_HORN1), "Fifth Equipment Slot!",
 				"_An extra slot has been added for rings/artifacts_, bringing the total number of equip slots up to 5!\n\n" +
@@ -269,7 +269,7 @@ public class v0_8_X_Changes {
 				"_-_ Released June 27th, 2020\n" +
 				"_-_ 72 days after Shattered v0.8.0\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"Dev commentary will be added here in the next major update."));
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.DISPLAY), "New Hero Select!",
 				"The game's hero select screen has been completely overhauled, and how shows off the heroes in more detail than ever before.\n\n" +
@@ -478,7 +478,7 @@ public class v0_8_X_Changes {
 				"_-_ 546 days after Shattered v0.7.0\n" +
 				"_-_ 197 days after Shattered v0.7.5\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"Dev commentary will be added here in the next major update."));
 
 		changes.addButton( new ChangeButton(new Image(new DM100Sprite()), "Misc Enemies",
 				"_DM-100s_ have been added to the prison to replace gnoll shamans. They behave very similarly to prison shamans, but have a few stat tweaks:\n" +
