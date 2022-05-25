@@ -70,7 +70,6 @@ public class GreatCrab extends Crab {
 
 	@Override
 	public void damage( int dmg, Object src ){
-		if (enemy == null) enemy = chooseEnemy();
 		//crab blocks all wand damage from the hero if it sees them.
 		//Direct damage is negated, but add-on effects and environmental effects go through as normal.
 		if (enemySeen
@@ -89,7 +88,6 @@ public class GreatCrab extends Crab {
 
 	@Override
 	public int defenseSkill( Char enemy ) {
-		if (this.enemy == null) this.enemy = chooseEnemy();
 		//crab blocks all melee attacks from its current target
 		if (enemySeen
 				&& state != SLEEPING
