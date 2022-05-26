@@ -42,6 +42,7 @@ public class ScrollOfPassage extends ExoticScroll {
 	public void doRead() {
 
 		identify();
+		readAnimation();
 		
 		if (Dungeon.level.locked) {
 			
