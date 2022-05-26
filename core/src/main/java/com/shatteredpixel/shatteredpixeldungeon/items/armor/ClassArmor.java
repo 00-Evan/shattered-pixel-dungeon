@@ -21,18 +21,27 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndChooseAbility;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
 import java.text.DecimalFormat;
@@ -41,6 +50,7 @@ import java.util.ArrayList;
 abstract public class ClassArmor extends Armor {
 
 	private static final String AC_ABILITY = "ABILITY";
+	private static final String AC_TRANSFER = "TRANSFER";
 	
 	{
 		levelKnown = true;
@@ -49,8 +59,6 @@ abstract public class ClassArmor extends Armor {
 
 		bones = false;
 	}
-
-	private int armorTier;
 
 	private Charger charger;
 	public float charge = 0;
@@ -141,6 +149,7 @@ abstract public class ClassArmor extends Armor {
 		if (isEquipped( hero )) {
 			actions.add( AC_ABILITY );
 		}
+		actions.add( AC_TRANSFER );
 		return actions;
 	}
 
@@ -179,6 +188,58 @@ abstract public class ClassArmor extends Armor {
 				hero.armorAbility.use(this, hero);
 			}
 			
+		} else if (action.equals(AC_TRANSFER)){
+
+			GameScene.show(new WndOptions(new ItemSprite(ItemSpriteSheet.CROWN),
+					Messages.get(ClassArmor.class, "transfer_title"),
+					Messages.get(ClassArmor.class, "transfer_desc"),
+					Messages.get(ClassArmor.class, "transfer_prompt"),
+					Messages.get(ClassArmor.class, "transfer_cancel")){
+				@Override
+				protected void onSelect(int index) {
+					if (index == 0){
+						GameScene.selectItem(new WndBag.ItemSelector() {
+							@Override
+							public String textPrompt() {
+								return Messages.get(ClassArmor.class, "transfer_prompt");
+							}
+
+							@Override
+							public boolean itemSelectable(Item item) {
+								return item instanceof Armor;
+							}
+
+							@Override
+							public void onSelect(Item item) {
+								if (item == null) return;
+
+								Armor armor = (Armor)item;
+								armor.detach(hero.belongings.backpack);
+								if (hero.belongings.armor == armor){
+									hero.belongings.armor = null;
+								}
+								level(armor.trueLevel());
+								tier = armor.tier;
+								augment = armor.augment;
+								inscribe( armor.glyph );
+								cursed = armor.cursed;
+								curseInfusionBonus = armor.curseInfusionBonus;
+								masteryPotionBonus = armor.masteryPotionBonus;
+								identify();
+
+								GLog.p( "Your heroic armor's properties have been transferred!" );
+								hero.sprite.operate(hero.pos);
+								hero.sprite.emitter().burst( Speck.factory( Speck.CROWN), 12 );
+								Sample.INSTANCE.play( Assets.Sounds.EVOKE );
+								hero.spend(Actor.TICK);
+								hero.busy();
+
+							}
+						});
+					}
+				}
+			});
+
 		}
 	}
 
