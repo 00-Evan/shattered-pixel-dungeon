@@ -59,7 +59,7 @@ public class FlockTrap extends Trap {
 					&& Actor.findChar(i) == null
 					&& !(Dungeon.level.pit[i])) {
 				Sheep sheep = new Sheep();
-				sheep.lifespan = Random.NormalIntRange( 4, 8 );
+				sheep.lifespan = 6;
 				sheep.pos = i;
 				GameScene.add(sheep);
 				CellEmitter.get(i).burst(Speck.factory(Speck.WOOL), 4);

@@ -53,7 +53,7 @@ public class Sheep extends NPC {
 
 		} else {
 			initialized = true;
-			spend( lifespan + Random.Float(2) );
+			spend( lifespan + Random.Float(-2, 2) );
 		}
 		return true;
 	}
@@ -77,6 +77,10 @@ public class Sheep extends NPC {
 		if (c == Dungeon.hero) {
 			Dungeon.hero.spendAndNext(1f);
 			Sample.INSTANCE.play(Assets.Sounds.SHEEP, 1, Random.Float(0.91f, 1.1f));
+			//sheep summoned by woolly bomb can be dispelled by interacting
+			if (lifespan >= 20){
+				spend(-cooldown());
+			}
 		}
 		return true;
 	}

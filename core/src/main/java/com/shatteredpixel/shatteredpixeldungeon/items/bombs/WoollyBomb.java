@@ -60,7 +60,7 @@ public class WoollyBomb extends Bomb {
 					&& Actor.findChar(i) == null
 					&& !(Dungeon.level.pit[i])) {
 				Sheep sheep = new Sheep();
-				sheep.lifespan = Random.NormalIntRange( 12, 16 );
+				sheep.lifespan = Dungeon.bossLevel() ? 20 : 200;
 				sheep.pos = i;
 				GameScene.add(sheep);
 				Dungeon.level.occupyCell(sheep);
