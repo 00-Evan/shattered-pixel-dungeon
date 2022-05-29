@@ -125,10 +125,10 @@ public class Bestiary {
 				
 			// City
 			case 16:
-				//2x ghoul, 2x elemental, 1x warlock
+				//3x ghoul, 1x elemental, 1x warlock
 				return new ArrayList<>(Arrays.asList(
-						Ghoul.class, Ghoul.class,
-						Elemental.random(), Elemental.random(),
+						Ghoul.class, Ghoul.class, Ghoul.class,
+						Elemental.random(),
 						Warlock.class));
 			case 17:
 				//1x ghoul, 2x elemental, 1x warlock, 1x monk
