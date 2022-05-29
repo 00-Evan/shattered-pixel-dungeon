@@ -21,10 +21,15 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 public class HolyDart extends TippedDart {
 
@@ -35,10 +40,17 @@ public class HolyDart extends TippedDart {
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
 		
-		Buff.affect(defender, Bless.class, Math.round(3.33f*Bless.DURATION));
-		
 		if (attacker.alignment == defender.alignment){
+			Buff.affect(defender, Bless.class, Math.round(Bless.DURATION));
 			return 0;
+		}
+
+		if (Char.hasProp(defender, Char.Property.UNDEAD) || Char.hasProp(defender, Char.Property.DEMONIC)){
+			defender.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10+buffedLvl() );
+			Sample.INSTANCE.play(Assets.Sounds.BURNING);
+			defender.damage(Random.NormalIntRange(10 + Dungeon.depth/3, 20 + Dungeon.depth/3), this);
+		} else {
+			Buff.affect(defender, Bless.class, Math.round(Bless.DURATION));
 		}
 		
 		return super.proc(attacker, defender, damage);
