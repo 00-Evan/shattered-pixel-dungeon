@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id=":SPD-classes:main" external.linked.project.path="$MODULE_DIR$/../../../SPD-classes" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="Combusted-Pixel-Dungeon" external.system.module.type="sourceSet" external.system.module.version="0.0.20" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <output url="file://$MODULE_DIR$/../../../SPD-classes/build/classes/java/main" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../../SPD-classes/src/main">
+      <sourceFolder url="file://$MODULE_DIR$/../../../SPD-classes/src/main/java" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-freetype:1.10.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx:1.10.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx-controllers:gdx-controllers-core:2.2.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.json:json:20170516" level="project" />
+  </component>
+</module>

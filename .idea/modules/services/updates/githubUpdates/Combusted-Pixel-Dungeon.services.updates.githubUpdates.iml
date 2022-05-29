@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id=":services:updates:githubUpdates" external.linked.project.path="$MODULE_DIR$/../../../../../services/updates/githubUpdates" external.root.project.path="$MODULE_DIR$/../../../../.." external.system.id="GRADLE" external.system.module.group="Combusted-Pixel-Dungeon.services.updates" external.system.module.version="0.0.19" type="JAVA_MODULE" version="4">
+<module external.linked.project.id=":services:updates:githubUpdates" external.linked.project.path="$MODULE_DIR$/../../../../../services/updates/githubUpdates" external.root.project.path="$MODULE_DIR$/../../../../.." external.system.id="GRADLE" external.system.module.group="Combusted-Pixel-Dungeon.services.updates" external.system.module.version="0.0.20" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="java-gradle" name="Java-Gradle">
       <configuration>
@@ -19,19 +19,10 @@
     <output-test url="file://$MODULE_DIR$/../../../../../services/updates/githubUpdates/build/classes/java/test" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../../../services/updates/githubUpdates">
-      <sourceFolder url="file://$MODULE_DIR$/../../../../../services/updates/githubUpdates/src/main/java" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../../../services/updates/githubUpdates/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../../../../services/updates/githubUpdates/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="Combusted-Pixel-Dungeon.services" />
-    <orderEntry type="module" module-name="Combusted-Pixel-Dungeon.SPD-classes" />
-    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx:1.10.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx-controllers:gdx-controllers-core:2.2.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.badlogicgames.gdx:gdx-freetype:1.10.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.json:json:20170516" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: com.badlogicgames.gdx:gdx-freetype:1.10.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.json:json:20170516" level="project" />
   </component>
 </module>

@@ -4,17 +4,38 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Combusted-Pixel-Dungeon.iml" filepath="$PROJECT_DIR$/.idea/modules/Combusted-Pixel-Dungeon.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/SPD-classes/Combusted-Pixel-Dungeon.SPD-classes.iml" filepath="$PROJECT_DIR$/.idea/modules/SPD-classes/Combusted-Pixel-Dungeon.SPD-classes.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SPD-classes/Combusted-Pixel-Dungeon.SPD-classes.main.iml" filepath="$PROJECT_DIR$/.idea/modules/SPD-classes/Combusted-Pixel-Dungeon.SPD-classes.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SPD-classes/Combusted-Pixel-Dungeon.SPD-classes.test.iml" filepath="$PROJECT_DIR$/.idea/modules/SPD-classes/Combusted-Pixel-Dungeon.SPD-classes.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/android/Combusted-Pixel-Dungeon.android.iml" filepath="$PROJECT_DIR$/.idea/modules/android/Combusted-Pixel-Dungeon.android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android/Combusted-Pixel-Dungeon.android.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/android/Combusted-Pixel-Dungeon.android.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android/Combusted-Pixel-Dungeon.android.main.iml" filepath="$PROJECT_DIR$/.idea/modules/android/Combusted-Pixel-Dungeon.android.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android/Combusted-Pixel-Dungeon.android.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/android/Combusted-Pixel-Dungeon.android.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/Combusted-Pixel-Dungeon.core.iml" filepath="$PROJECT_DIR$/.idea/modules/core/Combusted-Pixel-Dungeon.core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/Combusted-Pixel-Dungeon.core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core/Combusted-Pixel-Dungeon.core.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/Combusted-Pixel-Dungeon.core.test.iml" filepath="$PROJECT_DIR$/.idea/modules/core/Combusted-Pixel-Dungeon.core.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/desktop/Combusted-Pixel-Dungeon.desktop.iml" filepath="$PROJECT_DIR$/.idea/modules/desktop/Combusted-Pixel-Dungeon.desktop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/desktop/Combusted-Pixel-Dungeon.desktop.main.iml" filepath="$PROJECT_DIR$/.idea/modules/desktop/Combusted-Pixel-Dungeon.desktop.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/desktop/Combusted-Pixel-Dungeon.desktop.test.iml" filepath="$PROJECT_DIR$/.idea/modules/desktop/Combusted-Pixel-Dungeon.desktop.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/ios/Combusted-Pixel-Dungeon.ios.iml" filepath="$PROJECT_DIR$/.idea/modules/ios/Combusted-Pixel-Dungeon.ios.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ios/Combusted-Pixel-Dungeon.ios.main.iml" filepath="$PROJECT_DIR$/.idea/modules/ios/Combusted-Pixel-Dungeon.ios.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ios/Combusted-Pixel-Dungeon.ios.test.iml" filepath="$PROJECT_DIR$/.idea/modules/ios/Combusted-Pixel-Dungeon.ios.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/Combusted-Pixel-Dungeon.services.iml" filepath="$PROJECT_DIR$/.idea/modules/services/Combusted-Pixel-Dungeon.services.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/Combusted-Pixel-Dungeon.services.main.iml" filepath="$PROJECT_DIR$/.idea/modules/services/Combusted-Pixel-Dungeon.services.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/news/Combusted-Pixel-Dungeon.services.news.iml" filepath="$PROJECT_DIR$/.idea/modules/services/news/Combusted-Pixel-Dungeon.services.news.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/news/debugNews/Combusted-Pixel-Dungeon.services.news.debugNews.iml" filepath="$PROJECT_DIR$/.idea/modules/services/news/debugNews/Combusted-Pixel-Dungeon.services.news.debugNews.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/news/debugNews/Combusted-Pixel-Dungeon.services.news.debugNews.main.iml" filepath="$PROJECT_DIR$/.idea/modules/services/news/debugNews/Combusted-Pixel-Dungeon.services.news.debugNews.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/news/debugNews/Combusted-Pixel-Dungeon.services.news.debugNews.test.iml" filepath="$PROJECT_DIR$/.idea/modules/services/news/debugNews/Combusted-Pixel-Dungeon.services.news.debugNews.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/news/shatteredNews/Combusted-Pixel-Dungeon.services.news.shatteredNews.iml" filepath="$PROJECT_DIR$/.idea/modules/services/news/shatteredNews/Combusted-Pixel-Dungeon.services.news.shatteredNews.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/news/shatteredNews/Combusted-Pixel-Dungeon.services.news.shatteredNews.main.iml" filepath="$PROJECT_DIR$/.idea/modules/services/news/shatteredNews/Combusted-Pixel-Dungeon.services.news.shatteredNews.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/news/shatteredNews/Combusted-Pixel-Dungeon.services.news.shatteredNews.test.iml" filepath="$PROJECT_DIR$/.idea/modules/services/news/shatteredNews/Combusted-Pixel-Dungeon.services.news.shatteredNews.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/Combusted-Pixel-Dungeon.services.test.iml" filepath="$PROJECT_DIR$/.idea/modules/services/Combusted-Pixel-Dungeon.services.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/updates/Combusted-Pixel-Dungeon.services.updates.iml" filepath="$PROJECT_DIR$/.idea/modules/services/updates/Combusted-Pixel-Dungeon.services.updates.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/updates/debugUpdates/Combusted-Pixel-Dungeon.services.updates.debugUpdates.iml" filepath="$PROJECT_DIR$/.idea/modules/services/updates/debugUpdates/Combusted-Pixel-Dungeon.services.updates.debugUpdates.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/updates/debugUpdates/Combusted-Pixel-Dungeon.services.updates.debugUpdates.main.iml" filepath="$PROJECT_DIR$/.idea/modules/services/updates/debugUpdates/Combusted-Pixel-Dungeon.services.updates.debugUpdates.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/updates/debugUpdates/Combusted-Pixel-Dungeon.services.updates.debugUpdates.test.iml" filepath="$PROJECT_DIR$/.idea/modules/services/updates/debugUpdates/Combusted-Pixel-Dungeon.services.updates.debugUpdates.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/updates/githubUpdates/Combusted-Pixel-Dungeon.services.updates.githubUpdates.iml" filepath="$PROJECT_DIR$/.idea/modules/services/updates/githubUpdates/Combusted-Pixel-Dungeon.services.updates.githubUpdates.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/updates/githubUpdates/Combusted-Pixel-Dungeon.services.updates.githubUpdates.main.iml" filepath="$PROJECT_DIR$/.idea/modules/services/updates/githubUpdates/Combusted-Pixel-Dungeon.services.updates.githubUpdates.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/updates/githubUpdates/Combusted-Pixel-Dungeon.services.updates.githubUpdates.test.iml" filepath="$PROJECT_DIR$/.idea/modules/services/updates/githubUpdates/Combusted-Pixel-Dungeon.services.updates.githubUpdates.test.iml" />
     </modules>
   </component>
 </project>

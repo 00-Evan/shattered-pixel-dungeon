@@ -49,7 +49,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFear;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFlock;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfShock;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.exotic.StoneOfAffection;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.exotic.StoneOfKnowledge;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.exotic.StoneOfTrapFinding;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Reflection;
 
@@ -169,8 +171,8 @@ public abstract class ExoticScroll extends Scroll {
 		private static HashMap<Class<?extends Scroll>, Class<?extends Runestone>> stones = new HashMap<>();
 		static {
 			stones.put(ScrollOfDivination.class,    StoneOfKnowledge.class);
-//			stones.put(ScrollOfLullaby.class,       StoneOfDeepSleep.class);
-//			stones.put(ScrollOfMagicMapping.class,  StoneOfClairvoyance.class);
+			stones.put(ScrollOfSirensSong.class,    StoneOfAffection.class);
+			stones.put(ScrollOfForesight.class,     StoneOfTrapFinding.class);
 //			stones.put(ScrollOfMirrorImage.class,   StoneOfFlock.class);
 //			stones.put(ScrollOfRetribution.class,   StoneOfBlast.class);
 //			stones.put(ScrollOfRage.class,          StoneOfAggression.class);

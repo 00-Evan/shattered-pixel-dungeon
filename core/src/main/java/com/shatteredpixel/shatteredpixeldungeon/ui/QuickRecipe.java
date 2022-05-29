@@ -289,6 +289,15 @@ public class QuickRecipe extends Component {
 					ArrayList<Item> in = new ArrayList<Item>(Arrays.asList(scroll));
 					result.add(new QuickRecipe( r, in, r.sampleOutput(in)));
 				}
+				result.add(null);
+				result.add(null);
+				r = new ExoticScroll.ExocticScrollToStone();
+				for (Class<?> cls : Generator.Category.EXOTIC_SCROLL.classes){
+					ExoticScroll scroll = (ExoticScroll) Reflection.newInstance(cls);
+					if (!scroll.isKnown()) scroll.anonymize();
+					ArrayList<Item> in = new ArrayList<Item>(Arrays.asList(scroll));
+					result.add(new QuickRecipe( r, in, r.sampleOutput(in)));
+				}
 				return result;
 			case 2:
 				result.add(new QuickRecipe( new StewedMeat.oneMeat() ));

@@ -70,6 +70,7 @@ public class HeroSelectScene extends PixelScene {
 
 	@Override
 	public void create() {
+		Badges.validateAlchemistUnlock(null);
 		super.create();
 
 		Dungeon.hero = null;

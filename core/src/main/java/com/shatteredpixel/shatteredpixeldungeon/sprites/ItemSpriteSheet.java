@@ -461,12 +461,12 @@ public class ItemSpriteSheet {
 	//public static final int STONE_FEAR          = EXOTIC_STONES+2;
 	//public static final int STONE_BLAST         = EXOTIC_STONES+3;
 	//public static final int STONE_BLINK         = EXOTIC_STONES+4;
-	//public static final int STONE_CLAIRVOYANCE  = EXOTIC_STONES+5;
-	//public static final int STONE_SLEEP         = EXOTIC_STONES+6;
+	public static final int STONE_TRAPS 		  = EXOTIC_STONES+5;
+	public static final int STONE_AFFECTION       = EXOTIC_STONES+6;
 	//public static final int STONE_DISARM        = EXOTIC_STONES+7;
 	//public static final int STONE_ENCHANT       = EXOTIC_STONES+8;
 	//public static final int STONE_FLOCK         = EXOTIC_STONES+9;
-	public static final int STONE_KNOWLEDGE     = EXOTIC_STONES+10;
+	public static final int STONE_KNOWLEDGE       = EXOTIC_STONES+10;
 	//public static final int STONE_SHOCK         = EXOTIC_STONES+11;
 	static {
 		for (int i = EXOTIC_STONES; i < EXOTIC_STONES+16; i++)

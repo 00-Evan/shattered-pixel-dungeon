@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id=":android" external.linked.project.path="$MODULE_DIR$/../../../android" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="Combusted-Pixel-Dungeon" external.system.module.version="0.0.19" type="JAVA_MODULE" version="4">
+<module external.linked.project.id=":android" external.linked.project.path="$MODULE_DIR$/../../../android" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="Combusted-Pixel-Dungeon" external.system.module.version="0.0.20" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="android-gradle" name="Android-Gradle">
       <configuration>
@@ -10,84 +10,30 @@
     </facet>
     <facet type="android" name="Android">
       <configuration>
-        <option name="SELECTED_BUILD_VARIANT" value="release" />
-        <option name="ASSEMBLE_TASK_NAME" value="assembleRelease" />
-        <option name="COMPILE_JAVA_TASK_NAME" value="compileReleaseSources" />
+        <option name="SELECTED_BUILD_VARIANT" value="debug" />
+        <option name="ASSEMBLE_TASK_NAME" value="assembleDebug" />
+        <option name="COMPILE_JAVA_TASK_NAME" value="compileDebugSources" />
         <afterSyncTasks>
-          <task>generateReleaseSources</task>
+          <task>generateDebugSources</task>
         </afterSyncTasks>
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
-        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/../../../android/src/main/res;file://$MODULE_DIR$/../../../android/src/release/res;file://$MODULE_DIR$/../../../android/build/generated/res/rs/release;file://$MODULE_DIR$/../../../android/build/generated/res/resValues/release" />
-        <option name="TEST_RES_FOLDERS_RELATIVE_PATH" value="" />
+        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/../../../android/src/main/res;file://$MODULE_DIR$/../../../android/src/debug/res;file://$MODULE_DIR$/../../../android/build/generated/res/rs/debug;file://$MODULE_DIR$/../../../android/build/generated/res/resValues/debug" />
+        <option name="TEST_RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/../../../android/src/androidTest/res;file://$MODULE_DIR$/../../../android/src/androidTestDebug/res;file://$MODULE_DIR$/../../../android/build/generated/res/rs/androidTest/debug;file://$MODULE_DIR$/../../../android/build/generated/res/resValues/androidTest/debug" />
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/../core/src/main/assets" />
       </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
-    <output url="file://$MODULE_DIR$/../../../android/build/intermediates/javac/release/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../android/build/intermediates/javac/releaseUnitTest/classes" />
+    <output url="file://$MODULE_DIR$/../../../android/build/intermediates/javac/debug/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../android/build/intermediates/javac/debugUnitTest/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../android">
-      <sourceFolder url="file://$MODULE_DIR$/../../../android/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../android/src/main/res" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../android/build/generated/ap_generated_sources/release/out" isTestSource="false" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../android/build/generated/res/resValues/release" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../android/build/generated/source/buildConfig/release" isTestSource="false" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../android/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../../android/build" />
     </content>
-    <content url="file://$MODULE_DIR$/../../../core/src/main/assets">
-      <sourceFolder url="file://$MODULE_DIR$/../../../core/src/main/assets" type="java-resource" />
-    </content>
     <orderEntry type="jdk" jdkName="Android API 31 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-backend-android:1.10.0" level="project" />
-    <orderEntry type="module-library">
-      <library name="Gradle: com.badlogicgames.gdx:gdx-freetype:1.10.0">
-        <CLASSES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-freetype/1.10.0/de1d0d5c1e92e8d91364256fd6b7bb279d3e9859/gdx-freetype-1.10.0.jar!/" />
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-freetype/1.10.0/78df46404bdb4ca6354c01d0d0f0e65b80dbe622/gdx-freetype-1.10.0-javadoc.jar!/" />
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-freetype/1.10.0/8900f7ddf35e3a3184775d3e4614e5e52038986d/gdx-freetype-1.10.0-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="Gradle: com.badlogicgames.gdx:gdx:1.10.0">
-        <CLASSES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.10.0/74c240f79dc4fb6b766a834249600d0a019d0489/gdx-1.10.0.jar!/" />
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.10.0/26c95ab888727a69338fd2292e54dee12741e856/gdx-1.10.0-javadoc.jar!/" />
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.10.0/126a80a5ef6d32683bc563d4015c6c163d690f15/gdx-1.10.0-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="Gradle: com.badlogicgames.gdx-controllers:gdx-controllers-core:2.2.1">
-        <CLASSES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx-controllers/gdx-controllers-core/2.2.1/8aca0dc002a8daf6a6d28f49c44e25189dd93fd7/gdx-controllers-core-2.2.1.jar!/" />
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx-controllers/gdx-controllers-core/2.2.1/115de6a9cacff327ad727656b45359eb092df489/gdx-controllers-core-2.2.1-javadoc.jar!/" />
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx-controllers/gdx-controllers-core/2.2.1/dc2dc16ae45cf551d3bd5c537fa00a0033e6057f/gdx-controllers-core-2.2.1-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx-controllers:gdx-controllers-android:2.2.1@aar" level="project" />
-    <orderEntry type="module" module-name="Combusted-Pixel-Dungeon.core" />
-    <orderEntry type="module" module-name="Combusted-Pixel-Dungeon.SPD-classes" />
-    <orderEntry type="module" module-name="Combusted-Pixel-Dungeon.services.updates.githubUpdates" />
-    <orderEntry type="module" module-name="Combusted-Pixel-Dungeon.services.news.shatteredNews" />
-    <orderEntry type="module" module-name="Combusted-Pixel-Dungeon.services" />
   </component>
 </module>

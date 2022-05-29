@@ -14,6 +14,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
@@ -77,7 +78,7 @@ public class StoneOfKnowledge extends InventoryStone {
 
         WndDivination(ArrayList<Item> IDed ){
             IconTitle cur = new IconTitle(new ItemSprite(StoneOfKnowledge.this),
-                    Messages.titleCase(Messages.get(StoneOfKnowledge.class, "name")));
+            Messages.titleCase(Messages.get(StoneOfKnowledge.class, "name")));
             cur.setRect(0, 0, WIDTH, 0);
             add(cur);
 
