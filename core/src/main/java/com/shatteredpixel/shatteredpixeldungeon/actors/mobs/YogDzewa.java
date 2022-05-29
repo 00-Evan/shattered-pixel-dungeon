@@ -569,11 +569,8 @@ public class YogDzewa extends Mob {
 
 		fistSummons.clear();
 		Collections.addAll(fistSummons, bundle.getClassArray(FIST_SUMMONS));
-		//pre-0.9.3 saves
-		if (bundle.contains(CHALLENGE_SUMMONS)) {
-			challengeSummons.clear();
-			Collections.addAll(challengeSummons, bundle.getClassArray(CHALLENGE_SUMMONS));
-		}
+		challengeSummons.clear();
+		Collections.addAll(challengeSummons, bundle.getClassArray(CHALLENGE_SUMMONS));
 		regularSummons.clear();
 		Collections.addAll(regularSummons, bundle.getClassArray(REGULAR_SUMMONS));
 

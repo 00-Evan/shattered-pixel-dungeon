@@ -174,7 +174,6 @@ abstract public class ClassArmor extends Armor {
 
 		if (action.equals(AC_ABILITY)){
 
-			//for pre-0.9.3 saves
 			if (hero.armorAbility == null){
 				GameScene.show(new WndChooseAbility(null, this, hero));
 			} else if (!isEquipped( hero )) {

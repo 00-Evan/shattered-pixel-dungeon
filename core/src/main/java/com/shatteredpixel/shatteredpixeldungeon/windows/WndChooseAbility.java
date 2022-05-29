@@ -47,7 +47,7 @@ public class WndChooseAbility extends Window {
 
 		super();
 
-		//crown can be null if hero is choosing from armor, pre-0.9.3 saves
+		//crown can be null if hero is choosing from armor
 		IconTitle titlebar = new IconTitle();
 		titlebar.icon( new ItemSprite( crown == null ? armor.image() : crown.image(), null ) );
 		titlebar.label( Messages.titleCase(crown == null ? armor.name() : crown.name()) );

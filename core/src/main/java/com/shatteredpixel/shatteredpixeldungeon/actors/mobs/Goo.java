@@ -321,9 +321,7 @@ public class Goo extends Mob {
 		if (state != SLEEPING) BossHealthBar.assignBoss(this);
 		if ((HP*2 <= HT)) BossHealthBar.bleed(true);
 
-		//if check is for pre-0.9.3 saves
 		healInc = bundle.getInt(HEALINC);
-
 	}
 	
 }
