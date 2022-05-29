@@ -90,7 +90,7 @@ public class WildMagic extends ArmorAbility {
 					seconds.remove(w);
 				}
 				if (totalCharge < 3*chargeUsePerShot
-					|| Random.Int(4) > Dungeon.hero.pointsInTalent(Talent.CONSERVED_MAGIC)){
+					|| Random.Int(4) >= Dungeon.hero.pointsInTalent(Talent.FIRE_EVERYTHING)){
 					thirds.remove(w);
 				}
 			}
@@ -187,7 +187,11 @@ public class WildMagic extends ArmorAbility {
 			}
 			Item.updateQuickslot();
 			Invisibility.dispel();
-			hero.spendAndNext(Actor.TICK);
+			if (Random.Int(4) >= hero.pointsInTalent(Talent.CONSERVED_MAGIC)) {
+				hero.spendAndNext(Actor.TICK);
+			} else {
+				hero.next();
+			}
 		}
 	}
 
