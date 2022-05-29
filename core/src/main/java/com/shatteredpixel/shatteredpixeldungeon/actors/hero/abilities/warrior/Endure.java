@@ -111,7 +111,7 @@ public class Endure extends ArmorAbility {
 
 		public int adjustDamageTaken(int damage){
 			if (enduring) {
-				damageBonus += damage/3;
+				damageBonus += damage/2;
 				return damage/2;
 			}
 			return damage;

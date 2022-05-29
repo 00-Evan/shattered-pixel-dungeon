@@ -46,7 +46,7 @@ import com.watabou.utils.Random;
 public class HeroicLeap extends ArmorAbility {
 
 	{
-		baseChargeUse = 25f;
+		baseChargeUse = 35f;
 	}
 
 	@Override
