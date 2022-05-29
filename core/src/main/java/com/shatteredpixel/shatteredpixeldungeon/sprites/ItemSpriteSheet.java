@@ -562,7 +562,7 @@ public class ItemSpriteSheet {
 	public static final int SEED_ICECAP         = SEEDS+4;
 	public static final int SEED_STORMVINE      = SEEDS+5;
 	public static final int SEED_SORROWMOSS     = SEEDS+6;
-	public static final int SEED_DREAMFOIL      = SEEDS+7;
+	public static final int SEED_MAGEROYAL = SEEDS+7;
 	public static final int SEED_EARTHROOT      = SEEDS+8;
 	public static final int SEED_STARFLOWER     = SEEDS+9;
 	public static final int SEED_FADELEAF       = SEEDS+10;
