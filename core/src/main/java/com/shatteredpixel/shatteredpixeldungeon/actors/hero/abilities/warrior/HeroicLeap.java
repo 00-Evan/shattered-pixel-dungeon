@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HoldFast;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
@@ -58,8 +59,8 @@ public class HeroicLeap extends ArmorAbility {
 	public float chargeUse( Hero hero ) {
 		float chargeUse = super.chargeUse(hero);
 		if (hero.buff(DoubleJumpTracker.class) != null){
-			//reduced charge use by 16%/30%/41%/50%
-			chargeUse *= Math.pow(0.84, hero.pointsInTalent(Talent.DOUBLE_JUMP));
+			//reduced charge use by 20%/36%/50%/60%
+			chargeUse *= Math.pow(0.795, hero.pointsInTalent(Talent.DOUBLE_JUMP));
 		}
 		return chargeUse;
 	}
@@ -95,8 +96,8 @@ public class HeroicLeap extends ArmorAbility {
 						Char mob = Actor.findChar(hero.pos + i);
 						if (mob != null && mob != hero && mob.alignment != Char.Alignment.ALLY) {
 							if (hero.hasTalent(Talent.BODY_SLAM)){
-								int damage = hero.drRoll();
-								damage = Math.round(damage*0.25f*hero.pointsInTalent(Talent.BODY_SLAM));
+								int damage = Random.NormalIntRange(hero.pointsInTalent(Talent.BODY_SLAM), 4*hero.pointsInTalent(Talent.BODY_SLAM));
+								damage += Math.round(hero.drRoll()*0.25f*hero.pointsInTalent(Talent.BODY_SLAM));
 								mob.damage(damage, hero);
 							}
 							if (mob.pos == hero.pos + i && hero.hasTalent(Talent.IMPACT_WAVE)){
@@ -104,7 +105,7 @@ public class HeroicLeap extends ArmorAbility {
 								int strength = 1+hero.pointsInTalent(Talent.IMPACT_WAVE);
 								WandOfBlastWave.throwChar(mob, trajectory, strength, true, true, HeroicLeap.this.getClass());
 								if (Random.Int(4) < hero.pointsInTalent(Talent.IMPACT_WAVE)){
-									Buff.prolong(mob, Vulnerable.class, 3f);
+									Buff.prolong(mob, Vulnerable.class, 5f);
 								}
 							}
 						}
