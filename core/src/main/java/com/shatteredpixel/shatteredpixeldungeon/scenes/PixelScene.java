@@ -172,9 +172,19 @@ public class PixelScene extends Scene {
 				ControllerHandler.setControllerPointer(true);
 				virtualCursorPos = PointerEvent.currentHoverPos();
 			}
-			//cursor moves 500 scaled pixels per second at full speed, 100 at minimum speed
-			virtualCursorPos.x += defaultZoom * 500 * Game.elapsed * ControllerHandler.rightStickPosition.x;
-			virtualCursorPos.y += defaultZoom * 500 * Game.elapsed * ControllerHandler.rightStickPosition.y;
+
+			int sensitivity = SPDSettings.controllerPointerSensitivity() * 100;
+
+			//cursor moves 100xsens scaled pixels per second at full speed
+			//35x at 50% movement, ~9x at 20% deadzone threshold
+			float xMove = (float)Math.pow(Math.abs(ControllerHandler.rightStickPosition.x), 1.5);
+			if (ControllerHandler.rightStickPosition.x < 0) xMove = -xMove;
+
+			float yMove = (float)Math.pow(Math.abs(ControllerHandler.rightStickPosition.y), 1.5);
+			if (ControllerHandler.rightStickPosition.y < 0) yMove = -yMove;
+
+			virtualCursorPos.x += defaultZoom * sensitivity * Game.elapsed * xMove;
+			virtualCursorPos.y += defaultZoom * sensitivity * Game.elapsed * yMove;
 			virtualCursorPos.x = GameMath.gate(0, virtualCursorPos.x, Game.width);
 			virtualCursorPos.y = GameMath.gate(0, virtualCursorPos.y, Game.height);
 			PointerEvent.addPointerEvent(new PointerEvent((int) virtualCursorPos.x, (int) virtualCursorPos.y, 10_000, PointerEvent.Type.HOVER, PointerEvent.NONE));

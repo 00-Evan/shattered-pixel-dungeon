@@ -40,8 +40,10 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.input.ControllerHandler;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.DeviceCompat;
@@ -56,12 +58,13 @@ public class WndSettings extends WndTabbed {
 	private static final int WIDTH_P	    = 122;
 	private static final int WIDTH_L	    = 223;
 
-	private static final int SLIDER_HEIGHT	= 24;
-	private static final int BTN_HEIGHT	    = 18;
+	private static final int SLIDER_HEIGHT	= 23;
+	private static final int BTN_HEIGHT	    = 17;
 	private static final float GAP          = 2;
 
 	private DisplayTab  display;
 	private UITab       ui;
+	private InputTab    input;
 	private DataTab     data;
 	private AudioTab    audio;
 	private LangsTab    langs;
@@ -103,6 +106,28 @@ public class WndSettings extends WndTabbed {
 			}
 		});
 
+		input = new InputTab();
+		input.setSize(width, 0);
+		height = Math.max(height, input.height());
+
+		if (DeviceCompat.hasHardKeyboard() || ControllerHandler.isControllerConnected()) {
+			add( input );
+			Image icon;
+			if (ControllerHandler.controllerPointerActive() || !DeviceCompat.hasHardKeyboard()){
+				icon = Icons.get(Icons.CONTROLLER);
+			} else {
+				icon = Icons.get(Icons.KEYBOARD);
+			}
+			add(new IconTab(icon) {
+				@Override
+				protected void select(boolean value) {
+					super.select(value);
+					input.visible = input.active = value;
+					if (value) last_index = 2;
+				}
+			});
+		}
+
 		data = new DataTab();
 		data.setSize(width, 0);
 		height = Math.max(height, data.height());
@@ -113,7 +138,7 @@ public class WndSettings extends WndTabbed {
 			protected void select(boolean value) {
 				super.select(value);
 				data.visible = data.active = value;
-				if (value) last_index = 2;
+				if (value) last_index = 3;
 			}
 		});
 
@@ -127,7 +152,7 @@ public class WndSettings extends WndTabbed {
 			protected void select(boolean value) {
 				super.select(value);
 				audio.visible = audio.active = value;
-				if (value) last_index = 3;
+				if (value) last_index = 4;
 			}
 		});
 
@@ -142,7 +167,7 @@ public class WndSettings extends WndTabbed {
 			protected void select(boolean value) {
 				super.select(value);
 				langs.visible = langs.active = value;
-				if (value) last_index = 4;
+				if (value) last_index = 5;
 			}
 
 			@Override
@@ -165,7 +190,12 @@ public class WndSettings extends WndTabbed {
 
 		layoutTabs();
 
-		select(last_index);
+		if (tabs.size() == 5 && last_index >= 3){
+			//input tab isn't visible
+			select(last_index-1);
+		} else {
+			select(last_index);
+		}
 
 	}
 
@@ -221,7 +251,7 @@ public class WndSettings extends WndTabbed {
 			}
 			add(chkFullscreen);
 
-			if ((int)Math.ceil(2* Game.density) < PixelScene.maxDefaultZoom) {
+			/*if ((int)Math.ceil(2* Game.density) < PixelScene.maxDefaultZoom) {
 				optScale = new OptionSlider(Messages.get(this, "scale"),
 						(int)Math.ceil(2* Game.density)+ "X",
 						PixelScene.maxDefaultZoom + "X",
@@ -237,7 +267,7 @@ public class WndSettings extends WndTabbed {
 				};
 				optScale.setSelectedValue(PixelScene.defaultZoom);
 				add(optScale);
-			}
+			}*/
 
 			if (DeviceCompat.isAndroid() && PixelScene.maxScreenZoom >= 2) {
 				chkSaver = new CheckBox(Messages.get(this, "saver")) {
@@ -367,10 +397,9 @@ public class WndSettings extends WndTabbed {
 		RenderedTextBlock title;
 
 		ColorBlock sep1;
-		OptionSlider optUISize;
-		RenderedTextBlock barDesc;
-		RedButton btnSplit; RedButton btnGrouped; RedButton btnCentered;
-		CheckBox chkFlipToolbar;
+		OptionSlider optUIMode;
+		OptionSlider optUIScale;
+		RedButton btnToolbarSettings;
 		CheckBox chkFlipTags;
 		ColorBlock sep2;
 		CheckBox chkFont;
@@ -390,8 +419,8 @@ public class WndSettings extends WndTabbed {
 			float wMin = Game.width / PixelScene.MIN_WIDTH_FULL;
 			float hMin = Game.height / PixelScene.MIN_HEIGHT_FULL;
 			if (Math.min(wMin, hMin) >= 2*Game.density){
-				optUISize = new OptionSlider(
-						Messages.get(this, "size"),
+				optUIMode = new OptionSlider(
+						Messages.get(this, "ui_mode"),
 						Messages.get(this, "mobile"),
 						Messages.get(this, "full"),
 						0,
@@ -403,78 +432,152 @@ public class WndSettings extends WndTabbed {
 						ShatteredPixelDungeon.seamlessResetScene();
 					}
 				};
-				optUISize.setSelectedValue(SPDSettings.interfaceSize());
-				add(optUISize);
+				optUIMode.setSelectedValue(SPDSettings.interfaceSize());
+				add(optUIMode);
+			}
+
+			if ((int)Math.ceil(2* Game.density) < PixelScene.maxDefaultZoom) {
+				optUIScale = new OptionSlider(Messages.get(this, "scale"),
+						(int)Math.ceil(2* Game.density)+ "X",
+						PixelScene.maxDefaultZoom + "X",
+						(int)Math.ceil(2* Game.density),
+						PixelScene.maxDefaultZoom ) {
+					@Override
+					protected void onChange() {
+						if (getSelectedValue() != SPDSettings.scale()) {
+							SPDSettings.scale(getSelectedValue());
+							ShatteredPixelDungeon.seamlessResetScene();
+						}
+					}
+				};
+				optUIScale.setSelectedValue(PixelScene.defaultZoom);
+				add(optUIScale);
 			}
 
 			if (SPDSettings.interfaceSize() == 0) {
-				barDesc = PixelScene.renderTextBlock(Messages.get(this, "mode"), 9);
-				add(barDesc);
-
-				btnSplit = new RedButton(Messages.get(this, "split")) {
+				btnToolbarSettings = new RedButton(Messages.get(this, "toolbar_settings"), 9){
 					@Override
 					protected void onClick() {
-						textColor(TITLE_COLOR);
-						btnGrouped.textColor(WHITE);
-						btnCentered.textColor(WHITE);
-						SPDSettings.toolbarMode(Toolbar.Mode.SPLIT.name());
-						Toolbar.updateLayout();
+						ShatteredPixelDungeon.scene().addToFront(new Window(){
+
+							RenderedTextBlock barDesc;
+							RedButton btnSplit; RedButton btnGrouped; RedButton btnCentered;
+							CheckBox chkFlipToolbar;
+							CheckBox chkFlipTags;
+							//TODO checkbox for forcing 6 quicksltos on mobile portrait
+
+							{
+								barDesc = PixelScene.renderTextBlock(Messages.get(WndSettings.UITab.this, "mode"), 9);
+								add(barDesc);
+
+								btnSplit = new RedButton(Messages.get(WndSettings.UITab.this, "split")) {
+									@Override
+									protected void onClick() {
+										textColor(TITLE_COLOR);
+										btnGrouped.textColor(WHITE);
+										btnCentered.textColor(WHITE);
+										SPDSettings.toolbarMode(Toolbar.Mode.SPLIT.name());
+										Toolbar.updateLayout();
+									}
+								};
+								if (SPDSettings.toolbarMode().equals(Toolbar.Mode.SPLIT.name())) {
+									btnSplit.textColor(TITLE_COLOR);
+								}
+								add(btnSplit);
+
+								btnGrouped = new RedButton(Messages.get(WndSettings.UITab.this, "group")) {
+									@Override
+									protected void onClick() {
+										btnSplit.textColor(WHITE);
+										textColor(TITLE_COLOR);
+										btnCentered.textColor(WHITE);
+										SPDSettings.toolbarMode(Toolbar.Mode.GROUP.name());
+										Toolbar.updateLayout();
+									}
+								};
+								if (SPDSettings.toolbarMode().equals(Toolbar.Mode.GROUP.name())) {
+									btnGrouped.textColor(TITLE_COLOR);
+								}
+								add(btnGrouped);
+
+								btnCentered = new RedButton(Messages.get(WndSettings.UITab.this, "center")) {
+									@Override
+									protected void onClick() {
+										btnSplit.textColor(WHITE);
+										btnGrouped.textColor(WHITE);
+										textColor(TITLE_COLOR);
+										SPDSettings.toolbarMode(Toolbar.Mode.CENTER.name());
+										Toolbar.updateLayout();
+									}
+								};
+								if (SPDSettings.toolbarMode().equals(Toolbar.Mode.CENTER.name())) {
+									btnCentered.textColor(TITLE_COLOR);
+								}
+								add(btnCentered);
+
+								chkFlipToolbar = new CheckBox(Messages.get(WndSettings.UITab.this, "flip_toolbar")) {
+									@Override
+									protected void onClick() {
+										super.onClick();
+										SPDSettings.flipToolbar(checked());
+										Toolbar.updateLayout();
+									}
+								};
+								chkFlipToolbar.checked(SPDSettings.flipToolbar());
+								add(chkFlipToolbar);
+
+								chkFlipTags = new CheckBox(Messages.get(WndSettings.UITab.this, "flip_indicators")){
+									@Override
+									protected void onClick() {
+										super.onClick();
+										SPDSettings.flipTags(checked());
+										GameScene.layoutTags();
+									}
+								};
+								chkFlipTags.checked(SPDSettings.flipTags());
+								add(chkFlipTags);
+
+								//layout
+								resize(WIDTH_P, 0);
+
+								barDesc.setPos((width - barDesc.width()) / 2f, GAP);
+								PixelScene.align(barDesc);
+
+								int btnWidth = (int) (width - 2 * GAP) / 3;
+								btnSplit.setRect(0, barDesc.bottom() + GAP, btnWidth, BTN_HEIGHT-2);
+								btnGrouped.setRect(btnSplit.right() + GAP, btnSplit.top(), btnWidth, BTN_HEIGHT-2);
+								btnCentered.setRect(btnGrouped.right() + GAP, btnSplit.top(), btnWidth, BTN_HEIGHT-2);
+
+								if (width > 200) {
+									chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP, width / 2 - 1, BTN_HEIGHT);
+									chkFlipTags.setRect(chkFlipToolbar.right() + GAP, chkFlipToolbar.top(), width / 2 - 1, BTN_HEIGHT);
+								} else {
+									chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP, width, BTN_HEIGHT);
+									chkFlipTags.setRect(0, chkFlipToolbar.bottom() + GAP, width, BTN_HEIGHT);
+								}
+
+								resize(WIDTH_P, (int)chkFlipTags.bottom());
+
+							}
+						});
 					}
 				};
-				if (SPDSettings.toolbarMode().equals(Toolbar.Mode.SPLIT.name()))
-					btnSplit.textColor(TITLE_COLOR);
-				add(btnSplit);
+				add(btnToolbarSettings);
 
-				btnGrouped = new RedButton(Messages.get(this, "group")) {
-					@Override
-					protected void onClick() {
-						btnSplit.textColor(WHITE);
-						textColor(TITLE_COLOR);
-						btnCentered.textColor(WHITE);
-						SPDSettings.toolbarMode(Toolbar.Mode.GROUP.name());
-						Toolbar.updateLayout();
-					}
-				};
-				if (SPDSettings.toolbarMode().equals(Toolbar.Mode.GROUP.name()))
-					btnGrouped.textColor(TITLE_COLOR);
-				add(btnGrouped);
+			} else {
 
-				btnCentered = new RedButton(Messages.get(this, "center")) {
-					@Override
-					protected void onClick() {
-						btnSplit.textColor(WHITE);
-						btnGrouped.textColor(WHITE);
-						textColor(TITLE_COLOR);
-						SPDSettings.toolbarMode(Toolbar.Mode.CENTER.name());
-						Toolbar.updateLayout();
-					}
-				};
-				if (SPDSettings.toolbarMode().equals(Toolbar.Mode.CENTER.name()))
-					btnCentered.textColor(TITLE_COLOR);
-				add(btnCentered);
-
-				chkFlipToolbar = new CheckBox(Messages.get(this, "flip_toolbar")) {
+				chkFlipTags = new CheckBox(Messages.get(this, "flip_indicators")) {
 					@Override
 					protected void onClick() {
 						super.onClick();
-						SPDSettings.flipToolbar(checked());
-						Toolbar.updateLayout();
+						SPDSettings.flipTags(checked());
+						GameScene.layoutTags();
 					}
 				};
-				chkFlipToolbar.checked(SPDSettings.flipToolbar());
-				add(chkFlipToolbar);
-			}
+				chkFlipTags.checked(SPDSettings.flipTags());
+				add(chkFlipTags);
 
-			chkFlipTags = new CheckBox(Messages.get(this, "flip_indicators")){
-				@Override
-				protected void onClick() {
-					super.onClick();
-					SPDSettings.flipTags(checked());
-					GameScene.layoutTags();
-				}
-			};
-			chkFlipTags.checked(SPDSettings.flipTags());
-			add(chkFlipTags);
+			}
 
 			sep2 = new ColorBlock(1, 1, 0xFF000000);
 			add(sep2);
@@ -498,22 +601,6 @@ public class WndSettings extends WndTabbed {
 			};
 			chkFont.checked(SPDSettings.systemFont());
 			add(chkFont);
-
-			if (DeviceCompat.hasHardKeyboard()){
-
-				sep3 = new ColorBlock(1, 1, 0xFF000000);
-				add(sep3);
-
-				btnKeyBindings = new RedButton(Messages.get(this, "key_bindings")){
-					@Override
-					protected void onClick() {
-						super.onClick();
-						ShatteredPixelDungeon.scene().addToFront(new WndKeyBindings());
-					}
-				};
-
-				add(btnKeyBindings);
-			}
 		}
 
 		@Override
@@ -524,33 +611,32 @@ public class WndSettings extends WndTabbed {
 
 			height = sep1.y + 1;
 
-			if (optUISize != null){
-				optUISize.setRect(0, height + GAP, width, SLIDER_HEIGHT);
-				height = optUISize.bottom();
+			if (optUIMode != null && optUIScale != null && width > 200){
+				optUIMode.setRect(0, height + GAP, width/2-1, SLIDER_HEIGHT);
+				optUIScale.setRect(width/2+1, height + GAP, width/2-1, SLIDER_HEIGHT);
+				height = optUIScale.bottom();
+			} else {
+				if (optUIMode != null) {
+					optUIMode.setRect(0, height + GAP, width, SLIDER_HEIGHT);
+					height = optUIMode.bottom();
+				}
+
+				if (optUIScale != null) {
+					optUIScale.setRect(0, height + GAP, width, SLIDER_HEIGHT);
+					height = optUIScale.bottom();
+				}
 			}
 
-			if (barDesc != null) {
-				barDesc.setPos((width - barDesc.width()) / 2f, height + GAP);
-				PixelScene.align(barDesc);
-
-				int btnWidth = (int) (width - 2 * GAP) / 3;
-				btnSplit.setRect(0, barDesc.bottom() + GAP, btnWidth, 16);
-				btnGrouped.setRect(btnSplit.right() + GAP, btnSplit.top(), btnWidth, 16);
-				btnCentered.setRect(btnGrouped.right() + GAP, btnSplit.top(), btnWidth, 16);
-
-				if (width > 200) {
-					chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP, width / 2 - 1, BTN_HEIGHT);
-					chkFlipTags.setRect(chkFlipToolbar.right() + GAP, chkFlipToolbar.top(), width / 2 - 1, BTN_HEIGHT);
-				} else {
-					chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP, width, BTN_HEIGHT);
-					chkFlipTags.setRect(0, chkFlipToolbar.bottom() + GAP, width, BTN_HEIGHT);
-				}
+			if (btnToolbarSettings != null) {
+				btnToolbarSettings.setRect(0, height + GAP, width, BTN_HEIGHT);
+				height = btnToolbarSettings.bottom();
 			} else {
 				chkFlipTags.setRect(0, height + GAP, width, BTN_HEIGHT);
+				height = chkFlipTags.bottom();
 			}
 
 			sep2.size(width, 1);
-			sep2.y = chkFlipTags.bottom() + 2;
+			sep2.y = height + 2;
 
 			chkFont.setRect(0, sep2.y + 1 + GAP, width, BTN_HEIGHT);
 
@@ -573,6 +659,128 @@ public class WndSettings extends WndTabbed {
 			}
 		}
 
+	}
+
+	private static class InputTab extends Component{
+
+		RenderedTextBlock title;
+		ColorBlock sep1;
+
+		RedButton btnKeyBindings;
+		RedButton btnControllerBindings;
+
+		ColorBlock sep2;
+
+		OptionSlider optControlSens;
+		OptionSlider optHoldMoveSens;
+
+		@Override
+		protected void createChildren() {
+			title = PixelScene.renderTextBlock(Messages.get(this, "title"), 9);
+			title.hardlight(TITLE_COLOR);
+			add(title);
+
+			sep1 = new ColorBlock(1, 1, 0xFF000000);
+			add(sep1);
+
+			if (DeviceCompat.hasHardKeyboard()){
+
+				btnKeyBindings = new RedButton(Messages.get(this, "key_bindings")){
+					@Override
+					protected void onClick() {
+						super.onClick();
+						ShatteredPixelDungeon.scene().addToFront(new WndKeyBindings());
+					}
+				};
+
+				add(btnKeyBindings);
+			}
+
+			if (ControllerHandler.isControllerConnected()){
+				btnControllerBindings = new RedButton(Messages.get(this, "controller_bindings")){
+					@Override
+					protected void onClick() {
+						super.onClick();
+						//TODO Controller bindings menu
+					}
+				};
+
+				add(btnControllerBindings);
+			}
+
+			sep2 = new ColorBlock(1, 1, 0xFF000000);
+			add(sep2);
+
+
+			optControlSens = new OptionSlider(
+					Messages.get(this, "controller_sensitivity"),
+					"1",
+					"10",
+					1,
+					10
+			) {
+				@Override
+				protected void onChange() {
+					SPDSettings.controllerPointerSensitivity(getSelectedValue());
+				}
+			};
+			optControlSens.setSelectedValue(SPDSettings.controllerPointerSensitivity());
+			add(optControlSens);
+
+			optHoldMoveSens = new OptionSlider(
+					Messages.get(this, "movement_sensitivity"),
+					Messages.get(this, "off"),
+					Messages.get(this, "high"),
+					0,
+					4
+			) {
+				@Override
+				protected void onChange() {
+					SPDSettings.movementHoldSensitivity(getSelectedValue());
+				}
+			};
+			optHoldMoveSens.setSelectedValue(SPDSettings.movementHoldSensitivity());
+			add(optHoldMoveSens);
+		}
+
+		@Override
+		protected void layout() {
+			title.setPos((width - title.width())/2, y + GAP);
+			sep1.size(width, 1);
+			sep1.y = title.bottom() + 2*GAP;
+
+			height = sep1.y+1;
+
+			if (width > 200 && btnKeyBindings != null && btnControllerBindings != null){
+				btnKeyBindings.setRect(0, height + GAP, width/2-1, BTN_HEIGHT);
+				btnControllerBindings.setRect(width/2+1, height + GAP, width/2-1, BTN_HEIGHT);
+				height = btnControllerBindings.bottom();
+			} else {
+				if (btnKeyBindings != null) {
+					btnKeyBindings.setRect(0, height + GAP, width, BTN_HEIGHT);
+					height = btnKeyBindings.bottom();
+				}
+
+				if (btnControllerBindings != null) {
+					btnControllerBindings.setRect(0, height + GAP, width, BTN_HEIGHT);
+					height = btnControllerBindings.bottom();
+				}
+			}
+
+			sep2.size(width, 1);
+			sep2.y = height+ GAP;
+
+			if (width > 200){
+				optControlSens.setRect(0, sep2.y + 1 + GAP, width/2-1, SLIDER_HEIGHT);
+				optHoldMoveSens.setRect(width/2 + 1, optControlSens.top(), width/2 -1, SLIDER_HEIGHT);
+			} else {
+				optControlSens.setRect(0, sep2.y + 1 + GAP, width, SLIDER_HEIGHT);
+				optHoldMoveSens.setRect(0, optControlSens.bottom() + GAP, width, SLIDER_HEIGHT);
+			}
+
+			height = optHoldMoveSens.bottom();
+
+		}
 	}
 
 	private static class DataTab extends Component{
@@ -811,13 +1019,12 @@ public class WndSettings extends WndTabbed {
 	private static class LangsTab extends Component{
 
 		final static int COLS_P = 3;
-		final static int COLS_L = 4;
+		final static int COLS_L = 6;
 
 		final static int BTN_HEIGHT = 11;
 
 		RenderedTextBlock title;
 		ColorBlock sep1;
-		RenderedTextBlock txtLangName;
 		RenderedTextBlock txtLangInfo;
 		ColorBlock sep2;
 		RedButton[] lanBtns;
@@ -843,17 +1050,14 @@ public class WndSettings extends WndTabbed {
 
 			final Languages currLang = Messages.lang();
 
-			txtLangName = PixelScene.renderTextBlock( Messages.titleCase(currLang.nativeName()) , 9 );
-			if (currLang.status() == Languages.Status.REVIEWED) txtLangName.hardlight(TITLE_COLOR);
-			else if (currLang.status() == Languages.Status.UNREVIEWED) txtLangName.hardlight(CharSprite.WARNING);
-			else if (currLang.status() == Languages.Status.INCOMPLETE) txtLangName.hardlight(CharSprite.NEGATIVE);
-			add(txtLangName);
-
 			txtLangInfo = PixelScene.renderTextBlock(6);
-			if (currLang == Languages.ENGLISH) txtLangInfo.text("This is the source language, written by the developer.");
-			else if (currLang.status() == Languages.Status.REVIEWED) txtLangInfo.text(Messages.get(this, "completed"));
-			else if (currLang.status() == Languages.Status.UNREVIEWED) txtLangInfo.text(Messages.get(this, "unreviewed"));
-			else if (currLang.status() == Languages.Status.INCOMPLETE) txtLangInfo.text(Messages.get(this, "unfinished"));
+			String info = "_" + Messages.titleCase(currLang.nativeName()) + "_ - ";
+			if (currLang == Languages.ENGLISH) info += "This is the source language, written by the developer.";
+			else if (currLang.status() == Languages.Status.REVIEWED) info += Messages.get(this, "completed");
+			else if (currLang.status() == Languages.Status.UNREVIEWED) info += Messages.get(this, "unreviewed");
+			else if (currLang.status() == Languages.Status.INCOMPLETE) info += Messages.get(this, "unfinished");
+			txtLangInfo.text(info);
+
 			if (currLang.status() == Languages.Status.UNREVIEWED) txtLangInfo.setHightlighting(true, CharSprite.WARNING);
 			else if (currLang.status() == Languages.Status.INCOMPLETE) txtLangInfo.setHightlighting(true, CharSprite.NEGATIVE);
 			add(txtLangInfo);
@@ -864,7 +1068,7 @@ public class WndSettings extends WndTabbed {
 			lanBtns = new RedButton[langs.size()];
 			for (int i = 0; i < langs.size(); i++){
 				final int langIndex = i;
-				RedButton btn = new RedButton(Messages.titleCase(langs.get(i).nativeName()), 8){
+				RedButton btn = new RedButton(Messages.titleCase(langs.get(i).nativeName()), 7){
 					@Override
 					protected void onClick() {
 						super.onClick();
@@ -902,7 +1106,7 @@ public class WndSettings extends WndTabbed {
 			sep3 = new ColorBlock(1, 1, 0xFF000000);
 			add(sep3);
 
-			txtTranifex = PixelScene.renderTextBlock(6);
+			txtTranifex = PixelScene.renderTextBlock(5);
 			txtTranifex.text(Messages.get(this, "transifex"));
 			add(txtTranifex);
 
@@ -995,10 +1199,7 @@ public class WndSettings extends WndTabbed {
 			sep1.size(width, 1);
 			sep1.y = title.bottom() + 2*GAP;
 
-			txtLangName.setPos( (width - txtLangName.width())/2f, sep1.y + 1 + GAP );
-			PixelScene.align(txtLangName);
-
-			txtLangInfo.setPos(0, txtLangName.bottom() + 2*GAP);
+			txtLangInfo.setPos(0, sep1.y + 1 + GAP);
 			txtLangInfo.maxWidth((int)width);
 
 			y = txtLangInfo.bottom() + GAP;

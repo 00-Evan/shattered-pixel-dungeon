@@ -56,6 +56,7 @@ public enum Icons {
 	AUDIO,
 	LANGS,
 	CONTROLLER,
+	KEYBOARD,
 	STATS,
 	CHALLENGE_OFF,
 	CHALLENGE_ON,
@@ -179,7 +180,7 @@ public enum Icons {
 				icon.frame( icon.texture.uvRectBySize( 32, 32, 16, 12 ) );
 				break;
 			case DATA:
-				icon.frame( icon.texture.uvRectBySize( 48, 32, 16, 15 ) );
+				icon.frame( icon.texture.uvRectBySize( 48, 32, 14, 15 ) );
 				break;
 			case AUDIO:
 				icon.frame( icon.texture.uvRectBySize( 64, 32, 14, 14 ) );
@@ -190,29 +191,32 @@ public enum Icons {
 			case CONTROLLER:
 				icon.frame( icon.texture.uvRectBySize( 96, 32, 16, 12 ) );
 				break;
+			case KEYBOARD:
+				icon.frame( icon.texture.uvRectBySize( 112, 32, 15, 12 ) );
+				break;
 			case STATS:
-				icon.frame( icon.texture.uvRectBySize( 112, 32, 16, 13 ) );
+				icon.frame( icon.texture.uvRectBySize( 128, 32, 16, 13 ) );
 				break;
 			case CHALLENGE_OFF:
-				icon.frame( icon.texture.uvRectBySize( 128, 32, 14, 12 ) );
-				break;
-			case CHALLENGE_ON:
 				icon.frame( icon.texture.uvRectBySize( 144, 32, 14, 12 ) );
 				break;
-			case RENAME_OFF:
-				icon.frame( icon.texture.uvRectBySize( 160, 32, 15, 14 ) );
+			case CHALLENGE_ON:
+				icon.frame( icon.texture.uvRectBySize( 160, 32, 14, 12 ) );
 				break;
-			case RENAME_ON:
+			case RENAME_OFF:
 				icon.frame( icon.texture.uvRectBySize( 176, 32, 15, 14 ) );
 				break;
+			case RENAME_ON:
+				icon.frame( icon.texture.uvRectBySize( 192, 32, 15, 14 ) );
+				break;
 			case SEED:
-				icon.frame( icon.texture.uvRectBySize( 192, 32, 10, 10 ) );
+				icon.frame( icon.texture.uvRectBySize( 208, 32, 10, 10 ) );
 				break;
 			case LEFTARROW:
-				icon.frame( icon.texture.uvRectBySize( 208, 32, 14, 8 ) );
+				icon.frame( icon.texture.uvRectBySize( 224, 32, 14, 8 ) );
 				break;
 			case RIGHTARROW:
-				icon.frame( icon.texture.uvRectBySize( 224, 32, 14, 8 ) );
+				icon.frame( icon.texture.uvRectBySize( 240, 32, 14, 8 ) );
 				break;
 
 			case UNCHECKED:

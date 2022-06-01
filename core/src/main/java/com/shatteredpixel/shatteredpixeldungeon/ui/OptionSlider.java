@@ -60,6 +60,11 @@ public abstract class OptionSlider extends Component {
 			active = false;
 		}
 
+		if (title.length() > 20){
+			remove(this.title);
+			this.title = PixelScene.renderTextBlock(6);
+			add(this.title);
+		}
 		this.title.text(title);
 		this.minTxt.text(minTxt);
 		this.maxTxt.text(maxTxt);

@@ -26,6 +26,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.ControllerMapping;
+import com.badlogic.gdx.controllers.Controllers;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.PointF;
 
@@ -58,6 +59,10 @@ public class ControllerHandler implements ControllerListener {
 		} else {
 			return true;
 		}
+	}
+
+	public static boolean isControllerConnected(){
+		return controllersSupported() && Controllers.getCurrent() != null;
 	}
 
 	@Override

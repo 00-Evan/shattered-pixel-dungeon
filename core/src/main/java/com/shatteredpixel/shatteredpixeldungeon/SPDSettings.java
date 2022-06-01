@@ -48,12 +48,11 @@ public class SPDSettings extends GameSettings {
 		return getInt( KEY_VERSION, 0 );
 	}
 	
-	//Graphics
+	//Display
 	
 	public static final String KEY_FULLSCREEN	= "fullscreen";
 	public static final String KEY_LANDSCAPE	= "landscape";
 	public static final String KEY_POWER_SAVER 	= "power_saver";
-	public static final String KEY_SCALE		= "scale";
 	public static final String KEY_ZOOM			= "zoom";
 	public static final String KEY_BRIGHTNESS	= "brightness";
 	public static final String KEY_GRID 	    = "visual_grid";
@@ -92,14 +91,6 @@ public class SPDSettings extends GameSettings {
 		return getBoolean( KEY_POWER_SAVER, false );
 	}
 	
-	public static void scale( int value ) {
-		put( KEY_SCALE, value );
-	}
-	
-	public static int scale() {
-		return getInt( KEY_SCALE, 0 );
-	}
-	
 	public static void zoom( int value ) {
 		put( KEY_ZOOM, value );
 	}
@@ -129,6 +120,7 @@ public class SPDSettings extends GameSettings {
 	//Interface
 
 	public static final String KEY_UI_SIZE 	    = "full_ui";
+	public static final String KEY_SCALE		= "scale";
 	public static final String KEY_QUICKSLOTS	= "quickslots";
 	public static final String KEY_FLIPTOOLBAR	= "flipped_ui";
 	public static final String KEY_FLIPTAGS 	= "flip_tags";
@@ -150,6 +142,14 @@ public class SPDSettings extends GameSettings {
 			}
 		}
 		return size;
+	}
+
+	public static void scale( int value ) {
+		put( KEY_SCALE, value );
+	}
+
+	public static int scale() {
+		return getInt( KEY_SCALE, 0 );
 	}
 	
 	public static void quickSlots( int value ){ put( KEY_QUICKSLOTS, value ); }
@@ -224,7 +224,28 @@ public class SPDSettings extends GameSettings {
 	public static boolean supportNagged() {
 		return getBoolean(KEY_SUPPORT_NAGGED, false);
 	}
-	
+
+	//Input
+
+	public static final String KEY_CONTROLLER_SENS  = "controller_sens";
+	public static final String KEY_MOVE_SENS        = "move_sens";
+
+	public static void controllerPointerSensitivity( int value ){
+		put( KEY_CONTROLLER_SENS, value );
+	}
+
+	public static int controllerPointerSensitivity(){
+		return getInt(KEY_CONTROLLER_SENS, 5, 1, 10);
+	}
+
+	public static void movementHoldSensitivity( int value ){
+		put( KEY_MOVE_SENS, value );
+	}
+
+	public static int movementHoldSensitivity(){
+		return getInt(KEY_MOVE_SENS, 3, 0, 4);
+	}
+
 	//Audio
 	
 	public static final String KEY_MUSIC		= "music";
