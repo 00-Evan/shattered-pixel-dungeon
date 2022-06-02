@@ -275,7 +275,7 @@ public class Speck extends Image {
 			break;
 			
 		case HEART:
-			speed.set( Random.Int( -10, +10 ), -40 );
+			speed.set( Random.IntRange( -10, +10 ), -40 );
 			angularSpeed = Random.Float( -45, +45 );
 			lifespan = 1f;
 			break;
