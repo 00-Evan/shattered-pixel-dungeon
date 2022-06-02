@@ -33,8 +33,10 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.input.GameAction;
 import com.watabou.input.KeyBindings;
 import com.watabou.input.KeyEvent;
+import com.watabou.input.PointerEvent;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.PointF;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -344,7 +346,9 @@ public class WndKeyBindings extends Window {
 		private RenderedTextBlock changedKey;
 		private RenderedTextBlock warnErr;
 
+		private RedButton btnUnbind;
 		private RedButton btnConfirm;
+		private RedButton btnCancel;
 
 		public WndChangeBinding(GameAction action, BindingItem listItem, int keyAssigning, int curKeyCode, int otherBoundKey1, int otherBoundKey2 ){
 
@@ -379,10 +383,14 @@ public class WndKeyBindings extends Window {
 			warnErr.setRect(0, changedKey.bottom() + 10, WIDTH, warnErr.height());
 			add(warnErr);
 
-			RedButton btnUnbind = new RedButton(Messages.get(this, "unbind"), 9){
+			btnUnbind = new RedButton(Messages.get(this, "unbind"), 9){
 				@Override
 				protected void onClick() {
-					onSignal(new KeyEvent(0, true));
+					if (action == GameAction.LEFT_CLICK && listItem.key2 == 0 && listItem.key3 == 0){
+						ShatteredPixelDungeon.scene().addToFront(new WndMessage(Messages.get(WndChangeBinding.class, "cant_unbind")));
+					} else {
+						onSignal(new KeyEvent(0, true));
+					}
 				}
 			};
 			btnUnbind.setRect(0, warnErr.bottom() + 6, WIDTH, BTN_HEIGHT);
@@ -433,7 +441,7 @@ public class WndKeyBindings extends Window {
 			btnConfirm.enable(false);
 			add(btnConfirm);
 
-			RedButton btnCancel = new RedButton(Messages.get(this, "cancel"), 9){
+			btnCancel = new RedButton(Messages.get(this, "cancel"), 9){
 				@Override
 				protected void onClick() {
 					hide();
@@ -449,6 +457,14 @@ public class WndKeyBindings extends Window {
 
 		@Override
 		public boolean onSignal(KeyEvent event) {
+			//ignore left clicks if we are pressing a button
+			if (KeyBindings.getActionForKey(event) == GameAction.LEFT_CLICK){
+				PointF hoverPos = camera().screenToCamera((int)PointerEvent.currentHoverPos().x, (int)PointerEvent.currentHoverPos().y);
+				if (btnUnbind.inside(hoverPos.x, hoverPos.y)) return true;
+				if (btnConfirm.inside(hoverPos.x, hoverPos.y)) return true;
+				if (btnCancel.inside(hoverPos.x, hoverPos.y)) return true;
+			}
+
 			if (event.pressed){
 				changedKey.text(Messages.get(this, "changed_bind", KeyBindings.getKeyName(event.code)));
 				changedKey.setPos((WIDTH - changedKey.width())/2, changedKey.top());
