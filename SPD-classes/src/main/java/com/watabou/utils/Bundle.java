@@ -88,7 +88,7 @@ public class Bundle {
 	}
 
 	public boolean contains( String key ) {
-		return !data.isNull( key );
+		return !isNull() && !data.isNull( key );
 	}
 
 	public boolean remove( String key ){

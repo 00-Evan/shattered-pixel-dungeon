@@ -164,10 +164,11 @@ public class ControllerHandler implements ControllerListener {
 		if (btnCode == mapping.buttonR1)        return Input.Keys.BUTTON_R1;
 		if (btnCode == mapping.buttonR2)        return Input.Keys.BUTTON_R2;
 
-		if (btnCode == mapping.buttonDpadUp)    return Input.Keys.DPAD_UP;
-		if (btnCode == mapping.buttonDpadLeft)  return Input.Keys.DPAD_LEFT;
-		if (btnCode == mapping.buttonDpadDown)  return Input.Keys.DPAD_DOWN;
-		if (btnCode == mapping.buttonDpadRight) return Input.Keys.DPAD_RIGHT;
+		//we add 1000 here to make these keys distinct from Keys.UP, Keys.DOWN, etc..
+		if (btnCode == mapping.buttonDpadUp)    return Input.Keys.DPAD_UP       + 1000;
+		if (btnCode == mapping.buttonDpadDown)  return Input.Keys.DPAD_DOWN     + 1000;
+		if (btnCode == mapping.buttonDpadLeft)  return Input.Keys.DPAD_LEFT     + 1000;
+		if (btnCode == mapping.buttonDpadRight) return Input.Keys.DPAD_RIGHT    + 1000;
 
 		if (btnCode == mapping.buttonLeftStick) return Input.Keys.BUTTON_THUMBL;
 		if (btnCode == mapping.buttonRightStick)return Input.Keys.BUTTON_THUMBR;
@@ -180,7 +181,7 @@ public class ControllerHandler implements ControllerListener {
 			return true;
 		}
 
-		else if (keyCode >= Input.Keys.DPAD_UP && keyCode <= Input.Keys.DPAD_LEFT){
+		if (keyCode >= Input.Keys.DPAD_UP+1000 && keyCode <= Input.Keys.DPAD_RIGHT+1000){
 			return true;
 		}
 
@@ -198,6 +199,16 @@ public class ControllerHandler implements ControllerListener {
 			} else if (keyCode == Input.Keys.BUTTON_Y){
 				return "Triangle Button";
 			}
+		}
+
+		if (keyCode == Input.Keys.DPAD_UP + 1000){
+			return Input.Keys.toString(Input.Keys.DPAD_UP);
+		} else if (keyCode == Input.Keys.DPAD_DOWN + 1000){
+			return Input.Keys.toString(Input.Keys.DPAD_DOWN);
+		} else if (keyCode == Input.Keys.DPAD_LEFT + 1000){
+			return Input.Keys.toString(Input.Keys.DPAD_LEFT);
+		} else if (keyCode == Input.Keys.DPAD_RIGHT + 1000){
+			return Input.Keys.toString(Input.Keys.DPAD_RIGHT);
 		}
 
 		return null;
