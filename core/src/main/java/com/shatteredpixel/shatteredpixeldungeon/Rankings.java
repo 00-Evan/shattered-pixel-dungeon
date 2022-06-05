@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -250,6 +251,7 @@ public enum Rankings {
 		Notes.reset();
 		Dungeon.quickslot.reset();
 		QuickSlotButton.reset();
+		Toolbar.swappedQuickslots = false;
 
 		Bundle handler = data.getBundle(HANDLERS);
 		Scroll.restore(handler);

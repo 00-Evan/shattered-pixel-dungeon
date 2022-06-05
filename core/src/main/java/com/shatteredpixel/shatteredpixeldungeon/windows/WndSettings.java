@@ -462,9 +462,10 @@ public class WndSettings extends WndTabbed {
 
 							RenderedTextBlock barDesc;
 							RedButton btnSplit; RedButton btnGrouped; RedButton btnCentered;
+							CheckBox chkQuickSwapper;
+							RenderedTextBlock swapperDesc;
 							CheckBox chkFlipToolbar;
 							CheckBox chkFlipTags;
-							//TODO checkbox for forcing 6 quicksltos on mobile portrait
 
 							{
 								barDesc = PixelScene.renderTextBlock(Messages.get(WndSettings.UITab.this, "mode"), 9);
@@ -515,6 +516,21 @@ public class WndSettings extends WndTabbed {
 								}
 								add(btnCentered);
 
+								chkQuickSwapper = new CheckBox(Messages.get(WndSettings.UITab.this, "quickslot_swapper")) {
+									@Override
+									protected void onClick() {
+										super.onClick();
+										SPDSettings.quickSlots(checked());
+										Toolbar.updateLayout();
+									}
+								};
+								chkQuickSwapper.checked(SPDSettings.quickSlots());
+								add(chkQuickSwapper);
+
+								swapperDesc = PixelScene.renderTextBlock(Messages.get(WndSettings.UITab.this, "swapper_desc"), 5);
+								swapperDesc.hardlight(0x888888);
+								add(swapperDesc);
+
 								chkFlipToolbar = new CheckBox(Messages.get(WndSettings.UITab.this, "flip_toolbar")) {
 									@Override
 									protected void onClick() {
@@ -548,11 +564,16 @@ public class WndSettings extends WndTabbed {
 								btnGrouped.setRect(btnSplit.right() + GAP, btnSplit.top(), btnWidth, BTN_HEIGHT-2);
 								btnCentered.setRect(btnGrouped.right() + GAP, btnSplit.top(), btnWidth, BTN_HEIGHT-2);
 
+								chkQuickSwapper.setRect(0, btnGrouped.bottom() + GAP, width, BTN_HEIGHT);
+
+								swapperDesc.maxWidth(width);
+								swapperDesc.setPos(0, chkQuickSwapper.bottom()+1);
+
 								if (width > 200) {
-									chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP, width / 2 - 1, BTN_HEIGHT);
+									chkFlipToolbar.setRect(0, swapperDesc.bottom() + GAP, width / 2 - 1, BTN_HEIGHT);
 									chkFlipTags.setRect(chkFlipToolbar.right() + GAP, chkFlipToolbar.top(), width / 2 - 1, BTN_HEIGHT);
 								} else {
-									chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP, width, BTN_HEIGHT);
+									chkFlipToolbar.setRect(0, swapperDesc.bottom() + GAP, width, BTN_HEIGHT);
 									chkFlipTags.setRect(0, chkFlipToolbar.bottom() + GAP, width, BTN_HEIGHT);
 								}
 

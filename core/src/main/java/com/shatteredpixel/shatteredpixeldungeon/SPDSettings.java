@@ -152,9 +152,9 @@ public class SPDSettings extends GameSettings {
 		return getInt( KEY_SCALE, 0 );
 	}
 	
-	public static void quickSlots( int value ){ put( KEY_QUICKSLOTS, value ); }
+	public static void quickSlots( boolean value ){ put( KEY_QUICKSLOTS, value ); }
 	
-	public static int quickSlots(){ return getInt( KEY_QUICKSLOTS, 4, 0, 4); }
+	public static boolean quickSlots(){ return getBoolean( KEY_QUICKSLOTS, false); }
 	
 	public static void flipToolbar( boolean value) {
 		put(KEY_FLIPTOOLBAR, value );
