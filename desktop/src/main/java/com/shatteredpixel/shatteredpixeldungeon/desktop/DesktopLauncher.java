@@ -86,8 +86,13 @@ public class DesktopLauncher {
 				exceptionMsg = exceptionMsg.replace("com.watabou.", "");
 				exceptionMsg = exceptionMsg.replace("com.badlogic.gdx.", "");
 				exceptionMsg = exceptionMsg.replace("\t", "    ");
+				exceptionMsg = exceptionMsg.replace("'", "");
 
-				if (exceptionMsg.contains("Couldn't create window")){
+				if (exceptionMsg.length() > 500){
+					exceptionMsg = exceptionMsg.substring(0, 500) + "...";
+				}
+
+				if (exceptionMsg.contains("Couldnt create window")){
 					TinyFileDialogs.tinyfd_messageBox(title + " Has Crashed!",
 							title + " was not able to initialize its graphics display, sorry about that!\n\n" +
 									"This usually happens when your graphics card does not support OpenGL 2.0+, or has misconfigured graphics drivers.\n\n" +
