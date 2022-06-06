@@ -79,19 +79,18 @@ public abstract class SpecialRoom extends Room {
 		}
 	}
 
-	//10 special rooms which give equipment more often than consumables (or as often as)
+	//9 special rooms which give equipment more often than consumables (or as often as)
 	private static final ArrayList<Class<? extends SpecialRoom>> EQUIP_SPECIALS = new ArrayList<>( Arrays.asList(
 			WeakFloorRoom.class, CryptRoom.class, PoolRoom.class, ArmoryRoom.class, SentryRoom.class,
-			StatueRoom.class, CrystalVaultRoom.class, CrystalPathRoom.class, CrystalChoiceRoom.class,
-			SacrificeRoom.class
+			StatueRoom.class, CrystalVaultRoom.class, CrystalChoiceRoom.class, SacrificeRoom.class
 	));
 
-	//9 special rooms which give consumables more often than equipment
+	//10 special rooms which give consumables more often than equipment
 	//note that alchemy rooms are spawned separately
 	private static final ArrayList<Class<? extends SpecialRoom>> CONSUMABLE_SPECIALS = new ArrayList<>( Arrays.asList(
 			RunestoneRoom.class, GardenRoom.class, LibraryRoom.class, StorageRoom.class,
 			TreasuryRoom.class, MagicWellRoom.class, ToxicGasRoom.class, MagicalFireRoom.class,
-			TrapsRoom.class
+			TrapsRoom.class, CrystalPathRoom.class
 	) );
 
 	//only one special that uses crystal keys per floor
@@ -118,10 +117,8 @@ public abstract class SpecialRoom extends Room {
 		Random.shuffle(runEquipSpecials);
 		Random.shuffle(runConsSpecials);
 
-		// TODO currently always an equip special first as there's 1 more of them, adjust as needed if adding more
-		/*if (Random.Int(2) == 0){
-			runSpecials.add(runConsSpecials.remove(0));
-		}*/
+		// TODO currently always a consumable special first as there's 1 more of them, adjust as needed if adding more
+		runSpecials.add(runConsSpecials.remove(0));
 
 		while (!runEquipSpecials.isEmpty() || !runConsSpecials.isEmpty()){
 			if (!runEquipSpecials.isEmpty())    runSpecials.add(runEquipSpecials.remove(0));
