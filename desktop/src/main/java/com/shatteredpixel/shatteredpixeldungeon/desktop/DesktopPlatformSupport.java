@@ -55,6 +55,8 @@ public class DesktopPlatformSupport extends PlatformSupport {
 		if (!SPDSettings.fullscreen()) {
 			SPDSettings.windowResolution( previousSizes[0] );
 		}
+		//TODO fixes an in libGDX v1.11.0 with macOS displays
+		Gdx.gl.glViewport(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
 	}
 	
 	@Override
