@@ -91,8 +91,6 @@ public class Toolbar extends Component {
 				if (Dungeon.hero.ready && !GameScene.cancel()) {
 					examining = false;
 					Dungeon.hero.rest(false);
-					swappedQuickslots = !swappedQuickslots;
-					updateLayout();
 				}
 			}
 			
