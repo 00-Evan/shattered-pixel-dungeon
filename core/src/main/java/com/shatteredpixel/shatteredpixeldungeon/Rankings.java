@@ -185,6 +185,7 @@ public enum Rankings {
 	public static final String HANDLERS = "handlers";
 	public static final String CHALLENGES = "challenges";
 	public static final String GAME_VERSION = "game_version";
+	public static final String SEED = "seed";
 
 	public void saveGameData(Record rec){
 		rec.gameData = new Bundle();
@@ -239,6 +240,8 @@ public enum Rankings {
 		rec.gameData.put( CHALLENGES, Dungeon.challenges );
 
 		rec.gameData.put( GAME_VERSION, Dungeon.initialVersion );
+
+		rec.gameData.put( SEED, Dungeon.seed );
 	}
 
 	public void loadGameData(Record rec){
@@ -272,6 +275,12 @@ public enum Rankings {
 			Statistics.gameWon = rec.win;
 		}
 		rec.score = calculateScore();
+
+		if (rec.gameData.contains(SEED)){
+			Dungeon.seed = rec.gameData.getLong(SEED);
+		} else {
+			Dungeon.seed = -1;
+		}
 	}
 	
 	private static final String RECORDS	= "records";

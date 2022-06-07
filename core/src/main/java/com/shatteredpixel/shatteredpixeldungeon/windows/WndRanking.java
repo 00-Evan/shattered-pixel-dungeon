@@ -23,9 +23,11 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -35,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BadgesGrid;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BadgesList;
+import com.shatteredpixel.shatteredpixeldungeon.ui.CheckBox;
 import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
@@ -43,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TalentButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TalentsPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -50,6 +54,7 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Button;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.DeviceCompat;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -125,12 +130,14 @@ public class WndRanking extends WndTabbed {
 	private void createControls() {
 		
 		Icons[] icons =
-			{Icons.RANKINGS, Icons.BACKPACK_LRG, Icons.BADGES};
+			{Icons.RANKINGS, Icons.TALENT, Icons.BACKPACK_LRG, Icons.BADGES, Icons.CHALLENGE_ON};
 		Group[] pages =
-			{new StatsTab(), new ItemsTab(), new BadgesTab()};
+			{new StatsTab(), new TalentsTab(), new ItemsTab(), new BadgesTab(), new ChallengesTab()};
 		
 		for (int i=0; i < pages.length; i++) {
-			
+
+			if (i == 4 && Dungeon.challenges == 0) break;
+
 			add( pages[i] );
 			
 			Tab tab = new RankingTab( icons[i], pages[i] );
@@ -176,56 +183,7 @@ public class WndRanking extends WndTabbed {
 			title.setRect( 0, 0, WIDTH, 0 );
 			add( title );
 			
-			float pos = title.bottom() + GAP;
-
-			RedButton btnTalents = new RedButton( Messages.get(this, "talents") ){
-				@Override
-				protected void onClick() {
-					//removes talents from upper tiers
-					int tiers = 1;
-					if (Dungeon.hero.lvl >= 6) tiers++;
-					if (Dungeon.hero.lvl >= 12 && Dungeon.hero.subClass != HeroSubClass.NONE) tiers++;
-					if (Dungeon.hero.lvl >= 20 && Dungeon.hero.armorAbility != null) tiers++;
-					while (Dungeon.hero.talents.size() > tiers){
-						Dungeon.hero.talents.remove(Dungeon.hero.talents.size()-1);
-					}
-					Game.scene().addToFront( new Window(){
-						{
-							TalentsPane p = new TalentsPane(TalentButton.Mode.INFO);
-							add(p);
-							p.setPos(0, 0);
-							p.setSize(120, p.content().height());
-							resize((int)p.width(), (int)p.height());
-							p.setPos(0, 0);
-						}
-					});
-				}
-			};
-			btnTalents.icon(Icons.get(Icons.TALENT));
-			btnTalents.setRect( (WIDTH - btnTalents.reqWidth()+2)/2, pos, btnTalents.reqWidth()+2 , 16 );
-			add(btnTalents);
-
-			pos = btnTalents.bottom();
-
-			if (Dungeon.challenges > 0) {
-				RedButton btnChallenges = new RedButton( Messages.get(this, "challenges") ) {
-					@Override
-					protected void onClick() {
-						Game.scene().add( new WndChallenges( Dungeon.challenges, false ) );
-					}
-				};
-
-				btnChallenges.icon(Icons.get(Icons.CHALLENGE_ON));
-				btnChallenges.setSize( btnChallenges.reqWidth()+2, 16 );
-				add( btnChallenges );
-
-				float left = (WIDTH - btnTalents.width() - btnChallenges.width())/3f;
-
-				btnTalents.setPos(left, btnTalents.top());
-				btnChallenges.setPos(btnTalents.right() + left, btnTalents.top());
-			}
-
-			pos += GAP;
+			float pos = title.bottom() + GAP + 2;
 
 			NumberFormat num = NumberFormat.getInstance(Locale.US);
 			pos = statSlot( this, Messages.get(this, "score"), num.format( Statistics.totalScore ), pos );
@@ -248,6 +206,12 @@ public class WndRanking extends WndTabbed {
 			else                    pos = statSlot(this, Messages.get(this, "str"), Integer.toString(Dungeon.hero.STR), pos);
 			pos = statSlot( this, Messages.get(this, "duration"), num.format( (int)Statistics.duration ), pos );
 			pos = statSlot( this, Messages.get(this, "depth"), num.format( Statistics.deepestFloor ), pos );
+			if (Dungeon.seed != -1) {
+				pos = statSlot(this, Messages.get(this, "seed"), DungeonSeed.convertToCode(Dungeon.seed), pos);
+			} else {
+				pos += GAP + 5;
+			}
+
 			pos += GAP;
 
 			pos = statSlot( this, Messages.get(this, "enemies"), num.format( Statistics.enemiesSlain ), pos );
@@ -270,7 +234,32 @@ public class WndRanking extends WndTabbed {
 			return pos + GAP + txt.height();
 		}
 	}
-	
+
+	private class TalentsTab extends Group{
+
+		public TalentsTab(){
+			super();
+
+			camera = WndRanking.this.camera;
+
+			int tiers = 1;
+			if (Dungeon.hero.lvl >= 6) tiers++;
+			if (Dungeon.hero.lvl >= 12 && Dungeon.hero.subClass != HeroSubClass.NONE) tiers++;
+			if (Dungeon.hero.lvl >= 20 && Dungeon.hero.armorAbility != null) tiers++;
+			while (Dungeon.hero.talents.size() > tiers){
+				Dungeon.hero.talents.remove(Dungeon.hero.talents.size()-1);
+			}
+
+			TalentsPane p = new TalentsPane(TalentButton.Mode.INFO);
+			add(p);
+			p.setPos(0, 0);
+			p.setSize(WIDTH, HEIGHT);
+			p.setPos(0, 0);
+
+		}
+
+	}
+
 	private class ItemsTab extends Group {
 		
 		private float pos;
@@ -346,6 +335,48 @@ public class WndRanking extends WndTabbed {
 			add(badges);
 			badges.setSize( WIDTH, HEIGHT );
 		}
+	}
+
+	private class ChallengesTab extends Group{
+
+		public ChallengesTab(){
+			super();
+
+			camera = WndRanking.this.camera;
+
+			float pos = 0;
+
+			for (int i=0; i < Challenges.NAME_IDS.length; i++) {
+
+				final String challenge = Challenges.NAME_IDS[i];
+
+				CheckBox cb = new CheckBox( Messages.titleCase(Messages.get(Challenges.class, challenge)) );
+				cb.checked( (Dungeon.challenges & Challenges.MASKS[i]) != 0 );
+				cb.active = false;
+
+				if (i > 0) {
+					pos += 1;
+				}
+				cb.setRect( 0, pos, WIDTH-16, 15 );
+
+				add( cb );
+
+				IconButton info = new IconButton(Icons.get(Icons.INFO)){
+					@Override
+					protected void onClick() {
+						super.onClick();
+						ShatteredPixelDungeon.scene().add(
+								new WndMessage(Messages.get(Challenges.class, challenge+"_desc"))
+						);
+					}
+				};
+				info.setRect(cb.right(), pos, 16, 15);
+				add(info);
+
+				pos = cb.bottom();
+			}
+		}
+
 	}
 
 	private class ItemButton extends Button {
