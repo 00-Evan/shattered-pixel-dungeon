@@ -608,6 +608,9 @@ public abstract class Level implements Bundlable {
 			Actor.addDelayed(respawner, respawnCooldown());
 		} else {
 			Actor.add(respawner);
+			if (respawner.cooldown() > respawnCooldown()){
+				respawner.resetCooldown();
+			}
 		}
 		return respawner;
 	}
@@ -635,11 +638,20 @@ public abstract class Level implements Bundlable {
 
 			return true;
 		}
+
+		protected void resetCooldown(){
+			spend(-cooldown());
+			spend(Dungeon.level.respawnCooldown());
+		}
 	}
 
 	public float respawnCooldown(){
 		if (Statistics.amuletObtained){
-			return TIME_TO_RESPAWN/2f;
+			if (Dungeon.level.mobCount() <= 2){
+				return TIME_TO_RESPAWN / 10f;
+			} else {
+				return TIME_TO_RESPAWN / 2f;
+			}
 		} else if (Dungeon.level.feeling == Feeling.DARK){
 			return 2*TIME_TO_RESPAWN/3f;
 		} else {

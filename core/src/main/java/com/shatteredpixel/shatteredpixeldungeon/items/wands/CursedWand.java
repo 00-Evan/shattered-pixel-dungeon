@@ -205,7 +205,7 @@ public class CursedWand {
 			case 1:
 				final Char target = Actor.findChar( targetPos );
 				if (target != null) {
-					int damage = Dungeon.depth * 2;
+					int damage = Dungeon.scalingDepth() * 2;
 					Char toHeal, toDamage;
 
 					if (Random.Int(2) == 0){
@@ -295,7 +295,7 @@ public class CursedWand {
 
 			//inter-level teleportation
 			case 2:
-				if (Dungeon.depth > 1 && !Dungeon.bossLevel() && user == Dungeon.hero) {
+				if (Dungeon.depth > 1 && Dungeon.interfloorTeleportAllowed() && user == Dungeon.hero) {
 
 					//each depth has 1 more weight than the previous depth.
 					float[] depths = new float[Dungeon.depth-1];

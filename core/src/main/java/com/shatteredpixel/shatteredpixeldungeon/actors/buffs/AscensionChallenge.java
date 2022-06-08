@@ -82,15 +82,25 @@ public class AscensionChallenge extends Buff{
 		return 1;
 	}
 
-	//TODO lots of impl still to do here
+	//used for internal calculations like corruption, not actual exp gain
+	public static int AscensionExp(Mob m){
+		if (Dungeon.hero.buff(AscensionChallenge.class) == null){
+			return m.EXP;
+		}
 
-	//for Exp: treat all enemies with multiplier as needing 14 EXP (except ghouls/rippers, which are 7/10)
-
-	//For damage scaling effects: Treat as if floor 26 (bombs, toxic gas, corrosion, electricity, sac fire(?)
-	//  Burning, ooze,
-
-	//for allies/enemies with depth scaling effects, treat as if floor 26
-	// How though?
+		if (m instanceof RipperDemon){
+			return 10; //reduced due to their numbers
+		} else if (m instanceof Ghoul){
+			return 7; //half of 14
+		} else {
+			for (Class<?extends Mob> cls : modifiers.keySet()){
+				if (m.getClass().isAssignableFrom(cls)){
+					return Math.max(13, m.EXP); //same exp as an eye
+				}
+			}
+		}
+		return m.EXP;
+	}
 
 	@Override
 	public int icon() {

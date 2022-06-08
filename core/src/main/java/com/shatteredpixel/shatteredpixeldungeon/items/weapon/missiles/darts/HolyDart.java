@@ -48,7 +48,7 @@ public class HolyDart extends TippedDart {
 		if (Char.hasProp(defender, Char.Property.UNDEAD) || Char.hasProp(defender, Char.Property.DEMONIC)){
 			defender.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10+buffedLvl() );
 			Sample.INSTANCE.play(Assets.Sounds.BURNING);
-			defender.damage(Random.NormalIntRange(10 + Dungeon.depth/3, 20 + Dungeon.depth/3), this);
+			defender.damage(Random.NormalIntRange(10 + Dungeon.scalingDepth()/3, 20 + Dungeon.scalingDepth()/3), this);
 		} else {
 			Buff.affect(defender, Bless.class, Math.round(Bless.DURATION));
 		}

@@ -42,7 +42,7 @@ public class ShockingDart extends TippedDart {
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
 		
-		defender.damage(Random.NormalIntRange(5 + Dungeon.depth/4, 10 + Dungeon.depth/4), this);
+		defender.damage(Random.NormalIntRange(5 + Dungeon.scalingDepth()/4, 10 + Dungeon.scalingDepth()/4), this);
 		
 		CharSprite s = defender.sprite;
 		if (s != null && s.parent != null) {

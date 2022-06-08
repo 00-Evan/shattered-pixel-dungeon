@@ -159,8 +159,8 @@ public class WarpBeacon extends ArmorAbility {
 
 						} else {
 
-							if (hero.buff(LockedFloor.class) != null){
-								GLog.w( Messages.get(WarpBeacon.class, "locked_floor") );
+							if (!Dungeon.interfloorTeleportAllowed()){
+								GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 								return;
 							}
 

@@ -111,7 +111,7 @@ public class LloydsBeacon extends Artifact {
 
 		if (action == AC_SET || action == AC_RETURN) {
 			
-			if (Dungeon.bossLevel()) {
+			if (Dungeon.bossLevel() || !Dungeon.interfloorTeleportAllowed()) {
 				hero.spend( LloydsBeacon.TIME_TO_USE );
 				GLog.w( Messages.get(this, "preventing") );
 				return;
@@ -200,7 +200,7 @@ public class LloydsBeacon extends Artifact {
 			if (target == null) return;
 
 			Invisibility.dispel();
-			charge -= Dungeon.depth > 20 ? 2 : 1;
+			charge -= Dungeon.scalingDepth() > 20 ? 2 : 1;
 			updateQuickslot();
 
 			if (Actor.findChar(target) == curUser){

@@ -71,7 +71,7 @@ public class ShockBomb extends Bomb {
 			int power = 16 - 4*Dungeon.level.distance(ch.pos, cell);
 			if (power > 0){
 				//32% to 8% regular bomb damage
-				int damage = Math.round(Random.NormalIntRange(5 + Dungeon.depth, 10 + 2*Dungeon.depth) * (power/50f));
+				int damage = Math.round(Random.NormalIntRange(5 + Dungeon.scalingDepth(), 10 + 2*Dungeon.scalingDepth()) * (power/50f));
 				ch.damage(damage, this);
 				if (ch.isAlive()) Buff.prolong(ch, Paralysis.class, power);
 				arcs.add(new Lightning.Arc(DungeonTilemap.tileCenterToWorld(cell), ch.sprite.center()));

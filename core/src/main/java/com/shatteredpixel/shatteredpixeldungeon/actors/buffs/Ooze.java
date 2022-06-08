@@ -89,9 +89,9 @@ public class Ooze extends Buff {
 	@Override
 	public boolean act() {
 		if (target.isAlive()) {
-			if (Dungeon.depth > 5) {
-				target.damage(1 + Dungeon.depth / 5, this);
-			} else if (Dungeon.depth == 5){
+			if (Dungeon.scalingDepth() > 5) {
+				target.damage(1 + Dungeon.scalingDepth() / 5, this);
+			} else if (Dungeon.scalingDepth() == 5){
 				target.damage(1, this); //1 dmg per turn vs Goo
 			} else if (Random.Int(2) == 0) {
 				target.damage(1, this); //0.5 dmg per turn in sewers

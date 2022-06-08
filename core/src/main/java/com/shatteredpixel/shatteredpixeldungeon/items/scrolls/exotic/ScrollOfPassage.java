@@ -44,7 +44,7 @@ public class ScrollOfPassage extends ExoticScroll {
 		identify();
 		readAnimation();
 		
-		if (Dungeon.level.locked) {
+		if (!Dungeon.interfloorTeleportAllowed()) {
 			
 			GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 			return;
