@@ -65,6 +65,7 @@ public enum Icons {
 	SEED,
 	LEFTARROW,
 	RIGHTARROW,
+	CALENDAR,
 
 	//misc icons, mainly used for buttons, spacing for 16x16 until the smaller icons at the end
 	UNCHECKED,
@@ -217,6 +218,9 @@ public enum Icons {
 				break;
 			case RIGHTARROW:
 				icon.frame( icon.texture.uvRectBySize( 240, 32, 14, 8 ) );
+				break;
+			case CALENDAR:
+				icon.frame( icon.texture.uvRectBySize( 240, 16, 12, 12 ) );
 				break;
 
 			case UNCHECKED:
