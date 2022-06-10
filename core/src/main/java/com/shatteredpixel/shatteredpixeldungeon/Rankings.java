@@ -75,7 +75,13 @@ public enum Rankings {
 		rec.heroClass	= Dungeon.hero.heroClass;
 		rec.armorTier	= Dungeon.hero.tier();
 		rec.herolevel	= Dungeon.hero.lvl;
-		rec.depth		= Dungeon.depth;
+		if (Statistics.highestAscent == 0){
+			rec.depth = Statistics.deepestFloor;
+			rec.ascending = false;
+		} else {
+			rec.depth = Statistics.highestAscent;
+			rec.ascending = true;
+		}
 		rec.score       = calculateScore();
 
 		Badges.validateHighScore( rec.score );
@@ -346,6 +352,7 @@ public enum Rankings {
 		private static final String TIER	= "tier";
 		private static final String LEVEL	= "level";
 		private static final String DEPTH	= "depth";
+		private static final String ASCEND	= "ascending";
 		private static final String DATA	= "gameData";
 		private static final String ID      = "gameID";
 
@@ -356,7 +363,8 @@ public enum Rankings {
 		public int armorTier;
 		public int herolevel;
 		public int depth;
-		
+		public boolean ascending;
+
 		public Bundle gameData;
 		public String gameID;
 
@@ -364,7 +372,13 @@ public enum Rankings {
 		public int score;
 
 		public String desc(){
-			if (cause == null) {
+			if (win){
+				if (ascending){
+					return Messages.get(this, "ascended");
+				} else {
+					return Messages.get(this, "won");
+				}
+			} else if (cause == null) {
 				return Messages.get(this, "something");
 			} else {
 				String result = Messages.get(cause, "rankings_desc", (Messages.get(cause, "name")));
@@ -390,14 +404,14 @@ public enum Rankings {
 			
 			heroClass	= bundle.getEnum( CLASS, HeroClass.class );
 			armorTier	= bundle.getInt( TIER );
-			
+			herolevel   = bundle.getInt( LEVEL );
+			depth       = bundle.getInt( DEPTH );
+			ascending   = bundle.getBoolean( ASCEND );
+
 			if (bundle.contains(DATA))  gameData = bundle.getBundle(DATA);
 			if (bundle.contains(ID))   gameID = bundle.getString(ID);
 			
 			if (gameID == null) gameID = UUID.randomUUID().toString();
-
-			depth = bundle.getInt( DEPTH );
-			herolevel = bundle.getInt( LEVEL );
 
 		}
 		
@@ -413,7 +427,8 @@ public enum Rankings {
 			bundle.put( TIER, armorTier );
 			bundle.put( LEVEL, herolevel );
 			bundle.put( DEPTH, depth );
-			
+			bundle.put( ASCEND, ascending );
+
 			if (gameData != null) bundle.put( DATA, gameData );
 			bundle.put( ID, gameID );
 		}

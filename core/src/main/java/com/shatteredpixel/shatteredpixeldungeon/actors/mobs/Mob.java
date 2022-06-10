@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
@@ -643,6 +644,11 @@ public abstract class Mob extends Char {
 		return damage;
 	}
 
+	@Override
+	public float speed() {
+		return super.speed() * AscensionChallenge.enemySpeedModifier(this);
+	}
+
 	public final boolean surprisedBy( Char enemy ){
 		return surprisedBy( enemy, true);
 	}
@@ -691,6 +697,8 @@ public abstract class Mob extends Char {
 				Statistics.enemiesSlain++;
 				Badges.validateMonstersSlain();
 				Statistics.qualifiedForNoKilling = false;
+
+				AscensionChallenge.processEnemyKill(this);
 				
 				int exp = Dungeon.hero.lvl <= maxLvl ? EXP : 0;
 				if (exp > 0) {

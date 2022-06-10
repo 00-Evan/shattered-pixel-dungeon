@@ -190,6 +190,10 @@ public class Ratmogrify extends ArmorAbility {
 
 		}
 
+		public Mob getOriginal(){
+			return original;
+		}
+
 		private float timeLeft = 6f;
 
 		@Override

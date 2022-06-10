@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
@@ -186,7 +187,10 @@ public abstract class RegularLevel extends Level {
 	
 	@Override
 	public int mobLimit() {
-		if (Dungeon.depth <= 1) return 0;
+		if (Dungeon.depth <= 1){
+			if (!Statistics.amuletObtained) return 0;
+			else                            return 10;
+		}
 
 		int mobs = 3 + Dungeon.depth % 5 + Random.Int(3);
 		if (feeling == Feeling.LARGE){

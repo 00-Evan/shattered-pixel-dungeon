@@ -210,6 +210,11 @@ public class RankingsScene extends PixelScene {
 					add(depth);
 				}
 
+				if (rec.ascending){
+					shield.view( ItemSpriteSheet.AMULET, null );
+					shield.hardlight(0.4f, 0.4f, 0.7f);
+				}
+
 			}
 
 			if (rec.herolevel != 0){

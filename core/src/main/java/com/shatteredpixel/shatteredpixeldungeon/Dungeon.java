@@ -431,6 +431,10 @@ public class Dungeon {
 		
 		hero.curAction = hero.lastAction = null;
 
+		if (hero.buff(AscensionChallenge.class) != null){
+			hero.buff(AscensionChallenge.class).onLevelSwitch();
+		}
+
 		observe();
 		try {
 			saveAll();

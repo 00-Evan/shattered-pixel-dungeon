@@ -582,13 +582,13 @@ public abstract class Level implements Bundlable {
 	}
 
 	public int mobCount(){
-		int count = 0;
+		float count = 0;
 		for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])){
 			if (mob.alignment == Char.Alignment.ENEMY && !mob.properties().contains(Char.Property.MINIBOSS)) {
 				count += mob.spawningWeight();
 			}
 		}
-		return count;
+		return Math.round(count);
 	}
 
 	public Mob findMob( int pos ){
@@ -647,10 +647,12 @@ public abstract class Level implements Bundlable {
 
 	public float respawnCooldown(){
 		if (Statistics.amuletObtained){
-			if (Dungeon.level.mobCount() <= 2){
-				return TIME_TO_RESPAWN / 10f;
+			if (Dungeon.depth == 1){
+				//very fast spawns on floor 1! 0/2/4/6/8/10, etc.
+				return Dungeon.level.mobCount() * (TIME_TO_RESPAWN / 25f);
 			} else {
-				return TIME_TO_RESPAWN / 2f;
+				//respawn time is 0/6/13/19/25/25, etc.
+				return Math.round(Math.min(Dungeon.level.mobCount() * (TIME_TO_RESPAWN / 8f), TIME_TO_RESPAWN / 2f));
 			}
 		} else if (Dungeon.level.feeling == Feeling.DARK){
 			return 2*TIME_TO_RESPAWN/3f;
@@ -667,9 +669,6 @@ public abstract class Level implements Bundlable {
 		mob.pos = Dungeon.level.randomRespawnCell( mob );
 		if (Dungeon.hero.isAlive() && mob.pos != -1 && PathFinder.distance[mob.pos] >= disLimit) {
 			GameScene.add( mob );
-			if (Statistics.amuletObtained) {
-				mob.beckon( Dungeon.hero.pos );
-			}
 			if (!mob.buffs(ChampionEnemy.class).isEmpty()){
 				GLog.w(Messages.get(ChampionEnemy.class, "warn"));
 			}

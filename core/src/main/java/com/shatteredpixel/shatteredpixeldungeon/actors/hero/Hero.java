@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AdrenalineSurge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AnkhInvulnerability;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
@@ -130,6 +131,8 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.SurfaceScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
@@ -137,6 +140,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.StatusPane;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
 import com.watabou.noosa.Camera;
@@ -566,6 +570,8 @@ public class Hero extends Char {
 		if (natStrength != null){
 			speed *= (2f + 0.25f*pointsInTalent(Talent.GROWING_POWER));
 		}
+
+		speed = AscensionChallenge.modifyHeroSpeed(speed);
 		
 		return speed;
 		
@@ -1027,6 +1033,34 @@ public class Hero extends Char {
 					Dungeon.deleteGame( GamesInProgress.curSlot, true );
 					Game.switchScene( SurfaceScene.class );
 				}
+
+			} else if (transition.type == LevelTransition.Type.REGULAR_ENTRANCE
+					&& Dungeon.depth == 25
+					//ascension challenge only works on runs started on v1.3+
+					&& Dungeon.initialVersion > ShatteredPixelDungeon.v1_2_3
+					&& belongings.getItem(Amulet.class) != null
+					&& buff(AscensionChallenge.class) == null) {
+
+				Game.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						GameScene.show( new WndOptions( new ItemSprite(ItemSpriteSheet.AMULET),
+								Messages.get(Amulet.class, "ascent_title"),
+								Messages.get(Amulet.class, "ascent_desc"),
+								Messages.get(Amulet.class, "ascent_yes"),
+								Messages.get(Amulet.class, "ascent_no")){
+							@Override
+							protected void onSelect(int index) {
+								if (index == 0){
+									Buff.affect(Hero.this, AscensionChallenge.class);
+									Statistics.highestAscent = 25;
+									actTransition(action);
+								}
+							}
+						} );
+					}
+				});
+				ready();
 
 			} else {
 

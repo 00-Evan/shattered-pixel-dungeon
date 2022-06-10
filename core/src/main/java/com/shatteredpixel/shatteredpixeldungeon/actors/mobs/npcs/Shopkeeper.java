@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -54,7 +55,7 @@ public class Shopkeeper extends NPC {
 			Notes.add(Notes.Landmark.SHOP);
 		}
 
-		if (Dungeon.depth < 20 && Dungeon.hero.buff(AscensionChallenge.class) != null){
+		if (Statistics.highestAscent < 20 && Dungeon.hero.buff(AscensionChallenge.class) != null){
 			flee();
 			return true;
 		}

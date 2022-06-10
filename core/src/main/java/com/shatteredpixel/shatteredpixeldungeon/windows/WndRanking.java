@@ -132,12 +132,16 @@ public class WndRanking extends WndTabbed {
 		Icons[] icons =
 			{Icons.RANKINGS, Icons.TALENT, Icons.BACKPACK_LRG, Icons.BADGES, Icons.CHALLENGE_ON};
 		Group[] pages =
-			{new StatsTab(), new TalentsTab(), new ItemsTab(), new BadgesTab(), new ChallengesTab()};
+			{new StatsTab(), new TalentsTab(), new ItemsTab(), new BadgesTab(), null};
+
+		if (Dungeon.challenges != 0) pages[4] = new ChallengesTab();
 		
 		for (int i=0; i < pages.length; i++) {
 
-			if (i == 4 && Dungeon.challenges == 0) break;
-
+			if (pages[i] == null) {
+				break;
+			}
+			
 			add( pages[i] );
 			
 			Tab tab = new RankingTab( icons[i], pages[i] );
@@ -183,7 +187,7 @@ public class WndRanking extends WndTabbed {
 			title.setRect( 0, 0, WIDTH, 0 );
 			add( title );
 			
-			float pos = title.bottom() + GAP + 2;
+			float pos = title.bottom() + GAP + 1;
 
 			NumberFormat num = NumberFormat.getInstance(Locale.US);
 			pos = statSlot( this, Messages.get(this, "score"), num.format( Statistics.totalScore ), pos );
@@ -205,7 +209,11 @@ public class WndRanking extends WndTabbed {
 			else if (strBonus < 0)  pos = statSlot(this, Messages.get(this, "str"), Dungeon.hero.STR + " - " + -strBonus, pos );
 			else                    pos = statSlot(this, Messages.get(this, "str"), Integer.toString(Dungeon.hero.STR), pos);
 			pos = statSlot( this, Messages.get(this, "duration"), num.format( (int)Statistics.duration ), pos );
-			pos = statSlot( this, Messages.get(this, "depth"), num.format( Statistics.deepestFloor ), pos );
+			if (Statistics.highestAscent == 0) {
+				pos = statSlot(this, Messages.get(this, "depth"), num.format(Statistics.deepestFloor), pos);
+			} else {
+				pos = statSlot(this, Messages.get(this, "ascent"), num.format(Statistics.highestAscent), pos);
+			}
 			if (Dungeon.seed != -1) {
 				pos = statSlot(this, Messages.get(this, "seed"), DungeonSeed.convertToCode(Dungeon.seed), pos);
 			} else {
