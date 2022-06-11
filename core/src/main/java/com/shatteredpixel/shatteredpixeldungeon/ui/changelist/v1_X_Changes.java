@@ -26,18 +26,18 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.WoollyBomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfMetamorphosis;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Dreamfoil;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ElementalSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SpectralNecromancerSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIcon;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TalentIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
@@ -48,7 +48,8 @@ import java.util.ArrayList;
 public class v1_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
-		add_Coming_Soon(changeInfos);
+		//add_Coming_Soon(changeInfos);
+		add_v1_3_Changes(changeInfos);
 		add_v1_2_Changes(changeInfos);
 		add_v1_1_Changes(changeInfos);
 		add_v1_0_Changes(changeInfos);
@@ -78,107 +79,183 @@ public class v1_X_Changes {
 
 	}
 
+	public static void add_v1_3_Changes( ArrayList<ChangeInfo> changeInfos ) {
+		ChangeInfo changes = new ChangeInfo("v1.3", true, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		/*changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ v1.3.0 Released XX, 2022\n" +
+				"_-_ XX days after Shattered v1.2.0\n" +
+				"Expect dev commentary here in the future."));*/
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "To-Do",
+				"There are still a few bits and pieces left to finish up before v1.3 is released:\n\n" +
+				"_-_ Final work on daily seeded runs\n" +
+				"_-_ A new radial selection menu to make using quickslots and the inventory easier on controller\n" +
+				"_-_ Additional enemy info on the top-left of the screen on full UI mode\n" +
+				"_-_ Improvements to some of the game's interfaces on full UI mode" +
+				"_-_ Translation work, from volunteers on the game's Transifex project.\n" +
+				"_-_ Fixes for any bugs that gat reported"));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SEED), "Seeded Runs!",
+				"_It's now possible to enter a custom seed when starting a new game!_\n\n" +
+				"Seeds are used to determine dungeon generation, and two runs with the same seed and game version will produce the exact same dungeon to play though.\n\n" +
+				"If you don't enter a custom seed, the game will use a random one to generate a random dungeon, just like it did prior to this update.\n\n" +
+				"Note that only players who have won at least once can enter custom seeds, and games with custom seeds are not eligible to appear in rankings."));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.CALENDAR), "Daily Runs!",
+				"_Every day there is a specific seeded run that's available to all players!_\n\n" +
+				"The daily run makes it easy to compete again friends or other folks on the internet, without having to coordinate and share a specific seed. Note that dailies currently do not have online leaderboard functionality, but I am open to adding it in the future.\n\n" +
+				"_Note that daily runs have not yet been implemented._"));
+
+		changes.addButton( new ChangeButton(BadgeBanner.image( Badges.Badge.HIGH_SCORE_2.image ), "New Score System!",
+				"_The game's scoring system has been overhauled to go along with seeded runs and dailies!_\n\n" +
+				"The score system now factors in a bunch of new criteria like exploration, performance during boss fights, quest completions, and enabled challenges. This should make score a much better measure of player performance.\n\n" +
+				"A score breakdown page has also been added to the rankings screen. This page even works for old games, and retroactively applies the challenge bonus!"));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.AMULET), "Harder Ascension Route!",
+				"_A bunch of adjustments have been made to the ascension route to make it a proper challenge!_\n\n" +
+				"Enemies will get much stronger as you ascend, and it's impossible to teleport back up or flee and avoid all combat. Expect to have to work a little bit more for an ascension win!"));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.DISPLAY), "UI Improvements!",
+				"_Several UI and UX Improvements have been made for desktop and mobile users_\n\n" +
+				"_-_ The settings menu has been adjusted with a few new and rearranged options.\n" +
+				"_-_ Added a quickslot swapper option for mobile portrait users.\n" +
+				"_-_ Keyboard and controller key bindings now have separate windows\n" +
+				//"_-_ " +
+				"_Several more UI improvements will be implemented before v1.3.0 goes live."));
+
+		changes.addButton( new ChangeButton(BadgeBanner.image( Badges.Badge.BOSS_CHALLENGE_5.image ), "New Badges!",
+				"_14 new badges have been added to the game!_\n\n" +
+				"_-_ Five of these badges are 'high score' badges, meant to tie into the new score system.\n" +
+				"_-_ Another five of these badges are 'boss challenge' badges, which each require you to defeat a boss in a particular way.\n" +
+				"_-_ Four new 'cause of death' badges have also been added, which should be a little trickier than the existing ones.\n\n" +
+				"Several of these badges are on the harder end, in particular the final high score and boss challenge badge should be a real challenge, even for veteran players."));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SHORTSWORD, new ItemSprite.Glowing(0x000000)), "Curse Redesigns",
+				"_Three of the most annoying curses have been replaced or redesigned, and two more have been adjusted._\n\n" +
+				"_- Fragile_ has been replaced by _explosive,_ which builds power and then explodes!\n" +
+				"_- Wayward_ has been redesigned to sometimes apply an accuracy reducing debuff, instead of always reducing accuracy.\n" +
+				"_- Exhausting_ has been replaced by _dazzling,_ which can blind both the attacker and defender.\n\n" +
+				"_Anti-entropy_ and _sacrifice_ have also been nerfed (i.e. made less harsh), look at the nerfs section for more details on that."));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
+		changes.hardlight(CharSprite.WARNING);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.EXOTIC_ODAL), Messages.get(ScrollOfMetamorphosis.class, "name"),
+				"The scroll of metamorphosis has been adjusted to allow more of the game's talents to work with its effect.\n\n" +
+				"Several talents that were previously exempt from being chosen by the scroll now have alternative effects that let them be used by any hero.\n\n" +
+				"These alternative effects only appear when getting these talents via metamorphosis."));
+
+		changes.addButton( new ChangeButton(BadgeBanner.image( Badges.Badge.MONSTERS_SLAIN_5.image ), "Badge Changes",
+				"I'm making several changes to existing badges, based on feedback and data from Steam players:\n\n" +
+				"_-_ Several gold tier badges have been bumped up to platinum tier to better reflect their difficulty\n" +
+				"_-_ The 'grim reaper' badge has been bumped up to gold tier, from silver\n\n" +
+				"_-_ The master and grandmaster 'monsters hunter' and 'treasure hunter' badges have been made more difficult\n" +
+				"_-_ The alchemist badges have been rebalanced to start out easier and end up harder\n\n" +
+				"_-_ The 'dungeoneer' badges have been made easier to unlock with wins or games played. The master and grandmaster versions still require a lot of games played though."));
+
+		changes.addButton( new ChangeButton(new BuffIcon(BuffIndicator.TARGETED, true), "Buff and Spell Icons",
+				"Several buffs have been given icons when they didn't have any, or have had their icons adjusted to prevent icon duplication. This should improve buff clarity in a few cases, and ensure that two active buffs can never have the exact same icon (recolored icons are still present though).\n\n" +
+				"A few new overhead spell effects have been added as well."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Made the Huntress a bit easier to unlock again\n" +
+				"_-_ Dreamfoil has been renamed to Mageroyal, to better fit its lack of sleeping functionality since 1.2\n" +
+				"_-_ Updated various code dependencies\n" +
+				"_-_ Made major internal changes in prep for quest improvements in v1.4\n" +
+				"_-_ Added a slight delay to chasm jump confirmation window, to prevent mistaps\n" +
+				"_-_ Progress is now shown for badges that need to be unlocked with multiple heroes\n" +
+				"_-_ Multiple unlocked badges can now be shown at once\n" +
+				"_-_ Various minor tweaks to item and level generation to support seeded runs"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed\n" +
+				"_-_ Various minor textual and visual bugs\n" +
+				"_-_ Final boss's summons being slightly weaker than intended when badder bosses is enabled\n" +
+				"_-_ Great crab not blocking right after loading a save\n" +
+				"_-_ Exploits that could force DM-300 to dig outside of its arena\n" +
+				"_-_ Wraiths from spectral necromancers not always dying when the necromancer dies\n" +
+				"_-_ The mystical charge talent giving more charge than intended\n" +
+				"_-_ Ring of might HP bonus not applying in specific cases"));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
+		changes.hardlight(CharSprite.POSITIVE);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CROWN), "Armor Ability Buffs",
+				"_- Endure_ damage bonus increased to 1/2 of damage taken from 1/3\n\n" +
+				"_- Wild Magic_ base wand boost and max boost increased by 1\n" +
+				"_- Fire Everything_ now has a 25% chance per point to let a wand be usable 3 times\n" +
+				"_- Conserved Magic_ no longer lets a wand be usable 3 times, now grants a chance for wild magic to take 0 turns instead\n\n" +
+				"_- Elemental power_ boost per point up to 25%, from 25%\n" +
+				"_- Reactive Barrier_ shielding per point up to 2.5, from 20, and max targets now increases by 1 per point.\n\n" +
+				"_- Shadow Clone_ now costs 35 energy, down from 50. Initial HP down to 80 from 100\n" +
+				"_- Shadow Blade_ damage per point up to 8%, from 7.5%\n" +
+				"_- Cloned Armor_ armor per point down to 12%, from 15%\n\n" +
+				"_- Eagle Eye_ now grants 9 and 10 vision range at 3 and 4 points\n" +
+				"_- Go for the Eyes_ now cripples at ranks 3 and 4\n" +
+				"_- Swift Spirit_ now grants 2/4/6/8 dodges, up from 2/3/4/5"));
+
+		changes.addButton( new ChangeButton(new TalentIcon(Talent.WAND_PRESERVATION), Talent.WAND_PRESERVATION.title(),
+				"Only one isolated talent change in this update:\n\n" +
+				"_- Wand Preservation_ chance to preserve at +1 reverted to 67% from 50%, still grants 1 arcane resin if it fails to preserve"));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CRYSTAL_KEY), "Crystal Path Rooms",
+				"Loot from crystal path rooms (the rooms with a sequence of 3 crystal doors) has been buffed to make their value closer to other crystal key rooms."));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CLEANSING_DART), "Alchemy Item Buffs",
+				"I'm giving woolly bomb's a big buff to help make them more distinct from other sheep-spawning items:\n\n" +
+				"_- Woolly Bombs_ now summon sheep for 200 turns, or 20 turns during boss fights, up from 12-16 turns\n\n" +
+				"I've given some alternative functions to three darts that would previously only help allies:\n\n" +
+				"_- Holy Dart_ turns of bless reverted to 30 from 100, now heavily damages undead or demonic enemies, instead of blessing them\n\n" +
+				"_- Adrenaline Dart_ turns of adrenaline reverted to 10 from 30, now cripples enemies for 5 turns, instead of giving them adrenaline\n\n" +
+				"_- Cleansing Dart_ now clears positive buffs from enemies, and causes them to start wandering (note that they may immediately re-aggro if they are close enough)"));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
+		changes.hardlight(CharSprite.NEGATIVE);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CROWN), "Armor Ability Nerfs",
+				"Along with several armor ability buffs, two have received energy cost nerfs, mainly to reduce the uptime of positioning/escape abilities. Some compensation buffs have been given for the energy cost change as well:\n\n" +
+				"_- Heroic Leap_ energy cost up to 35 from 25\n" +
+				"_- Body Slam_ now adds 1-4 base damage per point in talent\n" +
+				"_- Impact Wave_ now applies vulnerable for 5 turns, up from 3\n" +
+				"_- Double jump_ energy cost reduction increased by 20%\n\n" +
+				"_- Smoke Bomb_ energy cost up to 50 from 35\n" +
+				"_- Smoke Bomb_ max range up to 10 from 6"));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARMOR_LEATHER, new ItemSprite.Glowing(0x000000)), "Curse Buffs",
+				"Two of the most harsh curses have been nerfed (i.e. made better for the player):\n\n" +
+				"_- Anti-Entopy_ now spreads less fire to the player, and freezes all adjacent tiles instead of just the enemy.\n\n" +
+				"_- Sacrifice_ now more heavily scales on current HP, bleeding for a bit more at high health, and very little at medium to low health."));
+
+		changes.addButton( new ChangeButton(new Image(new ElementalSprite.Fire()), "Floor 16 Adjustments",
+				"Floor 16's spawn rates have been adjusted:\n\n" +
+				"Ghouls up to 60% from 40%\n" +
+				"Elementals down to 20% from 40%\n" +
+				"Warlocks unchanged at 20%\n\n" +
+				"This is to help smooth over a slight difficulty spike on that floor."));
+
+	}
+
 	public static void add_v1_2_Changes( ArrayList<ChangeInfo> changeInfos ) {
 		ChangeInfo changes = new ChangeInfo("v1.2", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes = new ChangeInfo("v1.2.3", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Swarms that were spawned by splitting now give a little sacrifice progress if sacrificed, instead of 0.\n\n" +
-				"_-_ Updated Translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by v1.2.0):\n" +
-				"_-_ Various rare crash bugs\n" +
-				"_-_ Textual errors with talents and 13th armor ability\n" +
-				"_-_ Armband not benefiting from ring of energy\n" +
-				"_-_ v1.2.0 light cloak buff not applying in all cases\n" +
-				"_-_ Inconsistencies in freezing logic\n" +
-				"_-_ Cached rations talent not capping at 4/6 rations as intended\n\n" +
-				"Fixed (existed prior to v1.2.0)\n" +
-				"_-_ An exploit where unblessed ankhs could be used with a lost inventory" ));
-
-		changes = new ChangeInfo("v1.2.2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Sacrifice rooms now require slightly fewer enemies at lower depths\n" +
-				"_-_ Sacrifice rooms now accept sacrifices that are adjacent to the fire\n\n" +
-				"_-_ The game can now only spawn one room that requires a solution potion per floor\n\n" +
-				"_-_ Moved Steam notification location to bottom-left from top-left\n\n" +
-				"_-_ Updated Translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by v1.2.0):\n" +
-				"_-_ Some crashes on launch for Steam users\n" +
-				"_-_ Transmuted mage's staff not recharging\n" +
-				"_-_ Great crab being able to block attacks from invisible heroes\n" +
-				"_-_ Wand of frost not clearing magical fire\n\n" +
-				"Fixed (existed prior to v1.2.0)\n" +
-				"_-_ Various minor visual bugs\n" +
-				"_-_ Ring of might health boost not being affected by lost inventory debuff\n" +
-				"_-_ Cases where ghoul sprites could become glitched\n" +
-				"_-_ Items that spawn identified counting as being IDed by the player\n" +
-				"_-_ Cases where heroic energy talent would use the wrong name/icon\n" +
-				"_-_ Curse status of quickslot items not showing in rankings\n" +
-				"_-_ Some sources of artifact recharging affecting cursed artifacts\n" +
-				"_-_ Blacksmith not refusing to work with cursed items in specific cases" ));
-
-		changes = new ChangeInfo("v1.2.1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Added a 'new game' and 'menu' button when the player gets a game over\n" +
-				"_-_ The game now tries to preserve quickslot placement when items are transmuted\n" +
-				"_-_ Mouse 4 and 5 (aka forward and back mouse keys) can now be bound to game actions\n\n" +
-				"_-_ Reduced huntress unlock requirement to 10 enemies hit with thrown weapons from 15\n" +
-				"_-_ Made surprise attack VFX a bit more obvious\n\n" +
-				"_-_ Removed gold as a possible random loot from crystal choice rooms\n\n" +
-				"_-_ Updated translations and translators credits\n" +
-				"_-_ Added a new language: Galician!\n" +
-				"_-_ Removed the Catalan translation as it was below 70% complete"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by v1.2.0):\n" +
-				"_-_ Various rare crash bugs\n" +
-				"_-_ Various minor audiovisual, interface, and textual bugs\n" +
-				"_-_ Steam achievements not unlocking for some players\n" +
-				"_-_ Rankings not showing 5th and 6th quickslot\n" +
-				"_-_ Various minor issues with full UI inventory\n" +
-				"_-_ Back button not properly closing cell or item selection interfaces\n" +
-				"_-_ Succubi dealing much less damage than intended\n" +
-				"_-_ Various errors with magical fire\n" +
-				"_-_ Armband steal ability working on enemies that can no longer give loot\n" +
-				"_-_ Save corruption for linux users when importing old save data"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (existed prior to v1.2.0)\n" +
-				"_-_ Very rare cases where dried rose becomes unusable\n" +
-				"_-_ Corruption debuff affecting smoke bomb decoy\n" +
-				"_-_ Character mind vision persisting after a character dies\n" +
-				"_-_ Dwarf King not being targeted by wands or thrown weapons while on his throne\n" +
-				"_-_ Food 5 entrance rooms sometimes being smaller than intended\n" +
-				"_-_ Exploits involving corruption and the 13th armor ability\n" +
-				"_-_ Rare cases where lullaby scrolls were generated by the Unstable Spellbook\n" +
-				"_-_ Red flash effects stacking on each other in some cases\n" +
-				"_-_ Game forgetting previous window size when maximized and restarted"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
-				"_-_ Released March 23rd, 2022\n" +
+				"_-_ v1.2.0 Released March 23rd, 2022\n" +
 				"_-_ 103 days after Shattered v1.1.0\n" +
 				"Expect dev commentary here in the future."));
 
@@ -218,36 +295,63 @@ public class v1_X_Changes {
 		changeInfos.add(changes);
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Improved the blinking behaviour of the journal button, to make it easier to notice on desktop displays.\n" +
+				"_-_ Reduced cases of multiple rooms that require a solution potion per floor\n" +
+				"_-_ Reduced the huntress unlock requirement\n" +
+				"_-_ Adjusted the secrets level feeling to be less harsh\n\n" +
+				"_-_ Added a 'new game' and 'menu' button after game over\n" +
+				"_-_ Made the blinking behaviour of the journal button easier to notice\n" +
+				"_-_ quickslot placement is now preserved when items are transmuted\n" +
 				"_-_ Improved the depth display to include icons for level feelings\n" +
-				"_-_ Added an icon next to depth display showing enabled challenges\n\n" +
-				"_-_ Adjusted the secrets level feeling to be less extreme in what rooms it can hide\n\n" +
-				"_-_ Improved the resilience of the game's save system"));
+				"_-_ Added an icon next to depth display showing enabled challenges\n" +
+				"_-_ Made surprise attack VFX a bit more obvious\n" +
+				"_-_ Improved the resilience of the game's save system\n\n" +
+				"_-_ Added a new language: Galician!\n" +
+				"_-_ Removed the Catalan translation as it was below 70% complete"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 1",
 				"Fixed:\n" +
 				"_-_ Various rare cases of save corruption on Android\n" +
-				"_-_ Various minor textual and visual errors\n" +
-				"_-_ Unidentified wands being usable in alchemy\n" +
+				"_-_ Various minor textual and visual errors\n\n" +
 				"_-_ Various rare cases where the hero could perform two actions at once\n" +
-				"_-_ Pharmacophobia challenge incorrectly blocking some alchemy recipes\n" +
-				"_-_ Various rare cases where giant enemies could enter enclosed spaces\n" +
-				"_-_ Wild energy spell not cancelling invisibility or time freeze\n" +
 				"_-_ Rare cases where the Freerunner could gain momentum while freerunninng\n" +
 				"_-_ Gladiator's parry move not cancelling invisibility or time freeze\n" +
+				"_-_ Assassinate killing enemies right after they were corrupted by a corrupting weapon\n" +
+				"_-_ Player being able to self-target with assassinate ability\n" +
+				"_-_ Exploits involving corruption and the 13th armor ability\n\n" +
+				"_-_ Various rare cases where giant enemies could enter enclosed spaces\n" +
 				"_-_ On-hit effects still triggering when the great crab blocks\n" +
-				"_-_ Various rare bugs with the timekeeper's hourglass\n" +
-				"_-_ Various bugs with the potion of dragon's breath\n" +
-				"_-_ Assassinate killing enemies right after they were corrupted by a corrupting weapon"));
+				"_-_ Corruption debuff affecting smoke bomb decoy\n" +
+				"_-_ Character mind vision persisting after a character dies\n" +
+				"_-_ Dwarf King not being targeted by wands or thrown weapons while on his throne"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 2",
 				"Fixed:\n" +
-				"_-_ Layout issues with the loot indicator\n" +
+				"_-_ Pharmacophobia challenge incorrectly blocking some alchemy recipes\n" +
+				"_-_ Unidentified wands being usable in alchemy\n" +
+				"_-_ Wild energy spell not cancelling invisibility or time freeze\n" +
+				"_-_ Various rare bugs with the timekeeper's hourglass\n" +
+				"_-_ Various bugs with the potion of dragon's breath\n" +
 				"_-_ Artifact recharging not charging the horn of plenty in some cases when it should\n" +
 				"_-_ Some items rarely not being consumed when they should be\n" +
-				"_-_ Player being able to self-target with assassinate ability\n" +
 				"_-_ Arcane catalysts not being able to be turned into energy\n" +
-				"_-_ Fog of War not properly updating when warp beacon is used"));
+				"_-_ Fog of War not properly updating when warp beacon is used\n" +
+				"_-_ Very rare cases where dried rose becomes unusable"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 3",
+				"Fixed:\n" +
+				"_-_ Rare cases where lullaby scrolls were generated by the Unstable Spellbook\n" +
+				"_-_ Ring of might health boost not being affected by lost inventory debuff\n" +
+				"_-_ Items that spawn identified counting as being IDed by the player\n" +
+				"_-_ Some sources of artifact recharging affecting cursed artifacts\n" +
+				"_-_ Blacksmith not refusing to work with cursed items in specific cases\n" +
+				"_-_ An exploit where unblessed ankhs could be used with a lost inventory\n\n" +
+				"_-_ Layout issues with the loot indicator\n" +
+				"_-_ Floor 5 entrance rooms sometimes being smaller than intended\n" +
+				"_-_ Red flash effects stacking on each other in some cases\n" +
+				"_-_ Game forgetting previous window size when maximized and restarted\n" +
+				"_-_ Cases where ghoul sprites could become glitched\n" +
+				"_-_ Cases where heroic energy talent would use the wrong name/icon\n" +
+				"_-_ Curse status of quickslot items not showing in rankings"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight(CharSprite.POSITIVE);
@@ -314,7 +418,7 @@ public class v1_X_Changes {
 				"_- Burning Fist_ is now immune to freezing, but it can still be chilled\n" +
 				"_- Rotting and Rusted Fists_ now take less damage from retribution, grim, and psionic blast"));
 
-		changes.addButton( new ChangeButton( new Image(Assets.Environment.TERRAIN_FEATURES, 112, 112, 16, 16), new Dreamfoil().name(),
+		changes.addButton( new ChangeButton( new Image(Assets.Environment.TERRAIN_FEATURES, 112, 112, 16, 16), "Dreamfoil",
 				"Dreamfoil has always had great utility as a debuff-cleanser, and with the recent addition of stones of deep sleep its enemy sleeping functionality was feeling a bit unnecessary:\n\n" +
 				"_- Dreamfoil_ no longer puts enemies into magical sleep\n\n" +
 				"Sleep darts (made from dreamfoil) have also been changed into cleansing darts to go along with this change. These darts will make an ally temporarily immune to harmful effects."));

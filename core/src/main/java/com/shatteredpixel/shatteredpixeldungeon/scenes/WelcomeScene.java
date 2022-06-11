@@ -189,6 +189,7 @@ public class WelcomeScene extends PixelScene {
 		} else {
 			message = Messages.get(this, "what_msg");
 		}
+		message = "Greetings Alpha testers!\n\nv1.3 is getting close to release, so here's an early look! Almost all of v1.3's functionality is implemented, check the changes screen for full details.\n\nMake sure to report any bugs to me so I can get them fixed ASAP!";
 		text.text(message, Math.min(w-20, 300));
 		float textSpace = okay.top() - topRegion - 4;
 		text.setPos((w - text.width()) / 2f, (topRegion + 2) + (textSpace - text.height())/2);
