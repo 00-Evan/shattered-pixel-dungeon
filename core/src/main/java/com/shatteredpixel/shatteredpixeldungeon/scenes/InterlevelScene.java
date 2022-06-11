@@ -412,10 +412,10 @@ public class InterlevelScene extends PixelScene {
 		Dungeon.saveAll();
 
 		Level level;
-		if (Dungeon.depth >= Statistics.deepestFloor) {
+		Dungeon.depth++;
+		if (Dungeon.depth > Statistics.deepestFloor) {
 			level = Dungeon.newLevel();
 		} else {
-			Dungeon.depth++;
 			level = Dungeon.loadLevel( GamesInProgress.curSlot );
 		}
 		Dungeon.switchLevel( level, level.fallCell( fallIntoPit ));
