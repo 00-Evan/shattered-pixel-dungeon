@@ -205,7 +205,7 @@ public class Hero extends Char {
 	private ArrayList<Mob> visibleEnemies;
 
 	//This list is maintained so that some logic checks can be skipped
-	// for enemies we know we aren't seeing normally, resultign in better performance
+	// for enemies we know we aren't seeing normally, resulting in better performance
 	public ArrayList<Mob> mindVisionEnemies = new ArrayList<>();
 
 	public Hero() {

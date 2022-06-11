@@ -830,7 +830,7 @@ public class Dungeon {
 		if (hero.buff(MindVision.class) != null){
 			for (Mob m : level.mobs.toArray(new Mob[0])){
 				BArray.or( level.visited, level.heroFOV, m.pos - 1 - level.width(), 3, level.visited );
-				BArray.or( level.visited, level.heroFOV, m.pos, 3, level.visited );
+				BArray.or( level.visited, level.heroFOV, m.pos - 1, 3, level.visited );
 				BArray.or( level.visited, level.heroFOV, m.pos - 1 + level.width(), 3, level.visited );
 				//updates adjacent cells too
 				GameScene.updateFog(m.pos, 2);
