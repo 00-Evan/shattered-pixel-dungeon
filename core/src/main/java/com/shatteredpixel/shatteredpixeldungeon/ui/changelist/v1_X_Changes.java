@@ -194,7 +194,7 @@ public class v1_X_Changes {
 				"_- Wild Magic_ base wand boost and max boost increased by 1\n" +
 				"_- Fire Everything_ now has a 25% chance per point to let a wand be usable 3 times\n" +
 				"_- Conserved Magic_ no longer lets a wand be usable 3 times, now grants a chance for wild magic to take 0 turns instead\n\n" +
-				"_- Elemental power_ boost per point up to 25%, from 25%\n" +
+				"_- Elemental power_ boost per point up to 25%, from 20%\n" +
 				"_- Reactive Barrier_ shielding per point up to 2.5, from 20, and max targets now increases by 1 per point.\n\n" +
 				"_- Shadow Clone_ now costs 35 energy, down from 50. Initial HP down to 80 from 100\n" +
 				"_- Shadow Blade_ damage per point up to 8%, from 7.5%\n" +
