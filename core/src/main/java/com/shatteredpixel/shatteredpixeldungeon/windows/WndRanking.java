@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
@@ -226,6 +227,39 @@ public class WndRanking extends WndTabbed {
 			pos = statSlot( this, Messages.get(this, "gold"), num.format( Statistics.goldCollected ), pos );
 			pos = statSlot( this, Messages.get(this, "food"), num.format( Statistics.foodEaten ), pos );
 			pos = statSlot( this, Messages.get(this, "alchemy"), num.format( Statistics.itemsCrafted ), pos );
+
+			int buttontop = HEIGHT - 16;
+
+			if (Dungeon.seed != -1 && (DeviceCompat.isDebug() || Badges.isUnlocked(Badges.Badge.VICTORY))){
+				final Image icon = Icons.get(Icons.SEED);
+				RedButton btnSeed = new RedButton(Messages.get(this, "copy_seed")){
+					@Override
+					protected void onClick() {
+						super.onClick();
+						ShatteredPixelDungeon.scene().addToFront(new WndOptions(new Image(icon),
+								Messages.get(WndRanking.StatsTab.this, "copy_seed"),
+								Messages.get(WndRanking.StatsTab.this, "copy_seed_desc"),
+								Messages.get(WndRanking.StatsTab.this, "copy_seed_copy"),
+								Messages.get(WndRanking.StatsTab.this, "copy_seed_cancel")){
+							@Override
+							protected void onSelect(int index) {
+								super.onSelect(index);
+								if (index == 0){
+									SPDSettings.customSeed(DungeonSeed.convertToCode(Dungeon.seed));
+									icon.hardlight(1f, 1.5f, 0.67f);
+								}
+							}
+						});
+					}
+				};
+				if (DungeonSeed.convertFromText(SPDSettings.customSeed()) == Dungeon.seed){
+					icon.hardlight(1f, 1.5f, 0.67f);
+				}
+				btnSeed.icon(icon);
+				btnSeed.setRect(0, buttontop, 115, 16);
+				add(btnSeed);
+			}
+
 		}
 		
 		private float statSlot( Group parent, String label, String value, float pos ) {

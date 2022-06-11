@@ -434,7 +434,7 @@ public enum Rankings {
 		}
 	}
 
-	private static final Comparator<Record> scoreComparator = new Comparator<Rankings.Record>() {
+	public static final Comparator<Record> scoreComparator = new Comparator<Rankings.Record>() {
 		@Override
 		public int compare( Record lhs, Record rhs ) {
 			int result = (int)Math.signum( rhs.score - lhs.score );
