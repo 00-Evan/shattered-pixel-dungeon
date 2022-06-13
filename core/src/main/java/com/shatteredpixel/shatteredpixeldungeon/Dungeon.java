@@ -182,9 +182,8 @@ public class Dungeon {
 	public static int initialVersion;
 	public static int version;
 
-	public static String customSeedText;
+	public static String customSeedText = "";
 	public static long seed;
-	public static boolean usingCustomSeed;
 	
 	public static void init() {
 
