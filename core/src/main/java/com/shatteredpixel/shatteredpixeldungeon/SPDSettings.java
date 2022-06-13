@@ -121,7 +121,7 @@ public class SPDSettings extends GameSettings {
 
 	public static final String KEY_UI_SIZE 	    = "full_ui";
 	public static final String KEY_SCALE		= "scale";
-	public static final String KEY_QUICKSLOTS	= "quickslots";
+	public static final String KEY_QUICK_SWAP	= "quickslot_swapper";
 	public static final String KEY_FLIPTOOLBAR	= "flipped_ui";
 	public static final String KEY_FLIPTAGS 	= "flip_tags";
 	public static final String KEY_BARMODE		= "toolbar_mode";
@@ -152,9 +152,9 @@ public class SPDSettings extends GameSettings {
 		return getInt( KEY_SCALE, 0 );
 	}
 	
-	public static void quickSlots( boolean value ){ put( KEY_QUICKSLOTS, value ); }
+	public static void quickSwapper(boolean value ){ put( KEY_QUICK_SWAP, value ); }
 	
-	public static boolean quickSlots(){ return getBoolean( KEY_QUICKSLOTS, false); }
+	public static boolean quickSwapper(){ return getBoolean( KEY_QUICK_SWAP, true); }
 	
 	public static void flipToolbar( boolean value) {
 		put(KEY_FLIPTOOLBAR, value );

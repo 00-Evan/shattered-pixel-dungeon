@@ -231,7 +231,7 @@ public class Toolbar extends Component {
 		if (PixelScene.uiCamera.width > 170) quickslotsToShow ++;
 
 		int startingSlot;
-		if (SPDSettings.quickSlots() && quickslotsToShow < 6){
+		if (SPDSettings.quickSwapper() && quickslotsToShow < 6){
 			quickslotsToShow = 3;
 			startingSlot = swappedQuickslots ? 3 : 0;
 			btnSwap.visible = true;

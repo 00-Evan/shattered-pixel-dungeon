@@ -239,6 +239,11 @@ public class WelcomeScene extends PixelScene {
 			}
 		}
 
+		//defaults to false for older users
+		if (previousVersion <= ShatteredPixelDungeon.v1_2_3){
+			SPDSettings.quickSwapper(false);
+		}
+
 		SPDSettings.version(ShatteredPixelDungeon.versionCode);
 	}
 	

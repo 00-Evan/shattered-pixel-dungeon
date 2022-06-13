@@ -520,11 +520,11 @@ public class WndSettings extends WndTabbed {
 									@Override
 									protected void onClick() {
 										super.onClick();
-										SPDSettings.quickSlots(checked());
+										SPDSettings.quickSwapper(checked());
 										Toolbar.updateLayout();
 									}
 								};
-								chkQuickSwapper.checked(SPDSettings.quickSlots());
+								chkQuickSwapper.checked(SPDSettings.quickSwapper());
 								add(chkQuickSwapper);
 
 								swapperDesc = PixelScene.renderTextBlock(Messages.get(WndSettings.UITab.this, "swapper_desc"), 5);
