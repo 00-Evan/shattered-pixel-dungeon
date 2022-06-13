@@ -81,7 +81,7 @@ public class AscensionChallenge extends Buff {
 		}
 
 		for (Class<?extends Mob> cls : modifiers.keySet()){
-			if (ch.getClass().isAssignableFrom(cls)){
+			if (cls.isAssignableFrom(ch.getClass())){
 				return modifiers.get(cls);
 			}
 		}
@@ -132,7 +132,7 @@ public class AscensionChallenge extends Buff {
 		//only enemies that are boosted count
 		boolean found = false;
 		for (Class<?extends Mob> cls : modifiers.keySet()){
-			if (enemy.getClass().isAssignableFrom(cls)){
+			if (cls.isAssignableFrom(enemy.getClass())){
 				found = true;
 				break;
 			}
@@ -168,7 +168,7 @@ public class AscensionChallenge extends Buff {
 			return 7; //half of 13, rounded up
 		} else {
 			for (Class<?extends Mob> cls : modifiers.keySet()){
-				if (m.getClass().isAssignableFrom(cls)){
+				if (cls.isAssignableFrom(m.getClass())){
 					return Math.max(13, m.EXP); //same exp as an eye
 				}
 			}

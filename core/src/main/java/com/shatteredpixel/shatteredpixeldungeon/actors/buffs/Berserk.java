@@ -122,9 +122,8 @@ public class Berserk extends Buff {
 		return Math.min(1f, power);
 	}
 
-	public int damageFactor(int dmg){
-		float bonus = Math.min(1.5f, 1f + (power / 2f));
-		return Math.round(dmg * bonus);
+	public float damageFactor(float dmg){
+		return dmg * Math.min(1.5f, 1f + (power / 2f));
 	}
 
 	public boolean berserking(){
@@ -221,7 +220,7 @@ public class Berserk extends Buff {
 
 	@Override
 	public String desc() {
-		float dispDamage = (damageFactor(10000) / 100f) - 100f;
+		float dispDamage = ((int)damageFactor(10000) / 100f) - 100f;
 		switch (state){
 			case NORMAL: default:
 				return Messages.get(this, "angered_desc", Math.floor(power * 100f), dispDamage);

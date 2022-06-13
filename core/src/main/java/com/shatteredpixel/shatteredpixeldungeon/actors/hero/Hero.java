@@ -1223,7 +1223,7 @@ public class Hero extends Char {
 		if (!(src instanceof Char)){
 			//reduce damage here if it isn't coming from a character (if it is we already reduced it)
 			if (endure != null){
-				dmg = endure.adjustDamageTaken(dmg);
+				dmg = Math.round(endure.adjustDamageTaken(dmg));
 			}
 			//the same also applies to challenge scroll damage reduction
 			if (buff(ScrollOfChallenge.ChallengeArena.class) != null){

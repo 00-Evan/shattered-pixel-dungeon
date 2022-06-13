@@ -315,7 +315,7 @@ public abstract class Char extends Actor {
 
 		} else if (hit( this, enemy, accMulti )) {
 			
-			int dr = Math.round(enemy.drRoll() * AscensionChallenge.statModifier(this));
+			int dr = Math.round(enemy.drRoll() * AscensionChallenge.statModifier(enemy));
 
 			Barkskin bark = enemy.buff(Barkskin.class);
 			if (bark != null)   dr += Random.NormalIntRange( 0 , bark.level() );
@@ -332,7 +332,9 @@ public abstract class Char extends Actor {
 				}
 			}
 
-			int dmg;
+			//we use a float here briefly so that we don't have to constantly round while
+			// potentially applying various multiplier effects
+			float dmg;
 			Preparation prep = buff(Preparation.class);
 			if (prep != null){
 				dmg = prep.damageRoll(this);
@@ -352,6 +354,13 @@ public abstract class Char extends Actor {
 				dmg *= 1.5f;
 			}
 
+			for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
+				dmg *= buff.meleeDamageFactor();
+			}
+
+			dmg *= AscensionChallenge.statModifier(this);
+
+			//flat damage bonus is applied after positive multipliers, but before negative ones
 			dmg += dmgBonus;
 
 			//friendly endure
@@ -367,10 +376,15 @@ public abstract class Char extends Actor {
 			if (enemy.buff(ScrollOfChallenge.ChallengeArena.class) != null){
 				dmg *= 0.67f;
 			}
+
+			if ( buff(Weakness.class) != null ){
+				dmg *= 0.67f;
+			}
 			
-			int effectiveDamage = enemy.defenseProc( this, dmg );
+			int effectiveDamage = enemy.defenseProc( this, Math.round(dmg) );
 			effectiveDamage = Math.max( effectiveDamage - dr, 0 );
-			
+
+			//vulnerable specifically applies after armor reductions
 			if ( enemy.buff( Vulnerable.class ) != null){
 				effectiveDamage *= 1.33f;
 			}
@@ -505,14 +519,9 @@ public abstract class Char extends Actor {
 	// atm attack is always post-armor and defence is already pre-armor
 	
 	public int attackProc( Char enemy, int damage ) {
-		if ( buff(Weakness.class) != null ){
-			damage *= 0.67f;
-		}
 		for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
-			damage *= buff.meleeDamageFactor();
 			buff.onAttackProc( enemy );
 		}
-		damage = Math.round( damage * AscensionChallenge.statModifier(this));
 		return damage;
 	}
 	

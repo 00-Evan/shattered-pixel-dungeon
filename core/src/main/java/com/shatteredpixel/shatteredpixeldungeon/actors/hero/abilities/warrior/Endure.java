@@ -109,10 +109,10 @@ public class Endure extends ArmorAbility {
 			hitsLeft = 0;
 		}
 
-		public int adjustDamageTaken(int damage){
+		public float adjustDamageTaken(float damage){
 			if (enduring) {
 				damageBonus += damage/2;
-				return damage/2;
+				return damage/2f;
 			}
 			return damage;
 		}
@@ -155,7 +155,7 @@ public class Endure extends ArmorAbility {
 			}
 		}
 
-		public int damageFactor(int damage){
+		public float damageFactor(float damage){
 			if (enduring){
 				return damage;
 			} else {
