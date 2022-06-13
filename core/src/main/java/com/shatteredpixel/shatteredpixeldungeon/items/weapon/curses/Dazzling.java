@@ -46,7 +46,7 @@ public class Dazzling extends Weapon.Enchantment {
 		if (Random.Float() < procChance) {
 			for (Char ch : Actor.chars()){
 				if (ch.fieldOfView != null && ch.fieldOfView[defender.pos]){
-					Buff.prolong(ch, Blindness.class, Blindness.DURATION);
+					Buff.prolong(ch, Blindness.class, ch == attacker ? Blindness.DURATION : Blindness.DURATION/2f);
 					if (ch == Dungeon.hero){
 						GameScene.flash(0x80FFFFFF);
 					}
