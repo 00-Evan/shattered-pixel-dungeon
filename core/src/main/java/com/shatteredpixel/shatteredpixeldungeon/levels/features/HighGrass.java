@@ -101,19 +101,21 @@ public class HighGrass {
 					Talent.NatureBerriesDropped dropped = Buff.affect(ch, Talent.NatureBerriesDropped.class);
 					berriesAvailable -= dropped.count();
 
-					int targetFloor = 2 + 2*((Hero)ch).pointsInTalent(Talent.NATURES_BOUNTY);
-					targetFloor -= berriesAvailable;
-					targetFloor += (targetFloor >= 5) ? 3 : 2;
+					if (berriesAvailable > 0) {
+						int targetFloor = 2 + 2 * ((Hero) ch).pointsInTalent(Talent.NATURES_BOUNTY);
+						targetFloor -= berriesAvailable;
+						targetFloor += (targetFloor >= 5) ? 3 : 2;
 
-					//If we're behind: 1/10, if we're on page: 1/30, if we're ahead: 1/90
-					boolean droppingBerry = false;
-					if (Dungeon.depth > targetFloor)        droppingBerry = Random.Int(10) == 0;
-					else if (Dungeon.depth == targetFloor)  droppingBerry = Random.Int(30) == 0;
-					else if (Dungeon.depth < targetFloor)   droppingBerry = Random.Int(90) == 0;
+						//If we're behind: 1/10, if we're on page: 1/30, if we're ahead: 1/90
+						boolean droppingBerry = false;
+						if (Dungeon.depth > targetFloor) droppingBerry = Random.Int(10) == 0;
+						else if (Dungeon.depth == targetFloor) droppingBerry = Random.Int(30) == 0;
+						else if (Dungeon.depth < targetFloor) droppingBerry = Random.Int(90) == 0;
 
-					if (droppingBerry){
-						dropped.countUp(1);
-						level.drop(new Berry(), pos).sprite.drop();
+						if (droppingBerry) {
+							dropped.countUp(1);
+							level.drop(new Berry(), pos).sprite.drop();
+						}
 					}
 
 				}
