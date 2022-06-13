@@ -47,7 +47,7 @@ public class Explosive extends Weapon.Enchantment {
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
 
 		//average value of 5, or 20 hits to an explosion
-		int durToReduce = Random.IntRange(0, 10);
+		int durToReduce = Math.round(Random.IntRange(0, 10) * procChanceMultiplier(attacker));
 		int currentDurability = durability;
 		durability -= durToReduce;
 
