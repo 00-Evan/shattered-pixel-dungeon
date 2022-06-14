@@ -199,10 +199,10 @@ public enum Icons {
 				icon.frame( icon.texture.uvRectBySize( 128, 32, 16, 13 ) );
 				break;
 			case CHALLENGE_OFF:
-				icon.frame( icon.texture.uvRectBySize( 144, 32, 14, 12 ) );
+				icon.frame( icon.texture.uvRectBySize( 144, 32, 15, 12 ) );
 				break;
 			case CHALLENGE_ON:
-				icon.frame( icon.texture.uvRectBySize( 160, 32, 14, 12 ) );
+				icon.frame( icon.texture.uvRectBySize( 160, 32, 15, 12 ) );
 				break;
 			case RENAME_OFF:
 				icon.frame( icon.texture.uvRectBySize( 176, 32, 15, 14 ) );
@@ -211,7 +211,7 @@ public enum Icons {
 				icon.frame( icon.texture.uvRectBySize( 192, 32, 15, 14 ) );
 				break;
 			case SEED:
-				icon.frame( icon.texture.uvRectBySize( 208, 32, 10, 10 ) );
+				icon.frame( icon.texture.uvRectBySize( 208, 32, 15, 10 ) );
 				break;
 			case LEFTARROW:
 				icon.frame( icon.texture.uvRectBySize( 224, 32, 14, 8 ) );
@@ -220,7 +220,7 @@ public enum Icons {
 				icon.frame( icon.texture.uvRectBySize( 240, 32, 14, 8 ) );
 				break;
 			case CALENDAR:
-				icon.frame( icon.texture.uvRectBySize( 240, 16, 12, 12 ) );
+				icon.frame( icon.texture.uvRectBySize( 240, 16, 15, 12 ) );
 				break;
 
 			case UNCHECKED:
