@@ -54,8 +54,7 @@ public class ControllerHandler implements ControllerListener {
 	}
 
 	public static boolean controllersSupported() {
-		//disabled on iOS as a temporary workaround for dependency issues between RoboVM and gdx-controllers
-		if (DeviceCompat.isiOS() || (DeviceCompat.isAndroid() && Gdx.app.getVersion() < 16)) {
+		if (DeviceCompat.isAndroid() && Gdx.app.getVersion() < 16) {
 			return false;
 		} else {
 			return true;

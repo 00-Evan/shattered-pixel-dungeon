@@ -120,10 +120,6 @@ dependencies {
     implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
     implementation "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$gdxControllersVersion"
-    //temporary workaround for gdx-controllers-2.2.1 using outdated jamepad version
-    implementation("com.badlogicgames.jamepad:jamepad:2.0.20.0") {
-        exclude group: 'com.badlogicgames.gdx', module: 'gdx-jnigen-loader'
-    }
 
     //we use LWJGL tinyFD directly to display crash messages
     implementation "org.lwjgl:lwjgl-tinyfd:3.3.1"
