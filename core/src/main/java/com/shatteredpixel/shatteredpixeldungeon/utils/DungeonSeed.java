@@ -44,7 +44,7 @@ public class DungeonSeed {
 	//Takes a seed code (@@@@@@@@@) and converts it to the equivalent long value
 	public static long convertFromCode( String code ){
 		//ignore whitespace characters and dashes
-		code = code.replaceAll("[-\\s]", "");
+		code = code.replaceAll("[-\\s]", "").toUpperCase(Locale.ROOT);
 
 		if (code.length() != 9) {
 			throw new IllegalArgumentException("codes must be 9 A-Z characters.");
