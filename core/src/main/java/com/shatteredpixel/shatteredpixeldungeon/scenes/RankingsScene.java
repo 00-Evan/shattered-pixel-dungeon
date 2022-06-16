@@ -217,6 +217,10 @@ public class RankingsScene extends PixelScene {
 
 			}
 
+			if (!rec.customSeed.isEmpty()){
+				shield.view( ItemSpriteSheet.SEED_SUNGRASS, null );
+			}
+
 			if (rec.herolevel != 0){
 				level.text( Integer.toString(rec.herolevel) );
 				level.measure();
@@ -259,7 +263,7 @@ public class RankingsScene extends PixelScene {
 			
 			super.layout();
 			
-			shield.x = x;
+			shield.x = x + (16 - shield.width) / 2f;
 			shield.y = y + (height - shield.height) / 2f;
 			align(shield);
 			
@@ -287,8 +291,8 @@ public class RankingsScene extends PixelScene {
 			depth.y = steps.y + (steps.height - depth.height()) / 2f + 1;
 			align(depth);
 
-			desc.maxWidth((int)(steps.x - (shield.x + shield.width + GAP)));
-			desc.setPos(shield.x + shield.width + GAP, shield.y + (shield.height - desc.height()) / 2f + 1);
+			desc.maxWidth((int)(steps.x - (x + 16 + GAP)));
+			desc.setPos(x + 16 + GAP, shield.y + (shield.height - desc.height()) / 2f + 1);
 			align(desc);
 		}
 		

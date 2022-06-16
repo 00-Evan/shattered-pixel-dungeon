@@ -63,9 +63,6 @@ public enum Rankings {
 
 	public void submit( boolean win, Class cause ) {
 
-		//games with custom seeds do not appear in rankings
-		if (!Dungeon.customSeedText.isEmpty()) return;
-
 		load();
 		
 		Record rec = new Record();
@@ -83,6 +80,7 @@ public enum Rankings {
 			rec.ascending = true;
 		}
 		rec.score       = calculateScore();
+		rec.customSeed  = Dungeon.customSeedText;
 
 		Badges.validateHighScore( rec.score );
 		
@@ -107,10 +105,12 @@ public enum Rankings {
 
 			size = records.size();
 		}
-		
-		totalNumber++;
-		if (win) {
-			wonNumber++;
+
+		if (rec.customSeed.isEmpty()) {
+			totalNumber++;
+			if (win) {
+				wonNumber++;
+			}
 		}
 
 		Badges.validateGamesPlayed();
@@ -355,6 +355,7 @@ public enum Rankings {
 		private static final String ASCEND	= "ascending";
 		private static final String DATA	= "gameData";
 		private static final String ID      = "gameID";
+		private static final String SEED    = "custom_seed";
 
 		public Class cause;
 		public boolean win;
@@ -370,6 +371,8 @@ public enum Rankings {
 
 		//Note this is for summary purposes, visible score should be re-calculated from game data
 		public int score;
+
+		public String customSeed;
 
 		public String desc(){
 			if (win){
@@ -399,8 +402,9 @@ public enum Rankings {
 				cause = null;
 			}
 			
-			win		= bundle.getBoolean( WIN );
-			score	= bundle.getInt( SCORE );
+			win		    = bundle.getBoolean( WIN );
+			score	    = bundle.getInt( SCORE );
+			customSeed  = bundle.getString( SEED );
 			
 			heroClass	= bundle.getEnum( CLASS, HeroClass.class );
 			armorTier	= bundle.getInt( TIER );
@@ -422,6 +426,7 @@ public enum Rankings {
 
 			bundle.put( WIN, win );
 			bundle.put( SCORE, score );
+			bundle.put( SEED, customSeed );
 			
 			bundle.put( CLASS, heroClass );
 			bundle.put( TIER, armorTier );
@@ -437,10 +442,16 @@ public enum Rankings {
 	public static final Comparator<Record> scoreComparator = new Comparator<Rankings.Record>() {
 		@Override
 		public int compare( Record lhs, Record rhs ) {
+			if (rhs.customSeed.isEmpty() && !lhs.customSeed.isEmpty()){
+				return +1;
+			} else if (lhs.customSeed.isEmpty() && !rhs.customSeed.isEmpty()){
+				return -1;
+			}
+
 			int result = (int)Math.signum( rhs.score - lhs.score );
 			if (result == 0) {
 				return (int)Math.signum( rhs.gameID.hashCode() - lhs.gameID.hashCode());
-			} else{
+			} else {
 				return result;
 			}
 		}
