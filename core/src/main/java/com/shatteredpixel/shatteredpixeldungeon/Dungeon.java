@@ -386,7 +386,7 @@ public class Dungeon {
 	}
 
 	public static boolean interfloorTeleportAllowed(){
-		if (Dungeon.hero != null && Dungeon.hero.belongings.getItem(Amulet.class) != null){
+		if (Dungeon.level.locked || (Dungeon.hero != null && Dungeon.hero.belongings.getItem(Amulet.class) != null)){
 			return false;
 		}
 		return true;
@@ -722,11 +722,11 @@ public class Dungeon {
 		
 		Dungeon.level = null;
 		Actor.clear();
-		
+
 		Bundle bundle = FileUtils.bundleFromFile( GamesInProgress.depthFile( save, depth, branch ));
-		
+
 		Level level = (Level)bundle.get( LEVEL );
-		
+
 		if (level == null){
 			throw new IOException();
 		} else {
