@@ -245,7 +245,7 @@ public class HeroSelectScene extends PixelScene {
 		if (!SPDSettings.customSeed().isEmpty()){
 			btnOptions.icon().hardlight(1f, 1.5f, 0.67f);
 		} else if (SPDSettings.challenges() != 0){
-			btnOptions.icon().hardlight(2f, 1.5f, 0.5f);
+			btnOptions.icon().hardlight(2f, 1.33f, 0.5f);
 		} else {
 			btnOptions.icon().resetColor();
 		}
