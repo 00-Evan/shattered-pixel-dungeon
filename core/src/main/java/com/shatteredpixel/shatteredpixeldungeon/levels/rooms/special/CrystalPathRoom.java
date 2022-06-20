@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
+import com.sun.tools.javac.jvm.Gen;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -137,10 +138,12 @@ public class CrystalPathRoom extends SpecialRoom {
 					item = Generator.random(Generator.Category.SCROLL);
 					break;
 				case 3:
-					if (Random.Int(3) == 0){
-						item = new ScrollOfTransmutation();
-					} else {
+					if (Random.Int(2) == 0){
+						item = Generator.random(Random.oneOf(Generator.Category.POTION, Generator.Category.SCROLL));
+					} else if (Random.Int(2) == 0) {
 						item = new PotionOfExperience();
+					} else {
+						item = new ScrollOfTransmutation();
 					}
 					break;
 			}
