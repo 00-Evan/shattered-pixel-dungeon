@@ -309,6 +309,9 @@ public class WandOfLivingEarth extends DamageWand {
 			alignment = Alignment.ALLY;
 			state = HUNTING;
 			intelligentAlly = true;
+
+			properties.add(Property.INORGANIC);
+
 			WANDERING = new Wandering();
 
 			//before other mobs
