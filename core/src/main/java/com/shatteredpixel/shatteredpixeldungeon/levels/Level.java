@@ -237,6 +237,10 @@ public abstract class Level implements Bundlable {
 					case 4:
 						feeling = Feeling.LARGE;
 						addItemToSpawn(Generator.random(Generator.Category.FOOD));
+						//add a second torch to help with the larger floor
+						if (Dungeon.isChallenged(Challenges.DARKNESS)){
+							addItemToSpawn( new Torch() );
+						}
 						break;
 					case 5:
 						feeling = Feeling.TRAPS;
