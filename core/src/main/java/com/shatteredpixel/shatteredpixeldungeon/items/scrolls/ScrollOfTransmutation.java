@@ -90,6 +90,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 					item.cursed = false; //to allow it to be unequipped
 					((EquipableItem) item).doUnequip(Dungeon.hero, false);
 					((EquipableItem) result).doEquip(Dungeon.hero);
+					Dungeon.hero.spend(-Dungeon.hero.cooldown()); //cancel equip/unequip time
 				} else {
 					item.detach(Dungeon.hero.belongings.backpack);
 					if (!result.collect()) {
