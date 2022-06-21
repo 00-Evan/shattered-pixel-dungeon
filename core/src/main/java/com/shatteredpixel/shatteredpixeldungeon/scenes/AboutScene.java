@@ -65,27 +65,61 @@ public class AboutScene extends PixelScene {
 
 		//*** Combusted Pixel Dungeon Credits ***
 
-		String cbpxLink = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-		//tracking codes, so that the website knows where this pageview came from
-//		shpxLink += "?utm_source=shatteredpd";
-//		shpxLink += "&utm_medium=about_page";
-//		shpxLink += "&utm_campaign=ingame_link";
-
 		final int CBPX_COLOR = 0xFF9021;
 		CreditsBlock cbpx = new CreditsBlock(true, CBPX_COLOR,
 				"Combusted Pixel Dungeon",
 				Icons.CBPX.get(),
-				"Developed by: _Inferno214221_\nBased on Shattered Pixel Dungeon's open source",
+				"Developed by: _Inferno214221_\nBased on Shattered Pixel Dungeon",
 				"CombustedPixel.com",
-				cbpxLink);
+				"https://github.com/Inferno214221/Combusted-Pixel-Dungeon");
 		if (landscape()){
-			cbpx.setRect((w - fullWidth)/2f - 6, 10, 120, 0);
+			cbpx.setRect((w - (fullWidth/2f))/2f - 6, 10, 120, 0);
 		} else {
 			cbpx.setRect((w - fullWidth)/2f, 6, 120, 0);
 		}
 		content.add(cbpx);
 
 		addLine(cbpx.bottom() + 4, content);
+
+		//*** Ripped Pixel Dungeons Credits ***
+
+		RenderedTextBlock insp = PixelScene.renderTextBlock("Including Assets From:", 8);
+		if (landscape()){
+			insp.setPos((w - fullWidth)/2f + (fullWidth/2f - insp.width()/2) - 6, cbpx.bottom()+8);
+		} else {
+			insp.setPos((w - fullWidth)/2f + (fullWidth/2f - insp.width()/2), cbpx.bottom()+8);
+		}
+		//insp.hardlight(CBPX_COLOR);
+		content.add(insp);
+
+		CreditsBlock rrpx = new CreditsBlock(true, Window.TITLE_COLOR,
+				"Re-Remixed Pixel Dungeon",
+				Icons.RRPX.get(),
+				"Developed by: _QuasiStellar_\nBased on ShatteredPD's open source",//\nInspired by Remixed Dungeon by Nyrds
+				"quasistellar.org",
+				"https://quasistellar.neocities.org/");
+		if (landscape()){
+			rrpx.setRect((w - fullWidth)/2f - 6, insp.bottom()+4, 120, 0);
+		} else {
+			rrpx.setRect((w - fullWidth)/2f, insp.bottom()+4, 120, 0);
+		}
+		content.add(rrpx);
+
+		CreditsBlock supx = new CreditsBlock(true, Window.TITLE_COLOR,
+				"Summoning Pixel Dungeon",
+				Icons.SUPX.get(),
+				"Developed by: _Trashbox Bobylev_\nBased on ShatteredPD's open source",
+				"reddit: u/TrashboxBobylev",
+				"https://reddit.com/u/TrashboxBobylev");
+		if (landscape()){
+			supx.setRect(rrpx.right(), rrpx.top(), 120, 0);
+			content.add(supx);
+			addLine(supx.bottom() + 13, content);
+		} else {
+			supx.setRect((w - fullWidth)/2f, rrpx.bottom()+8, 120, 0);
+			content.add(supx);
+			addLine(supx.bottom() + 4, content);
+		}
 
 		//*** Shattered Pixel Dungeon Credits ***
 
@@ -102,9 +136,9 @@ public class AboutScene extends PixelScene {
 				"ShatteredPixel.com",
 				shpxLink);
 		if (landscape()){
-			shpx.setRect((w - fullWidth)/2f - 6, cbpx.bottom()+8, 120, 0);
+			shpx.setRect((w - fullWidth)/2f - 6, rrpx.bottom()+8, 120, 0);
 		} else {
-			shpx.setRect((w - fullWidth)/2f, cbpx.bottom()+8, 120, 0);
+			shpx.setRect((w - fullWidth)/2f, supx.bottom()+8, 120, 0);
 		}
 		content.add(shpx);
 

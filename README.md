@@ -7,14 +7,14 @@ Ideas, Assets, and code have been implemented from:
 - [Re-Remixed Dungeon](https://github.com/QuasiStellar/Re-Remixed_Dungeon).
 
 Combusted Pixel Dungeon implements the following features to Shattered Pixel Dungeon:
-- 5 New Spells
+- New Spells
 - Minor UI & Graphics Improvements
-- Alternate Map Graphics for the Prison, Caves and City. (Using Graphic Assets from Re-Remixed Dungeon)
 
 Unfinished features (WIP):
 - Exotic Stones
 - New Class:
   - Alchemist
+- Alternate Map Graphics for the Prison, Caves and City. (Using Graphic Assets from Re-Remixed Dungeon)
 
 Potential future changes might implement:
 - More Weapons
@@ -22,15 +22,19 @@ Potential future changes might implement:
 - New Potions, Scrolls & Alchemy Options
 - New Playable Classes:
   - Cleric?
-- A Story Mode (Preset large, open-world map)
+- A Story Mode? (Preset large, open-world map)
 
 Check out Shattered Pixel Dungeon at [ShatteredPixel.com](https://www.shatteredpixel.com) and [support it's creator on Patreon](https://www.patreon.com/ShatteredPixel)!
 
-Shattered Pixel Dungeon currently compiles for Android and Desktop platforms. It is available from [Google Play](https://play.google.com/store/apps/details?id=com.shatteredpixel.shatteredpixeldungeon), [the App Store](https://apps.apple.com/app/shattered-pixel-dungeon/id1563121109), and on [GitHub](https://github.com/00-Evan/shattered-pixel-dungeon/releases).
-
 Note that **this repository does not accept pull requests!** The code here is provided in hopes that others may find it useful for their own projects, not to allow community contribution. Issue reports of all kinds (bug reports, feature requests, etc.) are welcome.
 
-[Downloads are avaiable here.](https://github.com/Inferno214221/Combusted-Pixel-Dungeon/releases)
+# Downloads
+
+#### Desktop:
+
+Download the .jar file available [here](https://github.com/Inferno214221/Combusted-Pixel-Dungeon/releases). Make sure you have [JRE](https://www.oracle.com/java/technologies/downloads/) installed to run it.
+
+Download and install the .apk file available [here](https://github.com/Inferno214221/Combusted-Pixel-Dungeon/releases).
 
 # Modding the Game
 

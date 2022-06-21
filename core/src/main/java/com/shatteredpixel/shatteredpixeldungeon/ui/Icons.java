@@ -39,6 +39,7 @@ public enum Icons {
 	PREFS,
 	SHPX,
 	CBPX,
+	RRPX,
 
 	//rankings and hero select icons, spacing for 16x16
 	STAIRS,
@@ -112,7 +113,8 @@ public enum Icons {
 	KRISTJAN,
 	CUBE_CODE,
 	PURIGRO,
-	ARCNOR;
+	ARCNOR,
+	SUPX;
 
 	public Image get() {
 		return get( this );
@@ -148,6 +150,9 @@ public enum Icons {
 				break;
 			case CBPX:
 				icon.frame( icon.texture.uvRectBySize( 152, 0, 18, 16 ) );
+				break;
+			case RRPX:
+				icon.frame( icon.texture.uvRectBySize( 170, 0, 16, 16 ) );
 				break;
 
 			case STAIRS:
@@ -354,6 +359,10 @@ public enum Icons {
 				break;
 			case CUBE_CODE:
 				icon.frame( icon.texture.uvRectBySize( 160, 96, 27, 30 ) );
+				icon.scale.set(PixelScene.align(0.49f));
+				break;
+			case SUPX:
+				icon.frame( icon.texture.uvRectBySize( 187, 96, 28, 19 ) );
 				icon.scale.set(PixelScene.align(0.49f));
 				break;
 

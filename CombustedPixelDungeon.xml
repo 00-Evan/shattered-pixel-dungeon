@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>/home/inferno214221/Documents/Programming/Java/PixelDungeon/Combusted Pixel Dungeon/Combusted-Pixel-Dungeon/desktop/build/libs/desktop-0.1.0.jar</jar>
+  <outfile>/home/inferno214221/Documents/Programming/Java/PixelDungeon/Combusted Pixel Dungeon/Combusted-Pixel-Dungeon/desktop/build/CombustedPD.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl></supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon>/home/inferno214221/Documents/Programming/Java/PixelDungeon/Combusted Pixel Dungeon/Combusted-Pixel-Dungeon/CombustedPD.ico</icon>
+  <singleInstance>
+    <mutexName>CombustedPixelDungeon</mutexName>
+    <windowTitle>Combusted Pixel Dungeon</windowTitle>
+  </singleInstance>
+  <jre>
+    <path>jre</path>
+    <bundledJre64Bit>false</bundledJre64Bit>
+    <bundledJreAsFallback>false</bundledJreAsFallback>
+    <minVersion></minVersion>
+    <maxVersion></maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+    <runtimeBits>64/32</runtimeBits>
+  </jre>
+</launch4jConfig>

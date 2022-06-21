@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.CBDv0_1_Changes;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.ChangeInfo;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_1_X_Changes;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_2_X_Changes;
@@ -114,6 +115,9 @@ public class ChangesScene extends PixelScene {
 				v0_2_X_Changes.addAllChanges(changeInfos);
 				v0_1_X_Changes.addAllChanges(changeInfos);
 				break;
+			case 6:
+				CBDv0_1_Changes.addAllChanges(changeInfos);
+				break;
 		}
 
 		ScrollPane list = new ScrollPane( new Component() ){
@@ -168,6 +172,20 @@ public class ChangesScene extends PixelScene {
 				panel.innerHeight() + 2);
 		list.scrollTo(0, 0);
 
+		StyledButton cbd1_0 = new StyledButton(Chrome.Type.GREY_BUTTON_TR, "CBD"){
+			@Override
+			protected void onClick() {
+				super.onClick();
+				if (changesSelected != 6) {
+					changesSelected = 6;
+					ShatteredPixelDungeon.seamlessResetScene();
+				}
+			}
+		};
+		if (changesSelected != 0) cbd1_0.textColor( 0xBBBBBB );
+		cbd1_0.setRect(list.left()-4f, list.bottom(), 22, changesSelected == 6 ? 19 : 15);
+		addToBack(cbd1_0);
+
 		StyledButton btn1_1 = new StyledButton(Chrome.Type.GREY_BUTTON_TR, "1.X"){
 			@Override
 			protected void onClick() {
@@ -179,7 +197,7 @@ public class ChangesScene extends PixelScene {
 			}
 		};
 		if (changesSelected != 0) btn1_1.textColor( 0xBBBBBB );
-		btn1_1.setRect(list.left()-4f, list.bottom(), 22, changesSelected == 0 ? 19 : 15);
+		btn1_1.setRect(cbd1_0.right() + 1, list.bottom(), 22, changesSelected == 0 ? 19 : 15);
 		addToBack(btn1_1);
 
 		StyledButton btn0_9 = new StyledButton(Chrome.Type.GREY_BUTTON_TR, "0.9"){
