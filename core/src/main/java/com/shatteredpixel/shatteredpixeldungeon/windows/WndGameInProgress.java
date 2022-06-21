@@ -103,7 +103,9 @@ public class WndGameInProgress extends Window {
 		pos += GAP;
 		statSlot( Messages.get(this, "gold"), info.goldCollected );
 		statSlot( Messages.get(this, "depth"), info.maxDepth );
-		if (!info.customSeed.isEmpty()){
+		if (info.daily) {
+			statSlot( Messages.get(this, "daily_for"), "_" + info.customSeed + "_" );
+		} else if (!info.customSeed.isEmpty()){
 			statSlot( Messages.get(this, "custom_seed"), "_" + info.customSeed + "_" );
 		} else {
 			statSlot( Messages.get(this, "dungeon_seed"), DungeonSeed.convertToCode(info.seed) );

@@ -181,6 +181,7 @@ public class SPDSettings extends GameSettings {
 	public static final String KEY_LAST_CLASS	= "last_class";
 	public static final String KEY_CHALLENGES	= "challenges";
 	public static final String KEY_CUSTOM_SEED	= "custom_seed";
+	public static final String KEY_LAST_DAILY	= "last_daily";
 	public static final String KEY_INTRO		= "intro";
 
 	public static final String KEY_SUPPORT_NAGGED= "support_nagged";
@@ -215,6 +216,14 @@ public class SPDSettings extends GameSettings {
 
 	public static String customSeed() {
 		return getString( KEY_CUSTOM_SEED, "", 20);
+	}
+
+	public static void lastDaily( long value ){
+		put( KEY_LAST_DAILY, value );
+	}
+
+	public static long lastDaily() {
+		return getLong( KEY_LAST_DAILY, 0);
 	}
 
 	public static void supportNagged( boolean value ) {

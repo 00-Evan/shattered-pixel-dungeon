@@ -126,7 +126,7 @@ public class GamesInProgress {
 		}
 	}
 
-	public static void set(int slot, int depth, int challenges, long seed, String customSeed,
+	public static void set(int slot, int depth, int challenges, long seed, String customSeed, boolean daily,
 	                       Hero hero) {
 		Info info = new Info();
 		info.slot = slot;
@@ -136,6 +136,7 @@ public class GamesInProgress {
 
 		info.seed = seed;
 		info.customSeed = customSeed;
+		info.daily = daily;
 		
 		info.level = hero.lvl;
 		info.str = hero.STR;
@@ -171,6 +172,7 @@ public class GamesInProgress {
 
 		public long seed;
 		public String customSeed;
+		public boolean daily;
 		
 		public int level;
 		public int str;

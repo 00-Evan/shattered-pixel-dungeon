@@ -64,6 +64,12 @@ public enum Rankings {
 	public void submit( boolean win, Class cause ) {
 
 		load();
+
+		//TODO need separate storage for daily data
+		//when loading data, make sure to check for latestDaily errors and correct
+		if (Dungeon.daily){
+			return;
+		}
 		
 		Record rec = new Record();
 		
@@ -185,13 +191,15 @@ public enum Rankings {
 		return Statistics.totalScore;
 	}
 
-	public static final String HERO = "hero";
-	public static final String STATS = "stats";
-	public static final String BADGES = "badges";
-	public static final String HANDLERS = "handlers";
-	public static final String CHALLENGES = "challenges";
+	public static final String HERO         = "hero";
+	public static final String STATS        = "stats";
+	public static final String BADGES       = "badges";
+	public static final String HANDLERS     = "handlers";
+	public static final String CHALLENGES   = "challenges";
 	public static final String GAME_VERSION = "game_version";
-	public static final String SEED = "seed";
+	public static final String SEED         = "seed";
+	public static final String CUSTOM_SEED	= "custom_seed";
+	public static final String DAILY	    = "daily";
 
 	public void saveGameData(Record rec){
 		rec.gameData = new Bundle();
@@ -248,6 +256,8 @@ public enum Rankings {
 		rec.gameData.put( GAME_VERSION, Dungeon.initialVersion );
 
 		rec.gameData.put( SEED, Dungeon.seed );
+		rec.gameData.put( CUSTOM_SEED, Dungeon.customSeedText );
+		rec.gameData.put( DAILY, Dungeon.daily );
 	}
 
 	public void loadGameData(Record rec){
@@ -284,8 +294,12 @@ public enum Rankings {
 
 		if (rec.gameData.contains(SEED)){
 			Dungeon.seed = rec.gameData.getLong(SEED);
+			Dungeon.customSeedText = rec.gameData.getString(CUSTOM_SEED);
+			Dungeon.daily = rec.gameData.getBoolean(DAILY);
 		} else {
 			Dungeon.seed = -1;
+			Dungeon.customSeedText = "";
+			Dungeon.daily = false;
 		}
 	}
 	

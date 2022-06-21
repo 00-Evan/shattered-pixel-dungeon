@@ -216,7 +216,13 @@ public class WndRanking extends WndTabbed {
 				pos = statSlot(this, Messages.get(this, "ascent"), num.format(Statistics.highestAscent), pos);
 			}
 			if (Dungeon.seed != -1) {
-				pos = statSlot(this, Messages.get(this, "seed"), DungeonSeed.convertToCode(Dungeon.seed), pos);
+				if (Dungeon.daily){
+					pos = statSlot(this, Messages.get(this, "daily_for"), "_" + DungeonSeed.convertToCode(Dungeon.seed) + "_", pos);
+				} else if (!Dungeon.customSeedText.isEmpty()){
+					pos = statSlot(this, Messages.get(this, "custom_seed"), "_" + DungeonSeed.convertToCode(Dungeon.seed) + "_", pos);
+				} else {
+					pos = statSlot(this, Messages.get(this, "seed"), DungeonSeed.convertToCode(Dungeon.seed), pos);
+				}
 			} else {
 				pos += GAP + 5;
 			}

@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTextInput;
 import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndChallenges;
@@ -420,8 +421,100 @@ public class HeroSelectScene extends PixelScene {
 				buttons.add(seedButton);
 				add(seedButton);
 
-				//TODO does nothing atm
-				StyledButton dailyButton = new StyledButton(Chrome.Type.BLANK, Messages.get(HeroSelectScene.class, "daily"), 6);
+				StyledButton dailyButton = new StyledButton(Chrome.Type.BLANK, Messages.get(HeroSelectScene.class, "daily"), 6){
+
+					private static final long SECOND = 1000;
+					private static final long MINUTE = 60 * SECOND;
+					private static final long HOUR = 60 * MINUTE;
+					private static final long DAY = 24 * HOUR;
+
+					@Override
+					protected void onClick() {
+						super.onClick();
+
+						long diff = (SPDSettings.lastDaily() + DAY) - Game.realTime;
+						if (diff > 0){
+							if (diff > 30*HOUR){
+								ShatteredPixelDungeon.scene().addToFront(new WndMessage(Messages.get(HeroSelectScene.class, "daily_unavailable_long", (diff / DAY)+1)));
+							} else {
+								ShatteredPixelDungeon.scene().addToFront(new WndMessage(Messages.get(HeroSelectScene.class, "daily_unavailable")));
+							}
+							return;
+						}
+
+						for (GamesInProgress.Info game : GamesInProgress.checkAll()){
+							if (game.daily){
+								ShatteredPixelDungeon.scene().addToFront(new WndMessage(Messages.get(HeroSelectScene.class, "daily_existing")));
+								return;
+							}
+						}
+
+						Image icon = Icons.get(Icons.CALENDAR);
+						icon.hardlight(0.5f, 1f, 2f);
+						ShatteredPixelDungeon.scene().addToFront(new WndOptions(
+								icon,
+								Messages.get(HeroSelectScene.class, "daily"),
+								Messages.get(HeroSelectScene.class, "daily_desc"),
+								Messages.get(HeroSelectScene.class, "daily_yes"),
+								Messages.get(HeroSelectScene.class, "daily_no")){
+							@Override
+							protected void onSelect(int index) {
+								if (index == 0){
+									long time = Game.realTime - (Game.realTime % DAY);
+
+									//earliest possible daily for v1.3.0 is June 20 2022
+									//which is 19,163 days after Jan 1 1970
+									time = Math.max(time, 19_163 * DAY);
+
+									SPDSettings.lastDaily(time);
+
+									Dungeon.hero = null;
+									Dungeon.daily = true;
+									ActionIndicator.action = null;
+									InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
+
+									Game.switchScene( InterlevelScene.class );
+								}
+							}
+						});
+					}
+
+					private long timeToUpdate = 0;
+
+					@Override
+					public void update() {
+						super.update();
+
+						if (Game.realTime > timeToUpdate){
+							long diff = (SPDSettings.lastDaily() + DAY) - Game.realTime;
+							if (diff > 0){
+								//<1 minute
+								if (diff < MINUTE){
+									text(Messages.get(HeroSelectScene.class, "daily_seconds", (diff / SECOND)+1));
+									timeToUpdate = Game.realTime + SECOND;
+								//<1 hour
+								} else if (diff < HOUR){
+									text(Messages.get(HeroSelectScene.class, "daily_minutes", (diff / MINUTE)+1));
+									timeToUpdate = Game.realTime + 5*SECOND;
+								//<30 hours (a few extra in case of timezone shenanigans)
+								} else if (diff < (DAY + 6*HOUR)) {
+									text(Messages.get(HeroSelectScene.class, "daily_hours", (diff / HOUR)+1));
+									timeToUpdate = Game.realTime + 5*MINUTE;
+								//>30 hours, probably a cheater!
+								} else {
+									text(Messages.get(HeroSelectScene.class, "daily_30_hours"));
+									timeToUpdate = Game.realTime + 20*MINUTE;
+								}
+								textColor(0x888888);
+							} else {
+								text(Messages.get(HeroSelectScene.class, "daily"));
+								textColor(0xFFFFFF);
+								timeToUpdate = Long.MAX_VALUE;
+							}
+						}
+
+					}
+				};
 				dailyButton.leftJustify = true;
 				dailyButton.icon(Icons.get(Icons.CALENDAR));
 				add(dailyButton);
