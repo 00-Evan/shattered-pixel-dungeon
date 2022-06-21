@@ -236,7 +236,7 @@ public enum HeroClass {
 		Dungeon.quickslot.setSlot(1, knives);
 
 		new VelvetPouch().collect();
-		Dungeon.LimitedDrops.VELVET_POUCH.drop();
+		Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
 
 		new ScrollOfMagicMapping().identify();
 		new PotionOfInvisibility().identify();
