@@ -217,9 +217,9 @@ public class WndRanking extends WndTabbed {
 			}
 			if (Dungeon.seed != -1) {
 				if (Dungeon.daily){
-					pos = statSlot(this, Messages.get(this, "daily_for"), "_" + DungeonSeed.convertToCode(Dungeon.seed) + "_", pos);
+					pos = statSlot(this, Messages.get(this, "daily_for"), "_" + Dungeon.customSeedText + "_", pos);
 				} else if (!Dungeon.customSeedText.isEmpty()){
-					pos = statSlot(this, Messages.get(this, "custom_seed"), "_" + DungeonSeed.convertToCode(Dungeon.seed) + "_", pos);
+					pos = statSlot(this, Messages.get(this, "custom_seed"), "_" + Dungeon.customSeedText + "_", pos);
 				} else {
 					pos = statSlot(this, Messages.get(this, "seed"), DungeonSeed.convertToCode(Dungeon.seed), pos);
 				}
@@ -236,7 +236,8 @@ public class WndRanking extends WndTabbed {
 
 			int buttontop = HEIGHT - 16;
 
-			if (Dungeon.seed != -1 && (DeviceCompat.isDebug() || Badges.isUnlocked(Badges.Badge.VICTORY))){
+			if (Dungeon.seed != -1 && !Dungeon.daily &&
+					(DeviceCompat.isDebug() || Badges.isUnlocked(Badges.Badge.VICTORY))){
 				final Image icon = Icons.get(Icons.SEED);
 				RedButton btnSeed = new RedButton(Messages.get(this, "copy_seed")){
 					@Override

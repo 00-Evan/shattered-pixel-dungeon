@@ -46,6 +46,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.UUID;
 
 public enum Rankings {
@@ -61,15 +62,16 @@ public enum Rankings {
 	public int totalNumber;
 	public int wonNumber;
 
+	//The number of runs which are only present locally, not in the cloud
+	public int localTotal;
+	public int localWon;
+
+	public Record latestDaily;
+	public LinkedHashMap<Long, Integer> dailyScoreHistory = new LinkedHashMap<>();
+
 	public void submit( boolean win, Class cause ) {
 
 		load();
-
-		//TODO need separate storage for daily data
-		//when loading data, make sure to check for latestDaily errors and correct
-		if (Dungeon.daily){
-			return;
-		}
 		
 		Record rec = new Record();
 		
@@ -87,13 +89,21 @@ public enum Rankings {
 		}
 		rec.score       = calculateScore();
 		rec.customSeed  = Dungeon.customSeedText;
+		rec.daily       = Dungeon.daily;
 
 		Badges.validateHighScore( rec.score );
 		
 		INSTANCE.saveGameData(rec);
 
 		rec.gameID = UUID.randomUUID().toString();
-		
+
+		if (rec.daily){
+			latestDaily = rec;
+			dailyScoreHistory.put(Dungeon.seed, rec.score);
+			save();
+			return;
+		}
+
 		records.add( rec );
 		
 		Collections.sort( records, scoreComparator );
@@ -308,12 +318,29 @@ public enum Rankings {
 	private static final String TOTAL	= "total";
 	private static final String WON     = "won";
 
+	public static final String LATEST_DAILY	        = "latest_daily";
+	public static final String DAILY_HISTORY_DATES  = "daily_history_dates";
+	public static final String DAILY_HISTORY_SCORES = "daily_history_scores";
+
 	public void save() {
 		Bundle bundle = new Bundle();
 		bundle.put( RECORDS, records );
 		bundle.put( LATEST, lastRecord );
 		bundle.put( TOTAL, totalNumber );
 		bundle.put( WON, wonNumber );
+
+		bundle.put(LATEST_DAILY, latestDaily);
+
+		long[] dates = new long[dailyScoreHistory.size()];
+		int[] scores = new int[dailyScoreHistory.size()];
+		int i = 0;
+		for (Long l : dailyScoreHistory.keySet()){
+			dates[i] = l;
+			scores[i] = dailyScoreHistory.get(l);
+			i++;
+		}
+		bundle.put(DAILY_HISTORY_DATES, dates);
+		bundle.put(DAILY_HISTORY_SCORES, scores);
 
 		try {
 			FileUtils.bundleToFile( RANKINGS_FILE, bundle);
@@ -353,6 +380,23 @@ public enum Rankings {
 				}
 			}
 
+			if (bundle.contains(LATEST_DAILY)){
+				latestDaily = (Record) bundle.get(LATEST_DAILY);
+
+				dailyScoreHistory.clear();
+				int[] scores = bundle.getIntArray(DAILY_HISTORY_SCORES);
+				int i = 0;
+				long latestDate = 0;
+				for (long date : bundle.getLongArray(DAILY_HISTORY_DATES)){
+					dailyScoreHistory.put(date, scores[i]);
+					if (date > latestDate) latestDate = date;
+					i++;
+				}
+				if (latestDate > SPDSettings.lastDaily()){
+					SPDSettings.lastDaily(latestDate);
+				}
+			}
+
 		} catch (IOException e) {
 		}
 	}
@@ -370,6 +414,7 @@ public enum Rankings {
 		private static final String DATA	= "gameData";
 		private static final String ID      = "gameID";
 		private static final String SEED    = "custom_seed";
+		private static final String DAILY   = "daily";
 
 		public Class cause;
 		public boolean win;
@@ -387,6 +432,7 @@ public enum Rankings {
 		public int score;
 
 		public String customSeed;
+		public boolean daily;
 
 		public String desc(){
 			if (win){
@@ -419,7 +465,8 @@ public enum Rankings {
 			win		    = bundle.getBoolean( WIN );
 			score	    = bundle.getInt( SCORE );
 			customSeed  = bundle.getString( SEED );
-			
+			daily       = bundle.getBoolean( DAILY );
+
 			heroClass	= bundle.getEnum( CLASS, HeroClass.class );
 			armorTier	= bundle.getInt( TIER );
 			herolevel   = bundle.getInt( LEVEL );
@@ -441,7 +488,8 @@ public enum Rankings {
 			bundle.put( WIN, win );
 			bundle.put( SCORE, score );
 			bundle.put( SEED, customSeed );
-			
+			bundle.put( DAILY, daily );
+
 			bundle.put( CLASS, heroClass );
 			bundle.put( TIER, armorTier );
 			bundle.put( LEVEL, herolevel );
@@ -456,6 +504,7 @@ public enum Rankings {
 	public static final Comparator<Record> scoreComparator = new Comparator<Rankings.Record>() {
 		@Override
 		public int compare( Record lhs, Record rhs ) {
+			//this covers custom seeded runs and dailies
 			if (rhs.customSeed.isEmpty() && !lhs.customSeed.isEmpty()){
 				return +1;
 			} else if (lhs.customSeed.isEmpty() && !rhs.customSeed.isEmpty()){
