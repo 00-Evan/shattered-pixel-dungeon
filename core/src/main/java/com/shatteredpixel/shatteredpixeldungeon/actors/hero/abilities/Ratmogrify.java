@@ -204,6 +204,7 @@ public class Ratmogrify extends ArmorAbility {
 				original.clearTime();
 				GameScene.add(original);
 
+				EXP = 0;
 				destroy();
 				sprite.killAndErase();
 				CellEmitter.get(original.pos).burst(Speck.factory(Speck.WOOL), 4);
