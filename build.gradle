@@ -14,8 +14,8 @@ allprojects {
         appName = 'Shattered Pixel Dungeon'
         appPackageName = 'com.shatteredpixel.shatteredpixeldungeon'
 
-        appVersionCode = 633
-        appVersionName = '1.3.0-ALPHA-3'
+        appVersionCode = 634
+        appVersionName = '1.3.0-BETA-1'
 
         appJavaCompatibility = JavaVersion.VERSION_1_8
 

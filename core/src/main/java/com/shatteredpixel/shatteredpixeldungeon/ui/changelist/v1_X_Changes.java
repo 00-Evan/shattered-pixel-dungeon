@@ -94,24 +94,28 @@ public class v1_X_Changes {
 				"Expect dev commentary here in the future."));*/
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "To-Do",
-				"There are still a few bits and pieces left to finish up before v1.3 is released:\n\n" +
-				"_-_ Final work on daily seeded runs\n" +
+				"There are still a few bits and pieces left to finish up before v1.3 is released, mainly focused on interface work:\n\n" +
 				"_-_ A new radial selection menu to make using quickslots and the inventory easier on controller\n" +
+				"_-_ Improvements to default controller bindings, and some improved button functionality\n" +
 				"_-_ Additional enemy info on the top-left of the screen on full UI mode\n" +
-				"_-_ Improvements to some of the game's interfaces on full UI mode" +
+				"_-_ Improvements to some of the game's interfaces on full UI mode\n" +
 				"_-_ Translation work, from volunteers on the game's Transifex project.\n" +
 				"_-_ Fixes for any bugs that gat reported"));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.SEED), "Seeded Runs!",
+		Image ic = Icons.get(Icons.SEED);
+		ic.hardlight(1f, 1.5f, 0.67f);
+		changes.addButton( new ChangeButton(ic, "Seeded Runs!",
 				"_It's now possible to enter a custom seed when starting a new game!_\n\n" +
 				"Seeds are used to determine dungeon generation, and two runs with the same seed and game version will produce the exact same dungeon to play though.\n\n" +
 				"If you don't enter a custom seed, the game will use a random one to generate a random dungeon, just like it did prior to this update.\n\n" +
 				"Note that only players who have won at least once can enter custom seeds, and games with custom seeds are not eligible to appear in rankings."));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.CALENDAR), "Daily Runs!",
+		ic = Icons.get(Icons.CALENDAR);
+		ic.hardlight(0.5f, 1f, 2f);
+		changes.addButton( new ChangeButton(ic, "Daily Runs!",
 				"_Every day there is a specific seeded run that's available to all players!_\n\n" +
-				"The daily run makes it easy to compete again friends or other folks on the internet, without having to coordinate and share a specific seed. Note that dailies currently do not have online leaderboard functionality, but I am open to adding it in the future.\n\n" +
-				"_Note that daily runs have not yet been implemented._"));
+				"The daily run makes it easy to compete again friends or other folks on the internet, without having to coordinate and share a specific seed.\n\n" +
+				"The game does keep track of your previous daily scores, but at the moment there is no leaderboard. You must win at least once to have access to daily runs."));
 
 		changes.addButton( new ChangeButton(BadgeBanner.image( Badges.Badge.HIGH_SCORE_2.image ), "New Score System!",
 				"_The game's scoring system has been overhauled to go along with seeded runs and dailies!_\n\n" +
@@ -173,7 +177,11 @@ public class v1_X_Changes {
 				"_-_ Added a slight delay to chasm jump confirmation window, to prevent mistaps\n" +
 				"_-_ Progress is now shown for badges that need to be unlocked with multiple heroes\n" +
 				"_-_ Multiple unlocked badges can now be shown at once\n" +
-				"_-_ Various minor tweaks to item and level generation to support seeded runs"));
+				"_-_ Various minor tweaks to item and level generation to support seeded runs\n" +
+				"_-_ Keys now appear on top of other items in pit rooms\n" +
+				"_-_ Large floors now spawn two torches with the 'into darkness' challenge enabled\n" +
+				"_-_ Blazing champions no longer explode if they are killed by chasms\n" +
+				"_-_ Red sentries no longer fire on players with lots inventories"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed\n" +
@@ -183,7 +191,9 @@ public class v1_X_Changes {
 				"_-_ Exploits that could force DM-300 to dig outside of its arena\n" +
 				"_-_ Wraiths from spectral necromancers not always dying when the necromancer dies\n" +
 				"_-_ The mystical charge talent giving more charge than intended\n" +
-				"_-_ Ring of might HP bonus not applying in specific cases"));
+				"_-_ Ring of might HP bonus not applying in specific cases\n" +
+				"_-_ Earthen guardian not being immune to poison, gas, and bleed\n" +
+				"_-_ Transmogrified enemies awarding exp when the effect ends"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight(CharSprite.POSITIVE);
@@ -195,7 +205,7 @@ public class v1_X_Changes {
 				"_- Fire Everything_ now has a 25% chance per point to let a wand be usable 3 times\n" +
 				"_- Conserved Magic_ no longer lets a wand be usable 3 times, now grants a chance for wild magic to take 0 turns instead\n\n" +
 				"_- Elemental power_ boost per point up to 25%, from 20%\n" +
-				"_- Reactive Barrier_ shielding per point up to 2.5, from 20, and max targets now increases by 1 per point.\n\n" +
+				"_- Reactive Barrier_ shielding per point up to 2.5, from 2, and max targets now increases by 1 per point.\n\n" +
 				"_- Shadow Clone_ now costs 35 energy, down from 50. Initial HP down to 80 from 100\n" +
 				"_- Shadow Blade_ damage per point up to 8%, from 7.5%\n" +
 				"_- Cloned Armor_ armor per point down to 12%, from 15%\n\n" +
