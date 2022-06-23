@@ -241,7 +241,7 @@ public class v1_X_Changes {
 				"_- Smoke Bomb_ energy cost up to 50 from 35\n" +
 				"_- Smoke Bomb_ max range up to 10 from 6"));
 
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARMOR_LEATHER, new ItemSprite.Glowing(0x000000)), "Curse Buffs",
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARMOR_LEATHER, new ItemSprite.Glowing(0x000000)), "Curse Nerfs",
 				"Two of the most harsh curses have been nerfed (i.e. made better for the player):\n\n" +
 				"_- Anti-Entopy_ now spreads less fire to the player, and freezes all adjacent tiles instead of just the enemy.\n\n" +
 				"_- Sacrifice_ now more heavily scales on current HP, bleeding for a bit more at high health, and very little at medium to low health."));

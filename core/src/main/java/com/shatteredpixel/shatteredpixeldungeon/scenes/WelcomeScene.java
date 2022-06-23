@@ -189,7 +189,7 @@ public class WelcomeScene extends PixelScene {
 		} else {
 			message = Messages.get(this, "what_msg");
 		}
-		message = "Greetings Alpha testers!\n\nv1.3 is getting close to release, so here's an early look! Almost all of v1.3's functionality is implemented, check the changes screen for full details.\n\nMake sure to report any bugs to me so I can get them fixed ASAP!";
+		message = "Greetings Beta testers! v1.3.0 is almost content complete, so it's about time for a beta!\n\nv1.3.0 includes a bunch of new functionality, including custom seeds, daily runs, scoring improvements, a harder ascension route, UI improvements, new badges, and balance changes. Check the changes screen for full details!";
 		text.text(message, Math.min(w-20, 300));
 		float textSpace = okay.top() - topRegion - 4;
 		text.setPos((w - text.width()) / 2f, (topRegion + 2) + (textSpace - text.height())/2);
