@@ -120,6 +120,20 @@ public class WndKeyBindings extends Window {
 		add(scrollingList);
 
 		int y = 0;
+
+		if (controller){
+			RenderedTextBlock controllerInfo = PixelScene.renderTextBlock(Messages.get(this, "controller_info"), 6);
+			controllerInfo.maxWidth(WIDTH);
+			controllerInfo.setPos(0, 2);
+			controllerInfo.hardlight(TITLE_COLOR);
+			bindingsList.add(controllerInfo);
+			y = (int)controllerInfo.bottom()+3;
+
+			ColorBlock sep = new ColorBlock(WIDTH, 1, 0xFF222222);
+			sep.y = y;
+			bindingsList.add(sep);
+		}
+
 		for (GameAction action : GameAction.allActions()){
 			//start at 1. No bindings for NONE
 			if (action.code() < 1) continue;
