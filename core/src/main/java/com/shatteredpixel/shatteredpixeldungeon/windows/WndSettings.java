@@ -251,24 +251,6 @@ public class WndSettings extends WndTabbed {
 			}
 			add(chkFullscreen);
 
-			/*if ((int)Math.ceil(2* Game.density) < PixelScene.maxDefaultZoom) {
-				optScale = new OptionSlider(Messages.get(this, "scale"),
-						(int)Math.ceil(2* Game.density)+ "X",
-						PixelScene.maxDefaultZoom + "X",
-						(int)Math.ceil(2* Game.density),
-						PixelScene.maxDefaultZoom ) {
-					@Override
-					protected void onChange() {
-						if (getSelectedValue() != SPDSettings.scale()) {
-							SPDSettings.scale(getSelectedValue());
-							ShatteredPixelDungeon.seamlessResetScene();
-						}
-					}
-				};
-				optScale.setSelectedValue(PixelScene.defaultZoom);
-				add(optScale);
-			}*/
-
 			if (DeviceCompat.isAndroid() && PixelScene.maxScreenZoom >= 2) {
 				chkSaver = new CheckBox(Messages.get(this, "saver")) {
 					@Override
