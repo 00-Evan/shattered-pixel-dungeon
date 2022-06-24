@@ -80,9 +80,24 @@ public class v1_X_Changes {
 	}
 
 	public static void add_v1_3_Changes( ArrayList<ChangeInfo> changeInfos ) {
-		ChangeInfo changes = new ChangeInfo("v1.3", true, "");
+		ChangeInfo changes = new ChangeInfo("v1.3-BETA", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-2", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (Caused by Beta)\n" +
+				"_-_ Various rare crash issues\n" +
+				"_-_ Daily runs preventing regular runs from being started\n" +
+				"_-_ Duplicate crystal keys from pit rooms\n" +
+				"_-_ Hostile Champions challenge slightly affecting level generation"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -100,7 +115,7 @@ public class v1_X_Changes {
 				"_-_ Additional enemy info on the top-left of the screen on full UI mode\n" +
 				"_-_ Improvements to some of the game's interfaces on full UI mode\n" +
 				"_-_ Translation work, from volunteers on the game's Transifex project.\n" +
-				"_-_ Fixes for any bugs that gat reported"));
+				"_-_ Fixes for any bugs that get reported"));
 
 		Image ic = Icons.get(Icons.SEED);
 		ic.hardlight(1f, 1.5f, 0.67f);
@@ -181,7 +196,7 @@ public class v1_X_Changes {
 				"_-_ Keys now appear on top of other items in pit rooms\n" +
 				"_-_ Large floors now spawn two torches with the 'into darkness' challenge enabled\n" +
 				"_-_ Blazing champions no longer explode if they are killed by chasms\n" +
-				"_-_ Red sentries no longer fire on players with lots inventories"));
+				"_-_ Red sentries no longer fire on players with lost inventories"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed\n" +
@@ -243,7 +258,7 @@ public class v1_X_Changes {
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARMOR_LEATHER, new ItemSprite.Glowing(0x000000)), "Curse Nerfs",
 				"Two of the most harsh curses have been nerfed (i.e. made better for the player):\n\n" +
-				"_- Anti-Entopy_ now spreads less fire to the player, and freezes all adjacent tiles instead of just the enemy.\n\n" +
+				"_- Anti-Entropy_ now spreads less fire to the player, and freezes all adjacent tiles instead of just the enemy.\n\n" +
 				"_- Sacrifice_ now more heavily scales on current HP, bleeding for a bit more at high health, and very little at medium to low health."));
 
 		changes.addButton( new ChangeButton(new Image(new ElementalSprite.Fire()), "Floor 16 Adjustments",
