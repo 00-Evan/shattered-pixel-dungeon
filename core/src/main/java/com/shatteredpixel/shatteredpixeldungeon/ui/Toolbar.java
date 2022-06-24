@@ -74,7 +74,13 @@ public class Toolbar extends Component {
 
 		height = btnInventory.height();
 	}
-	
+
+	@Override
+	public synchronized void destroy() {
+		super.destroy();
+		if (instance == this) instance = null;
+	}
+
 	@Override
 	protected void createChildren() {
 
@@ -406,8 +412,10 @@ public class Toolbar extends Component {
 	private static CellSelector.Listener informer = new CellSelector.Listener() {
 		@Override
 		public void onSelect( Integer cell ) {
-			instance.examining = false;
-			GameScene.examineCell( cell );
+			if (instance != null) {
+				instance.examining = false;
+				GameScene.examineCell(cell);
+			}
 		}
 		@Override
 		public String prompt() {
@@ -527,7 +535,7 @@ public class Toolbar extends Component {
 		@Override
 		public synchronized void destroy() {
 			super.destroy();
-			SWAP_INSTANCE = null;
+			if (SWAP_INSTANCE == this) SWAP_INSTANCE = null;
 		}
 
 		@Override
