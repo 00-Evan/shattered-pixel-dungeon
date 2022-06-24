@@ -117,7 +117,7 @@ public class WandOfBlastWave extends DamageWand {
 
 		boolean collided = dist == trajectory.dist;
 
-		if (dist == 0
+		if (dist <= 0
 				|| ch.rooted
 				|| ch.properties().contains(Char.Property.IMMOVABLE)) return;
 
