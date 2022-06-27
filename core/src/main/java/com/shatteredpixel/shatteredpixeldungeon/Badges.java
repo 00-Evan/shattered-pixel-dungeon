@@ -314,18 +314,22 @@ public class Badges {
 			local.add( badge );
 		}
 		if (!local.contains( Badge.MONSTERS_SLAIN_2 ) && Statistics.enemiesSlain >= 50) {
+			if (badge != null) unlock(badge);
 			badge = Badge.MONSTERS_SLAIN_2;
 			local.add( badge );
 		}
 		if (!local.contains( Badge.MONSTERS_SLAIN_3 ) && Statistics.enemiesSlain >= 100) {
+			if (badge != null) unlock(badge);
 			badge = Badge.MONSTERS_SLAIN_3;
 			local.add( badge );
 		}
 		if (!local.contains( Badge.MONSTERS_SLAIN_4 ) && Statistics.enemiesSlain >= 250) {
+			if (badge != null) unlock(badge);
 			badge = Badge.MONSTERS_SLAIN_4;
 			local.add( badge );
 		}
 		if (!local.contains( Badge.MONSTERS_SLAIN_5 ) && Statistics.enemiesSlain >= 500) {
+			if (badge != null) unlock(badge);
 			badge = Badge.MONSTERS_SLAIN_5;
 			local.add( badge );
 		}
@@ -337,22 +341,27 @@ public class Badges {
 		Badge badge = null;
 		
 		if (!local.contains( Badge.GOLD_COLLECTED_1 ) && Statistics.goldCollected >= 250) {
+			if (badge != null) unlock(badge);
 			badge = Badge.GOLD_COLLECTED_1;
 			local.add( badge );
 		}
 		if (!local.contains( Badge.GOLD_COLLECTED_2 ) && Statistics.goldCollected >= 1000) {
+			if (badge != null) unlock(badge);
 			badge = Badge.GOLD_COLLECTED_2;
 			local.add( badge );
 		}
 		if (!local.contains( Badge.GOLD_COLLECTED_3 ) && Statistics.goldCollected >= 2500) {
+			if (badge != null) unlock(badge);
 			badge = Badge.GOLD_COLLECTED_3;
 			local.add( badge );
 		}
 		if (!local.contains( Badge.GOLD_COLLECTED_4 ) && Statistics.goldCollected >= 7500) {
+			if (badge != null) unlock(badge);
 			badge = Badge.GOLD_COLLECTED_4;
 			local.add( badge );
 		}
 		if (!local.contains( Badge.GOLD_COLLECTED_5 ) && Statistics.goldCollected >= 15_000) {
+			if (badge != null) unlock(badge);
 			badge = Badge.GOLD_COLLECTED_5;
 			local.add( badge );
 		}
@@ -368,18 +377,22 @@ public class Badges {
 			local.add( badge );
 		}
 		if (!local.contains( Badge.LEVEL_REACHED_2 ) && Dungeon.hero.lvl >= 12) {
+			if (badge != null) unlock(badge);
 			badge = Badge.LEVEL_REACHED_2;
 			local.add( badge );
 		}
 		if (!local.contains( Badge.LEVEL_REACHED_3 ) && Dungeon.hero.lvl >= 18) {
+			if (badge != null) unlock(badge);
 			badge = Badge.LEVEL_REACHED_3;
 			local.add( badge );
 		}
 		if (!local.contains( Badge.LEVEL_REACHED_4 ) && Dungeon.hero.lvl >= 24) {
+			if (badge != null) unlock(badge);
 			badge = Badge.LEVEL_REACHED_4;
 			local.add( badge );
 		}
 		if (!local.contains( Badge.LEVEL_REACHED_5 ) && Dungeon.hero.lvl >= 30) {
+			if (badge != null) unlock(badge);
 			badge = Badge.LEVEL_REACHED_5;
 			local.add( badge );
 		}
@@ -395,18 +408,22 @@ public class Badges {
 			local.add( badge );
 		}
 		if (!local.contains( Badge.STRENGTH_ATTAINED_2 ) && Dungeon.hero.STR >= 14) {
+			if (badge != null) unlock(badge);
 			badge = Badge.STRENGTH_ATTAINED_2;
 			local.add( badge );
 		}
 		if (!local.contains( Badge.STRENGTH_ATTAINED_3 ) && Dungeon.hero.STR >= 16) {
+			if (badge != null) unlock(badge);
 			badge = Badge.STRENGTH_ATTAINED_3;
 			local.add( badge );
 		}
 		if (!local.contains( Badge.STRENGTH_ATTAINED_4 ) && Dungeon.hero.STR >= 18) {
+			if (badge != null) unlock(badge);
 			badge = Badge.STRENGTH_ATTAINED_4;
 			local.add( badge );
 		}
 		if (!local.contains( Badge.STRENGTH_ATTAINED_5 ) && Dungeon.hero.STR >= 20) {
+			if (badge != null) unlock(badge);
 			badge = Badge.STRENGTH_ATTAINED_5;
 			local.add( badge );
 		}
@@ -422,18 +439,22 @@ public class Badges {
 			local.add( badge );
 		}
 		if (!local.contains( Badge.FOOD_EATEN_2 ) && Statistics.foodEaten >= 20) {
+			if (badge != null) unlock(badge);
 			badge = Badge.FOOD_EATEN_2;
 			local.add( badge );
 		}
 		if (!local.contains( Badge.FOOD_EATEN_3 ) && Statistics.foodEaten >= 30) {
+			if (badge != null) unlock(badge);
 			badge = Badge.FOOD_EATEN_3;
 			local.add( badge );
 		}
 		if (!local.contains( Badge.FOOD_EATEN_4 ) && Statistics.foodEaten >= 40) {
+			if (badge != null) unlock(badge);
 			badge = Badge.FOOD_EATEN_4;
 			local.add( badge );
 		}
 		if (!local.contains( Badge.FOOD_EATEN_5 ) && Statistics.foodEaten >= 50) {
+			if (badge != null) unlock(badge);
 			badge = Badge.FOOD_EATEN_5;
 			local.add( badge );
 		}
@@ -449,18 +470,22 @@ public class Badges {
 			local.add( badge );
 		}
 		if (!local.contains( Badge.ITEMS_CRAFTED_2 ) && Statistics.itemsCrafted >= 8) {
+			if (badge != null) unlock(badge);
 			badge = Badge.ITEMS_CRAFTED_2;
 			local.add( badge );
 		}
 		if (!local.contains( Badge.ITEMS_CRAFTED_3 ) && Statistics.itemsCrafted >= 15) {
+			if (badge != null) unlock(badge);
 			badge = Badge.ITEMS_CRAFTED_3;
 			local.add( badge );
 		}
 		if (!local.contains( Badge.ITEMS_CRAFTED_4 ) && Statistics.itemsCrafted >= 24) {
+			if (badge != null) unlock(badge);
 			badge = Badge.ITEMS_CRAFTED_4;
 			local.add( badge );
 		}
 		if (!local.contains( Badge.ITEMS_CRAFTED_5 ) && Statistics.itemsCrafted >= 35) {
+			if (badge != null) unlock(badge);
 			badge = Badge.ITEMS_CRAFTED_5;
 			local.add( badge );
 		}
@@ -497,18 +522,22 @@ public class Badges {
 			local.add( badge );
 		}
 		if (!local.contains( Badge.ITEM_LEVEL_2 ) && item.level() >= 6) {
+			if (badge != null) unlock(badge);
 			badge = Badge.ITEM_LEVEL_2;
 			local.add( badge );
 		}
 		if (!local.contains( Badge.ITEM_LEVEL_3 ) && item.level() >= 9) {
+			if (badge != null) unlock(badge);
 			badge = Badge.ITEM_LEVEL_3;
 			local.add( badge );
 		}
 		if (!local.contains( Badge.ITEM_LEVEL_4 ) && item.level() >= 12) {
+			if (badge != null) unlock(badge);
 			badge = Badge.ITEM_LEVEL_4;
 			local.add( badge );
 		}
 		if (!local.contains( Badge.ITEM_LEVEL_5 ) && item.level() >= 15) {
+			if (badge != null) unlock(badge);
 			badge = Badge.ITEM_LEVEL_5;
 			local.add( badge );
 		}
@@ -908,18 +937,22 @@ public class Badges {
 			local.add( badge );
 		}
 		if (score >= 25_000) {
+			unlock(badge);
 			badge = Badge.HIGH_SCORE_2;
 			local.add( badge );
 		}
 		if (score >= 100_000) {
+			unlock(badge);
 			badge = Badge.HIGH_SCORE_3;
 			local.add( badge );
 		}
 		if (score >= 250_000) {
+			unlock(badge);
 			badge = Badge.HIGH_SCORE_4;
 			local.add( badge );
 		}
 		if (score >= 1_000_000) {
+			unlock(badge);
 			badge = Badge.HIGH_SCORE_5;
 			local.add( badge );
 		}
