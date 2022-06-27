@@ -173,12 +173,4 @@ public class Chasm implements Hero.Doom {
 		}
 	}
 
-	//pre-1.3.0
-	public static class FallBleed extends Bleeding implements Hero.Doom {
-
-		@Override
-		public void onDeath() {
-			Badges.validateDeathFromFalling();
-		}
-	}
 }

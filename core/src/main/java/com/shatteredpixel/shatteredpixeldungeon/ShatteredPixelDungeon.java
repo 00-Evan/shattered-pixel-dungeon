@@ -47,6 +47,9 @@ public class ShatteredPixelDungeon extends Game {
 
 		//pre-v1.3.0
 		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm$FallBleed.class" );
+		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.plants.Mageroyal.class,
 				"com.shatteredpixel.shatteredpixeldungeon.plants.Dreamfoil" );
 		com.watabou.utils.Bundle.addAlias(
