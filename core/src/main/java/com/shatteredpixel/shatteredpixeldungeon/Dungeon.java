@@ -415,12 +415,17 @@ public class Dungeon {
 		PathFinder.setMapSize(level.width(), level.height());
 		
 		Dungeon.level = level;
+		hero.pos = pos;
+
 		Mob.restoreAllies( level, pos );
+
+		if (hero.buff(AscensionChallenge.class) != null){
+			hero.buff(AscensionChallenge.class).onLevelSwitch();
+		}
+
 		Actor.init();
 
 		level.addRespawner();
-
-		hero.pos = pos;
 		
 		for(Mob m : level.mobs){
 			if (m.pos == hero.pos){
@@ -438,10 +443,6 @@ public class Dungeon {
 		hero.viewDistance = light == null ? level.viewDistance : Math.max( Light.DISTANCE, level.viewDistance );
 		
 		hero.curAction = hero.lastAction = null;
-
-		if (hero.buff(AscensionChallenge.class) != null){
-			hero.buff(AscensionChallenge.class).onLevelSwitch();
-		}
 
 		observe();
 		try {

@@ -89,12 +89,14 @@ public class AscensionChallenge extends Buff {
 		return 1;
 	}
 
-	//mobs get constantly beckoned to the hero at 2.5+ stacks
+	//distant mobs get constantly beckoned to the hero at 2.5+ stacks
 	public static void beckonEnemies(){
 		if (Dungeon.hero.buff(AscensionChallenge.class) != null
 				&& Dungeon.hero.buff(AscensionChallenge.class).stacks >= 2.5f){
 			for (Mob m : Dungeon.level.mobs){
-				if (m.alignment == Char.Alignment.ENEMY) m.beckon(Dungeon.hero.pos);
+				if (m.alignment == Char.Alignment.ENEMY && m.distance(Dungeon.hero) > 8) {
+					m.beckon(Dungeon.hero.pos);
+				}
 			}
 		}
 	}
@@ -204,6 +206,16 @@ public class AscensionChallenge extends Buff {
 				} else if (stacks >= 2.5f){
 					toSay = Messages.get(this, "beckon");
 				}
+
+				//clears any existing mobs from the level and adds one initial one
+				//this helps balance difficulty between levels with lots of mobs left, and ones with few
+				for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+					if (!mob.reset()) {
+						Dungeon.level.mobs.remove( mob );
+					}
+					Dungeon.level.spawnMob(12);
+				}
+
 			}
 		}
 	}
