@@ -74,13 +74,13 @@ public class AmuletScene extends PixelScene {
 			protected void onClick() {
 				Dungeon.win( Amulet.class );
 				Dungeon.deleteGame( GamesInProgress.curSlot, true );
+				btnExit.enable(false);
+				btnStay.enable(false);
 
-				add(new Delayer(0.1f){
+				add(new Delayer(1f){
 					@Override
 					protected void onComplete() {
 						if (BadgeBanner.isShowingBadges()){
-							btnExit.enable(false);
-							btnStay.enable(false);
 							AmuletScene.this.add(new Delayer(3f){
 								@Override
 								protected void onComplete() {
@@ -101,6 +101,8 @@ public class AmuletScene extends PixelScene {
 			@Override
 			protected void onClick() {
 				onBackPressed();
+				btnExit.enable(false);
+				btnStay.enable(false);
 			}
 		};
 		btnStay.setSize( WIDTH, BTN_HEIGHT );
@@ -138,8 +140,10 @@ public class AmuletScene extends PixelScene {
 	
 	@Override
 	protected void onBackPressed() {
-		InterlevelScene.mode = InterlevelScene.Mode.CONTINUE;
-		Game.switchScene( InterlevelScene.class );
+		if (btnExit.isActive()) {
+			InterlevelScene.mode = InterlevelScene.Mode.CONTINUE;
+			Game.switchScene(InterlevelScene.class);
+		}
 	}
 	
 	private float timer = 0;
