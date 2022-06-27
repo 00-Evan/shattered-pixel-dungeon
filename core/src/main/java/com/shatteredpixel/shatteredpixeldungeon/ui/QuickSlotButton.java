@@ -46,8 +46,8 @@ public class QuickSlotButton extends Button {
 
 	private ItemSlot slot;
 	
-	private static Image crossB;
-	private static Image crossM;
+	private Image crossB;
+	private Image crossM;
 	
 	private static boolean targeting = false;
 	public static Char lastTarget = null;
@@ -338,9 +338,11 @@ public class QuickSlotButton extends Button {
 	
 	public static void cancel() {
 		if (targeting) {
-			crossB.visible = false;
-			crossM.remove();
-			targeting = false;
+			for (QuickSlotButton btn : instance) {
+				btn.crossB.visible = false;
+				btn.crossM.remove();
+				targeting = false;
+			}
 		}
 	}
 }
