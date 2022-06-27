@@ -36,7 +36,7 @@ public class WndTextInput extends Window {
 	private static final int MARGIN = 2;
 	private static final int BUTTON_HEIGHT = 16;
 
-	private TextInput textBox;
+	protected TextInput textBox;
 
 	public WndTextInput(final String title, final String body, final String initialValue, final int maxLength,
 	                           final boolean multiLine, final String posTxt, final String negTxt) {
