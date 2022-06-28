@@ -134,6 +134,35 @@ public class Toolbar extends Component {
 				else				return null;
 			}
 		});
+
+		add(new Button(){
+			@Override
+			protected void onClick() {
+				if (Dungeon.hero.ready && !GameScene.cancel()) {
+					if (Dungeon.level.heaps.get(Dungeon.hero.pos) != null
+						&& Dungeon.hero.handle(Dungeon.hero.pos)){
+						Dungeon.hero.next();
+					} else {
+						examining = false;
+						Dungeon.hero.rest(false);
+					}
+				}
+			}
+
+			protected boolean onLongClick() {
+				if (Dungeon.hero.ready && !GameScene.cancel()) {
+					examining = false;
+					Dungeon.hero.rest(true);
+				}
+				return true;
+			}
+
+			@Override
+			public GameAction keyAction() {
+				if (btnWait.active) return SPDAction.WAIT_OR_PICKUP;
+				else				return null;
+			}
+		});
 		
 		add(btnSearch = new Tool(44, 0, 20, 26) {
 			@Override

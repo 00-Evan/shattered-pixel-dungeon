@@ -21,15 +21,22 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
+import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.watabou.input.GameAction;
+import com.watabou.input.KeyBindings;
+import com.watabou.input.KeyEvent;
 import com.watabou.input.PointerEvent;
 import com.watabou.input.ScrollEvent;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.ColorBlock;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.ScrollArea;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
+import com.watabou.utils.Signal;
 
 public class ScrollPane extends Component {
 
@@ -37,8 +44,11 @@ public class ScrollPane extends Component {
 	protected static final float THUMB_ALPHA	= 0.5f;
 
 	protected PointerController controller;
+	protected Signal.Listener<KeyEvent> keyListener;
 	protected Component content;
 	protected ColorBlock thumb;
+
+	private float keyScroll = 0;
 
 	public ScrollPane( Component content ) {
 		super();
@@ -51,17 +61,64 @@ public class ScrollPane extends Component {
 
 		content.camera = new Camera( 0, 0, 1, 1, PixelScene.defaultZoom );
 		Camera.add( content.camera );
+
+		KeyEvent.addKeyListener(keyListener = new Signal.Listener<KeyEvent>() {
+			@Override
+			public boolean onSignal(KeyEvent keyEvent) {
+				GameAction action = KeyBindings.getActionForKey(keyEvent);
+				if (action == SPDAction.ZOOM_IN){
+					if (keyEvent.pressed){
+						keyScroll += 1;
+					} else {
+						keyScroll -= 1;
+					}
+					keyScroll = GameMath.gate(-1f, keyScroll, +1f);
+					return true;
+				} else if (action == SPDAction.ZOOM_OUT){
+					if (keyEvent.pressed){
+						keyScroll -= 1;
+					} else {
+						keyScroll += 1;
+					}
+					keyScroll = GameMath.gate(-1f, keyScroll, +1f);
+					return true;
+				}
+				return false;
+			}
+		});
 	}
 
 	@Override
 	public void destroy() {
 		super.destroy();
 		Camera.remove( content.camera );
+		KeyEvent.removeKeyListener(keyListener);
 	}
 
 	public void scrollTo( float x, float y ) {
-		content.camera.scroll.set( x, y );
-		thumb.y = this.y + height * content.camera.scroll.y / content.height();
+		Camera c = content.camera;
+		c.scroll.set( x, y );
+		if (c.scroll.x + width > content.width()) {
+			c.scroll.x = content.width() - width;
+		}
+		if (c.scroll.x < 0) {
+			c.scroll.x = 0;
+		}
+		if (c.scroll.y + height > content.height()) {
+			c.scroll.y = content.height() - height;
+		}
+		if (c.scroll.y < 0) {
+			c.scroll.y = 0;
+		}
+		thumb.y = this.y + height * c.scroll.y / content.height();
+	}
+
+	@Override
+	public synchronized void update() {
+		super.update();
+		if (keyScroll != 0){
+			scrollTo(content.camera.scroll.x, content.camera.scroll.y + (keyScroll * 150 * Game.elapsed));
+		}
 	}
 
 	@Override

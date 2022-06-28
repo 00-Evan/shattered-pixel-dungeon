@@ -54,7 +54,7 @@ public class SPDAction extends GameAction {
 	public static final GameAction NE           = new SPDAction("ne");
 	public static final GameAction SW           = new SPDAction("sw");
 	public static final GameAction SE           = new SPDAction("se");
-	public static final GameAction WAIT         = new SPDAction("wait");
+	public static final GameAction WAIT_OR_PICKUP   = new SPDAction("wait_or_pickup");
 
 	public static final GameAction INVENTORY    = new SPDAction("inventory");
 	public static final GameAction QUICKSLOT_1  = new SPDAction("quickslot_1");
@@ -71,6 +71,7 @@ public class SPDAction extends GameAction {
 	public static final GameAction BAG_5        = new SPDAction("bag_5");
 
 	public static final GameAction EXAMINE      = new SPDAction("examine");
+	public static final GameAction WAIT         = new SPDAction("wait");
 	public static final GameAction REST         = new SPDAction("rest");
 
 	public static final GameAction TAG_ATTACK   = new SPDAction("tag_attack");
@@ -94,7 +95,7 @@ public class SPDAction extends GameAction {
 		defaultBindings.put( Input.Keys.A,              SPDAction.W );
 		defaultBindings.put( Input.Keys.S,              SPDAction.S );
 		defaultBindings.put( Input.Keys.D,              SPDAction.E );
-		defaultBindings.put( Input.Keys.SPACE,          SPDAction.WAIT );
+		defaultBindings.put( Input.Keys.SPACE,          SPDAction.WAIT_OR_PICKUP);
 
 		defaultBindings.put( Input.Keys.UP,             SPDAction.N );
 		defaultBindings.put( Input.Keys.LEFT,           SPDAction.W );
@@ -109,7 +110,7 @@ public class SPDAction extends GameAction {
 		defaultBindings.put( Input.Keys.NUMPAD_9,       SPDAction.NE );
 		defaultBindings.put( Input.Keys.NUMPAD_1,       SPDAction.SW );
 		defaultBindings.put( Input.Keys.NUMPAD_3,       SPDAction.SE );
-		defaultBindings.put( Input.Keys.NUMPAD_5,       SPDAction.WAIT );
+		defaultBindings.put( Input.Keys.NUMPAD_5,       SPDAction.WAIT_OR_PICKUP );
 
 		defaultBindings.put( Input.Keys.F,              SPDAction.INVENTORY );
 		defaultBindings.put( Input.Keys.I,              SPDAction.INVENTORY );
@@ -162,7 +163,7 @@ public class SPDAction extends GameAction {
 		defaultControllerBindings.put( Input.Keys.DPAD_DOWN+1000,   SPDAction.S );
 		defaultControllerBindings.put( Input.Keys.DPAD_RIGHT+1000,  SPDAction.E );
 
-		defaultControllerBindings.put( Input.Keys.BUTTON_THUMBL,    SPDAction.WAIT );
+		defaultControllerBindings.put( Input.Keys.BUTTON_THUMBL,    SPDAction.WAIT_OR_PICKUP );
 
 		defaultControllerBindings.put( Input.Keys.BUTTON_R1,        SPDAction.INVENTORY );
 
