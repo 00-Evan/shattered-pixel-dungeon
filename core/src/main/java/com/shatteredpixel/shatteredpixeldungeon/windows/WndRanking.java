@@ -65,67 +65,43 @@ public class WndRanking extends WndTabbed {
 	private static final int WIDTH			= 115;
 	private static final int HEIGHT			= 144;
 	
-	private static Thread thread;
-	private String error = null;
+	private static WndRanking INSTANCE;
 	
-	private Image busy;
+	private String gameID;
+	private Rankings.Record record;
 	
 	public WndRanking( final Rankings.Record rec ) {
 		
 		super();
 		resize( WIDTH, HEIGHT );
-		
-		if (thread != null){
-			hide();
-			return;
-		}
-		
-		thread = new Thread() {
-			@Override
-			public void run() {
-				try {
-					Badges.loadGlobal();
-					Rankings.INSTANCE.loadGameData( rec );
-				} catch ( Exception e ) {
-					error = Messages.get(WndRanking.class, "error");
-				}
-			}
-		};
 
-		busy = Icons.BUSY.get();
-		busy.origin.set( busy.width / 2, busy.height / 2 );
-		busy.angularSpeed = 720;
-		busy.x = (WIDTH - busy.width) / 2;
-		busy.y = (HEIGHT - busy.height) / 2;
-		add( busy );
-		
-		thread.start();
-	}
-	
-	@Override
-	public void update() {
-		super.update();
-		
-		if (thread != null && !thread.isAlive() && busy != null) {
-			if (error == null) {
-				remove( busy );
-				busy = null;
-				if (Dungeon.hero != null) {
-					createControls();
-				} else {
-					hide();
-				}
+		if (INSTANCE != null){
+			INSTANCE.hide();
+		}
+		INSTANCE = this;
+
+		this.gameID = rec.gameID;
+		this.record = rec;
+
+		try {
+			Badges.loadGlobal();
+			Rankings.INSTANCE.loadGameData( rec );
+			if (Dungeon.hero != null) {
+				createControls();
 			} else {
 				hide();
-				Game.scene().add( new WndError( error ) );
 			}
+		} catch ( Exception e ) {
+			Game.scene().add( new WndError( Messages.get(WndRanking.class, "error" )));
 		}
 	}
 	
 	@Override
 	public void destroy() {
 		super.destroy();
-		thread = null;
+		if (INSTANCE == this){
+			INSTANCE = null;
+		}
 	}
 	
 	private void createControls() {
