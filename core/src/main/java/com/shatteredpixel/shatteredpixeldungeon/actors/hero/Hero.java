@@ -1694,6 +1694,10 @@ public class Hero extends Char {
 					}
 				});
 
+				if (cause instanceof Hero.Doom) {
+					((Hero.Doom)cause).onDeath();
+				}
+
 			}
 			return;
 		}
@@ -1765,10 +1769,6 @@ public class Hero extends Char {
 				Sample.INSTANCE.play( Assets.Sounds.DEATH );
 			}
 		});
-		
-		if (cause instanceof Hero.Doom) {
-			((Hero.Doom)cause).onDeath();
-		}
 		
 		Dungeon.deleteGame( GamesInProgress.curSlot, true );
 	}
