@@ -109,40 +109,40 @@ public class BeaconOfReturning extends Spell {
 	}
 	
 	private void returnBeacon( Hero hero ){
-		if (!Dungeon.interfloorTeleportAllowed()) {
-			GLog.w( Messages.get(this, "preventing") );
-			return;
-		}
-		
-		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-			Char ch = Actor.findChar(hero.pos + PathFinder.NEIGHBOURS8[i]);
-			if (ch != null && ch.alignment == Char.Alignment.ENEMY) {
-				GLog.w( Messages.get(this, "creatures") );
-				return;
-			}
-		}
 		
 		if (returnDepth == Dungeon.depth && returnBranch == Dungeon.branch) {
-			if (!Dungeon.level.passable[returnPos] && !Dungeon.level.avoid[returnPos]){
-				returnPos = Dungeon.level.entrance();
+
+			Char moving = Actor.findChar(returnPos);
+			if (moving != null){
+				moving.pos = returnPos+1;
 			}
-			ScrollOfTeleportation.appear( hero, returnPos );
-			for(Mob m : Dungeon.level.mobs){
-				if (m.pos == hero.pos){
-					//displace mob
+
+			if (ScrollOfTeleportation.teleportToLocation(hero, returnPos)){
+				if (moving != null){
+					moving.pos = returnPos;
 					for(int i : PathFinder.NEIGHBOURS8){
-						if (Actor.findChar(m.pos+i) == null && Dungeon.level.passable[m.pos + i]){
-							m.pos += i;
-							m.sprite.point(m.sprite.worldToCamera(m.pos));
+						if (Actor.findChar(moving.pos+i) == null
+								&& Dungeon.level.passable[moving.pos + i]
+								&& (!Char.hasProp(moving, Char.Property.LARGE) || Dungeon.level.openSpace[moving.pos + i])){
+							moving.pos += i;
+							moving.sprite.point(moving.sprite.worldToCamera(moving.pos));
 							break;
 						}
 					}
 				}
+			} else {
+				if (moving != null) {
+					moving.pos = returnPos;
+				}
+				return;
 			}
-			Dungeon.level.occupyCell(hero );
-			Dungeon.observe();
-			GameScene.updateFog();
+
 		} else {
+
+			if (!Dungeon.interfloorTeleportAllowed()) {
+				GLog.w( Messages.get(this, "preventing") );
+				return;
+			}
 
 			TimekeepersHourglass.timeFreeze timeFreeze = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
 			if (timeFreeze != null) timeFreeze.disarmPressedTraps();
@@ -155,6 +155,7 @@ public class BeaconOfReturning extends Spell {
 			InterlevelScene.returnPos = returnPos;
 			Game.switchScene( InterlevelScene.class );
 		}
+		hero.spendAndNext( 1f );
 		detach(hero.belongings.backpack);
 	}
 	
