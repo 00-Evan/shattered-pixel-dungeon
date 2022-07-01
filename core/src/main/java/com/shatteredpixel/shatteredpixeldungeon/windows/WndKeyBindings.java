@@ -134,19 +134,28 @@ public class WndKeyBindings extends Window {
 			bindingsList.add(sep);
 		}
 
-		for (GameAction action : GameAction.allActions()){
+		LinkedHashMap<Integer, GameAction> defaults = controller ? SPDAction.getControllerDefaults() : SPDAction.getDefaults();
+
+		ArrayList<GameAction> actionList = GameAction.allActions();
+		for (GameAction action : actionList.toArray(new GameAction[0])) {
 			//start at 1. No bindings for NONE
-			if (action.code() < 1) continue;
+			if (action.code() < 1) {
+				actionList.remove(action);
 
 			//mouse bindings are only available to controllers
-			if ((action == GameAction.LEFT_CLICK
+			} else if ((action == GameAction.LEFT_CLICK
 					|| action == GameAction.RIGHT_CLICK
-					|| action == GameAction.MIDDLE_CLICK) && !controller){
-				continue;
+					|| action == GameAction.MIDDLE_CLICK) && !controller) {
+				actionList.remove(action);
+
+			//actions with no default binding are moved to the end of the list
+			} else if (!defaults.containsValue(action)){
+						actionList.remove(action);
+						actionList.add(action);
 			}
+		}
 
-			//TODO probably exclude some binding for controllers, and adjust default mappings
-
+		for (GameAction action : actionList){
 			BindingItem item = new BindingItem(action);
 			item.setRect(0, y, WIDTH, BindingItem.HEIGHT);
 			bindingsList.addToBack(item);

@@ -26,17 +26,25 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTerrainTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndKeyBindings;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuickBag;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
+import com.watabou.input.ControllerHandler;
 import com.watabou.input.GameAction;
+import com.watabou.input.KeyBindings;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Gizmo;
@@ -45,6 +53,8 @@ import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
+
+import java.util.ArrayList;
 
 public class Toolbar extends Component {
 
@@ -90,6 +100,99 @@ public class Toolbar extends Component {
 		for (int i = 0; i < btnQuick.length; i++){
 			add( btnQuick[i] = new QuickslotTool(64, 0, 22, 24, i) );
 		}
+
+		//hidden button for quickslot selector keybind
+		add(new Button(){
+			@Override
+			protected void onClick() {
+				if (QuickSlotButton.targetingSlot != -1){
+					int cell = QuickSlotButton.autoAim(QuickSlotButton.lastTarget, Dungeon.quickslot.getItem(QuickSlotButton.targetingSlot));
+
+					if (cell != -1){
+						GameScene.handleCell(cell);
+					} else {
+						//couldn't auto-aim, just target the position and hope for the best.
+						GameScene.handleCell( QuickSlotButton.lastTarget.pos );
+					}
+					return;
+				}
+
+				if (Dungeon.hero.ready && !GameScene.cancel()) {
+
+					String[] slotNames = new String[6];
+					Image[] slotIcons = new Image[6];
+					for (int i = 0; i < 6; i++){
+						Item item = Dungeon.quickslot.getItem(i);
+
+						if (item != null && !Dungeon.quickslot.isPlaceholder(i) &&
+								(Dungeon.hero.buff(LostInventory.class) == null || item.keptThoughLostInvent)){
+							slotNames[i] = Messages.titleCase(item.name());
+							slotIcons[i] = new ItemSprite(item);
+						} else {
+							slotNames[i] = Messages.get(Toolbar.class, "quickslot_assign");
+							slotIcons[i] = new ItemSprite(ItemSpriteSheet.SOMETHING);
+						}
+					}
+
+					String info = "";
+					if (ControllerHandler.controllerPointerActive()){
+						info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.LEFT_CLICK, true)) + ": " + Messages.get(Toolbar.class, "quickslot_select") + "\n";
+						info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.RIGHT_CLICK, true)) + ": " + Messages.get(Toolbar.class, "quickslot_assign") + "\n";
+						info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.BACK, true)) + ": " + Messages.get(Toolbar.class, "quickslot_cancel");
+					} else {
+						info += Messages.get(WndKeyBindings.class, SPDAction.LEFT_CLICK.name()) + ": " + Messages.get(Toolbar.class, "quickslot_select") + "\n";
+						info += Messages.get(WndKeyBindings.class, SPDAction.RIGHT_CLICK.name()) + ": " + Messages.get(Toolbar.class, "quickslot_assign") + "\n";
+						info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.BACK, false)) + ": " + Messages.get(Toolbar.class, "quickslot_cancel");
+					}
+
+					GameScene.show(new RadialMenu(Messages.get(Toolbar.class, "quickslot_prompt"), info, slotNames, slotIcons) {
+						@Override
+						public void onSelect(int idx, boolean alt) {
+							Item item = Dungeon.quickslot.getItem(idx);
+
+							if (item == null || Dungeon.quickslot.isPlaceholder(idx)
+									|| (Dungeon.hero.buff(LostInventory.class) != null && !item.keptThoughLostInvent)
+									|| alt){
+								//TODO would be nice to use a radial menu for this too
+								// Also a bunch of code could be moved out of here into subclasses of RadialMenu
+								GameScene.selectItem(new WndBag.ItemSelector() {
+									@Override
+									public String textPrompt() {
+										return Messages.get(QuickSlotButton.class, "select_item");
+									}
+
+									@Override
+									public boolean itemSelectable(Item item) {
+										return item.defaultAction != null;
+									}
+
+									@Override
+									public void onSelect(Item item) {
+										if (item != null) {
+											Dungeon.quickslot.setSlot( idx , item );
+											QuickSlotButton.refresh();
+										}
+									}
+								});
+							} else {
+
+								item.execute(Dungeon.hero);
+								if (item.usesTargeting) {
+									QuickSlotButton.useTargeting(idx);
+								}
+							}
+							super.onSelect(idx, alt);
+						}
+					});
+				}
+			}
+
+			@Override
+			public GameAction keyAction() {
+				if (btnWait.active) return SPDAction.QUICKSLOT_SELECTOR;
+				else				return null;
+			}
+		});
 		
 		add(btnWait = new Tool(24, 0, 20, 26) {
 			@Override
@@ -119,6 +222,7 @@ public class Toolbar extends Component {
 			}
 		});
 
+		//hidden button for rest keybind
 		add(new Button(){
 			@Override
 			protected void onClick() {
@@ -135,6 +239,7 @@ public class Toolbar extends Component {
 			}
 		});
 
+		//hidden button for wait / pickup keybind
 		add(new Button(){
 			@Override
 			protected void onClick() {
@@ -250,6 +355,98 @@ public class Toolbar extends Component {
 				arrow.x = left() + (width - arrow.width())/2;
 				arrow.y = bottom()-arrow.height-1;
 				arrow.angle = bottom() == camera().height ? 0 : 180;
+			}
+		});
+
+		//hidden button for inventory selector keybind
+		add(new Button(){
+			@Override
+			protected void onClick() {
+				if (Dungeon.hero.ready && !GameScene.cancel()) {
+					ArrayList<Bag> bags = Dungeon.hero.belongings.getBags();
+					String[] names = new String[bags.size()];
+					Image[] images = new Image[bags.size()];
+					for (int i = 0; i < bags.size(); i++){
+						names[i] = Messages.titleCase(bags.get(i).name());
+						images[i] = new ItemSprite(bags.get(i));
+					}
+					String info = "";
+					if (ControllerHandler.controllerPointerActive()){
+						info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.LEFT_CLICK, true)) + ": " + Messages.get(Toolbar.class, "container_select") + "\n";
+						info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.BACK, true)) + ": " + Messages.get(Toolbar.class, "container_cancel");
+					} else {
+						info += Messages.get(WndKeyBindings.class, SPDAction.LEFT_CLICK.name()) + ": " + Messages.get(Toolbar.class, "container_select") + "\n";
+						info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.BACK, false)) + ": " + Messages.get(Toolbar.class, "container_cancel");
+					}
+
+					GameScene.show(new RadialMenu(Messages.get(Toolbar.class, "container_prompt"), info, names, images){
+						@Override
+						public void onSelect(int idx, boolean alt) {
+							super.onSelect(idx, alt);
+							Bag bag = bags.get(idx);
+							ArrayList<Item> items = (ArrayList<Item>) bag.items.clone();
+
+							for(Item i : bag.items){
+								if (i instanceof Bag) items.remove(i);
+								if (Dungeon.hero.buff(LostInventory.class) != null && !i.keptThoughLostInvent) items.remove(i);
+							}
+
+							if (idx == 0){
+								Belongings b = Dungeon.hero.belongings;
+								if (b.ring() != null) items.add(0, b.ring());
+								if (b.misc() != null) items.add(0, b.misc());
+								if (b.artifact() != null) items.add(0, b.artifact());
+								if (b.armor() != null) items.add(0, b.armor());
+								if (b.weapon() != null) items.add(0, b.weapon());
+							}
+
+							if (items.size() == 0){
+								GameScene.show(new WndMessage(Messages.get(Toolbar.class, "container_empty")));
+								return;
+							}
+
+							String[] itemNames = new String[items.size()];
+							Image[] itemIcons = new Image[items.size()];
+							for (int i = 0; i < items.size(); i++){
+								itemNames[i] = Messages.titleCase(items.get(i).name());
+								itemIcons[i] = new ItemSprite(items.get(i));
+							}
+
+							String info = "";
+							if (ControllerHandler.controllerPointerActive()){
+								info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.LEFT_CLICK, true)) + ": " + Messages.get(Toolbar.class, "item_select") + "\n";
+								info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.RIGHT_CLICK, true)) + ": " + Messages.get(Toolbar.class, "item_use") + "\n";
+								info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.BACK, false)) + ": " + Messages.get(Toolbar.class, "item_cancel");
+							} else {
+								info += Messages.get(WndKeyBindings.class, SPDAction.LEFT_CLICK.name()) + ": " + Messages.get(Toolbar.class, "item_select") + "\n";
+								info += Messages.get(WndKeyBindings.class, SPDAction.RIGHT_CLICK.name()) + ": " + Messages.get(Toolbar.class, "item_use") + "\n";
+								info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.BACK, false)) + ": " + Messages.get(Toolbar.class, "item_cancel");
+							}
+
+							GameScene.show(new RadialMenu(Messages.get(Toolbar.class, "item_prompt"), info, itemNames, itemIcons){
+								@Override
+								public void onSelect(int idx, boolean alt) {
+									super.onSelect(idx, alt);
+									Item item = items.get(idx);
+									if (alt && item.defaultAction != null) {
+										item.execute(Dungeon.hero);
+										if (item.usesTargeting) {
+											QuickSlotButton.useTargeting(idx);
+										}
+									} else {
+										Game.scene().addToFront(new WndUseItem(null, item));
+									}
+								}
+							});
+						}
+					});
+				}
+			}
+
+			@Override
+			public GameAction keyAction() {
+				if (btnWait.active) return SPDAction.INVENTORY_SELECTOR;
+				else				return null;
 			}
 		});
 

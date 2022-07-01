@@ -82,19 +82,17 @@ public class KeyBindings {
 		return GameAction.NONE;
 	}
 
-	public static ArrayList<Integer> getBoundKeysForAction(GameAction action){
-		ArrayList<Integer> result = new ArrayList<>();
-		for( int i : bindings.keySet() ){
-			if (bindings.get(i) == action){
-				result.add(i);
-			}
+	public static int getFirstKeyForAction(GameAction action, boolean preferController){
+		ArrayList<Integer> keys = getKeyboardKeysForAction(action);
+		ArrayList<Integer> buttons = getControllerKeysForAction(action);
+		if (preferController){
+			if (!buttons.isEmpty())         return buttons.get(0);
+			else if (!keys.isEmpty())       return keys.get(0);
+		} else {
+			if (!keys.isEmpty())            return keys.get(0);
+			else if (!buttons.isEmpty())    return buttons.get(0);
 		}
-		for( int i : controllerBindings.keySet() ){
-			if (controllerBindings.get(i) == action){
-				result.add(i);
-			}
-		}
-		return result;
+		return 0;
 	}
 
 	public static ArrayList<Integer> getKeyboardKeysForAction(GameAction action){

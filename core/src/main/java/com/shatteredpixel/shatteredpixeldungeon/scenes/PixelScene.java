@@ -160,34 +160,34 @@ public class PixelScene extends Scene {
 
 	}
 
-	private static PointF virtualCursorPos;
-
 	@Override
 	public void update() {
 		super.update();
 		//20% deadzone
-		if (Math.abs(ControllerHandler.rightStickPosition.x) >= 0.2f
-				|| Math.abs(ControllerHandler.rightStickPosition.y) >= 0.2f) {
-			if (!ControllerHandler.controllerPointerActive()) {
-				ControllerHandler.setControllerPointer(true);
-				virtualCursorPos = PointerEvent.currentHoverPos();
+		if (!Cursor.isCursorCaptured()) {
+			if (Math.abs(ControllerHandler.rightStickPosition.x) >= 0.2f
+					|| Math.abs(ControllerHandler.rightStickPosition.y) >= 0.2f) {
+				if (!ControllerHandler.controllerPointerActive()) {
+					ControllerHandler.setControllerPointer(true);
+				}
+
+				int sensitivity = SPDSettings.controllerPointerSensitivity() * 100;
+
+				//cursor moves 100xsens scaled pixels per second at full speed
+				//35x at 50% movement, ~9x at 20% deadzone threshold
+				float xMove = (float) Math.pow(Math.abs(ControllerHandler.rightStickPosition.x), 1.5);
+				if (ControllerHandler.rightStickPosition.x < 0) xMove = -xMove;
+
+				float yMove = (float) Math.pow(Math.abs(ControllerHandler.rightStickPosition.y), 1.5);
+				if (ControllerHandler.rightStickPosition.y < 0) yMove = -yMove;
+
+				PointF virtualCursorPos = ControllerHandler.getControllerPointerPos();
+				virtualCursorPos.x += defaultZoom * sensitivity * Game.elapsed * xMove;
+				virtualCursorPos.y += defaultZoom * sensitivity * Game.elapsed * yMove;
+				virtualCursorPos.x = GameMath.gate(0, virtualCursorPos.x, Game.width);
+				virtualCursorPos.y = GameMath.gate(0, virtualCursorPos.y, Game.height);
+				ControllerHandler.updateControllerPointer(virtualCursorPos, true);
 			}
-
-			int sensitivity = SPDSettings.controllerPointerSensitivity() * 100;
-
-			//cursor moves 100xsens scaled pixels per second at full speed
-			//35x at 50% movement, ~9x at 20% deadzone threshold
-			float xMove = (float)Math.pow(Math.abs(ControllerHandler.rightStickPosition.x), 1.5);
-			if (ControllerHandler.rightStickPosition.x < 0) xMove = -xMove;
-
-			float yMove = (float)Math.pow(Math.abs(ControllerHandler.rightStickPosition.y), 1.5);
-			if (ControllerHandler.rightStickPosition.y < 0) yMove = -yMove;
-
-			virtualCursorPos.x += defaultZoom * sensitivity * Game.elapsed * xMove;
-			virtualCursorPos.y += defaultZoom * sensitivity * Game.elapsed * yMove;
-			virtualCursorPos.x = GameMath.gate(0, virtualCursorPos.x, Game.width);
-			virtualCursorPos.y = GameMath.gate(0, virtualCursorPos.y, Game.height);
-			PointerEvent.addPointerEvent(new PointerEvent((int) virtualCursorPos.x, (int) virtualCursorPos.y, 10_000, PointerEvent.Type.HOVER, PointerEvent.NONE));
 		}
 	}
 
@@ -203,6 +203,7 @@ public class PixelScene extends Scene {
 				cursor = new Image(Cursor.Type.CONTROLLER.file);
 			}
 
+			PointF virtualCursorPos = ControllerHandler.getControllerPointerPos();
 			cursor.x = (virtualCursorPos.x / defaultZoom) - cursor.width()/2f;
 			cursor.y = (virtualCursorPos.y / defaultZoom) - cursor.height()/2f;
 			cursor.camera = uiCamera;

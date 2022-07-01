@@ -108,6 +108,10 @@ public class CircleArc extends Visual {
 		this.sweep = sweep;
 		dirty = true;
 	}
+
+	public float getSweep(){
+		return sweep;
+	}
 	
 	private void updateTriangles(){
 		

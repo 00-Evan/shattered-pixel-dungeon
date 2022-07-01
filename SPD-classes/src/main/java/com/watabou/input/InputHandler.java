@@ -27,6 +27,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.ui.Cursor;
 
 public class InputHandler extends InputAdapter {
 

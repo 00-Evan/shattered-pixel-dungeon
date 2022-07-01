@@ -24,7 +24,10 @@ package com.watabou.noosa.ui;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.watabou.input.ControllerHandler;
+import com.watabou.noosa.Game;
 import com.watabou.utils.FileUtils;
+import com.watabou.utils.PointF;
 
 public class Cursor {
 
@@ -84,6 +87,32 @@ public class Cursor {
 		lastType = type;
 		lastZoom = zoom;
 
+	}
+
+	private static boolean cursorCaptured = false;
+
+	public static void captureCursor(boolean captured){
+		cursorCaptured = captured;
+
+		if (captured) {
+			Gdx.input.setCursorCatched(true);
+		} else {
+			if (ControllerHandler.controllerPointerActive()) {
+				ControllerHandler.setControllerPointer(true);
+				ControllerHandler.updateControllerPointer(new PointF(Game.width/2, Game.height/2), false);
+			} else {
+				Gdx.input.setCursorCatched(false);
+				Gdx.input.setCursorPosition(Game.width/2, Game.height/2);
+			}
+		}
+	}
+
+	public static PointF getCursorDelta(){
+		return new PointF(Gdx.input.getDeltaX(), Gdx.input.getDeltaY());
+	}
+
+	public static boolean isCursorCaptured(){
+		return cursorCaptured;
 	}
 
 }

@@ -84,16 +84,43 @@ public class v1_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("BETA-3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "To-Do",
+				"I'm going to round the beta out and try to get it released early/mid next week. Because of that some of these things may be handled in patches:\n\n" +
+				"_-_ Additional enemy info on the top-left of the screen on full UI mode\n" +
+				"_-_ Improvements to some of the game's interfaces on full UI mode\n" +
+				"_-_ Translation work, and updated translators credits.\n" +
+				"_-_ Fixes for any bugs that get reported"));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.CONTROLLER), "UI/UX Improvements",
+				"A new radial menu system has been added, primarily for controller users! This should make using quickslots and the inventory much faster.\n\n" +
+				"These new menus also free up a bunch of buttons, so default controller button mappings have been reworked.\n\n" +
+				"A few other key binding actions have been adjusted as well, including a combo 'wait/loot item' action, and scrolling up/down using the zoom actions."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Levels are now cleared during ascension just before the hero returns to them. This prevents difficulty spikes if floors were left full of enemies. Ascension enemy spawn rates slightly increased to compensate\n\n" +
+				"_-_ Nearby enemies are no longer constantly drawn to the hero's position during the ascension challenge"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (Caused by BETA)\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Various minor visual and textual bugs\n" +
+				"_-_ Daily run history being lost in some cases\n" +
+				"_-_ Higher tier 'score chaser' badges not unlocking lower tier ones\n" +
+				"_-_ 'Friendly Fire' badge not being awarded by wand of corrosion\n\n" +
+				"Fixed (Existed Prior to BETA)\n" +
+				"_-_ Beacon of returning not working at all in boss arenas\n" +
+				"_-_ Various 'cause of death' badges not being awarded if death occurred with an ankh."));
 
 		changes = new ChangeInfo("BETA-2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (Caused by Beta)\n" +
+				"Fixed (Caused by BETA)\n" +
 				"_-_ Various rare crash issues\n" +
 				"_-_ Daily runs preventing regular runs from being started\n" +
 				"_-_ Duplicate crystal keys from pit rooms\n" +
@@ -107,15 +134,6 @@ public class v1_X_Changes {
 				"_-_ v1.3.0 Released XX, 2022\n" +
 				"_-_ XX days after Shattered v1.2.0\n" +
 				"Expect dev commentary here in the future."));*/
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "To-Do",
-				"There are still a few bits and pieces left to finish up before v1.3 is released, mainly focused on interface work:\n\n" +
-				"_-_ A new radial selection menu to make using quickslots and the inventory easier on controller\n" +
-				"_-_ Improvements to default controller bindings, and some improved button functionality\n" +
-				"_-_ Additional enemy info on the top-left of the screen on full UI mode\n" +
-				"_-_ Improvements to some of the game's interfaces on full UI mode\n" +
-				"_-_ Translation work, from volunteers on the game's Transifex project.\n" +
-				"_-_ Fixes for any bugs that get reported"));
 
 		Image ic = Icons.get(Icons.SEED);
 		ic.hardlight(1f, 1.5f, 0.67f);

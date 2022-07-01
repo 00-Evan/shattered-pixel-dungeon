@@ -87,13 +87,15 @@ public class Assets {
 		public static final String LOADING_CITY     = "interfaces/loading_city.png";
 		public static final String LOADING_HALLS    = "interfaces/loading_halls.png";
 
-		public static final String BUFFS_SMALL  = "interfaces/buffs.png";
-		public static final String BUFFS_LARGE  = "interfaces/large_buffs.png";
+		public static final String BUFFS_SMALL      = "interfaces/buffs.png";
+		public static final String BUFFS_LARGE      = "interfaces/large_buffs.png";
 
-		public static final String TALENT_ICONS  = "interfaces/talent_icons.png";
-		public static final String TALENT_BUTTON = "interfaces/talent_button.png";
+		public static final String TALENT_ICONS     = "interfaces/talent_icons.png";
+		public static final String TALENT_BUTTON    = "interfaces/talent_button.png";
 
-		public static final String HERO_ICONS   = "interfaces/hero_icons.png";
+		public static final String HERO_ICONS       = "interfaces/hero_icons.png";
+
+		public static final String RADIAL_MENU      = "interfaces/radial_menu.png";
 	}
 
 	//these points to resource bundles, not raw asset files

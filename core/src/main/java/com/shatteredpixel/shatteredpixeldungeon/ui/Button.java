@@ -84,18 +84,8 @@ public class Button extends Component {
 				String text = hoverText();
 				if (text != null){
 					if (keyAction() != null){
-						ArrayList<Integer> bindings = KeyBindings.getBoundKeysForAction(keyAction());
-						if (!bindings.isEmpty()){
-							int key = bindings.get(0);
-							//prefer controller buttons if we are using a controller
-							if (ControllerHandler.controllerPointerActive()){
-								for (int code : bindings){
-									if (ControllerHandler.icControllerKey(code)){
-										key = code;
-										break;
-									}
-								}
-							}
+						int key = KeyBindings.getFirstKeyForAction(keyAction(), ControllerHandler.controllerPointerActive());
+						if (key != 0){
 							text += " _(" + KeyBindings.getKeyName(key) + ")_";
 						}
 					}

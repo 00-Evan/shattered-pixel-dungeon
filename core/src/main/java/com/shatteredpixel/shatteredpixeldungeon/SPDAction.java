@@ -57,6 +57,8 @@ public class SPDAction extends GameAction {
 	public static final GameAction WAIT_OR_PICKUP   = new SPDAction("wait_or_pickup");
 
 	public static final GameAction INVENTORY    = new SPDAction("inventory");
+	public static final GameAction INVENTORY_SELECTOR   = new SPDAction("inventory_selector");
+	public static final GameAction QUICKSLOT_SELECTOR   = new SPDAction("quickslot_selector");
 	public static final GameAction QUICKSLOT_1  = new SPDAction("quickslot_1");
 	public static final GameAction QUICKSLOT_2  = new SPDAction("quickslot_2");
 	public static final GameAction QUICKSLOT_3  = new SPDAction("quickslot_3");
@@ -158,23 +160,20 @@ public class SPDAction extends GameAction {
 		defaultControllerBindings.put( Input.Keys.BUTTON_L2,        SPDAction.RIGHT_CLICK );
 		defaultControllerBindings.put( Input.Keys.BUTTON_SELECT,    SPDAction.MIDDLE_CLICK );
 
-		defaultControllerBindings.put( Input.Keys.DPAD_UP+1000,     SPDAction.N );
-		defaultControllerBindings.put( Input.Keys.DPAD_LEFT+1000,   SPDAction.W );
-		defaultControllerBindings.put( Input.Keys.DPAD_DOWN+1000,   SPDAction.S );
-		defaultControllerBindings.put( Input.Keys.DPAD_RIGHT+1000,  SPDAction.E );
+		defaultControllerBindings.put( Input.Keys.DPAD_UP+1000,     SPDAction.TAG_ACTION );
+		defaultControllerBindings.put( Input.Keys.DPAD_LEFT+1000,   SPDAction.TAG_DANGER );
+		defaultControllerBindings.put( Input.Keys.DPAD_DOWN+1000,   SPDAction.TAG_RESUME );
+		defaultControllerBindings.put( Input.Keys.DPAD_RIGHT+1000,  SPDAction.TAG_LOOT );
 
 		defaultControllerBindings.put( Input.Keys.BUTTON_THUMBL,    SPDAction.WAIT_OR_PICKUP );
 
-		defaultControllerBindings.put( Input.Keys.BUTTON_R1,        SPDAction.INVENTORY );
+		defaultControllerBindings.put( Input.Keys.BUTTON_R1,        SPDAction.ZOOM_IN );
+		defaultControllerBindings.put( Input.Keys.BUTTON_L1,        SPDAction.ZOOM_OUT );
 
-		defaultControllerBindings.put( Input.Keys.BUTTON_L1,        SPDAction.EXAMINE );
-
-		//plan for new buttons: quickslots, quick inventory,
-		//Probably want to repurpose dpad too: attack, loot(or combine this?), special action, resume
-		defaultControllerBindings.put( Input.Keys.BUTTON_Y,         SPDAction.QUICKSLOT_1 );
-		defaultControllerBindings.put( Input.Keys.BUTTON_B,         SPDAction.QUICKSLOT_2 );
-		defaultControllerBindings.put( Input.Keys.BUTTON_X,         SPDAction.QUICKSLOT_3 );
-		defaultControllerBindings.put( Input.Keys.BUTTON_A,         SPDAction.QUICKSLOT_4 );
+		defaultControllerBindings.put( Input.Keys.BUTTON_A,         SPDAction.TAG_ATTACK );
+		defaultControllerBindings.put( Input.Keys.BUTTON_B,         SPDAction.EXAMINE );
+		defaultControllerBindings.put( Input.Keys.BUTTON_X,         SPDAction.QUICKSLOT_SELECTOR );
+		defaultControllerBindings.put( Input.Keys.BUTTON_Y,         SPDAction.INVENTORY_SELECTOR );
 	}
 
 	public static LinkedHashMap<Integer, GameAction> getControllerDefaults() {

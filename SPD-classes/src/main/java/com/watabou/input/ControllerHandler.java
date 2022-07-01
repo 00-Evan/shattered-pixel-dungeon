@@ -27,6 +27,8 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.ControllerMapping;
 import com.badlogic.gdx.controllers.Controllers;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.ui.Cursor;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.PointF;
 
@@ -138,14 +140,32 @@ public class ControllerHandler implements ControllerListener {
 
 	//we use a separate variable as Gdx.input.isCursorCatched only works on desktop
 	private static boolean controllerPointerActive = false;
+	private static PointF controllerPointerPos;
 
 	public static void setControllerPointer( boolean active ){
-		Gdx.input.setCursorCatched(active);
+		if (controllerPointerActive == active) return;
 		controllerPointerActive = active;
+		if (active){
+			Gdx.input.setCursorCatched(true);
+			controllerPointerPos = new PointF(Game.width/2, Game.height/2);
+		} else if (!Cursor.isCursorCaptured()) {
+			Gdx.input.setCursorCatched(false);
+		}
 	}
 
 	public static boolean controllerPointerActive(){
-		return controllerPointerActive;
+		return controllerPointerActive && !Cursor.isCursorCaptured();
+	}
+
+	public static PointF getControllerPointerPos(){
+		return controllerPointerPos.clone();
+	}
+
+	public static void updateControllerPointer(PointF pos, boolean sendEvent){
+		controllerPointerPos.set(pos);
+		if (sendEvent) {
+			PointerEvent.addPointerEvent(new PointerEvent((int) controllerPointerPos.x, (int) controllerPointerPos.y, 10_000, PointerEvent.Type.HOVER, PointerEvent.NONE));
+		}
 	}
 
 	//converts controller button codes to keyEvent codes
@@ -198,6 +218,16 @@ public class ControllerHandler implements ControllerListener {
 				return "Square Button";
 			} else if (keyCode == Input.Keys.BUTTON_Y){
 				return "Triangle Button";
+			}
+		} else if (lastUsedType == ControllerType.XBOX){
+			if (keyCode == Input.Keys.BUTTON_L1){
+				return "Left Bumper";
+			} else if (keyCode == Input.Keys.BUTTON_L2){
+				return "Left Trigger";
+			} else if (keyCode == Input.Keys.BUTTON_R1){
+				return "Right Bumper";
+			} else if (keyCode == Input.Keys.BUTTON_R2){
+				return "Right Trigger";
 			}
 		}
 
