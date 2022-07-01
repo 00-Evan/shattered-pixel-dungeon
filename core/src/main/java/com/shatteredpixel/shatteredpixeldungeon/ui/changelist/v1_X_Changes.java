@@ -102,7 +102,8 @@ public class v1_X_Changes {
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"_-_ Levels are now cleared during ascension just before the hero returns to them. This prevents difficulty spikes if floors were left full of enemies. Ascension enemy spawn rates slightly increased to compensate\n\n" +
-				"_-_ Nearby enemies are no longer constantly drawn to the hero's position during the ascension challenge"));
+				"_-_ Nearby enemies are no longer constantly drawn to the hero's position during the ascension challenge\n\n" +
+				"_-_ Updated translations (updating credits will happen soon!)"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed (Caused by BETA)\n" +
