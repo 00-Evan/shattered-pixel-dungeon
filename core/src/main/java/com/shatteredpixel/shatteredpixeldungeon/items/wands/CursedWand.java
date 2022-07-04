@@ -244,6 +244,9 @@ public class CursedWand {
 			//Bomb explosion
 			case 2:
 				new Bomb().explode(targetPos);
+				if (user == Dungeon.hero && !user.isAlive()){
+					Badges.validateDeathFromFriendlyMagic();
+				}
 				tryForWandProc(Actor.findChar(targetPos), origin);
 				return true;
 
