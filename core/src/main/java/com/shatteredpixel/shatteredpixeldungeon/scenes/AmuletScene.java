@@ -77,7 +77,7 @@ public class AmuletScene extends PixelScene {
 				btnExit.enable(false);
 				btnStay.enable(false);
 
-				add(new Delayer(1f){
+				AmuletScene.this.add(new Delayer(0.1f){
 					@Override
 					protected void onComplete() {
 						if (BadgeBanner.isShowingBadges()){
