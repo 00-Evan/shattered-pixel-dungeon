@@ -131,24 +131,27 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		
 		config.setTitle( title );
-		
+
 		String basePath = "";
+		Files.FileType baseFileType = null;
 		if (SharedLibraryLoader.isWindows) {
 			if (System.getProperties().getProperty("os.name").equals("Windows XP")) {
 				basePath = "Application Data/.shatteredpixel/Shattered Pixel Dungeon/";
 			} else {
 				basePath = "AppData/Roaming/.shatteredpixel/Shattered Pixel Dungeon/";
 			}
+			baseFileType = Files.FileType.External;
 		} else if (SharedLibraryLoader.isMac) {
 			basePath = "Library/Application Support/Shattered Pixel Dungeon/";
+			baseFileType = Files.FileType.External;
 		} else if (SharedLibraryLoader.isLinux) {
-			String XDGHome = System.getenv().get("XDG_DATA_HOME");
-			if (XDGHome == null) XDGHome = ".local/share";
+			String XDGHome = System.getenv("XDG_DATA_HOME");
+			if (XDGHome == null) XDGHome = System.getProperty("user.home") + "/.local/share";
 			basePath = XDGHome + "/.shatteredpixel/shattered-pixel-dungeon/";
 
 			//copy over files from old linux save DIR, pre-1.2.0
 			FileHandle oldBase = new Lwjgl3FileHandle(".shatteredpixel/shattered-pixel-dungeon/", Files.FileType.External);
-			FileHandle newBase = new Lwjgl3FileHandle(basePath, Files.FileType.External);
+			FileHandle newBase = new Lwjgl3FileHandle(basePath, Files.FileType.Absolute);
 			if (oldBase.exists()){
 				if (!newBase.exists()) {
 					oldBase.copyTo(newBase.parent());
@@ -156,11 +159,12 @@ public class DesktopLauncher {
 				oldBase.deleteDirectory();
 				oldBase.parent().delete(); //only regular delete, in case of saves from other PD versions
 			}
+			baseFileType = Files.FileType.Absolute;
 		}
 
-		config.setPreferencesConfig( basePath, Files.FileType.External );
-		SPDSettings.set( new Lwjgl3Preferences( SPDSettings.DEFAULT_PREFS_FILE, basePath) );
-		FileUtils.setDefaultFileProperties( Files.FileType.External, basePath );
+		config.setPreferencesConfig( basePath, baseFileType );
+		SPDSettings.set( new Lwjgl3Preferences( new Lwjgl3FileHandle(basePath + SPDSettings.DEFAULT_PREFS_FILE, baseFileType) ));
+		FileUtils.setDefaultFileProperties( baseFileType, basePath );
 		
 		config.setWindowSizeLimits( 720, 400, -1, -1 );
 		Point p = SPDSettings.windowResolution();
