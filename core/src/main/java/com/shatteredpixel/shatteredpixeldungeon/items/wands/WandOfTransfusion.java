@@ -106,7 +106,7 @@ public class WandOfTransfusion extends Wand {
 				//grant a self-shield, and...
 				Buff.affect(curUser, Barrier.class).setShield((5 + buffedLvl()));
 				
-				//chars living enemies
+				//charms living enemies
 				if (!ch.properties().contains(Char.Property.UNDEAD)) {
 					Charm charm = Buff.affect(ch, Charm.class, Charm.DURATION/2f);
 					charm.object = curUser.id();

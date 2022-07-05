@@ -47,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.KingsCrown;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLightning;
@@ -438,8 +439,13 @@ public class DwarfKing extends Mob {
 
 	@Override
 	public void damage(int dmg, Object src) {
-		//lightning and corrosion have their own custom logic
-		if (src == Dungeon.hero || (src instanceof Wand && !(src instanceof WandOfLightning))){
+		//hero only counts as unarmed if they have no weapon and aren't benefiting from force
+		if (src == Dungeon.hero && (Dungeon.hero.belongings.weapon() != null || Dungeon.hero.buff(RingOfForce.Force.class) != null)){
+			Statistics.qualifiedForBossChallengeBadge = false;
+		//Corrosion, corruption, and regrowth do no direct damage and so have their own custom logic
+		//Transfusion damages DK and so doesn't need custom logic
+		//Lightning has custom logic so that chaining it doesn't DQ for the badge
+		} else if (src instanceof Wand && !(src instanceof WandOfLightning)){
 			Statistics.qualifiedForBossChallengeBadge = false;
 		}
 
