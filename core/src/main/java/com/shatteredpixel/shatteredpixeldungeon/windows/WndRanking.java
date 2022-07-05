@@ -92,7 +92,8 @@ public class WndRanking extends WndTabbed {
 				hide();
 			}
 		} catch ( Exception e ) {
-			Game.scene().add( new WndError( Messages.get(WndRanking.class, "error" )));
+			hide();
+			Game.scene().addToFront( new WndError( Messages.get(WndRanking.class, "error" )));
 		}
 	}
 	
