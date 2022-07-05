@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
@@ -300,6 +301,20 @@ public class YogDzewa extends Mob {
 					}
 				}
 
+				//if no other valid spawn spots exist, try to kill an adjacent sheep to spawn anyway
+				if (spawnPos == -1){
+					for (int i : PathFinder.NEIGHBOURS8){
+						if (Actor.findChar(pos+i) instanceof Sheep){
+							if (spawnPos == -1 || Dungeon.level.trueDistance(Dungeon.hero.pos, spawnPos) > Dungeon.level.trueDistance(Dungeon.hero.pos, pos+i)){
+								spawnPos = pos + i;
+							}
+						}
+					}
+					if (spawnPos != -1){
+						Actor.findChar(spawnPos).die(null);
+					}
+				}
+
 				if (spawnPos != -1) {
 					summon.pos = spawnPos;
 					GameScene.add( summon );
@@ -403,14 +418,18 @@ public class YogDzewa extends Mob {
 		int targetPos = Dungeon.level.exit() + Dungeon.level.width();
 
 		if (!Dungeon.isChallenged(Challenges.STRONGER_BOSSES)
-				&& Actor.findChar(targetPos) == null){
+				&& (Actor.findChar(targetPos) == null || Actor.findChar(targetPos) instanceof Sheep)){
 			fist.pos = targetPos;
-		} else if (Actor.findChar(targetPos-1) == null){
+		} else if (Actor.findChar(targetPos-1) == null || Actor.findChar(targetPos-1) instanceof Sheep){
 			fist.pos = targetPos-1;
-		} else if (Actor.findChar(targetPos+1) == null){
+		} else if (Actor.findChar(targetPos+1) == null || Actor.findChar(targetPos+1) instanceof Sheep){
 			fist.pos = targetPos+1;
-		} else if (Actor.findChar(targetPos) == null){
+		} else if (Actor.findChar(targetPos) == null || Actor.findChar(targetPos) instanceof Sheep){
 			fist.pos = targetPos;
+		}
+
+		if (Actor.findChar(fist.pos) instanceof Sheep){
+			Actor.findChar(fist.pos).die(null);
 		}
 
 		GameScene.add(fist, 4);
