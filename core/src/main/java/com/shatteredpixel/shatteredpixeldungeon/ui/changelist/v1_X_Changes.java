@@ -84,16 +84,30 @@ public class v1_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("BETA-3", false, null);
+		changes = new ChangeInfo("", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "To-Do",
-				"I'm going to round the beta out and try to get it released early/mid next week. Because of that some of these things may be handled in patches:\n\n" +
-				"_-_ Additional enemy info on the top-left of the screen on full UI mode\n" +
-				"_-_ Improvements to some of the game's interfaces on full UI mode\n" +
-				"_-_ Translation work, and updated translators credits.\n" +
-				"_-_ Fixes for any bugs that get reported"));
+		changes = new ChangeInfo("RC-1", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ The final two bosses can now destroy magical sheep that are blocking minion spawning\n\n" +
+				"_-_ Added a new Language: Dutch!\n\n" +
+				"_-_ Stones of blink now fall to the ground if they fail to teleport"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (Caused by BETA)\n" +
+				"_-_ Minor visual and textual errors\n" +
+				"_-_ Freezes in the amulet scene after winning a run\n" +
+				"_-_ Uncommon crashes in level transition scene\n" +
+				"_-_ Some wands not counting against DK's challenge badge when they should\n" +
+				"_-_ A few additional cases where 'cause of death' badges weren't triggering"));
+
+		changes = new ChangeInfo("BETA-3", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.CONTROLLER), "UI/UX Improvements",
 				"A new radial menu system has been added, primarily for controller users! This should make using quickslots and the inventory much faster.\n\n" +
