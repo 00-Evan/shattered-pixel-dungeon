@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SacrificialFire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AdrenalineSurge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AnkhInvulnerability;
@@ -1696,6 +1697,11 @@ public class Hero extends Char {
 
 				if (cause instanceof Hero.Doom) {
 					((Hero.Doom)cause).onDeath();
+				}
+
+				SacrificialFire.Marked sacMark = buff(SacrificialFire.Marked.class);
+				if (sacMark != null){
+					sacMark.detach();
 				}
 
 			}
