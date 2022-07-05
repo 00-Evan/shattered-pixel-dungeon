@@ -845,8 +845,8 @@ public class Dungeon {
 				BArray.or( level.visited, level.heroFOV, m.pos - 1 - level.width(), 3, level.visited );
 				BArray.or( level.visited, level.heroFOV, m.pos - 1, 3, level.visited );
 				BArray.or( level.visited, level.heroFOV, m.pos - 1 + level.width(), 3, level.visited );
-				//updates adjacent cells too
-				GameScene.updateFog(m.pos, 2);
+				//radius grows if mob moves quickly
+				GameScene.updateFog(m.pos, 1 + (int)Math.ceil(m.speed()));
 			}
 		}
 		
@@ -865,7 +865,8 @@ public class Dungeon {
 			BArray.or( level.visited, level.heroFOV, ch.pos - 1 - level.width(), 3, level.visited );
 			BArray.or( level.visited, level.heroFOV, ch.pos - 1, 3, level.visited );
 			BArray.or( level.visited, level.heroFOV, ch.pos - 1 + level.width(), 3, level.visited );
-			GameScene.updateFog(ch.pos, 2);
+			//radius grows if mob moves quickly
+			GameScene.updateFog(ch.pos, 1 + (int)Math.ceil(ch.speed()));
 		}
 
 		for (TalismanOfForesight.HeapAwareness h : hero.buffs(TalismanOfForesight.HeapAwareness.class)){
