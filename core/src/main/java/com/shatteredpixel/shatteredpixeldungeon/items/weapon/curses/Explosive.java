@@ -109,7 +109,7 @@ public class Explosive extends Weapon.Enchantment {
 		} else if (durability > 10){
 			desc += " " + Messages.get(this, "desc_warm");
 		} else {
-			desc += " " + Messages.get(this, "desc_hot");
+			desc += " _" + Messages.get(this, "desc_hot") + "_";
 		}
 		return desc;
 	}
