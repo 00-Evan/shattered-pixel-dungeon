@@ -126,8 +126,9 @@ public class InterlevelScene extends PixelScene {
 					loadingDepth = 1;
 					fadeTime = SLOW_FADE;
 				} else {
-					loadingDepth = curTransition.destDepth;
-					if (!(Statistics.deepestFloor < loadingDepth)) {
+					if (curTransition != null)  loadingDepth = curTransition.destDepth;
+					else                        loadingDepth = Dungeon.depth+1;
+					if (Statistics.deepestFloor >= loadingDepth) {
 						fadeTime = FAST_FADE;
 					} else if (loadingDepth == 6 || loadingDepth == 11
 							|| loadingDepth == 16 || loadingDepth == 21) {
@@ -142,7 +143,8 @@ public class InterlevelScene extends PixelScene {
 				break;
 			case ASCEND:
 				fadeTime = FAST_FADE;
-				loadingDepth = curTransition.destDepth;
+				if (curTransition != null)  loadingDepth = curTransition.destDepth;
+				else                        loadingDepth = Dungeon.depth-1;
 				scrollSpeed = -5;
 				break;
 			case RETURN:
