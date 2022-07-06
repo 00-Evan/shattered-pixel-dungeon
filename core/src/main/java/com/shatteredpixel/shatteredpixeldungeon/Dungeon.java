@@ -417,11 +417,11 @@ public class Dungeon {
 		Dungeon.level = level;
 		hero.pos = pos;
 
-		Mob.restoreAllies( level, pos );
-
 		if (hero.buff(AscensionChallenge.class) != null){
 			hero.buff(AscensionChallenge.class).onLevelSwitch();
 		}
+
+		Mob.restoreAllies( level, pos );
 
 		Actor.init();
 
