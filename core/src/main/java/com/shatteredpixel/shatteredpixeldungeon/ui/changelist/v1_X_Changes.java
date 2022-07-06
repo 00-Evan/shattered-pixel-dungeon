@@ -48,7 +48,7 @@ import java.util.ArrayList;
 public class v1_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
-		//add_Coming_Soon(changeInfos);
+		add_Coming_Soon(changeInfos);
 		add_v1_3_Changes(changeInfos);
 		add_v1_2_Changes(changeInfos);
 		add_v1_1_Changes(changeInfos);
@@ -62,93 +62,39 @@ public class v1_X_Changes {
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Overview",
-			"The next Shattered update will be v1.3.0! Like v1.2.0, I'm aiming for v1.3.0 to be an update that focused on a variety of smaller improvements and additions. In particular I want this to be a smaller and faster update so that I can respond to the reception the game gets after the Steam release. That being said, I do hope to fulfill some long-requested feature additions with v1.3.0!\n\n" +
-			"Ideally I'll be sharing more info on v1.3.0 sometime around the end of April or beginning of May."));
+			"The next Shattered update will be v1.4.0! After focusing on game porting and multiple smaller additions, v1.4.0 will finally focus on new core game content! I expect v1.4.0 to take about 2 months to complete, as I want to focus primarily on the core content and not overload the update too much with other smaller additions.\n\n" +
+			"I should have some more info on v1.4.0 to share in a blog post some time in August."));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.RANKINGS), "Seeded runs!",
-			"The most significant addition in v1.3.0 will be support for custom seeded runs, and possibly the addition of dailies/weeklies as well! One thing worth noting is that this update will not include online leaderboards for daily/weekly runs due to technical limitations, but I will be open to adding them in the future."));
+		changes.addButton( new ChangeButton(Icons.get(Icons.DISPLAY_LAND), "Desktop UI Improvements",
+			"...Before v1.4.0 though, I would like to add a few interface improvements for desktp users in some v1.3 patches. In particular I still haven't added more detailed enemy info to the main game screen. I expect to be adding these things along with the usual bugfixes in patches for v1.3."));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.DISPLAY_LAND), "UI/UX Improvements",
-			"I also plan to make more improvements to the game's UI/UX with an emphasis on Steam users. This won't be the core focus like it was in v1.3.0, but expect more interface improvements, tweaks based on feedback, and possibly some additions to help controller users better play with their more limited button count."));
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.PICKAXE), "Blacksmith Quest",
+			"The main content in v1.4.0 is going to be a total rework to the blacksmith's quest in the caves! Currently the quest is pretty simple, and I'd like to expand it to continue the trend of quests getting progressively more involved. Expect more mining for rare ore and gems, with some greater rewards if you perform well!"));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-			"v1.3.0 will also include a variety of miscellaneous adjustments. This will include balance tweaks to items and game mechanics, and maybe another item rework. I'd like to also include some more badges focused around more specific accomplishments!"));
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Side Content",
+			"I plan to also have one significant piece of side content in v1.4.0. I haven't yet locked this in, so there are a few possibilities. Expect the side content to be on the scale of a single new item, challenge, or similar."));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.ENTER), "Technical Improvements",
-			"Finally, I also hope to make some behind the scenes technical improvements to the way the game handles loading and storing floors of the dungeon. I plan to use this functionality in the near future to give quests their own sub-levels!"));
+		changes.addButton( new ChangeButton(Icons.get(Icons.TALENT), "Mechanics Tweaks",
+			"v1.4.0 will also have some tweaks, as usual. In particular I plan to focus on hero talents and some pieces of equipment. Shattered's overall balance is better than it ever has been, but there is always room for more incremental improvements."));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.AMULET), "What About a New Hero?",
+			"Lastly, while this won't be coming in v1.4.0, I am making some progress on adding a new hero in 2022! Expect to hear more on this after v1.4.0 releases!"));
 
 	}
 
 	public static void add_v1_3_Changes( ArrayList<ChangeInfo> changeInfos ) {
-		ChangeInfo changes = new ChangeInfo("v1.3-BETA", true, "");
+		ChangeInfo changes = new ChangeInfo("v1.3", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes = new ChangeInfo("RC-1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ The final two bosses can now destroy magical sheep that are blocking minion spawning\n\n" +
-				"_-_ Added a new Language: Dutch!\n\n" +
-				"_-_ Stones of blink now fall to the ground if they fail to teleport"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (Caused by BETA)\n" +
-				"_-_ Minor visual and textual errors\n" +
-				"_-_ Freezes in the amulet scene after winning a run\n" +
-				"_-_ Uncommon crashes in level transition scene\n" +
-				"_-_ Some wands not counting against DK's challenge badge when they should\n" +
-				"_-_ A few additional cases where 'cause of death' badges weren't triggering"));
-
-		changes = new ChangeInfo("BETA-3", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.CONTROLLER), "UI/UX Improvements",
-				"A new radial menu system has been added, primarily for controller users! This should make using quickslots and the inventory much faster.\n\n" +
-				"These new menus also free up a bunch of buttons, so default controller button mappings have been reworked.\n\n" +
-				"A few other key binding actions have been adjusted as well, including a combo 'wait/loot item' action, and scrolling up/down using the zoom actions."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Levels are now cleared during ascension just before the hero returns to them. This prevents difficulty spikes if floors were left full of enemies. Ascension enemy spawn rates slightly increased to compensate\n\n" +
-				"_-_ Nearby enemies are no longer constantly drawn to the hero's position during the ascension challenge\n\n" +
-				"_-_ Updated translations (updating credits will happen soon!)"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (Caused by BETA)\n" +
-				"_-_ Various rare crash bugs\n" +
-				"_-_ Various minor visual and textual bugs\n" +
-				"_-_ Daily run history being lost in some cases\n" +
-				"_-_ Higher tier 'score chaser' badges not unlocking lower tier ones\n" +
-				"_-_ 'Friendly Fire' badge not being awarded by wand of corrosion\n\n" +
-				"Fixed (Existed Prior to BETA)\n" +
-				"_-_ Beacon of returning not working at all in boss arenas\n" +
-				"_-_ Various 'cause of death' badges not being awarded if death occurred with an ankh."));
-
-		changes = new ChangeInfo("BETA-2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (Caused by BETA)\n" +
-				"_-_ Various rare crash issues\n" +
-				"_-_ Daily runs preventing regular runs from being started\n" +
-				"_-_ Duplicate crystal keys from pit rooms\n" +
-				"_-_ Hostile Champions challenge slightly affecting level generation"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		/*changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
-				"_-_ v1.3.0 Released XX, 2022\n" +
-				"_-_ XX days after Shattered v1.2.0\n" +
-				"Expect dev commentary here in the future."));*/
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ v1.3.0 Released July 6th, 2022\n" +
+				"_-_ 105 days after Shattered v1.2.0\n" +
+				"Expect dev commentary here in the future."));
 
 		Image ic = Icons.get(Icons.SEED);
 		ic.hardlight(1f, 1.5f, 0.67f);
@@ -174,13 +120,13 @@ public class v1_X_Changes {
 				"_A bunch of adjustments have been made to the ascension route to make it a proper challenge!_\n\n" +
 				"Enemies will get much stronger as you ascend, and it's impossible to teleport back up or flee and avoid all combat. Expect to have to work a little bit more for an ascension win!"));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.DISPLAY), "UI Improvements!",
+		changes.addButton( new ChangeButton(Icons.get(Icons.DISPLAY), "UI/UX Improvements!",
 				"_Several UI and UX Improvements have been made for desktop and mobile users_\n\n" +
 				"_-_ The settings menu has been adjusted with a few new and rearranged options.\n" +
+				"_-_ Added radial menus for controller users, and redid default controller bindings.\n" +
 				"_-_ Added a quickslot swapper option for mobile portrait users.\n" +
 				"_-_ Keyboard and controller key bindings now have separate windows\n" +
-				//"_-_ " +
-				"_Several more UI improvements will be implemented before v1.3.0 goes live."));
+				"_-_ Added a few new key/button bindings actions"));
 
 		changes.addButton( new ChangeButton(BadgeBanner.image( Badges.Badge.BOSS_CHALLENGE_5.image ), "New Badges!",
 				"_14 new badges have been added to the game!_\n\n" +
@@ -218,6 +164,7 @@ public class v1_X_Changes {
 				"A few new overhead spell effects have been added as well."));
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Updated translations, translator credits, and added a new language: Dutch!\n" +
 				"_-_ Made the Huntress a bit easier to unlock again\n" +
 				"_-_ Dreamfoil has been renamed to Mageroyal, to better fit its lack of sleeping functionality since 1.2\n" +
 				"_-_ Updated various code dependencies\n" +
@@ -237,9 +184,12 @@ public class v1_X_Changes {
 				"_-_ Final boss's summons being slightly weaker than intended when badder bosses is enabled\n" +
 				"_-_ Great crab not blocking right after loading a save\n" +
 				"_-_ Exploits that could force DM-300 to dig outside of its arena\n" +
+				"_-_ Various 'cause of death' badges not being awarded if death occurred with an ankh.\n" +
 				"_-_ Wraiths from spectral necromancers not always dying when the necromancer dies\n" +
 				"_-_ The mystical charge talent giving more charge than intended\n" +
 				"_-_ Ring of might HP bonus not applying in specific cases\n" +
+				"_-_ Stones of blink disappearing if they fail to teleport\n" +
+				"_-_ Beacon of returning not working at all in boss arenas\n" +
 				"_-_ Earthen guardian not being immune to poison, gas, and bleed\n" +
 				"_-_ Transmogrified enemies awarding exp when the effect ends"));
 
@@ -270,7 +220,7 @@ public class v1_X_Changes {
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CLEANSING_DART), "Alchemy Item Buffs",
 				"I'm giving woolly bomb's a big buff to help make them more distinct from other sheep-spawning items:\n\n" +
-				"_- Woolly Bombs_ now summon sheep for 200 turns, or 20 turns during boss fights, up from 12-16 turns\n\n" +
+				"_- Woolly Bombs_ now summon sheep for 200 turns, or 20 turns during boss fights, up from 12-16 turns. However, sheep no longer totally prevent bosses from summoning minions.\n\n" +
 				"I've given some alternative functions to three darts that would previously only help allies:\n\n" +
 				"_- Holy Dart_ turns of bless reverted to 30 from 100, now heavily damages undead or demonic enemies, instead of blessing them\n\n" +
 				"_- Adrenaline Dart_ turns of adrenaline reverted to 10 from 30, now cripples enemies for 5 turns, instead of giving them adrenaline\n\n" +

@@ -52,7 +52,7 @@ import java.util.Collections;
 
 public class WelcomeScene extends PixelScene {
 
-	private static final int LATEST_UPDATE = 630;
+	private static final int LATEST_UPDATE = ShatteredPixelDungeon.v1_3_0;
 
 	@Override
 	public void create() {
@@ -189,7 +189,6 @@ public class WelcomeScene extends PixelScene {
 		} else {
 			message = Messages.get(this, "what_msg");
 		}
-		message = "Greetings Beta testers! v1.3.0 is almost ready for release!\n\nI expect to fully release the update on Wednesday, so please let me know if you run into any issues.";
 		text.text(message, Math.min(w-20, 300));
 		float textSpace = okay.top() - topRegion - 4;
 		text.setPos((w - text.width()) / 2f, (topRegion + 2) + (textSpace - text.height())/2);
