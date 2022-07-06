@@ -839,17 +839,17 @@ public class Dungeon {
 		}
 	
 		GameScene.updateFog(l, t, width, height);
-		
+
 		if (hero.buff(MindVision.class) != null){
 			for (Mob m : level.mobs.toArray(new Mob[0])){
 				BArray.or( level.visited, level.heroFOV, m.pos - 1 - level.width(), 3, level.visited );
 				BArray.or( level.visited, level.heroFOV, m.pos - 1, 3, level.visited );
 				BArray.or( level.visited, level.heroFOV, m.pos - 1 + level.width(), 3, level.visited );
-				//radius grows if mob moves quickly
-				GameScene.updateFog(m.pos, 1 + (int)Math.ceil(m.speed()));
+				//updates adjacent cells too
+				GameScene.updateFog(m.pos, 2);
 			}
 		}
-		
+
 		if (hero.buff(Awareness.class) != null){
 			for (Heap h : level.heaps.valueList()){
 				BArray.or( level.visited, level.heroFOV, h.pos - 1 - level.width(), 3, level.visited );
@@ -865,8 +865,7 @@ public class Dungeon {
 			BArray.or( level.visited, level.heroFOV, ch.pos - 1 - level.width(), 3, level.visited );
 			BArray.or( level.visited, level.heroFOV, ch.pos - 1, 3, level.visited );
 			BArray.or( level.visited, level.heroFOV, ch.pos - 1 + level.width(), 3, level.visited );
-			//radius grows if mob moves quickly
-			GameScene.updateFog(ch.pos, 1 + (int)Math.ceil(ch.speed()));
+			GameScene.updateFog(ch.pos, 2);
 		}
 
 		for (TalismanOfForesight.HeapAwareness h : hero.buffs(TalismanOfForesight.HeapAwareness.class)){
