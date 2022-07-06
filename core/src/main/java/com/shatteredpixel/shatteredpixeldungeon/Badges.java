@@ -97,7 +97,7 @@ public class Badges {
 		BOSS_SLAIN_3                ( 48 ),
 		ALL_POTIONS_IDENTIFIED      ( 49 ),
 		ALL_SCROLLS_IDENTIFIED      ( 50 ),
-		DEATH_FROM_ENEMY_MAGIC( 51 ),
+		DEATH_FROM_ENEMY_MAGIC      ( 51 ),
 		DEATH_FROM_FRIENDLY_MAGIC   ( 52 ),
 		DEATH_FROM_SACRIFICE        ( 53 ),
 		BOSS_SLAIN_1_WARRIOR,
