@@ -210,7 +210,7 @@ abstract public class ClassArmor extends Armor {
 
 							@Override
 							public void onSelect(Item item) {
-								if (item == null) return;
+								if (item == null || item == ClassArmor.this) return;
 
 								Armor armor = (Armor)item;
 								armor.detach(hero.belongings.backpack);
@@ -226,7 +226,7 @@ abstract public class ClassArmor extends Armor {
 								masteryPotionBonus = armor.masteryPotionBonus;
 								identify();
 
-								GLog.p( "Your heroic armor's properties have been transferred!" );
+								GLog.p( Messages.get(ClassArmor.class, "transfer_complete") );
 								hero.sprite.operate(hero.pos);
 								hero.sprite.emitter().burst( Speck.factory( Speck.CROWN), 12 );
 								Sample.INSTANCE.play( Assets.Sounds.EVOKE );
