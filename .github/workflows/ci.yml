@@ -21,7 +21,7 @@ jobs:
         uses: timheuer/base64-to-file@v1.1
         with:
           fileName: "android-release.jks"
-          fileDir: ./
+          fileDir: ${{ runner.workspace }}
           encodedString: ${{ secrets.JKS_FILE_B64 }}
 
       - name: Build desktop jar and android apk
@@ -30,7 +30,7 @@ jobs:
           arguments: |
             desktop:release
             android:packageRelease
-            -PRELEASE_STORE_FILE=./android-release.jks
+            -PRELEASE_STORE_FILE=$RUNNER_WORKSPACE/android-release.jks
             -PRELEASE_STORE_PASSWORD=${{ secrets.JKS_PASS }}
             -PRELEASE_KEY_ALIAS=${{ secrets.KEY_ALIAS }}
             -PRELEASE_KEY_PASSWORD=${{ secrets.KEY_PASS }}
