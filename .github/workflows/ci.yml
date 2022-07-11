@@ -9,7 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: DockerHub
     steps:
       - name: Checkout
         uses: actions/checkout@v3
