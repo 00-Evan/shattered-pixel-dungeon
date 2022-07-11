@@ -35,6 +35,8 @@ jobs:
 
       - name: Build desktop jar
         run: gradle desktop:release
+        env:
+          GRADLE_USER_HOME: ~/.gradle
 
       - name: Upload desktop jar
         uses: actions/upload-artifact@v3
@@ -45,6 +47,8 @@ jobs:
 
       - name: Build android APK
         run: gradle android:packageRelease
+        env:
+          GRADLE_USER_HOME: ~/.gradle
 
       - name: Upload android APK
         uses: actions/upload-artifact@v3
