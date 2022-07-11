@@ -13,9 +13,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      # - name: Create JKS from secret
-      #   run: echo $JKS_FILE_B64 | base64 -d > $ANDROID_HOME/android-release.jks
-
       - name: Create JKS from secret
         uses: timheuer/base64-to-file@v1.1
         with:
