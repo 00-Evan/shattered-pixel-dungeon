@@ -33,15 +33,26 @@ If you'd like to work with the code, you can find the following guides in `/docs
 ### Done
 
 - Potion of Experience now level up hero up to 30 levels
+
 ![exp](images/exp.png)
+
 - Potion of Healing now adds 5000 to Hero HP
+
 ![health_1st_time](images/health_1st_time.png)
 ![health_2nd_time](images/health_2nd_time.png)
+
 - Potion of Strength now multiply str by 10
+
 ![strength_10](images/strength_10.png)
+
 - Shopkeepers not more so greedy
+
 ![shopkeeper](images/shopkeeper.png)
+
 - Scroll of Upgrade now adds +10 to item and no longer dispels the enchantment
+
 ![upgrade](images/upgrade.png)
+
 - All heros search distance upgraded to 6
+
 ![search_radius](images/search_radius.png)
