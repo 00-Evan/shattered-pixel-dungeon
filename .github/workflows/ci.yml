@@ -6,13 +6,6 @@ on:
       - "**"
   workflow_dispatch:
 
-env:
-  # JKS_FILE_B64: ${{ secrets.JKS_FILE_B64 }}
-  RELEASE_STORE_FILE: ${{ secrets.RELEASE_STORE_FILE }}
-  RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_FILE }}
-  RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_STORE_FILE }}
-  RELEASE_KEY_ALIAS: release
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -33,10 +26,10 @@ jobs:
       - name: Generate gradle.properties
         run: |
           cat <<EOF >> ~/.gradle/gradle.properties
-          echo RELEASE_STORE_FILE=$ANDROID_HOME/$JKS_FILE
-          echo RELEASE_STORE_PASSWORD=$JKS_PASS
-          echo RELEASE_KEY_ALIAS=$RELEASE_KEY_ALIAS
-          echo RELEASE_KEY_PASSWORD=$KEY_PASS
+          echo RELEASE_STORE_FILE=$ANDROID_HOME/android-release.jks
+          echo RELEASE_STORE_PASSWORD=${{ secrets.RELEASE_STORE_PASSWORD }}
+          echo RELEASE_KEY_ALIAS=release
+          echo RELEASE_KEY_PASSWORD=${{ secrets.RELEASE_KEY_PASSWORD }}
           EOF
 
       - name: Build desktop jar
