@@ -22,16 +22,15 @@ jobs:
 
       - name: Generate gradle.properties
         run: |
-          mkdir -p ~/.gradle &&
-          cat <<EOF >> ~/.gradle/gradle.properties
-          echo RELEASE_STORE_FILE=$ANDROID_HOME/android-release.jks
+          cat <<EOF >> ./gradle.properties
+          echo RELEASE_STORE_FILE=${{ env.ANDROID_HOME }}/android-release.jks
           echo RELEASE_STORE_PASSWORD=${{ secrets.JKS_PASS }}
           echo RELEASE_KEY_ALIAS=${{ secrets.KEY_ALIAS }}
           echo RELEASE_KEY_PASSWORD=${{ secrets.KEY_PASS }}
           EOF
 
       - name: Build desktop jar
-        run: GRADLE_USER_HOME=~/.gradle gradle desktop:release
+        run: gradle desktop:release
 
       - name: Upload desktop jar
         uses: actions/upload-artifact@v3
@@ -41,7 +40,7 @@ jobs:
           retention-days: 7
 
       - name: Build android APK
-        run: GRADLE_USER_HOME=~/.gradle gradle android:packageRelease
+        run: gradle android:packageRelease
 
       - name: Upload android APK
         uses: actions/upload-artifact@v3
