@@ -20,7 +20,14 @@ android {
         resConfigs "en_US", "cs", "tr", "ca", "ko", "pl", "it", "ja",
                 "eo", "ru", "zh_CN", "de", "fr", "es", "pt", "fi", "hu", "in"
     }
-
+    signingConfigs {
+        release {
+            storeFile file(RELEASE_STORE_FILE)
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
+        }
+    }
     buildTypes {
         debug {
             applicationIdSuffix ".indev"
@@ -39,7 +46,7 @@ android {
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
+            signingConfig signingConfigs.release
             dependencies {
                 releaseImplementation project(':services:updates:githubUpdates')
                 releaseImplementation project(':services:news:shatteredNews')
