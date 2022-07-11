@@ -19,7 +19,7 @@ jobs:
       - name: Create JKS from secret
         uses: timheuer/base64-to-file@v1.1
         with:
-          fileName: 'android-release.jks'
+          fileName: "android-release.jks"
           fileDir: $ANDROID_HOME
           encodedString: ${{ secrets.JKS_FILE_B64 }}
 
@@ -34,9 +34,7 @@ jobs:
           EOF
 
       - name: Build desktop jar
-        run: gradle desktop:release
-        env:
-          GRADLE_USER_HOME: ~/.gradle
+        run: GRADLE_USER_HOME=~/.gradle gradle desktop:release
 
       - name: Upload desktop jar
         uses: actions/upload-artifact@v3
@@ -46,9 +44,7 @@ jobs:
           retention-days: 7
 
       - name: Build android APK
-        run: gradle android:packageRelease
-        env:
-          GRADLE_USER_HOME: ~/.gradle
+        run: GRADLE_USER_HOME=~/.gradle gradle android:packageRelease
 
       - name: Upload android APK
         uses: actions/upload-artifact@v3
