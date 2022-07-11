@@ -25,11 +25,12 @@ jobs:
 
       - name: Generate gradle.properties
         run: |
+          mkdir -p ~/.gradle &&
           cat <<EOF >> ~/.gradle/gradle.properties
           echo RELEASE_STORE_FILE=$ANDROID_HOME/android-release.jks
-          echo RELEASE_STORE_PASSWORD=${{ secrets.RELEASE_STORE_PASSWORD }}
-          echo RELEASE_KEY_ALIAS=release
-          echo RELEASE_KEY_PASSWORD=${{ secrets.RELEASE_KEY_PASSWORD }}
+          echo RELEASE_STORE_PASSWORD=${{ secrets.JKS_PASS }}
+          echo RELEASE_KEY_ALIAS=${{ secrets.KEY_ALIAS }}
+          echo RELEASE_KEY_PASSWORD=${{ secrets.KEY_PASS }}
           EOF
 
       - name: Build desktop jar
