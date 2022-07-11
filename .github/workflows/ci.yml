@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  JKS_FILE_B64: ${{ secrets.JKS_FILE_B64 }}
+  # JKS_FILE_B64: ${{ secrets.JKS_FILE_B64 }}
   RELEASE_STORE_FILE: ${{ secrets.RELEASE_STORE_FILE }}
   RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_FILE }}
   RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_STORE_FILE }}
@@ -20,8 +20,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      # - name: Create JKS from secret
+      #   run: echo $JKS_FILE_B64 | base64 -d > $ANDROID_HOME/android-release.jks
+
       - name: Create JKS from secret
-        run: echo $JKS_FILE_B64 | base64 -d > $ANDROID_HOME/android-release.jks
+        uses: timheuer/base64-to-file@v1.1
+        with:
+          fileName: 'android-release.jks'
+          fileDir: $ANDROID_HOME
+          encodedString: ${{ secrets.JKS_FILE_B64 }}
 
       - name: Generate gradle.properties
         run: |
