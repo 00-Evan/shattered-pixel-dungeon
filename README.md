@@ -31,7 +31,7 @@ If you'd like to work with the code, you can find the following guides in `/docs
 ### Done
 
 - Potion of Experience now level up hero up to 30 levels
-  - 2test: find and drink
+![exp](images/exp.png)
 - Potion of Healing now adds 5000 to Hero HP
   - 2test: add HP second time
 ![health_1st_time](images/health_1st_time.png)
