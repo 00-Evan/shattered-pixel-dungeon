@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Build JAR and APK
 
 on:
   push:
