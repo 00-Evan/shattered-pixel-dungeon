@@ -30,7 +30,7 @@ jobs:
           arguments: |
             desktop:release
             android:packageRelease
-            -PRELEASE_STORE_FILE=$RUNNER_WORKSPACE/android-release.jks
+            -PRELEASE_STORE_FILE=${{ runner.workspace }}/android-release.jks
             -PRELEASE_STORE_PASSWORD=${{ secrets.JKS_PASS }}
             -PRELEASE_KEY_ALIAS=${{ secrets.KEY_ALIAS }}
             -PRELEASE_KEY_PASSWORD=${{ secrets.KEY_PASS }}
