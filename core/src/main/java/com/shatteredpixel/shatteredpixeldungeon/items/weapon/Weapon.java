@@ -259,8 +259,6 @@ abstract public class Weapon extends KindOfWeapon {
 		} else {
 			if (hasCurseEnchant()){
 				if (Random.Int(3) == 0) enchant(null);
-			} else if (level() >= 4 && Random.Float(10) < Math.pow(2, level()-4)){
-				enchant(null);
 			}
 		}
 		
