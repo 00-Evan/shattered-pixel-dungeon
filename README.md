@@ -35,3 +35,5 @@ If you'd like to work with the code, you can find the following guides in `/docs
 ![shopkeeper](images/shopkeeper.png)
 - Scroll of Upgrade now adds +10 to item and no longer dispels the enchantment
 ![upgrade](images/upgrade.png)
+- All heros search distance upgraded to 6
+  - #NEEDTEST
