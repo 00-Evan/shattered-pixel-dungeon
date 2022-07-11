@@ -43,4 +43,3 @@ If you'd like to work with the code, you can find the following guides in `/docs
   - Not working on armor, WIP
   - Not working on weapon, WIP
   - 2test: Remove curse
-  - 2test: Don't remove enchantment
