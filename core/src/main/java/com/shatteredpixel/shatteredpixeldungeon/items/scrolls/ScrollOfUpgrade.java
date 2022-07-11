@@ -67,9 +67,9 @@ public class ScrollOfUpgrade extends InventoryScroll {
 			boolean wasCursed = w.cursed;
 			boolean hadCursedEnchant = w.hasCurseEnchant();
 			boolean hadGoodEnchant = w.hasGoodEnchant();
-
-			w.upgrade();
-
+			for (int i = 0; i < 10; i++){
+				w.upgrade();
+			}
 			if (w.cursedKnown && hadCursedEnchant && !w.hasCurseEnchant()){
 				removeCurse( Dungeon.hero );
 			} else if (w.cursedKnown && wasCursed && !w.cursed){
@@ -84,9 +84,9 @@ public class ScrollOfUpgrade extends InventoryScroll {
 			boolean wasCursed = a.cursed;
 			boolean hadCursedGlyph = a.hasCurseGlyph();
 			boolean hadGoodGlyph = a.hasGoodGlyph();
-
-			a.upgrade();
-
+			for (int i = 0; i < 10; i++){
+				a.upgrade();
+			}
 			if (a.cursedKnown && hadCursedGlyph && !a.hasCurseGlyph()){
 				removeCurse( Dungeon.hero );
 			} else if (a.cursedKnown && wasCursed && !a.cursed){
@@ -98,9 +98,9 @@ public class ScrollOfUpgrade extends InventoryScroll {
 
 		} else if (item instanceof Wand || item instanceof Ring) {
 			boolean wasCursed = item.cursed;
-
-			item.upgrade();
-
+			for (int i = 0; i < 10; i++){
+				item.upgrade();
+			}
 			if (item.cursedKnown && wasCursed && !item.cursed){
 				removeCurse( Dungeon.hero );
 			}
