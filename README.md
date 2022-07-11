@@ -33,8 +33,8 @@ If you'd like to work with the code, you can find the following guides in `/docs
 - Potion of Experience now level up hero up to 30 levels
 ![exp](images/exp.png)
 - Potion of Healing now adds 5000 to Hero HP
-  - 2test: add HP second time
 ![health_1st_time](images/health_1st_time.png)
+![health_2nd_time](images/health_2nd_time.png)
 - Potion of Strength now multiply str by 10
 ![strength_10](images/strength_10.png)
 - Shopkeepers not more so greedy
