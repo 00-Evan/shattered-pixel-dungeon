@@ -1,0 +1,61 @@
+name: Docker Image CI
+
+on:
+  push:
+    tags:
+      - "**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: DockerHub
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Create JKS from secret
+        run: echo $JKS_FILE_B64 | base64 -d > $ANDROID_HOME/android-release.jks
+        env:
+          JKS_FILE_B64: ${{ secrets.JKS_FILE_B64 }}
+
+      - name: Generate gradle.properties
+        run: |
+          cat <<EOF >> ~/.gradle/gradle.properties
+          echo RELEASE_STORE_FILE=$ANDROID_HOME/$JKS_FILE
+          echo RELEASE_STORE_PASSWORD=$JKS_PASS
+          echo RELEASE_KEY_ALIAS=$RELEASE_KEY_ALIAS
+          echo RELEASE_KEY_PASSWORD=$KEY_PASS
+          EOF
+        env:
+          RELEASE_STORE_FILE: ${{ secrets.RELEASE_STORE_FILE }}
+          RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_FILE }}
+          RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_STORE_FILE }}
+          RELEASE_KEY_ALIAS: release
+
+      - name: Build desktop jar
+        run: gradle desktop:release
+
+      - name: Upload desktop jar
+        uses: actions/upload-artifact@v3
+        with:
+          name: "spd-${{ github.ref_name }}-${{ github.run_number }}.jar"
+          path: desktop/build/libs/desktop-*.jar
+          retention-days: 7
+
+      - name: Build android APK
+        run: gradle android:packageRelease
+
+      - name: Upload android APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: "spd-${{ github.ref_name }}-${{ github.run_number }}.apk"
+          path: android/build/outputs/apk/release/android-release.apk
+          retention-days: 7
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            desktop/build/libs/desktop-*.jar
+            android/build/outputs/apk/release/android-release.apk
