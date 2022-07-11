@@ -35,4 +35,3 @@ If you'd like to work with the code, you can find the following guides in `/docs
 ![shopkeeper](images/shopkeeper.png)
 - Scroll of Upgrade now adds +10 to item and no longer dispels the enchantment
   - Not working on armor, WIP
-  - Not working on weapon, WIP
