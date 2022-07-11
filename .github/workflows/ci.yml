@@ -10,8 +10,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 11
 
       - name: Create JKS from secret
         uses: timheuer/base64-to-file@v1.1
@@ -20,34 +24,30 @@ jobs:
           fileDir: $ANDROID_HOME
           encodedString: ${{ secrets.JKS_FILE_B64 }}
 
-      - name: Generate gradle.properties
-        run: |
-          cat <<EOF >> ./gradle.properties
-          echo RELEASE_STORE_FILE=${{ env.ANDROID_HOME }}/android-release.jks
-          echo RELEASE_STORE_PASSWORD=${{ secrets.JKS_PASS }}
-          echo RELEASE_KEY_ALIAS=${{ secrets.KEY_ALIAS }}
-          echo RELEASE_KEY_PASSWORD=${{ secrets.KEY_PASS }}
-          EOF
-
-      - name: Build desktop jar
-        run: gradle desktop:release
+      - name: Build desktop jar and android apk
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: |
+            desktop:release
+            android:packageRelease
+            -PRELEASE_STORE_FILE=${{ env.ANDROID_HOME }}/android-release.jks
+            -PRELEASE_STORE_PASSWORD=${{ secrets.JKS_PASS }}
+            -PRELEASE_KEY_ALIAS=${{ secrets.KEY_ALIAS }}
+            -PRELEASE_KEY_PASSWORD=${{ secrets.KEY_PASS }}
 
       - name: Upload desktop jar
         uses: actions/upload-artifact@v3
         with:
           name: "spd-${{ github.ref_name }}-${{ github.run_number }}.jar"
           path: desktop/build/libs/desktop-*.jar
-          retention-days: 7
-
-      - name: Build android APK
-        run: gradle android:packageRelease
+          retention-days: 2
 
       - name: Upload android APK
         uses: actions/upload-artifact@v3
         with:
           name: "spd-${{ github.ref_name }}-${{ github.run_number }}.apk"
           path: android/build/outputs/apk/release/android-release.apk
-          retention-days: 7
+          retention-days: 2
 
       - name: Release
         uses: softprops/action-gh-release@v1
