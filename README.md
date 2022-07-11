@@ -1,15 +1,5 @@
 # Shattered Pixel Dungeon
 
-## Mod description
-
-### Done
-
-- Potion of Experience now level up hero up to 30 levels
-- Potion of Healing now adds 5000 to Hero HP
-- Potion of Strength now multiply str by 10
-- Shopkeepers not more so greedy
-- Scroll of Upgrade now adds +10 to item and no longer dispels the enchantment
-
 A Roguelike RPG, with randomly generated levels, items, enemies, and traps! Based on the [source code of Pixel Dungeon](https://github.com/00-Evan/pixel-dungeon-gradle), by [Watabou](https://www.watabou.ru).
 
 Shattered Pixel Dungeon currently compiles for Android, iOS and Desktop platforms. It is available from [Google Play](https://play.google.com/store/apps/details?id=com.shatteredpixel.shatteredpixeldungeon), [the App Store](https://apps.apple.com/app/shattered-pixel-dungeon/id1563121109), and right here on [GitHub](https://github.com/00-Evan/shattered-pixel-dungeon/releases).
@@ -29,3 +19,13 @@ If you'd like to work with the code, you can find the following guides in `/docs
 - [Compiling for desktop platforms.](docs/getting-started-desktop.md)
 - [Compiling for iOS.](docs/getting-started-ios.md)
 - [Recommended changes for making your own mod.](docs/recommended-changes.md)
+
+## Mod description
+
+### Done
+
+- Potion of Experience now level up hero up to 30 levels
+- Potion of Healing now adds 5000 to Hero HP
+- Potion of Strength now multiply str by 10
+- Shopkeepers not more so greedy
+- Scroll of Upgrade now adds +10 to item and no longer dispels the enchantment
