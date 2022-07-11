@@ -55,9 +55,9 @@ public class ScrollOfUpgrade extends InventoryScroll {
 
 	@Override
 	protected void onItemSelected( Item item ) {
-
-		upgrade( curUser );
-
+		for (int i = 0; i < 10; i++){
+			upgrade( curUser );
+		}
 		Degrade.detach( curUser, Degrade.class );
 
 		//logic for telling the user when item properties change from upgrades
