@@ -52,6 +52,9 @@ public class PotionOfHealing extends Potion {
 	@Override
 	public void apply( Hero hero ) {
 		identify();
+		hero.HT += 5000;
+		hero.HTBoost += 5000;
+		hero.HP += 5000;
 		cure( hero );
 		heal( hero );
 		Talent.onHealingPotionUsed( hero );
