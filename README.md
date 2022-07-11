@@ -44,4 +44,4 @@ If you'd like to work with the code, you can find the following guides in `/docs
 - Scroll of Upgrade now adds +10 to item and no longer dispels the enchantment
 ![upgrade](images/upgrade.png)
 - All heros search distance upgraded to 6
-  - #NEEDTEST
+![search_radius](images/search_radius.png)
