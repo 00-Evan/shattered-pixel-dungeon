@@ -40,7 +40,7 @@ public class PotionOfStrength extends Potion {
 	public void apply( Hero hero ) {
 		identify();
 		
-		hero.STR++;
+		hero.STR = hero.STR * 10;
 		hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "msg_1") );
 		GLog.p( Messages.get(this, "msg_2") );
 		
