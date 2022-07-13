@@ -94,25 +94,24 @@ public class Amulet extends Item {
 	}
 	
 	private void showAmuletScene( boolean showText ) {
-		try {
-			Dungeon.saveAll();
-			AmuletScene.noText = !showText;
-			Game.switchScene( AmuletScene.class, new Game.SceneChangeCallback() {
-				@Override
-				public void beforeCreate() {
+		AmuletScene.noText = !showText;
+		Game.switchScene( AmuletScene.class, new Game.SceneChangeCallback() {
+			@Override
+			public void beforeCreate() {
 
-				}
+			}
 
-				@Override
-				public void afterCreate() {
-					Badges.validateVictory();
-					Badges.validateChampion(Challenges.activeChallenges());
-					Badges.saveGlobal();
+			@Override
+			public void afterCreate() {
+				Badges.validateVictory();
+				Badges.validateChampion(Challenges.activeChallenges());
+				try {
+					Dungeon.saveAll();
+				} catch (IOException e) {
+					ShatteredPixelDungeon.reportException(e);
 				}
-			});
-		} catch (IOException e) {
-			ShatteredPixelDungeon.reportException(e);
-		}
+			}
+		});
 	}
 	
 	@Override
