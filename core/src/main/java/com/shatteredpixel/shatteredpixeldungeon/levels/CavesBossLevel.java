@@ -262,6 +262,7 @@ public class CavesBossLevel extends Level {
 	@Override
 	public void seal() {
 		super.seal();
+		Statistics.qualifiedForBossChallengeBadge = true;
 
 		int entrance = entrance();
 		set( entrance, Terrain.WALL );
