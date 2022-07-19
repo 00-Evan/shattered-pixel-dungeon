@@ -157,6 +157,11 @@ public class YogDzewa extends Mob {
 	private ArrayList<Integer> targetedCells = new ArrayList<>();
 
 	@Override
+	public int attackSkill(Char target) {
+		return INFINITE_ACCURACY;
+	}
+
+	@Override
 	protected boolean act() {
 		//char logic
 		if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
@@ -216,23 +221,27 @@ public class YogDzewa extends Mob {
 					Dungeon.observe();
 				}
 				for (Char ch : affected) {
-					if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES)){
-						ch.damage(Random.NormalIntRange(30, 50), new Eye.DeathGaze());
-					} else {
-						ch.damage(Random.NormalIntRange(20, 30), new Eye.DeathGaze());
-					}
-					if (ch == Dungeon.hero){
-						Statistics.bossScores[4] -= 500;
-					}
 
-					if (Dungeon.level.heroFOV[pos]) {
-						ch.sprite.flash();
-						CellEmitter.center(pos).burst(PurpleParticle.BURST, Random.IntRange(1, 2));
-					}
-					if (!ch.isAlive() && ch == Dungeon.hero) {
-						Badges.validateDeathFromEnemyMagic();
-						Dungeon.fail(getClass());
-						GLog.n(Messages.get(Char.class, "kill", name()));
+					if (hit( this, ch, true )) {
+						if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES)) {
+							ch.damage(Random.NormalIntRange(30, 50), new Eye.DeathGaze());
+						} else {
+							ch.damage(Random.NormalIntRange(20, 30), new Eye.DeathGaze());
+						}
+						if (ch == Dungeon.hero) {
+							Statistics.bossScores[4] -= 500;
+						}
+						if (Dungeon.level.heroFOV[pos]) {
+							ch.sprite.flash();
+							CellEmitter.center(pos).burst(PurpleParticle.BURST, Random.IntRange(1, 2));
+						}
+						if (!ch.isAlive() && ch == Dungeon.hero) {
+							Badges.validateDeathFromEnemyMagic();
+							Dungeon.fail(getClass());
+							GLog.n(Messages.get(Char.class, "kill", name()));
+						}
+					} else {
+						ch.sprite.showStatus( CharSprite.NEUTRAL,  ch.defenseVerb() );
 					}
 				}
 				targetedCells.clear();
