@@ -746,6 +746,7 @@ public class Hero extends Char {
 		ready = true;
 
 		AttackIndicator.updateState();
+		BuffIndicator.refreshBoss();
 		
 		GameScene.ready();
 	}
@@ -1331,6 +1332,10 @@ public class Hero extends Char {
 	
 	public Mob visibleEnemy( int index ) {
 		return visibleEnemies.get(index % visibleEnemies.size());
+	}
+
+	public ArrayList<Mob> getVisibleEnemies(){
+		return new ArrayList<>(visibleEnemies);
 	}
 	
 	private boolean walkingToVisibleTrapInFog = false;
