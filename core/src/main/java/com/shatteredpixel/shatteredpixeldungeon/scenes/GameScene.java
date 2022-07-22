@@ -562,7 +562,8 @@ public class GameScene extends PixelScene {
 				}
 			}
 
-			if (Dungeon.hero.buff(AscensionChallenge.class) != null){
+			if (Dungeon.hero.buff(AscensionChallenge.class) != null
+				&& Dungeon.depth == Statistics.highestAscent){
 				Dungeon.hero.buff(AscensionChallenge.class).saySwitch();
 			}
 
