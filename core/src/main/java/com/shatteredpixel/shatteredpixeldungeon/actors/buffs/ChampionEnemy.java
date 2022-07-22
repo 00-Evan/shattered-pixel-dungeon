@@ -100,21 +100,21 @@ public abstract class ChampionEnemy extends Buff {
 
 		Dungeon.mobsToChampion--;
 
-		if (Dungeon.mobsToChampion <= 0){
-			Class<?extends ChampionEnemy> buffCls;
-			switch (Random.Int(6)){
-				case 0: default:    buffCls = Blazing.class;      break;
-				case 1:             buffCls = Projecting.class;   break;
-				case 2:             buffCls = AntiMagic.class;    break;
-				case 3:             buffCls = Giant.class;        break;
-				case 4:             buffCls = Blessed.class;      break;
-				case 5:             buffCls = Growing.class;      break;
-			}
+		//we roll for a champion enemy even if we aren't spawning one to ensure that
+		//mobsToChampion does not affect levelgen RNG (number of calls to Random.Int() is constant)
+		Class<?extends ChampionEnemy> buffCls;
+		switch (Random.Int(6)){
+			case 0: default:    buffCls = Blazing.class;      break;
+			case 1:             buffCls = Projecting.class;   break;
+			case 2:             buffCls = AntiMagic.class;    break;
+			case 3:             buffCls = Giant.class;        break;
+			case 4:             buffCls = Blessed.class;      break;
+			case 5:             buffCls = Growing.class;      break;
+		}
 
-			if (Dungeon.isChallenged(Challenges.CHAMPION_ENEMIES)) {
-				Buff.affect(m, buffCls);
-				m.state = m.WANDERING;
-			}
+		if (Dungeon.mobsToChampion <= 0 && Dungeon.isChallenged(Challenges.CHAMPION_ENEMIES)) {
+			Buff.affect(m, buffCls);
+			m.state = m.WANDERING;
 		}
 	}
 
