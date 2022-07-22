@@ -24,14 +24,17 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.ChangeInfo;
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.ChangesWindow;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_1_X_Changes;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_2_X_Changes;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_3_X_Changes;
@@ -42,8 +45,11 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_7_X_Changes;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_8_X_Changes;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_9_X_Changes;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v1_X_Changes;
+import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.watabou.noosa.Camera;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
+import com.watabou.noosa.Scene;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.ui.Component;
 
@@ -52,6 +58,10 @@ import java.util.ArrayList;
 public class ChangesScene extends PixelScene {
 	
 	public static int changesSelected = 0;
+
+	private NinePatch rightPanel;
+	private IconTitle changeTitle;
+	private RenderedTextBlock changeBody;
 	
 	@Override
 	public void create() {
@@ -83,9 +93,36 @@ public class ChangesScene extends PixelScene {
 		int pw = 135 + panel.marginLeft() + panel.marginRight() - 2;
 		int ph = h - 36;
 
-		panel.size( pw, ph );
-		panel.x = (w - pw) / 2f;
-		panel.y = title.bottom() + 5;
+		if (h >= PixelScene.MIN_HEIGHT_FULL && w >= PixelScene.MIN_WIDTH_FULL) {
+			panel.size( pw, ph );
+			panel.x = (w - pw) / 2f - pw/2 - 1;
+			panel.y = title.bottom() + 5;
+
+			rightPanel = Chrome.get(Chrome.Type.TOAST);
+			rightPanel.size( pw, ph );
+			rightPanel.x = (w - pw) / 2f + pw/2 + 1;
+			rightPanel.y = title.bottom() + 5;
+			add(rightPanel);
+
+			changeTitle = new IconTitle(Icons.get(Icons.CHANGES), Messages.get(this, "right_title"));
+			changeTitle.setPos(rightPanel.x + rightPanel.marginLeft(), rightPanel.y + rightPanel.marginTop());
+			changeTitle.setSize(pw, 20);
+			add(changeTitle);
+
+			String body = Messages.get(this, "right_body");
+			if (Messages.lang() != Languages.ENGLISH){
+				body += "\n\n_" + Messages.get(this, "lang_warn") + "_";
+			}
+			changeBody = PixelScene.renderTextBlock(body, 6);
+			changeBody.maxWidth(pw - panel.marginHor());
+			changeBody.setPos(rightPanel.x + rightPanel.marginLeft(), changeTitle.bottom()+2);
+			add(changeBody);
+
+		} else {
+			panel.size( pw, ph );
+			panel.x = (w - pw) / 2f;
+			panel.y = title.bottom() + 5;
+		}
 		align( panel );
 		add( panel );
 		
@@ -257,6 +294,36 @@ public class ChangesScene extends PixelScene {
 		addToBack( archs );
 
 		fadeIn();
+	}
+
+	private void updateChangesText(Image icon, String title, String message){
+		if (changeTitle != null){
+			changeTitle.icon(icon);
+			changeTitle.label(title);
+			changeTitle.setPos(changeTitle.left(), changeTitle.top());
+
+			int pw = 135 + rightPanel.marginHor() - 2;
+			changeBody.text(message, pw - rightPanel.marginHor());
+			while (changeBody.height() > rightPanel.height()-25
+					&& changeBody.right() + 5 < Camera.main.width){
+				changeBody.maxWidth(changeBody.maxWidth()+5);
+			}
+			int ph = Camera.main.height - 36;
+			rightPanel.size(changeBody.maxWidth() + rightPanel.marginHor(), Math.max(ph, changeBody.height()+18+rightPanel.marginVer()));
+			changeBody.setPos(changeBody.left(), changeTitle.bottom()+2);
+
+		} else {
+			addToFront(new ChangesWindow(icon, title, message));
+		}
+	}
+
+	public static void showChangeInfo(Image icon, String title, String message){
+		Scene s = ShatteredPixelDungeon.scene();
+		if (s instanceof ChangesScene){
+			((ChangesScene) s).updateChangesText(icon, title, message);
+			return;
+		}
+		s.addToFront(new ChangesWindow(icon, title, message));
 	}
 	
 	@Override
