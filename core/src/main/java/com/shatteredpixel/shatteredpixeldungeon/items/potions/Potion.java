@@ -74,6 +74,7 @@ import com.watabou.utils.Reflection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 
 public class Potion extends Item {
 
@@ -84,7 +85,7 @@ public class Potion extends Item {
 
 	private static final float TIME_TO_DRINK = 1f;
 
-	private static final HashMap<String, Integer> colors = new HashMap<String, Integer>() {
+	private static final LinkedHashMap<String, Integer> colors = new LinkedHashMap<String, Integer>() {
 		{
 			put("crimson",ItemSpriteSheet.POTION_CRIMSON);
 			put("amber",ItemSpriteSheet.POTION_AMBER);
