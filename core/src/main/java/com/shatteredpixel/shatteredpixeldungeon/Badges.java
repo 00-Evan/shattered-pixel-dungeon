@@ -864,6 +864,7 @@ public class Badges {
 	public static void validateVictory() {
 
 		Badge badge = Badge.VICTORY;
+		local.add( badge );
 		displayBadge( badge );
 
 		switch (Dungeon.hero.heroClass) {
