@@ -702,7 +702,7 @@ public class Badges {
 	private static LinkedHashMap<HeroClass, Badge> victoryClassBadges = new LinkedHashMap<>();
 	static {
 		victoryClassBadges.put(HeroClass.WARRIOR, Badge.VICTORY_WARRIOR);
-		victoryClassBadges.put(HeroClass.MAGE, Badge.MASTERY_MAGE);
+		victoryClassBadges.put(HeroClass.MAGE, Badge.VICTORY_MAGE);
 		victoryClassBadges.put(HeroClass.ROGUE, Badge.VICTORY_ROGUE);
 		victoryClassBadges.put(HeroClass.HUNTRESS, Badge.VICTORY_HUNTRESS);
 	}
@@ -867,28 +867,19 @@ public class Badges {
 		local.add( badge );
 		displayBadge( badge );
 
-		switch (Dungeon.hero.heroClass) {
-		case WARRIOR:
-			badge = Badge.VICTORY_WARRIOR;
-			break;
-		case MAGE:
-			badge = Badge.VICTORY_MAGE;
-			break;
-		case ROGUE:
-			badge = Badge.VICTORY_ROGUE;
-			break;
-		case HUNTRESS:
-			badge = Badge.VICTORY_HUNTRESS;
-			break;
-		}
+		badge = victoryClassBadges.get(Dungeon.hero.heroClass);
+		if (badge == null) return;
 		local.add( badge );
 		unlock(badge);
-		
-		if (isUnlocked( Badge.VICTORY_WARRIOR ) &&
-				isUnlocked( Badge.VICTORY_MAGE ) &&
-				isUnlocked( Badge.VICTORY_ROGUE ) &&
-				isUnlocked( Badge.VICTORY_HUNTRESS )) {
-			
+
+		boolean allUnlocked = true;
+		for (Badge b : victoryClassBadges.values()){
+			if (!isUnlocked(b)){
+				allUnlocked = false;
+				break;
+			}
+		}
+		if (allUnlocked){
 			badge = Badge.VICTORY_ALL_CLASSES;
 			displayBadge( badge );
 		}
