@@ -110,6 +110,11 @@ public class QuickSlotButton extends Button {
 			}
 
 			@Override
+			protected void onMiddleClick() {
+				onClick();
+			}
+
+			@Override
 			public GameAction keyAction() {
 				return QuickSlotButton.this.keyAction();
 			}
@@ -200,12 +205,20 @@ public class QuickSlotButton extends Button {
 			GameScene.selectItem(itemSelector);
 		}
 	}
-	
+
+	@Override
+	protected void onRightClick() {
+		onClick();
+	}
+
+	@Override
+	protected void onMiddleClick() {
+		onClick();
+	}
+
 	@Override
 	protected boolean onLongClick() {
-		if (Dungeon.hero.ready && !GameScene.cancel()) {
-			GameScene.selectItem(itemSelector);
-		}
+		onClick();
 		return true;
 	}
 
