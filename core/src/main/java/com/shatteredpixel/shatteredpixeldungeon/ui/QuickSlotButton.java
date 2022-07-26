@@ -119,6 +119,10 @@ public class QuickSlotButton extends Button {
 				return QuickSlotButton.this.keyAction();
 			}
 			@Override
+			public GameAction secondaryTooltipAction(){
+				return QuickSlotButton.this.secondaryTooltipAction();
+			}
+			@Override
 			protected boolean onLongClick() {
 				return QuickSlotButton.this.onLongClick();
 			}
@@ -188,6 +192,11 @@ public class QuickSlotButton extends Button {
 			default:
 				return super.keyAction();
 		}
+	}
+
+	@Override
+	public GameAction secondaryTooltipAction() {
+		return SPDAction.QUICKSLOT_SELECTOR;
 	}
 
 	@Override

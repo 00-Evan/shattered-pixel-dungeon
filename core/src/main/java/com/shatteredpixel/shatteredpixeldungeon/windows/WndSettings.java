@@ -113,7 +113,7 @@ public class WndSettings extends WndTabbed {
 		if (DeviceCompat.hasHardKeyboard() || ControllerHandler.isControllerConnected()) {
 			add( input );
 			Image icon;
-			if (ControllerHandler.controllerPointerActive() || !DeviceCompat.hasHardKeyboard()){
+			if (ControllerHandler.controllerActive || !DeviceCompat.hasHardKeyboard()){
 				icon = Icons.get(Icons.CONTROLLER);
 			} else {
 				icon = Icons.get(Icons.KEYBOARD);

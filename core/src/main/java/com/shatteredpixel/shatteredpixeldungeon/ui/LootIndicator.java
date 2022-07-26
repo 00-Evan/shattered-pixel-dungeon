@@ -59,6 +59,11 @@ public class LootIndicator extends Tag {
 			public GameAction keyAction() {
 				return SPDAction.TAG_LOOT;
 			}
+
+			@Override
+			public GameAction secondaryTooltipAction() {
+				return SPDAction.WAIT_OR_PICKUP;
+			}
 		};
 		slot.showExtraInfo( false );
 		add( slot );

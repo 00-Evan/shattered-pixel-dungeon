@@ -639,6 +639,11 @@ public class InventoryPane extends Component {
 		}
 
 		@Override
+		public GameAction secondaryTooltipAction() {
+			return SPDAction.INVENTORY_SELECTOR;
+		}
+
+		@Override
 		protected String hoverText() {
 			if (bag != null) {
 				return Messages.titleCase(bag.name());

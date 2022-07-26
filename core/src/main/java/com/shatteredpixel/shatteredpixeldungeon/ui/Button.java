@@ -83,11 +83,17 @@ public class Button extends Component {
 			protected void onHoverStart(PointerEvent event) {
 				String text = hoverText();
 				if (text != null){
+					int key = 0;
 					if (keyAction() != null){
-						int key = KeyBindings.getFirstKeyForAction(keyAction(), ControllerHandler.controllerPointerActive());
-						if (key != 0){
-							text += " _(" + KeyBindings.getKeyName(key) + ")_";
-						}
+						key = KeyBindings.getFirstKeyForAction(keyAction(), ControllerHandler.controllerActive);
+					}
+
+					if (key == 0 && secondaryTooltipAction() != null){
+						key = KeyBindings.getFirstKeyForAction(secondaryTooltipAction(), ControllerHandler.controllerActive);
+					}
+
+					if (key != 0){
+						text += " _(" + KeyBindings.getKeyName(key) + ")_";
 					}
 					hoverTip = new Tooltip(Button.this, text, 80);
 					Button.this.parent.addToFront(hoverTip);
@@ -127,6 +133,11 @@ public class Button extends Component {
 	private Signal.Listener<KeyEvent> keyListener;
 	
 	public GameAction keyAction(){
+		return null;
+	}
+
+	//used in cases where the main key action isn't bound, but a secondary action can be used for the tooltip
+	public GameAction secondaryTooltipAction(){
 		return null;
 	}
 	

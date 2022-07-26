@@ -135,7 +135,7 @@ public class Toolbar extends Component {
 					}
 
 					String info = "";
-					if (ControllerHandler.controllerPointerActive()){
+					if (ControllerHandler.controllerActive){
 						info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.LEFT_CLICK, true)) + ": " + Messages.get(Toolbar.class, "quickslot_select") + "\n";
 						info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.RIGHT_CLICK, true)) + ": " + Messages.get(Toolbar.class, "quickslot_assign") + "\n";
 						info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.BACK, true)) + ": " + Messages.get(Toolbar.class, "quickslot_cancel");
@@ -206,6 +206,11 @@ public class Toolbar extends Component {
 			@Override
 			public GameAction keyAction() {
 				return SPDAction.WAIT;
+			}
+
+			@Override
+			public GameAction secondaryTooltipAction() {
+				return SPDAction.WAIT_OR_PICKUP;
 			}
 
 			@Override
@@ -324,6 +329,11 @@ public class Toolbar extends Component {
 			}
 
 			@Override
+			public GameAction secondaryTooltipAction() {
+				return SPDAction.INVENTORY_SELECTOR;
+			}
+
+			@Override
 			protected String hoverText() {
 				return Messages.titleCase(Messages.get(WndKeyBindings.class, "inventory"));
 			}
@@ -371,7 +381,7 @@ public class Toolbar extends Component {
 						images[i] = new ItemSprite(bags.get(i));
 					}
 					String info = "";
-					if (ControllerHandler.controllerPointerActive()){
+					if (ControllerHandler.controllerActive){
 						info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.LEFT_CLICK, true)) + ": " + Messages.get(Toolbar.class, "container_select") + "\n";
 						info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.BACK, true)) + ": " + Messages.get(Toolbar.class, "container_cancel");
 					} else {
@@ -413,7 +423,7 @@ public class Toolbar extends Component {
 							}
 
 							String info = "";
-							if (ControllerHandler.controllerPointerActive()){
+							if (ControllerHandler.controllerActive){
 								info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.LEFT_CLICK, true)) + ": " + Messages.get(Toolbar.class, "item_select") + "\n";
 								info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.RIGHT_CLICK, true)) + ": " + Messages.get(Toolbar.class, "item_use") + "\n";
 								info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.BACK, false)) + ": " + Messages.get(Toolbar.class, "item_cancel");
