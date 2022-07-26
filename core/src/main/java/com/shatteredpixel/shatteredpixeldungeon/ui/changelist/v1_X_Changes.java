@@ -65,9 +65,6 @@ public class v1_X_Changes {
 			"The next Shattered update will be v1.4.0! After focusing on game porting and multiple smaller additions, v1.4.0 will finally focus on new core game content! I expect v1.4.0 to take about 2 months to complete, as I want to focus primarily on the core content and not overload the update too much with other smaller additions.\n\n" +
 			"I should have some more info on v1.4.0 to share in a blog post some time in August."));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.DISPLAY_LAND), "Desktop UI Improvements",
-			"...Before v1.4.0 though, I would like to add a few interface improvements for desktp users in some v1.3 patches. In particular I still haven't added more detailed enemy info to the main game screen. I expect to be adding these things along with the usual bugfixes in patches for v1.3."));
-
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.PICKAXE), "Blacksmith Quest",
 			"The main content in v1.4.0 is going to be a total rework to the blacksmith's quest in the caves! Currently the quest is pretty simple, and I'd like to expand it to continue the trend of quests getting progressively more involved. Expect more mining for rare ore and gems, with some greater rewards if you perform well!"));
 
@@ -115,6 +112,8 @@ public class v1_X_Changes {
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed (caused by v1.3.0):\n" +
 				"_-_ Various rare hang and crash bugs\n" +
+				"_-_ Game unintentionally requesting AD ID permissions on Google Play\n" +
+				"_-_ Various cases of incorrect or missing controller button prompts\n" +
 				"_-_ Enraged brutes not being killed by cleansing darts\n" +
 				"_-_ Minor visual bugs in one specific floor 5 layout type\n" +
 				"_-_ Lit bombs being preserved with other items when defeating Tengu\n" +
