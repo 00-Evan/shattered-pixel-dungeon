@@ -23,9 +23,12 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
+import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.input.KeyBindings;
+import com.watabou.input.KeyEvent;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
@@ -33,6 +36,7 @@ import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Button;
 import com.watabou.utils.RectF;
+import com.watabou.utils.Signal;
 
 import java.util.ArrayList;
 
@@ -40,12 +44,37 @@ public class WndTabbed extends Window {
 
 	protected ArrayList<Tab> tabs = new ArrayList<>();
 	protected Tab selected;
+
+	private Signal.Listener<KeyEvent> tabListener;
 	
 	public WndTabbed() {
 		super( 0, 0, Chrome.get( Chrome.Type.TAB_SET ) );
+
+		KeyEvent.addKeyListener(tabListener = new Signal.Listener<KeyEvent>() {
+			@Override
+			public boolean onSignal(KeyEvent keyEvent) {
+
+				if (!keyEvent.pressed && KeyBindings.getActionForKey(keyEvent) == SPDAction.CYCLE){
+					int idx = tabs.indexOf(selected);
+					idx++;
+					if (idx >= tabs.size()) idx = 0;
+					select(idx);
+
+					return true;
+				}
+
+				return false;
+			}
+		});
 	}
-	
-	protected Tab add( Tab tab ) {
+
+	@Override
+	public void destroy() {
+		super.destroy();
+		KeyEvent.removeKeyListener(tabListener);
+	}
+
+	protected Tab add(Tab tab ) {
 
 		tab.setPos( tabs.size() == 0 ?
 			-chrome.marginLeft() + 1 :
