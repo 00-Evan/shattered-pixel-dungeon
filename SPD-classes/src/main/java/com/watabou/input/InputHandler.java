@@ -28,6 +28,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.ui.Cursor;
+import com.watabou.utils.PointF;
 
 public class InputHandler extends InputAdapter {
 
@@ -121,7 +122,12 @@ public class InputHandler extends InputAdapter {
 	
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
-		ControllerHandler.setControllerPointer(false);
+		if (ControllerHandler.controllerPointerActive()) {
+			ControllerHandler.setControllerPointer(false);
+			PointF hover = ControllerHandler.getControllerPointerPos();
+			screenX = (int)hover.x;
+			screenY = (int)hover.y;
+		}
 		PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, -1, PointerEvent.Type.HOVER));
 		return true;
 	}
