@@ -53,7 +53,7 @@ import java.util.Collections;
 
 public class WelcomeScene extends PixelScene {
 
-	private static final int LATEST_UPDATE = ShatteredPixelDungeon.v1_3_0;
+	private static final int LATEST_UPDATE = ShatteredPixelDungeon.v1_3_2;
 
 	@Override
 	public void create() {
@@ -238,16 +238,6 @@ public class WelcomeScene extends PixelScene {
 			}
 			Dungeon.daily = false;
 
-		}
-
-		//if the player has beaten Goo, automatically give all guidebook pages
-		if (previousVersion <= ShatteredPixelDungeon.v0_9_3c){
-			Badges.loadGlobal();
-			if (Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_1)){
-				for (String page : Document.ADVENTURERS_GUIDE.pageNames()){
-					Document.ADVENTURERS_GUIDE.readPage(page);
-				}
-			}
 		}
 
 		//defaults to false for older users

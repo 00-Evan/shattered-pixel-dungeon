@@ -202,19 +202,9 @@ public enum Document {
 			if (docsBundle.contains(doc.name())){
 				Bundle pagesBundle = docsBundle.getBundle(doc.name());
 
-				//compatibility with pre-1.0.0 saves
-				if (pagesBundle.isNull()) {
-					for (String page : docsBundle.getStringArray(doc.name())){
-						if (doc.pagesStates.containsKey(page)) {
-							doc.pagesStates.put(page, READ);
-						}
-					}
-
-				} else {
-					for (String page : doc.pageNames()) {
-						if (pagesBundle.contains(page)) {
-							doc.pagesStates.put(page, pagesBundle.getInt(page));
-						}
+				for (String page : doc.pageNames()) {
+					if (pagesBundle.contains(page)) {
+						doc.pagesStates.put(page, pagesBundle.getInt(page));
 					}
 				}
 			}
