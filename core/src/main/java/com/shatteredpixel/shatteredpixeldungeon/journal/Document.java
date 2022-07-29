@@ -38,9 +38,9 @@ public enum Document {
 		pageSprite = sprite;
 	}
 
-	private static final int NOT_FOUND = 0;
-	private static final int FOUND = 1;
-	private static final int READ = 2;
+	public static final int NOT_FOUND = 0;
+	public static final int FOUND = 1;
+	public static final int READ = 2;
 	private LinkedHashMap<String, Integer> pagesStates = new LinkedHashMap<>();
 	
 	public boolean findPage(String page ) {
