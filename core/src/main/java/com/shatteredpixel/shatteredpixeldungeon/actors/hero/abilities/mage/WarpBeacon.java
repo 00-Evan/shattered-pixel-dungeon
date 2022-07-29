@@ -196,6 +196,7 @@ public class WarpBeacon extends ArmorAbility {
 			PathFinder.buildDistanceMap(target, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null));
 			if (Dungeon.level.pit[target] ||
 					(Dungeon.level.solid[target] && !Dungeon.level.passable[target]) ||
+					!(Dungeon.level.passable[target] || Dungeon.level.avoid[target]) ||
 					PathFinder.distance[hero.pos] == Integer.MAX_VALUE){
 				GLog.w( Messages.get(WarpBeacon.class, "invalid_beacon") );
 				return;
