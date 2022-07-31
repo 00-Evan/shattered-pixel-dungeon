@@ -27,7 +27,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -43,6 +45,8 @@ public class ItemSlot extends Button {
 	public static final int FADED       = 0x999999;
 	public static final int WARNING		= 0xFF8800;
 	public static final int ENHANCED	= 0x3399FF;
+	public static final int MASTERED	= 0xFFFF44;
+	public static final int CURSE_INFUSED	= 0x8800FF;
 	
 	private static final float ENABLED	= 1.0f;
 	private static final float DISABLED	= 0.3f;
@@ -228,6 +232,10 @@ public class ItemSlot extends Button {
 				extra.text( Messages.format( TXT_STRENGTH, str ) );
 				if (str > Dungeon.hero.STR()) {
 					extra.hardlight( DEGRADED );
+				} else if (item instanceof Weapon && ((Weapon) item).masteryPotionBonus){
+					extra.hardlight( MASTERED );
+				} else if (item instanceof Armor && ((Armor) item).masteryPotionBonus) {
+					extra.hardlight( MASTERED );
 				} else {
 					extra.resetColor();
 				}
@@ -251,7 +259,17 @@ public class ItemSlot extends Button {
 			level.text( Messages.format( TXT_LEVEL, buffedLvl ) );
 			level.measure();
 			if (trueLvl == buffedLvl || buffedLvl <= 0) {
-				level.hardlight(buffedLvl > 0 ? UPGRADED : DEGRADED);
+				if (buffedLvl > 0){
+					if ((item instanceof Weapon && ((Weapon) item).curseInfusionBonus)
+						|| (item instanceof Armor && ((Armor) item).curseInfusionBonus)
+							|| (item instanceof Wand && ((Wand) item).curseInfusionBonus)){
+						level.hardlight(CURSE_INFUSED);
+					} else {
+						level.hardlight(UPGRADED);
+					}
+				} else {
+					level.hardlight( DEGRADED );
+				}
 			} else {
 				level.hardlight(buffedLvl > trueLvl ? ENHANCED : WARNING);
 			}
