@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -50,6 +51,8 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class Ratmogrify extends ArmorAbility {
 
@@ -130,9 +133,20 @@ public class Ratmogrify extends ArmorAbility {
 			rat.setup((Mob)ch);
 			rat.pos = ch.pos;
 
+			//preserve champion enemy buffs
+			HashSet<ChampionEnemy> champBuffs = ch.buffs(ChampionEnemy.class);
+			for (ChampionEnemy champ : champBuffs){
+				ch.remove(champ);
+				ch.sprite.clearAura();
+			}
+
 			Actor.remove( ch );
 			ch.sprite.killAndErase();
 			Dungeon.level.mobs.remove(ch);
+
+			for (ChampionEnemy champ : champBuffs){
+				ch.add(champ);
+			}
 
 			GameScene.add(rat);
 
