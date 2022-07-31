@@ -36,7 +36,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class HolyBomb extends Bomb {
+public class HolyBomb extends Bomb.MagicalBomb {
 	
 	{
 		image = ItemSpriteSheet.HOLY_BOMB;
