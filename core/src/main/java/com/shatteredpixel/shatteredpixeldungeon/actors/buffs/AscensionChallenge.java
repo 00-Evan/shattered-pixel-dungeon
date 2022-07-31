@@ -209,7 +209,7 @@ public class AscensionChallenge extends Buff {
 	}
 
 	public void saySwitch(){
-		if (Dungeon.bossLevel() || Dungeon.depth == 1){
+		if (Dungeon.bossLevel()){
 			GLog.p(Messages.get(this, "break"));
 		} else {
 			if (Dungeon.depth == 1){
