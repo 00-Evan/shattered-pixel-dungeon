@@ -578,12 +578,13 @@ public class Hero extends Char {
 		
 	}
 
+	@Override
 	public boolean canSurpriseAttack(){
 		if (belongings.weapon() == null || !(belongings.weapon() instanceof Weapon))    return true;
 		if (STR() < ((Weapon)belongings.weapon()).STRReq())                             return false;
 		if (belongings.weapon() instanceof Flail)                                       return false;
 
-		return true;
+		return super.canSurpriseAttack();
 	}
 
 	public boolean canAttack(Char enemy){
@@ -1100,7 +1101,7 @@ public class Hero extends Char {
 
 		enemy = action.target;
 
-		if (enemy.isAlive() && canAttack( enemy ) && !isCharmedBy( enemy )) {
+		if (enemy.isAlive() && canAttack( enemy ) && !isCharmedBy( enemy ) && enemy.invisible == 0) {
 			
 			sprite.attack( enemy.pos );
 

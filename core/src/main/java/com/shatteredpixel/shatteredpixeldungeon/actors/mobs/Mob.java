@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
@@ -572,6 +573,7 @@ public abstract class Mob extends Char {
 			
 		} else {
 			attack( enemy );
+			Invisibility.dispel(this);
 			spend( attackDelay() );
 			return true;
 		}
@@ -580,6 +582,7 @@ public abstract class Mob extends Char {
 	@Override
 	public void onAttackComplete() {
 		attack( enemy );
+		Invisibility.dispel(this);
 		spend( attackDelay() );
 		super.onAttackComplete();
 	}

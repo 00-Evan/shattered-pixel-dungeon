@@ -469,6 +469,11 @@ public abstract class Char extends Actor {
 		float acuStat = attacker.attackSkill( defender );
 		float defStat = defender.defenseSkill( attacker );
 
+		//invisible chars always hit (for the hero this is surprise attacking)
+		if (attacker.invisible > 0 && attacker.canSurpriseAttack()){
+			acuStat = INFINITE_ACCURACY;
+		}
+
 		//if accuracy or evasion are large enough, treat them as infinite.
 		//note that infinite evasion beats infinite accuracy
 		if (defStat >= INFINITE_EVASION){
@@ -538,6 +543,11 @@ public abstract class Char extends Actor {
 		if ( buff( Haste.class ) != null) speed *= 3f;
 		if ( buff( Dread.class ) != null) speed *= 2f;
 		return speed;
+	}
+
+	//currently only used by invisible chars, or by the hero
+	public boolean canSurpriseAttack(){
+		return true;
 	}
 	
 	//used so that buffs(Shieldbuff.class) isn't called every time unnecessarily

@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -89,7 +90,8 @@ public class DM100 extends Mob implements Callback {
 		} else {
 			
 			spend( TIME_TO_ZAP );
-			
+
+			Invisibility.dispel(this);
 			if (hit( this, enemy, true )) {
 				int dmg = Random.NormalIntRange(3, 10);
 				dmg = Math.round(dmg * AscensionChallenge.statModifier(this));
