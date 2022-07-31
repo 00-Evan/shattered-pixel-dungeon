@@ -494,7 +494,11 @@ public class Armor extends EquipableItem {
 		} else if (seal != null) {
 			info += "\n\n" + Messages.get(Armor.class, "seal_attached", seal.maxShield(tier, level()));
 		} else if (!isIdentified() && cursedKnown){
-			info += "\n\n" + Messages.get(Armor.class, "not_cursed");
+			if (glyph != null && glyph.curse()) {
+				info += "\n\n" + Messages.get(Armor.class, "weak_cursed");
+			} else {
+				info += "\n\n" + Messages.get(Armor.class, "not_cursed");
+			}
 		}
 		
 		return info;

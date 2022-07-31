@@ -104,7 +104,11 @@ public class MeleeWeapon extends Weapon {
 		} else if (cursedKnown && cursed) {
 			info += "\n\n" + Messages.get(Weapon.class, "cursed");
 		} else if (!isIdentified() && cursedKnown){
-			info += "\n\n" + Messages.get(Weapon.class, "not_cursed");
+			if (enchantment != null && enchantment.curse()) {
+				info += "\n\n" + Messages.get(Weapon.class, "weak_cursed");
+			} else {
+				info += "\n\n" + Messages.get(Weapon.class, "not_cursed");
+			}
 		}
 		
 		return info;
