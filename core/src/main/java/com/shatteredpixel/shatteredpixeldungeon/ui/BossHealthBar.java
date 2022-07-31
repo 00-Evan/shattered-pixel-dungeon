@@ -143,7 +143,7 @@ public class BossHealthBar extends Component {
 		bossInfo.setRect(x, y, bar.width, bar.height);
 
 		if (buffs != null) {
-			buffs.setRect(hp.x, hp.y + 5, 110, 7);
+			buffs.setRect(hp.x, hp.y + 5, 47, 8);
 		}
 
 		skull.x = bar.x+5;

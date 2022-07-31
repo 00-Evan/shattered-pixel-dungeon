@@ -203,9 +203,11 @@ public class BuffIndicator extends Component {
 		for (BuffButton icon : buffButtons.values()){
 			icon.updateIcon();
 			//button areas are slightly oversized, especially on small buttons
-			icon.setRect(x + pos * (size + (large ? 1 : 2)), y, size + (large ? 1 : 2), size + (large ? 0 : 5));
+			icon.setRect(x + pos * (size + 1), y, size + 1, size + (large ? 0 : 5));
 			PixelScene.align(icon);
 			pos++;
+
+			icon.visible = icon.left() <= right();
 		}
 	}
 
