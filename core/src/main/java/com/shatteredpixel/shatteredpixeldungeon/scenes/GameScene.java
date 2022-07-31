@@ -1450,10 +1450,10 @@ public class GameScene extends PixelScene {
 				image = Icons.get(Icons.INFO);
 			} else if (objects.get(0) instanceof Hero) {
 				title = textLines.remove(0);
-				image = new Image(((Hero) objects.get(0)).sprite);
+				image = HeroSprite.avatar(((Hero) objects.get(0)).heroClass, ((Hero) objects.get(0)).tier());
 			} else if (objects.get(0) instanceof Mob) {
 				title = textLines.remove(0);
-				image = new Image(((Mob) objects.get(0)).sprite);
+				image = ((Mob) objects.get(0)).sprite();
 			} else if (objects.get(0) instanceof Heap) {
 				title = textLines.remove(0);
 				image = new ItemSprite((Heap) objects.get(0));
