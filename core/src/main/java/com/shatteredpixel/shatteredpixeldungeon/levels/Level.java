@@ -48,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpiritHawk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Piranha;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogFist;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlowParticle;
@@ -1055,6 +1056,10 @@ public abstract class Level implements Bundlable {
 			if (map[ch.pos] == Terrain.DOOR){
 				Door.enter( ch.pos );
 			}
+		}
+
+		if (ch.isAlive() && ch instanceof Piranha && !water[ch.pos]){
+			ch.die(null);
 		}
 	}
 	

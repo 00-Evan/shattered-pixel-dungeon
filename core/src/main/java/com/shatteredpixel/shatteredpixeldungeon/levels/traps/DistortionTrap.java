@@ -100,42 +100,8 @@ public class DistortionTrap extends Trap{
 		for (Integer point : respawnPoints) {
 			summoned++;
 			Mob mob;
-			switch (summoned){
-				case 1:
-					if (Dungeon.depth != 5 && Random.Int(100) == 0){
-						mob = new RatKing();
-						break;
-					}
-				case 3: case 5 : default:
-					int floor;
-					do {
-						floor = Random.Int(25);
-					} while( Dungeon.bossLevel(floor));
-					mob = Reflection.newInstance(Bestiary.getMobRotation(floor).get(0));
-					break;
-				case 2:
-					switch (Random.Int(4)){
-						case 0: default:
-							Wraith.spawnAt(point);
-							continue; //wraiths spawn themselves, no need to do more
-						case 1:
-							//yes it's intended that these are likely to die right away
-							mob = new Piranha();
-							break;
-						case 2:
-							mob = Mimic.spawnAt(point, new ArrayList<>());
-							((Mimic)mob).stopHiding();
-							mob.alignment = Char.Alignment.ENEMY;
-							break;
-						case 3:
-							mob = Statue.random();
-							break;
-					}
-					break;
-				case 4:
-					mob = Reflection.newInstance(Random.element(RARE));
-					break;
-			}
+				mob = new Piranha();
+
 
 			if (Char.hasProp(mob, Char.Property.LARGE) && !Dungeon.level.openSpace[point]){
 				continue;
@@ -158,7 +124,6 @@ public class DistortionTrap extends Trap{
 				t.activate();
 			}
 			ScrollOfTeleportation.appear(mob, mob.pos);
-			Dungeon.level.occupyCell(mob);
 		}
 
 	}
