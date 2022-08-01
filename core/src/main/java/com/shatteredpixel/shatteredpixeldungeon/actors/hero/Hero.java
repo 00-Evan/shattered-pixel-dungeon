@@ -888,6 +888,11 @@ public class Hero extends Char {
 					curAction = null;
 				} else {
 
+					//allow the hero to move between levels even if they can't collect the item
+					if (Dungeon.level.getTransition(pos) != null){
+						return actTransition(new HeroAction.LvlTransition(pos));
+					}
+
 					if (item instanceof Dewdrop
 							|| item instanceof TimekeepersHourglass.sandBag
 							|| item instanceof DriedRose.Petal
