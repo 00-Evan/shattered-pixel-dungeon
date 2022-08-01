@@ -44,13 +44,14 @@ public class Chains extends Group {
 
 	private PointF from, to;
 
-	public Chains(int from, int to, Callback callback){
+	public Chains(int from, int to, Effects.Type type, Callback callback){
 		this(DungeonTilemap.tileCenterToWorld(from),
 				DungeonTilemap.tileCenterToWorld(to),
+				type,
 				callback);
 	}
 
-	public Chains(PointF from, PointF to, Callback callback){
+	public Chains(PointF from, PointF to, Effects.Type type, Callback callback){
 		super();
 
 		this.callback = callback;
@@ -62,8 +63,8 @@ public class Chains extends Group {
 		float dy = to.y - from.y;
 		distance = (float)Math.hypot(dx, dy);
 
-
-		duration = distance/300f + 0.1f;
+		//base of 200ms, plus 50ms per tile travelled
+		duration = distance/320f + 0.2f;
 
 		rotation = (float)(Math.atan2( dy, dx ) * A) + 90f;
 
@@ -71,7 +72,7 @@ public class Chains extends Group {
 
 		chains = new Image[numChains];
 		for (int i = 0; i < chains.length; i++){
-			chains[i] = new Image(Effects.get(Effects.Type.CHAIN));
+			chains[i] = new Image(Effects.get(type));
 			chains[i].angle = rotation;
 			chains[i].origin.set( chains[i].width()/ 2, chains[i].height() );
 			add(chains[i]);

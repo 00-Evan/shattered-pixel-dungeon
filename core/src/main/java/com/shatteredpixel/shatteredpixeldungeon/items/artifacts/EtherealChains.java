@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Chains;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Effects;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -176,7 +177,10 @@ public class EtherealChains extends Artifact {
 		hero.busy();
 		throwSound();
 		Sample.INSTANCE.play( Assets.Sounds.CHAINS );
-		hero.sprite.parent.add(new Chains(hero.sprite.center(), enemy.sprite.center(), new Callback() {
+		hero.sprite.parent.add(new Chains(hero.sprite.center(),
+				enemy.sprite.center(),
+				Effects.Type.ETHEREAL_CHAIN,
+				new Callback() {
 			public void call() {
 				Actor.add(new Pushing(enemy, enemy.pos, pulledPos, new Callback() {
 					public void call() {
@@ -236,7 +240,10 @@ public class EtherealChains extends Artifact {
 		hero.busy();
 		throwSound();
 		Sample.INSTANCE.play( Assets.Sounds.CHAINS );
-		hero.sprite.parent.add(new Chains(hero.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(newHeroPos), new Callback() {
+		hero.sprite.parent.add(new Chains(hero.sprite.center(),
+				DungeonTilemap.raisedTileCenterToWorld(newHeroPos),
+				Effects.Type.ETHEREAL_CHAIN,
+				new Callback() {
 			public void call() {
 				Actor.add(new Pushing(hero, hero.pos, newHeroPos, new Callback() {
 					public void call() {
