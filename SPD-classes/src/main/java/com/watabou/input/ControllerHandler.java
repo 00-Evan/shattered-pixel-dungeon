@@ -21,6 +21,7 @@
 
 package com.watabou.input;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.controllers.Controller;
@@ -120,23 +121,23 @@ public class ControllerHandler implements ControllerListener {
 		else if (mapping.axisLeftY == axisCode)     leftStickPosition.y = value;
 
 		//L2 and R2 triggers on Desktop
-		else if (axisCode == 4) {
+		else if (axisCode == 4 && Gdx.app.getType() == Application.ApplicationType.Desktop && L2Trigger != value) {
 
-			if (L2Trigger < 0.5f && value >= 0.5f){
+			if (value == 1){
 				KeyEvent.addKeyEvent(new KeyEvent(Input.Keys.BUTTON_L2, true));
 				controllerActive = true;
-			} else if (L2Trigger >= 0.5f && value < 0.5f){
+			} else if (value == 0){
 				KeyEvent.addKeyEvent(new KeyEvent(Input.Keys.BUTTON_L2, false));
 				controllerActive = true;
 			}
 			L2Trigger = value;
 
-		} else if (axisCode == 5){
+		} else if (axisCode == 5 && Gdx.app.getType() == Application.ApplicationType.Desktop && R2Trigger != value){
 
-			if (R2Trigger < 0.5f && value >= 0.5f){
+			if (value == 1){
 				KeyEvent.addKeyEvent(new KeyEvent(Input.Keys.BUTTON_R2, true));
 				controllerActive = true;
-			} else if (R2Trigger >= 0.5f && value < 0.5f){
+			} else if (value == 0){
 				KeyEvent.addKeyEvent(new KeyEvent(Input.Keys.BUTTON_R2, false));
 				controllerActive = true;
 			}
