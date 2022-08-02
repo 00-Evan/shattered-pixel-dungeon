@@ -744,6 +744,7 @@ public class Hero extends Char {
 		if (sprite.looping()) sprite.idle();
 		curAction = null;
 		damageInterrupt = true;
+		waitOrPickup = false;
 		ready = true;
 
 		AttackIndicator.updateState();
@@ -858,6 +859,10 @@ public class Hero extends Char {
 		}
 	}
 
+	//used to keep track if the wait/pickup action was used
+	// so that the hero spends a turn even if the fail to pick up an item
+	public boolean waitOrPickup = false;
+
 	private boolean actPickUp( HeroAction.PickUp action ) {
 		int dst = action.dst;
 		if (pos == dst) {
@@ -888,8 +893,12 @@ public class Hero extends Char {
 					curAction = null;
 				} else {
 
+					//
+					if (waitOrPickup) {
+						spendAndNext(TIME_TO_REST);
+
 					//allow the hero to move between levels even if they can't collect the item
-					if (Dungeon.level.getTransition(pos) != null){
+					} else if (Dungeon.level.getTransition(pos) != null){
 						return actTransition(new HeroAction.LvlTransition(pos));
 					}
 

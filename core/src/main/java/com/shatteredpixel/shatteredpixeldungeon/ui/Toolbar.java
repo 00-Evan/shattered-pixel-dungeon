@@ -249,6 +249,7 @@ public class Toolbar extends Component {
 			@Override
 			protected void onClick() {
 				if (Dungeon.hero.ready && !GameScene.cancel()) {
+					Dungeon.hero.waitOrPickup = true;
 					if (Dungeon.level.heaps.get(Dungeon.hero.pos) != null
 						&& Dungeon.hero.handle(Dungeon.hero.pos)){
 						Dungeon.hero.next();
