@@ -641,7 +641,13 @@ public class Hero extends Char {
 		
 		super.spend(time);
 	}
-	
+
+	public void spendAndNextConstant( float time ) {
+		busy();
+		spendConstant( time );
+		next();
+	}
+
 	public void spendAndNext( float time ) {
 		busy();
 		spend( time );
@@ -683,7 +689,7 @@ public class Hero extends Char {
 		if (curAction == null) {
 			
 			if (resting) {
-				spend( TIME_TO_REST );
+				spendConstant( TIME_TO_REST );
 				next();
 			} else {
 				ready();
@@ -893,9 +899,8 @@ public class Hero extends Char {
 					curAction = null;
 				} else {
 
-					//
 					if (waitOrPickup) {
-						spendAndNext(TIME_TO_REST);
+						spendAndNextConstant(TIME_TO_REST);
 
 					//allow the hero to move between levels even if they can't collect the item
 					} else if (Dungeon.level.getTransition(pos) != null){
@@ -1140,7 +1145,7 @@ public class Hero extends Char {
 	}
 	
 	public void rest( boolean fullRest ) {
-		spendAndNext( TIME_TO_REST );
+		spendAndNextConstant( TIME_TO_REST );
 		if (!fullRest) {
 			if (hasTalent(Talent.HOLD_FAST)){
 				Buff.affect(this, HoldFast.class);
