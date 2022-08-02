@@ -36,7 +36,7 @@ import java.util.ArrayList;
 
 public class Waterskin extends Item {
 
-	private static final int MAX_VOLUME	= 20;
+	private static final int MAX_VOLUME	= 40;
 
 	private static final String AC_DRINK	= "DRINK";
 
@@ -156,8 +156,10 @@ public class Waterskin extends Item {
 	}
 
 	public boolean isFull() {
-		return volume >= MAX_VOLUME;
+		return volume >= 40;
 	}
+
+	public boolean canBless() { return volume >= 10; }
 
 	public void collectDew( Dewdrop dew ) {
 
