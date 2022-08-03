@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
@@ -61,7 +62,7 @@ public class AlchemistsToolkit extends Artifact {
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		if (isEquipped( hero ) && !cursed) {
+		if (isEquipped( hero ) && !cursed && hero.buff(MagicImmune.class) == null) {
 			actions.add(AC_BREW);
 			if (level() < levelCap) {
 				actions.add(AC_ENERGIZE);
@@ -74,6 +75,8 @@ public class AlchemistsToolkit extends Artifact {
 	public void execute(Hero hero, String action ) {
 
 		super.execute(hero, action);
+
+		if (hero.buff(MagicImmune.class) != null) return;
 
 		if (action.equals(AC_BREW)){
 			if (!isEquipped(hero))              GLog.i( Messages.get(this, "need_to_equip") );
@@ -155,6 +158,7 @@ public class AlchemistsToolkit extends Artifact {
 	
 	@Override
 	public void charge(Hero target, float amount) {
+		if (target.buff(MagicImmune.class) != null) return;
 		partialCharge += 0.25f*amount;
 		if (partialCharge >= 1){
 			partialCharge--;
@@ -215,7 +219,7 @@ public class AlchemistsToolkit extends Artifact {
 		@Override
 		public boolean act() {
 
-			if (warmUpDelay > 0){
+			if (warmUpDelay > 0 && !cursed && target.buff(MagicImmune.class) == null){
 				if (level() == 10){
 					warmUpDelay = 0;
 				} else if (warmUpDelay == 101){
@@ -232,7 +236,7 @@ public class AlchemistsToolkit extends Artifact {
 		}
 
 		public void gainCharge(float levelPortion) {
-			if (cursed) return;
+			if (cursed || target.buff(MagicImmune.class) != null) return;
 
 			//generates 2 energy every hero level, +0.1 energy per toolkit level
 			//to a max of 12 energy per hero level

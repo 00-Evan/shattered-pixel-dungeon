@@ -53,7 +53,7 @@ public class Regeneration extends Buff {
 			ChaliceOfBlood.chaliceRegen regenBuff = Dungeon.hero.buff( ChaliceOfBlood.chaliceRegen.class);
 
 			float delay = REGENERATION_DELAY;
-			if (regenBuff != null) {
+			if (regenBuff != null && target.buff(MagicImmune.class) == null) {
 				if (regenBuff.isCursed()) {
 					delay *= 1.5f;
 				} else {

@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -72,7 +73,10 @@ public class TimekeepersHourglass extends Artifact {
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		if (isEquipped( hero ) && !cursed && (charge > 0 || activeBuff != null)) {
+		if (isEquipped( hero )
+				&& !cursed
+				&& hero.buff(MagicImmune.class) == null
+				&& (charge > 0 || activeBuff != null)) {
 			actions.add(AC_ACTIVATE);
 		}
 		return actions;
@@ -82,6 +86,8 @@ public class TimekeepersHourglass extends Artifact {
 	public void execute( Hero hero, String action ) {
 
 		super.execute(hero, action);
+
+		if (hero.buff(MagicImmune.class) != null) return;
 
 		if (action.equals(AC_ACTIVATE)){
 
@@ -152,7 +158,7 @@ public class TimekeepersHourglass extends Artifact {
 	
 	@Override
 	public void charge(Hero target, float amount) {
-		if (charge < chargeCap){
+		if (charge < chargeCap && !cursed && target.buff(MagicImmune.class) == null){
 			partialCharge += 0.25f*amount;
 			if (partialCharge >= 1){
 				partialCharge--;
@@ -224,7 +230,10 @@ public class TimekeepersHourglass extends Artifact {
 		public boolean act() {
 
 			LockedFloor lock = target.buff(LockedFloor.class);
-			if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
+			if (charge < chargeCap
+					&& !cursed
+					&& target.buff(MagicImmune.class) == null
+					&& (lock == null || lock.regenOn())) {
 				//90 turns to charge at full, 60 turns to charge at 0/10
 				float chargeGain = 1 / (90f - (chargeCap - charge)*3f);
 				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);

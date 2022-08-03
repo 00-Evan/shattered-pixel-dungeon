@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Chains;
@@ -69,8 +70,9 @@ public class EtherealChains extends Artifact {
 	@Override
 	public ArrayList<String> actions(Hero hero) {
 		ArrayList<String> actions = super.actions( hero );
-		if (isEquipped(hero) && charge > 0 && !cursed)
+		if (isEquipped(hero) && charge > 0 && !cursed && hero.buff(MagicImmune.class) == null) {
 			actions.add(AC_CAST);
+		}
 		return actions;
 	}
 
@@ -82,6 +84,8 @@ public class EtherealChains extends Artifact {
 	public void execute(Hero hero, String action) {
 
 		super.execute(hero, action);
+
+		if (hero.buff(MagicImmune.class) != null) return;
 
 		if (action.equals(AC_CAST)){
 
@@ -266,6 +270,7 @@ public class EtherealChains extends Artifact {
 	
 	@Override
 	public void charge(Hero target, float amount) {
+		if (cursed || target.buff(MagicImmune.class) != null) return;
 		int chargeTarget = 5+(level()*2);
 		if (charge < chargeTarget*2){
 			partialCharge += 0.5f*amount;
@@ -297,7 +302,10 @@ public class EtherealChains extends Artifact {
 		public boolean act() {
 			int chargeTarget = 5+(level()*2);
 			LockedFloor lock = target.buff(LockedFloor.class);
-			if (charge < chargeTarget && !cursed && (lock == null || lock.regenOn())) {
+			if (charge < chargeTarget
+					&& !cursed
+					&& target.buff(MagicImmune.class) == null
+					&& (lock == null || lock.regenOn())) {
 				//gains a charge in 40 - 2*missingCharge turns
 				float chargeGain = (1 / (40f - (chargeTarget - charge)*2f));
 				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
@@ -319,7 +327,7 @@ public class EtherealChains extends Artifact {
 		}
 
 		public void gainExp( float levelPortion ) {
-			if (cursed || levelPortion == 0) return;
+			if (cursed || target.buff(MagicImmune.class) != null || levelPortion == 0) return;
 
 			exp += Math.round(levelPortion*100);
 

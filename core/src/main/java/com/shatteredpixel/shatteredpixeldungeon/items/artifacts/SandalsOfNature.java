@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -67,16 +68,23 @@ public class SandalsOfNature extends Artifact {
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		if (isEquipped( hero ) && level() < 3 && !cursed)
+		if (hero.buff(MagicImmune.class) != null){
+			return actions;
+		}
+		if (isEquipped( hero ) && level() < 3 && !cursed) {
 			actions.add(AC_FEED);
-		if (isEquipped( hero ) && charge > 0)
+		}
+		if (isEquipped( hero ) && charge > 0) {
 			actions.add(AC_ROOT);
+		}
 		return actions;
 	}
 
 	@Override
 	public void execute( Hero hero, String action ) {
 		super.execute(hero, action);
+
+		if (hero.buff(MagicImmune.class) != null) return;
 
 		if (action.equals(AC_FEED)){
 
@@ -171,6 +179,7 @@ public class SandalsOfNature extends Artifact {
 
 	public class Naturalism extends ArtifactBuff{
 		public void charge(float amount) {
+			if (cursed || target.buff(MagicImmune.class) != null) return;
 			if (level() > 0 && charge < target.HT){
 				//gain 1+(1*level)% of the difference between current charge and max HP.
 				float chargeGain = (target.HT-charge) * (.01f+ level()*0.01f);
