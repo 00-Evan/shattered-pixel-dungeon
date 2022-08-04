@@ -224,6 +224,8 @@ abstract public class ClassArmor extends Armor {
 								cursed = armor.cursed;
 								curseInfusionBonus = armor.curseInfusionBonus;
 								masteryPotionBonus = armor.masteryPotionBonus;
+								if (armor.checkSeal() != null) seal = armor.checkSeal();
+
 								identify();
 
 								GLog.p( Messages.get(ClassArmor.class, "transfer_complete") );

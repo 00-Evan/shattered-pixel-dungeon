@@ -105,7 +105,7 @@ public class Armor extends EquipableItem {
 	public boolean curseInfusionBonus = false;
 	public boolean masteryPotionBonus = false;
 	
-	private BrokenSeal seal;
+	protected BrokenSeal seal;
 	
 	public int tier;
 	
