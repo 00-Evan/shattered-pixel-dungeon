@@ -55,13 +55,16 @@ public class WelcomeScene extends PixelScene {
 
 	private static final int LATEST_UPDATE = ShatteredPixelDungeon.v1_3_2;
 
+	//used so that the game does not keep showing the window forever if cleaning fails
+	private static boolean triedCleaningTemp = false;
+
 	@Override
 	public void create() {
 		super.create();
 
 		final int previousVersion = SPDSettings.version();
 
-		if (FileUtils.cleanTempFiles()){
+		if (!triedCleaningTemp && FileUtils.cleanTempFiles()){
 			add(new WndHardNotification(Icons.get(Icons.WARNING),
 					Messages.get(WndError.class, "title"),
 					Messages.get(this, "save_warning"),
@@ -70,6 +73,7 @@ public class WelcomeScene extends PixelScene {
 				@Override
 				public void hide() {
 					super.hide();
+					triedCleaningTemp = true;
 					ShatteredPixelDungeon.resetScene();
 				}
 			});
