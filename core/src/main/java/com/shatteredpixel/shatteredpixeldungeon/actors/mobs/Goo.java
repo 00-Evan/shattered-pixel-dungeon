@@ -44,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Camera;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
@@ -199,9 +200,13 @@ public class Goo extends Mob {
 
 		} else {
 
-			pumpedUp++;
 			if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES)){
+				pumpedUp += 2;
+				//don't want to overly punish players with slow move or attack speed
+				spend(GameMath.gate(attackDelay(), Dungeon.hero.cooldown(), 3*attackDelay()));
+			} else {
 				pumpedUp++;
+				spend( attackDelay() );
 			}
 
 			((GooSprite)sprite).pumpUp( pumpedUp );
@@ -210,8 +215,6 @@ public class Goo extends Mob {
 				sprite.showStatus( CharSprite.NEGATIVE, Messages.get(this, "!!!") );
 				GLog.n( Messages.get(this, "pumpup") );
 			}
-
-			spend( attackDelay() );
 
 			return true;
 		}
