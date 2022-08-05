@@ -246,9 +246,9 @@ public class SpiritBow extends Weapon {
 				case NONE: default:
 					return 0f;
 				case SPEED:
-					return 1f * RingOfFuror.attackSpeedMultiplier(owner);
+					return 1f;
 				case DAMAGE:
-					return 2f * RingOfFuror.attackSpeedMultiplier(owner);
+					return 2f;
 			}
 		} else{
 			return super.baseDelay(owner);
