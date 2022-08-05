@@ -79,6 +79,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.PrismaticImage;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCleansing;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
@@ -93,6 +94,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Kinetic;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.ShockingDart;
@@ -385,6 +387,11 @@ public abstract class Char extends Actor {
 			int effectiveDamage = enemy.defenseProc( this, Math.round(dmg) );
 			effectiveDamage = Math.max( effectiveDamage - dr, 0 );
 
+			if (enemy.buff(Viscosity.ViscosityTracker.class) != null){
+				effectiveDamage = enemy.buff(Viscosity.ViscosityTracker.class).deferDamage(effectiveDamage);
+				enemy.buff(Viscosity.ViscosityTracker.class).detach();
+			}
+
 			//vulnerable specifically applies after armor reductions
 			if ( enemy.buff( Vulnerable.class ) != null){
 				effectiveDamage *= 1.33f;
@@ -658,6 +665,13 @@ public abstract class Char extends Actor {
 		}
 		shielded -= dmg;
 		HP -= dmg;
+
+		if (HP < 0 && src instanceof Char){
+			if (((Char) src).buff(Kinetic.KineticTracker.class) != null){
+				Buff.affect((Char) src, Kinetic.ConservedDamage.class).setBonus(-HP);
+				((Char) src).buff(Kinetic.KineticTracker.class).detach();
+			}
+		}
 		
 		if (sprite != null) {
 			sprite.showStatus(HP > HT / 2 ?
