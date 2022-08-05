@@ -24,6 +24,8 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
 
@@ -46,6 +48,17 @@ public class PlatformRoom extends StandardRoom {
 		return new float[]{6, 3, 1};
 	}
 	
+	@Override
+	public void merge(Level l, Room other, Rect merge, int mergeTerrain) {
+		if (mergeTerrain != Terrain.CHASM
+				&& (other instanceof PlatformRoom || other instanceof ChasmRoom)){
+			super.merge(l, other, merge, Terrain.CHASM);
+			Painter.set(l, connected.get(other), Terrain.EMPTY_SP);
+		} else {
+			super.merge(l, other, merge, mergeTerrain);
+		}
+	}
+
 	@Override
 	public void paint(Level level) {
 		

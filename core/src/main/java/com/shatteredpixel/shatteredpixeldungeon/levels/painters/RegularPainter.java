@@ -306,7 +306,7 @@ public abstract class RegularPainter extends Painter {
 			}
 
 			if (merge.height() >= 3) {
-				Painter.fill(l, merge.left, merge.top + 1, 1, merge.height()-1, mergeTerrain);
+				r.merge(l, n, new Rect(merge.left, merge.top + 1, merge.left+1, merge.bottom), mergeTerrain);
 				return true;
 			} else {
 				return false;
@@ -330,7 +330,7 @@ public abstract class RegularPainter extends Painter {
 			}
 
 			if (merge.width() >= 3) {
-				Painter.fill(l, merge.left + 1, merge.top, merge.width()-1, 1, mergeTerrain);
+				r.merge(l, n, new Rect(merge.left + 1, merge.top, merge.right, merge.top+1), mergeTerrain);
 				return true;
 			} else {
 				return false;

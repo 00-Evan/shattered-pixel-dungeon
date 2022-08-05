@@ -24,7 +24,9 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Random;
+import com.watabou.utils.Rect;
 
 public class StripedRoom extends StandardRoom {
 	
@@ -33,6 +35,16 @@ public class StripedRoom extends StandardRoom {
 		return new float[]{2, 1, 0};
 	}
 	
+	@Override
+	public void merge(Level l, Room other, Rect merge, int mergeTerrain) {
+		if (other instanceof StripedRoom && mergeTerrain == Terrain.EMPTY){
+			super.merge(l, other, merge, Terrain.EMPTY_SP);
+		} else {
+			super.merge(l, other, merge, mergeTerrain);
+		}
+
+	}
+
 	@Override
 	public void paint(Level level) {
 		Painter.fill( level, this, Terrain.WALL );
