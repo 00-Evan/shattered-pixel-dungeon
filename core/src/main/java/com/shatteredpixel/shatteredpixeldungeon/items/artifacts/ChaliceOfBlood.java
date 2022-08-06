@@ -155,7 +155,9 @@ public class ChaliceOfBlood extends Artifact {
 	public void charge(Hero target, float amount) {
 		if (cursed || target.buff(MagicImmune.class) != null) return;
 
-		//grants 5 turns of healing up-front
+		//grants 5 turns of healing up-front, if hero isn't starving
+		if (target.isStarving()) return;
+
 		float healDelay = 10f - level()*0.9f;
 		healDelay /= amount;
 		//effectively 1HP at lvl 0-5, 2HP lvl 6-8, 3HP lvl 9, and 5HP lvl 10.
