@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CounterBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -136,6 +137,8 @@ public class MasterThievesArmband extends Artifact {
 							boolean surprised = ((Mob) ch).surprisedBy(curUser, false);
 							float lootMultiplier = 1f + 0.1f*level();
 							int debuffDuration = 3 + level()/2;
+
+							Invisibility.dispel(curUser);
 
 							if (surprised){
 								lootMultiplier += 0.5f;
