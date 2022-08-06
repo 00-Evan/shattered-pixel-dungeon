@@ -490,16 +490,6 @@ public abstract class RegularLevel extends Level {
 		return new ArrayList<>(rooms);
 	}
 	
-	//FIXME pit rooms shouldn't be problematic enough to warrant this
-	public boolean hasPitRoom(){
-		for (Room r : rooms) {
-			if (r instanceof PitRoom) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
 	protected Room randomRoom( Class<?extends Room> type ) {
 		Random.shuffle( rooms );
 		for (Room r : rooms) {

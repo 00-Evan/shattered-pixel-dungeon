@@ -21,8 +21,6 @@
 
 package com.watabou.glwrap;
 
-//TODO libGDX offer matrix classes as well, which might give better performance.
-//should investigate using them
 public class Matrix {
 
 	public static final float G2RAD = 0.01745329251994329576923690768489f;

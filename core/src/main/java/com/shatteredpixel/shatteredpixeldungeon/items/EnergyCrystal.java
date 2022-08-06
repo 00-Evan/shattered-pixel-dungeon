@@ -57,8 +57,7 @@ public class EnergyCrystal extends Item {
 	public boolean doPickUp(Hero hero, int pos) {
 
 		Dungeon.energy += quantity;
-		//TODO Statistics.goldCollected += quantity;
-		//Badges.validateGoldCollected();
+		//TODO track energy collected maybe? We do already track recipes crafted though..
 
 		GameScene.pickUp( this, pos );
 		hero.sprite.showStatus( 0x44CCFF, TXT_VALUE, quantity );

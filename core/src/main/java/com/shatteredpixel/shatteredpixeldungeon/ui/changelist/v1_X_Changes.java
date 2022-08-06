@@ -562,7 +562,6 @@ public class v1_X_Changes {
 
 				"_-_ Updated translations and translator credits"));
 
-		//TODO condense to two bugfix entries
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 1",
 				"Fixed:\n" +
 				"_-_ Various minor/rare visual and textual errors\n" +

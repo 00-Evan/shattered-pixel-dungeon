@@ -445,10 +445,10 @@ public class GameScene extends PixelScene {
 			}
 			Dungeon.droppedItems.remove( Dungeon.depth );
 		}
-		
+
+		//pre-1.1.0 saves, including all logic surrounding Dungeon.portedItems
 		ArrayList<Item> ported = Dungeon.portedItems.get( Dungeon.depth );
 		if (ported != null){
-			//TODO currently items are only ported to boss rooms, so this works well
 			//might want to have a 'near entrance' function if items can be ported elsewhere
 			int pos;
 			//try to find a tile with no heap, otherwise just stick items onto a heap.
@@ -1080,7 +1080,6 @@ public class GameScene extends PixelScene {
 		}
 	}
 	
-	//todo this doesn't account for walls right now
 	public static void discoverTile( int pos, int oldValue ) {
 		if (scene != null) {
 			scene.tiles.discover( pos, oldValue );

@@ -110,7 +110,6 @@ public class ControllerHandler implements ControllerListener {
 	private float L2Trigger = 0f;
 	private float R2Trigger = 0f;
 
-	//FIXME these axis mappings seem to be wrong on Android (and iOS?) in some cases
 	@Override
 	public boolean axisMoved(Controller controller, int axisCode, float value) {
 		setControllerType(controller);

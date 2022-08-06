@@ -36,7 +36,6 @@ public class SpectralNecromancerSprite extends MobSprite {
 	private Animation charging;
 	private Emitter summoningBones;
 
-	//TODO sprite is still a bit of a WIP
 	public SpectralNecromancerSprite(){
 		super();
 

@@ -72,8 +72,6 @@ public class WallBlockingTilemap extends Tilemap {
 			super.updateMapCell(cell);
 			return;
 		}
-		
-		//TODO should doors be considered? currently the blocking is a bit permissive around doors
 
 		//non-wall tiles
 		if (!wall(cell)) {

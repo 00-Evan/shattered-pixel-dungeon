@@ -146,9 +146,9 @@ public class Game implements ApplicationListener {
 		}
 	}
 
-	//FIXME this is a temporary workaround to improve start times on android (first frame is 'cheated' and skips rendering)
-	//this is partly to improve stats on google play, and partly to try and diagnose what the cause of slow loading times is
-	//ultimately once the cause is found it should be fixed and this should no longer be needed
+	//FIXME this is a hack to improve start times on android (first frame is 'cheated' and skips rendering)
+	//This is mainly to improve stats on google play, as lots of texture refreshing leads to slow warm starts
+	//Would be nice to accomplish this goal in a less hacky way
 	private boolean justResumed = true;
 
 	@Override
