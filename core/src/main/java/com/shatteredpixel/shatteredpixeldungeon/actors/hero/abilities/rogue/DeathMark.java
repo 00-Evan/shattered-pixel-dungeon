@@ -158,17 +158,6 @@ public class DeathMark extends ArmorAbility {
 			icon.hardlight(1f, 0.2f, 0.2f);
 		}
 
-		@Override
-		public String toString() {
-			return Messages.get(this, "name");
-		}
-
-		@Override
-		public String desc() {
-			//TODO show initial HP here?
-			return Messages.get(this, "desc", dispTurns(visualcooldown()));
-		}
-
 		private void setInitialHP( int hp ){
 			if (initialHP < hp){
 				initialHP = hp;

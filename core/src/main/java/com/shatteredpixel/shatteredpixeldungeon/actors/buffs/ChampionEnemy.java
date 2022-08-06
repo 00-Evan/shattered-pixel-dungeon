@@ -61,16 +61,6 @@ public abstract class ChampionEnemy extends Buff {
 		else target.sprite.clearAura();
 	}
 
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
-
-	@Override
-	public String desc() {
-		return Messages.get(this, "desc");
-	}
-
 	public void onAttackProc(Char enemy ){
 
 	}

@@ -89,11 +89,6 @@ public class Bleeding extends Buff {
 	}
 	
 	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
-	
-	@Override
 	public boolean act() {
 		if (target.isAlive()) {
 			
@@ -130,11 +125,6 @@ public class Bleeding extends Buff {
 		}
 		
 		return true;
-	}
-
-	@Override
-	public String heroMessage() {
-		return Messages.get(this, "heromsg");
 	}
 
 	@Override

@@ -136,16 +136,6 @@ public class Frost extends FlavourBuff {
 		}
 	}
 
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
-
-	@Override
-	public String desc() {
-		return Messages.get(this, "desc", dispTurns());
-	}
-
 	{
 		//can't chill what's frozen!
 		immunities.add( Chill.class );

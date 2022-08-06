@@ -121,11 +121,6 @@ public class CapeOfThorns extends Artifact {
 		}
 
 		@Override
-		public String toString() {
-				return Messages.get(this, "name");
-		}
-
-		@Override
 		public String desc() {
 			return Messages.get(this, "desc", dispTurns(cooldown));
 		}

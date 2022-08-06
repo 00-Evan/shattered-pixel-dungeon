@@ -131,16 +131,6 @@ public class ScrollOfSirensSong extends ExoticScroll {
 		public int icon() {
 			return BuffIndicator.HEART;
 		}
-
-		@Override
-		public String toString() {
-			return Messages.get(this, "name");
-		}
-
-		@Override
-		public String desc() {
-			return Messages.get(this, "desc");
-		}
 	}
 	
 }

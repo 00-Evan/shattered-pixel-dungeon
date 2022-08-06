@@ -86,22 +86,6 @@ public class Paralysis extends FlavourBuff {
 		else if (target.paralysed <= 1) target.sprite.remove(CharSprite.State.PARALYSED);
 	}
 
-	@Override
-	public String heroMessage() {
-		return Messages.get(this, "heromsg");
-	}
-
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
-
-	@Override
-	public String desc() {
-		return Messages.get(this, "desc", dispTurns());
-	}
-
-	
 	public static class ParalysisResist extends Buff {
 		
 		{

@@ -864,7 +864,7 @@ public abstract class Mob extends Char {
 		String desc = description();
 
 		for (Buff b : buffs(ChampionEnemy.class)){
-			desc += "\n\n_" + Messages.titleCase(b.toString()) + "_\n" + b.desc();
+			desc += "\n\n_" + Messages.titleCase(b.name()) + "_\n" + b.desc();
 		}
 
 		return desc;

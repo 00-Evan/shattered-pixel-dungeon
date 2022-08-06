@@ -207,7 +207,7 @@ public class Berserk extends Buff {
 	}
 
 	@Override
-	public String toString() {
+	public String name() {
 		switch (state){
 			case NORMAL: default:
 				return Messages.get(this, "angered");

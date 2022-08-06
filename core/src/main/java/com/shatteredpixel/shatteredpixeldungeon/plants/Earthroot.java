@@ -131,11 +131,6 @@ public class Earthroot extends Plant {
 		public String iconTextDisplay() {
 			return Integer.toString(level);
 		}
-		
-		@Override
-		public String toString() {
-			return Messages.get(this, "name");
-		}
 
 		@Override
 		public String desc() {

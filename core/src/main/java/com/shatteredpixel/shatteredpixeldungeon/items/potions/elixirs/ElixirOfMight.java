@@ -130,11 +130,6 @@ public class ElixirOfMight extends Elixir {
 		public String iconTextDisplay() {
 			return Integer.toString(left);
 		}
-
-		@Override
-		public String toString() {
-			return Messages.get(this, "name");
-		}
 		
 		@Override
 		public String desc() {

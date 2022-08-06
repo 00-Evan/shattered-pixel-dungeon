@@ -279,11 +279,6 @@ public class AscensionChallenge extends Buff {
 	}
 
 	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
-
-	@Override
 	public String desc() {
 		String desc = Messages.get(this, "desc");
 		desc += "\n";

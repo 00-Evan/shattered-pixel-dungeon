@@ -414,16 +414,6 @@ public class TimekeepersHourglass extends Artifact {
 			return Integer.toString((int)turnsToCost+1);
 		}
 
-		@Override
-		public String toString() {
-			return Messages.get(this, "name");
-		}
-
-		@Override
-		public String desc() {
-			return Messages.get(this, "desc");
-		}
-
 		private static final String PRESSES = "presses";
 		private static final String TURNSTOCOST = "turnsToCost";
 

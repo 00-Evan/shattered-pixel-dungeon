@@ -85,11 +85,6 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	public String iconTextDisplay() {
 		return Integer.toString((int)comboTime);
 	}
-
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
 	
 	public void hit( Char enemy ) {
 

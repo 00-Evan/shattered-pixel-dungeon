@@ -301,7 +301,7 @@ public class WndHero extends WndTabbed {
 				icon.y = this.y;
 				add( icon );
 
-				txt = PixelScene.renderTextBlock( buff.toString(), 8 );
+				txt = PixelScene.renderTextBlock( Messages.titleCase(buff.name()), 8 );
 				txt.setPos(
 						icon.width + GAP,
 						this.y + (icon.height - txt.height()) / 2

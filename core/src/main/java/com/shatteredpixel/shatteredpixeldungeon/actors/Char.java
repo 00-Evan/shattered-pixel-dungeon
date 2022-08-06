@@ -793,13 +793,13 @@ public abstract class Char extends Actor {
 		if (sprite != null && buff.announced)
 			switch(buff.type){
 				case POSITIVE:
-					sprite.showStatus(CharSprite.POSITIVE, buff.toString());
+					sprite.showStatus(CharSprite.POSITIVE, Messages.titleCase(buff.name()));
 					break;
 				case NEGATIVE:
-					sprite.showStatus(CharSprite.NEGATIVE, buff.toString());
+					sprite.showStatus(CharSprite.NEGATIVE, Messages.titleCase(buff.name()));
 					break;
 				case NEUTRAL: default:
-					sprite.showStatus(CharSprite.NEUTRAL, buff.toString());
+					sprite.showStatus(CharSprite.NEUTRAL, Messages.titleCase(buff.name()));
 					break;
 			}
 

@@ -74,14 +74,4 @@ public class LifeLink extends FlavourBuff {
 		icon.hardlight(1, 0, 1);
 	}
 
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
-
-	@Override
-	public String desc() {
-		return Messages.get(this, "desc", dispTurns());
-	}
-
 }

@@ -68,11 +68,6 @@ public class Drowsy extends Buff {
 	}
 
 	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
-
-	@Override
 	public String desc() {
 		return Messages.get(this, "desc", dispTurns(visualcooldown()));
 	}

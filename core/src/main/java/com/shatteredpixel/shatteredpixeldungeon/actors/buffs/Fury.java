@@ -48,19 +48,4 @@ public class Fury extends Buff {
 	public int icon() {
 		return BuffIndicator.FURY;
 	}
-	
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
-
-	@Override
-	public String heroMessage() {
-		return Messages.get(this, "heromsg");
-	}
-
-	@Override
-	public String desc() {
-		return Messages.get(this, "desc");
-	}
 }

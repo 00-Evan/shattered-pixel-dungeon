@@ -176,7 +176,7 @@ public class Hunger extends Buff implements Hero.Doom {
 	}
 
 	@Override
-	public String toString() {
+	public String name() {
 		if (level < STARVING) {
 			return Messages.get(this, "hungry");
 		} else {

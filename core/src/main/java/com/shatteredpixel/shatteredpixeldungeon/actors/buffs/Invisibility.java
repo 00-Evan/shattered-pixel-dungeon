@@ -81,16 +81,6 @@ public class Invisibility extends FlavourBuff {
 		else if (target.invisible == 0) target.sprite.remove( CharSprite.State.INVISIBLE );
 	}
 
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
-
-	@Override
-	public String desc() {
-		return Messages.get(this, "desc", dispTurns());
-	}
-
 	public static void dispel() {
 		if (Dungeon.hero == null) return;
 

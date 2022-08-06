@@ -383,7 +383,7 @@ public abstract class YogFist extends Mob {
 				b.announced = false;
 				b.set(dmg*.6f);
 				b.attachTo(this);
-				sprite.showStatus(CharSprite.WARNING, b.toString() + " " + (int)b.level());
+				sprite.showStatus(CharSprite.WARNING, Messages.titleCase(b.name()) + " " + (int)b.level());
 			} else{
 				super.damage(dmg, src);
 			}

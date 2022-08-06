@@ -360,16 +360,6 @@ public class CloakOfShadows extends Artifact {
 		}
 
 		@Override
-		public String toString() {
-			return Messages.get(this, "name");
-		}
-
-		@Override
-		public String desc() {
-			return Messages.get(this, "desc");
-		}
-
-		@Override
 		public void detach() {
 			activeBuff = null;
 

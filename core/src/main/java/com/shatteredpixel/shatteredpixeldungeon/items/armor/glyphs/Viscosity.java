@@ -143,11 +143,6 @@ public class Viscosity extends Glyph {
 		}
 		
 		@Override
-		public String toString() {
-			return Messages.get(this, "name");
-		}
-		
-		@Override
 		public boolean act() {
 			if (target.isAlive()) {
 

@@ -118,11 +118,6 @@ public class ElixirOfAquaticRejuvenation extends Elixir {
 		}
 		
 		@Override
-		public String toString() {
-			return Messages.get(this, "name");
-		}
-		
-		@Override
 		public String desc() {
 			return Messages.get(this, "desc", left);
 		}
