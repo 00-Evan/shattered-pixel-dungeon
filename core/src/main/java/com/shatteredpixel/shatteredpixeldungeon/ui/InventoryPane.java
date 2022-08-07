@@ -507,6 +507,10 @@ public class InventoryPane extends Component {
 				return;
 			}
 
+			if (!Dungeon.hero.isAlive() || !Dungeon.hero.ready){
+				return;
+			}
+
 			if (targeting){
 				if (targetingSlot == this){
 					onClick();
@@ -529,6 +533,10 @@ public class InventoryPane extends Component {
 		protected void onRightClick() {
 			if (lastBag != item && !lastBag.contains(item) && !item.isEquipped(Dungeon.hero)){
 				updateInventory();
+				return;
+			}
+
+			if (!Dungeon.hero.isAlive() || !Dungeon.hero.ready){
 				return;
 			}
 
@@ -628,6 +636,11 @@ public class InventoryPane extends Component {
 				case 5:
 					return SPDAction.BAG_5;
 			}
+		}
+
+		@Override
+		public GameAction secondaryTooltipAction() {
+			return SPDAction.INVENTORY_SELECTOR;
 		}
 
 		@Override

@@ -562,7 +562,8 @@ public class GameScene extends PixelScene {
 				}
 			}
 
-			if (Dungeon.hero.buff(AscensionChallenge.class) != null){
+			if (Dungeon.hero.buff(AscensionChallenge.class) != null
+				&& Dungeon.depth == Statistics.highestAscent){
 				Dungeon.hero.buff(AscensionChallenge.class).saySwitch();
 			}
 
@@ -1195,6 +1196,8 @@ public class GameScene extends PixelScene {
 	}
 
 	public static void gameOver() {
+		if (scene == null) return;
+
 		Banner gameOver = new Banner( BannerSprites.get( BannerSprites.Type.GAME_OVER ) );
 		gameOver.show( 0x000000, 2f );
 		scene.showBanner( gameOver );

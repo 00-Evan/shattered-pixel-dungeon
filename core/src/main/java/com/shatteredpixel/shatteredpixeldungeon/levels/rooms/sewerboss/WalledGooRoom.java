@@ -34,9 +34,9 @@ public class WalledGooRoom extends GooBossRoom {
 		Painter.fill( level, this, Terrain.WALL );
 		Painter.fill( level, this, 1 , Terrain.EMPTY_SP );
 		Painter.fill( level, this, 2 , Terrain.EMPTY );
-		
-		int pillarW = (width()-2)/3;
-		int pillarH = (height()-2)/3;
+
+		int pillarW = (width()-6)/2;
+		int pillarH = (height()-6)/2;
 		
 		Painter.fill(level, left+2, top+2, pillarW, 1, Terrain.WALL);
 		Painter.fill(level, left+2, top+2, 1, pillarH, Terrain.WALL);

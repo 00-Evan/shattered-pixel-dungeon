@@ -57,7 +57,11 @@ import com.watabou.noosa.ui.Component;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class HeroSelectScene extends PixelScene {
 
@@ -482,31 +486,26 @@ public class HeroSelectScene extends PixelScene {
 
 					private long timeToUpdate = 0;
 
+					private final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.ROOT);
+					{
+						dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+					}
+
 					@Override
 					public void update() {
 						super.update();
 
-						if (Game.realTime > timeToUpdate){
+						if (Game.realTime > timeToUpdate && visible){
 							long diff = (SPDSettings.lastDaily() + DAY) - Game.realTime;
+
 							if (diff > 0){
-								//<1 minute
-								if (diff < MINUTE){
-									text(Messages.get(HeroSelectScene.class, "daily_seconds", (diff / SECOND)+1));
-									timeToUpdate = Game.realTime + SECOND;
-								//<1 hour
-								} else if (diff < HOUR){
-									text(Messages.get(HeroSelectScene.class, "daily_minutes", (diff / MINUTE)+1));
-									timeToUpdate = Game.realTime + 5*SECOND;
-								//<30 hours (a few extra in case of timezone shenanigans)
-								} else if (diff < (DAY + 6*HOUR)) {
-									text(Messages.get(HeroSelectScene.class, "daily_hours", (diff / HOUR)+1));
-									timeToUpdate = Game.realTime + 5*MINUTE;
-								//>30 hours, probably a cheater!
+								if (diff > 30*HOUR){
+									text("30:00:00+");
 								} else {
-									text(Messages.get(HeroSelectScene.class, "daily_30_hours"));
-									timeToUpdate = Game.realTime + 20*MINUTE;
+									text(dateFormat.format(new Date(diff)));
 								}
 								textColor(0x888888);
+								timeToUpdate = Game.realTime + SECOND;
 							} else {
 								text(Messages.get(HeroSelectScene.class, "daily"));
 								textColor(0xFFFFFF);

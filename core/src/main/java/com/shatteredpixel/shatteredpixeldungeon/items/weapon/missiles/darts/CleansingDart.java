@@ -48,6 +48,11 @@ public class CleansingDart extends TippedDart {
 					b.detach();
 				}
 			}
+			//for when cleansed effects were keeping defender alive (e.g. raging brutes)
+			if (!defender.isAlive()){
+				defender.die(attacker);
+				return super.proc(attacker, defender, damage);
+			}
 			if (defender instanceof Mob) {
 				//need to delay this so damage from the dart doesn't break wandering
 				new FlavourBuff(){

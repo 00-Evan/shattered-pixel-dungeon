@@ -110,8 +110,17 @@ public class QuickSlotButton extends Button {
 			}
 
 			@Override
+			protected void onMiddleClick() {
+				onClick();
+			}
+
+			@Override
 			public GameAction keyAction() {
 				return QuickSlotButton.this.keyAction();
+			}
+			@Override
+			public GameAction secondaryTooltipAction(){
+				return QuickSlotButton.this.secondaryTooltipAction();
 			}
 			@Override
 			protected boolean onLongClick() {
@@ -186,6 +195,11 @@ public class QuickSlotButton extends Button {
 	}
 
 	@Override
+	public GameAction secondaryTooltipAction() {
+		return SPDAction.QUICKSLOT_SELECTOR;
+	}
+
+	@Override
 	protected String hoverText() {
 		if (slot.item == null){
 			return Messages.titleCase(Messages.get(WndKeyBindings.class, "quickslot_" + (slotNum+1)));
@@ -200,12 +214,20 @@ public class QuickSlotButton extends Button {
 			GameScene.selectItem(itemSelector);
 		}
 	}
-	
+
+	@Override
+	protected void onRightClick() {
+		onClick();
+	}
+
+	@Override
+	protected void onMiddleClick() {
+		onClick();
+	}
+
 	@Override
 	protected boolean onLongClick() {
-		if (Dungeon.hero.ready && !GameScene.cancel()) {
-			GameScene.selectItem(itemSelector);
-		}
+		onClick();
 		return true;
 	}
 

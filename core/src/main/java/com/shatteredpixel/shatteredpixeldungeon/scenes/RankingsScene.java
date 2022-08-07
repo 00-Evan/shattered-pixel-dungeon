@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
@@ -161,9 +162,20 @@ public class RankingsScene extends PixelScene {
 			add(btnDailies);
 		}
 
+		if (Dungeon.daily){
+			addToFront(new WndDailies());
+		}
+
 		fadeIn();
 	}
-	
+
+	@Override
+	public void destroy() {
+		super.destroy();
+		//so that opening daily records does not trigger WndDailies opening on future visits
+		Dungeon.daily = false;
+	}
+
 	@Override
 	protected void onBackPressed() {
 		ShatteredPixelDungeon.switchNoFade(TitleScene.class);

@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
@@ -37,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.HeavyBoomerang;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
@@ -334,7 +336,11 @@ public class PrisonBossLevel extends Level {
 	private void clearEntities(Rect safeArea){
 		for (Heap heap : heaps.valueList()){
 			if (safeArea == null || !safeArea.inside(cellToPoint(heap.pos))){
-				storedItems.addAll(heap.items);
+				for (Item item : heap.items){
+					if (!(item instanceof Bomb) || ((Bomb)item).fuse == null){
+						storedItems.add(item);
+					}
+				}
 				heap.destroy();
 			}
 		}
@@ -414,6 +420,7 @@ public class PrisonBossLevel extends Level {
 				}
 				
 				seal();
+				Statistics.qualifiedForBossChallengeBadge = true;
 				set(pointToCell(tenguCellDoor), Terrain.LOCKED_DOOR);
 				GameScene.updateMap(pointToCell(tenguCellDoor));
 

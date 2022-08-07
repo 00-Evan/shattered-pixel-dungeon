@@ -132,7 +132,7 @@ public class SacrificialFire extends Blob {
 		SacrificialFire fire = (SacrificialFire)Dungeon.level.blobs.get( SacrificialFire.class );
 		int firePos = -1;
 		for (int i : PathFinder.NEIGHBOURS9){
-			if (fire != null && fire.cur[ch.pos+i] > 0){
+			if (fire != null && fire.volume > 0 && fire.cur[ch.pos+i] > 0){
 				firePos = ch.pos+i;
 				break;
 			}

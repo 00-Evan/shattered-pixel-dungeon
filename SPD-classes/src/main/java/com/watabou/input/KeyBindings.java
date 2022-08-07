@@ -87,10 +87,8 @@ public class KeyBindings {
 		ArrayList<Integer> buttons = getControllerKeysForAction(action);
 		if (preferController){
 			if (!buttons.isEmpty())         return buttons.get(0);
-			else if (!keys.isEmpty())       return keys.get(0);
 		} else {
 			if (!keys.isEmpty())            return keys.get(0);
-			else if (!buttons.isEmpty())    return buttons.get(0);
 		}
 		return 0;
 	}

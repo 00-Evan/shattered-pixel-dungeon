@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Goo;
@@ -167,6 +168,8 @@ public class SewerBossLevel extends SewerLevel {
 		if (!locked) {
 
 			super.seal();
+
+			Statistics.qualifiedForBossChallengeBadge = true;
 
 			set( entrance(), Terrain.WATER );
 			GameScene.updateMap( entrance() );

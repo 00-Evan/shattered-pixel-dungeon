@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
@@ -218,6 +219,16 @@ public class WelcomeScene extends PixelScene {
 						ShatteredPixelDungeon.reportException(e);
 					}
 				}
+				if (Rankings.INSTANCE.latestDaily != null){
+					try {
+						Rankings.INSTANCE.loadGameData(Rankings.INSTANCE.latestDaily);
+						Rankings.INSTANCE.saveGameData(Rankings.INSTANCE.latestDaily);
+					} catch (Exception e) {
+						//if we encounter a fatal per-record error, then clear that record
+						Rankings.INSTANCE.latestDaily = null;
+						ShatteredPixelDungeon.reportException(e);
+					}
+				}
 				Collections.sort(Rankings.INSTANCE.records, Rankings.scoreComparator);
 				Rankings.INSTANCE.save();
 			} catch (Exception e) {
@@ -225,6 +236,7 @@ public class WelcomeScene extends PixelScene {
 				FileUtils.deleteFile( Rankings.RANKINGS_FILE );
 				ShatteredPixelDungeon.reportException(e);
 			}
+			Dungeon.daily = false;
 
 		}
 

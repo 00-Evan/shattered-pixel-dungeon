@@ -53,13 +53,18 @@ public class TenguSprite extends MobSprite {
 		
 		play( run.clone() );
 	}
-	
+
 	@Override
-	public void idle() {
-		isMoving = false;
-		super.idle();
+	public void play(Animation anim) {
+		if (isMoving && anim != run){
+			synchronized (this){
+				isMoving = false;
+				notifyAll();
+			}
+		}
+		super.play(anim);
 	}
-	
+
 	@Override
 	public void move( int from, int to ) {
 		

@@ -127,7 +127,7 @@ public class GatewayTrap extends Trap {
 				}
 
 				Heap heap = Dungeon.level.heaps.get(pos + i);
-				if (heap != null){
+				if (heap != null && heap.type == Heap.Type.HEAP){
 					Item item = heap.pickUp();
 					Heap dropped = Dungeon.level.drop( item, telePos );
 					dropped.type = heap.type;

@@ -42,6 +42,7 @@ public class ControllerHandler implements ControllerListener {
 	}
 
 	public static ControllerType lastUsedType = ControllerType.OTHER;
+	public static boolean controllerActive = false;
 
 	private static void setControllerType(Controller controller){
 		if (controller.getName().contains("Xbox")){
@@ -69,6 +70,7 @@ public class ControllerHandler implements ControllerListener {
 
 	@Override
 	public void connected(Controller controller) {
+		controllerActive = true;
 		setControllerType(controller);
 	}
 
@@ -80,6 +82,7 @@ public class ControllerHandler implements ControllerListener {
 	@Override
 	public boolean buttonDown(Controller controller, int buttonCode) {
 		setControllerType(controller);
+		controllerActive = true;
 		int keyCode = buttonToKey(controller, buttonCode);
 		if (keyCode != Input.Keys.UNKNOWN){
 			KeyEvent.addKeyEvent(new KeyEvent(keyCode, true));
@@ -91,6 +94,7 @@ public class ControllerHandler implements ControllerListener {
 	@Override
 	public boolean buttonUp(Controller controller, int buttonCode) {
 		setControllerType(controller);
+		controllerActive = true;
 		int keyCode = buttonToKey(controller, buttonCode);
 		if (keyCode != Input.Keys.UNKNOWN){
 			KeyEvent.addKeyEvent(new KeyEvent(keyCode, false));
@@ -120,8 +124,10 @@ public class ControllerHandler implements ControllerListener {
 
 			if (L2Trigger < 0.5f && value >= 0.5f){
 				KeyEvent.addKeyEvent(new KeyEvent(Input.Keys.BUTTON_L2, true));
+				controllerActive = true;
 			} else if (L2Trigger >= 0.5f && value < 0.5f){
 				KeyEvent.addKeyEvent(new KeyEvent(Input.Keys.BUTTON_L2, false));
+				controllerActive = true;
 			}
 			L2Trigger = value;
 
@@ -129,8 +135,10 @@ public class ControllerHandler implements ControllerListener {
 
 			if (R2Trigger < 0.5f && value >= 0.5f){
 				KeyEvent.addKeyEvent(new KeyEvent(Input.Keys.BUTTON_R2, true));
+				controllerActive = true;
 			} else if (R2Trigger >= 0.5f && value < 0.5f){
 				KeyEvent.addKeyEvent(new KeyEvent(Input.Keys.BUTTON_R2, false));
+				controllerActive = true;
 			}
 			R2Trigger = value;
 
@@ -143,6 +151,7 @@ public class ControllerHandler implements ControllerListener {
 	private static PointF controllerPointerPos;
 
 	public static void setControllerPointer( boolean active ){
+		if (active) controllerActive = true;
 		if (controllerPointerActive == active) return;
 		controllerPointerActive = active;
 		if (active){
@@ -164,6 +173,7 @@ public class ControllerHandler implements ControllerListener {
 	public static void updateControllerPointer(PointF pos, boolean sendEvent){
 		controllerPointerPos.set(pos);
 		if (sendEvent) {
+			controllerActive = true;
 			PointerEvent.addPointerEvent(new PointerEvent((int) controllerPointerPos.x, (int) controllerPointerPos.y, 10_000, PointerEvent.Type.HOVER, PointerEvent.NONE));
 		}
 	}
@@ -211,9 +221,9 @@ public class ControllerHandler implements ControllerListener {
 	public static String customButtonName(int keyCode){
 		if (lastUsedType == ControllerType.PLAYSTATION){
 			if (keyCode == Input.Keys.BUTTON_A){
-				return "Circle Button";
-			} else if (keyCode == Input.Keys.BUTTON_B){
 				return "Cross Button";
+			} else if (keyCode == Input.Keys.BUTTON_B){
+				return "Circle Button";
 			} else if (keyCode == Input.Keys.BUTTON_X){
 				return "Square Button";
 			} else if (keyCode == Input.Keys.BUTTON_Y){
