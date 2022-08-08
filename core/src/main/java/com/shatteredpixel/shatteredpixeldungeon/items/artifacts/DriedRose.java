@@ -662,7 +662,9 @@ public class DriedRose extends Artifact {
 			}
 
 			//moves 2 tiles at a time when returning to the hero
-			if (state == WANDERING && defendingPos == -1){
+			if (state == WANDERING
+					&& defendingPos == -1
+					&& Dungeon.level.distance(pos, Dungeon.hero.pos) > 1){
 				speed *= 2;
 			}
 			

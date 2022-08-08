@@ -182,6 +182,12 @@ public class ShadowClone extends ArmorAbility {
 		}
 
 		@Override
+		public void defendPos(int cell) {
+			GLog.i(Messages.get(this, "direct_defend"));
+			super.defendPos(cell);
+		}
+
+		@Override
 		public void followHero() {
 			GLog.i(Messages.get(this, "direct_follow"));
 			super.followHero();
@@ -248,7 +254,9 @@ public class ShadowClone extends ArmorAbility {
 			float speed = super.speed();
 
 			//moves 2 tiles at a time when returning to the hero
-			if (state == WANDERING && defendingPos == -1){
+			if (state == WANDERING
+					&& defendingPos == -1
+					&& Dungeon.level.distance(pos, Dungeon.hero.pos) > 1){
 				speed *= 2;
 			}
 
