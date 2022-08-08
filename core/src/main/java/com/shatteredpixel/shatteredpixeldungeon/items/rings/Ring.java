@@ -290,7 +290,7 @@ public class Ring extends KindofMisc {
 		levelsToID -= levelPercent;
 		if (levelsToID <= 0){
 			identify();
-			GLog.p( Messages.get(Ring.class, "identify", toString()) );
+			GLog.p( Messages.get(Ring.class, "identify", title()) );
 			Badges.validateItemLevelAquired( this );
 		}
 	}

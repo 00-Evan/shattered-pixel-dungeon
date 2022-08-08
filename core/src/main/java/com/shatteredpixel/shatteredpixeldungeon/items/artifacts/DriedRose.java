@@ -231,11 +231,11 @@ public class DriedRose extends Artifact {
 			desc += "\n";
 
 			if (weapon != null) {
-				desc += "\n" + Messages.get(this, "desc_weapon", weapon.toString());
+				desc += "\n" + Messages.get(this, "desc_weapon", weapon.title());
 			}
 
 			if (armor != null) {
-				desc += "\n" + Messages.get(this, "desc_armor", armor.toString());
+				desc += "\n" + Messages.get(this, "desc_armor", armor.title());
 			}
 		}
 		

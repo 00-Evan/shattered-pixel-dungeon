@@ -146,11 +146,6 @@ public class PointF {
 	public static float angle( PointF start, PointF end ) {
 		return (float)Math.atan2( end.y - start.y, end.x - start.x );
 	}
-	
-	@Override
-	public String toString() {
-		return "" + x + ", " + y;
-	}
 
 	@Override
 	public boolean equals(Object o) {

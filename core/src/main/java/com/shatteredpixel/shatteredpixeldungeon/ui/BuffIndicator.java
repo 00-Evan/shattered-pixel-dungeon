@@ -295,7 +295,7 @@ public class BuffIndicator extends Component {
 
 		@Override
 		protected String hoverText() {
-			return Messages.titleCase(buff.toString());
+			return Messages.titleCase(buff.name());
 		}
 	}
 	
