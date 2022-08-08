@@ -40,6 +40,7 @@ import com.watabou.glwrap.Blending;
 import com.watabou.glwrap.Quad;
 import com.watabou.glwrap.Texture;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.FileUtils;
 import com.watabou.utils.Point;
 
@@ -184,7 +185,7 @@ public class TextInput extends Component {
 			skin.dispose();
 			Game.inputHandler.removeInputProcessor(stage);
 			Gdx.input.setOnscreenKeyboardVisible(false);
-			Game.platform.updateSystemUI();
+			if (!DeviceCompat.isDesktop()) Game.platform.updateSystemUI();
 		}
 	}
 }
