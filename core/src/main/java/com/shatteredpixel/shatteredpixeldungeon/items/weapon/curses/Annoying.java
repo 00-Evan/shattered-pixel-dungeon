@@ -49,7 +49,12 @@ public class Annoying extends Weapon.Enchantment {
 			attacker.sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.3f, 3);
 			Sample.INSTANCE.play(Assets.Sounds.MIMIC);
 			Invisibility.dispel();
-			GLog.n(Messages.get(this, "msg_" + (Random.Int(5)+1)));
+			//~1/100 for each rare line, ~1/10 for each common line
+			if (Random.Int(33) != 0) {
+				GLog.n(Messages.get(this, "msg_" + Random.IntRange(1, 10)));
+			} else {
+				GLog.n(Messages.get(this, "msg_" + Random.IntRange(11, 13)));
+			}
 		}
 
 		return damage;
