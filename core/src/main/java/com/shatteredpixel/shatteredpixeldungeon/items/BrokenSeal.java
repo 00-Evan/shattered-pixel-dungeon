@@ -130,9 +130,8 @@ public class BrokenSeal extends Item {
 				if (!armor.levelKnown){
 					GLog.w(Messages.get(BrokenSeal.class, "unknown_armor"));
 
-				} else if ((armor.cursed || armor.level() < 0)
-						&& (seal.getGlyph() == null || !seal.getGlyph().curse())){
-					GLog.w(Messages.get(BrokenSeal.class, "degraded_armor"));
+				} else if (armor.cursed && (seal.getGlyph() == null || !seal.getGlyph().curse())){
+					GLog.w(Messages.get(BrokenSeal.class, "cursed_armor"));
 
 				} else if (armor.glyph != null && seal.getGlyph() != null
 						&& armor.glyph.getClass() != seal.getGlyph().getClass()) {
