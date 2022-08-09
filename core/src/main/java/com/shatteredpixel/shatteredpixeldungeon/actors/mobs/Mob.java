@@ -349,12 +349,16 @@ public abstract class Mob extends Char {
 			if (enemies.isEmpty()){
 				return null;
 			} else {
-				//go after the closest potential enemy, preferring the hero if two are equidistant
+				//go after the closest potential enemy, preferring enemies that can be attacked, and the hero if two are equidistant
 				Char closest = null;
 				for (Char curr : enemies){
-					if (closest == null
-							|| Dungeon.level.distance(pos, curr.pos) < Dungeon.level.distance(pos, closest.pos)
-							|| Dungeon.level.distance(pos, curr.pos) == Dungeon.level.distance(pos, closest.pos) && curr == Dungeon.hero){
+					if (closest == null){
+						closest = curr;
+					} else if (canAttack(closest) && !canAttack(curr)){
+						continue;
+					} else if ((canAttack(curr) && !canAttack(closest))
+							|| (Dungeon.level.distance(pos, curr.pos) < Dungeon.level.distance(pos, closest.pos))
+							|| (Dungeon.level.distance(pos, curr.pos) == Dungeon.level.distance(pos, closest.pos) && curr == Dungeon.hero)){
 						closest = curr;
 					}
 				}
