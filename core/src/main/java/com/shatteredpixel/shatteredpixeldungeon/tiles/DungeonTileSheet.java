@@ -344,6 +344,9 @@ public class DungeonTileSheet {
 	public static final int HIGH_GRASS_OVERHANG_ALT     = WALL_OVERHANG+38;
 	public static final int FURROWED_OVERHANG_ALT       = WALL_OVERHANG+39;
 
+	//exit visuals are rendered flat atm, so they actually underhand
+	public static final int EXIT_UNDERHANG              = WALL_OVERHANG+41;
+
 	/**********************************************************************
 	 * Logic for the selection of tile visuals
 	 **********************************************************************/

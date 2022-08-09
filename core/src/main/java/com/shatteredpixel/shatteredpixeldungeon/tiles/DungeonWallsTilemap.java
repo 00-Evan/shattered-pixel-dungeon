@@ -62,7 +62,10 @@ public class DungeonWallsTilemap extends DungeonTilemap {
 
 		}
 
-		if (pos + mapWidth < size && DungeonTileSheet.wallStitcheable(map[pos+mapWidth])) {
+
+		if (map[pos] == Terrain.LOCKED_EXIT || map[pos] == Terrain.UNLOCKED_EXIT){
+			return DungeonTileSheet.EXIT_UNDERHANG;
+		} else if (pos + mapWidth < size && DungeonTileSheet.wallStitcheable(map[pos+mapWidth])) {
 
 			return DungeonTileSheet.stitchWallOverhangTile(
 					tile,
