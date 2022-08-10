@@ -890,9 +890,9 @@ public class Hero extends Char {
 						boolean important = item.unique && item.isIdentified() &&
 								(item instanceof Scroll || item instanceof Potion);
 						if (important) {
-							GLog.p( Messages.get(this, "you_now_have", item.name()) );
+							GLog.p( Messages.capitalize(Messages.get(this, "you_now_have", item.name())) );
 						} else {
-							GLog.i( Messages.get(this, "you_now_have", item.name()) );
+							GLog.i( Messages.capitalize(Messages.get(this, "you_now_have", item.name())) );
 						}
 					}
 					
@@ -914,7 +914,7 @@ public class Hero extends Char {
 						//Do Nothing
 					} else {
 						GLog.newLine();
-						GLog.n(Messages.get(this, "you_cant_have", item.name()));
+						GLog.n(Messages.capitalize(Messages.get(this, "you_cant_have", item.name())));
 					}
 
 					heap.sprite.drop();
