@@ -222,7 +222,10 @@ public enum Rankings {
 		for (Item item : belongings.backpack.items.toArray( new Item[0])) {
 			if (item instanceof Bag){
 				for (Item bagItem : ((Bag) item).items.toArray( new Item[0])){
-					if (Dungeon.quickslot.contains(bagItem)) belongings.backpack.items.add(bagItem);
+					if (Dungeon.quickslot.contains(bagItem)
+							&& !Dungeon.quickslot.contains(item)){
+						belongings.backpack.items.add(bagItem);
+					}
 				}
 			}
 			if (!Dungeon.quickslot.contains(item)) {
