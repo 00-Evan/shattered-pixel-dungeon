@@ -362,7 +362,8 @@ public class SpiritBow extends Weapon {
 		}
 
 		int flurryCount = -1;
-		
+		Actor flurryActor = null;
+
 		@Override
 		public void cast(final Hero user, final int dst) {
 			final int cell = throwPos( user, dst );
@@ -388,7 +389,7 @@ public class SpiritBow extends Weapon {
 				
 				((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).
 						reset(user.sprite,
-								cell,
+								enemy.pos,
 								this,
 								new Callback() {
 									@Override
@@ -403,6 +404,11 @@ public class SpiritBow extends Weapon {
 											sniperSpecial = false;
 											flurryCount = -1;
 										}
+
+										if (flurryActor != null){
+											flurryActor.next();
+											flurryActor = null;
+										}
 									}
 								});
 				
@@ -411,7 +417,21 @@ public class SpiritBow extends Weapon {
 					public void call() {
 						flurryCount--;
 						if (flurryCount > 0){
-							cast(user, dst);
+							Actor.add(new Actor() {
+
+								{
+									actPriority = VFX_PRIO-1;
+								}
+
+								@Override
+								protected boolean act() {
+									flurryActor = this;
+									cast(user, enemy.pos);
+									Actor.remove(this);
+									return false;
+								}
+							});
+							curUser.next();
 						}
 					}
 				});
