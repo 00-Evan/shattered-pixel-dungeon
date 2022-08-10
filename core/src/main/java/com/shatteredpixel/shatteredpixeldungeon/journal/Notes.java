@@ -66,16 +66,18 @@ public class Notes {
 	public enum Landmark {
 		WELL_OF_HEALTH,
 		WELL_OF_AWARENESS,
-		WELL_OF_TRANSMUTATION,
 		ALCHEMY,
 		GARDEN,
 		STATUE,
+		SACRIFICIAL_FIRE,
 		SHOP,
 		
 		GHOST,
 		WANDMAKER,
 		TROLL,
-		IMP;
+		IMP,
+
+		DEMON_SPAWNER;
 		
 		public String desc() {
 			return Messages.get(this, name());

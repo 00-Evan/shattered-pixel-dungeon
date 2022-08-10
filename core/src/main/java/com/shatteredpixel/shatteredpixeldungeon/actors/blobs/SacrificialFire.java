@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SacrificialParticle;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SacrificeRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -81,11 +82,15 @@ public class SacrificialFire extends Blob {
 							}
 						}
 
-						if (Dungeon.level.heroFOV[cell]
-								&& Dungeon.level.mobCount() == 0
-								&& bonusSpawns > 0) {
-							if (Dungeon.level.spawnMob(4)) {
-								bonusSpawns--;
+						if (off[cell] > 0 && Dungeon.level.heroFOV[cell]) {
+
+							Notes.add( Notes.Landmark.SACRIFICIAL_FIRE);
+
+							if (Dungeon.level.mobCount() == 0
+									&& bonusSpawns > 0) {
+								if (Dungeon.level.spawnMob(4)) {
+									bonusSpawns--;
+								}
 							}
 						}
 					}
@@ -173,6 +178,7 @@ public class SacrificialFire extends Blob {
 					GLog.w( Messages.get(SacrificialFire.class, "worthy"));
 				} else {
 					fire.clear(firePos);
+					Notes.remove(Notes.Landmark.SACRIFICIAL_FIRE);
 
 					for (int i : PathFinder.NEIGHBOURS9){
 						CellEmitter.get(firePos+i).burst( SacrificialParticle.FACTORY, 20 );
