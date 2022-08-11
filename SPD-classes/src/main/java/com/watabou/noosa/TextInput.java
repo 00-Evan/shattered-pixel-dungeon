@@ -126,6 +126,31 @@ public class TextInput extends Component {
 		return textField.getText();
 	}
 
+	public void copyToClipboard(){
+		if (textField.getSelection().isEmpty()) {
+			textField.selectAll();
+		}
+
+		textField.copy();
+	}
+
+	public void pasteFromClipboard(){
+		if (!Gdx.app.getClipboard().hasContents()) return;
+
+		if (!textField.getSelection().isEmpty()){
+			//just use cut, but override clipboard
+			String existingClip = Gdx.app.getClipboard().getContents();
+			textField.cut();
+			Gdx.app.getClipboard().setContents(existingClip);
+		}
+
+		String existing = textField.getText();
+		int cursorIdx = textField.getCursorPosition();
+
+		textField.setText(existing.substring(0, cursorIdx) + Gdx.app.getClipboard().getContents() + existing.substring(cursorIdx));
+		textField.setCursorPosition(cursorIdx + Gdx.app.getClipboard().getContents().length());
+	}
+
 	@Override
 	protected void layout() {
 		super.layout();

@@ -113,6 +113,7 @@ public class StyledButton extends Button {
 	public void enable( boolean value ) {
 		active = value;
 		text.alpha( value ? 1.0f : 0.3f );
+		if (icon != null) icon.alpha( value ? 1.0f : 0.3f );
 	}
 	
 	public void text( String value ) {

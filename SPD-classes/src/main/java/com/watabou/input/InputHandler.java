@@ -93,7 +93,6 @@ public class InputHandler extends InputAdapter {
 	public synchronized boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		ControllerHandler.setControllerPointer(false);
 		ControllerHandler.controllerActive = false;
-		Gdx.input.setOnscreenKeyboardVisible(false); //in-game events never need keyboard, so hide it
 
 		if (button >= 3 && KeyBindings.isKeyBound( button + 1000 )) {
 			KeyEvent.addKeyEvent( new KeyEvent( button + 1000, true ) );

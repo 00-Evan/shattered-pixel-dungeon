@@ -21,6 +21,7 @@
 
 package com.watabou.input;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.ui.Cursor;
@@ -138,6 +139,8 @@ public class PointerEvent {
 			pointerEvents.add(event);
 		}
 	}
+
+	public static boolean clearKeyboardThisPress = true;
 	
 	public static synchronized void processPointerEvents(){
 		//handle any hover events separately first as we may need to add drag events
@@ -164,6 +167,7 @@ public class PointerEvent {
 			if (p.type == Type.HOVER){
 				continue;
 			}
+			clearKeyboardThisPress = true;
 			if (activePointers.containsKey(p.id)){
 				PointerEvent existing = activePointers.get(p.id);
 				existing.current = p.current;
@@ -180,6 +184,10 @@ public class PointerEvent {
 					activePointers.put(p.id, p);
 				}
 				pointerSignal.dispatch(p);
+			}
+			if (clearKeyboardThisPress){
+				//most press events should clear the keyboard
+				Gdx.input.setOnscreenKeyboardVisible(false);
 			}
 		}
 		pointerEvents.clear();
