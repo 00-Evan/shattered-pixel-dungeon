@@ -101,12 +101,20 @@ public class TextInput extends Component {
 						enterPressed();
 					}
 				}
+
 			});
 		}
 
+		textField.setOnscreenKeyboard(new TextField.OnscreenKeyboard() {
+			@Override
+			public void show(boolean visible) {
+				Game.platform.setOnscreenKeyboardVisible(visible);
+			}
+		});
+
 		container.setActor(textField);
 		stage.setKeyboardFocus(textField);
-		Gdx.input.setOnscreenKeyboardVisible(true);
+		Game.platform.setOnscreenKeyboardVisible(true);
 	}
 
 	public void enterPressed(){
@@ -209,7 +217,7 @@ public class TextInput extends Component {
 			stage.dispose();
 			skin.dispose();
 			Game.inputHandler.removeInputProcessor(stage);
-			Gdx.input.setOnscreenKeyboardVisible(false);
+			Game.platform.setOnscreenKeyboardVisible(false);
 			if (!DeviceCompat.isDesktop()) Game.platform.updateSystemUI();
 		}
 	}

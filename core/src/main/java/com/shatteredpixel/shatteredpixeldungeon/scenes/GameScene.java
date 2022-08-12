@@ -1097,8 +1097,8 @@ public class GameScene extends PixelScene {
 				for (Gizmo g : scene.members){
 					if (g instanceof Window) offsetToInherit = ((Window) g).getOffset();
 				}
-				if (scene.lastOffset != null && offsetToInherit == null) {
-					offsetToInherit = scene.lastOffset;
+				if (lastOffset != null) {
+					offsetToInherit = lastOffset;
 				}
 				if (offsetToInherit != null) {
 					wnd.offset(offsetToInherit);

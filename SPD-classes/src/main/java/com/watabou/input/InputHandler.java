@@ -78,6 +78,20 @@ public class InputHandler extends InputAdapter {
 	public void removeInputProcessor(InputProcessor processor){
 		multiplexer.removeProcessor(processor);
 	}
+
+	public void emulateTouch(int button, boolean down){
+		PointF hoverPos = PointerEvent.currentHoverPos();
+		if (down){
+			multiplexer.touchDown((int)hoverPos.x, (int)hoverPos.y, 10+button, button);
+		} else {
+			multiplexer.touchUp((int)hoverPos.x, (int)hoverPos.y, 10+button, button);
+		}
+	}
+
+	public void emulateDrag(int button){
+		PointF hoverPos = PointerEvent.currentHoverPos();
+		multiplexer.touchDragged((int)hoverPos.x, (int)hoverPos.y, 10+button);
+	}
 	
 	public void processAllEvents(){
 		PointerEvent.processPointerEvents();
@@ -91,8 +105,10 @@ public class InputHandler extends InputAdapter {
 	
 	@Override
 	public synchronized boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		ControllerHandler.setControllerPointer(false);
-		ControllerHandler.controllerActive = false;
+		if (pointer < 10) {
+			ControllerHandler.setControllerPointer(false);
+			ControllerHandler.controllerActive = false;
+		}
 
 		if (button >= 3 && KeyBindings.isKeyBound( button + 1000 )) {
 			KeyEvent.addKeyEvent( new KeyEvent( button + 1000, true ) );

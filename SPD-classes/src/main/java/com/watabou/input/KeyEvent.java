@@ -21,6 +21,7 @@
 
 package com.watabou.input;
 
+import com.watabou.noosa.Game;
 import com.watabou.utils.Signal;
 
 import java.util.ArrayList;
@@ -63,13 +64,13 @@ public class KeyEvent {
 	public static synchronized void processKeyEvents(){
 		for (KeyEvent k : keyEvents){
 			if (KeyBindings.getActionForKey(k) == GameAction.LEFT_CLICK){
-				PointerEvent.emulateMouseButton(PointerEvent.LEFT, k.pressed);
+				Game.inputHandler.emulateTouch(PointerEvent.LEFT, k.pressed);
 				if (KeyBindings.bindingKey) keySignal.dispatch(k);
 			} else if (KeyBindings.getActionForKey(k) == GameAction.RIGHT_CLICK){
-				PointerEvent.emulateMouseButton(PointerEvent.RIGHT, k.pressed);
+				Game.inputHandler.emulateTouch(PointerEvent.RIGHT, k.pressed);
 				if (KeyBindings.bindingKey) keySignal.dispatch(k);
 			} else if (KeyBindings.getActionForKey(k) == GameAction.MIDDLE_CLICK){
-				PointerEvent.emulateMouseButton(PointerEvent.MIDDLE, k.pressed);
+				Game.inputHandler.emulateTouch(PointerEvent.MIDDLE, k.pressed);
 				if (KeyBindings.bindingKey) keySignal.dispatch(k);
 			} else {
 				keySignal.dispatch(k);

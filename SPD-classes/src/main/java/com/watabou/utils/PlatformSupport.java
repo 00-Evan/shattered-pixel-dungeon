@@ -51,6 +51,10 @@ public abstract class PlatformSupport {
 		return Gdx.net.openURI( uri );
 	}
 
+	public void setOnscreenKeyboardVisible(boolean value){
+		Gdx.input.setOnscreenKeyboardVisible(value);
+	}
+
 	//TODO should consider spinning this into its own class, rather than platform support getting ever bigger
 	protected static HashMap<FreeTypeFontGenerator, HashMap<Integer, BitmapFont>> fonts;
 
