@@ -56,7 +56,7 @@ public class ScrollOfSirensSong extends ExoticScroll {
 
 		@Override
 		public void onSelect(Integer cell) {
-			if (cell == null && isKnown() && !anonymous){
+			if (cell == null && isKnown()){
 				return;
 			}
 

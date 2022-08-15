@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -124,7 +125,7 @@ public class UnstableSpellbook extends Artifact {
 
 				Scroll scroll;
 				do {
-					scroll = (Scroll) Generator.randomUsingDefaults(Generator.Category.SCROLL);
+					scroll = new ScrollOfLullaby();
 				} while (scroll == null
 						//reduce the frequency of these scrolls by half
 						||((scroll instanceof ScrollOfIdentify ||
@@ -155,6 +156,7 @@ public class UnstableSpellbook extends Artifact {
 							if (index == 1){
 								Scroll scroll = Reflection.newInstance(ExoticScroll.regToExo.get(fScroll.getClass()));
 								charge--;
+								scroll.anonymize();
 								scroll.doRead();
 								Talent.onArtifactUsed(Dungeon.hero);
 							} else {
@@ -292,7 +294,7 @@ public class UnstableSpellbook extends Artifact {
 					&& target.buff(MagicImmune.class) == null
 					&& (lock == null || lock.regenOn())) {
 				//120 turns to charge at full, 80 turns to charge at 0/8
-				float chargeGain = 1 / (120f - (chargeCap - charge)*5f);
+				float chargeGain = 1;
 				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
 				partialCharge += chargeGain;
 
