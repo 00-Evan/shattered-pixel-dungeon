@@ -89,6 +89,11 @@ abstract public class ClassArmor extends Armor {
 		}
 	}
 
+	@Override
+	public int targetingPos(Hero user, int dst) {
+		return user.armorAbility.targetedPos(user, dst);
+	}
+
 	public static ClassArmor upgrade (Hero owner, Armor armor ) {
 		
 		ClassArmor classArmor = null;

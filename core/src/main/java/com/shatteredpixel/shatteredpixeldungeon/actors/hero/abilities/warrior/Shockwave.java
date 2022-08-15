@@ -58,6 +58,11 @@ public class Shockwave extends ArmorAbility {
 	}
 
 	@Override
+	public int targetedPos(Char user, int dst) {
+		return new Ballistica( user.pos, dst, Ballistica.STOP_SOLID | Ballistica.STOP_TARGET ).collisionPos;
+	}
+
+	@Override
 	protected void activate(ClassArmor armor, Hero hero, Integer target) {
 		if (target == null){
 			return;

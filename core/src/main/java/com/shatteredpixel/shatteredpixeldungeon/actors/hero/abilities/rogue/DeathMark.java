@@ -46,13 +46,18 @@ import com.watabou.utils.PathFinder;
 
 public class DeathMark extends ArmorAbility {
 
+	{
+		baseChargeUse = 25f;
+	}
+
 	@Override
 	public String targetingPrompt() {
 		return Messages.get(this, "prompt");
 	}
 
-	{
-		baseChargeUse = 25f;
+	@Override
+	public int targetedPos(Char user, int dst) {
+		return dst;
 	}
 
 	@Override

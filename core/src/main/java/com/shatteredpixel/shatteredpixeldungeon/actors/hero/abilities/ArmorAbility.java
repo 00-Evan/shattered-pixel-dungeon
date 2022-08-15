@@ -21,9 +21,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -60,6 +62,10 @@ public abstract class ArmorAbility implements Bundlable {
 
 	public boolean useTargeting(){
 		return targetingPrompt() != null;
+	}
+
+	public int targetedPos( Char user, int dst ){
+		return new Ballistica( user.pos, dst, Ballistica.PROJECTILE ).collisionPos;
 	}
 
 	public float chargeUse( Hero hero ){
