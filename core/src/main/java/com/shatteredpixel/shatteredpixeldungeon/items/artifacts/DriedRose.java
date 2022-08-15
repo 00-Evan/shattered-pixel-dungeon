@@ -586,7 +586,7 @@ public class DriedRose extends Artifact {
 			int acc = Dungeon.hero.lvl + 9;
 			
 			if (rose != null && rose.weapon != null){
-				acc *= rose.weapon.accuracyFactor(this);
+				acc *= rose.weapon.accuracyFactor( this, target );
 			}
 			
 			return acc;

@@ -168,7 +168,7 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 	
 	@Override
-	public float accuracyFactor( Char owner ) {
+	public float accuracyFactor(Char owner, Char target) {
 		
 		int encumbrance = 0;
 		

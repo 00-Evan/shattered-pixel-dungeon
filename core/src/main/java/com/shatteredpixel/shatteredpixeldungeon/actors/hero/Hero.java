@@ -461,7 +461,7 @@ public class Hero extends Char {
 		}
 		
 		if (wep != null) {
-			return (int)(attackSkill * accuracy * wep.accuracyFactor( this ));
+			return (int)(attackSkill * accuracy * wep.accuracyFactor( this, target ));
 		} else {
 			return (int)(attackSkill * accuracy);
 		}
