@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SmokeParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityLevel;
@@ -260,6 +261,20 @@ public class ShadowClone extends ArmorAbility {
 			} else {
 				return damage;
 			}
+		}
+
+		@Override
+		public void damage(int dmg, Object src) {
+
+			//TODO improve this when I have proper damage source logic
+			if (Random.Int(4) < Dungeon.hero.pointsInTalent(Talent.CLONED_ARMOR)
+					&& Dungeon.hero.belongings.armor() != null
+					&& Dungeon.hero.belongings.armor().hasGlyph(AntiMagic.class, this)
+					&& AntiMagic.RESISTS.contains(src.getClass())){
+				dmg -= AntiMagic.drRoll(Dungeon.hero.belongings.armor().buffedLvl());
+			}
+
+			super.damage(dmg, src);
 		}
 
 		@Override

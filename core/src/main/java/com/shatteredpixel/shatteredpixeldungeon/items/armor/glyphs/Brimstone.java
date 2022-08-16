@@ -36,6 +36,7 @@ public class Brimstone extends Armor.Glyph {
 		// GhostHero.isImmune
 		// Shadowclone.isImmune
 		// ArmoredStatue.isImmune
+		// PrismaticImage.isImmune
 		return damage;
 	}
 
