@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor.Glyph;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -76,7 +77,15 @@ public class Viscosity extends Glyph {
 			int level = Math.max( 0, this.level );
 
 			float percent = (level+1)/(float)(level+6);
-			int amount = (int)Math.ceil(dmg * percent);
+			percent *= RingOfArcana.enchantPowerMultiplier(target);
+
+			int amount;
+			if (percent > 1f){
+				dmg = Math.round(dmg / percent);
+				amount = dmg;
+			} else {
+				amount = (int)Math.ceil(dmg * percent);
+			}
 
 			if (amount > 0){
 				DeferedDamage deferred = Buff.affect( target, DeferedDamage.class );

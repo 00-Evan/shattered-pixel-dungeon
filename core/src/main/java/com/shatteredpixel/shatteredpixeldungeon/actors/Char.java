@@ -81,6 +81,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCleansing;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -668,7 +669,12 @@ public abstract class Char extends Actor {
 
 		if (HP < 0 && src instanceof Char){
 			if (((Char) src).buff(Kinetic.KineticTracker.class) != null){
-				Buff.affect((Char) src, Kinetic.ConservedDamage.class).setBonus(-HP);
+				int dmgToAdd = -HP;
+				dmgToAdd -= ((Char) src).buff(Kinetic.KineticTracker.class).conservedDamage;
+				dmgToAdd = Math.round(dmgToAdd * RingOfArcana.enchantPowerMultiplier((Char) src));
+				if (dmgToAdd > 0) {
+					Buff.affect((Char) src, Kinetic.ConservedDamage.class).setBonus(dmgToAdd);
+				}
 				((Char) src).buff(Kinetic.KineticTracker.class).detach();
 			}
 		}

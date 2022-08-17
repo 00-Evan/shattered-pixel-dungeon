@@ -720,19 +720,20 @@ public class ItemSpriteSheet {
 
 		private static final int RINGS          =                            xy(1, 1);  //16 slots
 		public static final int RING_ACCURACY   = RINGS+0;
-		public static final int RING_ELEMENTS   = RINGS+1;
-		public static final int RING_ENERGY     = RINGS+2;
-		public static final int RING_EVASION    = RINGS+3;
-		public static final int RING_FORCE      = RINGS+4;
-		public static final int RING_FUROR      = RINGS+5;
-		public static final int RING_HASTE      = RINGS+6;
-		public static final int RING_MIGHT      = RINGS+7;
-		public static final int RING_SHARPSHOOT = RINGS+8;
-		public static final int RING_TENACITY   = RINGS+9;
-		public static final int RING_WEALTH     = RINGS+10;
-		public static final int RING_UNUSED     = RINGS+11;
+		public static final int RING_ARCANA     = RINGS+1;
+		public static final int RING_ELEMENTS   = RINGS+2;
+		public static final int RING_ENERGY     = RINGS+3;
+		public static final int RING_EVASION    = RINGS+4;
+		public static final int RING_FORCE      = RINGS+5;
+		public static final int RING_FUROR      = RINGS+6;
+		public static final int RING_HASTE      = RINGS+7;
+		public static final int RING_MIGHT      = RINGS+8;
+		public static final int RING_SHARPSHOOT = RINGS+9;
+		public static final int RING_TENACITY   = RINGS+10;
+		public static final int RING_WEALTH     = RINGS+11;
 		static {
 			assignIconRect( RING_ACCURACY,      7, 7 );
+			assignIconRect( RING_ARCANA,        7, 7 );
 			assignIconRect( RING_ELEMENTS,      7, 7 );
 			assignIconRect( RING_ENERGY,        7, 5 );
 			assignIconRect( RING_EVASION,       7, 7 );

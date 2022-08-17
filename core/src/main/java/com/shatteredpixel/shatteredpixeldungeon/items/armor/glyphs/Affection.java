@@ -43,9 +43,12 @@ public class Affection extends Glyph {
 		// lvl 0 - 15%
 		// lvl 1 ~ 19%
 		// lvl 2 ~ 23%
-		if (Random.Int( level + 20 ) >= 17) {
+		float procChance = (level+3f)/(level+20f) * procChanceMultiplier(defender);
+		if (Random.Float() < procChance) {
 
-			Buff.affect( attacker, Charm.class, Charm.DURATION ).object = defender.id();
+			float powerMulti = Math.max(1f, procChance);
+
+			Buff.affect( attacker, Charm.class, Math.round(Charm.DURATION*powerMulti) ).object = defender.id();
 			attacker.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
 
 		}

@@ -145,6 +145,7 @@ public class WandOfFireblast extends DamageWand {
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
 		//acts like blazing enchantment
+		//FIXME this benefits from ring of arcana atm, change this
 		new Blazing().proc( staff, attacker, defender, damage);
 	}
 

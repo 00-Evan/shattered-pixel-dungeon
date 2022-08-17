@@ -45,7 +45,7 @@ public class Kinetic extends Weapon.Enchantment {
 		}
 
 		//use a tracker so that we can know the true final damage
-		Buff.affect(attacker, KineticTracker.class);
+		Buff.affect(attacker, KineticTracker.class).conservedDamage = conservedDamage;
 		
 		return damage + conservedDamage;
 	}
@@ -60,6 +60,8 @@ public class Kinetic extends Weapon.Enchantment {
 		{
 			actPriority = Actor.VFX_PRIO;
 		}
+
+		public int conservedDamage;
 
 		@Override
 		public boolean act() {

@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Warlock;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogFist;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration;
@@ -106,8 +107,10 @@ public class AntiMagic extends Armor.Glyph {
 		return damage;
 	}
 	
-	public static int drRoll( int level ){
-		return Random.NormalIntRange(level, 3 + Math.round(level*1.5f));
+	public static int drRoll( Char ch, int level ){
+		return Random.NormalIntRange(
+				Math.round(level * RingOfArcana.enchantPowerMultiplier(ch)),
+				Math.round((3 + (level*1.5f)) * RingOfArcana.enchantPowerMultiplier(ch)));
 	}
 
 	@Override

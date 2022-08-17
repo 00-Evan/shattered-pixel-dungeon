@@ -644,7 +644,7 @@ public class DriedRose extends Artifact {
 			//TODO improve this when I have proper damage source logic
 			if (rose != null && rose.armor != null && rose.armor.hasGlyph(AntiMagic.class, this)
 					&& AntiMagic.RESISTS.contains(src.getClass())){
-				dmg -= AntiMagic.drRoll(rose.armor.buffedLvl());
+				dmg -= AntiMagic.drRoll(this, rose.armor.buffedLvl());
 			}
 			
 			super.damage( dmg, src );

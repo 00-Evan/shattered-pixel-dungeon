@@ -99,6 +99,7 @@ public class WandOfLightning extends DamageWand {
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
 		//acts like shocking enchantment
+		//FIXME this benefits from ring of arcana atm, change this
 		new Shocking().proc(staff, attacker, defender, damage);
 	}
 

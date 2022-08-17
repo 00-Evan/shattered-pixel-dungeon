@@ -38,7 +38,8 @@ public class Corrosion extends Armor.Glyph {
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
 
-		if (Random.Int(10) == 0){
+		float procChance = 1/10f * procChanceMultiplier(defender);
+		if ( Random.Float() < procChance ) {
 			int pos = defender.pos;
 			for (int i : PathFinder.NEIGHBOURS9){
 				Splash.at(pos+i, 0x000000, 5);

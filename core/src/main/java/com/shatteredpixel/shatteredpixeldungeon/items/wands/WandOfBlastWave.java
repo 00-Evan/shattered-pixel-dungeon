@@ -179,6 +179,8 @@ public class WandOfBlastWave extends DamageWand {
 
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+		//acts like elastic enchantment
+		//FIXME this benefits from ring of arcana atm, change this
 		new Elastic().proc(staff, attacker, defender, damage);
 	}
 

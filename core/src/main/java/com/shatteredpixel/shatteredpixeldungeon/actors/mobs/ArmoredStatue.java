@@ -100,7 +100,7 @@ public class ArmoredStatue extends Statue {
 		//TODO improve this when I have proper damage source logic
 		if (armor != null && armor.hasGlyph(AntiMagic.class, this)
 				&& AntiMagic.RESISTS.contains(src.getClass())){
-			dmg -= AntiMagic.drRoll(armor.buffedLvl());
+			dmg -= AntiMagic.drRoll(this, armor.buffedLvl());
 		}
 
 		super.damage( dmg, src );

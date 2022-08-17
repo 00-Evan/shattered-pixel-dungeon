@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -41,7 +42,8 @@ public class Blocking extends Weapon.Enchantment {
 		
 		int level = Math.max( 0, weapon.buffedLvl() );
 		
-		Buff.prolong(attacker, BlockBuff.class, 2 + level/2).setBlocking(level + 1);
+		Buff.prolong(attacker, BlockBuff.class, 2 + level/2 * RingOfArcana.enchantPowerMultiplier(attacker))
+				.setBlocking(Math.round((level + 1) * RingOfArcana.enchantPowerMultiplier(attacker)));
 		
 		return damage;
 	}
