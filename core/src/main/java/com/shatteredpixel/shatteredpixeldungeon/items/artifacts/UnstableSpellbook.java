@@ -125,7 +125,7 @@ public class UnstableSpellbook extends Artifact {
 
 				Scroll scroll;
 				do {
-					scroll = new ScrollOfLullaby();
+					scroll = (Scroll) Generator.randomUsingDefaults(Generator.Category.SCROLL);
 				} while (scroll == null
 						//reduce the frequency of these scrolls by half
 						||((scroll instanceof ScrollOfIdentify ||
@@ -294,7 +294,7 @@ public class UnstableSpellbook extends Artifact {
 					&& target.buff(MagicImmune.class) == null
 					&& (lock == null || lock.regenOn())) {
 				//120 turns to charge at full, 80 turns to charge at 0/8
-				float chargeGain = 1;
+				float chargeGain = 1 / (120f - (chargeCap - charge)*5f);
 				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
 				partialCharge += chargeGain;
 
