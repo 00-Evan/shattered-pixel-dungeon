@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -99,7 +100,11 @@ public enum Rankings {
 
 		if (rec.daily){
 			latestDaily = rec;
-			dailyScoreHistory.put(Dungeon.seed, rec.score);
+			if (Dungeon.seed <= DungeonSeed.TOTAL_SEEDS) {
+				dailyScoreHistory.put(Dungeon.seed, rec.score);
+			} else {
+				dailyScoreHistory.put(Dungeon.seed - DungeonSeed.TOTAL_SEEDS, rec.score);
+			}
 			save();
 			return;
 		}

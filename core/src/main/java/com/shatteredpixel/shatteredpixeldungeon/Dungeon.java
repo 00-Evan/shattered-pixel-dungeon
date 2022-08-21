@@ -197,10 +197,11 @@ public class Dungeon {
 		mobsToChampion = -1;
 
 		if (daily) {
-			seed = SPDSettings.lastDaily();
+			//Ensures that daily seeds are not in the range of user-enterable seeds
+			seed = SPDSettings.lastDaily() + DungeonSeed.TOTAL_SEEDS;
 			DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ROOT);
 			format.setTimeZone(TimeZone.getTimeZone("UTC"));
-			customSeedText = format.format(new Date(seed));
+			customSeedText = format.format(new Date(SPDSettings.lastDaily()));
 		} else if (!SPDSettings.customSeed().isEmpty()){
 			customSeedText = SPDSettings.customSeed();
 			seed = DungeonSeed.convertFromText(customSeedText);
