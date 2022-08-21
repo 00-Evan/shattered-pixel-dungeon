@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Effects;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.AquaBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Elastic;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -160,7 +161,7 @@ public class WandOfBlastWave extends DamageWand {
 					ch.damage(Random.NormalIntRange(finalDist, 2*finalDist), this);
 					Paralysis.prolong(ch, Paralysis.class, 1 + finalDist/2f);
 					if (ch == Dungeon.hero && !ch.isAlive()){
-						if ( cause == WandOfBlastWave.class){
+						if (cause == WandOfBlastWave.class || cause == AquaBlast.class){
 							Badges.validateDeathFromFriendlyMagic();
 						}
 						Dungeon.fail(cause);
