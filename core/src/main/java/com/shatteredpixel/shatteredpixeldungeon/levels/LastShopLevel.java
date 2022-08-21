@@ -38,6 +38,9 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ImpShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.Group;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Point;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -128,13 +131,21 @@ public class LastShopLevel extends RegularLevel {
 	
 	@Override
 	public int randomRespawnCell( Char ch ) {
-		int cell;
-		do {
-			cell = pointToCell( roomEntrance.random() );
-		} while (!passable[cell]
-				|| (Char.hasProp(ch, Char.Property.LARGE) && !openSpace[cell])
-				|| Actor.findChar(cell) != null);
-		return cell;
+		ArrayList<Integer> candidates = new ArrayList<>();
+		for (Point p : roomEntrance.getPoints()){
+			int cell = pointToCell(p);
+			if (passable[cell]
+					&& Actor.findChar(cell) == null
+					&& (!Char.hasProp(ch, Char.Property.LARGE) || openSpace[cell])){
+				candidates.add(cell);
+			}
+		}
+
+		if (candidates.isEmpty()){
+			return -1;
+		} else {
+			return Random.element(candidates);
+		}
 	}
 	
 	@Override

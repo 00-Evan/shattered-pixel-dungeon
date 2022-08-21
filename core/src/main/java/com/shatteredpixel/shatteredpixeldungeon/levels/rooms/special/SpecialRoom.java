@@ -125,6 +125,8 @@ public abstract class SpecialRoom extends Room {
 			if (!runConsSpecials.isEmpty())     runSpecials.add(runConsSpecials.remove(0));
 		}
 
+		runSpecials.add(0, WeakFloorRoom.class);
+
 		pitNeededDepth = -1;
 	}
 	

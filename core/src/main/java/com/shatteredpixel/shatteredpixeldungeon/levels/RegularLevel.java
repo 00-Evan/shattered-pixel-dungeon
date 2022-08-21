@@ -549,18 +549,23 @@ public abstract class RegularLevel extends Level {
 		if (fallIntoPit) {
 			for (Room room : rooms) {
 				if (room instanceof PitRoom) {
-					int result;
-					do {
-						result = pointToCell(room.random());
-					} while (traps.get(result) != null
-							|| findMob(result) != null
-							|| heaps.get(result) != null);
-					return result;
+					ArrayList<Integer> candidates = new ArrayList<>();
+					for (Point p : room.getPoints()){
+						int cell = pointToCell(p);
+						if (passable[cell] &&
+								findMob(cell) == null){
+							candidates.add(cell);
+						}
+					}
+
+					if (!candidates.isEmpty()){
+						return Random.element(candidates);
+					}
 				}
 			}
 		}
 		
-		return super.fallCell( false );
+		return super.fallCell( fallIntoPit );
 	}
 
 	@Override

@@ -689,8 +689,15 @@ public abstract class Level implements Bundlable {
 	
 	public int randomRespawnCell( Char ch ) {
 		int cell;
+		int count = 0;
 		do {
+
+			if (++count > 30) {
+				return -1;
+			}
+
 			cell = Random.Int( length() );
+
 		} while ((Dungeon.level == this && heroFOV[cell])
 				|| !passable[cell]
 				|| (Char.hasProp(ch, Char.Property.LARGE) && !openSpace[cell])
@@ -1012,6 +1019,7 @@ public abstract class Level implements Bundlable {
 		int result;
 		do {
 			result = randomRespawnCell( null );
+			if (result == -1) return -1;
 		} while (traps.get(result) != null
 				|| findMob(result) != null);
 		return result;
