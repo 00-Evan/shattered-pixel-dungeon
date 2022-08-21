@@ -429,7 +429,7 @@ public class Dungeon {
 		level.addRespawner();
 		
 		for(Mob m : level.mobs){
-			if (m.pos == hero.pos){
+			if (m.pos == hero.pos && !Char.hasProp(m, Char.Property.IMMOVABLE)){
 				//displace mob
 				for(int i : PathFinder.NEIGHBOURS8){
 					if (Actor.findChar(m.pos+i) == null && level.passable[m.pos + i]){

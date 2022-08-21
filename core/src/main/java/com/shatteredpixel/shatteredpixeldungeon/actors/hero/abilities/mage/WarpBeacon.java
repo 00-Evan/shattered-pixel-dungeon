@@ -119,8 +119,6 @@ public class WarpBeacon extends ArmorAbility {
 						if (tracker.depth == Dungeon.depth && tracker.branch == Dungeon.branch){
 							Char existing = Actor.findChar(tracker.pos);
 
-							ScrollOfTeleportation.appear(hero, tracker.pos);
-
 							if (existing != null && existing != hero){
 								if (hero.hasTalent(Talent.TELEFRAG)){
 									int heroHP = hero.HP + hero.shielding();
@@ -150,13 +148,20 @@ public class WarpBeacon extends ArmorAbility {
 									Random.shuffle(candidates);
 
 									if (!candidates.isEmpty()){
+										ScrollOfTeleportation.appear(hero, tracker.pos);
 										Actor.addDelayed( new Pushing( toPush, toPush.pos, candidates.get(0) ), -1 );
 
 										toPush.pos = candidates.get(0);
 										Dungeon.level.occupyCell(toPush);
 										hero.next();
+									} else {
+										GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 									}
+								} else {
+									ScrollOfTeleportation.appear(hero, tracker.pos);
 								}
+							} else {
+								ScrollOfTeleportation.appear(hero, tracker.pos);
 							}
 
 							Invisibility.dispel();

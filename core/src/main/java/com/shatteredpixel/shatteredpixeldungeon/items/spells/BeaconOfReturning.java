@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPassage;
@@ -43,6 +44,9 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class BeaconOfReturning extends Spell {
 	
@@ -112,28 +116,35 @@ public class BeaconOfReturning extends Spell {
 		
 		if (returnDepth == Dungeon.depth && returnBranch == Dungeon.branch) {
 
-			Char moving = Actor.findChar(returnPos);
-			if (moving != null){
-				moving.pos = returnPos+1;
-			}
+			Char existing = Actor.findChar(returnPos);
+			if (existing != null && existing != hero){
+				Char toPush = !Char.hasProp(existing, Char.Property.IMMOVABLE) ? hero : existing;
 
-			if (ScrollOfTeleportation.teleportToLocation(hero, returnPos)){
-				if (moving != null){
-					moving.pos = returnPos;
-					for(int i : PathFinder.NEIGHBOURS8){
-						if (Actor.findChar(moving.pos+i) == null
-								&& Dungeon.level.passable[moving.pos + i]
-								&& (!Char.hasProp(moving, Char.Property.LARGE) || Dungeon.level.openSpace[moving.pos + i])){
-							moving.pos += i;
-							moving.sprite.point(moving.sprite.worldToCamera(moving.pos));
-							break;
-						}
+				ArrayList<Integer> candidates = new ArrayList<>();
+				for (int n : PathFinder.NEIGHBOURS8) {
+					int cell = returnPos + n;
+					if (!Dungeon.level.solid[cell] && Actor.findChar( cell ) == null
+							&& (!Char.hasProp(toPush, Char.Property.LARGE) || Dungeon.level.openSpace[cell])) {
+						candidates.add( cell );
 					}
 				}
-			} else {
-				if (moving != null) {
-					moving.pos = returnPos;
+				Random.shuffle(candidates);
+
+				if (!candidates.isEmpty()){
+					if (toPush == hero){
+						returnPos = candidates.get(0);
+					} else {
+						Actor.addDelayed( new Pushing( toPush, toPush.pos, candidates.get(0) ), -1 );
+						toPush.pos = candidates.get(0);
+						Dungeon.level.occupyCell(toPush);
+					}
+				} else {
+					GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
+					return;
 				}
+			}
+
+			if (!ScrollOfTeleportation.teleportToLocation(hero, returnPos)){
 				return;
 			}
 
