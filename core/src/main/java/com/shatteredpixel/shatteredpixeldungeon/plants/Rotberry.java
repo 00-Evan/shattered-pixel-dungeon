@@ -48,8 +48,6 @@ public class Rotberry extends Plant {
 		} else {
 			GameScene.add( Blob.seed( pos, 100, ToxicGas.class ) );
 		}
-		
-		Dungeon.level.drop( new Seed(), pos ).sprite.drop();
 	}
 	
 	@Override
@@ -59,8 +57,9 @@ public class Rotberry extends Plant {
 		if (Dungeon.level.heroFOV[pos]) {
 			CellEmitter.get( pos ).burst( LeafParticle.GENERAL, 6 );
 		}
-		
-		//no warden benefit
+
+		//seed always drops, no lotus benefit
+		Dungeon.level.drop( new Seed(), pos ).sprite.drop();
 	}
 
 	public static class Seed extends Plant.Seed {
