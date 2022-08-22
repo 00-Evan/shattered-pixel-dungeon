@@ -55,8 +55,8 @@ public abstract class Actor implements Bundlable {
 
 	protected abstract boolean act();
 
-	//Always spends exactly one tick, regardless of time-influencing factors
-	protected final void spendConstant( float time ){
+	//Always spends exactly the specified amount of time, regardless of time-influencing factors
+	protected void spendConstant( float time ){
 		this.time += time;
 		//if time is very close to a whole number, round to a whole number to fix errors
 		float ex = Math.abs(this.time % 1f);
@@ -65,7 +65,7 @@ public abstract class Actor implements Bundlable {
 		}
 	}
 
-	//can be overridden for time to be affected by various factors
+	//sends time, but the amount can be influenced
 	protected void spend( float time ) {
 		spendConstant( time );
 	}

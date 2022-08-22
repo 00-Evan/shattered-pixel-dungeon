@@ -650,7 +650,7 @@ public abstract class Mob extends Char {
 			}
 		}
 
-		return damage;
+		return super.defenseProc(enemy, damage);
 	}
 
 	@Override

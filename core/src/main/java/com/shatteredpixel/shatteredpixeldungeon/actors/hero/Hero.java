@@ -627,17 +627,6 @@ public class Hero extends Char {
 	@Override
 	public void spend( float time ) {
 		justMoved = false;
-		TimekeepersHourglass.timeFreeze freeze = buff(TimekeepersHourglass.timeFreeze.class);
-		if (freeze != null) {
-			freeze.processTime(time);
-			return;
-		}
-		
-		Swiftthistle.TimeBubble bubble = buff(Swiftthistle.TimeBubble.class);
-		if (bubble != null){
-			bubble.processTime(time);
-			return;
-		}
 		
 		super.spend(time);
 	}
@@ -1212,18 +1201,13 @@ public class Hero extends Char {
 		if (belongings.armor() != null) {
 			damage = belongings.armor().proc( enemy, this, damage );
 		}
-		
-		Earthroot.Armor armor = buff( Earthroot.Armor.class );
-		if (armor != null) {
-			damage = armor.absorb( damage );
-		}
 
 		WandOfLivingEarth.RockArmor rockArmor = buff(WandOfLivingEarth.RockArmor.class);
 		if (rockArmor != null) {
 			damage = rockArmor.absorb(damage);
 		}
 		
-		return damage;
+		return super.defenseProc( enemy, damage );
 	}
 	
 	@Override
