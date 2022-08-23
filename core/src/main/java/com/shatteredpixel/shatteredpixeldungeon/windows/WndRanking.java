@@ -353,7 +353,7 @@ public class WndRanking extends WndTabbed {
 			camera = WndRanking.this.camera;
 
 			Component badges;
-			if (Badges.totalUnlocked(false) <= 7){
+			if (Badges.filterReplacedBadges(false).size() <= 8){
 				badges = new BadgesList(false);
 			} else {
 				badges = new BadgesGrid(false);
