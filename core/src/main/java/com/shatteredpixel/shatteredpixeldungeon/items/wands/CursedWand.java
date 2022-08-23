@@ -66,6 +66,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BadgesList;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -223,12 +224,12 @@ public class CursedWand {
 					if (toDamage == Dungeon.hero){
 						Sample.INSTANCE.play(Assets.Sounds.CURSED);
 						if (!toDamage.isAlive()) {
-							if (origin != null) {
+							if (user == Dungeon.hero && origin != null) {
 								Badges.validateDeathFromFriendlyMagic();
 								Dungeon.fail( origin.getClass() );
 								GLog.n( Messages.get( CursedWand.class, "ondeath", origin.name() ) );
 							} else {
-								Badges.validateDeathFromFriendlyMagic();
+								Badges.validateDeathFromEnemyMagic();
 								Dungeon.fail( toHeal.getClass() );
 							}
 						}
