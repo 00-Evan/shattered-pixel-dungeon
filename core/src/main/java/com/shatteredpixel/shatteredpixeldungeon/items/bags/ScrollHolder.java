@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.bags;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.ArcaneResin;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.BeaconOfReturning;
@@ -35,7 +36,7 @@ public class ScrollHolder extends Bag {
 
 	@Override
 	public boolean canHold( Item item ) {
-		if (item instanceof Scroll || item instanceof Spell){
+		if (item instanceof Scroll || item instanceof Spell || item instanceof ArcaneResin){
 			return super.canHold(item);
 		} else {
 			return false;
