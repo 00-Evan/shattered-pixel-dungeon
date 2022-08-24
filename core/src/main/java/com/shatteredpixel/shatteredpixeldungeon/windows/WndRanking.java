@@ -321,7 +321,7 @@ public class WndRanking extends WndTabbed {
 
 			float slotWidth = Math.min(28, ((WIDTH - slotsActive + 1) / (float)slotsActive));
 
-			for (int i = 0; i < slotsActive; i++){
+			for (int i = 0; i < QuickSlot.SIZE; i++){
 				if (Dungeon.quickslot.isNonePlaceholder(i)){
 					QuickSlotButton slot = new QuickSlotButton(Dungeon.quickslot.getItem(i));
 
