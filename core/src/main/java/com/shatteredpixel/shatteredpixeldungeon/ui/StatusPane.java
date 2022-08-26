@@ -262,7 +262,7 @@ public class StatusPane extends Component {
 		shieldedHP.scale.x = health/(float)max;
 
 		if (shield > health) {
-			rawShielding.scale.x = shield / (float) max;
+			rawShielding.scale.x = Math.min(1, shield / (float) max);
 		} else {
 			rawShielding.scale.x = 0;
 		}
