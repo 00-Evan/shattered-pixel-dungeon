@@ -120,8 +120,8 @@ public class Honeypot extends Item {
 			bee.pos = newPos;
 			
 			GameScene.add( bee );
-			Actor.addDelayed( new Pushing( bee, pos, newPos ), -1f );
-			
+			if (newPos != pos) Actor.addDelayed( new Pushing( bee, pos, newPos ), -1f );
+
 			bee.sprite.alpha( 0 );
 			bee.sprite.parent.add( new AlphaTweener( bee.sprite, 1, 0.15f ) );
 			
