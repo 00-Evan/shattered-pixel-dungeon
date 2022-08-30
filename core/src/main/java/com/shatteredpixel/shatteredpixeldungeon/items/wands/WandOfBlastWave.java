@@ -158,7 +158,7 @@ public class WandOfBlastWave extends DamageWand {
 				int oldPos = ch.pos;
 				ch.pos = newPos;
 				if (finalCollided && ch.isAlive()) {
-					ch.damage(Random.NormalIntRange(50, 50), this);
+					ch.damage(Random.NormalIntRange(finalDist, 2*finalDist), this);
 					if (ch.isAlive()) {
 						Paralysis.prolong(ch, Paralysis.class, 1 + finalDist/2f);
 					} else if (ch == Dungeon.hero){
