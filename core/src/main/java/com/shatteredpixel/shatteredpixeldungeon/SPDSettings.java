@@ -370,4 +370,10 @@ public class SPDSettings extends GameSettings {
 		return getBoolean( KEY_WINDOW_MAXIMIZED, false );
 	}
 
+	public static final String ALL_UNLOCKED 	= "all_unlocked";
+
+	public static void allUnlocked( boolean value ) { put( ALL_UNLOCKED, value); }
+
+	public static boolean allUnlocked() { return getBoolean( ALL_UNLOCKED, false); }
+
 }

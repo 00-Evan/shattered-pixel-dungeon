@@ -245,4 +245,12 @@ public class Artifact extends KindofMisc {
 		else                charge = bundle.getInt( CHARGE );
 		partialCharge = bundle.getFloat( PARTIALCHARGE );
 	}
+
+	public int getCharge(){
+		return  this.charge;
+	}
+
+	public int getChargeCap(){
+		return  this.chargeCap;
+	}
 }

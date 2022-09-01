@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesPower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpiritHawk;
@@ -50,7 +51,18 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Stone;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
@@ -106,6 +118,8 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Icecap;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
 import com.watabou.utils.DeviceCompat;
 
+import java.sql.Time;
+
 public enum HeroClass {
 
 	WARRIOR( HeroSubClass.BERSERKER, HeroSubClass.GLADIATOR ),
@@ -156,6 +170,7 @@ public enum HeroClass {
 
 			case ALCHEMIST:
 				initAlchemist( hero );
+				initDebug(hero);
 				break;
 
 //			case DEBUG:
@@ -302,13 +317,15 @@ public enum HeroClass {
 		Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
 
 		new PotionOfLiquidFlame().identify(); new PotionOfHealing().identify();
+		hero.exp += 1000;
+		new CapeOfThorns().collect(); new ChaliceOfBlood().collect(); new CloakOfShadows().collect(); new DriedRose().collect(); new EtherealChains().collect(); new HornOfPlenty().collect(); new LloydsBeacon().collect(); new MasterThievesArmband().collect(); new SandalsOfNature().collect(); new TalismanOfForesight().collect(); new TimekeepersHourglass().collect(); new UnstableSpellbook().collect();
 
 		Ascend ascend = new Ascend();
 		ascend.collect();
 		Dungeon.quickslot.setSlot(2, ascend);
 		Descend descend = new Descend();
-		ascend.collect();
-		Dungeon.quickslot.setSlot(3, ascend);
+		descend.collect();
+		Dungeon.quickslot.setSlot(3, descend);
 	}
 
 	public String title() {
@@ -421,13 +438,13 @@ public enum HeroClass {
 			case WARRIOR: default:
 				return true;
 			case MAGE:
-				return Badges.isUnlocked(Badges.Badge.UNLOCK_MAGE);
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_MAGE) || SPDSettings.allUnlocked();
 			case ROGUE:
-				return Badges.isUnlocked(Badges.Badge.UNLOCK_ROGUE);
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_ROGUE) || SPDSettings.allUnlocked();
 			case HUNTRESS:
-				return Badges.isUnlocked(Badges.Badge.UNLOCK_HUNTRESS);
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_HUNTRESS) || SPDSettings.allUnlocked();
 			case ALCHEMIST:
-				return Badges.isUnlocked(Badges.Badge.UNLOCK_ALCHEMIST);
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_ALCHEMIST) || SPDSettings.allUnlocked();
 		}
 	}
 	

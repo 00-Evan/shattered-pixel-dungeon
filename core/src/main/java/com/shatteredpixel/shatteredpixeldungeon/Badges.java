@@ -786,7 +786,6 @@ public class Badges {
 		if(!(item instanceof AlchemyPage)) return;
 		if(item == null && !isUnlocked(Badge.UNLOCK_ALCHEMIST)){
 			displayBadge( Badge.UNLOCK_ALCHEMIST );
-			return;
 		}
 		Collection<String> allPages = Document.ALCHEMY_GUIDE.pageNames();
 		ArrayList<String> missingPages = new ArrayList<>();

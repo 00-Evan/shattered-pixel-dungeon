@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -190,6 +191,7 @@ public class WndSettings extends WndTabbed {
 		RenderedTextBlock title;
 		ColorBlock sep1;
 		CheckBox chkFullscreen;
+		CheckBox chkUnlocked;
 		OptionSlider optScale;
 		CheckBox chkSaver;
 		RedButton btnOrientation;
@@ -220,6 +222,19 @@ public class WndSettings extends WndTabbed {
 				chkFullscreen.enable(false);
 			}
 			add(chkFullscreen);
+
+			chkUnlocked = new CheckBox( "Unlock All Characters" ) {
+				@Override
+				protected void onClick() {
+					super.onClick();
+					SPDSettings.allUnlocked(checked());
+				}
+			};
+			if (DeviceCompat.isDebug()){
+				chkUnlocked.enable(false);
+			}
+			chkUnlocked.checked(SPDSettings.allUnlocked());
+			add(chkUnlocked);
 
 			if ((int)Math.ceil(2* Game.density) < PixelScene.maxDefaultZoom) {
 				optScale = new OptionSlider(Messages.get(this, "scale"),
@@ -325,6 +340,8 @@ public class WndSettings extends WndTabbed {
 				chkFullscreen.setRect(0, bottom + GAP, width/2-1, BTN_HEIGHT);
 				chkSaver.setRect(chkFullscreen.right()+ GAP, bottom + GAP, width/2-1, BTN_HEIGHT);
 				bottom = chkFullscreen.bottom();
+				chkUnlocked.setRect(0, bottom + GAP, width/2-1, BTN_HEIGHT);
+				bottom = chkUnlocked.bottom();
 			} else {
 				chkFullscreen.setRect(0, bottom + GAP, width, BTN_HEIGHT);
 				bottom = chkFullscreen.bottom();
@@ -333,6 +350,8 @@ public class WndSettings extends WndTabbed {
 					chkSaver.setRect(0, bottom + GAP, width, BTN_HEIGHT);
 					bottom = chkSaver.bottom();
 				}
+				chkUnlocked.setRect(0, bottom + GAP, width, BTN_HEIGHT);
+				bottom = chkUnlocked.bottom();
 			}
 
 			if (btnOrientation != null) {

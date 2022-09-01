@@ -32,9 +32,9 @@ Note that **this repository does not accept pull requests!** The code here is pr
 
 #### Desktop:
 
-Download the .jar file available [here](https://github.com/Inferno214221/Combusted-Pixel-Dungeon/releases). Make sure you have [JRE](https://www.oracle.com/java/technologies/downloads/) installed to run it.
+Download the .jar file available [here](https://github.com/Inferno214221/Combusted-Pixel-Dungeon/releases/latest). Make sure you have [JRE](https://www.oracle.com/java/technologies/downloads/) installed to run it.
 
-Download and install the .apk file available [here](https://github.com/Inferno214221/Combusted-Pixel-Dungeon/releases).
+Download and install the .apk file available [here](https://github.com/Inferno214221/Combusted-Pixel-Dungeon/releases/latest).
 
 # Modding the Game
 

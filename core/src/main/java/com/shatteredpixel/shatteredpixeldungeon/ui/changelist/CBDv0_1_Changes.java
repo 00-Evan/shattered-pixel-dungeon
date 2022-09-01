@@ -627,7 +627,7 @@ public class CBDv0_1_Changes {
 				"_First major release!_\nThank you for playing Combusted Pixel Dungeon!"));
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ENCHANT), "New Spells",
-				"_Six spells have been added!_\n\n" +
+				"_Seven spells have been added!_\n\n" +
 						"_Polymorph_, _Confusion_ and _Petrification_ from previous versions of Shattered Pixel Dungeon have been re-implemented as spells.\n\n" +
 						"_Enchantment Transfer_ from Summoning Pixel Dungeon has been added, allowing you to move an enchantment between items.\n\n" +
 						"_Duplicate_ and _Rewind_, two new spells designed by me, allowing you to duplicate small items and teleport to the start of the level on full health."));
@@ -645,6 +645,11 @@ public class CBDv0_1_Changes {
 						"_Stone of Knowledge_ allows the user to identify a random item of the same type as one they target with it and can be crafted with an Exotic Scroll of Divination.\n\n" +
 						"_Stone of Trap Finding_ can be used to reveal any traps in a large radius and can be crafted with an Exotic Scroll of Foresight."));
 
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), "Unlock All Characters",
+				"Added the option to _Unlock All Characters._\n\n" +
+						"Toggling on will allow access to all characters for any runs.\n\n" +
+						"Toggling off will revert your available characters to the ones you previously had. (This will not affect existing runs.)"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
 		changes.hardlight(CharSprite.WARNING);
 		changeInfos.add(changes);
@@ -654,7 +659,7 @@ public class CBDv0_1_Changes {
 						"Added icons to scrolls so that their type can be determined.\n\n" +
 						"Icons now show next to Brew and Elixirs to show their type, similar to scrolls and potions."));
 
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), "Graphics Modifications",
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.HOLY_BOMB), "Graphics Modifications",
 				"Various graphics modifications including:\n\n" +
 						"_-_ Holy Bomb changed to Holy Hand Grenade.\n\n" +
 						"_-_ Alternate action button shape from Summoning Pixel Dungeon."));

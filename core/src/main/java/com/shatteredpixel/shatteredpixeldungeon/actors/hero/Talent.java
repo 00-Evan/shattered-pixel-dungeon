@@ -49,6 +49,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.EnergyCrystal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
@@ -158,7 +159,7 @@ public enum Talent {
 	//Alchemist T1
 	/*One(128),*/ BREWING_KNOWLEDGE(129), EXOTIC_KNOWLEDGE(130), ALCHEMY_ENERGY(131),
 	//Alchemist T2
-	/*Five(132),*/ ALCHEMY_THEORIES(133), SHIELDING_ELIXIRS(134), RUNE_CRAFTING(135), //Nine(136),
+	/*Five(132),*/ ALCHEMY_THEORIES(133), SHIELDING_ELIXIRS(134), RUNE_CRAFTING(135), IDENTIFIED_ARTIFACTS(136),
 	//Alchemist T3
 	POTION_DURATION(137, 3), EMPTY(138, 3),
 	//SubclassA T3
@@ -452,6 +453,20 @@ public enum Talent {
 		if (hero.pointsInTalent(THIEFS_INTUITION) == 2){
 			if (item instanceof Ring) ((Ring) item).setKnown();
 		}
+		if(!(item instanceof Artifact)){
+			return;
+		}
+		Artifact artifact = ((Artifact) item);
+		if ((hero.pointsInTalent(IDENTIFIED_ARTIFACTS) == 2) && !(((Artifact) item).isIdentified())){
+			if(artifact.getCharge() == artifact.getChargeCap()){
+				if(Random.Boolean()) artifact.upgrade();
+			}else{
+				artifact.charge(hero, (artifact.getChargeCap()*0.2f));
+			}
+		}
+		if (hero.hasTalent(IDENTIFIED_ARTIFACTS)){
+			((Artifact) item).identify();
+		}
 	}
 
 	//note that IDing can happen in alchemy scene, so be careful with VFX here
@@ -600,7 +615,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, INVIGORATING_MEAL, RESTORED_NATURE, REJUVENATING_STEPS, HEIGHTENED_SENSES, DURABLE_PROJECTILES);
 				break;
 			case ALCHEMIST:
-				Collections.addAll(tierTalents, EMPTY, ALCHEMY_THEORIES, SHIELDING_ELIXIRS, RUNE_CRAFTING, EMPTY);
+				Collections.addAll(tierTalents, EMPTY, ALCHEMY_THEORIES, SHIELDING_ELIXIRS, RUNE_CRAFTING, IDENTIFIED_ARTIFACTS);
 				break;
 		}
 		for (Talent talent : tierTalents){
