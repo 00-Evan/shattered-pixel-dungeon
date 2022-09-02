@@ -112,8 +112,8 @@ public class RingOfWealth extends Ring {
 
 		//reset (if needed), decrement, and store counts
 		if (triesToDrop == Float.MIN_VALUE) {
-			triesToDrop = Random.NormalIntRange(0, 25);
-			dropsToEquip = Random.NormalIntRange(4, 8);
+			triesToDrop = Random.NormalIntRange(0, 20);
+			dropsToEquip = Random.NormalIntRange(5, 10);
 		}
 
 		//now handle reward logic
@@ -127,7 +127,7 @@ public class RingOfWealth extends Ring {
 					i = genEquipmentDrop(bonus - 1);
 				} while (Challenges.isItemBlocked(i));
 				drops.add(i);
-				dropsToEquip = Random.NormalIntRange(4, 8);
+				dropsToEquip = Random.NormalIntRange(5, 10);
 			} else {
 				Item i;
 				do {
@@ -267,9 +267,9 @@ public class RingOfWealth extends Ring {
 				result = Generator.random(Generator.Category.ARTIFACT);
 				break;
 		}
-		//minimum level is 1/2/3/4/5/6 when ring level is 1/3/6/10/15/21
+		//minimum level is 1/2/3/4/5/6 when ring level is 1/3/5/7/9/11
 		if (result.isUpgradable()){
-			int minLevel = (int)Math.floor((Math.sqrt(8*level + 1)-1)/2f);
+			int minLevel = (level+1)/2;
 			if (result.level() < minLevel){
 				result.level(minLevel);
 			}
