@@ -326,9 +326,6 @@ public abstract class Char extends Actor {
 
 			Barkskin bark = enemy.buff(Barkskin.class);
 			if (bark != null)   dr += Random.NormalIntRange( 0 , bark.level() );
-
-			Blocking.BlockBuff block = enemy.buff(Blocking.BlockBuff.class);
-			if (block != null)  dr += block.blockingRoll();
 			
 			if (this instanceof Hero){
 				Hero h = (Hero)this;
