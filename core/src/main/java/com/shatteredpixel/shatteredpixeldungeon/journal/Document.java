@@ -22,7 +22,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.journal;
 
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.DeviceCompat;
 
@@ -31,11 +34,21 @@ import java.util.LinkedHashMap;
 
 public enum Document {
 	
-	ADVENTURERS_GUIDE(ItemSpriteSheet.GUIDE_PAGE),
-	ALCHEMY_GUIDE(ItemSpriteSheet.ALCH_PAGE);
+	ADVENTURERS_GUIDE(ItemSpriteSheet.GUIDE_PAGE, false),
+	ALCHEMY_GUIDE(ItemSpriteSheet.ALCH_PAGE, false),
+
+	INTROS(Icons.STAIRS, true);
 	
-	Document( int sprite ){
+	Document( int sprite, boolean lore ){
+		pageIcon = null;
 		pageSprite = sprite;
+		loreDocument = lore;
+	}
+
+	Document( Icons icon, boolean lore ){
+		pageIcon = icon;
+		pageSprite = 0;
+		loreDocument = lore;
 	}
 
 	public static final int NOT_FOUND = 0;
@@ -64,8 +77,17 @@ public enum Document {
 		return isPageFound( pagesStates.keySet().toArray(new String[0])[pageIdx] );
 	}
 
+	public boolean anyPagesFound(){
+		for( Integer val : pagesStates.values()){
+			if (val != NOT_FOUND){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public boolean readPage( String page ) {
-		if (pagesStates.containsKey(page) && pagesStates.get(page) == FOUND){
+		if (pagesStates.containsKey(page)){
 			pagesStates.put(page, READ);
 			Journal.saveNeeded = true;
 			return true;
@@ -101,8 +123,18 @@ public enum Document {
 	}
 
 	private int pageSprite;
-	public int pageSprite(){
-		return pageSprite;
+	private Icons pageIcon;
+	public Image pageSprite(){
+		if (pageIcon != null){
+			return Icons.get(pageIcon);
+		} else {
+			return new ItemSprite(pageSprite);
+		}
+	}
+
+	private boolean loreDocument;
+	public boolean isLoreDoc(){
+		return loreDocument;
 	}
 	
 	public String title(){
@@ -153,17 +185,25 @@ public enum Document {
 		ADVENTURERS_GUIDE.pagesStates.put("Magic",              debug ? READ : NOT_FOUND);
 		
 		//given in sewers
-		ALCHEMY_GUIDE.pagesStates.put("Potions",              debug ? READ : NOT_FOUND);
-		ALCHEMY_GUIDE.pagesStates.put("Stones",               debug ? READ : NOT_FOUND);
-		ALCHEMY_GUIDE.pagesStates.put("Energy_Food",          debug ? READ : NOT_FOUND);
-		ALCHEMY_GUIDE.pagesStates.put("Exotic_Potions",       debug ? READ : NOT_FOUND);
-		ALCHEMY_GUIDE.pagesStates.put("Exotic_Scrolls",       debug ? READ : NOT_FOUND);
+		ALCHEMY_GUIDE.pagesStates.put("Potions",                debug ? READ : NOT_FOUND);
+		ALCHEMY_GUIDE.pagesStates.put("Stones",                 debug ? READ : NOT_FOUND);
+		ALCHEMY_GUIDE.pagesStates.put("Energy_Food",            debug ? READ : NOT_FOUND);
+		ALCHEMY_GUIDE.pagesStates.put("Exotic_Potions",         debug ? READ : NOT_FOUND);
+		ALCHEMY_GUIDE.pagesStates.put("Exotic_Scrolls",         debug ? READ : NOT_FOUND);
 		//given in prison
-		ALCHEMY_GUIDE.pagesStates.put("Bombs",                debug ? READ : NOT_FOUND);
-		ALCHEMY_GUIDE.pagesStates.put("Weapons",              debug ? READ : NOT_FOUND);
-		ALCHEMY_GUIDE.pagesStates.put("Catalysts",            debug ? READ : NOT_FOUND);
-		ALCHEMY_GUIDE.pagesStates.put("Brews_Elixirs",        debug ? READ : NOT_FOUND);
-		ALCHEMY_GUIDE.pagesStates.put("Spells",               debug ? READ : NOT_FOUND);
+		ALCHEMY_GUIDE.pagesStates.put("Bombs",                  debug ? READ : NOT_FOUND);
+		ALCHEMY_GUIDE.pagesStates.put("Weapons",                debug ? READ : NOT_FOUND);
+		ALCHEMY_GUIDE.pagesStates.put("Catalysts",              debug ? READ : NOT_FOUND);
+		ALCHEMY_GUIDE.pagesStates.put("Brews_Elixirs",          debug ? READ : NOT_FOUND);
+		ALCHEMY_GUIDE.pagesStates.put("Spells",                 debug ? READ : NOT_FOUND);
+
+		INTROS.pagesStates.put("Dungeon",                       debug ? READ : NOT_FOUND);
+		INTROS.pagesStates.put("Sewers",                        debug ? READ : NOT_FOUND);
+		INTROS.pagesStates.put("Prison",                        debug ? READ : NOT_FOUND);
+		INTROS.pagesStates.put("Caves",                         debug ? READ : NOT_FOUND);
+		INTROS.pagesStates.put("City",                          debug ? READ : NOT_FOUND);
+		INTROS.pagesStates.put("Halls",                         debug ? READ : NOT_FOUND);
+
 	}
 	
 	private static final String DOCUMENTS = "documents";

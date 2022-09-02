@@ -21,12 +21,15 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
+import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
+
+import javax.print.Doc;
 
 public class IntroScene extends PixelScene {
 
@@ -48,13 +51,14 @@ public class IntroScene extends PixelScene {
 		//darkens the arches
 		add(new ColorBlock(w, h, 0x88000000));
 		
-		add( new WndStory( Messages.get(this, "text") ) {
+		add( new WndStory( Document.INTROS.pageBody(0) ) {
 			@Override
 			public void hide() {
 				super.hide();
+				Document.INTROS.readPage(0);
 				Game.switchScene( InterlevelScene.class );
 			}
-		} );
+		}.setDelays(0f, 2f) );
 		
 		fadeIn();
 	}

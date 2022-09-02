@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
@@ -53,6 +54,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
+import javax.print.Doc;
+
 public class WndJournal extends WndTabbed {
 	
 	public static final int WIDTH_P     = 126;
@@ -67,6 +70,7 @@ public class WndJournal extends WndTabbed {
 	private AlchemyTab alchemyTab;
 	private NotesTab notesTab;
 	private CatalogTab catalogTab;
+	private LoreTab loreTab;
 	
 	public static int last_index = 0;
 	
@@ -95,9 +99,14 @@ public class WndJournal extends WndTabbed {
 		add(catalogTab);
 		catalogTab.setRect(0, 0, width, height);
 		catalogTab.updateList();
+
+		loreTab = new LoreTab();
+		add(loreTab);
+		loreTab.setRect(0, 0, width, height);
+		loreTab.updateList();
 		
 		Tab[] tabs = {
-				new IconTab( new ItemSprite(ItemSpriteSheet.GUIDE_PAGE, null) ) {
+				new IconTab( new ItemSprite(ItemSpriteSheet.MASTERY, null) ) {
 					protected void select( boolean value ) {
 						super.select( value );
 						guideTab.active = guideTab.visible = value;
@@ -124,6 +133,13 @@ public class WndJournal extends WndTabbed {
 						catalogTab.active = catalogTab.visible = value;
 						if (value) last_index = 3;
 					}
+				},
+				new IconTab( new ItemSprite(ItemSpriteSheet.GUIDE_PAGE, null) ) {
+					protected void select( boolean value ) {
+						super.select( value );
+						loreTab.active = loreTab.visible = value;
+						if (value) last_index = 4;
+					}
 				}
 		};
 		
@@ -141,8 +157,9 @@ public class WndJournal extends WndTabbed {
 		super.offset(xOffset, yOffset);
 		guideTab.layout();
 		alchemyTab.layout();
-		catalogTab.layout();
 		notesTab.layout();
+		catalogTab.layout();
+		loreTab.layout();
 	}
 	
 	public static class GuideTab extends Component {
@@ -622,6 +639,56 @@ public class WndJournal extends WndTabbed {
 					height - itemButtons[NUM_BUTTONS-1].bottom() - 1);
 		}
 		
+	}
+
+	public static class LoreTab extends Component{
+
+		private ScrollingListPane list;
+
+		@Override
+		protected void createChildren() {
+			list = new ScrollingListPane();
+			add( list );
+		}
+
+		@Override
+		protected void layout() {
+			super.layout();
+			list.setRect( 0, 0, width, height);
+		}
+
+		private void updateList(){
+			list.addTitle(Messages.get(this, "title"));
+
+			for (Document doc : Document.values()){
+				if (!doc.isLoreDoc()) continue;
+
+				boolean found = doc.anyPagesFound();
+				ScrollingListPane.ListItem item = new ScrollingListPane.ListItem(
+						doc.pageSprite(),
+						null,
+						found ? Messages.titleCase(doc.title()) : "???"
+				){
+					@Override
+					public boolean onClick(float x, float y) {
+						if (inside( x, y ) && found) {
+							ShatteredPixelDungeon.scene().addToFront( new WndDocument( doc ));
+							return true;
+						} else {
+							return false;
+						}
+					}
+				};
+				if (!found){
+					item.hardlight(0x999999);
+					item.hardlightIcon(0x999999);
+				}
+				list.addItem(item);
+			}
+
+			list.setRect(x, y, width, height);
+		}
+
 	}
 	
 }

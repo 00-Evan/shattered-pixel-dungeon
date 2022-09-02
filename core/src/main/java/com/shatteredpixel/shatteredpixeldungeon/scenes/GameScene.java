@@ -406,22 +406,16 @@ public class GameScene extends PixelScene {
 				break;
 			case DESCEND:
 			case FALL:
-				switch (Dungeon.depth) {
-				case 1:
-					WndStory.showChapter( WndStory.ID_SEWERS );
-					break;
-				case 6:
-					WndStory.showChapter( WndStory.ID_PRISON );
-					break;
-				case 11:
-					WndStory.showChapter( WndStory.ID_CAVES );
-					break;
-				case 16:
-					WndStory.showChapter( WndStory.ID_CITY );
-					break;
-				case 21:
-					WndStory.showChapter( WndStory.ID_HALLS );
-					break;
+				if (Dungeon.depth == Statistics.deepestFloor){
+					switch (Dungeon.depth) {
+						case 1: case 6: case 11: case 16: case 21:
+							int region = (Dungeon.depth+4)/5;
+							if (!Document.INTROS.isPageRead(region)) {
+								add(new WndStory(Document.INTROS.pageBody(region)).setDelays(0.6f, 1.4f));
+								Document.INTROS.readPage(region);
+							}
+							break;
+					}
 				}
 				if (Dungeon.hero.isAlive()) {
 					Badges.validateNoKilling();
@@ -1204,7 +1198,6 @@ public class GameScene extends PixelScene {
 		StyledButton restart = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(StartScene.class, "new"), 9){
 			@Override
 			protected void onClick() {
-				InterlevelScene.noStory = true;
 				GamesInProgress.selectedClass = Dungeon.hero.heroClass;
 				GamesInProgress.curSlot = GamesInProgress.firstEmpty();
 				ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
