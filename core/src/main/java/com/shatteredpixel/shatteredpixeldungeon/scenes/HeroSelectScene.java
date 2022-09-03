@@ -130,11 +130,7 @@ public class HeroSelectScene extends PixelScene {
 				ActionIndicator.action = null;
 				InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
 
-				if (!Document.INTROS.isPageRead(0)) {
-					Game.switchScene( IntroScene.class );
-				} else {
-					Game.switchScene( InterlevelScene.class );
-				}
+				Game.switchScene( InterlevelScene.class );
 			}
 		};
 		startBtn.icon(Icons.get(Icons.ENTER));
@@ -275,7 +271,7 @@ public class HeroSelectScene extends PixelScene {
 		infoButton.visible = true;
 		infoButton.setPos(startBtn.right(), startBtn.top());
 
-		btnOptions.visible = true;
+		btnOptions.visible = !SPDSettings.intro();
 		btnOptions.setPos(startBtn.left()-btnOptions.width(), startBtn.top());
 
 		optionsPane.setPos(optionsPane.left(), startBtn.top() - optionsPane.height() - 2);

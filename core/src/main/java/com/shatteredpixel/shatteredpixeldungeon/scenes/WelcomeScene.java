@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndHardNotification;
 import com.watabou.glwrap.Blending;
+import com.watabou.input.ControllerHandler;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
@@ -179,7 +180,8 @@ public class WelcomeScene extends PixelScene {
 		RenderedTextBlock text = PixelScene.renderTextBlock(6);
 		String message;
 		if (previousVersion == 0 || SPDSettings.intro()) {
-			message = Messages.get(this, "welcome_msg");
+			message = Document.INTROS.pageBody(0);
+			Document.INTROS.readPage(0);
 		} else if (previousVersion <= ShatteredPixelDungeon.versionCode) {
 			if (previousVersion < LATEST_UPDATE){
 				message = Messages.get(this, "update_intro");
@@ -201,6 +203,18 @@ public class WelcomeScene extends PixelScene {
 		text.setPos((w - text.width()) / 2f, (topRegion + 2) + (textSpace - text.height())/2);
 		add(text);
 
+		if (previousVersion == 0 && ControllerHandler.isControllerConnected()){
+			addToFront(new WndHardNotification(Icons.CONTROLLER.get(),
+					Messages.get(WelcomeScene.class, "controller_title"),
+					Messages.get(WelcomeScene.class, "controller_body"),
+					Messages.get(WelcomeScene.class, "controller_okay"),
+					0){
+				@Override
+				public void onBackPressed() {
+					//do nothing, must press the okay button
+				}
+			});
+		}
 	}
 
 	private void placeTorch( float x, float y ) {
