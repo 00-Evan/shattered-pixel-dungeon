@@ -155,16 +155,16 @@ public class SPDAction extends GameAction {
 	private static final LinkedHashMap<Integer, GameAction> defaultControllerBindings = new LinkedHashMap<>();
 	static {
 		defaultControllerBindings.put( Input.Keys.BUTTON_START,     SPDAction.BACK );
+		defaultControllerBindings.put( Input.Keys.BUTTON_SELECT,    SPDAction.JOURNAL );
 
 		defaultControllerBindings.put( Input.Keys.BUTTON_R2,        SPDAction.LEFT_CLICK );
 		defaultControllerBindings.put( Input.Keys.BUTTON_THUMBR,    SPDAction.LEFT_CLICK );
 		defaultControllerBindings.put( Input.Keys.BUTTON_L2,        SPDAction.RIGHT_CLICK );
-		defaultControllerBindings.put( Input.Keys.BUTTON_SELECT,    SPDAction.MIDDLE_CLICK );
 
 		defaultControllerBindings.put( Input.Keys.DPAD_UP+1000,     SPDAction.TAG_ACTION );
-		defaultControllerBindings.put( Input.Keys.DPAD_LEFT+1000,   SPDAction.CYCLE);
+		defaultControllerBindings.put( Input.Keys.DPAD_LEFT+1000,   SPDAction.TAG_LOOT );
 		defaultControllerBindings.put( Input.Keys.DPAD_DOWN+1000,   SPDAction.TAG_RESUME );
-		defaultControllerBindings.put( Input.Keys.DPAD_RIGHT+1000,  SPDAction.TAG_LOOT );
+		defaultControllerBindings.put( Input.Keys.DPAD_RIGHT+1000,  SPDAction.CYCLE );
 
 		defaultControllerBindings.put( Input.Keys.BUTTON_THUMBL,    SPDAction.WAIT_OR_PICKUP );
 
