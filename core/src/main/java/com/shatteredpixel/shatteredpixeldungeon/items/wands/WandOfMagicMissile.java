@@ -82,7 +82,7 @@ public class WandOfMagicMissile extends DamageWand {
 		SpellSprite.show(attacker, SpellSprite.CHARGE);
 		for (Wand.Charger c : attacker.buffs(Wand.Charger.class)){
 			if (c.wand() != this){
-				c.gainCharge(0.5f);
+				c.gainCharge(0.5f * procChanceMultiplier(attacker));
 			}
 		}
 

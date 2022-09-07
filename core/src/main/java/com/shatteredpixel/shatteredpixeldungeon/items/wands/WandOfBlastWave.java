@@ -27,6 +27,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Effects;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
@@ -188,7 +190,7 @@ public class WandOfBlastWave extends DamageWand {
 	private static class BlastWaveOnHit extends Elastic{
 		@Override
 		protected float procChanceMultiplier(Char attacker) {
-			return 1f; //not affected by enchantment proc chance changers
+			return Wand.procChanceMultiplier(attacker);
 		}
 	}
 

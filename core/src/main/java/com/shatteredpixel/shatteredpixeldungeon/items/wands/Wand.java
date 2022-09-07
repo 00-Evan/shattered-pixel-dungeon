@@ -125,6 +125,14 @@ public abstract class Wand extends Item {
 
 	public abstract void onHit( MagesStaff staff, Char attacker, Char defender, int damage);
 
+	//not affected by enchantment proc chance changers
+	public static float procChanceMultiplier( Char attacker ){
+		if (attacker.buff(Talent.EmpoweredStrikeTracker.class) != null){
+			return 1f + ((Hero)attacker).pointsInTalent(Talent.EMPOWERED_STRIKE)/3f;
+		}
+		return 1f;
+	}
+
 	public boolean tryToZap( Hero owner, int target ){
 
 		if (owner.buff(MagicImmune.class) != null){

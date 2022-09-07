@@ -235,11 +235,17 @@ public class WandOfCorruption extends Wand {
 
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+		int level = Math.max( 0, buffedLvl() );
+
 		// lvl 0 - 25%
 		// lvl 1 - 40%
 		// lvl 2 - 50%
-		if (Random.Int( buffedLvl() + 4 ) >= 3){
-			Buff.prolong( defender, Amok.class, 4+ buffedLvl()*2);
+		float procChance = (level+1f)/(level+4f) * procChanceMultiplier(attacker);
+		if (Random.Float() < procChance) {
+
+			float powerMulti = Math.max(1f, procChance);
+
+			Buff.prolong( defender, Amok.class, Math.round((4+level*2) * powerMulti));
 		}
 	}
 

@@ -151,7 +151,7 @@ public class WandOfFireblast extends DamageWand {
 	private static class FireBlastOnHit extends Blazing {
 		@Override
 		protected float procChanceMultiplier(Char attacker) {
-			return 1f; //not affected by enchantment proc chance changers
+			return Wand.procChanceMultiplier(attacker);
 		}
 	}
 

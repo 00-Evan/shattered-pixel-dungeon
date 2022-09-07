@@ -105,7 +105,7 @@ public class WandOfLightning extends DamageWand {
 	private static class LightningOnHit extends Shocking {
 		@Override
 		protected float procChanceMultiplier(Char attacker) {
-			return 1f; //not affected by enchantment proc chance changers
+			return Wand.procChanceMultiplier(attacker);
 		}
 	}
 
