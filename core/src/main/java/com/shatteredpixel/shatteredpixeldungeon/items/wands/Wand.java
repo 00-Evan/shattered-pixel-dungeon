@@ -396,6 +396,13 @@ public abstract class Wand extends Item {
 				Badges.validateItemLevelAquired( this );
 			}
 		}
+
+		//inside staff
+		if (charger != null && charger.target == Dungeon.hero && !Dungeon.hero.belongings.contains(this)){
+			if (Dungeon.hero.hasTalent(Talent.EXCESS_CHARGE) && curCharges >= maxCharges){
+				Buff.affect(Dungeon.hero, Barrier.class).setShield(Math.round(buffedLvl()*0.67f*Dungeon.hero.pointsInTalent(Talent.EXCESS_CHARGE)));
+			}
+		}
 		
 		curCharges -= cursed ? 1 : chargesPerCast();
 
