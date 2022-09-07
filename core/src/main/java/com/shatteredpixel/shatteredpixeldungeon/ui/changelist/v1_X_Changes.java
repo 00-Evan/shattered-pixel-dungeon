@@ -26,13 +26,19 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.WoollyBomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfMetamorphosis;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.TelekineticGrab;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTransfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ElementalSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SpectralNecromancerSprite;
@@ -48,7 +54,8 @@ import java.util.ArrayList;
 public class v1_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
-		add_Coming_Soon(changeInfos);
+		//add_Coming_Soon(changeInfos);
+		add_v1_4_Changes(changeInfos);
 		add_v1_3_Changes(changeInfos);
 		add_v1_2_Changes(changeInfos);
 		add_v1_1_Changes(changeInfos);
@@ -79,63 +86,157 @@ public class v1_X_Changes {
 
 	}
 
+	public static void add_v1_4_Changes( ArrayList<ChangeInfo> changeInfos ) {
+		ChangeInfo changes = new ChangeInfo("v1.4-ALPHA", true, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "To-Do",
+				"The following still needs to be implemented for v1.4 to release:\n\n" +
+				"_-_ Expansions to the game's lore, which will include multiple document pages spread through the dungeon\n" +
+				"_-_ A new short tutorial  at the start of the game\n" +
+				"_-_ Improvements to various game interfaces for desktop users\n" +
+				"_-_ other balance tweaks.\n" +
+				"_-_ other small tweaks and bugfixes"));
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.GUIDE_PAGE), "Lore Additions",
+				"More coming here soon, but for now I have slightly adjusted some of the region introduction text, and added them to the document system so they are considered lore entries like the documents coming soon."));
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_TOURMALINE), new RingOfArcana().trueName(),
+				"_A new ring has been added that enhances enchantments and glyphs!_\n\n" +
+				"The Ring of Arcana lets the player directly power up their enchantments and glyphs, instead of only being able to power them up by upgrading the item they are attached to. This can lead to be some really potent enchant/glyph effects at high ring levels."));
+
+		changes.addButton(new ChangeButton(new SandalsOfNature(),
+				"_The Sandals of Nature have been given a new active ability!_\n\n" +
+				"Rather than just using the effect of earthroot, the footwear of nature now use the effect of the seed most recently fed to them! These effects can be triggered on nearby enemies instead of just on you, opening up a bunch of tactical potential for this artifact.\n\n" +
+				"For balance, the amount of extra seeds/dew the footwear gives has been reduced, and 1 additional seed is needed for each upgrade level."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.WARRIOR, 0, 90, 12, 15), HeroSubClass.BERSERKER.title(),
+				"_The Berserker's berserk ability is now manually activated, but has a much lower cooldown._\n\n" +
+				"I'm doing this to try and make the subclass a bit more engaging, players can now trigger berserk at any point when they have 100% or more rage. Berserking still gives a big bonus shield, letting the Berserker survive normally fatal encounters. The lower the Berserker's health, the more shielding he gets.\n\n" +
+				"The Berserker's talents have been adjusted as well:\n" +
+				"_- Endless Rage_ Now grants bonuses to berserk duration and cooldown when above 100% rage.\n" +
+				"_- Berserking Stamina_ has been replaced with _Deathless Fury_, which lets berserking automatically trigger just like before, but at a high cooldown cost."));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
+		changes.hardlight(CharSprite.WARNING);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.MASTERY), "Tutorial Changes",
+				"_-_ Adjusted story text at the very start of the game"));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.DISPLAY), "Interface Changes",
+				"_-_ Added a new tab to the journal window for lore documents\n" +
+				"_-_ Added a popup window on the first game screen to explain controller pointer functionality"));
+
+		changes.addButton(new ChangeButton( new TalentIcon(Talent.EMPOWERED_STRIKE), "T3 Talent Redesigns",
+				"I've made some pretty significant changes to three T3 talents that were either unpopular or too simplistic:\n\n" +
+				"_- Empowered Strike_ now gives a little less direct staff damage, but also boosts the staff's on-hit effect. This should make it more interesting while still encouraging staff melee play.\n" +
+				"_- Excess Charge_ now triggers when the Mage's staff is zapped at full charge, instead of on-hit, but the barrier effect is a bit stronger. This should encourage a mix of staff melee and zapping, instead of just pure melee at full charge.\n\n" +
+				"_- Bounty Hunter_ now increases enemy drop chance, instead of providing gold. This should make it more varied and interesting. The bonus also gets notably higher at high preparation charge, instead of scaling linearly."));
+		//Talent changes
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 1",
+				"_-_ Adjusted default controller bindings slightly\n" +
+				"_-_ The 'switch enemy' keybind now also switches tabs on tabbed windows\n" +
+				"_-_ On desktop, the game now attempts to keep mouse and controller pointer potions in sync\n" +
+				"_-_ Slightly improved the marsupial rat attacking animation\n" +
+				"_-_ Item boosts from potion of mastery or curse infusion now change the color of text in that item's item slot\n" +
+				"_-_ Improved chains vfx, especially for prison guards\n" +
+				"_-_ Antimagic now applies to more items\n" +
+				"_-_ Waiting now always takes exactly 1 turn, regardless of hero speed\n" +
+				"_-_ Wand of Disintegration no longer harms undiscovered neutral characters"));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 2",
+				"_-_ Improved room merging logic in a few specific situations\n" +
+				"_-_ Goo's pump up attack now always gives the hero at least 1 action to react\n" +
+				"_-_ Improved behaviour of ally AI when told to hold a position\n" +
+				"_-_ Added sacrifical fire and demon spawners to the landmarks page\n" +
+				"_-_ Added a copy and paste button to text input windows\n" +
+				"_-_ The scroll holder can now hold arcane resin\n" +
+				"_-_ Added more achievements to Shattered on Google Play Games\n" +
+				"_-_ Slightly adjusted enemy stats on ascension to smooth out difficulty"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 1",
+				"Fixed\n" +
+				"_-_ Victory and Champion badges not be awarded in some cases\n" +
+				"_-_ Various rare crash and hang bugs\n" +
+				"_-_ Various minor visual/textual errors\n" +
+				"_-_ Characters rarely managing to enter eternal fire\n" +
+				"_-_ Invisibility effects not working on enemies\n" +
+				"_-_ Confusing text when a weapon or armor is partly uncursed\n" +
+				"_-_ 'No Weapons in His Presence' badge not stating that ring of force counts as a weapon\n" +
+				"_-_ Various cases where the friendly fire badge was not correctly awarded\n" +
+				"_-_ 13th armor ability incorrectly clearing champion enemy buffs\n" +
+				"_-_ Cases where piranhas could live for a turn on land\n" +
+				"_-_ Rare cases where lost inventory and items on stairs could softlock the game\n" +
+				"_-_ Hero armor transferring rarely deleting the Warrior's broken seal"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 2",
+				"Fixed\n" +
+				"_-_ Scrolls of Mirror Image not identifying in rare cases\n" +
+				"_-_ Various incorrect interaction between kinetic/viscosity and damage mitigating effects\n" +
+				"_-_ Wand of Fireblast sometimes not igniting adjacent item or barricades\n" +
+				"_-_ Ring of Furor not affecting Sniper special abilities\n" +
+				"_-_ Armband not breaking invisibility\n" +
+				"_-_ Chalice of Blood benefitting from recharging while hero is starving\n" +
+				"_-_ Cases where explosive curse would create explosions at the wrong location\n" +
+				"_-_ Rare cases where ranged allies would refuse to target nearby enemies\n" +
+				"_-_ Rare cases where items would not correctly appear in the rankings screen\n" +
+				"_-_ Errors with wild magic or flurry and knockback effects\n" +
+				"_-_ Magical Sight not making the hero immune to blindness"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 3",
+				"Fixed\n" +
+				"_-_ Additional cases where magical spellbook could generate scrolls of lullaby\n" +
+				"_-_ Targeting logic sometimes being incorrect on armor abilities\n" +
+				"_-_ Shadow clone not benefiting from certain glyphs\n" +
+				"_-_ Heavy boomerangs getting an accuracy penalty when returning\n" +
+				"_-_ Various rare cases where characters might stack on each other\n" +
+				"_-_ Dailies using seeds that are also user-enterable\n" +
+				"_-_ Knockback effects paralyzing dead characters\n" +
+				"_-_ Death to aqua blast counting as death to a geyser trap\n" +
+				"_-_ Albino rats causing bleed when hitting for 0 damage\n" +
+				"_-_ Prizes from sacrifice rooms now always being the same with the same dungeon seed\n" +
+				"_-_ Necromancers being able to summon through crystal doors"));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
+		changes.hardlight(CharSprite.POSITIVE);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.SHORTSWORD, new ItemSprite.Glowing( 0x000000 )), "Annoying Curse",
+				"A very critical buff has been given to the annoying curse:\n\n" +
+				"_-_ Added 5 new regular dialogue lines, for 10 total\n" +
+				"_-_ Added 3 additional new lines that trigger rarely"));
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_AMETHYST), new RingOfWealth().trueName(),
+				"I'm making a few improvements to the ring of wealth, mainly to make it more worth upgrading:\n\n" +
+				"_-_ Now gives a rare drop every 0-20 kills, up from every 0-25\n" +
+				"_-_ Now gives an equipment drop every 5-10 rare drops, down from every 4-8\n" +
+				"_-_ Equipment drops are now guaranteed to be at least level 1/2/3/4/5/6 at ring level 1/3/5/7/9/11, up from 1/3/6/10/15/21"));
+
+		changes.addButton(new ChangeButton( new WandOfTransfusion(),
+				"I'm boosting the wand of transfusion's damage scaling versus undead enemies slightly:\n\n" +
+				"_-_ Damage vs. undead scaling up to 1-2 per level, from 0.5-1"));
+
+		changes.addButton(new ChangeButton( new TelekineticGrab(),
+				"I'm enhancing the value of telekinetic grab a bit for users with multiple thrown weapons:\n\n" +
+				"_-_ now grabs all items at a location or stuck to an enemy, not just the first one."));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
+		changes.hardlight(CharSprite.NEGATIVE);
+		changeInfos.add(changes);
+
+	}
+
 	public static void add_v1_3_Changes( ArrayList<ChangeInfo> changeInfos ) {
 		ChangeInfo changes = new ChangeInfo("v1.3", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("v1.3.2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "UI Adjustments",
-				"As promised, I'm making a few UI improvements in v1.3.2. Unfortunately, these ended up being smaller than expected due to some design troubles:\n\n" +
-				"_-_ Boss health bars have been expanded to show current health and active buffs/debuffs.\n" +
-				"_-_ The Changes scene has been expanded on large enough displays. This is the first of several UI expansions I'd like to make over time.\n\n" +
-				"I've mentioned more detailed enemy info at the top-left for desktop users a few times now (each enemy getting a small info pane with health and buffs/debuffs), but have unfortunately decided to scrap that feature. After playtesting it the additional UI elements just added clutter. Most critically, when many enemies were present at once (the exact situation that extra enemy info was supposed to help with) it became impossible to tell which enemy was which. Instead, in a future update I'm going to look into giving enemies expanded health bar info if you hover over them."));
-
-		Image ic = Icons.get(Icons.SEED);
-		ic.hardlight(1f, 1.5f, 0.67f);
-		changes.addButton( new ChangeButton(ic, "Seeded Run Bugfixes",
-				"I have identified and fixed a couple of bugs which made levelgen of seeded runs with the same seed not always identical.\n\n" +
-				"Unfortunately, the fixes for this will mean that some of the items generated by a particular seed will be different on v1.3.2 than v1.3.1 or v1.3.0. I generally want to avoid smaller updates changing seeded runs like this.\n\n" +
-				"_-_ Fixed a bug where colors of potions, glyphs on scrolls, and gems on rings could vary between runs with the same seed.\n" +
-				"_-_ Fixed a bug where the number of enemies spawned over time could affect item generation on the next floor.\n"));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Characters with guaranteed dodges (e.g. spirit hawk) can now evade Yog's laser beam\n\n" +
-				"_-_ Dates and countdowns for daily runs are now language neutral (only use numbers)\n" +
-				"_-_ The rankings scene now automatically opens the daily run window if you just ended a daily\n\n" +
-				"_-_ Minor visual improvements to the amulet scene\n\n" +
-				"_-_ Updated translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by v1.3.0):\n" +
-				"_-_ Various rare hang and crash bugs\n" +
-				"_-_ Game unintentionally requesting AD ID permissions on Google Play\n" +
-				"_-_ Various cases of incorrect or missing controller button prompts\n" +
-				"_-_ Enraged brutes not being killed by cleansing darts\n" +
-				"_-_ Minor visual bugs in one specific floor 5 layout type\n" +
-				"_-_ Lit bombs being preserved with other items when defeating Tengu\n" +
-				"_-_ Some badges not being properly saved to a run during ascension\n" +
-				"_-_ Sheep spawned by woolly bomb not being dismissable in some cases\n" +
-				"_-_ Various rare cases where boss challenge badges wouldn't unlock\n\n" +
-				"Fixed (existed prior to v1.3.0):\n" +
-				"_-_ Gateway traps being able to teleport containers"));
-
-		changes = new ChangeInfo("v1.3.1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Wards and Sentries are now immune to sleep, vertigo and fear\n" +
-				"_-_ Updated translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by v1.3.0):\n" +
-				"_-_ Runs ended by debuffs not appearing in rankings\n" +
-				"_-_ Bugs with new hero armor transferring ability\n" +
-				"_-_ Text for daily run dates not being language-neutral"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -146,6 +247,7 @@ public class v1_X_Changes {
 				"_-_ 105 days after Shattered v1.2.0\n" +
 				"Expect dev commentary here in the future."));
 
+		Image ic;
 		ic = Icons.get(Icons.SEED);
 		ic.hardlight(1f, 1.5f, 0.67f);
 		changes.addButton( new ChangeButton(ic, "Seeded Runs!",
@@ -213,7 +315,7 @@ public class v1_X_Changes {
 				"Several buffs have been given icons when they didn't have any, or have had their icons adjusted to prevent icon duplication. This should improve buff clarity in a few cases, and ensure that two active buffs can never have the exact same icon (recolored icons are still present though).\n\n" +
 				"A few new overhead spell effects have been added as well."));
 
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 1",
 				"_-_ Updated translations, translator credits, and added a new language: Dutch!\n" +
 				"_-_ Made the Huntress a bit easier to unlock again\n" +
 				"_-_ Dreamfoil has been renamed to Mageroyal, to better fit its lack of sleeping functionality since 1.2\n" +
@@ -228,6 +330,12 @@ public class v1_X_Changes {
 				"_-_ Blazing champions no longer explode if they are killed by chasms\n" +
 				"_-_ Red sentries no longer fire on players with lost inventories"));
 
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 2",
+				"_-_ Wards and Sentries are now immune to sleep, vertigo and fear\n" +
+				"_-_ Characters with guaranteed dodges (e.g. spirit hawk) can now evade Yog's laser beam\n" +
+				"_-_ Boss health bars have been expanded to show current health and active buffs/debuffs.\n" +
+				"_-_ The Changes scene has been expanded on large enough displays. This is the first of several UI expansions I'd like to make over time."));
+
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed\n" +
 				"_-_ Various minor textual and visual bugs\n" +
@@ -241,7 +349,8 @@ public class v1_X_Changes {
 				"_-_ Stones of blink disappearing if they fail to teleport\n" +
 				"_-_ Beacon of returning not working at all in boss arenas\n" +
 				"_-_ Earthen guardian not being immune to poison, gas, and bleed\n" +
-				"_-_ Transmogrified enemies awarding exp when the effect ends"));
+				"_-_ Transmogrified enemies awarding exp when the effect ends\n" +
+				"_-_ Gateway traps being able to teleport containers"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight(CharSprite.POSITIVE);
