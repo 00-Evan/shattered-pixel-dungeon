@@ -767,9 +767,20 @@ public abstract class Mob extends Char {
 	public float lootChance(){
 		float lootChance = this.lootChance;
 
-		lootChance *= RingOfWealth.dropChanceMultiplier( Dungeon.hero );
+		float dropBonus = RingOfWealth.dropChanceMultiplier( Dungeon.hero );
 
-		return lootChance;
+		Talent.BountyHunterTracker bhTracker = Dungeon.hero.buff(Talent.BountyHunterTracker.class);
+		if (bhTracker != null){
+			Preparation prep = Dungeon.hero.buff(Preparation.class);
+			if (prep != null){
+				// 2/4/8/16% per prep level, multiplied by talent points
+				float bhBonus = 0.02f * (float)Math.pow(2, prep.attackLevel()-1);
+				bhBonus *= Dungeon.hero.pointsInTalent(Talent.BOUNTY_HUNTER);
+				dropBonus += bhBonus;
+			}
+		}
+
+		return lootChance * dropBonus;
 	}
 	
 	public void rollToDropLoot(){
@@ -807,14 +818,6 @@ public abstract class Mob extends Char {
 		if (buff(SoulMark.class) != null &&
 				Random.Int(10) < Dungeon.hero.pointsInTalent(Talent.SOUL_EATER)){
 			Talent.onFoodEaten(Dungeon.hero, 0, null);
-		}
-
-		//bounty hunter talent
-		if (Dungeon.hero.buff(Talent.BountyHunterTracker.class) != null) {
-			Preparation prep = Dungeon.hero.buff(Preparation.class);
-			if (prep != null && Random.Float() < 0.25f * prep.attackLevel()) {
-				Dungeon.level.drop(new Gold(15 * Dungeon.hero.pointsInTalent(Talent.BOUNTY_HUNTER)), pos).sprite.drop();
-			}
 		}
 
 	}
