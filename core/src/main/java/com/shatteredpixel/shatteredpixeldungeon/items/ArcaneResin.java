@@ -92,7 +92,7 @@ public class ArcaneResin extends Item {
 
 		@Override
 		public String textPrompt() {
-			return Messages.get(this, "prompt");
+			return Messages.get(ArcaneResin.class, "prompt");
 		}
 
 		@Override
