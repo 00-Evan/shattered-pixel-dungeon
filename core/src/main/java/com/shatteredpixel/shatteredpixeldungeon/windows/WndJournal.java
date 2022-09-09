@@ -184,14 +184,14 @@ public class WndJournal extends WndTabbed {
 			for (String page : Document.ADVENTURERS_GUIDE.pageNames()){
 				boolean found = Document.ADVENTURERS_GUIDE.isPageFound(page);
 				ScrollingListPane.ListItem item = new ScrollingListPane.ListItem(
-						iconForPage(page),
+						Document.ADVENTURERS_GUIDE.pageSprite(page),
 						null,
 						found ? Messages.titleCase(Document.ADVENTURERS_GUIDE.pageTitle(page)) : Messages.titleCase(Messages.get( this, "missing" ))
 				){
 					@Override
 					public boolean onClick(float x, float y) {
 						if (inside( x, y ) && found) {
-							GameScene.show( new WndStory( iconForPage(page),
+							GameScene.show( new WndStory( Document.ADVENTURERS_GUIDE.pageSprite(page),
 									Document.ADVENTURERS_GUIDE.pageTitle(page),
 									Document.ADVENTURERS_GUIDE.pageBody(page) ));
 							Document.ADVENTURERS_GUIDE.readPage(page);
@@ -209,41 +209,6 @@ public class WndJournal extends WndTabbed {
 			}
 
 			list.setRect(x, y, width, height);
-		}
-
-		//TODO might just want this to be part of the Document class
-		public static Image iconForPage( String page ){
-			if (!Document.ADVENTURERS_GUIDE.isPageFound(page)){
-				return new ItemSprite( ItemSpriteSheet.GUIDE_PAGE );
-			}
-			switch (page){
-				case Document.GUIDE_INTRO: default:
-					return new ItemSprite(ItemSpriteSheet.MASTERY);
-				case "Examining":
-					return Icons.get(Icons.MAGNIFY);
-				case "Surprise_Attacks":
-					return new ItemSprite( ItemSpriteSheet.ASSASSINS_BLADE );
-				case "Identifying":
-					return new ItemSprite( new ScrollOfIdentify() );
-				case "Food":
-					return new ItemSprite( ItemSpriteSheet.PASTY );
-				case "Dieing":
-					return new ItemSprite( ItemSpriteSheet.TOMB );
-				case Document.GUIDE_SEARCHING:
-					return Icons.get(Icons.MAGNIFY);
-				case "Strength":
-					return new ItemSprite( ItemSpriteSheet.GREATAXE );
-				case "Upgrades":
-					return new ItemSprite( ItemSpriteSheet.RING_EMERALD );
-				case "Looting":
-					return new ItemSprite( ItemSpriteSheet.CRYSTAL_KEY );
-				case "Levelling":
-					return Icons.get(Icons.TALENT);
-				case "Positioning":
-					return new ItemSprite( ItemSpriteSheet.SPIRIT_BOW );
-				case "Magic":
-					return new ItemSprite( ItemSpriteSheet.WAND_FIREBOLT );
-			}
 		}
 
 	}

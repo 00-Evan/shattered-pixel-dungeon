@@ -569,7 +569,7 @@ public class GameScene extends PixelScene {
 
 		if (Rankings.INSTANCE.totalNumber > 0 && !Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_DIEING)){
 			GLog.p(Messages.get(Guidebook.class, "hint"));
-			GameScene.flashForDocument(Document.GUIDE_DIEING);
+			GameScene.flashForDocument(Document.ADVENTURERS_GUIDE, Document.GUIDE_DIEING);
 		}
 
 		if (!invVisible) toggleInvPane();
@@ -1022,8 +1022,8 @@ public class GameScene extends PixelScene {
 	}
 
 	//TODO currently only works with guidebooks
-	public static void flashForDocument( String page ){
-		if (scene != null) scene.menu.flashForPage( page );
+	public static void flashForDocument( Document doc, String page ){
+		if (scene != null) scene.menu.flashForPage( doc, page );
 	}
 	
 	public static void updateKeyDisplay(){
@@ -1398,7 +1398,7 @@ public class GameScene extends PixelScene {
 			GameScene.show(new WndInfoMob((Mob) o));
 			if (o instanceof Snake && !Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_SURPRISE_ATKS)){
 				GLog.p(Messages.get(Guidebook.class, "hint"));
-				GameScene.flashForDocument(Document.GUIDE_SURPRISE_ATKS);
+				GameScene.flashForDocument(Document.ADVENTURERS_GUIDE, Document.GUIDE_SURPRISE_ATKS);
 			}
 		} else if ( o instanceof Heap ){
 			GameScene.show(new WndInfoItem((Heap)o));

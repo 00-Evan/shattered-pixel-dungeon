@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.journal;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -125,10 +126,46 @@ public enum Document {
 	private int pageSprite;
 	private Icons pageIcon;
 	public Image pageSprite(){
-		if (pageIcon != null){
-			return Icons.get(pageIcon);
+		return pageSprite("");
+	}
+
+	public Image pageSprite(String page){
+		if (page.isEmpty() || !isPageFound(page) || this != ADVENTURERS_GUIDE){
+			if (pageIcon != null){
+				return Icons.get(pageIcon);
+			} else {
+				return new ItemSprite(pageSprite);
+			}
 		} else {
-			return new ItemSprite(pageSprite);
+			//special per-page visuals for guidebook
+			switch (page){
+				case Document.GUIDE_INTRO: default:
+					return new ItemSprite(ItemSpriteSheet.MASTERY);
+				case "Examining":
+					return Icons.get(Icons.MAGNIFY);
+				case "Surprise_Attacks":
+					return new ItemSprite( ItemSpriteSheet.ASSASSINS_BLADE );
+				case "Identifying":
+					return new ItemSprite( new ScrollOfIdentify() );
+				case "Food":
+					return new ItemSprite( ItemSpriteSheet.PASTY );
+				case "Dieing":
+					return new ItemSprite( ItemSpriteSheet.TOMB );
+				case Document.GUIDE_SEARCHING:
+					return Icons.get(Icons.MAGNIFY);
+				case "Strength":
+					return new ItemSprite( ItemSpriteSheet.GREATAXE );
+				case "Upgrades":
+					return new ItemSprite( ItemSpriteSheet.RING_EMERALD );
+				case "Looting":
+					return new ItemSprite( ItemSpriteSheet.CRYSTAL_KEY );
+				case "Levelling":
+					return Icons.get(Icons.TALENT);
+				case "Positioning":
+					return new ItemSprite( ItemSpriteSheet.SPIRIT_BOW );
+				case "Magic":
+					return new ItemSprite( ItemSpriteSheet.WAND_FIREBOLT );
+			}
 		}
 	}
 

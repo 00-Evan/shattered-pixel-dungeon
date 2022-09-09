@@ -46,7 +46,7 @@ public class Guidebook extends Item {
 		Game.runOnRenderThread(new Callback() {
 			@Override
 			public void call() {
-				GameScene.show(new WndStory(WndJournal.GuideTab.iconForPage(page),
+				GameScene.show(new WndStory(Document.ADVENTURERS_GUIDE.pageSprite(page),
 						Document.ADVENTURERS_GUIDE.pageTitle(page),
 						Document.ADVENTURERS_GUIDE.pageBody(page)){
 

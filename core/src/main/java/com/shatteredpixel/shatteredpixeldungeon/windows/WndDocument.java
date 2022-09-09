@@ -49,7 +49,7 @@ public class WndDocument extends Window {
 				public boolean onClick(float x, float y) {
 					if (inside( x, y ) && found) {
 						ShatteredPixelDungeon.scene().addToFront( new WndStory(
-								doc.pageSprite(),
+								doc.pageSprite(page),
 								doc.pageTitle(page),
 								doc.pageBody(page) ));
 						doc.readPage(page);

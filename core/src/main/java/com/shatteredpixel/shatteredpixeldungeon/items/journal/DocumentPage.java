@@ -52,7 +52,7 @@ public abstract class DocumentPage extends Item {
 	@Override
 	public final boolean doPickUp(Hero hero, int pos) {
 		GameScene.pickUpJournal(this, pos);
-		GameScene.flashForDocument(page());
+		GameScene.flashForDocument(document(), page());
 		if (document() == Document.ALCHEMY_GUIDE){
 			WndJournal.last_index = 1;
 			WndJournal.AlchemyTab.currentPageIdx = document().pageIdx(page());
