@@ -469,11 +469,16 @@ public class InterlevelScene extends PixelScene {
 			Dungeon.hero.resurrect();
 			level = Dungeon.newLevel();
 			Dungeon.hero.pos = level.randomRespawnCell(Dungeon.hero);
+			if (Dungeon.hero.pos == -1) Dungeon.hero.pos = level.entrance();
 
 			for (Item i : preservedItems){
-				level.drop(i, level.randomRespawnCell(null));
+				int pos = level.randomRespawnCell(null);
+				if (pos == -1) pos = level.entrance();
+				level.drop(i, pos);
 			}
-			level.drop(new LostBackpack(), level.randomRespawnCell(null));
+			int pos = level.randomRespawnCell(null);
+			if (pos == -1) pos = level.entrance();
+			level.drop(new LostBackpack(), pos);
 
 		} else {
 			level = Dungeon.level;
