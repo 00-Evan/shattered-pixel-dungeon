@@ -223,7 +223,7 @@ public class CavesBossLevel extends Level {
 		for (int i : PathFinder.NEIGHBOURS8){
 			int cell = entrance() + i;
 			if (passable[cell]
-					&& Actor.findChar(cell) != null
+					&& Actor.findChar(cell) == null
 					&& (!Char.hasProp(ch, Char.Property.LARGE) || openSpace[cell])){
 				candidates.add(cell);
 			}
