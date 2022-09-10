@@ -147,10 +147,20 @@ public class WelcomeScene extends PixelScene {
 			protected void onClick() {
 				super.onClick();
 				if (previousVersion == 0 || SPDSettings.intro()){
+
+					//TODO for testers
+					if (previousVersion > 0){
+						updateVersion(previousVersion);
+					}
+
 					SPDSettings.version(ShatteredPixelDungeon.versionCode);
 					GamesInProgress.selectedClass = null;
-					GamesInProgress.curSlot = 1;
-					ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
+					GamesInProgress.curSlot = GamesInProgress.firstEmpty();
+					if (GamesInProgress.curSlot == -1){
+						ShatteredPixelDungeon.switchScene(StartScene.class);
+					} else {
+						ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
+					}
 				} else {
 					updateVersion(previousVersion);
 					ShatteredPixelDungeon.switchScene(TitleScene.class);
@@ -202,7 +212,6 @@ public class WelcomeScene extends PixelScene {
 		} else {
 			message = Messages.get(this, "what_msg");
 		}
-		Document.INTROS.readPage(0);
 
 		message = "Greetings Alpha Testers!\n\nAll of the gameplay changes for v1.4.0 are in place, but there's still a bit of UI/UX work and lore to finish up.\n\nKeep in mind that this is an early release, so bugs are to be expected. Please let me know if you encounter any!";
 

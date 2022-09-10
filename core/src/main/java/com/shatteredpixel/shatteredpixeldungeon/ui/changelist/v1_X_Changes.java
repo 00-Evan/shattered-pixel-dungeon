@@ -91,6 +91,31 @@ public class v1_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("ALPHA-2", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.MASTERY), "Expanded Tutorial",
+				"The game now starts with a very short guided tutorial that explains game movement, highlights the interface, and encourages reading the game log / guidebook.\n\n" +
+				"Alpha/Beta players will get the tutorial on their first play session, in order to test it and give feedback."));
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.GUIDE_PAGE), "Lore Additions",
+				"Most of the code for per-region lore has been implemented, but the lore pages themselves have not been put in the game yet, so these new lore documents are not yet findable."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by ALPHA):\n" +
+				"_-_ Crash bugs in boss floors\n" +
+				"_-_ Ring of Arcana missing from the item catalog\n" +
+				"_-_ Distortion traps only summoning piranhas\n" +
+				"_-_ Dungeon introduction text not being set as found\n" +
+				"_-_ Various minor textual errors\n\n" +
+				"Fixed (existed prior to ALPHA):\n" +
+				"_-_ Giant necromancers summoning skeletons into doorways"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);

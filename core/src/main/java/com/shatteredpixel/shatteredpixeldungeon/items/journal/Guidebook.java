@@ -42,12 +42,12 @@ public class Guidebook extends Item {
 	public final boolean doPickUp(Hero hero, int pos) {
 		GameScene.pickUpJournal(this, pos);
 		//we do this here so it appears before the tutorial text
+		GameLog.wipe();
 		GLog.i( Messages.capitalize(Messages.get(Hero.class, "you_now_have", name())) );
 		GLog.p(Messages.get(GameScene.class, "tutorial_guidebook"));
 		GameScene.flashForDocument(Document.ADVENTURERS_GUIDE, Document.GUIDE_INTRO);
 		Sample.INSTANCE.play( Assets.Sounds.ITEM );
 		hero.spendAndNext( TIME_TO_PICK_UP );
-		GameLog.wipe();
 		return true;
 	}
 
