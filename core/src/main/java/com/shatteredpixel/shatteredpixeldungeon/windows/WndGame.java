@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -110,18 +111,20 @@ public class WndGame extends Window {
 		}
 
 		// Main menu
-		addButton(curBtn = new RedButton( Messages.get(this, "menu") ) {
-			@Override
-			protected void onClick() {
-				try {
-					Dungeon.saveAll();
-				} catch (IOException e) {
-					ShatteredPixelDungeon.reportException(e);
+		if (!SPDSettings.intro()) {
+			addButton(curBtn = new RedButton(Messages.get(this, "menu")) {
+				@Override
+				protected void onClick() {
+					try {
+						Dungeon.saveAll();
+					} catch (IOException e) {
+						ShatteredPixelDungeon.reportException(e);
+					}
+					Game.switchScene(TitleScene.class);
 				}
-				Game.switchScene(TitleScene.class);
-			}
-		} );
-		curBtn.icon(Icons.get(Icons.DISPLAY));
+			});
+			curBtn.icon(Icons.get(Icons.DISPLAY));
+		}
 
 		resize( WIDTH, pos );
 	}

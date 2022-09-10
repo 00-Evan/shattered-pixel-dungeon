@@ -871,7 +871,8 @@ public class Hero extends Char {
 					if (item instanceof Dewdrop
 							|| item instanceof TimekeepersHourglass.sandBag
 							|| item instanceof DriedRose.Petal
-							|| item instanceof Key) {
+							|| item instanceof Key
+							|| item instanceof Guidebook) {
 						//Do Nothing
 					} else {
 

@@ -638,7 +638,17 @@ public class Toolbar extends Component {
 			btnInventory.enable(true);
 		}
 	}
-	
+
+	public void alpha( float value ){
+		btnWait.alpha( value );
+		btnSearch.alpha( value );
+		btnInventory.alpha( value );
+		for (QuickslotTool tool : btnQuick){
+			tool.alpha(value);
+		}
+		btnSwap.alpha( value );
+	}
+
 	public void pickup( Item item, int cell ) {
 		pickedUp.reset( item,
 			cell,
@@ -695,7 +705,11 @@ public class Toolbar extends Component {
 			base.x = x;
 			base.y = y;
 		}
-		
+
+		public void alpha( float value ){
+			base.alpha(value);
+		}
+
 		@Override
 		protected void onPointerDown() {
 			base.brightness( 1.4f );
@@ -747,7 +761,13 @@ public class Toolbar extends Component {
 			slot.setRect( x, y, width, height );
 			slot.slotMargins(borderLeft, 2, borderRight, 2);
 		}
-		
+
+		@Override
+		public void alpha(float value) {
+			super.alpha(value);
+			slot.alpha(value);
+		}
+
 		@Override
 		public void enable( boolean value ) {
 			super.enable( value && visible );
@@ -847,6 +867,14 @@ public class Toolbar extends Component {
 		protected void layout() {
 			super.layout();
 			updateVisuals();
+		}
+
+		@Override
+		public void alpha(float value) {
+			super.alpha(value);
+			for (Image im : icons){
+				if (im != null) im.alpha(value);
+			}
 		}
 
 		@Override

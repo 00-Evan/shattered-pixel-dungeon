@@ -129,6 +129,7 @@ import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
+import com.watabou.noosa.tweeners.Tweener;
 import com.watabou.utils.Callback;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
@@ -482,21 +483,6 @@ public class GameScene extends PixelScene {
 					&& (InterlevelScene.mode == InterlevelScene.Mode.DESCEND || InterlevelScene.mode == InterlevelScene.Mode.FALL)) {
 				GLog.h(Messages.get(this, "descend"), Dungeon.depth);
 				Sample.INSTANCE.play(Assets.Sounds.DESCEND);
-
-				//Tutorial
-				if (SPDSettings.intro()){
-
-					if (ControllerHandler.isControllerConnected()){
-						GLog.p(Messages.get(GameScene.class, "tutorial_move_controller"));
-					} else if (SPDSettings.interfaceSize() == 0){
-						GLog.p(Messages.get(GameScene.class, "tutorial_move_mobile"));
-					} else {
-						GLog.p(Messages.get(GameScene.class, "tutorial_move_desktop"));
-					}
-					toolbar.visible = false;
-					status.visible = false;
-					if (inventory != null) inventory.visible = false;
-				}
 				
 				for (Char ch : Actor.chars()){
 					if (ch instanceof DriedRose.GhostHero){
@@ -583,6 +569,21 @@ public class GameScene extends PixelScene {
 			InterlevelScene.mode = InterlevelScene.Mode.NONE;
 
 			
+		}
+
+		//Tutorial
+		if (SPDSettings.intro()){
+
+			if (ControllerHandler.isControllerConnected()){
+				GLog.p(Messages.get(GameScene.class, "tutorial_move_controller"));
+			} else if (SPDSettings.interfaceSize() == 0){
+				GLog.p(Messages.get(GameScene.class, "tutorial_move_mobile"));
+			} else {
+				GLog.p(Messages.get(GameScene.class, "tutorial_move_desktop"));
+			}
+			toolbar.visible = false;
+			status.visible = false;
+			if (inventory != null) inventory.visible = false;
 		}
 
 		if (Rankings.INSTANCE.totalNumber > 0 && !Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_DIEING)){
@@ -1046,24 +1047,27 @@ public class GameScene extends PixelScene {
 	public static void flashForDocument( Document doc, String page ){
 		if (scene != null) {
 			scene.menu.flashForPage( doc, page );
-			//we use a callback here so that regular pickup text appears first
-			if (SPDSettings.intro()) {
-				Game.runOnRenderThread(new Callback() {
-					@Override
-					public void call() {
-						GLog.p(Messages.get(GameScene.class, "tutorial_guidebook"));
-					}
-				});
-			}
 		}
 	}
 
 	public static void endIntro(){
 		if (scene != null){
 			SPDSettings.intro(false);
-			//TODO this is very sudden, should have UI and doors fade in
-			scene.status.visible = true;
-			scene.toolbar.visible = true;
+			scene.add(new Tweener(scene, 2f){
+				@Override
+				protected void updateValues(float progress) {
+					if (progress <= 0.5f) {
+						scene.status.alpha(2*progress);
+						scene.status.visible = true;
+						scene.toolbar.visible = false;
+					} else {
+						scene.status.alpha(1f);
+						scene.status.visible = true;
+						scene.toolbar.alpha((progress - 0.5f)*2);
+						scene.toolbar.visible = true;
+					}
+				}
+			});
 			if (scene.inventory != null) scene.inventory.visible = true;
 			GameLog.wipe();
 			if (SPDSettings.interfaceSize() == 0){
@@ -1076,6 +1080,7 @@ public class GameScene extends PixelScene {
 			for (int i = 0; i < Dungeon.level.length(); i++){
 				if (Dungeon.level.map[i] == Terrain.SECRET_DOOR){
 					Dungeon.level.discover(i);
+					discoverTile(i, Terrain.SECRET_DOOR);
 				}
 			}
 		}

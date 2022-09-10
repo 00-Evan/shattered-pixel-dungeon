@@ -166,6 +166,10 @@ public class QuickSlotButton extends Button {
 		PixelScene.align(crossB);
 	}
 
+	public void alpha( float value ){
+		slot.alpha(value);
+	}
+
 	@Override
 	public void update() {
 		super.update();
