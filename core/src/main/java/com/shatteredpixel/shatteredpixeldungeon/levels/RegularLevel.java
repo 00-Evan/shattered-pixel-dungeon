@@ -73,6 +73,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 
 public abstract class RegularLevel extends Level {
@@ -482,8 +483,70 @@ public abstract class RegularLevel extends Level {
 			drop( p, cell );
 		}
 
+		//lore pages
+		//TODO a fair bit going on here, I might want to refactor/externalize this in the future
+		if (Document.ADVENTURERS_GUIDE.allPagesFound()){
+
+			int region = 1+(Dungeon.depth-1)/5;
+
+			Document regionDoc;
+			switch( region ){
+				default: regionDoc = null; break;
+				case 1: regionDoc = Document.SEWERS_GUARD; break;
+				case 2: regionDoc = Document.PRISON_WARDEN; break;
+				case 3: regionDoc = Document.CAVES_EXPLORER; break;
+				case 4: regionDoc = Document.CITY_WARLOCK; break;
+				case 5: regionDoc = Document.HALLS_KING; break;
+			}
+
+			if (regionDoc != null && !regionDoc.allPagesFound()) {
+
+				Dungeon.LimitedDrops limit = limitedDocs.get(regionDoc);
+
+				if (limit == null || !limit.dropped()) {
+
+					float totalPages = 0;
+					float pagesFound = 0;
+					String pageToDrop = null;
+					for (String page : regionDoc.pageNames()) {
+						totalPages++;
+						if (!regionDoc.isPageFound(page)) {
+							if (pageToDrop == null) {
+								pageToDrop = page;
+							}
+						} else {
+							pagesFound++;
+						}
+					}
+					float percentComplete = pagesFound / totalPages;
+
+					// initial value is the first floor in a region
+					int targetFloor = 5*(region-1) + 1;
+					targetFloor += Math.round(3*percentComplete);
+
+					//TODO maybe drop last page in boss floor with custom logic?
+					if (Dungeon.depth >= targetFloor){
+						//TODO actually drop the page, need to look into documentpage class a bit
+						//if (limit != null) limit.drop();
+					}
+
+				}
+
+			}
+
+		}
+
 		Random.popGenerator();
 
+	}
+
+	private static HashMap<Document, Dungeon.LimitedDrops> limitedDocs = new HashMap<>();
+	static {
+		limitedDocs.put(Document.SEWERS_GUARD, Dungeon.LimitedDrops.LORE_SEWERS);
+		limitedDocs.put(Document.PRISON_WARDEN, Dungeon.LimitedDrops.LORE_PRISON);
+		limitedDocs.put(Document.CAVES_EXPLORER, Dungeon.LimitedDrops.LORE_CAVES);
+		limitedDocs.put(Document.CITY_WARLOCK, Dungeon.LimitedDrops.LORE_CITY);
+		limitedDocs.put(Document.HALLS_KING, Dungeon.LimitedDrops.LORE_HALLS);
 	}
 	
 	public ArrayList<Room> rooms() {

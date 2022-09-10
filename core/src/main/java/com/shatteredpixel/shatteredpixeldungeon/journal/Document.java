@@ -38,7 +38,13 @@ public enum Document {
 	ADVENTURERS_GUIDE(ItemSpriteSheet.GUIDE_PAGE, false),
 	ALCHEMY_GUIDE(ItemSpriteSheet.ALCH_PAGE, false),
 
-	INTROS(Icons.STAIRS, true);
+	INTROS(Icons.STAIRS, true),
+	//TODO separate visuals for these?
+	SEWERS_GUARD(ItemSpriteSheet.GUIDE_PAGE, true),
+	PRISON_WARDEN(ItemSpriteSheet.GUIDE_PAGE, true),
+	CAVES_EXPLORER(ItemSpriteSheet.GUIDE_PAGE, true),
+	CITY_WARLOCK(ItemSpriteSheet.GUIDE_PAGE, true),
+	HALLS_KING(ItemSpriteSheet.GUIDE_PAGE, true);
 	
 	Document( int sprite, boolean lore ){
 		pageIcon = null;
@@ -85,6 +91,15 @@ public enum Document {
 			}
 		}
 		return false;
+	}
+
+	public boolean allPagesFound(){
+		for( Integer val : pagesStates.values()){
+			if (val == NOT_FOUND){
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public boolean readPage( String page ) {
@@ -240,6 +255,41 @@ public enum Document {
 		INTROS.pagesStates.put("Caves",                         debug ? READ : NOT_FOUND);
 		INTROS.pagesStates.put("City",                          debug ? READ : NOT_FOUND);
 		INTROS.pagesStates.put("Halls",                         debug ? READ : NOT_FOUND);
+
+		SEWERS_GUARD.pagesStates.put("p1", NOT_FOUND);
+		SEWERS_GUARD.pagesStates.put("p2", NOT_FOUND);
+		SEWERS_GUARD.pagesStates.put("p3", NOT_FOUND);
+		SEWERS_GUARD.pagesStates.put("p4", NOT_FOUND);
+		SEWERS_GUARD.pagesStates.put("p5", NOT_FOUND);
+		SEWERS_GUARD.pagesStates.put("p6", NOT_FOUND);
+
+		PRISON_WARDEN.pagesStates.put("p1", NOT_FOUND);
+		PRISON_WARDEN.pagesStates.put("p2", NOT_FOUND);
+		PRISON_WARDEN.pagesStates.put("p3", NOT_FOUND);
+		PRISON_WARDEN.pagesStates.put("p4", NOT_FOUND);
+		PRISON_WARDEN.pagesStates.put("p5", NOT_FOUND);
+		PRISON_WARDEN.pagesStates.put("p6", NOT_FOUND);
+
+		CAVES_EXPLORER.pagesStates.put("p1", NOT_FOUND);
+		CAVES_EXPLORER.pagesStates.put("p2", NOT_FOUND);
+		CAVES_EXPLORER.pagesStates.put("p3", NOT_FOUND);
+		CAVES_EXPLORER.pagesStates.put("p4", NOT_FOUND);
+		CAVES_EXPLORER.pagesStates.put("p5", NOT_FOUND);
+		CAVES_EXPLORER.pagesStates.put("p6", NOT_FOUND);
+
+		CITY_WARLOCK.pagesStates.put("p1", NOT_FOUND);
+		CITY_WARLOCK.pagesStates.put("p2", NOT_FOUND);
+		CITY_WARLOCK.pagesStates.put("p3", NOT_FOUND);
+		CITY_WARLOCK.pagesStates.put("p4", NOT_FOUND);
+		CITY_WARLOCK.pagesStates.put("p5", NOT_FOUND);
+		CITY_WARLOCK.pagesStates.put("p6", NOT_FOUND);
+
+		HALLS_KING.pagesStates.put("p1", NOT_FOUND);
+		HALLS_KING.pagesStates.put("p2", NOT_FOUND);
+		HALLS_KING.pagesStates.put("p3", NOT_FOUND);
+		HALLS_KING.pagesStates.put("p4", NOT_FOUND);
+		HALLS_KING.pagesStates.put("p5", NOT_FOUND);
+		HALLS_KING.pagesStates.put("p6", NOT_FOUND);
 
 	}
 	
