@@ -86,6 +86,11 @@ public class WelcomeScene extends PixelScene {
 		if (ShatteredPixelDungeon.versionCode == previousVersion && !SPDSettings.intro()) {
 			ShatteredPixelDungeon.switchNoFade(TitleScene.class);
 			return;
+		} else {
+			//TODO temporary so alpha/beta players can test the tutorial
+			if (previousVersion <= 651){
+				SPDSettings.intro(true);
+			}
 		}
 
 		Music.INSTANCE.playTracks(
@@ -181,7 +186,6 @@ public class WelcomeScene extends PixelScene {
 		String message;
 		if (previousVersion == 0 || SPDSettings.intro()) {
 			message = Document.INTROS.pageBody(0);
-			Document.INTROS.readPage(0);
 		} else if (previousVersion <= ShatteredPixelDungeon.versionCode) {
 			if (previousVersion < LATEST_UPDATE){
 				message = Messages.get(this, "update_intro");
@@ -198,6 +202,7 @@ public class WelcomeScene extends PixelScene {
 		} else {
 			message = Messages.get(this, "what_msg");
 		}
+		Document.INTROS.readPage(0);
 
 		message = "Greetings Alpha Testers!\n\nAll of the gameplay changes for v1.4.0 are in place, but there's still a bit of UI/UX work and lore to finish up.\n\nKeep in mind that this is an early release, so bugs are to be expected. Please let me know if you encounter any!";
 
@@ -206,7 +211,7 @@ public class WelcomeScene extends PixelScene {
 		text.setPos((w - text.width()) / 2f, (topRegion + 2) + (textSpace - text.height())/2);
 		add(text);
 
-		if (previousVersion == 0 && ControllerHandler.isControllerConnected()){
+		if (SPDSettings.intro() && ControllerHandler.isControllerConnected()){
 			addToFront(new WndHardNotification(Icons.CONTROLLER.get(),
 					Messages.get(WelcomeScene.class, "controller_title"),
 					Messages.get(WelcomeScene.class, "controller_body"),

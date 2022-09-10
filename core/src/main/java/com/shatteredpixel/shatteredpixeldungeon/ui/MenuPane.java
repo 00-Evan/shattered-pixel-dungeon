@@ -316,7 +316,15 @@ public class MenuPane extends Component {
 				} else if (flashingDoc.pageNames().contains(flashingPage)){
 					GameScene.show( new WndStory( flashingDoc.pageSprite(flashingPage),
 							flashingDoc.pageTitle(flashingPage),
-							flashingDoc.pageBody(flashingPage) ));
+							flashingDoc.pageBody(flashingPage) ){
+						@Override
+						public void hide() {
+							super.hide();
+							if (SPDSettings.intro()){
+								GameScene.endIntro();
+							}
+						}
+					});
 					flashingDoc.readPage(flashingPage);
 				} else {
 					GameScene.show( new WndJournal() );

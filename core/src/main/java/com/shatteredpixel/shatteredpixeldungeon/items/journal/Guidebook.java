@@ -27,11 +27,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
-import com.watabou.noosa.Game;
+import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Callback;
 
 public class Guidebook extends Item {
 
@@ -42,35 +39,10 @@ public class Guidebook extends Item {
 	@Override
 	public final boolean doPickUp(Hero hero, int pos) {
 		GameScene.pickUpJournal(this, pos);
-		String page = Document.GUIDE_INTRO;
-		Game.runOnRenderThread(new Callback() {
-			@Override
-			public void call() {
-				GameScene.show(new WndStory(Document.ADVENTURERS_GUIDE.pageSprite(page),
-						Document.ADVENTURERS_GUIDE.pageTitle(page),
-						Document.ADVENTURERS_GUIDE.pageBody(page)){
-
-					float elapsed = 0;
-
-					@Override
-					public void update() {
-						elapsed += Game.elapsed;
-						super.update();
-					}
-
-					@Override
-					public void hide() {
-						//prevents accidentally closing
-						if (elapsed >= 1) {
-							super.hide();
-						}
-					}
-				});
-			}
-		});
-		Document.ADVENTURERS_GUIDE.readPage(Document.GUIDE_INTRO);
+		GameScene.flashForDocument(Document.ADVENTURERS_GUIDE, Document.GUIDE_INTRO);
 		Sample.INSTANCE.play( Assets.Sounds.ITEM );
 		hero.spendAndNext( TIME_TO_PICK_UP );
+		GameLog.wipe();
 		return true;
 	}
 

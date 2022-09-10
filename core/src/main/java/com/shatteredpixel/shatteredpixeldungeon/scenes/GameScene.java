@@ -60,6 +60,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
@@ -114,6 +115,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
 import com.watabou.glwrap.Blending;
+import com.watabou.input.ControllerHandler;
 import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
@@ -127,6 +129,7 @@ import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
+import com.watabou.utils.Callback;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Point;
@@ -479,6 +482,21 @@ public class GameScene extends PixelScene {
 					&& (InterlevelScene.mode == InterlevelScene.Mode.DESCEND || InterlevelScene.mode == InterlevelScene.Mode.FALL)) {
 				GLog.h(Messages.get(this, "descend"), Dungeon.depth);
 				Sample.INSTANCE.play(Assets.Sounds.DESCEND);
+
+				//Tutorial
+				if (SPDSettings.intro()){
+
+					if (ControllerHandler.isControllerConnected()){
+						GLog.p(Messages.get(GameScene.class, "tutorial_move_controller"));
+					} else if (SPDSettings.interfaceSize() == 0){
+						GLog.p(Messages.get(GameScene.class, "tutorial_move_mobile"));
+					} else {
+						GLog.p(Messages.get(GameScene.class, "tutorial_move_desktop"));
+					}
+					toolbar.visible = false;
+					status.visible = false;
+					if (inventory != null) inventory.visible = false;
+				}
 				
 				for (Char ch : Actor.chars()){
 					if (ch instanceof DriedRose.GhostHero){
@@ -771,15 +789,19 @@ public class GameScene extends PixelScene {
 		float tagWidth = Tag.SIZE + (tagsOnLeft ? insets.left : insets.right);
 		float tagLeft = tagsOnLeft ? 0 : uiCamera.width - tagWidth;
 
-		float invWidth = (scene.inventory != null && scene.inventory.visible) ? scene.inventory.width() : 0;
-
 		float y = SPDSettings.interfaceSize() == 0 ? scene.toolbar.top()-2 : scene.status.top()-2;
-		if (tagsOnLeft) {
-			scene.log.setRect(tagWidth, y, uiCamera.width - tagWidth - insets.right - invWidth, 0);
-		} else if (invWidth > 0) {
-			scene.log.setRect(insets.left, y, uiCamera.width - invWidth, 0);
+		if (SPDSettings.interfaceSize() == 0){
+			if (tagsOnLeft) {
+				scene.log.setRect(tagWidth, y, uiCamera.width - tagWidth - insets.right, 0);
+			} else {
+				scene.log.setRect(insets.left, y, uiCamera.width - tagWidth - insets.left, 0);
+			}
 		} else {
-			scene.log.setRect(insets.left, y, uiCamera.width - tagWidth - insets.left, 0);
+			if (tagsOnLeft) {
+				scene.log.setRect(tagWidth, y, 160 - tagWidth, 0);
+			} else {
+				scene.log.setRect(insets.left, y, 160 - insets.left, 0);
+			}
 		}
 
 		float pos = scene.toolbar.top();
@@ -1021,9 +1043,42 @@ public class GameScene extends PixelScene {
 		if (scene != null) scene.menu.pickup( item, pos );
 	}
 
-	//TODO currently only works with guidebooks
 	public static void flashForDocument( Document doc, String page ){
-		if (scene != null) scene.menu.flashForPage( doc, page );
+		if (scene != null) {
+			scene.menu.flashForPage( doc, page );
+			//we use a callback here so that regular pickup text appears first
+			if (SPDSettings.intro()) {
+				Game.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						GLog.p(Messages.get(GameScene.class, "tutorial_guidebook"));
+					}
+				});
+			}
+		}
+	}
+
+	public static void endIntro(){
+		if (scene != null){
+			SPDSettings.intro(false);
+			//TODO this is very sudden, should have UI and doors fade in
+			scene.status.visible = true;
+			scene.toolbar.visible = true;
+			if (scene.inventory != null) scene.inventory.visible = true;
+			GameLog.wipe();
+			if (SPDSettings.interfaceSize() == 0){
+				GLog.p(Messages.get(GameScene.class, "tutorial_ui_mobile"));
+			} else {
+				GLog.p(Messages.get(GameScene.class, "tutorial_ui_desktop"));
+			}
+
+			//clear hidden doors, it's floor 1 so there are only the entrance ones
+			for (int i = 0; i < Dungeon.level.length(); i++){
+				if (Dungeon.level.map[i] == Terrain.SECRET_DOOR){
+					Dungeon.level.discover(i);
+				}
+			}
+		}
 	}
 	
 	public static void updateKeyDisplay(){
