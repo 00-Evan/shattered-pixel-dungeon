@@ -771,6 +771,12 @@ public class Hero extends Char {
 		if (getCloser( action.dst )) {
 			return true;
 
+		//Hero moves in place if there is a trap to trigger or grass to trample
+		} else if (!rooted &&
+					(Dungeon.level.traps.get(pos) != null || Dungeon.level.map[pos] == Terrain.HIGH_GRASS)){
+			Dungeon.level.pressCell(pos);
+			spendAndNext( 1 / speed() );
+			return false;
 		} else {
 			ready();
 			return false;
