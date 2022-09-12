@@ -198,6 +198,7 @@ public class Armor extends EquipableItem {
 			if (!detaching.collect()){
 				Dungeon.level.drop(detaching, hero.pos);
 			}
+			updateQuickslot();
 		}
 	}
 
