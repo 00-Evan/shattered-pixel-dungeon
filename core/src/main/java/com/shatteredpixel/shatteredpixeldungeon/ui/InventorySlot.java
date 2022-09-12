@@ -65,6 +65,12 @@ public class InventorySlot extends ItemSlot {
 	}
 
 	@Override
+	public void alpha(float value) {
+		super.alpha(value);
+		bg.alpha(value);
+	}
+
+	@Override
 	public void item( Item item ) {
 
 		super.item( item );

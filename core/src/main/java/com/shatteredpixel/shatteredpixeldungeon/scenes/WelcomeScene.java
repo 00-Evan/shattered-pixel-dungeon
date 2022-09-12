@@ -157,7 +157,8 @@ public class WelcomeScene extends PixelScene {
 					GamesInProgress.selectedClass = null;
 					GamesInProgress.curSlot = GamesInProgress.firstEmpty();
 					if (GamesInProgress.curSlot == -1){
-						ShatteredPixelDungeon.switchScene(StartScene.class);
+						SPDSettings.intro(false);
+						ShatteredPixelDungeon.switchScene(TitleScene.class);
 					} else {
 						ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
 					}

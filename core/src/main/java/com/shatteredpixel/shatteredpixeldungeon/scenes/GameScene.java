@@ -581,9 +581,9 @@ public class GameScene extends PixelScene {
 			} else {
 				GLog.p(Messages.get(GameScene.class, "tutorial_move_desktop"));
 			}
-			toolbar.visible = false;
-			status.visible = false;
-			if (inventory != null) inventory.visible = false;
+			toolbar.visible = toolbar.active = false;
+			status.visible = status.active = false;
+			if (inventory != null) inventory.visible = inventory.active = false;
 		}
 
 		if (Rankings.INSTANCE.totalNumber > 0 && !Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_DIEING)){
@@ -1058,17 +1058,21 @@ public class GameScene extends PixelScene {
 				protected void updateValues(float progress) {
 					if (progress <= 0.5f) {
 						scene.status.alpha(2*progress);
-						scene.status.visible = true;
-						scene.toolbar.visible = false;
+						scene.status.visible = scene.status.active = true;
+						scene.toolbar.visible = scene.toolbar.active = false;
+						if (scene.inventory != null) scene.inventory.visible = scene.inventory.active = false;
 					} else {
 						scene.status.alpha(1f);
-						scene.status.visible = true;
+						scene.status.visible = scene.status.active = true;
 						scene.toolbar.alpha((progress - 0.5f)*2);
-						scene.toolbar.visible = true;
+						scene.toolbar.visible = scene.toolbar.active = true;
+						if (scene.inventory != null){
+							scene.inventory.visible = scene.inventory.active = true;
+							scene.inventory.alpha((progress - 0.5f)*2);
+						}
 					}
 				}
 			});
-			if (scene.inventory != null) scene.inventory.visible = true;
 			GameLog.wipe();
 			if (SPDSettings.interfaceSize() == 0){
 				GLog.p(Messages.get(GameScene.class, "tutorial_ui_mobile"));

@@ -167,6 +167,7 @@ public class ItemSlot extends Button {
 	}
 
 	public void alpha( float value ){
+		if (!active) value *= 0.3f;
 		if (sprite != null)     sprite.alpha(value);
 		if (extra != null)      extra.alpha(value);
 		if (status != null)     status.alpha(value);
