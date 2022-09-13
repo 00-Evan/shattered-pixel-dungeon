@@ -98,7 +98,7 @@ public class HeroSprite extends CharSprite {
 	@Override
 	public void place( int p ) {
 		super.place( p );
-		if (Game.scene() instanceof GameScene) Camera.main.panTo(center(), 5f);
+		if (Game.scene() instanceof GameScene) Camera.main.panFollow(this, 5f);
 	}
 
 	@Override

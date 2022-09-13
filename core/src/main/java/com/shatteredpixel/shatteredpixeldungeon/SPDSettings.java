@@ -56,6 +56,7 @@ public class SPDSettings extends GameSettings {
 	public static final String KEY_ZOOM			= "zoom";
 	public static final String KEY_BRIGHTNESS	= "brightness";
 	public static final String KEY_GRID 	    = "visual_grid";
+	public static final String KEY_CAMERA_FOLLOW= "camera_follow";
 	
 	public static void fullscreen( boolean value ) {
 		put( KEY_FULLSCREEN, value );
@@ -115,6 +116,15 @@ public class SPDSettings extends GameSettings {
 	
 	public static int visualGrid() {
 		return getInt( KEY_GRID, 0, -1, 2 );
+	}
+
+	public static void cameraFollow( int value ){
+		put( KEY_CAMERA_FOLLOW, value );
+		GameScene.updateMap();
+	}
+
+	public static int cameraFollow() {
+		return getInt( KEY_CAMERA_FOLLOW, 4, 1, 4 );
 	}
 	
 	//Interface
