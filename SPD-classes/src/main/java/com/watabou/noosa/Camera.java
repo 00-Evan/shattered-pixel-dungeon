@@ -50,7 +50,8 @@ public class Camera extends Gizmo {
 	int screenHeight;
 	
 	public float[] matrix;
-	
+
+	public boolean scrollable = false;
 	public PointF scroll;
 	public PointF centerOffset;
 	
