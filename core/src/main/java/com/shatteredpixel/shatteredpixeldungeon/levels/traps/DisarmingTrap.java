@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Statue;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -48,18 +49,19 @@ public class DisarmingTrap extends Trap{
 	public void activate() {
 		Heap heap = Dungeon.level.heaps.get( pos );
 
-		if (heap != null){
+		if (heap != null && heap.type == Heap.Type.HEAP){
 			int cell = Dungeon.level.randomRespawnCell( null );
 
+			Item item = heap.pickUp();
+
 			if (cell != -1) {
-				Item item = heap.pickUp();
 				Heap dropped = Dungeon.level.drop( item, cell );
-				dropped.type = heap.type;
-				dropped.sprite.view( dropped );
 				dropped.seen = true;
+				if (item instanceof Honeypot.ShatteredPot){
+					((Honeypot.ShatteredPot)item).movePot(pos, cell);
+				}
 				for (int i : PathFinder.NEIGHBOURS9) Dungeon.level.visited[cell+i] = true;
 				GameScene.updateFog();
-
 				Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 				CellEmitter.get(pos).burst(Speck.factory(Speck.LIGHT), 4);
 			}

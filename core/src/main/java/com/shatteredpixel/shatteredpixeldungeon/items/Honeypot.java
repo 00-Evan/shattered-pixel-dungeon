@@ -189,6 +189,12 @@ public class Honeypot extends Item {
 			}
 		}
 
+		public void movePot( int oldpos, int movePos){
+			for (Bee bee : findBees(oldpos)){
+				updateBee(bee, movePos, null);
+			}
+		}
+
 		public void destroyPot( int potPos ){
 			for (Bee bee : findBees(potPos)){
 				updateBee(bee, -1, null);
