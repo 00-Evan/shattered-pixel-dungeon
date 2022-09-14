@@ -36,7 +36,7 @@ public class WndDocument extends Window {
 		list = new ScrollingListPane();
 		add( list );
 
-		list.addTitle(doc.title());
+		list.addTitle(Messages.titleCase(doc.title()));
 
 		for (String page : doc.pageNames()){
 			boolean found = doc.isPageFound(page);

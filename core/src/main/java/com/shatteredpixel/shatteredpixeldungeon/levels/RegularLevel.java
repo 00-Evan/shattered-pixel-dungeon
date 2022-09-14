@@ -40,7 +40,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
+import com.shatteredpixel.shatteredpixeldungeon.items.journal.DocumentPage;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.GuidePage;
+import com.shatteredpixel.shatteredpixeldungeon.items.journal.RegionLorePage;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
@@ -526,8 +528,15 @@ public abstract class RegularLevel extends Level {
 
 					//TODO maybe drop last page in boss floor with custom logic?
 					if (Dungeon.depth >= targetFloor){
-						//TODO actually drop the page, need to look into documentpage class a bit
-						//if (limit != null) limit.drop();
+						DocumentPage page = RegionLorePage.pageForDoc(regionDoc);
+						page.page(pageToDrop);
+						int cell = randomDropCell();
+						if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
+							map[cell] = Terrain.GRASS;
+							losBlocking[cell] = false;
+						}
+						drop(page, cell);
+						if (limit != null) limit.drop();
 					}
 
 				}

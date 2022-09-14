@@ -39,12 +39,11 @@ public enum Document {
 	ALCHEMY_GUIDE(ItemSpriteSheet.ALCH_PAGE, false),
 
 	INTROS(Icons.STAIRS, true),
-	//TODO separate visuals for these?
-	SEWERS_GUARD(ItemSpriteSheet.GUIDE_PAGE, true),
-	PRISON_WARDEN(ItemSpriteSheet.GUIDE_PAGE, true),
-	CAVES_EXPLORER(ItemSpriteSheet.GUIDE_PAGE, true),
-	CITY_WARLOCK(ItemSpriteSheet.GUIDE_PAGE, true),
-	HALLS_KING(ItemSpriteSheet.GUIDE_PAGE, true);
+	SEWERS_GUARD(ItemSpriteSheet.SEWER_PAGE, true),
+	PRISON_WARDEN(ItemSpriteSheet.PRISON_PAGE, true),
+	CAVES_EXPLORER(ItemSpriteSheet.CAVES_PAGE, true),
+	CITY_WARLOCK(ItemSpriteSheet.CITY_PAGE, true),
+	HALLS_KING(ItemSpriteSheet.HALLS_PAGE, true);
 	
 	Document( int sprite, boolean lore ){
 		pageIcon = null;
