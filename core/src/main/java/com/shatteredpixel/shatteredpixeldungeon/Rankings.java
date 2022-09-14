@@ -68,6 +68,7 @@ public enum Rankings {
 	public int localWon;
 
 	public Record latestDaily;
+	public Record latestDailyReplay = null; //not stored, only meant to be temp
 	public LinkedHashMap<Long, Integer> dailyScoreHistory = new LinkedHashMap<>();
 
 	public void submit( boolean win, Class cause ) {
@@ -99,6 +100,11 @@ public enum Rankings {
 		rec.gameID = UUID.randomUUID().toString();
 
 		if (rec.daily){
+			if (Dungeon.dailyReplay){
+				latestDailyReplay = rec;
+				return;
+			}
+
 			latestDaily = rec;
 			if (Dungeon.seed <= DungeonSeed.TOTAL_SEEDS) {
 				dailyScoreHistory.put(Dungeon.seed, rec.score);
@@ -215,6 +221,7 @@ public enum Rankings {
 	public static final String SEED         = "seed";
 	public static final String CUSTOM_SEED	= "custom_seed";
 	public static final String DAILY	    = "daily";
+	public static final String DAILY_REPLAY	= "daily_replay";
 
 	public void saveGameData(Record rec){
 		rec.gameData = new Bundle();
@@ -276,6 +283,7 @@ public enum Rankings {
 		rec.gameData.put( SEED, Dungeon.seed );
 		rec.gameData.put( CUSTOM_SEED, Dungeon.customSeedText );
 		rec.gameData.put( DAILY, Dungeon.daily );
+		rec.gameData.put( DAILY_REPLAY, Dungeon.dailyReplay );
 	}
 
 	public void loadGameData(Record rec){
@@ -314,10 +322,11 @@ public enum Rankings {
 			Dungeon.seed = rec.gameData.getLong(SEED);
 			Dungeon.customSeedText = rec.gameData.getString(CUSTOM_SEED);
 			Dungeon.daily = rec.gameData.getBoolean(DAILY);
+			Dungeon.dailyReplay = rec.gameData.getBoolean(DAILY_REPLAY);
 		} else {
 			Dungeon.seed = -1;
 			Dungeon.customSeedText = "";
-			Dungeon.daily = false;
+			Dungeon.daily = Dungeon.dailyReplay = false;
 		}
 	}
 	

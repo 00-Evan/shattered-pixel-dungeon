@@ -62,6 +62,24 @@ public class WndDailies extends Window {
 		title.setPos(0, 0);
 		content.add(title);
 
+		if (Rankings.INSTANCE.latestDailyReplay != null){
+			IconButton replayInfo = new IconButton(Icons.get(Icons.CALENDAR)){
+				@Override
+				protected void onClick() {
+					ShatteredPixelDungeon.scene().addToFront(new WndRanking(Rankings.INSTANCE.latestDailyReplay));
+				}
+
+				@Override
+				protected void onPointerUp() {
+					super.onPointerUp();
+					icon.hardlight(1f, 0.5f, 2f);
+				}
+			};
+			replayInfo.icon().hardlight(1f, 0.5f, 2f);
+			replayInfo.setRect(WIDTH-16, 0, 16, 16);
+			add(replayInfo);
+		}
+
 		int top = (int)title.bottom()+3;
 
 		RenderedTextBlock day = PixelScene.renderTextBlock(Messages.get(this, "date"), 7);

@@ -311,36 +311,28 @@ public enum Icons {
 				icon.frame( icon.texture.uvRectBySize( 40, 72, 8, 8 ) );
 				break;
 			case DEPTH:
-				int ofs = Dungeon.daily ? 16 : (!Dungeon.customSeedText.isEmpty() ? 8 : 0);
-				icon.frame( icon.texture.uvRectBySize( 48, 64 + ofs, 6, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 48, 64 + runTypeOfs(), 6, 7 ) );
 				break;
 			case DEPTH_CHASM:
-				ofs = Dungeon.daily ? 16 : (!Dungeon.customSeedText.isEmpty() ? 8 : 0);
-				icon.frame( icon.texture.uvRectBySize( 56, 64 + ofs, 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 56, 64 + runTypeOfs(), 7, 7 ) );
 				break;
 			case DEPTH_WATER:
-				ofs = Dungeon.daily ? 16 : (!Dungeon.customSeedText.isEmpty() ? 8 : 0);
-				icon.frame( icon.texture.uvRectBySize( 64, 64 + ofs, 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 64, 64 + runTypeOfs(), 7, 7 ) );
 				break;
 			case DEPTH_GRASS:
-				ofs = Dungeon.daily ? 16 : (!Dungeon.customSeedText.isEmpty() ? 8 : 0);
-				icon.frame( icon.texture.uvRectBySize( 72, 64 + ofs, 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 72, 64 + runTypeOfs(), 7, 7 ) );
 				break;
 			case DEPTH_DARK:
-				ofs = Dungeon.daily ? 16 : (!Dungeon.customSeedText.isEmpty() ? 8 : 0);
-				icon.frame( icon.texture.uvRectBySize( 80, 64 + ofs, 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 80, 64 + runTypeOfs(), 7, 7 ) );
 				break;
 			case DEPTH_LARGE:
-				ofs = Dungeon.daily ? 16 : (!Dungeon.customSeedText.isEmpty() ? 8 : 0);
-				icon.frame( icon.texture.uvRectBySize( 88, 64 + ofs, 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 88, 64 + runTypeOfs(), 7, 7 ) );
 				break;
 			case DEPTH_TRAPS:
-				ofs = Dungeon.daily ? 16 : (!Dungeon.customSeedText.isEmpty() ? 8 : 0);
-				icon.frame( icon.texture.uvRectBySize( 96, 64 + ofs, 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 96, 64 + runTypeOfs(), 7, 7 ) );
 				break;
 			case DEPTH_SECRETS:
-				ofs = Dungeon.daily ? 16 : (!Dungeon.customSeedText.isEmpty() ? 8 : 0);
-				icon.frame( icon.texture.uvRectBySize( 104, 64 + ofs, 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 104, 64 + runTypeOfs(), 7, 7 ) );
 				break;
 			case CHAL_COUNT:
 				icon.frame( icon.texture.uvRectBySize( 112, 64, 7, 7 ) );
@@ -380,6 +372,20 @@ public enum Icons {
 
 		}
 		return icon;
+	}
+
+	private static int runTypeOfs(){
+		if (Dungeon.daily){
+			if (Dungeon.dailyReplay){
+				return 24;
+			} else {
+				return 16;
+			}
+		} else if (!Dungeon.customSeedText.isEmpty()){
+			return 8;
+		} else {
+			return 0;
+		}
 	}
 	
 	public static Image get( HeroClass cl ) {

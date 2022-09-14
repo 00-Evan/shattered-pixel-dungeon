@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
@@ -126,7 +125,7 @@ public class HeroSelectScene extends PixelScene {
 				if (GamesInProgress.selectedClass == null) return;
 
 				Dungeon.hero = null;
-				Dungeon.daily = false;
+				Dungeon.daily = Dungeon.dailyReplay = false;
 				ActionIndicator.action = null;
 				InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
 
@@ -434,12 +433,8 @@ public class HeroSelectScene extends PixelScene {
 						super.onClick();
 
 						long diff = (SPDSettings.lastDaily() + DAY) - Game.realTime;
-						if (diff > 0){
-							if (diff > 30*HOUR){
-								ShatteredPixelDungeon.scene().addToFront(new WndMessage(Messages.get(HeroSelectScene.class, "daily_unavailable_long", (diff / DAY)+1)));
-							} else {
-								ShatteredPixelDungeon.scene().addToFront(new WndMessage(Messages.get(HeroSelectScene.class, "daily_unavailable")));
-							}
+						if (diff > 24*HOUR){
+							ShatteredPixelDungeon.scene().addToFront(new WndMessage(Messages.get(HeroSelectScene.class, "daily_unavailable_long", (diff / DAY)+1)));
 							return;
 						}
 
@@ -451,23 +446,31 @@ public class HeroSelectScene extends PixelScene {
 						}
 
 						Image icon = Icons.get(Icons.CALENDAR);
-						icon.hardlight(0.5f, 1f, 2f);
+						if (diff <= 0)  icon.hardlight(0.5f, 1f, 2f);
+						else            icon.hardlight(1f, 0.5f, 2f);
 						ShatteredPixelDungeon.scene().addToFront(new WndOptions(
 								icon,
 								Messages.get(HeroSelectScene.class, "daily"),
-								Messages.get(HeroSelectScene.class, "daily_desc"),
+								diff > 0 ?
+									Messages.get(HeroSelectScene.class, "daily_repeat") :
+									Messages.get(HeroSelectScene.class, "daily_desc"),
 								Messages.get(HeroSelectScene.class, "daily_yes"),
 								Messages.get(HeroSelectScene.class, "daily_no")){
 							@Override
 							protected void onSelect(int index) {
 								if (index == 0){
-									long time = Game.realTime - (Game.realTime % DAY);
+									if (diff <= 0) {
+										long time = Game.realTime - (Game.realTime % DAY);
 
-									//earliest possible daily for v1.3.0 is June 20 2022
-									//which is 19,163 days after Jan 1 1970
-									time = Math.max(time, 19_163 * DAY);
+										//earliest possible daily for v1.4.0 is Sept 10 2022
+										//which is 19,245 days after Jan 1 1970
+										time = Math.max(time, 19_245 * DAY);
 
-									SPDSettings.lastDaily(time);
+										SPDSettings.lastDaily(time);
+										Dungeon.dailyReplay = false;
+									} else {
+										Dungeon.dailyReplay = true;
+									}
 
 									Dungeon.hero = null;
 									Dungeon.daily = true;
@@ -500,11 +503,9 @@ public class HeroSelectScene extends PixelScene {
 								} else {
 									text(dateFormat.format(new Date(diff)));
 								}
-								textColor(0x888888);
 								timeToUpdate = Game.realTime + SECOND;
 							} else {
 								text(Messages.get(HeroSelectScene.class, "daily"));
-								textColor(0xFFFFFF);
 								timeToUpdate = Long.MAX_VALUE;
 							}
 						}

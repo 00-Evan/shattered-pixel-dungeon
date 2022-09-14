@@ -280,7 +280,7 @@ public class WelcomeScene extends PixelScene {
 				FileUtils.deleteFile( Rankings.RANKINGS_FILE );
 				ShatteredPixelDungeon.reportException(e);
 			}
-			Dungeon.daily = false;
+			Dungeon.daily = Dungeon.dailyReplay = false;
 
 		}
 
