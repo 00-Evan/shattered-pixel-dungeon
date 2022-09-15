@@ -44,11 +44,16 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.FileUtils;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public enum Rankings {
 	
@@ -76,7 +81,19 @@ public enum Rankings {
 		load();
 		
 		Record rec = new Record();
-		
+
+		//we trim version to just the numbers, ignoring alpha/beta, etc.
+		Pattern p = Pattern.compile("\\d+\\.\\d+\\.\\d+");
+		Matcher m = p.matcher(ShatteredPixelDungeon.version);
+		if (m.find()) {
+			rec.version = "v" + m.group();
+		} else {
+			rec.version = "";
+		}
+
+		DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ROOT);
+		rec.date = format.format(new Date(Game.realTime));
+
 		rec.cause = cause;
 		rec.win		= win;
 		rec.heroClass	= Dungeon.hero.heroClass;
@@ -433,6 +450,9 @@ public enum Rankings {
 		private static final String SEED    = "custom_seed";
 		private static final String DAILY   = "daily";
 
+		private static final String DATE    = "date";
+		private static final String VERSION = "version";
+
 		public Class cause;
 		public boolean win;
 
@@ -450,6 +470,9 @@ public enum Rankings {
 
 		public String customSeed;
 		public boolean daily;
+
+		public String date;
+		public String version;
 
 		public String desc(){
 			if (win){
@@ -474,7 +497,7 @@ public enum Rankings {
 		public void restoreFromBundle( Bundle bundle ) {
 			
 			if (bundle.contains( CAUSE )) {
-				cause   = bundle.getClass( CAUSE );
+				cause = bundle.getClass( CAUSE );
 			} else {
 				cause = null;
 			}
@@ -489,6 +512,13 @@ public enum Rankings {
 			herolevel   = bundle.getInt( LEVEL );
 			depth       = bundle.getInt( DEPTH );
 			ascending   = bundle.getBoolean( ASCEND );
+
+			if (bundle.contains( DATE )){
+				date = bundle.getString( DATE );
+				version = bundle.getString( VERSION );
+			} else {
+				date = version = null;
+			}
 
 			if (bundle.contains(DATA))  gameData = bundle.getBundle(DATA);
 			if (bundle.contains(ID))   gameID = bundle.getString(ID);
@@ -512,6 +542,9 @@ public enum Rankings {
 			bundle.put( LEVEL, herolevel );
 			bundle.put( DEPTH, depth );
 			bundle.put( ASCEND, ascending );
+
+			bundle.put( DATE, date );
+			bundle.put( VERSION, version );
 
 			if (gameData != null) bundle.put( DATA, gameData );
 			bundle.put( ID, gameID );

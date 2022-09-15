@@ -164,8 +164,24 @@ public class WndRanking extends WndTabbed {
 			title.color(Window.TITLE_COLOR);
 			title.setRect( 0, 0, WIDTH, 0 );
 			add( title );
+
+			if (Dungeon.seed != -1){
+				GAP--;
+			}
 			
-			float pos = title.bottom() + GAP + 1;
+			float pos = title.bottom() + 1;
+
+			RenderedTextBlock date = PixelScene.renderTextBlock(record.date, 7);
+			date.hardlight(0xCCCCCC);
+			date.setPos(0, pos);
+			add(date);
+
+			RenderedTextBlock version = PixelScene.renderTextBlock(record.version, 7);
+			version.hardlight(0xCCCCCC);
+			version.setPos(WIDTH-version.width(), pos);
+			add(version);
+
+			pos = date.bottom()+5;
 
 			NumberFormat num = NumberFormat.getInstance(Locale.US);
 			pos = statSlot( this, Messages.get(this, "score"), num.format( Statistics.totalScore ), pos );
@@ -178,7 +194,7 @@ public class WndRanking extends WndTabbed {
 				}
 			};
 			scoreInfo.setSize(16, 16);
-			scoreInfo.setPos(WIDTH-scoreInfo.width(), pos-14);
+			scoreInfo.setPos(WIDTH-scoreInfo.width(), pos-10-GAP);
 			add(scoreInfo);
 			pos += GAP;
 
