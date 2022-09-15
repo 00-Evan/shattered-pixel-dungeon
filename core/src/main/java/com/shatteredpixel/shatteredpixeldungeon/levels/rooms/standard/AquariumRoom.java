@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Piranha;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.watabou.utils.Point;
 
 public class AquariumRoom extends StandardRoom {
 	
@@ -42,7 +43,17 @@ public class AquariumRoom extends StandardRoom {
 	public float[] sizeCatProbs() {
 		return new float[]{3, 1, 0};
 	}
-	
+
+	@Override
+	public boolean canPlaceItem(Point p, Level l) {
+		return super.canPlaceItem(p, l) && l.map[l.pointToCell(p)] != Terrain.WATER;
+	}
+
+	@Override
+	public boolean canPlaceCharacter(Point p, Level l) {
+		return super.canPlaceCharacter(p, l) && l.map[l.pointToCell(p)] != Terrain.WATER;
+	}
+
 	@Override
 	public void paint(Level level) {
 		Painter.fill( level, this, Terrain.WALL );
