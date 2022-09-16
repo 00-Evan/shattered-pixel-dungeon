@@ -265,6 +265,11 @@ abstract public class MissileWeapon extends Weapon {
 		}
 		return this;
 	}
+
+	public String status() {
+		//show quantity even when it is 1
+		return Integer.toString( quantity );
+	}
 	
 	@Override
 	public float castDelay(Char user, int dst) {
