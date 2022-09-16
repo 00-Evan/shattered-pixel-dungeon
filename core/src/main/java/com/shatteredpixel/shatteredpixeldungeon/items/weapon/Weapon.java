@@ -369,7 +369,7 @@ abstract public class Weapon extends KindOfWeapon {
 			float multi = RingOfArcana.enchantPowerMultiplier(attacker);
 			Berserk rage = attacker.buff(Berserk.class);
 			if (rage != null) {
-				multi += rage.enchantFactor(multi);
+				multi = rage.enchantFactor(multi);
 			}
 
 			if (attacker.buff(Talent.SpiritBladesTracker.class) != null
