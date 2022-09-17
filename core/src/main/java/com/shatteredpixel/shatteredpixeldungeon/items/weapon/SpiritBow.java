@@ -376,6 +376,11 @@ public class SpiritBow extends Weapon {
 					user.spendAndNext(castDelay(user, dst));
 					sniperSpecial = false;
 					flurryCount = -1;
+
+					if (flurryActor != null){
+						flurryActor.next();
+						flurryActor = null;
+					}
 					return;
 				}
 				QuickSlotButton.target(enemy);
