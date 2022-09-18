@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TenguDartTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Game;
@@ -176,6 +177,7 @@ public class WandOfBlastWave extends DamageWand {
 				Dungeon.level.occupyCell(ch);
 				if (ch == Dungeon.hero){
 					Dungeon.observe();
+					GameScene.updateFog();
 				}
 			}
 		}), -1);
