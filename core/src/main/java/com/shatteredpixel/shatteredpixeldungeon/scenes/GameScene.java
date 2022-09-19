@@ -570,6 +570,13 @@ public class GameScene extends PixelScene {
 			if (Dungeon.hero.buff(AscensionChallenge.class) != null
 				&& Dungeon.depth == Statistics.highestAscent){
 				Dungeon.hero.buff(AscensionChallenge.class).saySwitch();
+				if (Dungeon.bossLevel()){
+					for (Char ch : Actor.chars()){
+						if (ch instanceof DriedRose.GhostHero){
+							((DriedRose.GhostHero) ch).sayAppeared();
+						}
+					}
+				}
 			}
 
 			InterlevelScene.mode = InterlevelScene.Mode.NONE;
