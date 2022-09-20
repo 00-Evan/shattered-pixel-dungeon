@@ -255,12 +255,12 @@ public enum Document {
 		INTROS.pagesStates.put("City",                          debug ? READ : NOT_FOUND);
 		INTROS.pagesStates.put("Halls",                         debug ? READ : NOT_FOUND);
 
-		SEWERS_GUARD.pagesStates.put("p1", NOT_FOUND);
-		SEWERS_GUARD.pagesStates.put("p2", NOT_FOUND);
-		SEWERS_GUARD.pagesStates.put("p3", NOT_FOUND);
-		SEWERS_GUARD.pagesStates.put("p4", NOT_FOUND);
-		SEWERS_GUARD.pagesStates.put("p5", NOT_FOUND);
-		SEWERS_GUARD.pagesStates.put("p6", NOT_FOUND);
+		SEWERS_GUARD.pagesStates.put("new_position",            debug ? READ : NOT_FOUND);
+		SEWERS_GUARD.pagesStates.put("dangerous",               debug ? READ : NOT_FOUND);
+		SEWERS_GUARD.pagesStates.put("crabs",                   debug ? READ : NOT_FOUND);
+		SEWERS_GUARD.pagesStates.put("guild",                   debug ? READ : NOT_FOUND);
+		SEWERS_GUARD.pagesStates.put("lost",                    debug ? READ : NOT_FOUND);
+		SEWERS_GUARD.pagesStates.put("not_worth",               debug ? READ : NOT_FOUND);
 
 		PRISON_WARDEN.pagesStates.put("p1", NOT_FOUND);
 		PRISON_WARDEN.pagesStates.put("p2", NOT_FOUND);

@@ -36,7 +36,7 @@ import com.watabou.utils.SparseArray;
 public class WndStory extends Window {
 
 	private static final int WIDTH_P = 125;
-	private static final int WIDTH_L = 160;
+	private static final int WIDTH_L = 180;
 	private static final int MARGIN = 2;
 	
 	public static final int ID_SEWERS		= 0;
