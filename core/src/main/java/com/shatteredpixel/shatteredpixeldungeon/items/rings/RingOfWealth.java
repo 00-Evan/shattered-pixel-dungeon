@@ -122,9 +122,22 @@ public class RingOfWealth extends Ring {
 		triesToDrop -= tries;
 		while ( triesToDrop <= 0 ){
 			if (dropsToEquip <= 0){
+				int equipBonus = 0;
+
+				//A second ring of wealth can be at most +1 when calculating wealth bonus for equips
+				//This is to prevent using an upgraded wealth to farm another upgraded wealth and
+				//using the two to get substantially more upgrade value than intended
+				for (Wealth w : target.buffs(Wealth.class)){
+					if (w.buffedLvl() > equipBonus){
+						equipBonus = w.buffedLvl() + Math.min(equipBonus, 2);
+					} else {
+						equipBonus += Math.min(w.buffedLvl(), 2);
+					}
+				}
+
 				Item i;
 				do {
-					i = genEquipmentDrop(bonus - 1);
+					i = genEquipmentDrop(equipBonus - 1);
 				} while (Challenges.isItemBlocked(i));
 				drops.add(i);
 				dropsToEquip = Random.NormalIntRange(5, 10);
@@ -261,16 +274,10 @@ public class RingOfWealth extends Ring {
 				result = a;
 				break;
 			case 3:
-				do {
-					result = Generator.random(Generator.Category.RING);
-				//wealth cannot generate more rings of wealth
-				} while (result instanceof RingOfWealth);
+				result = Generator.random(Generator.Category.RING);
 				break;
 			case 4:
-				do {
-					result = Generator.random(Generator.Category.ARTIFACT);
-				//wealth cannot generate more rings of wealth
-				} while (result instanceof RingOfWealth);
+				result = Generator.random(Generator.Category.ARTIFACT);
 				break;
 		}
 		//minimum level is 1/2/3/4/5/6 when ring level is 1/3/5/7/9/11
