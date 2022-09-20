@@ -261,15 +261,21 @@ public class RingOfWealth extends Ring {
 				result = a;
 				break;
 			case 3:
-				result = Generator.random(Generator.Category.RING);
+				do {
+					result = Generator.random(Generator.Category.RING);
+				//wealth cannot generate more rings of wealth
+				} while (result instanceof RingOfWealth);
 				break;
 			case 4:
-				result = Generator.random(Generator.Category.ARTIFACT);
+				do {
+					result = Generator.random(Generator.Category.ARTIFACT);
+				//wealth cannot generate more rings of wealth
+				} while (result instanceof RingOfWealth);
 				break;
 		}
-		//minimum level is 1/2/3/4/5/6/7/8 when ring level is 1/3/5/7/9/11/13/15
+		//minimum level is 1/2/3/4/5/6 when ring level is 1/3/5/7/9/11
 		if (result.isUpgradable()){
-			int minLevel = Math.min(8, (level+1)/2);
+			int minLevel = (level+1)/2;
 			if (result.level() < minLevel){
 				result.level(minLevel);
 			}
