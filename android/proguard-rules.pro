@@ -19,8 +19,8 @@
 -dontwarn com.badlogic.gdx.jnigen.BuildTarget*
 
 # needed for libGDX skin reflection used in text fields. Perhaps just don't use skin?
--keepnames class com.badlogic.gdx.graphics.Color { *; }
--keepnames class com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle { *; }
+-keep class com.badlogic.gdx.graphics.Color { *; }
+-keep class com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle { *; }
 
 # needed for libGDX controllers
 -keep class com.badlogic.gdx.controllers.android.AndroidControllers { *; }
