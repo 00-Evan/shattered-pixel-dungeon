@@ -505,8 +505,8 @@ public abstract class RegularLevel extends Level {
 				case 5: regionDoc = Document.HALLS_KING; break;
 			}
 
-			//TODO only sewers for the moment
-			if (region <= 1 && !regionDoc.allPagesFound()) {
+			//TODO only sewers/prison for the moment
+			if (region <= 2 && !regionDoc.allPagesFound()) {
 
 				Dungeon.LimitedDrops limit = limitedDocs.get(regionDoc);
 
