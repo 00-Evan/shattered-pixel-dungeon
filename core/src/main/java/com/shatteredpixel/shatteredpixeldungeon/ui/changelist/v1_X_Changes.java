@@ -95,26 +95,42 @@ public class v1_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("ALPHA-2", false, null);
+		changes = new ChangeInfo("ALPHA-3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.MASTERY), "Expanded Tutorial",
-				"The game now starts with a very short guided tutorial that explains game movement, highlights the interface, and encourages reading the game log / guidebook.\n\n" +
-				"Alpha/Beta players will get the tutorial on their first play session, in order to test it and give feedback."));
-
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.GUIDE_PAGE), "Lore Additions",
-				"Most of the code for per-region lore has been implemented, but the lore pages themselves have not been put in the game yet, so these new lore documents are not yet findable."));
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.SEWER_PAGE), "Lore Additions",
+				"The new lore system is now fully implemented and mostly written. I still have a little polishing up to do on most of the pages though, so for the moment only the sewers document is obtainable.\n\n" +
+				"Expect to see the rest of the new lore very soon when the beta releases!"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed (caused by ALPHA):\n" +
-				"_-_ Crash bugs in boss floors\n" +
-				"_-_ Ring of Arcana missing from the item catalog\n" +
-				"_-_ Distortion traps only summoning piranhas\n" +
-				"_-_ Dungeon introduction text not being set as found\n" +
-				"_-_ Various minor textual errors\n\n" +
+				"_-_ Various errors with new tutorial\n" +
+				"_-_ Cloak of Shadows spawning incorrectly\n" +
+				"_-_ Berserker getting a much bigger enchantment boost than intended\n\n" +
 				"Fixed (existed prior to ALPHA):\n" +
-				"_-_ Giant necromancers summoning skeletons into doorways"));
+				"_-_ Various minor visual bugs\n" +
+				"_-_ Honeypots not reacting correctly to being teleported\n" +
+				"_-_ Controller axis mapping issues on Android\n" +
+				"_-_ Various rare fog of war errors when the hero was knocked a high distance\n" +
+				"_-_ Reading spellbook not spending a turn if the scroll was cancelled\n" +
+				"_-_ Sentries displaying Tengu bombs"));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Throwing weapons now show their quantity in orange when one is about to break\n" +
+				"_-_ Blooming enchant now tries to avoid placing grass on the hero\n" +
+				"_-_ Hero now pauses before ascending/descending if enemies are nearby\n" +
+				"_-_ Hero can now trample grass and trigger traps they are standing on by waiting\n" +
+				"_-_ The controller pointer can now pan the game camera\n" +
+				"_-_ Added a setting to adjust camera follow intensity\n" +
+				"_-_ Daily runs can now be replayed for practise\n" +
+				"_-_ Heroes can now be renamed individually\n" +
+				"_-_ Added date and version to rankings windows\n" +
+				"_-_ Items and enemies can no longer spawn in aquarium room water\n" +
+				"_-_ Added some ascension dialogue for the ghost hero"));
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_AMETHYST), new RingOfWealth().trueName(),
+				"To prevent using a ring of wealth to farm more rings of wealth to then farm very high level equipment, a second ring of wealth now cannot boost wealth equipment drops by more than +1."));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -147,23 +163,28 @@ public class v1_X_Changes {
 				"_- Endless Rage_ Now grants bonuses to berserk duration and cooldown when above 100% rage.\n" +
 				"_- Berserking Stamina_ has been replaced with _Deathless Fury_, which lets berserking automatically trigger just like before, but at a high cooldown cost."));
 
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.MASTERY), "Tutorial Additions",
+				"A short guided tutorial has been added at the start of the game for new players. This tutorial guides the player through their first few actions, and encourages reading the game log and guidebook.\n\n" +
+				"As part of this tutorial change, initial story texts and the guidebook have been slightly adjusted, and there is a new pop-up for controller players that explains how to use the in-game cursor.\n\n" +
+				"_Note that this tutorial will show up for beta players so they can try it out and give feedback._"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
 		changes.hardlight(CharSprite.WARNING);
 		changeInfos.add(changes);
 
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.MASTERY), "Tutorial Changes",
-				"_-_ Adjusted story text at the very start of the game"));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.DISPLAY), "Interface Changes",
+		/*changes.addButton(new ChangeButton(Icons.get(Icons.DISPLAY), "Interface Changes",
 				"_-_ Added a new tab to the journal window for lore documents\n" +
-				"_-_ Added a popup window on the first game screen to explain controller pointer functionality"));
+				"_-_ Added a popup window on the first game screen to explain controller pointer functionality"));*/
 
 		changes.addButton(new ChangeButton( new TalentIcon(Talent.EMPOWERED_STRIKE), "T3 Talent Redesigns",
 				"I've made some pretty significant changes to three T3 talents that were either unpopular or too simplistic:\n\n" +
 				"_- Empowered Strike_ now gives a little less direct staff damage, but also boosts the staff's on-hit effect. This should make it more interesting while still encouraging staff melee play.\n" +
 				"_- Excess Charge_ now triggers when the Mage's staff is zapped at full charge, instead of on-hit, but the barrier effect is a bit stronger. This should encourage a mix of staff melee and zapping, instead of just pure melee at full charge.\n\n" +
 				"_- Bounty Hunter_ now increases enemy drop chance, instead of providing gold. This should make it more varied and interesting. The bonus also gets notably higher at high preparation charge, instead of scaling linearly."));
-		//Talent changes
+
+		changes.addButton(new ChangeButton( new ItemSprite(ItemSpriteSheet.LONGSWORD, new ItemSprite.Glowing(0x0000FF)), "Blocking Enchant Redesign",
+				"Blocking has been slightly redesigned to provide a more visible benefit. Instead of always granting a little armor, the enchantment now has a chance to grant a larger shield.\n\n" +
+				"I don't expect that this will make the enchantment significantly stronger or weaker, but it should feel more impactful."));
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 1",
 				"_-_ Adjusted default controller bindings slightly\n" +
@@ -174,7 +195,8 @@ public class v1_X_Changes {
 				"_-_ Improved chains vfx, especially for prison guards\n" +
 				"_-_ Antimagic now applies to more items\n" +
 				"_-_ Waiting now always takes exactly 1 turn, regardless of hero speed\n" +
-				"_-_ Wand of Disintegration no longer harms undiscovered neutral characters"));
+				"_-_ Wand of Disintegration no longer harms undiscovered neutral characters\n" +
+				"_-_ Rotberry plant now gives a small puff of toxic gas when trampled"));
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 2",
 				"_-_ Improved room merging logic in a few specific situations\n" +
@@ -227,16 +249,12 @@ public class v1_X_Changes {
 				"_-_ Death to aqua blast counting as death to a geyser trap\n" +
 				"_-_ Albino rats causing bleed when hitting for 0 damage\n" +
 				"_-_ Prizes from sacrifice rooms now always being the same with the same dungeon seed\n" +
-				"_-_ Necromancers being able to summon through crystal doors"));
+				"_-_ Necromancers being able to summon through crystal doors\n" +
+				"_-_ Giant necromancers summoning skeletons into doorways"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight(CharSprite.POSITIVE);
 		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.SHORTSWORD, new ItemSprite.Glowing( 0x000000 )), "Annoying Curse",
-				"A very critical buff has been given to the annoying curse:\n\n" +
-				"_-_ Added 5 new regular dialogue lines, for 10 total\n" +
-				"_-_ Added 3 additional new lines that trigger rarely"));
 
 		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_AMETHYST), new RingOfWealth().trueName(),
 				"I'm making a few improvements to the ring of wealth, mainly to make it more worth upgrading:\n\n" +
@@ -251,6 +269,11 @@ public class v1_X_Changes {
 		changes.addButton(new ChangeButton( new TelekineticGrab(),
 				"I'm enhancing the value of telekinetic grab a bit for users with multiple thrown weapons:\n\n" +
 				"_-_ now grabs all items at a location or stuck to an enemy, not just the first one."));
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.SHORTSWORD, new ItemSprite.Glowing( 0x000000 )), "Annoying Curse",
+				"A very critical buff has been given to the annoying curse:\n\n" +
+				"_-_ Added 5 new regular dialogue lines, for 10 total\n" +
+				"_-_ Added 3 additional new lines that trigger rarely"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
 		changes.hardlight(CharSprite.NEGATIVE);

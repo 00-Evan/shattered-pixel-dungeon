@@ -88,7 +88,7 @@ public class WelcomeScene extends PixelScene {
 			return;
 		} else {
 			//TODO temporary so alpha/beta players can test the tutorial
-			if (previousVersion <= 651){
+			if (previousVersion <= 653){
 				SPDSettings.intro(true);
 			}
 		}
