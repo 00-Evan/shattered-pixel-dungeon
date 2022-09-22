@@ -228,7 +228,9 @@ public class ItemSlot extends Button {
 
 		status.text( item.status() );
 
+		//thrown weapons on their last use show quantity in orange, unless they are single-use
 		if (item instanceof MissileWeapon
+				&& ((MissileWeapon) item).durabilityLeft() <= 50f
 				&& ((MissileWeapon) item).durabilityLeft() <= ((MissileWeapon) item).durabilityPerUse()){
 			status.hardlight(WARNING);
 		} else {
