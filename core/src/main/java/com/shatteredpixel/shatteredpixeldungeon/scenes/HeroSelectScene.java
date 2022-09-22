@@ -282,7 +282,7 @@ public class HeroSelectScene extends PixelScene {
 	@Override
 	public void update() {
 		super.update();
-		btnExit.visible = !SPDSettings.intro() || Rankings.INSTANCE.totalNumber > 0;
+		btnExit.visible = !SPDSettings.intro();
 		//do not fade when a window is open
 		for (Object v : members){
 			if (v instanceof Window) resetFade();
