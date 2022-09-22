@@ -143,20 +143,20 @@ public class TextInput extends Component {
 	}
 
 	public void pasteFromClipboard(){
-		if (!Gdx.app.getClipboard().hasContents()) return;
+		String contents = Gdx.app.getClipboard().getContents();
+		if (contents == null) return;
 
 		if (!textField.getSelection().isEmpty()){
 			//just use cut, but override clipboard
-			String existingClip = Gdx.app.getClipboard().getContents();
 			textField.cut();
-			Gdx.app.getClipboard().setContents(existingClip);
+			Gdx.app.getClipboard().setContents(contents);
 		}
 
 		String existing = textField.getText();
 		int cursorIdx = textField.getCursorPosition();
 
-		textField.setText(existing.substring(0, cursorIdx) + Gdx.app.getClipboard().getContents() + existing.substring(cursorIdx));
-		textField.setCursorPosition(cursorIdx + Gdx.app.getClipboard().getContents().length());
+		textField.setText(existing.substring(0, cursorIdx) + contents + existing.substring(cursorIdx));
+		textField.setCursorPosition(cursorIdx + contents.length());
 	}
 
 	@Override
