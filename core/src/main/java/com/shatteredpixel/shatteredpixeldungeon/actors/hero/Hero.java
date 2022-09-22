@@ -1143,10 +1143,10 @@ public class Hero extends Char {
 	
 	public void rest( boolean fullRest ) {
 		spendAndNextConstant( TIME_TO_REST );
+		if (hasTalent(Talent.HOLD_FAST)){
+			Buff.affect(this, HoldFast.class);
+		}
 		if (!fullRest) {
-			if (hasTalent(Talent.HOLD_FAST)){
-				Buff.affect(this, HoldFast.class);
-			}
 			if (sprite != null) {
 				sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "wait"));
 			}
