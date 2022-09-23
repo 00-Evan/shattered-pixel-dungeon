@@ -53,6 +53,7 @@ public class WndDocument extends Window {
 								doc.pageTitle(page),
 								doc.pageBody(page) ));
 						doc.readPage(page);
+						hardlight(Window.WHITE);
 						return true;
 					} else {
 						return false;
@@ -62,6 +63,8 @@ public class WndDocument extends Window {
 			if (!found){
 				item.hardlight(0x999999);
 				item.hardlightIcon(0x999999);
+			} else if (!doc.isPageRead(page)){
+				item.hardlight(Window.TITLE_COLOR);
 			}
 			list.addItem(item);
 		}
