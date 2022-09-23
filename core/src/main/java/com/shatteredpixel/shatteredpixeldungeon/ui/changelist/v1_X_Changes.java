@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.WoollyBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfAntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfMetamorphosis;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.TelekineticGrab;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTransfusion;
@@ -87,53 +88,9 @@ public class v1_X_Changes {
 	}
 
 	public static void add_v1_4_Changes( ArrayList<ChangeInfo> changeInfos ) {
-		ChangeInfo changes = new ChangeInfo("v1.4-ALPHA", true, "");
+		ChangeInfo changes = new ChangeInfo("v1.4-BETA", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("ALPHA-4", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed and Android-specific bug that caused crashes with text input windows"));
-
-		changes = new ChangeInfo("ALPHA-3", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.SEWER_PAGE), "Lore Additions",
-				"The new lore system is now fully implemented and mostly written. I still have a little polishing up to do on most of the pages though, so for the moment only the sewers document is obtainable.\n\n" +
-				"Expect to see the rest of the new lore very soon when the beta releases!"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by ALPHA):\n" +
-				"_-_ Various errors with new tutorial\n" +
-				"_-_ Cloak of Shadows spawning incorrectly\n" +
-				"_-_ Berserker getting a much bigger enchantment boost than intended\n\n" +
-				"Fixed (existed prior to ALPHA):\n" +
-				"_-_ Various minor visual bugs\n" +
-				"_-_ Honeypots not reacting correctly to being teleported\n" +
-				"_-_ Controller axis mapping issues on Android\n" +
-				"_-_ Various rare fog of war errors when the hero was knocked a high distance\n" +
-				"_-_ Reading spellbook not spending a turn if the scroll was cancelled\n" +
-				"_-_ Sentries displaying Tengu bombs"));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Throwing weapons now show their quantity in orange when one is about to break\n" +
-				"_-_ Blooming enchant now tries to avoid placing grass on the hero\n" +
-				"_-_ Hero now pauses before ascending/descending if enemies are nearby\n" +
-				"_-_ Hero can now trample grass and trigger traps they are standing on by waiting\n" +
-				"_-_ The controller pointer can now pan the game camera\n" +
-				"_-_ Added a setting to adjust camera follow intensity\n" +
-				"_-_ Daily runs can now be replayed for practise\n" +
-				"_-_ Heroes can now be renamed individually\n" +
-				"_-_ Added date and version to rankings windows\n" +
-				"_-_ Items and enemies can no longer spawn in aquarium room water\n" +
-				"_-_ Added some ascension dialogue for the ghost hero"));
-
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_AMETHYST), new RingOfWealth().trueName(),
-				"To prevent using a ring of wealth to farm more rings of wealth to then farm very high level equipment, a second ring of wealth now cannot boost wealth equipment drops by more than +1."));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -141,14 +98,13 @@ public class v1_X_Changes {
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "To-Do",
 				"The following still needs to be implemented for v1.4 to release:\n\n" +
-				"_-_ Expansions to the game's lore, which will include multiple document pages spread through the dungeon\n" +
-				"_-_ A new short tutorial  at the start of the game\n" +
 				"_-_ Improvements to various game interfaces for desktop users\n" +
-				"_-_ other balance tweaks.\n" +
-				"_-_ other small tweaks and bugfixes"));
+				"_-_ any critical balance tweaks following the beta changes\n" +
+				"_-_ other small tweaks and bugfixes following the beta changes"));
 
 		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.GUIDE_PAGE), "Lore Additions",
-				"More coming here soon, but for now I have slightly adjusted some of the region introduction text, and added them to the document system so they are considered lore entries like the documents coming soon."));
+				"_30 pages of lore text have been added to the game, scattered around the regions of the dungeon!_\n\n" +
+				"These pages are found through the dungeon and go into a new tab in the journal window. Each region contains 6 pages that make up a short story that gives more details about that region and the people who have been there before the player."));
 
 		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_TOURMALINE), new RingOfArcana().trueName(),
 				"_A new ring has been added that enhances enchantments and glyphs!_\n\n" +
@@ -167,7 +123,8 @@ public class v1_X_Changes {
 				"_- Berserking Stamina_ has been replaced with _Deathless Fury_, which lets berserking automatically trigger just like before, but at a high cooldown cost."));
 
 		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.MASTERY), "Tutorial Additions",
-				"A short guided tutorial has been added at the start of the game for new players. This tutorial guides the player through their first few actions, and encourages reading the game log and guidebook.\n\n" +
+				"_A short guided tutorial has been added at the start of the game for new players._\n\n" +
+				"This tutorial guides the player through their first few actions, and encourages reading the game log and guidebook.\n\n" +
 				"As part of this tutorial change, initial story texts and the guidebook have been slightly adjusted, and there is a new pop-up for controller players that explains how to use the in-game cursor.\n\n" +
 				"_Note that this tutorial will show up for beta players so they can try it out and give feedback._"));
 
@@ -190,26 +147,36 @@ public class v1_X_Changes {
 				"I don't expect that this will make the enchantment significantly stronger or weaker, but it should feel more impactful."));
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 1",
+				"_-_ Daily runs can now be replayed for practise\n" +
+				"_-_ Waiting now always takes exactly 1 turn, regardless of hero speed\n" +
+				"_-_ Hero can now trample grass and trigger traps they are standing on by waiting\n" +
+				"_-_ Hero now pauses before ascending/descending if enemies are nearby\n" +
+				"_-_ Goo's pump up attack now always gives the hero at least 1 action to react\n" +
+				"_-_ Improved behaviour of ally AI when told to hold a position\n" +
+				"_-_ Slightly adjusted enemy stats on ascension to smooth out difficulty\n" +
+				"_-_ Rotberry plant now gives a small puff of toxic gas when trampled\n" +
+				"_-_ Items and enemies can no longer spawn in aquarium room water\n" +
+				"_-_ Blooming enchant now tries to avoid placing grass on the hero\n" +
+				"_-_ Wand of Disintegration no longer harms undiscovered neutral characters\n" +
+				"_-_ The scroll holder can now hold arcane resin\n" +
+				"_-_ Improved room merging logic in a few specific situations"));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 2",
+				"_-_ Throwing weapons now show their quantity in orange when one is about to break\n" +
+				"_-_ Item boosts from potion of mastery or curse infusion now change the color of text in that item's item slot\n" +
+				"_-_ Various minor UI improvements to hero select and rankings\n" +
+				"_-_ Added some ascension dialogue for the ghost hero\n" +
+				"_-_ Slightly improved the marsupial rat attacking animation\n" +
+				"_-_ Improved chains vfx, especially for prison guards\n" +
+				"_-_ Added sacrifical fire and demon spawners to the landmarks page\n" +
+				"_-_ Added a copy and paste button to text input windows\n" +
+				"_-_ Added more achievements to Shattered on Google Play Games\n" +
 				"_-_ Adjusted default controller bindings slightly\n" +
 				"_-_ The 'switch enemy' keybind now also switches tabs on tabbed windows\n" +
 				"_-_ On desktop, the game now attempts to keep mouse and controller pointer potions in sync\n" +
-				"_-_ Slightly improved the marsupial rat attacking animation\n" +
-				"_-_ Item boosts from potion of mastery or curse infusion now change the color of text in that item's item slot\n" +
-				"_-_ Improved chains vfx, especially for prison guards\n" +
-				"_-_ Antimagic now applies to more items\n" +
-				"_-_ Waiting now always takes exactly 1 turn, regardless of hero speed\n" +
-				"_-_ Wand of Disintegration no longer harms undiscovered neutral characters\n" +
-				"_-_ Rotberry plant now gives a small puff of toxic gas when trampled"));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 2",
-				"_-_ Improved room merging logic in a few specific situations\n" +
-				"_-_ Goo's pump up attack now always gives the hero at least 1 action to react\n" +
-				"_-_ Improved behaviour of ally AI when told to hold a position\n" +
-				"_-_ Added sacrifical fire and demon spawners to the landmarks page\n" +
-				"_-_ Added a copy and paste button to text input windows\n" +
-				"_-_ The scroll holder can now hold arcane resin\n" +
-				"_-_ Added more achievements to Shattered on Google Play Games\n" +
-				"_-_ Slightly adjusted enemy stats on ascension to smooth out difficulty"));
+				"_-_ Added a setting to adjust camera follow intensity\n" +
+				"_-_ The controller pointer can now pan the game camera\n" +
+				"_-_ Heroes can now be renamed individually"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 1",
 				"Fixed\n" +
@@ -223,6 +190,7 @@ public class v1_X_Changes {
 				"_-_ Various cases where the friendly fire badge was not correctly awarded\n" +
 				"_-_ 13th armor ability incorrectly clearing champion enemy buffs\n" +
 				"_-_ Cases where piranhas could live for a turn on land\n" +
+				"_-_ Honeypots not reacting correctly to being teleported\n" +
 				"_-_ Rare cases where lost inventory and items on stairs could softlock the game\n" +
 				"_-_ Hero armor transferring rarely deleting the Warrior's broken seal"));
 
@@ -232,7 +200,9 @@ public class v1_X_Changes {
 				"_-_ Various incorrect interaction between kinetic/viscosity and damage mitigating effects\n" +
 				"_-_ Wand of Fireblast sometimes not igniting adjacent item or barricades\n" +
 				"_-_ Ring of Furor not affecting Sniper special abilities\n" +
+				"_-_ Controller axis mapping issues on Android\n" +
 				"_-_ Armband not breaking invisibility\n" +
+				"_-_ Various rare fog of war errors when the hero was knocked a high distance\n" +
 				"_-_ Chalice of Blood benefitting from recharging while hero is starving\n" +
 				"_-_ Cases where explosive curse would create explosions at the wrong location\n" +
 				"_-_ Rare cases where ranged allies would refuse to target nearby enemies\n" +
@@ -253,6 +223,7 @@ public class v1_X_Changes {
 				"_-_ Albino rats causing bleed when hitting for 0 damage\n" +
 				"_-_ Prizes from sacrifice rooms now always being the same with the same dungeon seed\n" +
 				"_-_ Necromancers being able to summon through crystal doors\n" +
+				"_-_ Reading spellbook not spending a turn if the scroll was cancelled\n" +
 				"_-_ Giant necromancers summoning skeletons into doorways"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
@@ -263,7 +234,8 @@ public class v1_X_Changes {
 				"I'm making a few improvements to the ring of wealth, mainly to make it more worth upgrading:\n\n" +
 				"_-_ Now gives a rare drop every 0-20 kills, up from every 0-25\n" +
 				"_-_ Now gives an equipment drop every 5-10 rare drops, down from every 4-8\n" +
-				"_-_ Equipment drops are now guaranteed to be at least level 1/2/3/4/5/6 at ring level 1/3/5/7/9/11, up from 1/3/6/10/15/21"));
+				"_-_ Equipment drops are now guaranteed to be at least level 1/2/3/4/5/6 at ring level 1/3/5/7/9/11, up from 1/3/6/10/15/21\n\n" +
+				"To limit the effectiveness of farming for a long time to stack up two highly upgraded ring of wealth, the level for equipment drops is based on your most powerful wealth ring, and a second one can only boost the level by another +1 at most."));
 
 		changes.addButton(new ChangeButton( new WandOfTransfusion(),
 				"I'm boosting the wand of transfusion's damage scaling versus undead enemies slightly:\n\n" +
@@ -281,6 +253,9 @@ public class v1_X_Changes {
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
 		changes.hardlight(CharSprite.NEGATIVE);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.EXOTIC_GYFU), new ScrollOfAntiMagic().trueName(),
+				"Antimagic now also suppresses the positive effects of scrolls and artifacts while it is applied to the hero." ));
 
 	}
 

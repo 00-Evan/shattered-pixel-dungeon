@@ -214,7 +214,9 @@ public class WelcomeScene extends PixelScene {
 			message = Messages.get(this, "what_msg");
 		}
 
-		message = "Greetings Alpha Testers!\n\nAll of the gameplay changes for v1.4.0 are in place, but there's still a bit of UI/UX work and lore to finish up.\n\nKeep in mind that this is an early release, so bugs are to be expected. Please let me know if you encounter any!";
+		message = "Greetings Beta Testers!\n\n" +
+				"This beta includes all of the content for v1.4.0, minus a few UI tweaks that I'm hopeing to make over the next week. There's a lot of new text in particular this time, so please help out the translation project if you're able to!\n\n" +
+				"You'll probably get a chance to try the new tutorial as well. Please let me know if you encounter any issues!";
 
 		text.text(message, Math.min(w-20, 300));
 		float textSpace = okay.top() - topRegion - 4;
