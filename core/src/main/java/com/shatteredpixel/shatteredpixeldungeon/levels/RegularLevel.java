@@ -505,8 +505,8 @@ public abstract class RegularLevel extends Level {
 				case 5: regionDoc = Document.HALLS_KING; break;
 			}
 
-			//TODO only sewers-caves for the moment
-			if (region <= 3 && !regionDoc.allPagesFound()) {
+			//TODO no halls document at the moment
+			if (region <=4 && !regionDoc.allPagesFound()) {
 
 				Dungeon.LimitedDrops limit = limitedDocs.get(regionDoc);
 
