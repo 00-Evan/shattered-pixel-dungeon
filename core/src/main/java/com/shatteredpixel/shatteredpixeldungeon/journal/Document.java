@@ -263,18 +263,18 @@ public enum Document {
 		SEWERS_GUARD.pagesStates.put("not_worth",               debug ? READ : NOT_FOUND);
 
 		PRISON_WARDEN.pagesStates.put("journal",                debug ? READ : NOT_FOUND);
-		PRISON_WARDEN.pagesStates.put("recruits",                     debug ? READ : NOT_FOUND);
+		PRISON_WARDEN.pagesStates.put("recruits",               debug ? READ : NOT_FOUND);
 		PRISON_WARDEN.pagesStates.put("mines",                  debug ? READ : NOT_FOUND);
 		PRISON_WARDEN.pagesStates.put("rotberry",               debug ? READ : NOT_FOUND);
-		PRISON_WARDEN.pagesStates.put("no_support",              debug ? READ : NOT_FOUND);
+		PRISON_WARDEN.pagesStates.put("no_support",             debug ? READ : NOT_FOUND);
 		PRISON_WARDEN.pagesStates.put("letter",                 debug ? READ : NOT_FOUND);
 
-		CAVES_EXPLORER.pagesStates.put("p1", NOT_FOUND);
-		CAVES_EXPLORER.pagesStates.put("p2", NOT_FOUND);
-		CAVES_EXPLORER.pagesStates.put("p3", NOT_FOUND);
-		CAVES_EXPLORER.pagesStates.put("p4", NOT_FOUND);
-		CAVES_EXPLORER.pagesStates.put("p5", NOT_FOUND);
-		CAVES_EXPLORER.pagesStates.put("p6", NOT_FOUND);
+		CAVES_EXPLORER.pagesStates.put("expedition",            debug ? READ : NOT_FOUND);
+		CAVES_EXPLORER.pagesStates.put("gold",                  debug ? READ : NOT_FOUND);
+		CAVES_EXPLORER.pagesStates.put("troll",                 debug ? READ : NOT_FOUND);
+		CAVES_EXPLORER.pagesStates.put("city",                  debug ? READ : NOT_FOUND);
+		CAVES_EXPLORER.pagesStates.put("alive",                 debug ? READ : NOT_FOUND);
+		CAVES_EXPLORER.pagesStates.put("report",                debug ? READ : NOT_FOUND);
 
 		CITY_WARLOCK.pagesStates.put("p1", NOT_FOUND);
 		CITY_WARLOCK.pagesStates.put("p2", NOT_FOUND);

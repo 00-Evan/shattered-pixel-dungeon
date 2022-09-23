@@ -38,12 +38,6 @@ public class WndStory extends Window {
 	private static final int WIDTH_P = 125;
 	private static final int WIDTH_L = 180;
 	private static final int MARGIN = 2;
-	
-	public static final int ID_SEWERS		= 0;
-	public static final int ID_PRISON		= 1;
-	public static final int ID_CAVES		= 2;
-	public static final int ID_CITY     	= 3;
-	public static final int ID_HALLS		= 4;
 
 	private IconTitle ttl;
 	private RenderedTextBlock tf;
@@ -84,7 +78,7 @@ public class WndStory extends Window {
 		blocker.camera = PixelScene.uiCamera;
 		add(blocker);
 		
-		resize( (int)(tf.width() + MARGIN * 2), (int)Math.min( tf.bottom()+MARGIN, 180 ) );
+		resize( width + 2*MARGIN, (int)(tf.bottom()+MARGIN) );
 	}
 
 	public WndStory setDelays(float appearDelay, float disappearDelay){
