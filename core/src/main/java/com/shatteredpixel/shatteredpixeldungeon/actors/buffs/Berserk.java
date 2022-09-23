@@ -93,7 +93,7 @@ public class Berserk extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public boolean act() {
-		if (berserking()){
+		if (state == State.BERSERK){
 			ShieldBuff buff = target.buff(WarriorShield.class);
 			if (target.shielding() > 0) {
 				//lose 2.5% of shielding per turn, but no less than 1
