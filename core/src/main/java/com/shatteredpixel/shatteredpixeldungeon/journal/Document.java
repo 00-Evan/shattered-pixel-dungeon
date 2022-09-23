@@ -276,19 +276,19 @@ public enum Document {
 		CAVES_EXPLORER.pagesStates.put("alive",                 debug ? READ : NOT_FOUND);
 		CAVES_EXPLORER.pagesStates.put("report",                debug ? READ : NOT_FOUND);
 
-		CITY_WARLOCK.pagesStates.put("p1", NOT_FOUND);
-		CITY_WARLOCK.pagesStates.put("p2", NOT_FOUND);
-		CITY_WARLOCK.pagesStates.put("p3", NOT_FOUND);
-		CITY_WARLOCK.pagesStates.put("p4", NOT_FOUND);
-		CITY_WARLOCK.pagesStates.put("p5", NOT_FOUND);
-		CITY_WARLOCK.pagesStates.put("p6", NOT_FOUND);
+		CITY_WARLOCK.pagesStates.put("old_king",                debug ? READ : NOT_FOUND);
+		CITY_WARLOCK.pagesStates.put("resistance",              debug ? READ : NOT_FOUND);
+		CITY_WARLOCK.pagesStates.put("failure",                 debug ? READ : NOT_FOUND);
+		CITY_WARLOCK.pagesStates.put("more_powerful",           debug ? READ : NOT_FOUND);
+		CITY_WARLOCK.pagesStates.put("new_power",               debug ? READ : NOT_FOUND);
+		CITY_WARLOCK.pagesStates.put("seen_it",                 debug ? READ : NOT_FOUND);
 
-		HALLS_KING.pagesStates.put("p1", NOT_FOUND);
-		HALLS_KING.pagesStates.put("p2", NOT_FOUND);
-		HALLS_KING.pagesStates.put("p3", NOT_FOUND);
-		HALLS_KING.pagesStates.put("p4", NOT_FOUND);
-		HALLS_KING.pagesStates.put("p5", NOT_FOUND);
-		HALLS_KING.pagesStates.put("p6", NOT_FOUND);
+		HALLS_KING.pagesStates.put("Rejection",                 debug ? READ : NOT_FOUND);
+		HALLS_KING.pagesStates.put("amulet",                    debug ? READ : NOT_FOUND);
+		HALLS_KING.pagesStates.put("ritual",                    debug ? READ : NOT_FOUND);
+		HALLS_KING.pagesStates.put("new_king",                  debug ? READ : NOT_FOUND);
+		HALLS_KING.pagesStates.put("thing",                     debug ? READ : NOT_FOUND);
+		HALLS_KING.pagesStates.put("attrition",                 debug ? READ : NOT_FOUND);
 
 	}
 	
