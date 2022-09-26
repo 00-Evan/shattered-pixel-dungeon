@@ -31,7 +31,7 @@ public class AcidicSprite extends ScorpioSprite {
 		
 		texture( Assets.Sprites.SCORPIO );
 		
-		TextureFilm frames = new TextureFilm( texture, 18, 17 );
+		TextureFilm frames = new TextureFilm( texture, 17, 17 );
 		
 		idle = new Animation( 12, true );
 		idle.frames( frames, 14, 14, 14, 14, 14, 14, 14, 14, 15, 16, 15, 16, 15, 16 );
