@@ -235,7 +235,7 @@ public class v1_X_Changes {
 				"_-_ Now gives a rare drop every 0-20 kills, up from every 0-25\n" +
 				"_-_ Now gives an equipment drop every 5-10 rare drops, down from every 4-8\n" +
 				"_-_ Equipment drops are now guaranteed to be at least level 1/2/3/4/5/6 at ring level 1/3/5/7/9/11, up from 1/3/6/10/15/21\n\n" +
-				"To limit the effectiveness of farming for a long time to stack up two highly upgraded ring of wealth, the level for equipment drops is based on your most powerful wealth ring, and a second one can only boost the level by another +1 at most."));
+				"To limit the effectiveness of farming for a long time to stack up two highly upgraded rings of wealth, the level for equipment drops is based on your most powerful wealth ring, and a second one can only boost the level by another +1 at most."));
 
 		changes.addButton(new ChangeButton( new WandOfTransfusion(),
 				"I'm boosting the wand of transfusion's damage scaling versus undead enemies slightly:\n\n" +
@@ -243,7 +243,7 @@ public class v1_X_Changes {
 
 		changes.addButton(new ChangeButton( new TelekineticGrab(),
 				"I'm enhancing the value of telekinetic grab a bit for users with multiple thrown weapons:\n\n" +
-				"_-_ now grabs all items at a location or stuck to an enemy, not just the first one."));
+				"_-_ Now grabs all items at a location or stuck to an enemy, not just the first one."));
 
 		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.SHORTSWORD, new ItemSprite.Glowing( 0x000000 )), "Annoying Curse",
 				"A very critical buff has been given to the annoying curse:\n\n" +
