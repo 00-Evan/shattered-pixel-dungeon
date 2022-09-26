@@ -111,20 +111,19 @@ public class WndGame extends Window {
 		}
 
 		// Main menu
-		if (!SPDSettings.intro()) {
-			addButton(curBtn = new RedButton(Messages.get(this, "menu")) {
-				@Override
-				protected void onClick() {
-					try {
-						Dungeon.saveAll();
-					} catch (IOException e) {
-						ShatteredPixelDungeon.reportException(e);
-					}
-					Game.switchScene(TitleScene.class);
+		addButton(curBtn = new RedButton(Messages.get(this, "menu")) {
+			@Override
+			protected void onClick() {
+				try {
+					Dungeon.saveAll();
+				} catch (IOException e) {
+					ShatteredPixelDungeon.reportException(e);
 				}
-			});
-			curBtn.icon(Icons.get(Icons.DISPLAY));
-		}
+				Game.switchScene(TitleScene.class);
+			}
+		});
+		curBtn.icon(Icons.get(Icons.DISPLAY));
+		if (SPDSettings.intro()) curBtn.enable(false);
 
 		resize( WIDTH, pos );
 	}

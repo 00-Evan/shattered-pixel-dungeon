@@ -40,8 +40,15 @@ public class Guidebook extends Item {
 
 	@Override
 	public final boolean doPickUp(Hero hero, int pos) {
+		Document.ADVENTURERS_GUIDE.findPage(Document.GUIDE_INTRO);
+		Document.ADVENTURERS_GUIDE.findPage(Document.GUIDE_EXAMINING);
+		Document.ADVENTURERS_GUIDE.findPage(Document.GUIDE_SURPRISE_ATKS);
+		Document.ADVENTURERS_GUIDE.findPage(Document.GUIDE_IDING);
+		Document.ADVENTURERS_GUIDE.findPage(Document.GUIDE_FOOD);
+		Document.ADVENTURERS_GUIDE.findPage(Document.GUIDE_DIEING);
+
 		GameScene.pickUpJournal(this, pos);
-		//we do this here so it appears before the tutorial text
+		//we do this here so the pickup message appears before the tutorial text
 		GameLog.wipe();
 		GLog.i( Messages.capitalize(Messages.get(Hero.class, "you_now_have", name())) );
 		GLog.p(Messages.get(GameScene.class, "tutorial_guidebook"));

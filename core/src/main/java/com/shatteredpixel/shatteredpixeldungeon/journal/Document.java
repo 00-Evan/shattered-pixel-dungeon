@@ -62,7 +62,7 @@ public enum Document {
 	public static final int READ = 2;
 	private LinkedHashMap<String, Integer> pagesStates = new LinkedHashMap<>();
 	
-	public boolean findPage(String page ) {
+	public boolean findPage( String page ) {
 		if (pagesStates.containsKey(page) && pagesStates.get(page) == NOT_FOUND){
 			pagesStates.put(page, FOUND);
 			Journal.saveNeeded = true;
@@ -73,6 +73,19 @@ public enum Document {
 
 	public boolean findPage( int pageIdx ) {
 		return findPage( pagesStates.keySet().toArray(new String[0])[pageIdx] );
+	}
+
+	public boolean deletePage( String page ){
+		if (pagesStates.containsKey(page) && pagesStates.get(page) != NOT_FOUND){
+			pagesStates.put(page, NOT_FOUND);
+			Journal.saveNeeded = true;
+			return true;
+		}
+		return false;
+	}
+
+	public boolean deletePage( int pageIdx ) {
+		return deletePage( pagesStates.keySet().toArray(new String[0])[pageIdx] );
 	}
 
 	public boolean isPageFound( String page ){
@@ -214,18 +227,19 @@ public enum Document {
 	public static final String GUIDE_IDING          = "Identifying";
 	public static final String GUIDE_FOOD           = "Food";
 	public static final String GUIDE_DIEING         = "Dieing";
+
 	public static final String GUIDE_SEARCHING      = "Searching";
 
 	//pages and default states
 	static {
 		boolean debug = DeviceCompat.isDebug();
-		//hero starts with these
-		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_INTRO,          debug ? READ : FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_EXAMINING,      debug ? READ : FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_SURPRISE_ATKS,  debug ? READ : FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_IDING,          debug ? READ : FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_FOOD,           debug ? READ : FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_DIEING,         debug ? READ : FOUND);
+		//hero gets these when guidebook is collected
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_INTRO,          debug ? READ : NOT_FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_EXAMINING,      debug ? READ : NOT_FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_SURPRISE_ATKS,  debug ? READ : NOT_FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_IDING,          debug ? READ : NOT_FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_FOOD,           debug ? READ : NOT_FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_DIEING,         debug ? READ : NOT_FOUND);
 		//given in sewers
 		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_SEARCHING,      debug ? READ : NOT_FOUND);
 		ADVENTURERS_GUIDE.pagesStates.put("Strength",           debug ? READ : NOT_FOUND);

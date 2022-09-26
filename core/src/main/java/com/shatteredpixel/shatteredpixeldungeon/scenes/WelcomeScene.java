@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Fireball;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
@@ -88,8 +89,14 @@ public class WelcomeScene extends PixelScene {
 			return;
 		} else {
 			//TODO temporary so alpha/beta players can test the tutorial
-			if (previousVersion <= 653){
+			if (previousVersion <= 653 && GamesInProgress.firstEmpty() != -1){
 				SPDSettings.intro(true);
+			} else if (GamesInProgress.firstEmpty() == -1){
+				SPDSettings.intro(false);
+			}
+			if (SPDSettings.intro()){
+				Journal.loadGlobal();
+				Document.ADVENTURERS_GUIDE.deletePage(Document.GUIDE_INTRO);
 			}
 		}
 
