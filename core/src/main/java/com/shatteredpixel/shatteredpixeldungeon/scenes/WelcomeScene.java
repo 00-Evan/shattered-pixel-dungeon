@@ -253,10 +253,12 @@ public class WelcomeScene extends PixelScene {
 				for (Rankings.Record rec : Rankings.INSTANCE.records.toArray(new Rankings.Record[0])){
 					try {
 						Rankings.INSTANCE.loadGameData(rec);
-						if (Statistics.gameWon) Badges.unlock(Badges.Badge.VICTORY);
-						if (Challenges.activeChallenges() >= 1) Badges.unlock(Badges.Badge.CHAMPION_1);
-						if (Challenges.activeChallenges() >= 3) Badges.unlock(Badges.Badge.CHAMPION_2);
-						if (Challenges.activeChallenges() >= 6) Badges.unlock(Badges.Badge.CHAMPION_3);
+						if (Statistics.gameWon) {
+							Badges.unlock(Badges.Badge.VICTORY);
+							if (Challenges.activeChallenges() >= 1) Badges.unlock(Badges.Badge.CHAMPION_1);
+							if (Challenges.activeChallenges() >= 3) Badges.unlock(Badges.Badge.CHAMPION_2);
+							if (Challenges.activeChallenges() >= 6) Badges.unlock(Badges.Badge.CHAMPION_3);
+						}
 						Rankings.INSTANCE.saveGameData(rec);
 					} catch (Exception e) {
 						//if we encounter a fatal per-record error, then clear that record
