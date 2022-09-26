@@ -771,9 +771,8 @@ public class Hero extends Char {
 		if (getCloser( action.dst )) {
 			return true;
 
-		//Hero moves in place if there is an active trap to trigger or grass to trample
-		} else if (!rooted && !flying &&
-					(Dungeon.level.map[pos] == Terrain.TRAP || Dungeon.level.map[pos] == Terrain.HIGH_GRASS)){
+		//Hero moves in place if there is high grass to trample
+		} else if (!rooted && !flying && Dungeon.level.map[pos] == Terrain.HIGH_GRASS){
 			Dungeon.level.pressCell(pos);
 			spendAndNext( 1 / speed() );
 			return false;
