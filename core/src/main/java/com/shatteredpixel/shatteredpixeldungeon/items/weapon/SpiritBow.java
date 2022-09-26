@@ -393,7 +393,7 @@ public class SpiritBow extends Weapon {
 				
 				((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).
 						reset(user.sprite,
-								enemy.pos,
+								cell,
 								this,
 								new Callback() {
 									@Override
@@ -430,7 +430,7 @@ public class SpiritBow extends Weapon {
 								@Override
 								protected boolean act() {
 									flurryActor = this;
-									cast(user, enemy.pos);
+									cast(user, QuickSlotButton.autoAim(enemy, SpiritArrow.this));
 									Actor.remove(this);
 									return false;
 								}
