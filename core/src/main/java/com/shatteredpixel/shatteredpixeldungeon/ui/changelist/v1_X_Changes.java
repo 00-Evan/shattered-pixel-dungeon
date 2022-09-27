@@ -92,6 +92,32 @@ public class v1_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-2", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "From the Developer",
+				"Thanks for all the bug reports everyone! I wasn't able to reply to every message this time, but I did read all of them."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Various small text adjustments." ));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by BETA)\n" +
+				"_-_ Numerous typos in new lore documents\n" +
+				"_-_ Errors with acidic scorpio sprites\n" +
+				"_-_ Game incorrectly awarding challenge completion badges in some cases\n" +
+				"_-_ Various errors with new tutorial functionality\n" +
+				"_-_ Transmutation creating duplicate artifacts\n" +
+				"_-_ Incorrect interactions between active traps and hourglass stasis\n" +
+				"_-_ Sniper's flurry ability not targeting correctly in some cases\n" +
+				"Fixed (Existed prior to BETA)\n" +
+				"_-_ Rare consistency errors in potion of might description"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
