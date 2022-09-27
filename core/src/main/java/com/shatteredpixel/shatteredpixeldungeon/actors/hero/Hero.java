@@ -897,10 +897,13 @@ public class Hero extends Char {
 
 					if (waitOrPickup) {
 						spendAndNextConstant(TIME_TO_REST);
+					}
 
 					//allow the hero to move between levels even if they can't collect the item
-					} else if (Dungeon.level.getTransition(pos) != null){
-						return actTransition(new HeroAction.LvlTransition(pos));
+					if (Dungeon.level.getTransition(pos) != null){
+						throwItems();
+					} else {
+						heap.sprite.drop();
 					}
 
 					if (item instanceof Dewdrop
@@ -913,8 +916,7 @@ public class Hero extends Char {
 						GLog.n(Messages.capitalize(Messages.get(this, "you_cant_have", item.name())));
 					}
 
-					heap.sprite.drop();
-					ready();
+					next();
 				}
 			} else {
 				ready();
