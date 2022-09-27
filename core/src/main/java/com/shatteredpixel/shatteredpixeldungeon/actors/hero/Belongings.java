@@ -280,7 +280,7 @@ public class Belongings implements Iterable<Item> {
 	//triggers when a run ends, so ignores lost inventory effects
 	public void identify() {
 		for (Item item : this) {
-			item.identify();
+			item.identify(false);
 		}
 	}
 	
