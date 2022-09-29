@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
-import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
@@ -56,6 +55,7 @@ import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
+import com.watabou.utils.PointF;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,10 +66,14 @@ import java.util.TimeZone;
 public class HeroSelectScene extends PixelScene {
 
 	private Image background;
-	private RenderedTextBlock prompt;
+	private Image fadeLeft, fadeRight;
+	private IconButton btnFade; //only on landscape
 
 	//fading UI elements
+	private RenderedTextBlock title;
 	private ArrayList<StyledButton> heroBtns = new ArrayList<>();
+	private RenderedTextBlock heroName; //only on landscape
+	private RenderedTextBlock heroDesc; //only on landscape
 	private StyledButton startBtn;
 	private IconButton infoButton;
 	private IconButton btnOptions;
@@ -100,21 +104,30 @@ public class HeroSelectScene extends PixelScene {
 
 		background.x = (Camera.main.width - background.width())/2f;
 		background.y = (Camera.main.height - background.height())/2f;
+		if (landscape()){
+			//FIXME static offset and UI width falls apart at high resolutions
+			//Should try not always having the UI stuck to the left, perhaps occupy the left 20% or so instead
+			//Should also really try to have more variable spacing between UI elements so it fills things in a bit more
+			background.x += 40;
+		}
 		background.visible = false;
 		PixelScene.align(background);
 		add(background);
 
-		if (background.x > 0){
-			Image fadeLeft = new Image(TextureCache.createGradient(0xFF000000, 0x00000000));
-			fadeLeft.x = background.x-2;
-			fadeLeft.scale.set(4, background.height());
-			add(fadeLeft);
+		fadeLeft = new Image(TextureCache.createGradient(0xFF000000, 0xFF000000, 0x00000000));
+		fadeLeft.x = background.x-2;
+		fadeLeft.scale.set(3, background.height());
+		add(fadeLeft);
 
-			Image fadeRight = new Image(fadeLeft);
-			fadeRight.x = background.x + background.width() + 2;
-			fadeRight.y = background.y + background.height();
-			fadeRight.angle = 180;
-			add(fadeRight);
+		fadeRight = new Image(fadeLeft);
+		fadeRight.x = background.x + background.width() + 2;
+		fadeRight.y = background.y + background.height();
+		fadeRight.angle = 180;
+		add(fadeRight);
+
+		if (landscape()){
+			float fadeLeftScale = 47 * (80 - background.x)/80f;
+			fadeLeft.scale = new PointF(3 + Math.max(0, fadeLeftScale), background.height());
 		}
 
 		startBtn = new StyledButton(Chrome.Type.GREY_BUTTON_TR, ""){
@@ -142,7 +155,11 @@ public class HeroSelectScene extends PixelScene {
 			@Override
 			protected void onClick() {
 				super.onClick();
-				ShatteredPixelDungeon.scene().addToFront(new WndHeroInfo(GamesInProgress.selectedClass));
+				Window w = new WndHeroInfo(GamesInProgress.selectedClass);
+				if (landscape()){
+					w.offset(40, 0);
+				}
+				ShatteredPixelDungeon.scene().addToFront(w);
 			}
 
 			@Override
@@ -154,28 +171,81 @@ public class HeroSelectScene extends PixelScene {
 		infoButton.setSize(20, 21);
 		add(infoButton);
 
-		HeroClass[] classes = HeroClass.values();
-
-		int btnWidth = HeroBtn.MIN_WIDTH;
-		int curX = (Camera.main.width - btnWidth * classes.length)/2;
-		if (curX > 0){
-			btnWidth += Math.min(curX/(classes.length/2), 15);
-			curX = (Camera.main.width - btnWidth * classes.length)/2;
-		}
-
-		int heroBtnleft = curX;
-		for (HeroClass cl : classes){
+		for (HeroClass cl : HeroClass.values()){
 			HeroBtn button = new HeroBtn(cl);
-			button.setRect(curX, Camera.main.height-HeroBtn.HEIGHT+3, btnWidth, HeroBtn.HEIGHT);
-			curX += btnWidth;
 			add(button);
 			heroBtns.add(button);
+		}
+
+		int btnWidth = HeroBtn.MIN_WIDTH;
+		float curX;
+		if (landscape()){
+			btnWidth = HeroBtn.MIN_WIDTH + 15;
+			int cols = (1 + heroBtns.size())/2;
+			curX = (Camera.main.width - btnWidth * cols + (cols-1))/2f;
+		} else {
+			curX = (Camera.main.width - btnWidth * heroBtns.size())/2f;
+			if (curX > 0) {
+				btnWidth += Math.min(curX / (heroBtns.size() / 2f), 15);
+				curX = (Camera.main.width - btnWidth * heroBtns.size()) / 2f;
+			}
+		}
+
+		float curY;
+		if (landscape()){
+			curY = (Camera.main.height-HeroBtn.HEIGHT)/2f + 5;
+		} else {
+			curY = Camera.main.height-HeroBtn.HEIGHT+3;
+		}
+
+		if (landscape()){
+			int count = 0;
+			for (StyledButton button : heroBtns){
+				button.setRect(curX, curY, btnWidth, HeroBtn.HEIGHT);
+				align(button);
+				curX += btnWidth+1;
+				count++;
+				if (count >= (1+heroBtns.size())/2){
+					curX -= btnWidth*count + count;
+					curY += HeroBtn.HEIGHT+1;
+					if (heroBtns.size()%2 != 0){
+						curX += btnWidth/2f;
+					}
+					count = 0;
+				}
+			}
+		} else {
+			for (StyledButton button : heroBtns){
+				button.setRect(curX, curY, btnWidth, HeroBtn.HEIGHT);
+				curX += btnWidth;
+			}
+		}
+
+		if (landscape()){
+			heroName = renderTextBlock(9);
+			add(heroName);
+
+			heroDesc = renderTextBlock(5);
+			heroDesc.align(RenderedTextBlock.CENTER_ALIGN);
+			add(heroDesc);
+
+			btnFade = new IconButton(Icons.COMPASS.get()){
+				@Override
+				protected void onClick() {
+					uiAlpha = 0;
+					updateFade();
+				}
+			};
+			btnFade.icon().originToCenter();
+			btnFade.icon().angle = 270f;
+			btnFade.visible = btnFade.active = false;
+			add(btnFade);
 		}
 
 		optionsPane = new GameOptions();
 		optionsPane.visible = optionsPane.active = false;
 		optionsPane.layout();
-		optionsPane.setPos(heroBtnleft, 0);
+		optionsPane.setPos(heroBtns.get(0).left(), 0);
 		add(optionsPane);
 
 		btnOptions = new IconButton(Icons.get(Icons.PREFS)){
@@ -201,7 +271,7 @@ public class HeroSelectScene extends PixelScene {
 				return Messages.get(HeroSelectScene.class, "options");
 			}
 		};
-		btnOptions.setRect(heroBtnleft + 16, Camera.main.height-HeroBtn.HEIGHT-16, 20, 21);
+		btnOptions.setRect(heroBtns.get(0).left() + 16, Camera.main.height-HeroBtn.HEIGHT-16, 20, 21);
 		updateOptionsColor();
 		btnOptions.visible = false;
 
@@ -218,16 +288,20 @@ public class HeroSelectScene extends PixelScene {
 		add( btnExit );
 		btnExit.visible = btnExit.active = !SPDSettings.intro();
 
-		prompt = PixelScene.renderTextBlock(Messages.get(this, "title"), 12);
-		prompt.hardlight(Window.TITLE_COLOR);
-		prompt.setPos( (Camera.main.width - prompt.width())/2f, (Camera.main.height - HeroBtn.HEIGHT - prompt.height() - 4));
-		PixelScene.align(prompt);
-		add(prompt);
+		title = PixelScene.renderTextBlock(Messages.get(this, "title"), 12);
+		title.hardlight(Window.TITLE_COLOR);
+		if (landscape()){
+			title.setPos( (Camera.main.width - title.width())/2f, (Camera.main.height - title.height())/2f - 20);
+		} else {
+			title.setPos( (Camera.main.width - title.width())/2f, (Camera.main.height - HeroBtn.HEIGHT - title.height() - 4));
+		}
+		PixelScene.align(title);
+		add(title);
 
 		PointerArea fadeResetter = new PointerArea(0, 0, Camera.main.width, Camera.main.height){
 			@Override
 			public boolean onSignal(PointerEvent event) {
-				resetFade();
+				if (event != null && event.type == PointerEvent.Type.UP) resetFade();
 				return false;
 			}
 		};
@@ -259,22 +333,81 @@ public class HeroSelectScene extends PixelScene {
 		background.visible = true;
 		background.hardlight(1.5f,1.5f,1.5f);
 
-		prompt.visible = false;
+		if (landscape()) {
+
+			float dX = title.left();
+			float dY = title.top();
+			title.setPos((100 - title.width())/2f, (Camera.main.height - 140)/2f);
+			align(title);
+
+			dX = title.left() - dX;
+			dY = title.top() - dY;
+
+			if (dX != 0 || dY != 0) {
+				for (StyledButton button : heroBtns) {
+					button.setPos(button.left()+dX, button.top()+dY);
+				}
+			}
+
+			startBtn.text(Messages.titleCase(Messages.get(HeroSelectScene.class, "start")));
+
+		} else {
+			title.visible = false;
+			startBtn.text(Messages.titleCase(cl.title()));
+		}
+
+		if (landscape()){
+			heroName.text(Messages.titleCase(cl.title()));
+			heroName.hardlight(Window.TITLE_COLOR);
+			heroName.setPos((100 - heroName.width() - 20)/2f, heroBtns.get(heroBtns.size()-1).bottom()+5);
+			align(heroName);
+
+			heroDesc.text(cl.shortDesc());
+			heroDesc.maxWidth(80);
+			heroDesc.setPos(10, heroName.bottom()+5);
+			align(heroDesc);
+
+			//TODO don't like the positioning of this
+			btnFade.setRect(0, title.top()-10, 100, 10);
+			btnFade.visible = btnFade.active = true;
+		}
+
 		startBtn.visible = true;
-		startBtn.text(Messages.titleCase(cl.title()));
 		startBtn.textColor(Window.TITLE_COLOR);
 		startBtn.setSize(startBtn.reqWidth() + 8, 21);
-		startBtn.setPos((Camera.main.width - startBtn.width())/2f, startBtn.top());
+		if (landscape()) {
+			startBtn.setPos((100 - startBtn.width())/2f, heroName.bottom()+40);
+		} else {
+			startBtn.setPos((Camera.main.width - startBtn.width())/2f, startBtn.top());
+		}
 		PixelScene.align(startBtn);
 
-		infoButton.visible = true;
-		infoButton.setPos(startBtn.right(), startBtn.top());
+		if (landscape()){
 
-		btnOptions.visible = !SPDSettings.intro();
-		btnOptions.setPos(startBtn.left()-btnOptions.width(), startBtn.top());
+			infoButton.visible = true;
+			infoButton.setPos(heroName.right(), heroName.top() + (heroName.height() - infoButton.height())/2f);
+			align(infoButton);
 
-		optionsPane.setPos(optionsPane.left(), startBtn.top() - optionsPane.height() - 2);
-		PixelScene.align(optionsPane);
+			btnOptions.visible = !SPDSettings.intro();
+			btnOptions.setPos(startBtn.right(), startBtn.top());
+
+			optionsPane.setPos(btnOptions.right(), btnOptions.top() - optionsPane.height() - 2);
+
+			align(optionsPane);
+
+		} else {
+			infoButton.visible = true;
+			infoButton.setPos(startBtn.right(), startBtn.top());
+
+			btnOptions.visible = !SPDSettings.intro(); //TODO is it visible when nothing is usable?
+			btnOptions.setPos(startBtn.left()-btnOptions.width(), startBtn.top());
+
+			optionsPane.setPos(heroBtns.get(0).left(), startBtn.top() - optionsPane.height() - 2);
+			align(optionsPane);
+		}
+
+
+		updateOptionsColor();
 	}
 
 	private float uiAlpha;
@@ -287,25 +420,59 @@ public class HeroSelectScene extends PixelScene {
 		for (Object v : members){
 			if (v instanceof Window) resetFade();
 		}
-		if (GamesInProgress.selectedClass != null) {
+		if (!PixelScene.landscape() && GamesInProgress.selectedClass != null) {
 			if (uiAlpha > 0f){
 				uiAlpha -= Game.elapsed/4f;
 			}
-			float alpha = GameMath.gate(0f, uiAlpha, 1f);
-			for (StyledButton b : heroBtns){
-				b.alpha(alpha);
-			}
-			startBtn.alpha(alpha);
-			btnExit.icon().alpha(alpha);
-			optionsPane.alpha(alpha);
-			btnOptions.icon().alpha(alpha);
-			infoButton.icon().alpha(alpha);
+			updateFade();
 		}
+	}
+
+	private void updateFade(){
+		float alpha = GameMath.gate(0f, uiAlpha, 1f);
+		title.alpha(alpha);
+		for (StyledButton b : heroBtns){
+			b.enable(alpha != 0);
+			b.alpha(alpha);
+		}
+		if (heroName != null){
+			heroName.alpha(alpha);
+			heroDesc.alpha(alpha);
+			btnFade.enable(alpha != 0);
+			btnFade.icon().alpha(alpha);
+		}
+		startBtn.enable(alpha != 0);
+		startBtn.alpha(alpha);
+		btnExit.enable(alpha != 0);
+		btnExit.icon().alpha(alpha);
+		optionsPane.active = optionsPane.visible && alpha != 0;
+		optionsPane.alpha(alpha);
+		btnOptions.enable(alpha != 0);
+		btnOptions.icon().alpha(alpha);
+		infoButton.enable(alpha != 0);
+		infoButton.icon().alpha(alpha);
+
+		if (landscape()){
+
+			background.x = (Camera.main.width - background.width())/2f + (40*alpha);
+
+			float fadeLeftScale = 47 * (80 - background.x)/80f;
+			fadeLeft.scale.x = 3 + Math.max(fadeLeftScale, 0)*alpha;
+			fadeLeft.x = background.x-4;
+			fadeRight.x = background.x + background.width() + 4;
+		}
+
+		fadeLeft.x = background.x-5;
+		fadeRight.x = background.x + background.width() + 5;
+
+		fadeLeft.visible = background.x > 0 || (alpha > 0 && landscape());
+		fadeRight.visible = background.x + background.width() < Camera.main.width;
 	}
 
 	private void resetFade(){
 		//starts fading after 4 seconds, fades over 4 seconds.
 		uiAlpha = 2f;
+		updateFade();
 	}
 
 	@Override
@@ -354,7 +521,11 @@ public class HeroSelectScene extends PixelScene {
 			if( !cl.isUnlocked() ){
 				ShatteredPixelDungeon.scene().addToFront( new WndMessage(cl.unlockMsg()));
 			} else if (GamesInProgress.selectedClass == cl) {
-				ShatteredPixelDungeon.scene().add(new WndHeroInfo(cl));
+				Window w = new WndHeroInfo(cl);
+				if (landscape()){
+					w.offset(40, 0);
+				}
+				ShatteredPixelDungeon.scene().addToFront(w);
 			} else {
 				setSelectedHero(cl);
 			}
