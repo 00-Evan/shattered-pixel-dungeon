@@ -324,7 +324,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 			//special on-hit effects
 			switch (moveBeingUsed) {
 				case CLOBBER:
-					hit(enemy);
+					if (!wasAlly) hit(enemy);
 					//trace a ballistica to our target (which will also extend past them
 					Ballistica trajectory = new Ballistica(target.pos, enemy.pos, Ballistica.STOP_TARGET);
 					//trim it to just be the part that goes past them

@@ -431,6 +431,7 @@ public class Hero extends Char {
 	public boolean shoot( Char enemy, MissileWeapon wep ) {
 
 		this.enemy = enemy;
+		boolean wasEnemy = enemy.alignment == Alignment.ENEMY;
 
 		//temporarily set the hero's weapon to the missile weapon being used
 		//TODO improve this!
@@ -438,8 +439,8 @@ public class Hero extends Char {
 		boolean hit = attack( enemy );
 		Invisibility.dispel();
 		belongings.thrownWeapon = null;
-		
-		if (hit && subClass == HeroSubClass.GLADIATOR){
+
+		if (hit && subClass == HeroSubClass.GLADIATOR && wasEnemy){
 			Buff.affect( this, Combo.class ).hit( enemy );
 		}
 
@@ -1849,13 +1850,14 @@ public class Hero extends Char {
 	public void onAttackComplete() {
 		
 		AttackIndicator.target(enemy);
-		
+		boolean wasEnemy = enemy.alignment == Alignment.ENEMY;
+
 		boolean hit = attack( enemy );
 		
 		Invisibility.dispel();
 		spend( attackDelay() );
 
-		if (hit && subClass == HeroSubClass.GLADIATOR){
+		if (hit && subClass == HeroSubClass.GLADIATOR && wasEnemy){
 			Buff.affect( this, Combo.class ).hit( enemy );
 		}
 
