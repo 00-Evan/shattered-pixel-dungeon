@@ -92,9 +92,24 @@ public class v1_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("BETA-3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.DISPLAY_LAND), "Landscape Hero Select",
+				"Desktop and mobile landscape users will now see a new hero select screen that better makes use of screen real-estate.\n\n" +
+				"I might make a few further adjustments to this before release."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by BETA)\n" +
+				"_-_ Various minor typos\n" +
+				"_-_ Further issues with acidic scorpio sprites\n" +
+				"_-_ Occasional unusual behaviour when items were on stairs\n" +
+				"_-_ Rare cases where items would be unidentified in rankings\n" +
+				"_-_ Sniper's flurry failing to auto aim in some cases\n\n" +
+				"Fixed (Existed prior to BETA)\n" +
+				"_-_ Cursed rings of force still heavily buffing melee attacks\n" +
+				"_-_ Exploits where the gladiator could build combo on ally characters"));
 
 		changes = new ChangeInfo("BETA-2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -114,19 +129,19 @@ public class v1_X_Changes {
 				"_-_ Various errors with new tutorial functionality\n" +
 				"_-_ Transmutation creating duplicate artifacts\n" +
 				"_-_ Incorrect interactions between active traps and hourglass stasis\n" +
-				"_-_ Sniper's flurry ability not targeting correctly in some cases\n" +
+				"_-_ Sniper's flurry ability not targeting correctly in some cases\n\n" +
 				"Fixed (Existed prior to BETA)\n" +
-				"_-_ Rare consistency errors in potion of might description"));
+				"_-_ Rare consistency errors in potion of might buff description"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "To-Do",
+		/*changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "To-Do",
 				"The following still needs to be implemented for v1.4 to release:\n\n" +
 				"_-_ Improvements to various game interfaces for desktop users\n" +
 				"_-_ any critical balance tweaks following the beta changes\n" +
-				"_-_ other small tweaks and bugfixes following the beta changes"));
+				"_-_ other small tweaks and bugfixes following the beta changes"));*/
 
 		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.GUIDE_PAGE), "Lore Additions",
 				"_30 pages of lore text have been added to the game, scattered around the regions of the dungeon!_\n\n" +

@@ -87,17 +87,6 @@ public class WelcomeScene extends PixelScene {
 		if (ShatteredPixelDungeon.versionCode == previousVersion && !SPDSettings.intro()) {
 			ShatteredPixelDungeon.switchNoFade(TitleScene.class);
 			return;
-		} else {
-			//TODO temporary so alpha/beta players can test the tutorial
-			if (previousVersion <= 653 && GamesInProgress.firstEmpty() != -1){
-				SPDSettings.intro(true);
-			} else if (GamesInProgress.firstEmpty() == -1){
-				SPDSettings.intro(false);
-			}
-			if (SPDSettings.intro()){
-				Journal.loadGlobal();
-				Document.ADVENTURERS_GUIDE.deletePage(Document.GUIDE_INTRO);
-			}
 		}
 
 		Music.INSTANCE.playTracks(
@@ -222,8 +211,8 @@ public class WelcomeScene extends PixelScene {
 		}
 
 		message = "Greetings Beta Testers!\n\n" +
-				"This beta includes all of the content for v1.4.0, minus a few UI tweaks that I'm hopeing to make over the next week. There's a lot of new text in particular this time, so please help out the translation project if you're able to!\n\n" +
-				"You'll probably get a chance to try the new tutorial as well. Please let me know if you encounter any issues!";
+				"The beta for v1.4.0 is now wrapping up! Everything seems to be working well, and I've just added the last few UI tweaks I wanted to for this update.\n\n" +
+				"Expect v1.4.0 to release very early next week.";
 
 		text.text(message, Math.min(w-20, 300));
 		float textSpace = okay.top() - topRegion - 4;
