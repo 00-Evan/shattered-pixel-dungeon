@@ -917,7 +917,7 @@ public class Hero extends Char {
 						GLog.n(Messages.capitalize(Messages.get(this, "you_cant_have", item.name())));
 					}
 
-					next();
+					ready();
 				}
 			} else {
 				ready();
