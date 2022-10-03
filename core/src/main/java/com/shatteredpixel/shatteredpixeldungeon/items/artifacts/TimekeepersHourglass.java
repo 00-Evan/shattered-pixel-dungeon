@@ -116,6 +116,8 @@ public class TimekeepersHourglass extends Artifact {
 									activeBuff = new timeStasis();
 									Talent.onArtifactUsed(Dungeon.hero);
 									activeBuff.attachTo(Dungeon.hero);
+									charge--;
+									updateQuickslot();
 								} else if (index == 1) {
 									GLog.i( Messages.get(TimekeepersHourglass.class, "onfreeze") );
 									GameScene.flash(0x80FFFFFF);
@@ -328,7 +330,7 @@ public class TimekeepersHourglass extends Artifact {
 			type = buffType.POSITIVE;
 		}
 
-		float turnsToCost = 0f;
+		float turnsToCost = 2f;
 
 		ArrayList<Integer> presses = new ArrayList<>();
 
@@ -343,7 +345,7 @@ public class TimekeepersHourglass extends Artifact {
 
 			updateQuickslot();
 
-			if (charge < 0){
+			if (charge < 0 || charge == 0 && turnsToCost <= 0){
 				charge = 0;
 				detach();
 			}
@@ -407,12 +409,12 @@ public class TimekeepersHourglass extends Artifact {
 
 		@Override
 		public float iconFadePercent() {
-			return Math.max(0, (2f - (turnsToCost+1)) / 2f);
+			return Math.max(0, (2f - turnsToCost) / 2f);
 		}
 
 		@Override
 		public String iconTextDisplay() {
-			return Integer.toString((int)turnsToCost+1);
+			return Integer.toString((int)turnsToCost);
 		}
 
 		private static final String PRESSES = "presses";
