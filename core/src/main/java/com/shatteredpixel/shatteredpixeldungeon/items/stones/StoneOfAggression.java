@@ -98,6 +98,9 @@ public class StoneOfAggression extends Runestone {
 						if (m.alignment == Char.Alignment.ENEMY && m.isTargeting(target)) {
 							m.aggro(null);
 						}
+						if (target instanceof Mob && ((Mob) target).isTargeting(m)){
+							((Mob) target).aggro(null);
+						}
 					}
 				}
 			}
