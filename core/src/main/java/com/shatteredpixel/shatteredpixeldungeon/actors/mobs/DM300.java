@@ -403,6 +403,7 @@ public class DM300 extends Mob {
 		Dungeon.hero.interrupt();
 		final int rockCenter;
 
+		//knock back 2 tiles if adjacent
 		if (Dungeon.level.adjacent(pos, target.pos)){
 			int oppositeAdjacent = target.pos + (target.pos - pos);
 			Ballistica trajectory = new Ballistica(target.pos, oppositeAdjacent, Ballistica.MAGIC_BOLT);
@@ -411,6 +412,18 @@ public class DM300 extends Mob {
 				Dungeon.hero.interrupt();
 			}
 			rockCenter = trajectory.path.get(Math.min(trajectory.dist, 2));
+
+		//knock back 1 tile if there's 1 tile of space
+		} else if (fieldOfView[target.pos] && Dungeon.level.distance(pos, target.pos) == 2) {
+			int oppositeAdjacent = target.pos + (target.pos - pos);
+			Ballistica trajectory = new Ballistica(target.pos, oppositeAdjacent, Ballistica.MAGIC_BOLT);
+			WandOfBlastWave.throwChar(target, trajectory, 1, false, false, getClass());
+			if (target == Dungeon.hero){
+				Dungeon.hero.interrupt();
+			}
+			rockCenter = trajectory.path.get(Math.min(trajectory.dist, 1));
+
+		//otherwise no knockback
 		} else {
 			rockCenter = target.pos;
 		}
