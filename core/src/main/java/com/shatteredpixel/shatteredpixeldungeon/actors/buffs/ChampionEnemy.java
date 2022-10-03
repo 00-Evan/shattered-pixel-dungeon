@@ -195,7 +195,8 @@ public abstract class ChampionEnemy extends Buff {
 			} else {
 				boolean[] passable = BArray.not(Dungeon.level.solid, null);
 				for (Char ch : Actor.chars()) {
-					if (ch != target) passable[ch.pos] = false;
+					//our own tile is always passable
+					passable[ch.pos] = ch == target;
 				}
 
 				PathFinder.buildDistanceMap(enemy.pos, passable, 2);
