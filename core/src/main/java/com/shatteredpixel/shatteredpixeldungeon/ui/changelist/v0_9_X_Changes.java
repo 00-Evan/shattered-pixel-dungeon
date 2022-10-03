@@ -389,7 +389,7 @@ public class v0_9_X_Changes {
 				"_-_ Released December 11th, 2020\n" +
 				"_-_ 68 days after Shattered v0.9.0\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"Dev commentary will be added here in the next major update."));
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.TALENT), "Tier Two Talents!",
 				"_A second tier of talents has been added, including twenty new talents spanning levels 7-12!_\n\n" +
@@ -541,7 +541,7 @@ public class v0_9_X_Changes {
 				"_-_ 61 days after Shattered v0.8.2\n" +
 				"_-_ 173 days after Shattered v0.8.0\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"Dev commentary will be added here in the next major update."));
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.TALENT), "Hero Talents!",
 				"_A new gameplay system has been added!_\n\n" +
