@@ -55,7 +55,7 @@ import java.util.ArrayList;
 public class v1_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
-		//add_Coming_Soon(changeInfos);
+		add_Coming_Soon(changeInfos);
 		add_v1_4_Changes(changeInfos);
 		add_v1_3_Changes(changeInfos);
 		add_v1_2_Changes(changeInfos);
@@ -70,20 +70,17 @@ public class v1_X_Changes {
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Overview",
-			"The next Shattered update will be v1.4.0! After focusing on game porting and multiple smaller additions, v1.4.0 will finally focus on new core game content! I expect v1.4.0 to take about 2 months to complete, as I want to focus primarily on the core content and not overload the update too much with other smaller additions.\n\n" +
-			"I should have some more info on v1.4.0 to share in a blog post some time in August."));
+			"The next Shattered update will be v2.0.0, which is going to focus almost entirely on adding a new hero!\n\n" +
+			"v2.0.0 will likely have a few blog posts as I make progress on implementing the new hero. Expect to see the first of those posts in November."));
 
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.PICKAXE), "Blacksmith Quest",
-			"The main content in v1.4.0 is going to be a total rework to the blacksmith's quest in the caves! Currently the quest is pretty simple, and I'd like to expand it to continue the trend of quests getting progressively more involved. Expect more mining for rare ore and gems, with some greater rewards if you perform well!"));
+		changes.addButton( new ChangeButton(Icons.get(Icons.TALENT), "A New Hero!",
+			"_The new hero in v2.0.0 will be the Duelist!_\n\nThe duelist will be able to use weapons in ways other heroes cannot, through charge-based special abilities, and other mechanics via her talents and subclasses. Like all the other heroes, the duelist will have 2 subclasses, 3 armor abilities, and 26 talents!"));
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Side Content",
-			"I plan to also have one significant piece of side content in v1.4.0. I haven't yet locked this in, so there are a few possibilities. Expect the side content to be on the scale of a single new item, challenge, or similar."));
+			"I don't yet have any specific plans for other content in v2.0.0. I want to mostly focus on the Duelist, so don't expect as much side content as in previous updates, but I'm sure that there will be some amount of smaller additions and adjustments."));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.TALENT), "Mechanics Tweaks",
-			"v1.4.0 will also have some tweaks, as usual. In particular I plan to focus on hero talents and some pieces of equipment. Shattered's overall balance is better than it ever has been, but there is always room for more incremental improvements."));
-
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.AMULET), "What About a New Hero?",
-			"Lastly, while this won't be coming in v1.4.0, I am making some progress on adding a new hero in 2022! Expect to hear more on this after v1.4.0 releases!"));
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.PICKAXE), "Blacksmith Quest?",
+			"I was originally planning for the next update to be v1.5.0, and include a rework to the blacksmith's quest.\n\nWe're now in the last quarter of 2022 though, and I suspect people would much rather see a new hero release next. I also heavily implied a new hero would come this year back in the 'Shattered Pixel Dungeon in 2022' blog post.\n\nThis doesn't mean that the quest rework is never going to happen though, I'm just readjusting my priorities and will likely get to it in 2023 instead."));
 
 	}
 
@@ -92,56 +89,15 @@ public class v1_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("BETA-3", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.DISPLAY_LAND), "Landscape Hero Select",
-				"Desktop and mobile landscape users will now see a new hero select screen that better makes use of screen real-estate.\n\n" +
-				"I might make a few further adjustments to this before release."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by BETA)\n" +
-				"_-_ Various minor typos\n" +
-				"_-_ Further issues with acidic scorpio sprites\n" +
-				"_-_ Occasional unusual behaviour when items were on stairs\n" +
-				"_-_ Rare cases where items would be unidentified in rankings\n" +
-				"_-_ Sniper's flurry failing to auto aim in some cases\n\n" +
-				"Fixed (Existed prior to BETA)\n" +
-				"_-_ Cursed rings of force still heavily buffing melee attacks\n" +
-				"_-_ Exploits where the gladiator could build combo on ally characters"));
-
-		changes = new ChangeInfo("BETA-2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "From the Developer",
-				"Thanks for all the bug reports everyone! I wasn't able to reply to every message this time, but I did read all of them."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Various small text adjustments." ));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by BETA)\n" +
-				"_-_ Numerous typos in new lore documents\n" +
-				"_-_ Errors with acidic scorpio sprites\n" +
-				"_-_ Game incorrectly awarding challenge completion badges in some cases\n" +
-				"_-_ Various errors with new tutorial functionality\n" +
-				"_-_ Transmutation creating duplicate artifacts\n" +
-				"_-_ Incorrect interactions between active traps and hourglass stasis\n" +
-				"_-_ Sniper's flurry ability not targeting correctly in some cases\n\n" +
-				"Fixed (Existed prior to BETA)\n" +
-				"_-_ Rare consistency errors in potion of might buff description"));
-
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		/*changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "To-Do",
-				"The following still needs to be implemented for v1.4 to release:\n\n" +
-				"_-_ Improvements to various game interfaces for desktop users\n" +
-				"_-_ any critical balance tweaks following the beta changes\n" +
-				"_-_ other small tweaks and bugfixes following the beta changes"));*/
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released October 4th, 2022\n" +
+				"_-_ 90 days after Shattered v1.3.0\n" +
+				"\n" +
+				"Dev commentary will be added here in the future."));
 
 		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.GUIDE_PAGE), "Lore Additions",
 				"_30 pages of lore text have been added to the game, scattered around the regions of the dungeon!_\n\n" +
@@ -166,16 +122,11 @@ public class v1_X_Changes {
 		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.MASTERY), "Tutorial Additions",
 				"_A short guided tutorial has been added at the start of the game for new players._\n\n" +
 				"This tutorial guides the player through their first few actions, and encourages reading the game log and guidebook.\n\n" +
-				"As part of this tutorial change, initial story texts and the guidebook have been slightly adjusted, and there is a new pop-up for controller players that explains how to use the in-game cursor.\n\n" +
-				"_Note that this tutorial will show up for beta players so they can try it out and give feedback._"));
+				"As part of this tutorial change, initial story texts and the guidebook have been slightly adjusted, and there is a new pop-up for controller players that explains how to use the in-game cursor."));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
 		changes.hardlight(CharSprite.WARNING);
 		changeInfos.add(changes);
-
-		/*changes.addButton(new ChangeButton(Icons.get(Icons.DISPLAY), "Interface Changes",
-				"_-_ Added a new tab to the journal window for lore documents\n" +
-				"_-_ Added a popup window on the first game screen to explain controller pointer functionality"));*/
 
 		changes.addButton(new ChangeButton( new TalentIcon(Talent.EMPOWERED_STRIKE), "T3 Talent Redesigns",
 				"I've made some pretty significant changes to three T3 talents that were either unpopular or too simplistic:\n\n" +
@@ -186,6 +137,9 @@ public class v1_X_Changes {
 		changes.addButton(new ChangeButton( new ItemSprite(ItemSpriteSheet.LONGSWORD, new ItemSprite.Glowing(0x0000FF)), "Blocking Enchant Redesign",
 				"Blocking has been slightly redesigned to provide a more visible benefit. Instead of always granting a little armor, the enchantment now has a chance to grant a larger shield.\n\n" +
 				"I don't expect that this will make the enchantment significantly stronger or weaker, but it should feel more impactful."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.DISPLAY_LAND), "Landscape Hero Select",
+				"Desktop and mobile landscape users will now see a new hero select screen that better makes use of screen real-estate."));
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 1",
 				"_-_ Daily runs can now be replayed for practise\n" +
@@ -230,6 +184,7 @@ public class v1_X_Changes {
 				"_-_ 'No Weapons in His Presence' badge not stating that ring of force counts as a weapon\n" +
 				"_-_ Various cases where the friendly fire badge was not correctly awarded\n" +
 				"_-_ 13th armor ability incorrectly clearing champion enemy buffs\n" +
+				"_-_ Exploits where the gladiator could build combo on ally characters\n" +
 				"_-_ Cases where piranhas could live for a turn on land\n" +
 				"_-_ Honeypots not reacting correctly to being teleported\n" +
 				"_-_ Rare cases where lost inventory and items on stairs could softlock the game\n" +
@@ -241,6 +196,7 @@ public class v1_X_Changes {
 				"_-_ Various incorrect interaction between kinetic/viscosity and damage mitigating effects\n" +
 				"_-_ Wand of Fireblast sometimes not igniting adjacent item or barricades\n" +
 				"_-_ Ring of Furor not affecting Sniper special abilities\n" +
+				"_-_ Cursed rings of force still heavily buffing melee attacks\n" +
 				"_-_ Controller axis mapping issues on Android\n" +
 				"_-_ Armband not breaking invisibility\n" +
 				"_-_ Various rare fog of war errors when the hero was knocked a high distance\n" +
@@ -257,6 +213,7 @@ public class v1_X_Changes {
 				"_-_ Targeting logic sometimes being incorrect on armor abilities\n" +
 				"_-_ Shadow clone not benefiting from certain glyphs\n" +
 				"_-_ Heavy boomerangs getting an accuracy penalty when returning\n" +
+				"_-_ Rare consistency errors in potion of might buff description\n" +
 				"_-_ Various rare cases where characters might stack on each other\n" +
 				"_-_ Dailies using seeds that are also user-enterable\n" +
 				"_-_ Knockback effects paralyzing dead characters\n" +
