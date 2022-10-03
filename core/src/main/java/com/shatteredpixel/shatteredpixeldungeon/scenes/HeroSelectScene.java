@@ -218,6 +218,9 @@ public class HeroSelectScene extends PixelScene {
 			float uiHeight = Math.min(Camera.main.height-20, 300);
 			float uiSpacing = (uiHeight-120)/2f;
 
+			if (uiHeight >= 160) uiSpacing -= 5;
+			if (uiHeight >= 180) uiSpacing -= 6;
+
 			background.x += leftArea/6f;
 
 			float fadeLeftScale = 47 * (leftArea - background.x)/leftArea;
@@ -227,6 +230,10 @@ public class HeroSelectScene extends PixelScene {
 			align(title);
 
 			int btnWidth = HeroBtn.MIN_WIDTH + 15;
+			int btnHeight = HeroBtn.HEIGHT;
+			if (uiHeight >= 180){
+				btnHeight += 6;
+			}
 
 			int cols = 2;
 			float curX = (leftArea - btnWidth * cols + (cols-1))/2f;
@@ -234,13 +241,13 @@ public class HeroSelectScene extends PixelScene {
 
 			int count = 0;
 			for (StyledButton button : heroBtns){
-				button.setRect(curX, curY, btnWidth, HeroBtn.HEIGHT);
+				button.setRect(curX, curY, btnWidth, btnHeight);
 				align(button);
 				curX += btnWidth+1;
 				count++;
 				if (count >= (1+heroBtns.size())/2){
 					curX -= btnWidth*count + count;
-					curY += HeroBtn.HEIGHT+1;
+					curY += btnHeight+1;
 					if (heroBtns.size()%2 != 0){
 						curX += btnWidth/2f;
 					}
@@ -252,14 +259,18 @@ public class HeroSelectScene extends PixelScene {
 			heroName.setPos(0, heroBtns.get(heroBtns.size()-1).bottom()+5);
 			add(heroName);
 
-			heroDesc = renderTextBlock(5);
+			if (uiHeight >= 160){
+				heroDesc = renderTextBlock(6);
+			} else {
+				heroDesc = renderTextBlock(5);
+			}
 			heroDesc.align(RenderedTextBlock.CENTER_ALIGN);
 			heroDesc.setPos(0, heroName.bottom()+5);
 			add(heroDesc);
 
 			startBtn.text(Messages.titleCase(Messages.get(this, "start")));
 			startBtn.setSize(startBtn.reqWidth()+8, 21);
-			startBtn.setPos((leftArea - startBtn.width())/2f, heroName.top()+35 + uiSpacing);
+			startBtn.setPos((leftArea - startBtn.width())/2f, title.top() + uiHeight - startBtn.height());
 			align(startBtn);
 
 			btnFade = new IconButton(Icons.COMPASS.get()){
