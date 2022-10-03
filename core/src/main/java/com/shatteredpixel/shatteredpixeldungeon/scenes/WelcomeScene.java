@@ -57,7 +57,7 @@ import java.util.Collections;
 
 public class WelcomeScene extends PixelScene {
 
-	private static final int LATEST_UPDATE = 650;
+	private static final int LATEST_UPDATE = ShatteredPixelDungeon.v1_4_0;
 
 	//used so that the game does not keep showing the window forever if cleaning fails
 	private static boolean triedCleaningTemp = false;
@@ -209,10 +209,6 @@ public class WelcomeScene extends PixelScene {
 		} else {
 			message = Messages.get(this, "what_msg");
 		}
-
-		message = "Greetings Beta Testers!\n\n" +
-				"The beta for v1.4.0 is now wrapping up! Everything seems to be working well, and I've just added the last few UI tweaks I wanted to for this update.\n\n" +
-				"Expect v1.4.0 to release very early next week.";
 
 		text.text(message, Math.min(w-20, 300));
 		float textSpace = okay.top() - topRegion - 4;
