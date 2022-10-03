@@ -155,6 +155,12 @@ public class Berserk extends Buff implements ActionIndicator.Action {
 		return true;
 	}
 
+	@Override
+	public void detach() {
+		super.detach();
+		ActionIndicator.clearAction(this);
+	}
+
 	public float enchantFactor(float chance){
 		return chance + ((Math.min(1f, power) * 0.15f) * ((Hero) target).pointsInTalent(Talent.ENRAGED_CATALYST));
 	}

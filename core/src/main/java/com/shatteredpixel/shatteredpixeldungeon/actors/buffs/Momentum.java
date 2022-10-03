@@ -51,6 +51,12 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 	private boolean movedLastTurn = true;
 
 	@Override
+	public void detach() {
+		super.detach();
+		ActionIndicator.clearAction(this);
+	}
+
+	@Override
 	public boolean act() {
 		if (freerunCooldown > 0){
 			freerunCooldown--;
