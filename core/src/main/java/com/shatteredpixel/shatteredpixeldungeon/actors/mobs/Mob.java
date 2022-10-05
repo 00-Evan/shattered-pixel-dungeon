@@ -110,7 +110,7 @@ public abstract class Mob extends Char {
 	public int defenseSkill = 0;
 	
 	public int EXP = 1;
-	public int maxLvl = Hero.MAX_LEVEL;
+	public int maxLvl = Hero.MAX_LEVEL-1;
 	
 	protected Char enemy;
 	protected int enemyID = -1; //used for save/restore
