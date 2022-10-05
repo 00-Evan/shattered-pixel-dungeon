@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast;
@@ -75,6 +76,7 @@ public class AntiMagic extends Armor.Glyph {
 		RESISTS.add( Bomb.MagicalBomb.class );
 		RESISTS.add( ScrollOfPsionicBlast.class );
 
+		RESISTS.add( CursedWand.class );
 		RESISTS.add( WandOfBlastWave.class );
 		RESISTS.add( WandOfDisintegration.class );
 		RESISTS.add( WandOfFireblast.class );

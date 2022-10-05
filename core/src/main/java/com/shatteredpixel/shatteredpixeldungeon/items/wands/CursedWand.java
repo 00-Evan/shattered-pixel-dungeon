@@ -218,7 +218,7 @@ public class CursedWand {
 					}
 					toHeal.HP = Math.min(toHeal.HT, toHeal.HP + damage);
 					toHeal.sprite.emitter().burst(Speck.factory(Speck.HEALING), 3);
-					toDamage.damage(damage, origin == null ? toHeal : origin);
+					toDamage.damage(damage, new CursedWand());
 					toDamage.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
 
 					if (toDamage == Dungeon.hero){
@@ -244,11 +244,7 @@ public class CursedWand {
 
 			//Bomb explosion
 			case 2:
-				if (user == Dungeon.hero) {
-					new Bomb.MagicalBomb().explode(targetPos);
-				} else {
-					new Bomb().explode(targetPos);
-				}
+				new Bomb.MagicalBomb().explode(targetPos);
 				tryForWandProc(Actor.findChar(targetPos), origin);
 				return true;
 
