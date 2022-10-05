@@ -548,7 +548,8 @@ public abstract class Wand extends Item {
 	}
 
 	public int collisionProperties(int target){
-		return collisionProperties;
+		if (cursed)     return Ballistica.MAGIC_BOLT;
+		else            return collisionProperties;
 	}
 
 	public static class PlaceHolder extends Wand {
