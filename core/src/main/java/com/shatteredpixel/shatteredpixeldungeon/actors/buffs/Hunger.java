@@ -124,13 +124,6 @@ public class Hunger extends Buff implements Hero.Doom {
 	}
 
 	public void satisfy( float energy ) {
-
-		Artifact.ArtifactBuff buff = target.buff( HornOfPlenty.hornRecharge.class );
-		if (buff != null && buff.isCursed()){
-			energy *= 0.67f;
-			GLog.n( Messages.get(this, "cursedhorn") );
-		}
-
 		affectHunger( energy, false );
 	}
 
