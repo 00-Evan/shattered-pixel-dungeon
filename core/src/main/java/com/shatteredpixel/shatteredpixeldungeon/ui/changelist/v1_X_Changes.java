@@ -85,7 +85,7 @@ public class v1_X_Changes {
 	}
 
 	public static void add_v1_4_Changes( ArrayList<ChangeInfo> changeInfos ) {
-		ChangeInfo changes = new ChangeInfo("v1.4-BETA", true, "");
+		ChangeInfo changes = new ChangeInfo("v1.4", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
@@ -147,6 +147,7 @@ public class v1_X_Changes {
 				"_-_ Hero can now trample grass and trigger traps they are standing on by waiting\n" +
 				"_-_ Hero now pauses before ascending/descending if enemies are nearby\n" +
 				"_-_ Goo's pump up attack now always gives the hero at least 1 action to react\n" +
+				"_-_ DM-300 now knocks back during rockfall even if hero is 1 tile away\n" +
 				"_-_ Improved behaviour of ally AI when told to hold a position\n" +
 				"_-_ Slightly adjusted enemy stats on ascension to smooth out difficulty\n" +
 				"_-_ Rotberry plant now gives a small puff of toxic gas when trampled\n" +
@@ -179,7 +180,9 @@ public class v1_X_Changes {
 				"_-_ Various rare crash and hang bugs\n" +
 				"_-_ Various minor visual/textual errors\n" +
 				"_-_ Characters rarely managing to enter eternal fire\n" +
+				"_-_ Summons from guardian traps counting as regular states in some cases\n" +
 				"_-_ Invisibility effects not working on enemies\n" +
+				"_-_ Rare cases where giant enemies couldn't attack\n" +
 				"_-_ Confusing text when a weapon or armor is partly uncursed\n" +
 				"_-_ 'No Weapons in His Presence' badge not stating that ring of force counts as a weapon\n" +
 				"_-_ Various cases where the friendly fire badge was not correctly awarded\n" +
@@ -199,6 +202,8 @@ public class v1_X_Changes {
 				"_-_ Cursed rings of force still heavily buffing melee attacks\n" +
 				"_-_ Controller axis mapping issues on Android\n" +
 				"_-_ Armband not breaking invisibility\n" +
+				"_-_ Various quirks with charge spending on timekeeper's hourglass\n" +
+				"_-_ Stones of aggression working much more effectively than intended\n" +
 				"_-_ Various rare fog of war errors when the hero was knocked a high distance\n" +
 				"_-_ Chalice of Blood benefitting from recharging while hero is starving\n" +
 				"_-_ Cases where explosive curse would create explosions at the wrong location\n" +
@@ -253,7 +258,7 @@ public class v1_X_Changes {
 		changeInfos.add(changes);
 
 		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.EXOTIC_GYFU), new ScrollOfAntiMagic().trueName(),
-				"Antimagic now also suppresses the positive effects of scrolls and artifacts while it is applied to the hero." ));
+				"Antimagic now also suppresses the positive effects of rings and artifacts while it is applied to the hero." ));
 
 	}
 
