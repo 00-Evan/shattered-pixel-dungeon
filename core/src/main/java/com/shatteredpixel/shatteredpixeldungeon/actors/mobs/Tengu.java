@@ -188,9 +188,23 @@ public class Tengu extends Mob {
 			((PrisonBossLevel)Dungeon.level).progress();
 			BossHealthBar.bleed(true);
 			
-			//if tengu has lost a certain amount of hp, jump
+		//if tengu has lost a certain amount of hp, jump
 		} else if (beforeHitHP / hpBracket != HP / hpBracket) {
-			jump();
+			//let full attack action complete first
+			Actor.add(new Actor() {
+
+				{
+					actPriority = VFX_PRIO;
+				}
+
+				@Override
+				protected boolean act() {
+					Actor.remove(this);
+					jump();
+					return true;
+				}
+			});
+			return;
 		}
 	}
 	
