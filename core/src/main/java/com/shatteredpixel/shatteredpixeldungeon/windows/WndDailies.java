@@ -35,6 +35,7 @@ import com.watabou.noosa.ui.Component;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -95,7 +96,7 @@ public class WndDailies extends Window {
 		top = (int) score.bottom() + 6;
 
 		NumberFormat num = NumberFormat.getInstance(Locale.US);
-		DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ROOT);
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
 		format.setTimeZone(TimeZone.getTimeZone("UTC"));
 		Date date = new Date();
 

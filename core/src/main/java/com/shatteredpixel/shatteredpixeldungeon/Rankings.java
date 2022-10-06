@@ -45,6 +45,7 @@ import com.watabou.utils.FileUtils;
 
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -91,7 +92,7 @@ public enum Rankings {
 			rec.version = "";
 		}
 
-		DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ROOT);
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
 		rec.date = format.format(new Date(Game.realTime));
 
 		rec.cause = cause;

@@ -83,6 +83,7 @@ import com.watabou.utils.SparseArray;
 
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -207,7 +208,7 @@ public class Dungeon {
 		if (daily) {
 			//Ensures that daily seeds are not in the range of user-enterable seeds
 			seed = SPDSettings.lastDaily() + DungeonSeed.TOTAL_SEEDS;
-			DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ROOT);
+			DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
 			format.setTimeZone(TimeZone.getTimeZone("UTC"));
 			customSeedText = format.format(new Date(SPDSettings.lastDaily()));
 		} else if (!SPDSettings.customSeed().isEmpty()){
