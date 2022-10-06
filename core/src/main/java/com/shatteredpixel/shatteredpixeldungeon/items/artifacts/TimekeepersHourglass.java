@@ -116,8 +116,6 @@ public class TimekeepersHourglass extends Artifact {
 									activeBuff = new timeStasis();
 									Talent.onArtifactUsed(Dungeon.hero);
 									activeBuff.attachTo(Dungeon.hero);
-									charge--;
-									updateQuickslot();
 								} else if (index == 1) {
 									GLog.i( Messages.get(TimekeepersHourglass.class, "onfreeze") );
 									GameScene.flash(0x80FFFFFF);
@@ -126,6 +124,7 @@ public class TimekeepersHourglass extends Artifact {
 									activeBuff = new timeFreeze();
 									Talent.onArtifactUsed(Dungeon.hero);
 									activeBuff.attachTo(Dungeon.hero);
+									charge--;
 									((timeFreeze)activeBuff).processTime(0f);
 								}
 							}
