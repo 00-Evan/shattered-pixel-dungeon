@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -206,6 +207,14 @@ public class AscensionChallenge extends Buff {
 
 			}
 		}
+		if (Statistics.highestAscent < 20){
+			for (Mob m : Dungeon.level.mobs.toArray(new Mob[0])){
+				if (m instanceof Shopkeeper){
+					((Shopkeeper) m).flee();
+				}
+			}
+		}
+
 	}
 
 	public void saySwitch(){
