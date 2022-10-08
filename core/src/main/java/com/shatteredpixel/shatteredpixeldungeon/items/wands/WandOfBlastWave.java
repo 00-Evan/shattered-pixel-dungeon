@@ -186,7 +186,22 @@ public class WandOfBlastWave extends DamageWand {
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
 		//acts like elastic enchantment
-		new BlastWaveOnHit().proc(staff, attacker, defender, damage);
+		//we delay this with an actor to prevent conflicts with regular elastic
+		//so elastic always fully resolves first, then this effect activates
+		Actor.addDelayed(new Actor() {
+			{
+				actPriority = VFX_PRIO-1; //act after pushing effects
+			}
+
+			@Override
+			protected boolean act() {
+				Actor.remove(this);
+				if (defender.isAlive()) {
+					new BlastWaveOnHit().proc(staff, attacker, defender, damage);
+				}
+				return true;
+			}
+		}, -1);
 	}
 
 	private static class BlastWaveOnHit extends Elastic{
