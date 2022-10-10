@@ -89,6 +89,31 @@ public class v1_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("v1.4.1", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by v1.4)\n" +
+				"_-_ Various minor visual and textual errors\n" +
+				"_-_ Blooming enchantment triggering more often than intended\n" +
+				"_-_ Errors with charge use on timekeeper's hourglass\n" +
+				"_-_ Some changes missing from v1.4 changelog\n\n" +
+				"Fixed (existed prior to v1.4)\n" +
+				"_-_ Multiplicity glyph duplicating NPCs in rare cases\n" +
+				"_-_ Rare cases where potion of healing talents wouldn't trigger\n" +
+				"_-_ Cursed horn of plenty affecting non-food items\n" +
+				"_-_ Being able to self-target with cursed wands in rare cases\n" +
+				"_-_ Some thrown weapons triggering traps as Tengu jumps\n" +
+				"_-_ Magic resistance not applying to some cursed wand effects\n" +
+				"_-_ Some users seeing rankings dates in local format, instead of international\n" +
+				"_-_ Exploits during ascension challenge that let players still use shops\n" +
+				"_-_ Elastic and battlemage blast wave ability conflicting with each other"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
