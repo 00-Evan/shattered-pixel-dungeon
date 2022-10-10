@@ -42,7 +42,7 @@ public enum Languages {
 	DUTCH("nederlands",     "nl", Status.INCOMPLETE, new String[]{"AlbertBrand"}, new String[]{"AvanLieshout", "Frankwert", "Gehenna", "Mvharen", "Valco", "ZephyrZodiac", "link200023", "rmw", "th3f4llenh0rr0r"}),
 	HUNGARIAN("magyar",     "hu", Status.UNREVIEWED, new String[]{"dorheim", "szalaik"}, new String[]{"Navetelen", "acszoltan111", "clarovani", "dhialub", "nanometer", "nardomaa", "savarall", "summoner001"}),
 	FINNISH("suomi", 		"fi", Status.INCOMPLETE, new String[]{"TenguKnight"}, new String[]{"Allugaattori10", "Dakkus", "Oftox", "Sautari", "Tikkari"} ),
-	GREEK("ελληνικά",       "el", Status.UNREVIEWED,   new String[]{"Aeonius", "Saxy"}, new String[]{"DU_Clouds", "VasKyr", "YiorgosH", "fr3sh", "stefboi", "toumbo", "val.exe"}),
+	GREEK("ελληνικά",       "el", Status.REVIEWED,   new String[]{"Aeonius", "Saxy"}, new String[]{"DU_Clouds", "VasKyr", "YiorgosH", "fr3sh", "stefboi", "toumbo", "val.exe"}),
 	//CATALAN("català",     "ca", Status.INCOMPLETE, new String[]{"Illyatwo2"}, new String[]{"Elosy", "n1ngu"})
 	GALICIAN("galego",      "gl", Status.INCOMPLETE, new String[]{"xecarballido"}, null),
 	BASQUE("euskara",       "eu", Status.INCOMPLETE, new String[]{"Deathrevenge", "Osoitz"}, null),
