@@ -169,7 +169,7 @@ public class v1_X_Changes {
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 1",
 				"_-_ Daily runs can now be replayed for practise\n" +
 				"_-_ Waiting now always takes exactly 1 turn, regardless of hero speed\n" +
-				"_-_ Hero can now trample grass and trigger traps they are standing on by waiting\n" +
+				"_-_ Grass the hero is standing on can now be trampled by selecting the hero's position\n" +
 				"_-_ Hero now pauses before ascending/descending if enemies are nearby\n" +
 				"_-_ Goo's pump up attack now always gives the hero at least 1 action to react\n" +
 				"_-_ DM-300 now knocks back during rockfall even if hero is 1 tile away\n" +
