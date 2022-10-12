@@ -49,6 +49,7 @@ public class StoneOfDeepSleep extends Runestone {
 			if (c instanceof Mob){
 
 				Buff.affect(c, MagicalSleep.class);
+				c.sprite.centerEmitter().start( Speck.factory( Speck.NOTE ), 0.3f, 5 );
 
 			}
 
