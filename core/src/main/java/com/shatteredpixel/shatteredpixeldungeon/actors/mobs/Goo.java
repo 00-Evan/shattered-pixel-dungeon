@@ -101,6 +101,10 @@ public class Goo extends Mob {
 	@Override
 	public boolean act() {
 
+		if (state != HUNTING){
+			pumpedUp = 0;
+		}
+
 		if (Dungeon.level.water[pos] && HP < HT) {
 			HP += healInc;
 			Statistics.bossScores[0] -= 10;
