@@ -1109,36 +1109,27 @@ public abstract class Level implements Bundlable {
 			break;
 		}
 
+		TimekeepersHourglass.timeFreeze timeFreeze =
+				Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+
+		Swiftthistle.TimeBubble bubble =
+				Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
+
 		if (trap != null) {
-			
-			TimekeepersHourglass.timeFreeze timeFreeze =
-					Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
-			
-			Swiftthistle.TimeBubble bubble =
-					Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
-			
 			if (bubble != null){
-				
 				Sample.INSTANCE.play(Assets.Sounds.TRAP);
-				
 				discover(cell);
-				
 				bubble.setDelayedPress(cell);
 				
 			} else if (timeFreeze != null){
-				
 				Sample.INSTANCE.play(Assets.Sounds.TRAP);
-				
 				discover(cell);
-				
 				timeFreeze.setDelayedPress(cell);
 				
 			} else {
-
 				if (Dungeon.hero.pos == cell) {
 					Dungeon.hero.interrupt();
 				}
-
 				trap.trigger();
 
 			}
@@ -1146,7 +1137,18 @@ public abstract class Level implements Bundlable {
 		
 		Plant plant = plants.get( cell );
 		if (plant != null) {
-			plant.trigger();
+			if (bubble != null){
+				Sample.INSTANCE.play(Assets.Sounds.TRAMPLE, 1, Random.Float( 0.96f, 1.05f ) );
+				bubble.setDelayedPress(cell);
+
+			} else if (timeFreeze != null){
+				Sample.INSTANCE.play(Assets.Sounds.TRAMPLE, 1, Random.Float( 0.96f, 1.05f ) );
+				timeFreeze.setDelayedPress(cell);
+
+			} else {
+				plant.trigger();
+
+			}
 		}
 
 		if (hard && Blob.volumeAt(cell, Web.class) > 0){
