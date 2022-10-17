@@ -83,13 +83,13 @@ public class SpellSprite extends Image {
 	@Override
 	public void update() {
 		super.update();
-		
-		if (target.sprite != null) {
+
+		if (target != null && target.sprite != null) {
 			x = target.sprite.center().x - SIZE / 2;
 			y = target.sprite.y - SIZE;
 		}
 
-		if (phase == null){
+		if (phase == null || target == null){
 			return;
 		}
 		
