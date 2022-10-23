@@ -30,6 +30,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CounterBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -71,13 +73,21 @@ public class MasterThievesArmband extends Artifact {
 	@Override
 	public ArrayList<String> actions(Hero hero) {
 		ArrayList<String> actions = super.actions(hero);
-		if (isEquipped(hero) && charge > 0 && !cursed) actions.add(AC_STEAL);
+		if (isEquipped(hero)
+				&& charge > 0
+				&& hero.buff(MagicImmune.class) == null
+				&& !cursed) {
+			actions.add(AC_STEAL);
+		}
 		return actions;
 	}
 
 	@Override
 	public void execute(Hero hero, String action) {
 		super.execute(hero, action);
+
+		if (hero.buff(MagicImmune.class) != null) return;
+
 		if (action.equals(AC_STEAL)){
 
 			curUser = hero;
@@ -127,6 +137,8 @@ public class MasterThievesArmband extends Artifact {
 							boolean surprised = ((Mob) ch).surprisedBy(curUser, false);
 							float lootMultiplier = 1f + 0.1f*level();
 							int debuffDuration = 3 + level()/2;
+
+							Invisibility.dispel(curUser);
 
 							if (surprised){
 								lootMultiplier += 0.5f;
@@ -206,6 +218,7 @@ public class MasterThievesArmband extends Artifact {
 	
 	@Override
 	public void charge(Hero target, float amount) {
+		if (cursed || target.buff(MagicImmune.class) != null) return;
 		partialCharge += 0.1f * amount;
 		partialCharge = Math.min(partialCharge, chargeCap - charge);
 		while (partialCharge >= 1f){
@@ -261,7 +274,7 @@ public class MasterThievesArmband extends Artifact {
 		}
 
 		public void gainCharge(float levelPortion) {
-			if (cursed) return;
+			if (cursed || target.buff(MagicImmune.class) != null) return;
 
 			if (charge < chargeCap){
 				float chargeGain = 3f * levelPortion;

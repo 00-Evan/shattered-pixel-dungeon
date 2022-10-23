@@ -46,13 +46,18 @@ import com.watabou.utils.PathFinder;
 
 public class DeathMark extends ArmorAbility {
 
+	{
+		baseChargeUse = 25f;
+	}
+
 	@Override
 	public String targetingPrompt() {
 		return Messages.get(this, "prompt");
 	}
 
-	{
-		baseChargeUse = 25f;
+	@Override
+	public int targetedPos(Char user, int dst) {
+		return dst;
 	}
 
 	@Override
@@ -156,17 +161,6 @@ public class DeathMark extends ArmorAbility {
 		@Override
 		public void tintIcon(Image icon) {
 			icon.hardlight(1f, 0.2f, 0.2f);
-		}
-
-		@Override
-		public String toString() {
-			return Messages.get(this, "name");
-		}
-
-		@Override
-		public String desc() {
-			//TODO show initial HP here?
-			return Messages.get(this, "desc", dispTurns(visualcooldown()));
 		}
 
 		private void setInitialHP( int hp ){

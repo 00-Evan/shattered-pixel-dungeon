@@ -48,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpiritHawk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Piranha;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogFist;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlowParticle;
@@ -324,8 +325,8 @@ public abstract class Level implements Bundlable {
 
 		version = bundle.getInt( VERSION );
 		
-		//saves from before v0.9.3c are not supported
-		if (version < ShatteredPixelDungeon.v0_9_3c){
+		//saves from before v1.0.3 are not supported
+		if (version < ShatteredPixelDungeon.v1_0_3){
 			throw new RuntimeException("old save");
 		}
 
@@ -688,8 +689,15 @@ public abstract class Level implements Bundlable {
 	
 	public int randomRespawnCell( Char ch ) {
 		int cell;
+		int count = 0;
 		do {
+
+			if (++count > 30) {
+				return -1;
+			}
+
 			cell = Random.Int( length() );
+
 		} while ((Dungeon.level == this && heroFOV[cell])
 				|| !passable[cell]
 				|| (Char.hasProp(ch, Char.Property.LARGE) && !openSpace[cell])
@@ -1011,6 +1019,7 @@ public abstract class Level implements Bundlable {
 		int result;
 		do {
 			result = randomRespawnCell( null );
+			if (result == -1) return -1;
 		} while (traps.get(result) != null
 				|| findMob(result) != null);
 		return result;
@@ -1055,6 +1064,10 @@ public abstract class Level implements Bundlable {
 			if (map[ch.pos] == Terrain.DOOR){
 				Door.enter( ch.pos );
 			}
+		}
+
+		if (ch.isAlive() && ch instanceof Piranha && !water[ch.pos]){
+			ch.die(null);
 		}
 	}
 	

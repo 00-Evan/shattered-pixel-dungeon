@@ -304,11 +304,11 @@ public class ChangesScene extends PixelScene {
 
 			int pw = 135 + rightPanel.marginHor() - 2;
 			changeBody.text(message, pw - rightPanel.marginHor());
-			while (changeBody.height() > rightPanel.height()-25
+			int ph = Camera.main.height - 36;
+			while (changeBody.height() > ph-25
 					&& changeBody.right() + 5 < Camera.main.width){
 				changeBody.maxWidth(changeBody.maxWidth()+5);
 			}
-			int ph = Camera.main.height - 36;
 			rightPanel.size(changeBody.maxWidth() + rightPanel.marginHor(), Math.max(ph, changeBody.height()+18+rightPanel.marginVer()));
 			changeBody.setPos(changeBody.left(), changeTitle.bottom()+2);
 

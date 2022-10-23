@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class Explosive extends Weapon.Enchantment {
@@ -62,21 +63,18 @@ public class Explosive extends Weapon.Enchantment {
 			attacker.sprite.emitter().burst(BlastParticle.FACTORY, 5);
 			Item.updateQuickslot();
 		} else if (durability <= 0) {
-			//explosion position is either the attacker's position (when attacker and defender are adjacent)
-			//or the closest cell to the defender on a straight path to them otherwise
+			//explosion position is the closest adjacent cell to the defender
+			// this will be the attacker's position if they are adjacent
 			int explosionPos = -1;
-			if (Dungeon.level.adjacent(attacker.pos, defender.pos)){
-				explosionPos = attacker.pos;
-			} else {
-				Ballistica path = new Ballistica(attacker.pos, defender.pos, Ballistica.PROJECTILE);
-				if (path.dist == 0){
-					explosionPos = attacker.pos;
-				} else {
-					explosionPos = path.path.get(path.dist-1);
+			for (int i : PathFinder.NEIGHBOURS8){
+				if (!Dungeon.level.solid[defender.pos+i] &&
+						(explosionPos == -1 ||
+						Dungeon.level.trueDistance(attacker.pos, defender.pos+i) < Dungeon.level.trueDistance(attacker.pos, explosionPos))){
+					explosionPos = defender.pos+i;
 				}
 			}
 
-			new Bomb().explode(explosionPos);
+			new Bomb.MagicalBomb().explode(explosionPos);
 
 			durability = 100;
 			Item.updateQuickslot();

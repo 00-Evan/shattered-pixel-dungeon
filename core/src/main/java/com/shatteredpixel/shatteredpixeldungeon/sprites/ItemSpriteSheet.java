@@ -88,11 +88,8 @@ public class ItemSpriteSheet {
 	public static final int SANDBAG         = UNCOLLECTIBLE+5;
 	public static final int SPIRIT_ARROW    = UNCOLLECTIBLE+6;
 	
-	public static final int GUIDE_PAGE      = UNCOLLECTIBLE+8;
-	public static final int ALCH_PAGE       = UNCOLLECTIBLE+9;
-	
-	public static final int TENGU_BOMB      = UNCOLLECTIBLE+11;
-	public static final int TENGU_SHOCKER   = UNCOLLECTIBLE+12;
+	public static final int TENGU_BOMB      = UNCOLLECTIBLE+8;
+	public static final int TENGU_SHOCKER   = UNCOLLECTIBLE+9;
 	static{
 		assignItemRect(GOLD,        15, 13);
 		assignItemRect(ENERGY,      16, 16);
@@ -101,9 +98,6 @@ public class ItemSpriteSheet {
 		assignItemRect(PETAL,       8,  8);
 		assignItemRect(SANDBAG,     10, 10);
 		assignItemRect(SPIRIT_ARROW,11, 11);
-		
-		assignItemRect(GUIDE_PAGE,  10, 11);
-		assignItemRect(ALCH_PAGE,   10, 11);
 		
 		assignItemRect(TENGU_BOMB,      10, 10);
 		assignItemRect(TENGU_SHOCKER,   10, 10);
@@ -697,7 +691,23 @@ public class ItemSpriteSheet {
 		assignItemRect(VIAL,        12, 12);
 	}
 
-	                                                                                    //16 free slots
+	private static final int DOCUMENTS  =                                   xy(1, 32);  //16 slots
+	public static final int GUIDE_PAGE  = DOCUMENTS+0;
+	public static final int ALCH_PAGE   = DOCUMENTS+1;
+	public static final int SEWER_PAGE  = DOCUMENTS+2;
+	public static final int PRISON_PAGE = DOCUMENTS+3;
+	public static final int CAVES_PAGE  = DOCUMENTS+4;
+	public static final int CITY_PAGE   = DOCUMENTS+5;
+	public static final int HALLS_PAGE  = DOCUMENTS+6;
+	static{
+		assignItemRect(GUIDE_PAGE,  10, 11);
+		assignItemRect(ALCH_PAGE,   10, 11);
+		assignItemRect(SEWER_PAGE,  10, 11);
+		assignItemRect(PRISON_PAGE, 10, 11);
+		assignItemRect(CAVES_PAGE,  10, 11);
+		assignItemRect(CITY_PAGE,   10, 11);
+		assignItemRect(HALLS_PAGE,  10, 11);
+	}
 
 	//for smaller 8x8 icons that often accompany an item sprite
 	public static class Icons {
@@ -720,19 +730,20 @@ public class ItemSpriteSheet {
 
 		private static final int RINGS          =                            xy(1, 1);  //16 slots
 		public static final int RING_ACCURACY   = RINGS+0;
-		public static final int RING_ELEMENTS   = RINGS+1;
-		public static final int RING_ENERGY     = RINGS+2;
-		public static final int RING_EVASION    = RINGS+3;
-		public static final int RING_FORCE      = RINGS+4;
-		public static final int RING_FUROR      = RINGS+5;
-		public static final int RING_HASTE      = RINGS+6;
-		public static final int RING_MIGHT      = RINGS+7;
-		public static final int RING_SHARPSHOOT = RINGS+8;
-		public static final int RING_TENACITY   = RINGS+9;
-		public static final int RING_WEALTH     = RINGS+10;
-		public static final int RING_UNUSED     = RINGS+11;
+		public static final int RING_ARCANA     = RINGS+1;
+		public static final int RING_ELEMENTS   = RINGS+2;
+		public static final int RING_ENERGY     = RINGS+3;
+		public static final int RING_EVASION    = RINGS+4;
+		public static final int RING_FORCE      = RINGS+5;
+		public static final int RING_FUROR      = RINGS+6;
+		public static final int RING_HASTE      = RINGS+7;
+		public static final int RING_MIGHT      = RINGS+8;
+		public static final int RING_SHARPSHOOT = RINGS+9;
+		public static final int RING_TENACITY   = RINGS+10;
+		public static final int RING_WEALTH     = RINGS+11;
 		static {
 			assignIconRect( RING_ACCURACY,      7, 7 );
+			assignIconRect( RING_ARCANA,        7, 7 );
 			assignIconRect( RING_ELEMENTS,      7, 7 );
 			assignIconRect( RING_ENERGY,        7, 5 );
 			assignIconRect( RING_EVASION,       7, 7 );

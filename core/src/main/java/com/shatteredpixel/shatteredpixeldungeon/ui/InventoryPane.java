@@ -263,6 +263,27 @@ public class InventoryPane extends Component {
 
 		super.layout();
 	}
+	
+	public void alpha( float value ){
+		bg.alpha( value );
+		bg2.alpha( value );
+		
+		for (InventorySlot slot : equipped){
+			slot.alpha( value );
+		}
+		for (InventorySlot slot : bagItems){
+			slot.alpha( value );
+		}
+		
+		gold.alpha(value);
+		goldTxt.alpha(value);
+		energy.alpha(value);
+		energyTxt.alpha(value);
+
+		for (BagButton bag : bags){
+			bag.alpha( value );
+		}
+	}
 
 	public static void refresh(){
 		if (instance != null) instance.updateInventory();
@@ -613,6 +634,12 @@ public class InventoryPane extends Component {
 			bgBottom.size(width, height-1);
 			bgBottom.y = y+1;
 			bgBottom.x = x;
+		}
+		
+		public void alpha( float value ){
+			bgTop.alpha(value);
+			bgBottom.alpha(value);
+			icon.alpha(value);
 		}
 
 		@Override

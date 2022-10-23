@@ -79,20 +79,5 @@ public class Degrade extends FlavourBuff {
 	public float iconFadePercent() {
 		return (DURATION - visualcooldown())/DURATION;
 	}
-
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
-	
-	@Override
-	public String heroMessage() {
-		return Messages.get(this, "heromsg");
-	}
-	
-	@Override
-	public String desc() {
-		return Messages.get(this, "desc", dispTurns());
-	}
 	
 }

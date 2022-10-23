@@ -49,7 +49,7 @@ public class ScrollOfIdentify extends InventoryScroll {
 		curUser.sprite.parent.add( new Identification( curUser.sprite.center().offset( 0, -16 ) ) );
 		
 		item.identify();
-		GLog.i( Messages.get(this, "it_is", item) );
+		GLog.i( Messages.get(this, "it_is", item.title()) );
 		
 		Badges.validateItemLevelAquired( item );
 	}

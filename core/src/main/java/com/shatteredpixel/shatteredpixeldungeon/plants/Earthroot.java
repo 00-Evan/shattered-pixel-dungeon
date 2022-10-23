@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EarthParticle;
@@ -43,9 +44,9 @@ public class Earthroot extends Plant {
 	
 	@Override
 	public void activate( Char ch ) {
-		
-		if (ch == Dungeon.hero) {
-			if (Dungeon.hero.subClass == HeroSubClass.WARDEN){
+
+		if (ch != null){
+			if (ch instanceof Hero && ((Hero) ch).subClass == HeroSubClass.WARDEN) {
 				Buff.affect(ch, Barkskin.class).set(Dungeon.hero.lvl + 5, 5);
 			} else {
 				Buff.affect(ch, Armor.class).level(ch.HT);
@@ -111,10 +112,12 @@ public class Earthroot extends Plant {
 		}
 		
 		public void level( int value ) {
-			if (level < value) {
-				level = value;
+			if (target != null) {
+				if (level < value) {
+					level = value;
+				}
+				pos = target.pos;
 			}
-			pos = target.pos;
 		}
 		
 		@Override
@@ -130,11 +133,6 @@ public class Earthroot extends Plant {
 		@Override
 		public String iconTextDisplay() {
 			return Integer.toString(level);
-		}
-		
-		@Override
-		public String toString() {
-			return Messages.get(this, "name");
 		}
 
 		@Override

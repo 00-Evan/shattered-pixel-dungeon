@@ -54,14 +54,20 @@ public abstract class Actor implements Bundlable {
 	protected int actPriority = DEFAULT;
 
 	protected abstract boolean act();
-	
-	protected void spend( float time ) {
+
+	//Always spends exactly the specified amount of time, regardless of time-influencing factors
+	protected void spendConstant( float time ){
 		this.time += time;
 		//if time is very close to a whole number, round to a whole number to fix errors
 		float ex = Math.abs(this.time % 1f);
 		if (ex < .001f){
 			this.time = Math.round(this.time);
 		}
+	}
+
+	//sends time, but the amount can be influenced
+	protected void spend( float time ) {
+		spendConstant( time );
 	}
 
 	public void spendToWhole(){

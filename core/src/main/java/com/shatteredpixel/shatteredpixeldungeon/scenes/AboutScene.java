@@ -357,12 +357,14 @@ public class AboutScene extends PixelScene {
 					avatar.x = x;
 					body.maxWidth((int)(width() - avatar.width - 1));
 
-					if (avatar.height() > body.height()){
-						avatar.y = topY;
-						body.setPos( avatar.x + avatar.width() + 1, topY + (avatar.height() - body.height())/2f);
-						topY += avatar.height() + 1;
+					float fullAvHeight = Math.max(avatar.height(), 16);
+					if (fullAvHeight > body.height()){
+						avatar.y = topY + (fullAvHeight - avatar.height())/2f;
+						PixelScene.align(avatar);
+						body.setPos( avatar.x + avatar.width() + 1, topY + (fullAvHeight - body.height())/2f);
+						topY += fullAvHeight + 1;
 					} else {
-						avatar.y = topY + (body.height() - avatar.height())/2f;
+						avatar.y = topY + (body.height() - fullAvHeight)/2f;
 						PixelScene.align(avatar);
 						body.setPos( avatar.x + avatar.width() + 1, topY);
 						topY += body.height() + 2;

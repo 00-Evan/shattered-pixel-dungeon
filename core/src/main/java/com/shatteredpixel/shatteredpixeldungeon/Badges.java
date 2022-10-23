@@ -236,6 +236,8 @@ public class Badges {
 		if (bundle == null) return badges;
 		
 		String[] names = bundle.getStringArray( BADGES );
+		if (names == null) return badges;
+
 		for (int i=0; i < names.length; i++) {
 			try {
 				if (renamedBadges.containsKey(names[i])){
@@ -261,7 +263,7 @@ public class Badges {
 		String names[] = new String[badges.size()];
 		
 		for (Badge badge:badges) {
-			names[count++] = badge.toString();
+			names[count++] = badge.name();
 		}
 		bundle.put( BADGES, names );
 	}

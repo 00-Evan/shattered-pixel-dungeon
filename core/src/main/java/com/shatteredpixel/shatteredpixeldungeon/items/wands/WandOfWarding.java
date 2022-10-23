@@ -60,8 +60,8 @@ public class WandOfWarding extends Wand {
 
 	@Override
 	public int collisionProperties(int target) {
-		if (Dungeon.level.heroFOV[target])  return Ballistica.STOP_TARGET;
-		else                                return Ballistica.PROJECTILE;
+		if (cursed || !Dungeon.level.heroFOV[target])   return Ballistica.PROJECTILE;
+		else                                            return Ballistica.STOP_TARGET;
 	}
 
 	private boolean wardAvailable = true;
@@ -164,16 +164,19 @@ public class WandOfWarding extends Wand {
 
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
-
 		int level = Math.max( 0, staff.buffedLvl() );
 
 		// lvl 0 - 20%
 		// lvl 1 - 33%
 		// lvl 2 - 43%
-		if (Random.Int( level + 5 ) >= 4) {
+		float procChance = (level+1f)/(level+5f) * procChanceMultiplier(attacker);
+		if (Random.Float() < procChance) {
+
+			float powerMulti = Math.max(1f, procChance);
+
 			for (Char ch : Actor.chars()){
 				if (ch instanceof Ward){
-					((Ward) ch).wandHeal(staff.buffedLvl());
+					((Ward) ch).wandHeal(staff.buffedLvl(), powerMulti);
 					ch.sprite.emitter().burst(MagicMissile.WardParticle.UP, ((Ward) ch).tier);
 				}
 			}

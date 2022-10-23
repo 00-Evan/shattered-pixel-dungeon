@@ -35,6 +35,7 @@ import com.watabou.noosa.ui.Component;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -62,6 +63,24 @@ public class WndDailies extends Window {
 		title.setPos(0, 0);
 		content.add(title);
 
+		if (Rankings.INSTANCE.latestDailyReplay != null){
+			IconButton replayInfo = new IconButton(Icons.get(Icons.CALENDAR)){
+				@Override
+				protected void onClick() {
+					ShatteredPixelDungeon.scene().addToFront(new WndRanking(Rankings.INSTANCE.latestDailyReplay));
+				}
+
+				@Override
+				protected void onPointerUp() {
+					super.onPointerUp();
+					icon.hardlight(1f, 0.5f, 2f);
+				}
+			};
+			replayInfo.icon().hardlight(1f, 0.5f, 2f);
+			replayInfo.setRect(WIDTH-16, 0, 16, 16);
+			add(replayInfo);
+		}
+
 		int top = (int)title.bottom()+3;
 
 		RenderedTextBlock day = PixelScene.renderTextBlock(Messages.get(this, "date"), 7);
@@ -77,7 +96,7 @@ public class WndDailies extends Window {
 		top = (int) score.bottom() + 6;
 
 		NumberFormat num = NumberFormat.getInstance(Locale.US);
-		DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ROOT);
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
 		format.setTimeZone(TimeZone.getTimeZone("UTC"));
 		Date date = new Date();
 

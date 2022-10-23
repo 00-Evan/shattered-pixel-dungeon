@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -39,8 +40,6 @@ public class MagicImmune extends FlavourBuff {
 	{
 		immunities.addAll(AntiMagic.RESISTS);
 	}
-	
-	//FIXME still a lot of cases not handled here, e.g. rings/artifacts and various damage sources
 
 	@Override
 	public boolean attachTo(Char target) {
@@ -53,9 +52,20 @@ public class MagicImmune extends FlavourBuff {
 					}
 				}
 			}
+			if (target instanceof Hero){
+				((Hero) target).updateHT(false);
+			}
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	@Override
+	public void detach() {
+		super.detach();
+		if (target instanceof Hero){
+			((Hero) target).updateHT(false);
 		}
 	}
 
@@ -73,15 +83,4 @@ public class MagicImmune extends FlavourBuff {
 	public float iconFadePercent() {
 		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 	}
-	
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
-	
-	@Override
-	public String desc() {
-		return Messages.get(this, "desc", dispTurns());
-	}
-	
 }

@@ -63,12 +63,12 @@ public class IOSLauncher extends IOSApplication.Delegate {
 		});
 
 		try {
-			Game.version = NSBundle.getMainBundle().getInfoDictionaryObject("CFBundleVersionString").toString();
+			Game.version = NSBundle.getMainBundle().getInfoDictionaryObject("CFBundleVersionString").description();
 		} catch (Exception e) {
 			Game.version = "???";
 		}
 		try {
-			Game.versionCode = Integer.parseInt(NSBundle.getMainBundle().getInfoDictionaryObject("CFBundleVersion").toString());
+			Game.versionCode = Integer.parseInt(NSBundle.getMainBundle().getInfoDictionaryObject("CFBundleVersion").description());
 		} catch (Exception e) {
 			Game.versionCode = 0;
 		}

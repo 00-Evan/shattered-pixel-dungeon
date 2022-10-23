@@ -119,8 +119,9 @@ public class ActionIndicator extends Tag {
 	}
 
 	public static void clearAction(Action action){
-		if (ActionIndicator.action == action)
+		if (ActionIndicator.action == action) {
 			ActionIndicator.action = null;
+		}
 	}
 
 	public static void updateIcon(){

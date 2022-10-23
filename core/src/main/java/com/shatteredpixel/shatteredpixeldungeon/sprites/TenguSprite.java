@@ -80,7 +80,13 @@ public class TenguSprite extends MobSprite {
 		}
 
 	}
-	
+
+	@Override
+	public void update() {
+		if (paused) isMoving = false;
+		super.update();
+	}
+
 	@Override
 	public void attack( int cell ) {
 		if (!Dungeon.level.adjacent( cell, ch.pos )) {

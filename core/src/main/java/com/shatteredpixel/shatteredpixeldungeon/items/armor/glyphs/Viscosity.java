@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -30,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor.Glyph;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -46,38 +48,10 @@ public class Viscosity extends Glyph {
 	@Override
 	public int proc( Armor armor, Char attacker, Char defender, int damage ) {
 
-		//FIXME this glyph should really just proc after DR is accounted for.
-		//should build in functionality for that, but this works for now
-		int realDamage = damage - defender.drRoll();
+		//we use a tracker so that this glyph can apply after armor
+		Buff.affect(defender, ViscosityTracker.class).level = armor.buffedLvl();
 
-		//account for icon stomach (just skip the glyph)
-		if (defender.buff(Talent.WarriorFoodImmunity.class) != null){
-			return damage;
-		}
-
-		//account for huntress armor piercing
-		if (attacker instanceof Hero
-				&& ((Hero) attacker).belongings.weapon() instanceof MissileWeapon
-				&& ((Hero) attacker).subClass == HeroSubClass.SNIPER
-				&& !Dungeon.level.adjacent(attacker.pos, defender.pos)){
-			realDamage = damage;
-		}
-
-		if (realDamage <= 0) {
-			return 0;
-		}
-
-		int level = Math.max( 0, armor.buffedLvl() );
-		
-		float percent = (level+1)/(float)(level+6);
-		int amount = (int)Math.ceil(realDamage * percent);
-
-		DeferedDamage deferred = Buff.affect( defender, DeferedDamage.class );
-		deferred.prolong( amount );
-		
-		defender.sprite.showStatus( CharSprite.WARNING, Messages.get(this, "deferred", amount) );
-		
-		return damage - amount;
+		return damage;
 		
 	}
 
@@ -85,6 +59,50 @@ public class Viscosity extends Glyph {
 	public Glowing glowing() {
 		return PURPLE;
 	}
+
+	public static class ViscosityTracker extends Buff {
+
+		{
+			actPriority = Actor.VFX_PRIO;
+		}
+
+		private int level = 0;
+
+		public int deferDamage(int dmg){
+			//account for icon stomach (just skip the glyph)
+			if (target.buff(Talent.WarriorFoodImmunity.class) != null){
+				return dmg;
+			}
+
+			int level = Math.max( 0, this.level );
+
+			float percent = (level+1)/(float)(level+6);
+			percent *= RingOfArcana.enchantPowerMultiplier(target);
+
+			int amount;
+			if (percent > 1f){
+				dmg = Math.round(dmg / percent);
+				amount = dmg;
+			} else {
+				amount = (int)Math.ceil(dmg * percent);
+			}
+
+			if (amount > 0){
+				DeferedDamage deferred = Buff.affect( target, DeferedDamage.class );
+				deferred.prolong( amount );
+
+				target.sprite.showStatus( CharSprite.WARNING, Messages.get(Viscosity.class, "deferred", amount) );
+			}
+
+			return dmg - amount;
+		}
+
+		@Override
+		public boolean act() {
+			detach();
+			return true;
+		}
+	};
 	
 	public static class DeferedDamage extends Buff {
 		
@@ -131,11 +149,6 @@ public class Viscosity extends Glyph {
 		@Override
 		public String iconTextDisplay() {
 			return Integer.toString(damage);
-		}
-		
-		@Override
-		public String toString() {
-			return Messages.get(this, "name");
 		}
 		
 		@Override

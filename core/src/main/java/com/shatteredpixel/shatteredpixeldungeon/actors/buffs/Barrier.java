@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocking;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -68,8 +69,11 @@ public class Barrier extends ShieldBuff {
 	
 	@Override
 	public void fx(boolean on) {
-		if (on) target.sprite.add(CharSprite.State.SHIELDED);
-		else target.sprite.remove(CharSprite.State.SHIELDED);
+		if (on) {
+			target.sprite.add(CharSprite.State.SHIELDED);
+		} else if (target.buff(Blocking.BlockBuff.class) == null) {
+			target.sprite.remove(CharSprite.State.SHIELDED);
+		}
 	}
 	
 	@Override
@@ -85,11 +89,6 @@ public class Barrier extends ShieldBuff {
 	@Override
 	public String iconTextDisplay() {
 		return Integer.toString(shielding());
-	}
-	
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
 	}
 	
 	@Override

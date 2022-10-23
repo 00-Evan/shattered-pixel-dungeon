@@ -21,34 +21,38 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.badlogic.gdx.Gdx;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.input.PointerEvent;
 import com.watabou.noosa.TextInput;
 import com.watabou.utils.DeviceCompat;
 
 public class WndTextInput extends Window {
 
-	private static final int WIDTH = 130;
-	private static final int W_LAND_EXTRA = 200; //extra width is sometimes used in landscape
-	private static final int MARGIN = 2;
+	private static final int WIDTH = 135;
+	private static final int W_LAND_EXTRA = 220; //extra width is sometimes used in landscape
+	private static final int MARGIN = 1;
 	private static final int BUTTON_HEIGHT = 16;
 
 	protected TextInput textBox;
+
+	protected RedButton btnCopy;
+	protected RedButton btnPaste;
 
 	public WndTextInput(final String title, final String body, final String initialValue, final int maxLength,
 	                           final boolean multiLine, final String posTxt, final String negTxt) {
 		super();
 
 		//need to offset to give space for the soft keyboard
-		if (!DeviceCompat.isDesktop()) {
-			if (PixelScene.landscape()) {
-				offset(0, -45);
-			} else {
-				offset(0, multiLine ? -60 : -45);
-			}
+		if (PixelScene.landscape()) {
+			offset(0, -45);
+		} else {
+			offset(0, multiLine ? -60 : -45);
 		}
 
 		final int width;
@@ -67,7 +71,7 @@ public class WndTextInput extends Window {
 			txtTitle.setPos((width - txtTitle.width()) / 2, 2);
 			add(txtTitle);
 
-			pos = txtTitle.bottom() + 2 * MARGIN;
+			pos = txtTitle.bottom() + 4 * MARGIN;
 		}
 
 		if (body != null) {
@@ -98,8 +102,59 @@ public class WndTextInput extends Window {
 		} else {
 			inputHeight = 16;
 		}
+
+		float textBoxWidth = width-3*MARGIN-BUTTON_HEIGHT;
+
 		add(textBox);
-		textBox.setRect(MARGIN, pos, width-2*MARGIN, inputHeight);
+		textBox.setRect(MARGIN, pos, textBoxWidth, inputHeight);
+
+		btnCopy = new RedButton(""){
+			@Override
+			protected void onPointerDown() {
+				super.onPointerDown();
+				PointerEvent.clearKeyboardThisPress = false;
+			}
+
+			@Override
+			protected void onPointerUp() {
+				super.onPointerUp();
+				PointerEvent.clearKeyboardThisPress = false;
+			}
+
+			@Override
+			protected void onClick() {
+				super.onClick();
+				textBox.copyToClipboard();
+			}
+		};
+		btnCopy.icon(Icons.COPY.get());
+		add(btnCopy);
+
+		btnPaste = new RedButton(""){
+			@Override
+			protected void onPointerDown() {
+				super.onPointerDown();
+				PointerEvent.clearKeyboardThisPress = false;
+			}
+
+			@Override
+			protected void onPointerUp() {
+				super.onPointerUp();
+				PointerEvent.clearKeyboardThisPress = false;
+			}
+
+			@Override
+			protected void onClick() {
+				super.onClick();
+				textBox.pasteFromClipboard();
+			}
+
+		};
+		btnPaste.icon(Icons.PASTE.get());
+		add(btnPaste);
+
+		btnCopy.setRect(textBoxWidth + 2*MARGIN, pos, BUTTON_HEIGHT, BUTTON_HEIGHT);
+		btnPaste.setRect(textBoxWidth + 2*MARGIN, btnCopy.bottom()+MARGIN, BUTTON_HEIGHT, BUTTON_HEIGHT);
 
 		pos += inputHeight + MARGIN;
 
@@ -124,23 +179,33 @@ public class WndTextInput extends Window {
 			negativeBtn = null;
 		}
 
+		float btnWidth = multiLine ? width-2*MARGIN : textBoxWidth;
 		if (negTxt != null) {
-			positiveBtn.setRect(MARGIN, pos, (width - MARGIN * 3) / 2, BUTTON_HEIGHT);
+			positiveBtn.setRect(MARGIN, pos, (btnWidth - MARGIN) / 2, BUTTON_HEIGHT);
 			add(positiveBtn);
-			negativeBtn.setRect(positiveBtn.right() + MARGIN, pos, (width - MARGIN * 3) / 2, BUTTON_HEIGHT);
+			negativeBtn.setRect(positiveBtn.right() + MARGIN, pos, (btnWidth - MARGIN) / 2, BUTTON_HEIGHT);
 			add(negativeBtn);
 		} else {
-			positiveBtn.setRect(MARGIN, pos, width - MARGIN * 2, BUTTON_HEIGHT);
+			positiveBtn.setRect(MARGIN, pos, btnWidth, BUTTON_HEIGHT);
 			add(positiveBtn);
 		}
 
-		pos += BUTTON_HEIGHT + MARGIN;
+		pos += BUTTON_HEIGHT;
 
 		//need to resize first before laying out the text box, as it depends on the window's camera
 		resize(width, (int) pos);
 
-		textBox.setRect(MARGIN, textBox.top(), width-2*MARGIN, inputHeight);
+		textBox.setRect(MARGIN, textBox.top(), textBoxWidth, inputHeight);
 
+		PointerEvent.clearKeyboardThisPress = false;
+
+	}
+
+	@Override
+	public synchronized void update() {
+		super.update();
+		btnCopy.enable(!textBox.getText().isEmpty());
+		btnPaste.enable(Gdx.app.getClipboard().hasContents());
 	}
 
 	@Override

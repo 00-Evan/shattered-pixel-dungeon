@@ -62,7 +62,7 @@ public class MagicalInfusion extends InventorySpell {
 			item.upgrade();
 		}
 		
-		GLog.p( Messages.get(this, "infuse", item.name()) );
+		GLog.p( Messages.get(this, "infuse") );
 		Talent.onUpgradeScrollUsed( Dungeon.hero );
 		Badges.validateItemLevelAquired(item);
 

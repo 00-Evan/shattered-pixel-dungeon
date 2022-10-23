@@ -36,7 +36,6 @@ public class BuffIcon extends Image {
 
 	private final boolean large;
 
-	//TODO maybe roll fading behaviour into this too?
 	public BuffIcon(Buff buff, boolean large){
 		super( large ? Assets.Interfaces.BUFFS_LARGE : Assets.Interfaces.BUFFS_SMALL );
 		this.large = large;

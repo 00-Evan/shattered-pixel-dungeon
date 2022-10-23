@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -64,6 +65,11 @@ public class TeleportationTrap extends Trap {
 
 				if (cell != -1) {
 					Dungeon.level.drop( item, cell );
+					if (item instanceof Honeypot.ShatteredPot){
+						((Honeypot.ShatteredPot)item).movePot(pos, cell);
+					}
+					Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+					CellEmitter.get(pos).burst(Speck.factory(Speck.LIGHT), 4);
 				}
 			}
 		}

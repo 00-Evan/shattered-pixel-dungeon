@@ -71,7 +71,7 @@ public class Frost extends FlavourBuff {
 				
 				if (!freezable.isEmpty()){
 					Item toFreeze = Random.element(freezable).detach( hero.belongings.backpack );
-					GLog.w( Messages.get(this, "freezes", toFreeze.toString()) );
+					GLog.w( Messages.get(this, "freezes", toFreeze.title()) );
 					if (toFreeze instanceof Potion){
 						((Potion) toFreeze).shatter(hero.pos);
 					} else if (toFreeze instanceof MysteryMeat){
@@ -134,16 +134,6 @@ public class Frost extends FlavourBuff {
 			target.sprite.remove(CharSprite.State.FROZEN);
 			if (target.paralysed <= 1) target.sprite.remove(CharSprite.State.PARALYSED);
 		}
-	}
-
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
-
-	@Override
-	public String desc() {
-		return Messages.get(this, "desc", dispTurns());
 	}
 
 	{

@@ -84,7 +84,11 @@ public class v0_8_X_Changes {
 				"_-_ Released August 6th, 2020\n" +
 				"_-_ 40 days after Shattered v0.8.1\n" +
 				"\n" +
-				"Dev commentary will be added here in the next major update."));
+				"v0.8.2 was another followup to v0.8.0 in terms of game content. The dust was beginning to settle though and so fewer major balance changes were needed when comparing to v0.8.1.\n" +
+				"\n" +
+				"The one major content change was the addition of a fifth equip slot! This was something that I  probably should have done when I initially added artifacts all the way back in v0.2.0. The extra slot both reduced competition between ring and artifacts and allowed for all sorts of new and interesting item builds. v0.8.0 also made the game harder overall, so giving the player an extra equip slot was a nice counterbalance.\n" +
+				"\n" +
+				"Lastly, v0.8.2 included a crucial UI addition: an in-game news feed! I've always tried to be communicative to players who reach out to me, but lots of people will just passively wait for news to come to them. The news UI has made it possible for me to effectively communicate with everyone, not just players to seek me out."));
 
 		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_HORN1), "Fifth Equipment Slot!",
 				"_An extra slot has been added for rings/artifacts_, bringing the total number of equip slots up to 5!\n\n" +
@@ -269,7 +273,9 @@ public class v0_8_X_Changes {
 				"_-_ Released June 27th, 2020\n" +
 				"_-_ 72 days after Shattered v0.8.0\n" +
 				"\n" +
-				"Dev commentary will be added here in the next major update."));
+				"In terms of game content v0.8.1 was mostly a followup to v0.8.0. There were a lot of items that needed to be buffed or nerfed as a result of all the boss and enemy changes. I also took this as an opportunity to make a few item reworks. A few of the new boss and enemy mechanics were also adjusted based on balance data and player feedback.\n" +
+						"\n" +
+						"This update had some pretty big additions aside from game content though, with hero splash art and new sound effects! The splash art in particular was a long time coming, I first approached Aleksandar about them in 2016! While new game content is perhaps more exciting, these presentation improvements were a really important addition to Shattered, especially when it comes to enticing new players to try the game."));
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.DISPLAY), "New Hero Select!",
 				"The game's hero select screen has been completely overhauled, and how shows off the heroes in more detail than ever before.\n\n" +
@@ -478,7 +484,11 @@ public class v0_8_X_Changes {
 				"_-_ 546 days after Shattered v0.7.0\n" +
 				"_-_ 197 days after Shattered v0.7.5\n" +
 				"\n" +
-				"Dev commentary will be added here in the next major update."));
+				"v0.8.0 is easily the largest update Shattered has ever received in terms of game content. It included sweeping changes to basically every enemy after floor 10. This included full reworks to three of the game's bosses, which were some of the most well-received changes I've ever made to Shattered.\n" +
+				"\n" +
+				"These changes also heavily influenced item and class balance. Offense and defense became more fairly balanced, as many enemies gained mechanics that couldn't be ignored by just dealing more damage to them. I would say this update marks another new era in Shattered's development, as the experience of playing the game changed so substantially.\n" +
+				"\n" +
+				"At over 6 months v0.8.0 also took longer than any other update and it could have easily been released as 3 smaller updates instead. I felt similarly about v0.7.0, and since then I've tried to structure content releases so that updates don't take longer than about 3 months."));
 
 		changes.addButton( new ChangeButton(new Image(new DM100Sprite()), "Misc Enemies",
 				"_DM-100s_ have been added to the prison to replace gnoll shamans. They behave very similarly to prison shamans, but have a few stat tweaks:\n" +

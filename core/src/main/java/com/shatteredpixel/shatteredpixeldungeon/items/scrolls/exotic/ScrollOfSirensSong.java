@@ -56,7 +56,7 @@ public class ScrollOfSirensSong extends ExoticScroll {
 
 		@Override
 		public void onSelect(Integer cell) {
-			if (cell == null && isKnown() && !anonymous){
+			if (cell == null && isKnown()){
 				return;
 			}
 
@@ -130,16 +130,6 @@ public class ScrollOfSirensSong extends ExoticScroll {
 		@Override
 		public int icon() {
 			return BuffIndicator.HEART;
-		}
-
-		@Override
-		public String toString() {
-			return Messages.get(this, "name");
-		}
-
-		@Override
-		public String desc() {
-			return Messages.get(this, "desc");
 		}
 	}
 	

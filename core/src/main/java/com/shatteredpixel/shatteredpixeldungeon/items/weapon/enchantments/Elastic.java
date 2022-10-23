@@ -43,6 +43,9 @@ public class Elastic extends Weapon.Enchantment {
 		// lvl 2 - 43%
 		float procChance = (level+1f)/(level+5f) * procChanceMultiplier(attacker);
 		if (Random.Float() < procChance) {
+
+			float powerMulti = Math.max(1f, procChance);
+
 			//trace a ballistica to our target (which will also extend past them
 			Ballistica trajectory = new Ballistica(attacker.pos, defender.pos, Ballistica.STOP_TARGET);
 			//trim it to just be the part that goes past them
@@ -50,7 +53,7 @@ public class Elastic extends Weapon.Enchantment {
 			//knock them back along that ballistica
 			WandOfBlastWave.throwChar(defender,
 					trajectory,
-					2,
+					Math.round(2 * powerMulti),
 					!(weapon instanceof MissileWeapon || weapon instanceof SpiritBow),
 					true,
 					getClass());

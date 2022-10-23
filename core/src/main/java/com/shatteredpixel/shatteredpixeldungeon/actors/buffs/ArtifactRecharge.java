@@ -100,11 +100,6 @@ public class ArtifactRecharge extends Buff {
 	public String iconTextDisplay() {
 		return Integer.toString((int)left);
 	}
-
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
 	
 	@Override
 	public String desc() {

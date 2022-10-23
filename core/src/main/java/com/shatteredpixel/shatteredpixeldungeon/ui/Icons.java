@@ -80,6 +80,8 @@ public enum Icons {
 	MAGNIFY,
 	BUFFS,
 	ENERGY,
+	COPY,
+	PASTE,
 	COIN_SML,
 	ENERGY_SML,
 	BACKPACK,
@@ -259,26 +261,32 @@ public enum Icons {
 			case ENERGY:
 				icon.frame( icon.texture.uvRectBySize( 176, 48, 16, 16 ) );
 				break;
+			case COPY:
+				icon.frame( icon.texture.uvRectBySize( 192, 48, 13, 13 ) );
+				break;
+			case PASTE:
+				icon.frame( icon.texture.uvRectBySize( 208, 48, 13, 13 ) );
+				break;
 			case COIN_SML:
-				icon.frame( icon.texture.uvRectBySize( 192, 48, 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 192, 64, 7, 7 ) );
 				break;
 			case ENERGY_SML:
-				icon.frame( icon.texture.uvRectBySize( 192, 56, 8, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 192, 72, 8, 7 ) );
 				break;
 			case BACKPACK:
-				icon.frame( icon.texture.uvRectBySize( 201, 48, 10, 10 ) );
+				icon.frame( icon.texture.uvRectBySize( 201, 64, 10, 10 ) );
 				break;
 			case SCROLL_HOLDER:
-				icon.frame( icon.texture.uvRectBySize( 211, 48, 10, 10 ) );
+				icon.frame( icon.texture.uvRectBySize( 211, 64, 10, 10 ) );
 				break;
 			case SEED_POUCH:
-				icon.frame( icon.texture.uvRectBySize( 221, 48, 10, 10 ) );
+				icon.frame( icon.texture.uvRectBySize( 221, 64, 10, 10 ) );
 				break;
 			case WAND_HOLSTER:
-				icon.frame( icon.texture.uvRectBySize( 231, 48, 10, 10 ) );
+				icon.frame( icon.texture.uvRectBySize( 231, 64, 10, 10 ) );
 				break;
 			case POTION_BANDOLIER:
-				icon.frame( icon.texture.uvRectBySize( 241, 48, 10, 10 ) );
+				icon.frame( icon.texture.uvRectBySize( 241, 64, 10, 10 ) );
 				break;
 
 			case TARGET:
@@ -303,36 +311,28 @@ public enum Icons {
 				icon.frame( icon.texture.uvRectBySize( 40, 72, 8, 8 ) );
 				break;
 			case DEPTH:
-				int ofs = Dungeon.daily ? 16 : (!Dungeon.customSeedText.isEmpty() ? 8 : 0);
-				icon.frame( icon.texture.uvRectBySize( 48, 64 + ofs, 6, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 48, 64 + runTypeOfs(), 6, 7 ) );
 				break;
 			case DEPTH_CHASM:
-				ofs = Dungeon.daily ? 16 : (!Dungeon.customSeedText.isEmpty() ? 8 : 0);
-				icon.frame( icon.texture.uvRectBySize( 56, 64 + ofs, 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 56, 64 + runTypeOfs(), 7, 7 ) );
 				break;
 			case DEPTH_WATER:
-				ofs = Dungeon.daily ? 16 : (!Dungeon.customSeedText.isEmpty() ? 8 : 0);
-				icon.frame( icon.texture.uvRectBySize( 64, 64 + ofs, 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 64, 64 + runTypeOfs(), 7, 7 ) );
 				break;
 			case DEPTH_GRASS:
-				ofs = Dungeon.daily ? 16 : (!Dungeon.customSeedText.isEmpty() ? 8 : 0);
-				icon.frame( icon.texture.uvRectBySize( 72, 64 + ofs, 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 72, 64 + runTypeOfs(), 7, 7 ) );
 				break;
 			case DEPTH_DARK:
-				ofs = Dungeon.daily ? 16 : (!Dungeon.customSeedText.isEmpty() ? 8 : 0);
-				icon.frame( icon.texture.uvRectBySize( 80, 64 + ofs, 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 80, 64 + runTypeOfs(), 7, 7 ) );
 				break;
 			case DEPTH_LARGE:
-				ofs = Dungeon.daily ? 16 : (!Dungeon.customSeedText.isEmpty() ? 8 : 0);
-				icon.frame( icon.texture.uvRectBySize( 88, 64 + ofs, 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 88, 64 + runTypeOfs(), 7, 7 ) );
 				break;
 			case DEPTH_TRAPS:
-				ofs = Dungeon.daily ? 16 : (!Dungeon.customSeedText.isEmpty() ? 8 : 0);
-				icon.frame( icon.texture.uvRectBySize( 96, 64 + ofs, 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 96, 64 + runTypeOfs(), 7, 7 ) );
 				break;
 			case DEPTH_SECRETS:
-				ofs = Dungeon.daily ? 16 : (!Dungeon.customSeedText.isEmpty() ? 8 : 0);
-				icon.frame( icon.texture.uvRectBySize( 104, 64 + ofs, 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 104, 64 + runTypeOfs(), 7, 7 ) );
 				break;
 			case CHAL_COUNT:
 				icon.frame( icon.texture.uvRectBySize( 112, 64, 7, 7 ) );
@@ -372,6 +372,20 @@ public enum Icons {
 
 		}
 		return icon;
+	}
+
+	private static int runTypeOfs(){
+		if (Dungeon.daily){
+			if (Dungeon.dailyReplay){
+				return 24;
+			} else {
+				return 16;
+			}
+		} else if (!Dungeon.customSeedText.isEmpty()){
+			return 8;
+		} else {
+			return 0;
+		}
 	}
 	
 	public static Image get( HeroClass cl ) {

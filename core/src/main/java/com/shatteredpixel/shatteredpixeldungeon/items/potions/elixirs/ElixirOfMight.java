@@ -97,7 +97,7 @@ public class ElixirOfMight extends Elixir {
 		}
 		
 		public int boost(){
-			return Math.round(left*boost(target.HT)/5f);
+			return Math.round(left*boost(15 + 5*((Hero)target).lvl)/5f);
 		}
 		
 		public static int boost(int HT){
@@ -129,11 +129,6 @@ public class ElixirOfMight extends Elixir {
 		@Override
 		public String iconTextDisplay() {
 			return Integer.toString(left);
-		}
-
-		@Override
-		public String toString() {
-			return Messages.get(this, "name");
 		}
 		
 		@Override

@@ -35,6 +35,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shaman;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Warlock;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogFist;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast;
@@ -45,6 +49,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfPrismaticLight;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTransfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ForceCube;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -68,6 +73,10 @@ public class AntiMagic extends Armor.Glyph {
 		RESISTS.add( DisintegrationTrap.class );
 		RESISTS.add( GrimTrap.class );
 
+		RESISTS.add( Bomb.MagicalBomb.class );
+		RESISTS.add( ScrollOfPsionicBlast.class );
+
+		RESISTS.add( CursedWand.class );
 		RESISTS.add( WandOfBlastWave.class );
 		RESISTS.add( WandOfDisintegration.class );
 		RESISTS.add( WandOfFireblast.class );
@@ -91,12 +100,19 @@ public class AntiMagic extends Armor.Glyph {
 	
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
-		//no proc effect, see Hero.damage and GhostHero.damage and ArmoredStatue.damage
+		//no proc effect, see:
+		// Hero.damage
+		// GhostHero.damage
+		// Shadowclone.damage
+		// ArmoredStatue.damage
+		// PrismaticImage.damage
 		return damage;
 	}
 	
-	public static int drRoll( int level ){
-		return Random.NormalIntRange(level, 3 + Math.round(level*1.5f));
+	public static int drRoll( Char ch, int level ){
+		return Random.NormalIntRange(
+				Math.round(level * RingOfArcana.enchantPowerMultiplier(ch)),
+				Math.round((3 + (level*1.5f)) * RingOfArcana.enchantPowerMultiplier(ch)));
 	}
 
 	@Override

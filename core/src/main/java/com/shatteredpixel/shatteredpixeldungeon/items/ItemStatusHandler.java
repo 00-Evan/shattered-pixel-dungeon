@@ -79,7 +79,7 @@ public class ItemStatusHandler<T extends Item> {
 	
 	public void save( Bundle bundle ) {
 		for (int i=0; i < items.length; i++) {
-			String itemName = items[i].toString();
+			String itemName = items[i].getSimpleName();
 			bundle.put( itemName + PFX_LABEL, itemLabels.get( items[i] ) );
 			bundle.put( itemName + PFX_KNOWN, known.contains( items[i] ) );
 		}
@@ -90,7 +90,7 @@ public class ItemStatusHandler<T extends Item> {
 		for (Item item : itemsToSave){
 			if (items.contains(item.getClass())){
 				Class<? extends T> cls = items.get(items.indexOf(item.getClass()));
-				String itemName = cls.toString();
+				String itemName = cls.getSimpleName();
 				bundle.put( itemName + PFX_LABEL, itemLabels.get( cls ) );
 				bundle.put( itemName + PFX_KNOWN, known.contains( cls ) );
 			}
@@ -102,7 +102,7 @@ public class ItemStatusHandler<T extends Item> {
 		for (Class<?extends Item> cls : clsToSave){
 			if (items.contains(cls)){
 				Class<? extends T> toSave = items.get(items.indexOf(cls));
-				String itemName = toSave.toString();
+				String itemName = toSave.getSimpleName();
 				bundle.put( itemName + PFX_LABEL, itemLabels.get( toSave ) );
 				bundle.put( itemName + PFX_KNOWN, known.contains( toSave ) );
 			}
@@ -116,7 +116,12 @@ public class ItemStatusHandler<T extends Item> {
 		for (int i=0; i < items.length; i++) {
 
 			Class<? extends T> item = items[i];
-			String itemName = item.toString();
+			String itemName = item.getSimpleName();
+
+			//pre-1.4.0 saves
+			if (!bundle.contains( itemName + PFX_LABEL )){
+				itemName = item.toString();
+			}
 
 			if (bundle.contains( itemName + PFX_LABEL )) {
 
@@ -137,7 +142,7 @@ public class ItemStatusHandler<T extends Item> {
 
 		for (Class<? extends T> item : unlabelled){
 
-			String itemName = item.toString();
+			String itemName = item.getSimpleName();
 
 			int index = Random.Int( labelsLeft.size() );
 

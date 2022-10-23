@@ -25,10 +25,12 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Firebloom;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+import com.watabou.utils.Rect;
 
 public class PlantsRoom extends StandardRoom {
 	
@@ -47,6 +49,16 @@ public class PlantsRoom extends StandardRoom {
 		return new float[]{3, 1, 0};
 	}
 	
+	@Override
+	public void merge(Level l, Room other, Rect merge, int mergeTerrain) {
+		if (mergeTerrain == Terrain.EMPTY &&
+				(other instanceof PlantsRoom || other instanceof GrassyGraveRoom)){
+			super.merge(l, other, merge, Terrain.GRASS);
+		} else {
+			super.merge(l, other, merge, mergeTerrain);
+		}
+	}
+
 	@Override
 	public void paint(Level level) {
 		Painter.fill( level, this, Terrain.WALL );

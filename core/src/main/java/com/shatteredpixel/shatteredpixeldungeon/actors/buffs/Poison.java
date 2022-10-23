@@ -78,16 +78,6 @@ public class Poison extends Buff implements Hero.Doom {
 	public String iconTextDisplay(){
 		return Integer.toString((int) left);
 	}
-	
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
-
-	@Override
-	public String heroMessage() {
-		return Messages.get(this, "heromsg");
-	}
 
 	@Override
 	public String desc() {

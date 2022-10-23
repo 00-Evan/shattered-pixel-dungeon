@@ -3,8 +3,8 @@ This guide covers a few technical changes developers will likely want to make wh
 ## Application name, version name, and package name
 
 There are a number of variables defined in the root [build.gradle](/build.gradle) file that you may want to change:
-- `appName` defines the user-visible name of your app. Change this to whatever you wish to call your mod.
-- `appPackageName` defines the internal name of your app. The Android operating system uses this name to distinguish your app from others. You must change this from its initial value or Android will think your mod is Shattered Pixel Dungeon.
+- `appName` defines the user-visible name of your app. You must change this to whatever you wish to call your mod.
+- `appPackageName` defines the internal name of your app. Android and iOS use this name to distinguish your app from others and Desktop uses it and apName to determine the game's save directory. You must change this from its initial value. You should use the format com.<dev name>.<mod name>
 - `appVersionCode` defines the internal version number of your app. You want to increment this whenever releasing a new version. Read the next section for more details on this one.
 - `appVersionName` defines the user-visible version name of your app. Change this to whatever you like, and increment it whenever you release a new version.
 
@@ -19,6 +19,14 @@ Shattered Pixel Dungeon has an internal version code which should be incremented
 You may be tempted to set this value back to 1 when starting a new mod, but Shattered has compatibility code for previous versions which may be incorrectly triggered if you decrement the version code. The version code is entirely internal so there is no harm in using the game's current version code as a starting point.
 
 If you wish to set it to 1 anyway, the various constant variables toward the top of [ShatteredPixelDungeon.java](/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/ShatteredPixelDungeon.java) are a good starting point for finding all of the cases where the game refers to the version code for compatibility purposes.
+
+## Application Icon and Title Screen
+
+You will likely want to change the application icon and title screen to better visually distinguish your version from Shattered Pixel Dungeon. This is as simple as modifying image assets, but there are quite a few of them.
+
+For the title screen, you can find the game's title graphic and separate glow layer [Here](/core/src/main/assets/interfaces/banners.png).
+
+For icons, you can find the icons for each platform here: [Android(debug)](/android/src/debug/res), [Android(release)](/android/src/main/res), [Desktop](/desktop/src/main/assets/icons), [iOS](/ios/assets/Assets.xcassets).
 
 ## Credits & Supporter button
 

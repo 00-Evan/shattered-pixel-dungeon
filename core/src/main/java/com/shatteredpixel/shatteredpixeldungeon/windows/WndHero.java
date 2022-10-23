@@ -186,7 +186,11 @@ public class WndHero extends WndTabbed {
 			statSlot( Messages.get(this, "gold"), Statistics.goldCollected );
 			statSlot( Messages.get(this, "depth"), Statistics.deepestFloor );
 			if (Dungeon.daily){
-				statSlot( Messages.get(this, "daily_for"), "_" + Dungeon.customSeedText + "_" );
+				if (!Dungeon.dailyReplay) {
+					statSlot(Messages.get(this, "daily_for"), "_" + Dungeon.customSeedText + "_");
+				} else {
+					statSlot(Messages.get(this, "replay_for"), "_" + Dungeon.customSeedText + "_");
+				}
 			} else if (!Dungeon.customSeedText.isEmpty()){
 				statSlot( Messages.get(this, "custom_seed"), "_" + Dungeon.customSeedText + "_" );
 			} else {
@@ -301,7 +305,7 @@ public class WndHero extends WndTabbed {
 				icon.y = this.y;
 				add( icon );
 
-				txt = PixelScene.renderTextBlock( buff.toString(), 8 );
+				txt = PixelScene.renderTextBlock( Messages.titleCase(buff.name()), 8 );
 				txt.setPos(
 						icon.width + GAP,
 						this.y + (icon.height - txt.height()) / 2

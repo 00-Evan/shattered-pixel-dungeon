@@ -49,8 +49,8 @@ public class ElixirOfAquaticRejuvenation extends Elixir {
 			PotionOfHealing.pharmacophobiaProc(hero);
 		} else {
 			Buff.affect(hero, AquaHealing.class).set(Math.round(hero.HT * 1.5f));
-			Talent.onHealingPotionUsed( hero );
 		}
+		Talent.onHealingPotionUsed( hero );
 	}
 	
 	@Override
@@ -115,11 +115,6 @@ public class ElixirOfAquaticRejuvenation extends Elixir {
 		@Override
 		public String iconTextDisplay() {
 			return Integer.toString(left);
-		}
-		
-		@Override
-		public String toString() {
-			return Messages.get(this, "name");
 		}
 		
 		@Override

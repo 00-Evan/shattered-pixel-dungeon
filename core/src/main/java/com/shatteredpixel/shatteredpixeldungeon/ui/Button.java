@@ -208,6 +208,7 @@ public class Button extends Component {
 	public synchronized void destroy () {
 		super.destroy();
 		KeyEvent.removeKeyListener( keyListener );
+		killTooltip();
 	}
 	
 }

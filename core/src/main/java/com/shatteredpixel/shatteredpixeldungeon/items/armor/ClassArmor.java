@@ -89,6 +89,11 @@ abstract public class ClassArmor extends Armor {
 		}
 	}
 
+	@Override
+	public int targetingPos(Hero user, int dst) {
+		return user.armorAbility.targetedPos(user, dst);
+	}
+
 	public static ClassArmor upgrade (Hero owner, Armor armor ) {
 		
 		ClassArmor classArmor = null;
@@ -224,6 +229,8 @@ abstract public class ClassArmor extends Armor {
 								cursed = armor.cursed;
 								curseInfusionBonus = armor.curseInfusionBonus;
 								masteryPotionBonus = armor.masteryPotionBonus;
+								if (armor.checkSeal() != null) seal = armor.checkSeal();
+
 								identify();
 
 								GLog.p( Messages.get(ClassArmor.class, "transfer_complete") );

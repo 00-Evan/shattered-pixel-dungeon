@@ -19,43 +19,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.scenes;
+package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
-import com.watabou.noosa.Camera;
-import com.watabou.noosa.ColorBlock;
-import com.watabou.noosa.Game;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-public class IntroScene extends PixelScene {
+import java.text.DecimalFormat;
+
+public class RingOfArcana extends Ring {
 
 	{
-		inGameScene = true;
+		icon = ItemSpriteSheet.Icons.RING_ARCANA;
 	}
-	
+
+	public String statsInfo() {
+		if (isIdentified()){
+			return Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (Math.pow(1.15f, soloBuffedBonus()) - 1f)));
+		} else {
+			return Messages.get(this, "typical_stats", new DecimalFormat("#.##").format(15f));
+		}
+	}
+
 	@Override
-	public void create() {
-		super.create();
-
-		int w = Camera.main.width;
-		int h = Camera.main.height;
-
-		Archs archs = new Archs();
-		archs.setSize( w, h );
-		add( archs );
-
-		//darkens the arches
-		add(new ColorBlock(w, h, 0x88000000));
-		
-		add( new WndStory( Messages.get(this, "text") ) {
-			@Override
-			public void hide() {
-				super.hide();
-				Game.switchScene( InterlevelScene.class );
-			}
-		} );
-		
-		fadeIn();
+	protected RingBuff buff( ) {
+		return new Arcana();
 	}
+
+	public static float enchantPowerMultiplier(Char target ){
+		return (float)Math.pow(1.15f, getBuffedBonus(target, Arcana.class));
+	}
+
+	public class Arcana extends RingBuff {
+	}
+
 }

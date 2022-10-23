@@ -239,7 +239,7 @@ public class RenderedTextBlock extends Component {
 
 				if ((x - this.x) > width) width = (x - this.x);
 				
-				//TODO spacing currently doesn't factor in halfwidth and fullwidth characters
+				//Note that spacing currently doesn't factor in halfwidth and fullwidth characters
 				//(e.g. Ideographic full stop)
 				x -= 0.5f;
 

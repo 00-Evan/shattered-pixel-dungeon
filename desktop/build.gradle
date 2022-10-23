@@ -19,6 +19,7 @@ task debug(type: JavaExec) {
 
     main = appMainClass
     systemProperty 'Specification-Title', appName
+    systemProperty 'Implementation-Title', appPackageName
     systemProperty 'Specification-Version', appVersionName + "-INDEV"
     systemProperty 'Implementation-Version', appVersionCode
 
@@ -37,6 +38,7 @@ task release(type: Jar) {
     manifest {
         attributes 'Main-Class': appMainClass
         attributes 'Specification-Title': appName
+        attributes 'Implementation-Title': appPackageName
         attributes 'Specification-Version': appVersionName
         attributes 'Implementation-Version': appVersionCode
     }

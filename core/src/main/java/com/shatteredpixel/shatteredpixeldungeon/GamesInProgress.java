@@ -108,8 +108,8 @@ public class GamesInProgress {
 				info.slot = slot;
 				Dungeon.preview(info, bundle);
 				
-				//saves from before v0.9.3c are not supported
-				if (info.version < ShatteredPixelDungeon.v0_9_3c) {
+				//saves from before v1.0.3 are not supported
+				if (info.version < ShatteredPixelDungeon.v1_0_3) {
 					info = null;
 				}
 
@@ -126,28 +126,28 @@ public class GamesInProgress {
 		}
 	}
 
-	public static void set(int slot, int depth, int challenges, long seed, String customSeed, boolean daily,
-	                       Hero hero) {
+	public static void set(int slot) {
 		Info info = new Info();
 		info.slot = slot;
 		
-		info.depth = depth;
-		info.challenges = challenges;
+		info.depth = Dungeon.depth;
+		info.challenges = Dungeon.challenges;
 
-		info.seed = seed;
-		info.customSeed = customSeed;
-		info.daily = daily;
+		info.seed = Dungeon.seed;
+		info.customSeed = Dungeon.customSeedText;
+		info.daily = Dungeon.daily;
+		info.dailyReplay = Dungeon.dailyReplay;
 		
-		info.level = hero.lvl;
-		info.str = hero.STR;
-		info.strBonus = hero.STR() - hero.STR;
-		info.exp = hero.exp;
-		info.hp = hero.HP;
-		info.ht = hero.HT;
-		info.shld = hero.shielding();
-		info.heroClass = hero.heroClass;
-		info.subClass = hero.subClass;
-		info.armorTier = hero.tier();
+		info.level = Dungeon.hero.lvl;
+		info.str = Dungeon.hero.STR;
+		info.strBonus = Dungeon.hero.STR() - Dungeon.hero.STR;
+		info.exp = Dungeon.hero.exp;
+		info.hp = Dungeon.hero.HP;
+		info.ht = Dungeon.hero.HT;
+		info.shld = Dungeon.hero.shielding();
+		info.heroClass = Dungeon.hero.heroClass;
+		info.subClass = Dungeon.hero.subClass;
+		info.armorTier = Dungeon.hero.tier();
 		
 		info.goldCollected = Statistics.goldCollected;
 		info.maxDepth = Statistics.deepestFloor;
@@ -173,7 +173,8 @@ public class GamesInProgress {
 		public long seed;
 		public String customSeed;
 		public boolean daily;
-		
+		public boolean dailyReplay;
+
 		public int level;
 		public int str;
 		public int strBonus;

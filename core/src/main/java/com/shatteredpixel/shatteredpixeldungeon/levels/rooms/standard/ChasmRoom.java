@@ -25,12 +25,24 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.watabou.utils.Rect;
 
 public class ChasmRoom extends PatchRoom {
 
 	@Override
 	public float[] sizeCatProbs() {
 		return new float[]{4, 2, 1};
+	}
+
+	@Override
+	public void merge(Level l, Room other, Rect merge, int mergeTerrain) {
+		if (mergeTerrain == Terrain.EMPTY
+				&& (other instanceof ChasmRoom || other instanceof PlatformRoom)){
+			super.merge(l, other, merge, Terrain.CHASM);
+			Painter.set(l, connected.get(other), Terrain.EMPTY);
+		} else {
+			super.merge(l, other, merge, mergeTerrain);
+		}
 	}
 
 	@Override

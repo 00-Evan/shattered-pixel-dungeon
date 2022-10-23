@@ -166,6 +166,10 @@ public class QuickSlotButton extends Button {
 		PixelScene.align(crossB);
 	}
 
+	public void alpha( float value ){
+		slot.alpha(value);
+	}
+
 	@Override
 	public void update() {
 		super.update();
@@ -271,7 +275,6 @@ public class QuickSlotButton extends Button {
 	}
 	
 	private void enableSlot() {
-		//TODO check if item persists!
 		slot.enable(Dungeon.quickslot.isNonePlaceholder( slotNum )
 				&& (Dungeon.hero.buff(LostInventory.class) == null || Dungeon.quickslot.getItem(slotNum).keptThoughLostInvent));
 	}

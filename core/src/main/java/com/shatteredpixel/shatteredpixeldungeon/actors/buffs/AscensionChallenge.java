@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -41,18 +42,18 @@ public class AscensionChallenge extends Buff {
 
 	private static HashMap<Class<?extends Mob>, Float> modifiers = new HashMap<>();
 	static {
-		modifiers.put(Rat.class,            10f);
-		modifiers.put(Snake.class,          8f);
-		modifiers.put(Gnoll.class,          8f);
-		modifiers.put(Swarm.class,          7f);
+		modifiers.put(Rat.class,            8f);
+		modifiers.put(Snake.class,          7f);
+		modifiers.put(Gnoll.class,          7f);
+		modifiers.put(Swarm.class,          6.5f);
 		modifiers.put(Crab.class,           6f);
 		modifiers.put(Slime.class,          6f);
 
-		modifiers.put(Skeleton.class,       4.5f);
-		modifiers.put(Thief.class,          4.5f);
-		modifiers.put(DM100.class,          4f);
-		modifiers.put(Guard.class,          3.5f);
-		modifiers.put(Necromancer.class,    3.5f);
+		modifiers.put(Skeleton.class,       5f);
+		modifiers.put(Thief.class,          5f);
+		modifiers.put(DM100.class,          4.5f);
+		modifiers.put(Guard.class,          4f);
+		modifiers.put(Necromancer.class,    4f);
 
 		modifiers.put(Bat.class,            2.5f);
 		modifiers.put(Brute.class,          2.25f);
@@ -60,16 +61,16 @@ public class AscensionChallenge extends Buff {
 		modifiers.put(Spinner.class,        2f);
 		modifiers.put(DM200.class,          2f);
 
-		modifiers.put(Ghoul.class,          1.67f);
+		modifiers.put(Ghoul.class,          1.5f);
 		modifiers.put(Elemental.class,      1.5f);
 		modifiers.put(Warlock.class,        1.33f);
 		modifiers.put(Monk.class,           1.33f);
-		modifiers.put(Golem.class,          1.25f);
+		modifiers.put(Golem.class,          1.33f);
 
 		modifiers.put(RipperDemon.class,    1.2f);
 		modifiers.put(Succubus.class,       1.2f);
-		modifiers.put(Eye.class,            1f);
-		modifiers.put(Scorpio.class,        1f);
+		modifiers.put(Eye.class,            1.1f);
+		modifiers.put(Scorpio.class,        1.1f);
 	}
 
 	public static float statModifier(Char ch){
@@ -206,10 +207,18 @@ public class AscensionChallenge extends Buff {
 
 			}
 		}
+		if (Statistics.highestAscent < 20){
+			for (Mob m : Dungeon.level.mobs.toArray(new Mob[0])){
+				if (m instanceof Shopkeeper){
+					((Shopkeeper) m).flee();
+				}
+			}
+		}
+
 	}
 
 	public void saySwitch(){
-		if (Dungeon.bossLevel() || Dungeon.depth == 1){
+		if (Dungeon.bossLevel()){
 			GLog.p(Messages.get(this, "break"));
 		} else {
 			if (Dungeon.depth == 1){
@@ -224,10 +233,7 @@ public class AscensionChallenge extends Buff {
 				GLog.n(Messages.get(this, "beckon"));
 			}
 			if (stacks > 10 || stacks > 5 && Dungeon.depth > 20){
-				//english only until the next update
-				if (Messages.lang() == Languages.ENGLISH) {
-					GLog.h(Messages.get(this, "weaken_info"));
-				}
+				GLog.h(Messages.get(this, "weaken_info"));
 			}
 		}
 	}
@@ -276,11 +282,6 @@ public class AscensionChallenge extends Buff {
 		} else {
 			icon.hardlight(1, 0, 0);
 		}
-	}
-
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
 	}
 
 	@Override

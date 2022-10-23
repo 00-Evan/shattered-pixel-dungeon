@@ -44,7 +44,8 @@ public class AntiEntropy extends Glyph {
 	@Override
 	public int proc( Armor armor, Char attacker, Char defender, int damage) {
 
-		if (Random.Int( 8 ) == 0) {
+		float procChance = 1/8f * procChanceMultiplier(defender);
+		if ( Random.Float() < procChance ) {
 
 			for (int i : PathFinder.NEIGHBOURS8){
 				Freezing.affect(defender.pos+i);

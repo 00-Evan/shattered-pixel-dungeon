@@ -44,6 +44,7 @@ import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.ColorMath;
+import com.watabou.utils.GameMath;
 
 import java.util.ArrayList;
 
@@ -207,7 +208,7 @@ public class StatusPane extends Component {
 
 			heroInfoOnBar.setRect(heroInfo.right(), y + 19, 130, 20);
 
-			buffs.setPos( x + 31, y );
+			buffs.setRect(x + 31, y, 128, 16);
 
 			busy.x = x + bg.width + 1;
 			busy.y = y + bg.height - 9;
@@ -226,7 +227,7 @@ public class StatusPane extends Component {
 
 			heroInfoOnBar.setRect(heroInfo.right(), y, 50, 9);
 
-			buffs.setPos( x + 31, y + 9 );
+			buffs.setRect( x + 31, y + 9, 50, 8 );
 
 			busy.x = x + 1;
 			busy.y = y + 33;
@@ -262,7 +263,7 @@ public class StatusPane extends Component {
 		shieldedHP.scale.x = health/(float)max;
 
 		if (shield > health) {
-			rawShielding.scale.x = shield / (float) max;
+			rawShielding.scale.x = Math.min(1, shield / (float) max);
 		} else {
 			rawShielding.scale.x = 0;
 		}
@@ -316,6 +317,22 @@ public class StatusPane extends Component {
 		}
 
 		counter.setSweep((1f - Actor.now()%1f)%1f);
+	}
+
+	public void alpha( float value ){
+		value = GameMath.gate(0, value, 1f);
+		bg.alpha(value);
+		avatar.alpha(value);
+		rawShielding.alpha(0.5f*value);
+		shieldedHP.alpha(value);
+		hp.alpha(value);
+		hpText.alpha(0.6f*value);
+		exp.alpha(value);
+		if (expText != null) expText.alpha(0.6f*value);
+		level.alpha(value);
+		compass.alpha(value);
+		busy.alpha(value);
+		counter.alpha(value);
 	}
 
 	public void showStarParticles(){

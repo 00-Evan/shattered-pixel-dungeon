@@ -99,7 +99,14 @@ public class WandOfLightning extends DamageWand {
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
 		//acts like shocking enchantment
-		new Shocking().proc(staff, attacker, defender, damage);
+		new LightningOnHit().proc(staff, attacker, defender, damage);
+	}
+
+	private static class LightningOnHit extends Shocking {
+		@Override
+		protected float procChanceMultiplier(Char attacker) {
+			return Wand.procChanceMultiplier(attacker);
+		}
 	}
 
 	private void arc( Char ch ) {

@@ -44,6 +44,8 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Component;
 
+import javax.print.Doc;
+
 public class MenuPane extends Component {
 
 	private Image bg;
@@ -198,7 +200,8 @@ public class MenuPane extends Component {
 				btnJournal.centerY());
 	}
 
-	public void flashForPage( String page ){
+	public void flashForPage( Document doc, String page ){
+		btnJournal.flashingDoc = doc;
 		btnJournal.flashingPage = page;
 	}
 
@@ -212,6 +215,7 @@ public class MenuPane extends Component {
 		private Image journalIcon;
 		private KeyDisplay keyIcon;
 
+		private Document flashingDoc = null;
 		private String flashingPage = null;
 
 		public JournalButton() {
@@ -306,11 +310,22 @@ public class MenuPane extends Component {
 			time = 0;
 			keyIcon.am = journalIcon.am = 1;
 			if (flashingPage != null){
-				if (Document.ADVENTURERS_GUIDE.pageNames().contains(flashingPage)){
-					GameScene.show( new WndStory( WndJournal.GuideTab.iconForPage(flashingPage),
-							Document.ADVENTURERS_GUIDE.pageTitle(flashingPage),
-							Document.ADVENTURERS_GUIDE.pageBody(flashingPage) ));
-					Document.ADVENTURERS_GUIDE.readPage(flashingPage);
+				if (flashingDoc == Document.ALCHEMY_GUIDE){
+					WndJournal.last_index = 1;
+					GameScene.show( new WndJournal() );
+				} else if (flashingDoc.pageNames().contains(flashingPage)){
+					GameScene.show( new WndStory( flashingDoc.pageSprite(flashingPage),
+							flashingDoc.pageTitle(flashingPage),
+							flashingDoc.pageBody(flashingPage) ){
+						@Override
+						public void hide() {
+							super.hide();
+							if (SPDSettings.intro()){
+								GameScene.endIntro();
+							}
+						}
+					});
+					flashingDoc.readPage(flashingPage);
 				} else {
 					GameScene.show( new WndJournal() );
 				}

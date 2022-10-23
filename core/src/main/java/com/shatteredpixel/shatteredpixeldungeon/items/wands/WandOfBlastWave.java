@@ -27,15 +27,19 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Effects;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.AquaBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Elastic;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TenguDartTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Game;
@@ -149,8 +153,8 @@ public class WandOfBlastWave extends DamageWand {
 
 		Actor.addDelayed(new Pushing(ch, ch.pos, newPos, new Callback() {
 			public void call() {
-				if (initialpos != ch.pos) {
-					//something caused movement before pushing resolved, cancel to be safe.
+				if (initialpos != ch.pos || Actor.findChar(newPos) != null) {
+					//something caused movement or added chars before pushing resolved, cancel to be safe.
 					ch.sprite.place(ch.pos);
 					return;
 				}
@@ -158,9 +162,10 @@ public class WandOfBlastWave extends DamageWand {
 				ch.pos = newPos;
 				if (finalCollided && ch.isAlive()) {
 					ch.damage(Random.NormalIntRange(finalDist, 2*finalDist), this);
-					Paralysis.prolong(ch, Paralysis.class, 1 + finalDist/2f);
-					if (ch == Dungeon.hero && !ch.isAlive()){
-						if ( cause == WandOfBlastWave.class){
+					if (ch.isAlive()) {
+						Paralysis.prolong(ch, Paralysis.class, 1 + finalDist/2f);
+					} else if (ch == Dungeon.hero){
+						if (cause == WandOfBlastWave.class || cause == AquaBlast.class){
 							Badges.validateDeathFromFriendlyMagic();
 						}
 						Dungeon.fail(cause);
@@ -172,6 +177,7 @@ public class WandOfBlastWave extends DamageWand {
 				Dungeon.level.occupyCell(ch);
 				if (ch == Dungeon.hero){
 					Dungeon.observe();
+					GameScene.updateFog();
 				}
 			}
 		}), -1);
@@ -179,7 +185,30 @@ public class WandOfBlastWave extends DamageWand {
 
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
-		new Elastic().proc(staff, attacker, defender, damage);
+		//acts like elastic enchantment
+		//we delay this with an actor to prevent conflicts with regular elastic
+		//so elastic always fully resolves first, then this effect activates
+		Actor.addDelayed(new Actor() {
+			{
+				actPriority = VFX_PRIO-1; //act after pushing effects
+			}
+
+			@Override
+			protected boolean act() {
+				Actor.remove(this);
+				if (defender.isAlive()) {
+					new BlastWaveOnHit().proc(staff, attacker, defender, damage);
+				}
+				return true;
+			}
+		}, -1);
+	}
+
+	private static class BlastWaveOnHit extends Elastic{
+		@Override
+		protected float procChanceMultiplier(Char attacker) {
+			return Wand.procChanceMultiplier(attacker);
+		}
 	}
 
 	@Override

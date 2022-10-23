@@ -75,14 +75,4 @@ public class Light extends FlavourBuff {
 		if (on) target.sprite.add(CharSprite.State.ILLUMINATED);
 		else target.sprite.remove(CharSprite.State.ILLUMINATED);
 	}
-
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
-
-	@Override
-	public String desc() {
-		return Messages.get(this, "desc", dispTurns());
-	}
 }

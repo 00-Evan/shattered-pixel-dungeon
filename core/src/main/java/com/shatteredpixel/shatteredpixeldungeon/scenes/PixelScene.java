@@ -184,8 +184,29 @@ public class PixelScene extends Scene {
 				PointF virtualCursorPos = ControllerHandler.getControllerPointerPos();
 				virtualCursorPos.x += defaultZoom * sensitivity * Game.elapsed * xMove;
 				virtualCursorPos.y += defaultZoom * sensitivity * Game.elapsed * yMove;
-				virtualCursorPos.x = GameMath.gate(0, virtualCursorPos.x, Game.width);
-				virtualCursorPos.y = GameMath.gate(0, virtualCursorPos.y, Game.height);
+
+				PointF cameraShift = new PointF();
+
+				if (virtualCursorPos.x < 0){
+					cameraShift.x = virtualCursorPos.x;
+					virtualCursorPos.x = 0;
+				} else if (virtualCursorPos.x > Camera.main.screenWidth()){
+					cameraShift.x = (virtualCursorPos.x - Camera.main.screenWidth());
+					virtualCursorPos.x = Camera.main.screenWidth();
+				}
+
+				if (virtualCursorPos.y < 0){
+					cameraShift.y = virtualCursorPos.y;
+					virtualCursorPos.y = 0;
+				} else if (virtualCursorPos.y > Camera.main.screenHeight()){
+					cameraShift.y = (virtualCursorPos.y - Camera.main.screenHeight());
+					virtualCursorPos.y = Camera.main.screenHeight();
+				}
+
+				cameraShift.invScale(Camera.main.zoom);
+				if (cameraShift.length() > 0 && Camera.main.scrollable){
+					Camera.main.shift(cameraShift);
+				}
 				ControllerHandler.updateControllerPointer(virtualCursorPos, true);
 			}
 		}

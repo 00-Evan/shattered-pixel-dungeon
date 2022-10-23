@@ -98,23 +98,16 @@ public class StoneOfAggression extends Runestone {
 						if (m.alignment == Char.Alignment.ENEMY && m.isTargeting(target)) {
 							m.aggro(null);
 						}
+						if (target instanceof Mob && ((Mob) target).isTargeting(m)){
+							((Mob) target).aggro(null);
+						}
 					}
 				}
 			}
 			super.detach();
 			
 		}
-		
-		@Override
-		public String toString() {
-			return Messages.get(this, "name");
-		}
 
-		@Override
-		public String desc() {
-			return Messages.get(this, "desc", dispTurns());
-		}
-		
 	}
 	
 }

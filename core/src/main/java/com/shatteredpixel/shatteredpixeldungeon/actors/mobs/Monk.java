@@ -156,15 +156,5 @@ public class Monk extends Mob {
 		public void tintIcon(Image icon) {
 			icon.hardlight(0.25f, 1.5f, 1f);
 		}
-
-		@Override
-		public String toString() {
-			return Messages.get(this, "name");
-		}
-		
-		@Override
-		public String desc() {
-			return Messages.get(this, "desc");
-		}
 	}
 }

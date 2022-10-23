@@ -5,6 +5,5 @@ sourceCompatibility = targetCompatibility = appJavaCompatibility
 
 dependencies {
     api project(':SPD-classes')
-    //TODO might be nice to remove this, should decide
     implementation project(':services')
 }

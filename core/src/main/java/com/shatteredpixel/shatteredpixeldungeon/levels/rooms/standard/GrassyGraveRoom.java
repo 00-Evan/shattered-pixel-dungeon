@@ -27,9 +27,21 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Random;
+import com.watabou.utils.Rect;
 
 public class GrassyGraveRoom extends StandardRoom {
+
+	@Override
+	public void merge(Level l, Room other, Rect merge, int mergeTerrain) {
+		if (mergeTerrain == Terrain.EMPTY &&
+				(other instanceof GrassyGraveRoom || other instanceof PlantsRoom)){
+			super.merge(l, other, merge, Terrain.GRASS);
+		} else {
+			super.merge(l, other, merge, mergeTerrain);
+		}
+	}
 	
 	@Override
 	public void paint(Level level) {

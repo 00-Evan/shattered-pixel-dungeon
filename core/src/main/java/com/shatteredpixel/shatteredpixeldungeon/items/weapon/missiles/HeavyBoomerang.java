@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.watabou.noosa.tweeners.AlphaTweener;
@@ -49,7 +50,18 @@ public class HeavyBoomerang extends MissileWeapon {
 		return  4 * tier +                  //16 base, down from 20
 				(tier) * lvl;               //scaling unchanged
 	}
-	
+
+	boolean circleBackhit = false;
+
+	@Override
+	protected float adjacentAccFactor(Char owner, Char target) {
+		if (circleBackhit){
+			circleBackhit = false;
+			return 1.5f;
+		}
+		return super.adjacentAccFactor(owner, target);
+	}
+
 	@Override
 	protected void rangedHit(Char enemy, int cell) {
 		decrementDurability();
@@ -70,14 +82,14 @@ public class HeavyBoomerang extends MissileWeapon {
 			revivePersists = true;
 		}
 		
-		private MissileWeapon boomerang;
+		private HeavyBoomerang boomerang;
 		private int thrownPos;
 		private int returnPos;
 		private int returnDepth;
 		
 		private int left;
 		
-		public void setup( MissileWeapon boomerang, int thrownPos, int returnPos, int returnDepth){
+		public void setup( HeavyBoomerang boomerang, int thrownPos, int returnPos, int returnDepth){
 			this.boomerang = boomerang;
 			this.thrownPos = thrownPos;
 			this.returnPos = returnPos;
@@ -121,6 +133,7 @@ public class HeavyBoomerang extends MissileWeapon {
 												}
 												
 											} else if (returnTarget != null){
+												boomerang.circleBackhit = true;
 												if (((Hero)target).shoot( returnTarget, boomerang )) {
 													boomerang.decrementDurability();
 												}
@@ -162,7 +175,7 @@ public class HeavyBoomerang extends MissileWeapon {
 		@Override
 		public void restoreFromBundle(Bundle bundle) {
 			super.restoreFromBundle(bundle);
-			boomerang = (MissileWeapon) bundle.get(BOOMERANG);
+			boomerang = (HeavyBoomerang) bundle.get(BOOMERANG);
 			thrownPos = bundle.getInt(THROWN_POS);
 			returnPos = bundle.getInt(RETURN_POS);
 			returnDepth = bundle.getInt(RETURN_DEPTH);

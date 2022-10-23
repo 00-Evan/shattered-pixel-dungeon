@@ -164,8 +164,24 @@ public class WndRanking extends WndTabbed {
 			title.color(Window.TITLE_COLOR);
 			title.setRect( 0, 0, WIDTH, 0 );
 			add( title );
+
+			if (Dungeon.seed != -1){
+				GAP--;
+			}
 			
-			float pos = title.bottom() + GAP + 1;
+			float pos = title.bottom() + 1;
+
+			RenderedTextBlock date = PixelScene.renderTextBlock(record.date, 7);
+			date.hardlight(0xCCCCCC);
+			date.setPos(0, pos);
+			add(date);
+
+			RenderedTextBlock version = PixelScene.renderTextBlock(record.version, 7);
+			version.hardlight(0xCCCCCC);
+			version.setPos(WIDTH-version.width(), pos);
+			add(version);
+
+			pos = date.bottom()+5;
 
 			NumberFormat num = NumberFormat.getInstance(Locale.US);
 			pos = statSlot( this, Messages.get(this, "score"), num.format( Statistics.totalScore ), pos );
@@ -178,7 +194,7 @@ public class WndRanking extends WndTabbed {
 				}
 			};
 			scoreInfo.setSize(16, 16);
-			scoreInfo.setPos(WIDTH-scoreInfo.width(), pos-14);
+			scoreInfo.setPos(WIDTH-scoreInfo.width(), pos-10-GAP);
 			add(scoreInfo);
 			pos += GAP;
 
@@ -194,7 +210,11 @@ public class WndRanking extends WndTabbed {
 			}
 			if (Dungeon.seed != -1) {
 				if (Dungeon.daily){
-					pos = statSlot(this, Messages.get(this, "daily_for"), "_" + Dungeon.customSeedText + "_", pos);
+					if (Dungeon.dailyReplay) {
+						pos = statSlot(this, Messages.get(this, "replay_for"), "_" + Dungeon.customSeedText + "_", pos);
+					} else {
+						pos = statSlot(this, Messages.get(this, "daily_for"), "_" + Dungeon.customSeedText + "_", pos);
+					}
 				} else if (!Dungeon.customSeedText.isEmpty()){
 					pos = statSlot(this, Messages.get(this, "custom_seed"), "_" + Dungeon.customSeedText + "_", pos);
 				} else {
@@ -321,7 +341,7 @@ public class WndRanking extends WndTabbed {
 
 			float slotWidth = Math.min(28, ((WIDTH - slotsActive + 1) / (float)slotsActive));
 
-			for (int i = 0; i < slotsActive; i++){
+			for (int i = 0; i < QuickSlot.SIZE; i++){
 				if (Dungeon.quickslot.isNonePlaceholder(i)){
 					QuickSlotButton slot = new QuickSlotButton(Dungeon.quickslot.getItem(i));
 
@@ -353,7 +373,7 @@ public class WndRanking extends WndTabbed {
 			camera = WndRanking.this.camera;
 
 			Component badges;
-			if (Badges.totalUnlocked(false) <= 7){
+			if (Badges.filterReplacedBadges(false).size() <= 8){
 				badges = new BadgesList(false);
 			} else {
 				badges = new BadgesGrid(false);

@@ -31,10 +31,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Thief;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -115,7 +117,7 @@ public class Burning extends Buff implements Hero.Doom {
 
 					if (!burnable.isEmpty()){
 						Item toBurn = Random.element(burnable).detach(hero.belongings.backpack);
-						GLog.w( Messages.get(this, "burnsup", Messages.capitalize(toBurn.toString())) );
+						GLog.w( Messages.get(this, "burnsup", Messages.capitalize(toBurn.title())) );
 						if (toBurn instanceof MysteryMeat || toBurn instanceof FrozenCarpaccio){
 							ChargrilledMeat steak = new ChargrilledMeat();
 							if (!steak.collect( hero.belongings.backpack )) {
@@ -170,6 +172,23 @@ public class Burning extends Buff implements Hero.Doom {
 	}
 	
 	public void reignite( Char ch, float duration ) {
+		if (ch.isImmune(Burning.class)){
+			//TODO this only works for the hero, not others who can have brimstone+arcana effect
+			// e.g. prismatic image, shadow clone
+			if (ch instanceof Hero
+					&& ((Hero) ch).belongings.armor() != null
+					&& ((Hero) ch).belongings.armor().hasGlyph(Brimstone.class, ch)){
+				//has a 2*boost/50% chance to generate 1 shield per turn, to a max of 4x boost
+				float shieldChance = 2*(RingOfArcana.enchantPowerMultiplier(ch) - 1f);
+				int shieldCap = Math.round(shieldChance*4f);
+				if (shieldCap > 0 && Random.Float() < shieldChance){
+					Barrier barrier = Buff.affect(ch, Barrier.class);
+					if (barrier.shielding() < shieldCap){
+						barrier.incShield(1);
+					}
+				}
+			}
+		}
 		left = duration;
 	}
 	
@@ -192,16 +211,6 @@ public class Burning extends Buff implements Hero.Doom {
 	public void fx(boolean on) {
 		if (on) target.sprite.add(CharSprite.State.BURNING);
 		else target.sprite.remove(CharSprite.State.BURNING);
-	}
-
-	@Override
-	public String heroMessage() {
-		return Messages.get(this, "heromsg");
-	}
-
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
 	}
 
 	@Override

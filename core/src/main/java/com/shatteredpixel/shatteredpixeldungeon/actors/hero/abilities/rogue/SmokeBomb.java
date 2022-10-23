@@ -68,6 +68,11 @@ public class SmokeBomb extends ArmorAbility {
 	}
 
 	@Override
+	public boolean useTargeting() {
+		return false;
+	}
+
+	@Override
 	public float chargeUse(Hero hero) {
 		if (!hero.hasTalent(Talent.SHADOW_STEP) || hero.invisible <= 0){
 			return super.chargeUse(hero);

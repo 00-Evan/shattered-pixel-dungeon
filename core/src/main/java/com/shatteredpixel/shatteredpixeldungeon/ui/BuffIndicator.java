@@ -203,9 +203,11 @@ public class BuffIndicator extends Component {
 		for (BuffButton icon : buffButtons.values()){
 			icon.updateIcon();
 			//button areas are slightly oversized, especially on small buttons
-			icon.setRect(x + pos * (size + (large ? 1 : 2)), y, size + (large ? 1 : 2), size + (large ? 0 : 5));
+			icon.setRect(x + pos * (size + 1), y, size + 1, size + (large ? 0 : 5));
 			PixelScene.align(icon);
 			pos++;
+
+			icon.visible = icon.left() <= right();
 		}
 	}
 
@@ -218,7 +220,6 @@ public class BuffIndicator extends Component {
 		public Image grey; //only for small
 		public BitmapText text; //only for large
 
-		//TODO for large buffs there is room to have text instead of fading
 		public BuffButton( Buff buff, boolean large ){
 			super( new BuffIcon(buff, large));
 			this.buff = buff;
@@ -294,7 +295,7 @@ public class BuffIndicator extends Component {
 
 		@Override
 		protected String hoverText() {
-			return Messages.titleCase(buff.toString());
+			return Messages.titleCase(buff.name());
 		}
 	}
 	

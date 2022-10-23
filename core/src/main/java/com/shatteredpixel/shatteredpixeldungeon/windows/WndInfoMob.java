@@ -78,9 +78,11 @@ public class WndInfoMob extends WndTitledMessage {
 
 			health.setRect(image.width() + GAP, name.bottom() + GAP, w, health.height());
 
-			buffs.setPos(
+			buffs.setRect(
 				name.right() + GAP-1,
-				name.bottom() - BuffIndicator.SIZE_SMALL-2
+				name.bottom() - BuffIndicator.SIZE_SMALL-2,
+				w,
+				8
 			);
 
 			height = health.bottom();

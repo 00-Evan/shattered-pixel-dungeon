@@ -72,6 +72,7 @@ public class WndHardNotification extends WndTitledMessage{
 			timeLeft -= incTime;
 			incTime = 0;
 			btnOkay.text(btnMessage + " (" + (int)Math.ceil(timeLeft) + ")");
+			btnOkay.enable(false);
 		}
 
 	}

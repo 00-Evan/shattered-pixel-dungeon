@@ -48,22 +48,42 @@ public class Blooming extends Weapon.Enchantment {
 		// lvl 2 - 60%
 		float procChance = (level+1f)/(level+3f) * procChanceMultiplier(attacker);
 		if (Random.Float() < procChance) {
+
+			float powerMulti = Math.max(1f, procChance);
+
+			float plants = (1f + 0.1f*level) * powerMulti;
+			if (Random.Float() < plants%1){
+				plants = (float)Math.ceil(plants);
+			} else {
+				plants = (float)Math.floor(plants);
+			}
 			
-			boolean secondPlant = level > Random.Int(10);
 			if (plantGrass(defender.pos)){
-				if (secondPlant) secondPlant = false;
-				else return damage;
+				plants--;
+				if (plants <= 0){
+					return damage;
+				}
 			}
 			
 			ArrayList<Integer> positions = new ArrayList<>();
 			for (int i : PathFinder.NEIGHBOURS8){
-				positions.add(i);
+				if (defender.pos + i != attacker.pos) {
+					positions.add(defender.pos + i);
+				}
 			}
 			Random.shuffle( positions );
+
+			//The attacker's position is always lowest priority
+			if (Dungeon.level.adjacent(attacker.pos, defender.pos)){
+				positions.add(attacker.pos);
+			}
+
 			for (int i : positions){
-				if (plantGrass(defender.pos + i)){
-					if (secondPlant) secondPlant = false;
-					else return damage;
+				if (plantGrass(i)){
+					plants--;
+					if (plants <= 0) {
+						return damage;
+					}
 				}
 			}
 			

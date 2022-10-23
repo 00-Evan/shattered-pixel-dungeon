@@ -131,6 +131,7 @@ public class WndQuickBag extends Window {
 					return null; //no tooltips here
  				}
 			};
+			slot.showExtraInfo(false);
 			slot.setRect(left, top, btnWidth, btnHeight);
 			add(slot);
 

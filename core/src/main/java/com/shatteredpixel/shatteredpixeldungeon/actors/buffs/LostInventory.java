@@ -35,14 +35,4 @@ public class LostInventory extends Buff {
 		return BuffIndicator.NOINV;
 	}
 
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
-
-	@Override
-	public String desc() {
-		return Messages.get(this, "desc");
-	}
-
 }

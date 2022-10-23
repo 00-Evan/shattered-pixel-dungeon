@@ -74,14 +74,4 @@ public class LockedFloor extends Buff {
 	public int icon() {
 		return BuffIndicator.LOCKED_FLOOR;
 	}
-
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
-
-	@Override
-	public String desc() {
-		return Messages.get(this, "desc");
-	}
 }

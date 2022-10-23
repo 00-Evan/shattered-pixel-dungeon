@@ -196,7 +196,7 @@ public class WandOfLivingEarth extends DamageWand {
 			}
 		}
 		
-		int armor = Math.round(damage*0.33f);
+		int armor = Math.round(damage*0.33f*procChanceMultiplier(attacker));
 
 		if (guardian != null){
 			guardian.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + buffedLvl() / 2);
@@ -271,11 +271,6 @@ public class WandOfLivingEarth extends DamageWand {
 		@Override
 		public String iconTextDisplay() {
 			return Integer.toString(armor);
-		}
-
-		@Override
-		public String toString() {
-			return Messages.get(this, "name");
 		}
 
 		@Override

@@ -28,6 +28,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.ui.Cursor;
+import com.watabou.utils.PointF;
 
 public class InputHandler extends InputAdapter {
 
@@ -77,6 +78,20 @@ public class InputHandler extends InputAdapter {
 	public void removeInputProcessor(InputProcessor processor){
 		multiplexer.removeProcessor(processor);
 	}
+
+	public void emulateTouch(int button, boolean down){
+		PointF hoverPos = PointerEvent.currentHoverPos();
+		if (down){
+			multiplexer.touchDown((int)hoverPos.x, (int)hoverPos.y, 10+button, button);
+		} else {
+			multiplexer.touchUp((int)hoverPos.x, (int)hoverPos.y, 10+button, button);
+		}
+	}
+
+	public void emulateDrag(int button){
+		PointF hoverPos = PointerEvent.currentHoverPos();
+		multiplexer.touchDragged((int)hoverPos.x, (int)hoverPos.y, 10+button);
+	}
 	
 	public void processAllEvents(){
 		PointerEvent.processPointerEvents();
@@ -90,9 +105,10 @@ public class InputHandler extends InputAdapter {
 	
 	@Override
 	public synchronized boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		ControllerHandler.setControllerPointer(false);
-		ControllerHandler.controllerActive = false;
-		Gdx.input.setOnscreenKeyboardVisible(false); //in-game events never need keyboard, so hide it
+		if (pointer < 10) {
+			ControllerHandler.setControllerPointer(false);
+			ControllerHandler.controllerActive = false;
+		}
 
 		if (button >= 3 && KeyBindings.isKeyBound( button + 1000 )) {
 			KeyEvent.addKeyEvent( new KeyEvent( button + 1000, true ) );
@@ -121,7 +137,12 @@ public class InputHandler extends InputAdapter {
 	
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
-		ControllerHandler.setControllerPointer(false);
+		if (ControllerHandler.controllerPointerActive()) {
+			ControllerHandler.setControllerPointer(false);
+			PointF hover = ControllerHandler.getControllerPointerPos();
+			screenX = (int)hover.x;
+			screenY = (int)hover.y;
+		}
 		PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, -1, PointerEvent.Type.HOVER));
 		return true;
 	}

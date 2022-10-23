@@ -219,17 +219,21 @@ public class CavesBossLevel extends Level {
 
 	@Override
 	public int randomRespawnCell( Char ch ) {
-		//this check is mainly here for DM-300, to prevent an infinite loop
-		if (Char.hasProp(ch, Char.Property.LARGE) && map[entrance()] != Terrain.ENTRANCE){
-			return -1;
+		ArrayList<Integer> candidates = new ArrayList<>();
+		for (int i : PathFinder.NEIGHBOURS8){
+			int cell = entrance() + i;
+			if (passable[cell]
+					&& Actor.findChar(cell) == null
+					&& (!Char.hasProp(ch, Char.Property.LARGE) || openSpace[cell])){
+				candidates.add(cell);
+			}
 		}
-		int cell;
-		do {
-			cell = entrance() + PathFinder.NEIGHBOURS8[Random.Int(8)];
-		} while (!passable[cell]
-				|| (Char.hasProp(ch, Char.Property.LARGE) && !openSpace[cell])
-				|| Actor.findChar(cell) != null);
-		return cell;
+
+		if (candidates.isEmpty()){
+			return -1;
+		} else {
+			return Random.element(candidates);
+		}
 	}
 
 	@Override

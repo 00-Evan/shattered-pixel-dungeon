@@ -424,9 +424,8 @@ public class Item implements Bundlable {
 	public static void evoke( Hero hero ) {
 		hero.sprite.emitter().burst( Speck.factory( Speck.EVOKE ), 5 );
 	}
-	
-	@Override
-	public String toString() {
+
+	public String title() {
 
 		String name = name();
 

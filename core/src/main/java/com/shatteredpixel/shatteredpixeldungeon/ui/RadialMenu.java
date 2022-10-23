@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CircleArc;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.input.ControllerHandler;
 import com.watabou.noosa.ColorBlock;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Cursor;
 import com.watabou.utils.PointF;
@@ -51,10 +52,10 @@ public class RadialMenu extends Window {
 		remove(shadow);
 
 		int size = SPDSettings.interfaceSize() == 0 ? 140 : 200;
-		resize(size, size);
+		resize(Game.width, Game.height);
 
 		slots = optionTexts.length;
-		center = new PointF(size/2, size/2);
+		center = new PointF(width/2, height/2);
 		int length = SPDSettings.interfaceSize() == 0 ? 57 : 80;
 
 		selectionArc = new CircleArc(120/slots, size/2 - 1);
@@ -66,6 +67,9 @@ public class RadialMenu extends Window {
 		add(selectionArc);
 
 		Image outerBG = getBGTexture(size, false);
+		outerBG.x = (width - outerBG.width) / 2;
+		outerBG.y = (height - outerBG.height) / 2;
+		PixelScene.align(outerBG);
 		add(outerBG);
 
 		texts = optionTexts;
@@ -92,6 +96,7 @@ public class RadialMenu extends Window {
 		Image innerBG = getBGTexture(size, true);
 		innerBG.x = (width - innerBG.width) / 2;
 		innerBG.y = (height - innerBG.height) / 2;
+		PixelScene.align(innerBG);
 		add(innerBG);
 
 		descTxt = PixelScene.renderTextBlock(desc, 6);
@@ -136,7 +141,7 @@ public class RadialMenu extends Window {
 				}
 			}
 		};
-		selector.setRect(0, 0, size, size);
+		selector.setRect(0, 0, width, height);
 		add(selector);
 
 	}

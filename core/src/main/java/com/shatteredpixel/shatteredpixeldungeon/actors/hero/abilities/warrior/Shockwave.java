@@ -58,6 +58,11 @@ public class Shockwave extends ArmorAbility {
 	}
 
 	@Override
+	public int targetedPos(Char user, int dst) {
+		return new Ballistica( user.pos, dst, Ballistica.STOP_SOLID | Ballistica.STOP_TARGET ).collisionPos;
+	}
+
+	@Override
 	protected void activate(ClassArmor armor, Hero hero, Integer target) {
 		if (target == null){
 			return;
@@ -117,9 +122,10 @@ public class Shockwave extends ArmorAbility {
 								}
 
 								if (Random.Int(10) < 3*hero.pointsInTalent(Talent.STRIKING_WAVE)){
+									boolean wasEnemy = ch.alignment == Char.Alignment.ENEMY;
 									damage = hero.attackProc(ch, damage);
 									ch.damage(damage, hero);
-									if (hero.subClass == HeroSubClass.GLADIATOR){
+									if (hero.subClass == HeroSubClass.GLADIATOR && wasEnemy){
 										Buff.affect( hero, Combo.class ).hit( ch );
 									}
 								} else {

@@ -22,10 +22,13 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
+
+import java.util.HashSet;
 
 public class MagicalSight extends FlavourBuff {
 	
@@ -51,22 +54,24 @@ public class MagicalSight extends FlavourBuff {
 	public float iconFadePercent() {
 		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 	}
-	
+
 	@Override
-	public String toString() {
-		return Messages.get(this, "name");
+	public boolean attachTo(Char target) {
+		if (super.attachTo(target)){
+			Buff.detach(target, Blindness.class);
+			return true;
+		}
+		return false;
 	}
-	
+
 	@Override
 	public void detach() {
 		super.detach();
 		Dungeon.observe();
 		GameScene.updateFog();
 	}
-	
-	@Override
-	public String desc() {
-		return Messages.get(this, "desc", dispTurns());
+
+	{
+		immunities.add(Blindness.class);
 	}
-	
 }

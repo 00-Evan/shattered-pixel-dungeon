@@ -23,15 +23,18 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Fireball;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
@@ -40,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndHardNotification;
 import com.watabou.glwrap.Blending;
+import com.watabou.input.ControllerHandler;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
@@ -53,7 +57,10 @@ import java.util.Collections;
 
 public class WelcomeScene extends PixelScene {
 
-	private static final int LATEST_UPDATE = ShatteredPixelDungeon.v1_3_0;
+	private static final int LATEST_UPDATE = ShatteredPixelDungeon.v1_4_0;
+
+	//used so that the game does not keep showing the window forever if cleaning fails
+	private static boolean triedCleaningTemp = false;
 
 	@Override
 	public void create() {
@@ -61,7 +68,7 @@ public class WelcomeScene extends PixelScene {
 
 		final int previousVersion = SPDSettings.version();
 
-		if (FileUtils.cleanTempFiles()){
+		if (!triedCleaningTemp && FileUtils.cleanTempFiles()){
 			add(new WndHardNotification(Icons.get(Icons.WARNING),
 					Messages.get(WndError.class, "title"),
 					Messages.get(this, "save_warning"),
@@ -70,6 +77,7 @@ public class WelcomeScene extends PixelScene {
 				@Override
 				public void hide() {
 					super.hide();
+					triedCleaningTemp = true;
 					ShatteredPixelDungeon.resetScene();
 				}
 			});
@@ -135,10 +143,21 @@ public class WelcomeScene extends PixelScene {
 			protected void onClick() {
 				super.onClick();
 				if (previousVersion == 0 || SPDSettings.intro()){
+
+					//TODO for testers
+					if (previousVersion > 0){
+						updateVersion(previousVersion);
+					}
+
 					SPDSettings.version(ShatteredPixelDungeon.versionCode);
 					GamesInProgress.selectedClass = null;
-					GamesInProgress.curSlot = 1;
-					ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
+					GamesInProgress.curSlot = GamesInProgress.firstEmpty();
+					if (GamesInProgress.curSlot == -1){
+						SPDSettings.intro(false);
+						ShatteredPixelDungeon.switchScene(TitleScene.class);
+					} else {
+						ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
+					}
 				} else {
 					updateVersion(previousVersion);
 					ShatteredPixelDungeon.switchScene(TitleScene.class);
@@ -173,7 +192,7 @@ public class WelcomeScene extends PixelScene {
 		RenderedTextBlock text = PixelScene.renderTextBlock(6);
 		String message;
 		if (previousVersion == 0 || SPDSettings.intro()) {
-			message = Messages.get(this, "welcome_msg");
+			message = Document.INTROS.pageBody(0);
 		} else if (previousVersion <= ShatteredPixelDungeon.versionCode) {
 			if (previousVersion < LATEST_UPDATE){
 				message = Messages.get(this, "update_intro");
@@ -190,11 +209,24 @@ public class WelcomeScene extends PixelScene {
 		} else {
 			message = Messages.get(this, "what_msg");
 		}
+
 		text.text(message, Math.min(w-20, 300));
 		float textSpace = okay.top() - topRegion - 4;
 		text.setPos((w - text.width()) / 2f, (topRegion + 2) + (textSpace - text.height())/2);
 		add(text);
 
+		if (SPDSettings.intro() && ControllerHandler.isControllerConnected()){
+			addToFront(new WndHardNotification(Icons.CONTROLLER.get(),
+					Messages.get(WelcomeScene.class, "controller_title"),
+					Messages.get(WelcomeScene.class, "controller_body"),
+					Messages.get(WelcomeScene.class, "controller_okay"),
+					0){
+				@Override
+				public void onBackPressed() {
+					//do nothing, must press the okay button
+				}
+			});
+		}
 	}
 
 	private void placeTorch( float x, float y ) {
@@ -208,10 +240,17 @@ public class WelcomeScene extends PixelScene {
 		//update rankings, to update any data which may be outdated
 		if (previousVersion < LATEST_UPDATE){
 			try {
+				Badges.loadGlobal(); //fixing a bug with v1.3.2 saves
 				Rankings.INSTANCE.load();
 				for (Rankings.Record rec : Rankings.INSTANCE.records.toArray(new Rankings.Record[0])){
 					try {
 						Rankings.INSTANCE.loadGameData(rec);
+						if (Statistics.gameWon) {
+							Badges.unlock(Badges.Badge.VICTORY);
+							if (Challenges.activeChallenges() >= 1) Badges.unlock(Badges.Badge.CHAMPION_1);
+							if (Challenges.activeChallenges() >= 3) Badges.unlock(Badges.Badge.CHAMPION_2);
+							if (Challenges.activeChallenges() >= 6) Badges.unlock(Badges.Badge.CHAMPION_3);
+						}
 						Rankings.INSTANCE.saveGameData(rec);
 					} catch (Exception e) {
 						//if we encounter a fatal per-record error, then clear that record
@@ -231,23 +270,14 @@ public class WelcomeScene extends PixelScene {
 				}
 				Collections.sort(Rankings.INSTANCE.records, Rankings.scoreComparator);
 				Rankings.INSTANCE.save();
+				Badges.saveGlobal();
 			} catch (Exception e) {
 				//if we encounter a fatal error, then just clear the rankings
 				FileUtils.deleteFile( Rankings.RANKINGS_FILE );
 				ShatteredPixelDungeon.reportException(e);
 			}
-			Dungeon.daily = false;
+			Dungeon.daily = Dungeon.dailyReplay = false;
 
-		}
-
-		//if the player has beaten Goo, automatically give all guidebook pages
-		if (previousVersion <= ShatteredPixelDungeon.v0_9_3c){
-			Badges.loadGlobal();
-			if (Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_1)){
-				for (String page : Document.ADVENTURERS_GUIDE.pageNames()){
-					Document.ADVENTURERS_GUIDE.readPage(page);
-				}
-			}
 		}
 
 		//defaults to false for older users

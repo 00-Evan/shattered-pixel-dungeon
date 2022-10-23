@@ -123,6 +123,10 @@ public abstract class InventoryScroll extends Scroll {
 				
 				curItem.collect( curUser.belongings.backpack );
 				
+			} else {
+
+				curUser.spendAndNext( TIME_TO_READ );
+
 			}
 		}
 	};

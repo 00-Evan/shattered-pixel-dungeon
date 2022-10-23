@@ -36,33 +36,14 @@ import com.watabou.utils.SparseArray;
 public class WndStory extends Window {
 
 	private static final int WIDTH_P = 125;
-	private static final int WIDTH_L = 160;
+	private static final int WIDTH_L = 180;
 	private static final int MARGIN = 2;
-	
-	private static final float bgR	= 0.77f;
-	private static final float bgG	= 0.73f;
-	private static final float bgB	= 0.62f;
-	
-	public static final int ID_SEWERS		= 0;
-	public static final int ID_PRISON		= 1;
-	public static final int ID_CAVES		= 2;
-	public static final int ID_CITY     	= 3;
-	public static final int ID_HALLS		= 4;
-	
-	private static final SparseArray<String> CHAPTERS = new SparseArray<>();
-	
-	static {
-		CHAPTERS.put( ID_SEWERS, "sewers" );
-		CHAPTERS.put( ID_PRISON, "prison" );
-		CHAPTERS.put( ID_CAVES, "caves" );
-		CHAPTERS.put( ID_CITY, "city" );
-		CHAPTERS.put( ID_HALLS, "halls" );
-	}
 
 	private IconTitle ttl;
 	private RenderedTextBlock tf;
 	
-	private float delay;
+	private float appearDelay;
+	private float disappearDelay;
 
 	public WndStory( String text ) {
 		this( null, null, text );
@@ -97,36 +78,39 @@ public class WndStory extends Window {
 		blocker.camera = PixelScene.uiCamera;
 		add(blocker);
 		
-		resize( (int)(tf.width() + MARGIN * 2), (int)Math.min( tf.bottom()+MARGIN, 180 ) );
+		resize( width + 2*MARGIN, (int)(tf.bottom()+MARGIN) );
 	}
-	
+
+	public WndStory setDelays(float appearDelay, float disappearDelay){
+		this.appearDelay = appearDelay;
+		if (appearDelay > 0){
+			shadow.visible = chrome.visible = tf.visible = false;
+			if (ttl != null) ttl.visible = false;
+		}
+
+		this.disappearDelay = disappearDelay;
+		return this;
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (appearDelay <= 0 && disappearDelay <= 0) {
+			super.onBackPressed();
+		}
+	}
+
 	@Override
 	public void update() {
 		super.update();
 		
-		if (delay > 0 && (delay -= Game.elapsed) <= 0) {
-			shadow.visible = chrome.visible = tf.visible = true;
-			if (ttl != null) ttl.visible = true;
-		}
-	}
-	
-	public static void showChapter( int id ) {
-		
-		if (Dungeon.chapters.contains( id )) {
-			return;
-		}
-		
-		String text = Messages.get(WndStory.class, CHAPTERS.get( id ));
-		if (text != null) {
-			WndStory wnd = new WndStory( text );
-			if ((wnd.delay = 0.6f) > 0) {
-				wnd.shadow.visible = wnd.chrome.visible = wnd.tf.visible = false;
-				if (wnd.ttl != null) wnd.ttl.visible = false;
+		if (appearDelay > 0) {
+			appearDelay -= Game.elapsed;
+			if (appearDelay <= 0) {
+				shadow.visible = chrome.visible = tf.visible = true;
+				if (ttl != null) ttl.visible = true;
 			}
-			
-			Game.scene().add( wnd );
-			
-			Dungeon.chapters.add( id );
+		} else if (disappearDelay > 0){
+			disappearDelay -= Game.elapsed;
 		}
 	}
 }
