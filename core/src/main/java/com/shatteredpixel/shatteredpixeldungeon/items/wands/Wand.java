@@ -128,7 +128,7 @@ public abstract class Wand extends Item {
 	//not affected by enchantment proc chance changers
 	public static float procChanceMultiplier( Char attacker ){
 		if (attacker.buff(Talent.EmpoweredStrikeTracker.class) != null){
-			return 1f + ((Hero)attacker).pointsInTalent(Talent.EMPOWERED_STRIKE)/3f;
+			return 1f + ((Hero)attacker).pointsInTalent(Talent.EMPOWERED_STRIKE)/2f;
 		}
 		return 1f;
 	}
