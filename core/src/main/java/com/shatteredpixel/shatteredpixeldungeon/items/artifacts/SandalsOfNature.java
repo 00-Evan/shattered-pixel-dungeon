@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
@@ -194,7 +195,14 @@ public class SandalsOfNature extends Artifact {
 		}
 
 		if (curSeedEffect != null){
-			desc += "\n\n" + Messages.get(this, "desc_ability", seedChargeReqs.get(curSeedEffect));
+			//TODO fix in v2.0.0 when this line is translated
+			if (Messages.lang() == Languages.ENGLISH){
+				desc += "\n\n" + Messages.get(this, "desc_ability",
+						Messages.titleCase(Messages.get(curSeedEffect, "name")),
+						seedChargeReqs.get(curSeedEffect));
+			} else {
+				desc += "\n\n" + Messages.get(this, "desc_ability", seedChargeReqs.get(curSeedEffect));
+			}
 		}
 
 		if (!seeds.isEmpty()){
