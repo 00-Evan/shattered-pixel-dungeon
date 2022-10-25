@@ -215,6 +215,16 @@ public class Artifact extends KindofMisc {
 
 	public class ArtifactBuff extends Buff {
 
+		@Override
+		public boolean attachTo( Char target ) {
+			if (super.attachTo( target )) {
+				//if we're loading in and the hero has partially spent a turn, delay for 1 turn
+				if (now() == 0 && cooldown() == 0 && target.cooldown() > 0) spend(TICK);
+				return true;
+			}
+			return false;
+		}
+
 		public int itemLevel() {
 			return level();
 		}
