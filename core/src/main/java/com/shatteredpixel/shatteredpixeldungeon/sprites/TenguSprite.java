@@ -99,8 +99,7 @@ public class TenguSprite extends MobSprite {
 					}
 				} );
 			
-			play( zap );
-			turnTo( ch.pos , cell );
+			zap( ch.pos );
 			
 		} else {
 			

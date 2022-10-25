@@ -120,8 +120,7 @@ public abstract class FistSprite extends MobSprite {
 
 	public void zap( int cell ) {
 
-		turnTo( ch.pos , cell );
-		play( zap );
+		super.zap( cell );
 
 		MagicMissile.boltFromChar( parent,
 				boltType,
@@ -266,8 +265,7 @@ public abstract class FistSprite extends MobSprite {
 
 		@Override
 		public void zap( int cell ) {
-			turnTo( ch.pos , cell );
-			play( zap );
+			super.zap( cell );
 
 			((YogFist)ch).onZapComplete();
 			parent.add( new Beam.LightRay(center(), DungeonTilemap.raisedTileCenterToWorld(cell)));
