@@ -157,6 +157,8 @@ public class BossHealthBar extends Component {
 			if (!boss.isAlive() || !Dungeon.level.mobs.contains(boss)){
 				boss = null;
 				visible = active = false;
+				buffs.killAndErase();
+				buffs = null;
 			} else {
 
 				int health = boss.HP;
