@@ -107,7 +107,6 @@ public class Goo extends Mob {
 
 		if (Dungeon.level.water[pos] && HP < HT) {
 			HP += healInc;
-			Statistics.bossScores[0] -= 10;
 			Statistics.qualifiedForBossChallengeBadge = false;
 
 			LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
@@ -297,8 +296,7 @@ public class Goo extends Mob {
 		if (Statistics.qualifiedForBossChallengeBadge){
 			Badges.validateBossChallengeCompleted();
 		}
-		Statistics.bossScores[0] += 1050; //Goo has a 50 point gimme
-		Statistics.bossScores[0] = Math.min(1000, Statistics.bossScores[0]);
+		Statistics.bossScores[0] += 1000;
 		
 		yell( Messages.get(this, "defeated") );
 	}
