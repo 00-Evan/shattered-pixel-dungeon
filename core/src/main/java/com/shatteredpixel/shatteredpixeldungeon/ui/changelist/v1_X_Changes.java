@@ -89,9 +89,43 @@ public class v1_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v1.4.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.BUFFS), "Balance Tweaks",
+				"I've made a few balance tweaks to things that were added/changed in v1.4.0:\n\n" +
+				"_- Sandals of Nature_ energy costs reduced by 20%\n" +
+				"_- Sandals of Nature_ seeds needed to upgrade reverted to 3/6/9 from 4/7/10\n\n" +
+				"_- Blocking_ proc rate scaling with weapon level reduced by 50%\n\n" +
+				"_- Empowered Strike_ special effect boost up to 50% per level, from 33%\n" +
+				"_- Deathless Fury_ cooldown reduced to 3/2/1 levels, from 4/3/2"));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ The buff bar now condenses itself if many buffs are visible at once. This raises the limit of on-screen buffs to 15.\n\n" +
+				"_-_ Plants now trigger after time freeze ends, just like traps\n\n" +
+				"_-_ Clarified description for boss score in rankings\n" +
+				"_-_ Yog's laser now deducts score even if the hero dodges it\n" +
+				"_-_ Goo no longer deducts score by healing in water\n\n" +
+				"_-_ Added lullaby vfx to the stone of deep sleep\n\n" +
+				"_-_ The sandals of nature now include the name of the most recently fed seed in their description\n\n" +
+				"_-_ Updated translations and translator credits"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by v1.4)\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Various errors and inconsistencies with trampling hero's own position\n\n" +
+				"Fixed (existed prior to v1.4)\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Various rare audiovisual errors\n" +
+				"_-_ Goo Immediately using its pump up attack if a previous pump up was interrupted by sleep\n" +
+				"_-_ Caves boss arena not displacing all items on the tile that caves in\n" +
+				"_-_ Recharging effects sometimes getting an extra action on game load\n" +
+				"_-_ Screen orientation changes cancelling the scroll of enchantment\n" +
+				"_-_ Magical infusion incorrectly clearing curses on wands and rings\n" +
+				"_-_ Spinners failing to shoot webs in rare cases\n" +
+				"_-_ Projecting weapons not reaching through webs in rare cases\n" +
+				"_-_ Death by necromancer summoning damage not producing a record in rankings"));
 
 		changes = new ChangeInfo("v1.4.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
