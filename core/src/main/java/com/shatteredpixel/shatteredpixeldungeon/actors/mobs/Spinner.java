@@ -132,15 +132,13 @@ public class Spinner extends Mob {
 	}
 	
 	private boolean shotWebVisually = false;
-	private int visualWebPos = -1;
 
 	@Override
 	public void move(int step, boolean travelling) {
 		if (travelling && enemySeen && webCoolDown <= 0 && lastEnemyPos != -1){
 			if (webPos() != -1){
 				if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
-					visualWebPos = webPos();
-					sprite.zap(visualWebPos);
+					sprite.zap( webPos() );
 					shotWebVisually = true;
 				} else {
 					shootWeb();
@@ -152,13 +150,9 @@ public class Spinner extends Mob {
 	
 	public int webPos(){
 
-		if (visualWebPos != -1){
-			return visualWebPos;
-		}
-
 		Char enemy = this.enemy;
 		if (enemy == null) return -1;
-
+		
 		Ballistica b;
 		//aims web in direction enemy is moving, or between self and enemy if they aren't moving
 		if (lastEnemyPos == enemy.pos){
@@ -216,7 +210,6 @@ public class Spinner extends Mob {
 			if (Dungeon.level.heroFOV[enemy.pos]){
 				Dungeon.hero.interrupt();
 			}
-			visualWebPos = -1;
 		}
 		next();
 	}

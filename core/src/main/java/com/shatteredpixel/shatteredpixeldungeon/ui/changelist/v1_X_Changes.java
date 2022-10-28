@@ -123,7 +123,6 @@ public class v1_X_Changes {
 				"_-_ Recharging effects sometimes getting an extra action on game load\n" +
 				"_-_ Screen orientation changes cancelling the scroll of enchantment\n" +
 				"_-_ Magical infusion incorrectly clearing curses on wands and rings\n" +
-				"_-_ Spinners failing to shoot webs in rare cases\n" +
 				"_-_ Projecting weapons not reaching through webs in rare cases\n" +
 				"_-_ Death by necromancer summoning damage not producing a record in rankings"));
 
