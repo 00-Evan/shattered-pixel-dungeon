@@ -71,19 +71,21 @@ public class WndInfoMob extends WndTitledMessage {
 			image.y = Math.max( 0, name.height() + health.height() - image.height() );
 
 			float w = width - image.width() - GAP;
+			int extraBuffSpace = 0;
 
-			name.maxWidth((int)w);
+			//Tries to make space for up to 11 visible buffs
+			do {
+				name.maxWidth((int)w - extraBuffSpace);
+				buffs.setSize(w - name.width() - 8, 8);
+				extraBuffSpace += 8;
+			} while (extraBuffSpace <= 40 && !buffs.allBuffsVisible());
+
 			name.setPos(x + image.width + GAP,
 					image.height() > name.height() ? y +(image.height() - name.height()) / 2 : y);
 
 			health.setRect(image.width() + GAP, name.bottom() + GAP, w, health.height());
 
-			buffs.setRect(
-				name.right() + GAP-1,
-				name.bottom() - BuffIndicator.SIZE_SMALL-2,
-				w,
-				8
-			);
+			buffs.setPos(name.right(), name.bottom() - BuffIndicator.SIZE_SMALL-2);
 
 			height = health.bottom();
 		}
