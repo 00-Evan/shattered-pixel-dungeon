@@ -448,9 +448,6 @@ public class Toolbar extends Component {
 									Item item = items.get(idx);
 									if (alt && item.defaultAction != null) {
 										item.execute(Dungeon.hero);
-										if (item.usesTargeting) {
-											QuickSlotButton.useTargeting(idx);
-										}
 									} else {
 										Game.scene().addToFront(new WndUseItem(null, item));
 									}
