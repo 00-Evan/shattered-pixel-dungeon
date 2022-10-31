@@ -118,6 +118,7 @@ public abstract class FistSprite extends MobSprite {
 		jump(ch.pos, ch.pos, null, 9, SLAM_TIME );
 	}
 
+	//different bolt, so overrides zap
 	public void zap( int cell ) {
 
 		super.zap( cell );
@@ -265,7 +266,7 @@ public abstract class FistSprite extends MobSprite {
 
 		@Override
 		public void zap( int cell ) {
-			super.zap( cell );
+			super.zap( cell, null );
 
 			((YogFist)ch).onZapComplete();
 			parent.add( new Beam.LightRay(center(), DungeonTilemap.raisedTileCenterToWorld(cell)));
