@@ -139,6 +139,9 @@ public class DwarfKing extends Mob {
 		lastAbility = bundle.getInt( LAST_ABILITY );
 
 		if (phase == 2) properties.add(Property.IMMOVABLE);
+
+		BossHealthBar.assignBoss(this);
+		if (phase == 3) BossHealthBar.bleed(true);
 	}
 
 	@Override
