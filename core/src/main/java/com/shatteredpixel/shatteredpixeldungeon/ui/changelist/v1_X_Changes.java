@@ -89,9 +89,19 @@ public class v1_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("v1.4.2", false, null);
+		changes = new ChangeInfo("v1.4.3 & v1.4.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " v1.4.3",
+				"Fixed (caused by v1.4.2)\n" +
+				"_-_ Crashes with bright fist and shock elemental\n" +
+				"_-_ Rare crashes caused by spectral necromancers\n\n" +
+				"Fixed (existed prior to v1.4)\n" +
+				"_-_ Various rare audiovisual errors\n" +
+				"_-_ Rare crashes with radial inventory selector\n" +
+				"_-_ Boss health bar not appearing in rare cases\n" +
+				"_-_ Buff icons sometimes going outside of character info windows"));
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.BUFFS), "Balance Tweaks",
 				"I've made a few balance tweaks to things that were added/changed in v1.4.0:\n\n" +
@@ -111,7 +121,7 @@ public class v1_X_Changes {
 				"_-_ The sandals of nature now include the name of the most recently fed seed in their description\n\n" +
 				"_-_ Updated translations and translator credits"));
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " v1.4.2",
 				"Fixed (caused by v1.4)\n" +
 				"_-_ Various rare crash bugs\n" +
 				"_-_ Various errors and inconsistencies with trampling hero's own position\n\n" +
