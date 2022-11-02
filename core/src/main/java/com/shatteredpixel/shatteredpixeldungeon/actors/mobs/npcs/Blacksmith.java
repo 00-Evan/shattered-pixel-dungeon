@@ -214,7 +214,7 @@ public class Blacksmith extends NPC {
 	public static void upgrade( Item item1, Item item2 ) {
 		
 		Item first, second;
-		if (item2.level() > item1.level()) {
+		if (item2.trueLevel() > item1.trueLevel()) {
 			first = item2;
 			second = item1;
 		} else {

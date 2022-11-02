@@ -381,6 +381,8 @@ public class Armor extends EquipableItem {
 	@Override
 	public int level() {
 		int level = super.level();
+		//TODO warrior's seal upgrade should probably be considered here too
+		// instead of being part of true level
 		if (curseInfusionBonus) level += 1 + level/6;
 		return level;
 	}
