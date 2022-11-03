@@ -792,7 +792,7 @@ public class Hero extends Char {
 		
 		Char ch = action.ch;
 
-		if (ch.canInteract(this)) {
+		if (ch.isAlive() && ch.canInteract(this)) {
 			
 			ready();
 			sprite.turnTo( pos, ch.pos );
