@@ -476,6 +476,7 @@ public class PrisonBossLevel extends Level {
 				tengu.state = tengu.HUNTING;
 				tengu.pos = (arena.left + arena.width()/2) + width()*(arena.top+2);
 				GameScene.add(tengu);
+				tengu.timeToNow();
 				tengu.notice();
 				
 				GameScene.flash(0x80FFFFFF);
