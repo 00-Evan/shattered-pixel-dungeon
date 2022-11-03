@@ -391,6 +391,10 @@ public class CellSelector extends ScrollArea {
 			return false;
 		}
 
+		if (GameScene.cancelCellSelector()){
+			return false;
+		}
+
 		int cell = Dungeon.hero.pos;
 		for (GameAction action : actions) {
 			cell += directionFromAction(action);

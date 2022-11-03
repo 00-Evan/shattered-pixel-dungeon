@@ -1167,7 +1167,7 @@ public class GameScene extends PixelScene {
 	
 	public static void show( Window wnd ) {
 		if (scene != null) {
-			cancelCellSelector();
+			cancel();
 
 			//If a window is already present (or was just present)
 			// then inherit the offset it had
@@ -1353,9 +1353,9 @@ public class GameScene extends PixelScene {
 		}
 	}
 	
-	private static boolean cancelCellSelector() {
-		cellSelector.resetKeyHold();
+	public static boolean cancelCellSelector() {
 		if (cellSelector.listener != null && cellSelector.listener != defaultCellListener) {
+			cellSelector.resetKeyHold();
 			cellSelector.cancel();
 			return true;
 		} else {
@@ -1364,7 +1364,7 @@ public class GameScene extends PixelScene {
 	}
 	
 	public static WndBag selectItem( WndBag.ItemSelector listener ) {
-		cancelCellSelector();
+		cancel();
 
 		if (scene != null) {
 			//TODO can the inventory pane work in these cases? bad to fallback to mobile window
@@ -1382,6 +1382,7 @@ public class GameScene extends PixelScene {
 	}
 	
 	public static boolean cancel() {
+		cellSelector.resetKeyHold();
 		if (Dungeon.hero != null && (Dungeon.hero.curAction != null || Dungeon.hero.resting)) {
 			
 			Dungeon.hero.curAction = null;
