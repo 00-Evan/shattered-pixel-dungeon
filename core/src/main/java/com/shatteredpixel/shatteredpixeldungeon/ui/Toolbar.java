@@ -172,8 +172,7 @@ public class Toolbar extends Component {
 									@Override
 									public void onSelect(Item item) {
 										if (item != null) {
-											Dungeon.quickslot.setSlot( idx , item );
-											QuickSlotButton.refresh();
+											QuickSlotButton.set(idx, item);
 										}
 									}
 								});

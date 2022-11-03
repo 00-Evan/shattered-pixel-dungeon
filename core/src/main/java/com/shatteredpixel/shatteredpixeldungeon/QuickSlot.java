@@ -33,7 +33,7 @@ public class QuickSlot {
 
 	/**
 	 * Slots contain objects which are also in a player's inventory. The one exception to this is when quantity is 0,
-	 * which can happen for a stackable item that has been 'used up', these are refered to a placeholders.
+	 * which can happen for a stackable item that has been 'used up', these are referred to as placeholders.
 	 */
 
 	//note that the current max size is coded at 6, due to UI constraints, but it could be much much bigger with no issue.
@@ -59,12 +59,13 @@ public class QuickSlot {
 		return slots[slot];
 	}
 
-
 	//utility methods, for easier use of the internal array.
 	public int getSlot(Item item) {
-		for (int i = 0; i < SIZE; i++)
-			if (getItem(i) == item)
+		for (int i = 0; i < SIZE; i++) {
+			if (getItem(i) == item) {
 				return i;
+			}
+		}
 		return -1;
 	}
 
@@ -77,18 +78,21 @@ public class QuickSlot {
 	}
 
 	public void clearItem(Item item){
-		if (contains(item))
+		if (contains(item)) {
 			clearSlot(getSlot(item));
+		}
 	}
 
 	public boolean contains(Item item){
 		return getSlot(item) != -1;
 	}
 
-	public void replacePlaceholder(Item item){
-		for (int i = 0; i < SIZE; i++)
-			if (isPlaceholder(i) && item.isSimilar(getItem(i)))
-				setSlot( i , item );
+	public void replacePlaceholder(Item item) {
+		for (int i = 0; i < SIZE; i++) {
+			if (isPlaceholder(i) && item.isSimilar(getItem(i))) {
+				setSlot(i, item);
+			}
+		}
 	}
 
 	public void convertToPlaceholder(Item item){
@@ -106,10 +110,11 @@ public class QuickSlot {
 	public Item randomNonePlaceholder(){
 
 		ArrayList<Item> result = new ArrayList<>();
-		for (int i = 0; i < SIZE; i ++)
-		if (getItem(i) != null && !isPlaceholder(i))
+		for (int i = 0; i < SIZE; i ++) {
+			if (getItem(i) != null && !isPlaceholder(i)) {
 				result.add(getItem(i));
-
+			}
+		}
 		return Random.element(result);
 	}
 
@@ -126,11 +131,12 @@ public class QuickSlot {
 		ArrayList<Item> placeholders = new ArrayList<>(SIZE);
 		boolean[] placements = new boolean[SIZE];
 
-		for (int i = 0; i < SIZE; i++)
+		for (int i = 0; i < SIZE; i++) {
 			if (isPlaceholder(i)) {
 				placeholders.add(getItem(i));
 				placements[i] = true;
 			}
+		}
 		bundle.put( PLACEHOLDERS, placeholders );
 		bundle.put( PLACEMENTS, placements );
 	}
@@ -141,7 +147,9 @@ public class QuickSlot {
 
 		int i = 0;
 		for (Bundlable item : placeholders){
-			while (!placements[i]) i++;
+			while (!placements[i]){
+				i++;
+			}
 			setSlot( i, (Item)item );
 			i++;
 		}

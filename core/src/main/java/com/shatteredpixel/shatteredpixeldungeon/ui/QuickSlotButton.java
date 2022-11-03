@@ -250,11 +250,25 @@ public class QuickSlotButton extends Button {
 		@Override
 		public void onSelect(Item item) {
 			if (item != null) {
-				Dungeon.quickslot.setSlot( slotNum , item );
-				refresh();
+				set( slotNum , item );
 			}
 		}
 	};
+
+	public static void set(Item item){
+		for (int i = 0; i < instance.length; i++) {
+			if (select(i) == null || select(i) == item) {
+				set(i, item);
+				return;
+			}
+		}
+		set(0, item);
+	}
+
+	public static void set(int slotNum, Item item){
+		Dungeon.quickslot.setSlot( slotNum , item );
+		refresh();
+	}
 
 	private static Item select(int slotNum){
 		return Dungeon.quickslot.getItem( slotNum );
