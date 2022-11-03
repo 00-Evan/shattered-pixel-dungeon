@@ -135,6 +135,7 @@ public class SPDSettings extends GameSettings {
 	public static final String KEY_FLIPTOOLBAR	= "flipped_ui";
 	public static final String KEY_FLIPTAGS 	= "flip_tags";
 	public static final String KEY_BARMODE		= "toolbar_mode";
+	public static final String KEY_SLOTWATERSKIN= "quickslot_waterskin";
 
 	//0 = mobile, 1 = mixed (large without inventory in main UI), 2 = large
 	public static void interfaceSize( int value ){
@@ -184,6 +185,14 @@ public class SPDSettings extends GameSettings {
 	
 	public static String toolbarMode() {
 		return getString(KEY_BARMODE, PixelScene.landscape() ? "GROUP" : "SPLIT");
+	}
+
+	public static void quickslotWaterskin( boolean value ){
+		put( KEY_SLOTWATERSKIN, value);
+	}
+
+	public static boolean quickslotWaterskin(){
+		return getBoolean( KEY_SLOTWATERSKIN, true );
 	}
 	
 	//Game State
