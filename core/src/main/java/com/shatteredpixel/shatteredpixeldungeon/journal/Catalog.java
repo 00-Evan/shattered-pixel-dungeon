@@ -32,6 +32,8 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import static java.util.Arrays.asList;
+
 public enum Catalog {
 	
 	WEAPONS,
@@ -43,7 +45,11 @@ public enum Catalog {
 	SCROLLS;
 	
 	private LinkedHashMap<Class<? extends Item>, Boolean> seen = new LinkedHashMap<>();
-	
+
+	public static List<Catalog> catalogs() {
+		return asList(Catalog.values());
+	}
+
 	public Collection<Class<? extends Item>> items(){
 		return seen.keySet();
 	}
@@ -180,7 +186,7 @@ public enum Catalog {
 		if (bundle.contains(CATALOG_ITEMS)) {
 			List<Class> seenClasses = new ArrayList<>();
 			if (bundle.contains(CATALOG_ITEMS)) {
-				seenClasses = Arrays.asList(bundle.getClassArray(CATALOG_ITEMS));
+				seenClasses = asList(bundle.getClassArray(CATALOG_ITEMS));
 			}
 			
 			for (Catalog cat : values()) {

@@ -105,9 +105,9 @@ public class Bleeding extends Buff {
 				
 				if (target == Dungeon.hero && !target.isAlive()) {
 					if (source == Chasm.class){
-						Badges.validateDeathFromFalling();
+						Badges.Badge.DEATH_FROM_FALLING.validate();
 					} else if (source == Sacrificial.class){
-						Badges.validateDeathFromFriendlyMagic();
+						Badges.Badge.DEATH_FROM_FRIENDLY_MAGIC.validate();
 					}
 					Dungeon.fail( getClass() );
 					GLog.n( Messages.get(this, "ondeath") );

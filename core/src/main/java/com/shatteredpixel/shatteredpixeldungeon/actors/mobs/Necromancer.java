@@ -213,7 +213,7 @@ public class Necromancer extends Mob {
 				if (blocker.alignment != alignment){
 					blocker.damage( Random.NormalIntRange(2, 10), this );
 					if (blocker == Dungeon.hero && !blocker.isAlive()){
-						Badges.validateDeathFromEnemyMagic();
+						Badges.Badge.DEATH_FROM_ENEMY_MAGIC.validate();
 						Dungeon.fail(getClass());
 					}
 				}

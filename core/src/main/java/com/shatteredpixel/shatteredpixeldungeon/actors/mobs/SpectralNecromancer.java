@@ -136,7 +136,7 @@ public class SpectralNecromancer extends Necromancer {
 				if (blocker.alignment != alignment){
 					blocker.damage( Random.NormalIntRange(2, 10), this );
 					if (blocker == Dungeon.hero && !blocker.isAlive()){
-						Badges.validateDeathFromEnemyMagic();
+						Badges.Badge.DEATH_FROM_ENEMY_MAGIC.validate();
 						Dungeon.fail(getClass());
 					}
 				}

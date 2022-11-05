@@ -124,7 +124,7 @@ public abstract class Shaman extends Mob {
 			enemy.damage( dmg, new EarthenBolt() );
 			
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {
-				Badges.validateDeathFromEnemyMagic();
+				Badges.Badge.DEATH_FROM_ENEMY_MAGIC.validate();
 				Dungeon.fail( getClass() );
 				GLog.n( Messages.get(this, "bolt_kill") );
 			}

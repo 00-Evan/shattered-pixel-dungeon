@@ -67,7 +67,7 @@ public class ScrollOfPsionicBlast extends ExoticScroll {
 			Dungeon.observe();
 			readAnimation();
 		} else {
-			Badges.validateDeathFromFriendlyMagic();
+			Badges.Badge.DEATH_FROM_FRIENDLY_MAGIC.validate();
 			Dungeon.fail( getClass() );
 			GLog.n( Messages.get(this, "ondeath") );
 		}

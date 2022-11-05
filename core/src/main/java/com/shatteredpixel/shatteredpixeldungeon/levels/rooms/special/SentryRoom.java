@@ -278,7 +278,7 @@ public class SentryRoom extends SpecialRoom {
 		public void onZapComplete(){
 			Dungeon.hero.damage(Random.NormalIntRange(2+Dungeon.depth/2, 4+Dungeon.depth), new Eye.DeathGaze());
 			if (!Dungeon.hero.isAlive()){
-				Badges.validateDeathFromEnemyMagic();
+				Badges.Badge.DEATH_FROM_ENEMY_MAGIC.validate();
 				Dungeon.fail( getClass() );
 				GLog.n( Messages.capitalize(Messages.get(Char.class, "kill", name())) );
 			}

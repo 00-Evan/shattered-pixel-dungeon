@@ -446,7 +446,7 @@ public abstract class Char extends Actor {
 
 					if (this instanceof WandOfLivingEarth.EarthGuardian
 							|| this instanceof MirrorImage || this instanceof PrismaticImage){
-						Badges.validateDeathFromFriendlyMagic();
+						Badges.Badge.DEATH_FROM_FRIENDLY_MAGIC.validate();
 					}
 					Dungeon.fail( getClass() );
 					GLog.n( Messages.capitalize(Messages.get(Char.class, "kill", name())) );

@@ -172,7 +172,7 @@ public class SacrificialFire extends Blob {
 				exp *= Random.IntRange( 2, 3 );
 			} else if (ch instanceof Hero) {
 				exp = 1_000_000; //always enough to activate the reward, if you can somehow get it
-				Badges.validateDeathFromSacrifice();
+				Badges.Badge.DEATH_FROM_SACRIFICE.validate();
 			}
 
 			if (exp > 0) {

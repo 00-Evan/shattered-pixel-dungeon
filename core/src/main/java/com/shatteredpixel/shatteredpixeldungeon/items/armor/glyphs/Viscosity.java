@@ -159,7 +159,7 @@ public class Viscosity extends Glyph {
 				target.damage( damageThisTick, this );
 				if (target == Dungeon.hero && !target.isAlive()) {
 
-					Badges.validateDeathFromFriendlyMagic();
+					Badges.Badge.DEATH_FROM_FRIENDLY_MAGIC.validate();
 
 					Dungeon.fail( getClass() );
 					GLog.n( Messages.get(this, "ondeath") );

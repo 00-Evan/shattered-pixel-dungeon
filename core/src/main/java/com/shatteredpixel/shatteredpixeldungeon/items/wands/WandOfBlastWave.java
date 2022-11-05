@@ -166,7 +166,7 @@ public class WandOfBlastWave extends DamageWand {
 						Paralysis.prolong(ch, Paralysis.class, 1 + finalDist/2f);
 					} else if (ch == Dungeon.hero){
 						if (cause == WandOfBlastWave.class || cause == AquaBlast.class){
-							Badges.validateDeathFromFriendlyMagic();
+							Badges.Badge.DEATH_FROM_FRIENDLY_MAGIC.validate();
 						}
 						Dungeon.fail(cause);
 					}

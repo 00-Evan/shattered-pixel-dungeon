@@ -251,7 +251,7 @@ public class AscensionChallenge extends Buff {
 				damageInc -= (int)damageInc;
 
 				if (target == Dungeon.hero && !target.isAlive()){
-					Badges.validateDeathFromFriendlyMagic();
+					Badges.Badge.DEATH_FROM_FRIENDLY_MAGIC.validate();
 					GLog.n(Messages.get(this, "on_kill"));
 					Dungeon.fail(Amulet.class);
 				}

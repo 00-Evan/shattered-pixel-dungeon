@@ -122,7 +122,7 @@ public class ChaliceOfBlood extends Artifact {
 		hero.damage(damage, this);
 
 		if (!hero.isAlive()) {
-			Badges.validateDeathFromFriendlyMagic();
+			Badges.Badge.DEATH_FROM_FRIENDLY_MAGIC.validate();
 			Dungeon.fail( getClass() );
 			GLog.n( Messages.get(this, "ondeath") );
 		} else {

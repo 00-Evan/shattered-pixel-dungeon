@@ -90,7 +90,7 @@ public class WandOfLightning extends DamageWand {
 		}
 
 		if (!curUser.isAlive()) {
-			Badges.validateDeathFromFriendlyMagic();
+			Badges.Badge.DEATH_FROM_FRIENDLY_MAGIC.validate();
 			Dungeon.fail( getClass() );
 			GLog.n(Messages.get(this, "ondeath"));
 		}

@@ -118,7 +118,7 @@ public class Corrosion extends Buff implements Hero.Doom {
 	@Override
 	public void onDeath() {
 		if (source == WandOfCorrosion.class){
-			Badges.validateDeathFromFriendlyMagic();
+			Badges.Badge.DEATH_FROM_FRIENDLY_MAGIC.validate();
 		}
 
 		Dungeon.fail( getClass() );

@@ -336,7 +336,7 @@ public class WandOfWarding extends Wand {
 			}
 
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {
-				Badges.validateDeathFromFriendlyMagic();
+				Badges.Badge.DEATH_FROM_FRIENDLY_MAGIC.validate();
 				Dungeon.fail( getClass() );
 			}
 

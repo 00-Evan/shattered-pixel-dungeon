@@ -85,7 +85,7 @@ public class ArcaneBomb extends Bomb.MagicalBomb {
 			float multiplier = 1f - (.16667f*Dungeon.level.distance(cell, ch.pos));
 			ch.damage(Math.round(damage*multiplier), this);
 			if (ch == Dungeon.hero && !ch.isAlive()){
-				Badges.validateDeathFromFriendlyMagic();
+				Badges.Badge.DEATH_FROM_FRIENDLY_MAGIC.validate();
 				Dungeon.fail(Bomb.class);
 			}
 		}
