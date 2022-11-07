@@ -181,10 +181,16 @@ public class SPDAction extends GameAction {
 		return new LinkedHashMap<>(defaultControllerBindings);
 	}
 
-	//hard bindings for android devices
 	static {
+		//hard bindings for android devices
 		KeyBindings.addHardBinding( Input.Keys.BACK, SPDAction.BACK );
 		KeyBindings.addHardBinding( Input.Keys.MENU, SPDAction.INVENTORY );
+
+		//hard bindings for desktop fullscreen toggle
+		//not bound to specific game actions, see PixelScene
+		//Note that user-entered bindings can override these individually, and that's fine.
+		KeyBindings.addHardBinding( Input.Keys.ALT_RIGHT, SPDAction.NONE );
+		KeyBindings.addHardBinding( Input.Keys.ENTER, SPDAction.NONE );
 	}
 
 	//we only save/loads keys which differ from the default configuration.
