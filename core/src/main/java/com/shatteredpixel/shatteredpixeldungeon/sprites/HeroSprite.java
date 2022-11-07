@@ -124,7 +124,7 @@ public class HeroSprite extends CharSprite {
 		play( fly );
 	}
 
-	public void read() {
+	public synchronized void read() {
 		animCallback = new Callback() {
 			@Override
 			public void call() {

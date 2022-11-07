@@ -766,14 +766,19 @@ public class Hero extends Char {
 		damageInterrupt = false;
 		next();
 	}
+
+	public boolean isStandingOnTrampleableGrass(){
+		return !rooted && !flying &&
+				(Dungeon.level.map[pos] == Terrain.HIGH_GRASS || (heroClass != HeroClass.HUNTRESS && Dungeon.level.map[pos] == Terrain.FURROWED_GRASS));
+	}
 	
 	private boolean actMove( HeroAction.Move action ) {
 
 		if (getCloser( action.dst )) {
 			return true;
 
-		//Hero moves in place if there is high grass to trample
-		} else if (!rooted && !flying && Dungeon.level.map[pos] == Terrain.HIGH_GRASS){
+		//Hero moves in place if there is grass to trample
+		} else if (isStandingOnTrampleableGrass()){
 			Dungeon.level.pressCell(pos);
 			spendAndNext( 1 / speed() );
 			return false;

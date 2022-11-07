@@ -26,8 +26,11 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HoldFast;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -250,8 +253,12 @@ public class Toolbar extends Component {
 			protected void onClick() {
 				if (Dungeon.hero.ready && !GameScene.cancel()) {
 					Dungeon.hero.waitOrPickup = true;
-					if (Dungeon.level.heaps.get(Dungeon.hero.pos) != null
+					if ((Dungeon.level.heaps.get(Dungeon.hero.pos) != null || Dungeon.hero.isStandingOnTrampleableGrass())
 						&& Dungeon.hero.handle(Dungeon.hero.pos)){
+						//trigger hold fast here, even if the hero didn't specifically wait
+						if (Dungeon.hero.hasTalent(Talent.HOLD_FAST)){
+							Buff.affect(Dungeon.hero, HoldFast.class);
+						}
 						Dungeon.hero.next();
 					} else {
 						examining = false;
@@ -441,9 +448,6 @@ public class Toolbar extends Component {
 									Item item = items.get(idx);
 									if (alt && item.defaultAction != null) {
 										item.execute(Dungeon.hero);
-										if (item.usesTargeting) {
-											QuickSlotButton.useTargeting(idx);
-										}
 									} else {
 										Game.scene().addToFront(new WndUseItem(null, item));
 									}

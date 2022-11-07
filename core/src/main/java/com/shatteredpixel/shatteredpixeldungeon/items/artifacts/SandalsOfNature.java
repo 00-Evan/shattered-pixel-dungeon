@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
@@ -101,18 +102,18 @@ public class SandalsOfNature extends Artifact {
 
 	private static final HashMap<Class<? extends Plant.Seed>, Integer> seedChargeReqs = new HashMap<>();
 	static {
-		seedChargeReqs.put(Rotberry.Seed.class,     10);
-		seedChargeReqs.put(Firebloom.Seed.class,    25);
-		seedChargeReqs.put(Swiftthistle.Seed.class, 25);
-		seedChargeReqs.put(Sungrass.Seed.class,     100);
-		seedChargeReqs.put(Icecap.Seed.class,       25);
-		seedChargeReqs.put(Stormvine.Seed.class,    25);
-		seedChargeReqs.put(Sorrowmoss.Seed.class,   25);
-		seedChargeReqs.put(Mageroyal.Seed.class,    15);
-		seedChargeReqs.put(Earthroot.Seed.class,    50);
-		seedChargeReqs.put(Starflower.Seed.class,   50);
-		seedChargeReqs.put(Fadeleaf.Seed.class,     15);
-		seedChargeReqs.put(Blindweed.Seed.class,    15);
+		seedChargeReqs.put(Rotberry.Seed.class,     8);
+		seedChargeReqs.put(Firebloom.Seed.class,    20);
+		seedChargeReqs.put(Swiftthistle.Seed.class, 20);
+		seedChargeReqs.put(Sungrass.Seed.class,     80);
+		seedChargeReqs.put(Icecap.Seed.class,       20);
+		seedChargeReqs.put(Stormvine.Seed.class,    20);
+		seedChargeReqs.put(Sorrowmoss.Seed.class,   20);
+		seedChargeReqs.put(Mageroyal.Seed.class,    12);
+		seedChargeReqs.put(Earthroot.Seed.class,    40);
+		seedChargeReqs.put(Starflower.Seed.class,   40);
+		seedChargeReqs.put(Fadeleaf.Seed.class,     12);
+		seedChargeReqs.put(Blindweed.Seed.class,    12);
 	}
 
 	@Override
@@ -194,7 +195,14 @@ public class SandalsOfNature extends Artifact {
 		}
 
 		if (curSeedEffect != null){
-			desc += "\n\n" + Messages.get(this, "desc_ability", seedChargeReqs.get(curSeedEffect));
+			//TODO fix in v2.0.0 when this line is translated
+			if (Messages.lang() == Languages.ENGLISH){
+				desc += "\n\n" + Messages.get(this, "desc_ability",
+						Messages.titleCase(Messages.get(curSeedEffect, "name")),
+						seedChargeReqs.get(curSeedEffect));
+			} else {
+				desc += "\n\n" + Messages.get(this, "desc_ability", seedChargeReqs.get(curSeedEffect));
+			}
 		}
 
 		if (!seeds.isEmpty()){
@@ -289,7 +297,7 @@ public class SandalsOfNature extends Artifact {
 				Sample.INSTANCE.play( Assets.Sounds.PLANT );
 				hero.busy();
 				hero.spend( Actor.TICK );
-				if (seeds.size() >= 4+(level()*3)){
+				if (seeds.size() >= 3+(level()*3)){
 					seeds.clear();
 					upgrade();
 

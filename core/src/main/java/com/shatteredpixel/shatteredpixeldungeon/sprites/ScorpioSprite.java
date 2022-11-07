@@ -65,8 +65,7 @@ public class ScorpioSprite extends MobSprite {
 		if (!Dungeon.level.adjacent( cell, ch.pos )) {
 			
 			cellToAttack = cell;
-			turnTo( ch.pos , cell );
-			play( zap );
+			zap(cell);
 			
 		} else {
 			

@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.tiles;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.Tilemap;
 
@@ -106,8 +107,13 @@ public class WallBlockingTilemap extends Tilemap {
 				//- none of the remaining 5 neighbour cells are both not a wall and visible
 				
 				//if all 3 above are wall we can shortcut and just clear the cell
+				//unless one or more is a shelf, then we have to just block none
 				if (wall(cell - 1 - mapWidth) && wall(cell - mapWidth) && wall(cell + 1 - mapWidth)){
-					curr = CLEARED;
+					if (shelf(cell - 1 - mapWidth) || shelf(cell - mapWidth) || shelf(cell + 1 - mapWidth)){
+						curr = BLOCK_NONE;
+					} else {
+						curr = CLEARED;
+					}
 					
 				} else if ((!wall(cell - 1 - mapWidth) && !fogHidden(cell - 1 - mapWidth) && wall(cell - 1)) ||
 						(!wall(cell - mapWidth) && !fogHidden(cell - mapWidth)) ||
@@ -195,6 +201,10 @@ public class WallBlockingTilemap extends Tilemap {
 		return DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell]);
 	}
 
+	private boolean shelf(int cell) {
+		return Dungeon.level.map[cell] == Terrain.BOOKSHELF;
+	}
+
 	private boolean door(int cell) {
 		return DungeonTileSheet.doorTile(Dungeon.level.map[cell]);
 	}
@@ -202,8 +212,8 @@ public class WallBlockingTilemap extends Tilemap {
 	public synchronized void updateArea(int cell, int radius){
 		int l = cell%mapWidth - radius;
 		int t = cell/mapWidth - radius;
-		int r = cell%mapWidth + radius;
-		int b = cell/mapWidth + radius;
+		int r = cell%mapWidth - radius + 1 + 2*radius;
+		int b = cell/mapWidth - radius + 1 + 2*radius;
 		updateArea(
 				Math.max(0, l),
 				Math.max(0, t),

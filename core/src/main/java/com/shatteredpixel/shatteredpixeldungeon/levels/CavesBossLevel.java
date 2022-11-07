@@ -272,12 +272,13 @@ public class CavesBossLevel extends Level {
 		set( entrance, Terrain.WALL );
 
 		Heap heap = Dungeon.level.heaps.get( entrance );
-		if (heap != null) {
+		while (heap != null && !heap.isEmpty()) {
 			int n;
 			do {
-				n = entrance + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
+				n = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
 			} while (!Dungeon.level.passable[n]);
-			Dungeon.level.drop( heap.pickUp(), n ).sprite.drop( entrance );
+			Heap dropped = Dungeon.level.drop(heap.pickUp(), n);
+			dropped.seen = heap.seen;
 		}
 
 		Char ch = Actor.findChar( entrance );

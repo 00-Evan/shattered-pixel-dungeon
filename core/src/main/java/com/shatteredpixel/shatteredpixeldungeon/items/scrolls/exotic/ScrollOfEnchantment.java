@@ -122,48 +122,8 @@ public class ScrollOfEnchantment extends ExoticScroll {
 				enchants[0] = Weapon.Enchantment.randomCommon( existing );
 				enchants[1] = Weapon.Enchantment.randomUncommon( existing );
 				enchants[2] = Weapon.Enchantment.random( existing, enchants[0].getClass(), enchants[1].getClass());
-				
-				GameScene.show(new WndOptions(new ItemSprite(ScrollOfEnchantment.this),
-						Messages.titleCase(ScrollOfEnchantment.this.name()),
-						Messages.get(ScrollOfEnchantment.class, "weapon") +
-						"\n\n" +
-						Messages.get(ScrollOfEnchantment.class, "cancel_warn"),
-						enchants[0].name(),
-						enchants[1].name(),
-						enchants[2].name(),
-						Messages.get(ScrollOfEnchantment.class, "cancel")){
-					
-					@Override
-					protected void onSelect(int index) {
-						if (index < 3) {
-							((Weapon) item).enchant(enchants[index]);
-							GLog.p(Messages.get(StoneOfEnchantment.class, "weapon"));
-							((ScrollOfEnchantment)curItem).readAnimation();
-							
-							Sample.INSTANCE.play( Assets.Sounds.READ );
-							Enchanting.show(curUser, item);
-							Talent.onUpgradeScrollUsed( Dungeon.hero );
-						}
-					}
-					
-					@Override
-					protected boolean hasInfo(int index) {
-						return index < 3;
-					}
 
-					@Override
-					protected void onInfo( int index ) {
-						GameScene.show(new WndTitledMessage(
-								Icons.get(Icons.INFO),
-								Messages.titleCase(enchants[index].name()),
-								enchants[index].desc()));
-					}
-
-					@Override
-					public void onBackPressed() {
-						//do nothing, reader has to cancel
-					}
-				});
+				GameScene.show(new WndEnchantSelect((Weapon) item, enchants[0], enchants[1], enchants[2]));
 			
 			} else if (item instanceof Armor) {
 				
@@ -174,47 +134,7 @@ public class ScrollOfEnchantment extends ExoticScroll {
 				glyphs[1] = Armor.Glyph.randomUncommon( existing );
 				glyphs[2] = Armor.Glyph.random( existing, glyphs[0].getClass(), glyphs[1].getClass());
 				
-				GameScene.show(new WndOptions( new ItemSprite(ScrollOfEnchantment.this),
-						Messages.titleCase(ScrollOfEnchantment.this.name()),
-						Messages.get(ScrollOfEnchantment.class, "armor") +
-						"\n\n" +
-						Messages.get(ScrollOfEnchantment.class, "cancel_warn"),
-						glyphs[0].name(),
-						glyphs[1].name(),
-						glyphs[2].name(),
-						Messages.get(ScrollOfEnchantment.class, "cancel")){
-					
-					@Override
-					protected void onSelect(int index) {
-						if (index < 3) {
-							((Armor) item).inscribe(glyphs[index]);
-							GLog.p(Messages.get(StoneOfEnchantment.class, "armor"));
-							((ScrollOfEnchantment)curItem).readAnimation();
-							
-							Sample.INSTANCE.play( Assets.Sounds.READ );
-							Enchanting.show(curUser, item);
-							Talent.onUpgradeScrollUsed( Dungeon.hero );
-						}
-					}
-
-					@Override
-					protected boolean hasInfo(int index) {
-						return index < 3;
-					}
-
-					@Override
-					protected void onInfo( int index ) {
-						GameScene.show(new WndTitledMessage(
-								Icons.get(Icons.INFO),
-								Messages.titleCase(glyphs[index].name()),
-								glyphs[index].desc()));
-					}
-					
-					@Override
-					public void onBackPressed() {
-						//do nothing, reader has to cancel
-					}
-				});
+				GameScene.show(new WndGlyphSelect((Armor) item, glyphs[0], glyphs[1], glyphs[2]));
 			} else {
 				if (!identifiedByUse){
 					curItem.collect();
@@ -224,4 +144,132 @@ public class ScrollOfEnchantment extends ExoticScroll {
 			}
 		}
 	};
+
+	public static class WndEnchantSelect extends WndOptions {
+
+		private static Weapon wep;
+		private static Weapon.Enchantment[] enchantments;
+
+		//used in PixelScene.restoreWindows
+		public WndEnchantSelect(){
+			this(wep, enchantments[0], enchantments[1], enchantments[2]);
+		}
+
+		public WndEnchantSelect(Weapon wep, Weapon.Enchantment ench1,
+		                           Weapon.Enchantment ench2, Weapon.Enchantment ench3){
+			super(new ItemSprite(new ScrollOfEnchantment()),
+					Messages.titleCase(new ScrollOfEnchantment().name()),
+					Messages.get(ScrollOfEnchantment.class, "armor") +
+							"\n\n" +
+							Messages.get(ScrollOfEnchantment.class, "cancel_warn"),
+					ench1.name(),
+					ench2.name(),
+					ench3.name(),
+					Messages.get(ScrollOfEnchantment.class, "cancel"));
+			this.wep = wep;
+			enchantments = new Weapon.Enchantment[3];
+			enchantments[0] = ench1;
+			enchantments[1] = ench2;
+			enchantments[2] = ench3;
+		}
+
+		@Override
+		protected void onSelect(int index) {
+			if (index < 3) {
+				wep.enchant(enchantments[index]);
+				GLog.p(Messages.get(StoneOfEnchantment.class, "weapon"));
+				((ScrollOfEnchantment)curItem).readAnimation();
+
+				Sample.INSTANCE.play( Assets.Sounds.READ );
+				Enchanting.show(curUser, wep);
+				Talent.onUpgradeScrollUsed( Dungeon.hero );
+			}
+
+			wep = null;
+			enchantments = null;
+		}
+
+		@Override
+		protected boolean hasInfo(int index) {
+			return index < 3;
+		}
+
+		@Override
+		protected void onInfo( int index ) {
+			GameScene.show(new WndTitledMessage(
+					Icons.get(Icons.INFO),
+					Messages.titleCase(enchantments[index].name()),
+					enchantments[index].desc()));
+		}
+
+		@Override
+		public void onBackPressed() {
+			//do nothing, reader has to cancel
+		}
+
+	}
+
+	public static class WndGlyphSelect extends WndOptions {
+
+		private static Armor arm;
+		private static Armor.Glyph[] glyphs;
+
+		//used in PixelScene.restoreWindows
+		public WndGlyphSelect(){
+			this(arm, glyphs[0], glyphs[1], glyphs[2]);
+		}
+
+		public WndGlyphSelect(Armor arm, Armor.Glyph glyph1,
+		                      Armor.Glyph glyph2, Armor.Glyph glyph3){
+			super(new ItemSprite(new ScrollOfEnchantment()),
+					Messages.titleCase(new ScrollOfEnchantment().name()),
+					Messages.get(ScrollOfEnchantment.class, "armor") +
+							"\n\n" +
+							Messages.get(ScrollOfEnchantment.class, "cancel_warn"),
+					glyph1.name(),
+					glyph2.name(),
+					glyph3.name(),
+					Messages.get(ScrollOfEnchantment.class, "cancel"));
+			this.arm = arm;
+			glyphs = new Armor.Glyph[3];
+			glyphs[0] = glyph1;
+			glyphs[1] = glyph2;
+			glyphs[2] = glyph3;
+		}
+
+		@Override
+		protected void onSelect(int index) {
+			if (index < 3) {
+				arm.inscribe(glyphs[index]);
+				GLog.p(Messages.get(StoneOfEnchantment.class, "armor"));
+				((ScrollOfEnchantment)curItem).readAnimation();
+
+				Sample.INSTANCE.play( Assets.Sounds.READ );
+				Enchanting.show(curUser, arm);
+				Talent.onUpgradeScrollUsed( Dungeon.hero );
+			}
+
+			arm = null;
+			glyphs = null;
+		}
+
+		@Override
+		protected boolean hasInfo(int index) {
+			return index < 3;
+		}
+
+		@Override
+		protected void onInfo( int index ) {
+			GameScene.show(new WndTitledMessage(
+					Icons.get(Icons.INFO),
+					Messages.titleCase(glyphs[index].name()),
+					glyphs[index].desc()));
+		}
+
+		@Override
+		public void onBackPressed() {
+			//do nothing, reader has to cancel
+		}
+
+	}
 }

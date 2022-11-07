@@ -210,5 +210,9 @@ public class Button extends Component {
 		KeyEvent.removeKeyListener( keyListener );
 		killTooltip();
 	}
+
+	public void givePointerPriority(){
+		hotArea.givePointerPriority();
+	}
 	
 }

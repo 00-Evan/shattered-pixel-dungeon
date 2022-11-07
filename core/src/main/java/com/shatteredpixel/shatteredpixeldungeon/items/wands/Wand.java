@@ -128,7 +128,7 @@ public abstract class Wand extends Item {
 	//not affected by enchantment proc chance changers
 	public static float procChanceMultiplier( Char attacker ){
 		if (attacker.buff(Talent.EmpoweredStrikeTracker.class) != null){
-			return 1f + ((Hero)attacker).pointsInTalent(Talent.EMPOWERED_STRIKE)/3f;
+			return 1f + ((Hero)attacker).pointsInTalent(Talent.EMPOWERED_STRIKE)/2f;
 		}
 		return 1f;
 	}
@@ -664,12 +664,15 @@ public abstract class Wand extends Item {
 		private static final float CHARGE_BUFF_BONUS = 0.25f;
 
 		float scalingFactor = NORMAL_SCALE_FACTOR;
-		
+
 		@Override
 		public boolean attachTo( Char target ) {
-			super.attachTo( target );
-			
-			return true;
+			if (super.attachTo( target )) {
+				//if we're loading in and the hero has partially spent a turn, delay for 1 turn
+				if (now() == 0 && cooldown() == 0 && target.cooldown() > 0) spend(TICK);
+				return true;
+			}
+			return false;
 		}
 		
 		@Override

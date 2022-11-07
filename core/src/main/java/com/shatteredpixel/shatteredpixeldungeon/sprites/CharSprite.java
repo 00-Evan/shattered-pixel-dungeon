@@ -245,35 +245,33 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	}
 	
 	public void attack( int cell ) {
-		turnTo( ch.pos, cell );
-		play( attack );
+		attack( cell, null );
 	}
 	
-	public void attack( int cell, Callback callback ) {
+	public synchronized void attack( int cell, Callback callback ) {
 		animCallback = callback;
 		turnTo( ch.pos, cell );
 		play( attack );
 	}
 	
 	public void operate( int cell ) {
-		turnTo( ch.pos, cell );
-		play( operate );
+		operate( cell, null );
 	}
 	
-	public void operate( int cell, Callback callback ) {
+	public synchronized void operate( int cell, Callback callback ) {
 		animCallback = callback;
 		turnTo( ch.pos, cell );
 		play( operate );
 	}
 	
 	public void zap( int cell ) {
-		turnTo( ch.pos, cell );
-		play( zap );
+		zap( cell, null );
 	}
 	
-	public void zap( int cell, Callback callback ) {
+	public synchronized void zap( int cell, Callback callback ) {
 		animCallback = callback;
-		zap( cell );
+		turnTo( ch.pos, cell );
+		play( zap );
 	}
 	
 	public void turnTo( int from, int to ) {
@@ -732,7 +730,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	}
 
 	@Override
-	public void onComplete( Animation anim ) {
+	public synchronized void onComplete( Animation anim ) {
 		
 		if (animCallback != null) {
 			Callback executing = animCallback;

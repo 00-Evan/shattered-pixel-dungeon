@@ -21,24 +21,21 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.NecromancerSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SpectralNecromancerSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class SpectralNecromancer extends Necromancer {
 
@@ -106,6 +103,15 @@ public class SpectralNecromancer extends Necromancer {
 	@Override
 	public void summonMinion() {
 		if (Actor.findChar(summoningPos) != null) {
+
+			//cancel if character cannot be moved
+			if (Char.hasProp(Actor.findChar(summoningPos), Property.IMMOVABLE)){
+				summoning = false;
+				((SpectralNecromancerSprite)sprite).finishSummoning();
+				spend(TICK);
+				return;
+			}
+
 			int pushPos = pos;
 			for (int c : PathFinder.NEIGHBOURS8) {
 				if (Actor.findChar(summoningPos + c) == null
@@ -129,6 +135,10 @@ public class SpectralNecromancer extends Necromancer {
 				Char blocker = Actor.findChar(summoningPos);
 				if (blocker.alignment != alignment){
 					blocker.damage( Random.NormalIntRange(2, 10), this );
+					if (blocker == Dungeon.hero && !blocker.isAlive()){
+						Badges.validateDeathFromEnemyMagic();
+						Dungeon.fail(getClass());
+					}
 				}
 
 				spend(TICK);

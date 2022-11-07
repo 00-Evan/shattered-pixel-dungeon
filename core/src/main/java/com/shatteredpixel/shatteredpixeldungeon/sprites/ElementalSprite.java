@@ -106,9 +106,7 @@ public abstract class ElementalSprite extends MobSprite {
 	}
 	
 	public void zap( int cell ) {
-		
-		turnTo( ch.pos , cell );
-		play( zap );
+		super.zap( cell );
 		
 		MagicMissile.boltFromChar( parent,
 				boltType,
@@ -208,8 +206,7 @@ public abstract class ElementalSprite extends MobSprite {
 		//different bolt, so overrides zap
 		@Override
 		public void zap( int cell ) {
-			turnTo( ch.pos , cell );
-			play( zap );
+			super.zap( cell, null );
 			
 			((Elemental)ch).onZapComplete();
 			parent.add( new Beam.LightRay(center(), DungeonTilemap.raisedTileCenterToWorld(cell)));
