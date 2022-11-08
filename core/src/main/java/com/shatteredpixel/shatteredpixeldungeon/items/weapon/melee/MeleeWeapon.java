@@ -24,12 +24,49 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
+
 public class MeleeWeapon extends Weapon {
-	
+
+	public static String AC_ABILITY = "ABILITY";
+
+	@Override
+	public String defaultAction() {
+		if (Dungeon.hero != null && Dungeon.hero.heroClass == HeroClass.DUELIST){
+			return AC_ABILITY;
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions(hero);
+		if (isEquipped(hero) && hero.heroClass == HeroClass.DUELIST){
+			actions.add(AC_ABILITY);
+		}
+		return actions;
+	}
+
+	@Override
+	public void execute(Hero hero, String action) {
+		super.execute(hero, action);
+
+		if (action.equals(AC_ABILITY)){
+			if (!isEquipped(hero)){
+				GLog.w("Need to Equip!");
+			} else {
+				GLog.i("Weapon Ability TODO");
+			}
+		}
+	}
+
 	public int tier;
 
 	@Override

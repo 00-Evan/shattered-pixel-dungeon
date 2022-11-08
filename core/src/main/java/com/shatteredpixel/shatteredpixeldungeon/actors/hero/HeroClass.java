@@ -213,8 +213,8 @@ public enum HeroClass {
 
 		(hero.belongings.weapon = new Rapier()).identify();
 
-		//quickslot and thrown weapons?
-		//Dungeon.quickslot.setSlot(0, hero.belongings.weapon);
+		//thrown weapons?
+		Dungeon.quickslot.setSlot(0, hero.belongings.weapon);
 
 		new PotionOfStrength().identify();
 		new ScrollOfMirrorImage().identify();
