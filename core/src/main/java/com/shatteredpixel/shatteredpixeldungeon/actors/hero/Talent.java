@@ -144,10 +144,27 @@ public enum Talent {
 	//Spirit Hawk T4
 	EAGLE_EYE(119, 4), GO_FOR_THE_EYES(120, 4), SWIFT_SPIRIT(121, 4),
 
+	//Duelist T1
+	DUELIST_T1_1(128), DUELIST_T1_2(129), DUELIST_T1_3(130), DUELIST_T1_4(131),
+	//Duelist T2
+	DUELIST_T2_1(132), DUELIST_T2_2(133), DUELIST_T2_3(134), DUELIST_T2_4(135), DUELIST_T2_5(136),
+	//Duelist T3
+	DUELIST_T3_1(137, 3), DUELIST_T3_2(138, 3),
+	//Duelist S1 T3
+	DUELIST_S1_1(139, 3), DUELIST_S1_2(140, 3), DUELIST_S1_3(141, 3),
+	//Duelist S2 T3
+	DUELIST_S2_1(142, 3), DUELIST_S2_2(143, 3), DUELIST_S2_3(144, 3),
+	//Duelist A1 T4
+	DUELIST_A1_1(145, 4), DUELIST_A1_2(146, 4), DUELIST_A1_3(147, 4),
+	//Duelist A2 T4
+	DUELIST_A2_1(148, 4), DUELIST_A2_2(149, 4), DUELIST_A2_3(150, 4),
+	//Duelist A3 T4
+	DUELIST_A3_1(151, 4), DUELIST_A3_2(152, 4), DUELIST_A3_3(153, 4),
+
 	//universal T4
 	HEROIC_ENERGY(26, 4), //See icon() and title() for special logic for this one
 	//Ratmogrify T4
-	RATSISTANCE(124, 4), RATLOMACY(125, 4), RATFORCEMENTS(126, 4);
+	RATSISTANCE(215, 4), RATLOMACY(216, 4), RATFORCEMENTS(217, 4);
 
 	public static class ImprovisedProjectileCooldown extends FlavourBuff{
 		public int icon() { return BuffIndicator.TIME; }
@@ -227,7 +244,7 @@ public enum Talent {
 	public int icon(){
 		if (this == HEROIC_ENERGY){
 			if (Ratmogrify.useRatroicEnergy){
-				return 127;
+				return 218;
 			}
 			HeroClass cls = Dungeon.hero != null ? Dungeon.hero.heroClass : GamesInProgress.selectedClass;
 			switch (cls){
@@ -239,6 +256,8 @@ public enum Talent {
 					return 90;
 				case HUNTRESS:
 					return 122;
+				case DUELIST:
+					return 154;
 			}
 		} else {
 			return icon;
@@ -557,6 +576,9 @@ public enum Talent {
 			case HUNTRESS:
 				Collections.addAll(tierTalents, NATURES_BOUNTY, SURVIVALISTS_INTUITION, FOLLOWUP_STRIKE, NATURES_AID);
 				break;
+			case DUELIST:
+				Collections.addAll(tierTalents, DUELIST_T1_1, DUELIST_T1_2, DUELIST_T1_3, DUELIST_T1_4);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -580,6 +602,9 @@ public enum Talent {
 			case HUNTRESS:
 				Collections.addAll(tierTalents, INVIGORATING_MEAL, RESTORED_NATURE, REJUVENATING_STEPS, HEIGHTENED_SENSES, DURABLE_PROJECTILES);
 				break;
+			case DUELIST:
+				Collections.addAll(tierTalents, DUELIST_T2_1, DUELIST_T2_2, DUELIST_T2_3, DUELIST_T2_4, DUELIST_T2_5);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -602,6 +627,9 @@ public enum Talent {
 				break;
 			case HUNTRESS:
 				Collections.addAll(tierTalents, POINT_BLANK, SEER_SHOT);
+				break;
+			case DUELIST:
+				Collections.addAll(tierTalents, DUELIST_T3_1, DUELIST_T3_2);
 				break;
 		}
 		for (Talent talent : tierTalents){

@@ -19,14 +19,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.armor;
+package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-public class HuntressArmor extends ClassArmor {
+public class Rapier extends MeleeWeapon {
 
 	{
-		image = ItemSpriteSheet.ARMOR_HUNTRESS;
+		image = ItemSpriteSheet.RAPIER;
+		hitSound = Assets.Sounds.HIT_SLASH;
+		hitSoundPitch = 1.3f;
+
+		tier = 1;
+
+		bones = false;
+	}
+
+	//might want to think on this more, it doesn't really make sense for duelist to get defense and warrior to have raw dmg
+
+	@Override
+	public int max(int lvl) {
+		return  4*(tier+1) +    //8 base, down from 10
+				lvl*(tier+1);   //scaling unchanged
+	}
+
+	@Override
+	public int defenseFactor( Char owner ) {
+		return 1;	//1 extra defence
 	}
 
 }
