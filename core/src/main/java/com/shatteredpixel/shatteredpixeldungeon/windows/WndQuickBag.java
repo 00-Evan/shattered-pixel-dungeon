@@ -73,7 +73,7 @@ public class WndQuickBag extends Window {
 		ArrayList<Item> items = new ArrayList<>();
 
 		for (Item i : bag == null ? Dungeon.hero.belongings : bag){
-			if (i.defaultAction == null){
+			if (i.defaultAction() == null){
 				continue;
 			}
 			if (i instanceof Bag) {

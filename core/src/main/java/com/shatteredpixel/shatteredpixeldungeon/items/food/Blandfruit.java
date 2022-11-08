@@ -84,6 +84,17 @@ public class Blandfruit extends Food {
 	}
 
 	@Override
+	public String defaultAction() {
+		if (potionAttrib == null){
+			return null;
+		} else if (potionAttrib.defaultAction().equals(Potion.AC_DRINK)) {
+			return AC_EAT;
+		} else {
+			return potionAttrib.defaultAction();
+		}
+	}
+
+	@Override
 	public void execute( Hero hero, String action ) {
 
 		if (action.equals( Potion.AC_CHOOSE )){
@@ -172,12 +183,6 @@ public class Blandfruit extends Food {
 		if (potionAttrib instanceof PotionOfPurity)         potionGlow = new ItemSprite.Glowing( 0xC152AA );
 		if (potionAttrib instanceof PotionOfExperience)     potionGlow = new ItemSprite.Glowing( 0x404040 );
 		if (potionAttrib instanceof PotionOfHaste)          potionGlow = new ItemSprite.Glowing( 0xCCBB00 );
-
-		potionAttrib.setAction();
-		defaultAction = potionAttrib.defaultAction;
-		if (defaultAction.equals(Potion.AC_DRINK)){
-			defaultAction = AC_EAT;
-		}
 
 		return this;
 	}

@@ -166,7 +166,7 @@ public class Toolbar extends Component {
 
 									@Override
 									public boolean itemSelectable(Item item) {
-										return item.defaultAction != null;
+										return item.defaultAction() != null;
 									}
 
 									@Override
@@ -445,7 +445,7 @@ public class Toolbar extends Component {
 								public void onSelect(int idx, boolean alt) {
 									super.onSelect(idx, alt);
 									Item item = items.get(idx);
-									if (alt && item.defaultAction != null) {
+									if (alt && item.defaultAction() != null) {
 										item.execute(Dungeon.hero);
 									} else {
 										Game.scene().addToFront(new WndUseItem(null, item));

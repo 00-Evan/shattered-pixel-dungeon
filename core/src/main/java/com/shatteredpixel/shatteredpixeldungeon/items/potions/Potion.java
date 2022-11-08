@@ -192,26 +192,16 @@ public class Potion extends Item {
 			image = handler.image(this);
 			color = handler.label(this);
 		}
-		setAction();
 	}
-	
+
 	@Override
-	public boolean collect( Bag container ) {
-		if (super.collect( container )){
-			setAction();
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	public void setAction(){
+	public String defaultAction() {
 		if (isKnown() && mustThrowPots.contains(this.getClass())) {
-			defaultAction = AC_THROW;
+			return AC_THROW;
 		} else if (isKnown() &&canThrowPots.contains(this.getClass())){
-			defaultAction = AC_CHOOSE;
+			return AC_CHOOSE;
 		} else {
-			defaultAction = AC_DRINK;
+			return AC_DRINK;
 		}
 	}
 	
@@ -335,12 +325,6 @@ public class Potion extends Item {
 			if (!isKnown()) {
 				handler.know(this);
 				updateQuickslot();
-				Potion p = Dungeon.hero.belongings.getItem(getClass());
-				if (p != null)  p.setAction();
-				if (ExoticPotion.regToExo.get(getClass()) != null) {
-					p = Dungeon.hero.belongings.getItem(ExoticPotion.regToExo.get(getClass()));
-					if (p != null) p.setAction();
-				}
 			}
 			
 			if (Dungeon.hero.isAlive()) {

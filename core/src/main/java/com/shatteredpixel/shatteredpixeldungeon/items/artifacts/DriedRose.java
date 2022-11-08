@@ -130,6 +130,15 @@ public class DriedRose extends Artifact {
 	}
 
 	@Override
+	public String defaultAction() {
+		if (ghost != null){
+			return AC_DIRECT;
+		} else {
+			return AC_SUMMON;
+		}
+	}
+
+	@Override
 	public void execute( Hero hero, String action ) {
 
 		super.execute(hero, action);
@@ -357,8 +366,6 @@ public class DriedRose extends Artifact {
 		ghostID = bundle.getInt( GHOSTID );
 		droppedPetals = bundle.getInt( PETALS );
 		
-		if (ghostID != 0) defaultAction = AC_DIRECT;
-		
 		if (bundle.contains(WEAPON)) weapon = (MeleeWeapon)bundle.get( WEAPON );
 		if (bundle.contains(ARMOR))  armor = (Armor)bundle.get( ARMOR );
 	}
@@ -385,7 +392,6 @@ public class DriedRose extends Artifact {
 			
 			//rose does not charge while ghost hero is alive
 			if (ghost != null && !cursed && target.buff(MagicImmune.class) == null){
-				defaultAction = AC_DIRECT;
 				
 				//heals to full over 500 turns
 				LockedFloor lock = target.buff(LockedFloor.class);
@@ -402,8 +408,6 @@ public class DriedRose extends Artifact {
 				}
 				
 				return true;
-			} else {
-				defaultAction = AC_SUMMON;
 			}
 			
 			LockedFloor lock = target.buff(LockedFloor.class);
@@ -757,7 +761,6 @@ public class DriedRose extends Artifact {
 				rose.charge = 0;
 				rose.partialCharge = 0;
 				rose.ghostID = -1;
-				rose.defaultAction = AC_SUMMON;
 			}
 			super.destroy();
 		}

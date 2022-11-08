@@ -38,7 +38,7 @@ public abstract class Runestone extends Item {
 
 	@Override
 	protected void onThrow(int cell) {
-		if (Dungeon.level.pit[cell] || !defaultAction.equals(AC_THROW)){
+		if (Dungeon.level.pit[cell] || !defaultAction().equals(AC_THROW)){
 			super.onThrow( cell );
 		} else {
 			if (pressesCell) Dungeon.level.pressCell( cell );

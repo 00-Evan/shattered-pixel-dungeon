@@ -247,7 +247,7 @@ public class QuickSlotButton extends Button {
 
 		@Override
 		public boolean itemSelectable(Item item) {
-			return item.defaultAction != null;
+			return item.defaultAction() != null;
 		}
 
 		@Override

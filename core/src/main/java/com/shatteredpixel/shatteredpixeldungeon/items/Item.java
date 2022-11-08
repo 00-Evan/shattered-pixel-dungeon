@@ -66,7 +66,7 @@ public class Item implements Bundlable {
 	public static final String AC_DROP		= "DROP";
 	public static final String AC_THROW		= "THROW";
 	
-	public String defaultAction;
+	protected String defaultAction;
 	public boolean usesTargeting;
 
 	//TODO should these be private and accessed through methods?
@@ -163,9 +163,14 @@ public class Item implements Bundlable {
 			
 		}
 	}
+
+	//can be overridden if default action is variable
+	public String defaultAction(){
+		return defaultAction;
+	}
 	
 	public void execute( Hero hero ) {
-		execute( hero, defaultAction );
+		execute( hero, defaultAction() );
 	}
 	
 	protected void onThrow( int cell ) {

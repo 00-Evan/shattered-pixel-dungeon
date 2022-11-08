@@ -35,12 +35,11 @@ public abstract class Brew extends Potion {
 		actions.remove( AC_DRINK );
 		return actions;
 	}
-	
+
 	@Override
-	public void setAction() {
-		defaultAction = AC_THROW;
+	public String defaultAction() {
+		return AC_THROW;
 	}
-	
 	
 	@Override
 	public void doThrow(Hero hero) {
