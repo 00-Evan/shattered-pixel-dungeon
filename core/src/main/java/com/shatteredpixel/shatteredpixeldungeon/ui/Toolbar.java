@@ -252,7 +252,7 @@ public class Toolbar extends Component {
 			protected void onClick() {
 				if (Dungeon.hero.ready && !GameScene.cancel()) {
 					Dungeon.hero.waitOrPickup = true;
-					if ((Dungeon.level.heaps.get(Dungeon.hero.pos) != null || Dungeon.hero.isStandingOnTrampleableGrass())
+					if ((Dungeon.level.heaps.get(Dungeon.hero.pos) != null || Dungeon.hero.canSelfTrample())
 						&& Dungeon.hero.handle(Dungeon.hero.pos)){
 						//trigger hold fast here, even if the hero didn't specifically wait
 						if (Dungeon.hero.hasTalent(Talent.HOLD_FAST)){

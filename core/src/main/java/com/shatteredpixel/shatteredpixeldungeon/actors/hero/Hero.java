@@ -744,6 +744,7 @@ public class Hero extends Char {
 		damageInterrupt = true;
 		waitOrPickup = false;
 		ready = true;
+		canSelfTrample = true;
 
 		AttackIndicator.updateState();
 		
@@ -767,18 +768,26 @@ public class Hero extends Char {
 		next();
 	}
 
-	public boolean isStandingOnTrampleableGrass(){
-		return !rooted && !flying &&
-				(Dungeon.level.map[pos] == Terrain.HIGH_GRASS || (heroClass != HeroClass.HUNTRESS && Dungeon.level.map[pos] == Terrain.FURROWED_GRASS));
+	private boolean canSelfTrample = false;
+	public boolean canSelfTrample(){
+		return canSelfTrample && !rooted && !flying &&
+				//standing in high grass
+				(Dungeon.level.map[pos] == Terrain.HIGH_GRASS ||
+				//standing in furrowed grass and not huntress
+				(heroClass != HeroClass.HUNTRESS && Dungeon.level.map[pos] == Terrain.FURROWED_GRASS) ||
+				//standing on a plant
+				Dungeon.level.plants.get(pos) != null);
 	}
 	
 	private boolean actMove( HeroAction.Move action ) {
 
 		if (getCloser( action.dst )) {
+			canSelfTrample = false;
 			return true;
 
 		//Hero moves in place if there is grass to trample
-		} else if (isStandingOnTrampleableGrass()){
+		} else if (canSelfTrample()){
+			canSelfTrample = false;
 			Dungeon.level.pressCell(pos);
 			spendAndNext( 1 / speed() );
 			return false;
