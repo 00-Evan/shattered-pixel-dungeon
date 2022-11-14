@@ -100,7 +100,7 @@ public class GrimTrap extends Trap {
 									if (finalTarget == Dungeon.hero) {
 										Sample.INSTANCE.play(Assets.Sounds.CURSED);
 										if (!finalTarget.isAlive()) {
-											Badges.validateDeathFromGrimTrap();
+											Badges.validateDeathFromGrimOrDisintTrap();
 											Dungeon.fail( GrimTrap.class );
 											GLog.n( Messages.get(GrimTrap.class, "ondeath") );
 										}

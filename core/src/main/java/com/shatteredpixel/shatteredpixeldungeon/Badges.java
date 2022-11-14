@@ -135,7 +135,7 @@ public class Badges {
 		BOSS_SLAIN_4                ( 78 ),
 		ALL_RINGS_IDENTIFIED        ( 79 ),
 		ALL_ARTIFACTS_IDENTIFIED    ( 80 ),
-		DEATH_FROM_GRIM_TRAP        ( 81 ),
+		DEATH_FROM_GRIM_TRAP        ( 81 ), //also disintegration traps
 		VICTORY                     ( 82 ),
 		BOSS_CHALLENGE_1            ( 83 ),
 		BOSS_CHALLENGE_2            ( 84 ),
@@ -673,7 +673,7 @@ public class Badges {
 		validateDeathFromAll();
 	}
 
-	public static void validateDeathFromGrimTrap() {
+	public static void validateDeathFromGrimOrDisintTrap() {
 		Badge badge = Badge.DEATH_FROM_GRIM_TRAP;
 		local.add( badge );
 		displayBadge( badge );
