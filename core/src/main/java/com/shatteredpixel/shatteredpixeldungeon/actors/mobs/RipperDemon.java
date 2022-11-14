@@ -137,13 +137,14 @@ public class RipperDemon extends Mob {
 			if (leapPos != -1){
 
 				leapCooldown = Random.NormalIntRange(2, 4);
-				Ballistica b = new Ballistica(pos, leapPos, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID);
 
-				//check if leap pos is not obstructed by terrain
-				if (rooted || b.collisionPos != leapPos){
+				if (rooted){
 					leapPos = -1;
 					return true;
 				}
+
+				Ballistica b = new Ballistica(pos, leapPos, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID);
+				leapPos = b.collisionPos;
 
 				final Char leapVictim = Actor.findChar(leapPos);
 				final int endPos;
