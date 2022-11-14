@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.Brew;
@@ -231,6 +232,16 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		} while ( n != null && (Challenges.isItemBlocked(n) || n.getClass() == a.getClass()));
 		
 		if (n != null){
+
+			if (a instanceof DriedRose){
+				if (((DriedRose) a).ghostWeapon() != null){
+					Dungeon.level.drop(((DriedRose) a).ghostWeapon(), Dungeon.hero.pos);
+				}
+				if (((DriedRose) a).ghostArmor() != null){
+					Dungeon.level.drop(((DriedRose) a).ghostArmor(), Dungeon.hero.pos);
+				}
+			}
+
 			n.cursedKnown = a.cursedKnown;
 			n.cursed = a.cursed;
 			n.levelKnown = a.levelKnown;
