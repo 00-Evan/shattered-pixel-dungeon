@@ -44,6 +44,7 @@ public class Messages {
 
 	private static ArrayList<I18NBundle> bundles;
 	private static Languages lang;
+	private static Locale locale;
 
 	public static final String NO_TEXT_FOUND = "!!!NO TEXT FOUND!!!";
 
@@ -51,7 +52,9 @@ public class Messages {
 		return lang;
 	}
 
-
+	public static Locale locale(){
+		return locale;
+	}
 
 	/**
 	 * Setup Methods
@@ -79,7 +82,11 @@ public class Messages {
 
 		bundles = new ArrayList<>();
 		Messages.lang = lang;
-		Locale locale = new Locale(lang.code());
+		if (lang == Languages.ENGLISH){
+			locale = Locale.ENGLISH;
+		} else {
+			locale = new Locale(lang.code());
+		}
 
 		for (String file : prop_files) {
 			bundles.add(I18NBundle.createBundle(Gdx.files.internal(file), locale));
@@ -153,7 +160,7 @@ public class Messages {
 
 	public static String capitalize( String str ){
 		if (str.length() == 0)  return str;
-		else                    return Character.toTitleCase( str.charAt( 0 ) ) + str.substring( 1 );
+		else                    return str.substring( 0, 1 ).toUpperCase(locale) + str.substring( 1 );
 	}
 
 	//Words which should not be capitalized in title case, mostly prepositions which appear ingame
