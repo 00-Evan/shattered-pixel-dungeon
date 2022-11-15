@@ -121,18 +121,29 @@ public class Swiftthistle extends Plant {
 			}
 		}
 
-		public void triggerPresses() {
-			for (int cell : presses) {
-				Dungeon.level.pressCell(cell);
+		public void triggerPresses(){
+			for (int cell : presses){
+				Trap t = Dungeon.level.traps.get(cell);
+				if (t != null){
+					t.trigger();
+				}
+				Plant p = Dungeon.level.plants.get(cell);
+				if (p != null){
+					p.trigger();
+				}
 			}
-			
+
 			presses = new ArrayList<>();
 		}
 
 		public void disarmPressedTraps(){
 			for (int cell : presses){
 				Trap t = Dungeon.level.traps.get(cell);
-				if (t != null && t.disarmedByActivation) t.disarm();
+				if (t != null && t.disarmedByActivation) {
+					t.disarm();
+				}
+
+				Dungeon.level.uproot(cell);
 			}
 
 			presses = new ArrayList<>();

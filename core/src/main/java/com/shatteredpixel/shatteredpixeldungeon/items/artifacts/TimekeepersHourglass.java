@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -357,8 +358,16 @@ public class TimekeepersHourglass extends Artifact {
 		}
 
 		public void triggerPresses(){
-			for (int cell : presses)
-				Dungeon.level.pressCell(cell);
+			for (int cell : presses){
+				Trap t = Dungeon.level.traps.get(cell);
+				if (t != null){
+					t.trigger();
+				}
+				Plant p = Dungeon.level.plants.get(cell);
+				if (p != null){
+					p.trigger();
+				}
+			}
 
 			presses = new ArrayList<>();
 		}
@@ -366,7 +375,11 @@ public class TimekeepersHourglass extends Artifact {
 		public void disarmPressedTraps(){
 			for (int cell : presses){
 				Trap t = Dungeon.level.traps.get(cell);
-				if (t != null && t.disarmedByActivation) t.disarm();
+				if (t != null && t.disarmedByActivation) {
+					t.disarm();
+				}
+
+				Dungeon.level.uproot(cell);
 			}
 
 			presses = new ArrayList<>();
