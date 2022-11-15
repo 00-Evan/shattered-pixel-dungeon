@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Rapier extends MeleeWeapon {
@@ -50,4 +51,8 @@ public class Rapier extends MeleeWeapon {
 		return 1;	//1 extra defence
 	}
 
+	@Override
+	public String targetingPrompt() {
+		return Messages.get(this, "prompt");
+	}
 }

@@ -191,4 +191,12 @@ public class Messages {
 		//Otherwise, use sentence case
 		return capitalize(str);
 	}
+
+	public static String upperCase( String str ){
+		return str.toUpperCase(locale);
+	}
+
+	public static String lowerCase( String str ){
+		return str.toLowerCase(locale);
+	}
 }

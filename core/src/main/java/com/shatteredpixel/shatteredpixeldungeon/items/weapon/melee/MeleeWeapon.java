@@ -23,13 +23,19 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class MeleeWeapon extends Weapon {
@@ -37,11 +43,19 @@ public class MeleeWeapon extends Weapon {
 	public static String AC_ABILITY = "ABILITY";
 
 	@Override
+	public void activate(Char ch) {
+		super.activate(ch);
+		if (ch instanceof Hero && ((Hero) ch).heroClass == HeroClass.DUELIST){
+			Buff.affect(ch, Charger.class);
+		}
+	}
+
+	@Override
 	public String defaultAction() {
 		if (Dungeon.hero != null && Dungeon.hero.heroClass == HeroClass.DUELIST){
 			return AC_ABILITY;
 		} else {
-			return null;
+			return super.defaultAction();
 		}
 	}
 
@@ -55,16 +69,65 @@ public class MeleeWeapon extends Weapon {
 	}
 
 	@Override
+	public String actionName(String action, Hero hero) {
+		if (action.equals(AC_ABILITY)){
+			return Messages.upperCase(Messages.get(this, "ability_name"));
+		} else {
+			return super.actionName(action, hero);
+		}
+	}
+
+	@Override
 	public void execute(Hero hero, String action) {
 		super.execute(hero, action);
 
 		if (action.equals(AC_ABILITY)){
-			if (!isEquipped(hero)){
-				GLog.w("Need to Equip!");
+			if (!isEquipped(hero)) {
+				GLog.w(Messages.get(this, "ability_equip"));
+			} else if (Buff.affect(hero, Charger.class).charge < abilityChargeUse()) {
+				GLog.w(Messages.get(this, "ability_charge"));
 			} else {
-				GLog.i("Weapon Ability TODO");
+
+				if (targetingPrompt() == null){
+					Buff.affect(hero, Charger.class).charge -= abilityChargeUse();
+					duelistAbility(hero, hero.pos);
+					updateQuickslot();
+				} else {
+					usesTargeting = useTargeting();
+					GameScene.selectCell(new CellSelector.Listener() {
+						@Override
+						public void onSelect(Integer cell) {
+							if (cell != null) {
+								Buff.affect(hero, Charger.class).charge -= abilityChargeUse();
+								duelistAbility(hero, cell);
+								updateQuickslot();
+							}
+						}
+
+						@Override
+						public String prompt() {
+							return targetingPrompt();
+						}
+					});
+				}
 			}
 		}
+	}
+
+	//leave null for no targeting
+	public String targetingPrompt(){
+		return null;
+	}
+
+	public boolean useTargeting(){
+		return targetingPrompt() != null;
+	}
+
+	//TODO make abstract
+	protected void duelistAbility( Hero hero, Integer target ){}
+
+	public float abilityChargeUse(){
+		return 33f; //TODO
 	}
 
 	public int tier;
@@ -147,6 +210,11 @@ public class MeleeWeapon extends Weapon {
 				info += "\n\n" + Messages.get(Weapon.class, "not_cursed");
 			}
 		}
+
+		if (Dungeon.hero.heroClass == HeroClass.DUELIST){
+			info += "\n\n" + Messages.get(this, "ability_desc");
+			info += " " + Messages.get(MeleeWeapon.class, "charge_use", new DecimalFormat("#.##").format(abilityChargeUse()));
+		}
 		
 		return info;
 	}
@@ -154,7 +222,17 @@ public class MeleeWeapon extends Weapon {
 	public String statsInfo(){
 		return Messages.get(this, "stats_desc");
 	}
-	
+
+	@Override
+	public String status() {
+		if (isEquipped(Dungeon.hero)
+				&& Dungeon.hero.buff(Charger.class) != null) {
+			return Messages.format( "%.0f%%", Math.floor(Dungeon.hero.buff(Charger.class).charge) );
+		} else {
+			return super.status();
+		}
+	}
+
 	@Override
 	public int value() {
 		int price = 20 * tier;
@@ -171,6 +249,42 @@ public class MeleeWeapon extends Weapon {
 			price = 1;
 		}
 		return price;
+	}
+
+	public static class Charger extends Buff {
+
+		public float charge;
+		//offhand charge as well?
+
+		@Override
+		public boolean act() {
+			LockedFloor lock = target.buff(LockedFloor.class);
+			if (lock == null || lock.regenOn()) {
+				charge += 100 / 300f; //300 turns to full charge
+				updateQuickslot();
+				if (charge > 100) {
+					charge = 100;
+				}
+			}
+			spend(TICK);
+			return true;
+		}
+
+
+
+		public static final String CHARGE = "charge";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(CHARGE, charge);
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			charge = bundle.getFloat(CHARGE);
+		}
 	}
 
 }

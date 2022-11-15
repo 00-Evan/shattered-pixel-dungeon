@@ -164,7 +164,7 @@ abstract public class ClassArmor extends Armor {
 	@Override
 	public String actionName(String action, Hero hero) {
 		if (hero.armorAbility != null && action.equals(AC_ABILITY)){
-			return hero.armorAbility.name().toUpperCase();
+			return Messages.upperCase(hero.armorAbility.name());
 		} else {
 			return super.actionName(action, hero);
 		}
