@@ -740,6 +740,10 @@ public abstract class Char extends Actor {
 		return HP > 0 || deathMarked;
 	}
 
+	public boolean isActive() {
+		return isAlive();
+	}
+
 	@Override
 	protected void spendConstant(float time) {
 		TimekeepersHourglass.timeFreeze freeze = buff(TimekeepersHourglass.timeFreeze.class);

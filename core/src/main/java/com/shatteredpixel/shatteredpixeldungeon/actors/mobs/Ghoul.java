@@ -155,12 +155,21 @@ public class Ghoul extends Mob {
 				timesDowned++;
 				Buff.append(nearby, GhoulLifeLink.class).set(timesDowned*5, this);
 				((GhoulSprite)sprite).crumple();
-				beingLifeLinked = false;
 				return;
 			}
 		}
 
 		super.die(cause);
+	}
+
+	@Override
+	public boolean isAlive() {
+		return super.isAlive() || beingLifeLinked;
+	}
+
+	@Override
+	public boolean isActive() {
+		return !beingLifeLinked && isAlive();
 	}
 
 	@Override
@@ -269,6 +278,7 @@ public class Ghoul extends Mob {
 					}
 				}
 				ghoul.HP = Math.round(ghoul.HT/10f);
+				ghoul.beingLifeLinked = false;
 				Actor.add(ghoul);
 				ghoul.timeToNow();
 				Dungeon.level.mobs.add(ghoul);
@@ -321,6 +331,7 @@ public class Ghoul extends Mob {
 		public void restoreFromBundle(Bundle bundle) {
 			super.restoreFromBundle(bundle);
 			ghoul = (Ghoul) bundle.get(GHOUL);
+			ghoul.beingLifeLinked = true;
 			turnsToRevive = bundle.getInt(LEFT);
 		}
 
