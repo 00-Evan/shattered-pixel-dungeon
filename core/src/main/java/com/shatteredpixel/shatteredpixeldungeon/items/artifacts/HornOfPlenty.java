@@ -241,6 +241,12 @@ public class HornOfPlenty extends Artifact {
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
+
+		//pre-2.0.0 saves
+		if (partialCharge > 1){
+			partialCharge /= Hunger.STARVING/5f;
+		}
+
 		storedFoodEnergy = bundle.getInt(STORED);
 		
 		if (charge >= 8)       image = ItemSpriteSheet.ARTIFACT_HORN4;
@@ -260,12 +266,15 @@ public class HornOfPlenty extends Artifact {
 				//This means that a standard ration will be recovered in ~5.333 hero levels
 				float chargeGain = Hunger.STARVING * levelPortion * (0.25f + (0.125f*level()));
 				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
+
+				//each charge is equal to 1/5 the max hunger value
+				chargeGain /= Hunger.STARVING/5;
 				partialCharge += chargeGain;
 
 				//charge is in increments of 1/5 max hunger value.
-				while (partialCharge >= Hunger.STARVING/5) {
+				while (partialCharge >= 1) {
 					charge++;
-					partialCharge -= Hunger.STARVING/5;
+					partialCharge -= 1;
 
 					int oldImage = image;
 					if (charge >= 8)        image = ItemSpriteSheet.ARTIFACT_HORN4;
