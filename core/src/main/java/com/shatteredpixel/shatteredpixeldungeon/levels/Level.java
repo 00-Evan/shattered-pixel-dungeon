@@ -1168,7 +1168,7 @@ public abstract class Level implements Bundlable {
 		boolean sighted = c.buff( Blindness.class ) == null && c.buff( Shadows.class ) == null
 						&& c.buff( TimekeepersHourglass.timeStasis.class ) == null && c.isAlive();
 		if (sighted) {
-			boolean[] blocking;
+			boolean[] blocking = null;
 
 			if (modifiableBlocking == null || modifiableBlocking.length != Dungeon.level.losBlocking.length){
 				modifiableBlocking = new boolean[Dungeon.level.losBlocking.length];
@@ -1176,25 +1176,33 @@ public abstract class Level implements Bundlable {
 			
 			if ((c instanceof Hero && ((Hero) c).subClass == HeroSubClass.WARDEN)
 				|| c instanceof YogFist.SoiledFist) {
-				System.arraycopy(Dungeon.level.losBlocking, 0, modifiableBlocking, 0, modifiableBlocking.length);
-				blocking = modifiableBlocking;
+				if (blocking == null) {
+					System.arraycopy(Dungeon.level.losBlocking, 0, modifiableBlocking, 0, modifiableBlocking.length);
+					blocking = modifiableBlocking;
+				}
 				for (int i = 0; i < blocking.length; i++){
 					if (blocking[i] && (Dungeon.level.map[i] == Terrain.HIGH_GRASS || Dungeon.level.map[i] == Terrain.FURROWED_GRASS)){
 						blocking[i] = false;
 					}
 				}
-			} else if (c.alignment != Char.Alignment.ALLY
+			}
+
+			if (c.alignment != Char.Alignment.ALLY
 					&& Dungeon.level.blobs.containsKey(SmokeScreen.class)
 					&& Dungeon.level.blobs.get(SmokeScreen.class).volume > 0) {
-				System.arraycopy(Dungeon.level.losBlocking, 0, modifiableBlocking, 0, modifiableBlocking.length);
-				blocking = modifiableBlocking;
+				if (blocking == null) {
+					System.arraycopy(Dungeon.level.losBlocking, 0, modifiableBlocking, 0, modifiableBlocking.length);
+					blocking = modifiableBlocking;
+				}
 				Blob s = Dungeon.level.blobs.get(SmokeScreen.class);
 				for (int i = 0; i < blocking.length; i++){
 					if (!blocking[i] && s.cur[i] > 0){
 						blocking[i] = true;
 					}
 				}
-			} else {
+			}
+
+			if (blocking == null){
 				blocking = Dungeon.level.losBlocking;
 			}
 			
