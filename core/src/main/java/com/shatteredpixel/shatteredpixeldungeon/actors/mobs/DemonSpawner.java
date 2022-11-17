@@ -96,6 +96,12 @@ public class DemonSpawner extends Mob {
 
 		spawnCooldown--;
 		if (spawnCooldown <= 0){
+
+			//we don't want spawners to store multiple ripper demons
+			if (spawnCooldown < -20){
+				spawnCooldown = -20;
+			}
+
 			ArrayList<Integer> candidates = new ArrayList<>();
 			for (int n : PathFinder.NEIGHBOURS8) {
 				if (Dungeon.level.passable[pos+n] && Actor.findChar( pos+n ) == null) {
