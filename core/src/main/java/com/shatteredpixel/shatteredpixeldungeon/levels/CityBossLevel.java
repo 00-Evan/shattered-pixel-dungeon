@@ -294,15 +294,12 @@ public class CityBossLevel extends Level {
 
 	@Override
 	public void occupyCell( Char ch ) {
-
-		super.occupyCell( ch );
-
 		if (map[bottomDoor] != Terrain.LOCKED_DOOR && map[topDoor] == Terrain.LOCKED_DOOR
 				&& ch.pos < bottomDoor && ch == Dungeon.hero) {
-
 			seal();
-
 		}
+
+		super.occupyCell( ch );
 	}
 
 	@Override

@@ -547,8 +547,6 @@ public class PrisonBossLevel extends Level {
 	
 	@Override
 	public void occupyCell(Char ch) {
-		super.occupyCell(ch);
-		
 		if (ch == Dungeon.hero){
 			switch (state){
 				case START:
@@ -564,6 +562,8 @@ public class PrisonBossLevel extends Level {
 					break;
 			}
 		}
+
+		super.occupyCell(ch);
 	}
 	
 	@Override
