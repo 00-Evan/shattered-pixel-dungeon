@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
@@ -92,6 +93,10 @@ public class DemonSpawner extends Mob {
 
 		if (Dungeon.level.heroFOV[pos]){
 			Notes.add( Notes.Landmark.DEMON_SPAWNER );
+		}
+
+		if (Dungeon.hero.buff(AscensionChallenge.class) != null && spawnCooldown > 20){
+			spawnCooldown = 20;
 		}
 
 		spawnCooldown--;
