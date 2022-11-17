@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SacrificialFire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
@@ -150,9 +151,9 @@ public class Ghoul extends Mob {
 			Ghoul nearby = GhoulLifeLink.searchForHost(this);
 			if (nearby != null){
 				beingLifeLinked = true;
+				timesDowned++;
 				Actor.remove(this);
 				Dungeon.level.mobs.remove( this );
-				timesDowned++;
 				Buff.append(nearby, GhoulLifeLink.class).set(timesDowned*5, this);
 				((GhoulSprite)sprite).crumple();
 				return;
@@ -176,10 +177,14 @@ public class Ghoul extends Mob {
 	protected synchronized void onRemove() {
 		if (beingLifeLinked) {
 			for (Buff buff : buffs()) {
-				//ally buffs, champion, and king damager are preserved when removed via life link
-				if (!(buff instanceof AllyBuff)
-						&& (!(buff instanceof ChampionEnemy))
-						&& !(buff instanceof DwarfKing.KingDamager)) {
+				if (buff instanceof SacrificialFire.Marked){
+					//don't remove and postpone so marked stays on
+					Buff.prolong(this, SacrificialFire.Marked.class, timesDowned*5);
+				} else if (buff instanceof AllyBuff
+						|| buff instanceof ChampionEnemy
+						|| buff instanceof DwarfKing.KingDamager) {
+					//don't remove
+				} else {
 					buff.detach();
 				}
 			}
@@ -251,6 +256,7 @@ public class Ghoul extends Mob {
 
 			if (Dungeon.level.pit[ghoul.pos]){
 				super.detach();
+				ghoul.beingLifeLinked = false;
 				ghoul.die(this);
 				return true;
 			}
@@ -313,6 +319,7 @@ public class Ghoul extends Mob {
 				attachTo(newHost);
 				timeToNow();
 			} else {
+				ghoul.beingLifeLinked = false;
 				ghoul.die(this);
 			}
 		}
