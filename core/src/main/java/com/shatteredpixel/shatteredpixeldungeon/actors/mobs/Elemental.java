@@ -41,9 +41,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutat
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ElementalSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -330,7 +332,11 @@ public abstract class Elemental extends Mob {
 			}
 			
 			for (Char ch : affected) {
-				ch.damage( Math.round( damage * 0.4f ), this );
+				ch.damage( Math.round( damage * 0.4f ), Shocking.class );
+				if (ch == Dungeon.hero && !ch.isAlive()){
+					Dungeon.fail(getClass());
+					GLog.n( Messages.capitalize(Messages.get(Char.class, "kill", name())) );
+				}
 			}
 
 			boolean visible = sprite.visible || enemy.sprite.visible;
