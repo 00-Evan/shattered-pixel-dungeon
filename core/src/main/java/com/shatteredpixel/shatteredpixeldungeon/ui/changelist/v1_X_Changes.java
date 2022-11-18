@@ -55,7 +55,6 @@ import java.util.ArrayList;
 public class v1_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
-		add_Coming_Soon(changeInfos);
 		add_v1_4_Changes(changeInfos);
 		add_v1_3_Changes(changeInfos);
 		add_v1_2_Changes(changeInfos);
@@ -63,99 +62,10 @@ public class v1_X_Changes {
 		add_v1_0_Changes(changeInfos);
 	}
 
-	public static void add_Coming_Soon( ArrayList<ChangeInfo> changeInfos ) {
-
-		ChangeInfo changes = new ChangeInfo("Coming Soon", true, "");
-		changes.hardlight(0xCCCCCC);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Overview",
-			"The next Shattered update will be v2.0.0, which is going to focus almost entirely on adding a new hero!\n\n" +
-			"v2.0.0 will likely have a few blog posts as I make progress on implementing the new hero. Expect to see the first of those posts in November."));
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.TALENT), "A New Hero!",
-			"_The new hero in v2.0.0 will be the Duelist!_\n\nThe duelist will be able to use weapons in ways other heroes cannot, through charge-based special abilities, and other mechanics via her talents and subclasses. Like all the other heroes, the duelist will have 2 subclasses, 3 armor abilities, and 26 talents!"));
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Side Content",
-			"I don't yet have any specific plans for other content in v2.0.0. I want to mostly focus on the Duelist, so don't expect as much side content as in previous updates, but I'm sure that there will be some amount of smaller additions and adjustments."));
-
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.PICKAXE), "Blacksmith Quest?",
-			"I was originally planning for the next update to be v1.5.0, and include a rework to the blacksmith's quest.\n\nWe're now in the last quarter of 2022 though, and I suspect people would much rather see a new hero release next. I also heavily implied a new hero would come this year back in the 'Shattered Pixel Dungeon in 2022' blog post.\n\nThis doesn't mean that the quest rework is never going to happen though, I'm just readjusting my priorities and will likely get to it in 2023 instead."));
-
-	}
-
 	public static void add_v1_4_Changes( ArrayList<ChangeInfo> changeInfos ) {
 		ChangeInfo changes = new ChangeInfo("v1.4", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("v1.4.3 & v1.4.2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " v1.4.3",
-				"Fixed (caused by v1.4.2)\n" +
-				"_-_ Crashes with bright fist and shock elemental\n" +
-				"_-_ Rare crashes caused by spectral necromancers\n\n" +
-				"Fixed (existed prior to v1.4)\n" +
-				"_-_ Various rare audiovisual errors\n" +
-				"_-_ Rare crashes with radial inventory selector\n" +
-				"_-_ Boss health bar not appearing in rare cases\n" +
-				"_-_ Buff icons sometimes going outside of character info windows"));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.BUFFS), "Balance Tweaks",
-				"I've made a few balance tweaks to things that were added/changed in v1.4.0:\n\n" +
-				"_- Sandals of Nature_ energy costs reduced by 20%\n" +
-				"_- Sandals of Nature_ seeds needed to upgrade reverted to 3/6/9 from 4/7/10\n\n" +
-				"_- Blocking_ proc rate scaling with weapon level reduced by 50%\n\n" +
-				"_- Empowered Strike_ special effect boost up to 50% per level, from 33%\n" +
-				"_- Deathless Fury_ cooldown reduced to 3/2/1 levels, from 4/3/2"));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ The buff bar now condenses itself if many buffs are visible at once. This raises the limit of on-screen buffs to 15.\n\n" +
-				"_-_ Plants now trigger after time freeze ends, just like traps\n\n" +
-				"_-_ Clarified description for boss score in rankings\n" +
-				"_-_ Yog's laser now deducts score even if the hero dodges it\n" +
-				"_-_ Goo no longer deducts score by healing in water\n\n" +
-				"_-_ Added lullaby vfx to the stone of deep sleep\n\n" +
-				"_-_ The sandals of nature now include the name of the most recently fed seed in their description\n\n" +
-				"_-_ Updated translations and translator credits"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " v1.4.2",
-				"Fixed (caused by v1.4)\n" +
-				"_-_ Various rare crash bugs\n" +
-				"_-_ Various errors and inconsistencies with trampling hero's own position\n\n" +
-				"Fixed (existed prior to v1.4)\n" +
-				"_-_ Various rare crash bugs\n" +
-				"_-_ Various rare audiovisual errors\n" +
-				"_-_ Goo Immediately using its pump up attack if a previous pump up was interrupted by sleep\n" +
-				"_-_ Caves boss arena not displacing all items on the tile that caves in\n" +
-				"_-_ Recharging effects sometimes getting an extra action on game load\n" +
-				"_-_ Screen orientation changes cancelling the scroll of enchantment\n" +
-				"_-_ Magical infusion incorrectly clearing curses on wands and rings\n" +
-				"_-_ Projecting weapons not reaching through webs in rare cases\n" +
-				"_-_ Death by necromancer summoning damage not producing a record in rankings"));
-
-		changes = new ChangeInfo("v1.4.1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by v1.4)\n" +
-				"_-_ Various minor visual and textual errors\n" +
-				"_-_ Blooming enchantment triggering more often than intended\n" +
-				"_-_ Errors with charge use on timekeeper's hourglass\n" +
-				"_-_ Some changes missing from v1.4 changelog\n\n" +
-				"Fixed (existed prior to v1.4)\n" +
-				"_-_ Multiplicity glyph duplicating NPCs in rare cases\n" +
-				"_-_ Rare cases where potion of healing talents wouldn't trigger\n" +
-				"_-_ Cursed horn of plenty affecting non-food items\n" +
-				"_-_ Being able to self-target with cursed wands in rare cases\n" +
-				"_-_ Some thrown weapons triggering traps as Tengu jumps\n" +
-				"_-_ Magic resistance not applying to some cursed wand effects\n" +
-				"_-_ Some users seeing rankings dates in local format, instead of international\n" +
-				"_-_ Exploits during ascension challenge that let players still use shops\n" +
-				"_-_ Elastic and battlemage blast wave ability conflicting with each other"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -210,31 +120,53 @@ public class v1_X_Changes {
 				"Desktop and mobile landscape users will now see a new hero select screen that better makes use of screen real-estate."));
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 1",
-				"_-_ Daily runs can now be replayed for practise\n" +
+				"_Highlights:_\n" +
+				"_-_ Daily runs can now be replayed for practice\n" +
+				"_-_ Updated translations and translator credits\n" +
+				"_-_ Added more achievements to Shattered on Google Play Games\n" +
+				"_-_ The buff bar now condenses itself if many buffs are visible at once. This raises the limit of on-screen buffs to 15\n" +
+				"\n" +
+				"_Hero Actions:_\n" +
 				"_-_ Waiting now always takes exactly 1 turn, regardless of hero speed\n" +
 				"_-_ Grass the hero is standing on can now be trampled by selecting the hero's position\n" +
 				"_-_ Hero now pauses before ascending/descending if enemies are nearby\n" +
-				"_-_ Goo's pump up attack now always gives the hero at least 1 action to react\n" +
-				"_-_ DM-300 now knocks back during rockfall even if hero is 1 tile away\n" +
-				"_-_ Improved behaviour of ally AI when told to hold a position\n" +
-				"_-_ Slightly adjusted enemy stats on ascension to smooth out difficulty\n" +
-				"_-_ Rotberry plant now gives a small puff of toxic gas when trampled\n" +
-				"_-_ Items and enemies can no longer spawn in aquarium room water\n" +
-				"_-_ Blooming enchant now tries to avoid placing grass on the hero\n" +
+				"\n" +
+				"_Items:_\n" +
 				"_-_ Wand of Disintegration no longer harms undiscovered neutral characters\n" +
+				"_-_ Blooming enchant now tries to avoid placing grass on the hero\n" +
 				"_-_ The scroll holder can now hold arcane resin\n" +
-				"_-_ Improved room merging logic in a few specific situations"));
+				"_-_ Rotberry plant now gives a small puff of toxic gas when trampled\n" +
+				"_-_ Plants now trigger after time freeze ends, just like traps"));
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 2",
+				"_Allies & Enemies:_\n" +
+				"_-_ Improved behavior of ally AI when told to hold a position\n" +
+				"_-_ Goo's pump up attack now always gives the hero at least 1 action to react\n" +
+				"_-_ DM-300 now knocks back during rockfall even if hero is 1 tile away\n" +
+				"_-_ Slightly adjusted enemy stats on ascension to smooth out difficulty\n" +
+				"\n" +
+				"_UI/VFX:_\n" +
 				"_-_ Throwing weapons now show their quantity in orange when one is about to break\n" +
 				"_-_ Item boosts from potion of mastery or curse infusion now change the color of text in that item's item slot\n" +
 				"_-_ Various minor UI improvements to hero select and rankings\n" +
+				"_-_ Added sacrifical fire and demon spawners to the landmarks page\n" +
 				"_-_ Added some ascension dialogue for the ghost hero\n" +
 				"_-_ Slightly improved the marsupial rat attacking animation\n" +
 				"_-_ Improved chains vfx, especially for prison guards\n" +
-				"_-_ Added sacrifical fire and demon spawners to the landmarks page\n" +
+				"_-_ Added lullaby vfx to the stone of deep sleep"));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 3",
+				"_Rankings:_\n" +
+				"_-_ Clarified description for boss score in rankings\n" +
+				"_-_ Yog's laser now deducts score even if the hero dodges it\n" +
+				"_-_ Goo no longer deducts score by healing in water\n" +
+				"\n" +
+				"_Levelgen:_\n" +
+				"_-_ Items and enemies can no longer spawn in aquarium room water\n" +
+				"_-_ Improved room merging logic in a few specific situations\n" +
+				"\n" +
+				"_Controls:_\n" +
 				"_-_ Added a copy and paste button to text input windows\n" +
-				"_-_ Added more achievements to Shattered on Google Play Games\n" +
 				"_-_ Adjusted default controller bindings slightly\n" +
 				"_-_ The 'switch enemy' keybind now also switches tabs on tabbed windows\n" +
 				"_-_ On desktop, the game now attempts to keep mouse and controller pointer potions in sync\n" +
@@ -243,59 +175,87 @@ public class v1_X_Changes {
 				"_-_ Heroes can now be renamed individually"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 1",
-				"Fixed\n" +
-				"_-_ Victory and Champion badges not be awarded in some cases\n" +
+				"Fixed the following bugs:\n\n" +
+				"_Highlights:_\n" +
+				"_-_ Victory and Champion badges not being awarded in some cases\n" +
 				"_-_ Various rare crash and hang bugs\n" +
 				"_-_ Various minor visual/textual errors\n" +
+				"\n" +
+				"_Allies & Enemies:_\n" +
 				"_-_ Characters rarely managing to enter eternal fire\n" +
-				"_-_ Summons from guardian traps counting as regular states in some cases\n" +
-				"_-_ Invisibility effects not working on enemies\n" +
-				"_-_ Rare cases where giant enemies couldn't attack\n" +
-				"_-_ Confusing text when a weapon or armor is partly uncursed\n" +
-				"_-_ 'No Weapons in His Presence' badge not stating that ring of force counts as a weapon\n" +
-				"_-_ Various cases where the friendly fire badge was not correctly awarded\n" +
-				"_-_ 13th armor ability incorrectly clearing champion enemy buffs\n" +
-				"_-_ Exploits where the gladiator could build combo on ally characters\n" +
-				"_-_ Cases where piranhas could live for a turn on land\n" +
-				"_-_ Honeypots not reacting correctly to being teleported\n" +
-				"_-_ Rare cases where lost inventory and items on stairs could softlock the game\n" +
-				"_-_ Hero armor transferring rarely deleting the Warrior's broken seal"));
+				"_-_ Summons from guardian traps counting as regular statues in some cases\n" +
+				"_-_ Rare cases where ranged allies would refuse to target nearby enemies\n" +
+				"_-_ Various rare cases where characters might stack on each other\n" +
+				"_-_ Albino rats causing bleed when hitting for 0 damage\n" +
+				"_-_ Necromancers being able to summon through crystal doors\n" +
+				"_-_ Giant necromancers summoning skeletons into doorways\n" +
+				"_-_ Goo Immediately using its pump up attack if a previous pump up was interrupted by sleep"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 2",
-				"Fixed\n" +
+				"_Items pt.1:_\n" +
+				"_-_ Honeypots not reacting correctly to being teleported\n" +
+				"_-_ Rare cases where lost inventory and items on stairs could softlock the game\n" +
+				"_-_ Hero armor transferring rarely deleting the Warrior's broken seal\n" +
 				"_-_ Scrolls of Mirror Image not identifying in rare cases\n" +
-				"_-_ Various incorrect interaction between kinetic/viscosity and damage mitigating effects\n" +
+				"_-_ Various incorrect interactions between kinetic/viscosity and damage mitigating effects\n" +
 				"_-_ Wand of Fireblast sometimes not igniting adjacent item or barricades\n" +
 				"_-_ Ring of Furor not affecting Sniper special abilities\n" +
 				"_-_ Cursed rings of force still heavily buffing melee attacks\n" +
-				"_-_ Controller axis mapping issues on Android\n" +
 				"_-_ Armband not breaking invisibility\n" +
 				"_-_ Various quirks with charge spending on timekeeper's hourglass\n" +
 				"_-_ Stones of aggression working much more effectively than intended\n" +
-				"_-_ Various rare fog of war errors when the hero was knocked a high distance\n" +
 				"_-_ Chalice of Blood benefitting from recharging while hero is starving\n" +
 				"_-_ Cases where explosive curse would create explosions at the wrong location\n" +
-				"_-_ Rare cases where ranged allies would refuse to target nearby enemies\n" +
-				"_-_ Rare cases where items would not correctly appear in the rankings screen\n" +
-				"_-_ Errors with wild magic or flurry and knockback effects\n" +
-				"_-_ Magical Sight not making the hero immune to blindness"));
+				"_-_ Additional cases where magical spellbook could generate scrolls of lullaby"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 3",
-				"Fixed\n" +
-				"_-_ Additional cases where magical spellbook could generate scrolls of lullaby\n" +
-				"_-_ Targeting logic sometimes being incorrect on armor abilities\n" +
-				"_-_ Shadow clone not benefiting from certain glyphs\n" +
+				"_Items pt.2:_\n" +
 				"_-_ Heavy boomerangs getting an accuracy penalty when returning\n" +
 				"_-_ Rare consistency errors in potion of might buff description\n" +
-				"_-_ Various rare cases where characters might stack on each other\n" +
-				"_-_ Dailies using seeds that are also user-enterable\n" +
-				"_-_ Knockback effects paralyzing dead characters\n" +
 				"_-_ Death to aqua blast counting as death to a geyser trap\n" +
-				"_-_ Albino rats causing bleed when hitting for 0 damage\n" +
-				"_-_ Prizes from sacrifice rooms now always being the same with the same dungeon seed\n" +
-				"_-_ Necromancers being able to summon through crystal doors\n" +
 				"_-_ Reading spellbook not spending a turn if the scroll was cancelled\n" +
-				"_-_ Giant necromancers summoning skeletons into doorways"));
+				"_-_ Screen orientation changes cancelling the scroll of enchantment\n" +
+				"_-_ Magical infusion incorrectly clearing curses on wands and rings\n" +
+				"_-_ Projecting weapons not reaching through webs in rare cases\n" +
+				"_-_ Multiplicity glyph duplicating NPCs in rare cases\n" +
+				"_-_ Rare cases where potion of healing talents wouldn't trigger\n" +
+				"_-_ Cursed horn of plenty affecting non-food items\n" +
+				"_-_ Being able to self-target with cursed wands in rare cases\n" +
+				"_-_ Some thrown weapons triggering traps as Tengu jumps\n" +
+				"_-_ Magic resistance not applying to some cursed wand effects"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 4",
+				"_Effects:_\n" +
+				"_-_ Invisibility effects not working when applied to enemies\n" +
+				"_-_ Rare cases where giant enemies couldn't attack\n" +
+				"_-_ 13th armor ability incorrectly clearing champion enemy buffs\n" +
+				"_-_ Exploits where the gladiator could build combo on ally characters\n" +
+				"_-_ Cases where piranhas could live for a turn on land\n" +
+				"_-_ Errors with wild magic or flurry and knockback effects\n" +
+				"_-_ Magical Sight not making the hero immune to blindness\n" +
+				"_-_ Targeting logic sometimes being incorrect on armor abilities\n" +
+				"_-_ Shadow clone not benefiting from certain glyphs\n" +
+				"_-_ Knockback effects paralyzing dead characters\n" +
+				"_-_ Caves boss arena not displacing all items on the tile that caves in\n" +
+				"_-_ Recharging effects sometimes getting an extra action on game load\n" +
+				"_-_ Exploits during ascension challenge that let players still use shops\n" +
+				"_-_ Elastic and battlemage blast wave ability conflicting with each other"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 5",
+				"_Misc:_\n" +
+				"_-_ Dailies using seeds that are also user-enterable\n" +
+				"_-_ Confusing text when a weapon or armor is partly uncursed\n" +
+				"_-_ 'No Weapons in His Presence' badge not stating that ring of force counts as a weapon\n" +
+				"_-_ Various cases where the friendly fire badge was not correctly awarded\n" +
+				"_-_ Controller axis mapping issues on Android\n" +
+				"_-_ Various rare fog of war errors when the hero was knocked a high distance\n" +
+				"_-_ Rare cases where items would not correctly appear in the rankings screen\n" +
+				"_-_ Prizes from sacrifice rooms not always being the same with the same dungeon seed\n" +
+				"_-_ Rare crashes with radial inventory selector\n" +
+				"_-_ Boss health bar not appearing in rare cases\n" +
+				"_-_ Buff icons sometimes going outside of character info windows\n" +
+				"_-_ Death by necromancer summoning damage not producing a record in rankings\n" +
+				"_-_ Some users seeing rankings dates in local format, instead of international"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight(CharSprite.POSITIVE);
@@ -340,9 +300,9 @@ public class v1_X_Changes {
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
-				"_-_ v1.3.0 Released July 6th, 2022\n" +
-				"_-_ 105 days after Shattered v1.2.0\n" +
-				"Expect dev commentary here in the future."));
+				"_-_ Released July 6th, 2022\n" +
+				"_-_ 105 days after Shattered v1.2.0\n\n" +
+				"Dev commentary will be added here in the future."));
 
 		Image ic;
 		ic = Icons.get(Icons.SEED);
@@ -519,9 +479,9 @@ public class v1_X_Changes {
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
-				"_-_ v1.2.0 Released March 23rd, 2022\n" +
-				"_-_ 103 days after Shattered v1.1.0\n" +
-				"Expect dev commentary here in the future."));
+				"_-_ Released March 23rd, 2022\n" +
+				"_-_ 103 days after Shattered v1.1.0\n\n" +
+				"Dev commentary will be added here in the future."));
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.DISPLAY_LAND), "Desktop Enhancements and Steam Release!",
 				"_Shattered Pixel Dungeon has received a bunch of new features in preparation for its release on Steam!_\n\n" +
@@ -706,9 +666,9 @@ public class v1_X_Changes {
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
-				"_-_ v1.1.0 released December 10th, 2021\n" +
-				"_-_ 115 days after Shattered v1.0.0\n" +
-				"Expect dev commentary here in the future."));
+				"_-_ Released December 10th, 2021\n" +
+				"_-_ 115 days after Shattered v1.0.0\n\n" +
+				"Dev commentary will be added here in the future."));
 
 		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.ENERGY), "Alchemical Energy Overhaul",
 				"_The role of Alchemical Energy in the alchemy system has been totally overhauled!_\n\n" +
@@ -889,8 +849,7 @@ public class v1_X_Changes {
 				"_-_ 316 days after Shattered v0.9.0\n" +
 				"_-_ A bit more than 7 years after v0.1.0!\n" +
 				"\n" +
-				"_That's right, we've hit v1.0.0!_ This update was previously called v0.9.4 while in beta.\n\n" +
-				"Shattered will also now use the _major.minor.patch_ version naming scheme moving forward. So, the next patch will be v1.0.1, and the next update will be v1.1.0. _This change does not affect my plans for future updates!_\n\n" +
+				"_That's right, the big v1.0.0!_ In this update Shattered switched to the industry standard _major.minor.patch_ version naming scheme. Prior to this update Shattered's updates were versioned with _0.major.minor[patch]_, where patch was a letter. Rather than jumping all the way from v0.9.3 to v10.0.0, I opted to reset Shattered back to v1.0.0 for this update.\n\n" +
 				"Expect more dev commentary here in the future."));
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.DISPLAY_PORT), "iOS Release!",
