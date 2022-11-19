@@ -462,6 +462,10 @@ public class DM300 extends Mob {
 
 	@Override
 	public void damage(int dmg, Object src) {
+		if (!BossHealthBar.isAssigned()){
+			notice();
+		}
+
 		int preHP = HP;
 		super.damage(dmg, src);
 		if (isInvulnerable(src.getClass())){
