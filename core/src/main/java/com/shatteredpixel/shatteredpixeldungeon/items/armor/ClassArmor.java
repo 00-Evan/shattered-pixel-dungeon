@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -233,6 +234,11 @@ abstract public class ClassArmor extends Armor {
 								curseInfusionBonus = armor.curseInfusionBonus;
 								masteryPotionBonus = armor.masteryPotionBonus;
 								if (armor.checkSeal() != null) seal = armor.checkSeal();
+								if (seal.level() > 0){
+									int newLevel = trueLevel()+1;
+									level(newLevel);
+									Badges.validateItemLevelAquired(ClassArmor.this);
+								}
 
 								identify();
 
