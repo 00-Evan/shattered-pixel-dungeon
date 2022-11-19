@@ -84,12 +84,12 @@ public class MeleeWeapon extends Weapon {
 		if (action.equals(AC_ABILITY)){
 			if (!isEquipped(hero)) {
 				GLog.w(Messages.get(this, "ability_equip"));
-			} else if (Buff.affect(hero, Charger.class).charge < abilityChargeUse()) {
+			} else if (Buff.affect(hero, Charger.class).charges < abilityChargeUse()) {
 				GLog.w(Messages.get(this, "ability_charge"));
 			} else {
 
 				if (targetingPrompt() == null){
-					Buff.affect(hero, Charger.class).charge -= abilityChargeUse();
+					Buff.affect(hero, Charger.class).charges -= abilityChargeUse();
 					duelistAbility(hero, hero.pos);
 					updateQuickslot();
 				} else {
@@ -98,7 +98,7 @@ public class MeleeWeapon extends Weapon {
 						@Override
 						public void onSelect(Integer cell) {
 							if (cell != null) {
-								Buff.affect(hero, Charger.class).charge -= abilityChargeUse();
+								Buff.affect(hero, Charger.class).charges -= abilityChargeUse();
 								duelistAbility(hero, cell);
 								updateQuickslot();
 							}
@@ -126,8 +126,8 @@ public class MeleeWeapon extends Weapon {
 	//TODO make abstract
 	protected void duelistAbility( Hero hero, Integer target ){}
 
-	public float abilityChargeUse(){
-		return 33f; //TODO
+	public int abilityChargeUse(){
+		return 1; //TODO
 	}
 
 	public int tier;
@@ -213,7 +213,6 @@ public class MeleeWeapon extends Weapon {
 
 		if (Dungeon.hero.heroClass == HeroClass.DUELIST){
 			info += "\n\n" + Messages.get(this, "ability_desc");
-			info += " " + Messages.get(MeleeWeapon.class, "charge_use", new DecimalFormat("#.##").format(abilityChargeUse()));
 		}
 		
 		return info;
@@ -227,7 +226,8 @@ public class MeleeWeapon extends Weapon {
 	public String status() {
 		if (isEquipped(Dungeon.hero)
 				&& Dungeon.hero.buff(Charger.class) != null) {
-			return Messages.format( "%.0f%%", Math.floor(Dungeon.hero.buff(Charger.class).charge) );
+			Charger buff = Dungeon.hero.buff(Charger.class);
+			return buff.charges + "/" + buff.chargeCap();
 		} else {
 			return super.status();
 		}
@@ -253,37 +253,48 @@ public class MeleeWeapon extends Weapon {
 
 	public static class Charger extends Buff {
 
-		public float charge;
+		private int charges = 3;
+		private float partialCharge;
 		//offhand charge as well?
 
 		@Override
 		public boolean act() {
 			LockedFloor lock = target.buff(LockedFloor.class);
-			if (lock == null || lock.regenOn()) {
-				charge += 100 / 300f; //300 turns to full charge
-				updateQuickslot();
-				if (charge > 100) {
-					charge = 100;
+			if (charges < chargeCap()){
+				if (lock == null || lock.regenOn()){
+					partialCharge += 1/(45f-(chargeCap()-charges)); // 45 to 35 turns per charge
+					if (partialCharge >= 1){
+						charges++;
+						partialCharge--;
+						updateQuickslot();
+					}
 				}
+			} else {
+				partialCharge = 0;
 			}
 			spend(TICK);
 			return true;
 		}
 
+		public int chargeCap(){
+			return Math.min(10, 3 + (Dungeon.hero.lvl-1)/3);
+		}
 
-
-		public static final String CHARGE = "charge";
+		public static final String CHARGES          = "charges";
+		private static final String PARTIALCHARGE   = "partialCharge";
 
 		@Override
 		public void storeInBundle(Bundle bundle) {
 			super.storeInBundle(bundle);
-			bundle.put(CHARGE, charge);
+			bundle.put(CHARGES, charges);
+			bundle.put(PARTIALCHARGE, partialCharge);
 		}
 
 		@Override
 		public void restoreFromBundle(Bundle bundle) {
 			super.restoreFromBundle(bundle);
-			charge = bundle.getFloat(CHARGE);
+			charges = bundle.getInt(CHARGES);
+			partialCharge = bundle.getFloat(PARTIALCHARGE);
 		}
 	}
 
