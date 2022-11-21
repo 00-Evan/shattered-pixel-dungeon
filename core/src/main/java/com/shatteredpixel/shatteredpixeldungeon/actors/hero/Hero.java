@@ -1282,8 +1282,10 @@ public class Hero extends Char {
 		}
 
 		int preHP = HP + shielding();
+		if (src instanceof Hunger) preHP -= shielding();
 		super.damage( dmg, src );
 		int postHP = HP + shielding();
+		if (src instanceof Hunger) postHP -= shielding();
 		int effectiveDamage = preHP - postHP;
 
 		if (effectiveDamage <= 0) return;
