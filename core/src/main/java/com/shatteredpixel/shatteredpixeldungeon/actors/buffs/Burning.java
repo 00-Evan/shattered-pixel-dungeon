@@ -117,7 +117,7 @@ public class Burning extends Buff implements Hero.Doom {
 
 					if (!burnable.isEmpty()){
 						Item toBurn = Random.element(burnable).detach(hero.belongings.backpack);
-						GLog.w( Messages.get(this, "burnsup", Messages.capitalize(toBurn.title())) );
+						GLog.w( Messages.capitalize(Messages.get(this, "burnsup", toBurn.title())) );
 						if (toBurn instanceof MysteryMeat || toBurn instanceof FrozenCarpaccio){
 							ChargrilledMeat steak = new ChargrilledMeat();
 							if (!steak.collect( hero.belongings.backpack )) {
