@@ -270,8 +270,10 @@ abstract public class Weapon extends KindOfWeapon {
 		}
 		
 		cursed = false;
-		
-		return super.upgrade();
+
+		Item result = super.upgrade();
+		Badges.validateDuelistUnlock();
+		return result;
 	}
 	
 	@Override

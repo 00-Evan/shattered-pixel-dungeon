@@ -45,6 +45,7 @@ public class PotionOfStrength extends Potion {
 		GLog.p( Messages.get(this, "msg_2") );
 		
 		Badges.validateStrengthAttained();
+		Badges.validateDuelistUnlock();
 	}
 
 	@Override
