@@ -119,8 +119,8 @@ public class HeroSprite extends CharSprite {
 	}
 
 	@Override
-	public void jump( int from, int to, Callback callback ) {
-		super.jump( from, to, callback );
+	public void jump( int from, int to, float height, float duration,  Callback callback ) {
+		super.jump( from, to, height, duration, callback );
 		play( fly );
 	}
 

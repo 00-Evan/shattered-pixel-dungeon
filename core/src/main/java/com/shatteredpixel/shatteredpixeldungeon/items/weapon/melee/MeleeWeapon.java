@@ -86,10 +86,10 @@ public class MeleeWeapon extends Weapon {
 				GLog.w(Messages.get(this, "ability_equip"));
 			} else if (Buff.affect(hero, Charger.class).charges < abilityChargeUse()) {
 				GLog.w(Messages.get(this, "ability_charge"));
+				usesTargeting = false;
 			} else {
 
 				if (targetingPrompt() == null){
-					Buff.affect(hero, Charger.class).charges -= abilityChargeUse();
 					duelistAbility(hero, hero.pos);
 					updateQuickslot();
 				} else {
@@ -98,7 +98,6 @@ public class MeleeWeapon extends Weapon {
 						@Override
 						public void onSelect(Integer cell) {
 							if (cell != null) {
-								Buff.affect(hero, Charger.class).charges -= abilityChargeUse();
 								duelistAbility(hero, cell);
 								updateQuickslot();
 							}
@@ -125,6 +124,11 @@ public class MeleeWeapon extends Weapon {
 
 	//TODO make abstract
 	protected void duelistAbility( Hero hero, Integer target ){}
+
+	protected void onAbilityUsed( Hero hero ){
+		Buff.affect(hero, Charger.class).charges -= abilityChargeUse();
+		updateQuickslot();
+	}
 
 	public int abilityChargeUse(){
 		return 1; //TODO

@@ -22,9 +22,16 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
 
 public class Rapier extends MeleeWeapon {
 
@@ -54,5 +61,63 @@ public class Rapier extends MeleeWeapon {
 	@Override
 	public String targetingPrompt() {
 		return Messages.get(this, "prompt");
+	}
+
+	@Override
+	protected void duelistAbility(Hero hero, Integer target) {
+		if (target == null){
+			return;
+		}
+
+		Char enemy = Actor.findChar(target);
+		if (enemy == null){
+			GLog.w(Messages.get(this, "no_target"));
+			return;
+		}
+
+		if (Dungeon.level.distance(hero.pos, enemy.pos) != 2){
+			GLog.w(Messages.get(this, "bad_distance"));
+			return;
+		}
+
+		int lungeCell = -1;
+		for (int i : PathFinder.NEIGHBOURS8){
+			if (Dungeon.level.adjacent(hero.pos + i, enemy.pos)
+					&& Actor.findChar(hero.pos+i) == null
+					&& Dungeon.level.passable[hero.pos+i]){
+				if (lungeCell == -1 || Dungeon.level.trueDistance(hero.pos + i, enemy.pos) < Dungeon.level.trueDistance(lungeCell, enemy.pos)){
+					lungeCell = hero.pos + i;
+				}
+			}
+		}
+
+		if (lungeCell == -1){
+			GLog.w(Messages.get(this, "cant_reach"));
+			return;
+		}
+
+		final int dest = lungeCell;
+		hero.busy();
+		Sample.INSTANCE.play(Assets.Sounds.MISS);
+		hero.sprite.jump(hero.pos, dest, 0, 0.1f, new Callback() {
+			@Override
+			public void call() {
+				hero.pos = dest;
+				Dungeon.level.occupyCell(hero);
+
+				hero.sprite.attack(enemy.pos, new Callback() {
+					@Override
+					public void call() {
+						//+3+lvl damage, equivalent to +67% damage, but more consistent
+						hero.attack(enemy, 1f, 3 + level(), Char.INFINITE_ACCURACY);
+						onAbilityUsed(hero);
+						Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+						hero.spendAndNext(hero.attackDelay());
+					}
+				});
+			}
+		});
+
+		super.duelistAbility(hero, target);
 	}
 }
