@@ -117,7 +117,5 @@ public class Rapier extends MeleeWeapon {
 				});
 			}
 		});
-
-		super.duelistAbility(hero, target);
 	}
 }
