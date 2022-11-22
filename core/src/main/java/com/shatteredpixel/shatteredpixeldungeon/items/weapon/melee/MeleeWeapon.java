@@ -83,9 +83,9 @@ public class MeleeWeapon extends Weapon {
 
 		if (action.equals(AC_ABILITY)){
 			if (!isEquipped(hero)) {
-				GLog.w(Messages.get(this, "ability_equip"));
+				GLog.w(Messages.get(this, "ability_need_equip"));
 			} else if (Buff.affect(hero, Charger.class).charges < abilityChargeUse()) {
-				GLog.w(Messages.get(this, "ability_charge"));
+				GLog.w(Messages.get(this, "ability_no_charge"));
 				usesTargeting = false;
 			} else {
 

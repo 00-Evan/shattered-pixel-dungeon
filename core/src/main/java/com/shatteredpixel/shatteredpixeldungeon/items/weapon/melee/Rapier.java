@@ -70,13 +70,13 @@ public class Rapier extends MeleeWeapon {
 		}
 
 		Char enemy = Actor.findChar(target);
-		if (enemy == null){
-			GLog.w(Messages.get(this, "no_target"));
+		if (enemy == null || enemy == hero || hero.isCharmedBy(enemy) || !Dungeon.level.heroFOV[target]){
+			GLog.w(Messages.get(this, "ability_no_target"));
 			return;
 		}
 
 		if (Dungeon.level.distance(hero.pos, enemy.pos) != 2){
-			GLog.w(Messages.get(this, "bad_distance"));
+			GLog.w(Messages.get(this, "ability_bad_position"));
 			return;
 		}
 
@@ -92,7 +92,7 @@ public class Rapier extends MeleeWeapon {
 		}
 
 		if (lungeCell == -1){
-			GLog.w(Messages.get(this, "cant_reach"));
+			GLog.w(Messages.get(this, "ability_bad_position"));
 			return;
 		}
 
