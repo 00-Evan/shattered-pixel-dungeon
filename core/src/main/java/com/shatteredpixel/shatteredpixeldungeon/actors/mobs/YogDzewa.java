@@ -333,6 +333,7 @@ public class YogDzewa extends Mob {
 					GameScene.add( summon );
 					Actor.addDelayed( new Pushing( summon, pos, summon.pos ), -1 );
 					summon.beckon(Dungeon.hero.pos);
+					Dungeon.level.occupyCell(summon);
 
 					summonCooldown += Random.NormalFloat(MIN_SUMMON_CD, MAX_SUMMON_CD);
 					summonCooldown -= (phase - 1);
@@ -447,6 +448,7 @@ public class YogDzewa extends Mob {
 
 		GameScene.add(fist, 4);
 		Actor.addDelayed( new Pushing( fist, Dungeon.level.exit(), fist.pos ), -1 );
+		Dungeon.level.occupyCell(fist);
 	}
 
 	public void updateVisibility( Level level ){
