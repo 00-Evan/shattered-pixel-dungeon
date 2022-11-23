@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -257,10 +258,8 @@ public class Eye extends Mob {
 
 	{
 		resistances.add( WandOfDisintegration.class );
-	}
-	
-	{
-		//immunities.add( Terror.class );
+		resistances.add( DeathGaze.class );
+		resistances.add( DisintegrationTrap.class );
 	}
 
 	private class Hunting extends Mob.Hunting{
