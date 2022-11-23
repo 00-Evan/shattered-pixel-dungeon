@@ -53,6 +53,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projec
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstable;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampiric;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -210,7 +211,7 @@ abstract public class Weapon extends KindOfWeapon {
 	@Override
 	public int reachFactor(Char owner) {
 		if (hasEnchant(Projecting.class, owner)){
-			return RCH + Math.round(RingOfArcana.enchantPowerMultiplier(owner));
+			return RCH + Math.round(enchantment.procChanceMultiplier(owner));
 		} else {
 			return RCH;
 		}
@@ -368,10 +369,18 @@ abstract public class Weapon extends KindOfWeapon {
 		public abstract int proc( Weapon weapon, Char attacker, Char defender, int damage );
 
 		protected float procChanceMultiplier( Char attacker ){
+			return genericProcChanceMultiplier( attacker );
+		}
+
+		public static float genericProcChanceMultiplier( Char attacker ){
 			float multi = RingOfArcana.enchantPowerMultiplier(attacker);
 			Berserk rage = attacker.buff(Berserk.class);
 			if (rage != null) {
 				multi = rage.enchantFactor(multi);
+			}
+
+			if (attacker.buff(RunicBlade.RunicSlashTracker.class) != null){
+				multi += 2f;
 			}
 
 			if (attacker.buff(Talent.SpiritBladesTracker.class) != null

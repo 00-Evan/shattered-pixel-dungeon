@@ -354,9 +354,9 @@ public class Armor extends EquipableItem {
 					break;
 				}
 			}
-			if (!enemyNear) speed *= (1.2f + 0.04f * buffedLvl()) * RingOfArcana.enchantPowerMultiplier(owner);
+			if (!enemyNear) speed *= (1.2f + 0.04f * buffedLvl()) * glyph.procChanceMultiplier(owner);
 		} else if (hasGlyph(Flow.class, owner) && Dungeon.level.water[owner.pos]){
-			speed *= (2f + 0.25f*buffedLvl()) * RingOfArcana.enchantPowerMultiplier(owner);
+			speed *= (2f + 0.25f*buffedLvl()) * glyph.procChanceMultiplier(owner);
 		}
 		
 		if (hasGlyph(Bulk.class, owner) &&
@@ -372,7 +372,7 @@ public class Armor extends EquipableItem {
 	public float stealthFactor( Char owner, float stealth ){
 		
 		if (hasGlyph(Obfuscation.class, owner)){
-			stealth += (1 + buffedLvl()/3f) * RingOfArcana.enchantPowerMultiplier(owner);
+			stealth += (1 + buffedLvl()/3f) * glyph.procChanceMultiplier(owner);
 		}
 		
 		return stealth;
@@ -648,6 +648,10 @@ public class Armor extends EquipableItem {
 		public abstract int proc( Armor armor, Char attacker, Char defender, int damage );
 
 		protected float procChanceMultiplier( Char defender ){
+			return genericProcChanceMultiplier( defender );
+		}
+
+		public static float genericProcChanceMultiplier( Char defender ){
 			return RingOfArcana.enchantPowerMultiplier(defender);
 		}
 		

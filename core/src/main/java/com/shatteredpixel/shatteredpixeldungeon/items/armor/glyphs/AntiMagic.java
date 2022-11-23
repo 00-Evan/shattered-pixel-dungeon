@@ -118,8 +118,8 @@ public class AntiMagic extends Armor.Glyph {
 	
 	public static int drRoll( Char ch, int level ){
 		return Random.NormalIntRange(
-				Math.round(level * RingOfArcana.enchantPowerMultiplier(ch)),
-				Math.round((3 + (level*1.5f)) * RingOfArcana.enchantPowerMultiplier(ch)));
+				Math.round(level * genericProcChanceMultiplier(ch)),
+				Math.round((3 + (level*1.5f)) * genericProcChanceMultiplier(ch)));
 	}
 
 	@Override

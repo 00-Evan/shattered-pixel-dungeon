@@ -42,7 +42,7 @@ public class Camouflage extends Armor.Glyph {
 	}
 
 	public static void activate(Char ch, int level){
-		Buff.prolong(ch, Invisibility.class, Math.round((3 + level/2f)* RingOfArcana.enchantPowerMultiplier(ch)));
+		Buff.prolong(ch, Invisibility.class, Math.round((3 + level/2f)* genericProcChanceMultiplier(ch)));
 		if ( Dungeon.level.heroFOV[ch.pos] ) {
 			Sample.INSTANCE.play( Assets.Sounds.MELD );
 		}

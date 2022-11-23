@@ -166,7 +166,7 @@ abstract public class MissileWeapon extends Weapon {
 
 		if (projecting
 				&& (Dungeon.level.passable[dst] || Dungeon.level.avoid[dst])
-				&& Dungeon.level.distance(user.pos, dst) <= Math.round(4 * RingOfArcana.enchantPowerMultiplier(user))){
+				&& Dungeon.level.distance(user.pos, dst) <= Math.round(4 * Enchantment.genericProcChanceMultiplier(user))){
 			return dst;
 		} else {
 			return super.throwPos(user, dst);
