@@ -114,7 +114,7 @@ public class WandOfBlastWave extends DamageWand {
 	public static void throwChar(final Char ch, final Ballistica trajectory, int power,
 	                             boolean closeDoors, boolean collideDmg, Class cause){
 		if (ch.properties().contains(Char.Property.BOSS)) {
-			power /= 2;
+			power = (power+1)/2;
 		}
 
 		int dist = Math.min(trajectory.dist, power);
