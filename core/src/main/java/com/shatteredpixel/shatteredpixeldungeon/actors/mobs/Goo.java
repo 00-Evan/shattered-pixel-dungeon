@@ -66,8 +66,8 @@ public class Goo extends Mob {
 
 	@Override
 	public int damageRoll() {
-		int min = 1;
-		int max = (HP*2 <= HT) ? 12 : 8;
+		int min = 0;
+		int max = 0;
 		if (pumpedUp > 0) {
 			pumpedUp = 0;
 			if (enemy == Dungeon.hero) {
@@ -101,8 +101,9 @@ public class Goo extends Mob {
 	@Override
 	public boolean act() {
 
-		if (state != HUNTING){
+		if (state != HUNTING && pumpedUp > 0){
 			pumpedUp = 0;
+			sprite.idle();
 		}
 
 		if (Dungeon.level.water[pos] && HP < HT) {
