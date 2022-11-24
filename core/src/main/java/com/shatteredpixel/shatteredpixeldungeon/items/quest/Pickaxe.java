@@ -25,11 +25,21 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bat;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Crab;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Scorpio;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Spinner;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Swarm;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -44,7 +54,7 @@ import com.watabou.utils.PathFinder;
 
 import java.util.ArrayList;
 
-public class Pickaxe extends Weapon {
+public class Pickaxe extends MeleeWeapon {
 	
 	public static final String AC_MINE	= "MINE";
 	
@@ -59,26 +69,15 @@ public class Pickaxe extends Weapon {
 		
 		unique = true;
 		bones = false;
-		
-		defaultAction = AC_MINE;
 
+		tier = 2;
 	}
 	
 	public boolean bloodStained = false;
 
 	@Override
-	public int min(int lvl) {
-		return 2;   //tier 2
-	}
-
-	@Override
-	public int max(int lvl) {
-		return 15;  //tier 2
-	}
-
-	@Override
 	public int STRReq(int lvl) {
-		return STRReq(3, lvl); //tier 3
+		return super.STRReq(lvl) + 2; //tier 3 strength requirement with tier 2 damage stats
 	}
 
 	@Override
@@ -140,16 +139,6 @@ public class Pickaxe extends Weapon {
 	}
 	
 	@Override
-	public boolean isUpgradable() {
-		return false;
-	}
-	
-	@Override
-	public boolean isIdentified() {
-		return true;
-	}
-	
-	@Override
 	public int proc( Char attacker, Char defender, int damage ) {
 		if (!bloodStained && defender instanceof Bat) {
 			Actor.add(new Actor() {
@@ -170,9 +159,62 @@ public class Pickaxe extends Weapon {
 				}
 			});
 		}
-		return damage;
+		return super.proc( attacker, defender, damage );
 	}
-	
+
+	@Override
+	public String defaultAction() {
+		if (Dungeon.hero.heroClass == HeroClass.DUELIST && isEquipped(Dungeon.hero)){
+			return AC_ABILITY;
+		} else {
+			return AC_MINE;
+		}
+	}
+
+	@Override
+	public String targetingPrompt() {
+		return Messages.get(this, "prompt");
+	}
+
+	@Override
+	protected void duelistAbility(Hero hero, Integer target) {
+		if (target == null) {
+			return;
+		}
+
+		Char enemy = Actor.findChar(target);
+		if (enemy == null || enemy == hero || hero.isCharmedBy(enemy) || !Dungeon.level.heroFOV[target]) {
+			GLog.w(Messages.get(this, "ability_no_target"));
+			return;
+		}
+
+		if (!hero.canAttack(enemy)){
+			GLog.w(Messages.get(this, "ability_bad_position"));
+			return;
+		}
+
+		hero.sprite.attack(enemy.pos, new Callback() {
+			@Override
+			public void call() {
+				float damageMulti = 1f;
+				if (Char.hasProp(enemy, Char.Property.INORGANIC)
+						|| enemy instanceof Swarm
+						|| enemy instanceof Crab
+						|| enemy instanceof Spinner
+						|| enemy instanceof Scorpio) {
+					damageMulti = 2f;
+				}
+				hero.attack(enemy, damageMulti, 0, Char.INFINITE_ACCURACY);
+				if (enemy.isAlive()){
+					Buff.affect(enemy, Vulnerable.class, 3f);
+				}
+				onAbilityUsed(hero);
+				Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+				hero.spendAndNext(hero.attackDelay());
+			}
+		});
+	}
+
 	private static final String BLOODSTAINED = "bloodStained";
 	
 	@Override
@@ -191,7 +233,11 @@ public class Pickaxe extends Weapon {
 	
 	@Override
 	public Glowing glowing() {
-		return bloodStained ? BLOODY : null;
+		if (super.glowing() == null) {
+			return bloodStained ? BLOODY : null;
+		} else {
+			return super.glowing();
+		}
 	}
 
 }
