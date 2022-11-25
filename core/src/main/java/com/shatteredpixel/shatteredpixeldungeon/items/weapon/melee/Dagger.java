@@ -22,10 +22,23 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class Dagger extends MeleeWeapon {
@@ -65,6 +78,53 @@ public class Dagger extends MeleeWeapon {
 			}
 		}
 		return super.damageRoll(owner);
+	}
+
+	@Override
+	public int abilityChargeUse() {
+		return 2;
+	}
+
+	@Override
+	public String targetingPrompt() {
+		return Messages.get(this, "prompt");
+	}
+
+	@Override
+	protected void duelistAbility(Hero hero, Integer target) {
+		sneakAbility(hero, target, 5, this);
+	}
+
+	public static void sneakAbility(Hero hero, Integer target, int maxDist, MeleeWeapon wep){
+		if (target == null) {
+			return;
+		}
+
+		if (Actor.findChar(target) != null || !Dungeon.level.heroFOV[target]) {
+			GLog.w(Messages.get(wep, "ability_bad_position"));
+			return;
+		}
+
+		PathFinder.buildDistanceMap(Dungeon.hero.pos, BArray.not(Dungeon.level.solid, null), maxDist);
+		if (PathFinder.distance[target] == Integer.MAX_VALUE) {
+			GLog.w(Messages.get(wep, "ability_bad_position"));
+			return;
+		}
+
+		Buff.affect(hero, Invisibility.class, Math.max(1, 1/hero.speed()));
+		hero.spendAndNext(1/hero.speed());
+		wep.onAbilityUsed(hero);
+
+		Dungeon.hero.sprite.turnTo( Dungeon.hero.pos, target);
+		Dungeon.hero.pos = target;
+		Dungeon.level.occupyCell(Dungeon.hero);
+		Dungeon.observe();
+		GameScene.updateFog();
+		Dungeon.hero.checkVisibleMobs();
+
+		Dungeon.hero.sprite.place( Dungeon.hero.pos );
+		CellEmitter.get( Dungeon.hero.pos ).burst( Speck.factory( Speck.WOOL ), 6 );
+		Sample.INSTANCE.play( Assets.Sounds.PUFF );
 	}
 
 }
