@@ -22,7 +22,18 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Callback;
 
 public class Sword extends MeleeWeapon {
 	
@@ -32,6 +43,69 @@ public class Sword extends MeleeWeapon {
 		hitSoundPitch = 1f;
 
 		tier = 3;
+	}
+
+	@Override
+	public int abilityChargeUse() {
+		return Dungeon.hero.buff(CleaveTracker.class) != null ? 0 : 1;
+	}
+
+	@Override
+	public String targetingPrompt() {
+		return Messages.get(this, "prompt");
+	}
+
+	@Override
+	protected void duelistAbility(Hero hero, Integer target) {
+		Sword.cleaveAbility(hero, target, 1.27f, this);
+	}
+
+	public static void cleaveAbility(Hero hero, Integer target, float dmgMulti, MeleeWeapon wep){
+		if (target == null) {
+			return;
+		}
+
+		Char enemy = Actor.findChar(target);
+		if (enemy == null || enemy == hero || hero.isCharmedBy(enemy) || !Dungeon.level.heroFOV[target]) {
+			GLog.w(Messages.get(wep, "ability_no_target"));
+			return;
+		}
+
+		if (!hero.canAttack(enemy)){
+			GLog.w(Messages.get(wep, "ability_bad_position"));
+			return;
+		}
+
+		hero.sprite.attack(enemy.pos, new Callback() {
+			@Override
+			public void call() {
+				hero.attack(enemy, dmgMulti, 0, Char.INFINITE_ACCURACY);
+				wep.onAbilityUsed(hero);
+				Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+
+				if (!enemy.isAlive()){
+					hero.next();
+					Buff.prolong(hero, CleaveTracker.class, 4f); //1 less as attack was instant
+				} else {
+					hero.spendAndNext(hero.attackDelay());
+					if (hero.buff(CleaveTracker.class) != null) {
+						hero.buff(CleaveTracker.class).detach();
+					}
+				}
+			}
+		});
+	}
+
+	public static class CleaveTracker extends FlavourBuff {
+
+		{
+			type = buffType.POSITIVE;
+		}
+
+		@Override
+		public int icon() {
+			return BuffIndicator.DUEL_CLEAVE;
+		}
 	}
 
 }
