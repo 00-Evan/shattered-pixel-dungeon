@@ -22,7 +22,17 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Callback;
 
 public class Mace extends MeleeWeapon {
 
@@ -39,6 +49,47 @@ public class Mace extends MeleeWeapon {
 	public int max(int lvl) {
 		return  4*(tier+1) +    //16 base, down from 20
 				lvl*(tier+1);   //scaling unchanged
+	}
+
+	@Override
+	public String targetingPrompt() {
+		return Messages.get(this, "prompt");
+	}
+
+	@Override
+	protected void duelistAbility(Hero hero, Integer target) {
+		Mace.heavyBlowAbility(hero, target, 1.40f, this);
+	}
+
+	public static void heavyBlowAbility(Hero hero, Integer target, float dmgMulti, MeleeWeapon wep){
+		if (target == null) {
+			return;
+		}
+
+		Char enemy = Actor.findChar(target);
+		if (enemy == null || enemy == hero || hero.isCharmedBy(enemy) || !Dungeon.level.heroFOV[target]) {
+			GLog.w(Messages.get(wep, "ability_no_target"));
+			return;
+		}
+
+		if (!hero.canAttack(enemy)){
+			GLog.w(Messages.get(wep, "ability_bad_position"));
+			return;
+		}
+
+		hero.sprite.attack(enemy.pos, new Callback() {
+			@Override
+			public void call() {
+				if (hero.attack(enemy, dmgMulti, 0, 0.25f)) {
+					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+					if (enemy.isAlive()){
+						Buff.affect(enemy, Vulnerable.class, 5f);
+					}
+				}
+				hero.spendAndNext(hero.attackDelay());
+				wep.onAbilityUsed(hero);
+			}
+		});
 	}
 
 }
