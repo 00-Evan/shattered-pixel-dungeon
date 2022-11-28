@@ -62,26 +62,30 @@ public class Spear extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
+		Spear.spikeAbility(hero, target, 0.75f, this);
+	}
+
+	public static void spikeAbility(Hero hero, Integer target, float dmgMulti, MeleeWeapon wep){
 		if (target == null) {
 			return;
 		}
 
 		Char enemy = Actor.findChar(target);
 		if (enemy == null || enemy == hero || hero.isCharmedBy(enemy) || !Dungeon.level.heroFOV[target]) {
-			GLog.w(Messages.get(this, "ability_no_target"));
+			GLog.w(Messages.get(wep, "ability_no_target"));
 			return;
 		}
 
 		if (!hero.canAttack(enemy) || Dungeon.level.adjacent(hero.pos, enemy.pos)){
-			GLog.w(Messages.get(this, "ability_bad_position"));
+			GLog.w(Messages.get(wep, "ability_bad_position"));
 			return;
 		}
 
 		hero.sprite.attack(enemy.pos, new Callback() {
 			@Override
 			public void call() {
-				hero.attack(enemy, 0.75f, 0, Char.INFINITE_ACCURACY);
-				onAbilityUsed(hero);
+				hero.attack(enemy, dmgMulti, 0, Char.INFINITE_ACCURACY);
+				wep.onAbilityUsed(hero);
 				Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 
 				if (enemy.isAlive()){
@@ -95,7 +99,6 @@ public class Spear extends MeleeWeapon {
 				hero.spendAndNext(hero.attackDelay());
 			}
 		});
-
 	}
 
 }

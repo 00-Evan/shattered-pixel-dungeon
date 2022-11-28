@@ -122,6 +122,11 @@ public class MeleeWeapon extends Weapon {
 		return targetingPrompt() != null;
 	}
 
+	@Override
+	public int targetingPos(Hero user, int dst) {
+		return dst; //weapon abilities do not use projectile logic, no autoaim
+	}
+
 	//TODO make abstract
 	protected void duelistAbility( Hero hero, Integer target ){}
 
