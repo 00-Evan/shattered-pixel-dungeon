@@ -680,7 +680,9 @@ public abstract class Wand extends Item {
 		public boolean attachTo( Char target ) {
 			if (super.attachTo( target )) {
 				//if we're loading in and the hero has partially spent a turn, delay for 1 turn
-				if (now() == 0 && cooldown() == 0 && target.cooldown() > 0) spend(TICK);
+				if (target instanceof Hero && Dungeon.hero == null && cooldown() == 0 && target.cooldown() > 0) {
+					spend(TICK);
+				}
 				return true;
 			}
 			return false;
