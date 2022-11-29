@@ -93,7 +93,7 @@ public class DesktopLauncher {
 					exceptionMsg = exceptionMsg.substring(0, 1000) + "...";
 				}
 
-				if (exceptionMsg.contains("Could not create window")){
+				if (exceptionMsg.contains("Couldn't create window")){
 					TinyFileDialogs.tinyfd_messageBox(title + " Has Crashed!",
 							title + " was not able to initialize its graphics display, sorry about that!\n\n" +
 									"This usually happens when your graphics card does not support OpenGL 2.0+, or has misconfigured graphics drivers.\n\n" +
