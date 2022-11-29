@@ -120,6 +120,7 @@ public class Blacksmith extends NPC {
 					tell( Messages.get(this, "blood_2") );
 				} else {
 					if (pick.isEquipped( Dungeon.hero )) {
+						pick.cursed = false; //so that it can always be removed
 						pick.doUnequip( Dungeon.hero, false );
 					}
 					pick.detach( Dungeon.hero.belongings.backpack );
