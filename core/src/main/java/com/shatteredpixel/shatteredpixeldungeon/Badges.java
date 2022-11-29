@@ -867,7 +867,7 @@ public class Badges {
 	}
 
 	public static void validateDuelistUnlock(){
-		if (!isUnlocked(Badge.UNLOCK_HUNTRESS) && Dungeon.hero != null
+		if (!isUnlocked(Badge.UNLOCK_DUELIST) && Dungeon.hero != null
 				&& Dungeon.hero.belongings.weapon instanceof MeleeWeapon
 				&& ((MeleeWeapon) Dungeon.hero.belongings.weapon).tier >= 2
 				&& ((MeleeWeapon) Dungeon.hero.belongings.weapon).STRReq() <= Dungeon.hero.STR()){
