@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
@@ -84,18 +85,19 @@ public class Spear extends MeleeWeapon {
 		hero.sprite.attack(enemy.pos, new Callback() {
 			@Override
 			public void call() {
-				hero.attack(enemy, dmgMulti, 0, Char.INFINITE_ACCURACY);
-				wep.onAbilityUsed(hero);
-				Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 
-				if (enemy.isAlive()){
-					//trace a ballistica to our target (which will also extend past them
-					Ballistica trajectory = new Ballistica(hero.pos, enemy.pos, Ballistica.STOP_TARGET);
-					//trim it to just be the part that goes past them
-					trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
-					//knock them back along that ballistica
-					WandOfBlastWave.throwChar(enemy, trajectory, 1, true, false, hero.getClass());
+				if (hero.attack(enemy, dmgMulti, 0, Char.INFINITE_ACCURACY)) {
+					if (enemy.isAlive()){
+						//trace a ballistica to our target (which will also extend past them
+						Ballistica trajectory = new Ballistica(hero.pos, enemy.pos, Ballistica.STOP_TARGET);
+						//trim it to just be the part that goes past them
+						trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
+						//knock them back along that ballistica
+						WandOfBlastWave.throwChar(enemy, trajectory, 1, true, false, hero.getClass());
+					}
+					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				}
+				wep.onAbilityUsed(hero);
 				hero.spendAndNext(hero.attackDelay());
 			}
 		});
