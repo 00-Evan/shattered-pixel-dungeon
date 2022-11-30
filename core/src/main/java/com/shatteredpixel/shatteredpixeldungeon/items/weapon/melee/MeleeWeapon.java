@@ -136,7 +136,7 @@ public class MeleeWeapon extends Weapon {
 	}
 
 	public int abilityChargeUse(){
-		return 1; //TODO
+		return 1;
 	}
 
 	public int tier;
