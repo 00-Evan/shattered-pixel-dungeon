@@ -409,7 +409,27 @@ public abstract class Mob extends Char {
 		}
 		return false;
 	}
-	
+
+	private boolean cellIsPathable( int cell ){
+		if (!Dungeon.level.passable[cell]){
+			if (flying || buff(Amok.class) != null){
+				if (!Dungeon.level.avoid[cell]){
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
+		if (Char.hasProp(this, Char.Property.LARGE) && !Dungeon.level.openSpace[cell]){
+			return false;
+		}
+		if (Actor.findChar(cell) != null){
+			return false;
+		}
+
+		return true;
+	}
+
 	protected boolean getCloser( int target ) {
 		
 		if (rooted || target == pos) {
@@ -422,9 +442,7 @@ public abstract class Mob extends Char {
 
 			path = null;
 
-			if (Actor.findChar( target ) == null
-					&& (Dungeon.level.passable[target] || (flying && Dungeon.level.avoid[target]))
-					&& (!Char.hasProp(this, Char.Property.LARGE) || Dungeon.level.openSpace[target])) {
+			if (cellIsPathable(target)) {
 				step = target;
 			}
 
@@ -478,20 +496,14 @@ public abstract class Mob extends Char {
 			//checks if the next cell along the current path can be stepped into
 			if (!newPath) {
 				int nextCell = path.removeFirst();
-				if (!Dungeon.level.passable[nextCell]
-						|| (!flying && Dungeon.level.avoid[nextCell])
-						|| (Char.hasProp(this, Char.Property.LARGE) && !Dungeon.level.openSpace[nextCell])
-						|| Actor.findChar(nextCell) != null) {
+				if (!cellIsPathable(nextCell)) {
 
 					newPath = true;
 					//If the next cell on the path can't be moved into, see if there is another cell that could replace it
 					if (!path.isEmpty()) {
 						for (int i : PathFinder.NEIGHBOURS8) {
 							if (Dungeon.level.adjacent(pos, nextCell + i) && Dungeon.level.adjacent(nextCell + i, path.getFirst())) {
-								if (Dungeon.level.passable[nextCell+i]
-										&& (flying || !Dungeon.level.avoid[nextCell+i])
-										&& (!Char.hasProp(this, Char.Property.LARGE) || Dungeon.level.openSpace[nextCell+i])
-										&& Actor.findChar(nextCell+i) == null){
+								if (cellIsPathable(nextCell+i)){
 									path.addFirst(nextCell+i);
 									newPath = false;
 									break;
@@ -517,10 +529,7 @@ public abstract class Mob extends Char {
 					if (ignoreChars != null && (full == null || full.size() > 2*ignoreChars.size())){
 						//check if first cell of shorter path is valid. If it is, use new shorter path. Otherwise do nothing and wait.
 						path = ignoreChars;
-						if (!Dungeon.level.passable[ignoreChars.getFirst()]
-								|| (!flying && Dungeon.level.avoid[ignoreChars.getFirst()])
-								|| (Char.hasProp(this, Char.Property.LARGE) && !Dungeon.level.openSpace[ignoreChars.getFirst()])
-								|| Actor.findChar(ignoreChars.getFirst()) != null) {
+						if (!cellIsPathable(ignoreChars.getFirst())) {
 							return false;
 						}
 					} else {
