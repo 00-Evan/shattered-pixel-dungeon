@@ -181,7 +181,6 @@ public class Mimic extends Mob {
 		if (Actor.chars().contains(this) && Dungeon.level.heroFOV[pos]) {
 			enemy = Dungeon.hero;
 			target = Dungeon.hero.pos;
-			enemySeen = true;
 			GLog.w(Messages.get(this, "reveal") );
 			CellEmitter.get(pos).burst(Speck.factory(Speck.STAR), 10);
 			Sample.INSTANCE.play(Assets.Sounds.MIMIC);
