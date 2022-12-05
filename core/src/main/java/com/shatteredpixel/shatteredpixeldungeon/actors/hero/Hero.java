@@ -538,7 +538,7 @@ public class Hero extends Char {
 		}
 
 		if (buff(HoldFast.class) != null){
-			dr += Random.NormalIntRange(0, 2*pointsInTalent(Talent.HOLD_FAST));
+			dr += buff(HoldFast.class).armorBonus();
 		}
 		
 		return dr;
@@ -1170,7 +1170,7 @@ public class Hero extends Char {
 	public void rest( boolean fullRest ) {
 		spendAndNextConstant( TIME_TO_REST );
 		if (hasTalent(Talent.HOLD_FAST)){
-			Buff.affect(this, HoldFast.class);
+			Buff.affect(this, HoldFast.class).pos = pos;
 		}
 		if (!fullRest) {
 			if (sprite != null) {

@@ -82,12 +82,6 @@ public class Earthroot extends Plant {
 		}
 		
 		@Override
-		public boolean attachTo( Char target ) {
-			pos = target.pos;
-			return super.attachTo( target );
-		}
-		
-		@Override
 		public boolean act() {
 			if (target.pos != pos) {
 				detach();
@@ -101,6 +95,10 @@ public class Earthroot extends Plant {
 		}
 		
 		public int absorb( int damage ) {
+			if (pos != target.pos){
+				detach();
+				return damage;
+			}
 			int block = Math.min( damage, blocking());
 			if (level <= block) {
 				detach();

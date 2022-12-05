@@ -256,7 +256,7 @@ public class Toolbar extends Component {
 						&& Dungeon.hero.handle(Dungeon.hero.pos)){
 						//trigger hold fast here, even if the hero didn't specifically wait
 						if (Dungeon.hero.hasTalent(Talent.HOLD_FAST)){
-							Buff.affect(Dungeon.hero, HoldFast.class);
+							Buff.affect(Dungeon.hero, HoldFast.class).pos = Dungeon.hero.pos;
 						}
 						Dungeon.hero.next();
 					} else {
