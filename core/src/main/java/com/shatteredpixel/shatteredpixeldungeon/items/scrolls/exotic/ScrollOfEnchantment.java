@@ -159,7 +159,7 @@ public class ScrollOfEnchantment extends ExoticScroll {
 		                           Weapon.Enchantment ench2, Weapon.Enchantment ench3){
 			super(new ItemSprite(new ScrollOfEnchantment()),
 					Messages.titleCase(new ScrollOfEnchantment().name()),
-					Messages.get(ScrollOfEnchantment.class, "armor") +
+					Messages.get(ScrollOfEnchantment.class, "weapon") +
 							"\n\n" +
 							Messages.get(ScrollOfEnchantment.class, "cancel_warn"),
 					ench1.name(),
