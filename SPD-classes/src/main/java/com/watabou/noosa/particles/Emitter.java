@@ -89,8 +89,6 @@ public class Emitter extends Group {
 
 	public void start( Factory factory, float interval, int quantity ) {
 
-		started = true;
-
 		this.factory = factory;
 		this.lightMode = factory.lightMode();
 		
@@ -101,6 +99,7 @@ public class Emitter extends Group {
 		time = Random.Float( interval );
 		
 		on = true;
+		started = true;
 	}
 
 	public static boolean freezeEmitters = false;
