@@ -22,6 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Gloves extends MeleeWeapon {
@@ -41,6 +43,16 @@ public class Gloves extends MeleeWeapon {
 	public int max(int lvl) {
 		return  Math.round(2.5f*(tier+1)) +     //5 base, down from 10
 				lvl*Math.round(0.5f*(tier+1));  //+1 per level, down from +2
+	}
+
+	@Override
+	public String targetingPrompt() {
+		return Messages.get(this, "prompt");
+	}
+
+	@Override
+	protected void duelistAbility(Hero hero, Integer target) {
+		Sai.comboStrikeAbility(hero, target, 5, this);
 	}
 
 }

@@ -116,6 +116,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RoundShield;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sai;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
@@ -442,6 +443,10 @@ public class Hero extends Char {
 
 		if (hit && subClass == HeroSubClass.GLADIATOR && wasEnemy){
 			Buff.affect( this, Combo.class ).hit( enemy );
+		}
+
+		if (hit && heroClass == HeroClass.DUELIST && wasEnemy){
+			Buff.append( this, Sai.ComboStrikeTracker.class, Sai.ComboStrikeTracker.DURATION);
 		}
 
 		return hit;
@@ -1891,6 +1896,10 @@ public class Hero extends Char {
 
 		if (hit && subClass == HeroSubClass.GLADIATOR && wasEnemy){
 			Buff.affect( this, Combo.class ).hit( enemy );
+		}
+
+		if (hit && heroClass == HeroClass.DUELIST && wasEnemy){
+			Buff.append( this, Sai.ComboStrikeTracker.class, Sai.ComboStrikeTracker.DURATION);
 		}
 
 		curAction = null;

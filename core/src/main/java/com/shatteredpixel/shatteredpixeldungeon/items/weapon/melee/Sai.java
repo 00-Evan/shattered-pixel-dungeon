@@ -22,7 +22,21 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Callback;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Sai extends MeleeWeapon {
 
@@ -39,6 +53,65 @@ public class Sai extends MeleeWeapon {
 	public int max(int lvl) {
 		return  Math.round(2.5f*(tier+1)) +     //10 base, down from 20
 				lvl*Math.round(0.5f*(tier+1));  //+2 per level, down from +4
+	}
+
+	@Override
+	public String targetingPrompt() {
+		return Messages.get(this, "prompt");
+	}
+
+	@Override
+	protected void duelistAbility(Hero hero, Integer target) {
+		Sai.comboStrikeAbility(hero, target, 4, this);
+	}
+
+	public static void comboStrikeAbility(Hero hero, Integer target, int comboTime, MeleeWeapon wep){
+		if (target == null) {
+			return;
+		}
+
+		Char enemy = Actor.findChar(target);
+		if (enemy == null || enemy == hero || hero.isCharmedBy(enemy) || !Dungeon.level.heroFOV[target]) {
+			GLog.w(Messages.get(wep, "ability_no_target"));
+			return;
+		}
+
+		if (!hero.canAttack(enemy)){
+			GLog.w(Messages.get(wep, "ability_bad_position"));
+			return;
+		}
+
+		hero.sprite.attack(enemy.pos, new Callback() {
+			@Override
+			public void call() {
+				boolean hit = hero.attack(enemy, 1, 0, Char.INFINITE_ACCURACY);
+				wep.onAbilityUsed(hero);
+
+				HashSet<ComboStrikeTracker> buffs = hero.buffs(ComboStrikeTracker.class);
+				int recentHits = 0;
+				for (Buff b : buffs){
+					if (b.cooldown() >= (ComboStrikeTracker.DURATION - comboTime)){
+						recentHits++;
+					}
+				}
+
+				if (recentHits >= 2 && hit){
+					for (Buff b : buffs){
+						b.detach();
+					}
+					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+					hero.next();
+				} else {
+					hero.spendAndNext(hero.attackDelay());
+				}
+			}
+		});
+	}
+
+	public static class ComboStrikeTracker extends FlavourBuff{
+
+		public static float DURATION = 5f;
+
 	}
 
 }
