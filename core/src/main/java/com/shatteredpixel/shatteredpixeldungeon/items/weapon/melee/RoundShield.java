@@ -84,5 +84,10 @@ public class RoundShield extends MeleeWeapon {
 		public int icon() {
 			return BuffIndicator.DUEL_GUARD;
 		}
+
+		@Override
+		public float iconFadePercent() {
+			return Math.max(0, (5 - visualcooldown()) / 5);
+		}
 	}
 }

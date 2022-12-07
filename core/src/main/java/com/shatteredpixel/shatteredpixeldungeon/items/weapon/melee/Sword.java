@@ -107,6 +107,11 @@ public class Sword extends MeleeWeapon {
 		public int icon() {
 			return BuffIndicator.DUEL_CLEAVE;
 		}
+
+		@Override
+		public float iconFadePercent() {
+			return Math.max(0, (5 - visualcooldown()) / 5);
+		}
 	}
 
 }
