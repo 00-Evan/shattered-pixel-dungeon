@@ -77,7 +77,7 @@ import java.util.LinkedHashMap;
 public enum Talent {
 
 	//Warrior T1
-	HEARTY_MEAL(0), ARMSMASTERS_INTUITION(1), TEST_SUBJECT(2), IRON_WILL(3),
+	HEARTY_MEAL(0), VETERANS_INTUITION(1), TEST_SUBJECT(2), IRON_WILL(3),
 	//Warrior T2
 	IRON_STOMACH(4), RESTORED_WILLPOWER(5), RUNIC_TRANSFERENCE(6), LETHAL_MOMENTUM(7), IMPROVISED_PROJECTILES(8),
 	//Warrior T3
@@ -145,7 +145,7 @@ public enum Talent {
 	EAGLE_EYE(119, 4), GO_FOR_THE_EYES(120, 4), SWIFT_SPIRIT(121, 4),
 
 	//Duelist T1
-	DUELIST_T1_1(128), DUELIST_T1_2(129), DUELIST_T1_3(130), DUELIST_T1_4(131),
+	DUELIST_T1_1(128), ADVENTURERS_INTUITION(129), DUELIST_T1_3(130), DUELIST_T1_4(131),
 	//Duelist T2
 	DUELIST_T2_1(132), DUELIST_T2_2(133), DUELIST_T2_3(134), DUELIST_T2_4(135), DUELIST_T2_5(136),
 	//Duelist T3
@@ -295,8 +295,7 @@ public enum Talent {
 			Buff.affect(hero, BrokenSeal.WarriorShield.class);
 		}
 
-		if (talent == ARMSMASTERS_INTUITION && hero.pointsInTalent(ARMSMASTERS_INTUITION) == 2){
-			if (hero.belongings.weapon() != null) hero.belongings.weapon().identify();
+		if (talent == VETERANS_INTUITION && hero.pointsInTalent(VETERANS_INTUITION) == 2){
 			if (hero.belongings.armor() != null)  hero.belongings.armor.identify();
 		}
 		if (talent == THIEFS_INTUITION && hero.pointsInTalent(THIEFS_INTUITION) == 2){
@@ -311,6 +310,9 @@ public enum Talent {
 		if (talent == THIEFS_INTUITION && hero.pointsInTalent(THIEFS_INTUITION) == 1){
 			if (hero.belongings.ring instanceof Ring) hero.belongings.ring.setKnown();
 			if (hero.belongings.misc instanceof Ring) ((Ring) hero.belongings.misc).setKnown();
+		}
+		if (talent == ADVENTURERS_INTUITION && hero.pointsInTalent(ADVENTURERS_INTUITION) == 2){
+			if (hero.belongings.weapon() != null) hero.belongings.weapon().identify();
 		}
 
 		if (talent == LIGHT_CLOAK && hero.heroClass == HeroClass.ROGUE){
@@ -380,18 +382,24 @@ public enum Talent {
 	}
 
 	public static float itemIDSpeedFactor( Hero hero, Item item ){
-		// 1.75x/2.5x speed with huntress talent
-		float factor = 1f + hero.pointsInTalent(SURVIVALISTS_INTUITION)*0.75f;
+		// 1.75x/2.5x speed with Huntress talent
+		float factor = 1f + 0.75f*hero.pointsInTalent(SURVIVALISTS_INTUITION);
 
-		// 2x/instant for Warrior (see onItemEquipped)
-		if (item instanceof MeleeWeapon || item instanceof Armor){
-			factor *= 1f + hero.pointsInTalent(ARMSMASTERS_INTUITION);
+		// Affected by both Warrior(1.75x/2.5x) and Duelist(2.5x/inst.) talents
+		if (item instanceof MeleeWeapon){
+			factor *= 1f + 1.5f*hero.pointsInTalent(ADVENTURERS_INTUITION); //instant at +2 (see onItemEquipped)
+			factor *= 1f + 0.75f*hero.pointsInTalent(VETERANS_INTUITION);
 		}
-		// 3x/instant for mage (see Wand.wandUsed())
+		// Affected by both Warrior(2.5x/inst.) and Duelist(1.75x/2.5x) talents
+		if (item instanceof Armor){
+			factor *= 1f + 0.75f*hero.pointsInTalent(ADVENTURERS_INTUITION);
+			factor *= 1f + hero.pointsInTalent(VETERANS_INTUITION); //instant at +2 (see onItemEquipped)
+		}
+		// 3x/instant for Mage (see Wand.wandUsed())
 		if (item instanceof Wand){
-			factor *= 1f + 2*hero.pointsInTalent(SCHOLARS_INTUITION);
+			factor *= 1f + 2.0f*hero.pointsInTalent(SCHOLARS_INTUITION);
 		}
-		// 2x/instant for rogue (see onItemEqupped), also id's type on equip/on pickup
+		// 2x/instant for Rogue (see onItemEqupped), also id's type on equip/on pickup
 		if (item instanceof Ring){
 			factor *= 1f + hero.pointsInTalent(THIEFS_INTUITION);
 		}
@@ -484,7 +492,7 @@ public enum Talent {
 	}
 
 	public static void onItemEquipped( Hero hero, Item item ){
-		if (hero.pointsInTalent(ARMSMASTERS_INTUITION) == 2 && (item instanceof Weapon || item instanceof Armor)){
+		if (hero.pointsInTalent(VETERANS_INTUITION) == 2 && item instanceof Armor){
 			item.identify();
 		}
 		if (hero.hasTalent(THIEFS_INTUITION) && item instanceof Ring){
@@ -493,6 +501,9 @@ public enum Talent {
 			} else {
 				((Ring) item).setKnown();
 			}
+		}
+		if (hero.pointsInTalent(ADVENTURERS_INTUITION) == 2 && item instanceof Weapon){
+			item.identify();
 		}
 	}
 
@@ -565,7 +576,7 @@ public enum Talent {
 		//tier 1
 		switch (cls){
 			case WARRIOR: default:
-				Collections.addAll(tierTalents, HEARTY_MEAL, ARMSMASTERS_INTUITION, TEST_SUBJECT, IRON_WILL);
+				Collections.addAll(tierTalents, HEARTY_MEAL, VETERANS_INTUITION, TEST_SUBJECT, IRON_WILL);
 				break;
 			case MAGE:
 				Collections.addAll(tierTalents, EMPOWERING_MEAL, SCHOLARS_INTUITION, TESTED_HYPOTHESIS, BACKUP_BARRIER);
@@ -577,7 +588,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, NATURES_BOUNTY, SURVIVALISTS_INTUITION, FOLLOWUP_STRIKE, NATURES_AID);
 				break;
 			case DUELIST:
-				Collections.addAll(tierTalents, DUELIST_T1_1, DUELIST_T1_2, DUELIST_T1_3, DUELIST_T1_4);
+				Collections.addAll(tierTalents, DUELIST_T1_1, ADVENTURERS_INTUITION, DUELIST_T1_3, DUELIST_T1_4);
 				break;
 		}
 		for (Talent talent : tierTalents){
