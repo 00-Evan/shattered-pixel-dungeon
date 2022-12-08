@@ -62,6 +62,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
@@ -72,6 +73,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public enum Talent {
@@ -743,11 +745,20 @@ public enum Talent {
 		bundle.put("replacements", replacementsBundle);
 	}
 
+	private static final HashMap<String, String> renamedTalents = new HashMap<>();
+	static{
+		//v2.0.0
+		renamedTalents.put("ADVENTURERS_INTUITION",      "VETERANS_INTUITION");
+	}
+
 	public static void restoreTalentsFromBundle( Bundle bundle, Hero hero ){
 		if (bundle.contains("replacements")){
 			Bundle replacements = bundle.getBundle("replacements");
 			for (String key : replacements.getKeys()){
-				hero.metamorphedTalents.put(Talent.valueOf(key), replacements.getEnum(key, Talent.class));
+				String value = replacements.getString(key);
+				if (renamedTalents.containsKey(key)) key = renamedTalents.get(key);
+				if (renamedTalents.containsKey(value)) value = renamedTalents.get(value);
+				hero.metamorphedTalents.put(Talent.valueOf(key), Talent.valueOf(value));
 			}
 		}
 
@@ -760,9 +771,12 @@ public enum Talent {
 			Bundle tierBundle = bundle.contains(TALENT_TIER+(i+1)) ? bundle.getBundle(TALENT_TIER+(i+1)) : null;
 
 			if (tierBundle != null){
-				for (Talent talent : tier.keySet()){
-					if (tierBundle.contains(talent.name())){
-						tier.put(talent, Math.min(tierBundle.getInt(talent.name()), talent.maxPoints()));
+				for (String tName : tierBundle.getKeys()){
+					int points = tierBundle.getInt(tName);
+					if (renamedTalents.containsKey(tName)) tName = renamedTalents.get(tName);
+					Talent talent = Talent.valueOf(tName);
+					if (tier.containsKey(talent)){
+						tier.put(talent, Math.min(points, talent.maxPoints()));
 					}
 				}
 			}
