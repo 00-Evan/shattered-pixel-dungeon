@@ -53,26 +53,30 @@ public class Flail extends MeleeWeapon {
 				lvl*Math.round(1.6f*(tier+1));  //+8 per level, up from +5
 	}
 
+	private static float spinBonus = 1f;
+
 	@Override
 	public int damageRoll(Char owner) {
-		int dmg = super.damageRoll(owner);
-
-		SpinAbilityTracker spin = owner.buff(SpinAbilityTracker.class);
-		if (spin != null){
-			dmg = Math.round(dmg * (1f + 0.2f*spin.spins));
-			if (spin.spins == 3) Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
-			spin.detach();
-		}
-
+		int dmg = Math.round(super.damageRoll(owner) * spinBonus);
+		if (spinBonus == 1.6f) Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+		spinBonus = 1f;
 		return dmg;
 	}
 
 	@Override
 	public float accuracyFactor(Char owner, Char target) {
 		SpinAbilityTracker spin = owner.buff(SpinAbilityTracker.class);
-		if (spin != null && spin.spins >= 3f) {
-			return Float.POSITIVE_INFINITY;
+		if (spin != null) {
+			//we detach and calculate bonus here in case the attack misses
+			spin.detach();
+			spinBonus = 1f + 0.2f*spin.spins;
+			if (spinBonus == 1.6f){
+				return Float.POSITIVE_INFINITY;
+			} else {
+				return super.accuracyFactor(owner, target);
+			}
 		} else {
+			spinBonus = 1f;
 			return super.accuracyFactor(owner, target);
 		}
 	}
@@ -135,6 +139,11 @@ public class Flail extends MeleeWeapon {
 		@Override
 		public float iconFadePercent() {
 			return Math.max(0, (3 - visualcooldown()) / 3);
+		}
+
+		@Override
+		public String desc() {
+			return Messages.get(this, "desc", 20*spins, dispTurns());
 		}
 
 		public static String SPINS = "spins";
