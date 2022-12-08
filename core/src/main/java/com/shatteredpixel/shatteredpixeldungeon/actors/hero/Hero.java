@@ -52,6 +52,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PhysicalEmpower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
@@ -560,8 +561,18 @@ public class Hero extends Char {
 		} else {
 			dmg = RingOfForce.damageRoll(this);
 		}
+
+		PhysicalEmpower emp = buff(PhysicalEmpower.class);
+		if (emp != null){
+			dmg += emp.dmgBoost;
+			emp.left--;
+			if (emp.left <= 0) {
+				emp.detach();
+			}
+			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG, 0.75f, 1.2f);
+		}
+
 		if (dmg < 0) dmg = 0;
-		
 		return dmg;
 	}
 	

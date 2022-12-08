@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EnhancedRings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PhysicalEmpower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
@@ -62,7 +63,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
@@ -147,7 +147,7 @@ public enum Talent {
 	EAGLE_EYE(119, 4), GO_FOR_THE_EYES(120, 4), SWIFT_SPIRIT(121, 4),
 
 	//Duelist T1
-	DUELIST_T1_1(128), ADVENTURERS_INTUITION(129), DUELIST_T1_3(130), DUELIST_T1_4(131),
+	STRENGTHENING_MEAL(128), ADVENTURERS_INTUITION(129), DUELIST_T1_3(130), DUELIST_T1_4(131),
 	//Duelist T2
 	DUELIST_T2_1(132), DUELIST_T2_2(133), DUELIST_T2_3(134), DUELIST_T2_4(135), DUELIST_T2_5(136),
 	//Duelist T3
@@ -377,6 +377,10 @@ public enum Talent {
 			//effectively 1/2 turns of haste
 			Buff.prolong( hero, Haste.class, 0.67f+hero.pointsInTalent(INVIGORATING_MEAL));
 		}
+		if (hero.hasTalent(STRENGTHENING_MEAL)){
+			//2 bonus physical damage for next 2/3 attacks
+			Buff.affect( hero, PhysicalEmpower.class).set(2, 1 + hero.pointsInTalent(STRENGTHENING_MEAL));
+		}
 	}
 
 	public static class WarriorFoodImmunity extends FlavourBuff{
@@ -590,7 +594,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, NATURES_BOUNTY, SURVIVALISTS_INTUITION, FOLLOWUP_STRIKE, NATURES_AID);
 				break;
 			case DUELIST:
-				Collections.addAll(tierTalents, DUELIST_T1_1, ADVENTURERS_INTUITION, DUELIST_T1_3, DUELIST_T1_4);
+				Collections.addAll(tierTalents, STRENGTHENING_MEAL, ADVENTURERS_INTUITION, DUELIST_T1_3, DUELIST_T1_4);
 				break;
 		}
 		for (Talent talent : tierTalents){
