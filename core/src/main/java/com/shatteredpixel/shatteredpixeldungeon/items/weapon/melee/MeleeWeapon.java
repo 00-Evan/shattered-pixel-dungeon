@@ -23,10 +23,12 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
@@ -35,7 +37,6 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class MeleeWeapon extends Weapon {
@@ -130,8 +131,15 @@ public class MeleeWeapon extends Weapon {
 	//TODO make abstract
 	protected void duelistAbility( Hero hero, Integer target ){}
 
-	protected void onAbilityUsed( Hero hero ){
+	protected void onAbilityUsed(Hero hero ){
 		Buff.affect(hero, Charger.class).charges -= abilityChargeUse();
+
+		if (hero.heroClass == HeroClass.DUELIST
+				&& hero.hasTalent(Talent.AGGRESSIVE_BARRIER)
+				&& (hero.HP / (float)hero.HT) < 0.167f*(1+hero.pointsInTalent(Talent.AGGRESSIVE_BARRIER))){
+			Buff.affect(hero, Barrier.class).setShield(2);
+		}
+
 		updateQuickslot();
 	}
 

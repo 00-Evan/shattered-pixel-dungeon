@@ -36,10 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Spinner;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Swarm;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -204,13 +201,13 @@ public class Pickaxe extends MeleeWeapon {
 						|| enemy instanceof Scorpio) {
 					damageMulti = 2f;
 				}
+				onAbilityUsed(hero);
 				if (hero.attack(enemy, damageMulti, 0, Char.INFINITE_ACCURACY)) {
 					if (enemy.isAlive()) {
 						Buff.affect(enemy, Vulnerable.class, 3f);
 					}
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				}
-				onAbilityUsed(hero);
 				hero.spendAndNext(hero.attackDelay());
 			}
 		});

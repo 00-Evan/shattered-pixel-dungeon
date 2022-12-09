@@ -109,10 +109,10 @@ public class Rapier extends MeleeWeapon {
 					@Override
 					public void call() {
 						//+3+lvl damage, equivalent to +67% damage, but more consistent
+						onAbilityUsed(hero);
 						if (hero.attack(enemy, 1f, augment.damageFactor(3 + level()), Char.INFINITE_ACCURACY)){
 							Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 						}
-						onAbilityUsed(hero);
 						hero.spendAndNext(hero.attackDelay());
 					}
 				});

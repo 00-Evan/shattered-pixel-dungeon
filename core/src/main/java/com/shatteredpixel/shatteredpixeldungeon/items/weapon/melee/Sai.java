@@ -30,12 +30,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Sai extends MeleeWeapon {
@@ -84,8 +82,8 @@ public class Sai extends MeleeWeapon {
 		hero.sprite.attack(enemy.pos, new Callback() {
 			@Override
 			public void call() {
-				boolean hit = hero.attack(enemy, 1, 0, Char.INFINITE_ACCURACY);
 				wep.onAbilityUsed(hero);
+				boolean hit = hero.attack(enemy, 1, 0, Char.INFINITE_ACCURACY);
 
 				HashSet<ComboStrikeTracker> buffs = hero.buffs(ComboStrikeTracker.class);
 				int recentHits = 0;

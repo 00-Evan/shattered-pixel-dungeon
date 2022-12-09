@@ -147,7 +147,7 @@ public enum Talent {
 	EAGLE_EYE(119, 4), GO_FOR_THE_EYES(120, 4), SWIFT_SPIRIT(121, 4),
 
 	//Duelist T1
-	STRENGTHENING_MEAL(128), ADVENTURERS_INTUITION(129), DUELIST_T1_3(130), DUELIST_T1_4(131),
+	STRENGTHENING_MEAL(128), ADVENTURERS_INTUITION(129), DUELIST_T1_3(130), AGGRESSIVE_BARRIER(131),
 	//Duelist T2
 	DUELIST_T2_1(132), DUELIST_T2_2(133), DUELIST_T2_3(134), DUELIST_T2_4(135), DUELIST_T2_5(136),
 	//Duelist T3
@@ -227,6 +227,7 @@ public enum Talent {
 		public float iconFadePercent() { return Math.max(0, visualcooldown() / 20); }
 	};
 	public static class SpiritBladesTracker extends FlavourBuff{};
+	public static class AggressiveBarrierCooldown extends FlavourBuff{};
 
 	int icon;
 	int maxPoints;
@@ -594,7 +595,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, NATURES_BOUNTY, SURVIVALISTS_INTUITION, FOLLOWUP_STRIKE, NATURES_AID);
 				break;
 			case DUELIST:
-				Collections.addAll(tierTalents, STRENGTHENING_MEAL, ADVENTURERS_INTUITION, DUELIST_T1_3, DUELIST_T1_4);
+				Collections.addAll(tierTalents, STRENGTHENING_MEAL, ADVENTURERS_INTUITION, DUELIST_T1_3, AGGRESSIVE_BARRIER);
 				break;
 		}
 		for (Talent talent : tierTalents){

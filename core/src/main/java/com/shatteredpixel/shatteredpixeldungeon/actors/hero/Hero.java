@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AnkhInvulnerability
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -1160,7 +1161,14 @@ public class Hero extends Char {
 		enemy = action.target;
 
 		if (enemy.isAlive() && canAttack( enemy ) && !isCharmedBy( enemy ) && enemy.invisible == 0) {
-			
+
+			if (heroClass != HeroClass.DUELIST
+					&& hasTalent(Talent.AGGRESSIVE_BARRIER)
+					&& buff(Talent.AggressiveBarrierCooldown.class) == null
+					&& (HP / (float)HT) < 0.167f*(1+pointsInTalent(Talent.AGGRESSIVE_BARRIER))){
+				Buff.affect(this, Barrier.class).setShield(2);
+				Buff.affect(this, Talent.AggressiveBarrierCooldown.class, 30f);
+			}
 			sprite.attack( enemy.pos );
 
 			return false;

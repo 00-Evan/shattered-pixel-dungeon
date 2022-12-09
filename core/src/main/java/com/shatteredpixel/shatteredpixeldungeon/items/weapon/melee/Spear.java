@@ -25,11 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -85,7 +81,7 @@ public class Spear extends MeleeWeapon {
 		hero.sprite.attack(enemy.pos, new Callback() {
 			@Override
 			public void call() {
-
+				wep.onAbilityUsed(hero);
 				if (hero.attack(enemy, dmgMulti, 0, Char.INFINITE_ACCURACY)) {
 					if (enemy.isAlive()){
 						//trace a ballistica to our target (which will also extend past them
@@ -97,7 +93,6 @@ public class Spear extends MeleeWeapon {
 					}
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				}
-				wep.onAbilityUsed(hero);
 				hero.spendAndNext(hero.attackDelay());
 			}
 		});
