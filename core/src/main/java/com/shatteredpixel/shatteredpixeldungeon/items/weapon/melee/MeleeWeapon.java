@@ -279,7 +279,7 @@ public class MeleeWeapon extends Weapon {
 			LockedFloor lock = target.buff(LockedFloor.class);
 			if (charges < chargeCap()){
 				if (lock == null || lock.regenOn()){
-					partialCharge += 1/(45f-(chargeCap()-charges)); // 45 to 35 turns per charge
+					partialCharge += 1/(50f-(chargeCap()-charges)); // 50 to 40 turns per charge
 					if (partialCharge >= 1){
 						charges++;
 						partialCharge--;
