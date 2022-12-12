@@ -493,6 +493,14 @@ public class Hero extends Char {
 		float evasion = defenseSkill;
 		
 		evasion *= RingOfEvasion.evasionMultiplier( this );
+
+		if (buff(Talent.RestoredAgilityTracker.class) != null){
+			if (pointsInTalent(Talent.RESTORED_AGILITY) == 1){
+				evasion *= 2f;
+			} else if (pointsInTalent(Talent.RESTORED_AGILITY) == 2){
+				evasion *= 5f;
+			}
+		}
 		
 		if (paralysed > 0) {
 			evasion /= 2;

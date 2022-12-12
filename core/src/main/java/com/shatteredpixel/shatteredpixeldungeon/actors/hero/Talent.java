@@ -149,7 +149,7 @@ public enum Talent {
 	//Duelist T1
 	STRENGTHENING_MEAL(128), ADVENTURERS_INTUITION(129), DUELIST_T1_3(130), AGGRESSIVE_BARRIER(131),
 	//Duelist T2
-	FOCUSED_MEAL(132), DUELIST_T2_2(133), DUELIST_T2_3(134), DUELIST_T2_4(135), DUELIST_T2_5(136),
+	FOCUSED_MEAL(132), RESTORED_AGILITY(133), DUELIST_T2_3(134), DUELIST_T2_4(135), DUELIST_T2_5(136),
 	//Duelist T3
 	DUELIST_T3_1(137, 3), DUELIST_T3_2(138, 3),
 	//Duelist S1 T3
@@ -228,6 +228,7 @@ public enum Talent {
 	};
 	public static class SpiritBladesTracker extends FlavourBuff{};
 	public static class AggressiveBarrierCooldown extends FlavourBuff{};
+	public static class RestoredAgilityTracker extends FlavourBuff{};
 
 	int icon;
 	int maxPoints;
@@ -470,6 +471,9 @@ public enum Talent {
 			}
 			Dungeon.observe();
 		}
+		if (hero.hasTalent(RESTORED_AGILITY)){
+			Buff.prolong(hero, RestoredAgilityTracker.class, hero.cooldown());
+		}
 	}
 
 	public static void onUpgradeScrollUsed( Hero hero ){
@@ -630,7 +634,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, INVIGORATING_MEAL, RESTORED_NATURE, REJUVENATING_STEPS, HEIGHTENED_SENSES, DURABLE_PROJECTILES);
 				break;
 			case DUELIST:
-				Collections.addAll(tierTalents, FOCUSED_MEAL, DUELIST_T2_2, DUELIST_T2_3, DUELIST_T2_4, DUELIST_T2_5);
+				Collections.addAll(tierTalents, FOCUSED_MEAL, RESTORED_AGILITY, DUELIST_T2_3, DUELIST_T2_4, DUELIST_T2_5);
 				break;
 		}
 		for (Talent talent : tierTalents){
