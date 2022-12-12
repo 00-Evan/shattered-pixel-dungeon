@@ -23,9 +23,11 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -280,11 +282,18 @@ public class MeleeWeapon extends Weapon {
 			if (charges < chargeCap()){
 				if (lock == null || lock.regenOn()){
 					partialCharge += 1/(50f-(chargeCap()-charges)); // 50 to 40 turns per charge
-					if (partialCharge >= 1){
-						charges++;
-						partialCharge--;
-						updateQuickslot();
-					}
+				}
+
+				int points = ((Hero)target).pointsInTalent(Talent.WEAPON_RECHARGING);
+				if (points > 0 && target.buff(Recharging.class) != null || target.buff(ArtifactRecharge.class) != null){
+					//1 every 15 turns at +1, 10 turns at +2
+					partialCharge += 1/(20f - 5f*points);
+				}
+
+				if (partialCharge >= 1){
+					charges++;
+					partialCharge--;
+					updateQuickslot();
 				}
 			} else {
 				partialCharge = 0;
