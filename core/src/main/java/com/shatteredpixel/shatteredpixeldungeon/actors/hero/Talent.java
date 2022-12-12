@@ -149,7 +149,7 @@ public enum Talent {
 	//Duelist T1
 	STRENGTHENING_MEAL(128), ADVENTURERS_INTUITION(129), DUELIST_T1_3(130), AGGRESSIVE_BARRIER(131),
 	//Duelist T2
-	DUELIST_T2_1(132), DUELIST_T2_2(133), DUELIST_T2_3(134), DUELIST_T2_4(135), DUELIST_T2_5(136),
+	FOCUSED_MEAL(132), DUELIST_T2_2(133), DUELIST_T2_3(134), DUELIST_T2_4(135), DUELIST_T2_5(136),
 	//Duelist T3
 	DUELIST_T3_1(137, 3), DUELIST_T3_2(138, 3),
 	//Duelist S1 T3
@@ -381,6 +381,15 @@ public enum Talent {
 		if (hero.hasTalent(STRENGTHENING_MEAL)){
 			//2 bonus physical damage for next 2/3 attacks
 			Buff.affect( hero, PhysicalEmpower.class).set(2, 1 + hero.pointsInTalent(STRENGTHENING_MEAL));
+		}
+		if (hero.hasTalent(FOCUSED_MEAL)){
+			if (hero.heroClass == HeroClass.DUELIST){
+				//1/1.5 charge for the duelist
+				Buff.affect( hero, MeleeWeapon.Charger.class ).gainCharge(0.5f*(hero.pointsInTalent(FOCUSED_MEAL)+1));
+			} else {
+				// lvl/3 / lvl/2 bonus dmg on next hit for other classes
+				Buff.affect( hero, PhysicalEmpower.class).set(Math.round(hero.lvl / (4f - hero.pointsInTalent(FOCUSED_MEAL))), 1);
+			}
 		}
 	}
 
@@ -621,7 +630,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, INVIGORATING_MEAL, RESTORED_NATURE, REJUVENATING_STEPS, HEIGHTENED_SENSES, DURABLE_PROJECTILES);
 				break;
 			case DUELIST:
-				Collections.addAll(tierTalents, DUELIST_T2_1, DUELIST_T2_2, DUELIST_T2_3, DUELIST_T2_4, DUELIST_T2_5);
+				Collections.addAll(tierTalents, FOCUSED_MEAL, DUELIST_T2_2, DUELIST_T2_3, DUELIST_T2_4, DUELIST_T2_5);
 				break;
 		}
 		for (Talent talent : tierTalents){

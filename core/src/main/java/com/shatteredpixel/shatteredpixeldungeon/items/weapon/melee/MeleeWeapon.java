@@ -297,6 +297,18 @@ public class MeleeWeapon extends Weapon {
 			return Math.min(10, 3 + (Dungeon.hero.lvl-1)/3);
 		}
 
+		public void gainCharge( float charge ){
+			if (charges < chargeCap()) {
+				partialCharge += charge;
+				while (partialCharge >= 1f) {
+					charges++;
+					partialCharge--;
+				}
+				charges = Math.min(charges, chargeCap());
+				updateQuickslot();
+			}
+		}
+
 		public static final String CHARGES          = "charges";
 		private static final String PARTIALCHARGE   = "partialCharge";
 
