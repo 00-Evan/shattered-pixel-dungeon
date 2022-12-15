@@ -86,7 +86,17 @@ public class MeleeWeapon extends Weapon {
 
 		if (action.equals(AC_ABILITY)){
 			if (!isEquipped(hero)) {
-				GLog.w(Messages.get(this, "ability_need_equip"));
+				if (hero.hasTalent(Talent.SWIFT_EQUIP)){
+					if (hero.buff(Talent.SwiftEquipCooldown.class) == null
+						|| hero.buff(Talent.SwiftEquipCooldown.class).hasSecondUse()){
+						execute(hero, AC_EQUIP);
+						GLog.i(Messages.get(this, "swift_equip"));
+					} else {
+						GLog.w(Messages.get(this, "ability_need_equip"));
+					}
+				} else {
+					GLog.w(Messages.get(this, "ability_need_equip"));
+				}
 			} else if (Buff.affect(hero, Charger.class).charges < abilityChargeUse()) {
 				GLog.w(Messages.get(this, "ability_no_charge"));
 				usesTargeting = false;

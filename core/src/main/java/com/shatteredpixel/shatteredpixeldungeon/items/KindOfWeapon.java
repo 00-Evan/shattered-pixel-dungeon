@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -67,8 +68,21 @@ abstract public class KindOfWeapon extends EquipableItem {
 				equipCursed( hero );
 				GLog.n( Messages.get(KindOfWeapon.class, "equip_cursed") );
 			}
-			
-			hero.spendAndNext( TIME_TO_EQUIP );
+
+			if (hero.hasTalent(Talent.SWIFT_EQUIP)) {
+				if (hero.buff(Talent.SwiftEquipCooldown.class) == null){
+					hero.spendAndNext(-hero.cooldown());
+					Buff.affect(hero, Talent.SwiftEquipCooldown.class, 49f)
+							.secondUse = hero.pointsInTalent(Talent.SWIFT_EQUIP) == 2;
+				} else if (hero.buff(Talent.SwiftEquipCooldown.class).hasSecondUse()) {
+					hero.spendAndNext(-hero.cooldown());
+					hero.buff(Talent.SwiftEquipCooldown.class).secondUse = false;
+				} else {
+					hero.spendAndNext(TIME_TO_EQUIP);
+				}
+			} else {
+				hero.spendAndNext(TIME_TO_EQUIP);
+			}
 			return true;
 			
 		} else {

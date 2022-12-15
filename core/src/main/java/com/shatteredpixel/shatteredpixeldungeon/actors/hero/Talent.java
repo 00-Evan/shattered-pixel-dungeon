@@ -149,7 +149,7 @@ public enum Talent {
 	//Duelist T1
 	STRENGTHENING_MEAL(128), ADVENTURERS_INTUITION(129), DUELIST_T1_3(130), AGGRESSIVE_BARRIER(131),
 	//Duelist T2
-	FOCUSED_MEAL(132), RESTORED_AGILITY(133), WEAPON_RECHARGING(134), DUELIST_T2_4(135), DUELIST_T2_5(136),
+	FOCUSED_MEAL(132), RESTORED_AGILITY(133), WEAPON_RECHARGING(134), DUELIST_T2_4(135), SWIFT_EQUIP(136),
 	//Duelist T3
 	DUELIST_T3_1(137, 3), DUELIST_T3_2(138, 3),
 	//Duelist S1 T3
@@ -229,6 +229,31 @@ public enum Talent {
 	public static class SpiritBladesTracker extends FlavourBuff{};
 	public static class AggressiveBarrierCooldown extends FlavourBuff{};
 	public static class RestoredAgilityTracker extends FlavourBuff{};
+	public static class SwiftEquipCooldown extends FlavourBuff{
+		public boolean secondUse;
+		public boolean hasSecondUse(){
+			return secondUse && cooldown() > 44f;
+		}
+
+		public int icon() { return BuffIndicator.TIME; }
+		public void tintIcon(Image icon) {
+			if (hasSecondUse()) icon.hardlight(0.85f, 0f, 1.0f);
+			else                icon.hardlight(0.35f, 0f, 0.7f);
+		}
+		public float iconFadePercent() { return GameMath.gate(0, visualcooldown() / 50f, 1); }
+
+		private static final String SECOND_USE = "second_use";
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(SECOND_USE, secondUse);
+		}
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			secondUse = bundle.getBoolean(SECOND_USE);
+		}
+	};
 
 	int icon;
 	int maxPoints;
@@ -634,7 +659,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, INVIGORATING_MEAL, RESTORED_NATURE, REJUVENATING_STEPS, HEIGHTENED_SENSES, DURABLE_PROJECTILES);
 				break;
 			case DUELIST:
-				Collections.addAll(tierTalents, FOCUSED_MEAL, RESTORED_AGILITY, WEAPON_RECHARGING, DUELIST_T2_4, DUELIST_T2_5);
+				Collections.addAll(tierTalents, FOCUSED_MEAL, RESTORED_AGILITY, WEAPON_RECHARGING, DUELIST_T2_4, SWIFT_EQUIP);
 				break;
 		}
 		for (Talent talent : tierTalents){
