@@ -157,6 +157,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingCl
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingHammer;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingSpear;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingSpike;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingStone;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Tomahawk;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Trident;
@@ -411,7 +412,8 @@ public class Generator {
 			
 			MIS_T1.classes = new Class<?>[]{
 					ThrowingStone.class,
-					ThrowingKnife.class
+					ThrowingKnife.class,
+					ThrowingSpike.class
 			};
 			MIS_T1.probs = new float[]{ 6, 5 };
 			

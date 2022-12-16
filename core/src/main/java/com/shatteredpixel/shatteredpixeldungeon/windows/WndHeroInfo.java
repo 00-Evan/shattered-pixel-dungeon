@@ -195,7 +195,7 @@ public class WndHeroInfo extends WndTabbed {
 				case DUELIST:
 					icons = new Image[]{ new ItemSprite(ItemSpriteSheet.RAPIER),
 							new ItemSprite(ItemSpriteSheet.WAR_HAMMER),
-							new ItemSprite(ItemSpriteSheet.THROWING_KNIFE),
+							new ItemSprite(ItemSpriteSheet.THROWING_SPIKE),
 							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
 					break;
 			}

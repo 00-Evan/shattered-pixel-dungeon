@@ -68,6 +68,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Rapier;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingSpike;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingStone;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.DeviceCompat;
@@ -216,11 +217,11 @@ public enum HeroClass {
 		(hero.belongings.weapon = new Rapier()).identify();
 		hero.belongings.weapon.activate(hero);
 
-		ThrowingKnife knives = new ThrowingKnife();
-		knives.quantity(3).collect();
+		ThrowingSpike spikes = new ThrowingSpike();
+		spikes.quantity(2).collect();
 
 		Dungeon.quickslot.setSlot(0, hero.belongings.weapon);
-		Dungeon.quickslot.setSlot(1, knives);
+		Dungeon.quickslot.setSlot(1, spikes);
 
 		new PotionOfStrength().identify();
 		new ScrollOfMirrorImage().identify();
