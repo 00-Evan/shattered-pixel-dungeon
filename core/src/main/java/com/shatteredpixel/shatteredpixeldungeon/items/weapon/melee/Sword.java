@@ -89,6 +89,7 @@ public class Sword extends MeleeWeapon {
 				}
 
 				if (!enemy.isAlive()){
+					wep.onAbilityKill(hero);
 					hero.next();
 					Buff.prolong(hero, CleaveTracker.class, 4f); //1 less as attack was instant
 				} else {

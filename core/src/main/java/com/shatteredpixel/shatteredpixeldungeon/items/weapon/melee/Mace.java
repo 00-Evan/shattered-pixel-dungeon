@@ -85,6 +85,8 @@ public class Mace extends MeleeWeapon {
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 					if (enemy.isAlive()){
 						Buff.affect(enemy, Vulnerable.class, 5f);
+					} else {
+						wep.onAbilityKill(hero);
 					}
 				}
 				hero.spendAndNext(hero.attackDelay());

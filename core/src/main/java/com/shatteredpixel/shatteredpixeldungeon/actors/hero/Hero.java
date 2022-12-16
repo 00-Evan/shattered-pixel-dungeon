@@ -1195,7 +1195,7 @@ public class Hero extends Char {
 					&& buff(Talent.AggressiveBarrierCooldown.class) == null
 					&& (HP / (float)HT) < 0.167f*(1+pointsInTalent(Talent.AGGRESSIVE_BARRIER))){
 				Buff.affect(this, Barrier.class).setShield(2);
-				Buff.affect(this, Talent.AggressiveBarrierCooldown.class, 30f);
+				Buff.affect(this, Talent.AggressiveBarrierCooldown.class, 50f);
 			}
 			sprite.attack( enemy.pos );
 

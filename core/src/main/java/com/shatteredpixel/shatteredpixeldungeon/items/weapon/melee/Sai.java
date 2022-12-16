@@ -84,6 +84,9 @@ public class Sai extends MeleeWeapon {
 			public void call() {
 				wep.onAbilityUsed(hero);
 				boolean hit = hero.attack(enemy, 1, 0, Char.INFINITE_ACCURACY);
+				if (hit && !enemy.isAlive()){
+					wep.onAbilityKill(hero);
+				}
 
 				HashSet<ComboStrikeTracker> buffs = hero.buffs(ComboStrikeTracker.class);
 				int recentHits = 0;

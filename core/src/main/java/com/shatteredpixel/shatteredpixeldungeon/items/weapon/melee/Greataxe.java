@@ -81,6 +81,9 @@ public class Greataxe extends MeleeWeapon {
 				onAbilityUsed(hero);
 				if (hero.attack(enemy, 1.5f, 0, Char.INFINITE_ACCURACY)){
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+					if (!enemy.isAlive()){
+						onAbilityKill(hero);
+					}
 				}
 				hero.spendAndNext(2*hero.attackDelay());
 			}

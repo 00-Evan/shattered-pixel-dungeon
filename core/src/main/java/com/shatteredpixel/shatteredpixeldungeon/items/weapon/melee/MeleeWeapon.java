@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -93,9 +94,11 @@ public class MeleeWeapon extends Weapon {
 						GLog.i(Messages.get(this, "swift_equip"));
 					} else {
 						GLog.w(Messages.get(this, "ability_need_equip"));
+						usesTargeting = false;
 					}
 				} else {
 					GLog.w(Messages.get(this, "ability_need_equip"));
+					usesTargeting = false;
 				}
 			} else if ((Buff.affect(hero, Charger.class).charges + Buff.affect(hero, Charger.class).partialCharge)
 					< abilityChargeUse(hero)) {
@@ -159,6 +162,13 @@ public class MeleeWeapon extends Weapon {
 		}
 
 		updateQuickslot();
+	}
+
+	protected void onAbilityKill( Hero hero ){
+		if (hero.hasTalent(Talent.LETHAL_HASTE)){
+			//effectively 1/2 turns of haste
+			Buff.prolong(hero, Haste.class, 0.67f+hero.pointsInTalent(Talent.LETHAL_HASTE));
+		}
 	}
 
 	public float abilityChargeUse( Hero hero ){

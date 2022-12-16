@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
@@ -67,6 +68,18 @@ public class Flail extends MeleeWeapon {
 	public float accuracyFactor(Char owner, Char target) {
 		SpinAbilityTracker spin = owner.buff(SpinAbilityTracker.class);
 		if (spin != null) {
+			//have to handle this in an actor tied to the regular attack =S
+			Actor.add(new Actor() {
+				{ actPriority = VFX_PRIO; }
+				@Override
+				protected boolean act() {
+					if (owner instanceof Hero && !target.isAlive()){
+						onAbilityKill((Hero)owner);
+					}
+					Actor.remove(this);
+					return true;
+				}
+			});
 			//we detach and calculate bonus here in case the attack misses
 			spin.detach();
 			spinBonus = 1f + 0.2f*spin.spins;
