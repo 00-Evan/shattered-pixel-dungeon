@@ -54,6 +54,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
@@ -151,7 +152,7 @@ public enum Talent {
 	//Duelist T2
 	FOCUSED_MEAL(132), RESTORED_AGILITY(133), WEAPON_RECHARGING(134), DUELIST_T2_4(135), SWIFT_EQUIP(136),
 	//Duelist T3
-	DUELIST_T3_1(137, 3), DUELIST_T3_2(138, 3),
+	LIGHTWEIGHT_CHARGE(137, 3), DEADLY_FOLLOWUP(138, 3),
 	//Duelist S1 T3
 	DUELIST_S1_1(139, 3), DUELIST_S1_2(140, 3), DUELIST_S1_3(141, 3),
 	//Duelist S2 T3
@@ -254,6 +255,7 @@ public enum Talent {
 			secondUse = bundle.getBoolean(SECOND_USE);
 		}
 	};
+	public static class DeadlyFollowupTracker extends FlavourBuff{};
 
 	int icon;
 	int maxPoints;
@@ -595,6 +597,24 @@ public enum Talent {
 			}
 		}
 
+		if (hero.buff(Talent.SpiritBladesTracker.class) != null
+				&& Random.Int(10) < 3*hero.pointsInTalent(Talent.SPIRIT_BLADES)){
+			SpiritBow bow = hero.belongings.getItem(SpiritBow.class);
+			if (bow != null) dmg = bow.proc( hero, enemy, dmg );
+			hero.buff(Talent.SpiritBladesTracker.class).detach();
+		}
+
+		if (hero.hasTalent(DEADLY_FOLLOWUP)) {
+			if (hero.belongings.weapon() instanceof MissileWeapon) {
+				Buff.prolong(enemy, DeadlyFollowupTracker.class, 5f);
+			} else if (enemy.buff(DeadlyFollowupTracker.class) != null){
+				dmg = Math.round(dmg * (1.0f + .08f*hero.pointsInTalent(DEADLY_FOLLOWUP)));
+				if (!(enemy instanceof Mob) || !((Mob) enemy).surprisedBy(hero)){
+					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG, 0.75f, 1.2f);
+				}
+			}
+		}
+
 		return dmg;
 	}
 
@@ -685,7 +705,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, POINT_BLANK, SEER_SHOT);
 				break;
 			case DUELIST:
-				Collections.addAll(tierTalents, DUELIST_T3_1, DUELIST_T3_2);
+				Collections.addAll(tierTalents, LIGHTWEIGHT_CHARGE, DEADLY_FOLLOWUP);
 				break;
 		}
 		for (Talent talent : tierTalents){

@@ -40,8 +40,12 @@ public class WornShortsword extends MeleeWeapon {
 	}
 
 	@Override
-	public int abilityChargeUse() {
-		return Dungeon.hero.buff(Sword.CleaveTracker.class) != null ? 0 : 1;
+	public float abilityChargeUse( Hero hero ) {
+		if (hero.buff(Sword.CleaveTracker.class) != null){
+			return 0;
+		} else {
+			return super.abilityChargeUse( hero );
+		}
 	}
 
 	@Override

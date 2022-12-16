@@ -97,7 +97,8 @@ public class MeleeWeapon extends Weapon {
 				} else {
 					GLog.w(Messages.get(this, "ability_need_equip"));
 				}
-			} else if (Buff.affect(hero, Charger.class).charges < abilityChargeUse()) {
+			} else if ((Buff.affect(hero, Charger.class).charges + Buff.affect(hero, Charger.class).partialCharge)
+					< abilityChargeUse(hero)) {
 				GLog.w(Messages.get(this, "ability_no_charge"));
 				usesTargeting = false;
 			} else {
@@ -143,8 +144,13 @@ public class MeleeWeapon extends Weapon {
 	//TODO make abstract
 	protected void duelistAbility( Hero hero, Integer target ){}
 
-	protected void onAbilityUsed(Hero hero ){
-		Buff.affect(hero, Charger.class).charges -= abilityChargeUse();
+	protected void onAbilityUsed( Hero hero ){
+		Charger charger = Buff.affect(hero, Charger.class);
+		charger.partialCharge -= abilityChargeUse( hero );
+		while (charger.partialCharge < 0){
+			charger.charges--;
+			charger.partialCharge++;
+		}
 
 		if (hero.heroClass == HeroClass.DUELIST
 				&& hero.hasTalent(Talent.AGGRESSIVE_BARRIER)
@@ -155,8 +161,14 @@ public class MeleeWeapon extends Weapon {
 		updateQuickslot();
 	}
 
-	public int abilityChargeUse(){
-		return 1;
+	public float abilityChargeUse( Hero hero ){
+		float chargeUse = 1f;
+		if (hero.hasTalent(Talent.LIGHTWEIGHT_CHARGE) && tier <= 3){
+			// T1/2/3 get 50/33/25% charge use reduction at +3
+			float chargeUseReduction = 1/(1f+tier) * (hero.pointsInTalent(Talent.LIGHTWEIGHT_CHARGE)/3f);
+			chargeUse *= 1f - chargeUseReduction;
+		}
+		return chargeUse;
 	}
 
 	public int tier;

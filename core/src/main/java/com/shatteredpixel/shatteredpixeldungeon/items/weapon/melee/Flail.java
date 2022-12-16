@@ -82,8 +82,8 @@ public class Flail extends MeleeWeapon {
 	}
 
 	@Override
-	public int abilityChargeUse() {
-		return (Dungeon.hero.buff(SpinAbilityTracker.class) == null) ? 2 : 0;
+	public float abilityChargeUse( Hero hero ) {
+		return 2*super.abilityChargeUse(hero);
 	}
 
 	@Override

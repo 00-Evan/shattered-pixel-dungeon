@@ -80,8 +80,8 @@ public class Dagger extends MeleeWeapon {
 	}
 
 	@Override
-	public int abilityChargeUse() {
-		return 2;
+	public float abilityChargeUse( Hero hero ) {
+		return 2*super.abilityChargeUse(hero);
 	}
 
 	@Override
