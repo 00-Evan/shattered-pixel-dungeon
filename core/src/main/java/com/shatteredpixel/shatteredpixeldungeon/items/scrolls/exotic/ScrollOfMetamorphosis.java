@@ -170,13 +170,6 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 
 	public static class WndMetamorphReplace extends Window {
 
-		//talents that can only be used by one hero class
-		private static HashMap<Talent, HeroClass> restrictedTalents = new HashMap<>();
-		static {
-			restrictedTalents.put(Talent.RUNIC_TRANSFERENCE, HeroClass.WARRIOR);
-			restrictedTalents.put(Talent.WAND_PRESERVATION, HeroClass.MAGE);
-		}
-
 		public static WndMetamorphReplace INSTANCE;
 
 		public Talent replacing;
@@ -221,10 +214,6 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 						break;
 					} else {
 						if (curTalentsAtTier.contains(talent)){
-							clsTalentsAtTier.remove(talent);
-						}
-						if (restrictedTalents.containsKey(talent)
-								&& restrictedTalents.get(talent) != curUser.heroClass){
 							clsTalentsAtTier.remove(talent);
 						}
 					}

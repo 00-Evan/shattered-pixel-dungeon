@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
@@ -411,8 +412,16 @@ public class Armor extends EquipableItem {
 		} else {
 			if (hasCurseGlyph()){
 				if (Random.Int(3) == 0) inscribe(null);
-			} else if (level() >= 4 && Random.Float(10) < Math.pow(2, level()-4)){
-				inscribe(null);
+			} else {
+
+				int lossChanceStart = 4;
+				if (Dungeon.hero != null && Dungeon.hero.heroClass != HeroClass.WARRIOR && Dungeon.hero.hasTalent(Talent.RUNIC_TRANSFERENCE)){
+					lossChanceStart += 1+Dungeon.hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE);
+				}
+
+				if (level() >= lossChanceStart && Random.Float(10) < Math.pow(2, level()-4)) {
+					inscribe(null);
+				}
 			}
 		}
 		
