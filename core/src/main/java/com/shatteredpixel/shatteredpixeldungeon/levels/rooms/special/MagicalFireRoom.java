@@ -185,6 +185,10 @@ public class MagicalFireRoom extends SpecialRoom {
 							cur[cell] = 0;
 							clearAll = true;
 						}
+						//overrides fire
+						if (fire != null && fire.volume > 0 && fire.cur[cell] > 0){
+							fire.clear(cell);
+						}
 						if (freeze != null && freeze.volume > 0 && freeze.cur[cell] > 0){
 							freeze.clear(cell);
 							cur[cell] = 0;
