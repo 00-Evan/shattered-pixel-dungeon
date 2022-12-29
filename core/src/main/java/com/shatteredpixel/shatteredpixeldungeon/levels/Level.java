@@ -531,6 +531,16 @@ public abstract class Level implements Bundlable {
 		return null;
 	}
 
+	//some buff effects have special logic or are cancelled from the hero before transitioning levels
+	public static void beforeTransition(){
+
+		//time freeze effects need to resolve their pressed cells before transitioning
+		TimekeepersHourglass.timeFreeze timeFreeze = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+		if (timeFreeze != null) timeFreeze.disarmPresses();
+		Swiftthistle.TimeBubble timeBubble = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
+		if (timeBubble != null) timeBubble.disarmPresses();
+	}
+
 	public void seal(){
 		if (!locked) {
 			locked = true;
