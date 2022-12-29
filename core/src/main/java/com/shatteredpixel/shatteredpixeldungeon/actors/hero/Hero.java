@@ -483,7 +483,7 @@ public class Hero extends Char {
 	public int defenseSkill( Char enemy ) {
 
 		if (buff(Combo.ParryTracker.class) != null){
-			if (canAttack(enemy)){
+			if (canAttack(enemy) && !isCharmedBy(enemy)){
 				Buff.affect(this, Combo.RiposteTracker.class).enemy = enemy;
 			}
 			return INFINITE_EVASION;
