@@ -84,18 +84,18 @@ public class ScrollOfTeleportation extends Scroll {
 		return true;
 		
 	}
-	
-	public static boolean teleportHero( Hero hero ) {
-		return teleportChar( hero );
-	}
-	
+
 	public static boolean teleportChar( Char ch ) {
+		return teleportChar( ch, ScrollOfTeleportation.class );
+	}
+
+	public static boolean teleportChar( Char ch, Class source ) {
 
 		if (!(Dungeon.level instanceof RegularLevel)){
 			return teleportInNonRegularLevel( ch, false );
 		}
 
-		if (Char.hasProp(ch, Char.Property.IMMOVABLE)){
+		if (Char.hasProp(ch, Char.Property.IMMOVABLE) || ch.isImmune(source)){
 			GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 			return false;
 		}
@@ -205,7 +205,7 @@ public class ScrollOfTeleportation extends Scroll {
 
 	//teleports to a random pathable location on the floor
 	//prefers not seen(optional) > not visible > visible
-	public static boolean teleportInNonRegularLevel(Char ch, boolean preferNotSeen ){
+	private static boolean teleportInNonRegularLevel(Char ch, boolean preferNotSeen ){
 
 		if (Char.hasProp(ch, Char.Property.IMMOVABLE)){
 			GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );

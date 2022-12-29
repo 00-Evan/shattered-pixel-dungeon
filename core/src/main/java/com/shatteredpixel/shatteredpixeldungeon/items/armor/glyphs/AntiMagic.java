@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogFist;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
@@ -78,6 +79,7 @@ public class AntiMagic extends Armor.Glyph {
 
 		RESISTS.add( Bomb.MagicalBomb.class );
 		RESISTS.add( ScrollOfPsionicBlast.class );
+		RESISTS.add( ScrollOfTeleportation.class );
 
 		RESISTS.add( CursedWand.class );
 		RESISTS.add( WandOfBlastWave.class );

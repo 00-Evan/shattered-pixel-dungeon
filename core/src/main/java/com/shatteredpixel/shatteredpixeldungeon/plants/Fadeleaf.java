@@ -65,12 +65,12 @@ public class Fadeleaf extends Plant {
 				Game.switchScene( InterlevelScene.class );
 				
 			} else {
-				ScrollOfTeleportation.teleportChar((Hero) ch);
+				ScrollOfTeleportation.teleportChar(ch, Fadeleaf.class);
 			}
 			
 		} else if (ch instanceof Mob && !ch.properties().contains(Char.Property.IMMOVABLE)) {
 
-			ScrollOfTeleportation.teleportChar(ch);
+			ScrollOfTeleportation.teleportChar(ch, Fadeleaf.class);
 
 		}
 		
