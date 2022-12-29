@@ -325,9 +325,6 @@ public abstract class Char extends Actor {
 		} else if (hit( this, enemy, accMulti )) {
 			
 			int dr = Math.round(enemy.drRoll() * AscensionChallenge.statModifier(enemy));
-
-			Barkskin bark = enemy.buff(Barkskin.class);
-			if (bark != null)   dr += Random.NormalIntRange( 0 , bark.level() );
 			
 			if (this instanceof Hero){
 				Hero h = (Hero)this;
@@ -524,7 +521,12 @@ public abstract class Char extends Actor {
 	}
 	
 	public int drRoll() {
-		return 0;
+		int dr = 0;
+
+		Barkskin bark = buff(Barkskin.class);
+		if (bark != null)   dr += Random.NormalIntRange( 0 , bark.level() );
+
+		return dr;
 	}
 	
 	public int damageRoll() {

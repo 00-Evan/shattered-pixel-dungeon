@@ -176,10 +176,11 @@ public class PrismaticImage extends NPC {
 	
 	@Override
 	public int drRoll() {
+		int dr = super.drRoll();
 		if (hero != null){
-			return hero.drRoll();
+			return dr + hero.drRoll();
 		} else {
-			return 0;
+			return dr;
 		}
 	}
 	

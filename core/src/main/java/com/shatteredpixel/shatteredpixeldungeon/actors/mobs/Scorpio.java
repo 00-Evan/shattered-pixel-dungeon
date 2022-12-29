@@ -66,7 +66,7 @@ public class Scorpio extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 16);
+		return super.drRoll() + Random.NormalIntRange(0, 16);
 	}
 	
 	@Override
