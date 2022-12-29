@@ -539,6 +539,10 @@ public abstract class Level implements Bundlable {
 		if (timeFreeze != null) timeFreeze.disarmPresses();
 		Swiftthistle.TimeBubble timeBubble = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
 		if (timeBubble != null) timeBubble.disarmPresses();
+
+		//iron stomach does not persist through chasm falling
+		Talent.WarriorFoodImmunity foodImmune = Dungeon.hero.buff(Talent.WarriorFoodImmunity.class);
+		if (foodImmune != null) foodImmune.detach();
 	}
 
 	public void seal(){
