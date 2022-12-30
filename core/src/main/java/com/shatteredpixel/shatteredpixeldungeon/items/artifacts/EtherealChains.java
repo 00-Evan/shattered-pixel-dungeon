@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -174,6 +175,7 @@ public class EtherealChains extends Artifact {
 			return;
 		} else {
 			charge -= chargeUse;
+			Invisibility.dispel(hero);
 			Talent.onArtifactUsed(hero);
 			updateQuickslot();
 		}
@@ -237,6 +239,7 @@ public class EtherealChains extends Artifact {
 			return;
 		} else {
 			charge -= chargeUse;
+			Invisibility.dispel(hero);
 			Talent.onArtifactUsed(hero);
 			updateQuickslot();
 		}

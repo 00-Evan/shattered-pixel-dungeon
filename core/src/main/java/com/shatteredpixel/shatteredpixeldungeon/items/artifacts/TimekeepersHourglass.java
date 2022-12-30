@@ -122,6 +122,7 @@ public class TimekeepersHourglass extends Artifact {
 									GameScene.flash(0x80FFFFFF);
 									Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 
+									Invisibility.dispel(Dungeon.hero);
 									activeBuff = new timeFreeze();
 									Talent.onArtifactUsed(Dungeon.hero);
 									activeBuff.attachTo(Dungeon.hero);
