@@ -62,6 +62,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesPower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Snake;
@@ -436,7 +437,8 @@ public class Hero extends Char {
 	public boolean shoot( Char enemy, MissileWeapon wep ) {
 
 		this.enemy = enemy;
-		boolean wasEnemy = enemy.alignment == Alignment.ENEMY;
+		boolean wasEnemy = enemy.alignment == Alignment.ENEMY
+				|| (enemy instanceof Mimic && enemy.alignment == Alignment.NEUTRAL);
 
 		//temporarily set the hero's weapon to the missile weapon being used
 		//TODO improve this!
@@ -1922,7 +1924,8 @@ public class Hero extends Char {
 	public void onAttackComplete() {
 		
 		AttackIndicator.target(enemy);
-		boolean wasEnemy = enemy.alignment == Alignment.ENEMY;
+		boolean wasEnemy = enemy.alignment == Alignment.ENEMY
+				|| (enemy instanceof Mimic && enemy.alignment == Alignment.NEUTRAL);
 
 		boolean hit = attack( enemy );
 		
