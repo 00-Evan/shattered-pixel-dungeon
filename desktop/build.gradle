@@ -66,8 +66,6 @@ runtime {
         imageName = appName
     }
 
-    //TODO everything works but there is some jank and default icons, esp. for installers and linux
-    // look into --resource-dir flag for further improvements
     if (osName.contains('windows')) {
         targetPlatform("win") {
             jdkHome = jdkDownload("https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk-16.0.1%2B9/OpenJDK16U-jdk_x64_windows_hotspot_16.0.1_9.zip")
@@ -76,10 +74,6 @@ runtime {
                 jpackageHome = file("./build/jdks/win/jdk-16.0.1+9")
                 imageOptions = ["--icon", file("./src/main/assets/icons/windows.ico"),
                                 "--java-options", "-XX:+IgnoreUnrecognizedVMOptions"]
-
-                installerType = "msi"
-                installerName = appName
-                installerOptions = ["--win-dir-chooser", "--win-menu"]
             }
         }
     } else if (osName.contains('linux')) {
@@ -90,10 +84,6 @@ runtime {
                 jpackageHome = file("./build/jdks/linux/jdk-16.0.1+9")
                 imageOptions = ["--icon", file("./src/main/assets/icons/icon_256.png"),
                                 "--java-options", "-XX:+IgnoreUnrecognizedVMOptions"]
-                //assumes ubuntu linux, changes needed to generate .rpm files
-                installerType = "deb"
-                installerName = appName
-                installerOptions = ["--linux-shortcut"]
             }
         }
     } else if (osName.contains('mac')) {
@@ -108,9 +98,6 @@ runtime {
                                 //append .apple because com.shatteredpixel.shatteredpixeldungeon was taken =(
                                 "--mac-package-identifier", appPackageName + ".apple",
                                 "--mac-package-name", "ShattererdPD"]
-
-                installerType = "dmg"
-                installerName = appName
             }
         }
     }
