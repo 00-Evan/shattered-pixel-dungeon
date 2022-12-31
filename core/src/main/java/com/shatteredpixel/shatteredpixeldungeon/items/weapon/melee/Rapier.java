@@ -45,17 +45,10 @@ public class Rapier extends MeleeWeapon {
 		bones = false;
 	}
 
-	//might want to think on this more, it doesn't really make sense for duelist to get defense and warrior to have raw dmg
-
 	@Override
 	public int max(int lvl) {
 		return  4*(tier+1) +    //8 base, down from 10
 				lvl*(tier+1);   //scaling unchanged
-	}
-
-	@Override
-	public int defenseFactor( Char owner ) {
-		return 1;	//1 extra defence
 	}
 
 	@Override
