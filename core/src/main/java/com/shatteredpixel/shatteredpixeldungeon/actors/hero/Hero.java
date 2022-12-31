@@ -1221,6 +1221,9 @@ public class Hero extends Char {
 		if (hasTalent(Talent.HOLD_FAST)){
 			Buff.affect(this, HoldFast.class).pos = pos;
 		}
+		if (hasTalent(Talent.PATIENT_STRIKE)){
+			Buff.prolong(this, Talent.PatientStrikeTracker.class, cooldown());
+		}
 		if (!fullRest) {
 			if (sprite != null) {
 				sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "wait"));
