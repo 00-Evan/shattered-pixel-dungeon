@@ -761,6 +761,12 @@ public class GameScene extends PixelScene {
 			tagAction = action.visible;
 			tagResume = resume.visible;
 
+			//except if action is the only tag left, then let it drop to the bottom
+			// this is because the action tag can sometimes be persistent
+			if (tagAction && !tagAttack && !tagLoot && !tagResume){
+				tagAppearing = true;
+			}
+
 			if (tagAppearing) layoutTags();
 		}
 
