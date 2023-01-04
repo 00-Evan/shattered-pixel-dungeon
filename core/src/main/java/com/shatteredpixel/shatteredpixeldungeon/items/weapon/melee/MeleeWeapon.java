@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
@@ -31,12 +32,19 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -100,8 +108,12 @@ public class MeleeWeapon extends Weapon {
 					GLog.w(Messages.get(this, "ability_need_equip"));
 					usesTargeting = false;
 				}
-			} else if ((Buff.affect(hero, Charger.class).charges + Buff.affect(hero, Charger.class).partialCharge)
-					< abilityChargeUse(hero)) {
+			} else if (hero.belongings.weapon == this &&
+					(Buff.affect(hero, Charger.class).charges + Buff.affect(hero, Charger.class).partialCharge) < abilityChargeUse(hero)) {
+				GLog.w(Messages.get(this, "ability_no_charge"));
+				usesTargeting = false;
+			} else if (hero.belongings.secondWep == this &&
+					(Buff.affect(hero, Charger.class).secondCharges + Buff.affect(hero, Charger.class).secondPartialCharge) < abilityChargeUse(hero)) {
 				GLog.w(Messages.get(this, "ability_no_charge"));
 				usesTargeting = false;
 			} else {
@@ -149,10 +161,19 @@ public class MeleeWeapon extends Weapon {
 
 	protected void onAbilityUsed( Hero hero ){
 		Charger charger = Buff.affect(hero, Charger.class);
-		charger.partialCharge -= abilityChargeUse( hero );
-		while (charger.partialCharge < 0){
-			charger.charges--;
-			charger.partialCharge++;
+
+		if (Dungeon.hero.belongings.weapon == this) {
+			charger.partialCharge -= abilityChargeUse(hero);
+			while (charger.partialCharge < 0) {
+				charger.charges--;
+				charger.partialCharge++;
+			}
+		} else {
+			charger.secondPartialCharge -= abilityChargeUse(hero);
+			while (charger.secondPartialCharge < 0) {
+				charger.secondCharges--;
+				charger.secondPartialCharge++;
+			}
 		}
 
 		if (hero.heroClass == HeroClass.DUELIST
@@ -198,7 +219,23 @@ public class MeleeWeapon extends Weapon {
 	public int STRReq(int lvl){
 		return STRReq(tier, lvl);
 	}
-	
+
+	@Override
+	public int buffedLvl() {
+		if (Dungeon.hero.subClass == HeroSubClass.CHAMPION && isEquipped(Dungeon.hero)){
+			KindOfWeapon other = null;
+			if (Dungeon.hero.belongings.weapon() != this) other = Dungeon.hero.belongings.weapon();
+			if (Dungeon.hero.belongings.secondWep() != this) other = Dungeon.hero.belongings.secondWep();
+
+			if (other instanceof MeleeWeapon
+					&& tier <= ((MeleeWeapon) other).tier
+					&& other.level() > super.buffedLvl()){
+				return other.level();
+			}
+		}
+		return super.buffedLvl();
+	}
+
 	@Override
 	public int damageRoll(Char owner) {
 		int damage = augment.damageFactor(super.damageRoll( owner ));
@@ -278,7 +315,11 @@ public class MeleeWeapon extends Weapon {
 		if (isEquipped(Dungeon.hero)
 				&& Dungeon.hero.buff(Charger.class) != null) {
 			Charger buff = Dungeon.hero.buff(Charger.class);
-			return buff.charges + "/" + buff.chargeCap();
+			if (Dungeon.hero.belongings.weapon == this) {
+				return buff.charges + "/" + buff.chargeCap();
+			} else {
+				return buff.secondCharges + "/" + buff.secondChargeCap();
+			}
 		} else {
 			return super.status();
 		}
@@ -302,11 +343,15 @@ public class MeleeWeapon extends Weapon {
 		return price;
 	}
 
-	public static class Charger extends Buff {
+	public static class Charger extends Buff implements ActionIndicator.Action {
 
 		private int charges = 3;
 		private float partialCharge;
 		//offhand charge as well?
+
+		//champion subclass
+		private int secondCharges = 0;
+		private float secondPartialCharge;
 
 		@Override
 		public boolean act() {
@@ -330,12 +375,50 @@ public class MeleeWeapon extends Weapon {
 			} else {
 				partialCharge = 0;
 			}
+
+			if (Dungeon.hero.subClass == HeroSubClass.CHAMPION
+					&& secondCharges < secondChargeCap()) {
+				if (lock == null || lock.regenOn()) {
+					secondPartialCharge += 1 / (100f - (chargeCap() - 2 * secondCharges)); // 100 to 80 turns per charge
+				}
+
+				if (secondPartialCharge >= 1) {
+					secondCharges++;
+					secondPartialCharge--;
+					updateQuickslot();
+				}
+
+			} else {
+				secondPartialCharge = 0;
+			}
+
+			if (ActionIndicator.action != this && Dungeon.hero.subClass == HeroSubClass.CHAMPION) {
+				ActionIndicator.setAction(this);
+			}
+
 			spend(TICK);
 			return true;
 		}
 
+		@Override
+		public void fx(boolean on) {
+			if (on && Dungeon.hero.subClass == HeroSubClass.CHAMPION) {
+				ActionIndicator.setAction(this);
+			}
+		}
+
+		@Override
+		public void detach() {
+			super.detach();
+			ActionIndicator.clearAction(this);
+		}
+
 		public int chargeCap(){
 			return Math.min(10, 3 + (Dungeon.hero.lvl-1)/3);
+		}
+
+		public int secondChargeCap(){
+			return chargeCap()/2;
 		}
 
 		public void gainCharge( float charge ){
@@ -365,6 +448,28 @@ public class MeleeWeapon extends Weapon {
 			super.restoreFromBundle(bundle);
 			charges = bundle.getInt(CHARGES);
 			partialCharge = bundle.getFloat(PARTIALCHARGE);
+		}
+
+		@Override
+		public String actionName() {
+			return Messages.get(MeleeWeapon.class, "swap");
+		}
+
+		@Override
+		public Image actionIcon() {
+			return new HeroIcon(HeroSubClass.CHAMPION);
+		}
+
+		@Override
+		public void doAction() {
+			KindOfWeapon temp = Dungeon.hero.belongings.weapon;
+			Dungeon.hero.belongings.weapon = Dungeon.hero.belongings.secondWep;
+			Dungeon.hero.belongings.secondWep = temp;
+
+			Dungeon.hero.sprite.operate(Dungeon.hero.pos);
+			Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
+
+			Item.updateQuickslot();
 		}
 	}
 

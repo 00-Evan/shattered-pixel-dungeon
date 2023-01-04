@@ -100,6 +100,9 @@ public class Dart extends MissileWeapon {
 	private void updateCrossbow(){
 		if (Dungeon.hero.belongings.weapon() instanceof Crossbow){
 			bow = (Crossbow) Dungeon.hero.belongings.weapon();
+		} else if (Dungeon.hero.belongings.secondWep() instanceof Crossbow) {
+			//player can instant swap anyway, so this is just QoL
+			bow = (Crossbow) Dungeon.hero.belongings.secondWep();
 		} else {
 			bow = null;
 		}
