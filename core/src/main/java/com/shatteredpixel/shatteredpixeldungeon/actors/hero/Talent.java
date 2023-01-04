@@ -779,6 +779,12 @@ public enum Talent {
 			case WARDEN:
 				Collections.addAll(tierTalents, DURABLE_TIPS, BARKSKIN, SHIELDING_DEW);
 				break;
+			case CHAMPION:
+				Collections.addAll(tierTalents, DUELIST_S1_1, DUELIST_S1_2, DUELIST_S1_3);
+				break;
+			case ADEPT:
+				Collections.addAll(tierTalents, DUELIST_S2_1, DUELIST_S2_2, DUELIST_S2_3);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			talents.get(2).put(talent, 0);
