@@ -60,6 +60,11 @@ public class Greataxe extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
+		if (hero.HP / (float)hero.HT > 0.25f){
+			GLog.w(Messages.get(this, "ability_cant_use"));
+			return;
+		}
+
 		if (target == null) {
 			return;
 		}
@@ -85,7 +90,7 @@ public class Greataxe extends MeleeWeapon {
 						onAbilityKill(hero);
 					}
 				}
-				hero.spendAndNext(2*hero.attackDelay());
+				hero.spendAndNext(hero.attackDelay());
 			}
 		});
 	}
