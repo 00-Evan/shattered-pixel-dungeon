@@ -68,7 +68,7 @@ public class RoundShield extends MeleeWeapon {
 
 	public static void guardAbility(Hero hero, int duration, MeleeWeapon wep){
 		wep.onAbilityUsed(hero);
-		Buff.affect(hero, GuardTracker.class, duration);
+		Buff.prolong(hero, GuardTracker.class, duration);
 		hero.sprite.operate(hero.pos);
 		hero.spendAndNext(Actor.TICK);
 	}

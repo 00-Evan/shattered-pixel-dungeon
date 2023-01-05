@@ -54,6 +54,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocki
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstable;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampiric;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -184,6 +185,10 @@ abstract public class Weapon extends KindOfWeapon {
 			ACC /= 5;
 		}
 
+		if (owner.buff(Scimitar.SwordDance.class) != null){
+			ACC *= 0.67f;
+		}
+
 		return encumbrance > 0 ? (float)(ACC / Math.pow( 1.5, encumbrance )) : ACC;
 	}
 	
@@ -205,7 +210,13 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 
 	protected float speedMultiplier(Char owner ){
-		return RingOfFuror.attackSpeedMultiplier(owner);
+		float multi = RingOfFuror.attackSpeedMultiplier(owner);
+
+		if (owner.buff(Scimitar.SwordDance.class) != null){
+			multi += 0.6f;
+		}
+
+		return multi;
 	}
 
 	@Override
