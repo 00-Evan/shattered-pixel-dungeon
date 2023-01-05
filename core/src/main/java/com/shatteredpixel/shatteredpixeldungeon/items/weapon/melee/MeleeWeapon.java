@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -159,7 +160,8 @@ public class MeleeWeapon extends Weapon {
 	//TODO make abstract
 	protected void duelistAbility( Hero hero, Integer target ){}
 
-	protected void onAbilityUsed( Hero hero ){
+	protected void beforeAbilityUsed(Hero hero ){
+		hero.belongings.abilityWeapon = this;
 		Charger charger = Buff.affect(hero, Charger.class);
 
 		if (Dungeon.hero.belongings.weapon == this) {
@@ -183,6 +185,10 @@ public class MeleeWeapon extends Weapon {
 		}
 
 		updateQuickslot();
+	}
+
+	protected void afterAbilityUsed( Hero hero ){
+		hero.belongings.abilityWeapon = null;
 	}
 
 	protected void onAbilityKill( Hero hero ){
@@ -436,11 +442,16 @@ public class MeleeWeapon extends Weapon {
 		public static final String CHARGES          = "charges";
 		private static final String PARTIALCHARGE   = "partialCharge";
 
+		public static final String SECOND_CHARGES          = "second_charges";
+		private static final String SECOND_PARTIALCHARGE   = "second_partialCharge";
+
 		@Override
 		public void storeInBundle(Bundle bundle) {
 			super.storeInBundle(bundle);
 			bundle.put(CHARGES, charges);
 			bundle.put(PARTIALCHARGE, partialCharge);
+			bundle.put(SECOND_CHARGES, secondCharges);
+			bundle.put(SECOND_PARTIALCHARGE, secondPartialCharge);
 		}
 
 		@Override
@@ -448,6 +459,8 @@ public class MeleeWeapon extends Weapon {
 			super.restoreFromBundle(bundle);
 			charges = bundle.getInt(CHARGES);
 			partialCharge = bundle.getFloat(PARTIALCHARGE);
+			secondCharges = bundle.getInt(SECOND_CHARGES);
+			secondPartialCharge = bundle.getFloat(SECOND_PARTIALCHARGE);
 		}
 
 		@Override

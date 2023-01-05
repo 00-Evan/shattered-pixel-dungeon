@@ -52,10 +52,11 @@ public class Scimitar extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		onAbilityUsed(hero);
+		beforeAbilityUsed(hero);
 		Buff.prolong(hero, SwordDance.class, 5f); //5 turns as using the ability is instant
 		hero.sprite.operate(hero.pos);
 		hero.next();
+		afterAbilityUsed(hero);
 	}
 
 	public static class SwordDance extends FlavourBuff {

@@ -80,7 +80,7 @@ public class Mace extends MeleeWeapon {
 		hero.sprite.attack(enemy.pos, new Callback() {
 			@Override
 			public void call() {
-				wep.onAbilityUsed(hero);
+				wep.beforeAbilityUsed(hero);
 				if (hero.attack(enemy, dmgMulti, 0, 0.25f)) {
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 					if (enemy.isAlive()){
@@ -90,6 +90,7 @@ public class Mace extends MeleeWeapon {
 					}
 				}
 				hero.spendAndNext(hero.attackDelay());
+				wep.afterAbilityUsed(hero);
 			}
 		});
 	}

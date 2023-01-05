@@ -81,7 +81,7 @@ public class RunicBlade extends MeleeWeapon {
 		hero.sprite.attack(enemy.pos, new Callback() {
 			@Override
 			public void call() {
-				onAbilityUsed(hero);
+				beforeAbilityUsed(hero);
 				if (hero.attack(enemy, 1f, 0, Char.INFINITE_ACCURACY)){
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 					if (!enemy.isAlive()){
@@ -90,6 +90,7 @@ public class RunicBlade extends MeleeWeapon {
 				}
 				tracker.detach();
 				hero.spendAndNext(hero.attackDelay());
+				afterAbilityUsed(hero);
 			}
 		});
 	}

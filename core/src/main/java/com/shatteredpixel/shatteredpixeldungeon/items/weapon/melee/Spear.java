@@ -81,7 +81,7 @@ public class Spear extends MeleeWeapon {
 		hero.sprite.attack(enemy.pos, new Callback() {
 			@Override
 			public void call() {
-				wep.onAbilityUsed(hero);
+				wep.beforeAbilityUsed(hero);
 				if (hero.attack(enemy, dmgMulti, 0, Char.INFINITE_ACCURACY)) {
 					if (enemy.isAlive()){
 						//trace a ballistica to our target (which will also extend past them
@@ -96,6 +96,7 @@ public class Spear extends MeleeWeapon {
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				}
 				hero.spendAndNext(hero.attackDelay());
+				wep.afterAbilityUsed(hero);
 			}
 		});
 	}

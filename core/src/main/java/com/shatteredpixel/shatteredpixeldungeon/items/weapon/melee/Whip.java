@@ -73,7 +73,7 @@ public class Whip extends MeleeWeapon {
 		hero.sprite.attack(hero.pos, new Callback() {
 			@Override
 			public void call() {
-				onAbilityUsed(hero);
+				beforeAbilityUsed(hero);
 				for (Char ch : targets) {
 					hero.attack(ch);
 					if (!ch.isAlive()){
@@ -81,6 +81,7 @@ public class Whip extends MeleeWeapon {
 					}
 				}
 				hero.spendAndNext(hero.attackDelay());
+				afterAbilityUsed(hero);
 			}
 		});
 	}

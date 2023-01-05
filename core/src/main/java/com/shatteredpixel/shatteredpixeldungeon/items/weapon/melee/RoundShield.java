@@ -67,10 +67,11 @@ public class RoundShield extends MeleeWeapon {
 	}
 
 	public static void guardAbility(Hero hero, int duration, MeleeWeapon wep){
-		wep.onAbilityUsed(hero);
+		wep.beforeAbilityUsed(hero);
 		Buff.prolong(hero, GuardTracker.class, duration);
 		hero.sprite.operate(hero.pos);
 		hero.spendAndNext(Actor.TICK);
+		wep.afterAbilityUsed(hero);
 	}
 
 	public static class GuardTracker extends FlavourBuff {

@@ -110,7 +110,7 @@ public class Dagger extends MeleeWeapon {
 			return;
 		}
 
-		wep.onAbilityUsed(hero);
+		wep.beforeAbilityUsed(hero);
 		Buff.affect(hero, Invisibility.class, Math.max(1, 1/hero.speed()));
 		hero.spendAndNext(1/hero.speed());
 
@@ -124,6 +124,7 @@ public class Dagger extends MeleeWeapon {
 		Dungeon.hero.sprite.place( Dungeon.hero.pos );
 		CellEmitter.get( Dungeon.hero.pos ).burst( Speck.factory( Speck.WOOL ), 6 );
 		Sample.INSTANCE.play( Assets.Sounds.PUFF );
+		wep.afterAbilityUsed(hero);
 	}
 
 }

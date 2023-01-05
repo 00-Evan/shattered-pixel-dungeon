@@ -83,7 +83,7 @@ public class Sword extends MeleeWeapon {
 		hero.sprite.attack(enemy.pos, new Callback() {
 			@Override
 			public void call() {
-				wep.onAbilityUsed(hero);
+				wep.beforeAbilityUsed(hero);
 				if (hero.attack(enemy, dmgMulti, 0, Char.INFINITE_ACCURACY)){
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				}
@@ -98,6 +98,7 @@ public class Sword extends MeleeWeapon {
 						hero.buff(CleaveTracker.class).detach();
 					}
 				}
+				wep.afterAbilityUsed(hero);
 			}
 		});
 	}

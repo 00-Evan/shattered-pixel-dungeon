@@ -82,7 +82,7 @@ public class Sai extends MeleeWeapon {
 		hero.sprite.attack(enemy.pos, new Callback() {
 			@Override
 			public void call() {
-				wep.onAbilityUsed(hero);
+				wep.beforeAbilityUsed(hero);
 				boolean hit = hero.attack(enemy, 1, 0, Char.INFINITE_ACCURACY);
 				if (hit && !enemy.isAlive()){
 					wep.onAbilityKill(hero);
@@ -105,6 +105,7 @@ public class Sai extends MeleeWeapon {
 				} else {
 					hero.spendAndNext(hero.attackDelay());
 				}
+				wep.afterAbilityUsed(hero);
 			}
 		});
 	}

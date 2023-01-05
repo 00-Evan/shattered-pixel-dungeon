@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -102,7 +101,7 @@ public class Flail extends MeleeWeapon {
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
 
-		onAbilityUsed(hero);
+		beforeAbilityUsed(hero);
 		SpinAbilityTracker spin = hero.buff(SpinAbilityTracker.class);
 
 		if (spin == null){
@@ -119,6 +118,7 @@ public class Flail extends MeleeWeapon {
 		} else {
 			GLog.w(Messages.get(this, "spin_warn"));
 		}
+		afterAbilityUsed(hero);
 	}
 
 	public static class SpinAbilityTracker extends FlavourBuff {

@@ -84,6 +84,9 @@ public class Belongings implements Iterable<Item> {
 	//used when thrown weapons temporary become the current weapon
 	public KindOfWeapon thrownWeapon = null;
 
+	//used to ensure that the duelist always uses the weapon she's using the ability of
+	public KindOfWeapon abilityWeapon = null;
+
 	//used by the champion subclass
 	public KindOfWeapon secondWep = null;
 
@@ -94,6 +97,7 @@ public class Belongings implements Iterable<Item> {
 	public KindOfWeapon weapon(){
 		//no point in lost invent check, if it's assigned it must be usable
 		if (thrownWeapon != null) return thrownWeapon;
+		if (abilityWeapon != null) return abilityWeapon;
 
 		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
 		if (!lostInvent || (weapon != null && weapon.keptThoughLostInvent)){

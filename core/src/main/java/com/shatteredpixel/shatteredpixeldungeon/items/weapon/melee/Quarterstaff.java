@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
@@ -58,10 +57,11 @@ public class Quarterstaff extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		onAbilityUsed(hero);
+		beforeAbilityUsed(hero);
 		Buff.prolong(hero, DefensiveStance.class, 5f); //4 turns as using the ability is instant
 		hero.sprite.operate(hero.pos);
 		hero.next();
+		afterAbilityUsed(hero);
 	}
 
 	public static class DefensiveStance extends FlavourBuff {

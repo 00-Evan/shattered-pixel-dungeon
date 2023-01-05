@@ -201,7 +201,7 @@ public class Pickaxe extends MeleeWeapon {
 						|| enemy instanceof Scorpio) {
 					damageMulti = 2f;
 				}
-				onAbilityUsed(hero);
+				beforeAbilityUsed(hero);
 				if (hero.attack(enemy, damageMulti, 0, Char.INFINITE_ACCURACY)) {
 					if (enemy.isAlive()) {
 						Buff.affect(enemy, Vulnerable.class, 3f);
@@ -211,6 +211,7 @@ public class Pickaxe extends MeleeWeapon {
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				}
 				hero.spendAndNext(hero.attackDelay());
+				afterAbilityUsed(hero);
 			}
 		});
 	}
