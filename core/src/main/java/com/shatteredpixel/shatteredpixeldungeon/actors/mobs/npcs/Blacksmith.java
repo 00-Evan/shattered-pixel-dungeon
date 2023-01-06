@@ -67,7 +67,7 @@ public class Blacksmith extends NPC {
 			die(null);
 			return true;
 		}
-		if (Dungeon.level.heroFOV[pos] && !Quest.reforged){
+		if (Dungeon.level.visited[pos] && !Quest.reforged){
 			Notes.add( Notes.Landmark.TROLL );
 		}
 		return super.act();

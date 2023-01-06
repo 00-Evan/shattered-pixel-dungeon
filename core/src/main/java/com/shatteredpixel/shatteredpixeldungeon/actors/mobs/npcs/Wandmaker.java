@@ -66,7 +66,7 @@ public class Wandmaker extends NPC {
 			die(null);
 			return true;
 		}
-		if (Dungeon.level.heroFOV[pos] && Quest.wand1 != null){
+		if (Dungeon.level.visited[pos] && Quest.wand1 != null){
 			Notes.add( Notes.Landmark.WANDMAKER );
 		}
 		return super.act();

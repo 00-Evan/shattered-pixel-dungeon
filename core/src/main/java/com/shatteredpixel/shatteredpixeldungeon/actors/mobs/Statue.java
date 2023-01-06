@@ -80,7 +80,7 @@ public class Statue extends Mob {
 	
 	@Override
 	protected boolean act() {
-		if (levelGenStatue && Dungeon.level.heroFOV[pos]) {
+		if (levelGenStatue && Dungeon.level.visited[pos]) {
 			Notes.add( Notes.Landmark.STATUE );
 		}
 		return super.act();

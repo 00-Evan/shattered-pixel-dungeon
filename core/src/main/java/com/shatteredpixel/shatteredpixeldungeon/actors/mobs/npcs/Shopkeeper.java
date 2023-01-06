@@ -52,7 +52,7 @@ public class Shopkeeper extends NPC {
 	@Override
 	protected boolean act() {
 
-		if (Dungeon.level.heroFOV[pos]){
+		if (Dungeon.level.visited[pos]){
 			Notes.add(Notes.Landmark.SHOP);
 		}
 

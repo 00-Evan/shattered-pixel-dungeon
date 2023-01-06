@@ -61,7 +61,7 @@ public class Imp extends NPC {
 			die(null);
 			return true;
 		}
-		if (!Quest.given && Dungeon.level.heroFOV[pos]) {
+		if (!Quest.given && Dungeon.level.visited[pos]) {
 			if (!seenBefore) {
 				yell( Messages.get(this, "hey", Dungeon.hero.name() ) );
 			}

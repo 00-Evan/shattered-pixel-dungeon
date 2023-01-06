@@ -85,7 +85,7 @@ public class SacrificialFire extends Blob {
 							}
 						}
 
-						if (off[cell] > 0 && Dungeon.level.heroFOV[cell]) {
+						if (off[cell] > 0 && Dungeon.level.visited[cell]) {
 
 							Notes.add( Notes.Landmark.SACRIFICIAL_FIRE);
 

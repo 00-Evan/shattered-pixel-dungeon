@@ -53,7 +53,7 @@ public class Alchemy extends Blob {
 					}
 
 					volume += off[cell];
-					if (off[cell] > 0 && Dungeon.level.heroFOV[cell]){
+					if (off[cell] > 0 && Dungeon.level.visited[cell]){
 						Notes.add( Notes.Landmark.ALCHEMY );
 					}
 				}

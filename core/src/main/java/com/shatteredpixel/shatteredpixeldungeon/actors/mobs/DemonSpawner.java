@@ -91,7 +91,7 @@ public class DemonSpawner extends Mob {
 			spawnRecorded = true;
 		}
 
-		if (Dungeon.level.heroFOV[pos]){
+		if (Dungeon.level.visited[pos]){
 			Notes.add( Notes.Landmark.DEMON_SPAWNER );
 		}
 
