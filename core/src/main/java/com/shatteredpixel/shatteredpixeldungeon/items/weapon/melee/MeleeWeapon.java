@@ -351,13 +351,13 @@ public class MeleeWeapon extends Weapon {
 
 	public static class Charger extends Buff implements ActionIndicator.Action {
 
-		private int charges = 3;
-		private float partialCharge;
+		public int charges = 3;
+		public float partialCharge;
 		//offhand charge as well?
 
 		//champion subclass
-		private int secondCharges = 0;
-		private float secondPartialCharge;
+		public int secondCharges = 3;
+		public float secondPartialCharge;
 
 		@Override
 		public boolean act() {

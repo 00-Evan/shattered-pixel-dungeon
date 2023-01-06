@@ -23,10 +23,18 @@ package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.Image;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class RingOfForce extends Ring {
 
@@ -98,6 +106,149 @@ public class RingOfForce extends Ring {
 	}
 
 	public class Force extends RingBuff {
+	}
+
+	//Duelist stuff
+
+	public static String AC_ABILITY = "ABILITY";
+
+	@Override
+	public void activate(Char ch) {
+		super.activate(ch);
+		if (ch instanceof Hero && ((Hero) ch).heroClass == HeroClass.DUELIST){
+			Buff.affect(ch, MeleeWeapon.Charger.class);
+		}
+	}
+
+	@Override
+	public String defaultAction() {
+		if (Dungeon.hero != null && Dungeon.hero.heroClass == HeroClass.DUELIST){
+			return AC_ABILITY;
+		} else {
+			return super.defaultAction();
+		}
+	}
+
+	@Override
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions(hero);
+		if (isEquipped(hero) && hero.heroClass == HeroClass.DUELIST){
+			actions.add(AC_ABILITY);
+		}
+		return actions;
+	}
+
+	@Override
+	public String actionName(String action, Hero hero) {
+		if (action.equals(AC_ABILITY)){
+			return Messages.upperCase(Messages.get(this, "ability_name"));
+		} else {
+			return super.actionName(action, hero);
+		}
+	}
+
+	@Override
+	public void execute(Hero hero, String action) {
+		if (action.equals(AC_ABILITY)){
+			if (hero.buff(BrawlersStance.class) != null){
+				hero.buff(BrawlersStance.class).detach();
+			} else if (!isEquipped(hero)) {
+				GLog.w(Messages.get(MeleeWeapon.class, "ability_need_equip"));
+
+			} else if ((Buff.affect(hero, MeleeWeapon.Charger.class).charges + Buff.affect(hero, MeleeWeapon.Charger.class).partialCharge) < 0.333f){
+				GLog.w(Messages.get(MeleeWeapon.class, "ability_no_charge"));
+
+			} else {
+				Buff.affect(hero, BrawlersStance.class);
+			}
+		} else {
+			super.execute(hero, action);
+		}
+	}
+
+	@Override
+	public String info() {
+		String info = super.info();
+
+		if (Dungeon.hero.heroClass == HeroClass.DUELIST){
+			info += "\n\n" + Messages.get(this, "ability_desc");
+		}
+
+		return info;
+	}
+
+	public static boolean fightingUnarmed( Hero hero ){
+		if (hero.belongings.weapon() == null){
+			return true;
+		}
+		if (hero.belongings.thrownWeapon != null || hero.belongings.abilityWeapon != null){
+			return false;
+		}
+		BrawlersStance stance = hero.buff(BrawlersStance.class);
+		if (stance != null && stance.hitsLeft() > 0){
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean unarmedGetsWeaponEffects( Hero hero ){
+		if (hero.belongings.weapon() == null){
+			return false;
+		}
+		BrawlersStance stance = hero.buff(BrawlersStance.class);
+		if (stance != null && stance.hitsLeft() > 0){
+			return true;
+		}
+		return false;
+	}
+
+	public static class BrawlersStance extends Buff {
+
+		public static float HIT_CHARGE_USE = 0.25f;
+
+		{
+			announced = true;
+			type = buffType.POSITIVE;
+		}
+
+		public int hitsLeft(){
+			MeleeWeapon.Charger charger = Buff.affect(target, MeleeWeapon.Charger.class);
+			float charges = charger.charges;
+			charges += charger.partialCharge;
+
+			return (int)(charges/HIT_CHARGE_USE);
+		}
+
+		@Override
+		public int icon() {
+			return BuffIndicator.DUEL_BRAWL;
+		}
+
+		@Override
+		public void tintIcon(Image icon) {
+			if (hitsLeft() == 0){
+				icon.brightness(0.25f);
+			} else {
+				icon.resetColor();
+			}
+		}
+
+		@Override
+		public float iconFadePercent() {
+			float usableCharges = hitsLeft()*HIT_CHARGE_USE;
+
+			return 1f - (usableCharges /  Buff.affect(target, MeleeWeapon.Charger.class).chargeCap());
+		}
+
+		@Override
+		public String iconTextDisplay() {
+			return Integer.toString(hitsLeft());
+		}
+
+		@Override
+		public String desc() {
+			return Messages.get(this, "desc", hitsLeft());
+		}
 	}
 }
 

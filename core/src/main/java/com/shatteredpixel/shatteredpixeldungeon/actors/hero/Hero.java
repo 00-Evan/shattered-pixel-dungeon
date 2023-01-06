@@ -397,7 +397,7 @@ public class Hero extends Char {
 
 	@Override
 	public void hitSound(float pitch) {
-		if ( belongings.weapon() != null ){
+		if (!RingOfForce.fightingUnarmed(this)) {
 			belongings.weapon().hitSound(pitch);
 		} else if (RingOfForce.getBuffedBonus(this, RingOfForce.Force.class) > 0) {
 			//pitch deepens by 2.5% (additive) per point of strength, down to 75%
@@ -474,7 +474,7 @@ public class Hero extends Char {
 			}
 		}
 		
-		if (wep != null) {
+		if (!RingOfForce.fightingUnarmed(this)) {
 			return (int)(attackSkill * accuracy * wep.accuracyFactor( this, target ));
 		} else {
 			return (int)(attackSkill * accuracy);
@@ -573,7 +573,7 @@ public class Hero extends Char {
 		KindOfWeapon wep = belongings.weapon();
 		int dmg;
 
-		if (wep != null) {
+		if (!RingOfForce.fightingUnarmed(this)) {
 			dmg = wep.damageRoll( this );
 
 			if (heroClass != HeroClass.DUELIST
@@ -589,6 +589,9 @@ public class Hero extends Char {
 			if (!(wep instanceof MissileWeapon)) dmg += RingOfForce.armedDamageBonus(this);
 		} else {
 			dmg = RingOfForce.damageRoll(this);
+			if (RingOfForce.unarmedGetsWeaponEffects(this)){
+				dmg = ((Weapon)belongings.weapon()).augment.damageFactor(dmg);
+			}
 		}
 
 		PhysicalEmpower emp = buff(PhysicalEmpower.class);
@@ -644,6 +647,7 @@ public class Hero extends Char {
 	@Override
 	public boolean canSurpriseAttack(){
 		if (belongings.weapon() == null || !(belongings.weapon() instanceof Weapon))    return true;
+		if (RingOfForce.fightingUnarmed(this))                                          return true;
 		if (STR() < ((Weapon)belongings.weapon()).STRReq())                             return false;
 		if (belongings.weapon() instanceof Flail)                                       return false;
 
@@ -675,7 +679,7 @@ public class Hero extends Char {
 			return 0;
 		}
 
-		if (belongings.weapon() != null) {
+		if (!RingOfForce.fightingUnarmed(this)) {
 			
 			return belongings.weapon().delayFactor( this );
 			
@@ -683,7 +687,13 @@ public class Hero extends Char {
 			//Normally putting furor speed on unarmed attacks would be unnecessary
 			//But there's going to be that one guy who gets a furor+force ring combo
 			//This is for that one guy, you shall get your fists of fury!
-			return 1f/RingOfFuror.attackSpeedMultiplier(this);
+			float delay = 1f/RingOfFuror.attackSpeedMultiplier(this);
+
+			if (RingOfForce.unarmedGetsWeaponEffects(this)){
+				delay = ((Weapon)belongings.weapon).augment.delayFactor(delay);
+			}
+
+			return delay;
 		}
 	}
 
@@ -1240,7 +1250,8 @@ public class Hero extends Char {
 	@Override
 	public int attackProc( final Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
-		
+
+		//procs with weapon even in brawler's stance
 		KindOfWeapon wep = belongings.weapon();
 
 		if (wep != null) damage = wep.proc( this, enemy, damage );
@@ -1946,6 +1957,18 @@ public class Hero extends Char {
 
 		if (hit && heroClass == HeroClass.DUELIST && wasEnemy){
 			Buff.append( this, Sai.ComboStrikeTracker.class, Sai.ComboStrikeTracker.DURATION);
+		}
+
+		RingOfForce.BrawlersStance brawlStance = buff(RingOfForce.BrawlersStance.class);
+		if (brawlStance != null && brawlStance.hitsLeft() > 0){
+			MeleeWeapon.Charger charger = Buff.affect(this, MeleeWeapon.Charger.class);
+			charger.partialCharge -= 0.25f;
+			while (charger.partialCharge < 0) {
+				charger.charges--;
+				charger.partialCharge++;
+			}
+			BuffIndicator.refreshHero();
+			Item.updateQuickslot();
 		}
 
 		curAction = null;
