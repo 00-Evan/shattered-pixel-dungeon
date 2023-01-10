@@ -167,7 +167,9 @@ public class WndBag extends WndTabbed {
 
 		} else if (selector.preferredBag() != null){
 			Bag bag = Dungeon.hero.belongings.getItem( selector.preferredBag() );
-			if (bag != null) return new WndBag( bag, selector );
+			if (bag != null)    return new WndBag( bag, selector );
+			//if a specific preferred bag isn't present, then the relevant items will be in backpack
+			else                return new WndBag( Dungeon.hero.belongings.backpack, selector );
 		}
 
 		return lastBag( selector );

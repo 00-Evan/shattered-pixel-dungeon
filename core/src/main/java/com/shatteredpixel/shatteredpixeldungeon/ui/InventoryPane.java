@@ -393,7 +393,9 @@ public class InventoryPane extends Component {
 			lastBag = Dungeon.hero.belongings.backpack;
 		} else if (selector.preferredBag() != null) {
 			Bag preferred = Dungeon.hero.belongings.getItem(selector.preferredBag());
-			if (preferred != null) lastBag = preferred;
+			if (preferred != null)  lastBag = preferred;
+			//if a specific preferred bag isn't present, then the relevant items will be in backpack
+			else                    lastBag = Dungeon.hero.belongings.backpack;
 		}
 		updateInventory();
 	}
