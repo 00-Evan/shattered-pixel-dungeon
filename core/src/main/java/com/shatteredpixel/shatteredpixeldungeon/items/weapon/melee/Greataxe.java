@@ -60,7 +60,7 @@ public class Greataxe extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		if (hero.HP / (float)hero.HT > 0.25f){
+		if (hero.HP / (float)hero.HT > 0.33f){
 			GLog.w(Messages.get(this, "ability_cant_use"));
 			return;
 		}
@@ -84,7 +84,7 @@ public class Greataxe extends MeleeWeapon {
 			@Override
 			public void call() {
 				beforeAbilityUsed(hero);
-				if (hero.attack(enemy, 1.5f, 0, Char.INFINITE_ACCURACY)){
+				if (hero.attack(enemy, 1.35f, 0, Char.INFINITE_ACCURACY)){
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 					if (!enemy.isAlive()){
 						onAbilityKill(hero);

@@ -47,7 +47,7 @@ public class Scimitar extends MeleeWeapon {
 
 	@Override
 	public float abilityChargeUse(Hero hero) {
-		return 2;
+		return 2*super.abilityChargeUse(hero);
 	}
 
 	@Override
