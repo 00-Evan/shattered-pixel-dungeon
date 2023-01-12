@@ -39,7 +39,7 @@ public class CleansingDart extends TippedDart {
 	@Override
 	public int proc(Char attacker, final Char defender, int damage) {
 
-		if (attacker.alignment == defender.alignment){
+		if (attacker.alignment == defender.alignment && defender != attacker){
 			PotionOfCleansing.cleanse(defender, PotionOfCleansing.Cleanse.DURATION*2f);
 			return 0;
 		} else {

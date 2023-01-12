@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed;
@@ -178,6 +179,11 @@ public abstract class TippedDart extends Dart {
 			}
 		}
 		use *= (1f - lotusPreserve);
+
+		//grants 1 extra use with charged shot
+		if (Dungeon.hero.buff(Crossbow.ChargedShot.class) != null){
+			use = 100f/((use/100f) + 1f) + 0.001f;
+		}
 		
 		return use;
 	}

@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -39,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -120,7 +122,17 @@ public class Dart extends MissileWeapon {
 			return super.hasEnchant(type, owner);
 		}
 	}
-	
+
+	@Override
+	public float accuracyFactor(Char owner, Char target) {
+		//don't update xbow here, as dart is the active weapon atm
+		if (bow != null && owner.buff(Crossbow.ChargedShot.class) != null){
+			return Char.INFINITE_ACCURACY;
+		} else {
+			return super.accuracyFactor(owner, target);
+		}
+	}
+
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
 		if (bow != null){
@@ -140,6 +152,21 @@ public class Dart extends MissileWeapon {
 	protected void onThrow(int cell) {
 		updateCrossbow();
 		super.onThrow(cell);
+		processChargedShot(cell);
+	}
+
+	protected void processChargedShot( int cell ){
+		//don't update xbow here, as dart may be the active weapon atm
+		if (bow != null && Dungeon.hero.buff(Crossbow.ChargedShot.class) != null) {
+			PathFinder.buildDistanceMap(cell, Dungeon.level.passable, 1);
+			for (Char ch : Actor.chars()){
+				if (PathFinder.distance[ch.pos] != Integer.MAX_VALUE){
+					proc(Dungeon.hero, ch, 0);
+				}
+			}
+
+			Dungeon.hero.buff(Crossbow.ChargedShot.class).detach();
+		}
 	}
 
 	@Override

@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -36,7 +37,7 @@ public class AdrenalineDart extends TippedDart {
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
 		
-		if (attacker.alignment == defender.alignment){
+		if (attacker.alignment == defender.alignment && defender != attacker){
 			Buff.prolong( defender, Adrenaline.class, Adrenaline.DURATION);
 			return 0;
 		} else {
