@@ -154,7 +154,7 @@ public enum Talent {
 	//Duelist T3
 	LIGHTWEIGHT_CHARGE(137, 3), DEADLY_FOLLOWUP(138, 3),
 	//Duelist S1 T3
-	DUELIST_S1_1(139, 3), DUELIST_S1_2(140, 3), DUELIST_S1_3(141, 3),
+	SECONDARY_CHARGE(139, 3), TWIN_UPGRADES(140, 3), COMBINED_LETHALITY(141, 3),
 	//Duelist S2 T3
 	DUELIST_S2_1(142, 3), DUELIST_S2_2(143, 3), DUELIST_S2_3(144, 3),
 	//Duelist A1 T4
@@ -266,6 +266,14 @@ public enum Talent {
 		}
 	};
 	public static class DeadlyFollowupTracker extends FlavourBuff{};
+	public static class CombinedLethalityAbilityTracker extends FlavourBuff{
+		public MeleeWeapon weapon;
+	};
+	public static class CombinedLethalityTriggerTracker extends FlavourBuff{
+		{ type = buffType.POSITIVE; }
+		public int icon() { return BuffIndicator.CORRUPT; }
+		public void tintIcon(Image icon) { icon.hardlight(0.6f, 0.15f, 0.6f); }
+	};
 
 	int icon;
 	int maxPoints;
@@ -368,6 +376,10 @@ public enum Talent {
 
 		if (talent == HEIGHTENED_SENSES || talent == FARSIGHT){
 			Dungeon.observe();
+		}
+
+		if (talent == SECONDARY_CHARGE || talent == TWIN_UPGRADES){
+			Item.updateQuickslot();
 		}
 	}
 
@@ -780,7 +792,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, DURABLE_TIPS, BARKSKIN, SHIELDING_DEW);
 				break;
 			case CHAMPION:
-				Collections.addAll(tierTalents, DUELIST_S1_1, DUELIST_S1_2, DUELIST_S1_3);
+				Collections.addAll(tierTalents, SECONDARY_CHARGE, TWIN_UPGRADES, COMBINED_LETHALITY);
 				break;
 			case ADEPT:
 				Collections.addAll(tierTalents, DUELIST_S2_1, DUELIST_S2_2, DUELIST_S2_3);

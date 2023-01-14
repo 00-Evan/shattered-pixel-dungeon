@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -185,11 +184,28 @@ public class MeleeWeapon extends Weapon {
 			Buff.affect(hero, Barrier.class).setShield(2);
 		}
 
+		if (hero.buff(Talent.CombinedLethalityAbilityTracker.class) != null
+				&& hero.buff(Talent.CombinedLethalityAbilityTracker.class).weapon != null
+				&& hero.buff(Talent.CombinedLethalityAbilityTracker.class).weapon != this){
+			Buff.affect(hero, Talent.CombinedLethalityTriggerTracker.class, 5f);
+		}
+
 		updateQuickslot();
 	}
 
 	protected void afterAbilityUsed( Hero hero ){
 		hero.belongings.abilityWeapon = null;
+		if (hero.hasTalent(Talent.COMBINED_LETHALITY)) {
+			Talent.CombinedLethalityAbilityTracker tracker = hero.buff(Talent.CombinedLethalityAbilityTracker.class);
+			if (tracker == null){
+				Buff.affect(hero, Talent.CombinedLethalityAbilityTracker.class, hero.cooldown()).weapon = this;
+			} else if (tracker.weapon == this || tracker.weapon == null) {
+				Buff.prolong(hero, Talent.CombinedLethalityAbilityTracker.class, hero.cooldown());
+			} else {
+				//we triggered the talent, so remove the tracker
+				tracker.detach();
+			}
+		}
 	}
 
 	protected void onAbilityKill( Hero hero ){
@@ -229,13 +245,14 @@ public class MeleeWeapon extends Weapon {
 
 	@Override
 	public int buffedLvl() {
-		if (Dungeon.hero.subClass == HeroSubClass.CHAMPION && isEquipped(Dungeon.hero)){
+		if (isEquipped(Dungeon.hero) && Dungeon.hero.hasTalent(Talent.TWIN_UPGRADES)){
 			KindOfWeapon other = null;
 			if (Dungeon.hero.belongings.weapon() != this) other = Dungeon.hero.belongings.weapon();
 			if (Dungeon.hero.belongings.secondWep() != this) other = Dungeon.hero.belongings.secondWep();
 
+			//weaker weapon needs to be 2/1/0 tiers lower, based on talent level
 			if (other instanceof MeleeWeapon
-					&& tier <= ((MeleeWeapon) other).tier
+					&& (tier+(3-Dungeon.hero.pointsInTalent(Talent.TWIN_UPGRADES))) <= ((MeleeWeapon) other).tier
 					&& other.level() > super.buffedLvl()){
 				return other.level();
 			}
@@ -386,7 +403,9 @@ public class MeleeWeapon extends Weapon {
 			if (Dungeon.hero.subClass == HeroSubClass.CHAMPION
 					&& secondCharges < secondChargeCap()) {
 				if (lock == null || lock.regenOn()) {
-					secondPartialCharge += 1 / (100f - (chargeCap() - 2 * secondCharges)); // 100 to 80 turns per charge
+					// 100 to 80 turns per charge without talent
+					// up to 75 to 67 turns per charge at max talent level
+					secondPartialCharge += secondChargeMultiplier() / (50f-(secondChargeCap()-secondCharges));
 				}
 
 				if (secondPartialCharge >= 1) {
@@ -425,7 +444,12 @@ public class MeleeWeapon extends Weapon {
 		}
 
 		public int secondChargeCap(){
-			return chargeCap()/2;
+			return Math.round(chargeCap() * secondChargeMultiplier());
+		}
+
+		public float secondChargeMultiplier(){
+			//50% - 75%, depending on talent
+			return 0.5f + 0.0834f*Dungeon.hero.pointsInTalent(Talent.SECONDARY_CHARGE);
 		}
 
 		public void gainCharge( float charge ){

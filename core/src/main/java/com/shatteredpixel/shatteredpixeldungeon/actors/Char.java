@@ -428,6 +428,24 @@ public abstract class Char extends Actor {
 				enemy.sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Preparation.class, "assassinated"));
 			}
 
+			Talent.CombinedLethalityTriggerTracker combinedLethality = buff(Talent.CombinedLethalityTriggerTracker.class);
+			if (combinedLethality != null){
+				if ( enemy.isAlive() && enemy.alignment != alignment && !Char.hasProp(enemy, Property.BOSS)
+						&& !Char.hasProp(enemy, Property.MINIBOSS) && this instanceof Hero &&
+						(enemy.HP/(float)enemy.HT) <= 0.0834f*((Hero)this).pointsInTalent(Talent.COMBINED_LETHALITY)) {
+					enemy.HP = 0;
+					if (!enemy.isAlive()) {
+						enemy.die(this);
+					} else {
+						//helps with triggering any on-damage effects that need to activate
+						enemy.damage(-1, this);
+						DeathMark.processFearTheReaper(enemy);
+					}
+					enemy.sprite.showStatus(CharSprite.NEGATIVE, "executed");
+				}
+				buff(Talent.CombinedLethalityTriggerTracker.class).detach();
+			}
+
 			enemy.sprite.bloodBurstA( sprite.center(), effectiveDamage );
 			enemy.sprite.flash();
 
