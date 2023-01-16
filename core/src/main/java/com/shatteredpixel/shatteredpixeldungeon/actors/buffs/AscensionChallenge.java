@@ -82,6 +82,10 @@ public class AscensionChallenge extends Buff {
 			ch = ((Ratmogrify.TransmogRat) ch).getOriginal();
 		}
 
+		if (ch.buff(AscensionBuffBlocker.class) != null){
+			return 1f;
+		}
+
 		for (Class<?extends Mob> cls : modifiers.keySet()){
 			if (cls.isAssignableFrom(ch.getClass())){
 				return modifiers.get(cls);
@@ -134,6 +138,10 @@ public class AscensionChallenge extends Buff {
 		}
 
 		//only enemies that are boosted count
+		if (enemy.buff(AscensionBuffBlocker.class) != null){
+			return;
+		}
+
 		boolean found = false;
 		for (Class<?extends Mob> cls : modifiers.keySet()){
 			if (cls.isAssignableFrom(enemy.getClass())){
@@ -164,6 +172,10 @@ public class AscensionChallenge extends Buff {
 
 		if (m instanceof Ratmogrify.TransmogRat){
 			m = ((Ratmogrify.TransmogRat) m).getOriginal();
+		}
+
+		if (m.buff(AscensionBuffBlocker.class) != null){
+			return m.EXP;
 		}
 
 		if (m instanceof RipperDemon){
@@ -320,4 +332,7 @@ public class AscensionChallenge extends Buff {
 		stacks = bundle.getFloat(STACKS);
 		damageInc = bundle.getFloat(DAMAGE);
 	}
+
+	//chars with this buff are not boosted by the ascension challenge
+	public static class AscensionBuffBlocker extends Buff{};
 }
