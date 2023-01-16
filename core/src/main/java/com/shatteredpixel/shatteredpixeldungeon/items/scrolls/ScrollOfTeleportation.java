@@ -290,6 +290,22 @@ public class ScrollOfTeleportation extends Scroll {
 			ch.sprite.emitter().start(Speck.factory(Speck.LIGHT), 0.2f, 3);
 		}
 	}
+
+	//just plays the VFX for teleporting, without any position changes
+	public static void appearVFX( Char ch ){
+		if (Dungeon.level.heroFOV[ch.pos]){
+			Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+		}
+
+		if (ch.invisible == 0) {
+			ch.sprite.alpha( 0 );
+			ch.sprite.parent.add( new AlphaTweener( ch.sprite, 1, 0.4f ) );
+		}
+
+		if (Dungeon.level.heroFOV[ch.pos]) {
+			ch.sprite.emitter().start(Speck.factory(Speck.LIGHT), 0.2f, 3);
+		}
+	}
 	
 	@Override
 	public int value() {
