@@ -76,6 +76,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
@@ -142,6 +143,7 @@ public class ElementalBlast extends ArmorAbility {
 		}
 
 		if (wandCls == null){
+			GLog.w(Messages.get(this, "no_staff"));
 			return;
 		}
 
