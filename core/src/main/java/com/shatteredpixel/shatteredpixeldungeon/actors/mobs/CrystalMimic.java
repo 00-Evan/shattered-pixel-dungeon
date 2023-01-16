@@ -108,6 +108,7 @@ public class CrystalMimic extends Mimic {
 
 	public void stopHiding(){
 		state = FLEEING;
+		if (sprite != null) sprite.idle();
 		//haste for 2 turns if attacking
 		if (alignment == Alignment.NEUTRAL){
 			Buff.affect(this, Haste.class, 2f);
