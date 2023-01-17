@@ -128,7 +128,7 @@ public class DM200 extends Mob {
 
 	}
 
-	private boolean canVent(int target){
+	protected boolean canVent(int target){
 		if (ventCooldown > 0) return false;
 		PathFinder.buildDistanceMap(target, BArray.not(Dungeon.level.solid, null), Dungeon.level.distance(pos, target)+1);
 		//vent can go around blocking terrain, but not through it
