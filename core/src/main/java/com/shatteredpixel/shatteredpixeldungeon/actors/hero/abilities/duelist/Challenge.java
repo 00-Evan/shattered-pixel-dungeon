@@ -33,12 +33,16 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -66,6 +70,16 @@ public class Challenge extends ArmorAbility {
 	}
 
 	@Override
+	public float chargeUse( Hero hero ) {
+		float chargeUse = super.chargeUse(hero);
+		if (hero.buff(EliminationMatchTracker.class) != null){
+			//reduced charge use by 20%/36%/50%/60%
+			chargeUse *= Math.pow(0.795, hero.pointsInTalent(Talent.ELIMINATION_MATCH));
+		}
+		return chargeUse;
+	}
+
+	@Override
 	protected void activate(ClassArmor armor, Hero hero, Integer target) {
 		if (target == null || !Dungeon.level.heroFOV[target]){
 			return;
@@ -89,16 +103,53 @@ public class Challenge extends ArmorAbility {
 			for (Char c : Actor.chars()) {
 				if (c != hero) passable[c.pos] = false;
 			}
-
 			PathFinder.buildDistanceMap(targetCh.pos, passable);
-			if (PathFinder.distance[hero.pos] == Integer.MAX_VALUE){
+			int[] reachable = PathFinder.distance.clone();
+
+			int blinkpos = hero.pos;
+			if (hero.hasTalent(Talent.CLOSE_THE_GAP)){
+
+				int blinkrange = 1 + hero.pointsInTalent(Talent.CLOSE_THE_GAP);
+				PathFinder.buildDistanceMap(hero.pos, BArray.not(Dungeon.level.solid,null), blinkrange);
+
+				for (int i = 0; i < PathFinder.distance.length; i++){
+					if (PathFinder.distance[i] == Integer.MAX_VALUE
+							|| reachable[i] == Integer.MAX_VALUE
+							|| i == targetCh.pos){
+						continue;
+					}
+
+					if (Dungeon.level.distance(i, targetCh.pos) < Dungeon.level.distance(blinkpos, targetCh.pos)){
+						blinkpos = i;
+					} else if (Dungeon.level.distance(i, targetCh.pos) == Dungeon.level.distance(blinkpos, targetCh.pos)){
+						if (Dungeon.level.trueDistance(i, hero.pos) < Dungeon.level.trueDistance(blinkpos, hero.pos)){
+							blinkpos = i;
+						}
+					}
+				}
+			}
+
+			if (PathFinder.distance[blinkpos] == Integer.MAX_VALUE){
 				GLog.w(Messages.get(this, "unreachable_target"));
 				return;
 			}
 
-			if (Dungeon.level.distance(hero.pos, targetCh.pos) >= 5){
+			if (Dungeon.level.distance(blinkpos, targetCh.pos) >= 5){
 				GLog.w(Messages.get(this, "distant_target"));
 				return;
+			}
+
+			if (blinkpos != hero.pos){
+				Dungeon.hero.pos = blinkpos;
+				Dungeon.level.occupyCell(Dungeon.hero);
+				//prevents the hero from being interrupted by seeing new enemies
+				Dungeon.observe();
+				GameScene.updateFog();
+				Dungeon.hero.checkVisibleMobs();
+
+				Dungeon.hero.sprite.place( Dungeon.hero.pos );
+				CellEmitter.get( Dungeon.hero.pos ).burst( Speck.factory( Speck.WOOL ), 6 );
+				Sample.INSTANCE.play( Assets.Sounds.PUFF );
 			}
 
 			boolean bossTarget = Char.hasProp(targetCh, Char.Property.BOSS);
@@ -124,6 +175,10 @@ public class Challenge extends ArmorAbility {
 			hero.sprite.zap(target);
 
 			hero.next();
+
+			if (hero.buff(EliminationMatchTracker.class) != null){
+				hero.buff(EliminationMatchTracker.class).detach();
+			}
 		}
 	}
 
@@ -132,11 +187,14 @@ public class Challenge extends ArmorAbility {
 		return new Talent[]{Talent.CLOSE_THE_GAP, Talent.INVIGORATING_VICTORY, Talent.ELIMINATION_MATCH, Talent.HEROIC_ENERGY};
 	}
 
+	public static class EliminationMatchTracker extends FlavourBuff{};
+
 	public static class DuelParticipant extends Buff {
 
 		public static float DURATION = 10f;
 
 		private int left = (int)DURATION;
+		private int takenDmg = 0;
 
 		@Override
 		public int icon() {
@@ -151,6 +209,10 @@ public class Challenge extends ArmorAbility {
 		@Override
 		public String iconTextDisplay() {
 			return Integer.toString(left);
+		}
+
+		public void addDamage(int dmg){
+			takenDmg += dmg;
 		}
 
 		@Override
@@ -185,6 +247,24 @@ public class Challenge extends ArmorAbility {
 				if (target.alignment != Dungeon.hero.alignment){
 					Sample.INSTANCE.play(Assets.Sounds.BOSS);
 					GameScene.flash(0x80FFFFFF);
+
+					if (Dungeon.hero.hasTalent(Talent.INVIGORATING_VICTORY)){
+						DuelParticipant heroBuff = Dungeon.hero.buff(DuelParticipant.class);
+
+						int hpToHeal = 0;
+						if (heroBuff != null){
+							hpToHeal = heroBuff.takenDmg;
+						}
+
+						//heals for 30%/50%/65%/75% of taken damage, based on talent points
+						hpToHeal = (int)Math.round(hpToHeal * (1f - Math.pow(0.707f, Dungeon.hero.pointsInTalent(Talent.INVIGORATING_VICTORY))));
+						hpToHeal = Math.min(hpToHeal, Dungeon.hero.HT - Dungeon.hero.HP);
+						if (hpToHeal > 0){
+							Dungeon.hero.HP += hpToHeal;
+							Dungeon.hero.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.33f, 6 );
+							Dungeon.hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(Dewdrop.class, "heal", hpToHeal) );
+						}
+					}
 				}
 
 				for (Char ch : Actor.chars()) {
@@ -195,8 +275,12 @@ public class Challenge extends ArmorAbility {
 						ch.buff(DuelParticipant.class).detach();
 					}
 				}
-			} else if (target == Dungeon.hero){
+			} else if (target != Dungeon.hero){
 				GameScene.flash(0x80FFFFFF);
+			}
+
+			if (target == Dungeon.hero && Dungeon.hero.hasTalent(Talent.ELIMINATION_MATCH) && target.isAlive()){
+				Buff.affect(target, EliminationMatchTracker.class, 3);
 			}
 		}
 
@@ -206,17 +290,20 @@ public class Challenge extends ArmorAbility {
 		}
 
 		private static final String LEFT = "left";
+		private static final String TAKEN_DMG = "taken_dmg";
 
 		@Override
 		public void storeInBundle(Bundle bundle) {
 			super.storeInBundle(bundle);
 			bundle.put(LEFT, left);
+			bundle.put(TAKEN_DMG, takenDmg);
 		}
 
 		@Override
 		public void restoreFromBundle(Bundle bundle) {
 			super.restoreFromBundle(bundle);
 			left = bundle.getInt(LEFT);
+			takenDmg = bundle.getInt(TAKEN_DMG);
 		}
 	}
 

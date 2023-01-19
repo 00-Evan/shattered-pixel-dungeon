@@ -60,6 +60,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Challenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesPower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
@@ -1360,6 +1361,10 @@ public class Hero extends Char {
 		int effectiveDamage = preHP - postHP;
 
 		if (effectiveDamage <= 0) return;
+
+		if (buff(Challenge.DuelParticipant.class) != null){
+			buff(Challenge.DuelParticipant.class).addDamage(effectiveDamage);
+		}
 
 		//flash red when hit for serious damage.
 		float percentDMG = effectiveDamage / (float)preHP; //percent of current HP that was taken
