@@ -794,7 +794,7 @@ public enum Talent {
 			case CHAMPION:
 				Collections.addAll(tierTalents, SECONDARY_CHARGE, TWIN_UPGRADES, COMBINED_LETHALITY);
 				break;
-			case ADEPT:
+			case MONK:
 				Collections.addAll(tierTalents, DUELIST_S2_1, DUELIST_S2_2, DUELIST_S2_3);
 				break;
 		}
