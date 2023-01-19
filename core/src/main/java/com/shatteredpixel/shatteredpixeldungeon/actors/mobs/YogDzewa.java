@@ -368,7 +368,7 @@ public class YogDzewa extends Mob {
 
 	@Override
 	public boolean isInvulnerable(Class effect) {
-		return phase == 0 || findFist() != null;
+		return phase == 0 || findFist() != null || super.isInvulnerable(effect);
 	}
 
 	@Override
@@ -629,6 +629,7 @@ public class YogDzewa extends Mob {
 			maxLvl = -2;
 
 			properties.add(Property.DEMONIC);
+			properties.add(Property.BOSS_MINION);
 		}
 
 		@Override
@@ -649,15 +650,22 @@ public class YogDzewa extends Mob {
 	}
 
 	//used so death to yog's ripper demons have their own rankings description
-	public static class YogRipper extends RipperDemon {}
+	public static class YogRipper extends RipperDemon {
+		{
+			maxLvl = -2;
+			properties.add(Property.BOSS_MINION);
+		}
+	}
 	public static class YogEye extends Eye {
 		{
 			maxLvl = -2;
+			properties.add(Property.BOSS_MINION);
 		}
 	}
 	public static class YogScorpio extends Scorpio {
 		{
 			maxLvl = -2;
+			properties.add(Property.BOSS_MINION);
 		}
 	}
 }

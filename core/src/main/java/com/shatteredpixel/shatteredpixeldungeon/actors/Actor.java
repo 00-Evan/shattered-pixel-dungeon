@@ -357,6 +357,15 @@ public abstract class Actor implements Bundlable {
 			}
 		}
 	}
+
+	//'freezes' a character in time for a specified amount of time
+	//USE CAREFULLY! Manipulating time like this is useful for some gameplay effects but is tricky
+	public static void delayChar( Char ch, float time ){
+		ch.spendConstant(time);
+		for (Buff b : ch.buffs()){
+			b.spendConstant(time);
+		}
+	}
 	
 	public static synchronized Char findChar( int pos ) {
 		for (Char ch : chars){

@@ -503,7 +503,7 @@ public class DM300 extends Mob {
 			invulnWarned = true;
 			GLog.w(Messages.get(this, "charging_hint"));
 		}
-		return supercharged;
+		return supercharged || super.isInvulnerable(effect);
 	}
 
 	public void supercharge(){

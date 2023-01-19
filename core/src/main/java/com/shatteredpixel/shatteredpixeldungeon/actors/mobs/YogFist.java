@@ -116,7 +116,7 @@ public abstract class YogFist extends Mob {
 			invulnWarned = true;
 			GLog.w(Messages.get(this, "invuln_warn"));
 		}
-		return isNearYog();
+		return isNearYog() || super.isInvulnerable(effect);
 	}
 
 	@Override

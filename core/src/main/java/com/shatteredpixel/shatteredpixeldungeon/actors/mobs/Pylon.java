@@ -63,6 +63,7 @@ public class Pylon extends Mob {
 		maxLvl = -2;
 
 		properties.add(Property.MINIBOSS);
+		properties.add(Property.BOSS_MINION);
 		properties.add(Property.INORGANIC);
 		properties.add(Property.ELECTRIC);
 		properties.add(Property.IMMOVABLE);
@@ -178,7 +179,7 @@ public class Pylon extends Mob {
 	@Override
 	public boolean isInvulnerable(Class effect) {
 		//immune to damage when inactive
-		return (alignment == Alignment.NEUTRAL);
+		return alignment == Alignment.NEUTRAL || super.isInvulnerable(effect);
 	}
 
 	@Override
