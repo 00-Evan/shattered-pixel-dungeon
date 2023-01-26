@@ -57,7 +57,7 @@ import java.util.Collections;
 
 public class WelcomeScene extends PixelScene {
 
-	private static final int LATEST_UPDATE = ShatteredPixelDungeon.v1_4_0;
+	private static final int LATEST_UPDATE = 668;
 
 	//used so that the game does not keep showing the window forever if cleaning fails
 	private static boolean triedCleaningTemp = false;
@@ -205,6 +205,11 @@ public class WelcomeScene extends PixelScene {
 				message += "\n" + Messages.get(this, "patch_translations");
 
 			}
+
+			message = "Greeting Alpha testers, welcome to an early look at Shattered's new hero!\n\n" +
+					"Currently the entire Duelist base class is implemented, as well as one subclass and one armor ability. The Duelist's sprite and hero armor are also using placeholder visuals.\n\n" +
+					"Please let me know what you think! I'm going to try and add a second armor ability and fix any major issues before moving on to beta.";
+
 		} else {
 			message = Messages.get(this, "what_msg");
 		}
