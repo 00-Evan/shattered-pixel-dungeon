@@ -51,8 +51,10 @@ public class Blocking extends Weapon.Enchantment {
 		// lvl 2 ~ 14%
 		float procChance = (level+4f)/(level+40f) * procChanceMultiplier(attacker);
 		if (Random.Float() < procChance){
+			float powerMulti = Math.max(1f, procChance);
+
 			BlockBuff b = Buff.affect(attacker, BlockBuff.class);
-			b.setShield(attacker.HT/10);
+			b.setShield(Math.round(powerMulti * (2 + weapon.buffedLvl())));
 			attacker.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 5);
 		}
 		
