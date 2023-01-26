@@ -42,12 +42,12 @@ public class AscensionChallenge extends Buff {
 
 	private static HashMap<Class<?extends Mob>, Float> modifiers = new HashMap<>();
 	static {
-		modifiers.put(Rat.class,            8f);
-		modifiers.put(Snake.class,          7f);
-		modifiers.put(Gnoll.class,          7f);
-		modifiers.put(Swarm.class,          6.5f);
-		modifiers.put(Crab.class,           6f);
-		modifiers.put(Slime.class,          6f);
+		modifiers.put(Rat.class,            10f);
+		modifiers.put(Snake.class,          9f);
+		modifiers.put(Gnoll.class,          9f);
+		modifiers.put(Swarm.class,          8.5f);
+		modifiers.put(Crab.class,           8f);
+		modifiers.put(Slime.class,          8f);
 
 		modifiers.put(Skeleton.class,       5f);
 		modifiers.put(Thief.class,          5f);
@@ -61,10 +61,10 @@ public class AscensionChallenge extends Buff {
 		modifiers.put(Spinner.class,        2f);
 		modifiers.put(DM200.class,          2f);
 
-		modifiers.put(Ghoul.class,          1.5f);
-		modifiers.put(Elemental.class,      1.5f);
-		modifiers.put(Warlock.class,        1.33f);
-		modifiers.put(Monk.class,           1.33f);
+		modifiers.put(Ghoul.class,          1.67f);
+		modifiers.put(Elemental.class,      1.67f);
+		modifiers.put(Warlock.class,        1.5f);
+		modifiers.put(Monk.class,           1.5f);
 		modifiers.put(Golem.class,          1.33f);
 
 		modifiers.put(RipperDemon.class,    1.2f);
@@ -95,10 +95,10 @@ public class AscensionChallenge extends Buff {
 		return 1;
 	}
 
-	//distant mobs get constantly beckoned to the hero at 2.5+ stacks
+	//distant mobs get constantly beckoned to the hero at 2+ stacks
 	public static void beckonEnemies(){
 		if (Dungeon.hero.buff(AscensionChallenge.class) != null
-				&& Dungeon.hero.buff(AscensionChallenge.class).stacks >= 2.5f){
+				&& Dungeon.hero.buff(AscensionChallenge.class).stacks >= 2f){
 			for (Mob m : Dungeon.level.mobs){
 				if (m.alignment == Char.Alignment.ENEMY && m.distance(Dungeon.hero) > 8) {
 					m.beckon(Dungeon.hero.pos);
@@ -107,11 +107,11 @@ public class AscensionChallenge extends Buff {
 		}
 	}
 
-	//mobs move at 2x speed when not hunting/fleeing at 5 stacks or higher
+	//mobs move at 2x speed when not hunting/fleeing at 4 stacks or higher
 	public static float enemySpeedModifier(Mob m){
 		if (Dungeon.hero.buff(AscensionChallenge.class) != null
 				&& m.alignment == Char.Alignment.ENEMY
-				&& Dungeon.hero.buff(AscensionChallenge.class).stacks >= 5f
+				&& Dungeon.hero.buff(AscensionChallenge.class).stacks >= 4f
 				&& m.state != m.HUNTING && m.state != m.FLEEING){
 			return 2;
 		}
@@ -119,10 +119,10 @@ public class AscensionChallenge extends Buff {
 		return 1;
 	}
 
-	//hero speed is halved and capped at 1x at 7.5+ stacks
+	//hero speed is halved and capped at 1x at 6+ stacks
 	public static float modifyHeroSpeed(float speed){
 		if (Dungeon.hero.buff(AscensionChallenge.class) != null
-				&& Dungeon.hero.buff(AscensionChallenge.class).stacks >= 7.5f){
+				&& Dungeon.hero.buff(AscensionChallenge.class).stacks > 6f){
 			return Math.min(speed/2f, 1f);
 		}
 
@@ -158,7 +158,7 @@ public class AscensionChallenge extends Buff {
 			chal.stacks -= 1;
 		}
 		chal.stacks = Math.max(0, chal.stacks);
-		if (chal.stacks < 10f && (int)(chal.stacks/2.5) != (int)(oldStacks/2.5f)){
+		if (chal.stacks < 8f && (int)(chal.stacks/2) != (int)(oldStacks/2f)){
 			GLog.p(Messages.get(AscensionChallenge.class, "weaken"));
 		}
 		BuffIndicator.refreshHero();
@@ -206,7 +206,7 @@ public class AscensionChallenge extends Buff {
 				Dungeon.hero.buff(Hunger.class).satisfy(Hunger.STARVING);
 				Buff.affect(Dungeon.hero, Healing.class).setHeal(Dungeon.hero.HT, 0, 20);
 			} else {
-				stacks += 2.5f;
+				stacks += 2f;
 
 				//clears any existing mobs from the level and adds one initial one
 				//this helps balance difficulty between levels with lots of mobs left, and ones with few
@@ -235,16 +235,16 @@ public class AscensionChallenge extends Buff {
 		} else {
 			if (Dungeon.depth == 1){
 				GLog.n(Messages.get(this, "almost"));
-			} else if (stacks >= 10f){
+			} else if (stacks >= 8f){
 				GLog.n(Messages.get(this, "damage"));
-			} else if (stacks >= 7.5f){
+			} else if (stacks >= 6f){
 				GLog.n(Messages.get(this, "slow"));
-			} else if (stacks >= 5f){
+			} else if (stacks >= 4f){
 				GLog.n(Messages.get(this, "haste"));
-			} else if (stacks >= 2.5f){
+			} else if (stacks >= 2f){
 				GLog.n(Messages.get(this, "beckon"));
 			}
-			if (stacks > 10 || stacks > 5 && Dungeon.depth > 20){
+			if (stacks > 8 || stacks > 4 && Dungeon.depth > 20){
 				GLog.h(Messages.get(this, "weaken_info"));
 			}
 		}
@@ -255,9 +255,9 @@ public class AscensionChallenge extends Buff {
 
 		beckonEnemies();
 
-		//hero starts progressively taking damage over time at 10+ stacks
-		if (stacks >= 10 && !Dungeon.bossLevel()){
-			damageInc += (stacks-5)/5f;
+		//hero starts progressively taking damage over time at 8+ stacks
+		if (stacks >= 8 && !Dungeon.bossLevel()){
+			damageInc += (stacks-4)/4f;
 			if (damageInc >= 1){
 				target.damage((int)damageInc, this);
 				damageInc -= (int)damageInc;
@@ -283,13 +283,13 @@ public class AscensionChallenge extends Buff {
 
 	@Override
 	public void tintIcon(Image icon) {
-		if (stacks < 2.5f){
+		if (stacks < 2){
 			icon.hardlight(0.5f, 1, 0);
-		} else if (stacks < 5) {
+		} else if (stacks < 4) {
 			icon.hardlight(1, 1, 0);
-		} else if (stacks < 7.5f){
+		} else if (stacks < 6){
 			icon.hardlight(1, 0.67f, 0);
-		} else if (stacks < 10){
+		} else if (stacks < 8){
 			icon.hardlight(1, 0.33f, 0);
 		} else {
 			icon.hardlight(1, 0, 0);
@@ -300,16 +300,16 @@ public class AscensionChallenge extends Buff {
 	public String desc() {
 		String desc = Messages.get(this, "desc");
 		desc += "\n";
-		if (stacks < 2.5f){
+		if (stacks < 2){
 
 			desc += "\n" + Messages.get(this, "desc_clear");
 
 		} else {
 
-			if (stacks >= 2.5f)     desc += "\n" + Messages.get(this, "desc_beckon");
-			if (stacks >= 5.0f)     desc += "\n" + Messages.get(this, "desc_haste");
-			if (stacks >= 7.5f)     desc += "\n" + Messages.get(this, "desc_slow");
-			if (stacks >= 10.0f)    desc += "\n" + Messages.get(this, "desc_damage");
+			if (stacks >= 2)    desc += "\n" + Messages.get(this, "desc_beckon");
+			if (stacks >= 4)    desc += "\n" + Messages.get(this, "desc_haste");
+			if (stacks >= 6)    desc += "\n" + Messages.get(this, "desc_slow");
+			if (stacks >= 8)    desc += "\n" + Messages.get(this, "desc_damage");
 
 		}
 
