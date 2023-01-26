@@ -338,7 +338,7 @@ public class EtherealChains extends Artifact {
 			if (charge > 5+(level()*2)){
 				levelPortion *= (5+((float)level()*2))/charge;
 			}
-			partialCharge += levelPortion*10f;
+			partialCharge += levelPortion*6f;
 
 			if (exp > 100+level()*100 && level() < levelCap){
 				exp -= 100+level()*100;

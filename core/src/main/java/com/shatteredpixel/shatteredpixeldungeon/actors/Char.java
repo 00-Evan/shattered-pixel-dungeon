@@ -657,7 +657,7 @@ public abstract class Char extends Actor {
 			Buff.detach(this, MagicalSleep.class);
 		}
 		if (this.buff(Doom.class) != null && !isImmune(Doom.class)){
-			dmg *= 2;
+			dmg *= 1.67f;
 		}
 		if (alignment != Alignment.ALLY && this.buff(DeathMark.DeathMarkTracker.class) != null){
 			dmg *= 1.25f;

@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbili
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -304,7 +305,9 @@ abstract public class ClassArmor extends Armor {
 		public boolean act() {
 			LockedFloor lock = target.buff(LockedFloor.class);
 			if (lock == null || lock.regenOn()) {
-				charge += 100 / 500f; //500 turns to full charge
+				float chargeGain = 100 / 500f; //500 turns to full charge
+				chargeGain *= RingOfEnergy.armorChargeMultiplier(target);
+				charge += chargeGain;
 				updateQuickslot();
 				if (charge > 100) {
 					charge = 100;

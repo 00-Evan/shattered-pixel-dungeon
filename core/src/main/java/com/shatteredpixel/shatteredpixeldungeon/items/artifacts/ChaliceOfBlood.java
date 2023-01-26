@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -94,7 +95,7 @@ public class ChaliceOfBlood extends Artifact {
 	}
 
 	private void prick(Hero hero){
-		int damage = 3*(level()*level());
+		int damage = 5 + 3*(level()*level());
 
 		Earthroot.Armor armor = hero.buff(Earthroot.Armor.class);
 		if (armor != null) {
@@ -158,10 +159,16 @@ public class ChaliceOfBlood extends Artifact {
 		//grants 5 turns of healing up-front, if hero isn't starving
 		if (target.isStarving()) return;
 
-		float healDelay = 10f - level()*0.9f;
+		float healDelay = 10f - (1.33f + level()*0.667f);
 		healDelay /= amount;
-		//effectively 1HP at lvl 0-5, 2HP lvl 6-8, 3HP lvl 9, and 5HP lvl 10.
-		target.HP = Math.min( target.HT, target.HP + (int)Math.ceil(5/healDelay));
+		float heal = 5f/healDelay;
+		//effectively 0.5/1/1.5/2/2.5 HP per turn at +0/+6/+8/+9/+10
+		if (Random.Float() < heal%1){
+			heal++;
+		}
+		if (heal >= 1f) {
+			target.HP = Math.min(target.HT, target.HP + (int)heal);
+		}
 	}
 	
 	@Override

@@ -48,7 +48,7 @@ public class Corruption extends AllyBuff {
 	
 	@Override
 	public boolean act() {
-		buildToDamage += target.HT/200f;
+		buildToDamage += target.HT/100f;
 
 		int damage = (int)buildToDamage;
 		buildToDamage -= damage;
