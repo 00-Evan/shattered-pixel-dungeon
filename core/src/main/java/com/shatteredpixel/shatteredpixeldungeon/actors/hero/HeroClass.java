@@ -290,6 +290,9 @@ public enum HeroClass {
 	public boolean isUnlocked(){
 		//always unlock on debug builds
 		if (DeviceCompat.isDebug()) return true;
+
+		//For Beta/Alpha testers, TODO disable for full release!
+		if (this == DUELIST) return true;
 		
 		switch (this){
 			case WARRIOR: default:
