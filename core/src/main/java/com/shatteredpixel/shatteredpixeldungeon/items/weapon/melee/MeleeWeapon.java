@@ -108,6 +108,9 @@ public class MeleeWeapon extends Weapon {
 					GLog.w(Messages.get(this, "ability_need_equip"));
 					usesTargeting = false;
 				}
+			} else if (STRReq() > hero.STR()){
+				GLog.w(Messages.get(this, "ability_low_str"));
+				usesTargeting = false;
 			} else if (hero.belongings.weapon == this &&
 					(Buff.affect(hero, Charger.class).charges + Buff.affect(hero, Charger.class).partialCharge) < abilityChargeUse(hero)) {
 				GLog.w(Messages.get(this, "ability_no_charge"));
