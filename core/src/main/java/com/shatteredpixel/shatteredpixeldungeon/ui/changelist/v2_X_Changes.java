@@ -87,7 +87,7 @@ public class v2_X_Changes {
 				"\n" +
 				"_The Champion_ is a master of melee weapons who can equip a secondary weapon in addition to her primary one!\n" +
 				"\n" +
-				"_The Monk_ is a master of psychical technique, _but has not been finished yet._ Look out for the second subclass very soon!"));
+				"_The Monk_ is a master of physical technique, _but has not been finished yet._ Look out for the second subclass very soon!"));
 
 		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 6), "Duelist Armor Abilities",
 				"_The Duelist has three lategame armor abilities, with 3 more talents each!_\n" +
@@ -221,6 +221,8 @@ public class v2_X_Changes {
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_TOPAZ), "Item Buffs",
 				"I'm making several buffs to various items that could be performing a little better:\n" +
+				"\n" +
+				"_- Pickaxe_ can now benefit from upgrades enchantments and augmentation, if you feel like using it for fun.\n" +
 				"\n" +
 				"_- Ring of Energy_ now also applies a recharging boost to hero armor abilities. All the boosts it gives are now standardized to +15%.\n" +
 				"_- Ring of Arcana_ enchantment boost up to +17.5% per level, from +15%\n" +
