@@ -59,6 +59,24 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("ALPHA-2", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"Buffed _Restored Agility_ talent, now grants 3x/10x evasion, up from 2x/5x.\n\n" +
+				"Duelist can no longer use weapon abilities with insufficient strength."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed: (caused by ALPHA-1):\n" +
+				"_-_ Various minor textual errors\n" +
+				"_-_ Errors with old Warrior saves and Veteran's Intuition talent\n" +
+				"_-_ Attacking Duelist abilities not cancelling invis or time freeze"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
