@@ -502,9 +502,9 @@ public class Hero extends Char {
 
 		if (buff(Talent.RestoredAgilityTracker.class) != null){
 			if (pointsInTalent(Talent.RESTORED_AGILITY) == 1){
-				evasion *= 2f;
+				evasion *= 3f;
 			} else if (pointsInTalent(Talent.RESTORED_AGILITY) == 2){
-				evasion *= 5f;
+				evasion *= 10f;
 			}
 		}
 
