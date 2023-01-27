@@ -849,7 +849,7 @@ public enum Talent {
 	private static final HashMap<String, String> renamedTalents = new HashMap<>();
 	static{
 		//v2.0.0
-		renamedTalents.put("ADVENTURERS_INTUITION",      "VETERANS_INTUITION");
+		renamedTalents.put("ARMSMASTERS_INTUITION",      "VETERANS_INTUITION");
 	}
 
 	public static void restoreTalentsFromBundle( Bundle bundle, Hero hero ){
