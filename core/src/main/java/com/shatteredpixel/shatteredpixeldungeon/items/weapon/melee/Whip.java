@@ -57,6 +57,8 @@ public class Whip extends MeleeWeapon {
 
 		ArrayList<Char> targets = new ArrayList<>();
 
+		//temporarily set whip as ability weapon before the attack, as we want to use its range
+		hero.belongings.abilityWeapon = this;
 		for (Char ch : Actor.chars()){
 			if (ch.alignment == Char.Alignment.ENEMY
 					&& !hero.isCharmedBy(ch)
@@ -65,6 +67,7 @@ public class Whip extends MeleeWeapon {
 				targets.add(ch);
 			}
 		}
+		hero.belongings.abilityWeapon = null;
 
 		if (targets.isEmpty()) {
 			GLog.w(Messages.get(this, "ability_no_target"));
