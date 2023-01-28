@@ -155,7 +155,8 @@ public class RingOfForce extends Ring {
 			} else if (!isEquipped(hero)) {
 				GLog.w(Messages.get(MeleeWeapon.class, "ability_need_equip"));
 
-			} else if ((Buff.affect(hero, MeleeWeapon.Charger.class).charges + Buff.affect(hero, MeleeWeapon.Charger.class).partialCharge) < 0.333f){
+			} else if ((Buff.affect(hero, MeleeWeapon.Charger.class).charges + Buff.affect(hero, MeleeWeapon.Charger.class).partialCharge)
+					< BrawlersStance.HIT_CHARGE_USE){
 				GLog.w(Messages.get(MeleeWeapon.class, "ability_no_charge"));
 
 			} else {
