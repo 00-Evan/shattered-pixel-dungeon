@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -93,9 +94,12 @@ public class Flail extends MeleeWeapon {
 		}
 	}
 
-	@Override
 	public float abilityChargeUse( Hero hero ) {
-		return 2*super.abilityChargeUse(hero);
+		if (Dungeon.hero.buff(SpinAbilityTracker.class) != null){
+			return 0;
+		} else {
+			return 2*super.abilityChargeUse(hero);
+		}
 	}
 
 	@Override
