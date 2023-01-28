@@ -60,7 +60,8 @@ public class DM201 extends DM200 {
 		}
 
 		if (paralysed <= 0 && state == HUNTING && enemy != null && enemySeen && threatened
-				&& canVent(enemy.pos) && !Dungeon.level.adjacent(pos, enemy.pos) && fieldOfView[enemy.pos]){
+				&& canVent(enemy.pos) && !Dungeon.level.adjacent(pos, enemy.pos)
+				&& fieldOfView[enemy.pos] && enemy.invisible <= 0){
 			enemySeen = enemy.isAlive() && fieldOfView[enemy.pos] && enemy.invisible <= 0;
 			if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
 				sprite.zap( enemy.pos );
