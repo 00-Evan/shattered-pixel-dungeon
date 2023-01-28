@@ -326,7 +326,8 @@ public class MeleeWeapon extends Weapon {
 			}
 		}
 
-		if (Dungeon.hero.heroClass == HeroClass.DUELIST){
+		//the mage's staff has no ability as it can only be gained by the mage
+		if (Dungeon.hero.heroClass == HeroClass.DUELIST && !(this instanceof MagesStaff)){
 			info += "\n\n" + Messages.get(this, "ability_desc");
 		}
 		
