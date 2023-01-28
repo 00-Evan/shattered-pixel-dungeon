@@ -234,11 +234,13 @@ abstract public class ClassArmor extends Armor {
 								cursed = armor.cursed;
 								curseInfusionBonus = armor.curseInfusionBonus;
 								masteryPotionBonus = armor.masteryPotionBonus;
-								if (armor.checkSeal() != null) seal = armor.checkSeal();
-								if (seal.level() > 0){
-									int newLevel = trueLevel()+1;
-									level(newLevel);
-									Badges.validateItemLevelAquired(ClassArmor.this);
+								if (armor.checkSeal() != null) {
+									seal = armor.checkSeal();
+									if (seal.level() > 0) {
+										int newLevel = trueLevel() + 1;
+										level(newLevel);
+										Badges.validateItemLevelAquired(ClassArmor.this);
+									}
 								}
 
 								identify();
