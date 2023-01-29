@@ -83,7 +83,7 @@ public class Ratmogrify extends ArmorAbility {
 
 		Char ch = Actor.findChar(target);
 
-		if (ch == null) {
+		if (ch == null || !Dungeon.level.heroFOV[target]) {
 			GLog.w(Messages.get(this, "no_target"));
 			return;
 		} else if (ch == hero){

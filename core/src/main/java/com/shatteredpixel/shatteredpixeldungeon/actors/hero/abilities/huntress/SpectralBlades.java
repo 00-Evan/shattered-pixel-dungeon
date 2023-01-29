@@ -69,7 +69,7 @@ public class SpectralBlades extends ArmorAbility {
 
 		Char enemy = findChar(b, hero, 2*hero.pointsInTalent(Talent.PROJECTING_BLADES), targets);
 
-		if (enemy == null){
+		if (enemy == null || !hero.fieldOfView[enemy.pos]){
 			GLog.w(Messages.get(this, "no_target"));
 			return;
 		}
