@@ -99,7 +99,6 @@ public class MeleeWeapon extends Weapon {
 					if (hero.buff(Talent.SwiftEquipCooldown.class) == null
 						|| hero.buff(Talent.SwiftEquipCooldown.class).hasSecondUse()){
 						execute(hero, AC_EQUIP);
-						GLog.i(Messages.get(this, "swift_equip"));
 					} else {
 						GLog.w(Messages.get(this, "ability_need_equip"));
 						usesTargeting = false;

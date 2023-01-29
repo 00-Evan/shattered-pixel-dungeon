@@ -114,9 +114,11 @@ abstract public class KindOfWeapon extends EquipableItem {
 					hero.spendAndNext(-hero.cooldown());
 					Buff.affect(hero, Talent.SwiftEquipCooldown.class, 49f)
 							.secondUse = hero.pointsInTalent(Talent.SWIFT_EQUIP) == 2;
+					GLog.i(Messages.get(this, "swift_equip"));
 				} else if (hero.buff(Talent.SwiftEquipCooldown.class).hasSecondUse()) {
 					hero.spendAndNext(-hero.cooldown());
 					hero.buff(Talent.SwiftEquipCooldown.class).secondUse = false;
+					GLog.i(Messages.get(this, "swift_equip"));
 				} else {
 					hero.spendAndNext(TIME_TO_EQUIP);
 				}
@@ -155,9 +157,11 @@ abstract public class KindOfWeapon extends EquipableItem {
 					hero.spendAndNext(-hero.cooldown());
 					Buff.affect(hero, Talent.SwiftEquipCooldown.class, 49f)
 							.secondUse = hero.pointsInTalent(Talent.SWIFT_EQUIP) == 2;
+					GLog.i(Messages.get(this, "swift_equip"));
 				} else if (hero.buff(Talent.SwiftEquipCooldown.class).hasSecondUse()) {
 					hero.spendAndNext(-hero.cooldown());
 					hero.buff(Talent.SwiftEquipCooldown.class).secondUse = false;
+					GLog.i(Messages.get(this, "swift_equip"));
 				} else {
 					hero.spendAndNext(TIME_TO_EQUIP);
 				}
