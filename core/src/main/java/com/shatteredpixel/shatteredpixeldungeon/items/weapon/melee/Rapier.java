@@ -54,6 +54,11 @@ public class Rapier extends MeleeWeapon {
 	}
 
 	@Override
+	public int defenseFactor( Char owner ) {
+		return 1;	//1 extra defence
+	}
+
+	@Override
 	public String targetingPrompt() {
 		return Messages.get(this, "prompt");
 	}
