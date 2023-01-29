@@ -59,9 +59,42 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("ALPHA-3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 1), "Duelist Balancing",
+				"I'm making a few more aggressive balance changes based on early Alpha feedback.\n" +
+				"\n" +
+				"_- Rapier_ now blocks 0-1 damage, like I stated it would earlier in development\n" +
+				"_- Aggressive Barrier_ shielding granted up to 3 from 2\n" +
+				"\n" +
+				"Weapon abilities:\n" +
+				"_- Combo Strike_ timing window up to 6/5/4 from 5/4/3\n" +
+				"_- Cleave_ is no longer instant when killing an enemy\n" +
+				"_- Sneak_ no longer blinks, now grants 6/5/4 turns of invisibility instead\n" +
+				"\n" +
+				"_- Lightweight Charge_ heavily nerfed to 20/15/10% from 50/33/25%. I am considering outright removing this talent, as Duelist/Champion already have mechanics to encourage using lower tier weapon abilities. This talent was designed before both the Champion and Swift Equip."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Items and Enemies can no longer spawn on the Wandmaker quest ritual marker."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed: (caused by ALPHA):\n" +
+				"_-_ Plenty of textual errors\n" +
+				"_-_ Crashes when transferring hero armors\n" +
+				"_-_ Furor and Evasion nerfs not actually being applied\n" +
+				"_-_ Flail ability costing 2 charges every spin, instead of just the first\n" +
+				"_-_ Whip ability always using primary weapon's attack range\n" +
+				"_-_ Darts not being visually sped up by secondary weapon crossbow\n" +
+				"_-_ Duelist not appearing in ascension victory screen\n" +
+				"_-_ Inventory window showing 18 spaces instead of 19 when a secondary weapon is equipped\n" +
+				"_-_ Twin upgrades not accounting for some upgrade/degrade effects\n" +
+				"_-_ Corrupting enemies not counting as a win when dueling\n" +
+				"\n" +
+				"Fixed (existed prior to ALPHA):\n" +
+				"_-_ DM-201s targeting invisible heroes\n" +
+				"_-_ Some armor abilities not checking if targets are out of vision"));
 
 		changes = new ChangeInfo("ALPHA-2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -72,7 +105,7 @@ public class v2_X_Changes {
 				"Duelist can no longer use weapon abilities with insufficient strength."));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed: (caused by ALPHA-1):\n" +
+				"Fixed: (caused by ALPHA):\n" +
 				"_-_ Various minor textual errors\n" +
 				"_-_ Errors with old Warrior saves and Veteran's Intuition talent\n" +
 				"_-_ Attacking Duelist abilities not cancelling invis or time freeze"));

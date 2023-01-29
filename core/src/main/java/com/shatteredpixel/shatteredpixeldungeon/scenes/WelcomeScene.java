@@ -207,8 +207,8 @@ public class WelcomeScene extends PixelScene {
 			}
 
 			message = "Greeting Alpha testers, welcome to an early look at Shattered's new hero!\n\n" +
-					"Currently the entire Duelist base class is implemented, as well as one subclass and one armor ability. The Duelist's sprite and hero armor are also using placeholder visuals.\n\n" +
-					"Please let me know what you think! I'm going to try and add a second armor ability and fix any major issues before moving on to beta.";
+					"After a couple days of Alpha, I've now fixed a whole bunch of bugs, and made a few early balance changes. Please let me know what you think!\n\n" +
+					"I'm going to try and add a second armor ability and finish up the Duelist's sprite over the next few days before moving on to beta.";
 
 		} else {
 			message = Messages.get(this, "what_msg");
