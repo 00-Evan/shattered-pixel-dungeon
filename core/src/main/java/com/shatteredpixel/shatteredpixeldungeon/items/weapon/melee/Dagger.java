@@ -85,43 +85,14 @@ public class Dagger extends MeleeWeapon {
 	}
 
 	@Override
-	public String targetingPrompt() {
-		return Messages.get(this, "prompt");
-	}
-
-	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		sneakAbility(hero, target, 5, this);
+		sneakAbility(hero, 6, this);
 	}
 
-	public static void sneakAbility(Hero hero, Integer target, int maxDist, MeleeWeapon wep){
-		if (target == null) {
-			return;
-		}
-
-		if (Actor.findChar(target) != null || !Dungeon.level.heroFOV[target]) {
-			GLog.w(Messages.get(wep, "ability_bad_position"));
-			return;
-		}
-
-		PathFinder.buildDistanceMap(Dungeon.hero.pos, BArray.not(Dungeon.level.solid, null), maxDist);
-		if (PathFinder.distance[target] == Integer.MAX_VALUE) {
-			GLog.w(Messages.get(wep, "ability_bad_position"));
-			return;
-		}
-
+	public static void sneakAbility(Hero hero, int invisTurns, MeleeWeapon wep){
 		wep.beforeAbilityUsed(hero);
-		Buff.affect(hero, Invisibility.class, Math.max(1, 1/hero.speed()));
-		hero.spendAndNext(1/hero.speed());
-
-		Dungeon.hero.sprite.turnTo( Dungeon.hero.pos, target);
-		Dungeon.hero.pos = target;
-		Dungeon.level.occupyCell(Dungeon.hero);
-		Dungeon.observe();
-		GameScene.updateFog();
-		Dungeon.hero.checkVisibleMobs();
-
-		Dungeon.hero.sprite.place( Dungeon.hero.pos );
+		Buff.affect(hero, Invisibility.class, invisTurns);
+		hero.spendAndNext(Actor.TICK);
 		CellEmitter.get( Dungeon.hero.pos ).burst( Speck.factory( Speck.WOOL ), 6 );
 		Sample.INSTANCE.play( Assets.Sounds.PUFF );
 		wep.afterAbilityUsed(hero);
