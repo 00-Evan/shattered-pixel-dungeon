@@ -581,9 +581,9 @@ public class Hero extends Char {
 					&& hasTalent(Talent.LIGHTWEIGHT_CHARGE)
 					&& wep instanceof MeleeWeapon) {
 				if (((MeleeWeapon) wep).tier == 2) {
-					dmg = Math.round(dmg * (1f + 0.1f*pointsInTalent(Talent.LIGHTWEIGHT_CHARGE)));
+					dmg = Math.round(dmg * (1f + 0.067f*pointsInTalent(Talent.LIGHTWEIGHT_CHARGE)));
 				} else if (((MeleeWeapon) wep).tier == 3) {
-					dmg = Math.round(dmg * (1f + 0.05f*pointsInTalent(Talent.LIGHTWEIGHT_CHARGE)));
+					dmg = Math.round(dmg * (1f + 0.033f*pointsInTalent(Talent.LIGHTWEIGHT_CHARGE)));
 				}
 			}
 

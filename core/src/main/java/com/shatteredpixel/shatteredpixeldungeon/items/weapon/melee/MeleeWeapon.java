@@ -221,8 +221,8 @@ public class MeleeWeapon extends Weapon {
 	public float abilityChargeUse( Hero hero ){
 		float chargeUse = 1f;
 		if (hero.hasTalent(Talent.LIGHTWEIGHT_CHARGE) && tier <= 3){
-			// T1/2/3 get 50/33/25% charge use reduction at +3
-			float chargeUseReduction = 1/(1f+tier) * (hero.pointsInTalent(Talent.LIGHTWEIGHT_CHARGE)/3f);
+			// T1/2/3 get 20/15/10% charge use reduction at +3
+			float chargeUseReduction = (0.25f-.05f*tier) * (hero.pointsInTalent(Talent.LIGHTWEIGHT_CHARGE)/3f);
 			chargeUse *= 1f - chargeUseReduction;
 		}
 		return chargeUse;
