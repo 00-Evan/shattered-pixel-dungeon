@@ -51,7 +51,7 @@ import com.watabou.utils.PathFinder;
 public class Challenge extends ArmorAbility {
 
 	{
-		baseChargeUse = 35;
+		baseChargeUse = 5;
 	}
 
 	@Override
@@ -229,9 +229,9 @@ public class Challenge extends ArmorAbility {
 					}
 				}
 
-				if (other == null){
-					detach();
-				} else if (Dungeon.level.distance(target.pos, other.pos) > 5){
+				if (other == null
+					|| target.alignment == other.alignment
+					|| Dungeon.level.distance(target.pos, other.pos) > 5) {
 					detach();
 				}
 			}
@@ -243,10 +243,9 @@ public class Challenge extends ArmorAbility {
 		@Override
 		public void detach() {
 			super.detach();
-			if (!target.isAlive()) {
-				if (target.alignment != Dungeon.hero.alignment){
+			if (target != Dungeon.hero){
+				if (!target.isAlive() || target.alignment == Dungeon.hero.alignment){
 					Sample.INSTANCE.play(Assets.Sounds.BOSS);
-					GameScene.flash(0x80FFFFFF);
 
 					if (Dungeon.hero.hasTalent(Talent.INVIGORATING_VICTORY)){
 						DuelParticipant heroBuff = Dungeon.hero.buff(DuelParticipant.class);
@@ -275,12 +274,14 @@ public class Challenge extends ArmorAbility {
 						ch.buff(DuelParticipant.class).detach();
 					}
 				}
-			} else if (target != Dungeon.hero){
-				GameScene.flash(0x80FFFFFF);
-			}
+			} else {
+				if (Dungeon.hero.isAlive()) {
+					GameScene.flash(0x80FFFFFF);
 
-			if (target == Dungeon.hero && Dungeon.hero.hasTalent(Talent.ELIMINATION_MATCH) && target.isAlive()){
-				Buff.affect(target, EliminationMatchTracker.class, 3);
+					if (Dungeon.hero.hasTalent(Talent.ELIMINATION_MATCH)){
+						Buff.affect(target, EliminationMatchTracker.class, 3);
+					}
+				}
 			}
 		}
 
