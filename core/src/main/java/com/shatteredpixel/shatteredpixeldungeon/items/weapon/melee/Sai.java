@@ -62,7 +62,7 @@ public class Sai extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		Sai.comboStrikeAbility(hero, target, 4, this);
+		Sai.comboStrikeAbility(hero, target, 5, this);
 	}
 
 	public static void comboStrikeAbility(Hero hero, Integer target, int comboTime, MeleeWeapon wep){
@@ -116,7 +116,7 @@ public class Sai extends MeleeWeapon {
 
 	public static class ComboStrikeTracker extends FlavourBuff{
 
-		public static float DURATION = 5f;
+		public static float DURATION = 6f;
 
 	}
 
