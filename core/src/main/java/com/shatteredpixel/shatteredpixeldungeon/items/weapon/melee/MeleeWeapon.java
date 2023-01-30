@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
@@ -250,8 +251,13 @@ public class MeleeWeapon extends Weapon {
 	public int buffedLvl() {
 		if (!evaluatingTwinUpgrades && isEquipped(Dungeon.hero) && Dungeon.hero.hasTalent(Talent.TWIN_UPGRADES)){
 			KindOfWeapon other = null;
-			if (Dungeon.hero.belongings.weapon() != this) other = Dungeon.hero.belongings.weapon();
-			if (Dungeon.hero.belongings.secondWep() != this) other = Dungeon.hero.belongings.secondWep();
+			if (Dungeon.hero.belongings.weapon != this) other = Dungeon.hero.belongings.weapon;
+			if (Dungeon.hero.belongings.secondWep != this) other = Dungeon.hero.belongings.secondWep;
+
+			//need to manually check for lost inventory here
+			if (other instanceof MeleeWeapon && Dungeon.hero.buff(LostInventory.class) != null && !other.keptThoughLostInvent){
+				other = null;
+			}
 
 			if (other instanceof MeleeWeapon) {
 				evaluatingTwinUpgrades = true;
