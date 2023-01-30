@@ -72,11 +72,6 @@ public class Dirk extends MeleeWeapon {
 	}
 
 	@Override
-	public String targetingPrompt() {
-		return Messages.get(this, "prompt");
-	}
-
-	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
 		Dagger.sneakAbility(hero, 5, this);
 	}
