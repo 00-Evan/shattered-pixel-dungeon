@@ -74,11 +74,13 @@ public class RunicBlade extends MeleeWeapon {
 
 		//we apply here because of projecting
 		RunicSlashTracker tracker = Buff.affect(hero, RunicSlashTracker.class);
+		hero.belongings.abilityWeapon = this;
 		if (!hero.canAttack(enemy)){
 			GLog.w(Messages.get(this, "ability_bad_position"));
 			tracker.detach();
 			return;
 		}
+		hero.belongings.abilityWeapon = null;
 
 		hero.sprite.attack(enemy.pos, new Callback() {
 			@Override

@@ -77,10 +77,12 @@ public class Greataxe extends MeleeWeapon {
 			return;
 		}
 
+		hero.belongings.abilityWeapon = this;
 		if (!hero.canAttack(enemy)){
 			GLog.w(Messages.get(this, "ability_bad_position"));
 			return;
 		}
+		hero.belongings.abilityWeapon = null;
 
 		hero.sprite.attack(enemy.pos, new Callback() {
 			@Override

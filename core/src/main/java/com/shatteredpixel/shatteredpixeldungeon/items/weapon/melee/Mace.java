@@ -74,10 +74,12 @@ public class Mace extends MeleeWeapon {
 			return;
 		}
 
+		hero.belongings.abilityWeapon = wep;
 		if (!hero.canAttack(enemy)){
 			GLog.w(Messages.get(wep, "ability_bad_position"));
 			return;
 		}
+		hero.belongings.abilityWeapon = null;
 
 		hero.sprite.attack(enemy.pos, new Callback() {
 			@Override
