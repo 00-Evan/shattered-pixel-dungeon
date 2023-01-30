@@ -139,7 +139,11 @@ public class Dart extends MissileWeapon {
 			damage = bow.proc(attacker, defender, damage);
 		}
 
-		return super.proc(attacker, defender, damage);
+		int dmg = super.proc(attacker, defender, damage);
+		if (!processingChargedShot) {
+			processChargedShot(defender.pos, damage);
+		}
+		return dmg;
 	}
 
 	@Override
@@ -152,19 +156,39 @@ public class Dart extends MissileWeapon {
 	protected void onThrow(int cell) {
 		updateCrossbow();
 		super.onThrow(cell);
-		processChargedShot(cell);
 	}
 
-	protected void processChargedShot( int cell ){
+	private boolean processingChargedShot = false;
+	protected void processChargedShot( int cell, int dmg ){
 		//don't update xbow here, as dart may be the active weapon atm
+		processingChargedShot = true;
 		if (bow != null && Dungeon.hero.buff(Crossbow.ChargedShot.class) != null) {
 			PathFinder.buildDistanceMap(cell, Dungeon.level.passable, 1);
 			for (Char ch : Actor.chars()){
-				if (PathFinder.distance[ch.pos] != Integer.MAX_VALUE){
-					proc(Dungeon.hero, ch, 0);
+				if (ch.pos == cell){
+					Actor.add(new Actor() {
+						{ actPriority = VFX_PRIO; }
+						@Override
+						protected boolean act() {
+							if (!ch.isAlive()){
+								bow.onAbilityKill(Dungeon.hero);
+							}
+							Actor.remove(this);
+							return true;
+						}
+					});
+				} else if (PathFinder.distance[ch.pos] != Integer.MAX_VALUE){
+					proc(Dungeon.hero, ch, dmg);
 				}
 			}
+		}
+		processingChargedShot = false;
+	}
 
+	@Override
+	protected void decrementDurability() {
+		super.decrementDurability();
+		if (Dungeon.hero.buff(Crossbow.ChargedShot.class) != null) {
 			Dungeon.hero.buff(Crossbow.ChargedShot.class).detach();
 		}
 	}
