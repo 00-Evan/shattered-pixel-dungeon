@@ -558,8 +558,8 @@ public class Tengu extends Mob {
 		//Targets closest cell which is adjacent to target
 		for (int i : PathFinder.NEIGHBOURS8){
 			int cell = target.pos + i;
-			if (targetCell == -1 ||
-					Dungeon.level.trueDistance(cell, thrower.pos) < Dungeon.level.trueDistance(targetCell, thrower.pos)){
+			if (!Dungeon.level.solid[cell] &&
+					(targetCell == -1 || Dungeon.level.trueDistance(cell, thrower.pos) < Dungeon.level.trueDistance(targetCell, thrower.pos))){
 				targetCell = cell;
 			}
 		}
