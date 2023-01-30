@@ -59,6 +59,27 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("ALPHA-4", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed: (caused by ALPHA):\n" +
+				"_-_ Challenge only using 5 armor charge due to unintentionally committed debug code\n" +
+				"_-_ Dirk and Assassin's Blade still asking for a target despite not targeting anymore\n" +
+				"_-_ Secondary weapon abilities using the primary weapon's range\n" +
+				"_-_ Secondary weapon abilities not benefitting from twin upgrades\n" +
+				"_-_ Tengu's health bar persisting if he is hit into second phase by a weapon ability\n" +
+				"_-_ Crashes when self-hitting with mageroyal dart and crossbow weapon ability\n" +
+				"_-_ Crossbow ability not triggering lethal haste or shocking enchantment\n" +
+				"\n" +
+				"Fixed (existed prior to ALPHA):\n" +
+				"_-_ Very rare cases of Tengu throwing bombs into walls"));
+
 		changes = new ChangeInfo("ALPHA-3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
