@@ -87,6 +87,7 @@ public class Spear extends MeleeWeapon {
 			@Override
 			public void call() {
 				wep.beforeAbilityUsed(hero);
+				AttackIndicator.target(enemy);
 				if (hero.attack(enemy, dmgMulti, 0, Char.INFINITE_ACCURACY)) {
 					if (enemy.isAlive()){
 						//trace a ballistica to our target (which will also extend past them
@@ -100,7 +101,6 @@ public class Spear extends MeleeWeapon {
 					}
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				}
-				AttackIndicator.target(enemy);
 				hero.spendAndNext(hero.attackDelay());
 				Invisibility.dispel();
 				wep.afterAbilityUsed(hero);

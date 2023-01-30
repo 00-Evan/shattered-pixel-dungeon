@@ -86,6 +86,7 @@ public class RunicBlade extends MeleeWeapon {
 			@Override
 			public void call() {
 				beforeAbilityUsed(hero);
+				AttackIndicator.target(enemy);
 				if (hero.attack(enemy, 1f, 0, Char.INFINITE_ACCURACY)){
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 					if (!enemy.isAlive()){
@@ -93,7 +94,6 @@ public class RunicBlade extends MeleeWeapon {
 					}
 				}
 				tracker.detach();
-				AttackIndicator.target(enemy);
 				hero.spendAndNext(hero.attackDelay());
 				Invisibility.dispel();
 				afterAbilityUsed(hero);

@@ -110,13 +110,13 @@ public class Rapier extends MeleeWeapon {
 					public void call() {
 						//+3+lvl damage, equivalent to +67% damage, but more consistent
 						beforeAbilityUsed(hero);
+						AttackIndicator.target(enemy);
 						if (hero.attack(enemy, 1f, augment.damageFactor(3 + level()), Char.INFINITE_ACCURACY)){
 							Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 							if (!enemy.isAlive()){
 								onAbilityKill(hero);
 							}
 						}
-						AttackIndicator.target(enemy);
 						hero.spendAndNext(hero.attackDelay());
 						Invisibility.dispel();
 						afterAbilityUsed(hero);

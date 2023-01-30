@@ -87,6 +87,7 @@ public class Sai extends MeleeWeapon {
 			@Override
 			public void call() {
 				wep.beforeAbilityUsed(hero);
+				AttackIndicator.target(enemy);
 				boolean hit = hero.attack(enemy, 1, 0, Char.INFINITE_ACCURACY);
 				if (hit && !enemy.isAlive()){
 					wep.onAbilityKill(hero);
@@ -100,7 +101,6 @@ public class Sai extends MeleeWeapon {
 					}
 				}
 
-				AttackIndicator.target(enemy);
 				if (recentHits >= 2 && hit){
 					for (Buff b : buffs){
 						b.detach();

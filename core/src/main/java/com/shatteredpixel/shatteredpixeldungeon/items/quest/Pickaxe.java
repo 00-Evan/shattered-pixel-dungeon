@@ -206,6 +206,7 @@ public class Pickaxe extends MeleeWeapon {
 					damageMulti = 2f;
 				}
 				beforeAbilityUsed(hero);
+				AttackIndicator.target(enemy);
 				if (hero.attack(enemy, damageMulti, 0, Char.INFINITE_ACCURACY)) {
 					if (enemy.isAlive()) {
 						Buff.affect(enemy, Vulnerable.class, 3f);
@@ -214,7 +215,6 @@ public class Pickaxe extends MeleeWeapon {
 					}
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				}
-				AttackIndicator.target(enemy);
 				hero.spendAndNext(hero.attackDelay());
 				Invisibility.dispel();
 				afterAbilityUsed(hero);

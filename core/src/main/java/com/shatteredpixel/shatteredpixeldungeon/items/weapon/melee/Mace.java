@@ -85,6 +85,7 @@ public class Mace extends MeleeWeapon {
 			@Override
 			public void call() {
 				wep.beforeAbilityUsed(hero);
+				AttackIndicator.target(enemy);
 				if (hero.attack(enemy, dmgMulti, 0, 0.25f)) {
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 					if (enemy.isAlive()){
@@ -93,7 +94,6 @@ public class Mace extends MeleeWeapon {
 						wep.onAbilityKill(hero);
 					}
 				}
-				AttackIndicator.target(enemy);
 				hero.spendAndNext(hero.attackDelay());
 				Invisibility.dispel();
 				wep.afterAbilityUsed(hero);
