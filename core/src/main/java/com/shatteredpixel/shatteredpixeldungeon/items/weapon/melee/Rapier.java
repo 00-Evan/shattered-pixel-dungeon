@@ -72,22 +72,25 @@ public class Rapier extends MeleeWeapon {
 		}
 
 		Char enemy = Actor.findChar(target);
-		if (enemy == null || enemy == hero || hero.isCharmedBy(enemy) || !Dungeon.level.heroFOV[target]){
-			GLog.w(Messages.get(this, "ability_no_target"));
-			return;
+		//duelist can lunge out of her FOV, but this wastes the ability instead of cancelling if there is no target
+		if (Dungeon.level.heroFOV[target]) {
+			if (enemy == null || enemy == hero || hero.isCharmedBy(enemy)) {
+				GLog.w(Messages.get(this, "ability_no_target"));
+				return;
+			}
 		}
 
-		if (Dungeon.level.distance(hero.pos, enemy.pos) != 2){
+		if (Dungeon.level.distance(hero.pos, target) != 2){
 			GLog.w(Messages.get(this, "ability_bad_position"));
 			return;
 		}
 
 		int lungeCell = -1;
 		for (int i : PathFinder.NEIGHBOURS8){
-			if (Dungeon.level.adjacent(hero.pos + i, enemy.pos)
+			if (Dungeon.level.adjacent(hero.pos + i, target)
 					&& Actor.findChar(hero.pos+i) == null
 					&& Dungeon.level.passable[hero.pos+i]){
-				if (lungeCell == -1 || Dungeon.level.trueDistance(hero.pos + i, enemy.pos) < Dungeon.level.trueDistance(lungeCell, enemy.pos)){
+				if (lungeCell == -1 || Dungeon.level.trueDistance(hero.pos + i, target) < Dungeon.level.trueDistance(lungeCell, target)){
 					lungeCell = hero.pos + i;
 				}
 			}
@@ -110,23 +113,30 @@ public class Rapier extends MeleeWeapon {
 				hero.pos = dest;
 				Dungeon.level.occupyCell(hero);
 
-				hero.sprite.attack(enemy.pos, new Callback() {
-					@Override
-					public void call() {
-						//+3+lvl damage, equivalent to +67% damage, but more consistent
-						beforeAbilityUsed(hero);
-						AttackIndicator.target(enemy);
-						if (hero.attack(enemy, 1f, augment.damageFactor(3 + level()), Char.INFINITE_ACCURACY)){
-							Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
-							if (!enemy.isAlive()){
-								onAbilityKill(hero);
+				if (enemy != null) {
+					hero.sprite.attack(enemy.pos, new Callback() {
+						@Override
+						public void call() {
+							//+3+lvl damage, equivalent to +67% damage, but more consistent
+							beforeAbilityUsed(hero);
+							AttackIndicator.target(enemy);
+							if (hero.attack(enemy, 1f, augment.damageFactor(3 + level()), Char.INFINITE_ACCURACY)) {
+								Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+								if (!enemy.isAlive()) {
+									onAbilityKill(hero);
+								}
 							}
+							hero.spendAndNext(hero.attackDelay());
+							Invisibility.dispel();
+							afterAbilityUsed(hero);
 						}
-						hero.spendAndNext(hero.attackDelay());
-						Invisibility.dispel();
-						afterAbilityUsed(hero);
-					}
-				});
+					});
+				} else {
+					beforeAbilityUsed(hero);
+					GLog.w(Messages.get(Rapier.class, "ability_no_target"));
+					hero.spendAndNext(hero.speed());
+					afterAbilityUsed(hero);
+				}
 			}
 		});
 	}
