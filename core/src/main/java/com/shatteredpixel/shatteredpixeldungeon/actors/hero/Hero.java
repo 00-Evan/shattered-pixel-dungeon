@@ -50,6 +50,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Foresight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HoldFast;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Levitation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
@@ -1473,15 +1474,6 @@ public class Hero extends Char {
 			path = null;
 
 			if (Actor.findChar( target ) == null) {
-				if (Dungeon.level.pit[target] && !flying && !Dungeon.level.solid[target]) {
-					if (!Chasm.jumpConfirmed){
-						Chasm.heroJump(this);
-						interrupt();
-					} else {
-						Chasm.heroFall(target);
-					}
-					return false;
-				}
 				if (Dungeon.level.passable[target] || Dungeon.level.avoid[target]) {
 					step = target;
 				}
@@ -1531,16 +1523,27 @@ public class Hero extends Char {
 
 		if (step != -1) {
 
+			float delay = 1 / speed();
+
+			if (Dungeon.level.pit[step] && !Dungeon.level.solid[step]
+					&& (!flying || buff(Levitation.class) != null && buff(Levitation.class).cooldown() < delay)){
+				if (!Chasm.jumpConfirmed){
+					Chasm.heroJump(this);
+					interrupt();
+				} else {
+					Chasm.heroFall(target);
+				}
+				return false;
+			}
+
 			if (subClass == HeroSubClass.FREERUNNER){
 				Buff.affect(this, Momentum.class).gainStack();
 			}
-
-			float speed = speed();
 			
 			sprite.move(pos, step);
 			move(step);
 
-			spend( 1 / speed );
+			spend( delay );
 			justMoved = true;
 			
 			search(false);
