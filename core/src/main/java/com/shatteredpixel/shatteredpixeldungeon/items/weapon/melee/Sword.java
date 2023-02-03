@@ -93,6 +93,7 @@ public class Sword extends MeleeWeapon {
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				}
 
+				Invisibility.dispel();
 				hero.spendAndNext(hero.attackDelay());
 				if (!enemy.isAlive()){
 					wep.onAbilityKill(hero);
@@ -102,7 +103,6 @@ public class Sword extends MeleeWeapon {
 						hero.buff(CleaveTracker.class).detach();
 					}
 				}
-				Invisibility.dispel();
 				wep.afterAbilityUsed(hero);
 			}
 		});

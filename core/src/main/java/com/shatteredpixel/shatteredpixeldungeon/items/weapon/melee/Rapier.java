@@ -126,8 +126,8 @@ public class Rapier extends MeleeWeapon {
 									onAbilityKill(hero);
 								}
 							}
-							hero.spendAndNext(hero.attackDelay());
 							Invisibility.dispel();
+							hero.spendAndNext(hero.attackDelay());
 							afterAbilityUsed(hero);
 						}
 					});

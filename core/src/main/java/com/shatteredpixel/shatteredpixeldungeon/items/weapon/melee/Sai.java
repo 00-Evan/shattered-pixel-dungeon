@@ -101,6 +101,7 @@ public class Sai extends MeleeWeapon {
 					}
 				}
 
+				Invisibility.dispel();
 				if (recentHits >= 2 && hit){
 					for (Buff b : buffs){
 						b.detach();
@@ -110,7 +111,6 @@ public class Sai extends MeleeWeapon {
 				} else {
 					hero.spendAndNext(hero.attackDelay());
 				}
-				Invisibility.dispel();
 				wep.afterAbilityUsed(hero);
 			}
 		});
