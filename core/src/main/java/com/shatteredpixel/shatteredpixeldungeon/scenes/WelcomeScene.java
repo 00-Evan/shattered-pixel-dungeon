@@ -207,8 +207,8 @@ public class WelcomeScene extends PixelScene {
 			}
 
 			message = "Greeting Alpha testers, welcome to an early look at Shattered's new hero!\n\n" +
-					"After a couple days of Alpha, I've now fixed a whole bunch of bugs, and made a few early balance changes. Please let me know what you think!\n\n" +
-					"I'm going to try and add a second armor ability and finish up the Duelist's sprite over the next few days before moving on to beta.";
+					"We're now ready for beta content-wise! I'm going to make some visual adjustments to the duelist, and then proceed with the beta next week!\n\n" +
+					"This Alpha release includes a second armor ability! Please let me know what you think.";
 
 		} else {
 			message = Messages.get(this, "what_msg");

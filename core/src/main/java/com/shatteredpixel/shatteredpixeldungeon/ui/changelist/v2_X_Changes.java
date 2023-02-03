@@ -23,12 +23,14 @@ package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.ElementalStrike;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Image;
@@ -59,9 +61,25 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("ALPHA-5", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new HeroIcon(new ElementalStrike()), "Elemental Strike",
+				"_The Duelist's second armor ability has been added!_\n\n" +
+				"The Duelist strikes an enemy or location, performing a regular attack that's guaranteed to hit and spreading a magical effect that travels up to 3 tiles in a 65 degree cone. This magical effect varies based on the enchantment on the Duelist's primary weapon."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ The chasm warning screen now also appears when levitation is about to end.\n\n" +
+				"_-_ The Duelist can now use rapier lunge outside of her FOV, but the ability will be wasted if there is no enemy there."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed: (caused by ALPHA):\n" +
+				"_-_ Goo sometimes dealing 0 damage due to unintentionally committed debug code\n" +
+				"_-_ Rapier lunge not closing doors\n" +
+				"_-_ Flail spin using attack speed instead of always taking 1 turn\n" +
+				"_-_ Duelist abilities benefiting from time freeze\n" +
+				"_-_ Minor textual errors"));
 
 		changes = new ChangeInfo("ALPHA-4", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
