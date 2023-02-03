@@ -66,8 +66,8 @@ public class Goo extends Mob {
 
 	@Override
 	public int damageRoll() {
-		int min = 0;
-		int max = 0;
+		int min = 1;
+		int max = (HP*2 <= HT) ? 12 : 8;
 		if (pumpedUp > 0) {
 			pumpedUp = 0;
 			if (enemy == Dungeon.hero) {
