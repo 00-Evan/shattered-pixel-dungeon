@@ -364,7 +364,7 @@ public class WndBag extends WndTabbed {
 	@Override
 	public boolean onSignal(KeyEvent event) {
 		if (event.pressed && KeyBindings.getActionForKey( event ) == SPDAction.INVENTORY) {
-			hide();
+			onBackPressed();
 			return true;
 		} else {
 			return super.onSignal(event);
