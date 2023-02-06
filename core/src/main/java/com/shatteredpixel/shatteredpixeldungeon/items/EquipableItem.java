@@ -137,7 +137,7 @@ public abstract class EquipableItem extends Item {
 			onDetach();
 			Dungeon.quickslot.clearItem(this);
 			updateQuickslot();
-			if (collect) Dungeon.level.drop( this, hero.pos );
+			if (collect) Dungeon.level.drop( this, hero.pos ).sprite.drop();
 		}
 		keptThoughLostInvent = wasKept;
 
