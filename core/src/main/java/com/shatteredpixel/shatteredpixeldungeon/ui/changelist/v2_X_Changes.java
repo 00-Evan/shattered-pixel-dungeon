@@ -57,111 +57,18 @@ public class v2_X_Changes {
 	//TODO
 	public static void add_v2_0_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v2.0-ALPHA", true, "");
+		ChangeInfo changes = new ChangeInfo("v2.0-BETA", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("ALPHA-5", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new HeroIcon(new ElementalStrike()), "Elemental Strike",
-				"_The Duelist's second armor ability has been added!_\n\n" +
-				"The Duelist strikes an enemy or location, performing a regular attack that's guaranteed to hit and spreading a magical effect that travels up to 3 tiles in a 65 degree cone. This magical effect varies based on the enchantment on the Duelist's primary weapon."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ The chasm warning screen now also appears when levitation is about to end.\n\n" +
-				"_-_ The Duelist can now use rapier lunge outside of her FOV, but the ability will be wasted if there is no enemy there."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed: (caused by ALPHA):\n" +
-				"_-_ Goo sometimes dealing 0 damage due to unintentionally committed debug code\n" +
-				"_-_ Rapier lunge not closing doors\n" +
-				"_-_ Flail spin using attack speed instead of always taking 1 turn\n" +
-				"_-_ Duelist abilities benefiting from time freeze\n" +
-				"_-_ Minor textual errors"));
-
-		changes = new ChangeInfo("ALPHA-4", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed: (caused by ALPHA):\n" +
-				"_-_ Challenge only using 5 armor charge due to unintentionally committed debug code\n" +
-				"_-_ Dirk and Assassin's Blade still asking for a target despite not targeting anymore\n" +
-				"_-_ Secondary weapon abilities using the primary weapon's range\n" +
-				"_-_ Secondary weapon abilities not benefitting from twin upgrades\n" +
-				"_-_ Tengu's health bar persisting if he is hit into second phase by a weapon ability\n" +
-				"_-_ Crashes when self-hitting with mageroyal dart and crossbow weapon ability\n" +
-				"_-_ Crossbow ability not triggering lethal haste or shocking enchantment\n" +
-				"\n" +
-				"Fixed (existed prior to ALPHA):\n" +
-				"_-_ Very rare cases of Tengu throwing bombs into walls"));
-
-		changes = new ChangeInfo("ALPHA-3", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 1), "Duelist Balancing",
-				"I'm making a few more aggressive balance changes based on early Alpha feedback.\n" +
-				"\n" +
-				"_- Rapier_ now blocks 0-1 damage, like I stated it would earlier in development\n" +
-				"_- Aggressive Barrier_ shielding granted up to 3 from 2\n" +
-				"\n" +
-				"Weapon abilities:\n" +
-				"_- Combo Strike_ timing window up to 6/5/4 from 5/4/3\n" +
-				"_- Cleave_ is no longer instant when killing an enemy\n" +
-				"_- Sneak_ no longer blinks, now grants 6/5/4 turns of invisibility instead\n" +
-				"\n" +
-				"_- Lightweight Charge_ heavily nerfed to 20/15/10% from 50/33/25%. I am considering outright removing this talent, as Duelist/Champion already have mechanics to encourage using lower tier weapon abilities. This talent was designed before both the Champion and Swift Equip."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Items and Enemies can no longer spawn on the Wandmaker quest ritual marker."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed: (caused by ALPHA):\n" +
-				"_-_ Plenty of textual errors\n" +
-				"_-_ Crashes when transferring hero armors\n" +
-				"_-_ Furor and Evasion nerfs not actually being applied\n" +
-				"_-_ Flail ability costing 2 charges every spin, instead of just the first\n" +
-				"_-_ Whip ability always using primary weapon's attack range\n" +
-				"_-_ Darts not being visually sped up by secondary weapon crossbow\n" +
-				"_-_ Duelist not appearing in ascension victory screen\n" +
-				"_-_ Inventory window showing 18 spaces instead of 19 when a secondary weapon is equipped\n" +
-				"_-_ Twin upgrades not accounting for some upgrade/degrade effects\n" +
-				"_-_ Corrupting enemies not counting as a win when dueling\n" +
-				"\n" +
-				"Fixed (existed prior to ALPHA):\n" +
-				"_-_ DM-201s targeting invisible heroes\n" +
-				"_-_ Some armor abilities not checking if targets are out of vision"));
-
-		changes = new ChangeInfo("ALPHA-2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"Buffed _Restored Agility_ talent, now grants 3x/10x evasion, up from 2x/5x.\n\n" +
-				"Duelist can no longer use weapon abilities with insufficient strength."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed: (caused by ALPHA):\n" +
-				"_-_ Various minor textual errors\n" +
-				"_-_ Errors with old Warrior saves and Veteran's Intuition talent\n" +
-				"_-_ Attacking Duelist abilities not cancelling invis or time freeze"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "To-Do",
-				"While v2.0.0 has made it to alpha, there's still a fair bit of work to do! here's roughly what I have planned:\n\n" +
-				"Before Beta:\n" +
-				"_-_ Implement the Elemental Strike ability\n" +
-				"_-_ Substantially improve the Duelist's spritework. She needs hair!\n" +
-				"_-_ Fix any critical bugs or balance issues\n\n" +
-				"Before Release:\n" +
+				"While v2.0.0 has made it to beta, there's still some work to do! here's roughly what I have planned to finish before release:\n\n" +
 				"_-_ Implement the Monk subclass\n" +
-				"_-_ Implement the 3rd armor ability\n" +
+				"_-_ Implement the Feint armor ability\n" +
 				"_-_ Finish up Duelist visuals and any other small adjustments\n" +
 				"_-_ Fix any major bugs or balance issues"));
 
@@ -170,23 +77,27 @@ public class v2_X_Changes {
 				"\n" +
 				"The Duelist is an entire new hero class, _with a unique ability for every weapon in the game!_ She can be unlocked by earning a simple badge for equipping a T2 or higher weapon without a strength penalty. However, for the Beta she is unlocked by default!\n" +
 				"\n" +
-				"I want the Duelist to provide more interesting gameplay options for melee weapon focused builds, that have previously been fairly plain and simple compared to builds using other items."));
+				"I want the Duelist to provide more interesting gameplay options for melee weapon focused builds, that have previously been fairly plain and simple compared to builds using other items.\n" +
+				"\n" +
+				"_Note that the duelist's in-game sprite is not final. I plan to improve it before release._"));
 
 		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 4), "Duelist Subclasses",
 				"_The Duelist has two subclasses, with 3 more talents each!_\n" +
 				"\n" +
 				"_The Champion_ is a master of melee weapons who can equip a secondary weapon in addition to her primary one!\n" +
 				"\n" +
-				"_The Monk_ is a master of physical technique, _but has not been finished yet._ Look out for the second subclass very soon!"));
+				"_The Monk_ is a master of physical technique. As she defeats enemies, she gains energy which can be used on a variety of defensive and utlity-focused abilities.\n" +
+				"_The Monk has not been finished yet._ Look out for this second subclass very soon!"));
 
 		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 6), "Duelist Armor Abilities",
 				"_The Duelist has three lategame armor abilities, with 3 more talents each!_\n" +
 				"\n" +
 				"_Challenge_ compels an enemy to fight the Duelist while all other enemies are temporarily frozen in time.\n" +
 				"\n" +
-				"_Elemental Strike_ produces a special effect that is based on the Duelist's weapon enchantment. _This ability has not been finished yet,_ look out for it very soon!\n" +
+				"_Elemental Strike_ produces a special effect that is based on the Duelist's weapon enchantment.\n" +
 				"\n" +
-				"_A third armor ability will be added before release!_"));
+				"_Feint_ allows the Duelist to sidestep an enemy's attack while they are focused on her afterimage.\n" +
+				"_Feint has not been finished yet,_ look out for it very soon!"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
 		changes.hardlight(CharSprite.WARNING);
@@ -219,15 +130,17 @@ public class v2_X_Changes {
 				"_Hero, Allies, & Enemies:_\n" +
 				"_-_ The hero can now also self-trample plants, in addition to grass\n" +
 				"_-_ Ripper demons will now try to leap even if their destination is blocked by terrain\n" +
-				"_-_ Knockback effects now round up after being halved vs. bosses"));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 2",
+				"_-_ Knockback effects now round up after being halved vs. bosses\n" +
+				"\n" +
 				"_Effects:_\n" +
 				"_-_ Backup barrier now triggers before wand zaps fully resolve\n" +
-				"\n" +
+				"_-_ The chasm warning screen now also appears when levitation is about to end."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 2",
 				"_Levelgen:_\n" +
 				"_-_ Adjusted the layout of sacrifice rooms to provide some cover from ranged enemies\n" +
 				"_-_ Secret rooms now never affect the generation of items in other rooms\n" +
+				"_-_ Items and Enemies can no longer spawn on the Wandmaker quest ritual marker.\n" +
 				"\n" +
 				"_Items:_\n" +
 				"_-_ Several artifacts now cancel invisibility when used\n" +
@@ -242,7 +155,6 @@ public class v2_X_Changes {
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 1",
 				"Fixed the following bugs:\n" +
-				"\n" +
 				"_Highlights:_\n" +
 				"_-_ Softlocks caused by the warden using fadeleaf just as they start a boss fight\n" +
 				"_-_ Particle effects failing to appear in a bunch of rare cases\n" +
@@ -254,6 +166,7 @@ public class v2_X_Changes {
 				"_-_ Lethal momentum not triggering on kills made via enchantment\n" +
 				"_-_ Teleportation effects not being blocked by magic immunity\n" +
 				"_-_ Barkskin not reducing damage from things like bombs or the chalice of blood\n" +
+				"_-_ Some armor abilities not checking if targets are out of vision\n" +
 				"_-_ Magical fire not clearing regular fire if they are on the same tile\n" +
 				"_-_ Gladiator being able to riposte enemies who charmed him\n" +
 				"_-_ Iron Stomach talent cancelling fall damage in rare cases\n" +
@@ -267,6 +180,7 @@ public class v2_X_Changes {
 				"_-_ Transmuting a dried rose deleting any items held by the ghost\n" +
 				"_-_ Alchemist's Toolkit not triggering the enhanced rings talent\n" +
 				"_-_ Wand of fireblast rarely shooting great distances\n" +
+				"_-_ Wand of Lightning rarely taking credit for hero deaths not caused by it\n" +
 				"_-_ Horn of plenty benefiting from artifact recharging much more than intended\n" +
 				"_-_ Magic immunity not blocking use of shield battery, cursed artifact effects, or wand recharging\n" +
 				"_-_ Cursed items still blocking equipment slots when lost via ankh revive\n" +
@@ -280,8 +194,9 @@ public class v2_X_Changes {
 				"_Allies & Enemies:_\n" +
 				"_-_ Rare cases of hero stacking onto enemies when trying to swap positions with an ally\n" +
 				"_-_ DM-300 not using abilities in its first phase in specific situations\n" +
-				"_-_ DM-201s rarely lobbing grenades through closed doors\n" +
+				"_-_ DM-201s rarely lobbing grenades when they shouldn't\n" +
 				"_-_ DM-300's rockfall attack very rarely having no delay\n" +
+				"_-_ Tengu rarely throwing bombs into walls\n" +
 				"_-_ Several on-kill effects incorrectly triggering when ghouls get downed, but not killed\n" +
 				"_-_ Soiled fist being able to see through shrouding fog\n" +
 				"_-_ Rare cases where the Imp's shop could appear without completing his quest\n" +
@@ -298,6 +213,7 @@ public class v2_X_Changes {
 				"_UI/VFX:_\n" +
 				"_-_ Various minor audiovisual errors\n" +
 				"_-_ Various minor textual errors\n" +
+				"_-_ Items rarely disappearing when hotkeys are used to close the inventory\n" +
 				"_-_ 'i' being incorrectly uppercased to 'I' in Turkish\n" +
 				"_-_ Auras from champion enemies being visible in the fog of war for one frame\n" +
 				"_-_ Very rare cases where Goo attack particles behaved incorrectly\n" +
