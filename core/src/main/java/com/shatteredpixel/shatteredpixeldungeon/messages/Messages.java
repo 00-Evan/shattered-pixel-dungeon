@@ -33,6 +33,8 @@ import java.util.HashSet;
 import java.util.IllegalFormatException;
 import java.util.Locale;
 
+import jdk.vm.ci.meta.Local;
+
 /*
 	Simple wrapper class for libGDX I18NBundles.
 
@@ -80,7 +82,7 @@ public class Messages {
 		//seeing as missing keys are part of our process, this is faster than throwing an exception
 		I18NBundle.setExceptionOnMissingKey(false);
 
-		bundles = new ArrayList<>();
+		//store language and locale info for various string logic
 		Messages.lang = lang;
 		if (lang == Languages.ENGLISH){
 			locale = Locale.ENGLISH;
@@ -88,8 +90,11 @@ public class Messages {
 			locale = new Locale(lang.code());
 		}
 
+		//strictly match the language code when fetching bundles however
+		bundles = new ArrayList<>();
+		Locale bundleLocal = new Locale(lang.code());
 		for (String file : prop_files) {
-			bundles.add(I18NBundle.createBundle(Gdx.files.internal(file), locale));
+			bundles.add(I18NBundle.createBundle(Gdx.files.internal(file), bundleLocal));
 		}
 	}
 
