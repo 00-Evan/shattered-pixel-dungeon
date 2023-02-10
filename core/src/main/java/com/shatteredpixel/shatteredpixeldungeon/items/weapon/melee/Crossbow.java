@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -56,13 +57,13 @@ public class Crossbow extends MeleeWeapon {
 		}
 
 		beforeAbilityUsed(hero);
-		Buff.affect(hero, ChargedShot.class);
+		Buff.prolong(hero, ChargedShot.class, 100f);
 		hero.sprite.operate(hero.pos);
 		hero.next();
 		afterAbilityUsed(hero);
 	}
 
-	public static class ChargedShot extends Buff{
+	public static class ChargedShot extends FlavourBuff{
 
 		{
 			announced = true;
