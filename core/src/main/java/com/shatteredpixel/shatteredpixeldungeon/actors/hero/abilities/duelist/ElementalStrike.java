@@ -166,7 +166,10 @@ public class ElementalStrike extends ArmorAbility {
 				Ballistica.STOP_SOLID | Ballistica.STOP_TARGET);
 
 		KindOfWeapon w = hero.belongings.weapon();
-		Weapon.Enchantment enchantment = ((MeleeWeapon) w).enchantment;
+		Weapon.Enchantment enchantment = null;
+		if (w instanceof MeleeWeapon) {
+			enchantment = ((MeleeWeapon) w).enchantment;
+		}
 		Class<?extends Weapon.Enchantment> enchCls = null;
 		if (enchantment != null){
 			enchCls = enchantment.getClass();
@@ -182,6 +185,7 @@ public class ElementalStrike extends ArmorAbility {
 			);
 		}
 
+		Weapon.Enchantment finalEnchantment = enchantment;
 		hero.sprite.attack(target, new Callback() {
 			@Override
 			public void call() {
@@ -198,7 +202,7 @@ public class ElementalStrike extends ArmorAbility {
 					}
 				}
 
-				preAttackEffect(cone, hero, enchantment);
+				preAttackEffect(cone, hero, finalEnchantment);
 
 				if (enemy != null){
 					AttackIndicator.target(enemy);
@@ -207,9 +211,9 @@ public class ElementalStrike extends ArmorAbility {
 					}
 				}
 
-				perCellEffect(cone, enchantment);
+				perCellEffect(cone, finalEnchantment);
 
-				perCharEffect(cone, hero, enemy, enchantment);
+				perCharEffect(cone, hero, enemy, finalEnchantment);
 
 				Invisibility.dispel();
 				hero.spendAndNext(hero.attackDelay());
