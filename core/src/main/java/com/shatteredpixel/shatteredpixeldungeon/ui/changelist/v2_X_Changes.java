@@ -54,12 +54,31 @@ public class v2_X_Changes {
 
 	}
 
-	//TODO
 	public static void add_v2_0_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
 		ChangeInfo changes = new ChangeInfo("v2.0-BETA", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-2", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Charged shot buff now expires after 100 turns\n\n" +
+				"_-_ Updated translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (Caused by Beta):\n" +
+				"_-_ Various uncommon crash bugs\n" +
+				"_-_ Various minor textual errors\n" +
+				"_-_ Devices that were not set to English being unable to select English in-game\n" +
+				"_-_ Errors where the Duelist's equipped weapon could also be in her inventory\n" +
+				"_-_ Ripper demon leap attack not being blockable\n"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
