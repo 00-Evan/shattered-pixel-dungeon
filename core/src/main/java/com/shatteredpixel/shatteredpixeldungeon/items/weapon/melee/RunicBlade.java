@@ -78,6 +78,7 @@ public class RunicBlade extends MeleeWeapon {
 		if (!hero.canAttack(enemy)){
 			GLog.w(Messages.get(this, "ability_bad_position"));
 			tracker.detach();
+			hero.belongings.abilityWeapon = null;
 			return;
 		}
 		hero.belongings.abilityWeapon = null;
