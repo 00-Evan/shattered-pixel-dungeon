@@ -196,14 +196,9 @@ public class SandalsOfNature extends Artifact {
 		}
 
 		if (curSeedEffect != null){
-			//TODO fix in v2.0.0 when this line is translated
-			if (Messages.lang() == Languages.ENGLISH){
 				desc += "\n\n" + Messages.get(this, "desc_ability",
-						Messages.titleCase(Messages.get(curSeedEffect, "name")),
-						seedChargeReqs.get(curSeedEffect));
-			} else {
-				desc += "\n\n" + Messages.get(this, "desc_ability", seedChargeReqs.get(curSeedEffect));
-			}
+					Messages.titleCase(Messages.get(curSeedEffect, "name")),
+					seedChargeReqs.get(curSeedEffect));
 		}
 
 		if (!seeds.isEmpty()){
