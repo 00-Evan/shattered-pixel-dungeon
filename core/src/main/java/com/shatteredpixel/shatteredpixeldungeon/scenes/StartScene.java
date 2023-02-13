@@ -78,12 +78,16 @@ public class StartScene extends PixelScene {
 		
 		ArrayList<GamesInProgress.Info> games = GamesInProgress.checkAll();
 		
-		int slotGap = landscape() ? 5 : 10;
 		int slotCount = Math.min(GamesInProgress.MAX_SLOTS, games.size()+1);
+		int slotGap = 10 - slotCount;
 		int slotsHeight = slotCount*SLOT_HEIGHT + (slotCount-1)* slotGap;
+
+		while (slotsHeight > (h-title.bottom()-2)){
+			slotGap--;
+			slotsHeight -= slotCount-1;
+		}
 		
-		float yPos = (h - slotsHeight)/2f;
-		if (landscape()) yPos += 8;
+		float yPos = (h - slotsHeight + title.bottom() + 2)/2f;
 		
 		for (GamesInProgress.Info game : games) {
 			SaveSlotButton existingGame = new SaveSlotButton();
