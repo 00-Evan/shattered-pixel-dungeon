@@ -244,8 +244,8 @@ public class ElementalStrike extends ArmorAbility {
 
 		//*** Kinetic ***
 		if (ench instanceof Kinetic){
-			if (hero.buff(Kinetic.KineticTracker.class) != null) {
-				storedKineticDamage = hero.buff(Kinetic.KineticTracker.class).conservedDamage;
+			if (hero.buff(Kinetic.ConservedDamage.class) != null) {
+				storedKineticDamage = hero.buff(Kinetic.ConservedDamage.class).damageBonus();
 			}
 
 		//*** Blocking ***
@@ -348,10 +348,17 @@ public class ElementalStrike extends ArmorAbility {
 
 		//*** Kinetic ***
 		} else if (ench instanceof Kinetic){
-			for (Char ch : affected){
-				if (ch != primaryTarget) {
-					ch.damage(Math.round(storedKineticDamage * 0.33f * powerMulti), ench);
+			if (storedKineticDamage > 0) {
+				for (Char ch : affected) {
+					if (ch != primaryTarget) {
+						ch.damage(Math.round(storedKineticDamage * 0.33f * powerMulti), ench);
+					}
 				}
+				storedKineticDamage = 0;
+			}
+			//clear stored damage if there was no primary target
+			if (primaryTarget == null && hero.buff(Kinetic.ConservedDamage.class) != null){
+				hero.buff(Kinetic.ConservedDamage.class).detach();
 			}
 
 		//*** Blooming ***
