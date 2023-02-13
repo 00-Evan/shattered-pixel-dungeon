@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -42,6 +43,21 @@ public class Crossbow extends MeleeWeapon {
 		
 		tier = 4;
 	}
+
+	@Override
+	public boolean doUnequip(Hero hero, boolean collect, boolean single) {
+		if (super.doUnequip(hero, collect, single)){
+			if (hero.buff(ChargedShot.class) != null &&
+					!(hero.belongings.weapon() instanceof Crossbow)
+					&& !(hero.belongings.secondWep() instanceof Crossbow)){
+				//clear charged shot if no crossbow is equipped
+				hero.buff(ChargedShot.class).detach();
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 	@Override
 	public int max(int lvl) {
@@ -57,13 +73,13 @@ public class Crossbow extends MeleeWeapon {
 		}
 
 		beforeAbilityUsed(hero);
-		Buff.prolong(hero, ChargedShot.class, 100f);
+		Buff.affect(hero, ChargedShot.class);
 		hero.sprite.operate(hero.pos);
 		hero.next();
 		afterAbilityUsed(hero);
 	}
 
-	public static class ChargedShot extends FlavourBuff{
+	public static class ChargedShot extends Buff{
 
 		{
 			announced = true;
