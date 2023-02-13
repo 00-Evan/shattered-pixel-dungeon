@@ -50,7 +50,19 @@ public class RingOfForce extends Ring {
 	public static int armedDamageBonus( Char ch ){
 		return getBuffedBonus( ch, Force.class);
 	}
-	
+
+	@Override
+	public boolean doUnequip(Hero hero, boolean collect, boolean single) {
+		if (super.doUnequip(hero, collect, single)){
+			if (hero.buff(BrawlersStance.class) != null && hero.buff(Force.class) == null){
+				//clear brawler's stance if no ring of force is equipped
+				hero.buff(BrawlersStance.class).detach();
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 	// *** Weapon-like properties ***
 
@@ -188,7 +200,13 @@ public class RingOfForce extends Ring {
 		}
 		BrawlersStance stance = hero.buff(BrawlersStance.class);
 		if (stance != null && stance.hitsLeft() > 0){
-			return true;
+			//clear the buff if no ring of force is equipped
+			if (hero.buff(RingOfForce.Force.class) == null){
+				stance.detach();
+				return false;
+			} else {
+				return true;
+			}
 		}
 		return false;
 	}
