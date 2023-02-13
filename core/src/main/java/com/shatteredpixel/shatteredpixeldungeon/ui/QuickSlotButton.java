@@ -271,13 +271,14 @@ public class QuickSlotButton extends Button {
 	public static void set(int slotNum, Item item){
 		Dungeon.quickslot.setSlot( slotNum , item );
 		refresh();
-		boolean containsWaterskin = false;
-		for (int i = 0; i < instance.length; i++) {
-			if (select(i) instanceof Waterskin) containsWaterskin = true;
-		}
-		//Remember if the hero adds/removes the waterskin as one of their first actions.
+
+		//Remember if the player adds the waterskin as one of their first actions.
 		if (Statistics.duration + Actor.now() <= 10){
-			SPDSettings.quickslotWaterskin(containsWaterskin);
+			boolean containsWaterskin = false;
+			for (int i = 0; i < instance.length; i++) {
+				if (select(i) instanceof Waterskin) containsWaterskin = true;
+			}
+			if (containsWaterskin) SPDSettings.quickslotWaterskin(true);
 		}
 	}
 
@@ -374,6 +375,14 @@ public class QuickSlotButton extends Button {
 		}
 		if (Toolbar.SWAP_INSTANCE != null){
 			Toolbar.SWAP_INSTANCE.updateVisuals();
+		}
+		//Remember if the player removes the waterskin as one of their first actions.
+		if (Statistics.duration + Actor.now() <= 10){
+			boolean containsWaterskin = false;
+			for (int i = 0; i < instance.length; i++) {
+				if (select(i) instanceof Waterskin) containsWaterskin = true;
+			}
+			if (!containsWaterskin) SPDSettings.quickslotWaterskin(false);
 		}
 	}
 	
