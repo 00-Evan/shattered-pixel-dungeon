@@ -181,17 +181,23 @@ abstract public class KindOfWeapon extends EquipableItem {
 	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
 		boolean second = hero.belongings.secondWep == this;
 
+		if (second){
+			//do this first so that the item can go to a full inventory
+			hero.belongings.secondWep = null;
+		}
+
 		if (super.doUnequip( hero, collect, single )) {
 
-			if (second){
-				hero.belongings.secondWep = null;
-			} else {
+			if (!second){
 				hero.belongings.weapon = null;
 			}
 			return true;
 
 		} else {
 
+			if (second){
+				hero.belongings.secondWep = this;
+			}
 			return false;
 
 		}
