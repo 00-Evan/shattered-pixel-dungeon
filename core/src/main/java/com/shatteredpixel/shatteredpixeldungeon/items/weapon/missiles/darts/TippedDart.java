@@ -182,7 +182,7 @@ public abstract class TippedDart extends Dart {
 
 		//grants 1 extra use with charged shot
 		if (Dungeon.hero.buff(Crossbow.ChargedShot.class) != null){
-			use = 100f/((use/100f) + 1f) + 0.001f;
+			use = 100f/((100f/use) + 1f) + 0.001f;
 		}
 		
 		return use;
