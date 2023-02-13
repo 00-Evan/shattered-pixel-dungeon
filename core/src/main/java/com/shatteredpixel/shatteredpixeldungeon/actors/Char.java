@@ -631,9 +631,11 @@ public abstract class Char extends Actor {
 			dmg = (int)Math.ceil(dmg / (float)(links.size()+1));
 			for (LifeLink link : links){
 				Char ch = (Char)Actor.findById(link.object);
-				ch.damage(dmg, link);
-				if (!ch.isAlive()){
-					link.detach();
+				if (ch != null) {
+					ch.damage(dmg, link);
+					if (!ch.isAlive()) {
+						link.detach();
+					}
 				}
 			}
 		}

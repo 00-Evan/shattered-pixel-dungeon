@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
@@ -875,9 +876,13 @@ public enum Talent {
 				for (String tName : tierBundle.getKeys()){
 					int points = tierBundle.getInt(tName);
 					if (renamedTalents.containsKey(tName)) tName = renamedTalents.get(tName);
-					Talent talent = Talent.valueOf(tName);
-					if (tier.containsKey(talent)){
-						tier.put(talent, Math.min(points, talent.maxPoints()));
+					try {
+						Talent talent = Talent.valueOf(tName);
+						if (tier.containsKey(talent)) {
+							tier.put(talent, Math.min(points, talent.maxPoints()));
+						}
+					} catch (Exception e){
+						ShatteredPixelDungeon.reportException(e);
 					}
 				}
 			}
