@@ -60,9 +60,27 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("BETA-3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Charged shot and Brawler's stance buffs now cancel when their corresponding items are unequipped\n\n" +
+				"_-_ Improved gesture handling on iOS, should reduce/eliminate some touch delays\n\n" +
+				"_-_ Added a 5th games in progress slot for the Duelist\n\n" +
+				"_-_ Updated translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (Caused by Beta):\n" +
+				"_-_ Various uncommon crash bugs\n" +
+				"_-_ Various textual errors\n" +
+				"_-_ Further rare cases where the Duelist's equipped weapon could also be in her inventory\n" +
+				"_-_ Kinetic elemental strike always doing 0 damage\n" +
+				"_-_ Charged shot overriding tipped dart durability instead of boosting it\n" +
+				"_-_ 'Waterskin quickslot remembering' functionality not working in some cases\n\n" +
+				"Fixed (Existed prior to Beta):\n" +
+				"_-_ Further cases where particle effects would fail to appear\n" +
+				"_-_ Fly swarms often not splitting during ascension challenge"));
 
 		changes = new ChangeInfo("BETA-2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -78,7 +96,7 @@ public class v2_X_Changes {
 				"_-_ Various minor textual errors\n" +
 				"_-_ Devices that were not set to English being unable to select English in-game\n" +
 				"_-_ Errors where the Duelist's equipped weapon could also be in her inventory\n" +
-				"_-_ Ripper demon leap attack not being blockable\n"));
+				"_-_ Ripper demon leap attack not being blockable"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
