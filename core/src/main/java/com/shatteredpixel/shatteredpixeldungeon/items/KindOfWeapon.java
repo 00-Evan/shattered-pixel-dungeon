@@ -51,12 +51,16 @@ abstract public class KindOfWeapon extends EquipableItem {
 	@Override
 	public void execute(Hero hero, String action) {
 		if (hero.subClass == HeroSubClass.CHAMPION && action.equals(AC_EQUIP)){
+			String primaryName = Messages.titleCase(hero.belongings.weapon != null ? hero.belongings.weapon.trueName() : Messages.get(KindOfWeapon.class, "empty"));
+			String secondaryName = Messages.titleCase(hero.belongings.secondWep != null ? hero.belongings.secondWep.trueName() : Messages.get(KindOfWeapon.class, "empty"));
+			if (primaryName.length() > 18) primaryName = primaryName.substring(0, 15) + "...";
+			if (secondaryName.length() > 18) secondaryName = secondaryName.substring(0, 15) + "...";
 			GameScene.show(new WndOptions(
 					new ItemSprite(this),
 					Messages.titleCase(name()),
 					Messages.get(KindOfWeapon.class, "which_equip_msg"),
-					Messages.get(KindOfWeapon.class, "which_equip_primary", Messages.titleCase(hero.belongings.weapon != null ? hero.belongings.weapon.name() : Messages.get(KindOfWeapon.class, "empty"))),
-					Messages.get(KindOfWeapon.class, "which_equip_secondary", Messages.titleCase(hero.belongings.secondWep != null ? hero.belongings.secondWep.name() : Messages.get(KindOfWeapon.class, "empty")))
+					Messages.get(KindOfWeapon.class, "which_equip_primary", primaryName),
+					Messages.get(KindOfWeapon.class, "which_equip_secondary", secondaryName)
 			){
 				@Override
 				protected void onSelect(int index) {
