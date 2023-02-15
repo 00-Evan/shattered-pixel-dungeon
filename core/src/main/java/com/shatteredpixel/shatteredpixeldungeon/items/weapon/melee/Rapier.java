@@ -80,14 +80,15 @@ public class Rapier extends MeleeWeapon {
 			}
 		}
 
-		if (Dungeon.level.distance(hero.pos, target) != 2){
+		if (Dungeon.level.distance(hero.pos, target) < 2
+				|| Dungeon.level.distance(hero.pos, target)-1 > reachFactor(hero)){
 			GLog.w(Messages.get(this, "ability_bad_position"));
 			return;
 		}
 
 		int lungeCell = -1;
 		for (int i : PathFinder.NEIGHBOURS8){
-			if (Dungeon.level.adjacent(hero.pos + i, target)
+			if (Dungeon.level.distance(hero.pos, target)-1 <= reachFactor(hero)
 					&& Actor.findChar(hero.pos+i) == null
 					&& Dungeon.level.passable[hero.pos+i]){
 				if (lungeCell == -1 || Dungeon.level.trueDistance(hero.pos + i, target) < Dungeon.level.trueDistance(lungeCell, target)){
