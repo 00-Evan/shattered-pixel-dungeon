@@ -158,7 +158,7 @@ public class Messages {
 		try {
 			return String.format(Locale.ENGLISH, format, args);
 		} catch (IllegalFormatException e) {
-			ShatteredPixelDungeon.reportException( e );
+			ShatteredPixelDungeon.reportException( new Exception("formatting error for the string: " + format, e) );
 			return format;
 		}
 	}
