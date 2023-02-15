@@ -62,10 +62,10 @@ public class Sai extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		Sai.comboStrikeAbility(hero, target, 5, this);
+		Sai.comboStrikeAbility(hero, target, 0.25f, this);
 	}
 
-	public static void comboStrikeAbility(Hero hero, Integer target, int comboTime, MeleeWeapon wep){
+	public static void comboStrikeAbility(Hero hero, Integer target, float boostPerHit, MeleeWeapon wep){
 		if (target == null) {
 			return;
 		}
@@ -89,29 +89,23 @@ public class Sai extends MeleeWeapon {
 			public void call() {
 				wep.beforeAbilityUsed(hero);
 				AttackIndicator.target(enemy);
-				boolean hit = hero.attack(enemy, 1, 0, Char.INFINITE_ACCURACY);
+
+				HashSet<ComboStrikeTracker> buffs = hero.buffs(ComboStrikeTracker.class);
+				int recentHits = buffs.size();
+				for (Buff b : buffs){
+					b.detach();
+				}
+
+				boolean hit = hero.attack(enemy, 1f + boostPerHit*recentHits, 0, Char.INFINITE_ACCURACY);
 				if (hit && !enemy.isAlive()){
 					wep.onAbilityKill(hero);
 				}
 
-				HashSet<ComboStrikeTracker> buffs = hero.buffs(ComboStrikeTracker.class);
-				int recentHits = 0;
-				for (Buff b : buffs){
-					if (b.cooldown() >= (ComboStrikeTracker.DURATION - comboTime)){
-						recentHits++;
-					}
-				}
-
 				Invisibility.dispel();
 				if (recentHits >= 2 && hit){
-					for (Buff b : buffs){
-						b.detach();
-					}
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
-					hero.next();
-				} else {
-					hero.spendAndNext(hero.attackDelay());
 				}
+
 				wep.afterAbilityUsed(hero);
 			}
 		});
@@ -119,7 +113,7 @@ public class Sai extends MeleeWeapon {
 
 	public static class ComboStrikeTracker extends FlavourBuff{
 
-		public static float DURATION = 6f;
+		public static float DURATION = 5f;
 
 	}
 

@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -60,7 +61,7 @@ public class Mace extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		Mace.heavyBlowAbility(hero, target, 1.40f, this);
+		Mace.heavyBlowAbility(hero, target, 1.45f, this);
 	}
 
 	public static void heavyBlowAbility(Hero hero, Integer target, float dmgMulti, MeleeWeapon wep){
@@ -91,6 +92,7 @@ public class Mace extends MeleeWeapon {
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 					if (enemy.isAlive()){
 						Buff.affect(enemy, Vulnerable.class, 5f);
+						Buff.affect(enemy, Weakness.class, 5f);
 					} else {
 						wep.onAbilityKill(hero);
 					}

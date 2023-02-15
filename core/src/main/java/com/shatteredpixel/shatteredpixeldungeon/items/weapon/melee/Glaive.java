@@ -51,7 +51,7 @@ public class Glaive extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		Spear.spikeAbility(hero, target, 0.67f, this);
+		Spear.spikeAbility(hero, target, 1.10f, this);
 	}
 
 }

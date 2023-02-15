@@ -187,7 +187,7 @@ abstract public class Weapon extends KindOfWeapon {
 		}
 
 		if (owner.buff(Scimitar.SwordDance.class) != null){
-			ACC *= 0.67f;
+			ACC *= 0.8f;
 		}
 
 		return encumbrance > 0 ? (float)(ACC / Math.pow( 1.5, encumbrance )) : ACC;
@@ -392,7 +392,7 @@ abstract public class Weapon extends KindOfWeapon {
 			}
 
 			if (attacker.buff(RunicBlade.RunicSlashTracker.class) != null){
-				multi += 2f;
+				multi += 2.5f;
 				attacker.buff(RunicBlade.RunicSlashTracker.class).detach();
 			}
 
