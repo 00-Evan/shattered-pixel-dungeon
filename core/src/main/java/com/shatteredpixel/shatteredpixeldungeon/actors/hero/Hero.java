@@ -503,9 +503,9 @@ public class Hero extends Char {
 
 		if (buff(Talent.RestoredAgilityTracker.class) != null){
 			if (pointsInTalent(Talent.RESTORED_AGILITY) == 1){
-				evasion *= 3f;
+				evasion *= 4f;
 			} else if (pointsInTalent(Talent.RESTORED_AGILITY) == 2){
-				evasion *= 10f;
+				return INFINITE_EVASION;
 			}
 		}
 
@@ -584,7 +584,7 @@ public class Hero extends Char {
 				if (((MeleeWeapon) wep).tier == 2) {
 					dmg = Math.round(dmg * (1f + 0.067f*pointsInTalent(Talent.LIGHTWEIGHT_CHARGE)));
 				} else if (((MeleeWeapon) wep).tier == 3) {
-					dmg = Math.round(dmg * (1f + 0.033f*pointsInTalent(Talent.LIGHTWEIGHT_CHARGE)));
+					dmg = Math.round(dmg * (1f + 0.05f*pointsInTalent(Talent.LIGHTWEIGHT_CHARGE)));
 				}
 			}
 
@@ -1207,7 +1207,7 @@ public class Hero extends Char {
 			if (heroClass != HeroClass.DUELIST
 					&& hasTalent(Talent.AGGRESSIVE_BARRIER)
 					&& buff(Talent.AggressiveBarrierCooldown.class) == null
-					&& (HP / (float)HT) < 0.167f*(1+pointsInTalent(Talent.AGGRESSIVE_BARRIER))){
+					&& (HP / (float)HT) < 0.20f*(1+pointsInTalent(Talent.AGGRESSIVE_BARRIER))){
 				Buff.affect(this, Barrier.class).setShield(3);
 				Buff.affect(this, Talent.AggressiveBarrierCooldown.class, 50f);
 			}

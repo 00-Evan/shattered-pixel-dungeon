@@ -758,7 +758,7 @@ public abstract class Mob extends Char {
 						&& Dungeon.hero.hasTalent(Talent.LETHAL_HASTE)
 						&& Dungeon.hero.buff(Talent.LethalHasteCooldown.class) == null){
 					Buff.affect(Dungeon.hero, Talent.LethalHasteCooldown.class, 100f);
-					Buff.affect(Dungeon.hero, Haste.class, 0.67f + Dungeon.hero.pointsInTalent(Talent.LETHAL_HASTE));
+					Buff.affect(Dungeon.hero, Haste.class, 1.67f + Dungeon.hero.pointsInTalent(Talent.LETHAL_HASTE));
 				}
 			}
 

@@ -143,9 +143,6 @@ public class ElementalStrike extends ArmorAbility {
 		return dst;
 	}
 
-	//3 tiles in a 65 degree cone
-	// boostable to 4/5/6/7 tiles in a 70/75/80/85 degree cone
-
 	@Override
 	protected void activate(ClassArmor armor, Hero hero, Integer target) {
 		if (target == null){
@@ -162,7 +159,7 @@ public class ElementalStrike extends ArmorAbility {
 
 		ConeAOE cone = new ConeAOE(aim,
 				dist,
-				65 + 5*hero.pointsInTalent(Talent.ELEMENTAL_REACH),
+				65 + 10*hero.pointsInTalent(Talent.ELEMENTAL_REACH),
 				Ballistica.STOP_SOLID | Ballistica.STOP_TARGET);
 
 		KindOfWeapon w = hero.belongings.weapon();
@@ -236,11 +233,11 @@ public class ElementalStrike extends ArmorAbility {
 		}
 
 		if (hero.hasTalent(Talent.DIRECTED_POWER)){
-			float enchBoost = 0.25f * targetsHit * hero.pointsInTalent(Talent.DIRECTED_POWER);
+			float enchBoost = 0.30f * targetsHit * hero.pointsInTalent(Talent.DIRECTED_POWER);
 			Buff.affect(hero, DirectedPowerTracker.class, 0f).enchBoost = enchBoost;
 		}
 
-		float powerMulti = 1f + 0.25f*Dungeon.hero.pointsInTalent(Talent.STRIKING_FORCE);
+		float powerMulti = 1f + 0.30f*Dungeon.hero.pointsInTalent(Talent.STRIKING_FORCE);
 
 		//*** Kinetic ***
 		if (ench instanceof Kinetic){
@@ -284,7 +281,7 @@ public class ElementalStrike extends ArmorAbility {
 	//effects that affect the cells of the environment themselves
 	private void perCellEffect(ConeAOE cone, Weapon.Enchantment ench){
 
-		float powerMulti = 1f + 0.25f*Dungeon.hero.pointsInTalent(Talent.STRIKING_FORCE);
+		float powerMulti = 1f + 0.30f*Dungeon.hero.pointsInTalent(Talent.STRIKING_FORCE);
 
 		//*** Blazing ***
 		if (ench instanceof Blazing){
@@ -330,7 +327,7 @@ public class ElementalStrike extends ArmorAbility {
 	//effects that affect the characters within the cone AOE
 	private void perCharEffect(ConeAOE cone, Hero hero, Char primaryTarget, Weapon.Enchantment ench) {
 
-		float powerMulti = 1f + 0.25f * Dungeon.hero.pointsInTalent(Talent.STRIKING_FORCE);
+		float powerMulti = 1f + 0.30f * Dungeon.hero.pointsInTalent(Talent.STRIKING_FORCE);
 
 		ArrayList<Char> affected = new ArrayList<>();
 

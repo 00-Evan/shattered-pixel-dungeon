@@ -116,7 +116,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 			if (hero.hasTalent(Talent.SWIFT_EQUIP)) {
 				if (hero.buff(Talent.SwiftEquipCooldown.class) == null){
 					hero.spendAndNext(-hero.cooldown());
-					Buff.affect(hero, Talent.SwiftEquipCooldown.class, 49f)
+					Buff.affect(hero, Talent.SwiftEquipCooldown.class, 29f)
 							.secondUse = hero.pointsInTalent(Talent.SWIFT_EQUIP) == 2;
 					GLog.i(Messages.get(this, "swift_equip"));
 				} else if (hero.buff(Talent.SwiftEquipCooldown.class).hasSecondUse()) {

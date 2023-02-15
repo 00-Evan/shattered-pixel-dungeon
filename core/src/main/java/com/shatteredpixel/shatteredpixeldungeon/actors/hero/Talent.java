@@ -244,7 +244,7 @@ public enum Talent {
 	public static class SwiftEquipCooldown extends FlavourBuff{
 		public boolean secondUse;
 		public boolean hasSecondUse(){
-			return secondUse && cooldown() > 44f;
+			return secondUse && cooldown() > 24f;
 		}
 
 		public int icon() { return BuffIndicator.TIME; }
@@ -252,7 +252,7 @@ public enum Talent {
 			if (hasSecondUse()) icon.hardlight(0.85f, 0f, 1.0f);
 			else                icon.hardlight(0.35f, 0f, 0.7f);
 		}
-		public float iconFadePercent() { return GameMath.gate(0, visualcooldown() / 50f, 1); }
+		public float iconFadePercent() { return GameMath.gate(0, visualcooldown() / 30f, 1); }
 
 		private static final String SECOND_USE = "second_use";
 		@Override
@@ -641,7 +641,7 @@ public enum Talent {
 			if (hero.belongings.weapon() instanceof MissileWeapon) {
 				Buff.prolong(enemy, DeadlyFollowupTracker.class, 5f);
 			} else if (enemy.buff(DeadlyFollowupTracker.class) != null){
-				dmg = Math.round(dmg * (1.0f + .067f*hero.pointsInTalent(DEADLY_FOLLOWUP)));
+				dmg = Math.round(dmg * (1.0f + .08f*hero.pointsInTalent(DEADLY_FOLLOWUP)));
 				if (!(enemy instanceof Mob) || !((Mob) enemy).surprisedBy(hero)){
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG, 0.75f, 1.2f);
 				}

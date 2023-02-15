@@ -255,8 +255,9 @@ public class Challenge extends ArmorAbility {
 							hpToHeal = heroBuff.takenDmg;
 						}
 
-						//heals for 30%/50%/65%/75% of taken damage, based on talent points
+						//heals for 30%/50%/65%/75% of taken damage plus 3/6/9/12 bonus, based on talent points
 						hpToHeal = (int)Math.round(hpToHeal * (1f - Math.pow(0.707f, Dungeon.hero.pointsInTalent(Talent.INVIGORATING_VICTORY))));
+						hpToHeal += 3*Dungeon.hero.pointsInTalent(Talent.INVIGORATING_VICTORY);
 						hpToHeal = Math.min(hpToHeal, Dungeon.hero.HT - Dungeon.hero.HP);
 						if (hpToHeal > 0){
 							Dungeon.hero.HP += hpToHeal;

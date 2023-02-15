@@ -183,7 +183,7 @@ public class MeleeWeapon extends Weapon {
 
 		if (hero.heroClass == HeroClass.DUELIST
 				&& hero.hasTalent(Talent.AGGRESSIVE_BARRIER)
-				&& (hero.HP / (float)hero.HT) < 0.167f*(1+hero.pointsInTalent(Talent.AGGRESSIVE_BARRIER))){
+				&& (hero.HP / (float)hero.HT) < 0.20f*(1+hero.pointsInTalent(Talent.AGGRESSIVE_BARRIER))){
 			Buff.affect(hero, Barrier.class).setShield(3);
 		}
 
@@ -213,16 +213,16 @@ public class MeleeWeapon extends Weapon {
 
 	public void onAbilityKill( Hero hero ){
 		if (hero.hasTalent(Talent.LETHAL_HASTE)){
-			//effectively 1/2 turns of haste
-			Buff.prolong(hero, Haste.class, 0.67f+hero.pointsInTalent(Talent.LETHAL_HASTE));
+			//effectively 2/3 turns of haste
+			Buff.prolong(hero, Haste.class, 1.67f+hero.pointsInTalent(Talent.LETHAL_HASTE));
 		}
 	}
 
 	public float abilityChargeUse( Hero hero ){
 		float chargeUse = 1f;
 		if (hero.hasTalent(Talent.LIGHTWEIGHT_CHARGE) && tier <= 3){
-			// T1/2/3 get 20/15/10% charge use reduction at +3
-			float chargeUseReduction = (0.25f-.05f*tier) * (hero.pointsInTalent(Talent.LIGHTWEIGHT_CHARGE)/3f);
+			// T1/2/3 get 25/20/15% charge use reduction at +3
+			float chargeUseReduction = (0.30f-.05f*tier) * (hero.pointsInTalent(Talent.LIGHTWEIGHT_CHARGE)/3f);
 			chargeUse *= 1f - chargeUseReduction;
 		}
 		return chargeUse;
@@ -403,8 +403,8 @@ public class MeleeWeapon extends Weapon {
 
 				int points = ((Hero)target).pointsInTalent(Talent.WEAPON_RECHARGING);
 				if (points > 0 && target.buff(Recharging.class) != null || target.buff(ArtifactRecharge.class) != null){
-					//1 every 15 turns at +1, 10 turns at +2
-					partialCharge += 1/(20f - 5f*points);
+					//1 every 10 turns at +1, 6 turns at +2
+					partialCharge += 1/(14f - 4f*points);
 				}
 
 				if (partialCharge >= 1){
