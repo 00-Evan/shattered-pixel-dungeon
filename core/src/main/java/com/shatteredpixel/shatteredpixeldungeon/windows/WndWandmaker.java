@@ -108,7 +108,7 @@ public class WndWandmaker extends Window {
 			Dungeon.level.drop( reward, wandmaker.pos ).sprite.drop();
 		}
 		
-		wandmaker.yell( Messages.get(this, "farewell", Dungeon.hero.name()) );
+		wandmaker.yell( Messages.get(this, "farewell", Messages.titleCase(Dungeon.hero.name())) );
 		wandmaker.destroy();
 		
 		wandmaker.sprite.die();

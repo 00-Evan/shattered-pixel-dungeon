@@ -63,7 +63,7 @@ public class Imp extends NPC {
 		}
 		if (!Quest.given && Dungeon.level.visited[pos]) {
 			if (!seenBefore) {
-				yell( Messages.get(this, "hey", Dungeon.hero.name() ) );
+				yell( Messages.get(this, "hey", Messages.titleCase(Dungeon.hero.name()) ) );
 			}
 			Notes.add( Notes.Landmark.IMP );
 			seenBefore = true;
@@ -113,8 +113,8 @@ public class Imp extends NPC {
 				});
 			} else {
 				tell( Quest.alternative ?
-						Messages.get(this, "monks_2", Dungeon.hero.name())
-						: Messages.get(this, "golems_2", Dungeon.hero.name()) );
+						Messages.get(this, "monks_2", Messages.titleCase(Dungeon.hero.name()))
+						: Messages.get(this, "golems_2", Messages.titleCase(Dungeon.hero.name())) );
 			}
 			
 		} else {
@@ -138,7 +138,7 @@ public class Imp extends NPC {
 	
 	public void flee() {
 		
-		yell( Messages.get(this, "cya", Dungeon.hero.name()) );
+		yell( Messages.get(this, "cya", Messages.titleCase(Dungeon.hero.name())) );
 		
 		destroy();
 		sprite.die();
