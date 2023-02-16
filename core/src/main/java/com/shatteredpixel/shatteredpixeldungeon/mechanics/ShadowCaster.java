@@ -41,7 +41,7 @@ public final class ShadowCaster {
 				//testing the middle of a cell, so we use i + 0.5
 				rounding[i][j] = (int)Math.min(
 						j,
-						Math.round( (i + 0.5) * Math.cos( Math.asin( j / (i + 0.5) ))));
+						Math.round( i * Math.cos( Math.asin( j / (i + 0.5) ))));
 			}
 		}
 	}
