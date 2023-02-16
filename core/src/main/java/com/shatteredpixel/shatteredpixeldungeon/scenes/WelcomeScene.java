@@ -207,8 +207,8 @@ public class WelcomeScene extends PixelScene {
 			}
 
 			message = "Greeting Beta testers!\n\n" +
-					"This beta includes most of Shattered's first new hero! The base Duelist, one subclass, and two armor abilities are fully implemented! I plan to finish up the Duelist's sprite, second subclass, and third armor ability soon.\n\n" +
-					"Please let me know what you think, or if you run into any bugs!";
+					"After a week or so of beta testing, I've now fixed most bugs and just released a big balance pass on the Duelist! I still need to add her second subclass and third armor ability, but playing her should feel much better after these changes.\n\n" +
+					"Please let me know what you think, or if you run into any more bugs!";
 
 		} else {
 			message = Messages.get(this, "what_msg");

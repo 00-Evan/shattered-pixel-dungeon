@@ -60,6 +60,57 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-4", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.SHPX.get(), "Thanks for the Feedback!",
+				"After a week of gathering feedback and gameplay data, its become clear to me that the Duelist is in a weaker state that I intended.\n\n" +
+				"This beta release is all about taking some steps to rectify that, with buffs to the base duelist, most talents, and most armor abilities.\n\n" +
+				"While I haven't been able to reply to everyone, I have read every single direct message, email, and social media post. Hopefully this beta patch will go a long way towards addressing the negative sentiment some people have had toward the Duelist's mechanics so far."));
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.SAI), "Weapon Ability Buffs",
+				"All weapon abilities now recharge a bit faster, and several abilities have received some very substantial buffs:\n" +
+				"\n" +
+				"_-_ Weapon ability recharge speed increased by 10% at full charge, scaling to 33% at 0/10 charges\n" +
+				"\n" +
+				"_- Heavy blow_ now deals an additional +5% dmg at all tiers and also applies 5 turns of weaken\n" +
+				"_- Combo strike_ now deals +30/25/20% dmg per hit in the last 5 turns, but is no longer instant at 2+ hits\n" +
+				"_- Spike_ now deals +15/10% dmg, instead of -25/33%\n" +
+				"_- Sword dance_ accuracy penalty reduced to -20% from -33%\n" +
+				"_- Charged shot_ now grants +2 dart durability, up from +1\n" +
+				"_- Runic slash_ now grants +250% enchant power, up from +200%\n" +
+				"_- Retribution_ HP threshold up to 50% from 33%"));
+
+		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 3), "Duelist Talent Buffs",
+				"The Duelist is doing okay in the early to mid sewers, so I'm mostly leaving T1 talents alone, but most of her T2+ talents are getting buffed:\n" +
+				"\n" +
+				"_- Aggressive barrier_ HP threshold up to 40/60% from 33/50%\n" +
+				"\n" +
+				"_- Restored agility_ evasion boost up to 4x/inf. from 3x/10x\n" +
+				"_- Weapon recharging_ now grants a charge every 10/6 turns, up from 15/10\n" +
+				"_- Lethal haste_ now grants 2/3 turns of haste, up from 1/2\n" +
+				"_- Swift equip_ cooldown reduced to 30 turns, from 50\n" +
+				"\n" +
+				"_- Lightweight charge_ boost up to 25/20/15 at max rank, from 20/15/10\n" +
+				"_- Deadly followup_ damage boost up to 8% per rank, from 6.67%\n" +
+				"_- Combined lethality_ execution threshold up to 10% per rank, from 7.5%\n" +
+				"\n" +
+				"_- Invigorating victory_ now also grants a flat 3 healing per rank\n" +
+				"_- Elemental reach_ now boosts cone width by 10 degrees per rank, up from 5\n" +
+				"_- Striking force_ now grants 30% power per rank, up from 25%\n" +
+				"_- Directed power_ now grants 30% power per rank, up from 25%"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (Caused by Beta):\n" +
+				"_-_ Lunge ability not working with projecting enchantment\n\n" +
+				"Fixed (Existed prior to Beta):\n" +
+				"_-_ Various minor textual errors"));
+
 		changes = new ChangeInfo("BETA-3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
