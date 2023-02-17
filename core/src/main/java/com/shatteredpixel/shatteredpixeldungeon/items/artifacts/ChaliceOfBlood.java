@@ -70,7 +70,7 @@ public class ChaliceOfBlood extends Artifact {
 
 		if (action.equals(AC_PRICK)){
 
-			int damage = 3*(level()*level());
+			int damage = 5 + 3*(level()*level());
 
 			if (damage > hero.HP*0.75) {
 
