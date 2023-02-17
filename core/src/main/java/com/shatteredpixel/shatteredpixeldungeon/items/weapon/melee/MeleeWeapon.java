@@ -169,13 +169,13 @@ public class MeleeWeapon extends Weapon {
 
 		if (Dungeon.hero.belongings.weapon == this) {
 			charger.partialCharge -= abilityChargeUse(hero);
-			while (charger.partialCharge < 0) {
+			while (charger.partialCharge < 0 && charger.charges > 0) {
 				charger.charges--;
 				charger.partialCharge++;
 			}
 		} else {
 			charger.secondPartialCharge -= abilityChargeUse(hero);
-			while (charger.secondPartialCharge < 0) {
+			while (charger.secondPartialCharge < 0 && charger.secondCharges > 0) {
 				charger.secondCharges--;
 				charger.secondPartialCharge++;
 			}
