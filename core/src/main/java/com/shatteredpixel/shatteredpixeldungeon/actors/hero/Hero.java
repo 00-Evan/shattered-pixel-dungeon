@@ -126,6 +126,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RoundShield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sai;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
@@ -475,6 +476,10 @@ public class Hero extends Char {
 				accuracy *= 1.5f;
 			}
 		}
+
+		if (buff(Scimitar.SwordDance.class) != null){
+			accuracy *= 0.8f;
+		}
 		
 		if (!RingOfForce.fightingUnarmed(this)) {
 			return (int)(attackSkill * accuracy * wep.accuracyFactor( this, target ));
@@ -681,15 +686,21 @@ public class Hero extends Char {
 			return 0;
 		}
 
+		float delay = 1f;
+
+		if (buff(Scimitar.SwordDance.class) != null){
+			delay /= 1.6f; //+60% speed
+		}
+
 		if (!RingOfForce.fightingUnarmed(this)) {
 			
-			return belongings.weapon().delayFactor( this );
+			return delay * belongings.weapon().delayFactor( this );
 			
 		} else {
 			//Normally putting furor speed on unarmed attacks would be unnecessary
 			//But there's going to be that one guy who gets a furor+force ring combo
 			//This is for that one guy, you shall get your fists of fury!
-			float delay = 1f/RingOfFuror.attackSpeedMultiplier(this);
+			delay *= 1f/RingOfFuror.attackSpeedMultiplier(this);
 
 			if (RingOfForce.unarmedGetsWeaponEffects(this)){
 				delay = ((Weapon)belongings.weapon).augment.delayFactor(delay);

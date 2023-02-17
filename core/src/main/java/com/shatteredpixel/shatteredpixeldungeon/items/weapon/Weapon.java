@@ -186,10 +186,6 @@ abstract public class Weapon extends KindOfWeapon {
 			ACC /= 5;
 		}
 
-		if (owner.buff(Scimitar.SwordDance.class) != null){
-			ACC *= 0.8f;
-		}
-
 		return encumbrance > 0 ? (float)(ACC / Math.pow( 1.5, encumbrance )) : ACC;
 	}
 	
@@ -211,13 +207,7 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 
 	protected float speedMultiplier(Char owner ){
-		float multi = RingOfFuror.attackSpeedMultiplier(owner);
-
-		if (owner.buff(Scimitar.SwordDance.class) != null){
-			multi += 0.6f;
-		}
-
-		return multi;
+		return RingOfFuror.attackSpeedMultiplier(owner);
 	}
 
 	@Override
