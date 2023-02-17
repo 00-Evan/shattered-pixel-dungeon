@@ -60,17 +60,31 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("BETA-5", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Removed unused audio files on iOS, reducing download size by about 15%\n\n" +
+				"_-_ Updated translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (Caused by Beta):\n" +
+				"_-_ Various minor visual and textual errors\n" +
+				"_-_ Combo Strike always taking 0 turns, instead of using normal attack speed\n" +
+				"_-_ Lunge incorrectly allowing attacks on out of range enemies in various cases\n" +
+				"_-_ Sword dance not apply on unarmed attacks\n" +
+				"_-_ Warning popup from the chalice of blood not accounting for recent damage increase\n\n" +
+				"Fixed (Existed prior to Beta):\n" +
+				"_-_ Rare bugs with rounding on vision ranges."));
 
 		changes = new ChangeInfo("BETA-4", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
 		changes.addButton(new ChangeButton(Icons.SHPX.get(), "Thanks for the Feedback!",
-				"After a week of gathering feedback and gameplay data, its become clear to me that the Duelist is in a weaker state that I intended.\n\n" +
-				"This beta release is all about taking some steps to rectify that, with buffs to the base duelist, most talents, and most armor abilities.\n\n" +
+				"After a week of gathering feedback and gameplay data, its become clear to me that the Duelist is in a weaker state than I intended.\n\n" +
+				"This beta release is all about taking some steps to rectify that, with buffs to the base duelist, most talents, and most weapon abilities.\n\n" +
 				"While I haven't been able to reply to everyone, I have read every single direct message, email, and social media post. Hopefully this beta patch will go a long way towards addressing the negative sentiment some people have had toward the Duelist's mechanics so far."));
 
 		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.SAI), "Weapon Ability Buffs",
