@@ -24,7 +24,9 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -57,6 +59,19 @@ public class Levitation extends FlavourBuff {
 		if (ShatteredPixelDungeon.scene() instanceof GameScene) {
 			Dungeon.level.occupyCell(target );
 		}
+	}
+
+	//used to determine if levitation is about to end
+	public boolean detachesWithinDelay(float delay){
+		if (target.buff(Swiftthistle.TimeBubble.class) != null){
+			return false;
+		}
+
+		if (target.buff(TimekeepersHourglass.timeFreeze.class) != null){
+			return false;
+		}
+
+		return cooldown() < delay;
 	}
 	
 	@Override
