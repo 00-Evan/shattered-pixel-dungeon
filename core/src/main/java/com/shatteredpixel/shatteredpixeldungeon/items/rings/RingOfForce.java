@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
@@ -164,6 +165,7 @@ public class RingOfForce extends Ring {
 		if (action.equals(AC_ABILITY)){
 			if (hero.buff(BrawlersStance.class) != null){
 				hero.buff(BrawlersStance.class).detach();
+				AttackIndicator.updateState();
 			} else if (!isEquipped(hero)) {
 				GLog.w(Messages.get(MeleeWeapon.class, "ability_need_equip"));
 
@@ -173,6 +175,7 @@ public class RingOfForce extends Ring {
 
 			} else {
 				Buff.affect(hero, BrawlersStance.class);
+				AttackIndicator.updateState();
 			}
 		} else {
 			super.execute(hero, action);
@@ -203,6 +206,7 @@ public class RingOfForce extends Ring {
 			//clear the buff if no ring of force is equipped
 			if (hero.buff(RingOfForce.Force.class) == null){
 				stance.detach();
+				AttackIndicator.updateState();
 				return false;
 			} else {
 				return true;

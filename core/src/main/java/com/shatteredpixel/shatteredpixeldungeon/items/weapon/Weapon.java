@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.El
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Annoying;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Displacing;
@@ -212,10 +213,14 @@ abstract public class Weapon extends KindOfWeapon {
 
 	@Override
 	public int reachFactor(Char owner) {
+		int reach = RCH;
+		if (owner instanceof Hero && RingOfForce.unarmedGetsWeaponEffects((Hero) owner)){
+			reach = 1; //brawlers stance benefits from enchantments, but not innate reach
+		}
 		if (hasEnchant(Projecting.class, owner)){
-			return RCH + Math.round(enchantment.procChanceMultiplier(owner));
+			return reach + Math.round(enchantment.procChanceMultiplier(owner));
 		} else {
-			return RCH;
+			return reach;
 		}
 	}
 
