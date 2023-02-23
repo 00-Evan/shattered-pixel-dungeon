@@ -609,7 +609,7 @@ public enum Talent {
 		}
 
 		if (hero.hasTalent(Talent.FOLLOWUP_STRIKE)) {
-			if (hero.belongings.weapon() instanceof MissileWeapon) {
+			if (hero.belongings.attackingWeapon() instanceof MissileWeapon) {
 				Buff.affect(enemy, FollowupStrikeTracker.class);
 			} else if (enemy.buff(FollowupStrikeTracker.class) != null){
 				dmg += 1 + hero.pointsInTalent(FOLLOWUP_STRIKE);
@@ -638,7 +638,7 @@ public enum Talent {
 		}
 
 		if (hero.hasTalent(DEADLY_FOLLOWUP)) {
-			if (hero.belongings.weapon() instanceof MissileWeapon) {
+			if (hero.belongings.attackingWeapon() instanceof MissileWeapon) {
 				Buff.prolong(enemy, DeadlyFollowupTracker.class, 5f);
 			} else if (enemy.buff(DeadlyFollowupTracker.class) != null){
 				dmg = Math.round(dmg * (1.0f + .08f*hero.pointsInTalent(DEADLY_FOLLOWUP)));

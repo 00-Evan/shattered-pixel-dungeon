@@ -94,11 +94,14 @@ public class Belongings implements Iterable<Item> {
 	// we still want to access the raw equipped items in cases where effects should be ignored though,
 	// such as when equipping something, showing an interface, or dealing with items from a dead hero
 
-	public KindOfWeapon weapon(){
-		//no point in lost invent check, if it's assigned it must be usable
+	//normally the primary equipped weapon, but can also be a thrown weapon or an ability's weapon
+	public KindOfWeapon attackingWeapon(){
 		if (thrownWeapon != null) return thrownWeapon;
 		if (abilityWeapon != null) return abilityWeapon;
+		return weapon();
+	}
 
+	public KindOfWeapon weapon(){
 		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
 		if (!lostInvent || (weapon != null && weapon.keptThoughLostInvent)){
 			return weapon;

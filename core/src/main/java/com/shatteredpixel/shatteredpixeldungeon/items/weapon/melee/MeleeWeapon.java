@@ -251,13 +251,8 @@ public class MeleeWeapon extends Weapon {
 	public int buffedLvl() {
 		if (!evaluatingTwinUpgrades && isEquipped(Dungeon.hero) && Dungeon.hero.hasTalent(Talent.TWIN_UPGRADES)){
 			KindOfWeapon other = null;
-			if (Dungeon.hero.belongings.weapon != this) other = Dungeon.hero.belongings.weapon;
-			if (Dungeon.hero.belongings.secondWep != this) other = Dungeon.hero.belongings.secondWep;
-
-			//need to manually check for lost inventory here
-			if (other instanceof MeleeWeapon && Dungeon.hero.buff(LostInventory.class) != null && !other.keptThoughLostInvent){
-				other = null;
-			}
+			if (Dungeon.hero.belongings.weapon() != this) other = Dungeon.hero.belongings.weapon();
+			if (Dungeon.hero.belongings.secondWep() != this) other = Dungeon.hero.belongings.secondWep();
 
 			if (other instanceof MeleeWeapon) {
 				evaluatingTwinUpgrades = true;

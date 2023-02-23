@@ -195,7 +195,7 @@ public class RingOfForce extends Ring {
 	}
 
 	public static boolean fightingUnarmed( Hero hero ){
-		if (hero.belongings.weapon() == null){
+		if (hero.belongings.attackingWeapon() == null){
 			return true;
 		}
 		if (hero.belongings.thrownWeapon != null || hero.belongings.abilityWeapon != null){
@@ -216,7 +216,7 @@ public class RingOfForce extends Ring {
 	}
 
 	public static boolean unarmedGetsWeaponEffects( Hero hero ){
-		if (hero.belongings.weapon() == null){
+		if (hero.belongings.attackingWeapon() == null){
 			return false;
 		}
 		BrawlersStance stance = hero.buff(BrawlersStance.class);

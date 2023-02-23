@@ -401,7 +401,7 @@ public class Hero extends Char {
 	@Override
 	public void hitSound(float pitch) {
 		if (!RingOfForce.fightingUnarmed(this)) {
-			belongings.weapon().hitSound(pitch);
+			belongings.attackingWeapon().hitSound(pitch);
 		} else if (RingOfForce.getBuffedBonus(this, RingOfForce.Force.class) > 0) {
 			//pitch deepens by 2.5% (additive) per point of strength, down to 75%
 			super.hitSound( pitch * GameMath.gate( 0.75f, 1.25f - 0.025f*STR(), 1f) );
@@ -464,7 +464,7 @@ public class Hero extends Char {
 	
 	@Override
 	public int attackSkill( Char target ) {
-		KindOfWeapon wep = belongings.weapon();
+		KindOfWeapon wep = belongings.attackingWeapon();
 		
 		float accuracy = 1;
 		accuracy *= RingOfAccuracy.accuracyMultiplier( this );
@@ -577,7 +577,7 @@ public class Hero extends Char {
 	
 	@Override
 	public int damageRoll() {
-		KindOfWeapon wep = belongings.weapon();
+		KindOfWeapon wep = belongings.attackingWeapon();
 		int dmg;
 
 		if (!RingOfForce.fightingUnarmed(this)) {
@@ -597,7 +597,7 @@ public class Hero extends Char {
 		} else {
 			dmg = RingOfForce.damageRoll(this);
 			if (RingOfForce.unarmedGetsWeaponEffects(this)){
-				dmg = ((Weapon)belongings.weapon()).augment.damageFactor(dmg);
+				dmg = ((Weapon)belongings.attackingWeapon()).augment.damageFactor(dmg);
 			}
 		}
 
@@ -653,10 +653,11 @@ public class Hero extends Char {
 
 	@Override
 	public boolean canSurpriseAttack(){
-		if (belongings.weapon() == null || !(belongings.weapon() instanceof Weapon))    return true;
-		if (RingOfForce.fightingUnarmed(this))                                          return true;
-		if (STR() < ((Weapon)belongings.weapon()).STRReq())                             return false;
-		if (belongings.weapon() instanceof Flail)                                       return false;
+		KindOfWeapon w = belongings.attackingWeapon();
+		if (!(w instanceof Weapon))             return true;
+		if (RingOfForce.fightingUnarmed(this))  return true;
+		if (STR() < ((Weapon)w).STRReq())       return false;
+		if (w instanceof Flail)                 return false;
 
 		return super.canSurpriseAttack();
 	}
@@ -671,7 +672,7 @@ public class Hero extends Char {
 			return true;
 		}
 
-		KindOfWeapon wep = Dungeon.hero.belongings.weapon();
+		KindOfWeapon wep = Dungeon.hero.belongings.attackingWeapon();
 
 		if (wep != null){
 			return wep.canReach(this, enemy.pos);
@@ -694,7 +695,7 @@ public class Hero extends Char {
 
 		if (!RingOfForce.fightingUnarmed(this)) {
 			
-			return delay * belongings.weapon().delayFactor( this );
+			return delay * belongings.attackingWeapon().delayFactor( this );
 			
 		} else {
 			//Normally putting furor speed on unarmed attacks would be unnecessary
@@ -1265,7 +1266,7 @@ public class Hero extends Char {
 		damage = super.attackProc( enemy, damage );
 
 		//procs with weapon even in brawler's stance
-		KindOfWeapon wep = belongings.weapon();
+		KindOfWeapon wep = belongings.attackingWeapon();
 
 		if (wep != null) damage = wep.proc( this, enemy, damage );
 
