@@ -141,7 +141,7 @@ public class Dart extends MissileWeapon {
 
 		int dmg = super.proc(attacker, defender, damage);
 		if (!processingChargedShot) {
-			processChargedShot(defender.pos, damage);
+			processChargedShot(defender, damage);
 		}
 		return dmg;
 	}
@@ -155,17 +155,22 @@ public class Dart extends MissileWeapon {
 	@Override
 	protected void onThrow(int cell) {
 		updateCrossbow();
+		//we have to set this here, as on-hit effects can move the target we aim at
+		chargedShotPos = cell;
 		super.onThrow(cell);
 	}
 
 	private boolean processingChargedShot = false;
-	protected void processChargedShot( int cell, int dmg ){
+	private int chargedShotPos;
+	protected void processChargedShot( Char target, int dmg ){
 		//don't update xbow here, as dart may be the active weapon atm
 		processingChargedShot = true;
-		if (bow != null && Dungeon.hero.buff(Crossbow.ChargedShot.class) != null) {
-			PathFinder.buildDistanceMap(cell, Dungeon.level.passable, 1);
+		if (chargedShotPos != -1 && bow != null && Dungeon.hero.buff(Crossbow.ChargedShot.class) != null) {
+			PathFinder.buildDistanceMap(chargedShotPos, Dungeon.level.passable, 1);
+			//necessary to clone as some on-hit effects use Pathfinder
+			int[] distance = PathFinder.distance.clone();
 			for (Char ch : Actor.chars()){
-				if (ch.pos == cell){
+				if (ch == target){
 					Actor.add(new Actor() {
 						{ actPriority = VFX_PRIO; }
 						@Override
@@ -177,11 +182,12 @@ public class Dart extends MissileWeapon {
 							return true;
 						}
 					});
-				} else if (PathFinder.distance[ch.pos] != Integer.MAX_VALUE){
+				} else if (distance[ch.pos] != Integer.MAX_VALUE){
 					proc(Dungeon.hero, ch, dmg);
 				}
 			}
 		}
+		chargedShotPos = -1;
 		processingChargedShot = false;
 	}
 
