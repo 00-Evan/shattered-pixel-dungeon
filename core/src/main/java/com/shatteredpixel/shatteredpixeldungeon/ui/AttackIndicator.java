@@ -187,6 +187,7 @@ public class AttackIndicator extends Tag {
 	}
 
 	public static void target(Char target ) {
+		if (target == null) return;
 		synchronized (instance) {
 			instance.lastTarget = (Mob) target;
 			instance.updateImage();
