@@ -138,7 +138,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 		}
 	}
 
-	private boolean equipSecondary( Hero hero ){
+	public boolean equipSecondary( Hero hero ){
 		detachAll( hero.belongings.backpack );
 
 		if (hero.belongings.secondWep == null || hero.belongings.secondWep.doUnequip( hero, true )) {
