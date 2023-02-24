@@ -28,8 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-import java.text.DecimalFormat;
-
 public class RingOfEnergy extends Ring {
 
 	{
@@ -39,10 +37,10 @@ public class RingOfEnergy extends Ring {
 	public String statsInfo() {
 		if (isIdentified()){
 			return Messages.get(this, "stats",
-					new DecimalFormat("#.##").format(100f * (Math.pow(1.15f, soloBuffedBonus()) - 1f)));
+					Messages.decimalFormat("#.##", 100f * (Math.pow(1.15f, soloBuffedBonus()) - 1f)));
 		} else {
 			return Messages.get(this, "typical_stats",
-					new DecimalFormat("#.##").format(15f));
+					Messages.decimalFormat("#.##", 15f));
 		}
 	}
 	

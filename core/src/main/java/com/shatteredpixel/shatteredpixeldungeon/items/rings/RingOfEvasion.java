@@ -25,8 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-import java.text.DecimalFormat;
-
 public class RingOfEvasion extends Ring {
 
 	{
@@ -35,9 +33,9 @@ public class RingOfEvasion extends Ring {
 
 	public String statsInfo() {
 		if (isIdentified()){
-			return Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (Math.pow(1.125f, soloBuffedBonus()) - 1f)));
+			return Messages.get(this, "stats", Messages.decimalFormat("#.##", 100f * (Math.pow(1.125f, soloBuffedBonus()) - 1f)));
 		} else {
-			return Messages.get(this, "typical_stats", new DecimalFormat("#.##").format(12.5f));
+			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 12.5f));
 		}
 	}
 	

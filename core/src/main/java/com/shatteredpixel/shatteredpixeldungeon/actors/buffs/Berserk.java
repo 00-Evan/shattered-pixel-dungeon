@@ -38,8 +38,6 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 
-import java.text.DecimalFormat;
-
 public class Berserk extends Buff implements ActionIndicator.Action {
 
 	{
@@ -302,7 +300,7 @@ public class Berserk extends Buff implements ActionIndicator.Action {
 				return (int)(power*100) + "%";
 			case RECOVERING:
 				if (levelRecovery > 0) {
-					return new DecimalFormat("#.#").format(levelRecovery);
+					return Messages.decimalFormat("#.##", levelRecovery);
 				} else {
 					return Integer.toString(turnRecovery);
 				}

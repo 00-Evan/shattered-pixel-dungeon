@@ -28,10 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Reflection;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.HashSet;
-import java.util.Locale;
 
 public class Buff extends Actor {
 	
@@ -135,7 +132,7 @@ public class Buff extends Actor {
 
 	//to handle the common case of showing how many turns are remaining in a buff description.
 	protected String dispTurns(float input){
-		return new DecimalFormat("#.##", DecimalFormatSymbols.getInstance(Locale.ENGLISH)).format(input);
+		return Messages.decimalFormat("#.##", input);
 	}
 
 	//buffs act after the hero, so it is often useful to use cooldown+1 when display buff time remaining
