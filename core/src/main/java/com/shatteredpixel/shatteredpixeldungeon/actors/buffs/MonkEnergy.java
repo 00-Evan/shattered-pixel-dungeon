@@ -21,20 +21,28 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Ghoul;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RipperDemon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogDzewa;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndMonkAbilities;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
 
 public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
@@ -152,20 +160,157 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public void doAction() {
-		energy -= 1;
-		cooldown = 3;
-		ActionIndicator.clearAction(this);
-		BuffIndicator.refreshHero();
-		//GameScene.show(new WndMonk(this));
+		GameScene.show(new WndMonkAbilities(this));
 	}
 
-	public enum MonkAbility {
-		FLURRY_OF_BLOWS, //1
-		CLEANSE, //Just part of meditate?
-		DASH, //2 or 3 energy?
-		UPPERCUT, //2
-		FOCUS, //3
-		DRAGON_KICK, //5
-		MEDITATE //5
+	public static abstract class MonkAbility {
+
+		public static MonkAbility[] abilities = new MonkAbility[]{
+				new Flurry(),
+				new Dash(),
+				new Focus(),
+				new DragonKick(),
+				new Meditate()
+		};
+
+		public String name(){
+			return Messages.get(this, "name");
+		}
+
+		public String desc(){
+			return Messages.get(this, "desc");
+		}
+
+		public abstract int energyCost();
+		public abstract int cooldown();
+
+		public String targetingPrompt(){
+			return null; //return a string if uses targeting
+		}
+
+		public abstract void doAbility(Hero hero, Integer target );
+
+		public static class Flurry extends MonkAbility {
+
+			@Override
+			public int energyCost() {
+				return 1;
+			}
+
+			@Override
+			public int cooldown() {
+				return 3;
+			}
+
+			@Override
+			public String targetingPrompt() {
+				return "choose a location";
+			}
+
+			@Override
+			public void doAbility(Hero hero, Integer target) {
+				//TODO
+			}
+		}
+
+		public static class Dash extends MonkAbility {
+
+			@Override
+			public int energyCost() {
+				return 2;
+			}
+
+			@Override
+			public int cooldown() {
+				return 3; //extra turn as no time is spend dashing
+			}
+
+			@Override
+			public String targetingPrompt() {
+				return "choose a location";
+			}
+
+			@Override
+			public void doAbility(Hero hero, Integer target) {
+				if (target == null || target == -1){
+					return;
+				}
+
+				//TODO check conditions
+
+				hero.busy();
+				Sample.INSTANCE.play(Assets.Sounds.MISS);
+				hero.sprite.jump(hero.pos, target, 0, 0.1f, new Callback() {
+					@Override
+					public void call() {
+						if (Dungeon.level.map[hero.pos] == Terrain.OPEN_DOOR) {
+							Door.leave( hero.pos );
+						}
+						hero.pos = target;
+						Dungeon.level.occupyCell(hero);
+						hero.next();
+					}
+				});
+
+				//TODO decrement energy
+
+			}
+		}
+
+		public static class Focus extends MonkAbility {
+
+			@Override
+			public int energyCost() {
+				return 3;
+			}
+
+			@Override
+			public int cooldown() {
+				return 3;
+			}
+
+			@Override
+			public void doAbility(Hero hero, Integer target) {
+				//TODO
+			}
+
+		}
+
+		public static class DragonKick extends MonkAbility {
+
+			@Override
+			public int energyCost() {
+				return 4;
+			}
+
+			@Override
+			public int cooldown() {
+				return 3;
+			}
+
+			@Override
+			public void doAbility(Hero hero, Integer target) {
+				//TODO
+			}
+		}
+
+		public static class Meditate extends MonkAbility {
+
+			@Override
+			public int energyCost() {
+				return 5;
+			}
+
+			@Override
+			public int cooldown() {
+				return 3;
+			}
+
+			@Override
+			public void doAbility(Hero hero, Integer target) {
+				//TODO
+			}
+		}
+
 	}
 }
