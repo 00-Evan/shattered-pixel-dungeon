@@ -50,6 +50,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
@@ -57,6 +58,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gloves;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
@@ -154,13 +156,13 @@ public enum Talent {
 	FOCUSED_MEAL(132), RESTORED_AGILITY(133), WEAPON_RECHARGING(134), LETHAL_HASTE(135), SWIFT_EQUIP(136),
 	//Duelist T3
 	LIGHTWEIGHT_CHARGE(137, 3), DEADLY_FOLLOWUP(138, 3),
-	//Duelist S1 T3
+	//Champion T3
 	SECONDARY_CHARGE(139, 3), TWIN_UPGRADES(140, 3), COMBINED_LETHALITY(141, 3),
-	//Duelist S2 T3
-	DUELIST_S2_1(142, 3), DUELIST_S2_2(143, 3), DUELIST_S2_3(144, 3),
-	//Duelist A1 T4
+	//Monk T3
+	LIGHTLY_ARMED(142, 3), MONASTIC_VIGOR(143, 3), COMBINED_ENERGY(144, 3),
+	//Challenge T4
 	CLOSE_THE_GAP(145, 4), INVIGORATING_VICTORY(146, 4), ELIMINATION_MATCH(147, 4),
-	//Duelist A2 T4
+	//Elemental Strike T4
 	ELEMENTAL_REACH(148, 4), STRIKING_FORCE(149, 4), DIRECTED_POWER(150, 4),
 	//Duelist A3 T4
 	DUELIST_A3_1(151, 4), DUELIST_A3_2(152, 4), DUELIST_A3_3(153, 4),
@@ -381,6 +383,11 @@ public enum Talent {
 
 		if (talent == SECONDARY_CHARGE || talent == TWIN_UPGRADES){
 			Item.updateQuickslot();
+		}
+
+		if (talent == LIGHTLY_ARMED && hero.pointsInTalent(talent) == 3){
+			new ClothArmor().identify().collect();
+			new Gloves().identify().collect();
 		}
 	}
 
@@ -796,7 +803,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, SECONDARY_CHARGE, TWIN_UPGRADES, COMBINED_LETHALITY);
 				break;
 			case MONK:
-				Collections.addAll(tierTalents, DUELIST_S2_1, DUELIST_S2_2, DUELIST_S2_3);
+				Collections.addAll(tierTalents, LIGHTLY_ARMED, MONASTIC_VIGOR, COMBINED_ENERGY);
 				break;
 		}
 		for (Talent talent : tierTalents){

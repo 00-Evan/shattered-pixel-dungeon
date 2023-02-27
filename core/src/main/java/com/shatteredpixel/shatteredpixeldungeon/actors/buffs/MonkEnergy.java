@@ -27,12 +27,14 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Ghoul;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RipperDemon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogDzewa;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -134,16 +136,56 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 			return; //to prevent farming boss minions
 		}
 
-		//bosses and minibosses give extra energy, certain enemies give half, otherwise give 1
-		if (Char.hasProp(enemy, Char.Property.BOSS))            energy += 5;
-		else if (Char.hasProp(enemy, Char.Property.MINIBOSS))   energy += 3;
-		else if (enemy instanceof Ghoul)                        energy += 0.5f;
-		else if (enemy instanceof RipperDemon)                  energy += 0.5f;
-		else if (enemy instanceof YogDzewa.Larva)               energy += 0.5f;
-		else if (enemy instanceof Wraith)                       energy += 0.5f;
-		else                                                    energy += 1;
+		float energyGain;
 
-		energy = Math.min(energy, energyCap());
+		//bosses and minibosses give extra energy, certain enemies give half, otherwise give 1
+		if (Char.hasProp(enemy, Char.Property.BOSS))            energyGain = 5;
+		else if (Char.hasProp(enemy, Char.Property.MINIBOSS))   energyGain = 3;
+		else if (enemy instanceof Ghoul)                        energyGain = 0.5f;
+		else if (enemy instanceof RipperDemon)                  energyGain = 0.5f;
+		else if (enemy instanceof YogDzewa.Larva)               energyGain = 0.5f;
+		else if (enemy instanceof Wraith)                       energyGain = 0.5f;
+		else                                                    energyGain = 1;
+
+		float enGainMulti = 1f;
+		if (target instanceof Hero) {
+			Hero hero = (Hero) target;
+			if (hero.hasTalent(Talent.LIGHTLY_ARMED)) {
+				int points = hero.pointsInTalent(Talent.LIGHTLY_ARMED);
+
+				if (hero.belongings.armor() != null){
+					if (hero.belongings.armor().tier == 3 && points >= 1){
+						enGainMulti += 0.25f;
+					}
+					if (hero.belongings.armor().tier == 2 && points >= 2){
+						enGainMulti += 0.50f;
+					}
+					if (hero.belongings.armor().tier == 1 && points >= 3){
+						enGainMulti += 1.00f;
+					}
+				}
+
+				if (hero.belongings.weapon() instanceof MeleeWeapon){
+					if (((MeleeWeapon) hero.belongings.weapon()).tier == 3 && points >= 1){
+						enGainMulti += 0.25f;
+					}
+					if (((MeleeWeapon) hero.belongings.weapon()).tier == 2 && points >= 2){
+						enGainMulti += 0.50f;
+					}
+					if (((MeleeWeapon) hero.belongings.weapon()).tier == 1 && points >= 3){
+						enGainMulti += 1.00f;
+					}
+				} else if (hero.belongings.weapon == null) {
+					if (hero.buff(RingOfForce.Force.class) == null && points == 3){
+						enGainMulti += 1.50f;
+					}
+				}
+
+			}
+		}
+		energyGain *= enGainMulti;
+
+		energy = Math.min(energy+energyGain, energyCap());
 
 		if (energy > 0 && cooldown == 0){
 			ActionIndicator.setAction(this);
