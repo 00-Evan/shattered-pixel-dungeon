@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RipperDemon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogDzewa;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
@@ -262,8 +263,8 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 								public void call() {
 									hero.attack(enemy, 1, 0, Char.INFINITE_ACCURACY);
 									Invisibility.dispel();
+									hero.next();
 									tracker.detach();
-
 									Buff.affect(hero, MonkEnergy.class).abilityUsed(Flurry.this);
 									if (hero.buff(JustHitTracker.class) != null) {
 										hero.buff(JustHitTracker.class).detach();
@@ -272,6 +273,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 							});
 						} else {
 							Invisibility.dispel();
+							hero.next();
 							tracker.detach();
 							Buff.affect(hero, MonkEnergy.class).abilityUsed(Flurry.this);
 							if (hero.buff(JustHitTracker.class) != null) {
@@ -397,8 +399,62 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 			}
 
 			@Override
+			public String desc() {
+				//3x hero unarmed damage
+				return Messages.get(this, "desc", 3, 3*(Dungeon.hero.STR()-8));
+			}
+
+			@Override
+			public String targetingPrompt() {
+				return Messages.get(MeleeWeapon.class, "prompt");
+			}
+
+			@Override
 			public void doAbility(Hero hero, Integer target) {
-				//TODO
+				if (target == null || target == -1){
+					return;
+				}
+
+				Char enemy = Actor.findChar(target);
+				if (enemy == null || enemy == hero || hero.isCharmedBy(enemy) || !Dungeon.level.heroFOV[target]) {
+					GLog.w(Messages.get(MeleeWeapon.class, "ability_no_target"));
+					return;
+				}
+
+				UnarmedAbilityTracker tracker = Buff.affect(hero, UnarmedAbilityTracker.class);
+				if (!hero.canAttack(enemy)){
+					GLog.w(Messages.get(MeleeWeapon.class, "ability_bad_position"));
+					tracker.detach();
+					return;
+				}
+
+				hero.sprite.attack(enemy.pos, new Callback() {
+					@Override
+					public void call() {
+						AttackIndicator.target(enemy);
+						if (hero.attack(enemy, 4f, 0, Char.INFINITE_ACCURACY)){
+							Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+						}
+
+						if (enemy.isAlive()){
+							int oldPos = enemy.pos;
+							//trace a ballistica to our target (which will also extend past them
+							Ballistica trajectory = new Ballistica(hero.pos, enemy.pos, Ballistica.STOP_TARGET);
+							//trim it to just be the part that goes past them
+							trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
+							//knock them back along that ballistica
+							WandOfBlastWave.throwChar(enemy, trajectory, 6, true, false, hero.getClass());
+
+							if (trajectory.dist > 0) {
+								Buff.affect(enemy, Paralysis.class, Math.min( 6, trajectory.dist));
+							}
+						}
+						Invisibility.dispel();
+						hero.spendAndNext(hero.attackDelay());
+						tracker.detach();
+						Buff.affect(hero, MonkEnergy.class).abilityUsed(DragonKick.this);
+					}
+				});
 			}
 		}
 
