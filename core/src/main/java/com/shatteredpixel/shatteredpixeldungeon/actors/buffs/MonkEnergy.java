@@ -208,7 +208,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public String actionName() {
-		return "TODO";
+		return Messages.get(this, "action");
 	}
 
 	@Override
