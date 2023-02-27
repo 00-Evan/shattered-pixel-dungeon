@@ -54,6 +54,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Levitation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PhysicalEmpower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
@@ -536,6 +537,14 @@ public class Hero extends Char {
 			parry.parried = true;
 			if (buff(Combo.class).getComboCount() < 9 || pointsInTalent(Talent.ENHANCED_COMBO) < 2){
 				parry.detach();
+			}
+			return Messages.get(Monk.class, "parried");
+		}
+
+		if (buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class) != null){
+			buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class).detach();
+			if (sprite != null && sprite.visible) {
+				Sample.INSTANCE.play(Assets.Sounds.HIT_PARRY, 1, Random.Float(0.96f, 1.05f));
 			}
 			return Messages.get(Monk.class, "parried");
 		}

@@ -54,6 +54,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LifeLink;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
@@ -323,7 +324,7 @@ public abstract class Char extends Actor {
 
 			return false;
 
-		} else if (hit( this, enemy, accMulti )) {
+		} else if (hit( this, enemy, accMulti, false )) {
 			
 			int dr = Math.round(enemy.drRoll() * AscensionChallenge.statModifier(enemy));
 			
@@ -488,16 +489,20 @@ public abstract class Char extends Actor {
 	public static int INFINITE_EVASION = 1_000_000;
 
 	final public static boolean hit( Char attacker, Char defender, boolean magic ) {
-		return hit(attacker, defender, magic ? 2f : 1f);
+		return hit(attacker, defender, magic ? 2f : 1f, magic);
 	}
 
-	public static boolean hit( Char attacker, Char defender, float accMulti ) {
+	public static boolean hit( Char attacker, Char defender, float accMulti, boolean magic ) {
 		float acuStat = attacker.attackSkill( defender );
 		float defStat = defender.defenseSkill( attacker );
 
 		//invisible chars always hit (for the hero this is surprise attacking)
 		if (attacker.invisible > 0 && attacker.canSurpriseAttack()){
 			acuStat = INFINITE_ACCURACY;
+		}
+
+		if (defender.buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class) != null && !magic){
+			defStat = INFINITE_EVASION;
 		}
 
 		//if accuracy or evasion are large enough, treat them as infinite.

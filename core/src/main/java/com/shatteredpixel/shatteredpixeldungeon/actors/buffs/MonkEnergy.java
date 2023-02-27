@@ -23,21 +23,26 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Ghoul;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RipperDemon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogDzewa;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMonkAbilities;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
@@ -141,11 +146,20 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 		if (energy > 0 && cooldown == 0){
 			ActionIndicator.setAction(this);
 		}
+		BuffIndicator.refreshHero();
 	}
 
 	//10 at base, 20 at level 30
 	public int energyCap(){
 		return Math.max(10, 5 + Dungeon.hero.lvl/2);
+	}
+
+	public void abilityUsed( MonkAbility abil ){
+		energy -= abil.energyCost();
+		cooldown = abil.cooldown();
+		if (cooldown > 0 || energy < 1){
+			ActionIndicator.clearAction(this);
+		}
 	}
 
 	@Override
@@ -167,8 +181,8 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 		public static MonkAbility[] abilities = new MonkAbility[]{
 				new Flurry(),
-				new Dash(),
 				new Focus(),
+				new Dash(),
 				new DragonKick(),
 				new Meditate()
 		};
@@ -203,31 +217,15 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 			}
 
 			@Override
-			public String targetingPrompt() {
-				return "choose a location";
-			}
-
-			@Override
-			public void doAbility(Hero hero, Integer target) {
-				//TODO
-			}
-		}
-
-		public static class Dash extends MonkAbility {
-
-			@Override
-			public int energyCost() {
-				return 2;
-			}
-
-			@Override
-			public int cooldown() {
-				return 3; //extra turn as no time is spend dashing
+			public String desc() {
+				//double hero unarmed damage
+				//TODO maybe two hits at regular unarmed damage instead?
+				return Messages.get(this, "desc", 2, 2*(Dungeon.hero.STR()-8));
 			}
 
 			@Override
 			public String targetingPrompt() {
-				return "choose a location";
+				return "choose a target";
 			}
 
 			@Override
@@ -236,10 +234,103 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 					return;
 				}
 
-				//TODO check conditions
+				//TODO check for target viability
+
+				//TODO add a buff that forces melee only (and no RoF!)
+
+				//check for can attack
+
+				//clear buff if can't
+
+				//do attack logic
+			}
+		}
+
+		public static class Focus extends MonkAbility {
+
+			@Override
+			public int energyCost() {
+				return 2;
+			}
+
+			@Override
+			public int cooldown() {
+				return 4;
+			}
+
+			@Override
+			public void doAbility(Hero hero, Integer target) {
+				Buff.prolong(hero, FocusBuff.class, 30f);
+
+				Buff.affect(hero, MonkEnergy.class).abilityUsed(this);
+				hero.spendAndNext(1f);
+			}
+
+			public static class FocusBuff extends FlavourBuff {
+
+				{
+					type = buffType.POSITIVE;
+					announced = true;
+				}
+
+				@Override
+				public int icon() {
+					return BuffIndicator.MIND_VISION;
+				}
+
+				@Override
+				public void tintIcon(Image icon) {
+					icon.hardlight(0.25f, 1.5f, 1f);
+				}
+
+				@Override
+				public float iconFadePercent() {
+					return Math.max(0, (30 - visualcooldown()) / 30);
+				}
+			}
+
+		}
+
+		public static class Dash extends MonkAbility {
+
+			@Override
+			public int energyCost() {
+				return 3;
+			}
+
+			@Override
+			public int cooldown() {
+				return 3; //1 less turn as no time is spent dashing
+			}
+
+			@Override
+			public String targetingPrompt() {
+				return Messages.get(this, "prompt");
+			}
+
+			@Override
+			public void doAbility(Hero hero, Integer target) {
+				if (target == null || target == -1){
+					return;
+				}
+
+				if (Dungeon.level.distance(hero.pos, target) > 3){
+					GLog.w(Messages.get(this, "too_far"));
+					return;
+				}
+
+				Ballistica dash = new Ballistica(hero.pos, target, Ballistica.PROJECTILE);
+
+				if (!dash.collisionPos.equals(target)
+						|| Actor.findChar(target) != null
+						|| (Dungeon.level.solid[target] && !Dungeon.level.passable[target])){
+					GLog.w(Messages.get(this, "blocked"));
+					return;
+				}
 
 				hero.busy();
 				Sample.INSTANCE.play(Assets.Sounds.MISS);
+				hero.sprite.emitter().start(Speck.factory(Speck.JET), 0.01f, Math.round(4 + 2*Dungeon.level.trueDistance(hero.pos, target)));
 				hero.sprite.jump(hero.pos, target, 0, 0.1f, new Callback() {
 					@Override
 					public void call() {
@@ -252,28 +343,8 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 					}
 				});
 
-				//TODO decrement energy
-
+				Buff.affect(hero, MonkEnergy.class).abilityUsed(this);
 			}
-		}
-
-		public static class Focus extends MonkAbility {
-
-			@Override
-			public int energyCost() {
-				return 3;
-			}
-
-			@Override
-			public int cooldown() {
-				return 3;
-			}
-
-			@Override
-			public void doAbility(Hero hero, Integer target) {
-				//TODO
-			}
-
 		}
 
 		public static class DragonKick extends MonkAbility {
