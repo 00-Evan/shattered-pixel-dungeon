@@ -218,7 +218,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 			@Override
 			public int cooldown() {
-				return Dungeon.hero.buff(JustHitTracker.class) != null ? 0 : 3;
+				return Dungeon.hero.buff(JustHitTracker.class) != null ? 0 : 6;
 			}
 
 			@Override
@@ -294,7 +294,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 			@Override
 			public int cooldown() {
-				return 4;
+				return 6;
 			}
 
 			@Override
@@ -339,7 +339,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 			@Override
 			public int cooldown() {
-				return 3; //1 less turn as no time is spent dashing
+				return 5; //1 less turn as no time is spent dashing
 			}
 
 			@Override
@@ -395,7 +395,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 			@Override
 			public int cooldown() {
-				return 3;
+				return 6;
 			}
 
 			@Override
@@ -467,12 +467,28 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 			@Override
 			public int cooldown() {
-				return 3;
+				return 6;
 			}
 
 			@Override
 			public void doAbility(Hero hero, Integer target) {
-				//TODO
+
+				hero.sprite.operate(hero.pos);
+				GameScene.flash(0x88000000, false);
+				Sample.INSTANCE.play(Assets.Sounds.SCAN);
+
+				Buff.affect(hero, MonkEnergy.class).abilityUsed(this);
+				Buff.affect(hero, Recharging.class, 10f);
+				Buff.affect(hero, ArtifactRecharge.class).prolong(10f).ignoreHornOfPlenty = false;
+				for (Buff b : hero.buffs()){
+					if (b.type == Buff.buffType.NEGATIVE
+							&& !(b instanceof AllyBuff)
+							&& !(b instanceof LostInventory)){
+						b.detach();
+					}
+				}
+
+				hero.spendAndNext(5f);
 			}
 		}
 
