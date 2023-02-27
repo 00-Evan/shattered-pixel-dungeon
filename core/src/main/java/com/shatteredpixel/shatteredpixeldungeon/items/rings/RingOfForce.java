@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
@@ -77,7 +78,8 @@ public class RingOfForce extends Ring {
 	}
 
 	public static int damageRoll( Hero hero ){
-		if (hero.buff(Force.class) != null) {
+		if (hero.buff(Force.class) != null
+				&& hero.buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) == null) {
 			int level = getBuffedBonus(hero, Force.class);
 			float tier = tier(hero.STR());
 			return Random.NormalIntRange(min(level, tier), max(level, tier));

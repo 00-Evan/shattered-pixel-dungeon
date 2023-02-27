@@ -335,6 +335,13 @@ public abstract class Char extends Actor {
 						&& !Dungeon.level.adjacent(h.pos, enemy.pos)){
 					dr = 0;
 				}
+
+				if (h.buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) != null){
+					dr = 0;
+				} else if (h.subClass == HeroSubClass.MONK) {
+					//3 turns with standard attack delay
+					Buff.prolong(h, MonkEnergy.MonkAbility.JustHitTracker.class, 4f);
+				}
 			}
 
 			//we use a float here briefly so that we don't have to constantly round while

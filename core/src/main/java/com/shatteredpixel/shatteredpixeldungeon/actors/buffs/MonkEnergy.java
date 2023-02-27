@@ -29,17 +29,18 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Ghoul;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RipperDemon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogDzewa;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -204,6 +205,9 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 		public abstract void doAbility(Hero hero, Integer target );
 
+		public static class UnarmedAbilityTracker extends FlavourBuff{};
+		public static class JustHitTracker extends FlavourBuff{};
+
 		public static class Flurry extends MonkAbility {
 
 			@Override
@@ -213,19 +217,18 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 			@Override
 			public int cooldown() {
-				return 3;
+				return Dungeon.hero.buff(JustHitTracker.class) != null ? 0 : 3;
 			}
 
 			@Override
 			public String desc() {
-				//double hero unarmed damage
-				//TODO maybe two hits at regular unarmed damage instead?
-				return Messages.get(this, "desc", 2, 2*(Dungeon.hero.STR()-8));
+				//hero unarmed damage
+				return Messages.get(this, "desc", 1, Dungeon.hero.STR()-8);
 			}
 
 			@Override
 			public String targetingPrompt() {
-				return "choose a target";
+				return Messages.get(MeleeWeapon.class, "prompt");
 			}
 
 			@Override
@@ -234,15 +237,49 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 					return;
 				}
 
-				//TODO check for target viability
+				Char enemy = Actor.findChar(target);
+				if (enemy == null || enemy == hero || hero.isCharmedBy(enemy) || !Dungeon.level.heroFOV[target]) {
+					GLog.w(Messages.get(MeleeWeapon.class, "ability_no_target"));
+					return;
+				}
 
-				//TODO add a buff that forces melee only (and no RoF!)
+				UnarmedAbilityTracker tracker = Buff.affect(hero, UnarmedAbilityTracker.class);
+				if (!hero.canAttack(enemy)){
+					GLog.w(Messages.get(MeleeWeapon.class, "ability_bad_position"));
+					tracker.detach();
+					return;
+				}
 
-				//check for can attack
+				hero.sprite.attack(enemy.pos, new Callback() {
+					@Override
+					public void call() {
+						AttackIndicator.target(enemy);
+						hero.attack(enemy, 1, 0, Char.INFINITE_ACCURACY);
 
-				//clear buff if can't
+						if (enemy.isAlive()){
+							hero.sprite.attack(enemy.pos, new Callback() {
+								@Override
+								public void call() {
+									hero.attack(enemy, 1, 0, Char.INFINITE_ACCURACY);
+									Invisibility.dispel();
+									tracker.detach();
 
-				//do attack logic
+									Buff.affect(hero, MonkEnergy.class).abilityUsed(Flurry.this);
+									if (hero.buff(JustHitTracker.class) != null) {
+										hero.buff(JustHitTracker.class).detach();
+									}
+								}
+							});
+						} else {
+							Invisibility.dispel();
+							tracker.detach();
+							Buff.affect(hero, MonkEnergy.class).abilityUsed(Flurry.this);
+							if (hero.buff(JustHitTracker.class) != null) {
+								hero.buff(JustHitTracker.class).detach();
+							}
+						}
+					}
+				});
 			}
 		}
 
@@ -315,7 +352,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 				}
 
 				if (Dungeon.level.distance(hero.pos, target) > 3){
-					GLog.w(Messages.get(this, "too_far"));
+					GLog.w(Messages.get(MeleeWeapon.class, "ability_no_target"));
 					return;
 				}
 
@@ -324,7 +361,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 				if (!dash.collisionPos.equals(target)
 						|| Actor.findChar(target) != null
 						|| (Dungeon.level.solid[target] && !Dungeon.level.passable[target])){
-					GLog.w(Messages.get(this, "blocked"));
+					GLog.w(Messages.get(MeleeWeapon.class, "ability_bad_position"));
 					return;
 				}
 

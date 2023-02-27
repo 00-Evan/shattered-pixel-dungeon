@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
@@ -98,6 +99,7 @@ public class Belongings implements Iterable<Item> {
 	public KindOfWeapon attackingWeapon(){
 		if (thrownWeapon != null) return thrownWeapon;
 		if (abilityWeapon != null) return abilityWeapon;
+		if (owner.buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) != null) return null;
 		return weapon();
 	}
 
