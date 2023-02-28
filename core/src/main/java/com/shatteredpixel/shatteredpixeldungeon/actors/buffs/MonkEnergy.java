@@ -201,14 +201,37 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 	public void abilityUsed( MonkAbility abil ){
 		energy -= abil.energyCost();
 		cooldown = abil.cooldown();
+
+		if (target instanceof Hero && ((Hero) target).hasTalent(Talent.COMBINED_ENERGY)
+				&& abil.energyCost() >= 5-((Hero) target).pointsInTalent(Talent.COMBINED_ENERGY)) {
+			Talent.CombinedEnergyAbilityTracker tracker = target.buff(Talent.CombinedEnergyAbilityTracker.class);
+			if (tracker == null || tracker.wepAbilUsed == false){
+				Buff.prolong(target, Talent.CombinedEnergyAbilityTracker.class, target.cooldown()).energySpent = abil.energyCost();
+			} else {
+				tracker.energySpent = abil.energyCost();
+				processCombinedEnergy(tracker);
+			}
+		}
+
 		if (cooldown > 0 || energy < 1){
 			ActionIndicator.clearAction(this);
 		}
+		BuffIndicator.refreshHero();
 	}
 
 	public boolean abilitiesEmpowered( Hero hero ){
 		//100%/85%/70% energy at +1/+2/+3
 		return energy/energyCap() >= 1.15f - 0.15f*hero.pointsInTalent(Talent.MONASTIC_VIGOR);
+	}
+
+	public void processCombinedEnergy(Talent.CombinedEnergyAbilityTracker tracker){
+		energy += tracker.energySpent/3f;
+		cooldown = 0;
+		tracker.detach();
+		if (energy >= 1){
+			ActionIndicator.setAction(this);
+		}
+		BuffIndicator.refreshHero();
 	}
 
 	@Override
@@ -424,7 +447,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 				}
 
 				if (Dungeon.level.distance(hero.pos, target) > range){
-					GLog.w(Messages.get(MeleeWeapon.class, "ability_no_target"));
+					GLog.w(Messages.get(MeleeWeapon.class, "ability_bad_position"));
 					return;
 				}
 
@@ -556,8 +579,9 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 			}
 
 			@Override
+			//longer to account for turns spent meditating
 			public int cooldown() {
-				return 6;
+				return 10;
 			}
 
 			@Override
@@ -567,7 +591,6 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 				GameScene.flash(0x88000000, false);
 				Sample.INSTANCE.play(Assets.Sounds.SCAN);
 
-				Buff.affect(hero, MonkEnergy.class).abilityUsed(this);
 				Buff.affect(hero, Recharging.class, 10f);
 				Buff.affect(hero, ArtifactRecharge.class).prolong(10f).ignoreHornOfPlenty = false;
 				for (Buff b : hero.buffs()){
@@ -587,6 +610,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 				}
 
 				hero.spendAndNext(5f);
+				Buff.affect(hero, MonkEnergy.class).abilityUsed(this);
 			}
 
 			public static class MeditateResistance extends FlavourBuff{};

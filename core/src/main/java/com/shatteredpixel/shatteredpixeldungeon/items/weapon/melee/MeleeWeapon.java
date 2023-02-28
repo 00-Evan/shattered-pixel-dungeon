@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
@@ -200,13 +201,20 @@ public class MeleeWeapon extends Weapon {
 		hero.belongings.abilityWeapon = null;
 		if (hero.hasTalent(Talent.COMBINED_LETHALITY)) {
 			Talent.CombinedLethalityAbilityTracker tracker = hero.buff(Talent.CombinedLethalityAbilityTracker.class);
-			if (tracker == null){
+			if (tracker == null || tracker.weapon == this || tracker.weapon == null){
 				Buff.affect(hero, Talent.CombinedLethalityAbilityTracker.class, hero.cooldown()).weapon = this;
-			} else if (tracker.weapon == this || tracker.weapon == null) {
-				Buff.prolong(hero, Talent.CombinedLethalityAbilityTracker.class, hero.cooldown());
 			} else {
 				//we triggered the talent, so remove the tracker
 				tracker.detach();
+			}
+		}
+		if (hero.hasTalent(Talent.COMBINED_ENERGY)){
+			Talent.CombinedEnergyAbilityTracker tracker = hero.buff(Talent.CombinedEnergyAbilityTracker.class);
+			if (tracker == null || tracker.energySpent == -1){
+				Buff.prolong(hero, Talent.CombinedEnergyAbilityTracker.class, hero.cooldown()).wepAbilUsed = true;
+			} else {
+				tracker.wepAbilUsed = true;
+				Buff.affect(hero, MonkEnergy.class).processCombinedEnergy(tracker);
 			}
 		}
 	}

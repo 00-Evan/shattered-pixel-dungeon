@@ -277,6 +277,10 @@ public enum Talent {
 		public int icon() { return BuffIndicator.CORRUPT; }
 		public void tintIcon(Image icon) { icon.hardlight(0.6f, 0.15f, 0.6f); }
 	};
+	public static class CombinedEnergyAbilityTracker extends FlavourBuff{
+		public int energySpent = -1;
+		public boolean wepAbilUsed = false;
+	}
 
 	int icon;
 	int maxPoints;
