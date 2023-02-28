@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.ElementalStrike;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
@@ -59,6 +60,44 @@ public class v2_X_Changes {
 		ChangeInfo changes = new ChangeInfo("v2.0-BETA", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-6", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.SHPX.get(), "Remaining To-Do",
+				"With the Monk implemented, v2.0 is finally getting closer to release. It's taken longer than I initially expected, but I hope to get things released in another 1-2 weeks. Currently here is what is needed before release:\n\n" +
+				"_-_ Implement the Feint armor ability\n" +
+				"_-_ Replace the placeholder visuals for the Duelist's heroic armor\n" +
+				"_-_ Finish up on other Duelist visuals, most notably the hair on her sprite\n" +
+				"_-_ Fix any remaining bugs as they are reported, and any major issues with the Monk"));
+
+		changes.addButton(new ChangeButton(new HeroIcon(HeroSubClass.MONK), "The Monk!",
+				"After a longer delay than I expected, the Duelist's second subclass is now available!\n\n" +
+				"_The Monk_ is a master of physical technique. As she defeats enemies, she gains energy which can be used on a variety of defensive and utlity-focused abilities."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Added a new Language: _Vietnamese!_ Currently only system font is supported for Vietnamese. I hope to add pixel font support later.\n\n" +
+				"_-_ Removed the following Languages due to low usage and lack of maintenance: Finnish, Galician, Basque, Esperanto."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (Caused by Beta):\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Various minor textual errors\n" +
+				"_-_ Errors with view distance during into darkness challenge\n" +
+				"_-_ Brawler's stance benefiting from weapon reach\n" +
+				"_-_ Projecting not working with runic slash\n" +
+				"_-_ Crossbow not benefiting from twin upgrades in some cases\n" +
+				"_-_ Various errors with charged shot and displacing darts\n" +
+				"_-_ Swift equip still having a 50 turn cooldown in some cases\n" +
+				"_-_ New chasm warning logic not accounting for time freeze\n" +
+				"_-_ Equipping errors when transmuting a secondary weapon\n\n" +
+				"Fixed (Existed prior to Beta):\n" +
+				"_-_ Number display errors when device language is set to Arabic"));
 
 		changes = new ChangeInfo("BETA-5", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -167,13 +206,6 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "To-Do",
-				"While v2.0.0 has made it to beta, there's still some work to do! here's roughly what I have planned to finish before release:\n\n" +
-				"_-_ Implement the Monk subclass\n" +
-				"_-_ Implement the Feint armor ability\n" +
-				"_-_ Finish up Duelist visuals and any other small adjustments\n" +
-				"_-_ Fix any major bugs or balance issues"));
-
 		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 1), HeroClass.DUELIST.title(),
 				"_Shattered Pixel Dungeon has a new playable character!!_\n" +
 				"\n" +
@@ -188,8 +220,7 @@ public class v2_X_Changes {
 				"\n" +
 				"_The Champion_ is a master of melee weapons who can equip a secondary weapon in addition to her primary one!\n" +
 				"\n" +
-				"_The Monk_ is a master of physical technique. As she defeats enemies, she gains energy which can be used on a variety of defensive and utlity-focused abilities.\n" +
-				"_The Monk has not been finished yet._ Look out for this second subclass very soon!"));
+				"_The Monk_ is a master of physical technique. As she defeats enemies, she gains energy which can be used on a variety of defensive and utlity-focused abilities."));
 
 		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 6), "Duelist Armor Abilities",
 				"_The Duelist has three lategame armor abilities, with 3 more talents each!_\n" +
