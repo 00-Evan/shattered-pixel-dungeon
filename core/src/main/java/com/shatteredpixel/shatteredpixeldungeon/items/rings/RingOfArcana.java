@@ -35,7 +35,7 @@ public class RingOfArcana extends Ring {
 		if (isIdentified()){
 			return Messages.get(this, "stats", Messages.decimalFormat("#.##", 100f * (Math.pow(1.175f, soloBuffedBonus()) - 1f)));
 		} else {
-			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 175f));
+			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 17.5f));
 		}
 	}
 
