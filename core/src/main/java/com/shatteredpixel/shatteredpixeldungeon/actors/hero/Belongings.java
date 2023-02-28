@@ -99,7 +99,6 @@ public class Belongings implements Iterable<Item> {
 	public KindOfWeapon attackingWeapon(){
 		if (thrownWeapon != null) return thrownWeapon;
 		if (abilityWeapon != null) return abilityWeapon;
-		if (owner.buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) != null) return null;
 		return weapon();
 	}
 

@@ -197,7 +197,8 @@ public class RingOfForce extends Ring {
 	}
 
 	public static boolean fightingUnarmed( Hero hero ){
-		if (hero.belongings.attackingWeapon() == null){
+		if (hero.belongings.attackingWeapon() == null
+			|| hero.buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) != null){
 			return true;
 		}
 		if (hero.belongings.thrownWeapon != null || hero.belongings.abilityWeapon != null){
@@ -217,8 +218,23 @@ public class RingOfForce extends Ring {
 		return false;
 	}
 
-	public static boolean unarmedGetsWeaponEffects( Hero hero ){
+	public static boolean unarmedGetsWeaponEnchantment( Hero hero ){
 		if (hero.belongings.attackingWeapon() == null){
+			return false;
+		}
+		if (hero.buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) != null){
+			return hero.buff(MonkEnergy.MonkAbility.FlurryEmpowerTracker.class) != null;
+		}
+		BrawlersStance stance = hero.buff(BrawlersStance.class);
+		if (stance != null && stance.hitsLeft() > 0){
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean unarmedGetsWeaponAugment(Hero hero ){
+		if (hero.belongings.attackingWeapon() == null
+			|| hero.buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) != null){
 			return false;
 		}
 		BrawlersStance stance = hero.buff(BrawlersStance.class);

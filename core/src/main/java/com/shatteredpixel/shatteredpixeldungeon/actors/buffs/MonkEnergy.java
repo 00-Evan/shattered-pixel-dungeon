@@ -206,6 +206,11 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 		}
 	}
 
+	public boolean abilitiesEmpowered( Hero hero ){
+		//100%/85%/70% energy at +1/+2/+3
+		return energy/energyCap() >= 1.15f - 0.15f*hero.pointsInTalent(Talent.MONASTIC_VIGOR);
+	}
+
 	@Override
 	public String actionName() {
 		return Messages.get(this, "action");
@@ -251,6 +256,8 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 		public static class UnarmedAbilityTracker extends FlavourBuff{};
 		public static class JustHitTracker extends FlavourBuff{};
 
+		public static class FlurryEmpowerTracker extends FlavourBuff{};
+
 		public static class Flurry extends MonkAbility {
 
 			@Override
@@ -260,7 +267,8 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 			@Override
 			public int cooldown() {
-				return Dungeon.hero.buff(JustHitTracker.class) != null ? 0 : 6;
+				//1 less turn as no time is spent flurrying
+				return Dungeon.hero.buff(JustHitTracker.class) != null ? 0 : 5;
 			}
 
 			@Override
@@ -293,6 +301,10 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 					return;
 				}
 
+				if (Buff.affect(hero, MonkEnergy.class).abilitiesEmpowered(hero)){
+					Buff.affect(hero, FlurryEmpowerTracker.class, 0f);
+				}
+
 				hero.sprite.attack(enemy.pos, new Callback() {
 					@Override
 					public void call() {
@@ -311,6 +323,9 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 									if (hero.buff(JustHitTracker.class) != null) {
 										hero.buff(JustHitTracker.class).detach();
 									}
+									if (hero.buff(FlurryEmpowerTracker.class) != null){
+										hero.buff(FlurryEmpowerTracker.class).detach();
+									}
 								}
 							});
 						} else {
@@ -320,6 +335,9 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 							Buff.affect(hero, MonkEnergy.class).abilityUsed(Flurry.this);
 							if (hero.buff(JustHitTracker.class) != null) {
 								hero.buff(JustHitTracker.class).detach();
+							}
+							if (hero.buff(FlurryEmpowerTracker.class) != null){
+								hero.buff(FlurryEmpowerTracker.class).detach();
 							}
 						}
 					}
@@ -336,15 +354,20 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 			@Override
 			public int cooldown() {
-				return 6;
+				//1 less if focus was instant
+				return Buff.affect(Dungeon.hero, MonkEnergy.class).abilitiesEmpowered(Dungeon.hero) ? 5 : 6;
 			}
 
 			@Override
 			public void doAbility(Hero hero, Integer target) {
 				Buff.prolong(hero, FocusBuff.class, 30f);
 
+				if (Buff.affect(hero, MonkEnergy.class).abilitiesEmpowered(hero)){
+					hero.next();
+				} else {
+					hero.spendAndNext(1f);
+				}
 				Buff.affect(hero, MonkEnergy.class).abilityUsed(this);
-				hero.spendAndNext(1f);
 			}
 
 			public static class FocusBuff extends FlavourBuff {
@@ -395,7 +418,12 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 					return;
 				}
 
-				if (Dungeon.level.distance(hero.pos, target) > 3){
+				int range = 3;
+				if (Buff.affect(hero, MonkEnergy.class).abilitiesEmpowered(hero)){
+					range += 2;
+				}
+
+				if (Dungeon.level.distance(hero.pos, target) > range){
 					GLog.w(Messages.get(MeleeWeapon.class, "ability_no_target"));
 					return;
 				}
@@ -474,12 +502,13 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 					@Override
 					public void call() {
 						AttackIndicator.target(enemy);
-						if (hero.attack(enemy, 4f, 0, Char.INFINITE_ACCURACY)){
+						boolean empowered = Buff.affect(hero, MonkEnergy.class).abilitiesEmpowered(hero);
+
+						if (hero.attack(enemy, empowered ? 4f : 3f, 0, Char.INFINITE_ACCURACY)){
 							Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 						}
 
 						if (enemy.isAlive()){
-							int oldPos = enemy.pos;
 							//trace a ballistica to our target (which will also extend past them
 							Ballistica trajectory = new Ballistica(hero.pos, enemy.pos, Ballistica.STOP_TARGET);
 							//trim it to just be the part that goes past them
@@ -495,6 +524,25 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 						hero.spendAndNext(hero.attackDelay());
 						tracker.detach();
 						Buff.affect(hero, MonkEnergy.class).abilityUsed(DragonKick.this);
+
+						if (empowered){
+							for (Char ch : Actor.chars()){
+								if (ch != enemy
+										&& ch.alignment == Char.Alignment.ENEMY
+										&& Dungeon.level.adjacent(ch.pos, hero.pos)){
+									//trace a ballistica to our target (which will also extend past them
+									Ballistica trajectory = new Ballistica(hero.pos, ch.pos, Ballistica.STOP_TARGET);
+									//trim it to just be the part that goes past them
+									trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
+									//knock them back along that ballistica
+									WandOfBlastWave.throwChar(ch, trajectory, 6, true, false, hero.getClass());
+
+									if (trajectory.dist > 0) {
+										Buff.affect(ch, Paralysis.class, Math.min( 6, trajectory.dist));
+									}
+								}
+							}
+						}
 					}
 				});
 			}
@@ -530,8 +578,18 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 					}
 				}
 
+				if (Buff.affect(hero, MonkEnergy.class).abilitiesEmpowered(hero)){
+					int toHeal = Math.round((hero.HT - hero.HP)/5f);
+					if (toHeal > 0) {
+						Buff.affect(hero, Healing.class).setHeal(toHeal, 0, 1);
+					}
+					Buff.affect(hero, MeditateResistance.class, 5f);
+				}
+
 				hero.spendAndNext(5f);
 			}
+
+			public static class MeditateResistance extends FlavourBuff{};
 		}
 
 	}

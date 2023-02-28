@@ -605,7 +605,7 @@ public class Hero extends Char {
 			if (!(wep instanceof MissileWeapon)) dmg += RingOfForce.armedDamageBonus(this);
 		} else {
 			dmg = RingOfForce.damageRoll(this);
-			if (RingOfForce.unarmedGetsWeaponEffects(this)){
+			if (RingOfForce.unarmedGetsWeaponAugment(this)){
 				dmg = ((Weapon)belongings.attackingWeapon()).augment.damageFactor(dmg);
 			}
 		}
@@ -712,7 +712,7 @@ public class Hero extends Char {
 			//This is for that one guy, you shall get your fists of fury!
 			delay *= 1f/RingOfFuror.attackSpeedMultiplier(this);
 
-			if (RingOfForce.unarmedGetsWeaponEffects(this)){
+			if (RingOfForce.unarmedGetsWeaponAugment(this)){
 				delay = ((Weapon)belongings.weapon).augment.delayFactor(delay);
 			}
 
@@ -1274,8 +1274,12 @@ public class Hero extends Char {
 	public int attackProc( final Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
 
-		//procs with weapon even in brawler's stance
-		KindOfWeapon wep = belongings.attackingWeapon();
+		KindOfWeapon wep;
+		if (RingOfForce.fightingUnarmed(this) && !RingOfForce.unarmedGetsWeaponEnchantment(this)){
+			wep = null;
+		} else {
+			wep = belongings.attackingWeapon();
+		}
 
 		if (wep != null) damage = wep.proc( this, enemy, damage );
 
@@ -1354,6 +1358,10 @@ public class Hero extends Char {
 			//the same also applies to challenge scroll damage reduction
 			if (buff(ScrollOfChallenge.ChallengeArena.class) != null){
 				dmg *= 0.67f;
+			}
+			//and to monk meditate damage reduction
+			if (buff(MonkEnergy.MonkAbility.Meditate.MeditateResistance.class) != null){
+				dmg *= 0.2f;
 			}
 		}
 

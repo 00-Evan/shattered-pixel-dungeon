@@ -389,6 +389,10 @@ public abstract class Char extends Actor {
 				dmg *= 0.67f;
 			}
 
+			if (enemy.buff(MonkEnergy.MonkAbility.Meditate.MeditateResistance.class) != null){
+				dmg *= 0.2f;
+			}
+
 			if ( buff(Weakness.class) != null ){
 				dmg *= 0.67f;
 			}
