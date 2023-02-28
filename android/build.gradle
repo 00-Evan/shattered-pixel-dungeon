@@ -18,8 +18,8 @@ android {
         minSdkVersion appAndroidMinSDK
         targetSdkVersion appAndroidTargetSDK
 
-        resConfigs "en_US", "cs", "tr", "ca", "ko", "pl", "it", "ja",
-                "eo", "ru", "zh_CN", "de", "fr", "es", "pt", "fi", "hu", "in"
+        resConfigs "en_US", "cs", "de", "el", "es", "fr", "hu", "in", "it", "ja",
+                "ko", "nl", "pl", "pt", "ru", "tr", "uk", "vi", "zh_CN"
     }
 
     buildTypes {
