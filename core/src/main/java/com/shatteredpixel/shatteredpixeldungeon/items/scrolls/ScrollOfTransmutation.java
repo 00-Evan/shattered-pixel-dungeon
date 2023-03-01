@@ -52,6 +52,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.sun.tools.javac.jvm.Gen;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
@@ -143,7 +144,12 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		} else if (item instanceof Runestone) {
 			return changeStone((Runestone) item);
 		} else if (item instanceof Artifact) {
-			return changeArtifact( (Artifact)item );
+			Artifact a = changeArtifact( (Artifact)item );
+			if (a == null){
+				return Generator.random(Generator.Category.RING);
+			} else {
+				return a;
+			}
 		} else {
 			return null;
 		}
