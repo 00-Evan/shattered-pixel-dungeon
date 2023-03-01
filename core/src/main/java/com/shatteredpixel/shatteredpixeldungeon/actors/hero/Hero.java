@@ -722,12 +722,16 @@ public class Hero extends Char {
 
 	@Override
 	public void spend( float time ) {
-		justMoved = false;
-		
 		super.spend(time);
 	}
 
-	public void spendAndNextConstant( float time ) {
+	@Override
+	protected void spendConstant(float time) {
+		justMoved = false;
+		super.spendConstant(time);
+	}
+
+	public void spendAndNextConstant(float time ) {
 		busy();
 		spendConstant( time );
 		next();
