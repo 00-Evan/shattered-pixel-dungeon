@@ -390,8 +390,14 @@ public enum Talent {
 		}
 
 		if (talent == LIGHTLY_ARMED && hero.pointsInTalent(talent) == 3){
-			new ClothArmor().identify().collect();
-			new Gloves().identify().collect();
+			Item toGive = new ClothArmor().identify();
+			if (!toGive.collect()){
+				Dungeon.level.drop(toGive, hero.pos).sprite.drop();
+			}
+			toGive = new Gloves().identify();
+			if (!toGive.collect()){
+				Dungeon.level.drop(toGive, hero.pos).sprite.drop();
+			}
 		}
 	}
 
