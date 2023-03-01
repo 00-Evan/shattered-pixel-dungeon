@@ -159,7 +159,7 @@ public enum Talent {
 	//Champion T3
 	SECONDARY_CHARGE(139, 3), TWIN_UPGRADES(140, 3), COMBINED_LETHALITY(141, 3),
 	//Monk T3
-	LIGHTLY_ARMED(142, 3), MONASTIC_VIGOR(143, 3), COMBINED_ENERGY(144, 3),
+	UNENCUMBERED_SPIRIT(142, 3), MONASTIC_VIGOR(143, 3), COMBINED_ENERGY(144, 3),
 	//Challenge T4
 	CLOSE_THE_GAP(145, 4), INVIGORATING_VICTORY(146, 4), ELIMINATION_MATCH(147, 4),
 	//Elemental Strike T4
@@ -389,7 +389,7 @@ public enum Talent {
 			Item.updateQuickslot();
 		}
 
-		if (talent == LIGHTLY_ARMED && hero.pointsInTalent(talent) == 3){
+		if (talent == UNENCUMBERED_SPIRIT && hero.pointsInTalent(talent) == 3){
 			Item toGive = new ClothArmor().identify();
 			if (!toGive.collect()){
 				Dungeon.level.drop(toGive, hero.pos).sprite.drop();
@@ -813,7 +813,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, SECONDARY_CHARGE, TWIN_UPGRADES, COMBINED_LETHALITY);
 				break;
 			case MONK:
-				Collections.addAll(tierTalents, LIGHTLY_ARMED, MONASTIC_VIGOR, COMBINED_ENERGY);
+				Collections.addAll(tierTalents, UNENCUMBERED_SPIRIT, MONASTIC_VIGOR, COMBINED_ENERGY);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -867,7 +867,9 @@ public enum Talent {
 	private static final HashMap<String, String> renamedTalents = new HashMap<>();
 	static{
 		//v2.0.0
-		renamedTalents.put("ARMSMASTERS_INTUITION",      "VETERANS_INTUITION");
+		renamedTalents.put("ARMSMASTERS_INTUITION",     "VETERANS_INTUITION");
+		//v2.0.0 BETA
+		renamedTalents.put("LIGHTLY_ARMED",             "UNENCUMBERED_SPIRIT");
 	}
 
 	public static void restoreTalentsFromBundle( Bundle bundle, Hero hero ){
