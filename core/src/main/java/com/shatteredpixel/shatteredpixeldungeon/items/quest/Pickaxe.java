@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bat;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bee;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Crab;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Scorpio;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Spinner;
@@ -201,6 +202,7 @@ public class Pickaxe extends MeleeWeapon {
 				float damageMulti = 1f;
 				if (Char.hasProp(enemy, Char.Property.INORGANIC)
 						|| enemy instanceof Swarm
+						|| enemy instanceof Bee
 						|| enemy instanceof Crab
 						|| enemy instanceof Spinner
 						|| enemy instanceof Scorpio) {
