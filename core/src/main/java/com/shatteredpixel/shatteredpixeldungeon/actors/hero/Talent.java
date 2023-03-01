@@ -645,7 +645,8 @@ public enum Talent {
 		}
 
 		if (hero.hasTalent(PATIENT_STRIKE)){
-			if (hero.buff(PatientStrikeTracker.class) != null){
+			if (hero.buff(PatientStrikeTracker.class) != null
+					&& !(hero.belongings.attackingWeapon() instanceof MissileWeapon)){
 				hero.buff(PatientStrikeTracker.class).detach();
 				dmg += Random.IntRange(hero.pointsInTalent(Talent.PATIENT_STRIKE), 2);
 				if (!(enemy instanceof Mob) || !((Mob) enemy).surprisedBy(hero)){
