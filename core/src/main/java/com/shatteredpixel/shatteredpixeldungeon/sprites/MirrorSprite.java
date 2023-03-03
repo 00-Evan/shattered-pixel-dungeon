@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage;
 import com.watabou.noosa.TextureFilm;
+import com.watabou.utils.PointF;
 
 public class MirrorSprite extends MobSprite {
 	
@@ -42,6 +43,15 @@ public class MirrorSprite extends MobSprite {
 	@Override
 	public void link( Char ch ) {
 		super.link( ch );
+		updateArmor();
+	}
+
+	@Override
+	public void bloodBurstA(PointF from, int damage) {
+		//do nothing
+	}
+
+	public void updateArmor(){
 		updateArmor( ((MirrorImage)ch).armTier );
 	}
 	

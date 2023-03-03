@@ -50,6 +50,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Feint;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.DirectableAlly;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -224,6 +225,13 @@ public abstract class Mob extends Char {
 		enemy = chooseEnemy();
 		
 		boolean enemyInFOV = enemy != null && enemy.isAlive() && fieldOfView[enemy.pos] && enemy.invisible <= 0;
+
+		//prevents action, but still updates enemy seen status
+		if (buff(Feint.AfterImage.FeintConfusion.class) != null){
+			enemySeen = enemyInFOV;
+			spend( TICK );
+			return true;
+		}
 
 		return state.act( enemyInFOV, justAlerted );
 	}
@@ -689,6 +697,12 @@ public abstract class Mob extends Char {
 		if (state != PASSIVE){
 			state = HUNTING;
 		}
+	}
+
+	public void clearEnemy(){
+		enemy = null;
+		enemySeen = false;
+		if (state == HUNTING) state = WANDERING;
 	}
 	
 	public boolean isTargeting( Char ch){

@@ -63,7 +63,7 @@ public class HeroIcon extends Image {
 	public static final int SPIRIT_HAWK     = 27;
 	public static final int CHALLENGE       = 28;
 	public static final int ELEMENTAL_STRIKE= 29;
-	public static final int DUELIST_3       = 30;
+	public static final int FEINT           = 30;
 	public static final int RATMOGRIFY      = 31;
 
 	public HeroIcon(HeroSubClass subCls){
