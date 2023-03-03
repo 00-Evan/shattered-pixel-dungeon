@@ -72,6 +72,8 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 	public void tintIcon(Image icon) {
 		if (cooldown > 0){
 			icon.hardlight(0.33f, 0.33f, 1f);
+		} else if (abilitiesEmpowered(Dungeon.hero)) {
+			icon.tint(0.6f, 1f, 0.2f, 0.33f);
 		} else {
 			icon.resetColor();
 		}
