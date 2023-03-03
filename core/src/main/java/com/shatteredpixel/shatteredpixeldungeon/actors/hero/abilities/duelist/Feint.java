@@ -51,7 +51,7 @@ import com.watabou.utils.Callback;
 public class Feint extends ArmorAbility {
 
 	{
-		baseChargeUse = 0;
+		baseChargeUse = 50;
 	}
 
 	@Override
@@ -136,7 +136,7 @@ public class Feint extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.FEIGNED_RETREAT, Talent.EXPOSE_WEAKNESS, Talent.LASTING_IMAGE, Talent.HEROIC_ENERGY};
+		return new Talent[]{Talent.FEIGNED_RETREAT, Talent.EXPOSE_WEAKNESS, Talent.COUNTER_ABILITY, Talent.HEROIC_ENERGY};
 	}
 
 	public static class AfterImage extends Mob {
