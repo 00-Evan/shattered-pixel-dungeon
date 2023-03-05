@@ -41,7 +41,7 @@ public enum Languages {
 	INDONESIAN("indonésien","in", Status.INCOMPLETE, new String[]{"rakapratama"}, new String[]{"INDRA_SYAHPUTRA", "Izulhaaq", "Taka31", "ZakyM313", "ZangieF347", "atmorojo", "di9526985", "esprogarap", "kirimaja", "nicoalvito", "oolek", "wisnugafur"}),
 	DUTCH("nederlands",     "nl", Status.INCOMPLETE, new String[]{"AlbertBrand"}, new String[]{"AvanLieshout", "Blokheck011", "Frankwert", "Gehenna", "Mvharen", "Valco", "ZephyrZodiac", "link200023", "rmw", "th3f4llenh0rr0r"}),
 	HUNGARIAN("magyar",     "hu", Status.INCOMPLETE, new String[]{"dorheim", "szalaik"}, new String[]{"Navetelen", "acszoltan111", "clarovani", "dhialub", "nanometer", "nardomaa", "savarall", "summoner001"}),
-	VIETNAMESE("tiếng việt","vi", Status.INCOMPLETE, null, new String[]{"BlueSheepAlgodoo, Chuseko, Phuc2401, Teh_boi, The_Hood, Toluu, bruhwut, buicongminh_t63, deadlevel13, h4ndy_c4ndy, hniV, khangxyz3g, ngolamaz3, nguyenanhkhoapythus, nkhhu, vdgiapp, vtvinh24"}),
+	VIETNAMESE("tiếng việt","vi", Status.INCOMPLETE, new String[]{"Chuseko", "The_Hood", "nguyenanhkhoapythus"}, new String[]{"BlueSheepAlgodoo", "Phuc2401", "Teh_boi", "Toluu", "bruhwut", "buicongminh_t63", "deadlevel13", "h4ndy_c4ndy", "hniV", "khangxyz3g", "ngolamaz3", "nkhhu", "vdgiapp", "vtvinh24"}),
 	//FINNISH("suomi", 		"fi", Status.INCOMPLETE, new String[]{"TenguKnight"}, new String[]{"Allugaattori10", "Dakkus", "Jaskas123", "MailBoxGod", "Oftox", "Sautari", "Tikkari"} ),
 	GREEK("ελληνικά",       "el", Status.INCOMPLETE,   new String[]{"Aeonius", "Saxy"}, new String[]{"DU_Clouds", "VasKyr", "YiorgosH", "fr3sh", "stefboi", "toumbo", "val.exe"});
 	//CATALAN("català",     "ca", Status.INCOMPLETE, new String[]{"Illyatwo2"}, new String[]{"Elosy", "n1ngu"})
