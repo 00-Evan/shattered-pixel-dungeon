@@ -28,6 +28,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
@@ -180,17 +182,16 @@ public class Feint extends ArmorAbility {
 			}
 			Buff.affect(enemy, FeintConfusion.class, 1);
 			if (enemy.sprite != null) enemy.sprite.showLost();
-			return 0;
-		}
-
-		@Override
-		public int defenseProc(Char enemy, int damage) {
-			if (enemy instanceof Mob){
-				((Mob) enemy).clearEnemy();
+			if (Dungeon.hero.hasTalent(Talent.FEIGNED_RETREAT)){
+				Buff.prolong(Dungeon.hero, Haste.class, 2f*Dungeon.hero.pointsInTalent(Talent.FEIGNED_RETREAT));
 			}
-			Buff.affect(enemy, FeintConfusion.class, 1f);
-			if (enemy.sprite != null) enemy.sprite.showLost();
-			return super.defenseProc(enemy, damage);
+			if (Dungeon.hero.hasTalent(Talent.EXPOSE_WEAKNESS)){
+				Buff.prolong(enemy, Vulnerable.class, Dungeon.hero.pointsInTalent(Talent.EXPOSE_WEAKNESS));
+			}
+			if (Dungeon.hero.hasTalent(Talent.COUNTER_ABILITY)){
+				Buff.prolong(Dungeon.hero, Talent.CounterAbilityTacker.class, 3f);
+			}
+			return 0;
 		}
 
 		@Override
@@ -228,7 +229,7 @@ public class Feint extends ArmorAbility {
 			@Override
 			public void die() {
 				//don't interrupt current animation to start fading
-				//this ensures the face attack animation plays
+				//this ensures the fake attack animation plays
 				if (parent != null) {
 					parent.add( new AlphaTweener( this, 0, 3f ) {
 						@Override

@@ -281,6 +281,7 @@ public enum Talent {
 		public int energySpent = -1;
 		public boolean wepAbilUsed = false;
 	}
+	public static class CounterAbilityTacker extends FlavourBuff{};
 
 	int icon;
 	int maxPoints;

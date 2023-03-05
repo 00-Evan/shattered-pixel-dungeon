@@ -217,6 +217,9 @@ public class MeleeWeapon extends Weapon {
 				Buff.affect(hero, MonkEnergy.class).processCombinedEnergy(tracker);
 			}
 		}
+		if (hero.buff(Talent.CounterAbilityTacker.class) != null){
+			hero.buff(Talent.CounterAbilityTacker.class).detach();
+		}
 	}
 
 	public void onAbilityKill( Hero hero ){
@@ -228,6 +231,9 @@ public class MeleeWeapon extends Weapon {
 
 	public float abilityChargeUse( Hero hero ){
 		float chargeUse = 1f;
+		if (hero.buff(Talent.CounterAbilityTacker.class) != null){
+			chargeUse = Math.max(0, chargeUse-0.5f*hero.pointsInTalent(Talent.COUNTER_ABILITY));
+		}
 		if (hero.hasTalent(Talent.LIGHTWEIGHT_CHARGE) && tier <= 3){
 			// T1/2/3 get 25/20/15% charge use reduction at +3
 			float chargeUseReduction = (0.30f-.05f*tier) * (hero.pointsInTalent(Talent.LIGHTWEIGHT_CHARGE)/3f);
