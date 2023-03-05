@@ -120,6 +120,11 @@ public class MagesStaff extends MeleeWeapon {
 	}
 
 	@Override
+	public int targetingPos(Hero user, int dst) {
+		return wand.targetingPos(user, dst);
+	}
+
+	@Override
 	public void execute(Hero hero, String action) {
 
 		super.execute(hero, action);
