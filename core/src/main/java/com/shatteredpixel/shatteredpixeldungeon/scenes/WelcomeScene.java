@@ -207,7 +207,7 @@ public class WelcomeScene extends PixelScene {
 			}
 
 			message = "Greeting Beta testers!\n\n" +
-					"v2.0 is finally getting closer to release! The Duelist's second subclass is now available, and I plan to add her 3rd armor ability very soon. If all goes well I hope to release v2.0 in another 1-2 weeks.\n\n" +
+					"The beta for v2.0 is now content complete! I am currently planning for v2.0 to release fully on Monday March 13th at 1PM EDT.\n\n" +
 					"Please let me know what you think, or if you run into any more bugs!";
 
 		} else {

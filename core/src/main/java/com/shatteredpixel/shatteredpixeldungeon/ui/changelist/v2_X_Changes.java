@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.ElementalStrike;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Feint;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -61,20 +62,41 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes = new ChangeInfo("BETA-6", false, null);
+		changes = new ChangeInfo("BETA-7", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
 		changes.addButton(new ChangeButton(Icons.SHPX.get(), "Remaining To-Do",
-				"With the Monk implemented, v2.0 is finally getting closer to release. It's taken longer than I initially expected, but I hope to get things released in another 1-2 weeks. Currently here is what is needed before release:\n\n" +
-				"_-_ Implement the Feint armor ability\n" +
+				"v2.0 is now content-complete! All that's left to do is a bit of tidying up before release:\n\n" +
 				"_-_ Replace the placeholder visuals for the Duelist's heroic armor\n" +
 				"_-_ Finish up on other Duelist visuals, most notably the hair on her sprite\n" +
-				"_-_ Fix any remaining bugs as they are reported, and any major issues with the Monk"));
+				"_-_ Fix any remaining major bugs as they are reported"));
+
+		changes.addButton(new ChangeButton(new HeroIcon(new Feint()), "Feint!",
+				"The Duelist's third armor ability, _Feint_, has been added!\n\n" +
+				"The Duelist fakes an attack while dashing to an adjacent tile, leaving behind a momentary afterimage of herself. Enemies that were attacking the Duelist will attack her afterimage instead.\n\nEnemies that attack the afterimage become confused, which cancels their next action and leaves them open to a surprise attack."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Red Sentry attacks can now be dodged or blocked, but are very accurate.\n\n" +
+				"_-_ The Monk's energy buff icon is now brightened when Monastic Vigor is enabled."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (Caused by Beta):\n" +
+				"_-_ Various minor textual errors\n" +
+				"_-_ Unencumbered Spirit +3 not granting items if inventory is full\n" +
+				"_-_ Unencumbered Spirit working with Brawler's Stance enabled\n" +
+				"_-_ Flurry of Blows using 100% enchant power instead of 75%\n" +
+				"_-_ Pickaxe pierce ability not dealing bonus damage to bees\n" +
+				"_-_ Patient Strike working on ranged weapons\n" +
+				"_-_ Mage's Staff sometimes autotargeting incorrectly\n\n" +
+				"Fixed (Existed prior to Beta):\n" +
+				"_-_ Shurikens still getting an instant attack after waiting\n" +
+				"_-_ Mirror and Prismatic images benefiting from more accuracy or evasion effects than intended\n" +
+				"_-_ Transmutation not turning artifacts into rings if all artifacts have been spawned"));
+
+		changes = new ChangeInfo("BETA-6", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
 
 		changes.addButton(new ChangeButton(new HeroIcon(HeroSubClass.MONK), "The Monk!",
 				"After a longer delay than I expected, the Duelist's second subclass is now available!\n\n" +
