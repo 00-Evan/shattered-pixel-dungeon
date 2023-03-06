@@ -608,7 +608,10 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 					Buff.affect(hero, MeditateResistance.class, 5f);
 				}
 
-				hero.spendAndNext(5f);
+				//we process this as 5x wait actions instead of one 5 tick action to prevent
+				// effects like time freeze from eating the whole action duration
+				for (int i = 0; i < 5; i++) hero.spendConstant(Actor.TICK);
+				hero.next();
 				Buff.affect(hero, MonkEnergy.class).abilityUsed(this);
 			}
 
