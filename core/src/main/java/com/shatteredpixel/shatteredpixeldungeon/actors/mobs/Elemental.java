@@ -149,6 +149,7 @@ public abstract class Elemental extends Mob {
 		spend( 1f );
 
 		Invisibility.dispel(this);
+		Char enemy = this.enemy;
 		if (hit( this, enemy, true )) {
 			
 			rangedProc( enemy );

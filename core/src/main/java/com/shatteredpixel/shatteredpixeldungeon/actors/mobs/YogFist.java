@@ -314,6 +314,7 @@ public abstract class YogFist extends Mob {
 			spend( 1f );
 
 			Invisibility.dispel(this);
+			Char enemy = this.enemy;
 			if (hit( this, enemy, true )) {
 
 				Buff.affect( enemy, Roots.class, 3f );
@@ -471,6 +472,7 @@ public abstract class YogFist extends Mob {
 			spend( 1f );
 
 			Invisibility.dispel(this);
+			Char enemy = this.enemy;
 			if (hit( this, enemy, true )) {
 
 				enemy.damage( Random.NormalIntRange(10, 20), new LightBeam() );
@@ -536,6 +538,7 @@ public abstract class YogFist extends Mob {
 			spend( 1f );
 
 			Invisibility.dispel(this);
+			Char enemy = this.enemy;
 			if (hit( this, enemy, true )) {
 
 				enemy.damage( Random.NormalIntRange(10, 20), new DarkBolt() );
