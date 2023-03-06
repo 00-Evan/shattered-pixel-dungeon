@@ -53,7 +53,7 @@ import com.watabou.utils.Callback;
 public class Feint extends ArmorAbility {
 
 	{
-		baseChargeUse = 50;
+		baseChargeUse = 0;
 	}
 
 	@Override
@@ -126,7 +126,7 @@ public class Feint extends ArmorAbility {
 		});
 
 		for (Mob m : Dungeon.level.mobs.toArray( new Mob[0] )){
-			if (m.focusingHero() ||
+			if ((m.isTargeting(hero) && m.state == m.HUNTING) ||
 					(m.alignment == Char.Alignment.ENEMY && m.state != m.PASSIVE && Dungeon.level.distance(m.pos, image.pos) <= 2)){
 				m.aggro(image);
 			}

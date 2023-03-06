@@ -928,11 +928,6 @@ public abstract class Mob extends Char {
 		GLog.n( "%s: \"%s\" ", Messages.titleCase(name()), str );
 	}
 
-	//returns true when a mob sees the hero, and is currently targeting them.
-	public boolean focusingHero() {
-		return enemySeen && (target == Dungeon.hero.pos);
-	}
-
 	public interface AiState {
 		boolean act( boolean enemyInFOV, boolean justAlerted );
 	}
