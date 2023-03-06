@@ -80,7 +80,7 @@ public class Rapier extends MeleeWeapon {
 			}
 		}
 
-		if (Dungeon.level.distance(hero.pos, target) < 2
+		if (hero.rooted || Dungeon.level.distance(hero.pos, target) < 2
 				|| Dungeon.level.distance(hero.pos, target)-1 > reachFactor(hero)){
 			GLog.w(Messages.get(this, "ability_bad_position"));
 			return;
@@ -90,7 +90,7 @@ public class Rapier extends MeleeWeapon {
 		for (int i : PathFinder.NEIGHBOURS8){
 			if (Dungeon.level.distance(hero.pos+i, target) <= reachFactor(hero)
 					&& Actor.findChar(hero.pos+i) == null
-					&& Dungeon.level.passable[hero.pos+i]){
+					&& (Dungeon.level.passable[hero.pos+i] || (Dungeon.level.avoid[hero.pos+i] && hero.flying))){
 				if (lungeCell == -1 || Dungeon.level.trueDistance(hero.pos + i, target) < Dungeon.level.trueDistance(lungeCell, target)){
 					lungeCell = hero.pos + i;
 				}
