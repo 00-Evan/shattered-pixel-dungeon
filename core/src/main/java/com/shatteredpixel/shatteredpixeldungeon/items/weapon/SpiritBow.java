@@ -373,7 +373,12 @@ public class SpiritBow extends Weapon {
 				final Char enemy = Actor.findChar( cell );
 				
 				if (enemy == null){
-					user.spendAndNext(castDelay(user, dst));
+					if (user.buff(Talent.LethalMomentumTracker.class) != null){
+						user.buff(Talent.LethalMomentumTracker.class).detach();
+						user.next();
+					} else {
+						user.spendAndNext(castDelay(user, dst));
+					}
 					sniperSpecial = false;
 					flurryCount = -1;
 
@@ -404,7 +409,12 @@ public class SpiritBow extends Weapon {
 										}
 										
 										if (last) {
-											user.spendAndNext(castDelay(user, dst));
+											if (user.buff(Talent.LethalMomentumTracker.class) != null){
+												user.buff(Talent.LethalMomentumTracker.class).detach();
+												user.next();
+											} else {
+												user.spendAndNext(castDelay(user, dst));
+											}
 											sniperSpecial = false;
 											flurryCount = -1;
 										}
