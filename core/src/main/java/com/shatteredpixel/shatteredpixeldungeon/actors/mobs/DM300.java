@@ -176,7 +176,7 @@ public class DM300 extends Mob {
 
 			//determine if DM can reach its enemy
 			boolean canReach;
-			if (enemy == null){
+			if (enemy == null || !enemy.isAlive()){
 				if (Dungeon.level.adjacent(pos, Dungeon.hero.pos)){
 					canReach = true;
 				} else {
@@ -196,10 +196,12 @@ public class DM300 extends Mob {
 				}
 			} else {
 
-				if (enemy == null && Dungeon.hero.invisible <= 0) enemy = Dungeon.hero;
+				if ((enemy == null || !enemy.isAlive()) && Dungeon.hero.invisible <= 0) {
+					enemy = Dungeon.hero;
+				}
 
 				//more aggressive ability usage when DM can't reach its target
-				if (enemy != null && !canReach){
+				if (enemy != null && enemy.isAlive() && !canReach){
 
 					//try to fire gas at an enemy we can't reach
 					if (turnsSinceLastAbility >= MIN_COOLDOWN){
@@ -236,7 +238,7 @@ public class DM300 extends Mob {
 
 					}
 
-				} else if (enemy != null && fieldOfView[enemy.pos]) {
+				} else if (enemy != null && enemy.isAlive() && fieldOfView[enemy.pos]) {
 					if (turnsSinceLastAbility > abilityCooldown) {
 
 						if (lastAbility == NONE) {
