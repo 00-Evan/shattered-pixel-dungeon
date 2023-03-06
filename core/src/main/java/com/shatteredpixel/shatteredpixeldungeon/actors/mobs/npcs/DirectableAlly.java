@@ -72,6 +72,14 @@ public class DirectableAlly extends NPC {
 		movingToDefendPos = false;
 	}
 
+	@Override
+	public void aggro(Char ch) {
+		enemy = ch;
+		if (!movingToDefendPos && state != PASSIVE){
+			state = HUNTING;
+		}
+	}
+
 	public void directTocell( int cell ){
 		if (!Dungeon.level.heroFOV[cell]
 				|| Actor.findChar(cell) == null
