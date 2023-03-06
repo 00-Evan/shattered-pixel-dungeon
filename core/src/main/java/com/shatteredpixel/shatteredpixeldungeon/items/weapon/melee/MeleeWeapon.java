@@ -36,12 +36,15 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Transmuting;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -144,6 +147,33 @@ public class MeleeWeapon extends Weapon {
 				}
 			}
 		}
+	}
+
+	@Override
+	public boolean doEquip(Hero hero) {
+		if (super.doEquip(hero)){
+			ActionIndicator.updateIcon();
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean equipSecondary(Hero hero) {
+		if (super.equipSecondary(hero)){
+			ActionIndicator.updateIcon();
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean doUnequip(Hero hero, boolean collect, boolean single) {
+		if (super.doUnequip(hero, collect, single)){
+			ActionIndicator.updateIcon();
+			return true;
+		}
+		return false;
 	}
 
 	//leave null for no targeting
@@ -520,7 +550,11 @@ public class MeleeWeapon extends Weapon {
 
 		@Override
 		public Image actionIcon() {
-			return new HeroIcon(HeroSubClass.CHAMPION);
+			if (Dungeon.hero.belongings.weapon == null){
+				return new ItemSprite(ItemSpriteSheet.WEAPON_HOLDER);
+ 			} else {
+				return new ItemSprite(Dungeon.hero.belongings.weapon);
+			}
 		}
 
 		@Override
@@ -541,6 +575,7 @@ public class MeleeWeapon extends Weapon {
 			Dungeon.hero.sprite.operate(Dungeon.hero.pos);
 			Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
 
+			ActionIndicator.setAction(this);
 			Item.updateQuickslot();
 		}
 	}
