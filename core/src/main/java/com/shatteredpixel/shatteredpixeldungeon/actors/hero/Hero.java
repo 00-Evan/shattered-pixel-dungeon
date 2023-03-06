@@ -63,6 +63,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Challenge;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.ElementalStrike;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesPower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
@@ -1694,6 +1695,12 @@ public class Hero extends Char {
 				buff(Talent.RejuvenatingStepsFurrow.class).countDown(percent*200f);
 				if (buff(Talent.RejuvenatingStepsFurrow.class).count() <= 0){
 					buff(Talent.RejuvenatingStepsFurrow.class).detach();
+				}
+			}
+			if (buff(ElementalStrike.ElementalStrikeFurrowCounter.class) != null){
+				buff(ElementalStrike.ElementalStrikeFurrowCounter.class).countDown(percent*20f);
+				if (buff(ElementalStrike.ElementalStrikeFurrowCounter.class).count() <= 0){
+					buff(ElementalStrike.ElementalStrikeFurrowCounter.class).detach();
 				}
 			}
 		}

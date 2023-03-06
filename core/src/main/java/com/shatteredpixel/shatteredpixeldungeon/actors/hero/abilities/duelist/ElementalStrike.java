@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CounterBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
@@ -278,8 +279,17 @@ public class ElementalStrike extends ArmorAbility {
 
 	private int storedKineticDamage = 0;
 
+	public static class ElementalStrikeFurrowCounter extends CounterBuff{{revivePersists = true;}};
+
 	//effects that affect the cells of the environment themselves
 	private void perCellEffect(ConeAOE cone, Weapon.Enchantment ench){
+
+		int targetsHit = 0;
+		for (Char ch : Actor.chars()){
+			if (ch.alignment == Char.Alignment.ENEMY && cone.cells.contains(ch.pos)){
+				targetsHit++;
+			}
+		}
 
 		float powerMulti = 1f + 0.30f*Dungeon.hero.pointsInTalent(Talent.STRIKING_FORCE);
 
@@ -307,12 +317,26 @@ public class ElementalStrike extends ArmorAbility {
 			Random.shuffle(cells);
 			int grassToPlace = Math.round(6*powerMulti);
 
+			//start spawning furrowed grass if exp is not being gained
+			// each hero level is worth 20 normal uses, but just 5 if no enemies are present
+			// cap of 40/10 uses
+			int highGrassType = Terrain.HIGH_GRASS;
+			if (Buff.affect(Dungeon.hero, ElementalStrikeFurrowCounter.class).count() >= 40){
+				highGrassType = Terrain.FURROWED_GRASS;
+			} else {
+				if (Dungeon.hero.visibleEnemies() == 0 && targetsHit == 0) {
+					Buff.count(Dungeon.hero, ElementalStrikeFurrowCounter.class, 4f);
+				} else {
+					Buff.count(Dungeon.hero, ElementalStrikeFurrowCounter.class, 1f);
+				}
+			}
+
 			for (int cell : cells) {
 				int terr = Dungeon.level.map[cell];
 				if (terr == Terrain.EMPTY || terr == Terrain.EMBERS || terr == Terrain.EMPTY_DECO ||
 						terr == Terrain.GRASS) {
 					if (grassToPlace > 0){
-						Level.set(cell, Terrain.HIGH_GRASS);
+						Level.set(cell, highGrassType);
 						grassToPlace--;
 					} else {
 						Level.set(cell, Terrain.GRASS);
