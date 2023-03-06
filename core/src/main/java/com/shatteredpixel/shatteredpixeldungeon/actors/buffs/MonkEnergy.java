@@ -156,30 +156,26 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 				int points = hero.pointsInTalent(Talent.UNENCUMBERED_SPIRIT);
 
 				if (hero.belongings.armor() != null){
-					if (hero.belongings.armor().tier == 3 && points >= 1){
-						enGainMulti += 0.25f;
-					}
-					if (hero.belongings.armor().tier == 2 && points >= 2){
-						enGainMulti += 0.50f;
-					}
-					if (hero.belongings.armor().tier == 1 && points >= 3){
+					if (hero.belongings.armor().tier <= 1 && points >= 3){
 						enGainMulti += 1.00f;
+					} else if (hero.belongings.armor().tier <= 2 && points >= 2){
+						enGainMulti += 0.50f;
+					} else if (hero.belongings.armor().tier <= 3 && points >= 1){
+						enGainMulti += 0.25f;
 					}
 				}
 
 				if (hero.belongings.weapon() instanceof MeleeWeapon
 						&& hero.buff(RingOfForce.BrawlersStance.class) == null){
-					if (((MeleeWeapon) hero.belongings.weapon()).tier == 3 && points >= 1){
+					if (((MeleeWeapon) hero.belongings.weapon()).tier <= 1 && points >= 3){
+						enGainMulti += 1.00f;
+					} else if (((MeleeWeapon) hero.belongings.weapon()).tier <= 2 && points >= 2){
+						enGainMulti += 0.50f;
+					} else if (((MeleeWeapon) hero.belongings.weapon()).tier <= 3 && points >= 1){
 						enGainMulti += 0.25f;
 					}
-					if (((MeleeWeapon) hero.belongings.weapon()).tier == 2 && points >= 2){
-						enGainMulti += 0.50f;
-					}
-					if (((MeleeWeapon) hero.belongings.weapon()).tier == 1 && points >= 3){
-						enGainMulti += 1.00f;
-					}
 				} else if (hero.belongings.weapon == null) {
-					if (hero.buff(RingOfForce.Force.class) == null && points == 3){
+					if (hero.buff(RingOfForce.Force.class) == null && points >= 3){
 						enGainMulti += 1.50f;
 					}
 				}
