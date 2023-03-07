@@ -174,7 +174,7 @@ public class WndSettings extends WndTabbed {
 			protected void createChildren() {
 				super.createChildren();
 				switch(Messages.lang().status()){
-					case INCOMPLETE:
+					case UNFINISHED:
 						icon.hardlight(1.5f, 0, 0);
 						break;
 					case UNREVIEWED:
@@ -1072,13 +1072,13 @@ public class WndSettings extends WndTabbed {
 			txtLangInfo = PixelScene.renderTextBlock(6);
 			String info = "_" + Messages.titleCase(currLang.nativeName()) + "_ - ";
 			if (currLang == Languages.ENGLISH) info += "This is the source language, written by the developer.";
-			else if (currLang.status() == Languages.Status.REVIEWED) info += Messages.get(this, "completed");
+			else if (currLang.status() == Languages.Status._COMPLETE_) info += Messages.get(this, "completed");
 			else if (currLang.status() == Languages.Status.UNREVIEWED) info += Messages.get(this, "unreviewed");
-			else if (currLang.status() == Languages.Status.INCOMPLETE) info += Messages.get(this, "unfinished");
+			else if (currLang.status() == Languages.Status.UNFINISHED) info += Messages.get(this, "unfinished");
 			txtLangInfo.text(info);
 
 			if (currLang.status() == Languages.Status.UNREVIEWED) txtLangInfo.setHightlighting(true, CharSprite.WARNING);
-			else if (currLang.status() == Languages.Status.INCOMPLETE) txtLangInfo.setHightlighting(true, CharSprite.NEGATIVE);
+			else if (currLang.status() == Languages.Status.UNFINISHED) txtLangInfo.setHightlighting(true, CharSprite.NEGATIVE);
 			add(txtLangInfo);
 
 			sep2 = new ColorBlock(1, 1, 0xFF000000);
@@ -1110,7 +1110,7 @@ public class WndSettings extends WndTabbed {
 					btn.textColor(TITLE_COLOR);
 				} else {
 					switch (langs.get(i).status()) {
-						case INCOMPLETE:
+						case UNFINISHED:
 							btn.textColor(0x888888);
 							break;
 						case UNREVIEWED:
