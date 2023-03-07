@@ -110,8 +110,9 @@ public class Multiplicity extends Armor.Glyph {
 					}
 
 					if (!spawnPoints.isEmpty()) {
+						m.pos = Random.element(spawnPoints);
 						GameScene.add(m);
-						ScrollOfTeleportation.appear(m, Random.element(spawnPoints));
+						ScrollOfTeleportation.appear(m, m.pos);
 					}
 				}
 
