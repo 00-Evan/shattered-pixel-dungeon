@@ -441,7 +441,8 @@ public class ElementalStrike extends ArmorAbility {
 						&& ch instanceof Mob
 						&& ch.isAlive()) {
 					float hpMissing = 1f - (ch.HP / (float)ch.HT);
-					if (Random.Float() < 0.2f*powerMulti*hpMissing){
+					float chance = 0.04f + 0.16f*hpMissing; //4-20%
+					if (Random.Float() < chance*powerMulti){
 						Corruption.corruptionHeal(ch);
 						AllyBuff.affectAndLoot((Mob) ch, hero, Corruption.class);
 					}
@@ -453,7 +454,8 @@ public class ElementalStrike extends ArmorAbility {
 			for (Char ch : affected){
 				if (ch != primaryTarget) {
 					float hpMissing = 1f - (ch.HP / (float)ch.HT);
-					if (Random.Float() < 0.3f*powerMulti*hpMissing){
+					float chance = 0.06f + 0.24f*hpMissing; //6-30%
+					if (Random.Float() < chance*powerMulti){
 						ch.damage( ch.HP, Grim.class );
 						ch.sprite.emitter().burst( ShadowParticle.UP, 5 );
 					}
