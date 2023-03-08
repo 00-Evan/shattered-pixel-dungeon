@@ -377,6 +377,16 @@ public abstract class Mob extends Char {
 						closest = curr;
 					}
 				}
+				//if we were going to target the hero, but an afterimage exists, target that instead
+				if (closest == Dungeon.hero){
+					for (Char ch : enemies){
+						if (ch instanceof Feint.AfterImage){
+							closest = ch;
+							break;
+						}
+					}
+				}
+
 				return closest;
 			}
 
