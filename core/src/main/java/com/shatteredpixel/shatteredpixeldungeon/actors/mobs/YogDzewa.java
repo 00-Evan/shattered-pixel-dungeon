@@ -172,6 +172,9 @@ public class YogDzewa extends Mob {
 
 		throwItems();
 
+		sprite.hideAlert();
+		sprite.hideLost();
+
 		//mob logic
 		enemy = chooseEnemy();
 
@@ -477,6 +480,11 @@ public class YogDzewa extends Mob {
 
 	@Override
 	public void beckon( int cell ) {
+	}
+
+	@Override
+	public void clearEnemy() {
+		//do nothing
 	}
 
 	@Override
