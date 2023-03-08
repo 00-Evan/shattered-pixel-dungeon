@@ -699,10 +699,6 @@ public class Hero extends Char {
 
 		float delay = 1f;
 
-		if (buff(Scimitar.SwordDance.class) != null){
-			delay /= 1.6f; //+60% speed
-		}
-
 		if (!RingOfForce.fightingUnarmed(this)) {
 			
 			return delay * belongings.attackingWeapon().delayFactor( this );
@@ -711,13 +707,19 @@ public class Hero extends Char {
 			//Normally putting furor speed on unarmed attacks would be unnecessary
 			//But there's going to be that one guy who gets a furor+force ring combo
 			//This is for that one guy, you shall get your fists of fury!
-			delay *= 1f/RingOfFuror.attackSpeedMultiplier(this);
+			float speed = RingOfFuror.attackSpeedMultiplier(this);
 
+			//ditto for furor + sword dance!
+			if (buff(Scimitar.SwordDance.class) != null){
+				speed += 0.6f;
+			}
+
+			//and augments + brawler's stance! My goodness, so many options now compared to 2014!
 			if (RingOfForce.unarmedGetsWeaponAugment(this)){
 				delay = ((Weapon)belongings.weapon).augment.delayFactor(delay);
 			}
 
-			return delay;
+			return delay/speed;
 		}
 	}
 
