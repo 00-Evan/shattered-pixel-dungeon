@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
@@ -156,7 +157,7 @@ public class Challenge extends ArmorAbility {
 
 		boolean bossTarget = Char.hasProp(targetCh, Char.Property.BOSS);
 		for (Char toFreeze : Actor.chars()){
-			if (toFreeze != targetCh && toFreeze.alignment != hero.alignment
+			if (toFreeze != targetCh && toFreeze.alignment != Char.Alignment.ALLY && !(toFreeze instanceof NPC)
 				&& (!bossTarget || !(Char.hasProp(targetCh, Char.Property.BOSS) || Char.hasProp(targetCh, Char.Property.BOSS_MINION)))) {
 				Actor.delayChar(toFreeze, DuelParticipant.DURATION);
 				Buff.affect(toFreeze, SpectatorFreeze.class, DuelParticipant.DURATION);
