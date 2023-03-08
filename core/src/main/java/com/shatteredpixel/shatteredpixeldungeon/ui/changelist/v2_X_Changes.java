@@ -62,19 +62,32 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes = new ChangeInfo("BETA-8", false, null);
+		changes = new ChangeInfo("BETA-9", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
 		changes.addButton(new ChangeButton(Icons.SHPX.get(), "Remaining To-Do",
-				"v2.0 is now content-complete! All that's left to do is a bit of tidying up before release:\n\n" +
-				"_-_ Replace the placeholder visuals for the Duelist's heroic armor\n" +
-				"_-_ Finish up on other Duelist visuals, most notably the hair on her sprite\n" +
+				"v2.0 is now content-complete! All that's left to do is a bit of tidying up before release on March 13th:\n\n" +
+				"_-_ Final visual refinements for the Duelist, mainly focused on her sprite's hair and her ascension victory sprite.\n" +
 				"_-_ Fix any remaining major bugs as they are reported"));
+
+		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 6), "Duelist Armor Visuals",
+				"I've now replaced the placeholder visuals for the Duelist's armor with a design based on her splash art."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Updated Translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (Caused by Beta):\n" +
+				"_-_ Various tiny textual errors\n" +
+				"_-_ Feint armor ability unintentionally costing 0 charge\n" +
+				"_-_ Additional cases where feint would not cause enemies to target the afterimage\n" +
+				"_-_ Sword dance not applying to thrown weapons\n" +
+				"_-_ Challenge ability causing shopkeepers to flee"));
+
+		changes = new ChangeInfo("BETA-8", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"_-_ Blooming elemental strike now produces furrowed grass if used repeatedly without gaining exp.\n\n" +
@@ -95,7 +108,6 @@ public class v2_X_Changes {
 				"_-_ Rare freeze issues with DM-300\n" +
 				"_-_ Volley ability not triggering lethal momentum\n" +
 				"_-_ VFX rarely not appearing on characters as they are spawned by multiplicity"));
-
 
 		changes = new ChangeInfo("BETA-7", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
