@@ -870,6 +870,8 @@ public enum Talent {
 	static{
 		//v2.0.0
 		renamedTalents.put("ARMSMASTERS_INTUITION",     "VETERANS_INTUITION");
+		//v2.0.0 BETA
+		renamedTalents.put("LIGHTLY_ARMED",             "UNENCUMBERED_SPIRIT");
 	}
 
 	public static void restoreTalentsFromBundle( Bundle bundle, Hero hero ){
