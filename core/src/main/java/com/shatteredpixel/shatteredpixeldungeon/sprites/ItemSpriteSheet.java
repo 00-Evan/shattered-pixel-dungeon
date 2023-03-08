@@ -359,7 +359,7 @@ public class ItemSpriteSheet {
 		assignItemRect(ARMOR_MAGE,      15, 15);
 		assignItemRect(ARMOR_ROGUE,     14, 12);
 		assignItemRect(ARMOR_HUNTRESS,  13, 15);
-		assignItemRect(ARMOR_DUELIST,   12, 12);
+		assignItemRect(ARMOR_DUELIST,   12, 13);
 	}
 
 	                                                                                    //16 free slots
