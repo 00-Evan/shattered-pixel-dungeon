@@ -284,6 +284,15 @@ public class WelcomeScene extends PixelScene {
 
 		}
 
+		//pre-unlock Duelist for those who already have a win
+		if (previousVersion <= ShatteredPixelDungeon.v2_0_0){
+			Badges.loadGlobal();
+			if (Badges.isUnlocked(Badges.Badge.VICTORY) && !Badges.isUnlocked(Badges.Badge.UNLOCK_DUELIST)){
+				Badges.unlock(Badges.Badge.UNLOCK_DUELIST);
+				Badges.saveGlobal();
+			}
+		}
+
 		SPDSettings.version(ShatteredPixelDungeon.versionCode);
 	}
 	
