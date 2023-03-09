@@ -454,7 +454,7 @@ public abstract class Char extends Actor {
 						enemy.damage(-1, this);
 						DeathMark.processFearTheReaper(enemy);
 					}
-					enemy.sprite.showStatus(CharSprite.NEGATIVE, "executed");
+					enemy.sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Talent.CombinedLethalityTriggerTracker.class, "executed"));
 				}
 				buff(Talent.CombinedLethalityTriggerTracker.class).detach();
 			}
