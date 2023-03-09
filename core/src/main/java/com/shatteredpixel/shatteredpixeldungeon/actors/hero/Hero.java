@@ -542,18 +542,18 @@ public class Hero extends Char {
 			return Messages.get(Monk.class, "parried");
 		}
 
+		if (buff(RoundShield.GuardTracker.class) != null){
+			buff(RoundShield.GuardTracker.class).detach();
+			Sample.INSTANCE.play(Assets.Sounds.HIT_PARRY, 1, Random.Float(0.96f, 1.05f));
+			return Messages.get(RoundShield.GuardTracker.class, "guarded");
+		}
+
 		if (buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class) != null){
 			buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class).detach();
 			if (sprite != null && sprite.visible) {
 				Sample.INSTANCE.play(Assets.Sounds.HIT_PARRY, 1, Random.Float(0.96f, 1.05f));
 			}
 			return Messages.get(Monk.class, "parried");
-		}
-
-		if (buff(RoundShield.GuardTracker.class) != null){
-			buff(RoundShield.GuardTracker.class).detach();
-			Sample.INSTANCE.play(Assets.Sounds.HIT_PARRY, 1, Random.Float(0.96f, 1.05f));
-			return Messages.get(RoundShield.GuardTracker.class, "guarded");
 		}
 
 		return super.defenseVerb();
