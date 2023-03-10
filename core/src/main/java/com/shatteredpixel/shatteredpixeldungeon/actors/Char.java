@@ -456,7 +456,7 @@ public abstract class Char extends Actor {
 					}
 					enemy.sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Talent.CombinedLethalityTriggerTracker.class, "executed"));
 				}
-				buff(Talent.CombinedLethalityTriggerTracker.class).detach();
+				combinedLethality.detach();
 			}
 
 			enemy.sprite.bloodBurstA( sprite.center(), effectiveDamage );
