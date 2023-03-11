@@ -42,127 +42,57 @@ import java.util.ArrayList;
 public class v2_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
-		//add_Coming_Soon(changeInfos);
+		add_Coming_Soon(changeInfos);
 		add_v2_0_Changes(changeInfos);
 	}
 
-	//TODO
 	public static void add_Coming_Soon( ArrayList<ChangeInfo> changeInfos ) {
 
 		ChangeInfo changes = new ChangeInfo("Coming Soon", true, "");
 		changes.hardlight(0xCCCCCC);
 		changeInfos.add(changes);
 
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Overview",
+				"My current plan is for the next major update to be v2.1.0, which will mostly be focused on responding to any balance or general gameplay issues that appear as dust settles from the Duelist's release.\n\n" +
+				"I don't yet have a specific timeline for v2.1.0, but I think it's a safe bet that you'll hear from me about it sometime in late April or May. Please keep in mind that while I always try to keep to the ETAs I provide, they are just estimates. If you don't hear from me by the ETA, it means I'm still busy with the update!"));
+
+		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 6), "Hero Changes",
+				"The largest changes in v2.1.0 will be focused around the game's heroes, with a big emphasis on the Duelist. I'm generally happy with how she performed during the beta, but such a large addition to the game is definitely going to need some refinement over time. I may also make some smaller changes to the other heroes as well, depending on how things shake out. "));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.TALENT), "Side Content",
+				"v2.1.0 will also include some amount of side content, but it will probably be fairly small. I plan to add a couple new exotic enemies, and there might be room for one or two other little things as well."));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Smaller Fixes",
+				"There will also be more miscellaneous changes and bugfixes! Despite all of the fixes I've made in v2.0.0, my list of things to do has actually grown! I'd like to spend a bit of time keeping that list in check."));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.PICKAXE), "Blacksmith Quest?",
+				"And no I haven't forgotten about the blacksmith's quest! I will likely do some concepting or internal technical work for it during v2.1.0's development, but the quest rework itself is more likely to be part of v2.2.0."));
 
 	}
 
 	public static void add_v2_0_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v2.0-BETA", true, "");
+		ChangeInfo changes = new ChangeInfo("v2.0", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("BETA-9", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.SHPX.get(), "Remaining To-Do",
-				"v2.0 is now content-complete! All that's left to do is a bit of tidying up before release on March 13th:\n\n" +
-				"_-_ Final visual refinements for the Duelist, mainly focused on her sprite's hair and her ascension victory sprite.\n" +
-				"_-_ Fix any remaining major bugs as they are reported"));
-
-		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 6), "Duelist Armor Visuals",
-				"I've now replaced the placeholder visuals for the Duelist's armor with a design based on her splash art."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Updated Translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (Caused by Beta):\n" +
-				"_-_ Various tiny textual errors\n" +
-				"_-_ Feint armor ability unintentionally costing 0 charge\n" +
-				"_-_ Additional cases where feint would not cause enemies to target the afterimage\n" +
-				"_-_ Sword dance not applying to thrown weapons\n" +
-				"_-_ Challenge ability causing shopkeepers to flee"));
-
-		changes = new ChangeInfo("BETA-8", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Blooming elemental strike now produces furrowed grass if used repeatedly without gaining exp.\n\n" +
-				"_-_ Champion's swap weapon button now uses the sprite of your current primary weapon.\n\n" +
-				"_-_ Updated Translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (Caused by Beta):\n" +
-				"_-_ Various minor textual errors\n" +
-				"_-_ Crash bugs caused by feint and magical enemies\n" +
-				"_-_ Evil eyes not always being tricked by feint\n" +
-				"_-_ Grim and Corrupting elemental blast effects never triggering on high HP targets\n" +
-				"_-_ Exploits involving time freeze and meditate\n" +
-				"_-_ Various bugs with Unencumbered Spirit not triggering when it should\n" +
-				"_-_ Rapier lunge not account for being rooted or flying\n\n" +
-				"Fixed (Existed prior to Beta):\n" +
-				"_-_ Directable allies being easily distracted if attacked after being told to move\n" +
-				"_-_ Rare freeze issues with DM-300\n" +
-				"_-_ Volley ability not triggering lethal momentum\n" +
-				"_-_ VFX rarely not appearing on characters as they are spawned by multiplicity"));
-
-		changes = new ChangeInfo("BETA-7", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new HeroIcon(new Feint()), "Feint!",
-				"The Duelist's third armor ability, _Feint_, has been added!\n\n" +
-				"The Duelist fakes an attack while dashing to an adjacent tile, leaving behind a momentary afterimage of herself. Enemies that were attacking the Duelist will attack her afterimage instead.\n\nEnemies that attack the afterimage become confused, which cancels their next action and leaves them open to a surprise attack."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Red Sentry attacks can now be dodged or blocked, but are very accurate.\n\n" +
-				"_-_ The Monk's energy buff icon is now brightened when Monastic Vigor is enabled."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (Caused by Beta):\n" +
-				"_-_ Various minor textual errors\n" +
-				"_-_ Unencumbered Spirit +3 not granting items if inventory is full\n" +
-				"_-_ Unencumbered Spirit working with Brawler's Stance enabled\n" +
-				"_-_ Flurry of Blows using 100% enchant power instead of 75%\n" +
-				"_-_ Pickaxe pierce ability not dealing bonus damage to bees\n" +
-				"_-_ Patient Strike working on ranged weapons\n" +
-				"_-_ Mage's Staff sometimes autotargeting incorrectly\n\n" +
-				"Fixed (Existed prior to Beta):\n" +
-				"_-_ Shurikens still getting an instant attack after waiting\n" +
-				"_-_ Mirror and Prismatic images benefiting from more accuracy or evasion effects than intended\n" +
-				"_-_ Transmutation not turning artifacts into rings if all artifacts have been spawned"));
-
-		changes = new ChangeInfo("BETA-6", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new HeroIcon(HeroSubClass.MONK), "The Monk!",
-				"After a longer delay than I expected, the Duelist's second subclass is now available!\n\n" +
-				"_The Monk_ is a master of physical technique. As she defeats enemies, she gains energy which can be used on a variety of defensive and utlity-focused abilities."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Added a new Language: _Vietnamese!_ Currently only system font is supported for Vietnamese. I hope to add pixel font support later.\n\n" +
-				"_-_ Removed the following Languages due to low usage and lack of maintenance: Finnish, Galician, Basque, Esperanto."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (Existed prior to Beta):\n" +
-				"_-_ Number display errors when device language is set to Arabic"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released March 13th, 2023\n" +
+				"_-_ 160 days after Shattered v1.4.0\n" +
+				"_-_ 413 days after Shattered v1.0.0\n" +
+				"\n" +
+				"Dev commentary will be added here in the future."));
+
 		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 1), HeroClass.DUELIST.title(),
 				"_Shattered Pixel Dungeon has a new playable character!!_\n" +
 				"\n" +
-				"The Duelist is an entire new hero class, _with a unique ability for every weapon in the game!_ She can be unlocked by earning a simple badge for equipping a T2 or higher weapon without a strength penalty. However, for the Beta she is unlocked by default!\n" +
+				"The Duelist is an entire new hero class, _with a unique ability for every weapon in the game!_ She can be unlocked by earning a simple badge for equipping a T2 or higher weapon without a strength penalty. However, for existing players who already have a win she is unlocked by default!\n" +
 				"\n" +
-				"I want the Duelist to provide more interesting gameplay options for melee weapon focused builds, that have previously been fairly plain and simple compared to builds using other items.\n" +
-				"\n" +
-				"_Note that the duelist's in-game sprite is not final. I plan to improve it before release._"));
+				"I want the Duelist to provide more interesting gameplay options for melee weapon focused builds, that have previously been fairly plain and simple compared to builds using other items."));
 
 		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 4), "Duelist Subclasses",
 				"_The Duelist has two subclasses, with 3 more talents each!_\n" +
@@ -178,8 +108,7 @@ public class v2_X_Changes {
 				"\n" +
 				"_Elemental Strike_ produces a special effect that is based on the Duelist's weapon enchantment.\n" +
 				"\n" +
-				"_Feint_ allows the Duelist to sidestep an enemy's attack while they are focused on her afterimage.\n" +
-				"_Feint has not been finished yet,_ look out for it very soon!"));
+				"_Feint_ allows the Duelist to sidestep an enemy's attack while they are focused on her afterimage."));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
 		changes.hardlight(CharSprite.WARNING);
@@ -210,6 +139,11 @@ public class v2_X_Changes {
 				"_-_ Added a setting to enable/disable playing music in background on desktop\n" +
 				"_-_ Added a 5th games in progress slot for the Duelist\n" +
 				"\n" +
+				"_Translations:_\n" +
+				"_-_ Added a new Language: _Vietnamese!_ Currently only system font is supported for Vietnamese.\n" +
+				"_-_ Removed the following Languages due to low usage and lack of maintenance: Finnish, Galician, Basque, Esperanto."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 2",
 				"_iOS:_\n" +
 				"_-_ Improved gesture handling, should reduce/eliminate touch delays\n" +
 				"_-_ Removed unused audio files, reducing download size by about 15%\n" +
@@ -217,13 +151,14 @@ public class v2_X_Changes {
 				"_Hero, Allies, & Enemies:_\n" +
 				"_-_ The hero can now also self-trample plants, in addition to grass\n" +
 				"_-_ Ripper demons will now try to leap even if their destination is blocked by terrain\n" +
-				"_-_ Knockback effects now round up after being halved vs. bosses"));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 2",
+				"_-_ Red Sentry attacks can now be dodged or blocked, but are very accurate.\n" +
+				"_-_ Knockback effects now round up after being halved vs. bosses\n" +
+				"\n" +
 				"_Effects:_\n" +
 				"_-_ Backup barrier now triggers before wand zaps fully resolve\n" +
-				"_-_ The chasm warning screen now also appears when levitation is about to end.\n" +
-				"\n" +
+				"_-_ The chasm warning screen now also appears when levitation is about to end."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 3",
 				"_Levelgen:_\n" +
 				"_-_ Adjusted the layout of sacrifice rooms to provide some cover from ranged enemies\n" +
 				"_-_ Secret rooms now never affect the generation of items in other rooms\n" +
@@ -238,11 +173,12 @@ public class v2_X_Changes {
 				"_Misc:_\n" +
 				"_-_ Updated the icons for several talents\n" +
 				"_-_ Healing no longer interrupts resting when HP is already full\n" +
-				"_-_ Updated various code libraries"));
+				"_-_ Updated various code libraries\n"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 1",
 				"Fixed the following bugs:\n" +
 				"_Highlights:_\n" +
+				"_-_ Various rare crash and freeze errors\n" +
 				"_-_ Softlocks caused by the warden using fadeleaf just as they start a boss fight\n" +
 				"_-_ Particle effects failing to appear in a bunch of rare cases\n" +
 				"_-_ AOE from gladiator's crush move invalidating Dwarf King's 'no weapons' badge\n" +
@@ -258,7 +194,8 @@ public class v2_X_Changes {
 				"_-_ Gladiator being able to riposte enemies who charmed him\n" +
 				"_-_ Iron Stomach talent cancelling fall damage in rare cases\n" +
 				"_-_ Time freeze causing various odd behaviour when triggering plants and traps\n" +
-				"_-_ Rare cases of earthroot armor and hold fast working after movement"));
+				"_-_ Rare cases of earthroot armor and hold fast working after movement\n" +
+				"_-_ Volley ability not triggering lethal momentum"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 2",
 				"_Items:_\n" +
@@ -267,8 +204,10 @@ public class v2_X_Changes {
 				"_-_ Transmuting a dried rose deleting any items held by the ghost\n" +
 				"_-_ Alchemist's Toolkit not triggering the enhanced rings talent\n" +
 				"_-_ Wand of fireblast rarely shooting great distances\n" +
-				"_-_ Wand of Lightning rarely taking credit for hero deaths not caused by it\n" +
+				"_-_ Wand of lightning rarely taking credit for hero deaths not caused by it\n" +
 				"_-_ Horn of plenty benefiting from artifact recharging much more than intended\n" +
+				"_-_ Shurikens still getting an instant attack after waiting\n" +
+				"_-_ Transmutation not turning artifacts into rings if all artifacts have been spawned\n" +
 				"_-_ Magic immunity not blocking use of shield battery, cursed artifact effects, or wand recharging\n" +
 				"_-_ Cursed items still blocking equipment slots when lost via ankh revive\n" +
 				"_-_ Antimagic not reducing damage from enchantments\n" +
@@ -280,6 +219,7 @@ public class v2_X_Changes {
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 3",
 				"_Allies & Enemies:_\n" +
 				"_-_ Rare cases of hero stacking onto enemies when trying to swap positions with an ally\n" +
+				"_-_ Directable allies being easily distracted if attacked after being told to move\n" +
 				"_-_ DM-300 not using abilities in its first phase in specific situations\n" +
 				"_-_ DM-201s rarely lobbing grenades when they shouldn't\n" +
 				"_-_ DM-300's rockfall attack very rarely having no delay\n" +
@@ -295,16 +235,19 @@ public class v2_X_Changes {
 				"_-_ Evil eyes only resisting some disintegration effects\n" +
 				"_-_ Several rare issues with spinner web shooting\n" +
 				"_-_ Very rare cases where surprise attacks on mimics would fail\n" +
-				"_-_ Very rare pathfinding bugs with flying enemies"));
+				"_-_ Very rare pathfinding bugs with flying enemies\n" +
+				"_-_ Mirror and Prismatic images benefiting from more accuracy or evasion effects than intended"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 4",
 				"_UI/VFX:_\n" +
 				"_-_ Various minor audiovisual errors\n" +
 				"_-_ Various minor textual errors\n" +
 				"_-_ Items rarely disappearing when hotkeys are used to close the inventory\n" +
+				"_-_ Number display errors when device language is set to Arabic\n" +
 				"_-_ 'i' being incorrectly uppercased to 'I' in Turkish\n" +
 				"_-_ Auras from champion enemies being visible in the fog of war for one frame\n" +
 				"_-_ Very rare cases where Goo attack particles behaved incorrectly\n" +
+				"_-_ VFX rarely not appearing on characters as they are spawned by multiplicity\n" +
 				"_-_ Damage warn vfx not accounting for hunger ignoring shielding\n" +
 				"_-_ Cases where very fast heroes would cause landmarks to not be recorded\n" +
 				"_-_ No error message being given when the mage uses elemental blast without a staff"));
