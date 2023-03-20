@@ -518,6 +518,10 @@ public class Badges {
 		if (!item.levelKnown || item instanceof Artifact) {
 			return;
 		}
+
+		if (item instanceof MeleeWeapon){
+			validateDuelistUnlock();
+		}
 		
 		Badge badge = null;
 		if (!local.contains( Badge.ITEM_LEVEL_1 ) && item.level() >= 3) {
