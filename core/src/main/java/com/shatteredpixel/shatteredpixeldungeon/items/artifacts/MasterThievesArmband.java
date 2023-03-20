@@ -252,15 +252,6 @@ public class MasterThievesArmband extends Artifact {
 		return desc;
 	}
 
-	@Override
-	public void restoreFromBundle(Bundle bundle) {
-		super.restoreFromBundle(bundle);
-		//conversion for old armband on pre-1.2.0 saves
-		if (exp > Math.round(10 + level()*3.33f)){
-			exp = 0;
-		}
-	}
-
 	public class Thievery extends ArtifactBuff {
 
 		@Override
