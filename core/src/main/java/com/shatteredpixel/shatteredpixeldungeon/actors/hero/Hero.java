@@ -1992,6 +1992,12 @@ public class Hero extends Char {
 	
 	@Override
 	public void onAttackComplete() {
+
+		if (enemy == null){
+			curAction = null;
+			super.onAttackComplete();
+			return;
+		}
 		
 		AttackIndicator.target(enemy);
 		boolean wasEnemy = enemy.alignment == Alignment.ENEMY
