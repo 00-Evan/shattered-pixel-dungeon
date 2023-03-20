@@ -276,6 +276,7 @@ public class WelcomeScene extends PixelScene {
 		if (previousVersion <= ShatteredPixelDungeon.v2_0_0){
 			Badges.loadGlobal();
 			if (Badges.isUnlocked(Badges.Badge.VICTORY) && !Badges.isUnlocked(Badges.Badge.UNLOCK_DUELIST)){
+				Dungeon.customSeedText = ""; //clear in case rankings updating left this set
 				Badges.unlock(Badges.Badge.UNLOCK_DUELIST);
 				Badges.saveGlobal();
 			}
