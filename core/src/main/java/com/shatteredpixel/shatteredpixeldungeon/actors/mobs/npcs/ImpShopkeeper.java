@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,9 +39,9 @@ public class ImpShopkeeper extends Shopkeeper {
 
 		if (!seenBefore && Dungeon.level.heroFOV[pos]) {
 			if (Dungeon.hero.buff(AscensionChallenge.class) == null) {
-				yell(Messages.get(this, "greetings", Dungeon.hero.name()));
+				yell(Messages.get(this, "greetings", Messages.titleCase(Dungeon.hero.name())));
 			} else {
-				yell(Messages.get(this, "greetings_ascent", Dungeon.hero.name()));
+				yell(Messages.get(this, "greetings_ascent", Messages.titleCase(Dungeon.hero.name())));
 			}
 			seenBefore = true;
 		}

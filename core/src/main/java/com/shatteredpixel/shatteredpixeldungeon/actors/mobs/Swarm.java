@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
@@ -83,7 +84,10 @@ public class Swarm extends Mob {
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
 
-		if (HP >= damage + 2) {
+		//accounting for reduced damage on ascension
+		int effectiveDmg = (int)Math.ceil(damage / AscensionChallenge.statModifier(this));
+
+		if (HP >= effectiveDmg + 2) {
 			ArrayList<Integer> candidates = new ArrayList<>();
 			
 			int[] neighbours = {pos + 1, pos - 1, pos + Dungeon.level.width(), pos - Dungeon.level.width()};
@@ -99,7 +103,7 @@ public class Swarm extends Mob {
 			if (candidates.size() > 0) {
 				
 				Swarm clone = split();
-				clone.HP = (HP - damage) / 2;
+				clone.HP = (HP - effectiveDmg) / 2;
 				clone.pos = Random.element( candidates );
 				clone.state = clone.HUNTING;
 

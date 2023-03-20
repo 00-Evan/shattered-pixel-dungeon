@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -70,7 +70,7 @@ public class WildMagic extends ArmorAbility {
 		ArrayList<Wand> wands = hero.belongings.getAllItems(Wand.class);
 		Random.shuffle(wands);
 
-		float chargeUsePerShot = (float)Math.pow(0.67f, hero.pointsInTalent(Talent.CONSERVED_MAGIC));
+		float chargeUsePerShot = 0.5f * (float)Math.pow(0.67f, hero.pointsInTalent(Talent.CONSERVED_MAGIC));
 
 		for (Wand w : wands.toArray(new Wand[0])){
 			if (w.curCharges < 1 && w.partialCharge < chargeUsePerShot){
@@ -177,7 +177,7 @@ public class WildMagic extends ArmorAbility {
 	}
 
 	private void afterZap( Wand cur, ArrayList<Wand> wands, Hero hero, int target){
-		cur.partialCharge -= (float) Math.pow(0.67f, hero.pointsInTalent(Talent.CONSERVED_MAGIC));
+		cur.partialCharge -= 0.5f * (float)Math.pow(0.67f, hero.pointsInTalent(Talent.CONSERVED_MAGIC));
 		if (cur.partialCharge < 0) {
 			cur.partialCharge++;
 			cur.curCharges--;

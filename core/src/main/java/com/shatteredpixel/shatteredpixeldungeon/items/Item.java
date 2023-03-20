@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,6 +34,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.TippedDart;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -66,7 +68,7 @@ public class Item implements Bundlable {
 	public static final String AC_DROP		= "DROP";
 	public static final String AC_THROW		= "THROW";
 	
-	public String defaultAction;
+	protected String defaultAction;
 	public boolean usesTargeting;
 
 	//TODO should these be private and accessed through methods?
@@ -163,9 +165,14 @@ public class Item implements Bundlable {
 			
 		}
 	}
+
+	//can be overridden if default action is variable
+	public String defaultAction(){
+		return defaultAction;
+	}
 	
 	public void execute( Hero hero ) {
-		execute( hero, defaultAction );
+		execute( hero, defaultAction() );
 	}
 	
 	protected void onThrow( int cell ) {
@@ -217,6 +224,23 @@ public class Item implements Bundlable {
 						Badges.validateItemLevelAquired( this );
 						Talent.onItemCollected(Dungeon.hero, item);
 						if (isIdentified()) Catalog.setSeen(getClass());
+					}
+					if (TippedDart.lostDarts > 0){
+						Dart d = new Dart();
+						d.quantity(TippedDart.lostDarts);
+						TippedDart.lostDarts = 0;
+						if (!d.collect()){
+							//have to handle this in an actor as we can't manipulate the heap during pickup
+							Actor.add(new Actor() {
+								{ actPriority = VFX_PRIO; }
+								@Override
+								protected boolean act() {
+									Dungeon.level.drop(d, Dungeon.hero.pos).sprite.drop();
+									Actor.remove(this);
+									return true;
+								}
+							});
+						}
 					}
 					return true;
 				}

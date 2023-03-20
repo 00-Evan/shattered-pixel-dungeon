@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -328,7 +328,7 @@ public class TitleScene extends PixelScene {
 
 		public SettingsButton( Chrome.Type type, String label ){
 			super(type, label);
-			if (Messages.lang().status() == Languages.Status.INCOMPLETE){
+			if (Messages.lang().status() == Languages.Status.UNFINISHED){
 				icon(Icons.get(Icons.LANGS));
 				icon.hardlight(1.5f, 0, 0);
 			} else {
@@ -340,14 +340,14 @@ public class TitleScene extends PixelScene {
 		public void update() {
 			super.update();
 
-			if (Messages.lang().status() == Languages.Status.INCOMPLETE){
+			if (Messages.lang().status() == Languages.Status.UNFINISHED){
 				textColor(ColorMath.interpolate( 0xFFFFFF, CharSprite.NEGATIVE, 0.5f + (float)Math.sin(Game.timeTotal*5)/2f));
 			}
 		}
 
 		@Override
 		protected void onClick() {
-			if (Messages.lang().status() == Languages.Status.INCOMPLETE){
+			if (Messages.lang().status() == Languages.Status.UNFINISHED){
 				WndSettings.last_index = 4;
 			}
 			ShatteredPixelDungeon.scene().add(new WndSettings());

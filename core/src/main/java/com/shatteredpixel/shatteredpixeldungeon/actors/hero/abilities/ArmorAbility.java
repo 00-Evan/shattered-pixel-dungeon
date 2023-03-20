@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,8 +71,8 @@ public abstract class ArmorAbility implements Bundlable {
 	public float chargeUse( Hero hero ){
 		float chargeUse = baseChargeUse;
 		if (hero.hasTalent(Talent.HEROIC_ENERGY)){
-			//reduced charge use by 13%/24%/34%/43%
-			chargeUse *= Math.pow( 0.869, hero.pointsInTalent(Talent.HEROIC_ENERGY));
+			//reduced charge use by 12%/23%/32%/40%
+			chargeUse *= Math.pow( 0.8804, hero.pointsInTalent(Talent.HEROIC_ENERGY));
 		}
 		return chargeUse;
 	}

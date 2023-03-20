@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -184,6 +184,10 @@ public class MagicalFireRoom extends SpecialRoom {
 						if (l.water[cell]){
 							cur[cell] = 0;
 							clearAll = true;
+						}
+						//overrides fire
+						if (fire != null && fire.volume > 0 && fire.cur[cell] > 0){
+							fire.clear(cell);
 						}
 						if (freeze != null && freeze.volume > 0 && freeze.cur[cell] > 0){
 							freeze.clear(cell);

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -39,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -100,6 +102,9 @@ public class Dart extends MissileWeapon {
 	private void updateCrossbow(){
 		if (Dungeon.hero.belongings.weapon() instanceof Crossbow){
 			bow = (Crossbow) Dungeon.hero.belongings.weapon();
+		} else if (Dungeon.hero.belongings.secondWep() instanceof Crossbow) {
+			//player can instant swap anyway, so this is just QoL
+			bow = (Crossbow) Dungeon.hero.belongings.secondWep();
 		} else {
 			bow = null;
 		}
@@ -117,14 +122,28 @@ public class Dart extends MissileWeapon {
 			return super.hasEnchant(type, owner);
 		}
 	}
-	
+
+	@Override
+	public float accuracyFactor(Char owner, Char target) {
+		//don't update xbow here, as dart is the active weapon atm
+		if (bow != null && owner.buff(Crossbow.ChargedShot.class) != null){
+			return Char.INFINITE_ACCURACY;
+		} else {
+			return super.accuracyFactor(owner, target);
+		}
+	}
+
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
 		if (bow != null){
 			damage = bow.proc(attacker, defender, damage);
 		}
 
-		return super.proc(attacker, defender, damage);
+		int dmg = super.proc(attacker, defender, damage);
+		if (!processingChargedShot) {
+			processChargedShot(defender, damage);
+		}
+		return dmg;
 	}
 
 	@Override
@@ -136,7 +155,48 @@ public class Dart extends MissileWeapon {
 	@Override
 	protected void onThrow(int cell) {
 		updateCrossbow();
+		//we have to set this here, as on-hit effects can move the target we aim at
+		chargedShotPos = cell;
 		super.onThrow(cell);
+	}
+
+	private boolean processingChargedShot = false;
+	private int chargedShotPos;
+	protected void processChargedShot( Char target, int dmg ){
+		//don't update xbow here, as dart may be the active weapon atm
+		processingChargedShot = true;
+		if (chargedShotPos != -1 && bow != null && Dungeon.hero.buff(Crossbow.ChargedShot.class) != null) {
+			PathFinder.buildDistanceMap(chargedShotPos, Dungeon.level.passable, 1);
+			//necessary to clone as some on-hit effects use Pathfinder
+			int[] distance = PathFinder.distance.clone();
+			for (Char ch : Actor.chars()){
+				if (ch == target){
+					Actor.add(new Actor() {
+						{ actPriority = VFX_PRIO; }
+						@Override
+						protected boolean act() {
+							if (!ch.isAlive()){
+								bow.onAbilityKill(Dungeon.hero);
+							}
+							Actor.remove(this);
+							return true;
+						}
+					});
+				} else if (distance[ch.pos] != Integer.MAX_VALUE){
+					proc(Dungeon.hero, ch, dmg);
+				}
+			}
+		}
+		chargedShotPos = -1;
+		processingChargedShot = false;
+	}
+
+	@Override
+	protected void decrementDurability() {
+		super.decrementDurability();
+		if (Dungeon.hero.buff(Crossbow.ChargedShot.class) != null) {
+			Dungeon.hero.buff(Crossbow.ChargedShot.class).detach();
+		}
 	}
 
 	@Override

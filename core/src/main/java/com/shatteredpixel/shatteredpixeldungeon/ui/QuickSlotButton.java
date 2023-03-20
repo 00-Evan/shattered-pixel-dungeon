@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,10 +24,13 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -244,17 +247,40 @@ public class QuickSlotButton extends Button {
 
 		@Override
 		public boolean itemSelectable(Item item) {
-			return item.defaultAction != null;
+			return item.defaultAction() != null;
 		}
 
 		@Override
 		public void onSelect(Item item) {
 			if (item != null) {
-				Dungeon.quickslot.setSlot( slotNum , item );
-				refresh();
+				set( slotNum , item );
 			}
 		}
 	};
+
+	public static void set(Item item){
+		for (int i = 0; i < instance.length; i++) {
+			if (select(i) == null || select(i) == item) {
+				set(i, item);
+				return;
+			}
+		}
+		set(0, item);
+	}
+
+	public static void set(int slotNum, Item item){
+		Dungeon.quickslot.setSlot( slotNum , item );
+		refresh();
+
+		//Remember if the player adds the waterskin as one of their first actions.
+		if (Statistics.duration + Actor.now() <= 10){
+			boolean containsWaterskin = false;
+			for (int i = 0; i < instance.length; i++) {
+				if (select(i) instanceof Waterskin) containsWaterskin = true;
+			}
+			if (containsWaterskin) SPDSettings.quickslotWaterskin(true);
+		}
+	}
 
 	private static Item select(int slotNum){
 		return Dungeon.quickslot.getItem( slotNum );
@@ -349,6 +375,14 @@ public class QuickSlotButton extends Button {
 		}
 		if (Toolbar.SWAP_INSTANCE != null){
 			Toolbar.SWAP_INSTANCE.updateVisuals();
+		}
+		//Remember if the player removes the waterskin as one of their first actions.
+		if (Statistics.duration + Actor.now() <= 10){
+			boolean containsWaterskin = false;
+			for (int i = 0; i < instance.length; i++) {
+				if (select(i) instanceof Waterskin) containsWaterskin = true;
+			}
+			if (!containsWaterskin) SPDSettings.quickslotWaterskin(false);
 		}
 	}
 	

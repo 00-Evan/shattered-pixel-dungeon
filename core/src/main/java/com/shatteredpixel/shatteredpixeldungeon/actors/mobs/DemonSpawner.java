@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
@@ -66,7 +67,7 @@ public class DemonSpawner extends Mob {
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 12);
+		return super.drRoll() + Random.NormalIntRange(0, 12);
 	}
 
 	@Override
@@ -90,12 +91,22 @@ public class DemonSpawner extends Mob {
 			spawnRecorded = true;
 		}
 
-		if (Dungeon.level.heroFOV[pos]){
+		if (Dungeon.level.visited[pos]){
 			Notes.add( Notes.Landmark.DEMON_SPAWNER );
+		}
+
+		if (Dungeon.hero.buff(AscensionChallenge.class) != null && spawnCooldown > 20){
+			spawnCooldown = 20;
 		}
 
 		spawnCooldown--;
 		if (spawnCooldown <= 0){
+
+			//we don't want spawners to store multiple ripper demons
+			if (spawnCooldown < -20){
+				spawnCooldown = -20;
+			}
+
 			ArrayList<Integer> candidates = new ArrayList<>();
 			for (int n : PathFinder.NEIGHBOURS8) {
 				if (Dungeon.level.passable[pos+n] && Actor.findChar( pos+n ) == null) {

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,7 +67,7 @@ public class Blacksmith extends NPC {
 			die(null);
 			return true;
 		}
-		if (Dungeon.level.heroFOV[pos] && !Quest.reforged){
+		if (Dungeon.level.visited[pos] && !Quest.reforged){
 			Notes.add( Notes.Landmark.TROLL );
 		}
 		return super.act();
@@ -99,6 +99,7 @@ public class Blacksmith extends NPC {
 							Notes.add( Notes.Landmark.TROLL );
 							
 							Pickaxe pick = new Pickaxe();
+							pick.identify();
 							if (pick.doPickUp( Dungeon.hero )) {
 								GLog.i( Messages.capitalize(Messages.get(Dungeon.hero, "you_now_have", pick.name()) ));
 							} else {
@@ -119,6 +120,7 @@ public class Blacksmith extends NPC {
 					tell( Messages.get(this, "blood_2") );
 				} else {
 					if (pick.isEquipped( Dungeon.hero )) {
+						pick.cursed = false; //so that it can always be removed
 						pick.doUnequip( Dungeon.hero, false );
 					}
 					pick.detach( Dungeon.hero.belongings.backpack );
@@ -214,7 +216,7 @@ public class Blacksmith extends NPC {
 	public static void upgrade( Item item1, Item item2 ) {
 		
 		Item first, second;
-		if (item2.level() > item1.level()) {
+		if (item2.trueLevel() > item1.trueLevel()) {
 			first = item2;
 			second = item1;
 		} else {

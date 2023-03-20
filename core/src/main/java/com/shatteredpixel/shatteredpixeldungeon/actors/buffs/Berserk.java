@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,8 +37,6 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
-
-import java.text.DecimalFormat;
 
 public class Berserk extends Buff implements ActionIndicator.Action {
 
@@ -302,7 +300,7 @@ public class Berserk extends Buff implements ActionIndicator.Action {
 				return (int)(power*100) + "%";
 			case RECOVERING:
 				if (levelRecovery > 0) {
-					return new DecimalFormat("#.#").format(levelRecovery);
+					return Messages.decimalFormat("#.##", levelRecovery);
 				} else {
 					return Integer.toString(turnRecovery);
 				}

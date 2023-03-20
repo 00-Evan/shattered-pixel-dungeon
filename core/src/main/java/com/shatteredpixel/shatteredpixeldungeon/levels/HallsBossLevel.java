@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -220,12 +220,12 @@ public class HallsBossLevel extends Level {
 
 	@Override
 	public void occupyCell( Char ch ) {
-		super.occupyCell( ch );
-
 		if (map[entrance()] == Terrain.ENTRANCE && map[exit()] != Terrain.EXIT
 				&& ch == Dungeon.hero && Dungeon.level.distance(ch.pos, entrance()) >= 2) {
 			seal();
 		}
+
+		super.occupyCell( ch );
 	}
 
 	@Override

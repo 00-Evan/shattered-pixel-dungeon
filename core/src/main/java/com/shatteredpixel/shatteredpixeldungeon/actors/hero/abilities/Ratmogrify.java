@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
@@ -82,7 +83,7 @@ public class Ratmogrify extends ArmorAbility {
 
 		Char ch = Actor.findChar(target);
 
-		if (ch == null) {
+		if (ch == null || !Dungeon.level.heroFOV[target]) {
 			GLog.w(Messages.get(this, "no_target"));
 			return;
 		} else if (ch == hero){
@@ -107,6 +108,7 @@ public class Ratmogrify extends ArmorAbility {
 					Rat rat = new Rat();
 					rat.alignment = Char.Alignment.ALLY;
 					rat.state = rat.HUNTING;
+					Buff.affect(rat, AscensionChallenge.AscensionBuffBlocker.class);
 					GameScene.add( rat );
 					ScrollOfTeleportation.appear( rat, spawnPoints.get( index ) );
 

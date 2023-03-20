@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -346,10 +346,11 @@ public class WandOfLivingEarth extends DamageWand {
 
 		@Override
 		public int drRoll() {
+			int dr = super.drRoll();
 			if (Dungeon.isChallenged(Challenges.NO_ARMOR)){
-				return Random.NormalIntRange(wandLevel, 2 + wandLevel);
+				return dr + Random.NormalIntRange(wandLevel, 2 + wandLevel);
 			} else {
-				return Random.NormalIntRange(wandLevel, 3 + 3 * wandLevel);
+				return dr + Random.NormalIntRange(wandLevel, 3 + 3 * wandLevel);
 			}
 		}
 

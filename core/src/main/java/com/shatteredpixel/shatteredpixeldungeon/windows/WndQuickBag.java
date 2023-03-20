@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -73,7 +73,7 @@ public class WndQuickBag extends Window {
 		ArrayList<Item> items = new ArrayList<>();
 
 		for (Item i : bag == null ? Dungeon.hero.belongings : bag){
-			if (i.defaultAction == null){
+			if (i.defaultAction() == null){
 				continue;
 			}
 			if (i instanceof Bag) {

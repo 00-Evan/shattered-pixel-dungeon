@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -170,13 +170,6 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 
 	public static class WndMetamorphReplace extends Window {
 
-		//talents that can only be used by one hero class
-		private static HashMap<Talent, HeroClass> restrictedTalents = new HashMap<>();
-		static {
-			restrictedTalents.put(Talent.RUNIC_TRANSFERENCE, HeroClass.WARRIOR);
-			restrictedTalents.put(Talent.WAND_PRESERVATION, HeroClass.MAGE);
-		}
-
 		public static WndMetamorphReplace INSTANCE;
 
 		public Talent replacing;
@@ -221,10 +214,6 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 						break;
 					} else {
 						if (curTalentsAtTier.contains(talent)){
-							clsTalentsAtTier.remove(talent);
-						}
-						if (restrictedTalents.containsKey(talent)
-								&& restrictedTalents.get(talent) != curUser.heroClass){
 							clsTalentsAtTier.remove(talent);
 						}
 					}

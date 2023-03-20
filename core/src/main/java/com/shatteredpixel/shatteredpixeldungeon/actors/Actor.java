@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -355,6 +355,15 @@ public abstract class Actor implements Bundlable {
 			if (actor.id > 0) {
 				ids.remove( actor.id );
 			}
+		}
+	}
+
+	//'freezes' a character in time for a specified amount of time
+	//USE CAREFULLY! Manipulating time like this is useful for some gameplay effects but is tricky
+	public static void delayChar( Char ch, float time ){
+		ch.spendConstant(time);
+		for (Buff b : ch.buffs()){
+			b.spendConstant(time);
 		}
 	}
 	

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,11 +50,15 @@ public class DisarmingTrap extends Trap{
 		Heap heap = Dungeon.level.heaps.get( pos );
 
 		if (heap != null && heap.type == Heap.Type.HEAP){
-			int cell = Dungeon.level.randomRespawnCell( null );
 
-			Item item = heap.pickUp();
+			int cell;
+			do {
+				cell = Dungeon.level.randomRespawnCell(null);
+			} while (cell != -1 && Dungeon.level.heaps.get( pos ) != null
+						&& Dungeon.level.heaps.get( pos ).type != Heap.Type.HEAP);
 
 			if (cell != -1) {
+				Item item = heap.pickUp();
 				Heap dropped = Dungeon.level.drop( item, cell );
 				dropped.seen = true;
 				if (item instanceof Honeypot.ShatteredPot){

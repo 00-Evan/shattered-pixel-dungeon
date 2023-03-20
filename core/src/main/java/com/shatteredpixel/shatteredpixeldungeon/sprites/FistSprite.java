@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -115,7 +115,7 @@ public abstract class FistSprite extends MobSprite {
 	public void attack( int cell ) {
 		super.attack( cell );
 
-		jump(ch.pos, ch.pos, null, 9, SLAM_TIME );
+		jump(ch.pos, ch.pos, 9, SLAM_TIME, null );
 	}
 
 	//different bolt, so overrides zap

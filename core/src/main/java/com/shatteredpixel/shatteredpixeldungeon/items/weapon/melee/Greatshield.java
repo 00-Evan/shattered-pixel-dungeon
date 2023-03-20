@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
@@ -35,20 +36,25 @@ public class Greatshield extends MeleeWeapon {
 
 	@Override
 	public int max(int lvl) {
-		return  Math.round(2.5f*(tier+1)) +     //15 base, down from 30
-				lvl*(tier-2);                   //+3 per level, down from +6
+		return  Math.round(3f*(tier+1)) +   //18 base, down from 20
+				lvl*(tier-1);               //+3 per level, down from +6
 	}
 
 	@Override
 	public int defenseFactor( Char owner ) {
-		return 6+3*buffedLvl();    //6 extra defence, plus 3 per level;
+		return 6+2*buffedLvl();             //6 extra defence, plus 2 per level
 	}
 	
 	public String statsInfo(){
 		if (isIdentified()){
-			return Messages.get(this, "stats_desc", 6+3*buffedLvl());
+			return Messages.get(this, "stats_desc", 6+2*buffedLvl());
 		} else {
 			return Messages.get(this, "typical_stats_desc", 6);
 		}
+	}
+
+	@Override
+	protected void duelistAbility(Hero hero, Integer target) {
+		RoundShield.guardAbility(hero, 4, this);
 	}
 }

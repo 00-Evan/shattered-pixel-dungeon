@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,6 +52,7 @@ public class Spinner extends Mob {
 		loot = new MysteryMeat();
 		lootChance = 0.125f;
 
+		HUNTING = new Hunting();
 		FLEEING = new Fleeing();
 	}
 
@@ -67,7 +68,7 @@ public class Spinner extends Mob {
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 6);
+		return super.drRoll() + Random.NormalIntRange(0, 6);
 	}
 
 	private int webCoolDown = 0;
@@ -92,27 +93,26 @@ public class Spinner extends Mob {
 	
 	@Override
 	protected boolean act() {
+		if (state == HUNTING || state == FLEEING){
+			webCoolDown--;
+		}
+
 		AiState lastState = state;
 		boolean result = super.act();
 
-		//if state changed from wandering to hunting, we haven't acted yet, don't update.
+		//We only want to update target position once per turn, so if switched from wandering, wait for a moment
+		//Also want to avoid updating when we visually shot a web this turn (don't want to change the position)
 		if (!(lastState == WANDERING && state == HUNTING)) {
-			webCoolDown--;
-			if (shotWebVisually){
-				result = shotWebVisually = false;
-			} else {
+			if (!shotWebVisually){
 				if (enemy != null && enemySeen) {
 					lastEnemyPos = enemy.pos;
 				} else {
 					lastEnemyPos = Dungeon.hero.pos;
 				}
 			}
+			shotWebVisually = false;
 		}
 		
-		if (state == FLEEING && buff( Terror.class ) == null && buff( Dread.class ) == null &&
-				enemy != null && enemySeen && enemy.buff( Poison.class ) == null) {
-			state = HUNTING;
-		}
 		return result;
 	}
 
@@ -133,25 +133,15 @@ public class Spinner extends Mob {
 	
 	private boolean shotWebVisually = false;
 
-	@Override
-	public void move(int step, boolean travelling) {
-		if (travelling && enemySeen && webCoolDown <= 0 && lastEnemyPos != -1){
-			if (webPos() != -1){
-				if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
-					sprite.zap( webPos() );
-					shotWebVisually = true;
-				} else {
-					shootWeb();
-				}
-			}
-		}
-		super.move(step, travelling);
-	}
-	
 	public int webPos(){
 
 		Char enemy = this.enemy;
 		if (enemy == null) return -1;
+
+		//don't web a non-moving enemy that we're going to attack
+		if (state != FLEEING && enemy.pos == lastEnemyPos && canAttack(enemy)){
+			return -1;
+		}
 		
 		Ballistica b;
 		//aims web in direction enemy is moving, or between self and enemy if they aren't moving
@@ -230,7 +220,52 @@ public class Spinner extends Mob {
 		immunities.add(Web.class);
 	}
 
+	private class Hunting extends Mob.Hunting {
+
+		@Override
+		public boolean act(boolean enemyInFOV, boolean justAlerted) {
+			if (enemyInFOV && webCoolDown <= 0 && lastEnemyPos != -1){
+				if (webPos() != -1){
+					if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
+						sprite.zap( webPos() );
+						shotWebVisually = true;
+						return false;
+					} else {
+						shootWeb();
+						return true;
+					}
+				}
+			}
+
+			return super.act(enemyInFOV, justAlerted);
+		}
+	}
+
 	private class Fleeing extends Mob.Fleeing {
+
+		@Override
+		public boolean act(boolean enemyInFOV, boolean justAlerted) {
+			if (buff( Terror.class ) == null && buff( Dread.class ) == null &&
+					enemyInFOV && enemy.buff( Poison.class ) == null){
+				state = HUNTING;
+				return true;
+			}
+
+			if (enemyInFOV && webCoolDown <= 0 && lastEnemyPos != -1){
+				if (webPos() != -1){
+					if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
+						sprite.zap( webPos() );
+						shotWebVisually = true;
+						return false;
+					} else {
+						shootWeb();
+						return true;
+					}
+				}
+			}
+			return super.act(enemyInFOV, justAlerted);
+		}
+
 		@Override
 		protected void nowhereToRun() {
 			if (buff(Terror.class) == null && buff(Dread.class) == null) {

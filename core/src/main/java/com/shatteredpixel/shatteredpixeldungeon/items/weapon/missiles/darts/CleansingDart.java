@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCleansing;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class CleansingDart extends TippedDart {
@@ -39,12 +40,14 @@ public class CleansingDart extends TippedDart {
 	@Override
 	public int proc(Char attacker, final Char defender, int damage) {
 
-		if (attacker.alignment == defender.alignment){
+		if (attacker.alignment == defender.alignment && defender != attacker){
 			PotionOfCleansing.cleanse(defender, PotionOfCleansing.Cleanse.DURATION*2f);
 			return 0;
 		} else {
 			for (Buff b : defender.buffs()){
-				if (!(b instanceof ChampionEnemy) && b.type == Buff.buffType.POSITIVE){
+				if (!(b instanceof ChampionEnemy)
+						&& b.type == Buff.buffType.POSITIVE
+						&& !(b instanceof Crossbow.ChargedShot)){
 					b.detach();
 				}
 			}

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -140,7 +140,7 @@ public abstract class Wand extends Item {
 			return false;
 		}
 
-		if ( curCharges >= (cursed ? 1 : chargesPerCast())){
+		if ( curCharges >= chargesPerCast()){
 			return true;
 		} else {
 			GLog.w(Messages.get(this, "fizzles"));
@@ -421,34 +421,13 @@ public abstract class Wand extends Item {
 			}
 		}
 
-		if (charger != null
-				&& charger.target == Dungeon.hero){
+		//If hero owns wand but it isn't in belongings it must be in the staff
+		if (Dungeon.hero.hasTalent(Talent.EMPOWERED_STRIKE)
+				&& charger != null && charger.target == Dungeon.hero
+				&& !Dungeon.hero.belongings.contains(this)){
 
-			//if the wand is owned by the hero, but not in their inventory, it must be in the staff
-			if (!Dungeon.hero.belongings.contains(this)) {
-				if (curCharges == 0 && Dungeon.hero.hasTalent(Talent.BACKUP_BARRIER)) {
-					//grants 3/5 shielding
-					Buff.affect(Dungeon.hero, Barrier.class).setShield(1 + 2 * Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER));
-				}
-				if (Dungeon.hero.hasTalent(Talent.EMPOWERED_STRIKE)) {
-					Buff.prolong(Dungeon.hero, Talent.EmpoweredStrikeTracker.class, 10f);
-				}
+			Buff.prolong(Dungeon.hero, Talent.EmpoweredStrikeTracker.class, 10f);
 
-			//otherwise process logic for metamorphed backup barrier
-			} else if (curCharges == 0
-					&& Dungeon.hero.heroClass != HeroClass.MAGE
-					&& Dungeon.hero.hasTalent(Talent.BACKUP_BARRIER)){
-				boolean highest = true;
-				for (Item i : Dungeon.hero.belongings.getAllItems(Wand.class)){
-					if (i.level() > level()){
-						highest = false;
-					}
-				}
-				if (highest){
-					//grants 3/5 shielding
-					Buff.affect(Dungeon.hero, Barrier.class).setShield(1 + 2 * Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER));
-				}
-			}
 		}
 		Invisibility.dispel();
 		updateQuickslot();
@@ -594,6 +573,12 @@ public abstract class Wand extends Item {
 				
 				if (target == curUser.pos || cell == curUser.pos) {
 					if (target == curUser.pos && curUser.hasTalent(Talent.SHIELD_BATTERY)){
+
+						if (curUser.buff(MagicImmune.class) != null){
+							GLog.w( Messages.get(this, "no_magic") );
+							return;
+						}
+
 						float shield = curUser.HT * (0.04f*curWand.curCharges);
 						if (curUser.pointsInTalent(Talent.SHIELD_BATTERY) == 2) shield *= 1.5f;
 						Buff.affect(curUser, Barrier.class).setShield(Math.round(shield));
@@ -620,6 +605,32 @@ public abstract class Wand extends Item {
 				if (curWand.tryToZap(curUser, target)) {
 					
 					curUser.busy();
+
+					//backup barrier logic
+					//This triggers before the wand zap, mostly so the barrier helps vs skeletons
+					if (curUser.hasTalent(Talent.BACKUP_BARRIER)
+							&& curWand.curCharges == curWand.chargesPerCast()
+							&& curWand.charger != null && curWand.charger.target == curUser){
+
+						//regular. If hero owns wand but it isn't in belongings it must be in the staff
+						if (curUser.heroClass == HeroClass.MAGE && !curUser.belongings.contains(curWand)){
+							//grants 3/5 shielding
+							Buff.affect(Dungeon.hero, Barrier.class).setShield(1 + 2 * Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER));
+
+						//metamorphed. Triggers if wand is highest level hero has
+						} else if (curUser.heroClass != HeroClass.MAGE) {
+							boolean highest = true;
+							for (Item i : curUser.belongings.getAllItems(Wand.class)){
+								if (i.level() > curWand.level()){
+									highest = false;
+								}
+							}
+							if (highest){
+								//grants 3/5 shielding
+								Buff.affect(Dungeon.hero, Barrier.class).setShield(1 + 2 * Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER));
+							}
+						}
+					}
 					
 					if (curWand.cursed){
 						if (!curWand.cursedKnown){
@@ -669,7 +680,9 @@ public abstract class Wand extends Item {
 		public boolean attachTo( Char target ) {
 			if (super.attachTo( target )) {
 				//if we're loading in and the hero has partially spent a turn, delay for 1 turn
-				if (now() == 0 && cooldown() == 0 && target.cooldown() > 0) spend(TICK);
+				if (target instanceof Hero && Dungeon.hero == null && cooldown() == 0 && target.cooldown() > 0) {
+					spend(TICK);
+				}
 				return true;
 			}
 			return false;
@@ -677,7 +690,7 @@ public abstract class Wand extends Item {
 		
 		@Override
 		public boolean act() {
-			if (curCharges < maxCharges)
+			if (curCharges < maxCharges && target.buff(MagicImmune.class) == null)
 				recharge();
 			
 			while (partialCharge >= 1 && curCharges < maxCharges) {

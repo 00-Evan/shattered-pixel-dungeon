@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,6 +68,7 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -102,7 +103,7 @@ public class DM300 extends Mob {
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 10);
+		return super.drRoll() + Random.NormalIntRange(0, 10);
 	}
 
 	public int pylonsActivated = 0;
@@ -175,7 +176,7 @@ public class DM300 extends Mob {
 
 			//determine if DM can reach its enemy
 			boolean canReach;
-			if (enemy == null){
+			if (enemy == null || !enemy.isAlive()){
 				if (Dungeon.level.adjacent(pos, Dungeon.hero.pos)){
 					canReach = true;
 				} else {
@@ -195,10 +196,12 @@ public class DM300 extends Mob {
 				}
 			} else {
 
-				if (enemy == null && Dungeon.hero.invisible <= 0) enemy = Dungeon.hero;
+				if ((enemy == null || !enemy.isAlive()) && Dungeon.hero.invisible <= 0) {
+					enemy = Dungeon.hero;
+				}
 
 				//more aggressive ability usage when DM can't reach its target
-				if (enemy != null && !canReach){
+				if (enemy != null && enemy.isAlive() && !canReach){
 
 					//try to fire gas at an enemy we can't reach
 					if (turnsSinceLastAbility >= MIN_COOLDOWN){
@@ -235,7 +238,7 @@ public class DM300 extends Mob {
 
 					}
 
-				} else if (enemy != null && fieldOfView[enemy.pos]) {
+				} else if (enemy != null && enemy.isAlive() && fieldOfView[enemy.pos]) {
 					if (turnsSinceLastAbility > abilityCooldown) {
 
 						if (lastAbility == NONE) {
@@ -454,7 +457,7 @@ public class DM300 extends Mob {
 				pos++;
 			}
 		}
-		Buff.append(this, FallingRockBuff.class, Math.min(target.cooldown(), 3*TICK)).setRockPositions(rockCells);
+		Buff.append(this, FallingRockBuff.class, GameMath.gate(TICK, target.cooldown(), 3*TICK)).setRockPositions(rockCells);
 
 	}
 
@@ -462,6 +465,10 @@ public class DM300 extends Mob {
 
 	@Override
 	public void damage(int dmg, Object src) {
+		if (!BossHealthBar.isAssigned()){
+			notice();
+		}
+
 		int preHP = HP;
 		super.damage(dmg, src);
 		if (isInvulnerable(src.getClass())){
@@ -498,7 +505,7 @@ public class DM300 extends Mob {
 			invulnWarned = true;
 			GLog.w(Messages.get(this, "charging_hint"));
 		}
-		return supercharged;
+		return supercharged || super.isInvulnerable(effect);
 	}
 
 	public void supercharge(){

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -286,10 +286,10 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 
 	public void jump( int from, int to, Callback callback ) {
 		float distance = Math.max( 1f, Dungeon.level.trueDistance( from, to ));
-		jump( from, to, callback, distance * 2, distance * 0.1f );
+		jump( from, to, distance * 2, distance * 0.1f, callback );
 	}
 
-	public void jump( int from, int to, Callback callback, float height, float duration ) {
+	public void jump( int from, int to, float height, float duration,  Callback callback ) {
 		jumpCallback = callback;
 
 		jumpTweener = new JumpTweener( this, worldToCamera( to ), height, duration );
@@ -493,6 +493,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		aura = new Flare(5, size);
 		aura.angularSpeed = 90;
 		aura.color(color, true);
+		aura.visible = visible;
 
 		if (parent != null) {
 			aura.show(this, 0);

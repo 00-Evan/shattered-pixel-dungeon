@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,11 +45,13 @@ public class Healing extends Buff {
 	
 	@Override
 	public boolean act(){
-		
-		target.HP = Math.min(target.HT, target.HP + healingThisTick());
 
-		if (target.HP == target.HT && target instanceof Hero){
-			((Hero)target).resting = false;
+		if (target.HP < target.HT) {
+			target.HP = Math.min(target.HT, target.HP + healingThisTick());
+
+			if (target.HP == target.HT && target instanceof Hero) {
+				((Hero) target).resting = false;
+			}
 		}
 		
 		healingLeft -= healingThisTick();

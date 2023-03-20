@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -747,8 +747,8 @@ public class v0_7_X_Changes {
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released Oct 18th, 2018\n" +
-				"_-_ 501 days after Shattered v0.6.0\n" +
 				"_-_ 168 days after Shattered v0.6.5\n" +
+				"_-_ 501 days after Shattered v0.6.0\n" +
 				"\n" +
 				"v0.7.0 was Shattered's second longest-developed update at almost 6 months! This update took so long because it included my first attempt at an entirely new gameplay system: item crafting via alchemy!\n" +
 				"\n" +

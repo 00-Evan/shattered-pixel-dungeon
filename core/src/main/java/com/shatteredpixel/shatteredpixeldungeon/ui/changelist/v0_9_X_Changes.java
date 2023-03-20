@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2020 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -235,7 +235,7 @@ public class v0_9_X_Changes {
 				"_-_ Released February 26th, 2021\n" +
 				"_-_ 78 days after Shattered v0.9.1\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"Dev commentary will be added here in the next major update."));
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.TALENT), "Tier Three Talents!",
 				"_32 new talents have been added that span levels 13 to 20!_\n\n" +
@@ -389,7 +389,11 @@ public class v0_9_X_Changes {
 				"_-_ Released December 11th, 2020\n" +
 				"_-_ 68 days after Shattered v0.9.0\n" +
 				"\n" +
-				"Dev commentary will be added here in the next major update."));
+				"v0.9.1 continued on the momentum of v0.9.0, adding a new tier of talents spanning the mid game. These talents were a lot more satisfying for players to use, as they were able to more significantly shape gameplay when compared to the early game talents added in v0.9.0.\n" +
+				"\n" +
+				"I also became a lot more sure that I was making the right call by splitting the talent system into multiple updates. v0.9.1 was released quickly, more than doubled the number of talents, and made a bunch of crucial improvements to the talents added in v0.9.0. Had I released the entire system in one go then these sorts of growing pains would have stuck around for much longer.\n" +
+				"\n" +
+				"v0.9.1 also includes the first major changes to level generation since v0.6.2! While the same base algorithms are still used to lay levels out, v0.9.1 made overall level structures more chaotic and varied, which really helped individual layouts feel more unique."));
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.TALENT), "Tier Two Talents!",
 				"_A second tier of talents has been added, including twenty new talents spanning levels 7-12!_\n\n" +
@@ -541,7 +545,11 @@ public class v0_9_X_Changes {
 				"_-_ 61 days after Shattered v0.8.2\n" +
 				"_-_ 173 days after Shattered v0.8.0\n" +
 				"\n" +
-				"Dev commentary will be added here in the next major update."));
+				"v0.9.0 was the beginning of Shattered's second new gameplay system! The talent system was primarily designed to address consistent feedback that leveling up wasn't very satisfying. I wanted talents to deepen character customization and give the player a reason to feel excited about levelling up.\n" +
+				"\n" +
+				"I opted to split the talent system over multiple updates, rather than implement it all at once. This mean that v0.9.0 had an impressively short dev time of just two months, although it also meant that the talent system was pretty barebones to start.\n" +
+				"\n" +
+				"This update also included Shattered's first new challenge! The goal of hostile champions was to increase overall difficulty by adding new mechanics to the game, instead of removing them. This worked out very well, and led to a followup challenge addition just a couple of updates later."));
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.TALENT), "Hero Talents!",
 				"_A new gameplay system has been added!_\n\n" +

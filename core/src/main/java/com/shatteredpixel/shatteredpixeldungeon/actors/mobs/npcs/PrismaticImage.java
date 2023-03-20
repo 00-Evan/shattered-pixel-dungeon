@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,8 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEvasion;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.PrismaticSprite;
@@ -155,7 +157,8 @@ public class PrismaticImage extends NPC {
 	@Override
 	public int attackSkill( Char target ) {
 		if (hero != null) {
-			return hero.attackSkill(target);
+			//same base attack skill as hero, benefits from accuracy ring
+			return (int)((9 + hero.lvl) * RingOfAccuracy.accuracyMultiplier(hero));
 		} else {
 			return 0;
 		}
@@ -165,9 +168,13 @@ public class PrismaticImage extends NPC {
 	public int defenseSkill(Char enemy) {
 		if (hero != null) {
 			int baseEvasion = 4 + hero.lvl;
-			int heroEvasion = hero.defenseSkill(enemy);
-			
+			int heroEvasion = (int)((4 + hero.lvl) * RingOfEvasion.evasionMultiplier( hero ));
+			if (hero.belongings.armor() != null){
+				heroEvasion = (int)hero.belongings.armor().evasionFactor(this, heroEvasion);
+			}
+
 			//if the hero has more/less evasion, 50% of it is applied
+			//includes ring of evasion and armor boosts
 			return super.defenseSkill(enemy) * (baseEvasion + heroEvasion) / 2;
 		} else {
 			return 0;
@@ -176,10 +183,11 @@ public class PrismaticImage extends NPC {
 	
 	@Override
 	public int drRoll() {
+		int dr = super.drRoll();
 		if (hero != null){
-			return hero.drRoll();
+			return dr + hero.drRoll();
 		} else {
-			return 0;
+			return dr;
 		}
 	}
 	

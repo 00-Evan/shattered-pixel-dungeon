@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,9 @@ public class ShatteredPixelDungeon extends Game {
 	public static final int v1_1_2  = 588;
 	public static final int v1_2_3  = 628;
 	public static final int v1_3_2  = 648;
-	public static final int v1_4_0  = 660;
+	public static final int v1_4_3  = 668;
+
+	public static final int v2_0_0  = 684;
 	
 	public ShatteredPixelDungeon( PlatformSupport platform ) {
 		super( sceneClass == null ? WelcomeScene.class : sceneClass, platform );

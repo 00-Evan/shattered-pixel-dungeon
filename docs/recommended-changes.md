@@ -1,22 +1,24 @@
-This guide covers a few technical changes developers will likely want to make when creating their own Pixel Dungeon mod based on Shattered's source code.
+(Last Updated December 2022)
+
+This guide covers a few technical changes developers will likely want to make when creating their own Pixel Dungeon version based on Shattered's source code.
 
 ## Application name, version name, and package name
 
 There are a number of variables defined in the root [build.gradle](/build.gradle) file that you may want to change:
-- `appName` defines the user-visible name of your app. You must change this to whatever you wish to call your mod.
-- `appPackageName` defines the internal name of your app. Android and iOS use this name to distinguish your app from others and Desktop uses it and apName to determine the game's save directory. You must change this from its initial value. You should use the format com.<dev name>.<mod name>
-- `appVersionCode` defines the internal version number of your app. You want to increment this whenever releasing a new version. Read the next section for more details on this one.
-- `appVersionName` defines the user-visible version name of your app. Change this to whatever you like, and increment it whenever you release a new version.
+- `appName` defines the user-visible name of your app. You must change this to whatever you wish to call your game.
+- `appPackageName` defines the internal name of your app. Android and iOS use this name to distinguish your app from others and Desktop uses it and appName to determine the game's save directory. You must change this from its initial value. You should use the format com.<dev name>.<game name>
+- `appVersionCode` defines the internal version number of your app. You want to increment this whenever releasing a new update. Read the next section for more details on this one.
+- `appVersionName` defines the user-visible version name of your app. Change this to whatever you like, and increment it whenever you release a new update.
 
-The other variables do not need to be changed when setting up your own mod, they are mainly technical configurations that do not need to be adjusted.
+The other variables do not need to be changed when setting up your own version of Shattered, they are mainly technical configurations that do not need to be adjusted.
 
-Note that some guides may recommend that you change the package structure (i.e. the folder names) of the application. This used to be required for Pixel Dungeon mods, but is now optional as the `appPackageName` variable can be used instead.
+Note that some guides may recommend that you change the package structure (i.e. the folder names) of the application. This used to be required, but is now optional as the `appPackageName` variable can be used instead.
 
 ## Application version code
 
 Shattered Pixel Dungeon has an internal version code which should be incremented with each release. It is defined with the `appVersionCode` variable in the root [build.gradle](/build.gradle) file.
 
-You may be tempted to set this value back to 1 when starting a new mod, but Shattered has compatibility code for previous versions which may be incorrectly triggered if you decrement the version code. The version code is entirely internal so there is no harm in using the game's current version code as a starting point.
+You may be tempted to set this value back to 1, but Shattered has compatibility code for previous versions which may be incorrectly triggered if you decrement the version code. The version code is entirely internal so there is no harm in using Shattered's current version code as a starting point.
 
 If you wish to set it to 1 anyway, the various constant variables toward the top of [ShatteredPixelDungeon.java](/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/ShatteredPixelDungeon.java) are a good starting point for finding all of the cases where the game refers to the version code for compatibility purposes.
 
@@ -30,7 +32,7 @@ For icons, you can find the icons for each platform here: [Android(debug)](/andr
 
 ## Credits & Supporter button
 
-If you are making your own mod, you will likely want to add yourself to the credits or change the current supporter link. Feel free to adjust these however you like, the relevant code is in [AboutScene.java](/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/scenes/AboutScene.java) and [SupporterScene.java](/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/scenes/SupporterScene.java). If you wish to disable the supporter link, simply comment out the line `add(btnSupport);` in [TitleScene.java](/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/scenes/TitleScene.java).
+You will likely want to add yourself to the credits or change the current supporter link. Feel free to adjust these however you like, the relevant code is in [AboutScene.java](/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/scenes/AboutScene.java) and [SupporterScene.java](/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/scenes/SupporterScene.java). If you wish to disable the supporter link, simply comment out the line `add(btnSupport);` in [TitleScene.java](/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/scenes/TitleScene.java).
 
 The game also has a one-time nag window that appears when the player first defeats Goo. If you wish to edit this window, the code is in [WndSupportPrompt.java](/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/windows/WndSupportPrompt.java). If you wish to disable it entirely, the triggering logic is in [SkeletonKey.java](/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/items/keys/SkeletonKey.java).
 
@@ -40,23 +42,23 @@ Note that due to the GPLv3 license, any edits you make to the credits scene must
 
 ## Update Notification
 
-Shattered Pixel Dungeon includes a github-based update notification which likely will not be useful for mod developers unless it is modified.
+Shattered Pixel Dungeon includes a github-based update notification which likely will not be useful unless it is modified.
 
 To simply disable the notification change `:services:updates:githubUpdates` to `:services:updates:debugUpdates` for the release configurations in the build.gradle files in the [desktop](/desktop/build.gradle) and [android](/android/build.gradle) modules. The debug updates module does nothing by default and so works just fine in release builds.
 
 To modify the notification to point to your own github releases, go to [GitHubUpdates.java](/services/updates/githubUpdates/src/main/java/com/shatteredpixel/shatteredpixeldungeon/services/updates/GitHubUpdates.java) and change the line: `httpGet.setUrl("https://api.github.com/repos/00-Evan/shattered-pixel-dungeon/releases");` to match your own username and repository name. The github updater looks for a title, body of text followed by three dashes, and the phrase \` internal version number: # \` in your release.
 
-More advanced modders can change the format for releases if they like, or make entirely new update notification services.
+More advanced developers can change the format for releases if they like, or make entirely new update notification services.
 
 ## News Feed
 
-Shattered Pixel Dungeon includes a news feed which pulls blog posts from [ShatteredPixel.com](http://ShatteredPixel.com). The articles there may not be useful to your mod so you may wish to remove them.
+Shattered Pixel Dungeon includes a news feed which pulls blog posts from [ShatteredPixel.com](http://ShatteredPixel.com). The articles there may not be useful to you so you may wish to remove them.
 
 To simply disable news entirely, comment out the line `add(btnNews);` in [TitleScene.java](/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/scenes/TitleScene.java).
 
 You can also point the news checker to a different feed by modifing the URLs in [ShatteredNews.java](/services/news/shatteredNews/src/main/java/com/shatteredpixel/shatteredpixeldungeon/services/news/ShatteredNews.java). Note that the current logic expects an atom feed and is slightly customized to ShatteredPixel.com, but the logic can be modified to work with other xml feed types.
 
-More advanced modders can also write their own news checker services and use those.
+More advanced developers can also write their own news checker services and use those.
 
 ## Translations
 

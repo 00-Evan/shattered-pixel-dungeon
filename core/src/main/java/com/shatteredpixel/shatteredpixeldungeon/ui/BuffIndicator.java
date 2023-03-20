@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ import java.util.LinkedHashMap;
 public class BuffIndicator extends Component {
 	
 	//transparent icon
-	public static final int NONE    = 63;
+	public static final int NONE    = 127;
 
 	//FIXME this is becoming a mess, should do a big cleaning pass on all of these
 	//and think about tinting options
@@ -111,6 +111,15 @@ public class BuffIndicator extends Component {
 	public static final int INVERT_MARK = 57;
 	public static final int NATURE_POWER= 58;
 	public static final int AMULET      = 59;
+	public static final int DUEL_CLEAVE = 60;
+	public static final int DUEL_GUARD  = 61;
+	public static final int DUEL_SPIN   = 62;
+	public static final int DUEL_EVASIVE= 63;
+	public static final int DUEL_DANCE  = 64;
+	public static final int DUEL_BRAWL  = 65;
+	public static final int DUEL_XBOW   = 66;
+	public static final int CHALLENGE   = 67;
+	public static final int MONK_ENERGY = 68;
 
 	public static final int SIZE_SMALL  = 7;
 	public static final int SIZE_LARGE  = 16;

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,21 +45,26 @@ public class HeroIcon extends Image {
 	public static final int FREERUNNER  = 5;
 	public static final int SNIPER      = 6;
 	public static final int WARDEN      = 7;
+	public static final int CHAMPION    = 8;
+	public static final int MONK        = 9;
 
 	//abilities
-	public static final int HEROIC_LEAP     = 8;
-	public static final int SHOCKWAVE       = 9;
-	public static final int ENDURE          = 10;
-	public static final int ELEMENTAL_BLAST = 11;
-	public static final int WILD_MAGIC      = 12;
-	public static final int WARP_BEACON     = 13;
-	public static final int SMOKE_BOMB      = 14;
-	public static final int DEATH_MARK      = 15;
-	public static final int SHADOW_CLONE    = 16;
-	public static final int SPECTRAL_BLADES = 17;
-	public static final int NATURES_POWER   = 18;
-	public static final int SPIRIT_HAWK     = 19;
-	public static final int RATMOGRIFY      = 20;
+	public static final int HEROIC_LEAP     = 16;
+	public static final int SHOCKWAVE       = 17;
+	public static final int ENDURE          = 18;
+	public static final int ELEMENTAL_BLAST = 19;
+	public static final int WILD_MAGIC      = 20;
+	public static final int WARP_BEACON     = 21;
+	public static final int SMOKE_BOMB      = 22;
+	public static final int DEATH_MARK      = 23;
+	public static final int SHADOW_CLONE    = 24;
+	public static final int SPECTRAL_BLADES = 25;
+	public static final int NATURES_POWER   = 26;
+	public static final int SPIRIT_HAWK     = 27;
+	public static final int CHALLENGE       = 28;
+	public static final int ELEMENTAL_STRIKE= 29;
+	public static final int FEINT           = 30;
+	public static final int RATMOGRIFY      = 31;
 
 	public HeroIcon(HeroSubClass subCls){
 		super( Assets.Interfaces.HERO_ICONS );

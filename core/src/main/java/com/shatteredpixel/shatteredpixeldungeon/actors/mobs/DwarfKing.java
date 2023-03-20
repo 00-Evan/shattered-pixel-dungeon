@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -96,7 +96,7 @@ public class DwarfKing extends Mob {
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 10);
+		return super.drRoll() + Random.NormalIntRange(0, 10);
 	}
 
 	private int phase = 1;
@@ -438,7 +438,11 @@ public class DwarfKing extends Mob {
 
 	@Override
 	public boolean isInvulnerable(Class effect) {
-		return phase == 2 && effect != KingDamager.class;
+		if (effect == KingDamager.class){
+			return false;
+		} else {
+			return phase == 2 || super.isInvulnerable(effect);
+		}
 	}
 
 	@Override
@@ -562,6 +566,7 @@ public class DwarfKing extends Mob {
 
 	public static class DKGhoul extends Ghoul {
 		{
+			properties.add(Property.BOSS_MINION);
 			state = HUNTING;
 		}
 
@@ -574,12 +579,14 @@ public class DwarfKing extends Mob {
 
 	public static class DKMonk extends Monk {
 		{
+			properties.add(Property.BOSS_MINION);
 			state = HUNTING;
 		}
 	}
 
 	public static class DKWarlock extends Warlock {
 		{
+			properties.add(Property.BOSS_MINION);
 			state = HUNTING;
 		}
 
@@ -594,6 +601,7 @@ public class DwarfKing extends Mob {
 
 	public static class DKGolem extends Golem {
 		{
+			properties.add(Property.BOSS_MINION);
 			state = HUNTING;
 		}
 	}

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -190,8 +190,8 @@ public class v0_4_X_Changes {
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released June 20th, 2016\n" +
-				"_-_ 391 days after Shattered v0.3.0\n" +
 				"_-_ 50 days after Shattered v0.3.5\n" +
+				"_-_ 391 days after Shattered v0.3.0\n" +
 				"\n" +
 				"v0.4.0 was Shattered's third major item category update, this time addressing weapons! I see this update as the start of a new era for Shattered's development. For the first time a major update was adding far more content than it was reworking or repurposing.\n" +
 				"\n" +

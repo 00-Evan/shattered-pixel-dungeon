@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,7 +66,7 @@ public class Wandmaker extends NPC {
 			die(null);
 			return true;
 		}
-		if (Dungeon.level.heroFOV[pos] && Quest.wand1 != null){
+		if (Dungeon.level.visited[pos] && Quest.wand1 != null){
 			Notes.add( Notes.Landmark.WANDMAKER );
 		}
 		return super.act();
@@ -125,13 +125,13 @@ public class Wandmaker extends NPC {
 				String msg;
 				switch(Quest.type){
 					case 1: default:
-						msg = Messages.get(this, "reminder_dust", Dungeon.hero.name());
+						msg = Messages.get(this, "reminder_dust", Messages.titleCase(Dungeon.hero.name()));
 						break;
 					case 2:
-						msg = Messages.get(this, "reminder_ember", Dungeon.hero.name());
+						msg = Messages.get(this, "reminder_ember", Messages.titleCase(Dungeon.hero.name()));
 						break;
 					case 3:
-						msg = Messages.get(this, "reminder_berry", Dungeon.hero.name());
+						msg = Messages.get(this, "reminder_berry", Messages.titleCase(Dungeon.hero.name()));
 						break;
 				}
 				Game.runOnRenderThread(new Callback() {
@@ -154,10 +154,13 @@ public class Wandmaker extends NPC {
 					msg1 += Messages.get(this, "intro_rogue");
 					break;
 				case MAGE:
-					msg1 += Messages.get(this, "intro_mage", Dungeon.hero.name());
+					msg1 += Messages.get(this, "intro_mage", Messages.titleCase(Dungeon.hero.name()));
 					break;
 				case HUNTRESS:
 					msg1 += Messages.get(this, "intro_huntress");
+					break;
+				case DUELIST:
+					msg1 += Messages.get(this, "intro_duelist");
 					break;
 			}
 

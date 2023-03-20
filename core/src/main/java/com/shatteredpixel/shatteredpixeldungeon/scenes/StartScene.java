@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -78,12 +78,16 @@ public class StartScene extends PixelScene {
 		
 		ArrayList<GamesInProgress.Info> games = GamesInProgress.checkAll();
 		
-		int slotGap = landscape() ? 5 : 10;
 		int slotCount = Math.min(GamesInProgress.MAX_SLOTS, games.size()+1);
+		int slotGap = 10 - slotCount;
 		int slotsHeight = slotCount*SLOT_HEIGHT + (slotCount-1)* slotGap;
+
+		while (slotsHeight > (h-title.bottom()-2)){
+			slotGap--;
+			slotsHeight -= slotCount-1;
+		}
 		
-		float yPos = (h - slotsHeight)/2f;
-		if (landscape()) yPos += 8;
+		float yPos = (h - slotsHeight + title.bottom() + 2)/2f;
 		
 		for (GamesInProgress.Info game : games) {
 			SaveSlotButton existingGame = new SaveSlotButton();

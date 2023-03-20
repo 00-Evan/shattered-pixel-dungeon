@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -77,7 +77,7 @@ public class Viscosity extends Glyph {
 			int level = Math.max( 0, this.level );
 
 			float percent = (level+1)/(float)(level+6);
-			percent *= RingOfArcana.enchantPowerMultiplier(target);
+			percent *= genericProcChanceMultiplier(target);
 
 			int amount;
 			if (percent > 1f){

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -114,7 +114,7 @@ public class WandOfBlastWave extends DamageWand {
 	public static void throwChar(final Char ch, final Ballistica trajectory, int power,
 	                             boolean closeDoors, boolean collideDmg, Class cause){
 		if (ch.properties().contains(Char.Property.BOSS)) {
-			power /= 2;
+			power = (power+1)/2;
 		}
 
 		int dist = Math.min(trajectory.dist, power);

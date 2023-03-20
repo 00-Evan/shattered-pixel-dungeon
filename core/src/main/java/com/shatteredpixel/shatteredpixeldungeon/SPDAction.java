@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -181,10 +181,16 @@ public class SPDAction extends GameAction {
 		return new LinkedHashMap<>(defaultControllerBindings);
 	}
 
-	//hard bindings for android devices
 	static {
+		//hard bindings for android devices
 		KeyBindings.addHardBinding( Input.Keys.BACK, SPDAction.BACK );
 		KeyBindings.addHardBinding( Input.Keys.MENU, SPDAction.INVENTORY );
+
+		//hard bindings for desktop fullscreen toggle
+		//not bound to specific game actions, see PixelScene
+		//Note that user-entered bindings can override these individually, and that's fine.
+		KeyBindings.addHardBinding( Input.Keys.ALT_RIGHT, SPDAction.NONE );
+		KeyBindings.addHardBinding( Input.Keys.ENTER, SPDAction.NONE );
 	}
 
 	//we only save/loads keys which differ from the default configuration.

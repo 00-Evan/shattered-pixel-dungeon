@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,6 +63,7 @@ public class Pylon extends Mob {
 		maxLvl = -2;
 
 		properties.add(Property.MINIBOSS);
+		properties.add(Property.BOSS_MINION);
 		properties.add(Property.INORGANIC);
 		properties.add(Property.ELECTRIC);
 		properties.add(Property.IMMOVABLE);
@@ -178,7 +179,7 @@ public class Pylon extends Mob {
 	@Override
 	public boolean isInvulnerable(Class effect) {
 		//immune to damage when inactive
-		return (alignment == Alignment.NEUTRAL);
+		return alignment == Alignment.NEUTRAL || super.isInvulnerable(effect);
 	}
 
 	@Override

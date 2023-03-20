@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,9 +41,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutat
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ElementalSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -94,7 +96,7 @@ public abstract class Elemental extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 5);
+		return super.drRoll() + Random.NormalIntRange(0, 5);
 	}
 	
 	protected int rangedCooldown = Random.NormalIntRange( 3, 5 );
@@ -147,6 +149,7 @@ public abstract class Elemental extends Mob {
 		spend( 1f );
 
 		Invisibility.dispel(this);
+		Char enemy = this.enemy;
 		if (hit( this, enemy, true )) {
 			
 			rangedProc( enemy );
@@ -330,7 +333,11 @@ public abstract class Elemental extends Mob {
 			}
 			
 			for (Char ch : affected) {
-				ch.damage( Math.round( damage * 0.4f ), this );
+				ch.damage( Math.round( damage * 0.4f ), Shocking.class );
+				if (ch == Dungeon.hero && !ch.isAlive()){
+					Dungeon.fail(getClass());
+					GLog.n( Messages.capitalize(Messages.get(Char.class, "kill", name())) );
+				}
 			}
 
 			boolean visible = sprite.visible || enemy.sprite.visible;

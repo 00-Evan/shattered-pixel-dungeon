@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -91,6 +91,10 @@ public class GooSprite extends MobSprite {
 		} else {
 			play(pump);
 			Sample.INSTANCE.play( Assets.Sounds.CHARGEUP, 1f, warnDist == 1 ? 0.8f : 1f );
+			if (ch.fieldOfView == null || ch.fieldOfView.length != Dungeon.level.length()){
+				ch.fieldOfView = new boolean[Dungeon.level.length()];
+				Dungeon.level.updateFieldOfView( ch, ch.fieldOfView );
+			}
 			for (int i = 0; i < Dungeon.level.length(); i++){
 				if (ch.fieldOfView != null && ch.fieldOfView[i]
 						&& Dungeon.level.distance(i, ch.pos) <= warnDist

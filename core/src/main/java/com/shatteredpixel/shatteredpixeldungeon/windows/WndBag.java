@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -167,7 +167,9 @@ public class WndBag extends WndTabbed {
 
 		} else if (selector.preferredBag() != null){
 			Bag bag = Dungeon.hero.belongings.getItem( selector.preferredBag() );
-			if (bag != null) return new WndBag( bag, selector );
+			if (bag != null)    return new WndBag( bag, selector );
+			//if a specific preferred bag isn't present, then the relevant items will be in backpack
+			else                return new WndBag( Dungeon.hero.belongings.backpack, selector );
 		}
 
 		return lastBag( selector );
@@ -250,10 +252,16 @@ public class WndBag extends WndTabbed {
 		placeItem( stuff.misc != null ? stuff.misc : new Placeholder( ItemSpriteSheet.SOMETHING ) );
 		placeItem( stuff.ring != null ? stuff.ring : new Placeholder( ItemSpriteSheet.RING_HOLDER ) );
 
+		int equipped = 5;
+
 		//the container itself if it's not the root backpack
 		if (container != Dungeon.hero.belongings.backpack){
 			placeItem(container);
 			count--; //don't count this one, as it's not actually inside of itself
+		} else if (stuff.secondWep != null) {
+			//second weapon always goes to the front of view on main bag
+			placeItem(stuff.secondWep);
+			equipped++;
 		}
 
 		// Items in the bag, except other containers (they have tags at the bottom)
@@ -266,7 +274,7 @@ public class WndBag extends WndTabbed {
 		}
 		
 		// Free Space
-		while ((count - 5) < container.capacity()) {
+		while ((count - equipped) < container.capacity()) {
 			placeItem( null );
 		}
 	}
@@ -327,10 +335,9 @@ public class WndBag extends WndTabbed {
 
 			@Override
 			protected boolean onLongClick() {
-				if (selector == null && item.defaultAction != null) {
+				if (selector == null && item.defaultAction() != null) {
 					hide();
-					Dungeon.quickslot.setSlot( 0 , item );
-					QuickSlotButton.refresh();
+					QuickSlotButton.set( item );
 					return true;
 				} else if (selector != null) {
 					Game.scene().addToFront(new WndInfoItem(item));
@@ -357,7 +364,7 @@ public class WndBag extends WndTabbed {
 	@Override
 	public boolean onSignal(KeyEvent event) {
 		if (event.pressed && KeyBindings.getActionForKey( event ) == SPDAction.INVENTORY) {
-			hide();
+			onBackPressed();
 			return true;
 		} else {
 			return super.onSignal(event);

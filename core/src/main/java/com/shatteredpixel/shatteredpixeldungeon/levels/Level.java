@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -529,6 +529,20 @@ public abstract class Level implements Bundlable {
 			}
 		}
 		return null;
+	}
+
+	//some buff effects have special logic or are cancelled from the hero before transitioning levels
+	public static void beforeTransition(){
+
+		//time freeze effects need to resolve their pressed cells before transitioning
+		TimekeepersHourglass.timeFreeze timeFreeze = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+		if (timeFreeze != null) timeFreeze.disarmPresses();
+		Swiftthistle.TimeBubble timeBubble = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
+		if (timeBubble != null) timeBubble.disarmPresses();
+
+		//iron stomach does not persist through chasm falling
+		Talent.WarriorFoodImmunity foodImmune = Dungeon.hero.buff(Talent.WarriorFoodImmunity.class);
+		if (foodImmune != null) foodImmune.detach();
 	}
 
 	public void seal(){
@@ -1168,7 +1182,7 @@ public abstract class Level implements Bundlable {
 		boolean sighted = c.buff( Blindness.class ) == null && c.buff( Shadows.class ) == null
 						&& c.buff( TimekeepersHourglass.timeStasis.class ) == null && c.isAlive();
 		if (sighted) {
-			boolean[] blocking;
+			boolean[] blocking = null;
 
 			if (modifiableBlocking == null || modifiableBlocking.length != Dungeon.level.losBlocking.length){
 				modifiableBlocking = new boolean[Dungeon.level.losBlocking.length];
@@ -1176,25 +1190,33 @@ public abstract class Level implements Bundlable {
 			
 			if ((c instanceof Hero && ((Hero) c).subClass == HeroSubClass.WARDEN)
 				|| c instanceof YogFist.SoiledFist) {
-				System.arraycopy(Dungeon.level.losBlocking, 0, modifiableBlocking, 0, modifiableBlocking.length);
-				blocking = modifiableBlocking;
+				if (blocking == null) {
+					System.arraycopy(Dungeon.level.losBlocking, 0, modifiableBlocking, 0, modifiableBlocking.length);
+					blocking = modifiableBlocking;
+				}
 				for (int i = 0; i < blocking.length; i++){
 					if (blocking[i] && (Dungeon.level.map[i] == Terrain.HIGH_GRASS || Dungeon.level.map[i] == Terrain.FURROWED_GRASS)){
 						blocking[i] = false;
 					}
 				}
-			} else if (c.alignment != Char.Alignment.ALLY
+			}
+
+			if (c.alignment != Char.Alignment.ALLY
 					&& Dungeon.level.blobs.containsKey(SmokeScreen.class)
 					&& Dungeon.level.blobs.get(SmokeScreen.class).volume > 0) {
-				System.arraycopy(Dungeon.level.losBlocking, 0, modifiableBlocking, 0, modifiableBlocking.length);
-				blocking = modifiableBlocking;
+				if (blocking == null) {
+					System.arraycopy(Dungeon.level.losBlocking, 0, modifiableBlocking, 0, modifiableBlocking.length);
+					blocking = modifiableBlocking;
+				}
 				Blob s = Dungeon.level.blobs.get(SmokeScreen.class);
 				for (int i = 0; i < blocking.length; i++){
 					if (!blocking[i] && s.cur[i] > 0){
 						blocking[i] = true;
 					}
 				}
-			} else {
+			}
+
+			if (blocking == null){
 				blocking = Dungeon.level.losBlocking;
 			}
 			

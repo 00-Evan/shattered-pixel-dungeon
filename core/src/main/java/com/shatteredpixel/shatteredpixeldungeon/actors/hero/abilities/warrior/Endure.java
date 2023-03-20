@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ public class Endure extends ArmorAbility {
 	@Override
 	protected void activate(ClassArmor armor, Hero hero, Integer target) {
 
-		Buff.prolong(hero, EndureTracker.class, 13f).setup(hero);
+		Buff.prolong(hero, EndureTracker.class, 13f);
 
 		Combo combo = hero.buff(Combo.class);
 		if (combo != null){
@@ -71,11 +71,10 @@ public class Endure extends ArmorAbility {
 			type = buffType.POSITIVE;
 		}
 
-		public boolean enduring;
+		public boolean enduring = true;
 
-		public int damageBonus;
-		public int maxDmgTaken;
-		public int hitsLeft;
+		public int damageBonus = 0;
+		public int hitsLeft = 0;
 
 		@Override
 		public int icon() {
@@ -97,27 +96,17 @@ public class Endure extends ArmorAbility {
 			return Messages.get(this, "desc", damageBonus, hitsLeft);
 		}
 
-		public void setup(Hero hero){
-			enduring = true;
-			maxDmgTaken = (int) (hero.HT * Math.pow(0.67f, hero.pointsInTalent(Talent.SHRUG_IT_OFF)));
-			damageBonus = 0;
-			hitsLeft = 0;
-		}
-
 		public float adjustDamageTaken(float damage){
 			if (enduring) {
 				damageBonus += damage/2;
-				return damage/2f;
-			}
-			return damage;
-		}
 
-		public int enforceDamagetakenLimit(int damage){
-			if (damage >= maxDmgTaken) {
-				damage = maxDmgTaken;
-				maxDmgTaken = 0;
-			} else {
-				maxDmgTaken -= damage;
+				float damageMulti = 0.5f;
+				if (Dungeon.hero.hasTalent(Talent.SHRUG_IT_OFF)){
+					//total damage reduction is 60%/68%/74%/80%, based on points in talent
+					damageMulti *= Math.pow(0.8f, Dungeon.hero.pointsInTalent(Talent.SHRUG_IT_OFF));
+				}
+
+				return damage*damageMulti;
 			}
 			return damage;
 		}
@@ -166,7 +155,6 @@ public class Endure extends ArmorAbility {
 
 		public static String ENDURING       = "enduring";
 		public static String DAMAGE_BONUS   = "damage_bonus";
-		public static String MAX_DMG_TAKEN  = "max_dmg_taken";
 		public static String HITS_LEFT      = "hits_left";
 
 		@Override
@@ -174,7 +162,6 @@ public class Endure extends ArmorAbility {
 			super.storeInBundle(bundle);
 			bundle.put(ENDURING, enduring);
 			bundle.put(DAMAGE_BONUS, damageBonus);
-			bundle.put(MAX_DMG_TAKEN, maxDmgTaken);
 			bundle.put(HITS_LEFT, hitsLeft);
 		}
 
@@ -183,7 +170,6 @@ public class Endure extends ArmorAbility {
 			super.restoreFromBundle(bundle);
 			enduring = bundle.getBoolean(ENDURING);
 			damageBonus = bundle.getInt(DAMAGE_BONUS);
-			maxDmgTaken = bundle.getInt(ENDURING);
 			hitsLeft = bundle.getInt(HITS_LEFT);
 		}
 	};

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -116,7 +116,8 @@ public class Ballistica {
 
 			//if we're in solid terrain, and there's no char there, collide with the previous cell.
 			// we don't use solid here because we don't want to stop short of closed doors.
-			if (stopTerrain
+			if (collisionPos == null
+					&& stopTerrain
 					&& cell != sourcePos
 					&& !Dungeon.level.passable[cell]
 					&& !Dungeon.level.avoid[cell]
@@ -126,15 +127,17 @@ public class Ballistica {
 
 			path.add(cell);
 
-			if (stopTerrain && cell != sourcePos && Dungeon.level.solid[cell]) {
+			if (collisionPos == null && stopTerrain && cell != sourcePos && Dungeon.level.solid[cell]) {
 				if (ignoreSoftSolid && (Dungeon.level.passable[cell] || Dungeon.level.avoid[cell])) {
 					//do nothing
 				} else {
 					collide(cell);
 				}
-			} else if (cell != sourcePos && stopChars && Actor.findChar( cell ) != null) {
+			}
+			if (collisionPos == null && cell != sourcePos && stopChars && Actor.findChar( cell ) != null) {
 				collide(cell);
-			} else if  (cell == to && stopTarget){
+			}
+			if (collisionPos == null && cell == to && stopTarget){
 				collide(cell);
 			}
 
@@ -150,8 +153,9 @@ public class Ballistica {
 
 	//we only want to record the first position collision occurs at.
 	private void collide(int cell){
-		if (collisionPos == null)
+		if (collisionPos == null) {
 			collisionPos = cell;
+		}
 	}
 
 	//returns a segment of the path from start to end, inclusive.

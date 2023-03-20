@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -274,8 +274,8 @@ public class v0_8_X_Changes {
 				"_-_ 72 days after Shattered v0.8.0\n" +
 				"\n" +
 				"In terms of game content v0.8.1 was mostly a followup to v0.8.0. There were a lot of items that needed to be buffed or nerfed as a result of all the boss and enemy changes. I also took this as an opportunity to make a few item reworks. A few of the new boss and enemy mechanics were also adjusted based on balance data and player feedback.\n" +
-						"\n" +
-						"This update had some pretty big additions aside from game content though, with hero splash art and new sound effects! The splash art in particular was a long time coming, I first approached Aleksandar about them in 2016! While new game content is perhaps more exciting, these presentation improvements were a really important addition to Shattered, especially when it comes to enticing new players to try the game."));
+				"\n" +
+				"This update had some pretty big additions aside from game content though, with hero splash art and new sound effects! The splash art in particular was a long time coming, I first approached Aleksandar about them in 2016! While new game content is perhaps more exciting, these presentation improvements were a really important addition to Shattered, especially when it comes to enticing new players to try the game."));
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.DISPLAY), "New Hero Select!",
 				"The game's hero select screen has been completely overhauled, and how shows off the heroes in more detail than ever before.\n\n" +
@@ -481,8 +481,8 @@ public class v0_8_X_Changes {
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released April 16th, 2020\n" +
-				"_-_ 546 days after Shattered v0.7.0\n" +
 				"_-_ 197 days after Shattered v0.7.5\n" +
+				"_-_ 546 days after Shattered v0.7.0\n" +
 				"\n" +
 				"v0.8.0 is easily the largest update Shattered has ever received in terms of game content. It included sweeping changes to basically every enemy after floor 10. This included full reworks to three of the game's bosses, which were some of the most well-received changes I've ever made to Shattered.\n" +
 				"\n" +

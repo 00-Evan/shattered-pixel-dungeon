@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -166,14 +166,13 @@ public class Toolbar extends Component {
 
 									@Override
 									public boolean itemSelectable(Item item) {
-										return item.defaultAction != null;
+										return item.defaultAction() != null;
 									}
 
 									@Override
 									public void onSelect(Item item) {
 										if (item != null) {
-											Dungeon.quickslot.setSlot( idx , item );
-											QuickSlotButton.refresh();
+											QuickSlotButton.set(idx, item);
 										}
 									}
 								});
@@ -253,11 +252,14 @@ public class Toolbar extends Component {
 			protected void onClick() {
 				if (Dungeon.hero.ready && !GameScene.cancel()) {
 					Dungeon.hero.waitOrPickup = true;
-					if ((Dungeon.level.heaps.get(Dungeon.hero.pos) != null || Dungeon.hero.isStandingOnTrampleableGrass())
+					if ((Dungeon.level.heaps.get(Dungeon.hero.pos) != null || Dungeon.hero.canSelfTrample())
 						&& Dungeon.hero.handle(Dungeon.hero.pos)){
-						//trigger hold fast here, even if the hero didn't specifically wait
+						//trigger hold fast and patient strike here, even if the hero didn't specifically wait
 						if (Dungeon.hero.hasTalent(Talent.HOLD_FAST)){
-							Buff.affect(Dungeon.hero, HoldFast.class);
+							Buff.affect(Dungeon.hero, HoldFast.class).pos = Dungeon.hero.pos;
+						}
+						if (Dungeon.hero.hasTalent(Talent.PATIENT_STRIKE)){
+							Buff.prolong(Dungeon.hero, Talent.PatientStrikeTracker.class, Dungeon.hero.cooldown());
 						}
 						Dungeon.hero.next();
 					} else {
@@ -446,7 +448,7 @@ public class Toolbar extends Component {
 								public void onSelect(int idx, boolean alt) {
 									super.onSelect(idx, alt);
 									Item item = items.get(idx);
-									if (alt && item.defaultAction != null) {
+									if (alt && item.defaultAction() != null) {
 										item.execute(Dungeon.hero);
 									} else {
 										Game.scene().addToFront(new WndUseItem(null, item));

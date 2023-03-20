@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -110,8 +110,9 @@ public class Multiplicity extends Armor.Glyph {
 					}
 
 					if (!spawnPoints.isEmpty()) {
+						m.pos = Random.element(spawnPoints);
 						GameScene.add(m);
-						ScrollOfTeleportation.appear(m, Random.element(spawnPoints));
+						ScrollOfTeleportation.appear(m, m.pos);
 					}
 				}
 

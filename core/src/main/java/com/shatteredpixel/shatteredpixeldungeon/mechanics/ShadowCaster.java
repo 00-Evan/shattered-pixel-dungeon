@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ public final class ShadowCaster {
 				//testing the middle of a cell, so we use i + 0.5
 				rounding[i][j] = (int)Math.min(
 						j,
-						Math.round( (i + 0.5) * Math.cos( Math.asin( j / (i + 0.5) ))));
+						Math.round( i * Math.cos( Math.asin( j / (i + 0.5) ))));
 			}
 		}
 	}
@@ -83,6 +83,17 @@ public final class ShadowCaster {
 		boolean inBlocking = false;
 		int start, end;
 		int col;
+
+		int[] roundingAtDist;
+		if (distance == 2){
+			//at a visibility distance of 2 we fill in the corners of vision
+			// as otherwise this vision range disproportionately punishes diagonal movement,
+			// even though removing corners is technically correct
+			roundingAtDist = rounding[distance].clone();
+			roundingAtDist[2] = 2;
+		} else {
+			roundingAtDist = rounding[distance];
+		}
 		
 		//calculations are offset by 0.5 because FOV is coming from the center of the source cell
 		
@@ -96,8 +107,8 @@ public final class ShadowCaster {
 			if (lSlope == 0)    start = 0;
 			else                start = (int)Math.floor((row - 0.5) * lSlope + 0.499);
 			
-			if (rSlope == 1)    end = rounding[distance][row];
-			else                end = Math.min( rounding[distance][row],
+			if (rSlope == 1)    end = roundingAtDist[row];
+			else                end = Math.min( roundingAtDist[row],
 			                                    (int)Math.ceil((row + 0.5) * rSlope - 0.499));
 			
 			//coordinates of source

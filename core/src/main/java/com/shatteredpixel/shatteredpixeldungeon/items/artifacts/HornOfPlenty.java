@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.MeatPie;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Pasty;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -126,7 +128,8 @@ public class HornOfPlenty extends Artifact {
 				if (Dungeon.hero.hasTalent(Talent.IRON_STOMACH)
 						|| Dungeon.hero.hasTalent(Talent.ENERGIZING_MEAL)
 						|| Dungeon.hero.hasTalent(Talent.MYSTICAL_MEAL)
-						|| Dungeon.hero.hasTalent(Talent.INVIGORATING_MEAL)){
+						|| Dungeon.hero.hasTalent(Talent.INVIGORATING_MEAL)
+						|| Dungeon.hero.hasTalent(Talent.FOCUSED_MEAL)){
 					hero.spend(Food.TIME_TO_EAT - 2);
 				} else {
 					hero.spend(Food.TIME_TO_EAT);
@@ -214,6 +217,12 @@ public class HornOfPlenty extends Artifact {
 		if (level() >= 10) return;
 		
 		storedFoodEnergy += food.energy;
+		//Pasties are worth two upgrades instead of 1.5, meat pies are worth 4 instead of 3!
+		if (food instanceof Pasty){
+			storedFoodEnergy += Hunger.HUNGRY/2;
+		} else if (food instanceof MeatPie){
+			storedFoodEnergy += Hunger.HUNGRY;
+		}
 		if (storedFoodEnergy >= Hunger.HUNGRY){
 			int upgrades = storedFoodEnergy / (int)Hunger.HUNGRY;
 			upgrades = Math.min(upgrades, 10 - level());
@@ -241,6 +250,12 @@ public class HornOfPlenty extends Artifact {
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
+
+		//pre-2.0.0 saves
+		if (partialCharge > 1){
+			partialCharge /= Hunger.STARVING/5f;
+		}
+
 		storedFoodEnergy = bundle.getInt(STORED);
 		
 		if (charge >= 8)       image = ItemSpriteSheet.ARTIFACT_HORN4;
@@ -260,12 +275,15 @@ public class HornOfPlenty extends Artifact {
 				//This means that a standard ration will be recovered in ~5.333 hero levels
 				float chargeGain = Hunger.STARVING * levelPortion * (0.25f + (0.125f*level()));
 				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
+
+				//each charge is equal to 1/5 the max hunger value
+				chargeGain /= Hunger.STARVING/5;
 				partialCharge += chargeGain;
 
 				//charge is in increments of 1/5 max hunger value.
-				while (partialCharge >= Hunger.STARVING/5) {
+				while (partialCharge >= 1) {
 					charge++;
-					partialCharge -= Hunger.STARVING/5;
+					partialCharge -= 1;
 
 					int oldImage = image;
 					if (charge >= 8)        image = ItemSpriteSheet.ARTIFACT_HORN4;

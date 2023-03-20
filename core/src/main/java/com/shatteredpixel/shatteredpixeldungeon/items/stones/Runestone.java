@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ public abstract class Runestone extends Item {
 
 	@Override
 	protected void onThrow(int cell) {
-		if (Dungeon.level.pit[cell] || !defaultAction.equals(AC_THROW)){
+		if (Dungeon.level.pit[cell] || !defaultAction().equals(AC_THROW)){
 			super.onThrow( cell );
 		} else {
 			if (pressesCell) Dungeon.level.pressCell( cell );

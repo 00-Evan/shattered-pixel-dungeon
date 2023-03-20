@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -32,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbili
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -44,7 +46,6 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 abstract public class ClassArmor extends Armor {
@@ -99,22 +100,25 @@ abstract public class ClassArmor extends Armor {
 		ClassArmor classArmor = null;
 		
 		switch (owner.heroClass) {
-		case WARRIOR:
-			classArmor = new WarriorArmor();
-			BrokenSeal seal = armor.checkSeal();
-			if (seal != null) {
-				classArmor.affixSeal(seal);
-			}
-			break;
-		case ROGUE:
-			classArmor = new RogueArmor();
-			break;
-		case MAGE:
-			classArmor = new MageArmor();
-			break;
-		case HUNTRESS:
-			classArmor = new HuntressArmor();
-			break;
+			case WARRIOR:
+				classArmor = new WarriorArmor();
+				BrokenSeal seal = armor.checkSeal();
+				if (seal != null) {
+					classArmor.affixSeal(seal);
+				}
+				break;
+			case ROGUE:
+				classArmor = new RogueArmor();
+				break;
+			case MAGE:
+				classArmor = new MageArmor();
+				break;
+			case HUNTRESS:
+				classArmor = new HuntressArmor();
+				break;
+			case DUELIST:
+				classArmor = new DuelistArmor();
+				break;
 		}
 		
 		classArmor.level(armor.trueLevel());
@@ -161,7 +165,7 @@ abstract public class ClassArmor extends Armor {
 	@Override
 	public String actionName(String action, Hero hero) {
 		if (hero.armorAbility != null && action.equals(AC_ABILITY)){
-			return hero.armorAbility.name().toUpperCase();
+			return Messages.upperCase(hero.armorAbility.name());
 		} else {
 			return super.actionName(action, hero);
 		}
@@ -229,7 +233,14 @@ abstract public class ClassArmor extends Armor {
 								cursed = armor.cursed;
 								curseInfusionBonus = armor.curseInfusionBonus;
 								masteryPotionBonus = armor.masteryPotionBonus;
-								if (armor.checkSeal() != null) seal = armor.checkSeal();
+								if (armor.checkSeal() != null) {
+									seal = armor.checkSeal();
+									if (seal.level() > 0) {
+										int newLevel = trueLevel() + 1;
+										level(newLevel);
+										Badges.validateItemLevelAquired(ClassArmor.this);
+									}
+								}
 
 								identify();
 
@@ -258,7 +269,7 @@ abstract public class ClassArmor extends Armor {
 			if (ability != null) {
 				desc += "\n\n" + ability.shortDesc();
 				float chargeUse = ability.chargeUse(Dungeon.hero);
-				desc += " " + Messages.get(this, "charge_use", new DecimalFormat("#.##").format(chargeUse));
+				desc += " " + Messages.get(this, "charge_use", Messages.decimalFormat("#.##", chargeUse));
 			} else {
 				desc += "\n\n" + "_" + Messages.get(this, "no_ability") + "_";
 			}
@@ -283,7 +294,9 @@ abstract public class ClassArmor extends Armor {
 		public boolean attachTo( Char target ) {
 			if (super.attachTo( target )) {
 				//if we're loading in and the hero has partially spent a turn, delay for 1 turn
-				if (now() == 0 && cooldown() == 0 && target.cooldown() > 0) spend(TICK);
+				if (target instanceof Hero && Dungeon.hero == null && cooldown() == 0 && target.cooldown() > 0) {
+					spend(TICK);
+				}
 				return true;
 			}
 			return false;
@@ -293,7 +306,9 @@ abstract public class ClassArmor extends Armor {
 		public boolean act() {
 			LockedFloor lock = target.buff(LockedFloor.class);
 			if (lock == null || lock.regenOn()) {
-				charge += 100 / 500f; //500 turns to full charge
+				float chargeGain = 100 / 500f; //500 turns to full charge
+				chargeGain *= RingOfEnergy.armorChargeMultiplier(target);
+				charge += chargeGain;
 				updateQuickslot();
 				if (charge > 100) {
 					charge = 100;

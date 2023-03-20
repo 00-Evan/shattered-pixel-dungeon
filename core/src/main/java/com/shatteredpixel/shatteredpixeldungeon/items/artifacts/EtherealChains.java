@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -174,6 +175,7 @@ public class EtherealChains extends Artifact {
 			return;
 		} else {
 			charge -= chargeUse;
+			Invisibility.dispel(hero);
 			Talent.onArtifactUsed(hero);
 			updateQuickslot();
 		}
@@ -237,6 +239,7 @@ public class EtherealChains extends Artifact {
 			return;
 		} else {
 			charge -= chargeUse;
+			Invisibility.dispel(hero);
 			Talent.onArtifactUsed(hero);
 			updateQuickslot();
 		}
@@ -335,7 +338,7 @@ public class EtherealChains extends Artifact {
 			if (charge > 5+(level()*2)){
 				levelPortion *= (5+((float)level()*2))/charge;
 			}
-			partialCharge += levelPortion*10f;
+			partialCharge += levelPortion*6f;
 
 			if (exp > 100+level()*100 && level() < levelCap){
 				exp -= 100+level()*100;

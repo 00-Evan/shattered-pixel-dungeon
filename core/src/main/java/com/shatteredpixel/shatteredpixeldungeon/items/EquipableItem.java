@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
@@ -116,7 +117,9 @@ public abstract class EquipableItem extends Item {
 
 	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
 
-		if (cursed && hero.buff(MagicImmune.class) == null) {
+		if (cursed
+				&& hero.buff(MagicImmune.class) == null
+				&& (hero.buff(LostInventory.class) == null || keptThoughLostInvent)) {
 			GLog.w(Messages.get(EquipableItem.class, "unequip_cursed"));
 			return false;
 		}
@@ -134,7 +137,7 @@ public abstract class EquipableItem extends Item {
 			onDetach();
 			Dungeon.quickslot.clearItem(this);
 			updateQuickslot();
-			if (collect) Dungeon.level.drop( this, hero.pos );
+			if (collect) Dungeon.level.drop( this, hero.pos ).sprite.drop();
 		}
 		keptThoughLostInvent = wasKept;
 

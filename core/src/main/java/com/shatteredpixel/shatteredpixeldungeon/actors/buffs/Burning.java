@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Thief;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
@@ -117,7 +118,7 @@ public class Burning extends Buff implements Hero.Doom {
 
 					if (!burnable.isEmpty()){
 						Item toBurn = Random.element(burnable).detach(hero.belongings.backpack);
-						GLog.w( Messages.get(this, "burnsup", Messages.capitalize(toBurn.title())) );
+						GLog.w( Messages.capitalize(Messages.get(this, "burnsup", toBurn.title())) );
 						if (toBurn instanceof MysteryMeat || toBurn instanceof FrozenCarpaccio){
 							ChargrilledMeat steak = new ChargrilledMeat();
 							if (!steak.collect( hero.belongings.backpack )) {
@@ -179,7 +180,7 @@ public class Burning extends Buff implements Hero.Doom {
 					&& ((Hero) ch).belongings.armor() != null
 					&& ((Hero) ch).belongings.armor().hasGlyph(Brimstone.class, ch)){
 				//has a 2*boost/50% chance to generate 1 shield per turn, to a max of 4x boost
-				float shieldChance = 2*(RingOfArcana.enchantPowerMultiplier(ch) - 1f);
+				float shieldChance = 2*(Armor.Glyph.genericProcChanceMultiplier(ch) - 1f);
 				int shieldCap = Math.round(shieldChance*4f);
 				if (shieldCap > 0 && Random.Float() < shieldChance){
 					Barrier barrier = Buff.affect(ch, Barrier.class);

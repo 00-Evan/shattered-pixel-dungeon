@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ public class TargetHealthIndicator extends HealthBar {
 	public void update() {
 		super.update();
 		
-		if (target != null && target.isAlive() && target.sprite.visible) {
+		if (target != null && target.isAlive() && target.isActive() && target.sprite.visible) {
 			CharSprite sprite = target.sprite;
 			width = sprite.width();
 			x = sprite.x;
@@ -53,7 +53,7 @@ public class TargetHealthIndicator extends HealthBar {
 	}
 	
 	public void target( Char ch ) {
-		if (ch != null && ch.isAlive()) {
+		if (ch != null && ch.isAlive() && ch.isActive()) {
 			target = ch;
 		} else {
 			target = null;

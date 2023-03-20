@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,9 +22,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -49,21 +51,27 @@ public abstract class AllyBuff extends Buff{
 	//for when applying an ally buff should also cause that enemy to give exp/loot as if they had died
 	//consider that chars with the ally alignment do not drop items or award exp on death
 	public static void affectAndLoot(Mob enemy, Hero hero, Class<?extends AllyBuff> buffCls){
-		boolean droppingLoot = enemy.alignment != Char.Alignment.ALLY;
+		boolean wasEnemy = enemy.alignment == Char.Alignment.ENEMY;
 		Buff.affect(enemy, buffCls);
 
-		if (enemy.buff(buffCls) != null){
-			if (droppingLoot) enemy.rollToDropLoot();
+		if (enemy.buff(buffCls) != null && wasEnemy){
+			enemy.rollToDropLoot();
+
 			Statistics.enemiesSlain++;
 			Badges.validateMonstersSlain();
 			Statistics.qualifiedForNoKilling = false;
-			if (enemy.EXP > 0 && hero.lvl <= enemy.maxLvl) {
-				hero.sprite.showStatus(CharSprite.POSITIVE, Messages.get(enemy, "exp", enemy.EXP));
-				hero.earnExp(enemy.EXP, enemy.getClass());
-			} else {
-				hero.earnExp(0, enemy.getClass());
+
+			AscensionChallenge.processEnemyKill(enemy);
+
+			int exp = hero.lvl <= enemy.maxLvl ? enemy.EXP : 0;
+			if (exp > 0) {
+				hero.sprite.showStatus(CharSprite.POSITIVE, Messages.get(enemy, "exp", exp));
 			}
-			if (droppingLoot) AscensionChallenge.processEnemyKill(enemy);
+			hero.earnExp(exp, enemy.getClass());
+
+			if (hero.subClass == HeroSubClass.MONK){
+				Buff.affect(hero, MonkEnergy.class).gainEnergy(enemy);
+			}
 		}
 	}
 

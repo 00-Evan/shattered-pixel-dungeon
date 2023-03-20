@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2023 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -174,7 +174,7 @@ public class WndSettings extends WndTabbed {
 			protected void createChildren() {
 				super.createChildren();
 				switch(Messages.lang().status()){
-					case INCOMPLETE:
+					case UNFINISHED:
 						icon.hardlight(1.5f, 0, 0);
 						break;
 					case UNREVIEWED:
@@ -894,6 +894,7 @@ public class WndSettings extends WndTabbed {
 		CheckBox chkMuteSFX;
 		ColorBlock sep3;
 		CheckBox chkIgnoreSilent;
+		CheckBox chkMusicBG;
 
 		@Override
 		protected void createChildren() {
@@ -956,7 +957,7 @@ public class WndSettings extends WndTabbed {
 			chkMuteSFX.checked(!SPDSettings.soundFx());
 			add( chkMuteSFX );
 
-			if (DeviceCompat.isiOS() && Messages.lang() == Languages.ENGLISH){
+			if (DeviceCompat.isiOS()){
 
 				sep3 = new ColorBlock(1, 1, 0xFF000000);
 				add(sep3);
@@ -970,6 +971,21 @@ public class WndSettings extends WndTabbed {
 				};
 				chkIgnoreSilent.checked(SPDSettings.ignoreSilentMode());
 				add(chkIgnoreSilent);
+
+			} else if (DeviceCompat.isDesktop()){
+
+				sep3 = new ColorBlock(1, 1, 0xFF000000);
+				add(sep3);
+
+				chkMusicBG = new CheckBox( Messages.get(this, "music_bg") ){
+					@Override
+					protected void onClick() {
+						super.onClick();
+						SPDSettings.playMusicInBackground(checked());
+					}
+				};
+				chkMusicBG.checked(SPDSettings.playMusicInBackground());
+				add(chkMusicBG);
 			}
 		}
 
@@ -1008,6 +1024,12 @@ public class WndSettings extends WndTabbed {
 
 				chkIgnoreSilent.setRect(0, sep3.y + 1 + GAP, width, BTN_HEIGHT);
 				height = chkIgnoreSilent.bottom();
+			} else if (chkMusicBG != null){
+				sep3.size(width, 1);
+				sep3.y = chkMuteSFX.bottom() + GAP;
+
+				chkMusicBG.setRect(0, sep3.y + 1 + GAP, width, BTN_HEIGHT);
+				height = chkMusicBG.bottom();
 			}
 		}
 
@@ -1050,13 +1072,13 @@ public class WndSettings extends WndTabbed {
 			txtLangInfo = PixelScene.renderTextBlock(6);
 			String info = "_" + Messages.titleCase(currLang.nativeName()) + "_ - ";
 			if (currLang == Languages.ENGLISH) info += "This is the source language, written by the developer.";
-			else if (currLang.status() == Languages.Status.REVIEWED) info += Messages.get(this, "completed");
+			else if (currLang.status() == Languages.Status._COMPLETE_) info += Messages.get(this, "completed");
 			else if (currLang.status() == Languages.Status.UNREVIEWED) info += Messages.get(this, "unreviewed");
-			else if (currLang.status() == Languages.Status.INCOMPLETE) info += Messages.get(this, "unfinished");
+			else if (currLang.status() == Languages.Status.UNFINISHED) info += Messages.get(this, "unfinished");
 			txtLangInfo.text(info);
 
 			if (currLang.status() == Languages.Status.UNREVIEWED) txtLangInfo.setHightlighting(true, CharSprite.WARNING);
-			else if (currLang.status() == Languages.Status.INCOMPLETE) txtLangInfo.setHightlighting(true, CharSprite.NEGATIVE);
+			else if (currLang.status() == Languages.Status.UNFINISHED) txtLangInfo.setHightlighting(true, CharSprite.NEGATIVE);
 			add(txtLangInfo);
 
 			sep2 = new ColorBlock(1, 1, 0xFF000000);
@@ -1088,7 +1110,7 @@ public class WndSettings extends WndTabbed {
 					btn.textColor(TITLE_COLOR);
 				} else {
 					switch (langs.get(i).status()) {
-						case INCOMPLETE:
+						case UNFINISHED:
 							btn.textColor(0x888888);
 							break;
 						case UNREVIEWED:
