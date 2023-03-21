@@ -83,6 +83,7 @@ public class NecromancerSprite extends MobSprite {
 		super.die();
 		if (summoningBones != null){
 			summoningBones.on = false;
+			summoningBones = null;
 		}
 	}
 
@@ -90,13 +91,15 @@ public class NecromancerSprite extends MobSprite {
 	public void kill() {
 		super.kill();
 		if (summoningBones != null){
-			summoningBones.killAndErase();
+			summoningBones.on = false;
+			summoningBones = null;
 		}
 	}
 
 	public void cancelSummoning(){
 		if (summoningBones != null){
 			summoningBones.on = false;
+			summoningBones = null;
 		}
 	}
 
@@ -107,6 +110,7 @@ public class NecromancerSprite extends MobSprite {
 		} else {
 			summoningBones.on = false;
 		}
+		summoningBones = null;
 		idle();
 	}
 
