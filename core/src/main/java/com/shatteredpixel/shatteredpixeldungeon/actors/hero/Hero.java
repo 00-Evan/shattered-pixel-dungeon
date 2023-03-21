@@ -1767,14 +1767,15 @@ public class Hero extends Char {
 	}
 	
 	@Override
-	public void add( Buff buff ) {
+	public boolean add( Buff buff ) {
 
-		if (buff(TimekeepersHourglass.timeStasis.class) != null)
-			return;
+		if (buff(TimekeepersHourglass.timeStasis.class) != null) {
+			return false;
+		}
 
-		super.add( buff );
+		boolean added = super.add( buff );
 
-		if (sprite != null && buffs().contains(buff)) {
+		if (sprite != null && added) {
 			String msg = buff.heroMessage();
 			if (msg != null){
 				GLog.w(msg);
@@ -1787,13 +1788,17 @@ public class Hero extends Char {
 		}
 		
 		BuffIndicator.refreshHero();
+
+		return added;
 	}
 	
 	@Override
-	public void remove( Buff buff ) {
-		super.remove( buff );
-
-		BuffIndicator.refreshHero();
+	public boolean remove( Buff buff ) {
+		if (super.remove( buff )) {
+			BuffIndicator.refreshHero();
+			return true;
+		}
+		return false;
 	}
 	
 	@Override

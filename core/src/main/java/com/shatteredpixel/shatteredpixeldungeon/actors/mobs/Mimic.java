@@ -91,13 +91,16 @@ public class Mimic extends Mob {
 	}
 
 	@Override
-	public void add(Buff buff) {
-		super.add(buff);
-		if (buff.type == Buff.buffType.NEGATIVE && alignment == Alignment.NEUTRAL){
-			alignment = Alignment.ENEMY;
-			stopHiding();
-			if (sprite != null) sprite.idle();
+	public boolean add(Buff buff) {
+		if (super.add(buff)) {
+			if (buff.type == Buff.buffType.NEGATIVE && alignment == Alignment.NEUTRAL) {
+				alignment = Alignment.ENEMY;
+				stopHiding();
+				if (sprite != null) sprite.idle();
+			}
+			return true;
 		}
+		return false;
 	}
 
 	@Override

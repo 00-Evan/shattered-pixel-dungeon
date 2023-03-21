@@ -195,8 +195,8 @@ public class Feint extends ArmorAbility {
 		}
 
 		@Override
-		public void add( Buff buff ) {
-
+		public boolean add( Buff buff ) {
+			return false;
 		}
 
 		{

@@ -846,43 +846,48 @@ public abstract class Char extends Actor {
 		return false;
 	}
 
-	public synchronized void add( Buff buff ) {
+	public synchronized boolean add( Buff buff ) {
 
 		if (buff(PotionOfCleansing.Cleanse.class) != null) { //cleansing buff
 			if (buff.type == Buff.buffType.NEGATIVE
 					&& !(buff instanceof AllyBuff)
 					&& !(buff instanceof LostInventory)){
-				return;
+				return false;
 			}
 		}
 
 		if (sprite != null && buff(Challenge.SpectatorFreeze.class) != null){
-			return; //can't add buffs while frozen and game is loaded
+			return false; //can't add buffs while frozen and game is loaded
 		}
 
 		buffs.add( buff );
 		if (Actor.chars().contains(this)) Actor.add( buff );
 
-		if (sprite != null && buff.announced)
-			switch(buff.type){
+		if (sprite != null && buff.announced) {
+			switch (buff.type) {
 				case POSITIVE:
 					sprite.showStatus(CharSprite.POSITIVE, Messages.titleCase(buff.name()));
 					break;
 				case NEGATIVE:
 					sprite.showStatus(CharSprite.NEGATIVE, Messages.titleCase(buff.name()));
 					break;
-				case NEUTRAL: default:
+				case NEUTRAL:
+				default:
 					sprite.showStatus(CharSprite.NEUTRAL, Messages.titleCase(buff.name()));
 					break;
 			}
+		}
+
+		return true;
 
 	}
 	
-	public synchronized void remove( Buff buff ) {
+	public synchronized boolean remove( Buff buff ) {
 		
 		buffs.remove( buff );
 		Actor.remove( buff );
 
+		return true;
 	}
 	
 	public synchronized void remove( Class<? extends Buff> buffClass ) {
