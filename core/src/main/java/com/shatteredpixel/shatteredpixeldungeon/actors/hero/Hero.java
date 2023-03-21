@@ -2099,7 +2099,9 @@ public class Hero extends Char {
 		}
 		curAction = null;
 
-		super.onOperateComplete();
+		if (!ready) {
+			super.onOperateComplete();
+		}
 	}
 
 	@Override
