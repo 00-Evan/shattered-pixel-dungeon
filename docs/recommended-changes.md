@@ -6,7 +6,7 @@ This guide covers a few technical changes developers will likely want to make wh
 
 There are a number of variables defined in the root [build.gradle](/build.gradle) file that you may want to change:
 - `appName` defines the user-visible name of your app. You must change this to whatever you wish to call your game.
-- `appPackageName` defines the internal name of your app. Android and iOS use this name to distinguish your app from others and Desktop uses it and appName to determine the game's save directory. You must change this from its initial value. You should use the format com.<dev name>.<game name>
+- `appPackageName` defines the internal name of your app. Android and iOS use this name to distinguish your app from others and Desktop uses it and appName to determine the game's save directory. You must change this from its initial value. You should use the format `com.<dev name>.<game name>`
 - `appVersionCode` defines the internal version number of your app. You want to increment this whenever releasing a new update. Read the next section for more details on this one.
 - `appVersionName` defines the user-visible version name of your app. Change this to whatever you like, and increment it whenever you release a new update.
 
