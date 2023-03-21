@@ -140,7 +140,9 @@ public class Button extends Component {
 	public GameAction secondaryTooltipAction(){
 		return null;
 	}
-	
+
+	private float lastUpdateTime = Float.POSITIVE_INFINITY;
+
 	@Override
 	public void update() {
 		super.update();
@@ -148,7 +150,19 @@ public class Button extends Component {
 		hotArea.active = visible;
 		
 		if (pressed) {
-			if ((pressTime += Game.elapsed) >= longClick) {
+			//if this button hasn't updated for a bit while held, it was probably deactivated.
+			// cancel the hold action in these cases.
+			if (Game.timeTotal - 0.5f >= lastUpdateTime){
+				hotArea.reset();
+				pressed = false;
+				onPointerUp();
+
+				return;
+			} else {
+				lastUpdateTime = Game.timeTotal;
+			}
+
+			if (pressed && (pressTime += Game.elapsed) >= longClick) {
 				pressed = false;
 				if (onLongClick()) {
 
@@ -159,6 +173,8 @@ public class Button extends Component {
 					Game.vibrate( 50 );
 				}
 			}
+		} else {
+			lastUpdateTime = Float.POSITIVE_INFINITY;
 		}
 	}
 	
