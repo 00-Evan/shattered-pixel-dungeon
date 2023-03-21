@@ -89,7 +89,7 @@ public class Noisemaker extends Bomb {
 				}
 			}
 
-			if (bomb == null) {
+			if (bomb == null || bomb.fuse == null) {
 				detach();
 
 			} else if (Actor.findChar(cell) != null)  {
