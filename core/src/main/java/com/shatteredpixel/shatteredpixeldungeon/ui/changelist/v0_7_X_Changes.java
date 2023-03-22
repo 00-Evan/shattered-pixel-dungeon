@@ -507,7 +507,15 @@ public class v0_7_X_Changes {
 				"_-_ Recipe changed to: strength + catalyst + 5 energy\n" +
 				"_-_ Health boost now scales up with level, but fades after the hero gains a few levels\n\n" +
 				"_-_ Meat Pie recipe cost reduced from 9 to 6, total healing reduced from 45 to 25\n\n" +
-				"_-_ Added a privacy policy link to the Google Play edition of Shattered."));
+				"_-_ Added a privacy policy link to the Google Play edition of Shattered.",
+
+				"Major internal improvements to service integrations for Google Play version of the game:\n" +
+				"_-_ 'Share Gameplay Data' now uses Google Firebase Analytics instead of older Google Analytics. Data collected is unchanged.\n" +
+				"_-_ Many internal improvements to Google Play Games sync and Google Payment integration.\n" +
+				"_-_ Item renaming donation perk now applies to wands.\n\n" +
+				"_-_ Added support for adaptive icons in Android 8.0+.\n" +
+				"_-_ Improved how the game handles orientation changes and window resizing.\n" +
+				"_-_ Shocking enchantment no longer visually arcs lightning to the hero."));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
@@ -526,23 +534,8 @@ public class v0_7_X_Changes {
 				"_-_ Thieves rarely escaping when they are close\n" +
 				"_-_ Beacon of returning losing set location when scroll holder is picked up\n" +
 				"_-_ Recycle not giving an item if inventory is full\n" +
-				"_-_ Rare cases where the game wouldn't save during alchemy"));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(ChangesScene.class, "language"),
-				"Updated Translations\n\n" +
-				"Updated Translator Credits"));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"Major internal improvements to service integrations for Google Play version of the game:\n" +
-				"_-_ 'Share Gameplay Data' now uses Google Firebase Analytics instead of older Google Analytics. Data collected is unchanged.\n" +
-				"_-_ Many internal improvements to Google Play Games sync and Google Payment integration.\n" +
-				"_-_ Item renaming donation perk now applies to wands.\n\n" +
-				"_-_ Added support for adaptive icons in Android 8.0+.\n" +
-				"_-_ Improved how the game handles orientation changes and window resizing.\n" +
-				"_-_ Shocking enchantment no longer visually arcs lightning to the hero."));
-		
-		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (existed before 0.7.2):\n" +
+				"_-_ Rare cases where the game wouldn't save during alchemy",
+
 				"_-_ Cloak of Shadows very rarely consuming more charges than it should\n" +
 				"_-_ Assassin's blink not working on enemies standing on traps\n" +
 				"_-_ Glyph of stone blocking an incorrect amount of damage (too low) in some cases\n" +
@@ -556,6 +549,10 @@ public class v0_7_X_Changes {
 				"_-_ Crashes and other odd behaviour when a berserking hero is affected by shielding buffs\n" +
 				"_-_ Tengu spawning on top of other characters\n" +
 				"_-_ Cloak of shadows only being usable from quickslots if it has 1 charge"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(ChangesScene.class, "language"),
+				"Updated Translations\n\n" +
+				"Updated Translator Credits"));
 		
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight( CharSprite.POSITIVE );
@@ -859,14 +856,12 @@ public class v0_7_X_Changes {
 				"_-_ Augmented weapons rarely having inconsistent speed\n" +
 				"_-_ Scroll of upgrade revealing curses on unidentified items\n" +
 				"_-_ Item curses rarely not being revealed when they should be\n" +
-				"_-_ Assassin buffs not being cleared when they should in some cases\n" +
+				"_-_ Assassin buffs not being cleared when they should in some cases",
+
 				"_-_ Rooting not working correctly on retreating enemies\n" +
 				"_-_ Searching spending hunger in a locked level\n" +
 				"_-_ 'Faith is my armor' deleting class armors\n" +
-				"_-_ Various cases where the player can be ontop of enemies"));
-		
-		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed:\n" +
+				"_-_ Various cases where the player can be ontop of enemies\n" +
 				"_-_ Various screen layout issues in power saver mode\n" +
 				"_-_ Crashes when tengu is healed above 1/2 health\n" +
 				"_-_ Bolas incorrectly requiring 15 strength\n" +

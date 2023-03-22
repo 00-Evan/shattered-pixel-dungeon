@@ -146,7 +146,7 @@ public class v0_3_X_Changes {
 				"\n" +
 				"Google Play Games was the first online functionality ever added to Shattered. Some people were worried that this was the start of me turning Shattered into a game that would require internet. I tried to address this worry by making the functionality as optional as possible and heavily emphasizing that it was only for tiny extras like cloud sync and play games badges. Nowadays things are much more relaxed and Shattered has several internet-enabled features, but still none of them are needed to play the game itself."));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Google Play Games",
+		changes.addButton( new ChangeButton(Icons.get(Icons.CONTROLLER), "Google Play Games",
 				"Added support for Google Play Games in the Google Play version:\n\n" +
 				"- Badges can now sync across devices\n" +
 				"- Five Google Play Achievements added\n" +

@@ -129,7 +129,7 @@ public class v2_X_Changes {
 				"_- Gnoll & Snake_ stat boost up to 9x from 7x\n" +
 				"_- Rat_ stat boost up to 10x from 8x"));
 
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 1",
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"_Highlights:_\n" +
 				"_-_ The game now remembers if the player removes the waterskin from their quickslot right after starting a run\n" +
 				"_-_ The damage warning vfx now always interrupts the hero, regardless of any other factors\n" +
@@ -137,33 +137,31 @@ public class v2_X_Changes {
 				"_-_ Added metamorphosis effects to the two remaining talents that previously couldn't be gained by metamorphosis\n" +
 				"_-_ Desktop users can now toggle fullscreen with right-alt + enter\n" +
 				"_-_ Added a setting to enable/disable playing music in background on desktop\n" +
-				"_-_ Added a 5th games in progress slot for the Duelist\n" +
-				"\n" +
+				"_-_ Added a 5th games in progress slot for the Duelist",
+
 				"_Translations:_\n" +
 				"_-_ Added a new Language: _Vietnamese!_ Currently only system font is supported for Vietnamese.\n" +
-				"_-_ Removed the following Languages due to low usage and lack of maintenance: Finnish, Galician, Basque, Esperanto."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 2",
+				"_-_ Removed the following Languages due to low usage and lack of maintenance: Finnish, Galician, Basque, Esperanto.\n" +
+						"\n" +
 				"_iOS:_\n" +
 				"_-_ Improved gesture handling, should reduce/eliminate touch delays\n" +
 				"_-_ Removed unused audio files, reducing download size by about 15%\n" +
 				"\n" +
+				"_Effects:_\n" +
+				"_-_ Backup barrier now triggers before wand zaps fully resolve\n" +
+				"_-_ The chasm warning screen now also appears when levitation is about to end.",
+
 				"_Hero, Allies, & Enemies:_\n" +
 				"_-_ The hero can now also self-trample plants, in addition to grass\n" +
 				"_-_ Ripper demons will now try to leap even if their destination is blocked by terrain\n" +
 				"_-_ Red Sentry attacks can now be dodged or blocked, but are very accurate.\n" +
 				"_-_ Knockback effects now round up after being halved vs. bosses\n" +
 				"\n" +
-				"_Effects:_\n" +
-				"_-_ Backup barrier now triggers before wand zaps fully resolve\n" +
-				"_-_ The chasm warning screen now also appears when levitation is about to end."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 3",
 				"_Levelgen:_\n" +
 				"_-_ Adjusted the layout of sacrifice rooms to provide some cover from ranged enemies\n" +
 				"_-_ Secret rooms now never affect the generation of items in other rooms\n" +
-				"_-_ Items and Enemies can no longer spawn on the Wandmaker quest ritual marker.\n" +
-				"\n" +
+				"_-_ Items and Enemies can no longer spawn on the Wandmaker quest ritual marker.",
+
 				"_Items:_\n" +
 				"_-_ Several artifacts now cancel invisibility when used\n" +
 				"_-_ Items no longer spawn on pitfall traps\n" +
@@ -175,7 +173,7 @@ public class v2_X_Changes {
 				"_-_ Healing no longer interrupts resting when HP is already full\n" +
 				"_-_ Updated various code libraries\n"));
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 1",
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
 				"_Highlights:_\n" +
 				"_-_ Various rare crash and freeze errors\n" +
@@ -184,7 +182,12 @@ public class v2_X_Changes {
 				"_-_ AOE from gladiator's crush move invalidating Dwarf King's 'no weapons' badge\n" +
 				"_-_ Magic resistance being extremely effective against Grim traps at low HP\n" +
 				"_-_ Allies spawned by some armor abilities getting boosted stats during ascension\n" +
-				"\n" +
+				"_-_ One upgrade being lost when transferring class armor with a warrior's seal attached\n" +
+				"_-_ Transmuting a dried rose deleting any items held by the ghost\n" +
+				"_-_ Rare cases of hero stacking onto enemies when trying to swap positions with an ally\n" +
+				"_-_ Directable allies being easily distracted after being told to move\n" +
+				"_-_ Several on-kill effects incorrectly triggering when ghouls get downed",
+
 				"_Effects:_\n" +
 				"_-_ Lethal momentum not triggering on kills made via enchantment\n" +
 				"_-_ Teleportation effects not being blocked by magic immunity\n" +
@@ -195,13 +198,10 @@ public class v2_X_Changes {
 				"_-_ Iron Stomach talent cancelling fall damage in rare cases\n" +
 				"_-_ Time freeze causing various odd behaviour when triggering plants and traps\n" +
 				"_-_ Rare cases of earthroot armor and hold fast working after movement\n" +
-				"_-_ Volley ability not triggering lethal momentum"));
+				"_-_ Volley ability not triggering lethal momentum",
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 2",
 				"_Items:_\n" +
-				"_-_ One upgrade being lost when transferring class armor with a warrior's seal attached\n" +
-				"_-_ Leftover darts being lost in rare cases when tipped darts have bonus durability\n" +
-				"_-_ Transmuting a dried rose deleting any items held by the ghost\n" +
+				"_-_ Darts being lost in rare cases when tipped darts have bonus durability\n" +
 				"_-_ Alchemist's Toolkit not triggering the enhanced rings talent\n" +
 				"_-_ Wand of fireblast rarely shooting great distances\n" +
 				"_-_ Wand of lightning rarely taking credit for hero deaths not caused by it\n" +
@@ -214,17 +214,13 @@ public class v2_X_Changes {
 				"_-_ Rare cases where cloak of shadows wouldn't spend a charge on activation\n" +
 				"_-_ Disarming traps rarely teleporting weapons into chests or graves\n" +
 				"_-_ Blacksmith failing to take his pickaxe back in rare cases\n" +
-				"_-_ Various rare errors with blacksmith reforging and resin boosted wands"));
+				"_-_ Various rare errors with blacksmith reforging and resin boosted wands",
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 3",
 				"_Allies & Enemies:_\n" +
-				"_-_ Rare cases of hero stacking onto enemies when trying to swap positions with an ally\n" +
-				"_-_ Directable allies being easily distracted if attacked after being told to move\n" +
 				"_-_ DM-300 not using abilities in its first phase in specific situations\n" +
 				"_-_ DM-201s rarely lobbing grenades when they shouldn't\n" +
 				"_-_ DM-300's rockfall attack very rarely having no delay\n" +
 				"_-_ Tengu rarely throwing bombs into walls\n" +
-				"_-_ Several on-kill effects incorrectly triggering when ghouls get downed, but not killed\n" +
 				"_-_ Soiled fist being able to see through shrouding fog\n" +
 				"_-_ Rare cases where the Imp's shop could appear without completing his quest\n" +
 				"_-_ Gladiator not gaining combo from attacking hiding mimics\n" +
@@ -235,10 +231,8 @@ public class v2_X_Changes {
 				"_-_ Evil eyes only resisting some disintegration effects\n" +
 				"_-_ Several rare issues with spinner web shooting\n" +
 				"_-_ Very rare cases where surprise attacks on mimics would fail\n" +
-				"_-_ Very rare pathfinding bugs with flying enemies\n" +
-				"_-_ Mirror and Prismatic images benefiting from more accuracy or evasion effects than intended"));
+				"_-_ Very rare pathfinding bugs with flying enemies",
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 4",
 				"_UI/VFX:_\n" +
 				"_-_ Various minor audiovisual errors\n" +
 				"_-_ Various minor textual errors\n" +

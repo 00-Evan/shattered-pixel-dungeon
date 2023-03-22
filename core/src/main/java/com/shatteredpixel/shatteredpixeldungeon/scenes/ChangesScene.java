@@ -34,7 +34,8 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.ChangeInfo;
-import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.ChangesWindow;
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.WndChanges;
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.WndChangesTabbed;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_1_X_Changes;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_2_X_Changes;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_3_X_Changes;
@@ -61,6 +62,7 @@ public class ChangesScene extends PixelScene {
 	public static int changesSelected = 0;
 
 	private NinePatch rightPanel;
+	private ScrollPane rightScroll;
 	private IconTitle changeTitle;
 	private RenderedTextBlock changeBody;
 	
@@ -105,10 +107,19 @@ public class ChangesScene extends PixelScene {
 			rightPanel.y = title.bottom() + 5;
 			add(rightPanel);
 
+			rightScroll = new ScrollPane(new Component());
+			add(rightScroll);
+			rightScroll.setRect(
+					rightPanel.x + rightPanel.marginLeft(),
+					rightPanel.y + rightPanel.marginTop()-1,
+					rightPanel.innerWidth() + 2,
+					rightPanel.innerHeight() + 2);
+			rightScroll.scrollTo(0, 0);
+
 			changeTitle = new IconTitle(Icons.get(Icons.CHANGES), Messages.get(this, "right_title"));
-			changeTitle.setPos(rightPanel.x + rightPanel.marginLeft(), rightPanel.y + rightPanel.marginTop());
+			changeTitle.setPos(0, 1);
 			changeTitle.setSize(pw, 20);
-			add(changeTitle);
+			rightScroll.content().add(changeTitle);
 
 			String body = Messages.get(this, "right_body");
 			if (Messages.lang() != Languages.ENGLISH){
@@ -116,8 +127,8 @@ public class ChangesScene extends PixelScene {
 			}
 			changeBody = PixelScene.renderTextBlock(body, 6);
 			changeBody.maxWidth(pw - panel.marginHor());
-			changeBody.setPos(rightPanel.x + rightPanel.marginLeft(), changeTitle.bottom()+2);
-			add(changeBody);
+			changeBody.setPos(0, changeTitle.bottom()+2);
+			rightScroll.content().add(changeBody);
 
 		} else {
 			panel.size( pw, ph );
@@ -314,34 +325,44 @@ public class ChangesScene extends PixelScene {
 		fadeIn();
 	}
 
-	private void updateChangesText(Image icon, String title, String message){
+	private void updateChangesText(Image icon, String title, String... messages){
 		if (changeTitle != null){
 			changeTitle.icon(icon);
 			changeTitle.label(title);
 			changeTitle.setPos(changeTitle.left(), changeTitle.top());
 
-			int pw = 135 + rightPanel.marginHor() - 2;
-			changeBody.text(message, pw - rightPanel.marginHor());
-			int ph = Camera.main.height - 36;
-			while (changeBody.height() > ph-25
-					&& changeBody.right() + 5 < Camera.main.width){
-				changeBody.maxWidth(changeBody.maxWidth()+5);
+			String message = "";
+			for (int i = 0; i < messages.length; i++){
+				message += messages[i];
+				if (i != messages.length-1){
+					message += "\n\n";
+				}
 			}
-			rightPanel.size(changeBody.maxWidth() + rightPanel.marginHor(), Math.max(ph, changeBody.height()+18+rightPanel.marginVer()));
-			changeBody.setPos(changeBody.left(), changeTitle.bottom()+2);
+			changeBody.text(message);
+			rightScroll.content().setSize(rightScroll.width(), changeBody.bottom()+2);
+			rightScroll.setSize(rightScroll.width(), rightScroll.height());
+			rightScroll.scrollTo(0, 0);
 
 		} else {
-			addToFront(new ChangesWindow(icon, title, message));
+			if (messages.length == 1) {
+				addToFront(new WndChanges(icon, title, messages[0]));
+			} else {
+				addToFront(new WndChangesTabbed(icon, title, messages));
+			}
 		}
 	}
 
-	public static void showChangeInfo(Image icon, String title, String message){
+	public static void showChangeInfo(Image icon, String title, String... messages){
 		Scene s = ShatteredPixelDungeon.scene();
 		if (s instanceof ChangesScene){
-			((ChangesScene) s).updateChangesText(icon, title, message);
+			((ChangesScene) s).updateChangesText(icon, title, messages);
 			return;
 		}
-		s.addToFront(new ChangesWindow(icon, title, message));
+		if (messages.length == 1) {
+			s.addToFront(new WndChanges(icon, title, messages[0]));
+		} else {
+			s.addToFront(new WndChangesTabbed(icon, title, messages));
+		}
 	}
 	
 	@Override
