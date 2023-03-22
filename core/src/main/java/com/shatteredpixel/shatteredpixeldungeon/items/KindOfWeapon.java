@@ -66,19 +66,23 @@ abstract public class KindOfWeapon extends EquipableItem {
 				@Override
 				protected void onSelect(int index) {
 					super.onSelect(index);
-					if (index == 0){
+					if (index == 0 || index == 1){
+						//In addition to equipping itself, item reassigns itself to the quickslot
+						//This is a special case as the item is being removed from inventory, but is staying with the hero.
 						int slot = Dungeon.quickslot.getSlot( KindOfWeapon.this );
-						doEquip(hero);
+						slotOfUnequipped = -1;
+						if (index == 0) {
+							doEquip(hero);
+						} else {
+							equipSecondary(hero);
+						}
 						if (slot != -1) {
 							Dungeon.quickslot.setSlot( slot, KindOfWeapon.this );
 							updateQuickslot();
-						}
-					}
-					if (index == 1){
-						int slot = Dungeon.quickslot.getSlot( KindOfWeapon.this );
-						equipSecondary(hero);
-						if (slot != -1) {
-							Dungeon.quickslot.setSlot( slot, KindOfWeapon.this );
+						//if this item wasn't quickslotted, but the item it is replacing as equipped was
+						//then also have the item occupy the unequipped item's quickslot
+						} else if (slotOfUnequipped != -1 && defaultAction() != null) {
+							Dungeon.quickslot.setSlot( slotOfUnequipped, KindOfWeapon.this );
 							updateQuickslot();
 						}
 					}
