@@ -226,7 +226,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 	}
 
 	public void processCombinedEnergy(Talent.CombinedEnergyAbilityTracker tracker){
-		energy += tracker.energySpent/3f;
+		energy = Math.min(energy+tracker.energySpent/3f, energyCap());
 		cooldown = 0;
 		tracker.detach();
 		if (energy >= 1){
