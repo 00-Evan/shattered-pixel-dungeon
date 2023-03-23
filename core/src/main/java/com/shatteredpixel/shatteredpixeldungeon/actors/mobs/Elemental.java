@@ -112,16 +112,18 @@ public abstract class Elemental extends Mob {
 	
 	@Override
 	protected boolean canAttack( Char enemy ) {
-		if (rangedCooldown <= 0) {
-			return new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT ).collisionPos == enemy.pos;
+		if (super.canAttack(enemy)){
+			return true;
 		} else {
-			return super.canAttack( enemy );
+			return rangedCooldown < 0 && new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT ).collisionPos == enemy.pos;
 		}
 	}
 	
 	protected boolean doAttack( Char enemy ) {
 		
-		if (Dungeon.level.adjacent( pos, enemy.pos ) || rangedCooldown > 0) {
+		if (Dungeon.level.adjacent( pos, enemy.pos )
+				|| rangedCooldown > 0
+				|| new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT ).collisionPos != enemy.pos) {
 			
 			return super.doAttack( enemy );
 			

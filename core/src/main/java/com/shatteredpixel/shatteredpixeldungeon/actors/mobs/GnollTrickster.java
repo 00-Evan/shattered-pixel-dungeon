@@ -66,8 +66,8 @@ public class GnollTrickster extends Gnoll {
 
 	@Override
 	protected boolean canAttack( Char enemy ) {
-		Ballistica attack = new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE);
-		return !Dungeon.level.adjacent(pos, enemy.pos) && attack.collisionPos == enemy.pos;
+		return !Dungeon.level.adjacent( pos, enemy.pos )
+				&& (super.canAttack(enemy) || new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE).collisionPos == enemy.pos);
 	}
 
 	@Override
