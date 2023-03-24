@@ -76,6 +76,57 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("v2.0.1", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 6), "Duelist Buffs",
+				"I expect to make some more thorough changes in v2.1, after gameplay data becomes more reliable, but for now I'm making some early buffs to the Duelist to improve on a bunch of her talents and weapon abilities that are not performing as well as others. This should hopefully make her gameplay feel more consistent.\n\n" +
+				"_-_ Weapon ability recharge speed increased by 12.5% at no missing charges, down to being unchanged when at 0/10\n" +
+				"\n" +
+				"_- Strengthening Meal_ bonus damage up to 3 from 2\n" +
+				"_- Swift Equip_ cooldown down to 20 turns from 30\n" +
+				"_- Unencumbered Spirit_ energy boost up to 33/67/100/150%, from 25/50/100/150%\n" +
+				"_- Monastic Vigor_ threshold changed to 100/80/60%, from 100/85/70%\n" +
+				"\n" +
+				"_- Sneak_ now grants 8/6/4 turns of stealth, up from 6/5/4\n" +
+				"_- Spike_ now deals +40/30% bonus damage, up from +15/10%\n" +
+				"_- Heavy Blow_ now deals +65/60/55/50% damage, up from +50/45/40/35\n" +
+				"_- Combo Strike_ now deals +40/35/30% damage per stack, up from +30/25/20%\n" +
+				"_- Spin_ now deals +33% damage per stack, up from +20%"));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Quickslot contents are now automatically swapped if a newly equipped item that is not quickslotted replaces an item that was quickslotted. This should make weapon swapping gameplay smoother.\n" +
+				"\n" +
+				"_-_ The changes screen now supports more text for a single entry. On mobile UI the changes window can now have multiple tabs, on full UI the changes pane on the right is now scrollable.\n" +
+				"\n" +
+				"_-_ Updated translations\n" +
+				"_-_ Levitation now prevents damage from floor electricity during the DM-300 fight\n" +
+				"_-_ Removed support for save data prior to v1.2.3"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (Caused by v2.0):\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Duelist not being automatically unlocked for existing players with a win\n" +
+				"_-_ Blooming elemental strike placing tall grass on plants\n" +
+				"_-_ Various minor textual errors\n" +
+				"_-_ Enemies frozen by Challenge ability still being fearable\n" +
+				"_-_ Charged shot ability rarely messing with the game's UI when its animation ends\n" +
+				"_-_ Combined energy talent rarely boosting energy above 100%\n" +
+				"_-_ Brawler's stance not preventing damage blocking from equipped weapon\n" +
+						"\n" +
+				"Fixed (existed prior to v2.0):\n" +
+				"_-_ Noisemakers being visually defusable after trigger but not exploding\n" +
+				"_-_ Damage/Stun from blastwave knockback applying to downed ghouls\n" +
+				"_-_ Various rare bugs when inputting multiple actions while using the unstable spellbook\n" +
+				"_-_ Even more cases of particle effects sometimes failing to appear\n" +
+				"_-_ Projecting champtions with ranged attacks refusing to melee from a distance in some cases\n" +
+				"_-_ Various rare UI bug"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
