@@ -69,7 +69,7 @@ public class Eye extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange(20, 30);
+		return Random.NormalIntRange(0, 0);
 	}
 
 	@Override
@@ -126,7 +126,7 @@ public class Eye extends Mob {
 	protected boolean doAttack( Char enemy ) {
 
 		beam = new Ballistica(pos, enemy.pos, Ballistica.STOP_SOLID);
-		if (beamCooldown > 0 || !beam.subPath(1, beam.dist).contains(enemy.pos)) {
+		if (beamCooldown > 0 || (!beamCharged && !beam.subPath(1, beam.dist).contains(enemy.pos))) {
 			return super.doAttack(enemy);
 		} else if (!beamCharged){
 			((EyeSprite)sprite).charge( enemy.pos );
@@ -184,7 +184,7 @@ public class Eye extends Mob {
 			}
 
 			if (hit( this, ch, true )) {
-				int dmg = Random.NormalIntRange( 30, 50 );
+				int dmg = Random.NormalIntRange( 0, 0 );
 				dmg = Math.round(dmg * AscensionChallenge.statModifier(this));
 				ch.damage( dmg, new DeathGaze() );
 
