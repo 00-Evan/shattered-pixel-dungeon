@@ -118,7 +118,8 @@ public class v2_X_Changes {
 				"_-_ Charged shot ability rarely messing with the game's UI when its animation ends\n" +
 				"_-_ Combined energy talent rarely boosting energy above 100%\n" +
 				"_-_ Brawler's stance not preventing damage blocking from equipped weapon\n" +
-						"\n" +
+				"_-_ Duelist Unlock badge not registering on Google Play Games\n" +
+				"\n" +
 				"Fixed (existed prior to v2.0):\n" +
 				"_-_ Noisemakers being visually defusable after trigger but not exploding\n" +
 				"_-_ Damage/Stun from blastwave knockback applying to downed ghouls\n" +
