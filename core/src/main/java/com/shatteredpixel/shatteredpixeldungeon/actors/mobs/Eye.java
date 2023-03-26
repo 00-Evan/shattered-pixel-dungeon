@@ -125,7 +125,7 @@ public class Eye extends Mob {
 	@Override
 	protected boolean doAttack( Char enemy ) {
 
-		beam = new Ballistica(pos, enemy.pos, Ballistica.STOP_SOLID);
+		beam = new Ballistica(pos, beamTarget, Ballistica.STOP_SOLID);
 		if (beamCooldown > 0 || (!beamCharged && !beam.subPath(1, beam.dist).contains(enemy.pos))) {
 			return super.doAttack(enemy);
 		} else if (!beamCharged){
