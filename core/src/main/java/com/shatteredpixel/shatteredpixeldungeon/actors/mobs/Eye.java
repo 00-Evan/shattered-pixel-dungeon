@@ -69,7 +69,7 @@ public class Eye extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange(0, 0);
+		return Random.NormalIntRange(20, 30);
 	}
 
 	@Override
@@ -184,7 +184,7 @@ public class Eye extends Mob {
 			}
 
 			if (hit( this, ch, true )) {
-				int dmg = Random.NormalIntRange( 0, 0 );
+				int dmg = Random.NormalIntRange( 30, 50 );
 				dmg = Math.round(dmg * AscensionChallenge.statModifier(this));
 				ch.damage( dmg, new DeathGaze() );
 
