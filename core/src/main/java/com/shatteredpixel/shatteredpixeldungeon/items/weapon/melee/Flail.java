@@ -160,7 +160,7 @@ public class Flail extends MeleeWeapon {
 
 		@Override
 		public String desc() {
-			return Messages.get(this, "desc", (spins/3f)*100f, dispTurns());
+			return Messages.get(this, "desc", (int)Math.round((spins/3f)*100f), dispTurns());
 		}
 
 		public static String SPINS = "spins";
