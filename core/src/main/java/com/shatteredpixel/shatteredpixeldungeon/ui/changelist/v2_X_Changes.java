@@ -119,13 +119,13 @@ public class v2_X_Changes {
 				"_-_ Combined energy talent rarely boosting energy above 100%\n" +
 				"_-_ Brawler's stance not preventing damage blocking from equipped weapon\n" +
 				"_-_ Duelist Unlock badge not registering on Google Play Games\n" +
-				"\n" +
+				"_-_ Champion weapon swapping not triggering an attack indicator update",
 				"Fixed (existed prior to v2.0):\n" +
 				"_-_ Noisemakers being visually defusable after trigger but not exploding\n" +
+				"_-_ Noisemakers being collectable in some cases after triggering\n" +
 				"_-_ Damage/Stun from blastwave knockback applying to downed ghouls\n" +
-				"_-_ Various rare bugs when inputting multiple actions while using the unstable spellbook\n" +
 				"_-_ Even more cases of particle effects sometimes failing to appear\n" +
-				"_-_ Projecting champtions with ranged attacks refusing to melee from a distance in some cases\n" +
+				"_-_ Projecting champions with ranged attacks refusing to melee from a distance in some cases\n" +
 				"_-_ Various rare UI bug"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
