@@ -171,7 +171,6 @@ public class UnstableSpellbook extends Artifact {
 							//do nothing
 						}
 					});
-					hero.busy();
 				} else {
 					scroll.doRead();
 					Talent.onArtifactUsed(Dungeon.hero);
