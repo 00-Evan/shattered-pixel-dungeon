@@ -40,29 +40,35 @@ public class Button extends Component {
 	
 	protected PointerArea hotArea;
 	protected Tooltip hoverTip;
-	
-	protected boolean pressed;
+
+	//only one button should be pressed at a time
+	protected static Button pressedButton;
 	protected float pressTime;
-	protected boolean processed;
+	protected boolean clickReady;
 
 	@Override
 	protected void createChildren() {
 		hotArea = new PointerArea( 0, 0, 0, 0 ) {
 			@Override
 			protected void onPointerDown( PointerEvent event ) {
-				pressed = true;
+				pressedButton = Button.this;
 				pressTime = 0;
-				processed = false;
+				clickReady = true;
 				Button.this.onPointerDown();
 			}
 			@Override
 			protected void onPointerUp( PointerEvent event ) {
-				pressed = false;
+				if (pressedButton == Button.this){
+					pressedButton = null;
+				} else {
+					//cancel any potential click, only one button can be activated at a time
+					clickReady = false;
+				}
 				Button.this.onPointerUp();
 			}
 			@Override
 			protected void onClick( PointerEvent event ) {
-				if (!processed) {
+				if (clickReady) {
 					killTooltip();
 					switch (event.button){
 						case PointerEvent.LEFT: default:
@@ -114,14 +120,16 @@ public class Button extends Component {
 			public boolean onSignal ( KeyEvent event ) {
 				if ( active && KeyBindings.getActionForKey( event ) == keyAction()){
 					if (event.pressed){
-						pressed = true;
+						pressedButton = Button.this;
 						pressTime = 0;
-						processed = false;
+						clickReady = true;
 						Button.this.onPointerDown();
 					} else {
 						Button.this.onPointerUp();
-						if (pressed && !processed) onClick();
-						pressed = false;
+						if (pressedButton == Button.this) {
+							pressedButton = null;
+							if (clickReady) onClick();
+						}
 					}
 					return true;
 				}
@@ -141,40 +149,22 @@ public class Button extends Component {
 		return null;
 	}
 
-	private float lastUpdateTime = Float.POSITIVE_INFINITY;
-
 	@Override
 	public void update() {
 		super.update();
 		
 		hotArea.active = visible;
 		
-		if (pressed) {
-			//if this button hasn't updated for a bit while held, it was probably deactivated.
-			// cancel the hold action in these cases.
-			if (Game.timeTotal - 0.5f >= lastUpdateTime){
+		if (pressedButton == this && (pressTime += Game.elapsed) >= longClick) {
+			pressedButton = null;
+			if (onLongClick()) {
+
 				hotArea.reset();
-				pressed = false;
+				clickReady = false; //did a long click, can't do a regular one
 				onPointerUp();
 
-				return;
-			} else {
-				lastUpdateTime = Game.timeTotal;
+				Game.vibrate( 50 );
 			}
-
-			if (pressed && (pressTime += Game.elapsed) >= longClick) {
-				pressed = false;
-				if (onLongClick()) {
-
-					hotArea.reset();
-					processed = true;
-					onPointerUp();
-					
-					Game.vibrate( 50 );
-				}
-			}
-		} else {
-			lastUpdateTime = Float.POSITIVE_INFINITY;
 		}
 	}
 	
