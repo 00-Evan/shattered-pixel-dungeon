@@ -58,16 +58,23 @@ public class Noisemaker extends Bomb {
 
 	@Override
 	public ItemSprite.Glowing glowing() {
-		if (Dungeon.hero.buff(Trigger.class) != null){
-			return new ItemSprite.Glowing( 0xFF0000, 0.6f);
+		if (fuse == null){
+			for (Trigger trigger : Dungeon.hero.buffs(Trigger.class)){
+				Heap heap = Dungeon.level.heaps.get(trigger.cell);
+				if (heap != null && heap.items.contains(this)) {
+					return new ItemSprite.Glowing( 0xFF0000, 0.6f);
+				}
+			}
 		}
 		return super.glowing();
 	}
 
 	@Override
 	public boolean doPickUp(Hero hero, int pos) {
-		if (fuse == null && hero.buff(Trigger.class) != null){
-			return false;
+		if (fuse == null){
+			for (Trigger trigger : hero.buffs(Trigger.class)){
+				if (trigger.cell == pos) return false;
+			}
 		}
 		return super.doPickUp(hero, pos);
 	}
