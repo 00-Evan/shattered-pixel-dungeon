@@ -95,7 +95,7 @@ public class v2_X_Changes {
 				"\n" +
 				"_- Sneak_ now grants 8/6/4 turns of stealth, up from 6/5/4\n" +
 				"_- Spike_ now deals +40/30% bonus damage, up from +15/10%\n" +
-				"_- Heavy Blow_ now deals +65/60/55/50% damage, up from +50/45/40/35\n" +
+				"_- Heavy Blow_ now deals +65/60/55/50% damage, up from +50/45/40/35%\n" +
 				"_- Combo Strike_ now deals +40/35/30% damage per stack, up from +30/25/20%\n" +
 				"_- Spin_ now deals +33% damage per stack, up from +20%"));
 
@@ -105,6 +105,7 @@ public class v2_X_Changes {
 				"_-_ The changes screen now supports more text for a single entry. On mobile UI the changes window can now have multiple tabs, on full UI the changes pane on the right is now scrollable.\n" +
 				"\n" +
 				"_-_ Updated translations\n" +
+				"_-_ Attacking an enemy now properly sets them as the auto-targeting target in all cases\n" +
 				"_-_ Levitation now prevents damage from floor electricity during the DM-300 fight\n" +
 				"_-_ Removed support for save data prior to v1.2.3"));
 
@@ -121,11 +122,13 @@ public class v2_X_Changes {
 				"_-_ Duelist Unlock badge not registering on Google Play Games\n" +
 				"_-_ Champion weapon swapping not triggering an attack indicator update",
 				"Fixed (existed prior to v2.0):\n" +
+				"_-_ Various UI bugs caused by pressing multiple buttons simultaneously\n" +
 				"_-_ Noisemakers being visually defusable after trigger but not exploding\n" +
 				"_-_ Noisemakers being collectable in some cases after triggering\n" +
 				"_-_ Damage/Stun from blastwave knockback applying to downed ghouls\n" +
 				"_-_ Even more cases of particle effects sometimes failing to appear\n" +
 				"_-_ Projecting champions with ranged attacks refusing to melee from a distance in some cases\n" +
+				"_-_ Life Link sometimes persisting for longer than intended during Dwarf King fight" +
 				"_-_ Various rare UI bug"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
