@@ -192,7 +192,7 @@ public class AttackIndicator extends Tag {
 			instance.lastTarget = (Mob) target;
 			instance.updateImage();
 
-			TargetHealthIndicator.instance.target(target);
+			QuickSlotButton.target(target);
 		}
 	}
 	
