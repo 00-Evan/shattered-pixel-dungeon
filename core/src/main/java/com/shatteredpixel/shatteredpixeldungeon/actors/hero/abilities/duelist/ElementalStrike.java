@@ -407,8 +407,9 @@ public class ElementalStrike extends ArmorAbility {
 		//*** Lucky ***
 		} else if (ench instanceof Lucky){
 			for (Char ch : affected){
-				if (Random.Float() < 0.1f*powerMulti &&
-						ch.buff(ElementalStrikeLuckyTracker.class) == null) {
+				if (ch.alignment == Char.Alignment.ENEMY
+						&& Random.Float() < 0.1f*powerMulti
+						&& ch.buff(ElementalStrikeLuckyTracker.class) == null) {
 					Dungeon.level.drop(Lucky.genLoot(), ch.pos).sprite.drop();
 					Lucky.showFlare(ch.sprite);
 					Buff.affect(ch, ElementalStrikeLuckyTracker.class);
