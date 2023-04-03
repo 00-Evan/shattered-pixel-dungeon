@@ -46,12 +46,19 @@ public class Bones {
 	private static int depth = -1;
 	private static Item item;
 	
+	private static boolean canLeave(){
+		if (Statistics.amuletObtained) return false;
+		if ((Statistics.deepestFloor - 5) >= depth) return false;
+		if (Dungeon.challenges > 0) return false;
+		if (!Dungeon.customSeedText.isEmpty()) return false;
+		return true;
+	}
 	public static void leave() {
 
 		depth = Dungeon.depth;
 
 		//heroes drop no bones if they have the amulet, die far above their farthest depth, are challenged, or are playing with a custom seed.
-		if (Statistics.amuletObtained || (Statistics.deepestFloor - 5) >= depth || Dungeon.challenges > 0 || !Dungeon.customSeedText.isEmpty()) {
+		if (!canLeave()) {
 			depth = -1;
 			return;
 		}
