@@ -76,35 +76,41 @@ public class Bones {
 		}
 	}
 
+	private static Item getRandomItemFromHero(Hero hero){
+		Item item = null;
+		switch (Random.Int(7)) {
+			case 0:
+				item = hero.belongings.weapon;
+				//if the hero has two weapons (champion), pick the stronger one
+				if (hero.belongings.secondWep != null &&
+						(item == null || hero.belongings.secondWep.trueLevel() > item.trueLevel())){
+					item = hero.belongings.secondWep;
+					break;
+				}
+				break;
+			case 1:
+				item = hero.belongings.armor;
+				break;
+			case 2:
+				item = hero.belongings.artifact;
+				break;
+			case 3:
+				item = hero.belongings.misc;
+				break;
+			case 4:
+				item = hero.belongings.ring;
+				break;
+			case 5: case 6:
+				item = Dungeon.quickslot.randomNonePlaceholder();
+				break;
+		}
+		return item;
+	}
+
 	private static Item pickItem(Hero hero){
 		Item item = null;
 		if (Random.Int(3) != 0) {
-			switch (Random.Int(7)) {
-				case 0:
-					item = hero.belongings.weapon;
-					//if the hero has two weapons (champion), pick the stronger one
-					if (hero.belongings.secondWep != null &&
-							(item == null || hero.belongings.secondWep.trueLevel() > item.trueLevel())){
-						item = hero.belongings.secondWep;
-						break;
-					}
-					break;
-				case 1:
-					item = hero.belongings.armor;
-					break;
-				case 2:
-					item = hero.belongings.artifact;
-					break;
-				case 3:
-					item = hero.belongings.misc;
-					break;
-				case 4:
-					item = hero.belongings.ring;
-					break;
-				case 5: case 6:
-					item = Dungeon.quickslot.randomNonePlaceholder();
-					break;
-			}
+			item = getRandomItemFromHero(hero);
 			if (item == null || !item.bones) {
 				return pickItem(hero);
 			}
