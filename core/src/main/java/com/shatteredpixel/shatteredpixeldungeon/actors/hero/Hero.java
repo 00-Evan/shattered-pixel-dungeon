@@ -1151,7 +1151,7 @@ public class Hero extends Char {
 			Camera.main.shake(1, 1f);
 			ready();
 			return false;
-		} else if (transition != null && transition.inside(pos)) {
+		} else if (!Dungeon.level.locked && transition != null && transition.inside(pos)) {
 
 			if (transition.type == LevelTransition.Type.SURFACE){
 				if (belongings.getItem( Amulet.class ) == null) {
