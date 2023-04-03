@@ -93,8 +93,8 @@ public class Recycle extends InventorySpell {
 	
 	@Override
 	public int value() {
-		//prices of ingredients, divided by output quantity
-		return Math.round(quantity * ((50 + 40) / 12f));
+		//prices of ingredients, divided by output quantity, rounds down
+		return (int)((50 + 40) * (quantity/12f));
 	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
