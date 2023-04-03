@@ -602,22 +602,27 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 					}
 				}
 
+				//we process this as 5x wait actions instead of one 5 tick action to prevent
+				// effects like time freeze from eating the whole action duration
+				for (int i = 0; i < 5; i++) hero.spendConstant(Actor.TICK);
+
 				if (Buff.affect(hero, MonkEnergy.class).abilitiesEmpowered(hero)){
 					int toHeal = Math.round((hero.HT - hero.HP)/5f);
 					if (toHeal > 0) {
 						Buff.affect(hero, Healing.class).setHeal(toHeal, 0, 1);
 					}
-					Buff.affect(hero, MeditateResistance.class, 5f);
+					Buff.affect(hero, MeditateResistance.class, hero.cooldown());
 				}
 
-				//we process this as 5x wait actions instead of one 5 tick action to prevent
-				// effects like time freeze from eating the whole action duration
-				for (int i = 0; i < 5; i++) hero.spendConstant(Actor.TICK);
 				hero.next();
 				Buff.affect(hero, MonkEnergy.class).abilityUsed(this);
 			}
 
-			public static class MeditateResistance extends FlavourBuff{};
+			public static class MeditateResistance extends FlavourBuff{
+				{
+					actPriority = HERO_PRIO+1; //ends just before the hero acts
+				}
+			};
 		}
 
 	}
