@@ -51,9 +51,11 @@ public class Imp extends NPC {
 		spriteClass = ImpSprite.class;
 
 		properties.add(Property.IMMOVABLE);
+		npcInteract = new NPCInteract();
 	}
 	
 	private boolean seenBefore = false;
+	private NPCInteract npcInteract;
 	
 	@Override
 	protected boolean act() {
@@ -114,13 +116,13 @@ public class Imp extends NPC {
 					}
 				});
 			} else {
-				tell( Quest.alternative ?
+				npcInteract.tell( Quest.alternative ?
 						Messages.get(this, "monks_2", Messages.titleCase(Dungeon.hero.name()))
 						: Messages.get(this, "golems_2", Messages.titleCase(Dungeon.hero.name())) );
 			}
 			
 		} else {
-			tell( Quest.alternative ? Messages.get(this, "monks_1") : Messages.get(this, "golems_1") );
+			npcInteract.tell( Quest.alternative ? Messages.get(this, "monks_1") : Messages.get(this, "golems_1") );
 			Quest.given = true;
 			Quest.completed = false;
 			Notes.add( Notes.Landmark.IMP );
@@ -129,14 +131,7 @@ public class Imp extends NPC {
 		return true;
 	}
 	
-	private void tell( String text ) {
-		Game.runOnRenderThread(new Callback() {
-			@Override
-			public void call() {
-				GameScene.show( new WndQuest( Imp.this, text ));
-			}
-		});
-	}
+	
 	
 	public void flee() {
 		
