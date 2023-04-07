@@ -114,17 +114,12 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 	}
 
 	@Override
-	public Image actionIcon() {
-		return new HeroIcon(HeroIcon.SNIPERS_MARK);
+	public int actionIcon() {
+		return HeroIcon.SNIPERS_MARK;
 	}
 
 	@Override
-	public Image secondIcon() {
-		return null;
-	}
-
-	@Override
-	public int actionColor() {
+	public int indicatorColor() {
 		return 0x444444;
 	}
 

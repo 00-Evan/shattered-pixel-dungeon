@@ -46,8 +46,10 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -548,10 +550,15 @@ public class MeleeWeapon extends Weapon {
 		}
 
 		@Override
-		public Image actionIcon() {
+		public int actionIcon() {
+			return HeroIcon.WEAPON_SWAP;
+		}
+
+		@Override
+		public Visual primaryVisual() {
 			Image ico;
 			if (Dungeon.hero.belongings.weapon == null){
-				ico = new ItemSprite(ItemSpriteSheet.WEAPON_HOLDER);
+				ico = new HeroIcon(this);
  			} else {
 				ico = new ItemSprite(Dungeon.hero.belongings.weapon);
 			}
@@ -560,10 +567,10 @@ public class MeleeWeapon extends Weapon {
 		}
 
 		@Override
-		public Image secondIcon() {
+		public Visual secondaryVisual() {
 			Image ico;
 			if (Dungeon.hero.belongings.secondWep == null){
-				ico = new ItemSprite(ItemSpriteSheet.WEAPON_HOLDER);
+				ico = new HeroIcon(this);
 			} else {
 				ico = new ItemSprite(Dungeon.hero.belongings.secondWep);
 			}
@@ -573,7 +580,7 @@ public class MeleeWeapon extends Weapon {
 		}
 
 		@Override
-		public int actionColor() {
+		public int indicatorColor() {
 			return 0x5500BB;
 		}
 

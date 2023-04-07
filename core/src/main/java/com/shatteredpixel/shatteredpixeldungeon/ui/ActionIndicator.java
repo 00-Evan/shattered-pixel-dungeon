@@ -26,12 +26,13 @@ import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.input.GameAction;
-import com.watabou.noosa.Image;
+import com.watabou.noosa.BitmapText;
+import com.watabou.noosa.Visual;
 
 public class ActionIndicator extends Tag {
 
-	Image icon;
-	Image secondIcon;
+	Visual primaryVis;
+	Visual secondVis;
 
 	public static Action action;
 	public static ActionIndicator instance;
@@ -60,44 +61,72 @@ public class ActionIndicator extends Tag {
 	protected synchronized void layout() {
 		super.layout();
 		
-		if (icon != null){
-			if (!flipped)   icon.x = x + (SIZE - icon.width()) / 2f + 1;
-			else            icon.x = x + width - (SIZE + icon.width()) / 2f - 1;
-			icon.y = y + (height - icon.height()) / 2f;
-			PixelScene.align(icon);
-			if (secondIcon != null){
-				secondIcon.x = icon.center().x + 8 - secondIcon.width();
-				secondIcon.y = icon.y + icon.height() - secondIcon.height();
+		if (primaryVis != null){
+			if (!flipped)   primaryVis.x = x + (SIZE - primaryVis.width()) / 2f + 1;
+			else            primaryVis.x = x + width - (SIZE + primaryVis.width()) / 2f - 1;
+			primaryVis.y = y + (height - primaryVis.height()) / 2f;
+			PixelScene.align(primaryVis);
+			if (secondVis != null){
+				if (secondVis.width() > 16) secondVis.x = primaryVis.center().x - secondVis.width()/2f;
+				else                        secondVis.x = primaryVis.center().x + 8 - secondVis.width();
+				if (secondVis instanceof BitmapText){
+					//need a special case here for text unfortunately
+					secondVis.y = primaryVis.center().y + 8 - ((BitmapText) secondVis).baseLine();
+				} else {
+					secondVis.y = primaryVis.center().y + 8 - secondVis.height();
+				}
+				PixelScene.align(secondVis);
 			}
 		}
 	}
 	
-	private boolean needsLayout = false;
+	private boolean needsRefresh = false;
 	
 	@Override
 	public synchronized void update() {
 		super.update();
 
-		if (!Dungeon.hero.ready){
-			if (icon != null) icon.alpha(0.5f);
-			if (secondIcon != null) secondIcon.alpha(0.5f);
-		} else {
-			if (icon != null) icon.alpha(1f);
-			if (secondIcon != null) secondIcon.alpha(1f);
-		}
-
 		if (!visible && action != null){
 			visible = true;
-			refresh();
+			needsRefresh = true;
 			flash();
 		} else {
 			visible = action != null;
 		}
-		
-		if (needsLayout){
+
+		if (needsRefresh){
+			if (primaryVis != null) {
+				primaryVis.killAndErase();
+				primaryVis = null;
+			}
+			if (secondVis != null){
+				secondVis.killAndErase();
+				secondVis = null;
+			}
+			if (action != null) {
+				primaryVis = action.primaryVisual();
+				add(primaryVis);
+
+				secondVis = action.secondaryVisual();
+				if (secondVis != null){
+					add(secondVis);
+				}
+
+				needsRefresh = true;
+				setColor(action.indicatorColor());
+			}
+
 			layout();
-			needsLayout = false;
 		}
+
+		if (!Dungeon.hero.ready){
+			if (primaryVis != null) primaryVis.alpha(0.5f);
+			if (secondVis != null) secondVis.alpha(0.5f);
+		} else {
+			if (primaryVis != null) primaryVis.alpha(1f);
+			if (secondVis != null) secondVis.alpha(1f);
+		}
+
 	}
 
 	@Override
@@ -130,44 +159,31 @@ public class ActionIndicator extends Tag {
 
 	public static void refresh(){
 		if (instance != null){
-			synchronized (instance) {
-				if (instance.icon != null) {
-					instance.icon.killAndErase();
-					instance.icon = null;
-				}
-				if (instance.secondIcon != null){
-					instance.secondIcon.killAndErase();
-					instance.secondIcon = null;
-				}
-				if (action != null) {
-					instance.icon = action.actionIcon();
-					instance.add(instance.icon);
-
-					Image secondIco = action.secondIcon();
-					if (secondIco != null){
-						instance.secondIcon = secondIco;
-						instance.add(instance.secondIcon);
-					}
-
-					instance.needsLayout = true;
-					instance.setColor(action.actionColor());
-				}
-			}
+			instance.needsRefresh = true;
 		}
 	}
 
-	public interface Action{
+	public interface Action {
 
-		public String actionName();
+		String actionName();
 
-		public Image actionIcon();
+		default int actionIcon(){
+			return HeroIcon.NONE;
+		}
 
-		//TODO more variable than an icon maybe
-		public Image secondIcon();
+		//usually just a static icon, unless overridden
+		default Visual primaryVisual(){
+			return new HeroIcon(this);
+		}
 
-		public int actionColor();
+		//a smaller visual on the bottom-right, usually a tiny icon or bitmap text
+		default Visual secondaryVisual(){
+			return null; //no second visual by default
+		}
 
-		public void doAction();
+		int indicatorColor();
+
+		void doAction();
 
 	}
 

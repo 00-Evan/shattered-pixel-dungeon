@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -46,7 +47,9 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndCombo;
+import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
@@ -175,23 +178,27 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	}
 
 	@Override
-	public Image actionIcon() {
-		return new HeroIcon(HeroIcon.COMBO);
+	public int actionIcon() {
+		return HeroIcon.COMBO;
 	}
 
 	@Override
-	public Image secondIcon() {
-		return null;
+	public Visual secondaryVisual() {
+		BitmapText txt = new BitmapText(PixelScene.pixelFont);
+		txt.text( Integer.toString(count) );
+		txt.hardlight(CharSprite.POSITIVE);
+		txt.measure();
+		return txt;
 	}
 
 	@Override
-	public int actionColor() {
+	public int indicatorColor() {
 		ComboMove best = getHighestMove();
 		if (best == null) {
 			return 0xDFDFDF;
 		} else {
 			//take the tint color and darken slightly to match buff icon
-			int r = (int) ((best.tintColor & 0xFF) * 0.875f);
+			int r = (int) ((best.tintColor >> 16) * 0.875f);
 			int g = (int) (((best.tintColor >> 8) & 0xFF) * 0.875f);
 			int b = (int) ((best.tintColor & 0xFF) * 0.875f);
 			return (r << 16) + (g << 8) + b;
