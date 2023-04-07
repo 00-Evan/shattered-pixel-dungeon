@@ -48,7 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.watabou.noosa.audio.Sample;
 
 public class ScrollOfEnchantment extends ExoticScroll {
-	
+	public int icon = -1; 
 	{
 		icon = ItemSpriteSheet.Icons.SCROLL_ENCHANT;
 

@@ -27,7 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class ScrollOfAntiMagic extends ExoticScroll {
-	
+	public int icon = -1; 
 	{
 		icon = ItemSpriteSheet.Icons.SCROLL_ANTIMAGIC;
 	}

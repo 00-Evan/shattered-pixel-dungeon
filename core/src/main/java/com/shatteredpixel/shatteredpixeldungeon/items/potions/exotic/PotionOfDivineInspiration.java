@@ -39,7 +39,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
 public class PotionOfDivineInspiration extends ExoticPotion {
-	
+	public int icon = -1; 
 	{
 		icon = ItemSpriteSheet.Icons.POTION_DIVINE;
 	}

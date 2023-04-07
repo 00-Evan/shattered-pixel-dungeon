@@ -31,7 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class PotionOfShielding extends ExoticPotion {
-	
+	public int icon = -1; 
 	{
 		icon = ItemSpriteSheet.Icons.POTION_SHIELDING;
 	}

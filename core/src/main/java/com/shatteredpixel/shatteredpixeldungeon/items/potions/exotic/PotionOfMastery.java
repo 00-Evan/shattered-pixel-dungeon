@@ -37,7 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 
 public class PotionOfMastery extends ExoticPotion {
-	
+	public int icon = -1; 
 	{
 		icon = ItemSpriteSheet.Icons.POTION_MASTERY;
 

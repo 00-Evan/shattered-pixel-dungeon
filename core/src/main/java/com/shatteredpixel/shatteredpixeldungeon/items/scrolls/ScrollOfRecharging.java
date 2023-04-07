@@ -34,7 +34,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 
 public class ScrollOfRecharging extends Scroll {
-
+	public int icon = -1; 
 	{
 		icon = ItemSpriteSheet.Icons.SCROLL_RECHARGE;
 	}

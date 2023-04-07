@@ -38,7 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import java.util.HashSet;
 
 public class RingOfElements extends Ring {
-
+	public int icon = -1; 
 	{
 		icon = ItemSpriteSheet.Icons.RING_ELEMENTS;
 	}

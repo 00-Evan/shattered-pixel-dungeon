@@ -31,7 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
 
 public class ScrollOfPassage extends ExoticScroll {
-	
+	public int icon = -1; 
 	{
 		icon = ItemSpriteSheet.Icons.SCROLL_PASSAGE;
 	}

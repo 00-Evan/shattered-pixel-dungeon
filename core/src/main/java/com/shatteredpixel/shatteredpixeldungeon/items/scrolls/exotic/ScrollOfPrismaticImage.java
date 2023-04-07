@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 
 public class ScrollOfPrismaticImage extends ExoticScroll {
-	
+	public int icon = -1; 
 	{
 		icon = ItemSpriteSheet.Icons.SCROLL_PRISIMG;
 	}

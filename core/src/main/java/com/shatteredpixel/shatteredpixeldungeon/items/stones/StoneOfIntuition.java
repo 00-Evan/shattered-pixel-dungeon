@@ -185,7 +185,7 @@ public class StoneOfIntuition extends InventoryStone {
 					}
 				};
 				Image im = new Image(Assets.Sprites.ITEM_ICONS);
-				im.frame(ItemSpriteSheet.Icons.film.get(Reflection.newInstance(i).icon));
+				im.frame(ItemSpriteSheet.Icons.film.get(Reflection.newInstance(i).image));
 				im.scale.set(2f);
 				btn.icon(im);
 				btn.setRect(left + placed*BTN_SIZE, top, BTN_SIZE, BTN_SIZE);

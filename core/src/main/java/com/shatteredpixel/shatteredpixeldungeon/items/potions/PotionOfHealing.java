@@ -42,7 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class PotionOfHealing extends Potion {
-
+	public int icon = -1; 
 	{
 		icon = ItemSpriteSheet.Icons.POTION_HEALING;
 

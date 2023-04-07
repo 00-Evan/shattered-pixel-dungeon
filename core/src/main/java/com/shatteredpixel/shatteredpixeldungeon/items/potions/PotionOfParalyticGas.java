@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 
 public class PotionOfParalyticGas extends Potion {
-
+	public int icon = -1; 
 	{
 		icon = ItemSpriteSheet.Icons.POTION_PARAGAS;
 	}

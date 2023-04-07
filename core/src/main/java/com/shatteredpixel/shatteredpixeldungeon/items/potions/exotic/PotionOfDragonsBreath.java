@@ -50,7 +50,7 @@ import com.watabou.utils.PathFinder;
 import java.util.ArrayList;
 
 public class PotionOfDragonsBreath extends ExoticPotion {
-	
+	public int icon = -1; 
 	{
 		icon = ItemSpriteSheet.Icons.POTION_DRGBREATH;
 	}

@@ -63,7 +63,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 
 public abstract class Scroll extends Item {
-	
+	public int icon = -1; 
 	public static final String AC_READ	= "READ";
 	
 	protected static final float TIME_TO_READ	= 1f;

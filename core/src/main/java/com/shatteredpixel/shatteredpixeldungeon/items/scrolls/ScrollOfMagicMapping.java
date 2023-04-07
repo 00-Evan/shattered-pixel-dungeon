@@ -34,7 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
 public class ScrollOfMagicMapping extends Scroll {
-
+	public int icon = -1; 
 	{
 		icon = ItemSpriteSheet.Icons.SCROLL_MAGICMAP;
 	}

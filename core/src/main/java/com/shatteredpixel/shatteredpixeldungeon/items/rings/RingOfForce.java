@@ -39,7 +39,7 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 
 public class RingOfForce extends Ring {
-
+	public int icon = -1; 
 	{
 		icon = ItemSpriteSheet.Icons.RING_FORCE;
 	}

@@ -26,7 +26,7 @@ import com.watabou.noosa.Game;
 
 //wrapper for libGDX reflection
 public class Reflection {
-	
+	public int icon = -1; 
 	public static boolean isMemberClass( Class cls ){
 		return ClassReflection.isMemberClass(cls);
 	}

@@ -31,7 +31,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 
 public class PotionOfFrost extends Potion {
-
+	public int icon = -1; 
 	{
 		icon = ItemSpriteSheet.Icons.POTION_FROST;
 	}

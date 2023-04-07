@@ -48,7 +48,7 @@ import java.util.LinkedHashMap;
 import java.util.Set;
 
 public class ScrollOfMetamorphosis extends ExoticScroll {
-	
+	public int icon = -1; 
 	{
 		icon = ItemSpriteSheet.Icons.SCROLL_METAMORPH;
 	}

@@ -31,7 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 
 public class ScrollOfIdentify extends InventoryScroll {
-
+	public int icon = -1; 
 	{
 		icon = ItemSpriteSheet.Icons.SCROLL_IDENTIFY;
 

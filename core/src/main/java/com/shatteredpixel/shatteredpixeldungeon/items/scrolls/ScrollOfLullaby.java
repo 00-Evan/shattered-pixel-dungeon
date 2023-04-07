@@ -33,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
 public class ScrollOfLullaby extends Scroll {
-
+	public int icon = -1; 
 	{
 		icon = ItemSpriteSheet.Icons.SCROLL_LULLABY;
 	}

@@ -73,7 +73,7 @@ public class Item implements Bundlable {
 
 	//TODO should these be private and accessed through methods?
 	public int image = 0;
-	public int icon = -1; //used as an identifier for items with randomized images
+	//used as an identifier for items with randomized images
 	
 	public boolean stackable = false;
 	protected int quantity = 1;

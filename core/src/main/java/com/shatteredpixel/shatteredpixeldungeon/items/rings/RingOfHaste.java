@@ -26,7 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class RingOfHaste extends Ring {
-
+	public int icon = -1; 
 	{
 		icon = ItemSpriteSheet.Icons.RING_HASTE;
 	}

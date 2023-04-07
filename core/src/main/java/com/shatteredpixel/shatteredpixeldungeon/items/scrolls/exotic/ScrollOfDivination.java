@@ -44,7 +44,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class ScrollOfDivination extends ExoticScroll {
-	
+	public int icon = -1; 
 	{
 		icon = ItemSpriteSheet.Icons.SCROLL_DIVINATE;
 	}

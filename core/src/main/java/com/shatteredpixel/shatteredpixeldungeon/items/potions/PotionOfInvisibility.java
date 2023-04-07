@@ -31,7 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
 public class PotionOfInvisibility extends Potion {
-
+	public int icon = -1; 
 	{
 		icon = ItemSpriteSheet.Icons.POTION_INVIS;
 	}

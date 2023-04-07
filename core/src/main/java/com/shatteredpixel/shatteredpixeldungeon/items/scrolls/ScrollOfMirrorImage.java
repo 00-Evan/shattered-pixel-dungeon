@@ -40,7 +40,7 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 
 public class ScrollOfMirrorImage extends Scroll {
-
+	public int icon = -1; 
 	{
 		icon = ItemSpriteSheet.Icons.SCROLL_MIRRORIMG;
 	}

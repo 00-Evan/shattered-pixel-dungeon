@@ -40,7 +40,7 @@ import com.watabou.utils.PathFinder;
 import java.util.ArrayList;
 
 public class PotionOfPurity extends Potion {
-	
+	public int icon = -1; 
 	private static final int DISTANCE	= 3;
 	
 	private static ArrayList<Class> affectedBlobs;

@@ -26,7 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class PotionOfExperience extends Potion {
-
+	public int icon = -1; 
 	{
 		icon = ItemSpriteSheet.Icons.POTION_EXP;
 

@@ -50,7 +50,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class RingOfWealth extends Ring {
-
+	public int icon = -1; 
 	{
 		icon = ItemSpriteSheet.Icons.RING_WEALTH;
 	}
