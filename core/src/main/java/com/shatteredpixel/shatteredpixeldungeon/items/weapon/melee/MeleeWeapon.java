@@ -29,25 +29,23 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Transmuting;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
@@ -153,7 +151,7 @@ public class MeleeWeapon extends Weapon {
 	@Override
 	public boolean doEquip(Hero hero) {
 		if (super.doEquip(hero)){
-			ActionIndicator.updateIcon();
+			ActionIndicator.refresh();
 			return true;
 		}
 		return false;
@@ -162,7 +160,7 @@ public class MeleeWeapon extends Weapon {
 	@Override
 	public boolean equipSecondary(Hero hero) {
 		if (super.equipSecondary(hero)){
-			ActionIndicator.updateIcon();
+			ActionIndicator.refresh();
 			return true;
 		}
 		return false;
@@ -171,7 +169,7 @@ public class MeleeWeapon extends Weapon {
 	@Override
 	public boolean doUnequip(Hero hero, boolean collect, boolean single) {
 		if (super.doUnequip(hero, collect, single)){
-			ActionIndicator.updateIcon();
+			ActionIndicator.refresh();
 			return true;
 		}
 		return false;
@@ -551,11 +549,32 @@ public class MeleeWeapon extends Weapon {
 
 		@Override
 		public Image actionIcon() {
+			Image ico;
 			if (Dungeon.hero.belongings.weapon == null){
-				return new ItemSprite(ItemSpriteSheet.WEAPON_HOLDER);
+				ico = new ItemSprite(ItemSpriteSheet.WEAPON_HOLDER);
  			} else {
-				return new ItemSprite(Dungeon.hero.belongings.weapon);
+				ico = new ItemSprite(Dungeon.hero.belongings.weapon);
 			}
+			ico.width += 4; //shift slightly to the left to separate from smaller icon
+			return ico;
+		}
+
+		@Override
+		public Image secondIcon() {
+			Image ico;
+			if (Dungeon.hero.belongings.secondWep == null){
+				ico = new ItemSprite(ItemSpriteSheet.WEAPON_HOLDER);
+			} else {
+				ico = new ItemSprite(Dungeon.hero.belongings.secondWep);
+			}
+			ico.scale.set(PixelScene.align(0.51f));
+			ico.brightness(0.6f);
+			return ico;
+		}
+
+		@Override
+		public int actionColor() {
+			return 0x5500BB;
 		}
 
 		@Override

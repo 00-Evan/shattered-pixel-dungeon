@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
@@ -114,9 +115,19 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 
 	@Override
 	public Image actionIcon() {
-		return new ItemSprite(ItemSpriteSheet.SPIRIT_BOW, null);
+		return new HeroIcon(HeroIcon.SNIPERS_MARK);
 	}
-	
+
+	@Override
+	public Image secondIcon() {
+		return null;
+	}
+
+	@Override
+	public int actionColor() {
+		return 0x444444;
+	}
+
 	@Override
 	public void doAction() {
 		

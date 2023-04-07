@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
@@ -252,9 +253,19 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 	
 	@Override
 	public Image actionIcon() {
-		Image actionIco = Effects.get(Effects.Type.WOUND);
+		Image actionIco = new HeroIcon(HeroIcon.PREPARATION);
 		tintIcon(actionIco);
 		return actionIco;
+	}
+
+	@Override
+	public Image secondIcon() {
+		return null;
+	}
+
+	@Override
+	public int actionColor() {
+		return 0x444444;
 	}
 	
 	@Override

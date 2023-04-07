@@ -36,7 +36,7 @@ public class LootIndicator extends Tag {
 	private int lastQuantity = 0;
 	
 	public LootIndicator() {
-		super( 0x1F75CC );
+		super( 0x185898 );
 		
 		setSize( SIZE, SIZE );
 		

@@ -42,12 +42,14 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMonkAbilities;
+import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -242,7 +244,21 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public Image actionIcon() {
-		return new HeroIcon(HeroSubClass.MONK);
+		return new HeroIcon(HeroIcon.MONK_ABILITIES);
+	}
+
+	@Override
+	public Image secondIcon() {
+		return null;
+	}
+
+	@Override
+	public int actionColor() {
+		if (abilitiesEmpowered(Dungeon.hero)){
+			return 0xA0FF40;
+		} else {
+			return 0xA08840;
+		}
 	}
 
 	@Override

@@ -25,19 +25,19 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndKeyBindings;
 import com.watabou.input.GameAction;
 import com.watabou.noosa.Image;
 
 public class ActionIndicator extends Tag {
 
 	Image icon;
+	Image secondIcon;
 
 	public static Action action;
 	public static ActionIndicator instance;
 
 	public ActionIndicator() {
-		super( 0xFFFF4C );
+		super( 0 );
 
 		instance = this;
 
@@ -65,8 +65,10 @@ public class ActionIndicator extends Tag {
 			else            icon.x = x + width - (SIZE + icon.width()) / 2f - 1;
 			icon.y = y + (height - icon.height()) / 2f;
 			PixelScene.align(icon);
-			if (!members.contains(icon))
-				add(icon);
+			if (secondIcon != null){
+				secondIcon.x = icon.center().x + 8 - secondIcon.width();
+				secondIcon.y = icon.y + icon.height() - secondIcon.height();
+			}
 		}
 	}
 	
@@ -78,13 +80,15 @@ public class ActionIndicator extends Tag {
 
 		if (!Dungeon.hero.ready){
 			if (icon != null) icon.alpha(0.5f);
+			if (secondIcon != null) secondIcon.alpha(0.5f);
 		} else {
 			if (icon != null) icon.alpha(1f);
+			if (secondIcon != null) secondIcon.alpha(1f);
 		}
 
 		if (!visible && action != null){
 			visible = true;
-			updateIcon();
+			refresh();
 			flash();
 		} else {
 			visible = action != null;
@@ -115,7 +119,7 @@ public class ActionIndicator extends Tag {
 
 	public static void setAction(Action action){
 		ActionIndicator.action = action;
-		updateIcon();
+		refresh();
 	}
 
 	public static void clearAction(Action action){
@@ -124,16 +128,29 @@ public class ActionIndicator extends Tag {
 		}
 	}
 
-	public static void updateIcon(){
+	public static void refresh(){
 		if (instance != null){
 			synchronized (instance) {
 				if (instance.icon != null) {
 					instance.icon.killAndErase();
 					instance.icon = null;
 				}
+				if (instance.secondIcon != null){
+					instance.secondIcon.killAndErase();
+					instance.secondIcon = null;
+				}
 				if (action != null) {
 					instance.icon = action.actionIcon();
+					instance.add(instance.icon);
+
+					Image secondIco = action.secondIcon();
+					if (secondIco != null){
+						instance.secondIcon = secondIco;
+						instance.add(instance.secondIcon);
+					}
+
 					instance.needsLayout = true;
+					instance.setColor(action.actionColor());
 				}
 			}
 		}
@@ -144,6 +161,11 @@ public class ActionIndicator extends Tag {
 		public String actionName();
 
 		public Image actionIcon();
+
+		//TODO more variable than an icon maybe
+		public Image secondIcon();
+
+		public int actionColor();
 
 		public void doAction();
 

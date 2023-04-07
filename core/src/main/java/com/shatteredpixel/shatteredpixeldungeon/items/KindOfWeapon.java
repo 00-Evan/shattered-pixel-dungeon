@@ -109,7 +109,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 			activate( hero );
 			Talent.onItemEquipped(hero, this);
 			Badges.validateDuelistUnlock();
-			ActionIndicator.updateIcon();
+			ActionIndicator.refresh();
 			updateQuickslot();
 
 			cursedKnown = true;
@@ -152,7 +152,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 			activate( hero );
 			Talent.onItemEquipped(hero, this);
 			Badges.validateDuelistUnlock();
-			ActionIndicator.updateIcon();
+			ActionIndicator.refresh();
 			updateQuickslot();
 
 			cursedKnown = true;

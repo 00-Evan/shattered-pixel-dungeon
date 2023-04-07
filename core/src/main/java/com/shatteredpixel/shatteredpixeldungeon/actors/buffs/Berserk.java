@@ -32,6 +32,8 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.DangerIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
@@ -241,8 +243,17 @@ public class Berserk extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public Image actionIcon() {
-		//TODO, should look into these in general honestly
-		return new BuffIcon(BuffIndicator.FURY, true);
+		return new HeroIcon(HeroIcon.BERSERK);
+	}
+
+	@Override
+	public Image secondIcon() {
+		return null;
+	}
+
+	@Override
+	public int actionColor() {
+		return 0x660000;
 	}
 
 	@Override

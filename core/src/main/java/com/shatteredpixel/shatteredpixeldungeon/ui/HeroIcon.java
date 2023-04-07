@@ -66,6 +66,14 @@ public class HeroIcon extends Image {
 	public static final int FEINT           = 30;
 	public static final int RATMOGRIFY      = 31;
 
+	//action indicator visuals
+	public static final int BERSERK         = 32;
+	public static final int COMBO           = 33;
+	public static final int PREPARATION     = 34;
+	public static final int MOMENTUM        = 35;
+	public static final int SNIPERS_MARK    = 36;
+	public static final int MONK_ABILITIES  = 37;
+
 	public HeroIcon(HeroSubClass subCls){
 		super( Assets.Interfaces.HERO_ICONS );
 		if (film == null){
@@ -80,6 +88,15 @@ public class HeroIcon extends Image {
 			film = new TextureFilm(texture, SIZE, SIZE);
 		}
 		frame(film.get(abil.icon()));
+	}
+
+	//TODO make this consistent with subclass and ability icons
+	public HeroIcon(int icon){
+		super( Assets.Interfaces.HERO_ICONS );
+		if (film == null){
+			film = new TextureFilm(texture, SIZE, SIZE);
+		}
+		frame(film.get(icon));
 	}
 
 }

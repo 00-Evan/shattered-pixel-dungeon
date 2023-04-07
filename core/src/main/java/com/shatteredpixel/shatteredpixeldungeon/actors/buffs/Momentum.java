@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -206,9 +207,19 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public Image actionIcon() {
-		Image im = new BuffIcon(BuffIndicator.HASTE, true);
-		im.hardlight(0x99992E);
-		return im;
+		Image actionIco = new HeroIcon(HeroIcon.MOMENTUM);
+		actionIco.hardlight(1, 1, 0);
+		return actionIco;
+	}
+
+	@Override
+	public Image secondIcon() {
+		return null;
+	}
+
+	@Override
+	public int actionColor() {
+		return 0x444444;
 	}
 
 	@Override
