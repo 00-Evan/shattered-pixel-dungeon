@@ -232,7 +232,7 @@ public abstract class Char extends Actor {
 			return true;
 		}
 
-		moveSprite( pos, c.pos );
+		sprite.moveSprite( pos, c.pos );
 		move( c.pos );
 		
 		c.sprite.move( c.pos, curPos );
@@ -251,17 +251,7 @@ public abstract class Char extends Actor {
 		return true;
 	}
 	
-	protected boolean moveSprite( int from, int to ) {
-		
-		if (sprite.isVisible() && (Dungeon.level.heroFOV[from] || Dungeon.level.heroFOV[to])) {
-			sprite.move( from, to );
-			return true;
-		} else {
-			sprite.turnTo(from, to);
-			sprite.place( to );
-			return true;
-		}
-	}
+	
 
 	public void hitSound( float pitch ){
 		Sample.INSTANCE.play(Assets.Sounds.HIT, 1, pitch);

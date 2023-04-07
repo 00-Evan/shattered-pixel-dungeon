@@ -130,6 +130,18 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		super();
 		listener = this;
 	}
+
+	public boolean moveSprite( int from, int to ) {
+		
+		if (isVisible() && (Dungeon.level.heroFOV[from] || Dungeon.level.heroFOV[to])) {
+			move( from, to );
+			return true;
+		} else {
+			turnTo(from, to);
+			place( to );
+			return true;
+		}
+	}
 	
 	@Override
 	public void play(Animation anim) {

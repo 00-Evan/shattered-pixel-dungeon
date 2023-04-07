@@ -140,7 +140,7 @@ public class DirectableAlly extends NPC {
 				if (getCloser( target )) {
 					spend( 1 / speed() );
 					if (pos == defendingPos) movingToDefendPos = false;
-					return moveSprite( oldPos, pos );
+					return sprite.moveSprite( oldPos, pos );
 				} else {
 					//if it can't move closer to defending pos, then give up and defend current position
 					if (movingToDefendPos){

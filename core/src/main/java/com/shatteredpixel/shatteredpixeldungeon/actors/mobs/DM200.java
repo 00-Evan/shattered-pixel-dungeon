@@ -161,7 +161,7 @@ public class DM200 extends Mob {
 
 				} else if (getCloser( target )) {
 					spend( 1 / speed() );
-					return moveSprite( oldPos,  pos );
+					return sprite.moveSprite( oldPos,  pos );
 
 				} else if (canVent(target)) {
 					if (sprite != null && (sprite.visible || enemy.sprite.visible)) {

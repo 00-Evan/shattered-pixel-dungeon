@@ -255,7 +255,7 @@ public class RipperDemon extends Mob {
 				if (target != -1 && getCloser( target )) {
 
 					spend( 1 / speed() );
-					return moveSprite( oldPos,  pos );
+					return sprite.moveSprite( oldPos,  pos );
 
 				} else {
 					spend( TICK );

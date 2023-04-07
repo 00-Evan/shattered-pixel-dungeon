@@ -1055,7 +1055,7 @@ public abstract class Mob extends Char {
 			int oldPos = pos;
 			if (target != -1 && getCloser( target )) {
 				spend( 1 / speed() );
-				return moveSprite( oldPos, pos );
+				return sprite.moveSprite( oldPos, pos );
 			} else {
 				target = Dungeon.level.randomDestination( Mob.this );
 				spend( TICK );
@@ -1097,7 +1097,7 @@ public abstract class Mob extends Char {
 				if (target != -1 && getCloser( target )) {
 					
 					spend( 1 / speed() );
-					return moveSprite( oldPos,  pos );
+					return sprite.moveSprite( oldPos,  pos );
 
 				} else {
 
@@ -1148,7 +1148,7 @@ public abstract class Mob extends Char {
 			if (target != -1 && getFurther( target )) {
 
 				spend( 1 / speed() );
-				return moveSprite( oldPos, pos );
+				return sprite.moveSprite( oldPos, pos );
 
 			} else {
 
