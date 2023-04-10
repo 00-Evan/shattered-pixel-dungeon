@@ -234,7 +234,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 	public boolean abilitiesEmpowered( Hero hero ){
 		//100%/80%/60% energy at +1/+2/+3
-		return energy/energyCap() >= 1.15f - 0.2f*hero.pointsInTalent(Talent.MONASTIC_VIGOR);
+		return energy/energyCap() >= 1.2f - 0.2f*hero.pointsInTalent(Talent.MONASTIC_VIGOR);
 	}
 
 	public void processCombinedEnergy(Talent.CombinedEnergyAbilityTracker tracker){
