@@ -261,14 +261,18 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 	public Visual secondaryVisual() {
 		BitmapText txt = new BitmapText(PixelScene.pixelFont);
 		txt.text( Integer.toString((int)energy) );
-		if (abilitiesEmpowered(Dungeon.hero)) txt.hardlight(CharSprite.POSITIVE);
+		txt.hardlight(CharSprite.POSITIVE);
 		txt.measure();
 		return txt;
 	}
 
 	@Override
 	public int indicatorColor() {
-		return 0xA08840;
+		if (abilitiesEmpowered(Dungeon.hero)){
+			return 0x99CC33;
+		} else {
+			return 0xA08840;
+		}
 	}
 
 	@Override
