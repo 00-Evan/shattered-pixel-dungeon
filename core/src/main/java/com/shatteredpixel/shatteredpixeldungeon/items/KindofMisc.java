@@ -118,7 +118,7 @@ public abstract class KindofMisc extends EquipableItem {
 							}
 							if (slot != -1) {
 								Dungeon.quickslot.setSlot(slot, KindofMisc.this);
-							} else if (slotOfUnequipped != -1){
+							} else if (slotOfUnequipped != -1 && defaultAction() != null){
 								Dungeon.quickslot.setSlot(slotOfUnequipped, KindofMisc.this);
 							}
 							updateQuickslot();
