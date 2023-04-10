@@ -45,6 +45,9 @@ public class ControllerHandler implements ControllerListener {
 	public static ControllerType lastUsedType = ControllerType.OTHER;
 	public static boolean controllerActive = false;
 
+	//sufficiently large number so that it'll never collide with touch pointers (which start at 0)
+	public static final int CONTROLLER_POINTER_ID = 1000;
+
 	private static void setControllerType(Controller controller){
 		if (controller.getName().contains("Xbox")){
 			lastUsedType = ControllerType.XBOX;
@@ -179,6 +182,9 @@ public class ControllerHandler implements ControllerListener {
 		}
 	}
 
+	//we add 1000 to make the DPAD keys distinct from Keys.UP, Keys.DOWN, etc..
+	public static int DPAD_KEY_OFFSET = 1000;
+
 	//converts controller button codes to keyEvent codes
 	public static int buttonToKey(Controller controller, int btnCode){
 		ControllerMapping mapping = controller.getMapping();
@@ -195,11 +201,10 @@ public class ControllerHandler implements ControllerListener {
 		if (btnCode == mapping.buttonR1)        return Input.Keys.BUTTON_R1;
 		if (btnCode == mapping.buttonR2)        return Input.Keys.BUTTON_R2;
 
-		//we add 1000 here to make these keys distinct from Keys.UP, Keys.DOWN, etc..
-		if (btnCode == mapping.buttonDpadUp)    return Input.Keys.DPAD_UP       + 1000;
-		if (btnCode == mapping.buttonDpadDown)  return Input.Keys.DPAD_DOWN     + 1000;
-		if (btnCode == mapping.buttonDpadLeft)  return Input.Keys.DPAD_LEFT     + 1000;
-		if (btnCode == mapping.buttonDpadRight) return Input.Keys.DPAD_RIGHT    + 1000;
+		if (btnCode == mapping.buttonDpadUp)    return Input.Keys.DPAD_UP       + DPAD_KEY_OFFSET;
+		if (btnCode == mapping.buttonDpadDown)  return Input.Keys.DPAD_DOWN     + DPAD_KEY_OFFSET;
+		if (btnCode == mapping.buttonDpadLeft)  return Input.Keys.DPAD_LEFT     + DPAD_KEY_OFFSET;
+		if (btnCode == mapping.buttonDpadRight) return Input.Keys.DPAD_RIGHT    + DPAD_KEY_OFFSET;
 
 		if (btnCode == mapping.buttonLeftStick) return Input.Keys.BUTTON_THUMBL;
 		if (btnCode == mapping.buttonRightStick)return Input.Keys.BUTTON_THUMBR;
@@ -208,11 +213,13 @@ public class ControllerHandler implements ControllerListener {
 	}
 
 	public static boolean icControllerKey(int keyCode){
-		if (keyCode >= Input.Keys.BUTTON_A && keyCode <= Input.Keys.BUTTON_MODE){
+		if (keyCode >= Input.Keys.BUTTON_A
+				&& keyCode <= Input.Keys.BUTTON_MODE){
 			return true;
 		}
 
-		if (keyCode >= Input.Keys.DPAD_UP+1000 && keyCode <= Input.Keys.DPAD_RIGHT+1000){
+		if (keyCode >= Input.Keys.DPAD_UP+DPAD_KEY_OFFSET
+				&& keyCode <= Input.Keys.DPAD_RIGHT+DPAD_KEY_OFFSET){
 			return true;
 		}
 
@@ -242,13 +249,13 @@ public class ControllerHandler implements ControllerListener {
 			}
 		}
 
-		if (keyCode == Input.Keys.DPAD_UP + 1000){
+		if (keyCode == Input.Keys.DPAD_UP + DPAD_KEY_OFFSET){
 			return Input.Keys.toString(Input.Keys.DPAD_UP);
-		} else if (keyCode == Input.Keys.DPAD_DOWN + 1000){
+		} else if (keyCode == Input.Keys.DPAD_DOWN + DPAD_KEY_OFFSET){
 			return Input.Keys.toString(Input.Keys.DPAD_DOWN);
-		} else if (keyCode == Input.Keys.DPAD_LEFT + 1000){
+		} else if (keyCode == Input.Keys.DPAD_LEFT + DPAD_KEY_OFFSET){
 			return Input.Keys.toString(Input.Keys.DPAD_LEFT);
-		} else if (keyCode == Input.Keys.DPAD_RIGHT + 1000){
+		} else if (keyCode == Input.Keys.DPAD_RIGHT + DPAD_KEY_OFFSET){
 			return Input.Keys.toString(Input.Keys.DPAD_RIGHT);
 		}
 

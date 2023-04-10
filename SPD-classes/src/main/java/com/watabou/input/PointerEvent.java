@@ -175,12 +175,8 @@ public class PointerEvent {
 		pointerEvents.clear();
 
 		//add drag events for any emulated presses
-		if (hovered){
-			for (int i = 10+LEFT; i <= 10+FORWARD; i++){
-				if (activePointers.containsKey(i)){
-					Game.inputHandler.emulateDrag(i-10);
-				}
-			}
+		if (hovered && activePointers.containsKey(ControllerHandler.CONTROLLER_POINTER_ID)){
+			Game.inputHandler.emulateDrag(ControllerHandler.CONTROLLER_POINTER_ID);
 		}
 	}
 
