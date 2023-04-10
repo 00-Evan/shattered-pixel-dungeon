@@ -114,7 +114,7 @@ public class Rapier extends MeleeWeapon {
 				hero.pos = dest;
 				Dungeon.level.occupyCell(hero);
 
-				if (enemy != null) {
+				if (enemy != null && hero.canAttack(enemy)) {
 					hero.sprite.attack(enemy.pos, new Callback() {
 						@Override
 						public void call() {
