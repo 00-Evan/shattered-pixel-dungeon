@@ -586,6 +586,16 @@ public class Item implements Bundlable {
 		return new Ballistica( user.pos, dst, Ballistica.PROJECTILE ).collisionPos;
 	}
 
+	//묘르닐 Mjornil
+	public int targetingStartPos( int pos , int dst ){
+		return throwStartPos(  pos , dst );
+	}
+
+	public int throwStartPos ( int pos, int dst){
+		return new Ballistica( pos, dst, Ballistica.PROJECTILE ).collisionPos;
+	}
+	//묘르닐 퀵에임 관련 Mjornil
+
 	public void throwSound(){
 		Sample.INSTANCE.play(Assets.Sounds.MISS, 0.6f, 0.6f, 1.5f);
 	}

@@ -48,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Mjornil;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
@@ -182,6 +183,7 @@ public enum HeroClass {
 
 		new ScrollOfUpgrade().identify();
 		new PotionOfLiquidFlame().identify();
+		(hero.belongings.artifact = new Mjornil()).identify();
 	}
 
 	private static void initRogue( Hero hero ) {

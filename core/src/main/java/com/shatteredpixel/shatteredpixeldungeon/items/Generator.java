@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Mjornil;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
@@ -477,9 +478,10 @@ public class Generator {
 					SandalsOfNature.class,
 					TalismanOfForesight.class,
 					TimekeepersHourglass.class,
-					UnstableSpellbook.class
+					UnstableSpellbook.class,
+					Mjornil.class
 			};
-			ARTIFACT.defaultProbs = new float[]{ 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1 };
+			ARTIFACT.defaultProbs = new float[]{ 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1 ,1 };
 			ARTIFACT.probs = ARTIFACT.defaultProbs.clone();
 		}
 	}
