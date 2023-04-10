@@ -211,7 +211,7 @@ public class GameScene extends PixelScene {
 		
 		super.create();
 		Camera.main.zoom( GameMath.gate(minZoom, defaultZoom + SPDSettings.zoom(), maxZoom));
-		Camera.main.scrollable = true;
+		Camera.main.edgeScroll.set(1);
 
 		switch (SPDSettings.cameraFollow()) {
 			case 4: default:    Camera.main.setFollowDeadzone(0);      break;
