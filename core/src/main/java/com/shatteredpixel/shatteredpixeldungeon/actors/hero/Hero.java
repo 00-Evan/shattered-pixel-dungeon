@@ -1567,6 +1567,8 @@ public class Hero extends Char {
 					Chasm.heroJump(this);
 					interrupt();
 				} else {
+					flying = false;
+					remove(buff(Levitation.class)); //directly remove to prevent cell pressing
 					Chasm.heroFall(target);
 				}
 				canSelfTrample = false;
