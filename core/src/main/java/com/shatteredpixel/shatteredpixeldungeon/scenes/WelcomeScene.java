@@ -246,8 +246,8 @@ public class WelcomeScene extends PixelScene {
 						Rankings.INSTANCE.loadGameData(rec);
 						Rankings.INSTANCE.saveGameData(rec);
 					} catch (Exception e) {
-						//if we encounter a fatal per-record error, then clear that record
-						Rankings.INSTANCE.records.remove(rec);
+						//if we encounter a fatal per-record error, then clear that record's data
+						rec.gameData = null;
 						ShatteredPixelDungeon.reportException(e);
 					}
 				}
@@ -256,8 +256,8 @@ public class WelcomeScene extends PixelScene {
 						Rankings.INSTANCE.loadGameData(Rankings.INSTANCE.latestDaily);
 						Rankings.INSTANCE.saveGameData(Rankings.INSTANCE.latestDaily);
 					} catch (Exception e) {
-						//if we encounter a fatal per-record error, then clear that record
-						Rankings.INSTANCE.latestDaily = null;
+						//if we encounter a fatal per-record error, then clear that record's data
+						Rankings.INSTANCE.latestDaily.gameData = null;
 						ShatteredPixelDungeon.reportException(e);
 					}
 				}
