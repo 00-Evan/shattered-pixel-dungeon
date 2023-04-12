@@ -64,6 +64,9 @@ public class ChangeInfo extends Component {
 	
 	public void hardlight( int color ){
 		title.hardlight( color );
+		if (text != null){
+			text.hardlight(color);
+		}
 	}
 	
 	public void addButton( ChangeButton button ){
