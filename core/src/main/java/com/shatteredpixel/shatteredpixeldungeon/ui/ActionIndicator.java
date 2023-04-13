@@ -96,10 +96,12 @@ public class ActionIndicator extends Tag {
 
 		if (needsRefresh){
 			if (primaryVis != null) {
+				primaryVis.destroy();
 				primaryVis.killAndErase();
 				primaryVis = null;
 			}
 			if (secondVis != null){
+				secondVis.destroy();
 				secondVis.killAndErase();
 				secondVis = null;
 			}
@@ -112,11 +114,11 @@ public class ActionIndicator extends Tag {
 					add(secondVis);
 				}
 
-				needsRefresh = true;
 				setColor(action.indicatorColor());
 			}
 
 			layout();
+			needsRefresh = false;
 		}
 
 		if (!Dungeon.hero.ready){
