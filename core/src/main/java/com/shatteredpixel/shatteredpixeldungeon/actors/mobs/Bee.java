@@ -124,13 +124,16 @@ public class Bee extends Mob {
 	}
 
 	@Override
-	public void add(Buff buff) {
-		super.add(buff);
-		//TODO maybe handle honeyed bees with their own ally buff?
-		if (buff instanceof AllyBuff){
-			intelligentAlly = false;
-			setPotInfo(-1, null);
+	public boolean add(Buff buff) {
+		if (super.add(buff)) {
+			//TODO maybe handle honeyed bees with their own ally buff?
+			if (buff instanceof AllyBuff) {
+				intelligentAlly = false;
+				setPotInfo(-1, null);
+			}
+			return true;
 		}
+		return false;
 	}
 
 	@Override

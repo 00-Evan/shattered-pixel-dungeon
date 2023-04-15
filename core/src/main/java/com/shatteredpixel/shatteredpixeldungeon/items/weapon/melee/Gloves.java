@@ -52,7 +52,7 @@ public class Gloves extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		Sai.comboStrikeAbility(hero, target, 0.30f, this);
+		Sai.comboStrikeAbility(hero, target, 0.40f, this);
 	}
 
 }

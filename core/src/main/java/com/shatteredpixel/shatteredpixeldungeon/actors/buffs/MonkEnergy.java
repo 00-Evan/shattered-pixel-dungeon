@@ -161,9 +161,9 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 					if (hero.belongings.armor().tier <= 1 && points >= 3){
 						enGainMulti += 1.00f;
 					} else if (hero.belongings.armor().tier <= 2 && points >= 2){
-						enGainMulti += 0.50f;
+						enGainMulti += 0.667f;
 					} else if (hero.belongings.armor().tier <= 3 && points >= 1){
-						enGainMulti += 0.25f;
+						enGainMulti += 0.333f;
 					}
 				}
 
@@ -172,9 +172,9 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 					if (((MeleeWeapon) hero.belongings.weapon()).tier <= 1 && points >= 3){
 						enGainMulti += 1.00f;
 					} else if (((MeleeWeapon) hero.belongings.weapon()).tier <= 2 && points >= 2){
-						enGainMulti += 0.50f;
+						enGainMulti += 0.667f;
 					} else if (((MeleeWeapon) hero.belongings.weapon()).tier <= 3 && points >= 1){
-						enGainMulti += 0.25f;
+						enGainMulti += 0.333f;
 					}
 				} else if (hero.belongings.weapon == null) {
 					if (hero.buff(RingOfForce.Force.class) == null && points >= 3){
@@ -221,12 +221,12 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 	}
 
 	public boolean abilitiesEmpowered( Hero hero ){
-		//100%/85%/70% energy at +1/+2/+3
-		return energy/energyCap() >= 1.15f - 0.15f*hero.pointsInTalent(Talent.MONASTIC_VIGOR);
+		//100%/80%/60% energy at +1/+2/+3
+		return energy/energyCap() >= 1.15f - 0.2f*hero.pointsInTalent(Talent.MONASTIC_VIGOR);
 	}
 
 	public void processCombinedEnergy(Talent.CombinedEnergyAbilityTracker tracker){
-		energy += tracker.energySpent/3f;
+		energy = Math.min(energy+tracker.energySpent/3f, energyCap());
 		cooldown = 0;
 		tracker.detach();
 		if (energy >= 1){

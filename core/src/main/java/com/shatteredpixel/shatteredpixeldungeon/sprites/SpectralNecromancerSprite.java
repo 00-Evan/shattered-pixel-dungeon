@@ -34,7 +34,7 @@ import com.watabou.noosa.particles.Emitter;
 public class SpectralNecromancerSprite extends MobSprite {
 
 	private Animation charging;
-	private Emitter summoningBones;
+	private Emitter summoningParticles;
 
 	public SpectralNecromancerSprite(){
 		super();
@@ -75,40 +75,44 @@ public class SpectralNecromancerSprite extends MobSprite {
 	@Override
 	public void update() {
 		super.update();
-		if (summoningBones != null && ((Necromancer) ch).summoningPos != -1){
-			summoningBones.visible = Dungeon.level.heroFOV[((Necromancer) ch).summoningPos];
+		if (summoningParticles != null && ((Necromancer) ch).summoningPos != -1){
+			summoningParticles.visible = Dungeon.level.heroFOV[((Necromancer) ch).summoningPos];
 		}
 	}
 
 	@Override
 	public void die() {
 		super.die();
-		if (summoningBones != null){
-			summoningBones.on = false;
+		if (summoningParticles != null){
+			summoningParticles.on = false;
+			summoningParticles = null;
 		}
 	}
 
 	@Override
 	public void kill() {
 		super.kill();
-		if (summoningBones != null){
-			summoningBones.killAndErase();
+		if (summoningParticles != null){
+			summoningParticles.on = false;
+			summoningParticles = null;
 		}
 	}
 
 	public void cancelSummoning(){
-		if (summoningBones != null){
-			summoningBones.on = false;
+		if (summoningParticles != null){
+			summoningParticles.on = false;
+			summoningParticles = null;
 		}
 	}
 
 	public void finishSummoning(){
-		if (summoningBones.visible) {
+		if (summoningParticles.visible) {
 			Sample.INSTANCE.play(Assets.Sounds.CURSED);
-			summoningBones.burst(ShadowParticle.CURSE, 5);
+			summoningParticles.burst(ShadowParticle.CURSE, 5);
 		} else {
-			summoningBones.on = false;
+			summoningParticles.on = false;
 		}
+		summoningParticles = null;
 		idle();
 	}
 
@@ -120,13 +124,13 @@ public class SpectralNecromancerSprite extends MobSprite {
 	public void zap(int cell) {
 		super.zap(cell);
 		if (ch instanceof Necromancer && ((Necromancer) ch).summoning){
-			if (summoningBones != null){
-				summoningBones.on = false;
+			if (summoningParticles != null){
+				summoningParticles.on = false;
 			}
-			summoningBones = CellEmitter.get(((Necromancer) ch).summoningPos);
-			summoningBones.pour(ShadowParticle.MISSILE, 0.1f);
-			summoningBones.visible = Dungeon.level.heroFOV[((Necromancer) ch).summoningPos];
-			if (visible || summoningBones.visible ) Sample.INSTANCE.play( Assets.Sounds.CHARGEUP, 1f, 0.8f );
+			summoningParticles = CellEmitter.get(((Necromancer) ch).summoningPos);
+			summoningParticles.pour(ShadowParticle.MISSILE, 0.1f);
+			summoningParticles.visible = Dungeon.level.heroFOV[((Necromancer) ch).summoningPos];
+			if (visible || summoningParticles.visible ) Sample.INSTANCE.play( Assets.Sounds.CHARGEUP, 1f, 0.8f );
 		}
 	}
 

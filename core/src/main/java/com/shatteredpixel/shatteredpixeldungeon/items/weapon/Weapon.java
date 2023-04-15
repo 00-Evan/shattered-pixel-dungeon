@@ -287,9 +287,7 @@ abstract public class Weapon extends KindOfWeapon {
 		
 		cursed = false;
 
-		Item result = super.upgrade();
-		Badges.validateDuelistUnlock();
-		return result;
+		return super.upgrade();
 	}
 	
 	@Override

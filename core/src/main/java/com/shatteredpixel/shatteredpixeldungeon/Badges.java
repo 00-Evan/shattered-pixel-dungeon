@@ -229,14 +229,7 @@ public class Badges {
 
 	private static final HashMap<String, String> renamedBadges = new HashMap<>();
 	static{
-		//v1.1.0 (some names were from before 1.1.0, but conversion was added then)
-		renamedBadges.put("BAG_BOUGHT_SEED_POUCH",      "BAG_BOUGHT_VELVET_POUCH");
-		renamedBadges.put("BAG_BOUGHT_WAND_HOLSTER",    "BAG_BOUGHT_MAGICAL_HOLSTER");
-
-		renamedBadges.put("POTIONS_COOKED_1", "ITEMS_CRAFTED_1");
-		renamedBadges.put("POTIONS_COOKED_2", "ITEMS_CRAFTED_2");
-		renamedBadges.put("POTIONS_COOKED_3", "ITEMS_CRAFTED_3");
-		renamedBadges.put("POTIONS_COOKED_4", "ITEMS_CRAFTED_4");
+		//no renamed badges currently
 	}
 
 	public static HashSet<Badge> restore( Bundle bundle ) {
@@ -524,6 +517,10 @@ public class Badges {
 		// Note that artifacts should never trigger this badge as they are alternatively upgraded
 		if (!item.levelKnown || item instanceof Artifact) {
 			return;
+		}
+
+		if (item instanceof MeleeWeapon){
+			validateDuelistUnlock();
 		}
 		
 		Badge badge = null;

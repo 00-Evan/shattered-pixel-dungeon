@@ -200,7 +200,7 @@ public class WelcomeScene extends PixelScene {
 				//TODO: change the messages here in accordance with the type of patch.
 				message = Messages.get(this, "patch_intro");
 				message += "\n";
-				//message += "\n" + Messages.get(this, "patch_balance");
+				message += "\n" + Messages.get(this, "patch_balance");
 				message += "\n" + Messages.get(this, "patch_bugfixes");
 				message += "\n" + Messages.get(this, "patch_translations");
 
@@ -240,17 +240,10 @@ public class WelcomeScene extends PixelScene {
 		//update rankings, to update any data which may be outdated
 		if (previousVersion < LATEST_UPDATE){
 			try {
-				Badges.loadGlobal(); //fixing a bug with v1.3.2 saves
 				Rankings.INSTANCE.load();
 				for (Rankings.Record rec : Rankings.INSTANCE.records.toArray(new Rankings.Record[0])){
 					try {
 						Rankings.INSTANCE.loadGameData(rec);
-						if (Statistics.gameWon) {
-							Badges.unlock(Badges.Badge.VICTORY);
-							if (Challenges.activeChallenges() >= 1) Badges.unlock(Badges.Badge.CHAMPION_1);
-							if (Challenges.activeChallenges() >= 3) Badges.unlock(Badges.Badge.CHAMPION_2);
-							if (Challenges.activeChallenges() >= 6) Badges.unlock(Badges.Badge.CHAMPION_3);
-						}
 						Rankings.INSTANCE.saveGameData(rec);
 					} catch (Exception e) {
 						//if we encounter a fatal per-record error, then clear that record
@@ -270,7 +263,6 @@ public class WelcomeScene extends PixelScene {
 				}
 				Collections.sort(Rankings.INSTANCE.records, Rankings.scoreComparator);
 				Rankings.INSTANCE.save();
-				Badges.saveGlobal();
 			} catch (Exception e) {
 				//if we encounter a fatal error, then just clear the rankings
 				FileUtils.deleteFile( Rankings.RANKINGS_FILE );
@@ -284,6 +276,7 @@ public class WelcomeScene extends PixelScene {
 		if (previousVersion <= ShatteredPixelDungeon.v2_0_0){
 			Badges.loadGlobal();
 			if (Badges.isUnlocked(Badges.Badge.VICTORY) && !Badges.isUnlocked(Badges.Badge.UNLOCK_DUELIST)){
+				Dungeon.customSeedText = ""; //clear in case rankings updating left this set
 				Badges.unlock(Badges.Badge.UNLOCK_DUELIST);
 				Badges.saveGlobal();
 			}

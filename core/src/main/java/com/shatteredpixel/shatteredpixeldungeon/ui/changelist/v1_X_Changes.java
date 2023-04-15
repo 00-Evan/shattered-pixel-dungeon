@@ -119,7 +119,7 @@ public class v1_X_Changes {
 		changes.addButton(new ChangeButton(Icons.get(Icons.DISPLAY_LAND), "Landscape Hero Select",
 				"Desktop and mobile landscape users will now see a new hero select screen that better makes use of screen real-estate."));
 
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 1",
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"_Highlights:_\n" +
 				"_-_ Daily runs can now be replayed for practice\n" +
 				"_-_ Updated translations and translator credits\n" +
@@ -129,22 +129,20 @@ public class v1_X_Changes {
 				"_Hero Actions:_\n" +
 				"_-_ Waiting now always takes exactly 1 turn, regardless of hero speed\n" +
 				"_-_ Grass the hero is standing on can now be trampled by selecting the hero's position\n" +
-				"_-_ Hero now pauses before ascending/descending if enemies are nearby\n" +
-				"\n" +
+				"_-_ Hero now pauses before ascending/descending if enemies are nearby",
+
 				"_Items:_\n" +
 				"_-_ Wand of Disintegration no longer harms undiscovered neutral characters\n" +
 				"_-_ Blooming enchant now tries to avoid placing grass on the hero\n" +
 				"_-_ The scroll holder can now hold arcane resin\n" +
 				"_-_ Rotberry plant now gives a small puff of toxic gas when trampled\n" +
-				"_-_ Plants now trigger after time freeze ends, just like traps"));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 2",
+				"_-_ Plants now trigger after time freeze ends, just like traps\n" +
 				"_Allies & Enemies:_\n" +
 				"_-_ Improved behavior of ally AI when told to hold a position\n" +
 				"_-_ Goo's pump up attack now always gives the hero at least 1 action to react\n" +
 				"_-_ DM-300 now knocks back during rockfall even if hero is 1 tile away\n" +
-				"_-_ Slightly adjusted enemy stats on ascension to smooth out difficulty\n" +
-				"\n" +
+				"_-_ Slightly adjusted enemy stats on ascension to smooth out difficulty",
+
 				"_UI/VFX:_\n" +
 				"_-_ Throwing weapons now show their quantity in orange when one is about to break\n" +
 				"_-_ Item boosts from potion of mastery or curse infusion now change the color of text in that item's item slot\n" +
@@ -153,14 +151,13 @@ public class v1_X_Changes {
 				"_-_ Added some ascension dialogue for the ghost hero\n" +
 				"_-_ Slightly improved the marsupial rat attacking animation\n" +
 				"_-_ Improved chains vfx, especially for prison guards\n" +
-				"_-_ Added lullaby vfx to the stone of deep sleep"));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 3",
+				"_-_ Added lullaby vfx to the stone of deep sleep\n" +
+				"\n" +
 				"_Rankings:_\n" +
 				"_-_ Clarified description for boss score in rankings\n" +
 				"_-_ Yog's laser now deducts score even if the hero dodges it\n" +
-				"_-_ Goo no longer deducts score by healing in water\n" +
-				"\n" +
+				"_-_ Goo no longer deducts score by healing in water",
+
 				"_Levelgen:_\n" +
 				"_-_ Items and enemies can no longer spawn in aquarium room water\n" +
 				"_-_ Improved room merging logic in a few specific situations\n" +
@@ -174,7 +171,7 @@ public class v1_X_Changes {
 				"_-_ The controller pointer can now pan the game camera\n" +
 				"_-_ Heroes can now be renamed individually"));
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 1",
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n\n" +
 				"_Highlights:_\n" +
 				"_-_ Victory and Champion badges not being awarded in some cases\n" +
@@ -189,9 +186,8 @@ public class v1_X_Changes {
 				"_-_ Albino rats causing bleed when hitting for 0 damage\n" +
 				"_-_ Necromancers being able to summon through crystal doors\n" +
 				"_-_ Giant necromancers summoning skeletons into doorways\n" +
-				"_-_ Goo Immediately using its pump up attack if a previous pump up was interrupted by sleep"));
+				"_-_ Goo Immediately using its pump up attack if a previous pump up was interrupted by sleep",
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 2",
 				"_Items pt.1:_\n" +
 				"_-_ Honeypots not reacting correctly to being teleported\n" +
 				"_-_ Rare cases where lost inventory and items on stairs could softlock the game\n" +
@@ -205,11 +201,10 @@ public class v1_X_Changes {
 				"_-_ Various quirks with charge spending on timekeeper's hourglass\n" +
 				"_-_ Stones of aggression working much more effectively than intended\n" +
 				"_-_ Chalice of Blood benefitting from recharging while hero is starving\n" +
-				"_-_ Cases where explosive curse would create explosions at the wrong location\n" +
-				"_-_ Additional cases where magical spellbook could generate scrolls of lullaby"));
+				"_-_ Cases where explosive curse would create explosions at the wrong location",
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 3",
 				"_Items pt.2:_\n" +
+				"_-_ Additional cases where magical spellbook could generate scrolls of lullaby" +
 				"_-_ Heavy boomerangs getting an accuracy penalty when returning\n" +
 				"_-_ Rare consistency errors in potion of might buff description\n" +
 				"_-_ Death to aqua blast counting as death to a geyser trap\n" +
@@ -222,9 +217,8 @@ public class v1_X_Changes {
 				"_-_ Cursed horn of plenty affecting non-food items\n" +
 				"_-_ Being able to self-target with cursed wands in rare cases\n" +
 				"_-_ Some thrown weapons triggering traps as Tengu jumps\n" +
-				"_-_ Magic resistance not applying to some cursed wand effects"));
+				"_-_ Magic resistance not applying to some cursed wand effects",
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 4",
 				"_Effects:_\n" +
 				"_-_ Invisibility effects not working when applied to enemies\n" +
 				"_-_ Rare cases where giant enemies couldn't attack\n" +
@@ -239,9 +233,8 @@ public class v1_X_Changes {
 				"_-_ Caves boss arena not displacing all items on the tile that caves in\n" +
 				"_-_ Recharging effects sometimes getting an extra action on game load\n" +
 				"_-_ Exploits during ascension challenge that let players still use shops\n" +
-				"_-_ Elastic and battlemage blast wave ability conflicting with each other"));
+				"_-_ Elastic and battlemage blast wave ability conflicting with each other",
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 5",
 				"_Misc:_\n" +
 				"_-_ Dailies using seeds that are also user-enterable\n" +
 				"_-_ Confusing text when a weapon or armor is partly uncursed\n" +
@@ -372,7 +365,7 @@ public class v1_X_Changes {
 				"Several buffs have been given icons when they didn't have any, or have had their icons adjusted to prevent icon duplication. This should improve buff clarity in a few cases, and ensure that two active buffs can never have the exact same icon (recolored icons are still present though).\n\n" +
 				"A few new overhead spell effects have been added as well."));
 
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 1",
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"_-_ Updated translations, translator credits, and added a new language: Dutch!\n" +
 				"_-_ Made the Huntress a bit easier to unlock again\n" +
 				"_-_ Dreamfoil has been renamed to Mageroyal, to better fit its lack of sleeping functionality since 1.2\n" +
@@ -382,12 +375,11 @@ public class v1_X_Changes {
 				"_-_ Progress is now shown for badges that need to be unlocked with multiple heroes\n" +
 				"_-_ Multiple unlocked badges can now be shown at once\n" +
 				"_-_ Various minor tweaks to item and level generation to support seeded runs\n" +
-				"_-_ Keys now appear on top of other items in pit rooms\n" +
+				"_-_ Keys now appear on top of other items in pit rooms",
+
 				"_-_ Large floors now spawn two torches with the 'into darkness' challenge enabled\n" +
 				"_-_ Blazing champions no longer explode if they are killed by chasms\n" +
-				"_-_ Red sentries no longer fire on players with lost inventories"));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 2",
+				"_-_ Red sentries no longer fire on players with lost inventories\n" +
 				"_-_ Wards and Sentries are now immune to sleep, vertigo and fear\n" +
 				"_-_ Characters with guaranteed dodges (e.g. spirit hawk) can now evade Yog's laser beam\n" +
 				"_-_ Boss health bars have been expanded to show current health and active buffs/debuffs.\n" +
@@ -532,7 +524,7 @@ public class v1_X_Changes {
 				"_-_ Added a new language: Galician!\n" +
 				"_-_ Removed the Catalan translation as it was below 70% complete"));
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 1",
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
 				"_-_ Various rare cases of save corruption on Android\n" +
 				"_-_ Various minor textual and visual errors\n\n" +
@@ -546,10 +538,8 @@ public class v1_X_Changes {
 				"_-_ On-hit effects still triggering when the great crab blocks\n" +
 				"_-_ Corruption debuff affecting smoke bomb decoy\n" +
 				"_-_ Character mind vision persisting after a character dies\n" +
-				"_-_ Dwarf King not being targeted by wands or thrown weapons while on his throne"));
+				"_-_ Dwarf King not being targeted by wands or thrown weapons while on his throne",
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 2",
-				"Fixed:\n" +
 				"_-_ Pharmacophobia challenge incorrectly blocking some alchemy recipes\n" +
 				"_-_ Unidentified wands being usable in alchemy\n" +
 				"_-_ Wild energy spell not cancelling invisibility or time freeze\n" +
@@ -559,10 +549,8 @@ public class v1_X_Changes {
 				"_-_ Some items rarely not being consumed when they should be\n" +
 				"_-_ Arcane catalysts not being able to be turned into energy\n" +
 				"_-_ Fog of War not properly updating when warp beacon is used\n" +
-				"_-_ Very rare cases where dried rose becomes unusable"));
+				"_-_ Very rare cases where dried rose becomes unusable",
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 3",
-				"Fixed:\n" +
 				"_-_ Rare cases where lullaby scrolls were generated by the Unstable Spellbook\n" +
 				"_-_ Ring of might health boost not being affected by lost inventory debuff\n" +
 				"_-_ Items that spawn identified counting as being IDed by the player\n" +
@@ -703,32 +691,31 @@ public class v1_X_Changes {
 				"_- Scroll of Confusion_ is now _Scroll of Challenge_, which attracts enemies but creates an arena where you take reduced damage.\n" +
 				"_- Scroll of Polymorph_ is now _Scroll of Metamorphosis_, which lets you swap out a talent to one from another class." ));
 
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 1",
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"_-_ Item drops and special room spawns are now more consistent. Getting loads of the same item is now much less likely.\n" +
 				"_-_ Items present on boss floors are now preserved if the hero is revived from an unblessed ankh\n" +
 				"_-_ Teleport mechanics now work on boss levels\n" +
 				"_-_ Traps that teleport no longer work on items in chests or similar containers\n" +
-				"_-_ Rewards from piranha and trap rooms now always appear in chests\n\n" +
-
+				"_-_ Rewards from piranha and trap rooms now always appear in chests\n" +
+				"\n" +
 				"_-_ Tipped darts can now be transmuted and recycled\n" +
 				"_-_ Thrown weapons no longer stick to allies\n" +
-				"_-_ Liquid metal production from upgraded thrown weapons now caps at +3"));
+				"_-_ Liquid metal production from upgraded thrown weapons now caps at +3",
 
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc") + " 2",
 				"_-_ Updated game icons on Android and Desktop platforms\n" +
 				"_-_ Tabs in rankings and hero info windows now use icons, not text\n" +
-				"_-_ 'potions cooked' badge and stats are now 'items crafted'\n\n" +
-
-				"_-_ Newborn elementals no longer have a ranged attack\n\n" +
-
+				"_-_ 'potions cooked' badge and stats are now 'items crafted'\n" +
+				"\n" +
+				"_-_ Newborn elementals no longer have a ranged attack\n" +
+				"\n" +
 				"Various small improvements for iOS Devices:\n" +
 				"_-_ Game can now run at higher framerates than 60\n" +
 				"_-_ Ingame UI elements now move inward if notched devices are used in landscape\n" +
-				"_-_ There is now an option to override silent mode\n\n" +
-
+				"_-_ There is now an option to override silent mode\n" +
+				"\n" +
 				"_-_ Updated translations and translator credits"));
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 1",
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
 				"_-_ Various minor/rare visual and textual errors\n" +
 				"_-_ Cases where pausing/resuming the game at precise moments would cancel animations or attacks\n" +
@@ -744,11 +731,9 @@ public class v1_X_Changes {
 				"_-_ Various quirks with thrown weapon durability\n" +
 				"_-_ Rare cases where ghouls would get many extra turns when reviving\n" +
 				"_-_ Magical infusion not preserving curses on armor\n" +
-				"_-_ Vertigo and teleportation effects rarely interfering\n" +
-				"_-_ Layout issues in the hero info window with long buff names"));
+				"_-_ Vertigo and teleportation effects rarely interfering",
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 2",
-				"Fixed:\n" +
+				"_-_ Layout issues in the hero info window with long buff names\n" +
 				"_-_ Cursed wands being usable to create arcane resin\n" +
 				"_-_ Unblessed ankh revival rarely causing crashes or placing the player on hazards\n" +
 				"_-_ Some glyphs not working for armored statues or the ghost hero\n" +
@@ -759,14 +744,12 @@ public class v1_X_Changes {
 				"_-_ Ring of Might not updating hero health total in rare cases\n" +
 				"_-_ Specific cases where darts would not recognize an equipped crossbow\n" +
 				"_-_ Cap on regrowth wand being affect by level boosts\n" +
-				"_-_ Some on-hit effects not triggering on ghost or armored statues\n" +
+				"_-_ Some on-hit effects not triggering on ghost or armored statues",
+
 				"_-_ Rare errors when gateway traps teleported multiple things at once\n" +
 				"_-_ Various rare errors when multiple inputs were given in the same frame\n" +
 				"_-_ Fog of War errors in Tengu's arena\n" +
-				"_-_ Rare errors with sheep spawning items and traps"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes") + " 3",
-				"Fixed:\n" +
+				"_-_ Rare errors with sheep spawning items and traps\n" +
 				"_-_ Various rare crash bugs\n" +
 				"_-_ Various minor textual and visual errors\n" +
 				"_-_ Gateway traps rarely teleporting immovable characters\n" +
@@ -922,24 +905,22 @@ public class v1_X_Changes {
 				"_-_ Various minor visual and text errors\n" +
 				"_-_ damage warn triggering when hero gains HP from being hit\n" +
 				"_-_ various rare bugs involving pitfall traps\n" +
-				"_-_ disarming traps opening chests\n\n" +
-
+				"_-_ disarming traps opening chests\n" +
+				"\n" +
 				"_-_ various minor errors with electricity effects\n" +
 				"_-_ soul mark not working properly on low HP enemies with shielding\n" +
 				"_-_ various rare errors with shadows buff\n" +
 				"_-_ errors with time freeze and inter-floor teleportation mechanics\n" +
 				"_-_ rooted characters not being immune to knockback effects\n" +
-				"_-_ time stasis sometimes not preventing harmful effects in its last turn.\n\n" +
-
+				"_-_ time stasis sometimes not preventing harmful effects in its last turn.\n" +
+				"\n" +
 				"_-_ wands losing max charge on save/load in rare cases\n" +
 				"_-_ magical infusion clearing curses\n" +
 				"_-_ dewdrops stacking on each other in rare cases\n" +
 				"_-_ exploding skeletons not being blocked by transfusion shield in rare cases\n" +
 				"_-_ rare incorrect interactions between swiftthistle and golden lotus\n" +
-				"_-_ Rings not being renamable if they weren't IDed"));
+				"_-_ Rings not being renamable if they weren't IDed",
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed:\n" +
 				"_-_ statues not becoming aggressive when debuffed\n" +
 				"_-_ swapping places with allies reducing momentum\n" +
 				"_-_ DK minions dropping imp quest tokens\n" +
@@ -947,8 +928,8 @@ public class v1_X_Changes {
 				"_-_ spectral blades being blocked by allies\n" +
 				"_-_ Spirit Hawk and Shadow Clone being corruptible\n" +
 				"_-_ Rogue's body replacement ally being vulnerable to various AI-related debuffs\n" +
-				"_-_ some ranged enemies becoming frozen if they were attacked from out of their vision\n\n" +
-
+				"_-_ some ranged enemies becoming frozen if they were attacked from out of their vision\n" +
+				"\n" +
 				"_-_ gladiator combos dealing much more damage than intended in certain cases\n" +
 				"_-_ magical charge and scroll empower interacting incorrectly\n" +
 				"_-_ magical sight not working with farsight talent\n" +

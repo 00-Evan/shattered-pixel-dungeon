@@ -46,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
@@ -437,7 +438,7 @@ public class MeleeWeapon extends Weapon {
 			LockedFloor lock = target.buff(LockedFloor.class);
 			if (charges < chargeCap()){
 				if (lock == null || lock.regenOn()){
-					partialCharge += 1/(45f-1.5f*(chargeCap()-charges)); // 45 to 30 turns per charge
+					partialCharge += 1/(40f-(chargeCap()-charges)); // 40 to 30 turns per charge
 				}
 
 				int points = ((Hero)target).pointsInTalent(Talent.WEAPON_RECHARGING);
@@ -458,9 +459,9 @@ public class MeleeWeapon extends Weapon {
 			if (Dungeon.hero.subClass == HeroSubClass.CHAMPION
 					&& secondCharges < secondChargeCap()) {
 				if (lock == null || lock.regenOn()) {
-					// 90 to 60 turns per charge without talent
-					// up to 60 to 40 turns per charge at max talent level
-					secondPartialCharge += secondChargeMultiplier() / (45f-2.5f*(secondChargeCap()-secondCharges));
+					// 80 to 60 turns per charge without talent
+					// up to 53.333 to 40 turns per charge at max talent level
+					secondPartialCharge += secondChargeMultiplier() / (40f-(secondChargeCap()-secondCharges));
 				}
 
 				if (secondPartialCharge >= 1) {
@@ -577,6 +578,7 @@ public class MeleeWeapon extends Weapon {
 
 			ActionIndicator.setAction(this);
 			Item.updateQuickslot();
+			AttackIndicator.updateState();
 		}
 	}
 

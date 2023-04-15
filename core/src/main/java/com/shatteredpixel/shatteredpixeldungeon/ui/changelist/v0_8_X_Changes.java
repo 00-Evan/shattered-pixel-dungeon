@@ -125,11 +125,6 @@ public class v0_8_X_Changes {
 				"_-_ Journal sync is now supported by Google Play Games functionality"));
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_New Player Experience:_\n" +
-				"_-_ Snakes now give hints about surprise attacks after 3 misses, down from 5\n" +
-				"_-_ Accelerated the rate that guidebook pages drop on early floors\n" +
-				"_-_ The regular main menu is now only accessible after starting your first game\n" +
-				"_-_ Entrance doors on floor 2 are now only hidden the first time\n\n" +
 				"_Balance:_\n" +
 				"_-_ Bleed from gripping/flashing traps reduced, but they are also affected less by armor.\n" +
 				"_-_ All effects which cancel invisibility and time freeze now fully resolve before they cancel invis/freeze.\n" +
@@ -138,13 +133,21 @@ public class v0_8_X_Changes {
 				"_-_ Thrown potions no longer cleanse ooze/fire from enemies\n" +
 				"_-_ Strength Potions, Upgrade Scrolls, and items which use them are now considered unique and are immune to burn/freeze\n" +
 				"_-_ Enemies now cannot spawn near to the player, even if they are out of the player's view\n" +
-				"_-_ Ranged traps will now prefer to shoot visible targets over invisible ones"));
+				"_-_ Ranged traps will now prefer to shoot visible targets over invisible ones",
 
-			changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_New Player Experience:_\n" +
+				"_-_ Snakes now give hints about surprise attacks after 3 misses, down from 5\n" +
+				"_-_ Accelerated the rate that guidebook pages drop on early floors\n" +
+				"_-_ The regular main menu is now only accessible after starting your first game\n" +
+				"_-_ Entrance doors on floor 2 are now only hidden the first time\n\n" +
 				"_Audio:_\n" +
 				"_-_ New sound effects have been added for sheep and the talisman of foresight\n" +
 				"_-_ The SFX for discovering secrets has been remastered\n" +
 				"_-_ Torches now play a burning sound\n\n" +
+				"_Translations:_\n" +
+				"_-_ Added a new language: Ukranian!\n" +
+				"_-_ Updated translations and translator credits",
+
 				"_Quality of Life:_\n" +
 				"_-_ The dried rose can no longer be sold if it contains a weapon or armor\n" +
 				"_-_ Tweaked item visibility in furrowed grass\n" +
@@ -155,10 +158,7 @@ public class v0_8_X_Changes {
 				"_-_ Items for sale now show their price when being examined\n" +
 				"_-_ Stackable unique items can now be sold\n" +
 				"_-_ Shortened text from well of awareness\n" +
-				"_-_ Tweaked the sprites of tipped vs. untipped darts\n\n" +
-				"_Translations:_\n" +
-				"_-_ Added a new language: Ukranian!\n" +
-				"_-_ Updated translations and translator credits"));
+				"_-_ Tweaked the sprites of tipped vs. untipped darts"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
@@ -176,12 +176,10 @@ public class v0_8_X_Changes {
 				"_-_ Large enemies rarely appearing in enclosed spaces\n" +
 				"_-_ Player being able to drop corpse dust\n" +
 				"_-_ Remains in pit rooms rarely not being haunted when they contain cursed items\n" +
-				"_-_ Wandmaker rarely spawning ontop of traps\n" +
-				"_-_ Tengu placing traps over plants\n" +
-				"_-_ Items not being IDed in rankings in rare cases"));
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed:\n" +
+				"_-_ Wandmaker rarely spawning ontop of traps",
+				"_-_ Tengu placing traps over plants\n" +
+				"_-_ Items not being IDed in rankings in rare cases\n" +
 				"_-_ Sniper shot incorrectly capping at 2.5x damage instead of 3x\n" +
 				"_-_ Golden Lotus having twice at much HP as intended\n" +
 				"_-_ Pickaxe not getting bloodied by killing bats in rare cases\n" +
@@ -624,9 +622,8 @@ public class v0_8_X_Changes {
 				"\n" +
 				"_-_ Upgrading a stack of missile weapons now resets the durability of the stack\n" +
 				"_-_ Brewing a potion with 3 of the same seed now identifies it.\n" +
-				"_-_ Skeletal remains now always spawn a wraith if a cursed item spawned within them."));
+				"_-_ Skeletal remains now always spawn a wraith if a cursed item spawned within them.",
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"_-_ Dried rose desc now includes ghost's weapon and armor.\n" +
 				"_-_ Wand of Transfusion desc now includes damage/healing numbers.\n" +
 				"_-_ Beneficial darts now mention that they don't harm allies.\n" +
@@ -660,10 +657,8 @@ public class v0_8_X_Changes {
 				"_-_ Viscocity glyph not considering all armor sources when applying deferred damage\n" +
 				"_-_ Wand of warding bolts not pushing on terrain\n" +
 				"_-_ Wand of prismatic light rarely revealing areas it shouldn't\n" +
-				"_-_ Upgraded wands not spawning fully charged"));
+				"_-_ Upgraded wands not spawning fully charged",
 
-		changes.addButton( new ChangeButton(new Image( Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed:\n" +
 				"_-_ Invisibility not applying if the hero is also shadowmelded\n" +
 				"_-_ Landscape/portrait modes working incorrectly in rare cases\n" +
 				"_-_ Inventory incorrectly being seen as full when upgrading with the blacksmith\n" +

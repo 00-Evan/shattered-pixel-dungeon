@@ -27,9 +27,9 @@ import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.PointerArea;
 
-public class ChangesWindow extends WndTitledMessage {
+public class WndChanges extends WndTitledMessage {
 	
-	public ChangesWindow(Image icon, String title, String message ) {
+	public WndChanges( Image icon, String title, String message ) {
 		super( icon, title, message);
 		
 		PointerArea blocker = new PointerArea( 0, 0, PixelScene.uiCamera.width, PixelScene.uiCamera.height ) {

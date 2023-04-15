@@ -575,7 +575,7 @@ public abstract class Wand extends Item {
 					if (target == curUser.pos && curUser.hasTalent(Talent.SHIELD_BATTERY)){
 
 						if (curUser.buff(MagicImmune.class) != null){
-							GLog.w( Messages.get(this, "no_magic") );
+							GLog.w( Messages.get(Wand.class, "no_magic") );
 							return;
 						}
 
@@ -587,7 +587,7 @@ public abstract class Wand extends Item {
 						Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
 						ScrollOfRecharging.charge(curUser);
 						updateQuickslot();
-						curUser.spend(Actor.TICK);
+						curUser.spendAndNext(Actor.TICK);
 						return;
 					}
 					GLog.i( Messages.get(Wand.class, "self_target") );

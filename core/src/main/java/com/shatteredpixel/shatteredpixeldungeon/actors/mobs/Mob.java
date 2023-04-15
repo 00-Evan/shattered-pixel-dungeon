@@ -395,30 +395,36 @@ public abstract class Mob extends Char {
 	}
 	
 	@Override
-	public void add( Buff buff ) {
-		super.add( buff );
-		if (buff instanceof Amok || buff instanceof AllyBuff) {
-			state = HUNTING;
-		} else if (buff instanceof Terror || buff instanceof Dread) {
-			state = FLEEING;
-		} else if (buff instanceof Sleep) {
-			state = SLEEPING;
-			postpone( Sleep.SWS );
+	public boolean add( Buff buff ) {
+		if (super.add( buff )) {
+			if (buff instanceof Amok || buff instanceof AllyBuff) {
+				state = HUNTING;
+			} else if (buff instanceof Terror || buff instanceof Dread) {
+				state = FLEEING;
+			} else if (buff instanceof Sleep) {
+				state = SLEEPING;
+				postpone(Sleep.SWS);
+			}
+			return true;
 		}
+		return false;
 	}
 	
 	@Override
-	public void remove( Buff buff ) {
-		super.remove( buff );
-		if ((buff instanceof Terror && buff(Dread.class) == null)
-				|| (buff instanceof Dread && buff(Terror.class) == null)) {
-			if (enemySeen) {
-				sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "rage"));
-				state = HUNTING;
-			} else {
-				state = WANDERING;
+	public boolean remove( Buff buff ) {
+		if (super.remove( buff )) {
+			if ((buff instanceof Terror && buff(Dread.class) == null)
+					|| (buff instanceof Dread && buff(Terror.class) == null)) {
+				if (enemySeen) {
+					sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "rage"));
+					state = HUNTING;
+				} else {
+					state = WANDERING;
+				}
 			}
+			return true;
 		}
+		return false;
 	}
 	
 	protected boolean canAttack( Char enemy ) {
@@ -698,7 +704,7 @@ public abstract class Mob extends Char {
 
 	public boolean surprisedBy( Char enemy, boolean attacking ){
 		return enemy == Dungeon.hero
-				&& (enemy.invisible > 0 || !enemySeen || (fieldOfView != null && !fieldOfView[enemy.pos]))
+				&& (enemy.invisible > 0 || !enemySeen || (fieldOfView != null && fieldOfView.length == Dungeon.level.length() && !fieldOfView[enemy.pos]))
 				&& (!attacking || enemy.canSurpriseAttack());
 	}
 

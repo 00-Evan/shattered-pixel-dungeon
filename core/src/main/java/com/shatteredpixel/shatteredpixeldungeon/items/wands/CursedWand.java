@@ -382,22 +382,29 @@ public class CursedWand {
 						//Don't bother doing this joke to none-english speakers, I doubt it would translate.
 						return cursedEffect(origin, user, targetPos);
 					} else {
-						GameScene.show(
-								new WndOptions(Icons.get(Icons.WARNING),
-										"CURSED WAND ERROR",
-										"this application will now self-destruct",
-										"abort",
-										"retry",
-										"fail") {
-									
+						ShatteredPixelDungeon.runOnRenderThread(
+								new Callback() {
 									@Override
-									protected void onSelect(int index) {
-										Game.instance.finish();
-									}
-									
-									@Override
-									public void onBackPressed() {
-										//do nothing
+									public void call() {
+										GameScene.show(
+												new WndOptions(Icons.get(Icons.WARNING),
+														"CURSED WAND ERROR",
+														"this application will now self-destruct",
+														"abort",
+														"retry",
+														"fail") {
+
+													@Override
+													protected void onSelect(int index) {
+														Game.instance.finish();
+													}
+
+													@Override
+													public void onBackPressed() {
+														//do nothing
+													}
+												}
+										);
 									}
 								}
 						);

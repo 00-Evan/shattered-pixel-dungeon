@@ -112,11 +112,14 @@ public class Statue extends Mob {
 	}
 	
 	@Override
-	public void add(Buff buff) {
-		super.add(buff);
-		if (state == PASSIVE && buff.type == Buff.buffType.NEGATIVE){
-			state = HUNTING;
+	public boolean add(Buff buff) {
+		if (super.add(buff)) {
+			if (state == PASSIVE && buff.type == Buff.buffType.NEGATIVE) {
+				state = HUNTING;
+			}
+			return true;
 		}
+		return false;
 	}
 
 	@Override

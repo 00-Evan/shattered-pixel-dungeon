@@ -61,7 +61,7 @@ public class Mace extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		Mace.heavyBlowAbility(hero, target, 1.45f, this);
+		Mace.heavyBlowAbility(hero, target, 1.60f, this);
 	}
 
 	public static void heavyBlowAbility(Hero hero, Integer target, float dmgMulti, MeleeWeapon wep){
