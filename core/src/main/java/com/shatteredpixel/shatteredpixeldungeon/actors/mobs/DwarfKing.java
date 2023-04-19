@@ -690,7 +690,7 @@ public class DwarfKing extends Mob {
 
 		@Override
 		public void fx(boolean on) {
-			if (on && particles == null) {
+			if (on && (particles == null || particles.parent == null)) {
 				particles = CellEmitter.get(pos);
 
 				if (summon == DKGolem.class){
