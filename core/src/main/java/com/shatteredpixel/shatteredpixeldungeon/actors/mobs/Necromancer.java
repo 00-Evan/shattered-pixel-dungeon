@@ -244,6 +244,10 @@ public class Necromancer extends Mob {
 		@Override
 		public boolean act(boolean enemyInFOV, boolean justAlerted) {
 			enemySeen = enemyInFOV;
+
+			if (enemySeen){
+				target = enemy.pos;
+			}
 			
 			if (storedSkeletonID != -1){
 				Actor ch = Actor.findById(storedSkeletonID);
@@ -265,7 +269,7 @@ public class Necromancer extends Mob {
 				mySkeleton = null;
 			}
 			
-			//if enemy is seen, and enemy is within range, and we haven no skeleton, summon a skeleton!
+			//if enemy is seen, and enemy is within range, and we have no skeleton, summon a skeleton!
 			if (enemySeen && Dungeon.level.distance(pos, enemy.pos) <= 4 && mySkeleton == null){
 				
 				summoningPos = -1;
@@ -299,7 +303,6 @@ public class Necromancer extends Mob {
 			//otherwise, if enemy is seen, and we have a skeleton...
 			} else if (enemySeen && mySkeleton != null){
 				
-				target = enemy.pos;
 				spend(TICK);
 				
 				if (!fieldOfView[mySkeleton.pos]){
