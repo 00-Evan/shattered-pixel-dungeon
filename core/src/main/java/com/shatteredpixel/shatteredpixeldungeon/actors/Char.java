@@ -99,6 +99,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazin
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Kinetic;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sickle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.ShockingDart;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -692,6 +693,19 @@ public abstract class Char extends Actor {
 		if (AntiMagic.RESISTS.contains(src.getClass()) && buff(ArcaneArmor.class) != null){
 			dmg -= Random.NormalIntRange(0, buff(ArcaneArmor.class).level());
 			if (dmg < 0) dmg = 0;
+		}
+
+		if (buff(Sickle.HarvestBleedTracker.class) != null){
+			Bleeding b = buff(Bleeding.class);
+			if (b == null){
+				b = new Bleeding();
+			}
+			b.announced = false;
+			b.set(dmg*buff(Sickle.HarvestBleedTracker.class).bleedFactor, Sickle.HarvestBleedTracker.class);
+			b.attachTo(this);
+			sprite.showStatus(CharSprite.WARNING, Messages.titleCase(b.name()) + " " + (int)b.level());
+			buff(Sickle.HarvestBleedTracker.class).detach();
+			return;
 		}
 		
 		if (buff( Paralysis.class ) != null) {
