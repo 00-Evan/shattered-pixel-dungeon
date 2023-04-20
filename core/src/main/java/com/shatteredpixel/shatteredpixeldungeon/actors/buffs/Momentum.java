@@ -70,6 +70,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 		if (freerunCooldown == 0 && !freerunning() && target.invisible > 0 && Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH) >= 1){
 			momentumStacks = Math.min(momentumStacks + 2, 10);
 			movedLastTurn = true;
+			ActionIndicator.refresh();
 		}
 
 		if (freerunTurns > 0){
