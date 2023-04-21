@@ -96,7 +96,7 @@ public class Eye extends Mob {
 			if (enemy.invisible == 0 && !isCharmedBy(enemy) && fieldOfView[enemy.pos]
 					&& (super.canAttack(enemy) || aim.subPath(1, aim.dist).contains(enemy.pos))){
 				beam = aim;
-				beamTarget = aim.collisionPos;
+				beamTarget = enemy.pos;
 				return true;
 			} else {
 				//if the beam is charged, it has to attack, will aim at previous location of target.
