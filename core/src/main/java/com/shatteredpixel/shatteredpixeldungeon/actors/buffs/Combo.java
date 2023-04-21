@@ -224,14 +224,18 @@ public class Combo extends Buff implements ActionIndicator.Action {
 			this.tintColor = tintColor;
 		}
 
+		public String title(){
+			return Messages.get(this, name() + ".name");
+		}
+
 		public String desc(int count){
 			switch (this){
 				default:
-					return Messages.get(this, name()+"_desc");
+					return Messages.get(this, name() + ".desc");
 				case SLAM:
-					return Messages.get(this, name()+"_desc", count*20);
+					return Messages.get(this,  name() + ".desc", count*20);
 				case CRUSH:
-					return Messages.get(this, name()+"_desc", count*25);
+					return Messages.get(this,  name() + ".desc", count*25);
 			}
 
 		}
