@@ -53,7 +53,7 @@ public class PitfallTrap extends Trap {
 			return;
 		}
 
-		DelayedPit p = Buff.affect(Dungeon.hero, DelayedPit.class, 1);
+		DelayedPit p = Buff.append(Dungeon.hero, DelayedPit.class, 1);
 		p.depth = Dungeon.depth;
 		p.pos = pos;
 
@@ -105,6 +105,7 @@ public class PitfallTrap extends Trap {
 						}
 						heap.sprite.kill();
 						GameScene.discard(heap);
+						heap.sprite.drop();
 						Dungeon.level.heaps.remove(cell);
 					}
 
