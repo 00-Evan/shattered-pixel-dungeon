@@ -239,6 +239,17 @@ public class WelcomeScene extends PixelScene {
 
 		//update rankings, to update any data which may be outdated
 		if (previousVersion < LATEST_UPDATE){
+
+			Badges.loadGlobal();
+			Journal.loadGlobal();
+
+			//pre-unlock Duelist for those who already have a win
+			if (previousVersion <= ShatteredPixelDungeon.v2_0_0){
+				if (Badges.isUnlocked(Badges.Badge.VICTORY) && !Badges.isUnlocked(Badges.Badge.UNLOCK_DUELIST)){
+					Badges.unlock(Badges.Badge.UNLOCK_DUELIST);
+				}
+			}
+
 			try {
 				Rankings.INSTANCE.load();
 				for (Rankings.Record rec : Rankings.INSTANCE.records.toArray(new Rankings.Record[0])){
@@ -270,16 +281,9 @@ public class WelcomeScene extends PixelScene {
 			}
 			Dungeon.daily = Dungeon.dailyReplay = false;
 
-		}
+			Badges.saveGlobal(true);
+			Journal.saveGlobal(true);
 
-		//pre-unlock Duelist for those who already have a win
-		if (previousVersion <= ShatteredPixelDungeon.v2_0_0){
-			Badges.loadGlobal();
-			if (Badges.isUnlocked(Badges.Badge.VICTORY) && !Badges.isUnlocked(Badges.Badge.UNLOCK_DUELIST)){
-				Dungeon.customSeedText = ""; //clear in case rankings updating left this set
-				Badges.unlock(Badges.Badge.UNLOCK_DUELIST);
-				Badges.saveGlobal();
-			}
 		}
 
 		SPDSettings.version(ShatteredPixelDungeon.versionCode);
