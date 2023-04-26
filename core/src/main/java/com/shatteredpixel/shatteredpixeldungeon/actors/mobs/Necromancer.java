@@ -315,6 +315,7 @@ public class Necromancer extends Mob {
 							if (Actor.findChar(enemy.pos+c) == null
 									&& Dungeon.level.passable[enemy.pos+c]
 									&& fieldOfView[enemy.pos+c]
+									&& (Dungeon.level.openSpace[enemy.pos+c] || !Char.hasProp(mySkeleton, Property.LARGE))
 									&& Dungeon.level.trueDistance(pos, enemy.pos+c) < Dungeon.level.trueDistance(pos, telePos)){
 								telePos = enemy.pos+c;
 							}
