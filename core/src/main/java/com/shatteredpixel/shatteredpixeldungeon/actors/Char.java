@@ -213,7 +213,10 @@ public abstract class Char extends Actor {
 			return true;
 		}
 
-		int curPos = pos;
+		//we do a little raw position shuffling here so that the characters are never
+		// on the same cell when logic such as occupyCell() is triggered
+		int oldPos = pos;
+		int newPos = c.pos;
 
 		//warp instantly with allies in this case
 		if (c == Dungeon.hero && Dungeon.hero.hasTalent(Talent.ALLY_WARP)){
@@ -221,8 +224,10 @@ public abstract class Char extends Actor {
 			if (PathFinder.distance[pos] == Integer.MAX_VALUE){
 				return true;
 			}
-			ScrollOfTeleportation.appear(this, c.pos);
-			ScrollOfTeleportation.appear(c, curPos);
+			pos = newPos;
+			c.pos = oldPos;
+			ScrollOfTeleportation.appear(this, newPos);
+			ScrollOfTeleportation.appear(c, oldPos);
 			Dungeon.observe();
 			GameScene.updateFog();
 			return true;
@@ -233,11 +238,13 @@ public abstract class Char extends Actor {
 			return true;
 		}
 
-		moveSprite( pos, c.pos );
-		move( c.pos );
-		
-		c.sprite.move( c.pos, curPos );
-		c.move( curPos );
+		c.pos = oldPos;
+		moveSprite( oldPos, newPos );
+		move( newPos );
+
+		c.pos = newPos;
+		c.sprite.move( newPos, oldPos );
+		c.move( oldPos );
 		
 		c.spend( 1 / c.speed() );
 
