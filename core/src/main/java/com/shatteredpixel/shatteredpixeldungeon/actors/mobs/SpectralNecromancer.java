@@ -148,7 +148,7 @@ public class SpectralNecromancer extends Necromancer {
 
 		summoning = firstSummon = false;
 
-		Wraith wraith = Wraith.spawnAt(summoningPos);
+		Wraith wraith = Wraith.spawnAt(summoningPos, false);
 		wraith.adjustStats(0);
 		Dungeon.level.occupyCell( wraith );
 		((SpectralNecromancerSprite)sprite).finishSummoning();

@@ -116,7 +116,7 @@ public class DistortionTrap extends Trap{
 				case 2:
 					switch (Random.Int(4)){
 						case 0: default:
-							Wraith.spawnAt(point);
+							Wraith.spawnAt(point, true);
 							continue; //wraiths spawn themselves, no need to do more
 						case 1:
 							//yes it's intended that these are likely to die right away
