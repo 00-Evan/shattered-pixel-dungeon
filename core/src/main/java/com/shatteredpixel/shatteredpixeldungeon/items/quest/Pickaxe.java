@@ -214,7 +214,7 @@ public class Pickaxe extends MeleeWeapon {
 					if (enemy.isAlive()) {
 						Buff.affect(enemy, Vulnerable.class, 3f);
 					} else {
-						onAbilityKill(hero);
+						onAbilityKill(hero, enemy);
 					}
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				}

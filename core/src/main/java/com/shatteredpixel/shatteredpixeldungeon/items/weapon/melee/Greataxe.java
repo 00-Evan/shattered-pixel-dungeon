@@ -93,7 +93,7 @@ public class Greataxe extends MeleeWeapon {
 				if (hero.attack(enemy, 1.35f, 0, Char.INFINITE_ACCURACY)){
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 					if (!enemy.isAlive()){
-						onAbilityKill(hero);
+						onAbilityKill(hero, enemy);
 					}
 				}
 				Invisibility.dispel();

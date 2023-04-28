@@ -98,7 +98,7 @@ public class Sai extends MeleeWeapon {
 
 				boolean hit = hero.attack(enemy, 1f + boostPerHit*recentHits, 0, Char.INFINITE_ACCURACY);
 				if (hit && !enemy.isAlive()){
-					wep.onAbilityKill(hero);
+					wep.onAbilityKill(hero, enemy);
 				}
 
 				Invisibility.dispel();

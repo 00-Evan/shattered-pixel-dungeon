@@ -97,7 +97,7 @@ public class Sickle extends MeleeWeapon {
 				Invisibility.dispel();
 				hero.spendAndNext(hero.attackDelay());
 				if (!enemy.isAlive()){
-					wep.onAbilityKill(hero);
+					wep.onAbilityKill(hero, enemy);
 					Buff.prolong(hero, Sword.CleaveTracker.class, 5f);
 				} else {
 					if (hero.buff(Sword.CleaveTracker.class) != null) {

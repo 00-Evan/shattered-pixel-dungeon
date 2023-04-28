@@ -94,7 +94,7 @@ public class Mace extends MeleeWeapon {
 						Buff.affect(enemy, Vulnerable.class, 5f);
 						Buff.affect(enemy, Weakness.class, 5f);
 					} else {
-						wep.onAbilityKill(hero);
+						wep.onAbilityKill(hero, enemy);
 					}
 				}
 				Invisibility.dispel();

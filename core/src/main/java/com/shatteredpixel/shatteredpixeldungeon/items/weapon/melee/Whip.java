@@ -81,7 +81,7 @@ public class Whip extends MeleeWeapon {
 				for (Char ch : targets) {
 					hero.attack(ch);
 					if (!ch.isAlive()){
-						onAbilityKill(hero);
+						onAbilityKill(hero, ch);
 					}
 				}
 				Invisibility.dispel();

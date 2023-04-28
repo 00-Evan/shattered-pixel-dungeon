@@ -97,7 +97,7 @@ public class Spear extends MeleeWeapon {
 						//knock them back along that ballistica
 						WandOfBlastWave.throwChar(enemy, trajectory, 1, true, false, hero.getClass());
 					} else {
-						wep.onAbilityKill(hero);
+						wep.onAbilityKill(hero, enemy);
 					}
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				}

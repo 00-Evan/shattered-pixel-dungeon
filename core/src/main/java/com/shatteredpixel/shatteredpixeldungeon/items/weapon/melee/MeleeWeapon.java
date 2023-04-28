@@ -253,8 +253,8 @@ public class MeleeWeapon extends Weapon {
 		}
 	}
 
-	public static void onAbilityKill( Hero hero ){
-		if (hero.hasTalent(Talent.LETHAL_HASTE)){
+	public static void onAbilityKill( Hero hero, Char killed ){
+		if (killed.alignment == Char.Alignment.ENEMY && hero.hasTalent(Talent.LETHAL_HASTE)){
 			//effectively 2/3 turns of haste
 			Buff.prolong(hero, Haste.class, 1.67f+hero.pointsInTalent(Talent.LETHAL_HASTE));
 		}

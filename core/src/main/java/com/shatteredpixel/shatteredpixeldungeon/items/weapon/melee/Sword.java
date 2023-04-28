@@ -97,7 +97,7 @@ public class Sword extends MeleeWeapon {
 				Invisibility.dispel();
 				hero.spendAndNext(hero.attackDelay());
 				if (!enemy.isAlive()){
-					wep.onAbilityKill(hero);
+					wep.onAbilityKill(hero, enemy);
 					Buff.prolong(hero, CleaveTracker.class, 5f);
 				} else {
 					if (hero.buff(CleaveTracker.class) != null) {

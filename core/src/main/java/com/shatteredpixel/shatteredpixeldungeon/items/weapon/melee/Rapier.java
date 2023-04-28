@@ -130,7 +130,7 @@ public class Rapier extends MeleeWeapon {
 							if (hero.attack(enemy, dmgMulti, dmgBoost, Char.INFINITE_ACCURACY)) {
 								Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 								if (!enemy.isAlive()) {
-									wep.onAbilityKill(hero);
+									wep.onAbilityKill(hero, enemy);
 								}
 							}
 							Invisibility.dispel();

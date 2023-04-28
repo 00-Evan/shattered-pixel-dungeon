@@ -176,7 +176,7 @@ public class Dart extends MissileWeapon {
 						@Override
 						protected boolean act() {
 							if (!ch.isAlive()){
-								bow.onAbilityKill(Dungeon.hero);
+								bow.onAbilityKill(Dungeon.hero, ch);
 							}
 							Actor.remove(this);
 							return true;
