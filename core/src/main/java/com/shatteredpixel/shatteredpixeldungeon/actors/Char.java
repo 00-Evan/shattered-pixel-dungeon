@@ -730,7 +730,7 @@ public abstract class Char extends Actor {
 		shielded -= dmg;
 		HP -= dmg;
 
-		if (HP < 0 && src instanceof Char){
+		if (HP < 0 && src instanceof Char && alignment == Alignment.ENEMY){
 			if (((Char) src).buff(Kinetic.KineticTracker.class) != null){
 				int dmgToAdd = -HP;
 				dmgToAdd -= ((Char) src).buff(Kinetic.KineticTracker.class).conservedDamage;
