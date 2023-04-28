@@ -90,7 +90,7 @@ public class PoolRoom extends SpecialRoom {
 		level.addItemToSpawn( new PotionOfInvisibility() );
 		
 		for (int i=0; i < NPIRANHAS; i++) {
-			Piranha piranha = new Piranha();
+			Piranha piranha = Piranha.random();
 			do {
 				piranha.pos = level.pointToCell(random());
 			} while (level.map[piranha.pos] != Terrain.WATER|| level.findMob( piranha.pos ) != null);
