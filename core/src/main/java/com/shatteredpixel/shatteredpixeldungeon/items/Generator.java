@@ -340,7 +340,8 @@ public class Generator {
 					WandOfTransfusion.class,
 					WandOfCorruption.class,
 					WandOfRegrowth.class };
-			WAND.probs = new float[]{ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
+			WAND.defaultProbs = new float[]{ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
+			WAND.probs = WAND.defaultProbs.clone();
 			
 			//see generator.randomWeapon
 			WEAPON.classes = new Class<?>[]{};
@@ -353,7 +354,8 @@ public class Generator {
 					Gloves.class,
 					Rapier.class
 			};
-			WEP_T1.probs = new float[]{ 2, 0, 2, 2, 2 };
+			WEP_T1.defaultProbs = new float[]{ 2, 0, 2, 2, 2 };
+			WEP_T1.probs = WEP_T1.defaultProbs.clone();
 			
 			WEP_T2.classes = new Class<?>[]{
 					Shortsword.class,
@@ -363,7 +365,8 @@ public class Generator {
 					Dirk.class,
 					Sickle.class
 			};
-			WEP_T2.probs = new float[]{ 2, 2, 2, 2, 2, 2 };
+			WEP_T2.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2 };
+			WEP_T2.probs = WEP_T2.defaultProbs.clone();
 			
 			WEP_T3.classes = new Class<?>[]{
 					Sword.class,
@@ -373,7 +376,8 @@ public class Generator {
 					Sai.class,
 					Whip.class
 			};
-			WEP_T3.probs = new float[]{ 2, 2, 2, 2, 2, 2 };
+			WEP_T3.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2 };
+			WEP_T3.probs = WEP_T1.defaultProbs.clone();
 			
 			WEP_T4.classes = new Class<?>[]{
 					Longsword.class,
@@ -384,7 +388,8 @@ public class Generator {
 					Crossbow.class,
 					Katana.class
 			};
-			WEP_T4.probs = new float[]{ 2, 2, 2, 2, 2, 2, 2 };
+			WEP_T4.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2, 2 };
+			WEP_T4.probs = WEP_T4.defaultProbs.clone();
 			
 			WEP_T5.classes = new Class<?>[]{
 					Greatsword.class,
@@ -395,7 +400,8 @@ public class Generator {
 					Gauntlet.class,
 					WarScythe.class
 			};
-			WEP_T5.probs = new float[]{ 2, 2, 2, 2, 2, 2, 2 };
+			WEP_T5.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2, 2 };
+			WEP_T5.probs = WEP_T5.defaultProbs.clone();
 			
 			//see Generator.randomArmor
 			ARMOR.classes = new Class<?>[]{
@@ -421,41 +427,47 @@ public class Generator {
 					ThrowingKnife.class,
 					ThrowingSpike.class
 			};
-			MIS_T1.probs = new float[]{ 3, 3, 3 };
+			MIS_T1.defaultProbs = new float[]{ 3, 3, 3 };
+			MIS_T1.probs = MIS_T1.defaultProbs.clone();
 			
 			MIS_T2.classes = new Class<?>[]{
 					FishingSpear.class,
 					ThrowingClub.class,
 					Shuriken.class
 			};
-			MIS_T2.probs = new float[]{ 3, 3, 3 };
+			MIS_T2.defaultProbs = new float[]{ 3, 3, 3 };
+			MIS_T2.probs = MIS_T2.defaultProbs.clone();
 			
 			MIS_T3.classes = new Class<?>[]{
 					ThrowingSpear.class,
 					Kunai.class,
 					Bolas.class
 			};
-			MIS_T3.probs = new float[]{ 3, 3, 3 };
+			MIS_T3.defaultProbs = new float[]{ 3, 3, 3 };
+			MIS_T3.probs = MIS_T3.defaultProbs.clone();
 			
 			MIS_T4.classes = new Class<?>[]{
 					Javelin.class,
 					Tomahawk.class,
 					HeavyBoomerang.class
 			};
-			MIS_T4.probs = new float[]{ 3, 3, 3 };
+			MIS_T4.defaultProbs = new float[]{ 3, 3, 3 };
+			MIS_T4.probs = MIS_T4.defaultProbs.clone();
 			
 			MIS_T5.classes = new Class<?>[]{
 					Trident.class,
 					ThrowingHammer.class,
 					ForceCube.class
 			};
-			MIS_T5.probs = new float[]{ 3, 3, 3 };
+			MIS_T5.defaultProbs = new float[]{ 3, 3, 3 };
+			MIS_T5.probs = MIS_T5.defaultProbs.clone();
 			
 			FOOD.classes = new Class<?>[]{
 					Food.class,
 					Pasty.class,
 					MysteryMeat.class };
-			FOOD.probs = new float[]{ 4, 1, 0 };
+			FOOD.defaultProbs = new float[]{ 4, 1, 0 };
+			FOOD.probs = FOOD.defaultProbs.clone();
 			
 			RING.classes = new Class<?>[]{
 					RingOfAccuracy.class,
@@ -470,7 +482,8 @@ public class Generator {
 					RingOfSharpshooting.class,
 					RingOfTenacity.class,
 					RingOfWealth.class};
-			RING.probs = new float[]{ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
+			RING.defaultProbs = new float[]{ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
+			RING.probs = RING.defaultProbs.clone();
 			
 			ARTIFACT.classes = new Class<?>[]{
 					AlchemistsToolkit.class,
@@ -625,8 +638,7 @@ public class Generator {
 
 		floorSet = (int)GameMath.gate(0, floorSet, floorSetTierProbs.length-1);
 		
-		Category c = wepTiers[Random.chances(floorSetTierProbs[floorSet])];
-		MeleeWeapon w = (MeleeWeapon)random(c);
+		MeleeWeapon w = (MeleeWeapon)random(wepTiers[Random.chances(floorSetTierProbs[floorSet])]);
 		w.random();
 		return w;
 	}
@@ -646,9 +658,8 @@ public class Generator {
 	public static MissileWeapon randomMissile(int floorSet) {
 		
 		floorSet = (int)GameMath.gate(0, floorSet, floorSetTierProbs.length-1);
-		
-		Category c = misTiers[Random.chances(floorSetTierProbs[floorSet])];
-		MissileWeapon w = (MissileWeapon)Reflection.newInstance(c.classes[Random.chances(c.probs)]);
+
+		MissileWeapon w = (MissileWeapon)random(misTiers[Random.chances(floorSetTierProbs[floorSet])]);
 		w.random();
 		return w;
 	}
