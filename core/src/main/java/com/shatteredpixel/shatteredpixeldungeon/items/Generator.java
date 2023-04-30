@@ -340,7 +340,7 @@ public class Generator {
 					WandOfTransfusion.class,
 					WandOfCorruption.class,
 					WandOfRegrowth.class };
-			WAND.probs = new float[]{ 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3 };
+			WAND.probs = new float[]{ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
 			
 			//see generator.randomWeapon
 			WEAPON.classes = new Class<?>[]{};
@@ -353,7 +353,7 @@ public class Generator {
 					Gloves.class,
 					Rapier.class
 			};
-			WEP_T1.probs = new float[]{ 1, 0, 1, 1, 1 };
+			WEP_T1.probs = new float[]{ 2, 0, 2, 2, 2 };
 			
 			WEP_T2.classes = new Class<?>[]{
 					Shortsword.class,
@@ -363,7 +363,7 @@ public class Generator {
 					Dirk.class,
 					Sickle.class
 			};
-			WEP_T2.probs = new float[]{ 6, 5, 5, 4, 4, 4 };
+			WEP_T2.probs = new float[]{ 2, 2, 2, 2, 2, 2 };
 			
 			WEP_T3.classes = new Class<?>[]{
 					Sword.class,
@@ -373,7 +373,7 @@ public class Generator {
 					Sai.class,
 					Whip.class
 			};
-			WEP_T3.probs = new float[]{ 6, 5, 5, 4, 4, 4 };
+			WEP_T3.probs = new float[]{ 2, 2, 2, 2, 2, 2 };
 			
 			WEP_T4.classes = new Class<?>[]{
 					Longsword.class,
@@ -384,7 +384,7 @@ public class Generator {
 					Crossbow.class,
 					Katana.class
 			};
-			WEP_T4.probs = new float[]{ 6, 5, 5, 4, 4, 4, 4 };
+			WEP_T4.probs = new float[]{ 2, 2, 2, 2, 2, 2, 2 };
 			
 			WEP_T5.classes = new Class<?>[]{
 					Greatsword.class,
@@ -395,7 +395,7 @@ public class Generator {
 					Gauntlet.class,
 					WarScythe.class
 			};
-			WEP_T5.probs = new float[]{ 6, 5, 5, 4, 4, 4, 4 };
+			WEP_T5.probs = new float[]{ 2, 2, 2, 2, 2, 2, 2 };
 			
 			//see Generator.randomArmor
 			ARMOR.classes = new Class<?>[]{
@@ -421,35 +421,35 @@ public class Generator {
 					ThrowingKnife.class,
 					ThrowingSpike.class
 			};
-			MIS_T1.probs = new float[]{ 6, 5 };
+			MIS_T1.probs = new float[]{ 3, 3, 3 };
 			
 			MIS_T2.classes = new Class<?>[]{
 					FishingSpear.class,
 					ThrowingClub.class,
 					Shuriken.class
 			};
-			MIS_T2.probs = new float[]{ 6, 5, 4 };
+			MIS_T2.probs = new float[]{ 3, 3, 3 };
 			
 			MIS_T3.classes = new Class<?>[]{
 					ThrowingSpear.class,
 					Kunai.class,
 					Bolas.class
 			};
-			MIS_T3.probs = new float[]{ 6, 5, 4 };
+			MIS_T3.probs = new float[]{ 3, 3, 3 };
 			
 			MIS_T4.classes = new Class<?>[]{
 					Javelin.class,
 					Tomahawk.class,
 					HeavyBoomerang.class
 			};
-			MIS_T4.probs = new float[]{ 6, 5, 4 };
+			MIS_T4.probs = new float[]{ 3, 3, 3 };
 			
 			MIS_T5.classes = new Class<?>[]{
 					Trident.class,
 					ThrowingHammer.class,
 					ForceCube.class
 			};
-			MIS_T5.probs = new float[]{ 6, 5, 4 };
+			MIS_T5.probs = new float[]{ 3, 3, 3 };
 			
 			FOOD.classes = new Class<?>[]{
 					Food.class,
@@ -470,7 +470,7 @@ public class Generator {
 					RingOfSharpshooting.class,
 					RingOfTenacity.class,
 					RingOfWealth.class};
-			RING.probs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+			RING.probs = new float[]{ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
 			
 			ARTIFACT.classes = new Class<?>[]{
 					AlchemistsToolkit.class,
