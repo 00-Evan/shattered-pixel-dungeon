@@ -322,6 +322,10 @@ public abstract class Char extends Actor {
 		
 		boolean visibleFight = Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[enemy.pos];
 
+		if (enemy == Dungeon.hero && Dungeon.hero.damageInterrupt){
+			Dungeon.hero.interrupt();
+		}
+
 		if (enemy.isInvulnerable(getClass())) {
 
 			if (visibleFight) {

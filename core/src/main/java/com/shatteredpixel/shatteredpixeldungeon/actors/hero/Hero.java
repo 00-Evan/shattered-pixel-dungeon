@@ -197,7 +197,7 @@ public class Hero extends Char {
 	private int defenseSkill = 5;
 
 	public boolean ready = false;
-	private boolean damageInterrupt = true;
+	public boolean damageInterrupt = true;
 	public HeroAction curAction = null;
 	public HeroAction lastAction = null;
 
