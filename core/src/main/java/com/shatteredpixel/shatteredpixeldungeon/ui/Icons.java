@@ -79,6 +79,7 @@ public enum Icons {
 	BACKPACK_LRG,
 	TALENT,
 	MAGNIFY,
+	SNAKE,
 	BUFFS,
 	ENERGY,
 	COPY,
@@ -259,14 +260,17 @@ public enum Icons {
 			case MAGNIFY:
 				icon.frame( icon.texture.uvRectBySize( 144, 48, 14, 14 ) );
 				break;
+			case SNAKE:
+				icon.frame( icon.texture.uvRectBySize( 160, 48,  9, 13 ) );
+				break;
 			case BUFFS:
-				icon.frame( icon.texture.uvRectBySize( 160, 48, 16, 15 ) );
+				icon.frame( icon.texture.uvRectBySize( 176, 48, 16, 15 ) );
 				break;
 			case ENERGY:
-				icon.frame( icon.texture.uvRectBySize( 176, 48, 16, 16 ) );
+				icon.frame( icon.texture.uvRectBySize( 192, 48, 16, 16 ) );
 				break;
 			case COPY:
-				icon.frame( icon.texture.uvRectBySize( 192, 48, 13, 13 ) );
+				icon.frame( icon.texture.uvRectBySize( 224, 48, 13, 13 ) );
 				break;
 			case PASTE:
 				icon.frame( icon.texture.uvRectBySize( 208, 48, 13, 13 ) );
