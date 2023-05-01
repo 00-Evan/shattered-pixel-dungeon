@@ -150,10 +150,10 @@ public class WandOfCorruption extends Wand {
 				enemyResist = (1f + Dungeon.scalingDepth()/4f) / 5f;
 			} else if (ch instanceof Swarm){
 				//child swarms don't give exp, so we force this here.
-				enemyResist = 1 + AscensionChallenge.AscensionExp(enemy);
+				enemyResist = 1 + AscensionChallenge.AscensionCorruptResist(enemy);
 				if (enemyResist == 1) enemyResist = 1 + 3;
 			} else {
-				enemyResist = 1 + AscensionChallenge.AscensionExp(enemy);
+				enemyResist = 1 + AscensionChallenge.AscensionCorruptResist(enemy);
 			}
 			
 			//100% health: 5x resist   75%: 3.25x resist   50%: 2x resist   25%: 1.25x resist

@@ -1672,8 +1672,11 @@ public class Hero extends Char {
 	}
 	
 	public void earnExp( int exp, Class source ) {
-		
-		this.exp += exp;
+
+		//xp granted by ascension challenge is only for on-exp gain effects
+		if (source != AscensionChallenge.class) {
+			this.exp += exp;
+		}
 		float percent = exp/(float)maxExp();
 
 		EtherealChains.chainsRecharge chains = buff(EtherealChains.chainsRecharge.class);

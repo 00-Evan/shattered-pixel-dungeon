@@ -26,12 +26,12 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -163,11 +163,18 @@ public class AscensionChallenge extends Buff {
 		if (chal.stacks < 8f && (int)(chal.stacks/2) != (int)(oldStacks/2f)){
 			GLog.p(Messages.get(AscensionChallenge.class, "weaken"));
 		}
+
+		//if the hero is at the max level, grant them 10 effective xp per stack cleared
+		// for the purposes of on-xp gain effects
+		if (oldStacks > chal.stacks && Dungeon.hero.lvl == Hero.MAX_LEVEL){
+			Dungeon.hero.earnExp(Math.round(10*(oldStacks - chal.stacks)), chal.getClass());
+		}
+
 		BuffIndicator.refreshHero();
 	}
 
-	//used for internal calculations like corruption, not actual exp gain
-	public static int AscensionExp(Mob m){
+	public static int AscensionCorruptResist(Mob m){
+		//default to just using their EXP value if no ascent challenge is happening
 		if (Dungeon.hero.buff(AscensionChallenge.class) == null){
 			return m.EXP;
 		}

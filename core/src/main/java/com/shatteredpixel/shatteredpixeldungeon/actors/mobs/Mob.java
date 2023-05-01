@@ -761,6 +761,15 @@ public abstract class Mob extends Char {
 				AscensionChallenge.processEnemyKill(this);
 				
 				int exp = Dungeon.hero.lvl <= maxLvl ? EXP : 0;
+
+				//during ascent, under-levelled enemies grant 10 xp each until level 30
+				// after this enemy kills which reduce the amulet curse still grant 10 effective xp
+				// for the purposes of on-exp effects, see AscensionChallenge.processEnemyKill
+				if (Dungeon.hero.buff(AscensionChallenge.class) != null &&
+						exp == 0 && maxLvl > 0 && EXP > 0 && Dungeon.hero.lvl < Hero.MAX_LEVEL){
+					exp = Math.round(10 * spawningWeight());
+				}
+
 				if (exp > 0) {
 					Dungeon.hero.sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "exp", exp));
 				}
