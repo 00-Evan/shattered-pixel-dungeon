@@ -207,6 +207,13 @@ public class MagicalFireRoom extends SpecialRoom {
 							|| cur[cell+1] > 0
 							|| cur[cell-Dungeon.level.width()] > 0
 							|| cur[cell+Dungeon.level.width()] > 0) {
+
+						//ignore cells which are behind the magical fire or water
+						if (Dungeon.level.map[cell] == Terrain.EMPTY_SP
+							|| Dungeon.level.map[cell] == Terrain.WATER){
+							continue;
+						}
+
 						//spread fire to nearby flammable cells
 						if (Dungeon.level.flamable[cell] && (fire == null || fire.volume == 0 || fire.cur[cell] == 0)){
 							GameScene.add(Blob.seed(cell, 4, Fire.class));
@@ -216,6 +223,11 @@ public class MagicalFireRoom extends SpecialRoom {
 						Char ch = Actor.findChar(cell);
 						if (ch != null && !ch.isImmune(getClass())) {
 							Buff.affect(ch, Burning.class).reignite(ch, 4f);
+						}
+
+						//burn adjacent heaps, but only on outside cells
+						if (Dungeon.level.heaps.get(cell) != null){
+							Dungeon.level.heaps.get(cell).burn();
 						}
 					}
 
