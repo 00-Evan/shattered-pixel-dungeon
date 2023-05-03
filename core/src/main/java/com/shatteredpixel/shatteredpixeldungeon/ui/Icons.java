@@ -221,10 +221,10 @@ public enum Icons {
 				icon.frame( icon.texture.uvRectBySize( 208, 32, 15, 10 ) );
 				break;
 			case LEFTARROW:
-				icon.frame( icon.texture.uvRectBySize( 224, 32, 14, 8 ) );
+				icon.frame( icon.texture.uvRectBySize( 224, 32, 14, 9 ) );
 				break;
 			case RIGHTARROW:
-				icon.frame( icon.texture.uvRectBySize( 240, 32, 14, 8 ) );
+				icon.frame( icon.texture.uvRectBySize( 240, 32, 14, 9 ) );
 				break;
 			case CALENDAR:
 				icon.frame( icon.texture.uvRectBySize( 240, 16, 15, 12 ) );
