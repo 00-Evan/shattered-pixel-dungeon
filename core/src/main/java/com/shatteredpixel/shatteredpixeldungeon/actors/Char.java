@@ -526,6 +526,8 @@ public abstract class Char extends Actor {
 
 		if (defender.buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class) != null && !magic){
 			defStat = INFINITE_EVASION;
+			defender.buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class).detach();
+			Buff.affect(defender, MonkEnergy.MonkAbility.Focus.FocusActivation.class, 0);
 		}
 
 		//if accuracy or evasion are large enough, treat them as infinite.

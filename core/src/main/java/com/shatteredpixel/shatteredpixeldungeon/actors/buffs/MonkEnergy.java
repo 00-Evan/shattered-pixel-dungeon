@@ -447,6 +447,16 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 				}
 			}
 
+			//tracks just the activation of focus, needed as magical attacks do not trigger it
+			// but may be dodged normally
+			public static class FocusActivation extends FlavourBuff {
+
+				{
+					actPriority = VFX_PRIO;
+				}
+
+			}
+
 		}
 
 		public static class Dash extends MonkAbility {

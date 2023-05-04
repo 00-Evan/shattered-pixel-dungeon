@@ -548,8 +548,8 @@ public class Hero extends Char {
 			return Messages.get(RoundShield.GuardTracker.class, "guarded");
 		}
 
-		if (buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class) != null){
-			buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class).detach();
+		if (buff(MonkEnergy.MonkAbility.Focus.FocusActivation.class) != null){
+			buff(MonkEnergy.MonkAbility.Focus.FocusActivation.class).detach();
 			if (sprite != null && sprite.visible) {
 				Sample.INSTANCE.play(Assets.Sounds.HIT_PARRY, 1, Random.Float(0.96f, 1.05f));
 			}
