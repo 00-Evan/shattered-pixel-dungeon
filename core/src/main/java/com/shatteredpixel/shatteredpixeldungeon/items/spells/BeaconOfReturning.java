@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -153,6 +154,7 @@ public class BeaconOfReturning extends Spell {
 			}
 
 			Level.beforeTransition();
+			Invisibility.dispel();
 			InterlevelScene.mode = InterlevelScene.Mode.RETURN;
 			InterlevelScene.returnDepth = returnDepth;
 			InterlevelScene.returnBranch = returnBranch;

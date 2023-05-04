@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpiritHawk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
@@ -113,6 +114,8 @@ public class SummonElemental extends Spell {
 			elemental.setSummonedALly();
 			elemental.HP = elemental.HT;
 			ScrollOfTeleportation.appear( elemental, Random.element(spawnPoints) );
+			Invisibility.dispel(curUser);
+			curUser.sprite.operate(curUser.pos);
 			curUser.spendAndNext(Actor.TICK);
 
 			summonClass = Elemental.AllyNewBornElemental.class;

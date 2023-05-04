@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
@@ -51,6 +52,7 @@ public class FeatherFall extends Spell {
 		
 		detach( curUser.belongings.backpack );
 		updateQuickslot();
+		Invisibility.dispel();
 		hero.spendAndNext( 1f );
 	}
 	
