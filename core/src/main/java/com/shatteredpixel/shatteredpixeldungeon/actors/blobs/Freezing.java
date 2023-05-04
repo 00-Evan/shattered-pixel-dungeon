@@ -73,7 +73,11 @@ public class Freezing extends Blob {
 			} else {
 				Chill chill = ch.buff(Chill.class);
 				float turnsToAdd = Dungeon.level.water[cell] ? 5f : 3f;
-				if (chill != null) turnsToAdd = Math.min(turnsToAdd, Chill.DURATION - chill.cooldown());
+				if (chill != null){
+					float chillToCap = Chill.DURATION - chill.cooldown();
+					chillToCap /= ch.resist(Chill.class); //account for resistance to chill
+					turnsToAdd = Math.min(turnsToAdd, chillToCap);
+				}
 				if (turnsToAdd > 0f) {
 					Buff.affect(ch, Chill.class, turnsToAdd);
 				}
