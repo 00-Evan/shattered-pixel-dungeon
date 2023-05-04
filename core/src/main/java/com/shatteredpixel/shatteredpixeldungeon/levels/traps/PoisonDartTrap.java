@@ -77,6 +77,7 @@ public class PoisonDartTrap extends Trap {
 				if (target == null){
 					float closestDist = Float.MAX_VALUE;
 					for (Char ch : Actor.chars()){
+						if (!ch.isAlive()) continue;
 						float curDist = Dungeon.level.trueDistance(pos, ch.pos);
 						if (ch.invisible > 0) curDist += 1000;
 						Ballistica bolt = new Ballistica(pos, ch.pos, Ballistica.PROJECTILE);
