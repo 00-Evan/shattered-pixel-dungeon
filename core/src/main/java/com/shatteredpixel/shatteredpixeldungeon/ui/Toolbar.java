@@ -373,6 +373,7 @@ public class Toolbar extends Component {
 			protected void layout() {
 				super.layout();
 				ind.fill(this);
+				bringToFront(ind);
 
 				arrow.x = left() + (width - arrow.width())/2;
 				arrow.y = bottom()-arrow.height-1;
