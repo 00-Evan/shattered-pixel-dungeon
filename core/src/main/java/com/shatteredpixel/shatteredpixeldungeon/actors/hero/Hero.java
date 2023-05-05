@@ -458,7 +458,7 @@ public class Hero extends Char {
 		}
 
 		if (hit && heroClass == HeroClass.DUELIST && wasEnemy){
-			Buff.append( this, Sai.ComboStrikeTracker.class, Sai.ComboStrikeTracker.DURATION);
+			Buff.append( this, Sai.ComboStrikeTracker.class).addHit();
 		}
 
 		return hit;
@@ -2023,7 +2023,7 @@ public class Hero extends Char {
 		}
 
 		if (hit && heroClass == HeroClass.DUELIST && wasEnemy){
-			Buff.append( this, Sai.ComboStrikeTracker.class, Sai.ComboStrikeTracker.DURATION);
+			Buff.affect( this, Sai.ComboStrikeTracker.class).addHit();
 		}
 
 		RingOfForce.BrawlersStance brawlStance = buff(RingOfForce.BrawlersStance.class);
