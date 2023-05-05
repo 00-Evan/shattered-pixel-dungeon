@@ -78,6 +78,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.PrismaticImage;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
@@ -735,6 +736,22 @@ public abstract class Char extends Actor {
 		}
 		shielded -= dmg;
 		HP -= dmg;
+
+		if (HP > 0 && buff(Grim.GrimTracker.class) != null){
+
+			float finalChance = buff(Grim.GrimTracker.class).maxChance;
+			finalChance *= (float)Math.pow( ((HT - HP) / (float)HT), 2);
+
+			if (Random.Float() < finalChance) {
+				dmg += HP;
+				HP = 0;
+
+				sprite.emitter().burst( ShadowParticle.UP, 5 );
+				if (!isAlive() && buff(Grim.GrimTracker.class).qualifiesForBadge){
+					Badges.validateGrimWeapon();
+				}
+			}
+		}
 
 		if (HP < 0 && src instanceof Char && alignment == Alignment.ENEMY){
 			if (((Char) src).buff(Kinetic.KineticTracker.class) != null){
