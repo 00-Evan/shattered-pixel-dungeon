@@ -146,7 +146,13 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		} else if (item instanceof Artifact) {
 			Artifact a = changeArtifact( (Artifact)item );
 			if (a == null){
-				return Generator.random(Generator.Category.RING);
+				//if no artifacts are left, generate a random +0 ring with shared ID/curse state
+				Item result = Generator.random(Generator.Category.RING);
+				result.levelKnown = item.levelKnown;
+				result.cursed = item.cursed;
+				result.cursedKnown = item.cursedKnown;
+				result.level(0);
+				return result;
 			} else {
 				return a;
 			}
