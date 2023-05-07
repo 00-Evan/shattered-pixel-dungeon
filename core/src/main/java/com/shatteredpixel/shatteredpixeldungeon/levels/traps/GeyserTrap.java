@@ -46,7 +46,7 @@ public class GeyserTrap extends Trap {
 	}
 
 	public int centerKnockBackDirection = -1;
-	public Class source = getClass();
+	public Object source = this;
 
 	@Override
 	public void activate() {

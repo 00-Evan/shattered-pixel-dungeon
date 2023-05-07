@@ -486,7 +486,7 @@ public abstract class Char extends Actor {
 							|| this instanceof MirrorImage || this instanceof PrismaticImage){
 						Badges.validateDeathFromFriendlyMagic();
 					}
-					Dungeon.fail( getClass() );
+					Dungeon.fail( this );
 					GLog.n( Messages.capitalize(Messages.get(Char.class, "kill", name())) );
 					
 				} else if (this == Dungeon.hero) {

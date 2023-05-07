@@ -161,7 +161,7 @@ public class Viscosity extends Glyph {
 
 					Badges.validateDeathFromFriendlyMagic();
 
-					Dungeon.fail( getClass() );
+					Dungeon.fail( this );
 					GLog.n( Messages.get(this, "ondeath") );
 				}
 				spend( TICK );

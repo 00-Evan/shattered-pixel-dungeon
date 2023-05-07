@@ -73,7 +73,7 @@ public class ShrapnelBomb extends Bomb {
 			damage -= ch.drRoll();
 			ch.damage(damage, this);
 			if (ch == Dungeon.hero && !ch.isAlive()) {
-				Dungeon.fail(Bomb.class);
+				Dungeon.fail(this);
 			}
 		}
 	}

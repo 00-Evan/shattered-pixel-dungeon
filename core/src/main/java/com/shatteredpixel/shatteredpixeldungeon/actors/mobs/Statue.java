@@ -137,7 +137,7 @@ public class Statue extends Mob {
 		damage = super.attackProc( enemy, damage );
 		damage = weapon.proc( this, enemy, damage );
 		if (!enemy.isAlive() && enemy == Dungeon.hero){
-			Dungeon.fail(getClass());
+			Dungeon.fail(this);
 			GLog.n( Messages.capitalize(Messages.get(Char.class, "kill", name())) );
 		}
 		return damage;

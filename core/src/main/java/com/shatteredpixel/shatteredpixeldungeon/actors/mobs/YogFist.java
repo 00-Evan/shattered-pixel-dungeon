@@ -503,7 +503,7 @@ public abstract class YogFist extends Mob {
 
 				if (!enemy.isAlive() && enemy == Dungeon.hero) {
 					Badges.validateDeathFromEnemyMagic();
-					Dungeon.fail( getClass() );
+					Dungeon.fail( this );
 					GLog.n( Messages.get(Char.class, "kill", name()) );
 				}
 
@@ -573,7 +573,7 @@ public abstract class YogFist extends Mob {
 
 				if (!enemy.isAlive() && enemy == Dungeon.hero) {
 					Badges.validateDeathFromEnemyMagic();
-					Dungeon.fail( getClass() );
+					Dungeon.fail( this );
 					GLog.n( Messages.get(Char.class, "kill", name()) );
 				}
 

@@ -578,7 +578,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 							//trim it to just be the part that goes past them
 							trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
 							//knock them back along that ballistica
-							WandOfBlastWave.throwChar(enemy, trajectory, 6, true, false, hero.getClass());
+							WandOfBlastWave.throwChar(enemy, trajectory, 6, true, false, hero);
 
 							if (trajectory.dist > 0) {
 								Buff.affect(enemy, Paralysis.class, Math.min( 6, trajectory.dist));
@@ -599,7 +599,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 									//trim it to just be the part that goes past them
 									trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
 									//knock them back along that ballistica
-									WandOfBlastWave.throwChar(ch, trajectory, 6, true, false, hero.getClass());
+									WandOfBlastWave.throwChar(ch, trajectory, 6, true, false, hero);
 
 									if (trajectory.dist > 0) {
 										Buff.affect(ch, Paralysis.class, Math.min( 6, trajectory.dist));

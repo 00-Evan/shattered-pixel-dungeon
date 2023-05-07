@@ -120,7 +120,7 @@ public class Berserk extends Buff implements ActionIndicator.Action {
 					BuffIndicator.refreshHero();
 					if (!target.isAlive()){
 						target.die(this);
-						if (!target.isAlive()) Dungeon.fail(this.getClass());
+						if (!target.isAlive()) Dungeon.fail(this);
 					}
 				}
 
@@ -129,7 +129,7 @@ public class Berserk extends Buff implements ActionIndicator.Action {
 				power = 0f;
 				if (!target.isAlive()){
 					target.die(this);
-					if (!target.isAlive()) Dungeon.fail(this.getClass());
+					if (!target.isAlive()) Dungeon.fail(this);
 				}
 
 			}

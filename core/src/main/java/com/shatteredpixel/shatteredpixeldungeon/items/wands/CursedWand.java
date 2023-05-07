@@ -223,11 +223,11 @@ public class CursedWand {
 						if (!toDamage.isAlive()) {
 							if (user == Dungeon.hero && origin != null) {
 								Badges.validateDeathFromFriendlyMagic();
-								Dungeon.fail( origin.getClass() );
+								Dungeon.fail( origin );
 								GLog.n( Messages.get( CursedWand.class, "ondeath", origin.name() ) );
 							} else {
 								Badges.validateDeathFromEnemyMagic();
-								Dungeon.fail( toHeal.getClass() );
+								Dungeon.fail( toHeal );
 							}
 						}
 					} else {

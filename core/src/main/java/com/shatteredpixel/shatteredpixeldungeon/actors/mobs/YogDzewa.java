@@ -244,7 +244,7 @@ public class YogDzewa extends Mob {
 						}
 						if (!ch.isAlive() && ch == Dungeon.hero) {
 							Badges.validateDeathFromEnemyMagic();
-							Dungeon.fail(getClass());
+							Dungeon.fail(this);
 							GLog.n(Messages.get(Char.class, "kill", name()));
 						}
 					} else {

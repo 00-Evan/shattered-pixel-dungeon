@@ -401,7 +401,7 @@ public class ElementalStrike extends ArmorAbility {
 						knockback,
 						true,
 						true,
-						ElementalStrike.this.getClass());
+						ElementalStrike.this);
 			}
 
 		//*** Lucky ***
