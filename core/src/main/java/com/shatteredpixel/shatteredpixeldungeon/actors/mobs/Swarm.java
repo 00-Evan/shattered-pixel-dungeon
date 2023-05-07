@@ -84,10 +84,7 @@ public class Swarm extends Mob {
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
 
-		//accounting for reduced damage on ascension
-		int effectiveDmg = (int)Math.ceil(damage / AscensionChallenge.statModifier(this));
-
-		if (HP >= effectiveDmg + 2) {
+		if (HP >= damage + 2) {
 			ArrayList<Integer> candidates = new ArrayList<>();
 			
 			int[] neighbours = {pos + 1, pos - 1, pos + Dungeon.level.width(), pos - Dungeon.level.width()};
@@ -103,11 +100,11 @@ public class Swarm extends Mob {
 			if (candidates.size() > 0) {
 				
 				Swarm clone = split();
-				clone.HP = (HP - effectiveDmg) / 2;
 				clone.pos = Random.element( candidates );
 				clone.state = clone.HUNTING;
+				GameScene.add( clone, SPLIT_DELAY ); //we add before assigning HP due to ascension
 
-				GameScene.add( clone, SPLIT_DELAY );
+				clone.HP = (HP - damage) / 2;
 				Actor.addDelayed( new Pushing( clone, pos, clone.pos ), -1 );
 
 				Dungeon.level.occupyCell(clone);
