@@ -144,8 +144,8 @@ public class Goo extends Mob {
 			//we check both from and to in this case as projectile logic isn't always symmetrical.
 			//this helps trim out BS edge-cases
 			return Dungeon.level.distance(enemy.pos, pos) <= 2
-						&& new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE).collisionPos == enemy.pos
-						&& new Ballistica( enemy.pos, pos, Ballistica.PROJECTILE).collisionPos == pos;
+						&& new Ballistica( pos, enemy.pos, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID).collisionPos == enemy.pos
+						&& new Ballistica( enemy.pos, pos, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID).collisionPos == pos;
 		} else {
 			return super.canAttack(enemy);
 		}
