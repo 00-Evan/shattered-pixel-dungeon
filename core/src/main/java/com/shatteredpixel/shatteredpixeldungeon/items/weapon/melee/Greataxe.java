@@ -90,7 +90,7 @@ public class Greataxe extends MeleeWeapon {
 			public void call() {
 				beforeAbilityUsed(hero);
 				AttackIndicator.target(enemy);
-				if (hero.attack(enemy, 1.35f, 0, Char.INFINITE_ACCURACY)){
+				if (hero.attack(enemy, 1.50f, 0, Char.INFINITE_ACCURACY)){
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 					if (!enemy.isAlive()){
 						onAbilityKill(hero, enemy);

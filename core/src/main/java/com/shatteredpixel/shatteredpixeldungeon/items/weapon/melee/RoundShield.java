@@ -62,7 +62,7 @@ public class RoundShield extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		RoundShield.guardAbility(hero, 5, this);
+		RoundShield.guardAbility(hero, 8, this);
 	}
 
 	public static void guardAbility(Hero hero, int duration, MeleeWeapon wep){
@@ -87,7 +87,7 @@ public class RoundShield extends MeleeWeapon {
 
 		@Override
 		public float iconFadePercent() {
-			return Math.max(0, (5 - visualcooldown()) / 5);
+			return Math.max(0, (7 - visualcooldown()) / 7);
 		}
 	}
 }

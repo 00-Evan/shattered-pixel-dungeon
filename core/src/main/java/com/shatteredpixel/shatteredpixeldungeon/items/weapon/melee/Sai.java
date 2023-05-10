@@ -64,7 +64,7 @@ public class Sai extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		Sai.comboStrikeAbility(hero, target, 0.35f, this);
+		Sai.comboStrikeAbility(hero, target, 0.40f, this);
 	}
 
 	public static void comboStrikeAbility(Hero hero, Integer target, float boostPerHit, MeleeWeapon wep){

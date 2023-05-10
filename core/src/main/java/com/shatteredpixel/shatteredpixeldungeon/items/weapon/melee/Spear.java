@@ -61,7 +61,7 @@ public class Spear extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		Spear.spikeAbility(hero, target, 1.40f, this);
+		Spear.spikeAbility(hero, target, 1.45f, this);
 	}
 
 	public static void spikeAbility(Hero hero, Integer target, float dmgMulti, MeleeWeapon wep){

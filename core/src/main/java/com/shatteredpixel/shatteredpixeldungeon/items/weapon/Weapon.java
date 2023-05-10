@@ -395,7 +395,7 @@ abstract public class Weapon extends KindOfWeapon {
 			}
 
 			if (attacker.buff(RunicBlade.RunicSlashTracker.class) != null){
-				multi += 2.5f;
+				multi += 3f;
 				attacker.buff(RunicBlade.RunicSlashTracker.class).detach();
 			}
 

@@ -480,7 +480,7 @@ public class Hero extends Char {
 		}
 
 		if (buff(Scimitar.SwordDance.class) != null){
-			accuracy *= 0.8f;
+			accuracy *= 1.25f;
 		}
 		
 		if (!RingOfForce.fightingUnarmed(this)) {
@@ -517,7 +517,7 @@ public class Hero extends Char {
 		}
 
 		if (buff(Quarterstaff.DefensiveStance.class) != null){
-			evasion *= 2;
+			evasion *= 3;
 		}
 		
 		if (paralysed > 0) {
