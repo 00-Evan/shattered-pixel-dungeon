@@ -413,10 +413,6 @@ abstract public class Weapon extends KindOfWeapon {
 				multi += 0.2f;
 			}
 
-			if (attacker.buff(MonkEnergy.MonkAbility.FlurryEmpowerTracker.class) != null){
-				multi *= 0.75f;
-			}
-
 			return multi;
 		}
 

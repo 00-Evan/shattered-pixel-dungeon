@@ -169,26 +169,22 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 				if (hero.belongings.armor() != null){
 					if (hero.belongings.armor().tier <= 1 && points >= 3){
-						enGainMulti += 1.00f;
+						enGainMulti += 1.20f;
 					} else if (hero.belongings.armor().tier <= 2 && points >= 2){
-						enGainMulti += 0.667f;
+						enGainMulti += 0.80f;
 					} else if (hero.belongings.armor().tier <= 3 && points >= 1){
-						enGainMulti += 0.333f;
+						enGainMulti += 0.40f;
 					}
 				}
 
 				if (hero.belongings.weapon() instanceof MeleeWeapon
 						&& hero.buff(RingOfForce.BrawlersStance.class) == null){
 					if (((MeleeWeapon) hero.belongings.weapon()).tier <= 1 && points >= 3){
-						enGainMulti += 1.00f;
+						enGainMulti += 1.20f;
 					} else if (((MeleeWeapon) hero.belongings.weapon()).tier <= 2 && points >= 2){
-						enGainMulti += 0.667f;
+						enGainMulti += 0.80f;
 					} else if (((MeleeWeapon) hero.belongings.weapon()).tier <= 3 && points >= 1){
-						enGainMulti += 0.333f;
-					}
-				} else if (hero.belongings.weapon == null) {
-					if (hero.buff(RingOfForce.Force.class) == null && points >= 3){
-						enGainMulti += 1.50f;
+						enGainMulti += 0.40f;
 					}
 				}
 
@@ -238,7 +234,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 	}
 
 	public void processCombinedEnergy(Talent.CombinedEnergyAbilityTracker tracker){
-		energy = Math.min(energy+tracker.energySpent/3f, energyCap());
+		energy = Math.min(energy+tracker.energySpent/2f, energyCap());
 		cooldown = 0;
 		tracker.detach();
 		if (energy >= 1){
@@ -484,7 +480,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 				int range = 3;
 				if (Buff.affect(hero, MonkEnergy.class).abilitiesEmpowered(hero)){
-					range += 2;
+					range += 3;
 				}
 
 				if (Dungeon.level.distance(hero.pos, target) > range){
@@ -568,7 +564,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 						AttackIndicator.target(enemy);
 						boolean empowered = Buff.affect(hero, MonkEnergy.class).abilitiesEmpowered(hero);
 
-						if (hero.attack(enemy, empowered ? 4f : 3f, 0, Char.INFINITE_ACCURACY)){
+						if (hero.attack(enemy, empowered ? 4.5f : 3f, 0, Char.INFINITE_ACCURACY)){
 							Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 						}
 
@@ -632,8 +628,6 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 				GameScene.flash(0x88000000, false);
 				Sample.INSTANCE.play(Assets.Sounds.SCAN);
 
-				Buff.affect(hero, Recharging.class, 10f);
-				Buff.affect(hero, ArtifactRecharge.class).prolong(10f).ignoreHornOfPlenty = false;
 				for (Buff b : hero.buffs()){
 					if (b.type == Buff.buffType.NEGATIVE
 							&& !(b instanceof AllyBuff)
@@ -653,6 +647,16 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 					}
 					Buff.affect(hero, MeditateResistance.class, hero.cooldown());
 				}
+
+				Actor.addDelayed(new Actor() {
+					@Override
+					protected boolean act() {
+						Buff.affect(hero, Recharging.class, 8f);
+						Buff.affect(hero, ArtifactRecharge.class).prolong(8f).ignoreHornOfPlenty = false;
+						Actor.remove(this);
+						return true;
+					}
+				}, hero.cooldown()-1);
 
 				hero.next();
 				Buff.affect(hero, MonkEnergy.class).abilityUsed(this);
