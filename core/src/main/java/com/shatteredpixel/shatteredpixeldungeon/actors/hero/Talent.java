@@ -155,7 +155,7 @@ public enum Talent {
 	//Duelist T2
 	FOCUSED_MEAL(132), RESTORED_AGILITY(133), WEAPON_RECHARGING(134), LETHAL_HASTE(135), SWIFT_EQUIP(136),
 	//Duelist T3
-	LIGHTWEIGHT_CHARGE(137, 3), DEADLY_FOLLOWUP(138, 3),
+	PRECISE_ASSAULT(137, 3), DEADLY_FOLLOWUP(138, 3),
 	//Champion T3
 	SECONDARY_CHARGE(139, 3), TWIN_UPGRADES(140, 3), COMBINED_LETHALITY(141, 3),
 	//Monk T3
@@ -269,6 +269,7 @@ public enum Talent {
 		}
 	};
 	public static class DeadlyFollowupTracker extends FlavourBuff{};
+	public static class PreciseAssaultTracker extends FlavourBuff{};
 	public static class CombinedLethalityAbilityTracker extends FlavourBuff{
 		public MeleeWeapon weapon;
 	};
@@ -759,7 +760,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, POINT_BLANK, SEER_SHOT);
 				break;
 			case DUELIST:
-				Collections.addAll(tierTalents, LIGHTWEIGHT_CHARGE, DEADLY_FOLLOWUP);
+				Collections.addAll(tierTalents, PRECISE_ASSAULT, DEADLY_FOLLOWUP);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -874,6 +875,8 @@ public enum Talent {
 		renamedTalents.put("ARMSMASTERS_INTUITION",     "VETERANS_INTUITION");
 		//v2.0.0 BETA
 		renamedTalents.put("LIGHTLY_ARMED",             "UNENCUMBERED_SPIRIT");
+		//v2.1.0
+		renamedTalents.put("LIGHTWEIGHT_CHARGE",             "PRECISE_ASSAULT");
 	}
 
 	public static void restoreTalentsFromBundle( Bundle bundle, Hero hero ){

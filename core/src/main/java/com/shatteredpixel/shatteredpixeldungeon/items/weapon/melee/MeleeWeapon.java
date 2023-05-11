@@ -43,7 +43,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
@@ -219,6 +218,10 @@ public class MeleeWeapon extends Weapon {
 			Buff.affect(hero, Barrier.class).setShield(3);
 		}
 
+		if (hero.buff(Talent.PreciseAssaultTracker.class) != null) {
+			hero.buff(Talent.PreciseAssaultTracker.class).detach();
+		}
+
 		if (hero.buff(Talent.CombinedLethalityAbilityTracker.class) != null
 				&& hero.buff(Talent.CombinedLethalityAbilityTracker.class).weapon != null
 				&& hero.buff(Talent.CombinedLethalityAbilityTracker.class).weapon != this){
@@ -230,6 +233,9 @@ public class MeleeWeapon extends Weapon {
 
 	protected void afterAbilityUsed( Hero hero ){
 		hero.belongings.abilityWeapon = null;
+		if (hero.hasTalent(Talent.PRECISE_ASSAULT)){
+			Buff.affect(hero, Talent.PreciseAssaultTracker.class, hero.cooldown()+4f);
+		}
 		if (hero.hasTalent(Talent.COMBINED_LETHALITY)) {
 			Talent.CombinedLethalityAbilityTracker tracker = hero.buff(Talent.CombinedLethalityAbilityTracker.class);
 			if (tracker == null || tracker.weapon == this || tracker.weapon == null){
@@ -264,11 +270,6 @@ public class MeleeWeapon extends Weapon {
 		float chargeUse = 1f;
 		if (hero.buff(Talent.CounterAbilityTacker.class) != null){
 			chargeUse = Math.max(0, chargeUse-0.5f*hero.pointsInTalent(Talent.COUNTER_ABILITY));
-		}
-		if (hero.hasTalent(Talent.LIGHTWEIGHT_CHARGE) && tier <= 3){
-			// T1/2/3 get 25/20/15% charge use reduction at +3
-			float chargeUseReduction = (0.30f-.05f*tier) * (hero.pointsInTalent(Talent.LIGHTWEIGHT_CHARGE)/3f);
-			chargeUse *= 1f - chargeUseReduction;
 		}
 		return chargeUse;
 	}
@@ -313,6 +314,24 @@ public class MeleeWeapon extends Weapon {
 			}
 		}
 		return super.buffedLvl();
+	}
+
+	@Override
+	public float accuracyFactor(Char owner, Char target) {
+		float ACC = super.accuracyFactor(owner, target);
+
+		if (owner instanceof Hero && ((Hero) owner).hasTalent(Talent.PRECISE_ASSAULT)) {
+			if (((Hero) owner).heroClass != HeroClass.DUELIST){
+				//persistent +10%/20%/30% ACC for other heroes
+				ACC *= 1f + 0.1f*((Hero) owner).pointsInTalent(Talent.PRECISE_ASSAULT);
+			} else if (owner.buff(Talent.PreciseAssaultTracker.class) != null) {
+				// 2x/4x/8x ACC for duelist if she just used a weapon ability
+				ACC *= Math.pow(2, ((Hero) owner).pointsInTalent(Talent.PRECISE_ASSAULT));
+				owner.buff(Talent.PreciseAssaultTracker.class).detach();
+			}
+		}
+
+		return ACC;
 	}
 
 	@Override
