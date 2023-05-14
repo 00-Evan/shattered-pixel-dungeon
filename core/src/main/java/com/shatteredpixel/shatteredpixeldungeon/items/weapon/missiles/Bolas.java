@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Bolas extends MissileWeapon {
-	
+	//投石索
 	{
 		image = ItemSpriteSheet.BOLAS;
 		hitSound = Assets.Sounds.HIT;

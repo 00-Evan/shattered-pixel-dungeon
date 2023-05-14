@@ -160,6 +160,24 @@ public class ItemSpriteSheet {
 		assignItemRect(MASTERY,         13, 16);
 		assignItemRect(KIT,             16, 15);
 	}
+
+
+	//添加杂项
+	private static final int ADD_CONSUMABLE =                              xy(1, 34);   //16 slots
+	public static final int CLOTHSTRIP      = ADD_CONSUMABLE +0;
+	public static final int HOLYSTRIP       = ADD_CONSUMABLE +1;
+	public static final int HOLYWATER       = ADD_CONSUMABLE +2;
+	public static final int PALADINSEAL     = ADD_CONSUMABLE +3;
+
+	static{
+		assignItemRect(CLOTHSTRIP,            15, 15);
+		assignItemRect(HOLYSTRIP,             15, 15);
+		assignItemRect(HOLYWATER,             16, 16);
+		assignItemRect(PALADINSEAL,           14, 14);
+
+	}
+
+
 	
 	private static final int BOMBS          =                               xy(1, 5);   //16 slots
 	public static final int BOMB            = BOMBS+0;
@@ -269,8 +287,19 @@ public class ItemSpriteSheet {
 		assignItemRect(GREATSHIELD, 12, 16);
 		assignItemRect(GAUNTLETS,   13, 15);
 	}
-
-	                                                                                    //8 free slots
+	private static final int ADD_WEP      =                               xy(1, 36);
+	public static final int TANGSWORD      		= ADD_WEP+0;
+	public static final int BROKENTANGSWORD     = ADD_WEP+1;
+	public static final int TURTLESHIELD        = ADD_WEP+2;
+	public static final int PALADINHAMMER      	= ADD_WEP+3;
+	public static final int CROWBAR          	= ADD_WEP+4;
+	static{
+		assignItemRect(TANGSWORD,  		 15, 14);
+		assignItemRect(BROKENTANGSWORD,  15, 15);
+		assignItemRect(TURTLESHIELD,     16, 16);
+		assignItemRect(PALADINHAMMER,    14, 15);
+		assignItemRect(CROWBAR,     	 14, 15);
+	}                                                                           //8 free slots
 
 	private static final int MISSILE_WEP    =                               xy(1, 10);  //16 slots. 3 per tier + bow
 	public static final int SPIRIT_BOW      = MISSILE_WEP+0;
@@ -362,6 +391,15 @@ public class ItemSpriteSheet {
 		assignItemRect(ARMOR_DUELIST,   12, 13);
 	}
 
+	private static final int EXTRAARMOR          =                               xy(1, 35);
+	public static final int PASTORCLOTHE   = EXTRAARMOR+0;
+	public static final int NINJACLOTHE    = EXTRAARMOR+1;
+
+	static{
+		assignItemRect(PASTORCLOTHE,     16, 15);
+		assignItemRect(NINJACLOTHE,      16, 14);
+
+	}
 	                                                                                    //16 free slots
 
 	private static final int WANDS              =                           xy(1, 14);  //16 slots
@@ -639,6 +677,7 @@ public class ItemSpriteSheet {
 	public static final int BLANDFRUIT  = FOOD+10;
 	public static final int BLAND_CHUNKS= FOOD+11;
 	public static final int BERRY =       FOOD+12;
+	public static final int BUTTERBREAD = FOOD+13;
 	static{
 		assignItemRect(MEAT,        15, 11);
 		assignItemRect(STEAK,       15, 11);
@@ -653,6 +692,7 @@ public class ItemSpriteSheet {
 		assignItemRect(BLANDFRUIT,  9,  12);
 		assignItemRect(BLAND_CHUNKS,14, 6);
 		assignItemRect(BERRY,       9,  11);
+		assignItemRect(BUTTERBREAD, 12,  12);
 	}
 
 	private static final int QUEST  =                                       xy(1, 29);  //32 slots
@@ -879,5 +919,6 @@ public class ItemSpriteSheet {
 		                                                                                //16 free slots
 
 	}
+
 
 }

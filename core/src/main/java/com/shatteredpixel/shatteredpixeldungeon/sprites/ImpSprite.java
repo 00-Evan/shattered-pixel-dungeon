@@ -29,7 +29,7 @@ import com.watabou.noosa.TextureFilm;
 
 public class ImpSprite extends MobSprite {
 	
-	public ImpSprite() {
+	public ImpSprite( ){
 		super();
 		
 		texture( Assets.Sprites.IMP );

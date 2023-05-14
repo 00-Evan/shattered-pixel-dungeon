@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
-public abstract class Key extends Item {
+public class Key extends Item {
 
 	public static final float TIME_TO_UNLOCK = 1f;
 	

@@ -27,6 +27,8 @@ public class ScaleArmor extends Armor {
 
 	{
 		image = ItemSpriteSheet.ARMOR_SCALE;
+
+		armorType = ArmorType.metaled;
 	}
 	
 	public ScaleArmor() {
@@ -34,3 +36,4 @@ public class ScaleArmor extends Armor {
 	}
 
 }
+/* 鳞甲 */

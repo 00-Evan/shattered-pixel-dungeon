@@ -21,6 +21,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -34,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
+import com.shatteredpixel.shatteredpixeldungeon.items.ClothStrip;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.AntiEntropy;
@@ -61,13 +66,19 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
@@ -77,8 +88,10 @@ import java.util.Arrays;
 
 public class Armor extends EquipableItem {
 
+
 	protected static final String AC_DETACH       = "DETACH";
-	
+
+
 	public enum Augment {
 		EVASION (2f , -1f),
 		DEFENSE (-2f, 1f),
@@ -99,6 +112,7 @@ public class Armor extends EquipableItem {
 		public int defenseFactor(int level){
 			return Math.round((2 + level) * defenceFactor);
 		}
+
 	}
 	
 	public Augment augment = Augment.NONE;
@@ -126,6 +140,13 @@ public class Armor extends EquipableItem {
 	private static final String MASTERY_POTION_BONUS = "mastery_potion_bonus";
 	private static final String SEAL            = "seal";
 	private static final String AUGMENT			= "augment";
+
+
+	public enum ArmorType {empty,clothed,metaled}
+	public ArmorType armorType = ArmorType.clothed;
+
+	public static final String AC_TORN = "TORN";
+	private static int TIME_TO_TORN= 1 ;
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -165,6 +186,12 @@ public class Armor extends EquipableItem {
 	public ArrayList<String> actions(Hero hero) {
 		ArrayList<String> actions = super.actions(hero);
 		if (seal != null) actions.add(AC_DETACH);
+
+		if( this.armorType == ArmorType.clothed)
+		{
+				actions.add( AC_TORN );
+		}
+
 		return actions;
 	}
 
@@ -201,7 +228,70 @@ public class Armor extends EquipableItem {
 			}
 			updateQuickslot();
 		}
+
+		//撕布条按键按下后
+		if (action.equals( AC_TORN )){
+
+			if( hero.belongings.armor() == this ){
+				GLog.w("你必须把衣服脱下来再撕");
+
+			}else if( seal != null ){
+				GLog.w("你必须把纹章从衣服上卸下来再撕");
+			}
+
+			else {
+
+				Game.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						GameScene.show(new WndOptions( new ItemSprite(ItemSpriteSheet.ARMOR_CLOTH),
+								Messages.get(Armor.class, "title"),
+								Messages.get(Armor.class, "in"),
+								Messages.get(Armor.class, "sure"),
+								Messages.get(Armor.class, "notsure") ){
+							@Override
+							protected void onSelect(int index) {
+								if (index == 0){
+									hero.spend( TIME_TO_TORN );
+									hero.busy();
+
+									hero.sprite.operate( hero.pos );
+
+									detach( hero.belongings.backpack );
+									GLog.w("你撕开了这件布制成的护甲，获得了几根布条");
+
+									new ClothStrip().quantity( 3 + buffedLvl() ).identify().collect();
+									Sample.INSTANCE.play(Assets.Sounds.BURNING);
+									//把你的代码迁移到这里面
+								}
+							}
+						});
+					}
+				});
+
+
+
+			}
+
+
+		}
+
 	}
+
+	/*
+				hero.spend( TIME_TO_TORN );
+				hero.busy();
+
+				hero.sprite.operate( hero.pos );
+
+				detach( hero.belongings.backpack );
+				GLog.w("你撕开了这件布制成的护甲，获得了几根布条");
+
+				new ClothStrip().quantity( 3 + buffedLvl() ).identify().collect();
+				Sample.INSTANCE.play(Assets.Sounds.BURNING);
+	*/
+
+
 
 	@Override
 	public boolean doEquip( Hero hero ) {
@@ -248,8 +338,8 @@ public class Armor extends EquipableItem {
 		if (seal.getGlyph() != null){
 			inscribe(seal.getGlyph());
 		}
-		if (isEquipped(Dungeon.hero)){
-			Buff.affect(Dungeon.hero, BrokenSeal.WarriorShield.class).setArmor(this);
+		if (isEquipped(hero)){
+			Buff.affect(hero, BrokenSeal.WarriorShield.class).setArmor(this);
 		}
 	}
 
@@ -285,6 +375,34 @@ public class Armor extends EquipableItem {
 	public boolean isEquipped( Hero hero ) {
 		return hero.belongings.armor() == this;
 	}
+
+
+	//额外闪避
+	public final int ArmorEvasion(){
+		return ArmorEvasion(buffedLvl());
+	}
+
+	public int ArmorEvasion(int lvl){
+		int max = 0;
+		return max;
+	}
+
+
+	//HolyHealing回血速度与回血量
+	public final int Holyspeed(){
+		return Holyspeed(buffedLvl());
+	}
+    public int Holyspeed(int lvl){
+        return 0;
+    }
+	public final int Holyadd(){
+		return Holyadd(buffedLvl());
+	}
+	public int Holyadd(int lvl){
+		return 0;
+	}
+
+
 
 	public final int DRMax(){
 		return DRMax(buffedLvl());
@@ -340,12 +458,13 @@ public class Armor extends EquipableItem {
 	}
 	
 	public float speedFactor( Char owner, float speed ){
-		
+		//力量较低时
 		if (owner instanceof Hero) {
 			int aEnc = STRReq() - ((Hero) owner).STR();
 			if (aEnc > 0) speed /= Math.pow(1.2, aEnc);
 		}
-		
+
+		//臃肿诅咒
 		if (hasGlyph(Swiftness.class, owner)) {
 			boolean enemyNear = false;
 			PathFinder.buildDistanceMap(owner.pos, Dungeon.level.passable, 2);
@@ -359,7 +478,8 @@ public class Armor extends EquipableItem {
 		} else if (hasGlyph(Flow.class, owner) && Dungeon.level.water[owner.pos]){
 			speed *= (2f + 0.5f*buffedLvl()) * glyph.procChanceMultiplier(owner);
 		}
-		
+
+		//奥术之戒
 		if (hasGlyph(Bulk.class, owner) &&
 				(Dungeon.level.map[owner.pos] == Terrain.DOOR
 						|| Dungeon.level.map[owner.pos] == Terrain.OPEN_DOOR )) {
@@ -391,7 +511,7 @@ public class Armor extends EquipableItem {
 	//other things can equip these, for now we assume only the hero can be affected by levelling debuffs
 	@Override
 	public int buffedLvl() {
-		if (isEquipped( Dungeon.hero ) || Dungeon.hero.belongings.contains( this )){
+		if (isEquipped( hero ) || hero.belongings.contains( this )){
 			return super.buffedLvl();
 		} else {
 			return level();
@@ -415,8 +535,8 @@ public class Armor extends EquipableItem {
 			} else {
 
 				int lossChanceStart = 4;
-				if (Dungeon.hero != null && Dungeon.hero.heroClass != HeroClass.WARRIOR && Dungeon.hero.hasTalent(Talent.RUNIC_TRANSFERENCE)){
-					lossChanceStart += 1+Dungeon.hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE);
+				if (hero != null && hero.heroClass != HeroClass.WARRIOR && hero.hasTalent(Talent.RUNIC_TRANSFERENCE)){
+					lossChanceStart += 1+ hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE);
 				}
 
 				if (level() >= lossChanceStart && Random.Float(10) < Math.pow(2, level()-4)) {
@@ -439,8 +559,8 @@ public class Armor extends EquipableItem {
 			damage = glyph.proc( this, attacker, defender, damage );
 		}
 		
-		if (!levelKnown && defender == Dungeon.hero) {
-			float uses = Math.min( availableUsesToID, Talent.itemIDSpeedFactor(Dungeon.hero, this) );
+		if (!levelKnown && defender == hero) {
+			float uses = Math.min( availableUsesToID, Talent.itemIDSpeedFactor(hero, this) );
 			availableUsesToID -= uses;
 			usesLeftToID -= uses;
 			if (usesLeftToID <= 0) {
@@ -474,13 +594,13 @@ public class Armor extends EquipableItem {
 		if (levelKnown) {
 			info += "\n\n" + Messages.get(Armor.class, "curr_absorb", DRMin(), DRMax(), STRReq());
 			
-			if (STRReq() > Dungeon.hero.STR()) {
+			if (STRReq() > hero.STR()) {
 				info += " " + Messages.get(Armor.class, "too_heavy");
 			}
 		} else {
 			info += "\n\n" + Messages.get(Armor.class, "avg_absorb", DRMin(0), DRMax(0), STRReq(0));
 
-			if (STRReq(0) > Dungeon.hero.STR()) {
+			if (STRReq(0) > hero.STR()) {
 				info += " " + Messages.get(Armor.class, "probably_too_heavy");
 			}
 		}
@@ -500,7 +620,7 @@ public class Armor extends EquipableItem {
 			info += " " + glyph.desc();
 		}
 		
-		if (cursed && isEquipped( Dungeon.hero )) {
+		if (cursed && isEquipped( hero )) {
 			info += "\n\n" + Messages.get(Armor.class, "cursed_worn");
 		} else if (cursedKnown && cursed) {
 			info += "\n\n" + Messages.get(Armor.class, "cursed");
@@ -750,4 +870,8 @@ public class Armor extends EquipableItem {
 		}
 		
 	}
+
+
+
+
 }

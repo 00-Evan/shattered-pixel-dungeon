@@ -21,8 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.HighOrderKnightArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.PapalKnightArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.PastorClothe;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -48,7 +53,7 @@ public class Light extends FlavourBuff {
 			return false;
 		}
 	}
-	
+
 	@Override
 	public void detach() {
 		target.viewDistance = Dungeon.level.viewDistance;
@@ -66,9 +71,7 @@ public class Light extends FlavourBuff {
 	}
 	
 	@Override
-	public float iconFadePercent() {
-		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
-	}
+	public float iconFadePercent() { return Math.max(0, (DURATION - visualcooldown()) / DURATION); }
 
 	@Override
 	public void fx(boolean on) {

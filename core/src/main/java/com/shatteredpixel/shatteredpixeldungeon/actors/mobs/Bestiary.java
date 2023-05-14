@@ -43,12 +43,20 @@ public class Bestiary {
 			// Sewers
 			case 1: default:
 				//3x rat, 1x snake
-				return new ArrayList<>(Arrays.asList(
+				if( Random.Float()<=0.5f ) {
+					return new ArrayList<>(Arrays.asList(
 						Rat.class, Rat.class, Rat.class,
 						Snake.class));
+					}else {
+					return new ArrayList<>(Arrays.asList(
+						NinjaRat.class,NinjaRat.class,
+						Snake.class,Snake.class));
+					}
+
 			case 2:
 				//2x rat, 1x snake, 2x gnoll
-				return new ArrayList<>(Arrays.asList(Rat.class, Rat.class,
+				return new ArrayList<>(Arrays.asList(Rat.class,
+						NinjaRat.class,
 						Snake.class,
 						Gnoll.class, Gnoll.class));
 			case 3:
@@ -57,13 +65,27 @@ public class Bestiary {
 						Snake.class,
 						Gnoll.class, Gnoll.class, Gnoll.class,
 						Swarm.class,
-						Crab.class));
+						GiantTultle.class));
 			case 4: case 5:
 				//1x gnoll, 1x swarm, 2x crab, 2x slime
-				return new ArrayList<>(Arrays.asList(Gnoll.class,
+				if( Random.Float()<=0.5f ) {
+					return new ArrayList<>(Arrays.asList(
+							Gnoll.class,
+							Swarm.class,
+							Crab.class, Crab.class,
+							Slime.class, Slime.class));
+				}else {
+					return new ArrayList<>(Arrays.asList(
+							NinjaRat.class,NinjaRat.class,
+							Swarm.class,
+							GiantTultle.class, GiantTultle.class,
+							Slime.class, Slime.class));
+				}
+				/*return new ArrayList<>(Arrays.asList(
+						Gnoll.class,
 						Swarm.class,
 						Crab.class, Crab.class,
-						Slime.class, Slime.class));
+						Slime.class, Slime.class)); */
 				
 			// Prison
 			case 6:

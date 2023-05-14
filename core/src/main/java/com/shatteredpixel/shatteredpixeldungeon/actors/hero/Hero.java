@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
@@ -83,6 +85,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.NinjaClothe;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
@@ -122,6 +125,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.CrowBar;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
@@ -215,6 +219,7 @@ public class Hero extends Char {
 	public int exp = 0;
 	
 	public int HTBoost = 0;
+
 	
 	private ArrayList<Mob> visibleEnemies;
 
@@ -508,6 +513,11 @@ public class Hero extends Char {
 		
 		evasion *= RingOfEvasion.evasionMultiplier( this );
 
+		if( belongings.armor() != null ){
+		evasion += belongings.armor().ArmorEvasion();}
+		//如果穿了护甲，则增加护甲提供的额外闪避
+
+
 		if (buff(Talent.RestoredAgilityTracker.class) != null){
 			if (pointsInTalent(Talent.RESTORED_AGILITY) == 1){
 				evasion *= 4f;
@@ -524,7 +534,7 @@ public class Hero extends Char {
 			evasion /= 2;
 		}
 
-		if (belongings.armor() != null) {
+		if ( belongings.armor() != null ) {
 			evasion = belongings.armor().evasionFactor(this, evasion);
 		}
 
@@ -682,7 +692,7 @@ public class Hero extends Char {
 			return true;
 		}
 
-		KindOfWeapon wep = Dungeon.hero.belongings.attackingWeapon();
+		KindOfWeapon wep = hero.belongings.attackingWeapon();
 
 		if (wep != null){
 			return wep.canReach(this, enemy.pos);
@@ -1100,7 +1110,7 @@ public class Hero extends Char {
 		int doorCell = action.dst;
 		if (Dungeon.level.adjacent( pos, doorCell )) {
 			
-			boolean hasKey = false;
+			boolean hasKey = false ,hasCrowBar = false;
 			int door = Dungeon.level.map[doorCell];
 			
 			if (door == Terrain.LOCKED_DOOR
@@ -1129,6 +1139,14 @@ public class Hero extends Char {
 			} else {
 				GLog.w( Messages.get(this, "locked_door") );
 				ready();
+			}
+
+			if (hasCrowBar && door == Terrain.CRYSTAL_DOOR){
+
+				sprite.operate( doorCell );
+
+				Sample.INSTANCE.play( Assets.Sounds.UNLOCK );
+
 			}
 
 			return false;
@@ -1910,9 +1928,9 @@ public class Hero extends Char {
 		Dungeon.observe();
 		GameScene.updateFog();
 				
-		Dungeon.hero.belongings.identify();
+		hero.belongings.identify();
 
-		int pos = Dungeon.hero.pos;
+		int pos = hero.pos;
 
 		ArrayList<Integer> passable = new ArrayList<>();
 		for (Integer ofs : PathFinder.NEIGHBOURS8) {
@@ -1923,7 +1941,7 @@ public class Hero extends Char {
 		}
 		Collections.shuffle( passable );
 
-		ArrayList<Item> items = new ArrayList<>(Dungeon.hero.belongings.backpack.items);
+		ArrayList<Item> items = new ArrayList<>(hero.belongings.backpack.items);
 		for (Integer cell : passable) {
 			if (items.isEmpty()) {
 				break;
@@ -2075,6 +2093,21 @@ public class Hero extends Char {
 					GameScene.updateMap(doorCell);
 					spend(Key.TIME_TO_UNLOCK);
 				}
+
+				boolean hasCrowBar = true;
+				if (door == Terrain.CRYSTAL_DOOR) {
+					if (hasCrowBar) {
+						Level.set(doorCell, Terrain.EMPTY);
+						Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+						CellEmitter.get( doorCell ).start( Speck.factory( Speck.DISCOVER ), 0.025f, 20 );
+					}
+				}
+				if (hasKey) {
+					GameScene.updateKeyDisplay();
+					GameScene.updateMap(doorCell);
+					spend(CrowBar.TIME_TO_PICKLOCK);
+				}
+
 			}
 			
 		} else if (curAction instanceof HeroAction.OpenChest) {
@@ -2096,6 +2129,13 @@ public class Hero extends Char {
 					heap.open(this);
 					spend(Key.TIME_TO_UNLOCK);
 				}
+
+				/*boolean hasCrowBar = true;
+				if (hasCrowBar) {
+						GameScene.updateKeyDisplay();
+						heap.open(this);
+						spend(CrowBar.TIME_TO_PICKLOCK);
+				}*/
 			}
 			
 		}

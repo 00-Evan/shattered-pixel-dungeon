@@ -191,7 +191,6 @@ public abstract class Scroll extends Item {
 			Buff.affect(curUser, ScrollEmpower.class).reset();
 			updateQuickslot();
 		}
-
 	}
 	
 	public boolean isKnown() {

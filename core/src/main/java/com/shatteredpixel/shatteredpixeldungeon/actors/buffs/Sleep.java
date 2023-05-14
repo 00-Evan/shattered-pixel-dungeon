@@ -29,5 +29,5 @@ public class Sleep extends FlavourBuff {
 	}
 
 	public static final float SWS	= 1.5f;
-	
+
 }

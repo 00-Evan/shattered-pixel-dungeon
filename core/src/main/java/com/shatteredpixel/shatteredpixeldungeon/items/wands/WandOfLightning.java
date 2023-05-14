@@ -48,6 +48,7 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 
 public class WandOfLightning extends DamageWand {
+//雷霆
 
 	{
 		image = ItemSpriteSheet.WAND_LIGHTNING;

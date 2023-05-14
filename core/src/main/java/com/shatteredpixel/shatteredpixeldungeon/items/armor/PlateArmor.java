@@ -27,6 +27,8 @@ public class PlateArmor extends Armor {
 
 	{
 		image = ItemSpriteSheet.ARMOR_PLATE;
+
+		armorType = ArmorType.metaled;
 	}
 	
 	public PlateArmor() {
@@ -34,3 +36,4 @@ public class PlateArmor extends Armor {
 	}
 
 }
+/* 板甲 */

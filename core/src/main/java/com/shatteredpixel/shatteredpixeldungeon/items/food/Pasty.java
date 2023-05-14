@@ -40,7 +40,8 @@ public class Pasty extends Food {
 		NONE,
 		EASTER, //TBD
 		HWEEN,//2nd week of october though first day of november
-		XMAS //3rd week of december through first week of january
+		XMAS, //3rd week of december through first week of january
+		PHYSICIST,
 	}
 
 	private static Holiday holiday;
@@ -50,6 +51,7 @@ public class Pasty extends Food {
 		holiday = Holiday.NONE;
 
 		final Calendar calendar = Calendar.getInstance();
+		//if 英雄职业=PHYSICIST,holiday = PHYSICIST,然后将Pasty替换为黄油面包片
 		switch(calendar.get(Calendar.MONTH)){
 			case Calendar.JANUARY:
 				if (calendar.get(Calendar.WEEK_OF_MONTH) == 1)
@@ -91,6 +93,9 @@ public class Pasty extends Food {
 			case XMAS:
 				image = ItemSpriteSheet.CANDY_CANE;
 				break;
+			case PHYSICIST:
+				image = ItemSpriteSheet.BUTTERBREAD;
+				break;
 		}
 	}
 	
@@ -122,6 +127,8 @@ public class Pasty extends Food {
 				return Messages.get(this, "pie");
 			case XMAS:
 				return Messages.get(this, "cane");
+			case PHYSICIST:
+				return Messages.get(this, "butterbread");
 		}
 	}
 
@@ -134,6 +141,8 @@ public class Pasty extends Food {
 				return Messages.get(this, "pie_desc");
 			case XMAS:
 				return Messages.get(this, "cane_desc");
+			case PHYSICIST:
+				return Messages.get(this, "butterbread_desc");
 		}
 	}
 	

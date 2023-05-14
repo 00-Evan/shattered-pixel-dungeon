@@ -118,7 +118,8 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 		
 		return procced;
 	}
-	
+
+
 	@Override
 	public int value() {
 		return isKnown() ? 30 * quantity : super.value();

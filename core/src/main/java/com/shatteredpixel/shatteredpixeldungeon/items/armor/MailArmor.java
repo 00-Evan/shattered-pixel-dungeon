@@ -27,6 +27,8 @@ public class MailArmor extends Armor {
 
 	{
 		image = ItemSpriteSheet.ARMOR_MAIL;
+
+		armorType = ArmorType.metaled;
 	}
 	
 	public MailArmor() {
@@ -34,3 +36,4 @@ public class MailArmor extends Armor {
 	}
 
 }
+/* 链甲 */

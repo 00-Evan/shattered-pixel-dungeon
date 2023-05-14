@@ -49,6 +49,7 @@ import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 public class WandOfPrismaticLight extends DamageWand {
+//棱光
 
 	{
 		image = ItemSpriteSheet.WAND_PRISMATIC_LIGHT;
@@ -97,6 +98,7 @@ public class WandOfPrismaticLight extends DamageWand {
 			Sample.INSTANCE.play(Assets.Sounds.BURNING);
 
 			ch.damage(Math.round(dmg*1.333f), this);
+
 		} else {
 			ch.sprite.centerEmitter().burst( RainbowParticle.BURST, 10+buffedLvl() );
 

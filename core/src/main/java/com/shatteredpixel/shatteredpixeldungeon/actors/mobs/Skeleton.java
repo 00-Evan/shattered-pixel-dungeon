@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.BoneSpike;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SkeletonSprite;
@@ -46,8 +47,11 @@ public class Skeleton extends Mob {
 		EXP = 5;
 		maxLvl = 10;
 
-		loot = Generator.Category.WEAPON;
-		lootChance = 0.1667f; //by default, see lootChance()
+		//loot = Generator.Category.WEAPON;lootChance = 0.1667f; //by default, see lootChance()
+		//loot = new BoneSpike(  );/*掉落物 BoneSpike */lootChance = 0.2f;/*掉落概率 */
+
+		loot = new BoneSpike();
+		lootChance = 1f;
 
 		properties.add(Property.UNDEAD);
 		properties.add(Property.INORGANIC);
@@ -96,10 +100,31 @@ public class Skeleton extends Mob {
 		return super.lootChance() * (float)Math.pow(1/2f, Dungeon.LimitedDrops.SKELE_WEP.count);
 	}
 
+	/*
 	@Override
 	public Item createLoot() {
 		Dungeon.LimitedDrops.SKELE_WEP.count++;
 		return super.createLoot();
+	}
+	*/
+
+	//战利品掉落
+	@Override
+	public Item createLoot() {
+		Item loot;
+		switch(Random.Int(5)){
+			case 0: default:
+				loot = new BoneSpike();
+				return super.createLoot();
+			case 1:
+				loot = Generator.randomUsingDefaults(Generator.Category.WEAPON);
+				Dungeon.LimitedDrops.SKELE_WEP.count++;
+				break;
+			case 2:case 3:case 4:case 5:
+				loot = null;
+				break;
+		}
+		return loot;
 	}
 
 	@Override

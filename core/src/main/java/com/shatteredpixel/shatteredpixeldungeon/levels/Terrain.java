@@ -62,6 +62,7 @@ public class Terrain {
 	public static final int PASSABLE		= 0x01;
 	public static final int LOS_BLOCKING	= 0x02;
 	public static final int FLAMABLE		= 0x04;
+	public static final int HOLYFLAMABLE		= 0x04;
 	public static final int SECRET			= 0x08;
 	public static final int SOLID			= 0x10;
 	public static final int AVOID			= 0x20;

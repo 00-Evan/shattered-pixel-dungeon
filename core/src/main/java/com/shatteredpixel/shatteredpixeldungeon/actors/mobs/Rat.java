@@ -33,10 +33,10 @@ public class Rat extends Mob {
 	{
 		spriteClass = RatSprite.class;
 		
-		HP = HT = 8;
-		defenseSkill = 2;
+		HP = HT = 8;/*生命值8 */
+		defenseSkill = 2;/*闪避2 */
 		
-		maxLvl = 5;
+		maxLvl = 5;/*最大等级5 */
 	}
 
 	@Override
@@ -51,24 +51,24 @@ public class Rat extends Mob {
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 1, 4 );
-	}
+	}/*攻击力1-4 */
 	
 	@Override
 	public int attackSkill( Char target ) {
 		return 8;
-	}
+	}/*命中8 */
 	
 	@Override
 	public int drRoll() {
 		return super.drRoll() + Random.NormalIntRange(0, 1);
-	}
+	}/*生成随机数0-1 */
 
-	private static final String RAT_ALLY = "rat_ally";
+	private static final String RAT_ALLY = "rat_ally";/*根据随机数生成rat同伴（0-1个） */
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
-		if (alignment == Alignment.ALLY) bundle.put(RAT_ALLY, true);
+		if (alignment == Alignment.ALLY) bundle.put(RAT_ALLY, true);/*生成rat同伴 */
 	}
 
 	@Override

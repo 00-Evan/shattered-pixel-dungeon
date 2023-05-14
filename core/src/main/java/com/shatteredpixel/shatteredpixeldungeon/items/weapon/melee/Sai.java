@@ -38,7 +38,7 @@ import com.watabou.utils.Callback;
 
 import java.util.HashSet;
 
-public class Sai extends MeleeWeapon {
+public class Sai extends MeleeWeapon {	//双钗
 
 	{
 		image = ItemSpriteSheet.SAI;

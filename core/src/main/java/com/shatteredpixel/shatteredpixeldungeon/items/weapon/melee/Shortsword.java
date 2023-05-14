@@ -30,11 +30,11 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class Shortsword extends MeleeWeapon {
 
 	{
-		image = ItemSpriteSheet.SHORTSWORD;
-		hitSound = Assets.Sounds.HIT_SLASH;
-		hitSoundPitch = 1.1f;
+		image = ItemSpriteSheet.SHORTSWORD;//图片ItemSpriteSheet.SHORTSWORD
+		hitSound = Assets.Sounds.HIT_SLASH;//攻击音效Assets.Sounds.HIT_SLASH
+		hitSoundPitch = 1.1f;//音效为1.1倍
 
-		tier = 2;
+		tier = 2;//二阶
 	}
 
 	@Override

@@ -36,27 +36,27 @@ public class Snake extends Mob {
 	{
 		spriteClass = SnakeSprite.class;
 		
-		HP = HT = 4;
-		defenseSkill = 25;
+		HP = HT = 4;/*生命值4 */
+		defenseSkill = 25;/*闪避25 */
 		
-		EXP = 2;
-		maxLvl = 7;
+		EXP = 2;/*经验2 */
+		maxLvl = 7;/*最大等级7 */
 		
-		loot = Generator.Category.SEED;
-		lootChance = 0.25f;
+		loot = Generator.Category.SEED;/*掉落物种子 */
+		lootChance = 0.25f;/*概率25% */
 	}
 	
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 1, 4 );
-	}
+	}/*随机数1-4 */
 	
 	@Override
 	public int attackSkill( Char target ) {
 		return 10;
 	}
 
-	private static int dodges = 0;
+	private static int dodges = 0;/*如果攻击未命中，dodges加一 */
 
 	@Override
 	public String defenseVerb() {
@@ -64,7 +64,7 @@ public class Snake extends Mob {
 		if (dodges >= 2 && !Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_SURPRISE_ATKS)){
 			GLog.p(Messages.get(Guidebook.class, "hint"));
 			GameScene.flashForDocument(Document.ADVENTURERS_GUIDE, Document.GUIDE_SURPRISE_ATKS);
-			dodges = 0;
+			dodges = 0;/*触发教程 */
 		}
 		return super.defenseVerb();
 	}

@@ -51,13 +51,13 @@ public class GnollTrickster extends Gnoll {
 		state = WANDERING;
 
 		//at half quantity, see createLoot()
-		loot = Generator.Category.MISSILE;
+		loot = Generator.Category.MISSILE;//产生.类别.投掷物（掉落投掷物）
 		lootChance = 1f;
 
 		properties.add(Property.MINIBOSS);
 	}
 
-	private int combo = 0;
+	private int combo = 0;/* */
 
 	@Override
 	public int attackSkill( Char target ) {

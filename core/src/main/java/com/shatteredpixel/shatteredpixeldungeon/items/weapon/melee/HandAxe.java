@@ -42,13 +42,13 @@ public class HandAxe extends MeleeWeapon {
 		hitSoundPitch = 1f;
 
 		tier = 2;
-		ACC = 1.32f; //32% boost to accuracy
+		ACC = 1.32f; //32% boost to accuracy 额外精准
 	}
 
 	@Override
 	public int max(int lvl) {
-		return  4*(tier+1) +    //12 base, down from 15
-				lvl*(tier+1);   //scaling unchanged
+		return  4*(tier+1) +    //12 base, down from 15	最大伤害从15降低到12
+				lvl*(tier+1);   //scaling unchanged	升级增益不变
 	}
 
 	@Override

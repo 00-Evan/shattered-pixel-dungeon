@@ -30,7 +30,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
 public class Kunai extends MissileWeapon {
-	
+
+	//苦无
 	{
 		image = ItemSpriteSheet.KUNAI;
 		hitSound = Assets.Sounds.HIT_STAB;

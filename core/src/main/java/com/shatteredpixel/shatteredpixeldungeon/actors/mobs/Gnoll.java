@@ -31,28 +31,28 @@ public class Gnoll extends Mob {
 	{
 		spriteClass = GnollSprite.class;
 		
-		HP = HT = 12;
-		defenseSkill = 4;
+		HP = HT = 12;/*生命值12 */
+		defenseSkill = 4;/*闪避4 */
 		
-		EXP = 2;
-		maxLvl = 8;
+		EXP = 2;/*经验2 */
+		maxLvl = 8;/*最大等级8 */
 		
-		loot = Gold.class;
-		lootChance = 0.5f;
+		loot = Gold.class;/*掉落物金币 */
+		lootChance = 0.5f;/*掉落概率50% */
 	}
 	
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 1, 6 );
-	}
+	}/*攻击力1-6 */
 	
 	@Override
 	public int attackSkill( Char target ) {
 		return 10;
-	}
+	}/*命中10 */
 	
 	@Override
 	public int drRoll() {
 		return super.drRoll() + Random.NormalIntRange(0, 2);
-	}
+	}/*随机数0-2 */
 }

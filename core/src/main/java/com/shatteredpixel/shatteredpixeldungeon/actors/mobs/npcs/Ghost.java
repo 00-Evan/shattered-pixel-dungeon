@@ -35,10 +35,15 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.HighOrderKnightArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.NinjaClothe;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.PapalKnightArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.PastorClothe;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.VineArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
@@ -308,10 +313,23 @@ public class Ghost extends NPC {
 				//50%:tier2, 30%:tier3, 15%:tier4, 5%:tier5
 				switch (Random.chances(new float[]{0, 0, 10, 6, 3, 1})){
 					default:
-					case 2: armor = new LeatherArmor(); break;
-					case 3: armor = new MailArmor();    break;
-					case 4: armor = new ScaleArmor();   break;
-					case 5: armor = new PlateArmor();   break;
+					case 2: float a = Random.Float(0,1);
+						if (a<=0.33f) {armor = new LeatherArmor(); 			break;}
+						else if (a<=0.66f) {armor = new NinjaClothe(); 		break;}
+						else if (a<=1f) {armor = new PastorClothe(); 		break;}
+
+					case 3:	float b = Random.Float(0,1);
+						if(b<=0.33f) {armor = new MailArmor(); 				break;}
+						else if (b<=0.66f) {armor = new VineArmor(); 		break;}
+						else if (b<=0.1f) {armor = new PapalKnightArmor(); 	break;}
+
+					case 4: float c = Random.Float(0,1);
+						armor = new ScaleArmor();   						break;
+
+					case 5:	float d = Random.Float(0,1);
+						if(d<=0.5f) {armor = new PlateArmor();				break;}
+						else if (d<=1f){armor = new HighOrderKnightArmor(); break;}
+
 				}
 				//50%:tier2, 30%:tier3, 15%:tier4, 5%:tier5
 				int wepTier = Random.chances(new float[]{0, 0, 10, 6, 3, 1});
