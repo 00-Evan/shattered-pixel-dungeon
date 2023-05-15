@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -46,13 +47,13 @@ public class Scimitar extends MeleeWeapon {
 	}
 
 	@Override
-	public float abilityChargeUse(Hero hero) {
-		return 2*super.abilityChargeUse(hero);
+	public float abilityChargeUse(Hero hero, Char target) {
+		return 2*super.abilityChargeUse(hero, target);
 	}
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		beforeAbilityUsed(hero);
+		beforeAbilityUsed(hero, null);
 		Buff.prolong(hero, SwordDance.class, 4f); //4 turns as using the ability is instant
 		hero.sprite.operate(hero.pos);
 		hero.next();

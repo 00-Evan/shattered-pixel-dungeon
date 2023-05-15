@@ -89,11 +89,11 @@ public class Flail extends MeleeWeapon {
 		}
 	}
 
-	public float abilityChargeUse( Hero hero ) {
+	public float abilityChargeUse(Hero hero, Char target) {
 		if (Dungeon.hero.buff(SpinAbilityTracker.class) != null){
 			return 0;
 		} else {
-			return 2*super.abilityChargeUse(hero);
+			return 2*super.abilityChargeUse(hero, target);
 		}
 	}
 
@@ -106,7 +106,7 @@ public class Flail extends MeleeWeapon {
 			return;
 		}
 
-		beforeAbilityUsed(hero);
+		beforeAbilityUsed(hero, null);
 		if (spin == null){
 			spin = Buff.affect(hero, SpinAbilityTracker.class, 3f);
 		}

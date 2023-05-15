@@ -125,7 +125,7 @@ public class Rapier extends MeleeWeapon {
 						@Override
 						public void call() {
 
-							wep.beforeAbilityUsed(hero);
+							wep.beforeAbilityUsed(hero, enemy);
 							AttackIndicator.target(enemy);
 							if (hero.attack(enemy, dmgMulti, dmgBoost, Char.INFINITE_ACCURACY)) {
 								Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
@@ -139,7 +139,7 @@ public class Rapier extends MeleeWeapon {
 						}
 					});
 				} else {
-					wep.beforeAbilityUsed(hero);
+					wep.beforeAbilityUsed(hero, null);
 					GLog.w(Messages.get(Rapier.class, "ability_no_target"));
 					hero.spendAndNext(hero.speed());
 					wep.afterAbilityUsed(hero);

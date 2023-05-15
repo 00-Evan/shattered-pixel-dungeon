@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Callback;
 
@@ -82,7 +81,7 @@ public class Whip extends MeleeWeapon {
 		hero.sprite.attack(hero.pos, new Callback() {
 			@Override
 			public void call() {
-				beforeAbilityUsed(hero);
+				beforeAbilityUsed(hero, finalClosest);
 				for (Char ch : targets) {
 					hero.attack(ch, 0, 1, ch == finalClosest ? Char.INFINITE_ACCURACY : 1);
 					if (!ch.isAlive()){

@@ -86,7 +86,7 @@ public class Spear extends MeleeWeapon {
 		hero.sprite.attack(enemy.pos, new Callback() {
 			@Override
 			public void call() {
-				wep.beforeAbilityUsed(hero);
+				wep.beforeAbilityUsed(hero, enemy);
 				AttackIndicator.target(enemy);
 				if (hero.attack(enemy, dmgMulti, 0, Char.INFINITE_ACCURACY)) {
 					if (enemy.isAlive()){

@@ -86,7 +86,7 @@ public class Sickle extends MeleeWeapon {
 		hero.sprite.attack(enemy.pos, new Callback() {
 			@Override
 			public void call() {
-				wep.beforeAbilityUsed(hero);
+				wep.beforeAbilityUsed(hero, enemy);
 				AttackIndicator.target(enemy);
 
 				Buff.affect(enemy, HarvestBleedTracker.class, 0).bleedFactor = bleedFactor;

@@ -48,11 +48,11 @@ public class Sword extends MeleeWeapon {
 	}
 
 	@Override
-	public float abilityChargeUse( Hero hero ) {
+	public float abilityChargeUse(Hero hero, Char target) {
 		if (hero.buff(Sword.CleaveTracker.class) != null){
 			return 0;
 		} else {
-			return super.abilityChargeUse( hero );
+			return super.abilityChargeUse( hero, target);
 		}
 	}
 
@@ -88,7 +88,7 @@ public class Sword extends MeleeWeapon {
 		hero.sprite.attack(enemy.pos, new Callback() {
 			@Override
 			public void call() {
-				wep.beforeAbilityUsed(hero);
+				wep.beforeAbilityUsed(hero, enemy);
 				AttackIndicator.target(enemy);
 				if (hero.attack(enemy, dmgMulti, 0, Char.INFINITE_ACCURACY)){
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
