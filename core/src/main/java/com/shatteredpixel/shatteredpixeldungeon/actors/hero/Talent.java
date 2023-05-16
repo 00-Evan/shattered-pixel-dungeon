@@ -373,6 +373,10 @@ public enum Talent {
 			if (hero.belongings.weapon() != null) hero.belongings.weapon().identify();
 		}
 
+		if (talent == PROTECTIVE_SHADOWS && hero.invisible > 0){
+			Buff.affect(hero, Talent.ProtectiveShadowsTracker.class);
+		}
+
 		if (talent == LIGHT_CLOAK && hero.heroClass == HeroClass.ROGUE){
 			for (Item item : Dungeon.hero.belongings.backpack){
 				if (item instanceof CloakOfShadows){
