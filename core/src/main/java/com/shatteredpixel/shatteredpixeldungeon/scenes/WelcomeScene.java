@@ -259,7 +259,7 @@ public class WelcomeScene extends PixelScene {
 					} catch (Exception e) {
 						//if we encounter a fatal per-record error, then clear that record's data
 						rec.gameData = null;
-						ShatteredPixelDungeon.reportException(e);
+						Game.reportException( new RuntimeException("Rankings Updating Failed!",e));
 					}
 				}
 				if (Rankings.INSTANCE.latestDaily != null){
@@ -269,7 +269,7 @@ public class WelcomeScene extends PixelScene {
 					} catch (Exception e) {
 						//if we encounter a fatal per-record error, then clear that record's data
 						Rankings.INSTANCE.latestDaily.gameData = null;
-						ShatteredPixelDungeon.reportException(e);
+						Game.reportException( new RuntimeException("Rankings Updating Failed!",e));
 					}
 				}
 				Collections.sort(Rankings.INSTANCE.records, Rankings.scoreComparator);
@@ -277,7 +277,7 @@ public class WelcomeScene extends PixelScene {
 			} catch (Exception e) {
 				//if we encounter a fatal error, then just clear the rankings
 				FileUtils.deleteFile( Rankings.RANKINGS_FILE );
-				ShatteredPixelDungeon.reportException(e);
+				Game.reportException( new RuntimeException("Rankings Updating Failed!",e));
 			}
 			Dungeon.daily = Dungeon.dailyReplay = false;
 
