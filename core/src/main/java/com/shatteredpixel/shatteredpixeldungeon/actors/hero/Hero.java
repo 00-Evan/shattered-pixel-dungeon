@@ -1257,7 +1257,7 @@ public class Hero extends Char {
 			Buff.affect(this, HoldFast.class).pos = pos;
 		}
 		if (hasTalent(Talent.PATIENT_STRIKE)){
-			Buff.prolong(this, Talent.PatientStrikeTracker.class, cooldown());
+			Buff.affect(Dungeon.hero, Talent.PatientStrikeTracker.class).pos = Dungeon.hero.pos;
 		}
 		if (!fullRest) {
 			if (sprite != null) {

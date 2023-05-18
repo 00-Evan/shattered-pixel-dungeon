@@ -231,12 +231,31 @@ public enum Talent {
 		public float iconFadePercent() { return Math.max(0, visualcooldown() / 20); }
 	};
 	public static class SpiritBladesTracker extends FlavourBuff{};
-	public static class PatientStrikeTracker extends FlavourBuff {
+	public static class PatientStrikeTracker extends Buff {
+		public int pos;
 		{ type = Buff.buffType.POSITIVE; }
 		public int icon() { return BuffIndicator.TIME; }
 		public void tintIcon(Image icon) { icon.hardlight(0.5f, 0f, 1f); }
-		public String iconTextDisplay() { return ""; }
-		public float iconFadePercent() { return 0; }
+		@Override
+		public boolean act() {
+			if (pos != target.pos) {
+				detach();
+			} else {
+				spend(TICK);
+			}
+			return true;
+		}
+		private static final String POS = "pos";
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(POS, pos);
+		}
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			pos = bundle.getInt(POS);
+		}
 	};
 	public static class AggressiveBarrierCooldown extends FlavourBuff{
 		public int icon() { return BuffIndicator.TIME; }
