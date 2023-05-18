@@ -104,7 +104,7 @@ public class Wraith extends Mob {
 		if ((!Dungeon.level.solid[pos] || Dungeon.level.passable[pos]) && Actor.findChar( pos ) == null) {
 
 			Wraith w;
-			if (allowExotic && Random.Int(1) == 0){
+			if (allowExotic && Random.Int(100) == 0){
 				w = new TormentedSpirit();
 			} else {
 				w = new Wraith();
