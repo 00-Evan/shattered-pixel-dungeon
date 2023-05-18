@@ -269,7 +269,11 @@ public enum Talent {
 		}
 	};
 	public static class DeadlyFollowupTracker extends FlavourBuff{};
-	public static class PreciseAssaultTracker extends FlavourBuff{};
+	public static class PreciseAssaultTracker extends FlavourBuff{
+		{ type = buffType.POSITIVE; }
+		public int icon() { return BuffIndicator.INVERT_MARK; }
+		public void tintIcon(Image icon) { icon.hardlight(1f, 1f, 0.0f); }
+	};
 	public static class CombinedLethalityAbilityTracker extends FlavourBuff{
 		public MeleeWeapon weapon;
 	};
