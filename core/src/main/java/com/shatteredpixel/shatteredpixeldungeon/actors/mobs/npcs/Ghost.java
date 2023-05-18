@@ -317,6 +317,11 @@ public class Ghost extends NPC {
 				int wepTier = Random.chances(new float[]{0, 0, 10, 6, 3, 1});
 				weapon = (Weapon) Generator.randomUsingDefaults(Generator.wepTiers[wepTier - 1]);
 
+				//clear weapon's starting properties
+				weapon.level(0);
+				weapon.enchant(null);
+				weapon.cursed = false;
+
 				//50%:+0, 30%:+1, 15%:+2, 5%:+3
 				float itemLevelRoll = Random.Float();
 				int itemLevel;
