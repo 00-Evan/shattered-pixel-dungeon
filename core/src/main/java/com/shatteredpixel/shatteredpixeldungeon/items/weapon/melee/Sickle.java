@@ -53,6 +53,10 @@ public class Sickle extends MeleeWeapon {
 				lvl*(tier+1);                   //scaling unchanged
 	}
 
+	public float abilityChargeUse(Hero hero, Char target) {
+		return 2*super.abilityChargeUse(hero, target);
+	}
+
 	@Override
 	public String targetingPrompt() {
 		return Messages.get(this, "prompt");
