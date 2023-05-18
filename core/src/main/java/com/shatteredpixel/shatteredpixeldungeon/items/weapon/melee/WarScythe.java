@@ -34,7 +34,7 @@ public class WarScythe extends MeleeWeapon {
 		hitSoundPitch = 0.9f;
 
 		tier = 5;
-		ACC = 0.8f; //20% penalty to accuracy
+		ACC = 0.85f; //15% penalty to accuracy
 	}
 
 	@Override
