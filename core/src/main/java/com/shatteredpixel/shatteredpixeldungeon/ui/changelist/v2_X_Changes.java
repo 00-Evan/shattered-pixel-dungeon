@@ -24,16 +24,21 @@ package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.ElementalStrike;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Feint;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Whip;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ShopkeeperSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.TormentedSpiritSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.ui.TalentIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Image;
 
@@ -42,7 +47,8 @@ import java.util.ArrayList;
 public class v2_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
-		add_Coming_Soon(changeInfos);
+		//add_Coming_Soon(changeInfos);
+		add_v2_1_Changes(changeInfos);
 		add_v2_0_Changes(changeInfos);
 	}
 
@@ -67,6 +73,178 @@ public class v2_X_Changes {
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.PICKAXE), "Blacksmith Quest?",
 				"And no I haven't forgotten about the blacksmith's quest! I will likely do some concepting or internal technical work for it during v2.1.0's development, but the quest rework itself is more likely to be part of v2.2.0."));
+
+	}
+
+	public static void add_v2_1_Changes( ArrayList<ChangeInfo> changeInfos ) {
+
+		ChangeInfo changes = new ChangeInfo("v2.1-ALPHA", true, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"..TODO"));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAR_SCYTHE), "New Weapons!",
+				"Three new weapons have been added to the game!\n" +
+				"\n" +
+				"_The Katana_ a tier-4 defensive weapon that was designed to respond to the common feedback point of players wanting a higher tier weapon with the rapier's ability. Just like with her rapier, the Duelist can _lunge_ at enemies with a katana, dealing +50% damage.\n" +
+				"\n" +
+				"_The Sickle and War Scythe_ are T2 and T5 weapons that trade in some accuracy for increased base damage. The Duelist can use the _harvest_ ability with these weapons, which deals a large amount of bleeding instead of direct damage, but costs 2 charges."));
+
+		changes.addButton( new ChangeButton(new Image(new TormentedSpiritSprite()), "New Exotic Enemies",
+				"An exotic variant has been added for wraiths and piranhas!\n" +
+				"\n" +
+				"_Tormented Spirits_ replace 1 in every 100 wraiths, and have higher stats along with a unique interaction. Using a scroll of remove curse on these spirits will save them from their curse, peacefully defeating them and giving you an uncursed equipment reward!\n" +
+				"\n" +
+				"_Phantom Piranhas_ replace 1 in every 50 piranhas, and can teleport either to attack or retreat whenever they take damage. They're harder to kill, but give valuable phantom meat as a drop, instead of regular mystery meat. They're also a reference to the phantom fish quest from the original Pixel Dungeon!"));
+
+		changes.addButton( new ChangeButton(new Image(new ShopkeeperSprite()), "Shop Interface Improvements",
+				"_A new UI has been added when interacting with shopkeepers._ This UI lets you talk with then, and buyback the 3 most recently sold items!\n" +
+				"\n" +
+				"I plan to add more dialogue and region-specific shopkeepers in the future, but for now there is a bit of dialogue that varies based on the region and the hero you're playing as."));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
+		changes.hardlight(CharSprite.WARNING);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.STAIRS.get(), "Ascension Changes",
+				"I've made several changes to the Ascension challenge to make it more fun, mesh better with some items/effects, and to smooth out its difficulty:\n\n" +
+				"_-_ Enemies now gain increased max HP during ascent, instead of damage resistance\n\n" +
+				"_-_ Enemies now grant exp to the hero up to level 30 while ascending\n" +
+				"_-_ Even at level 30, on-exp-gain effects will now still trigger as long as the amulet's curse is being weakened\n\n" +
+				"_-_ Increased enemy stat scaling in the earlier floors of the caves and prison"));
+
+		changes.addButton( new ChangeButton(new TalentIcon(Talent.PRECISE_ASSAULT), "Precise Assault",
+				"The _Lightweight Charge_ talent has been completely replaced with a new talent: _Precise Assault_. This new talent grants a big accuracy boost for 1 attack after using a weapon ability, encouraging interweaving special and regular attacks.\n\n" +
+				"Lightweight Charge was removed as it was originally designed much earlier in the Duelist's dev cycle. This was before mechanics like Swift Equip, the Champion's Dual wielding, or Monastic Vigor existed. Those mechanics do a much better job of encouraging using abilities on lower tier weapons."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_Highlights:_\n" +
+				"_-_ Enemy misses now interrupt the hero, just like hits\n" +
+				"_-_ Boss regen limits are now less permissive, especially with badder bosses enabled\n" +
+				"_-_ Certain Weapons and Wands are no longer slightly more likely to spawn than others\n" +
+				"_-_ Players are now less likely to encounter multiple of the same weapon/wand/ring in a run.\n" +
+				"_-_ Slightly improved the final loot from crystal path rooms\n" +
+				"_-_ The toolbar's dimming behaviour is now less visually disruptive\n" +
+				"_-_ Added visual buffs for some Duelist and Huntress talents\n" +
+				"\n" +
+				"_Other:_\n" +
+				"_-_ Water effects now damage fiery enemies\n" +
+				"_-_ Enemies no longer randomly spawn on plants or traps\n" +
+				"_-_ Adjusted UI of Gladiator's combo window to be consistent with Monk's ability window\n" +
+				"_-_ Adjusted tutorialization relating to surprise attacks\n" +
+				"_-_ Improved the icon for the locked floor status\n" +
+				"_-_ Magical fire can now burn items placed next to it by the player."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Highlights:_\n" +
+				"_-_ Various rare crash errors\n" +
+				"_-_ Scrolls of Transmutation triggering the swift equip talent\n" +
+				"_-_ Evil Eyes meleeing at a distance in rare cases\n" +
+				"\n" +
+				"_Items:_\n" +
+				"_-_ Rare rounding errors when determining speed of augmented weapons\n" +
+				"_-_ Ethereal chains clearing invisibility before they activate instead of after\n" +
+				"_-_ Some spells not clearing invisibility\n" +
+				"_-_ Grim enchantment interacting incorrectly with some damage resistance effects\n" +
+				"_-_ Kinetic enchantment building damage from ally kills\n" +
+				"_-_ Artifact -> Ring transmutation generating a purely random ring\n" +
+				"_-_ Wand of Lightning not spreading correctly to flying enemies over water",
+
+				"_Effects:_\n" +
+				"_-_ Some Duelist abilities not clearing invisibility\n" +
+				"_-_ Cases where the player could input actions during the Sniper's flurry ability\n" +
+				"_-_ Speedy Stealth talent requiring existing momentum to work\n" +
+				"_-_ Rare errors caused by triggering many pitfall traps at once\n" +
+				"_-_ Projectile traps firing at incorrect targets in very specific cases\n" +
+				"_-_ Lethal Haste talent triggering on ally kills\n" +
+				"_-_ Very rare cases where the Duelist could be debuffed by attacking her own afterimage\n" +
+				"_-_ Monk's focus ability rarely triggering on magical attacks\n" +
+				"_-_ Chill and ring of elements interacting incorrectly in some cases\n" +
+				"_-_ Protective Shadows talent not triggering if unlocked while invisible",
+
+				"_Allies & Enemies:_\n" +
+				"_-_ Necromancers not properly tracking their enemy while summoning\n" +
+				"_-_ Giant necromancers teleporting their skeletons into enclosed spaces\n" +
+				"_-_ Ally swapping causing errors in rare cases\n" +
+				"_-_ Transmogrify armor ability incorrectly interacting with the multiplicity glyph\n" +
+				"_-_ Rat King blocking Goo's pump-up attack\n" +
+				"_-_ Enemy item drops being visible out of FOV for one frame\n" +
+				"\n" +
+				"_UI/VFX:_\n" +
+				"_-_ Various minor visual/textual errors\n" +
+				"_-_ Particle FX failing to appear after loading during the 4th boss fight\n" +
+				"_-_ Action indicator not updating properly from Speedy Stealth talent\n" +
+				"_-_ incorrect error messages when the game tries to report crashes on desktop\n"));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
+		changes.hardlight(CharSprite.POSITIVE);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new Whip(),
+				"The whip is getting a quick and simple buff, as it is performing a bit worse than its T3 counterparts:\n\n" +
+				"_- Whip_ base damage increased to 3-15 from 3-12"));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAR_HAMMER), "Weapon Abilities",
+				"Several of the Duelist's weapon abilities have not been performing as well as I'd hoped, even after the buffs in v2.0.1. It seems that I've overestimated how much the drawbacks I added have held back many of these abilities. My hope with these changes is to better balance other abilities versus the simple-yet-effective Cleave.\n" +
+				"\n" +
+				"Firstly, some abilities need relatively little help:\n" +
+				"_- Sneak_ invis duration up to 10/8/6 from 8/6/4\n" +
+				"_- Combo strike_ damage boost up to 45/40/35%, from 40/35/30%\n" +
+				"_- Spike damage_ bonus up to 45/30% from 40/30%\n" +
+				"_- Defensive Stance_ evasion boost up to 3x from 2x, duration down to 5 turns from 6\n" +
+				"_- Lash_ is now guaranteed to hit the closest target\n" +
+				"_- Block_ duration up to 8/6 from 5/4",
+
+				"And some abilities need more substantial buffs:\n" +
+				"_- Sword Dance_ now gives +25% ACC, up from -20%, duration down to 5 turns from 6\n" +
+				"_- Runic Slash_ enchant bonus up to +300% from +250%\n" +
+				"_- Spin_ now guarantees a hit at all levels, instead of just at 3 spins\n" +
+				"_- Retribution_ damage bonus up to +50% from +35%\n" +
+				"\n" +
+				"_Heavy Blow:_\n" +
+				"_-_ Now always hits, but costs 2 charges if it is not surprise attacking\n" +
+				"_-_ Damage boost reduced to 50-30%, from 70-50%\n" +
+				"_-_ Now applies a new 'daze' debuff instead of vulnerable or weakness. Daze halves accuracy and evasion for 5 turns.\n" +
+				"\n" +
+				"_Charged Shot:_\n" +
+				"_-_ Now grants +4 dart tip uses, up from +2\n" +
+				"_-_ Now triggers on-hit effects in a 5x5 AOE\n" +
+				"_-_ Harmful on-hit effects now only apply to enemies in the AOE, and positive effects only apply to allies"));
+
+		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 2), "Duelist Subclasses",
+				"The Duelist's subclasses have not had as many problems as her weapon abilities, so the changes here are more incremental. I've been more generous with the Monk, in anticipation that the weapon ability changes will be more beneficial to the Champion:\n\n" +
+				"_Champion:_\n" +
+				"_- Combined Lethality_ HP threshold up to 13/27/40 from 10/20/30\n\n" +
+				"_Monk:_\n" +
+				"_- Unencumbered Spirit_ energy boost up to 40/80/120% from 33/67/100%. Boost at +3 when unarmed removed\n" +
+				"_- Combined Energy_ now refunds 50% of energy spent, up from 33%\n" +
+				"_- Monastic Vigor:_\n" +
+				"_-_ Flurry enchantment power up to 100% from 75%\n" +
+				"_-_ Dash range boost up to +3 from +2\n" +
+				"_-_ Dragon Kick damage boost up to +50% from +33%"));
+
+		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 6), "Duelist Armor Abilities",
+				"Armor abilties are also getting more minor changes, targeted at specific talents and the elemental strike ability:\n\n" +
+				"_- Elemental Strike_ AOE effect base power increased by 20-33%, varying by enchantment.\n\n" +
+				"_- Expose Weakness_ turns of vulnerable increased to 2/4/6/8 from 1/2/3/4\n\n" +
+				"_- Invigorating Victory_ base heal increased to 5/10/15/20 from 3/6/9/12"));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
+		changes.hardlight(CharSprite.NEGATIVE);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 4), "Duelist Nerfs",
+				"The Duelist is also receiving a few very specific nerfs in v2.1.0:\n\n" +
+				"_- Meditate_ now grants the monk 8 turns of recharging, down from 10.\n" +
+				"_- Mediate_ recharging now begins after meditation ends, instead of when it starts.\n\n" +
+				"_- Elimination Match_ charge cost reduction down to 16/30/40/50% from 20/36/50/60%"));
 
 	}
 
