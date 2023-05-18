@@ -800,6 +800,14 @@ public abstract class Char extends Actor {
 			if (ch.buff(SnipersMark.class) != null && ch.buff(SnipersMark.class).object == id()){
 				ch.buff(SnipersMark.class).detach();
 			}
+			if (ch.buff(Talent.FollowupStrikeTracker.class) != null
+					&& ch.buff(Talent.FollowupStrikeTracker.class).object == id()){
+				ch.buff(Talent.FollowupStrikeTracker.class).detach();
+			}
+			if (ch.buff(Talent.DeadlyFollowupTracker.class) != null
+					&& ch.buff(Talent.DeadlyFollowupTracker.class).object == id()){
+				ch.buff(Talent.DeadlyFollowupTracker.class).detach();
+			}
 		}
 	}
 	
