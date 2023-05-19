@@ -82,6 +82,24 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("ALPHA-2", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Shattered Supporters on Google Play now have access to 10 Hall of Heroes pages, up from 4."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following (Caused by ALPHA):\n" +
+				"_-_ Tormented Spirits spawning much more frequently than intended\n" +
+				"_-_ Ghost quest sometimes giving cursed weapons, or weapons that were much stronger than intended\n" +
+				"_-_ Harvest ability costing 1 weapon charge instead of 2\n" +
+				"_-_ Magical fire failing to appear in many cases"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
@@ -104,7 +122,7 @@ public class v2_X_Changes {
 				"_Phantom Piranhas_ replace 1 in every 50 piranhas, and can teleport either to attack or retreat whenever they take damage. They're harder to kill, but give valuable phantom meat as a drop, instead of regular mystery meat. They're also a reference to the phantom fish quest from the original Pixel Dungeon!"));
 
 		changes.addButton( new ChangeButton(new Image(new ShopkeeperSprite()), "Shop Interface Improvements",
-				"_A new UI has been added when interacting with shopkeepers._ This UI lets you talk with then, and buyback the 3 most recently sold items!\n" +
+				"_A new UI has been added when interacting with shopkeepers._ This UI lets you talk with them and buyback the 3 most recently sold items!\n" +
 				"\n" +
 				"I plan to add more dialogue and region-specific shopkeepers in the future, but for now there is a bit of dialogue that varies based on the region and the hero you're playing as."));
 
@@ -243,7 +261,7 @@ public class v2_X_Changes {
 		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 4), "Duelist Nerfs",
 				"The Duelist is also receiving a few very specific nerfs in v2.1.0:\n\n" +
 				"_- Meditate_ now grants the monk 8 turns of recharging, down from 10.\n" +
-				"_- Mediate_ recharging now begins after meditation ends, instead of when it starts.\n\n" +
+				"_- Meditate_ recharging now begins after meditation ends, instead of when it starts.\n\n" +
 				"_- Elimination Match_ charge cost reduction down to 16/30/40/50% from 20/36/50/60%"));
 
 	}
