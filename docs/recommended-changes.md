@@ -67,7 +67,7 @@ Shattered Pixel Dungeon supporters a number of languages which are translated vi
 If you plan to add new text to the game, maintaining these translations may be difficult or impossible, and so you may wish to remove them:
 - In [Languages.java](/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/messages/Languages.java) remove all of the enum constants except for ENGLISH.
 - In the [messages resource folders](/core/src/main/assets/messages) remove all of the .properties files which include an underscore followed by a language code (e.g. remove actors_ru.properties, but not actors.properties)
-- Finally remove the language picker by commenting out the line `add( langsTab );` in [WndSettings.java](/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/windows/WndSettings.java)
+- Finally remove the language picker by commenting out the lines `add( langs );` and `add( langsTab );` in [WndSettings.java](/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/windows/WndSettings.java)
 - Optionally, if you are multilingual or have translators and wish to retain some languages, do not comment out the language picker and only remove the enums/resources for the languages you won't be using.
 
 If you want to have a language other than English as the base language, you can simply remove the .properties files that do not have a language code, and remove the underscore+language code from the language you want to use. The game will consider this language to be English internally however, so you may want to look into where the ENGLISH variable is used and make adjustments accordingly, and possibly rename it.
