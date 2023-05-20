@@ -104,15 +104,15 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
-				"..TODO"));
+		/*changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"..TODO"));*/
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAR_SCYTHE), "New Weapons!",
 				"Three new weapons have been added to the game!\n" +
 				"\n" +
-				"_The Katana_ a tier-4 defensive weapon that was designed to respond to the common feedback point of players wanting a higher tier weapon with the rapier's ability. Just like with her rapier, the Duelist can _lunge_ at enemies with a katana, dealing +50% damage.\n" +
+				"_The Katana_ is a tier-4 defensive weapon that was designed to respond to the common feedback point of players wanting a higher tier weapon with the rapier's ability. Just like with her rapier, the Duelist can _lunge_ at enemies with a katana, dealing +50% damage.\n" +
 				"\n" +
-				"_The Sickle and War Scythe_ are T2 and T5 weapons that trade in some accuracy for increased base damage. The Duelist can use the _harvest_ ability with these weapons, which deals a large amount of bleeding instead of direct damage, but costs 2 charges."));
+				"_The Sickle_ and _War Scythe_ are T2 and T5 weapons that trade in some accuracy for increased base damage. The Duelist can use the _harvest_ ability with these weapons, which deals a large amount of bleeding instead of direct damage, but costs 2 charges."));
 
 		changes.addButton( new ChangeButton(new Image(new TormentedSpiritSprite()), "New Exotic Enemies",
 				"An exotic variant has been added for wraiths and piranhas!\n" +
@@ -139,14 +139,14 @@ public class v2_X_Changes {
 
 		changes.addButton( new ChangeButton(new TalentIcon(Talent.PRECISE_ASSAULT), "Precise Assault",
 				"The _Lightweight Charge_ talent has been completely replaced with a new talent: _Precise Assault_. This new talent grants a big accuracy boost for 1 attack after using a weapon ability, encouraging interweaving special and regular attacks.\n\n" +
-				"Lightweight Charge was removed as it was originally designed much earlier in the Duelist's dev cycle. This was before mechanics like Swift Equip, the Champion's Dual wielding, or Monastic Vigor existed. Those mechanics do a much better job of encouraging using abilities on lower tier weapons."));
+				"Lightweight Charge is removed as it was originally designed much earlier in the Duelist's development process. This was before mechanics like Swift Equip, the Champion's Dual wielding, or Unencumbered Spirit existed. Those mechanics do a much better job of encouraging using abilities on lower tier weapons."));
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"_Highlights:_\n" +
 				"_-_ Enemy misses now interrupt the hero, just like hits\n" +
 				"_-_ Boss regen limits are now less permissive, especially with badder bosses enabled\n" +
 				"_-_ Certain Weapons and Wands are no longer slightly more likely to spawn than others\n" +
-				"_-_ Players are now less likely to encounter multiple of the same weapon/wand/ring in a run.\n" +
+				"_-_ Players are now less likely to encounter multiple of the same weapon/wand/ring in a run\n" +
 				"_-_ Slightly improved the final loot from crystal path rooms\n" +
 				"_-_ The toolbar's dimming behaviour is now less visually disruptive\n" +
 				"_-_ Added visual buffs for some Duelist and Huntress talents\n" +
@@ -157,7 +157,7 @@ public class v2_X_Changes {
 				"_-_ Adjusted UI of Gladiator's combo window to be consistent with Monk's ability window\n" +
 				"_-_ Adjusted tutorialization relating to surprise attacks\n" +
 				"_-_ Improved the icon for the locked floor status\n" +
-				"_-_ Magical fire can now burn items placed next to it by the player."));
+				"_-_ Magical fire can now burn items placed next to it by the player"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
@@ -184,7 +184,7 @@ public class v2_X_Changes {
 				"_-_ Lethal Haste talent triggering on ally kills\n" +
 				"_-_ Very rare cases where the Duelist could be debuffed by attacking her own afterimage\n" +
 				"_-_ Monk's focus ability rarely triggering on magical attacks\n" +
-				"_-_ Chill and ring of elements interacting incorrectly in some cases\n" +
+				"_-_ Chill and cold resistance interacting incorrectly in some cases\n" +
 				"_-_ Protective Shadows talent not triggering if unlocked while invisible",
 
 				"_Allies & Enemies:_\n" +
@@ -199,7 +199,7 @@ public class v2_X_Changes {
 				"_-_ Various minor visual/textual errors\n" +
 				"_-_ Particle FX failing to appear after loading during the 4th boss fight\n" +
 				"_-_ Action indicator not updating properly from Speedy Stealth talent\n" +
-				"_-_ incorrect error messages when the game tries to report crashes on desktop\n"));
+				"_-_ Incorrect error messages when the game tries to report crashes on desktop"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight(CharSprite.POSITIVE);
@@ -218,11 +218,11 @@ public class v2_X_Changes {
 				"_- Spike damage_ bonus up to 45/30% from 40/30%\n" +
 				"_- Defensive Stance_ evasion boost up to 3x from 2x, duration down to 5 turns from 6\n" +
 				"_- Lash_ is now guaranteed to hit the closest target\n" +
-				"_- Block_ duration up to 8/6 from 5/4",
+				"_- Block_ duration up to 8/6 from 5/4\n" +
+				"_- Runic Slash_ enchant bonus up to +300% from +250%",
 
 				"And some abilities need more substantial buffs:\n" +
 				"_- Sword Dance_ now gives +25% ACC, up from -20%, duration down to 5 turns from 6\n" +
-				"_- Runic Slash_ enchant bonus up to +300% from +250%\n" +
 				"_- Spin_ now guarantees a hit at all levels, instead of just at 3 spins\n" +
 				"_- Retribution_ damage bonus up to +50% from +35%\n" +
 				"\n" +
@@ -234,7 +234,7 @@ public class v2_X_Changes {
 				"_Charged Shot:_\n" +
 				"_-_ Now grants +4 dart tip uses, up from +2\n" +
 				"_-_ Now triggers on-hit effects in a 5x5 AOE\n" +
-				"_-_ Harmful on-hit effects now only apply to enemies in the AOE, and positive effects only apply to allies"));
+				"_-_ Harmful on-hit effects now only apply to enemies in the AOE, and positive effects only apply to allies."));
 
 		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 2), "Duelist Subclasses",
 				"The Duelist's subclasses have not had as many problems as her weapon abilities, so the changes here are more incremental. I've been more generous with the Monk, in anticipation that the weapon ability changes will be more beneficial to the Champion:\n\n" +
@@ -243,14 +243,14 @@ public class v2_X_Changes {
 				"_Monk:_\n" +
 				"_- Unencumbered Spirit_ energy boost up to 40/80/120% from 33/67/100%. Boost at +3 when unarmed removed\n" +
 				"_- Combined Energy_ now refunds 50% of energy spent, up from 33%\n" +
-				"_- Monastic Vigor:_\n" +
+				"_Monastic Vigor:_\n" +
 				"_-_ Flurry enchantment power up to 100% from 75%\n" +
 				"_-_ Dash range boost up to +3 from +2\n" +
 				"_-_ Dragon Kick damage boost up to +50% from +33%"));
 
 		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 6), "Duelist Armor Abilities",
-				"Armor abilties are also getting more minor changes, targeted at specific talents and the elemental strike ability:\n\n" +
-				"_- Elemental Strike_ AOE effect base power increased by 20-33%, varying by enchantment.\n\n" +
+				"Armor abilities are also getting more minor changes, targeted at specific talents and the elemental strike ability:\n\n" +
+				"_- Elemental Strike_ AOE effect base power increased by 20-33%, varying by enchantment\n\n" +
 				"_- Expose Weakness_ turns of vulnerable increased to 2/4/6/8 from 1/2/3/4\n\n" +
 				"_- Invigorating Victory_ base heal increased to 5/10/15/20 from 3/6/9/12"));
 
