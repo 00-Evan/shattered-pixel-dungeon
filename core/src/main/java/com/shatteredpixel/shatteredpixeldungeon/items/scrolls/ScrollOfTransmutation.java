@@ -201,7 +201,8 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		do {
 			n = (Weapon)Generator.random(c);
 		} while (Challenges.isItemBlocked(n) || n.getClass() == w.getClass());
-		
+
+		n.level(0);
 		int level = w.trueLevel();
 		if (level > 0) {
 			n.upgrade( level );
