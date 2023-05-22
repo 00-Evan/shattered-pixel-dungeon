@@ -133,7 +133,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 	
 	@Override
 	public void tintIcon(Image icon) {
-		if (freerunCooldown == 0){
+		if (freerunCooldown == 0 || freerunTurns > 0){
 			icon.hardlight(1,1,0);
 		} else {
 			icon.hardlight(0.5f,0.5f,1);
