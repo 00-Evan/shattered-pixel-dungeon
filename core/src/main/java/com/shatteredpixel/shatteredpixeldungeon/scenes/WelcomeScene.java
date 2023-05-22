@@ -206,8 +206,8 @@ public class WelcomeScene extends PixelScene {
 
 			}
 
-			message = "Greeting Alpha testers, welcome to an early look at v2.1.0!\n\n" +
-					"v2.1.0 is already content-complete, aside from a few smaller tweaks I still have planned to do. I expect this alpha to be fairly quick as a result.\n\n" +
+			message = "Greeting Beta testers!\n\n" +
+					"v2.1.0 includes a bunch of Duelist balance changes, a bit of new content, and a few significant QoL tweaks. The beta is already content-complete, so I expect it to last for about a week.\n\n" +
 					"Please let me know what you think, and if you run into any bugs!";
 
 		} else {

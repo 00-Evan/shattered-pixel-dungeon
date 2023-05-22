@@ -78,27 +78,9 @@ public class v2_X_Changes {
 
 	public static void add_v2_1_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v2.1-ALPHA", true, "");
+		ChangeInfo changes = new ChangeInfo("v2.1-BETA", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes = new ChangeInfo("ALPHA-2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Shattered Supporters on Google Play now have access to 10 Hall of Heroes pages, up from 4."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following (Caused by ALPHA):\n" +
-				"_-_ Tormented Spirits spawning much more frequently than intended\n" +
-				"_-_ Ghost quest sometimes giving cursed weapons, or weapons that were much stronger than intended\n" +
-				"_-_ Harvest ability costing 1 weapon charge instead of 2\n" +
-				"_-_ Magical fire failing to appear in many cases"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -150,6 +132,7 @@ public class v2_X_Changes {
 				"_-_ Slightly improved the final loot from crystal path rooms\n" +
 				"_-_ The toolbar's dimming behaviour is now less visually disruptive\n" +
 				"_-_ Added visual buffs for some Duelist and Huntress talents\n" +
+				"_-_ Shattered Supporters on Google Play now have access to 10 Hall of Heroes pages, up from 4\n" +
 				"\n" +
 				"_Other:_\n" +
 				"_-_ Water effects now damage fiery enemies\n" +
