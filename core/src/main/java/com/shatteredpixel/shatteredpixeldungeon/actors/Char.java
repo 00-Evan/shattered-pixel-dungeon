@@ -712,6 +712,10 @@ public abstract class Char extends Actor {
 		}
 
 		if (buff(Sickle.HarvestBleedTracker.class) != null){
+			if (isImmune(Bleeding.class)){
+				dmg = 0;
+			}
+
 			Bleeding b = buff(Bleeding.class);
 			if (b == null){
 				b = new Bleeding();
