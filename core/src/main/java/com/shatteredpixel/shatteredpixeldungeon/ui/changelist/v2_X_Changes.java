@@ -82,12 +82,35 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-2", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		//misc
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by BETA:_\n" +
+				"_-_ Weapons gaining levels when transmuted\n" +
+				"_-_ Hand Axe heavy blow dealing 0.45x damage instead of 1.45x\n" +
+				"_-_ Misses from magical attacks not interrupting the hero\n" +
+				"_-_ Various textual errors\n\n" +
+				"_Existed Prior to BETA:_\n" +
+				"_-_ Tengu smoke bombs visually destroying each other\n" +
+				"_-_ Some effects resolving before beacon of returning teleportation applies itself\n" +
+				"_-_ Errors when transmuting an equipped artifact into a ring"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
 		/*changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
-				"..TODO"));*/
+				"_-_ Released May 31st, 2023\n" +
+				"_-_ 77 days after Shattered v2.0.0\n"));*/
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAR_SCYTHE), "New Weapons!",
 				"Three new weapons have been added to the game!\n" +
