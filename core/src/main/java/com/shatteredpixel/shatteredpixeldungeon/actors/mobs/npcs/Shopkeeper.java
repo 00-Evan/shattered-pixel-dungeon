@@ -172,7 +172,9 @@ public class Shopkeeper extends NPC {
 				options[i++] = Messages.get(Shopkeeper.this, "sell");
 				options[i++] = Messages.get(Shopkeeper.this, "talk");
 				for (Item item : buybackItems){
-					options[i++] = Messages.get(Heap.class, "for_sale", item.value(), Messages.titleCase(item.title()));
+					options[i] = Messages.get(Heap.class, "for_sale", item.value(), Messages.titleCase(item.title()));
+					if (options[i].length() > 26) options[i] = options[i].substring(0, 23) + "...";
+					i++;
 				}
 				GameScene.show(new WndOptions(sprite(), Messages.titleCase(name()), description(), options){
 					@Override
