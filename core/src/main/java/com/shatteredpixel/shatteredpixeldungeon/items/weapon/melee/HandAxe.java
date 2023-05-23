@@ -68,7 +68,7 @@ public class HandAxe extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		Mace.heavyBlowAbility(hero, target, 0.45f, this);
+		Mace.heavyBlowAbility(hero, target, 1.45f, this);
 	}
 
 }
