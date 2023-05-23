@@ -324,10 +324,6 @@ public abstract class Char extends Actor {
 		
 		boolean visibleFight = Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[enemy.pos];
 
-		if (enemy == Dungeon.hero && Dungeon.hero.damageInterrupt){
-			Dungeon.hero.interrupt();
-		}
-
 		if (enemy.isInvulnerable(getClass())) {
 
 			if (visibleFight) {
@@ -520,6 +516,10 @@ public abstract class Char extends Actor {
 	public static boolean hit( Char attacker, Char defender, float accMulti, boolean magic ) {
 		float acuStat = attacker.attackSkill( defender );
 		float defStat = defender.defenseSkill( attacker );
+
+		if (defender instanceof Hero && ((Hero) defender).damageInterrupt){
+			((Hero) defender).interrupt();
+		}
 
 		//invisible chars always hit (for the hero this is surprise attacking)
 		if (attacker.invisible > 0 && attacker.canSurpriseAttack()){
