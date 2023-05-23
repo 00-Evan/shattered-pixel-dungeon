@@ -91,7 +91,13 @@ public class ScrollOfTransmutation extends InventoryScroll {
 				int slot = Dungeon.quickslot.getSlot(item);
 				if (item.isEquipped(Dungeon.hero)) {
 					item.cursed = false; //to allow it to be unequipped
-					if (item instanceof KindOfWeapon && Dungeon.hero.belongings.secondWep() == item){
+					if (item instanceof Artifact && result instanceof Ring){
+						//if we turned an equipped artifact into a ring, ring goes into inventory
+						((EquipableItem) item).doUnequip(Dungeon.hero, false);
+						if (!result.collect()){
+							Dungeon.level.drop(result, curUser.pos).sprite.drop();
+						}
+					} else if (item instanceof KindOfWeapon && Dungeon.hero.belongings.secondWep() == item){
 						((EquipableItem) item).doUnequip(Dungeon.hero, false);
 						((KindOfWeapon) result).equipSecondary(Dungeon.hero);
 					} else {
