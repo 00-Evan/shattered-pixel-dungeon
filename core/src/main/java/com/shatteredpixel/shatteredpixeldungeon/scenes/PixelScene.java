@@ -238,7 +238,9 @@ public class PixelScene extends Scene {
 				}
 
 				cameraShift.invScale(Camera.main.zoom);
-				if (cameraShift.length() > 0 && Camera.main.scrollable){
+				cameraShift.x *= Camera.main.edgeScroll.x;
+				cameraShift.y *= Camera.main.edgeScroll.y;
+				if (cameraShift.length() > 0){
 					Camera.main.shift(cameraShift);
 				}
 				ControllerHandler.updateControllerPointer(virtualCursorPos, true);

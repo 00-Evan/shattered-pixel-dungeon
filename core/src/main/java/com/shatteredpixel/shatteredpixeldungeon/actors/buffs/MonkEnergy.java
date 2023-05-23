@@ -42,13 +42,19 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoItem;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMonkAbilities;
+import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
@@ -63,6 +69,8 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 	public float energy;
 	public int cooldown;
 
+	private static final float MAX_COOLDOWN = 5;
+
 	@Override
 	public int icon() {
 		return BuffIndicator.MONK_ENERGY;
@@ -72,8 +80,6 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 	public void tintIcon(Image icon) {
 		if (cooldown > 0){
 			icon.hardlight(0.33f, 0.33f, 1f);
-		} else if (abilitiesEmpowered(Dungeon.hero)) {
-			icon.tint(0.6f, 1f, 0.2f, 0.33f);
 		} else {
 			icon.resetColor();
 		}
@@ -81,12 +87,16 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public float iconFadePercent() {
-		return Math.max(0, (energyCap() - energy)/ energyCap());
+		return Math.max(0, cooldown/MAX_COOLDOWN);
 	}
 
 	@Override
 	public String iconTextDisplay() {
-		return Integer.toString((int)energy);
+		if (cooldown > 0){
+			return Integer.toString(cooldown);
+		} else {
+			return "";
+		}
 	}
 
 	@Override
@@ -216,13 +226,15 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 		if (cooldown > 0 || energy < 1){
 			ActionIndicator.clearAction(this);
+		} else {
+			ActionIndicator.refresh();
 		}
 		BuffIndicator.refreshHero();
 	}
 
 	public boolean abilitiesEmpowered( Hero hero ){
 		//100%/80%/60% energy at +1/+2/+3
-		return energy/energyCap() >= 1.15f - 0.2f*hero.pointsInTalent(Talent.MONASTIC_VIGOR);
+		return energy/energyCap() >= 1.2f - 0.2f*hero.pointsInTalent(Talent.MONASTIC_VIGOR);
 	}
 
 	public void processCombinedEnergy(Talent.CombinedEnergyAbilityTracker tracker){
@@ -241,8 +253,26 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 	}
 
 	@Override
-	public Image actionIcon() {
-		return new HeroIcon(HeroSubClass.MONK);
+	public int actionIcon() {
+		return HeroIcon.MONK_ABILITIES;
+	}
+
+	@Override
+	public Visual secondaryVisual() {
+		BitmapText txt = new BitmapText(PixelScene.pixelFont);
+		txt.text( Integer.toString((int)energy) );
+		txt.hardlight(CharSprite.POSITIVE);
+		txt.measure();
+		return txt;
+	}
+
+	@Override
+	public int indicatorColor() {
+		if (abilitiesEmpowered(Dungeon.hero)){
+			return 0x99CC33;
+		} else {
+			return 0xA08840;
+		}
 	}
 
 	@Override
@@ -602,22 +632,27 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 					}
 				}
 
+				//we process this as 5x wait actions instead of one 5 tick action to prevent
+				// effects like time freeze from eating the whole action duration
+				for (int i = 0; i < 5; i++) hero.spendConstant(Actor.TICK);
+
 				if (Buff.affect(hero, MonkEnergy.class).abilitiesEmpowered(hero)){
 					int toHeal = Math.round((hero.HT - hero.HP)/5f);
 					if (toHeal > 0) {
 						Buff.affect(hero, Healing.class).setHeal(toHeal, 0, 1);
 					}
-					Buff.affect(hero, MeditateResistance.class, 5f);
+					Buff.affect(hero, MeditateResistance.class, hero.cooldown());
 				}
 
-				//we process this as 5x wait actions instead of one 5 tick action to prevent
-				// effects like time freeze from eating the whole action duration
-				for (int i = 0; i < 5; i++) hero.spendConstant(Actor.TICK);
 				hero.next();
 				Buff.affect(hero, MonkEnergy.class).abilityUsed(this);
 			}
 
-			public static class MeditateResistance extends FlavourBuff{};
+			public static class MeditateResistance extends FlavourBuff{
+				{
+					actPriority = HERO_PRIO+1; //ends just before the hero acts
+				}
+			};
 		}
 
 	}

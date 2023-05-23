@@ -658,7 +658,9 @@ public enum Talent {
 
 		if (hero.hasTalent(DEADLY_FOLLOWUP)) {
 			if (hero.belongings.attackingWeapon() instanceof MissileWeapon) {
-				Buff.prolong(enemy, DeadlyFollowupTracker.class, 5f);
+				if (!(hero.belongings.attackingWeapon() instanceof SpiritBow.SpiritArrow)) {
+					Buff.prolong(enemy, DeadlyFollowupTracker.class, 5f);
+				}
 			} else if (enemy.buff(DeadlyFollowupTracker.class) != null){
 				dmg = Math.round(dmg * (1.0f + .08f*hero.pointsInTalent(DEADLY_FOLLOWUP)));
 				if (!(enemy instanceof Mob) || !((Mob) enemy).surprisedBy(hero)){

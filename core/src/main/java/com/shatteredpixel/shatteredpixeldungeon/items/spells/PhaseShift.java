@@ -65,8 +65,8 @@ public class PhaseShift extends TargetedSpell {
 	
 	@Override
 	public int value() {
-		//prices of ingredients, divided by output quantity
-		return Math.round(quantity * ((30 + 40) / 8f));
+		//prices of ingredients, divided by output quantity, rounds down
+		return (int)((30 + 40) * (quantity/8f));
 	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {

@@ -76,9 +76,34 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v2.0.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Overhauled visuals for the action indicator. It now has different background colors for different actions, and supports a smaller secondary icon or text. Subclass abilities all make use of this new functionality, and some info has been moved from buff icons to this new indicator.\n\n" +
+				"_-_ The game's pixel font now supports Vietnamese!\n\n" +
+				"_-_ Rankings now attempt to show some basic information if loading full game data fails.\n\n" +
+				"_-_ The changes scene now shows a warning if the user is not viewing it in English.\n\n" +
+				"_-_ Liquid metal value increased to 1 from 0.5."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (Caused by v2.0):\n" +
+				"_-_ Various minor visual errors\n" +
+				"_-_ Flail spin ability triggering talents when already at full spin power\n" +
+				"_-_ Lucky elemental strike working on ally characters\n" +
+				"_-_ Resistance from empowered meditate lasting 1 turn longer than intended\n" +
+				"_-_ Threshold for Monastic Vigor being lower than intended (95/75/55 instead of 100/80/60)\n" +
+				"_-_ New quickslot swap behaviour sometimes placing items without a quick-use action into quickslots\n" +
+				"_-_ Levitation persisting for 1 extra turn after the hero falls into a pit\n" +
+				"_-_ Lunge ability still allowing the Duelist to attack if it placed her onto a teleportation trap\n" +
+				"_-_ Spirit bow arrows triggering the deadly followup talent",
+				"Fixed (existed prior to v2.0):\n" +
+				"_-_ Various bugs with controller input which occurred when two or more inputs were entered at once.\n" +
+				"_-_ Hero being able to leave floor 5 after it locks in rare cases\n" +
+				"_-_ Various minor rounding errors in alchemy produce values\n" +
+				"_-_ Spirit bow encumbrance calculations always using a strength requirement of 10\n" +
+				"_-_ Downed ghoul visuals sometimes staying visible in the fog of war"));
 
 		changes = new ChangeInfo("v2.0.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);

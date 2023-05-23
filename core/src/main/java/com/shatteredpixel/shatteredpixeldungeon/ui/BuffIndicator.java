@@ -285,6 +285,7 @@ public class BuffIndicator extends Component {
 			//round up to the nearest pixel if <50% faded, otherwise round down
 			if (!large || buff.iconTextDisplay().isEmpty()) {
 				text.visible = false;
+				grey.visible = true;
 				float fadeHeight = buff.iconFadePercent() * icon.height();
 				float zoom = (camera() != null) ? camera().zoom : 1;
 				if (fadeHeight < icon.height() / 2f) {
@@ -293,6 +294,7 @@ public class BuffIndicator extends Component {
 					grey.scale.set(icon.width(), (float) Math.floor(zoom * fadeHeight) / zoom);
 				}
 			} else if (!buff.iconTextDisplay().isEmpty()) {
+				text.visible = true;
 				grey.visible = false;
 				if (buff.type == Buff.buffType.POSITIVE)        text.hardlight(CharSprite.POSITIVE);
 				else if (buff.type == Buff.buffType.NEGATIVE)   text.hardlight(CharSprite.NEGATIVE);

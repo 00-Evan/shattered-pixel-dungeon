@@ -75,6 +75,13 @@ public class Tag extends Button {
 		bg.flipHorizontal(value);
 		layout();
 	}
+
+	public void setColor( int color ){
+		this.r = (color >> 16) / 255f;
+		this.g = ((color >> 8) & 0xFF) / 255f;
+		this.b = (color & 0xFF) / 255f;
+		bg.hardlight( r, g, b );
+	}
 	
 	@Override
 	public void update() {

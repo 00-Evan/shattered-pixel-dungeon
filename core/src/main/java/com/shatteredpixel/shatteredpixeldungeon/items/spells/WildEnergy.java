@@ -70,8 +70,8 @@ public class WildEnergy extends TargetedSpell {
 	
 	@Override
 	public int value() {
-		//prices of ingredients, divided by output quantity
-		return Math.round(quantity * ((50 + 50) / 5f));
+		//prices of ingredients, divided by output quantity, rounds down
+		return (int)((50 + 50) * (quantity/5f));
 	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {

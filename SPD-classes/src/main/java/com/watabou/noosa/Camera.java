@@ -51,7 +51,7 @@ public class Camera extends Gizmo {
 	
 	public float[] matrix;
 
-	public boolean scrollable = false;
+	public PointF edgeScroll;
 	public PointF scroll;
 	public PointF centerOffset;
 	
@@ -122,7 +122,8 @@ public class Camera extends Gizmo {
 		
 		screenWidth = (int)(width * zoom);
 		screenHeight = (int)(height * zoom);
-		
+
+		edgeScroll = new PointF();
 		scroll = new PointF();
 		centerOffset = new PointF();
 		

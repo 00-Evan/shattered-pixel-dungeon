@@ -242,6 +242,11 @@ public enum Rankings {
 	public static final String DAILY_REPLAY	= "daily_replay";
 
 	public void saveGameData(Record rec){
+		if (Dungeon.hero == null){
+			rec.gameData = null;
+			return;
+		}
+
 		rec.gameData = new Bundle();
 
 		Belongings belongings = Dungeon.hero.belongings;
@@ -315,6 +320,8 @@ public enum Rankings {
 		Dungeon.quickslot.reset();
 		QuickSlotButton.reset();
 		Toolbar.swappedQuickslots = false;
+
+		if (data == null) return;
 
 		Bundle handler = data.getBundle(HANDLERS);
 		Scroll.restore(handler);
