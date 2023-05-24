@@ -48,7 +48,7 @@ public class LockedFloor extends Buff {
 
 	public void addTime(float time){
 		left += time;
-		left = Math.max(left, 50); //cannot build to more than 50
+		left = Math.min(left, 50); //cannot build to more than 50
 	}
 
 	public void removeTime(float time){
