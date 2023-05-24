@@ -877,7 +877,7 @@ public class Hero extends Char {
 			return true;
 
 		//Hero moves in place if there is grass to trample
-		} else if (canSelfTrample()){
+		} else if (pos == action.dst && canSelfTrample()){
 			canSelfTrample = false;
 			Dungeon.level.pressCell(pos);
 			spendAndNext( 1 / speed() );
