@@ -458,7 +458,7 @@ public class Hero extends Char {
 		}
 
 		if (hit && heroClass == HeroClass.DUELIST && wasEnemy){
-			Buff.append( this, Sai.ComboStrikeTracker.class).addHit();
+			Buff.affect( this, Sai.ComboStrikeTracker.class).addHit();
 		}
 
 		return hit;
