@@ -656,7 +656,6 @@ public class Generator {
 		} else {
 			w = (MeleeWeapon) random(wepTiers[Random.chances(floorSetTierProbs[floorSet])]);
 		}
-		w.random();
 		return w;
 	}
 	
@@ -690,7 +689,6 @@ public class Generator {
 		} else {
 			w = (MissileWeapon)random(misTiers[Random.chances(floorSetTierProbs[floorSet])]);
 		}
-		w.random();
 		return w;
 	}
 
