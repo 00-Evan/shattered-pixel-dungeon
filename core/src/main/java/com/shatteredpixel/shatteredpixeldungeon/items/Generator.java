@@ -598,7 +598,11 @@ public class Generator {
 	//overrides any deck systems and always uses default probs
 	// except for artifacts, which must always use a deck
 	public static Item randomUsingDefaults( Category cat ){
-		if (cat.defaultProbs == null || cat == Category.ARTIFACT) {
+		if (cat == Category.WEAPON){
+			return randomWeapon(true);
+		} else if (cat == Category.MISSILE){
+			return randomMissile(true);
+		} else if (cat.defaultProbs == null || cat == Category.ARTIFACT) {
 			return random(cat);
 		} else {
 			return ((Item) Reflection.newInstance(cat.classes[Random.chances(cat.defaultProbs)])).random();
@@ -633,12 +637,25 @@ public class Generator {
 	public static MeleeWeapon randomWeapon(){
 		return randomWeapon(Dungeon.depth / 5);
 	}
-	
+
 	public static MeleeWeapon randomWeapon(int floorSet) {
+		return randomWeapon(floorSet, false);
+	}
+
+	public static MeleeWeapon randomWeapon(boolean useDefaults) {
+		return randomWeapon(Dungeon.depth / 5, false);
+	}
+	
+	public static MeleeWeapon randomWeapon(int floorSet, boolean useDefaults) {
 
 		floorSet = (int)GameMath.gate(0, floorSet, floorSetTierProbs.length-1);
-		
-		MeleeWeapon w = (MeleeWeapon)random(wepTiers[Random.chances(floorSetTierProbs[floorSet])]);
+
+		MeleeWeapon w;
+		if (useDefaults){
+			w = (MeleeWeapon) randomUsingDefaults(wepTiers[Random.chances(floorSetTierProbs[floorSet])]);
+		} else {
+			w = (MeleeWeapon) random(wepTiers[Random.chances(floorSetTierProbs[floorSet])]);
+		}
 		w.random();
 		return w;
 	}
@@ -654,12 +671,25 @@ public class Generator {
 	public static MissileWeapon randomMissile(){
 		return randomMissile(Dungeon.depth / 5);
 	}
-	
+
 	public static MissileWeapon randomMissile(int floorSet) {
+		return randomMissile(floorSet, false);
+	}
+
+	public static MissileWeapon randomMissile(boolean useDefaults) {
+		return randomMissile(Dungeon.depth / 5, useDefaults);
+	}
+
+	public static MissileWeapon randomMissile(int floorSet, boolean useDefaults) {
 		
 		floorSet = (int)GameMath.gate(0, floorSet, floorSetTierProbs.length-1);
 
-		MissileWeapon w = (MissileWeapon)random(misTiers[Random.chances(floorSetTierProbs[floorSet])]);
+		MissileWeapon w;
+		if (useDefaults){
+			w = (MissileWeapon)randomUsingDefaults(misTiers[Random.chances(floorSetTierProbs[floorSet])]);
+		} else {
+			w = (MissileWeapon)random(misTiers[Random.chances(floorSetTierProbs[floorSet])]);
+		}
 		w.random();
 		return w;
 	}
