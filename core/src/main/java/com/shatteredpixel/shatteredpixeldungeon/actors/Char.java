@@ -713,7 +713,9 @@ public abstract class Char extends Actor {
 
 		if (buff(Sickle.HarvestBleedTracker.class) != null){
 			if (isImmune(Bleeding.class)){
-				dmg = 0;
+				sprite.showStatus(CharSprite.POSITIVE, Messages.titleCase(Messages.get(this, "immune")));
+				buff(Sickle.HarvestBleedTracker.class).detach();
+				return;
 			}
 
 			Bleeding b = buff(Bleeding.class);
