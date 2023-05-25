@@ -82,15 +82,24 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("BETA-3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by BETA:_\n" +
+				"_-_ Various crash bugs\n" +
+				"_-_ Thrown weapons applying multiple instances of the combo strike buff\n" +
+				"_-_ New boss regen limit logic not working correctly in several cases\n" +
+				"_-_ Regular weapon drops sometimes spawning with enchantments and curses\n" +
+				"_-_ Various minor textual errors\n\n" +
+				"_Existed Prior to BETA:_\n" +
+				"_-_ Invalid move actions (e.g. into unknown areas) causing self-trample to activate"));
 
 		changes = new ChangeInfo("BETA-2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		//misc
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
@@ -110,6 +119,7 @@ public class v2_X_Changes {
 
 		/*changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released May 31st, 2023\n" +
+				"_-_ 48 days after Shattered v2.0.2\n"
 				"_-_ 77 days after Shattered v2.0.0\n"));*/
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAR_SCYTHE), "New Weapons!",
