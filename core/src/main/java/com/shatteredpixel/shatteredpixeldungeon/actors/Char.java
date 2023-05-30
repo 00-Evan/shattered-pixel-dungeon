@@ -749,10 +749,12 @@ public abstract class Char extends Actor {
 
 			float finalChance = buff(Grim.GrimTracker.class).maxChance;
 			finalChance *= (float)Math.pow( ((HT - HP) / (float)HT), 2);
+			finalChance = 1;
 
 			if (Random.Float() < finalChance) {
-				dmg += HP;
-				HP = 0;
+				int extraDmg = Math.round(HP*resist(Grim.class));
+				dmg += extraDmg;
+				HP -= extraDmg;
 
 				sprite.emitter().burst( ShadowParticle.UP, 5 );
 				if (!isAlive() && buff(Grim.GrimTracker.class).qualifiesForBadge){
