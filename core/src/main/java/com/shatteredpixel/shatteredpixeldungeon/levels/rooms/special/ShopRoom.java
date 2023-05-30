@@ -190,8 +190,10 @@ public class ShopRoom extends SpecialRoom {
 
 		itemsToSpawn.add( new Alchemize().quantity(Random.IntRange(2, 3)));
 
-		itemsToSpawn.add(ChooseBag(Dungeon.hero.belongings));
-
+		Bag bag = ChooseBag(Dungeon.hero.belongings);
+		if (bag != null) {
+			itemsToSpawn.add(bag);
+		}
 
 		itemsToSpawn.add( new PotionOfHealing() );
 		itemsToSpawn.add( Generator.randomUsingDefaults( Generator.Category.POTION ) );
