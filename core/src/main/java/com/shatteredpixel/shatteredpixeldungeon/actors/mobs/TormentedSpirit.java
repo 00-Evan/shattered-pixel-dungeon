@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShaftParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -40,9 +41,16 @@ public class TormentedSpirit extends Wraith {
 		spriteClass = TormentedSpiritSprite.class;
 	}
 
+	//50% more damage scaling than regular wraiths
 	@Override
-	public void adjustStats(int level) {
-		super.adjustStats(Math.round(level*1.5f));
+	public int damageRoll() {
+		return Random.NormalIntRange( 1 + Math.round(1.5f*level)/2, 2 + Math.round(1.5f*level) );
+	}
+
+	//50% more accuracy (and by extension evasion) scaling than regular wraiths
+	@Override
+	public int attackSkill( Char target ) {
+		return 10 + Math.round(1.5f*level);
 	}
 
 	public void cleanse(){

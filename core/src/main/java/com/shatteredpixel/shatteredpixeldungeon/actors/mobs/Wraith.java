@@ -37,7 +37,7 @@ public class Wraith extends Mob {
 
 	private static final float SPAWN_DELAY	= 2f;
 	
-	private int level;
+	protected int level;
 	
 	{
 		spriteClass = WraithSprite.class;
@@ -104,7 +104,7 @@ public class Wraith extends Mob {
 		if ((!Dungeon.level.solid[pos] || Dungeon.level.passable[pos]) && Actor.findChar( pos ) == null) {
 
 			Wraith w;
-			if (allowExotic && Random.Int(100) == 0){
+			if (allowExotic && Random.Int(1) == 0){
 				w = new TormentedSpirit();
 			} else {
 				w = new Wraith();
