@@ -45,7 +45,7 @@ public class Katana extends MeleeWeapon {
 
 	@Override
 	public int defenseFactor( Char owner ) {
-		return 3;	//3 extra defence
+		return 4;	//4 extra defence
 	}
 
 	@Override
@@ -55,6 +55,6 @@ public class Katana extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		Rapier.lungeAbility(hero, target, 1.5f, 0, this);
+		Rapier.lungeAbility(hero, target, 1.35f, 0, this);
 	}
 }
