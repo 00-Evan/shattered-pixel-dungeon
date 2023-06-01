@@ -749,7 +749,6 @@ public abstract class Char extends Actor {
 
 			float finalChance = buff(Grim.GrimTracker.class).maxChance;
 			finalChance *= (float)Math.pow( ((HT - HP) / (float)HT), 2);
-			finalChance = 1;
 
 			if (Random.Float() < finalChance) {
 				int extraDmg = Math.round(HP*resist(Grim.class));

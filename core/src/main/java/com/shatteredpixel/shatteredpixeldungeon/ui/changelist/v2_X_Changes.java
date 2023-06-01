@@ -89,6 +89,7 @@ public class v2_X_Changes {
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
 				"_Caused by RC-1:_\n" +
+				"_-_ Grim enchantment proccing far more often than intended\n" +
 				"_-_ Tormented spirit spawning far more frequently than intended"));
 
 		changes = new ChangeInfo("RC-1", false, null);
