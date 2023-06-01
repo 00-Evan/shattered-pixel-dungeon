@@ -153,7 +153,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 			Artifact a = changeArtifact( (Artifact)item );
 			if (a == null){
 				//if no artifacts are left, generate a random +0 ring with shared ID/curse state
-				Item result = Generator.random(Generator.Category.RING);
+				Item result = Generator.randomUsingDefaults(Generator.Category.RING);
 				result.levelKnown = item.levelKnown;
 				result.cursed = item.cursed;
 				result.cursedKnown = item.cursedKnown;
@@ -175,7 +175,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		} else {
 			Wand n;
 			do {
-				n = (Wand) Generator.random(Generator.Category.WAND);
+				n = (Wand) Generator.randomUsingDefaults(Generator.Category.WAND);
 			} while (Challenges.isItemBlocked(n) || n.getClass() == wandClass);
 			n.level(0);
 			n.identify();
@@ -205,7 +205,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		}
 		
 		do {
-			n = (Weapon)Generator.random(c);
+			n = (Weapon)Generator.randomUsingDefaults(c);
 		} while (Challenges.isItemBlocked(n) || n.getClass() == w.getClass());
 
 		n.level(0);
@@ -232,7 +232,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 	private static Ring changeRing( Ring r ) {
 		Ring n;
 		do {
-			n = (Ring)Generator.random( Generator.Category.RING );
+			n = (Ring)Generator.randomUsingDefaults( Generator.Category.RING );
 		} while (Challenges.isItemBlocked(n) || n.getClass() == r.getClass());
 		
 		n.level(0);

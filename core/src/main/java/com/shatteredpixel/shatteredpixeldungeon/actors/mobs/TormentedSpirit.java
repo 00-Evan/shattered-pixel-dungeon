@@ -60,7 +60,7 @@ public class TormentedSpirit extends Wraith {
 		//50/50 between weapon or armor, always uncursed
 		Item prize;
 		if (Random.Int(2) == 0){
-			prize = Generator.randomWeapon();
+			prize = Generator.randomWeapon(true);
 			if (((MeleeWeapon)prize).hasCurseEnchant()){
 				((MeleeWeapon) prize).enchantment = null;
 			}
