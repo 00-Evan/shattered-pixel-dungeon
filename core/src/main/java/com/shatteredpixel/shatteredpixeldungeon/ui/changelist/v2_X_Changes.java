@@ -82,6 +82,33 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("RC-1", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.KATANA), "Balance Changes",
+				"After pouring over a bit of beta analytics data, I'm making a few targeted changes to the new weapons:\n\n" +
+				"_- Sickle_ accuracy penalty up to 32% from 24%\n" +
+				"_- War Scythe_ accuracy penalty up to 20% from 15%\n\n" +
+				"_- Katana_ damage blocking up to 0-4 from 0-3\n" +
+				"_- Katana_ lunge ability damage boost down to +35% from +50%"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by BETA:_\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Transmuting generating additional thrown weapons\n" +
+				"_-_ Grim enchantment not being resisted by bosses\n" +
+				"_-_ Tormented spirits sometimes having much higher stats than intended\n\n" +
+				"_Existed Prior to BETA:_\n" +
+				"_-_ Empty item spots on the floor 20 shop\n" +
+				"_-_ Rare cases where items or the player could fall into doors on floor 5\n" +
+				"_-_ Displaying darts not properly granting vision of teleported enemies in some cases"));
+
 		changes = new ChangeInfo("BETA-3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);

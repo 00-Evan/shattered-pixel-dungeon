@@ -4,7 +4,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.0.1'
+        classpath 'com.android.tools.build:gradle:8.0.2'
     }
 }
 
@@ -14,8 +14,8 @@ allprojects {
         appName = 'Shattered Pixel Dungeon'
         appPackageName = 'com.shatteredpixel.shatteredpixeldungeon'
 
-        appVersionCode = 709
-        appVersionName = '2.1.0-BETA-3'
+        appVersionCode = 712
+        appVersionName = '2.1.0-RC-1'
 
         appJavaCompatibility = JavaVersion.VERSION_1_8
 
