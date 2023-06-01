@@ -47,7 +47,7 @@ import java.util.ArrayList;
 public class v2_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
-		//add_Coming_Soon(changeInfos);
+		add_Coming_Soon(changeInfos);
 		add_v2_1_Changes(changeInfos);
 		add_v2_0_Changes(changeInfos);
 	}
@@ -59,101 +59,35 @@ public class v2_X_Changes {
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Overview",
-				"My current plan is for the next major update to be v2.1.0, which will mostly be focused on responding to any balance or general gameplay issues that appear as dust settles from the Duelist's release.\n\n" +
-				"I don't yet have a specific timeline for v2.1.0, but I think it's a safe bet that you'll hear from me about it sometime in late April or May. Please keep in mind that while I always try to keep to the ETAs I provide, they are just estimates. If you don't hear from me by the ETA, it means I'm still busy with the update!"));
+				"The next update will be v2.2.0, and will include a complete rework of the blacksmith quest!\n" +
+				"\n" +
+				"I'll probably start to have a more clear idea of how long v2.2.0 will take after I finish releasing patches for v2.1.0, but I think that a total dev time of 3 months or so is a relatively safe bet. Please keep in mind that while I always try to keep to the ETAs I provide, they are just estimates. If you don't hear from me by the ETA, it means I'm still busy with the update!"));
 
-		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 6), "Hero Changes",
-				"The largest changes in v2.1.0 will be focused around the game's heroes, with a big emphasis on the Duelist. I'm generally happy with how she performed during the beta, but such a large addition to the game is definitely going to need some refinement over time. I may also make some smaller changes to the other heroes as well, depending on how things shake out. "));
+		changes.addButton( new ChangeButton(Icons.get(Icons.CHANGES), "Larger Patches",
+				"There is a decent amount of technical work that still needs to be done for v2.2.0, and I can easily introduce that into the game via some patches to v2.1.0. Because of this, I expect that v2.1 is going to have a longer patch cycle than usual, as I'll be both including those technical changes and taking the opportunity to fix a bunch of smaller issues sooner than if I waiting to release them in v2.2.0."));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.TALENT), "Side Content",
-				"v2.1.0 will also include some amount of side content, but it will probably be fairly small. I plan to add a couple new exotic enemies, and there might be room for one or two other little things as well."));
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.PICKAXE), "Blacksmith Questt",
+				"I plan to completely rework the blacksmith's quest in v2.2.0, to feature a new sub area and a unique mining mechanic. The player will need to mine out walls both to collect treasure and to navigate around hazards. I expect the quest will be notably more involved and challenging, but there will be new rewards on offer a well!"));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Smaller Fixes",
-				"There will also be more miscellaneous changes and bugfixes! Despite all of the fixes I've made in v2.0.0, my list of things to do has actually grown! I'd like to spend a bit of time keeping that list in check."));
-
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.PICKAXE), "Blacksmith Quest?",
-				"And no I haven't forgotten about the blacksmith's quest! I will likely do some concepting or internal technical work for it during v2.1.0's development, but the quest rework itself is more likely to be part of v2.2.0."));
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Smaller Changes/Fixes",
+				"As always, there will be some amount of smaller improvements, fixes, and additions both in v2.2.0 and during v2.1's longer than usual patch cycle. I expect that v2.2.0 is going to be mainly focused on the blacksmith quest though, so any new additions aside from that will be relatively minor. In terms of fixes, I plan to keep an eye on the Duelist and weapons in general after the changes in v2.1.0."));
 
 	}
 
 	public static void add_v2_1_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v2.1-BETA", true, "");
+		ChangeInfo changes = new ChangeInfo("v2.1", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("RC-2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by RC-1:_\n" +
-				"_-_ Grim enchantment proccing far more often than intended\n" +
-				"_-_ Tormented spirit spawning far more frequently than intended"));
-
-		changes = new ChangeInfo("RC-1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.KATANA), "Balance Changes",
-				"After pouring over a bit of beta analytics data, I'm making a few targeted changes to the new weapons:\n\n" +
-				"_- Sickle_ accuracy penalty up to 32% from 24%\n" +
-				"_- War Scythe_ accuracy penalty up to 20% from 15%\n\n" +
-				"_- Katana_ damage blocking up to 0-4 from 0-3\n" +
-				"_- Katana_ lunge ability damage boost down to +35% from +50%"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by BETA:_\n" +
-				"_-_ Various rare crash bugs\n" +
-				"_-_ Transmuting generating additional thrown weapons\n" +
-				"_-_ Grim enchantment not being resisted by bosses\n" +
-				"_-_ Tormented spirits sometimes having much higher stats than intended\n\n" +
-				"_Existed Prior to BETA:_\n" +
-				"_-_ Empty item spots on the floor 20 shop\n" +
-				"_-_ Rare cases where items or the player could fall into doors on floor 5\n" +
-				"_-_ Displaying darts not properly granting vision of teleported enemies in some cases"));
-
-		changes = new ChangeInfo("BETA-3", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by BETA:_\n" +
-				"_-_ Various crash bugs\n" +
-				"_-_ Thrown weapons applying multiple instances of the combo strike buff\n" +
-				"_-_ New boss regen limit logic not working correctly in several cases\n" +
-				"_-_ Regular weapon drops sometimes spawning with enchantments and curses\n" +
-				"_-_ Various minor textual errors\n\n" +
-				"_Existed Prior to BETA:_\n" +
-				"_-_ Invalid move actions (e.g. into unknown areas) causing self-trample to activate"));
-
-		changes = new ChangeInfo("BETA-2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by BETA:_\n" +
-				"_-_ Weapons gaining levels when transmuted\n" +
-				"_-_ Hand Axe heavy blow dealing 0.45x damage instead of 1.45x\n" +
-				"_-_ Misses from magical attacks not interrupting the hero\n" +
-				"_-_ Various textual errors\n\n" +
-				"_Existed Prior to BETA:_\n" +
-				"_-_ Tengu smoke bombs visually destroying each other\n" +
-				"_-_ Some effects resolving before beacon of returning teleportation applies itself\n" +
-				"_-_ Errors when transmuting an equipped artifact into a ring"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		/*changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
-				"_-_ Released May 31st, 2023\n" +
-				"_-_ 48 days after Shattered v2.0.2\n"
-				"_-_ 77 days after Shattered v2.0.0\n"));*/
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released June 2nd, 2023\n" +
+				"_-_ 83 days after Shattered v2.0.0\n\n" +
+				"Dev commentary will be added here in the future."));
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAR_SCYTHE), "New Weapons!",
 				"Three new weapons have been added to the game!\n" +
@@ -222,7 +156,10 @@ public class v2_X_Changes {
 				"_-_ Grim enchantment interacting incorrectly with some damage resistance effects\n" +
 				"_-_ Kinetic enchantment building damage from ally kills\n" +
 				"_-_ Artifact -> Ring transmutation generating a purely random ring\n" +
-				"_-_ Wand of Lightning not spreading correctly to flying enemies over water",
+				"_-_ Wand of Lightning not spreading correctly to flying enemies over water\n" +
+				"_-_ Errors when transmuting an equipped artifact into a ring\n" +
+				"_-_ Displacing darts not properly granting vision of teleported enemies in some cases\n" +
+				"_-_ Empty item spots on the floor 20 shop\n",
 
 				"_Effects:_\n" +
 				"_-_ Some Duelist abilities not clearing invisibility\n" +
@@ -233,8 +170,9 @@ public class v2_X_Changes {
 				"_-_ Lethal Haste talent triggering on ally kills\n" +
 				"_-_ Very rare cases where the Duelist could be debuffed by attacking her own afterimage\n" +
 				"_-_ Monk's focus ability rarely triggering on magical attacks\n" +
-				"_-_ Chill and cold resistance interacting incorrectly in some cases\n" +
-				"_-_ Protective Shadows talent not triggering if unlocked while invisible",
+				"_-_ Chill and ring of elements interacting incorrectly in some cases\n" +
+				"_-_ Protective Shadows talent not triggering if unlocked while invisible\n" +
+				"_-_ Some effects resolving before beacon of returning teleportation applies itself",
 
 				"_Allies & Enemies:_\n" +
 				"_-_ Necromancers not properly tracking their enemy while summoning\n" +
@@ -243,12 +181,14 @@ public class v2_X_Changes {
 				"_-_ Transmogrify armor ability incorrectly interacting with the multiplicity glyph\n" +
 				"_-_ Rat King blocking Goo's pump-up attack\n" +
 				"_-_ Enemy item drops being visible out of FOV for one frame\n" +
+				"_-_ Tengu smoke bombs visually destroying each other\n" +
 				"\n" +
 				"_UI/VFX:_\n" +
 				"_-_ Various minor visual/textual errors\n" +
 				"_-_ Particle FX failing to appear after loading during the 4th boss fight\n" +
 				"_-_ Action indicator not updating properly from Speedy Stealth talent\n" +
-				"_-_ Incorrect error messages when the game tries to report crashes on desktop"));
+				"_-_ Incorrect error messages when the game tries to report crashes on desktop\n" +
+				"_-_ Invalid move actions (e.g. into unknown areas) causing self-trample to activate"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight(CharSprite.POSITIVE);
