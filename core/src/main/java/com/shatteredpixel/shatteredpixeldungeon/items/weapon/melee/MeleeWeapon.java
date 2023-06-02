@@ -43,7 +43,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
@@ -117,11 +116,11 @@ public class MeleeWeapon extends Weapon {
 				GLog.w(Messages.get(this, "ability_low_str"));
 				usesTargeting = false;
 			} else if (hero.belongings.weapon == this &&
-					(Buff.affect(hero, Charger.class).charges + Buff.affect(hero, Charger.class).partialCharge) < abilityChargeUse(hero)) {
+					(Buff.affect(hero, Charger.class).charges + Buff.affect(hero, Charger.class).partialCharge) < abilityChargeUse(hero, null)) {
 				GLog.w(Messages.get(this, "ability_no_charge"));
 				usesTargeting = false;
 			} else if (hero.belongings.secondWep == this &&
-					(Buff.affect(hero, Charger.class).secondCharges + Buff.affect(hero, Charger.class).secondPartialCharge) < abilityChargeUse(hero)) {
+					(Buff.affect(hero, Charger.class).secondCharges + Buff.affect(hero, Charger.class).secondPartialCharge) < abilityChargeUse(hero, null)) {
 				GLog.w(Messages.get(this, "ability_no_charge"));
 				usesTargeting = false;
 			} else {
@@ -195,18 +194,18 @@ public class MeleeWeapon extends Weapon {
 		//do nothing by default
 	}
 
-	protected void beforeAbilityUsed(Hero hero ){
+	protected void beforeAbilityUsed(Hero hero, Char target){
 		hero.belongings.abilityWeapon = this;
 		Charger charger = Buff.affect(hero, Charger.class);
 
 		if (Dungeon.hero.belongings.weapon == this) {
-			charger.partialCharge -= abilityChargeUse(hero);
+			charger.partialCharge -= abilityChargeUse(hero, target);
 			while (charger.partialCharge < 0 && charger.charges > 0) {
 				charger.charges--;
 				charger.partialCharge++;
 			}
 		} else {
-			charger.secondPartialCharge -= abilityChargeUse(hero);
+			charger.secondPartialCharge -= abilityChargeUse(hero, target);
 			while (charger.secondPartialCharge < 0 && charger.secondCharges > 0) {
 				charger.secondCharges--;
 				charger.secondPartialCharge++;
@@ -230,6 +229,9 @@ public class MeleeWeapon extends Weapon {
 
 	protected void afterAbilityUsed( Hero hero ){
 		hero.belongings.abilityWeapon = null;
+		if (hero.hasTalent(Talent.PRECISE_ASSAULT)){
+			Buff.prolong(hero, Talent.PreciseAssaultTracker.class, hero.cooldown()+4f);
+		}
 		if (hero.hasTalent(Talent.COMBINED_LETHALITY)) {
 			Talent.CombinedLethalityAbilityTracker tracker = hero.buff(Talent.CombinedLethalityAbilityTracker.class);
 			if (tracker == null || tracker.weapon == this || tracker.weapon == null){
@@ -253,22 +255,17 @@ public class MeleeWeapon extends Weapon {
 		}
 	}
 
-	public void onAbilityKill( Hero hero ){
-		if (hero.hasTalent(Talent.LETHAL_HASTE)){
+	public static void onAbilityKill( Hero hero, Char killed ){
+		if (killed.alignment == Char.Alignment.ENEMY && hero.hasTalent(Talent.LETHAL_HASTE)){
 			//effectively 2/3 turns of haste
 			Buff.prolong(hero, Haste.class, 1.67f+hero.pointsInTalent(Talent.LETHAL_HASTE));
 		}
 	}
 
-	public float abilityChargeUse( Hero hero ){
+	public float abilityChargeUse(Hero hero, Char target){
 		float chargeUse = 1f;
 		if (hero.buff(Talent.CounterAbilityTacker.class) != null){
 			chargeUse = Math.max(0, chargeUse-0.5f*hero.pointsInTalent(Talent.COUNTER_ABILITY));
-		}
-		if (hero.hasTalent(Talent.LIGHTWEIGHT_CHARGE) && tier <= 3){
-			// T1/2/3 get 25/20/15% charge use reduction at +3
-			float chargeUseReduction = (0.30f-.05f*tier) * (hero.pointsInTalent(Talent.LIGHTWEIGHT_CHARGE)/3f);
-			chargeUse *= 1f - chargeUseReduction;
 		}
 		return chargeUse;
 	}
@@ -313,6 +310,29 @@ public class MeleeWeapon extends Weapon {
 			}
 		}
 		return super.buffedLvl();
+	}
+
+	@Override
+	public float accuracyFactor(Char owner, Char target) {
+		float ACC = super.accuracyFactor(owner, target);
+
+		if (owner instanceof Hero
+				&& ((Hero) owner).hasTalent(Talent.PRECISE_ASSAULT)
+				//does not trigger on ability attacks
+				&& ((Hero) owner).belongings.abilityWeapon != this) {
+			if (((Hero) owner).heroClass != HeroClass.DUELIST) {
+				//persistent +10%/20%/30% ACC for other heroes
+				ACC *= 1f + 0.1f * ((Hero) owner).pointsInTalent(Talent.PRECISE_ASSAULT);
+			} else if (this instanceof Flail && owner.buff(Flail.SpinAbilityTracker.class) != null){
+				//do nothing, this is not a regular attack so don't consume preciase assault
+			} else if (owner.buff(Talent.PreciseAssaultTracker.class) != null) {
+				// 2x/4x/8x ACC for duelist if she just used a weapon ability
+				ACC *= Math.pow(2, ((Hero) owner).pointsInTalent(Talent.PRECISE_ASSAULT));
+				owner.buff(Talent.PreciseAssaultTracker.class).detach();
+			}
+		}
+
+		return ACC;
 	}
 
 	@Override

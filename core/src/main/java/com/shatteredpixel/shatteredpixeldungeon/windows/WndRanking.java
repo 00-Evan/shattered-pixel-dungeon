@@ -88,7 +88,7 @@ public class WndRanking extends WndTabbed {
 			Rankings.INSTANCE.loadGameData( rec );
 			createControls();
 		} catch ( Exception e ) {
-			Game.reportException(e);
+			Game.reportException( new RuntimeException("Rankings Display Failed!",e));
 			Dungeon.hero = null;
 			createControls();
 		}

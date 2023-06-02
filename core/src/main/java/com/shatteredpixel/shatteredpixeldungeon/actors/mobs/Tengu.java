@@ -149,8 +149,8 @@ public class Tengu extends Mob {
 		
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 		if (lock != null) {
-			int multiple = state == PrisonBossLevel.State.FIGHT_START ? 1 : 4;
-			lock.addTime(dmg*multiple);
+			if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES))   lock.addTime(dmg/2f);
+			else                                                    lock.addTime(dmg);
 		}
 		
 		//phase 2 of the fight is over
@@ -631,17 +631,17 @@ public class Tengu extends Mob {
 								}
 							}
 						}
-
-						Heap h = Dungeon.level.heaps.get(cell);
-						if (h != null) {
-							for (Item i : h.items.toArray(new Item[0])) {
-								if (i instanceof BombItem) {
-									h.remove(i);
-								}
-							}
-						}
 					}
 
+				}
+
+				Heap h = Dungeon.level.heaps.get(bombPos);
+				if (h != null) {
+					for (Item i : h.items.toArray(new Item[0])) {
+						if (i instanceof BombItem) {
+							h.remove(i);
+						}
+					}
 				}
 				Sample.INSTANCE.play(Assets.Sounds.BLAST);
 				detach();

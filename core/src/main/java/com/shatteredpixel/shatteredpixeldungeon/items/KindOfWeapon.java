@@ -100,7 +100,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 	
 	@Override
 	public boolean doEquip( Hero hero ) {
-
+		boolean wasInInv = hero.belongings.contains(this);
 		detachAll( hero.belongings.backpack );
 		
 		if (hero.belongings.weapon == null || hero.belongings.weapon.doUnequip( hero, true )) {
@@ -118,7 +118,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 				GLog.n( Messages.get(KindOfWeapon.class, "equip_cursed") );
 			}
 
-			if (hero.hasTalent(Talent.SWIFT_EQUIP)) {
+			if (wasInInv && hero.hasTalent(Talent.SWIFT_EQUIP)) {
 				if (hero.buff(Talent.SwiftEquipCooldown.class) == null){
 					hero.spendAndNext(-hero.cooldown());
 					Buff.affect(hero, Talent.SwiftEquipCooldown.class, 19f)
@@ -144,6 +144,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 	}
 
 	public boolean equipSecondary( Hero hero ){
+		boolean wasInInv = hero.belongings.contains(this);
 		detachAll( hero.belongings.backpack );
 
 		if (hero.belongings.secondWep == null || hero.belongings.secondWep.doUnequip( hero, true )) {
@@ -161,7 +162,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 				GLog.n( Messages.get(KindOfWeapon.class, "equip_cursed") );
 			}
 
-			if (hero.hasTalent(Talent.SWIFT_EQUIP)) {
+			if (wasInInv && hero.hasTalent(Talent.SWIFT_EQUIP)) {
 				if (hero.buff(Talent.SwiftEquipCooldown.class) == null){
 					hero.spendAndNext(-hero.cooldown());
 					Buff.affect(hero, Talent.SwiftEquipCooldown.class, 19f)

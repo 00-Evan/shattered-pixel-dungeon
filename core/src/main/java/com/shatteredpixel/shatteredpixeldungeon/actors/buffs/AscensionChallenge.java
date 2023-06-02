@@ -24,12 +24,14 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -49,15 +51,15 @@ public class AscensionChallenge extends Buff {
 		modifiers.put(Crab.class,           8f);
 		modifiers.put(Slime.class,          8f);
 
-		modifiers.put(Skeleton.class,       5f);
-		modifiers.put(Thief.class,          5f);
-		modifiers.put(DM100.class,          4.5f);
+		modifiers.put(Skeleton.class,       6f);
+		modifiers.put(Thief.class,          6f);
+		modifiers.put(DM100.class,          5f);
 		modifiers.put(Guard.class,          4f);
 		modifiers.put(Necromancer.class,    4f);
 
-		modifiers.put(Bat.class,            2.5f);
-		modifiers.put(Brute.class,          2.25f);
-		modifiers.put(Shaman.class,         2.25f);
+		modifiers.put(Bat.class,            3f);
+		modifiers.put(Brute.class,          2.5f);
+		modifiers.put(Shaman.class,         2.5f);
 		modifiers.put(Spinner.class,        2f);
 		modifiers.put(DM200.class,          2f);
 
@@ -74,7 +76,7 @@ public class AscensionChallenge extends Buff {
 	}
 
 	public static float statModifier(Char ch){
-		if (Dungeon.hero.buff(AscensionChallenge.class) == null){
+		if (Dungeon.hero == null || Dungeon.hero.buff(AscensionChallenge.class) == null){
 			return 1;
 		}
 
@@ -161,11 +163,18 @@ public class AscensionChallenge extends Buff {
 		if (chal.stacks < 8f && (int)(chal.stacks/2) != (int)(oldStacks/2f)){
 			GLog.p(Messages.get(AscensionChallenge.class, "weaken"));
 		}
+
+		//if the hero is at the max level, grant them 10 effective xp per stack cleared
+		// for the purposes of on-xp gain effects
+		if (oldStacks > chal.stacks && Dungeon.hero.lvl == Hero.MAX_LEVEL){
+			Dungeon.hero.earnExp(Math.round(10*(oldStacks - chal.stacks)), chal.getClass());
+		}
+
 		BuffIndicator.refreshHero();
 	}
 
-	//used for internal calculations like corruption, not actual exp gain
-	public static int AscensionExp(Mob m){
+	public static int AscensionCorruptResist(Mob m){
+		//default to just using their EXP value if no ascent challenge is happening
 		if (Dungeon.hero.buff(AscensionChallenge.class) == null){
 			return m.EXP;
 		}
@@ -202,6 +211,7 @@ public class AscensionChallenge extends Buff {
 	public void onLevelSwitch(){
 		if (Dungeon.depth < Statistics.highestAscent){
 			Statistics.highestAscent = Dungeon.depth;
+			justAscended = true;
 			if (Dungeon.bossLevel()){
 				Dungeon.hero.buff(Hunger.class).satisfy(Hunger.STARVING);
 				Buff.affect(Dungeon.hero, Healing.class).setHeal(Dungeon.hero.HT, 0, 20);
@@ -229,9 +239,19 @@ public class AscensionChallenge extends Buff {
 
 	}
 
+	//messages at boss levels only trigger on first ascent
+	private boolean justAscended = false;
+
 	public void saySwitch(){
 		if (Dungeon.bossLevel()){
-			GLog.p(Messages.get(this, "break"));
+			if (justAscended) {
+				GLog.p(Messages.get(this, "break"));
+				for (Char ch : Actor.chars()){
+					if (ch instanceof DriedRose.GhostHero){
+						((DriedRose.GhostHero) ch).sayAppeared();
+					}
+				}
+			}
 		} else {
 			if (Dungeon.depth == 1){
 				GLog.n(Messages.get(this, "almost"));
@@ -248,6 +268,7 @@ public class AscensionChallenge extends Buff {
 				GLog.h(Messages.get(this, "weaken_info"));
 			}
 		}
+		justAscended = false;
 	}
 
 	@Override

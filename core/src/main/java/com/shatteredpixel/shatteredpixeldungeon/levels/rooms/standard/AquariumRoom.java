@@ -65,7 +65,7 @@ public class AquariumRoom extends StandardRoom {
 		int numFish = (minDim - 4)/3; //1-3 fish, depending on room size
 		
 		for (int i=0; i < numFish; i++) {
-			Piranha piranha = new Piranha();
+			Piranha piranha = Piranha.random();
 			do {
 				piranha.pos = level.pointToCell(random(3));
 			} while (level.map[piranha.pos] != Terrain.WATER|| level.findMob( piranha.pos ) != null);

@@ -388,14 +388,14 @@ public class SpiritBow extends Weapon {
 					}
 					return;
 				}
+
 				QuickSlotButton.target(enemy);
-				
-				final boolean last = flurryCount == 1;
 				
 				user.busy();
 				
 				throwSound();
-				
+
+				user.sprite.zap(cell);
 				((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).
 						reset(user.sprite,
 								cell,
@@ -407,8 +407,27 @@ public class SpiritBow extends Weapon {
 											curUser = user;
 											onThrow(cell);
 										}
-										
-										if (last) {
+
+										flurryCount--;
+										if (flurryCount > 0){
+											Actor.add(new Actor() {
+
+												{
+													actPriority = VFX_PRIO-1;
+												}
+
+												@Override
+												protected boolean act() {
+													flurryActor = this;
+													int target = QuickSlotButton.autoAim(enemy, SpiritArrow.this);
+													if (target == -1) target = cell;
+													cast(user, target);
+													Actor.remove(this);
+													return false;
+												}
+											});
+											curUser.next();
+										} else {
 											if (user.buff(Talent.LethalMomentumTracker.class) != null){
 												user.buff(Talent.LethalMomentumTracker.class).detach();
 												user.next();
@@ -425,32 +444,6 @@ public class SpiritBow extends Weapon {
 										}
 									}
 								});
-				
-				user.sprite.zap(cell, new Callback() {
-					@Override
-					public void call() {
-						flurryCount--;
-						if (flurryCount > 0){
-							Actor.add(new Actor() {
-
-								{
-									actPriority = VFX_PRIO-1;
-								}
-
-								@Override
-								protected boolean act() {
-									flurryActor = this;
-									int target = QuickSlotButton.autoAim(enemy, SpiritArrow.this);
-									if (target == -1) target = cell;
-									cast(user, target);
-									Actor.remove(this);
-									return false;
-								}
-							});
-							curUser.next();
-						}
-					}
-				});
 				
 			} else {
 

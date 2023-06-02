@@ -111,7 +111,10 @@ public class Goo extends Mob {
 			Statistics.qualifiedForBossChallengeBadge = false;
 
 			LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
-			if (lock != null) lock.removeTime(healInc*2);
+			if (lock != null){
+				if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES))   lock.removeTime(healInc);
+				else                                                    lock.removeTime(healInc*1.5f);
+			}
 
 			if (Dungeon.level.heroFOV[pos] ){
 				sprite.emitter().burst( Speck.factory( Speck.HEALING ), healInc );
@@ -141,8 +144,8 @@ public class Goo extends Mob {
 			//we check both from and to in this case as projectile logic isn't always symmetrical.
 			//this helps trim out BS edge-cases
 			return Dungeon.level.distance(enemy.pos, pos) <= 2
-						&& new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE).collisionPos == enemy.pos
-						&& new Ballistica( enemy.pos, pos, Ballistica.PROJECTILE).collisionPos == pos;
+						&& new Ballistica( pos, enemy.pos, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID).collisionPos == enemy.pos
+						&& new Ballistica( enemy.pos, pos, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID).collisionPos == pos;
 		} else {
 			return super.canAttack(enemy);
 		}
@@ -270,7 +273,10 @@ public class Goo extends Mob {
 			yell(Messages.get(this, "gluuurp"));
 		}
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
-		if (lock != null) lock.addTime(dmg*2);
+		if (lock != null){
+			if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES))   lock.addTime(dmg);
+			else                                                    lock.addTime(dmg*1.5f);
+		}
 	}
 
 	@Override

@@ -78,7 +78,7 @@ public class RatKing extends NPC {
 	@Override
 	protected void onAdd() {
 		super.onAdd();
-		if (Dungeon.depth != 5){
+		if (firstAdded && Dungeon.depth != 5){
 			yell(Messages.get(this, "confused"));
 		}
 	}

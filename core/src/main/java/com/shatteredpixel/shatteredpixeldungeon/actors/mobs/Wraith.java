@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ChallengeParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.WraithSprite;
@@ -36,7 +37,7 @@ public class Wraith extends Mob {
 
 	private static final float SPAWN_DELAY	= 2f;
 	
-	private int level;
+	protected int level;
 	
 	{
 		spriteClass = WraithSprite.class;
@@ -93,16 +94,21 @@ public class Wraith extends Mob {
 		return true;
 	}
 	
-	public static void spawnAround( int pos ) {
+	public static void spawnAround( int pos, boolean allowExotic ) {
 		for (int n : PathFinder.NEIGHBOURS4) {
-			spawnAt( pos + n );
+			spawnAt( pos + n, allowExotic );
 		}
 	}
 	
-	public static Wraith spawnAt( int pos ) {
+	public static Wraith spawnAt( int pos, boolean allowExotic ) {
 		if ((!Dungeon.level.solid[pos] || Dungeon.level.passable[pos]) && Actor.findChar( pos ) == null) {
-			
-			Wraith w = new Wraith();
+
+			Wraith w;
+			if (allowExotic && Random.Int(100) == 0){
+				w = new TormentedSpirit();
+			} else {
+				w = new Wraith();
+			}
 			w.adjustStats( Dungeon.scalingDepth() );
 			w.pos = pos;
 			w.state = w.HUNTING;
@@ -111,8 +117,12 @@ public class Wraith extends Mob {
 
 			w.sprite.alpha( 0 );
 			w.sprite.parent.add( new AlphaTweener( w.sprite, 1, 0.5f ) );
-			
-			w.sprite.emitter().burst( ShadowParticle.CURSE, 5 );
+
+			if (w instanceof TormentedSpirit){
+				w.sprite.emitter().burst(ChallengeParticle.FACTORY, 10);
+			} else {
+				w.sprite.emitter().burst(ShadowParticle.CURSE, 5);
+			}
 			
 			return w;
 		} else {

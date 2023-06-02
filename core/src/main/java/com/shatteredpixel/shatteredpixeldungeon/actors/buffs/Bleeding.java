@@ -25,6 +25,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Sacrificial;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sickle;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -109,8 +111,12 @@ public class Bleeding extends Buff {
 					} else if (source == Sacrificial.class){
 						Badges.validateDeathFromFriendlyMagic();
 					}
-					Dungeon.fail( getClass() );
+					Dungeon.fail( this );
 					GLog.n( Messages.get(this, "ondeath") );
+				}
+
+				if (source == Sickle.HarvestBleedTracker.class && !target.isAlive()){
+					MeleeWeapon.onAbilityKill(Dungeon.hero, target);
 				}
 				
 				spend( TICK );

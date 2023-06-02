@@ -67,6 +67,12 @@ public class Rapier extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
+		//+(3+lvl) damage, equivalent to +67% damage, but more consistent
+		int dmgBoost = augment.damageFactor(3 + level());
+		lungeAbility(hero, target, 1, dmgBoost, this);
+	}
+
+	public static void lungeAbility(Hero hero, Integer target, float dmgMulti, int dmgBoost, MeleeWeapon wep){
 		if (target == null){
 			return;
 		}
@@ -75,20 +81,20 @@ public class Rapier extends MeleeWeapon {
 		//duelist can lunge out of her FOV, but this wastes the ability instead of cancelling if there is no target
 		if (Dungeon.level.heroFOV[target]) {
 			if (enemy == null || enemy == hero || hero.isCharmedBy(enemy)) {
-				GLog.w(Messages.get(this, "ability_no_target"));
+				GLog.w(Messages.get(wep, "ability_no_target"));
 				return;
 			}
 		}
 
 		if (hero.rooted || Dungeon.level.distance(hero.pos, target) < 2
-				|| Dungeon.level.distance(hero.pos, target)-1 > reachFactor(hero)){
-			GLog.w(Messages.get(this, "ability_bad_position"));
+				|| Dungeon.level.distance(hero.pos, target)-1 > wep.reachFactor(hero)){
+			GLog.w(Messages.get(wep, "ability_bad_position"));
 			return;
 		}
 
 		int lungeCell = -1;
 		for (int i : PathFinder.NEIGHBOURS8){
-			if (Dungeon.level.distance(hero.pos+i, target) <= reachFactor(hero)
+			if (Dungeon.level.distance(hero.pos+i, target) <= wep.reachFactor(hero)
 					&& Actor.findChar(hero.pos+i) == null
 					&& (Dungeon.level.passable[hero.pos+i] || (Dungeon.level.avoid[hero.pos+i] && hero.flying))){
 				if (lungeCell == -1 || Dungeon.level.trueDistance(hero.pos + i, target) < Dungeon.level.trueDistance(lungeCell, target)){
@@ -98,7 +104,7 @@ public class Rapier extends MeleeWeapon {
 		}
 
 		if (lungeCell == -1){
-			GLog.w(Messages.get(this, "ability_bad_position"));
+			GLog.w(Messages.get(wep, "ability_bad_position"));
 			return;
 		}
 
@@ -118,25 +124,25 @@ public class Rapier extends MeleeWeapon {
 					hero.sprite.attack(enemy.pos, new Callback() {
 						@Override
 						public void call() {
-							//+3+lvl damage, equivalent to +67% damage, but more consistent
-							beforeAbilityUsed(hero);
+
+							wep.beforeAbilityUsed(hero, enemy);
 							AttackIndicator.target(enemy);
-							if (hero.attack(enemy, 1f, augment.damageFactor(3 + level()), Char.INFINITE_ACCURACY)) {
+							if (hero.attack(enemy, dmgMulti, dmgBoost, Char.INFINITE_ACCURACY)) {
 								Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 								if (!enemy.isAlive()) {
-									onAbilityKill(hero);
+									wep.onAbilityKill(hero, enemy);
 								}
 							}
 							Invisibility.dispel();
 							hero.spendAndNext(hero.attackDelay());
-							afterAbilityUsed(hero);
+							wep.afterAbilityUsed(hero);
 						}
 					});
 				} else {
-					beforeAbilityUsed(hero);
+					wep.beforeAbilityUsed(hero, null);
 					GLog.w(Messages.get(Rapier.class, "ability_no_target"));
 					hero.spendAndNext(hero.speed());
-					afterAbilityUsed(hero);
+					wep.afterAbilityUsed(hero);
 				}
 			}
 		});

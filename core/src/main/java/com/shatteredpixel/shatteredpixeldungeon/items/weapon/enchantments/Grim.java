@@ -21,14 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
 
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
-import com.watabou.utils.Random;
 
 public class Grim extends Weapon.Enchantment {
 	
@@ -39,27 +38,18 @@ public class Grim extends Weapon.Enchantment {
 
 		int level = Math.max( 0, weapon.buffedLvl() );
 
-		int enemyHealth = defender.HP - damage;
-		if (enemyHealth <= 0) return damage; //no point in proccing if they're already dead.
-
-		//scales from 0 - 50% based on how low hp the enemy is, plus 5% per level
+		//scales from 0 - 50% based on how low hp the enemy is, plus 0-5% per level
 		float maxChance = 0.5f + .05f*level;
-		float chanceMulti = (float)Math.pow( ((defender.HT - enemyHealth) / (float)defender.HT), 2);
-		float chance = maxChance * chanceMulti;
+		maxChance *= procChanceMultiplier(attacker);
 
-		chance *= procChanceMultiplier(attacker);
+		//we defer logic using an actor here so we can know the true final damage
+		//see Char.damage
+		Buff.affect(defender, GrimTracker.class).maxChance = maxChance;
 
-		if (Random.Float() < chance) {
-			
-			defender.damage( defender.HP, this );
-			defender.sprite.emitter().burst( ShadowParticle.UP, 5 );
-			
-			if (!defender.isAlive() && attacker instanceof Hero
-				//this prevents unstable from triggering grim achievement
-				&& weapon.hasEnchant(Grim.class, attacker)) {
-				Badges.validateGrimWeapon();
-			}
-			
+		if (defender.buff(GrimTracker.class) != null
+				&& attacker instanceof Hero
+				&& weapon.hasEnchant(Grim.class, attacker)){
+			defender.buff(GrimTracker.class).qualifiesForBadge = true;
 		}
 
 		return damage;
@@ -69,5 +59,21 @@ public class Grim extends Weapon.Enchantment {
 	public Glowing glowing() {
 		return BLACK;
 	}
+
+	public static class GrimTracker extends Buff {
+
+		{
+			actPriority = Actor.VFX_PRIO;
+		}
+
+		public float maxChance;
+		public boolean qualifiesForBadge;
+
+		@Override
+		public boolean act() {
+			detach();
+			return true;
+		}
+	};
 
 }

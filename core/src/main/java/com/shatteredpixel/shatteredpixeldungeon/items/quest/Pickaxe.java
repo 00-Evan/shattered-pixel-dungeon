@@ -208,13 +208,13 @@ public class Pickaxe extends MeleeWeapon {
 						|| enemy instanceof Scorpio) {
 					damageMulti = 2f;
 				}
-				beforeAbilityUsed(hero);
+				beforeAbilityUsed(hero, enemy);
 				AttackIndicator.target(enemy);
 				if (hero.attack(enemy, damageMulti, 0, Char.INFINITE_ACCURACY)) {
 					if (enemy.isAlive()) {
 						Buff.affect(enemy, Vulnerable.class, 3f);
 					} else {
-						onAbilityKill(hero);
+						onAbilityKill(hero, enemy);
 					}
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				}

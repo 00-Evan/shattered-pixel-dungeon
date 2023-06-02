@@ -46,6 +46,11 @@ public class DisplacingDart extends TippedDart {
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
 
+		//only display enemies when processing charge shot
+		if (processingChargedShot && attacker.alignment == defender.alignment) {
+			return super.proc(attacker, defender, damage);
+		}
+
 		//attempts to teleport the enemy to a position 8-10 cells away from the hero
 		//prioritizes the closest visible cell to the defender, or closest non-visible if no visible are present
 		//grants vision on the defender if teleport goes to non-visible
@@ -97,7 +102,7 @@ public class DisplacingDart extends TippedDart {
 					Dungeon.observe();
 					GameScene.updateFog();
 				} else if (!Dungeon.level.heroFOV[chosenPos]){
-					Buff.affect(attacker, TalismanOfForesight.CharAwareness.class, 5f).charID = defender.id();
+					Buff.append(attacker, TalismanOfForesight.CharAwareness.class, 5f).charID = defender.id();
 				}
 			}
 		

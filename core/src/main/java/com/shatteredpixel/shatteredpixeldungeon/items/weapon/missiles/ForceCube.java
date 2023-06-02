@@ -74,7 +74,7 @@ public class ForceCube extends MissileWeapon {
 			curUser.shoot(target, this);
 			if (target == Dungeon.hero && !target.isAlive()){
 				Badges.validateDeathFromFriendlyMagic();
-				Dungeon.fail(getClass());
+				Dungeon.fail(this);
 				GLog.n(Messages.get(this, "ondeath"));
 			}
 		}

@@ -171,7 +171,7 @@ public enum Document {
 				case "Examining":
 					return Icons.get(Icons.MAGNIFY);
 				case "Surprise_Attacks":
-					return new ItemSprite( ItemSpriteSheet.ASSASSINS_BLADE );
+					return Icons.get(Icons.SNAKE);
 				case "Identifying":
 					return new ItemSprite( new ScrollOfIdentify() );
 				case "Food":

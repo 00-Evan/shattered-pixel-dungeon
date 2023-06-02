@@ -223,11 +223,11 @@ public class CursedWand {
 						if (!toDamage.isAlive()) {
 							if (user == Dungeon.hero && origin != null) {
 								Badges.validateDeathFromFriendlyMagic();
-								Dungeon.fail( origin.getClass() );
+								Dungeon.fail( origin );
 								GLog.n( Messages.get( CursedWand.class, "ondeath", origin.name() ) );
 							} else {
 								Badges.validateDeathFromEnemyMagic();
-								Dungeon.fail( toHeal.getClass() );
+								Dungeon.fail( toHeal );
 							}
 						}
 					} else {
@@ -362,7 +362,7 @@ public class CursedWand {
 				mimic.alignment = Char.Alignment.ENEMY;
 				Item reward;
 				do {
-					reward = Generator.random(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
+					reward = Generator.randomUsingDefaults(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
 							Generator.Category.RING, Generator.Category.WAND));
 				} while (reward.level() < 1);
 				//play vfx/sfx manually as mimic isn't in the scene yet

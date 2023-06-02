@@ -312,12 +312,12 @@ public class Wandmaker extends NPC {
 				spawned = true;
 
 				given = false;
-				wand1 = (Wand) Generator.random(Generator.Category.WAND);
+				wand1 = (Wand) Generator.randomUsingDefaults(Generator.Category.WAND);
 				wand1.cursed = false;
 				wand1.upgrade();
 
 				do {
-					wand2 = (Wand) Generator.random(Generator.Category.WAND);
+					wand2 = (Wand) Generator.randomUsingDefaults(Generator.Category.WAND);
 				} while (wand2.getClass().equals(wand1.getClass()));
 				wand2.cursed = false;
 				wand2.upgrade();

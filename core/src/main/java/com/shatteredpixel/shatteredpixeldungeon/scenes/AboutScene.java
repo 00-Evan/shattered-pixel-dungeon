@@ -123,8 +123,8 @@ public class AboutScene extends PixelScene {
 				"Pixel Dungeon",
 				Icons.WATA.get(),
 				"Developed by: _Watabou_\nInspired by Brian Walker's Brogue",
-				"watabou.itch.io",
-				"https://watabou.itch.io/");
+				"pixeldungeon.watabou.ru",
+				"http://pixeldungeon.watabou.ru");
 		if (landscape()){
 			wata.setRect(shpx.left(), kristjan.bottom() + 8, colWidth, 0);
 		} else {

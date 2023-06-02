@@ -158,6 +158,7 @@ public class SewerBossLevel extends SewerLevel {
 		for (Point p : roomEntrance.getPoints()){
 			int cell = pointToCell(p);
 			if (passable[cell]
+					&& roomEntrance.inside(p)
 					&& Actor.findChar(cell) == null
 					&& (!Char.hasProp(ch, Char.Property.LARGE) || openSpace[cell])){
 				candidates.add(cell);

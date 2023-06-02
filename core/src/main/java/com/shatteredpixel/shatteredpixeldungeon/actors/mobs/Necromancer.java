@@ -162,7 +162,7 @@ public class Necromancer extends Mob {
 				sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
 			}
 			
-			mySkeleton.HP = Math.min(mySkeleton.HP + 5, mySkeleton.HT);
+			mySkeleton.HP = Math.min(mySkeleton.HP + mySkeleton.HT/5, mySkeleton.HT);
 			if (mySkeleton.sprite.visible) mySkeleton.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
 			
 		//otherwise give it adrenaline
@@ -214,7 +214,7 @@ public class Necromancer extends Mob {
 					blocker.damage( Random.NormalIntRange(2, 10), this );
 					if (blocker == Dungeon.hero && !blocker.isAlive()){
 						Badges.validateDeathFromEnemyMagic();
-						Dungeon.fail(getClass());
+						Dungeon.fail(this);
 					}
 				}
 
@@ -244,6 +244,10 @@ public class Necromancer extends Mob {
 		@Override
 		public boolean act(boolean enemyInFOV, boolean justAlerted) {
 			enemySeen = enemyInFOV;
+
+			if (enemySeen){
+				target = enemy.pos;
+			}
 			
 			if (storedSkeletonID != -1){
 				Actor ch = Actor.findById(storedSkeletonID);
@@ -265,7 +269,7 @@ public class Necromancer extends Mob {
 				mySkeleton = null;
 			}
 			
-			//if enemy is seen, and enemy is within range, and we haven no skeleton, summon a skeleton!
+			//if enemy is seen, and enemy is within range, and we have no skeleton, summon a skeleton!
 			if (enemySeen && Dungeon.level.distance(pos, enemy.pos) <= 4 && mySkeleton == null){
 				
 				summoningPos = -1;
@@ -299,7 +303,6 @@ public class Necromancer extends Mob {
 			//otherwise, if enemy is seen, and we have a skeleton...
 			} else if (enemySeen && mySkeleton != null){
 				
-				target = enemy.pos;
 				spend(TICK);
 				
 				if (!fieldOfView[mySkeleton.pos]){
@@ -312,6 +315,7 @@ public class Necromancer extends Mob {
 							if (Actor.findChar(enemy.pos+c) == null
 									&& Dungeon.level.passable[enemy.pos+c]
 									&& fieldOfView[enemy.pos+c]
+									&& (Dungeon.level.openSpace[enemy.pos+c] || !Char.hasProp(mySkeleton, Property.LARGE))
 									&& Dungeon.level.trueDistance(pos, enemy.pos+c) < Dungeon.level.trueDistance(pos, telePos)){
 								telePos = enemy.pos+c;
 							}
