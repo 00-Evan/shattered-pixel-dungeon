@@ -66,7 +66,7 @@ public class v2_X_Changes {
 		changes.addButton( new ChangeButton(Icons.get(Icons.CHANGES), "Larger Patches",
 				"There is a decent amount of technical work that still needs to be done for v2.2.0, and I can easily introduce that into the game via some patches to v2.1.0. Because of this, I expect that v2.1 is going to have a longer patch cycle than usual, as I'll be both including those technical changes and taking the opportunity to fix a bunch of smaller issues sooner than if I waiting to release them in v2.2.0."));
 
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.PICKAXE), "Blacksmith Questt",
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.PICKAXE), "Blacksmith Quest",
 				"I plan to completely rework the blacksmith's quest in v2.2.0, to feature a new sub area and a unique mining mechanic. The player will need to mine out walls both to collect treasure and to navigate around hazards. I expect the quest will be notably more involved and challenging, but there will be new rewards on offer a well!"));
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Smaller Changes/Fixes",
@@ -92,7 +92,7 @@ public class v2_X_Changes {
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAR_SCYTHE), "New Weapons!",
 				"Three new weapons have been added to the game!\n" +
 				"\n" +
-				"_The Katana_ is a tier-4 defensive weapon that was designed to respond to the common feedback point of players wanting a higher tier weapon with the rapier's ability. Just like with her rapier, the Duelist can _lunge_ at enemies with a katana, dealing +50% damage.\n" +
+				"_The Katana_ is a tier-4 defensive weapon that was designed to respond to the common feedback point of players wanting a higher tier weapon with the rapier's ability. Just like with her rapier, the Duelist can _lunge_ at enemies with a katana, dealing bonus damage.\n" +
 				"\n" +
 				"_The Sickle_ and _War Scythe_ are T2 and T5 weapons that trade in some accuracy for increased base damage. The Duelist can use the _harvest_ ability with these weapons, which deals a large amount of bleeding instead of direct damage, but costs 2 charges."));
 
