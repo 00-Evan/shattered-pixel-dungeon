@@ -170,6 +170,15 @@ public class Mimic extends Mob {
 	}
 
 	@Override
+	public int defenseProc(Char enemy, int damage) {
+		if (state == PASSIVE){
+			alignment = Alignment.ENEMY;
+			stopHiding();
+		}
+		return super.defenseProc(enemy, damage);
+	}
+
+	@Override
 	public void damage(int dmg, Object src) {
 		if (state == PASSIVE){
 			alignment = Alignment.ENEMY;
