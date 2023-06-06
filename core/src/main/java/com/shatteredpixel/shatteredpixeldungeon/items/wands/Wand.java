@@ -579,6 +579,11 @@ public abstract class Wand extends Item {
 							return;
 						}
 
+						if (curWand.curCharges == 0){
+							GLog.w( Messages.get(Wand.class, "fizzles") );
+							return;
+						}
+
 						float shield = curUser.HT * (0.04f*curWand.curCharges);
 						if (curUser.pointsInTalent(Talent.SHIELD_BATTERY) == 2) shield *= 1.5f;
 						Buff.affect(curUser, Barrier.class).setShield(Math.round(shield));
