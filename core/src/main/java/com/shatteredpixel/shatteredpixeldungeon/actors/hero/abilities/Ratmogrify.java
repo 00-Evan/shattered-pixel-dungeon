@@ -213,9 +213,10 @@ public class Ratmogrify extends ArmorAbility {
 		}
 
 		public Mob getOriginal(){
-			original.HP = HP;
-			original.pos = pos;
-			original.clearTime();
+			if (original != null) {
+				original.HP = HP;
+				original.pos = pos;
+			}
 			return original;
 		}
 
@@ -224,9 +225,8 @@ public class Ratmogrify extends ArmorAbility {
 		@Override
 		protected boolean act() {
 			if (timeLeft <= 0){
-				original.HP = HP;
-				original.pos = pos;
-				original.clearTime();
+				Mob original = getOriginal();
+				this.original = null;
 				GameScene.add(original);
 
 				EXP = 0;
