@@ -404,10 +404,15 @@ public class InventoryPane extends Component {
 		return selector != null;
 	}
 
+	public static void clearTargetingSlot(){
+		targetingSlot = null;
+	}
+
 	public static void useTargeting(){
 		if (instance != null &&
 				instance.visible &&
 				lastTarget != null &&
+				targetingSlot != null &&
 				Actor.chars().contains( lastTarget ) &&
 				lastTarget.isAlive() &&
 				lastTarget.alignment != Char.Alignment.ALLY &&
