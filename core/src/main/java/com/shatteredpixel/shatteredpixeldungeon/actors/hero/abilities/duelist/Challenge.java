@@ -138,7 +138,7 @@ public class Challenge extends ArmorAbility {
 			return;
 		}
 
-		if (Dungeon.level.distance(blinkpos, targetCh.pos) >= 5){
+		if (Dungeon.level.distance(blinkpos, targetCh.pos) > 5){
 			GLog.w(Messages.get(this, "distant_target"));
 			return;
 		}
