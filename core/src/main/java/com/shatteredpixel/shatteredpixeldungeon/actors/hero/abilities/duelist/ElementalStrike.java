@@ -529,7 +529,7 @@ public class ElementalStrike extends ArmorAbility {
 		} else if (ench instanceof Friendly){
 			for (Char ch : affected){
 				if (Random.Float() < 0.5f*powerMulti){
-					Buff.affect(ch, Charm.class, 6f).target = hero;
+					Buff.affect(ch, Charm.class, 6f).object = hero.id();
 				}
 			}
 		}
