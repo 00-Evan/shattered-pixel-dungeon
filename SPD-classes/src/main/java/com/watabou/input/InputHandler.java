@@ -21,13 +21,11 @@
 
 package com.watabou.input;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.watabou.noosa.Game;
-import com.watabou.noosa.ui.Cursor;
 import com.watabou.utils.PointF;
 
 public class InputHandler extends InputAdapter {

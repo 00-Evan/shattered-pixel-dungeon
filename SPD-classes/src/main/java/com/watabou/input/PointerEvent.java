@@ -121,6 +121,10 @@ public class PointerEvent {
 		}
 		return lastHoverPos.clone();
 	}
+
+	public static void setHoverPos(PointF pos){
+		lastHoverPos.set(pos);
+	}
 	
 	public static synchronized void addPointerEvent( PointerEvent event ){
 		pointerEvents.add( event );

@@ -26,6 +26,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.watabou.input.ControllerHandler;
 import com.watabou.noosa.Game;
+import com.watabou.utils.Callback;
 import com.watabou.utils.FileUtils;
 import com.watabou.utils.PointF;
 
@@ -99,10 +100,9 @@ public class Cursor {
 		} else {
 			if (ControllerHandler.controllerPointerActive()) {
 				ControllerHandler.setControllerPointer(true);
-				ControllerHandler.updateControllerPointer(new PointF(Game.width/2, Game.height/2), false);
+				ControllerHandler.updateControllerPointer(new PointF(Game.width/2f, Game.height/2f), false);
 			} else {
 				Gdx.input.setCursorCatched(false);
-				Gdx.input.setCursorPosition(Game.width/2, Game.height/2);
 			}
 		}
 	}
