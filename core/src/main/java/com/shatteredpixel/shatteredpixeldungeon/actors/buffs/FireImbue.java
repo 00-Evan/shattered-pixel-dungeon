@@ -113,4 +113,14 @@ public class FireImbue extends Buff {
 	{
 		immunities.add( Burning.class );
 	}
+
+	@Override
+	public boolean attachTo(Char target) {
+		if (super.attachTo(target)){
+			Buff.detach(target, Burning.class);
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
