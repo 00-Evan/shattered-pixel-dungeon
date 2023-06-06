@@ -26,12 +26,8 @@ import com.watabou.noosa.Game;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.Random;
 
-import java.awt.MediaTracker;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public enum Music {
 	

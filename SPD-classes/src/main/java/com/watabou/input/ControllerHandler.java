@@ -28,7 +28,6 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.ControllerMapping;
 import com.badlogic.gdx.controllers.Controllers;
-import com.watabou.noosa.Game;
 import com.watabou.noosa.ui.Cursor;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.PointF;

@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.input.PointerEvent;
 import com.watabou.noosa.TextInput;
-import com.watabou.utils.DeviceCompat;
 
 public class WndTextInput extends Window {
 

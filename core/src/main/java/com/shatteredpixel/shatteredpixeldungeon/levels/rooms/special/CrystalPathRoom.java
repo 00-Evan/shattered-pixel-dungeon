@@ -36,7 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Starflower;
-import com.sun.tools.javac.jvm.Gen;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 

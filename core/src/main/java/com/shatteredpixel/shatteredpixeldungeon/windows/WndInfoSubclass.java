@@ -28,8 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TalentButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TalentsPane;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndHeroInfo;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

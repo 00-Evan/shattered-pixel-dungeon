@@ -26,7 +26,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.watabou.input.ControllerHandler;
 import com.watabou.noosa.Game;
-import com.watabou.utils.Callback;
 import com.watabou.utils.FileUtils;
 import com.watabou.utils.PointF;
 

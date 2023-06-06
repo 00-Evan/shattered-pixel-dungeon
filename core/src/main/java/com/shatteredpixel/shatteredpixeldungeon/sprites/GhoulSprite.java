@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.watabou.noosa.Game;
 import com.watabou.noosa.TextureFilm;
 
 public class GhoulSprite extends MobSprite {

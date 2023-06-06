@@ -32,8 +32,6 @@ import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Signal;
 
-import java.util.ArrayList;
-
 public class Button extends Component {
 
 	public static float longClick = 0.5f;
