@@ -120,7 +120,6 @@ public class ScrollOfDivination extends ExoticScroll {
 		readAnimation();
 		identify();
 	}
-	
 	private class WndDivination extends Window {
 		
 		private static final int WIDTH = 120;

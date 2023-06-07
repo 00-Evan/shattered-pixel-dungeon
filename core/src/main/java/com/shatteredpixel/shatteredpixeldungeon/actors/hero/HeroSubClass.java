@@ -37,9 +37,11 @@ public enum HeroSubClass {
 
 	BATTLEMAGE(HeroIcon.BATTLEMAGE),
 	WARLOCK(HeroIcon.WARLOCK),
+	PASTOR(HeroIcon.WARLOCK),
 	
 	ASSASSIN(HeroIcon.ASSASSIN),
 	FREERUNNER(HeroIcon.FREERUNNER),
+	NINJA(HeroIcon.ASSASSIN),
 	
 	SNIPER(HeroIcon.SNIPER),
 	WARDEN(HeroIcon.WARDEN),

@@ -25,6 +25,11 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FrostImbue;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SnowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CthulhuGirlStatue;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
@@ -55,7 +60,21 @@ public class PotionOfFrost extends Potion {
 		}
 		
 	}
-	
+
+	@Override
+	public void apply(Hero hero) {
+		super.apply(hero);
+
+		CthulhuGirlStatue cthulhustatue = Dungeon.hero.belongings.getItem( CthulhuGirlStatue.class );
+
+		if( cthulhustatue != null ){
+			if( cthulhustatue.elementpower ) {
+				Buff.affect(hero, FrostImbue.class, 10f);
+				hero.sprite.emitter().burst(SnowParticle.FACTORY, 5);
+			}
+		}
+	}
+
 	@Override
 	public int value() {
 		return isKnown() ? 30 * quantity : super.value();

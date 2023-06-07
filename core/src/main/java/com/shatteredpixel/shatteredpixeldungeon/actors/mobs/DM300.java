@@ -207,6 +207,7 @@ public class DM300 extends Mob {
 					if (turnsSinceLastAbility >= MIN_COOLDOWN){
 						//use a coneAOE to try and account for trickshotting angles
 						ConeAOE aim = new ConeAOE(new Ballistica(pos, enemy.pos, Ballistica.WONT_STOP), Float.POSITIVE_INFINITY, 30, Ballistica.STOP_SOLID);
+
 						if (aim.cells.contains(enemy.pos)) {
 							lastAbility = GAS;
 							turnsSinceLastAbility = 0;

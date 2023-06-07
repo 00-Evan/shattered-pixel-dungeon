@@ -179,7 +179,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 
 		return n;
 	}
-	
+
 	private static Weapon changeWeapon( Weapon w ) {
 		
 		Weapon n;
@@ -212,7 +212,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		return n;
 		
 	}
-	
+
 	private static Ring changeRing( Ring r ) {
 		Ring n;
 		do {
@@ -234,7 +234,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		
 		return n;
 	}
-	
+
 	private static Artifact changeArtifact( Artifact a ) {
 		Artifact n;
 		do {
@@ -261,7 +261,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		
 		return null;
 	}
-	
+
 	private static Wand changeWand( Wand w ) {
 		
 		Wand n;
@@ -285,7 +285,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		
 		return n;
 	}
-	
+
 	private static Plant.Seed changeSeed( Plant.Seed s ) {
 		
 		Plant.Seed n;
@@ -296,7 +296,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		
 		return n;
 	}
-	
+
 	private static Runestone changeStone( Runestone r ) {
 		
 		Runestone n;
@@ -307,7 +307,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		
 		return n;
 	}
-	
+
 	private static Scroll changeScroll( Scroll s ) {
 		if (s instanceof ExoticScroll) {
 			return Reflection.newInstance(ExoticScroll.exoToReg.get(s.getClass()));
@@ -315,7 +315,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 			return Reflection.newInstance(ExoticScroll.regToExo.get(s.getClass()));
 		}
 	}
-	
+
 	private static Potion changePotion( Potion p ) {
 		if	(p instanceof ExoticPotion) {
 			return Reflection.newInstance(ExoticPotion.exoToReg.get(p.getClass()));

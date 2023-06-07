@@ -24,7 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.ArcaneResin;
-import com.shatteredpixel.shatteredpixeldungeon.items.ClothStrip;
+import com.shatteredpixel.shatteredpixeldungeon.items.sundry.ClothStrip;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.LiquidMetal;
@@ -366,9 +366,9 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe( new NinjaClothe.Recipe(),
 						new ArrayList<Item>(Arrays.asList(new ClothStrip(), new BoneSpike(), new Shuriken() )),
 						new NinjaClothe()));
-				result.add(new QuickRecipe( new HighOrderKnightArmor.Recipe(),
-						new ArrayList<Item>(Arrays.asList(new Pasty(), new Food() )),
-						new HighOrderKnightArmor()));
+				//result.add(new QuickRecipe( new HighOrderKnightArmor.Recipe(),
+					//	new ArrayList<Item>(Arrays.asList(new Pasty(), new Food() )),
+					//	new HighOrderKnightArmor()));
 				return result;
 			case 7:
 				result.add(new QuickRecipe(new AlchemicalCatalyst.Recipe(), new ArrayList<>(Arrays.asList(new Potion.PlaceHolder(), new Plant.Seed.PlaceHolder())), new AlchemicalCatalyst()));

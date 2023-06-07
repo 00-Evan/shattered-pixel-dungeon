@@ -21,12 +21,18 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AnkhInvulnerability;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Holyfire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -40,37 +46,74 @@ public class ScrollOfRetribution extends Scroll {
 	}
 	
 	@Override
-	public void doRead() {
+	public void doRead(  ) {
 		
-		GameScene.flash( 0x80FFFFFF );
-		
-		//scales from 0x to 1x power, maxing at ~10% HP
-		float hpPercent = (curUser.HT - curUser.HP)/(float)(curUser.HT);
-		float power = Math.min( 4f, 4.45f*hpPercent);
-		
-		Sample.INSTANCE.play( Assets.Sounds.BLAST );
-		GLog.i(Messages.get(this, "blast"));
-		
-		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-			if (Dungeon.level.heroFOV[mob.pos]) {
-				//deals 10%HT, plus 0-90%HP based on scaling
-				mob.damage(Math.round(mob.HT/10f + (mob.HP * power * 0.225f)), this);
-				if (mob.isAlive()) {
-					Buff.prolong(mob, Blindness.class, Blindness.DURATION);
+
+
+		if ( curUser.hasTalent(Talent.HATRED_TRANS) ){
+			GameScene.flash( 0x80FFD700 );
+			Sample.INSTANCE.play( Assets.Sounds.BLAST );
+			GLog.i(Messages.get(this, "holyblast"));
+			Buff.affect( curUser, AnkhInvulnerability.class, AnkhInvulnerability.DURATION );
+
+			for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+				if (mob.alignment != Char.Alignment.ALLY && Dungeon.level.heroFOV[mob.pos]) {
+					Buff.affect(mob, Holyfire.class ).reignite( mob, 999f  );
+					mob.sprite.centerEmitter().start(Speck.factory(Speck.NOTE), 0.2f, 10);
 				}
 			}
-		}
-		
-		Buff.prolong(curUser, Weakness.class, Weakness.DURATION);
-		Buff.prolong(curUser, Blindness.class, Blindness.DURATION);
-		Dungeon.observe();
 
-		identify();
+			identify();
+			readAnimation();
+
+		}else{
+			GameScene.flash( 0x80FFFFFF );
+			//scales from 0x to 1x power, maxing at ~10% HP
+			float hpPercent = (curUser.HT - curUser.HP)/(float)(curUser.HT);
+			float power = Math.min( 4f, 4.45f*hpPercent);
 		
-		readAnimation();
+			Sample.INSTANCE.play( Assets.Sounds.BLAST );
+			GLog.i(Messages.get(this, "blast"));
 		
+			for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+				if (Dungeon.level.heroFOV[mob.pos]) {
+					//deals 10%HT, plus 0-90%HP based on scaling
+					mob.damage(Math.round(mob.HT/10f + (mob.HP * power * 0.225f)), this);
+					if (mob.isAlive()) {
+						Buff.prolong(mob, Blindness.class, Blindness.DURATION);
+					}
+				}
+			}
+		
+			Buff.prolong(curUser, Weakness.class, Weakness.DURATION);
+			Buff.prolong(curUser, Blindness.class, Blindness.DURATION);
+			Dungeon.observe();
+
+			identify();
+		
+			readAnimation();
+
+		}
 	}
-	
+
+	@Override
+	public String info(){
+		super.info();
+		String info = desc();
+
+		if ( Dungeon.hero.hasTalent(Talent.HATRED_TRANS) ){
+			info += Messages.get(this, "hatred_trans_desc" );
+		} else {
+			info = desc();
+		}
+
+		if( isKnown() ){
+			return info;
+		}else
+			return Messages.get(this, "unknown_desc");
+	}
+
+
 	@Override
 	public int value() {
 		return isKnown() ? 40 * quantity : super.value();

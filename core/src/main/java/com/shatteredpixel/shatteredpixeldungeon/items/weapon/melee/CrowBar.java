@@ -28,20 +28,32 @@ import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.PHYSICIST;
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CrystalMimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.CrystalKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.MimicSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoTrap;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
@@ -111,76 +123,93 @@ public class CrowBar extends MeleeWeapon {
 
 		super.execute( hero, action );
 
-			if ( Random.Int(0,100) < Math.round( 30f+ level()*15 )) {
-				if (action.equals(AC_PICKLOCK)) {
-					GLog.i(Messages.get(this,"trylock_success"));
+		if ( action.equals(AC_PICKLOCK) ) {
 
-					hero.sprite.operate(hero.pos);
-					hero.busy();
+			curUser = hero;
+			curItem = this;
+			GameScene.selectCell(new CellSelector.Listener() {
 
-					hero.spend( TIME_TO_PICKLOCK );
-					hero.spendAndNext( TIME_TO_PICKLOCK );
+				@Override
+				public void onSelect( Integer cell ) {
 
-					GameScene.updateKeyDisplay();
+					if ( cell != null ) {
+						Heap heap = Dungeon.level.heaps.get( cell );
+						if (!(Dungeon.level.adjacent(curUser.pos, cell)) || cell == curUser.pos) {
+
+							if (cell == curUser.pos) {
+
+							} else {
+								GLog.i("too_far");
+								GLog.w(Messages.get(this, "too_far"));
+							}
+
+						} else if ( Dungeon.level.map[cell] == Terrain.CRYSTAL_DOOR ) {
+							Level.set( cell, Terrain.EMPTY );
+							Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+							CellEmitter.get( cell ).start( Speck.factory( Speck.DISCOVER ), 0.025f, 20 );
+							GameScene.updateMap(cell);
+
+						} else if ( Dungeon.level.map[cell] == Terrain.DOOR ) {
+							GLog.i("only_crystal");
+							GLog.w(Messages.get(this, "only_crystal"));
+						}
+
+						if ( heap != null ) {
+
+							if ( heap.type == Heap.Type.CRYSTAL_CHEST ) {
+								GameScene.updateKeyDisplay();
+								heap.open( curUser );
+							} else if ( heap.type == Heap.Type.CHEST ) {
+								GLog.i("only_crystal");
+								GLog.w(Messages.get(this, "only_crystal"));
+							}
+
+						} else if( !Dungeon.level.mobs.isEmpty() ){
+							Mob target = null;
+							Char ch = Actor.findChar(cell);
+								if ( ch != null && ch instanceof Mimic ){
+									target = (Mob)ch;
+									damageRoll( target );
+								}
+
+						} else {
+							GLog.i("cannot_picklock");
+							GLog.w(Messages.get(this, "cannot_picklock"));
+						}
+					}
 				}
+
+				@Override
+				public String prompt() {
+					return Messages.get(this, "prompt");
+				}
+			});
+
+			/*
+			if ( Random.Int(0,100) < Math.round( 30f+ level()*15 )) {
+				GLog.i(Messages.get(this,"trylock_success"));
+
+				hero.sprite.operate(hero.pos);
+				hero.busy();
+
+				hero.spend( TIME_TO_PICKLOCK );
+				hero.spendAndNext( TIME_TO_PICKLOCK );
+
+				GameScene.updateKeyDisplay();
 
 			}else {
 				GLog.i(Messages.get(this, "trylock_failed"));
+			}
+			 */
+
 		}
 	}
 
-
-
-	/*@Override
-	public void execute( Hero hero, String action ) {
-
-		super.execute( hero, action );
-		if(Random.Float()<0.2f){
-
-			if (action.equals( AC_PICKLOCK )) {
-				GLog.i(Messages.get(this,"trylock_success"));
-				hero.spend(5f);
-				hero.busy();
-				hero.sprite.operate(hero.pos);
-				//Dungeon.level.set(	hero.pos, );
-				ItemSprite sprite = Dungeon.level.drop(new Key(), hero.pos).sprite;
-
-
-			/*
-				if (hero.buff(MagicImmune.class) != null){
-					GLog.w( Messages.get(this, "no_magic") );
-				}  else
-				{
-				curUser = hero;
-				curItem = detach(hero.belongings.backpack );
-				//doPickLock();
-				}
-			} else {
-				GLog.i(Messages.get(this,"trylock_failed"));
-			}
-		}
-	}*/
-
 	@Override
-	public String info() {
-		String info = desc();
-		if (cursed && isEquipped( hero )) {
-			info += "\n\n" + Messages.get(Armor.class, "cursed_worn");
-		} else if (cursedKnown && cursed) {
-			info += "\n\n" + Messages.get(Armor.class, "cursed");
-		} else if (seal != null) {
-			info += "\n\n" + Messages.get(Armor.class, "seal_attached");
-		} else if (!isIdentified() && cursedKnown){
-			if (enchantment != null && enchantment.curse()) {
-				info += "\n\n" + Messages.get(Armor.class, "weak_cursed");
-			} else {
-				info += "\n\n" + Messages.get(Armor.class, "not_cursed");
-			}
-		}
+	public String statsInfo() {
 		if( hero.heroClass == PHYSICIST ){
-			info += "\n\n" + Messages.get(this, "mastery");
-		}
-		return info;
+			return  Messages.get(this, "mastery");
+		} return null;
 	}
 
 //对怪物额外伤害
@@ -202,5 +231,9 @@ public class CrowBar extends MeleeWeapon {
 	protected void duelistAbility(Hero hero, Integer target) {
 		Mace.heavyBlowAbility(hero, target, 1.65f, this);
 	}
+
+	//protected static CellSelector.Listener crystalSelector = new CellSelector.Listener() {
+
+
 
 }

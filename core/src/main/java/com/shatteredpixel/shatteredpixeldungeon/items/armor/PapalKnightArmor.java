@@ -75,26 +75,9 @@ public class PapalKnightArmor extends Armor {
 	@Override
 	public void execute(Hero hero, String action ){
 		super.execute(hero ,action);
-		switch (action){
-			case AC_EQUIP:
-				Buff.affect( hero, HolyHealing.class );
-				Buff.affect( hero, HolyLight.class );
-				break;
-			case AC_UNEQUIP:
-				doUnequip( hero,true );
-				Buff.detach(hero, HolyHealing.class);
-				Buff.detach(hero, HolyLight.class);
-				break;
-			case AC_THROW:
-				super.doThrow( hero );
-				Buff.detach(hero, HolyHealing.class);
-				Buff.detach(hero, HolyLight.class);
-				break;
-
-		}
-		if( hero.act( ) == doUnequip( hero,true )){
-			Buff.detach(hero, HolyHealing.class);
-			Buff.detach(hero, HolyLight.class);
+		if( action.equals( AC_EQUIP )){
+			Buff.affect( hero, HolyHealing.class );
+			Buff.affect( hero, HolyLight.class );
 		}
 	}
 

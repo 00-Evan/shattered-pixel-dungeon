@@ -19,10 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items;
+package com.shatteredpixel.shatteredpixeldungeon.items.sundry;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
@@ -38,13 +39,21 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.ArcaneResin;
+import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
+import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -64,7 +73,7 @@ public class Holywater extends Item {
 	private static final String AC_WASH	= "WASH";
 	private static final String AC_FILL	= "FILL";
 
-	private static final float TIME_TO_WASH = 1f;
+	private static final float TIME_TO_FILL = 1f;
 
 	private static final String TXT_STATUS	= "%d/%d";
 
@@ -132,23 +141,35 @@ public class Holywater extends Item {
 			}
 		}
 
-		//填充 先检测是否已知驱邪卷轴
+		//填充 先检测是否已知驱邪卷轴 Dungeon.hero.belongings.getItem(ScrollOfRemoveCurse.class) instanceof ScrollOfRemoveCurse &&
 			if(action.equals( AC_FILL )){
 				ScrollOfRemoveCurse scrollOfRemoveCurse = Dungeon.hero.belongings.getItem( ScrollOfRemoveCurse.class );
-				if (  Catalog.isSeen(ScrollOfRemoveCurse.class) &&  scrollOfRemoveCurse.isKnown() ){
-					ScrollOfRemoveCurse removeScroll = Dungeon.hero.belongings.getItem( ScrollOfRemoveCurse.class );
-					if ( Dungeon.hero.belongings.getItem(ScrollOfRemoveCurse.class) != null ) {
-						removeScroll.detach( Dungeon.hero.belongings.backpack );
-						volume += 1;
-						GLog.w( Messages.get(this, "fill") );
-					}else {
-						GLog.w(Messages.get(this, "cannotfill"));
-					}
-				}else{
-					GLog.w(Messages.get(this, "donotknown"));
-				}
+				if ( scrollOfRemoveCurse != null ) {
 
-		}
+					Waterskin waterskin = hero.belongings.getItem(Waterskin.class);
+
+					if( waterskin != null && volume >=5 ) {
+
+						if (Catalog.isSeen(ScrollOfRemoveCurse.class) && scrollOfRemoveCurse.isKnown()) {
+
+							ScrollOfRemoveCurse removeScroll = Dungeon.hero.belongings.getItem(ScrollOfRemoveCurse.class);
+
+							removeScroll.detach(Dungeon.hero.belongings.backpack);
+							volume += 1;
+							volume -= 5;
+							hero.spend(TIME_TO_FILL);
+							GLog.w(Messages.get(this, "fill"));
+
+						} else {
+							GLog.w(Messages.get(this, "donotknown"));
+						}
+					} else {
+						GLog.w(Messages.get(this, "dewdropnot_enough"));
+					}
+				} else {
+					GLog.w(Messages.get(this, "cannotfill"));
+				}
+			}
 	}
 
 	protected static WndBag.ItemSelector equipmentSelector = new WndBag.ItemSelector() {
@@ -165,8 +186,13 @@ public class Holywater extends Item {
 
 		@Override
 		public boolean itemSelectable(Item item) {
-			return (item instanceof EquipableItem || item instanceof Wand) && ((!item.isIdentified() && !item.cursedKnown) || item.cursed);
+			return (item instanceof EquipableItem || item instanceof Wand)
+					&& ((!item.isIdentified() && !item.cursedKnown)
+					|| item.cursed
+					|| item instanceof Ring);
 		}
+
+
 
 		@Override
 		public void onSelect(Item item) {
@@ -179,6 +205,38 @@ public class Holywater extends Item {
 				Degrade.detach(curUser, Degrade.class);
 				procced = true;
 			}
+
+			//戒指升级
+			if ( item != null && item instanceof Ring){
+				Ring r = (Ring)item;
+
+				if (r.level() >= 1){
+					GLog.w(Messages.get(ArcaneResin.class, "level_too_high"));
+					return;
+				}
+
+				int resinToUse = r.level()+1;
+
+					if (resinToUse < r.quantity() ){
+						r.quantity(r.quantity()-resinToUse);
+					} else {
+						r.detachAll(Dungeon.hero.belongings.backpack);
+					}
+
+					r.HolywaterLevel++;
+					Item.updateQuickslot();
+
+					GLog.w(Messages.get(this, "ring_upgrate"));
+
+					curUser.sprite.operate(curUser.pos);
+					Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+					curUser.sprite.emitter().start( Speck.factory( Speck.UP ), 0.2f, 3 );
+
+					curUser.spendAndNext(Actor.TICK);
+					GLog.p(Messages.get(ArcaneResin.class, "apply"));
+
+			}
+
 
 			if (procced) {
 				GLog.p( Messages.get(this, "cleansed") );

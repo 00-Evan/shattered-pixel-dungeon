@@ -233,6 +233,16 @@ public class ItemSprite extends MovieClip {
 	public void frame( int image ){
 		frame( ItemSpriteSheet.film.get( image ));
 
+		if( image == ItemSpriteSheet.CTHULHUGIRLSTATUE3 ){
+			scale.set( scale.invScale( 1.25f ) );
+		}
+		if( image == ItemSpriteSheet.CTHULHUGIRLSTATUE2 ){
+			scale.set( scale.invScale( 1.25f ) );
+		}
+		if( image == ItemSpriteSheet.CTHULHUGIRLSTATUE ){
+			scale.set( scale.invScale( 2.5f ) );
+		}
+
 		float height = ItemSpriteSheet.film.height( image );
 		//adds extra raise to very short items, so they are visible
 		if (height < 8f){

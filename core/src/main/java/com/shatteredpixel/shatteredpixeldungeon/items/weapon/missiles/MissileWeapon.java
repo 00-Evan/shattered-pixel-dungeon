@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -33,22 +34,61 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.LiquidMetal;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.NinjaClothe;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.MeatPie;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Pasty;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.StewedMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticGas;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfPurity;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projecting;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.PaladinHammer;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Fadeleaf;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Firebloom;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Icecap;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Mageroyal;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Sorrowmoss;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Starflower;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Stormvine;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndHardNotification;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 abstract public class MissileWeapon extends Weapon {
 
@@ -485,6 +525,156 @@ abstract public class MissileWeapon extends Weapon {
 		bundleRestoring = false;
 		durability = bundle.getFloat(DURABILITY);
 	}
+
+	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe {
+		Item missile;
+		Item missile2;
+		@Override
+		public boolean testIngredients(ArrayList<Item> ingredients) {
+			boolean missle = false;
+			boolean missle2 = false;
+			boolean liqued = false;
+			for (Item ingredient : ingredients){
+				if (ingredient instanceof MissileWeapon) {
+					missile = ingredient;
+					if (ingredient.quantity() > 0) {
+						missle = true;
+					}
+				}
+				if ( missile!=null && ingredient instanceof MissileWeapon ) {
+					missile2 = ingredient;
+					if ( ingredient.quantity() > 0 && missile2 == missile && missile2.level() == missile.level() ) {
+						missle2 = true;
+					}
+
+				} else if (ingredient instanceof LiquidMetal) {
+					if( missile!=null && missile instanceof MissileWeapon && missile2 !=null ){
+						if ( ingredient.quantity() >= (missile.level()*10-5)) {
+							liqued = true;
+						}
+					}
+				}
+			}
+			return missle && liqued && missle2;
+		}
+
+		@Override
+		public int cost(ArrayList<Item> ingredients) {
+			return 2;
+		}
+
+		@Override
+		public Item brew(ArrayList<Item> ingredients) {
+			if (!testIngredients(ingredients)) return null;
+
+			for (Item ingredient : ingredients){
+				if (ingredient instanceof MissileWeapon) {
+					missile.detach(Dungeon.hero.belongings.backpack);
+					missile2.detach(Dungeon.hero.belongings.backpack);
+					//由于你的两个武器都是同一个类型，所以地牢移除的时候总是会在视觉显示这里忽略一个。但其实是移除了
+					ShatteredPixelDungeon.scene().add(new WndHardNotification(new ItemSprite(ItemSpriteSheet.MISSILE_HOLDER),
+							"炼金完成",
+							"你的投掷武器成功升级了",
+							"点击任意区域继续",
+							0){
+						@Override
+						public void hide() {
+							super.hide();
+							//这里用一个悬浮框是因为刷新屏幕会导致看不见东西，如果这里有一个对话框在确定前是看得见炼金输出效果的
+							//而当屏幕一旦刷新，即便是同一个类型，也会完全清空这个屏幕的元素，达到效果。算临时方法吧,不过这个方法也不错
+							ShatteredPixelDungeon.resetScene();
+						}
+					});
+
+				} else if (ingredient instanceof LiquidMetal) {
+					if (ingredient.quantity() >= (missile.level()*10-5) ) {
+						ingredient.quantity(ingredient.quantity() - (missile.level()*10-5) );
+					}
+				}
+			}
+
+			//真正的输出效果在这里
+			missile.level(missile.level()+1);
+			missile.quantity(1);
+			return sampleOutput( null );
+		}
+
+		@Override
+		public Item sampleOutput(ArrayList<Item> ingredients) {
+			//这里是输出预览效果，你以前在这里写的会导致反复升级的时候，
+			// 输出的等级会越来越高
+			//return missile.quantity(1).upgrade(1);
+			//所以这里你应该直接返回一个你的missile
+			return missile;
+		}
+
+
+		//存在的问题是：两个武器等级不同的时候也能用，暂时我找不到解决策略
+		//以及我建议控制液金数量来控制等级，而不是控制投掷武器数量。
+	}
+
+	/*
+	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe {
+		Item missile;
+		Item missile2;
+		@Override
+		public boolean testIngredients(ArrayList<Item> ingredients) {
+			boolean missle = false;
+			boolean missle2 = false;
+			boolean liqued = false;
+
+			for (Item ingredient : ingredients){
+				if (ingredient instanceof MissileWeapon) {
+					missile = ingredient;
+					if (ingredient.quantity() > 0) {
+						missle = true;
+					}
+				}
+				if ( missile!=null && ingredient instanceof MissileWeapon ) {
+					missile2 = ingredient;
+					if ( ingredient.quantity() > 0 && missile2 == missile && missile2.buffedLvl() == missile.buffedLvl() ) {
+						missle2 = true;
+					}
+
+				} else if (ingredient instanceof LiquidMetal) {
+					if( missile!=null && missile instanceof MissileWeapon && missile2 !=null ){
+						if ( ingredient.quantity() >= (missile.level()*10-5)) {
+							liqued = true;
+						}
+					}
+				}
+			}
+			return missle && liqued && missle2;
+		}
+
+		@Override
+		public int cost(ArrayList<Item> ingredients) {
+			return 2;
+		}
+
+		@Override
+		public Item brew(ArrayList<Item> ingredients) {
+			if (!testIngredients(ingredients)) return null;
+
+			for (Item ingredient : ingredients){
+				if (ingredient instanceof MissileWeapon) {
+					missile.quantity( missile.quantity() - 1 );
+					missile2.quantity( missile2.quantity() - 1 );
+				} else if (ingredient instanceof LiquidMetal) {
+					if (ingredient.quantity() >= (5+missile.level()*10) ) {
+						ingredient.quantity(ingredient.quantity() - (missile.level()*10-5) );
+					}
+				}
+			}
+
+			return sampleOutput( null );
+		}
+
+		@Override
+		public Item sampleOutput(ArrayList<Item> ingredients) { return missile.quantity(1).upgrade(1); }
+	}
+	*/
+
 
 	public static class PlaceHolder extends MissileWeapon {
 

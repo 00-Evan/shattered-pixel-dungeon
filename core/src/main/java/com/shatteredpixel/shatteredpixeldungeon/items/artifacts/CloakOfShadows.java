@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -100,6 +101,10 @@ public class CloakOfShadows extends Artifact {
 					activeBuff.attachTo(hero);
 					Talent.onArtifactUsed(Dungeon.hero);
 					hero.sprite.operate(hero.pos);
+
+					if ( Dungeon.hero.subClass == HeroSubClass.NINJA ) {
+						ScrollOfMirrorImage.spawnImages( Dungeon.hero, 1 );
+					}
 				}
 			} else {
 				activeBuff.detach();

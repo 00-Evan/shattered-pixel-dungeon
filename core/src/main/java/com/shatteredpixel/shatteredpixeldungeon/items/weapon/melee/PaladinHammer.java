@@ -33,7 +33,7 @@ import com.watabou.noosa.audio.Sample;
 public class PaladinHammer extends MeleeWeapon {
 
 	{
-		image = ItemSpriteSheet.WAR_HAMMER;
+		image = ItemSpriteSheet.PALADINHAMMER;
 		hitSound = Assets.Sounds.HIT_CRUSH;
 		hitSoundPitch = 1.3f;
 

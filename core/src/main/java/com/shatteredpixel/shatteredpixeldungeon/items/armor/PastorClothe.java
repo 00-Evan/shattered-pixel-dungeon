@@ -28,12 +28,9 @@ import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HolyHealing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HolyLight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.items.ClothStrip;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.LiquidMetal;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Pasty;
+import com.shatteredpixel.shatteredpixeldungeon.items.sundry.ClothStrip;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.BoneSpike;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -97,30 +94,11 @@ public class PastorClothe extends Armor {
 
 
 	@Override
-	public void execute( Hero hero,String action ){
+	public void execute(Hero hero, String action ){
 		super.execute(hero ,action);
-		switch (action){
-			case AC_EQUIP:
-				doEquip( hero );
-				Buff.affect( hero, HolyHealing.class );
-				break;
-			case AC_DETACH:
-				doUnequip( hero,true );
-				Buff.detach(hero, HolyHealing.class);
-				break;
-			case AC_THROW:
-				super.doThrow( hero );
-				Buff.detach(hero, HolyHealing.class);
-				break;
-
+		if( action.equals( AC_EQUIP )){
+			Buff.affect( hero, HolyHealing.class );
 		}
-		/*
-		if (hero.act() != false ){
-			if ( hero.act() == doUnequip(hero, true)) {
-				Buff.detach(hero, HolyHealing.class);
-			}
-		}
-		*/
 	}
 
 	//@Override

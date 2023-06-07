@@ -76,6 +76,7 @@ public class Notes {
 		WANDMAKER,
 		TROLL,
 		IMP,
+		PALADIN,
 
 		DEMON_SPAWNER;
 		

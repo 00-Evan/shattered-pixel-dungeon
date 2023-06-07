@@ -26,20 +26,25 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -48,8 +53,10 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ElementalSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import java.time.Duration;
 import java.util.ArrayList;
 
 public abstract class Elemental extends Mob {
@@ -143,7 +150,7 @@ public abstract class Elemental extends Mob {
 	public int attackProc( Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
 		meleeProc( enemy, damage );
-		
+
 		return damage;
 	}
 	
@@ -362,7 +369,80 @@ public abstract class Elemental extends Mob {
 			}
 		}
 	}
-	
+
+	public static class HatredElemental extends Elemental {
+
+		{
+			spriteClass = ElementalSprite.Chaos.class;
+
+			if( Dungeon.hero.hasTalent(Talent.HATRED_TRANS) &&  Dungeon.hero.pointsInTalent(Talent.HATRED_TRANS) == 3 ){
+				loot = new ScrollOfRetribution().quantity(2);
+				lootChance = 1f;
+			}else{
+				loot = new ScrollOfRetribution();
+				lootChance = 1/6f;
+			}
+
+
+			properties.add( Property.FIERY );
+
+			//harmfulBuffs.add( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost.class );
+			harmfulBuffs.add( Chill.class );
+		}
+
+		@Override
+		public int damageRoll() {
+			int damage = Random.NormalIntRange(20, 25);
+			damage += 15*(	(this.HT-this.HP)/this.HT	);
+				return damage;
+			}
+
+		private int timesDowned = 0;
+		boolean heroKilled = false;
+
+		@Override
+		public void die( Object cause ) {
+
+			super.die(cause);
+
+			if (cause == Chasm.class) return;
+
+			for (int i = 0; i < PathFinder.NEIGHBOURS24.length; i++) {
+				Char ch = findChar(pos + PathFinder.NEIGHBOURS24[i]);
+				if (ch != null && ch.isAlive()) {
+
+					int damage = Math.round(Random.NormalIntRange(40, 60));
+					damage = Math.round(damage * AscensionChallenge.statModifier(this));
+					damage = Math.max(0, damage - (ch.drRoll() + ch.drRoll()));
+					ch.damage(damage, this);
+					if (ch == Dungeon.hero && !ch.isAlive()) {
+						heroKilled = true;
+					}
+				}
+			}
+			if (Dungeon.level.heroFOV[pos]) {
+				Sample.INSTANCE.play( Assets.Sounds.BONES );
+			}
+		}
+
+
+		@Override
+		protected void meleeProc( Char enemy, int damage ) {
+			if (Random.Int( 2 ) == 0 && !Dungeon.level.water[enemy.pos]) {
+				if (enemy.sprite.visible) Splash.at( enemy.sprite.center(), sprite.blood(), 5);
+
+			}
+		}
+
+		@Override
+		protected void rangedProc( Char enemy ) {
+			if (!Dungeon.level.water[enemy.pos]) {
+				Buff.affect( enemy, Vulnerable.class,  Vulnerable.DURATION - 5);
+			}
+			if (enemy.sprite.visible) Splash.at( enemy.sprite.center(), sprite.blood(), 5);
+		}
+	}
+
 	public static class ChaosElemental extends Elemental {
 		
 		{
@@ -382,19 +462,23 @@ public abstract class Elemental extends Mob {
 			CursedWand.cursedEffect(null, this, enemy);
 		}
 	}
-	
+
+
 	public static Class<? extends Elemental> random(){
 		if (Random.Int( 50 ) == 0){
 			return ChaosElemental.class;
 		}
 		
 		float roll = Random.Float();
-		if (roll < 0.4f){
+		if (roll < 0.28f){
 			return FireElemental.class;
-		} else if (roll < 0.8f){
+		} else if (roll < 0.56f){
 			return FrostElemental.class;
-		} else {
+		} else if (roll < 0.78f){
 			return ShockElemental.class;
+		} else {
+			return HatredElemental.class;
 		}
 	}
+
 }

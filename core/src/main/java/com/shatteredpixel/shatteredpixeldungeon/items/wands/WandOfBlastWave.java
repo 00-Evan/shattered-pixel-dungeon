@@ -51,6 +51,7 @@ import com.watabou.utils.Random;
 
 public class WandOfBlastWave extends DamageWand {
 
+	//冲击波
 	{
 		image = ItemSpriteSheet.WAND_BLAST_WAVE;
 

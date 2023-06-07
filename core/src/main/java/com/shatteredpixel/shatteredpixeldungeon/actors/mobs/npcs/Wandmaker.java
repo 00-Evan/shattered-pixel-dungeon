@@ -324,7 +324,8 @@ public class Wandmaker extends NPC {
 				
 			}
 		}
-		
+
+		//腐莓，老杖匠房间生成
 		public static ArrayList<Room> spawnRoom( ArrayList<Room> rooms) {
 			questRoomSpawned = false;
 			if (!spawned && (type != 0 || (Dungeon.depth > 6 && Random.Int( 10 - Dungeon.depth ) == 0))) {

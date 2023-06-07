@@ -125,10 +125,16 @@ public class Ghost extends NPC {
 		if (c != Dungeon.hero){
 			return super.interact(c);
 		}
-		
+
 		if (Quest.given) {
+            //如果任务给了
+
 			if (Quest.weapon != null) {
+                //如果任务武器存在
+
 				if (Quest.processed) {
+                    //任务结束
+
 					Game.runOnRenderThread(new Callback() {
 						@Override
 						public void call() {
@@ -136,6 +142,7 @@ public class Ghost extends NPC {
 						}
 					});
 				} else {
+					//如果任务没结束，则对话显示
 					Game.runOnRenderThread(new Callback() {
 						@Override
 						public void call() {
@@ -161,6 +168,7 @@ public class Ghost extends NPC {
 							break;
 						}
 					}
+
 					if (newPos != -1) {
 
 						CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
@@ -171,9 +179,11 @@ public class Ghost extends NPC {
 				}
 			}
 		} else {
+			//如果任务没给
 			Mob questBoss;
 			String txt_quest;
 
+			//对话显示
 			switch (Quest.type){
 				case 1: default:
 					questBoss = new FetidRat();
@@ -291,7 +301,8 @@ public class Ghost extends NPC {
 				reset();
 			}
 		}
-		
+
+		//生成
 		public static void spawn( SewerLevel level ) {
 			if (!spawned && Dungeon.depth > 1 && Random.Int( 5 - Dungeon.depth ) == 0) {
 				
@@ -321,14 +332,15 @@ public class Ghost extends NPC {
 					case 3:	float b = Random.Float(0,1);
 						if(b<=0.33f) {armor = new MailArmor(); 				break;}
 						else if (b<=0.66f) {armor = new VineArmor(); 		break;}
-						else if (b<=0.1f) {armor = new PapalKnightArmor(); 	break;}
+						else if (b<=0.1f) {armor = new MailArmor(); 		break;}
 
 					case 4: float c = Random.Float(0,1);
-						armor = new ScaleArmor();   						break;
+						{armor = new ScaleArmor();   						break;}
 
 					case 5:	float d = Random.Float(0,1);
 						if(d<=0.5f) {armor = new PlateArmor();				break;}
-						else if (d<=1f){armor = new HighOrderKnightArmor(); break;}
+						else if (d<=1f){armor = new PlateArmor(); 			break;}
+						//暂时不想让HighOrderKnightArmor、PapalKnightArmor通过这里获取
 
 				}
 				//50%:tier2, 30%:tier3, 15%:tier4, 5%:tier5

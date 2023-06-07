@@ -117,7 +117,21 @@ public enum Sample {
 			return -1;
 		}
 	}
+/* 方法为依次播放两段音乐，未构建完成，暂时废弃
+	public synchronized long doubleplay( Object id,Object id2, float leftVolume, float rightVolume, float pitch ) {
+		float volume = Math.max(leftVolume, rightVolume);
+		float pan = rightVolume - leftVolume;
+		float pan2 =
+		if (enabled && ids.containsKey( id ) && ids.containsKey( id2 )) {
 
+			ids.get(id).play( globalVolume*volume, pitch, pan );
+			ids.get(id2).play( globalVolume*volume, pitch, pan2 );
+			return ;
+		} else {
+			return -1;
+		}
+	}
+*/
 	private class DelayedSoundEffect{
 		Object id;
 		float delay;

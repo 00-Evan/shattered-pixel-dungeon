@@ -48,6 +48,7 @@ import java.util.LinkedHashMap;
 public class Ring extends KindofMisc {
 	
 	protected Buff buff;
+	public int HolywaterLevel = 0;
 
 	private static final LinkedHashMap<String, Integer> gems = new LinkedHashMap<String, Integer>() {
 		{
@@ -156,6 +157,7 @@ public class Ring extends KindofMisc {
 			}
 		}
 	}
+
 	
 	@Override
 	public String name() {

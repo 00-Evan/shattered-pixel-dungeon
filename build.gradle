@@ -15,7 +15,7 @@ allprojects {
         appPackageName = 'com.spacetimepixel.spacetimepixeldungeon'
 
         appVersionCode = 700
-        appVersionName = '1.0.0demo'
+        appVersionName = '1.0.1demo'
 
         appJavaCompatibility = JavaVersion.VERSION_1_8
 

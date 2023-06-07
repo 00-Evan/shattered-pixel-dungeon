@@ -32,7 +32,7 @@ public class HolyHealing extends Buff {
 
             if(Dungeon.hero.buff(HolyHealing.class) != null ){
                 int healAmt;
-                if( hero.belongings.armor() != null ){
+                if( hero.belongings.armor() != null & !hero.isStarving() ){
                     healAmt = Math.min( hero.HT, 1 + hero.belongings.armor().Holyadd() );
                 }else{
                     healAmt = Math.min( hero.HT, 1);
@@ -42,9 +42,9 @@ public class HolyHealing extends Buff {
                 hero.HP += healAmt;
 
                 if( hero.belongings.armor() != null ){
-                    spend( 25f - hero.belongings.armor().Holyspeed() );
+                    spend( 30f - hero.belongings.armor().Holyspeed() );
                 }else{
-                    spend( 999 );
+                    spend( 999f );
                 }
 
 
@@ -78,14 +78,13 @@ public class HolyHealing extends Buff {
         }
     }
 
-    @Override
-    public float iconFadePercent() {
-        if (target instanceof Hero){
-            float max = ((Hero) target).lvl;
-            return Math.max(0, (max-level)/max);
-        }
-        return 0;
-    }
+  //  @Override
+   // public float iconFadePercent() {
+       // if (target instanceof Hero){
+        //    float max = ((Hero) target).lvl;
+        //    return Math.max(0, (max-level)/max);}
+   //     return 0;
+  //  }
 
     @Override
     public String toString() {
@@ -116,12 +115,12 @@ public class HolyHealing extends Buff {
 
     @Override
     public void tintIcon(Image icon) {
-        icon.hardlight( 0xffff00);
+        icon.hardlight( 0xffff0080);
     }
 
     @Override
     public int icon() {
-        return BuffIndicator.LIGHT;
+        return BuffIndicator.NULL_ARMOR;
     }
 
 

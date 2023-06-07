@@ -31,23 +31,75 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.PapalKnightArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PastorClothe;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.Image;
 
-public class HolyLight extends Light {
+public class HolyLight extends Buff {
 	
 	{
 		type = buffType.POSITIVE;
 	}
+
+	public static final int DISTANCE	= 4;
+	public static int level = 1;
+	private int interval = 1;
+
+
+	public int level() {
+		return level;
+	}
+
+	public void set( int value, int time ) {
+		//decide whether to override, preferring high value + low interval
+		if (Math.sqrt(interval)*level <= Math.sqrt(time)*value) {
+			level = value;
+			interval = time;
+			spend(time - cooldown() - 1);
+		}
+	}
+
+	@Override
+	public boolean attachTo( Char target ) {
+		if (super.attachTo( target )) {
+			if (Dungeon.level != null) {
+				target.viewDistance = Math.max( Dungeon.level.viewDistance, DISTANCE );
+				Dungeon.observe();
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int icon() {
+		return BuffIndicator.ARMOR;
+	}
+
+	@Override
+	public void tintIcon(Image icon) {
+		icon.hardlight( 0xff0000);
+	}
+
+	@Override
+	public void fx(boolean on) {
+		if (on) target.sprite.add(CharSprite.State.ILLUMINATED);
+		else target.sprite.remove(CharSprite.State.ILLUMINATED);
+	}
+
 	@Override
 	public boolean act() {
-		if (target.isAlive()) {
-			if (	   !( hero.belongings.armor instanceof PastorClothe)
-					&& !( hero.belongings.armor instanceof PapalKnightArmor)
-					&& !( hero.belongings.armor instanceof HighOrderKnightArmor)
-					&& !( hero.belongings.armor instanceof ClassArmor)		) {
-				detach();
-			}
+		super.act();
+		spend(interval);
+		if (level <= 0 || ( !( hero.belongings.armor instanceof PastorClothe)
+				&& !( hero.belongings.armor instanceof PapalKnightArmor)
+				&& !( hero.belongings.armor instanceof HighOrderKnightArmor)
+				&& !( hero.belongings.armor instanceof ClassArmor)      ) ) {
+
+			detach();
 		}
+
 		return true;
 	}
+
 
 }

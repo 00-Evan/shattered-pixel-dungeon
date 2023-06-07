@@ -172,14 +172,14 @@ public class Guard extends Mob {
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
 			enemySeen = enemyInFOV;
 			
-			if (!chainsUsed
-					&& enemyInFOV
-					&& !isCharmedBy( enemy )
-					&& !canAttack( enemy )
-					&& Dungeon.level.distance( pos, enemy.pos ) < 5
+			if (!chainsUsed//锁链没有使用过
+					&& enemyInFOV//敌人在视野内
+					&& !isCharmedBy( enemy )//没有被魅惑
+					&& !canAttack( enemy )//可以攻击敌人
+					&& Dungeon.level.distance( pos, enemy.pos ) < 5//距离小于五格
 
 					
-					&& chain(enemy.pos)){
+					&& chain(enemy.pos)){//可以勾到敌人
 				return !(sprite.visible || enemy.sprite.visible);
 			} else {
 				return super.act( enemyInFOV, justAlerted );

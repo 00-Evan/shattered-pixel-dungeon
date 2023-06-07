@@ -22,29 +22,26 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon;
 
 import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
-import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.PHYSICIST;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Holyfire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.ElementalStrike;
-import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.PaladinSeal;
+import com.shatteredpixel.shatteredpixeldungeon.items.sundry.PaladinSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Annoying;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Displacing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Dazzling;
@@ -66,7 +63,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projec
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstable;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampiric;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.CrowBar;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -94,6 +90,9 @@ abstract public class Weapon extends KindOfWeapon {
 		SPEED   (0.7f, 0.6667f),
 		DAMAGE  (1.5f, 1.6667f),
 		NONE	(1.0f, 1.0000f);
+		//PSPEED  (1.0f, 0.6667f),
+		//PDAMAGE (1.5f, 1.0000f);
+
 
 		private float damageFactor;
 		private float delayFactor;
@@ -111,7 +110,7 @@ abstract public class Weapon extends KindOfWeapon {
 			return dly * delayFactor;
 		}
 	}
-	
+
 	public Augment augment = Augment.NONE;
 	
 	private static final int USES_TO_ID = 20;
@@ -188,12 +187,12 @@ abstract public class Weapon extends KindOfWeapon {
 		//圣骑士纹章，灼烧圣火
 		if ( (defender.properties().contains(Char.Property.DEMONIC)) //恶魔
 			 &&( seal != null ) ){
-			Buff.affect( defender, Bleeding.class ).set( 5 );
+			Buff.affect( defender, Holyfire.class ).reignite(defender, 5f );
 			Sample.INSTANCE.play(Assets.Sounds.BURNING);
 
 		}else if( defender.properties().contains(Char.Property.UNDEAD ) //亡灵
 			 &&( seal != null ) ){
-			Buff.affect( defender, Bleeding.class ).set( 5 );
+			Buff.affect( defender, Holyfire.class ).reignite(defender, 5f );
 			Sample.INSTANCE.play(Assets.Sounds.BURNING);
 		}
 
@@ -227,6 +226,7 @@ abstract public class Weapon extends KindOfWeapon {
 	private static final String MASTERY_POTION_BONUS = "mastery_potion_bonus";
 	private static final String SEAL            = "seal";
 	private static final String AUGMENT	        = "augment";
+	private static final String POLARITY        = "polarity";
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -249,7 +249,6 @@ abstract public class Weapon extends KindOfWeapon {
 		curseInfusionBonus = bundle.getBoolean( CURSE_INFUSION_BONUS );
 		masteryPotionBonus = bundle.getBoolean( MASTERY_POTION_BONUS );
 		seal = (PaladinSeal)bundle.get(SEAL);
-
 		augment = bundle.getEnum(AUGMENT, Augment.class);
 	}
 	
@@ -392,16 +391,16 @@ abstract public class Weapon extends KindOfWeapon {
 		String info = desc();
 
 		if (cursed && isEquipped( hero )) {
-			info += "\n\n" + Messages.get(Armor.class, "cursed_worn");
+			info += "\n\n" + Messages.get(Weapon.class, "cursed_worn");
 		} else if (cursedKnown && cursed) {
-			info += "\n\n" + Messages.get(Armor.class, "cursed");
+			info += "\n\n" + Messages.get(Weapon.class, "cursed");
 		} else if (seal != null) {
-			info += "\n\n" + Messages.get(Armor.class, "seal_attached");
+			info += "\n\n" + Messages.get(Weapon.class, "seal_attached");
 		} else if (!isIdentified() && cursedKnown){
 			if (enchantment != null && enchantment.curse()) {
-				info += "\n\n" + Messages.get(Armor.class, "weak_cursed");
+				info += "\n\n" + Messages.get(Weapon.class, "weak_cursed");
 			} else {
-				info += "\n\n" + Messages.get(Armor.class, "not_cursed");
+				info += "\n\n" + Messages.get(Weapon.class, "not_cursed");
 			}
 		}
 

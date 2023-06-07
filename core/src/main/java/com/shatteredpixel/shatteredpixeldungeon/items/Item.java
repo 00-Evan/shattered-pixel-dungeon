@@ -430,6 +430,10 @@ public class Item implements Bundlable {
 		return identify(true);
 	}
 
+	public final Item disidentify(){
+		return identify(false);
+	}
+
 	public Item identify( boolean byHero ) {
 
 		if (byHero && Dungeon.hero != null && Dungeon.hero.isAlive()){

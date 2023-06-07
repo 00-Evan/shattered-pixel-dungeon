@@ -513,4 +513,5 @@ public class CellSelector extends ScrollArea {
 
 		public abstract String prompt();
 	}
+
 }

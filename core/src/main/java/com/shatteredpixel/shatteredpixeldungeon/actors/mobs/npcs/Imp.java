@@ -104,9 +104,12 @@ public class Imp extends NPC {
 		}
 
 		if (Quest.given) {
+			//给了任务
 			
 			DwarfToken tokens = Dungeon.hero.belongings.getItem( DwarfToken.class );
 			if (tokens != null && (tokens.quantity() >= 5 || (!Quest.alternative && tokens.quantity() >= 4))) {
+				//如果数量达到要求，则移除tokens，显示界面，随机给一个戒指
+
 				Game.runOnRenderThread(new Callback() {
 					@Override
 					public void call() {
@@ -114,13 +117,19 @@ public class Imp extends NPC {
 					}
 				});
 			} else {
+				//如果没有达到要求，则提醒玩家
+
 				tell( Quest.alternative ?
 						Messages.get(this, "monks_2", Messages.titleCase(Dungeon.hero.name()))
 						: Messages.get(this, "golems_2", Messages.titleCase(Dungeon.hero.name())) );
 			}
 			
 		} else {
+			//没给任务
+
 			tell( Quest.alternative ? Messages.get(this, "monks_1") : Messages.get(this, "golems_1") );
+			//判断alternative是否为true，随机抽取武僧和魔像任务	17层必定flase，18随机抽取，19必定true
+
 			Quest.given = true;
 			Quest.completed = false;
 			Notes.add( Notes.Landmark.IMP );

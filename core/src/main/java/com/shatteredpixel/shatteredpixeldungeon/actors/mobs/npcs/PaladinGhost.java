@@ -21,35 +21,42 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Golem;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.FetidRat;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollTrickster;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GreatCrab;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.sundry.Holywater;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.sundry.PaladinSeal;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
-import com.shatteredpixel.shatteredpixeldungeon.levels.CityLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.CavesLevel;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ImpSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.PaladinGhostSprite;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndImp;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndPaladinGhost;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-/*public class PaladinGhost extends NPC {
+public class PaladinGhost extends NPC {
 
 	{
-		spriteClass = PaladinGhostSprite.class;
+		spriteClass = ImpSprite.class;
+
+		flying = true;
 
 		properties.add(Property.IMMOVABLE);
 	}
@@ -64,9 +71,9 @@ import com.watabou.utils.Random;
 		}
 		if (!Quest.given && Dungeon.level.visited[pos]) {
 			if (!seenBefore) {
-				yell( Messages.get(this, "hey", Messages.titleCase(Dungeon.hero.name()) ) );
+				yell( Messages.get(this, "help", Messages.titleCase(Dungeon.hero.name()) ) );
 			}
-			Notes.add( Notes.Landmark.IMP );
+			Notes.add( Notes.Landmark.PALADIN );
 			seenBefore = true;
 		} else {
 			seenBefore = false;
@@ -104,6 +111,92 @@ import com.watabou.utils.Random;
 			return true;
 		}
 
+		if (PaladinGhost.Quest.given) {
+
+
+				if (PaladinGhost.Quest.processed) {
+
+
+					Game.runOnRenderThread(new Callback() {
+						@Override
+						public void call() {
+							GameScene.show(new WndPaladinGhost(PaladinGhost.this, PaladinGhost.Quest.type));
+						}
+					});
+				} else {
+
+
+					Game.runOnRenderThread(new Callback() {
+						@Override
+						public void call() {
+							switch (PaladinGhost.Quest.type) {
+								case 1:
+								default:
+									GameScene.show(new WndQuest(PaladinGhost.this, Messages.get(PaladinGhost.this, "vampire_2")));
+									break;
+								case 2:
+									GameScene.show(new WndQuest(PaladinGhost.this, Messages.get(PaladinGhost.this, "troll_2")));
+									break;
+								case 3:
+									GameScene.show(new WndQuest(PaladinGhost.this, Messages.get(PaladinGhost.this, "dm666_2")));
+									break;
+							}
+						}
+					});
+
+					int newPos = -1;
+					for (int i = 0; i < 10; i++) {
+						newPos = Dungeon.level.randomRespawnCell( this );
+						if (newPos != -1) {
+							break;
+						}
+					}
+					if (newPos != -1) {
+
+						CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
+						pos = newPos;
+						sprite.place(pos);
+						sprite.visible = Dungeon.level.heroFOV[pos];
+					}
+				}
+
+		} else {
+			Mob questBoss;
+			String txt_quest;
+
+			switch (PaladinGhost.Quest.type){
+				case 1: default:
+					questBoss = new FetidRat();
+					txt_quest = Messages.get(this, "vampire_1", Messages.titleCase(Dungeon.hero.name())); break;
+				case 2:
+					questBoss = new GnollTrickster();
+					txt_quest = Messages.get(this, "troll_1", Messages.titleCase(Dungeon.hero.name())); break;
+				case 3:
+					questBoss = new GreatCrab();
+					txt_quest = Messages.get(this, "dm666_1", Messages.titleCase(Dungeon.hero.name())); break;
+			}
+
+			questBoss.pos = Dungeon.level.randomRespawnCell( this );
+
+			if (questBoss.pos != -1) {
+				GameScene.add(questBoss);
+				PaladinGhost.Quest.given = true;
+				Notes.add( Notes.Landmark.GHOST );
+				Game.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						GameScene.show( new WndQuest( PaladinGhost.this, txt_quest ) );
+					}
+				});
+			}
+
+		}
+
+		return true;
+	}
+
+
+/*
 		if (Quest.given) {
 			
 			DwarfToken tokens = Dungeon.hero.belongings.getItem( DwarfToken.class );
@@ -129,7 +222,8 @@ import com.watabou.utils.Random;
 
 		return true;
 	}
-	
+	*/
+
 	private void tell( String text ) {
 		Game.runOnRenderThread(new Callback() {
 			@Override
@@ -140,7 +234,8 @@ import com.watabou.utils.Random;
 	}
 	
 	public void flee() {
-		
+
+		//再见
 		yell( Messages.get(this, "cya", Messages.titleCase(Dungeon.hero.name())) );
 		
 		destroy();
@@ -148,14 +243,15 @@ import com.watabou.utils.Random;
 	}
 
 	public static class Quest {
-		
-		private static boolean alternative;
+		private static int type;
 		
 		private static boolean spawned;
 		private static boolean given;
 		private static boolean completed;
-		
-		public static Ring reward;
+		private static int depth;
+		private static boolean processed;
+
+		public static Item reward;
 		
 		public static void reset() {
 			spawned = false;
@@ -171,8 +267,11 @@ import com.watabou.utils.Random;
 		private static final String SPAWNED		= "spawned";
 		private static final String GIVEN		= "given";
 		private static final String COMPLETED	= "completed";
+		private static final String DEPTH		= "depth";
 		private static final String REWARD		= "reward";
-		
+		private static final String TYPE        = "type";
+		private static final String PROCESSED	= "processed";
+
 		public static void storeInBundle( Bundle bundle ) {
 			
 			Bundle node = new Bundle();
@@ -180,11 +279,15 @@ import com.watabou.utils.Random;
 			node.put( SPAWNED, spawned );
 			
 			if (spawned) {
-				node.put( ALTERNATIVE, alternative );
+				node.put( TYPE, type );
 				
 				node.put( GIVEN, given );
 				node.put( COMPLETED, completed );
+				node.put( PROCESSED, processed );
+				node.put( DEPTH, depth );
+
 				node.put( REWARD, reward );
+
 			}
 			
 			bundle.put( NODE, node );
@@ -195,15 +298,17 @@ import com.watabou.utils.Random;
 			Bundle node = bundle.getBundle( NODE );
 			
 			if (!node.isNull() && (spawned = node.getBoolean( SPAWNED ))) {
-				alternative	= node.getBoolean( ALTERNATIVE );
+				node.put( TYPE, type );
 				
 				given = node.getBoolean( GIVEN );
 				completed = node.getBoolean( COMPLETED );
-				reward = (Ring)node.get( REWARD );
+				depth = node.getInt( DEPTH );
+				reward = (Item)node.get( REWARD );
+
 			}
 		}
 		
-		public static void spawn( CityLevel level ) {
+		public static void spawn( CavesLevel level ) {
 			if (!spawned && Dungeon.depth > 16 && Random.Int( 20 - Dungeon.depth ) == 0) {
 				
 				PaladinGhost npc = new PaladinGhost();
@@ -223,43 +328,51 @@ import com.watabou.utils.Random;
 
 				//always assigns monks on floor 17, golems on floor 19, and 50/50 between either on 18
 				switch (Dungeon.depth){
-					case 17: default:
-						alternative = true;
+					case 12: default:
+						type = 1;
 						break;
-					case 18:
-						alternative = Random.Int(2) == 0;
+					case 13:
+						type = 2;
 						break;
-					case 19:
-						alternative = false;
+					case 14:
+						type = 3;
 						break;
 				}
 				
 				given = false;
-				
+
 				do {
-					reward = (Ring)Generator.random( Generator.Category.RING );
-				} while (reward.cursed);
-				reward.upgrade( 2 );
-				reward.cursed = true;
+					int thing;
+					thing = Random.Int( 1,2 );
+					switch ( thing ){
+						case 1: default:
+							reward = new PaladinSeal();
+							break;
+						case 2:
+							reward = new Holywater();
+							break;
+					}
+
+				} while ( !reward.cursed );
+				reward.cursed = false;
 			}
 		}
 		
 		public static void process( Mob mob ) {
-			if (spawned && given && !completed && Dungeon.depth != 20) {
-				if ((alternative && mob instanceof Monk) ||
-					(!alternative && mob instanceof Golem)) {
-					
-					Dungeon.level.drop( new DwarfToken(), mob.pos ).sprite.drop();
-				}
+			if (spawned && given && !processed && (depth == Dungeon.depth)) {
+				GLog.n( Messages.get(Ghost.class, "find_me") );
+				Sample.INSTANCE.play( Assets.Sounds.GHOST );
+				processed = true;
+				Statistics.questScores[0] = 1000;
 			}
 		}
 		
 		public static void complete() {
-			reward = null;
+
 			completed = true;
 
 			Statistics.questScores[3] = 4000;
-			Notes.remove( Notes.Landmark.IMP );
+			Notes.remove( Notes.Landmark.PALADIN );
 		}
 		
 		public static boolean isCompleted() {
@@ -267,4 +380,4 @@ import com.watabou.utils.Random;
 		}
 	}
 }
-*/
+//后续需要改动，通过玩家选择，收走护甲或锤子，才能获取圣水和圣骑士护符；怪物生成在上锁房间里

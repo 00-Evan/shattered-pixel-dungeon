@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -156,12 +157,11 @@ public class Burning extends Buff implements Hero.Doom {
 		if (Dungeon.level.flamable[target.pos] && Blob.volumeAt(target.pos, Fire.class) == 0) {
 			GameScene.add( Blob.seed( target.pos, 4, Fire.class ) );
 		}
-		
+
 		spend( TICK );
 
 		VineArmor vinearmor = new VineArmor();
-		if( vinearmor.AlwaysFire( vinearmor ) ){
-		} else {
+		if( !vinearmor.AlwaysFire( vinearmor ) ){
 			left -= TICK;
 		}
 

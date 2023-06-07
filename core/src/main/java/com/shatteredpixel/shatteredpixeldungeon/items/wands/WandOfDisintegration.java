@@ -42,6 +42,7 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 
 public class WandOfDisintegration extends DamageWand {
+	//解离
 
 	{
 		image = ItemSpriteSheet.WAND_DISINTEGRATION;

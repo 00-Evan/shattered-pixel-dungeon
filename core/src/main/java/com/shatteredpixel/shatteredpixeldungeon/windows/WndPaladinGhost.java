@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.PaladinGhost;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
@@ -50,9 +51,9 @@ public class WndPaladinGhost extends Window {
 	private static final int BTN_GAP	= 5;
 	private static final int GAP		= 2;
 
-	Ghost ghost;
+	PaladinGhost ghost;
 
-	public WndPaladinGhost(final Ghost ghost, final int type ) {
+	public WndPaladinGhost(final PaladinGhost ghost, final int type ) {
 		
 		super();
 
@@ -71,6 +72,11 @@ public class WndPaladinGhost extends Window {
 				titlebar.label( Messages.get(this, "troll_title") );
 				message = PixelScene.renderTextBlock( Messages.get(this, "gnoll")+"\n\n"+Messages.get(this, "give_item"), 6 );
 				break;
+			case 3:
+				titlebar.icon( new GnollTricksterSprite() );
+				titlebar.label( Messages.get(this, "dm666_title") );
+				message = PixelScene.renderTextBlock( Messages.get(this, "gnoll")+"\n\n"+Messages.get(this, "give_item"), 6 );
+				break;
 		}
 
 		titlebar.setRect( 0, 0, WIDTH, 0 );
@@ -80,11 +86,11 @@ public class WndPaladinGhost extends Window {
 		message.setPos(0, titlebar.bottom() + GAP);
 		add( message );
 
-		RewardButton btnWeapon = new RewardButton( Ghost.Quest.weapon );
+		RewardButton btnWeapon = new RewardButton( null );
 		btnWeapon.setRect( (WIDTH - BTN_GAP) / 2 - BTN_SIZE, message.top() + message.height() + BTN_GAP, BTN_SIZE, BTN_SIZE );
 		add( btnWeapon );
 
-		RewardButton btnArmor = new RewardButton( Ghost.Quest.armor );
+		RewardButton btnArmor = new RewardButton( PaladinGhost.Quest.reward );
 		btnArmor.setRect( btnWeapon.right() + BTN_GAP, btnWeapon.top(), BTN_SIZE, BTN_SIZE );
 		add(btnArmor);
 

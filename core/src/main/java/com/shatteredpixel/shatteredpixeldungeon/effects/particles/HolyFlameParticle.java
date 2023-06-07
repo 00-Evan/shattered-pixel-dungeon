@@ -27,10 +27,10 @@ import com.watabou.noosa.particles.PixelParticle;
 
 public class HolyFlameParticle extends PixelParticle.Shrinking {
 
-	public static final Factory FACTORY = new Factory() {
+	public static final Emitter.Factory FACTORY = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
-			((HolyFlameParticle)emitter.recycle( HolyFlameParticle.class )).reset( x, y );
+			(( HolyFlameParticle )emitter.recycle( HolyFlameParticle.class )).reset( x, y );
 		}
 		@Override
 		public boolean lightMode() {
@@ -41,7 +41,7 @@ public class HolyFlameParticle extends PixelParticle.Shrinking {
 	public HolyFlameParticle() {
 		super();
 		
-		color( 0xf0f6ff );
+		color( 0x80f0f6ff );
 		lifespan = 0.6f;
 		
 		acc.set( 0, -80 );
@@ -55,7 +55,7 @@ public class HolyFlameParticle extends PixelParticle.Shrinking {
 		
 		left = lifespan;
 		
-		size = 4;
+		size = 5;
 		speed.set( 0 );
 	}
 	

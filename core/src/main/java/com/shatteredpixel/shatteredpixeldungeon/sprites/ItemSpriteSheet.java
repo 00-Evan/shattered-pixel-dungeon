@@ -164,17 +164,18 @@ public class ItemSpriteSheet {
 
 	//添加杂项
 	private static final int ADD_CONSUMABLE =                              xy(1, 34);   //16 slots
-	public static final int CLOTHSTRIP      = ADD_CONSUMABLE +0;
-	public static final int HOLYSTRIP       = ADD_CONSUMABLE +1;
-	public static final int HOLYWATER       = ADD_CONSUMABLE +2;
-	public static final int PALADINSEAL     = ADD_CONSUMABLE +3;
+	public static final int CLOTHSTRIP      	= ADD_CONSUMABLE +0;
+	public static final int HOLYSTRIP       	= ADD_CONSUMABLE +1;
+	public static final int HOLYWATER      		= ADD_CONSUMABLE +2;
+	public static final int PALADINSEAL     	= ADD_CONSUMABLE +3;
+	public static final int CTHULHUGIRLSTATUE4	= ADD_CONSUMABLE +4;
 
 	static{
 		assignItemRect(CLOTHSTRIP,            15, 15);
 		assignItemRect(HOLYSTRIP,             15, 15);
 		assignItemRect(HOLYWATER,             16, 16);
 		assignItemRect(PALADINSEAL,           14, 14);
-
+		assignItemRect(CTHULHUGIRLSTATUE4,     16, 16);
 	}
 
 
@@ -752,6 +753,20 @@ public class ItemSpriteSheet {
 		assignItemRect(CITY_PAGE,   10, 11);
 		assignItemRect(HALLS_PAGE,  10, 11);
 	}
+
+	//巨型贴图48x48
+	public static final int LARGE_MAP =                            xy(1, 46);
+	public static final int CTHULHUGIRLSTATUE   = LARGE_MAP+0;
+	public static final int CTHULHUGIRLSTATUE2   = LARGE_MAP+3;
+	public static final int CTHULHUGIRLSTATUE3   = LARGE_MAP+5;
+
+	static {
+		assignItemRect( CTHULHUGIRLSTATUE,    	 48, 48 );
+		assignItemRect( CTHULHUGIRLSTATUE2,    	 32, 32 );
+		assignItemRect( CTHULHUGIRLSTATUE3,    	 21, 32 );
+
+	}
+
 
 	//for smaller 8x8 icons that often accompany an item sprite
 	public static class Icons {

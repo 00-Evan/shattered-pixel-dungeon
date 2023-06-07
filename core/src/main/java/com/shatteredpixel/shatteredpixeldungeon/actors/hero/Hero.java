@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
 import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+import static com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CthulhuGirlStatue.MysteriousPowers;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
@@ -50,6 +51,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Foresight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HoldFast;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Holyfire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Levitation;
@@ -78,6 +80,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CthulhuGirlStatue;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -85,7 +88,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.NinjaClothe;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
@@ -121,6 +123,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfTenacity;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfChallenge;
+import com.shatteredpixel.shatteredpixeldungeon.items.sundry.LockPicker;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
@@ -171,6 +174,7 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
+import java.lang.management.LockInfo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -1105,12 +1109,14 @@ public class Hero extends Char {
 			return false;
 		}
 	}
-	
+
+	public boolean hasLockPicker = false;
 	private boolean actUnlock( HeroAction.Unlock action ) {
 		int doorCell = action.dst;
 		if (Dungeon.level.adjacent( pos, doorCell )) {
-			
-			boolean hasKey = false ,hasCrowBar = false;
+
+			boolean hasKey = false;
+
 			int door = Dungeon.level.map[doorCell];
 			
 			if (door == Terrain.LOCKED_DOOR
@@ -1128,26 +1134,29 @@ public class Hero extends Char {
 
 				hasKey = true;
 				
+			} else if (door == Terrain.CRYSTAL_DOOR
+					&& hero.belongings.getItem(LockPicker.class) != null ) {
+				hasLockPicker = true;
 			}
-			
+
 			if (hasKey) {
 				
 				sprite.operate( doorCell );
 				
 				Sample.INSTANCE.play( Assets.Sounds.UNLOCK );
 				
-			} else {
-				GLog.w( Messages.get(this, "locked_door") );
-				ready();
-			}
-
-			if (hasCrowBar && door == Terrain.CRYSTAL_DOOR){
+			} else if ( hasLockPicker && door == Terrain.CRYSTAL_DOOR ){
 
 				sprite.operate( doorCell );
 
 				Sample.INSTANCE.play( Assets.Sounds.UNLOCK );
 
+			}  else {
+				GLog.w( Messages.get(this, "locked_door") );
+				ready();
 			}
+
+
 
 			return false;
 
@@ -1697,6 +1706,9 @@ public class Hero extends Char {
 		EtherealChains.chainsRecharge chains = buff(EtherealChains.chainsRecharge.class);
 		if (chains != null) chains.gainExp(percent);
 
+		CthulhuGirlStatue.statueRecharge volume = buff(CthulhuGirlStatue.statueRecharge.class);
+		if (volume != null) volume.gainExp(percent);
+
 		HornOfPlenty.hornRecharge horn = buff(HornOfPlenty.hornRecharge.class);
 		if (horn != null) horn.gainCharge(percent);
 		
@@ -2068,21 +2080,37 @@ public class Hero extends Char {
 		
 		if (curAction instanceof HeroAction.Unlock) {
 
+			boolean hasKey = true;
+
+			if( hero.belongings.getItem( CthulhuGirlStatue.class ) != null ){
+				CthulhuGirlStatue cthulhustatue = hero.belongings.getItem( CthulhuGirlStatue.class );
+				cthulhustatue.charge += 20;
+				MysteriousPowers( hero );
+			}
+
 			int doorCell = ((HeroAction.Unlock)curAction).dst;
 			int door = Dungeon.level.map[doorCell];
 			
 			if (Dungeon.level.distance(pos, doorCell) <= 1) {
-				boolean hasKey = true;
+
 				if (door == Terrain.LOCKED_DOOR) {
 					hasKey = Notes.remove(new IronKey(Dungeon.depth));
 					if (hasKey) Level.set(doorCell, Terrain.DOOR);
 				} else if (door == Terrain.CRYSTAL_DOOR) {
-					hasKey = Notes.remove(new CrystalKey(Dungeon.depth));
+
 					if (hasKey) {
+						hasKey = Notes.remove(new CrystalKey(Dungeon.depth));
+						Level.set(doorCell, Terrain.EMPTY);
+						Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+						CellEmitter.get( doorCell ).start( Speck.factory( Speck.DISCOVER ), 0.025f, 20 );
+					} else if ( hasLockPicker ) {
+						LockPicker lockpicker = hero.belongings.getItem( LockPicker.class );
+						lockpicker.detach( hero.belongings.backpack );
 						Level.set(doorCell, Terrain.EMPTY);
 						Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 						CellEmitter.get( doorCell ).start( Speck.factory( Speck.DISCOVER ), 0.025f, 20 );
 					}
+
 				} else {
 					hasKey = Notes.remove(new SkeletonKey(Dungeon.depth));
 					if (hasKey) Level.set(doorCell, Terrain.UNLOCKED_EXIT);
@@ -2094,7 +2122,7 @@ public class Hero extends Char {
 					spend(Key.TIME_TO_UNLOCK);
 				}
 
-				boolean hasCrowBar = true;
+/*
 				if (door == Terrain.CRYSTAL_DOOR) {
 					if (hasCrowBar) {
 						Level.set(doorCell, Terrain.EMPTY);
@@ -2102,7 +2130,12 @@ public class Hero extends Char {
 						CellEmitter.get( doorCell ).start( Speck.factory( Speck.DISCOVER ), 0.025f, 20 );
 					}
 				}
+ */
 				if (hasKey) {
+					GameScene.updateKeyDisplay();
+					GameScene.updateMap(doorCell);
+					spend(CrowBar.TIME_TO_PICKLOCK);
+				} else if ( hasLockPicker ) {
 					GameScene.updateKeyDisplay();
 					GameScene.updateMap(doorCell);
 					spend(CrowBar.TIME_TO_PICKLOCK);
@@ -2111,7 +2144,13 @@ public class Hero extends Char {
 			}
 			
 		} else if (curAction instanceof HeroAction.OpenChest) {
-			
+
+			if( hero.belongings.getItem( CthulhuGirlStatue.class ) != null ){
+				CthulhuGirlStatue cthulhustatue = hero.belongings.getItem( CthulhuGirlStatue.class );
+				cthulhustatue.charge += 10;
+				MysteriousPowers( hero );
+			}
+
 			Heap heap = Dungeon.level.heaps.get( ((HeroAction.OpenChest)curAction).dst );
 			
 			if (Dungeon.level.distance(pos, heap.pos) <= 1){
@@ -2121,23 +2160,33 @@ public class Hero extends Char {
 				} else if (heap.type == Type.LOCKED_CHEST){
 					hasKey = Notes.remove(new GoldenKey(Dungeon.depth));
 				} else if (heap.type == Type.CRYSTAL_CHEST){
-					hasKey = Notes.remove(new CrystalKey(Dungeon.depth));
+					if ( hasKey ){
+						hasKey = Notes.remove(new CrystalKey(Dungeon.depth));
+					} else if ( hasLockPicker ) {
+						LockPicker lockpicker = hero.belongings.getItem( LockPicker.class );
+						lockpicker.detach( hero.belongings.backpack );
+					}
 				}
 				
-				if (hasKey) {
+				if ( hasKey ) {
+					GameScene.updateKeyDisplay();
+					heap.open(this);
+					spend(Key.TIME_TO_UNLOCK);
+				} else if ( hasLockPicker ) {
 					GameScene.updateKeyDisplay();
 					heap.open(this);
 					spend(Key.TIME_TO_UNLOCK);
 				}
 
-				/*boolean hasCrowBar = true;
-				if (hasCrowBar) {
-						GameScene.updateKeyDisplay();
-						heap.open(this);
-						spend(CrowBar.TIME_TO_PICKLOCK);
-				}*/
 			}
 			
+		} else if( hero.curAction instanceof HeroAction.Buy && hero.belongings.getItem( CthulhuGirlStatue.class ) != null ){
+			CthulhuGirlStatue cthulhustatue = hero.belongings.getItem( CthulhuGirlStatue.class );
+			cthulhustatue.charge += 10;
+		}else if( hero.curAction instanceof HeroAction.Alchemy && hero.belongings.getItem( CthulhuGirlStatue.class ) != null ){
+			CthulhuGirlStatue cthulhustatue = hero.belongings.getItem( CthulhuGirlStatue.class );
+			cthulhustatue.charge += 5;
+			MysteriousPowers( hero );
 		}
 		curAction = null;
 
@@ -2152,6 +2201,8 @@ public class Hero extends Char {
 				&& belongings.armor() != null
 				&& belongings.armor().hasGlyph(Brimstone.class, this)){
 			return true;
+		} else if ( (effect == Burning.class && hero.subClass == HeroSubClass.PASTOR)
+				|(effect == Holyfire.class && hero.subClass == HeroSubClass.PASTOR) ){
 		}
 		return super.isImmune(effect);
 	}

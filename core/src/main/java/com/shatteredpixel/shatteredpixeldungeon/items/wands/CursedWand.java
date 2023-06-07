@@ -90,7 +90,7 @@ public class CursedWand {
 		cursedFX(user, bolt, new Callback() {
 			@Override
 			public void call() {
-				if (cursedEffect(origin, user, bolt.collisionPos)){
+				if (cursedEffect(origin, user, bolt.collisionPos )){
 					if (afterZap != null) afterZap.call();
 				}
 			}
@@ -107,21 +107,21 @@ public class CursedWand {
 		return cursedEffect(origin, user, target.pos);
 	}
 
-	public static boolean cursedEffect(final Item origin, final Char user, final int targetPos){
+	public static boolean cursedEffect(final Item origin, final Char user, final int targetPos ){
 		switch (Random.chances(new float[]{COMMON_CHANCE, UNCOMMON_CHANCE, RARE_CHANCE, VERY_RARE_CHANCE})){
 			case 0: default:
-				return commonEffect(origin, user, targetPos);
+				return commonEffect(origin, user, targetPos );
 			case 1:
-				return uncommonEffect(origin, user, targetPos);
+				return uncommonEffect(origin, user, targetPos );
 			case 2:
-				return rareEffect(origin, user, targetPos);
+				return rareEffect(origin, user, targetPos );
 			case 3:
-				return veryRareEffect(origin, user, targetPos);
+				return veryRareEffect(origin, user, targetPos );
 		}
 	}
 
-	private static boolean commonEffect(final Item origin, final Char user, final int targetPos){
-		switch(Random.Int(4)){
+	private static boolean commonEffect(final Item origin, final Char user, final int targetPos ){
+		switch(Random.Int( 4 )){
 
 			//anti-entropy
 			case 0: default:
@@ -180,8 +180,8 @@ public class CursedWand {
 
 	}
 
-	private static boolean uncommonEffect(final Item origin, final Char user, final int targetPos){
-		switch(Random.Int(4)){
+	private static boolean uncommonEffect(final Item origin, final Char user, final int targetPos ){
+		switch(Random.Int( 4 )){
 
 			//Random plant
 			case 0: default:
@@ -256,8 +256,8 @@ public class CursedWand {
 
 	}
 
-	private static boolean rareEffect(final Item origin, final Char user, final int targetPos){
-		switch(Random.Int(4)){
+	private static boolean rareEffect(final Item origin, final Char user, final int targetPos ){
+		switch(Random.Int( 4 )){
 
 			//sheep transformation
 			case 0: default:
@@ -320,8 +320,8 @@ public class CursedWand {
 		}
 	}
 
-	private static boolean veryRareEffect(final Item origin, final Char user, final int targetPos){
-		switch(Random.Int(4)){
+	private static boolean veryRareEffect(final Item origin, final Char user, final int targetPos ){
+		switch(Random.Int( 4 )){
 
 			//great forest fire!
 			case 0: default:

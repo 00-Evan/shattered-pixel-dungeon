@@ -33,7 +33,7 @@ public class GiantTultle extends Mob {
 	{
 		spriteClass = GiantTultleSprite.class;
 		
-		HP = HT = 30;
+		HP = HT = 40;
 		defenseSkill = 3;
 		baseSpeed = 0.9f;
 		
@@ -77,10 +77,15 @@ public class GiantTultle extends Mob {
 
 	@Override
 	protected boolean act() {
-		if (DefensePose && state != HUNTING){
+		if (DefensePose && state != HUNTING) {
 			DefensePose = false;
 			sprite.idle();
-		}/*if ( DefensePose == false | Cooldown == 0 ) {
+		}
+		if ( DefensePose ){
+			spend(5f);
+			DefensePose = false;
+		}
+		/*if ( DefensePose == false | Cooldown == 0 ) {
 			DefensePose = true;
 			Cooldown = 10;
 			super.act();
@@ -118,7 +123,7 @@ public class GiantTultle extends Mob {
 	@Override
 	public Item createLoot() {
 		Item loot;
-		switch(Random.Int(5)){
+		switch(Random.Int(6)){
 			case 0: default:
 				loot = new MysteryMeat();
 				break;

@@ -52,7 +52,7 @@ public class Pasty extends Food {
 
 		final Calendar calendar = Calendar.getInstance();
 		//if 英雄职业=PHYSICIST,holiday = PHYSICIST,然后将Pasty替换为黄油面包片
-		switch(calendar.get(Calendar.MONTH)){
+		switch( calendar.get(Calendar.MONTH) ){
 			case Calendar.JANUARY:
 				if (calendar.get(Calendar.WEEK_OF_MONTH) == 1)
 					holiday = Holiday.XMAS;
@@ -69,6 +69,7 @@ public class Pasty extends Food {
 				if (calendar.get(Calendar.WEEK_OF_MONTH) >= 3)
 					holiday = Holiday.XMAS;
 				break;
+
 		}
 	}
 

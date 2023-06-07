@@ -47,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
@@ -55,7 +56,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfHolyLight;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfHolyPureLight;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gloves;
@@ -67,6 +71,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
@@ -109,6 +114,8 @@ public enum Talent {
 	EMPOWERED_STRIKE(43, 3), MYSTICAL_CHARGE(44, 3), EXCESS_CHARGE(45, 3),
 	//Warlock T3
 	SOUL_EATER(46, 3), SOUL_SIPHON(47, 3), NECROMANCERS_MINIONS(48, 3),
+	//牧师天赋Pastor T3
+	HEALING_SHIELD(46, 3), HOLY_GIFT(47, 3), HATRED_TRANS(48, 3),
 	//Elemental Blast T4
 	BLAST_RADIUS(49, 4), ELEMENTAL_POWER(50, 4), REACTIVE_BARRIER(51, 4),
 	//Wild Magic T4
@@ -126,6 +133,8 @@ public enum Talent {
 	ENHANCED_LETHALITY(75, 3), ASSASSINS_REACH(76, 3), BOUNTY_HUNTER(77, 3),
 	//Freerunner T3
 	EVASIVE_ARMOR(78, 3), PROJECTILE_MOMENTUM(79, 3), SPEEDY_STEALTH(80, 3),
+	//忍者Ninja T3
+	MULTIPLE_MIRRORJUSU(78, 3), REPALCE_JUSU(79, 3), VIRTUALREAL_TRANS(80, 3),
 	//Smoke Bomb T4
 	HASTY_RETREAT(81, 4), BODY_REPLACEMENT(82, 4), SHADOW_STEP(83, 4),
 	//Death Mark T4
@@ -379,6 +388,34 @@ public enum Talent {
 						((CloakOfShadows) item).activate(Dungeon.hero);
 					}
 				}
+			}
+		}
+
+		if (talent == HOLY_GIFT && hero.pointsInTalent(HOLY_GIFT) == 1){
+			WandOfHolyLight wand = new WandOfHolyLight();
+			if (wand.doPickUp( Dungeon.hero )) {
+				GLog.i( Messages.get(Dungeon.hero, "you_now_have", wand.name() ));
+				hero.spend(-1);
+			} else {
+				Dungeon.level.drop( wand, Dungeon.hero.pos ).sprite.drop();
+			}
+		}
+		if (talent == HOLY_GIFT && hero.pointsInTalent(HOLY_GIFT) == 2){
+			Ankh Ankh = new Ankh();
+			if (Ankh.doPickUp( Dungeon.hero )) {
+				GLog.i( Messages.get(Dungeon.hero, "you_now_have", Ankh.name() ));
+				hero.spend(-1);
+			} else {
+				Dungeon.level.drop( Ankh, Dungeon.hero.pos ).sprite.drop();
+			}
+		}
+		if (talent == HOLY_GIFT && hero.pointsInTalent(HOLY_GIFT) == 3){
+			WandOfHolyPureLight wand = new WandOfHolyPureLight();
+			if (wand.doPickUp( Dungeon.hero )) {
+				GLog.i( Messages.get(Dungeon.hero, "you_now_have", wand.name() ));
+				hero.spend(-1);
+			} else {
+				Dungeon.level.drop( wand, Dungeon.hero.pos ).sprite.drop();
 			}
 		}
 
@@ -801,11 +838,17 @@ public enum Talent {
 			case WARLOCK:
 				Collections.addAll(tierTalents, SOUL_EATER, SOUL_SIPHON, NECROMANCERS_MINIONS);
 				break;
+			case PASTOR:
+				Collections.addAll(tierTalents, HEALING_SHIELD, HOLY_GIFT, HATRED_TRANS);
+				break;
 			case ASSASSIN:
 				Collections.addAll(tierTalents, ENHANCED_LETHALITY, ASSASSINS_REACH, BOUNTY_HUNTER);
 				break;
 			case FREERUNNER:
 				Collections.addAll(tierTalents, EVASIVE_ARMOR, PROJECTILE_MOMENTUM, SPEEDY_STEALTH);
+				break;
+			case NINJA:
+				Collections.addAll(tierTalents, MULTIPLE_MIRRORJUSU, REPALCE_JUSU, VIRTUALREAL_TRANS);
 				break;
 			case SNIPER:
 				Collections.addAll(tierTalents, FARSIGHT, SHARED_ENCHANTMENT, SHARED_UPGRADES);

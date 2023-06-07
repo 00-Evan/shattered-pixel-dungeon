@@ -38,7 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
-import com.shatteredpixel.shatteredpixeldungeon.items.ClothStrip;
+import com.shatteredpixel.shatteredpixeldungeon.items.sundry.ClothStrip;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.AntiEntropy;
@@ -96,6 +96,8 @@ public class Armor extends EquipableItem {
 		EVASION (2f , -1f),
 		DEFENSE (-2f, 1f),
 		NONE	(0f   ,  0f);
+		//PEVASION (2f , 0f),
+		//PDEFENSE (0f, 1f);
 		
 		private float evasionFactor;
 		private float defenceFactor;

@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HolyHealing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HolyLight;
@@ -52,20 +53,17 @@ public class HighOrderKnightArmor extends Armor {
 		super( 5 );
 	}
 
-
 	@Override
 	public int DRMin(int lvl) {
-		return  2 +    //最小防御为0
+		return  2 +    //最小防御为2
 				lvl;		//每升1级就加1
 	}
 
 	@Override
 	public int DRMax(int lvl) {
-		return  7 +    //最大防御为3
-				7*lvl;		//每升1级就加1
+		return  7 +    //最大防御为7
+				6*lvl;		//每升1级就加6
 	}
-
-
 	//HolyHealing回血速度与回血量
 	@Override
 	public int Holyspeed(int lvl) {
@@ -78,80 +76,19 @@ public class HighOrderKnightArmor extends Armor {
 	}
 	@Override
 	public int Holyadd(int lvl) {
-		return   5 +  //
+		return   3 +  //
 				lvl;		//每升1级就加1
 	}
-
-
-	//合成配方
-	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe {
-		@Override
-		public boolean testIngredients(ArrayList<Item> ingredients){
-
-			boolean pasty = false;
-			boolean ration = false;
-
-
-			for (Item ingredient : ingredients){
-				if (ingredient.quantity() > 0) {
-					if (ingredient instanceof Pasty) {
-						pasty = true;
-					} else if (ingredient.getClass() == Food.class) {
-						ration = true;
-					}
-				}
-			}
-			return pasty && ration;
-		}
-		@Override
-		public int cost(ArrayList<Item> ingredients) {
-			return 6;
-		}
-
-		@Override
-		public Item brew(ArrayList<Item> ingredients) {
-			if (!testIngredients(ingredients)) return null;
-
-			for (Item ingredient : ingredients){
-				ingredient.quantity(ingredient.quantity() - 1);
-			}
-
-			return sampleOutput(null);
-		}
-
-		@Override
-		public Item sampleOutput(ArrayList<Item> ingredients) {
-			return new HighOrderKnightArmor();
-		}
-	}
-
-
 	//穿上提供buff
 	@Override
 	public void execute(Hero hero, String action ){
 		super.execute(hero ,action);
-		switch (action){
-			case AC_EQUIP:
+		if( action.equals( AC_EQUIP )){
 				Buff.affect( hero, HolyHealing.class );
-				Buff.affect( hero, HolyLight.class );
-				break;
-			case AC_UNEQUIP:
-				doUnequip( hero,true );
-				Buff.detach(hero, HolyHealing.class);
-				Buff.detach(hero, HolyLight.class);
-				break;
-			case AC_THROW:
-				super.doThrow( hero );
-				Buff.detach(hero, HolyHealing.class);
-				Buff.detach(hero, HolyLight.class);
-				break;
-
+				Buff.affect( hero, HolyLight.class  );
+			}
 		}
-		if( hero.act( ) == doUnequip( hero,true )){
-			Buff.detach(hero, HolyHealing.class);
-			Buff.detach(hero, HolyLight.class);
-		}
-	}
-
 
 }
+
+

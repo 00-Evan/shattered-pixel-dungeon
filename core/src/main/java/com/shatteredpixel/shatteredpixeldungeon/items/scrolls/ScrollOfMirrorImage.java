@@ -27,6 +27,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -49,6 +51,7 @@ public class ScrollOfMirrorImage extends Scroll {
 	
 	@Override
 	public void doRead() {
+
 		if ( spawnImages(curUser, NIMAGES) > 0){
 			GLog.i(Messages.get(this, "copies"));
 		} else {
@@ -65,30 +68,33 @@ public class ScrollOfMirrorImage extends Scroll {
 	public static int spawnImages( Hero hero, int nImages ){
 		
 		ArrayList<Integer> respawnPoints = new ArrayList<>();
-		
+
 		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
 			int p = hero.pos + PathFinder.NEIGHBOURS8[i];
 			if (Actor.findChar( p ) == null && Dungeon.level.passable[p]) {
 				respawnPoints.add( p );
 			}
 		}
-		
+
 		int spawned = 0;
 		while (nImages > 0 && respawnPoints.size() > 0) {
 			int index = Random.index( respawnPoints );
-			
+
 			MirrorImage mob = new MirrorImage();
 			mob.duplicate( hero );
 			GameScene.add( mob );
 			ScrollOfTeleportation.appear( mob, respawnPoints.get( index ) );
-			
+
 			respawnPoints.remove( index );
+
 			nImages--;
 			spawned++;
 		}
 		
 		return spawned;
 	}
+
+
 
 	@Override
 	public int value() {

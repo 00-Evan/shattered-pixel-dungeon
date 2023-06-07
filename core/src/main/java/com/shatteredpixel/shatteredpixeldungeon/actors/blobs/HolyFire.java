@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Holyfire;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
@@ -42,38 +43,9 @@ public class HolyFire extends Blob {
 	@Override
 	protected void evolve() {
 
-		boolean[] flamable = Dungeon.level.flamable;
-		int cell;
-		int holyfire;
-
+		//boolean[] flamable = Dungeon.level.holyflamable;
 
 		boolean observe = false;
-
-		for (int i = area.left-1; i <= area.right; i++) {
-			for (int j = area.top-1; j <= area.bottom; j++) {
-				cell = i + j*Dungeon.level.width();
-				if (cur[cell] > 0) {
-
-
-					burn( cell );
-
-					holyfire = cur[cell] - 1;
-					if (holyfire <= 0 && flamable[cell]) {
-
-						Dungeon.level.destroy( cell );
-
-						observe = true;
-						GameScene.updateMap( cell );
-
-					}
-
-				} else {
-					holyfire = 0;
-				}
-
-				volume += (off[cell] = holyfire);
-			}
-		}
 
 		if (observe) {
 			Dungeon.observe();
@@ -82,10 +54,10 @@ public class HolyFire extends Blob {
 	
 	public static void burn( int pos ) {
 		Char ch = Actor.findChar( pos );
-		if (ch != null && !ch.isImmune(HolyFire.class)) {
-			Buff.affect( ch, Burning.class ).reignite( ch );
+		if (ch != null && !ch.isImmune(Fire.class)) {
+			Buff.affect( ch, Holyfire.class );
 		}
-		
+
 		Heap heap = Dungeon.level.heaps.get( pos );
 		if (heap != null) {
 			heap.burn();
@@ -96,7 +68,7 @@ public class HolyFire extends Blob {
 	@Override
 	public void use( BlobEmitter emitter ) {
 		super.use( emitter );
-		emitter.pour( HolyFlameParticle.FACTORY, 0.03f );
+		emitter.pour( HolyFlameParticle.FACTORY, 0.05f );
 	}
 
 	@Override

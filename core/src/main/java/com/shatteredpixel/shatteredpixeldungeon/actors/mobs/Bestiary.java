@@ -26,6 +26,8 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.lang.model.element.Element;
+
 public class Bestiary {
 	
 	public static ArrayList<Class<? extends Mob>> getMobRotation( int depth ){
@@ -45,20 +47,23 @@ public class Bestiary {
 				//3x rat, 1x snake
 				if( Random.Float()<=0.5f ) {
 					return new ArrayList<>(Arrays.asList(
-						Rat.class, Rat.class, Rat.class,
-						Snake.class));
+							Rat.class, Rat.class, Rat.class,
+							Snake.class//, TrollKnight.class
+					));
 					}else {
 					return new ArrayList<>(Arrays.asList(
-						NinjaRat.class,NinjaRat.class,
-						Snake.class,Snake.class));
+							NinjaRat.class,NinjaRat.class, //TrollKnight.class,
+							Snake.class,Snake.class));
 					}
 
 			case 2:
 				//2x rat, 1x snake, 2x gnoll
-				return new ArrayList<>(Arrays.asList(Rat.class,
+				return new ArrayList<>(Arrays.asList(
+						Rat.class,
 						NinjaRat.class,
 						Snake.class,
-						Gnoll.class, Gnoll.class));
+						Gnoll.class, Gnoll.class
+						 ));
 			case 3:
 				//1x rat, 1x snake, 3x gnoll, 1x swarm, 1x crab
 				return new ArrayList<>(Arrays.asList(Rat.class,

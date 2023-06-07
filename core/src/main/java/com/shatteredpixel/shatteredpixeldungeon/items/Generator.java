@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.HuntressArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.MageArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.NinjaArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.NinjaClothe;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PapalKnightArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PastorClothe;
@@ -445,8 +446,9 @@ public class Generator {
 
 			ARMOR_T4.classes = new Class<?>[]{
 					ScaleArmor.class,
+					NinjaArmor.class,
 			};
-			ARMOR_T4.probs = new float[]{ 6};
+			ARMOR_T4.probs = new float[]{ 6, 5};
 
 			ARMOR_T5.classes = new Class<?>[]{
 					PlateArmor.class,
