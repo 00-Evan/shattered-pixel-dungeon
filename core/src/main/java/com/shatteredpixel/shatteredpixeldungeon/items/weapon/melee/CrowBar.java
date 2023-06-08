@@ -99,7 +99,6 @@ public class CrowBar extends MeleeWeapon {
 
 	public static ArrayList picklocked = new ArrayList();
 
-
 	@Override
 	public void execute( final Hero hero, String action ) {
 
@@ -121,15 +120,15 @@ public class CrowBar extends MeleeWeapon {
 							if (cell == curUser.pos) {
 
 							} else {
-								GLog.i(Messages.get(this, "too_far"));
+								GLog.i(Messages.get(CrowBar.class, "too_far"));
 							}
 
 						} else if ( Dungeon.level.map[cell] == Terrain.CRYSTAL_DOOR ) {
 
 							if( picklocked.contains( cell ) ){
-								GLog.i(Messages.get(this,"had_try"));
+								GLog.i(Messages.get(CrowBar.class,"had_try"));
 							} else if ( Random.Int(0,100) < Math.round( 30f+ level()*15 )) {
-								GLog.w(Messages.get(this,"trylock_success"));
+								GLog.w(Messages.get(CrowBar.class,"trylock_success"));
 
 								hero.sprite.operate(hero.pos);
 								hero.busy();
@@ -145,21 +144,19 @@ public class CrowBar extends MeleeWeapon {
 								GameScene.updateKeyDisplay();
 
 							}else {
-								GLog.w(Messages.get(this, "trylock_failed"));
+								GLog.w(Messages.get(CrowBar.class, "trylock_failed"));
 								picklocked.add( cell );
 							}
 
 						} else if ( Dungeon.level.map[cell] == Terrain.DOOR ) {
-							GLog.w(Messages.get(this, "only_crystal"));
-						}
-
-						if ( heap != null ) {
+							GLog.i(Messages.get(CrowBar.class, "only_crystal"));
+						} else if ( heap != null ) {
 							if ( heap.type == Heap.Type.CRYSTAL_CHEST ) {
 
 								if( picklocked.contains( cell ) ){
-									GLog.w(Messages.get(this,"had_try"));
+									GLog.i(Messages.get(CrowBar.class,"had_try"));
 								} else if ( Random.Int(0,100) < Math.round( 30f+ level()*15 )) {
-									GLog.w(Messages.get(this,"trylock_success"));
+									GLog.w(Messages.get(CrowBar.class,"trylock_success"));
 
 									hero.sprite.operate(hero.pos);
 									hero.busy();
@@ -172,12 +169,12 @@ public class CrowBar extends MeleeWeapon {
 									GameScene.updateMap(cell);
 									GameScene.updateKeyDisplay();
 								} else {
-									GLog.w(Messages.get(this, "trylock_failed"));
+									GLog.w(Messages.get(CrowBar.class, "trylock_failed"));
 									picklocked.add( cell );
 								}
 
 							} else if ( heap.type == Heap.Type.CHEST ) {
-								GLog.i(Messages.get(this, "only_crystal"));
+								GLog.i(Messages.get(CrowBar.class, "only_crystal"));
 							}
 						} else if( !Dungeon.level.mobs.isEmpty() ){
 							Mob target = null;
@@ -185,17 +182,17 @@ public class CrowBar extends MeleeWeapon {
 								if ( ch != null && ch instanceof Mimic ){
 									target = (Mob)ch;
 									damageRoll( target );
-									GLog.i(Messages.get(this, "mimic"));
+									GLog.i(Messages.get(CrowBar.class, "mimic"));
 								}
 						} else {
-							GLog.i(Messages.get(this, "cannot_picklock"));
+							GLog.i(Messages.get(CrowBar.class, "cannot_picklock"));
 						}
 					}
 				}
 
 				@Override
 				public String prompt() {
-					return Messages.get(this, "prompt");
+					return Messages.get(CrowBar.class, "prompt");
 				}
 			});
 
@@ -206,7 +203,7 @@ public class CrowBar extends MeleeWeapon {
 	@Override
 	public String statsInfo() {
 		if( hero.heroClass == PHYSICIST ){
-			return  Messages.get(this, "mastery");
+			return  Messages.get(CrowBar.class, "mastery");
 		} return null;
 	}
 
@@ -219,10 +216,9 @@ public class CrowBar extends MeleeWeapon {
 		return super.proc(attacker, ch, damage);
 		}
 
-
 	@Override
 	public String targetingPrompt() {
-		return Messages.get(this, "maceprompt");
+		return Messages.get(CrowBar.class, "maceprompt");
 	}
 
 	@Override
