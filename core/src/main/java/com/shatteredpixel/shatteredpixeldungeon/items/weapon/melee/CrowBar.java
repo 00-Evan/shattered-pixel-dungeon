@@ -62,11 +62,8 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 
 public class CrowBar extends MeleeWeapon {
-
 	public static final String AC_PICKLOCK = "PICKLOCK";
-
 	public static final float TIME_TO_PICKLOCK = 1f;
-
 
 	{
 		image = ItemSpriteSheet.CROWBAR;
@@ -76,19 +73,13 @@ public class CrowBar extends MeleeWeapon {
 		defaultAction = AC_PICKLOCK;
 
 		tier = 2;
-		//ACC = 1.32f; 32% boost to accuracy 额外精准
 	}
-
-
 
 	@Override
 	public int max(int lvl) {
 		return  4*(tier+1) +    //12 base, down from 15	最大伤害从15降低到12
 				lvl*(tier+1);   //scaling unchanged	升级增益不变
 	}
-
-
-		//strength req decreases at +1,+3,+6,+10,etc.
 
 	@Override
 	public int STRReq(){
@@ -106,17 +97,8 @@ public class CrowBar extends MeleeWeapon {
 		return actions;
 	}
 
+	public static ArrayList picklocked = new ArrayList();
 
-/*
-	public void onSelect(Integer cell) {
-
-		Door target = null;
-		if (cell != null) {
-
-					target =  door ;
-			}
-		}
-	}*/
 
 	@Override
 	public void execute( final Hero hero, String action ) {
@@ -139,42 +121,74 @@ public class CrowBar extends MeleeWeapon {
 							if (cell == curUser.pos) {
 
 							} else {
-								GLog.i("too_far");
-								GLog.w(Messages.get(this, "too_far"));
+								GLog.i(Messages.get(this, "too_far"));
 							}
 
 						} else if ( Dungeon.level.map[cell] == Terrain.CRYSTAL_DOOR ) {
-							Level.set( cell, Terrain.EMPTY );
-							Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
-							CellEmitter.get( cell ).start( Speck.factory( Speck.DISCOVER ), 0.025f, 20 );
-							GameScene.updateMap(cell);
+
+							if( picklocked.contains( cell ) ){
+								GLog.i(Messages.get(this,"had_try"));
+							} else if ( Random.Int(0,100) < Math.round( 30f+ level()*15 )) {
+								GLog.w(Messages.get(this,"trylock_success"));
+
+								hero.sprite.operate(hero.pos);
+								hero.busy();
+
+								hero.spend( TIME_TO_PICKLOCK );
+								hero.spendAndNext( TIME_TO_PICKLOCK );
+
+								Level.set( cell, Terrain.EMPTY );
+								Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+								CellEmitter.get( cell ).start( Speck.factory( Speck.DISCOVER ), 0.025f, 20 );
+								GameScene.updateMap(cell);
+
+								GameScene.updateKeyDisplay();
+
+							}else {
+								GLog.w(Messages.get(this, "trylock_failed"));
+								picklocked.add( cell );
+							}
 
 						} else if ( Dungeon.level.map[cell] == Terrain.DOOR ) {
-							GLog.i("only_crystal");
 							GLog.w(Messages.get(this, "only_crystal"));
 						}
 
 						if ( heap != null ) {
-
 							if ( heap.type == Heap.Type.CRYSTAL_CHEST ) {
-								GameScene.updateKeyDisplay();
-								heap.open( curUser );
-							} else if ( heap.type == Heap.Type.CHEST ) {
-								GLog.i("only_crystal");
-								GLog.w(Messages.get(this, "only_crystal"));
-							}
 
+								if( picklocked.contains( cell ) ){
+									GLog.w(Messages.get(this,"had_try"));
+								} else if ( Random.Int(0,100) < Math.round( 30f+ level()*15 )) {
+									GLog.w(Messages.get(this,"trylock_success"));
+
+									hero.sprite.operate(hero.pos);
+									hero.busy();
+
+									hero.spend( TIME_TO_PICKLOCK );
+									hero.spendAndNext( TIME_TO_PICKLOCK );
+
+									GameScene.updateKeyDisplay();
+									heap.open( curUser );
+									GameScene.updateMap(cell);
+									GameScene.updateKeyDisplay();
+								} else {
+									GLog.w(Messages.get(this, "trylock_failed"));
+									picklocked.add( cell );
+								}
+
+							} else if ( heap.type == Heap.Type.CHEST ) {
+								GLog.i(Messages.get(this, "only_crystal"));
+							}
 						} else if( !Dungeon.level.mobs.isEmpty() ){
 							Mob target = null;
 							Char ch = Actor.findChar(cell);
 								if ( ch != null && ch instanceof Mimic ){
 									target = (Mob)ch;
 									damageRoll( target );
+									GLog.i(Messages.get(this, "mimic"));
 								}
-
 						} else {
-							GLog.i("cannot_picklock");
-							GLog.w(Messages.get(this, "cannot_picklock"));
+							GLog.i(Messages.get(this, "cannot_picklock"));
 						}
 					}
 				}
@@ -185,22 +199,6 @@ public class CrowBar extends MeleeWeapon {
 				}
 			});
 
-			/*
-			if ( Random.Int(0,100) < Math.round( 30f+ level()*15 )) {
-				GLog.i(Messages.get(this,"trylock_success"));
-
-				hero.sprite.operate(hero.pos);
-				hero.busy();
-
-				hero.spend( TIME_TO_PICKLOCK );
-				hero.spendAndNext( TIME_TO_PICKLOCK );
-
-				GameScene.updateKeyDisplay();
-
-			}else {
-				GLog.i(Messages.get(this, "trylock_failed"));
-			}
-			 */
 
 		}
 	}
@@ -224,16 +222,12 @@ public class CrowBar extends MeleeWeapon {
 
 	@Override
 	public String targetingPrompt() {
-		return Messages.get(this, "prompt");
+		return Messages.get(this, "maceprompt");
 	}
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
 		Mace.heavyBlowAbility(hero, target, 1.65f, this);
 	}
-
-	//protected static CellSelector.Listener crystalSelector = new CellSelector.Listener() {
-
-
 
 }
