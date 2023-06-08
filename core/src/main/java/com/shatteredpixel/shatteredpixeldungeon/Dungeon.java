@@ -957,8 +957,7 @@ public class Dungeon {
 			BArray.setFalse(passable);
 	}
 
-	public static PathFinder.Path findPath(Char ch, int to, boolean[] pass, boolean[] vis, boolean chars) {
-
+	public static boolean[] findPassable(Char ch, boolean[] pass, boolean[] vis, boolean chars){
 		setupPassable();
 		if (ch.flying || ch.buff( Amok.class ) != null) {
 			BArray.or( pass, Dungeon.level.avoid, passable );
@@ -978,7 +977,12 @@ public class Dungeon {
 			}
 		}
 
-		return PathFinder.find( ch.pos, to, passable );
+		return passable;
+	}
+
+	public static PathFinder.Path findPath(Char ch, int to, boolean[] pass, boolean[] vis, boolean chars) {
+
+		return PathFinder.find( ch.pos, to, findPassable(ch, pass, vis, chars) );
 
 	}
 	
@@ -988,47 +992,17 @@ public class Dungeon {
 			return Actor.findChar( to ) == null && (pass[to] || Dungeon.level.avoid[to]) ? to : -1;
 		}
 
-		setupPassable();
-		if (ch.flying || ch.buff( Amok.class ) != null) {
-			BArray.or( pass, Dungeon.level.avoid, passable );
-		} else {
-			System.arraycopy( pass, 0, passable, 0, Dungeon.level.length() );
-		}
-
-		if (Char.hasProp(ch, Char.Property.LARGE)){
-			BArray.and( passable, Dungeon.level.openSpace, passable );
-		}
-
-		if (chars){
-			for (Char c : Actor.chars()) {
-				if (visible[c.pos]) {
-					passable[c.pos] = false;
-				}
-			}
-		}
-		
-		return PathFinder.getStep( ch.pos, to, passable );
+		return PathFinder.getStep( ch.pos, to, findPassable(ch, pass, visible, chars) );
 
 	}
 	
 	public static int flee( Char ch, int from, boolean[] pass, boolean[] visible, boolean chars ) {
-
-		setupPassable();
-		if (ch.flying) {
-			BArray.or( pass, Dungeon.level.avoid, passable );
-		} else {
-			System.arraycopy( pass, 0, passable, 0, Dungeon.level.length() );
-		}
-
-		if (Char.hasProp(ch, Char.Property.LARGE)){
-			BArray.and( passable, Dungeon.level.openSpace, passable );
-		}
-
+		//only consider chars impassable if our retreat path runs into them
+		boolean[] passable = findPassable(ch, pass, visible, false);
 		passable[ch.pos] = true;
 
-		//only consider chars impassable if our retreat path runs into them
 		int step = PathFinder.getStepBack( ch.pos, from, passable );
-		while (step != -1 && Actor.findChar(step) != null){
+		while (step != -1 && Actor.findChar(step) != null && chars){
 			passable[step] = false;
 			step = PathFinder.getStepBack( ch.pos, from, passable );
 		}
