@@ -34,7 +34,9 @@ public class LevelTransition extends Rect implements Bundlable {
 	public enum Type {
 		SURFACE,
 		REGULAR_ENTRANCE,
-		REGULAR_EXIT;
+		REGULAR_EXIT,
+		BRANCH_ENTRANCE,
+		BRANCH_EXIT;
 	}
 
 	public Type type;

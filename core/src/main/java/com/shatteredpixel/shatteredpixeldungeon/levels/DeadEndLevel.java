@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -66,7 +67,18 @@ public class DeadEndLevel extends Level {
 		}
 		
 		int entrance = SIZE * width() + SIZE / 2 + 1;
-		transitions.add(new LevelTransition(this, entrance, LevelTransition.Type.REGULAR_ENTRANCE));
+
+		//different exit behaviour depending on main branch or side one
+		if (Dungeon.branch == 0) {
+			transitions.add(new LevelTransition(this, entrance, LevelTransition.Type.REGULAR_ENTRANCE));
+		} else {
+			transitions.add(new LevelTransition(this,
+					entrance,
+					LevelTransition.Type.BRANCH_ENTRANCE,
+					Dungeon.depth,
+					0,
+					LevelTransition.Type.BRANCH_EXIT));
+		}
 		map[entrance] = Terrain.ENTRANCE;
 		
 		return true;

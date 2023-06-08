@@ -384,11 +384,11 @@ public class InterlevelScene extends PixelScene {
 			Level level;
 			Dungeon.depth = curTransition.destDepth;
 			Dungeon.branch = curTransition.destBranch;
-			//TODO this is brittle atm, assumes we're always going down in depth 1 at a time
-			if (curTransition.destDepth > Statistics.deepestFloor) {
-				level = Dungeon.newLevel();
-			} else {
+
+			if (Dungeon.levelHasBeenGenerated(Dungeon.depth, Dungeon.branch)) {
 				level = Dungeon.loadLevel( GamesInProgress.curSlot );
+			} else {
+				level = Dungeon.newLevel();
 			}
 
 			LevelTransition destTransition = level.getTransition(curTransition.destType);
@@ -408,22 +408,27 @@ public class InterlevelScene extends PixelScene {
 
 		Level level;
 		Dungeon.depth++;
-		if (Dungeon.depth > Statistics.deepestFloor) {
-			level = Dungeon.newLevel();
-		} else {
+		if (Dungeon.levelHasBeenGenerated(Dungeon.depth, Dungeon.branch)) {
 			level = Dungeon.loadLevel( GamesInProgress.curSlot );
+		} else {
+			level = Dungeon.newLevel();
 		}
 		Dungeon.switchLevel( level, level.fallCell( fallIntoPit ));
 	}
-	
-	private void ascend() throws IOException {
-		
-		Mob.holdAllies( Dungeon.level );
 
+	private void ascend() throws IOException {
+		Mob.holdAllies( Dungeon.level );
 		Dungeon.saveAll();
+
+		Level level;
 		Dungeon.depth = curTransition.destDepth;
 		Dungeon.branch = curTransition.destBranch;
-		Level level = Dungeon.loadLevel( GamesInProgress.curSlot );
+
+		if (Dungeon.levelHasBeenGenerated(Dungeon.depth, Dungeon.branch)) {
+			level = Dungeon.loadLevel( GamesInProgress.curSlot );
+		} else {
+			level = Dungeon.newLevel();
+		}
 
 		LevelTransition destTransition = level.getTransition(curTransition.destType);
 		curTransition = null;
@@ -431,13 +436,18 @@ public class InterlevelScene extends PixelScene {
 	}
 	
 	private void returnTo() throws IOException {
-		
 		Mob.holdAllies( Dungeon.level );
-
 		Dungeon.saveAll();
+
+		Level level;
 		Dungeon.depth = returnDepth;
 		Dungeon.branch = returnBranch;
-		Level level = Dungeon.loadLevel( GamesInProgress.curSlot );
+		if (Dungeon.levelHasBeenGenerated(Dungeon.depth, Dungeon.branch)) {
+			level = Dungeon.loadLevel( GamesInProgress.curSlot );
+		} else {
+			level = Dungeon.newLevel();
+		}
+
 		Dungeon.switchLevel( level, returnPos );
 	}
 	
