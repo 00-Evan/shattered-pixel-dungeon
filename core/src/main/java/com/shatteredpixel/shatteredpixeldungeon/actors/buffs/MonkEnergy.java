@@ -561,11 +561,12 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 						AttackIndicator.target(enemy);
 						boolean empowered = Buff.affect(hero, MonkEnergy.class).abilitiesEmpowered(hero);
 
+						int oldPos = enemy.pos;
 						if (hero.attack(enemy, empowered ? 4.5f : 3f, 0, Char.INFINITE_ACCURACY)){
 							Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 						}
 
-						if (enemy.isAlive()){
+						if (enemy.isAlive() && oldPos == enemy.pos){
 							//trace a ballistica to our target (which will also extend past them
 							Ballistica trajectory = new Ballistica(hero.pos, enemy.pos, Ballistica.STOP_TARGET);
 							//trim it to just be the part that goes past them
