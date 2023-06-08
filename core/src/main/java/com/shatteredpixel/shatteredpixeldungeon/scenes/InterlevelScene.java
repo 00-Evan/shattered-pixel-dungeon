@@ -254,9 +254,6 @@ public class InterlevelScene extends PixelScene {
 					
 					try {
 
-						if (Dungeon.hero != null){
-							Dungeon.hero.spendToWhole();
-						}
 						Actor.fixTime();
 
 						switch (mode) {
