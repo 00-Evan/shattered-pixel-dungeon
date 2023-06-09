@@ -67,6 +67,11 @@ public class HeroicLeap extends ArmorAbility {
 	public void activate( ClassArmor armor, Hero hero, Integer target ) {
 		if (target != null) {
 
+			if (hero.rooted){
+				Camera.main.shake( 1, 1f );
+				return;
+			}
+
 			Ballistica route = new Ballistica(hero.pos, target, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID);
 			int cell = route.collisionPos;
 

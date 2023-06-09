@@ -46,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
@@ -111,7 +112,7 @@ public class Challenge extends ArmorAbility {
 		int[] reachable = PathFinder.distance.clone();
 
 		int blinkpos = hero.pos;
-		if (hero.hasTalent(Talent.CLOSE_THE_GAP)){
+		if (hero.hasTalent(Talent.CLOSE_THE_GAP) && !hero.rooted){
 
 			int blinkrange = 1 + hero.pointsInTalent(Talent.CLOSE_THE_GAP);
 			PathFinder.buildDistanceMap(hero.pos, BArray.not(Dungeon.level.solid,null), blinkrange);
@@ -135,11 +136,13 @@ public class Challenge extends ArmorAbility {
 
 		if (PathFinder.distance[blinkpos] == Integer.MAX_VALUE){
 			GLog.w(Messages.get(this, "unreachable_target"));
+			if (hero.rooted) Camera.main.shake( 1, 1f );
 			return;
 		}
 
 		if (Dungeon.level.distance(blinkpos, targetCh.pos) > 5){
 			GLog.w(Messages.get(this, "distant_target"));
+			if (hero.rooted) Camera.main.shake( 1, 1f );
 			return;
 		}
 

@@ -50,6 +50,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMonkAbilities;
 import com.watabou.noosa.BitmapText;
+import com.watabou.noosa.Camera;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Sample;
@@ -478,6 +479,12 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 				int range = 3;
 				if (Buff.affect(hero, MonkEnergy.class).abilitiesEmpowered(hero)){
 					range += 3;
+				}
+
+				if (Dungeon.hero.rooted){
+					Camera.main.shake( 1, 1f );
+					GLog.w(Messages.get(MeleeWeapon.class, "ability_bad_position"));
+					return;
 				}
 
 				if (Dungeon.level.distance(hero.pos, target) > range){

@@ -51,6 +51,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.MobSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.Camera;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
@@ -86,11 +87,16 @@ public class SmokeBomb extends ArmorAbility {
 	protected void activate(ClassArmor armor, Hero hero, Integer target) {
 		if (target != null) {
 
+			if (target != hero.pos && hero.rooted){
+				Camera.main.shake( 1, 1f );
+				return;
+			}
+
 			PathFinder.buildDistanceMap(hero.pos, BArray.not(Dungeon.level.solid,null), 6);
 
 			if ( PathFinder.distance[target] == Integer.MAX_VALUE ||
 					!Dungeon.level.heroFOV[target] ||
-					Actor.findChar( target ) != null) {
+					(target != hero.pos && Actor.findChar( target ) != null)) {
 
 				GLog.w( Messages.get(this, "fov") );
 				return;

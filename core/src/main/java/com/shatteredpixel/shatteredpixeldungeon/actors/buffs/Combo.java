@@ -45,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndCombo;
 import com.watabou.noosa.BitmapText;
+import com.watabou.noosa.Camera;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Sample;
@@ -472,6 +473,9 @@ public class Combo extends Buff implements ActionIndicator.Action {
 					if (c.collisionPos == enemy.pos){
 						final int leapPos = c.path.get(c.dist-1);
 						if (!Dungeon.level.passable[leapPos]){
+							GLog.w(Messages.get(Combo.class, "bad_target"));
+						} else if (Dungeon.hero.rooted) {
+							Camera.main.shake( 1, 1f );
 							GLog.w(Messages.get(Combo.class, "bad_target"));
 						} else {
 							Dungeon.hero.busy();
