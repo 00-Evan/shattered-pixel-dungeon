@@ -104,7 +104,7 @@ public class Challenge extends ArmorAbility {
 			return;
 		}
 
-		boolean[] passable = Dungeon.level.passable.clone();
+		boolean[] passable = BArray.not(Dungeon.level.solid,null);
 		for (Char c : Actor.chars()) {
 			if (c != hero) passable[c.pos] = false;
 		}
@@ -120,6 +120,7 @@ public class Challenge extends ArmorAbility {
 			for (int i = 0; i < PathFinder.distance.length; i++){
 				if (PathFinder.distance[i] == Integer.MAX_VALUE
 						|| reachable[i] == Integer.MAX_VALUE
+						|| (!Dungeon.level.passable[i] && !(hero.flying && Dungeon.level.avoid[i]))
 						|| i == targetCh.pos){
 					continue;
 				}
@@ -134,7 +135,7 @@ public class Challenge extends ArmorAbility {
 			}
 		}
 
-		if (PathFinder.distance[blinkpos] == Integer.MAX_VALUE){
+		if (reachable[blinkpos] == Integer.MAX_VALUE){
 			GLog.w(Messages.get(this, "unreachable_target"));
 			if (hero.rooted) Camera.main.shake( 1, 1f );
 			return;
