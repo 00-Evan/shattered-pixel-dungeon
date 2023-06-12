@@ -76,6 +76,42 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("v2.1.1", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.PICKAXE), "Early Blacksmith Quest",
+				"In v2.1.1 I've made some internal changes that will better support creating a sublevel for the blacksmith's quest.\n\n" +
+				"This should have no impact on gameplay currently, so please let me know if anything seems amiss with level saving/loading!"));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_- Barkskin_ can now stack from multiple sources. Only the strongest instance of barkskin is used when calculating defense, but this means that very strong short-term barkskin no longer totally overrides weaker long-term barkskin.\n\n" +
+				"_- Rooted_ has had a big consistency pass. It now properly presents movement from dash, blink, and leap abilities. Teleportation still works while rooted.\n\n" +
+				"_-_ Various abilities that automatically move the hero closer to a target now consider whether the hero is levitating when determining what hazards to avoid."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by v2.1.0:_\n" +
+				"_-_ Various rare crash errors\n" +
+				"_-_ Rare cases where enemies could get infinite actions during ascension\n" +
+				"_-_ Grim enchantment incorrectly applying to enemies that are immune to magic\n" +
+				"_-_ Cases where phantom piranhas could be knocked back right after teleporting\n\n" +
+				"_Existed Prior to v2.1.0:_\n" +
+				"_-_ Specific exploits involving moving between floors on a partial turn\n" +
+				"_-_ Enemy AI quirks which caused them to not switch away from inaccessible targets in some cases\n" +
+				"_-_ Various cases where the hero would not lose a debuff after becoming immune to it\n" +
+				"_-_ Hidden mimics not triggering some talents that only occur against enemies\n" +
+				"_-_ Challenge ability having a range of 4 tiles, instead of 5 as stated\n" +
+				"_-_ Shield battery talent being usable with an empty wand\n" +
+				"_-_ Elemental strike not working correctly with a friendly weapon\n" +
+				"_-_ Ally AI errors when told to attack while repositioning\n" +
+				"_-_ Visual bugs when multiple arcane bombs were used at once\n" +
+				"_-_ Various minor textual errors"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
