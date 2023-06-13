@@ -108,7 +108,7 @@ public class LiquidMetal extends Item {
 
 	@Override
 	public int value() {
-		return Math.max(1, quantity/2);
+		return quantity;
 	}
 
 	private final WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {

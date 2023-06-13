@@ -298,8 +298,12 @@ public class Badges {
 		}
 	}
 
-	public static void saveGlobal() {
-		if (saveNeeded) {
+	public static void saveGlobal(){
+		saveGlobal(false);
+	}
+
+	public static void saveGlobal(boolean force) {
+		if (saveNeeded || force) {
 			
 			Bundle bundle = new Bundle();
 			store( bundle, global );

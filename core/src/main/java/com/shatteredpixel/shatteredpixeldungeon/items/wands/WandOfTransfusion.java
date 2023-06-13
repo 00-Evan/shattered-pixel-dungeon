@@ -133,7 +133,7 @@ public class WandOfTransfusion extends Wand {
 
 		if (!curUser.isAlive()){
 			Badges.validateDeathFromFriendlyMagic();
-			Dungeon.fail( getClass() );
+			Dungeon.fail( this );
 			GLog.n( Messages.get(this, "ondeath") );
 		}
 	}

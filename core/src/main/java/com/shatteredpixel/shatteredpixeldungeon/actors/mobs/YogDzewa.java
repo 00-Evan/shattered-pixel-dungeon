@@ -245,7 +245,7 @@ public class YogDzewa extends Mob {
 						}
 						if (!ch.isAlive() && ch == Dungeon.hero) {
 							Badges.validateDeathFromEnemyMagic();
-							Dungeon.fail(getClass());
+							Dungeon.fail(this);
 							GLog.n(Messages.get(Char.class, "kill", name()));
 						}
 					} else {
@@ -419,7 +419,10 @@ public class YogDzewa extends Mob {
 		}
 
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
-		if (lock != null) lock.addTime(dmgTaken);
+		if (lock != null){
+			if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES))   lock.addTime(dmgTaken/3f);
+			else                                                    lock.addTime(dmgTaken/2f);
+		}
 
 	}
 

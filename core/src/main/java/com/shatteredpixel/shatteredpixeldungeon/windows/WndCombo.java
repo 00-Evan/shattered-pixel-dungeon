@@ -62,9 +62,9 @@ public class WndCombo extends Window {
 		}
 
 		for (Combo.ComboMove move : Combo.ComboMove.values()) {
-			Image ic = new Image(icon);
 
-			RedButton moveBtn = new RedButton(move.desc(combo.getComboCount()), 6){
+			String text = "_" + Messages.titleCase(move.title()) + " " + Messages.get(this, "combo_req", move.comboReq) + ":_ " + move.desc(combo.getComboCount());
+			RedButton moveBtn = new RedButton(text, 6){
 				@Override
 				protected void onClick() {
 					super.onClick();
@@ -72,8 +72,6 @@ public class WndCombo extends Window {
 					combo.useMove(move);
 				}
 			};
-			ic.tint(move.tintColor);
-			moveBtn.icon(ic);
 			moveBtn.leftJustify = true;
 			moveBtn.multiline = true;
 			moveBtn.setSize(width, moveBtn.reqHeight());

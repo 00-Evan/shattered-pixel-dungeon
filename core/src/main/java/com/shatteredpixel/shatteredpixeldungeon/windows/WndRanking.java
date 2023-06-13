@@ -86,14 +86,11 @@ public class WndRanking extends WndTabbed {
 		try {
 			Badges.loadGlobal();
 			Rankings.INSTANCE.loadGameData( rec );
-			if (Dungeon.hero != null) {
-				createControls();
-			} else {
-				hide();
-			}
+			createControls();
 		} catch ( Exception e ) {
-			hide();
-			Game.scene().addToFront( new WndError( Messages.get(WndRanking.class, "error" )));
+			Game.reportException( new RuntimeException("Rankings Display Failed!",e));
+			Dungeon.hero = null;
+			createControls();
 		}
 	}
 	
@@ -106,29 +103,35 @@ public class WndRanking extends WndTabbed {
 	}
 	
 	private void createControls() {
-		
-		Icons[] icons =
-			{Icons.RANKINGS, Icons.TALENT, Icons.BACKPACK_LRG, Icons.BADGES, Icons.CHALLENGE_ON};
-		Group[] pages =
-			{new StatsTab(), new TalentsTab(), new ItemsTab(), new BadgesTab(), null};
 
-		if (Dungeon.challenges != 0) pages[4] = new ChallengesTab();
-		
-		for (int i=0; i < pages.length; i++) {
+		if (Dungeon.hero != null) {
+			Icons[] icons =
+					{Icons.RANKINGS, Icons.TALENT, Icons.BACKPACK_LRG, Icons.BADGES, Icons.CHALLENGE_ON};
+			Group[] pages =
+					{new StatsTab(), new TalentsTab(), new ItemsTab(), new BadgesTab(), null};
 
-			if (pages[i] == null) {
-				break;
+			if (Dungeon.challenges != 0) pages[4] = new ChallengesTab();
+
+			for (int i = 0; i < pages.length; i++) {
+
+				if (pages[i] == null) {
+					break;
+				}
+
+				add(pages[i]);
+
+				Tab tab = new RankingTab(icons[i], pages[i]);
+				add(tab);
 			}
-			
-			add( pages[i] );
-			
-			Tab tab = new RankingTab( icons[i], pages[i] );
-			add( tab );
-		}
 
-		layoutTabs();
-		
-		select( 0 );
+			layoutTabs();
+
+			select(0);
+		} else {
+			StatsTab tab = new StatsTab();
+			add(tab);
+
+		}
 	}
 
 	private class RankingTab extends IconTab {
@@ -156,16 +159,19 @@ public class WndRanking extends WndTabbed {
 		public StatsTab() {
 			super();
 			
-			String heroClass = Dungeon.hero.className();
+			String heroClass = record.heroClass.name();
+			if (Dungeon.hero != null){
+				heroClass = Dungeon.hero.className();
+			}
 			
 			IconTitle title = new IconTitle();
-			title.icon( HeroSprite.avatar( Dungeon.hero.heroClass, Dungeon.hero.tier() ) );
-			title.label( Messages.get(this, "title", Dungeon.hero.lvl, heroClass ).toUpperCase( Locale.ENGLISH ) );
+			title.icon( HeroSprite.avatar( record.heroClass, record.armorTier ) );
+			title.label( Messages.get(this, "title", record.herolevel, heroClass ).toUpperCase( Locale.ENGLISH ) );
 			title.color(Window.TITLE_COLOR);
 			title.setRect( 0, 0, WIDTH, 0 );
 			add( title );
 
-			if (Dungeon.seed != -1){
+			if (Dungeon.hero != null && Dungeon.seed != -1){
 				GAP--;
 			}
 			
@@ -184,56 +190,77 @@ public class WndRanking extends WndTabbed {
 			pos = date.bottom()+5;
 
 			NumberFormat num = NumberFormat.getInstance(Locale.US);
-			pos = statSlot( this, Messages.get(this, "score"), num.format( Statistics.totalScore ), pos );
 
-			IconButton scoreInfo = new IconButton(Icons.get(Icons.INFO)){
-				@Override
-				protected void onClick() {
-					super.onClick();
-					ShatteredPixelDungeon.scene().addToFront(new WndScoreBreakdown());
-				}
-			};
-			scoreInfo.setSize(16, 16);
-			scoreInfo.setPos(WIDTH-scoreInfo.width(), pos-10-GAP);
-			add(scoreInfo);
-			pos += GAP;
+			if (Dungeon.hero == null){
+				pos = statSlot( this, Messages.get(this, "score"), num.format( record.score ), pos );
+				pos += GAP;
 
-			int strBonus = Dungeon.hero.STR() - Dungeon.hero.STR;
-			if (strBonus > 0)       pos = statSlot(this, Messages.get(this, "str"), Dungeon.hero.STR + " + " + strBonus, pos);
-			else if (strBonus < 0)  pos = statSlot(this, Messages.get(this, "str"), Dungeon.hero.STR + " - " + -strBonus, pos );
-			else                    pos = statSlot(this, Messages.get(this, "str"), Integer.toString(Dungeon.hero.STR), pos);
-			pos = statSlot( this, Messages.get(this, "duration"), num.format( (int)Statistics.duration ), pos );
-			if (Statistics.highestAscent == 0) {
-				pos = statSlot(this, Messages.get(this, "depth"), num.format(Statistics.deepestFloor), pos);
+				Image errorIcon = Icons.WARNING.get();
+				errorIcon.y = pos;
+				add(errorIcon);
+
+				RenderedTextBlock errorText = PixelScene.renderTextBlock(Messages.get(WndRanking.class, "error"), 6);
+				errorText.maxWidth((int)(WIDTH-errorIcon.width()-GAP));
+				errorText.setPos(errorIcon.width()+GAP, pos + (errorIcon.height()-errorText.height())/2);
+				add(errorText);
+
 			} else {
-				pos = statSlot(this, Messages.get(this, "ascent"), num.format(Statistics.highestAscent), pos);
-			}
-			if (Dungeon.seed != -1) {
-				if (Dungeon.daily){
-					if (Dungeon.dailyReplay) {
-						pos = statSlot(this, Messages.get(this, "replay_for"), "_" + Dungeon.customSeedText + "_", pos);
-					} else {
-						pos = statSlot(this, Messages.get(this, "daily_for"), "_" + Dungeon.customSeedText + "_", pos);
+
+				pos = statSlot(this, Messages.get(this, "score"), num.format(Statistics.totalScore), pos);
+
+				IconButton scoreInfo = new IconButton(Icons.get(Icons.INFO)) {
+					@Override
+					protected void onClick() {
+						super.onClick();
+						ShatteredPixelDungeon.scene().addToFront(new WndScoreBreakdown());
 					}
-				} else if (!Dungeon.customSeedText.isEmpty()){
-					pos = statSlot(this, Messages.get(this, "custom_seed"), "_" + Dungeon.customSeedText + "_", pos);
+				};
+				scoreInfo.setSize(16, 16);
+				scoreInfo.setPos(WIDTH - scoreInfo.width(), pos - 10 - GAP);
+				add(scoreInfo);
+
+				pos += GAP;
+
+				int strBonus = Dungeon.hero.STR() - Dungeon.hero.STR;
+				if (strBonus > 0)
+					pos = statSlot(this, Messages.get(this, "str"), Dungeon.hero.STR + " + " + strBonus, pos);
+				else if (strBonus < 0)
+					pos = statSlot(this, Messages.get(this, "str"), Dungeon.hero.STR + " - " + -strBonus, pos);
+				else
+					pos = statSlot(this, Messages.get(this, "str"), Integer.toString(Dungeon.hero.STR), pos);
+				pos = statSlot(this, Messages.get(this, "duration"), num.format((int) Statistics.duration), pos);
+				if (Statistics.highestAscent == 0) {
+					pos = statSlot(this, Messages.get(this, "depth"), num.format(Statistics.deepestFloor), pos);
 				} else {
-					pos = statSlot(this, Messages.get(this, "seed"), DungeonSeed.convertToCode(Dungeon.seed), pos);
+					pos = statSlot(this, Messages.get(this, "ascent"), num.format(Statistics.highestAscent), pos);
 				}
-			} else {
-				pos += GAP + 5;
+				if (Dungeon.seed != -1) {
+					if (Dungeon.daily) {
+						if (Dungeon.dailyReplay) {
+							pos = statSlot(this, Messages.get(this, "replay_for"), "_" + Dungeon.customSeedText + "_", pos);
+						} else {
+							pos = statSlot(this, Messages.get(this, "daily_for"), "_" + Dungeon.customSeedText + "_", pos);
+						}
+					} else if (!Dungeon.customSeedText.isEmpty()) {
+						pos = statSlot(this, Messages.get(this, "custom_seed"), "_" + Dungeon.customSeedText + "_", pos);
+					} else {
+						pos = statSlot(this, Messages.get(this, "seed"), DungeonSeed.convertToCode(Dungeon.seed), pos);
+					}
+				} else {
+					pos += GAP + 5;
+				}
+
+				pos += GAP;
+
+				pos = statSlot(this, Messages.get(this, "enemies"), num.format(Statistics.enemiesSlain), pos);
+				pos = statSlot(this, Messages.get(this, "gold"), num.format(Statistics.goldCollected), pos);
+				pos = statSlot(this, Messages.get(this, "food"), num.format(Statistics.foodEaten), pos);
+				pos = statSlot(this, Messages.get(this, "alchemy"), num.format(Statistics.itemsCrafted), pos);
 			}
-
-			pos += GAP;
-
-			pos = statSlot( this, Messages.get(this, "enemies"), num.format( Statistics.enemiesSlain ), pos );
-			pos = statSlot( this, Messages.get(this, "gold"), num.format( Statistics.goldCollected ), pos );
-			pos = statSlot( this, Messages.get(this, "food"), num.format( Statistics.foodEaten ), pos );
-			pos = statSlot( this, Messages.get(this, "alchemy"), num.format( Statistics.itemsCrafted ), pos );
 
 			int buttontop = HEIGHT - 16;
 
-			if (Dungeon.seed != -1 && !Dungeon.daily &&
+			if (Dungeon.hero != null && Dungeon.seed != -1 && !Dungeon.daily &&
 					(DeviceCompat.isDebug() || Badges.isUnlocked(Badges.Badge.VICTORY))){
 				final Image icon = Icons.get(Icons.SEED);
 				RedButton btnSeed = new RedButton(Messages.get(this, "copy_seed")){

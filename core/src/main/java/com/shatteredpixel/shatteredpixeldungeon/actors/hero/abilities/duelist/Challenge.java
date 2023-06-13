@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
@@ -74,8 +75,8 @@ public class Challenge extends ArmorAbility {
 	public float chargeUse( Hero hero ) {
 		float chargeUse = super.chargeUse(hero);
 		if (hero.buff(EliminationMatchTracker.class) != null){
-			//reduced charge use by 20%/36%/50%/60%
-			chargeUse *= Math.pow(0.795, hero.pointsInTalent(Talent.ELIMINATION_MATCH));
+			//reduced charge use by 16%/30%/41%/50%
+			chargeUse *= Math.pow(0.84, hero.pointsInTalent(Talent.ELIMINATION_MATCH));
 		}
 		return chargeUse;
 	}
@@ -175,6 +176,7 @@ public class Challenge extends ArmorAbility {
 
 		armor.charge -= chargeUse( hero );
 		armor.updateQuickslot();
+		Invisibility.dispel();
 		hero.sprite.zap(target);
 
 		hero.next();
@@ -257,9 +259,9 @@ public class Challenge extends ArmorAbility {
 							hpToHeal = heroBuff.takenDmg;
 						}
 
-						//heals for 30%/50%/65%/75% of taken damage plus 3/6/9/12 bonus, based on talent points
+						//heals for 30%/50%/65%/75% of taken damage plus 5/10/15/20 bonus, based on talent points
 						hpToHeal = (int)Math.round(hpToHeal * (1f - Math.pow(0.707f, Dungeon.hero.pointsInTalent(Talent.INVIGORATING_VICTORY))));
-						hpToHeal += 3*Dungeon.hero.pointsInTalent(Talent.INVIGORATING_VICTORY);
+						hpToHeal += 5*Dungeon.hero.pointsInTalent(Talent.INVIGORATING_VICTORY);
 						hpToHeal = Math.min(hpToHeal, Dungeon.hero.HT - Dungeon.hero.HP);
 						if (hpToHeal > 0){
 							Dungeon.hero.HP += hpToHeal;

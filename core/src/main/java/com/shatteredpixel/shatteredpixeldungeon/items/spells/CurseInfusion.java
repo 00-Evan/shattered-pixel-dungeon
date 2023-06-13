@@ -89,8 +89,8 @@ public class CurseInfusion extends InventorySpell {
 	
 	@Override
 	public int value() {
-		//prices of ingredients, divided by output quantity
-		return Math.round(quantity * ((30 + 50) / 3f));
+		//prices of ingredients, divided by output quantity, rounds down
+		return (int)((30 + 50) * (quantity/3f));
 	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {

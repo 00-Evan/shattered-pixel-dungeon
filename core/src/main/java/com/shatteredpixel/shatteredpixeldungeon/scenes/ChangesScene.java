@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
@@ -122,9 +123,7 @@ public class ChangesScene extends PixelScene {
 			rightScroll.content().add(changeTitle);
 
 			String body = Messages.get(this, "right_body");
-			if (Messages.lang() != Languages.ENGLISH){
-				body += "\n\n_" + Messages.get(this, "lang_warn") + "_";
-			}
+
 			changeBody = PixelScene.renderTextBlock(body, 6);
 			changeBody.maxWidth(pw - panel.marginHor());
 			changeBody.setPos(0, changeTitle.bottom()+2);
@@ -139,6 +138,12 @@ public class ChangesScene extends PixelScene {
 		add( panel );
 		
 		final ArrayList<ChangeInfo> changeInfos = new ArrayList<>();
+
+		if (Messages.lang() != Languages.ENGLISH){
+			ChangeInfo langWarn = new ChangeInfo("", true, Messages.get(this, "lang_warn"));
+			langWarn.hardlight(CharSprite.WARNING);
+			changeInfos.add(langWarn);
+		}
 		
 		switch (changesSelected){
 			case 0: default:

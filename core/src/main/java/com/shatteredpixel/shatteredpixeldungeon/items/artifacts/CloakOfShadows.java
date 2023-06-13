@@ -295,6 +295,11 @@ public class CloakOfShadows extends Artifact {
 		}
 
 		@Override
+		public String desc() {
+			return Messages.get(this, "desc", turnsToCost);
+		}
+
+		@Override
 		public boolean attachTo( Char target ) {
 			if (super.attachTo( target )) {
 				target.invisible++;

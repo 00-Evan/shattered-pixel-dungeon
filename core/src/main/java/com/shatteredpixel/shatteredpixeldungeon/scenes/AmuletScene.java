@@ -70,7 +70,6 @@ public class AmuletScene extends PixelScene {
 		if (!noText) {
 			text = renderTextBlock( Messages.get(this, "text"), 8 );
 			text.maxWidth( PixelScene.landscape() ? 2*WIDTH-4 : WIDTH);
-			add( text );
 		}
 		
 		amulet = new Image( Assets.Sprites.AMULET );
@@ -137,6 +136,7 @@ public class AmuletScene extends PixelScene {
 
 			text.setPos((Camera.main.width - text.width()) / 2, amulet.y + amulet.height + LARGE_GAP);
 			align(text);
+			add(text);
 			
 			btnExit.setPos( (Camera.main.width - btnExit.width()) / 2, text.top() + text.height() + LARGE_GAP );
 			btnStay.setPos( btnExit.left(), btnExit.bottom() + SMALL_GAP );

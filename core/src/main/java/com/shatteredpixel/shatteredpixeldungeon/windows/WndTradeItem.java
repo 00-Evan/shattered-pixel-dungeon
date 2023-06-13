@@ -23,7 +23,12 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+<<<<<<< HEAD
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+=======
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+>>>>>>> aaad76fe0d723ad033f8f32c60e07a7b67f499bd
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
@@ -60,12 +65,26 @@ public class WndTradeItem extends WndInfoItem {
 
 		float pos = height;
 
+<<<<<<< HEAD
+=======
+		//find the shopkeeper in the current level
+		Shopkeeper shop = null;
+		for (Char ch : Actor.chars()){
+			if (ch instanceof Shopkeeper){
+				shop = (Shopkeeper) ch;
+				break;
+			}
+		}
+		final Shopkeeper finalShop = shop;
+
+		if (item.quantity() == 1) {
+>>>>>>> aaad76fe0d723ad033f8f32c60e07a7b67f499bd
 
 		if(item instanceof CorgSeed){
 			RedButton seedSell = new RedButton( Messages.get(this, "pane_up", item.quantity()) ) {
 				@Override
 				protected void onClick() {
-					sell( item );
+					sell( item, finalShop);
 					hide();
 
 					Sample.INSTANCE.play( Assets.Sounds.LEVELUP );
@@ -83,6 +102,7 @@ public class WndTradeItem extends WndInfoItem {
 
 			if (item.quantity() == 1) {
 
+<<<<<<< HEAD
 				RedButton btnSell = new RedButton(Messages.get(this, "sell", item.value())) {
 					@Override
 					protected void onClick() {
@@ -93,6 +113,29 @@ public class WndTradeItem extends WndInfoItem {
 				btnSell.setRect(0, pos + GAP, width, BTN_HEIGHT);
 				btnSell.icon(new ItemSprite(ItemSpriteSheet.GOLD));
 				add(btnSell);
+=======
+			int priceAll= item.value();
+			RedButton btnSell1 = new RedButton( Messages.get(this, "sell_1", priceAll / item.quantity()) ) {
+				@Override
+				protected void onClick() {
+					sellOne( item, finalShop );
+					hide();
+				}
+			};
+			btnSell1.setRect( 0, pos + GAP, width, BTN_HEIGHT );
+			btnSell1.icon(new ItemSprite(ItemSpriteSheet.GOLD));
+			add( btnSell1 );
+			RedButton btnSellAll = new RedButton( Messages.get(this, "sell_all", priceAll ) ) {
+				@Override
+				protected void onClick() {
+					sell( item, finalShop );
+					hide();
+				}
+			};
+			btnSellAll.setRect( 0, btnSell1.bottom() + 1, width, BTN_HEIGHT );
+			btnSellAll.icon(new ItemSprite(ItemSpriteSheet.GOLD));
+			add( btnSellAll );
+>>>>>>> aaad76fe0d723ad033f8f32c60e07a7b67f499bd
 
 				pos = btnSell.bottom();
 
@@ -209,8 +252,12 @@ public class WndTradeItem extends WndInfoItem {
 		}
 		if (selling) Shopkeeper.sell();
 	}
-	
+
 	public static void sell( Item item ) {
+		sell(item, null);
+	}
+
+	public static void sell( Item item, Shopkeeper shop ) {
 		
 		Hero hero = Dungeon.hero;
 		
@@ -223,12 +270,23 @@ public class WndTradeItem extends WndInfoItem {
 		hero.spend(-hero.cooldown());
 
 		new Gold( item.value() ).doPickUp( hero );
+
+		if (shop != null){
+			shop.buybackItems.add(item);
+			while (shop.buybackItems.size() > Shopkeeper.MAX_BUYBACK_HISTORY){
+				shop.buybackItems.remove(0);
+			}
+		}
 	}
 
 	public static void sellOne( Item item ) {
+		sellOne( item, null );
+	}
+
+	public static void sellOne( Item item, Shopkeeper shop ) {
 		
 		if (item.quantity() <= 1) {
-			sell( item );
+			sell( item, shop );
 		} else {
 			
 			Hero hero = Dungeon.hero;
@@ -239,6 +297,13 @@ public class WndTradeItem extends WndInfoItem {
 			hero.spend(-hero.cooldown());
 
 			new Gold( item.value() ).doPickUp( hero );
+
+			if (shop != null){
+				shop.buybackItems.add(item);
+				while (shop.buybackItems.size() > Shopkeeper.MAX_BUYBACK_HISTORY){
+					shop.buybackItems.remove(0);
+				}
+			}
 		}
 	}
 	

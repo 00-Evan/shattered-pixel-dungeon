@@ -1,0 +1,10 @@
+diff a/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/actors/mobs/Wraith.java b/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/actors/mobs/Wraith.java	(rejected hunks)
+@@ -37,7 +37,7 @@
+ 
+ 	private static final float SPAWN_DELAY	= 2f;
+ 	
+-	private int level;
++	protected int level;
+ 	
+ 	{
+ 		spriteClass = WraithSprite.class;

@@ -45,20 +45,22 @@ public class ArtifactRecharge extends Buff {
 
 		if (target instanceof Hero) {
 			float chargeAmount = Math.min(1, left);
-			for (Buff b : target.buffs()) {
-				if (b instanceof Artifact.ArtifactBuff) {
-					if (b instanceof HornOfPlenty.hornRecharge && ignoreHornOfPlenty){
-						continue;
-					}
-					if (!((Artifact.ArtifactBuff) b).isCursed()) {
-						((Artifact.ArtifactBuff) b).charge((Hero) target, chargeAmount);
+			if (chargeAmount > 0){
+				for (Buff b : target.buffs()) {
+					if (b instanceof Artifact.ArtifactBuff) {
+						if (b instanceof HornOfPlenty.hornRecharge && ignoreHornOfPlenty){
+							continue;
+						}
+						if (!((Artifact.ArtifactBuff) b).isCursed()) {
+							((Artifact.ArtifactBuff) b).charge((Hero) target, chargeAmount);
+						}
 					}
 				}
 			}
 		}
 
 		left--;
-		if (left <= 0){
+		if (left < 0){ // we expire after 0 to be more consistent with wand recharging visually
 			detach();
 		} else {
 			spend(TICK);
@@ -98,7 +100,7 @@ public class ArtifactRecharge extends Buff {
 
 	@Override
 	public String iconTextDisplay() {
-		return Integer.toString((int)left);
+		return Integer.toString((int)left+1);
 	}
 	
 	@Override

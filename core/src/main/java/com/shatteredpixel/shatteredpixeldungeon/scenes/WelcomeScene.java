@@ -57,7 +57,7 @@ import java.util.Collections;
 
 public class WelcomeScene extends PixelScene {
 
-	private static final int LATEST_UPDATE = ShatteredPixelDungeon.v2_0_0;
+	private static final int LATEST_UPDATE = 706;
 
 	//used so that the game does not keep showing the window forever if cleaning fails
 	private static boolean triedCleaningTemp = false;
@@ -200,11 +200,15 @@ public class WelcomeScene extends PixelScene {
 				//TODO: change the messages here in accordance with the type of patch.
 				message = Messages.get(this, "patch_intro");
 				message += "\n";
-				message += "\n" + Messages.get(this, "patch_balance");
+				//message += "\n" + Messages.get(this, "patch_balance");
 				message += "\n" + Messages.get(this, "patch_bugfixes");
 				message += "\n" + Messages.get(this, "patch_translations");
 
 			}
+
+			message = "Greeting Beta testers!\n\n" +
+					"v2.1.0 includes a bunch of Duelist balance changes, a bit of new content, and a few significant QoL tweaks. The beta is already content-complete, so I expect it to last for about a week.\n\n" +
+					"Please let me know what you think, and if you run into any bugs!";
 
 		} else {
 			message = Messages.get(this, "what_msg");
@@ -239,6 +243,17 @@ public class WelcomeScene extends PixelScene {
 
 		//update rankings, to update any data which may be outdated
 		if (previousVersion < LATEST_UPDATE){
+
+			Badges.loadGlobal();
+			Journal.loadGlobal();
+
+			//pre-unlock Duelist for those who already have a win
+			if (previousVersion <= ShatteredPixelDungeon.v2_0_0){
+				if (Badges.isUnlocked(Badges.Badge.VICTORY) && !Badges.isUnlocked(Badges.Badge.UNLOCK_DUELIST)){
+					Badges.unlock(Badges.Badge.UNLOCK_DUELIST);
+				}
+			}
+
 			try {
 				Rankings.INSTANCE.load();
 				for (Rankings.Record rec : Rankings.INSTANCE.records.toArray(new Rankings.Record[0])){
@@ -246,9 +261,9 @@ public class WelcomeScene extends PixelScene {
 						Rankings.INSTANCE.loadGameData(rec);
 						Rankings.INSTANCE.saveGameData(rec);
 					} catch (Exception e) {
-						//if we encounter a fatal per-record error, then clear that record
-						Rankings.INSTANCE.records.remove(rec);
-						ShatteredPixelDungeon.reportException(e);
+						//if we encounter a fatal per-record error, then clear that record's data
+						rec.gameData = null;
+						Game.reportException( new RuntimeException("Rankings Updating Failed!",e));
 					}
 				}
 				if (Rankings.INSTANCE.latestDaily != null){
@@ -256,9 +271,9 @@ public class WelcomeScene extends PixelScene {
 						Rankings.INSTANCE.loadGameData(Rankings.INSTANCE.latestDaily);
 						Rankings.INSTANCE.saveGameData(Rankings.INSTANCE.latestDaily);
 					} catch (Exception e) {
-						//if we encounter a fatal per-record error, then clear that record
-						Rankings.INSTANCE.latestDaily = null;
-						ShatteredPixelDungeon.reportException(e);
+						//if we encounter a fatal per-record error, then clear that record's data
+						Rankings.INSTANCE.latestDaily.gameData = null;
+						Game.reportException( new RuntimeException("Rankings Updating Failed!",e));
 					}
 				}
 				Collections.sort(Rankings.INSTANCE.records, Rankings.scoreComparator);
@@ -266,20 +281,13 @@ public class WelcomeScene extends PixelScene {
 			} catch (Exception e) {
 				//if we encounter a fatal error, then just clear the rankings
 				FileUtils.deleteFile( Rankings.RANKINGS_FILE );
-				ShatteredPixelDungeon.reportException(e);
+				Game.reportException( new RuntimeException("Rankings Updating Failed!",e));
 			}
 			Dungeon.daily = Dungeon.dailyReplay = false;
 
-		}
+			Badges.saveGlobal(true);
+			Journal.saveGlobal(true);
 
-		//pre-unlock Duelist for those who already have a win
-		if (previousVersion <= ShatteredPixelDungeon.v2_0_0){
-			Badges.loadGlobal();
-			if (Badges.isUnlocked(Badges.Badge.VICTORY) && !Badges.isUnlocked(Badges.Badge.UNLOCK_DUELIST)){
-				Dungeon.customSeedText = ""; //clear in case rankings updating left this set
-				Badges.unlock(Badges.Badge.UNLOCK_DUELIST);
-				Badges.saveGlobal();
-			}
 		}
 
 		SPDSettings.version(ShatteredPixelDungeon.versionCode);

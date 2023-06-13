@@ -86,8 +86,11 @@ public class DesktopLauncher {
 				exceptionMsg = exceptionMsg.replace("com.shatteredpixel.shatteredpixeldungeon.", "");
 				exceptionMsg = exceptionMsg.replace("com.watabou.", "");
 				exceptionMsg = exceptionMsg.replace("com.badlogic.gdx.", "");
-				exceptionMsg = exceptionMsg.replace("\t", "    ");
-				exceptionMsg = exceptionMsg.replace("'", "");
+				exceptionMsg = exceptionMsg.replace("\t", "  "); //shortens length of tabs
+
+				//replace ' and " with similar equivalents as tinyfd hates them for some reason
+				exceptionMsg = exceptionMsg.replace('\'', '’');
+				exceptionMsg = exceptionMsg.replace('"', '”');
 
 				if (exceptionMsg.length() > 1000){
 					exceptionMsg = exceptionMsg.substring(0, 1000) + "...";

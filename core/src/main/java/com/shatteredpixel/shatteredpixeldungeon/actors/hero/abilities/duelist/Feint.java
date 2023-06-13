@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -97,6 +98,7 @@ public class Feint extends ArmorAbility {
 				}
 				hero.pos = target;
 				Dungeon.level.occupyCell(hero);
+				Invisibility.dispel();
 				hero.spendAndNext(1f);
 			}
 		});
@@ -177,19 +179,21 @@ public class Feint extends ArmorAbility {
 
 		@Override
 		public int defenseSkill(Char enemy) {
-			if (enemy instanceof Mob){
-				((Mob) enemy).clearEnemy();
-			}
-			Buff.affect(enemy, FeintConfusion.class, 1);
-			if (enemy.sprite != null) enemy.sprite.showLost();
-			if (Dungeon.hero.hasTalent(Talent.FEIGNED_RETREAT)){
-				Buff.prolong(Dungeon.hero, Haste.class, 2f*Dungeon.hero.pointsInTalent(Talent.FEIGNED_RETREAT));
-			}
-			if (Dungeon.hero.hasTalent(Talent.EXPOSE_WEAKNESS)){
-				Buff.prolong(enemy, Vulnerable.class, Dungeon.hero.pointsInTalent(Talent.EXPOSE_WEAKNESS));
-			}
-			if (Dungeon.hero.hasTalent(Talent.COUNTER_ABILITY)){
-				Buff.prolong(Dungeon.hero, Talent.CounterAbilityTacker.class, 3f);
+			if (enemy.alignment == Alignment.ENEMY) {
+				if (enemy instanceof Mob) {
+					((Mob) enemy).clearEnemy();
+				}
+				Buff.affect(enemy, FeintConfusion.class, 1);
+				if (enemy.sprite != null) enemy.sprite.showLost();
+				if (Dungeon.hero.hasTalent(Talent.FEIGNED_RETREAT)) {
+					Buff.prolong(Dungeon.hero, Haste.class, 2f * Dungeon.hero.pointsInTalent(Talent.FEIGNED_RETREAT));
+				}
+				if (Dungeon.hero.hasTalent(Talent.EXPOSE_WEAKNESS)) {
+					Buff.prolong(enemy, Vulnerable.class, 2f * Dungeon.hero.pointsInTalent(Talent.EXPOSE_WEAKNESS));
+				}
+				if (Dungeon.hero.hasTalent(Talent.COUNTER_ABILITY)) {
+					Buff.prolong(Dungeon.hero, Talent.CounterAbilityTacker.class, 3f);
+				}
 			}
 			return 0;
 		}

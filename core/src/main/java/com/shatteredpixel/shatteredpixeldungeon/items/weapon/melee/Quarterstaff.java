@@ -51,14 +51,14 @@ public class Quarterstaff extends MeleeWeapon {
 	}
 
 	@Override
-	public float abilityChargeUse(Hero hero) {
-		return 2*super.abilityChargeUse(hero);
+	public float abilityChargeUse(Hero hero, Char target) {
+		return 2*super.abilityChargeUse(hero, target);
 	}
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		beforeAbilityUsed(hero);
-		Buff.prolong(hero, DefensiveStance.class, 5f); //4 turns as using the ability is instant
+		beforeAbilityUsed(hero, null);
+		Buff.prolong(hero, DefensiveStance.class, 4f); //4 turns as using the ability is instant
 		hero.sprite.operate(hero.pos);
 		hero.next();
 		afterAbilityUsed(hero);
@@ -78,7 +78,7 @@ public class Quarterstaff extends MeleeWeapon {
 
 		@Override
 		public float iconFadePercent() {
-			return Math.max(0, (6 - visualcooldown()) / 6);
+			return Math.max(0, (5 - visualcooldown()) / 5);
 		}
 	}
 

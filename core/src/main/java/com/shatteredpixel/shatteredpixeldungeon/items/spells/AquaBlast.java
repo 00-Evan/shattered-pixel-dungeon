@@ -40,7 +40,7 @@ public class AquaBlast extends TargetedSpell {
 
 		GeyserTrap geyser = new GeyserTrap();
 		geyser.pos = cell;
-		geyser.source = getClass();
+		geyser.source = this;
 		if (bolt.path.size() > bolt.dist+1) {
 			geyser.centerKnockBackDirection = bolt.path.get(bolt.dist + 1);
 		}
@@ -49,8 +49,8 @@ public class AquaBlast extends TargetedSpell {
 	
 	@Override
 	public int value() {
-		//prices of ingredients, divided by output quantity
-		return Math.round(quantity * ((60 + 40) / 8f));
+		//prices of ingredients, divided by output quantity, rounds down
+		return (int)((60 + 40) * (quantity/8f));
 	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {

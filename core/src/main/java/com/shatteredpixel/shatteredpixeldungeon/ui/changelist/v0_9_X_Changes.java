@@ -68,7 +68,9 @@ public class v0_9_X_Changes {
 				"_-_ Released June 7th, 2021\n" +
 				"_-_ 101 days after Shattered v0.9.2\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"v0.9.3 was the largest talent addition yet, with over 50 total talents and 9 new armor abilities! Armor abilities were another thing that I always intended to work with the talent system. They now fit in as a bit of an equivalent to subclasses with their own customization options both from talents and the abilities themselves. These talents also heavily impact the power of their respective armor abilities, meaning that the same ability can be quite different depending on which talents you choose to upgrade.\n" +
+				"\n" +
+				"This update also included Shattered's second new challenge! Badder bosses was rattling around in my head ever since the release of v0.8.0, as I knew it would be very easy to make stronger versions of each of the new boss encounters that weren't just based on higher stats. Badder bosses was well received while still managing to be distinct from hostile champions. Hostile champions is a bit more random and can apply anywhere, whereas badder bosses is consistent in its effect but only applies during specific fights."));
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CROWN, null), "Armor abilities and T4 Talents!",
 				"_Hero armor abilities have been totally overhauled, featuring 13 abilities and 40 T4 talents!_\n\n" +
@@ -231,7 +233,9 @@ public class v0_9_X_Changes {
 				"_-_ Released February 26th, 2021\n" +
 				"_-_ 78 days after Shattered v0.9.1\n" +
 				"\n" +
-				"Dev commentary will be added here in the next major update."));
+				"v0.9.2 added the first tier of talents that were applicable through the later stages of the game. This is where the talent system really started to feel like it was deepening existing character customization systems in the game, rather than being tacked on top of them. It was always my intention for talents to work with subclasses as well, as there were lots of little subclass-level effects that could be fun but couldn't fit into their own full subclass. Talents give these mechanics a place to exist that compliments the game's existing systems.\n" +
+				"\n" +
+				"These talent additions also gave me balance room to give some help to weaker enemies and also better balance the various subclasses. Subclasses that were already a bit strong got some of their innate powers moved to talents, wheras other subclasses got entirely new effects via the talent system. The Gladiator and freerunner in particular got more wide-reaching changes for both balance and design reasons."));
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.TALENT), "Tier Three Talents!",
 				"_32 new talents have been added that span levels 13 to 20!_\n\n" +

@@ -117,11 +117,16 @@ public class BuffIndicator extends Component {
 	public static final int DUEL_XBOW   = 66;
 	public static final int CHALLENGE   = 67;
 	public static final int MONK_ENERGY = 68;
+<<<<<<< HEAD
 	public static final int SUPER_BULK  = 69;
 	public static final int SPIRIT_BUFF = 70;
 	public static final int PINNED_ARROW = 71;
 	public static final int SPIRIT_ICON  = 72;
 	public static final int GOLDEN_BLOOD = 73;
+=======
+	public static final int DUEL_COMBO  = 69;
+	public static final int DAZE        = 70;
+>>>>>>> aaad76fe0d723ad033f8f32c60e07a7b67f499bd
 
 	public static final int SIZE_SMALL  = 7;
 	public static final int SIZE_LARGE  = 16;
@@ -287,6 +292,7 @@ public class BuffIndicator extends Component {
 			//round up to the nearest pixel if <50% faded, otherwise round down
 			if (!large || buff.iconTextDisplay().isEmpty()) {
 				text.visible = false;
+				grey.visible = true;
 				float fadeHeight = buff.iconFadePercent() * icon.height();
 				float zoom = (camera() != null) ? camera().zoom : 1;
 				if (fadeHeight < icon.height() / 2f) {
@@ -295,6 +301,7 @@ public class BuffIndicator extends Component {
 					grey.scale.set(icon.width(), (float) Math.floor(zoom * fadeHeight) / zoom);
 				}
 			} else if (!buff.iconTextDisplay().isEmpty()) {
+				text.visible = true;
 				grey.visible = false;
 				if (buff.type == Buff.buffType.POSITIVE)        text.hardlight(CharSprite.POSITIVE);
 				else if (buff.type == Buff.buffType.NEGATIVE)   text.hardlight(CharSprite.NEGATIVE);

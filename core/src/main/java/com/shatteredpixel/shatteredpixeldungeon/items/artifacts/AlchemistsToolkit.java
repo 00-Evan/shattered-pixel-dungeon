@@ -146,7 +146,7 @@ public class AlchemistsToolkit extends Artifact {
 	@Override
 	public String status() {
 		if (isEquipped(Dungeon.hero) && warmUpDelay > 0 && !cursed){
-			return Messages.format( "%d%%", 100 - (int)warmUpDelay );
+			return Messages.format( "%d%%", Math.max(0, 100 - (int)warmUpDelay) );
 		} else {
 			return super.status();
 		}
@@ -221,12 +221,12 @@ public class AlchemistsToolkit extends Artifact {
 		@Override
 		public boolean act() {
 
-			if (warmUpDelay > 0 && !cursed && target.buff(MagicImmune.class) == null){
+			if (warmUpDelay > 0){
 				if (level() == 10){
 					warmUpDelay = 0;
 				} else if (warmUpDelay == 101){
 					warmUpDelay = 100f;
-				} else {
+				} else if (!cursed && target.buff(MagicImmune.class) == null) {
 					float turnsToWarmUp = (int) Math.pow(10 - level(), 2);
 					warmUpDelay -= 100 / turnsToWarmUp;
 				}

@@ -38,13 +38,25 @@ import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ShopkeeperSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+<<<<<<< HEAD
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndImp;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndShop;
+=======
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
+>>>>>>> aaad76fe0d723ad033f8f32c60e07a7b67f499bd
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.Image;
+import com.watabou.utils.Bundlable;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+
+import java.util.ArrayList;
 
 public class Shopkeeper extends NPC {
 
@@ -54,7 +66,12 @@ public class Shopkeeper extends NPC {
 		properties.add(Property.IMMOVABLE);
 	}
 
+<<<<<<< HEAD
 	private boolean seenBefore = false;
+=======
+	public static int MAX_BUYBACK_HISTORY = 3;
+	public ArrayList<Item> buybackItems = new ArrayList<>();
+>>>>>>> aaad76fe0d723ad033f8f32c60e07a7b67f499bd
 	
 	@Override
 	protected boolean act() {
@@ -63,6 +80,7 @@ public class Shopkeeper extends NPC {
 			Notes.add(Notes.Landmark.SHOP);
 		}
 
+<<<<<<< HEAD
 		/*if (Statistics.highestAscent < 20 && Dungeon.hero.buff(AscensionChallenge.class) != null){
 			flee();
 			return true;
@@ -79,6 +97,9 @@ public class Shopkeeper extends NPC {
 			seenBefore = false;
 		}
 		
+=======
+
+>>>>>>> aaad76fe0d723ad033f8f32c60e07a7b67f499bd
 		sprite.turnTo( pos, Dungeon.hero.pos );
 		spend( TICK );
 		return super.act();
@@ -180,6 +201,7 @@ public class Shopkeeper extends NPC {
 		if (c != Dungeon.hero) {
 			return true;
 		}
+<<<<<<< HEAD
 
 		CorgSeed seed = Dungeon.hero.belongings.getItem( CorgSeed.class );
 		if (seed != null) {
@@ -195,6 +217,59 @@ public class Shopkeeper extends NPC {
 					@Override
 					public void call() {
 						sell();
+=======
+		Game.runOnRenderThread(new Callback() {
+			@Override
+			public void call() {
+				String[] options = new String[2+ buybackItems.size()];
+				int i = 0;
+				options[i++] = Messages.get(Shopkeeper.this, "sell");
+				options[i++] = Messages.get(Shopkeeper.this, "talk");
+				for (Item item : buybackItems){
+					options[i] = Messages.get(Heap.class, "for_sale", item.value(), Messages.titleCase(item.title()));
+					if (options[i].length() > 26) options[i] = options[i].substring(0, 23) + "...";
+					i++;
+				}
+				GameScene.show(new WndOptions(sprite(), Messages.titleCase(name()), description(), options){
+					@Override
+					protected void onSelect(int index) {
+						super.onSelect(index);
+						if (index == 0){
+							sell();
+						} else if (index == 1){
+							GameScene.show(new WndTitledMessage(sprite(), Messages.titleCase(name()), chatText()));
+						} else if (index > 1){
+							GLog.i(Messages.get(Shopkeeper.this, "buyback"));
+							Item returned = buybackItems.remove(index-2);
+							Dungeon.gold -= returned.value();
+							Statistics.goldCollected -= returned.value();
+							if (!returned.doPickUp(Dungeon.hero)){
+								Dungeon.level.drop(returned, Dungeon.hero.pos);
+							}
+						}
+					}
+
+					@Override
+					protected boolean enabled(int index) {
+						if (index > 1){
+							return Dungeon.gold >= buybackItems.get(index-2).value();
+						} else {
+							return super.enabled(index);
+						}
+					}
+
+					@Override
+					protected boolean hasIcon(int index) {
+						return index > 1;
+					}
+
+					@Override
+					protected Image getIcon(int index) {
+						if (index > 1){
+							return new ItemSprite(buybackItems.get(index-2));
+						}
+						return null;
+>>>>>>> aaad76fe0d723ad033f8f32c60e07a7b67f499bd
 					}
 				});
 			}
@@ -207,5 +282,40 @@ public class Shopkeeper extends NPC {
 			});
 		}
 		return true;
+	}
+
+	public String chatText(){
+		if (Dungeon.hero.buff(AscensionChallenge.class) != null){
+			return Messages.get(this, "talk_ascent");
+		}
+		switch (Dungeon.depth){
+			case 6: default:
+				return Messages.get(this, "talk_prison_intro") + "\n\n" + Messages.get(this, "talk_prison_" + Dungeon.hero.heroClass.name());
+			case 11:
+				return Messages.get(this, "talk_caves");
+			case 16:
+				return Messages.get(this, "talk_city");
+			case 20:
+				return Messages.get(this, "talk_halls");
+		}
+	}
+
+	public static String BUYBACK_ITEMS = "buyback_items";
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put(BUYBACK_ITEMS, buybackItems);
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		buybackItems.clear();
+		if (bundle.contains(BUYBACK_ITEMS)){
+			for (Bundlable i : bundle.getCollection(BUYBACK_ITEMS)){
+				buybackItems.add((Item) i);
+			}
+		}
 	}
 }

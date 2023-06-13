@@ -21,10 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.TormentedSpirit;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
@@ -35,12 +38,40 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PathFinder;
 
 public class ScrollOfRemoveCurse extends InventoryScroll {
 
 	{
 		icon = ItemSpriteSheet.Icons.SCROLL_REMCURSE;
 		preferredBag = Belongings.Backpack.class;
+	}
+
+	@Override
+	public void doRead() {
+		TormentedSpirit spirit = null;
+		for (int i : PathFinder.NEIGHBOURS8){
+			if (Actor.findChar(curUser.pos+i) instanceof TormentedSpirit){
+				spirit = (TormentedSpirit) Actor.findChar(curUser.pos+i);
+			}
+		}
+		if (spirit != null){
+			identify();
+			Sample.INSTANCE.play( Assets.Sounds.READ );
+			readAnimation();
+
+			new Flare( 6, 32 ).show( curUser.sprite, 2f );
+
+			if (curUser.buff(Degrade.class) != null) {
+				Degrade.detach(curUser, Degrade.class);
+			}
+
+			GLog.p(Messages.get(this, "spirit"));
+			spirit.cleanse();
+		} else {
+			super.doRead();
+		}
 	}
 
 	@Override

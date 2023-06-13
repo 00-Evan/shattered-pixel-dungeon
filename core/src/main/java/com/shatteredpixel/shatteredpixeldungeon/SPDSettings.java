@@ -359,9 +359,6 @@ public class SPDSettings extends GameSettings {
 	}
 	
 	public static boolean systemFont(){
-		//TODO add pixel font support for vietnamese
-		if (language() == Languages.VIETNAMESE) return true;
-
 		return getBoolean(KEY_SYSTEMFONT,
 				(language() == Languages.KOREAN || language() == Languages.CHINESE || language() == Languages.JAPANESE));
 	}

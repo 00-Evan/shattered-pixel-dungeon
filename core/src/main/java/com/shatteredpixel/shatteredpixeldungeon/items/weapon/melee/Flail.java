@@ -59,7 +59,7 @@ public class Flail extends MeleeWeapon {
 	@Override
 	public int damageRoll(Char owner) {
 		int dmg = Math.round(super.damageRoll(owner) * spinBonus);
-		if (spinBonus == 2f) Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+		if (spinBonus > 1f) Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 		spinBonus = 1f;
 		return dmg;
 	}
@@ -68,60 +68,56 @@ public class Flail extends MeleeWeapon {
 	public float accuracyFactor(Char owner, Char target) {
 		SpinAbilityTracker spin = owner.buff(SpinAbilityTracker.class);
 		if (spin != null) {
-			//have to handle this in an actor tied to the regular attack =S
 			Actor.add(new Actor() {
 				{ actPriority = VFX_PRIO; }
 				@Override
 				protected boolean act() {
 					if (owner instanceof Hero && !target.isAlive()){
-						onAbilityKill((Hero)owner);
+						onAbilityKill((Hero)owner, target);
 					}
 					Actor.remove(this);
 					return true;
 				}
 			});
-			//we detach and calculate bonus here in case the attack misses
+			//we detach and calculate bonus here in case the attack misses (e.g. vs. monks)
 			spin.detach();
 			spinBonus = 1f + (spin.spins/3f);
-			if (spinBonus == 2f){
-				return Float.POSITIVE_INFINITY;
-			} else {
-				return super.accuracyFactor(owner, target);
-			}
+			return Float.POSITIVE_INFINITY;
 		} else {
 			spinBonus = 1f;
 			return super.accuracyFactor(owner, target);
 		}
 	}
 
-	public float abilityChargeUse( Hero hero ) {
+	public float abilityChargeUse(Hero hero, Char target) {
 		if (Dungeon.hero.buff(SpinAbilityTracker.class) != null){
 			return 0;
 		} else {
-			return 2*super.abilityChargeUse(hero);
+			return 2*super.abilityChargeUse(hero, target);
 		}
 	}
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
 
-		beforeAbilityUsed(hero);
 		SpinAbilityTracker spin = hero.buff(SpinAbilityTracker.class);
+		if (spin != null && spin.spins >= 3){
+			GLog.w(Messages.get(this, "spin_warn"));
+			return;
+		}
 
+		beforeAbilityUsed(hero, null);
 		if (spin == null){
 			spin = Buff.affect(hero, SpinAbilityTracker.class, 3f);
 		}
 
-		if (spin.spins < 3){
-			spin.spins++;
-			Buff.prolong(hero, SpinAbilityTracker.class, 3f);
-			Sample.INSTANCE.play(Assets.Sounds.CHAINS, 1, 1, 0.9f + 0.1f*spin.spins);
-			hero.sprite.operate(hero.pos);
-			hero.spendAndNext(Actor.TICK);
-			BuffIndicator.refreshHero();
-		} else {
-			GLog.w(Messages.get(this, "spin_warn"));
-		}
+		spin.spins++;
+		Buff.prolong(hero, SpinAbilityTracker.class, 3f);
+		Sample.INSTANCE.play(Assets.Sounds.CHAINS, 1, 1, 0.9f + 0.1f*spin.spins);
+		hero.sprite.operate(hero.pos);
+		hero.spendAndNext(Actor.TICK);
+		BuffIndicator.refreshHero();
+
 		afterAbilityUsed(hero);
 	}
 

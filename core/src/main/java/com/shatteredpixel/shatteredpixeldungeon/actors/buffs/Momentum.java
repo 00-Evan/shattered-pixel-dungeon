@@ -27,10 +27,15 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
+import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
@@ -65,6 +70,8 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 		if (freerunCooldown == 0 && !freerunning() && target.invisible > 0 && Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH) >= 1){
 			momentumStacks = Math.min(momentumStacks + 2, 10);
 			movedLastTurn = true;
+			ActionIndicator.setAction(this);
+			BuffIndicator.refreshHero();
 		}
 
 		if (freerunTurns > 0){
@@ -75,7 +82,9 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 			momentumStacks = (int)GameMath.gate(0, momentumStacks-1, Math.round(momentumStacks * 0.667f));
 			if (momentumStacks <= 0) {
 				ActionIndicator.clearAction(this);
-				if (freerunCooldown <= 0) detach();
+				BuffIndicator.refreshHero();
+			} else {
+				ActionIndicator.refresh();
 			}
 		}
 		movedLastTurn = false;
@@ -90,6 +99,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 			postpone(target.cooldown()+(1/target.speed()));
 			momentumStacks = Math.min(momentumStacks + 1, 10);
 			ActionIndicator.setAction(this);
+			BuffIndicator.refreshHero();
 		}
 	}
 
@@ -117,17 +127,16 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 	
 	@Override
 	public int icon() {
-		return BuffIndicator.MOMENTUM;
+		if (momentumStacks > 0 || freerunCooldown > 0)  return BuffIndicator.MOMENTUM;
+		else                                            return BuffIndicator.NONE;
 	}
 	
 	@Override
 	public void tintIcon(Image icon) {
-		if (freerunTurns > 0){
+		if (freerunCooldown == 0 || freerunTurns > 0){
 			icon.hardlight(1,1,0);
-		} else if (freerunCooldown > 0){
-			icon.hardlight(0.5f,0.5f,1);
 		} else {
-			icon.hardlight(1f - (momentumStacks /10f),1,1f - (momentumStacks /10f));
+			icon.hardlight(0.5f,0.5f,1);
 		}
 	}
 
@@ -138,7 +147,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 		} else if (freerunCooldown > 0){
 			return (freerunCooldown) / 30f;
 		} else {
-			return (10 - momentumStacks) / 10f;
+			return 0;
 		}
 	}
 
@@ -149,7 +158,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 		} else if (freerunCooldown > 0){
 			return Integer.toString(freerunCooldown);
 		} else {
-			return Integer.toString(momentumStacks);
+			return "";
 		}
 	}
 
@@ -205,10 +214,22 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 	}
 
 	@Override
-	public Image actionIcon() {
-		Image im = new BuffIcon(BuffIndicator.HASTE, true);
-		im.hardlight(0x99992E);
-		return im;
+	public int actionIcon() {
+		return HeroIcon.MOMENTUM;
+	}
+
+	@Override
+	public Visual secondaryVisual() {
+		BitmapText txt = new BitmapText(PixelScene.pixelFont);
+		txt.text(Integer.toString((int)momentumStacks) );
+		txt.hardlight(CharSprite.POSITIVE);
+		txt.measure();
+		return txt;
+	}
+
+	@Override
+	public int indicatorColor() {
+		return 0x444444;
 	}
 
 	@Override
