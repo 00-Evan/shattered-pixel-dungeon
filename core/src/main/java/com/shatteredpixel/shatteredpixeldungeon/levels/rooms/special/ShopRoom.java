@@ -21,8 +21,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
+
+
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
@@ -255,7 +258,7 @@ public class ShopRoom extends SpecialRoom {
 				rare.level( 0 );
 				break;
 			case 1:
-				rare = Generator.random(Generator.Category.RING);
+				rare = Generator.random( Generator.Category.RING );
 				rare.level( 0 );
 				break;
 			case 2:

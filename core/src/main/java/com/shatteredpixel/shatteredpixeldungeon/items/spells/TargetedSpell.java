@@ -44,6 +44,7 @@ public abstract class TargetedSpell extends Spell {
 	}
 	
 	protected abstract void affectTarget( Ballistica bolt, Hero hero );
+
 	
 	protected void fx( Ballistica bolt, Callback callback ) {
 		MagicMissile.boltFromChar( curUser.sprite.parent,
@@ -53,7 +54,8 @@ public abstract class TargetedSpell extends Spell {
 				callback);
 		Sample.INSTANCE.play( Assets.Sounds.ZAP );
 	}
-	
+
+
 	private static CellSelector.Listener targeter = new  CellSelector.Listener(){
 		
 		@Override
@@ -82,7 +84,8 @@ public abstract class TargetedSpell extends Spell {
 					QuickSlotButton.target(Actor.findChar(cell));
 				
 				curUser.busy();
-				
+
+
 				curSpell.fx(shot, new Callback() {
 					public void call() {
 						curSpell.affectTarget(shot, curUser);
@@ -92,7 +95,7 @@ public abstract class TargetedSpell extends Spell {
 						curUser.spendAndNext( 1f );
 					}
 				});
-				
+
 			}
 				
 		}

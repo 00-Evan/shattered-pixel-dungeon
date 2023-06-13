@@ -21,7 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.bags;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.ArcaneResin;
+import com.shatteredpixel.shatteredpixeldungeon.items.CorgSeed;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.BeaconOfReturning;
@@ -44,7 +46,12 @@ public class ScrollHolder extends Bag {
 	}
 
 	public int capacity(){
-		return 19;
+		int cap = super.capacity();
+		if (Dungeon.hero != null){
+			cap -=6;
+		}
+
+		return cap;
 	}
 	
 	@Override

@@ -29,8 +29,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
+import com.shatteredpixel.shatteredpixeldungeon.items.CorgSeed;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.SpiritHammer;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DarkGold;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
@@ -49,6 +51,7 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -81,6 +84,7 @@ public class Blacksmith extends NPC {
 		if (c != Dungeon.hero){
 			return true;
 		}
+
 		
 		if (!Quest.given) {
 			
@@ -125,14 +129,14 @@ public class Blacksmith extends NPC {
 					}
 					pick.detach( Dungeon.hero.belongings.backpack );
 					tell( Messages.get(this, "completed") );
-					
+
 					Quest.completed = true;
 					Quest.reforged = false;
 					Statistics.questScores[2] = 3000;
 				}
 				
 			} else {
-				
+
 				Pickaxe pick = Dungeon.hero.belongings.getItem( Pickaxe.class );
 				DarkGold gold = Dungeon.hero.belongings.getItem( DarkGold.class );
 				if (pick == null) {
@@ -146,13 +150,13 @@ public class Blacksmith extends NPC {
 					pick.detach( Dungeon.hero.belongings.backpack );
 					gold.detachAll( Dungeon.hero.belongings.backpack );
 					tell( Messages.get(this, "completed") );
-					
+
 					Quest.completed = true;
 					Quest.reforged = false;
 					Statistics.questScores[2] = 3000;
 				}
-				
 			}
+
 		} else if (!Quest.reforged) {
 			
 			Game.runOnRenderThread(new Callback() {
@@ -165,7 +169,7 @@ public class Blacksmith extends NPC {
 		} else {
 			
 			tell( Messages.get(this, "get_lost") );
-			
+
 		}
 
 		return true;

@@ -29,14 +29,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Transmuting;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
@@ -47,7 +45,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
@@ -220,9 +217,10 @@ public class MeleeWeapon extends Weapon {
 		}
 
 		if (hero.buff(Talent.CombinedLethalityAbilityTracker.class) != null
-				&& hero.buff(Talent.CombinedLethalityAbilityTracker.class).weapon != null
-				&& hero.buff(Talent.CombinedLethalityAbilityTracker.class).weapon != this){
+			&& hero.buff(Talent.CombinedLethalityAbilityTracker.class).weapon != null
+			&& hero.buff(Talent.CombinedLethalityAbilityTracker.class).weapon != this) {
 			Buff.affect(hero, Talent.CombinedLethalityTriggerTracker.class, 5f);
+
 		}
 
 		updateQuickslot();
@@ -324,10 +322,18 @@ public class MeleeWeapon extends Weapon {
 			if (exStr > 0) {
 				damage += Random.IntRange( 0, exStr );
 			}
+			if (owner.buff(Shovel.ShovelTracker.class) != null
+					&& owner.buff(Shovel.ShovelTracker.class).count >=2
+					&& ((Hero) owner).belongings.weapon() instanceof Shovel
+					&&!(((Hero) owner).belongings.abilityWeapon instanceof Shovel)){
+				damage = Math.round(damage * (1.4f));
+				owner.buff(Shovel.ShovelTracker.class).detach();
+			}
 		}
 		
 		return damage;
 	}
+
 	
 	@Override
 	public String info() {
@@ -542,6 +548,7 @@ public class MeleeWeapon extends Weapon {
 			partialCharge = bundle.getFloat(PARTIALCHARGE);
 			secondCharges = bundle.getInt(SECOND_CHARGES);
 			secondPartialCharge = bundle.getFloat(SECOND_PARTIALCHARGE);
+
 		}
 
 		@Override

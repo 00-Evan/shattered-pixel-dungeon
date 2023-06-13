@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.bags;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.CorgSeed;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.GooBlob;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.MetalShard;
@@ -37,7 +39,8 @@ public class VelvetPouch extends Bag {
 	@Override
 	public boolean canHold( Item item ) {
 		if (item instanceof Plant.Seed || item instanceof Runestone
-				|| item instanceof GooBlob || item instanceof MetalShard){
+				|| item instanceof GooBlob || item instanceof MetalShard
+				|| item instanceof CorgSeed){
 			return super.canHold(item);
 		} else {
 			return false;
@@ -45,7 +48,12 @@ public class VelvetPouch extends Bag {
 	}
 
 	public int capacity(){
-		return 19;
+		int cap = super.capacity();
+		if (Dungeon.hero != null){
+			cap -=6;
+		}
+
+		return cap;
 	}
 	
 	@Override

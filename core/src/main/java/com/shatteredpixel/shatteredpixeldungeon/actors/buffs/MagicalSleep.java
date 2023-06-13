@@ -21,8 +21,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -48,6 +50,8 @@ public class MagicalSleep extends Buff {
 				}
 			}
 
+
+
 			if (target instanceof Mob) {
 				((Mob) target).state = ((Mob) target).SLEEPING;
 			}
@@ -64,6 +68,7 @@ public class MagicalSleep extends Buff {
 			detach();
 			return true;
 		}
+
 		if (target.alignment == Char.Alignment.ALLY) {
 			target.HP = Math.min(target.HP+1, target.HT);
 			if (target instanceof  Hero) ((Hero) target).resting = true;
@@ -83,6 +88,14 @@ public class MagicalSleep extends Buff {
 		if (target instanceof Hero)
 			((Hero) target).resting = false;
 		super.detach();
+	}
+	@Override
+	public String desc() {
+		String desc = Messages.get(this, "desc");
+		if (Dungeon.hero.subClass == HeroSubClass.SOULCHASER){
+			desc += "\n\n" + Messages.get(this, "chaser_desc");
+		}
+		return desc;
 	}
 
 	@Override

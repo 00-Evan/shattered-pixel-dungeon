@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
@@ -58,18 +59,16 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Surprise;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.PocketedMobs;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Lucky;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -218,10 +217,10 @@ public abstract class Mob extends Char {
 			return true;
 		}
 
-		if (buff(Terror.class) != null || buff(Dread.class) != null ){
+		if (buff(Terror.class) != null || buff(Dread.class) != null){
 			state = FLEEING;
 		}
-		
+
 		enemy = chooseEnemy();
 		
 		boolean enemyInFOV = enemy != null && enemy.isAlive() && fieldOfView[enemy.pos] && enemy.invisible <= 0;
@@ -330,7 +329,7 @@ public abstract class Mob extends Char {
 				//look for hostile mobs to attack
 				for (Mob mob : Dungeon.level.mobs)
 					if (mob.alignment == Alignment.ENEMY && fieldOfView[mob.pos]
-							&& mob.invisible <= 0 && !mob.isInvulnerable(getClass()))
+							&& mob.invisible <= 0 && !mob.isInvulnerable(getClass()) )
 						//intelligent allies do not target mobs which are passive, wandering, or asleep
 						if (!intelligentAlly ||
 								(mob.state != mob.SLEEPING && mob.state != mob.PASSIVE && mob.state != mob.WANDERING)) {
@@ -341,11 +340,15 @@ public abstract class Mob extends Char {
 			} else if (alignment == Alignment.ENEMY) {
 				//look for ally mobs to attack
 				for (Mob mob : Dungeon.level.mobs)
-					if (mob.alignment == Alignment.ALLY && fieldOfView[mob.pos] && mob.invisible <= 0)
+					if (mob.alignment == Alignment.ALLY && fieldOfView[mob.pos] && mob.invisible <= 0 )
 						enemies.add(mob);
 
 				//and look for the hero
-				if (fieldOfView[Dungeon.hero.pos] && Dungeon.hero.invisible <= 0) {
+				if (fieldOfView[Dungeon.hero.pos] && Dungeon.hero.invisible <= 0 ) {
+					enemies.add(Dungeon.hero);
+				}
+				//쥐변이
+				if (fieldOfView[Dungeon.hero.pos] && Dungeon.hero.ignored <= 0 ) {
 					enemies.add(Dungeon.hero);
 				}
 				
@@ -358,6 +361,10 @@ public abstract class Mob extends Char {
 				if (source != null && enemies.contains(source) && enemies.size() > 1){
 					enemies.remove(source);
 				}
+			}
+
+			if (fieldOfView[Dungeon.hero.pos] && Dungeon.hero.ignored > 0) {
+				enemies.remove(Dungeon.hero);
 			}
 
 			//neutral characters in particular do not choose enemies.
@@ -610,7 +617,7 @@ public abstract class Mob extends Char {
 	}
 	
 	protected boolean doAttack( Char enemy ) {
-		
+
 		if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
 			sprite.attack( enemy.pos );
 			return false;
@@ -641,6 +648,7 @@ public abstract class Mob extends Char {
 			return 0;
 		}
 	}
+
 	
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
@@ -689,6 +697,8 @@ public abstract class Mob extends Char {
 				Dungeon.hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
 			}
 		}
+
+
 
 		return super.defenseProc(enemy, damage);
 	}
@@ -782,6 +792,12 @@ public abstract class Mob extends Char {
 			EXP /= 2;
 		}
 
+		if (cause == PocketedMobs.class){
+			// 주문으로 인한 사망 경험치 절반
+			if (EXP % 2 == 1) EXP += Random.Int(2);
+			EXP /= 2;
+		}
+
 		if (alignment == Alignment.ENEMY){
 			rollToDropLoot();
 
@@ -821,6 +837,8 @@ public abstract class Mob extends Char {
 			}
 		}
 	}
+
+
 
 	public float lootChance(){
 		float lootChance = this.lootChance;
@@ -869,6 +887,12 @@ public abstract class Mob extends Char {
 		//lucky enchant logic
 		if (buff(Lucky.LuckProc.class) != null){
 			Dungeon.level.drop(buff(Lucky.LuckProc.class).genLoot(), pos).sprite.drop();
+			Lucky.showFlare(sprite);
+		}
+
+		//수집가의 드롭
+		if (buff(Talent.LapidaristLuckProc.class) != null){
+			Dungeon.level.drop(buff(Talent.LapidaristLuckProc.class).genLoot(), pos).sprite.drop();
 			Lucky.showFlare(sprite);
 		}
 
@@ -1251,6 +1275,13 @@ public abstract class Mob extends Char {
 	
 	public static void clearHeldAllies(){
 		heldAllies.clear();
+	}
+
+	public static class ScareTracker extends FlavourBuff {
+		{ actPriority = HERO_PRIO+1;}
+
+		public boolean parried;
+
 	}
 }
 

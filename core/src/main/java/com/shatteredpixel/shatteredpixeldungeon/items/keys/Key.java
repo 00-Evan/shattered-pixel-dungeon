@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.keys;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -50,7 +51,9 @@ public abstract class Key extends Item {
 	public boolean doPickUp(Hero hero, int pos) {
 		GameScene.pickUpJournal(this, pos);
 		WndJournal.last_index = 2;
-		Notes.add(this);
+		if ( hero.pointsInTalent(Talent.LAPIDARIST_INVISI3)<3) { //마스터키 일때 열쇠 기록 없애기
+			Notes.add(this);
+		}
 		Sample.INSTANCE.play( Assets.Sounds.ITEM );
 		hero.spendAndNext( TIME_TO_PICK_UP );
 		GameScene.updateKeyDisplay();

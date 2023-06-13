@@ -22,9 +22,12 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
@@ -46,7 +49,15 @@ public class PotionOfToxicGas extends Potion {
 			Sample.INSTANCE.play( Assets.Sounds.GAS );
 		}
 
-		GameScene.add( Blob.seed( cell, 1000, ToxicGas.class ) );
+		Talent.PotionTickCounter counter = Dungeon.hero.buff(Talent.PotionTickCounter.class);
+		if (counter == null) {
+			GameScene.add( Blob.seed( cell, 1000, ToxicGas.class ) );
+		} else {
+			GameScene.add( Blob.seed( cell, 1000 + (int) counter.count(), ToxicGas.class ) );
+			counter.detach();
+		}
+		Statistics.toxicGasUsed++;
+		Badges.validatePotionystUnlock();
 	}
 	
 	@Override

@@ -21,9 +21,14 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
+import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.CONTACTLESS_TREATMENT;
+
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -38,10 +43,29 @@ public class PotionOfHaste extends Potion {
 	@Override
 	public void apply(Hero hero) {
 		identify();
-		
+		Talent.PotionTickCounter counter = Dungeon.hero.buff(Talent.PotionTickCounter.class);
+		if (counter != null) {
+			Buff.prolong( hero, Haste.class, (int)counter.count());
+			counter.detach();
+		}
 		GLog.w( Messages.get(this, "energetic") );
 		Buff.prolong( hero, Haste.class, Haste.DURATION);
 		SpellSprite.show(hero, SpellSprite.HASTE, 1, 1, 0);
+	}
+
+	@Override
+	public void applyChar( Char ch ) {
+		//whitephial
+		identify();
+		int treat = 1 + Dungeon.hero.pointsInTalent(CONTACTLESS_TREATMENT);
+		Talent.PotionTickCounter counter = Dungeon.hero.buff(Talent.PotionTickCounter.class);
+		if (counter != null) {
+			Buff.prolong( ch, Haste.class, (int)counter.count());
+			counter.detach();
+		}
+		GLog.w( Messages.get(this, "energetic"), ch.name() );
+		Buff.prolong( ch, Haste.class, Haste.DURATION * treat/4f);
+		SpellSprite.show(ch, SpellSprite.HASTE, 1, 1, 0);
 	}
 	
 	@Override

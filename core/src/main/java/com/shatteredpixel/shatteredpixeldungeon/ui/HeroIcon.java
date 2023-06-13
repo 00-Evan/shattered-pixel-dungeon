@@ -34,7 +34,7 @@ public class HeroIcon extends Image {
 	private static final int SIZE = 16;
 
 	//transparent icon
-	public static final int NONE    = 31;
+	public static final int NONE    = 39;
 
 	//subclasses
 	public static final int BERSERKER   = 0;
@@ -43,10 +43,14 @@ public class HeroIcon extends Image {
 	public static final int WARLOCK     = 3;
 	public static final int ASSASSIN    = 4;
 	public static final int FREERUNNER  = 5;
+	public static final int LAPIDARIST  = 12;
 	public static final int SNIPER      = 6;
 	public static final int WARDEN      = 7;
+	public static final int SOULCHASER  = 13;
 	public static final int CHAMPION    = 8;
 	public static final int MONK        = 9;
+	public static final int DR_PLAGUE   = 32;
+	public static final int ALCHEMYST   = 33;
 
 	//abilities
 	public static final int HEROIC_LEAP     = 16;
@@ -65,6 +69,8 @@ public class HeroIcon extends Image {
 	public static final int ELEMENTAL_STRIKE= 29;
 	public static final int FEINT           = 30;
 	public static final int RATMOGRIFY      = 31;
+	public static final int SCARECROW       = 34;
+
 
 	public HeroIcon(HeroSubClass subCls){
 		super( Assets.Interfaces.HERO_ICONS );

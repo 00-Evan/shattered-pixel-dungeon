@@ -21,8 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
+import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.CONTACTLESS_TREATMENT;
+
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -47,6 +52,16 @@ public class PotionOfStrength extends Potion {
 		Badges.validateStrengthAttained();
 		Badges.validateDuelistUnlock();
 	}
+	public void applyChar( Char ch ) {
+		identify();
+
+		int treat = 1 + Dungeon.hero.pointsInTalent(CONTACTLESS_TREATMENT);
+		ch.allySTR++;
+		ch.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "msg_1") );
+		GLog.p( Messages.get(this, "msg_2_ally"),ch.name() );
+		// whitephial의 특수상태
+
+	}
 
 	@Override
 	public int value() {
@@ -55,6 +70,11 @@ public class PotionOfStrength extends Potion {
 
 	@Override
 	public int energyVal() {
-		return isKnown() ? 8 * quantity : super.energyVal();
+		boolean potiontest = Dungeon.hero.hasTalent(Talent.POTION_ENERGY);
+		if (potiontest && Dungeon.hero.buff(Talent.PotionEnergyCounter.class) != null){
+			return (int) (( 8 + Dungeon.hero.buff(Talent.PotionEnergyCounter.class).count() )*quantity);
+		} else {
+			return 8 * quantity;
+		}
 	}
 }

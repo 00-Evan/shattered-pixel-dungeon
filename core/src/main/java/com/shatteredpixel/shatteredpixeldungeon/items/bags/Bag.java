@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.CorgSeed;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuickBag;
@@ -51,8 +52,14 @@ public class Bag extends Item implements Iterable<Item> {
 	
 	public ArrayList<Item> items = new ArrayList<>();
 
-	public int capacity(){
-		return 20; // default container size
+	public int cap =25;
+
+	public int capacity() {
+		if (Dungeon.hero != null && Dungeon.hero.buff(CorgSeed.SellSeedCounter.class) != null) {
+			return (int) (25 +Dungeon.hero.buff(CorgSeed.SellSeedCounter.class).count());
+		} else {
+			return 25 ; // default container size
+		}
 	}
 	
 	@Override

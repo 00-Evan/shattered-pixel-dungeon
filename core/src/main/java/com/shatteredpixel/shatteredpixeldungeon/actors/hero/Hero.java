@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
+import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.LAPIDARIST_INVISI3;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
@@ -35,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SacrificialFire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AdrenalineSurge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AnkhInvulnerability;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArrowMarkTracker;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
@@ -44,12 +47,17 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChaserMark;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChestAwareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Disguise;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Foresight;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Goldlize;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HoldFast;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LapidaristBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Levitation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
@@ -60,6 +68,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PhysicalEmpower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SuperBulk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Challenge;
@@ -108,7 +117,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfDivineInspiration;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEvasion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
@@ -129,6 +140,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RoundShield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sai;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shovel;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
@@ -236,12 +248,16 @@ public class Hero extends Char {
 	public void updateHT( boolean boostHP ){
 		int curHT = HT;
 		
-		HT = 20 + 5*(lvl-1) + HTBoost;
+		HT = 20 + 5*(lvl-1) + HTBoost ;
 		float multiplier = RingOfMight.HTMultiplier(this);
 		HT = Math.round(multiplier * HT);
 		
 		if (buff(ElixirOfMight.HTBoost.class) != null){
 			HT += buff(ElixirOfMight.HTBoost.class).boost();
+		}
+
+		if (buff(SuperBulk.class) != null) {
+			HT += buff(SuperBulk.class).boost();
 		}
 		
 		if (boostHP){
@@ -431,12 +447,17 @@ public class Hero extends Char {
 	
 	public int tier() {
 		Armor armor = belongings.armor();
-		if (armor instanceof ClassArmor){
-			return 6;
-		} else if (armor != null){
-			return armor.tier;
+		Disguise disguise = this.buff(Disguise.class);
+		if (disguise == null) {
+			if (armor instanceof ClassArmor) {
+				return 6;
+			} else if (armor != null) {
+				return armor.tier;
+			} else {
+				return 0;
+			}
 		} else {
-			return 0;
+			return 7;
 		}
 	}
 	
@@ -451,6 +472,7 @@ public class Hero extends Char {
 		belongings.thrownWeapon = wep;
 		boolean hit = attack( enemy );
 		Invisibility.dispel();
+	//	Disguise.dispel();
 		belongings.thrownWeapon = null;
 
 		if (hit && subClass == HeroSubClass.GLADIATOR && wasEnemy){
@@ -655,6 +677,11 @@ public class Hero extends Char {
 			speed *= (2f + 0.25f*pointsInTalent(Talent.GROWING_POWER));
 		}
 
+		SuperBulk superBulk = buff(SuperBulk.class);
+		if ( superBulk != null) {
+			speed *= superBulk.reducer(this,speed);
+		} //현재 속도감소량이 없음. 차후 고민중
+
 		speed = AscensionChallenge.modifyHeroSpeed(speed);
 		
 		return speed;
@@ -723,6 +750,32 @@ public class Hero extends Char {
 		}
 	}
 
+	//test
+	public float LapidaristAttackDelay() {
+		if (buff(Talent.LethalMomentumTracker.class) != null){
+			buff(Talent.LethalMomentumTracker.class).detach();
+			return 0;
+		}
+
+		float delay = 1f;
+
+		if (!RingOfForce.fightingUnarmed(this)) {
+			//수집가 고유 효과
+			return delay * belongings.attackingWeapon().LapidaristDelayFactor( this );
+		} else {
+			//Normally putting furor speed on unarmed attacks would be unnecessary
+			//But there's going to be that one guy who gets a furor+force ring combo
+			//This is for that one guy, you shall get your fists of fury!
+			float speed = RingOfFuror.attackSpeedMultiplier(this);
+
+			float LaSpeed = pointsInTalent(Talent.LAPIDARIST_SPEED2);
+			speed += 0.167f*LaSpeed;
+
+			return delay/speed;
+		}
+	}
+
+
 	@Override
 	public void spend( float time ) {
 		super.spend(time);
@@ -758,7 +811,7 @@ public class Hero extends Char {
 		
 		if (!ready) {
 			//do a full observe (including fog update) if not resting.
-			if (!resting || buff(MindVision.class) != null || buff(Awareness.class) != null) {
+			if (!resting || buff(MindVision.class) != null || buff(Awareness.class) != null || buff(ChestAwareness.class) != null) {
 				Dungeon.observe();
 			} else {
 				//otherwise just directly re-calculate FOV
@@ -831,10 +884,12 @@ public class Hero extends Char {
 		if(hasTalent(Talent.BARKSKIN) && Dungeon.level.map[pos] == Terrain.FURROWED_GRASS){
 			Buff.affect(this, Barkskin.class).set( (lvl*pointsInTalent(Talent.BARKSKIN))/2, 1 );
 		}
-		
+
+
 		return actResult;
 	}
-	
+
+
 	public void busy() {
 		ready = false;
 	}
@@ -879,7 +934,7 @@ public class Hero extends Char {
 				//standing on a plant
 				Dungeon.level.plants.get(pos) != null);
 	}
-	
+
 	private boolean actMove( HeroAction.Move action ) {
 
 		if (getCloser( action.dst )) {
@@ -1057,12 +1112,22 @@ public class Hero extends Char {
 			Heap heap = Dungeon.level.heaps.get( dst );
 			if (heap != null && (heap.type != Type.HEAP && heap.type != Type.FOR_SALE)) {
 				
-				if ((heap.type == Type.LOCKED_CHEST && Notes.keyCount(new GoldenKey(Dungeon.depth)) < 1)
-					|| (heap.type == Type.CRYSTAL_CHEST && Notes.keyCount(new CrystalKey(Dungeon.depth)) < 1)){
-
-						GLog.w( Messages.get(this, "locked_chest") );
+				if (((heap.type == Type.LOCKED_CHEST && Notes.keyCount(new GoldenKey(Dungeon.depth)) < 1 )
+					|| (heap.type == Type.CRYSTAL_CHEST && Notes.keyCount(new CrystalKey(Dungeon.depth)) < 1))
+						&& this.pointsInTalent(LAPIDARIST_INVISI3) < 3 ){
+					    //수집가의 마스터키
+					    GLog.w( Messages.get(this, "locked_chest") );
 						ready();
+
 						return false;
+
+				}
+
+				if (heap.type == Type.JEWEL_DUMMY && !(Dungeon.hero.belongings.weapon() instanceof Shovel)){
+
+					GLog.w( Messages.get(this, "no_shovel") );
+					ready();
+					return false;
 
 				}
 				
@@ -1073,6 +1138,10 @@ public class Hero extends Char {
 					break;
 				case SKELETON:
 				case REMAINS:
+					break;
+				case JEWEL_DUMMY:
+					Sample.INSTANCE.play( Assets.Sounds.TOMB );
+					Camera.main.shake( 1, 0.4f );
 					break;
 				default:
 					Sample.INSTANCE.play( Assets.Sounds.UNLOCK );
@@ -1104,12 +1173,14 @@ public class Hero extends Char {
 			int door = Dungeon.level.map[doorCell];
 			
 			if (door == Terrain.LOCKED_DOOR
-					&& Notes.keyCount(new IronKey(Dungeon.depth)) > 0) {
+					&& Notes.keyCount(new IronKey(Dungeon.depth)) > 0
+					|| this.pointsInTalent(LAPIDARIST_INVISI3) >= 3) {
 				
 				hasKey = true;
 				
 			} else if (door == Terrain.CRYSTAL_DOOR
-					&& Notes.keyCount(new CrystalKey(Dungeon.depth)) > 0) {
+					&& Notes.keyCount(new CrystalKey(Dungeon.depth)) > 0
+					|| this.pointsInTalent(LAPIDARIST_INVISI3) >= 3) {
 
 				hasKey = true;
 
@@ -1291,16 +1362,20 @@ public class Hero extends Char {
 		if (wep != null) damage = wep.proc( this, enemy, damage );
 
 		damage = Talent.onAttackProc( this, enemy, damage );
+
+		for (Talent.PlagueResists plague : buffs(Talent.PlagueResists.class)){
+			plague.onAttackProc( enemy );
+		}
 		
 		switch (subClass) {
 		case SNIPER:
 			if (wep instanceof MissileWeapon && !(wep instanceof SpiritBow.SpiritArrow) && enemy != this) {
 				Actor.add(new Actor() {
-					
+
 					{
 						actPriority = VFX_PRIO;
 					}
-					
+
 					@Override
 					protected boolean act() {
 						if (enemy.isAlive()) {
@@ -1313,9 +1388,60 @@ public class Hero extends Char {
 				});
 			}
 			break;
+
+
 		default:
 		}
-		
+		switch (subClass) {
+			case SOULCHASER:
+				if (wep instanceof SpiritBow.SpiritArrow &&  enemy != this) {
+					Actor.add(new Actor() {
+
+						{
+							actPriority = VFX_PRIO;
+						}
+
+						@Override
+						protected boolean act() {
+							if (enemy.isAlive()) {
+								Buff.prolong(Hero.this, ChaserMark.class, ChaserMark.DURATION).count();
+								Buff.affect(Hero.this, ArrowMarkTracker.class).set(enemy.id(), Dungeon.depth);
+							}
+							Actor.remove(this);
+							return true;
+						}
+					});
+				}
+				break;
+
+
+			default:
+		}
+		switch (subClass) {
+			case LAPIDARIST:
+				if ((wep instanceof MeleeWeapon || wep instanceof MissileWeapon) && enemy != this) {
+					Actor.add(new Actor() {
+
+						{
+							actPriority = VFX_PRIO;
+						}
+
+						@Override
+						protected boolean act() {
+							if (enemy.isAlive() && Random.Int(40) <= Dungeon.hero.lvl) {
+								Buff.affect(enemy, Talent.LapidaristLuckProc.class);
+							}
+							Actor.remove(this);
+							return true;
+						}
+					});
+				}
+				break;
+
+
+			default:
+		}
+
 		return damage;
 	}
 	
@@ -1335,7 +1461,7 @@ public class Hero extends Char {
 		if (rockArmor != null) {
 			damage = rockArmor.absorb(damage);
 		}
-		
+
 		return super.defenseProc( enemy, damage );
 	}
 	
@@ -1385,6 +1511,11 @@ public class Hero extends Char {
 			dmg -= AntiMagic.drRoll(this, belongings.armor().buffedLvl());
 		}
 
+		Goldlize Armor = buff(Goldlize.class);
+		if (Armor != null && RingOfElements.RESISTS.contains(src.getClass())) {
+			dmg = Armor.absorb(dmg);
+		}
+
 		if (buff(Talent.WarriorFoodImmunity.class) != null){
 			if (pointsInTalent(Talent.IRON_STOMACH) == 1)       dmg = Math.round(dmg*0.25f);
 			else if (pointsInTalent(Talent.IRON_STOMACH) == 2)  dmg = Math.round(dmg*0.00f);
@@ -1423,6 +1554,10 @@ public class Hero extends Char {
 				resting = false;
 				damageInterrupt = true;
 			}
+		}
+		Disguise disguise = buff(Disguise.class);
+		if (disguise != null){
+			disguise.recover();
 		}
 	}
 	
@@ -1575,6 +1710,14 @@ public class Hero extends Char {
 
 			if (subClass == HeroSubClass.FREERUNNER){
 				Buff.affect(this, Momentum.class).gainStack();
+			}
+
+			if (this.buff(LapidaristBuff.class) == null && subClass == HeroSubClass.LAPIDARIST){
+				Buff.affect(this, LapidaristBuff.class);
+			}
+
+			if (this.buff(Talent.PlagueResists.class) == null && Dungeon.hero.subClass == HeroSubClass.DR_PLAGUE){
+				Buff.affect(Dungeon.hero, Talent.PlagueResists.class);
 			}
 			
 			sprite.move(pos, step);
@@ -1808,7 +1951,12 @@ public class Hero extends Char {
 		if (belongings.armor() != null){
 			stealth = belongings.armor().stealthFactor(this, stealth);
 		}
-		
+
+		//둔갑물약의 무시
+		if (this.buff(Disguise.class) != null){
+			stealth += Disguise.stealthFactor(this, stealth);
+		}
+
 		return stealth;
 	}
 	
@@ -2011,7 +2159,18 @@ public class Hero extends Char {
 		boolean hit = attack( enemy );
 		
 		Invisibility.dispel();
-		spend( attackDelay() );
+	//	Disguise.dispel();
+
+/*		if (hit && subClass == HeroSubClass.LAPIDARIST && wasEnemy){
+			if (hasTalent(Talent.LAPIDARIST_SPEED2) && ((Mob) enemy).surprisedBy(this) ){
+				spend( LapidaristAttackDelay() );
+			}else {
+				spend( attackDelay() );
+			}
+		} else {
+*/			spend( attackDelay() );
+//		}
+
 
 		if (hit && subClass == HeroSubClass.GLADIATOR && wasEnemy){
 			Buff.affect( this, Combo.class ).hit( enemy );
@@ -2054,10 +2213,17 @@ public class Hero extends Char {
 			if (Dungeon.level.distance(pos, doorCell) <= 1) {
 				boolean hasKey = true;
 				if (door == Terrain.LOCKED_DOOR) {
-					hasKey = Notes.remove(new IronKey(Dungeon.depth));
+					if (this.pointsInTalent(LAPIDARIST_INVISI3) < 3 ) {
+						hasKey = Notes.remove(new IronKey(Dungeon.depth));
+					}
+					if (this.pointsInTalent(LAPIDARIST_INVISI3) >= 3 && Dungeon.depth == 20) {
+						hasKey = false;
+					}
 					if (hasKey) Level.set(doorCell, Terrain.DOOR);
 				} else if (door == Terrain.CRYSTAL_DOOR) {
-					hasKey = Notes.remove(new CrystalKey(Dungeon.depth));
+					if (this.pointsInTalent(LAPIDARIST_INVISI3) < 3) {
+						hasKey = Notes.remove(new CrystalKey(Dungeon.depth));
+					}
 					if (hasKey) {
 						Level.set(doorCell, Terrain.EMPTY);
 						Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
@@ -2084,9 +2250,37 @@ public class Hero extends Char {
 				if (heap.type == Type.SKELETON || heap.type == Type.REMAINS) {
 					Sample.INSTANCE.play( Assets.Sounds.BONES );
 				} else if (heap.type == Type.LOCKED_CHEST){
-					hasKey = Notes.remove(new GoldenKey(Dungeon.depth));
+					//수집가의 마스터키
+					if (this.pointsInTalent(LAPIDARIST_INVISI3) < 3) {
+						hasKey = Notes.remove(new GoldenKey(Dungeon.depth)); }
+
+					//수집가의 보물지도 1/3 확률
+					if( this.pointsInTalent(LAPIDARIST_INVISI3) >= 2 && Random.Int(5) > this.pointsInTalent(LAPIDARIST_INVISI3)) {
+						Buff.affect(this, ChestAwareness.class, ChestAwareness.DURATION);
+						GLog.w(Messages.get(this, "secret_mapping"));
+						Sample.INSTANCE.play( Assets.Sounds.READ );
+						Dungeon.observe();
+					}
 				} else if (heap.type == Type.CRYSTAL_CHEST){
-					hasKey = Notes.remove(new CrystalKey(Dungeon.depth));
+					//수집가의 마스터키
+					if (this.pointsInTalent(LAPIDARIST_INVISI3) < 3) {
+						hasKey = Notes.remove(new CrystalKey(Dungeon.depth)); }
+
+					//수집가의 보물지도 1/3 확률
+					if( this.pointsInTalent(LAPIDARIST_INVISI3) >= 2 && Random.Int(5) > this.pointsInTalent(LAPIDARIST_INVISI3)) {
+						Buff.affect(this, ChestAwareness.class, ChestAwareness.DURATION);
+						GLog.w(Messages.get(this, "secret_mapping"));
+						Sample.INSTANCE.play( Assets.Sounds.READ );
+						Dungeon.observe();
+					}
+					//수집가의 보물지도 1/3 확률
+				} else if (heap.type == Type.CHEST && this.pointsInTalent(LAPIDARIST_INVISI3) >= 2){
+					if( Random.Int(5) > this.pointsInTalent(LAPIDARIST_INVISI3) ) {
+						Buff.affect(this, ChestAwareness.class, ChestAwareness.DURATION);
+						GLog.w(Messages.get(this, "secret_mapping"));
+						Sample.INSTANCE.play( Assets.Sounds.READ );
+						Dungeon.observe();
+					}
 				}
 				
 				if (hasKey) {
@@ -2282,6 +2476,8 @@ public class Hero extends Char {
 		for (Item i : belongings){
 			if (i instanceof EquipableItem && i.isEquipped(this)){
 				((EquipableItem) i).activate(this);
+			} else if (i instanceof RingOfMight && !(i.isEquipped(this)) && i.keptThoughLostInvent && Dungeon.hero.subClass == HeroSubClass.LAPIDARIST){
+				((Ring) i).activate(this);
 			} else if (i instanceof CloakOfShadows && i.keptThoughLostInvent && hasTalent(Talent.LIGHT_CLOAK)){
 				((CloakOfShadows) i).activate(this);
 			} else if (i instanceof Wand && i.keptThoughLostInvent){

@@ -21,9 +21,21 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
+import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.CONTACTLESS_TREATMENT;
+
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
 
 public class PotionOfExperience extends Potion {
 
@@ -39,6 +51,23 @@ public class PotionOfExperience extends Potion {
 		hero.earnExp( hero.maxExp(), getClass() );
 		new Flare( 6, 32 ).color(0xFFFF00, true).show( curUser.sprite, 2f );
 	}
+
+	@Override
+	public void applyChar( Char ch ) {
+		//whitephial
+		identify();
+		int treat = 1 + Dungeon.hero.pointsInTalent(CONTACTLESS_TREATMENT);
+		if (ch.allyLVL < 5) {
+			GLog.p( Messages.get(this, "new_level_ally"), ch.name() );
+			ch.sprite.showStatus( CharSprite.POSITIVE, Messages.get(Hero.class, "level_up") );
+			Sample.INSTANCE.play( Assets.Sounds.LEVELUP );
+			ch.allyLVL++;
+		} else {
+			new Flare(6, 32).color(0xFFFF00, true).show(ch.sprite, 2f);
+			Buff.prolong(ch, Bless.class, Bless.DURATION * treat/4f);
+			Sample.INSTANCE.play( Assets.Sounds.LEVELUP );
+		}
+	}
 	
 	@Override
 	public int value() {
@@ -47,6 +76,11 @@ public class PotionOfExperience extends Potion {
 
 	@Override
 	public int energyVal() {
-		return isKnown() ? 8 * quantity : super.energyVal();
+		boolean potiontest = Dungeon.hero.hasTalent(Talent.POTION_ENERGY);
+		if (potiontest && Dungeon.hero.buff(Talent.PotionEnergyCounter.class) != null){
+			return (int) (( 8 + Dungeon.hero.buff(Talent.PotionEnergyCounter.class).count() )*quantity);
+		} else {
+			return 8 * quantity;
+		}
 	}
 }

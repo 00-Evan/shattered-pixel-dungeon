@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
@@ -48,6 +47,7 @@ public class Belongings implements Iterable<Item> {
 
 	private Hero owner;
 
+
 	public static class Backpack extends Bag {
 		{
 			image = ItemSpriteSheet.BACKPACK;
@@ -59,10 +59,16 @@ public class Belongings implements Iterable<Item> {
 					cap++;
 				}
 			}
+			if (Dungeon.hero != null){
+				//황금씨앗 퀘스트를 위한 인벤토리 줄이기
+				cap -=5;
+			}
+
 			if (Dungeon.hero != null && Dungeon.hero.belongings.secondWep != null){
 				//secondary weapons still occupy an inv. slot
 				cap--;
 			}
+
 			return cap;
 		}
 	}

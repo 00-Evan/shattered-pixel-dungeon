@@ -30,6 +30,8 @@ public class PosTweener extends Tweener {
 	
 	public PointF start;
 	public PointF end;
+
+	public float height;
 	
 	public PosTweener( Visual visual, PointF pos, float time ) {
 		super( visual, time );
@@ -39,8 +41,10 @@ public class PosTweener extends Tweener {
 		end = pos;
 	}
 
+
 	@Override
 	protected void updateValues( float progress ) {
 		visual.point( PointF.inter( start, end, progress ) );
+
 	}
 }

@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PlagueGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
@@ -68,6 +69,7 @@ public class RingOfElements extends Ring {
 
 		RESISTS.add( ToxicGas.class );
 		RESISTS.add( Electricity.class );
+		RESISTS.add( PlagueGas.class );
 
 		RESISTS.addAll( AntiMagic.RESISTS );
 	}

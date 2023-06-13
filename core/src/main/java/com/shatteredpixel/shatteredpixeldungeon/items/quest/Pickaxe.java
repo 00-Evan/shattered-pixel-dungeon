@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Spinner;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Swarm;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.CorgSeed;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -51,6 +52,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -124,7 +126,12 @@ public class Pickaxe extends MeleeWeapon {
 							} else {
 								Dungeon.level.drop( gold, hero.pos ).sprite.drop();
 							}
-							
+
+							if( Random.Float() < 0.66f && Dungeon.LimitedDrops.CORG_SEED.count < 1) {
+								Dungeon.level.drop(new CorgSeed(), hero.pos).sprite.drop(hero.pos);
+								Dungeon.LimitedDrops.CORG_SEED.count++;
+							}
+
 							hero.onOperateComplete();
 						}
 					} );
@@ -152,6 +159,11 @@ public class Pickaxe extends MeleeWeapon {
 					if (!defender.isAlive()){
 						bloodStained = true;
 						updateQuickslot();
+						if( Dungeon.LimitedDrops.CORG_SEED.count < 1) {
+						    Dungeon.level.drop(new CorgSeed(), defender.pos).sprite.drop(defender.pos);
+							Dungeon.LimitedDrops.CORG_SEED.count++;
+							return true;
+						}
 					}
 
 					Actor.remove(this);

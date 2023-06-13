@@ -21,13 +21,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.features;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -43,7 +41,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.Berry;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
 public class HighGrass {
@@ -52,8 +49,9 @@ public class HighGrass {
 	//yes this is a bit ugly, oh well.
 	private static boolean freezeTrample = false;
 
+
+
 	public static void trample( Level level, int pos ) {
-		
 		if (freezeTrample) return;
 		
 		Char ch = Actor.findChar(pos);
@@ -131,6 +129,8 @@ public class HighGrass {
 				if (Random.Int(6 - naturalismLevel/2) == 0) {
 					level.drop(new Dewdrop(), pos).sprite.drop();
 				}
+
+
 			}
 
 			//Camouflage

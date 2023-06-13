@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Golden;
 import com.shatteredpixel.shatteredpixeldungeon.effects.DarkBlock;
 import com.shatteredpixel.shatteredpixeldungeon.effects.EmoIcon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
@@ -36,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.TorchHalo;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SnowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SoulParticle;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -82,7 +84,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected float shadowOffset    = 0.25f;
 
 	public enum State {
-		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, HEARTS
+		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, HEARTS , SOULED ,GOLDEN
 	}
 	private int stunStates = 0;
 	
@@ -92,7 +94,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected Animation operate;
 	protected Animation zap;
 	protected Animation die;
-	
+
 	protected Callback animCallback;
 	
 	protected PosTweener motion;
@@ -100,6 +102,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected Emitter burning;
 	protected Emitter chilled;
 	protected Emitter marked;
+	protected Emitter souled;
+	protected Emitter golden;
 	protected Emitter levitation;
 	protected Emitter healing;
 	protected Emitter hearts;
@@ -284,6 +288,21 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		}
 	}
 
+	public void highjump( int from, int to,int height, float duration, Callback callback ) {
+		float distance = Math.max( 1f, Dungeon.level.trueDistance( from, to ));
+		highjump( from, to, distance*height , distance * duration, callback );
+	}
+
+	public void highjump( int from, int to, float height, float duration,  Callback callback ) {
+		jumpCallback = callback;
+
+		jumpTweener = new JumpTweener( this, worldToCamera( to ), height, duration );
+		jumpTweener.listener = this;
+		parent.add( jumpTweener );
+
+		turnTo( from, to );
+	} // shovel 삽을 위한 스프라이트 + rock is rock
+
 	public void jump( int from, int to, Callback callback ) {
 		float distance = Math.max( 1f, Dungeon.level.trueDistance( from, to ));
 		jump( from, to, distance * 2, distance * 0.1f, callback );
@@ -308,6 +327,9 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		if (health != null){
 			health.killAndErase();
 		}
+	}
+	public void testdie() {
+		play( die );
 	}
 	
 	public Emitter emitter() {
@@ -394,9 +416,17 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				marked = emitter();
 				marked.pour(ShadowParticle.UP, 0.1f);
 				break;
+			case SOULED: //영추자
+				souled = emitter();
+				souled.pour(SoulParticle.UP, 0.1f);
+				break;
 			case HEALING:
 				healing = emitter();
 				healing.pour(Speck.factory(Speck.HEALING), 0.5f);
+				break;
+			case GOLDEN:
+				golden = emitter();
+				golden.pour(Golden.goldParticle.UP, 0.1f);
 				break;
 			case SHIELDED:
 				if (shield != null) {
@@ -464,10 +494,22 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 					marked = null;
 				}
 				break;
+			case SOULED:
+				if (souled != null){
+					souled.on = false;
+					souled = null;
+				}
+				break;
 			case HEALING:
 				if (healing != null){
 					healing.on = false;
 					healing = null;
+				}
+				break;
+			case GOLDEN:
+				if (golden != null){
+					golden.on = false;
+					golden = null;
 				}
 				break;
 			case SHIELDED:
@@ -535,8 +577,14 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		if (marked != null) {
 			marked.visible = visible;
 		}
+		if (souled != null) {
+			souled.visible = visible;
+		}
 		if (healing != null){
 			healing.visible = visible;
+		}
+		if (golden != null) {
+			golden.visible = visible;
 		}
 		if (hearts != null){
 			hearts.visible = visible;

@@ -217,6 +217,8 @@ public class ItemSprite extends MovieClip {
 				return view( ItemSpriteSheet.BONES, null );
 			case REMAINS:
 				return view( ItemSpriteSheet.REMAINS, null );
+			case JEWEL_DUMMY:
+				return view( ItemSpriteSheet.JEWEL_DUMMY, null );
 			default:
 				return view( 0, null );
 		}

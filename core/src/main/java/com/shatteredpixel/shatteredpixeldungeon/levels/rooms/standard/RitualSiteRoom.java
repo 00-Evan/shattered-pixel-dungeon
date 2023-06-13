@@ -23,6 +23,9 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.CorgSeed;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CeremonialCandle;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -31,6 +34,8 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.watabou.noosa.Tilemap;
 import com.watabou.utils.Point;
+
+import java.util.ArrayList;
 
 public class RitualSiteRoom extends StandardRoom {
 	
@@ -65,6 +70,18 @@ public class RitualSiteRoom extends StandardRoom {
 		level.addItemToSpawn(new CeremonialCandle());
 		level.addItemToSpawn(new CeremonialCandle());
 		level.addItemToSpawn(new CeremonialCandle());
+
+		//황금씨앗 해골더미
+		ArrayList<Item> items = new ArrayList<>();
+		items.add(new CorgSeed());
+		for (Item item : items){
+			int pos;
+			do {
+				pos = level.pointToCell(random());
+			} while (level.map[pos] == Terrain.EMPTY || level.heaps.get(pos) != null);
+			Heap h = level.drop(item, pos);
+			h.type = Heap.Type.SKELETON;
+		}
 
 		CeremonialCandle.ritualPos = c.x + (level.width() * c.y);
 	}

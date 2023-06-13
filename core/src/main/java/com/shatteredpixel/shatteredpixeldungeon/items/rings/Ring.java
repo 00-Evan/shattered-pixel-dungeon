@@ -28,11 +28,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EnhancedRings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -41,7 +43,6 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 
@@ -123,15 +124,26 @@ public class Ring extends KindofMisc {
 		buff.attachTo( ch );
 	}
 
+
 	@Override
 	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
 		if (super.doUnequip( hero, collect, single )) {
-
-			if (buff != null) {
-				buff.detach();
-				buff = null;
+			// 수집가의 미 장착 반지 효과
+			if (!collect || Dungeon.hero.subClass != HeroSubClass.LAPIDARIST){
+				if (buff != null) {
+					buff.detach();
+					buff = null;
+				}
+			} else {
+				if( this.isIdentified()) {
+					activate(hero);
+				}else {
+					if (buff != null) {
+						buff.detach();
+						buff = null;
+					}
+				}
 			}
-
 			return true;
 
 		} else {
@@ -140,7 +152,34 @@ public class Ring extends KindofMisc {
 
 		}
 	}
-	
+
+	//수집가가 반지의 효과를 유지하는 로직
+	@Override
+	public boolean collect( Bag container ) {
+		if (super.collect(container)){
+			if (container.owner instanceof Hero
+					&& buff == null
+					&& ((Hero) container.owner).subClass == HeroSubClass.LAPIDARIST
+					&& this.isIdentified()){
+				activate((Hero) container.owner);
+			}
+			return true;
+		} else{
+			return false;
+		}
+	}
+
+	// 수집가의 미 장착 반지 효과
+	@Override
+	protected void onDetach() {
+		if (buff != null && !isEquipped((Hero) buff.target)
+				&& Dungeon.hero.subClass == HeroSubClass.LAPIDARIST){
+			buff.detach();
+			buff = null;
+		}
+	}
+
+
 	public boolean isKnown() {
 		return anonymous || (handler != null && handler.isKnown( this ));
 	}
@@ -180,6 +219,10 @@ public class Ring extends KindofMisc {
 		
 		if (isKnown()) {
 			desc += "\n\n" + statsInfo();
+		}
+
+		if (Dungeon.hero.subClass == HeroSubClass.LAPIDARIST){
+			desc += "\n\n" + Messages.get(Ring.class, "lapidarist_desc");
 		}
 		
 		return desc;
@@ -270,6 +313,7 @@ public class Ring extends KindofMisc {
 	}
 
 	private static final String LEVELS_TO_ID    = "levels_to_ID";
+
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -365,6 +409,6 @@ public class Ring extends KindofMisc {
 		public int buffedLvl(){
 			return Ring.this.soloBuffedBonus();
 		}
-
 	}
+
 }

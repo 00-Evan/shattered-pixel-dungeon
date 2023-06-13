@@ -40,12 +40,17 @@ public enum HeroSubClass {
 	
 	ASSASSIN(HeroIcon.ASSASSIN),
 	FREERUNNER(HeroIcon.FREERUNNER),
+	LAPIDARIST(HeroIcon.LAPIDARIST),
 	
 	SNIPER(HeroIcon.SNIPER),
 	WARDEN(HeroIcon.WARDEN),
+	SOULCHASER(HeroIcon.SOULCHASER),
 
 	CHAMPION(HeroIcon.CHAMPION),
-	MONK(HeroIcon.MONK);
+	MONK(HeroIcon.MONK),
+
+	DR_PLAGUE (HeroIcon.DR_PLAGUE),
+	ALCHEMYST (HeroIcon.ALCHEMYST);
 
 	int icon;
 

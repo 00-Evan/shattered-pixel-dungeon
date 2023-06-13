@@ -23,14 +23,17 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.ArcaneResin;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.LiquidMetal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Berry;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.GoldenBerry;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MeatPie;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Pasty;
@@ -49,6 +52,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfIc
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfToxicEssence;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.potionystbrews.PotionOfDisguise;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.potionystbrews.PotionOfGoldenLiquid;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.potionystbrews.PotionOfGoldlizing;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.DarkGold;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Alchemize;
@@ -59,6 +66,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.spells.CurseInfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.FeatherFall;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicalInfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.PhaseShift;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.PocketedMobs;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.ReclaimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Recycle;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.SummonElemental;
@@ -273,6 +281,15 @@ public class QuickRecipe extends Component {
 						return "";
 					}
 				}));
+				//황금화,둔갑의 물약 레시피 추가
+				if (Dungeon.hero.hasTalent(Talent.POTION_RECIPE)) {
+					result.add(new QuickRecipe(new PotionOfGoldenLiquid.SeedToLiquid(),
+							new ArrayList<Item>(Arrays.asList(new LiquidMetal(), new Plant.Seed.PlaceHolder().quantity(2))),
+							new PotionOfGoldenLiquid()));
+					result.add(new QuickRecipe(new PotionOfDisguise.SeedToLiquid(),
+							new ArrayList<Item>(Arrays.asList(new ArcaneCatalyst(), new Plant.Seed.PlaceHolder().quantity(2))),
+							new PotionOfDisguise()));
+				}
 				return result;
 			case 1:
 				Recipe r = new Scroll.ScrollToStone();
@@ -291,6 +308,12 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe( new MeatPie.Recipe(),
 						new ArrayList<Item>(Arrays.asList(new Pasty(), new Food(), new MysteryMeat.PlaceHolder())),
 						new MeatPie()));
+				//황금 사과 레시피 추가
+				if (Dungeon.hero != null && Dungeon.hero.belongings.getItem(Berry.class) != null) {
+					result.add(new QuickRecipe(new GoldenBerry.CookBerry(),
+							new ArrayList<Item>(Arrays.asList(new DarkGold(), new Berry(), new DarkGold())),
+							new GoldenBerry()));
+				}
 				result.add(null);
 				result.add(new QuickRecipe( new Blandfruit.CookFruit(),
 						new ArrayList<>(Arrays.asList(new Blandfruit(), new Plant.Seed.PlaceHolder())),
@@ -312,6 +335,12 @@ public class QuickRecipe extends Component {
 					Potion pot = (Potion) Reflection.newInstance(cls);
 					ArrayList<Item> in = new ArrayList<>(Arrays.asList(pot));
 					result.add(new QuickRecipe( r, in, r.sampleOutput(in)));
+				}
+				// 도금화의 물약 레시피 추가
+				if (Dungeon.hero.pointsInTalent(Talent.POTION_RECIPE) >= 2) {
+					result.add(new QuickRecipe(new PotionOfGoldlizing.potionToLiquid(),
+							new ArrayList<Item>(Arrays.asList(new PotionOfGoldenLiquid())),
+							new PotionOfGoldlizing()));
 				}
 				return result;
 			case 4:
@@ -381,6 +410,7 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new WildEnergy.Recipe()));
 				result.add(new QuickRecipe(new BeaconOfReturning.Recipe()));
 				result.add(new QuickRecipe(new SummonElemental.Recipe()));
+				result.add(new QuickRecipe(new PocketedMobs.Recipe()));
 				result.add(null);
 				result.add(new QuickRecipe(new AquaBlast.Recipe()));
 				result.add(new QuickRecipe(new ReclaimTrap.Recipe()));

@@ -38,7 +38,6 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndChooseAbility;
@@ -117,6 +116,9 @@ abstract public class ClassArmor extends Armor {
 				classArmor = new HuntressArmor();
 				break;
 			case DUELIST:
+				classArmor = new DuelistArmor();
+				break;
+			case POTIONYST: // 더 추가예정
 				classArmor = new DuelistArmor();
 				break;
 		}

@@ -77,6 +77,7 @@ public class ReclaimTrap extends TargetedSpell {
 		} else {
 			
 			Trap t = Reflection.newInstance(storedTrap);
+
 			storedTrap = null;
 			
 			t.pos = bolt.collisionPos;

@@ -44,7 +44,7 @@ import com.watabou.utils.Bundle;
 public class SpiritHammer extends Item {
 
 	{
-		image = ItemSpriteSheet.SPIRIT_HAMMER;
+		image = ItemSpriteSheet.ARTIFACT_MJORNIL;
 		stackable = true;
 		unique = true;
 	}
@@ -61,77 +61,21 @@ public class SpiritHammer extends Item {
 			flask.collectHam( this );
 			GameScene.pickUp( this, pos );
 
+		} else if (flask == null){
+			GLog.i( Messages.get(SpiritHammer.class, "no_artifact") );
+			return false;
 		}
 
 		Sample.INSTANCE.play(Assets.Sounds.DEWDROP);
 		hero.spendAndNext(TIME_TO_PICK_UP);
-		updateQuickslot();
 
 		return true;
 	}
-
-	public void drop (int cell){
-
-		Buff.affect(Dungeon.hero, SpiritHammer.Trigger.class).set(cell);
-
-		CellEmitter.center( cell ).pos(0,0);
-
-	}
-	public static class Trigger extends Buff {
-
-		{
-			revivePersists = true;
-		}
-
-		int cell;
-		int floor;
-		int left;
-
-		public void set(int cell){
-			floor = Dungeon.depth;
-			this.cell = cell;
-			left = 6;
-		}
-
-		@Override
-		public boolean act() {
-
-			if (Dungeon.depth != floor){
-				spend(TICK);
-				return true;
-			}
-
-			return true;
-		}
-
-		private static final String CELL = "cell";
-		private static final String FLOOR = "floor";
-		private static final String LEFT = "left";
-
-		@Override
-		public void storeInBundle(Bundle bundle) {
-			super.storeInBundle(bundle);
-			bundle.put(CELL, cell);
-			bundle.put(FLOOR, floor);
-			bundle.put(LEFT, left);
-		}
-
-		@Override
-		public void restoreFromBundle(Bundle bundle) {
-			super.restoreFromBundle(bundle);
-			cell = bundle.getInt(CELL);
-			floor = bundle.getInt(FLOOR);
-			left = bundle.getInt(LEFT);
-		}
-	}
-
-
 
 	@Override
 	public boolean isIdentified() {
 		return true;
 	}
-
 
 	@Override
 	public Item merge( Item other ){

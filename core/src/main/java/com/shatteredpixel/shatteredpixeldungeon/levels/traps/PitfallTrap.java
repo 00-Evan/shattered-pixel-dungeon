@@ -99,7 +99,8 @@ public class PitfallTrap extends Trap {
 
 					if (heap != null && heap.type != Heap.Type.FOR_SALE
 							&& heap.type != Heap.Type.LOCKED_CHEST
-							&& heap.type != Heap.Type.CRYSTAL_CHEST) {
+							&& heap.type != Heap.Type.CRYSTAL_CHEST
+							&& heap.type != Heap.Type.JEWEL_DUMMY) {
 						for (Item item : heap.items) {
 							Dungeon.dropToChasm(item);
 						}

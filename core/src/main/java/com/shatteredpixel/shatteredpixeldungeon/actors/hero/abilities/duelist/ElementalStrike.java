@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
@@ -41,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CounterBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -48,6 +50,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbili
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.ElementalBlast;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
@@ -78,6 +81,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Kinetic;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Lucky;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projecting;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Sacred;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstable;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampiric;
@@ -108,6 +112,7 @@ public class ElementalStrike extends ArmorAbility {
 		effectTypes.put(Chilling.class,     MagicMissile.FROST_CONE);
 		effectTypes.put(Kinetic.class,      MagicMissile.FORCE_CONE);
 		effectTypes.put(Shocking.class,     MagicMissile.SPARK_CONE);
+		effectTypes.put(Sacred.class,       MagicMissile.FORCE_CONE);
 		effectTypes.put(Blocking.class,     MagicMissile.WARD_CONE);
 		effectTypes.put(Blooming.class,     MagicMissile.FOLIAGE_CONE);
 		effectTypes.put(Elastic.class,      MagicMissile.FORCE_CONE);
@@ -246,6 +251,14 @@ public class ElementalStrike extends ArmorAbility {
 				storedKineticDamage = hero.buff(Kinetic.ConservedDamage.class).damageBonus();
 			}
 
+		//*** Sacred ***
+		} else if (ench instanceof Sacred){
+			if (targetsHit > 0){
+				Buff.prolong(hero, Bless.class,(Math.round(5f*targetsHit*powerMulti)));
+				Buff.prolong(hero, Light.class,(Math.round(5f*targetsHit*powerMulti)));
+				new Flare( 6, 32 ).color(0xFFFFFF, true).show( hero.sprite, 1f );
+			}
+
 		//*** Blocking ***
 		} else if (ench instanceof Blocking){
 			if (targetsHit > 0){
@@ -310,6 +323,7 @@ public class ElementalStrike extends ArmorAbility {
 			for (int cell : cone.cells) {
 				GameScene.add(Blob.seed(cell, Math.round(6 * powerMulti), Electricity.class));
 			}
+
 
 		//*** Blooming ***
 		} else if (ench instanceof Blooming){
@@ -384,6 +398,14 @@ public class ElementalStrike extends ArmorAbility {
 				hero.buff(Kinetic.ConservedDamage.class).detach();
 			}
 
+		//*** Sacred ***
+/*		} else if (ench instanceof Sacred){
+			for (Char ch : affected) {
+				if (hero.properties().contains(Char.Property.DEMONIC) || hero.properties().contains(Char.Property.UNDEAD)) {
+					ch.damage(Math.round(hero.damageRoll() * 0.333f * powerMulti), ench);
+				}
+			}
+*/
 		//*** Blooming ***
 		} else if (ench instanceof Blooming){
 			for (Char ch : affected){

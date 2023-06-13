@@ -55,6 +55,7 @@ public class Badges {
 		MASTERY_ROGUE,
 		MASTERY_HUNTRESS,
 		MASTERY_DUELIST,
+		MASTERY_POTIONYST,
 		FOUND_RATMOGRIFY,
 
 		//bronze
@@ -62,6 +63,7 @@ public class Badges {
 		UNLOCK_ROGUE                ( 2 ),
 		UNLOCK_HUNTRESS             ( 3 ),
 		UNLOCK_DUELIST              ( 4 ),
+		UNLOCK_POTIONYST            ( 136 ),
 		//UNLOCK_CLERIC             ( 5 ),
 		MONSTERS_SLAIN_1            ( 6 ),
 		MONSTERS_SLAIN_2            ( 7 ),
@@ -80,6 +82,7 @@ public class Badges {
 		DEATH_FROM_FALLING          ( 20 ),
 		GAMES_PLAYED_1              ( 21, true ),
 		HIGH_SCORE_1                ( 22 ),
+		DEATH_FROM_GOLDEN           ( 23 ),
 
 		//silver
 		NO_MONSTERS_SLAIN           ( 32 ),
@@ -109,6 +112,7 @@ public class Badges {
 		BOSS_SLAIN_1_ROGUE,
 		BOSS_SLAIN_1_HUNTRESS,
 		BOSS_SLAIN_1_DUELIST,
+		BOSS_SLAIN_1_POTIONYST,
 		BOSS_SLAIN_1_ALL_CLASSES    ( 54, true ),
 		GAMES_PLAYED_2              ( 55, true ),
 		HIGH_SCORE_2                ( 56 ),
@@ -155,6 +159,7 @@ public class Badges {
 		VICTORY_ROGUE,
 		VICTORY_HUNTRESS,
 		VICTORY_DUELIST,
+		VICTORY_POTIONYST,
 		VICTORY_ALL_CLASSES         ( 103, true ),
 		DEATH_FROM_ALL              ( 104, true ),
 		BOSS_SLAIN_3_GLADIATOR,
@@ -163,10 +168,14 @@ public class Badges {
 		BOSS_SLAIN_3_BATTLEMAGE,
 		BOSS_SLAIN_3_FREERUNNER,
 		BOSS_SLAIN_3_ASSASSIN,
+		BOSS_SLAIN_3_LAPIDARIST,
 		BOSS_SLAIN_3_SNIPER,
 		BOSS_SLAIN_3_WARDEN,
+		BOSS_SLAIN_3_SOULCHASER,
 		BOSS_SLAIN_3_CHAMPION,
 		BOSS_SLAIN_3_MONK,
+		BOSS_SLAIN_3_DR_PLAGUE,
+		BOSS_SLAIN_3_ALCHEMYST,
 		BOSS_SLAIN_3_ALL_SUBCLASSES ( 105, true ),
 		BOSS_CHALLENGE_3            ( 106 ),
 		BOSS_CHALLENGE_4            ( 107 ),
@@ -615,6 +624,14 @@ public class Badges {
 		
 		validateDeathFromAll();
 	}
+
+	public static void validateDeathFromGolden() {
+		Badge badge = Badge.DEATH_FROM_GOLDEN;
+		local.add( badge );
+		displayBadge( badge );
+
+		validateDeathFromAll();
+	}
 	
 	public static void validateDeathFromPoison() {
 		Badge badge = Badge.DEATH_FROM_POISON;
@@ -689,7 +706,8 @@ public class Badges {
 				isUnlocked( Badge.DEATH_FROM_ENEMY_MAGIC) &&
 				isUnlocked( Badge.DEATH_FROM_FRIENDLY_MAGIC) &&
 				isUnlocked( Badge.DEATH_FROM_SACRIFICE) &&
-				isUnlocked( Badge.DEATH_FROM_GRIM_TRAP)) {
+				isUnlocked( Badge.DEATH_FROM_GRIM_TRAP) &&
+				isUnlocked( Badge.DEATH_FROM_GOLDEN)) {
 
 			Badge badge = Badge.DEATH_FROM_ALL;
 			if (!isUnlocked( badge )) {
@@ -705,6 +723,7 @@ public class Badges {
 		firstBossClassBadges.put(HeroClass.ROGUE, Badge.BOSS_SLAIN_1_ROGUE);
 		firstBossClassBadges.put(HeroClass.HUNTRESS, Badge.BOSS_SLAIN_1_HUNTRESS);
 		firstBossClassBadges.put(HeroClass.DUELIST, Badge.BOSS_SLAIN_1_DUELIST);
+		firstBossClassBadges.put(HeroClass.POTIONYST, Badge.BOSS_SLAIN_1_POTIONYST);
 	}
 
 	private static LinkedHashMap<HeroClass, Badge> victoryClassBadges = new LinkedHashMap<>();
@@ -714,6 +733,7 @@ public class Badges {
 		victoryClassBadges.put(HeroClass.ROGUE, Badge.VICTORY_ROGUE);
 		victoryClassBadges.put(HeroClass.HUNTRESS, Badge.VICTORY_HUNTRESS);
 		victoryClassBadges.put(HeroClass.DUELIST, Badge.VICTORY_DUELIST);
+		victoryClassBadges.put(HeroClass.POTIONYST, Badge.VICTORY_POTIONYST);
 	}
 
 	private static LinkedHashMap<HeroSubClass, Badge> thirdBossSubclassBadges = new LinkedHashMap<>();
@@ -724,10 +744,14 @@ public class Badges {
 		thirdBossSubclassBadges.put(HeroSubClass.WARLOCK, Badge.BOSS_SLAIN_3_WARLOCK);
 		thirdBossSubclassBadges.put(HeroSubClass.ASSASSIN, Badge.BOSS_SLAIN_3_ASSASSIN);
 		thirdBossSubclassBadges.put(HeroSubClass.FREERUNNER, Badge.BOSS_SLAIN_3_FREERUNNER);
+		thirdBossSubclassBadges.put(HeroSubClass.LAPIDARIST, Badge.BOSS_SLAIN_3_LAPIDARIST);
 		thirdBossSubclassBadges.put(HeroSubClass.SNIPER, Badge.BOSS_SLAIN_3_SNIPER);
 		thirdBossSubclassBadges.put(HeroSubClass.WARDEN, Badge.BOSS_SLAIN_3_WARDEN);
+		thirdBossSubclassBadges.put(HeroSubClass.SOULCHASER, Badge.BOSS_SLAIN_3_SOULCHASER);
 		thirdBossSubclassBadges.put(HeroSubClass.CHAMPION, Badge.BOSS_SLAIN_3_CHAMPION);
 		thirdBossSubclassBadges.put(HeroSubClass.MONK, Badge.BOSS_SLAIN_3_MONK);
+		thirdBossSubclassBadges.put(HeroSubClass.DR_PLAGUE, Badge.BOSS_SLAIN_3_DR_PLAGUE);
+		thirdBossSubclassBadges.put(HeroSubClass.ALCHEMYST, Badge.BOSS_SLAIN_3_ALCHEMYST);
 	}
 	
 	public static void validateBossSlain() {
@@ -840,6 +864,9 @@ public class Badges {
 			case DUELIST:
 				badge = Badge.MASTERY_DUELIST;
 				break;
+			case POTIONYST:
+				badge = Badge.MASTERY_POTIONYST;
+				break;
 		}
 		
 		unlock(badge);
@@ -881,6 +908,12 @@ public class Badges {
 					((MeleeWeapon) Dungeon.hero.belongings.weapon).STRReq(0) <= Dungeon.hero.STR()){
 				displayBadge(Badge.UNLOCK_DUELIST);
 			}
+		}
+	}
+
+	public static void validatePotionystUnlock(){
+		if (Statistics.toxicGasUsed >= 1 && !isUnlocked(Badge.UNLOCK_POTIONYST)){
+			displayBadge( Badge.UNLOCK_POTIONYST );
 		}
 	}
 	
@@ -1110,6 +1143,7 @@ public class Badges {
 			{Badge.DEATH_FROM_FRIENDLY_MAGIC, Badge.DEATH_FROM_ALL},
 			{Badge.DEATH_FROM_SACRIFICE, Badge.DEATH_FROM_ALL},
 			{Badge.DEATH_FROM_GRIM_TRAP, Badge.DEATH_FROM_ALL},
+			{Badge.DEATH_FROM_GOLDEN, Badge.DEATH_FROM_ALL},
 
 			{Badge.ALL_WEAPONS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED},
 			{Badge.ALL_ARMOR_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED},

@@ -33,14 +33,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Mjornil;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projecting;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -69,12 +68,14 @@ abstract public class MissileWeapon extends Weapon {
 	protected float baseUses = 10;
 	
 	public boolean holster;
-	
+
+
 	//used to reduce durability from the source weapon stack, rather than the one being thrown.
 	protected MissileWeapon parent;
 	
 	public int tier;
-	
+
+
 	@Override
 	public int min() {
 		return Math.max(0, min( buffedLvl() + RingOfSharpshooting.levelDamageBonus(Dungeon.hero) ));
@@ -204,6 +205,7 @@ abstract public class MissileWeapon extends Weapon {
 		super.doThrow(hero);
 	}
 
+
 	@Override
 	protected void onThrow( int cell ) {
 		Char enemy = Actor.findChar( cell );
@@ -227,12 +229,15 @@ abstract public class MissileWeapon extends Weapon {
 			if (!curUser.shoot( enemy, this )) {
 				rangedMiss( cell );
 			} else {
-				
+
 				rangedHit( enemy, cell );
 
 			}
 		}
 	}
+
+
+
 
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
@@ -336,18 +341,36 @@ abstract public class MissileWeapon extends Weapon {
 				durability = 0;
 				parent.durability = MAX_DURABILITY;
 			} else {
-				parent.durability -= parent.durabilityPerUse();
-				if (parent.durability > 0 && parent.durability <= parent.durabilityPerUse()){
-					if (level() <= 0)GLog.w(Messages.get(this, "about_to_break"));
-					else             GLog.n(Messages.get(this, "about_to_break"));
+				if (curUser.buff(Mjornil.chargeThunder.class) != null
+						&& curUser.buff(Mjornil.chargeThunder.class).isCursed()){
+					parent.durability -= 2f*parent.durabilityPerUse();
+
+					if (level() <= 0) GLog.w(Messages.get(this, "cursed"));
+						else GLog.n(Messages.get(this, "cursed"));
+
+				}else {
+					parent.durability -= parent.durabilityPerUse();
+					if (parent.durability > 0 && parent.durability <= parent.durabilityPerUse()) {
+						if (level() <= 0) GLog.w(Messages.get(this, "about_to_break"));
+						else GLog.n(Messages.get(this, "about_to_break"));
+					}
 				}
 			}
 			parent = null;
-		} else {
-			durability -= durabilityPerUse();
-			if (durability > 0 && durability <= durabilityPerUse()){
-				if (level() <= 0)GLog.w(Messages.get(this, "about_to_break"));
-				else             GLog.n(Messages.get(this, "about_to_break"));
+		} else { // 묘르닐 저주 문구
+			if (curUser.buff(Mjornil.chargeThunder.class) != null
+					&& curUser.buff(Mjornil.chargeThunder.class).isCursed()) {
+				durability -= 2f*durabilityPerUse();
+
+				if (level() <= 0) GLog.w(Messages.get(this, "cursed"));
+				else GLog.n(Messages.get(this, "cursed"));
+
+			}else {
+				durability -= durabilityPerUse();
+				if (durability > 0 && durability <= durabilityPerUse()) {
+					if (level() <= 0) GLog.w(Messages.get(this, "about_to_break"));
+					else GLog.n(Messages.get(this, "about_to_break"));
+				}
 			}
 		}
 	}
@@ -469,11 +492,13 @@ abstract public class MissileWeapon extends Weapon {
 	}
 	
 	private static final String DURABILITY = "durability";
+
 	
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
 		bundle.put(DURABILITY, durability);
+
 	}
 	
 	private static boolean bundleRestoring = false;
@@ -484,7 +509,12 @@ abstract public class MissileWeapon extends Weapon {
 		super.restoreFromBundle(bundle);
 		bundleRestoring = false;
 		durability = bundle.getFloat(DURABILITY);
+
+
 	}
+
+
+
 
 	public static class PlaceHolder extends MissileWeapon {
 

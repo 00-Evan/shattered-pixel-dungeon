@@ -21,13 +21,17 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
+import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.CONTACTLESS_TREATMENT;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ConfusionGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Levitation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -57,8 +61,27 @@ public class PotionOfLevitation extends Potion {
 	@Override
 	public void apply( Hero hero ) {
 		identify();
-		Buff.affect( hero, Levitation.class, Levitation.DURATION );
+		Talent.PotionTickCounter counter = Dungeon.hero.buff(Talent.PotionTickCounter.class);
+		if (counter != null) {
+			Buff.affect( hero, Levitation.class , (int) counter.count());
+			counter.detach();
+		}
+		Buff.affect( hero, Levitation.class , Levitation.DURATION );
 		GLog.i( Messages.get(this, "float") );
+	}
+
+	@Override
+	public void applyChar( Char ch ) {
+		//whitephial
+		identify();
+		int treat = 1 + Dungeon.hero.pointsInTalent(CONTACTLESS_TREATMENT);
+		Talent.PotionTickCounter counter = Dungeon.hero.buff(Talent.PotionTickCounter.class);
+		if (counter != null) {
+			Buff.affect( ch, Levitation.class , (int) counter.count());
+			counter.detach();
+		}
+		Buff.affect( ch, Levitation.class , Levitation.DURATION * treat/4f );
+		GLog.i( Messages.get(this, "float_ally"), ch.name());
 	}
 	
 	@Override

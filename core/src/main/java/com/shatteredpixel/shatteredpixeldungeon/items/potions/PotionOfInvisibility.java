@@ -21,10 +21,15 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
+import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.CONTACTLESS_TREATMENT;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -39,8 +44,28 @@ public class PotionOfInvisibility extends Potion {
 	@Override
 	public void apply( Hero hero ) {
 		identify();
-		Buff.affect( hero, Invisibility.class, Invisibility.DURATION );
+		Talent.PotionTickCounter counter = Dungeon.hero.buff(Talent.PotionTickCounter.class);
+		if (counter != null) {
+			Buff.affect(hero, Invisibility.class, (int) counter.count());
+			counter.detach();
+		}
+		Buff.affect(hero, Invisibility.class, Invisibility.DURATION );
 		GLog.i( Messages.get(this, "invisible") );
+		Sample.INSTANCE.play( Assets.Sounds.MELD );
+	}
+
+	@Override
+	public void applyChar( Char ch ) {
+		//whitephial
+		identify();
+		int treat = 1 + Dungeon.hero.pointsInTalent(CONTACTLESS_TREATMENT);
+		Talent.PotionTickCounter counter = Dungeon.hero.buff(Talent.PotionTickCounter.class);
+		if (counter != null) {
+			Buff.affect(ch, Invisibility.class, (int) counter.count());
+			counter.detach();
+		}
+		Buff.affect(ch, Invisibility.class, Invisibility.DURATION * treat/4f);
+		GLog.i( Messages.get(this, "invisible_ally"), ch.name() );
 		Sample.INSTANCE.play( Assets.Sounds.MELD );
 	}
 	

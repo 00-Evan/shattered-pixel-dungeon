@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -60,6 +59,7 @@ public class ItemSlot extends Button {
 	protected BitmapText extra;
 	protected Image      itemIcon;
 	protected BitmapText level;
+	protected BitmapText percent;
 	
 	private static final String TXT_STRENGTH	= ":%d";
 	private static final String TXT_TYPICAL_STR	= "%d?";
@@ -91,6 +91,10 @@ public class ItemSlot extends Button {
 		public int image() { return ItemSpriteSheet.REMAINS; }
 		public String name() { return Messages.get(Heap.class, "remains"); }
 	};
+	public static final Item JEWEL_DUMMY = new Item() {
+		public int image() { return ItemSpriteSheet.JEWEL_DUMMY; }
+		public String name() { return Messages.get(Heap.class, "jeweldummy"); }
+	};
 	
 	public ItemSlot() {
 		super();
@@ -119,6 +123,9 @@ public class ItemSlot extends Button {
 		
 		level = new BitmapText( PixelScene.pixelFont);
 		add(level);
+
+		percent = new BitmapText( PixelScene.pixelFont);
+		add(percent);
 	}
 	
 	@Override
@@ -165,6 +172,12 @@ public class ItemSlot extends Button {
 			PixelScene.align(level);
 		}
 
+		if (percent != null) {
+			percent.x = x + margin.right;
+			percent.y = y + (height - percent.baseLine() - 1) - margin.bottom;
+			PixelScene.align(percent);
+		}
+
 	}
 
 	public void alpha( float value ){
@@ -174,6 +187,7 @@ public class ItemSlot extends Button {
 		if (status != null)     status.alpha(value);
 		if (itemIcon != null)   itemIcon.alpha(value);
 		if (level != null)      level.alpha(value);
+		if (percent != null)    percent.alpha(value);
 	}
 
 	public void clear(){
@@ -220,13 +234,15 @@ public class ItemSlot extends Button {
 		}
 
 		if (item == null){
-			status.visible = extra.visible = level.visible = false;
+			status.visible = extra.visible = level.visible = percent.visible = false;
 			return;
 		} else {
-			status.visible = extra.visible = level.visible = true;
+			status.visible = extra.visible = level.visible  = percent.visible = true;
 		}
 
 		status.text( item.status() );
+
+		percent.text( item.percent() );
 
 		//thrown weapons on their last use show quantity in orange, unless they are single-use
 		if (item instanceof MissileWeapon
@@ -237,8 +253,8 @@ public class ItemSlot extends Button {
 			status.resetColor();
 		}
 
-		if (item.icon != -1 && (item.isIdentified() || (item instanceof Ring && ((Ring) item).isKnown()))){
-			extra.text( null );
+		if (item.icon != -1 && (item.isIdentified() || (item instanceof Ring && ((Ring) item).isKnown()))) {
+			extra.text(null);
 
 			itemIcon = new Image(Assets.Sprites.ITEM_ICONS);
 			itemIcon.frame(ItemSpriteSheet.Icons.film.get(item.icon));
@@ -308,6 +324,7 @@ public class ItemSlot extends Button {
 		status.alpha( alpha );
 		extra.alpha( alpha );
 		level.alpha( alpha );
+		percent.alpha( alpha );
 		if (itemIcon != null) itemIcon.alpha( alpha );
 	}
 

@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.bags;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.CorgSeed;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.LiquidMetal;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
@@ -42,7 +44,13 @@ public class PotionBandolier extends Bag {
 	}
 
 	public int capacity(){
-		return 19;
+		int cap = super.capacity();
+		if (Dungeon.hero != null){
+			cap -=6;
+		}
+
+		return cap;
+
 	}
 
 	@Override

@@ -25,12 +25,20 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RotHeart;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RotLasher;
+import com.shatteredpixel.shatteredpixeldungeon.items.CorgSeed;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class RotGardenRoom extends SpecialRoom {
 	
@@ -45,6 +53,7 @@ public class RotGardenRoom extends SpecialRoom {
 		Door entrance = entrance();
 		entrance.set(Door.Type.LOCKED);
 		level.addItemToSpawn(new IronKey(Dungeon.depth));
+
 
 		Painter.fill(level, this, Terrain.WALL);
 		Painter.fill(level, this, 1, Terrain.GRASS);
@@ -73,6 +82,20 @@ public class RotGardenRoom extends SpecialRoom {
 				pos = level.pointToCell(random());
 			} while (!validPlantPos(level, pos));
 			placePlant(level, pos, new RotLasher());
+		}
+
+		ArrayList<Item> items = new ArrayList<>();
+		items.add(new CorgSeed());
+		for (Item item : items){
+			int pos;
+			do {
+				pos = level.pointToCell(random());
+			} while (level.map[pos] == Terrain.HIGH_GRASS && level.map[pos] == Terrain.GRASS
+					|| level.map[pos] == Terrain.FURROWED_GRASS || level.heaps.get(pos) != null);
+
+			level.map[pos] = Terrain.GRASS;
+			Heap h = level.drop(item, pos);
+			h.type = Heap.Type.SKELETON;
 		}
 	}
 

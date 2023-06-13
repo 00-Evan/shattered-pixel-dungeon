@@ -235,9 +235,13 @@ abstract public class KindOfWeapon extends EquipableItem {
 		return 1f;
 	}
 
-	public int reachFactor( Char owner ){
-		return 1;
-	}
+	public float LapidaristDelayFactor (Char owner){
+		return 1f;
+	} // 수집가
+
+	public int reachFactor( Char owner ){return 1;}
+
+	public int DstFactor( Char owner ){	return 0;}
 	
 	public boolean canReach( Char owner, int target){
 		int reach = reachFactor(owner);

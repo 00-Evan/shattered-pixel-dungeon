@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LifeLink;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.SuperSheep;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
@@ -653,6 +654,10 @@ public class DwarfKing extends Mob {
 
 				//kill sheep that are right on top of the spawner instead of failing to spawn
 				if (Actor.findChar(pos) instanceof Sheep){
+					Actor.findChar(pos).die(null);
+				}
+
+				if (Actor.findChar(pos) instanceof SuperSheep){
 					Actor.findChar(pos).die(null);
 				}
 

@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChestAwareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
@@ -51,6 +52,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Piranha;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogFist;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.SuperSheep;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WindParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -60,6 +62,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
 import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.SuperMushroom;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
@@ -155,6 +158,7 @@ public abstract class Level implements Bundlable {
 	public SparseArray<Heap> heaps;
 	public HashMap<Class<? extends Blob>,Blob> blobs;
 	public SparseArray<Plant> plants;
+
 	public SparseArray<Trap> traps;
 	public HashSet<CustomTilemap> customTiles;
 	public HashSet<CustomTilemap> customWalls;
@@ -176,6 +180,7 @@ public abstract class Level implements Bundlable {
 	private static final String LOCKED      = "locked";
 	private static final String HEAPS		= "heaps";
 	private static final String PLANTS		= "plants";
+
 	private static final String TRAPS       = "traps";
 	private static final String CUSTOM_TILES= "customTiles";
 	private static final String CUSTOM_WALLS= "customWalls";
@@ -194,7 +199,6 @@ public abstract class Level implements Bundlable {
 			if (Dungeon.isChallenged(Challenges.DARKNESS)){
 				addItemToSpawn( new Torch() );
 			}
-
 			if (Dungeon.posNeeded()) {
 				addItemToSpawn( new PotionOfStrength() );
 				Dungeon.LimitedDrops.STRENGTH_POTIONS.count++;
@@ -574,6 +578,7 @@ public abstract class Level implements Bundlable {
 		for (HeavyBoomerang.CircleBack b : Dungeon.hero.buffs(HeavyBoomerang.CircleBack.class)){
 			if (b.activeDepth() == Dungeon.depth) items.add(b.cancel());
 		}
+
 		return items;
 	}
 
@@ -808,6 +813,7 @@ public abstract class Level implements Bundlable {
 
 	}
 
+
 	public void destroy( int pos ) {
 		//if raw tile type is flammable or empty
 		int terr = map[pos];
@@ -818,6 +824,12 @@ public abstract class Level implements Bundlable {
 		Blob web = blobs.get(Web.class);
 		if (web != null){
 			web.clear(pos);
+		}
+		if (terr == Terrain.BARRICADE){
+			//3/5확률 드롭
+			if (Random.Int(4) >= 2) {
+				this.drop(new SuperMushroom(), pos).sprite.drop();
+			}
 		}
 	}
 
@@ -909,7 +921,7 @@ public abstract class Level implements Bundlable {
 				GameScene.add( heap );
 			}
 			
-		} else if (heap.type == Heap.Type.LOCKED_CHEST || heap.type == Heap.Type.CRYSTAL_CHEST) {
+		} else if (heap.type == Heap.Type.LOCKED_CHEST || heap.type == Heap.Type.CRYSTAL_CHEST || heap.type == Heap.Type.JEWEL_DUMMY) {
 			
 			int n;
 			do {
@@ -928,7 +940,7 @@ public abstract class Level implements Bundlable {
 		return heap;
 	}
 	
-	public Plant plant( Plant.Seed seed, int pos ) {
+	public Plant plant( Plant.Seed seed, int pos) {
 		
 		if (Dungeon.isChallenged(Challenges.NO_HERBALISM)){
 			return null;
@@ -964,11 +976,41 @@ public abstract class Level implements Bundlable {
 		
 		return plant;
 	}
+	/*
+	public HeroTrap heroTrap (MissileWeapon Mwep, int pos ) {
+
+		HeroTrap Htrap = htrap.get( pos );
+		if (Htrap != null) {
+			Htrap.wither();
+		}
+
+		if (map[pos] == Terrain.HIGH_GRASS ||
+				map[pos] == Terrain.FURROWED_GRASS ||
+				map[pos] == Terrain.EMPTY ||
+				map[pos] == Terrain.EMBERS ||
+				map[pos] == Terrain.EMPTY_DECO) {
+			set(pos, Terrain.EMPTY, this);
+			GameScene.updateMap(pos);
+		}
+
+		htrap.put( pos, Htrap );
+
+		GameScene.plantSeed( pos );
+
+		return Htrap;
+	} */
+
 	
 	public void uproot( int pos ) {
 		plants.remove(pos);
 		GameScene.updateMap( pos );
 	}
+
+	/*
+	public void uptrap( int pos ) {
+		htrap.remove(pos);
+		GameScene.updateMap( pos );
+	}*/
 
 	public Trap setTrap( Trap trap, int pos ){
 		Trap existingTrap = traps.get(pos);
@@ -1071,9 +1113,10 @@ public abstract class Level implements Bundlable {
 				}
 				return;
 			}
-			
+
+
 			//characters which are not the hero or a sheep 'soft' press cells
-			pressCell( ch.pos, ch instanceof Hero || ch instanceof Sheep);
+			pressCell( ch.pos, ch instanceof Hero || ch instanceof Sheep || ch instanceof SuperSheep);
 		} else {
 			if (map[ch.pos] == Terrain.DOOR){
 				Door.enter( ch.pos );
@@ -1121,6 +1164,11 @@ public abstract class Level implements Bundlable {
 		case Terrain.DOOR:
 			Door.enter( cell );
 			break;
+
+		case Terrain.BARRICADE:
+
+			break;
+
 		}
 
 		TimekeepersHourglass.timeFreeze timeFreeze =
@@ -1164,7 +1212,13 @@ public abstract class Level implements Bundlable {
 
 			}
 		}
+	/*	HeroTrap heroTrap = htrap.get( cell );
+		if (heroTrap != null && Dungeon.hero.pos != cell) {
 
+			heroTrap.trigger();
+
+		}
+*/
 		if (hard && Blob.volumeAt(cell, Web.class) > 0){
 			blobs.get(Web.class).clear(cell);
 		}
@@ -1277,6 +1331,14 @@ public abstract class Level implements Bundlable {
 			}
 		}
 
+		if (c.alignment != Char.Alignment.ALLY && c.buff(MindVision.class) != null){
+			for (Mob mob : mobs) {
+				for (int i : PathFinder.NEIGHBOURS9) {
+					fieldOfView[mob.pos + i] = true;
+				}
+			}
+		}
+
 		//Currently only the hero can get mind vision or awareness
 		if (c.isAlive() && c == Dungeon.hero) {
 
@@ -1293,14 +1355,48 @@ public abstract class Level implements Bundlable {
 						heroMindFov[mob.pos + i] = true;
 					}
 				}
-			} else if (((Hero) c).hasTalent(Talent.HEIGHTENED_SENSES)) {
+			} else if (((Hero) c).hasTalent(Talent.HEIGHTENED_SENSES)
+					&& !(Dungeon.hero.subClass == HeroSubClass.SOULCHASER)) {
 				Hero h = (Hero) c;
-				int range = 1+h.pointsInTalent(Talent.HEIGHTENED_SENSES);
+				int range = 1 + h.pointsInTalent(Talent.HEIGHTENED_SENSES);
 				for (Mob mob : mobs) {
 					int p = mob.pos;
 					if (!fieldOfView[p] && distance(c.pos, p) <= range) {
 						for (int i : PathFinder.NEIGHBOURS9) {
 							heroMindFov[mob.pos + i] = true;
+						}
+					}
+				}
+			}else if (!((Hero) c).hasTalent(Talent.HEIGHTENED_SENSES)
+					&& Dungeon.hero.subClass == HeroSubClass.SOULCHASER) { // 영혼추적자 비전 시야
+				Hero h = (Hero) c;
+				int range = 3;
+				for (Mob mob : mobs) {
+					int p = mob.pos;                               // +0 20퍼 몹 체력부터 +3 50퍼 몹 체력
+					if (mob.HP / (float)mob.HT <= 0.2f+(0.1f*h.pointsInTalent(Talent.CHASER_PLUS3))) {
+						if (!fieldOfView[p] && distance(c.pos, p) <= range) {
+							for (int i : PathFinder.NEIGHBOURS9) {
+								heroMindFov[mob.pos + i] = true;
+							}
+						}
+					}
+				}
+			}else if (((Hero) c).hasTalent(Talent.HEIGHTENED_SENSES)
+					&& Dungeon.hero.subClass == HeroSubClass.SOULCHASER) { // 영혼추적자 비전 시야 + 사거리
+				Hero h = (Hero) c;
+				int range = 3 + h.pointsInTalent(Talent.HEIGHTENED_SENSES);
+				for (Mob mob : mobs) {
+					int p = mob.pos;
+					if (!fieldOfView[p] && distance(c.pos, p) <= 1+ h.pointsInTalent(Talent.HEIGHTENED_SENSES)) {
+						for (int i : PathFinder.NEIGHBOURS9) {
+							heroMindFov[mob.pos + i] = true;
+						}
+					}// +0 20퍼 몹 체력부터 +3 50퍼 몹 체력
+					if (mob.HP / (float)mob.HT <= 0.2f+(0.1f*h.pointsInTalent(Talent.CHASER_PLUS3))) {
+						if (!fieldOfView[p] && distance(c.pos, p) <= range) {
+							for (int i : PathFinder.NEIGHBOURS9) {
+								heroMindFov[mob.pos + i] = true;
+							}
 						}
 					}
 				}
@@ -1310,6 +1406,15 @@ public abstract class Level implements Bundlable {
 				for (Heap heap : heaps.valueList()) {
 					int p = heap.pos;
 					for (int i : PathFinder.NEIGHBOURS9) heroMindFov[p+i] = true;
+				}
+			}
+
+			if (c.buff( ChestAwareness.class ) != null) {
+				for (Heap heap : heaps.valueList()) {
+					if (heap.type == Heap.Type.CHEST || heap.type == Heap.Type.CRYSTAL_CHEST || heap.type == Heap.Type.LOCKED_CHEST) {
+						int p = heap.pos;
+						heroMindFov[p] = true;
+					}
 				}
 			}
 

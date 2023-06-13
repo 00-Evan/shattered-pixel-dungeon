@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.CrystalKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
@@ -74,8 +75,9 @@ public class KeyDisplay extends Visual {
 		
 		for (Notes.KeyRecord rec : Notes.getRecords(Notes.KeyRecord.class)){
 			if (rec.depth() < Dungeon.depth){
-				//only ever 1 black key
-				keys[0] = 1;
+				// 3이상일때 마스터키 //only ever 1 black key
+				if (Dungeon.hero.pointsInTalent(Talent.LAPIDARIST_INVISI3) <3) keys[0] = 1;
+				if (Dungeon.hero.pointsInTalent(Talent.LAPIDARIST_INVISI3) >= 3) keys[1] = 1;
 			} else if (rec.depth() == Dungeon.depth){
 				keys[keyMap.get(rec.type())] += rec.quantity();
 			}

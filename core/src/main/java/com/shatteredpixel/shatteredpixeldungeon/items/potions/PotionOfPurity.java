@@ -21,12 +21,16 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
+import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.CONTACTLESS_TREATMENT;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
@@ -92,9 +96,29 @@ public class PotionOfPurity extends Potion {
 	@Override
 	public void apply( Hero hero ) {
 		GLog.w( Messages.get(this, "protected") );
+		Talent.PotionTickCounter counter = Dungeon.hero.buff(Talent.PotionTickCounter.class);
+		if (counter != null) {
+			Buff.prolong( hero, BlobImmunity.class, (int)counter.count());
+			counter.detach();
+		}
 		Buff.prolong( hero, BlobImmunity.class, BlobImmunity.DURATION );
 		SpellSprite.show(hero, SpellSprite.PURITY);
 		identify();
+	}
+
+	@Override
+	public void applyChar( Char ch ) {
+		//whitephial
+		identify();
+		int treat = 1 + Dungeon.hero.pointsInTalent(CONTACTLESS_TREATMENT);
+		GLog.w( Messages.get(this, "protected_ally"), ch.name() );
+		Talent.PotionTickCounter counter = Dungeon.hero.buff(Talent.PotionTickCounter.class);
+		if (counter != null) {
+			Buff.prolong( ch, BlobImmunity.class, (int)counter.count());
+			counter.detach();
+		}
+		Buff.prolong( ch, BlobImmunity.class, BlobImmunity.DURATION * treat/4f );
+		SpellSprite.show(ch, SpellSprite.PURITY);
 	}
 	
 	@Override

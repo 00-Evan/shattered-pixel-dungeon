@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.plants.HeroTrap;
 import com.watabou.input.GameAction;
 
 public class LootIndicator extends Tag {
@@ -88,6 +89,7 @@ public class LootIndicator extends Tag {
 		
 		if (Dungeon.hero.ready) {
 			Heap heap = Dungeon.level.heaps.get( Dungeon.hero.pos );
+		//	HeroTrap heroTrap = Dungeon.level.htrap.get( Dungeon.hero.pos );
 			if (heap != null) {
 				
 				Item item =
@@ -97,6 +99,7 @@ public class LootIndicator extends Tag {
 					heap.type == Heap.Type.TOMB ? ItemSlot.TOMB :
 					heap.type == Heap.Type.SKELETON ? ItemSlot.SKELETON :
 					heap.type == Heap.Type.REMAINS ? ItemSlot.REMAINS :
+					heap.type == Heap.Type.JEWEL_DUMMY ? ItemSlot.JEWEL_DUMMY :
 					heap.peek();
 				if (item != lastItem || item.quantity() != lastQuantity) {
 					lastItem = item;
@@ -107,7 +110,9 @@ public class LootIndicator extends Tag {
 				}
 				visible = true;
 				
-			} else {
+		//	} else if(heroTrap != null) {
+
+			}else {
 				
 				lastItem = null;
 				visible = false;

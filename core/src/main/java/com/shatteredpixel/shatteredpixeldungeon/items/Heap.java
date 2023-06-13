@@ -42,12 +42,12 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.TippedDart;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -67,7 +67,8 @@ public class Heap implements Bundlable {
 		CRYSTAL_CHEST,
 		TOMB,
 		SKELETON,
-		REMAINS
+		REMAINS,
+		JEWEL_DUMMY
 	}
 	public Type type = Type.HEAP;
 	
@@ -137,7 +138,7 @@ public class Heap implements Bundlable {
 		} else if (sprite != null) {
 			sprite.view(this).place( pos );
 		}
-		
+
 		return item;
 	}
 	
@@ -251,6 +252,43 @@ public class Heap implements Bundlable {
 		}
 	}
 
+	//황금화 물약의 아이템 황금화
+	public void golden() {
+
+		if (type != Type.HEAP) {
+			return;
+		}
+
+		boolean evaporated = false;
+
+		for (Item item : items.toArray( new Item[0] )) {
+			if (item.value() > 0 && !item.unique && !(item instanceof MissileWeapon)) {
+
+				items.remove( item );
+				Dungeon.level.drop(new Gold(item.value()),pos).sprite.drop();
+
+				evaporated = true;
+			}
+
+		}
+
+		if ( evaporated ) {
+
+			if (Dungeon.level.heroFOV[pos]) {
+
+				bubbleFX(pos);
+
+			}
+
+			if (isEmpty()) {
+				destroy();
+			} else if (sprite != null) {
+				sprite.view(this).place( pos );
+			}
+
+		}
+	}
+
 	//Note: should not be called to initiate an explosion, but rather by an explosion that is happening.
 	public void explode() {
 
@@ -344,6 +382,10 @@ public class Heap implements Bundlable {
 	public static void evaporateFX( int pos ) {
 		CellEmitter.get( pos ).burst( Speck.factory( Speck.STEAM ), 5 );
 	}
+
+	public static void bubbleFX( int pos ) {
+		CellEmitter.get( pos ).burst( Speck.factory( Speck.BUBBLE ), 5 );
+	}
 	
 	public boolean isEmpty() {
 		return items == null || items.size() == 0;
@@ -378,6 +420,8 @@ public class Heap implements Bundlable {
 				return Messages.get(this, "skeleton");
 			case REMAINS:
 				return Messages.get(this, "remains");
+			case JEWEL_DUMMY:
+				return Messages.get(this, "jeweldummy");
 			default:
 				return peek().title();
 		}
@@ -402,6 +446,8 @@ public class Heap implements Bundlable {
 				return Messages.get(this, "skeleton_desc");
 			case REMAINS:
 				return Messages.get(this, "remains_desc");
+			case JEWEL_DUMMY:
+				return Messages.get(this, "jeweldummy_desc");
 			default:
 				return peek().info();
 		}

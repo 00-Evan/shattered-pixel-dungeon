@@ -26,13 +26,18 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArrowMarkTracker;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Chains;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Effects;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.TippedDart;
@@ -43,8 +48,9 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.InventoryPane;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundlable;
@@ -177,11 +183,12 @@ public class Item implements Bundlable {
 			execute(hero, defaultAction());
 		}
 	}
-	
+
+
 	protected void onThrow( int cell ) {
-		Heap heap = Dungeon.level.drop( this, cell );
+		Heap heap = Dungeon.level.drop(this, cell);
 		if (!heap.isEmpty()) {
-			heap.sprite.drop( cell );
+			heap.sprite.drop(cell);
 		}
 	}
 	
@@ -315,9 +322,10 @@ public class Item implements Bundlable {
 			
 		}
 	}
-	
+
 	public final Item detachAll( Bag container ) {
 		Dungeon.quickslot.clearItem( this );
+
 
 		for (Item item : container.items) {
 			if (item == this) {
@@ -528,6 +536,15 @@ public class Item implements Bundlable {
 		return quantity != 1 ? Integer.toString( quantity ) : null;
 	}
 
+	public String percent() {
+
+		//if the artifact isn't IDed, or is cursed, don't display anything
+		if (!isIdentified() || cursed) {
+			return null;
+		}
+		return null;
+	}
+
 	public static void updateQuickslot() {
 		GameScene.updateItemDisplays = true;
 	}
@@ -578,7 +595,7 @@ public class Item implements Bundlable {
 		keptThoughLostInvent = bundle.getBoolean( KEPT_LOST );
 	}
 
-	public int targetingPos( Hero user, int dst ){
+	public int targetingPos(Hero user, int dst ){
 		return throwPos( user, dst );
 	}
 
@@ -652,12 +669,74 @@ public class Item implements Bundlable {
 							curUser = user;
 							Item i = Item.this.detach(user.belongings.backpack);
 							if (i != null) i.onThrow(cell);
-							user.spendAndNext(delay);
+						//	user.spendAndNext(delay);
+							//영추자의 그랩로직
+							if (curUser.buff(ArrowMarkTracker.class) !=null){
+								if(i instanceof SpiritBow.SpiritArrow && curUser.buff(Talent.ChaserMarkGrabTracker.class) != null) {
+									for (ArrowMarkTracker a : curUser.buffs(ArrowMarkTracker.class)) {
+										if (Dungeon.depth == a.depth) {
+
+											int shotPos = throwPos(user, dst);
+
+											Char ch = (Char) Actor.findById(a.object);
+
+											final Ballistica arrow = new Ballistica(ch.pos, shotPos, Ballistica.MAGIC_CHAIN);
+											if (Actor.findChar(arrow.collisionPos) != null) {
+												user.spendAndNext(delay);
+											} else {
+												chainEnemy(arrow, ch, dst);
+												curUser.buff(Talent.ChaserMarkGrabTracker.class).detach();
+												// 적을 옮기고 나면 더이상 못 옮기게 해제
+											}
+											curUser.next();
+										}
+									}
+								}else {user.spendAndNext(delay);}
+							}else {
+								user.spendAndNext(delay);
+							}
 						}
 					});
 		}
 	}
-	
+
+
+	//영추자의 그랩
+	private void chainEnemy(Ballistica arrow, final Char enemy , final int dst ){
+
+		if (enemy.properties().contains(Char.Property.IMMOVABLE)
+				|| enemy.properties().contains(Char.Property.BOSS)) {
+			GLog.w( Messages.get(SpiritBow.class, "cant_pull") );
+			return;
+		}
+
+		final int newEnemyPos = arrow.collisionPos;
+
+		curUser.busy();
+		throwSound();
+		Sample.INSTANCE.play( Assets.Sounds.ATK_SPIRITBOW );
+		enemy.sprite.parent.add(new Chains(enemy.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(newEnemyPos),
+				Effects.Type.ARROW_CHAIN,
+				new Callback() {
+					public void call() {
+						Actor.add(new Pushing(enemy, enemy.pos, newEnemyPos, new Callback() {
+							public void call() {
+								enemy.pos = newEnemyPos;
+								Dungeon.level.occupyCell(enemy);
+								Dungeon.observe();
+								GameScene.updateFog();
+								curUser.spendAndNext(castDelay(curUser, dst));
+							}
+						}));
+						curUser.next();
+					}
+				}));
+	}
+	//영추자의 그랩
+
+
+
+
 	public float castDelay( Char user, int dst ){
 		return TIME_TO_THROW;
 	}
@@ -668,7 +747,7 @@ public class Item implements Bundlable {
 		@Override
 		public void onSelect( Integer target ) {
 			if (target != null) {
-				curItem.cast( curUser, target );
+				curItem.cast(curUser, target);
 			}
 		}
 		@Override

@@ -25,8 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
@@ -113,7 +111,7 @@ public class Hunger extends Buff implements Hero.Doom {
 			}
 			
 			spend( target.buff( Shadows.class ) == null ? STEP : STEP * 1.5f );
-
+			spend( target.buff( Disguise.class ) == null ? STEP : STEP * 1.5f );
 		} else {
 
 			diactivate();

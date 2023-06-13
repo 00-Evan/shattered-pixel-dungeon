@@ -29,13 +29,16 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SacrificialFire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoldenMimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Statue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Rock;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
@@ -46,8 +49,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.journal.GuidePage;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.RegionLorePage;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shovel;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.FigureEightBuilder;
@@ -142,7 +146,7 @@ public abstract class RegularLevel extends Level {
 			if (s instanceof PitRoom) specials++;
 			initRooms.add(s);
 		}
-		
+
 		int secrets = SecretRoom.secretsForFloor(Dungeon.depth);
 		//one additional secret for secret levels
 		if (feeling == Feeling.SECRETS) secrets++;
@@ -333,6 +337,9 @@ public abstract class RegularLevel extends Level {
 	
 	@Override
 	protected void createItems() {
+
+		//황금씨앗 퀘스트
+		Rock.Quest.spawn(this);
 		
 		// drops 3/4/5 items 60%/30%/10% of the time
 		int nItems = 3 + Random.chances(new float[]{6, 3, 1});
@@ -351,6 +358,7 @@ public abstract class RegularLevel extends Level {
 				map[cell] = Terrain.GRASS;
 				losBlocking[cell] = false;
 			}
+
 
 			Heap.Type type = null;
 			switch (Random.Int( 20 )) {
@@ -462,6 +470,63 @@ public abstract class RegularLevel extends Level {
 					}
 					drop(new SmallRation(), cell).type = Heap.Type.CHEST;
 					dropped.countUp(1);
+				}
+			}
+		}
+
+		//수집가
+		if (Dungeon.hero.hasTalent(Talent.LAPIDARIST_INVISI3) && Dungeon.hero.subClass == HeroSubClass.LAPIDARIST){
+			if (Random.Int(9) < Dungeon.hero.pointsInTalent(Talent.LAPIDARIST_INVISI3)){
+				Ring ring;
+				int cell;
+				int tries = 100;
+				boolean valid;
+				do {
+					cell = randomDropCell(SpecialRoom.class);
+					valid = cell != -1 && !(room(cell) instanceof SecretRoom)
+							&& !(room(cell) instanceof ShopRoom)
+							&& map[cell] != Terrain.EMPTY_SP
+							&& map[cell] != Terrain.WATER
+							&& map[cell] != Terrain.PEDESTAL;
+				} while (tries-- > 0 && !valid);
+				if (valid) {
+					if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
+						map[cell] = Terrain.GRASS;
+						losBlocking[cell] = false;
+					}
+					ring = (Ring)Generator.random( Generator.Category.RING );
+					drop(ring, cell).type = Heap.Type.CHEST;
+				}
+			}
+		}
+
+		Shovel shovel = Dungeon.hero.belongings.getItem( Shovel.class );
+		if (shovel != null && shovel.isIdentified() && !shovel.cursed ){
+			Shovel.JewelDummyDropped dropped = Buff.affect(Dungeon.hero, Shovel.JewelDummyDropped.class);
+			//aim to drop 1 dummy every 2 floors
+			int dummyDroped = (int) Math.ceil((float)((Dungeon.depth / 2) - shovel.droppedJewelDummy) / 3);
+			for (int i=1; i <= dummyDroped; i++) {
+				//the player may miss a single petal and still max their rose.
+				if (dropped.count() < 11) {
+					int cell;
+					int tries = 100;
+					boolean valid;
+					do {
+						cell = randomDropCell(SpecialRoom.class);
+						valid = cell != -1 && !(room(cell) instanceof SecretRoom)
+								&& !(room(cell) instanceof ShopRoom)
+								&& map[cell] != Terrain.EMPTY_SP
+								&& map[cell] != Terrain.WATER
+								&& map[cell] != Terrain.PEDESTAL;
+					} while (tries-- > 0 && !valid);
+					if (valid) {
+						if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
+							map[cell] = Terrain.GRASS;
+							losBlocking[cell] = false;
+						}
+						drop(new Gold(Random.Int(100)), cell).type = Heap.Type.JEWEL_DUMMY;
+						dropped.countUp(1);
+					}
 				}
 			}
 		}

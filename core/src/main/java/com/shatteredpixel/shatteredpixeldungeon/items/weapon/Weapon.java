@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon;
 
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -28,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.ElementalStrike;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -36,8 +39,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Annoying;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Displacing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Dazzling;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Displacing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Explosive;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Friendly;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Polarized;
@@ -53,6 +56,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Kinetic;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Lucky;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projecting;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Sacred;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstable;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampiric;
@@ -74,6 +78,7 @@ abstract public class Weapon extends KindOfWeapon {
 	public float    ACC = 1f;	// Accuracy modifier
 	public float	DLY	= 1f;	// Speed modifier
 	public int      RCH = 1;    // Reach modifier (only applies to melee hits)
+	public int      DST = 0;    // 방어력 관통
 
 	public enum Augment {
 		SPEED   (0.7f, 0.6667f),
@@ -106,6 +111,7 @@ abstract public class Weapon extends KindOfWeapon {
 	public Enchantment enchantment;
 	public boolean curseInfusionBonus = false;
 	public boolean masteryPotionBonus = false;
+	public boolean destructFacter = false;
 	
 	@Override
 	public int proc( Char attacker, Char defender, int damage ) {
@@ -190,7 +196,13 @@ abstract public class Weapon extends KindOfWeapon {
 
 		return encumbrance > 0 ? (float)(ACC / Math.pow( 1.5, encumbrance )) : ACC;
 	}
-	
+
+	//수집가 기습공격 턴소모
+	public float LapidaristDelayFactor( Char owner ) {
+		float LaSpeed = Dungeon.hero.pointsInTalent(Talent.LAPIDARIST_SPEED2);
+		return baseDelay(owner) * (1f/(speedMultiplier(owner)+(0.167f*LaSpeed)));
+	}
+
 	@Override
 	public float delayFactor( Char owner ) {
 		return baseDelay(owner) * (1f/speedMultiplier(owner));
@@ -232,6 +244,19 @@ abstract public class Weapon extends KindOfWeapon {
 		} else {
 			return reach;
 		}
+	}
+
+	@Override
+	public int DstFactor(Char owner) {
+		int Dst = DST;
+		if(destructFacter){
+			if (owner instanceof Hero && this.buffedLvl() >0 ) {
+				return Dst + this.buffedLvl();
+			}
+		} else {
+			return Dst;
+		}
+		return Dst;
 	}
 
 	public int STRReq(){
@@ -360,7 +385,8 @@ abstract public class Weapon extends KindOfWeapon {
 	public static abstract class Enchantment implements Bundlable {
 		
 		private static final Class<?>[] common = new Class<?>[]{
-				Blazing.class, Chilling.class, Kinetic.class, Shocking.class};
+				Blazing.class, Chilling.class, Kinetic.class,
+				Shocking.class, Sacred.class};
 		
 		private static final Class<?>[] uncommon = new Class<?>[]{
 				Blocking.class, Blooming.class, Elastic.class,
@@ -415,6 +441,14 @@ abstract public class Weapon extends KindOfWeapon {
 
 			if (attacker.buff(MonkEnergy.MonkAbility.FlurryEmpowerTracker.class) != null){
 				multi *= 0.75f;
+			}
+
+			int point = hero.pointsInTalent(Talent.LAPIDARIST_SPEED2);
+			if (attacker instanceof Hero
+					&& hero.subClass == HeroSubClass.LAPIDARIST
+					&& hero.hasTalent(Talent.LAPIDARIST_SPEED2)
+					&& hero.invisible > 0 ){
+				multi += point/3;
 			}
 
 			return multi;

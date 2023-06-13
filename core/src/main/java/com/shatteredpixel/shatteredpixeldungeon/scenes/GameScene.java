@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Disguise;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DemonSpawner;
@@ -62,6 +63,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretLaboratoryRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -169,6 +171,7 @@ public class GameScene extends PixelScene {
 	private Group customWalls;
 	private Group ripples;
 	private Group plants;
+	private Group htrap;
 	private Group traps;
 	private Group heaps;
 	private Group mobs;
@@ -515,6 +518,23 @@ public class GameScene extends PixelScene {
 					if (reqSecrets <= 0 && Random.Int(4) <= Dungeon.hero.pointsInTalent(Talent.ROGUES_FORESIGHT)){
 						GLog.p(Messages.get(this, "secret_hint"));
 					}
+				Random.popGenerator();
+			}
+
+			// 쥐변이 물약
+			if (Dungeon.hero.buff(Disguise.class) != null
+					&& Dungeon.level instanceof RegularLevel){
+				int reqSecrets = Dungeon.level.feeling == Level.Feeling.SECRETS ? 2 : 1;
+				for (Room r : ((RegularLevel) Dungeon.level).rooms()){
+					if (r instanceof SecretLaboratoryRoom) reqSecrets--;
+				}
+
+				//50%/75% chance, use level's seed so that we get the same result for the same level
+				//offset seed slightly to avoid output patterns
+				Random.pushGenerator(Dungeon.seedCurDepth()+1);
+				if (reqSecrets <= 0 ){
+					GLog.p(Messages.get(this, "laboratory_hint"));
+				}
 				Random.popGenerator();
 			}
 
@@ -874,6 +894,8 @@ public class GameScene extends PixelScene {
 
 	}
 
+
+
 	private void addTrapSprite( Trap trap ) {
 
 	}
@@ -934,6 +956,11 @@ public class GameScene extends PixelScene {
 			scene.addPlantSprite( plant );
 		}
 	}
+/*	public static void add( HeroTrap heroTrap ) {
+		if (scene != null) {
+			scene.addHtrapSprite( heroTrap );
+		}
+	}*/
 
 	public static void add( Trap trap ) {
 		if (scene != null) {
@@ -1447,6 +1474,9 @@ public class GameScene extends PixelScene {
 		Plant plant = Dungeon.level.plants.get( cell );
 		if (plant != null) objects.add(plant);
 
+	/*	HeroTrap heroTrap = Dungeon.level.htrap.get (cell);
+		if( heroTrap != null) objects.add(heroTrap);
+*/
 		Trap trap = Dungeon.level.traps.get( cell );
 		if (trap != null && trap.visible) objects.add(trap);
 
@@ -1456,11 +1486,11 @@ public class GameScene extends PixelScene {
 	private static ArrayList<String> getObjectNames( ArrayList<Object> objects ){
 		ArrayList<String> names = new ArrayList<>();
 		for (Object obj : objects){
-			if (obj instanceof Hero)        names.add(((Hero) obj).className().toUpperCase(Locale.ENGLISH));
-			else if (obj instanceof Mob)    names.add(Messages.titleCase( ((Mob)obj).name() ));
-			else if (obj instanceof Heap)   names.add(Messages.titleCase( ((Heap)obj).title() ));
-			else if (obj instanceof Plant)  names.add(Messages.titleCase( ((Plant) obj).name() ));
-			else if (obj instanceof Trap)   names.add(Messages.titleCase( ((Trap) obj).name() ));
+			if (obj instanceof Hero)          names.add(((Hero) obj).className().toUpperCase(Locale.ENGLISH));
+			else if (obj instanceof Mob)      names.add(Messages.titleCase( ((Mob)obj).name() ));
+			else if (obj instanceof Heap)     names.add(Messages.titleCase( ((Heap)obj).title() ));
+			else if (obj instanceof Plant)    names.add(Messages.titleCase( ((Plant) obj).name() ));
+			else if (obj instanceof Trap)     names.add(Messages.titleCase( ((Trap) obj).name() ));
 		}
 		return names;
 	}

@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.SuperSheep;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
@@ -61,12 +62,19 @@ public class StoneOfFlock extends Runestone {
 			if (Dungeon.level.insideMap(i)
 					&& Actor.findChar(i) == null
 					&& !(Dungeon.level.pit[i])) {
-				Sheep sheep = new Sheep();
-				sheep.lifespan = 8;
-				sheep.pos = i;
-				GameScene.add(sheep);
-				Dungeon.level.occupyCell(sheep);
 				CellEmitter.get(i).burst(Speck.factory(Speck.WOOL), 4);
+					Sheep sheep = new Sheep();
+					sheep.lifespan = 8;
+					sheep.pos = i;
+					GameScene.add(sheep);
+					Dungeon.level.occupyCell(sheep);
+				if (Random.Float() > 0.991f) {
+					SuperSheep ssheep = new SuperSheep();
+					sheep.lifespan = 8;
+					ssheep.pos = Random.element(spawnPoints);
+					GameScene.add(ssheep);
+					Dungeon.level.occupyCell(ssheep);
+				}
 			}
 		}
 

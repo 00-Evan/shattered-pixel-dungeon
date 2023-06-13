@@ -25,11 +25,11 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PlagueGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PrismaticGuard;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -216,6 +216,7 @@ public class PrismaticImage extends NPC {
 		if (hero != null && hero.belongings.armor() != null){
 			return hero.belongings.armor().speedFactor(this, super.speed());
 		}
+
 		return super.speed();
 	}
 	
@@ -257,6 +258,7 @@ public class PrismaticImage extends NPC {
 		immunities.add( CorrosiveGas.class );
 		immunities.add( Burning.class );
 		immunities.add( AllyBuff.class );
+		immunities.add( PlagueGas.class );
 	}
 	
 	private class Wandering extends Mob.Wandering{

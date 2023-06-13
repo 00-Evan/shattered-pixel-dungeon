@@ -228,6 +228,7 @@ public class Assets {
 		public static final String ROGUE    = "splashes/rogue.jpg";
 		public static final String HUNTRESS = "splashes/huntress.jpg";
 		public static final String DUELIST  = "splashes/duelist.jpg";
+		public static final String POTIONYST= "splashes/duelist.jpg";
 	}
 
 	public static class Sprites {
@@ -239,6 +240,7 @@ public class Assets {
 		public static final String ROGUE    = "sprites/rogue.png";
 		public static final String HUNTRESS = "sprites/huntress.png";
 		public static final String DUELIST  = "sprites/duelist.png";
+		public static final String POTIONYST= "sprites/potionyst.png";
 		public static final String AVATARS  = "sprites/avatars.png";
 		public static final String PET      = "sprites/pet.png";
 		public static final String AMULET   = "sprites/amulet.png";
@@ -261,6 +263,7 @@ public class Assets {
 		public static final String THIEF    = "sprites/thief.png";
 		public static final String TENGU    = "sprites/tengu.png";
 		public static final String SHEEP    = "sprites/sheep.png";
+		public static final String S_SHEEP  = "sprites/super_sheep.png";
 		public static final String KEEPER   = "sprites/shopkeeper.png";
 		public static final String BAT      = "sprites/bat.png";
 		public static final String ELEMENTAL= "sprites/elemental.png";
@@ -274,6 +277,7 @@ public class Assets {
 		public static final String YOG      = "sprites/yog.png";
 		public static final String LARVA    = "sprites/larva.png";
 		public static final String GHOST    = "sprites/ghost.png";
+		public static final String ROCK     = "sprites/rock.png";
 		public static final String MAKER    = "sprites/wandmaker.png";
 		public static final String TROLL    = "sprites/blacksmith.png";
 		public static final String IMP      = "sprites/demon.png";
@@ -296,6 +300,7 @@ public class Assets {
 		public static final String DM200    = "sprites/dm200.png";
 		public static final String LOTUS    = "sprites/lotus.png";
 		public static final String NINJA_LOG= "sprites/ninja_log.png";
+		public static final String SCARECROW= "sprites/scarecrow.png";
 		public static final String SPIRIT_HAWK= "sprites/spirit_hawk.png";
 		public static final String RED_SENTRY= "sprites/red_sentry.png";
 	}

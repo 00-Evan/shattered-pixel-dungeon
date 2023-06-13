@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
+import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.CONTACTLESS_TREATMENT;
+
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -55,6 +57,19 @@ public class PotionOfHealing extends Potion {
 		cure( hero );
 		heal( hero );
 		Talent.onHealingPotionUsed( hero );
+	}
+
+	@Override
+	public void applyChar( Char ch ) {
+		//whitephial
+		identify();
+		int treat = 1 + Dungeon.hero.pointsInTalent(CONTACTLESS_TREATMENT);
+
+		Buff.affect(ch, Healing.class).setHeal((int) ((0.8f * ch.HT + 14) * treat/4f), 0.25f, 0);
+		if (ch.alignment == Char.Alignment.ALLY){
+			GLog.p( Messages.get(PotionOfHealing.class, "heal_ally"),ch.name() );
+		}
+		cure( ch );
 	}
 
 	public static void heal( Char ch ){

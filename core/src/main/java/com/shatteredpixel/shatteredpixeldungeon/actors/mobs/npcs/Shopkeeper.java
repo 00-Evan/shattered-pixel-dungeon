@@ -27,16 +27,21 @@ import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SuperBulk;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.CorgSeed;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ShopkeeperSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndImp;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndShop;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Callback;
@@ -48,6 +53,8 @@ public class Shopkeeper extends NPC {
 
 		properties.add(Property.IMMOVABLE);
 	}
+
+	private boolean seenBefore = false;
 	
 	@Override
 	protected boolean act() {
@@ -60,12 +67,28 @@ public class Shopkeeper extends NPC {
 			flee();
 			return true;
 		}*/
+
+		if (Dungeon.hero.belongings.getItem( CorgSeed.class ) != null && Dungeon.level.visited[pos]) {
+			if (!seenBefore && Dungeon.hero.buff(CorgSeed.SellSeedCounter.class) == null) {
+				notice();
+				yell( Messages.get(Shopkeeper.class, "hey", Messages.titleCase(Dungeon.hero.name()) ) );
+			}
+			Notes.add( Notes.Landmark.SHOP );
+			seenBefore = true;
+		} else {
+			seenBefore = false;
+		}
 		
 		sprite.turnTo( pos, Dungeon.hero.pos );
 		spend( TICK );
 		return super.act();
 	}
-	
+
+	public void notice() {
+		sprite.showAlert();
+	}
+
+
 	@Override
 	public void damage( int dmg, Object src ) {
 		flee();
@@ -147,6 +170,7 @@ public class Shopkeeper extends NPC {
 			if (item != null) {
 				WndBag parentWnd = sell();
 				GameScene.show( new WndTradeItem( item, parentWnd ) );
+
 			}
 		}
 	};
@@ -156,12 +180,32 @@ public class Shopkeeper extends NPC {
 		if (c != Dungeon.hero) {
 			return true;
 		}
-		Game.runOnRenderThread(new Callback() {
-			@Override
-			public void call() {
-				sell();
+
+		CorgSeed seed = Dungeon.hero.belongings.getItem( CorgSeed.class );
+		if (seed != null) {
+			if (Dungeon.hero.buff(CorgSeed.SellSeedCounter.class) == null) {
+				Game.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						GameScene.show(new WndShop(Shopkeeper.this, seed));
+					}
+				});
+			}else {
+				Game.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						sell();
+					}
+				});
 			}
-		});
+		}else {
+			Game.runOnRenderThread(new Callback() {
+				@Override
+				public void call() {
+					sell();
+				}
+			});
+		}
 		return true;
 	}
 }

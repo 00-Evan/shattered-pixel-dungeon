@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GreatCrab;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.CorgSeed;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherArmor;
@@ -295,6 +296,8 @@ public class Ghost extends NPC {
 					ghost.pos = level.randomRespawnCell( ghost );
 				} while (ghost.pos == -1);
 				level.mobs.add( ghost );
+				level.drop( new CorgSeed() ,ghost.pos);
+				//황금씨앗은 슬픈유령의 첫 리스폰 위치에서 나온다
 				
 				spawned = true;
 				//dungeon depth determines type of quest.

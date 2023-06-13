@@ -25,7 +25,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
@@ -233,6 +232,9 @@ public class CloakOfShadows extends Artifact {
 					if (level() > 7) missing += 5*(level() - 7)/3f;
 					float turnsToCharge = (45 - missing);
 					turnsToCharge /= RingOfEnergy.artifactChargeMultiplier(target);
+					if (Dungeon.hero.subClass == HeroSubClass.LAPIDARIST){
+						turnsToCharge /= RingOfEnergy.artifactChargeMultiplier(target) + Talent.artifactChargeMultipliertoTalent(target);
+					}
 					float chargeToGain = (1f / turnsToCharge);
 					if (!isEquipped(Dungeon.hero)){
 						chargeToGain *= 0.75f*Dungeon.hero.pointsInTalent(Talent.LIGHT_CLOAK)/3f;
@@ -364,7 +366,6 @@ public class CloakOfShadows extends Artifact {
 			activeBuff = null;
 
 			if (target.invisible > 0)   target.invisible--;
-
 			updateQuickslot();
 			super.detach();
 		}

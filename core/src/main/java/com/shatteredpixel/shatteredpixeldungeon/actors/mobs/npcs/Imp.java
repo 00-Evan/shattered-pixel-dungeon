@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Golem;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
+import com.shatteredpixel.shatteredpixeldungeon.items.CorgSeed;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
@@ -141,7 +142,7 @@ public class Imp extends NPC {
 	public void flee() {
 		
 		yell( Messages.get(this, "cya", Messages.titleCase(Dungeon.hero.name())) );
-		
+		Dungeon.level.drop(new CorgSeed() , this.pos).sprite.drop();
 		destroy();
 		sprite.die();
 	}
@@ -217,9 +218,7 @@ public class Imp extends NPC {
 						!(level.passable[npc.pos + PathFinder.CIRCLE4[0]] && level.passable[npc.pos + PathFinder.CIRCLE4[2]]) ||
 						!(level.passable[npc.pos + PathFinder.CIRCLE4[1]] && level.passable[npc.pos + PathFinder.CIRCLE4[3]]));
 				level.mobs.add( npc );
-				
 				spawned = true;
-
 				//always assigns monks on floor 17, golems on floor 19, and 50/50 between either on 18
 				switch (Dungeon.depth){
 					case 17: default:

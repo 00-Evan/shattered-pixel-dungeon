@@ -45,13 +45,12 @@ public class PotionOfFrost extends Potion {
 			splash( cell );
 			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 		}
-		
-		for (int offset : PathFinder.NEIGHBOURS9){
-			if (!Dungeon.level.solid[cell+offset]) {
-				
-				GameScene.add(Blob.seed(cell + offset, 10, Freezing.class));
-				
-			}
+		for (int offset : PathFinder.NEIGHBOURS9) {
+				if (!Dungeon.level.solid[cell + offset]) {
+
+					GameScene.add(Blob.seed(cell + offset, 10, Freezing.class));
+
+				}
 		}
 		
 	}

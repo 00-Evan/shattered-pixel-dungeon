@@ -21,10 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
+import com.shatteredpixel.shatteredpixeldungeon.items.CorgSeed;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -34,6 +37,8 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
 
 public class WndTradeItem extends WndInfoItem {
 
@@ -55,47 +60,75 @@ public class WndTradeItem extends WndInfoItem {
 
 		float pos = height;
 
-		if (item.quantity() == 1) {
 
-			RedButton btnSell = new RedButton( Messages.get(this, "sell", item.value()) ) {
+		if(item instanceof CorgSeed){
+			RedButton seedSell = new RedButton( Messages.get(this, "pane_up", item.quantity()) ) {
 				@Override
 				protected void onClick() {
 					sell( item );
 					hide();
+
+					Sample.INSTANCE.play( Assets.Sounds.LEVELUP );
+					Buff.count(Dungeon.hero, CorgSeed.SellSeedCounter.class, item.quantity());
+					GLog.i( Messages.capitalize(Messages.get(Dungeon.hero, "you_have_bagpane", item.quantity())) );
+					Shopkeeper.sell(); //창을 다시 올리면서 인벤토리 리셋
 				}
 			};
-			btnSell.setRect( 0, pos + GAP, width, BTN_HEIGHT );
-			btnSell.icon(new ItemSprite(ItemSpriteSheet.GOLD));
-			add( btnSell );
+			seedSell.icon(new ItemSprite( ItemSpriteSheet.KIT ));
+			seedSell.setRect(0, pos + GAP, width, BTN_HEIGHT);
+			add( seedSell );
 
-			pos = btnSell.bottom();
+			pos = seedSell.bottom();
+		}else {
 
-		} else {
+			if (item.quantity() == 1) {
 
-			int priceAll= item.value();
-			RedButton btnSell1 = new RedButton( Messages.get(this, "sell_1", priceAll / item.quantity()) ) {
-				@Override
-				protected void onClick() {
-					sellOne( item );
-					hide();
-				}
-			};
-			btnSell1.setRect( 0, pos + GAP, width, BTN_HEIGHT );
-			btnSell1.icon(new ItemSprite(ItemSpriteSheet.GOLD));
-			add( btnSell1 );
-			RedButton btnSellAll = new RedButton( Messages.get(this, "sell_all", priceAll ) ) {
-				@Override
-				protected void onClick() {
-					sell( item );
-					hide();
-				}
-			};
-			btnSellAll.setRect( 0, btnSell1.bottom() + 1, width, BTN_HEIGHT );
-			btnSellAll.icon(new ItemSprite(ItemSpriteSheet.GOLD));
-			add( btnSellAll );
+				RedButton btnSell = new RedButton(Messages.get(this, "sell", item.value())) {
+					@Override
+					protected void onClick() {
+						sell(item);
+						hide();
+					}
+				};
+				btnSell.setRect(0, pos + GAP, width, BTN_HEIGHT);
+				btnSell.icon(new ItemSprite(ItemSpriteSheet.GOLD));
+				add(btnSell);
 
-			pos = btnSellAll.bottom();
+				pos = btnSell.bottom();
 
+
+			} else {
+
+				int priceAll = item.value();
+				RedButton btnSell1 = new RedButton(Messages.get(this, "sell_1", priceAll / item.quantity())) {
+					@Override
+					protected void onClick() {
+						sellOne(item);
+						hide();
+					}
+				};
+				btnSell1.setRect(0, pos + GAP, width, BTN_HEIGHT);
+				btnSell1.icon(new ItemSprite(ItemSpriteSheet.GOLD));
+				add(btnSell1);
+				RedButton btnSellAll = new RedButton(Messages.get(this, "sell_all", priceAll)) {
+					@Override
+					protected void onClick() {
+						sell(item);
+						hide();
+/*						if (item instanceof CorgSeed) {
+							Buff.count(Dungeon.hero, CorgSeed.SellSeedCounter.class, item.quantity());
+							Shopkeeper.sell(); //창을 다시 올리면서 인벤토리 리셋
+							GLog.i( Messages.capitalize(Messages.get(Dungeon.hero, "you_have_bagpane", item.quantity())) );
+						}
+*/					}
+				};
+				btnSellAll.setRect(0, btnSell1.bottom() + 1, width, BTN_HEIGHT);
+				btnSellAll.icon(new ItemSprite(ItemSpriteSheet.GOLD));
+				add(btnSellAll);
+
+				pos = btnSellAll.bottom();
+
+			}
 		}
 
 		resize( width, (int)pos );

@@ -26,16 +26,21 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Golden;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.WhitePhial;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfHoneyedHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCleansing;
@@ -43,15 +48,17 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCor
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfShroudingFog;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfSnapFreeze;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfStormClouds;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.potionystbrews.PotionOfGoldenLiquid;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Mageroyal;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Fadeleaf;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Firebloom;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Icecap;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Mageroyal;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sorrowmoss;
@@ -82,8 +89,9 @@ public class Potion extends Item {
 	
 	//used internally for potions that can be drunk or thrown
 	public static final String AC_CHOOSE = "CHOOSE";
-
 	private static final float TIME_TO_DRINK = 1f;
+
+
 
 	private static final LinkedHashMap<String, Integer> colors = new LinkedHashMap<String, Integer>() {
 		{
@@ -108,7 +116,8 @@ public class Potion extends Item {
 		mustThrowPots.add(PotionOfLiquidFlame.class);
 		mustThrowPots.add(PotionOfParalyticGas.class);
 		mustThrowPots.add(PotionOfFrost.class);
-		
+		mustThrowPots.add(PotionOfGoldenLiquid.class);
+
 		//exotic
 		mustThrowPots.add(PotionOfCorrosiveGas.class);
 		mustThrowPots.add(PotionOfSnapFreeze.class);
@@ -283,6 +292,23 @@ public class Potion extends Item {
 		Sample.INSTANCE.play( Assets.Sounds.DRINK );
 		
 		hero.sprite.operate( hero.pos );
+		if (Dungeon.hero.hasTalent(Talent.POTIONYST_BARRIER)){
+			Buff.affect(Dungeon.hero, Talent.ProtectivePotionTracker.class);
+		} //물약 사용후 약재사의 방어막
+
+		if (Dungeon.hero.hasTalent(Talent.POTIONYST_STRIKE) && Dungeon.hero.heroClass != HeroClass.POTIONYST){
+			Buff.affect(Dungeon.hero, Talent.PotionStrikeTracker.class);
+		} //물약 사용후 , 타영웅의 피해량 올리기
+
+		if (Dungeon.hero.hasTalent(Talent.BETTER_ALCHEMY) && Dungeon.hero.heroClass != HeroClass.POTIONYST) {
+			//약재사의 3-1 스킬, 타영웅은 유물 충전 효과
+			ArtifactRecharge buff = Buff.affect(Dungeon.hero, ArtifactRecharge.class);
+			if (buff.left() < 2 + 3 * (Dungeon.hero.pointsInTalent(Talent.BETTER_ALCHEMY))) {
+				Buff.affect(Dungeon.hero, ArtifactRecharge.class).set(2 + 3 * (Dungeon.hero.pointsInTalent(Talent.BETTER_ALCHEMY)));
+			}
+			ScrollOfRecharging.charge(Dungeon.hero);
+			SpellSprite.show(Dungeon.hero, SpellSprite.CHARGE, 0, 1, 1);
+		}
 	}
 	
 	@Override
@@ -302,12 +328,39 @@ public class Potion extends Item {
 	public void apply( Hero hero ) {
 		shatter( hero.pos );
 	}
-	
+
+	public void applyChar( Char ch ) {
+		Sample.INSTANCE.play( Assets.Sounds.DRINK );
+		// whitephial의 특수상태
+		// 버프를 주기 때문에 기본 가이드
+	}
+
 	public void shatter( int cell ) {
 		if (Dungeon.level.heroFOV[cell]) {
-			GLog.i( Messages.get(Potion.class, "shatter") );
+
+			Char ch = Actor.findChar(cell);
+			if (!(ch.alignment == Char.Alignment.ALLY && Dungeon.hero.buff(Talent.AllyPhialCooldown.class) == null)
+			    && Dungeon.hero.hasTalent(Talent.CONTACTLESS_TREATMENT)) {
+				GLog.i(Messages.get(Potion.class, "shatter"));
+				// 같은 팀 물약투척
+			}
+
 			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 			splash( cell );
+
+			if (Dungeon.hero.hasTalent(Talent.POTIONYST_BARRIER)){
+				Buff.affect(Dungeon.hero, Talent.ProtectivePotionTracker.class);
+			}
+
+			if (Dungeon.hero.hasTalent(Talent.BETTER_ALCHEMY) && Dungeon.hero.heroClass != HeroClass.POTIONYST) {
+				//약재사 3-1 스킬 다른 영웅은 유물충전
+				ArtifactRecharge buff = Buff.affect(Dungeon.hero, ArtifactRecharge.class);
+				if (buff.left() < 2 + 3 * (Dungeon.hero.pointsInTalent(Talent.BETTER_ALCHEMY))) {
+					Buff.affect(Dungeon.hero, ArtifactRecharge.class).set(2 + 3 * (Dungeon.hero.pointsInTalent(Talent.BETTER_ALCHEMY)));
+				}
+				ScrollOfRecharging.charge(Dungeon.hero);
+				SpellSprite.show(Dungeon.hero, SpellSprite.CHARGE, 0, 1, 1);
+			}
 		}
 	}
 
@@ -329,6 +382,11 @@ public class Potion extends Item {
 			
 			if (Dungeon.hero.isAlive()) {
 				Catalog.setSeen(getClass());
+			}
+
+			if (Dungeon.hero.belongings.getItem(WhitePhial.class) != null){
+				Dungeon.hero.belongings.getItem(WhitePhial.class).activate(Dungeon.hero);
+				updateQuickslot();
 			}
 		}
 	}
@@ -391,6 +449,7 @@ public class Potion extends Item {
 		if (ch != null && ch.alignment == Char.Alignment.ALLY) {
 			Buff.detach(ch, Burning.class);
 			Buff.detach(ch, Ooze.class);
+			Buff.detach(ch, Golden.class);
 			Splash.at( ch.sprite.center(), color, 5 );
 		} else {
 			Splash.at( cell, color, 5 );
@@ -404,7 +463,12 @@ public class Potion extends Item {
 
 	@Override
 	public int energyVal() {
-		return 6 * quantity;
+		boolean potiontest = Dungeon.hero.hasTalent(Talent.POTION_ENERGY);
+		if (potiontest && Dungeon.hero.buff(Talent.PotionEnergyCounter.class) != null){
+			return (int) (( 6 + Dungeon.hero.buff(Talent.PotionEnergyCounter.class).count() )*quantity);
+		} else {
+			return 6 * quantity;
+		}
 	}
 
 	public static class PlaceHolder extends Potion {

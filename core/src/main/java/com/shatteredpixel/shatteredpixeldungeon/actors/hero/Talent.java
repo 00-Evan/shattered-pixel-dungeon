@@ -27,8 +27,10 @@ import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PlagueGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CounterBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EnhancedRings;
@@ -36,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PhysicalEmpower;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Plague;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
@@ -47,13 +50,16 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SnowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.WhitePhial;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
@@ -125,7 +131,9 @@ public enum Talent {
 	//Assassin T3
 	ENHANCED_LETHALITY(75, 3), ASSASSINS_REACH(76, 3), BOUNTY_HUNTER(77, 3),
 	//Freerunner T3
-	EVASIVE_ARMOR(78, 3), PROJECTILE_MOMENTUM(79, 3), SPEEDY_STEALTH(80, 3),
+	EVASIVE_ARMOR(79, 3), PROJECTILE_MOMENTUM(80, 3), SPEEDY_STEALTH(81, 3),
+	//lapidarist  T3
+	LAPIDARIST_UP1(91, 3), LAPIDARIST_SPEED2(92, 3), LAPIDARIST_INVISI3(93, 3),
 	//Smoke Bomb T4
 	HASTY_RETREAT(81, 4), BODY_REPLACEMENT(82, 4), SHADOW_STEP(83, 4),
 	//Death Mark T4
@@ -143,6 +151,8 @@ public enum Talent {
 	FARSIGHT(107, 3), SHARED_ENCHANTMENT(108, 3), SHARED_UPGRADES(109, 3),
 	//Warden T3
 	DURABLE_TIPS(110, 3), BARKSKIN(111, 3), SHIELDING_DEW(112, 3),
+	//SoulChaser T3
+	CHASER_UP1(123,3), CHASER_KILL2(124,3), CHASER_PLUS3(125,3),
 	//Spectral Blades T4
 	FAN_OF_BLADES(113, 4), PROJECTING_BLADES(114, 4), SPIRIT_BLADES(115, 4),
 	//Natures Power T4
@@ -167,6 +177,20 @@ public enum Talent {
 	//Duelist A3 T4
 	FEIGNED_RETREAT(151, 4), EXPOSE_WEAKNESS(152, 4), COUNTER_ABILITY(153, 4),
 
+	//Potionyst T1
+	POTIONYST_MEAL(160), POTIONYST_INTUITION(161), POTIONYST_STRIKE(162), POTIONYST_BARRIER(163),
+	//Potionyst T2
+	PURITY_MEAL(164), POTIONYST_WATER(165), POTION_PRESERVATION(166), POTION_ENERGY(167), POTION_RECIPE(168),
+	//Potionyst T3
+	BETTER_ALCHEMY(169, 3), CONTACTLESS_TREATMENT(170, 3),
+	//Dr_plague T3
+	TOXIC_POWER(171, 3), TOXIC_STEALTH(172, 3), BOUNCING_PHIAL(173, 3),
+	//Alchemyst T3
+	ENCHANT_CONTINUOUS(174, 3), ALCHEMYST_TWO2(175, 3), ALCHEMYST_THREE3(176, 3),
+	//Scarecrow T4
+	SCARECROW_HP(177,4),SCARECROW_FEAR(178,4),SCARECROW_TELE(179,4),
+
+
 	//universal T4
 	HEROIC_ENERGY(26, 4), //See icon() and title() for special logic for this one
 	//Ratmogrify T4
@@ -177,10 +201,73 @@ public enum Talent {
 		public void tintIcon(Image icon) { icon.hardlight(0.15f, 0.2f, 0.5f); }
 		public float iconFadePercent() { return Math.max(0, visualcooldown() / 50); }
 	};
+
+	//수집가의 아티팩트 충전 계산식
+	public static float artifactChargeMultipliertoTalent ( Char target ){
+		if( Dungeon.hero.belongings.getItem(Ring.class)!= null ) {
+			float ringCount = Dungeon.hero.belongings.getItem(Ring.class).quantity();
+			float charge = Dungeon.hero.pointsInTalent(Talent.LAPIDARIST_UP1);
+
+			float bonus = 1f + (float)(0.05f* ringCount) + (0.15f * ringCount * charge);
+
+		return bonus;
+		}
+		return 0;
+	}
+
+	public static class LapidaristLuckProc extends Buff {
+
+		//	private int Level = -5;
+		private int herolvl = - Dungeon.hero.lvl / 3;
+		//영웅 최대 레벨/3 = 만렙시 -10
+
+		@Override
+		public boolean act() {
+			detach();
+			return true;
+		}
+
+		public Item genLoot(){
+			detach();
+			return RingOfWealth.genConsumableDrop(herolvl);
+		}
+	}//수집가 드롭 계산식
+
+	//역병 의사 패시브
+	public static class PlagueResists extends Buff {
+
+		{
+			type = buffType.POSITIVE;
+			immunities.add ( PlagueCounter.class );
+			immunities.add ( PlagueGas.class );
+			immunities.add ( Plague.class );
+		}
+
+		public void onAttackProc(Char enemy ){
+			// 영웅의 공격은 역병의 지속시간을 초기화
+			if (enemy.buff(Plague.class) != null){
+				Buff.affect(enemy, Plague.class).set(Plague.DURATION);
+			}
+		}
+	}
+
+
 	public static class LethalMomentumTracker extends FlavourBuff{};
 	public static class StrikingWaveTracker extends FlavourBuff{};
 	public static class WandPreservationCounter extends CounterBuff{{revivePersists = true;}};
 	public static class EmpoweredStrikeTracker extends FlavourBuff{};
+	public static class FindSeedCounter extends CounterBuff {{revivePersists = true;}}; //둔갑 물약 첫 사용 +1
+	public static class PotionTickCounter extends CounterBuff{
+		{revivePersists = true;}
+		@Override
+		public int icon() {
+			return BuffIndicator.UPGRADE;
+		}
+		@Override
+		public void tintIcon(Image icon) {
+			icon.hardlight(1, 1, 0);
+		}
+	};
 	public static class ProtectiveShadowsTracker extends Buff {
 		float barrierInc = 0.5f;
 
@@ -218,6 +305,52 @@ public enum Talent {
 			barrierInc = bundle.getFloat( BARRIER_INC );
 		}
 	}
+
+	//역병 의사 방어막 공식
+	public static class ProtectivePotionTracker extends Buff {
+		float count = 0f;
+
+		@Override
+		public boolean act() {
+			//방어막이 사라질때 마다 1씩 3번, 2씩 3번 주도록
+			if (((Hero)target).hasTalent(Talent.POTIONYST_BARRIER)){
+				Barrier barrier = Buff.affect(target, Barrier.class);
+				if (count < 3) {
+					if (barrier.shielding() < 1) {
+						barrier.incShield(((Hero) target).pointsInTalent(Talent.POTIONYST_BARRIER));
+						count++;
+					}
+				} else {
+					count = 0f;
+					barrier.incShield(0);
+					detach();
+				}
+			} else {
+				detach();
+			}
+			spend( TICK );
+			return true;
+		}
+
+		private static final String COUNT = "count";
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put( COUNT, count);
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			count = bundle.getFloat( COUNT );
+		}
+	}
+	public static class ChaserMarkGrabTracker extends Buff{
+		@Override
+		public int icon() {return BuffIndicator.PINNED_ARROW;}
+	} // 영추자의 적 옮기는 버프
+	public static class PlagueCounter extends CounterBuff { public static final float DURATION= 10f;};
+	// 역병 포자 계산
 	public static class BountyHunterTracker extends FlavourBuff{};
 	public static class RejuvenatingStepsCooldown extends FlavourBuff{
 		public int icon() { return BuffIndicator.TIME; }
@@ -226,12 +359,24 @@ public enum Talent {
 	};
 	public static class RejuvenatingStepsFurrow extends CounterBuff{{revivePersists = true;}};
 	public static class SeerShotCooldown extends FlavourBuff{
+		int stealth = Dungeon.hero.pointsInTalent(Talent.SEER_SHOT);
 		public int icon() { return target.buff(RevealedArea.class) != null ? BuffIndicator.NONE : BuffIndicator.TIME; }
 		public void tintIcon(Image icon) { icon.hardlight(0.7f, 0.4f, 0.7f); }
-		public float iconFadePercent() { return Math.max(0, visualcooldown() / 20); }
+		public float iconFadePercent() { return Math.max(0, visualcooldown() / (20 - 5*stealth)); }
 	};
+
+	public static class AllyPhialCooldown extends FlavourBuff{ //물약 버프 쿨타임
+
+		int treatment = Dungeon.hero.pointsInTalent(Talent.CONTACTLESS_TREATMENT);
+		public int icon() { return BuffIndicator.TIME; }
+		public void tintIcon(Image icon) { icon.hardlight(0.8f, 0.4f, 0.9f); }
+		public float iconFadePercent() { return Math.max(0, visualcooldown() / (20f)); }
+	};
+
+
 	public static class SpiritBladesTracker extends FlavourBuff{};
 	public static class PatientStrikeTracker extends FlavourBuff{};
+	public static class PotionStrikeTracker extends Buff{};
 	public static class AggressiveBarrierCooldown extends FlavourBuff{
 		public int icon() { return BuffIndicator.TIME; }
 		public void tintIcon(Image icon) { icon.hardlight(0.35f, 0f, 0.7f); }
@@ -315,6 +460,8 @@ public enum Talent {
 					return 122;
 				case DUELIST:
 					return 154;
+				case POTIONYST:
+					return 186;
 			}
 		} else {
 			return icon;
@@ -400,9 +547,21 @@ public enum Talent {
 				Dungeon.level.drop(toGive, hero.pos).sprite.drop();
 			}
 		}
+		//약병 파악
+		if (talent == POTIONYST_INTUITION && hero.pointsInTalent(POTIONYST_INTUITION) >= 1){
+			if (hero.belongings.getItem(WhitePhial.class) != null) {
+				Dungeon.hero.belongings.getItem(WhitePhial.class).activate(Dungeon.hero);
+			}
+		}
+
+		if (talent == POTION_ENERGY && hero.pointsInTalent(POTION_ENERGY) >= 1){
+			Buff.affect(hero,PotionEnergyCounter.class).countUp(1);
+		}
+
 	}
 
 	public static class CachedRationsDropped extends CounterBuff{{revivePersists = true;}};
+	public static class PotionEnergyCounter extends CounterBuff{{revivePersists = true;}}; // 물약 에너지 카운터
 	public static class NatureBerriesAvailable extends CounterBuff{{revivePersists = true;}}; //for pre-1.3.0 saves
 	public static class NatureBerriesDropped extends CounterBuff{{revivePersists = true;}};
 
@@ -459,6 +618,14 @@ public enum Talent {
 				// lvl/3 / lvl/2 bonus dmg on next hit for other classes
 				Buff.affect( hero, PhysicalEmpower.class).set(Math.round(hero.lvl / (4f - hero.pointsInTalent(FOCUSED_MEAL))), 1);
 			}
+		}
+		if (hero.hasTalent(POTIONYST_MEAL)){
+			//식사시 포션의 추가효과 주려는데
+			Buff.count( hero, PotionTickCounter.class, hero.pointsInTalent(POTIONYST_MEAL));
+		}
+		if (hero.hasTalent(PURITY_MEAL)){
+			//effectively 1/2 turns of purity 1/2 정화
+			Buff.prolong( hero, BlobImmunity.class, hero.pointsInTalent(PURITY_MEAL));
 		}
 	}
 
@@ -539,8 +706,43 @@ public enum Talent {
 			}
 			Dungeon.observe();
 		}
+
 		if (hero.hasTalent(RESTORED_AGILITY)){
 			Buff.prolong(hero, RestoredAgilityTracker.class, hero.cooldown());
+		}
+
+		if (hero.hasTalent(POTIONYST_WATER)){
+			ArrayList<Integer> waterCells = new ArrayList<>();
+			for (int i : PathFinder.NEIGHBOURS9){
+				waterCells.add(hero.pos+i);
+			}
+			Random.shuffle(waterCells);
+			if (hero.pointsInTalent(POTIONYST_WATER) == 2){
+				waterCells.remove(0);
+				waterCells.remove(0);
+				waterCells.remove(0);
+			}
+
+			if (hero.pointsInTalent(POTIONYST_WATER) == 1){
+				waterCells.remove(0);
+				waterCells.remove(0);
+				waterCells.remove(0);
+				waterCells.remove(0);
+				waterCells.remove(0);
+			}
+			for (int cell : waterCells){
+				if ((Dungeon.level.map[cell] == Terrain.PASSABLE &&(
+						Dungeon.level.map[cell] == Terrain.EMPTY ||
+						Dungeon.level.map[cell] == Terrain.EMBERS ||
+						Dungeon.level.map[cell] == Terrain.EMPTY_DECO ||
+						Dungeon.level.map[cell] == Terrain.GRASS)) &&
+						Dungeon.level.plants.get(cell) == null){
+					Level.set(cell, Terrain.WATER);
+					GameScene.updateMap(cell);
+				}
+				CellEmitter.get(cell).burst(SnowParticle.FACTORY, 3);
+			}
+			Dungeon.observe();
 		}
 	}
 
@@ -667,6 +869,17 @@ public enum Talent {
 			}
 		}
 
+		if (hero.hasTalent(POTIONYST_STRIKE)){  // 포션 사용후 딜상승 1~2, 2~3
+			if (hero.buff(PotionStrikeTracker.class) != null
+					&& !(hero.belongings.attackingWeapon() instanceof MissileWeapon)){
+				hero.buff(PotionStrikeTracker.class).detach();
+				dmg += Random.IntRange(hero.pointsInTalent(Talent.POTIONYST_STRIKE) , 1+ hero.pointsInTalent(Talent.POTIONYST_STRIKE));
+				if (!(enemy instanceof Mob) || !((Mob) enemy).surprisedBy(hero)){
+					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG, 0.75f, 1.2f);
+				}
+			}
+		}
+
 		return dmg;
 	}
 
@@ -707,6 +920,9 @@ public enum Talent {
 			case DUELIST:
 				Collections.addAll(tierTalents, STRENGTHENING_MEAL, ADVENTURERS_INTUITION, PATIENT_STRIKE, AGGRESSIVE_BARRIER);
 				break;
+			case POTIONYST:
+				Collections.addAll(tierTalents, POTIONYST_MEAL, POTIONYST_INTUITION, POTIONYST_STRIKE, POTIONYST_BARRIER);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -733,6 +949,9 @@ public enum Talent {
 			case DUELIST:
 				Collections.addAll(tierTalents, FOCUSED_MEAL, RESTORED_AGILITY, WEAPON_RECHARGING, LETHAL_HASTE, SWIFT_EQUIP);
 				break;
+			case POTIONYST:
+				Collections.addAll(tierTalents, PURITY_MEAL, POTIONYST_WATER, POTION_PRESERVATION, POTION_ENERGY, POTION_RECIPE);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -758,6 +977,9 @@ public enum Talent {
 				break;
 			case DUELIST:
 				Collections.addAll(tierTalents, LIGHTWEIGHT_CHARGE, DEADLY_FOLLOWUP);
+				break;
+			case POTIONYST:
+				Collections.addAll(tierTalents, BETTER_ALCHEMY, CONTACTLESS_TREATMENT);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -805,17 +1027,29 @@ public enum Talent {
 			case FREERUNNER:
 				Collections.addAll(tierTalents, EVASIVE_ARMOR, PROJECTILE_MOMENTUM, SPEEDY_STEALTH);
 				break;
+			case LAPIDARIST:
+				Collections.addAll(tierTalents, LAPIDARIST_UP1, LAPIDARIST_SPEED2, LAPIDARIST_INVISI3);
+				break;
 			case SNIPER:
 				Collections.addAll(tierTalents, FARSIGHT, SHARED_ENCHANTMENT, SHARED_UPGRADES);
 				break;
 			case WARDEN:
 				Collections.addAll(tierTalents, DURABLE_TIPS, BARKSKIN, SHIELDING_DEW);
 				break;
+			case SOULCHASER:
+				Collections.addAll(tierTalents, CHASER_UP1, CHASER_KILL2, CHASER_PLUS3);
+				break;
 			case CHAMPION:
 				Collections.addAll(tierTalents, SECONDARY_CHARGE, TWIN_UPGRADES, COMBINED_LETHALITY);
 				break;
 			case MONK:
 				Collections.addAll(tierTalents, UNENCUMBERED_SPIRIT, MONASTIC_VIGOR, COMBINED_ENERGY);
+				break;
+			case DR_PLAGUE:
+				Collections.addAll(tierTalents, TOXIC_POWER, TOXIC_STEALTH, BOUNCING_PHIAL);
+				break;
+			case ALCHEMYST:
+				Collections.addAll(tierTalents, ENCHANT_CONTINUOUS, ALCHEMYST_TWO2, ALCHEMYST_THREE3);
 				break;
 		}
 		for (Talent talent : tierTalents){

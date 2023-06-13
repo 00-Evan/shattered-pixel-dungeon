@@ -25,11 +25,17 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArrowMark;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AwakenBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.DrowsyArrowBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesPower;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
@@ -100,8 +106,8 @@ public class SpiritBow extends Weapon {
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
 
-		if (attacker.buff(NaturesPower.naturesPowerTracker.class) != null && !sniperSpecial){
 
+		if (attacker.buff(NaturesPower.naturesPowerTracker.class) != null && !sniperSpecial){
 			Actor.add(new Actor() {
 				{
 					actPriority = VFX_PRIO;
@@ -128,10 +134,20 @@ public class SpiritBow extends Weapon {
 				}
 			});
 
+		}//영혼 추적자 로직
+		if (defender != Dungeon.hero && Dungeon.hero.subClass == HeroSubClass.SOULCHASER && !(defender instanceof NPC)){
+			ArrowMark.prolong(defender, ArrowMark.class, ArrowMark.DURATION );
+			defender.buff(ArrowMark.class).count++;
+			if (attacker.buff(DrowsyArrowBuff.class)!=null && Dungeon.hero.pointsInTalent(Talent.CHASER_UP1) > 1){
+				//1번스킬 2이상 일때 적에게 졸림 부여
+				Buff.affect(defender, Drowsy.class);
+				Buff.affect(defender, AwakenBuff.class,8f);
+				attacker.buff(DrowsyArrowBuff.class).detach();
+			}
 		}
-
 		return super.proc(attacker, defender, damage);
 	}
+
 
 	@Override
 	public String info() {
@@ -464,7 +480,6 @@ public class SpiritBow extends Weapon {
 						Buff.affect(user, Talent.SeerShotCooldown.class, 20f);
 					}
 				}
-
 				super.cast(user, dst);
 			}
 		}

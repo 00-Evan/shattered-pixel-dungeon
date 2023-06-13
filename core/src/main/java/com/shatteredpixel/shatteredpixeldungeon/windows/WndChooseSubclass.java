@@ -22,8 +22,12 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LapidaristBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.TengusMask;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -73,6 +77,13 @@ public class WndChooseSubclass extends Window {
 							if (index == 0 && WndChooseSubclass.this.parent != null){
 								WndChooseSubclass.this.hide();
 								tome.choose( subCls );
+							}
+							//전직 후 바로 버프를 받도록
+							if (Dungeon.hero.subClass == HeroSubClass.LAPIDARIST){
+								Buff.affect(Dungeon.hero, LapidaristBuff.class);
+							}
+							if (Dungeon.hero.subClass == HeroSubClass.DR_PLAGUE){
+								Buff.affect(Dungeon.hero, Talent.PlagueResists.class);
 							}
 						}
 					});

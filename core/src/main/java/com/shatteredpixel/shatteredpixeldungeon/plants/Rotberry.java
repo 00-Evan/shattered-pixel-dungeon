@@ -62,6 +62,7 @@ public class Rotberry extends Plant {
 		Dungeon.level.drop( new Seed(), pos ).sprite.drop();
 	}
 
+
 	public static class Seed extends Plant.Seed {
 		{
 			image = ItemSpriteSheet.SEED_ROTBERRY;

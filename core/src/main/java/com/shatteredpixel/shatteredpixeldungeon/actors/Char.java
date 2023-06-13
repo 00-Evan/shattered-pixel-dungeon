@@ -25,10 +25,12 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PlagueGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArcaneArmor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArrowMarkTracker;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
@@ -38,18 +40,22 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChaserMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corrosion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Disguise;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FireImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FrostImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fury;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Golden;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LapidaristBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LifeLink;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
@@ -57,6 +63,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Plague;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
@@ -72,9 +79,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Challenge;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.potionyst.Scarecrow;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.DeathMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.PrismaticImage;
@@ -83,6 +92,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Mjornil;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCleansing;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
@@ -99,6 +109,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazin
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Kinetic;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.ShockingDart;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -123,7 +134,10 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 
 public abstract class Char extends Actor {
-	
+
+	public int allySTR; //역할은 없음
+	public int allyLVL; //역할은 없음
+
 	public int pos = 0;
 	
 	public CharSprite sprite;
@@ -138,6 +152,8 @@ public abstract class Char extends Actor {
 	public boolean rooted		= false;
 	public boolean flying		= false;
 	public int invisible		= 0;
+
+	public int ignored	    	= 0;
 	
 	//these are relative to the hero
 	public enum Alignment{
@@ -164,6 +180,7 @@ public abstract class Char extends Actor {
 		if (properties().contains(Property.IMMOVABLE)){
 			throwItems();
 		}
+
 		return false;
 	}
 
@@ -206,6 +223,7 @@ public abstract class Char extends Actor {
 			return true;
 		}
 
+
 		//can't swap into a space without room
 		if (properties().contains(Property.LARGE) && !Dungeon.level.openSpace[c.pos]
 			|| c.properties().contains(Property.LARGE) && !Dungeon.level.openSpace[pos]){
@@ -244,7 +262,12 @@ public abstract class Char extends Actor {
 			if (Dungeon.hero.subClass == HeroSubClass.FREERUNNER){
 				Buff.affect(Dungeon.hero, Momentum.class).gainStack();
 			}
-
+			if (Dungeon.hero.subClass == HeroSubClass.LAPIDARIST && c.buff(LapidaristBuff.class) == null){
+				Buff.affect(Dungeon.hero, LapidaristBuff.class);
+			}
+			if (this.buff(Talent.PlagueResists.class) == null && Dungeon.hero.subClass == HeroSubClass.DR_PLAGUE){
+				Buff.affect(Dungeon.hero, Talent.PlagueResists.class);
+			}
 			Dungeon.hero.busy();
 		}
 		
@@ -327,13 +350,20 @@ public abstract class Char extends Actor {
 		} else if (hit( this, enemy, accMulti, false )) {
 			
 			int dr = Math.round(enemy.drRoll() * AscensionChallenge.statModifier(enemy));
-			
+
 			if (this instanceof Hero){
 				Hero h = (Hero)this;
+				Weapon weapon = h.belongings.getItem(MeleeWeapon.class);
 				if (h.belongings.attackingWeapon() instanceof MissileWeapon
 						&& h.subClass == HeroSubClass.SNIPER
 						&& !Dungeon.level.adjacent(h.pos, enemy.pos)){
 					dr = 0;
+				}
+				//dst만큼 방어력 관통
+				if (h.belongings.attackingWeapon() instanceof MeleeWeapon
+						&& weapon.DST >=1 ){
+					 dr -= (weapon.DstFactor(h));
+					if(dr <= 0) dr = 0;
 				}
 
 				if (h.buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) != null){
@@ -500,6 +530,9 @@ public abstract class Char extends Actor {
 	public static int INFINITE_EVASION = 1_000_000;
 
 	final public static boolean hit( Char attacker, Char defender, boolean magic ) {
+		if (defender instanceof Scarecrow.ScareCrowAlly) {
+			Buff.affect(attacker, Mob.ScareTracker.class);
+		} // scarecrow 허수아비
 		return hit(attacker, defender, magic ? 2f : 1f, magic);
 	}
 
@@ -574,6 +607,9 @@ public abstract class Char extends Actor {
 	public int attackProc( Char enemy, int damage ) {
 		for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
 			buff.onAttackProc( enemy );
+		}
+		for (Plague plague : buffs(Plague.class)){
+			plague.onAttackProc( enemy );
 		}
 		return damage;
 	}
@@ -741,18 +777,24 @@ public abstract class Char extends Actor {
 		HP = 0;
 		Actor.remove( this );
 
-		for (Char ch : Actor.chars().toArray(new Char[0])){
-			if (ch.buff(Charm.class) != null && ch.buff(Charm.class).object == id()){
+		for (Char ch : Actor.chars().toArray(new Char[0])) {
+			if (ch.buff(Charm.class) != null && ch.buff(Charm.class).object == id()) {
 				ch.buff(Charm.class).detach();
 			}
-			if (ch.buff(Dread.class) != null && ch.buff(Dread.class).object == id()){
+			if (ch.buff(Dread.class) != null && ch.buff(Dread.class).object == id()) {
 				ch.buff(Dread.class).detach();
 			}
-			if (ch.buff(Terror.class) != null && ch.buff(Terror.class).object == id()){
+			if (ch.buff(Terror.class) != null && ch.buff(Terror.class).object == id()) {
 				ch.buff(Terror.class).detach();
 			}
-			if (ch.buff(SnipersMark.class) != null && ch.buff(SnipersMark.class).object == id()){
+			if (ch.buff(SnipersMark.class) != null && ch.buff(SnipersMark.class).object == id()) {
 				ch.buff(SnipersMark.class).detach();
+			}
+			if (ch.buff(ChaserMark.class) != null && ch.buff(ChaserMark.class).count < 3) {
+				ch.buff(ChaserMark.class).count = 0;
+			}
+			if (ch.buff(ArrowMarkTracker.class) != null && ch.buff(ArrowMarkTracker.class).object == id()) {
+				ch.buff(ArrowMarkTracker.class).detach();
 			}
 		}
 	}
@@ -826,7 +868,8 @@ public abstract class Char extends Actor {
 	}
 
 	@SuppressWarnings("unchecked")
-	//returns an instance of the specific buff class, if it exists. Not just assignable
+	//note that the path is the FULL path of the projectile, including tiles after collision.
+	//make sure to generate a subPath for the common case of going source to collision.
 	public synchronized  <T extends Buff> T buff( Class<T> c ) {
 		for (Buff b : buffs) {
 			if (b.getClass() == c) {
@@ -942,7 +985,12 @@ public abstract class Char extends Actor {
 		if (this != Dungeon.hero) {
 			sprite.visible = Dungeon.level.heroFOV[pos];
 		}
-		
+
+		for (Disguise disguise : buffs(Disguise.class)){
+
+			disguise.move( );
+		}
+
 		Dungeon.level.occupyCell(this );
 	}
 	
@@ -1023,22 +1071,23 @@ public abstract class Char extends Actor {
 	}
 
 	public enum Property{
-		BOSS ( new HashSet<Class>( Arrays.asList(Grim.class, GrimTrap.class, ScrollOfRetribution.class, ScrollOfPsionicBlast.class)),
-				new HashSet<Class>( Arrays.asList(AllyBuff.class, Dread.class) )),
+		BOSS ( new HashSet<Class>( Arrays.asList(Grim.class, GrimTrap.class, ScrollOfRetribution.class, ScrollOfPsionicBlast.class, Talent.PlagueCounter.class)),
+				new HashSet<Class>( Arrays.asList(AllyBuff.class, Dread.class, Talent.PlagueCounter.class) )),
 		MINIBOSS ( new HashSet<Class>(),
-				new HashSet<Class>( Arrays.asList(AllyBuff.class, Dread.class) )),
+				new HashSet<Class>( Arrays.asList(AllyBuff.class, Dread.class, Talent.PlagueCounter.class) )),
 		BOSS_MINION,
 		UNDEAD,
 		DEMONIC,
 		INORGANIC ( new HashSet<Class>(),
-				new HashSet<Class>( Arrays.asList(Bleeding.class, ToxicGas.class, Poison.class) )),
+				new HashSet<Class>( Arrays.asList(Bleeding.class, ToxicGas.class, Poison.class , PlagueGas.class) )),
 		FIERY ( new HashSet<Class>( Arrays.asList(WandOfFireblast.class, Elemental.FireElemental.class)),
-				new HashSet<Class>( Arrays.asList(Burning.class, Blazing.class))),
+				new HashSet<Class>( Arrays.asList(Burning.class, Blazing.class, Golden.class))),
 		ICY ( new HashSet<Class>( Arrays.asList(WandOfFrost.class, Elemental.FrostElemental.class)),
-				new HashSet<Class>( Arrays.asList(Frost.class, Chill.class))),
+				new HashSet<Class>( Arrays.asList(Frost.class, Chill.class, Golden.class))),
 		ACIDIC ( new HashSet<Class>( Arrays.asList(Corrosion.class)),
 				new HashSet<Class>( Arrays.asList(Ooze.class))),
-		ELECTRIC ( new HashSet<Class>( Arrays.asList(WandOfLightning.class, Shocking.class, Potential.class, Electricity.class, ShockingDart.class, Elemental.ShockElemental.class )),
+		ELECTRIC ( new HashSet<Class>( Arrays.asList(WandOfLightning.class, Shocking.class, Potential.class, Electricity.class, ShockingDart.class, Elemental.ShockElemental.class ,
+				Mjornil.AtacktoHammer.class, Golden.class)),
 				new HashSet<Class>()),
 		LARGE,
 		IMMOVABLE;

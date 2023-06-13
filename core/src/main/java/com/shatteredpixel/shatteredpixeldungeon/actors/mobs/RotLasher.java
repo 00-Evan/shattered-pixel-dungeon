@@ -22,12 +22,16 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PlagueGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Plague;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RotLasherSprite;
 import com.watabou.utils.Random;
 
@@ -68,6 +72,7 @@ public class RotLasher extends Mob {
 		}
 	}
 
+
 	@Override
 	public int attackProc(Char enemy, int damage) {
 		damage = super.attackProc( enemy, damage );
@@ -107,6 +112,7 @@ public class RotLasher extends Mob {
 	
 	{
 		immunities.add( ToxicGas.class );
+		immunities.add( PlagueGas.class );
 	}
 
 	private class Waiting extends Mob.Wandering{}

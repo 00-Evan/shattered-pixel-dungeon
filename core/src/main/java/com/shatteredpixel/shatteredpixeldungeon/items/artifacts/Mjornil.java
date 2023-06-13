@@ -30,7 +30,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -54,7 +56,6 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
@@ -128,18 +129,16 @@ public class Mjornil extends Artifact {
 			} else if (cursed) {
 				GLog.w(Messages.get(this, "cursed"));
 				usesTargeting = false;
-			} else if (volume<=0 && returnDepth != Dungeon.depth){
+/*			} else if (volume<=0 && returnDepth != Dungeon.depth){
+				startPos = curUser.pos;
 				GLog.i(Messages.get(Mjornil.class, "need_to_hammer"));
 				usesTargeting = false;
-			} else {
+*/			} else {
 				usesTargeting = true;
 				curUser = hero;
 				curItem = this;
 				GameScene.selectCell(shooter);
 
-				if(volume<=0) {image = ItemSpriteSheet.ARTIFACT_MJORNIL2;}
-				else if(volume>=1) {image = ItemSpriteSheet.ARTIFACT_MJORNIL;}
-				returnDepth = Dungeon.depth;
 				updateQuickslot();
 			}
 		}else if (action.equals(AC_LVLUP)){
@@ -153,13 +152,21 @@ public class Mjornil extends Artifact {
 	public String desc() {
 		String desc = super.desc();
 
-		if (isEquipped(hero)) {
+		if (isEquipped(Dungeon.hero)) {
 			if (!cursed) {
-				if (level() < levelCap)
-					desc += "\n\n" + Messages.get(this, "desc_hint"); // 강화 설명
+				if (level() < levelCap){
+					desc += "\n\n" + Messages.get(this, "desc_hint",
+							3+(int)(Math.sqrt(8 * level() + 1) - 1)/2,3+(int)(Math.sqrt(8 * level() + 1) - 1)/2);
+				}
+							// 강화 설명
+
 			} else {
 				desc += "\n\n" + Messages.get(this, "desc_cursed"); // 저주 받은 상태 설명
 			}
+		}else if (!isEquipped(Dungeon.hero)) {
+
+			return desc;
+
 		}
 
 
@@ -183,12 +190,10 @@ public class Mjornil extends Artifact {
 				updateQuickslot();
 			}
 		}
-		if (charge == 10) {
-			GLog.p(Messages.get(Mjornil.class, "ready_to_thunder"));
-		}
+
 		if (charge == chargeCap){
 			partialCharge = 0;
-			GLog.p( Messages.get(Mjornil.class, "full") );
+			return;
 		}
 		updateQuickslot();
 	}
@@ -196,7 +201,6 @@ public class Mjornil extends Artifact {
 	public void collectHam ( SpiritHammer ham ) {
 
 		volume ++;
-		returnDepth = -1;
 		if (volume >= MAX_VOLUME) {
 			volume = MAX_VOLUME;
 			GLog.p( Messages.get(this, "grabed") );
@@ -214,11 +218,11 @@ public class Mjornil extends Artifact {
 
 	@Override
 	public Item upgrade() {
-
 		chargeCap = 100;
 		return super.upgrade();
-	} // 임시방편
+	}
 
+	//업그래이드를 위한 단계
 	private int storedMissile = 0;
 
 	public void gainMissile( MissileWeapon missile ){
@@ -235,31 +239,33 @@ public class Mjornil extends Artifact {
 				GLog.p( Messages.get(this, "maxlevel") );
 			} else {
 				GLog.p( Messages.get(this, "levelup"),
-						(int)(3.5f+(level()*0.5f)),(int)(3.5f+(level()*0.5f)) );
+						3+(int)(Math.sqrt(8 * level() + 1) - 1)/2,3+(int)(Math.sqrt(8 * level() + 1) - 1)/2);
 			}
 		} else {
 			GLog.i( Messages.get(this, "feed") );
 		}
 	}
 
+
 	@Override
 	public String info() {
 		String info = desc();
+		if (isEquipped(Dungeon.hero)) {
+			info += "\n\n" + Messages.get(Mjornil.class, "stats",
+					Math.round(1 + (int) (0.2f * level())
+							+ RingOfSharpshooting.levelDamageBonus(hero)),
+					Math.round(5 + (int) (0.2f * level())
+							+ (int) 1.5f * RingOfSharpshooting.levelDamageBonus(hero)),
+					Math.round(2 * (level() + 1)), Math.round(3 * (level() + 1))
+			);
+			if (9 > Dungeon.hero.STR()) {
+				info += " " + Messages.get(Mjornil.class, "too_heavy");
+			} else if (Dungeon.hero.STR() > 9) {
+				info += " " + Messages.get(Mjornil.class, "excess_str", Dungeon.hero.STR() - 9);
+			}
+			info += "\n\n" + Messages.get(Mjornil.class, "distance");
 
-		info += "\n\n" + Messages.get(Mjornil.class, "stats",
-				Math.round(1 + (int)( 0.7f * Mlevel())
-						+RingOfSharpshooting.levelDamageBonus(hero)),
-				Math.round(6 + (int)( 0.3f * Mlevel())
-						+RingOfSharpshooting.levelDamageBonus(hero)),
-				Math.round(2 *(Mlevel()+1)), Math.round(3 * (Mlevel()+1))
-		        );
-		if (9 > Dungeon.hero.STR()) {
-			info += " " + Messages.get(Mjornil.class, "too_heavy");
-		} else if (Dungeon.hero.STR() > 9) {
-			info += " " + Messages.get(Mjornil.class, "excess_str", Dungeon.hero.STR() - 9);
-		}
-		info += "\n\n" + Messages.get(Mjornil.class, "distance");
-		return info;
+		}return info;
 	}
 
 
@@ -288,7 +294,7 @@ public class Mjornil extends Artifact {
 
 
 		{
-			image = ItemSpriteSheet.SPIRIT_HAMMER;
+			image = ItemSpriteSheet.ARTIFACT_MJORNIL;
 
 			hitSound = Assets.Sounds.HIT_CRUSH;
 			hitSoundPitch = 0.8f;
@@ -297,7 +303,7 @@ public class Mjornil extends Artifact {
 
 
 		public int culCharge(){
-			if (charge >= 10) {
+			if (charge >= 20) {
 				return  1;
 			}else {
 				return 0;
@@ -307,21 +313,22 @@ public class Mjornil extends Artifact {
 
 		@Override
 		public int min(int lvl) {
-			int dmg = 1 + (int)( 0.7f * Mlevel())
+			int dmg = 1 + (int)( 0.2f * Mlevel())
 					+RingOfSharpshooting.levelDamageBonus(hero);
 			return Math.max(0, dmg);
 		}
 
 		@Override
 		public int max(int lvl) {
-			int dmg = 6 + (int)( 0.3f * Mlevel())
-					+2 * RingOfSharpshooting.levelDamageBonus(hero);
+			int dmg = 5 + (int)( 0.2f * Mlevel())
+					+(int)1.5f * RingOfSharpshooting.levelDamageBonus(hero);
 			return Math.max(0, dmg);
 		}
 
+
 		@Override
 		public int proc(Char attacker, Char defender, int damage) {
-			if (charge>=10) {
+			if (charge>=20) {
 
 				defender.damage(Random.NormalIntRange(2 * (Mlevel()+1) * culCharge(), 3 * (Mlevel()+1) * culCharge()), this);
 				defender.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);
@@ -335,74 +342,35 @@ public class Mjornil extends Artifact {
 					s.parent.add(new Lightning(arcs, null));
 					Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);
 				}
+				if (defender != Dungeon.hero &&
+						Dungeon.hero.subClass == HeroSubClass.WARLOCK &&
+						//흑마법사의 영혼의 표식 부여 (완드의 계산 방식의 2배)
+						Random.Float() > 0.5f*(Math.pow(0.92f, (Mlevel()*culCharge())+1) - 0.07f)){
+					SoulMark.prolong(defender, SoulMark.class, SoulMark.DURATION + Mlevel());
+				}
+				if (charge >= 20) {
+					charge -= 20f*culCharge();
+				}
+				if (charge <= 0) {
+					charge = 0;
+				}
 			}
 
 			return super.proc(attacker, defender, damage);
 		}
 
 
-
-		//떨어진 해머의 위치 찾기
-		protected void droptoEnemy (Char ch , Item item, int cell) {
-
-			if(ch == null || ch == curUser){
-				Dungeon.level.drop(item, cell).sprite.drop();
-				startPos = cell;
-			}
-			// 고정 적에 던질 때 떨어지는 해머의 위치 찾기
-			else if (ch.properties().contains(Char.Property.IMMOVABLE)) {
-				int newPlace;
-				do {
-					newPlace = cell + PathFinder.NEIGHBOURS8[Random.Int(8)];
-				} while (!Dungeon.level.passable[newPlace] && !Dungeon.level.avoid[newPlace]);
-				Dungeon.level.drop(item, newPlace).sprite.drop(cell);
-				startPos = newPlace;
-
-			} else {
-				Dungeon.level.drop(item, cell).sprite.drop();
-				startPos = cell;
-			}
-
-		}
-
-
-		public void droptoLock (Item item, int cell) {
-			Heap Hpos = Dungeon.level.heaps.get(cell);
-			if (Hpos == null){
-				Dungeon.level.drop(item, cell).sprite.drop(cell);
-				startPos = cell;
-
-			}
-            //잠긴 상자에 던질 때 떨어지는 해머의 위치 찾기
-			else if (Hpos.type == Heap.Type.LOCKED_CHEST || Hpos.type == Heap.Type.CRYSTAL_CHEST){
-				int newPlace;
-				do {
-					newPlace = cell + PathFinder.NEIGHBOURS8[Random.Int(8)];
-				} while (!Dungeon.level.passable[newPlace] && !Dungeon.level.avoid[newPlace]);
-				Dungeon.level.drop(item, newPlace).sprite.drop(cell);
-				startPos = newPlace;
-
-			}else {
-				Dungeon.level.drop(item, cell).sprite.drop(cell);
-				startPos = cell;
-			}
-
-		}
-
-
-
 		@Override
 		protected void rangedHit(Char enemy, int cell) {
-			droptoEnemy(enemy,new SpiritHammer(),cell);
+			Dungeon.level.drop(new SpiritHammer(),cell).sprite.drop();
+
 		}
 
 		@Override
 		protected void rangedMiss( int cell ) {
 			Dungeon.level.drop(new SpiritHammer(),cell).sprite.drop(cell);
-			super.onThrow(cell);
+
 		}
-
-
 
 
 		@Override
@@ -410,18 +378,16 @@ public class Mjornil extends Artifact {
 			Char enemy = Actor.findChar(cell);
 			volume--;
 			if (enemy == null || enemy == curUser) {
-				droptoLock(new SpiritHammer(),cell);
+
+				Dungeon.level.drop(new SpiritHammer(),cell).sprite.drop();
 			} else {
 				if (!curUser.shoot(enemy, this)) {
 					rangedMiss(cell);
+
 				} else {
 					rangedHit(enemy, cell);
-					if (charge >= 10){
-						charge -= usedCharge;
-					}
 				}
 			}
-			if (charge <= 0){ charge = 0; }
 			updateQuickslot();
 		}
 
@@ -443,7 +409,6 @@ public class Mjornil extends Artifact {
 		public void cast(final Hero user, final int dst) {
 			final int cell = throwPos(user, dst);
 			Mjornil.this.targetPos = cell;
-			if (volume >= 1) {
 
 				final Char enemy = Actor.findChar(cell);
 
@@ -470,18 +435,18 @@ public class Mjornil extends Artifact {
 					}
 				});
 				super.cast(user, dst);
-			}
 		}
 
 
 		public void recast ( final Hero user, final int spos, final int epos) {
 			final int cell = throwStartPos( spos, epos);
 			if (volume <= 0) {
-				if (returnDepth == Dungeon.depth) {
 
-					knockHammer().targetingStartPos( startPos, cell);
+				startPos = spos;
 
-					final Char endTarget = Actor.findChar(cell);
+				knockHammer().targetingStartPos( startPos, cell);
+
+				final Char endTarget = Actor.findChar(cell);
 
 			MissileSprite visual = ((MissileSprite) curUser.sprite.parent.recycle(MissileSprite.class));
 				visual.reset(startPos,
@@ -492,27 +457,21 @@ public class Mjornil extends Artifact {
 						public void call() {
 
 							if (endTarget == null) {
-								droptoLock(new SpiritHammer(),cell);
+								Dungeon.level.drop(new SpiritHammer(),cell).sprite.drop();
 							} else if (endTarget != null) {
 								circleBackhit = true;
 								if (endTarget == curUser) {
 									new SpiritHammer().doPickUp(curUser);
 									user.spend(-TIME_TO_PICK_UP);
+
 								} else {
 									if (curUser.shoot(endTarget, new AtacktoHammer())) {
-										droptoEnemy(endTarget,new SpiritHammer(),cell);
-
-										if (charge >= 10) {
-											charge -= usedCharge;
-										}
-										if (charge <= 0) {
-											charge = 0;
-										}
-
+										Dungeon.level.drop(new SpiritHammer(),cell).sprite.drop();
 										updateQuickslot();
 									} else {
-										Dungeon.level.drop(new SpiritHammer(), cell).sprite.drop(cell);
-										startPos = cell;
+
+										rangedMiss(cell);
+
 									}
 								}
 							}
@@ -525,7 +484,6 @@ public class Mjornil extends Artifact {
 					hero.sprite.zap(cell);
 					hero.busy();
 					curUser.spend(Actor.TICK);
-				}
 				return;
 			}
 		}
@@ -533,81 +491,71 @@ public class Mjornil extends Artifact {
 
 
 
-
-
-
-
-	private int returnDepth = -1;
 	private int startPos;
-
 
 
 	private CellSelector.Listener shooter = new CellSelector.Listener() {
 
-
 		@Override
 		public void onSelect(Integer target) {
 
-
-			if (target == null) {
-
-				return;
-			}
+			if (target == null) {return;}
 
 			if (target != null) {
 				if (volume >= 1) {
 					knockHammer().cast(curUser, target);
-
+				//떨어진 해머 투척
 				} else if (volume <= 0) {
-					for (int n : PathFinder.NEIGHBOURS8) {
+					if (Dungeon.level.heroFOV[target]) {
+						for (int i = 0; i < Dungeon.level.length(); i++) {
+							for (Heap heap : Dungeon.level.heaps.valueList()) {
+								for (Item item : heap.items.toArray(new Item[0])) {
+									if (item instanceof SpiritHammer) {
+										int p = heap.pos;
 
-						Heap Hdropedpos = Dungeon.level.heaps.get(startPos);
+										Heap Hdropedpos = Dungeon.level.heaps.get(p);
 
-						if (Hdropedpos != null && Hdropedpos.peek() instanceof SpiritHammer) {
+										float hammerDst = Dungeon.level.distance(curUser.pos, p);
+										//망치와 영웅과의 사이 거리
+										if (Hdropedpos != null && Hdropedpos.peek() instanceof SpiritHammer) {
 
-							float hammerDst = Dungeon.level.distance(curUser.pos, startPos);
-								//망치와 영웅과의 사이 거리
-							if ( hammerDst >(int) (3.5f + (level() * 0.5f))) {
-								// 망치 조종 불가능
-								Hdropedpos.pickUp();
-								Dungeon.level.drop(new SpiritHammer(), startPos).sprite.drop();
-								GLog.w(Messages.get(Mjornil.class, "out_of_range_hammer",
-										(int) (3.5f + (level() * 0.5f)),(int) (3.5f + (level() * 0.5f))));
-								return;
+											if (hammerDst > 3f + (int) (Math.sqrt(8 * level() + 1) - 1) / 2) {
+												// 망치 사거리 밖 조종 불가
+												Dungeon.level.drop(new SpiritHammer(), p).sprite.drop();
+												GLog.w(Messages.get(Mjornil.class, "out_of_range_hammer"));
+												return;
+											}
+											if (hammerDst <= 3 + (int) (Math.sqrt(8 * level() + 1) - 1) / 2) {
+												// 망치 조종 가능
+												Hdropedpos.pickUp();
+												knockHammer().recast(curUser, p, target);
+												GLog.w(Messages.get(Mjornil.class, "control"));
+												return;
+											}
+
+										} else {
+											//망치 위 다른 아이템 , 망치의 위치 변경시 문구
+											GLog.w(Messages.get(Mjornil.class, "no_hammer"));
+											return;
+										}
+									}
+								}
 							}
-							if ( hammerDst <= (int) (3.5f + (level() * 0.5f))) {
-								// 망치 조종 가능
-								Hdropedpos.pickUp();
-								knockHammer().recast(curUser, startPos, target);
-								GLog.w(Messages.get(Mjornil.class, "control"));
-								return;
-							}
-						} else {
-							//망치 안보임
-							GLog.w(Messages.get(Mjornil.class, "no_hammer"));
-							return;
 						}
+					}else if (Dungeon.level.heroFOV[target] == false) {
+						// 시야 밖
+						GLog.w(Messages.get(Mjornil.class, "no_sign"));
 					}
 				}
 			}
 		}
-					/*if (charge < 100) {
-						PathFinder.buildDistanceMap(curUser.pos, BArray.not(Dungeon.level.solid, null),
-								(int) (3.5f + (level() * 0.5f)));
-						if (PathFinder.distance[target] == Integer.MAX_VALUE) {
-							Dungeon.level.drop(new SpiritHammer(), startPos).sprite.drop();
-							GLog.w(Messages.get(Mjornil.class, "out_of_range",(int) (3.5f + (level() * 0.5f))));
-
-						} else
-							knockHammer().recast(curUser, startPos, target);
-					}*/
-
 		@Override
 		public String prompt() {
 			return Messages.get(Mjornil.class, "prompt");
 		}
-
 	};
+
+
 
 
 
@@ -635,11 +583,9 @@ public class Mjornil extends Artifact {
 						partialCharge --;
 
 					}
-
 				} else if (charge == chargeCap) {
-					GLog.p(Messages.get(Mjornil.class, "full"));
-					partialCharge = 0;
 
+					partialCharge = 0;
 				}
 			}
 			updateQuickslot();
@@ -671,7 +617,7 @@ public class Mjornil extends Artifact {
 
 				Hero hero = Dungeon.hero;
 				hero.sprite.operate( hero.pos );
-				Sample.INSTANCE.play( Assets.Sounds.EVOKE );
+				Sample.INSTANCE.play( Assets.Sounds.DRINK );
 				hero.busy();
 				hero.spend( Actor.TICK );
 
@@ -681,7 +627,6 @@ public class Mjornil extends Artifact {
 		}
 	};
 	private static final String START_POS = "startpos";
-	private static final String RETURN_DEPTH = "return_depth";
 	private static final String STORED = "stored";
 	private static final String VOLUME = "volume";
 
@@ -691,8 +636,6 @@ public class Mjornil extends Artifact {
 		super.storeInBundle(bundle);
 
 		bundle.put( START_POS , startPos );
-		bundle.put( RETURN_DEPTH , returnDepth );
-
 		bundle.put( STORED, storedMissile );
 		bundle.put( VOLUME, volume );
 	}
@@ -702,9 +645,7 @@ public class Mjornil extends Artifact {
 		super.restoreFromBundle(bundle);
 		storedMissile = bundle.getInt(STORED);
 		volume = bundle.getInt(VOLUME);
-
 		startPos = bundle.getInt(START_POS);
-		returnDepth = bundle.getInt(RETURN_DEPTH);
 
 	}
 

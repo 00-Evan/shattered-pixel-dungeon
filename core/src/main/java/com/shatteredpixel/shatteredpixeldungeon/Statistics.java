@@ -54,6 +54,7 @@ public class Statistics {
 	public static int upgradesUsed;
 	public static int sneakAttacks;
 	public static int thrownAttacks;
+	public static int toxicGasUsed;
 
 	public static int spawnersAlive;
 	
@@ -94,6 +95,7 @@ public class Statistics {
 		upgradesUsed    = 0;
 		sneakAttacks    = 0;
 		thrownAttacks   = 0;
+		toxicGasUsed    = 0;
 
 		spawnersAlive   = 0;
 		
@@ -133,6 +135,7 @@ public class Statistics {
 	private static final String UPGRADES	= "upgradesUsed";
 	private static final String SNEAKS		= "sneakAttacks";
 	private static final String THROWN		= "thrownAssists";
+	private static final String TOXICGAS    = "toxicgas";
 
 	private static final String SPAWNERS	= "spawnersAlive";
 	
@@ -144,6 +147,7 @@ public class Statistics {
 	private static final String AMULET          = "amuletObtained";
 	private static final String WON		        = "won";
 	private static final String ASCENDED		= "ascended";
+
 	
 	public static void storeInBundle( Bundle bundle ) {
 		bundle.put( GOLD,		goldCollected );
@@ -175,6 +179,7 @@ public class Statistics {
 		bundle.put( UPGRADES,   upgradesUsed );
 		bundle.put( SNEAKS,		sneakAttacks );
 		bundle.put( THROWN,     thrownAttacks);
+		bundle.put( TOXICGAS,   toxicGasUsed);
 
 		bundle.put( SPAWNERS,	spawnersAlive );
 		
@@ -221,6 +226,7 @@ public class Statistics {
 		upgradesUsed    = bundle.getInt( UPGRADES );
 		sneakAttacks    = bundle.getInt( SNEAKS );
 		thrownAttacks   = bundle.getInt( THROWN );
+		toxicGasUsed    = bundle.getInt( TOXICGAS );
 
 		spawnersAlive   = bundle.getInt( SPAWNERS );
 		
