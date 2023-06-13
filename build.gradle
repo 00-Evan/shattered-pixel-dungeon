@@ -4,7 +4,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.0.1'
+        classpath 'com.android.tools.build:gradle:8.0.2'
     }
 }
 
@@ -15,12 +15,17 @@ allprojects {
         appPackageName = 'com.shatteredpixel.omazupixeldungeon'
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         appVersionCode = 696
         appVersionName = '2.0.2'
 =======
         appVersionCode = 709
         appVersionName = '2.1.0-BETA-3'
 >>>>>>> aaad76fe0d723ad033f8f32c60e07a7b67f499bd
+=======
+        appVersionCode = 722
+        appVersionName = '2.1.0'
+>>>>>>> origin/master
 
         appJavaCompatibility = JavaVersion.VERSION_1_8
 

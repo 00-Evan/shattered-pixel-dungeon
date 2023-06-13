@@ -37,7 +37,7 @@ public class Wraith extends Mob {
 
 	private static final float SPAWN_DELAY	= 2f;
 	
-	private int level;
+	protected int level;
 	
 	{
 		spriteClass = WraithSprite.class;

@@ -57,7 +57,7 @@ import java.util.Collections;
 
 public class WelcomeScene extends PixelScene {
 
-	private static final int LATEST_UPDATE = 706;
+	private static final int LATEST_UPDATE = ShatteredPixelDungeon.v2_1_0;
 
 	//used so that the game does not keep showing the window forever if cleaning fails
 	private static boolean triedCleaningTemp = false;
@@ -206,10 +206,6 @@ public class WelcomeScene extends PixelScene {
 
 			}
 
-			message = "Greeting Beta testers!\n\n" +
-					"v2.1.0 includes a bunch of Duelist balance changes, a bit of new content, and a few significant QoL tweaks. The beta is already content-complete, so I expect it to last for about a week.\n\n" +
-					"Please let me know what you think, and if you run into any bugs!";
-
 		} else {
 			message = Messages.get(this, "what_msg");
 		}
@@ -248,7 +244,7 @@ public class WelcomeScene extends PixelScene {
 			Journal.loadGlobal();
 
 			//pre-unlock Duelist for those who already have a win
-			if (previousVersion <= ShatteredPixelDungeon.v2_0_0){
+			if (previousVersion <= ShatteredPixelDungeon.v2_0_2){
 				if (Badges.isUnlocked(Badges.Badge.VICTORY) && !Badges.isUnlocked(Badges.Badge.UNLOCK_DUELIST)){
 					Badges.unlock(Badges.Badge.UNLOCK_DUELIST);
 				}

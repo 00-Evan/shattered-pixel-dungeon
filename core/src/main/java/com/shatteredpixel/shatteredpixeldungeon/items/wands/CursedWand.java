@@ -362,7 +362,7 @@ public class CursedWand {
 				mimic.alignment = Char.Alignment.ENEMY;
 				Item reward;
 				do {
-					reward = Generator.random(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
+					reward = Generator.randomUsingDefaults(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
 							Generator.Category.RING, Generator.Category.WAND));
 				} while (reward.level() < 1);
 				//play vfx/sfx manually as mimic isn't in the scene yet
