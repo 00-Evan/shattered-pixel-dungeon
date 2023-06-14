@@ -90,7 +90,7 @@ public class Feint extends ArmorAbility {
 			return;
 		}
 
-		if (!Dungeon.level.solid[target] || Actor.findChar(target) != null){
+		if (Dungeon.level.solid[target] || Actor.findChar(target) != null){
 			GLog.w(Messages.get(this, "bad_location"));
 			return;
 		}
