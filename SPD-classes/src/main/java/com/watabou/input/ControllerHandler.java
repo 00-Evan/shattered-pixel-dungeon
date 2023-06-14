@@ -75,10 +75,11 @@ public class ControllerHandler implements ControllerListener {
 				// e.g. missing natives on very old 32-bit desktop platforms
 				Controllers.getCurrent();
 				initialized = true;
+				return true;
 			} catch (Exception e){
 				failedInit = true;
+				return false;
 			}
-			return true;
 		}
 	}
 
