@@ -76,9 +76,24 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v2.1.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Teleportation effects now the cleanse the rooted debuff.\n\n" +
+				"_-_ The active effect of Sandals of Nature has new vfx, and can now target visible tiles through walls.\n\n" +
+				"_-_ Armors now include their tier in the description."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by v2.1.1:_\n" +
+				"_-_ Feint ability not working\n" +
+				"_-_ Large enemies moving into small spaces when retreating\n\n" +
+				"_Caused by v2.1.0:_\n" +
+				"_-_ Various rare crash errors\n\n" +
+				"_Existed Prior to v2.1.0:_\n" +
+				"_-_ Rare visual errors with lunge ability"));
 
 		changes = new ChangeInfo("v2.1.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -90,7 +105,7 @@ public class v2_X_Changes {
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"_- Barkskin_ can now stack from multiple sources. Only the strongest instance of barkskin is used when calculating defense, but this means that very strong short-term barkskin no longer totally overrides weaker long-term barkskin.\n\n" +
-				"_- Rooted_ has had a big consistency pass. It now properly presents movement from dash, blink, and leap abilities. Teleportation still works while rooted.\n\n" +
+				"_- Rooted_ has had a big consistency pass. It now properly prevents movement from dash, blink, and leap abilities. Teleportation still works while rooted.\n\n" +
 				"_-_ Various abilities that automatically move the hero closer to a target now consider whether the hero is levitating when determining what hazards to avoid."));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
