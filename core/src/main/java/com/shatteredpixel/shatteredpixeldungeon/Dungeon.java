@@ -958,6 +958,10 @@ public class Dungeon {
 	}
 
 	public static boolean[] findPassable(Char ch, boolean[] pass, boolean[] vis, boolean chars){
+		return findPassable(ch, pass, vis, chars, chars);
+	}
+
+	public static boolean[] findPassable(Char ch, boolean[] pass, boolean[] vis, boolean chars, boolean considerLarge){
 		setupPassable();
 		if (ch.flying || ch.buff( Amok.class ) != null) {
 			BArray.or( pass, Dungeon.level.avoid, passable );
@@ -965,7 +969,7 @@ public class Dungeon {
 			System.arraycopy( pass, 0, passable, 0, Dungeon.level.length() );
 		}
 
-		if (chars && Char.hasProp(ch, Char.Property.LARGE)){
+		if (considerLarge && Char.hasProp(ch, Char.Property.LARGE)){
 			BArray.and( passable, Dungeon.level.openSpace, passable );
 		}
 
@@ -998,7 +1002,7 @@ public class Dungeon {
 	
 	public static int flee( Char ch, int from, boolean[] pass, boolean[] visible, boolean chars ) {
 		//only consider chars impassable if our retreat path runs into them
-		boolean[] passable = findPassable(ch, pass, visible, false);
+		boolean[] passable = findPassable(ch, pass, visible, false, true);
 		passable[ch.pos] = true;
 
 		int step = PathFinder.getStepBack( ch.pos, from, passable );
