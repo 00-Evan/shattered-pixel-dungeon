@@ -184,6 +184,9 @@ public class Ratmogrify extends ArmorAbility {
 
 		{
 			spriteClass = RatSprite.class;
+
+			//always false, as we derive stats from what we are transmogging from (which was already added)
+			firstAdded = false;
 		}
 
 		private Mob original;
