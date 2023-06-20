@@ -48,10 +48,12 @@ public class Bones {
 	
 	public static void leave() {
 
-		depth = Dungeon.depth;
+		//remains will usually drop on the floor the hero died on
+		// but are capped at 5 floors above the lowest depth reached (even when ascending)
+		depth = Math.max(Dungeon.depth, Statistics.deepestFloor-5);
 
-		//heroes drop no bones if they have the amulet, die far above their farthest depth, are challenged, or are playing with a custom seed.
-		if (Statistics.amuletObtained || (Statistics.deepestFloor - 5) >= depth || Dungeon.challenges > 0 || !Dungeon.customSeedText.isEmpty()) {
+		//daily runs do not interact with remains
+		if (Dungeon.daily) {
 			depth = -1;
 			return;
 		}
@@ -71,6 +73,17 @@ public class Bones {
 
 	private static Item pickItem(Hero hero){
 		Item item = null;
+
+		//seeded runs always leave gold
+		//This is to prevent using specific seeds to transport items to regular runs
+		if (!Dungeon.customSeedText.isEmpty()){
+			if (Dungeon.gold > 100) {
+				return new Gold( Random.NormalIntRange( 50, Dungeon.gold/2 ) );
+			} else {
+				return new Gold( 50 );
+			}
+		}
+
 		if (Random.Int(3) != 0) {
 			switch (Random.Int(7)) {
 				case 0:
@@ -130,6 +143,11 @@ public class Bones {
 	}
 
 	public static Item get() {
+		//daily runs do not interact with remains
+		if (Dungeon.daily){
+			return null;
+		}
+
 		if (depth == -1) {
 
 			try {
@@ -147,8 +165,8 @@ public class Bones {
 			}
 
 		} else {
-			//heroes who are challenged or on a seeded run cannot find bones
-			if (depth == Dungeon.depth && Dungeon.challenges == 0 && Dungeon.customSeedText.isEmpty()) {
+			if (depth == Dungeon.depth) {
+
 				Bundle emptyBones = new Bundle();
 				emptyBones.put(LEVEL, 0);
 				try {
@@ -157,8 +175,15 @@ public class Bones {
 					ShatteredPixelDungeon.reportException(e);
 				}
 				depth = 0;
-				
-				if (item == null) return null;
+
+				//challenged or seeded runs will always find 10 gold
+				if (Dungeon.challenges != 0 || !Dungeon.customSeedText.isEmpty()){
+					item = new Gold(10);
+				}
+
+				if (item == null) {
+					item = new Gold(50);
+				}
 
 				//Enforces artifact uniqueness
 				if (item instanceof Artifact){
