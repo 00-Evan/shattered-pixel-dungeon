@@ -22,10 +22,13 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 
 public class DeadEndLevel extends Level {
@@ -99,6 +102,10 @@ public class DeadEndLevel extends Level {
 
 	@Override
 	protected void createItems() {
+		Item item = Bones.get();
+		if (item != null) {
+			drop( item, entrance()-width() ).setHauntedIfCursed().type = Heap.Type.REMAINS;
+		}
 	}
 	
 	@Override

@@ -41,9 +41,11 @@ public class Bones {
 	private static final String BONES_FILE	= "bones.dat";
 	
 	private static final String LEVEL	= "level";
+	private static final String BRANCH	= "branch";
 	private static final String ITEM	= "item";
 
 	private static int depth = -1;
+	private static int branch = -1;
 	private static Item item;
 	
 	public static void leave() {
@@ -52,9 +54,11 @@ public class Bones {
 		// but are capped at 5 floors above the lowest depth reached (even when ascending)
 		depth = Math.max(Dungeon.depth, Statistics.deepestFloor-5);
 
+		branch = Dungeon.branch;
+
 		//daily runs do not interact with remains
 		if (Dungeon.daily) {
-			depth = -1;
+			depth = branch = -1;
 			return;
 		}
 
@@ -154,6 +158,7 @@ public class Bones {
 				Bundle bundle = FileUtils.bundleFromFile(BONES_FILE);
 
 				depth = bundle.getInt( LEVEL );
+				branch = bundle.getInt( BRANCH );
 				if (depth > 0) {
 					item = (Item) bundle.get(ITEM);
 				}
@@ -165,7 +170,7 @@ public class Bones {
 			}
 
 		} else {
-			if (depth == Dungeon.depth) {
+			if (lootAtCurLevel()) {
 
 				Bundle emptyBones = new Bundle();
 				emptyBones.put(LEVEL, 0);
@@ -227,5 +232,18 @@ public class Bones {
 				return null;
 			}
 		}
+	}
+
+	private static boolean lootAtCurLevel(){
+		if (branch == Dungeon.branch) {
+			if (branch == 0) {
+				//always match depth exactly for main path
+				return depth == Dungeon.depth;
+			} else if (branch == 1) {
+				//just match the region for quest sub-floors
+				return depth/5 == Dungeon.depth/5;
+			}
+		}
+		return false;
 	}
 }
