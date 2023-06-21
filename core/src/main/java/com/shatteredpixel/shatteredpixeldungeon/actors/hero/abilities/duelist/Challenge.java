@@ -41,12 +41,12 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
@@ -137,13 +137,13 @@ public class Challenge extends ArmorAbility {
 
 		if (reachable[blinkpos] == Integer.MAX_VALUE){
 			GLog.w(Messages.get(this, "unreachable_target"));
-			if (hero.rooted) Camera.main.shake( 1, 1f );
+			if (hero.rooted) PixelScene.shake( 1, 1f );
 			return;
 		}
 
 		if (Dungeon.level.distance(blinkpos, targetCh.pos) > 5){
 			GLog.w(Messages.get(this, "distant_target"));
-			if (hero.rooted) Camera.main.shake( 1, 1f );
+			if (hero.rooted) PixelScene.shake( 1, 1f );
 			return;
 		}
 

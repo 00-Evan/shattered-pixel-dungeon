@@ -30,10 +30,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
@@ -90,7 +90,7 @@ public class Rapier extends MeleeWeapon {
 		if (hero.rooted || Dungeon.level.distance(hero.pos, target) < 2
 				|| Dungeon.level.distance(hero.pos, target)-1 > wep.reachFactor(hero)){
 			GLog.w(Messages.get(wep, "ability_bad_position"));
-			if (hero.rooted) Camera.main.shake( 1, 1f );
+			if (hero.rooted) PixelScene.shake( 1, 1f );
 			return;
 		}
 

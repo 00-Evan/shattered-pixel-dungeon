@@ -142,6 +142,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.AlchemyScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.SurfaceScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
@@ -157,7 +158,6 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
-import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -1059,7 +1059,7 @@ public class Hero extends Char {
 				switch (heap.type) {
 				case TOMB:
 					Sample.INSTANCE.play( Assets.Sounds.TOMB );
-					Camera.main.shake( 1, 0.5f );
+					PixelScene.shake( 1, 0.5f );
 					break;
 				case SKELETON:
 				case REMAINS:
@@ -1138,7 +1138,7 @@ public class Hero extends Char {
 		LevelTransition transition = Dungeon.level.getTransition(stairs);
 
 		if (rooted) {
-			Camera.main.shake(1, 1f);
+			PixelScene.shake(1, 1f);
 			ready();
 			return false;
 		} else if (!Dungeon.level.locked && transition != null && transition.inside(pos)) {
@@ -1489,7 +1489,7 @@ public class Hero extends Char {
 			return false;
 
 		if (rooted) {
-			Camera.main.shake( 1, 1f );
+			PixelScene.shake( 1, 1f );
 			return false;
 		}
 		
@@ -1600,7 +1600,7 @@ public class Hero extends Char {
 		
 		Char ch = Actor.findChar( cell );
 		Heap heap = Dungeon.level.heaps.get( cell );
-		
+
 		if (Dungeon.level.map[cell] == Terrain.ALCHEMY && cell != pos) {
 			
 			curAction = new HeroAction.Alchemy( cell );

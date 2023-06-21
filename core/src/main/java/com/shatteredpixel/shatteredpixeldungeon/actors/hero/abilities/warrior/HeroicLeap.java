@@ -36,8 +36,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
-import com.watabou.noosa.Camera;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -68,7 +68,7 @@ public class HeroicLeap extends ArmorAbility {
 		if (target != null) {
 
 			if (hero.rooted){
-				Camera.main.shake( 1, 1f );
+				PixelScene.shake( 1, 1f );
 				return;
 			}
 
@@ -115,7 +115,7 @@ public class HeroicLeap extends ArmorAbility {
 					}
 
 					WandOfBlastWave.BlastWave.blast(dest);
-					Camera.main.shake(2, 0.5f);
+					PixelScene.shake(2, 0.5f);
 
 					Invisibility.dispel();
 					hero.spendAndNext(Actor.TICK);

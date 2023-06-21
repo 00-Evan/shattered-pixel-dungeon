@@ -59,12 +59,12 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.DM300Sprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
@@ -323,7 +323,7 @@ public class DM300 extends Mob {
 	public void move(int step, boolean travelling) {
 		super.move(step, travelling);
 
-		if (travelling) Camera.main.shake( supercharged ? 3 : 1, 0.25f );
+		if (travelling) PixelScene.shake( supercharged ? 3 : 1, 0.25f );
 
 		if (Dungeon.level.map[step] == Terrain.INACTIVE_TRAP && state == HUNTING) {
 
@@ -627,7 +627,7 @@ public class DM300 extends Mob {
 				if (bestpos != pos) {
 					move(bestpos);
 				}
-				Camera.main.shake( 5, 1f );
+				PixelScene.shake( 5, 1f );
 
 				return true;
 			}
@@ -686,7 +686,7 @@ public class DM300 extends Mob {
 				}
 			}
 
-			Camera.main.shake( 3, 0.7f );
+			PixelScene.shake( 3, 0.7f );
 			Sample.INSTANCE.play(Assets.Sounds.ROCKS);
 
 			detach();
