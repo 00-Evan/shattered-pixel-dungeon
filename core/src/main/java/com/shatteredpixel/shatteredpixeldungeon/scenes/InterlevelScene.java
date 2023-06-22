@@ -285,10 +285,12 @@ public class InterlevelScene extends PixelScene {
 						error = e;
 						
 					}
-					
-					if (phase == Phase.STATIC && error == null) {
-						phase = Phase.FADE_OUT;
-						timeLeft = fadeTime;
+
+					synchronized (thread) {
+						if (phase == Phase.STATIC && error == null) {
+							phase = Phase.FADE_OUT;
+							timeLeft = fadeTime;
+						}
 					}
 				}
 			};
@@ -310,11 +312,13 @@ public class InterlevelScene extends PixelScene {
 		case FADE_IN:
 			message.alpha( 1 - p );
 			if ((timeLeft -= Game.elapsed) <= 0) {
-				if (!thread.isAlive() && error == null) {
-					phase = Phase.FADE_OUT;
-					timeLeft = fadeTime;
-				} else {
-					phase = Phase.STATIC;
+				synchronized (thread) {
+					if (!thread.isAlive() && error == null) {
+						phase = Phase.FADE_OUT;
+						timeLeft = fadeTime;
+					} else {
+						phase = Phase.STATIC;
+					}
 				}
 			}
 			break;
