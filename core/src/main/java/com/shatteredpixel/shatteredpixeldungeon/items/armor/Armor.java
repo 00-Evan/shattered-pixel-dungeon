@@ -388,16 +388,6 @@ public class Armor extends EquipableItem {
 		return level;
 	}
 	
-	//other things can equip these, for now we assume only the hero can be affected by levelling debuffs
-	@Override
-	public int buffedLvl() {
-		if (isEquipped( Dungeon.hero ) || Dungeon.hero.belongings.contains( this )){
-			return super.buffedLvl();
-		} else {
-			return level();
-		}
-	}
-	
 	@Override
 	public Item upgrade() {
 		return upgrade( false );
