@@ -21,10 +21,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap;
 import com.watabou.utils.Point;
@@ -71,6 +73,22 @@ public class BlacksmithRoom extends StandardRoom {
 			npc.pos = level.pointToCell(random( 2 ));
 		} while (level.heaps.get( npc.pos ) != null);
 		level.mobs.add( npc );
+
+		// TODO need to add some better visuals here (even just a simple custom asset)
+		Random.pushGenerator(Dungeon.seedCurDepth()+1);
+			int entrancePos;
+			do {
+				entrancePos = level.pointToCell(random( 2 ));
+			} while (level.heaps.get( npc.pos ) != null || entrancePos == npc.pos);
+		Random.popGenerator();
+
+		level.transitions.add(new LevelTransition(level,
+				entrancePos,
+				LevelTransition.Type.BRANCH_EXIT,
+				Dungeon.depth,
+				Dungeon.branch+1,
+				LevelTransition.Type.BRANCH_ENTRANCE));
+		Painter.set(level, entrancePos, Terrain.EXIT);
 
 		for(Point p : getPoints()) {
 			int cell = level.pointToCell(p);

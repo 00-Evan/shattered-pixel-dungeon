@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.tiles;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.Tilemap;
@@ -107,9 +108,10 @@ public class WallBlockingTilemap extends Tilemap {
 				//- none of the remaining 5 neighbour cells are both not a wall and visible
 				
 				//if all 3 above are wall we can shortcut and just clear the cell
-				//unless one or more is a shelf, then we have to just block none
+				//unless one or more is a shelf, or we can mine, then we have to just block none
 				if (wall(cell - 1 - mapWidth) && wall(cell - mapWidth) && wall(cell + 1 - mapWidth)){
-					if (shelf(cell - 1 - mapWidth) || shelf(cell - mapWidth) || shelf(cell + 1 - mapWidth)){
+					if (shelf(cell - 1 - mapWidth) || shelf(cell - mapWidth)
+							|| shelf(cell + 1 - mapWidth) || Dungeon.level instanceof MiningLevel){
 						curr = BLOCK_NONE;
 					} else {
 						curr = CLEARED;

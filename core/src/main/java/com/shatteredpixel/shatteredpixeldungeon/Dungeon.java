@@ -58,6 +58,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.HallsLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.LastLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
@@ -334,6 +335,17 @@ public class Dungeon {
 					break;
 				case 26:
 					level = new LastLevel();
+					break;
+				default:
+					level = new DeadEndLevel();
+			}
+		} else if (branch == 1) {
+			switch (depth) {
+				case 11:
+				case 12:
+				case 13:
+				case 14:
+					level = new MiningLevel();
 					break;
 				default:
 					level = new DeadEndLevel();
