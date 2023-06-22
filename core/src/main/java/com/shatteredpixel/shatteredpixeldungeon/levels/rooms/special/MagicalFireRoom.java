@@ -216,9 +216,10 @@ public class MagicalFireRoom extends SpecialRoom {
 							Buff.affect(ch, Burning.class).reignite(ch, 4f);
 						}
 
-						//burn adjacent heaps, but only on outside cells
+						//burn adjacent heaps, but only on outside and non-water cells
 						if (Dungeon.level.heaps.get(cell) != null
-							&& Dungeon.level.map[cell] != Terrain.EMPTY_SP){
+							&& Dungeon.level.map[cell] != Terrain.EMPTY_SP
+							&& Dungeon.level.map[cell] != Terrain.WATER){
 							Dungeon.level.heaps.get(cell).burn();
 						}
 					}
