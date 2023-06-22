@@ -57,9 +57,10 @@ public class ChasmRoom extends PatchRoom {
 		// normal   ~30% to ~40%
 		// large    ~40% to ~50%
 		// giant    ~50% to ~60%
-		float fill = 0.30f + (width()*height())/1024f;
+		int scale = Math.min(width()*height(), 18*18);
+		float fill = 0.30f + scale/1024f;
 
-		setupPatch(level, fill, 1, true);
+		setupPatch(level, fill, 1, connected.size() > 0);
 		cleanDiagonalEdges();
 
 		for (int i = top + 1; i < bottom; i++) {
