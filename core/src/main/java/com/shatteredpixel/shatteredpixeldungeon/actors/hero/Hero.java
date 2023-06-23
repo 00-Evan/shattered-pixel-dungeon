@@ -1049,6 +1049,7 @@ public class Hero extends Char {
 	private boolean actOpenChest( HeroAction.OpenChest action ) {
 		int dst = action.dst;
 		if (Dungeon.level.adjacent( pos, dst ) || pos == dst) {
+			path = null;
 			
 			Heap heap = Dungeon.level.heaps.get( dst );
 			if (heap != null && (heap.type != Type.HEAP && heap.type != Type.FOR_SALE)) {
@@ -1095,6 +1096,7 @@ public class Hero extends Char {
 	private boolean actUnlock( HeroAction.Unlock action ) {
 		int doorCell = action.dst;
 		if (Dungeon.level.adjacent( pos, doorCell )) {
+			path = null;
 			
 			boolean hasKey = false;
 			int door = Dungeon.level.map[doorCell];
@@ -1140,47 +1142,55 @@ public class Hero extends Char {
 	}
 
 	public boolean actMine(HeroAction.Mine action){
-		if (Dungeon.level.adjacent(pos, action.dst)
-				&& (Dungeon.level.map[action.dst] == Terrain.WALL || Dungeon.level.map[action.dst] == Terrain.WALL_DECO)
+		if (Dungeon.level.adjacent(pos, action.dst)){
+			path = null;
+			if ((Dungeon.level.map[action.dst] == Terrain.WALL || Dungeon.level.map[action.dst] == Terrain.WALL_DECO)
 				&& Dungeon.level.insideMap(action.dst)){
-			sprite.attack(action.dst, new Callback() {
-				@Override
-				public void call() {
+				sprite.attack(action.dst, new Callback() {
+					@Override
+					public void call() {
 
-					if (Dungeon.level.map[action.dst] == Terrain.WALL_DECO){
-						DarkGold gold = new DarkGold();
-						if (gold.doPickUp( Dungeon.hero )) {
-							GLog.i( Messages.capitalize(Messages.get(Dungeon.hero, "you_now_have", gold.name())) );
+						if (Dungeon.level.map[action.dst] == Terrain.WALL_DECO){
+							DarkGold gold = new DarkGold();
+							if (gold.doPickUp( Dungeon.hero )) {
+								GLog.i( Messages.capitalize(Messages.get(Dungeon.hero, "you_now_have", gold.name())) );
+							} else {
+								Dungeon.level.drop( gold, pos ).sprite.drop();
+							}
+							CellEmitter.center( action.dst ).burst( Speck.factory( Speck.STAR ), 7 );
+							Sample.INSTANCE.play( Assets.Sounds.EVOKE );
 						} else {
-							Dungeon.level.drop( gold, pos ).sprite.drop();
+							CellEmitter.get( action.dst ).burst( Speck.factory( Speck.ROCK ), 2 );
+							Sample.INSTANCE.play( Assets.Sounds.MINE );
 						}
-						CellEmitter.center( action.dst ).burst( Speck.factory( Speck.STAR ), 7 );
-						Sample.INSTANCE.play( Assets.Sounds.EVOKE );
-					} else {
-						CellEmitter.get( action.dst ).burst( Speck.factory( Speck.ROCK ), 2 );
-						Sample.INSTANCE.play( Assets.Sounds.MINE );
+
+						PixelScene.shake(0.5f, 0.5f);
+
+						Level.set( action.dst, Terrain.EMPTY_DECO );
+						for (int i : PathFinder.NEIGHBOURS9) {
+							Dungeon.level.discoverable[action.dst + i] = true;
+						}
+						for (int i : PathFinder.NEIGHBOURS9) {
+							GameScene.updateMap( action.dst+i );
+						}
+
+						Dungeon.observe();
+
+						spendAndNext(TICK);
 					}
+				});
+			} else {
+				ready();
+			}
+			return false;
+		} else if (getCloser( action.dst )) {
 
-					PixelScene.shake(0.5f, 0.5f);
+			return true;
 
-					Level.set( action.dst, Terrain.EMPTY_DECO );
-					for (int i : PathFinder.NEIGHBOURS9) {
-						Dungeon.level.discoverable[action.dst + i] = true;
-					}
-					for (int i : PathFinder.NEIGHBOURS9) {
-						GameScene.updateMap( action.dst+i );
-					}
-
-					Dungeon.observe();
-
-					spendAndNext(TICK);
-					ready();
-				}
-			});
+		} else {
+			ready();
 			return false;
 		}
-		ready();
-		return false;
 	}
 	
 	private boolean actTransition(HeroAction.LvlTransition action ) {
