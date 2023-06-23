@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.CavesPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.CaveRoom;
 
@@ -53,9 +54,6 @@ public class MiningLevel extends Level {
 	@Override
 	protected boolean build() {
 
-		//a few niceties are needed here before putting this out, things like water, short grass
-		// tile deco, and a pause to hunger/regen
-
 		setSize(32, 32);
 
 		CaveRoom c = new CaveRoom();
@@ -73,6 +71,12 @@ public class MiningLevel extends Level {
 				LevelTransition.Type.BRANCH_EXIT));
 
 		map[entrance] = Terrain.ENTRANCE;
+
+		Painter painter = new CavesPainter()
+				.setWater(0.35f, 6)
+				.setGrass(0.10f, 3);
+
+		painter.paint(this, null);
 
 		return true;
 	}

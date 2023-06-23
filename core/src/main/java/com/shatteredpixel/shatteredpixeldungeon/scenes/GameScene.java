@@ -430,7 +430,7 @@ public class GameScene extends PixelScene {
 					}
 				}
 				if (Dungeon.level instanceof MiningLevel){
-					add(new WndStory(Messages.get(this, "blacksmith_quest_window_title") + ":\n\n" + Messages.get(this, "blacksmith_quest_window")).setDelays(0.6f, 1.4f));
+					add(new WndStory(Messages.get(this, "blacksmith_quest_window_title") + ":\n\n" + Messages.get(this, "blacksmith_quest_window")).setDelays(0.4f, 0.4f));
 				}
 				if (Dungeon.hero.isAlive()) {
 					Badges.validateNoKilling();
