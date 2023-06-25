@@ -45,7 +45,7 @@ public class ArmoredBrute extends Brute {
 	
 	@Override
 	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(6, 10);
+		return super.drRoll() + 4; //4-12 DR total
 	}
 	
 	@Override
