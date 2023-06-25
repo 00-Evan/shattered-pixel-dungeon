@@ -33,6 +33,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.CavesPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.CaveRoom;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.watabou.noosa.Group;
 
 public class MiningLevel extends Level {
 
@@ -105,5 +107,53 @@ public class MiningLevel extends Level {
 	@Override
 	public int randomRespawnCell( Char ch ) {
 		return entrance()-width();
+	}
+
+	@Override
+	public String tileName( int tile ) {
+		switch (tile) {
+			case Terrain.GRASS:
+				return Messages.get(CavesLevel.class, "grass_name");
+			case Terrain.HIGH_GRASS:
+				return Messages.get(CavesLevel.class, "high_grass_name");
+			case Terrain.WATER:
+				return Messages.get(CavesLevel.class, "water_name");
+			case Terrain.STATUE:
+				//city statues are used
+				return Messages.get(CityLevel.class, "statue_name");
+			default:
+				return super.tileName( tile );
+		}
+	}
+
+	@Override
+	public String tileDesc( int tile ) {
+		switch (tile) {
+			case Terrain.WATER:
+				return super.tileDesc( tile ) + "\n\n" + Messages.get(CavesBossLevel.class, "water_desc");
+			case Terrain.ENTRANCE:
+				return Messages.get(CavesLevel.class, "entrance_desc");
+			case Terrain.EXIT:
+				//city exit is used
+				return Messages.get(CityLevel.class, "exit_desc");
+			case Terrain.HIGH_GRASS:
+				return Messages.get(CavesLevel.class, "high_grass_desc");
+			case Terrain.WALL_DECO:
+				return Messages.get(CavesLevel.class, "wall_deco_desc");
+			case Terrain.BOOKSHELF:
+				return Messages.get(CavesLevel.class, "bookshelf_desc");
+			//city statues are used
+			case Terrain.STATUE:
+				return Messages.get(CityLevel.class, "statue_desc");
+			default:
+				return super.tileDesc( tile );
+		}
+	}
+
+	@Override
+	public Group addVisuals() {
+		super.addVisuals();
+		CavesLevel.addCavesVisuals(this, visuals);
+		return visuals;
 	}
 }
