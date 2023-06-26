@@ -76,6 +76,7 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 
 public enum Talent {
@@ -929,6 +930,12 @@ public enum Talent {
 		bundle.put("replacements", replacementsBundle);
 	}
 
+	private static final HashSet<String> removedTalents = new HashSet<>();
+	static{
+		//v1.4.0
+		removedTalents.add("BERSERKING_STAMINA");
+	}
+
 	private static final HashMap<String, String> renamedTalents = new HashMap<>();
 	static{
 		//v2.0.0
@@ -946,7 +953,13 @@ public enum Talent {
 				String value = replacements.getString(key);
 				if (renamedTalents.containsKey(key)) key = renamedTalents.get(key);
 				if (renamedTalents.containsKey(value)) value = renamedTalents.get(value);
-				hero.metamorphedTalents.put(Talent.valueOf(key), Talent.valueOf(value));
+				if (!removedTalents.contains(key) && !removedTalents.contains(value)){
+					try {
+						hero.metamorphedTalents.put(Talent.valueOf(key), Talent.valueOf(value));
+					} catch (Exception e) {
+						ShatteredPixelDungeon.reportException(e);
+					}
+				}
 			}
 		}
 
@@ -962,13 +975,15 @@ public enum Talent {
 				for (String tName : tierBundle.getKeys()){
 					int points = tierBundle.getInt(tName);
 					if (renamedTalents.containsKey(tName)) tName = renamedTalents.get(tName);
-					try {
-						Talent talent = Talent.valueOf(tName);
-						if (tier.containsKey(talent)) {
-							tier.put(talent, Math.min(points, talent.maxPoints()));
+					if (!removedTalents.contains(tName)) {
+						try {
+							Talent talent = Talent.valueOf(tName);
+							if (tier.containsKey(talent)) {
+								tier.put(talent, Math.min(points, talent.maxPoints()));
+							}
+						} catch (Exception e) {
+							ShatteredPixelDungeon.reportException(e);
 						}
-					} catch (Exception e){
-						ShatteredPixelDungeon.reportException(e);
 					}
 				}
 			}
