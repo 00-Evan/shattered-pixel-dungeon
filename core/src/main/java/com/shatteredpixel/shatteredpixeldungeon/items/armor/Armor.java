@@ -474,7 +474,7 @@ public class Armor extends EquipableItem {
 				info += " " + Messages.get(Armor.class, "too_heavy");
 			}
 		} else {
-			if (Messages.lang() == Languages.KOREAN) {
+			if (Messages.lang() != Languages.KOREAN) {
 				info += "\n\n" + Messages.get(Armor.class, "avg_absorb", tier, DRMin(0), DRMax(0), STRReq(0));
 			} else {
 				info += "\n\n" + Messages.get(Armor.class, "avg_absorb", DRMin(0), DRMax(0), STRReq(0));
