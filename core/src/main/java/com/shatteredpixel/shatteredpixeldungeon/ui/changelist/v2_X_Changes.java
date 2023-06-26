@@ -76,6 +76,36 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("v2.1.3", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.PICKAXE), "Blacksmith Quest",
+				"While the blacksmith quest rework isn't coming until v2.2.0, I've added a new area so players can test out some of the quest's new mechanics!\n\n" +
+				"Next to the blacksmith's anvil you'll find a set of stairs that take you down to a special sub-floor. In this sub-floor you can try out the new mining mechanic to your heart's content.\n\n" +
+				"Note that a pickaxe is required, and there isn't currently any reward to doing this. It's purely to test the mechanics out. Hunger and regen effects are also disabled while in the test area."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Heroes remains can now appear in more cases, such as during challenge or seeded runs. Remains will always contain 10 gold in challenge or seeded runs however.\n\n" +
+				"_-_ Dark gold veins can now be seen from the side and behind, not just the front\n\n" +
+				"_-_ Added a setting for screen shake intensity"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by v2.1.0:_\n" +
+				"_-_ Rare cases of enemies getting massively boosted health during ascension challenge.\n" +
+				"_-_ Rare cases of magical fire burning items that spawn next to it\n\n" +
+				"_Existed Prior to v2.1.0:_\n" +
+				"_-_ Various rare crash and hang bugs\n" +
+				"_-_ Weaker healing effects overiding stronger ones\n" +
+				"_-_ Divine inspiration potion not being cancellable if it was already identified\n" +
+				"_-_ Very rare cases where tapping a location wouldn't cause the hero to move\n" +
+				"_-_ Armored brutes blocking more damage than intended"));
+
 		changes = new ChangeInfo("v2.1.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
