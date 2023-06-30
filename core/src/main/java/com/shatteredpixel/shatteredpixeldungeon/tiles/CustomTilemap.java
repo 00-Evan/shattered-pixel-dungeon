@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.tiles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.TextureFilm;
@@ -40,7 +41,11 @@ public abstract class CustomTilemap implements Bundlable {
 	protected Tilemap vis = null;
 
 	public void pos(int pos) {
-		pos( pos%Dungeon.level.width(), pos/Dungeon.level.width() );
+		pos( pos, Dungeon.level );
+	}
+
+	public void pos(int pos, Level level) {
+		pos( pos%level.width(), pos/level.width() );
 	}
 
 	public void pos(int tileX, int tileY){

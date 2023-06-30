@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -29,6 +30,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.watabou.noosa.Tilemap;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -74,13 +77,16 @@ public class BlacksmithRoom extends StandardRoom {
 		} while (level.heaps.get( npc.pos ) != null);
 		level.mobs.add( npc );
 
-		// TODO need to add some better visuals here (even just a simple custom asset)
 		Random.pushGenerator(Dungeon.seedCurDepth()+1);
 			int entrancePos;
 			do {
 				entrancePos = level.pointToCell(random( 2 ));
 			} while (level.heaps.get( npc.pos ) != null || entrancePos == npc.pos);
 		Random.popGenerator();
+
+		QuestEntrance vis = new QuestEntrance();
+		vis.pos(entrancePos, level);
+		level.customTiles.add(vis);
 
 		level.transitions.add(new LevelTransition(level,
 				entrancePos,
@@ -96,5 +102,23 @@ public class BlacksmithRoom extends StandardRoom {
 				level.setTrap(new BurningTrap().reveal(), cell);
 			}
 		}
+	}
+
+	public static class QuestEntrance extends CustomTilemap {
+
+		{
+			texture = Assets.Environment.CAVES_QUEST;
+
+			tileW = tileH = 1;
+		}
+
+		@Override
+		public Tilemap create() {
+			Tilemap v = super.create();
+			v.map( new int[]{0}, 1 );
+			return v;
+		}
+
+		//TODO add some text here in v2.2.0
 	}
 }
