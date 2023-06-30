@@ -47,13 +47,6 @@ public class Noisemaker extends Bomb {
 		Buff.affect(Dungeon.hero, Trigger.class).set(cell);
 		fuse = null;
 
-		CellEmitter.center( cell ).start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
-		Sample.INSTANCE.play( Assets.Sounds.ALERT );
-
-		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-			mob.beckon( cell );
-		}
-
 	}
 
 	@Override
@@ -92,7 +85,7 @@ public class Noisemaker extends Bomb {
 		public void set(int cell){
 			floor = Dungeon.depth;
 			this.cell = cell;
-			left = 6;
+			left = 0;
 		}
 		
 		@Override
