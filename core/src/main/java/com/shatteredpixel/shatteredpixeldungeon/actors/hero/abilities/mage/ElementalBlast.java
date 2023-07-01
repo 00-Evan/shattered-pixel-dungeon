@@ -128,12 +128,23 @@ public class ElementalBlast extends ArmorAbility {
 	@Override
 	protected void activate(ClassArmor armor, Hero hero, Integer target) {
 		Ballistica aim;
-		//Basically the direction of the aim only matters if it goes outside the map
-		//So we just ensure it won't do that.
-		if (hero.pos % Dungeon.level.width() > 10){
-			aim = new Ballistica(hero.pos, hero.pos - 1, Ballistica.WONT_STOP);
+		//The direction of the aim only matters if it goes outside the map
+		//So we try to aim in the cardinal direction that has the most space
+		int x = hero.pos % Dungeon.level.width();
+		int y = hero.pos / Dungeon.level.width();
+
+		if (Math.max(x, Dungeon.level.width()-x) >= Math.max(y, Dungeon.level.height()-y)){
+			if (x > Dungeon.level.width()/2){
+				aim = new Ballistica(hero.pos, hero.pos - 1, Ballistica.WONT_STOP);
+			} else {
+				aim = new Ballistica(hero.pos, hero.pos + 1, Ballistica.WONT_STOP);
+			}
 		} else {
-			aim = new Ballistica(hero.pos, hero.pos + 1, Ballistica.WONT_STOP);
+			if (y > Dungeon.level.height()/2){
+				aim = new Ballistica(hero.pos, hero.pos - Dungeon.level.width(), Ballistica.WONT_STOP);
+			} else {
+				aim = new Ballistica(hero.pos, hero.pos + Dungeon.level.width(), Ballistica.WONT_STOP);
+			}
 		}
 
 		Class<? extends Wand> wandCls = null;
@@ -183,7 +194,7 @@ public class ElementalBlast extends ArmorAbility {
 		((MagicMissile)hero.sprite.parent.recycle( MagicMissile.class )).reset(
 				effectTypes.get(wandCls),
 				hero.sprite,
-				aim.path.get(aoeSize / 2),
+				aim.path.get(Math.min(aoeSize / 2, aim.path.size()-1)),
 				new Callback() {
 					@Override
 					public void call() {
