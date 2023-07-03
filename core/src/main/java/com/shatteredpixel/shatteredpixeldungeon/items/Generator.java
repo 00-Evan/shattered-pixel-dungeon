@@ -641,7 +641,7 @@ public class Generator {
 	}
 
 	public static MeleeWeapon randomWeapon(boolean useDefaults) {
-		return randomWeapon(Dungeon.depth / 5, false);
+		return randomWeapon(Dungeon.depth / 5, useDefaults);
 	}
 	
 	public static MeleeWeapon randomWeapon(int floorSet, boolean useDefaults) {
