@@ -262,8 +262,12 @@ public class MeleeWeapon extends Weapon {
 		}
 	}
 
-	public float abilityChargeUse(Hero hero, Char target){
-		float chargeUse = 1f;
+	protected int baseChargeUse(Hero hero, Char target){
+		return 1; //abilities use 1 charge by default
+	}
+
+	public final float abilityChargeUse(Hero hero, Char target){
+		float chargeUse = baseChargeUse(hero, target);
 		if (hero.buff(Talent.CounterAbilityTacker.class) != null){
 			chargeUse = Math.max(0, chargeUse-0.5f*hero.pointsInTalent(Talent.COUNTER_ABILITY));
 		}

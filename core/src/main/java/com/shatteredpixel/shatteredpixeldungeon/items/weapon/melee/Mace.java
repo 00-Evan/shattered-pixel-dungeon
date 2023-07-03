@@ -60,11 +60,11 @@ public class Mace extends MeleeWeapon {
 	}
 
 	@Override
-	public float abilityChargeUse(Hero hero, Char target) {
+	protected int baseChargeUse(Hero hero, Char target){
 		if (target == null || (target instanceof Mob && ((Mob) target).surprisedBy(hero))) {
-			return super.abilityChargeUse(hero, target);
+			return 1;
 		} else {
-			return 2*super.abilityChargeUse(hero, target);
+			return 2;
 		}
 	}
 

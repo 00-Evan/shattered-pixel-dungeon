@@ -44,8 +44,9 @@ public class WarScythe extends MeleeWeapon {
 				lvl*(tier+1);                   //scaling unchanged
 	}
 
-	public float abilityChargeUse(Hero hero, Char target) {
-		return 2*super.abilityChargeUse(hero, target);
+	@Override
+	protected int baseChargeUse(Hero hero, Char target){
+		return 2;
 	}
 
 	@Override
