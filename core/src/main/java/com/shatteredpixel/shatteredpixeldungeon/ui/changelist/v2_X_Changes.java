@@ -76,9 +76,30 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v2.1.4", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ The stairs down to the blacksmith tester area now use custom visuals\n" +
+				"_-_ The mining test area now has darkened walls at the non-mineable borders\n\n" +
+				"_-_ Made the new boss regen limit vs. Tengu a bit less strict when badder bosses is enabled.\n\n" +
+				"_-_ Adjusted the new gold visuals to only appear in the mining test area for now."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by v2.1.3:_\n" +
+				"_-_ Various rare crash bugs relating to the mining test area\n" +
+				"_-_ Pitfall traps working in the mining test area\n" +
+				"_-_ Music not always playing correctly in the mining test area\n" +
+				"_-_ Weapon spawns sometimes being inconsistent with the same dungeon seed\n" +
+				"_-_ A couple visual errors in the changes screen and Huntress description\n\n" +
+				"_Existed Prior to v2.1.0:_\n" +
+				"_-_ various rare crash bugs\n" +
+				"_-_ Specific exploits that allowed noisemakers to alter enemies as they were defused\n" +
+				"_-_ Regen-disabling effects not affecting the warrior's shield\n" +
+				"_-_ Counter Ability talent incorrectly making all abilities cost 0 charge when upgraded to +2\n" +
+				"_-_ Visual bugs when hiding mimics were magically slept"));
 
 		changes = new ChangeInfo("v2.1.3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
