@@ -338,86 +338,6 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("v2.0.2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Overhauled visuals for the action indicator. It now has different background colors for different actions, and supports a smaller secondary icon or text. Subclass abilities all make use of this new functionality, and some info has been moved from buff icons to this new indicator.\n\n" +
-				"_-_ The game's pixel font now supports Vietnamese!\n\n" +
-				"_-_ Rankings now attempt to show some basic information if loading full game data fails.\n\n" +
-				"_-_ The changes scene now shows a warning if the user is not viewing it in English.\n\n" +
-				"_-_ Liquid metal value increased to 1 from 0.5."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (Caused by v2.0):\n" +
-				"_-_ Various minor visual errors\n" +
-				"_-_ Flail spin ability triggering talents when already at full spin power\n" +
-				"_-_ Lucky elemental strike working on ally characters\n" +
-				"_-_ Resistance from empowered meditate lasting 1 turn longer than intended\n" +
-				"_-_ Threshold for Monastic Vigor being lower than intended (95/75/55 instead of 100/80/60)\n" +
-				"_-_ New quickslot swap behaviour sometimes placing items without a quick-use action into quickslots\n" +
-				"_-_ Levitation persisting for 1 extra turn after the hero falls into a pit\n" +
-				"_-_ Lunge ability still allowing the Duelist to attack if it placed her onto a teleportation trap\n" +
-				"_-_ Spirit bow arrows triggering the deadly followup talent",
-				"Fixed (existed prior to v2.0):\n" +
-				"_-_ Various bugs with controller input which occurred when two or more inputs were entered at once.\n" +
-				"_-_ Hero being able to leave floor 5 after it locks in rare cases\n" +
-				"_-_ Various minor rounding errors in alchemy produce values\n" +
-				"_-_ Spirit bow encumbrance calculations always using a strength requirement of 10\n" +
-				"_-_ Downed ghoul visuals sometimes staying visible in the fog of war"));
-
-		changes = new ChangeInfo("v2.0.1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 6), "Duelist Buffs",
-				"I expect to make some more thorough changes in v2.1, after gameplay data becomes more reliable, but for now I'm making some early buffs to the Duelist to improve on a bunch of her talents and weapon abilities that are not performing as well as others. This should hopefully make her gameplay feel more consistent.\n\n" +
-				"_-_ Weapon ability recharge speed increased by 12.5% at no missing charges, down to being unchanged when at 0/10\n" +
-				"\n" +
-				"_- Strengthening Meal_ bonus damage up to 3 from 2\n" +
-				"_- Swift Equip_ cooldown down to 20 turns from 30\n" +
-				"_- Unencumbered Spirit_ energy boost up to 33/67/100/150%, from 25/50/100/150%\n" +
-				"_- Monastic Vigor_ threshold changed to 100/80/60%, from 100/85/70%\n" +
-				"\n" +
-				"_- Sneak_ now grants 8/6/4 turns of stealth, up from 6/5/4\n" +
-				"_- Spike_ now deals +40/30% bonus damage, up from +15/10%\n" +
-				"_- Heavy Blow_ now deals +65/60/55/50% damage, up from +50/45/40/35%\n" +
-				"_- Combo Strike_ now deals +40/35/30% damage per stack, up from +30/25/20%\n" +
-				"_- Spin_ now deals +33% damage per stack, up from +20%"));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Quickslot contents are now automatically swapped if a newly equipped item that is not quickslotted replaces an item that was quickslotted. This should make weapon swapping gameplay smoother.\n" +
-				"\n" +
-				"_-_ The changes screen now supports more text for a single entry. On mobile UI the changes window can now have multiple tabs, on full UI the changes pane on the right is now scrollable.\n" +
-				"\n" +
-				"_-_ Updated translations\n" +
-				"_-_ Attacking an enemy now properly sets them as the auto-targeting target in all cases\n" +
-				"_-_ Levitation now prevents damage from floor electricity during the DM-300 fight\n" +
-				"_-_ Removed support for save data prior to v1.2.3"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (Caused by v2.0):\n" +
-				"_-_ Various rare crash bugs\n" +
-				"_-_ Duelist not being automatically unlocked for existing players with a win\n" +
-				"_-_ Blooming elemental strike placing tall grass on plants\n" +
-				"_-_ Various minor textual errors\n" +
-				"_-_ Enemies frozen by Challenge ability still being fearable\n" +
-				"_-_ Charged shot ability rarely messing with the game's UI when its animation ends\n" +
-				"_-_ Combined energy talent rarely boosting energy above 100%\n" +
-				"_-_ Brawler's stance not preventing damage blocking from equipped weapon\n" +
-				"_-_ Duelist Unlock badge not registering on Google Play Games\n" +
-				"_-_ Champion weapon swapping not triggering an attack indicator update",
-				"Fixed (existed prior to v2.0):\n" +
-				"_-_ Various UI bugs caused by pressing multiple buttons simultaneously\n" +
-				"_-_ Noisemakers being visually defusable after trigger but not exploding\n" +
-				"_-_ Noisemakers being collectable in some cases after triggering\n" +
-				"_-_ Damage/Stun from blastwave knockback applying to downed ghouls\n" +
-				"_-_ Even more cases of particle effects sometimes failing to appear\n" +
-				"_-_ Projecting champions with ranged attacks refusing to melee from a distance in some cases\n" +
-				"_-_ Life Link sometimes persisting for longer than intended during Dwarf King fight" +
-				"_-_ Various rare UI bug"));
-
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
@@ -482,9 +402,9 @@ public class v2_X_Changes {
 				"_-_ Added a 5th games in progress slot for the Duelist",
 
 				"_Translations:_\n" +
-				"_-_ Added a new Language: _Vietnamese!_ Currently only system font is supported for Vietnamese.\n" +
+				"_-_ Added a new Language: _Vietnamese!_\n" +
 				"_-_ Removed the following Languages due to low usage and lack of maintenance: Finnish, Galician, Basque, Esperanto.\n" +
-						"\n" +
+				"\n" +
 				"_iOS:_\n" +
 				"_-_ Improved gesture handling, should reduce/eliminate touch delays\n" +
 				"_-_ Removed unused audio files, reducing download size by about 15%\n" +
@@ -513,7 +433,20 @@ public class v2_X_Changes {
 				"_Misc:_\n" +
 				"_-_ Updated the icons for several talents\n" +
 				"_-_ Healing no longer interrupts resting when HP is already full\n" +
-				"_-_ Updated various code libraries\n"));
+				"_-_ Updated various code libraries",
+
+				"_v2.0.1:_\n" +
+				"_-_ Quickslot contents can now automatically swap when equipped items are swapped.\n" +
+				"_-_ The changes screen now supports more text for a single entry.\n" +
+				"_-_ Attacking an enemy now properly sets them as the auto-targeting target in all cases\n" +
+				"_-_ Levitation now prevents damage from floor electricity during the DM-300 fight\n" +
+				"_-_ Removed support for save data prior to v1.2.3\n" +
+				"\n" +
+				"_v2.0.2:_\n" +
+				"_-_ Overhauled visuals for the action indicator. Some info has been moved from buff icons to this new indicator.\n" +
+				"_-_ Rankings now attempt to show some basic information if loading full game data fails.\n" +
+				"_-_ The changes scene now shows a warning if the user is not viewing it in English.\n" +
+				"_-_ Liquid metal value increased to 1 from 0.5."));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
@@ -586,7 +519,23 @@ public class v2_X_Changes {
 				"_-_ VFX rarely not appearing on characters as they are spawned by multiplicity\n" +
 				"_-_ Damage warn vfx not accounting for hunger ignoring shielding\n" +
 				"_-_ Cases where very fast heroes would cause landmarks to not be recorded\n" +
-				"_-_ No error message being given when the mage uses elemental blast without a staff"));
+				"_-_ No error message being given when the mage uses elemental blast without a staff",
+
+				"_v2.0.1:_\n" +
+				"_-_ Various UI bugs caused by pressing multiple buttons simultaneously\n" +
+				"_-_ Noisemakers being visually defusable after trigger but not exploding\n" +
+				"_-_ Noisemakers being collectable in some cases after triggering\n" +
+				"_-_ Damage/Stun from blastwave knockback applying to downed ghouls\n" +
+				"_-_ Projecting champions with ranged attacks refusing to use melee in some cases\n" +
+				"_-_ Life Link sometimes persisting for longer than intended during Dwarf King fight\n" +
+				"_-_ Various rare UI bugs\n" +
+				"\n" +
+				"_v2.0.2:_\n" +
+				"_-_ Various bugs with controller input and simultaneous button presses\n" +
+				"_-_ Hero being able to leave floor 5 after it locks in rare cases\n" +
+				"_-_ Various minor rounding errors in alchemy produce values\n" +
+				"_-_ Spirit bow encumbrance calculations always using a strength requirement of 10\n" +
+				"_-_ Downed ghoul visuals sometimes staying visible in the fog of war"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight(CharSprite.POSITIVE);
