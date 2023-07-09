@@ -38,7 +38,7 @@ public class GitHubUpdates extends UpdateService {
 	private static Pattern versionCodePattern = Pattern.compile("internal version number: ([0-9]*)", Pattern.CASE_INSENSITIVE);
 
 	@Override
-	public boolean isUpdateable() {
+	public boolean supportsUpdatePrompts() {
 		return true;
 	}
 
@@ -125,16 +125,6 @@ public class GitHubUpdates extends UpdateService {
 	@Override
 	public void initializeUpdate(AvailableUpdateData update) {
 		Game.platform.openURI( update.URL );
-	}
-
-	@Override
-	public boolean isInstallable() {
-		return false;
-	}
-
-	@Override
-	public void initializeInstall() {
-		//does nothing, always installed
 	}
 
 	@Override

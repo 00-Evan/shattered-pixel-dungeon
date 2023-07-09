@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.HeroSelectScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.RankingsScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
-import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
@@ -61,18 +60,6 @@ public class WndGame extends Window {
 			}
 		});
 		curBtn.icon(Icons.get(Icons.PREFS));
-
-		//install prompt
-		if (Updates.isInstallable()){
-			addButton( curBtn = new RedButton( Messages.get(this, "install") ) {
-				@Override
-				protected void onClick() {
-					Updates.launchInstall();
-				}
-			} );
-			curBtn.textColor(Window.SHPX_COLOR);
-			curBtn.icon(Icons.get(Icons.CHANGES));
-		}
 
 		// Challenges window
 		if (Dungeon.challenges > 0) {

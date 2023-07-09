@@ -29,7 +29,7 @@ public class DebugUpdates extends UpdateService {
 	private static AvailableUpdateData debugUpdateInfo;
 
 	@Override
-	public boolean isUpdateable() {
+	public boolean supportsUpdatePrompts() {
 		return false; //turn on to debug update prompts
 	}
 
@@ -57,16 +57,6 @@ public class DebugUpdates extends UpdateService {
 	@Override
 	public void initializeUpdate(AvailableUpdateData update) {
 		Game.platform.openURI( update.URL );
-	}
-
-	@Override
-	public boolean isInstallable() {
-		return false; //turn on to test install prompts
-	}
-
-	@Override
-	public void initializeInstall() {
-		//does nothing
 	}
 
 	@Override
