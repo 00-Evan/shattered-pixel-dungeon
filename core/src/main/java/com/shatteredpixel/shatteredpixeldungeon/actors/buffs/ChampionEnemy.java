@@ -116,7 +116,9 @@ public abstract class ChampionEnemy extends Buff {
 
 		@Override
 		public void onAttackProc(Char enemy) {
-			Buff.affect(enemy, Burning.class).reignite(enemy);
+			if (!Dungeon.level.water[enemy.pos]) {
+				Buff.affect(enemy, Burning.class).reignite(enemy);
+			}
 		}
 
 		@Override
@@ -124,7 +126,7 @@ public abstract class ChampionEnemy extends Buff {
 			//don't trigger when killed by being knocked into a pit
 			if (target.flying || !Dungeon.level.pit[target.pos]) {
 				for (int i : PathFinder.NEIGHBOURS9) {
-					if (!Dungeon.level.solid[target.pos + i]) {
+					if (!Dungeon.level.solid[target.pos + i] && !Dungeon.level.water[target.pos + i]) {
 						GameScene.add(Blob.seed(target.pos + i, 2, Fire.class));
 					}
 				}
@@ -154,8 +156,20 @@ public abstract class ChampionEnemy extends Buff {
 		}
 
 		@Override
-		public boolean canAttackWithExtraReach( Char enemy ) {
-			return target.fieldOfView[enemy.pos]; //if it can see it, it can attack it.
+		public boolean canAttackWithExtraReach(Char enemy) {
+			if (Dungeon.level.distance( target.pos, enemy.pos ) > 5){
+				return false;
+			} else {
+				boolean[] passable = BArray.not(Dungeon.level.solid, null);
+				for (Char ch : Actor.chars()) {
+					//our own tile is always passable
+					passable[ch.pos] = ch == target;
+				}
+
+				PathFinder.buildDistanceMap(enemy.pos, passable, 5);
+
+				return PathFinder.distance[target.pos] <= 5;
+			}
 		}
 	}
 
@@ -167,7 +181,7 @@ public abstract class ChampionEnemy extends Buff {
 
 		@Override
 		public float damageTakenFactor() {
-			return 0.75f;
+			return 0.5f;
 		}
 
 		{
@@ -185,7 +199,7 @@ public abstract class ChampionEnemy extends Buff {
 
 		@Override
 		public float damageTakenFactor() {
-			return 0.25f;
+			return 0.2f;
 		}
 
 		@Override
@@ -214,7 +228,7 @@ public abstract class ChampionEnemy extends Buff {
 
 		@Override
 		public float evasionAndAccuracyFactor() {
-			return 3f;
+			return 4f;
 		}
 	}
 
@@ -229,7 +243,7 @@ public abstract class ChampionEnemy extends Buff {
 		@Override
 		public boolean act() {
 			multiplier += 0.01f;
-			spend(3*TICK);
+			spend(4*TICK);
 			return true;
 		}
 
