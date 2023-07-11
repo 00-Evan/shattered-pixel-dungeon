@@ -472,7 +472,7 @@ public class v1_X_Changes {
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released March 23rd, 2022\n" +
 				"_-_ 103 days after Shattered v1.1.0\n\n" +
-				"Dev commentary will be added here in the future."));
+				"Dev commentary will be added here in the next major update."));
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.DISPLAY_LAND), "Desktop Enhancements and Steam Release!",
 				"_Shattered Pixel Dungeon has received a bunch of new features in preparation for its release on Steam!_\n\n" +
@@ -655,7 +655,9 @@ public class v1_X_Changes {
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released December 10th, 2021\n" +
 				"_-_ 115 days after Shattered v1.0.0\n\n" +
-				"Dev commentary will be added here in the next major update."));
+				"v1.1.0 was the start of Shattered's alchemy system actually doing the job it was supposed to do way back in v0.7.0. Previously alchemical energy sort of sat on top of the alchemy system and acted as a hard cap on how many 'powerful' recipes the player could use in a run. Thanks to v1.1.0's changes, energy replaced specific ingredients in a huge number of recipes, which made the system massively more flexible. Lots of specific alchemy items also received big buffs or redesigns, making them much more worthwhile to create.\n" +
+				"\n" +
+				"This update also included new region-specific music tracks composed by Kristjan Haaristo! Kristjan was actually a fan of Shattered before working on the music and contacted me about potentially adding new tracks. I feel extremely fortunate to have been able to work with people that are just as passionate about Shattered as I am."));
 
 		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.ENERGY), "Alchemical Energy Overhaul",
 				"_The role of Alchemical Energy in the alchemy system has been totally overhauled!_\n\n" +
