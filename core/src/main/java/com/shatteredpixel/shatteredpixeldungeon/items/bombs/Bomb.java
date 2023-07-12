@@ -107,10 +107,14 @@ public class Bomb extends Item {
 		super.execute(hero, action);
 	}
 
+	protected Fuse createFuse(){
+		return new Fuse();
+	}
+
 	@Override
 	protected void onThrow( int cell ) {
 		if (!Dungeon.level.pit[ cell ] && lightingFuse) {
-			Actor.addDelayed(fuse = new Fuse().ignite(this), 2);
+			Actor.addDelayed(fuse = createFuse().ignite(this), 2);
 		}
 		if (Actor.findChar( cell ) != null && !(Actor.findChar( cell ) instanceof Hero) ){
 			ArrayList<Integer> candidates = new ArrayList<>();
@@ -269,7 +273,7 @@ public class Bomb extends Item {
 			actPriority = BLOB_PRIO+1; //after hero, before other actors
 		}
 
-		private Bomb bomb;
+		protected Bomb bomb;
 
 		public Fuse ignite(Bomb bomb){
 			this.bomb = bomb;
@@ -289,21 +293,7 @@ public class Bomb extends Item {
 			for (Heap heap : Dungeon.level.heaps.valueList()) {
 				if (heap.items.contains(bomb)) {
 
-					//FIXME this is a bit hacky, might want to generalize the functionality
-					//of bombs that don't explode instantly when their fuse ends
-					if (bomb instanceof Noisemaker){
-
-						((Noisemaker) bomb).setTrigger(heap.pos);
-
-					} else {
-
-						heap.remove(bomb);
-
-						bomb.explode(heap.pos);
-					}
-
-					diactivate();
-					Actor.remove(this);
+					trigger(heap);
 					return true;
 				}
 			}
@@ -311,6 +301,18 @@ public class Bomb extends Item {
 			//can't find our bomb, something must have removed it, do nothing.
 			bomb.fuse = null;
 			Actor.remove( this );
+			return true;
+		}
+
+		protected void trigger(Heap heap){
+			heap.remove(bomb);
+			bomb.explode(heap.pos);
+			Actor.remove(this);
+		}
+
+		public boolean freeze(){
+			bomb.fuse = null;
+			Actor.remove(this);
 			return true;
 		}
 	}

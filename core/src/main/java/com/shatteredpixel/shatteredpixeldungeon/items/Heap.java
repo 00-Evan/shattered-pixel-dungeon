@@ -321,8 +321,7 @@ public class Heap implements Bundlable {
 				((Potion) item).shatter(pos);
 				frozen = true;
 			} else if (item instanceof Bomb){
-				((Bomb) item).fuse = null;
-				frozen = true;
+				frozen = frozen || ((Bomb) item).fuse.freeze();
 			}
 		}
 		
