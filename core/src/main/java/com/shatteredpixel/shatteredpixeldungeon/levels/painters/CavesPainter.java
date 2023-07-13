@@ -113,6 +113,15 @@ public class CavesPainter extends RegularPainter {
 			}
 		}
 		
+		generateGold(level, rooms);
+
+	}
+
+	protected void generateGold(Level level, ArrayList<Room> rooms){
+		int w = level.width();
+		int l = level.length();
+		int[] map = level.map;
+
 		for (int i=0; i < l - w; i++) {
 			if (map[i] == Terrain.WALL &&
 					DungeonTileSheet.floorTile(map[i + w])
@@ -120,6 +129,5 @@ public class CavesPainter extends RegularPainter {
 				map[i] = Terrain.WALL_DECO;
 			}
 		}
-
 	}
 }

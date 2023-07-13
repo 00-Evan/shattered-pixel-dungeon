@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.CavesPainter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.MiningLevelPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.CaveRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -39,6 +39,7 @@ import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.Tilemap;
 import com.watabou.noosa.audio.Music;
+import com.watabou.utils.Random;
 
 import java.util.Arrays;
 
@@ -88,7 +89,8 @@ public class MiningLevel extends Level {
 
 		map[entrance] = Terrain.ENTRANCE;
 
-		Painter painter = new CavesPainter()
+		Painter painter = new MiningLevelPainter()
+				.setGold(Random.NormalIntRange(42, 46))
 				.setWater(0.35f, 6)
 				.setGrass(0.10f, 3);
 
