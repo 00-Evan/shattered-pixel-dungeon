@@ -672,6 +672,8 @@ public class GameScene extends PixelScene {
 	private float notifyDelay = 1/60f;
 
 	public static boolean updateItemDisplays = false;
+
+	public static boolean tagsNeedLayout = false;
 	
 	@Override
 	public synchronized void update() {
@@ -728,7 +730,6 @@ public class GameScene extends PixelScene {
 				tagAction != action.visible ||
 				tagResume != resume.visible) {
 
-			//we only want to change the layout when new tags pop in, not when existing ones leave.
 			boolean tagAppearing = (attack.active && !tagAttack) ||
 									(loot.visible && !tagLoot) ||
 									(action.visible && !tagAction) ||
@@ -739,13 +740,11 @@ public class GameScene extends PixelScene {
 			tagAction = action.visible;
 			tagResume = resume.visible;
 
-			//except if action is the only tag left, then let it drop to the bottom
-			// this is because the action tag can sometimes be persistent
-			if (tagAction && !tagAttack && !tagLoot && !tagResume){
-				tagAppearing = true;
-			}
+			//if a new tag appears, re-layout tags immediately
+			//otherwise, wait until the hero acts, so as to not suddenly change their position
+			if (tagAppearing)   layoutTags();
+			else                tagsNeedLayout = true;
 
-			if (tagAppearing) layoutTags();
 		}
 
 		cellSelector.enable(Dungeon.hero.ready);
@@ -1392,6 +1391,10 @@ public class GameScene extends PixelScene {
 		QuickSlotButton.cancel();
 		InventoryPane.cancelTargeting();
 		if (scene != null && scene.toolbar != null) scene.toolbar.examining = false;
+		if (tagsNeedLayout) {
+			layoutTags();
+			tagsNeedLayout = false;
+		}
 	}
 	
 	public static void checkKeyHold(){

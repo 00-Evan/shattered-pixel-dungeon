@@ -48,6 +48,7 @@ public class LootIndicator extends Tag {
 
 		slot = new ItemSlot() {
 			protected void onClick() {
+				LootIndicator.this.onClick();
 				if (Dungeon.hero.ready && Dungeon.hero.handle(Dungeon.hero.pos)){
 					Dungeon.hero.next();
 				}
