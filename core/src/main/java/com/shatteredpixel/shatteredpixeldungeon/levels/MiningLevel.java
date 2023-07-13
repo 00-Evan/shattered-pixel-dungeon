@@ -40,6 +40,8 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.Tilemap;
 import com.watabou.noosa.audio.Music;
 
+import java.util.Arrays;
+
 public class MiningLevel extends Level {
 
 	{
@@ -92,7 +94,11 @@ public class MiningLevel extends Level {
 
 		painter.paint(this, null);
 
-		BorderDarken vis = new BorderDarken();
+		CustomTilemap vis = new BorderTopDarken();
+		vis.setRect(0, 0, width, 1);
+		customTiles.add(vis);
+
+		vis = new BorderWallsDarken();
 		vis.setRect(0, 0, width, height);
 		customWalls.add(vis);
 
@@ -173,7 +179,28 @@ public class MiningLevel extends Level {
 		return visuals;
 	}
 
-	public static class BorderDarken extends CustomTilemap{
+	public static class BorderTopDarken extends CustomTilemap {
+
+		{
+			texture = Assets.Environment.CAVES_QUEST;
+		}
+
+		@Override
+		public Tilemap create() {
+			Tilemap v = super.create();
+			int[] data = new int[tileW*tileH];
+			Arrays.fill(data, 1);
+			v.map( data, tileW );
+			return v;
+		}
+
+		@Override
+		public Image image(int tileX, int tileY) {
+			return null;
+		}
+	}
+
+	public static class BorderWallsDarken extends CustomTilemap {
 
 		{
 			texture = Assets.Environment.CAVES_QUEST;
@@ -184,12 +211,10 @@ public class MiningLevel extends Level {
 			Tilemap v = super.create();
 			int[] data = new int[tileW*tileH];
 			for (int i = 0; i < data.length; i++){
-				if (i < tileW){
-					data[i] = 2;
-				} else if (i % tileW == 0 || i % tileW == tileW-1){
+				if (i % tileW == 0 || i % tileW == tileW-1){
 					data[i] = 1;
 				} else if (i + 2*tileW > data.length) {
-					data[i] = 3;
+					data[i] = 2;
 				} else {
 					data[i] = -1;
 				}
