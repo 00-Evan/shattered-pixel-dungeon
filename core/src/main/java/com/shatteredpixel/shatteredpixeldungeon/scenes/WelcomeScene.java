@@ -147,7 +147,7 @@ public class WelcomeScene extends PixelScene {
 					SPDSettings.version(ShatteredPixelDungeon.versionCode);
 					GamesInProgress.selectedClass = null;
 					GamesInProgress.curSlot = GamesInProgress.firstEmpty();
-					if (GamesInProgress.curSlot == -1){
+					if (GamesInProgress.curSlot == -1 || Rankings.INSTANCE.totalNumber > 0){
 						SPDSettings.intro(false);
 						ShatteredPixelDungeon.switchScene(TitleScene.class);
 					} else {
