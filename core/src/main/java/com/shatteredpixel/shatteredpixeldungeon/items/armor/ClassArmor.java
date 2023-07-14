@@ -101,10 +101,6 @@ abstract public class ClassArmor extends Armor {
 		switch (owner.heroClass) {
 			case WARRIOR:
 				classArmor = new WarriorArmor();
-				BrokenSeal seal = armor.checkSeal();
-				if (seal != null) {
-					classArmor.affixSeal(seal);
-				}
 				break;
 			case ROGUE:
 				classArmor = new RogueArmor();
@@ -123,7 +119,18 @@ abstract public class ClassArmor extends Armor {
 		classArmor.level(armor.trueLevel());
 		classArmor.tier = armor.tier;
 		classArmor.augment = armor.augment;
-		classArmor.inscribe( armor.glyph );
+		BrokenSeal seal = armor.checkSeal();
+		if (seal != null) {
+			//want to preserve whether the glyph is on the armor or the seal
+			if (seal.getGlyph() != null) {
+				classArmor.affixSeal(seal);
+			} else {
+				classArmor.inscribe(armor.glyph);
+				classArmor.affixSeal(seal);
+			}
+		} else {
+			classArmor.inscribe(armor.glyph);
+		}
 		classArmor.cursed = armor.cursed;
 		classArmor.curseInfusionBonus = armor.curseInfusionBonus;
 		classArmor.masteryPotionBonus = armor.masteryPotionBonus;
