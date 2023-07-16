@@ -21,23 +21,20 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.CrystalKey;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Starflower;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class CrystalPathRoom extends SpecialRoom {
 
@@ -49,122 +46,189 @@ public class CrystalPathRoom extends SpecialRoom {
 	public void paint(Level level) {
 
 		Painter.fill( level, this, Terrain.WALL );
-		Painter.fill( level, this, 1, Terrain.EMPTY_SP );
 
-		Door entrance = entrance();
+		//rooms are ordered from closest to furthest from the entrance
+		EmptyRoom[] rooms = new EmptyRoom[6];
+		for( int i=0; i<rooms.length; i++){
+			rooms[i] = new EmptyRoom();
+		}
 
-		Point center;
-		do {
-			center = center();
-		} while (center.x == entrance.x || center.y == entrance.y);
+		Point entry = new Point(entrance());
 
-		//draw walls between internal rooms
-		Painter.drawLine(level, new Point(center.x, top+1), new Point(center.x, bottom-1), Terrain.WALL);
-		Painter.drawLine(level, new Point(left+1, center.y), new Point(right-1, center.y), Terrain.WALL);
+		int prize1 = 0, prize2 = 0;
+		if (entry.x == left || entry.x == right){
 
-		Point door = new Point(entrance);
+			Painter.drawInside(level, this, entry, width() > 8 ? 5 : 3, Terrain.EMPTY);
 
-		//determine if the door and loot order should be clockwise or counterclockwise
-		boolean clockwise;
-		if (entrance.x == left || entrance.x == right){
-			door.x = center.x;
-			clockwise = entrance.y < center.y;
-			if (entrance.x  == right) clockwise = !clockwise;
+			int roomW1 = width() >= 9 ? 2 : 1;
+			int roomW2 = width() % 2 == 0 ? 2 : 1;
+			int roomH = height() >= 9 ? 2 : 1;
+
+			if (entry.x == left){
+				rooms[0].setPos(left+1, entry.y-roomH-1).resize(roomW1-1, roomH-1);
+				Painter.set(level, rooms[0].left, rooms[0].bottom+1, Terrain.CRYSTAL_DOOR);
+				rooms[1].setPos(left+1, entry.y+2).resize(roomW1-1, roomH-1);
+				Painter.set(level, rooms[1].left, rooms[1].top-1, Terrain.CRYSTAL_DOOR);
+
+				rooms[2].setPos(rooms[1].right+2, entry.y-roomH-1).resize(roomW1-1, roomH-1);
+				Painter.set(level, rooms[2].left, rooms[2].bottom+1, Terrain.CRYSTAL_DOOR);
+				rooms[3].setPos(rooms[1].right+2, entry.y+2).resize(roomW1-1, roomH-1);
+				Painter.set(level, rooms[3].left, rooms[3].top-1, Terrain.CRYSTAL_DOOR);
+
+				rooms[4].setPos(rooms[3].right+2, entry.y-roomH-1).resize(roomW2-1, roomH);
+				Painter.set(level, rooms[4].left-1, rooms[4].bottom-1, Terrain.CRYSTAL_DOOR);
+				rooms[5].setPos(rooms[3].right+2, entry.y+1).resize(roomW2-1, roomH);
+				Painter.set(level, rooms[5].left-1, rooms[5].top+1, Terrain.CRYSTAL_DOOR);
+
+				prize1 = level.pointToCell(new Point(rooms[4].left, rooms[4].bottom));
+				prize2 = level.pointToCell(new Point(rooms[5].left, rooms[5].top));
+			} else {
+				rooms[0].setPos(right-roomW1, entry.y-roomH-1).resize(roomW1-1, roomH-1);
+				Painter.set(level, rooms[0].right, rooms[0].bottom+1, Terrain.CRYSTAL_DOOR);
+				rooms[1].setPos(right-roomW1, entry.y+2).resize(roomW1-1, roomH-1);
+				Painter.set(level, rooms[1].right, rooms[1].top-1, Terrain.CRYSTAL_DOOR);
+
+				rooms[2].setPos(rooms[1].left-roomW1-1, entry.y-roomH-1).resize(roomW1-1, roomH-1);
+				Painter.set(level, rooms[2].right, rooms[2].bottom+1, Terrain.CRYSTAL_DOOR);
+				rooms[3].setPos(rooms[1].left-roomW1-1, entry.y+2).resize(roomW1-1, roomH-1);
+				Painter.set(level, rooms[3].right, rooms[3].top-1, Terrain.CRYSTAL_DOOR);
+
+				rooms[4].setPos(rooms[3].left-roomW2-1, entry.y-roomH-1).resize(roomW2-1, roomH);
+				Painter.set(level, rooms[4].right+1, rooms[4].bottom-1, Terrain.CRYSTAL_DOOR);
+				rooms[5].setPos(rooms[3].left-roomW2-1, entry.y+1).resize(roomW2-1, roomH);
+				Painter.set(level, rooms[5].right+1, rooms[5].top+1, Terrain.CRYSTAL_DOOR);
+
+				prize1 = level.pointToCell(new Point(rooms[4].right, rooms[4].bottom));
+				prize2 = level.pointToCell(new Point(rooms[5].right, rooms[5].top));
+			}
+
 		} else {
-			door.y = center.y;
-			clockwise = entrance.x > center.x;
-			if (entrance.y == bottom) clockwise = !clockwise;
-		}
+			Painter.drawInside(level, this, entry, height() > 8 ? 5 : 3, Terrain.EMPTY);
 
-		//define the four sub-rooms. clockwise from top-left
-		Room[] rooms = new EmptyRoom[4];
-		rooms[0] = new EmptyRoom();
-		rooms[0].set(left+1, top+1, center.x-1, center.y-1);
-		rooms[1] = new EmptyRoom();
-		rooms[1].set(center.x+1, top+1, right-1, center.y-1);
-		rooms[2] = new EmptyRoom();
-		rooms[2].set(center.x+1, center.y+1, right-1, bottom-1);
-		rooms[3] = new EmptyRoom();
-		rooms[3].set(left+1, center.y+1, center.x-1, bottom-1);
+			int roomW = width() >= 9 ? 2 : 1;
+			int roomH1 = height() >= 9 ? 2 : 1;
+			int roomH2 = height() % 2 == 0 ? 2 : 1;
 
-		//place 3 crystal doors in the center between rooms,
-		// forming a clockwise or counterclockwise pattern
-		for (int i = 0; i < 3; i++){
-			if (door.x == center.x){
-				if (door.y < center.y){
-					door.y = rooms[0].center().y;
-				} else {
-					door.y = rooms[2].center().y;
-				}
+			if (entry.y == top){
+				rooms[0].setPos(entry.x-roomW-1, top+1).resize(roomW-1, roomH1-1);
+				Painter.set(level, rooms[0].right+1, rooms[0].top, Terrain.CRYSTAL_DOOR);
+				rooms[1].setPos(entry.x+2, top+1).resize(roomW-1, roomH1-1);
+				Painter.set(level, rooms[1].left-1, rooms[1].top, Terrain.CRYSTAL_DOOR);
+
+				rooms[2].setPos(entry.x-roomW-1, rooms[1].bottom+2).resize(roomW-1, roomH1-1);
+				Painter.set(level, rooms[2].right+1, rooms[2].top, Terrain.CRYSTAL_DOOR);
+				rooms[3].setPos(entry.x+2,  rooms[1].bottom+2).resize(roomW-1, roomH1-1);
+				Painter.set(level, rooms[3].left-1, rooms[3].top, Terrain.CRYSTAL_DOOR);
+
+				rooms[4].setPos(entry.x-roomW-1, rooms[3].bottom+2).resize(roomW, roomH2-1);
+				Painter.set(level, rooms[4].right-1, rooms[4].top-1, Terrain.CRYSTAL_DOOR);
+				rooms[5].setPos(entry.x+1, rooms[3].bottom+2).resize(roomW, roomH2-1);
+				Painter.set(level, rooms[5].left+1, rooms[5].top-1, Terrain.CRYSTAL_DOOR);
+
+				prize1 = level.pointToCell(new Point(rooms[4].right, rooms[4].top));
+				prize2 = level.pointToCell(new Point(rooms[5].left, rooms[5].top));
 			} else {
-				if (door.x < center.x){
-					door.x = rooms[0].center().x;
-				} else {
-					door.x = rooms[1].center().x;
+				rooms[0].setPos(entry.x-roomW-1, bottom-roomH1).resize(roomW-1, roomH1-1);
+				Painter.set(level, rooms[0].right+1, rooms[0].bottom, Terrain.CRYSTAL_DOOR);
+				rooms[1].setPos(entry.x+2, bottom-roomH1).resize(roomW-1, roomH1-1);
+				Painter.set(level, rooms[1].left-1, rooms[1].bottom, Terrain.CRYSTAL_DOOR);
+
+				rooms[2].setPos(entry.x-roomW-1, rooms[1].top-roomH1-1).resize(roomW-1, roomH1-1);
+				Painter.set(level, rooms[2].right+1, rooms[2].bottom, Terrain.CRYSTAL_DOOR);
+				rooms[3].setPos(entry.x+2, rooms[1].top-roomH1-1).resize(roomW-1, roomH1-1);
+				Painter.set(level, rooms[3].left-1, rooms[3].bottom, Terrain.CRYSTAL_DOOR);
+
+				rooms[4].setPos(entry.x-roomW-1, rooms[3].top-roomH2-1).resize(roomW, roomH2-1);
+				Painter.set(level, rooms[4].right-1, rooms[4].bottom+1, Terrain.CRYSTAL_DOOR);
+				rooms[5].setPos(entry.x+1,  rooms[3].top-roomH2-1).resize(roomW, roomH2-1);
+				Painter.set(level, rooms[5].left+1, rooms[5].bottom+1, Terrain.CRYSTAL_DOOR);
+
+				prize1 = level.pointToCell(new Point(rooms[4].right, rooms[4].bottom));
+				prize2 = level.pointToCell(new Point(rooms[5].left, rooms[5].bottom));
+			}
+
+		}
+
+		for (EmptyRoom room : rooms) {
+			Painter.fill(level, room, Terrain.EMPTY_SP);
+		}
+		Painter.set(level, prize1, Terrain.PEDESTAL);
+		Painter.set(level, prize2, Terrain.PEDESTAL);
+
+		//random potion/scroll in rooms 1-4, with lower value ones going into earlier rooms
+		ArrayList<Item> rewardItems = new ArrayList<>();
+
+		ArrayList<Item> duplicates = new ArrayList<>();
+
+		addRewardItem(Generator.Category.POTION, rewardItems, duplicates);
+		addRewardItem(Generator.Category.SCROLL, rewardItems, duplicates);
+		addRewardItem(Generator.Category.POTION, rewardItems, duplicates);
+		addRewardItem(Generator.Category.SCROLL, rewardItems, duplicates);
+		if (Random.Int(2) == 0){
+			addRewardItem(Generator.Category.POTION, rewardItems, duplicates);
+			rewardItems.add(new ScrollOfTransmutation());
+		} else {
+			rewardItems.add(new PotionOfExperience());
+			addRewardItem(Generator.Category.SCROLL, rewardItems, duplicates);
+		}
+
+		//need to undo the changes to spawn chances that the duplicates created
+		for (Item i : duplicates){
+			Generator.undoDrop(i);
+		}
+
+		//rarer potions/scroll go later in the order
+		Collections.sort(rewardItems, new Comparator<Item>() {
+			@Override
+			public int compare(Item a, Item b) {
+				int aVal = 0, bVal = 0;
+				for (int i = 0; i < Generator.Category.POTION.classes.length; i++){
+					if (a.getClass() == Generator.Category.POTION.classes[i]) aVal = (int)Generator.Category.POTION.defaultProbs[i];
+					if (b.getClass() == Generator.Category.POTION.classes[i]) bVal = (int)Generator.Category.POTION.defaultProbs[i];
+				}
+				for (int i = 0; i < Generator.Category.SCROLL.classes.length; i++){
+					if (a.getClass() == Generator.Category.SCROLL.classes[i]) aVal = (int)Generator.Category.SCROLL.defaultProbs[i];
+					if (b.getClass() == Generator.Category.SCROLL.classes[i]) bVal = (int)Generator.Category.SCROLL.defaultProbs[i];
+				}
+
+				return aVal - bVal;
+			}
+		});
+
+		//least valuable items go into rooms 2&3, then rooms 0&1, and finally 4&5
+		int shuffle = Random.Int(2);
+		level.drop(rewardItems.remove(0), level.pointToCell(rooms[shuffle == 1 ? 2 : 3].center()));
+		level.drop(rewardItems.remove(0), level.pointToCell(rooms[shuffle == 1 ? 3 : 2].center()));
+
+		level.drop(rewardItems.remove(0), level.pointToCell(rooms[shuffle == 1 ? 0 : 1].center()));
+		level.drop(rewardItems.remove(0), level.pointToCell(rooms[shuffle == 1 ? 1 : 0].center()));
+
+		level.drop(rewardItems.remove(0), shuffle == 1 ? prize1 : prize2);
+		level.drop(rewardItems.remove(0), shuffle == 1 ? prize2 : prize1);
+
+		entrance().set( Door.Type.UNLOCKED );
+
+	}
+
+	//this prevents duplicates
+	public void addRewardItem(Generator.Category cat, ArrayList<Item> items, ArrayList<Item> dupes){
+		while (true) {
+			Item reward = Generator.random(cat);
+
+			boolean dupe = false;
+			for (Item i : items){
+				if (i.isSimilar(reward)){
+					dupes.add(reward);
+					dupe = true;
+					break;
 				}
 			}
-			Painter.set(level, door, Terrain.CRYSTAL_DOOR);
-			door.x -= center.x;
-			door.y -= center.y;
-			int tmp = door.x;
-			door.x = door.y;
-			door.y = tmp;
-			if (clockwise)  door.x = -door.x;
-			else            door.y = -door.y;
-			door.x += center.x;
-			door.y += center.y;
-		}
 
-		//figure out room order for loot, and start generating it!
-		int idx = 0;
-		for (int i = 0; i < rooms.length; i++){
-			rooms[i].set(rooms[i].shrink(-2)); //we grow/shrink the room to increase intersection bounds
-			if (rooms[i].inside(entrance)){
-				idx = i;
-			}
-			rooms[i].set(rooms[i].shrink(2));
-		}
-
-		for (int i = 0; i < 4; i++){
-			int pos = level.pointToCell(rooms[idx].center());
-			Item item;
-			switch (i){
-				case 0: default:
-					item = new Gold().random();
-					break;
-				case 1:
-					item = Generator.random(Generator.Category.POTION);
-					break;
-				case 2:
-					item = Generator.random(Generator.Category.SCROLL);
-					break;
-				case 3:
-					switch (Random.Int(4)){
-						default:
-						case 0: item = new StoneOfAugmentation(); break;
-						case 1: item = new ScrollOfTransmutation(); break;
-						case 2: item = new Starflower.Seed(); break;
-						case 3: item = new PotionOfExperience(); break;
-					}
-					break;
-			}
-			level.drop(item, pos);
-			if (clockwise){
-				idx++;
-				if (idx > 3) idx = 0;
-			} else {
-				idx--;
-				if (idx < 0) idx = 3;
+			if (!dupe){
+				items.add(reward);
+				return;
 			}
 		}
-
-		level.addItemToSpawn( new CrystalKey( Dungeon.depth ) );
-		level.addItemToSpawn( new CrystalKey( Dungeon.depth ) );
-		level.addItemToSpawn( new CrystalKey( Dungeon.depth ) );
-
-		entrance().set( Door.Type.LOCKED );
-		level.addItemToSpawn( new IronKey( Dungeon.depth ) );
-
 	}
 
 	@Override
@@ -172,14 +236,28 @@ public class CrystalPathRoom extends SpecialRoom {
 		if (!super.canConnect(p)){
 			return false;
 		}
-		//don't place door in the exact center, if that exists
-		if (width() % 2 == 1 && p.x == center().x){
-			return false;
+		//only place doors in the center
+		if (Math.abs(p.x - (right - (width()-1)/2f)) < 1f){
+			return true;
 		}
-		if (height() % 2 == 1 && p.y == center().y){
-			return false;
+		if (Math.abs(p.y - (bottom - (height()-1)/2f)) < 1f){
+			return true;
 		}
-		return true;
+		return false;
 	}
 
+	@Override
+	public boolean canPlaceGrass(Point p) {
+		return false;
+	}
+
+	@Override
+	public boolean canPlaceWater(Point p) {
+		return false;
+	}
+
+	@Override
+	public boolean canPlaceTrap(Point p) {
+		return false;
+	}
 }
