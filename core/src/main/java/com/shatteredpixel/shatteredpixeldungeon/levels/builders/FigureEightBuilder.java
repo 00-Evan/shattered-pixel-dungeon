@@ -130,7 +130,7 @@ public class FigureEightBuilder extends RegularBuilder {
 		ArrayList<Room> secondLoopTemp = new ArrayList<>();
 		secondLoopTemp.add(landmarkRoom);
 		secondLoopTemp.addAll(roomsToLoop);
-		secondLoopTemp.add((secondLoopTemp.size()+1)/2, exit);
+		if (exit != null) secondLoopTemp.add((secondLoopTemp.size()+1)/2, exit);
 
 		secondLoop = new ArrayList<>();
 		for (Room r : secondLoopTemp){
