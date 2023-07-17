@@ -31,8 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.FetidRat;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollTrickster;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GreatCrab;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherArmor;
@@ -42,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
@@ -52,6 +51,7 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 public class Ghost extends NPC {
@@ -61,7 +61,7 @@ public class Ghost extends NPC {
 		
 		flying = true;
 		
-		state = WANDERING;
+		state = PASSIVE;
 	}
 
 	@Override
@@ -69,9 +69,6 @@ public class Ghost extends NPC {
 		if (Dungeon.hero.buff(AscensionChallenge.class) != null){
 			die(null);
 			return true;
-		}
-		if (Quest.processed()) {
-			target = Dungeon.hero.pos;
 		}
 		if (Dungeon.level.heroFOV[pos] && !Quest.completed()){
 			Notes.add( Notes.Landmark.GHOST );
@@ -147,20 +144,6 @@ public class Ghost extends NPC {
 						}
 					});
 
-					int newPos = -1;
-					for (int i = 0; i < 10; i++) {
-						newPos = Dungeon.level.randomRespawnCell( this );
-						if (newPos != -1) {
-							break;
-						}
-					}
-					if (newPos != -1) {
-
-						CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
-						pos = newPos;
-						sprite.place(pos);
-						sprite.visible = Dungeon.level.heroFOV[pos];
-					}
 				}
 			}
 		} else {
@@ -285,13 +268,35 @@ public class Ghost extends NPC {
 			}
 		}
 		
-		public static void spawn( SewerLevel level ) {
+		public static void spawn( SewerLevel level, Room room ) {
 			if (!spawned && Dungeon.depth > 1 && Random.Int( 5 - Dungeon.depth ) == 0) {
 				
 				Ghost ghost = new Ghost();
+				boolean validPos;
+				//spawn along the border, but not on the exit, a trap, or in front of a door
 				do {
-					ghost.pos = level.randomRespawnCell( ghost );
-				} while (ghost.pos == -1);
+					validPos = true;
+					Point point = new Point();
+					if (Random.Int(2) == 0) {
+						point.x = Random.Int(2) == 0 ? room.left+1 : room.right-1;
+						point.y = Random.IntRange(room.top+1, room.bottom-1);
+					} else {
+						point.x = Random.IntRange(room.left+1, room.right-1);
+						point.y = Random.Int(2) == 0 ? room.top+1 : room.bottom-1;
+					}
+					ghost.pos = level.pointToCell(point);
+					if (ghost.pos == level.exit()){
+						validPos = false;
+					}
+					for (Point door : room.connected.values()){
+						if (level.trueDistance( ghost.pos, level.pointToCell( door ) ) <= 1){
+							validPos = false;
+						}
+					}
+					if (level.traps.get(ghost.pos) != null){
+						validPos = false;
+					}
+				} while (!validPos);
 				level.mobs.add( ghost );
 				
 				spawned = true;
