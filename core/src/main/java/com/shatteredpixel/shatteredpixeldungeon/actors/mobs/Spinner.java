@@ -266,13 +266,5 @@ public class Spinner extends Mob {
 			return super.act(enemyInFOV, justAlerted);
 		}
 
-		@Override
-		protected void nowhereToRun() {
-			if (buff(Terror.class) == null && buff(Dread.class) == null) {
-				state = HUNTING;
-			} else {
-				super.nowhereToRun();
-			}
-		}
 	}
 }

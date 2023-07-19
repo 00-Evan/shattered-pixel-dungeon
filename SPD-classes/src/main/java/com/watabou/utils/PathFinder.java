@@ -31,6 +31,7 @@ public class PathFinder {
 	
 	private static boolean[] goals;
 	private static int[] queue;
+	private static boolean[] queued; //currently only used in getStepBack, other can piggyback on distance
 	
 	private static int size = 0;
 	private static int width = 0;
@@ -57,6 +58,7 @@ public class PathFinder {
 		distance = new int[size];
 		goals = new boolean[size];
 		queue = new int[size];
+		queued = new boolean[size];
 
 		maxVal = new int[size];
 		Arrays.fill(maxVal, Integer.MAX_VALUE);
@@ -127,9 +129,51 @@ public class PathFinder {
 		return best;
 	}
 	
-	public static int getStepBack( int cur, int from, boolean[] passable ) {
+	public static int getStepBack( int cur, int from, int lookahead, boolean[] passable, boolean canApproachFromPos ) {
 
-		int d = buildEscapeDistanceMap( cur, from, 5, passable );
+		int d = buildEscapeDistanceMap( cur, from, lookahead, passable );
+		if (d == 0) return -1;
+
+		if (!canApproachFromPos) {
+			//We can't approach the position we are retreating from
+			//re-calculate based on this, and reduce the target distance if need-be
+			int head = 0;
+			int tail = 0;
+
+			int newD = distance[cur];
+			BArray.setFalse(queued);
+
+			queue[tail++] = cur;
+			queued[cur] = true;
+
+			while (head < tail) {
+				int step = queue[head++];
+
+				if (distance[step] > newD) {
+					newD = distance[step];
+				}
+
+				int start = (step % width == 0 ? 3 : 0);
+				int end = ((step + 1) % width == 0 ? 3 : 0);
+				for (int i = start; i < dirLR.length - end; i++) {
+
+					int n = step + dirLR[i];
+					if (n >= 0 && n < size && passable[n]) {
+						if (distance[n] < distance[cur]) {
+							passable[n] = false;
+						} else if (distance[n] >= distance[step] && !queued[n]) {
+							// Add to queue
+							queue[tail++] = n;
+							queued[n] = true;
+						}
+					}
+				}
+
+			}
+
+			d = Math.min(newD, d);
+		}
+
 		for (int i=0; i < size; i++) {
 			goals[i] = distance[i] == d;
 		}
@@ -284,7 +328,9 @@ public class PathFinder {
 		
 		return pathFound;
 	}
-	
+
+	//the lookahead is the target number of cells to retreat toward from our current position's
+	// distance from the position we are escaping from. Returns the highest found distance, up to the lookahead
 	private static int buildEscapeDistanceMap( int cur, int from, int lookAhead, boolean[] passable ) {
 		
 		System.arraycopy(maxVal, 0, distance, 0, maxVal.length);
