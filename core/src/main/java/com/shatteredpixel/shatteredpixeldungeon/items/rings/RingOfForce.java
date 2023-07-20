@@ -114,7 +114,12 @@ public class RingOfForce extends Ring {
 		float tier = tier(Dungeon.hero.STR());
 		if (isIdentified()) {
 			int level = soloBuffedBonus();
-			return Messages.get(this, "stats", min(level, tier), max(level, tier), level);
+			String info = Messages.get(this, "stats", min(level, tier), max(level, tier), level);
+			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != getBuffedBonus(Dungeon.hero, Force.class)){
+				level = getBuffedBonus(Dungeon.hero, Force.class);
+				info += "\n\n" + Messages.get(this, "combined_stats", min(level, tier), max(level, tier), level);
+			}
+			return info;
 		} else {
 			return Messages.get(this, "typical_stats", min(1, tier), max(1, tier), 1);
 		}
