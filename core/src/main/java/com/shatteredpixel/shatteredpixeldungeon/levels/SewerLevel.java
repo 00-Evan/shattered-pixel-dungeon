@@ -115,11 +115,10 @@ public class SewerLevel extends RegularLevel {
 						2, 2,
 						1, 1, 1, 1, 1};
 	}
-	
+
 	@Override
-	protected void createItems() {
+	protected void createMobs() {
 		Ghost.Quest.spawn( this, roomExit );
-		
 		super.createItems();
 	}
 	
