@@ -25,11 +25,13 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Patch;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MiningLevelPainter extends CavesPainter {
 
@@ -80,7 +82,7 @@ public class MiningLevelPainter extends CavesPainter {
 			//fill in only the exposed potential gold cells...
 			for (int i : goldPosCandidates){
 				if (map[i] == Terrain.WALL) {
-					map[i] = Terrain.BARRICADE;
+					map[i] = Terrain.WALL_DECO;
 					goldToAdd--;
 				}
 
@@ -88,7 +90,7 @@ public class MiningLevelPainter extends CavesPainter {
 				for (int k : PathFinder.NEIGHBOURS4){
 					if (!level.insideMap(i+k)) continue;
 					if (goldToAdd > 0 && goldPosCandidates.contains(i+k) && map[i+k] == Terrain.WALL){
-						map[i+k] = Terrain.BARRICADE;
+						map[i+k] = Terrain.WALL_DECO;
 						goldToAdd--;
 					}
 				};
@@ -104,7 +106,7 @@ public class MiningLevelPainter extends CavesPainter {
 					for (int k : PathFinder.NEIGHBOURS4){
 						if (!level.insideMap(i+k)) continue;
 						if (goldToAdd > 0 && gold[i+k] && map[i+k] == Terrain.WALL){
-							map[i+k] = Terrain.BARRICADE;
+							map[i+k] = Terrain.WALL_DECO;
 							goldToAdd--;
 						}
 					};
@@ -130,4 +132,49 @@ public class MiningLevelPainter extends CavesPainter {
 		}
 	}
 	*/
+
+	@Override
+	protected void paintDoors(Level l, ArrayList<Room> rooms) {
+
+		HashMap<Room, Room> roomMerges = new HashMap<>();
+
+		//add door types are empty, except secret, which becomes wall
+		for (Room r : rooms) {
+			for (Room n : r.connected.keySet()) {
+
+				//normal sized rooms can be merged at most once. Large and Giant rooms can be merged many times
+				if (roomMerges.get(r) == n || roomMerges.get(n) == r){
+					continue;
+				} else if (!roomMerges.containsKey(r) && !roomMerges.containsKey(n) &&
+						mergeRooms(l, r, n, r.connected.get(n), Terrain.EMPTY)) {
+					if (((StandardRoom) r).sizeCat == StandardRoom.SizeCategory.NORMAL) roomMerges.put(r, n);
+					if (((StandardRoom) n).sizeCat == StandardRoom.SizeCategory.NORMAL) roomMerges.put(n, r);
+					continue;
+				}
+
+				Room.Door d = r.connected.get(n);
+				int door = d.x + d.y * l.width();
+
+				//TODO should be more purposeful about this
+				if (Random.Int(2) == 0 || d.type == Room.Door.Type.HIDDEN){
+					l.map[door] = Terrain.WALL;
+				} else {
+					l.map[door] = Terrain.EMPTY;
+				}
+
+			}
+		}
+	}
+
+	@Override
+	protected void decorate(Level level, ArrayList<Room> rooms) {
+		super.decorate(level, rooms);
+
+		//no chasms allowed, replace with ground!
+		for (int i = 0; i < level.length(); i++){
+			if (level.map[i] == Terrain.CHASM){
+				level.map[i] = Terrain.EMPTY;
+			}
+		}
+	}
 }
