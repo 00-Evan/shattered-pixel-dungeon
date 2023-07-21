@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.builders;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.ConnectionRoom;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -101,5 +102,22 @@ public class BranchesBuilder extends RegularBuilder {
 		}
 		
 		return rooms;
+	}
+
+	@Override
+	protected float randomBranchAngle( Room r ) {
+		PointF entranceCenter = new PointF(entrance.center());
+		//generate four angles randomly and return the one which points closer to the entrance
+		float toCenter = angleBetweenPoints( new PointF((r.left + r.right)/2f, (r.top + r.bottom)/2f), entranceCenter);
+		if (toCenter < 0) toCenter += 360f;
+
+		float currAngle = Random.Float(360f);
+		for( int i = 0; i < 4; i ++){
+			float newAngle = Random.Float(360f);
+			if (Math.abs(toCenter - newAngle) < Math.abs(toCenter - currAngle)){
+				currAngle = newAngle;
+			}
+		}
+		return currAngle;
 	}
 }
