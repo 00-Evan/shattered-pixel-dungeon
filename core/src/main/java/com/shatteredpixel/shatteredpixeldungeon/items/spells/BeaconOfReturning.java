@@ -183,12 +183,14 @@ public class BeaconOfReturning extends Spell {
 	}
 	
 	private static final String DEPTH	= "depth";
+	private static final String BRANCH	= "branch";
 	private static final String POS		= "pos";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( DEPTH, returnDepth );
+		bundle.put( BRANCH, returnBranch );
 		if (returnDepth != -1) {
 			bundle.put( POS, returnPos );
 		}
@@ -198,6 +200,7 @@ public class BeaconOfReturning extends Spell {
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle(bundle);
 		returnDepth	= bundle.getInt( DEPTH );
+		returnBranch = bundle.getInt( BRANCH );
 		returnPos	= bundle.getInt( POS );
 	}
 	
