@@ -60,6 +60,7 @@ public class StoneOfAugmentation extends InventoryStone {
 		weapon.augment = augment;
 		useAnimation();
 		ScrollOfUpgrade.upgrade(curUser);
+		curItem.detach( curUser.belongings.backpack );
 		
 	}
 	
@@ -68,6 +69,7 @@ public class StoneOfAugmentation extends InventoryStone {
 		armor.augment = augment;
 		useAnimation();
 		ScrollOfUpgrade.upgrade(curUser);
+		curItem.detach( curUser.belongings.backpack );
 	}
 	
 	@Override

@@ -50,6 +50,8 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 
 	@Override
 	public void doRead() {
+
+		detach(curUser.belongings.backpack);
 		TormentedSpirit spirit = null;
 		for (int i : PathFinder.NEIGHBOURS8){
 			if (Actor.findChar(curUser.pos+i) instanceof TormentedSpirit){

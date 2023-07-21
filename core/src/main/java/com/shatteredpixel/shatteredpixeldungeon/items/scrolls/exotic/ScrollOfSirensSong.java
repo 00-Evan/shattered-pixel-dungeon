@@ -44,10 +44,18 @@ public class ScrollOfSirensSong extends ExoticScroll {
 	{
 		icon = ItemSpriteSheet.Icons.SCROLL_SIREN;
 	}
+
+	protected static boolean identifiedByUse = false;
 	
 	@Override
 	public void doRead() {
-		if (!anonymous) curItem.collect(); //we detach it later
+		if (!isKnown()) {
+			identify();
+			curItem = detach(curUser.belongings.backpack);
+			identifiedByUse = true;
+		} else {
+			identifiedByUse = false;
+		}
 		GameScene.selectCell(targeter);
 	}
 
@@ -67,13 +75,11 @@ public class ScrollOfSirensSong extends ExoticScroll {
 				}
 			}
 
-			if (target == null && isKnown() && !anonymous){
+			if (target == null && !anonymous && !identifiedByUse){
 				GLog.w(Messages.get(ScrollOfSirensSong.class, "cancel"));
 				return;
 
 			} else {
-
-				detach(curUser.belongings.backpack);
 
 				curUser.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
 				Sample.INSTANCE.play( Assets.Sounds.CHARMS );
@@ -99,7 +105,10 @@ public class ScrollOfSirensSong extends ExoticScroll {
 					GLog.w(Messages.get(ScrollOfSirensSong.class, "no_target"));
 				}
 
-				identify();
+				if (!identifiedByUse) {
+					curItem.detach(curUser.belongings.backpack);
+				}
+				identifiedByUse = false;
 
 				readAnimation();
 

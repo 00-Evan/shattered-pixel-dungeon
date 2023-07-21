@@ -50,6 +50,8 @@ public class ScrollOfChallenge extends ExoticScroll {
 	
 	@Override
 	public void doRead() {
+
+		detach(curUser.belongings.backpack);
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 			mob.beckon( curUser.pos );
 		}

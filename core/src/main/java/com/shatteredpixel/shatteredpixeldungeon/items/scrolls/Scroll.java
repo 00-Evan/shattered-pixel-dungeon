@@ -171,8 +171,6 @@ public abstract class Scroll extends Item {
 					&& !(this instanceof ScrollOfRemoveCurse || this instanceof ScrollOfAntiMagic)){
 				GLog.n( Messages.get(this, "cursed") );
 			} else {
-				curUser = hero;
-				curItem = detach( hero.belongings.backpack );
 				doRead();
 			}
 			

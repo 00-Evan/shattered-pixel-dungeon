@@ -39,7 +39,8 @@ public class ScrollOfPrismaticImage extends ExoticScroll {
 	
 	@Override
 	public void doRead() {
-		
+
+		detach(curUser.belongings.backpack);
 		boolean found = false;
 		for (Mob m : Dungeon.level.mobs.toArray(new Mob[0])){
 			if (m instanceof PrismaticImage){

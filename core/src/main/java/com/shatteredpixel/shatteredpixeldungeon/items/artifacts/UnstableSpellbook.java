@@ -153,6 +153,7 @@ public class UnstableSpellbook extends Artifact {
 							handler.detach();
 							if (index == 1){
 								Scroll scroll = Reflection.newInstance(ExoticScroll.regToExo.get(fScroll.getClass()));
+								curItem = scroll;
 								charge--;
 								scroll.anonymize();
 								scroll.doRead();

@@ -60,11 +60,10 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 	@Override
 	//need to override drink so that time isn't spent right away
 	protected void drink(final Hero hero) {
-		curUser = hero;
-		curItem = detach( hero.belongings.backpack );
 
 		if (!isKnown()) {
 			identify();
+			curItem = detach( hero.belongings.backpack );
 			identifiedByUse = true;
 		} else {
 			identifiedByUse = false;
@@ -116,9 +115,10 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 						} );
 					}
 				});
-			} else if (cell == null && !anonymous){
-				curItem.collect( curUser.belongings.backpack );
 			} else if (cell != null) {
+				if (!identifiedByUse) {
+					curItem.detach(curUser.belongings.backpack);
+				}
 				potionAlreadyUsed = true;
 				identifiedByUse = false;
 				curUser.busy();
@@ -126,8 +126,6 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 				curUser.sprite.operate(curUser.pos, new Callback() {
 					@Override
 					public void call() {
-
-						curItem.detach(curUser.belongings.backpack);
 
 						curUser.sprite.idle();
 						curUser.sprite.zap(cell);

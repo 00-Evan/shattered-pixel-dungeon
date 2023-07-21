@@ -43,7 +43,8 @@ public class ScrollOfPsionicBlast extends ExoticScroll {
 	
 	@Override
 	public void doRead() {
-		
+
+		detach(curUser.belongings.backpack);
 		GameScene.flash( 0x80FFFFFF );
 		
 		Sample.INSTANCE.play( Assets.Sounds.BLAST );

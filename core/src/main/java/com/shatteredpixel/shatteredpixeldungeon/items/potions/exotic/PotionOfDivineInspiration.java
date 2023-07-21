@@ -44,11 +44,19 @@ public class PotionOfDivineInspiration extends ExoticPotion {
 		icon = ItemSpriteSheet.Icons.POTION_DIVINE;
 	}
 
+	protected static boolean identifiedByUse = false;
+
 	@Override
 	//need to override drink so that time isn't spent right away
 	protected void drink(final Hero hero) {
-		curUser = hero;
-		curItem = this;
+
+		if (!isKnown()) {
+			identify();
+			curItem = detach( hero.belongings.backpack );
+			identifiedByUse = true;
+		} else {
+			identifiedByUse = false;
+		}
 
 		boolean[] enabled = new boolean[5];
 		enabled[1] = enabled[2] = enabled[3] = enabled[4] = true;
@@ -69,10 +77,6 @@ public class PotionOfDivineInspiration extends ExoticPotion {
 				GLog.w(Messages.get(this, "no_more_points"));
 				return;
 			}
-		}
-
-		if (!isIdentified()) {
-			curItem.detach(curUser.belongings.backpack);
 		}
 
 		GameScene.show(new WndOptions(
@@ -96,11 +100,11 @@ public class PotionOfDivineInspiration extends ExoticPotion {
 				if (index != -1){
 					Buff.affect(curUser, DivineInspirationTracker.class).setBoosted(index+1);
 
-					if (isIdentified()) {
+					if (!identifiedByUse) {
 						curItem.detach(curUser.belongings.backpack);
 					}
+					identifiedByUse = false;
 
-					identify();
 					curUser.busy();
 					curUser.sprite.operate(curUser.pos);
 
@@ -132,7 +136,7 @@ public class PotionOfDivineInspiration extends ExoticPotion {
 			@Override
 			public void onBackPressed() {
 				//window can be closed if potion is already IDed
-				if (isIdentified()){
+				if (!identifiedByUse){
 					super.onBackPressed();
 				}
 			}
