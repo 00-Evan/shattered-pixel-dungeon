@@ -51,7 +51,6 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
-import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 public class Ghost extends NPC {
@@ -60,8 +59,11 @@ public class Ghost extends NPC {
 		spriteClass = GhostSprite.class;
 		
 		flying = true;
-		
-		state = PASSIVE;
+
+		state = WANDERING;
+
+		//not actually large of course, but this makes the ghost stick to the exit room
+		properties.add(Property.LARGE);
 	}
 
 	@Override
@@ -272,31 +274,9 @@ public class Ghost extends NPC {
 			if (!spawned && Dungeon.depth > 1 && Random.Int( 5 - Dungeon.depth ) == 0) {
 				
 				Ghost ghost = new Ghost();
-				boolean validPos;
-				//spawn along the border, but not on the exit, a trap, or in front of a door
 				do {
-					validPos = true;
-					Point point = new Point();
-					if (Random.Int(2) == 0) {
-						point.x = Random.Int(2) == 0 ? room.left+1 : room.right-1;
-						point.y = Random.IntRange(room.top+1, room.bottom-1);
-					} else {
-						point.x = Random.IntRange(room.left+1, room.right-1);
-						point.y = Random.Int(2) == 0 ? room.top+1 : room.bottom-1;
-					}
-					ghost.pos = level.pointToCell(point);
-					if (ghost.pos == level.exit()){
-						validPos = false;
-					}
-					for (Point door : room.connected.values()){
-						if (level.trueDistance( ghost.pos, level.pointToCell( door ) ) <= 1){
-							validPos = false;
-						}
-					}
-					if (level.traps.get(ghost.pos) != null){
-						validPos = false;
-					}
-				} while (!validPos);
+					ghost.pos = level.pointToCell(room.random());
+				} while (ghost.pos == -1 || ghost.pos == level.exit());
 				level.mobs.add( ghost );
 				
 				spawned = true;
