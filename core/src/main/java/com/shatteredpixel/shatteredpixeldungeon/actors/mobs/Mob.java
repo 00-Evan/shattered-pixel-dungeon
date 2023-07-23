@@ -1081,11 +1081,15 @@ public abstract class Mob extends Char {
 				spend( 1 / speed() );
 				return moveSprite( oldPos, pos );
 			} else {
-				target = Dungeon.level.randomDestination( Mob.this );
+				target = randomDestination();
 				spend( TICK );
 			}
 			
 			return true;
+		}
+
+		protected int randomDestination(){
+			return Dungeon.level.randomDestination( Mob.this );
 		}
 		
 	}

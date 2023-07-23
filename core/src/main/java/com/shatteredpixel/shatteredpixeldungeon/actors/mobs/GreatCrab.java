@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GreatCrabSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class GreatCrab extends Crab {
@@ -45,6 +46,7 @@ public class GreatCrab extends Crab {
 
 		EXP = 6;
 
+		WANDERING = new Wandering();
 		state = WANDERING;
 
 		loot = new MysteryMeat().quantity(2);
@@ -108,5 +110,20 @@ public class GreatCrab extends Crab {
 		super.die( cause );
 
 		Ghost.Quest.process();
+	}
+
+	protected class Wandering extends Mob.Wandering{
+		@Override
+		protected int randomDestination() {
+			//of two potential wander positions, picks the one closest to the hero
+			int pos1 = super.randomDestination();
+			int pos2 = super.randomDestination();
+			PathFinder.buildDistanceMap(Dungeon.hero.pos, Dungeon.level.passable);
+			if (PathFinder.distance[pos2] < PathFinder.distance[pos1]){
+				return pos2;
+			} else {
+				return pos1;
+			}
+		}
 	}
 }
