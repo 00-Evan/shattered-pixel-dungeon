@@ -156,7 +156,7 @@ public abstract class ElementalSprite extends MobSprite {
 	public static class NewbornFire extends ElementalSprite {
 		
 		{
-			boltType = MagicMissile.FIRE;
+			boltType = MagicMissile.ELMO;
 		}
 		
 		@Override
