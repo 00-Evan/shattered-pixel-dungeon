@@ -32,6 +32,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.watabou.noosa.Image;
@@ -93,6 +95,32 @@ public class MassGraveRoom extends SpecialRoom {
 			h.setHauntedIfCursed();
 			h.type = Heap.Type.SKELETON;
 		}
+	}
+
+	@Override
+	public boolean canConnect(Room r) {
+		if (r instanceof EntranceRoom){
+			return false;
+		}
+
+		//must have at least 3 rooms between it and the entrance room
+		for (Room r1 : r.connected.keySet()) {
+			if (r1 instanceof EntranceRoom){
+				return false;
+			}
+			for (Room r2 : r1.connected.keySet()) {
+				if (r2 instanceof EntranceRoom){
+					return false;
+				}
+				for (Room r3 : r2.connected.keySet()) {
+					if (r3 instanceof EntranceRoom){
+						return false;
+					}
+				}
+			}
+		}
+
+		return super.canConnect(r);
 	}
 
 	public static class Bones extends CustomTilemap {
