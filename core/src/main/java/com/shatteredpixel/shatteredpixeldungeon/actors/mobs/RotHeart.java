@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RotHeartSprite;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class RotHeart extends Mob {
@@ -73,7 +74,15 @@ public class RotHeart extends Mob {
 
 	@Override
 	public int defenseProc(Char enemy, int damage) {
-		GameScene.add(Blob.seed(pos, 20, ToxicGas.class));
+		//rot heart spreads less gas in enclosed spaces
+		int openNearby = 2;
+		for (int i : PathFinder.NEIGHBOURS8){
+			if (!Dungeon.level.solid[pos+i]){
+				openNearby++;
+			}
+		}
+
+		GameScene.add(Blob.seed(pos, 2*openNearby, ToxicGas.class));
 
 		return super.defenseProc(enemy, damage);
 	}
