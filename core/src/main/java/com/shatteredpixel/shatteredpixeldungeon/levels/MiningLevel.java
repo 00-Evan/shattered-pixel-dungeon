@@ -71,6 +71,22 @@ public class MiningLevel extends CavesLevel {
 	}
 
 	@Override
+	protected boolean build() {
+		if (super.build()){
+			CustomTilemap vis = new BorderTopDarken();
+			vis.setRect(0, 0, width, 1);
+			customTiles.add(vis);
+
+			vis = new BorderWallsDarken();
+			vis.setRect(0, 0, width, height);
+			customWalls.add(vis);
+
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	protected Painter painter() {
 		return new MiningLevelPainter()
 				.setGold(Random.NormalIntRange(42, 46))
@@ -108,15 +124,6 @@ public class MiningLevel extends CavesLevel {
 	public Group addVisuals() {
 		super.addVisuals();
 		CavesLevel.addCavesVisuals(this, visuals);
-
-		CustomTilemap vis = new BorderTopDarken();
-		vis.setRect(0, 0, width, 1);
-		customTiles.add(vis);
-
-		vis = new BorderWallsDarken();
-		vis.setRect(0, 0, width, height);
-		customWalls.add(vis);
-
 		return visuals;
 	}
 
