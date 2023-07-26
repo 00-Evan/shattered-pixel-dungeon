@@ -72,6 +72,14 @@ public class Point {
 		y += d.y;
 		return this;
 	}
+
+	public boolean isZero(){
+		return x == 0 && y == 0;
+	}
+
+	public float length() {
+		return (float)Math.sqrt( x * x + y * y );
+	}
 	
 	@Override
 	public boolean equals( Object obj ) {

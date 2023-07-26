@@ -116,7 +116,11 @@ public class PointF {
 	public Point floor() {
 		return new Point( (int)x, (int)y );
 	}
-	
+
+	public boolean isZero(){
+		return x == 0 && y == 0;
+	}
+
 	public float length() {
 		return (float)Math.sqrt( x * x + y * y );
 	}
