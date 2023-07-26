@@ -88,7 +88,9 @@ public class BranchesBuilder extends RegularBuilder {
 		roomsToBranch.addAll(multiConnections);
 		if (exit != null) roomsToBranch.add(exit);
 		roomsToBranch.addAll(singleConnections);
-		createBranches(rooms, branchable, roomsToBranch, branchTunnelChances);
+		if (!createBranches(rooms, branchable, roomsToBranch, branchTunnelChances)){
+			return null;
+		}
 		
 		findNeighbours(rooms);
 		

@@ -144,7 +144,7 @@ public abstract class RegularBuilder extends Builder {
 	
 	//places the rooms in roomsToBranch into branches from rooms in branchable.
 	//note that the three arrays should be separate, they may contain the same rooms however
-	protected void createBranches(ArrayList<Room> rooms, ArrayList<Room> branchable,
+	protected boolean createBranches(ArrayList<Room> rooms, ArrayList<Room> branchable,
 	                                     ArrayList<Room> roomsToBranch, float[] connChances){
 		
 		int i = 0;
@@ -152,9 +152,13 @@ public abstract class RegularBuilder extends Builder {
 		int tries;
 		Room curr;
 		ArrayList<Room> connectingRoomsThisBranch = new ArrayList<>();
-		
+		int failedBranchAttempts = 0;
 		float[] connectionChances = connChances.clone();
 		while (i < roomsToBranch.size()){
+
+			if (failedBranchAttempts > 100){
+				return false;
+			}
 			
 			Room r = roomsToBranch.get(i);
 			
@@ -197,6 +201,7 @@ public abstract class RegularBuilder extends Builder {
 			}
 			
 			if (connectingRoomsThisBranch.size() != connectingRooms){
+				failedBranchAttempts++;
 				continue;
 			}
 			
@@ -214,6 +219,7 @@ public abstract class RegularBuilder extends Builder {
 					rooms.remove(t);
 				}
 				connectingRoomsThisBranch.clear();
+				failedBranchAttempts++;
 				continue;
 			}
 			
@@ -232,6 +238,8 @@ public abstract class RegularBuilder extends Builder {
 			
 			i++;
 		}
+
+		return true;
 	}
 	
 	protected float randomBranchAngle( Room r ){
