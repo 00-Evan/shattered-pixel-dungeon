@@ -43,11 +43,11 @@ public class StormCloud extends Blob {
 				if (cur[cell] > 0) {
 					Dungeon.level.setCellToWater(true, cell);
 					if (fire != null){
-						fire.clear(i);
+						fire.clear(cell);
 					}
 
 					//fiery enemies take damage as if they are in toxic gas
-					Char ch = Actor.findChar(i);
+					Char ch = Actor.findChar(cell);
 					if (ch != null
 							&& !ch.isImmune(getClass())
 							&& Char.hasProp(ch, Char.Property.FIERY)){
