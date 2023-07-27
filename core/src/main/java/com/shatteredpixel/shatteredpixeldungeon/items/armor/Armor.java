@@ -183,16 +183,10 @@ public class Armor extends EquipableItem {
 			if (detaching.level() > 0){
 				degrade();
 			}
-			if (detaching.getGlyph() != null){
-				if (hero.hasTalent(Talent.RUNIC_TRANSFERENCE)
-						&& (Arrays.asList(Glyph.common).contains(detaching.getGlyph().getClass())
-							|| Arrays.asList(Glyph.uncommon).contains(detaching.getGlyph().getClass()))){
-					inscribe(null);
-				} else if (hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 2){
-					inscribe(null);
-				} else {
-					detaching.setGlyph(null);
-				}
+			if (detaching.canTransferGlyph()){
+				inscribe(null);
+			} else {
+				detaching.setGlyph(null);
 			}
 			GLog.i( Messages.get(Armor.class, "detach_seal") );
 			hero.sprite.operate(hero.pos);
@@ -633,17 +627,17 @@ public class Armor extends EquipableItem {
 	
 	public static abstract class Glyph implements Bundlable {
 		
-		private static final Class<?>[] common = new Class<?>[]{
+		public static final Class<?>[] common = new Class<?>[]{
 				Obfuscation.class, Swiftness.class, Viscosity.class, Potential.class };
-		
-		private static final Class<?>[] uncommon = new Class<?>[]{
+
+		public static final Class<?>[] uncommon = new Class<?>[]{
 				Brimstone.class, Stone.class, Entanglement.class,
 				Repulsion.class, Camouflage.class, Flow.class };
-		
-		private static final Class<?>[] rare = new Class<?>[]{
+
+		public static final Class<?>[] rare = new Class<?>[]{
 				Affection.class, AntiMagic.class, Thorns.class };
-		
-		private static final float[] typeChances = new float[]{
+
+		public static final float[] typeChances = new float[]{
 				50, //12.5% each
 				40, //6.67% each
 				10  //3.33% each

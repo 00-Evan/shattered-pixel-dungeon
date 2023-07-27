@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -119,17 +118,9 @@ abstract public class ClassArmor extends Armor {
 		classArmor.level(armor.trueLevel());
 		classArmor.tier = armor.tier;
 		classArmor.augment = armor.augment;
-		BrokenSeal seal = armor.checkSeal();
-		if (seal != null) {
-			//want to preserve whether the glyph is on the armor or the seal
-			if (seal.getGlyph() != null) {
-				classArmor.affixSeal(seal);
-			} else {
-				classArmor.inscribe(armor.glyph);
-				classArmor.affixSeal(seal);
-			}
-		} else {
-			classArmor.inscribe(armor.glyph);
+		classArmor.inscribe(armor.glyph);
+		if (armor.seal != null) {
+			classArmor.seal = armor.seal;
 		}
 		classArmor.cursed = armor.cursed;
 		classArmor.curseInfusionBonus = armor.curseInfusionBonus;
@@ -235,17 +226,38 @@ abstract public class ClassArmor extends Armor {
 								level(armor.trueLevel());
 								tier = armor.tier;
 								augment = armor.augment;
-								inscribe( armor.glyph );
 								cursed = armor.cursed;
 								curseInfusionBonus = armor.curseInfusionBonus;
 								masteryPotionBonus = armor.masteryPotionBonus;
 								if (armor.checkSeal() != null) {
+									inscribe(armor.glyph);
 									seal = armor.checkSeal();
 									if (seal.level() > 0) {
 										int newLevel = trueLevel() + 1;
 										level(newLevel);
 										Badges.validateItemLevelAquired(ClassArmor.this);
 									}
+								} else if (checkSeal() != null){
+									//automates the process of detaching the glyph manually
+									// and re-affixing it to the new armor
+									if (seal.level() > 0 && trueLevel() <= armor.trueLevel()){
+										int newLevel = trueLevel() + 1;
+										level(newLevel);
+										Badges.validateItemLevelAquired(ClassArmor.this);
+									}
+
+									//if both source and destination armor have glyphs
+									// we assume the player wants the glyph on the destination armor
+									// they can always manually detach first if they don't.
+									// otherwise we automate glyph transfer just like upgrades
+									if (armor.glyph == null && seal.canTransferGlyph()){
+										//do nothing, keep our glyph
+									} else {
+										inscribe(armor.glyph);
+										seal.setGlyph(null);
+									}
+								} else {
+									inscribe(armor.glyph);
 								}
 
 								identify();
