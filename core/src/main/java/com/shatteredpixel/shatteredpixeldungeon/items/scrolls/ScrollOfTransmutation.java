@@ -131,7 +131,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		if (item instanceof MagesStaff) {
 			return changeStaff((MagesStaff) item);
 		}else if (item instanceof TippedDart){
-			return changeTippeDart( (TippedDart)item );
+			return changeTippedDart( (TippedDart)item );
 		} else if (item instanceof MeleeWeapon || item instanceof MissileWeapon) {
 			return changeWeapon( (Weapon)item );
 		} else if (item instanceof Scroll) {
@@ -182,7 +182,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		return staff;
 	}
 
-	private static TippedDart changeTippeDart( TippedDart dart ){
+	private static TippedDart changeTippedDart( TippedDart dart ){
 		TippedDart n;
 		do {
 			n = TippedDart.randomTipped(1);
@@ -192,7 +192,6 @@ public class ScrollOfTransmutation extends InventoryScroll {
 	}
 	
 	private static Weapon changeWeapon( Weapon w ) {
-		
 		Weapon n;
 		Generator.Category c;
 		if (w instanceof MeleeWeapon) {
@@ -276,7 +275,6 @@ public class ScrollOfTransmutation extends InventoryScroll {
 	}
 	
 	private static Wand changeWand( Wand w ) {
-		
 		Wand n;
 		do {
 			n = (Wand)Generator.random( Generator.Category.WAND );
@@ -300,7 +298,6 @@ public class ScrollOfTransmutation extends InventoryScroll {
 	}
 	
 	private static Plant.Seed changeSeed( Plant.Seed s ) {
-		
 		Plant.Seed n;
 		
 		do {
@@ -311,7 +308,6 @@ public class ScrollOfTransmutation extends InventoryScroll {
 	}
 	
 	private static Runestone changeStone( Runestone r ) {
-		
 		Runestone n;
 		
 		do {
@@ -320,21 +316,31 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		
 		return n;
 	}
-	
+
 	private static Scroll changeScroll( Scroll s ) {
-		if (s instanceof ExoticScroll) {
-			return Reflection.newInstance(ExoticScroll.exoToReg.get(s.getClass()));
-		} else {
-			return Reflection.newInstance(ExoticScroll.regToExo.get(s.getClass()));
-		}
+		Scroll n;
+
+		do {
+			n = (Scroll)Generator.randomUsingDefaults( Generator.Category.SCROLL );
+			if (s instanceof ExoticScroll){
+				n = Reflection.newInstance(ExoticScroll.regToExo.get(n.getClass()));
+			}
+		} while (n.getClass() == s.getClass());
+
+		return n;
 	}
-	
+
 	private static Potion changePotion( Potion p ) {
-		if	(p instanceof ExoticPotion) {
-			return Reflection.newInstance(ExoticPotion.exoToReg.get(p.getClass()));
-		} else {
-			return Reflection.newInstance(ExoticPotion.regToExo.get(p.getClass()));
-		}
+		Potion n;
+
+		do {
+			n = (Potion)Generator.randomUsingDefaults( Generator.Category.POTION );
+			if (p instanceof ExoticPotion){
+				n = Reflection.newInstance(ExoticPotion.regToExo.get(n.getClass()));
+			}
+		} while (n.getClass() == p.getClass());
+
+		return n;
 	}
 	
 	@Override
