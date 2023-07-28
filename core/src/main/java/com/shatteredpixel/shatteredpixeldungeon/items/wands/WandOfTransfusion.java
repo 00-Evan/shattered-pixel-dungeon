@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -101,7 +102,8 @@ public class WandOfTransfusion extends Wand {
 				}
 
 			//for enemies...
-			} else {
+			//(or for mimics which are hiding, special case)
+			} else if (ch.alignment == Char.Alignment.ENEMY || ch instanceof Mimic) {
 
 				//grant a self-shield, and...
 				Buff.affect(curUser, Barrier.class).setShield((5 + buffedLvl()));

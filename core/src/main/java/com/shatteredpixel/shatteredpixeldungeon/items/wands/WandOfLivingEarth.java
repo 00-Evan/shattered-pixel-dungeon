@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
@@ -79,7 +80,10 @@ public class WandOfLivingEarth extends DamageWand {
 		}
 
 		RockArmor buff = curUser.buff(RockArmor.class);
-		if (ch == null){
+		//only grant armor if we are shooting at an enemy, or a hiding mimic
+		if (ch == null
+				|| ch.alignment == Char.Alignment.ALLY
+				|| ch.alignment == Char.Alignment.NEUTRAL && !(ch instanceof Mimic)){
 			armorToAdd = 0;
 		} else {
 			if (buff == null && guardian == null) {
@@ -125,7 +129,9 @@ public class WandOfLivingEarth extends DamageWand {
 				}
 
 				if (closest == -1){
-					curUser.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + buffedLvl()/2);
+					if (armorToAdd > 0) {
+						curUser.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + buffedLvl() / 2);
+					}
 					return; //do not spawn guardian or detach buff
 				} else {
 					guardian.pos = closest;
@@ -159,7 +165,9 @@ public class WandOfLivingEarth extends DamageWand {
 				Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, 0.8f * Random.Float(0.87f, 1.15f) );
 				
 				if (guardian == null) {
-					curUser.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + buffedLvl() / 2);
+					if (armorToAdd > 0) {
+						curUser.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + buffedLvl() / 2);
+					}
 				} else {
 					guardian.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + buffedLvl() / 2);
 					guardian.setInfo(curUser, buffedLvl(), armorToAdd);
