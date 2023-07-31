@@ -123,8 +123,15 @@ public class MiningLevel extends CavesLevel {
 	@Override
 	public Group addVisuals() {
 		super.addVisuals();
-		CavesLevel.addCavesVisuals(this, visuals);
+		visuals.clear(); //we re-add these in wall visuals
 		return visuals;
+	}
+
+	@Override
+	public Group addWallVisuals() {
+		super.addWallVisuals();
+		CavesLevel.addCavesVisuals(this, wallVisuals);
+		return wallVisuals;
 	}
 
 	public static class BorderTopDarken extends CustomTilemap {

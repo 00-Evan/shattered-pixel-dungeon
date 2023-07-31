@@ -163,6 +163,7 @@ public abstract class Level implements Bundlable {
 	protected ArrayList<Item> itemsToSpawn = new ArrayList<>();
 
 	protected Group visuals;
+	protected Group wallVisuals;
 	
 	public int color1 = 0x004400;
 	public int color2 = 0x88CC44;
@@ -608,6 +609,18 @@ public abstract class Level implements Bundlable {
 		}
 		return visuals;
 	}
+
+	//for visual effects that should render above wall overhang tiles
+	public Group addWallVisuals(){
+		if (wallVisuals == null || wallVisuals.parent == null){
+			wallVisuals = new Group();
+		} else {
+			wallVisuals.clear();
+			wallVisuals.camera = null;
+		}
+		return wallVisuals;
+	}
+
 	
 	public int mobLimit() {
 		return 0;
