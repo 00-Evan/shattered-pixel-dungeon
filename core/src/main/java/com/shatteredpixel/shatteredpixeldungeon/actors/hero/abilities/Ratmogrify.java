@@ -161,6 +161,11 @@ public class Ratmogrify extends ArmorAbility {
 			Sample.INSTANCE.play(Assets.Sounds.PUFF);
 
 			Dungeon.level.occupyCell(rat);
+
+			//for rare cases where a buff was keeping a mob alive (e.g. gnoll brutes)
+			if (!rat.isAlive()){
+				rat.die(this);
+			}
 		}
 
 		armor.charge -= chargeUse(hero);
