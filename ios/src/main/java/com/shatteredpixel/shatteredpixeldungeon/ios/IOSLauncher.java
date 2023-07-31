@@ -38,7 +38,6 @@ import com.watabou.utils.FileUtils;
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.foundation.NSBundle;
-import org.robovm.apple.foundation.NSDictionary;
 import org.robovm.apple.foundation.NSException;
 import org.robovm.apple.foundation.NSMutableDictionary;
 import org.robovm.apple.foundation.NSObject;
@@ -57,11 +56,7 @@ public class IOSLauncher extends IOSApplication.Delegate {
 	protected IOSApplication createApplication() {
 
 		//ensures the app actually crashes if there's an error in the mobiVM runtime
-		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-			public void uncaughtException(Thread thread, Throwable ex) {
-				new NSException(ex.getClass().getName(), ex.getMessage(), new NSDictionary()).raise();
-			}
-		});
+		NSException.registerDefaultJavaUncaughtExceptionHandler();
 
 		try {
 			Game.version = NSBundle.getMainBundle().getInfoDictionaryObject("CFBundleVersionString").description();
