@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.StormTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WarpingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -158,11 +159,15 @@ public class CavesLevel extends RegularLevel {
 		addCavesVisuals( this, visuals );
 		return visuals;
 	}
-	
+
 	public static void addCavesVisuals( Level level, Group group ) {
+		addCavesVisuals(level, group, false);
+	}
+	
+	public static void addCavesVisuals( Level level, Group group, boolean overHang ) {
 		for (int i=0; i < level.length(); i++) {
 			if (level.map[i] == Terrain.WALL_DECO) {
-				group.add( new Vein( i ) );
+				group.add( new Vein( i, overHang ) );
 			}
 		}
 	}
@@ -170,13 +175,20 @@ public class CavesLevel extends RegularLevel {
 	private static class Vein extends Group {
 		
 		private int pos;
+
+		private boolean includeOverhang;
 		
 		private float delay;
-		
+
 		public Vein( int pos ) {
+			this(pos, false);
+		}
+
+		public Vein( int pos, boolean includeOverhang ) {
 			super();
 			
 			this.pos = pos;
+			this.includeOverhang = includeOverhang;
 			
 			delay = Random.Float( 2 );
 		}
@@ -197,11 +209,20 @@ public class CavesLevel extends RegularLevel {
 					}
 					
 					delay = Random.Float();
-					
+
 					PointF p = DungeonTilemap.tileToWorld( pos );
-					((Sparkle)recycle( Sparkle.class )).reset(
-						p.x + Random.Float( DungeonTilemap.SIZE ),
-						p.y + Random.Float( DungeonTilemap.SIZE ) );
+					if (includeOverhang && !DungeonTileSheet.wallStitcheable(Dungeon.level.map[pos-Dungeon.level.width()])){
+						//also sparkles in the bottom 1/2 of the upper tile. Increases particle frequency by 50% accordingly.
+						delay *= 0.67f;
+						p.y -= DungeonTilemap.SIZE/2f;
+						((Sparkle)recycle( Sparkle.class )).reset(
+								p.x + Random.Float( DungeonTilemap.SIZE ),
+								p.y + Random.Float( DungeonTilemap.SIZE*1.5f ) );
+					} else {
+						((Sparkle)recycle( Sparkle.class )).reset(
+								p.x + Random.Float( DungeonTilemap.SIZE ),
+								p.y + Random.Float( DungeonTilemap.SIZE ) );
+					}
 				}
 			}
 		}

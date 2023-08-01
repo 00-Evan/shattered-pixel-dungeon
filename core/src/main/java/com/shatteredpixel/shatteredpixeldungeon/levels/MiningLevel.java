@@ -130,7 +130,7 @@ public class MiningLevel extends CavesLevel {
 	@Override
 	public Group addWallVisuals() {
 		super.addWallVisuals();
-		CavesLevel.addCavesVisuals(this, wallVisuals);
+		CavesLevel.addCavesVisuals(this, wallVisuals, true);
 		return wallVisuals;
 	}
 
