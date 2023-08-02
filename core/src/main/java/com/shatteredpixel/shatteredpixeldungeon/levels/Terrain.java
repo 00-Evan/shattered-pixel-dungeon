@@ -50,7 +50,7 @@ public class Terrain {
 	public static final int EMPTY_DECO		= 20;
 	public static final int LOCKED_EXIT		= 21;
 	public static final int UNLOCKED_EXIT	= 22;
-	public static final int SIGN			= 23;
+	public static final int SIGN			= 23; //currently used purely for custom tile visuals
 	public static final int WELL			= 24;
 	public static final int STATUE			= 25;
 	public static final int STATUE_SP		= 26;
@@ -116,16 +116,6 @@ public class Terrain {
 		default:
 			return terr;
 		}
-	}
-
-	//removes signs, places floors instead
-	public static int[] convertTilesFrom0_6_0b(int[] map){
-		for (int i = 0; i < map.length; i++){
-			if (map[i] == 23){
-				map[i] = 1;
-			}
-		}
-		return map;
 	}
 
 }

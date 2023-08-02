@@ -66,8 +66,6 @@ public class DungeonTerrainTilemap extends DungeonTilemap {
 						pos + mapWidth < size ?     map[pos + mapWidth] : -1,
 						pos % mapWidth != 0 ?       map[pos - 1] : -1
 						);
-			} else if (tile == Terrain.SIGN) {
-				return DungeonTileSheet.RAISED_SIGN;
 			} else if (tile == Terrain.STATUE) {
 				return DungeonTileSheet.RAISED_STATUE;
 			} else if (tile == Terrain.STATUE_SP) {
