@@ -70,13 +70,12 @@ public class Healing extends Buff {
 				Math.round(healingLeft * percentHealPerTick) + flatHealPerTick,
 				healingLeft);
 	}
-	
+
 	public void setHeal(int amount, float percentPerTick, int flatPerTick){
-		if (amount > healingLeft) {
-			healingLeft = amount;
-			percentHealPerTick = percentPerTick;
-			flatHealPerTick = flatPerTick;
-		}
+		//multiple sources of healing do not overlap, but do combine the best of their properties
+		healingLeft = Math.max(healingLeft, amount);
+		percentHealPerTick = Math.max(percentHealPerTick, percentPerTick);
+		flatHealPerTick = Math.max(flatHealPerTick, flatPerTick);
 	}
 	
 	public void increaseHeal( int amount ){
