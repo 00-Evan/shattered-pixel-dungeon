@@ -74,6 +74,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CheckedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
@@ -163,8 +164,10 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.tweeners.Delayer;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.ColorMath;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
@@ -1144,7 +1147,10 @@ public class Hero extends Char {
 	public boolean actMine(HeroAction.Mine action){
 		if (Dungeon.level.adjacent(pos, action.dst)){
 			path = null;
-			if ((Dungeon.level.map[action.dst] == Terrain.WALL || Dungeon.level.map[action.dst] == Terrain.WALL_DECO)
+			if ((Dungeon.level.map[action.dst] == Terrain.WALL
+					|| Dungeon.level.map[action.dst] == Terrain.WALL_DECO
+					|| Dungeon.level.map[action.dst] == Terrain.MINE_CRYSTAL
+					|| Dungeon.level.map[action.dst] == Terrain.MINE_BOULDER)
 				&& Dungeon.level.insideMap(action.dst)){
 				sprite.attack(action.dst, new Callback() {
 					@Override
@@ -1157,16 +1163,30 @@ public class Hero extends Char {
 							} else {
 								Dungeon.level.drop( gold, pos ).sprite.drop();
 							}
+							PixelScene.shake(0.5f, 0.5f);
 							CellEmitter.center( action.dst ).burst( Speck.factory( Speck.STAR ), 7 );
 							Sample.INSTANCE.play( Assets.Sounds.EVOKE );
-						} else {
+							Level.set( action.dst, Terrain.EMPTY_DECO );
+
+						} else if (Dungeon.level.map[action.dst] == Terrain.WALL){
+							//TODO inc. hunger by 5
+							PixelScene.shake(0.5f, 0.5f);
 							CellEmitter.get( action.dst ).burst( Speck.factory( Speck.ROCK ), 2 );
 							Sample.INSTANCE.play( Assets.Sounds.MINE );
+							Level.set( action.dst, Terrain.EMPTY_DECO );
+
+						} else if (Dungeon.level.map[action.dst] == Terrain.MINE_CRYSTAL){
+							Splash.at(action.dst, 0xFFFFFF, 5); //TODO match color?
+							Sample.INSTANCE.play( Assets.Sounds.SHATTER );
+							Level.set( action.dst, Terrain.EMPTY );
+
+						} else if (Dungeon.level.map[action.dst] == Terrain.MINE_BOULDER){
+							//TODO inc. hunger by 1
+							Splash.at(action.dst, ColorMath.random( 0x444444, 0x777766 ), 5);
+							Sample.INSTANCE.play( Assets.Sounds.MINE, 0.6f );
+							Level.set( action.dst, Terrain.EMPTY );
 						}
 
-						PixelScene.shake(0.5f, 0.5f);
-
-						Level.set( action.dst, Terrain.EMPTY_DECO );
 						for (int i : PathFinder.NEIGHBOURS9) {
 							Dungeon.level.discoverable[action.dst + i] = true;
 						}
@@ -1174,9 +1194,41 @@ public class Hero extends Char {
 							GameScene.updateMap( action.dst+i );
 						}
 
-						Dungeon.observe();
+						boolean crystalAdjacent = false;
+						for (int i : PathFinder.NEIGHBOURS8) {
+							if (Dungeon.level.map[action.dst + i] == Terrain.MINE_CRYSTAL){
+								crystalAdjacent = true;
+								break;
+							}
+						}
 
-						spendAndNext(TICK);
+						if (crystalAdjacent){
+							sprite.parent.add(new Delayer(0.2f){
+								@Override
+								protected void onComplete() {
+									boolean broke = false;
+									for (int i : PathFinder.NEIGHBOURS8) {
+										if (Dungeon.level.map[action.dst+i] == Terrain.MINE_CRYSTAL){
+											Splash.at(action.dst+i, 0xFFFFFF, 5);
+											Level.set( action.dst+i, Terrain.EMPTY );
+											broke = true;
+										}
+									}
+									if (broke){
+										Sample.INSTANCE.play( Assets.Sounds.SHATTER );
+									}
+
+									for (int i : PathFinder.NEIGHBOURS9) {
+										GameScene.updateMap( action.dst+i );
+									}
+									spendAndNext(TICK);
+								}
+							});
+						} else {
+							spendAndNext(TICK);
+						}
+
+						Dungeon.observe();
 					}
 				});
 			} else {
@@ -1676,7 +1728,10 @@ public class Hero extends Char {
 		//TODO perhaps only trigger this if hero is already adjacent? reducing mistaps
 		} else if (Dungeon.level instanceof MiningLevel &&
 					belongings.getItem(Pickaxe.class) != null &&
-				(Dungeon.level.map[cell] == Terrain.WALL || Dungeon.level.map[cell] == Terrain.WALL_DECO)){
+				(Dungeon.level.map[cell] == Terrain.WALL
+						|| Dungeon.level.map[cell] == Terrain.WALL_DECO
+						|| Dungeon.level.map[cell] == Terrain.MINE_CRYSTAL
+						|| Dungeon.level.map[cell] == Terrain.MINE_BOULDER)){
 
 			curAction = new HeroAction.Mine( cell );
 

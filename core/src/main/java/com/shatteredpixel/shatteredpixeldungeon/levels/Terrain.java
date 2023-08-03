@@ -58,6 +58,10 @@ public class Terrain {
 	public static final int CUSTOM_DECO	    = 23; //invisible decoration that will also be a custom visual, re-uses the old terrain ID for signs
 	public static final int STATUE			= 25;
 	public static final int STATUE_SP		= 26;
+	//These decorations are environment-specific
+	//33 and 34 are reserved for future statue-like decorations
+	public static final int MINE_CRYSTAL    = 35;
+	public static final int MINE_BOULDER    = 36;
 
 	public static final int WATER		    = 29;
 	

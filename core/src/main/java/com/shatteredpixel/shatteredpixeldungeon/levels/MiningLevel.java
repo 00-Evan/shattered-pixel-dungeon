@@ -121,6 +121,30 @@ public class MiningLevel extends CavesLevel {
 	}
 
 	@Override
+	public String tileName( int tile ) {
+		switch (tile) {
+			case Terrain.MINE_CRYSTAL:
+				return Messages.get(MiningLevel.class, "crystal_name");
+			case Terrain.MINE_BOULDER:
+				return Messages.get(MiningLevel.class, "boulder_name");
+			default:
+				return super.tileName( tile );
+		}
+	}
+
+	@Override
+	public String tileDesc( int tile ) {
+		switch (tile) {
+			case Terrain.MINE_CRYSTAL:
+				return Messages.get(MiningLevel.class, "crystal_desc");
+			case Terrain.MINE_BOULDER:
+				return Messages.get(MiningLevel.class, "boulder_desc");
+			default:
+				return super.tileDesc( tile );
+		}
+	}
+
+	@Override
 	public Group addVisuals() {
 		super.addVisuals();
 		visuals.clear(); //we re-add these in wall visuals
