@@ -50,12 +50,14 @@ public class Terrain {
 	public static final int EMPTY_DECO		= 20;
 	public static final int LOCKED_EXIT		= 21;
 	public static final int UNLOCKED_EXIT	= 22;
-	public static final int SIGN			= 23; //currently used purely for custom tile visuals
 	public static final int WELL			= 24;
-	public static final int STATUE			= 25;
-	public static final int STATUE_SP		= 26;
 	public static final int BOOKSHELF		= 27;
 	public static final int ALCHEMY			= 28;
+
+	//solid environment decorations
+	public static final int CUSTOM_DECO	    = 23; //invisible decoration that will also be a custom visual, re-uses the old terrain ID for signs
+	public static final int STATUE			= 25;
+	public static final int STATUE_SP		= 26;
 
 	public static final int WATER		    = 29;
 	
@@ -98,12 +100,13 @@ public class Terrain {
 		flags[EMPTY_DECO]	= flags[EMPTY];
 		flags[LOCKED_EXIT]	= SOLID;
 		flags[UNLOCKED_EXIT]= PASSABLE;
-		flags[SIGN]			= SOLID; //Currently these are unused except for visual tile overrides where we want terrain to be solid with no other properties
 		flags[WELL]			= AVOID;
-		flags[STATUE]		= SOLID;
-		flags[STATUE_SP]	= flags[STATUE];
 		flags[BOOKSHELF]	= flags[BARRICADE];
 		flags[ALCHEMY]		= SOLID;
+
+		flags[CUSTOM_DECO] = SOLID;
+		flags[STATUE] = SOLID;
+		flags[STATUE_SP] = flags[STATUE];
 
 	}
 
