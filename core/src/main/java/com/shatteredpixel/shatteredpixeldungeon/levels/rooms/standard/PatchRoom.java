@@ -31,15 +31,21 @@ import com.watabou.utils.PathFinder;
 public abstract class PatchRoom extends StandardRoom {
 	
 	protected boolean[] patch;
+
+	protected abstract float fill();
+	protected abstract int clustering();
+	protected abstract boolean ensurePath();
+	protected abstract boolean cleanEdges();
 	
-	protected void setupPatch(Level level, float fill, int clustering, boolean ensurePath){
+	protected void setupPatch(Level level){
 
 		int attempts = 0;
-		if (ensurePath){
+		if (ensurePath()){
+			float fill = fill();
 			PathFinder.setMapSize(width()-2, height()-2);
 			boolean valid;
 			do {
-				patch = Patch.generate(width()-2, height()-2, fill, clustering, true);
+				patch = Patch.generate(width()-2, height()-2, fill, clustering(), true);
 				int startPoint = level.pointToCell(center());
 				for (Door door : connected.values()) {
 					if (door.x == left) {
@@ -78,7 +84,22 @@ public abstract class PatchRoom extends StandardRoom {
 			} while (!valid);
 			PathFinder.setMapSize(level.width(), level.height());
 		} else {
-			patch = Patch.generate(width()-2, height()-2, fill, clustering, true);
+			patch = Patch.generate(width()-2, height()-2, fill(), clustering(), true);
+		}
+		if (cleanEdges()){
+			cleanDiagonalEdges();
+		}
+	}
+
+	//convenience method for the common case of just setting all terrain in the patch to a value
+	protected void fillPatch(Level level, int terrain){
+		for (int i = top + 1; i < bottom; i++) {
+			for (int j = left + 1; j < right; j++) {
+				if (patch[xyToPatchCoords(j, i)]) {
+					int cell = i * level.width() + j;
+					level.map[cell] = terrain;
+				}
+			}
 		}
 	}
 	

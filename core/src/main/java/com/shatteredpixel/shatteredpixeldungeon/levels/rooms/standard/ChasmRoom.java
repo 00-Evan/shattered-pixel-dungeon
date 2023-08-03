@@ -35,6 +35,31 @@ public class ChasmRoom extends PatchRoom {
 	}
 
 	@Override
+	protected float fill() {
+		//fill scales from ~30% at 4x4, to ~60% at 18x18
+		// normal   ~30% to ~40%
+		// large    ~40% to ~50%
+		// giant    ~50% to ~60%
+		int scale = Math.min(width()*height(), 18*18);
+		return 0.30f + scale/1024f;
+	}
+
+	@Override
+	protected int clustering() {
+		return 1;
+	}
+
+	@Override
+	protected boolean ensurePath() {
+		return connected.size() > 0;
+	}
+
+	@Override
+	protected boolean cleanEdges() {
+		return true;
+	}
+
+	@Override
 	public void merge(Level l, Room other, Rect merge, int mergeTerrain) {
 		if (mergeTerrain == Terrain.EMPTY
 				&& (other instanceof ChasmRoom || other instanceof PlatformRoom)){
@@ -53,24 +78,9 @@ public class ChasmRoom extends PatchRoom {
 			door.set( Room.Door.Type.REGULAR );
 		}
 
-		//fill scales from ~30% at 4x4, to ~60% at 18x18
-		// normal   ~30% to ~40%
-		// large    ~40% to ~50%
-		// giant    ~50% to ~60%
-		int scale = Math.min(width()*height(), 18*18);
-		float fill = 0.30f + scale/1024f;
+		setupPatch(level);
 
-		setupPatch(level, fill, 1, connected.size() > 0);
-		cleanDiagonalEdges();
-
-		for (int i = top + 1; i < bottom; i++) {
-			for (int j = left + 1; j < right; j++) {
-				if (patch[xyToPatchCoords(j, i)]) {
-					int cell = i * level.width() + j;
-					level.map[cell] = Terrain.CHASM;
-				}
-			}
-		}
+		fillPatch(level, Terrain.CHASM);
 	}
 
 }

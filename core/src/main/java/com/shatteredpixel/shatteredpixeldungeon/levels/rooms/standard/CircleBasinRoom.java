@@ -50,6 +50,26 @@ public class CircleBasinRoom extends PatchRoom {
 	}
 
 	@Override
+	protected float fill() {
+		return 0.5f;
+	}
+
+	@Override
+	protected int clustering() {
+		return 5;
+	}
+
+	@Override
+	protected boolean ensurePath() {
+		return false;
+	}
+
+	@Override
+	protected boolean cleanEdges() {
+		return false;
+	}
+
+	@Override
 	public void paint(Level level) {
 		Painter.fill( level, this, Terrain.WALL );
 
@@ -80,7 +100,7 @@ public class CircleBasinRoom extends PatchRoom {
 			Painter.set( level, center, Terrain.WALL );
 		}
 
-		setupPatch(level, 0.5f, 5, true);
+		setupPatch(level);
 		for (int i = top + 1; i < bottom; i++) {
 			for (int j = left + 1; j < right; j++) {
 				int cell = i * level.width() + j;

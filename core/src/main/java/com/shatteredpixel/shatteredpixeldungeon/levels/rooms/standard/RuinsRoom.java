@@ -39,30 +39,39 @@ public class RuinsRoom extends PatchRoom {
 	}
 
 	@Override
+	protected float fill() {
+		//fill scales from ~20% at 4x4, to ~50% at 18x18
+		// normal   ~20% to ~30%
+		// large    ~30% to ~40%
+		// giant    ~40% to ~50%
+		int scale = Math.min(width()*height(), 18*18);
+		return 0.20f + scale/1024f;
+	}
+
+	@Override
+	protected int clustering() {
+		return 9;
+	}
+
+	@Override
+	protected boolean ensurePath() {
+		return connected.size() > 0;
+	}
+
+	@Override
+	protected boolean cleanEdges() {
+		return true;
+	}
+
+	@Override
 	public void paint(Level level) {
 		Painter.fill( level, this, Terrain.WALL );
 		Painter.fill( level, this, 1 , Terrain.EMPTY );
 		for (Door door : connected.values()) {
 			door.set( Door.Type.REGULAR );
 		}
-
-		//fill scales from ~20% at 4x4, to ~50% at 18x18
-		// normal   ~20% to ~30%
-		// large    ~30% to ~40%
-		// giant    ~40% to ~50%
-		int scale = Math.min(width()*height(), 18*18);
-		float fill = 0.20f + scale/1024f;
 		
-		setupPatch(level, fill, 0, connected.size() > 0);
-		cleanDiagonalEdges();
-		
-		for (int i = top + 1; i < bottom; i++) {
-			for (int j = left + 1; j < right; j++) {
-				if (patch[xyToPatchCoords(j, i)]) {
-					int cell = i * level.width() + j;
-					level.map[cell] = Terrain.WALL;
-				}
-			}
-		}
+		setupPatch(level);
+		fillPatch(level, Terrain.WALL);
 	}
 }

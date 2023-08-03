@@ -40,7 +40,29 @@ public class BurnedRoom extends PatchRoom {
 		int cell = l.pointToCell(pointInside(p, 1));
 		return l.map[cell] == Terrain.EMPTY;
 	}
-	
+
+	@Override
+	protected float fill() {
+		//past 8x8 each point of width/height decreases fill by 3%
+		// e.g. a 14x14 burned room has a fill of 54%
+		return Math.min( 1f, 1.48f - (width()+height())*0.03f);
+	}
+
+	@Override
+	protected int clustering() {
+		return 2;
+	}
+
+	@Override
+	protected boolean ensurePath() {
+		return false;
+	}
+
+	@Override
+	protected boolean cleanEdges() {
+		return false;
+	}
+
 	@Override
 	public void paint(Level level) {
 		Painter.fill( level, this, Terrain.WALL );
@@ -49,10 +71,7 @@ public class BurnedRoom extends PatchRoom {
 			door.set( Door.Type.REGULAR );
 		}
 		
-		//past 8x8 each point of width/height decreases fill by 3%
-		// e.g. a 14x14 burned room has a fill of 54%
-		float fill = Math.min( 1f, 1.48f - (width()+height())*0.03f);
-		setupPatch(level, fill, 2, false );
+		setupPatch(level);
 		
 		for (int i=top + 1; i < bottom; i++) {
 			for (int j=left + 1; j < right; j++) {
