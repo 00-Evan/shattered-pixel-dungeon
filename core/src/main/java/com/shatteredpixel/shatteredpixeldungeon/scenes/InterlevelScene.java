@@ -343,6 +343,24 @@ public class InterlevelScene extends PixelScene {
 			Dungeon.init();
 			GameLog.wipe();
 
+			//When debugging, we may start a game at a later depth to quickly test something
+			// if this happens, the games quickly generates all prior levels on branch 0 first,
+			// which ensures levelgen consistency with a regular game that was played to that depth.
+			if (DeviceCompat.isDebug()){
+				int trueDepth = Dungeon.depth;
+				int trueBranch = Dungeon.branch;
+				for (int i = 1; i < trueDepth + (trueBranch == 0 ? 0 : 1); i++){
+					if (!Dungeon.levelHasBeenGenerated(i, 0)){
+						Dungeon.depth = i;
+						Dungeon.branch = 0;
+						Dungeon.level = Dungeon.newLevel();
+						Dungeon.saveLevel(GamesInProgress.curSlot);
+					}
+				}
+				Dungeon.depth = trueDepth;
+				Dungeon.branch = trueBranch;
+			}
+
 			Level level = Dungeon.newLevel();
 			Dungeon.switchLevel( level, -1 );
 		} else {
