@@ -28,12 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 public class CaveRoom extends PatchRoom {
 
 	@Override
-	public int minWidth() { return Math.max(6, super.minWidth()); }
-
-	@Override
-	public int minHeight() { return Math.max(6, super.minHeight()); }
-
-	@Override
 	public float[] sizeCatProbs() {
 		return new float[]{4, 2, 1};
 	}
