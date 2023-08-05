@@ -86,7 +86,7 @@ public class Holywater extends Item {
 
 	}
 
-	private int volume = 0;
+	private int volume = 2;
 
 	private static final String VOLUME	= "volume";
 
@@ -122,8 +122,8 @@ public class Holywater extends Item {
 		//驱邪
 		if (action.equals( AC_WASH )) {
 			if (volume > 0) {
-				GameScene.selectItem(equipmentSelector);
 				volume -= 1;
+				GameScene.selectItem(equipmentSelector);
 				//照明
 				Buff.affect( hero, Light.class ,5f);
 				//清除负面buff
@@ -192,8 +192,6 @@ public class Holywater extends Item {
 					|| item instanceof Ring);
 		}
 
-
-
 		@Override
 		public void onSelect(Item item) {
 
@@ -208,32 +206,39 @@ public class Holywater extends Item {
 
 			//戒指升级
 			if ( item != null && item instanceof Ring){
+
+				Holywater h = Dungeon.hero.belongings.getItem(Holywater.class);
 				Ring r = (Ring)item;
 
-				if (r.level() >= 1){
-					GLog.w(Messages.get(ArcaneResin.class, "level_too_high"));
+				if ( r.HolywaterLevel >= 2 ){
+					GLog.i(Messages.get(ArcaneResin.class, "level_too_high"));
 					return;
-				}
+				} else{
+					int resinToUse = r.HolywaterLevel+1;
 
-				int resinToUse = r.level()+1;
 
-					if (resinToUse < r.quantity() ){
-						r.quantity(r.quantity()-resinToUse);
+
+					if ( h.volume > resinToUse ){
+						h.volume -= resinToUse ;
+						r.upgrade( 1 );
+						r.HolywaterLevel += 1;
+						Item.updateQuickslot();
+
+						GLog.w(Messages.get(this, "ring_upgrate"));
+
+						curUser.sprite.operate(curUser.pos);
+						Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+						curUser.sprite.emitter().start( Speck.factory( Speck.UP ), 0.2f, 3 );
+
+						curUser.spendAndNext(Actor.TICK);
+
+
 					} else {
-						r.detachAll(Dungeon.hero.belongings.backpack);
+						GLog.i(Messages.get(ArcaneResin.class, "volume_notenough"));
+
 					}
 
-					r.HolywaterLevel++;
-					Item.updateQuickslot();
-
-					GLog.w(Messages.get(this, "ring_upgrate"));
-
-					curUser.sprite.operate(curUser.pos);
-					Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
-					curUser.sprite.emitter().start( Speck.factory( Speck.UP ), 0.2f, 3 );
-
-					curUser.spendAndNext(Actor.TICK);
-					GLog.p(Messages.get(ArcaneResin.class, "apply"));
+				}
 
 			}
 

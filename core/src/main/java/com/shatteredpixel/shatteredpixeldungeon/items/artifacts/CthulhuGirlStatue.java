@@ -39,9 +39,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoldenMimic;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Goo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -63,6 +66,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEvasion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
@@ -82,6 +86,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.TippedDart;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DistortionTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GuardianTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
@@ -150,6 +156,7 @@ public class CthulhuGirlStatue extends Artifact {
 	private static int mobcountValue = 0; // 初始化为0
 	private static int herolevel = 1; // 初始化为1
 	private static int maptype = 4;
+	private static int stengthchanged = 2;
 
 	private static final String LUCKY			= "lucky";
 	private static final String ACCUMULATION	= "accumulation";
@@ -157,6 +164,7 @@ public class CthulhuGirlStatue extends Artifact {
 	private static final String ELEMENTPOWER    = "elementpower";
 
 	private static final String MAPTYPE    = "maptype";
+	private static final String STENGTHCHANGED = "stengthchanged" ;
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -167,6 +175,7 @@ public class CthulhuGirlStatue extends Artifact {
 		bundle.put( ALMOSTDIE, almostdie );
 		bundle.put( ELEMENTPOWER, elementpower );
 		bundle.put( MAPTYPE, maptype );
+		bundle.put( STENGTHCHANGED, stengthchanged );
 	}
 
 	@Override
@@ -178,6 +187,7 @@ public class CthulhuGirlStatue extends Artifact {
 		almostdie		= bundle.getInt( ALMOSTDIE );
 		elementpower	= bundle.getBoolean( ELEMENTPOWER );
 		maptype			= bundle.getInt( MAPTYPE );
+		stengthchanged	= bundle.getInt( STENGTHCHANGED );
 	}
 
 	@Override
@@ -521,7 +531,7 @@ public class CthulhuGirlStatue extends Artifact {
 	public static boolean cthulhu(Char ch, Class source ) {
 		CthulhuGirlStatue cthulhustatue = hero.belongings.getItem( CthulhuGirlStatue.class );
 		int lucky = cthulhustatue.lucky;
-		int NUMBER = Random.Int( 1,4 );
+		int NUMBER = Random.Int( 1,5 );
 		int LUCKY  = Random.Int( 0,30 );
 		int volume = Random.Int( 0,100 );
 
@@ -617,26 +627,16 @@ public class CthulhuGirlStatue extends Artifact {
 						SummoningTrap st = new SummoningTrap();
 						st.pos = ch.pos;
 						st.activate();
-						case VERYUNLUCKY:
-						for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-						if (mob.alignment != Char.Alignment.ALLY && Dungeon.level.heroFOV[mob.pos]) {
-							Buff.affect( mob, Weakness.class,Weakness.DURATION  );
-							}
-						}
+					case VERYUNLUCKY:
+						DistortionTrap dt = new DistortionTrap();
+						dt.pos = ch.pos;
+						dt.activate();
 						break;
 					case QUITEUNLUCKY:
 						SummoningTrap st2 = new SummoningTrap();
 						st2.pos = ch.pos;
 						st2.activate();
-						switch (Dungeon.depth) {
-							case 1:
-							case 2:
-							case 3:
-							case 4:
-							case 5:
-							default:
-
-						}
+						Buff.affect( hero, Weakness.class,Weakness.DURATION  );
 						cthulhustatue.lucky += 5;
 						break;
 					case UNLUCKY:
@@ -644,6 +644,7 @@ public class CthulhuGirlStatue extends Artifact {
 						st3.pos = ch.pos;
 						st3.activate();
 						break;
+
 				}
 				cthulhustatue.charge -= 20;
 				GLog.w(Messages.get(CthulhuGirlStatue.class, "summering"));
@@ -775,18 +776,37 @@ public class CthulhuGirlStatue extends Artifact {
 			case 4:
 				switch (luck){
 					case VERYLUCKY:
+						if( stengthchanged >= 4 ){
+							hero.HT += 5;
+							GLog.w(Messages.get(CthulhuGirlStatue.class, "STRMAX"));
+						}else{
+							hero.STR += 1;
+							stengthchanged += 1;
+						}
 						break;
 					case QUITELUCKY:
+						hero.HT += hero.lvl;
 						break;
 					case LUCKY: default:
+						hero.lvl += 1;
 						break;
 					case UNLUCKY:
+						hero.lvl -= 1;
 						break;
 					case QUITEUNLUCKY:
+						hero.HT -= Dungeon.depth;
 						break;
 					case VERYUNLUCKY:
+						if( stengthchanged <= 0 ){
+							hero.HT -= 5;
+							GLog.w(Messages.get(CthulhuGirlStatue.class, "STRMIN"));
+						}else{
+							hero.STR -= 1;
+							stengthchanged -= 1;
+						}
 						break;
 				}
+				GLog.w(Messages.get(CthulhuGirlStatue.class, "attribute"));
 				break;
 			case 5:
 				switch (luck){
@@ -801,11 +821,46 @@ public class CthulhuGirlStatue extends Artifact {
 					case QUITEUNLUCKY:
 						break;
 					case VERYUNLUCKY:
+						for (int i = 0; i < (Dungeon.depth - 5)/5; i++){
+							GuardianTrap.Guardian guardian = new GuardianTrap.Guardian();
+							guardian.state = guardian.WANDERING;
+							guardian.pos = Dungeon.level.randomRespawnCell( guardian );
+							if (guardian.pos != -1) {
+								GameScene.add(guardian);
+								guardian.beckon(Dungeon.hero.pos);
+							}
+						}
 						break;
 				}
 				break;
-			/*
+
 			case 6:
+
+				Item i = new Item();
+				switch (luck){
+					case VERYLUCKY:
+
+						break;
+					case QUITELUCKY:
+						i = Generator.randomUsingDefaults(Generator.Category.WEAPON);
+						break;
+					case LUCKY: default:
+
+						break;
+					case UNLUCKY:
+
+						break;
+					case QUITEUNLUCKY:
+
+						break;
+					case VERYUNLUCKY:
+
+						break;
+				}
+				i.quantity(1).collect();
+				break;
+/*
+case 7:
 				switch (luck){
 					case VERYLUCKY:
 						break;
@@ -821,6 +876,7 @@ public class CthulhuGirlStatue extends Artifact {
 						break;
 				}
 				break;
+
 
 			if( lucky-LUCKY >= 25 ){
 				} else if ( lucky-LUCKY >= 10 ) {

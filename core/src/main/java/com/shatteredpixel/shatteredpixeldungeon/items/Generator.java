@@ -217,6 +217,9 @@ public class Generator {
 		
 		WAND	( 1, 1, Wand.class ),
 		RING	( 1, 0, Ring.class ),
+		RING_T1 ( 0, 0,	Ring.class ),
+		RING_T2 ( 0, 0,	Ring.class ),
+		RING_T3 ( 0, 0,	Ring.class ),
 		ARTIFACT( 0, 1, Artifact.class),
 		
 		FOOD	( 0, 0, Food.class ),
@@ -516,6 +519,33 @@ public class Generator {
 					RingOfTenacity.class,
 					RingOfWealth.class};
 			RING.probs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+
+			RING_T1.classes = new Class<?>[]{
+
+					RingOfArcana.class,
+					RingOfHaste.class,
+					RingOfSharpshooting.class,
+					RingOfWealth.class};
+			RING_T1.probs = new float[]{ 1, 1, 1, 1 };
+
+			RING_T2.classes = new Class<?>[]{
+
+					RingOfElements.class,
+					RingOfForce.class,
+					RingOfEnergy.class,
+					RingOfMight.class};
+			RING_T2.probs = new float[]{ 1, 1, 1, 1 };
+
+			RING_T3.classes = new Class<?>[]{
+
+					RingOfAccuracy.class,
+					RingOfEvasion.class,
+					RingOfTenacity.class,
+					RingOfFuror.class};
+			RING_T3.probs = new float[]{ 1, 1, 1, 1 };
+
+			//T3 RingOfAccuracy.class, RingOfEvasion.class, RingOfTenacity.class, RingOfFuror.class,
+			//T2 RingOfElements.class, RingOfForce.class, RingOfEnergy.class, RingOfMight.class,
 			
 			ARTIFACT.classes = new Class<?>[]{
 					AlchemistsToolkit.class,

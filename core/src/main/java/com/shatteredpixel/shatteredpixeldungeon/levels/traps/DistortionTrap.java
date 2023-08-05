@@ -51,6 +51,7 @@ import java.util.Arrays;
 
 public class DistortionTrap extends Trap{
 
+	//重构
 	private static final float DELAY = 2f;
 
 	{

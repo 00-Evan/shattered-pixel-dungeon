@@ -66,7 +66,7 @@ public class Ring extends KindofMisc {
 			put("diamond",ItemSpriteSheet.RING_DIAMOND);
 		}
 	};
-	
+
 	private static ItemStatusHandler<Ring> handler;
 	
 	private String gem;

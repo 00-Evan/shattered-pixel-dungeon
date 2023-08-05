@@ -86,6 +86,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndHardNotification;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -526,27 +527,135 @@ abstract public class MissileWeapon extends Weapon {
 		durability = bundle.getFloat(DURABILITY);
 	}
 
+
+
+	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe {
+
+		@Override
+		public boolean testIngredients(ArrayList<Item> ingredients) {
+			MissileWeapon weapon1 = null;
+			MissileWeapon weapon2 = null;
+			int level = -1;
+			int count = 0;
+			for (Item ingredient : ingredients) {
+				if (ingredient.quantity() > 0 && ingredient instanceof MissileWeapon) {
+					MissileWeapon missile = (MissileWeapon) ingredient;
+					if (weapon1 == null) {
+						weapon1 = missile;
+						level = missile.level();
+						count++;
+					} else if (missile.getClass() == weapon1.getClass() && missile.level() == level && weapon2 == null) {
+						weapon2 = missile;
+						count++;
+					}
+				}
+			}
+			return (count == 2 && ((weapon1.quantity() == 1 && weapon2.quantity() == 1) || (weapon1.quantity() == 2)));
+		}
+
+		@Override
+		public int cost(ArrayList<Item> ingredients) {
+			return 0;
+		}
+
+		@Override
+		public Item brew(ArrayList<Item> ingredients) {
+			if (!testIngredients(ingredients)) {
+				return null;
+			}
+
+			MissileWeapon weapon1 = null;
+			MissileWeapon weapon2 = null;
+			int level = -1;
+			int count = 0;
+			for (Item ingredient : ingredients) {
+				if (ingredient.quantity() > 0 && ingredient instanceof MissileWeapon) {
+					MissileWeapon missile = (MissileWeapon) ingredient;
+					if (weapon1 == null) {
+						weapon1 = missile;
+						level = missile.level();
+						count++;
+					} else if (missile.getClass() == weapon1.getClass() && missile.level() == level && weapon2 == null) {
+						weapon2 = missile;
+						count++;
+					}
+				}
+			}
+
+			if (count == 2) {
+				if (weapon1.quantity() == 1 && weapon2.quantity() == 1) {
+					weapon1.detach(null);
+					weapon2.detach(null);
+
+					Item upgradedWeapon = weapon1.upgrade();
+
+					upgradedWeapon.quantity(1);
+					return upgradedWeapon;
+				} else if (weapon1.quantity() == 2) {
+					weapon1.quantity(1);
+					Item upgradedWeapon = weapon1.upgrade();
+					upgradedWeapon.quantity(1);
+					return upgradedWeapon;
+				}
+			}
+
+			return null;
+		}
+
+		@Override
+		public Item sampleOutput(ArrayList<Item> ingredients) {
+			MissileWeapon weapon1 = null;
+			MissileWeapon weapon2 = null;
+			int level = -1;
+			for (Item ingredient : ingredients) {
+				if (ingredient instanceof MissileWeapon) {
+					MissileWeapon missile = (MissileWeapon) ingredient;
+					if (weapon1 == null) {
+						weapon1 = missile;
+						level = missile.level();
+					} else if (missile.getClass() == weapon1.getClass() && missile.level() == level && weapon2 == null) {
+						weapon2 = missile;
+					}
+				}
+			}
+
+			if (weapon1 != null && weapon2 != null) {
+				Item upgradedWeapon = weapon1.upgrade();
+				return upgradedWeapon;
+			} else {
+				return null;
+			}
+		}
+	}
+
+	/*
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe {
 		Item missile;
 		Item missile2;
+
 		@Override
 		public boolean testIngredients(ArrayList<Item> ingredients) {
 			boolean missle = false;
 			boolean missle2 = false;
 			boolean liqued = false;
+
 			for (Item ingredient : ingredients){
-				if (ingredient instanceof MissileWeapon) {
+
+				if ( missile == null && ingredient instanceof MissileWeapon ) {
 					missile = ingredient;
 					if (ingredient.quantity() > 0) {
 						missle = true;
 					}
-				}
-				if ( missile!=null && ingredient instanceof MissileWeapon ) {
+				} else if ( missile != null && ingredient instanceof MissileWeapon ) {
 					missile2 = ingredient;
-					if ( ingredient.quantity() > 0 && missile2 == missile && missile2.level() == missile.level() ) {
+					if ( ingredient.quantity() > 0  && missile2.level() == missile.level() ) {
 						missle2 = true;
 					}
-
+				} /*else if (missile != null && missile2 == null && ingredient instanceof MissileWeapon) {
+					missile2 = ingredient;
+					if (ingredient.quantity() > 0 && missile2.level() == missile.level()) {
+						missle2 = true;
+					} //&& missile2 == missile
 				} else if (ingredient instanceof LiquidMetal) {
 					if( missile!=null && missile instanceof MissileWeapon && missile2 !=null ){
 						if ( ingredient.quantity() >= (missile.level()*10-5)) {
@@ -560,17 +669,58 @@ abstract public class MissileWeapon extends Weapon {
 
 		@Override
 		public int cost(ArrayList<Item> ingredients) {
-			return 2;
+			return 0;
 		}
 
 		@Override
 		public Item brew(ArrayList<Item> ingredients) {
-			if (!testIngredients(ingredients)) return null;
+			//if (!testIngredients(ingredients)) return null;
 
 			for (Item ingredient : ingredients){
 				if (ingredient instanceof MissileWeapon) {
-					missile.detach(Dungeon.hero.belongings.backpack);
-					missile2.detach(Dungeon.hero.belongings.backpack);
+					//missile.quantity( missile.quantity() - 1 );
+					//missile2.quantity( missile2.quantity() - 1 );
+					if (ingredient.quantity() >= 1 ) {
+						ingredient.quantity(ingredient.quantity() - 1 );
+					}
+				} else if (ingredient instanceof LiquidMetal) {
+					if (ingredient.quantity() >= ( missile.level()*10-5 ) ) {
+						ingredient.quantity(ingredient.quantity() - (missile.level()*10-5) );
+					}
+				}
+			}
+
+			return sampleOutput( null );
+		}
+
+		@Override
+		public Item sampleOutput(ArrayList<Item> ingredients) {
+			//这里是输出预览效果，你以前在这里写的会导致反复升级的时候，
+			// 输出的等级会越来越高
+			//return missile.quantity(1).upgrade(1);
+			//所以这里你应该直接返回一个你的missile
+			return new MeatPie();
+		}
+		//Reflection.newInstance( missile.upgrade( 1 ).quantity(1).getClass(  ) )
+		//存在的问题是：两个武器等级不同的时候也能用，暂时我找不到解决策略
+		//以及我建议控制液金数量来控制等级，而不是控制投掷武器数量。
+	}
+	*/
+/*
+		@Override
+		public Item brew(ArrayList<Item> ingredients) {
+			if (!testIngredients(ingredients)) return null;
+
+				if ( ingredient instanceof MissileWeapon ) {
+					missile.detach( Dungeon.hero.belongings.backpack );
+					missile2.detach( Dungeon.hero.belongings.backpack );
+					//missile2.quantity( missile2.quantity() - 1 );
+				} else
+
+			for (Item ingredient : ingredients){
+				if (ingredient instanceof MissileWeapon) {
+					missile.quantity( missile.quantity() - 1 ) ;
+					missile2.quantity( missile2.quantity() - 1 );
 					//由于你的两个武器都是同一个类型，所以地牢移除的时候总是会在视觉显示这里忽略一个。但其实是移除了
 					ShatteredPixelDungeon.scene().add(new WndHardNotification(new ItemSprite(ItemSpriteSheet.MISSILE_HOLDER),
 							"炼金完成",
@@ -599,19 +749,9 @@ abstract public class MissileWeapon extends Weapon {
 			return sampleOutput( null );
 		}
 
-		@Override
-		public Item sampleOutput(ArrayList<Item> ingredients) {
-			//这里是输出预览效果，你以前在这里写的会导致反复升级的时候，
-			// 输出的等级会越来越高
-			//return missile.quantity(1).upgrade(1);
-			//所以这里你应该直接返回一个你的missile
-			return missile;
-		}
+ */
 
 
-		//存在的问题是：两个武器等级不同的时候也能用，暂时我找不到解决策略
-		//以及我建议控制液金数量来控制等级，而不是控制投掷武器数量。
-	}
 
 	/*
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe {
