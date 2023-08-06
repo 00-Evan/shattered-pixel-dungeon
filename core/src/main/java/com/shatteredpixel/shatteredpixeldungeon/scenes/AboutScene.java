@@ -110,8 +110,8 @@ public class AboutScene extends PixelScene {
 				"Music:",
 				Icons.KRISTJAN.get(),
 				"Kristjan Haaristo",
-				"youtube.com/user/...",
-				"https://www.youtube.com/channel/UCL1e7SgzSWbD_DQxB_5YcLA");
+				"youtube.com/@kristjan...",
+				"https://www.youtube.com/@kristjanthomashaaristo");
 		kristjan.setRect(alex.right() - colWidth/4f, alex.bottom() + 5, colWidth/2f, 0);
 		content.add(kristjan);
 
@@ -122,8 +122,8 @@ public class AboutScene extends PixelScene {
 				"Pixel Dungeon",
 				Icons.WATA.get(),
 				"Developed by: _Watabou_\nInspired by Brian Walker's Brogue",
-				"pixeldungeon.watabou.ru",
-				"http://pixeldungeon.watabou.ru");
+				"watabou.itch.io",
+				"https://watabou.itch.io/");
 		if (landscape()){
 			wata.setRect(shpx.left(), kristjan.bottom() + 8, colWidth, 0);
 		} else {
@@ -170,8 +170,8 @@ public class AboutScene extends PixelScene {
 				"Pixel Dungeon GDX:",
 				Icons.ARCNOR.get(),
 				"Edu García",
-				"twitter.com/arcnor",
-				"https://twitter.com/arcnor");
+				"gamedev.place/@arcnor",
+				"https://mastodon.gamedev.place/@arcnor");
 		arcnor.setSize(colWidth/2f, 0);
 		if (landscape()){
 			arcnor.setPos(gdx.right(), gdx.top() + (gdx.height() - arcnor.height())/2f);
