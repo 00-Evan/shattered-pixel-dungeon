@@ -27,13 +27,16 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.levels.builders.BranchesBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
+import com.shatteredpixel.shatteredpixeldungeon.levels.builders.FigureEightBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.MiningLevelPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.MineEntrance;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.CaveRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.MineGiantRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.MineLargeRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.MineSecretRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.MineSmallRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
@@ -52,15 +55,29 @@ public class MiningLevel extends CavesLevel {
 		ArrayList<Room> initRooms = new ArrayList<>();
 		initRooms.add ( roomEntrance = new MineEntrance());
 
-		//currently spawns 10-12 cave rooms, of any size
-		int rooms = Random.NormalIntRange(10, 12);
+		//spawns 1 giant, 3-4 large, and 5-8 regular cave rooms
+		StandardRoom s;
+		s = new MineGiantRoom();
+		s.setSizeCat();
+		initRooms.add(s);
+
+		int rooms = Random.NormalIntRange(3, 4);
 		for (int i = 0; i < rooms; i++){
-			StandardRoom s;
-			do {
-				s = new CaveRoom();
-			} while (!s.setSizeCat( 8 ));
-			//i += s.sizeCat.roomValue-1;
+			s = new MineLargeRoom();
+			s.setSizeCat();
 			initRooms.add(s);
+		}
+
+		rooms = Random.NormalIntRange(8, 10);
+		for (int i = 0; i < rooms; i++){
+			s = new MineSmallRoom();
+			s.setSizeCat();
+			initRooms.add(s);
+		}
+
+		rooms = Random.NormalIntRange(1, 2);
+		for (int i = 0; i < rooms; i++){
+			initRooms.add(new MineSecretRoom());
 		}
 
 		return initRooms;
@@ -68,7 +85,7 @@ public class MiningLevel extends CavesLevel {
 
 	@Override
 	protected Builder builder() {
-		return new BranchesBuilder().setTunnelLength(new float[]{1}, new float[]{1});
+		return new FigureEightBuilder().setPathLength(0.8f, new float[]{1}).setTunnelLength(new float[]{1}, new float[]{1});
 	}
 
 	@Override

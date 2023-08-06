@@ -25,8 +25,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Patch;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
+import com.watabou.utils.Graph;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
@@ -135,31 +135,47 @@ public class MiningLevelPainter extends CavesPainter {
 
 	@Override
 	protected void paintDoors(Level l, ArrayList<Room> rooms) {
-
 		HashMap<Room, Room> roomMerges = new HashMap<>();
 
-		//add door types are empty, except secret, which becomes wall
+		float hiddenDoorChance = 0.90f;
+
+		//hidden doors become wall tiles
+		//(maybe sometimes become gold ore?)
+		//everything else becomes empty
 		for (Room r : rooms) {
 			for (Room n : r.connected.keySet()) {
-
-				//normal sized rooms can be merged at most once. Large and Giant rooms can be merged many times
-				if (roomMerges.get(r) == n || roomMerges.get(n) == r){
-					continue;
-				} else if (!roomMerges.containsKey(r) && !roomMerges.containsKey(n) &&
-						mergeRooms(l, r, n, r.connected.get(n), Terrain.EMPTY)) {
-					if (((StandardRoom) r).sizeCat == StandardRoom.SizeCategory.NORMAL) roomMerges.put(r, n);
-					if (((StandardRoom) n).sizeCat == StandardRoom.SizeCategory.NORMAL) roomMerges.put(n, r);
-					continue;
-				}
 
 				Room.Door d = r.connected.get(n);
 				int door = d.x + d.y * l.width();
 
-				//TODO should be more purposeful about this
-				if (Random.Int(2) == 0 || d.type == Room.Door.Type.HIDDEN){
+				if (d.type == Room.Door.Type.HIDDEN){
 					l.map[door] = Terrain.WALL;
 				} else {
-					l.map[door] = Terrain.EMPTY;
+					//some of these are randomly hidden, using the same rules as regular levels
+					if (Random.Float() < hiddenDoorChance) {
+						d.type = Room.Door.Type.HIDDEN;
+						Graph.buildDistanceMap(rooms, r);
+						if (n.distance == Integer.MAX_VALUE){
+							l.map[door] = Terrain.EMPTY;
+							d.type = Room.Door.Type.EMPTY;
+						} else {
+							l.map[door] = Terrain.WALL;
+						}
+					} else {
+						l.map[door] = Terrain.EMPTY;
+						d.type = Room.Door.Type.EMPTY;
+					}
+
+				}
+
+				//if the door is empty, always merge the rooms
+				if (l.map[door] == Terrain.EMPTY){
+					if (roomMerges.get(r) == n || roomMerges.get(n) == r){
+						continue;
+					} else if (mergeRooms(l, r, n, r.connected.get(n), Terrain.EMPTY)) {
+						roomMerges.put(r, n);
+						roomMerges.put(n, r);
+					}
 				}
 
 			}

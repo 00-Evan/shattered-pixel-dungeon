@@ -60,7 +60,7 @@ public class MineEntrance extends EntranceRoom {
 
 		int entrance;
 		do {
-			entrance = level.pointToCell(random(2));
+			entrance = level.pointToCell(random(3));
 		} while (level.findMob(entrance) != null || level.map[entrance] == Terrain.WALL);
 		Painter.set( level, entrance, Terrain.ENTRANCE );
 
@@ -76,7 +76,7 @@ public class MineEntrance extends EntranceRoom {
 				0,
 				LevelTransition.Type.BRANCH_EXIT));
 
-		//TODO add pre-quest decorations here
+		//TODO add per-quest decorations here
 	}
 
 	public static class QuestExit extends CustomTilemap {
