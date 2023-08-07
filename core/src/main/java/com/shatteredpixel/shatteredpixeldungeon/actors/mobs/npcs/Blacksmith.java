@@ -65,9 +65,10 @@ public class Blacksmith extends NPC {
 	protected boolean act() {
 		if (Dungeon.hero.buff(AscensionChallenge.class) != null){
 			die(null);
+			Notes.remove( Notes.Landmark.TROLL );
 			return true;
 		}
-		if (Dungeon.level.visited[pos] && !Quest.reforged){
+		if (Dungeon.level.visited[pos]){
 			Notes.add( Notes.Landmark.TROLL );
 		}
 		return super.act();
@@ -83,13 +84,29 @@ public class Blacksmith extends NPC {
 		}
 		
 		if (!Quest.given) {
-			
+
+			final String text;
+			//pre-v2.2.0 saves
+			switch (Quest.type ){
+				case 0: default:
+					text = Quest.alternative ? Messages.get(Blacksmith.this, "blood_1") : Messages.get(Blacksmith.this, "gold_1");
+					break;
+				case 1:
+					text = Messages.get(Blacksmith.this, "intro_quest_1");
+					break;
+				case 2:
+					text = Messages.get(Blacksmith.this, "intro_quest_2");
+					break;
+				case 3:
+					text = Messages.get(Blacksmith.this, "intro_quest_3");
+					break;
+			}
+
 			Game.runOnRenderThread(new Callback() {
 				@Override
 				public void call() {
-					GameScene.show( new WndQuest( Blacksmith.this,
-							Quest.alternative ? Messages.get(Blacksmith.this, "blood_1") : Messages.get(Blacksmith.this, "gold_1") ) {
-						
+					GameScene.show(new WndQuest(Blacksmith.this, text) {
+
 						@Override
 						public void onBackPressed() {
 							super.onBackPressed();
@@ -111,47 +128,54 @@ public class Blacksmith extends NPC {
 			});
 			
 		} else if (!Quest.completed) {
-			if (Quest.alternative) {
-				
-				Pickaxe pick = Dungeon.hero.belongings.getItem( Pickaxe.class );
-				if (pick == null) {
-					tell( Messages.get(this, "lost_pick") );
-				} else if (!pick.bloodStained) {
-					tell( Messages.get(this, "blood_2") );
-				} else {
-					if (pick.isEquipped( Dungeon.hero )) {
-						pick.cursed = false; //so that it can always be removed
-						pick.doUnequip( Dungeon.hero, false );
+
+			if (Quest.type == 0) {
+				if (Quest.alternative) {
+
+					Pickaxe pick = Dungeon.hero.belongings.getItem(Pickaxe.class);
+					if (pick == null) {
+						tell(Messages.get(this, "lost_pick"));
+					} else if (!pick.bloodStained) {
+						tell(Messages.get(this, "blood_2"));
+					} else {
+						if (pick.isEquipped(Dungeon.hero)) {
+							pick.cursed = false; //so that it can always be removed
+							pick.doUnequip(Dungeon.hero, false);
+						}
+						pick.detach(Dungeon.hero.belongings.backpack);
+						tell(Messages.get(this, "completed"));
+
+						Quest.completed = true;
+						Quest.reforged = false;
+						Statistics.questScores[2] = 3000;
 					}
-					pick.detach( Dungeon.hero.belongings.backpack );
-					tell( Messages.get(this, "completed") );
-					
-					Quest.completed = true;
-					Quest.reforged = false;
-					Statistics.questScores[2] = 3000;
+
+				} else {
+
+					Pickaxe pick = Dungeon.hero.belongings.getItem(Pickaxe.class);
+					DarkGold gold = Dungeon.hero.belongings.getItem(DarkGold.class);
+					if (pick == null) {
+						tell(Messages.get(this, "lost_pick"));
+					} else if (gold == null || gold.quantity() < 15) {
+						tell(Messages.get(this, "gold_2"));
+					} else {
+						if (pick.isEquipped(Dungeon.hero)) {
+							pick.doUnequip(Dungeon.hero, false);
+						}
+						pick.detach(Dungeon.hero.belongings.backpack);
+						gold.detachAll(Dungeon.hero.belongings.backpack);
+						tell(Messages.get(this, "completed"));
+
+						Quest.completed = true;
+						Quest.reforged = false;
+						Statistics.questScores[2] = 3000;
+					}
+
 				}
-				
 			} else {
-				
-				Pickaxe pick = Dungeon.hero.belongings.getItem( Pickaxe.class );
-				DarkGold gold = Dungeon.hero.belongings.getItem( DarkGold.class );
-				if (pick == null) {
-					tell( Messages.get(this, "lost_pick") );
-				} else if (gold == null || gold.quantity() < 15) {
-					tell( Messages.get(this, "gold_2") );
-				} else {
-					if (pick.isEquipped( Dungeon.hero )) {
-						pick.doUnequip( Dungeon.hero, false );
-					}
-					pick.detach( Dungeon.hero.belongings.backpack );
-					gold.detachAll( Dungeon.hero.belongings.backpack );
-					tell( Messages.get(this, "completed") );
-					
-					Quest.completed = true;
-					Quest.reforged = false;
-					Statistics.questScores[2] = 3000;
-				}
-				
+
+				tell(Messages.get(this, "reminder"));
+
 			}
 		} else if (!Quest.reforged) {
 			
@@ -253,8 +277,6 @@ public class Blacksmith extends NPC {
 		Item.updateQuickslot();
 		
 		Quest.reforged = true;
-		
-		Notes.remove( Notes.Landmark.TROLL );
 	}
 	
 	@Override
@@ -278,27 +300,39 @@ public class Blacksmith extends NPC {
 	}
 
 	public static class Quest {
-		
+
+		// 0 = old blacksmith quest (pre-2.2.0)
+		// 1 = TBA
+		// 2 = TBA
+		// 3 = TBA
+		private static int type;
+
 		private static boolean spawned;
-		
-		private static boolean alternative;
 		private static boolean given;
 		private static boolean completed;
+
+		//pre-v2.2.0
+		private static boolean alternative; //false for mining gold, true for bat blood
 		private static boolean reforged;
 		
 		public static void reset() {
+			type        = 0;
+
 			spawned		= false;
 			given		= false;
+
 			completed	= false;
 			reforged	= false;
 		}
 		
 		private static final String NODE	= "blacksmith";
-		
+
+		private static final String TYPE    	= "type";
 		private static final String SPAWNED		= "spawned";
-		private static final String ALTERNATIVE	= "alternative";
 		private static final String GIVEN		= "given";
 		private static final String COMPLETED	= "completed";
+
+		private static final String ALTERNATIVE	= "alternative";
 		private static final String REFORGED	= "reforged";
 		
 		public static void storeInBundle( Bundle bundle ) {
@@ -308,6 +342,7 @@ public class Blacksmith extends NPC {
 			node.put( SPAWNED, spawned );
 			
 			if (spawned) {
+				node.put( TYPE, type );
 				node.put( ALTERNATIVE, alternative );
 				node.put( GIVEN, given );
 				node.put( COMPLETED, completed );
@@ -322,6 +357,7 @@ public class Blacksmith extends NPC {
 			Bundle node = bundle.getBundle( NODE );
 			
 			if (!node.isNull() && (spawned = node.getBoolean( SPAWNED ))) {
+				type = node.getInt(TYPE);
 				alternative	=  node.getBoolean( ALTERNATIVE );
 				given = node.getBoolean( GIVEN );
 				completed = node.getBoolean( COMPLETED );
@@ -336,12 +372,41 @@ public class Blacksmith extends NPC {
 				
 				rooms.add(new BlacksmithRoom());
 				spawned = true;
-				alternative = Random.Int( 2 ) == 0;
+
+				type = 1+Random.Int(3);
+				alternative = false;
 				
 				given = false;
 				
 			}
 			return rooms;
+		}
+
+		public static boolean given(){
+			return given;
+		}
+
+		public static boolean completed(){
+			return given && completed;
+		}
+
+		public static void complete(){
+			completed = true;
+			reforged = false;
+			Statistics.questScores[2] = 3000; //TODO actual scoring logic
+		}
+
+		//if the blacksmith is generated pre-v2.2.0, and the player never spawned a mining test floor
+		public static boolean oldQuestMineBlocked(){
+			return type == 0 && !Dungeon.levelHasBeenGenerated(Dungeon.depth, 1);
+		}
+
+		public static boolean oldBloodQuest(){
+			return type == 0 && alternative;
+		}
+
+		public static boolean oldMiningQuest(){
+			return type == 0 && !alternative;
 		}
 	}
 }

@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Crab;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Scorpio;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Spinner;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Swarm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
@@ -54,6 +55,7 @@ import com.watabou.utils.PathFinder;
 
 import java.util.ArrayList;
 
+//various code in here supports old blacksmith quest logic from before v2.2.0
 public class Pickaxe extends MeleeWeapon {
 	
 	public static final String AC_MINE	= "MINE";
@@ -83,7 +85,9 @@ public class Pickaxe extends MeleeWeapon {
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		actions.add( AC_MINE );
+		if (Blacksmith.Quest.oldMiningQuest()) {
+			actions.add(AC_MINE);
+		}
 		return actions;
 	}
 	
@@ -140,7 +144,7 @@ public class Pickaxe extends MeleeWeapon {
 	
 	@Override
 	public int proc( Char attacker, Char defender, int damage ) {
-		if (!bloodStained && defender instanceof Bat) {
+		if (Blacksmith.Quest.oldBloodQuest() && !bloodStained && defender instanceof Bat) {
 			Actor.add(new Actor() {
 
 				{
@@ -166,8 +170,10 @@ public class Pickaxe extends MeleeWeapon {
 	public String defaultAction() {
 		if (Dungeon.hero.heroClass == HeroClass.DUELIST && isEquipped(Dungeon.hero)){
 			return AC_ABILITY;
-		} else {
+		} else if (Blacksmith.Quest.oldMiningQuest()) {
 			return AC_MINE;
+		} else {
+			return defaultAction;
 		}
 	}
 
