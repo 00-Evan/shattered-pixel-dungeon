@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
+import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DarkGold;
@@ -177,7 +178,7 @@ public class Blacksmith extends NPC {
 				tell(Messages.get(this, "reminder"));
 
 			}
-		} else if (!Quest.reforged) {
+		} else if (Quest.type == 0 && !Quest.reforged) {
 			
 			Game.runOnRenderThread(new Callback() {
 				@Override
@@ -186,6 +187,12 @@ public class Blacksmith extends NPC {
 				}
 			});
 			
+		} else if (Quest.favor > 0) {
+
+			tell("You got " + Quest.favor + " favor. Here's some gold.");
+			new Gold(Quest.favor).doPickUp(Dungeon.hero, Dungeon.hero.pos);
+			Quest.favor = 0;
+
 		} else {
 			
 			tell( Messages.get(this, "get_lost") );
@@ -311,6 +318,8 @@ public class Blacksmith extends NPC {
 		private static boolean given;
 		private static boolean completed;
 
+		private static int favor;
+
 		//pre-v2.2.0
 		private static boolean alternative; //false for mining gold, true for bat blood
 		private static boolean reforged;
@@ -320,6 +329,7 @@ public class Blacksmith extends NPC {
 
 			spawned		= false;
 			given		= false;
+			favor       = 0;
 
 			completed	= false;
 			reforged	= false;
@@ -332,6 +342,8 @@ public class Blacksmith extends NPC {
 		private static final String GIVEN		= "given";
 		private static final String COMPLETED	= "completed";
 
+		private static final String FAVOR	= "favor";
+
 		private static final String ALTERNATIVE	= "alternative";
 		private static final String REFORGED	= "reforged";
 		
@@ -343,9 +355,10 @@ public class Blacksmith extends NPC {
 			
 			if (spawned) {
 				node.put( TYPE, type );
-				node.put( ALTERNATIVE, alternative );
 				node.put( GIVEN, given );
 				node.put( COMPLETED, completed );
+				node.put( FAVOR, favor );
+				node.put( ALTERNATIVE, alternative );
 				node.put( REFORGED, reforged );
 			}
 			
@@ -358,9 +371,10 @@ public class Blacksmith extends NPC {
 			
 			if (!node.isNull() && (spawned = node.getBoolean( SPAWNED ))) {
 				type = node.getInt(TYPE);
-				alternative	=  node.getBoolean( ALTERNATIVE );
 				given = node.getBoolean( GIVEN );
 				completed = node.getBoolean( COMPLETED );
+				favor = node.getInt( FAVOR );
+				alternative	=  node.getBoolean( ALTERNATIVE );
 				reforged = node.getBoolean( REFORGED );
 			} else {
 				reset();
@@ -393,7 +407,15 @@ public class Blacksmith extends NPC {
 		public static void complete(){
 			completed = true;
 			reforged = false;
-			Statistics.questScores[2] = 3000; //TODO actual scoring logic
+
+			favor = 0;
+			DarkGold gold = Dungeon.hero.belongings.getItem(DarkGold.class);
+			if (gold != null){
+				favor += Math.min(2000, gold.quantity()*50);
+			}
+			//check for boss enemy, add another 1k points if they are dead
+			//perhaps reduce final quest score if hero is hit by avoidable boss attacks?
+			Statistics.questScores[2] = favor;
 		}
 
 		//if the blacksmith is generated pre-v2.2.0, and the player never spawned a mining test floor

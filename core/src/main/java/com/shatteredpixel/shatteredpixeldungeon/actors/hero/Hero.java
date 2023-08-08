@@ -1161,7 +1161,14 @@ public class Hero extends Char {
 						if (Dungeon.level.map[action.dst] == Terrain.WALL_DECO){
 							DarkGold gold = new DarkGold();
 							if (gold.doPickUp( Dungeon.hero )) {
-								GLog.i( Messages.capitalize(Messages.get(Dungeon.hero, "you_now_have", gold.name())) );
+								DarkGold existing = Dungeon.hero.belongings.getItem(DarkGold.class);
+								if (existing != null && existing.quantity()%5 == 0){
+									if (existing.quantity() >= 40) {
+										GLog.p(Messages.get(DarkGold.class, "you_now_have", existing.quantity()));
+									} else {
+										GLog.i(Messages.get(DarkGold.class, "you_now_have", existing.quantity()));
+									}
+								}
 							} else {
 								Dungeon.level.drop( gold, pos ).sprite.drop();
 							}
