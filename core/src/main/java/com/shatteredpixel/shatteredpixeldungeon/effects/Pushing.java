@@ -42,7 +42,7 @@ public class Pushing extends Actor {
 	private Callback callback;
 
 	{
-		actPriority = VFX_PRIO;
+		actPriority = VFX_PRIO+10;
 	}
 	
 	public Pushing( Char ch, int from, int to ) {

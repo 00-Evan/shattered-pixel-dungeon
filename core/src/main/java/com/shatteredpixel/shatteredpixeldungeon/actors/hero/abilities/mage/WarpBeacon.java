@@ -147,7 +147,7 @@ public class WarpBeacon extends ArmorAbility {
 
 									if (!candidates.isEmpty()){
 										ScrollOfTeleportation.appear(hero, tracker.pos);
-										Actor.addDelayed( new Pushing( toPush, toPush.pos, candidates.get(0) ), -1 );
+										Actor.add( new Pushing( toPush, toPush.pos, candidates.get(0) ));
 
 										toPush.pos = candidates.get(0);
 										Dungeon.level.occupyCell(toPush);

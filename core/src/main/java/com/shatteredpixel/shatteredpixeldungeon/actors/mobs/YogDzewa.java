@@ -334,7 +334,7 @@ public class YogDzewa extends Mob {
 				if (spawnPos != -1) {
 					summon.pos = spawnPos;
 					GameScene.add( summon );
-					Actor.addDelayed( new Pushing( summon, pos, summon.pos ), -1 );
+					Actor.add( new Pushing( summon, pos, summon.pos ) );
 					summon.beckon(Dungeon.hero.pos);
 					Dungeon.level.occupyCell(summon);
 
@@ -453,7 +453,7 @@ public class YogDzewa extends Mob {
 		}
 
 		GameScene.add(fist, 4);
-		Actor.addDelayed( new Pushing( fist, Dungeon.level.exit(), fist.pos ), -1 );
+		Actor.add( new Pushing( fist, Dungeon.level.exit(), fist.pos ) );
 		Dungeon.level.occupyCell(fist);
 	}
 

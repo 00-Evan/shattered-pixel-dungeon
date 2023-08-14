@@ -131,7 +131,7 @@ public class Ghoul extends Mob {
 				Dungeon.level.occupyCell(child);
 				
 				if (sprite.visible) {
-					Actor.addDelayed( new Pushing( child, pos, child.pos ), -1 );
+					Actor.add( new Pushing( child, pos, child.pos ) );
 				}
 
 				for (Buff b : buffs(ChampionEnemy.class)){
@@ -277,7 +277,7 @@ public class Ghoul extends Mob {
 					}
 					if (candidates.size() > 0) {
 						int newPos = Random.element( candidates );
-						Actor.addDelayed( new Pushing( ghoul, ghoul.pos, newPos ), -1 );
+						Actor.add( new Pushing( ghoul, ghoul.pos, newPos ) );
 						ghoul.pos = newPos;
 
 					} else {

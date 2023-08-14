@@ -125,7 +125,7 @@ public class SpectralNecromancer extends Necromancer {
 			//push enemy, or wait a turn if there is no valid pushing position
 			if (pushPos != pos) {
 				Char ch = Actor.findChar(summoningPos);
-				Actor.addDelayed( new Pushing( ch, ch.pos, pushPos ), -1 );
+				Actor.add( new Pushing( ch, ch.pos, pushPos ) );
 
 				ch.pos = pushPos;
 				Dungeon.level.occupyCell(ch );
