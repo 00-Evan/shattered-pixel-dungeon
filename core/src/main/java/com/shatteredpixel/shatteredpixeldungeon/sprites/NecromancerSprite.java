@@ -104,13 +104,15 @@ public class NecromancerSprite extends MobSprite {
 	}
 
 	public void finishSummoning(){
-		if (summoningBones.visible) {
-			Sample.INSTANCE.play(Assets.Sounds.BONES);
-			summoningBones.burst(Speck.factory(Speck.RATTLE), 5);
-		} else {
-			summoningBones.on = false;
+		if (summoningBones != null) {
+			if (summoningBones.visible) {
+				Sample.INSTANCE.play(Assets.Sounds.BONES);
+				summoningBones.burst(Speck.factory(Speck.RATTLE), 5);
+			} else {
+				summoningBones.on = false;
+			}
+			summoningBones = null;
 		}
-		summoningBones = null;
 		idle();
 	}
 

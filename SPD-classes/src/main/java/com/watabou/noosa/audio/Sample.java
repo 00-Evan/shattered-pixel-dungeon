@@ -79,9 +79,13 @@ public enum Sample {
 			@Override
 			public void run() {
 				for (String asset : toLoad) {
-					Sound newSound = Gdx.audio.newSound(Gdx.files.internal(asset));
-					synchronized (INSTANCE) {
-						ids.put(asset, newSound);
+					try {
+						Sound newSound = Gdx.audio.newSound(Gdx.files.internal(asset));
+						synchronized (INSTANCE) {
+							ids.put(asset, newSound);
+						}
+					} catch (Exception e){
+						Game.reportException(e);
 					}
 				}
 			}

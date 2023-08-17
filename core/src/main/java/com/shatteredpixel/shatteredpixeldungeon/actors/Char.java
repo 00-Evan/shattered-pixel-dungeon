@@ -448,7 +448,9 @@ public abstract class Char extends Actor {
 					enemy.damage(-1, this);
 					DeathMark.processFearTheReaper(enemy);
 				}
-				enemy.sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Preparation.class, "assassinated"));
+				if (enemy.sprite != null) {
+					enemy.sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Preparation.class, "assassinated"));
+				}
 			}
 
 			Talent.CombinedLethalityTriggerTracker combinedLethality = buff(Talent.CombinedLethalityTriggerTracker.class);
@@ -464,13 +466,17 @@ public abstract class Char extends Actor {
 						enemy.damage(-1, this);
 						DeathMark.processFearTheReaper(enemy);
 					}
-					enemy.sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Talent.CombinedLethalityTriggerTracker.class, "executed"));
+					if (enemy.sprite != null) {
+						enemy.sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Talent.CombinedLethalityTriggerTracker.class, "executed"));
+					}
 				}
 				combinedLethality.detach();
 			}
 
-			enemy.sprite.bloodBurstA( sprite.center(), effectiveDamage );
-			enemy.sprite.flash();
+			if (enemy.sprite != null) {
+				enemy.sprite.bloodBurstA(sprite.center(), effectiveDamage);
+				enemy.sprite.flash();
+			}
 
 			if (!enemy.isAlive() && visibleFight) {
 				if (enemy == Dungeon.hero) {
