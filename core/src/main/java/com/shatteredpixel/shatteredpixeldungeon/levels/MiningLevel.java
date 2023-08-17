@@ -24,11 +24,15 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.DarkGold;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.FigureEightBuilder;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.MiningLevelPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
@@ -39,10 +43,15 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.MineSecretRoo
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.MineSmallRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.BlacksmithSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.Tilemap;
+import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -147,6 +156,60 @@ public class MiningLevel extends CavesLevel {
 				return Messages.get(MiningLevel.class, "boulder_name");
 			default:
 				return super.tileName( tile );
+		}
+	}
+
+	@Override
+	public boolean activateTransition(Hero hero, LevelTransition transition) {
+		if (transition.type == LevelTransition.Type.BRANCH_ENTRANCE
+				&& !Blacksmith.Quest.completed() && Blacksmith.Quest.Type() != 0) {
+
+			String warnText;
+			DarkGold gold = hero.belongings.getItem(DarkGold.class);
+			int goldAmount = gold == null ? 0 : gold.quantity();
+			if (goldAmount < 10){
+				warnText = Messages.get(Blacksmith.class, "exit_warn_none");
+			} else if (goldAmount < 20){
+				warnText = Messages.get(Blacksmith.class, "exit_warn_low");
+			} else if (goldAmount < 30){
+				warnText = Messages.get(Blacksmith.class, "exit_warn_med");
+			} else if (goldAmount < 40){
+				warnText = Messages.get(Blacksmith.class, "exit_warn_high");
+			} else {
+				warnText = Messages.get(Blacksmith.class, "exit_warn_full");
+			}
+
+			if (!Blacksmith.Quest.bossBeaten()){
+				switch (Blacksmith.Quest.Type()){
+					case 1: warnText += "\n\n" + Messages.get(Blacksmith.class, "exit_warn_crystal"); break;
+					case 2: warnText += "\n\n" + Messages.get(Blacksmith.class, "exit_warn_fungi"); break;
+					case 3: warnText += "\n\n" + Messages.get(Blacksmith.class, "exit_warn_gnoll"); break;
+				}
+			}
+
+			String finalWarnText = warnText;
+			Game.runOnRenderThread(new Callback() {
+				@Override
+				public void call() {
+					GameScene.show(new WndOptions( new BlacksmithSprite(),
+							Messages.titleCase(Messages.get(Blacksmith.class, "name")),
+							finalWarnText,
+							Messages.get(Blacksmith.class, "exit_yes"),
+							Messages.get(Blacksmith.class, "exit_no")){
+						@Override
+						protected void onSelect(int index) {
+							if (index == 0){
+								Blacksmith.Quest.complete();
+								MiningLevel.super.activateTransition(hero, transition);
+							}
+						}
+					} );
+				}
+			});
+			return false;
+
+		} else {
+			return super.activateTransition(hero, transition);
 		}
 	}
 

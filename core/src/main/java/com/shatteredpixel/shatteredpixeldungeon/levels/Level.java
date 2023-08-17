@@ -79,13 +79,14 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
-import com.watabou.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.BArray;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
@@ -535,6 +536,24 @@ public abstract class Level implements Bundlable {
 			}
 		}
 		return null;
+	}
+
+	//returns true if we immediately transition, false otherwise
+	public boolean activateTransition(Hero hero, LevelTransition transition){
+		if (locked){
+			return false;
+		}
+
+		beforeTransition();
+		InterlevelScene.curTransition = transition;
+		if (transition.type == LevelTransition.Type.REGULAR_EXIT
+				|| transition.type == LevelTransition.Type.BRANCH_EXIT) {
+			InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
+		} else {
+			InterlevelScene.mode = InterlevelScene.Mode.ASCEND;
+		}
+		Game.switchScene(InterlevelScene.class);
+		return true;
 	}
 
 	//some buff effects have special logic or are cancelled from the hero before transitioning levels

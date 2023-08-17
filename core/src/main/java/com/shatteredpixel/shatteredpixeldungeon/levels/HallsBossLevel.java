@@ -24,22 +24,30 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogDzewa;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Tilemap;
@@ -302,6 +310,40 @@ public class HallsBossLevel extends Level {
 			if (m instanceof YogDzewa){
 				((YogDzewa) m).updateVisibility(this);
 			}
+		}
+	}
+
+	@Override
+	public boolean activateTransition(Hero hero, LevelTransition transition) {
+		if (transition.type == LevelTransition.Type.REGULAR_ENTRANCE
+				//ascension challenge only works on runs started on v1.3+
+				&& Dungeon.initialVersion > ShatteredPixelDungeon.v1_2_3
+				&& hero.belongings.getItem(Amulet.class) != null
+				&& hero.buff(AscensionChallenge.class) == null) {
+
+			Game.runOnRenderThread(new Callback() {
+				@Override
+				public void call() {
+					GameScene.show( new WndOptions( new ItemSprite(ItemSpriteSheet.AMULET),
+							Messages.get(Amulet.class, "ascent_title"),
+							Messages.get(Amulet.class, "ascent_desc"),
+							Messages.get(Amulet.class, "ascent_yes"),
+							Messages.get(Amulet.class, "ascent_no")){
+						@Override
+						protected void onSelect(int index) {
+							if (index == 0){
+								Buff.affect(hero, AscensionChallenge.class);
+								Statistics.highestAscent = 25;
+								HallsBossLevel.super.activateTransition(hero, transition);
+							}
+						}
+					} );
+				}
+			});
+			return false;
+
+		} else {
+			return super.activateTransition(hero, transition);
 		}
 	}
 

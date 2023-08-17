@@ -70,13 +70,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Snake;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CheckedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
-import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
@@ -146,24 +144,16 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.AlchemyScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.SurfaceScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.BlacksmithSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StatusPane;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
@@ -1264,155 +1254,12 @@ public class Hero extends Char {
 			ready();
 			return false;
 
-		//TODO, these checks are getting cumbersome, perhaps move them into Level?
 		} else if (!Dungeon.level.locked && transition != null && transition.inside(pos)) {
 
-			if (transition.type == LevelTransition.Type.SURFACE){
-				if (belongings.getItem( Amulet.class ) == null) {
-					Game.runOnRenderThread(new Callback() {
-						@Override
-						public void call() {
-							GameScene.show( new WndMessage( Messages.get(Hero.this, "leave") ) );
-						}
-					});
-					ready();
-				} else {
-					Statistics.ascended = true;
-					Badges.silentValidateHappyEnd();
-					Dungeon.win( Amulet.class );
-					Dungeon.deleteGame( GamesInProgress.curSlot, true );
-					Game.switchScene( SurfaceScene.class );
-				}
-
-			} else if (transition.type == LevelTransition.Type.REGULAR_ENTRANCE
-					&& Dungeon.depth == 25
-					//ascension challenge only works on runs started on v1.3+
-					&& Dungeon.initialVersion > ShatteredPixelDungeon.v1_2_3
-					&& belongings.getItem(Amulet.class) != null
-					&& buff(AscensionChallenge.class) == null) {
-
-				Game.runOnRenderThread(new Callback() {
-					@Override
-					public void call() {
-						GameScene.show( new WndOptions( new ItemSprite(ItemSpriteSheet.AMULET),
-								Messages.get(Amulet.class, "ascent_title"),
-								Messages.get(Amulet.class, "ascent_desc"),
-								Messages.get(Amulet.class, "ascent_yes"),
-								Messages.get(Amulet.class, "ascent_no")){
-							@Override
-							protected void onSelect(int index) {
-								if (index == 0){
-									Buff.affect(Hero.this, AscensionChallenge.class);
-									Statistics.highestAscent = 25;
-									actTransition(action);
-								}
-							}
-						} );
-					}
-				});
-				ready();
-
-			} else if (transition.type == LevelTransition.Type.BRANCH_EXIT
-					&& Dungeon.depth >= 11 && Dungeon.depth <= 14
-					&& (!Blacksmith.Quest.given() || Blacksmith.Quest.oldQuestMineBlocked() || Blacksmith.Quest.completed() || !Blacksmith.Quest.started())) {
-
-				if (Blacksmith.Quest.oldQuestMineBlocked()){
-					GLog.w(Messages.get(Blacksmith.class, "cant_enter_old"));
-				} else if (!Blacksmith.Quest.given() || Blacksmith.Quest.completed()) {
-					GLog.w(Messages.get(Blacksmith.class, "entrance_blocked"));
-				} else if (!Blacksmith.Quest.started() && Blacksmith.Quest.Type() != 0){
-					final Pickaxe pick = belongings.getItem(Pickaxe.class);
-					Game.runOnRenderThread(new Callback() {
-						@Override
-						public void call() {
-							if (pick == null){
-								GameScene.show( new WndTitledMessage(new BlacksmithSprite(),
-										Messages.titleCase(Messages.get(Blacksmith.class, "name")),
-										Messages.get(Blacksmith.class, "lost_pick"))
-								);
-							} else {
-								GameScene.show( new WndOptions( new BlacksmithSprite(),
-										Messages.titleCase(Messages.get(Blacksmith.class, "name")),
-										Messages.get(Blacksmith.class, "quest_start_prompt"),
-										Messages.get(Blacksmith.class, "enter_yes"),
-										Messages.get(Blacksmith.class, "enter_no")){
-									@Override
-									protected void onSelect(int index) {
-										if (index == 0){
-											Blacksmith.Quest.start();
-											actTransition(action);
-										}
-									}
-								} );
-							}
-
-						}
-					});
-				}
-				ready();
-
-			} else if (transition.type == LevelTransition.Type.BRANCH_ENTRANCE
-					&& Dungeon.depth >= 11 && Dungeon.depth <= 14
-					&& !Blacksmith.Quest.completed() && Blacksmith.Quest.Type() != 0) {
-
-				String warnText;
-				DarkGold gold = belongings.getItem(DarkGold.class);
-				int goldAmount = gold == null ? 0 : gold.quantity();
-				if (goldAmount < 10){
-					warnText = Messages.get(Blacksmith.class, "exit_warn_none");
-				} else if (goldAmount < 20){
-					warnText = Messages.get(Blacksmith.class, "exit_warn_low");
-				} else if (goldAmount < 30){
-					warnText = Messages.get(Blacksmith.class, "exit_warn_med");
-				} else if (goldAmount < 40){
-					warnText = Messages.get(Blacksmith.class, "exit_warn_high");
-				} else {
-					warnText = Messages.get(Blacksmith.class, "exit_warn_full");
-				}
-
-				if (!Blacksmith.Quest.bossBeaten()){
-					switch (Blacksmith.Quest.Type()){
-						case 1: warnText += "\n\n" + Messages.get(Blacksmith.class, "exit_warn_crystal"); break;
-						case 2: warnText += "\n\n" + Messages.get(Blacksmith.class, "exit_warn_fungi"); break;
-						case 3: warnText += "\n\n" + Messages.get(Blacksmith.class, "exit_warn_gnoll"); break;
-					}
-				}
-
-				String finalWarnText = warnText;
-				Game.runOnRenderThread(new Callback() {
-					@Override
-					public void call() {
-						GameScene.show( new WndOptions( new BlacksmithSprite(),
-								Messages.titleCase(Messages.get(Blacksmith.class, "name")),
-								finalWarnText,
-								Messages.get(Blacksmith.class, "exit_yes"),
-								Messages.get(Blacksmith.class, "exit_no")){
-							@Override
-							protected void onSelect(int index) {
-								if (index == 0){
-									Blacksmith.Quest.complete();
-									actTransition(action);
-								}
-							}
-						} );
-					}
-				});
-				ready();
-
-			} else {
-
+			if (Dungeon.level.activateTransition(this, transition)){
 				curAction = null;
-
-				Level.beforeTransition();
-				InterlevelScene.curTransition = transition;
-				if (transition.type == LevelTransition.Type.REGULAR_EXIT
-					|| transition.type == LevelTransition.Type.BRANCH_EXIT) {
-					InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
-				} else {
-					InterlevelScene.mode = InterlevelScene.Mode.ASCEND;
-				}
-				Game.switchScene(InterlevelScene.class);
-
+			} else {
+				ready();
 			}
 
 			return false;

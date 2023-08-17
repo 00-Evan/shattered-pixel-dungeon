@@ -22,9 +22,15 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Ripple;
+import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.SewerPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.AlarmTrap;
@@ -41,12 +47,15 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ToxicTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WornDartTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.SurfaceScene;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
+import com.watabou.utils.Callback;
 import com.watabou.utils.ColorMath;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
@@ -123,6 +132,30 @@ public class SewerLevel extends RegularLevel {
 		super.createMobs();
 	}
 	
+	@Override
+	public boolean activateTransition(Hero hero, LevelTransition transition) {
+		if (transition.type == LevelTransition.Type.SURFACE){
+			if (hero.belongings.getItem( Amulet.class ) == null) {
+				Game.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						GameScene.show( new WndMessage( Messages.get(hero, "leave") ) );
+					}
+				});
+				return false;
+			} else {
+				Statistics.ascended = true;
+				Badges.silentValidateHappyEnd();
+				Dungeon.win( Amulet.class );
+				Dungeon.deleteGame( GamesInProgress.curSlot, true );
+				Game.switchScene( SurfaceScene.class );
+				return true;
+			}
+		} else {
+			return super.activateTransition(hero, transition);
+		}
+	}
+
 	@Override
 	public Group addVisuals() {
 		super.addVisuals();

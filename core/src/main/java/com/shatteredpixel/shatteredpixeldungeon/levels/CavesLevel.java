@@ -23,7 +23,12 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.CavesPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
@@ -42,12 +47,18 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.StormTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WarpingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.BlacksmithSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.particles.PixelParticle;
+import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
@@ -95,6 +106,59 @@ public class CavesLevel extends RegularLevel {
 				.setTraps(nTraps(), trapClasses(), trapChances());
 	}
 	
+	@Override
+	public boolean activateTransition(Hero hero, LevelTransition transition) {
+		if (transition.type == LevelTransition.Type.BRANCH_EXIT
+				&& (!Blacksmith.Quest.given() || Blacksmith.Quest.oldQuestMineBlocked() || Blacksmith.Quest.completed() || !Blacksmith.Quest.started())) {
+
+			Blacksmith smith = null;
+			for (Char c : Actor.chars()){
+				if (c instanceof Blacksmith){
+					smith = (Blacksmith) c;
+					break;
+				}
+			}
+
+			if (Blacksmith.Quest.oldQuestMineBlocked()){
+				GLog.w(Messages.get(Blacksmith.class, "cant_enter_old"));
+			} else if (smith == null || !Blacksmith.Quest.given() || Blacksmith.Quest.completed()) {
+				GLog.w(Messages.get(Blacksmith.class, "entrance_blocked"));
+			} else if (!Blacksmith.Quest.started() && Blacksmith.Quest.Type() != 0){
+				final Pickaxe pick = hero.belongings.getItem(Pickaxe.class);
+				Game.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						if (pick == null){
+							GameScene.show( new WndTitledMessage(new BlacksmithSprite(),
+									Messages.titleCase(Messages.get(Blacksmith.class, "name")),
+									Messages.get(Blacksmith.class, "lost_pick"))
+							);
+						} else {
+							GameScene.show( new WndOptions( new BlacksmithSprite(),
+									Messages.titleCase(Messages.get(Blacksmith.class, "name")),
+									Messages.get(Blacksmith.class, "quest_start_prompt"),
+									Messages.get(Blacksmith.class, "enter_yes"),
+									Messages.get(Blacksmith.class, "enter_no")){
+								@Override
+								protected void onSelect(int index) {
+									if (index == 0){
+										Blacksmith.Quest.start();
+										CavesLevel.super.activateTransition(hero, transition);
+									}
+								}
+							} );
+						}
+
+					}
+				});
+			}
+			return false;
+
+		} else {
+			return super.activateTransition(hero, transition);
+		}
+	}
+
 	@Override
 	public String tilesTex() {
 		return Assets.Environment.TILES_CAVES;
