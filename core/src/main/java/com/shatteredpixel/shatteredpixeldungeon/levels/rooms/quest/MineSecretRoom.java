@@ -25,16 +25,15 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
+import com.watabou.utils.Random;
 
 public class MineSecretRoom extends SecretRoom {
 
 	@Override
-	public int minWidth() { return 6; }
+	public int maxWidth() { return 7; }
 
 	@Override
-	public int minHeight() {
-		return 6;
-	}
+	public int maxHeight() { return 7; }
 
 	@Override
 	public void paint(Level level) {
@@ -43,8 +42,13 @@ public class MineSecretRoom extends SecretRoom {
 
 		entrance().set( Door.Type.HIDDEN );
 
-		//TODO refine this
-		Painter.fill( level, this, 2, Terrain.WALL_DECO );
-		Painter.fill( level, this, 3, Terrain.WALL );
+		int goldAmount = Random.NormalIntRange(4, 7);
+
+		//TODO maybe add per-quest decorations here?
+
+		for (int i = 0; i < goldAmount; i++){
+			Painter.set(level, random(1), Terrain.WALL_DECO);
+		}
+
 	}
 }
