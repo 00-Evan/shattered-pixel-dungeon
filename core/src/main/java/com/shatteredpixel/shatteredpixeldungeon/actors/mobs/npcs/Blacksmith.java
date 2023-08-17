@@ -86,36 +86,46 @@ public class Blacksmith extends NPC {
 		
 		if (!Quest.given) {
 
-			final String text;
-			//pre-v2.2.0 saves
-			switch (Quest.type ){
-				case 0: default:
-					text = Quest.alternative ? Messages.get(Blacksmith.this, "blood_1") : Messages.get(Blacksmith.this, "gold_1");
-					break;
-				case 1:
-					text = Messages.get(Blacksmith.this, "intro_quest_1");
-					break;
-				case 2:
-					text = Messages.get(Blacksmith.this, "intro_quest_2");
-					break;
-				case 3:
-					text = Messages.get(Blacksmith.this, "intro_quest_3");
-					break;
+			String msg1 = "";
+			String msg2 = "";
+
+			if (Quest.type == 0){
+				//pre-v2.2.0 saves
+				msg1 = Quest.alternative ? Messages.get(Blacksmith.this, "blood_1") : Messages.get(Blacksmith.this, "gold_1");
+			} else {
+
+				switch (Dungeon.hero.heroClass){
+					case WARRIOR:   msg1 += Messages.get(Blacksmith.this, "intro_quest_warrior"); break;
+					case MAGE:      msg1 += Messages.get(Blacksmith.this, "intro_quest_mage"); break;
+					case ROGUE:     msg1 += Messages.get(Blacksmith.this, "intro_quest_rogue"); break;
+					case HUNTRESS:  msg1 += Messages.get(Blacksmith.this, "intro_quest_huntress"); break;
+					case DUELIST:   msg1 += Messages.get(Blacksmith.this, "intro_quest_duelist"); break;
+					//case CLERIC: msg1 += Messages.get(Blacksmith.this, "intro_quest_cleric"); break;
+				}
+
+				msg1 += "\n\n" + Messages.get(Blacksmith.this, "intro_quest_start");
+
+				switch (Quest.type){
+					case 1: msg2 += Messages.get(Blacksmith.this, "intro_quest_crystal"); break;
+					case 2: msg2 += Messages.get(Blacksmith.this, "intro_quest_fungi"); break;
+					case 3: msg2 += Messages.get(Blacksmith.this, "intro_quest_gnoll"); break;
+				}
+
 			}
 
+			final String msg1Final = msg1;
+			final String msg2Final = msg2;
 			Game.runOnRenderThread(new Callback() {
 				@Override
 				public void call() {
-					GameScene.show(new WndQuest(Blacksmith.this, text) {
-
+					GameScene.show(new WndQuest(Blacksmith.this, msg1Final) {
 						@Override
-						public void onBackPressed() {
-							super.onBackPressed();
-							
+						public void hide() {
+							super.hide();
+
 							Quest.given = true;
 							Quest.completed = false;
 							Notes.add( Notes.Landmark.TROLL );
-							
 							Pickaxe pick = new Pickaxe();
 							pick.identify();
 							if (pick.doPickUp( Dungeon.hero )) {
@@ -123,6 +133,11 @@ public class Blacksmith extends NPC {
 							} else {
 								Dungeon.level.drop( pick, Dungeon.hero.pos ).sprite.drop();
 							}
+
+							if (msg2Final != ""){
+								GameScene.show(new WndQuest(Blacksmith.this, msg2Final));
+							}
+
 						}
 					} );
 				}
@@ -309,13 +324,15 @@ public class Blacksmith extends NPC {
 	public static class Quest {
 
 		// 0 = old blacksmith quest (pre-2.2.0)
-		// 1 = TBA
-		// 2 = TBA
-		// 3 = TBA
+		// 1 = Crystal
+		// 2 = Fungi
+		// 3 = Gnoll
 		private static int type;
 
 		private static boolean spawned;
 		private static boolean given;
+		private static boolean started;
+		private static boolean bossBeaten;
 		private static boolean completed;
 
 		private static int favor;
@@ -329,6 +346,8 @@ public class Blacksmith extends NPC {
 
 			spawned		= false;
 			given		= false;
+			started     = false;
+			bossBeaten  = false;
 			favor       = 0;
 
 			completed	= false;
@@ -340,6 +359,8 @@ public class Blacksmith extends NPC {
 		private static final String TYPE    	= "type";
 		private static final String SPAWNED		= "spawned";
 		private static final String GIVEN		= "given";
+		private static final String STARTED		= "started";
+		private static final String BOSS_BEATEN	= "boss_beaten";
 		private static final String COMPLETED	= "completed";
 
 		private static final String FAVOR	= "favor";
@@ -356,6 +377,8 @@ public class Blacksmith extends NPC {
 			if (spawned) {
 				node.put( TYPE, type );
 				node.put( GIVEN, given );
+				node.put( STARTED, started );
+				node.put( BOSS_BEATEN, bossBeaten );
 				node.put( COMPLETED, completed );
 				node.put( FAVOR, favor );
 				node.put( ALTERNATIVE, alternative );
@@ -372,6 +395,8 @@ public class Blacksmith extends NPC {
 			if (!node.isNull() && (spawned = node.getBoolean( SPAWNED ))) {
 				type = node.getInt(TYPE);
 				given = node.getBoolean( GIVEN );
+				started = node.getBoolean( STARTED );
+				bossBeaten = node.getBoolean( BOSS_BEATEN );
 				completed = node.getBoolean( COMPLETED );
 				favor = node.getInt( FAVOR );
 				alternative	=  node.getBoolean( ALTERNATIVE );
@@ -395,9 +420,24 @@ public class Blacksmith extends NPC {
 			}
 			return rooms;
 		}
+		public static int Type(){
+			return type;
+		}
 
 		public static boolean given(){
 			return given;
+		}
+
+		public static boolean started(){
+			return started;
+		}
+
+		public static void start(){
+			started = true;
+		}
+
+		public static boolean bossBeaten(){
+			return bossBeaten;
 		}
 
 		public static boolean completed(){
@@ -412,7 +452,15 @@ public class Blacksmith extends NPC {
 			DarkGold gold = Dungeon.hero.belongings.getItem(DarkGold.class);
 			if (gold != null){
 				favor += Math.min(2000, gold.quantity()*50);
+				gold.detachAll(Dungeon.hero.belongings.backpack);
 			}
+
+			//we may want to store this so that any upgrades are remembered.
+			Pickaxe pick = Dungeon.hero.belongings.getItem(Pickaxe.class);
+			if (pick.isEquipped(Dungeon.hero)) {
+				pick.doUnequip(Dungeon.hero, false);
+			}
+			pick.detach(Dungeon.hero.belongings.backpack);
 			//check for boss enemy, add another 1k points if they are dead
 			//perhaps reduce final quest score if hero is hit by avoidable boss attacks?
 			Statistics.questScores[2] = favor;

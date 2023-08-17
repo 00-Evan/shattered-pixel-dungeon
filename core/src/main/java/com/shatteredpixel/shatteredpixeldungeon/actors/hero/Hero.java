@@ -163,6 +163,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
@@ -1313,25 +1314,77 @@ public class Hero extends Char {
 
 			} else if (transition.type == LevelTransition.Type.BRANCH_EXIT
 					&& Dungeon.depth >= 11 && Dungeon.depth <= 14
-					&& (!Blacksmith.Quest.given() || Blacksmith.Quest.oldQuestMineBlocked() || Blacksmith.Quest.completed())) {
+					&& (!Blacksmith.Quest.given() || Blacksmith.Quest.oldQuestMineBlocked() || Blacksmith.Quest.completed() || !Blacksmith.Quest.started())) {
 
 				if (Blacksmith.Quest.oldQuestMineBlocked()){
 					GLog.w(Messages.get(Blacksmith.class, "cant_enter_old"));
-				} else {
+				} else if (!Blacksmith.Quest.given() || Blacksmith.Quest.completed()) {
 					GLog.w(Messages.get(Blacksmith.class, "entrance_blocked"));
+				} else if (!Blacksmith.Quest.started() && Blacksmith.Quest.Type() != 0){
+					final Pickaxe pick = belongings.getItem(Pickaxe.class);
+					Game.runOnRenderThread(new Callback() {
+						@Override
+						public void call() {
+							if (pick == null){
+								GameScene.show( new WndTitledMessage(new BlacksmithSprite(),
+										Messages.titleCase(Messages.get(Blacksmith.class, "name")),
+										Messages.get(Blacksmith.class, "lost_pick"))
+								);
+							} else {
+								GameScene.show( new WndOptions( new BlacksmithSprite(),
+										Messages.titleCase(Messages.get(Blacksmith.class, "name")),
+										Messages.get(Blacksmith.class, "quest_start_prompt"),
+										Messages.get(Blacksmith.class, "enter_yes"),
+										Messages.get(Blacksmith.class, "enter_no")){
+									@Override
+									protected void onSelect(int index) {
+										if (index == 0){
+											Blacksmith.Quest.start();
+											actTransition(action);
+										}
+									}
+								} );
+							}
+
+						}
+					});
 				}
 				ready();
 
 			} else if (transition.type == LevelTransition.Type.BRANCH_ENTRANCE
 					&& Dungeon.depth >= 11 && Dungeon.depth <= 14
-					&& !Blacksmith.Quest.completed()) {
+					&& !Blacksmith.Quest.completed() && Blacksmith.Quest.Type() != 0) {
 
+				String warnText;
+				DarkGold gold = belongings.getItem(DarkGold.class);
+				int goldAmount = gold == null ? 0 : gold.quantity();
+				if (goldAmount < 10){
+					warnText = Messages.get(Blacksmith.class, "exit_warn_none");
+				} else if (goldAmount < 20){
+					warnText = Messages.get(Blacksmith.class, "exit_warn_low");
+				} else if (goldAmount < 30){
+					warnText = Messages.get(Blacksmith.class, "exit_warn_med");
+				} else if (goldAmount < 40){
+					warnText = Messages.get(Blacksmith.class, "exit_warn_high");
+				} else {
+					warnText = Messages.get(Blacksmith.class, "exit_warn_full");
+				}
+
+				if (!Blacksmith.Quest.bossBeaten()){
+					switch (Blacksmith.Quest.Type()){
+						case 1: warnText += "\n\n" + Messages.get(Blacksmith.class, "exit_warn_crystal"); break;
+						case 2: warnText += "\n\n" + Messages.get(Blacksmith.class, "exit_warn_fungi"); break;
+						case 3: warnText += "\n\n" + Messages.get(Blacksmith.class, "exit_warn_gnoll"); break;
+					}
+				}
+
+				String finalWarnText = warnText;
 				Game.runOnRenderThread(new Callback() {
 					@Override
 					public void call() {
 						GameScene.show( new WndOptions( new BlacksmithSprite(),
 								Messages.titleCase(Messages.get(Blacksmith.class, "name")),
-								Messages.get(Blacksmith.class, "exit_warn"),
+								finalWarnText,
 								Messages.get(Blacksmith.class, "exit_yes"),
 								Messages.get(Blacksmith.class, "exit_no")){
 							@Override
