@@ -21,115 +21,75 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.ItemButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
+import java.util.ArrayList;
+
 public class WndBlacksmith extends Window {
 
-	private static final int BTN_SIZE	= 36;
-	private static final float GAP		= 2;
-	private static final float BTN_GAP	= 10;
-	private static final int WIDTH		= 116;
-	
-	private ItemButton btnPressed;
-	
-	private ItemButton btnItem1;
-	private ItemButton btnItem2;
-	private RedButton btnReforge;
-	
-	public WndBlacksmith( Blacksmith troll, Hero hero ) {
-		
+	private static final int WIDTH_P = 120;
+	private static final int WIDTH_L = 160;
+
+	private static final int GAP  = 2;
+
+	//A LOT still to do here!
+	public WndBlacksmith(Blacksmith troll, Hero hero ) {
 		super();
-		
+
+		int width = PixelScene.landscape() ? WIDTH_L : WIDTH_P;
+
 		IconTitle titlebar = new IconTitle();
 		titlebar.icon( troll.sprite() );
 		titlebar.label( Messages.titleCase( troll.name() ) );
-		titlebar.setRect( 0, 0, WIDTH, 0 );
+		titlebar.setRect( 0, 0, width, 0 );
 		add( titlebar );
-		
+
 		RenderedTextBlock message = PixelScene.renderTextBlock( Messages.get(this, "prompt"), 6 );
-		message.maxWidth( WIDTH);
+		message.maxWidth( width );
 		message.setPos(0, titlebar.bottom() + GAP);
 		add( message );
-		
-		btnItem1 = new ItemButton() {
+
+
+		ArrayList<RedButton> buttons = new ArrayList<>();
+
+		//TODO
+		RedButton pickaxe = new RedButton("_Pickaxe (250 favor):_ \"I guess I can give you the pickaxe back if you really want it. I've got plenty more.\"", 6){
 			@Override
 			protected void onClick() {
-				btnPressed = btnItem1;
-				GameScene.selectItem( itemSelector );
-			}
-		};
-		btnItem1.setRect( (WIDTH - BTN_GAP) / 2 - BTN_SIZE, message.top() + message.height() + BTN_GAP, BTN_SIZE, BTN_SIZE );
-		add( btnItem1 );
-		
-		btnItem2 = new ItemButton() {
-			@Override
-			protected void onClick() {
-				btnPressed = btnItem2;
-				GameScene.selectItem( itemSelector );
-			}
-		};
-		btnItem2.setRect( btnItem1.right() + BTN_GAP, btnItem1.top(), BTN_SIZE, BTN_SIZE );
-		add( btnItem2 );
-		
-		btnReforge = new RedButton( Messages.get(this, "reforge") ) {
-			@Override
-			protected void onClick() {
-				Blacksmith.upgrade( btnItem1.item(), btnItem2.item() );
-				hide();
-			}
-		};
-		btnReforge.enable( false );
-		btnReforge.setRect( 0, btnItem1.bottom() + BTN_GAP, WIDTH, 20 );
-		add( btnReforge );
-		
-		
-		resize( WIDTH, (int)btnReforge.bottom() );
-	}
-	
-	protected WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
-
-		@Override
-		public String textPrompt() {
-			return Messages.get(WndBlacksmith.class, "select");
-		}
-
-		@Override
-		public Class<?extends Bag> preferredBag(){
-			return Belongings.Backpack.class;
-		}
-
-		@Override
-		public boolean itemSelectable(Item item) {
-			return item.isUpgradable();
-		}
-
-		@Override
-		public void onSelect( Item item ) {
-			if (item != null && btnPressed.parent != null) {
-				btnPressed.item( item );
-				
-				if (btnItem1.item() != null && btnItem2.item() != null) {
-					String result = Blacksmith.verify( btnItem1.item(), btnItem2.item() );
-					if (result != null) {
-						GameScene.show( new WndMessage( result ) );
-						btnReforge.enable( false );
-					} else {
-						btnReforge.enable( true );
-					}
+				Blacksmith.Quest.pickaxe.collect(Dungeon.hero.belongings.backpack);
+				Blacksmith.Quest.favor -= 250;
+				Blacksmith.Quest.pickaxe = null;
+				WndBlacksmith.this.hide();
+				if (Blacksmith.Quest.favor > 0) {
+					GameScene.show(new WndBlacksmith(troll, hero));
 				}
 			}
+		};
+		pickaxe.enable(Blacksmith.Quest.pickaxe != null && Blacksmith.Quest.favor >= 250);
+		buttons.add(pickaxe);
+
+
+		float pos = message.bottom() + 3*GAP;
+		for (RedButton b : buttons){
+			b.leftJustify = true;
+			b.multiline = true;
+			b.setSize(width, b.reqHeight());
+			b.setRect(0, pos, width, b.reqHeight());
+			b.enable(b.active); //so that it's visually reflected
+			add(b);
+			pos = b.bottom() + GAP;
 		}
-	};
+
+		resize(width, (int)pos);
+
+	}
 
 }

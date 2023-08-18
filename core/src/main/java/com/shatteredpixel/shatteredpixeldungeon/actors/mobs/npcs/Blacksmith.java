@@ -44,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BlacksmithSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBlacksmith;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndBlacksmithOld;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
@@ -202,12 +203,11 @@ public class Blacksmith extends NPC {
 			Game.runOnRenderThread(new Callback() {
 				@Override
 				public void call() {
-					GameScene.show( new WndBlacksmith( Blacksmith.this, Dungeon.hero ) );
+					GameScene.show( new WndBlacksmithOld( Blacksmith.this, Dungeon.hero ) );
 				}
 			});
 
-		//only the reforge window at the moment
-		} else if (Quest.favor >= 500) {
+		} else if (Quest.favor > 0) {
 
 			Game.runOnRenderThread(new Callback() {
 				@Override
@@ -350,12 +350,12 @@ public class Blacksmith extends NPC {
 		private static boolean completed;
 
 		//reward tracking. Stores remaining favor, the pickaxe, and how many of each reward has been chosen
-		private static int favor;
-		private static Item pickaxe;
-		private static int reforges; //also used by the pre-v2.2.0 version of the quest
-		private static int hardens;
-		private static int upgrades;
-		private static int smiths;
+		public static int favor;
+		public static Item pickaxe;
+		public static int reforges; //also used by the pre-v2.2.0 version of the quest
+		public static int hardens;
+		public static int upgrades;
+		public static int smiths;
 		
 		public static void reset() {
 			type        = 0;
