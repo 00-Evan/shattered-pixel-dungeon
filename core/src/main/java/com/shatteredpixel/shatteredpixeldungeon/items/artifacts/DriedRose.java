@@ -62,12 +62,12 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ItemButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndBlacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
 import com.watabou.noosa.Game;
@@ -862,8 +862,8 @@ public class DriedRose extends Artifact {
 		private static final float BTN_GAP	= 12;
 		private static final int WIDTH		= 116;
 		
-		private WndBlacksmith.ItemButton btnWeapon;
-		private WndBlacksmith.ItemButton btnArmor;
+		private ItemButton btnWeapon;
+		private ItemButton btnArmor;
 		
 		WndGhostHero(final DriedRose rose){
 			
@@ -879,7 +879,7 @@ public class DriedRose extends Artifact {
 			message.setPos(0, titlebar.bottom() + GAP);
 			add( message );
 			
-			btnWeapon = new WndBlacksmith.ItemButton(){
+			btnWeapon = new ItemButton(){
 				@Override
 				protected void onClick() {
 					if (rose.weapon != null){
@@ -945,7 +945,7 @@ public class DriedRose extends Artifact {
 			}
 			add( btnWeapon );
 			
-			btnArmor = new WndBlacksmith.ItemButton(){
+			btnArmor = new ItemButton(){
 				@Override
 				protected void onClick() {
 					if (rose.armor != null){
