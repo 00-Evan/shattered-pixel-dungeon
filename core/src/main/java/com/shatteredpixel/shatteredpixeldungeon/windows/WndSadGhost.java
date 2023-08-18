@@ -21,8 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -34,14 +32,11 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.FetidRatSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollTricksterSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GreatCrabSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ItemButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.watabou.noosa.NinePatch;
-import com.watabou.noosa.audio.Sample;
-import com.watabou.noosa.ui.Component;
 
 public class WndSadGhost extends Window {
 
@@ -86,11 +81,23 @@ public class WndSadGhost extends Window {
 		message.setPos(0, titlebar.bottom() + GAP);
 		add( message );
 
-		RewardButton btnWeapon = new RewardButton( Ghost.Quest.weapon );
+		ItemButton btnWeapon = new ItemButton(){
+			@Override
+			protected void onClick() {
+				GameScene.show(new RewardWindow(item()));
+			}
+		};
+		btnWeapon.item( Ghost.Quest.weapon );
 		btnWeapon.setRect( (WIDTH - BTN_GAP) / 2 - BTN_SIZE, message.top() + message.height() + BTN_GAP, BTN_SIZE, BTN_SIZE );
 		add( btnWeapon );
 
-		RewardButton btnArmor = new RewardButton( Ghost.Quest.armor );
+		ItemButton btnArmor = new ItemButton(){
+			@Override
+			protected void onClick() {
+				GameScene.show(new RewardWindow(item()));
+			}
+		};
+		btnArmor.item( Ghost.Quest.armor );
 		btnArmor.setRect( btnWeapon.right() + BTN_GAP, btnWeapon.top(), BTN_SIZE, BTN_SIZE );
 		add(btnArmor);
 
@@ -120,45 +127,6 @@ public class WndSadGhost extends Window {
 		ghost.die( null );
 		
 		Ghost.Quest.complete();
-	}
-
-	private class RewardButton extends Component {
-
-		protected NinePatch bg;
-		protected ItemSlot slot;
-
-		public RewardButton( Item item ){
-			bg = Chrome.get( Chrome.Type.RED_BUTTON);
-			add( bg );
-
-			slot = new ItemSlot( item ){
-				@Override
-				protected void onPointerDown() {
-					bg.brightness( 1.2f );
-					Sample.INSTANCE.play( Assets.Sounds.CLICK );
-				}
-				@Override
-				protected void onPointerUp() {
-					bg.resetColor();
-				}
-				@Override
-				protected void onClick() {
-					GameScene.show(new RewardWindow(item));
-				}
-			};
-			add(slot);
-		}
-
-		@Override
-		protected void layout() {
-			super.layout();
-
-			bg.x = x;
-			bg.y = y;
-			bg.size( width, height );
-
-			slot.setRect( x + 2, y + 2, width - 4, height - 4 );
-		}
 	}
 
 	private class RewardWindow extends WndInfoItem {
