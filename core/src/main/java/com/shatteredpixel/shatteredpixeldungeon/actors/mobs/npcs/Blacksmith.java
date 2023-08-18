@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
-import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DarkGold;
@@ -126,13 +125,13 @@ public class Blacksmith extends NPC {
 							Quest.given = true;
 							Quest.completed = false;
 							Notes.add( Notes.Landmark.TROLL );
-							Pickaxe pick = new Pickaxe();
-							pick.identify();
+							Item pick = Quest.pickaxe;
 							if (pick.doPickUp( Dungeon.hero )) {
 								GLog.i( Messages.capitalize(Messages.get(Dungeon.hero, "you_now_have", pick.name()) ));
 							} else {
 								Dungeon.level.drop( pick, Dungeon.hero.pos ).sprite.drop();
 							}
+							Quest.pickaxe = null;
 
 							if (msg2Final != ""){
 								GameScene.show(new WndQuest(Blacksmith.this, msg2Final));
@@ -155,14 +154,16 @@ public class Blacksmith extends NPC {
 						tell(Messages.get(this, "blood_2"));
 					} else {
 						if (pick.isEquipped(Dungeon.hero)) {
+							boolean wasCursed = pick.cursed;
 							pick.cursed = false; //so that it can always be removed
 							pick.doUnequip(Dungeon.hero, false);
+							pick.cursed = wasCursed;
 						}
 						pick.detach(Dungeon.hero.belongings.backpack);
+						Quest.pickaxe = pick;
 						tell(Messages.get(this, "completed"));
 
 						Quest.completed = true;
-						Quest.reforged = false;
 						Statistics.questScores[2] = 3000;
 					}
 
@@ -176,14 +177,17 @@ public class Blacksmith extends NPC {
 						tell(Messages.get(this, "gold_2"));
 					} else {
 						if (pick.isEquipped(Dungeon.hero)) {
+							boolean wasCursed = pick.cursed;
+							pick.cursed = false; //so that it can always be removed
 							pick.doUnequip(Dungeon.hero, false);
+							pick.cursed = wasCursed;
 						}
 						pick.detach(Dungeon.hero.belongings.backpack);
+						Quest.pickaxe = pick;
 						gold.detachAll(Dungeon.hero.belongings.backpack);
 						tell(Messages.get(this, "completed"));
 
 						Quest.completed = true;
-						Quest.reforged = false;
 						Statistics.questScores[2] = 3000;
 					}
 
@@ -193,7 +197,7 @@ public class Blacksmith extends NPC {
 				tell(Messages.get(this, "reminder"));
 
 			}
-		} else if (Quest.type == 0 && !Quest.reforged) {
+		} else if (Quest.type == 0 && Quest.reforges == 0) {
 			
 			Game.runOnRenderThread(new Callback() {
 				@Override
@@ -201,12 +205,16 @@ public class Blacksmith extends NPC {
 					GameScene.show( new WndBlacksmith( Blacksmith.this, Dungeon.hero ) );
 				}
 			});
-			
-		} else if (Quest.favor > 0) {
 
-			tell("You got " + Quest.favor + " favor. Here's some gold.");
-			new Gold(Quest.favor).doPickUp(Dungeon.hero, Dungeon.hero.pos);
-			Quest.favor = 0;
+		//only the reforge window at the moment
+		} else if (Quest.favor >= 500) {
+
+			Game.runOnRenderThread(new Callback() {
+				@Override
+				public void call() {
+					GameScene.show( new WndBlacksmith( Blacksmith.this, Dungeon.hero ) );
+				}
+			});
 
 		} else {
 			
@@ -297,8 +305,11 @@ public class Blacksmith extends NPC {
 		Dungeon.hero.spendAndNext( 2f );
 		Badges.validateItemLevelAquired( first );
 		Item.updateQuickslot();
-		
-		Quest.reforged = true;
+
+		Quest.reforges++;
+		if (Quest.type != 0) {
+			Quest.favor -= 500;
+		}
 	}
 	
 	@Override
@@ -328,45 +339,59 @@ public class Blacksmith extends NPC {
 		// 2 = Fungi
 		// 3 = Gnoll
 		private static int type;
+		//pre-v2.2.0
+		private static boolean alternative; //false for mining gold, true for bat blood
 
+		//quest state information
 		private static boolean spawned;
 		private static boolean given;
 		private static boolean started;
 		private static boolean bossBeaten;
 		private static boolean completed;
 
+		//reward tracking. Stores remaining favor, the pickaxe, and how many of each reward has been chosen
 		private static int favor;
-
-		//pre-v2.2.0
-		private static boolean alternative; //false for mining gold, true for bat blood
-		private static boolean reforged;
+		private static Item pickaxe;
+		private static int reforges; //also used by the pre-v2.2.0 version of the quest
+		private static int hardens;
+		private static int upgrades;
+		private static int smiths;
 		
 		public static void reset() {
 			type        = 0;
+			alternative = false;
 
 			spawned		= false;
 			given		= false;
 			started     = false;
 			bossBeaten  = false;
-			favor       = 0;
-
 			completed	= false;
-			reforged	= false;
+
+			favor       = 0;
+			pickaxe     = new Pickaxe().identify();
+			reforges    = 0;
+			hardens     = 0;
+			upgrades    = 0;
+			smiths      = 0;
 		}
 		
 		private static final String NODE	= "blacksmith";
 
 		private static final String TYPE    	= "type";
+		private static final String ALTERNATIVE	= "alternative";
+
 		private static final String SPAWNED		= "spawned";
 		private static final String GIVEN		= "given";
 		private static final String STARTED		= "started";
 		private static final String BOSS_BEATEN	= "boss_beaten";
 		private static final String COMPLETED	= "completed";
 
-		private static final String FAVOR	= "favor";
-
-		private static final String ALTERNATIVE	= "alternative";
-		private static final String REFORGED	= "reforged";
+		private static final String FAVOR	    = "favor";
+		private static final String PICKAXE	    = "pickaxe";
+		private static final String REFORGES	= "reforges";
+		private static final String HARDENS	    = "hardens";
+		private static final String UPGRADES	= "upgrades";
+		private static final String SMITHS	    = "smiths";
 		
 		public static void storeInBundle( Bundle bundle ) {
 			
@@ -376,13 +401,19 @@ public class Blacksmith extends NPC {
 			
 			if (spawned) {
 				node.put( TYPE, type );
+				node.put( ALTERNATIVE, alternative );
+
 				node.put( GIVEN, given );
 				node.put( STARTED, started );
 				node.put( BOSS_BEATEN, bossBeaten );
 				node.put( COMPLETED, completed );
+
 				node.put( FAVOR, favor );
-				node.put( ALTERNATIVE, alternative );
-				node.put( REFORGED, reforged );
+				if (pickaxe != null) node.put( PICKAXE, pickaxe );
+				node.put( REFORGES, reforges );
+				node.put( HARDENS, hardens );
+				node.put( UPGRADES, upgrades );
+				node.put( SMITHS, smiths );
 			}
 			
 			bundle.put( NODE, node );
@@ -394,13 +425,29 @@ public class Blacksmith extends NPC {
 			
 			if (!node.isNull() && (spawned = node.getBoolean( SPAWNED ))) {
 				type = node.getInt(TYPE);
+				alternative	=  node.getBoolean( ALTERNATIVE );
+
 				given = node.getBoolean( GIVEN );
 				started = node.getBoolean( STARTED );
 				bossBeaten = node.getBoolean( BOSS_BEATEN );
 				completed = node.getBoolean( COMPLETED );
+
 				favor = node.getInt( FAVOR );
-				alternative	=  node.getBoolean( ALTERNATIVE );
-				reforged = node.getBoolean( REFORGED );
+				if (node.contains(PICKAXE)) {
+					pickaxe = (Item) node.get(PICKAXE);
+				} else {
+					pickaxe = null;
+				}
+				if (node.contains("reforged")){
+					//pre-v2.2.0 saves
+					reforges = node.getBoolean( "reforged" ) ? 1 : 0;
+				} else {
+					reforges = node.getInt( REFORGES );
+				}
+				hardens = node.getInt( HARDENS );
+				upgrades = node.getInt( UPGRADES );
+				smiths = node.getInt( SMITHS );
+
 			} else {
 				reset();
 			}
@@ -446,7 +493,6 @@ public class Blacksmith extends NPC {
 
 		public static void complete(){
 			completed = true;
-			reforged = false;
 
 			favor = 0;
 			DarkGold gold = Dungeon.hero.belongings.getItem(DarkGold.class);
@@ -455,12 +501,15 @@ public class Blacksmith extends NPC {
 				gold.detachAll(Dungeon.hero.belongings.backpack);
 			}
 
-			//we may want to store this so that any upgrades are remembered.
 			Pickaxe pick = Dungeon.hero.belongings.getItem(Pickaxe.class);
 			if (pick.isEquipped(Dungeon.hero)) {
+				boolean wasCursed = pick.cursed;
+				pick.cursed = false; //so that it can always be removed
 				pick.doUnequip(Dungeon.hero, false);
+				pick.cursed = wasCursed;
 			}
 			pick.detach(Dungeon.hero.belongings.backpack);
+			Quest.pickaxe = pick;
 			//check for boss enemy, add another 1k points if they are dead
 			//perhaps reduce final quest score if hero is hit by avoidable boss attacks?
 			Statistics.questScores[2] = favor;
