@@ -25,6 +25,8 @@ import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Group extends Gizmo {
 
@@ -309,5 +311,9 @@ public class Group extends Gizmo {
 		} else {
 			return null;
 		}
+	}
+
+	public synchronized void sort(Comparator c){
+		Collections.sort(members, c);
 	}
 }
