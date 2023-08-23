@@ -21,21 +21,14 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
-import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DarkGold;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.BlacksmithRoom;
@@ -44,10 +37,8 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BlacksmithSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBlacksmith;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndBlacksmithOld;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.watabou.noosa.Game;
-import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
@@ -203,7 +194,7 @@ public class Blacksmith extends NPC {
 			Game.runOnRenderThread(new Callback() {
 				@Override
 				public void call() {
-					GameScene.show( new WndBlacksmithOld( Blacksmith.this, Dungeon.hero ) );
+					GameScene.show( new WndBlacksmith.WndReforge( Blacksmith.this, Dungeon.hero ) );
 				}
 			});
 
@@ -233,85 +224,7 @@ public class Blacksmith extends NPC {
 			}
 		});
 	}
-	
-	public static String verify( Item item1, Item item2 ) {
-		
-		if (item1 == item2 && (item1.quantity() == 1 && item2.quantity() == 1)) {
-			return Messages.get(Blacksmith.class, "same_item");
-		}
 
-		if (item1.getClass() != item2.getClass()) {
-			return Messages.get(Blacksmith.class, "diff_type");
-		}
-		
-		if (!item1.isIdentified() || !item2.isIdentified()) {
-			return Messages.get(Blacksmith.class, "un_ided");
-		}
-		
-		if (item1.cursed || item2.cursed ||
-				(item1 instanceof Armor && ((Armor) item1).hasCurseGlyph()) ||
-				(item2 instanceof Armor && ((Armor) item2).hasCurseGlyph()) ||
-				(item1 instanceof Weapon && ((Weapon) item1).hasCurseEnchant()) ||
-				(item2 instanceof Weapon && ((Weapon) item2).hasCurseEnchant())) {
-			return Messages.get(Blacksmith.class, "cursed");
-		}
-		
-		if (item1.level() < 0 || item2.level() < 0) {
-			return Messages.get(Blacksmith.class, "degraded");
-		}
-		
-		if (!item1.isUpgradable() || !item2.isUpgradable()) {
-			return Messages.get(Blacksmith.class, "cant_reforge");
-		}
-		
-		return null;
-	}
-	
-	public static void upgrade( Item item1, Item item2 ) {
-		
-		Item first, second;
-		if (item2.trueLevel() > item1.trueLevel()) {
-			first = item2;
-			second = item1;
-		} else {
-			first = item1;
-			second = item2;
-		}
-
-		Sample.INSTANCE.play( Assets.Sounds.EVOKE );
-		ScrollOfUpgrade.upgrade( Dungeon.hero );
-		Item.evoke( Dungeon.hero );
-
-		if (second.isEquipped( Dungeon.hero )) {
-			((EquipableItem)second).doUnequip( Dungeon.hero, false );
-		}
-		second.detach( Dungeon.hero.belongings.backpack );
-
-		if (second instanceof Armor){
-			BrokenSeal seal = ((Armor) second).checkSeal();
-			if (seal != null){
-				Dungeon.level.drop( seal, Dungeon.hero.pos );
-			}
-		}
-
-		//preserves enchant/glyphs if present
-		if (first instanceof Weapon && ((Weapon) first).hasGoodEnchant()){
-			((Weapon) first).upgrade(true);
-		} else if (first instanceof Armor && ((Armor) first).hasGoodGlyph()){
-			((Armor) first).upgrade(true);
-		} else {
-			first.upgrade();
-		}
-		Dungeon.hero.spendAndNext( 2f );
-		Badges.validateItemLevelAquired( first );
-		Item.updateQuickslot();
-
-		Quest.reforges++;
-		if (Quest.type != 0) {
-			Quest.favor -= 500;
-		}
-	}
-	
 	@Override
 	public int defenseSkill( Char enemy ) {
 		return INFINITE_EVASION;
