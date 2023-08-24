@@ -50,6 +50,8 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 	
 	{
 		icon = ItemSpriteSheet.Icons.SCROLL_METAMORPH;
+
+		talentFactor = 2f;
 	}
 
 	protected static boolean identifiedByUse = false;

@@ -23,10 +23,8 @@ package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ScrollEmpower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -88,6 +86,9 @@ public abstract class Scroll extends Item {
 	protected static ItemStatusHandler<Scroll> handler;
 	
 	protected String rune;
+
+	//affects how strongly on-scroll talents trigger from this scroll
+	protected float talentFactor = 1;
 	
 	{
 		stackable = true;
@@ -185,9 +186,8 @@ public abstract class Scroll extends Item {
 		curUser.busy();
 		((HeroSprite)curUser.sprite).read();
 
-		if (curUser.hasTalent(Talent.EMPOWERING_SCROLLS)){
-			Buff.affect(curUser, ScrollEmpower.class).reset();
-			updateQuickslot();
+		if (!anonymous) {
+			Talent.onScrollUsed(curUser, curUser.pos, talentFactor);
 		}
 
 	}

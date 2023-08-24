@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -134,6 +135,9 @@ public class Potion extends Item {
 	protected static ItemStatusHandler<Potion> handler;
 	
 	protected String color;
+
+	//affects how strongly on-potion talents trigger from this potion
+	protected float talentFactor = 1;
 	
 	{
 		stackable = true;
@@ -282,6 +286,10 @@ public class Potion extends Item {
 		Sample.INSTANCE.play( Assets.Sounds.DRINK );
 		
 		hero.sprite.operate( hero.pos );
+
+		if (!anonymous){
+			Talent.onPotionUsed(curUser, curUser.pos, talentFactor);
+		}
 	}
 	
 	@Override
@@ -294,6 +302,10 @@ public class Potion extends Item {
 
 			Dungeon.level.pressCell( cell );
 			shatter( cell );
+
+			if (!anonymous){
+				Talent.onPotionUsed(curUser, cell, talentFactor);
+			}
 			
 		}
 	}

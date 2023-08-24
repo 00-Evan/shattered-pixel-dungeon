@@ -508,9 +508,9 @@ public class Hero extends Char {
 		evasion *= RingOfEvasion.evasionMultiplier( this );
 
 		if (buff(Talent.RestoredAgilityTracker.class) != null){
-			if (pointsInTalent(Talent.RESTORED_AGILITY) == 1){
+			if (pointsInTalent(Talent.LIQUID_AGILITY) == 1){
 				evasion *= 4f;
-			} else if (pointsInTalent(Talent.RESTORED_AGILITY) == 2){
+			} else if (pointsInTalent(Talent.LIQUID_AGILITY) == 2){
 				return INFINITE_EVASION;
 			}
 		}

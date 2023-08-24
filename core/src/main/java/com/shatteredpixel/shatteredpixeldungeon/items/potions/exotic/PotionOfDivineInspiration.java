@@ -42,6 +42,8 @@ public class PotionOfDivineInspiration extends ExoticPotion {
 	
 	{
 		icon = ItemSpriteSheet.Icons.POTION_DIVINE;
+
+		talentFactor = 2f;
 	}
 
 	protected static boolean identifiedByUse = false;

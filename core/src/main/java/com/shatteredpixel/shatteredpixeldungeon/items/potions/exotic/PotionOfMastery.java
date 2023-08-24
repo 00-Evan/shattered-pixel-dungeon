@@ -42,6 +42,8 @@ public class PotionOfMastery extends ExoticPotion {
 		icon = ItemSpriteSheet.Icons.POTION_MASTERY;
 
 		unique = true;
+
+		talentFactor = 2f;
 	}
 
 	protected static boolean identifiedByUse = false;

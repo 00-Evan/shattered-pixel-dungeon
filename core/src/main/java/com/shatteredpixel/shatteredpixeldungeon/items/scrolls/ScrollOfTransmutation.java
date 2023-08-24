@@ -59,6 +59,8 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		icon = ItemSpriteSheet.Icons.SCROLL_TRANSMUTE;
 		
 		bones = true;
+
+		talentFactor = 2f;
 	}
 
 	@Override
