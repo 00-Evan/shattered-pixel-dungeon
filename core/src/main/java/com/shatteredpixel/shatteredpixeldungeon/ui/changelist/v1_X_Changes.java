@@ -485,7 +485,7 @@ public class v1_X_Changes {
 				"_-_ Integration with Steamworks for achievements and cloud sync.\n\n" +
 				"Users on mobile devices will be able to benefit from most of these features as well! (some feature require a large enough display)"));
 
-		changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_SEWERS, 176, 64, 16, 16 ), "Special Rooms Additions!",
+		changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_SEWERS, 176, 48, 16, 16 ), "Special Rooms Additions!",
 				"_Six new special rooms have been added!_\n\n" +
 				"Two of these rooms (and one existing room) use new crystal doors, which let you see through them before you find a crystal key to unlock them.\n\n" +
 				"Three of these rooms include new terrain hazards, which will require the right tools to get past.\n\n" +

@@ -753,7 +753,7 @@ public class v0_7_X_Changes {
 				"\n" +
 				"Also, before v0.7.0 there were a few unique artifacts which only dropped from particular enemies. I standardized these items in v0.7.0 to either be universal, or scrapped them entirely and put some of their functionality into other game systems."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_SEWERS, 48, 80, 16, 16 ), "Alchemy Overhaul!",
+		changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_SEWERS, 0, 64, 16, 16 ), "Alchemy Overhaul!",
 				"The game's alchemy system has been entirely overhauled!\n\n" +
 				"Alchemy is now a full consumable crafting system which lets you create all kinds of new items.\n\n" +
 				"There is also a new resource: alchemical energy. Every alchemy pot has some energy within it. Some recipes require this energy, so make sure to use it wisely!\n\n" +
