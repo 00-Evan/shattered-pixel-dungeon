@@ -341,6 +341,14 @@ public abstract class Wand extends Item {
 				lvl = Degrade.reduceLevel(lvl);
 			}
 
+			if (charger.target.buff(ScrollEmpower.class) != null){
+				lvl += 2;
+			}
+
+			if (curCharges == 1 && charger.target instanceof Hero && ((Hero)charger.target).hasTalent(Talent.DESPERATE_POWER)){
+				lvl += ((Hero)charger.target).pointsInTalent(Talent.DESPERATE_POWER);
+			}
+
 			if (charger.target.buff(WildMagic.WildMagicTracker.class) != null){
 				int bonus = 4 + ((Hero)charger.target).pointsInTalent(Talent.WILD_POWER);
 				if (Random.Int(2) == 0) bonus++;
@@ -350,10 +358,6 @@ public abstract class Wand extends Item {
 				if (lvl < maxBonusLevel) {
 					lvl = Math.min(lvl + bonus, maxBonusLevel);
 				}
-			}
-
-			if (charger.target.buff(ScrollEmpower.class) != null){
-				lvl += 2;
 			}
 
 			WandOfMagicMissile.MagicCharge buff = charger.target.buff(WandOfMagicMissile.MagicCharge.class);
