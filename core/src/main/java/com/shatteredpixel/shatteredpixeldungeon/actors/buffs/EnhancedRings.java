@@ -25,11 +25,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 
-public class EnhancedRings extends FlavourBuff{
+public class EnhancedRings extends FlavourBuff {
 
 	{
 		type = Buff.buffType.POSITIVE;
@@ -66,8 +65,4 @@ public class EnhancedRings extends FlavourBuff{
 		return Math.max(0, (max-visualcooldown()) / max);
 	}
 
-	@Override
-	public String desc() {
-		return Messages.get(this, "desc", (int)visualcooldown());
-	}
 }
