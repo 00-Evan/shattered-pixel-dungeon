@@ -31,8 +31,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.BArray;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class Dagger extends MeleeWeapon {
@@ -75,22 +80,55 @@ public class Dagger extends MeleeWeapon {
 	}
 
 	@Override
+	public String targetingPrompt() {
+		return Messages.get(this, "prompt");
+	}
+
+	public boolean useTargeting(){
+		return false;
+	}
+
+	@Override
 	protected int baseChargeUse(Hero hero, Char target){
 		return 2;
 	}
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		sneakAbility(hero, 10, this);
+		sneakAbility(hero, target, 5, this);
 	}
 
-	public static void sneakAbility(Hero hero, int invisTurns, MeleeWeapon wep){
+	public static void sneakAbility(Hero hero, Integer target, int maxDist, MeleeWeapon wep){
+		if (target == null) {
+			return;
+		}
+
+		if (Actor.findChar(target) != null || !Dungeon.level.heroFOV[target]) {
+			GLog.w(Messages.get(wep, "ability_bad_position"));
+			return;
+		}
+
+		PathFinder.buildDistanceMap(Dungeon.hero.pos, BArray.not(Dungeon.level.solid, null), maxDist);
+		if (PathFinder.distance[target] == Integer.MAX_VALUE) {
+			GLog.w(Messages.get(wep, "ability_bad_position"));
+			return;
+		}
+
 		wep.beforeAbilityUsed(hero, null);
-		Buff.affect(hero, Invisibility.class, invisTurns);
+		Buff.affect(hero, Invisibility.class, Actor.TICK);
 		hero.spendAndNext(Actor.TICK);
+
+		Dungeon.hero.sprite.turnTo( Dungeon.hero.pos, target);
+		Dungeon.hero.pos = target;
+		Dungeon.level.occupyCell(Dungeon.hero);
+		Dungeon.observe();
+		GameScene.updateFog();
+		Dungeon.hero.checkVisibleMobs();
+
+		Dungeon.hero.sprite.place( Dungeon.hero.pos );
 		CellEmitter.get( Dungeon.hero.pos ).burst( Speck.factory( Speck.WOOL ), 6 );
 		Sample.INSTANCE.play( Assets.Sounds.PUFF );
+
 		wep.afterAbilityUsed(hero);
 	}
-
 }

@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
@@ -66,13 +67,22 @@ public class Dirk extends MeleeWeapon {
 	}
 
 	@Override
+	public String targetingPrompt() {
+		return Messages.get(this, "prompt");
+	}
+
+	public boolean useTargeting(){
+		return false;
+	}
+
+	@Override
 	protected int baseChargeUse(Hero hero, Char target){
 		return 2;
 	}
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		Dagger.sneakAbility(hero, 8, this);
+		Dagger.sneakAbility(hero, target, 4, this);
 	}
 
 }

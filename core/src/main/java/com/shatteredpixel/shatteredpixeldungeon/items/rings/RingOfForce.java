@@ -251,7 +251,7 @@ public class RingOfForce extends Ring {
 
 	public static class BrawlersStance extends Buff {
 
-		public static float HIT_CHARGE_USE = 0.25f;
+		public static float HIT_CHARGE_USE = 1/6f;
 
 		{
 			announced = true;
