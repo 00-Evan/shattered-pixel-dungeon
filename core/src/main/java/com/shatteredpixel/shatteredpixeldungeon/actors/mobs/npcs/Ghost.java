@@ -85,7 +85,7 @@ public class Ghost extends NPC {
 	
 	@Override
 	public float speed() {
-		return Quest.processed() ? 2f : 0.5f;
+		return 0.5f;
 	}
 	
 	@Override
