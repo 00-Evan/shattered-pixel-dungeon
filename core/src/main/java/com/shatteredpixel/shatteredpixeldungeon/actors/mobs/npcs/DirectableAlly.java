@@ -47,10 +47,10 @@ public class DirectableAlly extends NPC {
 	protected boolean movingToDefendPos = false;
 
 	public void defendPos( int cell ){
-		aggro(null);
-		state = WANDERING;
 		defendingPos = cell;
 		movingToDefendPos = true;
+		aggro(null);
+		state = WANDERING;
 	}
 
 	public void clearDefensingPos(){
@@ -59,17 +59,17 @@ public class DirectableAlly extends NPC {
 	}
 
 	public void followHero(){
-		aggro(null);
-		state = WANDERING;
 		defendingPos = -1;
 		movingToDefendPos = false;
+		aggro(null);
+		state = WANDERING;
 	}
 
 	public void targetChar( Char ch ){
-		aggro(ch);
-		target = ch.pos;
 		defendingPos = -1;
 		movingToDefendPos = false;
+		aggro(ch);
+		target = ch.pos;
 	}
 
 	@Override

@@ -48,7 +48,7 @@ public class PitfallTrap extends Trap {
 	@Override
 	public void activate() {
 		
-		if( Dungeon.bossLevel() || Dungeon.depth > 25){
+		if( Dungeon.bossLevel() || Dungeon.depth > 25 || Dungeon.branch != 0){
 			GLog.w(Messages.get(this, "no_pit"));
 			return;
 		}
@@ -79,12 +79,13 @@ public class PitfallTrap extends Trap {
 
 		int pos;
 		int depth;
+		int branch;
 
 		@Override
 		public boolean act() {
 
 			boolean herofell = false;
-			if (depth == Dungeon.depth) {
+			if (depth == Dungeon.depth && branch == Dungeon.branch) {
 				for (int i : PathFinder.NEIGHBOURS9) {
 
 					int cell = pos + i;
@@ -131,12 +132,14 @@ public class PitfallTrap extends Trap {
 
 		private static final String POS = "pos";
 		private static final String DEPTH = "depth";
+		private static final String BRANCH = "branch";
 
 		@Override
 		public void storeInBundle(Bundle bundle) {
 			super.storeInBundle(bundle);
 			bundle.put(POS, pos);
 			bundle.put(DEPTH, depth);
+			bundle.put(BRANCH, branch);
 		}
 
 		@Override
@@ -144,6 +147,7 @@ public class PitfallTrap extends Trap {
 			super.restoreFromBundle(bundle);
 			pos = bundle.getInt(POS);
 			depth = bundle.getInt(DEPTH);
+			branch = bundle.getInt(BRANCH);
 		}
 
 	}

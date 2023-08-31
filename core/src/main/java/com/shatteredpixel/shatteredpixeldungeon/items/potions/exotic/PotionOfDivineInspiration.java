@@ -131,7 +131,10 @@ public class PotionOfDivineInspiration extends ExoticPotion {
 
 			@Override
 			public void onBackPressed() {
-				//do nothing, prevents accidentally closing
+				//window can be closed if potion is already IDed
+				if (isIdentified()){
+					super.onBackPressed();
+				}
 			}
 		});
 

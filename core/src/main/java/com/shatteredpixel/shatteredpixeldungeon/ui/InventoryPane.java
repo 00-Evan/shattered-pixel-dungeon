@@ -48,12 +48,10 @@ import com.watabou.input.KeyEvent;
 import com.watabou.input.PointerEvent;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
-import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.ui.Component;
-import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Signal;
 
@@ -404,10 +402,15 @@ public class InventoryPane extends Component {
 		return selector != null;
 	}
 
+	public static void clearTargetingSlot(){
+		targetingSlot = null;
+	}
+
 	public static void useTargeting(){
 		if (instance != null &&
 				instance.visible &&
 				lastTarget != null &&
+				targetingSlot != null &&
 				Actor.chars().contains( lastTarget ) &&
 				lastTarget.isAlive() &&
 				lastTarget.alignment != Char.Alignment.ALLY &&
@@ -548,7 +551,7 @@ public class InventoryPane extends Component {
 
 			if (selector == null && item.defaultAction() != null){
 				item.execute(Dungeon.hero);
-				if (item.usesTargeting) {
+				if (item != null && item.usesTargeting) {
 					targetingSlot = this;
 					InventoryPane.useTargeting();
 				}

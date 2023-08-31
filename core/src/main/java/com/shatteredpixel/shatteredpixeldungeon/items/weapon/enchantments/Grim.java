@@ -36,6 +36,10 @@ public class Grim extends Weapon.Enchantment {
 	@Override
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
 
+		if (defender.isImmune(Grim.class)) {
+			return damage;
+		}
+
 		int level = Math.max( 0, weapon.buffedLvl() );
 
 		//scales from 0 - 50% based on how low hp the enemy is, plus 0-5% per level

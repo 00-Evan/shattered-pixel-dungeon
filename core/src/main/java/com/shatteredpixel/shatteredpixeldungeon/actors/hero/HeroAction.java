@@ -69,6 +69,12 @@ public class HeroAction {
 			this.dst = stairs;
 		}
 	}
+
+	public static class Mine extends HeroAction {
+		public Mine( int wall ) {
+			this.dst = wall;
+		}
+	}
 	
 	public static class Alchemy extends HeroAction {
 		public Alchemy( int pot ) {

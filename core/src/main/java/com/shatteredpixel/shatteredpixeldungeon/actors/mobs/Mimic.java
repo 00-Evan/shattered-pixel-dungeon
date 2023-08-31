@@ -125,9 +125,12 @@ public class Mimic extends Mob {
 	protected boolean act() {
 		if (alignment == Alignment.NEUTRAL && state != PASSIVE){
 			alignment = Alignment.ENEMY;
-			GLog.w(Messages.get(this, "reveal") );
-			CellEmitter.get(pos).burst(Speck.factory(Speck.STAR), 10);
-			Sample.INSTANCE.play(Assets.Sounds.MIMIC);
+			if (sprite != null) sprite.idle();
+			if (Dungeon.level.heroFOV[pos]) {
+				GLog.w(Messages.get(this, "reveal") );
+				CellEmitter.get(pos).burst(Speck.factory(Speck.STAR), 10);
+				Sample.INSTANCE.play(Assets.Sounds.MIMIC);
+			}
 		}
 		return super.act();
 	}
@@ -167,6 +170,15 @@ public class Mimic extends Mob {
 			alignment = Alignment.ENEMY;
 			Dungeon.hero.spendAndNext(1f);
 		}
+	}
+
+	@Override
+	public int defenseProc(Char enemy, int damage) {
+		if (state == PASSIVE){
+			alignment = Alignment.ENEMY;
+			stopHiding();
+		}
+		return super.defenseProc(enemy, damage);
 	}
 
 	@Override

@@ -83,50 +83,52 @@ public class ActionIndicator extends Tag {
 	private boolean needsRefresh = false;
 	
 	@Override
-	public synchronized void update() {
+	public void update() {
 		super.update();
 
-		if (!visible && action != null){
-			visible = true;
-			needsRefresh = true;
-			flash();
-		} else {
-			visible = action != null;
-		}
-
-		if (needsRefresh){
-			if (primaryVis != null) {
-				primaryVis.destroy();
-				primaryVis.killAndErase();
-				primaryVis = null;
+		synchronized (ActionIndicator.class) {
+			if (!visible && action != null) {
+				visible = true;
+				needsRefresh = true;
+				flash();
+			} else {
+				visible = action != null;
 			}
-			if (secondVis != null){
-				secondVis.destroy();
-				secondVis.killAndErase();
-				secondVis = null;
-			}
-			if (action != null) {
-				primaryVis = action.primaryVisual();
-				add(primaryVis);
 
-				secondVis = action.secondaryVisual();
-				if (secondVis != null){
-					add(secondVis);
+			if (needsRefresh) {
+				if (primaryVis != null) {
+					primaryVis.destroy();
+					primaryVis.killAndErase();
+					primaryVis = null;
+				}
+				if (secondVis != null) {
+					secondVis.destroy();
+					secondVis.killAndErase();
+					secondVis = null;
+				}
+				if (action != null) {
+					primaryVis = action.primaryVisual();
+					add(primaryVis);
+
+					secondVis = action.secondaryVisual();
+					if (secondVis != null) {
+						add(secondVis);
+					}
+
+					setColor(action.indicatorColor());
 				}
 
-				setColor(action.indicatorColor());
+				layout();
+				needsRefresh = false;
 			}
 
-			layout();
-			needsRefresh = false;
-		}
-
-		if (!Dungeon.hero.ready){
-			if (primaryVis != null) primaryVis.alpha(0.5f);
-			if (secondVis != null) secondVis.alpha(0.5f);
-		} else {
-			if (primaryVis != null) primaryVis.alpha(1f);
-			if (secondVis != null) secondVis.alpha(1f);
+			if (!Dungeon.hero.ready) {
+				if (primaryVis != null) primaryVis.alpha(0.5f);
+				if (secondVis != null) secondVis.alpha(0.5f);
+			} else {
+				if (primaryVis != null) primaryVis.alpha(1f);
+				if (secondVis != null) secondVis.alpha(1f);
+			}
 		}
 
 	}
@@ -149,19 +151,29 @@ public class ActionIndicator extends Tag {
 	}
 
 	public static void setAction(Action action){
-		ActionIndicator.action = action;
-		refresh();
+		synchronized (ActionIndicator.class) {
+			ActionIndicator.action = action;
+			refresh();
+		}
+	}
+
+	public static void clearAction(){
+		clearAction(null);
 	}
 
 	public static void clearAction(Action action){
-		if (ActionIndicator.action == action) {
-			ActionIndicator.action = null;
+		synchronized (ActionIndicator.class) {
+			if (action == null || ActionIndicator.action == action) {
+				ActionIndicator.action = null;
+			}
 		}
 	}
 
 	public static void refresh(){
-		if (instance != null){
-			instance.needsRefresh = true;
+		synchronized (ActionIndicator.class) {
+			if (instance != null) {
+				instance.needsRefresh = true;
+			}
 		}
 	}
 

@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.tiles;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.watabou.utils.Random;
 import com.watabou.utils.SparseArray;
@@ -168,15 +169,14 @@ public class DungeonTileSheet {
 	public static final int FLAT_WALL_DECO_ALT  = FLAT_WALLS+5;
 	public static final int FLAT_BOOKSHELF_ALT  = FLAT_WALLS+6;
 
-	private static final int FLAT_DOORS         =                           xy(1, 6);   //16 slots
-	public static final int FLAT_DOOR           = FLAT_DOORS+0;
-	public static final int FLAT_DOOR_OPEN      = FLAT_DOORS+1;
-	public static final int FLAT_DOOR_LOCKED    = FLAT_DOORS+2;
-	public static final int FLAT_DOOR_CRYSTAL   = FLAT_DOORS+3;
-	public static final int UNLOCKED_EXIT       = FLAT_DOORS+4;
-	public static final int LOCKED_EXIT         = FLAT_DOORS+5;
+	public static final int FLAT_DOOR           = FLAT_WALLS+8;
+	public static final int FLAT_DOOR_OPEN      = FLAT_WALLS+9;
+	public static final int FLAT_DOOR_LOCKED    = FLAT_WALLS+10;
+	public static final int FLAT_DOOR_CRYSTAL   = FLAT_WALLS+11;
+	public static final int UNLOCKED_EXIT       = FLAT_WALLS+12;
+	public static final int LOCKED_EXIT         = FLAT_WALLS+13;
 
-	public static final int FLAT_OTHER          =                           xy(1, 7);   //16 slots
+	public static final int FLAT_OTHER          =                           xy(1, 6);   //16 slots
 	public static final int FLAT_SIGN           = FLAT_OTHER+0;
 	public static final int FLAT_STATUE         = FLAT_OTHER+1;
 	public static final int FLAT_STATUE_SP      = FLAT_OTHER+2;
@@ -193,7 +193,7 @@ public class DungeonTileSheet {
 	 * Raised Tiles, Lower Layer
 	 **********************************************************************/
 
-	private static final int RAISED_WALLS               =                   xy(1, 8);   //32 slots
+	private static final int RAISED_WALLS               =                   xy(1, 7);   //32 slots
 	//+1 for open to the right, +2 for open to the left
 	public static final int RAISED_WALL                 = RAISED_WALLS+0;
 	public static final int RAISED_WALL_DECO            = RAISED_WALLS+4;
@@ -238,7 +238,7 @@ public class DungeonTileSheet {
 		return result;
 	}
 
-	private static final int RAISED_DOORS           =                       xy(1, 10);  //16 slots
+	private static final int RAISED_DOORS           =                       xy(1, 9);  //16 slots
 	public static final int RAISED_DOOR             = RAISED_DOORS+0;
 	public static final int RAISED_DOOR_OPEN        = RAISED_DOORS+1;
 	public static final int RAISED_DOOR_LOCKED      = RAISED_DOORS+2;
@@ -267,7 +267,7 @@ public class DungeonTileSheet {
 		return false;
 	}
 
-	private static final int RAISED_OTHER           =                       xy(1, 11);  //16 slots
+	private static final int RAISED_OTHER           =                       xy(1, 10);  //16 slots
 	public static final int RAISED_SIGN             = RAISED_OTHER+0;
 	public static final int RAISED_STATUE           = RAISED_OTHER+1;
 	public static final int RAISED_STATUE_SP        = RAISED_OTHER+2;
@@ -276,9 +276,16 @@ public class DungeonTileSheet {
 	public static final int RAISED_HIGH_GRASS       = RAISED_OTHER+5;
 	public static final int RAISED_FURROWED_GRASS   = RAISED_OTHER+6;
 
+	//these are part of a layer that appears above characters, despite not being part of overhang
+	public static final int RAISED_HIGH_GRASS_OVER      = RAISED_OTHER+7;
+	public static final int RAISED_FURROWED_GRASS_OVER  = RAISED_OTHER+8;
+
 	public static final int RAISED_HIGH_GRASS_ALT   = RAISED_OTHER+9;
 	public static final int RAISED_FURROWED_ALT     = RAISED_OTHER+10;
 
+	//these are part of a layer that appears above characters, despite not being part of overhang
+	public static final int RAISED_HIGH_GRASS_OVER_ALT  = RAISED_OTHER+11;
+	public static final int RAISED_FURROWED_OVER_ALT    = RAISED_OTHER+12;
 
 
 	/**********************************************************************
@@ -286,15 +293,19 @@ public class DungeonTileSheet {
 	 **********************************************************************/
 
 	//+1 for open right, +2 for open right-below, +4 for open left-below, +8 for open left.
-	public static final int WALLS_INTERNAL              =                   xy(1, 12);  //32 slots
+	public static final int WALLS_INTERNAL              =                   xy(1, 11);  //48 slots
 	private static final int WALL_INTERNAL              = WALLS_INTERNAL+0;
-	private static final int WALL_INTERNAL_WOODEN       = WALLS_INTERNAL+16;
+	private static final int WALL_INTERNAL_DECO         = WALLS_INTERNAL+16;
+	private static final int WALL_INTERNAL_WOODEN       = WALLS_INTERNAL+32;
 
 	public static int stitchInternalWallTile(int tile, int right, int rightBelow, int below, int leftBelow, int left){
 		int result;
 
-		if (tile == Terrain.BOOKSHELF || below == Terrain.BOOKSHELF)  result = WALL_INTERNAL_WOODEN;
-		else                            result = WALL_INTERNAL;
+		if (tile == Terrain.BOOKSHELF || below == Terrain.BOOKSHELF)        result = WALL_INTERNAL_WOODEN;
+		//TODO currently this line on triggers on mining floors, do we want to make it universal?
+		else if (Dungeon.branch == 1 &&
+				(tile == Terrain.WALL_DECO || below == Terrain.WALL_DECO))   result = WALL_INTERNAL_DECO;
+		else                                                                result = WALL_INTERNAL;
 
 		if (!wallStitcheable(right))        result += 1;
 		if (!wallStitcheable(rightBelow))   result += 2;
@@ -306,18 +317,21 @@ public class DungeonTileSheet {
 	//+1 for open to the down-right, +2 for open to the down-left
 	private static final int WALLS_OVERHANG             =                   xy(1, 14);  //32 slots
 	public static final int WALL_OVERHANG                   = WALLS_OVERHANG+0;
-	public static final int DOOR_SIDEWAYS_OVERHANG          = WALLS_OVERHANG+4;
-	public static final int DOOR_SIDEWAYS_OVERHANG_OPEN     = WALLS_OVERHANG+8;
-	public static final int DOOR_SIDEWAYS_OVERHANG_LOCKED   = WALLS_OVERHANG+12;
-	public static final int DOOR_SIDEWAYS_OVERHANG_CRYSTAL  = WALLS_OVERHANG+16;
-	public static final int WALL_OVERHANG_WOODEN            = WALLS_OVERHANG+20;
+	public static final int WALL_OVERHANG_DECO              = WALLS_OVERHANG+4;
+	public static final int WALL_OVERHANG_WOODEN            = WALLS_OVERHANG+8;
+	public static final int DOOR_SIDEWAYS_OVERHANG          = WALLS_OVERHANG+16;
+	public static final int DOOR_SIDEWAYS_OVERHANG_CLOSED   = WALLS_OVERHANG+20;
+	public static final int DOOR_SIDEWAYS_OVERHANG_LOCKED   = WALLS_OVERHANG+24;
+	public static final int DOOR_SIDEWAYS_OVERHANG_CRYSTAL  = WALLS_OVERHANG+28;
+
 
 	public static int stitchWallOverhangTile(int tile, int rightBelow, int below, int leftBelow){
 		int visual;
-		if (tile == Terrain.DOOR)                                   visual = DOOR_SIDEWAYS_OVERHANG;
-		else if (tile == Terrain.OPEN_DOOR)                         visual = DOOR_SIDEWAYS_OVERHANG_OPEN;
+		if (tile == Terrain.OPEN_DOOR)                              visual = DOOR_SIDEWAYS_OVERHANG;
+		else if (tile == Terrain.DOOR)                              visual = DOOR_SIDEWAYS_OVERHANG_CLOSED;
 		else if (tile == Terrain.LOCKED_DOOR)                       visual = DOOR_SIDEWAYS_OVERHANG_LOCKED;
 		else if (tile == Terrain.CRYSTAL_DOOR)                      visual = DOOR_SIDEWAYS_OVERHANG_CRYSTAL;
+		else if (below == Terrain.WALL_DECO)                        visual = WALL_OVERHANG_DECO;
 		else if (below == Terrain.BOOKSHELF)                        visual = WALL_OVERHANG_WOODEN;
 		else                                                        visual = WALL_OVERHANG;
 
@@ -327,25 +341,24 @@ public class DungeonTileSheet {
 		return visual;
 	}
 
-	//no attachment to adjacent walls
-	public static final int DOOR_OVERHANG               = WALL_OVERHANG+25;
-	public static final int DOOR_OVERHANG_OPEN          = WALL_OVERHANG+26;
-	public static final int DOOR_OVERHANG_CRYSTAL       = WALL_OVERHANG+27;
-	public static final int DOOR_SIDEWAYS               = WALL_OVERHANG+28;
-	public static final int DOOR_SIDEWAYS_LOCKED        = WALL_OVERHANG+29;
-	public static final int DOOR_SIDEWAYS_CRYSTAL       = WALL_OVERHANG+30;
+	private static final int OTHER_OVERHANG             =                   xy(1, 16);  //16 slots
+	public static final int STATUE_OVERHANG             = OTHER_OVERHANG+0;
+	public static final int ALCHEMY_POT_OVERHANG        = OTHER_OVERHANG+1;
+	public static final int BARRICADE_OVERHANG          = OTHER_OVERHANG+2;
+	public static final int HIGH_GRASS_OVERHANG         = OTHER_OVERHANG+3;
+	public static final int FURROWED_OVERHANG           = OTHER_OVERHANG+4;
 
-	public static final int STATUE_OVERHANG             = WALL_OVERHANG+32;
-	public static final int ALCHEMY_POT_OVERHANG        = WALL_OVERHANG+33;
-	public static final int BARRICADE_OVERHANG          = WALL_OVERHANG+34;
-	public static final int HIGH_GRASS_OVERHANG         = WALL_OVERHANG+35;
-	public static final int FURROWED_OVERHANG           = WALL_OVERHANG+36;
+	public static final int HIGH_GRASS_OVERHANG_ALT     = OTHER_OVERHANG+6;
+	public static final int FURROWED_OVERHANG_ALT       = OTHER_OVERHANG+7;
 
-	public static final int HIGH_GRASS_OVERHANG_ALT     = WALL_OVERHANG+38;
-	public static final int FURROWED_OVERHANG_ALT       = WALL_OVERHANG+39;
-
-	//exit visuals are rendered flat atm, so they actually underhand
-	public static final int EXIT_UNDERHANG              = WALL_OVERHANG+41;
+	public static final int DOOR_OVERHANG               = OTHER_OVERHANG+9;
+	public static final int DOOR_OVERHANG_OPEN          = OTHER_OVERHANG+10;
+	public static final int DOOR_OVERHANG_CRYSTAL       = OTHER_OVERHANG+11;
+	public static final int DOOR_SIDEWAYS               = OTHER_OVERHANG+12;
+	public static final int DOOR_SIDEWAYS_LOCKED        = OTHER_OVERHANG+13;
+	public static final int DOOR_SIDEWAYS_CRYSTAL       = OTHER_OVERHANG+14;
+	//exit visuals are rendered flat atm, so they actually underhang
+	public static final int EXIT_UNDERHANG              =  OTHER_OVERHANG+15;
 
 	/**********************************************************************
 	 * Logic for the selection of tile visuals
@@ -434,6 +447,8 @@ public class DungeonTileSheet {
 
 		commonAltVisuals.put(RAISED_HIGH_GRASS,     RAISED_HIGH_GRASS_ALT);
 		commonAltVisuals.put(RAISED_FURROWED_GRASS, RAISED_FURROWED_ALT);
+		commonAltVisuals.put(RAISED_HIGH_GRASS_OVER,        RAISED_HIGH_GRASS_OVER_ALT);
+		commonAltVisuals.put(RAISED_FURROWED_GRASS_OVER,    RAISED_FURROWED_OVER_ALT);
 		commonAltVisuals.put(HIGH_GRASS_OVERHANG,   HIGH_GRASS_OVERHANG_ALT);
 		commonAltVisuals.put(FURROWED_OVERHANG,     FURROWED_OVERHANG_ALT);
 	}

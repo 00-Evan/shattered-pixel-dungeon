@@ -30,11 +30,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
@@ -48,7 +46,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
-import com.watabou.utils.Rect;
 
 public class MagicalFireRoom extends SpecialRoom {
 
@@ -219,9 +216,10 @@ public class MagicalFireRoom extends SpecialRoom {
 							Buff.affect(ch, Burning.class).reignite(ch, 4f);
 						}
 
-						//burn adjacent heaps, but only on outside cells
+						//burn adjacent heaps, but only on outside and non-water cells
 						if (Dungeon.level.heaps.get(cell) != null
-							&& Dungeon.level.map[cell] != Terrain.EMPTY_SP){
+							&& Dungeon.level.map[cell] != Terrain.EMPTY_SP
+							&& Dungeon.level.map[cell] != Terrain.WATER){
 							Dungeon.level.heaps.get(cell).burn();
 						}
 					}

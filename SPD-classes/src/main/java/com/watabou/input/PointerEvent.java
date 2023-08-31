@@ -21,16 +21,13 @@
 
 package com.watabou.input;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.ui.Cursor;
-import com.watabou.utils.GameMath;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Signal;
 
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.HashMap;
 
 public class PointerEvent {
@@ -120,6 +117,10 @@ public class PointerEvent {
 			lastHoverPos.y = Game.height/2;
 		}
 		return lastHoverPos.clone();
+	}
+
+	public static void setHoverPos(PointF pos){
+		lastHoverPos.set(pos);
 	}
 	
 	public static synchronized void addPointerEvent( PointerEvent event ){

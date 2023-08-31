@@ -45,7 +45,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.ElementalBlast;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
@@ -57,8 +56,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorrosion;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Annoying;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Dazzling;
@@ -97,6 +94,8 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class ElementalStrike extends ArmorAbility {
@@ -204,6 +203,7 @@ public class ElementalStrike extends ArmorAbility {
 
 				if (enemy != null){
 					AttackIndicator.target(enemy);
+					oldEnemyPos = enemy.pos;
 					if (hero.attack(enemy, 1, 0, Char.INFINITE_ACCURACY)) {
 						Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 					}
@@ -350,6 +350,8 @@ public class ElementalStrike extends ArmorAbility {
 		}
 	}
 
+	private int oldEnemyPos;
+
 	//effects that affect the characters within the cone AOE
 	private void perCharEffect(ConeAOE cone, Hero hero, Char primaryTarget, Weapon.Enchantment ench) {
 
@@ -392,8 +394,18 @@ public class ElementalStrike extends ArmorAbility {
 
 		//*** Elastic ***
 		} else if (ench instanceof Elastic){
-			//TODO sort affected by distance first? So further ones get knocked back first
+
+			//sorts affected from furthest to closest
+			Collections.sort(affected, new Comparator<Char>() {
+				@Override
+				public int compare(Char a, Char b) {
+					return Dungeon.level.distance(hero.pos, a.pos) - Dungeon.level.distance(hero.pos, b.pos);
+				}
+			});
+
 			for (Char ch : affected){
+				if (ch == primaryTarget && oldEnemyPos != primaryTarget.pos) continue;
+
 				Ballistica aim = new Ballistica(hero.pos, ch.pos, Ballistica.WONT_STOP);
 				int knockback = Math.round(5*powerMulti);
 				WandOfBlastWave.throwChar(ch,
@@ -532,7 +544,7 @@ public class ElementalStrike extends ArmorAbility {
 		} else if (ench instanceof Friendly){
 			for (Char ch : affected){
 				if (Random.Float() < 0.5f*powerMulti){
-					Buff.affect(ch, Charm.class, 6f).target = hero;
+					Buff.affect(ch, Charm.class, 6f).object = hero.id();
 				}
 			}
 		}

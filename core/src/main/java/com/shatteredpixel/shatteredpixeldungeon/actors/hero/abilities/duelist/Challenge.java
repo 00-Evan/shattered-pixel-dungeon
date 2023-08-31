@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
@@ -103,7 +104,7 @@ public class Challenge extends ArmorAbility {
 			return;
 		}
 
-		boolean[] passable = Dungeon.level.passable.clone();
+		boolean[] passable = BArray.not(Dungeon.level.solid,null);
 		for (Char c : Actor.chars()) {
 			if (c != hero) passable[c.pos] = false;
 		}
@@ -111,7 +112,7 @@ public class Challenge extends ArmorAbility {
 		int[] reachable = PathFinder.distance.clone();
 
 		int blinkpos = hero.pos;
-		if (hero.hasTalent(Talent.CLOSE_THE_GAP)){
+		if (hero.hasTalent(Talent.CLOSE_THE_GAP) && !hero.rooted){
 
 			int blinkrange = 1 + hero.pointsInTalent(Talent.CLOSE_THE_GAP);
 			PathFinder.buildDistanceMap(hero.pos, BArray.not(Dungeon.level.solid,null), blinkrange);
@@ -119,6 +120,7 @@ public class Challenge extends ArmorAbility {
 			for (int i = 0; i < PathFinder.distance.length; i++){
 				if (PathFinder.distance[i] == Integer.MAX_VALUE
 						|| reachable[i] == Integer.MAX_VALUE
+						|| (!Dungeon.level.passable[i] && !(hero.flying && Dungeon.level.avoid[i]))
 						|| i == targetCh.pos){
 					continue;
 				}
@@ -133,13 +135,15 @@ public class Challenge extends ArmorAbility {
 			}
 		}
 
-		if (PathFinder.distance[blinkpos] == Integer.MAX_VALUE){
+		if (reachable[blinkpos] == Integer.MAX_VALUE){
 			GLog.w(Messages.get(this, "unreachable_target"));
+			if (hero.rooted) PixelScene.shake( 1, 1f );
 			return;
 		}
 
-		if (Dungeon.level.distance(blinkpos, targetCh.pos) >= 5){
+		if (Dungeon.level.distance(blinkpos, targetCh.pos) > 5){
 			GLog.w(Messages.get(this, "distant_target"));
+			if (hero.rooted) PixelScene.shake( 1, 1f );
 			return;
 		}
 

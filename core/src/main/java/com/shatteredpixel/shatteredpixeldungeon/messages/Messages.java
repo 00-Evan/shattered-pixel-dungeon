@@ -36,8 +36,6 @@ import java.util.HashSet;
 import java.util.IllegalFormatException;
 import java.util.Locale;
 
-import jdk.vm.ci.meta.Local;
-
 /*
 	Simple wrapper class for libGDX I18NBundles.
 

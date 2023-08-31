@@ -28,9 +28,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -262,8 +262,12 @@ public class MeleeWeapon extends Weapon {
 		}
 	}
 
-	public float abilityChargeUse(Hero hero, Char target){
-		float chargeUse = 1f;
+	protected int baseChargeUse(Hero hero, Char target){
+		return 1; //abilities use 1 charge by default
+	}
+
+	public final float abilityChargeUse(Hero hero, Char target){
+		float chargeUse = baseChargeUse(hero, target);
 		if (hero.buff(Talent.CounterAbilityTacker.class) != null){
 			chargeUse = Math.max(0, chargeUse-0.5f*hero.pointsInTalent(Talent.COUNTER_ABILITY));
 		}
@@ -455,9 +459,8 @@ public class MeleeWeapon extends Weapon {
 
 		@Override
 		public boolean act() {
-			LockedFloor lock = target.buff(LockedFloor.class);
 			if (charges < chargeCap()){
-				if (lock == null || lock.regenOn()){
+				if (Regeneration.regenOn()){
 					partialCharge += 1/(40f-(chargeCap()-charges)); // 40 to 30 turns per charge
 				}
 
@@ -478,7 +481,7 @@ public class MeleeWeapon extends Weapon {
 
 			if (Dungeon.hero.subClass == HeroSubClass.CHAMPION
 					&& secondCharges < secondChargeCap()) {
-				if (lock == null || lock.regenOn()) {
+				if (Regeneration.regenOn()) {
 					// 80 to 60 turns per charge without talent
 					// up to 53.333 to 40 turns per charge at max talent level
 					secondPartialCharge += secondChargeMultiplier() / (40f-(secondChargeCap()-secondCharges));

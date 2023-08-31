@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Ghoul;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -44,13 +43,11 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoItem;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMonkAbilities;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Image;
@@ -146,7 +143,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 	public void gainEnergy(Mob enemy ){
 		if (target == null) return;
 
-		if (target.buff(LockedFloor.class) != null && !target.buff(LockedFloor.class).regenOn()){
+		if (!Regeneration.regenOn()){
 			return; //to prevent farming boss minions
 		}
 
@@ -483,6 +480,12 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 					range += 3;
 				}
 
+				if (Dungeon.hero.rooted){
+					PixelScene.shake( 1, 1f );
+					GLog.w(Messages.get(MeleeWeapon.class, "ability_bad_position"));
+					return;
+				}
+
 				if (Dungeon.level.distance(hero.pos, target) > range){
 					GLog.w(Messages.get(MeleeWeapon.class, "ability_bad_position"));
 					return;
@@ -564,11 +567,12 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 						AttackIndicator.target(enemy);
 						boolean empowered = Buff.affect(hero, MonkEnergy.class).abilitiesEmpowered(hero);
 
+						int oldPos = enemy.pos;
 						if (hero.attack(enemy, empowered ? 4.5f : 3f, 0, Char.INFINITE_ACCURACY)){
 							Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 						}
 
-						if (enemy.isAlive()){
+						if (enemy.isAlive() && oldPos == enemy.pos){
 							//trace a ballistica to our target (which will also extend past them
 							Ballistica trajectory = new Ballistica(hero.pos, enemy.pos, Ballistica.STOP_TARGET);
 							//trim it to just be the part that goes past them

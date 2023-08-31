@@ -28,8 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Daze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -62,11 +60,11 @@ public class Mace extends MeleeWeapon {
 	}
 
 	@Override
-	public float abilityChargeUse(Hero hero, Char target) {
+	protected int baseChargeUse(Hero hero, Char target){
 		if (target == null || (target instanceof Mob && ((Mob) target).surprisedBy(hero))) {
-			return super.abilityChargeUse(hero, target);
+			return 1;
 		} else {
-			return 2*super.abilityChargeUse(hero, target);
+			return 2;
 		}
 	}
 

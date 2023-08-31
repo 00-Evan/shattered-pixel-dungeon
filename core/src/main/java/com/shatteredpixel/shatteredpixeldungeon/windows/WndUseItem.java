@@ -55,7 +55,7 @@ public class WndUseItem extends WndInfoItem {
 							item.execute( Dungeon.hero, action );
 						}
 						Item.updateQuickslot();
-						if (action == item.defaultAction() && item.usesTargeting && owner == null){
+						if (action.equals(item.defaultAction()) && item.usesTargeting && owner == null){
 							InventoryPane.useTargeting();
 						}
 					}

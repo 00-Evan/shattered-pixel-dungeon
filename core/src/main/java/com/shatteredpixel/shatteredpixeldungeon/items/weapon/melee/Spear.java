@@ -88,8 +88,9 @@ public class Spear extends MeleeWeapon {
 			public void call() {
 				wep.beforeAbilityUsed(hero, enemy);
 				AttackIndicator.target(enemy);
+				int oldPos = enemy.pos;
 				if (hero.attack(enemy, dmgMulti, 0, Char.INFINITE_ACCURACY)) {
-					if (enemy.isAlive()){
+					if (enemy.isAlive() && enemy.pos == oldPos){
 						//trace a ballistica to our target (which will also extend past them
 						Ballistica trajectory = new Ballistica(hero.pos, enemy.pos, Ballistica.STOP_TARGET);
 						//trim it to just be the part that goes past them

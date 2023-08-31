@@ -58,7 +58,7 @@ public class FrozenCarpaccio extends Food {
 				break;
 			case 1:
 				GLog.i( Messages.get(FrozenCarpaccio.class, "hard") );
-				Buff.affect( hero, Barkskin.class ).set( hero.HT / 4, 1 );
+				Barkskin.conditionallyAppend( hero, hero.HT / 4, 1 );
 				break;
 			case 2:
 				GLog.i( Messages.get(FrozenCarpaccio.class, "refresh") );

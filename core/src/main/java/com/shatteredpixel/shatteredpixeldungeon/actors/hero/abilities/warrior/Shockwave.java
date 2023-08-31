@@ -40,9 +40,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
@@ -99,7 +99,7 @@ public class Shockwave extends ArmorAbility {
 
 		hero.sprite.zap(target);
 		Sample.INSTANCE.play(Assets.Sounds.BLAST, 1f, 0.5f);
-		Camera.main.shake(2, 0.5f);
+		PixelScene.shake(2, 0.5f);
 		//final zap at 2/3 distance, for timing of the actual effect
 		MagicMissile.boltFromChar(hero.sprite.parent,
 				MagicMissile.FORCE_CONE,

@@ -525,6 +525,7 @@ public class Bundle {
 				// Some of these are written in a 'minified' format, some have duplicate keys.
 				// We read them in with the libGDX JSON code, fix duplicates, write as full JSON
 				// and then try to read again with org.json
+				Game.reportException(e);
 				JsonValue gdxJSON = new JsonReader().parse(jsonString);
 				killDuplicateKeysInLibGDXJSON(gdxJSON);
 				json = new JSONTokener(gdxJSON.prettyPrint(JsonWriter.OutputType.json, 0)).nextValue();

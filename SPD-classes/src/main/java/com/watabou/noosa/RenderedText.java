@@ -35,6 +35,7 @@ import com.watabou.glwrap.Quad;
 
 import java.nio.Buffer;
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class RenderedText extends Image {
@@ -73,6 +74,8 @@ public class RenderedText extends Image {
 		this.size = size;
 		measure();
 	}
+
+	private static final ArrayList<Character> alreadyReported = new ArrayList<>();
 	
 	private synchronized void measure(){
 		
@@ -101,7 +104,11 @@ public class RenderedText extends Image {
 					if (toException.length() > 30){
 						toException = toException.substring(0, 30) + "...";
 					}
-					Game.reportException(new Throwable("font file " + font.toString() + " could not render " + c + " from string: " + toException));
+					//reduces logspam
+					if (!alreadyReported.contains(c)) {
+						Game.reportException(new Throwable("font file " + font.toString() + " could not render " + c + " from string: " + toException));
+						alreadyReported.add(c);
+					}
 				}
 			}
 			

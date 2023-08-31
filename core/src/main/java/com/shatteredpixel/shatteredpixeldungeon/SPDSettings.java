@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
@@ -57,6 +56,7 @@ public class SPDSettings extends GameSettings {
 	public static final String KEY_BRIGHTNESS	= "brightness";
 	public static final String KEY_GRID 	    = "visual_grid";
 	public static final String KEY_CAMERA_FOLLOW= "camera_follow";
+	public static final String KEY_SCREEN_SHAKE = "screen_shake";
 	
 	public static void fullscreen( boolean value ) {
 		put( KEY_FULLSCREEN, value );
@@ -120,11 +120,18 @@ public class SPDSettings extends GameSettings {
 
 	public static void cameraFollow( int value ){
 		put( KEY_CAMERA_FOLLOW, value );
-		GameScene.updateMap();
 	}
 
 	public static int cameraFollow() {
 		return getInt( KEY_CAMERA_FOLLOW, 4, 1, 4 );
+	}
+
+	public static void screenShake( int value ){
+		put( KEY_SCREEN_SHAKE, value );
+	}
+
+	public static int screenShake() {
+		return getInt( KEY_SCREEN_SHAKE, 2, 0, 4 );
 	}
 	
 	//Interface
