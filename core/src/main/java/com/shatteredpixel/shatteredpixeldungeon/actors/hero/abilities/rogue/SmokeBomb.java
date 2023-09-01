@@ -126,6 +126,7 @@ public class SmokeBomb extends ArmorAbility {
 					NinjaLog n = new NinjaLog();
 					n.pos = hero.pos;
 					GameScene.add(n);
+					Dungeon.level.occupyCell(n);
 				}
 
 				if (hero.hasTalent(Talent.HASTY_RETREAT)){
