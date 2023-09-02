@@ -23,6 +23,7 @@ package com.watabou.noosa.audio;
 
 import com.badlogic.gdx.Gdx;
 import com.watabou.noosa.Game;
+import com.watabou.utils.Callback;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.Random;
 
@@ -40,6 +41,10 @@ public enum Music {
 	
 	private boolean enabled = true;
 	private float volume = 1f;
+
+	private float fadeTime = -1f;
+	private float fadeTotal = -1f;
+	private Callback onFadeOut = null;
 
 	String[] trackList;
 	float[] trackChances;
@@ -122,6 +127,29 @@ public enum Music {
 		play(trackQueue.remove(0), trackLooper);
 	}
 
+	public synchronized void fadeOut(float duration, Callback onComplete){
+		fadeTotal = duration;
+		fadeTime = 0f;
+		onFadeOut = onComplete;
+	}
+
+	public synchronized void update(){
+		if (fadeTotal > 0f){
+			fadeTime += Game.elapsed;
+
+			if (player != null) {
+				player.setVolume(volumeWithFade());
+			}
+
+			if (fadeTime >= fadeTotal) {
+				fadeTime = fadeTotal = -1f;
+				if (onFadeOut != null){
+					onFadeOut.call();
+				}
+			}
+		}
+	}
+
 	private com.badlogic.gdx.audio.Music.OnCompletionListener trackLooper = new com.badlogic.gdx.audio.Music.OnCompletionListener() {
 		@Override
 		public void onCompletion(com.badlogic.gdx.audio.Music music) {
@@ -167,7 +195,7 @@ public enum Music {
 		try {
 			player = Gdx.audio.newMusic(Gdx.files.internal(track));
 			player.setLooping(looping);
-			player.setVolume(volume);
+			player.setVolume(volumeWithFade());
 			player.play();
 			if (listener != null) {
 				player.setOnCompletionListener(listener);
@@ -207,7 +235,15 @@ public enum Music {
 	public synchronized void volume( float value ) {
 		volume = value;
 		if (player != null) {
-			player.setVolume( value );
+			player.setVolume( volumeWithFade() );
+		}
+	}
+
+	private synchronized float volumeWithFade(){
+		if (fadeTotal > 0f){
+			return Math.max(0, volume * ((fadeTotal - fadeTime) / fadeTotal));
+		} else {
+			return volume;
 		}
 	}
 	
