@@ -67,7 +67,7 @@ public class SewerLevel extends RegularLevel {
 	}
 
 	public void playLevelMusic(){
-		if (Statistics.amuletObtained){
+		if (Ghost.Quest.active() || Statistics.amuletObtained){
 			Music.INSTANCE.play(Assets.Music.SEWERS_TENSE, true);
 		} else {
 			Music.INSTANCE.playTracks(

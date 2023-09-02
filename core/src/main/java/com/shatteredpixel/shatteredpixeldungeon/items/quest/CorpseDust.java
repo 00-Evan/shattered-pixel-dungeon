@@ -32,8 +32,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -141,6 +144,18 @@ public class CorpseDust extends Item {
 					mob.die(null);
 				}
 			}
+			Game.runOnRenderThread(new Callback() {
+				@Override
+				public void call() {
+					//maybe have a fade here?
+					Music.INSTANCE.fadeOut(1f, new Callback() {
+						@Override
+						public void call() {
+							Dungeon.level.playLevelMusic();
+						}
+					});
+				}
+			});
 		}
 
 		private static String SPAWNPOWER = "spawnpower";

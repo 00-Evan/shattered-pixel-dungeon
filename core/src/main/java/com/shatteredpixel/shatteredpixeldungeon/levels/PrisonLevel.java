@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -45,10 +46,12 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TeleportationTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ToxicTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Halo;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.particles.Emitter;
+import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
@@ -63,7 +66,7 @@ public class PrisonLevel extends RegularLevel {
 
 	@Override
 	public void playLevelMusic() {
-		if (Statistics.amuletObtained){
+		if (Wandmaker.Quest.active() || Statistics.amuletObtained){
 			Music.INSTANCE.play(Assets.Music.PRISON_TENSE, true);
 		} else {
 			Music.INSTANCE.playTracks(
@@ -71,6 +74,7 @@ public class PrisonLevel extends RegularLevel {
 					new float[]{1, 1, 0.5f},
 					false);
 		}
+		wandmakerQuestWasActive = Wandmaker.Quest.active();
 	}
 
 	@Override
@@ -130,6 +134,34 @@ public class PrisonLevel extends RegularLevel {
 				4, 4, 4, 4, 4,
 				2, 2, 2,
 				1, 1, 1, 1, 1, 1 };
+	}
+
+	private Boolean wandmakerQuestWasActive = null;
+
+	@Override
+	public void occupyCell(Char ch) {
+		super.occupyCell(ch);
+		if (ch == Dungeon.hero) {
+			if (wandmakerQuestWasActive == null) {
+				wandmakerQuestWasActive = Wandmaker.Quest.active();
+				return;
+			}
+			if (Wandmaker.Quest.active() != wandmakerQuestWasActive) {
+				wandmakerQuestWasActive = Wandmaker.Quest.active();
+
+				Game.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						Music.INSTANCE.fadeOut(1f, new Callback() {
+							@Override
+							public void call() {
+								Dungeon.level.playLevelMusic();
+							}
+						});
+					}
+				});
+			}
+		}
 	}
 
 	@Override

@@ -51,6 +51,7 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.Tilemap;
+import com.watabou.noosa.audio.Music;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
@@ -58,6 +59,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MiningLevel extends CavesLevel {
+
+	@Override
+	public void playLevelMusic() {
+		Music.INSTANCE.play(Assets.Music.CAVES_TENSE, true);
+	}
 
 	@Override
 	protected ArrayList<Room> initRooms() {
