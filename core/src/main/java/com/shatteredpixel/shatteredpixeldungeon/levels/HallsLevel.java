@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.HallsPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -70,10 +71,14 @@ public class HallsLevel extends RegularLevel {
 
 	@Override
 	public void playLevelMusic() {
-		Music.INSTANCE.playTracks(
-				new String[]{Assets.Music.HALLS_1, Assets.Music.HALLS_2, Assets.Music.HALLS_2},
-				new float[]{1, 1, 0.5f},
-				false);
+		if (Statistics.amuletObtained){
+			Music.INSTANCE.play(Assets.Music.HALLS_TENSE, true);
+		} else {
+			Music.INSTANCE.playTracks(
+					new String[]{Assets.Music.HALLS_1, Assets.Music.HALLS_2, Assets.Music.HALLS_2},
+					new float[]{1, 1, 0.5f},
+					false);
+		}
 	}
 
 	@Override
