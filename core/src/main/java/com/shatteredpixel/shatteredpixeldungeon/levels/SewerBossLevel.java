@@ -76,10 +76,7 @@ public class SewerBossLevel extends SewerLevel {
 		if (gooAlive){
 			Music.INSTANCE.end();
 		} else {
-			Music.INSTANCE.playTracks(
-					new String[]{Assets.Music.SEWERS_1, Assets.Music.SEWERS_2, Assets.Music.SEWERS_2},
-					new float[]{1, 1, 0.5f},
-					false);
+			Music.INSTANCE.playTracks(SewerLevel.SEWER_TRACK_LIST, SewerLevel.SEWER_TRACK_CHANCES, false);
 		}
 
 	}

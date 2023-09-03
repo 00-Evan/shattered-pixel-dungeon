@@ -64,15 +64,17 @@ public class PrisonLevel extends RegularLevel {
 		color2 = 0x88924c;
 	}
 
+	public static final String[] PRISON_TRACK_LIST
+			= new String[]{Assets.Music.PRISON_1, Assets.Music.PRISON_2, Assets.Music.PRISON_2,
+			Assets.Music.PRISON_1, Assets.Music.PRISON_3, Assets.Music.PRISON_3};
+	public static final float[] PRISON_TRACK_CHANCES = new float[]{1f, 1f, 0.5f, 0.25f, 1f, 0.5f};
+
 	@Override
 	public void playLevelMusic() {
 		if (Wandmaker.Quest.active() || Statistics.amuletObtained){
 			Music.INSTANCE.play(Assets.Music.PRISON_TENSE, true);
 		} else {
-			Music.INSTANCE.playTracks(
-					new String[]{Assets.Music.PRISON_1, Assets.Music.PRISON_2, Assets.Music.PRISON_2},
-					new float[]{1, 1, 0.5f},
-					false);
+			Music.INSTANCE.playTracks(PRISON_TRACK_LIST, PRISON_TRACK_CHANCES, false);
 		}
 		wandmakerQuestWasActive = Wandmaker.Quest.active();
 	}

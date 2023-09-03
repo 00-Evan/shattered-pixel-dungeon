@@ -72,15 +72,17 @@ public class CavesLevel extends RegularLevel {
 		color2 = 0xb9d661;
 	}
 
+	public static final String[] CAVES_TRACK_LIST
+			= new String[]{Assets.Music.CAVES_1, Assets.Music.CAVES_2, Assets.Music.CAVES_2,
+			Assets.Music.CAVES_1, Assets.Music.CAVES_3, Assets.Music.CAVES_3};
+	public static final float[] CAVES_TRACK_CHANCES = new float[]{1f, 1f, 0.5f, 0.25f, 1f, 0.5f};
+
 	@Override
 	public void playLevelMusic() {
 		if (Statistics.amuletObtained){
 			Music.INSTANCE.play(Assets.Music.CAVES_TENSE, true);
 		} else {
-			Music.INSTANCE.playTracks(
-					new String[]{Assets.Music.CAVES_1, Assets.Music.CAVES_2, Assets.Music.CAVES_2},
-					new float[]{1, 1, 0.5f},
-					false);
+			Music.INSTANCE.playTracks(CAVES_TRACK_LIST, CAVES_TRACK_CHANCES, false);
 		}
 	}
 

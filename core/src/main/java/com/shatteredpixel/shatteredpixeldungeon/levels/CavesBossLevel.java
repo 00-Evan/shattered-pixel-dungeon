@@ -87,10 +87,7 @@ public class CavesBossLevel extends Level {
 		} else if (map[14 + 13*width()] == Terrain.CUSTOM_DECO){
 			Music.INSTANCE.end();
 		} else {
-			Music.INSTANCE.playTracks(
-					new String[]{Assets.Music.CAVES_1, Assets.Music.CAVES_2, Assets.Music.CAVES_2},
-					new float[]{1, 1, 0.5f},
-					false);
+			Music.INSTANCE.playTracks(CavesLevel.CAVES_TRACK_LIST, CavesLevel.CAVES_TRACK_CHANCES, false);
 		}
 	}
 
