@@ -53,7 +53,7 @@ import java.util.Collections;
 
 public class WelcomeScene extends PixelScene {
 
-	private static final int LATEST_UPDATE = ShatteredPixelDungeon.v2_1_4;
+	private static final int LATEST_UPDATE = 738;
 
 	//used so that the game does not keep showing the window forever if cleaning fails
 	private static boolean triedCleaningTemp = false;
@@ -201,7 +201,9 @@ public class WelcomeScene extends PixelScene {
 				message += "\n" + Messages.get(this, "patch_translations");
 
 			}
-
+			message = "Greetings alpha testers, welcome to an early look at everything else coming in v2.2.0!\n\n" +
+					"The blacksmith quest has unfortunately been a bit delayed, so I've decided to release some early alpha/beta versions of v2.2.0 so people can play with all of the other changes that are done.\n\n" +
+					"Hopefully the new quest can come online in the coming weeks, but in the meantime I hope you enjoy this update's other changes.";
 		} else {
 			message = Messages.get(this, "what_msg");
 		}

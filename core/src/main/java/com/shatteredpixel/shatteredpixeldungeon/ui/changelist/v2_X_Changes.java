@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
+import com.badlogic.gdx.Gdx;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -33,17 +34,20 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ShopkeeperSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TormentedSpiritSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.WandmakerSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TalentIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Image;
+import com.watabou.utils.DeviceCompat;
 
 import java.util.ArrayList;
 
 public class v2_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
-		add_Coming_Soon(changeInfos);
+		//add_Coming_Soon(changeInfos);
+		add_v2_2_Changes(changeInfos);
 		add_v2_1_Changes(changeInfos);
 		add_v2_0_Changes(changeInfos);
 	}
@@ -67,6 +71,175 @@ public class v2_X_Changes {
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Smaller Changes/Fixes",
 				"As always, there will be some amount of smaller improvements, fixes, and additions both in v2.2.0 and during v2.1's longer than usual patch cycle. I expect that v2.2.0 is going to be mainly focused on the blacksmith quest though, so any new additions aside from that will be relatively minor. In terms of fixes, I plan to keep an eye on the Duelist and weapons in general after the changes in v2.1.0."));
+
+	}
+
+	public static void add_v2_2_Changes( ArrayList<ChangeInfo> changeInfos ) {
+
+		ChangeInfo changes = new ChangeInfo("v2.1-ALPHA-0.1", true, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		if (DeviceCompat.isiOS() && Gdx.app.getVersion() < 11){
+			changes.addButton( new ChangeButton(Icons.WARNING.get(), "32-bit iOS support",
+					"v2.2 is the last version of Shattered Pixel Dungeon that will support 32-bit iOS devices. As a result, future Shattered updates will require iOS 11+, up from 9+.\n\n" +
+					"Players on iOS 9 and 10 will be able to continue playing Shattered Pixel Dungeon v2.2, and can check the news section for information on future versions."));
+		}
+
+		changes.addButton( new ChangeButton(Icons.SHPX.get(), "ALPHA To-Do",
+				"v2.2.0's big quest overhaul is partially complete internally, but is currently disabled.\n\n" +
+				"My current plan is to steadily release the new quest to early testers as I finish up each environment in sequence, in addition to any other fixes needed for v2.2.0. v2.2.0 is otherwise content-complete. The first new environment will be released with BETA-1.0."));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.PICKAXE), "New Blacksmith Quest!",
+				"_Note that the new quest is currently incomplete, and so is disabled. The old quest, with the old rewards, is still active. Expect the new quest to be turned on with at least 1 of its environments complete in BETA-1.0_\n" +
+				"\n" +
+				"_Shattered Pixel Dungeon's blacksmith quest has been completely redone!_\n" +
+				"\n" +
+				"_The quest now takes place in a new sublevel, with one of three randomly chosen environments._ Each environment has its own set of hazards, level generation logic, and unique enemies.\n" +
+				"\n" +
+				"_The quest area features a new mining mechanic._ In addition to digging out gold, you can tunnel through walls to create new routes and evade hazards.\n" +
+				"\n" +
+				"_The quest rewards are also massively expanded._ The better you do on the quest, the more favor you'll earn in exchange for blacksmithing services. The old reforge option is still available, but there are several new options too."));
+
+		changes.addButton( new ChangeButton(Icons.AUDIO.get(), "New Music!",
+				"_Shattered Pixel Dungeon's soundtrack has been massively expanded!_ The game's soundtrack runtime has doubled in total, with almost 20 minutes of new audio by the game's composer: Kristjan Thomas Harristo.\n" +
+				"\n" +
+				"_The existing region tracks have been expanded._ Each track now has three total segments, instead of two. All of these segments play in a semi-random pattern, increasing variety for the game's more frequently heard music.\n" +
+				"\n" +
+				"_Each region also has a new 'intense' track._ These tracks play while completing region quests and also during the ascension challenge.\n" +
+				"\n" +
+				"_Lastly, four 'finale' tracks have been added._ Three of these tracks play when you are about to defeat the game's three later bosses, and one plays right before securing victory (either grabbing the amulet or reaching the end of ascension)."));
+
+		changes.addButton( new ChangeButton(new Image(new WandmakerSprite()), "Prison Quest Changes",
+				"The game's second quest has received a bunch of adjustments to make it more engaging.\n" +
+				"\n" +
+				"_Corpse Dust Quest:_ The mass grave room now always spawns at least a bit away from the entrance, and wraith spawning is more consistent.\n" +
+				"\n" +
+				"_Elemental Embers Quest:_ The newborn elemental has been reworked:\n" +
+				"_-_ HP up to 60 from 30, attacking power reduced, no longer ignites on-hit\n" +
+				"_-_ Now shoots an avoidable fireball in a 3x3 area\n" +
+				"_-_ The summon elemental spell is unchanged\n" +
+				"\n" +
+				"_Rotberry Quest:_ Overhauled the rot garden room:\n" +
+				"_-_ Rot lashers are now much stronger, but take 1 turn to notice an adjacent enemy before attacking\n" +
+				"_-_ Room layout is now much more chaotic, with more grass and crumbling walls\n" +
+				"_-_ There is now a guaranteed safe path to the rot heart"));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
+		changes.hardlight(CharSprite.WARNING);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.CHALLENGE_ON.get(), "Hostile Champions",
+				"I've decided to make some changes to the hostile champions challenge, to better balance the difficulty of each of the champion types, and address some common feedback about difficulty spikes:\n" +
+				"\n" +
+				"_- Projecting Champions_ now have +3 attack range, instead of infinite range\n" +
+				"_- Blazing Champions_ now cannot spread fire onto water tiles\n" +
+				"_- Growing Champions_ now gain stats 25% more slowly\n" +
+				"_- Blessed Champions_ now have 4x accuracy and evasion, up from 3x\n" +
+				"_- Giant Champions_ now take 80% reduced damage, up from 75%\n" +
+				"_- Antimagic Champions_ now take 50% reduced damage, up from 25%"));
+
+		changes.addButton( new ChangeButton(Icons.TALENT.get(), "T2 Potion and Scroll Talents",
+				"The T2 potion and scroll talents have been reworked to trigger on a more broad range of items, and have had their names and effects changed as a result:\n" +
+				"\n" +
+				"_-_ Warrior, Huntress, and Duelist talents now trigger on any potion, not just potions of healing. Their effects are doubled when using potions of strength or experience.\n" +
+				"_-_ Mage and Rogue talents now trigger on any scroll, not just scrolls of upgrade. Their effects are doubled when using scrolls of upgrade or transmutation.\n" +
+				"\n" +
+				"_-_ Warrior effect reduced to 50/75% shield, from 67/100%\n" +
+				"_-_ Mage effect changed to +2 levels on the next 2/3 wand zaps\n" +
+				"_-_ Rogue effect changed to 3/5 turns of invisibility\n" +
+				"_-_ Huntress effect reduced to 1/2 turns of rooting and 4/6 grass, from 2/3 root and 5/8 grass\n" +
+				"_-_ Duelist effect unchanged\n" +
+				"\n" +
+				"_-_ The Mage now also has a new T3 talent: 'desperate power', as the above change effectively moves the Empowering Scrolls talent to T2."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_Highlights:_\n" +
+				"_-_ Shopkeepers now warn the player once before fleeing when they are damaged\n" +
+				"_-_ The sad ghost now always spawns at the end of the level it appears in and does not leave the exit room\n" +
+				"_-_ Bosses from the sad ghost's quest now tend to wander toward the hero\n" +
+				"_-_ Crystal path rooms have been redesigned to give the player more choice over the items they get\n" +
+				"_-_ Overhauled retreating enemy AI. Retreating enemies should get stuck far less often, and terrified enemies are unable to approach the hero.\n" +
+				"_-_ The Google Play version of Shattered now uses Google Play Games v2, which requires Android 4.4+\n" +
+				"\n" +
+				"_Items:_\n" +
+				"_-_ Equipping two of the same ring now shows their combined effect in their descriptions\n" +
+				"_-_ Scroll of Transmutation no longer swaps between exotic and regular for potions and scrolls",
+
+				"_UI/VFX:_\n" +
+				"_-_ There is now a Google Play achievements button in the badges screen, if Google Play Games is enabled\n" +
+				"_-_ Indicators now lower into empty space below them after the hero takes an action, not whenever new indicators appear\n" +
+				"_-_ The game's tutorial is now skipped if there is existing gameplay data (e.g. via Google Play Games sync)\n" +
+				"\n" +
+				"_Other:_\n" +
+				"_-_ Healing effects still do not stack, but now combine more effectively\n" +
+				"_-_ Added dev commentary for v1.1.0\n" +
+				"_-_ Removed support for Android Instant Apps\n" +
+				"_-_ Updated some links in the game's credits"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Highlights:_\n" +
+				"_-_ Some items being incorrectly consumed when the game is closed while they are being used\n" +
+				"_-_ Mage's Staff not being affected by the degrade debuff\n" +
+				"_-_ Further characters sometimes rendering on top of closer large characters\n" +
+				"\n" +
+				"_Allies & Enemies:_\n" +
+				"_-_ Ambitious Imp sometimes calling out to the hero when not visible\n" +
+				"_-_ Phantom Piranhas rapidly teleporting when corrupted\n" +
+				"_-_ DM-300 fight sometimes not having a safe route to a power pylon\n" +
+				"_-_ The Rogue's body replacement talent not triggering effects like chasms and traps",
+
+				"_Items:_\n" +
+				"_-_ Dwarf King's Crown rarely triggering the effect of the runic transference talent\n" +
+				"_-_ Various errors with class armor conversion and Warrior's broken seal\n" +
+				"_-_ Living Earth and Transfusion wands granting their self-buffs when shooting NPCs\n" +
+				"_-_ Several obscure issues with noisemakers\n" +
+				"\n" +
+				"_Misc.:_\n" +
+				"_-_ Various rare crash issues\n" +
+				"_-_ Various minor textual errors\n" +
+				"_-_ Gold ore appearing on the back face of walls in regular caves levels\n" +
+				"_-_ Starflower plant VFX triggering even when out of the hero's FOV\n" +
+				"_-_ Storm Clouds not correctly clearing fire or harming fiery enemies\n" +
+				"_-_ Combining diagonal direction keys on desktop causing rare errors\n" +
+				"_-_ Cases where pushing effects could cause pitfalls to trigger early"));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
+		changes.hardlight(CharSprite.POSITIVE);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.DIRK), "Weapon Ability Buffs",
+				"Weapon abilities are overall in a much better place now, but there are still a couple that need a boost:\n" +
+				"\n" +
+				"_- Sneak_ ability (Dagger, Dirk, and Assassin's blade) reworked. Now lets the Duelist blink for 5/4/3 tiles of distance and grants 1 turn of invisibility, instead of granting 10/8/6 turns of invisibility.\n" +
+				"\n" +
+				"_- Harvest_ ability (Sickle and War Scythe) bleeding amount increased to 110%/90% of damage, from 100%/80% of damage.\n" +
+				"\n" +
+				"_- Brawler's Stance_ ability (Ring of Force) charge use down to 1/6 per attack, from 1/4 per attack."));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
+		changes.hardlight(CharSprite.NEGATIVE);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.KATANA), "Weapon & Curse Nerfs",
+				"Relatively mild changes here, a slight nerf to a new weapon and nerfs to the two most harmful curses (i.e. they are less detrimental now).\n" +
+				"\n" +
+				"_- Katana_ blocking down to 0-3 from 0-4\n" +
+				"\n" +
+				"_- Sacrificial_ curse bleeding amount reduced by ~25%\n" +
+				"_- Sacrificial_ curse no longer always deals a minimum of 1 bleeding when it triggers\n" +
+				"\n" +
+				"_- Corrosion_ curse turns of ooze down to 10, from 20."));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.STAIRS), "Ascension Challenge",
+				"The combination of enemy stat scaling adjustments and the switch to boosting HP instead of reducing damage taken has made the earlier floors in the ascension challenge a little harder than intended, so I'm scaling things back:\n" +
+				"\n" +
+				"_-_ Reverted the v2.1.0 increase to enemy stats in the caves and prison during the ascension challenge."));
 
 	}
 
