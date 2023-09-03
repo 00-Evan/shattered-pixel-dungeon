@@ -195,6 +195,17 @@ public class YogDzewa extends Mob {
 			summonCooldown = -15; //summon a burst of minions!
 			phase = 5;
 			BossHealthBar.bleed(true);
+			Game.runOnRenderThread(new Callback() {
+				@Override
+				public void call() {
+					Music.INSTANCE.fadeOut(0.5f, new Callback() {
+						@Override
+						public void call() {
+							Music.INSTANCE.play(Assets.Music.HALLS_BOSS_FINALE, true);
+						}
+					});
+				}
+			});
 		}
 
 		if (phase == 0){

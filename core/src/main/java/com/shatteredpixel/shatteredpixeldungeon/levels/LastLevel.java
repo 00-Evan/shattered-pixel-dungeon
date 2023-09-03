@@ -54,7 +54,11 @@ public class LastLevel extends Level {
 
 	@Override
 	public void playLevelMusic() {
-		Music.INSTANCE.end();
+		if (Statistics.amuletObtained) {
+			Music.INSTANCE.end();
+		} else {
+			Music.INSTANCE.play(Assets.Music.THEME_FINALE, true);
+		}
 	}
 
 	@Override

@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ImpShopRoo
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Tilemap;
@@ -88,7 +89,11 @@ public class CityBossLevel extends Level {
 	@Override
 	public void playLevelMusic() {
 		if (locked){
-			Music.INSTANCE.play(Assets.Music.CITY_BOSS, true);
+			if (BossHealthBar.isBleeding()){
+				Music.INSTANCE.play(Assets.Music.CITY_BOSS_FINALE, true);
+			} else {
+				Music.INSTANCE.play(Assets.Music.CITY_BOSS, true);
+			}
 		//if top door isn't unlocked
 		} else if (map[topDoor] == Terrain.LOCKED_DOOR){
 			Music.INSTANCE.end();
@@ -354,7 +359,12 @@ public class CityBossLevel extends Level {
 		Game.runOnRenderThread(new Callback() {
 			@Override
 			public void call() {
-				Music.INSTANCE.end();
+				Music.INSTANCE.fadeOut(3f, new Callback() {
+					@Override
+					public void call() {
+						Music.INSTANCE.end();
+					}
+				});
 			}
 		});
 	}

@@ -204,7 +204,12 @@ public class SewerBossLevel extends SewerLevel {
 			Game.runOnRenderThread(new Callback() {
 				@Override
 				public void call() {
-					Music.INSTANCE.end();
+					Music.INSTANCE.fadeOut(3f, new Callback() {
+						@Override
+						public void call() {
+							Music.INSTANCE.end();
+						}
+					});
 				}
 			});
 		}

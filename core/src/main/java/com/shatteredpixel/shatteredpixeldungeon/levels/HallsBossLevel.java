@@ -47,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -79,9 +80,13 @@ public class HallsBossLevel extends Level {
 	@Override
 	public void playLevelMusic() {
 		if (locked){
-			Music.INSTANCE.play(Assets.Music.HALLS_BOSS, true);
+			if (BossHealthBar.isBleeding()){
+				Music.INSTANCE.play(Assets.Music.HALLS_BOSS_FINALE, true);
+			} else {
+				Music.INSTANCE.play(Assets.Music.HALLS_BOSS, true);
+			}
 		//if exit isn't unlocked
-		} else if (map[exit()] != Terrain.EXIT){
+		} else if (map[exit()] != Terrain.EXIT || Statistics.amuletObtained){
 			Music.INSTANCE.end();
 		} else {
 			Music.INSTANCE.playTracks(
@@ -298,7 +303,12 @@ public class HallsBossLevel extends Level {
 		Game.runOnRenderThread(new Callback() {
 			@Override
 			public void call() {
-				Music.INSTANCE.end();
+				Music.INSTANCE.fadeOut(3f, new Callback() {
+					@Override
+					public void call() {
+						Music.INSTANCE.play(Assets.Music.THEME_FINALE, true);
+					}
+				});
 			}
 		});
 	}

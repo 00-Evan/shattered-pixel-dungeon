@@ -536,7 +536,12 @@ public class PrisonBossLevel extends Level {
 				Game.runOnRenderThread(new Callback() {
 					@Override
 					public void call() {
-						Music.INSTANCE.end();
+						Music.INSTANCE.fadeOut(3f, new Callback() {
+							@Override
+							public void call() {
+								Music.INSTANCE.end();
+							}
+						});
 					}
 				});
 				break;

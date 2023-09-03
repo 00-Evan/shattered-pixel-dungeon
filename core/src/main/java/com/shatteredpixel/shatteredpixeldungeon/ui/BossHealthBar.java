@@ -220,4 +220,8 @@ public class BossHealthBar extends Component {
 		bleeding = value;
 	}
 
+	public static boolean isBleeding(){
+		return bleeding;
+	}
+
 }

@@ -50,6 +50,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.PylonSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -77,7 +78,11 @@ public class CavesBossLevel extends Level {
 	@Override
 	public void playLevelMusic() {
 		if (locked){
-			Music.INSTANCE.play(Assets.Music.CAVES_BOSS, true);
+			if (BossHealthBar.isBleeding()){
+				Music.INSTANCE.play(Assets.Music.CAVES_BOSS_FINALE, true);
+			} else {
+				Music.INSTANCE.play(Assets.Music.CAVES_BOSS, true);
+			}
 		//if wall isn't broken
 		} else if (map[14 + 13*width()] == Terrain.CUSTOM_DECO){
 			Music.INSTANCE.end();
@@ -347,7 +352,12 @@ public class CavesBossLevel extends Level {
 		Game.runOnRenderThread(new Callback() {
 			@Override
 			public void call() {
-				Music.INSTANCE.end();
+				Music.INSTANCE.fadeOut(3f, new Callback() {
+					@Override
+					public void call() {
+						Music.INSTANCE.end();
+					}
+				});
 			}
 		});
 
