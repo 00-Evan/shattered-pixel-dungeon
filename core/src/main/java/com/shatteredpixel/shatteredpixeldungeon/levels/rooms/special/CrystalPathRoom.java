@@ -21,8 +21,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.CrystalKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -205,6 +207,10 @@ public class CrystalPathRoom extends SpecialRoom {
 
 		level.drop(rewardItems.remove(0), shuffle == 1 ? prize1 : prize2);
 		level.drop(rewardItems.remove(0), shuffle == 1 ? prize2 : prize1);
+
+		level.addItemToSpawn( new CrystalKey( Dungeon.depth ) );
+		level.addItemToSpawn( new CrystalKey( Dungeon.depth ) );
+		level.addItemToSpawn( new CrystalKey( Dungeon.depth ) );
 
 		entrance().set( Door.Type.UNLOCKED );
 
