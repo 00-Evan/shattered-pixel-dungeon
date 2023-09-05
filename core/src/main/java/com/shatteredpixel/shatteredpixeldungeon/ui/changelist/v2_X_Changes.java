@@ -80,6 +80,27 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("ALPHA-0.2", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Increased the value of lower-exp enemies in sacrifice rooms. This is most noticeable in early floors, especially when sacrificing rats."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by ALPHA:_\n" +
+				"_-_ Epitaph text not appearing\n" +
+				"_-_ New crystal path rooms not generating keys\n" +
+				"\n" +
+				"_Existed Prior to ALPHA:_\n" +
+				"_-_ Rare crash bugs involving right-click menus\n" +
+				"_-_ Wild Magic ability not respecting wand of warding's ward cap"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
