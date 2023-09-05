@@ -167,7 +167,7 @@ public class SacrificialFire extends Blob {
 					//give 1 exp for child swarms, instead of 0
 					exp = 1;
 				} else {
-					exp = ((Mob)ch).EXP;
+					exp = 1 + ((Mob)ch).EXP;
 				}
 				exp *= Random.IntRange( 2, 3 );
 			} else if (ch instanceof Hero) {
