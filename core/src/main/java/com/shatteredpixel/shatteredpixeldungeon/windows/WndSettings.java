@@ -1102,7 +1102,7 @@ public class WndSettings extends WndTabbed {
 			lanBtns = new RedButton[langs.size()];
 			for (int i = 0; i < langs.size(); i++){
 				final int langIndex = i;
-				RedButton btn = new RedButton(Messages.titleCase(langs.get(i).nativeName()), 7){
+				RedButton btn = new RedButton(Messages.titleCase(langs.get(i).nativeName()), 6){
 					@Override
 					protected void onClick() {
 						super.onClick();

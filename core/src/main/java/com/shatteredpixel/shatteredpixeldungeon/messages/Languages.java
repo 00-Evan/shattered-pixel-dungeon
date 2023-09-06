@@ -43,7 +43,8 @@ public enum Languages {
 	HUNGARIAN("magyar",     "hu", Status._COMPLETE_, new String[]{"dorheim", "szalaik"}, new String[]{"Csanevox", "Navetelen", "acszoltan111", "clarovani", "dhialub", "nanometer", "nardomaa", "savarall", "summoner001", "szemetvodor"}),
 	VIETNAMESE("tiếng việt","vi", Status._COMPLETE_, new String[]{"Chuseko", "The_Hood", "nguyenanhkhoapythus"}, new String[]{"BlueSheepAlgodoo", "Phuc2401", "Teh_boi", "Threyja", "Toluu", "bruhwut", "buicongminh_t63", "deadlevel13", "h4ndy_c4ndy", "hniV", "khangxyz3g", "ngolamaz3", "nkhhu", "vdgiapp", "vtvinh24"}),
 	//FINNISH("suomi", 		"fi", Status.UNFINISHED, new String[]{"TenguKnight"}, new String[]{"Allugaattori10", "Dakkus", "Jaskas123", "MailBoxGod", "Oftox", "Sautari", "Tikkari"} ),
-	GREEK("ελληνικά",       "el", Status._COMPLETE_, new String[]{"Aeonius", "Saxy"}, new String[]{"DU_Clouds", "VasKyr", "YiorgosH", "fr3sh", "stefboi", "toumbo", "val.exe"});
+	GREEK("ελληνικά",       "el", Status._COMPLETE_, new String[]{"Aeonius", "Saxy"}, new String[]{"DU_Clouds", "VasKyr", "YiorgosH", "fr3sh", "stefboi", "toumbo", "val.exe"}),
+	BELARUSIAN("беларуская","be", Status.UNREVIEWED, new String[]{"AprilRain"}, new String[]{"4ebotar"});
 	//CATALAN("català",     "ca", Status.UNFINISHED, new String[]{"Illyatwo2"}, new String[]{"Elosy", "n1ngu"})
 	//GALICIAN("galego",    "gl", Status.UNFINISHED, new String[]{"xecarballido"}, null),
 	//BASQUE("euskara",     "eu", Status.UNFINISHED, new String[]{"Deathrevenge", "Osoitz"}, null),
