@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DarkGold;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.FigureEightBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
@@ -47,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BlacksmithSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
@@ -169,6 +171,19 @@ public class MiningLevel extends CavesLevel {
 	public boolean activateTransition(Hero hero, LevelTransition transition) {
 		if (transition.type == LevelTransition.Type.BRANCH_ENTRANCE
 				&& !Blacksmith.Quest.completed() && Blacksmith.Quest.Type() != 0) {
+
+
+			if (hero.belongings.getItem(Pickaxe.class) == null){
+				Game.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						GameScene.show(new WndTitledMessage( new BlacksmithSprite(),
+								Messages.titleCase(Messages.get(Blacksmith.class, "name")),
+								Messages.get(Blacksmith.class, "lost_pick")));
+					}
+				});
+				return false;
+			}
 
 			String warnText;
 			DarkGold gold = hero.belongings.getItem(DarkGold.class);
