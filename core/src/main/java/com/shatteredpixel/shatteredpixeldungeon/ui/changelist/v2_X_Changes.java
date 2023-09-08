@@ -76,30 +76,9 @@ public class v2_X_Changes {
 
 	public static void add_v2_2_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v2.1-ALPHA-0.1", true, "");
+		ChangeInfo changes = new ChangeInfo("v2.1-BETA-0.1", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes = new ChangeInfo("ALPHA-0.2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Increased the value of lower-exp enemies in sacrifice rooms. This is most noticeable in early floors, especially when sacrificing rats."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by ALPHA:_\n" +
-				"_-_ Epitaph text not appearing\n" +
-				"_-_ New crystal path rooms not generating keys\n" +
-				"\n" +
-				"_Existed Prior to ALPHA:_\n" +
-				"_-_ Rare crash bugs involving right-click menus\n" +
-				"_-_ Wild Magic ability not respecting wand of warding's ward cap"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -184,8 +163,8 @@ public class v2_X_Changes {
 				"_-_ The sad ghost now always spawns at the end of the level it appears in and does not leave the exit room\n" +
 				"_-_ Bosses from the sad ghost's quest now tend to wander toward the hero\n" +
 				"_-_ Crystal path rooms have been redesigned to give the player more choice over the items they get\n" +
-				"_-_ Overhauled retreating enemy AI. Retreating enemies should get stuck far less often, and terrified enemies are unable to approach the hero.\n" +
-				"_-_ The Google Play version of Shattered now uses Google Play Games v2, which requires Android 4.4+\n" +
+				"_-_ Increased the value of lower-exp enemies in sacrifice rooms. This is most noticeable in early floors, especially when sacrificing rats.\n" +
+				"_-_ Added a new Language: Belarusian!\n" +
 				"\n" +
 				"_Items:_\n" +
 				"_-_ Equipping two of the same ring now shows their combined effect in their descriptions\n" +
@@ -197,8 +176,10 @@ public class v2_X_Changes {
 				"_-_ The game's tutorial is now skipped if there is existing gameplay data (e.g. via Google Play Games sync)\n" +
 				"\n" +
 				"_Other:_\n" +
+				"_-_ Overhauled retreating enemy AI. Retreating enemies should get stuck far less often, and terrified enemies are unable to approach the hero.\n" +
 				"_-_ Healing effects still do not stack, but now combine more effectively\n" +
 				"_-_ Added dev commentary for v1.1.0\n" +
+				"_-_ The Google Play version of Shattered now uses Google Play Games v2, which requires Android 4.4+\n" +
 				"_-_ Removed support for Android Instant Apps\n" +
 				"_-_ Updated some links in the game's credits"));
 
