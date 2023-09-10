@@ -205,12 +205,6 @@ public class StoneOfIntuition extends InventoryStone {
 			resize(WIDTH, 100);
 			
 		}
-		
-		
-		@Override
-		public void onBackPressed() {
-			super.onBackPressed();
-			new StoneOfIntuition().collect();
-		}
+
 	}
 }
