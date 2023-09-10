@@ -59,7 +59,7 @@ public class Chasm implements Hero.Doom {
 			@Override
 			public void call() {
 				GameScene.show(
-						new WndOptions( new Image(Dungeon.level.tilesTex(), 48, 48, 16, 16),
+						new WndOptions( new Image(Dungeon.level.tilesTex(), 176, 16, 16, 16),
 								Messages.get(Chasm.class, "chasm"),
 								Messages.get(Chasm.class, "jump"),
 								Messages.get(Chasm.class, "yes"),
