@@ -205,8 +205,9 @@ public class CrystalPathRoom extends SpecialRoom {
 		level.drop(rewardItems.remove(0), level.pointToCell(rooms[shuffle == 1 ? 0 : 1].center()));
 		level.drop(rewardItems.remove(0), level.pointToCell(rooms[shuffle == 1 ? 1 : 0].center()));
 
-		level.drop(rewardItems.remove(0), shuffle == 1 ? prize1 : prize2);
-		level.drop(rewardItems.remove(0), shuffle == 1 ? prize2 : prize1);
+		//player can only see these if they unlock the previous doors, so don't count them for exploration
+		level.drop(rewardItems.remove(0), shuffle == 1 ? prize1 : prize2).autoExplored = true;
+		level.drop(rewardItems.remove(0), shuffle == 1 ? prize2 : prize1).autoExplored = true;
 
 		level.addItemToSpawn( new CrystalKey( Dungeon.depth ) );
 		level.addItemToSpawn( new CrystalKey( Dungeon.depth ) );
