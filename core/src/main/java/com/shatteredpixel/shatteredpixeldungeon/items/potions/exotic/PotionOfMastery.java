@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
@@ -119,6 +120,9 @@ public class PotionOfMastery extends ExoticPotion {
 				}
 				identifiedByUse = false;
 
+				if (!anonymous){
+					Talent.onPotionUsed(curUser, curUser.pos, talentFactor);
+				}
 			}
 
 		}
