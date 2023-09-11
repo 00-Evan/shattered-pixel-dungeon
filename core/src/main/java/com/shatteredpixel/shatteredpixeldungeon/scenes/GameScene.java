@@ -881,7 +881,7 @@ public class GameScene extends PixelScene {
 		}
 	}
 	
-	private void addMobSprite( Mob mob ) {
+	private synchronized void addMobSprite( Mob mob ) {
 		CharSprite sprite = mob.sprite();
 		sprite.visible = Dungeon.level.heroFOV[mob.pos];
 		mobs.add( sprite );
@@ -889,18 +889,21 @@ public class GameScene extends PixelScene {
 		sortMobSprites();
 	}
 
-	//ensures that mob sprites are drawn in the correct order, in case of overlap
+	//ensures that mob sprites are drawn from top to bottom, in case of overlap
 	public static void sortMobSprites(){
 		if (scene != null){
-			scene.mobs.sort(new Comparator() {
-				@Override
-				public int compare(Object a, Object b) {
-					if (a instanceof CharSprite && b instanceof CharSprite){
-						return ((CharSprite) a).ch.pos - ((CharSprite) b).ch.pos;
+			synchronized (scene) {
+				scene.mobs.sort(new Comparator() {
+					@Override
+					public int compare(Object a, Object b) {
+						if (a instanceof CharSprite && b instanceof CharSprite) {
+							return (int) Math.signum((((CharSprite) a).y + ((CharSprite) a).height())
+									- (((CharSprite) b).y + ((CharSprite) b).height()));
+						}
+						return 0;
 					}
-					return 0;
-				}
-			});
+				});
+			}
 		}
 	}
 	
