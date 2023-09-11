@@ -76,9 +76,35 @@ public class v2_X_Changes {
 
 	public static void add_v2_2_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v2.1-BETA-0.1", true, "");
+		ChangeInfo changes = new ChangeInfo("v2.2-BETA-0.1", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-0.2", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Updated Translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by BETA:_\n" +
+				"_-_ Uncommon random crashs caused by some new graphics code\n" +
+				"_-_ Crashes when talking to blacksmith in runs started before the beta\n" +
+				"_-_ Duplication bugs with stones of intuition\n" +
+				"_-_ Prison visuals not appearing in runs started before the beta\n" +
+				"_-_ New music not playing correctly during elemental embers quest\n" +
+				"_-_ Some exotic potions not triggering new tier-2 potion talents\n" +
+				"_-_ New crystal path rooms needing to be cleared in certain ways for 100% exploration score\n" +
+				"_-_ Visual errors in chasm warning window\n" +
+				"\n" +
+				"_Existing Prior to BETA:_\n" +
+				"_-_ Exploit where multiplicity curse could be used to skip some of Dwarf King's second phase"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -90,7 +116,7 @@ public class v2_X_Changes {
 					"Players on iOS 9 and 10 will be able to continue playing Shattered Pixel Dungeon v2.2, and can check the news section for information on future versions."));
 		}
 
-		changes.addButton( new ChangeButton(Icons.SHPX.get(), "ALPHA To-Do",
+		changes.addButton( new ChangeButton(Icons.SHPX.get(), "BETA To-Do",
 				"v2.2.0's big quest overhaul is partially complete internally, but is currently disabled.\n\n" +
 				"My current plan is to steadily release the new quest to early testers as I finish up each environment in sequence, in addition to any other fixes needed for v2.2.0. v2.2.0 is otherwise content-complete. The first new environment will be released with BETA-1.0."));
 
