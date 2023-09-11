@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Statue;
@@ -51,7 +52,7 @@ public class Multiplicity extends Armor.Glyph {
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
 
-		float procChance = 1/20f * procChanceMultiplier(defender);
+		float procChance = 1/2f * procChanceMultiplier(defender);
 		if ( Random.Float() < procChance ) {
 			ArrayList<Integer> spawnPoints = new ArrayList<>();
 
@@ -93,9 +94,11 @@ public class Multiplicity extends Armor.Glyph {
 							m.restoreFromBundle(store);
 							m.pos = 0;
 							m.HP = m.HT;
-							if (m.buff(PinCushion.class) != null) {
-								m.remove(m.buff(PinCushion.class));
-							}
+
+							//don't duplicate stuck projectiles
+							m.remove(m.buff(PinCushion.class));
+							//don't duplicate pending damage to dwarf king
+							m.remove(DwarfKing.KingDamager.class);
 							
 							//If a thief has stolen an item, that item is not duplicated.
 							if (m instanceof Thief) {
