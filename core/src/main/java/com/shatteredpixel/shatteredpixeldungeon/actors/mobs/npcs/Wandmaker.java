@@ -378,7 +378,14 @@ public class Wandmaker extends NPC {
 
 				return false;
 			} else if (type == 2){
-				//hero is in the ritual room and all 4 candles are with them
+				//hero has summoned the newborn elemental
+				for (Mob m : Dungeon.level.mobs) {
+					if (m instanceof Elemental.NewbornFireElemental) {
+						return true;
+					}
+				}
+
+				//or hero is in the ritual room and all 4 candles are with them
 				if (((RegularLevel) Dungeon.level).room(Dungeon.hero.pos) instanceof RitualSiteRoom) {
 					int candles = 0;
 					if (Dungeon.hero.belongings.getItem(CeremonialCandle.class) != null){
@@ -403,14 +410,6 @@ public class Wandmaker extends NPC {
 						return true;
 					}
 
-					return false;
-				}
-
-				//or they have summoned but not killed the newborn elemental
-				for (Mob m : Dungeon.level.mobs) {
-					if (m instanceof Elemental.NewbornFireElemental) {
-						return true;
-					}
 				}
 
 				return false;
