@@ -896,13 +896,13 @@ public class GameScene extends PixelScene {
 				scene.mobs.sort(new Comparator() {
 					@Override
 					public int compare(Object a, Object b) {
-						//elements that aren't CharSprites go to the end of the list
-						if (a instanceof CharSprite && b instanceof CharSprite) {
-							return (int) Math.signum((((CharSprite) a).y + ((CharSprite) a).height())
-									- (((CharSprite) b).y + ((CharSprite) b).height()));
-						} else if (a instanceof CharSprite){
+						//elements that aren't visual go to the end of the list
+						if (a instanceof Visual && b instanceof Visual) {
+							return (int) Math.signum((((Visual) a).y + ((Visual) a).height())
+									- (((Visual) b).y + ((Visual) b).height()));
+						} else if (a instanceof Visual){
 							return -1;
-						} else if (b instanceof CharSprite){
+						} else if (b instanceof Visual){
 							return 1;
 						} else {
 							return 0;
