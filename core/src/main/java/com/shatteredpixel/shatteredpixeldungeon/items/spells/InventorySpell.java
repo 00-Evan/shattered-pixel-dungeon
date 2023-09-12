@@ -35,7 +35,6 @@ public abstract class InventorySpell extends Spell {
 	
 	@Override
 	protected void onCast(Hero hero) {
-		curItem = detach( hero.belongings.backpack );
 		GameScene.selectItem( itemSelector );
 	}
 
@@ -78,6 +77,8 @@ public abstract class InventorySpell extends Spell {
 			}
 			
 			if (item != null) {
+
+				curItem = detach(curUser.belongings.backpack);
 				
 				((InventorySpell)curItem).onItemSelected( item );
 				curUser.spend( 1f );
@@ -87,8 +88,6 @@ public abstract class InventorySpell extends Spell {
 				Sample.INSTANCE.play( Assets.Sounds.READ );
 				Invisibility.dispel();
 				
-			} else {
-				curItem.collect( curUser.belongings.backpack );
 			}
 		}
 	};
