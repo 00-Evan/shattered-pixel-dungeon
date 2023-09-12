@@ -80,9 +80,16 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("BETA-0.3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by BETA:_\n" +
+				"_-_ Further random uncommon crash issues (I hope)\n" +
+				"_-_ Error with armor descriptions in Korean\n" +
+				"_-_ A few minor textual errors"));
 
 		changes = new ChangeInfo("BETA-0.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
