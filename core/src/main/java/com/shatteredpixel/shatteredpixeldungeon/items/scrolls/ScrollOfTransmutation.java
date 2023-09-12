@@ -68,7 +68,8 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		return item instanceof MeleeWeapon ||
 				(item instanceof MissileWeapon && (!(item instanceof Dart) || item instanceof TippedDart)) ||
 				(item instanceof Potion && !(item instanceof Elixir || item instanceof Brew || item instanceof AlchemicalCatalyst)) ||
-				item instanceof Scroll ||
+				//the extra check here prevents a single scroll being used on itself
+				(item instanceof Scroll && (!(item instanceof ScrollOfTransmutation) || item.quantity() > 1)) ||
 				item instanceof Ring ||
 				item instanceof Wand ||
 				item instanceof Plant.Seed ||
