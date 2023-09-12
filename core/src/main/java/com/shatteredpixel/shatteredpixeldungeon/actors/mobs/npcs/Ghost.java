@@ -363,7 +363,7 @@ public class Ghost extends NPC {
 		}
 
 		public static boolean active(){
-			return given && !processed && depth == Dungeon.depth;
+			return spawned && given && !processed && depth == Dungeon.depth;
 		}
 		
 		public static void complete() {
