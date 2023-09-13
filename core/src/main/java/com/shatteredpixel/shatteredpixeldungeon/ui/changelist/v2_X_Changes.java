@@ -80,18 +80,31 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("BETA-0.3", false, null);
+		changes = new ChangeInfo("BETA-0.4", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"Based on some early beta feedback I'm walking back the change I made to _scrolls of transmutation_ and have opted instead to include the exotic swapping functionality for potions/scrolls in the item's description. Frankly I'm quite surprised by how many people used this functionality, I had assumed that it was largely unknown, especially given that is is often impractical compared to using alchemy directly.\n\n" +
+				"I've also made a small buff to the new _sneak_ ability, it now has 1 more tile of range and occurs instantly. I'd like to wait for analytics numbers before making any more changes to it though.\n\n" +
+				"Lastly, the sad ghost now tries to avoid staying on items or the level exit while wandering."));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
 				"_Caused by BETA:_\n" +
-				"_-_ Further random uncommon crash issues (I hope)\n" +
-				"_-_ Error with armor descriptions in Korean\n" +
-				"_-_ A few minor textual errors"));
+				"_-_ Multiplicity curse triggering much more often than intended\n" +
+				"_-_ Wraiths from corpse dust not spawning if the player has reduced vision\n" +
+				"_-_ Tense dwarven city track playing in the prison, instead of the tense prison track\n" +
+				"_-_ Scrolls of remove curse being consumed at a higher rate than intended\n" +
+				"_-_ Tense sewers track rarely playing when it shouldn't\n" +
+				"_-_ Scrolls of transmutation being usable on themselves\n" +
+				"_-_ Some spells still being consumed if the game is closed while they are not actually used yet\n" +
+				"_-_ Flare vfx appearing on top of characters instead of behind them\n" +
+				"\n" +
+				"_Existing Prior to BETA:_\n" +
+				"_-_ Various minor textual errors"));
 
-		changes = new ChangeInfo("BETA-0.2", false, null);
+		changes = new ChangeInfo("BETA-0.2 & 0.3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
@@ -101,7 +114,7 @@ public class v2_X_Changes {
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
 				"_Caused by BETA:_\n" +
-				"_-_ Uncommon random crashs caused by some new graphics code\n" +
+				"_-_ Uncommon random crashes caused by some new graphics code\n" +
 				"_-_ Crashes when talking to blacksmith in runs started before the beta\n" +
 				"_-_ Duplication bugs with stones of intuition\n" +
 				"_-_ Prison visuals not appearing in runs started before the beta\n" +
@@ -109,6 +122,7 @@ public class v2_X_Changes {
 				"_-_ Some exotic potions not triggering new tier-2 potion talents\n" +
 				"_-_ New crystal path rooms needing to be cleared in certain ways for 100% exploration score\n" +
 				"_-_ Visual errors in chasm warning window\n" +
+				"_-_ A few minor textual errors\n" +
 				"\n" +
 				"_Existing Prior to BETA:_\n" +
 				"_-_ Exploit where multiplicity curse could be used to skip some of Dwarf King's second phase"));
