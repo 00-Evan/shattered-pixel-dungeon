@@ -79,7 +79,7 @@ public class HallsBossLevel extends Level {
 
 	@Override
 	public void playLevelMusic() {
-		if (locked){
+		if (locked && BossHealthBar.isAssigned()){
 			if (BossHealthBar.isBleeding()){
 				Music.INSTANCE.play(Assets.Music.HALLS_BOSS_FINALE, true);
 			} else {
