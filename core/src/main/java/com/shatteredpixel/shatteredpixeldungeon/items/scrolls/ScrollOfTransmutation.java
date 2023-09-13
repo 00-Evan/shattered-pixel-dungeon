@@ -321,29 +321,19 @@ public class ScrollOfTransmutation extends InventoryScroll {
 	}
 
 	private static Scroll changeScroll( Scroll s ) {
-		Scroll n;
-
-		do {
-			n = (Scroll)Generator.randomUsingDefaults( Generator.Category.SCROLL );
-			if (s instanceof ExoticScroll){
-				n = Reflection.newInstance(ExoticScroll.regToExo.get(n.getClass()));
-			}
-		} while (n.getClass() == s.getClass());
-
-		return n;
+		if (s instanceof ExoticScroll) {
+			return Reflection.newInstance(ExoticScroll.exoToReg.get(s.getClass()));
+		} else {
+			return Reflection.newInstance(ExoticScroll.regToExo.get(s.getClass()));
+		}
 	}
 
 	private static Potion changePotion( Potion p ) {
-		Potion n;
-
-		do {
-			n = (Potion)Generator.randomUsingDefaults( Generator.Category.POTION );
-			if (p instanceof ExoticPotion){
-				n = Reflection.newInstance(ExoticPotion.regToExo.get(n.getClass()));
-			}
-		} while (n.getClass() == p.getClass());
-
-		return n;
+		if	(p instanceof ExoticPotion) {
+			return Reflection.newInstance(ExoticPotion.exoToReg.get(p.getClass()));
+		} else {
+			return Reflection.newInstance(ExoticPotion.regToExo.get(p.getClass()));
+		}
 	}
 	
 	@Override
