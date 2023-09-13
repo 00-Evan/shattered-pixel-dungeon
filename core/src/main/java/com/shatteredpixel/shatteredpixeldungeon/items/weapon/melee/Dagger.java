@@ -95,7 +95,7 @@ public class Dagger extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		sneakAbility(hero, target, 5, this);
+		sneakAbility(hero, target, 6, this);
 	}
 
 	public static void sneakAbility(Hero hero, Integer target, int maxDist, MeleeWeapon wep){
@@ -116,7 +116,7 @@ public class Dagger extends MeleeWeapon {
 
 		wep.beforeAbilityUsed(hero, null);
 		Buff.affect(hero, Invisibility.class, Actor.TICK);
-		hero.spendAndNext(Actor.TICK);
+		hero.next();
 
 		Dungeon.hero.sprite.turnTo( Dungeon.hero.pos, target);
 		Dungeon.hero.pos = target;
