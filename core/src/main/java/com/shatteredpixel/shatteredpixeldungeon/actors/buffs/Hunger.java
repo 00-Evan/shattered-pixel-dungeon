@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
-import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -68,9 +67,7 @@ public class Hunger extends Buff implements Hero.Doom {
 		if (Dungeon.level.locked
 				|| target.buff(WellFed.class) != null
 				|| SPDSettings.intro()
-				|| target.buff(ScrollOfChallenge.ChallengeArena.class) != null
-				//this is mainly for the current test sub-level
-				|| Dungeon.level instanceof MiningLevel){
+				|| target.buff(ScrollOfChallenge.ChallengeArena.class) != null){
 			spend(STEP);
 			return true;
 		}
@@ -140,6 +137,8 @@ public class Hunger extends Buff implements Hero.Doom {
 			return;
 		}
 
+		float oldLevel = level;
+
 		level -= energy;
 		if (level < 0 && !overrideLimits) {
 			level = 0;
@@ -147,6 +146,13 @@ public class Hunger extends Buff implements Hero.Doom {
 			float excess = level - STARVING;
 			level = STARVING;
 			partialDamage += excess * (target.HT/1000f);
+		}
+
+		if (oldLevel < HUNGRY && level >= HUNGRY){
+			GLog.w( Messages.get(this, "onhungry") );
+		} else if (oldLevel < STARVING && level >= STARVING){
+			GLog.n( Messages.get(this, "onstarving") );
+			target.damage( 1, this );
 		}
 
 		BuffIndicator.refreshHero();

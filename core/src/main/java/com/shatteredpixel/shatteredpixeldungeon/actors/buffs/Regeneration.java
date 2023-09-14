@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
-import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
 
 public class Regeneration extends Buff {
 	
@@ -81,9 +80,6 @@ public class Regeneration extends Buff {
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 		if (lock != null && !lock.regenOn()){
 			return false;
-		}
-		if (Dungeon.level instanceof MiningLevel){
-			return false; //this is mainly for the current test sub-level
 		}
 		return true;
 	}

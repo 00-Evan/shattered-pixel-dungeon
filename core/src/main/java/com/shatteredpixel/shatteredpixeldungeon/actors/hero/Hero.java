@@ -1169,19 +1169,19 @@ public class Hero extends Char {
 							Level.set( action.dst, Terrain.EMPTY_DECO );
 
 						} else if (Dungeon.level.map[action.dst] == Terrain.WALL){
-							//TODO inc. hunger by 5
+							buff(Hunger.class).affectHunger(-5);
 							PixelScene.shake(0.5f, 0.5f);
 							CellEmitter.get( action.dst ).burst( Speck.factory( Speck.ROCK ), 2 );
 							Sample.INSTANCE.play( Assets.Sounds.MINE );
 							Level.set( action.dst, Terrain.EMPTY_DECO );
 
 						} else if (Dungeon.level.map[action.dst] == Terrain.MINE_CRYSTAL){
-							Splash.at(action.dst, 0xFFFFFF, 5); //TODO match color?
+							Splash.at(action.dst, 0xFFFFFF, 5);
 							Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 							Level.set( action.dst, Terrain.EMPTY );
 
 						} else if (Dungeon.level.map[action.dst] == Terrain.MINE_BOULDER){
-							//TODO inc. hunger by 1
+							buff(Hunger.class).affectHunger(-1);
 							Splash.at(action.dst, ColorMath.random( 0x444444, 0x777766 ), 5);
 							Sample.INSTANCE.play( Assets.Sounds.MINE, 0.6f );
 							Level.set( action.dst, Terrain.EMPTY );
