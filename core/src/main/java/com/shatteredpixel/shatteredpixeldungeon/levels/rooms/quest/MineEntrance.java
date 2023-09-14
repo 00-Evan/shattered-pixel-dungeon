@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
@@ -76,7 +77,14 @@ public class MineEntrance extends EntranceRoom {
 				0,
 				LevelTransition.Type.BRANCH_EXIT));
 
-		//TODO add per-quest decorations here
+		if (Blacksmith.Quest.Type() == Blacksmith.Quest.CRYSTAL){
+			for (int i = 0; i < width()*height()/3; i ++){
+				Point r = random(1);
+				if (level.distance(level.pointToCell(r), entrance) > 1) {
+					Painter.set(level, r, Terrain.MINE_CRYSTAL);
+				}
+			}
+		}
 	}
 
 	public static class QuestExit extends CustomTilemap {

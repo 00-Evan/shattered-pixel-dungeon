@@ -81,7 +81,7 @@ public class Blacksmith extends NPC {
 			String msg1 = "";
 			String msg2 = "";
 
-			if (Quest.type == 0){
+			if (Quest.type == Quest.OLD){
 				//pre-v2.2.0 saves
 				msg1 = Quest.alternative ? Messages.get(Blacksmith.this, "blood_1") : Messages.get(Blacksmith.this, "gold_1");
 			} else {
@@ -98,9 +98,9 @@ public class Blacksmith extends NPC {
 				msg1 += "\n\n" + Messages.get(Blacksmith.this, "intro_quest_start");
 
 				switch (Quest.type){
-					case 1: msg2 += Messages.get(Blacksmith.this, "intro_quest_crystal"); break;
-					case 2: msg2 += Messages.get(Blacksmith.this, "intro_quest_fungi"); break;
-					case 3: msg2 += Messages.get(Blacksmith.this, "intro_quest_gnoll"); break;
+					case Quest.CRYSTAL: msg2 += Messages.get(Blacksmith.this, "intro_quest_crystal"); break;
+					case Quest.FUNGI:   msg2 += Messages.get(Blacksmith.this, "intro_quest_fungi"); break;
+					case Quest.GNOLL:   msg2 += Messages.get(Blacksmith.this, "intro_quest_gnoll"); break;
 				}
 
 			}
@@ -137,7 +137,7 @@ public class Blacksmith extends NPC {
 			
 		} else if (!Quest.completed) {
 
-			if (Quest.type == 0) {
+			if (Quest.type == Quest.OLD) {
 				if (Quest.alternative) {
 
 					Pickaxe pick = Dungeon.hero.belongings.getItem(Pickaxe.class);
@@ -190,7 +190,7 @@ public class Blacksmith extends NPC {
 				tell(Messages.get(this, "reminder"));
 
 			}
-		} else if (Quest.type == 0 && Quest.reforges == 0) {
+		} else if (Quest.type == Quest.OLD && Quest.reforges == 0) {
 			
 			Game.runOnRenderThread(new Callback() {
 				@Override
@@ -248,11 +248,11 @@ public class Blacksmith extends NPC {
 
 	public static class Quest {
 
-		// 0 = old blacksmith quest (pre-2.2.0)
-		// 1 = Crystal
-		// 2 = Fungi
-		// 3 = Gnoll
-		private static int type;
+		private static int type = 0;
+		public static final int OLD = 0;
+		public static final int CRYSTAL = 1;
+		public static final int FUNGI = 2;
+		public static final int GNOLL = 3;
 		//pre-v2.2.0
 		private static boolean alternative; //false for mining gold, true for bat blood
 
@@ -375,10 +375,11 @@ public class Blacksmith extends NPC {
 
 				//currently the new quest is disabled in production as it is incomplete
 				if (DeviceCompat.isDebug()){
-					type = 1+Random.Int(3);
+					//type = 1+Random.Int(3);
+					type = CRYSTAL;
 					alternative = false;
 				} else {
-					type = 0;
+					type = OLD;
 					alternative = Random.Int(2) == 0;
 				}
 				
@@ -438,15 +439,15 @@ public class Blacksmith extends NPC {
 
 		//if the blacksmith is generated pre-v2.2.0, and the player never spawned a mining test floor
 		public static boolean oldQuestMineBlocked(){
-			return type == 0 && !Dungeon.levelHasBeenGenerated(Dungeon.depth, 1);
+			return type == OLD && !Dungeon.levelHasBeenGenerated(Dungeon.depth, 1);
 		}
 
 		public static boolean oldBloodQuest(){
-			return type == 0 && alternative;
+			return type == OLD && alternative;
 		}
 
 		public static boolean oldMiningQuest(){
-			return type == 0 && !alternative;
+			return type == OLD && !alternative;
 		}
 	}
 }

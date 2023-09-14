@@ -39,8 +39,6 @@ public class MiningLevelPainter extends CavesPainter {
 	// and an excellent job of ensuring that the total gold amount is consistent
 	// but it doesn't ensure anything about gold distribution. Gold can often be overly clumped in certain areas
 
-	//TODO gold on left/right/below walls is also super hard to see atm
-
 	private int goldToAdd = 0;
 
 	public RegularPainter setGold(int amount){
@@ -118,20 +116,6 @@ public class MiningLevelPainter extends CavesPainter {
 		} while (goldToAdd > 0);
 
 	}
-
-	/*
-	//spreads gold over an entire cluster, currently unused
-	private void spreadGold(int i, boolean[] gold){
-		for (int k : PathFinder.NEIGHBOURS4){
-			if (!insideMap(i+k)) continue;
-			if (goldToAdd > 0 && gold[i+k] && map[i+k] == Terrain.WALL){
-				map[i+k] = Terrain.BARRICADE;
-				goldToAdd--;
-				spreadGold(i+k, gold);
-			}
-		}
-	}
-	*/
 
 	@Override
 	protected void paintDoors(Level l, ArrayList<Room> rooms) {

@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -38,7 +39,12 @@ public class MineSecretRoom extends SecretRoom {
 	@Override
 	public void paint(Level level) {
 		Painter.fill( level, this, Terrain.WALL );
-		Painter.fill( level, this, 1, Terrain.EMPTY );
+
+		if (Blacksmith.Quest.Type() == Blacksmith.Quest.CRYSTAL) {
+			Painter.fill(level, this, 1, Terrain.MINE_CRYSTAL);
+		} else {
+			Painter.fill(level, this, 1, Terrain.EMPTY);
+		}
 
 		entrance().set( Door.Type.HIDDEN );
 

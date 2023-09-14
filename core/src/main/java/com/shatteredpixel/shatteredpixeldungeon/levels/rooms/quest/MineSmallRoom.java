@@ -21,8 +21,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.CaveRoom;
+import com.watabou.utils.Point;
 
 public class MineSmallRoom extends CaveRoom {
 
@@ -46,7 +50,14 @@ public class MineSmallRoom extends CaveRoom {
 	public void paint(Level level) {
 		super.paint(level);
 
-		//TODO per-quest details here
+		if (Blacksmith.Quest.Type() == Blacksmith.Quest.CRYSTAL){
+			for (int i = 0; i < width()*height()/5; i ++){
+				Point r = random(1);
+				if (level.map[level.pointToCell(r)] != Terrain.WALL) {
+					Painter.set(level, r, Terrain.MINE_CRYSTAL);
+				}
+			}
+		}
 
 	}
 }
