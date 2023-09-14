@@ -119,7 +119,12 @@ public class PrismaticImage extends NPC {
 			}
 		}
 	}
-	
+
+	@Override
+	public boolean isActive() {
+		return isAlive() || deathTimer > 0;
+	}
+
 	private static final String HEROID	= "hero_id";
 	private static final String TIMER	= "timer";
 	
