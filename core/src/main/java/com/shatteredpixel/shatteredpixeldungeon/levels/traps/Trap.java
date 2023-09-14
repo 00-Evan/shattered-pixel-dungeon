@@ -104,6 +104,13 @@ public abstract class Trap implements Bundlable {
 		Dungeon.level.disarmTrap(pos);
 	}
 
+	//returns the depth value the trap should use for determining its power
+	//If the trap is part of the level, it should use the true depth
+	//If it's not part of the level (e.g. effect from reclaim trap), use scaling depth
+	protected int scalingDepth(){
+		return Dungeon.level.traps.get(pos) == this ? Dungeon.depth : Dungeon.scalingDepth();
+	}
+
 	public String name(){
 		return Messages.get(this, "name");
 	}
