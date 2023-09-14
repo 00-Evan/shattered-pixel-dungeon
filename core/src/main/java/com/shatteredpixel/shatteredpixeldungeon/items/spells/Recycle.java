@@ -21,22 +21,27 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Transmuting;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.Brew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.Elixir;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.TippedDart;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.utils.Reflection;
 
 public class Recycle extends InventorySpell {
 	
@@ -55,7 +60,26 @@ public class Recycle extends InventorySpell {
 
 	@Override
 	protected void onItemSelected(Item item) {
-		Item result = ScrollOfTransmutation.changeItem(item);
+		Item result;
+		do {
+			if (item instanceof Potion) {
+				result = Generator.randomUsingDefaults(Generator.Category.POTION);
+				if (item instanceof ExoticPotion){
+					result = Reflection.newInstance(ExoticPotion.regToExo.get(result.getClass()));
+				}
+			} else if (item instanceof Scroll) {
+				result = Generator.randomUsingDefaults(Generator.Category.SCROLL);
+				if (item instanceof ExoticScroll){
+					result = Reflection.newInstance(ExoticScroll.regToExo.get(result.getClass()));
+				}
+			} else if (item instanceof Plant.Seed) {
+				result = Generator.randomUsingDefaults(Generator.Category.SEED);
+			} else if (item instanceof Runestone) {
+				result = Generator.randomUsingDefaults(Generator.Category.STONE);
+			} else {
+				result = TippedDart.randomTipped(1);
+			}
+		} while (result.getClass() == item.getClass() || Challenges.isItemBlocked(result));
 		
 		item.detach(curUser.belongings.backpack);
 		GLog.p(Messages.get(this, "recycled", result.name()));
