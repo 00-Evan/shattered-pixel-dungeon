@@ -35,14 +35,14 @@ public class RingOfFuror extends Ring {
 	public String statsInfo() {
 		if (isIdentified()){
 			String info = Messages.get(this, "stats",
-					Messages.decimalFormat("#.##", 100f * (Math.pow(1.0905f, soloBuffedBonus()) - 1f)));
+					Messages.decimalFormat("#.##", 100f * (Math.pow(1.09051f, soloBuffedBonus()) - 1f)));
 			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != getBuffedBonus(Dungeon.hero, Furor.class)){
 				info += "\n\n" + Messages.get(this, "combined_stats",
-						Messages.decimalFormat("#.##", 100f * (Math.pow(1.0905f, getBuffedBonus(Dungeon.hero, Furor.class)) - 1f)));
+						Messages.decimalFormat("#.##", 100f * (Math.pow(1.09051f, getBuffedBonus(Dungeon.hero, Furor.class)) - 1f)));
 			}
 			return info;
 		} else {
-			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 9.05f));
+			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 9.051f));
 		}
 	}
 
@@ -52,7 +52,7 @@ public class RingOfFuror extends Ring {
 	}
 	
 	public static float attackSpeedMultiplier(Char target ){
-		return (float)Math.pow(1.0905, getBuffedBonus(target, Furor.class));
+		return (float)Math.pow(1.09051, getBuffedBonus(target, Furor.class));
 	}
 
 	public class Furor extends RingBuff {
