@@ -119,7 +119,21 @@ public class RotGardenRoom extends SpecialRoom {
 			placePlant(level, pos, new RotLasher());
 		}
 
-		//if almost every open cell next to the heart has a lasher threatening it, try to clear one lasher
+		//If the only open cells next to the heart are a diagonal, open one additional adjacent cell
+		//This is important so that the heart can spread gas
+		boolean openCardinal = false;
+		for (int i = 1; i < PathFinder.CIRCLE8.length; i+=2){
+			if (level.map[heartPos + PathFinder.CIRCLE8[i]] != Terrain.WALL) openCardinal = true;
+		}
+		if (!openCardinal){
+			for (int i = 0; i < PathFinder.CIRCLE8.length; i+=2){
+				if (level.map[heartPos + PathFinder.CIRCLE8[i]] != Terrain.WALL){
+					Painter.set(level, heartPos + PathFinder.CIRCLE8[i+1], Terrain.HIGH_GRASS);
+				}
+			}
+		}
+
+		//if almost every open cell next to the heart has a lasher threatening it, clear one lasher
 		int safeHeartcells = 0;
 		HashSet<Mob> adjacentLashers = new HashSet<>();
 		for (int i : PathFinder.NEIGHBOURS8){
