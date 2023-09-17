@@ -148,7 +148,7 @@ public abstract class YogFist extends Mob {
 	public void damage(int dmg, Object src) {
 		int preHP = HP;
 		super.damage(dmg, src);
-		int dmgTaken = HP - preHP;
+		int dmgTaken = preHP - HP;
 
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 		if (dmgTaken > 0 && lock != null){
