@@ -80,6 +80,31 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-0.5", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by BETA:_\n" +
+				"_-_ Rare crash issues\n" +
+				"_-_ Recycle spell not working correctly on potions and scrolls\n" +
+				"_-_ Prismatic Images not being examinable at 0hp\n" +
+				"_-_ Rot Heart very rarely having no place to spread gas\n" +
+				"_-_ Wand of living earth not healing earthen guardian when aimed at it\n" +
+				"\n" +
+				"_Existing Prior to BETA:_\n" +
+				"_-_ Damage caused to Yog's fists not correctly adding time to boss regen limit\n" +
+				"_-_ Mimics not dropping loot when they are killed via chasm while hiding\n" +
+				"_-_ Trap effects from reclaim trap spell not scaling with ascension challenge\n" +
+				"_-_ Ring of Force incorrectly displaying +99.99% when at +7, instead of +100%\n" +
+				"_-_ Tengu very rarely throwing bombs ontop of each other\n" +
+				"_-_ Various minor textual issues"));
+
 		changes = new ChangeInfo("BETA-0.4", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
