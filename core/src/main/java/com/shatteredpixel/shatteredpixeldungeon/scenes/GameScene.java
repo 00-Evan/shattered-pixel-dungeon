@@ -674,7 +674,8 @@ public class GameScene extends PixelScene {
 
 	public static boolean updateItemDisplays = false;
 
-	public static boolean tagsNeedLayout = false;
+	public static boolean tagDisappeared = false;
+	public static boolean updateTags = false;
 	
 	@Override
 	public synchronized void update() {
@@ -726,7 +727,15 @@ public class GameScene extends PixelScene {
 			log.newLine();
 		}
 
-		if (tagAttack != attack.active ||
+		if (updateTags){
+			tagAttack = attack.active;
+			tagLoot = loot.visible;
+			tagAction = action.visible;
+			tagResume = resume.visible;
+
+			layoutTags();
+
+		} else if (tagAttack != attack.active ||
 				tagLoot != loot.visible ||
 				tagAction != action.visible ||
 				tagResume != resume.visible) {
@@ -744,7 +753,7 @@ public class GameScene extends PixelScene {
 			//if a new tag appears, re-layout tags immediately
 			//otherwise, wait until the hero acts, so as to not suddenly change their position
 			if (tagAppearing)   layoutTags();
-			else                tagsNeedLayout = true;
+			else                tagDisappeared = true;
 
 		}
 
@@ -773,6 +782,8 @@ public class GameScene extends PixelScene {
 	private boolean tagResume    = false;
 
 	public static void layoutTags() {
+
+		updateTags = false;
 
 		if (scene == null) return;
 
@@ -1417,9 +1428,9 @@ public class GameScene extends PixelScene {
 		QuickSlotButton.cancel();
 		InventoryPane.cancelTargeting();
 		if (scene != null && scene.toolbar != null) scene.toolbar.examining = false;
-		if (tagsNeedLayout) {
-			layoutTags();
-			tagsNeedLayout = false;
+		if (tagDisappeared) {
+			tagDisappeared = false;
+			updateTags = true;
 		}
 	}
 	

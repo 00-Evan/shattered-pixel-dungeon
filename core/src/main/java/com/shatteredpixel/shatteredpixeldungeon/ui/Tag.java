@@ -59,7 +59,7 @@ public class Tag extends Button {
 
 	@Override
 	protected void onClick() {
-		GameScene.tagsNeedLayout = false;
+		GameScene.tagDisappeared = false;
 	}
 
 	@Override
