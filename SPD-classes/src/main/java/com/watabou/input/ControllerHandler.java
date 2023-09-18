@@ -45,7 +45,8 @@ public class ControllerHandler implements ControllerListener {
 	public static boolean controllerActive = false;
 
 	//sufficiently large number so that it'll never collide with touch pointers (which start at 0)
-	public static final int CONTROLLER_POINTER_ID = 1000;
+	//19 is the max to avoid array overflow when interacting with some libGDX graphics objects
+	public static final int CONTROLLER_POINTER_ID = 19;
 
 	private static void setControllerType(Controller controller){
 		if (controller.getName().contains("Xbox")){
