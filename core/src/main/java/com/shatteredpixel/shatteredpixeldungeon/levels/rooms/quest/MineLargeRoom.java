@@ -21,11 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CrystalGuardian;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.CaveRoom;
+import com.watabou.utils.Point;
 
 public class MineLargeRoom extends CaveRoom {
 
@@ -36,7 +38,6 @@ public class MineLargeRoom extends CaveRoom {
 
 	@Override
 	protected float fill() {
-		int scale = Math.min(width()*height(), 18*18);
 		return 0.55f;
 	}
 
@@ -51,6 +52,13 @@ public class MineLargeRoom extends CaveRoom {
 			for (int i = 0; i < (width()-8)*(height()-8)/5; i ++){
 				Painter.set(level, random(4), Terrain.MINE_CRYSTAL);
 			}
+
+			Point p = random(5);
+			CrystalGuardian m = new CrystalGuardian();
+			m.pos = level.pointToCell(p);
+			level.mobs.add(m);
+			Painter.set(level, p, Terrain.EMPTY);
+
 		} else {
 			Painter.fillEllipse(level, this, 3, Terrain.EMPTY);
 		}

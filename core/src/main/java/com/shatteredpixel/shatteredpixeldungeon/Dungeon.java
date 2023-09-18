@@ -987,6 +987,8 @@ public class Dungeon {
 			BArray.and( passable, Dungeon.level.openSpace, passable );
 		}
 
+		ch.modifyPassable(passable);
+
 		if (chars) {
 			for (Char c : Actor.chars()) {
 				if (vis[c.pos]) {

@@ -314,5 +314,8 @@ public class Assets {
 		public static final String NINJA_LOG= "sprites/ninja_log.png";
 		public static final String SPIRIT_HAWK= "sprites/spirit_hawk.png";
 		public static final String RED_SENTRY= "sprites/red_sentry.png";
+		public static final String CRYSTAL_WISP= "sprites/crystal_wisp.png";
+		public static final String CRYSTAL_GUARDIAN= "sprites/crystal_guardian.png";
+		public static final String CRYSTAL_SPIRE= "sprites/crystal_spire.png";
 	}
 }

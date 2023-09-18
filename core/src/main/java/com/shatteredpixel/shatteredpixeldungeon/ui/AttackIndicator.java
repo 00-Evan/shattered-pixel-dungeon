@@ -155,6 +155,11 @@ public class AttackIndicator extends Tag {
 		sprite.idle();
 		sprite.paused = true;
 		sprite.visible = bg.visible;
+
+		if (sprite.width() > 20 || sprite.height() > 20){
+			sprite.scale.set(PixelScene.align(20f/Math.max(sprite.width(), sprite.height())));
+		}
+
 		add( sprite );
 
 		layout();

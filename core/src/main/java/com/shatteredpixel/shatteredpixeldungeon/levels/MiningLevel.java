@@ -23,8 +23,9 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bat;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CrystalWisp;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -132,15 +133,12 @@ public class MiningLevel extends CavesLevel {
 
 	@Override
 	public Mob createMob() {
-		return null;
-	}
-
-	@Override
-	protected void createMobs() {
-	}
-
-	public Actor addRespawner() {
-		return null;
+		switch (Blacksmith.Quest.Type()){
+			default:
+				return new Bat();
+			case Blacksmith.Quest.CRYSTAL:
+				return new CrystalWisp();
+		}
 	}
 
 	@Override

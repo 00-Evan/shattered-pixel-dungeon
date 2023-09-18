@@ -1015,6 +1015,11 @@ public abstract class Char extends Actor {
 	public int distance( Char other ) {
 		return Dungeon.level.distance( pos, other.pos );
 	}
+
+	public boolean[] modifyPassable( boolean[] passable){
+		//do nothing by default, but some chars can pass over terrain that others can't
+		return passable;
+	}
 	
 	public void onMotionComplete() {
 		//Does nothing by default
