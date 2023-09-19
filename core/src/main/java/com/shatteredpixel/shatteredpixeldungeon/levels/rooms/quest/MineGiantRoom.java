@@ -56,7 +56,11 @@ public class MineGiantRoom extends CaveRoom {
 			CrystalSpire m = new CrystalSpire();
 			m.pos = level.pointToCell(p);
 			level.mobs.add(m);
-			Painter.set(level, p, Terrain.EMPTY);
+			Painter.set(level, p, Terrain.CUSTOM_DECO_EMPTY);
+			Painter.set(level, p.x-1, p.y, Terrain.CUSTOM_DECO_EMPTY);
+			Painter.set(level, p.x+1, p.y, Terrain.CUSTOM_DECO_EMPTY);
+			Painter.set(level, p.x, p.y-1, Terrain.CUSTOM_DECO_EMPTY);
+			Painter.set(level, p.x, p.y-2, Terrain.CUSTOM_DECO_EMPTY);
 
 		} else {
 			Painter.fillEllipse(level, this, 3, Terrain.EMPTY);
