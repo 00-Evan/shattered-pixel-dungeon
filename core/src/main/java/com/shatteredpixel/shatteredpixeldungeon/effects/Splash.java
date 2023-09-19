@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.effects;
 
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.watabou.noosa.Visual;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.utils.PointF;
@@ -63,6 +64,21 @@ public class Splash {
 		FACTORY.color = color;
 		FACTORY.dir = dir;
 		FACTORY.cone = cone;
+		emitter.burst( FACTORY, n );
+	}
+
+	public static void around(Visual v, final int color, int n ) {
+		if (n <= 0) {
+			return;
+		}
+
+		Emitter emitter = GameScene.emitter();
+		if (emitter == null) return;
+		emitter.pos( v );
+
+		FACTORY.color = color;
+		FACTORY.dir = -3.1415926f / 2;
+		FACTORY.cone = 3.1415926f;
 		emitter.burst( FACTORY, n );
 	}
 

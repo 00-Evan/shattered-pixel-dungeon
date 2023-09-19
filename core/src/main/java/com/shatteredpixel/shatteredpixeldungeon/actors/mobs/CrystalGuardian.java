@@ -40,6 +40,11 @@ public class CrystalGuardian extends Mob{
 		state = SLEEPING;
 	}
 
+	@Override
+	public boolean reset() {
+		return true;
+	}
+
 	public CrystalGuardian(){
 		super();
 		switch (Random.Int(3)){

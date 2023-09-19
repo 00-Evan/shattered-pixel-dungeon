@@ -23,12 +23,17 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.watabou.noosa.TextureFilm;
 
 public abstract class CrystalSpireSprite extends MobSprite {
 
 	{
 		perspectiveRaise = 7 / 16f; //7 pixels
+
+		shadowWidth     = 1f;
+		shadowHeight    = 1f;
+		shadowOffset    = 1f;
 	}
 
 	public CrystalSpireSprite(){
@@ -46,15 +51,44 @@ public abstract class CrystalSpireSprite extends MobSprite {
 		zap = idle.clone();
 
 		die = new Animation(1, false);
-		die.frames( frames, 0+c );
+		die.frames( frames, 4+c );
 
 		play(idle);
+	}
+
+	public void updateIdle(){
+		float hpPercent = 1f;
+		if (ch != null){
+			hpPercent = ch.HP/(float)ch.HT;
+		}
+
+		TextureFilm frames = new TextureFilm( texture, 30, 45 );
+
+		if (hpPercent > 0.8f){
+			idle.frames( frames, 0+texOffset() );
+		} else if (hpPercent > 0.5f){
+			idle.frames( frames, 1+texOffset() );
+		} else if (hpPercent > 0.25f){
+			idle.frames( frames, 2+texOffset() );
+		} else {
+			idle.frames( frames, 3+texOffset() );
+		}
+		play(idle, true);
+		run = idle.clone();
+		attack = idle.clone();
+		zap = idle.clone();
 	}
 
 	@Override
 	public void link(Char ch) {
 		super.link(ch);
-		renderShadow = false;
+		updateIdle();
+	}
+
+	@Override
+	public void die() {
+		super.die();
+		Splash.around(this, blood(), 100);
 	}
 
 	protected abstract int texOffset();
@@ -73,7 +107,7 @@ public abstract class CrystalSpireSprite extends MobSprite {
 	public static class Green extends CrystalSpireSprite {
 		@Override
 		protected int texOffset() {
-			return 1;
+			return 5;
 		}
 		@Override
 		public int blood() {
@@ -84,7 +118,7 @@ public abstract class CrystalSpireSprite extends MobSprite {
 	public static class Red extends CrystalSpireSprite {
 		@Override
 		protected int texOffset() {
-			return 2;
+			return 10;
 		}
 		@Override
 		public int blood() {

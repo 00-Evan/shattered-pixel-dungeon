@@ -405,6 +405,10 @@ public class Blacksmith extends NPC {
 			started = true;
 		}
 
+		public static boolean beatBoss(){
+			return bossBeaten = true;
+		}
+
 		public static boolean bossBeaten(){
 			return bossBeaten;
 		}

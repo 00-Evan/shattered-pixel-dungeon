@@ -73,7 +73,7 @@ public class SpawnerSprite extends MobSprite {
 
 	@Override
 	public void die() {
-		Splash.at( center(), blood(), 100 );
+		Splash.around( this, blood(), 100 );
 		killAndErase();
 	}
 
