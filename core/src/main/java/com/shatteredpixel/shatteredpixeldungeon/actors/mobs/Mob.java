@@ -1166,6 +1166,7 @@ public abstract class Mob extends Char {
 			if (enemy == null || !enemyInFOV && 1 + Random.Int(Dungeon.level.distance(pos, target)) >= 6){
 				escaped();
 				if (state != FLEEING){
+					spend( TICK );
 					return true;
 				}
 			
