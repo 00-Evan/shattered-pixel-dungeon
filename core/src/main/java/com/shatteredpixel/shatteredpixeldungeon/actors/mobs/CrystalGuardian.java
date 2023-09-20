@@ -21,11 +21,17 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CrystalGuardianSprite;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -33,16 +39,50 @@ import com.watabou.utils.Random;
 public class CrystalGuardian extends Mob{
 
 	{
-		HP = HT = 1;
 		spriteClass = CrystalGuardianSprite.class;
+
+		HP = HT = 100;
+		defenseSkill = 14;
+
+		EXP = 10;
+		maxLvl = -2;
 
 		SLEEPING = new Sleeping();
 		state = SLEEPING;
+
+		properties.add(Property.INORGANIC);
+		properties.add(Property.MINIBOSS);
+	}
+
+	@Override
+	public int damageRoll() {
+		return Random.NormalIntRange( 10, 20 );
+	}
+
+	@Override
+	public int attackSkill( Char target ) {
+		return 20;
+	}
+
+	@Override
+	public int drRoll() {
+		return super.drRoll() + Random.NormalIntRange(0, 10);
 	}
 
 	@Override
 	public boolean reset() {
 		return true;
+	}
+
+	@Override
+	public boolean isAlive() {
+		if (HP <= 0){
+			HP = 1;
+			if (sprite != null) ((CrystalGuardianSprite)sprite).crumple();
+			spend(10f-cooldown());
+			Buff.affect(this, Healing.class).setHeal(100, 0, 10);
+		}
+		return super.isAlive();
 	}
 
 	public CrystalGuardian(){
@@ -77,24 +117,32 @@ public class CrystalGuardian extends Mob{
 	@Override
 	public void beckon(int cell) {
 		super.beckon(cell);
+		state = HUNTING;
+	}
 
-		//If we are still penned into our starting area, break out of it
-		PathFinder.buildDistanceMap(cell, Dungeon.level.passable);
-		if (PathFinder.distance[pos] == Integer.MAX_VALUE){
-			boolean[] passable = Dungeon.level.passable.clone();
+	@Override
+	public void move(int step, boolean travelling) {
+		super.move(step, travelling);
+		if (Dungeon.level.map[pos] == Terrain.MINE_CRYSTAL){
+			Level.set(pos, Terrain.EMPTY);
+			GameScene.updateMap(pos);
+			if (Dungeon.level.heroFOV[pos]){
+				Splash.at(pos, 0xFFFFFF, 5);
+				Sample.INSTANCE.play( Assets.Sounds.SHATTER );
+			}
+		}
+	}
+
+	@Override
+	public boolean[] modifyPassable(boolean[] passable) {
+		//TODO maybe base this on passable instead of hunting?
+		// want to prevent one guardian randomly waking another though
+		if (state == HUNTING){
 			for (int i = 0; i < Dungeon.level.length(); i++){
 				passable[i] = passable[i] || Dungeon.level.map[i] == Terrain.MINE_CRYSTAL;
 			}
-			PathFinder.Path p = PathFinder.find(pos, cell, passable);
-			if (p != null) {
-				for (int i : p) {
-					if (Dungeon.level.map[i] == Terrain.MINE_CRYSTAL) {
-						Level.set(i, Terrain.EMPTY);
-						GameScene.updateMap(i);
-					}
-				}
-			}
 		}
+		return passable;
 	}
 
 	protected class Sleeping extends Mob.Sleeping{

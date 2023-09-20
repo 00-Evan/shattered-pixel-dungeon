@@ -22,6 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CrystalWisp;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.TextureFilm;
 
 public abstract class CrystalWispSprite extends MobSprite {
@@ -50,6 +53,23 @@ public abstract class CrystalWispSprite extends MobSprite {
 		die.frames( frames, c+7, c+8, c+9, c+10, c+11, c+12, c+13, c+12 );
 
 		play( idle );
+	}
+
+	public void zap( int cell ) {
+
+		super.zap( cell );
+
+		((CrystalWisp)ch).onZapComplete();
+		parent.add( new Beam.LightRay(center(), DungeonTilemap.raisedTileCenterToWorld(cell)));
+
+	}
+
+	@Override
+	public void onComplete( Animation anim ) {
+		if (anim == zap) {
+			idle();
+		}
+		super.onComplete( anim );
 	}
 
 	protected abstract int texOffset();

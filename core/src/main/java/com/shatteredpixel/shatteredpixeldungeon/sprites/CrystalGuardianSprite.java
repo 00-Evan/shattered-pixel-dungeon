@@ -22,10 +22,14 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing;
 import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.TextureFilm;
 
 public abstract class CrystalGuardianSprite extends MobSprite {
+
+	private Animation crumple;
 
 	public CrystalGuardianSprite() {
 		super();
@@ -48,7 +52,21 @@ public abstract class CrystalGuardianSprite extends MobSprite {
 		die = new MovieClip.Animation( 5, false );
 		die.frames( frames, 11+c, 12+c, 13+c, 14+c, 15+c, 15+c );
 
+		crumple = die.clone();
+
 		play( idle );
+	}
+
+	public void crumple(){
+		play(crumple);
+	}
+
+	@Override
+	public void link(Char ch) {
+		super.link(ch);
+		if (ch.buff(Healing.class) != null && ch.cooldown() > 0){
+			crumple();
+		}
 	}
 
 	protected abstract int texOffset();
