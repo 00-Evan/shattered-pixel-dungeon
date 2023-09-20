@@ -218,7 +218,13 @@ public class SPDAction extends GameAction {
 						continue; //we have no keys assigned to this action, move to the next one
 					} else {
 						merged.put(firstKeys.getInt(a.name()), a);
-						defaults.remove(firstKeys.getInt(a.name())); //prevent duplicates in other actions
+						//remove whatever the first default key was for this action, if any
+						for (int i : defaults.keySet()) {
+							if (defaults.get(i) == a) {
+								defaults.remove(i);
+								break;
+							}
+						}
 					}
 				} else {
 					//if we have no custom key here, find the first one from defaults and merge it
@@ -235,7 +241,13 @@ public class SPDAction extends GameAction {
 						continue; //we have no more keys assigned to this action, move to the next one
 					} else {
 						merged.put(secondKeys.getInt(a.name()), a);
-						defaults.remove(secondKeys.getInt(a.name()));
+						//remove whatever the second default key was for this action, if any
+						for (int i : defaults.keySet()){
+							if (defaults.get(i) == a){
+								defaults.remove(i);
+								break;
+							}
+						}
 					}
 				} else {
 					//if we have no custom key here, find the next one from defaults and merge it
@@ -252,7 +264,13 @@ public class SPDAction extends GameAction {
 						continue; //we have no more keys assigned to this action, move to the next one
 					} else {
 						merged.put(thirdKeys.getInt(a.name()), a);
-						defaults.remove(thirdKeys.getInt(a.name()));
+						//remove whatever the third default key was for this action, if any
+						for (int i : defaults.keySet()){
+							if (defaults.get(i) == a){
+								defaults.remove(i);
+								break;
+							}
+						}
 					}
 				} else {
 					//if we have no custom key here, find the next one from defaults and merge it
@@ -281,7 +299,13 @@ public class SPDAction extends GameAction {
 						continue; //we have no keys assigned to this action, move to the next one
 					} else {
 						merged.put(firstButtons.getInt(a.name()), a);
-						defaults.remove(firstButtons.getInt(a.name())); //prevent duplicates in other actions
+						//remove whatever the first default button was for this action, if any
+						for (int i : defaults.keySet()) {
+							if (defaults.get(i) == a) {
+								defaults.remove(i);
+								break;
+							}
+						}
 					}
 				} else {
 					//if we have no custom key here, find the first one from defaults and merge it
@@ -298,7 +322,13 @@ public class SPDAction extends GameAction {
 						continue; //we have no more keys assigned to this action, move to the next one
 					} else {
 						merged.put(secondButtons.getInt(a.name()), a);
-						defaults.remove(secondButtons.getInt(a.name()));
+						//remove whatever the second default button was for this action, if any
+						for (int i : defaults.keySet()) {
+							if (defaults.get(i) == a) {
+								defaults.remove(i);
+								break;
+							}
+						}
 					}
 				} else {
 					//if we have no custom key here, find the next one from defaults and merge it
@@ -315,7 +345,13 @@ public class SPDAction extends GameAction {
 						continue; //we have no more keys assigned to this action, move to the next one
 					} else {
 						merged.put(thirdButtons.getInt(a.name()), a);
-						defaults.remove(thirdButtons.getInt(a.name()));
+						//remove whatever the third default button was for this action, if any
+						for (int i : defaults.keySet()) {
+							if (defaults.get(i) == a) {
+								defaults.remove(i);
+								break;
+							}
+						}
 					}
 				} else {
 					//if we have no custom key here, find the next one from defaults and merge it
