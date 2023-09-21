@@ -61,6 +61,12 @@ public abstract class CrystalGuardianSprite extends MobSprite {
 		play(crumple);
 	}
 
+	public void endCrumple(){
+		if (curAnim == crumple){
+			idle();
+		}
+	}
+
 	@Override
 	public void link(Char ch) {
 		super.link(ch);

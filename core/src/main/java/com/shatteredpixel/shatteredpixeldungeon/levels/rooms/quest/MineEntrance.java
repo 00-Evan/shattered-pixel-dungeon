@@ -78,7 +78,7 @@ public class MineEntrance extends EntranceRoom {
 				LevelTransition.Type.BRANCH_EXIT));
 
 		if (Blacksmith.Quest.Type() == Blacksmith.Quest.CRYSTAL){
-			for (int i = 0; i < width()*height()/3; i ++){
+			for (int i = 0; i < width()*height()/2; i ++){
 				Point r = random(1);
 				if (level.distance(level.pointToCell(r), entrance) > 1) {
 					Painter.set(level, r, Terrain.MINE_CRYSTAL);

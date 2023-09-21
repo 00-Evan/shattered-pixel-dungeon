@@ -51,7 +51,7 @@ public class MineSmallRoom extends CaveRoom {
 		super.paint(level);
 
 		if (Blacksmith.Quest.Type() == Blacksmith.Quest.CRYSTAL){
-			for (int i = 0; i < width()*height()/5; i ++){
+			for (int i = 0; i < width()*height()/3; i ++){
 				Point r = random(1);
 				if (level.map[level.pointToCell(r)] != Terrain.WALL) {
 					Painter.set(level, r, Terrain.MINE_CRYSTAL);

@@ -74,20 +74,20 @@ public class MiningLevel extends CavesLevel {
 		ArrayList<Room> initRooms = new ArrayList<>();
 		initRooms.add ( roomEntrance = new MineEntrance());
 
-		//spawns 1 giant, 3-4 large, and 5-8 regular cave rooms
+		//spawns 1 giant, 3 large, 6-8 small, and 1-2 secret cave rooms
 		StandardRoom s;
 		s = new MineGiantRoom();
 		s.setSizeCat();
 		initRooms.add(s);
 
-		int rooms = Random.NormalIntRange(3, 4);
+		int rooms = 3;
 		for (int i = 0; i < rooms; i++){
 			s = new MineLargeRoom();
 			s.setSizeCat();
 			initRooms.add(s);
 		}
 
-		rooms = Random.NormalIntRange(8, 10);
+		rooms = Random.NormalIntRange(6, 8);
 		for (int i = 0; i < rooms; i++){
 			s = new MineSmallRoom();
 			s.setSizeCat();

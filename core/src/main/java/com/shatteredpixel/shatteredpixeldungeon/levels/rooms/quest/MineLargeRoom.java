@@ -27,13 +27,26 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.CaveRoom;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
+
+import java.util.ArrayList;
 
 public class MineLargeRoom extends CaveRoom {
 
 	@Override
 	public float[] sizeCatProbs() {
 		return new float[]{0, 1, 0};
+	}
+
+	@Override
+	public int minHeight() {
+		return 11;
+	}
+
+	@Override
+	public int minWidth() {
+		return 11;
 	}
 
 	@Override
@@ -46,14 +59,30 @@ public class MineLargeRoom extends CaveRoom {
 		super.paint(level);
 
 		if (Blacksmith.Quest.Type() == Blacksmith.Quest.CRYSTAL){
-			Painter.fillEllipse(level, this, 2, Terrain.MINE_CRYSTAL);
+			Painter.fillEllipse(level, this, 3, Terrain.MINE_CRYSTAL);
 			Painter.fillEllipse(level, this, 4, Terrain.EMPTY);
 
-			for (int i = 0; i < (width()-8)*(height()-8)/5; i ++){
-				Painter.set(level, random(4), Terrain.MINE_CRYSTAL);
+			Point p = random(5);
+			ArrayList<Integer> internalcells = new ArrayList<>();
+			findInternalCells(level, level.pointToCell(p), internalcells);
+
+			//we want to ensure that every internal cell has no way out, even diagonally
+			for (int i : internalcells){
+				for (int j : PathFinder.CIRCLE8){
+					if (!internalcells.contains(i+j) && level.map[i+j] != Terrain.MINE_CRYSTAL){
+						level.map[i] = Terrain.MINE_CRYSTAL;
+						break;
+					}
+				}
 			}
 
-			Point p = random(5);
+			for (int i = 0; i < width()*height()/4; i ++){
+				Point r = random(1);
+				if (level.map[level.pointToCell(r)] != Terrain.WALL) {
+					Painter.set(level, r, Terrain.MINE_CRYSTAL);
+				}
+			}
+
 			CrystalGuardian m = new CrystalGuardian();
 			m.pos = level.pointToCell(p);
 			level.mobs.add(m);
@@ -63,6 +92,15 @@ public class MineLargeRoom extends CaveRoom {
 			Painter.fillEllipse(level, this, 3, Terrain.EMPTY);
 		}
 
+	}
+
+	private void findInternalCells(Level level, int cell, ArrayList<Integer> internalCells){
+		for (int i : PathFinder.NEIGHBOURS4){
+			if (!internalCells.contains(cell+i) && level.map[cell+i] != Terrain.MINE_CRYSTAL){
+				internalCells.add(cell+i);
+				findInternalCells(level, cell+i, internalCells);
+			}
+		}
 	}
 
 }
