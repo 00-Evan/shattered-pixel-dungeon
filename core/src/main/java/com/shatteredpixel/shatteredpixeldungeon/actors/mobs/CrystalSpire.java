@@ -26,7 +26,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
@@ -109,6 +111,22 @@ public class CrystalSpire extends Mob {
 						Sample.INSTANCE.playDelayed(Assets.Sounds.ROCKS, 0.1f);
 						PixelScene.shake( 3, 0.7f );
 						Blacksmith.Quest.beatBoss();
+					}
+
+					for (Char ch : Actor.chars()){
+						if (ch instanceof CrystalWisp){
+							((CrystalWisp)ch).beckon(pos);
+						} else if (ch instanceof CrystalGuardian){
+							//TODO we want some way to encourage the player to explore first, but also not disturb guardians.
+							// maybe wisps alone are enough for this?
+							if (((CrystalGuardian) ch).state == ((CrystalGuardian) ch).SLEEPING){
+								Buff.affect(ch, Haste.class, 6f);
+							}
+							((CrystalGuardian) ch).beckon(pos);
+							if (((CrystalGuardian) ch).state != HUNTING){
+								((CrystalGuardian) ch).aggro(Dungeon.hero);
+							}
+						}
 					}
 
 					Dungeon.hero.spendAndNext(Actor.TICK);

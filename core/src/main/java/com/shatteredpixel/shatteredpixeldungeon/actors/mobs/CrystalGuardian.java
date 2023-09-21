@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -55,6 +56,12 @@ public class CrystalGuardian extends Mob{
 	}
 
 	@Override
+	protected boolean act() {
+		if (sprite instanceof CrystalGuardianSprite) ((CrystalGuardianSprite) sprite).endCrumple();
+		return super.act();
+	}
+
+	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 10, 20 );
 	}
@@ -76,7 +83,7 @@ public class CrystalGuardian extends Mob{
 
 	@Override
 	public boolean isAlive() {
-		if (HP <= 0){
+		if (HP <= 0 && !Blacksmith.Quest.bossBeaten()){
 			HP = 1;
 			if (sprite != null) ((CrystalGuardianSprite)sprite).crumple();
 			spend(10f-cooldown());
@@ -115,12 +122,6 @@ public class CrystalGuardian extends Mob{
 	}
 
 	@Override
-	public void beckon(int cell) {
-		super.beckon(cell);
-		state = HUNTING;
-	}
-
-	@Override
 	public void move(int step, boolean travelling) {
 		super.move(step, travelling);
 		if (Dungeon.level.map[pos] == Terrain.MINE_CRYSTAL){
@@ -135,11 +136,14 @@ public class CrystalGuardian extends Mob{
 
 	@Override
 	public boolean[] modifyPassable(boolean[] passable) {
-		//TODO maybe base this on passable instead of hunting?
-		// want to prevent one guardian randomly waking another though
+		//if we are hunting, and our current target is not reachable otherwise, then we can step on crystals
 		if (state == HUNTING){
-			for (int i = 0; i < Dungeon.level.length(); i++){
-				passable[i] = passable[i] || Dungeon.level.map[i] == Terrain.MINE_CRYSTAL;
+			PathFinder.buildDistanceMap(target, passable);
+
+			if (PathFinder.distance[pos] == Integer.MAX_VALUE) {
+				for (int i = 0; i < Dungeon.level.length(); i++) {
+					passable[i] = passable[i] || Dungeon.level.map[i] == Terrain.MINE_CRYSTAL;
+				}
 			}
 		}
 		return passable;
