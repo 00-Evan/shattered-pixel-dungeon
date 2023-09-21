@@ -22,12 +22,12 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Patch;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.MineSecretRoom;
 import com.watabou.utils.Graph;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -35,9 +35,10 @@ import java.util.HashMap;
 
 public class MiningLevelPainter extends CavesPainter {
 
-	//TODO currently this does an acceptable job of generating veins/clusters of gold
-	// and an excellent job of ensuring that the total gold amount is consistent
-	// but it doesn't ensure anything about gold distribution. Gold can often be overly clumped in certain areas
+	@Override
+	protected int padding(Level level) {
+		return 3;
+	}
 
 	private int goldToAdd = 0;
 
@@ -56,63 +57,51 @@ public class MiningLevelPainter extends CavesPainter {
 		}
 
 		int[] map = level.map;
-
 		do {
-			//use the patch system to generate a random smattering of gold with some grouping
-			boolean[] gold = Patch.generate( level.width(), level.height(), 0.05f, 2, true );
-			ArrayList<Integer> goldPosCandidates = new ArrayList<>();
+			Random.shuffle(rooms);
+			for (Room r : rooms) {
 
-			//find all potential gold cells that are exposed
-			for (int i = 0; i < level.length(); i++){
-				if (level.insideMap(i) && goldToAdd > 0 && map[i] == Terrain.WALL && gold[i]){
+				if (r instanceof MineSecretRoom) continue;
 
-					for (int j : PathFinder.NEIGHBOURS4){
-						if (level.insideMap(i+j) && DungeonTileSheet.floorTile(map[i+j])){
-							goldPosCandidates.add(i);
-							break;
+				ArrayList<Integer> goldPosCandidates = new ArrayList<>();
+				for (Point p : r.getPoints()){
+					int i = level.pointToCell(p);
+
+					if (level.insideMap(i) && goldToAdd > 0 && map[i] == Terrain.WALL){
+
+						for (int j : PathFinder.NEIGHBOURS4){
+							if (level.insideMap(i+j) && map[i+j] != Terrain.WALL){
+								goldPosCandidates.add(i);
+								break;
+							}
 						}
 					}
 				}
-			}
 
-			Random.shuffle(goldPosCandidates);
+				if (goldToAdd > 0 && !goldPosCandidates.isEmpty()){
+					int pos = Random.element(goldPosCandidates);
 
-			//fill in only the exposed potential gold cells...
-			for (int i : goldPosCandidates){
-				if (map[i] == Terrain.WALL) {
-					map[i] = Terrain.WALL_DECO;
+					map[pos] = Terrain.WALL_DECO;
 					goldToAdd--;
-				}
 
-				//...with some preference to fill in neighbours
-				for (int k : PathFinder.NEIGHBOURS4){
-					if (!level.insideMap(i+k)) continue;
-					if (goldToAdd > 0 && goldPosCandidates.contains(i+k) && map[i+k] == Terrain.WALL){
-						map[i+k] = Terrain.WALL_DECO;
-						goldToAdd--;
-					}
-				};
-
-				if (goldToAdd <= 0) break;
-
-			}
-
-			//if we have more gold to add, also look into filling in some non-exposed potential gold cells
-			// that are adjacent to exposed cells
-			if (goldToAdd > 0){
-				for (int i : goldPosCandidates){
-					for (int k : PathFinder.NEIGHBOURS4){
-						if (!level.insideMap(i+k)) continue;
-						if (goldToAdd > 0 && gold[i+k] && map[i+k] == Terrain.WALL){
-							map[i+k] = Terrain.WALL_DECO;
+					if (goldToAdd > 0){
+						int i = PathFinder.NEIGHBOURS4[Random.Int(4)];
+						if (level.insideMap(pos+i) && map[pos+i] == Terrain.WALL){
+							map[pos+i] = Terrain.WALL_DECO;
 							goldToAdd--;
 						}
-					};
-					if (goldToAdd <= 0) break;
-				}
-			}
+						if (Random.Int(2) == 0){
+							i = PathFinder.NEIGHBOURS4[Random.Int(4)];
+							if (level.insideMap(pos+i) && map[pos+i] == Terrain.WALL){
+								map[pos+i] = Terrain.WALL_DECO;
+								goldToAdd--;
+							}
+						}
+					}
 
-		//if we don't have enough gold yet, loop
+				}
+
+			}
 		} while (goldToAdd > 0);
 
 	}

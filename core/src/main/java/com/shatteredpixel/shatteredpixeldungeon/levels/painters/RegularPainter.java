@@ -75,6 +75,10 @@ public abstract class RegularPainter extends Painter {
 		trapChances = chances;
 		return this;
 	}
+
+	protected int padding(Level level){
+		return level.feeling == Level.Feeling.CHASM ? 2 : 1;
+	}
 	
 	@Override
 	public boolean paint(Level level, ArrayList<Room> rooms) {
@@ -82,7 +86,7 @@ public abstract class RegularPainter extends Painter {
 		//painter can be used without rooms
 		if (rooms != null) {
 			
-			int padding = level.feeling == Level.Feeling.CHASM ? 2 : 1;
+			int padding = padding(level);
 			
 			int leftMost = Integer.MAX_VALUE, topMost = Integer.MAX_VALUE;
 			
