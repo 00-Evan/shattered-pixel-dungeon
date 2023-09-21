@@ -194,7 +194,9 @@ public class Ghost extends NPC {
 								Music.INSTANCE.fadeOut(1f, new Callback() {
 									@Override
 									public void call() {
-										Dungeon.level.playLevelMusic();
+										if (Dungeon.level != null) {
+											Dungeon.level.playLevelMusic();
+										}
 									}
 								});
 							}
@@ -367,7 +369,9 @@ public class Ghost extends NPC {
 						Music.INSTANCE.fadeOut(1f, new Callback() {
 							@Override
 							public void call() {
-								Dungeon.level.playLevelMusic();
+								if (Dungeon.level != null) {
+									Dungeon.level.playLevelMusic();
+								}
 							}
 						});
 					}

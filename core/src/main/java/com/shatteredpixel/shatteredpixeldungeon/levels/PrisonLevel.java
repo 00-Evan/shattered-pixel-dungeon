@@ -157,7 +157,9 @@ public class PrisonLevel extends RegularLevel {
 						Music.INSTANCE.fadeOut(1f, new Callback() {
 							@Override
 							public void call() {
-								Dungeon.level.playLevelMusic();
+								if (Dungeon.level != null) {
+									Dungeon.level.playLevelMusic();
+								}
 							}
 						});
 					}

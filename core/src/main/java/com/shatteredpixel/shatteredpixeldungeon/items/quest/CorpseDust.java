@@ -150,11 +150,12 @@ public class CorpseDust extends Item {
 			Game.runOnRenderThread(new Callback() {
 				@Override
 				public void call() {
-					//maybe have a fade here?
 					Music.INSTANCE.fadeOut(1f, new Callback() {
 						@Override
 						public void call() {
-							Dungeon.level.playLevelMusic();
+							if (Dungeon.level != null) {
+								Dungeon.level.playLevelMusic();
+							}
 						}
 					});
 				}

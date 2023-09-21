@@ -390,7 +390,9 @@ public abstract class Elemental extends Mob {
 						Music.INSTANCE.fadeOut(1f, new Callback() {
 							@Override
 							public void call() {
-								Dungeon.level.playLevelMusic();
+								if (Dungeon.level != null) {
+									Dungeon.level.playLevelMusic();
+								}
 							}
 						});
 					}
