@@ -46,10 +46,9 @@ public class MineGiantRoom extends CaveRoom {
 		super.paint(level);
 
 		if (Blacksmith.Quest.Type() == Blacksmith.Quest.CRYSTAL){
-			Painter.fillEllipse(level, this, 3, Terrain.MINE_CRYSTAL);
-			Painter.fillEllipse(level, this, 5, Terrain.EMPTY);
+			Painter.fillEllipse(level, this, 3, Terrain.EMPTY);
 
-			for (int i = 0; i < width()*height()/4; i ++){
+			for (int i = 0; i < width()*height()/2; i ++){
 				Point r = random(1);
 				if (level.map[level.pointToCell(r)] != Terrain.WALL) {
 					Painter.set(level, r, Terrain.MINE_CRYSTAL);
