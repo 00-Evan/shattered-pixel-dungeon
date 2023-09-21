@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -83,11 +82,11 @@ public class CrystalGuardian extends Mob{
 
 	@Override
 	public boolean isAlive() {
-		if (HP <= 0 && !Blacksmith.Quest.bossBeaten()){
+		if (HP <= 0){
 			HP = 1;
 			if (sprite != null) ((CrystalGuardianSprite)sprite).crumple();
-			spend(10f-cooldown());
-			Buff.affect(this, Healing.class).setHeal(100, 0, 10);
+			spend(20f-cooldown());
+			Buff.affect(this, Healing.class).setHeal(100, 0, 5);
 		}
 		return super.isAlive();
 	}

@@ -26,17 +26,18 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CrystalSpireSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
@@ -83,6 +84,8 @@ public class CrystalSpire extends Mob {
 		super.damage(dmg, src);
 	}
 
+	int hits = 0;
+
 	@Override
 	public boolean interact(Char c) {
 		if (c == Dungeon.hero){
@@ -113,18 +116,29 @@ public class CrystalSpire extends Mob {
 						Blacksmith.Quest.beatBoss();
 					}
 
-					for (Char ch : Actor.chars()){
-						if (ch instanceof CrystalWisp){
-							((CrystalWisp)ch).beckon(pos);
-						} else if (ch instanceof CrystalGuardian){
-							//TODO we want some way to encourage the player to explore first, but also not disturb guardians.
-							// maybe wisps alone are enough for this?
-							if (((CrystalGuardian) ch).state == ((CrystalGuardian) ch).SLEEPING){
-								Buff.affect(ch, Haste.class, 6f);
-							}
-							((CrystalGuardian) ch).beckon(pos);
-							if (((CrystalGuardian) ch).state != HUNTING){
-								((CrystalGuardian) ch).aggro(Dungeon.hero);
+					hits++;
+
+					if (hits == 1){
+						GLog.w(Messages.get(CrystalSpire.class, "warning"));
+						PixelScene.shake( 1, 0.7f );
+						Sample.INSTANCE.play( Assets.Sounds.MINE );
+					} else if (hits >= 3) {
+
+						if (hits == 3){
+							Sample.INSTANCE.play( Assets.Sounds.ROCKS );
+							PixelScene.shake( 3, 0.7f );
+							GLog.n(Messages.get(CrystalSpire.class, "alert"));
+							BossHealthBar.assignBoss(CrystalSpire.this);
+						}
+
+						for (Char ch : Actor.chars()) {
+							if (ch instanceof CrystalWisp) {
+								((CrystalWisp) ch).beckon(pos);
+							} else if (ch instanceof CrystalGuardian) {
+								((CrystalGuardian) ch).beckon(pos);
+								if (((CrystalGuardian) ch).state != HUNTING) {
+									((CrystalGuardian) ch).aggro(Dungeon.hero);
+								}
 							}
 						}
 					}
@@ -159,17 +173,20 @@ public class CrystalSpire extends Mob {
 	}
 
 	public static final String SPRITE = "sprite";
+	public static final String HITS = "hits";
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
 		bundle.put(SPRITE, spriteClass);
+		bundle.put(HITS, hits);
 	}
 
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		spriteClass = bundle.getClass(SPRITE);
+		hits = bundle.getInt(HITS);
 	}
 
 	{
