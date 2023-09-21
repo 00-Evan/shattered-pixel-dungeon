@@ -173,8 +173,6 @@ public class BossHealthBar extends Component {
 				shieldedHP.scale.x = health/(float)max;
 				rawShielding.scale.x = shield/(float)max;
 
-				if (hp.scale.x < 0.25f) bleed( true );
-
 				if (bleeding != blood.on){
 					if (bleeding)   skull.tint( 0xcc0000, 0.6f );
 					else            skull.resetColor();
