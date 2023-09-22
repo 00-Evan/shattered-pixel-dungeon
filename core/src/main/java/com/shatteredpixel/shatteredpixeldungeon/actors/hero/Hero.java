@@ -1222,10 +1222,12 @@ public class Hero extends Char {
 										GameScene.updateMap( action.dst+i );
 									}
 									spendAndNext(TICK);
+									ready();
 								}
 							});
 						} else {
 							spendAndNext(TICK);
+							ready();
 						}
 
 						Dungeon.observe();

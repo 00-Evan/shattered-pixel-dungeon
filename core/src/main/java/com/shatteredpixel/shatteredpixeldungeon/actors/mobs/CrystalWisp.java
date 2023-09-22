@@ -131,7 +131,7 @@ public class CrystalWisp extends Mob{
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {
 				Badges.validateDeathFromEnemyMagic();
 				Dungeon.fail( this );
-				GLog.n( Messages.get(this, "bolt_kill") );
+				GLog.n( Messages.get(this, "beam_kill") );
 			}
 		} else {
 			enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );

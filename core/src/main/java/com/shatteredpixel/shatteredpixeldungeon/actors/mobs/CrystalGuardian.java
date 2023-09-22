@@ -113,11 +113,17 @@ public class CrystalGuardian extends Mob{
 
 	@Override
 	public float speed() {
-		if (Dungeon.level.openSpace[pos]) {
-			return super.speed();
-		} else {
-			return super.speed()/4f;
+		//crystal guardians move at 1/4 speed when enclosed, but only if enclosed by walls
+		//TODO maybe we want crystals to count?
+		if (!Dungeon.level.openSpace[pos]) {
+			for (int i = 0; i < PathFinder.CIRCLE4.length / 2; i++) {
+				if (Dungeon.level.solid[pos + PathFinder.CIRCLE4[i]] && Dungeon.level.solid[pos + PathFinder.CIRCLE4[i + 2]]
+						&& Dungeon.level.map[pos + PathFinder.CIRCLE4[i]] != Terrain.MINE_CRYSTAL && Dungeon.level.map[pos + PathFinder.CIRCLE4[i + 2]] != Terrain.MINE_CRYSTAL) {
+					return super.speed() / 4f;
+				}
+			}
 		}
+		return super.speed();
 	}
 
 	@Override
@@ -130,6 +136,8 @@ public class CrystalGuardian extends Mob{
 				Splash.at(pos, 0xFFFFFF, 5);
 				Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 			}
+			//breaking a crystal costs an extra turn
+			spend(TICK);
 		}
 	}
 
