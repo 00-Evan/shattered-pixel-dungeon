@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.watabou.noosa.Tilemap;
-import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -80,25 +79,22 @@ public class BlacksmithRoom extends StandardRoom {
 		} while (level.heaps.get( npc.pos ) != null);
 		level.mobs.add( npc );
 
-		//currently the new quest is disabled in production as it is incomplete
-		if (DeviceCompat.isDebug()) {
-			int entrancePos;
-			do {
-				entrancePos = level.pointToCell(random( 2 ));
-			} while (level.heaps.get( npc.pos ) != null || entrancePos == npc.pos);
+		int entrancePos;
+		do {
+			entrancePos = level.pointToCell(random( 2 ));
+		} while (level.heaps.get( npc.pos ) != null || entrancePos == npc.pos);
 
-			QuestEntrance vis = new QuestEntrance();
-			vis.pos(entrancePos, level);
-			level.customTiles.add(vis);
+		QuestEntrance vis = new QuestEntrance();
+		vis.pos(entrancePos, level);
+		level.customTiles.add(vis);
 
-			level.transitions.add(new LevelTransition(level,
-					entrancePos,
-					LevelTransition.Type.BRANCH_EXIT,
-					Dungeon.depth,
-					Dungeon.branch + 1,
-					LevelTransition.Type.BRANCH_ENTRANCE));
-			Painter.set(level, entrancePos, Terrain.EXIT);
-		}
+		level.transitions.add(new LevelTransition(level,
+				entrancePos,
+				LevelTransition.Type.BRANCH_EXIT,
+				Dungeon.depth,
+				Dungeon.branch + 1,
+				LevelTransition.Type.BRANCH_ENTRANCE));
+		Painter.set(level, entrancePos, Terrain.EXIT);
 
 		for(Point p : getPoints()) {
 			int cell = level.pointToCell(p);

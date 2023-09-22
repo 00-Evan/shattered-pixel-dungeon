@@ -41,7 +41,6 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
-import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -373,15 +372,10 @@ public class Blacksmith extends NPC {
 				rooms.add(new BlacksmithRoom());
 				spawned = true;
 
-				//currently the new quest is disabled in production as it is incomplete
-				if (DeviceCompat.isDebug()){
-					//type = 1+Random.Int(3);
-					type = CRYSTAL;
-					alternative = false;
-				} else {
-					type = OLD;
-					alternative = Random.Int(2) == 0;
-				}
+				//currently only the crystal quest is ready to play
+				//we still roll for quest type however, to ensure seed consistency
+				type = 1+Random.Int(1);
+				alternative = false;
 				
 				given = false;
 				
