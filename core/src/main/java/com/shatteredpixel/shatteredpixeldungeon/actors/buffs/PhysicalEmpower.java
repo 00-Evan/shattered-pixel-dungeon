@@ -64,8 +64,10 @@ public class PhysicalEmpower extends Buff {
 	public int left;
 
 	public void set(int dmg, int hits){
-		dmgBoost = dmg;
-		left = Math.max(left, hits);
+		if (dmg*hits > dmgBoost*left) {
+			dmgBoost = dmg;
+			left = hits;
+		}
 	}
 
 	private static final String BOOST = "boost";
