@@ -63,4 +63,6 @@ xcrun notarytool submit "${APP}".zip \
 
 rm -rf "${APP}".zip
 
-echo "Notarizing finished, if it worked, run: xcrun stapler staple \"${APP}\""
+echo "Notarizing finished, stapling..."
+
+xcrun stapler staple "${APP}"
