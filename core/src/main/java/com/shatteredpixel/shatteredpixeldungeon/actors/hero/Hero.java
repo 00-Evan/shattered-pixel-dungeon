@@ -1149,6 +1149,14 @@ public class Hero extends Char {
 					@Override
 					public void call() {
 
+						boolean crystalAdjacent = false;
+						for (int i : PathFinder.NEIGHBOURS8) {
+							if (Dungeon.level.map[action.dst + i] == Terrain.MINE_CRYSTAL){
+								crystalAdjacent = true;
+								break;
+							}
+						}
+
 						if (Dungeon.level.map[action.dst] == Terrain.WALL_DECO){
 							DarkGold gold = new DarkGold();
 							if (gold.doPickUp( Dungeon.hero )) {
@@ -1160,6 +1168,7 @@ public class Hero extends Char {
 										GLog.i(Messages.get(DarkGold.class, "you_now_have", existing.quantity()));
 									}
 								}
+								spend(-Actor.TICK); //picking up the gold doesn't spend a turn here
 							} else {
 								Dungeon.level.drop( gold, pos ).sprite.drop();
 							}
@@ -1167,6 +1176,9 @@ public class Hero extends Char {
 							CellEmitter.center( action.dst ).burst( Speck.factory( Speck.STAR ), 7 );
 							Sample.INSTANCE.play( Assets.Sounds.EVOKE );
 							Level.set( action.dst, Terrain.EMPTY_DECO );
+
+							//mining gold doesn't break crystals
+							crystalAdjacent = false;
 
 						} else if (Dungeon.level.map[action.dst] == Terrain.WALL){
 							buff(Hunger.class).affectHunger(-5);
@@ -1192,14 +1204,6 @@ public class Hero extends Char {
 						}
 						for (int i : PathFinder.NEIGHBOURS9) {
 							GameScene.updateMap( action.dst+i );
-						}
-
-						boolean crystalAdjacent = false;
-						for (int i : PathFinder.NEIGHBOURS8) {
-							if (Dungeon.level.map[action.dst + i] == Terrain.MINE_CRYSTAL){
-								crystalAdjacent = true;
-								break;
-							}
 						}
 
 						if (crystalAdjacent){
