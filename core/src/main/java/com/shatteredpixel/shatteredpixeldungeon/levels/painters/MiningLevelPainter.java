@@ -49,6 +49,16 @@ public class MiningLevelPainter extends CavesPainter {
 
 	@Override
 	protected void generateGold(Level level, ArrayList<Room> rooms) {
+
+		//replace all hidden doors with wall
+		// we do this here so that levels can still know where hidden passages are until the end
+		// but said passages can also sometimes have gold in them
+		for (int i = 0; i < level.length(); i++) {
+			if (level.map[i] == Terrain.SECRET_DOOR) {
+				level.map[i] = Terrain.WALL;
+			}
+		}
+
 		//we start by counting all the gold purposefully made by rooms
 		for (int i = 0; i < level.length(); i++){
 			if (level.map[i] == Terrain.WALL_DECO) {
@@ -112,8 +122,7 @@ public class MiningLevelPainter extends CavesPainter {
 
 		float hiddenDoorChance = 0.90f;
 
-		//hidden doors become wall tiles
-		//(maybe sometimes become gold ore?)
+		//hidden doors become wall tiles a bit later in painting
 		//everything else becomes empty
 		for (Room r : rooms) {
 			for (Room n : r.connected.keySet()) {
@@ -122,7 +131,7 @@ public class MiningLevelPainter extends CavesPainter {
 				int door = d.x + d.y * l.width();
 
 				if (d.type == Room.Door.Type.HIDDEN){
-					l.map[door] = Terrain.WALL;
+					l.map[door] = Terrain.SECRET_DOOR;
 				} else {
 					//some of these are randomly hidden, using the same rules as regular levels
 					if (Random.Float() < hiddenDoorChance) {

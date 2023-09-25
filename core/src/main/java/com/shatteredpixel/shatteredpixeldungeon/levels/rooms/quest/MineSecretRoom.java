@@ -48,11 +48,13 @@ public class MineSecretRoom extends SecretRoom {
 
 		entrance().set( Door.Type.HIDDEN );
 
-		int goldAmount = Random.NormalIntRange(4, 7);
-
-		//TODO maybe add per-quest decorations here?
+		int goldAmount = Random.NormalIntRange(3, 5);
 
 		for (int i = 0; i < goldAmount; i++){
+			int cell;
+			do {
+				cell = level.pointToCell(random(1));
+			} while (level.map[cell] == Terrain.WALL_DECO);
 			Painter.set(level, random(1), Terrain.WALL_DECO);
 		}
 
