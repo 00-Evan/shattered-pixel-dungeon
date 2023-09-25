@@ -138,33 +138,37 @@ public class PrisonLevel extends RegularLevel {
 				1, 1, 1, 1, 1, 1 };
 	}
 
-	private Boolean wandmakerQuestWasActive = null;
-
 	@Override
 	public void occupyCell(Char ch) {
 		super.occupyCell(ch);
 		if (ch == Dungeon.hero) {
-			if (wandmakerQuestWasActive == null) {
-				wandmakerQuestWasActive = Wandmaker.Quest.active();
-				return;
-			}
-			if (Wandmaker.Quest.active() != wandmakerQuestWasActive) {
-				wandmakerQuestWasActive = Wandmaker.Quest.active();
+			updateWandmakerQuestMusic();
+		}
+	}
 
-				Game.runOnRenderThread(new Callback() {
-					@Override
-					public void call() {
-						Music.INSTANCE.fadeOut(1f, new Callback() {
-							@Override
-							public void call() {
-								if (Dungeon.level != null) {
-									Dungeon.level.playLevelMusic();
-								}
+	private Boolean wandmakerQuestWasActive = null;
+
+	public void updateWandmakerQuestMusic(){
+		if (wandmakerQuestWasActive == null) {
+			wandmakerQuestWasActive = Wandmaker.Quest.active();
+			return;
+		}
+		if (Wandmaker.Quest.active() != wandmakerQuestWasActive) {
+			wandmakerQuestWasActive = Wandmaker.Quest.active();
+
+			Game.runOnRenderThread(new Callback() {
+				@Override
+				public void call() {
+					Music.INSTANCE.fadeOut(1f, new Callback() {
+						@Override
+						public void call() {
+							if (Dungeon.level != null) {
+								Dungeon.level.playLevelMusic();
 							}
-						});
-					}
-				});
-			}
+						}
+					});
+				}
+			});
 		}
 	}
 

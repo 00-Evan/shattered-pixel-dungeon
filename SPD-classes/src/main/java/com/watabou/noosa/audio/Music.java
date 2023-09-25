@@ -193,6 +193,8 @@ public enum Music {
 
 	private synchronized void play(String track, com.badlogic.gdx.audio.Music.OnCompletionListener listener){
 		try {
+			fadeTime = fadeTotal = -1;
+
 			player = Gdx.audio.newMusic(Gdx.files.internal(track));
 			player.setLooping(looping);
 			player.setVolume(volumeWithFade());
