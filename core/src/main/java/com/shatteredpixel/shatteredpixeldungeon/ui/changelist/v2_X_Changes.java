@@ -76,13 +76,36 @@ public class v2_X_Changes {
 
 	public static void add_v2_2_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v2.2-BETA-0.1", true, "");
+		ChangeInfo changes = new ChangeInfo("v2.2-BETA", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("ALPHA-1.0", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.SHPX.get(), "BETA To-Do",
+				"v2.2.0's big quest overhaul is partially complete at the moment.\n\n" +
+				"In addition to bugfixes and balance/mechanics tweaks, I expect to get more variants for the new quest online in the coming weeks."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Environment.TILES_CAVES, 192, 64, 16, 16), "Caves Quest Rework Pt.1!",
+				"_The first of three variants for the new quest is now active!_\n\n" +
+				"This quest variant places the hero in a cave sub-region full of fragile crystals and tougher crystalline enemies. Watch your step, as some enemies will only attack you once disturbed...\n\n" +
+				"The new quest scoring system and rewards are also available, so make sure to get lots of gold if you want some of the new loot!\n\n" +
+				"_While the quest and rewards are fully playable, there's definitely still some refinement needed. Please let me know what you think!_"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by BETA:_\n" +
+				"_-_ Various rare crash & freeze bugs\n" +
+				"_-_ Sacrificial fire unintentionally working with allies\n" +
+				"_-_ Various minor music hiccups\n" +
+				"\n" +
+				"_Existing Prior to BETA:_\n" +
+				"_-_ Crashes caused by text input windows for controller users\n" +
+				"_-_ Cases where default keybindings could override custom ones\n" +
+				"_-_ Horn of Plenty occasionally having the wrong visuals for its charge state\n" +
+				"_-_ Physical empower buff incorrectly stacking in specific cases"));
 
 		changes = new ChangeInfo("BETA-0.5", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -98,59 +121,13 @@ public class v2_X_Changes {
 				"_-_ Wand of living earth not healing earthen guardian when aimed at it\n" +
 				"\n" +
 				"_Existing Prior to BETA:_\n" +
+				"_-_ Exploit where multiplicity curse could be used to skip some of Dwarf King's second phase\n" +
 				"_-_ Damage caused to Yog's fists not correctly adding time to boss regen limit\n" +
 				"_-_ Mimics not dropping loot when they are killed via chasm while hiding\n" +
 				"_-_ Trap effects from reclaim trap spell not scaling with ascension challenge\n" +
 				"_-_ Ring of Force incorrectly displaying +99.99% when at +7, instead of +100%\n" +
 				"_-_ Tengu very rarely throwing bombs ontop of each other\n" +
 				"_-_ Various minor textual issues"));
-
-		changes = new ChangeInfo("BETA-0.4", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"Based on some early beta feedback I'm walking back the change I made to _scrolls of transmutation_ and have opted instead to include the exotic swapping functionality for potions/scrolls in the item's description. Frankly I'm quite surprised by how many people used this functionality, I had assumed that it was largely unknown, especially given that is is often impractical compared to using alchemy directly.\n\n" +
-				"I've also made a small buff to the new _sneak_ ability, it now has 1 more tile of range and occurs instantly. I'd like to wait for analytics numbers before making any more changes to it though.\n\n" +
-				"Lastly, the sad ghost now tries to avoid staying on items or the level exit while wandering."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by BETA:_\n" +
-				"_-_ Multiplicity curse triggering much more often than intended\n" +
-				"_-_ Wraiths from corpse dust not spawning if the player has reduced vision\n" +
-				"_-_ Tense dwarven city track playing in the prison, instead of the tense prison track\n" +
-				"_-_ Scrolls of remove curse being consumed at a higher rate than intended\n" +
-				"_-_ Tense sewers track rarely playing when it shouldn't\n" +
-				"_-_ Scrolls of transmutation being usable on themselves\n" +
-				"_-_ Some spells still being consumed if the game is closed while they are not actually used yet\n" +
-				"_-_ Flare vfx appearing on top of characters instead of behind them\n" +
-				"\n" +
-				"_Existing Prior to BETA:_\n" +
-				"_-_ Various minor textual errors"));
-
-		changes = new ChangeInfo("BETA-0.2 & 0.3", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Updated Translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by BETA:_\n" +
-				"_-_ Uncommon random crashes caused by some new graphics code\n" +
-				"_-_ Crashes when talking to blacksmith in runs started before the beta\n" +
-				"_-_ Duplication bugs with stones of intuition\n" +
-				"_-_ Prison visuals not appearing in runs started before the beta\n" +
-				"_-_ New music not playing correctly during elemental embers quest\n" +
-				"_-_ Some exotic potions not triggering new tier-2 potion talents\n" +
-				"_-_ New crystal path rooms needing to be cleared in certain ways for 100% exploration score\n" +
-				"_-_ Visual errors in chasm warning window\n" +
-				"_-_ A few minor textual errors\n" +
-				"\n" +
-				"_Existing Prior to BETA:_\n" +
-				"_-_ Exploit where multiplicity curse could be used to skip some of Dwarf King's second phase"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -162,12 +139,8 @@ public class v2_X_Changes {
 					"Players on iOS 9 and 10 will be able to continue playing Shattered Pixel Dungeon v2.2, and can check the news section for information on future versions."));
 		}
 
-		changes.addButton( new ChangeButton(Icons.SHPX.get(), "BETA To-Do",
-				"v2.2.0's big quest overhaul is partially complete internally, but is currently disabled.\n\n" +
-				"My current plan is to steadily release the new quest to early testers as I finish up each environment in sequence, in addition to any other fixes needed for v2.2.0. v2.2.0 is otherwise content-complete. The first new environment will be released with BETA-1.0."));
-
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.PICKAXE), "New Blacksmith Quest!",
-				"_Note that the new quest is currently incomplete, and so is disabled. The old quest, with the old rewards, is still active. Expect the new quest to be turned on with at least 1 of its environments complete in BETA-1.0_\n" +
+				"_Note that the new quest is currently partially complete, only one of the three environments is enabled._\n" +
 				"\n" +
 				"_Shattered Pixel Dungeon's blacksmith quest has been completely redone!_\n" +
 				"\n" +
@@ -236,11 +209,8 @@ public class v2_X_Changes {
 				"_-_ Bosses from the sad ghost's quest now tend to wander toward the hero\n" +
 				"_-_ Crystal path rooms have been redesigned to give the player more choice over the items they get\n" +
 				"_-_ Increased the value of lower-exp enemies in sacrifice rooms. This is most noticeable in early floors, especially when sacrificing rats.\n" +
-				"_-_ Added a new Language: Belarusian!\n" +
-				"\n" +
-				"_Items:_\n" +
 				"_-_ Equipping two of the same ring now shows their combined effect in their descriptions\n" +
-				"_-_ Scroll of Transmutation no longer swaps between exotic and regular for potions and scrolls",
+				"_-_ Added a new Language: Belarusian!",
 
 				"_UI/VFX:_\n" +
 				"_-_ There is now a Google Play achievements button in the badges screen, if Google Play Games is enabled\n" +
@@ -290,7 +260,7 @@ public class v2_X_Changes {
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.DIRK), "Weapon Ability Buffs",
 				"Weapon abilities are overall in a much better place now, but there are still a couple that need a boost:\n" +
 				"\n" +
-				"_- Sneak_ ability (Dagger, Dirk, and Assassin's blade) reworked. Now lets the Duelist blink for 5/4/3 tiles of distance and grants 1 turn of invisibility, instead of granting 10/8/6 turns of invisibility.\n" +
+				"_- Sneak_ ability (Dagger, Dirk, and Assassin's blade) reworked. Now lets the Duelist instantly blink for 6/5/4 tiles of distance and grants 1 turn of invisibility, instead of granting 10/8/6 turns of invisibility.\n" +
 				"\n" +
 				"_- Harvest_ ability (Sickle and War Scythe) bleeding amount increased to 110%/90% of damage, from 100%/80% of damage.\n" +
 				"\n" +

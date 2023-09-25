@@ -201,9 +201,8 @@ public class WelcomeScene extends PixelScene {
 				message += "\n" + Messages.get(this, "patch_translations");
 
 			}
-			message = "Greetings beta testers, welcome to an early look at everything else coming in v2.2.0!\n\n" +
-					"The blacksmith quest has unfortunately been a bit delayed, so I've decided to release some early beta versions of v2.2.0 so people can play with all of the other changes that are done.\n\n" +
-					"Hopefully the new quest can come online in the coming weeks, but in the meantime I hope you enjoy this update's other changes.";
+			message = "Greetings alpha testers, the new quest is finally online!\n\n" +
+					"There is currently only one variant, but I expect to get more working over the next few weeks. The exact mechanics and visuals are still a bit of a work in progress, so please let me know what you think!";
 		} else {
 			message = Messages.get(this, "what_msg");
 		}
