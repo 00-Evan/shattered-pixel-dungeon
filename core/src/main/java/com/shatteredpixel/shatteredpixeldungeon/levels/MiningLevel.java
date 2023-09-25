@@ -142,6 +142,12 @@ public class MiningLevel extends CavesLevel {
 	}
 
 	@Override
+	public float respawnCooldown() {
+		//normal enemies respawn more slowly here
+		return 2*TIME_TO_RESPAWN;
+	}
+
+	@Override
 	protected void createItems() {
 		Item item = Bones.get();
 		if (item != null) {
@@ -159,6 +165,12 @@ public class MiningLevel extends CavesLevel {
 			losBlocking[cell] = false;
 		}
 		drop( Generator.randomUsingDefaults(Generator.Category.FOOD), cell );
+	}
+
+	@Override
+	protected int randomDropCell() {
+		//avoid placing random items next to hazards
+		return randomDropCell(MineSmallRoom.class);
 	}
 
 	@Override

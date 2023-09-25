@@ -113,15 +113,9 @@ public class CrystalGuardian extends Mob{
 
 	@Override
 	public float speed() {
-		//crystal guardians move at 1/4 speed when enclosed, but only if enclosed by walls
-		//TODO maybe we want crystals to count?
+		//crystal guardians take up to 4 turns when moving through an enclosed space
 		if (!Dungeon.level.openSpace[pos]) {
-			for (int i = 0; i < PathFinder.CIRCLE4.length / 2; i++) {
-				if (Dungeon.level.solid[pos + PathFinder.CIRCLE4[i]] && Dungeon.level.solid[pos + PathFinder.CIRCLE4[i + 2]]
-						&& Dungeon.level.map[pos + PathFinder.CIRCLE4[i]] != Terrain.MINE_CRYSTAL && Dungeon.level.map[pos + PathFinder.CIRCLE4[i + 2]] != Terrain.MINE_CRYSTAL) {
-					return super.speed() / 4f;
-				}
-			}
+			return Math.max(0.25f, super.speed() / 4f);
 		}
 		return super.speed();
 	}
@@ -136,18 +130,18 @@ public class CrystalGuardian extends Mob{
 				Splash.at(pos, 0xFFFFFF, 5);
 				Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 			}
-			//breaking a crystal costs an extra turn
-			spend(TICK);
+			//breaking a crystal costs an extra move, not affected by enclosed spaces though
+			spend(1/super.speed());
 		}
 	}
 
 	@Override
 	public boolean[] modifyPassable(boolean[] passable) {
-		//if we are hunting, and our current target is not reachable otherwise, then we can step on crystals
+		//if we are hunting, we can stomp through crystals, but prefer not to
 		if (state == HUNTING){
 			PathFinder.buildDistanceMap(target, passable);
 
-			if (PathFinder.distance[pos] == Integer.MAX_VALUE) {
+			if (PathFinder.distance[pos] > 2*Dungeon.level.distance(pos, target)) {
 				for (int i = 0; i < Dungeon.level.length(); i++) {
 					passable[i] = passable[i] || Dungeon.level.map[i] == Terrain.MINE_CRYSTAL;
 				}
