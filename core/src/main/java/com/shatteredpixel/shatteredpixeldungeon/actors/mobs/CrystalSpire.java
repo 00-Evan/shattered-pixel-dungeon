@@ -111,11 +111,6 @@ public class CrystalSpire extends Mob {
 
 				for (int i : cellsToAttack){
 
-					//TODO would be nice to find a way to crystal these cells
-					if(i == pos+1 || i == pos-1 || i == pos-Dungeon.level.width() || i == pos-2*Dungeon.level.width()){
-						continue; //don't spawn crystals in these locations
-					}
-
 					Char ch = Actor.findChar(i);
 					if (ch instanceof CrystalGuardian || ch instanceof CrystalSpire){
 						continue; //don't spawn crystals on these chars

@@ -22,8 +22,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonWallsTilemap;
 import com.watabou.noosa.TextureFilm;
 
 public abstract class CrystalSpireSprite extends MobSprite {
@@ -39,7 +42,7 @@ public abstract class CrystalSpireSprite extends MobSprite {
 	public CrystalSpireSprite(){
 		texture( Assets.Sprites.CRYSTAL_SPIRE );
 
-		TextureFilm frames = new TextureFilm( texture, 30, 45 );
+		TextureFilm frames = new TextureFilm( texture, 24, 41 );
 
 		int c = texOffset();
 
@@ -62,7 +65,7 @@ public abstract class CrystalSpireSprite extends MobSprite {
 			hpPercent = ch.HP/(float)ch.HT;
 		}
 
-		TextureFilm frames = new TextureFilm( texture, 30, 45 );
+		TextureFilm frames = new TextureFilm( texture, 24, 41 );
 
 		if (hpPercent > 0.8f){
 			idle.frames( frames, 0+texOffset() );
@@ -85,10 +88,35 @@ public abstract class CrystalSpireSprite extends MobSprite {
 		updateIdle();
 	}
 
+	boolean wasVisible = false;
+
+	@Override
+	public void update() {
+		super.update();
+		if (curAnim != die && ch != null && visible != wasVisible){
+			if (visible){
+				DungeonWallsTilemap.skipCells.add(ch.pos - 2*Dungeon.level.width());
+				DungeonWallsTilemap.skipCells.add(ch.pos - Dungeon.level.width());
+			} else {
+				DungeonWallsTilemap.skipCells.remove(ch.pos - 2*Dungeon.level.width());
+				DungeonWallsTilemap.skipCells.remove(ch.pos - Dungeon.level.width());
+			}
+			GameScene.updateMap(ch.pos-2*Dungeon.level.width());
+			GameScene.updateMap(ch.pos-Dungeon.level.width());
+			wasVisible = visible;
+		}
+	}
+
 	@Override
 	public void die() {
 		super.die();
 		Splash.around(this, blood(), 100);
+		if (ch != null && visible){
+			DungeonWallsTilemap.skipCells.remove(ch.pos - 2*Dungeon.level.width());
+			DungeonWallsTilemap.skipCells.remove(ch.pos - Dungeon.level.width());
+			GameScene.updateMap(ch.pos-2*Dungeon.level.width());
+			GameScene.updateMap(ch.pos-Dungeon.level.width());
+		}
 	}
 
 	protected abstract int texOffset();

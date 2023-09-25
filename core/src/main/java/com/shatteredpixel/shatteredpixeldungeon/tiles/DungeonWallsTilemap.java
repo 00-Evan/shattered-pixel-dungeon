@@ -24,10 +24,15 @@ package com.shatteredpixel.shatteredpixeldungeon.tiles;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 
+import java.util.HashSet;
+
 public class DungeonWallsTilemap extends DungeonTilemap {
+
+	public static HashSet<Integer> skipCells = new HashSet<>();
 
 	public DungeonWallsTilemap(){
 		super(Dungeon.level.tilesTex());
+		skipCells.clear();
 		map( Dungeon.level.map, Dungeon.level.width() );
 	}
 
@@ -62,6 +67,9 @@ public class DungeonWallsTilemap extends DungeonTilemap {
 
 		}
 
+		if (skipCells.contains(pos)){
+			return -1;
+		}
 
 		if (map[pos] == Terrain.LOCKED_EXIT || map[pos] == Terrain.UNLOCKED_EXIT){
 			return DungeonTileSheet.EXIT_UNDERHANG;
