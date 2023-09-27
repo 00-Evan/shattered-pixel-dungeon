@@ -430,8 +430,9 @@ public class Blacksmith extends NPC {
 			}
 			pick.detach(Dungeon.hero.belongings.backpack);
 			Quest.pickaxe = pick;
-			//check for boss enemy, add another 1k points if they are dead
-			//perhaps reduce final quest score if hero is hit by avoidable boss attacks?
+
+			if (bossBeaten) favor += 1000;
+
 			Statistics.questScores[2] = favor;
 		}
 
