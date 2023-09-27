@@ -24,8 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -54,9 +53,24 @@ public class CrystalGuardian extends Mob{
 		properties.add(Property.MINIBOSS);
 	}
 
+	private boolean recovering = false;
+
+	public boolean recovering(){
+		return recovering;
+	}
+
 	@Override
 	protected boolean act() {
-		if (sprite instanceof CrystalGuardianSprite) ((CrystalGuardianSprite) sprite).endCrumple();
+		if (recovering){
+			HP = Math.min(HT, HP+5);
+			sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+			if (HP == HT){
+				recovering = false;
+				if (sprite instanceof CrystalGuardianSprite) ((CrystalGuardianSprite) sprite).endCrumple();
+			}
+			spend(TICK);
+			return true;
+		}
 		return super.act();
 	}
 
@@ -84,9 +98,10 @@ public class CrystalGuardian extends Mob{
 	public boolean isAlive() {
 		if (HP <= 0){
 			HP = 1;
-			if (sprite != null) ((CrystalGuardianSprite)sprite).crumple();
-			spend(20f-cooldown());
-			Buff.affect(this, Healing.class).setHeal(100, 0, 5);
+			if (!recovering) {
+				recovering = true;
+				if (sprite != null) ((CrystalGuardianSprite) sprite).crumple();
+			}
 		}
 		return super.isAlive();
 	}
@@ -166,16 +181,19 @@ public class CrystalGuardian extends Mob{
 	}
 
 	public static final String SPRITE = "sprite";
+	public static final String RECOVERING = "recovering";
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
 		bundle.put(SPRITE, spriteClass);
+		bundle.put(RECOVERING, recovering);
 	}
 
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		spriteClass = bundle.getClass(SPRITE);
+		recovering = bundle.getBoolean(RECOVERING);
 	}
 }

@@ -23,7 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CrystalGuardian;
 import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.TextureFilm;
 
@@ -70,7 +70,7 @@ public abstract class CrystalGuardianSprite extends MobSprite {
 	@Override
 	public void link(Char ch) {
 		super.link(ch);
-		if (ch.buff(Healing.class) != null && ch.cooldown() > 0){
+		if (ch instanceof CrystalGuardian && ((CrystalGuardian) ch).recovering()){
 			crumple();
 		}
 	}
