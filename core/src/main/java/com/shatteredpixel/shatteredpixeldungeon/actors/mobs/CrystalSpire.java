@@ -131,11 +131,11 @@ public class CrystalSpire extends Mob {
 					Char ch = Actor.findChar(i);
 
 					if (ch != null && !(ch instanceof CrystalWisp || ch instanceof CrystalSpire)){
-						int dmg = Random.NormalIntRange(15, 20);
+						int dmg = Random.NormalIntRange(8, 16);
 
-						if (!(ch instanceof CrystalGuardian)) {
-							dmg -= ch.drRoll();
-						} else {
+						//guardians are hit harder by the attack
+						if (ch instanceof CrystalGuardian) {
+							dmg += 8;
 							Buff.prolong(ch, Cripple.class, 20f);
 						}
 						ch.damage(dmg, CrystalSpire.this);
@@ -171,7 +171,7 @@ public class CrystalSpire extends Mob {
 					}
 				}
 
-				//PixelScene.shake( 3, 0.7f );
+				PixelScene.shake( 1, 0.7f );
 				Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 
 				if (!targetedCells.isEmpty()){
