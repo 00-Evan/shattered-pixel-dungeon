@@ -3,6 +3,7 @@
 	<mainClass>${appMainclass}</mainClass>
 	<os>ios</os>
 	<arch>thumbv7</arch>
+	<arch>arm64</arch>
 	<target>ios</target>
 	<iosInfoPList>Info.plist</iosInfoPList>
 	<resources>
