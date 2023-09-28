@@ -375,7 +375,7 @@ public class WndBlacksmith extends Window {
 		public void onSelect(Item item) {
 			if (item != null) {
 				item.upgrade();
-				int upgradeCost = Blacksmith.Quest.upgrades == 0 ? 1000 : 1500;
+				int upgradeCost = 1000 * (int)Math.pow(2, Blacksmith.Quest.upgrades);
 				Blacksmith.Quest.favor -= upgradeCost;
 				Blacksmith.Quest.upgrades++;
 
