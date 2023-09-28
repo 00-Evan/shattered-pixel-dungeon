@@ -24,6 +24,9 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -98,6 +101,13 @@ public class CrystalGuardian extends Mob{
 	public boolean isAlive() {
 		if (HP <= 0){
 			HP = 1;
+
+			for (Buff b : buffs()){
+				if (!(b instanceof Doom || b instanceof Cripple)) {
+					b.detach();
+				}
+			}
+
 			if (!recovering) {
 				recovering = true;
 				if (sprite != null) ((CrystalGuardianSprite) sprite).crumple();
