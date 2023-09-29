@@ -408,20 +408,22 @@ public abstract class Char extends Actor {
 			}
 			
 			int effectiveDamage = enemy.defenseProc( this, Math.round(dmg) );
-			effectiveDamage = Math.max( effectiveDamage - dr, 0 );
+			//do not trigger on-hit logic if defenseProc returned a negative value
+			if (effectiveDamage >= 0) {
+				effectiveDamage = Math.max(effectiveDamage - dr, 0);
 
-			if (enemy.buff(Viscosity.ViscosityTracker.class) != null){
-				effectiveDamage = enemy.buff(Viscosity.ViscosityTracker.class).deferDamage(effectiveDamage);
-				enemy.buff(Viscosity.ViscosityTracker.class).detach();
-			}
+				if (enemy.buff(Viscosity.ViscosityTracker.class) != null) {
+					effectiveDamage = enemy.buff(Viscosity.ViscosityTracker.class).deferDamage(effectiveDamage);
+					enemy.buff(Viscosity.ViscosityTracker.class).detach();
+				}
 
-			//vulnerable specifically applies after armor reductions
-			if ( enemy.buff( Vulnerable.class ) != null){
-				effectiveDamage *= 1.33f;
+				//vulnerable specifically applies after armor reductions
+				if (enemy.buff(Vulnerable.class) != null) {
+					effectiveDamage *= 1.33f;
+				}
+
+				effectiveDamage = attackProc(enemy, effectiveDamage);
 			}
-			
-			effectiveDamage = attackProc( enemy, effectiveDamage );
-			
 			if (visibleFight) {
 				if (effectiveDamage > 0 || !enemy.blockSound(Random.Float(0.96f, 1.05f))) {
 					hitSound(Random.Float(0.87f, 1.15f));

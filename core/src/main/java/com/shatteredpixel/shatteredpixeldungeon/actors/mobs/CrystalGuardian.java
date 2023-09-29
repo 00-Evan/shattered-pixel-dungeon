@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CrystalGuardianSprite;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -65,6 +66,7 @@ public class CrystalGuardian extends Mob{
 	@Override
 	protected boolean act() {
 		if (recovering){
+			throwItems();
 			HP = Math.min(HT, HP+5);
 			sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
 			if (HP == HT){
@@ -95,6 +97,17 @@ public class CrystalGuardian extends Mob{
 	@Override
 	public boolean reset() {
 		return true;
+	}
+
+	@Override
+	public int defenseProc(Char enemy, int damage) {
+		if (recovering){
+			sprite.showStatus(CharSprite.NEGATIVE, Integer.toString(damage));
+			HP = Math.max(1, HP-damage);
+			damage = -1;
+		}
+
+		return super.defenseProc(enemy, damage);
 	}
 
 	@Override
