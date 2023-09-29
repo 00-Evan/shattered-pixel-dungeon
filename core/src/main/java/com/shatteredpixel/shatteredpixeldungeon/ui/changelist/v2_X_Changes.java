@@ -80,6 +80,32 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-1.1", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.SHPX.get(), "Feedback Please!",
+				"The new quest added in BETA-1.0 is something pretty new to Shattered, so I'd love to hear your feedback!\n\n" +
+				"In particular, I'm interested in how fun the quest feels, how difficult/complex it feels, and how powerful the new rewards feel.\n\n" +
+				"The best way to contact me is via email: Evan@ShatteredPixel.com"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by BETA:_\n" +
+				"_-_ Various cases where the pickaxe could be lost during the quest, softlocking the game\n" +
+				"_-_ Softlocks when sleeping crystal guardians are debuffed\n" +
+				"_-_ Downed crystal guardians not dropping projectiles stuck to them\n" +
+				"_-_ On-hit effects being triggerable on down crystal guardians\n" +
+				"_-_ Quest level not spawning a torch during the into darkness challenge\n" +
+				"\n" +
+				"_Existing Prior to BETA:_\n" +
+				"_-_ Piranhas throwing themselves off chasms in very rare cases\n" +
+				"_-_ Various minor visual and textual issues\n"));
+
 		changes = new ChangeInfo("BETA-1.0", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
