@@ -50,7 +50,7 @@ public class LostBackpack extends Item {
 
 		MagicalHolster holster = hero.belongings.getItem(MagicalHolster.class);
 		for (Item i : hero.belongings){
-			if (i.keptThoughLostInvent){
+			if (i.keptThroughLostInventory()){
 				i.keptThoughLostInvent = false; //don't reactivate, was previously activated
 			} else {
 				if (i instanceof EquipableItem && i.isEquipped(hero)){

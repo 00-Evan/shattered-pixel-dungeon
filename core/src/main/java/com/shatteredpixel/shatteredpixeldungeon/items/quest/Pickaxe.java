@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -87,6 +88,10 @@ public class Pickaxe extends MeleeWeapon {
 		ArrayList<String> actions = super.actions( hero );
 		if (Blacksmith.Quest.oldMiningQuest()) {
 			actions.add(AC_MINE);
+		}
+		if (Dungeon.level instanceof MiningLevel){
+			actions.remove(AC_DROP);
+			actions.remove(AC_THROW);
 		}
 		return actions;
 	}
@@ -164,6 +169,12 @@ public class Pickaxe extends MeleeWeapon {
 			});
 		}
 		return super.proc( attacker, defender, damage );
+	}
+
+	@Override
+	public boolean keptThroughLostInventory() {
+		//pickaxe is always kept when it's needed for the mining level
+		return super.keptThroughLostInventory() || Dungeon.level instanceof MiningLevel;
 	}
 
 	@Override

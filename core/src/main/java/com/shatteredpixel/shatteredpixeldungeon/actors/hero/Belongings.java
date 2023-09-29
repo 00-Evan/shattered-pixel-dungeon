@@ -103,7 +103,7 @@ public class Belongings implements Iterable<Item> {
 
 	public KindOfWeapon weapon(){
 		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
-		if (!lostInvent || (weapon != null && weapon.keptThoughLostInvent)){
+		if (!lostInvent || (weapon != null && weapon.keptThroughLostInventory())){
 			return weapon;
 		} else {
 			return null;
@@ -112,7 +112,7 @@ public class Belongings implements Iterable<Item> {
 
 	public Armor armor(){
 		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
-		if (!lostInvent || (armor != null && armor.keptThoughLostInvent)){
+		if (!lostInvent || (armor != null && armor.keptThroughLostInventory())){
 			return armor;
 		} else {
 			return null;
@@ -121,7 +121,7 @@ public class Belongings implements Iterable<Item> {
 
 	public Artifact artifact(){
 		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
-		if (!lostInvent || (artifact != null && artifact.keptThoughLostInvent)){
+		if (!lostInvent || (artifact != null && artifact.keptThroughLostInventory())){
 			return artifact;
 		} else {
 			return null;
@@ -130,7 +130,7 @@ public class Belongings implements Iterable<Item> {
 
 	public KindofMisc misc(){
 		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
-		if (!lostInvent || (misc != null && misc.keptThoughLostInvent)){
+		if (!lostInvent || (misc != null && misc.keptThroughLostInventory())){
 			return misc;
 		} else {
 			return null;
@@ -139,7 +139,7 @@ public class Belongings implements Iterable<Item> {
 
 	public Ring ring(){
 		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
-		if (!lostInvent || (ring != null && ring.keptThoughLostInvent)){
+		if (!lostInvent || (ring != null && ring.keptThroughLostInventory())){
 			return ring;
 		} else {
 			return null;
@@ -148,7 +148,7 @@ public class Belongings implements Iterable<Item> {
 
 	public KindOfWeapon secondWep(){
 		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
-		if (!lostInvent || (secondWep != null && secondWep.keptThoughLostInvent)){
+		if (!lostInvent || (secondWep != null && secondWep.keptThroughLostInventory())){
 			return secondWep;
 		} else {
 			return null;
@@ -236,7 +236,7 @@ public class Belongings implements Iterable<Item> {
 
 		for (Item item : this) {
 			if (itemClass.isInstance( item )) {
-				if (!lostInvent || item.keptThoughLostInvent) {
+				if (!lostInvent || item.keptThroughLostInventory()) {
 					return (T) item;
 				}
 			}
@@ -252,7 +252,7 @@ public class Belongings implements Iterable<Item> {
 
 		for (Item item : this) {
 			if (itemClass.isInstance( item )) {
-				if (!lostInvent || item.keptThoughLostInvent) {
+				if (!lostInvent || item.keptThroughLostInventory()) {
 					result.add((T) item);
 				}
 			}
@@ -267,7 +267,7 @@ public class Belongings implements Iterable<Item> {
 		
 		for (Item item : this) {
 			if (contains == item) {
-				if (!lostInvent || item.keptThoughLostInvent) {
+				if (!lostInvent || item.keptThroughLostInventory()) {
 					return true;
 				}
 			}
@@ -282,7 +282,7 @@ public class Belongings implements Iterable<Item> {
 		
 		for (Item item : this) {
 			if (similar != item && similar.isSimilar(item)) {
-				if (!lostInvent || item.keptThoughLostInvent) {
+				if (!lostInvent || item.keptThroughLostInventory()) {
 					return item;
 				}
 			}
@@ -298,7 +298,7 @@ public class Belongings implements Iterable<Item> {
 		
 		for (Item item : this) {
 			if (item != similar && similar.isSimilar(item)) {
-				if (!lostInvent || item.keptThoughLostInvent) {
+				if (!lostInvent || item.keptThroughLostInventory()) {
 					result.add(item);
 				}
 			}

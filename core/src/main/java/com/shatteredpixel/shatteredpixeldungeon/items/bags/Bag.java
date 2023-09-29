@@ -168,7 +168,7 @@ public class Bag extends Item implements Iterable<Item> {
 
 	public boolean canHold( Item item ){
 		if (!loading && owner != null && owner.buff(LostInventory.class) != null
-			&& !item.keptThoughLostInvent){
+			&& !item.keptThroughLostInventory()){
 			return false;
 		}
 
