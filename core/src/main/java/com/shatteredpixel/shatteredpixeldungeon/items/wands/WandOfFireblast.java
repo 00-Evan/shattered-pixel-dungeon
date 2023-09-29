@@ -168,7 +168,6 @@ public class WandOfFireblast extends DamageWand {
 
 		// 5/7/9 distance
 		int maxDist = 3 + 2*chargesPerCast();
-		int dist = Math.min(bolt.dist, maxDist);
 
 		cone = new ConeAOE( bolt,
 				maxDist,
@@ -176,7 +175,11 @@ public class WandOfFireblast extends DamageWand {
 				Ballistica.STOP_TARGET | Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID);
 
 		//cast to cells at the tip, rather than all cells, better performance.
+		Ballistica longestRay = null;
 		for (Ballistica ray : cone.outerRays){
+			if (longestRay == null || ray.dist > longestRay.dist){
+				longestRay = ray;
+			}
 			((MagicMissile)curUser.sprite.parent.recycle( MagicMissile.class )).reset(
 					MagicMissile.FIRE_CONE,
 					curUser.sprite,
@@ -185,11 +188,11 @@ public class WandOfFireblast extends DamageWand {
 			);
 		}
 
-		//final zap at half distance, for timing of the actual wand effect
+		//final zap at half distance of the longest ray, for timing of the actual wand effect
 		MagicMissile.boltFromChar( curUser.sprite.parent,
 				MagicMissile.FIRE_CONE,
 				curUser.sprite,
-				bolt.path.get(dist/2),
+				longestRay.path.get(longestRay.dist/2),
 				callback );
 		Sample.INSTANCE.play( Assets.Sounds.ZAP );
 		Sample.INSTANCE.play( Assets.Sounds.BURNING );
