@@ -983,6 +983,9 @@ public abstract class Mob extends Char {
 			for (Buff b : buffs()){
 				if (b.type == Buff.buffType.NEGATIVE){
 					awaken(enemyInFOV);
+					if (state == SLEEPING){
+						spend(TICK); //wait if we can't wake up for some reason
+					}
 					return true;
 				}
 			}
@@ -999,6 +1002,9 @@ public abstract class Mob extends Char {
 
 				if (Random.Float( distance( enemy ) + enemyStealth ) < 1) {
 					awaken(enemyInFOV);
+					if (state == SLEEPING){
+						spend(TICK); //wait if we can't wake up for some reason
+					}
 					return true;
 				}
 
