@@ -23,6 +23,8 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bat;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CrystalWisp;
@@ -31,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DarkGold;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
@@ -165,6 +168,15 @@ public class MiningLevel extends CavesLevel {
 			losBlocking[cell] = false;
 		}
 		drop( Generator.randomUsingDefaults(Generator.Category.FOOD), cell );
+
+		if (Dungeon.isChallenged(Challenges.DARKNESS)){
+			cell = randomDropCell();
+			if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
+				map[cell] = Terrain.GRASS;
+				losBlocking[cell] = false;
+			}
+			drop( new Torch(), cell );
+		}
 	}
 
 	@Override
