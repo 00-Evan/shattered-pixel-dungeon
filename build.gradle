@@ -4,7 +4,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.1.1'
+        //the R8 version bundled with AGP 8.1.0+ causes crashes on very old Android versions
+        classpath 'com.android.tools.build:gradle:8.0.2'
     }
 }
 
