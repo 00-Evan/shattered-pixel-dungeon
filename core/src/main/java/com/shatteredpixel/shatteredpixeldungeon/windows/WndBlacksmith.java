@@ -136,7 +136,7 @@ public class WndBlacksmith extends Window {
 		smith.enable(Blacksmith.Quest.favor >= 2000);
 		buttons.add(smith);
 
-		RedButton cashOut = new RedButton(Messages.get(this, "cashout", Blacksmith.Quest.favor), 6){
+		RedButton cashOut = new RedButton(Messages.get(this, "cashout"), 6){
 			@Override
 			protected void onClick() {
 				new Gold(Blacksmith.Quest.favor).doPickUp(Dungeon.hero, Dungeon.hero.pos);

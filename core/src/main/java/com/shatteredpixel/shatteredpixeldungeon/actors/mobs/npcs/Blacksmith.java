@@ -198,7 +198,7 @@ public class Blacksmith extends NPC {
 				}
 			});
 
-		} else if (Quest.favor > 0) {
+		} else if (Quest.favor > 0 || Quest.pickaxe != null && Statistics.questScores[2] >= 2500) {
 
 			Game.runOnRenderThread(new Callback() {
 				@Override
