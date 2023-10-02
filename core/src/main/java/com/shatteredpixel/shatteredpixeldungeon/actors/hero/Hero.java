@@ -1157,6 +1157,7 @@ public class Hero extends Char {
 							}
 						}
 
+						//1 hunger spent total
 						if (Dungeon.level.map[action.dst] == Terrain.WALL_DECO){
 							DarkGold gold = new DarkGold();
 							if (gold.doPickUp( Dungeon.hero )) {
@@ -1180,20 +1181,22 @@ public class Hero extends Char {
 							//mining gold doesn't break crystals
 							crystalAdjacent = false;
 
+						//4 hunger spent total
 						} else if (Dungeon.level.map[action.dst] == Terrain.WALL){
-							buff(Hunger.class).affectHunger(-5);
+							buff(Hunger.class).affectHunger(-3);
 							PixelScene.shake(0.5f, 0.5f);
 							CellEmitter.get( action.dst ).burst( Speck.factory( Speck.ROCK ), 2 );
 							Sample.INSTANCE.play( Assets.Sounds.MINE );
 							Level.set( action.dst, Terrain.EMPTY_DECO );
 
+						//1 hunger spent total
 						} else if (Dungeon.level.map[action.dst] == Terrain.MINE_CRYSTAL){
 							Splash.at(action.dst, 0xFFFFFF, 5);
 							Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 							Level.set( action.dst, Terrain.EMPTY );
 
+						//1 hunger spent total
 						} else if (Dungeon.level.map[action.dst] == Terrain.MINE_BOULDER){
-							buff(Hunger.class).affectHunger(-1);
 							Splash.at(action.dst, ColorMath.random( 0x444444, 0x777766 ), 5);
 							Sample.INSTANCE.play( Assets.Sounds.MINE, 0.6f );
 							Level.set( action.dst, Terrain.EMPTY );

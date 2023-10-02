@@ -67,11 +67,11 @@ public abstract class CrystalSpireSprite extends MobSprite {
 
 		TextureFilm frames = new TextureFilm( texture, 24, 41 );
 
-		if (hpPercent > 0.8f){
+		if (hpPercent > 0.9f){
 			idle.frames( frames, 0+texOffset() );
-		} else if (hpPercent > 0.5f){
+		} else if (hpPercent > 0.67f){
 			idle.frames( frames, 1+texOffset() );
-		} else if (hpPercent > 0.25f){
+		} else if (hpPercent > 0.33f){
 			idle.frames( frames, 2+texOffset() );
 		} else {
 			idle.frames( frames, 3+texOffset() );

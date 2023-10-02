@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -40,7 +39,7 @@ public class CrystalWisp extends Mob{
 	{
 		spriteClass = CrystalWispSprite.class;
 
-		HP = HT = 35;
+		HP = HT = 30;
 		defenseSkill = 16;
 
 		EXP = 7;
@@ -76,12 +75,12 @@ public class CrystalWisp extends Mob{
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 3, 10 );
+		return Random.NormalIntRange( 5, 10 );
 	}
 
 	@Override
 	public int attackSkill( Char target ) {
-		return 16;
+		return 18;
 	}
 
 	@Override
@@ -115,7 +114,7 @@ public class CrystalWisp extends Mob{
 	}
 
 	//used so resistances can differentiate between melee and magical attacks
-	public static class CrystalBolt{}
+	public static class LightBeam {}
 
 	private void zap() {
 		spend( 1f );
@@ -124,9 +123,8 @@ public class CrystalWisp extends Mob{
 		Char enemy = this.enemy;
 		if (hit( this, enemy, true )) {
 
-			int dmg = Random.NormalIntRange( 2, 8 );
-			dmg = Math.round(dmg * AscensionChallenge.statModifier(this));
-			enemy.damage( dmg, new CrystalBolt() );
+			int dmg = Random.NormalIntRange( 5, 10 );
+			enemy.damage( dmg, new LightBeam() );
 
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {
 				Badges.validateDeathFromEnemyMagic();

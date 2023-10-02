@@ -66,8 +66,8 @@ public class CrystalSpire extends Mob {
 		HP = HT = 300;
 		spriteClass = CrystalSpireSprite.class;
 
-		//acts before other mobs, this is important for how it blocks crystal guardians
-		actPriority = MOB_PRIO+1;
+		//acts after other mobs, which makes baiting crystal guardians more consistent
+		actPriority = MOB_PRIO-1;
 
 		state = PASSIVE;
 
@@ -78,10 +78,8 @@ public class CrystalSpire extends Mob {
 		properties.add(Property.INORGANIC);
 	}
 
-	//TODO this fight needs some mechanics and balance tuning now
-
 	private float abilityCooldown;
-	private static final int ABILITY_CD = 12;
+	private static final int ABILITY_CD = 15;
 
 	private ArrayList<ArrayList<Integer>> targetedCells = new ArrayList<>();
 
@@ -131,12 +129,12 @@ public class CrystalSpire extends Mob {
 					Char ch = Actor.findChar(i);
 
 					if (ch != null && !(ch instanceof CrystalWisp || ch instanceof CrystalSpire)){
-						int dmg = Random.NormalIntRange(8, 16);
+						int dmg = Random.NormalIntRange(6, 15);
 
 						//guardians are hit harder by the attack
 						if (ch instanceof CrystalGuardian) {
-							dmg += 8;
-							Buff.prolong(ch, Cripple.class, 20f);
+							dmg += 12; //18-27 damage
+							Buff.prolong(ch, Cripple.class, 30f);
 						}
 						ch.damage(dmg, CrystalSpire.this);
 
@@ -363,6 +361,8 @@ public class CrystalSpire extends Mob {
 							PixelScene.shake( 3, 0.7f );
 							GLog.n(Messages.get(CrystalSpire.class, "alert"));
 							BossHealthBar.assignBoss(CrystalSpire.this);
+
+							abilityCooldown = 1; //dely first attack by 1 turn
 						}
 
 						boolean affectingGuardians = false;
@@ -400,8 +400,8 @@ public class CrystalSpire extends Mob {
 										}
 
 										//delays sleeping guardians that happen to be near to the crystal
-										if (PathFinder.distance[ch.pos] < 24){
-											Buff.affect(ch, Paralysis.class, 24-PathFinder.distance[ch.pos]);
+										if (PathFinder.distance[ch.pos] < 20){
+											Buff.affect(ch, Paralysis.class, 20-PathFinder.distance[ch.pos]);
 										}
 
 									} else if (((CrystalGuardian) ch).state != ((CrystalGuardian) ch).HUNTING && ((CrystalGuardian) ch).target != pos){
