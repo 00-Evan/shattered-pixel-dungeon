@@ -80,9 +80,44 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("BETA-1.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.SHPX.get(), "Thanks for the Feedback!",
+				"Thank you all so much for the feedback I've received so far!\n\n" +
+				"The general consensus seems to be that the quest is quite fun, but is a bit too difficult/complex currently. I've made a few tweaks to improve that in this patch.\n\n" +
+				"I'm extremely happy that the quest is turning out to be fun though. The caves quest has gone though a lot of design/concepting struggles over the past year or so to get to this point.\n\n" +
+				"I'm still looking for more feedback though, so if you've like to send me your thoughts, please email me: Evan@ShatteredPixel.com"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Environment.TILES_CAVES, 192, 64, 16, 16), "Caves Quest Balance Changes",
+				"I'm making a number of balance tweaks to the new quest, with the goal of reducing overall difficulty and also shifting some difficulty into the exploration stage.\n\n" +
+				"Firstly, I'm scaling back the hunger punishment for mining walls:\n" +
+				"_-_ Hunger cost for mining rock walls reduced by 33%\n\n" +
+				"_Crystal Wisps_ were always intended to be a bit weak, but currently they're barely even an annoyance. They've been re-tuned so that their ranged damage is now more of a real threat:\n" +
+				"_-_ Wisp magic damage increased by 50%\n" +
+				"_-_ Wisp melee damage increased by 15%\n" +
+				"_-_ Wisp accuracy increased by 12.5%\n" +
+				"_-_ Wisp HP down to 30 from 35",
+				"The _Crystal Spire_ is getting a number of tweaks to make the fight against it a bit less intense:\n" +
+				"_-_ Spire attack delay increased by 25%\n" +
+				"_-_ Spire's first attack is now on a slight delay\n" +
+				"_-_ Spire attack damage vs. allies reduced by 12.5%\n" +
+				"_-_ Spire attack damage vs. guardians increased by 12.5%\n" +
+				"_-_ Spire attack now cripples guardians for 30 turns, up from 20\n" +
+				"_-_ Spire's attack now always occurs after crystal guardians move, making it slightly easier to bait them into it."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Various minor textual improvements\n" +
+				"_-_ Added some analytics tracking code for the new quests, to give me better data about balance."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by BETA:_\n" +
+				"_-_ Instant crashes for users on Android 4.4-\n" +
+				"_-_ Additional rare softlocks during crystal spire fight\n" +
+				"_-_ Crystal spire attacks moving immovable characters\n" +
+				"_-_ Rogue's foresight triggering on quest sub floors"));
 
 		changes = new ChangeInfo("BETA-1.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
