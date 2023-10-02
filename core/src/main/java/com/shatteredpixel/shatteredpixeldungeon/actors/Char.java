@@ -81,7 +81,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.PrismaticImage;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
@@ -113,14 +112,15 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.watabou.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.BArray;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -172,14 +172,17 @@ public abstract class Char extends Actor {
 
 	protected void throwItems(){
 		Heap heap = Dungeon.level.heaps.get( pos );
-		if (heap != null && heap.type == Heap.Type.HEAP) {
-			int n;
-			do {
-				n = pos + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
-			} while (!Dungeon.level.passable[n] && !Dungeon.level.avoid[n]);
-			Item item = heap.peek();
-			if (!(item instanceof Tengu.BombAbility.BombItem || item instanceof Tengu.ShockerAbility.ShockerItem)){
-				Dungeon.level.drop( heap.pickUp(), n ).sprite.drop( pos );
+		if (heap != null && heap.type == Heap.Type.HEAP
+				&& !(heap.peek() instanceof Tengu.BombAbility.BombItem)
+				&& !(heap.peek() instanceof Tengu.ShockerAbility.ShockerItem)) {
+			ArrayList<Integer> candidates = new ArrayList<>();
+			for (int n : PathFinder.NEIGHBOURS8){
+				if (Dungeon.level.passable[pos+n]){
+					candidates.add(pos+n);
+				}
+			}
+			if (!candidates.isEmpty()){
+				Dungeon.level.drop( heap.pickUp(), Random.element(candidates) ).sprite.drop( pos );
 			}
 		}
 	}
