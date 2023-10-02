@@ -147,7 +147,7 @@ public class CrystalSpire extends Mob {
 									movePos = i+j;
 								}
 							}
-						} else {
+						} else if (!Char.hasProp(ch, Property.IMMOVABLE)) {
 							for (int j : PathFinder.NEIGHBOURS8){
 								if (!Dungeon.level.solid[i+j] && Actor.findChar(i+j) == null &&
 										Dungeon.level.trueDistance(i+j, pos) > Dungeon.level.trueDistance(movePos, pos)){
