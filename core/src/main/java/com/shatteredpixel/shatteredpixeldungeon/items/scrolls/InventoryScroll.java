@@ -123,7 +123,7 @@ public abstract class InventoryScroll extends Scroll {
 				
 				((InventoryScroll)curItem).confirmCancelation();
 				
-			} else {
+			} else if (((Scroll)curItem).anonymous) {
 
 				curUser.spendAndNext( TIME_TO_READ );
 
