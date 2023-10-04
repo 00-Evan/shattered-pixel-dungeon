@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -133,6 +134,16 @@ public class CrystalGuardian extends Mob{
 			}
 		}
 		return super.isAlive();
+	}
+
+	@Override
+	public boolean isInvulnerable(Class effect) {
+		if (recovering){
+			//while recovering, immune to chars that aren't the hero or spire
+			// this is sort of a hack to prevent allies from attacking downed guardians
+			return super.isInvulnerable(effect) || (Char.class.isAssignableFrom(effect) && !Hero.class.isAssignableFrom(effect) && !CrystalSpire.class.isAssignableFrom(effect));
+		}
+		return super.isInvulnerable(effect);
 	}
 
 	public CrystalGuardian(){
