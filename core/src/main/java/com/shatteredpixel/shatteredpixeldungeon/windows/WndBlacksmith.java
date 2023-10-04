@@ -144,7 +144,7 @@ public class WndBlacksmith extends Window {
 				WndBlacksmith.this.hide();
 			}
 		};
-		cashOut.enable(true);
+		cashOut.enable(Blacksmith.Quest.favor > 0);
 		buttons.add(cashOut);
 
 		float pos = message.bottom() + 3*GAP;

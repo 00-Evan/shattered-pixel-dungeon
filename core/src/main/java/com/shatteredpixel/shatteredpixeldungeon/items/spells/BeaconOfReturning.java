@@ -155,6 +155,12 @@ public class BeaconOfReturning extends Spell {
 				return;
 			}
 
+			//cannot return to mining level
+			if (returnDepth >= 11 && returnDepth <= 14 && returnBranch == 1){
+				GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
+				return;
+			}
+
 			Level.beforeTransition();
 			Invisibility.dispel();
 			InterlevelScene.mode = InterlevelScene.Mode.RETURN;

@@ -103,82 +103,82 @@ public class CrystalSpire extends Mob {
 		enemySeen = enemy.isAlive() && fieldOfView[enemy.pos];
 		//end of char/mob logic
 
+		if (!targetedCells.isEmpty()){
+
+			ArrayList<Integer> cellsToAttack = targetedCells.remove(0);
+
+			for (int i : cellsToAttack){
+
+				Char ch = Actor.findChar(i);
+				if (ch instanceof CrystalSpire){
+					continue; //don't spawn crystals on itself
+				}
+
+				Level.set(i, Terrain.MINE_CRYSTAL);
+				GameScene.updateMap(i);
+
+				Splash.at(i, 0xFFFFFF, 5);
+			}
+
+			for (int i : cellsToAttack){
+				Char ch = Actor.findChar(i);
+
+				if (ch != null && !(ch instanceof CrystalWisp || ch instanceof CrystalSpire)){
+					int dmg = Random.NormalIntRange(6, 15);
+
+					//guardians are hit harder by the attack
+					if (ch instanceof CrystalGuardian) {
+						dmg += 12; //18-27 damage
+						Buff.prolong(ch, Cripple.class, 30f);
+					}
+					ch.damage(dmg, CrystalSpire.this);
+
+					int movePos = i;
+					//crystal guardians get knocked away from the hero, others get knocked away from the spire
+					if (ch instanceof CrystalGuardian){
+						for (int j : PathFinder.NEIGHBOURS8){
+							if (!Dungeon.level.solid[i+j] && Actor.findChar(i+j) == null &&
+									Dungeon.level.trueDistance(i+j, Dungeon.hero.pos) > Dungeon.level.trueDistance(movePos, Dungeon.hero.pos)){
+								movePos = i+j;
+							}
+						}
+					} else if (!Char.hasProp(ch, Property.IMMOVABLE)) {
+						for (int j : PathFinder.NEIGHBOURS8){
+							if (!Dungeon.level.solid[i+j] && Actor.findChar(i+j) == null &&
+									Dungeon.level.trueDistance(i+j, pos) > Dungeon.level.trueDistance(movePos, pos)){
+								movePos = i+j;
+							}
+						}
+					}
+
+					if (ch.isAlive()){
+						if (movePos != i){
+							Actor.add(new Pushing(ch, i, movePos));
+							ch.pos = movePos;
+							Dungeon.level.occupyCell(ch);
+						}
+					} else if (ch == Dungeon.hero){
+						GLog.n( Messages.capitalize(Messages.get(Char.class, "kill", name())) );
+						Dungeon.fail(this);
+					}
+				}
+			}
+
+			PixelScene.shake( 1, 0.7f );
+			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
+
+			if (!targetedCells.isEmpty()){
+				for (int i : targetedCells.get(0)){
+					sprite.parent.add(new TargetedCell(i, 0xFF0000));
+				}
+			}
+
+		}
+
 		if (hits < 3 || !enemySeen){
 			spend(TICK);
 			return true;
 		} else {
-
-			if (!targetedCells.isEmpty()){
-
-				ArrayList<Integer> cellsToAttack = targetedCells.remove(0);
-
-				for (int i : cellsToAttack){
-
-					Char ch = Actor.findChar(i);
-					if (ch instanceof CrystalSpire){
-						continue; //don't spawn crystals on itself
-					}
-
-					Level.set(i, Terrain.MINE_CRYSTAL);
-					GameScene.updateMap(i);
-
-					Splash.at(i, 0xFFFFFF, 5);
-				}
-
-				for (int i : cellsToAttack){
-					Char ch = Actor.findChar(i);
-
-					if (ch != null && !(ch instanceof CrystalWisp || ch instanceof CrystalSpire)){
-						int dmg = Random.NormalIntRange(6, 15);
-
-						//guardians are hit harder by the attack
-						if (ch instanceof CrystalGuardian) {
-							dmg += 12; //18-27 damage
-							Buff.prolong(ch, Cripple.class, 30f);
-						}
-						ch.damage(dmg, CrystalSpire.this);
-
-						int movePos = i;
-						//crystal guardians get knocked away from the hero, others get knocked away from the spire
-						if (ch instanceof CrystalGuardian){
-							for (int j : PathFinder.NEIGHBOURS8){
-								if (!Dungeon.level.solid[i+j] && Actor.findChar(i+j) == null &&
-										Dungeon.level.trueDistance(i+j, Dungeon.hero.pos) > Dungeon.level.trueDistance(movePos, Dungeon.hero.pos)){
-									movePos = i+j;
-								}
-							}
-						} else if (!Char.hasProp(ch, Property.IMMOVABLE)) {
-							for (int j : PathFinder.NEIGHBOURS8){
-								if (!Dungeon.level.solid[i+j] && Actor.findChar(i+j) == null &&
-										Dungeon.level.trueDistance(i+j, pos) > Dungeon.level.trueDistance(movePos, pos)){
-									movePos = i+j;
-								}
-							}
-						}
-
-						if (ch.isAlive()){
-							if (movePos != i){
-								Actor.add(new Pushing(ch, i, movePos));
-								ch.pos = movePos;
-								Dungeon.level.occupyCell(ch);
-							}
-						} else if (ch == Dungeon.hero){
-							GLog.n( Messages.capitalize(Messages.get(Char.class, "kill", name())) );
-							Dungeon.fail(this);
-						}
-					}
-				}
-
-				PixelScene.shake( 1, 0.7f );
-				Sample.INSTANCE.play( Assets.Sounds.SHATTER );
-
-				if (!targetedCells.isEmpty()){
-					for (int i : targetedCells.get(0)){
-						sprite.parent.add(new TargetedCell(i, 0xFF0000));
-					}
-				}
-
-			}
 
 			if (abilityCooldown <= 0){
 

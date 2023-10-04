@@ -90,6 +90,12 @@ public class CrystalGuardian extends Mob{
 	}
 
 	@Override
+	public int defenseSkill(Char enemy) {
+		if (recovering) return 0;
+		return super.defenseSkill(enemy);
+	}
+
+	@Override
 	public int drRoll() {
 		return super.drRoll() + Random.NormalIntRange(0, 10);
 	}
