@@ -69,7 +69,9 @@ public class CrystalGuardian extends Mob{
 		if (recovering){
 			throwItems();
 			HP = Math.min(HT, HP+5);
-			sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+			if (Dungeon.level.heroFOV[pos]) {
+				sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+			}
 			if (HP == HT){
 				recovering = false;
 				if (sprite instanceof CrystalGuardianSprite) ((CrystalGuardianSprite) sprite).endCrumple();
