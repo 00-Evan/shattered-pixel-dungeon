@@ -21,6 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.DarkGold;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
@@ -53,6 +56,11 @@ public class MiningLevelPainter extends CavesPainter {
 		for (int i = 0; i < level.length(); i++){
 			if (level.map[i] == Terrain.WALL_DECO) {
 				goldToAdd--;
+			}
+		}
+		for (Heap h : level.heaps.valueList()){
+			for (Item i : h.items){
+				if (i instanceof DarkGold) goldToAdd -= i.quantity();
 			}
 		}
 
@@ -112,15 +120,16 @@ public class MiningLevelPainter extends CavesPainter {
 
 		float hiddenDoorChance = 0.90f;
 
+		//wall doors will still be wall
 		//hidden doors become wall tiles a bit later in painting
-		//everything else becomes empty
+		//everything else usually becomes empty, but can be wall sometimes
 		for (Room r : rooms) {
 			for (Room n : r.connected.keySet()) {
 
 				Room.Door d = r.connected.get(n);
 				int door = d.x + d.y * l.width();
 
-				if (d.type == Room.Door.Type.HIDDEN){
+				if (d.type == Room.Door.Type.WALL || d.type == Room.Door.Type.HIDDEN){
 					l.map[door] = Terrain.WALL;
 				} else {
 					//some of these are randomly hidden, using the same rules as regular levels

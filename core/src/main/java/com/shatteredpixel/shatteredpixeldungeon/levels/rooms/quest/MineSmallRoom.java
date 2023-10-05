@@ -25,8 +25,14 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.CaveRoom;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.Point;
+import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class MineSmallRoom extends CaveRoom {
 
@@ -57,6 +63,41 @@ public class MineSmallRoom extends CaveRoom {
 					Painter.set(level, r, Terrain.MINE_CRYSTAL);
 				}
 			}
+		} else if (Blacksmith.Quest.Type() == Blacksmith.Quest.GNOLL) {
+
+			//connections to non-secret rooms have a 7/8 chance to become empty, otherwise wall
+			for (Room n : connected.keySet()){
+				if (!(n instanceof SecretRoom) && connected.get(n).type == Door.Type.REGULAR){
+					if (Random.Int(8) == 0){
+						connected.get(n).set(Door.Type.EMPTY);
+					} else {
+						connected.get(n).set(Door.Type.WALL);
+					}
+					connected.get(n).lockTypeChanges(true);
+				}
+			}
+
+			ArrayList<Door> doors = new ArrayList<>();
+			for (Door d : connected.values()){
+				if (d.type == Door.Type.WALL){
+					doors.add(d);
+				}
+			}
+
+			for (Point p : getPoints()){
+				int cell = level.pointToCell(p);
+				if (level.map[cell] == Terrain.EMPTY){
+					float dist = 1000;
+					for (Door d : doors){
+						dist = Math.min(dist, Point.distance(p, d));
+					}
+					dist = GameMath.gate(1f, dist, 5f);
+					if (Random.Float((float) Math.pow(dist, 2)) < 1f) {
+						Painter.set(level, cell, Terrain.MINE_BOULDER);
+					}
+				}
+			}
+
 		}
 
 	}

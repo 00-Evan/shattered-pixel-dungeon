@@ -28,12 +28,18 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.Tilemap;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.Point;
+import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class MineEntrance extends EntranceRoom {
 
@@ -66,8 +72,8 @@ public class MineEntrance extends EntranceRoom {
 		Painter.set( level, entrance, Terrain.ENTRANCE );
 
 		QuestExit vis = new QuestExit();
-		Point p = level.cellToPoint(entrance);
-		vis.pos(p.x - 1, p.y - 1);
+		Point e = level.cellToPoint(entrance);
+		vis.pos(e.x - 1, e.y - 1);
 		level.customTiles.add(vis);
 
 		level.transitions.add(new LevelTransition(level,
@@ -84,6 +90,41 @@ public class MineEntrance extends EntranceRoom {
 					Painter.set(level, r, Terrain.MINE_CRYSTAL);
 				}
 			}
+		} else if (Blacksmith.Quest.Type() == Blacksmith.Quest.GNOLL) {
+
+			//connections to non-secret rooms have a 7/8 chance to become empty, otherwise wall
+			for (Room n : connected.keySet()){
+				if (!(n instanceof SecretRoom) && connected.get(n).type == Door.Type.REGULAR){
+					if (Random.Int(8) == 0){
+						connected.get(n).set(Door.Type.EMPTY);
+					} else {
+						connected.get(n).set(Door.Type.WALL);
+					}
+					connected.get(n).lockTypeChanges(true);
+				}
+			}
+
+			ArrayList<Door> doors = new ArrayList<>();
+			for (Door d : connected.values()){
+				if (d.type == Door.Type.WALL){
+					doors.add(d);
+				}
+			}
+
+			for (Point p : getPoints()){
+				int cell = level.pointToCell(p);
+				if (level.distance(cell, entrance) > 1 && level.map[cell] == Terrain.EMPTY){
+					float dist = 1000;
+					for (Door d : doors){
+						dist = Math.min(dist, Point.distance(p, d));
+					}
+					dist = GameMath.gate(1f, dist-0.5f, 5f);
+					if (Random.Float((float) Math.pow(dist, 2)) < 1f) {
+						Painter.set(level, cell, Terrain.MINE_BOULDER);
+					}
+				}
+			}
+
 		}
 	}
 

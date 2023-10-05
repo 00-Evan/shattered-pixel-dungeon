@@ -80,6 +80,12 @@ public class Point {
 	public float length() {
 		return (float)Math.sqrt( x * x + y * y );
 	}
+
+	public static float distance( Point a, Point b ) {
+		float dx = a.x - b.x;
+		float dy = a.y - b.y;
+		return (float)Math.sqrt( dx * dx + dy * dy );
+	}
 	
 	@Override
 	public boolean equals( Object obj ) {

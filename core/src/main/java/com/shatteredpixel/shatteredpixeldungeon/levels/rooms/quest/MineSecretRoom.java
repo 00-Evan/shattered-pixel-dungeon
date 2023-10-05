@@ -22,6 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.DarkGold;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -40,13 +42,17 @@ public class MineSecretRoom extends SecretRoom {
 	public void paint(Level level) {
 		Painter.fill( level, this, Terrain.WALL );
 
+		entrance().set( Door.Type.HIDDEN );
+
 		if (Blacksmith.Quest.Type() == Blacksmith.Quest.CRYSTAL) {
 			Painter.fill(level, this, 1, Terrain.MINE_CRYSTAL);
+		} else if (Blacksmith.Quest.Type() == Blacksmith.Quest.GNOLL) {
+			Painter.fill( level, this, 1, Terrain.EMPTY_SP );
+			level.drop(new DarkGold().quantity(Random.NormalIntRange(3, 5)), level.pointToCell(center())).type = Heap.Type.CHEST;
+			return;
 		} else {
 			Painter.fill(level, this, 1, Terrain.EMPTY);
 		}
-
-		entrance().set( Door.Type.HIDDEN );
 
 		int goldAmount = Random.NormalIntRange(3, 5);
 

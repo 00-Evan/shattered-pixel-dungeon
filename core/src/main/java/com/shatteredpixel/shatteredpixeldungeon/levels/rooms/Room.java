@@ -428,7 +428,7 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 	public static class Door extends Point implements Bundlable {
 		
 		public enum Type {
-			EMPTY, TUNNEL, WATER, REGULAR, UNLOCKED, HIDDEN, BARRICADE, LOCKED, CRYSTAL
+			EMPTY, TUNNEL, WATER, REGULAR, UNLOCKED, HIDDEN, BARRICADE, LOCKED, CRYSTAL, WALL
 		}
 		public Type type = Type.EMPTY;
 		
@@ -442,9 +442,15 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 		public Door( int x, int y ) {
 			super( x, y );
 		}
-		
+
+		private boolean typeLocked = false;
+
+		public void lockTypeChanges( boolean lock ){
+			typeLocked = lock;
+		}
+
 		public void set( Type type ) {
-			if (type.compareTo( this.type ) > 0) {
+			if (!typeLocked && type.compareTo( this.type ) > 0) {
 				this.type = type;
 			}
 		}
@@ -454,6 +460,7 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 			bundle.put("x", x);
 			bundle.put("y", y);
 			bundle.put("type", type);
+			bundle.put("type_locked", typeLocked);
 		}
 		
 		@Override
@@ -461,6 +468,7 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 			x = bundle.getInt("x");
 			y = bundle.getInt("y");
 			type = bundle.getEnum("type", Type.class);
+			typeLocked = bundle.getBoolean("type_locked");
 		}
 	}
 }
