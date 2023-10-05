@@ -338,11 +338,13 @@ public class CrystalSpire extends Mob {
 						}
 
 						for (Char ch : Actor.chars()){
-							if (ch instanceof CrystalGuardian){
-								ch.damage(ch.HT, this);
-							}
-							if (ch instanceof CrystalWisp && fieldOfView[ch.pos]){
-								Buff.affect(ch, Blindness.class, 5f);
+							if (fieldOfView[ch.pos]) {
+								if (ch instanceof CrystalGuardian) {
+									ch.damage(ch.HT, this);
+								}
+								if (ch instanceof CrystalWisp) {
+									Buff.affect(ch, Blindness.class, 5f);
+								}
 							}
 						}
 
