@@ -53,6 +53,12 @@ public class BlacksmithRoom extends StandardRoom {
 
 		Painter.fill( level, this, Terrain.WALL );
 		Painter.fill( level, this, 1, Terrain.TRAP );
+
+		for (Door door : connected.values()) {
+			door.set( Door.Type.REGULAR );
+			Painter.drawInside( level, this, door, 2, Terrain.EMPTY );
+		}
+
 		Painter.fill( level, this, 2, Terrain.EMPTY_SP );
 		
 		for (int i=0; i < 2; i++) {
@@ -66,11 +72,6 @@ public class BlacksmithRoom extends StandardRoom {
 					Generator.Category.WEAPON,
 					Generator.Category.MISSILE
 				) ), pos );
-		}
-		
-		for (Door door : connected.values()) {
-			door.set( Door.Type.REGULAR );
-			Painter.drawInside( level, this, door, 1, Terrain.EMPTY );
 		}
 		
 		Blacksmith npc = new Blacksmith();
