@@ -80,14 +80,27 @@ public class WndBlacksmith extends Window {
 		RedButton pickaxe = new RedButton(Messages.get(this, "pickaxe", pickaxeCost), 6){
 			@Override
 			protected void onClick() {
-				if (Blacksmith.Quest.pickaxe.doPickUp( Dungeon.hero )) {
-					GLog.i( Messages.capitalize(Messages.get(Dungeon.hero, "you_now_have", Blacksmith.Quest.pickaxe.name()) ));
-				} else {
-					Dungeon.level.drop( Blacksmith.Quest.pickaxe, Dungeon.hero.pos ).sprite.drop();
-				}
-				Blacksmith.Quest.favor -= pickaxeCost;
-				Blacksmith.Quest.pickaxe = null;
-				WndBlacksmith.this.hide();
+				GameScene.show(new WndOptions(
+						troll.sprite(),
+						Messages.titleCase( troll.name() ),
+						Messages.get(WndBlacksmith.class, "pickaxe_verify") + (pickaxeCost == 0 ? "\n\n" + Messages.get(WndBlacksmith.class, "pickaxe_free") : ""),
+						Messages.get(WndBlacksmith.class, "pickaxe_yes"),
+						Messages.get(WndBlacksmith.class, "pickaxe_no")
+				){
+					@Override
+					protected void onSelect(int index) {
+						if (index == 0){
+							if (Blacksmith.Quest.pickaxe.doPickUp( Dungeon.hero )) {
+								GLog.i( Messages.capitalize(Messages.get(Dungeon.hero, "you_now_have", Blacksmith.Quest.pickaxe.name()) ));
+							} else {
+								Dungeon.level.drop( Blacksmith.Quest.pickaxe, Dungeon.hero.pos ).sprite.drop();
+							}
+							Blacksmith.Quest.favor -= pickaxeCost;
+							Blacksmith.Quest.pickaxe = null;
+							WndBlacksmith.this.hide();
+						}
+					}
+				});
 			}
 		};
 		pickaxe.enable(Blacksmith.Quest.pickaxe != null && Blacksmith.Quest.favor >= pickaxeCost);
@@ -97,8 +110,7 @@ public class WndBlacksmith extends Window {
 		RedButton reforge = new RedButton(Messages.get(this, "reforge", reforgecost), 6){
 			@Override
 			protected void onClick() {
-				WndBlacksmith.this.hide();
-				GameScene.show(new WndReforge(troll, hero));
+				GameScene.show(new WndReforge(troll, WndBlacksmith.this));
 			}
 		};
 		reforge.enable(Blacksmith.Quest.favor >= reforgecost);
@@ -127,10 +139,23 @@ public class WndBlacksmith extends Window {
 		RedButton smith = new RedButton(Messages.get(this, "smith", 2000), 6){
 			@Override
 			protected void onClick() {
-				Blacksmith.Quest.favor -= 2000;
-				Blacksmith.Quest.smiths++;
-				WndBlacksmith.this.hide();
-				GameScene.show(new WndSmith(troll, hero));
+				GameScene.show(new WndOptions(
+						troll.sprite(),
+						Messages.titleCase( troll.name() ),
+						Messages.get(WndBlacksmith.class, "smith_verify"),
+						Messages.get(WndBlacksmith.class, "smith_yes"),
+						Messages.get(WndBlacksmith.class, "smith_no")
+				){
+					@Override
+					protected void onSelect(int index) {
+						if (index == 0){
+							Blacksmith.Quest.favor -= 2000;
+							Blacksmith.Quest.smiths++;
+							WndBlacksmith.this.hide();
+							GameScene.show(new WndSmith(troll, hero));
+						}
+					}
+				});
 			}
 		};
 		smith.enable(Blacksmith.Quest.favor >= 2000);
@@ -139,9 +164,22 @@ public class WndBlacksmith extends Window {
 		RedButton cashOut = new RedButton(Messages.get(this, "cashout"), 6){
 			@Override
 			protected void onClick() {
-				new Gold(Blacksmith.Quest.favor).doPickUp(Dungeon.hero, Dungeon.hero.pos);
-				Blacksmith.Quest.favor = 0;
-				WndBlacksmith.this.hide();
+				GameScene.show(new WndOptions(
+						troll.sprite(),
+						Messages.titleCase( troll.name() ),
+						Messages.get(WndBlacksmith.class, "cashout_verify", Blacksmith.Quest.favor),
+						Messages.get(WndBlacksmith.class, "cashout_yes"),
+						Messages.get(WndBlacksmith.class, "cashout_no")
+				){
+					@Override
+					protected void onSelect(int index) {
+						if (index == 0){
+							new Gold(Blacksmith.Quest.favor).doPickUp(Dungeon.hero, Dungeon.hero.pos);
+							Blacksmith.Quest.favor = 0;
+							WndBlacksmith.this.hide();
+						}
+					}
+				});
 			}
 		};
 		cashOut.enable(Blacksmith.Quest.favor > 0);
@@ -177,7 +215,7 @@ public class WndBlacksmith extends Window {
 		private ItemButton btnItem2;
 		private RedButton btnReforge;
 
-		public WndReforge( Blacksmith troll, Hero hero ) {
+		public WndReforge( Blacksmith troll, Window wndParent ) {
 			super();
 
 			IconTitle titlebar = new IconTitle();
@@ -255,6 +293,9 @@ public class WndBlacksmith extends Window {
 					Blacksmith.Quest.reforges++;
 
 					hide();
+					if (wndParent != null){
+						wndParent.hide();
+					}
 				}
 			};
 			btnReforge.enable( false );

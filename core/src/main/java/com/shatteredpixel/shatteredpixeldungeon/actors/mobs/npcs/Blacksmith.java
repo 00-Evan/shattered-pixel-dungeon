@@ -194,7 +194,7 @@ public class Blacksmith extends NPC {
 			Game.runOnRenderThread(new Callback() {
 				@Override
 				public void call() {
-					GameScene.show( new WndBlacksmith.WndReforge( Blacksmith.this, Dungeon.hero ) );
+					GameScene.show( new WndBlacksmith.WndReforge( Blacksmith.this, null ) );
 				}
 			});
 
@@ -374,7 +374,7 @@ public class Blacksmith extends NPC {
 
 				//currently only the crystal quest is ready to play
 				//we still roll for quest type however, to ensure seed consistency
-				type = 1+Random.Int(1);
+				type = 3+Random.Int(1);
 				alternative = false;
 				
 				given = false;
