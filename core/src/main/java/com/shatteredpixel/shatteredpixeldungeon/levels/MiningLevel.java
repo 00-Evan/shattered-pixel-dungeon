@@ -270,6 +270,10 @@ public class MiningLevel extends CavesLevel {
 	@Override
 	public String tileDesc( int tile ) {
 		switch (tile) {
+			case Terrain.WALL:
+				return Messages.get(MiningLevel.class, "wall_desc");
+			case Terrain.WALL_DECO:
+				return super.tileDesc(tile) + "\n\n" +  Messages.get(MiningLevel.class, "gold_extra_desc");
 			case Terrain.MINE_CRYSTAL:
 				return Messages.get(MiningLevel.class, "crystal_desc");
 			case Terrain.MINE_BOULDER:
