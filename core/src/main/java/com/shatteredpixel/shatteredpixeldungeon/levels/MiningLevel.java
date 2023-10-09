@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bat;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CrystalWisp;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollGuard;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Spinner;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -131,8 +132,8 @@ public class MiningLevel extends CavesLevel {
 	protected Painter painter() {
 		return new MiningLevelPainter()
 				.setGold(Random.NormalIntRange(42, 46))
-				.setWater(0.35f, 6)
-				.setGrass(0.10f, 3);
+				.setWater(Blacksmith.Quest.Type() == Blacksmith.Quest.FUNGI ? 0.1f : 0.35f, 6)
+				.setGrass(Blacksmith.Quest.Type() == Blacksmith.Quest.FUNGI ? 0.65f : 0.10f, 3);
 	}
 
 	@Override
@@ -142,6 +143,8 @@ public class MiningLevel extends CavesLevel {
 				return new Bat();
 			case Blacksmith.Quest.CRYSTAL:
 				return new CrystalWisp();
+			case Blacksmith.Quest.FUNGI:
+				return new Spinner();
 			case Blacksmith.Quest.GNOLL:
 				return new GnollGuard();
 		}

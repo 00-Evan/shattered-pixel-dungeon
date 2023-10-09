@@ -92,6 +92,16 @@ public class MineLargeRoom extends CaveRoom {
 			level.mobs.add(m);
 			Painter.set(level, p, Terrain.EMPTY);
 
+		} else if (Blacksmith.Quest.Type() == Blacksmith.Quest.FUNGI){
+			Painter.fillEllipse(level, this, 3, Terrain.EMPTY);
+
+			for (int i = 0; i < width() * height() / 4; i++) {
+				Point r = random(1);
+				if (level.map[level.pointToCell(r)] != Terrain.WALL) {
+					Painter.set(level, r, Terrain.HIGH_GRASS);
+				}
+			}
+
 		} else if (Blacksmith.Quest.Type() == Blacksmith.Quest.GNOLL){
 			Painter.fillEllipse(level, this, 3, Terrain.EMPTY);
 
