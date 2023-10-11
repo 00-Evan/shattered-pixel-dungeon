@@ -58,6 +58,12 @@ public class v2_X_Changes {
 		changes.hardlight(0xCCCCCC);
 		changeInfos.add(changes);
 
+		if (DeviceCompat.isiOS() && Gdx.app.getVersion() < 11){
+			changes.addButton( new ChangeButton(Icons.WARNING.get(), "32-bit iOS support",
+					"v2.3 will be the last version of Shattered Pixel Dungeon that will supports 32-bit iOS devices. As a result, future Shattered updates will require iOS 11+, up from 9+.\n\n" +
+					"Players on iOS 9 and 10 will be able to continue playing Shattered Pixel Dungeon v2.3, and can check the news section for information on future versions."));
+		}
+
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Overview",
 				"The next update will be v2.2.0, and will include a complete rework of the blacksmith quest!\n" +
 				"\n" +
@@ -80,17 +86,52 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("BETA-1.3", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.SHPX.get(), "Release Plan Changes",
+				"I have decided to split the release of the new caves quest into two updates.  This way everyone can enjoy the first quest variant very soon, I can work on the next two variants under a bit less time pressure, and I can get a wider breadth of feedback on the new quest sooner.\n\n" +
+				"With this release schedule change, the only thing left to get finished with the v2.2.0 beta is some visual improvements to the crystal caves quest and fixes for any more bugs that pop up.\n\n" +
+				"I am still happy to hear feedback about the new quest if anyone wants to offer it: Evan@ShatteredPixel.com"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Environment.TILES_CAVES, 224, 64, 16, 16), "Crystal Caves Changes",
+				"The crystal caves quest starting to look like it's in a pretty decent space in terms of difficulty now, especially as success rates naturally climb as players get used to the new mechanics. I am making a couple tweaks though, to reduce difficulty a little bit:\n\n" +
+				"_- Crystal Guardian_ melee damage reduced by ~13%\n" +
+				"_- Crystal Wisp_ initial spawn count reduced by 1\n" +
+				"_- Crystal Wisp_ respawn delay increased by 50%\n\n" +
+				"I've also made one early improvement to the crystal spritework. The crystal terrain is now darker in appearance, so that it better blends in with the existing caves terrain."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Improved several parts of blackmith reward selection UI.\n" +
+				"_-_ Various minor textual fixes/improvements.\n" +
+				"_-_ Substantially reduced the forbidden runes challenge's effect on levelgen."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by BETA:_\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Various minor visual and textual errors\n" +
+				"_-_ Various errors with item placement in new crystal path rooms\n" +
+				"_-_ Cases where music would cut out when it should just fade\n" +
+				"_-_ Crystal spire not finishing attacks if hero leaves its FOV\n" +
+				"_-_ Allies repeatedly attacking recovering crystal guardians\n" +
+				"_-_ Crystal guardians having evasion while recovering\n" +
+				"_-_ Badges not being triggered by blacksmith's upgrade reward\n" +
+				"_-_ Blacksmith rarely blocking doors on the corner of his room\n" +
+				"_-_ Cancelling scrolls spending turns\n" +
+				"\n" +
+				"_Existed Prior to BETA:_\n" +
+				"_-_ Into Darkness and Barren Land challenges affecting levelgen\n" +
+				"_-_ Items in Imp's shop not being affected by dungeon seed\n" +
+				"_-_ Various rare cases where levelgen could differ between two runs on the same seed\n" +
+				"_-_ Followup strike buff rarely not clearing when enemies die"));
+
 		changes = new ChangeInfo("BETA-1.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(Icons.SHPX.get(), "Thanks for the Feedback!",
-				"Thank you all so much for the feedback I've received so far!\n\n" +
-				"The general consensus seems to be that the quest is quite fun, but is a bit too difficult/complex currently. I've made a few tweaks to improve that in this patch.\n\n" +
-				"I'm extremely happy that the quest is turning out to be fun though. The caves quest has gone though a lot of design/concepting struggles over the past year or so to get to this point.\n\n" +
-				"I'm still looking for more feedback though, so if you've like to send me your thoughts, please email me: Evan@ShatteredPixel.com"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Environment.TILES_CAVES, 192, 64, 16, 16), "Caves Quest Balance Changes",
+		changes.addButton(new ChangeButton(new Image(Assets.Environment.TILES_CAVES, 208, 64, 16, 16), "Caves Quest Balance Changes",
 				"I'm making a number of balance tweaks to the new quest, with the goal of reducing overall difficulty and also shifting some difficulty into the exploration stage.\n\n" +
 				"Firstly, I'm scaling back the hunger punishment for mining walls:\n" +
 				"_-_ Hunger cost for mining rock walls reduced by 33%\n\n" +
@@ -123,11 +164,6 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(Icons.SHPX.get(), "Feedback Please!",
-				"The new quest added in BETA-1.0 is something pretty new to Shattered, so I'd love to hear your feedback!\n\n" +
-				"In particular, I'm interested in how fun the quest feels, how difficult/complex it feels, and how powerful the new rewards feel.\n\n" +
-				"The best way to contact me is via email: Evan@ShatteredPixel.com"));
-
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
 				"_Caused by BETA:_\n" +
@@ -137,17 +173,13 @@ public class v2_X_Changes {
 				"_-_ On-hit effects being triggerable on down crystal guardians\n" +
 				"_-_ Quest level not spawning a torch during the into darkness challenge\n" +
 				"\n" +
-				"_Existing Prior to BETA:_\n" +
+				"_Existed Prior to BETA:_\n" +
 				"_-_ Piranhas throwing themselves off chasms in very rare cases\n" +
 				"_-_ Various minor visual and textual issues\n"));
 
 		changes = new ChangeInfo("BETA-1.0", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(Icons.SHPX.get(), "BETA To-Do",
-				"v2.2.0's big quest overhaul is partially complete at the moment.\n\n" +
-				"In addition to bugfixes and balance/mechanics tweaks, I expect to get more variants for the new quest online in the coming weeks."));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Environment.TILES_CAVES, 192, 64, 16, 16), "Caves Quest Rework Pt.1!",
 				"_The first of three variants for the new quest is now active!_\n\n" +
@@ -162,50 +194,20 @@ public class v2_X_Changes {
 				"_-_ Sacrificial fire unintentionally working with allies\n" +
 				"_-_ Various minor music hiccups\n" +
 				"\n" +
-				"_Existing Prior to BETA:_\n" +
+				"_Existed Prior to BETA:_\n" +
 				"_-_ Crashes caused by text input windows for controller users\n" +
 				"_-_ Cases where default keybindings could override custom ones\n" +
 				"_-_ Horn of Plenty occasionally having the wrong visuals for its charge state\n" +
 				"_-_ Physical empower buff incorrectly stacking in specific cases"));
 
-		changes = new ChangeInfo("BETA-0.5", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by BETA:_\n" +
-				"_-_ Rare crash issues\n" +
-				"_-_ Recycle spell not working correctly on potions and scrolls\n" +
-				"_-_ Prismatic Images not being examinable at 0hp\n" +
-				"_-_ Rot Heart very rarely having no place to spread gas\n" +
-				"_-_ Wand of living earth not healing earthen guardian when aimed at it\n" +
-				"\n" +
-				"_Existing Prior to BETA:_\n" +
-				"_-_ Exploit where multiplicity curse could be used to skip some of Dwarf King's second phase\n" +
-				"_-_ Damage caused to Yog's fists not correctly adding time to boss regen limit\n" +
-				"_-_ Mimics not dropping loot when they are killed via chasm while hiding\n" +
-				"_-_ Trap effects from reclaim trap spell not scaling with ascension challenge\n" +
-				"_-_ Ring of Force incorrectly displaying +99.99% when at +7, instead of +100%\n" +
-				"_-_ Tengu very rarely throwing bombs ontop of each other\n" +
-				"_-_ Various minor textual issues"));
-
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		if (DeviceCompat.isiOS() && Gdx.app.getVersion() < 11){
-			changes.addButton( new ChangeButton(Icons.WARNING.get(), "32-bit iOS support",
-					"v2.2 is the last version of Shattered Pixel Dungeon that will support 32-bit iOS devices. As a result, future Shattered updates will require iOS 11+, up from 9+.\n\n" +
-					"Players on iOS 9 and 10 will be able to continue playing Shattered Pixel Dungeon v2.2, and can check the news section for information on future versions."));
-		}
-
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.PICKAXE), "New Blacksmith Quest!",
-				"_Note that the new quest is currently partially complete, only one of the three environments is enabled._\n" +
-				"\n" +
 				"_Shattered Pixel Dungeon's blacksmith quest has been completely redone!_\n" +
 				"\n" +
-				"_The quest now takes place in a new sublevel, with one of three randomly chosen environments._ Each environment has its own set of hazards, level generation logic, and unique enemies.\n" +
+				"_The quest now takes place in a new sublevel, with one entirely new environment, and two more on the way in v2.3!_ Each environment has its own set of hazards, level generation logic, and unique enemies.\n" +
 				"\n" +
 				"_The quest area features a new mining mechanic._ In addition to digging out gold, you can tunnel through walls to create new routes and evade hazards.\n" +
 				"\n" +
@@ -294,16 +296,22 @@ public class v2_X_Changes {
 				"_-_ Further characters sometimes rendering on top of closer large characters\n" +
 				"\n" +
 				"_Allies & Enemies:_\n" +
+				"_-_ Damage caused to Yog's fists not correctly adding time to boss regen limit\n" +
 				"_-_ Ambitious Imp sometimes calling out to the hero when not visible\n" +
 				"_-_ Phantom Piranhas rapidly teleporting when corrupted\n" +
 				"_-_ DM-300 fight sometimes not having a safe route to a power pylon\n" +
+				"_-_ Mimics not dropping loot when they are killed via chasm while hiding\n" +
+				"_-_ Tengu very rarely throwing bombs ontop of each other\n" +
 				"_-_ The Rogue's body replacement talent not triggering effects like chasms and traps",
 
 				"_Items:_\n" +
 				"_-_ Dwarf King's Crown rarely triggering the effect of the runic transference talent\n" +
+				"_-_ Exploit where multiplicity curse could be used to skip some of Dwarf King's second phase\n" +
 				"_-_ Various errors with class armor conversion and Warrior's broken seal\n" +
+				"_-_ Ring of Force incorrectly displaying +99.99% when at +7, instead of +100%\n" +
 				"_-_ Living Earth and Transfusion wands granting their self-buffs when shooting NPCs\n" +
 				"_-_ Several obscure issues with noisemakers\n" +
+				"_-_ Trap effects from reclaim trap spell not scaling with ascension challenge\n" +
 				"\n" +
 				"_Misc.:_\n" +
 				"_-_ Various rare crash issues\n" +

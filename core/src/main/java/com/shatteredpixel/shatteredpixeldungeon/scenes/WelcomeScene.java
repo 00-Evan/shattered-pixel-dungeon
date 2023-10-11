@@ -201,8 +201,8 @@ public class WelcomeScene extends PixelScene {
 				message += "\n" + Messages.get(this, "patch_translations");
 
 			}
-			message = "Greetings beta testers, the new quest is finally online!\n\n" +
-					"There is currently only one variant, but I expect to get more working over the next few weeks. The exact mechanics and visuals are still a bit of a work in progress, so please let me know what you think!";
+			message = "Greetings beta testers!\n\n" +
+					"I've decided to change my plans a bit when it comes to the development and release of the new quest. v2.2.0 will now only include the crystal variant, but will be releasing much sooner! Expect the beta to wrap up around October 18th.";
 		} else {
 			message = Messages.get(this, "what_msg");
 		}
