@@ -975,10 +975,6 @@ public abstract class Level implements Bundlable {
 	}
 	
 	public Plant plant( Plant.Seed seed, int pos ) {
-		
-		if (Dungeon.isChallenged(Challenges.NO_HERBALISM)){
-			return null;
-		}
 
 		Plant plant = plants.get( pos );
 		if (plant != null) {
@@ -992,6 +988,11 @@ public abstract class Level implements Bundlable {
 				map[pos] == Terrain.EMPTY_DECO) {
 			set(pos, Terrain.GRASS, this);
 			GameScene.updateMap(pos);
+		}
+
+		//we have to get this far as grass placement has RNG implications in levelgen
+		if (Dungeon.isChallenged(Challenges.NO_HERBALISM)){
+			return null;
 		}
 		
 		plant = seed.couch( pos, this );
