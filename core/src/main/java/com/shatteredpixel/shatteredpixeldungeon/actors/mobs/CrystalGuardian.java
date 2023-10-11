@@ -95,7 +95,13 @@ public class CrystalGuardian extends Mob{
 	@Override
 	public int defenseSkill(Char enemy) {
 		if (recovering) return 0;
-		return super.defenseSkill(enemy);
+		else            return super.defenseSkill(enemy);
+	}
+
+	@Override
+	public boolean surprisedBy(Char enemy, boolean attacking) {
+		if (recovering) return false;
+		else            return super.surprisedBy(enemy, attacking);
 	}
 
 	@Override
