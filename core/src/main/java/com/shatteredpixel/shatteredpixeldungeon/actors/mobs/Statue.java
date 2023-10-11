@@ -54,14 +54,17 @@ public class Statue extends Mob {
 	public Statue() {
 		super();
 		
-		do {
-			weapon = (MeleeWeapon) Generator.random(Generator.Category.WEAPON);
-		} while (weapon.cursed);
-		
-		weapon.enchant( Enchantment.random() );
+		weapon = createWeapon();
 		
 		HP = HT = 15 + Dungeon.depth * 5;
 		defenseSkill = 4 + Dungeon.depth;
+	}
+
+	public Weapon createWeapon(){
+		Weapon weapon = (MeleeWeapon) Generator.random(Generator.Category.WEAPON);
+		weapon.cursed = false;
+		weapon.enchant( Enchantment.random() );
+		return weapon;
 	}
 	
 	private static final String WEAPON	= "weapon";

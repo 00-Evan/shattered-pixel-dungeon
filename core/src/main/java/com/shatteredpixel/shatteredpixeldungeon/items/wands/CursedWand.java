@@ -425,7 +425,7 @@ public class CursedWand {
 				origin.detach(Dungeon.hero.belongings.backpack);
 				Item result;
 				do {
-					result = Generator.random(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
+					result = Generator.randomUsingDefaults(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
 							Generator.Category.RING, Generator.Category.ARTIFACT));
 				} while (result.cursed);
 				if (result.isUpgradable()) result.upgrade();

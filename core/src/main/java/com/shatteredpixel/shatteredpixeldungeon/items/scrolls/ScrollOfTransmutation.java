@@ -280,7 +280,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 	private static Wand changeWand( Wand w ) {
 		Wand n;
 		do {
-			n = (Wand)Generator.random( Generator.Category.WAND );
+			n = (Wand)Generator.randomUsingDefaults( Generator.Category.WAND );
 		} while ( Challenges.isItemBlocked(n) || n.getClass() == w.getClass());
 		
 		n.level( 0 );
