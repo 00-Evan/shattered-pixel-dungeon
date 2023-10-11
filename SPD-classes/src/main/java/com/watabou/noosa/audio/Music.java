@@ -59,6 +59,7 @@ public enum Music {
 		}
 		
 		if (isPlaying() && lastPlayed != null && lastPlayed.equals( assetName )) {
+			player.setVolume(volumeWithFade());
 			return;
 		}
 		
@@ -101,7 +102,10 @@ public enum Music {
 				}
 			}
 
-			if (sameList) return;
+			if (sameList) {
+				player.setVolume(volumeWithFade());
+				return;
+			}
 		}
 
 		stop();
@@ -128,8 +132,13 @@ public enum Music {
 	}
 
 	public synchronized void fadeOut(float duration, Callback onComplete){
-		fadeTotal = duration;
-		fadeTime = 0f;
+		if (fadeTotal == -1f) {
+			fadeTotal = duration;
+			fadeTime = 0f;
+		} else {
+			fadeTime = (fadeTime/fadeTotal) * duration;
+			fadeTotal = duration;
+		}
 		onFadeOut = onComplete;
 	}
 
