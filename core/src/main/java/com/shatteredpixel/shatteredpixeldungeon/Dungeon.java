@@ -167,6 +167,14 @@ public class Dungeon {
 				}
 				
 			}
+
+			//pre-v2.2.0 saves
+			if (Dungeon.version < 750
+					&& Dungeon.isChallenged(Challenges.NO_SCROLLS)
+					&& UPGRADE_SCROLLS.count > 0){
+				//we now count SOU fully, and just don't drop every 2nd one
+				UPGRADE_SCROLLS.count += UPGRADE_SCROLLS.count-1;
+			}
 		}
 
 	}
@@ -519,12 +527,8 @@ public class Dungeon {
 	
 	public static boolean souNeeded() {
 		int souLeftThisSet;
-		//3 SOU each floor set, 1.5 (rounded) on forbidden runes challenge
-		if (isChallenged(Challenges.NO_SCROLLS)){
-			souLeftThisSet = Math.round(1.5f - (LimitedDrops.UPGRADE_SCROLLS.count - (depth / 5) * 1.5f));
-		} else {
-			souLeftThisSet = 3 - (LimitedDrops.UPGRADE_SCROLLS.count - (depth / 5) * 3);
-		}
+		//3 SOU each floor set
+		souLeftThisSet = 3 - (LimitedDrops.UPGRADE_SCROLLS.count - (depth / 5) * 3);
 		if (souLeftThisSet <= 0) return false;
 
 		int floorThisSet = (depth % 5);

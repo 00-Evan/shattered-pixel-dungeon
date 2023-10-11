@@ -196,16 +196,22 @@ public abstract class Level implements Bundlable {
 			addItemToSpawn(Generator.random(Generator.Category.FOOD));
 
 			if (Dungeon.posNeeded()) {
-				addItemToSpawn( new PotionOfStrength() );
 				Dungeon.LimitedDrops.STRENGTH_POTIONS.count++;
+				addItemToSpawn( new PotionOfStrength() );
 			}
 			if (Dungeon.souNeeded()) {
-				addItemToSpawn( new ScrollOfUpgrade() );
 				Dungeon.LimitedDrops.UPGRADE_SCROLLS.count++;
+				//every 2nd scroll of upgrade is removed with forbidden runes challenge on
+				//TODO while this does significantly reduce this challenge's levelgen impact, it doesn't quite remove it
+				//for 0 levelgen impact, we need to do something like give the player all SOU, but nerf them
+				//or give a random scroll (from a separate RNG) instead of every 2nd SOU
+				if (!Dungeon.isChallenged(Challenges.NO_SCROLLS) || Dungeon.LimitedDrops.UPGRADE_SCROLLS.count%2 != 0){
+					addItemToSpawn(new ScrollOfUpgrade());
+				}
 			}
 			if (Dungeon.asNeeded()) {
-				addItemToSpawn( new Stylus() );
 				Dungeon.LimitedDrops.ARCANE_STYLI.count++;
+				addItemToSpawn( new Stylus() );
 			}
 			//one scroll of transmutation is guaranteed to spawn somewhere on chapter 2-4
 			int enchChapter = (int)((Dungeon.seed / 10) % 3) + 1;
