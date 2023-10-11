@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -31,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.StatueSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
@@ -61,7 +63,13 @@ public class Statue extends Mob {
 	}
 
 	public Weapon createWeapon(){
-		Weapon weapon = (MeleeWeapon) Generator.random(Generator.Category.WEAPON);
+		Weapon weapon = null;
+		//this is a bit of a hack. I'm strongly considering redesigning this system code-wise though
+		if (ShatteredPixelDungeon.scene() instanceof InterlevelScene) {
+			weapon = (MeleeWeapon) Generator.random(Generator.Category.WEAPON);
+		} else {
+			weapon = (MeleeWeapon) Generator.randomUsingDefaults(Generator.Category.WEAPON);
+		}
 		weapon.cursed = false;
 		weapon.enchant( Enchantment.random() );
 		return weapon;

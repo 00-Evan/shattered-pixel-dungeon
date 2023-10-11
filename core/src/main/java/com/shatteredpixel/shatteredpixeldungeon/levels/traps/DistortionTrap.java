@@ -129,6 +129,7 @@ public class DistortionTrap extends Trap{
 							break;
 						case 3:
 							mob = Statue.random();
+							((Statue) mob).levelGenStatue = false;
 							break;
 					}
 					break;
