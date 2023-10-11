@@ -158,29 +158,30 @@ public class CrystalPathRoom extends SpecialRoom {
 		Painter.set(level, prize2, Terrain.PEDESTAL);
 
 		//random potion/scroll in rooms 1-4, with lower value ones going into earlier rooms
-		ArrayList<Item> rewardItems = new ArrayList<>();
+		ArrayList<Item> potions = new ArrayList<>();
+		ArrayList<Item> scrolls = new ArrayList<>();
 
 		ArrayList<Item> duplicates = new ArrayList<>();
 
-		addRewardItem(Generator.Category.POTION, rewardItems, duplicates);
-		addRewardItem(Generator.Category.SCROLL, rewardItems, duplicates);
-		addRewardItem(Generator.Category.POTION, rewardItems, duplicates);
-		addRewardItem(Generator.Category.SCROLL, rewardItems, duplicates);
 		if (Random.Int(2) == 0){
-			addRewardItem(Generator.Category.POTION, rewardItems, duplicates);
-			rewardItems.add(new ScrollOfTransmutation());
+			addRewardItem(Generator.Category.POTION, potions, duplicates);
+			scrolls.add(new ScrollOfTransmutation());
 		} else {
-			rewardItems.add(new PotionOfExperience());
-			addRewardItem(Generator.Category.SCROLL, rewardItems, duplicates);
+			potions.add(new PotionOfExperience());
+			addRewardItem(Generator.Category.SCROLL, scrolls, duplicates);
 		}
+		addRewardItem(Generator.Category.POTION, potions, duplicates);
+		addRewardItem(Generator.Category.SCROLL, scrolls, duplicates);
+		addRewardItem(Generator.Category.POTION, potions, duplicates);
+		addRewardItem(Generator.Category.SCROLL, scrolls, duplicates);
 
 		//need to undo the changes to spawn chances that the duplicates created
 		for (Item i : duplicates){
 			Generator.undoDrop(i);
 		}
 
-		//rarer potions/scroll go later in the order
-		Collections.sort(rewardItems, new Comparator<Item>() {
+		//rarer potions/scrolls go later in the order
+		Collections.sort(potions, new Comparator<Item>() {
 			@Override
 			public int compare(Item a, Item b) {
 				int aVal = 0, bVal = 0;
@@ -188,26 +189,32 @@ public class CrystalPathRoom extends SpecialRoom {
 					if (a.getClass() == Generator.Category.POTION.classes[i]) aVal = (int)Generator.Category.POTION.defaultProbs[i];
 					if (b.getClass() == Generator.Category.POTION.classes[i]) bVal = (int)Generator.Category.POTION.defaultProbs[i];
 				}
+				return bVal - aVal;
+			}
+		});
+		Collections.sort(scrolls, new Comparator<Item>() {
+			@Override
+			public int compare(Item a, Item b) {
+				int aVal = 0, bVal = 0;
 				for (int i = 0; i < Generator.Category.SCROLL.classes.length; i++){
 					if (a.getClass() == Generator.Category.SCROLL.classes[i]) aVal = (int)Generator.Category.SCROLL.defaultProbs[i];
 					if (b.getClass() == Generator.Category.SCROLL.classes[i]) bVal = (int)Generator.Category.SCROLL.defaultProbs[i];
 				}
-
-				return aVal - bVal;
+				return bVal - aVal;
 			}
 		});
 
 		//least valuable items go into rooms 2&3, then rooms 0&1, and finally 4&5
 		int shuffle = Random.Int(2);
-		level.drop(rewardItems.remove(0), level.pointToCell(rooms[shuffle == 1 ? 2 : 3].center()));
-		level.drop(rewardItems.remove(0), level.pointToCell(rooms[shuffle == 1 ? 3 : 2].center()));
+		level.drop(potions.remove(0), level.pointToCell(rooms[shuffle == 1 ? 2 : 3].center()));
+		level.drop(scrolls.remove(0), level.pointToCell(rooms[shuffle == 1 ? 3 : 2].center()));
 
-		level.drop(rewardItems.remove(0), level.pointToCell(rooms[shuffle == 1 ? 0 : 1].center()));
-		level.drop(rewardItems.remove(0), level.pointToCell(rooms[shuffle == 1 ? 1 : 0].center()));
+		level.drop(potions.remove(0), level.pointToCell(rooms[shuffle == 1 ? 0 : 1].center()));
+		level.drop(scrolls.remove(0), level.pointToCell(rooms[shuffle == 1 ? 1 : 0].center()));
 
 		//player can only see these if they unlock the previous doors, so don't count them for exploration
-		level.drop(rewardItems.remove(0), shuffle == 1 ? prize1 : prize2).autoExplored = true;
-		level.drop(rewardItems.remove(0), shuffle == 1 ? prize2 : prize1).autoExplored = true;
+		level.drop(potions.remove(0), shuffle == 1 ? prize1 : prize2).autoExplored = true;
+		level.drop(scrolls.remove(0), shuffle == 1 ? prize2 : prize1).autoExplored = true;
 
 		level.addItemToSpawn( new CrystalKey( Dungeon.depth ) );
 		level.addItemToSpawn( new CrystalKey( Dungeon.depth ) );
