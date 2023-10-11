@@ -137,6 +137,12 @@ public class MiningLevel extends CavesLevel {
 	}
 
 	@Override
+	public int mobLimit() {
+		//1 fewer than usual
+		return super.mobLimit()-1;
+	}
+
+	@Override
 	public Mob createMob() {
 		switch (Blacksmith.Quest.Type()){
 			default:
@@ -152,8 +158,8 @@ public class MiningLevel extends CavesLevel {
 
 	@Override
 	public float respawnCooldown() {
-		//normal enemies respawn more slowly here
-		return 2*TIME_TO_RESPAWN;
+		//normal enemies respawn much more slowly here
+		return 3*TIME_TO_RESPAWN;
 	}
 
 	@Override
