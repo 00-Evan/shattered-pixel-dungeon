@@ -25,13 +25,16 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.ImpShopkeeper;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Point;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 //shops probably shouldn't extend special room, because of cases like this.
 public class ImpShopRoom extends ShopRoom {
@@ -56,20 +59,11 @@ public class ImpShopRoom extends ShopRoom {
 
 	@Override
 	public void paint(Level level) {
-		Painter.fill( level, this, Terrain.WALL );
-		Painter.fill( level, this, 1, Terrain.EMPTY_SP );
-		Painter.fill( level, this, 3, Terrain.WATER);
-
-		for (Door door : connected.values()) {
-			door.set( Door.Type.REGULAR );
+		//this room isn't actually filled in until the city boss is defeated, at the earliest
+		//but we want to decide the items as part of levelgen
+		if (itemsToSpawn == null) {
+			itemsToSpawn = generateItems();
 		}
-
-		if (Imp.Quest.isCompleted()){
-			spawnShop(level);
-		} else {
-			impSpawned = false;
-		}
-
 	}
 
 	@Override
@@ -111,17 +105,22 @@ public class ImpShopRoom extends ShopRoom {
 	}
 
 	private static final String IMP = "imp_spawned";
+	private static final String ITEMS = "items";
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
 		bundle.put(IMP, impSpawned);
+		if (itemsToSpawn != null) bundle.put(ITEMS, itemsToSpawn);
 	}
 
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		impSpawned = bundle.getBoolean(IMP);
+		if (bundle.contains( ITEMS )) {
+			itemsToSpawn = new ArrayList<>((Collection<Item>) ((Collection<?>) bundle.getCollection(ITEMS)));
+		}
 	}
 
 	@Override
