@@ -71,7 +71,7 @@ public class CrystalVaultRoom extends SpecialRoom {
 
 		level.drop( i1, i1Pos ).type = Heap.Type.CRYSTAL_CHEST;
 		if (Random.Int(10) == 0){
-			level.mobs.add(Mimic.spawnAt(i2Pos, i2, CrystalMimic.class));
+			level.mobs.add(Mimic.spawnAt(i2Pos, CrystalMimic.class, i2));
 		} else {
 			level.drop(i2, i2Pos).type = Heap.Type.CRYSTAL_CHEST;
 		}

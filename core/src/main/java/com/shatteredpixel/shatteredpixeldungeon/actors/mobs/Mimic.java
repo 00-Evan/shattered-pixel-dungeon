@@ -46,7 +46,6 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 public class Mimic extends Mob {
 	
@@ -274,20 +273,19 @@ public class Mimic extends Mob {
 		return true;
 	}
 
-	public static Mimic spawnAt( int pos, Item item ){
-		return spawnAt( pos, Arrays.asList(item), Mimic.class);
+	public static Mimic spawnAt( int pos, Item... items){
+		return spawnAt(pos, Mimic.class, items);
 	}
 
-	public static Mimic spawnAt( int pos, Item item, Class mimicType ){
-		return spawnAt( pos, Arrays.asList(item), mimicType);
+	public static Mimic spawnAt( int pos, Class mimicType, Item... items){
+		return spawnAt(pos, mimicType, true, items);
 	}
 
-	public static Mimic spawnAt( int pos, List<Item> items ) {
-		return spawnAt( pos, items, Mimic.class);
+	public static Mimic spawnAt( int pos, boolean useDecks, Item... items){
+		return spawnAt(pos, Mimic.class, useDecks, items);
 	}
 
-	public static Mimic spawnAt( int pos, List<Item> items, Class mimicType ) {
-
+	public static Mimic spawnAt( int pos, Class mimicType, boolean useDecks, Item... items){
 		Mimic m;
 		if (mimicType == GoldenMimic.class){
 			m = new GoldenMimic();
@@ -297,17 +295,17 @@ public class Mimic extends Mob {
 			m = new Mimic();
 		}
 
-		m.items = new ArrayList<>( items );
+		m.items = new ArrayList<>( Arrays.asList(items) );
 		m.setLevel( Dungeon.depth );
 		m.pos = pos;
 
 		//generate an extra reward for killing the mimic
-		m.generatePrize();
-		
+		m.generatePrize(useDecks);
+
 		return m;
 	}
 
-	protected void generatePrize(){
+	protected void generatePrize( boolean useDecks ){
 		Item reward = null;
 		do {
 			switch (Random.Int(5)) {
@@ -315,16 +313,16 @@ public class Mimic extends Mob {
 					reward = new Gold().random();
 					break;
 				case 1:
-					reward = Generator.randomMissile(true);
+					reward = Generator.randomMissile(!useDecks);
 					break;
 				case 2:
 					reward = Generator.randomArmor();
 					break;
 				case 3:
-					reward = Generator.randomWeapon(true);
+					reward = Generator.randomWeapon(!useDecks);
 					break;
 				case 4:
-					reward = Generator.randomUsingDefaults(Generator.Category.RING);
+					reward = useDecks ? Generator.random(Generator.Category.RING) : Generator.randomUsingDefaults(Generator.Category.RING);
 					break;
 			}
 		} while (reward == null || Challenges.isItemBlocked(reward));

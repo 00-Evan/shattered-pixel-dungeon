@@ -357,7 +357,7 @@ public class CursedWand {
 					}
 				}
 
-				Mimic mimic = Mimic.spawnAt(spawnCell, new ArrayList<Item>(), GoldenMimic.class);
+				Mimic mimic = Mimic.spawnAt(spawnCell, GoldenMimic.class, false);
 				mimic.stopHiding();
 				mimic.alignment = Char.Alignment.ENEMY;
 				Item reward;

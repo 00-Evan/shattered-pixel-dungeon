@@ -58,7 +58,7 @@ public class GuardianTrap extends Trap {
 
 		for (int i = 0; i < (scalingDepth() - 5)/5; i++){
 			Guardian guardian = new Guardian();
-			guardian.createWeapon();
+			guardian.createWeapon(false);
 			guardian.state = guardian.WANDERING;
 			guardian.pos = Dungeon.level.randomRespawnCell( guardian );
 			if (guardian.pos != -1) {
@@ -81,7 +81,7 @@ public class GuardianTrap extends Trap {
 		}
 
 		@Override
-		public void createWeapon() {
+		public void createWeapon( boolean useDecks ) {
 			weapon = (MeleeWeapon) Generator.randomUsingDefaults(Generator.Category.WEAPON);
 			weapon.cursed = false;
 			weapon.enchant(null);

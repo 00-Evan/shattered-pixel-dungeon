@@ -386,7 +386,7 @@ public abstract class RegularLevel extends Level {
 					(toDrop.isUpgradable() && Random.Int(4 - toDrop.level()) == 0)){
 
 				if (Dungeon.depth > 1 && Random.Int(10) == 0 && findMob(cell) == null){
-					mobs.add(Mimic.spawnAt(cell, toDrop, GoldenMimic.class));
+					mobs.add(Mimic.spawnAt(cell, GoldenMimic.class, toDrop));
 				} else {
 					Heap dropped = drop(toDrop, cell);
 					if (heaps.get(cell) == dropped) {

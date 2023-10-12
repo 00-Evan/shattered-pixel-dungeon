@@ -82,8 +82,8 @@ public class GoldenMimic extends Mimic {
 	}
 
 	@Override
-	protected void generatePrize() {
-		super.generatePrize();
+	protected void generatePrize( boolean useDecks ) {
+		super.generatePrize( useDecks );
 		//all existing prize items are guaranteed uncursed, and have a 50% chance to be +1 if they were +0
 		for (Item i : items){
 			if (i instanceof EquipableItem || i instanceof Wand){
