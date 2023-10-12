@@ -26,9 +26,12 @@ import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DarkGold;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.BlacksmithRoom;
@@ -44,6 +47,7 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class Blacksmith extends NPC {
 	
@@ -269,6 +273,9 @@ public class Blacksmith extends NPC {
 		public static int hardens;
 		public static int upgrades;
 		public static int smiths;
+
+		//pre-generate these so they are consistent between seeds
+		public static ArrayList<Item> smithRewards;
 		
 		public static void reset() {
 			type        = 0;
@@ -286,6 +293,8 @@ public class Blacksmith extends NPC {
 			hardens     = 0;
 			upgrades    = 0;
 			smiths      = 0;
+
+			smithRewards = null;
 		}
 		
 		private static final String NODE	= "blacksmith";
@@ -305,6 +314,7 @@ public class Blacksmith extends NPC {
 		private static final String HARDENS	    = "hardens";
 		private static final String UPGRADES	= "upgrades";
 		private static final String SMITHS	    = "smiths";
+		private static final String SMITH_REWARDS = "smith_rewards";
 		
 		public static void storeInBundle( Bundle bundle ) {
 			
@@ -327,6 +337,8 @@ public class Blacksmith extends NPC {
 				node.put( HARDENS, hardens );
 				node.put( UPGRADES, upgrades );
 				node.put( SMITHS, smiths );
+
+				if (smithRewards != null) node.put( SMITH_REWARDS, smithRewards );
 			}
 			
 			bundle.put( NODE, node );
@@ -361,6 +373,10 @@ public class Blacksmith extends NPC {
 				upgrades = node.getInt( UPGRADES );
 				smiths = node.getInt( SMITHS );
 
+				if (node.contains( SMITH_REWARDS )){
+					smithRewards = new ArrayList<>((Collection<Item>) ((Collection<?>) node.getCollection( SMITH_REWARDS )));
+				}
+
 			} else {
 				reset();
 			}
@@ -378,9 +394,49 @@ public class Blacksmith extends NPC {
 				alternative = false;
 				
 				given = false;
+				generateRewards( true );
 				
 			}
 			return rooms;
+		}
+
+		public static void generateRewards( boolean useDecks ){
+			smithRewards = new ArrayList<>();
+			smithRewards.add(Generator.randomWeapon(3, useDecks));
+			smithRewards.add(Generator.randomWeapon(3, useDecks));
+			ArrayList<Item> toUndo = new ArrayList<>();
+			while (smithRewards.get(0).getClass() == smithRewards.get(1).getClass()) {
+				if (useDecks)   toUndo.add(smithRewards.get(1));
+				smithRewards.remove(1);
+				smithRewards.add(Generator.randomWeapon(3, useDecks));
+			}
+			for (Item i : toUndo){
+				Generator.undoDrop(i);
+			}
+			smithRewards.add(Generator.randomArmor(3));
+
+			//15%:+0, 55%:+1, 20%:+2, 5%:+3
+			int rewardLevel;
+			float itemLevelRoll = Random.Float();
+			if (itemLevelRoll < 0.2f){
+				rewardLevel = 0;
+			} else if (itemLevelRoll < 0.75f){
+				rewardLevel = 1;
+			} else if (itemLevelRoll < 0.95f){
+				rewardLevel = 2;
+			} else {
+				rewardLevel = 3;
+			}
+
+			for (Item i : smithRewards){
+				i.level(rewardLevel);
+				if (i instanceof Weapon) {
+					((Weapon) i).enchant(null);
+				} else if (i instanceof Armor){
+					((Armor) i).inscribe(null);
+				}
+				i.cursed = false;
+			}
 		}
 
 		public static int Type(){

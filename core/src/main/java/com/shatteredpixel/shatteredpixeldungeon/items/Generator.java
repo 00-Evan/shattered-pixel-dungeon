@@ -537,6 +537,7 @@ public class Generator {
 	}
 
 	//reverts changes to drop chances generates by this item
+	//equivalent of shuffling the card back into the deck, does not preserve order!
 	public static void undoDrop(Item item){
 		for (Category cat : Category.values()){
 			if (item.getClass().isAssignableFrom(cat.superClass)){

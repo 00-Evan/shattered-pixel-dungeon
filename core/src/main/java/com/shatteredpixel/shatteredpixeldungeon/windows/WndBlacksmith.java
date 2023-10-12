@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
@@ -47,7 +46,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -438,10 +436,6 @@ public class WndBlacksmith extends Window {
 		private static final int BTN_GAP	= 5;
 		private static final int GAP		= 2;
 
-		Item[] rewards = new Item[3];
-
-		int rewardLevel;
-
 		public WndSmith( Blacksmith troll, Hero hero ){
 			super();
 
@@ -458,35 +452,13 @@ public class WndBlacksmith extends Window {
 			message.setPos(0, titlebar.bottom() + GAP);
 			add( message );
 
-			rewards[0] = Generator.randomWeapon(3, true);
-			do {
-				rewards[1] = Generator.randomWeapon(3, true);
-			} while (rewards[0].getClass() == rewards[1].getClass());
-			rewards[2] = Generator.randomArmor(3);
-
-			//15%:+0, 55%:+1, 20%:+2, 5%:+3
-			float itemLevelRoll = Random.Float();
-			if (itemLevelRoll < 0.2f){
-				rewardLevel = 0;
-			} else if (itemLevelRoll < 0.75f){
-				rewardLevel = 1;
-			} else if (itemLevelRoll < 0.95f){
-				rewardLevel = 2;
-			} else {
-				rewardLevel = 3;
+			if (Blacksmith.Quest.smithRewards == null || Blacksmith.Quest.smithRewards.isEmpty()){
+				Blacksmith.Quest.generateRewards(false);
 			}
 
 			int count = 0;
-			for (Item i : rewards){
+			for (Item i : Blacksmith.Quest.smithRewards){
 				count++;
-				i.level(rewardLevel);
-				if (i instanceof Weapon) {
-					((Weapon) i).enchant(null);
-				} else if (i instanceof Armor){
-					((Armor) i).inscribe(null);
-				}
-				i.cursed = false;
-
 				ItemButton btnReward = new ItemButton(){
 					@Override
 					protected void onClick() {
@@ -526,6 +498,7 @@ public class WndBlacksmith extends Window {
 							Dungeon.level.drop( item, Dungeon.hero.pos ).sprite.drop();
 						}
 						WndSmith.this.hide();
+						Blacksmith.Quest.smithRewards = null;
 					}
 				};
 				btnConfirm.setRect(0, height+2, width/2-1, 16);
