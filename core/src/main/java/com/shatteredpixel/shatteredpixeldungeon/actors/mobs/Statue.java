@@ -56,14 +56,11 @@ public class Statue extends Mob {
 	public Statue() {
 		super();
 		
-		weapon = createWeapon();
-		
 		HP = HT = 15 + Dungeon.depth * 5;
 		defenseSkill = 4 + Dungeon.depth;
 	}
 
-	public Weapon createWeapon(){
-		Weapon weapon = null;
+	public void createWeapon(){
 		//this is a bit of a hack. I'm strongly considering redesigning this system code-wise though
 		if (ShatteredPixelDungeon.scene() instanceof InterlevelScene) {
 			weapon = (MeleeWeapon) Generator.random(Generator.Category.WEAPON);
@@ -72,7 +69,6 @@ public class Statue extends Mob {
 		}
 		weapon.cursed = false;
 		weapon.enchant( Enchantment.random() );
-		return weapon;
 	}
 	
 	private static final String WEAPON	= "weapon";
@@ -195,11 +191,14 @@ public class Statue extends Mob {
 	}
 
 	public static Statue random(){
+		Statue statue = null;
 		if (Random.Int(10) == 0){
-			return new ArmoredStatue();
+			statue = new ArmoredStatue();
 		} else {
-			return new Statue();
+			statue = new Statue();
 		}
+		statue.createWeapon();
+		return statue;
 	}
 	
 }

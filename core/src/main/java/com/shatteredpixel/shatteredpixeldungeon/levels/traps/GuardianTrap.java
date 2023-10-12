@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Statue;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -59,6 +58,7 @@ public class GuardianTrap extends Trap {
 
 		for (int i = 0; i < (scalingDepth() - 5)/5; i++){
 			Guardian guardian = new Guardian();
+			guardian.createWeapon();
 			guardian.state = guardian.WANDERING;
 			guardian.pos = Dungeon.level.randomRespawnCell( guardian );
 			if (guardian.pos != -1) {
@@ -81,12 +81,11 @@ public class GuardianTrap extends Trap {
 		}
 
 		@Override
-		public Weapon createWeapon() {
-			Weapon w = (MeleeWeapon) Generator.randomUsingDefaults(Generator.Category.WEAPON);
-			w.cursed = false;
-			w.enchant(null);
-			w.level(0);
-			return w;
+		public void createWeapon() {
+			weapon = (MeleeWeapon) Generator.randomUsingDefaults(Generator.Category.WEAPON);
+			weapon.cursed = false;
+			weapon.enchant(null);
+			weapon.level(0);
 		}
 
 		@Override
