@@ -207,7 +207,12 @@ public class Blacksmith extends NPC {
 			Game.runOnRenderThread(new Callback() {
 				@Override
 				public void call() {
-					GameScene.show( new WndBlacksmith( Blacksmith.this, Dungeon.hero ) );
+					//in case game was closed during smith reward selection
+					if (Quest.smithRewards != null && Quest.smiths > 0){
+						GameScene.show( new WndBlacksmith.WndSmith( Blacksmith.this, Dungeon.hero ) );
+					} else {
+						GameScene.show(new WndBlacksmith(Blacksmith.this, Dungeon.hero));
+					}
 				}
 			});
 
