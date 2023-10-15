@@ -86,6 +86,29 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("RC-1", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Environment.TILES_CAVES, 192, 64, 16, 16), "Spritework Improvements",
+				"_-_ Crystal terrain visuals have been heavily improved\n" +
+				"_-_ Crystal spire sprite has been modestly improved\n" +
+				"_-_ Crystal guardian sprite has been modestly improved\n\n" +
+				"I'd like to make a few more improvements before v2.2.0 releases if time permits, but I may end up them in patches instead."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ New blacksmith reward items are now affected by dungeon seed.\n\n" +
+				"_-_ The game now correctly handles being closed while selecting a smithing reward.\n\n" +
+				"_-_ Heroes other than the duelist can now quickslot weapons if they get the swift equip talent."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by BETA:_\n" +
+				"_-_ Ethereal chains not working correctly in new mining area\n" +
+				"\n" +
+				"_Existed Prior to BETA:_\n" +
+				"_-_ Rare cases where levelgen would spawn different weapons on the same seed"));
+
 		changes = new ChangeInfo("BETA-1.3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
@@ -160,24 +183,7 @@ public class v2_X_Changes {
 				"_-_ Crystal spire attacks moving immovable characters\n" +
 				"_-_ Rogue's foresight triggering on quest sub floors"));
 
-		changes = new ChangeInfo("BETA-1.1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by BETA:_\n" +
-				"_-_ Various cases where the pickaxe could be lost during the quest, softlocking the game\n" +
-				"_-_ Softlocks when sleeping crystal guardians are debuffed\n" +
-				"_-_ Downed crystal guardians not dropping projectiles stuck to them\n" +
-				"_-_ On-hit effects being triggerable on down crystal guardians\n" +
-				"_-_ Quest level not spawning a torch during the into darkness challenge\n" +
-				"\n" +
-				"_Existed Prior to BETA:_\n" +
-				"_-_ Piranhas throwing themselves off chasms in very rare cases\n" +
-				"_-_ Various minor visual and textual issues\n"));
-
-		changes = new ChangeInfo("BETA-1.0", false, null);
+		changes = new ChangeInfo("BETA-1.0 & 1.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
@@ -200,6 +206,19 @@ public class v2_X_Changes {
 				"_-_ Horn of Plenty occasionally having the wrong visuals for its charge state\n" +
 				"_-_ Physical empower buff incorrectly stacking in specific cases"));
 
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by BETA:_\n" +
+				"_-_ Various cases where the pickaxe could be lost during the quest, softlocking the game\n" +
+				"_-_ Softlocks when sleeping crystal guardians are debuffed\n" +
+				"_-_ Downed crystal guardians not dropping projectiles stuck to them\n" +
+				"_-_ On-hit effects being triggerable on down crystal guardians\n" +
+				"_-_ Quest level not spawning a torch during the into darkness challenge\n" +
+				"\n" +
+				"_Existed Prior to BETA:_\n" +
+				"_-_ Piranhas throwing themselves off chasms in very rare cases\n" +
+				"_-_ Various minor visual and textual issues\n"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
@@ -214,7 +233,7 @@ public class v2_X_Changes {
 				"_The quest rewards are also massively expanded._ The better you do on the quest, the more favor you'll earn in exchange for blacksmithing services. The old reforge option is still available, but there are several new options too."));
 
 		changes.addButton( new ChangeButton(Icons.AUDIO.get(), "New Music!",
-				"_Shattered Pixel Dungeon's soundtrack has been massively expanded!_ The game's soundtrack runtime has doubled in total, with almost 20 minutes of new audio by the game's composer: Kristjan Thomas Harristo.\n" +
+				"_Shattered Pixel Dungeon's soundtrack has been massively expanded!_ The game's soundtrack runtime has doubled in total, with almost 20 minutes of new audio by the game's composer: Kristjan Thomas Haaristo.\n" +
 				"\n" +
 				"_The existing region tracks have been expanded._ Each track now has three total segments, instead of two. All of these segments play in a semi-random pattern, increasing variety for the game's more frequently heard music.\n" +
 				"\n" +
