@@ -184,7 +184,7 @@ public class Pickaxe extends MeleeWeapon {
 		} else if (Blacksmith.Quest.oldMiningQuest()) {
 			return AC_MINE;
 		} else {
-			return defaultAction;
+			return super.defaultAction();
 		}
 	}
 
