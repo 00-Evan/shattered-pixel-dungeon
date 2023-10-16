@@ -119,6 +119,11 @@ public abstract class CrystalSpireSprite extends MobSprite {
 		}
 	}
 
+	@Override
+	public void turnTo(int from, int to) {
+		//do nothing
+	}
+
 	protected abstract int texOffset();
 
 	public static class Blue extends CrystalSpireSprite {

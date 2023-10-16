@@ -423,6 +423,11 @@ public class SentryRoom extends SpecialRoom {
 		}
 
 		@Override
+		public void turnTo(int from, int to) {
+			//do nothing
+		}
+
+		@Override
 		public void update() {
 			super.update();
 			if (chargeParticles != null){
