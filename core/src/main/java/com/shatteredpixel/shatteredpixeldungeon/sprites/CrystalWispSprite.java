@@ -73,7 +73,7 @@ public abstract class CrystalWispSprite extends MobSprite {
 				light.alpha(0.3f);
 				((CrystalWisp)ch).onZapComplete();
 				Beam ray = new Beam.LightRay(center(), DungeonTilemap.raisedTileCenterToWorld(cell));
-				ray.hardlight(blood());
+				ray.hardlight(blood() & 0x00FFFFFF);
 				parent.add( ray );
 			}
 		});
