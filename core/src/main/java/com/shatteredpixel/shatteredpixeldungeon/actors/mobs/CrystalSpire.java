@@ -396,10 +396,8 @@ public class CrystalSpire extends Mob {
 								if (ch instanceof CrystalGuardian){
 									if (((CrystalGuardian) ch).state == ((CrystalGuardian) ch).SLEEPING) {
 
+										((CrystalGuardian) ch).aggro(Dungeon.hero);
 										((CrystalGuardian) ch).beckon(pos);
-										if (((CrystalGuardian) ch).state != HUNTING) {
-											((CrystalGuardian) ch).aggro(Dungeon.hero);
-										}
 
 										//delays sleeping guardians that happen to be near to the crystal
 										if (PathFinder.distance[ch.pos] < 20){

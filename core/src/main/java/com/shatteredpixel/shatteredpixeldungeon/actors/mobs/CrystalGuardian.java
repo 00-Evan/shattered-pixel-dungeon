@@ -213,6 +213,15 @@ public class CrystalGuardian extends Mob{
 		return passable;
 	}
 
+	@Override
+	public void beckon(int cell) {
+		if (state == SLEEPING){
+			//do nothing
+		} else {
+			super.beckon(cell);
+		}
+	}
+
 	protected class Sleeping extends Mob.Sleeping{
 
 		@Override
