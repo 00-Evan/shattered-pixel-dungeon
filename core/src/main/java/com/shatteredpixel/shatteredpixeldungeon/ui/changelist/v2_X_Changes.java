@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Whip;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.BruteSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -46,7 +47,7 @@ import java.util.ArrayList;
 public class v2_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
-		//add_Coming_Soon(changeInfos);
+		add_Coming_Soon(changeInfos);
 		add_v2_2_Changes(changeInfos);
 		add_v2_1_Changes(changeInfos);
 		add_v2_0_Changes(changeInfos);
@@ -65,165 +66,37 @@ public class v2_X_Changes {
 		}
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Overview",
-				"The next update will be v2.2.0, and will include a complete rework of the blacksmith quest!\n" +
+				"The next update will be v2.3.0, and will add two new variants to the new caves quest!\n" +
 				"\n" +
-				"I'll probably start to have a more clear idea of how long v2.2.0 will take after I finish releasing patches for v2.1.0, but I think that a total dev time of 3 months or so is a relatively safe bet. Please keep in mind that while I always try to keep to the ETAs I provide, they are just estimates. If you don't hear from me by the ETA, it means I'm still busy with the update!"));
+				"The new caves quest ended up taking quite a lot longer than intended, so I'm a bit hesitant to commit to an ETA for v2.3.0 currently. I should hopefully be able to announce something later in November or early December. Please keep in mind that while I always try to keep to the ETAs I provide, they are just estimates. If you don't hear from me by the ETA, it means I'm still busy with the update!"));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.CHANGES), "Larger Patches",
-				"There is a decent amount of technical work that still needs to be done for v2.2.0, and I can easily introduce that into the game via some patches to v2.1.0. Because of this, I expect that v2.1 is going to have a longer patch cycle than usual, as I'll be both including those technical changes and taking the opportunity to fix a bunch of smaller issues sooner than if I waiting to release them in v2.2.0."));
+		changes.addButton( new ChangeButton(new Image(new BruteSprite()), "Gnoll Encampment",
+				"The first of the upcoming caves quest variants is an unstable gnoll encampment. The gnolls have taken to trying to mine out some gold themselves, but are preferring to use earth-moving magic with little care for cave stability. Expect a lot of closed in walls and fallen rocks, as well as gnolls that'll be able to use those rocks against you."));
 
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.PICKAXE), "Blacksmith Quest",
-				"I plan to completely rework the blacksmith's quest in v2.2.0, to feature a new sub area and a unique mining mechanic. The player will need to mine out walls both to collect treasure and to navigate around hazards. I expect the quest will be notably more involved and challenging, but there will be new rewards on offer a well!"));
+		changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_CAVES, 32, 64, 16, 16), "Mushroom Forest",
+				"The second upcoming variant is a mushroom forest. A large mycellium network has grown in this area, creating lots of hostile plant life. The abundance of tall vegetation isn't just pretty tough, you'll want to use it (or the cave walls themselves) to keep out of sight from the powerful, yet stationary, mushroom sentries."));
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Smaller Changes/Fixes",
-				"As always, there will be some amount of smaller improvements, fixes, and additions both in v2.2.0 and during v2.1's longer than usual patch cycle. I expect that v2.2.0 is going to be mainly focused on the blacksmith quest though, so any new additions aside from that will be relatively minor. In terms of fixes, I plan to keep an eye on the Duelist and weapons in general after the changes in v2.1.0."));
+				"I also expect v2.3.0 will include followup changes to the initial new quest variant, as well as the usual assortment of other smaller improvements, fixes, and additions. I'd like for v2.3.0 to be fairly quick, so the other changes will probably be lighter than usual."));
 
 	}
 
 	public static void add_v2_2_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v2.2-BETA", true, "");
+		ChangeInfo changes = new ChangeInfo("v2.2", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("RC-1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Environment.TILES_CAVES, 192, 64, 16, 16), "Spritework Improvements",
-				"_-_ Crystal terrain visuals have been heavily improved\n" +
-				"_-_ Crystal spire sprite has been modestly improved\n" +
-				"_-_ Crystal guardian sprite has been modestly improved\n\n" +
-				"I'd like to make a few more improvements before v2.2.0 releases if time permits, but I may end up them in patches instead."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ New blacksmith reward items are now affected by dungeon seed.\n\n" +
-				"_-_ The game now correctly handles being closed while selecting a smithing reward.\n\n" +
-				"_-_ Heroes other than the duelist can now quickslot weapons if they get the swift equip talent."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by BETA:_\n" +
-				"_-_ Ethereal chains not working correctly in new mining area\n" +
-				"\n" +
-				"_Existed Prior to BETA:_\n" +
-				"_-_ Rare cases where levelgen would spawn different weapons on the same seed"));
-
-		changes = new ChangeInfo("BETA-1.3", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(Icons.SHPX.get(), "Release Plan Changes",
-				"I have decided to split the release of the new caves quest into two updates.  This way everyone can enjoy the first quest variant very soon, I can work on the next two variants under a bit less time pressure, and I can get a wider breadth of feedback on the new quest sooner.\n\n" +
-				"With this release schedule change, the only thing left to get finished with the v2.2.0 beta is some visual improvements to the crystal caves quest and fixes for any more bugs that pop up.\n\n" +
-				"I am still happy to hear feedback about the new quest if anyone wants to offer it: Evan@ShatteredPixel.com"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Environment.TILES_CAVES, 224, 64, 16, 16), "Crystal Caves Changes",
-				"The crystal caves quest starting to look like it's in a pretty decent space in terms of difficulty now, especially as success rates naturally climb as players get used to the new mechanics. I am making a couple tweaks though, to reduce difficulty a little bit:\n\n" +
-				"_- Crystal Guardian_ melee damage reduced by ~13%\n" +
-				"_- Crystal Wisp_ initial spawn count reduced by 1\n" +
-				"_- Crystal Wisp_ respawn delay increased by 50%\n\n" +
-				"I've also made one early improvement to the crystal spritework. The crystal terrain is now darker in appearance, so that it better blends in with the existing caves terrain."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Improved several parts of blackmith reward selection UI.\n" +
-				"_-_ Various minor textual fixes/improvements.\n" +
-				"_-_ Substantially reduced the forbidden runes challenge's effect on levelgen."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by BETA:_\n" +
-				"_-_ Various rare crash bugs\n" +
-				"_-_ Various minor visual and textual errors\n" +
-				"_-_ Various errors with item placement in new crystal path rooms\n" +
-				"_-_ Cases where music would cut out when it should just fade\n" +
-				"_-_ Crystal spire not finishing attacks if hero leaves its FOV\n" +
-				"_-_ Allies repeatedly attacking recovering crystal guardians\n" +
-				"_-_ Crystal guardians having evasion while recovering\n" +
-				"_-_ Badges not being triggered by blacksmith's upgrade reward\n" +
-				"_-_ Blacksmith rarely blocking doors on the corner of his room\n" +
-				"_-_ Cancelling scrolls spending turns\n" +
-				"\n" +
-				"_Existed Prior to BETA:_\n" +
-				"_-_ Into Darkness and Barren Land challenges affecting levelgen\n" +
-				"_-_ Items in Imp's shop not being affected by dungeon seed\n" +
-				"_-_ Various rare cases where levelgen could differ between two runs on the same seed\n" +
-				"_-_ Followup strike buff rarely not clearing when enemies die"));
-
-		changes = new ChangeInfo("BETA-1.2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Environment.TILES_CAVES, 208, 64, 16, 16), "Caves Quest Balance Changes",
-				"I'm making a number of balance tweaks to the new quest, with the goal of reducing overall difficulty and also shifting some difficulty into the exploration stage.\n\n" +
-				"Firstly, I'm scaling back the hunger punishment for mining walls:\n" +
-				"_-_ Hunger cost for mining rock walls reduced by 33%\n\n" +
-				"_Crystal Wisps_ were always intended to be a bit weak, but currently they're barely even an annoyance. They've been re-tuned so that their ranged damage is now more of a real threat:\n" +
-				"_-_ Wisp magic damage increased by 50%\n" +
-				"_-_ Wisp melee damage increased by 15%\n" +
-				"_-_ Wisp accuracy increased by 12.5%\n" +
-				"_-_ Wisp HP down to 30 from 35",
-				"The _Crystal Spire_ is getting a number of tweaks to make the fight against it a bit less intense:\n" +
-				"_-_ Spire attack delay increased by 25%\n" +
-				"_-_ Spire's first attack is now on a slight delay\n" +
-				"_-_ Spire attack damage vs. allies reduced by 12.5%\n" +
-				"_-_ Spire attack damage vs. guardians increased by 12.5%\n" +
-				"_-_ Spire attack now cripples guardians for 30 turns, up from 20\n" +
-				"_-_ Spire's attack now always occurs after crystal guardians move, making it slightly easier to bait them into it."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Various minor textual improvements\n" +
-				"_-_ Added some analytics tracking code for the new quests, to give me better data about balance."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by BETA:_\n" +
-				"_-_ Instant crashes for users on Android 4.4-\n" +
-				"_-_ Additional rare softlocks during crystal spire fight\n" +
-				"_-_ Crystal spire attacks moving immovable characters\n" +
-				"_-_ Rogue's foresight triggering on quest sub floors"));
-
-		changes = new ChangeInfo("BETA-1.0 & 1.1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Environment.TILES_CAVES, 192, 64, 16, 16), "Caves Quest Rework Pt.1!",
-				"_The first of three variants for the new quest is now active!_\n\n" +
-				"This quest variant places the hero in a cave sub-region full of fragile crystals and tougher crystalline enemies. Watch your step, as some enemies will only attack you once disturbed...\n\n" +
-				"The new quest scoring system and rewards are also available, so make sure to get lots of gold if you want some of the new loot!\n\n" +
-				"_While the quest and rewards are fully playable, there's definitely still some refinement needed. Please let me know what you think!_"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by BETA:_\n" +
-				"_-_ Various rare crash & freeze bugs\n" +
-				"_-_ Sacrificial fire unintentionally working with allies\n" +
-				"_-_ Various minor music hiccups\n" +
-				"\n" +
-				"_Existed Prior to BETA:_\n" +
-				"_-_ Crashes caused by text input windows for controller users\n" +
-				"_-_ Cases where default keybindings could override custom ones\n" +
-				"_-_ Horn of Plenty occasionally having the wrong visuals for its charge state\n" +
-				"_-_ Physical empower buff incorrectly stacking in specific cases"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by BETA:_\n" +
-				"_-_ Various cases where the pickaxe could be lost during the quest, softlocking the game\n" +
-				"_-_ Softlocks when sleeping crystal guardians are debuffed\n" +
-				"_-_ Downed crystal guardians not dropping projectiles stuck to them\n" +
-				"_-_ On-hit effects being triggerable on down crystal guardians\n" +
-				"_-_ Quest level not spawning a torch during the into darkness challenge\n" +
-				"\n" +
-				"_Existed Prior to BETA:_\n" +
-				"_-_ Piranhas throwing themselves off chasms in very rare cases\n" +
-				"_-_ Various minor visual and textual issues\n"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.PICKAXE), "New Blacksmith Quest!",
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released October 18th, 2023\n" +
+				"_-_ 138 days after Shattered v2.1.0\n\n" +
+				"Dev commentary will be added here in the future."));
+
+		changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_CAVES, 192, 64, 16, 16), "New Blacksmith Quest!",
 				"_Shattered Pixel Dungeon's blacksmith quest has been completely redone!_\n" +
 				"\n" +
 				"_The quest now takes place in a new sublevel, with one entirely new environment, and two more on the way in v2.3!_ Each environment has its own set of hazards, level generation logic, and unique enemies.\n" +
@@ -298,9 +171,11 @@ public class v2_X_Changes {
 				"_-_ There is now a Google Play achievements button in the badges screen, if Google Play Games is enabled\n" +
 				"_-_ Indicators now lower into empty space below them after the hero takes an action, not whenever new indicators appear\n" +
 				"_-_ The game's tutorial is now skipped if there is existing gameplay data (e.g. via Google Play Games sync)\n" +
-				"\n" +
-				"_Other:_\n" +
+				"_-_ Heroes other than the duelist can now quickslot weapons if they get the swift equip talent.",
+
+				"_Misc.:_\n" +
 				"_-_ Overhauled retreating enemy AI. Retreating enemies should get stuck far less often, and terrified enemies are unable to approach the hero.\n" +
+				"_-_ Substantially reduced the forbidden runes challenge's effect on levelgen\n" +
 				"_-_ Healing effects still do not stack, but now combine more effectively\n" +
 				"_-_ Added dev commentary for v1.1.0\n" +
 				"_-_ The Google Play version of Shattered now uses Google Play Games v2, which requires Android 4.4+\n" +
@@ -313,16 +188,6 @@ public class v2_X_Changes {
 				"_-_ Some items being incorrectly consumed when the game is closed while they are being used\n" +
 				"_-_ Mage's Staff not being affected by the degrade debuff\n" +
 				"_-_ Further characters sometimes rendering on top of closer large characters\n" +
-				"\n" +
-				"_Allies & Enemies:_\n" +
-				"_-_ Damage caused to Yog's fists not correctly adding time to boss regen limit\n" +
-				"_-_ Ambitious Imp sometimes calling out to the hero when not visible\n" +
-				"_-_ Phantom Piranhas rapidly teleporting when corrupted\n" +
-				"_-_ DM-300 fight sometimes not having a safe route to a power pylon\n" +
-				"_-_ Mimics not dropping loot when they are killed via chasm while hiding\n" +
-				"_-_ Tengu very rarely throwing bombs ontop of each other\n" +
-				"_-_ The Rogue's body replacement talent not triggering effects like chasms and traps",
-
 				"_Items:_\n" +
 				"_-_ Dwarf King's Crown rarely triggering the effect of the runic transference talent\n" +
 				"_-_ Exploit where multiplicity curse could be used to skip some of Dwarf King's second phase\n" +
@@ -331,15 +196,32 @@ public class v2_X_Changes {
 				"_-_ Living Earth and Transfusion wands granting their self-buffs when shooting NPCs\n" +
 				"_-_ Several obscure issues with noisemakers\n" +
 				"_-_ Trap effects from reclaim trap spell not scaling with ascension challenge\n" +
-				"\n" +
+				"_-_ Horn of Plenty occasionally having the wrong visuals for its charge state",
+
+				"_Allies & Enemies:_\n" +
+				"_-_ Damage caused to Yog's fists not correctly adding time to boss regen limit\n" +
+				"_-_ Ambitious Imp sometimes calling out to the hero when not visible\n" +
+				"_-_ Phantom Piranhas rapidly teleporting when corrupted\n" +
+				"_-_ DM-300 fight sometimes not having a safe route to a power pylon\n" +
+				"_-_ Mimics not dropping loot when they are killed via chasm while hiding\n" +
+				"_-_ Tengu very rarely throwing bombs ontop of each other\n" +
+				"_-_ Piranhas throwing themselves off chasms in very rare cases\n" +
+				"_-_ The Rogue's body replacement talent not triggering effects like chasms and traps\n" +
+				"_-_ Followup strike buff rarely not clearing when enemies die",
+
 				"_Misc.:_\n" +
 				"_-_ Various rare crash issues\n" +
-				"_-_ Various minor textual errors\n" +
+				"_-_ Various minor visual and textual errors\n" +
+				"_-_ Various rare cases where levelgen could differ between two runs on the same seed\n" +
+				"_-_ Into Darkness and Barren Land challenges affecting levelgen\n" +
+				"_-_ Items in Imp's shop not being affected by dungeon seed\n" +
 				"_-_ Gold ore appearing on the back face of walls in regular caves levels\n" +
 				"_-_ Starflower plant VFX triggering even when out of the hero's FOV\n" +
 				"_-_ Storm Clouds not correctly clearing fire or harming fiery enemies\n" +
+				"_-_ Cases where pushing effects could cause pitfalls to trigger early\n" +
 				"_-_ Combining diagonal direction keys on desktop causing rare errors\n" +
-				"_-_ Cases where pushing effects could cause pitfalls to trigger early"));
+				"_-_ Cases where default keybindings could override custom ones\n" +
+				"_-_ Crashes caused by text input windows for controller users"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight(CharSprite.POSITIVE);
