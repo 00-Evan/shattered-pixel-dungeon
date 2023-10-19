@@ -51,7 +51,10 @@ public class Endure extends ArmorAbility {
 	@Override
 	protected void activate(ClassArmor armor, Hero hero, Integer target) {
 
-		Buff.prolong(hero, EndureTracker.class, 13f);
+		if (hero.buff(EndureTracker.class) != null){
+			hero.buff(EndureTracker.class).detach();
+		}
+		Buff.prolong(hero, EndureTracker.class, 12f);
 
 		Combo combo = hero.buff(Combo.class);
 		if (combo != null){
@@ -83,7 +86,7 @@ public class Endure extends ArmorAbility {
 
 		@Override
 		public void tintIcon(Image icon) {
-			super.tintIcon(icon);
+			icon.hardlight(1, 0, 0);
 		}
 
 		@Override
