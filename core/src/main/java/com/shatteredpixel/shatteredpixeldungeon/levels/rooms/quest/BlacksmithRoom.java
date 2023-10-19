@@ -105,6 +105,15 @@ public class BlacksmithRoom extends StandardRoom {
 		}
 	}
 
+	@Override
+	public boolean canPlaceCharacter(Point p, Level l) {
+		if (l.map[l.pointToCell(p)] == Terrain.EXIT){
+			return false;
+		} else {
+			return super.canPlaceCharacter(p, l);
+		}
+	}
+
 	public static class QuestEntrance extends CustomTilemap {
 
 		{
