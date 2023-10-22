@@ -104,7 +104,7 @@ public class IOSLauncher extends IOSApplication.Delegate {
 		config.hideHomeIndicator = SPDSettings.fullscreen();
 		config.overrideRingerSwitch = SPDSettings.ignoreSilentMode();
 
-		config.screenEdgesDeferringSystemGestures = UIRectEdge.All;
+		config.screenEdgesDeferringSystemGestures = UIRectEdge.None;
 
 		if (NSProcessInfo.getSharedProcessInfo().getOperatingSystemVersion().getMajorVersion() >= 11) {
 			config.preferredFramesPerSecond = (int)(UIScreen.getMainScreen().getMaximumFramesPerSecond());
