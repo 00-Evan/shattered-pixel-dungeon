@@ -223,6 +223,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		n.cursedKnown = w.cursedKnown;
 		n.cursed = w.cursed;
 		n.augment = w.augment;
+		n.enchantHardened = w.enchantHardened;
 		
 		return n;
 		
