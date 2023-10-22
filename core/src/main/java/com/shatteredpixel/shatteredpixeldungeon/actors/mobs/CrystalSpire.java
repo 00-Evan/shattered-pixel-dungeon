@@ -292,6 +292,11 @@ public class CrystalSpire extends Mob {
 	}
 
 	@Override
+	public boolean isInvulnerable(Class effect) {
+		return effect != Pickaxe.class;
+	}
+
+	@Override
 	public boolean add( Buff buff ) {
 		return false; //immune to all buffs and debuffs
 	}
