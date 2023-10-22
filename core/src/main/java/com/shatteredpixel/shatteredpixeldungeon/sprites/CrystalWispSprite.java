@@ -111,8 +111,8 @@ public abstract class CrystalWispSprite extends MobSprite {
 	}
 
 	@Override
-	public void destroy() {
-		super.destroy();
+	public void kill() {
+		super.kill();
 		if (light != null){
 			light.killAndErase();
 		}
