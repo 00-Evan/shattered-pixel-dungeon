@@ -368,21 +368,21 @@ public class GameScene extends PixelScene {
 		boss.setPos( 6 + (uiCamera.width - boss.width())/2, 20);
 		add(boss);
 
-		attack = new AttackIndicator();
-		attack.camera = uiCamera;
-		add( attack );
-
-		loot = new LootIndicator();
-		loot.camera = uiCamera;
-		add( loot );
+		resume = new ResumeIndicator();
+		resume.camera = uiCamera;
+		add( resume );
 
 		action = new ActionIndicator();
 		action.camera = uiCamera;
 		add( action );
 
-		resume = new ResumeIndicator();
-		resume.camera = uiCamera;
-		add( resume );
+		loot = new LootIndicator();
+		loot.camera = uiCamera;
+		add( loot );
+
+		attack = new AttackIndicator();
+		attack.camera = uiCamera;
+		add( attack );
 
 		log = new GameLog();
 		log.camera = uiCamera;
