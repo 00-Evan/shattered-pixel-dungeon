@@ -108,7 +108,7 @@ public class Dagger extends MeleeWeapon {
 			return;
 		}
 
-		PathFinder.buildDistanceMap(Dungeon.hero.pos, BArray.not(Dungeon.level.solid, null), maxDist);
+		PathFinder.buildDistanceMap(Dungeon.hero.pos, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null), maxDist);
 		if (PathFinder.distance[target] == Integer.MAX_VALUE) {
 			GLog.w(Messages.get(wep, "ability_bad_position"));
 			return;

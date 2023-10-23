@@ -104,7 +104,7 @@ public class Challenge extends ArmorAbility {
 			return;
 		}
 
-		boolean[] passable = BArray.not(Dungeon.level.solid,null);
+		boolean[] passable = BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null);
 		for (Char c : Actor.chars()) {
 			if (c != hero) passable[c.pos] = false;
 		}
@@ -115,7 +115,7 @@ public class Challenge extends ArmorAbility {
 		if (hero.hasTalent(Talent.CLOSE_THE_GAP) && !hero.rooted){
 
 			int blinkrange = 1 + hero.pointsInTalent(Talent.CLOSE_THE_GAP);
-			PathFinder.buildDistanceMap(hero.pos, BArray.not(Dungeon.level.solid,null), blinkrange);
+			PathFinder.buildDistanceMap(hero.pos, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null), blinkrange);
 
 			for (int i = 0; i < PathFinder.distance.length; i++){
 				if (PathFinder.distance[i] == Integer.MAX_VALUE
