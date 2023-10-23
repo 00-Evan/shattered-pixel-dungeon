@@ -66,6 +66,8 @@ public class CrystalSpire extends Mob {
 		HP = HT = 300;
 		spriteClass = CrystalSpireSprite.class;
 
+		EXP = 20;
+
 		//acts after other mobs, which makes baiting crystal guardians more consistent
 		actPriority = MOB_PRIO-1;
 
