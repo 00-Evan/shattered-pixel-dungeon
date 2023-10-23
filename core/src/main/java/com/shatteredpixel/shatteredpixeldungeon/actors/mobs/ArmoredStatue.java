@@ -46,13 +46,17 @@ public class ArmoredStatue extends Statue {
 	public ArmoredStatue(){
 		super();
 
-		do {
-			armor = Generator.randomArmor();
-		} while (armor.cursed);
-		armor.inscribe(Armor.Glyph.random());
-
 		//double HP
 		HP = HT = 30 + Dungeon.depth * 10;
+	}
+
+	@Override
+	public void createWeapon(boolean useDecks) {
+		super.createWeapon(useDecks);
+
+		armor = Generator.randomArmor();
+		armor.cursed = false;
+		armor.inscribe(Armor.Glyph.random());
 	}
 
 	private static final String ARMOR	= "armor";
