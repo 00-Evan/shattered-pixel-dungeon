@@ -336,6 +336,11 @@ public class CrystalSpire extends Mob {
 						PixelScene.shake( 3, 0.7f );
 						Blacksmith.Quest.beatBoss();
 
+						if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
+							fieldOfView = new boolean[Dungeon.level.length()];
+							Dungeon.level.updateFieldOfView( CrystalSpire.this, fieldOfView );
+						}
+
 						for (int i = 0; i < Dungeon.level.length(); i++){
 							if (fieldOfView[i] && Dungeon.level.map[i] == Terrain.MINE_CRYSTAL){
 								Level.set(i, Terrain.EMPTY);
