@@ -197,6 +197,7 @@ public class CrystalSpire extends Mob {
 				abilityCooldown += ABILITY_CD;
 
 				spend(GameMath.gate(TICK, (int)Math.ceil(Dungeon.hero.cooldown()), 3*TICK));
+				Dungeon.hero.interrupt();
 			} else {
 				abilityCooldown -= 1;
 				spend(TICK);
