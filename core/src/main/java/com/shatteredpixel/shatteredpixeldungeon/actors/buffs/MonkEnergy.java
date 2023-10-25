@@ -666,6 +666,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 				}, hero.cooldown()-1);
 
 				hero.next();
+				hero.busy();
 				Buff.affect(hero, MonkEnergy.class).abilityUsed(this);
 			}
 
