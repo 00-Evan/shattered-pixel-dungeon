@@ -75,14 +75,14 @@ public class RotHeart extends Mob {
 	@Override
 	public int defenseProc(Char enemy, int damage) {
 		//rot heart spreads less gas in enclosed spaces
-		int openNearby = 2;
+		int openNearby = 0;
 		for (int i : PathFinder.NEIGHBOURS8){
 			if (!Dungeon.level.solid[pos+i]){
 				openNearby++;
 			}
 		}
 
-		GameScene.add(Blob.seed(pos, 2*openNearby, ToxicGas.class));
+		GameScene.add(Blob.seed(pos, 5 + 3*openNearby, ToxicGas.class));
 
 		return super.defenseProc(enemy, damage);
 	}
