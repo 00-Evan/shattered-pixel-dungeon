@@ -460,7 +460,7 @@ public class DM300 extends Mob {
 				pos++;
 			}
 		}
-		Buff.append(this, FallingRockBuff.class, GameMath.gate(TICK, target.cooldown(), 3*TICK)).setRockPositions(rockCells);
+		Buff.append(this, FallingRockBuff.class, GameMath.gate(TICK, (int)Math.ceil(target.cooldown()), 3*TICK)).setRockPositions(rockCells);
 
 	}
 

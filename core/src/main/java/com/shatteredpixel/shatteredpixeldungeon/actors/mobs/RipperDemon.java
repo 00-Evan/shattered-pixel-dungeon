@@ -240,7 +240,7 @@ public class RipperDemon extends Mob {
 						//get ready to leap
 						leapPos = targetPos;
 						//don't want to overly punish players with slow move or attack speed
-						spend(GameMath.gate(TICK, enemy.cooldown(), 3*TICK));
+						spend(GameMath.gate(attackDelay(), (int)Math.ceil(enemy.cooldown()), 3*attackDelay()));
 						if (Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[leapPos]){
 							GLog.w(Messages.get(RipperDemon.this, "leap"));
 							sprite.parent.addToBack(new TargetedCell(leapPos, 0xFF0000));

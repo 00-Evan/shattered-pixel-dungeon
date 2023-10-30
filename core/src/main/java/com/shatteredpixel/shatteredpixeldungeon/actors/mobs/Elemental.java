@@ -312,7 +312,7 @@ public abstract class Elemental extends Mob {
 					}
 
 					GLog.n(Messages.get(this, "charging"));
-					spend(GameMath.gate(TICK, (int)Math.ceil(Dungeon.hero.cooldown()), 3*TICK));
+					spend(GameMath.gate(attackDelay(), (int)Math.ceil(Dungeon.hero.cooldown()), 3*attackDelay()));
 					Dungeon.hero.interrupt();
 					return true;
 				} else {
