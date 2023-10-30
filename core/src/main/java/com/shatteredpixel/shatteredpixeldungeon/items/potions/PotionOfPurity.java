@@ -77,10 +77,10 @@ public class PotionOfPurity extends Potion {
 				
 			}
 		}
-		
-		
+
+
+		splash( cell );
 		if (Dungeon.level.heroFOV[cell]) {
-			splash(cell);
 			Sample.INSTANCE.play(Assets.Sounds.SHATTER);
 
 			identify();

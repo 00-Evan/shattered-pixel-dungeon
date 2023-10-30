@@ -56,9 +56,9 @@ public class PotionOfCleansing extends ExoticPotion {
 		if (Actor.findChar(cell) == null){
 			super.shatter(cell);
 		} else {
+			splash( cell );
 			if (Dungeon.level.heroFOV[cell]) {
 				Sample.INSTANCE.play(Assets.Sounds.SHATTER);
-				splash(cell);
 				identify();
 			}
 			

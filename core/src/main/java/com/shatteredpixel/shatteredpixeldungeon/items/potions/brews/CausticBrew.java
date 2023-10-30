@@ -43,9 +43,9 @@ public class CausticBrew extends Brew {
 	
 	@Override
 	public void shatter(int cell) {
-		
+
+		splash( cell );
 		if (Dungeon.level.heroFOV[cell]) {
-			splash( cell );
 			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 		}
 		
