@@ -308,7 +308,7 @@ public class InterlevelScene extends PixelScene {
 				else if (error.getMessage() != null &&
 						error.getMessage().equals("old save")) errorMsg = Messages.get(this, "io_error");
 
-				else throw new RuntimeException("fatal error occured while moving between floors. " +
+				else throw new RuntimeException("fatal error occurred while moving between floors. " +
 							"Seed:" + Dungeon.seed + " depth:" + Dungeon.depth, error);
 
 				add( new WndError( errorMsg ) {
@@ -326,11 +326,13 @@ public class InterlevelScene extends PixelScene {
 					s += "\n";
 					s += t.toString();
 				}
-				ShatteredPixelDungeon.reportException(
-						new RuntimeException("waited more than 10 seconds on levelgen. " +
-								"Seed:" + Dungeon.seed + " depth:" + Dungeon.depth + " trace:" +
-								s)
-				);
+				//we care about reporting game logic exceptions, not slow IO
+				if (!s.contains("FileUtils.bundleToFile")){
+					ShatteredPixelDungeon.reportException(
+							new RuntimeException("waited more than 10 seconds on levelgen. " +
+									"Seed:" + Dungeon.seed + " depth:" + Dungeon.depth + " trace:" +
+									s));
+				}
 			}
 			break;
 		}
