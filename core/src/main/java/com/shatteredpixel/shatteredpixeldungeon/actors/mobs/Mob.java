@@ -835,7 +835,7 @@ public abstract class Mob extends Char {
 		if (!(this instanceof Wraith)
 				&& soulMarked
 				&& Random.Float() < (0.4f*Dungeon.hero.pointsInTalent(Talent.NECROMANCERS_MINIONS)/3f)){
-			Wraith w = Wraith.spawnAt(pos, false);
+			Wraith w = Wraith.spawnAt(pos, Wraith.class);
 			if (w != null) {
 				Buff.affect(w, Corruption.class);
 				if (Dungeon.level.heroFOV[pos]) {

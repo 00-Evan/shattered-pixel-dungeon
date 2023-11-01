@@ -89,11 +89,11 @@ public class WandOfCorruption extends Wand {
 	private static final float MINOR_DEBUFF_WEAKEN = 1/4f;
 	private static final HashMap<Class<? extends Buff>, Float> MINOR_DEBUFFS = new HashMap<>();
 	static{
-		MINOR_DEBUFFS.put(Weakness.class,       2f);
-		MINOR_DEBUFFS.put(Vulnerable.class,     2f);
-		MINOR_DEBUFFS.put(Cripple.class,        1f);
-		MINOR_DEBUFFS.put(Blindness.class,      1f);
-		MINOR_DEBUFFS.put(Terror.class,         1f);
+		MINOR_DEBUFFS.put(Weakness.class,       0f);
+		MINOR_DEBUFFS.put(Vulnerable.class,     0f);
+		MINOR_DEBUFFS.put(Cripple.class,        0f);
+		MINOR_DEBUFFS.put(Blindness.class,      0f);
+		MINOR_DEBUFFS.put(Terror.class,         0f);
 		
 		MINOR_DEBUFFS.put(Chill.class,          0f);
 		MINOR_DEBUFFS.put(Ooze.class,           0f);
@@ -109,9 +109,9 @@ public class WandOfCorruption extends Wand {
 	private static final HashMap<Class<? extends Buff>, Float> MAJOR_DEBUFFS = new HashMap<>();
 	static{
 		MAJOR_DEBUFFS.put(Amok.class,           3f);
-		MAJOR_DEBUFFS.put(Slow.class,           2f);
-		MAJOR_DEBUFFS.put(Hex.class,            2f);
-		MAJOR_DEBUFFS.put(Paralysis.class,      1f);
+		MAJOR_DEBUFFS.put(Slow.class,           0f);
+		MAJOR_DEBUFFS.put(Hex.class,            0f);
+		MAJOR_DEBUFFS.put(Paralysis.class,      0f);
 
 		MAJOR_DEBUFFS.put(Daze.class,           0f);
 		MAJOR_DEBUFFS.put(Dread.class,          0f);
