@@ -318,5 +318,7 @@ public class Assets {
 		public static final String CRYSTAL_GUARDIAN= "sprites/crystal_guardian.png";
 		public static final String CRYSTAL_SPIRE= "sprites/crystal_spire.png";
 		public static final String GNOLL_GUARD= "sprites/gnoll_guard.png";
+		public static final String GNOLL_SAPPER= "sprites/gnoll_sapper.png";
+		public static final String GNOLL_GEOMANCER = "sprites/gnoll_geomancer.png";
 	}
 }
