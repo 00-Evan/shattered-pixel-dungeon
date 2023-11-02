@@ -22,6 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CrystalGuardian;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollGuard;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollSapper;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -144,6 +146,21 @@ public class MineLargeRoom extends CaveRoom {
 					Painter.set(level, r, Terrain.BARRICADE);
 				}
 			}
+
+			//TODO refine this with barricades
+			Point p = random(5);
+			GnollSapper s = new GnollSapper();
+			s.pos = level.pointToCell(p);
+			level.mobs.add(s);
+			Painter.set(level, p, Terrain.EMPTY);
+
+			p = random(4);
+			GnollGuard g = new GnollGuard();
+			g.pos = level.pointToCell(p);
+			level.mobs.add(g);
+			Painter.set(level, p, Terrain.EMPTY);
+
+			s.linkGuard(g);
 
 		} else {
 			Painter.fillEllipse(level, this, 3, Terrain.EMPTY);
