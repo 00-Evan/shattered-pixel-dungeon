@@ -988,6 +988,15 @@ public class Hero extends Char {
 							|| item instanceof Key
 							|| item instanceof Guidebook) {
 						//Do Nothing
+					} else if (item instanceof DarkGold) {
+						DarkGold existing = belongings.getItem(DarkGold.class);
+						if (existing != null){
+							if (existing.quantity() >= 40) {
+								GLog.p(Messages.get(DarkGold.class, "you_now_have", existing.quantity()));
+							} else {
+								GLog.i(Messages.get(DarkGold.class, "you_now_have", existing.quantity()));
+							}
+						}
 					} else {
 
 						//TODO make all unique items important? or just POS / SOU?
