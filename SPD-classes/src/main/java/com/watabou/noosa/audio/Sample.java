@@ -24,10 +24,11 @@ package com.watabou.noosa.audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.watabou.noosa.Game;
+import com.watabou.utils.Callback;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 public enum Sample {
 
@@ -61,37 +62,44 @@ public enum Sample {
 		}
 	}
 
+	private static LinkedList<String> loadingQueue = new LinkedList<>();
+
 	public synchronized void load( final String... assets ) {
 
-		final ArrayList<String> toLoad = new ArrayList<>();
-
 		for (String asset : assets){
-			if (!ids.containsKey(asset)){
-				toLoad.add(asset);
+			if (!ids.containsKey(asset) && !loadingQueue.contains(asset)){
+				loadingQueue.add(asset);
 			}
 		}
 
-		//don't make a new thread of all assets are already loaded
-		if (toLoad.isEmpty()) return;
+		//cancel if all assets are already loaded
+		if (loadingQueue.isEmpty()) return;
 
-		//load in a separate thread to prevent this blocking the UI
-		new Thread(){
-			@Override
-			public void run() {
-				for (String asset : toLoad) {
+		//load one at a time on the UI thread to prevent this blocking the UI
+		//yes this may cause hitching, but only in the first couple seconds of game runtime
+		Game.runOnRenderThread(loadingCallback);
+		
+	}
+
+	private Callback loadingCallback = new Callback() {
+		@Override
+		public void call() {
+			synchronized (INSTANCE) {
+				String asset = loadingQueue.poll();
+				if (asset != null) {
 					try {
 						Sound newSound = Gdx.audio.newSound(Gdx.files.internal(asset));
-						synchronized (INSTANCE) {
-							ids.put(asset, newSound);
-						}
+						ids.put(asset, newSound);
 					} catch (Exception e){
 						Game.reportException(e);
 					}
 				}
+				if (!loadingQueue.isEmpty()){
+					Game.runOnRenderThread(this);
+				}
 			}
-		}.start();
-		
-	}
+		}
+	};
 
 	public synchronized void unload( Object src ) {
 		if (ids.containsKey( src )) {
