@@ -1122,7 +1122,7 @@ public abstract class Mob extends Char {
 				} else if (enemy == null) {
 					sprite.showLost();
 					state = WANDERING;
-					target = Dungeon.level.randomDestination( Mob.this );
+					target = ((Mob.Wandering)WANDERING).randomDestination();
 					spend( TICK );
 					return true;
 				}

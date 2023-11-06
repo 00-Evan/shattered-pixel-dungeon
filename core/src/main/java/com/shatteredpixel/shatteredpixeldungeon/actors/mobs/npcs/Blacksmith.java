@@ -102,8 +102,8 @@ public class Blacksmith extends NPC {
 
 				switch (Quest.type){
 					case Quest.CRYSTAL: msg2 += Messages.get(Blacksmith.this, "intro_quest_crystal"); break;
-					case Quest.FUNGI:   msg2 += Messages.get(Blacksmith.this, "intro_quest_fungi"); break;
 					case Quest.GNOLL:   msg2 += Messages.get(Blacksmith.this, "intro_quest_gnoll"); break;
+					case Quest.FUNGI:   msg2 += Messages.get(Blacksmith.this, "intro_quest_fungi"); break;
 				}
 
 			}
@@ -259,8 +259,8 @@ public class Blacksmith extends NPC {
 		private static int type = 0;
 		public static final int OLD = 0;
 		public static final int CRYSTAL = 1;
-		public static final int FUNGI = 2;
-		public static final int GNOLL = 3;
+		public static final int GNOLL = 2;
+		public static final int FUNGI = 3;
 		//pre-v2.2.0
 		private static boolean alternative; //false for mining gold, true for bat blood
 

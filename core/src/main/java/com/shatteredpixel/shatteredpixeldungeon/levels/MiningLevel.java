@@ -149,10 +149,10 @@ public class MiningLevel extends CavesLevel {
 				return new Bat();
 			case Blacksmith.Quest.CRYSTAL:
 				return new CrystalWisp();
-			case Blacksmith.Quest.FUNGI:
-				return new Spinner();
 			case Blacksmith.Quest.GNOLL:
 				return new GnollGuard();
+			case Blacksmith.Quest.FUNGI:
+				return new Spinner();
 		}
 	}
 
@@ -212,8 +212,7 @@ public class MiningLevel extends CavesLevel {
 	@Override
 	public boolean activateTransition(Hero hero, LevelTransition transition) {
 		if (transition.type == LevelTransition.Type.BRANCH_ENTRANCE
-				&& !Blacksmith.Quest.completed() && Blacksmith.Quest.Type() != 0) {
-
+				&& !Blacksmith.Quest.completed() && Blacksmith.Quest.Type() != Blacksmith.Quest.OLD) {
 
 			if (hero.belongings.getItem(Pickaxe.class) == null){
 				Game.runOnRenderThread(new Callback() {
@@ -244,9 +243,9 @@ public class MiningLevel extends CavesLevel {
 
 			if (!Blacksmith.Quest.bossBeaten()){
 				switch (Blacksmith.Quest.Type()){
-					case 1: warnText += "\n\n" + Messages.get(Blacksmith.class, "exit_warn_crystal"); break;
-					case 2: warnText += "\n\n" + Messages.get(Blacksmith.class, "exit_warn_fungi"); break;
-					case 3: warnText += "\n\n" + Messages.get(Blacksmith.class, "exit_warn_gnoll"); break;
+					case Blacksmith.Quest.CRYSTAL: warnText += "\n\n" + Messages.get(Blacksmith.class, "exit_warn_crystal"); break;
+					case Blacksmith.Quest.GNOLL: warnText += "\n\n" + Messages.get(Blacksmith.class, "exit_warn_gnoll"); break;
+					case Blacksmith.Quest.FUNGI: warnText += "\n\n" + Messages.get(Blacksmith.class, "exit_warn_fungi"); break;
 				}
 			}
 
