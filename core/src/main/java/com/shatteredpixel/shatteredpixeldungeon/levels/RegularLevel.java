@@ -125,7 +125,7 @@ public abstract class RegularLevel extends Level {
 			do {
 				s = StandardRoom.createRoom();
 			} while (!s.setSizeCat( standards-i ));
-			i += s.sizeCat.roomValue-1;
+			i += s.sizeFactor()-1;
 			initRooms.add(s);
 		}
 		
@@ -213,7 +213,7 @@ public abstract class RegularLevel extends Level {
 		ArrayList<Room> stdRooms = new ArrayList<>();
 		for (Room room : rooms) {
 			if (room instanceof StandardRoom && room != roomEntrance) {
-				for (int i = 0; i < ((StandardRoom) room).sizeCat.roomValue; i++) {
+				for (int i = 0; i < ((StandardRoom) room).mobSpawnWeight(); i++) {
 					stdRooms.add(room);
 				}
 			}

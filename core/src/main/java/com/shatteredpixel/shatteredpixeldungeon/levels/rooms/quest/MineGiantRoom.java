@@ -48,6 +48,13 @@ public class MineGiantRoom extends CaveRoom {
 	}
 
 	@Override
+	public int mobSpawnWeight() {
+		//This room contains the boss
+		// so don't amp up regular enemy spawns too
+		return 1;
+	}
+
+	@Override
 	public void paint(Level level) {
 		super.paint(level);
 

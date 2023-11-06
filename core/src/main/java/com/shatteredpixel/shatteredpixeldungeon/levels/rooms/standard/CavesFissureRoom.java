@@ -87,7 +87,7 @@ public class CavesFissureRoom extends StandardRoom {
 
 			//generate angles for 2-4 fissure lines, they can't be too close to doors or eachother
 			ArrayList<Float> lineAngles = new ArrayList<>();
-			int numLines = 1 + sizeCat.roomValue;
+			int numLines = 1 + sizeFactor();
 			for (int i = 0; i < numLines; i++) {
 				int tries = 100;
 				boolean valid;
@@ -190,7 +190,7 @@ public class CavesFissureRoom extends StandardRoom {
 				buildBridge(level, Random.element(lineAngles), center, 1);
 			} else {
 				for (float angle : lineAngles) {
-					buildBridge(level, angle, center, sizeCat.roomValue);
+					buildBridge(level, angle, center, sizeFactor());
 				}
 			}
 

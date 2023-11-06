@@ -48,10 +48,6 @@ public abstract class StandardRoom extends Room {
 			roomValue = val;
 		}
 		
-		public int connectionWeight(){
-			return roomValue*roomValue;
-		}
-		
 	}
 	
 	public SizeCategory sizeCat;
@@ -100,6 +96,20 @@ public abstract class StandardRoom extends Room {
 	@Override
 	public int minHeight() { return sizeCat.minDim; }
 	public int maxHeight() { return sizeCat.maxDim; }
+
+	//larger standard rooms generally count as multiple rooms for various counting/weighting purposes
+	//but there can be exceptions
+	public int sizeFactor(){
+		return sizeCat.roomValue;
+	}
+
+	public int mobSpawnWeight(){
+		return sizeFactor();
+	}
+
+	public int connectionWeight(){
+		return sizeFactor() * sizeFactor();
+	}
 
 	@Override
 	public boolean canMerge(Level l, Point p, int mergeTerrain) {

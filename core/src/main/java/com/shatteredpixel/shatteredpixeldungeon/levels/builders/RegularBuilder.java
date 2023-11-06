@@ -123,7 +123,7 @@ public abstract class RegularBuilder extends Builder {
 		while (roomsOnMainPath > 0 && !multiConnections.isEmpty()){
 			Room r = multiConnections.remove(0);
 			if (r instanceof StandardRoom){
-				roomsOnMainPath -= ((StandardRoom) r).sizeCat.roomValue;
+				roomsOnMainPath -= ((StandardRoom) r).sizeFactor();
 			} else {
 				roomsOnMainPath--;
 			}
@@ -136,7 +136,7 @@ public abstract class RegularBuilder extends Builder {
 	protected void weightRooms(ArrayList<Room> rooms){
 		for (Room r : rooms.toArray(new Room[0])){
 			if (r instanceof StandardRoom){
-				for (int i = 1; i < ((StandardRoom) r).sizeCat.connectionWeight(); i++)
+				for (int i = 1; i < ((StandardRoom) r).connectionWeight(); i++)
 					rooms.add(r);
 			}
 		}
@@ -228,7 +228,7 @@ public abstract class RegularBuilder extends Builder {
 			}
 			if (r.maxConnections(Room.ALL) > 1 && Random.Int(3) == 0) {
 				if (r instanceof StandardRoom){
-					for (int j = 0; j < ((StandardRoom) r).sizeCat.connectionWeight(); j++){
+					for (int j = 0; j < ((StandardRoom) r).connectionWeight(); j++){
 						branchable.add(r);
 					}
 				} else {

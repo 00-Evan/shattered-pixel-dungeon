@@ -62,6 +62,13 @@ public class MineLargeRoom extends CaveRoom {
 	}
 
 	@Override
+	public int mobSpawnWeight() {
+		//These rooms always spawn their own enemies
+		// so don't amp up regular enemy spawns too
+		return 1;
+	}
+
+	@Override
 	public void paint(Level level) {
 		super.paint(level);
 
