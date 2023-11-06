@@ -27,15 +27,20 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.watabou.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.BArray;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -64,7 +69,7 @@ public class RockfallTrap extends Trap {
 			r = ((RegularLevel) Dungeon.level).room(pos);
 		}
 		
-		if (onGround && r != null){
+		if (onGround && r != null && !(Dungeon.level instanceof MiningLevel)){
 			int cell;
 			for (Point p : r.getPoints()){
 				cell = Dungeon.level.pointToCell(p);
@@ -73,7 +78,7 @@ public class RockfallTrap extends Trap {
 				}
 			}
 			
-		//if we don't have a room, then just do 5x5
+		//do 5x5 if we don't have a room, or are in the mining level
 		} else {
 			PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), 2 );
 			for (int i = 0; i < PathFinder.distance.length; i++) {
@@ -104,6 +109,11 @@ public class RockfallTrap extends Trap {
 					Dungeon.fail( this );
 					GLog.n( Messages.get(this, "ondeath") );
 				}
+			} else if (Dungeon.level instanceof MiningLevel
+					&& Blacksmith.Quest.Type() == Blacksmith.Quest.GNOLL
+					&& Random.Int(2) == 0){
+				Level.set( cell, Terrain.MINE_BOULDER );
+				GameScene.updateMap(cell);
 			}
 		}
 		
