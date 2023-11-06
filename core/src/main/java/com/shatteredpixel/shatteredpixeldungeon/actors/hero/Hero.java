@@ -1208,7 +1208,7 @@ public class Hero extends Char {
 						} else if (Dungeon.level.map[action.dst] == Terrain.MINE_BOULDER){
 							Splash.at(action.dst, ColorMath.random( 0x444444, 0x777766 ), 5);
 							Sample.INSTANCE.play( Assets.Sounds.MINE, 0.6f );
-							Level.set( action.dst, Terrain.EMPTY );
+							Level.set( action.dst, Terrain.EMPTY_DECO );
 						}
 
 						for (int i : PathFinder.NEIGHBOURS9) {

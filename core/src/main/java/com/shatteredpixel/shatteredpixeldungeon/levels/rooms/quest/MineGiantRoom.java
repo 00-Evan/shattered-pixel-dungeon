@@ -80,10 +80,10 @@ public class MineGiantRoom extends CaveRoom {
 		} else if (Blacksmith.Quest.Type() == Blacksmith.Quest.GNOLL){
 			Painter.fillEllipse(level, this, 3, Terrain.EMPTY);
 
-			//connections to non-secret rooms have a 7/8 chance to become empty, otherwise wall
+			//connections to non-secret rooms have a 9/10 chance to become empty, otherwise wall
 			for (Room n : connected.keySet()){
 				if (!(n instanceof SecretRoom) && connected.get(n).type == Door.Type.REGULAR){
-					if (Random.Int(8) == 0){
+					if (Random.Int(10) == 0){
 						connected.get(n).set(Door.Type.EMPTY);
 					} else {
 						connected.get(n).set(Door.Type.WALL);
@@ -107,8 +107,11 @@ public class MineGiantRoom extends CaveRoom {
 						dist = Math.min(dist, Point.distance(p, d));
 					}
 					dist = GameMath.gate(1f, dist-0.5f, 3f);
-					if (Random.Float((float)Math.pow(dist, 2)) < 1f){
+					float val = Random.Float((float) Math.pow(dist, 2));
+					if (val <= 0.75f) {
 						Painter.set(level, cell, Terrain.MINE_BOULDER);
+					} else if (val <= 3f && dist <= 3){
+						Painter.set(level, cell, Terrain.EMPTY_DECO);
 					}
 				}
 			}

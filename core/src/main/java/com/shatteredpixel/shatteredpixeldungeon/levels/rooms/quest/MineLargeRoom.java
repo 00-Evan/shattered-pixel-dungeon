@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.CaveRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.RockfallTrap;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
@@ -107,10 +108,10 @@ public class MineLargeRoom extends CaveRoom {
 		} else if (Blacksmith.Quest.Type() == Blacksmith.Quest.GNOLL){
 			Painter.fillEllipse(level, this, 3, Terrain.EMPTY);
 
-			//connections to non-secret rooms have a 7/8 chance to become empty, otherwise wall
+			//connections to non-secret rooms have a 9/10 chance to become empty, otherwise wall
 			for (Room n : connected.keySet()){
 				if (!(n instanceof SecretRoom) && connected.get(n).type == Door.Type.REGULAR){
-					if (Random.Int(8) == 0){
+					if (Random.Int(10) == 0){
 						connected.get(n).set(Door.Type.EMPTY);
 					} else {
 						connected.get(n).set(Door.Type.WALL);
@@ -126,42 +127,58 @@ public class MineLargeRoom extends CaveRoom {
 				}
 			}
 
+			int sapperPos = level.pointToCell(random(5));
+			GnollSapper s = new GnollSapper();
+			s.pos = sapperPos;
+			((GnollSapper)s).spawnPos = s.pos;
+			level.mobs.add(s);
+
+			int guardPos;
+			do {
+				guardPos = sapperPos+PathFinder.NEIGHBOURS8[Random.Int(8)];
+			} while (level.map[guardPos] != Terrain.EMPTY);
+			GnollGuard g = new GnollGuard();
+			g.pos = guardPos;
+			level.mobs.add(g);
+			s.linkGuard(g);
+
+			for (int i = 0; i < 3; i ++){
+				int barricadePos = sapperPos+PathFinder.NEIGHBOURS8[Random.Int(8)];
+				if (level.map[barricadePos] == Terrain.EMPTY && barricadePos != guardPos){
+					Painter.set(level, barricadePos, Terrain.BARRICADE);
+				}
+			}
+
+			int traps = square() > 150 ? 3 : 2;
+			for (int i = 0; i < traps; i ++){
+				Point r;
+				do {
+					r = random(2);
+				} while (level.map[level.pointToCell(r)] != Terrain.EMPTY
+						|| level.pointToCell(r) == sapperPos
+						|| level.pointToCell(r) == guardPos);
+				Painter.set(level, r, Terrain.TRAP);
+				level.setTrap(new RockfallTrap().reveal(), level.pointToCell(r));
+			}
+
 			for (Point p : getPoints()){
 				int cell = level.pointToCell(p);
-				if (level.map[cell] == Terrain.EMPTY){
+				if (level.map[cell] == Terrain.EMPTY
+						&& cell != sapperPos
+						&& cell != guardPos){
 					float dist = 1000;
 					for (Door d : doors){
 						dist = Math.min(dist, Point.distance(p, d));
 					}
-					dist = GameMath.gate(1f, dist-0.5f, 5f);
-					if (Random.Float((float)Math.pow(dist, 2)) < 1f){
+					dist = GameMath.gate(1f, dist-0.5f, 4f);
+					float val = Random.Float((float) Math.pow(dist, 2));
+					if (val <= 0.75f) {
 						Painter.set(level, cell, Terrain.MINE_BOULDER);
+					} else if (val <= 3f && dist <= 3){
+						Painter.set(level, cell, Terrain.EMPTY_DECO);
 					}
 				}
 			}
-
-			for (int i = 0; i < 4; i ++){
-				Point r = random(5);
-				if (level.map[level.pointToCell(r)] != Terrain.WALL) {
-					Painter.set(level, r, Terrain.BARRICADE);
-				}
-			}
-
-			//TODO refine this with barricades
-			Point p = random(5);
-			GnollSapper s = new GnollSapper();
-			s.pos = level.pointToCell(p);
-			level.mobs.add(s);
-			Painter.set(level, p, Terrain.EMPTY);
-
-			p = random(4);
-			GnollGuard g = new GnollGuard();
-			g.pos = level.pointToCell(p);
-			level.mobs.add(g);
-			Painter.set(level, p, Terrain.EMPTY);
-
-			s.linkGuard(g);
-
 		} else {
 			Painter.fillEllipse(level, this, 3, Terrain.EMPTY);
 		}
