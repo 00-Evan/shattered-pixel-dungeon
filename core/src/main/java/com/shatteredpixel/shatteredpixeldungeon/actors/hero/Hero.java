@@ -776,6 +776,15 @@ public class Hero extends Char {
 			} else {
 				ready();
 			}
+
+			//if we just loaded into a level and have a search buff, make sure to process them
+			if(Actor.now() == 0){
+				if (buff(Foresight.class) != null){
+					search(false);
+				} else if (buff(TalismanOfForesight.Foresight.class) != null){
+					buff(TalismanOfForesight.Foresight.class).checkAwareness();
+				}
+			}
 			
 			actResult = false;
 			
@@ -2343,6 +2352,10 @@ public class Hero extends Char {
 
 		if (foresight){
 			GameScene.updateFog(pos, Foresight.DISTANCE+1);
+		}
+
+		if (talisman != null){
+			talisman.checkAwareness();
 		}
 		
 		return smthFound;
