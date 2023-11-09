@@ -146,9 +146,11 @@ public class Game implements ApplicationListener {
 		}
 	}
 
-	//FIXME this is a hack to improve start times on android (first frame is 'cheated' and skips rendering)
-	//This is mainly to improve stats on google play, as lots of texture refreshing leads to slow warm starts
-	//Would be nice to accomplish this goal in a less hacky way
+	///justResumed is used for two purposes:
+	//firstly, to clear pointer events when the game is resumed,
+	// this helps with input errors caused by system gestures on iOS/Android
+	//secondly, as a bit of a hack to improve start time metrics on Android,
+	// as texture refreshing leads to slow warm starts. TODO would be nice to fix this properly
 	private boolean justResumed = true;
 
 	@Override
@@ -160,6 +162,7 @@ public class Game implements ApplicationListener {
 		}
 
 		if (justResumed){
+			PointerEvent.clearPointerEvents();
 			justResumed = false;
 			if (DeviceCompat.isAndroid()) return;
 		}

@@ -104,7 +104,10 @@ public class IOSLauncher extends IOSApplication.Delegate {
 		config.hideHomeIndicator = SPDSettings.fullscreen();
 		config.overrideRingerSwitch = SPDSettings.ignoreSilentMode();
 
-		config.screenEdgesDeferringSystemGestures = UIRectEdge.None;
+		//game has to ignore input from system gestures itself, otherwise there is lag on
+		//every button press on the corner of the screen. Currently this is accomplished via
+		//clearing all pointer events on the first frame after the game is resumed.
+		config.screenEdgesDeferringSystemGestures = UIRectEdge.All;
 
 		if (NSProcessInfo.getSharedProcessInfo().getOperatingSystemVersion().getMajorVersion() >= 11) {
 			config.preferredFramesPerSecond = (int)(UIScreen.getMainScreen().getMaximumFramesPerSecond());
