@@ -68,6 +68,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoItem;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
 import com.watabou.noosa.Game;
@@ -935,6 +936,15 @@ public class DriedRose extends Artifact {
 							}
 						});
 					}
+				}
+
+				@Override
+				protected boolean onLongClick() {
+					if (item() != null && item().name() != null){
+						GameScene.show(new WndInfoItem(item()));
+						return true;
+					}
+					return false;
 				}
 			};
 			btnWeapon.setRect( (WIDTH - BTN_GAP) / 2 - BTN_SIZE, message.top() + message.height() + GAP, BTN_SIZE, BTN_SIZE );

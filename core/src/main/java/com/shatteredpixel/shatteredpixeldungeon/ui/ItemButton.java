@@ -57,12 +57,21 @@ public class ItemButton extends Component {
 			protected void onClick() {
 				ItemButton.this.onClick();
 			}
+
+			@Override
+			protected boolean onLongClick() {
+				return ItemButton.this.onLongClick();
+			}
 		};
 		slot.enable(true);
 		add(slot);
 	}
 
 	protected void onClick() {}
+
+	protected boolean onLongClick(){
+		return false;
+	}
 
 	@Override
 	protected void layout() {
