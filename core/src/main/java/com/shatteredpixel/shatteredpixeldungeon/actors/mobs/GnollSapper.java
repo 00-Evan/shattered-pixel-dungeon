@@ -21,16 +21,40 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
+import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollSapperSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
+import com.watabou.utils.ColorMath;
+import com.watabou.utils.GameMath;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
 public class GnollSapper extends Mob {
 
 	{
+		//TODO act after gnoll guards? makes it easier to kite them
 		spriteClass = GnollSapperSprite.class;
 
 		HP = HT = 35;
@@ -41,12 +65,16 @@ public class GnollSapper extends Mob {
 
 		properties.add(Property.MINIBOSS);
 
-		SLEEPING = new Sleeping();
+		HUNTING = new Hunting();
+		WANDERING = new Wandering();
 		state = SLEEPING;
-		//TODO wandering and hunting too. Partly for abilities, but also for other logic
 	}
 
+	public int spawnPos;
 	private ArrayList<Integer> guardIDs = new ArrayList<>();
+
+	private int throwingRockFromPos = -1;
+	private int throwingRockToPos = -1;
 
 	public void linkGuard(GnollGuard g){
 		guardIDs.add(g.id());
@@ -63,6 +91,7 @@ public class GnollSapper extends Mob {
 		}
 	}
 
+	private static final String SPAWN_POS = "spawn_pos";
 	private static final String GUARD_IDS = "guard_ids";
 
 	@Override
@@ -73,6 +102,7 @@ public class GnollSapper extends Mob {
 			toStore[i] = guardIDs.get(i);
 		}
 		bundle.put(GUARD_IDS, toStore);
+		bundle.put(SPAWN_POS, spawnPos);
 	}
 
 	@Override
@@ -82,21 +112,196 @@ public class GnollSapper extends Mob {
 		for (int g : bundle.getIntArray(GUARD_IDS)){
 			guardIDs.add(g);
 		}
+		spawnPos = bundle.getInt(SPAWN_POS);
 	}
 
-	public class Sleeping extends Mob.Sleeping {
+	@Override
+	protected boolean act() {
+		if (throwingRockFromPos != -1){
+			Level.set(throwingRockFromPos, Terrain.EMPTY);
+			GameScene.updateMap(throwingRockFromPos);
+			sprite.attack(throwingRockToPos, new Callback() {
+				@Override
+				public void call() {
+					//do nothing
+				}
+			});
 
+			Ballistica rockPath = new Ballistica(throwingRockFromPos, throwingRockToPos, Ballistica.MAGIC_BOLT);
+
+			Sample.INSTANCE.play(Assets.Sounds.MISS);
+			((MissileSprite)sprite.parent.recycle( MissileSprite.class )).
+					reset( throwingRockFromPos, rockPath.collisionPos, new Boulder(), new Callback() {
+						@Override
+						public void call() {
+							//TODO can probably have better particles
+							Splash.at(rockPath.collisionPos, ColorMath.random( 0x444444, 0x777766 ), 15);
+							Sample.INSTANCE.play(Assets.Sounds.ROCKS);
+
+							Char ch = Actor.findChar(rockPath.collisionPos);
+							if (ch == Dungeon.hero){
+								PixelScene.shake( 3, 0.7f );
+							} else {
+								PixelScene.shake(0.5f, 0.5f);
+							}
+
+							if (ch != null){
+								ch.damage(Random.NormalIntRange(5, 10), this);
+
+								if (ch.isAlive()){
+									Buff.prolong( ch, Paralysis.class, ch instanceof GnollGuard ? 10 : 3 );
+								} else if (!ch.isAlive() && ch == Dungeon.hero) {
+									Badges.validateDeathFromEnemyMagic();
+									Dungeon.fail( GnollSapper.this );
+									//TODO GLog.n( Messages.get(this, "bolt_kill") );
+								}
+
+								if (rockPath.path.size() > rockPath.dist+1) {
+									Ballistica trajectory = new Ballistica(ch.pos, rockPath.path.get(rockPath.dist + 1), Ballistica.MAGIC_BOLT);
+									WandOfBlastWave.throwChar(ch, trajectory, 1, false, false, GnollSapper.this);
+								}
+							}
+
+							next();
+						}
+					} );
+
+			throwingRockFromPos = -1;
+			throwingRockToPos = -1;
+
+			spend(TICK);
+			return false;
+		} else {
+			return super.act();
+		}
+
+	}
+
+	public class Hunting extends Mob.Hunting {
 		@Override
 		public boolean act(boolean enemyInFOV, boolean justAlerted) {
-			if (guardIDs.size() < 2){
-				for (Char ch : Actor.chars()){
-					if (fieldOfView[ch.pos] && ch instanceof GnollGuard && !guardIDs.contains(ch.id())){
-						linkGuard((GnollGuard) ch);
-						break;
+			if (!enemyInFOV) {
+				return super.act(enemyInFOV, justAlerted);
+			} else {
+
+				//TODO we need a cooldown mechanic
+				if (Random.Int(4) == 0){
+					if (Random.Int(3) != 0 && prepRockAttack(enemy)) {
+						Dungeon.hero.interrupt();
+						spend(GameMath.gate(TICK, (int)Math.ceil(enemy.cooldown()), 3*TICK));
+						return true;
+					} else if (prepRockFallAttack(enemy)) {
+						spend(GameMath.gate(TICK, (int)Math.ceil(enemy.cooldown()), 3*TICK));
+						return true;
 					}
+
+				}
+
+				spend(TICK);
+				return true;
+			}
+		}
+	}
+
+	private boolean prepRockAttack( Char target ){
+		ArrayList<Integer> candidateRocks = new ArrayList<>();
+
+		for (int i = 0; i < Dungeon.level.length(); i++){
+			if (fieldOfView[i] && Dungeon.level.map[i] == Terrain.MINE_BOULDER){
+				if (new Ballistica(i, target.pos, Ballistica.PROJECTILE).collisionPos == target.pos){
+					candidateRocks.add(i);
 				}
 			}
-			return super.act(enemyInFOV, justAlerted);
+		}
+
+		if (candidateRocks.isEmpty()){
+			return false;
+		} else {
+
+			//TODO always random, or pick based on some criteria? maybe based on distance?
+			throwingRockFromPos = Random.element(candidateRocks);
+			throwingRockToPos = enemy.pos;
+
+			Ballistica warnPath = new Ballistica(throwingRockFromPos, throwingRockToPos, Ballistica.STOP_SOLID);
+			for (int i : warnPath.subPath(0, warnPath.dist)){
+				sprite.parent.add(new TargetedCell(i, 0xFF0000));
+			}
+
+		}
+
+		return true;
+	}
+
+	//similar overall logic as DM-300's rock fall attack, but 5x5 and can't hit barricades
+	// TODO externalize? we're going to use this for geomancer too
+	private boolean prepRockFallAttack( Char target ){
+
+		Dungeon.hero.interrupt();
+		final int rockCenter = target.pos;
+
+		int safeCell;
+		do {
+			safeCell = rockCenter + PathFinder.NEIGHBOURS8[Random.Int(8)];
+		} while (safeCell == pos
+				|| (Dungeon.level.solid[safeCell] && Random.Int(2) == 0)
+				|| (Dungeon.level.traps.containsKey(safeCell) && Random.Int(2) == 0));
+
+		ArrayList<Integer> rockCells = new ArrayList<>();
+
+		int start = rockCenter - Dungeon.level.width() * 2 - 2;
+		int pos;
+		for (int y = 0; y < 5; y++) {
+			pos = start + Dungeon.level.width() * y;
+			for (int x = 0; x < 5; x++) {
+				if (!Dungeon.level.insideMap(pos)) {
+					pos++;
+					continue;
+				}
+				if (Dungeon.level instanceof MiningLevel){
+					boolean barricade = false;
+					for (int j : PathFinder.NEIGHBOURS9){
+						if (Dungeon.level.map[pos+j] == Terrain.BARRICADE){
+							barricade = true;
+						}
+					}
+					if (barricade){
+						pos++;
+						continue;
+					}
+				}
+				//add rock cell to pos, if it is not solid, and isn't the safecell
+				if (!Dungeon.level.solid[pos] && pos != safeCell && Random.Int(Dungeon.level.distance(rockCenter, pos)) == 0) {
+					//don't want to overly punish players with slow move or attack speed
+					rockCells.add(pos);
+				}
+				pos++;
+			}
+		}
+		for (int i : rockCells){
+			sprite.parent.add(new TargetedCell(i, 0xFF0000));
+		}
+		Buff.append(this, DM300.FallingRockBuff.class, GameMath.gate(TICK, (int)Math.ceil(target.cooldown()), 3*TICK)).setRockPositions(rockCells);
+
+		sprite.attack(target.pos, new Callback() {
+			@Override
+			public void call() {
+				//do nothing
+			}
+		});
+
+		return true;
+	}
+
+	public class Boulder extends Item {
+		{
+			image = ItemSpriteSheet.GEO_BOULDER;
+		}
+	}
+
+	public class Wandering extends Mob.Wandering {
+		@Override
+		protected int randomDestination() {
+			return spawnPos;
 		}
 	}
 }

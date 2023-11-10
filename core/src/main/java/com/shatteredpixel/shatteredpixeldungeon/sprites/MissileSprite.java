@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollSapper;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
@@ -102,13 +103,14 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		ANGULAR_SPEEDS.put(ScorpioSprite.ScorpioShot.class,   0);
 		
 		//720 is default
+
+		ANGULAR_SPEEDS.put(GnollSapper.Boulder.class,   90);
 		
 		ANGULAR_SPEEDS.put(HeavyBoomerang.class,1440);
 		ANGULAR_SPEEDS.put(Bolas.class,         1440);
 		
-		ANGULAR_SPEEDS.put(Shuriken.class,      2160);
-		
-		ANGULAR_SPEEDS.put(TenguSprite.TenguShuriken.class,      2160);
+		ANGULAR_SPEEDS.put(Shuriken.class,                  2160);
+		ANGULAR_SPEEDS.put(TenguSprite.TenguShuriken.class, 2160);
 	}
 
 	//TODO it might be nice to have a source and destination angle, to improve thrown weapon visuals
@@ -147,6 +149,12 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 			angularSpeed = -angularSpeed;
 			angle += 90;
 			flipHorizontal = true;
+			updateFrame();
+		}
+
+		if (item instanceof GnollSapper.Boulder){
+			angle = 0;
+			flipHorizontal = false;
 			updateFrame();
 		}
 		

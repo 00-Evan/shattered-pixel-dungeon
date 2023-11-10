@@ -55,6 +55,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.quest.MetalShard;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
@@ -676,6 +677,7 @@ public class DM300 extends Mob {
 		resistances.add(Slow.class);
 	}
 
+	//TODO we probably want to exernalize this as it's now being used by multiple characters
 	public static class FallingRockBuff extends FlavourBuff {
 
 		private int[] rockPositions;
@@ -697,10 +699,19 @@ public class DM300 extends Mob {
 
 				Char ch = Actor.findChar(i);
 				if (ch != null && !(ch instanceof DM300)){
-					Buff.prolong( ch, Paralysis.class, Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 5 : 3 );
-					if (ch == Dungeon.hero){
-						Statistics.bossScores[2] -= 100;
+					if (Dungeon.level instanceof MiningLevel){
+						Buff.prolong(ch, Paralysis.class, ch instanceof GnollGuard ? 10 : 3);
+					} else {
+						Buff.prolong(ch, Paralysis.class, Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 5 : 3);
+						if (ch == Dungeon.hero) {
+							Statistics.bossScores[2] -= 100;
+						}
 					}
+				}
+
+				if (ch == null && Dungeon.level instanceof MiningLevel && Random.Int(3) == 0){
+					Level.set( i, Terrain.MINE_BOULDER );
+					GameScene.updateMap(i);
 				}
 			}
 

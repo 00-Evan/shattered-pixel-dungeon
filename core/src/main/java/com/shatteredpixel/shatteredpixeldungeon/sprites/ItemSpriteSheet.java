@@ -90,6 +90,7 @@ public class ItemSpriteSheet {
 	
 	public static final int TENGU_BOMB      = UNCOLLECTIBLE+8;
 	public static final int TENGU_SHOCKER   = UNCOLLECTIBLE+9;
+	public static final int GEO_BOULDER     = UNCOLLECTIBLE+10;
 	static{
 		assignItemRect(GOLD,        15, 13);
 		assignItemRect(ENERGY,      16, 16);
@@ -101,6 +102,7 @@ public class ItemSpriteSheet {
 		
 		assignItemRect(TENGU_BOMB,      10, 10);
 		assignItemRect(TENGU_SHOCKER,   10, 10);
+		assignItemRect(GEO_BOULDER,     16, 14);
 	}
 
 	private static final int CONTAINERS     =                               xy(1, 3);   //16 slots
