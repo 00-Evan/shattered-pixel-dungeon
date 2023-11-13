@@ -118,11 +118,6 @@ public class ItemStatusHandler<T extends Item> {
 			Class<? extends T> item = items[i];
 			String itemName = item.getSimpleName();
 
-			//pre-1.4.0 saves
-			if (!bundle.contains( itemName + PFX_LABEL )){
-				itemName = item.toString();
-			}
-
 			if (bundle.contains( itemName + PFX_LABEL )) {
 
 				String label = bundle.getString( itemName + PFX_LABEL );

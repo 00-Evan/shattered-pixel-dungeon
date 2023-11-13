@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -323,8 +322,6 @@ public class HallsBossLevel extends Level {
 	@Override
 	public boolean activateTransition(Hero hero, LevelTransition transition) {
 		if (transition.type == LevelTransition.Type.REGULAR_ENTRANCE
-				//ascension challenge only works on runs started on v1.3+
-				&& Dungeon.initialVersion > ShatteredPixelDungeon.v1_2_3
 				&& hero.belongings.getItem(Amulet.class) != null
 				&& hero.buff(AscensionChallenge.class) == null) {
 

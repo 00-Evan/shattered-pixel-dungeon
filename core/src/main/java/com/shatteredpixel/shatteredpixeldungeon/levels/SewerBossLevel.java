@@ -222,11 +222,6 @@ public class SewerBossLevel extends SewerLevel {
 	
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
-		//pre-1.3.0 saves
-		if (bundle.getInt("stairs") != 0){
-			bundle.put("entrance", bundle.getInt("stairs"));
-			bundle.remove("stairs");
-		}
 		super.restoreFromBundle( bundle );
 		roomExit = roomEntrance;
 	}

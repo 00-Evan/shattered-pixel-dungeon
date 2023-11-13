@@ -327,8 +327,8 @@ public abstract class Level implements Bundlable {
 
 		version = bundle.getInt( VERSION );
 		
-		//saves from before v1.2.3 are not supported
-		if (version < ShatteredPixelDungeon.v1_2_3){
+		//saves from before v1.4.3 are not supported
+		if (version < ShatteredPixelDungeon.v1_4_3){
 			throw new RuntimeException("old save");
 		}
 
@@ -348,21 +348,8 @@ public abstract class Level implements Bundlable {
 		mapped	= bundle.getBooleanArray( MAPPED );
 
 		transitions = new ArrayList<>();
-		if (bundle.contains(TRANSITIONS)){
-			for (Bundlable b : bundle.getCollection( TRANSITIONS )){
-				transitions.add((LevelTransition) b);
-			}
-		//pre-1.3.0 saves, converts old entrance/exit to new transitions
-		} else {
-			if (bundle.contains("entrance")){
-				transitions.add(new LevelTransition(
-						this,
-						bundle.getInt("entrance"),
-						Dungeon.depth == 1 ? LevelTransition.Type.SURFACE : LevelTransition.Type.REGULAR_ENTRANCE));
-			}
-			if (bundle.contains("exit")){
-				transitions.add(new LevelTransition(this, bundle.getInt("exit"), LevelTransition.Type.REGULAR_EXIT));
-			}
+		for (Bundlable b : bundle.getCollection( TRANSITIONS )){
+			transitions.add((LevelTransition) b);
 		}
 
 		locked      = bundle.getBoolean( LOCKED );

@@ -189,13 +189,6 @@ public class CavesBossLevel extends Level {
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 
-		//pre-1.3.0 saves, modifies exit transition with custom size
-		if (bundle.contains("exit")){
-			LevelTransition exit = getTransition(LevelTransition.Type.REGULAR_EXIT);
-			exit.set(14, 0, 18, 2);
-			transitions.add(exit);
-		}
-
 		for (CustomTilemap c : customTiles){
 			if (c instanceof ArenaVisuals){
 				customArenaVisuals = (ArenaVisuals) c;

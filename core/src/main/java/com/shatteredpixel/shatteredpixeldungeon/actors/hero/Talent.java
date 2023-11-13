@@ -459,7 +459,6 @@ public enum Talent {
 	}
 
 	public static class CachedRationsDropped extends CounterBuff{{revivePersists = true;}};
-	public static class NatureBerriesAvailable extends CounterBuff{{revivePersists = true;}}; //for pre-1.3.0 saves
 	public static class NatureBerriesDropped extends CounterBuff{{revivePersists = true;}};
 
 	public static void onFoodEaten( Hero hero, float foodVal, Item foodSource ){
@@ -939,8 +938,6 @@ public enum Talent {
 	static{
 		//v2.2.0
 		removedTalents.add("EMPOWERING_SCROLLS");
-		//v1.4.0
-		removedTalents.add("BERSERKING_STAMINA");
 	}
 
 	private static final HashMap<String, String> renamedTalents = new HashMap<>();
