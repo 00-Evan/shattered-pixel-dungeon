@@ -35,7 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
@@ -44,10 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EarthParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
@@ -55,7 +51,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.quest.MetalShard;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
@@ -64,13 +59,11 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.DM300Sprite;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.GameMath;
@@ -80,7 +73,6 @@ import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class DM300 extends Mob {
 
@@ -677,80 +669,23 @@ public class DM300 extends Mob {
 		resistances.add(Slow.class);
 	}
 
-	//TODO we probably want to exernalize this as it's now being used by multiple characters
-	public static class FallingRockBuff extends FlavourBuff {
-
-		private int[] rockPositions;
-		private ArrayList<Emitter> rockEmitters = new ArrayList<>();
-
-		public void setRockPositions( List<Integer> rockPositions ) {
-			this.rockPositions = new int[rockPositions.size()];
-			for (int i = 0; i < rockPositions.size(); i++){
-				this.rockPositions[i] = rockPositions.get(i);
-			}
-
-			fx(true);
-		}
+	public static class FallingRockBuff extends DelayedRockFall {
 
 		@Override
-		public boolean act() {
-			for (int i : rockPositions){
-				CellEmitter.get( i ).start( Speck.factory( Speck.ROCK ), 0.07f, 10 );
-
-				Char ch = Actor.findChar(i);
-				if (ch != null && !(ch instanceof DM300)){
-					if (Dungeon.level instanceof MiningLevel){
-						Buff.prolong(ch, Paralysis.class, ch instanceof GnollGuard ? 10 : 3);
-					} else {
-						Buff.prolong(ch, Paralysis.class, Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 5 : 3);
-						if (ch == Dungeon.hero) {
-							Statistics.bossScores[2] -= 100;
-						}
-					}
-				}
-
-				if (ch == null && Dungeon.level instanceof MiningLevel && Random.Int(3) == 0){
-					Level.set( i, Terrain.MINE_BOULDER );
-					GameScene.updateMap(i);
-				}
-			}
-
-			PixelScene.shake( 3, 0.7f );
-			Sample.INSTANCE.play(Assets.Sounds.ROCKS);
-
-			detach();
-			return super.act();
-		}
-
-		@Override
-		public void fx(boolean on) {
-			if (on && rockPositions != null){
-				for (int i : this.rockPositions){
-					Emitter e = CellEmitter.get(i);
-					e.y -= DungeonTilemap.SIZE*0.2f;
-					e.height *= 0.4f;
-					e.pour(EarthParticle.FALLING, 0.1f);
-					rockEmitters.add(e);
-				}
-			} else {
-				for (Emitter e : rockEmitters){
-					e.on = false;
+		public void affectChar(Char ch) {
+			if (!(ch instanceof DM300)){
+				Buff.prolong(ch, Paralysis.class, Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 5 : 3);
+				if (ch == Dungeon.hero) {
+					Statistics.bossScores[2] -= 100;
 				}
 			}
 		}
 
-		private static final String POSITIONS = "positions";
-
 		@Override
-		public void storeInBundle(Bundle bundle) {
-			super.storeInBundle(bundle);
-			bundle.put(POSITIONS, rockPositions);
-		}
-
-		@Override
-		public void restoreFromBundle(Bundle bundle) {
-			super.restoreFromBundle(bundle);
-			rockPositions = bundle.getIntArray(POSITIONS);
+		public void affectCell(int cell) {
+			if (Dungeon.level.traps.get(cell) != null){
+				Dungeon.level.pressCell(cell);
+			}
 		}
 	}
 }

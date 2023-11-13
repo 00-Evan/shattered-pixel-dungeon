@@ -280,7 +280,7 @@ public class GnollSapper extends Mob {
 		for (int i : rockCells){
 			sprite.parent.add(new TargetedCell(i, 0xFF0000));
 		}
-		Buff.append(this, DM300.FallingRockBuff.class, GameMath.gate(TICK, (int)Math.ceil(target.cooldown()), 3*TICK)).setRockPositions(rockCells);
+		Buff.append(this, SapperRockFall.class, GameMath.gate(TICK, (int)Math.ceil(target.cooldown()), 3*TICK)).setRockPositions(rockCells);
 
 		sprite.attack(target.pos, new Callback() {
 			@Override
@@ -290,6 +290,26 @@ public class GnollSapper extends Mob {
 		});
 
 		return true;
+	}
+
+	public class SapperRockFall extends DelayedRockFall {
+
+		@Override
+		public void affectChar(Char ch) {
+			Buff.prolong(ch, Paralysis.class, ch instanceof GnollGuard ? 10 : 3);
+		}
+
+		@Override
+		public void affectCell(int cell) {
+			if (Dungeon.level.traps.get(cell) != null){
+				Dungeon.level.pressCell(cell);
+			}
+			if (Random.Int(3) == 0) {
+				Level.set(cell, Terrain.MINE_BOULDER);
+				GameScene.updateMap(cell);
+			}
+		}
+
 	}
 
 	public class Boulder extends Item {
