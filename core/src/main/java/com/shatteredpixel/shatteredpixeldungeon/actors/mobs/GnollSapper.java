@@ -54,10 +54,12 @@ import java.util.ArrayList;
 public class GnollSapper extends Mob {
 
 	{
-		//TODO act after gnoll guards? makes it easier to kite them
+		//always acts after guards, makes it easier to kite them into attacks
+		actPriority = Actor.MOB_PRIO-1;
+
 		spriteClass = GnollSapperSprite.class;
 
-		HP = HT = 35;
+		HP = HT = 50;
 		defenseSkill = 15;
 
 		EXP = 10;
@@ -71,48 +73,45 @@ public class GnollSapper extends Mob {
 	}
 
 	public int spawnPos;
-	private ArrayList<Integer> guardIDs = new ArrayList<>();
+	private int guardID = -1;
+
+	private int abilityCooldown = Random.NormalIntRange(4, 6);
 
 	private int throwingRockFromPos = -1;
 	private int throwingRockToPos = -1;
 
 	public void linkGuard(GnollGuard g){
-		guardIDs.add(g.id());
+		guardID = g.id();
 		g.linkSapper(this);
 	}
 
 	@Override
 	public void die(Object cause) {
 		super.die(cause);
-		for (Integer g : guardIDs){
-			if (Actor.findById(g) instanceof GnollGuard){
-				((GnollGuard) Actor.findById(g)).loseSapper();
-			}
+		if (guardID != -1 && Actor.findById(guardID) instanceof GnollGuard){
+			((GnollGuard) Actor.findById(guardID)).loseSapper();
 		}
 	}
 
-	private static final String SPAWN_POS = "spawn_pos";
-	private static final String GUARD_IDS = "guard_ids";
-
 	@Override
-	public void storeInBundle(Bundle bundle) {
-		super.storeInBundle(bundle);
-		int[] toStore = new int[guardIDs.size()];
-		for (int i = 0; i < toStore.length; i++){
-			toStore[i] = guardIDs.get(i);
-		}
-		bundle.put(GUARD_IDS, toStore);
-		bundle.put(SPAWN_POS, spawnPos);
+	public int damageRoll() {
+		return Random.NormalIntRange( 3, 6 );
 	}
 
 	@Override
-	public void restoreFromBundle(Bundle bundle) {
-		super.restoreFromBundle(bundle);
-		guardIDs = new ArrayList<>();
-		for (int g : bundle.getIntArray(GUARD_IDS)){
-			guardIDs.add(g);
-		}
-		spawnPos = bundle.getInt(SPAWN_POS);
+	public int attackSkill( Char target ) {
+		return 18;
+	}
+
+	@Override
+	public void damage(int dmg, Object src) {
+		super.damage(dmg, src);
+		abilityCooldown -= dmg/10f;
+	}
+
+	@Override
+	public int drRoll() {
+		return super.drRoll() + Random.NormalIntRange(0, 6);
 	}
 
 	@Override
@@ -160,6 +159,8 @@ public class GnollSapper extends Mob {
 									Ballistica trajectory = new Ballistica(ch.pos, rockPath.path.get(rockPath.dist + 1), Ballistica.MAGIC_BOLT);
 									WandOfBlastWave.throwChar(ch, trajectory, 1, false, false, GnollSapper.this);
 								}
+							} else {
+								Dungeon.level.pressCell(rockPath.collisionPos);
 							}
 
 							next();
@@ -183,22 +184,40 @@ public class GnollSapper extends Mob {
 			if (!enemyInFOV) {
 				return super.act(enemyInFOV, justAlerted);
 			} else {
+				enemySeen = true;
 
-				//TODO we need a cooldown mechanic
-				if (Random.Int(4) == 0){
-					if (Random.Int(3) != 0 && prepRockAttack(enemy)) {
+				if (abilityCooldown-- <= 0){
+					boolean targetNextToBarricade = false;
+					for (int i : PathFinder.NEIGHBOURS8){
+						if (Dungeon.level.map[enemy.pos+i] == Terrain.BARRICADE){
+							targetNextToBarricade = true;
+							break;
+						}
+					}
+
+					// 50/50 to either throw a rock or do rockfall
+					// unless target is next to a barricade, then always try to throw
+					// unless nothing to throw, then always rockfall
+					if ((targetNextToBarricade || Random.Int(2) == 0) && prepRockAttack(enemy)) {
 						Dungeon.hero.interrupt();
+						abilityCooldown = Random.NormalIntRange(4, 6);
 						spend(GameMath.gate(TICK, (int)Math.ceil(enemy.cooldown()), 3*TICK));
 						return true;
 					} else if (prepRockFallAttack(enemy)) {
+						Dungeon.hero.interrupt();
 						spend(GameMath.gate(TICK, (int)Math.ceil(enemy.cooldown()), 3*TICK));
+						abilityCooldown = Random.NormalIntRange(4, 6);
 						return true;
 					}
-
 				}
 
-				spend(TICK);
-				return true;
+				//does not approach an enemy it can see, but does melee if in range
+				if (canAttack(enemy)){
+					return super.act(enemyInFOV, justAlerted);
+				} else {
+					spend(TICK);
+					return true;
+				}
 			}
 		}
 	}
@@ -218,8 +237,13 @@ public class GnollSapper extends Mob {
 			return false;
 		} else {
 
-			//TODO always random, or pick based on some criteria? maybe based on distance?
-			throwingRockFromPos = Random.element(candidateRocks);
+			//throw closest rock to enemy
+			throwingRockFromPos = candidateRocks.get(0);
+			for (int i : candidateRocks){
+				if (Dungeon.level.trueDistance(i, target.pos) < Dungeon.level.trueDistance(throwingRockFromPos, target.pos)){
+					throwingRockFromPos = i;
+				}
+			}
 			throwingRockToPos = enemy.pos;
 
 			Ballistica warnPath = new Ballistica(throwingRockFromPos, throwingRockToPos, Ballistica.STOP_SOLID);
@@ -233,10 +257,8 @@ public class GnollSapper extends Mob {
 	}
 
 	//similar overall logic as DM-300's rock fall attack, but 5x5 and can't hit barricades
-	// TODO externalize? we're going to use this for geomancer too
 	private boolean prepRockFallAttack( Char target ){
 
-		Dungeon.hero.interrupt();
 		final int rockCenter = target.pos;
 
 		int safeCell;
@@ -271,7 +293,6 @@ public class GnollSapper extends Mob {
 				}
 				//add rock cell to pos, if it is not solid, and isn't the safecell
 				if (!Dungeon.level.solid[pos] && pos != safeCell && Random.Int(Dungeon.level.distance(rockCenter, pos)) == 0) {
-					//don't want to overly punish players with slow move or attack speed
 					rockCells.add(pos);
 				}
 				pos++;
@@ -280,6 +301,7 @@ public class GnollSapper extends Mob {
 		for (int i : rockCells){
 			sprite.parent.add(new TargetedCell(i, 0xFF0000));
 		}
+		//don't want to overly punish players with slow move or attack speed
 		Buff.append(this, SapperRockFall.class, GameMath.gate(TICK, (int)Math.ceil(target.cooldown()), 3*TICK)).setRockPositions(rockCells);
 
 		sprite.attack(target.pos, new Callback() {
@@ -292,7 +314,7 @@ public class GnollSapper extends Mob {
 		return true;
 	}
 
-	public class SapperRockFall extends DelayedRockFall {
+	public static class SapperRockFall extends DelayedRockFall {
 
 		@Override
 		public void affectChar(Char ch) {
@@ -323,5 +345,32 @@ public class GnollSapper extends Mob {
 		protected int randomDestination() {
 			return spawnPos;
 		}
+	}
+
+	private static final String SPAWN_POS = "spawn_pos";
+	private static final String GUARD_ID = "guard_id";
+
+	private static final String ABILITY_COOLDOWN = "ability_cooldown";
+	private static final String ROCK_FROM_POS = "rock_from_pos";
+	private static final String ROCK_TO_POS = "rock_to_pos";
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put(GUARD_ID, guardID);
+		bundle.put(SPAWN_POS, spawnPos);
+		bundle.put(ABILITY_COOLDOWN, abilityCooldown);
+		bundle.put(ROCK_FROM_POS, throwingRockFromPos);
+		bundle.put(ROCK_TO_POS, throwingRockToPos);
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		guardID = bundle.getInt( GUARD_ID );
+		spawnPos = bundle.getInt(SPAWN_POS);
+		abilityCooldown = bundle.getInt(ABILITY_COOLDOWN);
+		throwingRockFromPos = bundle.getInt(ROCK_FROM_POS);
+		throwingRockToPos = bundle.getInt(ROCK_TO_POS);
 	}
 }

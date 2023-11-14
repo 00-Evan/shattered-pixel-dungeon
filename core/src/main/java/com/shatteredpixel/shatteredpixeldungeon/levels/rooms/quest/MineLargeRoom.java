@@ -139,10 +139,13 @@ public class MineLargeRoom extends CaveRoom {
 			level.mobs.add(g);
 			s.linkGuard(g);
 
-			for (int i = 0; i < 3; i ++){
+			int barricades = Random.Int(2) == 0 ? 2 : 1;
+			for (int i = 0; i < barricades; i ++){
 				int barricadePos = sapperPos+PathFinder.NEIGHBOURS8[Random.Int(8)];
 				if (level.map[barricadePos] == Terrain.EMPTY && barricadePos != guardPos){
 					Painter.set(level, barricadePos, Terrain.BARRICADE);
+				} else {
+					i--;
 				}
 			}
 
