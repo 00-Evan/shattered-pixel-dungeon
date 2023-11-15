@@ -124,9 +124,9 @@ public class MineEntrance extends EntranceRoom {
 					}
 					dist = GameMath.gate(1f, dist-0.5f, 5f);
 					float val = Random.Float((float) Math.pow(dist, 2));
-					if (val <= 0.75f) {
+					if (val <= 0.75f || dist <= 1) {
 						Painter.set(level, cell, Terrain.MINE_BOULDER);
-					} else if (val <= 3f && dist <= 3){
+					} else if (val <= 5f && dist <= 3){
 						Painter.set(level, cell, Terrain.EMPTY_DECO);
 					}
 				}
