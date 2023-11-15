@@ -229,6 +229,8 @@ public class Generator {
 		// this enforces more consistency while still allowing for better precision
 		public float[] defaultProbs2 = null;
 		public boolean using2ndProbs = false;
+		//but in such cases we still need a reference to the full deck in case of non-deck generation
+		public float[] defaultProbsTotal = null;
 
 		//These variables are used as a part of the deck system, to ensure that drops are consistent
 		// regardless of when they occur (either as part of seeded levelgen, or random item drops)
@@ -506,6 +508,15 @@ public class Generator {
 			};
 			ARTIFACT.defaultProbs = new float[]{ 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1 };
 			ARTIFACT.probs = ARTIFACT.defaultProbs.clone();
+
+			for (Category cat : Category.values()){
+				if (cat.defaultProbs2 != null){
+					cat.defaultProbsTotal = new float[cat.defaultProbs.length];
+					for (int i = 0; i < cat.defaultProbs.length; i++){
+						cat.defaultProbsTotal[i] = cat.defaultProbs[i] + cat.defaultProbs2[i];
+					}
+				}
+			}
 		}
 	}
 
@@ -633,6 +644,8 @@ public class Generator {
 			return randomMissile(true);
 		} else if (cat.defaultProbs == null || cat == Category.ARTIFACT) {
 			return random(cat);
+		} else if (cat.defaultProbsTotal != null){
+			return ((Item) Reflection.newInstance(cat.classes[Random.chances(cat.defaultProbsTotal)])).random();
 		} else {
 			return ((Item) Reflection.newInstance(cat.classes[Random.chances(cat.defaultProbs)])).random();
 		}
