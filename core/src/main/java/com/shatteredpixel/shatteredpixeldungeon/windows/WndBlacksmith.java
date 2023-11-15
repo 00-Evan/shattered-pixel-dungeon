@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -96,6 +97,10 @@ public class WndBlacksmith extends Window {
 							Blacksmith.Quest.favor -= pickaxeCost;
 							Blacksmith.Quest.pickaxe = null;
 							WndBlacksmith.this.hide();
+
+							if (!Blacksmith.Quest.rewardsAvailable()){
+								Notes.remove( Notes.Landmark.TROLL );
+							}
 						}
 					}
 				});
@@ -290,6 +295,10 @@ public class WndBlacksmith extends Window {
 					Blacksmith.Quest.favor -= 500 + 1000*Blacksmith.Quest.reforges;
 					Blacksmith.Quest.reforges++;
 
+					if (!Blacksmith.Quest.rewardsAvailable()){
+						Notes.remove( Notes.Landmark.TROLL );
+					}
+
 					hide();
 					if (wndParent != null){
 						wndParent.hide();
@@ -386,6 +395,10 @@ public class WndBlacksmith extends Window {
 
 				Sample.INSTANCE.play(Assets.Sounds.EVOKE);
 				Item.evoke( Dungeon.hero );
+
+				if (!Blacksmith.Quest.rewardsAvailable()){
+					Notes.remove( Notes.Landmark.TROLL );
+				}
 			}
 		}
 	}
@@ -424,6 +437,10 @@ public class WndBlacksmith extends Window {
 				Item.evoke( Dungeon.hero );
 
 				Badges.validateItemLevelAquired( item );
+
+				if (!Blacksmith.Quest.rewardsAvailable()){
+					Notes.remove( Notes.Landmark.TROLL );
+				}
 			}
 		}
 	}
@@ -498,6 +515,10 @@ public class WndBlacksmith extends Window {
 						}
 						WndSmith.this.hide();
 						Blacksmith.Quest.smithRewards = null;
+
+						if (!Blacksmith.Quest.rewardsAvailable()){
+							Notes.remove( Notes.Landmark.TROLL );
+						}
 					}
 				};
 				btnConfirm.setRect(0, height+2, width/2-1, 16);

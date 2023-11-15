@@ -64,7 +64,7 @@ public class Blacksmith extends NPC {
 			Notes.remove( Notes.Landmark.TROLL );
 			return true;
 		}
-		if (Dungeon.level.visited[pos]){
+		if (Dungeon.level.visited[pos] && !Quest.started()){
 			Notes.add( Notes.Landmark.TROLL );
 		}
 		return super.act();
@@ -202,7 +202,7 @@ public class Blacksmith extends NPC {
 				}
 			});
 
-		} else if (Quest.favor > 0 || Quest.pickaxe != null && Statistics.questScores[2] >= 2500) {
+		} else if (Quest.rewardsAvailable()) {
 
 			Game.runOnRenderThread(new Callback() {
 				@Override
@@ -495,6 +495,12 @@ public class Blacksmith extends NPC {
 			if (bossBeaten) favor += 1000;
 
 			Statistics.questScores[2] = favor;
+		}
+
+		public static boolean rewardsAvailable(){
+			return favor > 0
+					|| (Quest.smithRewards != null && Quest.smiths > 0)
+					|| (pickaxe != null && Statistics.questScores[2] >= 2500);
 		}
 
 		//if the blacksmith is generated pre-v2.2.0, and the player never spawned a mining test floor
