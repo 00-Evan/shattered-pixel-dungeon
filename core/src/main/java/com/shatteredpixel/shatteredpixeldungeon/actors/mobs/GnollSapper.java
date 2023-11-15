@@ -182,9 +182,19 @@ public class GnollSapper extends Mob {
 		@Override
 		public boolean act(boolean enemyInFOV, boolean justAlerted) {
 			if (!enemyInFOV) {
+				if (Dungeon.level.distance(spawnPos, target) > 3){
+					//don't chase something more than a few tiles out of spawning position
+					target = pos;
+				}
 				return super.act(enemyInFOV, justAlerted);
 			} else {
 				enemySeen = true;
+
+				if (Actor.findById(guardID) instanceof GnollGuard
+						&& Dungeon.level.distance(pos, enemy.pos) <= 3){
+					((GnollGuard) Actor.findById(guardID)).beckon(enemy.pos);
+					((GnollGuard) Actor.findById(guardID)).aggro(enemy);
+				}
 
 				if (abilityCooldown-- <= 0){
 					boolean targetNextToBarricade = false;
