@@ -325,9 +325,6 @@ public class GnollSapper extends Mob {
 
 		@Override
 		public void affectCell(int cell) {
-			if (Dungeon.level.traps.get(cell) != null){
-				Dungeon.level.pressCell(cell);
-			}
 			if (Random.Int(3) == 0) {
 				Level.set(cell, Terrain.MINE_BOULDER);
 				GameScene.updateMap(cell);

@@ -681,11 +681,5 @@ public class DM300 extends Mob {
 			}
 		}
 
-		@Override
-		public void affectCell(int cell) {
-			if (Dungeon.level.traps.get(cell) != null){
-				Dungeon.level.pressCell(cell);
-			}
-		}
 	}
 }
