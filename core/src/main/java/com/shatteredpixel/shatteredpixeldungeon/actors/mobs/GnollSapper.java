@@ -189,7 +189,8 @@ public class GnollSapper extends Mob {
 				if (abilityCooldown-- <= 0){
 					boolean targetNextToBarricade = false;
 					for (int i : PathFinder.NEIGHBOURS8){
-						if (Dungeon.level.map[enemy.pos+i] == Terrain.BARRICADE){
+						if (Dungeon.level.map[enemy.pos+i] == Terrain.BARRICADE
+							|| Dungeon.level.map[enemy.pos+i] == Terrain.ENTRANCE){
 							targetNextToBarricade = true;
 							break;
 						}
@@ -282,7 +283,8 @@ public class GnollSapper extends Mob {
 				if (Dungeon.level instanceof MiningLevel){
 					boolean barricade = false;
 					for (int j : PathFinder.NEIGHBOURS9){
-						if (Dungeon.level.map[pos+j] == Terrain.BARRICADE){
+						if (Dungeon.level.map[pos+j] == Terrain.BARRICADE
+								|| Dungeon.level.map[pos+j] == Terrain.ENTRANCE){
 							barricade = true;
 						}
 					}
