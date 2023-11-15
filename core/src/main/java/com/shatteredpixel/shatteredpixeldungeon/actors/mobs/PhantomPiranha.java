@@ -85,10 +85,12 @@ public class PhantomPiranha extends Piranha {
 
 	@Override
 	public void dieOnLand() {
-		teleportAway();
+		if (!teleportAway()){
+			super.dieOnLand();
+		}
 	}
 
-	private void teleportAway(){
+	private boolean teleportAway(){
 
 		ArrayList<Integer> inFOVCandidates = new ArrayList<>();
 		ArrayList<Integer> outFOVCandidates = new ArrayList<>();
@@ -105,9 +107,13 @@ public class PhantomPiranha extends Piranha {
 		if (!outFOVCandidates.isEmpty()){
 			if (Dungeon.level.heroFOV[pos]) GLog.i(Messages.get(this, "teleport_away"));
 			ScrollOfTeleportation.appear(this, Random.element(outFOVCandidates));
+			return true;
 		} else if (!inFOVCandidates.isEmpty()){
 			ScrollOfTeleportation.appear(this, Random.element(inFOVCandidates));
+			return true;
 		}
+
+		return false;
 
 	}
 }
