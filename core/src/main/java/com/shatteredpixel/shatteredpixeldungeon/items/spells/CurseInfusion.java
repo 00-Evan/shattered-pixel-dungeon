@@ -79,7 +79,7 @@ public class CurseInfusion extends InventorySpell {
 				if (a.hasGoodGlyph() || a.curseInfusionBonus) {
 					a.inscribe(Armor.Glyph.randomCurse(a.glyph.getClass()));
 				}
-			} else if (a.hasGoodGlyph() || a.curseInfusionBonus) {
+			} else {
 				a.inscribe(Armor.Glyph.randomCurse());
 			}
 			a.curseInfusionBonus = true;
