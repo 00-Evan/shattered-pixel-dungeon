@@ -31,7 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.CaveRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.RockfallTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GnollRockfallTrap;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
@@ -158,7 +158,7 @@ public class MineLargeRoom extends CaveRoom {
 						|| level.pointToCell(r) == sapperPos
 						|| level.pointToCell(r) == guardPos);
 				Painter.set(level, r, Terrain.TRAP);
-				level.setTrap(new RockfallTrap().reveal(), level.pointToCell(r));
+				level.setTrap(new GnollRockfallTrap().reveal(), level.pointToCell(r));
 			}
 
 			for (Point p : getPoints()){

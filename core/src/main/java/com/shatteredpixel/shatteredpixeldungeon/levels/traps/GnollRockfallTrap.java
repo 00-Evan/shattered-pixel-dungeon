@@ -27,62 +27,47 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollGuard;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.watabou.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.BArray;
 import com.watabou.utils.PathFinder;
-import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class RockfallTrap extends Trap {
+public class GnollRockfallTrap extends RockfallTrap {
 
-	{
-		color = GREY;
-		shape = DIAMOND;
-		
-		canBeHidden = false;
-		avoidsHallways = true;
-	}
-	
 	@Override
 	public void activate() {
-		
+
 		ArrayList<Integer> rockCells = new ArrayList<>();
-		
-		//determines if the trap is actually in the world, or if it is being spawned for its effect
-		boolean onGround = Dungeon.level.traps.get(pos) == this;
-		Room r = null;
-		if (Dungeon.level instanceof RegularLevel){
-			r = ((RegularLevel) Dungeon.level).room(pos);
-		}
-		
-		if (onGround && r != null){
-			int cell;
-			for (Point p : r.getPoints()){
-				cell = Dungeon.level.pointToCell(p);
-				if (!Dungeon.level.solid[cell]){
-					rockCells.add(cell);
+
+		//drop rocks in a 5x5 grid, ignoring cells next to barricades
+		PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), 2 );
+		for (int i = 0; i < PathFinder.distance.length; i++) {
+			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+				if (Dungeon.level instanceof MiningLevel){
+					boolean barricade = false;
+					for (int j : PathFinder.NEIGHBOURS9){
+						if (Dungeon.level.map[i+j] == Terrain.BARRICADE){
+							barricade = true;
+						}
+					}
+					if (barricade) continue;
 				}
-			}
-			
-		//if we don't have a room, then just do 5x5
-		} else {
-			PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), 2 );
-			for (int i = 0; i < PathFinder.distance.length; i++) {
-				if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-					rockCells.add(i);
-				}
+				rockCells.add(i);
 			}
 		}
-		
+
 		boolean seen = false;
 		for (int cell : rockCells){
 
@@ -94,23 +79,32 @@ public class RockfallTrap extends Trap {
 			Char ch = Actor.findChar( cell );
 
 			if (ch != null && ch.isAlive()){
-				int damage = Random.NormalIntRange(5+scalingDepth(), 10+scalingDepth()*2);
+				//5-10 less damage than normal rockfall traps
+				int damage = Random.NormalIntRange(scalingDepth(), scalingDepth()*2);
 				damage -= ch.drRoll();
 				ch.damage( Math.max(damage, 0) , this);
 
-				Buff.prolong( ch, Paralysis.class, Paralysis.DURATION );
+				//guards take full paralysis, otherwise just a little
+				Buff.prolong(ch, Paralysis.class, ch instanceof GnollGuard ? 10 : 3);
 
 				if (!ch.isAlive() && ch == Dungeon.hero){
 					Dungeon.fail( this );
 					GLog.n( Messages.get(this, "ondeath") );
 				}
+			} else if (Dungeon.level instanceof MiningLevel
+					&& Dungeon.level.traps.get(cell) == null
+					&& Dungeon.level.plants.get(cell) == null
+					&& Random.Int(2) == 0){
+				Level.set( cell, Terrain.MINE_BOULDER );
+				GameScene.updateMap(cell);
 			}
 		}
-		
+
 		if (seen){
 			PixelScene.shake(3, 0.7f);
 			Sample.INSTANCE.play(Assets.Sounds.ROCKS);
 		}
 
 	}
+
 }

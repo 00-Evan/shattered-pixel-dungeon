@@ -290,6 +290,8 @@ public class MiningLevel extends CavesLevel {
 				return Messages.get(MiningLevel.class, "crystal_desc");
 			case Terrain.MINE_BOULDER:
 				return Messages.get(MiningLevel.class, "boulder_desc");
+			case Terrain.BARRICADE:
+				return Messages.get(MiningLevel.class, "barricade_desc");
 			default:
 				return super.tileDesc( tile );
 		}
