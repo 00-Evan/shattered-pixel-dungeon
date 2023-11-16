@@ -36,11 +36,13 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollSapperSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
@@ -95,7 +97,7 @@ public class GnollSapper extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 3, 6 );
+		return Random.NormalIntRange( 1, 6 );
 	}
 
 	@Override
@@ -133,7 +135,6 @@ public class GnollSapper extends Mob {
 					reset( throwingRockFromPos, rockPath.collisionPos, new Boulder(), new Callback() {
 						@Override
 						public void call() {
-							//TODO can probably have better particles
 							Splash.at(rockPath.collisionPos, ColorMath.random( 0x444444, 0x777766 ), 15);
 							Sample.INSTANCE.play(Assets.Sounds.ROCKS);
 
@@ -152,7 +153,7 @@ public class GnollSapper extends Mob {
 								} else if (!ch.isAlive() && ch == Dungeon.hero) {
 									Badges.validateDeathFromEnemyMagic();
 									Dungeon.fail( GnollSapper.this );
-									//TODO GLog.n( Messages.get(this, "bolt_kill") );
+									GLog.n( Messages.get(this, "rock_kill") );
 								}
 
 								if (rockPath.path.size() > rockPath.dist+1) {
@@ -192,7 +193,7 @@ public class GnollSapper extends Mob {
 
 				if (Actor.findById(guardID) instanceof GnollGuard
 						&& Dungeon.level.distance(pos, enemy.pos) <= 3){
-					((GnollGuard) Actor.findById(guardID)).beckon(enemy.pos);
+					((GnollGuard) Actor.findById(guardID)).target = enemy.pos;
 					((GnollGuard) Actor.findById(guardID)).aggro(enemy);
 				}
 
