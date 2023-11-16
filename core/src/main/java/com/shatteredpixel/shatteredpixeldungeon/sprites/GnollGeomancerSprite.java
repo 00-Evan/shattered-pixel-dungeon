@@ -22,9 +22,12 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.watabou.noosa.TextureFilm;
 
 public class GnollGeomancerSprite extends MobSprite {
+
+	private Animation statue;
 
 	public GnollGeomancerSprite() {
 		super();
@@ -34,21 +37,32 @@ public class GnollGeomancerSprite extends MobSprite {
 		TextureFilm frames = new TextureFilm( texture, 12, 16 );
 
 		idle = new Animation( 2, true );
-		idle.frames( frames, 0, 0, 0, 1, 0, 0, 1, 1 );
+		idle.frames( frames, 1, 1, 1, 2, 1, 1, 2, 2 );
 
 		run = new Animation( 12, true );
-		run.frames( frames, 4, 5, 6, 7 );
+		run.frames( frames, 5, 6, 7, 8 );
 
 		attack = new Animation( 12, false );
-		attack.frames( frames, 2, 3, 0 );
+		attack.frames( frames, 3, 4, 1 );
 
 		zap = attack.clone();
 
 		die = new Animation( 12, false );
-		die.frames( frames, 8, 9, 10 );
+		die.frames( frames, 9, 10, 11 );
 
-		play( idle );
+		statue = new Animation(1, true);
+		statue.frames( frames, 0 );
+
+		play(idle);
+
+		scale.set(1.25f);
 	}
 
-
+	@Override
+	public void idle() {
+		super.idle();
+		if (ch instanceof Mob && ((Mob) ch).state == ((Mob) ch).SLEEPING){
+			play( statue );
+		}
+	}
 }

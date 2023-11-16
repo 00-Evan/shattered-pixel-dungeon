@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CrystalSpire;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollGeomancer;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -32,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.CaveRoom;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+import com.watabou.utils.Rect;
 
 import java.util.ArrayList;
 
@@ -113,12 +115,14 @@ public class MineGiantRoom extends CaveRoom {
 				}
 			}
 
-			for (int i = 0; i < 8; i ++){
-				Point r = random(5);
-				if (level.map[level.pointToCell(r)] != Terrain.WALL) {
-					Painter.set(level, r, Terrain.BARRICADE);
-				}
-			}
+			Point center = center();
+			Rect centerArea = new Rect(center.x-2, center.y-2, center.x+3, center.y+3);
+			Painter.fillEllipse(level, centerArea, 0, Terrain.MINE_BOULDER);
+			Painter.fill(level, centerArea, 2, Terrain.EMPTY_DECO);
+
+			GnollGeomancer g = new GnollGeomancer();
+			g.pos = level.pointToCell(center);
+			level.mobs.add(g);
 
 		} else if (Blacksmith.Quest.Type() == Blacksmith.Quest.FUNGI){
 			Painter.fillEllipse(level, this, 3, Terrain.EMPTY);
