@@ -22,8 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollGeomancer;
 import com.watabou.noosa.TextureFilm;
+import com.watabou.utils.ColorMath;
 
 public class GnollGeomancerSprite extends MobSprite {
 
@@ -61,8 +62,13 @@ public class GnollGeomancerSprite extends MobSprite {
 	@Override
 	public void idle() {
 		super.idle();
-		if (ch instanceof Mob && ((Mob) ch).state == ((Mob) ch).SLEEPING){
+		if (ch != null && ch.buff(GnollGeomancer.RockArmor.class) != null){
 			play( statue );
 		}
+	}
+
+	@Override
+	public int blood() {
+		return curAnim == statue ? ColorMath.random( 0x444444, 0x777766 ) : super.blood();
 	}
 }

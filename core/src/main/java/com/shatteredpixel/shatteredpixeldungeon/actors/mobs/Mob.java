@@ -723,6 +723,11 @@ public abstract class Mob extends Char {
 				&& (!attacking || enemy.canSurpriseAttack());
 	}
 
+	//whether the hero should interact with the mob (true) or attack it (false)
+	public boolean heroShouldInteract(){
+		return alignment != Alignment.ENEMY && buff(Amok.class) == null;
+	}
+
 	public void aggro( Char ch ) {
 		enemy = ch;
 		if (state != PASSIVE){

@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CrystalSpire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollGeomancer;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
@@ -122,6 +123,7 @@ public class MineGiantRoom extends CaveRoom {
 
 			GnollGeomancer g = new GnollGeomancer();
 			g.pos = level.pointToCell(center);
+			Buff.affect(g, GnollGeomancer.RockArmor.class).setShield(50);
 			level.mobs.add(g);
 
 		} else if (Blacksmith.Quest.Type() == Blacksmith.Quest.FUNGI){
