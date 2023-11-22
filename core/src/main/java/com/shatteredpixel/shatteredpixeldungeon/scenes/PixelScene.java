@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Tooltip;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Holiday;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
 import com.watabou.input.ControllerHandler;
@@ -99,6 +100,8 @@ public class PixelScene extends Scene {
 		if (!inGameScene && InterlevelScene.lastRegion != -1){
 			InterlevelScene.lastRegion = -1;
 			TextureCache.clear();
+			//good time to clear holiday cache as well
+			Holiday.clearCachedHoliday();
 		}
 
 		float minWidth, minHeight, scaleFactor;

@@ -29,46 +29,9 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-
-import java.util.Calendar;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Holiday;
 
 public class Pasty extends Food {
-
-	//TODO: implement fun stuff for other holidays
-	//TODO: probably should externalize this if I want to add any more festive stuff.
-	private enum Holiday{
-		NONE,
-		EASTER, //TBD
-		HWEEN,//2nd week of october though first day of november
-		XMAS //3rd week of december through first week of january
-	}
-
-	private static Holiday holiday;
-
-	static{
-
-		holiday = Holiday.NONE;
-
-		final Calendar calendar = Calendar.getInstance();
-		switch(calendar.get(Calendar.MONTH)){
-			case Calendar.JANUARY:
-				if (calendar.get(Calendar.WEEK_OF_MONTH) == 1)
-					holiday = Holiday.XMAS;
-				break;
-			case Calendar.OCTOBER:
-				if (calendar.get(Calendar.WEEK_OF_MONTH) >= 2)
-					holiday = Holiday.HWEEN;
-				break;
-			case Calendar.NOVEMBER:
-				if (calendar.get(Calendar.DAY_OF_MONTH) == 1)
-					holiday = Holiday.HWEEN;
-				break;
-			case Calendar.DECEMBER:
-				if (calendar.get(Calendar.WEEK_OF_MONTH) >= 3)
-					holiday = Holiday.XMAS;
-				break;
-		}
-	}
 
 	{
 		reset();
@@ -81,14 +44,14 @@ public class Pasty extends Food {
 	@Override
 	public void reset() {
 		super.reset();
-		switch(holiday){
+		switch(Holiday.getCurrentHoliday()){
 			case NONE:
 				image = ItemSpriteSheet.PASTY;
 				break;
-			case HWEEN:
+			case HALLOWEEN:
 				image = ItemSpriteSheet.PUMPKIN_PIE;
 				break;
-			case XMAS:
+			case WINTER_HOLIDAYS:
 				image = ItemSpriteSheet.CANDY_CANE;
 				break;
 		}
@@ -98,15 +61,15 @@ public class Pasty extends Food {
 	protected void satisfy(Hero hero) {
 		super.satisfy(hero);
 		
-		switch(holiday){
-			case NONE:
+		switch(Holiday.getCurrentHoliday()){
+			default:
 				break; //do nothing extra
-			case HWEEN:
+			case HALLOWEEN:
 				//heals for 10% max hp
 				hero.HP = Math.min(hero.HP + hero.HT/10, hero.HT);
 				hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
 				break;
-			case XMAS:
+			case WINTER_HOLIDAYS:
 				Buff.affect( hero, Recharging.class, 2f ); //half of a charge
 				ScrollOfRecharging.charge( hero );
 				break;
@@ -115,24 +78,24 @@ public class Pasty extends Food {
 
 	@Override
 	public String name() {
-		switch(holiday){
+		switch(Holiday.getCurrentHoliday()){
 			case NONE: default:
 				return Messages.get(this, "pasty");
-			case HWEEN:
+			case HALLOWEEN:
 				return Messages.get(this, "pie");
-			case XMAS:
+			case WINTER_HOLIDAYS:
 				return Messages.get(this, "cane");
 		}
 	}
 
 	@Override
 	public String info() {
-		switch(holiday){
+		switch(Holiday.getCurrentHoliday()){
 			case NONE: default:
 				return Messages.get(this, "pasty_desc");
-			case HWEEN:
+			case HALLOWEEN:
 				return Messages.get(this, "pie_desc");
-			case XMAS:
+			case WINTER_HOLIDAYS:
 				return Messages.get(this, "cane_desc");
 		}
 	}
