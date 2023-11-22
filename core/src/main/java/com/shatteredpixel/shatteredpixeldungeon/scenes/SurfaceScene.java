@@ -60,6 +60,7 @@ import com.watabou.utils.Random;
 import java.nio.Buffer;
 import java.nio.FloatBuffer;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class SurfaceScene extends PixelScene {
 
@@ -110,8 +111,9 @@ public class SurfaceScene extends PixelScene {
 		Group window = new Group();
 		window.camera = viewport;
 		add( window );
-		
-		boolean dayTime = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) >= 7;
+
+		Calendar cal = GregorianCalendar.getInstance();
+		boolean dayTime = cal.get(Calendar.HOUR_OF_DAY) >= 7 && cal.get(Calendar.HOUR_OF_DAY) <= 20;
 		
 		Sky sky = new Sky( dayTime );
 		sky.scale.set( SKY_WIDTH, SKY_HEIGHT );

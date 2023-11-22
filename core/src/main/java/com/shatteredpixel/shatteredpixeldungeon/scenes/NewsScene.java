@@ -44,7 +44,6 @@ import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.ui.Component;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class NewsScene extends PixelScene {
 
@@ -273,8 +272,6 @@ public class NewsScene extends PixelScene {
 				textColor(Window.SHPX_COLOR);
 			}
 
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(article.date);
 			date = new BitmapText( News.parseArticleDate(article), pixelFont);
 			date.scale.set(PixelScene.align(0.5f));
 			date.hardlight( 0x888888 );
