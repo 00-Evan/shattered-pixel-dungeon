@@ -437,14 +437,16 @@ public abstract class RegularLevel extends Level {
 		Random.popGenerator();
 
 		Random.pushGenerator( Random.Long() );
-			Item item = Bones.get();
-			if (item != null) {
+			ArrayList<Item> bonesItems = Bones.get();
+			if (bonesItems != null) {
 				int cell = randomDropCell();
 				if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
 					map[cell] = Terrain.GRASS;
 					losBlocking[cell] = false;
 				}
-				drop( item, cell ).setHauntedIfCursed().type = Heap.Type.REMAINS;
+				for (Item i : bonesItems) {
+					drop(i, cell).setHauntedIfCursed().type = Heap.Type.REMAINS;
+				}
 			}
 		Random.popGenerator();
 
@@ -457,7 +459,7 @@ public abstract class RegularLevel extends Level {
 				for (int i=1; i <= petalsNeeded; i++) {
 					//the player may miss a single petal and still max their rose.
 					if (rose.droppedPetals < 11) {
-						item = new DriedRose.Petal();
+						Item item = new DriedRose.Petal();
 						int cell = randomDropCell();
 						drop( item, cell ).type = Heap.Type.HEAP;
 						if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {

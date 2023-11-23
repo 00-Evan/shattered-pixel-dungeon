@@ -565,10 +565,19 @@ public class PrisonBossLevel extends Level {
 	
 	@Override
 	protected void createItems() {
-		Item item = Bones.get();
-		if (item != null) {
-			drop( item, randomRespawnCell( null ) ).setHauntedIfCursed().type = Heap.Type.REMAINS;
-		}
+		Random.pushGenerator(Random.Long());
+			ArrayList<Item> bonesItems = Bones.get();
+			if (bonesItems != null) {
+				int pos;
+				do {
+					pos = randomRespawnCell(null);
+				} while (pos == entrance());
+				for (Item i : bonesItems) {
+					drop(i, pos).setHauntedIfCursed().type = Heap.Type.REMAINS;
+				}
+			}
+		Random.popGenerator();
+
 		drop(new IronKey(10), randomPrisonCellPos());
 	}
 

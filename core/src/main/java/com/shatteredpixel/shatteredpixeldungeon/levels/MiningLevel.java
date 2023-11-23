@@ -164,15 +164,19 @@ public class MiningLevel extends CavesLevel {
 
 	@Override
 	protected void createItems() {
-		Item item = Bones.get();
-		if (item != null) {
-			int cell = randomDropCell();
-			if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
-				map[cell] = Terrain.GRASS;
-				losBlocking[cell] = false;
+		Random.pushGenerator(Random.Long());
+			ArrayList<Item> bonesItems = Bones.get();
+			if (bonesItems != null) {
+				int cell = randomDropCell();
+				if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
+					map[cell] = Terrain.GRASS;
+					losBlocking[cell] = false;
+				}
+				for (Item i : bonesItems) {
+					drop(i, cell).setHauntedIfCursed().type = Heap.Type.REMAINS;
+				}
 			}
-			drop( item, cell ).setHauntedIfCursed().type = Heap.Type.REMAINS;
-		}
+		Random.popGenerator();
 
 		int cell = randomDropCell();
 		if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {

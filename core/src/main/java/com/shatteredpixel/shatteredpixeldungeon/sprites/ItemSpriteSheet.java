@@ -125,7 +125,7 @@ public class ItemSpriteSheet {
 		assignItemRect(EBONY_CHEST,     16, 14);
 	}
 
-	private static final int MISC_CONSUMABLE =                              xy(1, 4);   //16 slots
+	private static final int MISC_CONSUMABLE =                              xy(1, 4);   //32 slots
 	public static final int ANKH            = MISC_CONSUMABLE +0;
 	public static final int STYLUS          = MISC_CONSUMABLE +1;
 	public static final int SEAL            = MISC_CONSUMABLE +2;
@@ -142,6 +142,12 @@ public class ItemSpriteSheet {
 	public static final int AMULET          = MISC_CONSUMABLE +13;
 	public static final int MASTERY         = MISC_CONSUMABLE +14;
 	public static final int KIT             = MISC_CONSUMABLE +15;
+	public static final int SEAL_SHARD      = MISC_CONSUMABLE +16;
+	public static final int BROKEN_STAFF    = MISC_CONSUMABLE +17;
+	public static final int CLOAK_SCRAP     = MISC_CONSUMABLE +18;
+	public static final int BOW_FRAGMENT    = MISC_CONSUMABLE +19;
+	public static final int BROKEN_HILT     = MISC_CONSUMABLE +20;
+
 	static{
 		assignItemRect(ANKH,            10, 16);
 		assignItemRect(STYLUS,          12, 13);
@@ -161,9 +167,16 @@ public class ItemSpriteSheet {
 		assignItemRect(AMULET,          16, 16);
 		assignItemRect(MASTERY,         13, 16);
 		assignItemRect(KIT,             16, 15);
+
+		//TODO improve these placeholder images
+		assignItemRect(SEAL_SHARD,      6,   9);
+		assignItemRect(BROKEN_STAFF,    15, 11);
+		assignItemRect(CLOAK_SCRAP,     5,   9);
+		assignItemRect(BOW_FRAGMENT,    12,  7);
+		assignItemRect(BROKEN_HILT,      6,  7);
 	}
 	
-	private static final int BOMBS          =                               xy(1, 5);   //16 slots
+	private static final int BOMBS          =                               xy(1, 6);   //16 slots
 	public static final int BOMB            = BOMBS+0;
 	public static final int DBL_BOMB        = BOMBS+1;
 	public static final int FIRE_BOMB       = BOMBS+2;
@@ -191,9 +204,6 @@ public class ItemSpriteSheet {
 		assignItemRect(ARCANE_BOMB,     10, 13);
 		assignItemRect(SHRAPNEL_BOMB,   10, 13);
 	}
-
-	
-	                                                                                    //16 free slots
 
 	private static final int WEP_TIER1      =                               xy(1, 7);   //8 slots
 	public static final int WORN_SHORTSWORD = WEP_TIER1+0;
