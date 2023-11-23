@@ -103,7 +103,7 @@ public class v0_3_X_Changes {
 				"\n" +
 				"v0.3.4 made Shattered available in multiple languages! This update was a direct response to messages I kept getting from users who wanted to share the game with their friends, but couldn't due to the language barrier.\n" +
 				"\n" +
-				"Translating the game was no small feat, Shattered has a huge amount of text that is constantly changing and growing. As of mid 2021 Shattered has roughly 40 thousand words of total text. Because of the volume of text it would have been prohibitively expensive to get the game professionally translated, and so I opted to ask for community translations instead.\n" +
+				"Translating the game was no small feat, Shattered has a huge amount of text that is constantly changing and growing, over 50 thousand words in total. Because of the volume of text it would have been prohibitively expensive to get the game professionally translated, and so I opted to ask for community translations instead.\n" +
 				"\n" +
 				"The response from the community was and continues to be incredible! Even multiple years later Shattered's updates are still consistently translated into a number of languages."));
 		
