@@ -22,7 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollSapper;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollGeomancer;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
@@ -104,7 +104,7 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		
 		//720 is default
 
-		ANGULAR_SPEEDS.put(GnollSapper.Boulder.class,   90);
+		ANGULAR_SPEEDS.put(GnollGeomancer.Boulder.class,   90);
 		
 		ANGULAR_SPEEDS.put(HeavyBoomerang.class,1440);
 		ANGULAR_SPEEDS.put(Bolas.class,         1440);
@@ -152,7 +152,7 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 			updateFrame();
 		}
 
-		if (item instanceof GnollSapper.Boulder){
+		if (item instanceof GnollGeomancer.Boulder){
 			angle = 0;
 			flipHorizontal = false;
 			updateFrame();

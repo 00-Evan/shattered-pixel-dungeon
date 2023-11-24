@@ -21,37 +21,17 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollSapperSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.Callback;
-import com.watabou.utils.ColorMath;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
-
-import java.util.ArrayList;
 
 public class GnollSapper extends Mob {
 
@@ -119,54 +99,7 @@ public class GnollSapper extends Mob {
 	@Override
 	protected boolean act() {
 		if (throwingRockFromPos != -1){
-			Level.set(throwingRockFromPos, Terrain.EMPTY);
-			GameScene.updateMap(throwingRockFromPos);
-			sprite.attack(throwingRockToPos, new Callback() {
-				@Override
-				public void call() {
-					//do nothing
-				}
-			});
-
-			Ballistica rockPath = new Ballistica(throwingRockFromPos, throwingRockToPos, Ballistica.MAGIC_BOLT);
-
-			Sample.INSTANCE.play(Assets.Sounds.MISS);
-			((MissileSprite)sprite.parent.recycle( MissileSprite.class )).
-					reset( throwingRockFromPos, rockPath.collisionPos, new Boulder(), new Callback() {
-						@Override
-						public void call() {
-							Splash.at(rockPath.collisionPos, ColorMath.random( 0x444444, 0x777766 ), 15);
-							Sample.INSTANCE.play(Assets.Sounds.ROCKS);
-
-							Char ch = Actor.findChar(rockPath.collisionPos);
-							if (ch == Dungeon.hero){
-								PixelScene.shake( 3, 0.7f );
-							} else {
-								PixelScene.shake(0.5f, 0.5f);
-							}
-
-							if (ch != null){
-								ch.damage(Random.NormalIntRange(5, 10), this);
-
-								if (ch.isAlive()){
-									Buff.prolong( ch, Paralysis.class, ch instanceof GnollGuard ? 10 : 3 );
-								} else if (!ch.isAlive() && ch == Dungeon.hero) {
-									Badges.validateDeathFromEnemyMagic();
-									Dungeon.fail( GnollSapper.this );
-									GLog.n( Messages.get(this, "rock_kill") );
-								}
-
-								if (rockPath.path.size() > rockPath.dist+1) {
-									Ballistica trajectory = new Ballistica(ch.pos, rockPath.path.get(rockPath.dist + 1), Ballistica.MAGIC_BOLT);
-									WandOfBlastWave.throwChar(ch, trajectory, 1, false, false, GnollSapper.this);
-								}
-							} else {
-								Dungeon.level.pressCell(rockPath.collisionPos);
-							}
-
-							next();
-						}
-					} );
+			GnollGeomancer.doRockThrowAttack(this, throwingRockFromPos, throwingRockToPos);
 
 			throwingRockFromPos = -1;
 			throwingRockToPos = -1;
@@ -210,12 +143,22 @@ public class GnollSapper extends Mob {
 					// 50/50 to either throw a rock or do rockfall
 					// unless target is next to a barricade, then always try to throw
 					// unless nothing to throw, then always rockfall
-					if ((targetNextToBarricade || Random.Int(2) == 0) && prepRockAttack(enemy)) {
+					Ballistica aim = GnollGeomancer.prepRockThrowAttack(enemy, GnollSapper.this);
+					if (aim != null && (targetNextToBarricade || Random.Int(2) == 0)) {
+
+						throwingRockFromPos = aim.sourcePos;
+						throwingRockToPos = aim.collisionPos;
+
+						Ballistica warnPath = new Ballistica(aim.sourcePos, aim.collisionPos, Ballistica.STOP_SOLID);
+						for (int i : warnPath.subPath(0, warnPath.dist)){
+							sprite.parent.add(new TargetedCell(i, 0xFF0000));
+						}
+
 						Dungeon.hero.interrupt();
 						abilityCooldown = Random.NormalIntRange(4, 6);
 						spend(GameMath.gate(TICK, (int)Math.ceil(enemy.cooldown()), 3*TICK));
 						return true;
-					} else if (prepRockFallAttack(enemy)) {
+					} else if (GnollGeomancer.prepRockFallAttack(enemy, GnollSapper.this, 2, true)) {
 						Dungeon.hero.interrupt();
 						spend(GameMath.gate(TICK, (int)Math.ceil(enemy.cooldown()), 3*TICK));
 						abilityCooldown = Random.NormalIntRange(4, 6);
@@ -231,122 +174,6 @@ public class GnollSapper extends Mob {
 					return true;
 				}
 			}
-		}
-	}
-
-	private boolean prepRockAttack( Char target ){
-		ArrayList<Integer> candidateRocks = new ArrayList<>();
-
-		for (int i = 0; i < Dungeon.level.length(); i++){
-			if (fieldOfView[i] && Dungeon.level.map[i] == Terrain.MINE_BOULDER){
-				if (new Ballistica(i, target.pos, Ballistica.PROJECTILE).collisionPos == target.pos){
-					candidateRocks.add(i);
-				}
-			}
-		}
-
-		if (candidateRocks.isEmpty()){
-			return false;
-		} else {
-
-			//throw closest rock to enemy
-			throwingRockFromPos = candidateRocks.get(0);
-			for (int i : candidateRocks){
-				if (Dungeon.level.trueDistance(i, target.pos) < Dungeon.level.trueDistance(throwingRockFromPos, target.pos)){
-					throwingRockFromPos = i;
-				}
-			}
-			throwingRockToPos = enemy.pos;
-
-			Ballistica warnPath = new Ballistica(throwingRockFromPos, throwingRockToPos, Ballistica.STOP_SOLID);
-			for (int i : warnPath.subPath(0, warnPath.dist)){
-				sprite.parent.add(new TargetedCell(i, 0xFF0000));
-			}
-
-		}
-
-		return true;
-	}
-
-	//similar overall logic as DM-300's rock fall attack, but 5x5 and can't hit barricades
-	private boolean prepRockFallAttack( Char target ){
-
-		final int rockCenter = target.pos;
-
-		int safeCell;
-		do {
-			safeCell = rockCenter + PathFinder.NEIGHBOURS8[Random.Int(8)];
-		} while (safeCell == pos
-				|| (Dungeon.level.solid[safeCell] && Random.Int(2) == 0)
-				|| (Dungeon.level.traps.containsKey(safeCell) && Random.Int(2) == 0));
-
-		ArrayList<Integer> rockCells = new ArrayList<>();
-
-		int start = rockCenter - Dungeon.level.width() * 2 - 2;
-		int pos;
-		for (int y = 0; y < 5; y++) {
-			pos = start + Dungeon.level.width() * y;
-			for (int x = 0; x < 5; x++) {
-				if (!Dungeon.level.insideMap(pos)) {
-					pos++;
-					continue;
-				}
-				if (Dungeon.level instanceof MiningLevel){
-					boolean barricade = false;
-					for (int j : PathFinder.NEIGHBOURS9){
-						if (Dungeon.level.map[pos+j] == Terrain.BARRICADE
-								|| Dungeon.level.map[pos+j] == Terrain.ENTRANCE){
-							barricade = true;
-						}
-					}
-					if (barricade){
-						pos++;
-						continue;
-					}
-				}
-				//add rock cell to pos, if it is not solid, and isn't the safecell
-				if (!Dungeon.level.solid[pos] && pos != safeCell && Random.Int(Dungeon.level.distance(rockCenter, pos)) == 0) {
-					rockCells.add(pos);
-				}
-				pos++;
-			}
-		}
-		for (int i : rockCells){
-			sprite.parent.add(new TargetedCell(i, 0xFF0000));
-		}
-		//don't want to overly punish players with slow move or attack speed
-		Buff.append(this, SapperRockFall.class, GameMath.gate(TICK, (int)Math.ceil(target.cooldown()), 3*TICK)).setRockPositions(rockCells);
-
-		sprite.attack(target.pos, new Callback() {
-			@Override
-			public void call() {
-				//do nothing
-			}
-		});
-
-		return true;
-	}
-
-	public static class SapperRockFall extends DelayedRockFall {
-
-		@Override
-		public void affectChar(Char ch) {
-			Buff.prolong(ch, Paralysis.class, ch instanceof GnollGuard ? 10 : 3);
-		}
-
-		@Override
-		public void affectCell(int cell) {
-			if (Random.Int(3) == 0) {
-				Level.set(cell, Terrain.MINE_BOULDER);
-				GameScene.updateMap(cell);
-			}
-		}
-
-	}
-
-	public class Boulder extends Item {
-		{
-			image = ItemSpriteSheet.GEO_BOULDER;
 		}
 	}
 
