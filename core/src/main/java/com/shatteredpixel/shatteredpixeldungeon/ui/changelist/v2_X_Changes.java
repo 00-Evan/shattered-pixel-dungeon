@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Whip;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.BlacksmithSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BruteSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
@@ -87,45 +86,6 @@ public class v2_X_Changes {
 		ChangeInfo changes = new ChangeInfo("v2.2", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes = new ChangeInfo("v2.2.1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton( new Image(new BlacksmithSprite()), "Blacksmith Reward Changes",
-				"Overall I'm fairly happy with the level of challenge and reward the new quest offers, but from looking at gameplay data the rewards are a bit overtuned currently.\n\n" +
-				"I certainly don't plan to reduce the blacksmith rewards back to being similar to before this new quest, but for now I am making some initial changes to get them into a better place balance-wise. This will make it easier to fine-tune the overall quest difficulty and rewards in v2.3.0.\n\n" +
-				"_-_ Cost for second reforge/harden up to 1500 from 1000\n" +
-				"_-_ Upgrade now caps at +2, down from +3\n" +
-				"_-_ Chance for smith to produce a +0 item up to 30%, from 20%\n" +
-				"_-_ Chance for smith to produce a +1 item down to 45%, from 55%"));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ The Crystal Spire now awards 20 exp when it is defeated\n\n" +
-				"_-_ Increased the amount of toxic gas that the rot heart can produce\n\n" +
-				"_-_ New quest bosses now interrupt the hero when they are telegraphing an attack\n\n" +
-				"_-_ Updated translations and translator credits"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by v2.2.0:_\n" +
-				"_-_ Various rare crash bugs in new quest\n" +
-				"_-_ Hardening not being preserved when transmuting weapons\n" +
-				"_-_ Items rarely spawning on new quest entrance\n" +
-				"_-_ Hero getting teleported to quest entrance if game was loaded while they were inside a crystal spike\n" +
-				"_-_ Various minor visual bugs in new quest\n" +
-				"\n" +
-				"_Existed Prior to v2.2.0:_\n" +
-				"_-_ System gestures in iOS sometimes registering as taps within the game\n" +
-				"_-_ Endure ability not working properly when used twice quickly\n" +
-				"_-_ Melee damage of Mage's Staff benefiting from talents that boost wand levels\n" +
-				"_-_ Various blink effects allowing movement over magical fire\n" +
-				"_-_ Some game actions being possible while meditating\n" +
-				"_-_ Various minor visual and textual errors"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -262,7 +222,19 @@ public class v2_X_Changes {
 				"_-_ Cases where pushing effects could cause pitfalls to trigger early\n" +
 				"_-_ Combining diagonal direction keys on desktop causing rare errors\n" +
 				"_-_ Cases where default keybindings could override custom ones\n" +
-				"_-_ Crashes caused by text input windows for controller users"));
+				"_-_ Crashes caused by text input windows for controller users",
+
+				"_v2.2.1:_\n" +
+				"_-_ System gestures in iOS sometimes registering as taps within the game\n" +
+				"_-_ Endure ability not working properly when used twice quickly\n" +
+				"_-_ Melee damage of Mage's Staff benefiting from talents that boost wand levels\n" +
+				"_-_ Various blink effects allowing movement over magical fire\n" +
+				"_-_ Some game actions being possible while meditating\n" +
+				"_-_ Various minor visual and textual errors\n" +
+				"\n" +
+				"_v2.2.2 (iOS only):_\n" +
+				"_-_ Gesture fix from v2.2.1 resulting in input delays\n" +
+				"_-_ Rare crash errors caused by audio loading"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight(CharSprite.POSITIVE);
