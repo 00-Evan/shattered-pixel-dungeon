@@ -47,7 +47,13 @@ public class RotGardenRoom extends SpecialRoom {
 	@Override
 	public int minHeight() { return 10; }
 
-	public void paint( Level level ) {
+	@Override
+	public boolean canConnect(Point p) {
+		//refuses connections next to corners, this helps ensure better terrain layouts
+		return super.canConnect(p) && ((p.x > left+1 && p.x < right-1) || (p.y > top+1 && p.y < bottom-1));
+	}
+
+	public void paint(Level level ) {
 
 		Door entrance = entrance();
 		entrance.set(Door.Type.LOCKED);
