@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
+import com.shatteredpixel.shatteredpixeldungeon.items.remains.RemainsItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
@@ -216,6 +217,14 @@ public class SurfaceScene extends PixelScene {
 			allySprite.y = SKY_HEIGHT - allySprite.height();
 			align(allySprite);
 			window.add(allySprite);
+		}
+
+		if (Dungeon.hero.belongings.getItem(RemainsItem.class) != null){
+			Image grave = new Image(Assets.Interfaces.SURFACE, 88, 74, 16, 22);
+
+			grave.x = a.x + a.width() + 10;
+			grave.y = a.y + a.height() - grave.height();
+			window.add(grave);
 		}
 		
 		window.add( a );

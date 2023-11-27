@@ -239,6 +239,9 @@ public class Bones {
 
 				if (heroClass != null) {
 					result.add(RemainsItem.get(heroClass));
+					if (Dungeon.bossLevel()){
+						Statistics.qualifiedForBossRemainsBadge = true;
+					}
 				}
 
 				if (item != null) {
