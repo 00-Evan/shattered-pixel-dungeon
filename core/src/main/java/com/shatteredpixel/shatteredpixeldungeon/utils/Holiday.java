@@ -151,8 +151,8 @@ public enum Holiday {
 	public static boolean isLunarNewYear(int year, int dayOfYear){
 		int lunarNewYearDayOfYear;
 		switch (year){
-			//yes, I really did hardcode this all the way to 2050
-			default:   lunarNewYearDayOfYear = 31+3; break;     //defaults to February 3rd
+			//yes, I really did hardcode this all the way to 2100
+			default:   lunarNewYearDayOfYear = 31+5; break;     //defaults to February 5th
 			case 2024: lunarNewYearDayOfYear = 31+10; break;    //February 10th
 			case 2025: lunarNewYearDayOfYear = 29; break;       //January 29th
 			case 2026: lunarNewYearDayOfYear = 31+17; break;    //February 17th
@@ -180,9 +180,59 @@ public enum Holiday {
 			case 2048: lunarNewYearDayOfYear = 31+14; break;    //February 14th
 			case 2049: lunarNewYearDayOfYear = 31+2; break;     //February 2nd
 			case 2050: lunarNewYearDayOfYear = 23; break;       //January 23rd
+			case 2051: lunarNewYearDayOfYear = 31+11; break;    //February 11th
+			case 2052: lunarNewYearDayOfYear = 31+1; break;     //February 1st
+			case 2053: lunarNewYearDayOfYear = 31+19; break;    //February 19th
+			case 2054: lunarNewYearDayOfYear = 31+8; break;     //February 8th
+			case 2055: lunarNewYearDayOfYear = 28; break;       //January 28th
+			case 2056: lunarNewYearDayOfYear = 31+15; break;    //February 15th
+			case 2057: lunarNewYearDayOfYear = 31+4; break;     //February 4th
+			case 2058: lunarNewYearDayOfYear = 24; break;       //January 24th
+			case 2059: lunarNewYearDayOfYear = 31+12; break;    //February 12th
+			case 2060: lunarNewYearDayOfYear = 31+2; break;     //February 2nd
+			case 2061: lunarNewYearDayOfYear = 21; break;       //January 21st
+			case 2062: lunarNewYearDayOfYear = 31+9; break;     //February 9th
+			case 2063: lunarNewYearDayOfYear = 29; break;       //January 29th
+			case 2064: lunarNewYearDayOfYear = 31+17; break;    //February 17th
+			case 2065: lunarNewYearDayOfYear = 31+5; break;     //February 5th
+			case 2066: lunarNewYearDayOfYear = 26; break;       //January 26th
+			case 2067: lunarNewYearDayOfYear = 31+14; break;    //February 14th
+			case 2068: lunarNewYearDayOfYear = 31+3; break;     //February 3rd
+			case 2069: lunarNewYearDayOfYear = 23; break;       //January 23rd
+			case 2070: lunarNewYearDayOfYear = 31+11; break;    //February 11th
+			case 2071: lunarNewYearDayOfYear = 31; break;       //January 31st
+			case 2072: lunarNewYearDayOfYear = 31+19; break;    //February 19th
+			case 2073: lunarNewYearDayOfYear = 31+7; break;     //February 7th
+			case 2074: lunarNewYearDayOfYear = 27; break;       //January 27th
+			case 2075: lunarNewYearDayOfYear = 31+15; break;    //February 15th
+			case 2076: lunarNewYearDayOfYear = 31+5; break;     //February 5th
+			case 2077: lunarNewYearDayOfYear = 24; break;       //January 24th
+			case 2078: lunarNewYearDayOfYear = 31+12; break;    //February 12th
+			case 2079: lunarNewYearDayOfYear = 31+2; break;     //February 2nd
+			case 2080: lunarNewYearDayOfYear = 22; break;       //January 22nd
+			case 2081: lunarNewYearDayOfYear = 31+9; break;     //February 9th
+			case 2082: lunarNewYearDayOfYear = 29; break;       //January 29th
+			case 2083: lunarNewYearDayOfYear = 31+17; break;    //February 17th
+			case 2084: lunarNewYearDayOfYear = 31+6; break;     //February 6th
+			case 2085: lunarNewYearDayOfYear = 26; break;       //January 26th
+			case 2086: lunarNewYearDayOfYear = 31+14; break;    //February 14th
+			case 2087: lunarNewYearDayOfYear = 31+3; break;     //February 3rd
+			case 2088: lunarNewYearDayOfYear = 24; break;       //January 24th
+			case 2089: lunarNewYearDayOfYear = 31+10; break;    //February 10th
+			case 2090: lunarNewYearDayOfYear = 30; break;       //January 30th
+			case 2091: lunarNewYearDayOfYear = 31+18; break;    //February 18th
+			case 2092: lunarNewYearDayOfYear = 31+7; break;     //February 7th
+			case 2093: lunarNewYearDayOfYear = 27; break;       //January 27th
+			case 2094: lunarNewYearDayOfYear = 31+15; break;    //February 15th
+			case 2095: lunarNewYearDayOfYear = 31+5; break;     //February 5th
+			case 2096: lunarNewYearDayOfYear = 25; break;       //January 25th
+			case 2097: lunarNewYearDayOfYear = 31+12; break;    //February 12th
+			case 2098: lunarNewYearDayOfYear = 31+1; break;     //February 1st
+			case 2099: lunarNewYearDayOfYear = 21; break;       //January 21st
+			case 2100: lunarNewYearDayOfYear = 31+9; break;     //February 9th
 		}
 
-		//celebrate for 7 days total, with actual lunar new year on the 5th day
+		//celebrate for 7 days total, with Lunar New Year on the 5th day
 		return dayOfYear >= lunarNewYearDayOfYear-4 && dayOfYear <= lunarNewYearDayOfYear+2;
 	}
 
@@ -223,6 +273,7 @@ public enum Holiday {
 
 		easterDayOfYear += (o+1); //add day of month
 
+		//celebrate for 7 days total, with Easter Sunday on the 5th day
 		return dayOfYear >= easterDayOfYear-4 && dayOfYear <= easterDayOfYear+2;
 	}
 
