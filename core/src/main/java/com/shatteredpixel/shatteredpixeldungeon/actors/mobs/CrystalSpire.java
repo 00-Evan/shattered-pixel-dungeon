@@ -327,6 +327,8 @@ public class CrystalSpire extends Mob {
 					sprite.bloodBurstA(Dungeon.hero.sprite.center(), dmg);
 					sprite.flash();
 
+					BossHealthBar.bleed(HP <= HT/3);
+
 					if (isAlive()) {
 						Sample.INSTANCE.play(Assets.Sounds.SHATTER, 1f, Random.Float(1.15f, 1.25f));
 						((CrystalSpireSprite) sprite).updateIdle();
