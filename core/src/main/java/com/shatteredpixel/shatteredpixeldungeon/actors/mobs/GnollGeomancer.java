@@ -49,6 +49,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollGeomancerSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -88,8 +89,22 @@ public class GnollGeomancer extends Mob {
 	private int throwingRockFromPos = -1;
 	private int throwingRockToPos = -1;
 
+	int[] sapperSpawns = null;
+
 	@Override
 	protected boolean act() {
+		if (sapperSpawns == null){
+			sapperSpawns = new int[3];
+			int i = 0;
+			for (Mob m : Dungeon.level.mobs){
+				if (m instanceof GnollSapper){
+					sapperSpawns[i] = ((GnollSapper) m).spawnPos;
+					i++;
+				}
+				if (i == 3) break;
+			}
+		}
+
 		if (throwingRockFromPos != -1){
 			GnollGeomancer.doRockThrowAttack(this, throwingRockFromPos, throwingRockToPos);
 
@@ -170,10 +185,11 @@ public class GnollGeomancer extends Mob {
 						do {
 							target = Random.Int(Dungeon.level.length());
 						} while (!Dungeon.level.insideMap(target) || Dungeon.level.distance(pos, target) != 10);
-						carveRock(target);
+						carveRock(getDashPos());
 
 						state = HUNTING;
 						enemy = Dungeon.hero;
+						BossHealthBar.assignBoss(GnollGeomancer.this);
 					}
 
 					if (wasSleeping) {
@@ -199,24 +215,106 @@ public class GnollGeomancer extends Mob {
 	public void damage(int dmg, Object src) {
 		int hpBracket = HT / 3;
 
-		int beforeHitHP = HP;
+		int curbracket = HP / hpBracket;
+		if (curbracket == 3) curbracket--; //full HP isn't its own bracket
+
+		inFinalBracket = curbracket == 0;
+
 		super.damage(dmg, src);
 
-		//geomancer cannot be hit through multiple brackets at a time
-		if ((beforeHitHP/hpBracket - HP/hpBracket) >= 2){
-			HP = hpBracket * ((beforeHitHP/hpBracket)-1) + 1;
-		}
+		int newBracket =  HP / hpBracket;
+		if (newBracket == 3) newBracket--; //full HP isn't its own bracket
 
-		//taking damage from full HP does not trigger a jump
-		if (beforeHitHP != HT && beforeHitHP / hpBracket != HP / hpBracket) {
+		if (newBracket != curbracket) {
+			//cannot be hit through multiple brackets at a time
+			if (HP <= (curbracket-1)*hpBracket){
+				HP = (curbracket-1)*hpBracket + 1;
+			}
+
+			BossHealthBar.bleed(newBracket <= 0);
+
 			//this is a start, but need a lot more fight logic
 			int target;
 			do {
 				target = Random.Int(Dungeon.level.length());
 			} while (!Dungeon.level.insideMap(target) || Dungeon.level.distance(pos, target) != 10);
-			carveRock(target);
+			carveRock(getDashPos());
 			Buff.affect(this, RockArmor.class).setShield(30);
 		}
+	}
+
+	private boolean inFinalBracket = false;
+
+	@Override
+	public boolean isAlive() {
+		//cannot die until final HP bracket, regardless of incoming dmg
+		return super.isAlive() || !inFinalBracket;
+	}
+
+	//we pick location to jump to based on sapper positions:
+	//first aim for closest living sapper, moving 8-12 tiles, preferring to go 10
+	//otherwise aim to closest dead sapper pos
+	//if we arrive at (or are near enough to) a sapper pos, we claim that sapper
+	//
+	private int getDashPos(){
+
+		int closestSapperPos = -1;
+		boolean closestisAlive = false;
+		for (int i = 0; i < sapperSpawns.length; i++){
+			if (sapperSpawns[i] == -1){
+				continue;
+			}
+
+			if (closestSapperPos == -1) {
+				closestSapperPos = sapperSpawns[i];
+				for (Mob m : Dungeon.level.mobs){
+					if (m instanceof GnollSapper && ((GnollSapper) m).spawnPos == closestSapperPos){
+						closestisAlive = true;
+						break;
+					}
+				}
+				continue;
+			}
+
+			boolean sapperAlive = false;
+			for (Mob m : Dungeon.level.mobs){
+				if (m instanceof GnollSapper && ((GnollSapper) m).spawnPos == sapperSpawns[i]){
+					sapperAlive = true;
+					break;
+				}
+			}
+
+			if (Dungeon.level.distance(pos, sapperSpawns[i]) <= 16) {
+				if (sapperAlive && !closestisAlive
+						|| Dungeon.level.distance(pos, sapperSpawns[i]) < Dungeon.level.distance(pos, closestSapperPos)) {
+					closestSapperPos = sapperSpawns[i];
+					closestisAlive = sapperAlive;
+				}
+			}
+		}
+
+		//TODO get blink position
+		int dashPos = closestSapperPos;
+
+		//if spawn pos is more than 12 tiles away, get as close as possible
+		Ballistica path = new Ballistica(pos, dashPos, Ballistica.STOP_TARGET);
+
+		if (path.dist > 12){
+			dashPos = path.path.get(12);
+		}
+
+		//TODO move to adjacent cell if pos is occupied
+
+		for (int i = 0; i < sapperSpawns.length; i++){
+			if (sapperSpawns[i] == closestSapperPos){
+				sapperSpawns[i] = -1;
+			}
+		}
+
+		//TODO if geomancer alive, steal guard and set properties
+
+		return dashPos;
+
 	}
 
 	private void carveRock(int target){
@@ -234,8 +332,13 @@ public class GnollGeomancer extends Mob {
 				Dungeon.level.drop(new DarkGold(), i).sprite.drop();
 			}
 			if (Dungeon.level.solid[i]){
-				//TODO boulders?
-				Dungeon.level.map[i] = Terrain.EMPTY_DECO;
+				if (Random.Int(3) == 0){
+					Dungeon.level.map[i] = Terrain.MINE_BOULDER;
+				} else {
+					Dungeon.level.map[i] = Terrain.EMPTY_DECO;
+				}
+			} else if (Dungeon.level.map[i] == Terrain.HIGH_GRASS || Dungeon.level.map[i] == Terrain.FURROWED_GRASS){
+				Dungeon.level.map[i] = Terrain.GRASS;
 			}
 			CellEmitter.get( i - Dungeon.level.width() ).start(Speck.factory(Speck.ROCK), 0.07f, 10);
 		}
@@ -392,6 +495,7 @@ public class GnollGeomancer extends Mob {
 		source.sprite.attack(from, new Callback() {
 			@Override
 			public void call() {
+				source.sprite.idle();
 				//do nothing
 			}
 		});
@@ -498,6 +602,7 @@ public class GnollGeomancer extends Mob {
 			@Override
 			public void call() {
 				//do nothing
+				source.sprite.idle();
 			}
 		});
 
@@ -529,6 +634,8 @@ public class GnollGeomancer extends Mob {
 	private static final String ROCK_FROM_POS = "rock_from_pos";
 	private static final String ROCK_TO_POS = "rock_to_pos";
 
+	private static final String SAPPER_SPAWNS = "sapper_spawns";
+
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
@@ -536,6 +643,10 @@ public class GnollGeomancer extends Mob {
 		bundle.put(ABILITY_COOLDOWN, abilityCooldown);
 		bundle.put(ROCK_FROM_POS, throwingRockFromPos);
 		bundle.put(ROCK_TO_POS, throwingRockToPos);
+
+		if (sapperSpawns != null){
+			bundle.put(SAPPER_SPAWNS, sapperSpawns);
+		}
 	}
 
 	@Override
@@ -545,5 +656,13 @@ public class GnollGeomancer extends Mob {
 		abilityCooldown = bundle.getInt(ABILITY_COOLDOWN);
 		throwingRockFromPos = bundle.getInt(ROCK_FROM_POS);
 		throwingRockToPos = bundle.getInt(ROCK_TO_POS);
+
+		if (bundle.contains(SAPPER_SPAWNS)) {
+			sapperSpawns = bundle.getIntArray(SAPPER_SPAWNS);
+		}
+
+		if (hits >= 3){
+			BossHealthBar.assignBoss(this);
+		}
 	}
 }

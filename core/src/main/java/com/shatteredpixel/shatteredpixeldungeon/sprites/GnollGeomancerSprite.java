@@ -60,6 +60,14 @@ public class GnollGeomancerSprite extends MobSprite {
 	}
 
 	@Override
+	public void onComplete( Animation anim ) {
+		if (anim == zap) {
+			idle();
+		}
+		super.onComplete( anim );
+	}
+
+	@Override
 	public void idle() {
 		super.idle();
 		if (ch != null && ch.buff(GnollGeomancer.RockArmor.class) != null){

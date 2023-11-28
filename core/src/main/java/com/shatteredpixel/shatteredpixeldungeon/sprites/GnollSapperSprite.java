@@ -50,5 +50,12 @@ public class GnollSapperSprite extends MobSprite {
 		play( idle );
 	}
 
+	@Override
+	public void onComplete( Animation anim ) {
+		if (anim == zap) {
+			idle();
+		}
+		super.onComplete( anim );
+	}
 
 }
