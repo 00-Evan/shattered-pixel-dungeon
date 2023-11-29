@@ -65,6 +65,10 @@ public class EarthParticle extends PixelParticle {
 
 		left = lifespan = 0.5f;
 		size = 16;
+
+		acc.y = 0;
+		speed.y = 0;
+		angularSpeed = 0;
 	}
 
 	public void resetSmall( float x, float y ) {

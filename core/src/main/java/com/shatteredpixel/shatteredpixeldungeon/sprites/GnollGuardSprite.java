@@ -68,9 +68,9 @@ public class GnollGuardSprite extends MobSprite {
 			earthArmor = emitter();
 			earthArmor.fillTarget = false;
 			earthArmor.y = height()/2f;
-			earthArmor.x = 2;
-			earthArmor.width = width()-4;
-			earthArmor.height = height() - 10f;
+			earthArmor.x = (2*scale.x);
+			earthArmor.width = width()-(4*scale.x);
+			earthArmor.height = height() - (10*scale.y);
 			earthArmor.pour(EarthParticle.SMALL, 0.15f);
 		}
 	}

@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollGeomancer;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollGuard;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -78,7 +79,7 @@ public class GnollRockfallTrap extends RockfallTrap {
 
 			Char ch = Actor.findChar( cell );
 
-			if (ch != null && ch.isAlive()){
+			if (ch != null && ch.isAlive() && !(ch instanceof GnollGeomancer)){
 				//5-10 less damage than normal rockfall traps
 				int damage = Random.NormalIntRange(scalingDepth(), scalingDepth()*2);
 				damage -= ch.drRoll();
@@ -91,7 +92,8 @@ public class GnollRockfallTrap extends RockfallTrap {
 					Dungeon.fail( this );
 					GLog.n( Messages.get(this, "ondeath") );
 				}
-			} else if (Dungeon.level instanceof MiningLevel
+			} else if (ch == null
+					&& Dungeon.level instanceof MiningLevel
 					&& Dungeon.level.traps.get(cell) == null
 					&& Dungeon.level.plants.get(cell) == null
 					&& Random.Int(2) == 0){

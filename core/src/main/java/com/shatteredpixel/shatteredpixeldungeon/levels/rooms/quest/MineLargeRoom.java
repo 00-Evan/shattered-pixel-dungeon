@@ -137,7 +137,7 @@ public class MineLargeRoom extends CaveRoom {
 			GnollGuard g = new GnollGuard();
 			g.pos = guardPos;
 			level.mobs.add(g);
-			s.linkGuard(g);
+			s.linkPartner(g);
 
 			int barricades = Random.Int(2) == 0 ? 2 : 1;
 			for (int i = 0; i < barricades; i ++){

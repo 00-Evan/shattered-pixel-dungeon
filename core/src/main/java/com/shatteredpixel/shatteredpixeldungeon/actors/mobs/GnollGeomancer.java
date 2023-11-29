@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DarkGold;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -89,7 +90,8 @@ public class GnollGeomancer extends Mob {
 	private int throwingRockFromPos = -1;
 	private int throwingRockToPos = -1;
 
-	int[] sapperSpawns = null;
+	private int sapperID = -1;
+	private int[] sapperSpawns = null;
 
 	@Override
 	protected boolean act() {
@@ -121,7 +123,9 @@ public class GnollGeomancer extends Mob {
 
 	@Override
 	public boolean isInvulnerable(Class effect) {
-		return super.isInvulnerable(effect) || (buff(RockArmor.class) != null && effect != Pickaxe.class);
+		return super.isInvulnerable(effect)
+				|| (buff(RockArmor.class) != null && effect != Pickaxe.class)
+				|| hasSapper();
 	}
 
 	@Override
@@ -251,11 +255,7 @@ public class GnollGeomancer extends Mob {
 		return super.isAlive() || !inFinalBracket;
 	}
 
-	//we pick location to jump to based on sapper positions:
-	//first aim for closest living sapper, moving 8-12 tiles, preferring to go 10
-	//otherwise aim to closest dead sapper pos
-	//if we arrive at (or are near enough to) a sapper pos, we claim that sapper
-	//
+	//aim for closest sapper, preferring living ones within 16 tiles
 	private int getDashPos(){
 
 		int closestSapperPos = -1;
@@ -284,16 +284,13 @@ public class GnollGeomancer extends Mob {
 				}
 			}
 
-			if (Dungeon.level.distance(pos, sapperSpawns[i]) <= 16) {
-				if (sapperAlive && !closestisAlive
-						|| Dungeon.level.distance(pos, sapperSpawns[i]) < Dungeon.level.distance(pos, closestSapperPos)) {
-					closestSapperPos = sapperSpawns[i];
-					closestisAlive = sapperAlive;
-				}
+			if ((sapperAlive && !closestisAlive && Dungeon.level.distance(pos, sapperSpawns[i]) <= 16)
+					|| Dungeon.level.distance(pos, sapperSpawns[i]) < Dungeon.level.distance(pos, closestSapperPos)) {
+				closestSapperPos = sapperSpawns[i];
+				closestisAlive = sapperAlive;
 			}
 		}
 
-		//TODO get blink position
 		int dashPos = closestSapperPos;
 
 		//if spawn pos is more than 12 tiles away, get as close as possible
@@ -303,7 +300,17 @@ public class GnollGeomancer extends Mob {
 			dashPos = path.path.get(12);
 		}
 
-		//TODO move to adjacent cell if pos is occupied
+		if (Actor.findChar(dashPos) != null){
+			ArrayList<Integer> candidates = new ArrayList<>();
+			for (int i : PathFinder.NEIGHBOURS8){
+				if (Actor.findChar(dashPos+i) == null && Dungeon.level.traps.get(dashPos+i) == null){
+					candidates.add(dashPos+i);
+				}
+			}
+			if (!candidates.isEmpty()) {
+				dashPos = Random.element(candidates);
+			}
+		}
 
 		for (int i = 0; i < sapperSpawns.length; i++){
 			if (sapperSpawns[i] == closestSapperPos){
@@ -311,10 +318,49 @@ public class GnollGeomancer extends Mob {
 			}
 		}
 
-		//TODO if geomancer alive, steal guard and set properties
+		if (closestisAlive){
+			GnollSapper closest = null;
+			for (Mob m : Dungeon.level.mobs){
+				if (m instanceof GnollSapper && ((GnollSapper) m).spawnPos == closestSapperPos){
+					closest = (GnollSapper) m;
+					break;
+				}
+			}
+			if (closest != null){
+				closest.linkPartner(this);
+				//moves sapper toward geomancer if it is too far away
+				if (Dungeon.level.distance(closest.pos, dashPos) > 3){
+					int newSapperPos = new Ballistica(dashPos, closest.pos, Ballistica.STOP_TARGET).path.get(1);
+					ScrollOfTeleportation.appear(closest, newSapperPos);
+					closest.spawnPos = newSapperPos;
+				}
+			}
+		}
 
 		return dashPos;
 
+	}
+
+	public void linkSapper( GnollSapper sapper ){
+		this.sapperID = sapper.id();
+		if (sprite instanceof GnollGeomancerSprite){
+			((GnollGeomancerSprite) sprite).setupArmor();
+		}
+	}
+
+	public boolean hasSapper(){
+		return sapperID != -1
+				&& Actor.findById(sapperID) instanceof GnollSapper
+				&& ((GnollSapper)Actor.findById(sapperID)).isAlive();
+	}
+
+	public void loseSapper(){
+		if (sapperID != -1){
+			sapperID = -1;
+			if (sprite instanceof GnollGeomancerSprite){
+				((GnollGeomancerSprite) sprite).loseArmor();
+			}
+		}
 	}
 
 	private void carveRock(int target){
@@ -410,9 +456,7 @@ public class GnollGeomancer extends Mob {
 				return true;
 			} else {
 				enemySeen = true;
-				//sprite.showStatus(CharSprite.DEFAULT, "seen");
 
-				//TODO cooldown
 				if (abilityCooldown-- <= 0){
 					//do we care?
 					boolean targetNextToBarricade = false;
@@ -634,6 +678,7 @@ public class GnollGeomancer extends Mob {
 	private static final String ROCK_FROM_POS = "rock_from_pos";
 	private static final String ROCK_TO_POS = "rock_to_pos";
 
+	private static final String SAPPER_ID = "sapper_id";
 	private static final String SAPPER_SPAWNS = "sapper_spawns";
 
 	@Override
@@ -644,6 +689,7 @@ public class GnollGeomancer extends Mob {
 		bundle.put(ROCK_FROM_POS, throwingRockFromPos);
 		bundle.put(ROCK_TO_POS, throwingRockToPos);
 
+		bundle.put(SAPPER_ID, sapperID);
 		if (sapperSpawns != null){
 			bundle.put(SAPPER_SPAWNS, sapperSpawns);
 		}
@@ -657,6 +703,7 @@ public class GnollGeomancer extends Mob {
 		throwingRockFromPos = bundle.getInt(ROCK_FROM_POS);
 		throwingRockToPos = bundle.getInt(ROCK_TO_POS);
 
+		sapperID = bundle.getInt(SAPPER_ID);
 		if (bundle.contains(SAPPER_SPAWNS)) {
 			sapperSpawns = bundle.getIntArray(SAPPER_SPAWNS);
 		}

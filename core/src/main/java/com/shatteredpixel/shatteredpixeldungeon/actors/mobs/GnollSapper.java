@@ -55,24 +55,38 @@ public class GnollSapper extends Mob {
 	}
 
 	public int spawnPos;
-	private int guardID = -1;
+	private int partnerID = -1;
 
 	private int abilityCooldown = Random.NormalIntRange(4, 6);
 
 	private int throwingRockFromPos = -1;
 	private int throwingRockToPos = -1;
 
-	public void linkGuard(GnollGuard g){
-		guardID = g.id();
-		g.linkSapper(this);
+	public void linkPartner(Char c){
+		losePartner();
+		partnerID = c.id();
+		if (c instanceof GnollGuard) {
+			((GnollGuard) c).linkSapper(this);
+		} else if (c instanceof GnollGeomancer){
+			((GnollGeomancer) c).linkSapper(this);
+		}
+	}
+
+	public void losePartner(){
+		if (partnerID != -1){
+			if (Actor.findById(partnerID) instanceof GnollGuard) {
+				((GnollGuard) Actor.findById(partnerID)).loseSapper();
+			} else if (Actor.findById(partnerID) instanceof GnollGeomancer) {
+				((GnollGeomancer) Actor.findById(partnerID)).loseSapper();
+			}
+			partnerID = -1;
+		}
 	}
 
 	@Override
 	public void die(Object cause) {
 		super.die(cause);
-		if (guardID != -1 && Actor.findById(guardID) instanceof GnollGuard){
-			((GnollGuard) Actor.findById(guardID)).loseSapper();
-		}
+		losePartner();
 	}
 
 	@Override
@@ -124,10 +138,10 @@ public class GnollSapper extends Mob {
 			} else {
 				enemySeen = true;
 
-				if (Actor.findById(guardID) instanceof GnollGuard
+				if (Actor.findById(partnerID) != null
 						&& Dungeon.level.distance(pos, enemy.pos) <= 3){
-					((GnollGuard) Actor.findById(guardID)).target = enemy.pos;
-					((GnollGuard) Actor.findById(guardID)).aggro(enemy);
+					((Mob) Actor.findById(partnerID)).target = enemy.pos;
+					((Mob) Actor.findById(partnerID)).aggro(enemy);
 				}
 
 				if (abilityCooldown-- <= 0){
@@ -185,7 +199,7 @@ public class GnollSapper extends Mob {
 	}
 
 	private static final String SPAWN_POS = "spawn_pos";
-	private static final String GUARD_ID = "guard_id";
+	private static final String PARTNER_ID = "partner_id";
 
 	private static final String ABILITY_COOLDOWN = "ability_cooldown";
 	private static final String ROCK_FROM_POS = "rock_from_pos";
@@ -194,7 +208,7 @@ public class GnollSapper extends Mob {
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
-		bundle.put(GUARD_ID, guardID);
+		bundle.put(PARTNER_ID, partnerID);
 		bundle.put(SPAWN_POS, spawnPos);
 		bundle.put(ABILITY_COOLDOWN, abilityCooldown);
 		bundle.put(ROCK_FROM_POS, throwingRockFromPos);
@@ -204,7 +218,7 @@ public class GnollSapper extends Mob {
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
-		guardID = bundle.getInt( GUARD_ID );
+		partnerID = bundle.getInt(PARTNER_ID);
 		spawnPos = bundle.getInt(SPAWN_POS);
 		abilityCooldown = bundle.getInt(ABILITY_COOLDOWN);
 		throwingRockFromPos = bundle.getInt(ROCK_FROM_POS);

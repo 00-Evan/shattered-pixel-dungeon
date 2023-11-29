@@ -22,13 +22,18 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollGeomancer;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EarthParticle;
 import com.watabou.noosa.TextureFilm;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.ColorMath;
 
 public class GnollGeomancerSprite extends MobSprite {
 
 	private Animation statue;
+
+	private Emitter earthArmor;
 
 	public GnollGeomancerSprite() {
 		super();
@@ -57,6 +62,62 @@ public class GnollGeomancerSprite extends MobSprite {
 		play(idle);
 
 		scale.set(1.25f);
+	}
+
+	@Override
+	public void link( Char ch ) {
+		super.link( ch );
+
+		if (ch instanceof GnollGeomancer && ((GnollGeomancer) ch).hasSapper()){
+			setupArmor();
+		}
+		if (ch != null && ch.buff(GnollGeomancer.RockArmor.class) != null){
+			play( statue );
+		}
+	}
+
+	public void setupArmor(){
+		if (earthArmor == null) {
+			earthArmor = emitter();
+			earthArmor.fillTarget = false;
+			earthArmor.y = height()/2f;
+			earthArmor.x = (2*scale.x);
+			earthArmor.width = width()-(4*scale.x);
+			earthArmor.height = height() - (10*scale.y);
+			earthArmor.pour(EarthParticle.SMALL, 0.15f);
+		}
+	}
+
+	public void loseArmor(){
+		if (earthArmor != null){
+			earthArmor.on = false;
+			earthArmor = null;
+		}
+	}
+
+	@Override
+	public void update() {
+		super.update();
+
+		if (earthArmor != null){
+			earthArmor.visible = visible;
+		}
+	}
+
+	@Override
+	public void die() {
+		super.die();
+		if (earthArmor != null){
+			earthArmor.on = false;
+		}
+	}
+
+	@Override
+	public void kill() {
+		super.kill();
+		if (earthArmor != null){
+			earthArmor.killAndErase();
+		}
 	}
 
 	@Override
