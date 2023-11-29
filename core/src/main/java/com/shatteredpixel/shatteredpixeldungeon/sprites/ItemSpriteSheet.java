@@ -651,13 +651,11 @@ public class ItemSpriteSheet {
 	public static final int CARPACCIO   = FOOD+4;
 	public static final int RATION      = FOOD+5;
 	public static final int PASTY       = FOOD+6;
-	public static final int PUMPKIN_PIE = FOOD+7;
-	public static final int CANDY_CANE  = FOOD+8;
-	public static final int MEAT_PIE    = FOOD+9;
-	public static final int BLANDFRUIT  = FOOD+10;
-	public static final int BLAND_CHUNKS= FOOD+11;
-	public static final int BERRY =       FOOD+12;
-	public static final int PHANTOM_MEAT= FOOD+13;
+	public static final int MEAT_PIE    = FOOD+7;
+	public static final int BLANDFRUIT  = FOOD+8;
+	public static final int BLAND_CHUNKS= FOOD+9;
+	public static final int BERRY       = FOOD+10;
+	public static final int PHANTOM_MEAT= FOOD+11;
 	static{
 		assignItemRect(MEAT,        15, 11);
 		assignItemRect(STEAK,       15, 11);
@@ -666,8 +664,6 @@ public class ItemSpriteSheet {
 		assignItemRect(CARPACCIO,   15, 11);
 		assignItemRect(RATION,      16, 12);
 		assignItemRect(PASTY,       16, 11);
-		assignItemRect(PUMPKIN_PIE, 16, 12);
-		assignItemRect(CANDY_CANE,  13, 16);
 		assignItemRect(MEAT_PIE,    16, 12);
 		assignItemRect(BLANDFRUIT,  9,  12);
 		assignItemRect(BLAND_CHUNKS,14, 6);
@@ -675,7 +671,31 @@ public class ItemSpriteSheet {
 		assignItemRect(PHANTOM_MEAT,15, 11);
 	}
 
-	private static final int QUEST  =                                       xy(1, 29);  //32 slots
+	private static final int HOLIDAY_FOOD   =                               xy(1, 29);  //16 slots
+	public static final int STEAMED_FISH    = HOLIDAY_FOOD+0;
+	public static final int FISH_LEFTOVER   = HOLIDAY_FOOD+1;
+	public static final int CHOC_AMULET     = HOLIDAY_FOOD+2;
+	public static final int EASTER_EGG      = HOLIDAY_FOOD+3;
+	public static final int RAINBOW_POTION  = HOLIDAY_FOOD+4;
+	public static final int SHATTERED_CAKE  = HOLIDAY_FOOD+5;
+	public static final int PUMPKIN_PIE     = HOLIDAY_FOOD+6;
+	public static final int VANILLA_CAKE    = HOLIDAY_FOOD+7;
+	public static final int CANDY_CANE      = HOLIDAY_FOOD+8;
+	public static final int SPARKLING_POTION= HOLIDAY_FOOD+9;
+	static{
+		assignItemRect(STEAMED_FISH,    15, 11);
+		assignItemRect(FISH_LEFTOVER,   15, 11);
+		assignItemRect(CHOC_AMULET,     16, 16);
+		assignItemRect(EASTER_EGG,      15, 11);
+		assignItemRect(RAINBOW_POTION,  12, 14);
+		assignItemRect(SHATTERED_CAKE,  15, 11);
+		assignItemRect(PUMPKIN_PIE,     16, 12);
+		assignItemRect(VANILLA_CAKE,    15, 11);
+		assignItemRect(CANDY_CANE,      13, 16);
+		assignItemRect(SPARKLING_POTION,12, 14);
+	}
+
+	private static final int QUEST  =                                       xy(1, 30);  //16 slots
 	public static final int SKULL   = QUEST+0;
 	public static final int DUST    = QUEST+1;
 	public static final int CANDLE  = QUEST+2;
