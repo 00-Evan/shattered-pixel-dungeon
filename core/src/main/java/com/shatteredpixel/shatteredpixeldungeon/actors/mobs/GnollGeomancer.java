@@ -250,6 +250,8 @@ public class GnollGeomancer extends Mob {
 
 		super.damage(dmg, src);
 
+		abilityCooldown -= dmg/15f;
+
 		int newBracket =  HP / hpBracket;
 		if (newBracket == 3) newBracket--; //full HP isn't its own bracket
 
@@ -508,6 +510,14 @@ public class GnollGeomancer extends Mob {
 				return true;
 			} else {
 				enemySeen = true;
+
+				//use abilities more frequently on the hero's initial approach
+				// but only if they aren't stunned, to prevent stunlocking
+				if (Dungeon.level.distance(pos, enemy.pos) > 2
+						&& buff(RockArmor.class) != null
+						&& enemy.buff(Paralysis.class) == null){
+					abilityCooldown -= 1f;
+				}
 
 				if (abilityCooldown-- <= 0){
 
