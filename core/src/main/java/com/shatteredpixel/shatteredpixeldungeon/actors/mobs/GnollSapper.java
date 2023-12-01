@@ -58,9 +58,10 @@ public class GnollSapper extends Mob {
 	private int partnerID = -1;
 
 	private int abilityCooldown = Random.NormalIntRange(4, 6);
+	private boolean lastAbilityWasRockfall = false;
 
-	private int throwingRockFromPos = -1;
-	private int throwingRockToPos = -1;
+	public int throwingRockFromPos = -1;
+	public int throwingRockToPos = -1;
 
 	public void linkPartner(Char c){
 		losePartner();
@@ -81,6 +82,10 @@ public class GnollSapper extends Mob {
 			}
 			partnerID = -1;
 		}
+	}
+
+	public Actor getPartner(){
+		return Actor.findById(partnerID);
 	}
 
 	@Override
@@ -113,7 +118,9 @@ public class GnollSapper extends Mob {
 	@Override
 	protected boolean act() {
 		if (throwingRockFromPos != -1){
-			GnollGeomancer.doRockThrowAttack(this, throwingRockFromPos, throwingRockToPos);
+			if (Dungeon.level.map[throwingRockFromPos] == Terrain.MINE_BOULDER) {
+				GnollGeomancer.doRockThrowAttack(this, throwingRockFromPos, throwingRockToPos);
+			}
 
 			throwingRockFromPos = -1;
 			throwingRockToPos = -1;
@@ -154,12 +161,13 @@ public class GnollSapper extends Mob {
 						}
 					}
 
-					// 50/50 to either throw a rock or do rockfall
+					// 50/50 to either throw a rock or do rockfall, but never do rockfall twice
 					// unless target is next to a barricade, then always try to throw
 					// unless nothing to throw, then always rockfall
 					Ballistica aim = GnollGeomancer.prepRockThrowAttack(enemy, GnollSapper.this);
-					if (aim != null && (targetNextToBarricade || Random.Int(2) == 0)) {
+					if (aim != null && (targetNextToBarricade || lastAbilityWasRockfall || Random.Int(2) == 0)) {
 
+						lastAbilityWasRockfall = false;
 						throwingRockFromPos = aim.sourcePos;
 						throwingRockToPos = aim.collisionPos;
 
@@ -173,6 +181,7 @@ public class GnollSapper extends Mob {
 						spend(GameMath.gate(TICK, (int)Math.ceil(enemy.cooldown()), 3*TICK));
 						return true;
 					} else if (GnollGeomancer.prepRockFallAttack(enemy, GnollSapper.this, 2, true)) {
+						lastAbilityWasRockfall = true;
 						Dungeon.hero.interrupt();
 						spend(GameMath.gate(TICK, (int)Math.ceil(enemy.cooldown()), 3*TICK));
 						abilityCooldown = Random.NormalIntRange(4, 6);
@@ -202,6 +211,8 @@ public class GnollSapper extends Mob {
 	private static final String PARTNER_ID = "partner_id";
 
 	private static final String ABILITY_COOLDOWN = "ability_cooldown";
+	private static final String LAST_ABILITY_WAS_ROCKFALL = "last_ability_was_rockfall";
+
 	private static final String ROCK_FROM_POS = "rock_from_pos";
 	private static final String ROCK_TO_POS = "rock_to_pos";
 
@@ -210,7 +221,10 @@ public class GnollSapper extends Mob {
 		super.storeInBundle(bundle);
 		bundle.put(PARTNER_ID, partnerID);
 		bundle.put(SPAWN_POS, spawnPos);
+
 		bundle.put(ABILITY_COOLDOWN, abilityCooldown);
+		bundle.put(LAST_ABILITY_WAS_ROCKFALL, lastAbilityWasRockfall);
+
 		bundle.put(ROCK_FROM_POS, throwingRockFromPos);
 		bundle.put(ROCK_TO_POS, throwingRockToPos);
 	}
@@ -220,7 +234,10 @@ public class GnollSapper extends Mob {
 		super.restoreFromBundle(bundle);
 		partnerID = bundle.getInt(PARTNER_ID);
 		spawnPos = bundle.getInt(SPAWN_POS);
+
 		abilityCooldown = bundle.getInt(ABILITY_COOLDOWN);
+		lastAbilityWasRockfall = bundle.getBoolean(LAST_ABILITY_WAS_ROCKFALL);
+
 		throwingRockFromPos = bundle.getInt(ROCK_FROM_POS);
 		throwingRockToPos = bundle.getInt(ROCK_TO_POS);
 	}
