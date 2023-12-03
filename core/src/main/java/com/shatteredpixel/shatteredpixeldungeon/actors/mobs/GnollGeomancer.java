@@ -477,7 +477,7 @@ public class GnollGeomancer extends Mob {
 			String desc = super.description();
 			if (buff(RockArmor.class) != null){
 				if (hasSapper()){
-					desc += Messages.get(this, "desc_armor_sapper");
+					desc += "\n\n" + Messages.get(this, "desc_armor_sapper");
 				} else {
 					desc += "\n\n" + Messages.get(this, "desc_armor");
 				}
@@ -490,6 +490,16 @@ public class GnollGeomancer extends Mob {
 	public void die(Object cause) {
 		super.die(cause);
 		Blacksmith.Quest.beatBoss();
+		Sample.INSTANCE.playDelayed(Assets.Sounds.ROCKS, 0.1f);
+		PixelScene.shake( 3, 0.7f );
+
+		for (int i = 0; i < Dungeon.level.length(); i++){
+			if (Dungeon.level.map[i] == Terrain.MINE_BOULDER && Dungeon.level.trueDistance(i, pos) <= 6){
+				Level.set(i, Terrain.EMPTY_DECO);
+				GameScene.updateMap(i);
+				Splash.at(i, 0x555555, 15);
+			}
+		}
 	}
 
 	private class Sleeping extends Mob.Sleeping {
@@ -510,12 +520,16 @@ public class GnollGeomancer extends Mob {
 			} else {
 				enemySeen = true;
 
-				//use abilities more frequently on the hero's initial approach
-				// but only if they aren't stunned, to prevent stunlocking
-				if (Dungeon.level.distance(pos, enemy.pos) > 2
+				//use abilities more frequently on the hero's initial approach or if sapper is alive
+				// but only if hero isn't stunned, to prevent stunlocking
+				if ((Dungeon.level.distance(pos, enemy.pos) > 2 || hasSapper())
 						&& buff(RockArmor.class) != null
 						&& enemy.buff(Paralysis.class) == null){
 					abilityCooldown -= 1f;
+				}
+
+				if (hasSapper()){
+					((GnollSapper)Actor.findById(sapperID)).aggro(enemy);
 				}
 
 				if (abilityCooldown-- <= 0){
@@ -729,6 +743,7 @@ public class GnollGeomancer extends Mob {
 				if (!Dungeon.level.solid[pos]
 						&& pos != safeCell
 						&& !(Actor.findChar(pos) instanceof GnollGeomancer)
+						&& !(source instanceof GnollGeomancer && Actor.findChar(pos) instanceof GnollSapper)
 						&& Random.Int(1+Dungeon.level.distance(rockCenter, pos)/2) == 0) {
 					rockCells.add(pos);
 				}
