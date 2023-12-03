@@ -393,9 +393,9 @@ public class Blacksmith extends NPC {
 				rooms.add(new BlacksmithRoom());
 				spawned = true;
 
-				//currently only the crystal quest is ready to play
+				//currently hard set to gnoll quest for testing
 				//we still roll for quest type however, to ensure seed consistency
-				type = 1+Random.Int(1);
+				type = 2+Random.Int(1);
 				alternative = false;
 				
 				given = false;
