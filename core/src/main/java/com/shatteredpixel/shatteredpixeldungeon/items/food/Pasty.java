@@ -47,7 +47,7 @@ public class Pasty extends Food {
 	public void reset() {
 		super.reset();
 		switch(Holiday.getCurrentHoliday()){
-			case NONE:
+			case NONE: default:
 				image = ItemSpriteSheet.PASTY;
 				break;
 			case LUNAR_NEW_YEAR:
