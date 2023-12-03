@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollGeomancer;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EarthParticle;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.particles.Emitter;
-import com.watabou.utils.ColorMath;
 
 public class GnollGeomancerSprite extends MobSprite {
 
@@ -138,6 +137,6 @@ public class GnollGeomancerSprite extends MobSprite {
 
 	@Override
 	public int blood() {
-		return curAnim == statue ? ColorMath.random( 0x444444, 0x777766 ) : super.blood();
+		return curAnim == statue ? 0x555555 : super.blood();
 	}
 }

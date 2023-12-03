@@ -55,7 +55,6 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
-import com.watabou.utils.ColorMath;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -644,7 +643,7 @@ public class GnollGeomancer extends Mob {
 				reset( from, rockPath.collisionPos, new GnollGeomancer.Boulder(), new Callback() {
 					@Override
 					public void call() {
-						Splash.at(rockPath.collisionPos, ColorMath.random( 0x444444, 0x777766 ), 15);
+						Splash.at(rockPath.collisionPos, 0x555555, 15);
 						Sample.INSTANCE.play(Assets.Sounds.ROCKS);
 
 						Char ch = Actor.findChar(rockPath.collisionPos);
