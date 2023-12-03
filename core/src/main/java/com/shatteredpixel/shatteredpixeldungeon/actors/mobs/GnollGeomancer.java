@@ -65,7 +65,7 @@ import java.util.ArrayList;
 public class GnollGeomancer extends Mob {
 
 	{
-		HP = HT = 200;
+		HP = HT = 120;
 		spriteClass = GnollGeomancerSprite.class;
 
 		EXP = 20;
@@ -83,7 +83,7 @@ public class GnollGeomancer extends Mob {
 		properties.add(Property.BOSS);
 	}
 
-	private int abilityCooldown = Random.NormalIntRange(3, 5);
+	private int abilityCooldown = Random.NormalIntRange(3, 6);
 	private boolean lastAbilityWasRockfall;
 
 	private int throwingRockFromPos = -1;
@@ -250,7 +250,7 @@ public class GnollGeomancer extends Mob {
 
 		super.damage(dmg, src);
 
-		abilityCooldown -= dmg/15f;
+		abilityCooldown -= dmg/10f;
 
 		int newBracket =  HP / hpBracket;
 		if (newBracket == 3) newBracket--; //full HP isn't its own bracket
@@ -572,13 +572,9 @@ public class GnollGeomancer extends Mob {
 					}
 				}
 
-				//does not approach enemies, but does melee if in range
-				if (canAttack(enemy)){
-					return super.act(enemyInFOV, justAlerted);
-				} else {
-					spend(TICK);
-					return true;
-				}
+				//does not perform regular attacks
+				spend(TICK);
+				return true;
 			}
 		}
 
@@ -659,7 +655,7 @@ public class GnollGeomancer extends Mob {
 						}
 
 						if (ch != null && !(ch instanceof GnollGeomancer)){
-							ch.damage(Random.NormalIntRange(8, 12), this);
+							ch.damage(Random.NormalIntRange(5, 10), this);
 
 							if (ch.isAlive()){
 								Buff.prolong( ch, Paralysis.class, ch instanceof GnollGuard ? 10 : 3 );
