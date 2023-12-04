@@ -250,7 +250,9 @@ public class ElementalStrike extends ArmorAbility {
 		//*** Blocking ***
 		} else if (ench instanceof Blocking){
 			if (targetsHit > 0){
+				int shield = Math.round(Math.round(6f*targetsHit*powerMulti));
 				Buff.affect(hero, Barrier.class).setShield(Math.round(6f*targetsHit*powerMulti));
+				hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, String.valueOf(shield), FloatingText.SHIELDING);
 			}
 
 		//*** Vampiric ***
