@@ -55,12 +55,14 @@ public class FloatingText extends RenderedTextBlock {
 	public static int HUNGER    = 4;
 	public static int BURNING   = 5;
 	public static int SHOCKING  = 6;
-	public static int BLEEDING  = 7;
-	public static int TOXIC     = 8;
-	public static int CORROSION = 9;
-	public static int POISON    = 10;
-	public static int OOZE      = 11;
-	public static int DEFERRED  = 12;
+	public static int FROST     = 7;
+	public static int WATER     = 8;
+	public static int BLEEDING  = 9;
+	public static int TOXIC     = 10;
+	public static int CORROSION = 11;
+	public static int POISON    = 12;
+	public static int OOZE      = 13;
+	public static int DEFERRED  = 14;
 
 	//positive icons
 	public static int HEALING   = 18;
