@@ -683,10 +683,10 @@ public class ItemSpriteSheet {
 	public static final int CANDY_CANE      = HOLIDAY_FOOD+8;
 	public static final int SPARKLING_POTION= HOLIDAY_FOOD+9;
 	static{
-		assignItemRect(STEAMED_FISH,    15, 11);
-		assignItemRect(FISH_LEFTOVER,   15, 11);
+		assignItemRect(STEAMED_FISH,    16, 12);
+		assignItemRect(FISH_LEFTOVER,   16, 12);
 		assignItemRect(CHOC_AMULET,     16, 16);
-		assignItemRect(EASTER_EGG,      15, 11);
+		assignItemRect(EASTER_EGG,      14, 16);
 		assignItemRect(RAINBOW_POTION,  12, 14);
 		assignItemRect(SHATTERED_CAKE,  15, 11);
 		assignItemRect(PUMPKIN_PIE,     16, 12);
