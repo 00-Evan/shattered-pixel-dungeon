@@ -91,7 +91,7 @@ public class FloatingText extends RenderedTextBlock {
 	public void update() {
 		super.update();
 		
-		if (timeLeft > 0) {
+		if (timeLeft >= 0) {
 			if ((timeLeft -= Game.elapsed) <= 0) {
 				kill();
 			} else {
@@ -218,10 +218,16 @@ public class FloatingText extends RenderedTextBlock {
 			if (stack.size() > 0) {
 				FloatingText below = txt;
 				int aboveIndex = stack.size() - 1;
+				int numBelow = 0;
 				while (aboveIndex >= 0) {
+					numBelow++;
 					FloatingText above = stack.get(aboveIndex);
 					if (above.bottom() + 4 > below.top()) {
 						above.setPos(above.left(), below.top() - above.height() - 4);
+
+						//reduce remaining time on texts being nudged up, to prevent spam
+						above.timeLeft = Math.min(above.timeLeft, LIFESPAN-(numBelow/5f));
+						above.timeLeft = Math.max(above.timeLeft, 0);
 						
 						below = above;
 						aboveIndex--;
