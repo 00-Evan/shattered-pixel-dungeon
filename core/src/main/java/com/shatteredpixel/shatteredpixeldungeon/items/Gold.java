@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -36,8 +37,6 @@ import java.util.ArrayList;
 
 public class Gold extends Item {
 
-	private static final String TXT_VALUE	= "%+d";
-	
 	{
 		image = ItemSpriteSheet.GOLD;
 		stackable = true;
@@ -64,7 +63,7 @@ public class Gold extends Item {
 		Badges.validateGoldCollected();
 
 		GameScene.pickUp( this, pos );
-		hero.sprite.showStatus( CharSprite.NEUTRAL, TXT_VALUE, quantity );
+		hero.sprite.showStatusWithIcon( CharSprite.NEUTRAL, String.valueOf(quantity), FloatingText.GOLD );
 		hero.spendAndNext( TIME_TO_PICK_UP );
 		
 		Sample.INSTANCE.play( Assets.Sounds.GOLD, 1, 1, Random.Float( 0.9f, 1.1f ) );

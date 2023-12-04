@@ -46,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
@@ -344,7 +345,13 @@ public class ElementalBlast extends ArmorAbility {
 										mob.HP += healing;
 
 										mob.sprite.emitter().burst(Speck.factory(Speck.HEALING), 4);
-										mob.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing + shielding);
+
+										if (healing > 0) {
+											mob.sprite.showStatusWithIcon(CharSprite.POSITIVE, String.valueOf(healing), FloatingText.HEALING);
+										}
+										if (shielding > 0){
+											mob.sprite.showStatusWithIcon(CharSprite.POSITIVE, String.valueOf(shielding), FloatingText.SHIELDING);
+										}
 									} else {
 										if (!mob.properties().contains(Char.Property.UNDEAD)) {
 											Charm charm = Buff.affect(mob, Charm.class, effectMulti*Charm.DURATION/2f);

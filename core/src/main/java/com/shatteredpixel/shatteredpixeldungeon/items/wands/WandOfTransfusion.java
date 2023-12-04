@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BloodParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
@@ -93,7 +94,12 @@ public class WandOfTransfusion extends Wand {
 				ch.HP += healing;
 				
 				ch.sprite.emitter().burst(Speck.factory(Speck.HEALING), 2 + buffedLvl() / 2);
-				ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing + shielding);
+				if (healing > 0) {
+					ch.sprite.showStatusWithIcon(CharSprite.POSITIVE, String.valueOf(healing), FloatingText.HEALING);
+				}
+				if (shielding > 0){
+					ch.sprite.showStatusWithIcon(CharSprite.POSITIVE, String.valueOf(shielding), FloatingText.SHIELDING);
+				}
 				
 				if (!freeCharge) {
 					damageHero(selfDmg);

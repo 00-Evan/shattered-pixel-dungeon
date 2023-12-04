@@ -79,6 +79,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.PrismaticImage;
+import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
@@ -86,6 +87,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCleansing;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -785,10 +787,26 @@ public abstract class Char extends Actor {
 		}
 		
 		if (sprite != null) {
-			sprite.showStatus(HP > HT / 2 ?
+			//defaults to normal damage icon if no other ones apply
+			int                                             icon = FloatingText.PHYS_DMG;
+			if (AntiMagic.RESISTS.contains(src.getClass())) icon = FloatingText.MAGIC_DMG;
+			if (src instanceof Pickaxe)                     icon = FloatingText.PICK_DMG;
+
+			if (src instanceof Hunger)                      icon = FloatingText.HUNGER;
+			if (src instanceof Burning)                     icon = FloatingText.BURNING;
+			if (src instanceof Electricity)                 icon = FloatingText.SHOCKING;
+			if (src instanceof Bleeding)                    icon = FloatingText.BLEEDING;
+			if (src instanceof ToxicGas)                    icon = FloatingText.TOXIC;
+			if (src instanceof Corrosion)                   icon = FloatingText.CORROSION;
+			if (src instanceof Poison)                      icon = FloatingText.POISON;
+			if (src instanceof Ooze)                        icon = FloatingText.OOZE;
+			if (src instanceof Viscosity.DeferedDamage)     icon = FloatingText.DEFERRED;
+
+			sprite.showStatusWithIcon(HP > HT / 2 ?
 							CharSprite.WARNING :
 							CharSprite.NEGATIVE,
-					Integer.toString(dmg + shielded));
+					Integer.toString(dmg + shielded),
+					icon);
 		}
 
 		if (HP < 0) HP = 0;
