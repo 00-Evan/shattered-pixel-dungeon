@@ -327,7 +327,7 @@ public class WndBlacksmith extends Window {
 
 			@Override
 			public boolean itemSelectable(Item item) {
-				return item.isIdentified() && item.isUpgradable();
+				return item.isIdentified() && !item.cursed && item.isUpgradable();
 			}
 
 			@Override
@@ -374,7 +374,7 @@ public class WndBlacksmith extends Window {
 		@Override
 		public boolean itemSelectable(Item item) {
 			return item.isUpgradable()
-					&& item.isIdentified()
+					&& item.isIdentified() && !item.cursed
 					&& ((item instanceof MeleeWeapon && !((Weapon) item).enchantHardened)
 					|| (item instanceof Armor && !((Armor) item).glyphHardened));
 		}
@@ -419,6 +419,7 @@ public class WndBlacksmith extends Window {
 		public boolean itemSelectable(Item item) {
 			return item.isUpgradable()
 					&& item.isIdentified()
+					&& !item.cursed
 					&& item.level() < 2;
 		}
 
