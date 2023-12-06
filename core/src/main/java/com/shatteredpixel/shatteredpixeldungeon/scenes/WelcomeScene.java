@@ -201,6 +201,9 @@ public class WelcomeScene extends PixelScene {
 				message += "\n" + Messages.get(this, "patch_translations");
 
 			}
+
+			message = "Welcome alpha testers!\n\n" +
+					"This initial alpha includes a complete second variant for the caves quest, and almost all side-content planned for v2.3.0. Please let me know what you think, or if you run into any bugs. Happy testing!";
 		} else {
 			message = Messages.get(this, "what_msg");
 		}

@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BruteSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollGuardSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -47,7 +48,8 @@ import java.util.ArrayList;
 public class v2_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
-		add_Coming_Soon(changeInfos);
+		//add_Coming_Soon(changeInfos);
+		add_v2_3_Changes(changeInfos);
 		add_v2_2_Changes(changeInfos);
 		add_v2_1_Changes(changeInfos);
 		add_v2_0_Changes(changeInfos);
@@ -81,6 +83,123 @@ public class v2_X_Changes {
 
 	}
 
+	public static void add_v2_3_Changes( ArrayList<ChangeInfo> changeInfos ) {
+
+		ChangeInfo changes = new ChangeInfo("v2.3-ALPHA", true, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.SHPX), "v2.3.0 TODO",
+				"The following still needs to be done before v2.3.0 Releases:\n" +
+				"\n" +
+				"_-_ The 3rd quest variant has to be implemented, or delayed until a future update\n" +
+				"_-_ Various sprites in the gnoll quest area need to be improved (most notably the boulders)\n" +
+				"_-_ Sprites for new remains items and holiay items need to be improved\n" +
+				"\n" +
+				"Note that currently the crystal caves quest variant has been disabled, to speed up testing of the gnoll variant."));
+
+		changes.addButton(new ChangeButton(new Image(new GnollGuardSprite()), "Gnoll Caves Quest",
+				"_A second variant has been added to the caves quest!_\n" +
+				"\n" +
+				"This variant features _gnolls and earth-moving magic._ Expect to spend a bit more time digging, as this environment features collapsed walls, boulders, and angry gnolls wielding spears and earth-moving devices. Their magic is quite chaotic, so be ready to dodge and possibly get the gnolls caught in their own attacks.\n" +
+				"\n" +
+				"The boss for this variant is the _gnoll geomancer,_ an experienced gnoll with access to lots of mobility and earth-moving power. "));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Environment.TILES_CAVES, 32, 64, 16, 16), "Fungi Caves Quest",
+				"_I currently have plans for a 3rd caves quest variant in 2.3.0, but it is not implemented yet._"));
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.REMAINS), "New Remains Items",
+				"_Heroes remains now contain a new unique item that varies based on the class of the hero that died._\n" +
+				"\n" +
+				"These items are single use consumables that provide a small benefit that's themed after the hero who died. There are also two new badges relating to these items.\n" +
+				"\n" +
+				"Remains now always contain a signature remains item in addition to an extra item from the previous run, if one was chosen. This replaces the previous behaviour, where remains would contain 50 or 10 gold if no eligible item could be chosen.\n" +
+				"\n" +
+				"Additionally, remains which contain a stackable item from the previous run now cap the quantity of that item at 3."));
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.CANDY_CANE), "New Holiday Items",
+				"Shattered has had little holiday food items that temporarily replace cornish pasties ever since 2016, but only for Halloween and the Winter Holidays. Throughout 2024 you'll see a bunch of new items for more holidays through the year, which all have different tiny bonus effects when eaten.\n" +
+				"\n" +
+				"For now I have implemented items for Lunar New Years and Easter, with more on the way in future updates.\n" +
+				"\n" +
+				"I've also shortened the duration for Halloween and the Winter Holidays after 2023, so as not to make the game overly festive in the later months of the year, and nerfed the healing effect on Halloween pumpkin pies."));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
+		changes.hardlight(CharSprite.WARNING);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.BUFFS), "Floating Text Icons",
+				"The little bits of floating text that appear above characters to indicate damage, positive effects, and currency gain now have tiny icons to indicate the type! \n" +
+				"\n" +
+				"For damage, it is now shown whether the damage is physical, magical, or if it comes from a particular debuff or DOT effect. Note that armor usually reduces physical damage, but doesn't in all cases. Armor never reduces magical damage.\n" +
+				"\n" +
+				"For positive effects, icons are now shown for healing, shielding, and exp gain. Loads of healing or shielding effects which previously didn't show floating text now do as well."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_Highlights:_\n" +
+				"_-_ Improved the sprites for Armored Brutes and DM-201s\n" +
+				"_-_ The troll blacksmith no longer works on cursed items\n" +
+				"_-_ Reduced the chance for sleeping enemies to clump together in caves quest levels\n" +
+				"_-_ Added support for themed icons on Android 13+\n" +
+				"_-_ Random scroll and potion drops are now more consistent throughout a run\n" +
+				"\n" +
+				"_Items:_\n" +
+				"_-_ Added a warning when trying to steal from shops with less than 100% success chance\n" +
+				"_-_ Curse infusion now preserves an existing curse on items that don't have the curse infusion bonus yet\n" +
+				"_-_ long pressing on the ghost equip window now shows the stats of equipped items",
+
+				"_Characters:_\n" +
+				"_-_ DM-300's rockfall attack now uses positional danger indicators in addition to the rock particle effects\n" +
+				"_-_ Phantom piranhas now die on land if there are no water cells to teleport to\n" +
+				"_-_ Corrupted allies no longer attack passive enemies\n" +
+				"\n" +
+				"_Misc:_\n" +
+				"_-_ Surface scene now shows night later in the evening as well as after midnight\n" +
+				"_-_ Removed support for saves prior to v1.4.3\n" +
+				"_-_ Added developer commentary for v1.2.0"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Highlights:_\n" +
+				"_-_ Enemies continuing to fight each other after amok expires in many cases\n" +
+				"_-_ Some inter-level teleportation effects working inside caves quest level\n" +
+				"_-_ Transmutation being usable on the pickaxe during the caves quest\n" +
+				"\n" +
+				"_Items & Effects:_\n" +
+				"_-_ Final boss fight not properly interacting with the into darkness challenge\n" +
+				"_-_ Thrown potions not clearing fire/ooze if they shattered out of view\n" +
+				"_-_ Foresight effects not triggering after level transition\n" +
+				"_-_ Cursed wand of warding having different targeting properties than other wands\n" +
+				"_-_ Projecting missile weapons not working on enemies inside solid terrain",
+
+				"_Characters:_\n" +
+				"_-_ Hero not being able to self-trample plants when standing on stairs\n" +
+				"_-_ Corpse dust quest tracking all wraiths instead of just the ones it spawned\n" +
+				"_-_ Blacksmith landmark entry not clearing when you have spent all favor\n" +
+				"_-_ Crystal spire being considered a mini boss, not a full boss\n" +
+				"_-_ Berserker being able to rage without his seal equipped in some cases\n" +
+				"_-_ Tengu behaving slightly incorrectly when taking massive damage\n" +
+				"\n" +
+				"_Misc.:_\n" +
+				"_-_ Various rare crash and freeze bugs\n" +
+				"_-_ Various minor visual and textual errors\n" +
+				"_-_ Some cases where new rot garden room could spawn much smaller than intended\n" +
+				"_-_ Cases where remains would fail to appear in the new mining level"));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
+		changes.hardlight(CharSprite.POSITIVE);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
+		changes.hardlight(CharSprite.NEGATIVE);
+		changeInfos.add(changes);
+
+	}
+
 	public static void add_v2_2_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
 		ChangeInfo changes = new ChangeInfo("v2.2", true, "");
@@ -96,14 +215,14 @@ public class v2_X_Changes {
 				"_-_ 138 days after Shattered v2.1.0\n\n" +
 				"Dev commentary will be added here in the future."));
 
-		changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_CAVES, 192, 64, 16, 16), "New Blacksmith Quest!",
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.PICKAXE), "New Blacksmith Quest!",
 				"_Shattered Pixel Dungeon's blacksmith quest has been completely redone!_\n" +
-				"\n" +
-				"_The quest now takes place in a new sublevel, with one entirely new environment, and two more on the way in v2.3!_ Each environment has its own set of hazards, level generation logic, and unique enemies.\n" +
-				"\n" +
-				"_The quest area features a new mining mechanic._ In addition to digging out gold, you can tunnel through walls to create new routes and evade hazards.\n" +
-				"\n" +
-				"_The quest rewards are also massively expanded._ The better you do on the quest, the more favor you'll earn in exchange for blacksmithing services. The old reforge option is still available, but there are several new options too."));
+						"\n" +
+						"_The quest now takes place in a new sublevel, with one entirely new environment, and two more on the way in v2.3!_ Each environment has its own set of hazards, level generation logic, and unique enemies.\n" +
+						"\n" +
+						"_The quest area features a new mining mechanic._ In addition to digging out gold, you can tunnel through walls to create new routes and evade hazards.\n" +
+						"\n" +
+						"_The quest rewards are also massively expanded._ The better you do on the quest, the more favor you'll earn in exchange for blacksmithing services. The old reforge option is still available, but there are several new options too."));
 
 		changes.addButton( new ChangeButton(Icons.AUDIO.get(), "New Music!",
 				"_Shattered Pixel Dungeon's soundtrack has been massively expanded!_ The game's soundtrack runtime has doubled in total, with almost 20 minutes of new audio by the game's composer: Kristjan Thomas Haaristo.\n" +
