@@ -41,6 +41,8 @@ public class PotionOfStrength extends Potion {
 	public void apply( Hero hero ) {
 		identify();
 
+		hero.STR++;
+
 		GLog.p( Messages.get(this, "msg", hero.STR()) );
 		
 		Badges.validateStrengthAttained();
