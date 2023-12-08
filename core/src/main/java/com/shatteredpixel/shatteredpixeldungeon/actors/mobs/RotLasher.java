@@ -55,7 +55,7 @@ public class RotLasher extends Mob {
 
 	@Override
 	protected boolean act() {
-		if (HP < HT && enemy == null || !Dungeon.level.adjacent(pos, enemy.pos)) {
+		if (HP < HT && (enemy == null || !Dungeon.level.adjacent(pos, enemy.pos))) {
 			sprite.showStatusWithIcon(CharSprite.POSITIVE, String.valueOf(Math.min(5, HT - HP)), FloatingText.HEALING);
 			HP = Math.min(HT, HP + 5);
 		}
