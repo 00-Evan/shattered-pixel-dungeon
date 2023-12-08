@@ -465,7 +465,7 @@ public enum Talent {
 
 	public static void onFoodEaten( Hero hero, float foodVal, Item foodSource ){
 		if (hero.hasTalent(HEARTY_MEAL)){
-			if (hero.HP <= hero.HT/4) {
+			if (hero.HP <= hero.HT/2) {
 				//2/3 HP healed, when hero is below 50% health
 				int healing = 1 + hero.pointsInTalent(HEARTY_MEAL);
 				//3/5 HP healed, when hero is below 25% health
