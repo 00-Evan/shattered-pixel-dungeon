@@ -133,7 +133,7 @@ public class CrystalSpire extends Mob {
 						dmg += 12; //18-27 damage
 						Buff.prolong(ch, Cripple.class, 30f);
 					}
-					ch.damage(dmg, CrystalSpire.this);
+					ch.damage(dmg, new SpireSpike());
 
 					int movePos = i;
 					//crystal guardians get knocked away from the hero, others get knocked away from the spire
@@ -207,6 +207,8 @@ public class CrystalSpire extends Mob {
 
 		return true;
 	}
+
+	public static class SpireSpike{}
 
 	private void diamondAOEAttack(){
 		targetedCells.clear();
