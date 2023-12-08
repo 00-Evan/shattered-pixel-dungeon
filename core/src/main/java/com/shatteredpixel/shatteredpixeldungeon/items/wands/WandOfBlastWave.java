@@ -159,7 +159,7 @@ public class WandOfBlastWave extends DamageWand {
 				int oldPos = ch.pos;
 				ch.pos = newPos;
 				if (finalCollided && ch.isActive()) {
-					ch.damage(Random.NormalIntRange(finalDist, 2*finalDist), this);
+					ch.damage(Random.NormalIntRange(finalDist, 2*finalDist), new Knockback());
 					if (ch.isActive()) {
 						Paralysis.prolong(ch, Paralysis.class, 1 + finalDist/2f);
 					} else if (ch == Dungeon.hero){
@@ -180,6 +180,8 @@ public class WandOfBlastWave extends DamageWand {
 			}
 		}));
 	}
+
+	public static class Knockback{}
 
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {

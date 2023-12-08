@@ -47,31 +47,35 @@ public class FloatingText extends RenderedTextBlock {
 	public static int NO_ICON   = -1;
 
 	//combat damage icons
-	public static int PHYS_DMG  = 0;
-	public static int MAGIC_DMG = 1;
-	public static int PICK_DMG  = 2;
+	public static int PHYS_DMG          = 0;
+	public static int PHYS_DMG_NO_BLOCK = 1;
+	public static int MAGIC_DMG         = 2;
+	public static int PICK_DMG          = 3;
 
 	//debuff/dot damage icons
-	public static int HUNGER    = 4;
-	public static int BURNING   = 5;
-	public static int SHOCKING  = 6;
-	public static int FROST     = 7;
-	public static int WATER     = 8;
-	public static int BLEEDING  = 9;
-	public static int TOXIC     = 10;
-	public static int CORROSION = 11;
-	public static int POISON    = 12;
-	public static int OOZE      = 13;
-	public static int DEFERRED  = 14;
+	public static int HUNGER    = 5;
+	public static int BURNING   = 6;
+	public static int SHOCKING  = 7;
+	public static int FROST     = 8;
+	public static int WATER     = 9;
+	public static int BLEEDING  = 10;
+	public static int TOXIC     = 11;
+	public static int CORROSION = 12;
+	public static int POISON    = 13;
+	public static int OOZE      = 14;
+	public static int DEFERRED  = 15;
+	public static int CORRUPTION= 16;
+	public static int AMULET    = 17;
 
 	//positive icons
 	public static int HEALING   = 18;
 	public static int SHIELDING = 19;
 	public static int EXPERIENCE= 20;
+	public static int STRENGTH  = 21;
 
 	//currency icons
-	public static int GOLD      = 22;
-	public static int ENERGY    = 23;
+	public static int GOLD      = 23;
+	public static int ENERGY    = 24;
 
 	private Image icon;
 	private boolean iconLeft;
