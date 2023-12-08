@@ -89,9 +89,24 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("ALPHA-0.3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"Added damage icons in three more cases: physical damage that ignores armor, corruption damage, and amulet curse damage."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by v2.3.0-ALPHA:_\n" +
+				"_-_ Hearty meal only triggering below 1/4 HP\n" +
+				"_-_ Incorrect healing text from test subject talent\n" +
+				"_-_ Incorrect exp gain text from corrupted enemies\n" +
+				"_-_ Rot lashers spamming healing text\n" +
+				"_-_ Various minor cases of misattributed damage text icons\n\n" +
+				"_Existed prior to v2.3.0-ALPHA:_\n" +
+				"_-_ Damage from Body Slam talent ignoring armor\n" +
+				"_-_ Meditate and other damage-resisting effects not applying to crystal spire attacks"));
 
 		changes = new ChangeInfo("ALPHA-0.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -118,7 +133,7 @@ public class v2_X_Changes {
 				"\n" +
 				"This variant features _gnolls and earth-moving magic._ Expect to spend a bit more time digging, as this environment features collapsed walls, boulders, and angry gnolls wielding spears and earth-moving devices. Their magic is quite chaotic, so be ready to dodge and possibly get the gnolls caught in their own attacks.\n" +
 				"\n" +
-				"The boss for this variant is the _gnoll geomancer,_ an experienced gnoll with access to lots of mobility and earth-moving power. "));
+				"The boss for this variant is the _gnoll geomancer,_ an experienced gnoll with access to lots of mobility and earth-moving power."));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Environment.TILES_CAVES, 32, 64, 16, 16), "Fungi Caves Quest",
 				"_I currently have plans for a 3rd caves quest variant in 2.3.0, but it is not implemented yet._"));
@@ -144,7 +159,7 @@ public class v2_X_Changes {
 		changeInfos.add(changes);
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.BUFFS), "Floating Text Icons",
-				"The little bits of floating text that appear above characters to indicate damage, positive effects, and currency gain now have tiny icons to indicate the type! \n" +
+				"The little bits of floating text that appear above characters to indicate damage, positive effects, and currency gain now have tiny icons to indicate the type!\n" +
 				"\n" +
 				"For damage, it is now shown whether the damage is physical, magical, or if it comes from a particular debuff or DOT effect. Note that armor usually reduces physical damage, but doesn't in all cases. Armor never reduces magical damage.\n" +
 				"\n" +
