@@ -27,7 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 
 //generic class for buffs which convert an enemy into an ally
@@ -64,7 +64,7 @@ public abstract class AllyBuff extends Buff{
 
 			int exp = hero.lvl <= enemy.maxLvl ? enemy.EXP : 0;
 			if (exp > 0) {
-				hero.sprite.showStatus(CharSprite.POSITIVE, Messages.get(enemy, "exp", exp));
+				hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, String.valueOf(exp), FloatingText.EXPERIENCE);
 			}
 			hero.earnExp(exp, enemy.getClass());
 
