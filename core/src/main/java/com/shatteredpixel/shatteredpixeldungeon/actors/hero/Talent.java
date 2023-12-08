@@ -671,7 +671,7 @@ public enum Talent {
 			if (hero.sprite != null) {
 				Emitter e = hero.sprite.emitter();
 				if (e != null) e.burst(Speck.factory(Speck.HEALING), hero.pointsInTalent(TEST_SUBJECT));
-				hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, String.valueOf(hero.HP + 1 + hero.pointsInTalent(TEST_SUBJECT)), FloatingText.HEALING);
+				hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, String.valueOf(1 + hero.pointsInTalent(TEST_SUBJECT)), FloatingText.HEALING);
 			}
 		}
 		if (hero.hasTalent(TESTED_HYPOTHESIS)){
