@@ -168,12 +168,11 @@ public class ItemSpriteSheet {
 		assignItemRect(MASTERY,         13, 16);
 		assignItemRect(KIT,             16, 15);
 
-		//TODO improve these placeholder images
-		assignItemRect(SEAL_SHARD,      6,   9);
-		assignItemRect(BROKEN_STAFF,    15, 11);
-		assignItemRect(CLOAK_SCRAP,     5,   9);
-		assignItemRect(BOW_FRAGMENT,    12,  7);
-		assignItemRect(BROKEN_HILT,      6,  7);
+		assignItemRect(SEAL_SHARD,      11, 11);
+		assignItemRect(BROKEN_STAFF,    14, 10);
+		assignItemRect(CLOAK_SCRAP,      9,  9);
+		assignItemRect(BOW_FRAGMENT,    12,  9);
+		assignItemRect(BROKEN_HILT,      9,  9);
 	}
 	
 	private static final int BOMBS          =                               xy(1, 6);   //16 slots
