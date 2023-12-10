@@ -310,7 +310,7 @@ public class DriedRose extends Artifact {
 				}
 				updateQuickslot();
 			}
-		} else {
+		} else if (ghost.HP < ghost.HT) {
 			int heal = Math.round((1 + level()/3f)*amount);
 			ghost.HP = Math.min( ghost.HT, ghost.HP + heal);
 			ghost.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(heal), FloatingText.HEALING);

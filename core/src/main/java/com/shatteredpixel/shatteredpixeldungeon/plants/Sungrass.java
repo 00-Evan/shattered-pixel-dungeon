@@ -92,15 +92,20 @@ public class Sungrass extends Plant {
 			partialHeal += (40 + target.HT)/150f;
 			
 			if (partialHeal > 1){
-				target.HP += (int)partialHeal;
-				level -= (int)partialHeal;
-				partialHeal -= (int)partialHeal;
-				target.sprite.showStatusWithIcon(CharSprite.POSITIVE, "1", FloatingText.HEALING);
-				
-				if (target.HP >= target.HT) {
-					target.HP = target.HT;
-					if (target instanceof Hero){
-						((Hero)target).resting = false;
+				int healThisTurn = (int)partialHeal;
+				partialHeal -= healThisTurn;
+				level -= healThisTurn;
+
+				if (target.HP < target.HT) {
+
+					target.HP += healThisTurn;
+					target.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(healThisTurn), FloatingText.HEALING);
+
+					if (target.HP >= target.HT) {
+						target.HP = target.HT;
+						if (target instanceof Hero) {
+							((Hero) target).resting = false;
+						}
 					}
 				}
 			}
