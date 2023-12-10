@@ -213,7 +213,7 @@ public class Berserk extends Buff implements ActionIndicator.Action {
 		WarriorShield shield = target.buff(WarriorShield.class);
 		int shieldAmount = Math.round(shield.maxShield() * shieldMultiplier);
 		shield.supercharge(shieldAmount);
-		target.sprite.showStatusWithIcon( CharSprite.POSITIVE, String.valueOf(shieldAmount), FloatingText.SHIELDING );
+		target.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(shieldAmount), FloatingText.SHIELDING );
 
 		BuffIndicator.refreshHero();
 	}

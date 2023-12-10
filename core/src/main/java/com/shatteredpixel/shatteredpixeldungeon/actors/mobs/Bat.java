@@ -72,7 +72,7 @@ public class Bat extends Mob {
 		if (reg > 0) {
 			HP += reg;
 			sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
-			sprite.showStatusWithIcon(CharSprite.POSITIVE, String.valueOf(reg), FloatingText.HEALING);
+			sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(reg), FloatingText.HEALING);
 		}
 		
 		return damage;

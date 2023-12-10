@@ -473,7 +473,7 @@ public enum Talent {
 
 				hero.HP = Math.min(hero.HP + healing, hero.HT);
 				hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
-				hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, String.valueOf(healing), FloatingText.HEALING);
+				hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(healing), FloatingText.HEALING);
 
 			}
 		}
@@ -557,13 +557,13 @@ public enum Talent {
 				if (shield != null) {
 					// 50/75% of total shield
 					int shieldToGive = Math.round(factor * shield.maxShield() * 0.25f * (1 + hero.pointsInTalent(LIQUID_WILLPOWER)));
-					hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, String.valueOf(shieldToGive), FloatingText.SHIELDING);
+					hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldToGive), FloatingText.SHIELDING);
 					shield.supercharge(shieldToGive);
 				}
 			} else {
 				// 5/7.5% of max HP
 				int shieldToGive = Math.round( factor * hero.HT * (0.025f * (1+hero.pointsInTalent(LIQUID_WILLPOWER))));
-				hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, String.valueOf(shieldToGive), FloatingText.SHIELDING);
+				hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldToGive), FloatingText.SHIELDING);
 				Buff.affect(hero, Barrier.class).setShield(shieldToGive);
 			}
 		}
@@ -671,7 +671,7 @@ public enum Talent {
 			if (hero.sprite != null) {
 				Emitter e = hero.sprite.emitter();
 				if (e != null) e.burst(Speck.factory(Speck.HEALING), hero.pointsInTalent(TEST_SUBJECT));
-				hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, String.valueOf(1 + hero.pointsInTalent(TEST_SUBJECT)), FloatingText.HEALING);
+				hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(1 + hero.pointsInTalent(TEST_SUBJECT)), FloatingText.HEALING);
 			}
 		}
 		if (hero.hasTalent(TESTED_HYPOTHESIS)){

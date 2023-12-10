@@ -55,7 +55,7 @@ public class PhantomMeat extends Food {
 		Buff.affect( hero, Invisibility.class, Invisibility.DURATION );
 		hero.HP = Math.min( hero.HP + hero.HT / 4, hero.HT );
 		hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
-		hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, String.valueOf(hero.HT / 4), FloatingText.HEALING );
+		hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(hero.HT / 4), FloatingText.HEALING );
 		PotionOfHealing.cure(hero);
 
 	}

@@ -95,10 +95,10 @@ public class WandOfTransfusion extends Wand {
 				
 				ch.sprite.emitter().burst(Speck.factory(Speck.HEALING), 2 + buffedLvl() / 2);
 				if (healing > 0) {
-					ch.sprite.showStatusWithIcon(CharSprite.POSITIVE, String.valueOf(healing), FloatingText.HEALING);
+					ch.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(healing), FloatingText.HEALING);
 				}
 				if (shielding > 0){
-					ch.sprite.showStatusWithIcon(CharSprite.POSITIVE, String.valueOf(shielding), FloatingText.SHIELDING);
+					ch.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shielding), FloatingText.SHIELDING);
 				}
 				
 				if (!freeCharge) {

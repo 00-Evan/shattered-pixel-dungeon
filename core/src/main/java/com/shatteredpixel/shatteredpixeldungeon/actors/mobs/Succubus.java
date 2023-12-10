@@ -82,11 +82,11 @@ public class Succubus extends Mob {
 			if (shield > 0){
 				HP = HT;
 				if (shield < 5){
-					sprite.showStatusWithIcon(CharSprite.POSITIVE, String.valueOf(5-shield), FloatingText.HEALING);
+					sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(5-shield), FloatingText.HEALING);
 				}
 
 				Buff.affect(this, Barrier.class).setShield(shield);
-				sprite.showStatusWithIcon(CharSprite.POSITIVE, String.valueOf(shield), FloatingText.SHIELDING);
+				sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shield), FloatingText.SHIELDING);
 			} else {
 				HP += 5 + damage;
 				sprite.showStatusWithIcon(CharSprite.POSITIVE, "5", FloatingText.HEALING);

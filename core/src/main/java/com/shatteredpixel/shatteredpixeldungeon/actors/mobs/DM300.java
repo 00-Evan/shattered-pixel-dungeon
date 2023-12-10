@@ -336,7 +336,7 @@ public class DM300 extends Mob {
 				}
 				Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);
 				sprite.emitter().start(SparkParticle.STATIC, 0.05f, 20);
-				sprite.showStatusWithIcon(CharSprite.POSITIVE, String.valueOf(30 + (HT - HP)/10), FloatingText.SHIELDING);
+				sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(30 + (HT - HP)/10), FloatingText.SHIELDING);
 			}
 
 			Buff.affect(this, Barrier.class).setShield( 30 + (HT - HP)/10);

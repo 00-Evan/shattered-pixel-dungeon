@@ -100,7 +100,7 @@ public class Pasty extends Food {
 				int toHeal = Math.max(3, hero.HT/20);
 				hero.HP = Math.min(hero.HP + toHeal, hero.HT);
 				hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
-				hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, String.valueOf(toHeal), FloatingText.HEALING );
+				hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(toHeal), FloatingText.HEALING );
 				break;
 			case WINTER_HOLIDAYS:
 				hero.belongings.charge(0.5f); //2 turns worth

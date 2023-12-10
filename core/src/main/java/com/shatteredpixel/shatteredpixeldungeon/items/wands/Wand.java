@@ -603,7 +603,7 @@ public abstract class Wand extends Item {
 						float shield = curUser.HT * (0.04f*curWand.curCharges);
 						if (curUser.pointsInTalent(Talent.SHIELD_BATTERY) == 2) shield *= 1.5f;
 						Buff.affect(curUser, Barrier.class).setShield(Math.round(shield));
-						curUser.sprite.showStatusWithIcon(CharSprite.POSITIVE, String.valueOf(shield), FloatingText.SHIELDING);
+						curUser.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(Math.round(shield)), FloatingText.SHIELDING);
 						curWand.curCharges = 0;
 						curUser.sprite.operate(curUser.pos);
 						Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
@@ -639,7 +639,7 @@ public abstract class Wand extends Item {
 							//grants 3/5 shielding
 							int shieldToGive = 1 + 2 * Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER);
 							Buff.affect(Dungeon.hero, Barrier.class).setShield(shieldToGive);
-							Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, String.valueOf(shieldToGive), FloatingText.SHIELDING);
+							Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldToGive), FloatingText.SHIELDING);
 
 						//metamorphed. Triggers if wand is highest level hero has
 						} else if (curUser.heroClass != HeroClass.MAGE) {
@@ -653,7 +653,7 @@ public abstract class Wand extends Item {
 								//grants 3/5 shielding
 								int shieldToGive = 1 + 2 * Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER);
 								Buff.affect(Dungeon.hero, Barrier.class).setShield(shieldToGive);
-								Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, String.valueOf(shieldToGive), FloatingText.SHIELDING);
+								Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldToGive), FloatingText.SHIELDING);
 							}
 						}
 					}

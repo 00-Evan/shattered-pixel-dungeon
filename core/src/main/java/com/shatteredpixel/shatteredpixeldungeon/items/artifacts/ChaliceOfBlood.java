@@ -170,7 +170,7 @@ public class ChaliceOfBlood extends Artifact {
 		}
 		if (heal >= 1f) {
 			target.HP = Math.min(target.HT, target.HP + (int)heal);
-			target.sprite.showStatusWithIcon(CharSprite.POSITIVE, String.valueOf(heal), FloatingText.HEALING);
+			target.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString((int)heal), FloatingText.HEALING);
 		}
 	}
 	

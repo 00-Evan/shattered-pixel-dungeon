@@ -119,7 +119,7 @@ public class Goo extends Mob {
 
 			if (Dungeon.level.heroFOV[pos] ){
 				sprite.emitter().burst( Speck.factory( Speck.HEALING ), healInc );
-				sprite.showStatusWithIcon( CharSprite.POSITIVE, String.valueOf(healInc), FloatingText.HEALING );
+				sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(healInc), FloatingText.HEALING );
 			}
 			if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES) && healInc < 3) {
 				healInc++;

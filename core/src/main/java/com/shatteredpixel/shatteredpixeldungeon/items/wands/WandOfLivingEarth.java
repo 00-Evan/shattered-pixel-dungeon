@@ -332,7 +332,7 @@ public class WandOfLivingEarth extends DamageWand {
 				HT = 16 + 8 * wandLevel;
 			}
 			if (HP != 0){
-				sprite.showStatusWithIcon(CharSprite.POSITIVE, String.valueOf(healthToAdd), FloatingText.HEALING);
+				sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(healthToAdd), FloatingText.HEALING);
 			}
 			HP = Math.min(HT, HP + healthToAdd);
 			//half of hero's evasion

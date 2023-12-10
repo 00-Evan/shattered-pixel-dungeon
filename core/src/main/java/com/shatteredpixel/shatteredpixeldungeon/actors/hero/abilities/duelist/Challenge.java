@@ -270,7 +270,7 @@ public class Challenge extends ArmorAbility {
 						if (hpToHeal > 0){
 							Dungeon.hero.HP += hpToHeal;
 							Dungeon.hero.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.33f, 6 );
-							Dungeon.hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, String.valueOf(hpToHeal), FloatingText.HEALING );
+							Dungeon.hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(hpToHeal), FloatingText.HEALING );
 						}
 					}
 				}
