@@ -144,7 +144,7 @@ public class Rapier extends MeleeWeapon {
 				} else {
 					wep.beforeAbilityUsed(hero, null);
 					GLog.w(Messages.get(Rapier.class, "ability_no_target"));
-					hero.spendAndNext(hero.speed());
+					hero.spendAndNext(1/hero.speed());
 					wep.afterAbilityUsed(hero);
 				}
 			}
