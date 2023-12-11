@@ -209,6 +209,7 @@ public class SpiritHawk extends ArmorAbility {
 		protected boolean act() {
 			if (timeRemaining <= 0){
 				die(null);
+				Dungeon.hero.interrupt();
 				return true;
 			}
 			viewDistance = 6+Dungeon.hero.pointsInTalent(Talent.EAGLE_EYE);
