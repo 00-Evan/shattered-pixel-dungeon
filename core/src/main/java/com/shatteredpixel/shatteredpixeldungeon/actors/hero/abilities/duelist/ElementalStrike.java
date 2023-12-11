@@ -155,7 +155,7 @@ public class ElementalStrike extends ArmorAbility {
 
 		Ballistica aim = new Ballistica(hero.pos, target, Ballistica.WONT_STOP);
 
-		int maxDist = 3 + hero.pointsInTalent(Talent.ELEMENTAL_REACH);
+		int maxDist = 4 + hero.pointsInTalent(Talent.ELEMENTAL_REACH);
 		int dist = Math.min(aim.dist, maxDist);
 
 		ConeAOE cone = new ConeAOE(aim,
