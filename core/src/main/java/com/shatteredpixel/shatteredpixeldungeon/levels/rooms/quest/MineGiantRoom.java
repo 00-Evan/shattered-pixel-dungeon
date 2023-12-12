@@ -127,14 +127,13 @@ public class MineGiantRoom extends CaveRoom {
 			level.mobs.add(g);
 
 		} else if (Blacksmith.Quest.Type() == Blacksmith.Quest.FUNGI){
-			Painter.fillEllipse(level, this, 3, Terrain.EMPTY);
+			Painter.fillEllipse(level, this, 2, Terrain.HIGH_GRASS);
 
-			for (int i = 0; i < width()*height()/2; i ++){
-				Point r = random(1);
-				if (level.map[level.pointToCell(r)] != Terrain.WALL) {
-					Painter.set(level, r, Terrain.HIGH_GRASS);
-				}
-			}
+			Painter.fillEllipse(level, this, 3, Terrain.GRASS);
+
+			Painter.fillEllipse(level, this, 4, Terrain.HIGH_GRASS);
+			Painter.fillEllipse(level, this, 5, Terrain.GRASS);
+
 
 		} else {
 			Painter.fillEllipse(level, this, 3, Terrain.EMPTY);

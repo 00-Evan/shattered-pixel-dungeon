@@ -52,6 +52,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollGeomancer;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Piranha;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogFist;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WindParticle;
@@ -1220,20 +1221,24 @@ public abstract class Level implements Bundlable {
 			if (modifiableBlocking == null || modifiableBlocking.length != Dungeon.level.losBlocking.length){
 				modifiableBlocking = new boolean[Dungeon.level.losBlocking.length];
 			}
-			
-			if ((c instanceof Hero && ((Hero) c).subClass == HeroSubClass.WARDEN)
-				|| c instanceof YogFist.SoiledFist || c instanceof GnollGeomancer) {
-				if (blocking == null) {
-					System.arraycopy(Dungeon.level.losBlocking, 0, modifiableBlocking, 0, modifiableBlocking.length);
-					blocking = modifiableBlocking;
-				}
-				for (int i = 0; i < blocking.length; i++){
-					if (blocking[i] && (Dungeon.level.map[i] == Terrain.HIGH_GRASS || Dungeon.level.map[i] == Terrain.FURROWED_GRASS)){
-						blocking[i] = false;
+
+			//grass is see-through by some specific entities, but not during the fungi quest
+			if (!(Dungeon.level instanceof  MiningLevel) || Blacksmith.Quest.Type() != Blacksmith.Quest.FUNGI){
+				if ((c instanceof Hero && ((Hero) c).subClass == HeroSubClass.WARDEN)
+						|| c instanceof YogFist.SoiledFist || c instanceof GnollGeomancer) {
+					if (blocking == null) {
+						System.arraycopy(Dungeon.level.losBlocking, 0, modifiableBlocking, 0, modifiableBlocking.length);
+						blocking = modifiableBlocking;
+					}
+					for (int i = 0; i < blocking.length; i++) {
+						if (blocking[i] && (Dungeon.level.map[i] == Terrain.HIGH_GRASS || Dungeon.level.map[i] == Terrain.FURROWED_GRASS)) {
+							blocking[i] = false;
+						}
 					}
 				}
 			}
 
+			//allies and specific enemies can see through shrouding fog
 			if ((c.alignment != Char.Alignment.ALLY && !(c instanceof GnollGeomancer))
 					&& Dungeon.level.blobs.containsKey(SmokeScreen.class)
 					&& Dungeon.level.blobs.get(SmokeScreen.class).volume > 0) {

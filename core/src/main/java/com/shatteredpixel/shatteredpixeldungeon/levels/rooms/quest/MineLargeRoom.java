@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CrystalGuardian;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollGuard;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollSapper;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RotLasher;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -180,14 +181,28 @@ public class MineLargeRoom extends CaveRoom {
 				}
 			}
 		} else if (Blacksmith.Quest.Type() == Blacksmith.Quest.FUNGI){
-			Painter.fillEllipse(level, this, 3, Terrain.EMPTY);
 
-			for (int i = 0; i < width() * height() / 4; i++) {
+			for (Point p : getPoints()){
+				int cell = level.pointToCell(p);
+				if (level.map[cell] == Terrain.EMPTY){
+					level.map[cell] = Terrain.HIGH_GRASS;
+				}
+			}
+
+			Painter.fillEllipse(level, this, 3, Terrain.GRASS);
+
+			for (int i = 0; i < width() * height() / 6; i++) {
 				Point r = random(1);
 				if (level.map[level.pointToCell(r)] != Terrain.WALL) {
 					Painter.set(level, r, Terrain.HIGH_GRASS);
 				}
 			}
+
+			Point p = center();
+			RotLasher m = new RotLasher(); //placeholder enemy
+			m.pos = level.pointToCell(p);
+			level.mobs.add(m);
+			Painter.set(level, p, Terrain.GRASS);
 
 		} else {
 			Painter.fillEllipse(level, this, 3, Terrain.EMPTY);
