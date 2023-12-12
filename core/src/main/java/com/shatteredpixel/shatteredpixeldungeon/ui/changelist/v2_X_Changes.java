@@ -85,48 +85,21 @@ public class v2_X_Changes {
 
 	public static void add_v2_3_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v2.3-ALPHA", true, "");
+		ChangeInfo changes = new ChangeInfo("v2.3-BETA", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("ALPHA-0.3", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"Added damage icons in three more cases: physical damage that ignores armor, corruption damage, and amulet curse damage."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by v2.3.0-ALPHA:_\n" +
-				"_-_ Hearty meal only triggering below 1/4 HP\n" +
-				"_-_ Incorrect healing text from test subject talent\n" +
-				"_-_ Incorrect exp gain text from corrupted enemies\n" +
-				"_-_ Rot lashers spamming healing text\n" +
-				"_-_ Various minor cases of misattributed damage text icons\n\n" +
-				"_Existed prior to v2.3.0-ALPHA:_\n" +
-				"_-_ Damage from Body Slam talent ignoring armor\n" +
-				"_-_ Meditate and other damage-resisting effects not applying to crystal spire attacks"));
-
-		changes = new ChangeInfo("ALPHA-0.2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed potions of strength not increasing hero's STR amount (whoops!)"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton(new ChangeButton(Icons.get(Icons.SHPX), "v2.3.0 TODO",
-				"The following still needs to be done before v2.3.0 Releases:\n" +
+		changes.addButton(new ChangeButton(Icons.get(Icons.SHPX), "v2.3.0 To-Do",
+				"The following still needs to be done before v2.3.0 releases:\n" +
 				"\n" +
-				"_-_ The 3rd quest variant has to be implemented, or delayed until a future update\n" +
+				"_-_ The 3rd caves quest variant has to be implemented, or delayed until a future update\n" +
 				"_-_ Various sprites in the gnoll quest area need to be improved (most notably the boulders)\n" +
-				"_-_ Sprites for new remains items and holiay items need to be improved\n" +
 				"\n" +
-				"Note that currently the crystal caves quest variant has been disabled, to speed up testing of the gnoll variant."));
+				"Note that currently the crystal caves quest variant has been disabled, to allow for easier testing of the gnoll variant."));
 
 		changes.addButton(new ChangeButton(new Image(new GnollGuardSprite()), "Gnoll Caves Quest",
 				"_A second variant has been added to the caves quest!_\n" +
@@ -161,7 +134,7 @@ public class v2_X_Changes {
 		changes.addButton(new ChangeButton(Icons.get(Icons.BUFFS), "Floating Text Icons",
 				"The little bits of floating text that appear above characters to indicate damage, positive effects, and currency gain now have tiny icons to indicate the type!\n" +
 				"\n" +
-				"For damage, it is now shown whether the damage is physical, magical, or if it comes from a particular debuff or DOT effect. Note that armor usually reduces physical damage, but doesn't in all cases. Armor never reduces magical damage.\n" +
+				"For damage, it is now shown whether the damage is physical, magical, or if it comes from a particular debuff or DOT effect. There are separate physical damage icons depending on whether armor reduces the incoming damage. Armor never reduces magical or DOT damage.\n" +
 				"\n" +
 				"For positive effects, icons are now shown for healing, shielding, and exp gain. Loads of healing or shielding effects which previously didn't show floating text now do as well."));
 
@@ -182,9 +155,11 @@ public class v2_X_Changes {
 				"_-_ DM-300's rockfall attack now uses positional danger indicators in addition to the rock particle effects\n" +
 				"_-_ Phantom piranhas now die on land if there are no water cells to teleport to\n" +
 				"_-_ Corrupted allies no longer attack passive enemies\n" +
+				"_-_ Spirit hawk now interrupts the hero when it expires\n" +
 				"\n" +
 				"_Misc:_\n" +
 				"_-_ Surface scene now shows night later in the evening as well as after midnight\n" +
+				"_-_ Did a consistency pass on heal over time effects interrupting the hero resting\n" +
 				"_-_ Removed support for saves prior to v1.4.3\n" +
 				"_-_ Added developer commentary for v1.2.0"));
 
@@ -200,7 +175,8 @@ public class v2_X_Changes {
 				"_-_ Thrown potions not clearing fire/ooze if they shattered out of view\n" +
 				"_-_ Foresight effects not triggering after level transition\n" +
 				"_-_ Cursed wand of warding having different targeting properties than other wands\n" +
-				"_-_ Projecting missile weapons not working on enemies inside solid terrain",
+				"_-_ Projecting missile weapons not working on enemies inside solid terrain\n" +
+				"_-_ Damage from Body Slam talent ignoring armor",
 
 				"_Characters:_\n" +
 				"_-_ Hero not being able to self-trample plants when standing on stairs\n" +
@@ -209,6 +185,7 @@ public class v2_X_Changes {
 				"_-_ Crystal spire being considered a mini boss, not a full boss\n" +
 				"_-_ Berserker being able to rage without his seal equipped in some cases\n" +
 				"_-_ Tengu behaving slightly incorrectly when taking massive damage\n" +
+				"_-_ Crystal spire attacks ignoring damage-resisting effects\n" +
 				"\n" +
 				"_Misc.:_\n" +
 				"_-_ Various rare crash and freeze bugs\n" +
@@ -220,9 +197,12 @@ public class v2_X_Changes {
 		changes.hardlight(CharSprite.POSITIVE);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
-		changes.hardlight(CharSprite.NEGATIVE);
-		changeInfos.add(changes);
+		changes.addButton(new ChangeButton(Icons.TALENT.get(), "Hero Abilities",
+				"No nerfs this time, and just a couple targeted buffs to hero abilities/talents.\n" +
+				"\n" +
+				"_- Rogue's Foresight_ talent trigger chance increased to 60% at +1 and 90% at +2, up from 50% at +1 and 75% at +2.\n" +
+				"\n" +
+				"_- Elemental Strike_ ability base range increased to 4 from 3."));
 
 	}
 

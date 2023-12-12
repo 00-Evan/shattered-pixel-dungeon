@@ -53,7 +53,7 @@ import java.util.Collections;
 
 public class WelcomeScene extends PixelScene {
 
-	private static final int LATEST_UPDATE = 756;
+	private static final int LATEST_UPDATE = 759;
 
 	//used so that the game does not keep showing the window forever if cleaning fails
 	private static boolean triedCleaningTemp = false;
@@ -202,8 +202,8 @@ public class WelcomeScene extends PixelScene {
 
 			}
 
-			message = "Welcome alpha testers!\n\n" +
-					"This initial alpha includes a complete second variant for the caves quest, and almost all side-content planned for v2.3.0. Please let me know what you think, or if you run into any bugs. Happy testing!";
+			message = "Welcome beta testers!\n\n" +
+					"This initial beta includes a complete second variant for the caves quest, and all side-content planned for v2.3.0! Please let me know what you think, or if you run into any bugs.";
 		} else {
 			message = Messages.get(this, "what_msg");
 		}
