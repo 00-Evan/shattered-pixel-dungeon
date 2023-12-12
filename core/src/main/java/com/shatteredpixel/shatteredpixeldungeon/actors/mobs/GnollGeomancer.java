@@ -76,7 +76,9 @@ public class GnollGeomancer extends Mob {
 		HUNTING = new Hunting();
 		state = SLEEPING;
 
-		//can see the hero from a distance
+		//FOV is used to attack hero when they are in open space created by geomancer
+		// but geomancer will lose sight and stop attacking if the hero flees behind walls.
+		// Because of this geomancer can see through high grass and shrouding fod
 		viewDistance = 12;
 
 		properties.add(Property.BOSS);
@@ -85,7 +87,6 @@ public class GnollGeomancer extends Mob {
 	private int abilityCooldown = Random.NormalIntRange(3, 6);
 	private boolean lastAbilityWasRockfall;
 
-	private int throwingRockFromPos = -1;
 	private int[] throwingRocksFromPos = null;
 	private int throwingRockToPos = -1; //only need 1 to pos, it's always the same.
 
