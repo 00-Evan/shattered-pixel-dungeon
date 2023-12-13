@@ -116,6 +116,11 @@ public class GnollSapper extends Mob {
 	}
 
 	@Override
+	public boolean reset() {
+		return true;
+	}
+
+	@Override
 	protected boolean act() {
 		if (throwingRockFromPos != -1){
 			if (Dungeon.level.map[throwingRockFromPos] == Terrain.MINE_BOULDER) {

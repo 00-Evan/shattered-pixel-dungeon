@@ -148,6 +148,11 @@ public class GnollGeomancer extends Mob {
 	}
 
 	@Override
+	public boolean reset() {
+		return true;
+	}
+
+	@Override
 	public boolean heroShouldInteract() {
 		return super.heroShouldInteract() || buff(RockArmor.class) != null;
 	}
