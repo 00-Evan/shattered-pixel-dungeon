@@ -76,7 +76,7 @@ public class Explosive extends Weapon.Enchantment {
 				explosionPos = defender.pos;
 			}
 
-			new Bomb.MagicalBomb().explode(explosionPos);
+			new Bomb.ConjuredBomb().explode(explosionPos);
 
 			durability = 100;
 			Item.updateQuickslot();

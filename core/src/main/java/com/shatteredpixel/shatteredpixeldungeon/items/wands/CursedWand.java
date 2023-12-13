@@ -241,7 +241,7 @@ public class CursedWand {
 
 			//Bomb explosion
 			case 2:
-				new Bomb.MagicalBomb().explode(targetPos);
+				new Bomb.ConjuredBomb().explode(targetPos);
 				tryForWandProc(Actor.findChar(targetPos), origin);
 				return true;
 
