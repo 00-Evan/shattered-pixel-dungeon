@@ -89,6 +89,26 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-1.1", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by BETA:_\n" +
+				"_-_ Wand of Corruption being much stronger than intended\n" +
+				"_-_ Gnoll Sappers and Geomancer being incorrectly cleared by ankh revive\n" +
+				"_-_ Various cases of new text icons not being used properly\n" +
+				"_-_ New remains items being upgradeable\n" +
+				"\n" +
+				"_Existed prior to BETA:_\n" +
+				"_-_ Some bombs and explosion-spawning effects incorrect dealing magic damage\n" +
+				"_-_ Liquid Agility talent not working with thrown potions"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
