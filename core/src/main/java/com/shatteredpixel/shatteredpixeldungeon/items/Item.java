@@ -647,8 +647,9 @@ public class Item implements Bundlable {
 						public void call() {
 							curUser = user;
 							Item i = Item.this.detach(user.belongings.backpack);
+							user.spend(delay);
 							if (i != null) i.onThrow(cell);
-							user.spendAndNext(delay);
+							user.next();
 						}
 					});
 		}
