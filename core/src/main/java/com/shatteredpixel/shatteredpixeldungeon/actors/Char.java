@@ -746,7 +746,7 @@ public abstract class Char extends Actor {
 			b.announced = false;
 			b.set(dmg*buff(Sickle.HarvestBleedTracker.class).bleedFactor, Sickle.HarvestBleedTracker.class);
 			b.attachTo(this);
-			sprite.showStatus(CharSprite.WARNING, Messages.titleCase(b.name()) + " " + (int)b.level());
+			sprite.showStatus(CharSprite.NEGATIVE, Messages.titleCase(b.name()) + " " + (int)b.level());
 			buff(Sickle.HarvestBleedTracker.class).detach();
 			return;
 		}
@@ -825,11 +825,7 @@ public abstract class Char extends Actor {
 			if (src instanceof Corruption)                              icon = FloatingText.CORRUPTION;
 			if (src instanceof AscensionChallenge)                      icon = FloatingText.AMULET;
 
-			sprite.showStatusWithIcon(HP > HT / 2 ?
-							CharSprite.WARNING :
-							CharSprite.NEGATIVE,
-					Integer.toString(dmg + shielded),
-					icon);
+			sprite.showStatusWithIcon(CharSprite.NEGATIVE, Integer.toString(dmg + shielded), icon);
 		}
 
 		if (HP < 0) HP = 0;
@@ -995,7 +991,7 @@ public abstract class Char extends Actor {
 					sprite.showStatus(CharSprite.POSITIVE, Messages.titleCase(buff.name()));
 					break;
 				case NEGATIVE:
-					sprite.showStatus(CharSprite.NEGATIVE, Messages.titleCase(buff.name()));
+					sprite.showStatus(CharSprite.WARNING, Messages.titleCase(buff.name()));
 					break;
 				case NEUTRAL:
 				default:

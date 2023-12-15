@@ -613,11 +613,11 @@ public class Tengu extends Mob {
 			
 			PointF p = DungeonTilemap.raisedTileCenterToWorld(bombPos);
 			if (timer == 3) {
-				FloatingText.show(p.x, p.y, bombPos, "3...", CharSprite.NEUTRAL);
+				FloatingText.show(p.x, p.y, bombPos, "3...", CharSprite.WARNING);
 			} else if (timer == 2){
 				FloatingText.show(p.x, p.y, bombPos, "2...", CharSprite.WARNING);
 			} else if (timer == 1){
-				FloatingText.show(p.x, p.y, bombPos, "1...", CharSprite.NEGATIVE);
+				FloatingText.show(p.x, p.y, bombPos, "1...", CharSprite.WARNING);
 			} else {
 				PathFinder.buildDistanceMap( bombPos, BArray.not( Dungeon.level.solid, null ), 2 );
 				for (int cell = 0; cell < PathFinder.distance.length; cell++) {
