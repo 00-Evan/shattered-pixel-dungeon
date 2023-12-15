@@ -53,14 +53,14 @@ public enum Holiday {
 	}
 
 	public static Holiday getCurrentHoliday(){
-		return getHolidayForDate((GregorianCalendar) GregorianCalendar.getInstance());
+		if (cached == null){
+			cached = getHolidayForDate((GregorianCalendar) GregorianCalendar.getInstance());
+		}
+		return cached;
 	}
 
 	//requires a gregorian calendar
 	public static Holiday getHolidayForDate(GregorianCalendar cal){
-		if (cached != null){
-			return cached;
-		}
 
 		//legacy holiday logic from late 2016 to early 2024
 		//only halloween and winter holidays, and they had longer dates determined by week of month
