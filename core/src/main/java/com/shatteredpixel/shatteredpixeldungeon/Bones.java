@@ -68,12 +68,13 @@ public class Bones {
 		}
 
 		item = pickItem(Dungeon.hero);
+		heroClass = Dungeon.hero.heroClass;
 
 		Bundle bundle = new Bundle();
 		bundle.put( LEVEL, depth );
 		bundle.put( BRANCH, branch );
 		bundle.put( ITEM, item );
-		bundle.put( HERO_CLASS, Dungeon.hero.heroClass );
+		bundle.put( HERO_CLASS, heroClass );
 
 		try {
 			FileUtils.bundleToFile( BONES_FILE, bundle );
