@@ -89,9 +89,26 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("BETA-1.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"To go along with the recent floating text icon additions, I've made a couple of changes to floating text colors for better consistency:\n\n" +
+				"_-_ Floating text for damage and death effects are now always red. Previously damage was orange if health was above 50%\n" +
+				"_-_ Floating text for warnings and negative effects are now always orange, previously some of them were red.\n" +
+				"_-_ Use of other colors is unchanged."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by BETA:_\n" +
+				"_-_ Freeze errors when rocks were deleted right before they were thrown\n" +
+				"_-_ Hero's remains not containing the new remains items in several cases\n" +
+				"_-_ Various minor textual errors\n" +
+				"\n" +
+				"_Existed prior to BETA:_\n" +
+				"_-_ Music fade out effects not working in specific cases\n" +
+				"_-_ Rotberry seed being deleted in rare cases"));
 
 		changes = new ChangeInfo("BETA-1.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
