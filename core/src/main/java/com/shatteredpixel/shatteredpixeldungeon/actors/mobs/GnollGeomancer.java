@@ -108,8 +108,10 @@ public class GnollGeomancer extends Mob {
 		}
 
 		if (throwingRocksFromPos != null){
+			boolean attacked = false;
 			for (int rock : throwingRocksFromPos) {
 				if (rock != -1 && Dungeon.level.map[rock] == Terrain.MINE_BOULDER) {
+					attacked = true;
 					GnollGeomancer.doRockThrowAttack(this, rock, throwingRockToPos);
 				}
 			}
@@ -118,7 +120,7 @@ public class GnollGeomancer extends Mob {
 			throwingRockToPos = -1;
 
 			spend(TICK);
-			return false;
+			return !attacked;
 		} else {
 			return super.act();
 		}

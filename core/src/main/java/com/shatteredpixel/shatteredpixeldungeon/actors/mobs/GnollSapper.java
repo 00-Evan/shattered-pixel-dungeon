@@ -123,7 +123,10 @@ public class GnollSapper extends Mob {
 	@Override
 	protected boolean act() {
 		if (throwingRockFromPos != -1){
-			if (Dungeon.level.map[throwingRockFromPos] == Terrain.MINE_BOULDER) {
+
+			boolean attacked = Dungeon.level.map[throwingRockFromPos] == Terrain.MINE_BOULDER;
+
+			if (attacked) {
 				GnollGeomancer.doRockThrowAttack(this, throwingRockFromPos, throwingRockToPos);
 			}
 
@@ -131,7 +134,7 @@ public class GnollSapper extends Mob {
 			throwingRockToPos = -1;
 
 			spend(TICK);
-			return false;
+			return !attacked;
 		} else {
 			return super.act();
 		}
