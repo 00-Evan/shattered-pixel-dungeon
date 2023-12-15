@@ -143,7 +143,10 @@ public class Swiftthistle extends Plant {
 					t.disarm();
 				}
 
-				Dungeon.level.uproot(cell);
+				Plant p = Dungeon.level.plants.get(cell);
+				if (p != null && !(p instanceof Rotberry)) {
+					Dungeon.level.uproot(cell);
+				}
 			}
 
 			presses = new ArrayList<>();
