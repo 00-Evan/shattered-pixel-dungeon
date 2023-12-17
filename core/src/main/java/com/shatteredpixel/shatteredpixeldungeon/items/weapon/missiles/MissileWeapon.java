@@ -98,6 +98,15 @@ abstract public class MissileWeapon extends Weapon {
 	public int STRReq(int lvl){
 		return STRReq(tier, lvl) - 1; //1 less str than normal for their tier
 	}
+
+	//use the parent item if this has been thrown from a parent
+	public int buffedLvl(){
+		if (parent != null) {
+			return parent.buffedLvl();
+		} else {
+			return super.buffedLvl();
+		}
+	}
 	
 	@Override
 	//FIXME some logic here assumes the items are in the player's inventory. Might need to adjust
