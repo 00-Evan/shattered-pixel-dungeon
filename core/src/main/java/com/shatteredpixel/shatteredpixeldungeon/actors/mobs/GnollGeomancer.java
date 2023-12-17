@@ -510,6 +510,15 @@ public class GnollGeomancer extends Mob {
 		}
 	}
 
+	@Override
+	public void beckon(int cell) {
+		if (state == SLEEPING){
+			//do nothing
+		} else {
+			super.beckon(cell);
+		}
+	}
+
 	private class Sleeping extends Mob.Sleeping {
 
 		@Override
