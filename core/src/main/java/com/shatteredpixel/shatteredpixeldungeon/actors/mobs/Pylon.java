@@ -75,8 +75,22 @@ public class Pylon extends Mob {
 
 	@Override
 	protected boolean act() {
-		alerted = false;
-		super.act();
+		//char logic
+		if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
+			fieldOfView = new boolean[Dungeon.level.length()];
+		}
+		Dungeon.level.updateFieldOfView( this, fieldOfView );
+
+		throwItems();
+
+		sprite.hideAlert();
+		sprite.hideLost();
+
+		//mob logic
+		enemy = chooseEnemy();
+
+		enemySeen = enemy != null && enemy.isAlive() && fieldOfView[enemy.pos] && enemy.invisible <= 0;
+		//end of char/mob logic
 
 		if (alignment == Alignment.NEUTRAL){
 			return true;
@@ -117,6 +131,8 @@ public class Pylon extends Mob {
 
 		targetNeighbor = (targetNeighbor+1)%8;
 
+		spend(TICK);
+
 		return true;
 	}
 
@@ -138,6 +154,7 @@ public class Pylon extends Mob {
 
 	public void activate(){
 		alignment = Alignment.ENEMY;
+		state = HUNTING; //so allies know to attack it
 		((PylonSprite) sprite).activate();
 	}
 
