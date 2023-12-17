@@ -219,7 +219,7 @@ public class BossHealthBar extends Component {
 	}
 
 	public static boolean isBleeding(){
-		return bleeding;
+		return isAssigned() && bleeding;
 	}
 
 }
