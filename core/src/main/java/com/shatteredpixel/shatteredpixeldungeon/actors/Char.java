@@ -746,7 +746,7 @@ public abstract class Char extends Actor {
 			b.announced = false;
 			b.set(dmg*buff(Sickle.HarvestBleedTracker.class).bleedFactor, Sickle.HarvestBleedTracker.class);
 			b.attachTo(this);
-			sprite.showStatus(CharSprite.NEGATIVE, Messages.titleCase(b.name()) + " " + (int)b.level());
+			sprite.showStatus(CharSprite.WARNING, Messages.titleCase(b.name()) + " " + (int)b.level());
 			buff(Sickle.HarvestBleedTracker.class).detach();
 			return;
 		}
