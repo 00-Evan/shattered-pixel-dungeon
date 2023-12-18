@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.CorrosionParti
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PoisonParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.RainbowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
@@ -66,12 +67,12 @@ public class MagicMissile extends Emitter {
 	public static final int RAINBOW         = 8;
 	public static final int EARTH           = 9;
 	public static final int WARD            = 10;
-	
 	public static final int SHAMAN_RED      = 11;
 	public static final int SHAMAN_BLUE     = 12;
 	public static final int SHAMAN_PURPLE   = 13;
 	public static final int TOXIC_VENT      = 14;
 	public static final int ELMO            = 15;
+	public static final int POISON          = 16;
 
 	public static final int MAGIC_MISS_CONE = 100;
 	public static final int FROST_CONE      = 101;
@@ -166,7 +167,6 @@ public class MagicMissile extends Emitter {
 				size( 4 );
 				pour( WardParticle.FACTORY, 0.01f );
 				break;
-				
 			case SHAMAN_RED:
 				size( 2 );
 				pour( ShamanParticle.RED, 0.01f );
@@ -186,6 +186,10 @@ public class MagicMissile extends Emitter {
 			case ELMO:
 				size( 5 );
 				pour( ElmoParticle.FACTORY, 0.01f );
+				break;
+			case POISON:
+				size( 3 );
+				pour( PoisonParticle.MISSILE, 0.01f );
 				break;
 
 			case MAGIC_MISS_CONE:

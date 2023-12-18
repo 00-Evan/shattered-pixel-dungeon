@@ -22,9 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CrystalGuardian;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.FungalSentry;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollGuard;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollSapper;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RotLasher;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -199,9 +199,13 @@ public class MineLargeRoom extends CaveRoom {
 			}
 
 			Point p = center();
-			RotLasher m = new RotLasher(); //placeholder enemy
+			FungalSentry m = new FungalSentry();
 			m.pos = level.pointToCell(p);
 			level.mobs.add(m);
+			Painter.set(level, p, Terrain.GRASS);
+
+			//no high grass directly above the sentry
+			p.y--;
 			Painter.set(level, p, Terrain.GRASS);
 
 		} else {

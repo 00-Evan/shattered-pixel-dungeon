@@ -312,15 +312,16 @@ public class Assets {
 		public static final String PYLON    = "sprites/pylon.png";
 		public static final String DM200    = "sprites/dm200.png";
 		public static final String LOTUS    = "sprites/lotus.png";
-		public static final String NINJA_LOG= "sprites/ninja_log.png";
-		public static final String SPIRIT_HAWK= "sprites/spirit_hawk.png";
-		public static final String RED_SENTRY= "sprites/red_sentry.png";
-		public static final String CRYSTAL_WISP= "sprites/crystal_wisp.png";
-		public static final String CRYSTAL_GUARDIAN= "sprites/crystal_guardian.png";
-		public static final String CRYSTAL_SPIRE= "sprites/crystal_spire.png";
-		public static final String GNOLL_GUARD= "sprites/gnoll_guard.png";
-		public static final String GNOLL_SAPPER= "sprites/gnoll_sapper.png";
-		public static final String GNOLL_GEOMANCER = "sprites/gnoll_geomancer.png";
-		public static final String FUNGAL_SPINNER = "sprites/fungal_spinner.png";
+		public static final String NINJA_LOG        = "sprites/ninja_log.png";
+		public static final String SPIRIT_HAWK      = "sprites/spirit_hawk.png";
+		public static final String RED_SENTRY       = "sprites/red_sentry.png";
+		public static final String CRYSTAL_WISP     = "sprites/crystal_wisp.png";
+		public static final String CRYSTAL_GUARDIAN = "sprites/crystal_guardian.png";
+		public static final String CRYSTAL_SPIRE    = "sprites/crystal_spire.png";
+		public static final String GNOLL_GUARD      = "sprites/gnoll_guard.png";
+		public static final String GNOLL_SAPPER     = "sprites/gnoll_sapper.png";
+		public static final String GNOLL_GEOMANCER  = "sprites/gnoll_geomancer.png";
+		public static final String FUNGAL_SPINNER   = "sprites/fungal_spinner.png";
+		public static final String FUNGAL_SENTRY    = "sprites/fungal_sentry.png";
 	}
 }
