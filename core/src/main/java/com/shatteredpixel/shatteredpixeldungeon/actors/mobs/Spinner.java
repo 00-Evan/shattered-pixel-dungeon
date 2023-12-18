@@ -191,9 +191,9 @@ public class Spinner extends Mob {
 			int leftPos = enemy.pos + PathFinder.CIRCLE8[left(i)];
 			int rightPos = enemy.pos + PathFinder.CIRCLE8[right(i)];
 			
-			if (Dungeon.level.passable[leftPos]) GameScene.add(Blob.seed(leftPos, 20, Web.class));
-			if (Dungeon.level.passable[webPos])  GameScene.add(Blob.seed(webPos, 20, Web.class));
-			if (Dungeon.level.passable[rightPos])GameScene.add(Blob.seed(rightPos, 20, Web.class));
+			if (Dungeon.level.passable[leftPos]) applyWebToCell(leftPos);
+			if (Dungeon.level.passable[webPos])  applyWebToCell(webPos);
+			if (Dungeon.level.passable[rightPos])applyWebToCell(rightPos);
 			
 			webCoolDown = 10;
 
@@ -202,6 +202,10 @@ public class Spinner extends Mob {
 			}
 		}
 		next();
+	}
+
+	protected void applyWebToCell(int cell){
+		GameScene.add(Blob.seed(cell, 20, Web.class));
 	}
 	
 	private int left(int direction){
