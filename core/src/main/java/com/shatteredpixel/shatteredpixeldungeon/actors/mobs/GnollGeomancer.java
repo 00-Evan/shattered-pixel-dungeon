@@ -155,6 +155,11 @@ public class GnollGeomancer extends Mob {
 	}
 
 	@Override
+	public float spawningWeight() {
+		return 0;
+	}
+
+	@Override
 	public boolean heroShouldInteract() {
 		return super.heroShouldInteract() || buff(RockArmor.class) != null;
 	}

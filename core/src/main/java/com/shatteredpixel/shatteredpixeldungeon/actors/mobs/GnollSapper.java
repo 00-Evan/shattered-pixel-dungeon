@@ -121,6 +121,11 @@ public class GnollSapper extends Mob {
 	}
 
 	@Override
+	public float spawningWeight() {
+		return 0;
+	}
+
+	@Override
 	protected boolean act() {
 		if (throwingRockFromPos != -1){
 
