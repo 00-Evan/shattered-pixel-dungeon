@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CrystalSpire;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.FungalCore;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollGeomancer;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -134,6 +135,10 @@ public class MineGiantRoom extends CaveRoom {
 			Painter.fillEllipse(level, this, 4, Terrain.HIGH_GRASS);
 			Painter.fillEllipse(level, this, 5, Terrain.GRASS);
 
+			Point p = center();
+			FungalCore m = new FungalCore();
+			m.pos = level.pointToCell(p);
+			level.mobs.add(m);
 
 		} else {
 			Painter.fillEllipse(level, this, 3, Terrain.EMPTY);

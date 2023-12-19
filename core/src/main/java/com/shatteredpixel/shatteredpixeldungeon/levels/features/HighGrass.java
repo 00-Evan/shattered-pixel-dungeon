@@ -117,7 +117,7 @@ public class HighGrass {
 			if (Dungeon.level instanceof MiningLevel
 					&& Blacksmith.Quest.Type() == Blacksmith.Quest.FUNGI
 					&& Random.Int(3) != 0){
-				naturalismLevel = 0;
+				naturalismLevel = -1;
 			}
 			
 			if (naturalismLevel >= 0) {

@@ -52,6 +52,11 @@ public class FungalSentry extends Mob {
 	}
 
 	@Override
+	public float spawningWeight() {
+		return 0;
+	}
+
+	@Override
 	protected boolean getCloser(int target) {
 		return false;
 	}

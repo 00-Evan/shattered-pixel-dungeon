@@ -23,20 +23,18 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonWallsTilemap;
 import com.watabou.noosa.TextureFilm;
-import com.watabou.utils.Callback;
 
-public class FungalSentrySprite extends MobSprite {
+public class FungalCoreSprite extends MobSprite {
 
-	private int cellToAttack;
-
-	public FungalSentrySprite(){
+	public FungalCoreSprite(){
 		super();
 
-		texture( Assets.Sprites.FUNGAL_SENTRY );
+		texture( Assets.Sprites.FUNGAL_CORE );
 
-		TextureFilm frames = new TextureFilm( texture, 18, 18 );
+		TextureFilm frames = new TextureFilm( texture, 27, 27 );
 
 		idle = new Animation( 0, true );
 		idle.frames( frames, 0);
@@ -56,33 +54,33 @@ public class FungalSentrySprite extends MobSprite {
 
 	}
 
+	boolean wasVisible = false;
+
 	@Override
-	public void attack( int cell ) {
-		if (!Dungeon.level.adjacent( cell, ch.pos )) {
-
-			cellToAttack = cell;
-			zap(cell);
-
-		} else {
-
-			super.attack( cell );
-
+	public void update() {
+		super.update();
+		if (curAnim != die && ch != null && visible != wasVisible){
+			if (visible){
+				DungeonWallsTilemap.skipCells.add(ch.pos - 2* Dungeon.level.width());
+				DungeonWallsTilemap.skipCells.add(ch.pos - Dungeon.level.width());
+			} else {
+				DungeonWallsTilemap.skipCells.remove(ch.pos - 2*Dungeon.level.width());
+				DungeonWallsTilemap.skipCells.remove(ch.pos - Dungeon.level.width());
+			}
+			GameScene.updateMap(ch.pos-2*Dungeon.level.width());
+			GameScene.updateMap(ch.pos-Dungeon.level.width());
+			wasVisible = visible;
 		}
 	}
 
 	@Override
-	public void onComplete( Animation anim ) {
-		if (anim == zap) {
-			idle();
-
-			MagicMissile.boltFromChar(parent, MagicMissile.POISON, this, cellToAttack, new Callback() {
-						@Override
-						public void call() {
-							ch.onAttackComplete();
-						}
-					} );
-		} else {
-			super.onComplete( anim );
+	public void die() {
+		super.die();
+		if (ch != null && visible){
+			DungeonWallsTilemap.skipCells.remove(ch.pos - 2*Dungeon.level.width());
+			DungeonWallsTilemap.skipCells.remove(ch.pos - Dungeon.level.width());
+			GameScene.updateMap(ch.pos-2*Dungeon.level.width());
+			GameScene.updateMap(ch.pos-Dungeon.level.width());
 		}
 	}
 

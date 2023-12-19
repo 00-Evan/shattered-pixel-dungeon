@@ -323,5 +323,6 @@ public class Assets {
 		public static final String GNOLL_GEOMANCER  = "sprites/gnoll_geomancer.png";
 		public static final String FUNGAL_SPINNER   = "sprites/fungal_spinner.png";
 		public static final String FUNGAL_SENTRY    = "sprites/fungal_sentry.png";
+		public static final String FUNGAL_CORE      = "sprites/fungal_core.png";
 	}
 }
