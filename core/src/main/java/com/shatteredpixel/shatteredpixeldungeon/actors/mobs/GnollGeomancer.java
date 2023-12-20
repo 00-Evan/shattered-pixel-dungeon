@@ -793,7 +793,13 @@ public class GnollGeomancer extends Mob {
 
 		@Override
 		public void affectChar(Char ch) {
-			Buff.prolong(ch, Paralysis.class, ch instanceof GnollGuard ? 10 : 3);
+			ch.damage(Random.NormalIntRange(8, 12), this);
+			if (ch.isAlive()) {
+				Buff.prolong(ch, Paralysis.class, ch instanceof GnollGuard ? 10 : 3);
+			} else if (ch == Dungeon.hero){
+				Dungeon.fail( target );
+				GLog.n( Messages.get( GnollGeomancer.class, "rockfall_kill") );
+			}
 		}
 
 		@Override

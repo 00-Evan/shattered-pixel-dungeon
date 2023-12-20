@@ -80,9 +80,8 @@ public class GnollRockfallTrap extends RockfallTrap {
 			Char ch = Actor.findChar( cell );
 
 			if (ch != null && ch.isAlive() && !(ch instanceof GnollGeomancer)){
-				//5-10 less damage than normal rockfall traps
-				int damage = Random.NormalIntRange(scalingDepth(), scalingDepth()*2);
-				damage -= ch.drRoll();
+				//deals notably less damage than a regular rockfall trap, but ignores armor
+				int damage = Random.NormalIntRange(8, 12);
 				ch.damage( Math.max(damage, 0) , this);
 
 				//guards take full paralysis, otherwise just a little
