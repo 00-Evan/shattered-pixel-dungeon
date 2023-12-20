@@ -89,7 +89,45 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("BETA-1.2", false, null);
+		changes = new ChangeInfo("BETA-1.3", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.SHPX), "v2.3.0 To-Do",
+				"Hey folks, I've made some progress on the third quest variant, and am hopeful that I'll be able to add it in v2.3.0, but with the holidays coming up you'll likely not hear much from me until January.\n\n" +
+				"Unless any major bugs pop up, this is likely to be the last beta release for a little bit, so I've tried to put in some tweaks here in response to feedback on the new quest.\n\n" +
+				"As a reminder, here's what I'd like to do before releasing v2.3.0:\n" +
+				"_-_ Fully implement a 3rd caves quest variant to go along with the gnoll and crystal ones\n" +
+				"_-_ Make various visual and mechanic improvements to the gnoll quest in response to feedback\n\n" +
+				"I've also re-enabled the crystal quest for now, but the gnoll quest is 2x as likely to appear."));
+
+		changes.addButton(new ChangeButton(new Image(new GnollGuardSprite()), "Gnoll Caves Tweaks",
+				"Thanks for all your feedback about the new gnoll quest! At the moment it seems to be shaping up to be notably easier than the crystal quest, so I'm making a few changes to increase the difficulty a bit:\n\n" +
+				"_-_ Gnoll guard damage up by 20% when adjacent, up 40% when at a distance\n" +
+				"_-_ Added a game log warning when being attacked by gnoll guards at a distance\n\n" +
+				"_-_ Boulder toss damage up by 33%\n" +
+				"_-_ Rockfall attacks now deal damage in addition to stunning\n" +
+				"_-_ Gnoll rockfall traps now deal much less damage, but ignore armor\n\n" +
+				"_-_ Gnoll Geomancer HP up by 25%\n" +
+				"_-_ Gnoll Geomancer now uses abilities ~11% faster"));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Improved visual clarity of sparks in the DM-300 fight\n" +
+				"_-_ Removed unnecessary game log entries when DM-300 uses abilities"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by BETA:_\n" +
+				"_-_ Gnoll geomancer being woken by swarm intelligence challenge\n" +
+				"_-_ Fewer gnoll guards spawning over time than intended\n" +
+				"_-_ Allies no longer attacking active DM pylons\n" +
+				"_-_ Various minor visual and textual issues\n" +
+				"\n" +
+				"_Existed prior to BETA:_\n" +
+				"_-_ Rare cases where DM-300 finale music would play before the fight\n" +
+				"_-_ Degrade debuff not applying to thrown weapons"));
+
+		changes = new ChangeInfo("BETA-1.1 & 1.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
@@ -108,35 +146,13 @@ public class v2_X_Changes {
 				"\n" +
 				"_Existed prior to BETA:_\n" +
 				"_-_ Music fade out effects not working in specific cases\n" +
-				"_-_ Rotberry seed being deleted in rare cases"));
-
-		changes = new ChangeInfo("BETA-1.1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by BETA:_\n" +
-				"_-_ Wand of Corruption being much stronger than intended\n" +
-				"_-_ Gnoll Sappers and Geomancer being incorrectly cleared by ankh revive\n" +
-				"_-_ Various cases of new text icons not being used properly\n" +
-				"_-_ New remains items being upgradeable\n" +
-				"\n" +
-				"_Existed prior to BETA:_\n" +
+				"_-_ Rotberry seed being deleted in rare cases\n" +
 				"_-_ Some bombs and explosion-spawning effects incorrect dealing magic damage\n" +
 				"_-_ Liquid Agility talent not working with thrown potions"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.SHPX), "v2.3.0 To-Do",
-				"The following still needs to be done before v2.3.0 releases:\n" +
-				"\n" +
-				"_-_ The 3rd caves quest variant has to be implemented, or delayed until a future update\n" +
-				"_-_ Various sprites in the gnoll quest area need to be improved (most notably the boulders)\n" +
-				"\n" +
-				"Note that currently the crystal caves quest variant has been disabled, to allow for easier testing of the gnoll variant."));
 
 		changes.addButton(new ChangeButton(new Image(new GnollGuardSprite()), "Gnoll Caves Quest",
 				"_A second variant has been added to the caves quest!_\n" +
