@@ -108,6 +108,7 @@ public class GnollGeomancerSprite extends MobSprite {
 		super.die();
 		if (earthArmor != null){
 			earthArmor.on = false;
+			earthArmor = null;
 		}
 	}
 
@@ -115,7 +116,8 @@ public class GnollGeomancerSprite extends MobSprite {
 	public void kill() {
 		super.kill();
 		if (earthArmor != null){
-			earthArmor.killAndErase();
+			earthArmor.on = false;
+			earthArmor = null;
 		}
 	}
 
