@@ -64,7 +64,7 @@ import java.util.ArrayList;
 public class GnollGeomancer extends Mob {
 
 	{
-		HP = HT = 120;
+		HP = HT = 150;
 		spriteClass = GnollGeomancerSprite.class;
 
 		EXP = 20;
@@ -84,7 +84,7 @@ public class GnollGeomancer extends Mob {
 		properties.add(Property.BOSS);
 	}
 
-	private int abilityCooldown = Random.NormalIntRange(3, 6);
+	private int abilityCooldown = Random.NormalIntRange(3, 5);
 	private boolean lastAbilityWasRockfall;
 
 	private int[] throwingRocksFromPos = null;
@@ -690,7 +690,7 @@ public class GnollGeomancer extends Mob {
 						}
 
 						if (ch != null && !(ch instanceof GnollGeomancer)){
-							ch.damage(Random.NormalIntRange(5, 10), new GnollGeomancer.Boulder());
+							ch.damage(Random.NormalIntRange(8, 12), new GnollGeomancer.Boulder());
 
 							if (ch.isAlive()){
 								Buff.prolong( ch, Paralysis.class, ch instanceof GnollGuard ? 10 : 3 );
