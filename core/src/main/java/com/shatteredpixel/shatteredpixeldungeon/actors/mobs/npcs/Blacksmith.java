@@ -393,10 +393,13 @@ public class Blacksmith extends NPC {
 				rooms.add(new BlacksmithRoom());
 				spawned = true;
 
-				//currently hard set to gnoll quest for testing
-				//we still roll for quest type however, to ensure seed consistency
-				type = 2+Random.Int(1);
+				type = Random.IntRange(1, 3);
 				alternative = false;
+
+				//fungi quest is not finished atm, so gnoll is 2x as common instead for now
+				if (type == FUNGI){
+					type = GNOLL;
+				}
 				
 				given = false;
 				generateRewards( true );
