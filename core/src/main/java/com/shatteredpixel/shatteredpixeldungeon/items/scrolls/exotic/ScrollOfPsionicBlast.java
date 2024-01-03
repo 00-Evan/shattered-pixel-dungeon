@@ -35,6 +35,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
+import java.util.ArrayList;
+
 public class ScrollOfPsionicBlast extends ExoticScroll {
 	
 	{
@@ -49,19 +51,26 @@ public class ScrollOfPsionicBlast extends ExoticScroll {
 		
 		Sample.INSTANCE.play( Assets.Sounds.BLAST );
 		GLog.i(Messages.get(ScrollOfRetribution.class, "blast"));
-		
-		int targets = 0;
+
+		ArrayList<Mob> targets = new ArrayList<>();
+
+		//calculate targets first, in case damaging/blinding a target affects hero vision
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 			if (Dungeon.level.heroFOV[mob.pos]) {
-				targets ++;
-				mob.damage(Math.round(mob.HT/2f + mob.HP/2f), this);
-				if (mob.isAlive()) {
-					Buff.prolong(mob, Blindness.class, Blindness.DURATION);
-				}
+				targets.add(mob);
+			}
+		}
+
+		for (Mob mob : targets){
+			//always kills non-resistant enemies
+			//resistant enemies take 50% current HP at full health, scaling to 75% at 1/2 HP, and 100% at 1/3 hp
+			mob.damage(Math.round(mob.HT/2f + mob.HP/2f), this);
+			if (mob.isAlive()) {
+				Buff.prolong(mob, Blindness.class, Blindness.DURATION);
 			}
 		}
 		
-		curUser.damage(Math.max(0, Math.round(curUser.HT*(0.5f * (float)Math.pow(0.9, targets)))), this);
+		curUser.damage(Math.max(0, Math.round(curUser.HT*(0.5f * (float)Math.pow(0.9, targets.size())))), this);
 		if (curUser.isAlive()) {
 			Buff.prolong(curUser, Blindness.class, Blindness.DURATION);
 			Buff.prolong(curUser, Weakness.class, Weakness.DURATION*5f);
