@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -103,8 +104,9 @@ public class Dagger extends MeleeWeapon {
 			return;
 		}
 
-		if (Actor.findChar(target) != null || !Dungeon.level.heroFOV[target]) {
+		if (Actor.findChar(target) != null || !Dungeon.level.heroFOV[target] || hero.rooted) {
 			GLog.w(Messages.get(wep, "ability_bad_position"));
+			if (Dungeon.hero.rooted) PixelScene.shake( 1, 1f );
 			return;
 		}
 
