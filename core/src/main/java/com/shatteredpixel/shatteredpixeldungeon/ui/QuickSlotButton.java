@@ -258,8 +258,10 @@ public class QuickSlotButton extends Button {
 		}
 	};
 
+	public static int lastVisible = instance.length;
+
 	public static void set(Item item){
-		for (int i = 0; i < instance.length; i++) {
+		for (int i = 0; i < lastVisible; i++) {
 			if (select(i) == null || select(i) == item) {
 				set(i, item);
 				return;

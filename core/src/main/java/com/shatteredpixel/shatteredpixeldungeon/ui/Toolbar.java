@@ -498,10 +498,12 @@ public class Toolbar extends Component {
 			startingSlot = swappedQuickslots ? 3 : 0;
 			btnSwap.visible = true;
 			btnSwap.active = lastEnabled;
+			QuickSlotButton.lastVisible = 6;
 		} else {
 			startingSlot = 0;
 			btnSwap.visible = btnSwap.active = false;
 			btnSwap.setPos(0, PixelScene.uiCamera.height);
+			QuickSlotButton.lastVisible = quickslotsToShow;
 		}
 		int endingSlot = startingSlot+quickslotsToShow-1;
 
