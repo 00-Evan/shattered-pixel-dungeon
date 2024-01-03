@@ -1268,7 +1268,7 @@ public abstract class Mob extends Char {
 			
 			ArrayList<Integer> candidatePositions = new ArrayList<>();
 			for (int i : PathFinder.NEIGHBOURS8) {
-				if (!Dungeon.level.solid[i+pos] && level.findMob(i+pos) == null){
+				if (!Dungeon.level.solid[i+pos] && !Dungeon.level.avoid[i+pos] && level.findMob(i+pos) == null){
 					candidatePositions.add(i+pos);
 				}
 			}
