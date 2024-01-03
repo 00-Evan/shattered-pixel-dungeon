@@ -257,7 +257,7 @@ public class WndBlacksmith extends Window {
 				protected void onClick() {
 
 					Item first, second;
-					if (btnItem1.item().trueLevel() > btnItem2.item().trueLevel()) {
+					if (btnItem1.item().trueLevel() >= btnItem2.item().trueLevel()) {
 						first = btnItem1.item();
 						second = btnItem2.item();
 					} else {
