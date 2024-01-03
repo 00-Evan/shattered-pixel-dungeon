@@ -190,7 +190,13 @@ public class Blacksmith extends NPC {
 				}
 			} else {
 
-				tell(Messages.get(this, "reminder"));
+				String msg = Messages.get(this, "reminder") + "\n\n";
+				switch (Quest.type){
+					case Quest.CRYSTAL: msg += Messages.get(Blacksmith.this, "reminder_crystal"); break;
+					case Quest.GNOLL:   msg += Messages.get(Blacksmith.this, "reminder_gnoll"); break;
+					case Quest.FUNGI:   msg += Messages.get(Blacksmith.this, "reminder_fungi"); break;
+				}
+				tell(msg);
 
 			}
 		} else if (Quest.type == Quest.OLD && Quest.reforges == 0) {
@@ -400,6 +406,7 @@ public class Blacksmith extends NPC {
 				if (type == FUNGI){
 					type = GNOLL;
 				}
+				//type = FUNGI;
 				
 				given = false;
 				generateRewards( true );
