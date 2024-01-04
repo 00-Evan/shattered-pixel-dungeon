@@ -40,7 +40,7 @@ public class DM201 extends DM200 {
 
 		properties.add(Property.IMMOVABLE);
 
-		HUNTING = new Mob.Hunting();
+		HUNTING = new Hunting();
 	}
 
 	@Override
@@ -49,30 +49,6 @@ public class DM201 extends DM200 {
 	}
 
 	private boolean threatened = false;
-
-	@Override
-	protected boolean act() {
-
-		//in case DM-201 hasn't been able to act yet
-		if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
-			fieldOfView = new boolean[Dungeon.level.length()];
-			Dungeon.level.updateFieldOfView( this, fieldOfView );
-		}
-
-		if (paralysed <= 0 && state == HUNTING && enemy != null && enemySeen && threatened
-				&& canVent(enemy.pos) && !Dungeon.level.adjacent(pos, enemy.pos)
-				&& fieldOfView[enemy.pos] && enemy.invisible <= 0){
-			enemySeen = enemy.isAlive() && fieldOfView[enemy.pos] && enemy.invisible <= 0;
-			if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
-				sprite.zap( enemy.pos );
-				return false;
-			} else {
-				zap();
-				return true;
-			}
-		}
-		return super.act();
-	}
 
 	@Override
 	public void damage(int dmg, Object src) {
@@ -102,13 +78,18 @@ public class DM201 extends DM200 {
 	}
 
 	@Override
+	protected boolean canVent(int target) {
+		return false;
+	}
+
+	@Override
 	protected boolean getCloser(int target) {
-		return true;
+		return false;
 	}
 
 	@Override
 	protected boolean getFurther(int target) {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -122,6 +103,27 @@ public class DM201 extends DM200 {
 			ofs = PathFinder.NEIGHBOURS8[Random.Int(8)];
 		} while (Dungeon.level.solid[pos + ofs] && !Dungeon.level.passable[pos + ofs]);
 		Dungeon.level.drop( new MetalShard(), pos + ofs ).sprite.drop( pos );
+	}
+
+	private class Hunting extends Mob.Hunting {
+
+		@Override
+		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
+
+			if (threatened && enemyInFOV){
+				if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
+					sprite.zap( enemy.pos );
+					return false;
+				} else {
+					zap();
+					return true;
+				}
+			} else {
+				return super.act( enemyInFOV, justAlerted );
+			}
+
+		}
+
 	}
 
 }
