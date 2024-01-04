@@ -164,8 +164,10 @@ public class GnollSapper extends Mob {
 					if (partner.state == partner.SLEEPING){
 						partner.notice();
 					}
-					partner.target = enemy.pos;
-					partner.aggro(enemy);
+					if (enemy != partner) {
+						partner.target = enemy.pos;
+						partner.aggro(enemy);
+					}
 				}
 
 				if (abilityCooldown-- <= 0){
