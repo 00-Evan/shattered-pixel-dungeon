@@ -82,6 +82,7 @@ public class GnollGeomancer extends Mob {
 		viewDistance = 12;
 
 		properties.add(Property.BOSS);
+		properties.add(Property.IMMOVABLE); //moves itself via ability, otherwise is static
 	}
 
 	private int abilityCooldown = Random.NormalIntRange(3, 5);
