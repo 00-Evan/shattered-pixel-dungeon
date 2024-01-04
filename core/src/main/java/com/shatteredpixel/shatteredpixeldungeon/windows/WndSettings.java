@@ -841,7 +841,7 @@ public class WndSettings extends WndTabbed {
 						@Override
 						protected void onClick() {
 							super.onClick();
-							SPDSettings.updates(checked());
+							SPDSettings.betas(checked());
 							Updates.clearUpdate();
 						}
 					};
