@@ -314,6 +314,11 @@ abstract public class MissileWeapon extends Weapon {
 	}
 	
 	public float durabilityPerUse(){
+		//classes that override durabilityPerUse can turn rounding off, to do their own rounding after more logic
+		return durabilityPerUse(true);
+	}
+
+	protected final float durabilityPerUse( boolean rounded){
 		float usages = baseUses * (float)(Math.pow(3, level()));
 
 		//+50%/75% durability
@@ -323,16 +328,20 @@ abstract public class MissileWeapon extends Weapon {
 		if (holster) {
 			usages *= MagicalHolster.HOLSTER_DURABILITY_FACTOR;
 		}
-		
+
 		usages *= RingOfSharpshooting.durabilityMultiplier( Dungeon.hero );
-		
+
 		//at 100 uses, items just last forever.
 		if (usages >= 100f) return 0;
 
-		usages = Math.round(usages);
-		
-		//add a tiny amount to account for rounding error for calculations like 1/3
-		return (MAX_DURABILITY/usages) + 0.001f;
+		if (rounded){
+			usages = Math.round(usages);
+			//add a tiny amount to account for rounding error for calculations like 1/3
+			return (MAX_DURABILITY/usages) + 0.001f;
+		} else {
+			//rounding can be disabled for classes that override durability per use
+			return MAX_DURABILITY/usages;
+		}
 	}
 	
 	protected void decrementDurability(){
