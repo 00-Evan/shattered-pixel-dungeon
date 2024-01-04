@@ -352,6 +352,9 @@ public class CloakOfShadows extends Artifact {
 		}
 
 		public void dispel(){
+			if (turnsToCost <= 0 && charge > 0){
+				charge--;
+			}
 			updateQuickslot();
 			detach();
 		}
