@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
@@ -530,6 +529,7 @@ public class DriedRose extends Artifact {
 			state = HUNTING;
 			
 			properties.add(Property.UNDEAD);
+			properties.add(Property.INORGANIC);
 		}
 		
 		private DriedRose rose = null;
@@ -851,7 +851,6 @@ public class DriedRose extends Artifact {
 		}
 		
 		{
-			immunities.add( ToxicGas.class );
 			immunities.add( CorrosiveGas.class );
 			immunities.add( Burning.class );
 			immunities.add( ScrollOfRetribution.class );
