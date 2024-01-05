@@ -92,7 +92,6 @@ public class Succubus extends Mob {
 				sprite.showStatusWithIcon(CharSprite.POSITIVE, "5", FloatingText.HEALING);
 			}
 			if (Dungeon.level.heroFOV[pos]) {
-				sprite.emitter().burst( Speck.factory( Speck.HEALING ), 2 );
 				Sample.INSTANCE.play( Assets.Sounds.CHARMS );
 			}
 		} else if (Random.Int( 3 ) == 0) {

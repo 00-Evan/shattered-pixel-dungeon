@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
@@ -384,8 +385,8 @@ public abstract class YogFist extends Mob {
 			GameScene.add(Blob.seed(pos, 0, ToxicGas.class));
 
 			if (Dungeon.level.water[pos] && HP < HT) {
-				sprite.emitter().burst( Speck.factory(Speck.HEALING), 3 );
-				HP += HT/50;
+				sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(HT/50), FloatingText.HEALING);
+				HP = Math.max(HT, HP + HT/50);
 			}
 
 			return super.act();
