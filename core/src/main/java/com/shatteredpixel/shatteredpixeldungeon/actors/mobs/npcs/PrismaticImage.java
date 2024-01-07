@@ -210,6 +210,7 @@ public class PrismaticImage extends NPC {
 		if (hero != null && hero.belongings.armor() != null && hero.belongings.armor().hasGlyph(AntiMagic.class, this)
 				&& AntiMagic.RESISTS.contains(src.getClass())){
 			dmg -= AntiMagic.drRoll(hero, hero.belongings.armor().buffedLvl());
+			dmg = Math.max(dmg, 0);
 		}
 		
 		super.damage(dmg, src);
