@@ -111,6 +111,10 @@ public class RipperDemon extends Mob {
 
 	@Override
 	protected boolean act() {
+		if (state == WANDERING){
+			leapPos = -1;
+		}
+
 		AiState lastState = state;
 		boolean result = super.act();
 		if (paralysed <= 0) leapCooldown --;
