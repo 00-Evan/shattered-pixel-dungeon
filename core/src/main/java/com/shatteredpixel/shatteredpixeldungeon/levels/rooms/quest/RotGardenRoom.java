@@ -47,13 +47,7 @@ public class RotGardenRoom extends SpecialRoom {
 	@Override
 	public int minHeight() { return 10; }
 
-	@Override
-	public boolean canConnect(Point p) {
-		//refuses connections next to corners, this helps ensure better terrain layouts
-		return super.canConnect(p) && ((p.x > left+1 && p.x < right-1) || (p.y > top+1 && p.y < bottom-1));
-	}
-
-	public void paint(Level level ) {
+	public void paint( Level level ) {
 
 		Door entrance = entrance();
 		entrance.set(Door.Type.LOCKED);
@@ -62,50 +56,55 @@ public class RotGardenRoom extends SpecialRoom {
 		//define basic terrain, mostly high grass with some chaotically placed wall tiles
 		Painter.fill(level, this, Terrain.WALL);
 		Painter.set(level, entrance, Terrain.LOCKED_DOOR);
-		Painter.fill(level, this, 1, Terrain.HIGH_GRASS);
-		for (int i = 0; i < 12; i ++){
-			Painter.set(level, random(1), Terrain.WALL);
-		}
-		for (int i = 0; i < 8; i ++){
-			Painter.set(level, random(2), Terrain.WALL);
-		}
-		for (int i = 0; i < 4; i ++){
-			Painter.set(level, random(3), Terrain.WALL);
-		}
-		Painter.drawInside(level, this, entrance, 3, Terrain.HIGH_GRASS);
 
-		boolean[] passable = new boolean[level.length()];
-		for (int i = 0; i < passable.length; i++){
-			passable[i] = level.map[i] != Terrain.WALL;
-		}
-
-		//place the heart in a slightly random location sufficiently far from the entrance
-		int entryPos = level.pointToCell(entrance());
-		PathFinder.buildDistanceMap(entryPos, passable);
 		ArrayList<Integer> candidates = new ArrayList<>();
-		for (Point p : getPoints()){
-			int i = level.pointToCell(p);
-			if (PathFinder.distance[i] != Integer.MAX_VALUE){
-				if (PathFinder.distance[i] >= 3){
-					candidates.add(i);
-				}
-			} else {
-				//fill in grass tiles that are enclosed
-				if (level.map[i] == Terrain.HIGH_GRASS){
-					level.map[i] = Terrain.WALL;
+		boolean[] passable = new boolean[level.length()];
+		int entryPos = level.pointToCell(entrance());
+		do {
+			Painter.fill(level, this, 1, Terrain.HIGH_GRASS);
+			for (int i = 0; i < 12; i++) {
+				Painter.set(level, random(1), Terrain.WALL);
+			}
+			for (int i = 0; i < 8; i++) {
+				Painter.set(level, random(2), Terrain.WALL);
+			}
+			for (int i = 0; i < 4; i++) {
+				Painter.set(level, random(3), Terrain.WALL);
+			}
+			Painter.drawInside(level, this, entrance, 3, Terrain.HIGH_GRASS);
+
+			for (int i = 0; i < passable.length; i++) {
+				passable[i] = level.map[i] != Terrain.WALL;
+			}
+
+			//place the heart in a slightly random location sufficiently far from the entrance
+			PathFinder.buildDistanceMap(entryPos, passable);
+			candidates.clear();
+			for (Point p : getPoints()) {
+				int i = level.pointToCell(p);
+				if (PathFinder.distance[i] != Integer.MAX_VALUE) {
+					if (PathFinder.distance[i] >= 7) {
+						candidates.add(i);
+					}
+				} else {
+					//fill in grass tiles that are enclosed
+					if (level.map[i] == Terrain.HIGH_GRASS) {
+						level.map[i] = Terrain.WALL;
+					}
 				}
 			}
-		}
-		Random.shuffle(candidates);
-		int closestPos = 3;
-		while (candidates.size() > 5){
-			for (Integer i : candidates.toArray(new Integer[0])){
-				if (candidates.size() > 5 && PathFinder.distance[i] == closestPos){
-					candidates.remove(i);
+			Random.shuffle(candidates);
+			int closestPos = 7;
+			while (candidates.size() > 5) {
+				for (Integer i : candidates.toArray(new Integer[0])) {
+					if (candidates.size() > 5 && PathFinder.distance[i] == closestPos) {
+						candidates.remove(i);
+					}
 				}
+				closestPos++;
 			}
-			closestPos++;
-		}
+
+		} while (candidates.isEmpty());
 		int heartPos = Random.element(candidates);
 		placePlant(level, heartPos, new RotHeart());
 
