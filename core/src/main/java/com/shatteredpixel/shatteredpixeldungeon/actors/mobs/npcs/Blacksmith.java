@@ -266,7 +266,7 @@ public class Blacksmith extends NPC {
 		public static final int OLD = 0;
 		public static final int CRYSTAL = 1;
 		public static final int GNOLL = 2;
-		public static final int FUNGI = 3;
+		public static final int FUNGI = 3; //The fungi quest is not implemented, only exists partially in code
 		//pre-v2.2.0
 		private static boolean alternative; //false for mining gold, true for bat blood
 
@@ -399,14 +399,9 @@ public class Blacksmith extends NPC {
 				rooms.add(new BlacksmithRoom());
 				spawned = true;
 
-				type = Random.IntRange(1, 3);
+				//Currently cannot roll the fungi quest, as it is not fully implemented
+				type = Random.IntRange(1, 2);
 				alternative = false;
-
-				//fungi quest is not finished atm, so gnoll is 2x as common instead for now
-				if (type == FUNGI){
-					type = GNOLL;
-				}
-				//type = FUNGI;
 				
 				given = false;
 				generateRewards( true );
