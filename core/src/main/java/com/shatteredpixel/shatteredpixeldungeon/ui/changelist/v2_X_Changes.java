@@ -89,17 +89,54 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("BETA-1.3", false, null);
+		changes = new ChangeInfo("BETA-1.4", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton(new ChangeButton(Icons.get(Icons.SHPX), "v2.3.0 To-Do",
-				"Hey folks, I've made some progress on the third quest variant, and am hopeful that I'll be able to add it in v2.3.0, but with the holidays coming up you'll likely not hear much from me until January.\n\n" +
-				"Unless any major bugs pop up, this is likely to be the last beta release for a little bit, so I've tried to put in some tweaks here in response to feedback on the new quest.\n\n" +
-				"As a reminder, here's what I'd like to do before releasing v2.3.0:\n" +
-				"_-_ Fully implement a 3rd caves quest variant to go along with the gnoll and crystal ones\n" +
-				"_-_ Make various visual and mechanic improvements to the gnoll quest in response to feedback\n\n" +
-				"I've also re-enabled the crystal quest for now, but the gnoll quest is 2x as likely to appear."));
+		changes.addButton(new ChangeButton(Icons.get(Icons.SHPX), "v2.3.0 Content Changes",
+				"Hey folks, I hope you all had a happy holiday! Due to a mix of personal duties and getting sick I've ended up having basically no time to work on Shattered since mid december =S.\n\n" +
+				"Rather than working on the caves quest for another couple of months, I've decided to release v2.3.0 as-is with the gnoll quest, and move on to other content for now.\n\n" +
+				"The upside of this is that v2.3.0 will be able to release in about a week! There will probably be one more beta release before then with some gnoll spritework improvements.\n\n" +
+				"I'll be making a blog post very soon that talks about this as well as my larger plans for 2024."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ The Gnoll and Crystal quests now have the same chance of appearing\n\n" +
+				"_-_ Added a bit of clarity text to some parts of the blacksmith quest/rewards\n\n" +
+				"_-_ Added healing text to a couple more cases, and removed lots of now-unnecessary single healing particles\n\n" +
+				"_-_ Ghosts and Rogue's shadow clone are now considered inorganic (immune to bleed, toxic, poison)\n\n" +
+				"_-_ Long-press to assign quickslot now works in the full UI inventory pane, just like the mobile inventory window"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"There were quite a lot of bug reports over the holidays, so this list is a bit bigger than usual for a beta patch.\n\n" +
+				"Fixed the following bugs:\n" +
+				"_Caused by BETA:_\n" +
+				"_-_ Cases of particle effects not appearing in the new quest area. Please let me know if you encounter this bug in the latest beta!\n" +
+				"_-_ Gnoll guards rarely attacking themselves\n" +
+				"_-_ Gnoll geomancer being pullable by etherial chains\n" +
+				"\n" +
+				"_Existed prior to BETA (pt.1):_\n" +
+				"_-_ Various minor textual and visual errors\n" +
+				"_-_ Various cases where the tutorial could become stuck\n" +
+				"_-_ Cases where prismatic images could keep appearing and then disappearing\n" +
+				"_-_ Monk ability use disqualifying for dwarf king's 'no weapons' badge when a weapon was equipped\n" +
+				"_-_ Unintended changes to reforge functionality when both items are the same level\n" +
+				"_-_ Sneak ability working while Duelist is rooted",
+
+				"_Existed prior to BETA (pt.2):_\n" +
+				"_-_ Retribution and psionic blast not applying to all visible characters in very rare cases\n" +
+				"_-_ Mimics not dropping their loot if corrupted while hiding\n" +
+				"_-_ Items being assignable to non-visible quickslots in specific cases\n" +
+				"_-_ Allies rarely spawning on hazards after ankh revive\n" +
+				"_-_ Beta updates checkbox not working as intended\n" +
+				"_-_ Rounding errors causing tipped darts to last longer than intended in some cases\n" +
+				"_-_ Rare errors in DM-201 target selection\n" +
+				"_-_ Ally warp working on corrupted DM-201s\n" +
+				"_-_ Cloak of shadows not losing charge if it is dispelled as it is activated\n" +
+				"_-_ Further rare layout errors in rot garden rooms"));
+
+		changes = new ChangeInfo("BETA-1.3", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
 
 		changes.addButton(new ChangeButton(new Image(new GnollGuardSprite()), "Gnoll Caves Tweaks",
 				"Thanks for all your feedback about the new gnoll quest! At the moment it seems to be shaping up to be notably easier than the crystal quest, so I'm making a few changes to increase the difficulty a bit:\n\n" +
@@ -127,29 +164,6 @@ public class v2_X_Changes {
 				"_-_ Rare cases where DM-300 finale music would play before the fight\n" +
 				"_-_ Degrade debuff not applying to thrown weapons"));
 
-		changes = new ChangeInfo("BETA-1.1 & 1.2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"To go along with the recent floating text icon additions, I've made a couple of changes to floating text colors for better consistency:\n\n" +
-				"_-_ Floating text for damage and death effects are now always red. Previously damage was orange if health was above 50%\n" +
-				"_-_ Floating text for warnings and negative effects are now always orange, previously some of them were red.\n" +
-				"_-_ Use of other colors is unchanged."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by BETA:_\n" +
-				"_-_ Freeze errors when rocks were deleted right before they were thrown\n" +
-				"_-_ Hero's remains not containing the new remains items in several cases\n" +
-				"_-_ Various minor textual errors\n" +
-				"\n" +
-				"_Existed prior to BETA:_\n" +
-				"_-_ Music fade out effects not working in specific cases\n" +
-				"_-_ Rotberry seed being deleted in rare cases\n" +
-				"_-_ Some bombs and explosion-spawning effects incorrect dealing magic damage\n" +
-				"_-_ Liquid Agility talent not working with thrown potions"));
-
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
@@ -160,9 +174,6 @@ public class v2_X_Changes {
 				"This variant features _gnolls and earth-moving magic._ Expect to spend a bit more time digging, as this environment features collapsed walls, boulders, and angry gnolls wielding spears and earth-moving devices. Their magic is quite chaotic, so be ready to dodge and possibly get the gnolls caught in their own attacks.\n" +
 				"\n" +
 				"The boss for this variant is the _gnoll geomancer,_ an experienced gnoll with access to lots of mobility and earth-moving power."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Environment.TILES_CAVES, 32, 64, 16, 16), "Fungi Caves Quest",
-				"_I currently have plans for a 3rd caves quest variant in 2.3.0, but it is not implemented yet._"));
 
 		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.REMAINS), "New Remains Items",
 				"_Heroes remains now contain a new unique item that varies based on the class of the hero that died._\n" +
@@ -187,7 +198,7 @@ public class v2_X_Changes {
 		changes.addButton(new ChangeButton(Icons.get(Icons.BUFFS), "Floating Text Icons",
 				"The little bits of floating text that appear above characters to indicate damage, positive effects, and currency gain now have tiny icons to indicate the type!\n" +
 				"\n" +
-				"For damage, it is now shown whether the damage is physical, magical, or if it comes from a particular debuff or DOT effect. There are separate physical damage icons depending on whether armor reduces the incoming damage. Armor never reduces magical or DOT damage.\n" +
+				"For damage, it is now shown whether the damage is physical, magical, or if it comes from a particular debuff or DOT effect. There are separate physical damage icons depending on whether armor reduces the incoming damage. Armor never reduces magical or DOT damage. Damage text is also now always red,  warnings and negative effects are always orange.\n" +
 				"\n" +
 				"For positive effects, icons are now shown for healing, shielding, and exp gain. Loads of healing or shielding effects which previously didn't show floating text now do as well."));
 
@@ -229,7 +240,11 @@ public class v2_X_Changes {
 				"_-_ Foresight effects not triggering after level transition\n" +
 				"_-_ Cursed wand of warding having different targeting properties than other wands\n" +
 				"_-_ Projecting missile weapons not working on enemies inside solid terrain\n" +
-				"_-_ Damage from Body Slam talent ignoring armor",
+				"_-_ Damage from Body Slam talent ignoring armor\n" +
+				"_-_ Lunge ability incorrectly interacting with movespeed in some cases\n" +
+				"_-_ Rotberry seed being deleted in rare cases\n" +
+				"_-_ Liquid Agility talent not working with thrown potions\n" +
+				"_-_ Some bombs and explosion-spawning effects incorrect dealing magic damage",
 
 				"_Characters:_\n" +
 				"_-_ Hero not being able to self-trample plants when standing on stairs\n" +
@@ -243,6 +258,7 @@ public class v2_X_Changes {
 				"_Misc.:_\n" +
 				"_-_ Various rare crash and freeze bugs\n" +
 				"_-_ Various minor visual and textual errors\n" +
+				"_-_ Music fade out effects not working in specific cases\n" +
 				"_-_ Some cases where new rot garden room could spawn much smaller than intended\n" +
 				"_-_ Cases where remains would fail to appear in the new mining level"));
 
