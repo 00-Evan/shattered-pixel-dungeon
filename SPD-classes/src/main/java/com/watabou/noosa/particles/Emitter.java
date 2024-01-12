@@ -134,9 +134,11 @@ public class Emitter extends Group {
 
 	@Override
 	public void revive() {
+		//ensure certain emitter variables default to true
 		started = false;
-		//some emitters may be killed while not visible, this ensures true is always the default
 		visible = true;
+		fillTarget = true;
+		autoKill = true;
 		super.revive();
 	}
 
