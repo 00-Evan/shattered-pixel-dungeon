@@ -72,6 +72,11 @@ public class Bag extends Item implements Iterable<Item> {
 
 		grabItems(container);
 
+		//if there are any quickslot placeholders that match items in this bag, assign them
+		for (Item item : items) {
+			Dungeon.quickslot.replacePlaceholder(item);
+		}
+
 		if (super.collect( container )) {
 			
 			owner = container.owner;
@@ -87,8 +92,9 @@ public class Bag extends Item implements Iterable<Item> {
 	@Override
 	public void onDetach( ) {
 		this.owner = null;
-		for (Item item : items)
+		for (Item item : items) {
 			Dungeon.quickslot.clearItem(item);
+		}
 		updateQuickslot();
 	}
 
