@@ -152,7 +152,9 @@ public class WandOfTransfusion extends Wand {
 		if (defender.buff(Charm.class) != null && defender.buff(Charm.class).object == attacker.id()){
 			//grants a free use of the staff and shields self
 			freeCharge = true;
-			Buff.affect(attacker, Barrier.class).setShield(Math.round((2*(5 + buffedLvl()))*procChanceMultiplier(attacker)));
+			int shieldToGive = Math.round((2*(5 + buffedLvl()))*procChanceMultiplier(attacker));
+			Buff.affect(attacker, Barrier.class).setShield(shieldToGive);
+			attacker.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldToGive), FloatingText.SHIELDING);
 			GLog.p( Messages.get(this, "charged") );
 			attacker.sprite.emitter().burst(BloodParticle.BURST, 20);
 		}
