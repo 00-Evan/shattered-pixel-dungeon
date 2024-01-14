@@ -30,7 +30,7 @@ import com.watabou.noosa.particles.Emitter;
 
 public class GnollGeomancerSprite extends MobSprite {
 
-	private Animation statue;
+	boolean isStatue = false;
 
 	private Emitter earthArmor;
 
@@ -39,26 +39,7 @@ public class GnollGeomancerSprite extends MobSprite {
 
 		texture(Assets.Sprites.GNOLL_GEOMANCER);
 
-		TextureFilm frames = new TextureFilm( texture, 12, 16 );
-
-		idle = new Animation( 2, true );
-		idle.frames( frames, 1, 1, 1, 2, 1, 1, 2, 2 );
-
-		run = new Animation( 12, true );
-		run.frames( frames, 5, 6, 7, 8 );
-
-		attack = new Animation( 12, false );
-		attack.frames( frames, 3, 4, 1 );
-
-		zap = attack.clone();
-
-		die = new Animation( 12, false );
-		die.frames( frames, 9, 10, 11 );
-
-		statue = new Animation(1, true);
-		statue.frames( frames, 0 );
-
-		play(idle);
+		updateAnims();
 
 		scale.set(1.25f);
 	}
@@ -70,9 +51,34 @@ public class GnollGeomancerSprite extends MobSprite {
 		if (ch instanceof GnollGeomancer && ((GnollGeomancer) ch).hasSapper()){
 			setupArmor();
 		}
-		if (ch != null && ch.buff(GnollGeomancer.RockArmor.class) != null){
-			play( statue );
+		if (ch != null && (ch.buff(GnollGeomancer.RockArmor.class) != null != isStatue)){
+			isStatue = !isStatue;
+			updateAnims();
 		}
+	}
+
+	private void updateAnims(){
+
+		TextureFilm frames = new TextureFilm( texture, 12, 16 );
+
+		int ofs = isStatue ? 21 : 0;
+		idle = new Animation( isStatue ? 1 : 2, true );
+		idle.frames( frames, ofs+0, ofs+0, ofs+0, ofs+1, ofs+0, ofs+0, ofs+1, ofs+1 );
+
+		run = new Animation( 12, true );
+		run.frames( frames, ofs+4, ofs+5, ofs+6, ofs+7 );
+
+		attack = new Animation( 12, false );
+		attack.frames( frames, ofs+2, ofs+3, ofs+0 );
+
+		zap = attack.clone();
+
+		die = new Animation( 12, false );
+		die.frames( frames, ofs+8, ofs+9, ofs+10 );
+
+		play(idle);
+
+		play(idle);
 	}
 
 	public void setupArmor(){
@@ -132,13 +138,14 @@ public class GnollGeomancerSprite extends MobSprite {
 	@Override
 	public void idle() {
 		super.idle();
-		if (ch != null && ch.buff(GnollGeomancer.RockArmor.class) != null){
-			play( statue );
+		if (ch != null && ch.buff(GnollGeomancer.RockArmor.class) != null != isStatue){
+			isStatue = !isStatue;
+			updateAnims();
 		}
 	}
 
 	@Override
 	public int blood() {
-		return curAnim == statue ? 0x555555 : super.blood();
+		return isStatue ? 0x555555 : super.blood();
 	}
 }

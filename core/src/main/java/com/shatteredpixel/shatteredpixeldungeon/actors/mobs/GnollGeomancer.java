@@ -239,6 +239,7 @@ public class GnollGeomancer extends Mob {
 					}
 
 					if (buff(RockArmor.class) == null){
+						Splash.around(sprite, 0x555555, 30);
 						sprite.idle();
 					}
 
