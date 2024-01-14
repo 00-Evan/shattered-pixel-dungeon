@@ -33,7 +33,6 @@ import com.watabou.input.KeyEvent;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
-import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.RectF;
 import com.watabou.utils.Signal;
@@ -168,10 +167,6 @@ public class WndTabbed extends Window {
 		protected boolean selected;
 		
 		protected NinePatch bg;
-
-		{
-			hotArea.blockLevel = PointerArea.ALWAYS_BLOCK;
-		}
 		
 		@Override
 		protected void layout() {
@@ -186,9 +181,7 @@ public class WndTabbed extends Window {
 		
 		protected void select( boolean value ) {
 			
-			active = !(selected = value);
-
-			if (!active) killTooltip();
+			selected = value;
 			
 			if (bg != null) {
 				remove( bg );
@@ -204,8 +197,10 @@ public class WndTabbed extends Window {
 		
 		@Override
 		protected void onClick() {
-			Sample.INSTANCE.play( Assets.Sounds.CLICK, 0.7f, 0.7f, 1.2f );
-			WndTabbed.this.onClick( this );
+			if (!selected) {
+				Sample.INSTANCE.play(Assets.Sounds.CLICK, 0.7f, 0.7f, 1.2f);
+				WndTabbed.this.onClick(this);
+			}
 		}
 	}
 	
