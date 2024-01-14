@@ -718,6 +718,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			if (jumpCallback != null) {
 				jumpCallback.call();
 			}
+			GameScene.sortMobSprites();
 
 		} else if (tweener == motion) {
 

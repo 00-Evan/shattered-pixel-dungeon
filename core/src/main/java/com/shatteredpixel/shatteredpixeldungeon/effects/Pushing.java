@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.effects;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
@@ -122,7 +123,8 @@ public class Pushing extends Actor {
 				killAndErase();
 				Actor.remove(Pushing.this);
 				if (callback != null) callback.call();
-				
+				GameScene.sortMobSprites();
+
 				next();
 			}
 		}
