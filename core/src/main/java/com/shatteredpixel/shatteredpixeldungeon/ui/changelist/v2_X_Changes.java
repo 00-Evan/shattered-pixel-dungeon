@@ -89,6 +89,39 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("RC-1", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.SHPX), "Wrapping up",
+				"Unless any major bugs are encountered, this final release candidate version will be the last beta release before v2.3.0 goes live!\n\nExpect a full release in another day or two."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Substantially improved the visuals for boulders in the gnoll area\n" +
+				"_-_ Slightly improved the visuals for Gnoll Geomancer encased in rock\n" +
+				"_-_ Added floating text for shielding in a few more cases\n\n" +
+				"The gnoll caves quest is now showing as slightly harder than the crystal quest, so I'm scaling it back just a touch before full release:\n" +
+				"_-_ Reduced boulder and falling rock damage by 10% (now 20% higher than before beta-1.3)\n" +
+				"_-_ Reduced Gnoll Guard damage at a distance by ~10% (now ~27% higher than before beta-1.3)\n" +
+				"This is now 2.11x their close-range damage, down from 2.33x (it was 2x before beta-1.3)"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by BETA:_\n" +
+				"_-_ Rotting fist healing much more in water than intended\n" +
+				"_-_ Particle issues during gnoll quest (this should finally be fixed for real now)\n" +
+				"\n" +
+				"_Existed prior to BETA:_\n" +
+				"_-_ Rare quickslot errors when bags which already contain items are collected\n" +
+				"_-_ Rare cases where the game would freeze after reviving via unblessed ankh\n" +
+				"_-_ Duelist's lunge ability not correctly applying range boosts in rare cases\n" +
+				"_-_ Scrolling pane in journal window freezing in rare cases\n" +
+				"_-_ Rare cases where hero could appear to be on top of crystal spire"));
+
 		changes = new ChangeInfo("BETA-1.4", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
