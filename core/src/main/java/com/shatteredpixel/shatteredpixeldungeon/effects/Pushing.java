@@ -64,16 +64,18 @@ public class Pushing extends Actor {
 	
 	@Override
 	protected boolean act() {
-		if (sprite != null) {
+		Actor.remove( Pushing.this );
+
+		if (sprite != null && sprite.parent != null) {
 			if (Dungeon.level.heroFOV[from] || Dungeon.level.heroFOV[to]){
 				sprite.visible = true;
 			}
 			if (effect == null) {
 				new Effect();
 			}
+		} else {
+			return true;
 		}
-
-		Actor.remove( Pushing.this );
 
 		//so that all pushing effects at the same time go simultaneously
 		for ( Actor actor : Actor.all() ){
