@@ -43,6 +43,9 @@ public class Assets {
 		public static final String TILES_CITY   = "environment/tiles_city.png";
 		public static final String TILES_HALLS  = "environment/tiles_halls.png";
 
+		public static final String TILES_CAVES_CRYSTAL  = "environment/tiles_caves_crystal.png";
+		public static final String TILES_CAVES_GNOLL    = "environment/tiles_caves_gnoll.png";
+
 		public static final String WATER_SEWERS = "environment/water0.png";
 		public static final String WATER_PRISON = "environment/water1.png";
 		public static final String WATER_CAVES  = "environment/water2.png";

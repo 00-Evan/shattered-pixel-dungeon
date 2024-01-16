@@ -70,6 +70,19 @@ import java.util.Arrays;
 public class MiningLevel extends CavesLevel {
 
 	@Override
+	public String tilesTex() {
+		switch (Blacksmith.Quest.Type()){
+			default:
+				return Assets.Environment.TILES_CAVES;
+			case Blacksmith.Quest.CRYSTAL:
+				return Assets.Environment.TILES_CAVES_CRYSTAL;
+			case Blacksmith.Quest.GNOLL:
+				return Assets.Environment.TILES_CAVES_GNOLL;
+		}
+
+	}
+
+	@Override
 	public void playLevelMusic() {
 		Music.INSTANCE.play(Assets.Music.CAVES_TENSE, true);
 	}

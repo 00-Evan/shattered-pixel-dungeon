@@ -189,8 +189,9 @@ public class DungeonTileSheet {
 	public static final int FLAT_MINE_CRYSTAL         = FLAT_OTHER+12;
 	public static final int FLAT_MINE_CRYSTAL_ALT     = FLAT_OTHER+13;
 	public static final int FLAT_MINE_CRYSTAL_ALT_2   = FLAT_OTHER+14;
-	public static final int FLAT_MINE_BOULDER         = FLAT_OTHER+15;
-
+	public static final int FLAT_MINE_BOULDER         = FLAT_OTHER+12;
+	public static final int FLAT_MINE_BOULDER_ALT     = FLAT_OTHER+13;
+	public static final int FLAT_MINE_BOULDER_ALT_2   = FLAT_OTHER+14;
 
 	/**********************************************************************
 	 * Raised Tiles, Lower Layer
@@ -285,7 +286,9 @@ public class DungeonTileSheet {
 	public static final int RAISED_MINE_CRYSTAL     = RAISED_OTHER+12;
 	public static final int RAISED_MINE_CRYSTAL_ALT = RAISED_OTHER+13;
 	public static final int RAISED_MINE_CRYSTAL_ALT_2=RAISED_OTHER+14;
-	public static final int RAISED_MINE_BOULDER     = RAISED_OTHER+15;
+	public static final int RAISED_MINE_BOULDER     = RAISED_OTHER+12;
+	public static final int RAISED_MINE_BOULDER_ALT = RAISED_OTHER+13;
+	public static final int RAISED_MINE_BOULDER_ALT_2=RAISED_OTHER+14;
 
 
 	/**********************************************************************
@@ -366,7 +369,9 @@ public class DungeonTileSheet {
 	public static final int MINE_CRYSTAL_OVERHANG       = OTHER_OVERHANG+12;
 	public static final int MINE_CRYSTAL_OVERHANG_ALT   = OTHER_OVERHANG+13;
 	public static final int MINE_CRYSTAL_OVERHANG_ALT_2 = OTHER_OVERHANG+14;
-	public static final int MINE_BOULDER_OVERHANG       = OTHER_OVERHANG+15;
+	public static final int MINE_BOULDER_OVERHANG       = OTHER_OVERHANG+12;
+	public static final int MINE_BOULDER_OVERHANG_ALT   = OTHER_OVERHANG+13;
+	public static final int MINE_BOULDER_OVERHANG_ALT_2 = OTHER_OVERHANG+14;
 
 	public static final int HIGH_GRASS_UNDERHANG        = OTHER_OVERHANG+18;
 	public static final int FURROWED_UNDERHANG          = OTHER_OVERHANG+19;
@@ -460,6 +465,7 @@ public class DungeonTileSheet {
 		commonAltVisuals.put(FLAT_HIGH_GRASS,       FLAT_HIGH_GRASS_ALT);
 		commonAltVisuals.put(FLAT_FURROWED_GRASS,   FLAT_FURROWED_ALT);
 		commonAltVisuals.put(FLAT_MINE_CRYSTAL,     FLAT_MINE_CRYSTAL_ALT);
+		commonAltVisuals.put(FLAT_MINE_BOULDER,     FLAT_MINE_BOULDER_ALT);
 
 		commonAltVisuals.put(RAISED_WALL,           RAISED_WALL_ALT);
 		commonAltVisuals.put(RAISED_WALL_DECO,      RAISED_WALL_DECO_ALT);
@@ -470,9 +476,11 @@ public class DungeonTileSheet {
 		commonAltVisuals.put(HIGH_GRASS_OVERHANG,   HIGH_GRASS_OVERHANG_ALT);
 		commonAltVisuals.put(FURROWED_OVERHANG,     FURROWED_OVERHANG_ALT);
 		commonAltVisuals.put(RAISED_MINE_CRYSTAL,   RAISED_MINE_CRYSTAL_ALT);
+		commonAltVisuals.put(RAISED_MINE_BOULDER,   RAISED_MINE_BOULDER_ALT);
 		commonAltVisuals.put(HIGH_GRASS_UNDERHANG,  HIGH_GRASS_UNDERHANG_ALT);
 		commonAltVisuals.put(FURROWED_UNDERHANG,    FURROWED_UNDERHANG_ALT);
 		commonAltVisuals.put(MINE_CRYSTAL_OVERHANG, MINE_CRYSTAL_OVERHANG_ALT);
+		commonAltVisuals.put(MINE_BOULDER_OVERHANG, MINE_BOULDER_OVERHANG_ALT);
 	}
 
 	//These alt visuals trigger 5% of the time (and also override common alts when they show up)
@@ -480,8 +488,11 @@ public class DungeonTileSheet {
 	static {
 		rareAltVisuals.put(FLOOR,                   FLOOR_ALT_2);
 		rareAltVisuals.put(FLAT_MINE_CRYSTAL,       FLAT_MINE_CRYSTAL_ALT_2);
+		rareAltVisuals.put(FLAT_MINE_BOULDER,       FLAT_MINE_BOULDER_ALT_2);
 		rareAltVisuals.put(RAISED_MINE_CRYSTAL,     RAISED_MINE_CRYSTAL_ALT_2);
+		rareAltVisuals.put(RAISED_MINE_BOULDER,     RAISED_MINE_BOULDER_ALT_2);
 		rareAltVisuals.put(MINE_CRYSTAL_OVERHANG,   MINE_CRYSTAL_OVERHANG_ALT_2);
+		rareAltVisuals.put(MINE_BOULDER_OVERHANG,   MINE_BOULDER_OVERHANG_ALT_2);
 	}
 
 	public static int getVisualWithAlts(int visual, int pos){
