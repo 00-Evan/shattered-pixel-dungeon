@@ -692,7 +692,7 @@ public class GnollGeomancer extends Mob {
 						}
 
 						if (ch != null && !(ch instanceof GnollGeomancer)){
-							ch.damage(Random.NormalIntRange(8, 12), new GnollGeomancer.Boulder());
+							ch.damage(Random.NormalIntRange(6, 12), new GnollGeomancer.Boulder());
 
 							if (ch.isAlive()){
 								Buff.prolong( ch, Paralysis.class, ch instanceof GnollGuard ? 10 : 3 );
@@ -795,7 +795,7 @@ public class GnollGeomancer extends Mob {
 
 		@Override
 		public void affectChar(Char ch) {
-			ch.damage(Random.NormalIntRange(8, 12), this);
+			ch.damage(Random.NormalIntRange(6, 12), this);
 			if (ch.isAlive()) {
 				Buff.prolong(ch, Paralysis.class, ch instanceof GnollGuard ? 10 : 3);
 			} else if (ch == Dungeon.hero){

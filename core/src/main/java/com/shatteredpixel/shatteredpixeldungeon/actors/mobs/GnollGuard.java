@@ -82,7 +82,7 @@ public class GnollGuard extends Mob {
 	@Override
 	public int damageRoll() {
 		if (enemy != null && !Dungeon.level.adjacent(pos, enemy.pos)){
-			return Random.NormalIntRange( 18, 24 );
+			return Random.NormalIntRange( 16, 22 );
 		} else {
 			return Random.NormalIntRange( 6, 12 );
 		}
