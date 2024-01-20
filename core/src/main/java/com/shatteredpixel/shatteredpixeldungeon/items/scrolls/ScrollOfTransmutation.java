@@ -122,7 +122,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 					item.detach(Dungeon.hero.belongings.backpack);
 					if (!result.collect()) {
 						Dungeon.level.drop(result, curUser.pos).sprite.drop();
-					} else if (Dungeon.hero.belongings.getSimilar(result) != null){
+					} else if (result.stackable && Dungeon.hero.belongings.getSimilar(result) != null){
 						result = Dungeon.hero.belongings.getSimilar(result);
 					}
 				}
