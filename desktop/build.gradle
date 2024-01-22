@@ -114,12 +114,12 @@ dependencies {
     implementation "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$gdxControllersVersion"
 
     //we use LWJGL tinyFD directly to display crash messages
-    implementation "org.lwjgl:lwjgl-tinyfd:3.3.1"
-    implementation "org.lwjgl:lwjgl-tinyfd:3.3.1:natives-windows"
-    implementation "org.lwjgl:lwjgl-tinyfd:3.3.1:natives-macos"
-    implementation "org.lwjgl:lwjgl-tinyfd:3.3.1:natives-macos-arm64"
-    implementation "org.lwjgl:lwjgl-tinyfd:3.3.1:natives-linux"
-    implementation "org.lwjgl:lwjgl-tinyfd:3.3.1:natives-linux-arm64"
+    implementation "org.lwjgl:lwjgl-tinyfd:3.3.3"
+    implementation "org.lwjgl:lwjgl-tinyfd:3.3.3:natives-windows"
+    implementation "org.lwjgl:lwjgl-tinyfd:3.3.3:natives-macos"
+    implementation "org.lwjgl:lwjgl-tinyfd:3.3.3:natives-macos-arm64"
+    implementation "org.lwjgl:lwjgl-tinyfd:3.3.3:natives-linux"
+    implementation "org.lwjgl:lwjgl-tinyfd:3.3.3:natives-linux-arm64"
 
     implementation project(':services:updates:githubUpdates')
     implementation project(':services:news:shatteredNews')

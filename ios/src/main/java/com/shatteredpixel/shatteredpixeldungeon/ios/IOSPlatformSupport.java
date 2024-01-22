@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.ios;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.backends.iosrobovm.objectal.OALSimpleAudio;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
@@ -81,8 +82,12 @@ public class IOSPlatformSupport extends PlatformSupport {
 	}
 
 	public void vibrate( int millis ){
-		//gives a short vibrate on iPhone 6+, no vibration otherwise
-		AudioServices.playSystemSound(1520);
+		if (Gdx.input.isPeripheralAvailable(Input.Peripheral.HapticFeedback)){
+			super.vibrate( millis );
+		} else {
+			//devices without haptics support use a short vibrate on iPhone 6+, no vibration otherwise
+			AudioServices.playSystemSound(1520);
+		}
 	}
 
 	@Override

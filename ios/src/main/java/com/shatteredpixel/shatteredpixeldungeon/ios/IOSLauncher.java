@@ -41,13 +41,11 @@ import org.robovm.apple.foundation.NSBundle;
 import org.robovm.apple.foundation.NSException;
 import org.robovm.apple.foundation.NSMutableDictionary;
 import org.robovm.apple.foundation.NSObject;
-import org.robovm.apple.foundation.NSProcessInfo;
 import org.robovm.apple.foundation.NSString;
 import org.robovm.apple.glkit.GLKViewDrawableColorFormat;
 import org.robovm.apple.glkit.GLKViewDrawableDepthFormat;
 import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIRectEdge;
-import org.robovm.apple.uikit.UIScreen;
 
 import java.io.File;
 
@@ -107,11 +105,8 @@ public class IOSLauncher extends IOSApplication.Delegate {
 		//game has to ignore input from system gestures itself, otherwise there is lag on
 		//every button press on the corner of the screen. Currently this is accomplished via
 		//clearing all pointer events on the first frame after the game is resumed.
+		//TODO this may not be needed anymore with libgdx 1.12.1
 		config.screenEdgesDeferringSystemGestures = UIRectEdge.All;
-
-		if (NSProcessInfo.getSharedProcessInfo().getOperatingSystemVersion().getMajorVersion() >= 11) {
-			config.preferredFramesPerSecond = (int)(UIScreen.getMainScreen().getMaximumFramesPerSecond());
-		}
 
 		CGRect statusBarFrame = UIApplication.getSharedApplication().getStatusBarFrame();
 		double statusBarHeight = Math.min(statusBarFrame.getWidth(), statusBarFrame.getHeight());

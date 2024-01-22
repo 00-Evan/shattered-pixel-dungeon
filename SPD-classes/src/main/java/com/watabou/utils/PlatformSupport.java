@@ -40,6 +40,7 @@ public abstract class PlatformSupport {
 
 	public void vibrate( int millis ){
 		//regular GDX vibration by default
+		//TODO should this trigger controller vibration if available?
 		Gdx.input.vibrate( millis );
 	}
 
