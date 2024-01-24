@@ -110,8 +110,6 @@ public class AndroidLauncher extends AndroidApplication {
 					ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
 					ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT );
 		}
-
-		//TODO libGDX offers its own immersive mode functionality, do we want to use it?
 		
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.depth = 0;
@@ -121,6 +119,9 @@ public class AndroidLauncher extends AndroidApplication {
 			config.g = 6;
 			config.b = 5;
 		}
+
+		//we manage this ourselves
+		config.useImmersiveMode = false;
 		
 		config.useCompass = false;
 		config.useAccelerometer = false;
