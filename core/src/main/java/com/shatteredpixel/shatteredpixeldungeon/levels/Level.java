@@ -558,10 +558,10 @@ public abstract class Level implements Bundlable {
 
 		//spend the hero's partial turns,  so the hero cannot take partial turns between floors
 		Dungeon.hero.spendToWhole();
-		for (Char ch : Actor.chars()){
-			//also adjust any mobs that are now ahead of the hero due to this
-			if (ch.cooldown() < Dungeon.hero.cooldown()){
-				ch.spendToWhole();
+		for (Actor a : Actor.all()){
+			//also adjust any other actors that are now ahead of the hero due to this
+			if (a.cooldown() < Dungeon.hero.cooldown()){
+				a.spendToWhole();
 			}
 		}
 	}
