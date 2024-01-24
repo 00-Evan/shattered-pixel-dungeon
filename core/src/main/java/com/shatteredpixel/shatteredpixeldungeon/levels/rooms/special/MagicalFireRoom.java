@@ -186,15 +186,19 @@ public class MagicalFireRoom extends SpecialRoom {
 						if (fire != null && fire.volume > 0 && fire.cur[cell] > 0){
 							fire.clear(cell);
 						}
-						if (freeze != null && freeze.volume > 0 && freeze.cur[cell] > 0){
-							freeze.clear(cell);
-							cur[cell] = 0;
-							clearAll = true;
-						}
-						if (bliz != null && bliz.volume > 0 && bliz.cur[cell] > 0){
-							bliz.clear(cell);
-							cur[cell] = 0;
-							clearAll = true;
+
+						//clears itself if there is frost/blizzard on or next to it
+						for (int k : PathFinder.NEIGHBOURS9) {
+							if (freeze != null && freeze.volume > 0 && freeze.cur[cell+k] > 0) {
+								freeze.clear(cell);
+								cur[cell] = 0;
+								clearAll = true;
+							}
+							if (bliz != null && bliz.volume > 0 && bliz.cur[cell+k] > 0) {
+								bliz.clear(cell);
+								cur[cell] = 0;
+								clearAll = true;
+							}
 						}
 						l.passable[cell] = cur[cell] == 0 && (Terrain.flags[l.map[cell]] & Terrain.PASSABLE) != 0;
 					}
