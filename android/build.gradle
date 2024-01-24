@@ -59,16 +59,19 @@ configurations { natives }
 dependencies {
     implementation project(':core')
 
+    // We are using the natives from 1.11.0 to maintain compatibility with Android 4.0-4.3 for now
+    // The 1.12.0+ natives are compiled with a version of the NDK which drops 4.3- support
+    // YES, THIS IS VERY DANGEROUS! 1.11.0 natives may only incidentally work with later libGDX versions
     implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
-    natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
-    natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
-    natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
-    natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
+    natives "com.badlogicgames.gdx:gdx-platform:1.11.0:natives-armeabi-v7a"
+    natives "com.badlogicgames.gdx:gdx-platform:1.11.0:natives-arm64-v8a"
+    natives "com.badlogicgames.gdx:gdx-platform:1.11.0:natives-x86"
+    natives "com.badlogicgames.gdx:gdx-platform:1.11.0:natives-x86_64"
     implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-    natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi-v7a"
-    natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a"
-    natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86"
-    natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64"
+    natives "com.badlogicgames.gdx:gdx-freetype-platform:1.11.0:natives-armeabi-v7a"
+    natives "com.badlogicgames.gdx:gdx-freetype-platform:1.11.0:natives-arm64-v8a"
+    natives "com.badlogicgames.gdx:gdx-freetype-platform:1.11.0:natives-x86"
+    natives "com.badlogicgames.gdx:gdx-freetype-platform:1.11.0:natives-x86_64"
     implementation "com.badlogicgames.gdx-controllers:gdx-controllers-android:$gdxControllersVersion"
 }
 
