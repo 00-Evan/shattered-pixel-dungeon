@@ -29,6 +29,7 @@ import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.watabou.input.ControllerHandler;
 import com.watabou.noosa.Game;
 import com.watabou.utils.PlatformSupport;
 
@@ -82,8 +83,12 @@ public class IOSPlatformSupport extends PlatformSupport {
 	}
 
 	public void vibrate( int millis ){
-		if (Gdx.input.isPeripheralAvailable(Input.Peripheral.HapticFeedback)){
-			super.vibrate( millis );
+		if (ControllerHandler.isControllerConnected()){
+			if (ControllerHandler.isControllerConnected()) {
+				ControllerHandler.vibrate(millis);
+			}
+		} else if (Gdx.input.isPeripheralAvailable(Input.Peripheral.HapticFeedback)){
+			Gdx.input.vibrate( millis );
 		} else {
 			//devices without haptics support use a short vibrate on iPhone 6+, no vibration otherwise
 			AudioServices.playSystemSound(1520);

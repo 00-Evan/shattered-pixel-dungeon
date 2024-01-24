@@ -84,6 +84,12 @@ public class ControllerHandler implements ControllerListener {
 		}
 	}
 
+	public static void vibrate( int millis ){
+		if (Controllers.getCurrent().canVibrate()) {
+			Controllers.getCurrent().startVibration(millis, 1f);
+		}
+	}
+
 	public static boolean isControllerConnected(){
 		return controllersSupported() && Controllers.getCurrent() != null;
 	}
