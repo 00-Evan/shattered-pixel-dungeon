@@ -637,10 +637,15 @@ public class WndSettings extends WndTabbed {
 				protected void onClick() {
 					super.onClick();
 					SPDSettings.vibration(checked());
+					if (checked()){
+						Game.vibrate(250);
+					}
 				}
 			};
-			chkVibrate.checked(SPDSettings.vibration());
 			chkVibrate.enable(Game.platform.supportsVibration());
+			if (chkVibrate.active) {
+				chkVibrate.checked(SPDSettings.vibration());
+			}
 			add(chkVibrate);
 		}
 
