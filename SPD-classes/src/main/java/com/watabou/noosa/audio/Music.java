@@ -94,12 +94,19 @@ public enum Music {
 
 		if (isPlaying() && this.trackList != null && tracks.length == trackList.length){
 
-			boolean sameList = true;
-			for (int i = 0; i < tracks.length; i ++){
-				if (!tracks[i].equals(trackList[i]) || chances[i] != trackChances[i]){
-					sameList = false;
-					break;
+			//lists are considered the same if they are identical or merely shifted
+			// e.g. the regular title theme and the victory theme are considered equivalent
+			boolean sameList = false;
+			for (int ofs = 0; ofs < tracks.length; ofs++){
+				sameList = true;
+				for (int j = 0; j < tracks.length; j++){
+					int i = (j+ofs)%tracks.length;
+					if (!tracks[i].equals(trackList[j]) || chances[i] != trackChances[j]){
+						sameList = false;
+						break;
+					}
 				}
+				if (sameList) break;
 			}
 
 			if (sameList) {
