@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.watabou.input.ControllerHandler;
 import com.watabou.input.GameAction;
 import com.watabou.input.KeyBindings;
@@ -161,7 +162,9 @@ public class Button extends Component {
 				clickReady = false; //did a long click, can't do a regular one
 				onPointerUp();
 
-				Game.vibrate( 50 );
+				if (SPDSettings.vibration()) {
+					Game.vibrate(50);
+				}
 			}
 		}
 	}

@@ -166,6 +166,11 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		}
 	}
 
+	@Override
+	public boolean supportsVibration() {
+		return true; //always true on Android
+	}
+
 	/* FONT SUPPORT */
 	
 	//droid sans / roboto, or a custom pixel font, for use with Latin and Cyrillic languages

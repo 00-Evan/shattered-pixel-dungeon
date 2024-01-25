@@ -143,6 +143,8 @@ public class SPDSettings extends GameSettings {
 	public static final String KEY_FLIPTAGS 	= "flip_tags";
 	public static final String KEY_BARMODE		= "toolbar_mode";
 	public static final String KEY_SLOTWATERSKIN= "quickslot_waterskin";
+	public static final String KEY_SYSTEMFONT	= "system_font";
+	public static final String KEY_VIBRATION    = "vibration";
 
 	//0 = mobile, 1 = mixed (large without inventory in main UI), 2 = large
 	public static void interfaceSize( int value ){
@@ -201,7 +203,24 @@ public class SPDSettings extends GameSettings {
 	public static boolean quickslotWaterskin(){
 		return getBoolean( KEY_SLOTWATERSKIN, true );
 	}
-	
+
+	public static void systemFont(boolean value){
+		put(KEY_SYSTEMFONT, value);
+	}
+
+	public static boolean systemFont(){
+		return getBoolean(KEY_SYSTEMFONT,
+				(language() == Languages.KOREAN || language() == Languages.CHINESE || language() == Languages.JAPANESE));
+	}
+
+	public static void vibration(boolean value){
+		put(KEY_VIBRATION, value);
+	}
+
+	public static boolean vibration(){
+		return getBoolean(KEY_VIBRATION, true);
+	}
+
 	//Game State
 	
 	public static final String KEY_LAST_CLASS	= "last_class";
@@ -281,6 +300,55 @@ public class SPDSettings extends GameSettings {
 		return getInt(KEY_MOVE_SENS, 3, 0, 4);
 	}
 
+	//Connectivity
+
+	public static final String KEY_NEWS     = "news";
+	public static final String KEY_UPDATES	= "updates";
+	public static final String KEY_BETAS	= "betas";
+	public static final String KEY_WIFI     = "wifi";
+
+	public static final String KEY_NEWS_LAST_READ = "news_last_read";
+
+	public static void news(boolean value){
+		put(KEY_NEWS, value);
+	}
+
+	public static boolean news(){
+		return getBoolean(KEY_NEWS, true);
+	}
+
+	public static void updates(boolean value){
+		put(KEY_UPDATES, value);
+	}
+
+	public static boolean updates(){
+		return getBoolean(KEY_UPDATES, true);
+	}
+
+	public static void betas(boolean value){
+		put(KEY_BETAS, value);
+	}
+
+	public static boolean betas(){
+		return getBoolean(KEY_BETAS, Game.version.contains("BETA") || Game.version.contains("RC"));
+	}
+
+	public static void WiFi(boolean value){
+		put(KEY_WIFI, value);
+	}
+
+	public static boolean WiFi(){
+		return getBoolean(KEY_WIFI, true);
+	}
+
+	public static void newsLastRead(long lastRead){
+		put(KEY_NEWS_LAST_READ, lastRead);
+	}
+
+	public static long newsLastRead(){
+		return getLong(KEY_NEWS_LAST_READ, 0);
+	}
+
 	//Audio
 	
 	public static final String KEY_MUSIC		= "music";
@@ -343,10 +411,9 @@ public class SPDSettings extends GameSettings {
 		return getBoolean( KEY_MUSIC_BG, true);
 	}
 	
-	//Languages and Font
+	//Languages
 	
 	public static final String KEY_LANG         = "language";
-	public static final String KEY_SYSTEMFONT	= "system_font";
 	
 	public static void language(Languages lang) {
 		put( KEY_LANG, lang.code());
@@ -360,65 +427,7 @@ public class SPDSettings extends GameSettings {
 			return Languages.matchCode(code);
 		}
 	}
-	
-	public static void systemFont(boolean value){
-		put(KEY_SYSTEMFONT, value);
-	}
-	
-	public static boolean systemFont(){
-		return getBoolean(KEY_SYSTEMFONT,
-				(language() == Languages.KOREAN || language() == Languages.CHINESE || language() == Languages.JAPANESE));
-	}
 
-	//Connectivity
-
-	public static final String KEY_NEWS     = "news";
-	public static final String KEY_UPDATES	= "updates";
-	public static final String KEY_BETAS	= "betas";
-	public static final String KEY_WIFI     = "wifi";
-
-	public static final String KEY_NEWS_LAST_READ = "news_last_read";
-
-	public static void news(boolean value){
-		put(KEY_NEWS, value);
-	}
-
-	public static boolean news(){
-		return getBoolean(KEY_NEWS, true);
-	}
-
-	public static void updates(boolean value){
-		put(KEY_UPDATES, value);
-	}
-
-	public static boolean updates(){
-		return getBoolean(KEY_UPDATES, true);
-	}
-
-	public static void betas(boolean value){
-		put(KEY_BETAS, value);
-	}
-
-	public static boolean betas(){
-		return getBoolean(KEY_BETAS, Game.version.contains("BETA") || Game.version.contains("RC"));
-	}
-
-	public static void WiFi(boolean value){
-		put(KEY_WIFI, value);
-	}
-
-	public static boolean WiFi(){
-		return getBoolean(KEY_WIFI, true);
-	}
-
-	public static void newsLastRead(long lastRead){
-		put(KEY_NEWS_LAST_READ, lastRead);
-	}
-
-	public static long newsLastRead(){
-		return getLong(KEY_NEWS_LAST_READ, 0);
-	}
-	
 	//Window management (desktop only atm)
 	
 	public static final String KEY_WINDOW_WIDTH     = "window_width";
@@ -444,5 +453,4 @@ public class SPDSettings extends GameSettings {
 	public static boolean windowMaximized(){
 		return getBoolean( KEY_WINDOW_MAXIMIZED, false );
 	}
-
 }
