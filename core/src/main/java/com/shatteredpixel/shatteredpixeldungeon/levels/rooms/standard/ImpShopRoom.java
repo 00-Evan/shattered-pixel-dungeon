@@ -91,7 +91,7 @@ public class ImpShopRoom extends ShopRoom {
 	//fix for connections not being bundled normally
 	@Override
 	public Door entrance() {
-		return connected.isEmpty() ? new Door(left, top+2) : super.entrance();
+		return connected.isEmpty() ? new Door((left+right)/2 + 1, bottom-1) : super.entrance();
 	}
 
 	public void spawnShop(Level level){
