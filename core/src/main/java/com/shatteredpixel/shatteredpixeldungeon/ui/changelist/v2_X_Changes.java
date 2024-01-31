@@ -80,9 +80,23 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v2.3.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Slightly improved the layout of shop rooms when many items are present\n\n" +
+				"_-_ Updated a link in the game's credits"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by v2.3.1:_\n" +
+				"_-_ Tengu being able to set himself on fire, oops =S\n\n" +
+				"_Existed prior to v2.3.0:_\n" +
+				"_-_ Various minor textual errors\n" +
+				"_-_ Very specific cases where levelgen could vary based on whether the player has a timekeeper's hourglass or not\n" +
+				"_-_ Hero leap vfx not causing the camera to follow them\n" +
+				"_-_ Cases where grass and embers wouldn't appear on top of specific ground visuals"));
 
 		changes = new ChangeInfo("v2.3.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -92,8 +106,7 @@ public class v2_X_Changes {
 				"I've updated to the latest version of Shattered's game library (libGDX), which has a few benefits:\n" +
 				"_-_ Improved vibration on modern iOS devices\n" +
 				"_-_ Improved changing audio device behavior\n" +
-				"_-_ Misc. stability & compatibility improvements\n" +
-				"_Note that this version of libGDX has issues with very old versions of Android (4.0-4.3). I've managed to get it working, but the fix I used may have side-effects. Please let me know if you encounter any stability issues with the game on Android, I'll make further adjustments if needed._\n\n" +
+				"_-_ Misc. stability & compatibility improvements\n\n" +
 				"_-_ Magical fire is now cleared by frost next to it, in addition to on top of it\n" +
 				"_-_ Tengu's fire wall attack now ignites items\n\n" +
 				"_-_ Improved music transitions in main menu when game was just won\n\n" +
