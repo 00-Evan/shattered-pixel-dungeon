@@ -687,11 +687,11 @@ public class ItemSpriteSheet {
 		assignItemRect(CHOC_AMULET,     16, 16);
 		assignItemRect(EASTER_EGG,      12, 14);
 		assignItemRect(RAINBOW_POTION,  12, 14);
-		assignItemRect(SHATTERED_CAKE,  15, 11);
+		assignItemRect(SHATTERED_CAKE,  14, 13);
 		assignItemRect(PUMPKIN_PIE,     16, 12);
-		assignItemRect(VANILLA_CAKE,    15, 11);
+		assignItemRect(VANILLA_CAKE,    14, 13);
 		assignItemRect(CANDY_CANE,      13, 16);
-		assignItemRect(SPARKLING_POTION,12, 14);
+		assignItemRect(SPARKLING_POTION, 7, 16);
 	}
 
 	private static final int QUEST  =                                       xy(1, 30);  //16 slots

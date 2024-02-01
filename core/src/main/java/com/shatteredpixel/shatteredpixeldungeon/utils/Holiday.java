@@ -28,7 +28,6 @@ public enum Holiday {
 
 	NONE,
 
-	//TODO many of these don't actually do anything atm
 	LUNAR_NEW_YEAR,         //Varies, sometime in late Jan to Late Feb              (7 days)
 	APRIL_FOOLS,            //April 1st, can override easter                        (1 day)
 	EASTER,                 //Varies, sometime in Late Mar to Late Apr              (6-7 days)
@@ -61,32 +60,6 @@ public enum Holiday {
 
 	//requires a gregorian calendar
 	public static Holiday getHolidayForDate(GregorianCalendar cal){
-
-		//legacy holiday logic from late 2016 to early 2024
-		//only halloween and winter holidays, and they had longer dates determined by week of month
-		//TODO maybe remove this after early 2024 passes?
-		// Do we really care about historical accuracy for folks who turn their system date back?
-		if (cal.get(Calendar.YEAR) < 2024
-				|| (cal.get(Calendar.YEAR) == 2024 && cal.get(Calendar.DAY_OF_YEAR) <= 10)){
-			switch(cal.get(Calendar.MONTH)){
-				case Calendar.JANUARY:
-					if (cal.get(Calendar.WEEK_OF_MONTH) == 1)
-						return WINTER_HOLIDAYS;
-					break;
-				case Calendar.OCTOBER:
-					if (cal.get(Calendar.WEEK_OF_MONTH) >= 2)
-						return HALLOWEEN;
-					break;
-				case Calendar.NOVEMBER:
-					if (cal.get(Calendar.DAY_OF_MONTH) == 1)
-						return HALLOWEEN;
-					break;
-				case Calendar.DECEMBER:
-					if (cal.get(Calendar.WEEK_OF_MONTH) >= 3)
-						return WINTER_HOLIDAYS;
-					break;
-			}
-		}
 
 		//Lunar New Year
 		if (isLunarNewYear(cal.get(Calendar.YEAR),
@@ -151,8 +124,12 @@ public enum Holiday {
 	public static boolean isLunarNewYear(int year, int dayOfYear){
 		int lunarNewYearDayOfYear;
 		switch (year){
-			//yes, I really did hardcode this all the way to 2100
+			//yes, I really did hardcode this all the way from 2020 to 2100
 			default:   lunarNewYearDayOfYear = 31+5; break;     //defaults to February 5th
+			case 2020: lunarNewYearDayOfYear = 25; break;       //January 25th
+			case 2021: lunarNewYearDayOfYear = 31+12; break;    //February 12th
+			case 2022: lunarNewYearDayOfYear = 31+1; break;     //February 1st
+			case 2023: lunarNewYearDayOfYear = 22; break;       //January 22nd
 			case 2024: lunarNewYearDayOfYear = 31+10; break;    //February 10th
 			case 2025: lunarNewYearDayOfYear = 29; break;       //January 29th
 			case 2026: lunarNewYearDayOfYear = 31+17; break;    //February 17th
