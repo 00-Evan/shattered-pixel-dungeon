@@ -757,11 +757,13 @@ public class GameScene extends PixelScene {
 		}
 
 		cellSelector.enable(Dungeon.hero.ready);
-		
-		for (Gizmo g : toDestroy){
-			g.destroy();
+
+		if (!toDestroy.isEmpty()) {
+			for (Gizmo g : toDestroy) {
+				g.destroy();
+			}
+			toDestroy.clear();
 		}
-		toDestroy.clear();
 	}
 
 	private static Point lastOffset = null;

@@ -136,6 +136,10 @@ public class PointerEvent {
 	public static boolean clearKeyboardThisPress = true;
 	
 	public static synchronized void processPointerEvents(){
+		if (pointerEvents.isEmpty()){
+			return;
+		}
+
 		//handle any hover events separately first as we may need to add drag events
 		boolean hovered = false;
 		for (PointerEvent p : pointerEvents){

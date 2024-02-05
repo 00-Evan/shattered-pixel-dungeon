@@ -48,8 +48,9 @@ public class CircleArc extends Visual {
 	private boolean lightMode = true;
 	
 	private SmartTexture texture;
-	
-	private FloatBuffer vertices;
+
+	protected float[] vertices;
+	private FloatBuffer verticesBuffer;
 	private ShortBuffer indices;
 	
 	private int nTris;
@@ -64,8 +65,9 @@ public class CircleArc extends Visual {
 		
 		this.nTris = triangles;
 		this.rad = radius;
-		
-		vertices = ByteBuffer.
+
+		vertices = new float[4];
+		verticesBuffer = ByteBuffer.
 				allocateDirect( (nTris * 2 + 1) * 4 * (Float.SIZE / 8) ).
 				order( ByteOrder.nativeOrder() ).
 				asFloatBuffer();
@@ -105,8 +107,10 @@ public class CircleArc extends Visual {
 	}
 	
 	public void setSweep( float sweep ){
-		this.sweep = sweep;
-		dirty = true;
+		if (sweep != this.sweep) {
+			this.sweep = sweep;
+			dirty = true;
+		}
 	}
 
 	public float getSweep(){
@@ -116,19 +120,18 @@ public class CircleArc extends Visual {
 	private void updateTriangles(){
 		
 		dirty = false;
-		float v[] = new float[4];
 		
 		((Buffer)indices).position( 0 );
-		((Buffer)vertices).position( 0 );
+		((Buffer)verticesBuffer).position( 0 );
 		
-		v[0] = 0;
-		v[1] = 0;
-		v[2] = 0.25f;
-		v[3] = 0;
-		vertices.put( v );
-		
-		v[2] = 0.75f;
-		v[3] = 0;
+		vertices[0] = 0;
+		vertices[1] = 0;
+		vertices[2] = 0.25f;
+		vertices[3] = 0;
+		verticesBuffer.put( vertices );
+
+		vertices[2] = 0.75f;
+		vertices[3] = 0;
 		
 		//starting position is very top by default, use angle to adjust this.
 		double start = 2 * (Math.PI - Math.PI*sweep) - Math.PI/2.0;
@@ -136,14 +139,14 @@ public class CircleArc extends Visual {
 		for (int i = 0; i < nTris; i++) {
 			
 			double a = start + i * Math.PI * 2 / nTris * sweep;
-			v[0] = (float)Math.cos( a ) * rad;
-			v[1] = (float)Math.sin( a ) * rad;
-			vertices.put( v );
+			vertices[0] = (float)Math.cos( a ) * rad;
+			vertices[1] = (float)Math.sin( a ) * rad;
+			verticesBuffer.put( vertices );
 			
 			a += 3.1415926f * 2 / nTris * sweep;
-			v[0] = (float)Math.cos( a ) * rad;
-			v[1] = (float)Math.sin( a ) * rad;
-			vertices.put( v );
+			vertices[0] = (float)Math.cos( a ) * rad;
+			vertices[1] = (float)Math.sin( a ) * rad;
+			verticesBuffer.put( vertices );
 			
 			indices.put( (short)0 );
 			indices.put( (short)(1 + i * 2) );
@@ -189,7 +192,7 @@ public class CircleArc extends Visual {
 				ra, ga, ba, aa );
 		
 		script.camera( camera );
-		script.drawElements( vertices, indices, nTris * 3 );
+		script.drawElements( verticesBuffer, indices, nTris * 3 );
 		
 		if (lightMode) Blending.setNormalMode();
 	}

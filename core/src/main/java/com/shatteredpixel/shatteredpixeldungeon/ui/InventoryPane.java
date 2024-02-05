@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
@@ -361,7 +360,7 @@ public class InventoryPane extends Component {
 			}
 		}
 
-		boolean lostInvent = Dungeon.hero.buff(LostInventory.class) != null;
+		boolean lostInvent = Dungeon.hero.belongings.lostInventory();
 		for (InventorySlot b : equipped){
 			b.enable(lastEnabled
 					&& !(b.item() instanceof WndBag.Placeholder)
@@ -451,7 +450,7 @@ public class InventoryPane extends Component {
 		if (lastEnabled != (Dungeon.hero.ready || !Dungeon.hero.isAlive())) {
 			lastEnabled = (Dungeon.hero.ready || !Dungeon.hero.isAlive());
 
-			boolean lostInvent = Dungeon.hero.buff(LostInventory.class) != null;
+			boolean lostInvent = Dungeon.hero.belongings.lostInventory();
 			for (InventorySlot b : equipped){
 				b.enable(lastEnabled
 						&& !(b.item() instanceof WndBag.Placeholder)

@@ -356,12 +356,16 @@ public class CellSelector extends ScrollArea {
 	public void update() {
 		super.update();
 
-		if (GameScene.interfaceBlockingHero()){
-			return;
-		}
-
 		GameAction newLeftStick = actionFromStick(ControllerHandler.leftStickPosition.x,
 				ControllerHandler.leftStickPosition.y);
+
+		//skip logic here if there's no input, or if input is blocked
+		if ((newLeftStick == leftStickAction
+				&& leftStickAction == GameAction.NONE
+					&& heldAction1 == SPDAction.NONE)
+					|| GameScene.interfaceBlockingHero()){
+			return;
+		}
 
 		if (newLeftStick != leftStickAction){
 			if (leftStickAction == SPDAction.NONE){

@@ -62,6 +62,10 @@ public class ScrollEvent {
 	}
 	
 	public static synchronized void processScrollEvents(){
+		if (scrollEvents.isEmpty()) {
+			return;
+		}
+
 		for (ScrollEvent k : scrollEvents){
 			scrollSignal.dispatch(k);
 		}

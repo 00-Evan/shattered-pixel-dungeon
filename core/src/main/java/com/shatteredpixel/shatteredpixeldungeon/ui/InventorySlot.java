@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -101,7 +100,7 @@ public class InventorySlot extends ItemSlot {
 
 			if (item.name() == null) {
 				enable( false );
-			} else if (Dungeon.hero.buff(LostInventory.class) != null
+			} else if (Dungeon.hero.belongings.lostInventory()
 					&& !item.keptThroughLostInventory()){
 				enable(false);
 			}

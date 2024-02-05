@@ -178,36 +178,39 @@ public class Camera extends Gizmo {
 		float deadX = 0;
 		float deadY = 0;
 		if (followTarget != null){
-			panTarget = followTarget.center().offset(centerOffset);
+			//manually assign here to avoid an allocation from sprite.center()
+			panTarget.x = followTarget.x + followTarget.width()/2;
+			panTarget.y = followTarget.y + followTarget.height()/2;
+			panTarget.offset(centerOffset);
 			deadX = width * followDeadzone /2f;
 			deadY = height * followDeadzone /2f;
 		}
 		
 		if (panIntensity > 0f){
 
-			PointF panMove = new PointF();
-			panMove.x = panTarget.x - (scroll.x + width/2f);
-			panMove.y = panTarget.y - (scroll.y + height/2f);
+			float panX = panTarget.x - (scroll.x + width/2f);
+			float panY = panTarget.y - (scroll.y + height/2f);
 
-			if (panMove.x > deadX){
-				panMove.x -= deadX;
-			} else if (panMove.x < -deadX){
-				panMove.x += deadX;
+			if (panX > deadX){
+				panX -= deadX;
+			} else if (panX < -deadX){
+				panX += deadX;
 			} else {
-				panMove.x = 0;
+				panX = 0;
 			}
 
-			if (panMove.y > deadY){
-				panMove.y -= deadY;
-			} else if (panMove.y < -deadY){
-				panMove.y += deadY;
+			if (panY > deadY){
+				panY -= deadY;
+			} else if (panY < -deadY){
+				panY += deadY;
 			} else {
-				panMove.y = 0;
+				panY = 0;
 			}
 
-			panMove.scale(Math.min(1f, Game.elapsed * panIntensity));
+			panX *= Math.min(1f, Game.elapsed * panIntensity);
+			panY *= Math.min(1f, Game.elapsed * panIntensity);
 
-			scroll.offset(panMove);
+			scroll.offset(panX, panY);
 		}
 		
 		if ((shakeTime -= Game.elapsed) > 0) {

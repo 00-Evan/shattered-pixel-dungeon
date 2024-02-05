@@ -62,6 +62,10 @@ public class KeyEvent {
 	}
 	
 	public static synchronized void processKeyEvents(){
+		if (keyEvents.isEmpty()) {
+			return;
+		}
+
 		for (KeyEvent k : keyEvents){
 			if (KeyBindings.getActionForKey(k) == GameAction.LEFT_CLICK){
 				Game.inputHandler.emulateTouch(ControllerHandler.CONTROLLER_POINTER_ID, PointerEvent.LEFT, k.pressed);
