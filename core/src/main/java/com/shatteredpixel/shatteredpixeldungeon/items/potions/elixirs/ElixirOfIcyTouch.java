@@ -55,10 +55,10 @@ public class ElixirOfIcyTouch extends Elixir {
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{
-			inputs =  new Class[]{PotionOfSnapFreeze.class, AlchemicalCatalyst.class};
-			inQuantity = new int[]{1, 1};
+			inputs =  new Class[]{PotionOfSnapFreeze.class};
+			inQuantity = new int[]{1};
 			
-			cost = 6;
+			cost = 14;
 			
 			output = ElixirOfIcyTouch.class;
 			outQuantity = 1;

@@ -26,7 +26,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -36,6 +38,8 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndEnergizeItem;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoItem;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
 import com.watabou.noosa.audio.Sample;
+
+import java.util.ArrayList;
 
 public class Alchemize extends Spell {
 	
@@ -56,19 +60,40 @@ public class Alchemize extends Spell {
 		return (int)(40 * (quantity/8f));
 	}
 
-	//TODO also allow alchemical catalyst? Or save that for an elixir/brew?
-	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
+	//TODO this can't be simple anymore =S
+	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe {
 
-		{
-			inputs =  new Class[]{ArcaneCatalyst.class};
-			inQuantity = new int[]{1};
-			
-			cost = 2;
-			
-			output = Alchemize.class;
-			outQuantity = 8;
+		@Override
+		public boolean testIngredients(ArrayList<Item> ingredients) {
+			if (ingredients.size() != 2) return false;
+
+			if (ingredients.get(0) instanceof Plant.Seed && ingredients.get(1) instanceof Runestone){
+				return true;
+			}
+
+			if (ingredients.get(0) instanceof Runestone && ingredients.get(1) instanceof Plant.Seed){
+				return true;
+			}
+
+			return false;
 		}
-		
+
+		@Override
+		public int cost(ArrayList<Item> ingredients) {
+			return 6;
+		}
+
+		@Override
+		public Item brew(ArrayList<Item> ingredients) {
+			ingredients.get(0).quantity(ingredients.get(0).quantity()-1);
+			ingredients.get(1).quantity(ingredients.get(1).quantity()-1);
+			return sampleOutput(null);
+		}
+
+		@Override
+		public Item sampleOutput(ArrayList<Item> ingredients) {
+			return new Alchemize().quantity(8);
+		}
 	}
 
 	private static WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {

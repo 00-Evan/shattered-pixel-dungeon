@@ -123,10 +123,10 @@ public class TelekineticGrab extends TargetedSpell {
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 
 		{
-			inputs =  new Class[]{LiquidMetal.class, ArcaneCatalyst.class};
-			inQuantity = new int[]{10, 1};
+			inputs =  new Class[]{LiquidMetal.class};
+			inQuantity = new int[]{10};
 
-			cost = 2;
+			cost = 11;
 
 			output = TelekineticGrab.class;
 			outQuantity = 6;

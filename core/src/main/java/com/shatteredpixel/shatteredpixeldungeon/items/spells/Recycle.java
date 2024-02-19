@@ -99,10 +99,10 @@ public class Recycle extends InventorySpell {
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{
-			inputs =  new Class[]{ScrollOfTransmutation.class, ArcaneCatalyst.class};
+			inputs =  new Class[]{ScrollOfTransmutation.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 8;
+			cost = 17;
 			
 			output = Recycle.class;
 			outQuantity = 12;

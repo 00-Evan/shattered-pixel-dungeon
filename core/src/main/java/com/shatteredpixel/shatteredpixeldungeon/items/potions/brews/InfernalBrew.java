@@ -68,10 +68,10 @@ public class InfernalBrew extends Brew {
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{
-			inputs =  new Class[]{PotionOfLiquidFlame.class, AlchemicalCatalyst.class};
-			inQuantity = new int[]{1, 1};
+			inputs =  new Class[]{PotionOfLiquidFlame.class};
+			inQuantity = new int[]{1};
 			
-			cost = 4;
+			cost = 12;
 			
 			output = InfernalBrew.class;
 			outQuantity = 1;

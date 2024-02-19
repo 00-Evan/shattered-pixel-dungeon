@@ -58,10 +58,10 @@ public class ElixirOfDragonsBlood extends Elixir {
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{
-			inputs =  new Class[]{PotionOfDragonsBreath.class, AlchemicalCatalyst.class};
-			inQuantity = new int[]{1, 1};
+			inputs =  new Class[]{PotionOfDragonsBreath.class};
+			inQuantity = new int[]{1};
 			
-			cost = 6;
+			cost = 14;
 			
 			output = ElixirOfDragonsBlood.class;
 			outQuantity = 1;

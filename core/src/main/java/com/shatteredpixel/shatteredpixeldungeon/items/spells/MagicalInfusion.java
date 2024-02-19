@@ -80,10 +80,10 @@ public class MagicalInfusion extends InventorySpell {
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{
-			inputs =  new Class[]{ScrollOfUpgrade.class, ArcaneCatalyst.class};
-			inQuantity = new int[]{1, 1};
+			inputs =  new Class[]{ScrollOfUpgrade.class};
+			inQuantity = new int[]{1};
 			
-			cost = 4;
+			cost = 13;
 			
 			output = MagicalInfusion.class;
 			outQuantity = 1;

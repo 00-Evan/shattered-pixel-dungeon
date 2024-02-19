@@ -67,10 +67,10 @@ public class BlizzardBrew extends Brew {
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{
-			inputs =  new Class[]{PotionOfFrost.class, AlchemicalCatalyst.class};
-			inQuantity = new int[]{1, 1};
+			inputs =  new Class[]{PotionOfFrost.class};
+			inQuantity = new int[]{1};
 			
-			cost = 3;
+			cost = 11;
 			
 			output = BlizzardBrew.class;
 			outQuantity = 1;
