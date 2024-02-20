@@ -49,8 +49,12 @@ public class AquaBlast extends TargetedSpell {
 	
 	@Override
 	public int value() {
-		//prices of ingredients, divided by output quantity, rounds down
-		return (int)((60 + 40) * (quantity/8f));
+		return (int)(60 * (quantity/8f));
+	}
+
+	@Override
+	public int energyVal() {
+		return (int)(12 * (quantity/8f));
 	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {

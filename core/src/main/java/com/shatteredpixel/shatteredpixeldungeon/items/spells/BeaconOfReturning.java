@@ -212,8 +212,12 @@ public class BeaconOfReturning extends Spell {
 	
 	@Override
 	public int value() {
-		//prices of ingredients, divided by output quantity, rounds down
-		return (int)((50 + 40) * (quantity/5f));
+		return (int)(60 * (quantity/5f));
+	}
+
+	@Override
+	public int energyVal() {
+		return (int)(12 * (quantity/5f));
 	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {

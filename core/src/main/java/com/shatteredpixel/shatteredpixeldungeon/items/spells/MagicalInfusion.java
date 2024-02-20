@@ -73,8 +73,12 @@ public class MagicalInfusion extends InventorySpell {
 	
 	@Override
 	public int value() {
-		//prices of ingredients
-		return (50 + 40) * quantity;
+		return 60 * quantity;
+	}
+
+	@Override
+	public int energyVal() {
+		return 12 * quantity;
 	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {

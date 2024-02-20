@@ -56,11 +56,16 @@ public class Alchemize extends Spell {
 	
 	@Override
 	public int value() {
-		//prices of ingredients, divided by output quantity, rounds down
-		return (int)(40 * (quantity/8f));
+		//cheap, as ingredients are cheap
+		return (int)(20 * (quantity/8f));
 	}
 
-	//TODO this can't be simple anymore =S
+	@Override
+	public int energyVal() {
+		//also cheap, same reason
+		return (int)(4 * (quantity/8f));
+	}
+
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe {
 
 		@Override

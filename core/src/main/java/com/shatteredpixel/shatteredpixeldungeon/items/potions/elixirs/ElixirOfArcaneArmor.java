@@ -39,12 +39,6 @@ public class ElixirOfArcaneArmor extends Elixir {
 		Buff.affect(hero, ArcaneArmor.class).set(5 + hero.lvl/2, 80);
 	}
 	
-	@Override
-	public int value() {
-		//prices of ingredients
-		return quantity * (60 + 30);
-	}
-	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{

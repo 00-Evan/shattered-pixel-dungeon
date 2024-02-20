@@ -49,12 +49,6 @@ public class ElixirOfDragonsBlood extends Elixir {
 		return 0xFFFF002A;
 	}
 	
-	@Override
-	public int value() {
-		//prices of ingredients
-		return quantity * (50 + 40);
-	}
-	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{

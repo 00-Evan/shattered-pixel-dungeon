@@ -46,12 +46,6 @@ public class ElixirOfIcyTouch extends Elixir {
 		return 0xFF18C3E6;
 	}
 	
-	@Override
-	public int value() {
-		//prices of ingredients
-		return quantity * (50 + 40);
-	}
-	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{

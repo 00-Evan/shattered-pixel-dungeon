@@ -66,12 +66,6 @@ public class ElixirOfMight extends Elixir {
 		return Messages.get(this, "desc", HTBoost.boost(Dungeon.hero.HT));
 	}
 	
-	@Override
-	public int value() {
-		//prices of ingredients
-		return quantity * (50 + 40);
-	}
-	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{

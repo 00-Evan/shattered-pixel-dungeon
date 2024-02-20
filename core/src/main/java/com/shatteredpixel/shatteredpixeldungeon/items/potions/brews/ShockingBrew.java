@@ -54,12 +54,6 @@ public class ShockingBrew extends Brew {
 		}
 	}
 	
-	@Override
-	public int value() {
-		//prices of ingredients
-		return quantity * (40 + 40);
-	}
-	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{

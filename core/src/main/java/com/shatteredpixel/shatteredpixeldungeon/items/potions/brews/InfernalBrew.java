@@ -59,12 +59,6 @@ public class InfernalBrew extends Brew {
 		GameScene.add( Blob.seed( cell, centerVolume, Inferno.class ) );
 	}
 	
-	@Override
-	public int value() {
-		//prices of ingredients
-		return quantity * (30 + 40);
-	}
-	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{
