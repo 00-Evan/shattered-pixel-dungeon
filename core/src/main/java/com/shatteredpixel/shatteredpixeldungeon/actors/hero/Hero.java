@@ -1155,7 +1155,7 @@ public class Hero extends Char {
 		}
 	}
 
-	public boolean actMine(HeroAction.Mine action){
+	private boolean actMine(HeroAction.Mine action){
 		if (Dungeon.level.adjacent(pos, action.dst)){
 			path = null;
 			if ((Dungeon.level.map[action.dst] == Terrain.WALL
