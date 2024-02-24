@@ -592,6 +592,7 @@ public class ItemSpriteSheet {
 	public static final int BREW_BLIZZARD   = BREWS+1;
 	public static final int BREW_SHOCKING   = BREWS+2;
 	public static final int BREW_CAUSTIC    = BREWS+3;
+	public static final int BREW_AQUA       = BREWS+4;
 	
 	private static final int ELIXIRS        =                               xy(9, 25);  //8 slots
 	public static final int ELIXIR_HONEY    = ELIXIRS+0;
@@ -601,9 +602,12 @@ public class ItemSpriteSheet {
 	public static final int ELIXIR_TOXIC    = ELIXIRS+4;
 	public static final int ELIXIR_ICY      = ELIXIRS+5;
 	public static final int ELIXIR_ARCANE   = ELIXIRS+6;
+	public static final int ELIXIR_FEATHER  = ELIXIRS+7;
 	static{
 		for (int i = BREWS; i < BREWS+16; i++)
 			assignItemRect(i, 12, 14);
+
+		assignItemRect(BREW_AQUA, 9, 11);
 	}
 	
 	                                                                                    //16 free slots
@@ -615,9 +619,7 @@ public class ItemSpriteSheet {
 	public static final int WILD_ENERGY     = SPELLS+3;
 	public static final int RETURN_BEACON   = SPELLS+4;
 	public static final int SUMMON_ELE      = SPELLS+5;
-	
-	public static final int AQUA_BLAST      = SPELLS+7;
-	public static final int FEATHER_FALL    = SPELLS+8;
+
 	public static final int RECLAIM_TRAP    = SPELLS+9;
 	
 	public static final int CURSE_INFUSE    = SPELLS+11;
@@ -632,8 +634,6 @@ public class ItemSpriteSheet {
 		assignItemRect(RETURN_BEACON,    8, 16);
 		assignItemRect(SUMMON_ELE,       8, 16);
 		
-		assignItemRect(AQUA_BLAST,      11, 11);
-		assignItemRect(FEATHER_FALL,    11, 11);
 		assignItemRect(RECLAIM_TRAP,    11, 11);
 		
 		assignItemRect(CURSE_INFUSE,    10, 15);

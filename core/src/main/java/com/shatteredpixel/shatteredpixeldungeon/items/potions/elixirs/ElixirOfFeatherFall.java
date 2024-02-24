@@ -19,12 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.spells;
+package com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
@@ -33,36 +31,28 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.audio.Sample;
 
-public class FeatherFall extends Spell {
-	
+public class ElixirOfFeatherFall extends Elixir {
+
 	{
-		image = ItemSpriteSheet.FEATHER_FALL;
+		image = ItemSpriteSheet.ELIXIR_FEATHER;
 	}
-	
+
 	@Override
-	protected void onCast(Hero hero) {
+	public void apply(Hero hero) {
 		Buff.append(hero, FeatherBuff.class, FeatherBuff.DURATION);
-		hero.sprite.operate(hero.pos);
-		Sample.INSTANCE.play(Assets.Sounds.READ );
-		hero.sprite.emitter().burst( Speck.factory( Speck.JET ), 20);
-		
+
+		hero.sprite.emitter().burst(Speck.factory(Speck.JET), 20);
 		GLog.p(Messages.get(this, "light"));
-		
-		detach( curUser.belongings.backpack );
-		updateQuickslot();
-		Invisibility.dispel();
-		hero.spendAndNext( 1f );
 	}
-	
+
 	public static class FeatherBuff extends FlavourBuff {
 		//does nothing, just waits to be triggered by chasm falling
 		{
 			type = buffType.POSITIVE;
 		}
 
-		public static final float DURATION	= 30f;
+		public static final float DURATION	= 50f;
 
 		@Override
 		public int icon() {
@@ -79,7 +69,7 @@ public class FeatherFall extends Spell {
 			return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 		}
 	}
-	
+
 	@Override
 	public int value() {
 		return (int)(60 * (quantity/2f));
@@ -89,18 +79,19 @@ public class FeatherFall extends Spell {
 	public int energyVal() {
 		return (int)(12 * (quantity/2f));
 	}
-	
+
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
-		
+
 		{
 			inputs =  new Class[]{PotionOfLevitation.class};
 			inQuantity = new int[]{1};
-			
+
 			cost = 17;
-			
-			output = FeatherFall.class;
+
+			output = ElixirOfFeatherFall.class;
 			outQuantity = 2;
 		}
-		
+
 	}
+
 }

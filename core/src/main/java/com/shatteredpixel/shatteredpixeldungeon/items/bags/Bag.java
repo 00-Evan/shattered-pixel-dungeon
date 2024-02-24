@@ -156,7 +156,12 @@ public class Bag extends Item implements Iterable<Item> {
 
 		loading = true;
 		for (Bundlable item : bundle.getCollection( ITEMS )) {
-			if (item != null) ((Item)item).collect( this );
+			if (item != null){
+				if (!((Item)item).collect( this )){
+					//force-add the item if necessary, such as if its item category changed after an update
+					items.add((Item) item);
+				}
+			}
 		}
 		loading = false;
 	}
