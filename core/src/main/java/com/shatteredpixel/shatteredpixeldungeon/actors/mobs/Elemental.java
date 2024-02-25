@@ -263,7 +263,10 @@ public abstract class Elemental extends Mob {
 
 		@Override
 		protected boolean act() {
-			if (targetingPos != -1){
+			//fire a charged attack instead of any other action, as long as it is possible to do so
+			if (targetingPos != -1 && state == HUNTING){
+				//account for bolt hitting walls, in case position suddenly changed
+				targetingPos = new Ballistica( pos, targetingPos, Ballistica.STOP_SOLID | Ballistica.STOP_TARGET ).collisionPos;
 				if (sprite != null && (sprite.visible || Dungeon.level.heroFOV[targetingPos])) {
 					sprite.zap( targetingPos );
 					return false;
@@ -272,6 +275,11 @@ public abstract class Elemental extends Mob {
 					return true;
 				}
 			} else {
+
+				if (state != HUNTING){
+					targetingPos = -1;
+				}
+
 				return super.act();
 			}
 		}
@@ -322,8 +330,15 @@ public abstract class Elemental extends Mob {
 
 
 			} else {
-				rangedCooldown = 1;
-				return super.doAttack(enemy);
+
+				if (sprite != null && (sprite.visible || Dungeon.level.heroFOV[targetingPos])) {
+					sprite.zap( targetingPos );
+					return false;
+				} else {
+					zap();
+					return true;
+				}
+
 			}
 		}
 
