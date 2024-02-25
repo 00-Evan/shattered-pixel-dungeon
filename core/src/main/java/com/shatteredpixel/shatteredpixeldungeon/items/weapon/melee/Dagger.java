@@ -117,7 +117,7 @@ public class Dagger extends MeleeWeapon {
 		}
 
 		wep.beforeAbilityUsed(hero, null);
-		Buff.affect(hero, Invisibility.class, Actor.TICK);
+		Buff.affect(hero, Invisibility.class);
 		hero.next();
 
 		Dungeon.hero.sprite.turnTo( Dungeon.hero.pos, target);
