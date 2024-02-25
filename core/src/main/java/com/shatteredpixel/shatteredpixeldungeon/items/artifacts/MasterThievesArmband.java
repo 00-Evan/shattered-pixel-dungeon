@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Surprise;
@@ -121,7 +122,8 @@ public class MasterThievesArmband extends Artifact {
 				Char ch = Actor.findChar(target);
 				if (ch instanceof Shopkeeper){
 					GLog.w( Messages.get(MasterThievesArmband.class, "steal_shopkeeper") );
-				} else if (ch.alignment != Char.Alignment.ENEMY){
+				} else if (ch.alignment != Char.Alignment.ENEMY
+						&& !(ch instanceof Mimic && ch.alignment == Char.Alignment.NEUTRAL)){
 					GLog.w( Messages.get(MasterThievesArmband.class, "no_target") );
 				} else if (ch instanceof Mob) {
 					curUser.busy();
