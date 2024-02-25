@@ -212,9 +212,9 @@ public class WndJournal extends WndTabbed {
 	public static class AlchemyTab extends Component {
 		
 		private RedButton[] pageButtons;
-		private static final int NUM_BUTTONS = 10;
+		private static final int NUM_BUTTONS = 9;
 		
-		private static final int[] spriteIndexes = {10, 12, 7, 9, 11, 8, 3, 13, 14, 15};
+		private static final int[] spriteIndexes = {10, 12, 7, 9, 11, 8, 3, 14, 15};
 		
 		public static int currentPageIdx   = 0;
 		
@@ -277,7 +277,7 @@ public class WndJournal extends WndTabbed {
 					if (i == 4){
 						y += ITEM_HEIGHT;
 						x = 0;
-						buttonWidth = width()/5;
+						buttonWidth = width()/4;
 					}
 				}
 			}

@@ -115,13 +115,11 @@ public class Potion extends Item {
 		mustThrowPots.add(PotionOfShroudingFog.class);
 		mustThrowPots.add(PotionOfStormClouds.class);
 		
-		//also all brews, hardcoded
+		//also all brews except unstable, hardcoded
 	}
 	
 	private static final HashSet<Class<?extends Potion>> canThrowPots = new HashSet<>();
 	static{
-		canThrowPots.add(AlchemicalCatalyst.class);
-		
 		canThrowPots.add(PotionOfPurity.class);
 		canThrowPots.add(PotionOfLevitation.class);
 		

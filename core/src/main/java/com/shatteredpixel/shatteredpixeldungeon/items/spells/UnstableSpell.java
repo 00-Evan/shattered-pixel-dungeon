@@ -37,7 +37,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
@@ -45,10 +44,10 @@ import com.watabou.utils.Reflection;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ArcaneCatalyst extends Spell {
-	
+public class UnstableSpell extends Spell {
+
 	{
-		image = ItemSpriteSheet.SCROLL_CATALYST;
+		image = ItemSpriteSheet.UNSTABLE_SPELL;
 	}
 	
 	private static HashMap<Class<? extends Scroll>, Float> scrollChances = new HashMap<>();
@@ -77,7 +76,8 @@ public class ArcaneCatalyst extends Spell {
 		curItem = s;
 		s.doRead();
 	}
-	
+
+	//lower values, as it's cheaper to make
 	@Override
 	public int value() {
 		return 40 * quantity;
@@ -89,50 +89,43 @@ public class ArcaneCatalyst extends Spell {
 	}
 
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe {
-		
+
 		@Override
 		public boolean testIngredients(ArrayList<Item> ingredients) {
 			boolean scroll = false;
-			boolean secondary = false;
-			
+			boolean stone = false;
+
 			for (Item i : ingredients){
-				if (i instanceof Plant.Seed || i instanceof Runestone){
-					secondary = true;
+				if (i instanceof Runestone){
+					stone = true;
 					//if it is a regular or exotic potion
 				} else if (ExoticScroll.regToExo.containsKey(i.getClass())
 						|| ExoticScroll.regToExo.containsValue(i.getClass())) {
 					scroll = true;
 				}
 			}
-			
-			return scroll && secondary;
+
+			return scroll && stone;
 		}
 		
 		@Override
 		public int cost(ArrayList<Item> ingredients) {
-			for (Item i : ingredients){
-				if (i instanceof Plant.Seed){
-					return 1;
-				} else if (i instanceof Runestone){
-					return 0;
-				}
-			}
-			return 0;
+			return 2;
 		}
-		
+
 		@Override
 		public Item brew(ArrayList<Item> ingredients) {
-			
+
 			for (Item i : ingredients){
 				i.quantity(i.quantity()-1);
 			}
-			
+
 			return sampleOutput(null);
 		}
-		
+
 		@Override
 		public Item sampleOutput(ArrayList<Item> ingredients) {
-			return new ArcaneCatalyst();
+			return new UnstableSpell();
 		}
 	}
 }

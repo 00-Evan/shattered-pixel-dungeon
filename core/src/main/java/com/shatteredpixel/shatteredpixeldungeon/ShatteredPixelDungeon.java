@@ -49,6 +49,12 @@ public class ShatteredPixelDungeon extends Game {
 
 		//pre-v2.4.0
 		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.UnstableBrew.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.spells.UnstableSpell.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.spells.ArcaneCatalyst" );
+		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfFeatherFall.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.spells.FeatherFall" );
 		com.watabou.utils.Bundle.addAlias(

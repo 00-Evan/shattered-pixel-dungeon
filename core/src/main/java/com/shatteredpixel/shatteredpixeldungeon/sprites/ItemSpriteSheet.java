@@ -483,13 +483,11 @@ public class ItemSpriteSheet {
 	public static final int SCROLL_BERKANAN = SCROLLS+9;
 	public static final int SCROLL_ODAL     = SCROLLS+10;
 	public static final int SCROLL_TIWAZ    = SCROLLS+11;
-	
-	public static final int SCROLL_CATALYST = SCROLLS+13;
-	public static final int ARCANE_RESIN    = SCROLLS+14;
+
+	public static final int ARCANE_RESIN    = SCROLLS+13;
 	static {
 		for (int i = SCROLLS; i < SCROLLS+16; i++)
 			assignItemRect(i, 15, 14);
-		assignItemRect(SCROLL_CATALYST, 12, 11);
 		assignItemRect(ARCANE_RESIN   , 12, 11);
 	}
 	
@@ -542,12 +540,11 @@ public class ItemSpriteSheet {
 	public static final int POTION_CHARCOAL = POTIONS+9;
 	public static final int POTION_SILVER   = POTIONS+10;
 	public static final int POTION_IVORY    = POTIONS+11;
-	public static final int POTION_CATALYST = POTIONS+13;
-	public static final int LIQUID_METAL    = POTIONS+14;
+
+	public static final int LIQUID_METAL    = POTIONS+13;
 	static {
 		for (int i = POTIONS; i < POTIONS+16; i++)
 			assignItemRect(i, 12, 14);
-		assignItemRect(POTION_CATALYST, 6, 15);
 		assignItemRect(LIQUID_METAL,    8, 15);
 	}
 	
@@ -593,6 +590,7 @@ public class ItemSpriteSheet {
 	public static final int BREW_SHOCKING   = BREWS+2;
 	public static final int BREW_CAUSTIC    = BREWS+3;
 	public static final int BREW_AQUA       = BREWS+4;
+	public static final int BREW_UNSTABLE   = BREWS+5;
 	
 	private static final int ELIXIRS        =                               xy(9, 25);  //8 slots
 	public static final int ELIXIR_HONEY    = ELIXIRS+0;
@@ -620,6 +618,7 @@ public class ItemSpriteSheet {
 	public static final int RETURN_BEACON   = SPELLS+4;
 	public static final int SUMMON_ELE      = SPELLS+5;
 
+	public static final int UNSTABLE_SPELL  = SPELLS+8;
 	public static final int RECLAIM_TRAP    = SPELLS+9;
 	
 	public static final int CURSE_INFUSE    = SPELLS+11;
@@ -633,7 +632,8 @@ public class ItemSpriteSheet {
 		assignItemRect(WILD_ENERGY,      8, 16);
 		assignItemRect(RETURN_BEACON,    8, 16);
 		assignItemRect(SUMMON_ELE,       8, 16);
-		
+
+		assignItemRect(UNSTABLE_SPELL,  12, 13);
 		assignItemRect(RECLAIM_TRAP,    11, 11);
 		
 		assignItemRect(CURSE_INFUSE,    10, 15);

@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.Brew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.Elixir;
@@ -75,9 +74,9 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		} else if (item instanceof MissileWeapon){
 			return item.getClass() != Dart.class;
 
-		//all regular or exotic potions. No brews, elixirs, or catalysts
+		//all regular or exotic potions. No brews or elixirs
 		} else if (item instanceof Potion){
-			return !(item instanceof Elixir || item instanceof Brew || item instanceof AlchemicalCatalyst);
+			return !(item instanceof Elixir || item instanceof Brew);
 
 		//all regular or exotic scrolls, except itself
 		} else if (item instanceof Scroll){
