@@ -150,7 +150,7 @@ public enum Music {
 	}
 
 	public synchronized void update(){
-		if (fadeTotal > 0f){
+		if (fadeTotal > 0f && !paused){
 			fadeTime += Game.elapsed;
 
 			if (player != null) {
@@ -217,7 +217,7 @@ public enum Music {
 			player = Gdx.audio.newMusic(Gdx.files.internal(track));
 			player.setLooping(looping);
 			player.setVolume(volumeWithFade());
-			player.play();
+			if (!paused) player.play();
 			if (listener != null) {
 				player.setOnCompletionListener(listener);
 			}
@@ -232,14 +232,18 @@ public enum Music {
 		trackList = null;
 		stop();
 	}
+
+	private boolean paused = false;
 	
 	public synchronized void pause() {
+		paused = true;
 		if (player != null) {
 			player.pause();
 		}
 	}
 	
 	public synchronized void resume() {
+		paused = false;
 		if (player != null) {
 			player.play();
 			player.setLooping(looping);
