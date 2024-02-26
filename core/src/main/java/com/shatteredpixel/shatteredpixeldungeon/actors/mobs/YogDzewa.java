@@ -503,7 +503,7 @@ public class YogDzewa extends Mob {
 	@Override
 	public void aggro(Char ch) {
 		for (Mob mob : (Iterable<Mob>)Dungeon.level.mobs.clone()) {
-			if (Dungeon.level.distance(pos, mob.pos) <= 4 &&
+			if (mob != ch && Dungeon.level.distance(pos, mob.pos) <= 4 &&
 					(mob instanceof Larva || mob instanceof YogRipper || mob instanceof YogEye || mob instanceof YogScorpio)) {
 				mob.aggro(ch);
 			}
