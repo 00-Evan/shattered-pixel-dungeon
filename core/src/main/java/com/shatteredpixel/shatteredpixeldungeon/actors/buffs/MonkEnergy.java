@@ -341,15 +341,18 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 					return;
 				}
 
+				if (Buff.affect(hero, MonkEnergy.class).abilitiesEmpowered(hero)){
+					Buff.affect(hero, FlurryEmpowerTracker.class, 0f);
+				}
+
 				UnarmedAbilityTracker tracker = Buff.affect(hero, UnarmedAbilityTracker.class);
 				if (!hero.canAttack(enemy)){
 					GLog.w(Messages.get(MeleeWeapon.class, "ability_bad_position"));
 					tracker.detach();
+					if (hero.buff(FlurryEmpowerTracker.class) != null){
+						hero.buff(FlurryEmpowerTracker.class).detach();
+					}
 					return;
-				}
-
-				if (Buff.affect(hero, MonkEnergy.class).abilitiesEmpowered(hero)){
-					Buff.affect(hero, FlurryEmpowerTracker.class, 0f);
 				}
 
 				hero.sprite.attack(enemy.pos, new Callback() {
