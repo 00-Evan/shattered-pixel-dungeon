@@ -293,6 +293,17 @@ public class Item implements Bundlable {
 			return split;
 		}
 	}
+
+	public Item duplicate(){
+		Item dupe = Reflection.newInstance(getClass());
+		if (dupe == null){
+			return null;
+		}
+		Bundle copy = new Bundle();
+		this.storeInBundle(copy);
+		dupe.restoreFromBundle(copy);
+		return dupe;
+	}
 	
 	public final Item detach( Bag container ) {
 		
