@@ -351,19 +351,20 @@ abstract public class MissileWeapon extends Weapon {
 			if (parent.durability <= parent.durabilityPerUse()){
 				durability = 0;
 				parent.durability = MAX_DURABILITY;
+				GLog.n(Messages.get(this, "has_broken"));
 			} else {
 				parent.durability -= parent.durabilityPerUse();
 				if (parent.durability > 0 && parent.durability <= parent.durabilityPerUse()){
-					if (level() <= 0)GLog.w(Messages.get(this, "about_to_break"));
-					else             GLog.n(Messages.get(this, "about_to_break"));
+					GLog.w(Messages.get(this, "about_to_break"));
 				}
 			}
 			parent = null;
 		} else {
 			durability -= durabilityPerUse();
 			if (durability > 0 && durability <= durabilityPerUse()){
-				if (level() <= 0)GLog.w(Messages.get(this, "about_to_break"));
-				else             GLog.n(Messages.get(this, "about_to_break"));
+				GLog.w(Messages.get(this, "about_to_break"));
+			} else if (durability <= 0){
+				GLog.n(Messages.get(this, "has_broken"));
 			}
 		}
 	}
