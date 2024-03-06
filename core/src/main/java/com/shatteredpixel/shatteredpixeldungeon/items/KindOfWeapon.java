@@ -120,12 +120,12 @@ abstract public class KindOfWeapon extends EquipableItem {
 
 			if (wasInInv && hero.hasTalent(Talent.SWIFT_EQUIP)) {
 				if (hero.buff(Talent.SwiftEquipCooldown.class) == null){
-					hero.spendAndNext(-hero.cooldown());
+					hero.spendAndNext(-time2equip(hero));
 					Buff.affect(hero, Talent.SwiftEquipCooldown.class, 19f)
 							.secondUse = hero.pointsInTalent(Talent.SWIFT_EQUIP) == 2;
 					GLog.i(Messages.get(this, "swift_equip"));
 				} else if (hero.buff(Talent.SwiftEquipCooldown.class).hasSecondUse()) {
-					hero.spendAndNext(-hero.cooldown());
+					hero.spendAndNext(-time2equip(hero));
 					hero.buff(Talent.SwiftEquipCooldown.class).secondUse = false;
 					GLog.i(Messages.get(this, "swift_equip"));
 				} else {
@@ -164,12 +164,12 @@ abstract public class KindOfWeapon extends EquipableItem {
 
 			if (wasInInv && hero.hasTalent(Talent.SWIFT_EQUIP)) {
 				if (hero.buff(Talent.SwiftEquipCooldown.class) == null){
-					hero.spendAndNext(-hero.cooldown());
+					hero.spendAndNext(-time2equip(hero));
 					Buff.affect(hero, Talent.SwiftEquipCooldown.class, 19f)
 							.secondUse = hero.pointsInTalent(Talent.SWIFT_EQUIP) == 2;
 					GLog.i(Messages.get(this, "swift_equip"));
 				} else if (hero.buff(Talent.SwiftEquipCooldown.class).hasSecondUse()) {
-					hero.spendAndNext(-hero.cooldown());
+					hero.spendAndNext(-time2equip(hero));
 					hero.buff(Talent.SwiftEquipCooldown.class).secondUse = false;
 					GLog.i(Messages.get(this, "swift_equip"));
 				} else {
