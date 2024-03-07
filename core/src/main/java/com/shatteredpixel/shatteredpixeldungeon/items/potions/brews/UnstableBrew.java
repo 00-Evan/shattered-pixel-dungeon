@@ -81,18 +81,35 @@ public class UnstableBrew extends Brew {
 	
 	@Override
 	public void apply(Hero hero) {
-		Potion p = Reflection.newInstance(Random.chances(potionChances));
 		//Don't allow this to roll healing in pharma
-		while (Dungeon.isChallenged(Challenges.NO_HEALING) && p instanceof PotionOfHealing){
+		if (Dungeon.isChallenged(Challenges.NO_HEALING)){
+			potionChances.put(PotionOfHealing.class, 0f);
+		}
+
+		Potion p = Reflection.newInstance(Random.chances(potionChances));
+
+		//reroll the potion once if it wasn't a good potion to drink
+		if (mustThrowPots.contains(p.getClass())){
 			p = Reflection.newInstance(Random.chances(potionChances));
 		}
+
 		p.anonymize();
 		p.apply(hero);
+
+		if (Dungeon.isChallenged(Challenges.NO_HEALING)){
+			potionChances.put(PotionOfHealing.class, 3f);
+		}
 	}
 	
 	@Override
 	public void shatter(int cell) {
 		Potion p = Reflection.newInstance(Random.chances(potionChances));
+
+		//reroll the potion once if it wasn't a good potion to throw
+		if (!mustThrowPots.contains(p.getClass()) && !canThrowPots.contains(p.getClass())){
+			p = Reflection.newInstance(Random.chances(potionChances));
+		}
+
 		p.anonymize();
 		curItem = p;
 		p.shatter(cell);

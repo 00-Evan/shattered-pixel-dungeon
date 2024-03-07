@@ -43,6 +43,7 @@ import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class UnstableSpell extends Spell {
 
@@ -64,6 +65,28 @@ public class UnstableSpell extends Spell {
 		scrollChances.put( ScrollOfTerror.class,        2f );
 		scrollChances.put( ScrollOfTransmutation.class, 1f );
 	}
+
+	private static HashSet<Class<? extends Scroll>> nonCombatScrolls = new HashSet<>();
+	static {
+		nonCombatScrolls.add( ScrollOfIdentify.class );
+		nonCombatScrolls.add( ScrollOfRemoveCurse.class );
+		nonCombatScrolls.add( ScrollOfMagicMapping.class );
+		nonCombatScrolls.add( ScrollOfRecharging.class );
+		nonCombatScrolls.add( ScrollOfLullaby.class );
+		nonCombatScrolls.add( ScrollOfTeleportation.class );
+		nonCombatScrolls.add( ScrollOfTransmutation.class );
+	}
+
+	private static HashSet<Class<? extends Scroll>> combatScrolls = new HashSet<>();
+	static {
+		combatScrolls.add( ScrollOfMirrorImage.class );
+		combatScrolls.add( ScrollOfRecharging.class );
+		combatScrolls.add( ScrollOfLullaby.class );
+		combatScrolls.add( ScrollOfRetribution.class );
+		combatScrolls.add( ScrollOfRage.class );
+		combatScrolls.add( ScrollOfTeleportation.class );
+		combatScrolls.add( ScrollOfTerror.class );
+	}
 	
 	@Override
 	protected void onCast(Hero hero) {
@@ -72,6 +95,17 @@ public class UnstableSpell extends Spell {
 		updateQuickslot();
 		
 		Scroll s = Reflection.newInstance(Random.chances(scrollChances));
+
+		boolean enemy = hero.visibleEnemies() != 0;
+
+		//reroll the scroll once if there is an enemy and it is a non-combat scroll
+		// or if there is no enemy and it is a combat scroll
+		if (enemy && nonCombatScrolls.contains(s.getClass())){
+			s = Reflection.newInstance(Random.chances(scrollChances));
+		} else if (!enemy && combatScrolls.contains(s.getClass())){
+			s = Reflection.newInstance(Random.chances(scrollChances));
+		}
+
 		s.anonymize();
 		curItem = s;
 		s.doRead();
