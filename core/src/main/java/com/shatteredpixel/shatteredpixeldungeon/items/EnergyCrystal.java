@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -77,12 +76,6 @@ public class EnergyCrystal extends Item {
 	@Override
 	public boolean isIdentified() {
 		return true;
-	}
-
-	@Override
-	public Item random() {
-		quantity = Random.IntRange( 4, 6 );
-		return this;
 	}
 
 }
