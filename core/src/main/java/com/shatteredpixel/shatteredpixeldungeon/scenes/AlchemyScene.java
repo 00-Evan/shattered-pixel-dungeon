@@ -607,41 +607,9 @@ public class AlchemyScene extends PixelScene {
 		}
 		
 		if (result != null){
-			bubbleEmitter.start(Speck.factory( Speck.BUBBLE ), 0.01f, 100 );
-			smokeEmitter.burst(Speck.factory( Speck.WOOL ), 10 );
-			Sample.INSTANCE.play( Assets.Sounds.PUFF );
 
-			int resultQuantity = result.quantity();
-			if (!result.collect()){
-				Dungeon.level.drop(result, Dungeon.hero.pos);
-			}
+			craftItem(ingredients, result);
 
-			Statistics.itemsCrafted++;
-			Badges.validateItemsCrafted();
-			
-			try {
-				Dungeon.saveAll();
-			} catch (IOException e) {
-				ShatteredPixelDungeon.reportException(e);
-			}
-			
-			synchronized (inputs) {
-				for (int i = 0; i < inputs.length; i++) {
-					if (inputs[i] != null && inputs[i].item() != null) {
-						Item item = inputs[i].item();
-						if (item.quantity() <= 0) {
-							inputs[i].item(null);
-						} else {
-							inputs[i].slot.updateText();
-						}
-					}
-				}
-			}
-			
-			updateState();
-			//we reset the quantity in case the result was merged into another stack in the backpack
-			result.quantity(resultQuantity);
-			outputs[0].item(result);
 		}
 
 		boolean foundItems = true;
@@ -656,6 +624,44 @@ public class AlchemyScene extends PixelScene {
 		lastRecipe = recipe;
 		repeat.enable(foundItems);
 		cancel.enable(false);
+	}
+
+	public void craftItem( ArrayList<Item> ingredients, Item result ){
+		bubbleEmitter.start(Speck.factory( Speck.BUBBLE ), 0.01f, 100 );
+		smokeEmitter.burst(Speck.factory( Speck.WOOL ), 10 );
+		Sample.INSTANCE.play( Assets.Sounds.PUFF );
+
+		int resultQuantity = result.quantity();
+		if (!result.collect()){
+			Dungeon.level.drop(result, Dungeon.hero.pos);
+		}
+
+		Statistics.itemsCrafted++;
+		Badges.validateItemsCrafted();
+
+		try {
+			Dungeon.saveAll();
+		} catch (IOException e) {
+			ShatteredPixelDungeon.reportException(e);
+		}
+
+		synchronized (inputs) {
+			for (int i = 0; i < inputs.length; i++) {
+				if (inputs[i] != null && inputs[i].item() != null) {
+					Item item = inputs[i].item();
+					if (item.quantity() <= 0) {
+						inputs[i].item(null);
+					} else {
+						inputs[i].slot.updateText();
+					}
+				}
+			}
+		}
+
+		updateState();
+		//we reset the quantity in case the result was merged into another stack in the backpack
+		result.quantity(resultQuantity);
+		outputs[0].item(result);
 	}
 	
 	public void populate(ArrayList<Item> toFind, Belongings inventory){
