@@ -354,20 +354,21 @@ public class QuickRecipe extends Component {
 				return result;
 			case 7:
 				result.add(new QuickRecipe(new CausticBrew.Recipe()));
+				result.add(new QuickRecipe(new UnstableBrew.Recipe(), new ArrayList<>(Arrays.asList(new Potion.PlaceHolder(), new  Plant.Seed.PlaceHolder())), new UnstableBrew()));
 				result.add(new QuickRecipe(new BlizzardBrew.Recipe()));
+				result.add(new QuickRecipe(new ShockingBrew.Recipe()));
 				result.add(new QuickRecipe(new InfernalBrew.Recipe()));
 				result.add(new QuickRecipe(new AquaBrew.Recipe()));
-				result.add(new QuickRecipe(new ShockingBrew.Recipe()));
-				result.add(new QuickRecipe(new UnstableBrew.Recipe(), new ArrayList<>(Arrays.asList(new Potion.PlaceHolder(), new  Plant.Seed.PlaceHolder())), new UnstableBrew()));
+				result.add(null);
 				result.add(null);
 				result.add(new QuickRecipe(new ElixirOfHoneyedHealing.Recipe()));
 				result.add(new QuickRecipe(new ElixirOfAquaticRejuvenation.Recipe()));
-				result.add(new QuickRecipe(new ElixirOfMight.Recipe()));
-				result.add(new QuickRecipe(new ElixirOfDragonsBlood.Recipe()));
+				result.add(new QuickRecipe(new ElixirOfArcaneArmor.Recipe()));
 				result.add(new QuickRecipe(new ElixirOfIcyTouch.Recipe()));
 				result.add(new QuickRecipe(new ElixirOfToxicEssence.Recipe()));
+				result.add(new QuickRecipe(new ElixirOfDragonsBlood.Recipe()));
+				result.add(new QuickRecipe(new ElixirOfMight.Recipe()));
 				result.add(new QuickRecipe(new ElixirOfFeatherFall.Recipe()));
-				result.add(new QuickRecipe(new ElixirOfArcaneArmor.Recipe()));
 				return result;
 			case 8:
 				result.add(new QuickRecipe(new TelekineticGrab.Recipe()));

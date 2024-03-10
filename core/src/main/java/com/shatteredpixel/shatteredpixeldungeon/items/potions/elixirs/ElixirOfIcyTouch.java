@@ -51,7 +51,7 @@ public class ElixirOfIcyTouch extends Elixir {
 			inputs =  new Class[]{PotionOfSnapFreeze.class};
 			inQuantity = new int[]{1};
 			
-			cost = 14;
+			cost = 6;
 			
 			output = ElixirOfIcyTouch.class;
 			outQuantity = 1;

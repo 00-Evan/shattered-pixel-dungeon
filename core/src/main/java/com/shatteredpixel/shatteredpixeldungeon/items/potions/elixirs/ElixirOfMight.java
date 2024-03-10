@@ -71,7 +71,7 @@ public class ElixirOfMight extends Elixir {
 			inputs =  new Class[]{PotionOfStrength.class};
 			inQuantity = new int[]{1};
 			
-			cost = 14;
+			cost = 16;
 			
 			output = ElixirOfMight.class;
 			outQuantity = 1;

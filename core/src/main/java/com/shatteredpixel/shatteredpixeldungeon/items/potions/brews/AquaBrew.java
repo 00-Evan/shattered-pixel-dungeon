@@ -62,7 +62,7 @@ public class AquaBrew extends Brew {
 			inputs =  new Class[]{PotionOfStormClouds.class};
 			inQuantity = new int[]{1};
 
-			cost = 11;
+			cost = 8;
 
 			output = AquaBrew.class;
 			outQuantity = 8;

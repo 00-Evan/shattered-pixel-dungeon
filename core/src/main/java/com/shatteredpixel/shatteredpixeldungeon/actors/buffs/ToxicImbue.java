@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
@@ -29,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 
 public class ToxicImbue extends Buff {
 	
@@ -62,11 +64,22 @@ public class ToxicImbue extends Buff {
 
 	@Override
 	public boolean act() {
-		GameScene.add(Blob.seed(target.pos, 50, ToxicGas.class));
+		if (left > 0) {
+			//spreads 54 units of gas total
+			int centerVolume = 6;
+			for (int i : PathFinder.NEIGHBOURS8) {
+				if (!Dungeon.level.solid[target.pos + i]) {
+					GameScene.add(Blob.seed(target.pos + i, 6, ToxicGas.class));
+				} else {
+					centerVolume += 6;
+				}
+			}
+			GameScene.add(Blob.seed(target.pos, centerVolume, ToxicGas.class));
+		}
 
 		spend(TICK);
 		left -= TICK;
-		if (left <= 0){
+		if (left <= -5){
 			detach();
 		}
 
@@ -75,7 +88,7 @@ public class ToxicImbue extends Buff {
 
 	@Override
 	public int icon() {
-		return BuffIndicator.IMBUE;
+		return left > 0 ? BuffIndicator.IMBUE : BuffIndicator.NONE;
 	}
 
 	@Override

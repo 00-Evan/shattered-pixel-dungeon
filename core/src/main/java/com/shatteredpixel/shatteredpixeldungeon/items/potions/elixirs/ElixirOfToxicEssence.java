@@ -25,7 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ToxicImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PoisonParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCorrosiveGas;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class ElixirOfToxicEssence extends Elixir {
@@ -48,10 +48,10 @@ public class ElixirOfToxicEssence extends Elixir {
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{
-			inputs =  new Class[]{PotionOfToxicGas.class};
+			inputs =  new Class[]{PotionOfCorrosiveGas.class};
 			inQuantity = new int[]{1};
 			
-			cost = 14;
+			cost = 8;
 			
 			output = ElixirOfToxicEssence.class;
 			outQuantity = 1;

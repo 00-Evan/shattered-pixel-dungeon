@@ -68,7 +68,7 @@ public class CausticBrew extends Brew {
 			inputs =  new Class[]{PotionOfToxicGas.class, GooBlob.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 2;
+			cost = 0;
 			
 			output = CausticBrew.class;
 			outQuantity = 1;
