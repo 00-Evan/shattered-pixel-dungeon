@@ -153,7 +153,7 @@ public class UnstableBrew extends Brew {
 
 		@Override
 		public int cost(ArrayList<Item> ingredients) {
-			return 2;
+			return 1;
 		}
 
 		@Override

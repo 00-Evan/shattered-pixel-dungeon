@@ -87,7 +87,7 @@ public class MagicalInfusion extends InventorySpell {
 			inputs =  new Class[]{ScrollOfUpgrade.class};
 			inQuantity = new int[]{1};
 			
-			cost = 13;
+			cost = 12;
 			
 			output = MagicalInfusion.class;
 			outQuantity = 1;

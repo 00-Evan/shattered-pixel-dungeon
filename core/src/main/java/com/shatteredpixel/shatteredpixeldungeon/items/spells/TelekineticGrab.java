@@ -116,12 +116,12 @@ public class TelekineticGrab extends TargetedSpell {
 
 	@Override
 	public int value() {
-		return (int)(60 * (quantity/6f));
+		return (int)(60 * (quantity/8f));
 	}
 
 	@Override
 	public int energyVal() {
-		return (int)(12 * (quantity/6f));
+		return (int)(12 * (quantity/8f));
 	}
 
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
@@ -130,10 +130,10 @@ public class TelekineticGrab extends TargetedSpell {
 			inputs =  new Class[]{LiquidMetal.class};
 			inQuantity = new int[]{10};
 
-			cost = 11;
+			cost = 10;
 
 			output = TelekineticGrab.class;
-			outQuantity = 6;
+			outQuantity = 8;
 		}
 
 	}

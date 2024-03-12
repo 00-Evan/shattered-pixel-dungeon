@@ -611,35 +611,34 @@ public class ItemSpriteSheet {
 	                                                                                    //16 free slots
 	
 	private static final int SPELLS         =                               xy(1, 27);  //16 slots
-	public static final int MAGIC_PORTER    = SPELLS+0;
+	public static final int WILD_ENERGY     = SPELLS+0;
 	public static final int PHASE_SHIFT     = SPELLS+1;
 	public static final int TELE_GRAB       = SPELLS+2;
-	public static final int WILD_ENERGY     = SPELLS+3;
-	public static final int RETURN_BEACON   = SPELLS+4;
-	public static final int SUMMON_ELE      = SPELLS+5;
+	public static final int UNSTABLE_SPELL  = SPELLS+3;
 
-	public static final int UNSTABLE_SPELL  = SPELLS+8;
-	public static final int RECLAIM_TRAP    = SPELLS+9;
-	
-	public static final int CURSE_INFUSE    = SPELLS+11;
-	public static final int MAGIC_INFUSE    = SPELLS+12;
-	public static final int ALCHEMIZE       = SPELLS+13;
-	public static final int RECYCLE         = SPELLS+14;
+	public static final int CURSE_INFUSE    = SPELLS+5;
+	public static final int MAGIC_INFUSE    = SPELLS+6;
+	public static final int ALCHEMIZE       = SPELLS+7;
+	public static final int RECYCLE         = SPELLS+8;
+
+	public static final int RECLAIM_TRAP    = SPELLS+10;
+	public static final int RETURN_BEACON   = SPELLS+11;
+	public static final int SUMMON_ELE      = SPELLS+12;
+
 	static{
-		assignItemRect(MAGIC_PORTER,    12, 11);
+		assignItemRect(WILD_ENERGY,     12, 11);
 		assignItemRect(PHASE_SHIFT,     12, 11);
 		assignItemRect(TELE_GRAB,       12, 11);
-		assignItemRect(WILD_ENERGY,      8, 16);
-		assignItemRect(RETURN_BEACON,    8, 16);
-		assignItemRect(SUMMON_ELE,       8, 16);
-
 		assignItemRect(UNSTABLE_SPELL,  12, 13);
-		assignItemRect(RECLAIM_TRAP,    11, 11);
-		
+
 		assignItemRect(CURSE_INFUSE,    10, 15);
 		assignItemRect(MAGIC_INFUSE,    10, 15);
 		assignItemRect(ALCHEMIZE,       10, 15);
 		assignItemRect(RECYCLE,         10, 15);
+
+		assignItemRect(RECLAIM_TRAP,     8, 16);
+		assignItemRect(RETURN_BEACON,    8, 16);
+		assignItemRect(SUMMON_ELE,       8, 16);
 	}
 	
 	private static final int FOOD       =                                   xy(1, 28);  //16 slots

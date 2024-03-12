@@ -115,12 +115,12 @@ public class ReclaimTrap extends TargetedSpell {
 	
 	@Override
 	public int value() {
-		return (int)(60 * (quantity/4f));
+		return (int)(60 * (quantity/5f));
 	}
 
 	@Override
 	public int energyVal() {
-		return (int)(12 * (quantity/4f));
+		return (int)(12 * (quantity/5f));
 	}
 	
 	private static final String STORED_TRAP = "stored_trap";
@@ -143,10 +143,10 @@ public class ReclaimTrap extends TargetedSpell {
 			inputs =  new Class[]{ScrollOfMagicMapping.class, MetalShard.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 6;
+			cost = 8;
 			
 			output = ReclaimTrap.class;
-			outQuantity = 4;
+			outQuantity = 5;
 		}
 		
 	}

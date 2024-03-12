@@ -116,8 +116,6 @@ public class SummonElemental extends Spell {
 			curUser.sprite.operate(curUser.pos);
 			curUser.spendAndNext(Actor.TICK);
 
-			summonClass = Elemental.AllyNewBornElemental.class;
-
 			detach(Dungeon.hero.belongings.backpack);
 
 		} else {
@@ -229,10 +227,10 @@ public class SummonElemental extends Spell {
 			inputs =  new Class[]{Embers.class};
 			inQuantity = new int[]{1};
 
-			cost = 15;
+			cost = 10;
 
 			output = SummonElemental.class;
-			outQuantity = 5;
+			outQuantity = 6;
 		}
 
 	}
