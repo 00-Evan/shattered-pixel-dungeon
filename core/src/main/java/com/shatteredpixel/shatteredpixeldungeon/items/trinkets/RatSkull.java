@@ -19,28 +19,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.quest;
+package com.shatteredpixel.shatteredpixeldungeon.items.trinkets;
 
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-//this one's still hanging around to support quests from old saves
-//I may reuse it at some point.
-public class RatSkull extends Item {
-	
+public class RatSkull extends Trinket {
+
 	{
-		image = ItemSpriteSheet.SKULL;
-		
-		unique = true;
+		image = ItemSpriteSheet.RAT_SKULL;
 	}
-	
+
 	@Override
-	public boolean isUpgradable() {
-		return false;
+	protected int upgradeEnergyCost() {
+		return 5 + 10*level();
 	}
-	
+
 	@Override
-	public boolean isIdentified() {
-		return true;
+	public String desc() {
+		return Messages.get(this, "desc", (int)(exoticChanceMultiplier(buffedLvl())));
 	}
+
+	public static float exoticChanceMultiplier(){
+		return exoticChanceMultiplier(trinketLevel(RatSkull.class));
+	}
+
+	public static float exoticChanceMultiplier( int level ){
+		if (level == -1){
+			return 1f;
+		} else {
+			return 2f + 2f*level;
+		}
+	}
+
 }

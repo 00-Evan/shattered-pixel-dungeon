@@ -418,7 +418,7 @@ public class ItemSpriteSheet {
 			assignItemRect(i, 8, 10);
 	}
 
-	private static final int ARTIFACTS          =                            xy(1, 16);  //32 slots
+	private static final int ARTIFACTS          =                            xy(1, 16);  //24 slots
 	public static final int ARTIFACT_CLOAK      = ARTIFACTS+0;
 	public static final int ARTIFACT_ARMBAND    = ARTIFACTS+1;
 	public static final int ARTIFACT_CAPE       = ARTIFACTS+2;
@@ -468,7 +468,11 @@ public class ItemSpriteSheet {
 		assignItemRect(ARTIFACT_ROSE3,      14, 14);
 	}
 
-	                                                                                    //16 free slots
+	private static final int TRINKETS        =                               xy(9, 17);  //24 slots
+	public static final int RAT_SKULL       = TRINKETS+0;
+	static{
+		assignItemRect(RAT_SKULL,           16,  11);
+	}
 
 	private static final int SCROLLS        =                               xy(1, 19);  //16 slots
 	public static final int SCROLL_KAUNAN   = SCROLLS+0;
@@ -694,7 +698,6 @@ public class ItemSpriteSheet {
 	}
 
 	private static final int QUEST  =                                       xy(1, 30);  //16 slots
-	public static final int SKULL   = QUEST+0;
 	public static final int DUST    = QUEST+1;
 	public static final int CANDLE  = QUEST+2;
 	public static final int EMBER   = QUEST+3;
@@ -704,7 +707,6 @@ public class ItemSpriteSheet {
 	public static final int BLOB    = QUEST+7;
 	public static final int SHARD   = QUEST+8;
 	static{
-		assignItemRect(SKULL,   16, 11);
 		assignItemRect(DUST,    12, 11);
 		assignItemRect(CANDLE,  12, 12);
 		assignItemRect(EMBER,   12, 11);

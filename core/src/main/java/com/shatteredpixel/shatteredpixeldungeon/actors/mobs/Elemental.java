@@ -44,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlam
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.RatSkull;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -561,7 +562,8 @@ public abstract class Elemental extends Mob {
 	}
 	
 	public static Class<? extends Elemental> random(){
-		if (Random.Int( 50 ) == 0){
+		float altChance = 1/50f * RatSkull.exoticChanceMultiplier();
+		if (Random.Float() < altChance){
 			return ChaosElemental.class;
 		}
 		

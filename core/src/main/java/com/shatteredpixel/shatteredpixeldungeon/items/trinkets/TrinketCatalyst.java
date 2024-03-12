@@ -44,6 +44,8 @@ public class TrinketCatalyst extends Item {
 
 	{
 		image = ItemSpriteSheet.ARCANE_RESIN;
+
+		unique = true;
 	}
 
 	@Override

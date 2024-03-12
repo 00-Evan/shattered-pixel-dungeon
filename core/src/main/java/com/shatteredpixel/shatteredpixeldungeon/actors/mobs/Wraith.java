@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ChallengeParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.RatSkull;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.WraithSprite;
 import com.watabou.noosa.tweeners.AlphaTweener;
@@ -116,7 +117,8 @@ public class Wraith extends Mob {
 			Wraith w;
 			//if no wraith type is specified, 1/100 chance for exotic, otherwise normal
 			if (wraithClass == null){
-				if (Random.Int(100) == 0){
+				float altChance = 1/100f * RatSkull.exoticChanceMultiplier();
+				if (Random.Float() < altChance){
 					w = new TormentedSpirit();
 				} else {
 					w = new Wraith();
