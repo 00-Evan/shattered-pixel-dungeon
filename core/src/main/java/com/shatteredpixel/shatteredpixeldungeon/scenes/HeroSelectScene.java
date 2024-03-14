@@ -153,11 +153,14 @@ public class HeroSelectScene extends PixelScene {
 			@Override
 			protected void onClick() {
 				super.onClick();
-				Window w = new WndHeroInfo(GamesInProgress.selectedClass);
-				if (landscape()){
-					w.offset(Camera.main.width/6, 0);
+				HeroClass cls = GamesInProgress.selectedClass;
+				if (cls != null) {
+					Window w = new WndHeroInfo(GamesInProgress.selectedClass);
+					if (landscape()) {
+						w.offset(Camera.main.width / 6, 0);
+					}
+					ShatteredPixelDungeon.scene().addToFront(w);
 				}
-				ShatteredPixelDungeon.scene().addToFront(w);
 			}
 
 			@Override
