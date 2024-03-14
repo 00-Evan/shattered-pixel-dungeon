@@ -91,7 +91,7 @@ public class HeroSelectScene extends PixelScene {
 		Badges.loadGlobal();
 		Journal.loadGlobal();
 
-		background = new Image(HeroClass.WARRIOR.splashArt()){
+		background = new Image(TextureCache.createSolid(0xFF2d2f31), 0, 0, 800, 450){
 			@Override
 			public void update() {
 				if (GamesInProgress.selectedClass != null) {
@@ -105,7 +105,6 @@ public class HeroSelectScene extends PixelScene {
 			}
 		};
 		background.scale.set(Camera.main.height/background.height);
-		background.tint(0x2d2f31, 1f);
 
 		background.x = (Camera.main.width - background.width())/2f;
 		background.y = (Camera.main.height - background.height())/2f;
@@ -376,7 +375,13 @@ public class HeroSelectScene extends PixelScene {
 	private void setSelectedHero(HeroClass cl){
 		GamesInProgress.selectedClass = cl;
 
-		background.texture( cl.splashArt() );
+		try {
+			//loading these big jpgs fails sometimes, so we have a catch for it
+			background.texture(cl.splashArt());
+		} catch (Exception e){
+			background.texture(TextureCache.createSolid(0xFF2d2f31));
+			background.frame(0, 0, 800, 450);
+		}
 		background.visible = true;
 		background.hardlight(1.5f,1.5f,1.5f);
 
