@@ -470,8 +470,12 @@ public class ItemSpriteSheet {
 
 	private static final int TRINKETS        =                               xy(9, 17);  //24 slots
 	public static final int RAT_SKULL       = TRINKETS+0;
+	public static final int PARCHMENT_SCRAP = TRINKETS+1;
+	public static final int PETRIFIED_SEED  = TRINKETS+2;
 	static{
-		assignItemRect(RAT_SKULL,           16,  11);
+			assignItemRect(RAT_SKULL,       16,  11);
+			assignItemRect(PARCHMENT_SCRAP, 10,  14);
+			assignItemRect(PETRIFIED_SEED,  10,  10);
 	}
 
 	private static final int SCROLLS        =                               xy(1, 19);  //16 slots

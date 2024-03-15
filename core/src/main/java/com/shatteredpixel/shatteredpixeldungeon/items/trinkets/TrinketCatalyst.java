@@ -119,7 +119,9 @@ public class TrinketCatalyst extends Item {
 						ShatteredPixelDungeon.scene().addToFront(new RewardWindow(item()));
 					}
 				};
-				btnReward.item(Generator.randomUsingDefaults());
+				//TODO we need to persist these through save/load in case someone quits when the window is up
+				//alternatively we could just 'peek' at the items and then actually remove them when one is awarded.
+				btnReward.item(Generator.random(Generator.Category.TRINKET));
 				btnReward.setRect( i*(WIDTH - BTN_GAP) / NUM_TRINKETS - BTN_SIZE, message.top() + message.height() + BTN_GAP, BTN_SIZE, BTN_SIZE );
 				add( btnReward );
 

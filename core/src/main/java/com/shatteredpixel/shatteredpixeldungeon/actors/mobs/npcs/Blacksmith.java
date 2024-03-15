@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DarkGold;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ParchmentScrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
@@ -466,7 +467,7 @@ public class Blacksmith extends NPC {
 
 			// 30% base chance to be enchanted, stored separately so status isn't revealed early
 			float enchantRoll = Random.Float();
-			if (enchantRoll <= 0.3f){
+			if (enchantRoll <= 0.3f * ParchmentScrap.enchantChanceMultiplier()){
 				smithEnchant = Weapon.Enchantment.random();
 				smithGlyph = Armor.Glyph.random();
 			}

@@ -24,10 +24,10 @@ package com.shatteredpixel.shatteredpixeldungeon.items.trinkets;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-public class RatSkull extends Trinket {
+public class PetrifiedSeed extends Trinket {
 
 	{
-		image = ItemSpriteSheet.RAT_SKULL;
+		image = ItemSpriteSheet.PETRIFIED_SEED;
 	}
 
 	@Override
@@ -37,19 +37,26 @@ public class RatSkull extends Trinket {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", (int)(exoticChanceMultiplier(buffedLvl())));
+		return Messages.get(this, "desc", (int)(100*stoneInsteadOfSeedChance(buffedLvl())), (int)Math.round(100*(grassLootMultiplier(buffedLvl())-1f)));
 	}
 
-	public static float exoticChanceMultiplier(){
-		return exoticChanceMultiplier(trinketLevel(RatSkull.class));
+	public static float grassLootMultiplier(){
+		return grassLootMultiplier(trinketLevel(PetrifiedSeed.class));
 	}
 
-	public static float exoticChanceMultiplier( int level ){
+	public static float grassLootMultiplier( int level ){
+		return 1f + .4f*level/3f;
+	}
+
+	public static float stoneInsteadOfSeedChance(){
+		return stoneInsteadOfSeedChance(trinketLevel(PetrifiedSeed.class));
+	}
+
+	public static float stoneInsteadOfSeedChance( int level ){
 		if (level == -1){
-			return 1f;
+			return 0f;
 		} else {
-			return 2f + 2f*level;
+			return 0.35f + .05f*level;
 		}
 	}
-
 }

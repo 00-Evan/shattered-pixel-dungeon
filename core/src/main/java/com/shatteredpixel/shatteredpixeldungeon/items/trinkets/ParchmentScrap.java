@@ -24,10 +24,10 @@ package com.shatteredpixel.shatteredpixeldungeon.items.trinkets;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-public class RatSkull extends Trinket {
+public class ParchmentScrap extends Trinket {
 
 	{
-		image = ItemSpriteSheet.RAT_SKULL;
+		image = ItemSpriteSheet.PARCHMENT_SCRAP;
 	}
 
 	@Override
@@ -37,19 +37,44 @@ public class RatSkull extends Trinket {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", (int)(exoticChanceMultiplier(buffedLvl())));
+		return Messages.get(this, "desc", (int)enchantChanceMultiplier(buffedLvl()), Messages.decimalFormat("#.##", curseChanceMultiplier(buffedLvl())));
 	}
 
-	public static float exoticChanceMultiplier(){
-		return exoticChanceMultiplier(trinketLevel(RatSkull.class));
+	public static float enchantChanceMultiplier(){
+		return enchantChanceMultiplier(trinketLevel(ParchmentScrap.class));
 	}
 
-	public static float exoticChanceMultiplier( int level ){
-		if (level == -1){
-			return 1f;
-		} else {
-			return 2f + 2f*level;
+	public static float enchantChanceMultiplier( int level ){
+		switch (level){
+			default:
+				return 1;
+			case 0:
+				return 2;
+			case 1:
+				return 4;
+			case 2:
+				return 7;
+			case 3:
+				return 10;
 		}
 	}
 
+	public static float curseChanceMultiplier(){
+		return curseChanceMultiplier(trinketLevel(ParchmentScrap.class));
+	}
+
+	public static float curseChanceMultiplier( int level ){
+		switch (level){
+			default:
+				return 1;
+			case 0:
+				return 1.5f;
+			case 1:
+				return 2f;
+			case 2:
+				return 1f;
+			case 3:
+				return 0f;
+		}
+	}
 }
