@@ -287,6 +287,8 @@ public class Blacksmith extends NPC {
 
 		//pre-generate these so they are consistent between seeds
 		public static ArrayList<Item> smithRewards;
+		public static Weapon.Enchantment smithEnchant;
+		public static Armor.Glyph smithGlyph;
 		
 		public static void reset() {
 			type        = 0;
@@ -306,6 +308,8 @@ public class Blacksmith extends NPC {
 			smiths      = 0;
 
 			smithRewards = null;
+			smithEnchant = null;
+			smithGlyph = null;
 		}
 		
 		private static final String NODE	= "blacksmith";
@@ -326,6 +330,8 @@ public class Blacksmith extends NPC {
 		private static final String UPGRADES	= "upgrades";
 		private static final String SMITHS	    = "smiths";
 		private static final String SMITH_REWARDS = "smith_rewards";
+		private static final String ENCHANT		= "enchant";
+		private static final String GLYPH		= "glyph";
 		
 		public static void storeInBundle( Bundle bundle ) {
 			
@@ -349,7 +355,13 @@ public class Blacksmith extends NPC {
 				node.put( UPGRADES, upgrades );
 				node.put( SMITHS, smiths );
 
-				if (smithRewards != null) node.put( SMITH_REWARDS, smithRewards );
+				if (smithRewards != null) {
+					node.put( SMITH_REWARDS, smithRewards );
+					if (smithEnchant != null) {
+						node.put(ENCHANT, smithEnchant);
+						node.put(GLYPH, smithGlyph);
+					}
+				}
 			}
 			
 			bundle.put( NODE, node );
@@ -386,6 +398,10 @@ public class Blacksmith extends NPC {
 
 				if (node.contains( SMITH_REWARDS )){
 					smithRewards = new ArrayList<>((Collection<Item>) ((Collection<?>) node.getCollection( SMITH_REWARDS )));
+					if (node.contains(ENCHANT)) {
+						smithEnchant = (Weapon.Enchantment) node.get(ENCHANT);
+						smithGlyph   = (Armor.Glyph) node.get(GLYPH);
+					}
 				}
 
 			} else {
@@ -447,6 +463,14 @@ public class Blacksmith extends NPC {
 				}
 				i.cursed = false;
 			}
+
+			// 30% base chance to be enchanted, stored separately so status isn't revealed early
+			float enchantRoll = Random.Float();
+			if (enchantRoll <= 0.3f){
+				smithEnchant = Weapon.Enchantment.random();
+				smithGlyph = Armor.Glyph.random();
+			}
+
 		}
 
 		public static int Type(){
