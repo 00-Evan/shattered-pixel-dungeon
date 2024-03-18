@@ -806,7 +806,9 @@ public class GnollGeomancer extends Mob {
 
 		@Override
 		public void affectCell(int cell) {
-			if (Dungeon.level.map[cell] != Terrain.EMPTY_SP && Random.Int(3) == 0) {
+			if (Dungeon.level.map[cell] != Terrain.EMPTY_SP
+					&& !Dungeon.level.adjacent(cell, Dungeon.level.entrance())
+					&& Random.Int(3) == 0) {
 				Level.set(cell, Terrain.MINE_BOULDER);
 				GameScene.updateMap(cell);
 			}
