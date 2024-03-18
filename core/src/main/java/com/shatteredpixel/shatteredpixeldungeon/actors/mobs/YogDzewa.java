@@ -473,7 +473,10 @@ public class YogDzewa extends Mob {
 		if (phase > 1 && isAlive()){
 			viewDistance = 4 - (phase-1);
 		}
-		level.viewDistance = (int)GameMath.gate(1, viewDistance, level.viewDistance);
+		if (Dungeon.isChallenged(Challenges.DARKNESS)) {
+			viewDistance = Math.min(viewDistance, 2);
+		}
+		level.viewDistance = viewDistance;
 		if (Dungeon.hero != null) {
 			if (Dungeon.hero.buff(Light.class) == null) {
 				Dungeon.hero.viewDistance = level.viewDistance;
