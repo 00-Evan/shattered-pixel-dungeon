@@ -158,6 +158,12 @@ public class GnollSapper extends Mob {
 			} else {
 				enemySeen = true;
 
+				if (getPartner() != null
+						&& getPartner() instanceof Mob
+						&& ((Mob) getPartner()).alignment != alignment){
+					losePartner();
+				}
+
 				if (Actor.findById(partnerID) != null
 						&& Dungeon.level.distance(pos, enemy.pos) <= 3){
 					Mob partner = (Mob) Actor.findById(partnerID);
