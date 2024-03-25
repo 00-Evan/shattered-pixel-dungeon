@@ -61,6 +61,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticG
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfPurity;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
@@ -87,6 +88,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportat
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation;
@@ -100,6 +102,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFear;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFlock;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfShock;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ExoticCrystals;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MossyClump;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ParchmentScrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.PetrifiedSeed;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.RatSkull;
@@ -520,9 +524,11 @@ public class Generator {
 			TRINKET.classes = new Class<?>[]{
 					RatSkull.class,
 					ParchmentScrap.class,
-					PetrifiedSeed.class
+					PetrifiedSeed.class,
+					ExoticCrystals.class,
+					MossyClump.class
 			};
-			TRINKET.defaultProbs = new float[]{ 1, 1, 1 };
+			TRINKET.defaultProbs = new float[]{ 1, 1, 1, 1, 1 };
 			TRINKET.probs = TRINKET.defaultProbs.clone();
 
 			for (Category cat : Category.values()){
@@ -582,11 +588,15 @@ public class Generator {
 	//reverts changes to drop chances generates by this item
 	//equivalent of shuffling the card back into the deck, does not preserve order!
 	public static void undoDrop(Item item){
+		undoDrop(item.getClass());
+	}
+
+	public static void undoDrop(Class cls){
 		for (Category cat : Category.values()){
-			if (item.getClass().isAssignableFrom(cat.superClass)){
+			if (cls.isAssignableFrom(cat.superClass)){
 				if (cat.defaultProbs == null) continue;
 				for (int i = 0; i < cat.classes.length; i++){
-					if (item.getClass() == cat.classes[i]){
+					if (cls == cat.classes[i]){
 						cat.probs[i]++;
 					}
 				}
@@ -641,13 +651,24 @@ public class Generator {
 					i = Random.chances(cat.probs);
 				}
 				if (cat.defaultProbs != null) cat.probs[i]--;
+				Class<?> itemCls = cat.classes[i];
 
 				if (cat.defaultProbs != null && cat.seed != null){
 					Random.popGenerator();
 					cat.dropped++;
 				}
 
-				return ((Item) Reflection.newInstance(cat.classes[i])).random();
+				if (ExoticPotion.regToExo.containsKey(itemCls)){
+					if (Random.Float() < ExoticCrystals.consumableExoticChance()){
+						itemCls = ExoticPotion.regToExo.get(itemCls);
+					}
+				} else if (ExoticScroll.regToExo.containsKey(itemCls)){
+					if (Random.Float() < ExoticCrystals.consumableExoticChance()){
+						itemCls = ExoticScroll.regToExo.get(itemCls);
+					}
+				}
+
+				return ((Item) Reflection.newInstance(itemCls)).random();
 		}
 	}
 

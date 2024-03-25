@@ -33,6 +33,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetributio
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ExoticCrystals;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -93,6 +95,13 @@ public class SecretLibraryRoom extends SecretRoom {
 			
 			Class<?extends Scroll> scrollCls = Random.chances(chances);
 			chances.put(scrollCls, 0f);
+
+			if (ExoticScroll.regToExo.containsKey(scrollCls)){
+				if (Random.Float() < ExoticCrystals.consumableExoticChance()){
+					scrollCls = ExoticScroll.regToExo.get(scrollCls);
+				}
+			}
+
 			level.drop( Reflection.newInstance(scrollCls), pos );
 		}
 	}

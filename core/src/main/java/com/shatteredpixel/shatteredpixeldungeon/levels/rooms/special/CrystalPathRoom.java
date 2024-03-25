@@ -26,7 +26,12 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.CrystalKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfDivineInspiration;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfMetamorphosis;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ExoticCrystals;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -165,9 +170,11 @@ public class CrystalPathRoom extends SpecialRoom {
 
 		if (Random.Int(2) == 0){
 			addRewardItem(Generator.Category.POTION, potions, duplicates);
-			scrolls.add(new ScrollOfTransmutation());
+			scrolls.add(Random.Float() < ExoticCrystals.consumableExoticChance()
+					? new ScrollOfMetamorphosis() : new ScrollOfTransmutation());
 		} else {
-			potions.add(new PotionOfExperience());
+			potions.add(Random.Float() < ExoticCrystals.consumableExoticChance()
+					? new PotionOfDivineInspiration() : new PotionOfExperience());
 			addRewardItem(Generator.Category.SCROLL, scrolls, duplicates);
 		}
 		addRewardItem(Generator.Category.POTION, potions, duplicates);
@@ -177,7 +184,13 @@ public class CrystalPathRoom extends SpecialRoom {
 
 		//need to undo the changes to spawn chances that the duplicates created
 		for (Item i : duplicates){
-			Generator.undoDrop(i);
+			if (i instanceof ExoticPotion){
+				Generator.undoDrop(ExoticPotion.exoToReg.get(i.getClass()));
+			} else if (i instanceof ExoticScroll){
+				Generator.undoDrop(ExoticScroll.exoToReg.get(i.getClass()));
+			} else {
+				Generator.undoDrop(i);
+			}
 		}
 
 		//rarer potions/scrolls go later in the order
@@ -185,9 +198,16 @@ public class CrystalPathRoom extends SpecialRoom {
 			@Override
 			public int compare(Item a, Item b) {
 				int aVal = 0, bVal = 0;
+				Class aCls = a.getClass(), bCls = b.getClass();
+				if (a instanceof ExoticPotion){
+					aCls = ExoticPotion.exoToReg.get(aCls);
+				}
+				if (b instanceof ExoticPotion){
+					bCls = ExoticPotion.exoToReg.get(aCls);
+				}
 				for (int i = 0; i < Generator.Category.POTION.classes.length; i++){
-					if (a.getClass() == Generator.Category.POTION.classes[i]) aVal = (int)Generator.Category.POTION.defaultProbsTotal[i];
-					if (b.getClass() == Generator.Category.POTION.classes[i]) bVal = (int)Generator.Category.POTION.defaultProbsTotal[i];
+					if (aCls == Generator.Category.POTION.classes[i]) aVal = (int)Generator.Category.POTION.defaultProbsTotal[i];
+					if (bCls == Generator.Category.POTION.classes[i]) bVal = (int)Generator.Category.POTION.defaultProbsTotal[i];
 				}
 				return bVal - aVal;
 			}
@@ -196,9 +216,16 @@ public class CrystalPathRoom extends SpecialRoom {
 			@Override
 			public int compare(Item a, Item b) {
 				int aVal = 0, bVal = 0;
+				Class aCls = a.getClass(), bCls = b.getClass();
+				if (a instanceof ExoticScroll){
+					aCls = ExoticScroll.exoToReg.get(aCls);
+				}
+				if (b instanceof ExoticScroll){
+					bCls = ExoticScroll.exoToReg.get(aCls);
+				}
 				for (int i = 0; i < Generator.Category.SCROLL.classes.length; i++){
-					if (a.getClass() == Generator.Category.SCROLL.classes[i]) aVal = (int)Generator.Category.SCROLL.defaultProbsTotal[i];
-					if (b.getClass() == Generator.Category.SCROLL.classes[i]) bVal = (int)Generator.Category.SCROLL.defaultProbsTotal[i];
+					if (aCls == Generator.Category.SCROLL.classes[i]) aVal = (int)Generator.Category.SCROLL.defaultProbsTotal[i];
+					if (bCls == Generator.Category.SCROLL.classes[i]) bVal = (int)Generator.Category.SCROLL.defaultProbsTotal[i];
 				}
 				return bVal - aVal;
 			}

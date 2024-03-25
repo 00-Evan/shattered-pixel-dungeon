@@ -131,20 +131,26 @@ public abstract class RegularPainter extends Painter {
 		}
 		
 		paintDoors( level, rooms );
+
+		//use a separate RNG here so that extra painting variance doesn't affect the rest of levelgen
+		//e.g. this minimizes mossy clump's effect on levelgen
+		Random.pushGenerator(Random.Long());
+
+			if (waterFill > 0f) {
+				paintWater( level, rooms );
+			}
+
+			if (grassFill > 0f){
+				paintGrass( level, rooms );
+			}
+
+			if (nTraps > 0){
+				paintTraps( level, rooms );
+			}
 		
-		if (waterFill > 0f) {
-			paintWater( level, rooms );
-		}
-		
-		if (grassFill > 0f){
-			paintGrass( level, rooms );
-		}
-		
-		if (nTraps > 0){
-			paintTraps( level, rooms );
-		}
-		
-		decorate( level, rooms );
+			decorate( level, rooms );
+
+		Random.popGenerator();
 		
 		return true;
 	}

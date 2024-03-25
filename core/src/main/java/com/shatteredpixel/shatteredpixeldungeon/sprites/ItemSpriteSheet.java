@@ -472,10 +472,14 @@ public class ItemSpriteSheet {
 	public static final int RAT_SKULL       = TRINKETS+0;
 	public static final int PARCHMENT_SCRAP = TRINKETS+1;
 	public static final int PETRIFIED_SEED  = TRINKETS+2;
+	public static final int EXOTIC_CRYSTALS = TRINKETS+3;
+	public static final int MOSSY_CLUMP     = TRINKETS+4;
 	static{
-			assignItemRect(RAT_SKULL,       16,  11);
-			assignItemRect(PARCHMENT_SCRAP, 10,  14);
-			assignItemRect(PETRIFIED_SEED,  10,  10);
+		assignItemRect(RAT_SKULL,       16,  11);
+		assignItemRect(PARCHMENT_SCRAP, 10,  14);
+		assignItemRect(PETRIFIED_SEED,  10,  10);
+		assignItemRect(EXOTIC_CRYSTALS, 11,  11);
+		assignItemRect(MOSSY_CLUMP,     12,  11);
 	}
 
 	private static final int SCROLLS        =                               xy(1, 19);  //16 slots

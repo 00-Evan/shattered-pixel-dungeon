@@ -67,6 +67,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MossyClump;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrinketCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
@@ -259,6 +260,12 @@ public abstract class Level implements Bundlable {
 					case 6:
 						feeling = Feeling.SECRETS;
 						break;
+					default:
+						if (Random.Float() < MossyClump.overrideNormalLevelChance()){
+							feeling = MossyClump.getNextFeeling();
+						} else {
+							feeling = Feeling.NONE;
+						}
 				}
 			}
 		}
