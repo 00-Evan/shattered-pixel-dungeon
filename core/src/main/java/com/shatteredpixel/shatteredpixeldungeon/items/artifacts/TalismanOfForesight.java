@@ -275,13 +275,14 @@ public class TalismanOfForesight extends Artifact {
 				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
 				partialCharge += chargeGain;
 
-				if (partialCharge > 1 && charge < chargeCap) {
+				while (partialCharge >= 1){
 					partialCharge--;
 					charge++;
+					if (charge >= chargeCap) {
+						partialCharge = 0;
+						GLog.p(Messages.get(TalismanOfForesight.class, "full_charge"));
+					}
 					updateQuickslot();
-				} else if (charge >= chargeCap) {
-					partialCharge = 0;
-					GLog.p( Messages.get(TalismanOfForesight.class, "full_charge") );
 				}
 			}
 

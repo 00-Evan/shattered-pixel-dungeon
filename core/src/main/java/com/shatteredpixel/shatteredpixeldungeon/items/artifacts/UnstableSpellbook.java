@@ -226,9 +226,13 @@ public class UnstableSpellbook extends Artifact {
 	public void charge(Hero target, float amount) {
 		if (charge < chargeCap && !cursed && target.buff(MagicImmune.class) == null){
 			partialCharge += 0.1f*amount;
-			if (partialCharge >= 1){
+			while (partialCharge >= 1){
 				partialCharge--;
 				charge++;
+
+				if (charge == chargeCap){
+					partialCharge = 0;
+				}
 				updateQuickslot();
 			}
 		}
@@ -298,7 +302,7 @@ public class UnstableSpellbook extends Artifact {
 				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
 				partialCharge += chargeGain;
 
-				if (partialCharge >= 1) {
+				while (partialCharge >= 1) {
 					partialCharge --;
 					charge ++;
 

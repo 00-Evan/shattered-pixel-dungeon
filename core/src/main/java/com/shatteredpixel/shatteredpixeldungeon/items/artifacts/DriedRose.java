@@ -404,7 +404,7 @@ public class DriedRose extends Artifact {
 					partialCharge += (ghost.HT / 500f) * RingOfEnergy.artifactChargeMultiplier(target);
 					updateQuickslot();
 					
-					if (partialCharge > 1) {
+					while (partialCharge > 1) {
 						ghost.HP++;
 						partialCharge--;
 					}
@@ -421,7 +421,7 @@ public class DriedRose extends Artifact {
 					&& Regeneration.regenOn()) {
 				//500 turns to a full charge
 				partialCharge += (1/5f * RingOfEnergy.artifactChargeMultiplier(target));
-				if (partialCharge > 1){
+				while (partialCharge > 1){
 					charge++;
 					partialCharge--;
 					if (charge == chargeCap){

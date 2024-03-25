@@ -238,7 +238,7 @@ public class CloakOfShadows extends Artifact {
 					partialCharge += chargeToGain;
 				}
 
-				if (partialCharge >= 1) {
+				while (partialCharge >= 1) {
 					charge++;
 					partialCharge -= 1;
 					if (charge == chargeCap){

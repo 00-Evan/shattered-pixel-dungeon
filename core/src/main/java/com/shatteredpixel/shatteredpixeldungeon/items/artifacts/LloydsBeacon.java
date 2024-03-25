@@ -276,7 +276,7 @@ public class LloydsBeacon extends Artifact {
 	public void charge(Hero target, float amount) {
 		if (charge < chargeCap){
 			partialCharge += 0.25f*amount;
-			if (partialCharge >= 1){
+			while (partialCharge >= 1){
 				partialCharge--;
 				charge++;
 				updateQuickslot();
@@ -314,7 +314,7 @@ public class LloydsBeacon extends Artifact {
 			if (charge < chargeCap && !cursed && Regeneration.regenOn()) {
 				partialCharge += 1 / (100f - (chargeCap - charge)*10f);
 
-				if (partialCharge >= 1) {
+				while (partialCharge >= 1) {
 					partialCharge --;
 					charge ++;
 
