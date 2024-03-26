@@ -65,14 +65,14 @@ public class HeavyBoomerang extends MissileWeapon {
 	protected void rangedHit(Char enemy, int cell) {
 		decrementDurability();
 		if (durability > 0){
-			Buff.append(Dungeon.hero, CircleBack.class).setup(this, cell, Dungeon.hero.pos, Dungeon.depth);
+			Buff.append(Dungeon.hero, CircleBack.class).setup(this, cell, Dungeon.hero.pos, Dungeon.depth, Dungeon.branch);
 		}
 	}
 	
 	@Override
 	protected void rangedMiss(int cell) {
 		parent = null;
-		Buff.append(Dungeon.hero, CircleBack.class).setup(this, cell, Dungeon.hero.pos, Dungeon.depth);
+		Buff.append(Dungeon.hero, CircleBack.class).setup(this, cell, Dungeon.hero.pos, Dungeon.depth, Dungeon.branch);
 	}
 	
 	public static class CircleBack extends Buff {
@@ -85,14 +85,16 @@ public class HeavyBoomerang extends MissileWeapon {
 		private int thrownPos;
 		private int returnPos;
 		private int returnDepth;
+		private int returnBranch;
 		
 		private int left;
 		
-		public void setup( HeavyBoomerang boomerang, int thrownPos, int returnPos, int returnDepth){
+		public void setup( HeavyBoomerang boomerang, int thrownPos, int returnPos, int returnDepth, int returnBranch){
 			this.boomerang = boomerang;
 			this.thrownPos = thrownPos;
 			this.returnPos = returnPos;
 			this.returnDepth = returnDepth;
+			this.returnBranch = returnBranch;
 			left = 3;
 		}
 		
@@ -111,7 +113,7 @@ public class HeavyBoomerang extends MissileWeapon {
 		
 		@Override
 		public boolean act() {
-			if (returnDepth == Dungeon.depth){
+			if (returnDepth == Dungeon.depth && returnBranch == Dungeon.branch){
 				left--;
 				if (left <= 0){
 					final Char returnTarget = Actor.findChar(returnPos);
@@ -161,7 +163,8 @@ public class HeavyBoomerang extends MissileWeapon {
 		private static final String THROWN_POS = "thrown_pos";
 		private static final String RETURN_POS = "return_pos";
 		private static final String RETURN_DEPTH = "return_depth";
-		
+		private static final String RETURN_BRANCH = "return_branch";
+
 		@Override
 		public void storeInBundle(Bundle bundle) {
 			super.storeInBundle(bundle);
@@ -169,6 +172,7 @@ public class HeavyBoomerang extends MissileWeapon {
 			bundle.put(THROWN_POS, thrownPos);
 			bundle.put(RETURN_POS, returnPos);
 			bundle.put(RETURN_DEPTH, returnDepth);
+			bundle.put(RETURN_BRANCH, returnBranch);
 		}
 		
 		@Override
@@ -178,6 +182,7 @@ public class HeavyBoomerang extends MissileWeapon {
 			thrownPos = bundle.getInt(THROWN_POS);
 			returnPos = bundle.getInt(RETURN_POS);
 			returnDepth = bundle.getInt(RETURN_DEPTH);
+			returnBranch = bundle.contains(RETURN_BRANCH) ? bundle.getInt(RETURN_BRANCH) : 0;
 		}
 	}
 	
