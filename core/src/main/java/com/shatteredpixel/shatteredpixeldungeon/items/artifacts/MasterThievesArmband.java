@@ -302,6 +302,7 @@ public class MasterThievesArmband extends Artifact {
 					GLog.p(Messages.get(MasterThievesArmband.class, "level_up"));
 					upgrade();
 				}
+				updateQuickslot();
 				return true;
 			}
 		}
