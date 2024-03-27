@@ -249,7 +249,7 @@ public class StatusPane extends Component {
 
 		if (!Dungeon.hero.isAlive()) {
 			avatar.tint(0x000000, 0.5f);
-		} else if ((health/(float)max) < 0.3f) {
+		} else if ((health/(float)max) <= 0.3f) {
 			warning += Game.elapsed * 5f *(0.4f - (health/(float)max));
 			warning %= 1f;
 			avatar.tint(ColorMath.interpolate(warning, warningColors), 0.5f );
