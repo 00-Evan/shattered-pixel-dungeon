@@ -426,7 +426,7 @@ public class WandOfRegrowth extends Wand {
 		}
 
 		public float seedPreservation(){
-			return 0.40f + 0.04f*wandLvl;
+			return Math.min( 1f, 0.40f + 0.04f*wandLvl );
 		}
 
 		@Override
