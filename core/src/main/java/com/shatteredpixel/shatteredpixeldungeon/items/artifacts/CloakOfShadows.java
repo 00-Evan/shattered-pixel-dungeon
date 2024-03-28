@@ -188,8 +188,8 @@ public class CloakOfShadows extends Artifact {
 		}
 	}
 
-	public void overCharge(int amount){
-		charge = Math.min(charge+amount, chargeCap+amount);
+	public void directCharge(int amount){
+		charge = Math.min(charge+amount, chargeCap);
 		updateQuickslot();
 	}
 	
