@@ -37,8 +37,10 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoItem;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSadGhost;
+import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class TrinketCatalyst extends Item {
 
@@ -58,6 +60,27 @@ public class TrinketCatalyst extends Item {
 		return false;
 	}
 
+	private ArrayList<Trinket> rolledTrinkets = new ArrayList<>();
+
+	private static final String ROLLED_TRINKETS = "rolled_trinkets";
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		if (!rolledTrinkets.isEmpty()){
+			bundle.put(ROLLED_TRINKETS, rolledTrinkets);
+		}
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		rolledTrinkets.clear();
+		if (bundle.contains(ROLLED_TRINKETS)){
+			rolledTrinkets.addAll((Collection<Trinket>) ((Collection<?>)bundle.getCollection( ROLLED_TRINKETS )));
+		}
+	}
+
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe {
 
 		@Override
@@ -67,18 +90,22 @@ public class TrinketCatalyst extends Item {
 
 		@Override
 		public int cost(ArrayList<Item> ingredients) {
+			if (ingredients.get(0) instanceof TrinketCatalyst && !((TrinketCatalyst) ingredients.get(0)).rolledTrinkets.isEmpty()){
+				return 0; //costs 0 if rolledTrinkets has items as the player already paid 6 energy
+			}
 			return 6;
 		}
 
 		@Override
 		public Item brew(ArrayList<Item> ingredients) {
-			ingredients.get(0).quantity(0);
-
 			//we silently re-add the catalyst so that we can clear it when a trinket is selected
 			//this way player isn't totally screwed if they quit the game while selecting
-			new TrinketCatalyst().collect();
+			TrinketCatalyst newCata = (TrinketCatalyst) ingredients.get(0).duplicate();
+			newCata.collect();
 
-			ShatteredPixelDungeon.scene().addToFront(new WndTrinket());
+			ingredients.get(0).quantity(0);
+
+			ShatteredPixelDungeon.scene().addToFront(new WndTrinket(newCata));
 			return null;
 		}
 
@@ -97,9 +124,7 @@ public class TrinketCatalyst extends Item {
 
 		private static final int NUM_TRINKETS = 3;
 
-		public WndTrinket(){
-
-			TrinketCatalyst cata = new TrinketCatalyst();
+		public WndTrinket( TrinketCatalyst cata ){
 
 			IconTitle titlebar = new IconTitle();
 			titlebar.icon(new ItemSprite(cata));
@@ -112,17 +137,20 @@ public class TrinketCatalyst extends Item {
 			message.setPos(0, titlebar.bottom() + GAP);
 			add( message );
 
-			for (int i = 1; i <= NUM_TRINKETS; i++){
+			//roll new trinkets if trinkets were not already rolled
+			while (cata.rolledTrinkets.size() < NUM_TRINKETS){
+				cata.rolledTrinkets.add((Trinket) Generator.random(Generator.Category.TRINKET));
+			}
+
+			for (int i = 0; i < NUM_TRINKETS; i++){
 				ItemButton btnReward = new ItemButton(){
 					@Override
 					protected void onClick() {
 						ShatteredPixelDungeon.scene().addToFront(new RewardWindow(item()));
 					}
 				};
-				//TODO we need to persist these through save/load in case someone quits when the window is up
-				//alternatively we could just 'peek' at the items and then actually remove them when one is awarded.
-				btnReward.item(Generator.random(Generator.Category.TRINKET));
-				btnReward.setRect( i*(WIDTH - BTN_GAP) / NUM_TRINKETS - BTN_SIZE, message.top() + message.height() + BTN_GAP, BTN_SIZE, BTN_SIZE );
+				btnReward.item(cata.rolledTrinkets.get(i));
+				btnReward.setRect( (i+1)*(WIDTH - BTN_GAP) / NUM_TRINKETS - BTN_SIZE, message.top() + message.height() + BTN_GAP, BTN_SIZE, BTN_SIZE );
 				add( btnReward );
 
 			}
