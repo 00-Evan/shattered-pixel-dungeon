@@ -23,10 +23,12 @@ package com.shatteredpixel.shatteredpixeldungeon.items.trinkets;
 
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+//TODO this maybe should do something during the day too? Perhaps lightly reduce enemy spawn rates?
 public class DimensionalSundial extends Trinket {
 
 	{
@@ -43,10 +45,21 @@ public class DimensionalSundial extends Trinket {
 		return Messages.get(this, "desc", (int)(100*(enemySpawnMultiplier(buffedLvl())-1f)));
 	}
 
+	public static boolean sundialWarned = false;
+
 	public static float spawnMultiplierAtCurrentTime(){
-		Calendar cal = GregorianCalendar.getInstance();
-		if (cal.get(Calendar.HOUR_OF_DAY) >= 21 || cal.get(Calendar.HOUR_OF_DAY) <= 6 ){
-			return enemySpawnMultiplier();
+		float spawnMulti = enemySpawnMultiplier();
+		if (spawnMulti > 1f) {
+			Calendar cal = GregorianCalendar.getInstance();
+			if (cal.get(Calendar.HOUR_OF_DAY) >= 21 || cal.get(Calendar.HOUR_OF_DAY) <= 6) {
+				if (!sundialWarned){
+					GLog.w(Messages.get(DimensionalSundial.class, "warning"));
+					sundialWarned = true;
+				}
+				return spawnMulti;
+			} else {
+				return 1f;
+			}
 		} else {
 			return 1f;
 		}

@@ -58,6 +58,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.DimensionalSundial;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -558,6 +559,13 @@ public class GameScene extends PixelScene {
 
 			if (Dungeon.hero.buff(AscensionChallenge.class) != null){
 				Dungeon.hero.buff(AscensionChallenge.class).saySwitch();
+			}
+
+			DimensionalSundial.sundialWarned = true;
+			if (DimensionalSundial.spawnMultiplierAtCurrentTime() > 1){
+				GLog.w(Messages.get(DimensionalSundial.class, "warning"));
+			} else {
+				DimensionalSundial.sundialWarned = false;
 			}
 
 			InterlevelScene.mode = InterlevelScene.Mode.NONE;
