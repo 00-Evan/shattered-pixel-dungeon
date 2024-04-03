@@ -479,7 +479,7 @@ public class ItemSpriteSheet {
 		assignItemRect(RAT_SKULL,       16,  11);
 		assignItemRect(PARCHMENT_SCRAP, 10,  14);
 		assignItemRect(PETRIFIED_SEED,  10,  10);
-		assignItemRect(EXOTIC_CRYSTALS, 11,  11);
+		assignItemRect(EXOTIC_CRYSTALS, 14,  13);
 		assignItemRect(MOSSY_CLUMP,     12,  11);
 		assignItemRect(SUNDIAL,         16,  12);
 	}
