@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PointF;
-import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -45,7 +44,7 @@ public class ShockingDart extends TippedDart {
 
 		//when processing charged shot, only shock enemies
 		if (!processingChargedShot || attacker.alignment != defender.alignment) {
-			defender.damage(Random.NormalIntRange(5 + Dungeon.scalingDepth() / 4, 10 + Dungeon.scalingDepth() / 4), new Electricity());
+			defender.damage(Char.combatRoll(5 + Dungeon.scalingDepth() / 4, 10 + Dungeon.scalingDepth() / 4), new Electricity());
 
 			CharSprite s = defender.sprite;
 			if (s != null && s.parent != null) {

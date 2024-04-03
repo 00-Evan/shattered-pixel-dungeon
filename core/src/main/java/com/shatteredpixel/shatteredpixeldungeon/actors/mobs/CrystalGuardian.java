@@ -84,7 +84,7 @@ public class CrystalGuardian extends Mob{
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 10, 16 );
+		return Char.combatRoll( 10, 16 );
 	}
 
 	@Override
@@ -106,7 +106,7 @@ public class CrystalGuardian extends Mob{
 
 	@Override
 	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 10);
+		return super.drRoll() + Char.combatRoll(0, 10);
 	}
 
 	@Override

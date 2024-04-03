@@ -177,7 +177,7 @@ public class SpiritHawk extends ArmorAbility {
 
 		@Override
 		public int damageRoll() {
-			return Random.NormalIntRange(5, 10);
+			return Char.combatRoll(5, 10);
 		}
 
 		@Override

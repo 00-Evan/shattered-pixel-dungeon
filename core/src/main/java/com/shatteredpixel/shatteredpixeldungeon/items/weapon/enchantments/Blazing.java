@@ -53,7 +53,7 @@ public class Blazing extends Weapon.Enchantment {
 			}
 
 			if (powerMulti > 0){
-				int burnDamage = Random.NormalIntRange( 1, 3 + Dungeon.scalingDepth()/4 );
+				int burnDamage = Char.combatRoll( 1, 3 + Dungeon.scalingDepth()/4 );
 				burnDamage = Math.round(burnDamage * 0.67f * powerMulti);
 				if (burnDamage > 0) {
 					defender.damage(burnDamage, this);

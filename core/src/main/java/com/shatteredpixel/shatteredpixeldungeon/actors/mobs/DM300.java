@@ -91,7 +91,7 @@ public class DM300 extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 15, 25 );
+		return Char.combatRoll( 15, 25 );
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class DM300 extends Mob {
 
 	@Override
 	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 10);
+		return super.drRoll() + Char.combatRoll(0, 10);
 	}
 
 	public int pylonsActivated = 0;

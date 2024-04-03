@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.watabou.utils.Random;
 
 public class Dirk extends MeleeWeapon {
 
@@ -53,12 +52,12 @@ public class Dirk extends MeleeWeapon {
 			if (enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)) {
 				//deals 67% toward max to max on surprise, instead of min to max.
 				int diff = max() - min();
-				int damage = augment.damageFactor(Random.NormalIntRange(
+				int damage = augment.damageFactor(Char.combatRoll(
 						min() + Math.round(diff*0.67f),
 						max()));
 				int exStr = hero.STR() - STRReq();
 				if (exStr > 0) {
-					damage += Random.IntRange(0, exStr);
+					damage += Char.combatRoll(0, exStr);
 				}
 				return damage;
 			}

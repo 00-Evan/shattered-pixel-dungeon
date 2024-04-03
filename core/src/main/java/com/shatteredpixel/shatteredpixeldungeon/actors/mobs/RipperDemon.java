@@ -69,7 +69,7 @@ public class RipperDemon extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 15, 25 );
+		return Char.combatRoll( 15, 25 );
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class RipperDemon extends Mob {
 
 	@Override
 	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 4);
+		return super.drRoll() + Char.combatRoll(0, 4);
 	}
 
 	private static final String LAST_ENEMY_POS = "last_enemy_pos";

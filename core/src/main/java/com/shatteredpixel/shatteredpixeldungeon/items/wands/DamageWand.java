@@ -23,10 +23,10 @@ package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WandEmpower;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Random;
 
 //for wands that directly damage a target
 //wands with AOE effects count here (e.g. fireblast), but wands with indrect damage do not (e.g. venom, transfusion)
@@ -49,7 +49,7 @@ public abstract class DamageWand extends Wand{
 	}
 
 	public int damageRoll(int lvl){
-		int dmg = Random.NormalIntRange(min(lvl), max(lvl));
+		int dmg = Char.combatRoll(min(lvl), max(lvl));
 		WandEmpower emp = Dungeon.hero.buff(WandEmpower.class);
 		if (emp != null){
 			dmg += emp.dmgBoost;

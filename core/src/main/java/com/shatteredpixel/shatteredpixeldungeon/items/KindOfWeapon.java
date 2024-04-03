@@ -34,12 +34,11 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
-import com.watabou.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.BArray;
 import com.watabou.utils.PathFinder;
-import com.watabou.utils.Random;
 
 abstract public class KindOfWeapon extends EquipableItem {
 	
@@ -225,7 +224,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 	abstract public int max(int lvl);
 
 	public int damageRoll( Char owner ) {
-		return Random.NormalIntRange( min(), max() );
+		return Char.combatRoll( min(), max() );
 	}
 	
 	public float accuracyFactor( Char owner, Char target ) {

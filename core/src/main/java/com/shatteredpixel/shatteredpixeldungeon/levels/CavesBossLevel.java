@@ -827,7 +827,7 @@ public class CavesBossLevel extends Level {
 						Char ch = Actor.findChar(cell);
 						if (ch != null && !(ch instanceof DM300) && !ch.flying) {
 							Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
-							ch.damage( Random.NormalIntRange(6, 12), new Electricity());
+							ch.damage( Char.combatRoll(6, 12), new Electricity());
 							ch.sprite.flash();
 
 							if (ch == Dungeon.hero){

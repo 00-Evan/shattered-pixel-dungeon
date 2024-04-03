@@ -153,7 +153,7 @@ public abstract class Char extends Actor {
 	public boolean rooted		= false;
 	public boolean flying		= false;
 	public int invisible		= 0;
-	
+
 	//these are relative to the hero
 	public enum Alignment{
 		ENEMY,
@@ -589,6 +589,12 @@ public abstract class Char extends Actor {
 		
 		return (acuRoll * accMulti) >= defRoll;
 	}
+
+	//used for damage and blocking calculations, normally just calls NormalIntRange
+	// but may be affected by things that specifically impact combat number ranges
+	public static int combatRoll(int min, int max ){
+		return Random.NormalIntRange( min, max );
+	}
 	
 	public int attackSkill( Char target ) {
 		return 0;
@@ -605,7 +611,7 @@ public abstract class Char extends Actor {
 	public int drRoll() {
 		int dr = 0;
 
-		dr += Random.NormalIntRange( 0 , Barkskin.currentLevel(this) );
+		dr += combatRoll( 0 , Barkskin.currentLevel(this) );
 
 		return dr;
 	}
@@ -735,7 +741,7 @@ public abstract class Char extends Actor {
 		
 		//TODO improve this when I have proper damage source logic
 		if (AntiMagic.RESISTS.contains(src.getClass()) && buff(ArcaneArmor.class) != null){
-			dmg -= Random.NormalIntRange(0, buff(ArcaneArmor.class).level());
+			dmg -= combatRoll(0, buff(ArcaneArmor.class).level());
 			if (dmg < 0) dmg = 0;
 		}
 

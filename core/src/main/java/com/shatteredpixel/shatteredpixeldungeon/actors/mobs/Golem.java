@@ -60,7 +60,7 @@ public class Golem extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 25, 30 );
+		return Char.combatRoll( 25, 30 );
 	}
 	
 	@Override
@@ -70,7 +70,7 @@ public class Golem extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 12);
+		return super.drRoll() + Char.combatRoll(0, 12);
 	}
 
 	@Override

@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollGuardSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.Random;
 
 public class GnollGuard extends Mob {
 
@@ -82,9 +81,9 @@ public class GnollGuard extends Mob {
 	@Override
 	public int damageRoll() {
 		if (enemy != null && !Dungeon.level.adjacent(pos, enemy.pos)){
-			return Random.NormalIntRange( 16, 22 );
+			return Char.combatRoll( 16, 22 );
 		} else {
-			return Random.NormalIntRange( 6, 12 );
+			return Char.combatRoll( 6, 12 );
 		}
 	}
 
@@ -104,7 +103,7 @@ public class GnollGuard extends Mob {
 
 	@Override
 	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 6);
+		return super.drRoll() + Char.combatRoll(0, 6);
 	}
 
 	@Override

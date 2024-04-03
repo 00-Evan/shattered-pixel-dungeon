@@ -124,7 +124,7 @@ public class WandOfTransfusion extends Wand {
 				
 				//harms the undead
 				} else {
-					ch.damage(Random.NormalIntRange(3 + buffedLvl(), 6+2*buffedLvl()), this);
+					ch.damage(Char.combatRoll(3 + buffedLvl(), 6+2*buffedLvl()), this);
 					ch.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10 + buffedLvl());
 					Sample.INSTANCE.play(Assets.Sounds.BURNING);
 				}

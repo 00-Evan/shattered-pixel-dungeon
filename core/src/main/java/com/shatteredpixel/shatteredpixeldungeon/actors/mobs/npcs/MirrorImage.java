@@ -40,7 +40,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.MirrorSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.Random;
 
 public class MirrorImage extends NPC {
 	
@@ -151,7 +150,7 @@ public class MirrorImage extends NPC {
 	public int drRoll() {
 		int dr = super.drRoll();
 		if (hero != null && hero.belongings.weapon() != null){
-			return dr + Random.NormalIntRange(0, hero.belongings.weapon().defenseFactor(this)/2);
+			return dr + Char.combatRoll(0, hero.belongings.weapon().defenseFactor(this)/2);
 		} else {
 			return dr;
 		}

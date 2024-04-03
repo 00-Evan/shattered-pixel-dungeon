@@ -45,7 +45,7 @@ public class DM201 extends DM200 {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 15, 25 );
+		return Char.combatRoll( 15, 25 );
 	}
 
 	private boolean threatened = false;

@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
-import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -82,10 +81,10 @@ public class RingOfForce extends Ring {
 				&& hero.buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) == null) {
 			int level = getBuffedBonus(hero, Force.class);
 			float tier = tier(hero.STR());
-			return Random.NormalIntRange(min(level, tier), max(level, tier));
+			return Char.combatRoll(min(level, tier), max(level, tier));
 		} else {
 			//attack without any ring of force influence
-			return Random.NormalIntRange(1, Math.max(hero.STR()-8, 1));
+			return Char.combatRoll(1, Math.max(hero.STR()-8, 1));
 		}
 	}
 

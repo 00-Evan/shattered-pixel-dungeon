@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.FungalSentrySprite;
-import com.watabou.utils.Random;
 
 public class FungalSentry extends Mob {
 
@@ -68,7 +67,7 @@ public class FungalSentry extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange(5, 10);
+		return Char.combatRoll(5, 10);
 	}
 
 	@Override
