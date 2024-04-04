@@ -121,7 +121,7 @@ public class Random {
 
 	//returns an inverse triangularly distributed int in the range [min, max]
 	//this makes results more likely as they get further from the middle of the range
-	public static int InvNormalIntRange( int min, int max){
+	public static int InvNormalIntRange( int min, int max ){
 		float roll1 = Float(), roll2 = Float();
 		if (Math.abs(roll1-0.5f) >= Math.abs(roll2-0.5f)){
 			return min + (int)(roll1*(max - min + 1));

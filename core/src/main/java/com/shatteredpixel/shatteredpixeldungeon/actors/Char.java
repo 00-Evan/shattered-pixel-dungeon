@@ -100,6 +100,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetributio
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ThirteenLeafClover;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFrost;
@@ -593,7 +594,11 @@ public abstract class Char extends Actor {
 	//used for damage and blocking calculations, normally just calls NormalIntRange
 	// but may be affected by things that specifically impact combat number ranges
 	public static int combatRoll(int min, int max ){
-		return Random.NormalIntRange( min, max );
+		if (Random.Float() < ThirteenLeafClover.combatDistributionInverseChance()){
+			return ThirteenLeafClover.invCombatRoll(min, max);
+		} else {
+			return Random.NormalIntRange(min, max);
+		}
 	}
 	
 	public int attackSkill( Char target ) {

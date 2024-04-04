@@ -69,6 +69,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MossyClump;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.DimensionalSundial;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrapMechanism;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrinketCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
@@ -262,8 +263,11 @@ public abstract class Level implements Bundlable {
 						feeling = Feeling.SECRETS;
 						break;
 					default:
+						//if-else statements are fine here as only one chance can be above 0 at a time
 						if (Random.Float() < MossyClump.overrideNormalLevelChance()){
 							feeling = MossyClump.getNextFeeling();
+						} else if (Random.Float() < TrapMechanism.overrideNormalLevelChance()) {
+							feeling = TrapMechanism.getNextFeeling();
 						} else {
 							feeling = Feeling.NONE;
 						}
