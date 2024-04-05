@@ -40,10 +40,21 @@ public class RatKingSprite extends MobSprite {
 
 	public void resetAnims(){
 
-		int c = Holiday.getCurrentHoliday() == Holiday.WINTER_HOLIDAYS ? 8 : 0;
+		int c;
+		switch (Holiday.getCurrentHoliday()){
+			default:
+				c = 0;
+				break;
+			case APRIL_FOOLS:
+				c = 8;
+				break;
+			case WINTER_HOLIDAYS:
+				c = 16;
+				break;
+		}
 
 		if (Dungeon.hero != null && Dungeon.hero.armorAbility instanceof Ratmogrify){
-			c += 16;
+			c = 24;
 			if (parent != null) aura(0xFFFF00);
 		}
 

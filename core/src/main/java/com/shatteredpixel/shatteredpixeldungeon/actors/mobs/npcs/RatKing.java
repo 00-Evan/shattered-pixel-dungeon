@@ -161,8 +161,12 @@ public class RatKing extends NPC {
 	
 	@Override
 	public String description() {
-		if (Holiday.getCurrentHoliday() == Holiday.WINTER_HOLIDAYS){
-			return Messages.get(this, "desc_festive");
+		if (Dungeon.hero.armorAbility instanceof Ratmogrify){
+			return Messages.get(this, "desc_crown");
+		} else if (Holiday.getCurrentHoliday() == Holiday.APRIL_FOOLS){
+			return Messages.get(this, "desc_birthday");
+		} else if (Holiday.getCurrentHoliday() == Holiday.WINTER_HOLIDAYS){
+			return Messages.get(this, "desc_winter");
 		} else {
 			return super.description();
 		}
