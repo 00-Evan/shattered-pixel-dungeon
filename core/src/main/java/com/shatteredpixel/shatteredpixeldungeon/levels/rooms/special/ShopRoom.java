@@ -68,17 +68,31 @@ public class ShopRoom extends SpecialRoom {
 	
 	@Override
 	public int minWidth() {
-		return Math.max(7, (int)(Math.sqrt(itemCount())+3));
+		return Math.max(7, (int)(Math.sqrt(spacesNeeded())+3));
 	}
 	
 	@Override
 	public int minHeight() {
-		return Math.max(7, (int)(Math.sqrt(itemCount())+3));
+		return Math.max(7, (int)(Math.sqrt(spacesNeeded())+3));
 	}
 
-	public int itemCount(){
+	public int spacesNeeded(){
 		if (itemsToSpawn == null) itemsToSpawn = generateItems();
-		return itemsToSpawn.size();
+
+		//sandbags spawn based on current level of an hourglass the player may be holding
+		// so, to avoid rare cases of min sizes differing based on that, we ignore all sandbags
+		// and then add 4 items in all cases, which is max number of sandbags that can be in the shop
+		int spacesNeeded = itemsToSpawn.size();
+		for (Item i : itemsToSpawn){
+			if (i instanceof TimekeepersHourglass.sandBag){
+				spacesNeeded--;
+			}
+		}
+		spacesNeeded += 4;
+
+		//we also add 1 more space, for the shopkeeper
+		spacesNeeded++;
+		return spacesNeeded;
 	}
 	
 	public void paint( Level level ) {
