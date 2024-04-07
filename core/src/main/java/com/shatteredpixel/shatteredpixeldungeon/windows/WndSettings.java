@@ -253,7 +253,11 @@ public class WndSettings extends WndTabbed {
 			}
 			add(chkFullscreen);
 
-			if (DeviceCompat.isAndroid() && PixelScene.maxScreenZoom >= 2) {
+			//power saver is being slowly phased out, only show it on old (4.3-) android devices
+			// this is being phased out as the setting is useless on all but very old devices anyway
+			// and support is going to be dropped for 4.3- in the forseeable future
+			if (DeviceCompat.isAndroid() && PixelScene.maxScreenZoom >= 2
+				&& SPDSettings.powerSaver() || !DeviceCompat.supportsFullScreen()) {
 				chkSaver = new CheckBox(Messages.get(this, "saver")) {
 					@Override
 					protected void onClick() {
