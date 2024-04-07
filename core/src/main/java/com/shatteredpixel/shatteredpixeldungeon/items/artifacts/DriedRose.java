@@ -252,6 +252,9 @@ public class DriedRose extends Artifact {
 			if (armor != null) {
 				desc += "\n" + Messages.get(this, "desc_armor", armor.title());
 			}
+
+			desc += "\n" + Messages.get(this, "desc_strength", ghostStrength());
+
 		}
 		
 		return desc;
