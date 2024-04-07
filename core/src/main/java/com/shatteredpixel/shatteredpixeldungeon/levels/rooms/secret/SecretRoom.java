@@ -88,15 +88,12 @@ public abstract class SecretRoom extends SpecialRoom {
 	}
 	
 	public static SecretRoom createRoom(){
-		
-		SecretRoom r = null;
-		int index = runSecrets.size();
-		for (int i = 0; i < 4; i++){
-			int newidx = Random.Int( runSecrets.size() );
-			if (newidx < index) index = newidx;
-		}
-		
-		r = Reflection.newInstance(runSecrets.get( index ));
+
+		//60% chance for front of queue, 30% chance for next, 10% for one after that
+		int index = Random.chances(new float[]{6, 3, 1});
+		while (index >= runSecrets.size()) index--;
+
+		SecretRoom r = Reflection.newInstance(runSecrets.get( index ));
 		
 		runSecrets.add(runSecrets.remove(index));
 		
