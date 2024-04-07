@@ -223,6 +223,8 @@ public class SummonElemental extends Spell {
 
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 
+		private static final int OUT_QUANTITY = 6;
+
 		{
 			inputs =  new Class[]{Embers.class};
 			inQuantity = new int[]{1};
@@ -230,7 +232,7 @@ public class SummonElemental extends Spell {
 			cost = 10;
 
 			output = SummonElemental.class;
-			outQuantity = 6;
+			outQuantity = OUT_QUANTITY;
 		}
 
 	}

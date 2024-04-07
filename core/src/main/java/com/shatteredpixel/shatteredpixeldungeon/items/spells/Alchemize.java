@@ -57,15 +57,17 @@ public class Alchemize extends Spell {
 	@Override
 	public int value() {
 		//lower value, as it's very cheap to make (and also sold at shops)
-		return (int)(20 * (quantity/8f));
+		return (int)(20 * (quantity/(float)Recipe.OUT_QUANTITY));
 	}
 
 	@Override
 	public int energyVal() {
-		return (int)(4 * (quantity/8f));
+		return (int)(4 * (quantity/(float)Recipe.OUT_QUANTITY));
 	}
 
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe {
+
+		private static final int OUT_QUANTITY = 8;
 
 		@Override
 		public boolean testIngredients(ArrayList<Item> ingredients) {
@@ -96,7 +98,7 @@ public class Alchemize extends Spell {
 
 		@Override
 		public Item sampleOutput(ArrayList<Item> ingredients) {
-			return new Alchemize().quantity(8);
+			return new Alchemize().quantity(OUT_QUANTITY);
 		}
 	}
 

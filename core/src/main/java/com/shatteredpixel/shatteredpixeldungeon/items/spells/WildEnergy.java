@@ -64,15 +64,17 @@ public class WildEnergy extends TargetedSpell {
 	
 	@Override
 	public int value() {
-		return (int)(60 * (quantity/5f));
+		return (int)(60 * (quantity/(float)Recipe.OUT_QUANTITY));
 	}
 
 	@Override
 	public int energyVal() {
-		return (int)(12 * (quantity/5f));
+		return (int)(12 * (quantity/(float)Recipe.OUT_QUANTITY));
 	}
 
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
+
+		private static final int OUT_QUANTITY = 5;
 		
 		{
 			inputs =  new Class[]{ScrollOfRecharging.class, MetalShard.class};
@@ -81,7 +83,7 @@ public class WildEnergy extends TargetedSpell {
 			cost = 4;
 			
 			output = WildEnergy.class;
-			outQuantity = 5;
+			outQuantity = OUT_QUANTITY;
 		}
 		
 	}

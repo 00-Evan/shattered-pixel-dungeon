@@ -72,15 +72,17 @@ public class ElixirOfFeatherFall extends Elixir {
 
 	@Override
 	public int value() {
-		return (int)(60 * (quantity/2f));
+		return (int)(60 * (quantity/(float) Recipe.OUT_QUANTITY));
 	}
 
 	@Override
 	public int energyVal() {
-		return (int)(12 * (quantity/2f));
+		return (int)(12 * (quantity/(float) Recipe.OUT_QUANTITY));
 	}
 
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
+
+		private static final int OUT_QUANTITY = 2;
 
 		{
 			inputs =  new Class[]{PotionOfLevitation.class};
@@ -89,7 +91,7 @@ public class ElixirOfFeatherFall extends Elixir {
 			cost = 16;
 
 			output = ElixirOfFeatherFall.class;
-			outQuantity = 2;
+			outQuantity = OUT_QUANTITY;
 		}
 
 	}
