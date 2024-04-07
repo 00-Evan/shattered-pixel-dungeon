@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpiritHawk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
@@ -63,6 +64,8 @@ public class SummonElemental extends Spell {
 
 	{
 		image = ItemSpriteSheet.SUMMON_ELE;
+
+		talentChance = 1/(float)Recipe.OUT_QUANTITY;
 	}
 
 	private Class<? extends Elemental> summonClass = Elemental.AllyNewBornElemental.class;
@@ -117,6 +120,9 @@ public class SummonElemental extends Spell {
 			curUser.spendAndNext(Actor.TICK);
 
 			detach(Dungeon.hero.belongings.backpack);
+			if (Random.Float() < talentChance){
+				Talent.onScrollUsed(curUser, curUser.pos, talentFactor);
+			}
 
 		} else {
 			GLog.w(Messages.get(SpiritHawk.class, "no_space"));

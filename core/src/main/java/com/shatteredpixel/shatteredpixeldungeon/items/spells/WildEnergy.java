@@ -39,7 +39,10 @@ public class WildEnergy extends TargetedSpell {
 	
 	{
 		image = ItemSpriteSheet.WILD_ENERGY;
+
 		usesTargeting = true;
+
+		talentChance = 1/(float)Recipe.OUT_QUANTITY;
 	}
 	
 	//we rely on cursedWand to do fx instead

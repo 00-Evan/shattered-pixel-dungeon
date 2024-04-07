@@ -40,6 +40,8 @@ public class PhaseShift extends TargetedSpell {
 		image = ItemSpriteSheet.PHASE_SHIFT;
 
 		usesTargeting = true;
+
+		talentChance = 1/(float)Recipe.OUT_QUANTITY;
 	}
 	
 	@Override

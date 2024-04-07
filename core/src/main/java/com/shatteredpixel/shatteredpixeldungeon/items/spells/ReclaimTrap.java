@@ -43,6 +43,8 @@ public class ReclaimTrap extends TargetedSpell {
 	
 	{
 		image = ItemSpriteSheet.RECLAIM_TRAP;
+
+		talentChance = 1/(float)Recipe.OUT_QUANTITY;
 	}
 	
 	private Class<?extends Trap> storedTrap = null;

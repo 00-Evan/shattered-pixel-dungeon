@@ -136,6 +136,8 @@ public class Potion extends Item {
 
 	//affects how strongly on-potion talents trigger from this potion
 	protected float talentFactor = 1;
+	//the chance (0-1) of whether on-potion talents trigger from this potion
+	protected float talentChance = 1;
 	
 	{
 		stackable = true;
@@ -285,7 +287,7 @@ public class Potion extends Item {
 		
 		hero.sprite.operate( hero.pos );
 
-		if (!anonymous){
+		if (!anonymous && Random.Float() < talentChance){
 			Talent.onPotionUsed(curUser, curUser.pos, talentFactor);
 		}
 	}
@@ -301,7 +303,7 @@ public class Potion extends Item {
 			Dungeon.level.pressCell( cell );
 			shatter( cell );
 
-			if (!anonymous){
+			if (!anonymous && Random.Float() < talentChance){
 				Talent.onPotionUsed(curUser, cell, talentFactor);
 			}
 			

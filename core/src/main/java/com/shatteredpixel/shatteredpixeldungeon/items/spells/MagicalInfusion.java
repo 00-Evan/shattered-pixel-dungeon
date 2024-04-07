@@ -39,6 +39,8 @@ public class MagicalInfusion extends InventorySpell {
 		image = ItemSpriteSheet.MAGIC_INFUSE;
 
 		unique = true;
+
+		talentFactor = 2;
 	}
 
 	@Override

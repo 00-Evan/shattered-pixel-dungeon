@@ -33,6 +33,11 @@ import java.util.ArrayList;
 public abstract class Spell extends Item {
 	
 	public static final String AC_CAST = "CAST";
+
+	//affects how strongly on-scroll talents trigger from this scroll
+	protected float talentFactor = 1;
+	//the chance (0-1) of whether on-scroll talents trigger from this potion
+	protected float talentChance = 1;
 	
 	{
 		stackable = true;

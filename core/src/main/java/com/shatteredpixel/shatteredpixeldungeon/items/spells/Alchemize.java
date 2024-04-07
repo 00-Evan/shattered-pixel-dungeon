@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
@@ -38,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndEnergizeItem;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoItem;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -45,6 +47,8 @@ public class Alchemize extends Spell {
 	
 	{
 		image = ItemSpriteSheet.ALCHEMIZE;
+
+		talentChance = 1/(float)Recipe.OUT_QUANTITY;
 	}
 
 	private static WndBag parentWnd;
@@ -253,6 +257,9 @@ public class Alchemize extends Spell {
 					owner.hide();
 				}
 				GameScene.selectItem(itemSelector);
+			}
+			if (curItem instanceof Alchemize && Random.Float() < ((Alchemize)curItem).talentChance){
+				Talent.onScrollUsed(curUser, curUser.pos, ((Alchemize) curItem).talentFactor);
 			}
 		}
 
