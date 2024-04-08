@@ -227,14 +227,37 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 		public String desc(int count){
 			switch (this){
-				default:
-					return Messages.get(this, name() + ".desc");
+				case CLOBBER: default:
+					if (count >= 7 && Dungeon.hero.pointsInTalent(Talent.ENHANCED_COMBO) >= 1){
+						return Messages.get(this, name() + ".empower_desc");
+					} else {
+						return Messages.get(this, name() + ".desc");
+					}
 				case SLAM:
-					return Messages.get(this,  name() + ".desc", count*20);
+					if (count >= 3 && Dungeon.hero.pointsInTalent(Talent.ENHANCED_COMBO) >= 3){
+						return Messages.get(this, name() + ".empower_desc", count/3, count*20);
+					} else {
+						return Messages.get(this, name() + ".desc");
+					}
+				case PARRY:
+					if (count >= 9 && Dungeon.hero.pointsInTalent(Talent.ENHANCED_COMBO) >= 2){
+						return Messages.get(this, name() + ".empower_desc");
+					} else {
+						return Messages.get(this, name() + ".desc");
+					}
 				case CRUSH:
-					return Messages.get(this,  name() + ".desc", count*25);
+					if (count >= 3 && Dungeon.hero.pointsInTalent(Talent.ENHANCED_COMBO) >= 3){
+						return Messages.get(this, name() + ".empower_desc", count/3, count*25);
+					} else {
+						return Messages.get(this,  name() + ".desc", count*25);
+					}
+				case FURY:
+					if (count >= 3 && Dungeon.hero.pointsInTalent(Talent.ENHANCED_COMBO) >= 3){
+						return Messages.get(this, name() + ".empower_desc", count/3);
+					} else {
+						return Messages.get(this,  name() + ".desc");
+					}
 			}
-
 		}
 
 	}
