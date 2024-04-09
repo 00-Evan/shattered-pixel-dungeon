@@ -56,7 +56,16 @@ public class WarScythe extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		Sickle.harvestAbility(hero, target, 0.9f, this);
+		Sickle.harvestAbility(hero, target, 1f, this);
+	}
+
+	@Override
+	public String abilityInfo() {
+		if (levelKnown) {
+			return Messages.get(this, "ability_desc", augment.damageFactor(Math.round(min() * 1.0f)), augment.damageFactor(Math.round(max() * 1.0f)));
+		} else {
+			return Messages.get(this, "typical_ability_desc", Math.round(min(0) * 1.0f), Math.round(max(0) * 1.0f));
+		}
 	}
 
 }

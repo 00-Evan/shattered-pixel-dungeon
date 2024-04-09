@@ -65,7 +65,16 @@ public class Sickle extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		harvestAbility(hero, target, 1f, this);
+		harvestAbility(hero, target, 1.10f, this);
+	}
+
+	@Override
+	public String abilityInfo() {
+		if (levelKnown) {
+			return Messages.get(this, "ability_desc", augment.damageFactor(Math.round(min() * 1.10f)), augment.damageFactor(Math.round(max() * 1.10f)));
+		} else {
+			return Messages.get(this, "typical_ability_desc", Math.round(min(0) * 1.10f), Math.round(max(0) * 1.10f));
+		}
 	}
 
 	public static void harvestAbility(Hero hero, Integer target, float bleedFactor, MeleeWeapon wep){
@@ -95,7 +104,7 @@ public class Sickle extends MeleeWeapon {
 				AttackIndicator.target(enemy);
 
 				Buff.affect(enemy, HarvestBleedTracker.class, 0).bleedFactor = bleedFactor;
-				if (hero.attack(enemy, 1.1f, 0, Char.INFINITE_ACCURACY)){
+				if (hero.attack(enemy, 1f, 0, Char.INFINITE_ACCURACY)){
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				}
 

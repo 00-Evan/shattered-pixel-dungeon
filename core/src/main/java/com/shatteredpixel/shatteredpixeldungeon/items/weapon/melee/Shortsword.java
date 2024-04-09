@@ -56,4 +56,12 @@ public class Shortsword extends MeleeWeapon {
 		Sword.cleaveAbility(hero, target, 1.30f, this);
 	}
 
+	@Override
+	public String abilityInfo() {
+		if (levelKnown) {
+			return Messages.get(this, "ability_desc", augment.damageFactor(Math.round(min() * 1.30f)), augment.damageFactor(Math.round(max() * 1.30f)));
+		} else {
+			return Messages.get(this, "typical_ability_desc", Math.round(min(0) * 1.30f), Math.round(max(0) * 1.30f));
+		}
+	}
 }

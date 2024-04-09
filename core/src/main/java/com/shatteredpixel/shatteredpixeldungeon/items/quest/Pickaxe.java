@@ -242,6 +242,11 @@ public class Pickaxe extends MeleeWeapon {
 		});
 	}
 
+	@Override
+	public String abilityInfo() {
+		return Messages.get(this, "ability_desc", augment.damageFactor(Math.round(min() * 2f)), augment.damageFactor(Math.round(max() * 2f)));
+	}
+
 	private static final String BLOODSTAINED = "bloodStained";
 	
 	@Override

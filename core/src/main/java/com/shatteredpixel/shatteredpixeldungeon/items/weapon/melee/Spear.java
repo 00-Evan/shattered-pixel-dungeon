@@ -64,6 +64,15 @@ public class Spear extends MeleeWeapon {
 		Spear.spikeAbility(hero, target, 1.45f, this);
 	}
 
+	@Override
+	public String abilityInfo() {
+		if (levelKnown) {
+			return Messages.get(this, "ability_desc", augment.damageFactor(Math.round(min() * 1.45f)), augment.damageFactor(Math.round(max() * 1.45f)));
+		} else {
+			return Messages.get(this, "typical_ability_desc", Math.round(min(0) * 1.45f), Math.round(max(0) * 1.45f));
+		}
+	}
+
 	public static void spikeAbility(Hero hero, Integer target, float dmgMulti, MeleeWeapon wep){
 		if (target == null) {
 			return;

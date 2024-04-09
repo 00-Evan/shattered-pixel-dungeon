@@ -73,6 +73,15 @@ public class Rapier extends MeleeWeapon {
 		lungeAbility(hero, target, 1, dmgBoost, this);
 	}
 
+	@Override
+	public String abilityInfo() {
+		if (levelKnown){
+			return Messages.get(this, "ability_desc", augment.damageFactor(min()+3+level()), augment.damageFactor(max()+3+level()));
+		} else {
+			return Messages.get(this, "typical_ability_desc", min(0)+3, max(0)+3);
+		}
+	}
+
 	public static void lungeAbility(Hero hero, Integer target, float dmgMulti, int dmgBoost, MeleeWeapon wep){
 		if (target == null){
 			return;

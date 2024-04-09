@@ -102,4 +102,13 @@ public class Greataxe extends MeleeWeapon {
 			}
 		});
 	}
+
+	@Override
+	public String abilityInfo() {
+		if (levelKnown) {
+			return Messages.get(this, "ability_desc", augment.damageFactor(Math.round(min() * 1.50f)), augment.damageFactor(Math.round(max() * 1.50f)));
+		} else {
+			return Messages.get(this, "typical_ability_desc", Math.round(min(0) * 1.50f), Math.round(max(0) * 1.50f));
+		}
+	}
 }

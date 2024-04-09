@@ -64,4 +64,13 @@ public class BattleAxe extends MeleeWeapon {
 		Mace.heavyBlowAbility(hero, target, 1.35f, this);
 	}
 
+	@Override
+	public String abilityInfo() {
+		if (levelKnown) {
+			return Messages.get(this, "ability_desc", augment.damageFactor(Math.round(min() * 1.35f)), augment.damageFactor(Math.round(max() * 1.35f)));
+		} else {
+			return Messages.get(this, "typical_ability_desc", Math.round(min(0) * 1.35f), Math.round(max(0) * 1.35f));
+		}
+	}
+
 }

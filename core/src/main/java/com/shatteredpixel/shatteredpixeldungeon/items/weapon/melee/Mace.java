@@ -73,6 +73,15 @@ public class Mace extends MeleeWeapon {
 		Mace.heavyBlowAbility(hero, target, 1.40f, this);
 	}
 
+	@Override
+	public String abilityInfo() {
+		if (levelKnown) {
+			return Messages.get(this, "ability_desc", augment.damageFactor(Math.round(min() * 1.40f)), augment.damageFactor(Math.round(max() * 1.40f)));
+		} else {
+			return Messages.get(this, "typical_ability_desc", Math.round(min(0) * 1.40f), Math.round(max(0) * 1.40f));
+		}
+	}
+
 	public static void heavyBlowAbility(Hero hero, Integer target, float dmgMulti, MeleeWeapon wep){
 		if (target == null) {
 			return;

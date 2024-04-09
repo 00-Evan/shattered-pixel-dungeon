@@ -56,4 +56,12 @@ public class Longsword extends MeleeWeapon {
 		Sword.cleaveAbility(hero, target, 1.23f, this);
 	}
 
+	@Override
+	public String abilityInfo() {
+		if (levelKnown) {
+			return Messages.get(this, "ability_desc", augment.damageFactor(Math.round(min() * 1.23f)), augment.damageFactor(Math.round(max() * 1.23f)));
+		} else {
+			return Messages.get(this, "typical_ability_desc", Math.round(min(0) * 1.23f), Math.round(max(0) * 1.23f));
+		}
+	}
 }
