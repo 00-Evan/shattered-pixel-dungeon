@@ -61,19 +61,22 @@ public class Spear extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		Spear.spikeAbility(hero, target, 1.45f, this);
+		//+(5+lvl) damage, roughly equivalent to +45% damage
+		int dmgBoost = augment.damageFactor(5 + buffedLvl());
+		Spear.spikeAbility(hero, target, 1, dmgBoost, this);
 	}
 
 	@Override
 	public String abilityInfo() {
-		if (levelKnown) {
-			return Messages.get(this, "ability_desc", augment.damageFactor(Math.round(min() * 1.45f)), augment.damageFactor(Math.round(max() * 1.45f)));
+		int dmgBoost = levelKnown ? 5 + buffedLvl() : 5;
+		if (levelKnown){
+			return Messages.get(this, "ability_desc", augment.damageFactor(min()+dmgBoost), augment.damageFactor(max()+dmgBoost));
 		} else {
-			return Messages.get(this, "typical_ability_desc", Math.round(min(0) * 1.45f), Math.round(max(0) * 1.45f));
+			return Messages.get(this, "typical_ability_desc", min(0)+dmgBoost, max(0)+dmgBoost);
 		}
 	}
 
-	public static void spikeAbility(Hero hero, Integer target, float dmgMulti, MeleeWeapon wep){
+	public static void spikeAbility(Hero hero, Integer target, float dmgMulti, int dmgBoost, MeleeWeapon wep){
 		if (target == null) {
 			return;
 		}
@@ -98,7 +101,7 @@ public class Spear extends MeleeWeapon {
 				wep.beforeAbilityUsed(hero, enemy);
 				AttackIndicator.target(enemy);
 				int oldPos = enemy.pos;
-				if (hero.attack(enemy, dmgMulti, 0, Char.INFINITE_ACCURACY)) {
+				if (hero.attack(enemy, dmgMulti, dmgBoost, Char.INFINITE_ACCURACY)) {
 					if (enemy.isAlive() && enemy.pos == oldPos){
 						//trace a ballistica to our target (which will also extend past them
 						Ballistica trajectory = new Ballistica(hero.pos, enemy.pos, Ballistica.STOP_TARGET);

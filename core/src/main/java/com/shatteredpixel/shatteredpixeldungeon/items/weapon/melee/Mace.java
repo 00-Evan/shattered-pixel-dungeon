@@ -70,19 +70,22 @@ public class Mace extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		Mace.heavyBlowAbility(hero, target, 1.40f, this);
+		//+(4+lvl) damage, roughly equivalent to +40% damage
+		int dmgBoost = augment.damageFactor(4 + buffedLvl());
+		Mace.heavyBlowAbility(hero, target, 1, dmgBoost, this);
 	}
 
 	@Override
 	public String abilityInfo() {
-		if (levelKnown) {
-			return Messages.get(this, "ability_desc", augment.damageFactor(Math.round(min() * 1.40f)), augment.damageFactor(Math.round(max() * 1.40f)));
+		int dmgBoost = levelKnown ? 4 + buffedLvl() : 4;
+		if (levelKnown){
+			return Messages.get(this, "ability_desc", augment.damageFactor(min()+dmgBoost), augment.damageFactor(max()+dmgBoost));
 		} else {
-			return Messages.get(this, "typical_ability_desc", Math.round(min(0) * 1.40f), Math.round(max(0) * 1.40f));
+			return Messages.get(this, "typical_ability_desc", min(0)+dmgBoost, max(0)+dmgBoost);
 		}
 	}
 
-	public static void heavyBlowAbility(Hero hero, Integer target, float dmgMulti, MeleeWeapon wep){
+	public static void heavyBlowAbility(Hero hero, Integer target, float dmgMulti, int dmgBoost, MeleeWeapon wep){
 		if (target == null) {
 			return;
 		}
@@ -122,7 +125,7 @@ public class Mace extends MeleeWeapon {
 			public void call() {
 				wep.beforeAbilityUsed(hero, enemy);
 				AttackIndicator.target(enemy);
-				if (hero.attack(enemy, dmgMulti, 0, Char.INFINITE_ACCURACY)) {
+				if (hero.attack(enemy, dmgMulti, dmgBoost, Char.INFINITE_ACCURACY)) {
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 					if (enemy.isAlive()){
 						Buff.affect(enemy, Daze.class, Daze.DURATION);

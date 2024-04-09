@@ -63,19 +63,22 @@ public class Sword extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		Sword.cleaveAbility(hero, target, 1.27f, this);
+		//+(3+0.67*lvl) damage, roughly equivalent to +27% damage
+		int dmgBoost = augment.damageFactor(3 + Math.round(0.67f*buffedLvl()));
+		Sword.cleaveAbility(hero, target, 1, dmgBoost, this);
 	}
 
 	@Override
 	public String abilityInfo() {
-		if (levelKnown) {
-			return Messages.get(this, "ability_desc", augment.damageFactor(Math.round(min() * 1.27f)), augment.damageFactor(Math.round(max() * 1.27f)));
+		int dmgBoost = levelKnown ? 3+Math.round(0.67f*buffedLvl()) : 3;
+		if (levelKnown){
+			return Messages.get(this, "ability_desc", augment.damageFactor(min()+dmgBoost), augment.damageFactor(max()+dmgBoost));
 		} else {
-			return Messages.get(this, "typical_ability_desc", Math.round(min(0) * 1.27f), Math.round(max(0) * 1.27f));
+			return Messages.get(this, "typical_ability_desc", min(0)+dmgBoost, max(0)+dmgBoost);
 		}
 	}
 
-	public static void cleaveAbility(Hero hero, Integer target, float dmgMulti, MeleeWeapon wep){
+	public static void cleaveAbility(Hero hero, Integer target, float dmgMulti, int dmgBoost, MeleeWeapon wep){
 		if (target == null) {
 			return;
 		}
@@ -99,7 +102,7 @@ public class Sword extends MeleeWeapon {
 			public void call() {
 				wep.beforeAbilityUsed(hero, enemy);
 				AttackIndicator.target(enemy);
-				if (hero.attack(enemy, dmgMulti, 0, Char.INFINITE_ACCURACY)){
+				if (hero.attack(enemy, dmgMulti, dmgBoost, Char.INFINITE_ACCURACY)){
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				}
 

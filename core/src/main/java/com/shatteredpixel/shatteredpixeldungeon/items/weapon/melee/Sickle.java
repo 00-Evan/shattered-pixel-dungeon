@@ -65,19 +65,23 @@ public class Sickle extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		harvestAbility(hero, target, 1.10f, this);
+		//+(1.1+lvl/5) damage, roughly equivalent to +10% damage
+		//..yes such a small boost is very silly
+		int dmgBoost = augment.damageFactor(Math.round(1.1f + buffedLvl()/5f));
+		harvestAbility(hero, target, 1f, dmgBoost, this);
 	}
 
 	@Override
 	public String abilityInfo() {
-		if (levelKnown) {
-			return Messages.get(this, "ability_desc", augment.damageFactor(Math.round(min() * 1.10f)), augment.damageFactor(Math.round(max() * 1.10f)));
+		int dmgBoost = levelKnown ? Math.round(1.1f + buffedLvl()/5f) : 1;
+		if (levelKnown){
+			return Messages.get(this, "ability_desc", augment.damageFactor(min()+dmgBoost), augment.damageFactor(max()+dmgBoost));
 		} else {
-			return Messages.get(this, "typical_ability_desc", Math.round(min(0) * 1.10f), Math.round(max(0) * 1.10f));
+			return Messages.get(this, "typical_ability_desc", min(0)+dmgBoost, max(0)+dmgBoost);
 		}
 	}
 
-	public static void harvestAbility(Hero hero, Integer target, float bleedFactor, MeleeWeapon wep){
+	public static void harvestAbility(Hero hero, Integer target, float bleedMulti, int bleedBoost, MeleeWeapon wep){
 
 		if (target == null) {
 			return;
@@ -103,8 +107,8 @@ public class Sickle extends MeleeWeapon {
 				wep.beforeAbilityUsed(hero, enemy);
 				AttackIndicator.target(enemy);
 
-				Buff.affect(enemy, HarvestBleedTracker.class, 0).bleedFactor = bleedFactor;
-				if (hero.attack(enemy, 1f, 0, Char.INFINITE_ACCURACY)){
+				Buff.affect(enemy, HarvestBleedTracker.class, 0);
+				if (hero.attack(enemy, bleedMulti, bleedBoost, Char.INFINITE_ACCURACY)){
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				}
 
@@ -119,8 +123,6 @@ public class Sickle extends MeleeWeapon {
 
 	}
 
-	public static class HarvestBleedTracker extends FlavourBuff{
-		public float bleedFactor;
-	};
+	public static class HarvestBleedTracker extends FlavourBuff{};
 
 }

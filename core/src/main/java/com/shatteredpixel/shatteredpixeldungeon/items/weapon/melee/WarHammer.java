@@ -61,15 +61,18 @@ public class WarHammer extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		Mace.heavyBlowAbility(hero, target, 1.30f, this);
+		//+(4+lvl) damage, roughly equivalent to +30% damage
+		int dmgBoost = augment.damageFactor(4 + buffedLvl());
+		Mace.heavyBlowAbility(hero, target, 1, dmgBoost, this);
 	}
 
 	@Override
 	public String abilityInfo() {
-		if (levelKnown) {
-			return Messages.get(this, "ability_desc", augment.damageFactor(Math.round(min() * 1.30f)), augment.damageFactor(Math.round(max() * 1.30f)));
+		int dmgBoost = levelKnown ? 4 + buffedLvl() : 4;
+		if (levelKnown){
+			return Messages.get(this, "ability_desc", augment.damageFactor(min()+dmgBoost), augment.damageFactor(max()+dmgBoost));
 		} else {
-			return Messages.get(this, "typical_ability_desc", Math.round(min(0) * 1.30f), Math.round(max(0) * 1.30f));
+			return Messages.get(this, "typical_ability_desc", min(0)+dmgBoost, max(0)+dmgBoost);
 		}
 	}
 

@@ -52,7 +52,19 @@ public class Gloves extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		Sai.comboStrikeAbility(hero, target, 0.45f, this);
+		//+(1.5+0.5*lvl) damage, roughly equivalent to +45% damage
+		int dmgBoost = augment.damageFactor(Math.round(1.5f + 0.5f*buffedLvl()));
+		Sai.comboStrikeAbility(hero, target, 0, dmgBoost, this);
+	}
+
+	@Override
+	public String abilityInfo() {
+		int dmgBoost = levelKnown ? Math.round(1.5f + 0.5f*buffedLvl()) : 2;
+		if (levelKnown){
+			return Messages.get(this, "ability_desc", augment.damageFactor(dmgBoost));
+		} else {
+			return Messages.get(this, "typical_ability_desc", augment.damageFactor(dmgBoost));
+		}
 	}
 
 }

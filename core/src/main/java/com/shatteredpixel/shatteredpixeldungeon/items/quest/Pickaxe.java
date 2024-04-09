@@ -216,18 +216,19 @@ public class Pickaxe extends MeleeWeapon {
 		hero.sprite.attack(enemy.pos, new Callback() {
 			@Override
 			public void call() {
-				float damageMulti = 1f;
+				int damageBoost = 0;
 				if (Char.hasProp(enemy, Char.Property.INORGANIC)
 						|| enemy instanceof Swarm
 						|| enemy instanceof Bee
 						|| enemy instanceof Crab
 						|| enemy instanceof Spinner
 						|| enemy instanceof Scorpio) {
-					damageMulti = 2f;
+					//+(8+2*lvl) damage, equivalent to +100% damage
+					damageBoost = augment.damageFactor(8 + 2*buffedLvl());
 				}
 				beforeAbilityUsed(hero, enemy);
 				AttackIndicator.target(enemy);
-				if (hero.attack(enemy, damageMulti, 0, Char.INFINITE_ACCURACY)) {
+				if (hero.attack(enemy, 1, damageBoost, Char.INFINITE_ACCURACY)) {
 					if (enemy.isAlive()) {
 						Buff.affect(enemy, Vulnerable.class, 3f);
 					} else {
@@ -244,7 +245,8 @@ public class Pickaxe extends MeleeWeapon {
 
 	@Override
 	public String abilityInfo() {
-		return Messages.get(this, "ability_desc", augment.damageFactor(Math.round(min() * 2f)), augment.damageFactor(Math.round(max() * 2f)));
+		int dmgBoost = 8 + 2*buffedLvl();
+		return Messages.get(this, "ability_desc", augment.damageFactor(min()+dmgBoost), augment.damageFactor(max()+dmgBoost));
 	}
 
 	private static final String BLOODSTAINED = "bloodStained";
