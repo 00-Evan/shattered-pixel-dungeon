@@ -97,7 +97,7 @@ public class Dart extends MissileWeapon {
 		}
 	}
 	
-	private static Crossbow bow;
+	protected static Crossbow bow;
 	
 	private void updateCrossbow(){
 		if (Dungeon.hero.belongings.weapon() instanceof Crossbow){

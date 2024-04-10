@@ -95,10 +95,19 @@ public class Dagger extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		sneakAbility(hero, target, 6, this);
+		sneakAbility(hero, target, 5, 2+buffedLvl(), this);
 	}
 
-	public static void sneakAbility(Hero hero, Integer target, int maxDist, MeleeWeapon wep){
+	@Override
+	public String abilityInfo() {
+		if (levelKnown){
+			return Messages.get(this, "ability_desc", 2+buffedLvl());
+		} else {
+			return Messages.get(this, "typical_ability_desc", 2);
+		}
+	}
+
+	public static void sneakAbility(Hero hero, Integer target, int maxDist, int invisTurns, MeleeWeapon wep){
 		if (target == null) {
 			return;
 		}
@@ -116,7 +125,7 @@ public class Dagger extends MeleeWeapon {
 		}
 
 		wep.beforeAbilityUsed(hero, null);
-		Buff.affect(hero, Invisibility.class);
+		Buff.affect(hero, Invisibility.class, invisTurns-1); //1 fewer turns as ability is instant
 		hero.next();
 
 		Dungeon.hero.sprite.turnTo( Dungeon.hero.pos, target);

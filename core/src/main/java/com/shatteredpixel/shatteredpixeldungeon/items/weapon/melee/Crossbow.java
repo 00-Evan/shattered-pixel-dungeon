@@ -76,6 +76,15 @@ public class Crossbow extends MeleeWeapon {
 		afterAbilityUsed(hero);
 	}
 
+	@Override
+	public String abilityInfo() {
+		if (levelKnown){
+			return Messages.get(this, "ability_desc", 2+buffedLvl());
+		} else {
+			return Messages.get(this, "typical_ability_desc", 2);
+		}
+	}
+
 	public static class ChargedShot extends Buff{
 
 		{
