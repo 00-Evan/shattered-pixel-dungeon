@@ -94,7 +94,7 @@ public class Greataxe extends MeleeWeapon {
 				//+(12.5+(1.75*lvl)) damage, equivalent to +50% damage
 				int dmgBoost = augment.damageFactor(Math.round(12.5f + 1.75f*buffedLvl()));
 
-				if (hero.attack(enemy, 1.50f, 0, Char.INFINITE_ACCURACY)){
+				if (hero.attack(enemy, 1, dmgBoost, Char.INFINITE_ACCURACY)){
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 					if (!enemy.isAlive()){
 						onAbilityKill(hero, enemy);
