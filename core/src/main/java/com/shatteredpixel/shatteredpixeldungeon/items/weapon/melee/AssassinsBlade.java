@@ -75,11 +75,6 @@ public class AssassinsBlade extends MeleeWeapon {
 	}
 
 	@Override
-	protected int baseChargeUse(Hero hero, Char target){
-		return 2;
-	}
-
-	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
 		Dagger.sneakAbility(hero, target, 3, 2+buffedLvl(), this);
 	}

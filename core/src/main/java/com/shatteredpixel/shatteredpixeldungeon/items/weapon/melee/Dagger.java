@@ -89,11 +89,6 @@ public class Dagger extends MeleeWeapon {
 	}
 
 	@Override
-	protected int baseChargeUse(Hero hero, Char target){
-		return 2;
-	}
-
-	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
 		sneakAbility(hero, target, 5, 2+buffedLvl(), this);
 	}

@@ -63,14 +63,14 @@ public class Sword extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		//+(3+0.67*lvl) damage, roughly equivalent to +27% damage
-		int dmgBoost = augment.damageFactor(3 + Math.round(0.67f*buffedLvl()));
+		//+(4+lvl) damage, roughly +35% base dmg, +40% scaling
+		int dmgBoost = augment.damageFactor(4 + buffedLvl());
 		Sword.cleaveAbility(hero, target, 1, dmgBoost, this);
 	}
 
 	@Override
 	public String abilityInfo() {
-		int dmgBoost = levelKnown ? 3+Math.round(0.67f*buffedLvl()) : 3;
+		int dmgBoost = levelKnown ? 4 + buffedLvl() : 4;
 		if (levelKnown){
 			return Messages.get(this, "ability_desc", augment.damageFactor(min()+dmgBoost), augment.damageFactor(max()+dmgBoost));
 		} else {
@@ -107,11 +107,17 @@ public class Sword extends MeleeWeapon {
 				}
 
 				Invisibility.dispel();
-				hero.spendAndNext(hero.attackDelay());
+
 				if (!enemy.isAlive()){
+					hero.next();
 					wep.onAbilityKill(hero, enemy);
-					Buff.prolong(hero, CleaveTracker.class, 5f);
+					if (hero.buff(CleaveTracker.class) != null) {
+						hero.buff(CleaveTracker.class).detach();
+					} else {
+						Buff.prolong(hero, CleaveTracker.class, 4f); //1 less as attack was instant
+					}
 				} else {
+					hero.spendAndNext(hero.attackDelay());
 					if (hero.buff(CleaveTracker.class) != null) {
 						hero.buff(CleaveTracker.class).detach();
 					}

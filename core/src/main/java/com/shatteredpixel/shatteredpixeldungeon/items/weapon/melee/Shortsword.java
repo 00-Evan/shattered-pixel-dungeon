@@ -53,14 +53,14 @@ public class Shortsword extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		//+(2.5+0.6*lvl) damage, roughly equivalent to +30% damage
-		int dmgBoost = augment.damageFactor(Math.round(2.5f + 0.6f*buffedLvl()));
+		//+(3+lvl) damage, roughly +35% base dmg, +50% scaling
+		int dmgBoost = augment.damageFactor(3 + buffedLvl());
 		Sword.cleaveAbility(hero, target, 1, dmgBoost, this);
 	}
 
 	@Override
 	public String abilityInfo() {
-		int dmgBoost = levelKnown ? Math.round(2.5f + 0.6f*buffedLvl()) : 3;
+		int dmgBoost = levelKnown ? 3 + buffedLvl() : 3;
 		if (levelKnown){
 			return Messages.get(this, "ability_desc", augment.damageFactor(min()+dmgBoost), augment.damageFactor(max()+dmgBoost));
 		} else {

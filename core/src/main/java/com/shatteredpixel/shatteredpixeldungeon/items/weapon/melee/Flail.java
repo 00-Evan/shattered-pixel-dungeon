@@ -81,7 +81,9 @@ public class Flail extends MeleeWeapon {
 			});
 			//we detach and calculate bonus here in case the attack misses (e.g. vs. monks)
 			spin.detach();
-			spinBoost = spin.spins * augment.damageFactor(Math.round(6.5f + 1.5f*buffedLvl()));
+			//+(6+2*lvl) damage per spin, roughly +30% base damage, +45% scaling
+			// so +90% base dmg, +135% scaling at 3 spins
+			spinBoost = spin.spins * augment.damageFactor(6 + 2*buffedLvl());
 			return Float.POSITIVE_INFINITY;
 		} else {
 			spinBoost = 0;
@@ -94,7 +96,7 @@ public class Flail extends MeleeWeapon {
 		if (Dungeon.hero.buff(SpinAbilityTracker.class) != null){
 			return 0;
 		} else {
-			return 2;
+			return 1;
 		}
 	}
 
@@ -124,7 +126,7 @@ public class Flail extends MeleeWeapon {
 
 	@Override
 	public String abilityInfo() {
-		int dmgBoost = levelKnown ? Math.round(6.5f + 1.5f*buffedLvl()) : 7;
+		int dmgBoost = levelKnown ? 6 + 2*buffedLvl() : 6;
 		if (levelKnown){
 			return Messages.get(this, "ability_desc", augment.damageFactor(dmgBoost));
 		} else {

@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.Image;
 
 public class RoundShield extends MeleeWeapon {
 
@@ -62,21 +63,21 @@ public class RoundShield extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		RoundShield.guardAbility(hero, 8+buffedLvl(), this);
+		RoundShield.guardAbility(hero, 5+buffedLvl(), this);
 	}
 
 	@Override
 	public String abilityInfo() {
 		if (levelKnown){
-			return Messages.get(this, "ability_desc", 8+buffedLvl());
+			return Messages.get(this, "ability_desc", 5+buffedLvl());
 		} else {
-			return Messages.get(this, "typical_ability_desc", 8);
+			return Messages.get(this, "typical_ability_desc", 5);
 		}
 	}
 
 	public static void guardAbility(Hero hero, int duration, MeleeWeapon wep){
 		wep.beforeAbilityUsed(hero, null);
-		Buff.prolong(hero, GuardTracker.class, duration);
+		Buff.prolong(hero, GuardTracker.class, duration).hasBlocked = false;
 		hero.sprite.operate(hero.pos);
 		hero.spendAndNext(Actor.TICK);
 		wep.afterAbilityUsed(hero);
@@ -89,9 +90,20 @@ public class RoundShield extends MeleeWeapon {
 			type = buffType.POSITIVE;
 		}
 
+		public boolean hasBlocked = false;
+
 		@Override
 		public int icon() {
 			return BuffIndicator.DUEL_GUARD;
+		}
+
+		@Override
+		public void tintIcon(Image icon) {
+			if (hasBlocked){
+				icon.tint(0x651f66, 0.5f);
+			} else {
+				icon.resetColor();
+			}
 		}
 
 		@Override
