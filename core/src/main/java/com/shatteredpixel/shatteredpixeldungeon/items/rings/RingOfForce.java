@@ -33,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.watabou.noosa.Image;
 
 import java.util.ArrayList;
 
@@ -81,7 +80,13 @@ public class RingOfForce extends Ring {
 				&& hero.buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) == null) {
 			int level = getBuffedBonus(hero, Force.class);
 			float tier = tier(hero.STR());
-			return Char.combatRoll(min(level, tier), max(level, tier));
+			int dmg = Char.combatRoll(min(level, tier), max(level, tier));
+			if (hero.buff(BrawlersStance.class) != null){
+				// 1+tier base dmg, roughly +35% dmg
+				// lvl*((3+tier)/8) scaling, roughly +30% dmg
+				dmg += Math.round(1+tier+(level*((3+tier)/8f)));
+			}
+			return dmg;
 		} else {
 			//attack without any ring of force influence
 			return Char.combatRoll(1, Math.max(hero.STR()-8, 1));
@@ -175,10 +180,6 @@ public class RingOfForce extends Ring {
 			} else if (!isEquipped(hero)) {
 				GLog.w(Messages.get(MeleeWeapon.class, "ability_need_equip"));
 
-			} else if ((Buff.affect(hero, MeleeWeapon.Charger.class).charges + Buff.affect(hero, MeleeWeapon.Charger.class).partialCharge)
-					< BrawlersStance.HIT_CHARGE_USE){
-				GLog.w(Messages.get(MeleeWeapon.class, "ability_no_charge"));
-
 			} else {
 				Buff.affect(hero, BrawlersStance.class);
 				AttackIndicator.updateState();
@@ -194,7 +195,15 @@ public class RingOfForce extends Ring {
 
 		if (Dungeon.hero.heroClass == HeroClass.DUELIST
 			&& (anonymous || isIdentified() || isEquipped(Dungeon.hero))){
-			info += "\n\n" + Messages.get(this, "ability_desc");
+			//0 if unidentified, solo level if unequipped, combined level if equipped
+			int level = isIdentified() ? (isEquipped(Dungeon.hero) ? getBuffedBonus(Dungeon.hero, Force.class) : soloBuffedBonus()) : 0;
+			float tier = tier(Dungeon.hero.STR());
+			int dmgBoost = Math.round(1+tier+(level*((3+tier)/8f)));
+			if (isIdentified()) {
+				info += "\n\n" + Messages.get(this, "ability_desc", min(level, tier)+dmgBoost, max(level, tier)+dmgBoost);
+			} else {
+				info += "\n\n" + Messages.get(this, "typical_ability_desc",  min(level, tier)+dmgBoost, max(level, tier)+dmgBoost);
+			}
 		}
 
 		return info;
@@ -209,7 +218,7 @@ public class RingOfForce extends Ring {
 			return false;
 		}
 		BrawlersStance stance = hero.buff(BrawlersStance.class);
-		if (stance != null && stance.hitsLeft() > 0){
+		if (stance != null){
 			//clear the buff if no ring of force is equipped
 			if (hero.buff(RingOfForce.Force.class) == null){
 				stance.detach();
@@ -230,7 +239,7 @@ public class RingOfForce extends Ring {
 			return hero.buff(MonkEnergy.MonkAbility.FlurryEmpowerTracker.class) != null;
 		}
 		BrawlersStance stance = hero.buff(BrawlersStance.class);
-		if (stance != null && stance.hitsLeft() > 0){
+		if (stance != null){
 			return true;
 		}
 		return false;
@@ -242,7 +251,7 @@ public class RingOfForce extends Ring {
 			return false;
 		}
 		BrawlersStance stance = hero.buff(BrawlersStance.class);
-		if (stance != null && stance.hitsLeft() > 0){
+		if (stance != null){
 			return true;
 		}
 		return false;
@@ -250,50 +259,14 @@ public class RingOfForce extends Ring {
 
 	public static class BrawlersStance extends Buff {
 
-		public static float HIT_CHARGE_USE = 1/6f;
-
 		{
 			announced = true;
 			type = buffType.POSITIVE;
 		}
 
-		public int hitsLeft(){
-			MeleeWeapon.Charger charger = Buff.affect(target, MeleeWeapon.Charger.class);
-			float charges = charger.charges;
-			charges += charger.partialCharge;
-
-			return (int)(charges/HIT_CHARGE_USE);
-		}
-
 		@Override
 		public int icon() {
 			return BuffIndicator.DUEL_BRAWL;
-		}
-
-		@Override
-		public void tintIcon(Image icon) {
-			if (hitsLeft() == 0){
-				icon.brightness(0.25f);
-			} else {
-				icon.resetColor();
-			}
-		}
-
-		@Override
-		public float iconFadePercent() {
-			float usableCharges = hitsLeft()*HIT_CHARGE_USE;
-
-			return 1f - (usableCharges /  Buff.affect(target, MeleeWeapon.Charger.class).chargeCap());
-		}
-
-		@Override
-		public String iconTextDisplay() {
-			return Integer.toString(hitsLeft());
-		}
-
-		@Override
-		public String desc() {
-			return Messages.get(this, "desc", hitsLeft());
 		}
 	}
 }

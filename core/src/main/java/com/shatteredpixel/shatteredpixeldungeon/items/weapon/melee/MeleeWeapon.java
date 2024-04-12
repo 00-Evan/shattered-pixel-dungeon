@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
@@ -453,6 +454,11 @@ public class MeleeWeapon extends Weapon {
 					//40 to 30 turns per charge for champion
 					if (Dungeon.hero.subClass == HeroSubClass.CHAMPION){
 						chargeToGain *= 1.5f;
+					}
+
+					//50% slower charge gain with brawler's stance enabled
+					if (Dungeon.hero.buff(RingOfForce.BrawlersStance.class) != null){
+						chargeToGain *= 0.50f;
 					}
 
 					partialCharge += chargeToGain;
