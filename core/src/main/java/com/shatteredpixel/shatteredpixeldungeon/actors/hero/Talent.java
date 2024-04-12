@@ -159,7 +159,7 @@ public enum Talent {
 	//Duelist T3
 	PRECISE_ASSAULT(137, 3), DEADLY_FOLLOWUP(138, 3),
 	//Champion T3
-	SECONDARY_CHARGE(139, 3), TWIN_UPGRADES(140, 3), COMBINED_LETHALITY(141, 3),
+	VARIED_CHARGE(139, 3), TWIN_UPGRADES(140, 3), COMBINED_LETHALITY(141, 3),
 	//Monk T3
 	UNENCUMBERED_SPIRIT(142, 3), MONASTIC_VIGOR(143, 3), COMBINED_ENERGY(144, 3),
 	//Challenge T4
@@ -319,6 +319,21 @@ public enum Talent {
 		public void tintIcon(Image icon) { icon.hardlight(1f, 1f, 0.0f); }
 		public float iconFadePercent() { return Math.max(0, 1f - (visualcooldown() / 5)); }
 	};
+	public static class VariedChargeTracker extends Buff{
+		public Class weapon;
+
+		private static final String WEAPON    = "weapon";
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(WEAPON, weapon);
+		}
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			weapon = bundle.getClass(WEAPON);
+		}
+	}
 	public static class CombinedLethalityAbilityTracker extends FlavourBuff{
 		public MeleeWeapon weapon;
 	};
@@ -441,7 +456,7 @@ public enum Talent {
 			Dungeon.observe();
 		}
 
-		if (talent == SECONDARY_CHARGE || talent == TWIN_UPGRADES || talent == DESPERATE_POWER){
+		if (talent == TWIN_UPGRADES || talent == DESPERATE_POWER){
 			Item.updateQuickslot();
 		}
 
@@ -892,7 +907,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, DURABLE_TIPS, BARKSKIN, SHIELDING_DEW);
 				break;
 			case CHAMPION:
-				Collections.addAll(tierTalents, SECONDARY_CHARGE, TWIN_UPGRADES, COMBINED_LETHALITY);
+				Collections.addAll(tierTalents, VARIED_CHARGE, TWIN_UPGRADES, COMBINED_LETHALITY);
 				break;
 			case MONK:
 				Collections.addAll(tierTalents, UNENCUMBERED_SPIRIT, MONASTIC_VIGOR, COMBINED_ENERGY);
@@ -957,6 +972,9 @@ public enum Talent {
 
 	private static final HashMap<String, String> renamedTalents = new HashMap<>();
 	static{
+		//v2.4.0
+		renamedTalents.put("SECONDARY_CHARGE",          "VARIED_CHARGE");
+
 		//v2.2.0
 		renamedTalents.put("RESTORED_WILLPOWER",        "LIQUID_WILLPOWER");
 		renamedTalents.put("ENERGIZING_UPGRADE",        "INSCRIBED_POWER");

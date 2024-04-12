@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
@@ -221,6 +222,27 @@ public class MeleeWeapon extends Weapon {
 		hero.belongings.abilityWeapon = null;
 		if (hero.hasTalent(Talent.PRECISE_ASSAULT)){
 			Buff.prolong(hero, Talent.PreciseAssaultTracker.class, hero.cooldown()+4f);
+		}
+		if (hero.hasTalent(Talent.VARIED_CHARGE)){
+			Talent.VariedChargeTracker tracker = hero.buff(Talent.VariedChargeTracker.class);
+			if (tracker == null || tracker.weapon == getClass() || tracker.weapon == null){
+				Buff.affect(hero, Talent.VariedChargeTracker.class).weapon = getClass();
+			} else {
+				tracker.detach();
+				Charger charger = Buff.affect(hero, Charger.class);
+				if (charger.charges < charger.chargeCap()) {
+					charger.partialCharge += hero.pointsInTalent(Talent.VARIED_CHARGE) / 6f;
+					if (charger.partialCharge >= 1f) {
+						charger.partialCharge -= 1f;
+						charger.charges++;
+						if (charger.charges == charger.chargeCap()){
+							charger.partialCharge = 0;
+						}
+						updateQuickslot();
+					}
+				}
+				ScrollOfRecharging.charge(hero);
+			}
 		}
 		if (hero.hasTalent(Talent.COMBINED_LETHALITY)) {
 			Talent.CombinedLethalityAbilityTracker tracker = hero.buff(Talent.CombinedLethalityAbilityTracker.class);
