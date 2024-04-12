@@ -795,11 +795,11 @@ public abstract class Level implements Bundlable {
 			return null;
 
 		if (match == null){
-			//if we have a trinket catalyst, always return that
-			for (Item i : itemsToSpawn){
-				if (i instanceof TrinketCatalyst){
-					itemsToSpawn.remove(i);
-					return i;
+			//if we have a trinket catalyst, always return that first
+			for (Item item : itemsToSpawn){
+				if (item instanceof TrinketCatalyst){
+					itemsToSpawn.remove(item);
+					return item;
 				}
 			}
 

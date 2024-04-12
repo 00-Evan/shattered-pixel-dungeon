@@ -25,7 +25,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrinketCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -44,14 +46,17 @@ public class TreasuryRoom extends SpecialRoom {
 		
 		int n = Random.IntRange( 2, 3 );
 		for (int i=0; i < n; i++) {
+			Item item = level.findPrizeItem(TrinketCatalyst.class);
+			if (item == null) item = new Gold().random();
+
 			int pos;
 			do {
 				pos = level.pointToCell(random());
 			} while (level.map[pos] != Terrain.EMPTY || level.heaps.get( pos ) != null || level.findMob(pos) != null);
 			if (heapType == Heap.Type.CHEST && Dungeon.depth > 1 && Random.Int( 5 ) == 0){
-				level.mobs.add(Mimic.spawnAt(pos, new Gold().random()));
+				level.mobs.add(Mimic.spawnAt(pos, item));
 			} else {
-				level.drop( new Gold().random(), pos ).type = heapType;
+				level.drop( item, pos ).type = heapType;
 			}
 		}
 		

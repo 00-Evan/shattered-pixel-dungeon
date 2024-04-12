@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrinketCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -62,6 +63,15 @@ public class ArmoryRoom extends SpecialRoom {
 				pos = level.pointToCell(random());
 			} while (level.map[pos] != Terrain.EMPTY || level.heaps.get( pos ) != null);
 			level.drop( prize( level ), pos );
+		}
+
+		Item cata = level.findPrizeItem(TrinketCatalyst.class);
+		if (cata != null){
+			int pos;
+			do {
+				pos = level.pointToCell(random());
+			} while (level.map[pos] != Terrain.EMPTY || level.heaps.get( pos ) != null);
+			level.drop( cata, pos );
 		}
 		
 		entrance.set( Door.Type.LOCKED );

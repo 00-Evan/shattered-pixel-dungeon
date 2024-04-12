@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrinketCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -64,10 +65,14 @@ public class RunestoneRoom extends SpecialRoom {
 	}
 	
 	private static Item prize( Level level ) {
-		
-		Item prize = level.findPrizeItem( Runestone.class );
-		if (prize == null)
-			prize = Generator.random( Generator.Category.STONE );
+
+		Item prize = level.findPrizeItem( TrinketCatalyst.class );
+		if (prize == null){
+			prize = level.findPrizeItem( Runestone.class );
+			if (prize == null) {
+				prize = Generator.random( Generator.Category.STONE );
+			}
+		}
 		
 		return prize;
 	}
