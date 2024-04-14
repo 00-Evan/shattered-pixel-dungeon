@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.Trinket;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
@@ -82,10 +83,11 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		} else if (item instanceof Scroll){
 			return item != this || item.quantity() > 1;
 
-		//all rings, wands, artifacts, seeds, and runestones
+		//all rings, wands, artifacts, trinkets, seeds, and runestones
 		} else {
 			return item instanceof Ring || item instanceof Wand || item instanceof Artifact
-					|| item instanceof Plant.Seed || item instanceof Runestone;
+					|| item instanceof Trinket || item instanceof Plant.Seed
+					|| item instanceof Runestone;
 		}
 	}
 	
@@ -174,6 +176,8 @@ public class ScrollOfTransmutation extends InventoryScroll {
 			} else {
 				return a;
 			}
+		} else if (item instanceof Trinket) {
+			return changeTrinket( (Trinket)item );
 		} else {
 			return null;
 		}
@@ -288,6 +292,19 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		}
 		
 		return null;
+	}
+
+	private static Trinket changeTrinket( Trinket t ){
+		Trinket n;
+		do {
+			n = (Trinket)Generator.random(Generator.Category.TRINKET);
+		} while ( Challenges.isItemBlocked(n) || n.getClass() == t.getClass());
+
+		n.level(t.trueLevel());
+		n.levelKnown = t.levelKnown;
+		n.cursed = t.cursed;
+
+		return n;
 	}
 	
 	private static Wand changeWand( Wand w ) {
