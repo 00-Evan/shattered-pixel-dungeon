@@ -389,7 +389,10 @@ public abstract class Char extends Actor {
 				dmg = damageRoll();
 			}
 
-			dmg = Math.round(dmg*dmgMulti);
+			dmg = dmg*dmgMulti;
+
+			//flat damage bonus is affected by multipliers
+			dmg += dmgBonus;
 
 			Berserk berserk = buff(Berserk.class);
 			if (berserk != null) dmg = berserk.damageFactor(dmg);
@@ -403,9 +406,6 @@ public abstract class Char extends Actor {
 			}
 
 			dmg *= AscensionChallenge.statModifier(this);
-
-			//flat damage bonus is applied after positive multipliers, but before negative ones
-			dmg += dmgBonus;
 
 			//friendly endure
 			Endure.EndureTracker endure = buff(Endure.EndureTracker.class);
