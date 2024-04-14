@@ -800,9 +800,8 @@ public class Badges {
 
 			if (Statistics.qualifiedForBossRemainsBadge && Dungeon.hero.belongings.getItem(RemainsItem.class) != null){
 				badge = Badge.BOSS_SLAIN_REMAINS;
-				if (!isUnlocked( badge )) {
-					displayBadge( badge );
-				}
+				local.add( badge );
+				displayBadge( badge );
 			}
 
 		}
