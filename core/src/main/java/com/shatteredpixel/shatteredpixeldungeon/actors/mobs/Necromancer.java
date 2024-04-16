@@ -80,7 +80,17 @@ public class Necromancer extends Mob {
 		}
 		return super.act();
 	}
-	
+
+	@Override
+	public void aggro(Char ch) {
+		super.aggro(ch);
+		if (mySkeleton != null && mySkeleton.isAlive()
+				&& Dungeon.level.mobs.contains(mySkeleton)
+				&& mySkeleton.alignment == alignment){
+			mySkeleton.aggro(ch);
+		}
+	}
+
 	@Override
 	public int drRoll() {
 		return super.drRoll() + Char.combatRoll(0, 5);
