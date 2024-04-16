@@ -70,16 +70,16 @@ public class TrapMechanism extends Trinket {
 		}
 		if (mech.levelFeels.isEmpty()){
 			Random.pushGenerator(Dungeon.seed+1);
-			mech.levelFeels.add(true);
-			mech.levelFeels.add(true);
-			mech.levelFeels.add(true);
-			mech.levelFeels.add(false);
-			mech.levelFeels.add(false);
-			mech.levelFeels.add(false);
-			for (int i = 0; i <= mech.shuffles; i++) {
-				Random.shuffle(mech.levelFeels);
-			}
-			mech.shuffles++;
+				mech.levelFeels.add(true);
+				mech.levelFeels.add(true);
+				mech.levelFeels.add(true);
+				mech.levelFeels.add(false);
+				mech.levelFeels.add(false);
+				mech.levelFeels.add(false);
+				for (int i = 0; i <= mech.shuffles; i++) {
+					Random.shuffle(mech.levelFeels);
+				}
+				mech.shuffles++;
 			Random.popGenerator();
 		}
 

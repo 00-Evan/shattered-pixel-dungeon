@@ -102,6 +102,10 @@ public class Dungeon {
 		STRENGTH_POTIONS,
 		UPGRADE_SCROLLS,
 		ARCANE_STYLI,
+		ENCH_STONE,
+		INT_STONE,
+		TRINKET_CATA,
+		LAB_ROOM, //actually a room, but logic is the same
 
 		//Health potion sources
 		//enemies
@@ -256,7 +260,7 @@ public class Dungeon {
 		QuickSlotButton.reset();
 		Toolbar.swappedQuickslots = false;
 		
-		depth = 1;
+		depth = 15;
 		branch = 0;
 		generatedLevels.clear();
 
@@ -553,6 +557,46 @@ public class Dungeon {
 		//chance is floors left / scrolls left
 		return Random.Int(5 - floorThisSet) < asLeftThisSet;
 	}
+
+	public static boolean enchStoneNeeded(){
+		//1 enchantment stone, spawns on chapter 2 or 3
+		if (!LimitedDrops.ENCH_STONE.dropped()){
+			int region = 1+depth/5;
+			if (region > 1){
+				int floorsVisited = depth - 5;
+				if (floorsVisited > 4) floorsVisited--; //skip floor 10
+				return Random.Int(9-floorsVisited) == 0; //1/8 chance each floor
+			}
+		}
+		return false;
+	}
+
+	public static boolean intStoneNeeded(){
+		//one stone on floors 1-3
+		return !LimitedDrops.INT_STONE.dropped() && Random.Int(4-depth) == 0;
+	}
+
+	public static boolean trinketCataNeeded(){
+		//one trinket catalyst on floors 1-3
+		return !LimitedDrops.TRINKET_CATA.dropped() && Random.Int(4-depth) == 0;
+	}
+
+	public static boolean labRoomNeeded(){
+		//one laboratory each floor set, in floor 3 or 4, 1/2 chance each floor
+		int region = 1+depth/5;
+		if (region > LimitedDrops.LAB_ROOM.count){
+			int floorThisRegion = depth%5;
+			if (floorThisRegion >= 4 || (floorThisRegion == 3 && Random.Int(2) == 0)){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// 1/4
+	// 3/4 * 1/3 = 3/12 = 1/4
+	// 3/4 * 2/3 * 1/2 = 6/24 = 1/4
+	// 1/4
 
 	private static final String INIT_VER	= "init_ver";
 	private static final String VERSION		= "version";
