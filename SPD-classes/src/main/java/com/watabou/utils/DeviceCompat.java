@@ -43,6 +43,11 @@ public class DeviceCompat {
 		}
 	}
 
+	//return APi level on Android, major OS version on iOS, 0 on desktop
+	public static int getPlatformVersion(){
+		return Gdx.app.getVersion();
+	}
+
 	public static boolean isAndroid(){
 		return SharedLibraryLoader.isAndroid;
 	}

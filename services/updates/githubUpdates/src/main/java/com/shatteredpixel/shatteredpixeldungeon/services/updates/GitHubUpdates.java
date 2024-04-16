@@ -26,6 +26,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.DeviceCompat;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,6 +37,9 @@ public class GitHubUpdates extends UpdateService {
 
 	private static Pattern descPattern = Pattern.compile("(.*?)(\r\n|\n|\r)(\r\n|\n|\r)---", Pattern.DOTALL + Pattern.MULTILINE);
 	private static Pattern versionCodePattern = Pattern.compile("internal version number: ([0-9]*)", Pattern.CASE_INSENSITIVE);
+
+	private static Pattern minAndroidPattern = Pattern.compile("Android .*\\(API ([0-9]*)\\)\\+ Devices", Pattern.CASE_INSENSITIVE);
+	private static Pattern minIOSPattern = Pattern.compile("iOS ([0-9]*)\\+ Devices", Pattern.CASE_INSENSITIVE);
 
 	@Override
 	public boolean supportsUpdatePrompts() {
@@ -71,11 +75,31 @@ public class GitHubUpdates extends UpdateService {
 
 						if (m.find()){
 							int releaseVersion = Integer.parseInt(m.group(1));
-							if (releaseVersion > latestVersionCode
-									&& (includeBetas || !b.getBoolean("prerelease"))){
-								latestRelease = b;
-								latestVersionCode = releaseVersion;
+
+
+							//skip release that aren't the latest update (or an update at all)
+							if (releaseVersion <= latestVersionCode) {
+								continue;
+
+							// or that are betas when we haven't opted in
+							} else if (!includeBetas && !b.getBoolean("prerelease")){
+								continue;
+
+							// or that aren't compatible
+							} else if (DeviceCompat.isDesktop()){
+								Matcher minAndroid = minAndroidPattern.matcher(b.getString("body"));
+								if (minAndroid.find() && DeviceCompat.getPlatformVersion() < Integer.parseInt(minAndroid.group(1))){
+									continue;
+								}
+							} else if (DeviceCompat.isiOS()){
+								Matcher minIOS = minIOSPattern.matcher(b.getString("body"));
+								if (minIOS.find() && DeviceCompat.getPlatformVersion() < Integer.parseInt(minIOS.group(1))){
+									continue;
+								}
 							}
+
+							latestRelease = b;
+							latestVersionCode = releaseVersion;
 						}
 
 					}
