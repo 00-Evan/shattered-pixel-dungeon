@@ -478,7 +478,7 @@ public class MeleeWeapon extends Weapon {
 						chargeToGain *= 1.5f;
 					}
 
-					//50% slower charge gain with brawler's stance enabled
+					//50% slower charge gain with brawler's stance enabled, even if buff is inactive
 					if (Dungeon.hero.buff(RingOfForce.BrawlersStance.class) != null){
 						chargeToGain *= 0.50f;
 					}
