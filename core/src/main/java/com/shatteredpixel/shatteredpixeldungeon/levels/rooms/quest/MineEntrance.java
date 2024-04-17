@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.watabou.noosa.Image;
@@ -41,7 +41,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class MineEntrance extends EntranceRoom {
+public class MineEntrance extends StandardRoom {
 
 	@Override
 	public int minWidth() {
@@ -54,10 +54,8 @@ public class MineEntrance extends EntranceRoom {
 	}
 
 	@Override
-	public boolean canMerge(Level l, Point p, int mergeTerrain) {
-		//StandardRoom.canMerge
-		int cell = l.pointToCell(pointInside(p, 1));
-		return (Terrain.flags[l.map[cell]] & Terrain.SOLID) == 0;
+	public boolean isEntrance() {
+		return true;
 	}
 
 	@Override

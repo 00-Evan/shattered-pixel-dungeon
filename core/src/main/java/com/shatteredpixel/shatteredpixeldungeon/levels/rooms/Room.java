@@ -282,6 +282,14 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 		}
 		connected.clear();
 	}
+
+	public boolean isEntrance(){
+		return false;
+	}
+
+	public boolean isExit(){
+		return false;
+	}
 	
 	// **** Painter Logic ****
 	

@@ -64,6 +64,13 @@ public class ShatteredPixelDungeon extends Game {
 				com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.AquaBrew.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.spells.AquaBlast" );
 
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.entrance.EntranceRoom.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom.class" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.exit.ExitRoom.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom.class" );
+
 		//pre-v2.3.0
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb.ConjuredBomb.class,

@@ -61,8 +61,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MagicalFire
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.PitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.entrance.EntranceRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.exit.ExitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BlazingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap;
@@ -766,9 +766,9 @@ public abstract class RegularLevel extends Level {
 		rooms = new ArrayList<>( (Collection<Room>) ((Collection<?>) bundle.getCollection( "rooms" )) );
 		for (Room r : rooms) {
 			r.onLevelLoad( this );
-			if (r instanceof EntranceRoom ){
+			if (r.isEntrance()){
 				roomEntrance = r;
-			} else if (r instanceof ExitRoom ){
+			} else if (r.isExit()){
 				roomExit = r;
 			}
 		}

@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.watabou.noosa.Image;
@@ -100,21 +99,21 @@ public class MassGraveRoom extends SpecialRoom {
 
 	@Override
 	public boolean canConnect(Room r) {
-		if (r instanceof EntranceRoom){
+		if (r.isEntrance()){
 			return false;
 		}
 
 		//must have at least 3 rooms between it and the entrance room
 		for (Room r1 : r.connected.keySet()) {
-			if (r1 instanceof EntranceRoom){
+			if (r1.isEntrance()){
 				return false;
 			}
 			for (Room r2 : r1.connected.keySet()) {
-				if (r2 instanceof EntranceRoom){
+				if (r2.isEntrance()){
 					return false;
 				}
 				for (Room r3 : r2.connected.keySet()) {
-					if (r3 instanceof EntranceRoom){
+					if (r3.isEntrance()){
 						return false;
 					}
 				}
