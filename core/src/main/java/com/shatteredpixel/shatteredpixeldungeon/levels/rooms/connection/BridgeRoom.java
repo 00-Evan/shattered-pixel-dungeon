@@ -55,7 +55,7 @@ public class BridgeRoom extends TunnelRoom {
 	}
 
 	@Override
-	public boolean canMerge(Level l, Point p, int mergeTerrain) {
+	public boolean canMerge(Level l, Room other, Point p, int mergeTerrain) {
 		return mergeTerrain == Terrain.CHASM;
 	}
 }

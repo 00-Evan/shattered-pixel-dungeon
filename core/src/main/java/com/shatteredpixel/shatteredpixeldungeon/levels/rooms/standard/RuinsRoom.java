@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Point;
 
 public class RuinsRoom extends PatchRoom {
@@ -34,7 +35,7 @@ public class RuinsRoom extends PatchRoom {
 	}
 
 	@Override
-	public boolean canMerge(Level l, Point p, int mergeTerrain) {
+	public boolean canMerge(Level l, Room other, Point p, int mergeTerrain) {
 		return true;
 	}
 

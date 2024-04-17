@@ -310,12 +310,12 @@ public abstract class RegularPainter extends Painter {
 			merge.top = merge.bottom = start != null ? start.y : intersect.center().y;
 
 			Point p = new Point(merge.left, merge.top);
-			while(merge.top > intersect.top && n.canMerge(l, p, mergeTerrain) && r.canMerge(l, p, mergeTerrain)) {
+			while(merge.top > intersect.top && n.canMerge(l, r, p, mergeTerrain) && r.canMerge(l, n, p, mergeTerrain)) {
 				merge.top--;
 				p.y--;
 			}
 			p.y = merge.bottom;
-			while(merge.bottom < intersect.bottom && n.canMerge(l, p, mergeTerrain) && r.canMerge(l, p, mergeTerrain)) {
+			while(merge.bottom < intersect.bottom && n.canMerge(l, r, p, mergeTerrain) && r.canMerge(l, n, p, mergeTerrain)) {
 				merge.bottom++;
 				p.y++;
 			}
@@ -334,12 +334,12 @@ public abstract class RegularPainter extends Painter {
 			merge.top = merge.bottom = intersect.top;
 
 			Point p = new Point(merge.left, merge.top);
-			while(merge.left > intersect.left && n.canMerge(l, p, mergeTerrain) && r.canMerge(l, p, mergeTerrain)) {
+			while(merge.left > intersect.left && n.canMerge(l, r, p, mergeTerrain) && r.canMerge(l, n, p, mergeTerrain)) {
 				merge.left--;
 				p.x--;
 			}
 			p.x = merge.right;
-			while(merge.right < intersect.right && n.canMerge(l, p, mergeTerrain) && r.canMerge(l, p, mergeTerrain)) {
+			while(merge.right < intersect.right && n.canMerge(l, r, p, mergeTerrain) && r.canMerge(l, n, p, mergeTerrain)) {
 				merge.right++;
 				p.x++;
 			}

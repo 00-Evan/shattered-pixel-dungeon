@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
@@ -37,7 +38,7 @@ public class MinefieldRoom extends StandardRoom {
 	}
 
 	@Override
-	public boolean canMerge(Level l, Point p, int mergeTerrain) {
+	public boolean canMerge(Level l, Room other, Point p, int mergeTerrain) {
 		int cell = l.pointToCell(pointInside(p, 1));
 		return l.map[cell] == Terrain.EMPTY;
 	}

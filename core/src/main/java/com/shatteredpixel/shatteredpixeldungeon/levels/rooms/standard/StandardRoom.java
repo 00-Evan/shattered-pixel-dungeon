@@ -112,7 +112,7 @@ public abstract class StandardRoom extends Room {
 	}
 
 	@Override
-	public boolean canMerge(Level l, Point p, int mergeTerrain) {
+	public boolean canMerge(Level l, Room other, Point p, int mergeTerrain) {
 		int cell = l.pointToCell(pointInside(p, 1));
 		return (Terrain.flags[l.map[cell]] & Terrain.SOLID) == 0;
 	}

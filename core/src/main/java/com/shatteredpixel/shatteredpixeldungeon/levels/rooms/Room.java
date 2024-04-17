@@ -239,7 +239,7 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 			return false;
 	}
 
-	public boolean canMerge(Level l, Point p, int mergeTerrain){
+	public boolean canMerge(Level l, Room other, Point p, int mergeTerrain){
 		return false;
 	}
 

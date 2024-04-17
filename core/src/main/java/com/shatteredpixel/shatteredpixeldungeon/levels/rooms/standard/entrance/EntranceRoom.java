@@ -53,11 +53,11 @@ public class EntranceRoom extends StandardRoom {
 	}
 
 	@Override
-	public boolean canMerge(Level l, Point p, int mergeTerrain) {
+	public boolean canMerge(Level l, Room other, Point p, int mergeTerrain) {
 		if (Dungeon.depth <= 2) {
 			return false;
 		} else {
-			return super.canMerge(l, p, mergeTerrain);
+			return super.canMerge(l, other, p, mergeTerrain);
 		}
 	}
 

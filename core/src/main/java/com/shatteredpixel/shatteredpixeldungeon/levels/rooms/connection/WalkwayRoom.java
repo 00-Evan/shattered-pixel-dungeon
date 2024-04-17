@@ -55,7 +55,7 @@ public class WalkwayRoom extends PerimeterRoom {
 	}
 
 	@Override
-	public boolean canMerge(Level l, Point p, int mergeTerrain) {
+	public boolean canMerge(Level l, Room other, Point p, int mergeTerrain) {
 		return mergeTerrain == Terrain.CHASM;
 	}
 }

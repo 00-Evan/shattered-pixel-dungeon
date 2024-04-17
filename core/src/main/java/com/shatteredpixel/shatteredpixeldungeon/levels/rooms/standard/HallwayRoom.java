@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
@@ -43,8 +44,14 @@ public class HallwayRoom extends StandardRoom {
 	}
 
 	@Override
-	public boolean canMerge(Level l, Point p, int mergeTerrain) {
-		return false;
+	public boolean canMerge(Level l, Room other, Point p, int mergeTerrain) {
+		return other instanceof HallwayRoom && super.canMerge(l, other, p, mergeTerrain);
+	}
+
+	@Override
+	public void merge(Level l, Room other, Rect merge, int mergeTerrain) {
+		super.merge(l, other, merge, mergeTerrain);
+		Painter.set(l, connected.get(other), Terrain.EMPTY_SP);
 	}
 
 	//FIXME lots of copy-pasta from tunnel rooms here
