@@ -40,7 +40,12 @@ public class ExitRoom extends StandardRoom {
 	public int minHeight() {
 		return Math.max(super.minHeight(), 5);
 	}
-	
+
+	@Override
+	public boolean isExit() {
+		return true;
+	}
+
 	public void paint(Level level) {
 
 		Painter.fill( level, this, Terrain.WALL );

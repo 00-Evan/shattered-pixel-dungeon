@@ -49,7 +49,7 @@ public class ShrapnelBomb extends Bomb {
 		
 		boolean[] FOV = new boolean[Dungeon.level.length()];
 		Point c = Dungeon.level.cellToPoint(cell);
-		ShadowCaster.castShadow(c.x, c.y, FOV, Dungeon.level.losBlocking, 8);
+		ShadowCaster.castShadow(c.x, c.y, Dungeon.level.width(), FOV, Dungeon.level.losBlocking, 8);
 		
 		ArrayList<Char> affected = new ArrayList<>();
 		

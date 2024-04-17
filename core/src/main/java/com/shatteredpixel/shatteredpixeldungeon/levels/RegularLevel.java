@@ -61,9 +61,9 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MagicalFire
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.PitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.entrance.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.exit.ExitRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BlazingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
@@ -73,6 +73,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FrostTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PitfallTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WornDartTrap;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -213,7 +214,7 @@ public abstract class RegularLevel extends Level {
 
 		ArrayList<Room> stdRooms = new ArrayList<>();
 		for (Room room : rooms) {
-			if (room instanceof StandardRoom && room != roomEntrance) {
+			if (room instanceof StandardRoom) {
 				for (int i = 0; i < ((StandardRoom) room).mobSpawnWeight(); i++) {
 					stdRooms.add(room);
 				}
@@ -221,6 +222,10 @@ public abstract class RegularLevel extends Level {
 		}
 		Random.shuffle(stdRooms);
 		Iterator<Room> stdRoomIter = stdRooms.iterator();
+
+		boolean[] entranceFOV = new boolean[length()];
+		Point c = cellToPoint(entrance());
+		ShadowCaster.castShadow(c.x, c.y, width(), entranceFOV, losBlocking, 8);
 
 		while (mobsToSpawn > 0) {
 			Mob mob = createMob();
@@ -236,6 +241,7 @@ public abstract class RegularLevel extends Level {
 				mob.pos = pointToCell(roomToSpawn.random());
 				tries--;
 			} while (tries >= 0 && (findMob(mob.pos) != null
+					|| entranceFOV[mob.pos] || (roomToSpawn.isEntrance() && distance(entrance(), mob.pos) <= 5)
 					|| !passable[mob.pos]
 					|| solid[mob.pos]
 					|| !roomToSpawn.canPlaceCharacter(cellToPoint(mob.pos), this)
@@ -256,6 +262,7 @@ public abstract class RegularLevel extends Level {
 						mob.pos = pointToCell(roomToSpawn.random());
 						tries--;
 					} while (tries >= 0 && (findMob(mob.pos) != null
+							|| entranceFOV[mob.pos] || (roomToSpawn.isEntrance() && distance(entrance(), mob.pos) <= 5)
 							|| !passable[mob.pos]
 							|| solid[mob.pos]
 							|| !roomToSpawn.canPlaceCharacter(cellToPoint(mob.pos), this)

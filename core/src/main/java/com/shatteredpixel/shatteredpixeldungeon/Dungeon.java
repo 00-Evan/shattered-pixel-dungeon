@@ -260,7 +260,7 @@ public class Dungeon {
 		QuickSlotButton.reset();
 		Toolbar.swappedQuickslots = false;
 		
-		depth = 15;
+		depth = 1;
 		branch = 0;
 		generatedLevels.clear();
 

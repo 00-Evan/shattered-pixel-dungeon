@@ -47,7 +47,7 @@ public class StoneOfDisarming extends Runestone {
 	protected void activate(final int cell) {
 		boolean[] FOV = new boolean[Dungeon.level.length()];
 		Point c = Dungeon.level.cellToPoint(cell);
-		ShadowCaster.castShadow(c.x, c.y, FOV, Dungeon.level.losBlocking, DIST);
+		ShadowCaster.castShadow(c.x, c.y, Dungeon.level.width(), FOV, Dungeon.level.losBlocking, DIST);
 		
 		int sX = Math.max(0, c.x - DIST);
 		int eX = Math.min(Dungeon.level.width()-1, c.x + DIST);
