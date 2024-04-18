@@ -35,6 +35,16 @@ public class ChasmRoom extends PatchRoom {
 	}
 
 	@Override
+	public int minHeight() {
+		return Math.max(5, super.minHeight());
+	}
+
+	@Override
+	public int minWidth() {
+		return Math.max(5, super.minWidth());
+	}
+
+	@Override
 	protected float fill() {
 		//fill scales from ~30% at 4x4, to ~60% at 18x18
 		// normal   ~30% to ~40%

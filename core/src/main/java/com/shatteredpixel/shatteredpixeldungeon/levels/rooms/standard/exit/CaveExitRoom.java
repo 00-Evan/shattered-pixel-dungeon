@@ -21,29 +21,20 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.exit;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.CaveRoom;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
-import com.watabou.utils.Random;
-import com.watabou.utils.Reflection;
 
-import java.util.ArrayList;
+public class CaveExitRoom extends CaveRoom {
 
-public class ExitRoom extends StandardRoom {
-	
 	@Override
-	public int minWidth() {
-		return Math.max(super.minWidth(), 5);
-	}
-	
-	@Override
-	public int minHeight() {
-		return Math.max(super.minHeight(), 5);
+	public float[] sizeCatProbs() {
+		return new float[]{2, 1, 0};
 	}
 
 	@Override
@@ -51,20 +42,24 @@ public class ExitRoom extends StandardRoom {
 		return true;
 	}
 
+	@Override
 	public void paint(Level level) {
+		super.paint(level);
 
-		Painter.fill( level, this, Terrain.WALL );
-		Painter.fill( level, this, 1, Terrain.EMPTY );
-		
-		for (Room.Door door : connected.values()) {
-			door.set( Room.Door.Type.REGULAR );
-		}
-		
-		int exit = level.pointToCell(random( 2 ));
+		int exit;
+		do {
+			exit = level.pointToCell(random(2));
+
+		} while (level.map[exit] == Terrain.WALL || level.findMob(exit) != null);
 		Painter.set( level, exit, Terrain.EXIT );
+
+		for (int i : PathFinder.NEIGHBOURS8){
+			Painter.set( level, exit+i, Terrain.EMPTY );
+		}
+
 		level.transitions.add(new LevelTransition(level, exit, LevelTransition.Type.REGULAR_EXIT));
 	}
-	
+
 	@Override
 	public boolean canPlaceCharacter(Point p, Level l) {
 		return super.canPlaceCharacter(p, l) && l.pointToCell(p) != l.exit();
@@ -75,43 +70,5 @@ public class ExitRoom extends StandardRoom {
 		//cannot connect to entrance, otherwise works normally
 		if (room.isEntrance())  return false;
 		else                    return super.connect(room);
-	}
-
-	private static ArrayList<Class<?extends StandardRoom>> rooms = new ArrayList<>();
-	static {
-		rooms.add(ExitRoom.class);
-
-
-		rooms.add(CircleBasinExitRoom.class);
-
-		rooms.add(PillarsExitRoom.class);
-
-		rooms.add(CaveExitRoom.class);
-
-		rooms.add(HallwayExitRoom.class);
-
-		rooms.add(ChasmExitRoom.class);
-	}
-
-	private static float[][] chances = new float[27][];
-	static {
-		chances[1] =  new float[]{5,  2, 0, 0, 0, 0};
-		chances[5] =  chances[4] = chances[3] = chances[2] = chances[1];
-
-		chances[6] =  new float[]{5,  0, 5, 0, 0, 0};
-		chances[10] = chances[9] = chances[8] = chances[7] = chances[6];
-
-		chances[11] = new float[]{5,  0, 0, 5, 0, 0};
-		chances[15] = chances[14] = chances[13] = chances[12] = chances[11];
-
-		chances[16] = new float[]{5,  0, 0, 0, 5, 0};
-		chances[20] = chances[19] = chances[18] = chances[17] = chances[16];
-
-		chances[21] = new float[]{5,  0, 0, 0, 0, 5};
-		chances[26] = chances[25] = chances[24] = chances[23] = chances[22] = chances[21];
-	}
-
-	public static StandardRoom createExit(){
-		return Reflection.newInstance(rooms.get(Random.chances(chances[Dungeon.depth])));
 	}
 }
