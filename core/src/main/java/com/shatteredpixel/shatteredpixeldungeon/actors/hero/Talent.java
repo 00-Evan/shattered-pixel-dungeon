@@ -182,7 +182,10 @@ public enum Talent {
 	public static class LethalMomentumTracker extends FlavourBuff{};
 	public static class StrikingWaveTracker extends FlavourBuff{};
 	public static class WandPreservationCounter extends CounterBuff{{revivePersists = true;}};
-	public static class EmpoweredStrikeTracker extends FlavourBuff{};
+	public static class EmpoweredStrikeTracker extends FlavourBuff{
+		//blast wave on-hit doesn't resolve instantly, so we delay detaching for it
+		public boolean delayedDetach = false;
+	};
 	public static class ProtectiveShadowsTracker extends Buff {
 		float barrierInc = 0.5f;
 

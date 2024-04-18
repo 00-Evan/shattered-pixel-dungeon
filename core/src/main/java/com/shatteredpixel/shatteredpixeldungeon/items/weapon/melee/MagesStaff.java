@@ -184,7 +184,7 @@ public class MagesStaff extends MeleeWeapon {
 		}
 
 		if (empoweredStrike != null){
-			empoweredStrike.detach();
+			if (!empoweredStrike.delayedDetach) empoweredStrike.detach();
 			if (!(defender instanceof Mob) || !((Mob) defender).surprisedBy(attacker)){
 				Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG, 0.75f, 1.2f);
 			}
