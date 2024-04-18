@@ -155,7 +155,7 @@ public class WandOfFireblast extends DamageWand {
 		new FireBlastOnHit().proc( staff, attacker, defender, damage);
 	}
 
-	private static class FireBlastOnHit extends Blazing {
+	public static class FireBlastOnHit extends Blazing {
 		@Override
 		protected float procChanceMultiplier(Char attacker) {
 			return Wand.procChanceMultiplier(attacker);
