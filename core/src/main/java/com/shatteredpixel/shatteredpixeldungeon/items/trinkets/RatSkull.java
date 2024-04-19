@@ -48,7 +48,7 @@ public class RatSkull extends Trinket {
 		if (level == -1){
 			return 1f;
 		} else {
-			return 2f + 2f*level;
+			return 2f + 1f*level;
 		}
 	}
 
