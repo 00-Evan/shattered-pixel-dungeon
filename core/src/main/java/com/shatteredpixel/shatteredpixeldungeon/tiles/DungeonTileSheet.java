@@ -68,6 +68,8 @@ public class DungeonTileSheet {
 	public static final int EMPTY_WELL      = GROUND +19;
 	public static final int PEDESTAL        = GROUND +20;
 
+	public static final int ENTRANCE_SP     = GROUND +22;
+
 	public static final int CHASM           =                               xy(9, 2);   //8 slots
 	//chasm stitching visuals...
 	public static final int CHASM_FLOOR     = CHASM+1;
@@ -394,6 +396,7 @@ public class DungeonTileSheet {
 		directVisuals.put(Terrain.EMBERS,           EMBERS);
 		directVisuals.put(Terrain.PEDESTAL,         PEDESTAL);
 		directVisuals.put(Terrain.EMPTY_SP,         FLOOR_SP);
+		directVisuals.put(Terrain.ENTRANCE_SP,      ENTRANCE_SP);
 
 		directVisuals.put(Terrain.SECRET_TRAP,      directVisuals.get(Terrain.EMPTY));
 		directVisuals.put(Terrain.TRAP,             directVisuals.get(Terrain.EMPTY));

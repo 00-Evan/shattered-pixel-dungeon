@@ -210,6 +210,7 @@ public class CavesLevel extends RegularLevel {
 	public String tileDesc( int tile ) {
 		switch (tile) {
 			case Terrain.ENTRANCE:
+			case Terrain.ENTRANCE_SP:
 				return Messages.get(CavesLevel.class, "entrance_desc");
 			case Terrain.EXIT:
 				return Messages.get(CavesLevel.class, "exit_desc");

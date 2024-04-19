@@ -388,6 +388,7 @@ public class CityBossLevel extends Level {
 	public String tileDesc(int tile) {
 		switch (tile) {
 			case Terrain.ENTRANCE:
+			case Terrain.ENTRANCE_SP:
 				return Messages.get(CityLevel.class, "entrance_desc");
 			case Terrain.EXIT:
 				return Messages.get(CityLevel.class, "exit_desc");

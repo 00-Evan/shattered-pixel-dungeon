@@ -31,6 +31,7 @@ public class Terrain {
 	public static final int DOOR			= 5;
 	public static final int OPEN_DOOR		= 6;
 	public static final int ENTRANCE		= 7;
+	public static final int ENTRANCE_SP		= 37;
 	public static final int EXIT			= 8;
 	public static final int EMBERS			= 9;
 	public static final int LOCKED_DOOR		= 10;
@@ -85,7 +86,8 @@ public class Terrain {
 		flags[WALL]			= LOS_BLOCKING | SOLID;
 		flags[DOOR]			= PASSABLE | LOS_BLOCKING | FLAMABLE | SOLID;
 		flags[OPEN_DOOR]	= PASSABLE | FLAMABLE;
-		flags[ENTRANCE]		= PASSABLE/* | SOLID*/;
+		flags[ENTRANCE]		= PASSABLE;
+		flags[ENTRANCE_SP]	= flags[ENTRANCE];
 		flags[EXIT]			= PASSABLE;
 		flags[EMBERS]		= PASSABLE;
 		flags[LOCKED_DOOR]	= LOS_BLOCKING | SOLID;
