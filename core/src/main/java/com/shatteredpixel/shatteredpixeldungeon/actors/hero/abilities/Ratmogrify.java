@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -146,12 +147,20 @@ public class Ratmogrify extends ArmorAbility {
 				}
 			}
 
+			MasterThievesArmband.StolenTracker stealTracker = ch.buff(MasterThievesArmband.StolenTracker.class);
+			if (stealTracker != null){
+				ch.remove(stealTracker);
+			}
+
 			Actor.remove( ch );
 			ch.sprite.killAndErase();
 			Dungeon.level.mobs.remove(ch);
 
 			for (ChampionEnemy champ : champBuffs){
 				ch.add(champ);
+			}
+			if (stealTracker != null) {
+				ch.add(stealTracker);
 			}
 
 			GameScene.add(rat);

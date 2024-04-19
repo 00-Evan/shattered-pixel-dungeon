@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Ch
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -185,6 +186,7 @@ public class Ghoul extends Mob {
 					Buff.prolong(this, SacrificialFire.Marked.class, timesDowned*5);
 				} else if (buff instanceof AllyBuff
 						|| buff instanceof ChampionEnemy
+						|| buff instanceof MasterThievesArmband.StolenTracker
 						|| buff instanceof DwarfKing.KingDamager) {
 					//don't remove
 				} else {
