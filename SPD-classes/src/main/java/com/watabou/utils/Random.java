@@ -135,9 +135,12 @@ public class Random {
 		return generators.peek().nextLong();
 	}
 
-	//returns a uniformly distributed long in the range [0, max)
-	public static synchronized long Long( long max ) {
-		return max > 0 ? generators.peek().nextLong(max) : 0;
+	//returns a mostly uniformly distributed long in the range [0, max)
+	public static long Long( long max ) {
+		long result = Long();
+		if (result < 0) result += Long.MAX_VALUE;
+		//modulo isn't perfect, but as long as max is reasonably below 2^63 it's close enough
+		return result % max;
 	}
 
 	//returns an index from chances, the probability of each index is the weight values in changes
