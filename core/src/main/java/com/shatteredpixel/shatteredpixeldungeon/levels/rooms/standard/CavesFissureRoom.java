@@ -60,6 +60,16 @@ public class CavesFissureRoom extends StandardRoom {
 	}
 
 	@Override
+	public boolean canPlaceItem(Point p, Level l) {
+		return super.canPlaceItem(p, l) && l.map[l.pointToCell(p)] != Terrain.EMPTY_SP;
+	}
+
+	@Override
+	public boolean canPlaceCharacter(Point p, Level l) {
+		return super.canPlaceItem(p, l) && l.map[l.pointToCell(p)] != Terrain.EMPTY_SP;
+	}
+
+	@Override
 	public void paint(Level level) {
 
 		boolean pathable = true;

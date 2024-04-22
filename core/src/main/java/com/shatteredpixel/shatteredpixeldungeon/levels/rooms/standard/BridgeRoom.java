@@ -51,6 +51,16 @@ public abstract class BridgeRoom extends StandardRoom {
 		return l.map[cell] != spaceTile();
 	}
 
+	@Override
+	public boolean canPlaceItem(Point p, Level l) {
+		return super.canPlaceItem(p, l) && !spaceRect.inside(p);
+	}
+
+	@Override
+	public boolean canPlaceCharacter(Point p, Level l) {
+		return super.canPlaceItem(p, l) && !spaceRect.inside(p);
+	}
+
 	//keep these so that subclasses can use them in their methods
 	protected Rect spaceRect;
 	protected Rect bridgeRect;
