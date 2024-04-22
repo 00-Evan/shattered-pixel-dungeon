@@ -51,7 +51,7 @@ public class RuinsRoom extends PatchRoom {
 
 	@Override
 	protected int clustering() {
-		return 9;
+		return 0;
 	}
 
 	@Override
