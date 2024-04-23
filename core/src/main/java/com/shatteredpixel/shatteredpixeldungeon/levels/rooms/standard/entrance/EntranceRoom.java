@@ -139,34 +139,39 @@ public class EntranceRoom extends StandardRoom {
 		rooms.add(EntranceRoom.class);
 
 
+		rooms.add(WaterBridgeEntranceRoom.class);
 		rooms.add(CircleBasinEntranceRoom.class);
 
+		rooms.add(ChasmBridgeEntranceRoom.class);
 		rooms.add(PillarsEntranceRoom.class);
 
 		rooms.add(CaveEntranceRoom.class);
+		rooms.add(CavesFissureEntranceRoom.class);
 
 		rooms.add(HallwayEntranceRoom.class);
+		rooms.add(StatuesEntranceRoom.class);
 
 		rooms.add(ChasmEntranceRoom.class);
+		rooms.add(RitualEntranceRoom.class);
 	}
 
 	private static float[][] chances = new float[27][];
 	static {
-		chances[1] =  new float[]{1,  0, 0, 0, 0, 0};
+		chances[1] =  new float[]{1,  0,0, 0,0, 0,0, 0,0, 0,0};
 		chances[2] =  chances[1];
-		chances[3] =  new float[]{5,  2, 0, 0, 0, 0};
+		chances[3] =  new float[]{3,  6,1, 0,0, 0,0, 0,0, 0,0};
 		chances[5] =  chances[4] = chances[3];
 
-		chances[6] =  new float[]{5,  0, 5, 0, 0, 0};
+		chances[6] =  new float[]{2,  0,0, 4,4, 0,0, 0,0, 0,0};
 		chances[10] = chances[9] = chances[8] = chances[7] = chances[6];
 
-		chances[11] = new float[]{5,  0, 0, 5, 0, 0};
+		chances[11] = new float[]{2,  0,0, 0,0, 4,4, 0,0, 0,0};
 		chances[15] = chances[14] = chances[13] = chances[12] = chances[11];
 
-		chances[16] = new float[]{5,  0, 0, 0, 5, 0};
+		chances[16] = new float[]{2,  0,0, 0,0, 0,0, 4,4, 0,0};
 		chances[20] = chances[19] = chances[18] = chances[17] = chances[16];
 
-		chances[21] = new float[]{5,  0, 0, 0, 0, 5};
+		chances[21] = new float[]{3,  0,0, 0,0, 0,0, 0,0, 6,1};
 		chances[26] = chances[25] = chances[24] = chances[23] = chances[22] = chances[21];
 	}
 
