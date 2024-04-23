@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Whip;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollGuardSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -45,7 +46,8 @@ import java.util.ArrayList;
 public class v2_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
-		add_Coming_Soon(changeInfos);
+		//add_Coming_Soon(changeInfos);
+		add_v2_4_Changes(changeInfos);
 		add_v2_3_Changes(changeInfos);
 		add_v2_2_Changes(changeInfos);
 		add_v2_1_Changes(changeInfos);
@@ -74,58 +76,181 @@ public class v2_X_Changes {
 
 	}
 
+	public static void add_v2_4_Changes( ArrayList<ChangeInfo> changeInfos ) {
+
+		ChangeInfo changes = new ChangeInfo("v2.4.0-ALPHA", true, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Alpha To-Do",
+				"v2.4.0 isn't yet content complete, so there's a bit more I plan to add before beta/release:\n\n" +
+				"_-_ I want to add a few more Trinkets, ideally so there are 10-12 in total for release.\n" +
+				"_-_ I'd like to make further alchemy UI improvements, mainly it'd be nice to include the guidebook on the main screen for desktop users.\n" +
+				"_-_ I plan on making a few supporter feature improvements, primarily better epitaphs and maybe custom notes. This might get delayed to a future patch/update though.\n" +
+				"_-_ I'll make further Hero tweaks in response to feedback as needed.\n" +
+				"_-_ And, of course, there'll be various misc tweaks and fixes as needed."));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RAT_SKULL), "Trinkets!",
+				"_A new category of item has been added: Trinkets!_\n" +
+				"\n" +
+				"Trinkets are a new item type produced and upgraded via alchemical energy, and are more about tweaking gameplay variables than giving direct power or utility.\n" +
+				"\n" +
+				"Look out for a trinket catalyst in the early stages of the game, which you can use at the first alchemy pot to produce one of three trinket options. There are _8 trinkets in total_ currently."));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.STAIRS), "New Rooms",
+				"_New standard rooms have been added to the various regions of the game!_\n" +
+				"\n" +
+				"This includes one totally new room per region, and two new variants of entrance/exit rooms per region. Rooms that are mostly empty rectangles are now much less common, and there's a bunch of variety for which rooms can have entrance/exit stairs in them.\n" +
+				"\n" +
+				"Entrance rooms are now also capable of merging with other rooms in a dungeon floor, but there are some guarantees so that enemies won't ever be near you right after descending to a new floor."));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.PUMPKIN_PIE), "More Holiday Items",
+				"_I've added more holiday items for the rest of 2024!_\n" +
+				"\n" +
+				"Expect to see some new temporary holiday overrides for cornish pasties for:\n" +
+				"_-_ Pride in late June\n" +
+				"_-_ Shattered's Birthday in early August\n" +
+				"_-_ Pixel Dungeon's Birthday in early December\n" +
+				"_-_ New Years in late December and early January\n" +
+				"\n" +
+				"This is in addition to the usual pumpkin pie around Halloween and candy cane around the Winter Holidays.\n" +
+				"\n" +
+				"...I may have also added a tiny little surprise for Rat King's birthday, but that won't appear until 2025."));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
+		changes.hardlight(CharSprite.WARNING);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 6), "Duelist Weapon Abilities",
+				"I'm making some overarching changes to the Duelist's weapon abilities, to make them stronger and feel more impactful:\n" +
+				"_-_ Weapon ability charge speed down by 33%\n" +
+				"_-_ Weapon abilities buffed across the board\n" +
+				"_-_ All weapon abilities now scale with weapon level in some way\n" +
+				"_-_ Weapon abilities now directly state their damage ranges\n" +
+				"\n" +
+				"There are also some changes to the Champion subclass to go along with this:\n" +
+				"_-_ Champion's two weapons now share a charge count, but Champion gets boosted max charges and charge speed.\n" +
+				"_-_ Champion's secondary charge talent has been replaced with a new talent that encourages varied ability use."));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.ENERGY), "Alchemy Changes",
+				"I've made a bunch of changes to the alchemy system to streamline things and complement the addition of trinkets:\n" +
+				"\n" +
+				"_-_ Catalysts have been removed entirely, recipes now simply cost more energy instead of requiring one.\n" +
+				"_-_ Lots of recipes have received adjustments to their overall energy cost or output quantities.\n" +
+				"_-_ High value potions/scrolls now grant a little more energy if they are energized.\n" +
+				"_-_ Alchemy pots now always spawn on the 3rd or 4th floor in each region.\n" +
+				"_-_ Various UI improvements have been made to the alchemy screen.",
+				
+				"Various specific alchemy items have also received more notable changes:\n" +
+				"\n" +
+				"_- Added Unstable Brew,_ which gives a random potion effect that's likely to be useful.\n" +
+				"_- Aqua Blast_ is now a brew, otherwise unchanged.\n" +
+				"_- Featherfall_ is now an elixir, otherwise unchanged.\n" +
+				"_- Elixir of Icy Touch_ now applies 3 chill each hit, up from 2.\n" +
+				"_- Elixir of Toxic Essence_ now spreads gas quicker and grants lingering gas immunity for 5 turns.\n" +
+				"_- Added Unstable Spell,_ which gives a random scroll effect that's likely to be useful.\n" +
+				"_- Alchemize_ has a new recipe, it is now much cheaper to make.\n" +
+				"_- Summon Elemental_ now retains its empowerment, rather than having it last only 1 use."));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.TALENT), "T1 talent changes",
+				"I've made some changes meant to improve some of the least popular T1 talents:\n" +
+				"_- Cached Rations_ now awards a smaller number of unique 'supply rations'. These rations grant a little healing and cloak charge.\n" +
+				"_- Test Subject and Tested Hypothesis_ have been replaced with two new talents that grant small combat bonuses.\n" +
+				"\n" +
+				"Plus one change to an unnecessarily complex T1 talent:\n" +
+				"_- Hearty Meal_ has been simplified, now just has one threshold at 30% HP"));
+
+		/*changes.addButton( new ChangeButton(Icons.get(Icons.GOLD), "Supporter Changes",
+				"."));*/
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_Highlights:_\n" +
+				"_-_ Potion and Scroll talents can now trigger from elixirs, brews, and spells\n" +
+				"_-_ Ankh resurrection window now warns if two items aren't selected\n" +
+				"_-_ Trying to attack an enemy that has charmed you now shows a warning\n" +
+				"\n" +
+				"_Heroes:_\n" +
+				"_-_ Gladiator and Monk now include brief ability descriptions in their subclass descriptions\n" +
+				"_-_ Ability descriptions for Gladiator and Monk now change if their abilities are empowered",
+
+				"_Items:_\n" +
+				"_-_ Thrown weapons now state when they break in the game log\n" +
+				"_-_ Tipped darts now last forever when reaching 100 uses, like other thrown weapons\n" +
+				"_-_ Dried rose now includes the ghost's strength in its description\n" +
+				"\n" +
+				"_Misc:_\n" +
+				"_-_ Updated various code dependencies\n" +
+				"_-_ Slight optimizations to memory use\n" +
+				"_-_ Improved the error message on Android when native code is missing\n" +
+				"_-_ Removed the power saver setting on Android 4.4+ devices, if the user hadn't already enabled it.\n" +
+				"(Power saver was always meant for very old Android devices. It gives no real benefit for more modern ones.)"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Highlights:_\n" +
+				"_-_ Ruins rooms in the last region using incorrect wall shapes since v2.2.0\n" +
+				"_-_ Rare cases where some victory badges would not save if game was immediately closed\n" +
+				"_-_ Rare cases where game actors could continue to process for a moment when hero falls into a chasm\n" +
+				"_-_ Various cases where characters would not play death animations if they died while paralyzed\n" +
+				"\n" +
+				"_Enemies:_\n" +
+				"_-_ Newborn elemental boss rarely firing its attack through walls\n" +
+				"_-_ Rare cases where the final boss could command minions to attack themselves\n" +
+				"_-_ Gnoll geomancer and sappers potentially dropping boulders next to entrance\n" +
+				"_-_ Gnoll sappers granting armor to corrupted gnoll guards\n" +
+				"_-_ Necromancer skeletons not following necromancer's aggro in some cases",
+
+				"_Items:_\n" +
+				"_-_ Thieve's Armband not working on hiding mimics\n" +
+				"_-_ Chilling enchantment reducing chill duration in rare cases\n" +
+				"_-_ Rare cases where lucky enchantment wouldn't trigger\n" +
+				"_-_ Runestones affecting terrain when thrown at a character\n" +
+				"_-_ Thrown weapons sticking to downed ghouls in some cases\n" +
+				"_-_ Camouflage glyph not working if hero uses ethereal chains to move into grass\n" +
+				"_-_ Sandals of nature incorrectly interacting with artifact charging\n" +
+				"_-_ Several artifacts being unable to gain more than 1 (or 1%) charge per turn\n" +
+				"_-_ Brimstone glyph not benefiting from glyph power boosts past +50%\n" +
+				"_-_ Errors when leaving/entering blacksmith's area while a boomerang was circling back\n" +
+				"_-_ Transfusion not benefiting from wand damage bonuses\n" +
+				"_-_ Dwarf King's crown automatically IDing armor\n" +
+				"_-_ Armband allowing more than one steal in specific cases\n" +
+				"_-_ Swiftness glyph ignoring nearby enemies in specific cases",
+
+				"_Heroes:_\n" +
+				"_-_ Duelist's swift equip not working during time freeze\n" +
+				"_-_ Monk's flurry of blows not using projecting enchantment when empowered\n" +
+				"_-_ Various battlemage on-hit effects not showing as magical damage\n" +
+				"_-_ Empowered strike talent not working with blastwave\n" +
+				"\n" +
+				"_Misc:_\n" +
+				"_-_ Various minor visual and textual errors\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Specific cases where unbreakable traps could spawn in halls in the caves\n" +
+				"_-_ Music not properly pausing in background on desktop in some cases\n" +
+				"_-_ Various rare errors when game launches in fullscreen\n" +
+				"_-_ 'taste vengeance' badge not being earnable in a run after unlocking it"));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
+		changes.hardlight(CharSprite.POSITIVE);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new Image(new GhostSprite()), "Ghost and Blacksmith Enchantments",
+				"I've given a slight boost to the rewards of the Ghost quest and Blacksmith's smith reward, aimed at making enchantments/glyphs more likely. this should make these rewards a bit more interesting more often.\n" +
+				"\n" +
+				"_-_ Ghost reward enchant rate up to 20% from 10%\n" +
+				"_-_ Blacksmith smith reward enchant rate up to 30% from 0%"));
+
+	}
+
 	public static void add_v2_3_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
 		ChangeInfo changes = new ChangeInfo("v2.3", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("v2.3.2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Slightly improved the layout of shop rooms when many items are present\n\n" +
-				"_-_ Updated a link in the game's credits"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by v2.3.1:_\n" +
-				"_-_ Tengu being able to set himself on fire, oops =S\n\n" +
-				"_Existed prior to v2.3.0:_\n" +
-				"_-_ Various minor textual errors\n" +
-				"_-_ Very specific cases where levelgen could vary based on whether the player has a timekeeper's hourglass or not\n" +
-				"_-_ Hero leap vfx not causing the camera to follow them\n" +
-				"_-_ Cases where grass and embers wouldn't appear on top of specific ground visuals"));
-
-		changes = new ChangeInfo("v2.3.1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"I've updated to the latest version of Shattered's game library (libGDX), which has a few benefits:\n" +
-				"_-_ Improved vibration on modern iOS devices\n" +
-				"_-_ Improved changing audio device behavior\n" +
-				"_-_ Misc. stability & compatibility improvements\n\n" +
-				"_-_ Magical fire is now cleared by frost next to it, in addition to on top of it\n" +
-				"_-_ Tengu's fire wall attack now ignites items\n\n" +
-				"_-_ Improved music transitions in main menu when game was just won\n\n" +
-				"_-_ Added support for controller vibration\n" +
-				"_-_ Added a vibration toggle in the settings\n\n" +
-				"_-_ Updated translators and translator credits\n\n" +
-				"_-_ Increased the minimum supported iOS version to 11, from 9"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by v2.3.0:_\n" +
-				"Nothing! v2.3.0 is pretty stable. =)\n\n" +
-				"_Existed prior to v2.3.0:_\n" +
-				"_-_ Game unintentionally spamming new Google Play players with Play Games login requests\n" +
-				"_-_ Events which interrupt the hero not interrupting resting\n" +
-				"_-_ Rare cases where hero could lose a turn when moving between depths\n" +
-				"_-_ Transmutation removing items from quickslots in rare cases\n" +
-				"_-_ Incorrect death messages when player is killed by wards\n" +
-				"_-_ Amoked allies not being affected by aggression debuff"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -201,7 +326,25 @@ public class v2_X_Changes {
 				"_-_ Long-press to assign quickslot now works in the full UI inventory pane, just like the mobile inventory window\n" +
 				"_-_ Added support for themed icons on Android 13+\n" +
 				"_-_ Removed support for saves prior to v1.4.3\n" +
-				"_-_ Added developer commentary for v1.2.0"));
+				"_-_ Added developer commentary for v1.2.0",
+
+				"_v2.3.1_\n" +
+				"I've updated to the latest version of Shattered's game library (libGDX), which has a few benefits:\n" +
+				"_-_ Improved vibration on modern iOS devices\n" +
+				"_-_ Improved changing audio device behavior\n" +
+				"_-_ Misc. stability & compatibility improvements\n" +
+				"\n" +
+				"_-_ Magical fire is now cleared by frost next to it, in addition to on top of it\n" +
+				"_-_ Tengu's fire wall attack now ignites items\n" +
+				"_-_ Improved music transitions in main menu when game was just won\n" +
+				"_-_ Added support for controller vibration\n" +
+				"_-_ Added a vibration toggle in the settings\n" +
+				"_-_ Updated translators and translator credits\n" +
+				"_-_ Increased the minimum supported iOS version to 11, from 9\n" +
+				"\n" +
+				"_v2.3.2_\n" +
+				"_-_ Slightly improved the layout of shop rooms when many items are present\n" +
+				"_-_ Updated a link in the game's credits"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
@@ -261,7 +404,21 @@ public class v2_X_Changes {
 				"_-_ Tutorial becoming stuck in rare cases\n" +
 				"_-_ Beta updates setting not working as intended\n" +
 				"_-_ Music fading not working in rare cases\n" +
-				"_-_ Scrolling pane in journal window freezing in rare cases"));
+				"_-_ Scrolling pane in journal window freezing in rare cases",
+
+				"_v2.3.1:_\n" +
+				"_-_ Game unintentionally spamming new Google Play players with Play Games login requests\n" +
+				"_-_ Events which interrupt the hero not interrupting resting\n" +
+				"_-_ Rare cases where hero could lose a turn when moving between depths\n" +
+				"_-_ Transmutation removing items from quickslots in rare cases\n" +
+				"_-_ Incorrect death messages when player is killed by wards\n" +
+				"_-_ Amoked allies not being affected by aggression debuff\n" +
+				"\n" +
+				"_v2.3.2:_\n" +
+				"_-_ Various minor textual errors\n" +
+				"_-_ Very specific cases where levelgen could vary based on whether the player has a timekeeper's hourglass or not\n" +
+				"_-_ Hero leap vfx not causing the camera to follow them\n" +
+				"_-_ Cases where grass and embers wouldn't appear on top of specific ground visuals"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight(CharSprite.POSITIVE);
