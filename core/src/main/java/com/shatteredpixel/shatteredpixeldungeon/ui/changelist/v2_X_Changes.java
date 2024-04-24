@@ -82,6 +82,16 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("ALPHA-2", true, "");
+		changes.hardlight(0xCCCCCC);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by ALPHA-1_:\n" +
+				"_-_ Frequent crash bugs for some user (whoops!)\n" +
+				"_-_ Incorrect sprites for un-ided potions/scrolls in the catalog"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
