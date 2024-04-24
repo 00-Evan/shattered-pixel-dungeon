@@ -464,7 +464,14 @@ public class WndJournal extends WndTabbed {
 		private static final int POTION_IDX = 5;
 		private static final int SCROLL_IDX = 6;
 		
-		private static final int spriteIndexes[] = {1, 2, 4, 5, 6, 9, 11};
+		private static final int spriteIndexes[] =
+				{ItemSpriteSheet.WEAPON_HOLDER,
+						ItemSpriteSheet.ARMOR_HOLDER,
+						ItemSpriteSheet.WAND_HOLDER,
+						ItemSpriteSheet.RING_HOLDER,
+						ItemSpriteSheet.ARTIFACT_HOLDER,
+						ItemSpriteSheet.POTION_HOLDER,
+						ItemSpriteSheet.SCROLL_HOLDER};
 
 		private ScrollingListPane list;
 		
@@ -480,7 +487,7 @@ public class WndJournal extends WndTabbed {
 						updateList();
 					}
 				};
-				itemButtons[i].icon(new ItemSprite(ItemSpriteSheet.SOMETHING + spriteIndexes[i], null));
+				itemButtons[i].icon(new ItemSprite(spriteIndexes[i], null));
 				add( itemButtons[i] );
 			}
 
