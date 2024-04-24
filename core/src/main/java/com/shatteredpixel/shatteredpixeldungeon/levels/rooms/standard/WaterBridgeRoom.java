@@ -24,7 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.watabou.utils.Point;
 
-public class WaterBridgeRoom extends BridgeRoom {
+public class WaterBridgeRoom extends StandardBridgeRoom {
 
 	protected int maxBridgeWidth( int roomDimension ) {
 		return roomDimension >= 8 ? 3 : 2;
