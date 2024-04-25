@@ -66,10 +66,10 @@ public class ShatteredPixelDungeon extends Game {
 
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.entrance.EntranceRoom.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom.class" );
+				"com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom" );
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.exit.ExitRoom.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom.class" );
+				"com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom" );
 
 		//pre-v2.3.0
 		com.watabou.utils.Bundle.addAlias(
