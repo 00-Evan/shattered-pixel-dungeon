@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.MassGraveRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.RitualSiteRoom;
@@ -308,7 +309,7 @@ public class Wandmaker extends NPC {
 							validPos = false;
 						}
 					}
-					if (level.traps.get(npc.pos) != null){
+					if (level.traps.get(npc.pos) != null || level.map[npc.pos] == Terrain.CHASM){
 						validPos = false;
 					}
 				} while (!validPos);
