@@ -87,8 +87,8 @@ public class ExitRoom extends StandardRoom {
 		rooms.add(ChasmBridgeExitRoom.class);
 		rooms.add(PillarsExitRoom.class);
 
-		rooms.add(CavesFissureExitRoom.class);
 		rooms.add(CaveExitRoom.class);
+		rooms.add(CavesFissureExitRoom.class);
 
 		rooms.add(HallwayExitRoom.class);
 		rooms.add(StatuesExitRoom.class);

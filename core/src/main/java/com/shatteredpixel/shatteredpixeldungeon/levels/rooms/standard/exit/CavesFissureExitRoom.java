@@ -44,23 +44,23 @@ public class CavesFissureExitRoom extends CavesFissureRoom {
 	public void paint(Level level) {
 		super.paint(level);
 
-		int entrance;
+		int exit;
 		do {
-			entrance = level.pointToCell(random(2));
+			exit = level.pointToCell(random(2));
 
-		} while (level.map[entrance] == Terrain.CHASM
-				|| level.map[entrance] == Terrain.EMPTY_SP
-				|| level.findMob(entrance) != null);
+		} while (level.map[exit] == Terrain.CHASM
+				|| level.map[exit] == Terrain.EMPTY_SP
+				|| level.findMob(exit) != null);
 
 
 		for (int i : PathFinder.NEIGHBOURS8){
-			if (level.map[entrance+i] == Terrain.CHASM) {
-				Painter.set(level, entrance + i, Terrain.EMPTY);
+			if (level.map[exit+i] == Terrain.CHASM) {
+				Painter.set(level, exit + i, Terrain.EMPTY);
 			}
 		}
 
-		Painter.set( level, entrance, Terrain.ENTRANCE );
-		level.transitions.add(new LevelTransition(level, entrance, LevelTransition.Type.REGULAR_ENTRANCE));
+		Painter.set( level, exit, Terrain.EXIT );
+		level.transitions.add(new LevelTransition(level, exit, LevelTransition.Type.REGULAR_EXIT));
 
 	}
 
