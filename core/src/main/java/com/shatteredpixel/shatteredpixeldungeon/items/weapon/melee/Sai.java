@@ -163,7 +163,7 @@ public class Sai extends MeleeWeapon {
 			hits++;
 			comboTime = 5f;
 
-			if (hits >= 2){
+			if (hits >= 2 && icon() != BuffIndicator.NONE){
 				GLog.p( Messages.get(Combo.class, "combo", hits) );
 			}
 		}
