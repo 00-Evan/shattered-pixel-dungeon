@@ -82,14 +82,26 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("ALPHA-2", true, "");
-		changes.hardlight(0xCCCCCC);
+		changes = new ChangeInfo("ALPHA-3", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
-				"_Caused by ALPHA-1_:\n" +
-				"_-_ Frequent crash bugs for some user (whoops!)\n" +
+				"_Caused by ALPHA_:\n" +
+				"_-_ Caves levels frequently generating with two entrances or two exits (again, oops =S). Existing runs 'should' be able to continue after updating to this patch.\n" +
+				"_-_ Duelist getting spammed with combo text without using a combo strike weapon\n" +
+				"_-_ Wandmaker occasionally spawning on chasms\n" +
+				"_-_ various minor textual errors"));
+
+		changes = new ChangeInfo("ALPHA-2", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by ALPHA_:\n" +
+				"_-_ Frequent crash bugs for some users (whoops!)\n" +
 				"_-_ Incorrect sprites for un-ided potions/scrolls in the catalog"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
