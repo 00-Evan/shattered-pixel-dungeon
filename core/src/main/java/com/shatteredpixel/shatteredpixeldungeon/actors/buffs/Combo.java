@@ -237,7 +237,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 					if (count >= 3 && Dungeon.hero.pointsInTalent(Talent.ENHANCED_COMBO) >= 3){
 						return Messages.get(this, name() + ".empower_desc", count/3, count*20);
 					} else {
-						return Messages.get(this, name() + ".desc");
+						return Messages.get(this, name() + ".desc", count*20);
 					}
 				case PARRY:
 					if (count >= 9 && Dungeon.hero.pointsInTalent(Talent.ENHANCED_COMBO) >= 2){
