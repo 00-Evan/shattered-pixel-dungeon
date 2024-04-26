@@ -46,7 +46,11 @@ public class PetrifiedSeed extends Trinket {
 	}
 
 	public static float grassLootMultiplier( int level ){
-		return 1f + .4f*level/3f;
+		if (level <= 0){
+			return 1f;
+		} else {
+			return 1f + .4f*level/3f;
+		}
 	}
 
 	public static float stoneInsteadOfSeedChance(){

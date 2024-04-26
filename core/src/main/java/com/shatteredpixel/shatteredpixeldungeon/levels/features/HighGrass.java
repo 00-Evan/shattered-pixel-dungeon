@@ -125,12 +125,11 @@ public class HighGrass {
 				// Seed, scales from 1/25 to 1/9
 				float lootChance = 1/(25f - naturalismLevel*4f);
 
-				//absolute max drop rate is ~1/6.5 with footwear of nature, ~1/18 without
+				// absolute max drop rate is ~1/6.5 with footwear of nature, ~1/18 without
 				lootChance *= PetrifiedSeed.grassLootMultiplier();
 
 				if (Random.Float() < lootChance) {
 					if (Random.Float() < PetrifiedSeed.stoneInsteadOfSeedChance()) {
-						//TODO do we want to use decks here in some way?
 						level.drop(Generator.randomUsingDefaults(Generator.Category.STONE), pos).sprite.drop();
 					} else {
 						level.drop(Generator.random(Generator.Category.SEED), pos).sprite.drop();
@@ -138,7 +137,8 @@ public class HighGrass {
 				}
 				
 				// Dew, scales from 1/6 to 1/4
-				if (Random.Int(6 - naturalismLevel/2) == 0) {
+				lootChance = 1/(6f -naturalismLevel/2f);
+				if (Random.Float() < lootChance) {
 					level.drop(new Dewdrop(), pos).sprite.drop();
 				}
 			}
