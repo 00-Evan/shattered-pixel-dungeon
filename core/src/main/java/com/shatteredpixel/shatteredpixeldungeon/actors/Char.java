@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StormCloud;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArcaneArmor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
@@ -63,6 +64,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Speed;
@@ -1192,15 +1194,17 @@ public abstract class Char extends Actor {
 				new HashSet<Class>( Arrays.asList(Frost.class, Chill.class))),
 		ACIDIC ( new HashSet<Class>( Arrays.asList(Corrosion.class)),
 				new HashSet<Class>( Arrays.asList(Ooze.class))),
-		ELECTRIC ( new HashSet<Class>( Arrays.asList(WandOfLightning.class, Shocking.class, Potential.class, Electricity.class, ShockingDart.class, Elemental.ShockElemental.class )),
+		ELECTRIC ( new HashSet<Class>( Arrays.asList(WandOfLightning.class, Shocking.class, Potential.class,
+										Electricity.class, ShockingDart.class, Elemental.ShockElemental.class )),
 				new HashSet<Class>()),
 		LARGE,
 		IMMOVABLE ( new HashSet<Class>(),
 				new HashSet<Class>( Arrays.asList(Vertigo.class) )),
 		//A character that acts in an unchanging manner. immune to AI state debuffs or stuns/slows
 		STATIC( new HashSet<Class>(),
-				new HashSet<Class>( Arrays.asList(Paralysis.class, Frost.class, Chill.class, Slow.class, Speed.class) ));
-		
+				new HashSet<Class>( Arrays.asList(AllyBuff.class, Dread.class, Terror.class, Amok.class, Charm.class, Sleep.class,
+									Paralysis.class, Frost.class, Chill.class, Slow.class, Speed.class) ));
+
 		private HashSet<Class> resistances;
 		private HashSet<Class> immunities;
 		

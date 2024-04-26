@@ -464,7 +464,6 @@ public class WandOfRegrowth extends Wand {
 		}
 
 		{
-			immunities.add( AllyBuff.class );
 			immunities.add( Doom.class );
 		}
 
