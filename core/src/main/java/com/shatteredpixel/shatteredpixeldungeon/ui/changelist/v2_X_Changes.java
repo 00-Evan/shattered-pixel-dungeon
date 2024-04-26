@@ -82,27 +82,46 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("ALPHA-3", false, "");
+		changes = new ChangeInfo("ALPHA-4", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Alpha To-Do",
+				"The alpha seems to be mostly stable now, so I'll be looking into making a few more changes in prep for releasing a beta, hopefully very early next week.\n\n" +
+				"In particular, I want to add 2-4 more trinkets and make some more alchemy UI improvements before release. That won't be finished by beta time, but I want to at least get started on it."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"I've adjusted a few Duelist talents to account for the changes to weapon charges:\n" +
+				"_- Focused Meal_ and _Weapon Recharging_ charge gain reduced by 33%\n" +
+				"_- Counter Ability_ now causes Duelist to gain up to 1.5 charges, instead of reducing charge cost\n\n" +
+				"_-_ Trinkets can now appear in the rankings screen\n" +
+				"_-_ Slightly improved the layout for caves fissure entrance/exit rooms"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by ALPHA:_\n" +
+				"_-_ Errors with activating/deactivating brawler's stance\n" +
+				"_-_ Regular droprate of seeds from grass being slightly lower than intended\n" +
+				"_-_ Crashes when trinkets were renamed\n" +
+				"_-_ Some characters not being immune to various debuffs when they were previously\n" +
+				"_-_ Aqua brew triggering traps when thrown on them\n\n" +
+				"_Existed prior to ALPHA:_\n" +
+				"_-_ Teleportation effect not accounting for large characters in specific cases\n" +
+				"_-_ Some items charging to slightly above maximum charge in specific cases"));
+
+		changes = new ChangeInfo("ALPHA-2 & 3", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
-				"_Caused by ALPHA_:\n" +
-				"_-_ Caves levels frequently generating with two entrances or two exits (again, oops =S). Existing runs 'should' be able to continue after updating to this patch.\n" +
+				"_Caused by ALPHA:_\n" +
+				"_-_ Frequent crash bugs for some users (whoops!)\n" +
+				"_-_ Incorrect sprites for un-ided potions/scrolls in the catalog\n" +
+				"_-_ Caves levels frequently generating with two entrances or two exits (again, oops =S).\n" +
 				"_-_ Duelist getting spammed with combo text without using a combo strike weapon\n" +
 				"_-_ Wandmaker occasionally spawning on chasms\n" +
 				"_-_ various minor textual errors"));
-
-		changes = new ChangeInfo("ALPHA-2", false, "");
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by ALPHA_:\n" +
-				"_-_ Frequent crash bugs for some users (whoops!)\n" +
-				"_-_ Incorrect sprites for un-ided potions/scrolls in the catalog"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -112,7 +131,6 @@ public class v2_X_Changes {
 				"v2.4.0 isn't yet content complete, so there's a bit more I plan to add before beta/release:\n\n" +
 				"_-_ I want to add a few more Trinkets, ideally so there are 10-12 in total for release.\n" +
 				"_-_ I'd like to make further alchemy UI improvements, mainly it'd be nice to include the guidebook on the main screen for desktop users.\n" +
-				"_-_ I plan on making a few supporter feature improvements, primarily better epitaphs and maybe custom notes. This might get delayed to a future patch/update though.\n" +
 				"_-_ I'll make further Hero tweaks in response to feedback as needed.\n" +
 				"_-_ And, of course, there'll be various misc tweaks and fixes as needed."));
 
