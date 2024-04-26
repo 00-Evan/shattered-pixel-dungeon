@@ -279,8 +279,13 @@ public class LloydsBeacon extends Artifact {
 			while (partialCharge >= 1){
 				partialCharge--;
 				charge++;
-				updateQuickslot();
+
 			}
+			if (charge >= chargeCap){
+				partialCharge = 0;
+				charge = chargeCap;
+			}
+			updateQuickslot();
 		}
 	}
 

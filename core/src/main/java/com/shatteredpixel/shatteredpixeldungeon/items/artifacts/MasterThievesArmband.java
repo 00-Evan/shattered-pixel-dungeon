@@ -222,11 +222,13 @@ public class MasterThievesArmband extends Artifact {
 		while (partialCharge >= 1f){
 			charge++;
 			partialCharge--;
-			updateQuickslot();
-			if (charge == chargeCap){
-				GLog.p( Messages.get(MasterThievesArmband.class, "full") );
-			}
 		}
+		if (charge >= chargeCap){
+			GLog.p( Messages.get(MasterThievesArmband.class, "full") );
+			partialCharge = 0;
+			charge = chargeCap;
+		}
+		updateQuickslot();
 	}
 
 	@Override

@@ -770,7 +770,10 @@ public abstract class Wand extends Item {
 					curCharges++;
 					partialCharge--;
 				}
-				curCharges = Math.min(curCharges, maxCharges);
+				if (curCharges >= maxCharges){
+					partialCharge = 0;
+					curCharges = maxCharges;
+				}
 				updateQuickslot();
 			}
 		}

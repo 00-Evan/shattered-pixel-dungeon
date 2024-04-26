@@ -100,7 +100,11 @@ public class TalismanOfForesight extends Artifact {
 	public void charge(Hero target, float amount) {
 		if (cursed || target.buff(MagicImmune.class) != null) return;
 		if (charge < chargeCap){
-			charge += Math.round(2*amount);
+			partialCharge += 2*amount;
+			while (partialCharge >= 1f){
+				charge++;
+				partialCharge--;
+			}
 			if (charge >= chargeCap) {
 				charge = chargeCap;
 				partialCharge = 0;

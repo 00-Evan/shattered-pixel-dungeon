@@ -230,17 +230,7 @@ public class MeleeWeapon extends Weapon {
 			} else {
 				tracker.detach();
 				Charger charger = Buff.affect(hero, Charger.class);
-				if (charger.charges < charger.chargeCap()) {
-					charger.partialCharge += hero.pointsInTalent(Talent.VARIED_CHARGE) / 6f;
-					if (charger.partialCharge >= 1f) {
-						charger.partialCharge -= 1f;
-						charger.charges++;
-						if (charger.charges == charger.chargeCap()){
-							charger.partialCharge = 0;
-						}
-						updateQuickslot();
-					}
-				}
+				charger.gainCharge(hero.pointsInTalent(Talent.VARIED_CHARGE) / 6f);
 				ScrollOfRecharging.charge(hero);
 			}
 		}
@@ -537,7 +527,10 @@ public class MeleeWeapon extends Weapon {
 					charges++;
 					partialCharge--;
 				}
-				charges = Math.min(charges, chargeCap());
+				if (charges >= chargeCap()){
+					partialCharge = 0;
+					charges = chargeCap();
+				}
 				updateQuickslot();
 			}
 		}

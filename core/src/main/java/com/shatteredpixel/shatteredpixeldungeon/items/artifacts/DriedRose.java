@@ -304,7 +304,11 @@ public class DriedRose extends Artifact {
 
 		if (ghost == null){
 			if (charge < chargeCap) {
-				charge += Math.round(4*amount);
+				partialCharge += 4*amount;
+				while (partialCharge >= 1f){
+					charge++;
+					partialCharge--;
+				}
 				if (charge >= chargeCap) {
 					charge = chargeCap;
 					partialCharge = 0;

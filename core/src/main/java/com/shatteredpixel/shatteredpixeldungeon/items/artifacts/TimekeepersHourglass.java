@@ -167,12 +167,11 @@ public class TimekeepersHourglass extends Artifact {
 			while (partialCharge >= 1){
 				partialCharge--;
 				charge++;
-
-				if (charge == chargeCap){
-					partialCharge = 0;
-				}
-				updateQuickslot();
 			}
+			if (charge >= chargeCap){
+				partialCharge = 0;
+			}
+			updateQuickslot();
 		}
 	}
 

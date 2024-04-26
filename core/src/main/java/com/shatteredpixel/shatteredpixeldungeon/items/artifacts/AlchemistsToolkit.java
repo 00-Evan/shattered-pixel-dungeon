@@ -159,7 +159,7 @@ public class AlchemistsToolkit extends Artifact {
 	public void charge(Hero target, float amount) {
 		if (target.buff(MagicImmune.class) != null) return;
 		partialCharge += 0.25f*amount;
-		if (partialCharge >= 1){
+		while (partialCharge >= 1){
 			partialCharge--;
 			charge++;
 			updateQuickslot();
