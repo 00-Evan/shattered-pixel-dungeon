@@ -225,7 +225,7 @@ public class ScrollOfTeleportation extends Scroll {
 		boolean[] passable = Dungeon.level.passable;
 
 		if (Char.hasProp(ch, Char.Property.LARGE)){
-			passable = BArray.or(passable, Dungeon.level.openSpace, null);
+			passable = BArray.and(passable, Dungeon.level.openSpace, null);
 		}
 
 		PathFinder.buildDistanceMap(ch.pos, passable);
