@@ -263,6 +263,10 @@ public class MeleeWeapon extends Weapon {
 			}
 		}
 		if (hero.buff(Talent.CounterAbilityTacker.class) != null){
+			if (hero.pointsInTalent(Talent.COUNTER_ABILITY) == 4){
+				Charger charger = Buff.affect(hero, Charger.class);
+				charger.gainCharge(hero.pointsInTalent(Talent.COUNTER_ABILITY)/3f);
+			}
 			hero.buff(Talent.CounterAbilityTacker.class).detach();
 		}
 	}
@@ -279,11 +283,7 @@ public class MeleeWeapon extends Weapon {
 	}
 
 	public final float abilityChargeUse(Hero hero, Char target){
-		float chargeUse = baseChargeUse(hero, target);
-		if (hero.buff(Talent.CounterAbilityTacker.class) != null){
-			chargeUse = Math.max(0, chargeUse-0.5f*hero.pointsInTalent(Talent.COUNTER_ABILITY));
-		}
-		return chargeUse;
+		return baseChargeUse(hero, target);
 	}
 
 	public int tier;
