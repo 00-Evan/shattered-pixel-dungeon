@@ -253,10 +253,8 @@ public class MeleeWeapon extends Weapon {
 			}
 		}
 		if (hero.buff(Talent.CounterAbilityTacker.class) != null){
-			if (hero.pointsInTalent(Talent.COUNTER_ABILITY) == 4){
-				Charger charger = Buff.affect(hero, Charger.class);
-				charger.gainCharge(hero.pointsInTalent(Talent.COUNTER_ABILITY)/3f);
-			}
+			Charger charger = Buff.affect(hero, Charger.class);
+			charger.gainCharge(hero.pointsInTalent(Talent.COUNTER_ABILITY)*0.375f);
 			hero.buff(Talent.CounterAbilityTacker.class).detach();
 		}
 	}
