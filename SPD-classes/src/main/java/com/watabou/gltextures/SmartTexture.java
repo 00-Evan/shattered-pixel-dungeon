@@ -89,7 +89,9 @@ public class SmartTexture extends Texture {
 	}
 	
 	public int getPixel( int x, int y ){
-		return bitmap.getPixel(x, y);
+		int color = bitmap.getPixel(x, y);
+		// convert from libGdx RGBA to Noosa ARGB
+		return ( (color << 24) | (color >>> 8) );
 	}
 	
 	public void reload() {
