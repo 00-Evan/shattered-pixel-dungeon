@@ -78,57 +78,16 @@ public class v2_X_Changes {
 
 	public static void add_v2_4_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v2.4.0-ALPHA", true, "");
+		ChangeInfo changes = new ChangeInfo("v2.4.0-BETA", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("ALPHA-4", false, "");
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Alpha To-Do",
-				"The alpha seems to be mostly stable now, so I'll be looking into making a few more changes in prep for releasing a beta, hopefully very early next week.\n\n" +
-				"In particular, I want to add 2-4 more trinkets and make some more alchemy UI improvements before release. That won't be finished by beta time, but I want to at least get started on it."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"I've adjusted a few Duelist talents to account for the changes to weapon charges:\n" +
-				"_- Focused Meal_ and _Weapon Recharging_ charge gain reduced by 33%\n" +
-				"_- Counter Ability_ now causes Duelist to gain up to 1.5 charges, instead of reducing charge cost\n\n" +
-				"_-_ Trinkets can now appear in the rankings screen\n" +
-				"_-_ Slightly improved the layout for caves fissure entrance/exit rooms"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by ALPHA:_\n" +
-				"_-_ Errors with activating/deactivating brawler's stance\n" +
-				"_-_ Regular droprate of seeds from grass being slightly lower than intended\n" +
-				"_-_ Crashes when trinkets were renamed\n" +
-				"_-_ Some characters not being immune to various debuffs when they were previously\n" +
-				"_-_ Aqua brew triggering traps when thrown on them\n\n" +
-				"_Existed prior to ALPHA:_\n" +
-				"_-_ Teleportation effect not accounting for large characters in specific cases\n" +
-				"_-_ Some items charging to slightly above maximum charge in specific cases"));
-
-		changes = new ChangeInfo("ALPHA-2 & 3", false, "");
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by ALPHA:_\n" +
-				"_-_ Frequent crash bugs for some users (whoops!)\n" +
-				"_-_ Incorrect sprites for un-ided potions/scrolls in the catalog\n" +
-				"_-_ Caves levels frequently generating with two entrances or two exits (again, oops =S).\n" +
-				"_-_ Duelist getting spammed with combo text without using a combo strike weapon\n" +
-				"_-_ Wandmaker occasionally spawning on chasms\n" +
-				"_-_ various minor textual errors"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Alpha To-Do",
-				"v2.4.0 isn't yet content complete, so there's a bit more I plan to add before beta/release:\n\n" +
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Beta To-Do",
+				"v2.4.0 isn't yet content complete, so there's a bit more I plan to add before full release:\n\n" +
 				"_-_ I want to add a few more Trinkets, ideally so there are 10-12 in total for release.\n" +
 				"_-_ I'd like to make further alchemy UI improvements, mainly it'd be nice to include the guidebook on the main screen for desktop users.\n" +
 				"_-_ I'll make further Hero tweaks in response to feedback as needed.\n" +
@@ -169,8 +128,9 @@ public class v2_X_Changes {
 				"I'm making some overarching changes to the Duelist's weapon abilities, to make them stronger and feel more impactful:\n" +
 				"_-_ Weapon ability charge speed down by 33%\n" +
 				"_-_ Weapon abilities buffed across the board\n" +
-				"_-_ All weapon abilities now scale with weapon level in some way\n" +
+				"_-_ Some talents adjusted to account for weapon charges being less frequent\n" +
 				"_-_ Weapon abilities now directly state their damage ranges\n" +
+				"Check the buffs and talent changes section for specific weapon ability and talent changes.\n" +
 				"\n" +
 				"There are also some changes to the Champion subclass to go along with this:\n" +
 				"_-_ Champion's two weapons now share a charge count, but Champion gets boosted max charges and charge speed.\n" +
@@ -179,33 +139,28 @@ public class v2_X_Changes {
 		changes.addButton( new ChangeButton(Icons.get(Icons.ENERGY), "Alchemy Changes",
 				"I've made a bunch of changes to the alchemy system to streamline things and complement the addition of trinkets:\n" +
 				"\n" +
-				"_-_ Catalysts have been removed entirely, recipes now simply cost more energy instead of requiring one.\n" +
-				"_-_ Lots of recipes have received adjustments to their overall energy cost or output quantities.\n" +
+				"_-_ Catalysts have been removed entirely, recipes that required one now simply cost 8 or 9 more energy.\n" +
+				"_-_ A new unstable brew and spell have been added, which give random potion/scroll effects.\n" +
+				"_-_ Aqua Blast and Featherfall are now a brew and elixir, otherwise unchanged.\n" +
 				"_-_ High value potions/scrolls now grant a little more energy if they are energized.\n" +
 				"_-_ Alchemy pots now always spawn on the 3rd or 4th floor in each region.\n" +
-				"_-_ Various UI improvements have been made to the alchemy screen.",
-				
-				"Various specific alchemy items have also received more notable changes:\n" +
+				"_-_ Various UI improvements have been made to the alchemy screen.\n" +
 				"\n" +
-				"_- Added Unstable Brew,_ which gives a random potion effect that's likely to be useful.\n" +
-				"_- Aqua Blast_ is now a brew, otherwise unchanged.\n" +
-				"_- Featherfall_ is now an elixir, otherwise unchanged.\n" +
-				"_- Elixir of Icy Touch_ now applies 3 chill each hit, up from 2.\n" +
-				"_- Elixir of Toxic Essence_ now spreads gas quicker and grants lingering gas immunity for 5 turns.\n" +
-				"_- Added Unstable Spell,_ which gives a random scroll effect that's likely to be useful.\n" +
-				"_- Alchemize_ has a new recipe, it is now much cheaper to make.\n" +
-				"_- Summon Elemental_ now retains its empowerment, rather than having it last only 1 use."));
+				"Various specific alchemy items have also received changes to their energy cost, output quantity, or mechanics. Check the buffs and nerfs section for more details on those."));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.TALENT), "T1 talent changes",
+		changes.addButton( new ChangeButton(Icons.get(Icons.TALENT), "Talent Changes",
+				"Duelist talents have been changed to account for adjustments to weapon charge mechanics:\n" +
+				"_- Aggressive Barrier_ shielding increased to 3/5 from 3, threshold changed to 50% from 40%/60%.\n" +
+				"_- Focused Meal_ charge boost reduced to 0.67/1 from 1/1.5.\n" +
+				"_- Weapon Recharging_ boost reduced to every 15/10 turns from every 10/6 turns.\n" +
+				"_- Counter Ability_ now grants up to 1.5 charges, instead of reducing cost.\n" +
+				"\n" +
 				"I've made some changes meant to improve some of the least popular T1 talents:\n" +
 				"_- Cached Rations_ now awards a smaller number of unique 'supply rations'. These rations grant a little healing and cloak charge.\n" +
 				"_- Test Subject and Tested Hypothesis_ have been replaced with two new talents that grant small combat bonuses.\n" +
 				"\n" +
 				"Plus one change to an unnecessarily complex T1 talent:\n" +
 				"_- Hearty Meal_ has been simplified, now just has one threshold at 30% HP"));
-
-		/*changes.addButton( new ChangeButton(Icons.get(Icons.GOLD), "Supporter Changes",
-				"."));*/
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"_Highlights:_\n" +
@@ -278,11 +233,57 @@ public class v2_X_Changes {
 		changes.hardlight(CharSprite.POSITIVE);
 		changeInfos.add(changes);
 
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RAPIER), "Weapon Ability Buffs",
+				"_- Lunge_ damage up\n" +
+				"_- Cleave_ damage up, is now instant if it kills\n" +
+				"_- Heavy Blow_ damage up, non-surprise penalty changed to no bonus damage\n" +
+				"_- Sneak_ charge cost down to 1 from 2, invis duration now scales\n" +
+				"_- Combo Strike_ damage up, combo duration now resets on hit (like gladiator)\n" +
+				"_- Spike_ damage up\n" +
+				"_- Defensive Stance_ charge cost down to 1 from 2, duration now scales\n" +
+				"_- Harvest_ charge cost down to 1 from 2, bleed amount dealt is now constant\n" +
+				"_- Sword Dance_ charge cost down to 1 from 2, duration now scales, ACC boost up to 50%\n" +
+				"_- Block_ duration now scales, now keeps blocking until you attack\n" +
+				"_- Lash_ now deals bonus damage and is garunteed to hit all targets\n" +
+				"_- Spin_ charge cost down to 1 from 2\n" +
+				"_- Runic Strike_ enchant boost now scales\n" +
+				"_- Charge Shot_ AOE up to 7x7 from 5x5, dart durability boost now scales\n" +
+				"_- Retribution_ is now instant if it kills\n" +
+				"_- Brawler's Stance_ now deals bonus damage, reduces recharge speed instead of costing charge per hit"));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ALCHEMIZE), "Alchemy Buffs",
+				"Firstly, many items have received simple energy cost reductions. Note that all energy costs are after accounting for catalyst removal\n" +
+				"_- Caustic Brew_ cost down to 2 from 1\n" +
+				"_- Blizzard Brew_ cost down to 8 from 11\n" +
+				"_- Shocking Brew_ cost down to 10 from 14\n" +
+				"_- Aqua Brew_ cost down to 8 from 11\n" +
+				"_- Elixir of Dragon's Blood_ cost down to 10 from 14\n" +
+				"_- Telekinetic Grab_ cost down to 10 from 11\n" +
+				"_- Beacon of Returning_ cost down to 12 from 15\n" +
+				"_- Magical Infusion_ cost down to 12 from 13\n" +
+				"_- Recycle_ cost down to 12 from 17",
+
+				"Some alchemy produce has also received bigger buffs:\n" +
+				"_- Elixir of Toxic Essence_ cost down to 8 from 10, spreads gas quicker, and gives 5 turns of lingering gas immunity\n" +
+				"_- Elixir of Icy Touch_ cost down to 6 from 14 and now applies 3 chill each hit, up from 2\n" +
+				"_- Wild Energy_ now requires a regular scroll of recharging, instead of mystical energy\n" +
+				"_- Reclaim Trap_ cost up to 8 from 6, but output quantity increased to 5 from 4\n" +
+				"_- Alchemize_ has a new recipe, it is now much cheaper to make\n" +
+				"_- Summon Elemental_ cost down to 10 from 15 and buffing the spell now persists after use"));
+
 		changes.addButton( new ChangeButton(new Image(new GhostSprite()), "Ghost and Blacksmith Enchantments",
 				"I've given a slight boost to the rewards of the Ghost quest and Blacksmith's smith reward, aimed at making enchantments/glyphs more likely. this should make these rewards a bit more interesting more often.\n" +
 				"\n" +
 				"_-_ Ghost reward enchant rate up to 20% from 10%\n" +
 				"_-_ Blacksmith smith reward enchant rate up to 30% from 0%"));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
+		changes.hardlight(CharSprite.NEGATIVE);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ELIXIR_MIGHT), "Alchemy Nerfs",
+				"_- Elixir of Might_ cost up to 16 from 14 (after account for catalyst removal)\n" +
+				"_- Phase Shift_ cost down to 10 from 13, but output quantity down to 6 from 8"));
 
 	}
 

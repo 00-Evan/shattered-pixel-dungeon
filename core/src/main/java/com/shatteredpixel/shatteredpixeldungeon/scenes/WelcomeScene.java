@@ -53,7 +53,7 @@ import java.util.Collections;
 
 public class WelcomeScene extends PixelScene {
 
-	private static final int LATEST_UPDATE = 769;
+	private static final int LATEST_UPDATE = 774;
 
 	//used so that the game does not keep showing the window forever if cleaning fails
 	private static boolean triedCleaningTemp = false;
@@ -202,7 +202,7 @@ public class WelcomeScene extends PixelScene {
 
 			}
 
-			message = "Welcome Alpha testers!\n\nv2.4.0 is mostly complete so far, with 8 trinkets implemented and a bunch of other content too. Check the changes screen for more details, and please let me know what you think!";
+			//message = "Welcome Beta testers!\n\nv2.4.0 is mostly complete so far, with 8 trinkets implemented and a bunch of other content too. Check the changes screen for more details, and please let me know what you think!";
 
 		} else {
 			message = Messages.get(this, "what_msg");
