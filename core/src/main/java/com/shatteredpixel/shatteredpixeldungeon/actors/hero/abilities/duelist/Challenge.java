@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -99,7 +100,8 @@ public class Challenge extends ArmorAbility {
 			return;
 		}
 
-		if (targetCh.alignment == hero.alignment){
+		if (targetCh.alignment != Char.Alignment.ENEMY
+				&& !(targetCh instanceof Mimic && targetCh.alignment == Char.Alignment.NEUTRAL)){
 			GLog.w(Messages.get(this, "ally_target"));
 			return;
 		}
@@ -275,14 +277,6 @@ public class Challenge extends ArmorAbility {
 					}
 				}
 
-				for (Char ch : Actor.chars()) {
-					if (ch.buff(SpectatorFreeze.class) != null) {
-						ch.buff(SpectatorFreeze.class).detach();
-					}
-					if (ch.buff(DuelParticipant.class) != null && ch != target) {
-						ch.buff(DuelParticipant.class).detach();
-					}
-				}
 			} else {
 				if (Dungeon.hero.isAlive()) {
 					GameScene.flash(0x80FFFFFF);
@@ -290,6 +284,15 @@ public class Challenge extends ArmorAbility {
 					if (Dungeon.hero.hasTalent(Talent.ELIMINATION_MATCH)){
 						Buff.affect(target, EliminationMatchTracker.class, 3);
 					}
+				}
+			}
+
+			for (Char ch : Actor.chars()) {
+				if (ch.buff(SpectatorFreeze.class) != null) {
+					ch.buff(SpectatorFreeze.class).detach();
+				}
+				if (ch.buff(DuelParticipant.class) != null && ch != target) {
+					ch.buff(DuelParticipant.class).detach();
 				}
 			}
 		}
