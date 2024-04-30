@@ -40,11 +40,6 @@ public class ElixirOfToxicEssence extends Elixir {
 		hero.sprite.emitter().burst(PoisonParticle.SPLASH, 10);
 	}
 	
-	@Override
-	protected int splashColor() {
-		return 0xFF00B34A;
-	}
-	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{

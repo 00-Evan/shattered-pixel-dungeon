@@ -40,11 +40,6 @@ public class ElixirOfIcyTouch extends Elixir {
 		hero.sprite.emitter().burst(SnowParticle.FACTORY, 5);
 	}
 	
-	@Override
-	protected int splashColor() {
-		return 0xFF18C3E6;
-	}
-	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{

@@ -43,11 +43,6 @@ public class ElixirOfDragonsBlood extends Elixir {
 		hero.sprite.emitter().burst(FlameParticle.FACTORY, 10);
 	}
 	
-	@Override
-	protected int splashColor() {
-		return 0xFFFF002A;
-	}
-	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{
