@@ -207,7 +207,7 @@ public class Pickaxe extends MeleeWeapon {
 
 		hero.belongings.abilityWeapon = this;
 		if (!hero.canAttack(enemy)){
-			GLog.w(Messages.get(this, "ability_bad_position"));
+			GLog.w(Messages.get(this, "ability_target_range"));
 			hero.belongings.abilityWeapon = null;
 			return;
 		}

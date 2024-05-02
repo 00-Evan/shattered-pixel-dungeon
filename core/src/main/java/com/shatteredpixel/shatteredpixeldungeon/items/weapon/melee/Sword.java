@@ -91,7 +91,7 @@ public class Sword extends MeleeWeapon {
 
 		hero.belongings.abilityWeapon = wep;
 		if (!hero.canAttack(enemy)){
-			GLog.w(Messages.get(wep, "ability_bad_position"));
+			GLog.w(Messages.get(wep, "ability_target_range"));
 			hero.belongings.abilityWeapon = null;
 			return;
 		}
