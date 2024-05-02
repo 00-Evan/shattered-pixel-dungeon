@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
+import com.watabou.utils.Bundle;
 
 public class RoundShield extends MeleeWeapon {
 
@@ -109,6 +110,20 @@ public class RoundShield extends MeleeWeapon {
 		@Override
 		public float iconFadePercent() {
 			return Math.max(0, (5 - visualcooldown()) / 5);
+		}
+
+		private static final String BLOCKED = "blocked";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			hasBlocked = bundle.getBoolean(BLOCKED);
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			bundle.put(BLOCKED, hasBlocked);
 		}
 	}
 }
