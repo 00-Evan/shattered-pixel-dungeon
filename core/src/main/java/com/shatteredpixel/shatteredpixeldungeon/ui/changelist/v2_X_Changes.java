@@ -82,6 +82,27 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-2", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by BETA:_\n" +
+				"_-_ Uncommon cases of wandmaker blocking paths or spawning in walls\n" +
+				"_-_ Rare cases of freezes during levelgen\n" +
+				"_-_ Recycle not being craftable\n" +
+				"_-_ Guard ability buff resetting on save/load\n" +
+				"_-_ Various minor textual errors\n\n" +
+				"_Existed prior to BETA:_\n" +
+				"_-_ Geyser traps and aqua brew not extinguishing flames\n" +
+				"_-_ Seer shot not working in blacksmith quest area\n" +
+				"_-_ Various minor textual errors"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
