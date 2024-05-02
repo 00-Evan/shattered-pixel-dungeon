@@ -33,6 +33,16 @@ import com.watabou.utils.Point;
 public class CaveExitRoom extends CaveRoom {
 
 	@Override
+	public int minHeight() {
+		return Math.max(7, super.minHeight());
+	}
+
+	@Override
+	public int minWidth() {
+		return Math.max(7, super.minWidth());
+	}
+
+	@Override
 	public float[] sizeCatProbs() {
 		return new float[]{2, 1, 0};
 	}
