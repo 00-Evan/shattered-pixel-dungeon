@@ -127,6 +127,7 @@ public class v2_X_Changes {
 		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 6), "Duelist Weapon Abilities",
 				"I'm making some overarching changes to the Duelist's weapon abilities, to make them stronger and feel more impactful:\n" +
 				"_-_ Weapon ability charge speed down by 33%\n" +
+				"_-_ Weapon ability charge cap reduced to 2-8, from 3-10\n" +
 				"_-_ Weapon abilities buffed across the board\n" +
 				"_-_ Some talents adjusted to account for weapon charges being less frequent\n" +
 				"_-_ Weapon abilities now directly state their damage ranges\n" +
@@ -235,7 +236,7 @@ public class v2_X_Changes {
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RAPIER), "Weapon Ability Buffs",
 				"_- Lunge_ damage up\n" +
-				"_- Cleave_ damage up, is now instant if it kills\n" +
+				"_- Cleave_ damage up, is now instant if it kills, but no longer chains\n" +
 				"_- Heavy Blow_ damage up, non-surprise penalty changed to no bonus damage\n" +
 				"_- Sneak_ charge cost down to 1 from 2, invis duration now scales\n" +
 				"_- Combo Strike_ damage up, combo duration now resets on hit (like gladiator)\n" +
@@ -244,7 +245,7 @@ public class v2_X_Changes {
 				"_- Harvest_ charge cost down to 1 from 2, bleed amount dealt is now constant\n" +
 				"_- Sword Dance_ charge cost down to 1 from 2, duration now scales, ACC boost up to 50%\n" +
 				"_- Block_ duration now scales, now keeps blocking until you attack\n" +
-				"_- Lash_ now deals bonus damage and is garunteed to hit all targets\n" +
+				"_- Lash_ now deals bonus damage and is guaranteed to hit all targets\n" +
 				"_- Spin_ charge cost down to 1 from 2\n" +
 				"_- Runic Strike_ enchant boost now scales\n" +
 				"_- Charge Shot_ AOE up to 7x7 from 5x5, dart durability boost now scales\n" +
@@ -253,7 +254,7 @@ public class v2_X_Changes {
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ALCHEMIZE), "Alchemy Buffs",
 				"Firstly, many items have received simple energy cost reductions. Note that all energy costs are after accounting for catalyst removal\n" +
-				"_- Caustic Brew_ cost down to 2 from 1\n" +
+				"_- Caustic Brew_ cost down to 1 from 2\n" +
 				"_- Blizzard Brew_ cost down to 8 from 11\n" +
 				"_- Shocking Brew_ cost down to 10 from 14\n" +
 				"_- Aqua Brew_ cost down to 8 from 11\n" +
