@@ -27,7 +27,7 @@ allprojects {
 
         gdxVersion = '1.12.1'
         gdxControllersVersion = '2.2.4-SNAPSHOT'
-        robovmVersion = '2.3.20'
+        robovmVersion = '2.3.21'
     }
     version = appVersionName
 
