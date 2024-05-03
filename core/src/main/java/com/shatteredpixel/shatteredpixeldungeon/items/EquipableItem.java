@@ -116,8 +116,8 @@ public abstract class EquipableItem extends Item {
 		Sample.INSTANCE.play( Assets.Sounds.CURSED );
 	}
 
-	protected float time2equip( Hero hero ) {
-		return 1;
+	protected float timeToEquip( Hero hero ) {
+		return 1f;
 	}
 
 	public abstract boolean doEquip( Hero hero );
@@ -132,9 +132,9 @@ public abstract class EquipableItem extends Item {
 		}
 
 		if (single) {
-			hero.spendAndNext( time2equip( hero ) );
+			hero.spendAndNext( timeToEquip( hero ) );
 		} else {
-			hero.spend( time2equip( hero ) );
+			hero.spend( timeToEquip( hero ) );
 		}
 
 		slotOfUnequipped = Dungeon.quickslot.getSlot(this);

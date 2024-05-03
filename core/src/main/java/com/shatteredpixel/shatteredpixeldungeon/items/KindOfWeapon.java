@@ -41,8 +41,6 @@ import com.watabou.utils.BArray;
 import com.watabou.utils.PathFinder;
 
 abstract public class KindOfWeapon extends EquipableItem {
-	
-	protected static final float TIME_TO_EQUIP = 1f;
 
 	protected String hitSound = Assets.Sounds.HIT;
 	protected float hitSoundPitch = 1f;
@@ -96,10 +94,24 @@ abstract public class KindOfWeapon extends EquipableItem {
 	public boolean isEquipped( Hero hero ) {
 		return hero.belongings.weapon() == this || hero.belongings.secondWep() == this;
 	}
+
+	private static boolean isSwiftEquipping = false;
+
+	protected float timeToEquip( Hero hero ) {
+		return isSwiftEquipping ? 0f : super.timeToEquip(hero);
+	}
 	
 	@Override
 	public boolean doEquip( Hero hero ) {
-		boolean wasInInv = hero.belongings.contains(this);
+
+		isSwiftEquipping = false;
+		if (hero.belongings.contains(this) && hero.hasTalent(Talent.SWIFT_EQUIP)){
+			if (hero.buff(Talent.SwiftEquipCooldown.class) == null
+					|| hero.buff(Talent.SwiftEquipCooldown.class).hasSecondUse()){
+				isSwiftEquipping = true;
+			}
+		}
+
 		detachAll( hero.belongings.backpack );
 		
 		if (hero.belongings.weapon == null || hero.belongings.weapon.doUnequip( hero, true )) {
@@ -117,32 +129,36 @@ abstract public class KindOfWeapon extends EquipableItem {
 				GLog.n( Messages.get(KindOfWeapon.class, "equip_cursed") );
 			}
 
-			if (wasInInv && hero.hasTalent(Talent.SWIFT_EQUIP)) {
+			hero.spendAndNext( timeToEquip(hero) );
+			if (isSwiftEquipping) {
+				GLog.i(Messages.get(this, "swift_equip"));
 				if (hero.buff(Talent.SwiftEquipCooldown.class) == null){
-					hero.spendAndNext(-time2equip(hero));
 					Buff.affect(hero, Talent.SwiftEquipCooldown.class, 19f)
 							.secondUse = hero.pointsInTalent(Talent.SWIFT_EQUIP) == 2;
-					GLog.i(Messages.get(this, "swift_equip"));
 				} else if (hero.buff(Talent.SwiftEquipCooldown.class).hasSecondUse()) {
-					hero.spendAndNext(-time2equip(hero));
 					hero.buff(Talent.SwiftEquipCooldown.class).secondUse = false;
-					GLog.i(Messages.get(this, "swift_equip"));
-				} else {
-					hero.spendAndNext(TIME_TO_EQUIP);
 				}
-			} else {
-				hero.spendAndNext(TIME_TO_EQUIP);
+				isSwiftEquipping = false;
 			}
 			return true;
 			
 		} else {
-			
+			isSwiftEquipping = false;
 			collect( hero.belongings.backpack );
 			return false;
 		}
 	}
 
 	public boolean equipSecondary( Hero hero ){
+
+		isSwiftEquipping = false;
+		if (hero.belongings.contains(this) && hero.hasTalent(Talent.SWIFT_EQUIP)){
+			if (hero.buff(Talent.SwiftEquipCooldown.class) == null
+					|| hero.buff(Talent.SwiftEquipCooldown.class).hasSecondUse()){
+				isSwiftEquipping = true;
+			}
+		}
+
 		boolean wasInInv = hero.belongings.contains(this);
 		detachAll( hero.belongings.backpack );
 
@@ -161,26 +177,21 @@ abstract public class KindOfWeapon extends EquipableItem {
 				GLog.n( Messages.get(KindOfWeapon.class, "equip_cursed") );
 			}
 
-			if (wasInInv && hero.hasTalent(Talent.SWIFT_EQUIP)) {
+			hero.spendAndNext( timeToEquip(hero) );
+			if (isSwiftEquipping) {
+				GLog.i(Messages.get(this, "swift_equip"));
 				if (hero.buff(Talent.SwiftEquipCooldown.class) == null){
-					hero.spendAndNext(-time2equip(hero));
 					Buff.affect(hero, Talent.SwiftEquipCooldown.class, 19f)
 							.secondUse = hero.pointsInTalent(Talent.SWIFT_EQUIP) == 2;
-					GLog.i(Messages.get(this, "swift_equip"));
 				} else if (hero.buff(Talent.SwiftEquipCooldown.class).hasSecondUse()) {
-					hero.spendAndNext(-time2equip(hero));
 					hero.buff(Talent.SwiftEquipCooldown.class).secondUse = false;
-					GLog.i(Messages.get(this, "swift_equip"));
-				} else {
-					hero.spendAndNext(TIME_TO_EQUIP);
 				}
-			} else {
-				hero.spendAndNext(TIME_TO_EQUIP);
+				isSwiftEquipping = false;
 			}
 			return true;
 
 		} else {
-
+			isSwiftEquipping = false;
 			collect( hero.belongings.backpack );
 			return false;
 		}

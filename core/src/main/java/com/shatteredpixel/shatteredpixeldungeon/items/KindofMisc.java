@@ -35,8 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 
 public abstract class KindofMisc extends EquipableItem {
 
-	private static final float TIME_TO_EQUIP = 1f;
-
 	@Override
 	public boolean doEquip(final Hero hero) {
 
@@ -153,7 +151,7 @@ public abstract class KindofMisc extends EquipableItem {
 				GLog.n( Messages.get(this, "equip_cursed", this) );
 			}
 
-			hero.spendAndNext( TIME_TO_EQUIP );
+			hero.spendAndNext( timeToEquip(hero) );
 			return true;
 
 		}
