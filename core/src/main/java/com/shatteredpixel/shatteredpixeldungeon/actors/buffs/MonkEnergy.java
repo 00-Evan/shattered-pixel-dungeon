@@ -506,6 +506,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 				if (Actor.findChar(target) != null){
 					GLog.w(Messages.get(MeleeWeapon.class, "ability_occupied"));
+					return;
 				}
 
 				Ballistica dash = new Ballistica(hero.pos, target, Ballistica.PROJECTILE);
