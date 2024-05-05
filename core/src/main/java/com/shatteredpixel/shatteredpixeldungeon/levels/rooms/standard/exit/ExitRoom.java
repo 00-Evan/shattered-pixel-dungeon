@@ -70,13 +70,6 @@ public class ExitRoom extends StandardRoom {
 		return super.canPlaceCharacter(p, l) && l.pointToCell(p) != l.exit();
 	}
 
-	@Override
-	public boolean connect(Room room) {
-		//cannot connect to entrance, otherwise works normally
-		if (room.isEntrance())  return false;
-		else                    return super.connect(room);
-	}
-
 	private static ArrayList<Class<?extends StandardRoom>> rooms = new ArrayList<>();
 	static {
 		rooms.add(ExitRoom.class);

@@ -127,13 +127,6 @@ public class EntranceRoom extends StandardRoom {
 
 	}
 
-	@Override
-	public boolean connect(Room room) {
-		//cannot connect to exit, otherwise works normally
-		if (room.isExit())  return false;
-		else                return super.connect(room);
-	}
-
 	private static ArrayList<Class<?extends StandardRoom>> rooms = new ArrayList<>();
 	static {
 		rooms.add(EntranceRoom.class);

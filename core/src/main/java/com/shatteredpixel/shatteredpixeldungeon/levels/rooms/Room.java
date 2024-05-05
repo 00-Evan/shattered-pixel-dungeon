@@ -263,6 +263,11 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 	}
 	
 	public boolean connect( Room room ) {
+		if (isExit() && room.isEntrance() || isEntrance() && room.isExit()){
+			//entrance and exit rooms cannot directly connect
+			return false;
+		}
+
 		if ((neigbours.contains(room) || addNeigbour(room))
 				&& !connected.containsKey( room ) && canConnect(room)) {
 			connected.put( room, null );
