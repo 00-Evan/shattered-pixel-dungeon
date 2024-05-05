@@ -906,7 +906,7 @@ public class AlchemyScene extends PixelScene {
 
 				@Override
 				protected String hoverText() {
-					return "Craft";
+					return Messages.get(AlchemyScene.class, "craft");
 				}
 
 				@Override
