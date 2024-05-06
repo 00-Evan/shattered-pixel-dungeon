@@ -23,9 +23,12 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MimicTooth;
 import com.watabou.noosa.TextureFilm;
 
 public class MimicSprite extends MobSprite {
+
+	private Animation advancedHiding;
 
 	private Animation hiding;
 
@@ -49,20 +52,23 @@ public class MimicSprite extends MobSprite {
 
 		TextureFilm frames = new TextureFilm( texture, 16, 16 );
 
+		advancedHiding = new Animation( 1, true );
+		advancedHiding.frames( frames, 0+c);
+
 		hiding = new Animation( 1, true );
-		hiding.frames( frames, 0+c, 0+c, 0+c, 0+c, 0+c, 1+c);
+		hiding.frames( frames, 1+c, 1+c, 1+c, 1+c, 1+c, 2+c);
 
 		idle = new Animation( 5, true );
-		idle.frames( frames, 2+c, 2+c, 2+c, 3+c, 3+c );
+		idle.frames( frames, 3+c, 3+c, 3+c, 4+c, 4+c );
 
 		run = new Animation( 10, true );
-		run.frames( frames, 2+c, 3+c, 4+c, 5+c, 5+c, 4+c, 3+c );
+		run.frames( frames, 3+c, 4+c, 5+c, 6+c, 6+c, 5+c, 4+c );
 
 		attack = new Animation( 10, false );
-		attack.frames( frames, 2+c, 6+c, 7+c, 8+c );
+		attack.frames( frames, 3+c, 7+c, 8+c, 9+c );
 
 		die = new Animation( 5, false );
-		die.frames( frames, 9+c, 10+c, 11+c );
+		die.frames( frames, 10+c, 111+c, 12+c );
 
 		play( idle );
 	}
@@ -76,13 +82,17 @@ public class MimicSprite extends MobSprite {
 	}
 
 	public void hideMimic(){
-		play(hiding);
+		if (MimicTooth.stealthyMimics()){
+			play(advancedHiding);
+		} else {
+			play(hiding);
+		}
 		hideSleep();
 	}
 
 	@Override
 	public void showSleep() {
-		if (curAnim == hiding){
+		if (curAnim == hiding || curAnim == advancedHiding){
 			return;
 		}
 		super.showSleep();

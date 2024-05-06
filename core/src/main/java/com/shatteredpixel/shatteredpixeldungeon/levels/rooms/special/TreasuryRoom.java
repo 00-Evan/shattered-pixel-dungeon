@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MimicTooth;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrinketCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -45,6 +46,7 @@ public class TreasuryRoom extends SpecialRoom {
 		Heap.Type heapType = Random.Int( 2 ) == 0 ? Heap.Type.CHEST : Heap.Type.HEAP;
 		
 		int n = Random.IntRange( 2, 3 );
+		float mimicChance = 1/5f * MimicTooth.mimicChanceMultiplier();
 		for (int i=0; i < n; i++) {
 			Item item = level.findPrizeItem(TrinketCatalyst.class);
 			if (item == null) item = new Gold().random();
@@ -53,7 +55,7 @@ public class TreasuryRoom extends SpecialRoom {
 			do {
 				pos = level.pointToCell(random());
 			} while (level.map[pos] != Terrain.EMPTY || level.heaps.get( pos ) != null || level.findMob(pos) != null);
-			if (heapType == Heap.Type.CHEST && Dungeon.depth > 1 && Random.Int( 5 ) == 0){
+			if (heapType == Heap.Type.CHEST && Dungeon.depth > 1 && Random.Float() < mimicChance){
 				level.mobs.add(Mimic.spawnAt(pos, item));
 			} else {
 				level.drop( item, pos ).type = heapType;

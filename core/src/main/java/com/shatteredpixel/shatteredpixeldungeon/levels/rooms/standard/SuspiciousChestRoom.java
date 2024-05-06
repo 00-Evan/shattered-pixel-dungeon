@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MimicTooth;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -61,7 +62,8 @@ public class SuspiciousChestRoom extends StandardRoom {
 
 		Painter.set(level, center, Terrain.PEDESTAL);
 
-		if (Random.Int(3) == 0) {
+		float mimicChance = 1/3f * MimicTooth.mimicChanceMultiplier();
+		if (Random.Float() < mimicChance) {
 			level.mobs.add(Mimic.spawnAt(center, i));
 		} else {
 			level.drop(i, center).type = Heap.Type.CHEST;
