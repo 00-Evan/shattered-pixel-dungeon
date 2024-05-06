@@ -354,7 +354,7 @@ public class Item implements Bundlable {
 	}
 	
 	public boolean isSimilar( Item item ) {
-		return level == item.level && getClass() == item.getClass();
+		return getClass() == item.getClass();
 	}
 
 	protected void onDetach(){}
