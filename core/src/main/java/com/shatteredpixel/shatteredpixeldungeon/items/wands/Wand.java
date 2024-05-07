@@ -48,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.WondrousResin;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -683,9 +684,21 @@ public abstract class Wand extends Item {
 						curWand.fx(shot, new Callback() {
 							public void call() {
 								curWand.onZap(shot);
-								curWand.wandUsed();
+								if (Random.Float() < WondrousResin.extraCurseEffectChance()){
+									CursedWand.cursedZap(curWand,
+											curUser,
+											new Ballistica(curUser.pos, target, Ballistica.MAGIC_BOLT), new Callback() {
+												@Override
+												public void call() {
+													curWand.wandUsed();
+												}
+											});
+								} else {
+									curWand.wandUsed();
+								}
 							}
 						});
+
 					}
 					curWand.cursedKnown = true;
 					

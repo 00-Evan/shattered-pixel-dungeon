@@ -54,6 +54,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.WondrousResin;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CursingTrap;
@@ -123,6 +124,7 @@ public class CursedWand {
 	}
 
 	private static boolean commonEffect(final Item origin, final Char user, final int targetPos){
+		boolean positiveOnly = Random.Float() < WondrousResin.positiveCurseEffectChance();
 		switch(Random.Int(4)){
 
 			//anti-entropy
@@ -130,9 +132,9 @@ public class CursedWand {
 				Char target = Actor.findChar(targetPos);
 				if (Random.Int(2) == 0) {
 					if (target != null) Buff.affect(target, Burning.class).reignite(target);
-					Buff.affect(user, Frost.class, Frost.DURATION);
+					if (!positiveOnly) Buff.affect(user, Frost.class, Frost.DURATION);
 				} else {
-					Buff.affect(user, Burning.class).reignite(user);
+					if (!positiveOnly)Buff.affect(user, Burning.class).reignite(user);
 					if (target != null) Buff.affect(target, Frost.class, Frost.DURATION);
 				}
 				tryForWandProc(target, origin);
@@ -146,7 +148,7 @@ public class CursedWand {
 
 			//random teleportation
 			case 2:
-				if(Random.Int(2) == 0) {
+				if(!positiveOnly && Random.Int(2) == 0) {
 					if (user != null && !user.properties().contains(Char.Property.IMMOVABLE)) {
 						ScrollOfTeleportation.teleportChar(user);
 					} else {
@@ -183,6 +185,7 @@ public class CursedWand {
 	}
 
 	private static boolean uncommonEffect(final Item origin, final Char user, final int targetPos){
+		boolean positiveOnly = Random.Float() < WondrousResin.positiveCurseEffectChance();
 		switch(Random.Int(4)){
 
 			//Random plant
@@ -208,7 +211,7 @@ public class CursedWand {
 					int damage = Dungeon.scalingDepth() * 2;
 					Char toHeal, toDamage;
 
-					if (Random.Int(2) == 0){
+					if (positiveOnly || Random.Int(2) == 0){
 						toHeal = user;
 						toDamage = target;
 					} else {
@@ -251,7 +254,7 @@ public class CursedWand {
 
 			//shock and recharge
 			case 3:
-				new ShockingTrap().set( user.pos ).activate();
+				if (!positiveOnly) new ShockingTrap().set( user.pos ).activate();
 				Buff.prolong(user, Recharging.class, Recharging.DURATION);
 				ScrollOfRecharging.charge(user);
 				SpellSprite.show(user, SpellSprite.CHARGE);
@@ -261,7 +264,8 @@ public class CursedWand {
 	}
 
 	private static boolean rareEffect(final Item origin, final Char user, final int targetPos){
-		switch(Random.Int(4)){
+		boolean positiveOnly = Random.Float() < WondrousResin.positiveCurseEffectChance();
+		switch(positiveOnly ? 0 : Random.Int(4)){
 
 			//sheep transformation
 			case 0: default:
@@ -325,20 +329,24 @@ public class CursedWand {
 	}
 
 	private static boolean veryRareEffect(final Item origin, final Char user, final int targetPos){
-		switch(Random.Int(4)){
+		boolean positiveOnly = Random.Float() < WondrousResin.positiveCurseEffectChance();
+		switch( positiveOnly ? 0 : Random.Int(4) ){
 
 			//great forest fire!
 			case 0: default:
 				for (int i = 0; i < Dungeon.level.length(); i++){
 					GameScene.add( Blob.seed(i, 15, Regrowth.class));
 				}
-				do {
-					GameScene.add(Blob.seed(Dungeon.level.randomDestination(null), 10, Fire.class));
-				} while (Random.Int(5) != 0);
+
 				new Flare(8, 32).color(0xFFFF66, true).show(user.sprite, 2f);
 				Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 				GLog.p(Messages.get(CursedWand.class, "grass"));
-				GLog.w(Messages.get(CursedWand.class, "fire"));
+				if (!positiveOnly) {
+					GLog.w(Messages.get(CursedWand.class, "fire"));
+					do {
+						GameScene.add(Blob.seed(Dungeon.level.randomDestination(null), 10, Fire.class));
+					} while (Random.Int(5) != 0);
+				}
 				return true;
 
 			//golden mimic
