@@ -38,7 +38,9 @@ public class MimicTooth extends Trinket {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", Float.toString(mimicChanceMultiplier(buffedLvl())));
+		return Messages.get(this, "desc",
+				Messages.decimalFormat("#.##", mimicChanceMultiplier(buffedLvl())),
+				Messages.decimalFormat("#.##", 100*ebonyMimicChance(buffedLvl())));
 	}
 
 	public static float mimicChanceMultiplier(){
@@ -55,6 +57,18 @@ public class MimicTooth extends Trinket {
 
 	public static boolean stealthyMimics(){
 		return trinketLevel(MimicTooth.class) >= 0;
+	}
+
+	public static float ebonyMimicChance(){
+		return ebonyMimicChance(trinketLevel(MimicTooth.class));
+	}
+
+	public static float ebonyMimicChance( int level ){
+		if (level >= 0){
+			return 0.125f + 0.125f * level;
+		} else {
+			return 0;
+		}
 	}
 
 }

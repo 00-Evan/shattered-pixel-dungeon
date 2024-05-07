@@ -28,9 +28,9 @@ import com.watabou.noosa.TextureFilm;
 
 public class MimicSprite extends MobSprite {
 
-	private Animation advancedHiding;
+	protected Animation advancedHiding;
 
-	private Animation hiding;
+	protected Animation hiding;
 
 	{
 		//adjust shadow slightly to account for 1 empty bottom pixel (used for border while hiding)
@@ -68,7 +68,7 @@ public class MimicSprite extends MobSprite {
 		attack.frames( frames, 3+c, 7+c, 8+c, 9+c );
 
 		die = new Animation( 5, false );
-		die.frames( frames, 10+c, 111+c, 12+c );
+		die.frames( frames, 10+c, 11+c, 12+c );
 
 		play( idle );
 	}
@@ -109,6 +109,27 @@ public class MimicSprite extends MobSprite {
 		@Override
 		protected int texOffset() {
 			return 32;
+		}
+	}
+
+	public static class Ebony extends MimicSprite{
+		@Override
+		protected int texOffset() {
+			return 48;
+		}
+
+		@Override
+		public void hideMimic() {
+			super.hideMimic();
+			alpha(0.2f);
+		}
+
+		@Override
+		public void play(Animation anim) {
+			if (curAnim == advancedHiding && anim != advancedHiding){
+				alpha(1f);
+			}
+			super.play(anim);
 		}
 	}
 

@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SacrificialFire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.EbonyMimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoldenMimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -627,6 +628,35 @@ public abstract class RegularLevel extends Level {
 
 				}
 
+			}
+		Random.popGenerator();
+
+		//ebony mimics >:)
+		Random.pushGenerator(Random.Long());
+			if (Random.Float() < MimicTooth.ebonyMimicChance()){
+				ArrayList<Integer> candidateCells = new ArrayList<>();
+				if (Random.Int(2) == 0){
+					for (Heap h : heaps.valueList()){
+						if (h.type == Heap.Type.HEAP
+								&& !(room(h.pos) instanceof SpecialRoom)
+								&& findMob(h.pos) == null){
+							candidateCells.add(h.pos);
+						}
+					}
+				} else {
+					if (Random.Int(5) == 0 && findMob(exit()) == null){
+						candidateCells.add(exit());
+					} else {
+						for (int i = 0; i < length(); i++) {
+							if (map[i] == Terrain.DOOR && findMob(i) == null) {
+								candidateCells.add(i);
+							}
+						}
+					}
+				}
+
+				int pos = Random.element(candidateCells);
+				mobs.add(Mimic.spawnAt(pos, EbonyMimic.class, false));
 			}
 		Random.popGenerator();
 

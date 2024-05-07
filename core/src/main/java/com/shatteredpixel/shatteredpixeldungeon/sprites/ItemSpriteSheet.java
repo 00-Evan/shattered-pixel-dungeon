@@ -490,7 +490,7 @@ public class ItemSpriteSheet {
 		assignItemRect(SUNDIAL,         16, 12);
 		assignItemRect(CLOVER,          11, 15);
 		assignItemRect(TRAP_MECHANISM,  13, 15);
-		assignItemRect(MIMIC_TOOTH,     7,  13);
+		assignItemRect(MIMIC_TOOTH,     8,  15);
 	}
 
 	private static final int SCROLLS        =                               xy(1, 19);  //16 slots
