@@ -82,9 +82,31 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("BETA-3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.EYE_OF_NEWT), "New Trinkets!",
+				"Three new trinkets have been added, bringing us to 11 total! Keep an eye out for the mimic tooth, wondrous resin, and eye of newt.\n" +
+				"\n" +
+				"I've also made a few balance changes to existing trinkets:\n" +
+				"_-_ upgrade cost down for thirteen leaf clover and dimensional sundial\n" +
+				"_-_ upgrade cost up for mossy clump\n" +
+				"_-_ reduced extra drops from petrified seed and increased runestone chance to compensate"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by BETA:_\n" +
+				"_-_ Monk's dash ability letting her move into enemies\n" +
+				"_-_ new entrance and exit rooms being able to connect directly\n" +
+				"_-_ further errors with swift equip and time freeze\n" +
+				"_-_ Cases of enemies spawning too near to entrance stairs\n" +
+				"_-_ Trinket upgrade recipe not working with repeat button\n" +
+				"_-_ Rare cases of floor 1 spawning without 6 rats and 2 snakes\n" +
+				"_-_ Various minor textual errors"));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ plant effects (e.g. fadeleaf) now trigger before traps when time freeze ends"));
 
 		changes = new ChangeInfo("BETA-2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
