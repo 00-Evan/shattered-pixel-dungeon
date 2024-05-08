@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoldenMimic;
@@ -52,8 +53,11 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfMetamorphosis;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfSirensSong;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.WondrousResin;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -128,6 +132,7 @@ public class CursedWand {
 		switch(Random.Int(4)){
 
 			//anti-entropy
+			//doesn't affect caster if positive only
 			case 0: default:
 				Char target = Actor.findChar(targetPos);
 				if (Random.Int(2) == 0) {
@@ -147,6 +152,7 @@ public class CursedWand {
 				return true;
 
 			//random teleportation
+			//can only teleport enemy if positive only
 			case 2:
 				if(!positiveOnly && Random.Int(2) == 0) {
 					if (user != null && !user.properties().contains(Char.Property.IMMOVABLE)) {
@@ -205,6 +211,7 @@ public class CursedWand {
 				return true;
 
 			//Health transfer
+			//can only harm enemy if positive only
 			case 1:
 				final Char target = Actor.findChar( targetPos );
 				if (target != null) {
@@ -253,6 +260,7 @@ public class CursedWand {
 				return true;
 
 			//shock and recharge
+			//no shock if positive only
 			case 3:
 				if (!positiveOnly) new ShockingTrap().set( user.pos ).activate();
 				Buff.prolong(user, Recharging.class, Recharging.DURATION);
@@ -265,7 +273,7 @@ public class CursedWand {
 
 	private static boolean rareEffect(final Item origin, final Char user, final int targetPos){
 		boolean positiveOnly = Random.Float() < WondrousResin.positiveCurseEffectChance();
-		switch(positiveOnly ? 0 : Random.Int(4)){
+		switch(Random.Int(4)){
 
 			//sheep transformation
 			case 0: default:
@@ -291,7 +299,14 @@ public class CursedWand {
 				return true;
 
 			//curses!
+			//or hexes target if positive only
 			case 1:
+				if (positiveOnly){
+					ch = Actor.findChar( targetPos );
+					if (ch != null){
+						Buff.affect(ch, Hex.class, Hex.DURATION);
+					}
+				}
 				if (user instanceof Hero) {
 					CursingTrap.curse( (Hero) user );
 				} else {
@@ -300,8 +315,9 @@ public class CursedWand {
 				return true;
 
 			//inter-level teleportation
+			//of scroll of teleportation if positive only, or inter-floor teleport disallowed
 			case 2:
-				if (Dungeon.depth > 1 && Dungeon.interfloorTeleportAllowed() && user == Dungeon.hero) {
+				if (!positiveOnly && Dungeon.depth > 1 && Dungeon.interfloorTeleportAllowed() && user == Dungeon.hero) {
 
 					//each depth has 1 more weight than the previous depth.
 					float[] depths = new float[Dungeon.depth-1];
@@ -322,17 +338,23 @@ public class CursedWand {
 				return true;
 
 			//summon monsters
+			//or mirror images if positive only
 			case 3:
-				new SummoningTrap().set( targetPos ).activate();
+				if (positiveOnly && user == Dungeon.hero){
+					ScrollOfMirrorImage.spawnImages(Dungeon.hero, 2);
+				} else {
+					new SummoningTrap().set(targetPos).activate();
+				}
 				return true;
 		}
 	}
 
 	private static boolean veryRareEffect(final Item origin, final Char user, final int targetPos){
 		boolean positiveOnly = Random.Float() < WondrousResin.positiveCurseEffectChance();
-		switch( positiveOnly ? 0 : Random.Int(4) ){
+		switch( Random.Int(4) ){
 
 			//great forest fire!
+			//only grass, no fire, if positive only
 			case 0: default:
 				for (int i = 0; i < Dungeon.level.length(); i++){
 					GameScene.add( Blob.seed(i, 15, Regrowth.class));
@@ -350,6 +372,7 @@ public class CursedWand {
 				return true;
 
 			//golden mimic
+			//mimic is enthralled if positive only
 			case 1:
 
 				Char ch = Actor.findChar(targetPos);
@@ -383,9 +406,14 @@ public class CursedWand {
 				mimic.items.clear();
 				mimic.items.add(reward);
 				GameScene.add(mimic);
+
+				if (positiveOnly){
+					Buff.affect(mimic, ScrollOfSirensSong.Enthralled.class);
+				}
+
 				return true;
 
-			//crashes the game, yes, really.
+			//appears to crash the game (actually just closes it)
 			case 2:
 				
 				try {
@@ -429,7 +457,13 @@ public class CursedWand {
 				}
 
 			//random transmogrification
+			//or triggers metamorph effect if positive only
 			case 3:
+				if (positiveOnly){
+					GameScene.show(new ScrollOfMetamorphosis.WndMetamorphChoose());
+					return true;
+				}
+
 				//skips this effect if there is no item to transmogrify
 				if (origin == null || user != Dungeon.hero || !Dungeon.hero.belongings.contains(origin)){
 					return cursedEffect(origin, user, targetPos);
