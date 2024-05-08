@@ -49,7 +49,7 @@ public class PetrifiedSeed extends Trinket {
 		if (level <= 0){
 			return 1f;
 		} else {
-			return 1f + .4f*level/3f;
+			return 1f + .25f*level/3f;
 		}
 	}
 
@@ -59,7 +59,7 @@ public class PetrifiedSeed extends Trinket {
 
 	//when accounting for boosts, we effectively get:
 	//stones: 25/50/75/100%
-	//seeds:  75/62/51/40%
+	//seeds:  75/58/38/25%
 	public static float stoneInsteadOfSeedChance( int level ){
 		switch (level){
 			default:
@@ -67,11 +67,11 @@ public class PetrifiedSeed extends Trinket {
 			case 0:
 				return 0.25f;
 			case 1:
-				return 0.45f;
+				return 0.46f;
 			case 2:
-				return 0.6f;
+				return 0.65f;
 			case 3:
-				return 0.7f;
+				return 0.8f;
 		}
 	}
 }
