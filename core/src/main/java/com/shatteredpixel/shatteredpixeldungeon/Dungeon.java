@@ -942,6 +942,11 @@ public class Dungeon {
 			BArray.or( level.visited, level.heroFOV, pos, width, level.visited );
 			pos+=level.width();
 		}
+
+		//always visit adjacent tiles, even if they aren't seen
+		for (int i : PathFinder.NEIGHBOURS9){
+			level.visited[hero.pos+i] = true;
+		}
 	
 		GameScene.updateFog(l, t, width, height);
 
