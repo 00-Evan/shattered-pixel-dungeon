@@ -306,6 +306,7 @@ public class CursedWand {
 					if (ch != null){
 						Buff.affect(ch, Hex.class, Hex.DURATION);
 					}
+					return true;
 				}
 				if (user instanceof Hero) {
 					CursingTrap.curse( (Hero) user );
@@ -395,20 +396,21 @@ public class CursedWand {
 				Mimic mimic = Mimic.spawnAt(spawnCell, GoldenMimic.class, false);
 				mimic.stopHiding();
 				mimic.alignment = Char.Alignment.ENEMY;
-				Item reward;
-				do {
-					reward = Generator.randomUsingDefaults(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
-							Generator.Category.RING, Generator.Category.WAND));
-				} while (reward.level() < 1);
 				//play vfx/sfx manually as mimic isn't in the scene yet
 				Sample.INSTANCE.play(Assets.Sounds.MIMIC, 1, 0.85f);
 				CellEmitter.get(mimic.pos).burst(Speck.factory(Speck.STAR), 10);
 				mimic.items.clear();
-				mimic.items.add(reward);
 				GameScene.add(mimic);
 
 				if (positiveOnly){
 					Buff.affect(mimic, ScrollOfSirensSong.Enthralled.class);
+				} else {
+					Item reward;
+					do {
+						reward = Generator.randomUsingDefaults(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
+								Generator.Category.RING, Generator.Category.WAND));
+					} while (reward.level() < 1);
+					mimic.items.add(reward);
 				}
 
 				return true;

@@ -197,7 +197,7 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 		public WndMetamorphReplace(Talent replacing, int tier){
 			super();
 
-			if (!identifiedByUse) {
+			if (!identifiedByUse && curItem instanceof ScrollOfMetamorphosis) {
 				curItem.detach(curUser.belongings.backpack);
 			}
 			identifiedByUse = false;
