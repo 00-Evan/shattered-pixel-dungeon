@@ -39,6 +39,7 @@ public class Pushing extends Actor {
 	private int to;
 	
 	private Effect effect;
+	private Char ch;
 
 	private Callback callback;
 
@@ -47,6 +48,7 @@ public class Pushing extends Actor {
 	}
 	
 	public Pushing( Char ch, int from, int to ) {
+		this.ch = ch;
 		sprite = ch.sprite;
 		this.from = from;
 		this.to = to;
@@ -84,6 +86,15 @@ public class Pushing extends Actor {
 		}
 		return false;
 
+	}
+
+	public static boolean pushingExistsForChar(Char ch) {
+		for (Actor a : all()){
+			if (a instanceof Pushing && ((Pushing)a).ch == ch){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public class Effect extends Visual {
