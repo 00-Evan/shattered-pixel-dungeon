@@ -217,18 +217,19 @@ public class MasterThievesArmband extends Artifact {
 	@Override
 	public void charge(Hero target, float amount) {
 		if (cursed || target.buff(MagicImmune.class) != null) return;
-		partialCharge += 0.1f * amount;
-		partialCharge = Math.min(partialCharge, chargeCap - charge);
-		while (partialCharge >= 1f){
-			charge++;
-			partialCharge--;
+		if (charge < chargeCap) {
+			partialCharge += 0.1f * amount;
+			while (partialCharge >= 1f) {
+				charge++;
+				partialCharge--;
+			}
+			if (charge >= chargeCap) {
+				GLog.p(Messages.get(MasterThievesArmband.class, "full"));
+				partialCharge = 0;
+				charge = chargeCap;
+			}
+			updateQuickslot();
 		}
-		if (charge >= chargeCap){
-			GLog.p( Messages.get(MasterThievesArmband.class, "full") );
-			partialCharge = 0;
-			charge = chargeCap;
-		}
-		updateQuickslot();
 	}
 
 	@Override
