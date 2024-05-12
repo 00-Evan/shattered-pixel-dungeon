@@ -82,6 +82,28 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("RC-1", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by BETA:_\n" +
+				"_-_ Uncommon crash bugs caused by ebony mimics\n" +
+				"_-_ Various bugs with wondrous resin and cursed wand effects\n" +
+				"_-_ Mossy clump not actually having an increased energy cost as stated in BETA-3 changes\n" +
+				"_-_ Wandmaker always appearing on floor 7\n" +
+				"_-_ Various minor textual errors\n\n" +
+				"_Existed prior to BETA:_\n" +
+				"_-_ Stone of fear applying to hero and allies\n" +
+				"_-_ Spike ability overriding elastic enchant in some cases\n" +
+				"_-_ DM-300 not becoming supercharged if exactly damaged to the supercharge threshold\n" +
+				"_-_ Various minor textual errors"));
+
 		changes = new ChangeInfo("BETA-3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
@@ -129,12 +151,10 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Beta To-Do",
-				"v2.4.0 isn't yet content complete, so there's a bit more I plan to add before full release:\n\n" +
-				"_-_ I want to add a few more Trinkets, ideally so there are 10-12 in total for release.\n" +
-				"_-_ I'd like to make further alchemy UI improvements, mainly it'd be nice to include the guidebook on the main screen for desktop users.\n" +
-				"_-_ I'll make further Hero tweaks in response to feedback as needed.\n" +
-				"_-_ And, of course, there'll be various misc tweaks and fixes as needed."));
+		/*changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released May 15th, 2024\n" +
+				"_-_ 118 days after Shattered v2.3.0\n\n" +
+				"Dev commentary will be added here in the future."));*/
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RAT_SKULL), "Trinkets!",
 				"_A new category of item has been added: Trinkets!_\n" +
