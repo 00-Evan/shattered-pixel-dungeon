@@ -293,6 +293,7 @@ public class CursedWand {
 					CellEmitter.get(sheep.pos).burst(Speck.factory(Speck.WOOL), 4);
 					Sample.INSTANCE.play(Assets.Sounds.PUFF);
 					Sample.INSTANCE.play(Assets.Sounds.SHEEP);
+					Dungeon.level.occupyCell(sheep);
 				} else {
 					return cursedEffect(origin, user, targetPos);
 				}
