@@ -489,7 +489,7 @@ public class DM300 extends Mob {
 			threshold = HT / 3 * (2 - pylonsActivated);
 		}
 
-		if (HP <= threshold){
+		if (HP <= threshold && HP > 0){
 			HP = threshold;
 			supercharge();
 		}
