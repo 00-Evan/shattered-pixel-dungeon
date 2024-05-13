@@ -123,6 +123,7 @@ abstract public class ClassArmor extends Armor {
 		if (armor.seal != null) {
 			classArmor.seal = armor.seal;
 		}
+		classArmor.glyphHardened = armor.glyphHardened;
 		classArmor.cursed = armor.cursed;
 		classArmor.curseInfusionBonus = armor.curseInfusionBonus;
 		classArmor.masteryPotionBonus = armor.masteryPotionBonus;
