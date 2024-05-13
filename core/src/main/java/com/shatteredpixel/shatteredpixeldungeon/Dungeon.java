@@ -575,12 +575,12 @@ public class Dungeon {
 
 	public static boolean intStoneNeeded(){
 		//one stone on floors 1-3
-		return !LimitedDrops.INT_STONE.dropped() && Random.Int(4-depth) == 0;
+		return depth < 5 && !LimitedDrops.INT_STONE.dropped() && Random.Int(4-depth) == 0;
 	}
 
 	public static boolean trinketCataNeeded(){
 		//one trinket catalyst on floors 1-3
-		return !LimitedDrops.TRINKET_CATA.dropped() && Random.Int(4-depth) == 0;
+		return depth < 5 && !LimitedDrops.TRINKET_CATA.dropped() && Random.Int(4-depth) == 0;
 	}
 
 	public static boolean labRoomNeeded(){
