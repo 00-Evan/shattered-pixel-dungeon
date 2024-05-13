@@ -82,9 +82,17 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("RC-2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by BETA:_\n" +
+				"_-_ Extra pylons activating at the end of the DM-300 fight\n" +
+				"_-_ Trinket catalyst spawning in later floors on pre-2.4.0 runs\n\n" +
+				"_Existed prior to BETA:_\n" +
+				"_-_ King's crown not preserving armor hardening"));
 
 		changes = new ChangeInfo("RC-1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
