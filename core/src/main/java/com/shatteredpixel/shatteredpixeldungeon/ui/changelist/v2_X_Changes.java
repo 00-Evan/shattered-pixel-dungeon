@@ -46,7 +46,7 @@ import java.util.ArrayList;
 public class v2_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
-		//add_Coming_Soon(changeInfos);
+		add_Coming_Soon(changeInfos);
 		add_v2_4_Changes(changeInfos);
 		add_v2_3_Changes(changeInfos);
 		add_v2_2_Changes(changeInfos);
@@ -61,115 +61,44 @@ public class v2_X_Changes {
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Overview",
-				"The next update will be v2.4.0, including a new type of item called trinkets!\n" +
+				"The next update to Shattered will likely be v2.5.0, which will be a fairly small update focused on following up v2.4.0's changes and making some interface/QoL tweaks. \n" +
 				"\n" +
-				"I'd like to try and release v2.4.0 fairly quickly to put us onto a good pace for 2024, but we'll see how well that actually turns out. Expect to hear something from me one way or another later in early to mid March. Please keep in mind that while I always try to keep to the ETAs I provide, they are just estimates. If you don't hear from me by the ETA, it means I'm still busy with the update!"));
+				"I expect v2.5.0 will have a shorter dev time than usual, what with it being more about smaller changes. Hopefully things will have shaped up enough for me to make a blog post about it and commit to a release date sometime in July.\n" +
+				"\n" +
+				"Please keep in mind that while I always try to keep to the ETAs I provide, they are just estimates. If you don't hear from me by the ETA, it means I'm still busy with the update!"));
 
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RAT_SKULL), "Trinkets",
-				"Trinkets are a new item type that are more about tweaking gameplay variables than giving direct power or utility. You'll be able to get one trinket per run (with some choice), which will change up the game slightly with effects such as increasing rare enemy spawn rates or making enchantments and curses more likely. Trinkets will be upgradeable via alchemical energy, increasing the strength of their effect."));
+		changes.addButton( new ChangeButton(Icons.get(Icons.BUFFS), "Balance Tweaks",
+				"v2.4.0 ended up being a pretty massive update balance-wise, with a new item category and sweeping changes to both the Duelist and alchemy. More fine-tuned adjustment will definitely be needed once the dust settles a bit, and so I expect that will be an important aspect of both v2.5.0 and v2.4.0's patches. Ideally most of the followup changes will be buffs, but we'll have to see how everything shapes up."));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Smaller Changes/Fixes",
-				"As always, v2.4.0 will include some smaller changes and fixes as well. Right now I'm considering making some targeted balance and design tweaks to various hero abilities, but I haven't locked that in yet as there are lots of little things I could choose to look into changing or improving."));
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Interface and QoL Changes",
+				"Given that v2.5.0 won't have a new content focus, I'd also like to take the chance to make some smaller interface-driven changes that players have been asking me for. I can't guarantee what will be in v2.5.0 specifically yet, but frequent requests include better journal functionality (landmarks, catalogs, notes, etc.), a bestiary, and better support for controller users and keyboard users."));
 
-		changes.addButton( new ChangeButton(Icons.WARNING.get(), "iOS 9 and 10 Support",
-				"The next update will also be dropping support for iOS 9 and 10, which currently make up ~0.05% of Shattered's iOS playerbase. I'm making this change due to an update to Shattered's game library (libGDX), and to remove the requirement to include 32-bit iOS code with the game. iOS 9 and 10 players will still be able to continue playing Shattered Pixel Dungeon v2.3.0"));
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.MASTERY), "The Cleric",
+				"The next major content addition I have planned is the Cleric, coming in v3.0.0. While I do think it's a good idea to do a small v2.5.0 update first, I will start actively designing the cleric now behind the scenes, so keep your eyes peeled for info on that as well!"));
 
 	}
 
 	public static void add_v2_4_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v2.4.0-BETA", true, "");
+		ChangeInfo changes = new ChangeInfo("v2.4.0", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("RC-2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by BETA:_\n" +
-				"_-_ Extra pylons activating at the end of the DM-300 fight\n" +
-				"_-_ Trinket catalyst spawning in later floors on pre-2.4.0 runs\n\n" +
-				"_Existed prior to BETA:_\n" +
-				"_-_ King's crown not preserving armor hardening"));
-
-		changes = new ChangeInfo("RC-1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by BETA:_\n" +
-				"_-_ Uncommon crash bugs caused by ebony mimics\n" +
-				"_-_ Various bugs with wondrous resin and cursed wand effects\n" +
-				"_-_ Mossy clump not actually having an increased energy cost as stated in BETA-3 changes\n" +
-				"_-_ Wandmaker always appearing on floor 7\n" +
-				"_-_ Various minor textual errors\n\n" +
-				"_Existed prior to BETA:_\n" +
-				"_-_ Stone of fear applying to hero and allies\n" +
-				"_-_ Spike ability overriding elastic enchant in some cases\n" +
-				"_-_ DM-300 not becoming supercharged if exactly damaged to the supercharge threshold\n" +
-				"_-_ Various minor textual errors"));
-
-		changes = new ChangeInfo("BETA-3", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.EYE_OF_NEWT), "New Trinkets!",
-				"Three new trinkets have been added, bringing us to 11 total! Keep an eye out for the mimic tooth, wondrous resin, and eye of newt.\n" +
-				"\n" +
-				"I've also made a few balance changes to existing trinkets:\n" +
-				"_-_ upgrade cost down for thirteen leaf clover and dimensional sundial\n" +
-				"_-_ upgrade cost up for mossy clump\n" +
-				"_-_ reduced extra drops from petrified seed and increased runestone chance to compensate"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by BETA:_\n" +
-				"_-_ Monk's dash ability letting her move into enemies\n" +
-				"_-_ new entrance and exit rooms being able to connect directly\n" +
-				"_-_ further errors with swift equip and time freeze\n" +
-				"_-_ Cases of enemies spawning too near to entrance stairs\n" +
-				"_-_ Trinket upgrade recipe not working with repeat button\n" +
-				"_-_ Rare cases of floor 1 spawning without 6 rats and 2 snakes\n" +
-				"_-_ Various minor textual errors"));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ plant effects (e.g. fadeleaf) now trigger before traps when time freeze ends"));
-
-		changes = new ChangeInfo("BETA-2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by BETA:_\n" +
-				"_-_ Uncommon cases of wandmaker blocking paths or spawning in walls\n" +
-				"_-_ Rare cases of freezes during levelgen\n" +
-				"_-_ Recycle not being craftable\n" +
-				"_-_ Guard ability buff resetting on save/load\n" +
-				"_-_ Various minor textual errors\n\n" +
-				"_Existed prior to BETA:_\n" +
-				"_-_ Geyser traps and aqua brew not extinguishing flames\n" +
-				"_-_ Seer shot not working in blacksmith quest area\n" +
-				"_-_ Various minor textual errors"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		/*changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released May 15th, 2024\n" +
 				"_-_ 118 days after Shattered v2.3.0\n\n" +
-				"Dev commentary will be added here in the future."));*/
+				"Dev commentary will be added here in the future."));
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RAT_SKULL), "Trinkets!",
 				"_A new category of item has been added: Trinkets!_\n" +
 				"\n" +
 				"Trinkets are a new item type produced and upgraded via alchemical energy, and are more about tweaking gameplay variables than giving direct power or utility.\n" +
 				"\n" +
-				"Look out for a trinket catalyst in the early stages of the game, which you can use at the first alchemy pot to produce one of three trinket options. There are _8 trinkets in total_ currently."));
+				"Look out for a trinket catalyst in the early stages of the game, which you can use at the first alchemy pot to produce one of three trinket options. There are _11 trinkets in total_."));
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.STAIRS), "New Rooms",
 				"_New standard rooms have been added to the various regions of the game!_\n" +
@@ -248,6 +177,7 @@ public class v2_X_Changes {
 				"_-_ Thrown weapons now state when they break in the game log\n" +
 				"_-_ Tipped darts now last forever when reaching 100 uses, like other thrown weapons\n" +
 				"_-_ Dried rose now includes the ghost's strength in its description\n" +
+				"_-_ Plant effects (e.g. fadeleaf) now trigger before traps when time freeze ends" +
 				"\n" +
 				"_Misc:_\n" +
 				"_-_ Updated various code dependencies\n" +
@@ -269,29 +199,39 @@ public class v2_X_Changes {
 				"_-_ Rare cases where the final boss could command minions to attack themselves\n" +
 				"_-_ Gnoll geomancer and sappers potentially dropping boulders next to entrance\n" +
 				"_-_ Gnoll sappers granting armor to corrupted gnoll guards\n" +
-				"_-_ Necromancer skeletons not following necromancer's aggro in some cases",
+				"_-_ Necromancer skeletons not following necromancer's aggro in some cases\n" +
+				"_-_ Teleportation effects not accounting for large characters in specific cases\n" +
+				"_-_ DM-300 not becoming supercharged if exactly damaged to the supercharge threshold",
 
-				"_Items:_\n" +
-				"_-_ Thieve's Armband not working on hiding mimics\n" +
-				"_-_ Chilling enchantment reducing chill duration in rare cases\n" +
-				"_-_ Rare cases where lucky enchantment wouldn't trigger\n" +
+				"_Items pt.1:_\n" +
+				"_-_ Armband not working on hiding mimics\n" +
+				"_-_ Chilling enchant reducing chill duration in rare cases\n" +
+				"_-_ Rare cases where lucky enchant wouldn't trigger\n" +
 				"_-_ Runestones affecting terrain when thrown at a character\n" +
 				"_-_ Thrown weapons sticking to downed ghouls in some cases\n" +
 				"_-_ Camouflage glyph not working if hero uses ethereal chains to move into grass\n" +
 				"_-_ Sandals of nature incorrectly interacting with artifact charging\n" +
-				"_-_ Several artifacts being unable to gain more than 1 (or 1%) charge per turn\n" +
+				"_-_ Various specific errors with artifact charge boosting\n" +
+				"_-_ King's crown not preserving armor hardening",
+				
+				"_Items pt.2:_\n" +
 				"_-_ Brimstone glyph not benefiting from glyph power boosts past +50%\n" +
 				"_-_ Errors when leaving/entering blacksmith's area while a boomerang was circling back\n" +
 				"_-_ Transfusion not benefiting from wand damage bonuses\n" +
 				"_-_ Dwarf King's crown automatically IDing armor\n" +
 				"_-_ Armband allowing more than one steal in specific cases\n" +
-				"_-_ Swiftness glyph ignoring nearby enemies in specific cases",
+				"_-_ Swiftness glyph ignoring nearby enemies in specific cases\n" +
+				"_-_ Stone of fear applying to hero and allies\n" +
+				"_-_ Spike ability overriding elastic enchant in some cases\n" +
+				"_-_ Geyser traps and aqua brew not extinguishing flames",
 
 				"_Heroes:_\n" +
 				"_-_ Duelist's swift equip not working during time freeze\n" +
 				"_-_ Monk's flurry of blows not using projecting enchantment when empowered\n" +
 				"_-_ Various battlemage on-hit effects not showing as magical damage\n" +
 				"_-_ Empowered strike talent not working with blastwave\n" +
+				"_-_ Challenge ability incorrectly working on neutral mobs\n" +
+				"_-_ Seer shot talent not working in blacksmith quest area\n" +
 				"\n" +
 				"_Misc:_\n" +
 				"_-_ Various minor visual and textual errors\n" +
