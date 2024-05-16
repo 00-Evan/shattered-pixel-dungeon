@@ -893,8 +893,10 @@ public class Generator {
 
 		if (bundle.contains(GENERAL_PROBS)){
 			float[] probs = bundle.getFloatArray(GENERAL_PROBS);
-			for (int i = 0; i < probs.length; i++){
-				categoryProbs.put(Category.values()[i], probs[i]);
+			if (probs.length == Category.values().length) {
+				for (int i = 0; i < probs.length; i++) {
+					categoryProbs.put(Category.values()[i], probs[i]);
+				}
 			}
 		}
 
