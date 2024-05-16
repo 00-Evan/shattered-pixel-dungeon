@@ -432,12 +432,12 @@ public class TimekeepersHourglass extends Artifact {
 
 		@Override
 		public String iconTextDisplay() {
-			return Integer.toString((int)turnsToCost);
+			return Integer.toString((int)(turnsToCost + 0.001f));
 		}
 
 		@Override
 		public String desc() {
-			return Messages.get(this, "desc", Messages.decimalFormat("#.##", turnsToCost));
+			return Messages.get(this, "desc", Messages.decimalFormat("#.##", Math.max(0, turnsToCost)));
 		}
 
 		private static final String PRESSES = "presses";

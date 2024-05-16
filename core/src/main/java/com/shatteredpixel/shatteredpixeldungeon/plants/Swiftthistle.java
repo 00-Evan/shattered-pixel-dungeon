@@ -93,7 +93,7 @@ public class Swiftthistle extends Plant {
 
 		@Override
 		public String iconTextDisplay() {
-			return Integer.toString((int)left);
+			return Integer.toString((int)(left + 0.001f));
 		}
 		
 		public void reset(){
@@ -102,7 +102,7 @@ public class Swiftthistle extends Plant {
 		
 		@Override
 		public String desc() {
-			return Messages.get(this, "desc", dispTurns(left));
+			return Messages.get(this, "desc", dispTurns(Math.max(0, left)));
 		}
 		
 		public void processTime(float time){
