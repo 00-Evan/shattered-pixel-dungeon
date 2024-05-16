@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
@@ -282,7 +283,7 @@ public class Speck extends Image {
 			
 		case BUBBLE:
 			speed.set( 0, -15 );
-			scale.set( Random.Float( 0.8f, 1 ) );
+			scale.set( PixelScene.align(Random.Float( 0.8f, 1 )) );
 			lifespan = Random.Float( 0.8f, 1.5f );
 			break;
 			
