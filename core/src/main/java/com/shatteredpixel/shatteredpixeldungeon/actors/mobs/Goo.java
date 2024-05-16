@@ -273,7 +273,7 @@ public class Goo extends Mob {
 			yell(Messages.get(this, "gluuurp"));
 		}
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
-		if (lock != null){
+		if (lock != null && !isImmune(src.getClass()) && !isInvulnerable(src.getClass())){
 			if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES))   lock.addTime(dmg);
 			else                                                    lock.addTime(dmg*1.5f);
 		}
