@@ -149,7 +149,7 @@ public class AscensionChallenge extends Buff {
 	//hero speed is halved and capped at 1x at 6+ stacks
 	public static float modifyHeroSpeed(float speed){
 		if (Dungeon.hero.buff(AscensionChallenge.class) != null
-				&& Dungeon.hero.buff(AscensionChallenge.class).stacks > 6f){
+				&& Dungeon.hero.buff(AscensionChallenge.class).stacks >= 6f){
 			return Math.min(speed/2f, 1f);
 		}
 
