@@ -140,6 +140,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.AlchemyScene;
@@ -1522,8 +1523,10 @@ public class Hero extends Char {
 					newMob = true;
 				}
 
-				if (!mindVisionEnemies.contains(m) && QuickSlotButton.autoAim(m) != -1){
-					if (target == null){
+				//only do a simple check for mind visioned enemies, better performance
+				if ((!mindVisionEnemies.contains(m) && QuickSlotButton.autoAim(m) != -1)
+						|| (mindVisionEnemies.contains(m) && new Ballistica( pos, m.pos, Ballistica.PROJECTILE ).collisionPos == m.pos)) {
+					if (target == null) {
 						target = m;
 					} else if (distance(target) > distance(m)) {
 						target = m;
