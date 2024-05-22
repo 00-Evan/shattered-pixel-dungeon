@@ -379,6 +379,7 @@ public class HeroSelectScene extends PixelScene {
 			//loading these big jpgs fails sometimes, so we have a catch for it
 			background.texture(cl.splashArt());
 		} catch (Exception e){
+			Game.reportException(e);
 			background.texture(TextureCache.createSolid(0xFF2d2f31));
 			background.frame(0, 0, 800, 450);
 		}
