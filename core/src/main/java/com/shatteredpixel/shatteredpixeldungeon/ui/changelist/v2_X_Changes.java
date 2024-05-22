@@ -80,9 +80,49 @@ public class v2_X_Changes {
 
 	public static void add_v2_4_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v2.4.0", true, "");
+		ChangeInfo changes = new ChangeInfo("v2.4", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("v2.4.1", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.MOSSY_CLUMP), "Trinket Balance Changes",
+				"I'm making some balance tweaks to trinkets based on early gameplay data. I expect I'll be making more tweaks here later on, both to trinkets and the new Duelist abilities, once a little more time has passed.\n" +
+				"\n" +
+				"_- Mossy Clump_ upgrade cost increased\n" +
+				"\n" +
+				"_Ebony Mimics_ (from Mimic Tooth) adjusted to be more rewarding:\n" +
+				"_-_ Stats reduced by ~20%, now a little weaker than golden mimics\n" +
+				"_-_ Surprise attack damage unchanged (still really hurts!)\n" +
+				"_-_ Now contain two random item drops, in addition to normal golden mimic loot\n" +
+				"\n" +
+				"_- Trap Mechanism_ upgrade cost reduced\n" +
+				"_- Dimensional Sundial_ upgrade cost reduced\n" +
+				"_- Thirteen Leaf Clover_ upgrade cost reduced"));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Enemies seen via mind vision can now be auto-targeted, but the game won't auto-aim as aggressively for performance reasons\n" +
+				"_-_ Added dev commentary for v1.3.0"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by v2.4.0:_\n" +
+				"_-_ Saves from before v2.4 sometimes generating trinkets in the dungeon\n" +
+				"_-_ Errors when DM-300 took massive amounts of damage\n" +
+				"_-_ Duelist harvest ability being reduced by damage reduction effects twice\n" +
+				"\n" +
+				"_Existed Prior to v2.4.0:_\n" +
+				"_-_ Various minor visual bugs and typos\n" +
+				"_-_ Swiftness glyph not working near neutral characters\n" +
+				"_-_ Specific cases where damaging immune enemies would count towards regen time during boss fights\n" +
+				"_-_ Ascension hero speed debuff triggering at 7+ amulet curse stacks instead of 6+\n" +
+				"_-_ Fixed view distance becoming 0 during final boss in specific cases"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
