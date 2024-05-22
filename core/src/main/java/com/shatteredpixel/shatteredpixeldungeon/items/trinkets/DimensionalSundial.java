@@ -37,8 +37,8 @@ public class DimensionalSundial extends Trinket {
 
 	@Override
 	protected int upgradeEnergyCost() {
-		//5 -> 5(10) -> 5(15) -> 5(20)
-		return 5;
+		//5 -> 2(7) -> 3(10) -> 5(15)
+		return 2 + Math.round(level()*1.33f);
 	}
 
 	@Override
