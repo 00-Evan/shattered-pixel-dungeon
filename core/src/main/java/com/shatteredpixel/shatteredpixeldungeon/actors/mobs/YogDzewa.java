@@ -464,7 +464,7 @@ public class YogDzewa extends Mob {
 	public void updateVisibility( Level level ){
 		int viewDistance = 4;
 		if (phase > 1 && isAlive()){
-			viewDistance = 4 - (phase-1);
+			viewDistance = Math.max(4 - (phase-1), 1);
 		}
 		if (Dungeon.isChallenged(Challenges.DARKNESS)) {
 			viewDistance = Math.min(viewDistance, 2);
