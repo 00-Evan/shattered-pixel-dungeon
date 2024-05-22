@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
@@ -83,7 +84,7 @@ public class EbonyMimic extends Mimic {
 	@Override
 	public int damageRoll() {
 		if (alignment == Alignment.NEUTRAL){
-			return Math.round(super.damageRoll()*1.5f); //BIG damage on surprise
+			return Math.round(super.damageRoll()*1.75f); //BIG damage on surprise
 		} else {
 			return super.damageRoll();
 		}
@@ -91,12 +92,15 @@ public class EbonyMimic extends Mimic {
 
 	@Override
 	public void setLevel(int level) {
-		super.setLevel(Math.round(level*1.5f));
+		super.setLevel(Math.round(level*1.25f));
 	}
 
 	@Override
 	protected void generatePrize( boolean useDecks ) {
 		super.generatePrize( useDecks );
+		//add two extra random loot items
+		items.add(Generator.randomUsingDefaults());
+		items.add(Generator.randomUsingDefaults());
 		//all existing prize items are guaranteed uncursed, and have a 50% chance to be +1 if they were +0
 		for (Item i : items){
 			if (i instanceof EquipableItem || i instanceof Wand){
