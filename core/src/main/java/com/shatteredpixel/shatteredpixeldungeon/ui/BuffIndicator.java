@@ -36,6 +36,7 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.GameMath;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -285,7 +286,7 @@ public class BuffIndicator extends Component {
 			if (!large || buff.iconTextDisplay().isEmpty()) {
 				text.visible = false;
 				grey.visible = true;
-				float fadeHeight = buff.iconFadePercent() * icon.height();
+				float fadeHeight = GameMath.gate(0, buff.iconFadePercent(), 1) * icon.height();
 				float zoom = (camera() != null) ? camera().zoom : 1;
 				if (fadeHeight < icon.height() / 2f) {
 					grey.scale.set(icon.width(), (float) Math.ceil(zoom * fadeHeight) / zoom);
