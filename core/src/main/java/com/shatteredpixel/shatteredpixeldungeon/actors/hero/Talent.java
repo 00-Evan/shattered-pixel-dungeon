@@ -684,7 +684,7 @@ public enum Talent {
 
 		if (hero.hasTalent(Talent.PROVOKED_ANGER)
 			&& hero.buff(ProvokedAngerTracker.class) != null){
-			dmg += Random.IntRange(hero.pointsInTalent(Talent.PROVOKED_ANGER) , 2);
+			dmg += 1 + hero.pointsInTalent(Talent.PROVOKED_ANGER);
 			hero.buff(ProvokedAngerTracker.class).detach();
 		}
 
