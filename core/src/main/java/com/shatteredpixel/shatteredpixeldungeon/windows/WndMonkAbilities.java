@@ -34,7 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 public class WndMonkAbilities extends Window {
 
 	private static final int WIDTH_P = 120;
-	private static final int WIDTH_L = 160;
+	private static final int WIDTH_L = 180;
 
 	private static final int MARGIN  = 2;
 

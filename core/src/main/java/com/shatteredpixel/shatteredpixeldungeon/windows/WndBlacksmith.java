@@ -53,7 +53,7 @@ import java.util.ArrayList;
 public class WndBlacksmith extends Window {
 
 	private static final int WIDTH_P = 120;
-	private static final int WIDTH_L = 160;
+	private static final int WIDTH_L = 180;
 
 	private static final int GAP  = 2;
 
