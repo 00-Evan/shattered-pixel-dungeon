@@ -451,7 +451,7 @@ public abstract class Wand extends Item {
 		if (Dungeon.hero.hasTalent(Talent.LINGERING_MAGIC)
 				&& charger != null && charger.target == Dungeon.hero){
 
-			Buff.affect(Dungeon.hero, Talent.LingeringMagicTracker.class, 5f);
+			Buff.prolong(Dungeon.hero, Talent.LingeringMagicTracker.class, 5f);
 		}
 
 		Invisibility.dispel();
