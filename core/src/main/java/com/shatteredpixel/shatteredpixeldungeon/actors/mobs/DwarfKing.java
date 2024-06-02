@@ -498,8 +498,15 @@ public class DwarfKing extends Mob {
 					s.detach();
 				}
 				for (Mob m : Dungeon.level.mobs.toArray(new Mob[0])) {
-					if (m instanceof Ghoul || m instanceof Monk || m instanceof Warlock || m instanceof Golem) {
-						m.die(null);
+					if (m.alignment == alignment) {
+						if (m instanceof Ghoul || m instanceof Monk || m instanceof Warlock || m instanceof Golem) {
+							m.die(null);
+						}
+					}
+				}
+				for (Buff b: buffs()){
+					if (b instanceof LifeLink){
+						b.detach();
 					}
 				}
 			}
