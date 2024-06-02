@@ -147,33 +147,6 @@ public class MeleeWeapon extends Weapon {
 		}
 	}
 
-	@Override
-	public boolean doEquip(Hero hero) {
-		if (super.doEquip(hero)){
-			ActionIndicator.refresh();
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public boolean equipSecondary(Hero hero) {
-		if (super.equipSecondary(hero)){
-			ActionIndicator.refresh();
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public boolean doUnequip(Hero hero, boolean collect, boolean single) {
-		if (super.doUnequip(hero, collect, single)){
-			ActionIndicator.refresh();
-			return true;
-		}
-		return false;
-	}
-
 	//leave null for no targeting
 	public String targetingPrompt(){
 		return null;
