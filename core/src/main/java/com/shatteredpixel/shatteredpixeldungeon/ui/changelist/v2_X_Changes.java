@@ -84,9 +84,38 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v2.4.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SICKLE), "Weapon Ability Buffs",
+				"Overall success rates are up across the board for the Duelist and weapon abilities, but I've giving out some buffs to a few abilities that didn't benefit as strongly from v.2.4.0:\n" +
+				"_- Harvest_ bleeding increased by ~30%\n" +
+				"_- Harvest_ now deals regular damage to bleed-immune foes\n" +
+				"_- Spin_ damage boost up to 8+lvl from 6+lvl\n" +
+				"_- Runic Slash_ base enchant boost up to 300% from 200%\n\n" +
+				"I'm also making a general change to the Duelist's weapon ability charge cap to improve her scaling a tiny bit, especially at level 4:\n" +
+				"_-_ Duelist now gains another weapon charge every 3 levels, down from 4\n" +
+				"_-_ Max possible charges unchanged, but they are now reached at level 19, down from 25\n\n" +
+				"I had mentioned in v2.4.1 that I was planning to make more changes to trinkets, but I've decided to hold off on that for now."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Buffed the bonus damage on the Warrior's new _Provoked Anger_ talent. Now grants 2 or 3 damage, up from 1-2 or 2.\n" +
+				"\n" +
+				"_-_ Cursed wands can no longer turn important NPCs into sheep\n" +
+				"_-_ Spectral necromancers now only kill wraiths they are aligned with when they die\n" +
+				"_-_ Dwarf King now only clears minions that are still allied with him when transitioning phases."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by v2.4.0:_\n" +
+				"_-_ Wondrous Resin not triggering when using wild magic\n" +
+				"_-_ Lingering magic duration stacking instead of resetting when re-triggered\n" +
+				"_-_ Various rare actor order issues caused by dagger blink ability\n" +
+				"_-_ Alchemy UI disabling cancel button when it shouldn't in specific cases\n" +
+				"\n" +
+				"_Existed Prior to v2.4.0:_\n" +
+				"_-_ Various minor visual and textual errors"));
 
 		changes = new ChangeInfo("v2.4.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
