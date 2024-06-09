@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.journal;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
@@ -33,12 +34,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public enum Catalog {
-	
+
+	//EQUIPMENT
 	WEAPONS,
 	ARMOR,
 	WANDS,
 	RINGS,
 	ARTIFACTS,
+
+	//CONSUMABLES
 	POTIONS,
 	SCROLLS;
 	
@@ -47,14 +51,21 @@ public enum Catalog {
 	public Collection<Class<? extends Item>> items(){
 		return seen.keySet();
 	}
-	
-	public boolean allSeen(){
-		for (Class<?extends Item> item : items()){
-			if (!seen.get(item)){
-				return false;
-			}
+
+	public String title(){
+		return Messages.get(this, name() + ".title");
+	}
+
+	public int totalItems(){
+		return seen.size();
+	}
+
+	public int totalSeen(){
+		int seenTotal = 0;
+		for (boolean itemSeen : seen.values()){
+			if (itemSeen) seenTotal++;
 		}
-		return true;
+		return seenTotal;
 	}
 	
 	static {

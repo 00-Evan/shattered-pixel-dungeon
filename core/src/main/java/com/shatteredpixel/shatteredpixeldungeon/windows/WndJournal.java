@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -41,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.QuickRecipe;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollingGridPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollingListPane;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
@@ -48,16 +50,14 @@ import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
+import java.util.Collection;
 
 public class WndJournal extends WndTabbed {
 	
 	public static final int WIDTH_P     = 126;
 	public static final int HEIGHT_P    = 180;
 	
-	public static final int WIDTH_L     = 200;
+	public static final int WIDTH_L     = 216;
 	public static final int HEIGHT_L    = 130;
 	
 	private static final int ITEM_HEIGHT	= 18;
@@ -451,29 +451,19 @@ public class WndJournal extends WndTabbed {
 	private static class CatalogTab extends Component{
 		
 		private RedButton[] itemButtons;
-		private static final int NUM_BUTTONS = 7;
+		private static final int NUM_BUTTONS = 2;
 		
 		private static int currentItemIdx   = 0;
 		
 		//sprite locations
-		private static final int WEAPON_IDX = 0;
-		private static final int ARMOR_IDX  = 1;
-		private static final int WAND_IDX   = 2;
-		private static final int RING_IDX   = 3;
-		private static final int ARTIF_IDX  = 4;
-		private static final int POTION_IDX = 5;
-		private static final int SCROLL_IDX = 6;
+		private static final int EQUIP_IDX = 0;
+		private static final int CONSUM_IDX = 1;
 		
 		private static final int spriteIndexes[] =
 				{ItemSpriteSheet.WEAPON_HOLDER,
-						ItemSpriteSheet.ARMOR_HOLDER,
-						ItemSpriteSheet.WAND_HOLDER,
-						ItemSpriteSheet.RING_HOLDER,
-						ItemSpriteSheet.ARTIFACT_HOLDER,
-						ItemSpriteSheet.POTION_HOLDER,
-						ItemSpriteSheet.SCROLL_HOLDER};
+						ItemSpriteSheet.POTION_HOLDER};
 
-		private ScrollingListPane list;
+		private ScrollingGridPane grid;
 		
 		@Override
 		protected void createChildren() {
@@ -491,8 +481,8 @@ public class WndJournal extends WndTabbed {
 				add( itemButtons[i] );
 			}
 
-			list = new ScrollingListPane();
-			add( list );
+			grid = new ScrollingGridPane();
+			add( grid );
 		}
 		
 		@Override
@@ -508,13 +498,13 @@ public class WndJournal extends WndTabbed {
 				PixelScene.align(itemButtons[i]);
 			}
 			
-			list.setRect(0, itemButtons[NUM_BUTTONS-1].bottom() + 1, width,
+			grid.setRect(0, itemButtons[NUM_BUTTONS-1].bottom() + 1, width,
 					height - itemButtons[NUM_BUTTONS-1].bottom() - 1);
 		}
 		
 		private void updateList() {
 			
-			list.clear();
+			grid.clear();
 			
 			for (int i = 0; i < NUM_BUTTONS; i++){
 				if (i == currentItemIdx){
@@ -524,99 +514,97 @@ public class WndJournal extends WndTabbed {
 				}
 			}
 			
-			list.scrollTo( 0, 0 );
-			
-			ArrayList<Class<? extends Item>> itemClasses;
-			final HashMap<Class<?  extends Item>, Boolean> known = new HashMap<>();
-			if (currentItemIdx == WEAPON_IDX) {
-				itemClasses = new ArrayList<>(Catalog.WEAPONS.items());
-				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
-			} else if (currentItemIdx == ARMOR_IDX){
-				itemClasses = new ArrayList<>(Catalog.ARMOR.items());
-				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
-			} else if (currentItemIdx == WAND_IDX){
-				itemClasses = new ArrayList<>(Catalog.WANDS.items());
-				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
-			} else if (currentItemIdx == RING_IDX){
-				itemClasses = new ArrayList<>(Catalog.RINGS.items());
-				for (Class<? extends Item> cls : itemClasses) known.put(cls, Ring.getKnown().contains(cls));
-			} else if (currentItemIdx == ARTIF_IDX){
-				itemClasses = new ArrayList<>(Catalog.ARTIFACTS.items());
-				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
-			} else if (currentItemIdx == POTION_IDX){
-				itemClasses = new ArrayList<>(Catalog.POTIONS.items());
-				for (Class<? extends Item> cls : itemClasses) known.put(cls, Potion.getKnown().contains(cls));
-			} else if (currentItemIdx == SCROLL_IDX) {
-				itemClasses = new ArrayList<>(Catalog.SCROLLS.items());
-				for (Class<? extends Item> cls : itemClasses) known.put(cls, Scroll.getKnown().contains(cls));
-			} else {
-				itemClasses = new ArrayList<>();
-			}
-			
-			Collections.sort(itemClasses, new Comparator<Class<? extends Item>>() {
-				@Override
-				public int compare(Class<? extends Item> a, Class<? extends Item> b) {
-					int result = 0;
-					
-					//specifically known items appear first, then seen items, then unknown items.
-					if (known.get(a) && Catalog.isSeen(a)) result -= 2;
-					if (known.get(b) && Catalog.isSeen(b)) result += 2;
-					if (Catalog.isSeen(a))                 result --;
-					if (Catalog.isSeen(b))                 result ++;
-					
-					return result;
-				}
-			});
-			
-			for (Class<? extends Item> itemClass : itemClasses) {
-				Item item = Reflection.newInstance(itemClass);
-				boolean itemIDed = known.get(itemClass);
-				boolean itemSeen = Catalog.isSeen(itemClass);
-				if ( itemSeen && !itemIDed ){
-					if (item instanceof Ring){
-						((Ring) item).anonymize();
-					} else if (item instanceof Potion){
-						((Potion) item).anonymize();
-					} else if (item instanceof Scroll){
-						((Scroll) item).anonymize();
-					}
-				}
-				ScrollingListPane.ListItem listItem = new ScrollingListPane.ListItem(
-						(itemIDed && itemSeen) ? new ItemSprite(item) : new ItemSprite( ItemSpriteSheet.SOMETHING + spriteIndexes[currentItemIdx]),
-						null,
-						itemSeen ? Messages.titleCase(item.trueName()) : "???"
-				){
-					@Override
-					public boolean onClick(float x, float y) {
-						if (inside( x, y ) && itemSeen) {
-							if (item instanceof ClassArmor){
-								GameScene.show(new WndTitledMessage(new Image(icon),
-										Messages.titleCase(item.trueName()), item.desc()));
-							} else {
-								GameScene.show(new WndTitledMessage(new Image(icon),
-										Messages.titleCase(item.trueName()), item.info()));
-							}
-							return true;
-						} else {
-							return false;
-						}
-					}
-				};
+			grid.scrollTo( 0, 0 );
 
-				if (!itemSeen) {
-					listItem.hardlight( 0x999999 );
-				} else if (!itemIDed) {
-					listItem.hardlight( 0xCCCCCC );
-				}
+			if (currentItemIdx == EQUIP_IDX) {
+				int totalItems = Catalog.WEAPONS.totalItems() + Catalog.ARMOR.totalItems() + Catalog.WANDS.totalItems() + Catalog.RINGS.totalItems() + Catalog.ARTIFACTS.totalItems();
+				int totalSeen = Catalog.WEAPONS.totalSeen() + Catalog.ARMOR.totalSeen() + Catalog.WANDS.totalSeen() + Catalog.RINGS.totalSeen() + Catalog.ARTIFACTS.totalSeen();
+				grid.addHeader("_" + Messages.get(this, "title_equipment") + "_ (" + totalSeen + "/" + totalItems + ")", 9, true);
 
-				list.addItem(listItem);
+				grid.addHeader("_" + Messages.capitalize(Catalog.WEAPONS.title()) + "_ (" + Catalog.WEAPONS.totalSeen() + "/" + Catalog.WEAPONS.totalItems() + "):");
+				addGridItems(grid, Catalog.WEAPONS.items());
+
+				grid.addHeader("_" + Messages.capitalize(Catalog.ARMOR.title()) + "_ (" + Catalog.ARMOR.totalSeen() + "/" + Catalog.ARMOR.totalItems() + "):");
+				addGridItems(grid, Catalog.ARMOR.items());
+
+				grid.addHeader("_" + Messages.capitalize(Catalog.WANDS.title()) + "_ (" + Catalog.WANDS.totalSeen() + "/" + Catalog.WANDS.totalItems() + "):");
+				addGridItems(grid, Catalog.WANDS.items());
+
+				grid.addHeader("_" + Messages.capitalize(Catalog.RINGS.title()) + "_ (" + Catalog.RINGS.totalSeen() + "/" + Catalog.RINGS.totalItems() + "):");
+				addGridItems(grid, Catalog.RINGS.items());
+
+				grid.addHeader("_" + Messages.capitalize(Catalog.ARTIFACTS.title()) + "_ (" + Catalog.ARTIFACTS.totalSeen() + "/" + Catalog.ARTIFACTS.totalItems() + "):");
+				addGridItems(grid, Catalog.ARTIFACTS.items());
+
+			} else if (currentItemIdx == CONSUM_IDX){
+				int totalItems = Catalog.POTIONS.totalItems() + Catalog.SCROLLS.totalItems();
+				int totalSeen = Catalog.POTIONS.totalSeen() + Catalog.SCROLLS.totalSeen();
+				grid.addHeader("_" + Messages.get(this, "title_consumables") + "_ (" + totalSeen + "/" + totalItems + ")", 9, true);
+
+				grid.addHeader("_" + Messages.capitalize(Catalog.POTIONS.title()) + "_ (" + Catalog.POTIONS.totalSeen() + "/" + Catalog.POTIONS.totalItems() + "):");
+				addGridItems(grid, Catalog.POTIONS.items());
+
+				grid.addHeader("_" + Messages.capitalize(Catalog.SCROLLS.title()) + "_ (" + Catalog.SCROLLS.totalSeen() + "/" + Catalog.SCROLLS.totalItems() + "):");
+				addGridItems(grid, Catalog.SCROLLS.items());
 
 			}
 
-			list.setRect(x, itemButtons[NUM_BUTTONS-1].bottom() + 1, width,
+			grid.setRect(x, itemButtons[NUM_BUTTONS-1].bottom() + 1, width,
 					height - itemButtons[NUM_BUTTONS-1].bottom() - 1);
 		}
 		
+	}
+
+	private static void addGridItems( ScrollingGridPane grid, Collection<Class<? extends Item>> itemClasses) {
+		for (Class<? extends Item> itemClass : itemClasses) {
+			Item item = Reflection.newInstance(itemClass);
+			boolean itemSeen = Catalog.isSeen(itemClass);
+
+			if (itemSeen) {
+				if (item instanceof Ring) {
+					((Ring) item).anonymize();
+				} else if (item instanceof Potion) {
+					((Potion) item).anonymize();
+				} else if (item instanceof Scroll) {
+					((Scroll) item).anonymize();
+				}
+			}
+
+			Image sprite = new ItemSprite(item);
+			if (!itemSeen) sprite.lightness(0);
+			ScrollingGridPane.GridItem gridItem = new ScrollingGridPane.GridItem(
+					sprite) {
+				@Override
+				public boolean onClick(float x, float y) {
+					if (inside(x, y)) {
+						Image sprite = new Image(icon);
+						if (itemSeen) {
+							GameScene.show(new WndTitledMessage(sprite,
+									Messages.titleCase(item.trueName()),
+									item instanceof ClassArmor ? item.desc() : item.info()));
+						} else {
+							sprite.lightness(0);
+							GameScene.show(new WndTitledMessage(sprite,
+									"???",
+									Messages.get(CatalogTab.class, "not_seen")));
+						}
+						return true;
+					} else {
+						return false;
+					}
+				}
+			};
+			if (itemSeen) {
+				if (item instanceof Potion || item instanceof Scroll || item instanceof Ring) {
+					Image icon = new Image(Assets.Sprites.ITEM_ICONS);
+					icon.frame(ItemSpriteSheet.Icons.film.get(item.icon));
+					gridItem.addSecondIcon(icon);
+				}
+			} else {
+				gridItem.hardLightBG(2f, 1f, 2f);
+			}
+			grid.addItem(gridItem);
+		}
 	}
 
 	public static class LoreTab extends Component{

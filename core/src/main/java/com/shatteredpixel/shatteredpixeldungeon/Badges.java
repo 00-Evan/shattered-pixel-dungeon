@@ -590,7 +590,7 @@ public class Badges {
 	public static void validateItemsIdentified() {
 		
 		for (Catalog cat : Catalog.values()){
-			if (cat.allSeen()){
+			if (cat.totalItems() == cat.totalSeen()){
 				Badge b = Catalog.catalogBadges.get(cat);
 				if (!isUnlocked(b)){
 					displayBadge(b);
