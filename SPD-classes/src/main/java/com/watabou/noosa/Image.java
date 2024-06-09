@@ -100,6 +100,9 @@ public class Image extends Visual {
 		
 		updateFrame();
 		updateVertices();
+
+		rm = other.rm; gm = other.gm; bm = other.bm; am = other.am;
+		ra = other.ra; ga = other.ga; ba = other.ba; aa = other.aa;
 	}
 	
 	protected void updateFrame() {
