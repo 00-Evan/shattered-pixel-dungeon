@@ -517,35 +517,36 @@ public class WndJournal extends WndTabbed {
 			grid.scrollTo( 0, 0 );
 
 			if (currentItemIdx == EQUIP_IDX) {
-				int totalItems = Catalog.WEAPONS.totalItems() + Catalog.ARMOR.totalItems() + Catalog.WANDS.totalItems() + Catalog.RINGS.totalItems() + Catalog.ARTIFACTS.totalItems();
-				int totalSeen = Catalog.WEAPONS.totalSeen() + Catalog.ARMOR.totalSeen() + Catalog.WANDS.totalSeen() + Catalog.RINGS.totalSeen() + Catalog.ARTIFACTS.totalSeen();
+				int totalItems = 0;
+				int totalSeen = 0;
+				for (Catalog catalog : Catalog.equipmentCatalogs){
+					totalItems += catalog.totalItems();
+					totalSeen += catalog.totalSeen();
+				}
 				grid.addHeader("_" + Messages.get(this, "title_equipment") + "_ (" + totalSeen + "/" + totalItems + ")", 9, true);
 
-				grid.addHeader("_" + Messages.capitalize(Catalog.WEAPONS.title()) + "_ (" + Catalog.WEAPONS.totalSeen() + "/" + Catalog.WEAPONS.totalItems() + "):");
-				addGridItems(grid, Catalog.WEAPONS.items());
-
-				grid.addHeader("_" + Messages.capitalize(Catalog.ARMOR.title()) + "_ (" + Catalog.ARMOR.totalSeen() + "/" + Catalog.ARMOR.totalItems() + "):");
-				addGridItems(grid, Catalog.ARMOR.items());
-
-				grid.addHeader("_" + Messages.capitalize(Catalog.WANDS.title()) + "_ (" + Catalog.WANDS.totalSeen() + "/" + Catalog.WANDS.totalItems() + "):");
-				addGridItems(grid, Catalog.WANDS.items());
-
-				grid.addHeader("_" + Messages.capitalize(Catalog.RINGS.title()) + "_ (" + Catalog.RINGS.totalSeen() + "/" + Catalog.RINGS.totalItems() + "):");
-				addGridItems(grid, Catalog.RINGS.items());
-
-				grid.addHeader("_" + Messages.capitalize(Catalog.ARTIFACTS.title()) + "_ (" + Catalog.ARTIFACTS.totalSeen() + "/" + Catalog.ARTIFACTS.totalItems() + "):");
-				addGridItems(grid, Catalog.ARTIFACTS.items());
+				for (Catalog catalog : Catalog.equipmentCatalogs){
+					totalItems += catalog.totalItems();
+					totalSeen += catalog.totalSeen();
+					grid.addHeader("_" + Messages.titleCase(catalog.title()) + "_ (" + catalog.totalSeen() + "/" + catalog.totalItems() + "):");
+					addGridItems(grid, catalog.items());
+				}
 
 			} else if (currentItemIdx == CONSUM_IDX){
-				int totalItems = Catalog.POTIONS.totalItems() + Catalog.SCROLLS.totalItems();
-				int totalSeen = Catalog.POTIONS.totalSeen() + Catalog.SCROLLS.totalSeen();
+				int totalItems = 0;
+				int totalSeen = 0;
+				for (Catalog catalog : Catalog.consumableCatalogs){
+					totalItems += catalog.totalItems();
+					totalSeen += catalog.totalSeen();
+				}
 				grid.addHeader("_" + Messages.get(this, "title_consumables") + "_ (" + totalSeen + "/" + totalItems + ")", 9, true);
 
-				grid.addHeader("_" + Messages.capitalize(Catalog.POTIONS.title()) + "_ (" + Catalog.POTIONS.totalSeen() + "/" + Catalog.POTIONS.totalItems() + "):");
-				addGridItems(grid, Catalog.POTIONS.items());
-
-				grid.addHeader("_" + Messages.capitalize(Catalog.SCROLLS.title()) + "_ (" + Catalog.SCROLLS.totalSeen() + "/" + Catalog.SCROLLS.totalItems() + "):");
-				addGridItems(grid, Catalog.SCROLLS.items());
+				for (Catalog catalog : Catalog.consumableCatalogs){
+					totalItems += catalog.totalItems();
+					totalSeen += catalog.totalSeen();
+					grid.addHeader("_" + Messages.titleCase(catalog.title()) + "_ (" + catalog.totalSeen() + "/" + catalog.totalItems() + "):");
+					addGridItems(grid, catalog.items());
+				}
 
 			}
 
@@ -595,7 +596,7 @@ public class WndJournal extends WndTabbed {
 				}
 			};
 			if (itemSeen) {
-				if (item instanceof Potion || item instanceof Scroll || item instanceof Ring) {
+				if (item.icon != -1) {
 					Image icon = new Image(Assets.Sprites.ITEM_ICONS);
 					icon.frame(ItemSpriteSheet.Icons.film.get(item.icon));
 					gridItem.addSecondIcon(icon);
