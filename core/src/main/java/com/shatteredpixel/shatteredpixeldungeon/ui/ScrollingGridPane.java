@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
@@ -112,7 +113,13 @@ public class ScrollingGridPane extends ScrollPane {
 		public GridItem( Image icon ) {
 			super();
 
+			if (icon instanceof ItemSprite){
+				this.icon = new ItemSprite();
+			} else {
+				this.icon = new Image();
+			}
 			this.icon.copy(icon);
+			add(this.icon);
 		}
 
 		public void addSecondIcon( Image icon ){
@@ -133,9 +140,6 @@ public class ScrollingGridPane extends ScrollPane {
 		protected void createChildren() {
 			bg = new ColorBlock( 1, 1, 0x9953564D);
 			add(bg);
-
-			icon = new Image();
-			add( icon );
 		}
 
 		@Override

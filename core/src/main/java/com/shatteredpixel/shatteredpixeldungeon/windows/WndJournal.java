@@ -25,10 +25,12 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
@@ -556,52 +558,101 @@ public class WndJournal extends WndTabbed {
 		
 	}
 
-	private static void addGridItems( ScrollingGridPane grid, Collection<Class<? extends Item>> itemClasses) {
-		for (Class<? extends Item> itemClass : itemClasses) {
-			Item item = Reflection.newInstance(itemClass);
-			boolean itemSeen = Catalog.isSeen(itemClass);
+	private static void addGridItems( ScrollingGridPane grid, Collection<Class<?>> classes) {
+		for (Class<?> itemClass : classes) {
 
-			if (itemSeen) {
-				if (item instanceof Ring) {
-					((Ring) item).anonymize();
-				} else if (item instanceof Potion) {
-					((Potion) item).anonymize();
-				} else if (item instanceof Scroll) {
-					((Scroll) item).anonymize();
+			boolean seen = Catalog.isSeen(itemClass);;
+			Image sprite = null;
+			Image secondIcon = null;
+			String title = "";
+			String desc = "";
+
+			if (Item.class.isAssignableFrom(itemClass)) {
+
+				Item item = (Item) Reflection.newInstance(itemClass);
+
+				if (seen) {
+					if (item instanceof Ring) {
+						((Ring) item).anonymize();
+					} else if (item instanceof Potion) {
+						((Potion) item).anonymize();
+					} else if (item instanceof Scroll) {
+						((Scroll) item).anonymize();
+					}
 				}
+
+				sprite = new ItemSprite(item.image, seen ? item.glowing() : null);
+				if (!seen)  {
+					sprite.lightness(0);
+					title = "???";
+					desc = Messages.get(CatalogTab.class, "not_seen_item");
+				} else {
+					title = Messages.titleCase(item.trueName());
+					desc = item instanceof ClassArmor ? item.desc() : item.info();
+
+					if (item.icon != -1) {
+						secondIcon = new Image(Assets.Sprites.ITEM_ICONS);
+						secondIcon.frame(ItemSpriteSheet.Icons.film.get(item.icon));
+					}
+				}
+
+			} else if (Weapon.Enchantment.class.isAssignableFrom(itemClass)){
+
+				Weapon.Enchantment ench = (Weapon.Enchantment) Reflection.newInstance(itemClass);
+
+				if (seen){
+					sprite = new ItemSprite(ItemSpriteSheet.WORN_SHORTSWORD, ench.glowing());
+					title = Messages.titleCase(ench.name());
+					desc = ench.desc();
+				} else {
+					sprite = new ItemSprite(ItemSpriteSheet.WORN_SHORTSWORD);
+					sprite.lightness(0f);
+					title = "???";
+					desc = Messages.get(CatalogTab.class, "not_seen_enchantment");
+				}
+
+			} else if (Armor.Glyph.class.isAssignableFrom(itemClass)){
+
+				Armor.Glyph glyph = (Armor.Glyph) Reflection.newInstance(itemClass);
+
+				if (seen){
+					sprite = new ItemSprite(ItemSpriteSheet.ARMOR_CLOTH, glyph.glowing());
+					title = Messages.titleCase(glyph.name());
+					desc = glyph.desc();
+				} else {
+					sprite = new ItemSprite(ItemSpriteSheet.ARMOR_CLOTH);
+					sprite.lightness(0f);
+					title = "???";
+					desc = Messages.get(CatalogTab.class, "not_seen_glyph");
+				}
+
 			}
 
-			Image sprite = new ItemSprite(item);
-			if (!itemSeen) sprite.lightness(0);
-			ScrollingGridPane.GridItem gridItem = new ScrollingGridPane.GridItem(
-					sprite) {
+			String finalTitle = title;
+			String finalDesc = desc;
+			ScrollingGridPane.GridItem gridItem = new ScrollingGridPane.GridItem(sprite) {
 				@Override
 				public boolean onClick(float x, float y) {
 					if (inside(x, y)) {
-						Image sprite = new Image(icon);
-						if (itemSeen) {
-							GameScene.show(new WndTitledMessage(sprite,
-									Messages.titleCase(item.trueName()),
-									item instanceof ClassArmor ? item.desc() : item.info()));
+						//TODO need to dupe!
+						Image sprite;
+						if (icon instanceof ItemSprite){
+							sprite = new ItemSprite();
+							sprite.copy(icon);
 						} else {
-							sprite.lightness(0);
-							GameScene.show(new WndTitledMessage(sprite,
-									"???",
-									Messages.get(CatalogTab.class, "not_seen")));
+							sprite = new Image(icon);
 						}
+						GameScene.show(new WndTitledMessage(sprite, finalTitle, finalDesc));
 						return true;
 					} else {
 						return false;
 					}
 				}
 			};
-			if (itemSeen) {
-				if (item.icon != -1) {
-					Image icon = new Image(Assets.Sprites.ITEM_ICONS);
-					icon.frame(ItemSpriteSheet.Icons.film.get(item.icon));
-					gridItem.addSecondIcon(icon);
-				}
-			} else {
+			if (secondIcon != null){
+				gridItem.addSecondIcon(secondIcon);
+			}
+			if (!seen) {
 				gridItem.hardLightBG(2f, 1f, 2f);
 			}
 			grid.addItem(gridItem);

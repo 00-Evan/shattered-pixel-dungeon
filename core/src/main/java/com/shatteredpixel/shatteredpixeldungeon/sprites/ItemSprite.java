@@ -38,6 +38,7 @@ import com.watabou.glwrap.Matrix;
 import com.watabou.glwrap.Vertexbuffer;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.audio.Sample;
@@ -123,6 +124,16 @@ public class ItemSprite extends MovieClip {
 			emitter.killAndErase();
 			emitter = null;
 		}
+	}
+
+	@Override
+	public void copy(Image other) {
+		super.copy(other);
+
+		if (other instanceof ItemSprite && ((ItemSprite) other).glowing != null){
+			glow(((ItemSprite) other).glowing);
+		}
+
 	}
 
 	public void visible(boolean value){
