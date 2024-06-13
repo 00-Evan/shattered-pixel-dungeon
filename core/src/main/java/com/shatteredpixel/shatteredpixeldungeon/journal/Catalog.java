@@ -121,6 +121,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+//For items, but includes a few item-like effects, such as enchantments
 public enum Catalog {
 
 	//EQUIPMENT

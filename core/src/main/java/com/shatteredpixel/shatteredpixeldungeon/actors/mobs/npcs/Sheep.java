@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SheepSprite;
@@ -46,6 +47,9 @@ public class Sheep extends NPC {
 
 	@Override
 	protected boolean act() {
+		if (Dungeon.level.heroFOV[pos]){
+			Bestiary.setSeen(getClass());
+		}
 		if (initialized) {
 			HP = 0;
 
