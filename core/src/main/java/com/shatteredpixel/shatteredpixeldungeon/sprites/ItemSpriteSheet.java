@@ -42,7 +42,7 @@ public class ItemSpriteSheet {
 		film.add( item, x, y, x+width, y+height);
 	}
 
-	private static final int PLACEHOLDERS   =                               xy(1, 1);   //16 slots
+	private static final int PLACEHOLDERS   =                               xy(1, 1);   //18 slots
 	//SOMETHING is the default item sprite at position 0. May show up ingame if there are bugs.
 	public static final int SOMETHING       = PLACEHOLDERS+0;
 	public static final int WEAPON_HOLDER   = PLACEHOLDERS+1;
@@ -60,6 +60,8 @@ public class ItemSpriteSheet {
 	public static final int STONE_HOLDER    = PLACEHOLDERS+13;
 	public static final int ELIXIR_HOLDER   = PLACEHOLDERS+14;
 	public static final int SPELL_HOLDER    = PLACEHOLDERS+15;
+	public static final int MOB_HOLDER      = PLACEHOLDERS+16;
+	public static final int DOCUMENT_HOLDER = PLACEHOLDERS+17;
 	static{
 		assignItemRect(SOMETHING,       8,  13);
 		assignItemRect(WEAPON_HOLDER,   14, 14);
@@ -77,9 +79,11 @@ public class ItemSpriteSheet {
 		assignItemRect(STONE_HOLDER,    14, 12);
 		assignItemRect(ELIXIR_HOLDER,   12, 14);
 		assignItemRect(SPELL_HOLDER,    8,  16);
+		assignItemRect(MOB_HOLDER,      15, 14);
+		assignItemRect(DOCUMENT_HOLDER, 10, 11);
 	}
 
-	private static final int UNCOLLECTIBLE  =                               xy(1, 2);   //16 slots
+	private static final int UNCOLLECTIBLE  =                               xy(3, 2);   //14 slots
 	public static final int GOLD            = UNCOLLECTIBLE+0;
 	public static final int ENERGY          = UNCOLLECTIBLE+1;
 

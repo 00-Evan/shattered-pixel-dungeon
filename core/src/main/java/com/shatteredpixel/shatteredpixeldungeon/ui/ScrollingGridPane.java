@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.Visual;
 import com.watabou.noosa.ui.Component;
 
 import java.util.ArrayList;
@@ -76,12 +77,30 @@ public class ScrollingGridPane extends ScrollPane {
 		super.layout();
 
 		float left = 0;
+		boolean freshRow = true;
 		float top = 0;
-		for (Component item : items){
+		for (int i = 0; i < items.size(); i++){
+			Component item = items.get(i);
 			if (item instanceof GridHeader){
 				if (left > 0){
-					left = 0;
-					top += ITEM_SIZE+2;
+					//this bit of logic here exists so that multiple headers can be on one row in landscape
+					// if both of their groups have a small number of items (e.g. 6)
+					float spaceLeft = width() - left;
+					int spaceReq = 0;
+					for (int j = i+1; j < items.size(); j++){
+						if (items.get(j) instanceof GridItem){
+							spaceReq += ITEM_SIZE+1;
+						} else {
+							break;
+						}
+					}
+					if (freshRow && spaceLeft >= spaceReq){
+						top -= item.height()+1;
+					} else {
+						left = 0;
+						top += ITEM_SIZE + 2;
+						freshRow = true;
+					}
 				}
 				item.setRect(left, top, width(), item.height());
 				top += item.height()+1;
@@ -89,6 +108,7 @@ public class ScrollingGridPane extends ScrollPane {
 				if (left + ITEM_SIZE > width()) {
 					left = 0;
 					top += ITEM_SIZE+1;
+					freshRow = false;
 				}
 				item.setRect(left, top, ITEM_SIZE, ITEM_SIZE);
 				left += ITEM_SIZE+1;
@@ -106,7 +126,7 @@ public class ScrollingGridPane extends ScrollPane {
 
 		protected Image icon;
 
-		protected Image secondIcon;
+		protected Visual secondIcon;
 
 		protected ColorBlock bg;
 
@@ -122,7 +142,7 @@ public class ScrollingGridPane extends ScrollPane {
 			add(this.icon);
 		}
 
-		public void addSecondIcon( Image icon ){
+		public void addSecondIcon( Visual icon ){
 			secondIcon = icon;
 			add(secondIcon);
 			layout();

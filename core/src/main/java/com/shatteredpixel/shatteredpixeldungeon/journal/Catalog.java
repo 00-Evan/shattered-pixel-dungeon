@@ -345,19 +345,8 @@ public enum Catalog {
 	public static void restore( Bundle bundle ){
 		
 		Badges.loadGlobal();
-		
-		//logic for if we have all badges
-		//FIXME skip this for now as it's outdated
-		/*if (Badges.isUnlocked(Badges.Badge.ALL_ITEMS_IDENTIFIED)){
-			for ( Catalog cat : values()){
-				for (Class<? extends Item> item : cat.items()){
-					cat.seen.put(item, true);
-				}
-			}
-			return;
-		}*/
-		
-		//catalog-specific badge logic
+
+		//old logic for pre-v2.5 catalog-specific badges
 		for (Catalog cat : values()){
 			if (Badges.isUnlocked(catalogBadges.get(cat))){
 				for (Class<?> item : cat.items()){

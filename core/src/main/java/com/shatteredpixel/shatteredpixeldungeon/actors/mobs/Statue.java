@@ -182,7 +182,11 @@ public class Statue extends Mob {
 
 	@Override
 	public String description() {
-		return Messages.get(this, "desc", weapon.name());
+		String desc = Messages.get(this, "desc");
+		if (weapon != null){
+			desc += "\n\n" + Messages.get(this, "desc_weapon", weapon.name());
+		}
+		return desc;
 	}
 	
 	{

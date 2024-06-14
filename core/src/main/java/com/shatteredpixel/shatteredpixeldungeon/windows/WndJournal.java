@@ -24,21 +24,31 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Pylon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.TerrainFeaturesTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickRecipe;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
@@ -46,9 +56,11 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollingGridPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollingListPane;
+import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.RectF;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
@@ -98,10 +110,10 @@ public class WndJournal extends WndTabbed {
 		catalogTab.setRect(0, 0, width, height);
 		catalogTab.updateList();
 
-		loreTab = new LoreTab();
+		/*loreTab = new LoreTab();
 		add(loreTab);
 		loreTab.setRect(0, 0, width, height);
-		loreTab.updateList();
+		loreTab.updateList();*/
 		
 		Tab[] tabs = {
 				new IconTab( new ItemSprite(ItemSpriteSheet.MASTERY, null) ) {
@@ -125,20 +137,20 @@ public class WndJournal extends WndTabbed {
 						if (value) last_index = 2;
 					}
 				},
-				new IconTab( new ItemSprite(ItemSpriteSheet.WEAPON_HOLDER, null) ) {
+				new IconTab( Icons.RENAME_ON.get() ) { //TODO dedicated icon here?
 					protected void select( boolean value ) {
 						super.select( value );
 						catalogTab.active = catalogTab.visible = value;
 						if (value) last_index = 3;
 					}
 				},
-				new IconTab( new ItemSprite(ItemSpriteSheet.GUIDE_PAGE, null) ) {
+				/*new IconTab( new ItemSprite(ItemSpriteSheet.GUIDE_PAGE, null) ) {
 					protected void select( boolean value ) {
 						super.select( value );
 						loreTab.active = loreTab.visible = value;
 						if (value) last_index = 4;
 					}
-				}
+				}*/
 		};
 		
 		for (Tab tab : tabs) {
@@ -453,17 +465,15 @@ public class WndJournal extends WndTabbed {
 	private static class CatalogTab extends Component{
 		
 		private RedButton[] itemButtons;
-		private static final int NUM_BUTTONS = 2;
+		private static final int NUM_BUTTONS = 4;
 		
 		private static int currentItemIdx   = 0;
 		
 		//sprite locations
 		private static final int EQUIP_IDX = 0;
 		private static final int CONSUM_IDX = 1;
-		
-		private static final int spriteIndexes[] =
-				{ItemSpriteSheet.WEAPON_HOLDER,
-						ItemSpriteSheet.POTION_HOLDER};
+		private static final int BESTIARY_IDX = 2;
+		private static final int LORE_IDX = 3;
 
 		private ScrollingGridPane grid;
 		
@@ -479,9 +489,12 @@ public class WndJournal extends WndTabbed {
 						updateList();
 					}
 				};
-				itemButtons[i].icon(new ItemSprite(spriteIndexes[i], null));
 				add( itemButtons[i] );
 			}
+			itemButtons[EQUIP_IDX].icon(new ItemSprite(ItemSpriteSheet.WEAPON_HOLDER));
+			itemButtons[CONSUM_IDX].icon(new ItemSprite(ItemSpriteSheet.POTION_HOLDER));
+			itemButtons[BESTIARY_IDX].icon(new ItemSprite(ItemSpriteSheet.MOB_HOLDER));
+			itemButtons[LORE_IDX].icon(new ItemSprite(ItemSpriteSheet.DOCUMENT_HOLDER));
 
 			grid = new ScrollingGridPane();
 			add( grid );
@@ -528,8 +541,6 @@ public class WndJournal extends WndTabbed {
 				grid.addHeader("_" + Messages.get(this, "title_equipment") + "_ (" + totalSeen + "/" + totalItems + ")", 9, true);
 
 				for (Catalog catalog : Catalog.equipmentCatalogs){
-					totalItems += catalog.totalItems();
-					totalSeen += catalog.totalSeen();
 					grid.addHeader("_" + Messages.titleCase(catalog.title()) + "_ (" + catalog.totalSeen() + "/" + catalog.totalItems() + "):");
 					addGridItems(grid, catalog.items());
 				}
@@ -544,12 +555,70 @@ public class WndJournal extends WndTabbed {
 				grid.addHeader("_" + Messages.get(this, "title_consumables") + "_ (" + totalSeen + "/" + totalItems + ")", 9, true);
 
 				for (Catalog catalog : Catalog.consumableCatalogs){
-					totalItems += catalog.totalItems();
-					totalSeen += catalog.totalSeen();
 					grid.addHeader("_" + Messages.titleCase(catalog.title()) + "_ (" + catalog.totalSeen() + "/" + catalog.totalItems() + "):");
 					addGridItems(grid, catalog.items());
 				}
 
+			} else if (currentItemIdx == BESTIARY_IDX){
+				int totalItems = 0;
+				int totalSeen = 0;
+				for (Bestiary bestiary : Bestiary.values()){
+					totalItems += bestiary.totalEntities();
+					totalSeen += bestiary.totalSeen();
+				}
+				grid.addHeader("_" + Messages.get(this, "title_bestiary") + "_ (" + totalSeen + "/" + totalItems + ")", 9, true);
+
+				for (Bestiary bestiary : Bestiary.values()){
+					grid.addHeader("_" + Messages.titleCase(bestiary.title()) + "_ (" + bestiary.totalSeen() + "/" + bestiary.totalEntities() + "):");
+					addGridEntities(grid, bestiary.entities());
+				}
+
+			} else {
+				int totalItems = 0;
+				int totalSeen = 0;
+				for (Document doc : Document.values()){
+					if (!doc.isLoreDoc()){
+						continue;
+					}
+					for (String page : doc.pageNames()){
+						totalItems++;
+						if (doc.isPageFound(page)){
+							totalSeen++;
+						}
+					}
+				}
+				grid.addHeader("_" + Messages.get(this, "title_lore") + "_ (" + totalSeen + "/" + totalItems + ")", 9, true);
+
+				for (Document doc : Document.values()){
+					if (!doc.isLoreDoc()){
+						continue;
+					}
+
+					for (String page : doc.pageNames()){
+						totalItems++;
+						if (doc.isPageFound(page)){
+							totalSeen++;
+						}
+					}
+				}
+				for (Document doc : Document.values()){
+					if (!doc.isLoreDoc()){
+						continue;
+					}
+					totalItems = totalSeen = 0;
+					for (String page : doc.pageNames()){
+						totalItems++;
+						if (doc.isPageFound(page)){
+							totalSeen++;
+						}
+					}
+					if (!doc.anyPagesFound()){
+						grid.addHeader("_???_ (" + totalSeen + "/" + totalItems + "):");
+					} else {
+						grid.addHeader("_" + Messages.titleCase(doc.title()) + "_ (" + totalSeen + "/" + totalItems + "):");
+					}
+					addGridDocuments(grid, doc);
+				}
 			}
 
 			grid.setRect(x, itemButtons[NUM_BUTTONS-1].bottom() + 1, width,
@@ -558,11 +627,12 @@ public class WndJournal extends WndTabbed {
 		
 	}
 
+	//also includes item-like things such as enchantments, glyphs, curses.
 	private static void addGridItems( ScrollingGridPane grid, Collection<Class<?>> classes) {
 		for (Class<?> itemClass : classes) {
 
 			boolean seen = Catalog.isSeen(itemClass);;
-			Image sprite = null;
+			ItemSprite sprite = null;
 			Image secondIcon = null;
 			String title = "";
 			String desc = "";
@@ -634,15 +704,9 @@ public class WndJournal extends WndTabbed {
 				@Override
 				public boolean onClick(float x, float y) {
 					if (inside(x, y)) {
-						//TODO need to dupe!
-						Image sprite;
-						if (icon instanceof ItemSprite){
-							sprite = new ItemSprite();
-							sprite.copy(icon);
-						} else {
-							sprite = new Image(icon);
-						}
-						GameScene.show(new WndTitledMessage(sprite, finalTitle, finalDesc));
+						Image sprite = new ItemSprite();
+						sprite.copy(icon);
+						GameScene.show(new WndJournalItem(sprite, finalTitle, finalDesc));
 						return true;
 					} else {
 						return false;
@@ -653,6 +717,171 @@ public class WndJournal extends WndTabbed {
 				gridItem.addSecondIcon(secondIcon);
 			}
 			if (!seen) {
+				gridItem.hardLightBG(2f, 1f, 2f);
+			}
+			grid.addItem(gridItem);
+		}
+	}
+
+	private static void addGridEntities(ScrollingGridPane grid, Collection<Class<?>> classes) {
+		for (Class<?> entityCls : classes){
+
+			boolean seen = Bestiary.isSeen(entityCls);
+			Mob mob = null;
+			Image icon = null;
+			String title = null;
+			String desc = null;
+
+			if (Mob.class.isAssignableFrom(entityCls)) {
+
+				mob = (Mob) Reflection.newInstance(entityCls);
+
+				if (mob instanceof Mimic || mob instanceof Pylon) {
+					mob.alignment = Char.Alignment.ENEMY;
+				}
+				if (mob instanceof WandOfWarding.Ward){
+					if (mob instanceof WandOfWarding.Ward.WardSentry){
+						((WandOfWarding.Ward) mob).upgrade(3);
+						((WandOfWarding.Ward) mob).upgrade(3);
+						((WandOfWarding.Ward) mob).upgrade(3);
+						((WandOfWarding.Ward) mob).upgrade(3);
+					} else {
+						((WandOfWarding.Ward) mob).upgrade(0);
+					}
+				}
+
+				CharSprite sprite = mob.sprite();
+				sprite.idle();
+
+				icon = new Image(sprite);
+				if (seen) {
+					title = Messages.titleCase(mob.name());
+					desc = mob.description();
+					if (Bestiary.encounterCount(entityCls) > 1){
+						desc += "\n\n" + Messages.get(CatalogTab.class, "enemy_count", Bestiary.encounterCount(entityCls));
+					}
+				} else {
+					icon.lightness(0f);
+					title = "???";
+					desc = mob.alignment == Char.Alignment.ENEMY ? Messages.get(CatalogTab.class, "not_seen_enemy") : Messages.get(CatalogTab.class, "not_seen_ally");
+				}
+
+				//we have to clip the bounds of the sprite if it's too large
+				if (icon.width() >= 17 || icon.height() >= 17) {
+					RectF frame = icon.frame();
+
+					float wShrink = frame.width() * (1f - 17f / icon.width());
+					if (wShrink > 0) {
+						frame.left += wShrink / 2f;
+						frame.right -= wShrink / 2f;
+					}
+					float hShrink = frame.height() * (1f - 17f / icon.height());
+					if (hShrink > 0) {
+						frame.top += hShrink / 2f;
+						frame.bottom -= hShrink / 2f;
+					}
+					icon.frame(frame);
+				}
+			} else if (Trap.class.isAssignableFrom(entityCls)){
+
+				Trap trap = (Trap) Reflection.newInstance(entityCls);
+				icon = TerrainFeaturesTilemap.getTrapVisual(trap);
+
+				if (seen) {
+					title = Messages.titleCase(trap.name());
+					desc = trap.desc();
+					if (Bestiary.encounterCount(entityCls) > 1){
+						desc += "\n\n" + Messages.get(CatalogTab.class, "trap_count", Bestiary.encounterCount(entityCls));
+					}
+				} else {
+					icon.lightness(0f);
+					title = "???";
+					desc = Messages.get(CatalogTab.class, "not_seen_trap");
+				}
+
+			} else if (Plant.class.isAssignableFrom(entityCls)){
+
+				Plant plant = (Plant) Reflection.newInstance(entityCls);
+				icon = TerrainFeaturesTilemap.getPlantVisual(plant);
+
+				if (seen) {
+					title = Messages.titleCase(plant.name());
+					desc = plant.desc();
+					if (Bestiary.encounterCount(entityCls) > 1){
+						desc += "\n\n" + Messages.get(CatalogTab.class, "plant_count", Bestiary.encounterCount(entityCls));
+					}
+				} else {
+					icon.lightness(0f);
+					title = "???";
+					desc = Messages.get(CatalogTab.class, "not_seen_trap");
+				}
+
+			}
+
+			Mob finalMob = mob;
+			String finalTitle = title;
+			String finalDesc = desc;
+			ScrollingGridPane.GridItem gridItem = new ScrollingGridPane.GridItem(icon) {
+				@Override
+				public boolean onClick(float x, float y) {
+					if (inside(x, y)) {
+						if (seen && finalMob != null){
+							GameScene.show(new WndJournalItem(finalMob.sprite(), finalTitle, finalDesc));
+						} else {
+							GameScene.show(new WndJournalItem(new Image(icon), finalTitle, finalDesc));
+						}
+
+						return true;
+					} else {
+						return false;
+					}
+				}
+			};
+			if (!seen) {
+				gridItem.hardLightBG(2f, 1f, 2f);
+			}
+			grid.addItem(gridItem);
+		}
+	};
+
+	private static void addGridDocuments( ScrollingGridPane grid, Document doc ){
+		for (String page : doc.pageNames()){
+
+			Image sprite = doc.pageSprite(page);
+
+			boolean seen = doc.isPageFound(page);
+			boolean read = doc.isPageRead(page);
+
+			if (!seen){
+				sprite.lightness(0f);
+			}
+
+			ScrollingGridPane.GridItem gridItem = new ScrollingGridPane.GridItem(sprite) {
+				@Override
+				public boolean onClick(float x, float y) {
+					if (inside(x, y)) {
+						Image sprite = new Image(icon);
+						if (seen) {
+							GameScene.show(new WndStory(sprite, doc.pageTitle(page), doc.pageBody(page)));
+							hardLightBG(1, 1, 1);
+						} else {
+							GameScene.show(new WndJournalItem(sprite, "???", Messages.get(CatalogTab.class, "not_seen_lore")));
+						}
+						return true;
+					} else {
+						return false;
+					}
+				}
+			};
+
+			if (seen){
+				BitmapText text = new BitmapText(Integer.toString(doc.pageIdx(page)+1), PixelScene.pixelFont);
+				text.measure();
+				gridItem.addSecondIcon( text );
+				if (!read) {
+					gridItem.hardLightBG(1f, 1f, 2f);
+				}
+			} else {
 				gridItem.hardLightBG(2f, 1f, 2f);
 			}
 			grid.addItem(gridItem);
