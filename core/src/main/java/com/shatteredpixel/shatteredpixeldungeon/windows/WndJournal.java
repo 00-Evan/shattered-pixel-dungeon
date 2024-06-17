@@ -468,6 +468,7 @@ public class WndJournal extends WndTabbed {
 		private static final int NUM_BUTTONS = 4;
 		
 		private static int currentItemIdx   = 0;
+		private static float[] scrollPositions = new float[NUM_BUTTONS];
 		
 		//sprite locations
 		private static final int EQUIP_IDX = 0;
@@ -496,7 +497,13 @@ public class WndJournal extends WndTabbed {
 			itemButtons[BESTIARY_IDX].icon(new ItemSprite(ItemSpriteSheet.MOB_HOLDER));
 			itemButtons[LORE_IDX].icon(new ItemSprite(ItemSpriteSheet.DOCUMENT_HOLDER));
 
-			grid = new ScrollingGridPane();
+			grid = new ScrollingGridPane(){
+				@Override
+				public synchronized void update() {
+					super.update();
+					scrollPositions[currentItemIdx] = content.camera.scroll.y;
+				}
+			};
 			add( grid );
 		}
 		
@@ -623,6 +630,8 @@ public class WndJournal extends WndTabbed {
 
 			grid.setRect(x, itemButtons[NUM_BUTTONS-1].bottom() + 1, width,
 					height - itemButtons[NUM_BUTTONS-1].bottom() - 1);
+
+			grid.scrollTo(0, scrollPositions[currentItemIdx]);
 		}
 		
 	}
