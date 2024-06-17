@@ -259,6 +259,7 @@ public enum Catalog {
 
 	}
 
+	//old badges for pre-2.5
 	public static LinkedHashMap<Catalog, Badges.Badge> catalogBadges = new LinkedHashMap<>();
 	static {
 		catalogBadges.put(MELEE_WEAPONS, Badges.Badge.ALL_WEAPONS_IDENTIFIED);
@@ -316,7 +317,7 @@ public enum Catalog {
 				Journal.saveNeeded = true;
 			}
 		}
-		Badges.validateItemsIdentified();
+		Badges.validateCatalogBadges();
 	}
 	
 	private static final String CATALOG_ITEMS = "catalog_items";
@@ -327,16 +328,11 @@ public enum Catalog {
 		
 		ArrayList<Class> seen = new ArrayList<>();
 		
-		//if we have identified all items of a set, we use the badge to keep track instead.
-		//if (!Badges.isUnlocked(Badges.Badge.ALL_ITEMS_IDENTIFIED)) {
-			for (Catalog cat : values()) {
-				//if (!Badges.isUnlocked(catalogBadges.get(cat))) {
-					for (Class<?> item : cat.items()) {
-						if (cat.seen.get(item)) seen.add(item);
-					}
-				//}
+		for (Catalog cat : values()) {
+			for (Class<?> item : cat.items()) {
+				if (cat.seen.get(item)) seen.add(item);
 			}
-		//}
+		}
 		
 		bundle.put( CATALOG_ITEMS, seen.toArray(new Class[0]) );
 		

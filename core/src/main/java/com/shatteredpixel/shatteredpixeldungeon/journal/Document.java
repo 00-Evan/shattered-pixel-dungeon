@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.journal;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -66,6 +67,7 @@ public enum Document {
 		if (pagesStates.containsKey(page) && pagesStates.get(page) == NOT_FOUND){
 			pagesStates.put(page, FOUND);
 			Journal.saveNeeded = true;
+			Badges.validateCatalogBadges();
 			return true;
 		}
 		return false;
@@ -85,6 +87,19 @@ public enum Document {
 	}
 
 	public boolean deletePage( int pageIdx ) {
+		return deletePage( pagesStates.keySet().toArray(new String[0])[pageIdx] );
+	}
+
+	public boolean unreadPage( String page ){
+		if (pagesStates.containsKey(page) && pagesStates.get(page) == READ){
+			pagesStates.put(page, FOUND);
+			Journal.saveNeeded = true;
+			return true;
+		}
+		return false;
+	}
+
+	public boolean unreadPage( int pageIdx ) {
 		return deletePage( pagesStates.keySet().toArray(new String[0])[pageIdx] );
 	}
 
@@ -118,6 +133,7 @@ public enum Document {
 		if (pagesStates.containsKey(page)){
 			pagesStates.put(page, READ);
 			Journal.saveNeeded = true;
+			Badges.validateCatalogBadges();
 			return true;
 		}
 		return false;
@@ -233,6 +249,8 @@ public enum Document {
 
 	public static final String GUIDE_SEARCHING      = "Searching";
 
+	public static final String KING_ATTRITION       = "attrition";
+
 	//pages and default states
 	static {
 		boolean debug = DeviceCompat.isDebug();
@@ -305,7 +323,7 @@ public enum Document {
 		HALLS_KING.pagesStates.put("ritual",                    debug ? READ : NOT_FOUND);
 		HALLS_KING.pagesStates.put("new_king",                  debug ? READ : NOT_FOUND);
 		HALLS_KING.pagesStates.put("thing",                     debug ? READ : NOT_FOUND);
-		HALLS_KING.pagesStates.put("attrition",                 debug ? READ : NOT_FOUND);
+		HALLS_KING.pagesStates.put(KING_ATTRITION,              debug ? NOT_FOUND : NOT_FOUND);
 
 	}
 	

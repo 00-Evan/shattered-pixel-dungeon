@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.journal;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpiritHawk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.ShadowClone;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.SmokeBomb;
@@ -213,14 +214,14 @@ public enum Bestiary {
 				DwarfKing.class,
 				YogDzewa.Larva.class, YogFist.BurningFist.class, YogFist.SoiledFist.class, YogFist.RottingFist.class, YogFist.RustedFist.class,YogFist.BrightFist.class, YogFist.DarkFist.class, YogDzewa.class);
 
-		UNIVERSAL.addEntities(Wraith.class, Piranha.class, Mimic.class, GoldenMimic.class, Statue.class, GuardianTrap.Guardian.class, SentryRoom.Sentry.class);
+		UNIVERSAL.addEntities(Wraith.class, Piranha.class, Mimic.class, GoldenMimic.class, EbonyMimic.class, Statue.class, GuardianTrap.Guardian.class, SentryRoom.Sentry.class);
 
 		RARE.addEntities(Albino.class, CausticSlime.class,
 				Bandit.class, SpectralNecromancer.class,
 				ArmoredBrute.class, DM201.class,
 				Elemental.ChaosElemental.class, Senior.class,
 				Acidic.class,
-				TormentedSpirit.class, PhantomPiranha.class, CrystalMimic.class, EbonyMimic.class, ArmoredStatue.class);
+				TormentedSpirit.class, PhantomPiranha.class, CrystalMimic.class, ArmoredStatue.class);
 
 		QUEST.addEntities(FetidRat.class, GnollTrickster.class, GreatCrab.class,
 				Elemental.NewbornFireElemental.class, RotLasher.class, RotHeart.class,
@@ -282,7 +283,7 @@ public enum Bestiary {
 		classConversions.put(YogDzewa.YogScorpio.class,        Scorpio.class);
 	}
 
-	public static boolean setSeen(Class<?> mobClass){
+	public static void setSeen(Class<?> mobClass){
 		if (classConversions.containsKey(mobClass)){
 			mobClass = classConversions.get(mobClass);
 		}
@@ -294,7 +295,7 @@ public enum Bestiary {
 				}
 			}
 		}
-		return false;
+		Badges.validateCatalogBadges();
 	}
 
 	public static void trackEncounter(Class<?> mobClass){
@@ -309,6 +310,7 @@ public enum Bestiary {
 				}
 			}
 		}
+		Badges.validateCatalogBadges();
 	}
 
 	private static final String BESTIARY_CLASSES = "bestiary_classes";

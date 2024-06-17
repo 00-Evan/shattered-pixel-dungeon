@@ -53,7 +53,7 @@ import java.util.Collections;
 
 public class WelcomeScene extends PixelScene {
 
-	private static final int LATEST_UPDATE = ShatteredPixelDungeon.v2_4_0;
+	private static final int LATEST_UPDATE = ShatteredPixelDungeon.v2_4_2;
 
 	//used so that the game does not keep showing the window forever if cleaning fails
 	private static boolean triedCleaningTemp = false;
@@ -238,6 +238,13 @@ public class WelcomeScene extends PixelScene {
 
 			Badges.loadGlobal();
 			Journal.loadGlobal();
+
+			//Dwarf King's final journal entry changed, set it as un-read
+			if (previousVersion <= ShatteredPixelDungeon.v2_4_2){
+				if (Document.HALLS_KING.isPageRead(Document.KING_ATTRITION)){
+					Document.HALLS_KING.unreadPage(Document.KING_ATTRITION);
+				}
+			}
 
 			//pre-unlock Duelist for those who already have a win
 			if (previousVersion <= ShatteredPixelDungeon.v2_0_2){
