@@ -137,7 +137,7 @@ public class WndJournal extends WndTabbed {
 						if (value) last_index = 2;
 					}
 				},
-				new IconTab( Icons.RENAME_ON.get() ) { //TODO dedicated icon here?
+				new IconTab( Icons.CATALOG.get() ) {
 					protected void select( boolean value ) {
 						super.select( value );
 						catalogTab.active = catalogTab.visible = value;

@@ -85,6 +85,7 @@ public enum Icons {
 	ENERGY,
 	COPY,
 	PASTE,
+	CATALOG,
 	COIN_SML,
 	ENERGY_SML,
 	BACKPACK,
@@ -279,26 +280,29 @@ public enum Icons {
 			case PASTE:
 				icon.frame( icon.texture.uvRectBySize( 240, 48, 13, 13 ) );
 				break;
+			case CATALOG:
+				icon.frame( icon.texture.uvRectBySize( 240, 64, 13, 16 ) );
+				break;
 			case COIN_SML:
-				icon.frame( icon.texture.uvRectBySize( 192, 64, 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 192, 80, 7, 7 ) );
 				break;
 			case ENERGY_SML:
-				icon.frame( icon.texture.uvRectBySize( 192, 72, 8, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 192, 88, 8, 7 ) );
 				break;
 			case BACKPACK:
-				icon.frame( icon.texture.uvRectBySize( 201, 64, 10, 10 ) );
+				icon.frame( icon.texture.uvRectBySize( 201, 80, 10, 10 ) );
 				break;
 			case SCROLL_HOLDER:
-				icon.frame( icon.texture.uvRectBySize( 211, 64, 10, 10 ) );
+				icon.frame( icon.texture.uvRectBySize( 211, 80, 10, 10 ) );
 				break;
 			case SEED_POUCH:
-				icon.frame( icon.texture.uvRectBySize( 221, 64, 10, 10 ) );
+				icon.frame( icon.texture.uvRectBySize( 221, 80, 10, 10 ) );
 				break;
 			case WAND_HOLSTER:
-				icon.frame( icon.texture.uvRectBySize( 231, 64, 10, 10 ) );
+				icon.frame( icon.texture.uvRectBySize( 231, 80, 10, 10 ) );
 				break;
 			case POTION_BANDOLIER:
-				icon.frame( icon.texture.uvRectBySize( 241, 64, 10, 10 ) );
+				icon.frame( icon.texture.uvRectBySize( 241, 80, 10, 10 ) );
 				break;
 
 			case TARGET:
