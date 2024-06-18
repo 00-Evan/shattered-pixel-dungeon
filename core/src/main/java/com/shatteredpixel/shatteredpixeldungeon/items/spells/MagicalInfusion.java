@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -69,6 +70,9 @@ public class MagicalInfusion extends InventorySpell {
 		
 		GLog.p( Messages.get(this, "infuse") );
 		Badges.validateItemLevelAquired(item);
+
+		Catalog.countUse(item.getClass());
+		Catalog.countUse(getClass());
 
 		Statistics.upgradesUsed++;
 	}

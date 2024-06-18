@@ -119,7 +119,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 //For items, but includes a few item-like effects, such as enchantments
 public enum Catalog {
@@ -149,8 +148,11 @@ public enum Catalog {
 	BREWS_ELIXIRS,
 	SPELLS,
 	MISC_CONSUMABLES;
-	
-	private LinkedHashMap<Class<?>, Boolean> seen = new LinkedHashMap<>();
+
+	//tracks whether an item has been collected while identified
+	private final LinkedHashMap<Class<?>, Boolean> seen = new LinkedHashMap<>();
+	//tracks upgrades spent for equipment, uses for consumables
+	private final LinkedHashMap<Class<?>, Integer> useCount = new LinkedHashMap<>();
 	
 	public Collection<Class<?>> items(){
 		return seen.keySet();
@@ -160,6 +162,7 @@ public enum Catalog {
 	private void addItems( Class<?>... items){
 		for (Class<?> item : items){
 			seen.put(item, false);
+			useCount.put(item, 0);
 		}
 	}
 
@@ -179,7 +182,6 @@ public enum Catalog {
 		return seenTotal;
 	}
 
-	//TODO ordering of some items, and see if there may be better places to centralize some of these lists
 	static {
 
 		MELEE_WEAPONS.addItems(Generator.Category.WEP_T1.classes);
@@ -301,10 +303,10 @@ public enum Catalog {
 		consumableCatalogs.add(MISC_CONSUMABLES);
 	}
 	
-	public static boolean isSeen(Class<?> itemClass){
+	public static boolean isSeen(Class<?> cls){
 		for (Catalog cat : values()) {
-			if (cat.seen.containsKey(itemClass)) {
-				return cat.seen.get(itemClass);
+			if (cat.seen.containsKey(cls)) {
+				return cat.seen.get(cls);
 			}
 		}
 		return false;
@@ -319,30 +321,75 @@ public enum Catalog {
 		}
 		Badges.validateCatalogBadges();
 	}
-	
-	private static final String CATALOG_ITEMS = "catalog_items";
+
+	public static int useCount(Class<?> cls){
+		for (Catalog cat : values()) {
+			if (cat.useCount.containsKey(cls)) {
+				return cat.useCount.get(cls);
+			}
+		}
+		return 0;
+	}
+
+	public static void countUse(Class<?> cls){
+		countUses(cls, 1);
+	}
+
+	public static void countUses(Class<?> cls, int uses){
+		for (Catalog cat : values()) {
+			if (cat.useCount.containsKey(cls) && cat.useCount.get(cls) != Integer.MAX_VALUE) {
+				cat.useCount.put(cls, cat.useCount.get(cls)+uses);
+				if (cat.useCount.get(cls) < -1_000_000_000){ //to catch cases of overflow
+					cat.useCount.put(cls, Integer.MAX_VALUE);
+				}
+				Journal.saveNeeded = true;
+			}
+		}
+	}
+
+	private static final String CATALOG_CLASSES = "catalog_classes";
+	private static final String CATALOG_SEEN    = "catalog_seen";
+	private static final String CATALOG_USES    = "catalog_uses";
 	
 	public static void store( Bundle bundle ){
-		
-		Badges.loadGlobal();
-		
-		ArrayList<Class> seen = new ArrayList<>();
+
+		ArrayList<Class<?>> classes = new ArrayList<>();
+		ArrayList<Boolean> seen = new ArrayList<>();
+		ArrayList<Integer> uses = new ArrayList<>();
 		
 		for (Catalog cat : values()) {
 			for (Class<?> item : cat.items()) {
-				if (cat.seen.get(item)) seen.add(item);
+				if (cat.seen.get(item) || cat.useCount.get(item) > 0){
+					classes.add(item);
+					seen.add(cat.seen.get(item));
+					uses.add(cat.useCount.get(item));
+				}
 			}
 		}
+
+		Class<?>[] storeCls = new Class[classes.size()];
+		boolean[] storeSeen = new boolean[seen.size()];
+		int[] storeUses = new int[uses.size()];
+
+		for (int i = 0; i < storeCls.length; i++){
+			storeCls[i] = classes.get(i);
+			storeSeen[i] = seen.get(i);
+			storeUses[i] = uses.get(i);
+		}
 		
-		bundle.put( CATALOG_ITEMS, seen.toArray(new Class[0]) );
+		bundle.put( CATALOG_CLASSES, storeCls );
+		bundle.put( CATALOG_SEEN, storeSeen );
+		bundle.put( CATALOG_USES, storeUses );
 		
 	}
+
+	//pre-v2.5
+	private static final String CATALOG_ITEMS = "catalog_items";
 	
 	public static void restore( Bundle bundle ){
-		
-		Badges.loadGlobal();
 
 		//old logic for pre-v2.5 catalog-specific badges
+		Badges.loadGlobal();
 		for (Catalog cat : values()){
 			if (Badges.isUnlocked(catalogBadges.get(cat))){
 				for (Class<?> item : cat.items()){
@@ -350,22 +397,33 @@ public enum Catalog {
 				}
 			}
 		}
-		
-		//general save/load
 		if (bundle.contains(CATALOG_ITEMS)) {
-			List<Class> seenClasses = new ArrayList<>();
-			if (bundle.contains(CATALOG_ITEMS)) {
-				seenClasses = Arrays.asList(bundle.getClassArray(CATALOG_ITEMS));
-			}
-			
-			for (Catalog cat : values()) {
-				for (Class<?> item : cat.items()) {
-					if (seenClasses.contains(item)) {
-						cat.seen.put(item, true);
+			for (Class<?> cls : Arrays.asList(bundle.getClassArray(CATALOG_ITEMS))){
+				for (Catalog cat : values()) {
+					if (cat.seen.containsKey(cls)) {
+						cat.seen.put(cls, true);
 					}
 				}
 			}
 		}
+		//end of old logic
+
+		if (bundle.contains(CATALOG_CLASSES)){
+			Class<?>[] classes = bundle.getClassArray(CATALOG_CLASSES);
+			boolean[] seen = bundle.getBooleanArray(CATALOG_SEEN);
+			int[] uses = bundle.getIntArray(CATALOG_USES);
+
+			for (int i = 0; i < classes.length; i++){
+				for (Catalog cat : values()) {
+					if (cat.seen.containsKey(classes[i])) {
+						cat.seen.put(classes[i], seen[i]);
+						cat.useCount.put(classes[i], uses[i]);
+					}
+				}
+
+			}
+		}
+
 	}
 	
 }

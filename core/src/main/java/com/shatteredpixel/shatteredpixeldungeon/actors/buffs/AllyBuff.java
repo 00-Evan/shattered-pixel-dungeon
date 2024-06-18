@@ -61,7 +61,8 @@ public abstract class AllyBuff extends Buff{
 			Statistics.enemiesSlain++;
 			Badges.validateMonstersSlain();
 			Statistics.qualifiedForNoKilling = false;
-			Bestiary.trackEncounter(enemy.getClass());
+			Bestiary.setSeen(enemy.getClass());
+			Bestiary.countEncounter(enemy.getClass());
 
 			AscensionChallenge.processEnemyKill(enemy);
 

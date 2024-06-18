@@ -63,6 +63,8 @@ public class Dewdrop extends Item {
 			if (!consumeDew(1, hero, terr == Terrain.ENTRANCE || terr == Terrain.ENTRANCE_SP
 					|| terr == Terrain.EXIT || terr == Terrain.UNLOCKED_EXIT)){
 				return false;
+			} else {
+				Catalog.countUse(getClass());
 			}
 			
 		}

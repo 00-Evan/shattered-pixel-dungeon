@@ -94,7 +94,8 @@ public abstract class Trap implements Bundlable {
 			}
 			if (disarmedByActivation) disarm();
 			Dungeon.level.discover(pos);
-			Bestiary.trackEncounter(getClass());
+			Bestiary.setSeen(getClass());
+			Bestiary.countEncounter(getClass());
 			activate();
 		}
 	}

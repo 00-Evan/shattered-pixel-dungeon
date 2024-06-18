@@ -189,8 +189,11 @@ public abstract class Scroll extends Item {
 		curUser.busy();
 		((HeroSprite)curUser.sprite).read();
 
-		if (!anonymous && Random.Float() < talentChance) {
-			Talent.onScrollUsed(curUser, curUser.pos, talentFactor);
+		if (!anonymous) {
+			Catalog.countUse(getClass());
+			if (Random.Float() < talentChance) {
+				Talent.onScrollUsed(curUser, curUser.pos, talentFactor);
+			}
 		}
 
 	}

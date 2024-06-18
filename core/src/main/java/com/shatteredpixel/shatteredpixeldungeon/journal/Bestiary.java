@@ -170,18 +170,21 @@ public enum Bestiary {
 	TRAP,
 	PLANT;
 
+	//tracks whether an entity has been encountered
+	private final LinkedHashMap<Class<?>, Boolean> seen = new LinkedHashMap<>();
 	//tracks enemy kills, trap activations, plant tramples, or just sets to 1 for seen on allies
-	private LinkedHashMap<Class<?>, Integer> encounterCount = new LinkedHashMap<>();
+	private final LinkedHashMap<Class<?>, Integer> encounterCount = new LinkedHashMap<>();
 
 	//should only be used when initializing
 	private void addEntities(Class<?>... classes ){
 		for (Class<?> cls : classes){
+			seen.put(cls, false);
 			encounterCount.put(cls, 0);
 		}
 	}
 
 	public Collection<Class<?>> entities(){
-		return encounterCount.keySet();
+		return seen.keySet();
 	}
 
 	public String title(){
@@ -189,13 +192,13 @@ public enum Bestiary {
 	}
 
 	public int totalEntities(){
-		return encounterCount.size();
+		return seen.size();
 	}
 
 	public int totalSeen(){
 		int seenTotal = 0;
-		for (int count : encounterCount.values()){
-			if (count > 0) seenTotal++;
+		for (boolean entitySeen : seen.values()){
+			if (entitySeen) seenTotal++;
 		}
 		return seenTotal;
 	}
@@ -250,19 +253,6 @@ public enum Bestiary {
 
 	}
 
-	public static int encounterCount(Class<?> cls) {
-		for (Bestiary cat : values()) {
-			if (cat.encounterCount.containsKey(cls)) {
-				return cat.encounterCount.get(cls);
-			}
-		}
-		return 0;
-	}
-
-	public static boolean isSeen(Class<?> cls){
-		return encounterCount(cls) > 0;
-	}
-
 	//some mobs and traps have different internal classes in some cases, so need to convert here
 	private static final HashMap<Class<?>, Class<?>> classConversions = new HashMap<>();
 	static {
@@ -283,73 +273,100 @@ public enum Bestiary {
 		classConversions.put(YogDzewa.YogScorpio.class,        Scorpio.class);
 	}
 
-	public static void setSeen(Class<?> mobClass){
-		if (classConversions.containsKey(mobClass)){
-			mobClass = classConversions.get(mobClass);
+	public static boolean isSeen(Class<?> cls){
+		for (Bestiary cat : values()) {
+			if (cat.seen.containsKey(cls)) {
+				return cat.seen.get(cls);
+			}
+		}
+		return false;
+	}
+
+	public static void setSeen(Class<?> cls){
+		if (classConversions.containsKey(cls)){
+			cls = classConversions.get(cls);
 		}
 		for (Bestiary cat : values()) {
-			if (cat.encounterCount.containsKey(mobClass)) {
-				if (cat.encounterCount.get(mobClass) == 0){
-					cat.encounterCount.put(mobClass, 1);
-					Journal.saveNeeded = true;
-				}
+			if (cat.seen.containsKey(cls) && !cat.seen.get(cls)) {
+				cat.seen.put(cls, true);
+				Journal.saveNeeded = true;
 			}
 		}
 		Badges.validateCatalogBadges();
 	}
 
-	public static void trackEncounter(Class<?> mobClass){
-		if (classConversions.containsKey(mobClass)){
-			mobClass = classConversions.get(mobClass);
+	public static int encounterCount(Class<?> cls) {
+		for (Bestiary cat : values()) {
+			if (cat.encounterCount.containsKey(cls)) {
+				return cat.encounterCount.get(cls);
+			}
+		}
+		return 0;
+	}
+
+	public static void countEncounter(Class<?> cls){
+		if (classConversions.containsKey(cls)){
+			cls = classConversions.get(cls);
 		}
 		for (Bestiary cat : values()) {
-			if (cat.encounterCount.containsKey(mobClass)) {
-				if (cat.encounterCount.get(mobClass) != Integer.MAX_VALUE){
-					cat.encounterCount.put(mobClass, cat.encounterCount.get(mobClass)+1);
-					Journal.saveNeeded = true;
-				}
+			if (cat.encounterCount.containsKey(cls) && cat.encounterCount.get(cls) != Integer.MAX_VALUE){
+				cat.encounterCount.put(cls, cat.encounterCount.get(cls)+1);
+				Journal.saveNeeded = true;
 			}
 		}
 		Badges.validateCatalogBadges();
 	}
 
-	private static final String BESTIARY_CLASSES = "bestiary_classes";
+	private static final String BESTIARY_CLASSES    = "bestiary_classes";
+	private static final String BESTIARY_SEEN       = "bestiary_seen";
 	private static final String BESTIARY_ENCOUNTERS = "bestiary_encounters";
 
 	public static void store( Bundle bundle ){
 
 		ArrayList<Class<?>> classes = new ArrayList<>();
-		ArrayList<Integer> kills = new ArrayList<>();
+		ArrayList<Boolean> seen = new ArrayList<>();
+		ArrayList<Integer> encounters = new ArrayList<>();
 
 		for (Bestiary cat : values()) {
-			for (Class<?> mob : cat.entities()) {
-				if (cat.encounterCount.get(mob) > 0){
-					classes.add(mob);
-					kills.add(cat.encounterCount.get(mob));
+			for (Class<?> entity : cat.entities()) {
+				if (cat.seen.get(entity) || cat.encounterCount.get(entity) > 0){
+					classes.add(entity);
+					seen.add(cat.seen.get(entity));
+					encounters.add(cat.encounterCount.get(entity));
 				}
 			}
 		}
 
-		int[] killsToStore = new int[kills.size()];
-		for (int i = 0; i < killsToStore.length; i++){
-			killsToStore[i] = kills.get(i);
+		Class<?>[] storeCls = new Class[classes.size()];
+		boolean[] storeSeen = new boolean[seen.size()];
+		int[] storeEncounters = new int[encounters.size()];
+
+		for (int i = 0; i < storeCls.length; i++){
+			storeCls[i] = classes.get(i);
+			storeSeen[i] = seen.get(i);
+			storeEncounters[i] = encounters.get(i);
 		}
 
-		bundle.put( BESTIARY_CLASSES, classes.toArray(new Class[0]) );
-		bundle.put( BESTIARY_ENCOUNTERS, killsToStore );
+		bundle.put( BESTIARY_CLASSES, storeCls );
+		bundle.put( BESTIARY_SEEN, storeSeen );
+		bundle.put( BESTIARY_ENCOUNTERS, storeEncounters );
 
 	}
 
 	public static void restore( Bundle bundle ){
 
-		if (bundle.contains(BESTIARY_CLASSES) && bundle.contains(BESTIARY_ENCOUNTERS)){
+		if (bundle.contains(BESTIARY_CLASSES)
+				&& bundle.contains(BESTIARY_SEEN)
+				&& bundle.contains(BESTIARY_ENCOUNTERS)){
 			Class<?>[] classes = bundle.getClassArray(BESTIARY_CLASSES);
-			int[] kills = bundle.getIntArray(BESTIARY_ENCOUNTERS);
+			boolean[] seen = bundle.getBooleanArray(BESTIARY_SEEN);
+			int[] encounters = bundle.getIntArray(BESTIARY_ENCOUNTERS);
 
 			for (int i = 0; i < classes.length; i++){
 				for (Bestiary cat : values()){
-					if (cat.encounterCount.containsKey(classes[i])){
-						cat.encounterCount.put(classes[i], kills[i]);
+					if (cat.seen.containsKey(classes[i])){
+						cat.seen.put(classes[i], seen[i]);
+						cat.encounterCount.put(classes[i], encounters[i]);
 					}
 				}
 			}

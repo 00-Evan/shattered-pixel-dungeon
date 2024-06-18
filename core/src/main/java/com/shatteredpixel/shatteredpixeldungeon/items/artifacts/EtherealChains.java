@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Chains;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Effects;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -346,6 +347,7 @@ public class EtherealChains extends Artifact {
 			if (exp > 100+level()*100 && level() < levelCap){
 				exp -= 100+level()*100;
 				GLog.p( Messages.get(this, "levelup") );
+				Catalog.countUses(EtherealChains.class, 2);
 				upgrade();
 			}
 

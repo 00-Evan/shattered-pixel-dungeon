@@ -225,6 +225,7 @@ public class Notes {
 	public static boolean remove( Key key ){
 		KeyRecord k = new KeyRecord( key );
 		if (records.contains(k)){
+			Catalog.countUses(key.getClass(), key.quantity());
 			k = (KeyRecord) records.get(records.indexOf(k));
 			k.quantity(k.quantity() - key.quantity());
 			if (k.quantity() <= 0){

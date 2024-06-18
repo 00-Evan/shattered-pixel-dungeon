@@ -252,7 +252,7 @@ public class WandOfWarding extends Wand {
 					break;
 			}
 
-			if (tier >= 4){
+			if (Actor.chars().contains(this) && tier >= 3){
 				Bestiary.setSeen(WardSentry.class);
 			}
 

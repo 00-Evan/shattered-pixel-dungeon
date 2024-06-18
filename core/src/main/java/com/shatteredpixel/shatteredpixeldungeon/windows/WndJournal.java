@@ -28,6 +28,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Pylon;
+import com.shatteredpixel.shatteredpixeldungeon.items.EnergyCrystal;
+import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
@@ -654,6 +656,18 @@ public class WndJournal extends WndTabbed {
 				} else {
 					title = Messages.titleCase(item.trueName());
 					desc = item instanceof ClassArmor ? item.desc() : item.info();
+
+					if (Catalog.useCount(itemClass) > 1) {
+						if (item.isUpgradable()) {
+							desc += "\n\n" + Messages.get(CatalogTab.class, "upgrade_count", Catalog.useCount(itemClass));
+						} else if (item instanceof Gold) {
+							desc += "\n\n" + Messages.get(CatalogTab.class, "gold_count", Catalog.useCount(itemClass));
+						} else if (item instanceof EnergyCrystal) {
+							desc += "\n\n" + Messages.get(CatalogTab.class, "energy_count", Catalog.useCount(itemClass));
+						} else {
+							desc += "\n\n" + Messages.get(CatalogTab.class, "use_count", Catalog.useCount(itemClass));
+						}
+					}
 
 					if (item.icon != -1) {
 						secondIcon = new Image(Assets.Sprites.ITEM_ICONS);

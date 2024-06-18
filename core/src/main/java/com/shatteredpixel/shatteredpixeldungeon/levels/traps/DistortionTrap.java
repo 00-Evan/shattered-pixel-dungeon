@@ -156,7 +156,8 @@ public class DistortionTrap extends Trap{
 			if ((t = Dungeon.level.traps.get(mob.pos)) != null && t.active){
 				if (t.disarmedByActivation) t.disarm();
 				t.reveal();
-				Bestiary.trackEncounter(t.getClass());
+				Bestiary.setSeen(t.getClass());
+				Bestiary.countEncounter(t.getClass());
 				t.activate();
 			}
 			ScrollOfTeleportation.appear(mob, mob.pos);
