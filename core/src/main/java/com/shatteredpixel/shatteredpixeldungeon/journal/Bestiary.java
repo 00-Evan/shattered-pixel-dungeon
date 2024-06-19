@@ -305,16 +305,22 @@ public enum Bestiary {
 	}
 
 	public static void countEncounter(Class<?> cls){
+		countEncounters(cls, 1);
+	}
+
+	public static void countEncounters(Class<?> cls, int encounters){
 		if (classConversions.containsKey(cls)){
 			cls = classConversions.get(cls);
 		}
 		for (Bestiary cat : values()) {
 			if (cat.encounterCount.containsKey(cls) && cat.encounterCount.get(cls) != Integer.MAX_VALUE){
-				cat.encounterCount.put(cls, cat.encounterCount.get(cls)+1);
+				cat.encounterCount.put(cls, cat.encounterCount.get(cls)+encounters);
+				if (cat.encounterCount.get(cls) < -1_000_000_000){ //to catch cases of overflow
+					cat.encounterCount.put(cls, Integer.MAX_VALUE);
+				}
 				Journal.saveNeeded = true;
 			}
 		}
-		Badges.validateCatalogBadges();
 	}
 
 	private static final String BESTIARY_CLASSES    = "bestiary_classes";
