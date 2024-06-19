@@ -242,7 +242,7 @@ public class Ring extends KindofMisc {
 	}
 	
 	public static boolean allKnown() {
-		return handler.known().size() == Generator.Category.RING.classes.length;
+		return handler != null && handler.known().size() == Generator.Category.RING.classes.length;
 	}
 	
 	@Override

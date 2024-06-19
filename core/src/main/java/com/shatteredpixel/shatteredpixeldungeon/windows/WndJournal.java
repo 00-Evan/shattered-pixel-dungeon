@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
@@ -655,7 +656,12 @@ public class WndJournal extends WndTabbed {
 					desc = Messages.get(CatalogTab.class, "not_seen_item");
 				} else {
 					title = Messages.titleCase(item.trueName());
-					desc = item instanceof ClassArmor ? item.desc() : item.info();
+					//some items don't include direct stats, generally when they're not applicable
+					if (item instanceof ClassArmor || item instanceof SpiritBow){
+						desc += item.desc();
+					} else {
+						desc += item.info();
+					}
 
 					if (Catalog.useCount(itemClass) > 1) {
 						if (item.isUpgradable()) {
@@ -715,7 +721,11 @@ public class WndJournal extends WndTabbed {
 					if (inside(x, y)) {
 						Image sprite = new ItemSprite();
 						sprite.copy(icon);
-						GameScene.show(new WndJournalItem(sprite, finalTitle, finalDesc));
+						if (ShatteredPixelDungeon.scene() instanceof GameScene){
+							GameScene.show(new WndJournalItem(sprite, finalTitle, finalDesc));
+						} else {
+							ShatteredPixelDungeon.scene().addToFront(new WndJournalItem(sprite, finalTitle, finalDesc));
+						}
 						return true;
 					} else {
 						return false;
@@ -834,10 +844,17 @@ public class WndJournal extends WndTabbed {
 				@Override
 				public boolean onClick(float x, float y) {
 					if (inside(x, y)) {
+						Image image;
 						if (seen && finalMob != null){
-							GameScene.show(new WndJournalItem(finalMob.sprite(), finalTitle, finalDesc));
+							image = finalMob.sprite();
 						} else {
-							GameScene.show(new WndJournalItem(new Image(icon), finalTitle, finalDesc));
+							image = new Image(icon);
+						}
+
+						if (ShatteredPixelDungeon.scene() instanceof GameScene){
+							GameScene.show(new WndJournalItem(image, finalTitle, finalDesc));
+						} else {
+							ShatteredPixelDungeon.scene().addToFront(new WndJournalItem(image, finalTitle, finalDesc));
 						}
 
 						return true;
@@ -871,11 +888,21 @@ public class WndJournal extends WndTabbed {
 					if (inside(x, y)) {
 						Image sprite = new Image(icon);
 						if (seen) {
-							GameScene.show(new WndStory(sprite, doc.pageTitle(page), doc.pageBody(page)));
+							if (ShatteredPixelDungeon.scene() instanceof GameScene){
+								GameScene.show(new WndStory(sprite, doc.pageTitle(page), doc.pageBody(page)));
+							} else {
+								ShatteredPixelDungeon.scene().addToFront(new WndStory(sprite, doc.pageTitle(page), doc.pageBody(page)));
+							}
+
 							doc.readPage(page);
 							hardLightBG(1, 1, 1);
 						} else {
-							GameScene.show(new WndJournalItem(sprite, "???", Messages.get(CatalogTab.class, "not_seen_lore")));
+							if (ShatteredPixelDungeon.scene() instanceof GameScene){
+								GameScene.show(new WndJournalItem(sprite, "???", Messages.get(CatalogTab.class, "not_seen_lore")));
+							} else {
+								ShatteredPixelDungeon.scene().addToFront(new WndJournalItem(sprite, "???", Messages.get(CatalogTab.class, "not_seen_lore")));
+							}
+
 						}
 						return true;
 					} else {

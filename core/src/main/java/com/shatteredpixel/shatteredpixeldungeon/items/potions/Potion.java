@@ -393,7 +393,7 @@ public class Potion extends Item {
 	}
 	
 	public static boolean allKnown() {
-		return handler.known().size() == Generator.Category.POTION.classes.length;
+		return handler != null && handler.known().size() == Generator.Category.POTION.classes.length;
 	}
 	
 	protected int splashColor(){

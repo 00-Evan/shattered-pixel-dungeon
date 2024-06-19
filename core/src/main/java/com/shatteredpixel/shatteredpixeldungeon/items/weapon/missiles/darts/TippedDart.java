@@ -154,32 +154,34 @@ public abstract class TippedDart extends Dart {
 	@Override
 	public float durabilityPerUse() {
 		float use = super.durabilityPerUse(false);
-		
-		use /= (1 + Dungeon.hero.pointsInTalent(Talent.DURABLE_TIPS));
 
-		//checks both destination and source position
-		float lotusPreserve = 0f;
-		if (targetPos != -1){
-			for (Char ch : Actor.chars()){
-				if (ch instanceof WandOfRegrowth.Lotus){
+		if (Dungeon.hero != null) {
+			use /= (1 + Dungeon.hero.pointsInTalent(Talent.DURABLE_TIPS));
+
+			//checks both destination and source position
+			float lotusPreserve = 0f;
+			if (targetPos != -1) {
+				for (Char ch : Actor.chars()) {
+					if (ch instanceof WandOfRegrowth.Lotus) {
+						WandOfRegrowth.Lotus l = (WandOfRegrowth.Lotus) ch;
+						if (l.inRange(targetPos)) {
+							lotusPreserve = Math.max(lotusPreserve, l.seedPreservation());
+						}
+					}
+				}
+				targetPos = -1;
+			}
+			int p = curUser == null ? Dungeon.hero.pos : curUser.pos;
+			for (Char ch : Actor.chars()) {
+				if (ch instanceof WandOfRegrowth.Lotus) {
 					WandOfRegrowth.Lotus l = (WandOfRegrowth.Lotus) ch;
-					if (l.inRange(targetPos)){
+					if (l.inRange(p)) {
 						lotusPreserve = Math.max(lotusPreserve, l.seedPreservation());
 					}
 				}
 			}
-			targetPos = -1;
+			use *= (1f - lotusPreserve);
 		}
-		int p = curUser == null ? Dungeon.hero.pos : curUser.pos;
-		for (Char ch : Actor.chars()){
-			if (ch instanceof WandOfRegrowth.Lotus){
-				WandOfRegrowth.Lotus l = (WandOfRegrowth.Lotus) ch;
-				if (l.inRange(p)){
-					lotusPreserve = Math.max(lotusPreserve, l.seedPreservation());
-				}
-			}
-		}
-		use *= (1f - lotusPreserve);
 
 		float usages = Math.round(MAX_DURABILITY/use);
 
