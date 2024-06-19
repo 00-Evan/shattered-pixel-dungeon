@@ -37,10 +37,16 @@ public class MimicTooth extends Trinket {
 	}
 
 	@Override
-	public String desc() {
-		return Messages.get(this, "desc",
-				Messages.decimalFormat("#.##", mimicChanceMultiplier(buffedLvl())),
-				Messages.decimalFormat("#.##", 100*ebonyMimicChance(buffedLvl())));
+	public String statsDesc() {
+		if (isIdentified()){
+			return Messages.get(this, "stats_desc",
+					Messages.decimalFormat("#.##", mimicChanceMultiplier(buffedLvl())),
+					Messages.decimalFormat("#.##", 100*ebonyMimicChance(buffedLvl())));
+		} else {
+			return Messages.get(this, "typical_stats_desc",
+					Messages.decimalFormat("#.##", mimicChanceMultiplier(0)),
+					Messages.decimalFormat("#.##", 100*ebonyMimicChance(0)));
+		}
 	}
 
 	public static float mimicChanceMultiplier(){

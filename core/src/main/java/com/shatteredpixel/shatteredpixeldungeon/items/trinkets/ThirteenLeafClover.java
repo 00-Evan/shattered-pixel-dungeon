@@ -38,8 +38,12 @@ public class ThirteenLeafClover extends Trinket {
 	}
 
 	@Override
-	public String desc() {
-		return Messages.get(this, "desc", (int)(100*combatDistributionInverseChance(buffedLvl())));
+	public String statsDesc() {
+		if (isIdentified()){
+			return Messages.get(this, "stats_desc", (int)(100*combatDistributionInverseChance(buffedLvl())));
+		} else {
+			return Messages.get(this, "typical_stats_desc", (int)(100*combatDistributionInverseChance(0)));
+		}
 	}
 
 	public static float combatDistributionInverseChance(){

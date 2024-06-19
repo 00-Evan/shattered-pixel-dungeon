@@ -37,10 +37,16 @@ public class EyeOfNewt extends Trinket {
 	}
 
 	@Override
-	public String desc() {
-		return Messages.get(this, "desc",
-				Messages.decimalFormat("#.##", 100*(1f-visionRangeMultiplier(buffedLvl()))),
-				mindVisionRange(buffedLvl()));
+	public String statsDesc() {
+		if (isIdentified()){
+			return Messages.get(this, "stats_desc",
+					Messages.decimalFormat("#.##", 100*(1f-visionRangeMultiplier(buffedLvl()))),
+					mindVisionRange(buffedLvl()));
+		} else {
+			return Messages.get(this, "typical_stats_desc",
+					Messages.decimalFormat("#.##", 100*(1f-visionRangeMultiplier(0))),
+					mindVisionRange(0));
+		}
 	}
 
 	public static float visionRangeMultiplier(){

@@ -38,11 +38,6 @@ public abstract class Trinket extends Item {
 	}
 
 	@Override
-	public boolean isIdentified() {
-		return true;
-	}
-
-	@Override
 	public boolean isUpgradable() {
 		return false;
 	}
@@ -62,6 +57,15 @@ public abstract class Trinket extends Item {
 			return -1;
 		}
 	}
+
+	@Override
+	public String info() {
+		String desc = desc();
+		desc += "\n\n" + statsDesc();
+		return desc;
+	}
+
+	public abstract String statsDesc();
 
 	public static class PlaceHolder extends Trinket {
 
@@ -83,6 +87,11 @@ public abstract class Trinket extends Item {
 		public String info() {
 				return "";
 			}
+
+		@Override
+		public String statsDesc() {
+			return "";
+		}
 
 	}
 

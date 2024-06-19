@@ -43,8 +43,12 @@ public class MossyClump extends Trinket {
 	}
 
 	@Override
-	public String desc() {
-		return Messages.get(this, "desc", (int)(100*overrideNormalLevelChance(buffedLvl())));
+	public String statsDesc() {
+		if (isIdentified()){
+			return Messages.get(this, "stats_desc", (int)(100*overrideNormalLevelChance(buffedLvl())));
+		} else {
+			return Messages.get(this, "typical_stats_desc", (int)(100*overrideNormalLevelChance(0)));
+		}
 	}
 
 	public static float overrideNormalLevelChance(){
