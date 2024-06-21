@@ -184,7 +184,21 @@ public class WandOfLivingEarth extends DamageWand {
 		}
 
 	}
-	
+
+	@Override
+	public String upgradeStat2(int level) {
+		return Integer.toString(16 + 8*level);
+	}
+
+	@Override
+	public String upgradeStat3(int level) {
+		if (Dungeon.isChallenged(Challenges.NO_ARMOR)){
+			return level + "-" + (2+level);
+		} else {
+			return level + "-" + (3+(3*level));
+		}
+	}
+
 	@Override
 	public void fx(Ballistica bolt, Callback callback) {
 		MagicMissile.boltFromChar(curUser.sprite.parent,

@@ -125,4 +125,13 @@ public class WandOfCorrosion extends Wand {
 			return Messages.get(this, "stats_desc", 2);
 	}
 
+	@Override
+	public String upgradeStat1(int level) {
+		return Integer.toString(level+2);
+	}
+
+	@Override
+	public String upgradeStat2(int level) {
+		return (1+.2f*level) + "x";
+	}
 }

@@ -29,10 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.InventoryScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicalInfusion;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.DamageWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorrosion;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatshield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
@@ -155,33 +152,31 @@ public class WndUpgrade extends Window {
 
 		float bottom = i1.y + 16 + GAP;
 
-		final String LINE = Messages.lang() == Languages.CHINESE ? "~" : "-";
-
 		// *** Various lines for stats, highlighting differences between current level and +1 ***
 
 		//physical damage
 		if (toUpgrade instanceof Weapon){
 			bottom = fillFields(Messages.get(this, "damage"),
-					((Weapon) toUpgrade).min(levelFrom) + LINE + ((Weapon) toUpgrade).max(levelFrom),
-					((Weapon) toUpgrade).min(levelTo) + LINE + ((Weapon) toUpgrade).max(levelTo),
+					((Weapon) toUpgrade).min(levelFrom) + "-" + ((Weapon) toUpgrade).max(levelFrom),
+					((Weapon) toUpgrade).min(levelTo) + "-" + ((Weapon) toUpgrade).max(levelTo),
 					bottom);
 		}
 
 		//blocking (armor and shields)
 		if (toUpgrade instanceof Armor){
 			bottom = fillFields(Messages.get(this, "blocking"),
-					((Armor) toUpgrade).DRMin(levelFrom) + LINE + ((Armor) toUpgrade).DRMax(levelFrom),
-					((Armor) toUpgrade).DRMin(levelTo) + LINE + ((Armor) toUpgrade).DRMax(levelTo),
+					((Armor) toUpgrade).DRMin(levelFrom) + "-" + ((Armor) toUpgrade).DRMax(levelFrom),
+					((Armor) toUpgrade).DRMin(levelTo) + "-" + ((Armor) toUpgrade).DRMax(levelTo),
 					bottom);
 		} else if (toUpgrade instanceof RoundShield){
 			bottom = fillFields(Messages.get(this, "blocking"),
-					0 + LINE + ((RoundShield) toUpgrade).DRMax(levelFrom),
-					0 + LINE + ((RoundShield) toUpgrade).DRMax(levelTo),
+					0 + "-" + ((RoundShield) toUpgrade).DRMax(levelFrom),
+					0 + "-" + ((RoundShield) toUpgrade).DRMax(levelTo),
 					bottom);
 		} else if (toUpgrade instanceof Greatshield){
 			bottom = fillFields(Messages.get(this, "blocking"),
-					0 + LINE + ((Greatshield) toUpgrade).DRMax(levelFrom),
-					0 + LINE + ((Greatshield) toUpgrade).DRMax(levelTo),
+					0 + "-" + ((Greatshield) toUpgrade).DRMax(levelFrom),
+					0 + "-" + ((Greatshield) toUpgrade).DRMax(levelTo),
 					bottom);
 		}
 
@@ -197,6 +192,8 @@ public class WndUpgrade extends Window {
 					Integer.toString((((Armor) toUpgrade).STRReq(levelTo))),
 					bottom);
 		}
+
+		//TODO Duelist weapon abilities
 
 		//durability
 		if (toUpgrade instanceof MissileWeapon){
@@ -215,37 +212,27 @@ public class WndUpgrade extends Window {
 			wand = Reflection.newInstance(((MagesStaff) toUpgrade).wandClass());
 		}
 
-		//direct damage and damage-adjacent effects
-		if (wand instanceof DamageWand) {
-			bottom = fillFields(Messages.get(this, "zap_damage"),
-					((DamageWand) wand).min(levelFrom) + LINE + ((DamageWand) wand).max(levelFrom),
-					((DamageWand) wand).min(levelTo) + LINE + ((DamageWand) wand).max(levelTo),
-					bottom);
-		} else if (wand instanceof WandOfCorrosion){
-			//TODO externalize!
-			bottom = fillFields(Messages.get(this, "corrosion_damage"),
-					Integer.toString(2+levelFrom),
-					Integer.toString(2+levelTo),
-					bottom);
-		} else if (wand instanceof WandOfWarding){
-			//TODO externalize!
-			bottom = fillFields(Messages.get(this, "ward_damage"),
-					(2 + levelFrom) + LINE + (8 + 4*levelFrom),
-					(2 + levelTo) + LINE + (8 + 4*levelTo),
-					bottom);
+		//Various wand stats (varies by wand)
+		if (wand instanceof Wand){
+			if (((Wand) wand).upgradeStat1(levelFrom) != null){
+				bottom = fillFields(Messages.get(wand, "upgrade_stat_name_1"),
+						((Wand) wand).upgradeStat1(levelFrom),
+						((Wand) wand).upgradeStat1(levelTo),
+						bottom);
+			}
+			if (((Wand) wand).upgradeStat2(levelFrom) != null){
+				bottom = fillFields(Messages.get(wand, "upgrade_stat_name_2"),
+						((Wand) wand).upgradeStat2(levelFrom),
+						((Wand) wand).upgradeStat2(levelTo),
+						bottom);
+			}
+			if (((Wand) wand).upgradeStat3(levelFrom) != null){
+				bottom = fillFields(Messages.get(wand, "upgrade_stat_name_3"),
+						((Wand) wand).upgradeStat3(levelFrom),
+						((Wand) wand).upgradeStat3(levelTo),
+						bottom);
+			}
 		}
-
-		//TODO various extra wand effects
-		//disintegration range?
-		//corrosion AOE?
-		//blast wave knockback?
-		//rock guardian powers?
-		//frost chill duration?
-		//prismatic light blinding/lighting?
-		//warding max energy
-		//transfusion stats? and also de-emphasize damage?
-		//corruption power?
-		//regrowth power?
 
 		//max charges
 		if (wand instanceof Wand){
@@ -256,7 +243,7 @@ public class WndUpgrade extends Window {
 					bottom);
 		}
 
-		//TODO ring stats
+		//TODO Various ring stats (varies by ring)
 		if (toUpgrade instanceof Ring){
 
 		}
@@ -265,13 +252,13 @@ public class WndUpgrade extends Window {
 		ColorBlock sep = new ColorBlock(1, 1, 0xFF222222);
 		sep.size(1, bottom - message.bottom());
 		sep.x = WIDTH/2f;
-		sep.y = message.bottom();
+		sep.y = message.bottom() + GAP;
 		add(sep);
 
 		sep = new ColorBlock(1, 1, 0xFF222222);
 		sep.size(1, bottom - message.bottom());
 		sep.x = 3*WIDTH/4f;
-		sep.y = message.bottom();
+		sep.y = message.bottom() + GAP;
 		add(sep);
 
 		// *** Various extra info texts that can appear underneath stats ***
@@ -415,12 +402,22 @@ public class WndUpgrade extends Window {
 	@Override
 	public void onBackPressed() {
 		//don't let this window be closed if
-		if (!force) super.onBackPressed();
+		//TODO currently never closes, as the Sou/magic infusion is consumed as it is shown
+		//we might want to only have it be pre-consumed when force = true
+		//as atm quitting the game with the window open will eat the scroll/infuse when force=false
 	}
 
 	private float fillFields(String title, String msg1, String msg2, float bottom){
 
-		RenderedTextBlock ttl = PixelScene.renderTextBlock( title , 6);
+		//the ~ symbol is more commonly used in Chinese
+		if (Messages.lang() == Languages.CHINESE){
+			msg1 = msg1.replace('-', '~');
+			msg2 = msg2.replace('-', '~');
+		}
+
+		RenderedTextBlock ttl = PixelScene.renderTextBlock(6);
+		ttl.align(RenderedTextBlock.CENTER_ALIGN);
+		ttl.text(title, WIDTH/2);
 		ttl.setPos(COL_1 - ttl.width() / 2f, bottom + GAP);
 		PixelScene.align(ttl);
 		add(ttl);
@@ -435,7 +432,7 @@ public class WndUpgrade extends Window {
 		PixelScene.align(m2);
 		add(m2);
 
-		return m2.bottom() + GAP + 1;
+		return ttl.bottom() + GAP;
 
 	}
 

@@ -252,6 +252,16 @@ public class WandOfCorruption extends Wand {
 	}
 
 	@Override
+	public String upgradeStat1(int level) {
+		return Messages.decimalFormat("#.##", 3f + level/3f);
+	}
+
+	@Override
+	public String upgradeStat2(int level) {
+		return Integer.toString(6 + 3*level);
+	}
+
+	@Override
 	public void fx(Ballistica bolt, Callback callback) {
 		MagicMissile.boltFromChar( curUser.sprite.parent,
 				MagicMissile.SHADOW,

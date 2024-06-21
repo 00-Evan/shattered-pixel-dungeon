@@ -220,6 +220,11 @@ public class WandOfBlastWave extends DamageWand {
 	}
 
 	@Override
+	public String upgradeStat2(int level) {
+		return Integer.toString(3 + level);
+	}
+
+	@Override
 	public void fx(Ballistica bolt, Callback callback) {
 		MagicMissile.boltFromChar( curUser.sprite.parent,
 				MagicMissile.FORCE,
