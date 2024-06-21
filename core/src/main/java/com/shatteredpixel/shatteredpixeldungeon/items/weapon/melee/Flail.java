@@ -134,6 +134,10 @@ public class Flail extends MeleeWeapon {
 		}
 	}
 
+	public String upgradeAbilityStat(int level){
+		return "+" + augment.damageFactor(8 + 2*level);
+	}
+
 	public static class SpinAbilityTracker extends FlavourBuff {
 
 		{

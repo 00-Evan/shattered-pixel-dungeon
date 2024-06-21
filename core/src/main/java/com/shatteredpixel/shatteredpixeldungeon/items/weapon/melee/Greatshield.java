@@ -75,4 +75,9 @@ public class Greatshield extends MeleeWeapon {
 			return Messages.get(this, "typical_ability_desc", 3);
 		}
 	}
+
+	@Override
+	public String upgradeAbilityStat(int level) {
+		return Integer.toString(3 + level);
+	}
 }

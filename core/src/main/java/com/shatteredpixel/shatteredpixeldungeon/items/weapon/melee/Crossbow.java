@@ -85,6 +85,11 @@ public class Crossbow extends MeleeWeapon {
 		}
 	}
 
+	@Override
+	public String upgradeAbilityStat(int level) {
+		return Integer.toString(3 + level);
+	}
+
 	public static class ChargedShot extends Buff{
 
 		{

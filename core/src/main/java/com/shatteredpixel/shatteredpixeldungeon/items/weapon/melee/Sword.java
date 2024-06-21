@@ -78,6 +78,11 @@ public class Sword extends MeleeWeapon {
 		}
 	}
 
+	public String upgradeAbilityStat(int level){
+		int dmgBoost = 4 + level;
+		return augment.damageFactor(min(level)+dmgBoost) + "-" + augment.damageFactor(max(level)+dmgBoost);
+	}
+
 	public static void cleaveAbility(Hero hero, Integer target, float dmgMulti, int dmgBoost, MeleeWeapon wep){
 		if (target == null) {
 			return;

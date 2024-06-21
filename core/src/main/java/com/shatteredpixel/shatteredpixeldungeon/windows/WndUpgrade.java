@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
@@ -33,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatshield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RoundShield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
@@ -156,17 +158,27 @@ public class WndUpgrade extends Window {
 
 		//physical damage
 		if (toUpgrade instanceof Weapon){
+			Weapon.Augment aug = ((Weapon) toUpgrade).augment;
 			bottom = fillFields(Messages.get(this, "damage"),
-					((Weapon) toUpgrade).min(levelFrom) + "-" + ((Weapon) toUpgrade).max(levelFrom),
-					((Weapon) toUpgrade).min(levelTo) + "-" + ((Weapon) toUpgrade).max(levelTo),
+					aug.damageFactor(((Weapon) toUpgrade).min(levelFrom)) + "-" + aug.damageFactor(((Weapon) toUpgrade).max(levelFrom)),
+					aug.damageFactor(((Weapon) toUpgrade).min(levelTo)) + "-" + aug.damageFactor(((Weapon) toUpgrade).max(levelTo)),
+					bottom);
+		}
+
+		if (Dungeon.hero != null && Dungeon.hero.heroClass == HeroClass.DUELIST
+				&& toUpgrade instanceof MeleeWeapon && ((MeleeWeapon) toUpgrade).upgradeAbilityStat(levelFrom) != null){
+			bottom = fillFields(Messages.get(toUpgrade, "upgrade_ability_stat_name"),
+					((MeleeWeapon) toUpgrade).upgradeAbilityStat(levelFrom),
+					((MeleeWeapon) toUpgrade).upgradeAbilityStat(levelTo),
 					bottom);
 		}
 
 		//blocking (armor and shields)
 		if (toUpgrade instanceof Armor){
+			Armor.Augment aug = ((Armor) toUpgrade).augment;
 			bottom = fillFields(Messages.get(this, "blocking"),
-					((Armor) toUpgrade).DRMin(levelFrom) + "-" + ((Armor) toUpgrade).DRMax(levelFrom),
-					((Armor) toUpgrade).DRMin(levelTo) + "-" + ((Armor) toUpgrade).DRMax(levelTo),
+					((Armor) toUpgrade).DRMin(levelFrom) + "-" + (((Armor) toUpgrade).DRMax(levelFrom) + aug.defenseFactor(levelFrom)),
+					((Armor) toUpgrade).DRMin(levelTo) + "-" +  (((Armor) toUpgrade).DRMax(levelFrom) + aug.defenseFactor(levelTo)),
 					bottom);
 		} else if (toUpgrade instanceof RoundShield){
 			bottom = fillFields(Messages.get(this, "blocking"),
@@ -192,8 +204,6 @@ public class WndUpgrade extends Window {
 					Integer.toString((((Armor) toUpgrade).STRReq(levelTo))),
 					bottom);
 		}
-
-		//TODO Duelist weapon abilities
 
 		//durability
 		if (toUpgrade instanceof MissileWeapon){
@@ -255,6 +265,12 @@ public class WndUpgrade extends Window {
 				bottom = fillFields(Messages.get(toUpgrade, "upgrade_stat_name_2"),
 						((Ring) toUpgrade).upgradeStat2(levelFrom),
 						((Ring) toUpgrade).upgradeStat2(levelTo),
+						bottom);
+			}
+			if (((Ring) toUpgrade).upgradeStat3(levelFrom) != null){
+				bottom = fillFields(Messages.get(toUpgrade, "upgrade_stat_name_3"),
+						((Ring) toUpgrade).upgradeStat3(levelFrom),
+						((Ring) toUpgrade).upgradeStat3(levelTo),
 						bottom);
 			}
 		}

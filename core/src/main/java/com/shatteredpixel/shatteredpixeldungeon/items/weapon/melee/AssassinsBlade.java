@@ -88,4 +88,9 @@ public class AssassinsBlade extends MeleeWeapon {
 		}
 	}
 
+	@Override
+	public String upgradeAbilityStat(int level) {
+		return Integer.toString(2+level);
+	}
+
 }

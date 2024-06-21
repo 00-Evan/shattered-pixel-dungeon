@@ -400,6 +400,10 @@ public class MeleeWeapon extends Weapon {
 		return Messages.get(this, "ability_desc");
 	}
 
+	public String upgradeAbilityStat(int level){
+		return null;
+	}
+
 	@Override
 	public String status() {
 		if (isEquipped(Dungeon.hero)

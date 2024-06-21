@@ -102,6 +102,11 @@ public class Dagger extends MeleeWeapon {
 		}
 	}
 
+	@Override
+	public String upgradeAbilityStat(int level) {
+		return Integer.toString(2+level);
+	}
+
 	public static void sneakAbility(Hero hero, Integer target, int maxDist, int invisTurns, MeleeWeapon wep){
 		if (target == null) {
 			return;

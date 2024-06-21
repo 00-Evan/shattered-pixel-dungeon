@@ -70,4 +70,9 @@ public class Katana extends MeleeWeapon {
 		}
 	}
 
+	public String upgradeAbilityStat(int level){
+		int dmgBoost = 6 + Math.round(1.5f*level);
+		return augment.damageFactor(min(level)+dmgBoost) + "-" + augment.damageFactor(max(level)+dmgBoost);
+	}
+
 }

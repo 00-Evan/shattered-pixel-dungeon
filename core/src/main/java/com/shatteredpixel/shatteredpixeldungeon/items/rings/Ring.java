@@ -195,6 +195,10 @@ public class Ring extends KindofMisc {
 	public String upgradeStat2(int level){
 		return null;
 	}
+
+	public String upgradeStat3(int level){
+		return null;
+	}
 	
 	@Override
 	public Item upgrade() {

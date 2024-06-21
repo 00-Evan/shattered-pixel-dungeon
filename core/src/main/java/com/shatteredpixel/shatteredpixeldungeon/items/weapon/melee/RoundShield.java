@@ -85,6 +85,11 @@ public class RoundShield extends MeleeWeapon {
 		}
 	}
 
+	@Override
+	public String upgradeAbilityStat(int level) {
+		return Integer.toString(5 + level);
+	}
+
 	public static void guardAbility(Hero hero, int duration, MeleeWeapon wep){
 		wep.beforeAbilityUsed(hero, null);
 		Buff.prolong(hero, GuardTracker.class, duration).hasBlocked = false;
