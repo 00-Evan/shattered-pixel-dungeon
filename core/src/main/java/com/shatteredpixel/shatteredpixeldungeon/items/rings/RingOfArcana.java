@@ -46,6 +46,10 @@ public class RingOfArcana extends Ring {
 		}
 	}
 
+	public String upgradeStat1(int level){
+		return Messages.decimalFormat("#.##", 100f * (Math.pow(1.175f, level+1)-1f)) + "%";
+	}
+
 	@Override
 	protected RingBuff buff( ) {
 		return new Arcana();

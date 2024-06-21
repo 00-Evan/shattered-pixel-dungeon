@@ -46,6 +46,10 @@ public class RingOfFuror extends Ring {
 		}
 	}
 
+	public String upgradeStat1(int level){
+		return Messages.decimalFormat("#.##", 100f * (Math.pow(1.09051f, level+1)-1f)) + "%";
+	}
+
 	@Override
 	protected RingBuff buff( ) {
 		return new Furor();

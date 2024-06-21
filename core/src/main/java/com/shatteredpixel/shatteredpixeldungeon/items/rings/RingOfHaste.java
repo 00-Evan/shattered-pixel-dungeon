@@ -45,6 +45,10 @@ public class RingOfHaste extends Ring {
 			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 20f));
 		}
 	}
+
+	public String upgradeStat1(int level){
+		return Messages.decimalFormat("#.##", 100f * (Math.pow(1.2f, level+1)-1f)) + "%";
+	}
 	
 	@Override
 	protected RingBuff buff( ) {

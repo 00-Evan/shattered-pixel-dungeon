@@ -46,6 +46,10 @@ public class RingOfTenacity extends Ring {
 		}
 	}
 
+	public String upgradeStat1(int level){
+		return Messages.decimalFormat("#.##", 100f * (1f - Math.pow(0.85f, level+1))) + "%";
+	}
+
 	@Override
 	protected RingBuff buff( ) {
 		return new Tenacity();

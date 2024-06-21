@@ -75,6 +75,10 @@ public class RingOfWealth extends Ring {
 		}
 	}
 
+	public String upgradeStat1(int level){
+		return Messages.decimalFormat("#.##", 100f * (Math.pow(1.2f, level+1)-1f)) + "%";
+	}
+
 	private static final String TRIES_TO_DROP = "tries_to_drop";
 	private static final String DROPS_TO_RARE = "drops_to_rare";
 

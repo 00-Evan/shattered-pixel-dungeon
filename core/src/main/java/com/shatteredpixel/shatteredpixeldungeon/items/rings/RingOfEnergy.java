@@ -49,6 +49,10 @@ public class RingOfEnergy extends Ring {
 					Messages.decimalFormat("#.##", 15f));
 		}
 	}
+
+	public String upgradeStat1(int level){
+		return Messages.decimalFormat("#.##", 100f * (Math.pow(1.15f, level+1)-1f)) + "%";
+	}
 	
 	@Override
 	protected RingBuff buff( ) {

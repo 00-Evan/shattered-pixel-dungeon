@@ -89,6 +89,16 @@ public class RingOfMight extends Ring {
 	}
 
 	@Override
+	public String upgradeStat1(int level) {
+		return Integer.toString(level+1);
+	}
+
+	@Override
+	public String upgradeStat2(int level) {
+		return Messages.decimalFormat("#.##", 100f * (Math.pow(1.035, level+1)-1f)) + "%";
+	}
+
+	@Override
 	protected RingBuff buff( ) {
 		return new Might();
 	}

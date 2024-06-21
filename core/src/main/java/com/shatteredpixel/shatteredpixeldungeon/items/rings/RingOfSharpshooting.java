@@ -45,6 +45,16 @@ public class RingOfSharpshooting extends Ring {
 			return Messages.get(this, "typical_stats", 1, Messages.decimalFormat("#.##", 20f));
 		}
 	}
+
+	@Override
+	public String upgradeStat1(int level) {
+		return Integer.toString(level+1);
+	}
+
+	@Override
+	public String upgradeStat2(int level) {
+		return Messages.decimalFormat("#.##", 100f * (Math.pow(1.2, level+1)-1f)) + "%";
+	}
 	
 	@Override
 	protected RingBuff buff( ) {

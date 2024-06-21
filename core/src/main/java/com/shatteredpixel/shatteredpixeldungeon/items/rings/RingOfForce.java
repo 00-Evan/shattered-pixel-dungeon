@@ -131,6 +131,17 @@ public class RingOfForce extends Ring {
 		}
 	}
 
+	@Override
+	public String upgradeStat1(int level) {
+		float tier = tier(Dungeon.hero != null ? Dungeon.hero.STR() : 10);
+		return min(level+1, tier) + "-" + max(level+1, tier);
+	}
+
+	@Override
+	public String upgradeStat2(int level) {
+		return Integer.toString(level+1);
+	}
+
 	public class Force extends RingBuff {
 	}
 
