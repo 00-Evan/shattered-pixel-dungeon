@@ -377,7 +377,7 @@ public abstract class Wand extends Item {
 		curCharges = Math.min( curCharges, maxCharges );
 	}
 	
-	protected int initialCharges() {
+	public int initialCharges() {
 		return 2;
 	}
 

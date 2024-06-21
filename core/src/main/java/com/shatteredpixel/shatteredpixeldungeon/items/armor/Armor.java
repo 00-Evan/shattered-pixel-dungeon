@@ -588,15 +588,15 @@ public class Armor extends EquipableItem {
 	}
 
 	public int STRReq(){
-		int req = STRReq(level());
+		return STRReq(level());
+	}
+
+	public int STRReq(int lvl){
+		int req = STRReq(tier, lvl);
 		if (masteryPotionBonus){
 			req -= 2;
 		}
 		return req;
-	}
-
-	public int STRReq(int lvl){
-		return STRReq(tier, lvl);
 	}
 
 	protected static int STRReq(int tier, int lvl){

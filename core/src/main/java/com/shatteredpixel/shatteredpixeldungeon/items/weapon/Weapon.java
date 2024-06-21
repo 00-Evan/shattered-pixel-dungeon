@@ -261,11 +261,7 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 
 	public int STRReq(){
-		int req = STRReq(level());
-		if (masteryPotionBonus){
-			req -= 2;
-		}
-		return req;
+		return STRReq(level());
 	}
 
 	public abstract int STRReq(int lvl);

@@ -84,16 +84,19 @@ public abstract class InventorySpell extends Spell {
 				curItem = detach(curUser.belongings.backpack);
 				
 				((InventorySpell)curItem).onItemSelected( item );
-				curUser.spend( 1f );
-				curUser.busy();
-				(curUser.sprite).operate( curUser.pos );
-				
-				Sample.INSTANCE.play( Assets.Sounds.READ );
-				Invisibility.dispel();
+				//Magical Infusion still does these things, but after the upgrade window
+				if (!(curItem instanceof MagicalInfusion)) {
+					curUser.spend(1f);
+					curUser.busy();
+					(curUser.sprite).operate(curUser.pos);
 
-				Catalog.countUse(curItem.getClass());
-				if (Random.Float() < ((Spell)curItem).talentChance){
-					Talent.onScrollUsed(curUser, curUser.pos, ((Spell)curItem).talentFactor);
+					Sample.INSTANCE.play(Assets.Sounds.READ);
+					Invisibility.dispel();
+
+					Catalog.countUse(curItem.getClass());
+					if (Random.Float() < ((Spell) curItem).talentChance) {
+						Talent.onScrollUsed(curUser, curUser.pos, ((Spell) curItem).talentFactor);
+					}
 				}
 				
 			}

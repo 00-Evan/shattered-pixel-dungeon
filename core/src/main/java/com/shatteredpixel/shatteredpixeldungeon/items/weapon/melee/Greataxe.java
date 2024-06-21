@@ -52,7 +52,11 @@ public class Greataxe extends MeleeWeapon {
 
 	@Override
 	public int STRReq(int lvl) {
-		return STRReq(tier+1, lvl); //20 base strength req, up from 18
+		int req = STRReq(tier+1, lvl); //20 base strength req, up from 18
+		if (masteryPotionBonus){
+			req -= 2;
+		}
+		return req;
 	}
 
 	@Override

@@ -115,9 +115,12 @@ public abstract class InventoryScroll extends Scroll {
 					curItem = detach(curUser.belongings.backpack);
 				}
 				((InventoryScroll)curItem).onItemSelected( item );
-				((InventoryScroll)curItem).readAnimation();
-				
-				Sample.INSTANCE.play( Assets.Sounds.READ );
+
+				//SoU still does these things, but after the upgrade window
+				if (!(curItem instanceof ScrollOfUpgrade)) {
+					((InventoryScroll) curItem).readAnimation();
+					Sample.INSTANCE.play(Assets.Sounds.READ);
+				}
 				
 			} else if (identifiedByUse && !((Scroll)curItem).anonymous) {
 				

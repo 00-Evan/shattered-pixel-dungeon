@@ -263,7 +263,11 @@ public class MeleeWeapon extends Weapon {
 	}
 
 	public int STRReq(int lvl){
-		return STRReq(tier, lvl);
+		int req = STRReq(tier, lvl);
+		if (masteryPotionBonus){
+			req -= 2;
+		}
+		return req;
 	}
 
 	private static boolean evaluatingTwinUpgrades = false;
