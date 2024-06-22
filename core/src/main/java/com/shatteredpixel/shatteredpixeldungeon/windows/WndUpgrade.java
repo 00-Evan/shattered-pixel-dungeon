@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
@@ -60,7 +61,8 @@ public class WndUpgrade extends Window {
 	private static final float COL_2 = 5*WIDTH/8f;
 	private static final float COL_3 = 7*WIDTH/8f;
 
-	protected static final int GAP	= 2;
+	private static final int GAP	= 2;
+	private static final int ITEMSLOT_SIZE = 18;
 
 	private boolean force;
 
@@ -103,12 +105,34 @@ public class WndUpgrade extends Window {
 
 		// *** Sprites, showing item at current level and with +1 ***
 
-		//TODO add a background here too, to better communicate things like ID state and curse state?
+		ColorBlock bg1 = new ColorBlock(ITEMSLOT_SIZE, ITEMSLOT_SIZE, 0x9953564D);
+		bg1.x = COL_2 - ITEMSLOT_SIZE/2f;
+		bg1.y = message.bottom() + 2*GAP;
+		add(bg1);
+
+		ColorBlock bg2 = new ColorBlock(ITEMSLOT_SIZE, ITEMSLOT_SIZE, 0x9953564D);
+		bg2.x = COL_3 - ITEMSLOT_SIZE/2f;
+		bg2.y = message.bottom() + 2*GAP;
+		add(bg2);
+
+		if (!toUpgrade.isIdentified()){
+			if (!toUpgrade.cursed && toUpgrade.cursedKnown){
+				bg1.hardlight(1f, 1, 2f);
+				bg2.hardlight(1f, 1, 2f);
+			} else {
+				bg1.hardlight(2f, 1, 2f);
+				bg2.hardlight(2f, 1, 2f);
+			}
+		} else if (toUpgrade.cursed && toUpgrade.cursedKnown){
+			bg1.hardlight(2f, 0.5f, 1f);
+			bg2.hardlight(2f, 0.5f, 1f);
+		}
+
 		ItemSprite i1 = new ItemSprite();
 		add(i1);
 		i1.view(toUpgrade);
 		i1.x = COL_2 - i1.width()/2f;
-		i1.y = message.bottom() + GAP + (16-i1.height())/2f;
+		i1.y = bg1.y + (ITEMSLOT_SIZE-i1.height())/2f;
 		PixelScene.align(i1);
 		add(i1);
 
@@ -139,21 +163,20 @@ public class WndUpgrade extends Window {
 
 		} else {
 			t1.text("?");
-			t1.hardlight(0.6f, 0.3f, 0.6f);
 			t2.text("+1?");
-			t2.hardlight(0.6f, 0.3f, 0.6f);
+			t2.hardlight(ItemSlot.UPGRADED);
 		}
 		t1.measure();
-		t1.x = COL_2 + 8 - t1.width();
-		t1.y = message.bottom() + GAP + 16 - t1.baseLine();
+		t1.x = COL_2 + ITEMSLOT_SIZE/2f - t1.width();
+		t1.y = bg1.y + ITEMSLOT_SIZE - t1.baseLine() - 1;
 		add(t1);
 
 		t2.measure();
-		t2.x = COL_3 + 8 - t2.width();
-		t2.y = message.bottom() + GAP + 16 - t2.baseLine();
+		t2.x = COL_3 + ITEMSLOT_SIZE/2f - t2.width();
+		t2.y = bg2.y + ITEMSLOT_SIZE - t2.baseLine() - 1;
 		add(t2);
 
-		float bottom = i1.y + 16 + GAP;
+		float bottom = i1.y + ITEMSLOT_SIZE;
 
 		// *** Various lines for stats, highlighting differences between current level and +1 ***
 
@@ -413,6 +436,9 @@ public class WndUpgrade extends Window {
 		add(btnCancel);
 
 		btnUpgrade.enable(Dungeon.hero.ready);
+
+		btnUpgrade.icon(new ItemSprite(upgrader));
+		btnCancel.icon(Icons.CLOSE.get());
 
 		bottom = (int)btnCancel.bottom();
 
