@@ -103,6 +103,7 @@ public class WndUpgrade extends Window {
 
 		// *** Sprites, showing item at current level and with +1 ***
 
+		//TODO add a background here too, to better communicate things like ID state and curse state?
 		ItemSprite i1 = new ItemSprite();
 		add(i1);
 		i1.view(toUpgrade);
@@ -254,7 +255,6 @@ public class WndUpgrade extends Window {
 		}
 
 		//Various ring stats (varies by ring)
-		//TODO cursed ring stats?
 		if (toUpgrade instanceof Ring){
 			if (((Ring) toUpgrade).upgradeStat1(levelFrom) != null){
 				bottom = fillFields(Messages.get(toUpgrade, "upgrade_stat_name_1"),

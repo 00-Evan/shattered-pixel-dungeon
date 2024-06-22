@@ -47,6 +47,7 @@ public class RingOfEvasion extends Ring {
 	}
 
 	public String upgradeStat1(int level){
+		if (cursed && cursedKnown) level = Math.min(-1, level-3);
 		return Messages.decimalFormat("#.##", 100f * (Math.pow(1.125f, level+1)-1f)) + "%";
 	}
 	
