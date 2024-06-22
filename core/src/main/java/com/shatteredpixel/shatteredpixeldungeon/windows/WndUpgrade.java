@@ -254,6 +254,7 @@ public class WndUpgrade extends Window {
 		}
 
 		//Various ring stats (varies by ring)
+		//TODO cursed ring stats?
 		if (toUpgrade instanceof Ring){
 			if (((Ring) toUpgrade).upgradeStat1(levelFrom) != null){
 				bottom = fillFields(Messages.get(toUpgrade, "upgrade_stat_name_1"),
@@ -369,6 +370,7 @@ public class WndUpgrade extends Window {
 					upgraded = ((MagicalInfusion) upgrader).upgradeItem(toUpgrade);
 				}
 
+				if (!force) upgrader.detach(Dungeon.hero.belongings.backpack);
 				Item moreUpgradeItem = Dungeon.hero.belongings.getItem(upgrader.getClass());
 
 				hide();
@@ -429,9 +431,7 @@ public class WndUpgrade extends Window {
 	@Override
 	public void onBackPressed() {
 		//don't let this window be closed if
-		//TODO currently never closes, as the Sou/magic infusion is consumed as it is shown
-		//we might want to only have it be pre-consumed when force = true
-		//as atm quitting the game with the window open will eat the scroll/infuse when force=false
+		if (!force) super.onBackPressed();
 	}
 
 	private float fillFields(String title, String msg1, String msg2, float bottom){

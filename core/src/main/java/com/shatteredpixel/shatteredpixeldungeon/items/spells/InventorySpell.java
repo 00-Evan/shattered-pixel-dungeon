@@ -81,10 +81,13 @@ public abstract class InventorySpell extends Spell {
 			
 			if (item != null) {
 
-				curItem = detach(curUser.belongings.backpack);
+				//Infusion opens a separate window that can be cancelled
+				//so we don't do a lot of logic here
+				if (!(curItem instanceof MagicalInfusion)) {
+					curItem = detach(curUser.belongings.backpack);
+				}
 				
 				((InventorySpell)curItem).onItemSelected( item );
-				//Magical Infusion still does these things, but after the upgrade window
 				if (!(curItem instanceof MagicalInfusion)) {
 					curUser.spend(1f);
 					curUser.busy();
