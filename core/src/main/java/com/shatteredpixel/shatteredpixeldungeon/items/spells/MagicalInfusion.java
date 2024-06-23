@@ -63,6 +63,10 @@ public class MagicalInfusion extends InventorySpell {
 
 	}
 
+	public void reShowSelector(){
+		GameScene.selectItem(itemSelector);
+	}
+
 	public void useAnimation(){
 		curUser.spend(1f);
 		curUser.busy();

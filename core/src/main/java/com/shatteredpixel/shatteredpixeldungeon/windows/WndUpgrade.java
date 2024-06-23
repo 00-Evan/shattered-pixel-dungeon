@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.InventoryScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicalInfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
@@ -64,6 +63,7 @@ public class WndUpgrade extends Window {
 	private static final int GAP	= 2;
 	private static final int ITEMSLOT_SIZE = 18;
 
+	private Item upgrader;
 	private boolean force;
 
 	private RedButton btnUpgrade;
@@ -71,6 +71,7 @@ public class WndUpgrade extends Window {
 
 	public WndUpgrade( Item upgrader, Item toUpgrade, boolean force){
 
+		this.upgrader = upgrader;
 		this.force = force;
 
 		IconTitle title = new IconTitle( new ItemSprite(upgrader), Messages.get(this, "title") );
@@ -399,7 +400,6 @@ public class WndUpgrade extends Window {
 				hide();
 
 				if (moreUpgradeItem != null && toUpgrade.isIdentified()){
-					moreUpgradeItem = moreUpgradeItem.detach(Dungeon.hero.belongings.backpack);
 					GameScene.show(new WndUpgrade(moreUpgradeItem, upgraded, false));
 				}
 			}
@@ -407,27 +407,15 @@ public class WndUpgrade extends Window {
 		btnUpgrade.setRect(0, bottom+2*GAP, WIDTH/2f, 16);
 		add(btnUpgrade);
 
-		btnCancel = new RedButton(Messages.get(this, "cancel")){
+		btnCancel = new RedButton(Messages.get(this, "back")){
 			@Override
 			protected void onClick() {
 				super.onClick();
-				if (!force) {
-					upgrader.collect();
-					hide();
-				} else {
-					GameScene.show( new WndOptions(new ItemSprite(upgrader),
-							Messages.titleCase(upgrader.name()),
-							Messages.get(InventoryScroll.class, "warning"),
-							Messages.get(InventoryScroll.class, "yes"),
-							Messages.get(InventoryScroll.class, "no") ) {
-						@Override
-						protected void onSelect( int index ) {
-							if (index == 0){
-								WndUpgrade.this.hide();
-							}
-						}
-						public void onBackPressed() {}
-					} );
+				hide();
+				if (upgrader instanceof ScrollOfUpgrade) {
+					((ScrollOfUpgrade) upgrader).reShowSelector(force);
+				} else if (upgrader instanceof MagicalInfusion){
+					((MagicalInfusion)upgrader).reShowSelector();
 				}
 			}
 
@@ -438,7 +426,7 @@ public class WndUpgrade extends Window {
 		btnUpgrade.enable(Dungeon.hero.ready);
 
 		btnUpgrade.icon(new ItemSprite(upgrader));
-		btnCancel.icon(Icons.CLOSE.get());
+		btnCancel.icon(Icons.EXIT.get());
 
 		bottom = (int)btnCancel.bottom();
 
@@ -456,8 +444,12 @@ public class WndUpgrade extends Window {
 
 	@Override
 	public void onBackPressed() {
-		//don't let this window be closed if
-		if (!force) super.onBackPressed();
+		super.onBackPressed();
+		if (upgrader instanceof ScrollOfUpgrade) {
+			((ScrollOfUpgrade) upgrader).reShowSelector(force);
+		} else if (upgrader instanceof MagicalInfusion){
+			((MagicalInfusion)upgrader).reShowSelector();
+		}
 	}
 
 	private float fillFields(String title, String msg1, String msg2, float bottom){
