@@ -596,7 +596,6 @@ public class GameScene extends PixelScene {
 		if (!SPDSettings.intro() &&
 				Rankings.INSTANCE.totalNumber > 0 &&
 				!Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_DIEING)){
-			GLog.p(Messages.get(Guidebook.class, "hint"));
 			GameScene.flashForDocument(Document.ADVENTURERS_GUIDE, Document.GUIDE_DIEING);
 		}
 
@@ -1102,6 +1101,16 @@ public class GameScene extends PixelScene {
 
 	public static void flashForDocument( Document doc, String page ){
 		if (scene != null) {
+			if (doc == Document.ADVENTURERS_GUIDE){
+				if (!page.equals(Document.GUIDE_INTRO)) {
+					if (SPDSettings.interfaceSize() == 0) {
+						GLog.p(Messages.get(Guidebook.class, "hint_mobile"));
+					} else {
+						GLog.p(Messages.get(Guidebook.class, "hint_desktop", KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(SPDAction.JOURNAL, ControllerHandler.isControllerConnected()))));
+					}
+				}
+				Dungeon.hero.sprite.showStatus(CharSprite.POSITIVE, Messages.get(Guidebook.class, "hint_status"));
+			}
 			scene.menu.flashForPage( doc, page );
 		}
 	}
@@ -1539,7 +1548,6 @@ public class GameScene extends PixelScene {
 		} else if ( o instanceof Mob && ((Mob) o).isActive() ){
 			GameScene.show(new WndInfoMob((Mob) o));
 			if (o instanceof Snake && !Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_SURPRISE_ATKS)){
-				GLog.p(Messages.get(Guidebook.class, "hint"));
 				GameScene.flashForDocument(Document.ADVENTURERS_GUIDE, Document.GUIDE_SURPRISE_ATKS);
 			}
 		} else if ( o instanceof Heap && !((Heap) o).isEmpty() ){

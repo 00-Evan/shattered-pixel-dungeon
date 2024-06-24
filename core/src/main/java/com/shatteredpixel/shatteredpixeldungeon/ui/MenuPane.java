@@ -234,7 +234,7 @@ public class MenuPane extends Component {
 			bg = new Image( Assets.Interfaces.MENU_BTN, 2, 2, 13, 11 );
 			add( bg );
 
-			journalIcon = new Image( Assets.Interfaces.MENU_BTN, 31, 0, 11, 7);
+			journalIcon = new Image( Assets.Interfaces.MENU_BTN, 31, 0, 11, 6);
 			add( journalIcon );
 
 			keyIcon = new KeyDisplay();
@@ -308,9 +308,15 @@ public class MenuPane extends Component {
 			keyIcon.am = journalIcon.am = 1;
 			if (flashingPage != null){
 				if (flashingDoc == Document.ALCHEMY_GUIDE){
-					WndJournal.last_index = 1;
+					WndJournal.last_index = 2;
 					GameScene.show( new WndJournal() );
 				} else if (flashingDoc.pageNames().contains(flashingPage)){
+					if (flashingDoc == Document.ADVENTURERS_GUIDE){
+						WndJournal.last_index = 1;
+					} else if (flashingDoc.isLoreDoc()){
+						WndJournal.last_index = 3;
+						WndJournal.CatalogTab.currentItemIdx = 3;
+					}
 					GameScene.show( new WndStory( flashingDoc.pageSprite(flashingPage),
 							flashingDoc.pageTitle(flashingPage),
 							flashingDoc.pageBody(flashingPage) ){

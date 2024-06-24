@@ -39,6 +39,7 @@ public enum Icons {
 	CHANGES,
 	PREFS,
 	SHPX,
+	JOURNAL,
 
 	//rankings and hero select icons, spacing for 16x16
 	STAIRS,
@@ -86,6 +87,7 @@ public enum Icons {
 	COPY,
 	PASTE,
 	CATALOG,
+	ALCHEMY,
 	COIN_SML,
 	ENERGY_SML,
 	BACKPACK,
@@ -153,6 +155,9 @@ public enum Icons {
 				break;
 			case SHPX:
 				icon.frame( icon.texture.uvRectBySize( 119, 0, 16, 16 ) );
+				break;
+			case JOURNAL:
+				icon.frame( icon.texture.uvRectBySize( 136, 0, 17, 16 ) );
 				break;
 
 			case STAIRS:
@@ -282,6 +287,9 @@ public enum Icons {
 				break;
 			case CATALOG:
 				icon.frame( icon.texture.uvRectBySize( 240, 64, 13, 16 ) );
+				break;
+			case ALCHEMY:
+				icon.frame( icon.texture.uvRectBySize( 224, 64, 16, 16 ) );
 				break;
 			case COIN_SML:
 				icon.frame( icon.texture.uvRectBySize( 192, 80, 7, 7 ) );

@@ -113,11 +113,23 @@ public class WndJournal extends WndTabbed {
 		catalogTab.updateList();
 		
 		Tab[] tabs = {
+				new IconTab( Icons.JOURNAL.get() ) {
+					protected void select( boolean value ) {
+						super.select( value );
+						notesTab.active = notesTab.visible = value;
+						if (value) last_index = 0;
+					}
+
+					@Override
+					protected String hoverText() {
+						return Messages.get(notesTab, "title");
+					}
+				},
 				new IconTab( new ItemSprite(ItemSpriteSheet.MASTERY, null) ) {
 					protected void select( boolean value ) {
 						super.select( value );
 						guideTab.active = guideTab.visible = value;
-						if (value) last_index = 0;
+						if (value) last_index = 1;
 					}
 
 					@Override
@@ -125,28 +137,16 @@ public class WndJournal extends WndTabbed {
 						return Messages.get(guideTab, "title");
 					}
 				},
-				new IconTab( new ItemSprite(ItemSpriteSheet.ALCH_PAGE, null) ) {
+				new IconTab( Icons.ALCHEMY.get() ) {
 					protected void select( boolean value ) {
 						super.select( value );
 						alchemyTab.active = alchemyTab.visible = value;
-						if (value) last_index = 1;
-					}
-
-					@Override
-					protected String hoverText() {
-						return Messages.get(alchemyTab, "title");
-					}
-				},
-				new IconTab( Icons.get(Icons.STAIRS) ) {
-					protected void select( boolean value ) {
-						super.select( value );
-						notesTab.active = notesTab.visible = value;
 						if (value) last_index = 2;
 					}
 
 					@Override
 					protected String hoverText() {
-						return Messages.get(notesTab, "title");
+						return Messages.get(alchemyTab, "title");
 					}
 				},
 				new IconTab( Icons.CATALOG.get() ) {
@@ -478,12 +478,12 @@ public class WndJournal extends WndTabbed {
 		
 	}
 	
-	private static class CatalogTab extends Component{
+	public static class CatalogTab extends Component{
 		
 		private RedButton[] itemButtons;
 		private static final int NUM_BUTTONS = 4;
-		
-		private static int currentItemIdx   = 0;
+
+		public static int currentItemIdx   = 0;
 		private static float[] scrollPositions = new float[NUM_BUTTONS];
 		
 		//sprite locations
