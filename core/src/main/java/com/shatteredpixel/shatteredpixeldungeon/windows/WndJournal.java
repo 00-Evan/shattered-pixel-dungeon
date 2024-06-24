@@ -22,8 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -119,12 +119,22 @@ public class WndJournal extends WndTabbed {
 						guideTab.active = guideTab.visible = value;
 						if (value) last_index = 0;
 					}
+
+					@Override
+					protected String hoverText() {
+						return Messages.get(guideTab, "title");
+					}
 				},
 				new IconTab( new ItemSprite(ItemSpriteSheet.ALCH_PAGE, null) ) {
 					protected void select( boolean value ) {
 						super.select( value );
 						alchemyTab.active = alchemyTab.visible = value;
 						if (value) last_index = 1;
+					}
+
+					@Override
+					protected String hoverText() {
+						return Messages.get(alchemyTab, "title");
 					}
 				},
 				new IconTab( Icons.get(Icons.STAIRS) ) {
@@ -133,12 +143,22 @@ public class WndJournal extends WndTabbed {
 						notesTab.active = notesTab.visible = value;
 						if (value) last_index = 2;
 					}
+
+					@Override
+					protected String hoverText() {
+						return Messages.get(notesTab, "title");
+					}
 				},
 				new IconTab( Icons.CATALOG.get() ) {
 					protected void select( boolean value ) {
 						super.select( value );
 						catalogTab.active = catalogTab.visible = value;
 						if (value) last_index = 3;
+					}
+
+					@Override
+					protected String hoverText() {
+						return Messages.get(catalogTab, "title");
 					}
 				}
 		};
@@ -401,52 +421,59 @@ public class WndJournal extends WndTabbed {
 	
 	private static class NotesTab extends Component {
 		
-		private ScrollingListPane list;
+		private ScrollingGridPane grid;
 		
 		@Override
 		protected void createChildren() {
-			list = new ScrollingListPane();
-			add( list );
+			grid = new ScrollingGridPane();
+			add(grid);
 		}
 		
 		@Override
 		protected void layout() {
 			super.layout();
-			list.setRect( x, y, width, height);
+			grid.setRect( x, y, width, height);
 		}
 		
 		private void updateList(){
-			//Keys
-			ArrayList<Notes.KeyRecord> keys = Notes.getRecords(Notes.KeyRecord.class);
-			if (!keys.isEmpty()){
-				list.addTitle(Messages.get(this, "keys"));
 
-				for(Notes.Record rec : keys){
-					ScrollingListPane.ListItem item = new ScrollingListPane.ListItem( Icons.get(Icons.STAIRS),
-							Integer.toString(rec.depth()),
-							Messages.titleCase(rec.desc()));
-					if (Dungeon.depth == rec.depth()) item.hardlight(TITLE_COLOR);
-					list.addItem(item);
+			grid.addHeader("_" + Messages.get(this, "title") + "_", 9, true);
+
+			grid.addHeader(Messages.get(this, "desc"), 6, true);
+
+			for (int i = Statistics.deepestFloor; i > 0; i--){
+
+				ArrayList<Notes.Record> recs = Notes.getRecords(i);
+
+				grid.addHeader("_" + Messages.get(this, "floor_header", i) + "_");
+				for( Notes.Record rec : recs){
+
+					ScrollingGridPane.GridItem gridItem = new ScrollingGridPane.GridItem(rec.icon()){
+						@Override
+						public boolean onClick(float x, float y) {
+							if (inside(x, y)) {
+								GameScene.show(new WndTitledMessage(rec.icon(),
+										Messages.titleCase(rec.title()),
+										rec.desc()));
+								return true;
+							} else {
+								return false;
+							}
+						}
+					};
+
+					if (rec.quantity() > 1){
+						BitmapText text = new BitmapText(Integer.toString(rec.quantity()), PixelScene.pixelFont);
+						text.measure();
+						gridItem.addSecondIcon( text );
+					}
+
+					grid.addItem(gridItem);
 				}
 			}
-			
-			//Landmarks
-			ArrayList<Notes.LandmarkRecord> landmarks = Notes.getRecords(Notes.LandmarkRecord.class);
-			if (!landmarks.isEmpty()){
 
-				list.addTitle(Messages.get(this, "landmarks"));
+			grid.setRect(x, y, width, height);
 
-				for (Notes.Record rec : landmarks) {
-					ScrollingListPane.ListItem item = new ScrollingListPane.ListItem( Icons.get(Icons.STAIRS),
-							Integer.toString(rec.depth()),
-							Messages.titleCase(rec.desc()));
-					if (Dungeon.depth == rec.depth()) item.hardlight(TITLE_COLOR);
-					list.addItem(item);
-				}
-
-			}
-
-			list.setRect(x, y, width, height);
 		}
 		
 	}

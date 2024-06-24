@@ -21,9 +21,24 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.journal;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.BlacksmithSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ImpSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ShopkeeperSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.SpawnerSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.StatueSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.WandmakerSprite;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.TerrainFeaturesTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIcon;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.watabou.noosa.Image;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 
@@ -40,7 +55,13 @@ public class Notes {
 		public int depth(){
 			return depth;
 		}
+
+		public Image icon() { return Icons.STAIRS.get(); }
+
+		public int quantity() { return 1; }
 		
+		public abstract String title();
+
 		public abstract String desc();
 		
 		@Override
@@ -79,8 +100,8 @@ public class Notes {
 		IMP,
 
 		DEMON_SPAWNER;
-		
-		public String desc() {
+
+		public String title() {
 			return Messages.get(this, name());
 		}
 	}
@@ -95,12 +116,51 @@ public class Notes {
 			this.landmark = landmark;
 			this.depth = depth;
 		}
-		
+
+		public Image icon(){
+			switch (landmark){
+				default:
+					return super.icon();
+
+				//TODO we probably want a separate image file for landmark visuals, especially if we expand this
+				case WELL_OF_HEALTH:
+				case WELL_OF_AWARENESS:
+					return new Image(Assets.Environment.TILES_SEWERS, 48, 16, 16, 16);
+				case ALCHEMY:
+					return new Image(Assets.Environment.TILES_SEWERS, 0, 64, 16, 16);
+				case GARDEN:
+					return TerrainFeaturesTilemap.getPlantVisual(new Sungrass());
+				case STATUE:
+					return new Image(new StatueSprite());
+				case SACRIFICIAL_FIRE:
+					return new BuffIcon(BuffIndicator.SACRIFICE, true);
+				case SHOP:
+					return new Image(new ShopkeeperSprite());
+
+				case GHOST:
+					return new Image(new GhostSprite());
+				case WANDMAKER:
+					return new Image(new WandmakerSprite());
+				case TROLL:
+					return new Image(new BlacksmithSprite());
+				case IMP:
+					return new Image(new ImpSprite());
+
+				case DEMON_SPAWNER:
+					return new Image(new SpawnerSprite());
+			}
+		}
+
+		@Override
+		public String title() {
+			return landmark.title();
+		}
+
 		@Override
 		public String desc() {
-			return landmark.desc();
+			return "";
 		}
-		
+
 		@Override
 		public boolean equals(Object obj) {
 			return (obj instanceof LandmarkRecord)
@@ -137,16 +197,26 @@ public class Notes {
 		public int depth() {
 			return key.depth;
 		}
-		
+
+		@Override
+		public Image icon() {
+			return new ItemSprite(key);
+		}
+
+		@Override
+		public String title() {
+			return key.title();
+		}
+
 		@Override
 		public String desc() {
-			return key.title();
+			return key.desc();
 		}
 		
 		public Class<? extends Key> type(){
 			return key.getClass();
 		}
-		
+
 		public int quantity(){
 			return key.quantity();
 		}
@@ -255,6 +325,21 @@ public class Notes {
 		for (Record rec : records){
 			if (recordType.isInstance(rec)){
 				filtered.add((T)rec);
+			}
+		}
+		return filtered;
+	}
+
+	public static ArrayList<Record> getRecords(int depth){
+		ArrayList<Record> filtered = new ArrayList<>();
+		for (Record rec : records){
+			if (rec.depth() == depth){
+				if (rec instanceof KeyRecord){
+					filtered.add(rec); //key records always go at the end
+				} else {
+					filtered.add(0, rec);
+				}
+
 			}
 		}
 		return filtered;

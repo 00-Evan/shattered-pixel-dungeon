@@ -35,6 +35,7 @@ public class ScrollingGridPane extends ScrollPane {
 	private ArrayList<Component> items = new ArrayList<>();
 
 	private static final int ITEM_SIZE	= 17;
+	private static final int MIN_GROUP_SIZE = 3*(ITEM_SIZE+1);
 
 	public ScrollingGridPane(){
 		super(new Component());
@@ -77,15 +78,24 @@ public class ScrollingGridPane extends ScrollPane {
 		super.layout();
 
 		float left = 0;
-		boolean freshRow = true;
 		float top = 0;
+
+		//these variables help control logic for laying out multiple grid groups on one line
+		boolean freshRow = true; //whether the previous group is still on its first row
+		boolean lastWasSmallheader = false; //whether the last UI element was a header on its own
+		float widthThisGroup = 0; //how wide the current group is (we use a min of 3 items)
+
 		for (int i = 0; i < items.size(); i++){
 			Component item = items.get(i);
 			if (item instanceof GridHeader){
-				if (left > 0){
-					//this bit of logic here exists so that multiple headers can be on one row in landscape
-					// if both of their groups have a small number of items (e.g. 6)
-					float spaceLeft = width() - left;
+				//we can sometimes get two smaller headers next to each other if a group has no items in it
+				//so we need to treat it as if there were grid items for proper layout
+				if (left > 0 || lastWasSmallheader){
+
+					//this bit of logic exists so that multiple headers can be on one row
+					// if all of their groups have a small number of items, with a min space for 3
+					float spacing = Math.max(0, MIN_GROUP_SIZE - widthThisGroup);
+					float spaceLeft = width() - (left + spacing);
 					int spaceReq = 0;
 					for (int j = i+1; j < items.size(); j++){
 						if (items.get(j) instanceof GridItem){
@@ -94,7 +104,9 @@ public class ScrollingGridPane extends ScrollPane {
 							break;
 						}
 					}
-					if (freshRow && spaceLeft >= spaceReq){
+					spaceReq = Math.max(spaceReq, MIN_GROUP_SIZE);
+					if (!((GridHeader) item).center && freshRow && spaceLeft >= spaceReq){
+						left = left + spacing;
 						top -= item.height()+1;
 					} else {
 						left = 0;
@@ -104,15 +116,27 @@ public class ScrollingGridPane extends ScrollPane {
 				}
 				item.setRect(left, top, width(), item.height());
 				top += item.height()+1;
+				widthThisGroup = 0;
+
+				if (!((GridHeader) item).center){
+					lastWasSmallheader = true;
+				} else {
+					lastWasSmallheader = false;
+				}
+
 			} if (item instanceof GridItem){
 				if (left + ITEM_SIZE > width()) {
 					left = 0;
+					widthThisGroup = 0;
 					top += ITEM_SIZE+1;
 					freshRow = false;
 				}
 				item.setRect(left, top, ITEM_SIZE, ITEM_SIZE);
 				left += ITEM_SIZE+1;
+				widthThisGroup += ITEM_SIZE+1;
+				lastWasSmallheader = false;
 			}
+
 		}
 		if (left > 0){
 			left = 0;
@@ -186,7 +210,6 @@ public class ScrollingGridPane extends ScrollPane {
 
 		protected RenderedTextBlock text;
 		boolean center;
-		protected ColorBlock sep;
 
 		public GridHeader( String text ){
 			this(text, 7, false);
@@ -199,10 +222,6 @@ public class ScrollingGridPane extends ScrollPane {
 			this.text = PixelScene.renderTextBlock(text, size);
 			add(this.text);
 
-			if (center) {
-				sep = new ColorBlock(1, 1, 0xFF222222);
-				//add(sep);
-			}
 		}
 
 		@Override
@@ -215,11 +234,11 @@ public class ScrollingGridPane extends ScrollPane {
 			super.layout();
 
 			if (center){
+				text.align(RenderedTextBlock.CENTER_ALIGN);
+				text.maxWidth((int)width());
 				text.setPos(x + (width() - text.width()) / 2, y+1);
-				sep.size(width(), 1);
-				sep.x = x;
-				sep.y = bottom();
 			} else {
+				text.maxWidth((int)width());
 				text.setPos(x, y+1);
 			}
 		}
