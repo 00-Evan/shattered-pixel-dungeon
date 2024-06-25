@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.Visual;
@@ -200,6 +201,7 @@ public class ScrollingGridPane extends ScrollPane {
 			if (secondIcon != null){
 				secondIcon.x = x + width()-secondIcon.width()-1;
 				secondIcon.y = y + height()-secondIcon.height()-1;
+				if (secondIcon instanceof BitmapText) secondIcon.y++;
 			}
 
 		}

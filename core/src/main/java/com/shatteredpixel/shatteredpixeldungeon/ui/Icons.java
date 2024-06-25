@@ -85,6 +85,10 @@ public enum Icons {
 	BUFFS,
 	CATALOG,
 	ALCHEMY,
+	GRASS,
+	WELL_HEALTH,
+	WELL_AWARENESS,
+	SACRIFICE_ALTAR,
 
 	//smaller icons, variable spacing
 	SKULL,
@@ -271,6 +275,18 @@ public enum Icons {
 				break;
 			case ALCHEMY:
 				icon.frame( icon.texture.uvRectBySize( 112, 48, 16, 16 ) );
+				break;
+			case GRASS:
+				icon.frame( icon.texture.uvRectBySize( 128, 48, 16, 16 ) );
+				break;
+			case WELL_HEALTH:
+				icon.frame( icon.texture.uvRectBySize( 144, 48, 16, 16 ) );
+				break;
+			case WELL_AWARENESS:
+				icon.frame( icon.texture.uvRectBySize( 160, 48, 16, 16 ) );
+				break;
+			case SACRIFICE_ALTAR:
+				icon.frame( icon.texture.uvRectBySize( 176, 48, 16, 16 ) );
 				break;
 
 			case SKULL:

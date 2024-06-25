@@ -63,6 +63,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollingListPane;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.Visual;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.RectF;
 import com.watabou.utils.Reflection;
@@ -463,10 +464,9 @@ public class WndJournal extends WndTabbed {
 						}
 					};
 
-					if (rec.quantity() > 1){
-						BitmapText text = new BitmapText(Integer.toString(rec.quantity()), PixelScene.pixelFont);
-						text.measure();
-						gridItem.addSecondIcon( text );
+					Visual secondIcon = rec.secondIcon();
+					if (secondIcon != null){
+						gridItem.addSecondIcon( secondIcon );
 					}
 
 					grid.addItem(gridItem);

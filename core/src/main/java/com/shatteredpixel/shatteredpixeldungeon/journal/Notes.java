@@ -21,24 +21,21 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.journal;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BlacksmithSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ImpSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ShopkeeperSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SpawnerSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.StatueSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.WandmakerSprite;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.TerrainFeaturesTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIcon;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.Visual;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 
@@ -57,6 +54,8 @@ public class Notes {
 		}
 
 		public Image icon() { return Icons.STAIRS.get(); }
+
+		public Visual secondIcon() { return null; }
 
 		public int quantity() { return 1; }
 		
@@ -86,6 +85,10 @@ public class Notes {
 	}
 	
 	public enum Landmark {
+		//a landmark for each depth type
+
+		//more special room landmarks?
+		// distant well
 		WELL_OF_HEALTH,
 		WELL_OF_AWARENESS,
 		ALCHEMY,
@@ -98,6 +101,7 @@ public class Notes {
 		WANDMAKER,
 		TROLL,
 		IMP,
+		//rat king?
 
 		DEMON_SPAWNER;
 
@@ -122,20 +126,20 @@ public class Notes {
 				default:
 					return super.icon();
 
-				//TODO we probably want a separate image file for landmark visuals, especially if we expand this
 				case WELL_OF_HEALTH:
+					return Icons.get(Icons.WELL_HEALTH);
 				case WELL_OF_AWARENESS:
-					return new Image(Assets.Environment.TILES_SEWERS, 48, 16, 16, 16);
+					return Icons.get(Icons.WELL_AWARENESS);
 				case ALCHEMY:
-					return new Image(Assets.Environment.TILES_SEWERS, 0, 64, 16, 16);
+					return Icons.get(Icons.ALCHEMY);
 				case GARDEN:
-					return TerrainFeaturesTilemap.getPlantVisual(new Sungrass());
+					return Icons.get(Icons.GRASS);
 				case STATUE:
 					return new Image(new StatueSprite());
 				case SACRIFICIAL_FIRE:
-					return new BuffIcon(BuffIndicator.SACRIFICE, true);
+					return Icons.get(Icons.SACRIFICE_ALTAR);
 				case SHOP:
-					return new Image(new ShopkeeperSprite());
+					return Icons.get(Icons.GOLD);
 
 				case GHOST:
 					return new Image(new GhostSprite());
@@ -201,6 +205,17 @@ public class Notes {
 		@Override
 		public Image icon() {
 			return new ItemSprite(key);
+		}
+
+		@Override
+		public Visual secondIcon() {
+			if (quantity() > 1){
+				BitmapText text = new BitmapText(Integer.toString(quantity()), PixelScene.pixelFont);
+				text.measure();
+				return text;
+			} else {
+				return null;
+			}
 		}
 
 		@Override
