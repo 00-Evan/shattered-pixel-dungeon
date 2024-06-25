@@ -724,14 +724,14 @@ public class HeroSelectScene extends PixelScene {
 						ShatteredPixelDungeon.scene().addToFront(new WndChallenges(SPDSettings.challenges(), true) {
 							public void onBackPressed() {
 								super.onBackPressed();
-								icon(Icons.get(SPDSettings.challenges() > 0 ? Icons.CHALLENGE_ON : Icons.CHALLENGE_OFF));
+								icon(Icons.get(SPDSettings.challenges() > 0 ? Icons.CHALLENGE_COLOR : Icons.CHALLENGE_GREY));
 								updateOptionsColor();
 							}
 						} );
 					}
 				};
 				challengeButton.leftJustify = true;
-				challengeButton.icon(Icons.get(SPDSettings.challenges() > 0 ? Icons.CHALLENGE_ON : Icons.CHALLENGE_OFF));
+				challengeButton.icon(Icons.get(SPDSettings.challenges() > 0 ? Icons.CHALLENGE_COLOR : Icons.CHALLENGE_GREY));
 				add(challengeButton);
 				buttons.add(challengeButton);
 			}

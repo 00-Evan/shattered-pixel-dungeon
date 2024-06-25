@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
@@ -700,6 +701,13 @@ public class WndJournal extends WndTabbed {
 						} else {
 							desc += "\n\n" + Messages.get(CatalogTab.class, "use_count", Catalog.useCount(itemClass));
 						}
+					}
+
+					//mage's staff normally has 2 pixels extra at the top for particle effects, we chop that off here
+					if (item instanceof MagesStaff){
+						RectF frame = sprite.frame();
+						frame.top += frame.height()/8f;
+						sprite.frame(frame);
 					}
 
 					if (item.icon != -1) {

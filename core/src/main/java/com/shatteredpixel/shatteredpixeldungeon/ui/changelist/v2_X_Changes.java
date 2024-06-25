@@ -206,7 +206,7 @@ public class v2_X_Changes {
 				"_-_ Champion's two weapons now share a charge count, but Champion gets boosted max charges and charge speed.\n" +
 				"_-_ Champion's secondary charge talent has been replaced with a new talent that encourages varied ability use."));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.ENERGY), "Alchemy Changes",
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ENERGY), "Alchemy Changes",
 				"I've made a bunch of changes to the alchemy system to streamline things and complement the addition of trinkets:\n" +
 				"\n" +
 				"_-_ Catalysts have been removed entirely, recipes that required one now simply cost 8 or 9 more energy.\n" +
@@ -607,7 +607,7 @@ public class v2_X_Changes {
 		changes.hardlight(CharSprite.WARNING);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(Icons.CHALLENGE_ON.get(), "Hostile Champions",
+		changes.addButton( new ChangeButton(Icons.CHALLENGE_COLOR.get(), "Hostile Champions",
 				"I've decided to make some changes to the hostile champions challenge, to better balance the difficulty of each of the champion types, and address some common feedback about difficulty spikes:\n" +
 				"\n" +
 				"_- Projecting Champions_ now have +3 attack range, instead of infinite range\n" +

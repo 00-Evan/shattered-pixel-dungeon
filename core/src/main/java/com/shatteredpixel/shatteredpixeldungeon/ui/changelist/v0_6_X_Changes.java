@@ -218,7 +218,7 @@ public class v0_6_X_Changes {
 				"\n" +
 				"I also made some important changes to challenges in v0.6.4, primarily to make stacked challenge games a bit easier. This made high-challenge games more feasible without extreme luck, which led to a big increase in challenge interest among highly skilled players."));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.CHALLENGE_ON), "Challenges",
+		changes.addButton( new ChangeButton(Icons.get(Icons.CHALLENGE_COLOR), "Challenges",
 				"Challenges have received several major changes, with the goal of making them more fair and interesting.\n" +
 				"\n" +
 				"_-_ Challenges now have descriptions\n" +

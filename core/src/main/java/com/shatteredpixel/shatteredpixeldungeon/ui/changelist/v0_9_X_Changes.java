@@ -77,7 +77,7 @@ public class v0_9_X_Changes {
 				"After the defeating the fourth boss, the player now gets to choose between one of three abilities for each hero. Armor abilities also charge much faster, and can be further improved via tier four talents!\n\n" +
 				"Each armor ability has three talents, plus one charge-speed talent that's shared between them. These talents all take up to 4 points, and there are up to 10 points available in tier 4, for levels 21-30."));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.CHALLENGE_ON), "New Challenge!",
+		changes.addButton( new ChangeButton(Icons.get(Icons.CHALLENGE_COLOR), "New Challenge!",
 				"A new challenge has been added: _Badder Bosses!_\n\n" +
 				"This challenge is a followup to Hostile Champions in a lot of ways, making the dungeon's bosses much stronger, instead of the enemies. Early bosses like Goo are only a touch tougher, but lategame bosses are quite a lot more deadly!\n\n" +
 				"To go along with this challenge, I've also made a few targeted tweaks to regular boss mechanics:\n" +
@@ -342,7 +342,7 @@ public class v0_9_X_Changes {
 				"_- Succubi:_ Damage up to 25-30 from 22-30.\n" +
 				"_- Scorpios:_ HP up to 110 from 95, damage up to 30-40 from 26-36."));
 
-		changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_ON), "Hostile Champions",
+		changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_COLOR), "Hostile Champions",
 				"I've made another round of tweaks to the Hostile Champions challenge to make it more consistent and a bit harder overall:\n\n" +
 				"_-_ Champion spawn rate up to 1/8 from 1/10.\n" +
 				"_-_ Rather than having a 1/8 chance per enemy, the game now guarantees that every 8th enemy is a champion. This should make champion spawn rates much more consistent.\n" +
@@ -551,7 +551,7 @@ public class v0_9_X_Changes {
 				"Talents are split into tiers, and to start only the first tier is available, which covers levels 1 to 6. More talents will be added soon!\n\n" +
 				"Previously I would have spent many more months on v0.9.0 and released the entire system in one update, but I'm changing up my strategy and splitting these big updates into smaller parts."));
 
-		changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_ON), "Hostile Champions!",
+		changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_COLOR), "Hostile Champions!",
 				"A new challenge has been added: _Hostile Champions!_\n\n" +
 				"Unlike most other challenges, this one focuses on amping up the difficulty of the dungeon, rather than removing tools from the player. Give it a try if you've unlocked challenges, and you might find some particularly nasty enemies in the dungeon!"));
 
@@ -570,7 +570,7 @@ public class v0_9_X_Changes {
 				"The _Mage_ no longer has an innate wand identification effect, this is replaced by his wand identification talent.\n\n" +
 				"The _Huntress'_ studded gloves have had their base damage reduced to 1-5 from 1-6, to compensate for her damage-dealing talent."));
 
-		changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_OFF), "Existing Challenges",
+		changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_GREY), "Existing Challenges",
 				"Some existing challenges have been tweaked to reduce the number of items that they remove from the game:\n\n" +
 				"_On Diet_ no longer restricts food, but instead causes all food to be 1/3 as effective at satiating hunger.\n\n" +
 				"_Faith Is My Armor_ no longer restricts the hero to cloth armor, but instead heavily reduces the blocking power of all armor above cloth.\n\n" +

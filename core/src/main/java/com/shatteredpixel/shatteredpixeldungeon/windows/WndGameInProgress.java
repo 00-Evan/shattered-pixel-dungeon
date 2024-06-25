@@ -78,7 +78,7 @@ public class WndGameInProgress extends Window {
 					Game.scene().add( new WndChallenges( info.challenges, false ) );
 				}
 			};
-			btnChallenges.icon(Icons.get(Icons.CHALLENGE_ON));
+			btnChallenges.icon(Icons.get(Icons.CHALLENGE_COLOR));
 			float btnW = btnChallenges.reqWidth() + 2;
 			btnChallenges.setRect( (WIDTH - btnW)/2, pos, btnW , 18 );
 			add( btnChallenges );
