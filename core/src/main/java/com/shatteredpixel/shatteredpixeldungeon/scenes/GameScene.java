@@ -64,6 +64,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MimicTooth;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -545,13 +546,34 @@ public class GameScene extends PixelScene {
 			}
 
 			switch (Dungeon.level.feeling) {
-				case CHASM:     GLog.w(Messages.get(this, "chasm"));    break;
-				case WATER:     GLog.w(Messages.get(this, "water"));    break;
-				case GRASS:     GLog.w(Messages.get(this, "grass"));    break;
-				case DARK:      GLog.w(Messages.get(this, "dark"));     break;
-				case LARGE:     GLog.w(Messages.get(this, "large"));    break;
-				case TRAPS:     GLog.w(Messages.get(this, "traps"));    break;
-				case SECRETS:   GLog.w(Messages.get(this, "secrets"));  break;
+				case CHASM:
+					GLog.w(Dungeon.level.feeling.desc());
+					Notes.add(Notes.Landmark.CHASM_FLOOR);
+					break;
+				case WATER:
+					GLog.w(Dungeon.level.feeling.desc());
+					Notes.add(Notes.Landmark.WATER_FLOOR);
+					break;
+				case GRASS:
+					GLog.w(Dungeon.level.feeling.desc());
+					Notes.add(Notes.Landmark.GRASS_FLOOR);
+					break;
+				case DARK:
+					GLog.w(Dungeon.level.feeling.desc());
+					Notes.add(Notes.Landmark.DARK_FLOOR);
+					break;
+				case LARGE:
+					GLog.w(Dungeon.level.feeling.desc());
+					Notes.add(Notes.Landmark.LARGE_FLOOR);
+					break;
+				case TRAPS:
+					GLog.w(Dungeon.level.feeling.desc());
+					Notes.add(Notes.Landmark.TRAPS_FLOOR);
+					break;
+				case SECRETS:
+					GLog.w(Dungeon.level.feeling.desc());
+					Notes.add(Notes.Landmark.SECRETS_FLOOR);
+					break;
 			}
 
 			for (Mob mob : Dungeon.level.mobs) {

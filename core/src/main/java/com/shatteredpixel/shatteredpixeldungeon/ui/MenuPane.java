@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -36,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndGame;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndKeyBindings;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.watabou.input.GameAction;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Game;
@@ -84,23 +86,26 @@ public class MenuPane extends Component {
 		depthButton = new Button(){
 			@Override
 			protected String hoverText() {
-				switch (Dungeon.level.feeling) {
-					case CHASM:     return Messages.get(GameScene.class, "chasm");
-					case WATER:     return Messages.get(GameScene.class, "water");
-					case GRASS:     return Messages.get(GameScene.class, "grass");
-					case DARK:      return Messages.get(GameScene.class, "dark");
-					case LARGE:     return Messages.get(GameScene.class, "large");
-					case TRAPS:     return Messages.get(GameScene.class, "traps");
-					case SECRETS:   return Messages.get(GameScene.class, "secrets");
+				if (Dungeon.level.feeling != Level.Feeling.NONE){
+					return Dungeon.level.feeling.desc();
+				} else {
+					return null;
 				}
-				return null;
 			}
 
 			@Override
 			protected void onClick() {
 				super.onClick();
-				//just open journal for now, maybe have it open landmarks after expanding that page?
-				GameScene.show( new WndJournal() );
+
+				if (Dungeon.level.feeling == Level.Feeling.NONE){
+					GameScene.show(new WndJournal());
+				} else {
+					Image icon = Icons.get(Dungeon.level.feeling);
+					icon.scale.set(2f);
+					GameScene.show(new WndTitledMessage(icon,
+							Dungeon.level.feeling.title(),
+							Dungeon.level.feeling.desc()));
+				}
 			}
 		};
 		add(depthButton);

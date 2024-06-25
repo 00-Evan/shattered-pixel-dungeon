@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.journal;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BlacksmithSprite;
@@ -85,7 +86,13 @@ public class Notes {
 	}
 	
 	public enum Landmark {
-		//a landmark for each depth type
+		CHASM_FLOOR,
+		WATER_FLOOR,
+		GRASS_FLOOR,
+		DARK_FLOOR,
+		LARGE_FLOOR,
+		TRAPS_FLOOR,
+		SECRETS_FLOOR,
 
 		//more special room landmarks?
 		// distant well
@@ -124,7 +131,38 @@ public class Notes {
 		public Image icon(){
 			switch (landmark){
 				default:
-					return super.icon();
+					return Icons.STAIRS.get();
+
+				//TODO using a 2x bloated sprite isn't ideal..
+				// but I want them to visually match what's in the game scene
+				case CHASM_FLOOR:
+					Image result = Icons.DEPTH_CHASM.get();
+					result.scale.set(2f);
+					return result;
+				case WATER_FLOOR:
+					result = Icons.DEPTH_WATER.get();
+					result.scale.set(2f);
+					return result;
+				case GRASS_FLOOR:
+					result = Icons.DEPTH_GRASS.get();
+					result.scale.set(2f);
+					return result;
+				case DARK_FLOOR:
+					result = Icons.DEPTH_DARK.get();
+					result.scale.set(2f);
+					return result;
+				case LARGE_FLOOR:
+					result = Icons.DEPTH_LARGE.get();
+					result.scale.set(2f);
+					return result;
+				case TRAPS_FLOOR:
+					result = Icons.DEPTH_TRAPS.get();
+					result.scale.set(2f);
+					return result;
+				case SECRETS_FLOOR:
+					result = Icons.DEPTH_SECRETS.get();
+					result.scale.set(2f);
+					return result;
 
 				case WELL_OF_HEALTH:
 					return Icons.get(Icons.WELL_HEALTH);
@@ -157,12 +195,30 @@ public class Notes {
 
 		@Override
 		public String title() {
-			return landmark.title();
+			switch (landmark) {
+				default: landmark.title();
+				case CHASM_FLOOR:   return Messages.get(Level.Feeling.class, "chasm_title");
+				case WATER_FLOOR:   return Messages.get(Level.Feeling.class, "water_title");
+				case GRASS_FLOOR:   return Messages.get(Level.Feeling.class, "grass_title");
+				case DARK_FLOOR:    return Messages.get(Level.Feeling.class, "dark_title");
+				case LARGE_FLOOR:   return Messages.get(Level.Feeling.class, "large_title");
+				case TRAPS_FLOOR:   return Messages.get(Level.Feeling.class, "traps_title");
+				case SECRETS_FLOOR: return Messages.get(Level.Feeling.class, "secrets_title");
+			}
 		}
 
 		@Override
 		public String desc() {
-			return "";
+			switch (landmark) {
+				default: return "";
+				case CHASM_FLOOR:   return Messages.get(Level.Feeling.class, "chasm_desc");
+				case WATER_FLOOR:   return Messages.get(Level.Feeling.class, "water_desc");
+				case GRASS_FLOOR:   return Messages.get(Level.Feeling.class, "grass_desc");
+				case DARK_FLOOR:    return Messages.get(Level.Feeling.class, "dark_desc");
+				case LARGE_FLOOR:   return Messages.get(Level.Feeling.class, "large_desc");
+				case TRAPS_FLOOR:   return Messages.get(Level.Feeling.class, "traps_desc");
+				case SECRETS_FLOOR: return Messages.get(Level.Feeling.class, "secrets_desc");
+			}
 		}
 
 		@Override

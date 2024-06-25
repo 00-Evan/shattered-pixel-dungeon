@@ -121,7 +121,15 @@ public abstract class Level implements Bundlable {
 		DARK,
 		LARGE,
 		TRAPS,
-		SECRETS
+		SECRETS;
+
+		public String title(){
+			return Messages.get(this, name()+"_title");
+		}
+
+		public String desc() {
+			return Messages.get(this, name()+"_desc");
+		}
 	}
 
 	protected int width;
