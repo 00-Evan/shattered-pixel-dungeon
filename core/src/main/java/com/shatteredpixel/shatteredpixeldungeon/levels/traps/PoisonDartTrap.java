@@ -86,6 +86,10 @@ public class PoisonDartTrap extends Trap {
 							closestDist = curDist;
 						}
 					}
+					//max targeting range of 8 tiles
+					if (closestDist > 8){
+						target = null;
+					}
 				}
 
 				if (target != null) {
