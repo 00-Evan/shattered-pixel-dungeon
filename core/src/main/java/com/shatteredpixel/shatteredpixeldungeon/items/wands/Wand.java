@@ -122,7 +122,11 @@ public abstract class Wand extends Item {
 
 	@Override
 	public int targetingPos(Hero user, int dst) {
-		return new Ballistica( user.pos, dst, collisionProperties ).collisionPos;
+		if (cursed && cursedKnown){
+			return new Ballistica(user.pos, dst, Ballistica.MAGIC_BOLT).collisionPos;
+		} else {
+			return new Ballistica(user.pos, dst, collisionProperties).collisionPos;
+		}
 	}
 
 	public abstract void onZap(Ballistica attack);
