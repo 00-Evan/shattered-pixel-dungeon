@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
 import com.shatteredpixel.shatteredpixeldungeon.items.KingsCrown;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RatKingSprite;
@@ -99,6 +100,10 @@ public class RatKing extends NPC {
 				sprite.killAndErase();
 			} else {
 				target = Dungeon.level.entrance();
+			}
+		} else {
+			if (Dungeon.level.heroFOV[pos]){
+				Notes.add(Notes.Landmark.RAT_KING);
 			}
 		}
 		return super.act();

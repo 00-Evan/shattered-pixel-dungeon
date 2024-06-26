@@ -34,6 +34,7 @@ import java.util.ArrayList;
 public class ScrollingGridPane extends ScrollPane {
 
 	private ArrayList<Component> items = new ArrayList<>();
+	private ArrayList<ColorBlock> separators = new ArrayList<>();
 
 	private static final int ITEM_SIZE	= 17;
 	private static final int MIN_GROUP_SIZE = 3*(ITEM_SIZE+1);
@@ -81,6 +82,8 @@ public class ScrollingGridPane extends ScrollPane {
 		float left = 0;
 		float top = 0;
 
+		int sepsUsed = 0;
+
 		//these variables help control logic for laying out multiple grid groups on one line
 		boolean freshRow = true; //whether the previous group is still on its first row
 		boolean lastWasSmallheader = false; //whether the last UI element was a header on its own
@@ -109,6 +112,18 @@ public class ScrollingGridPane extends ScrollPane {
 					if (!((GridHeader) item).center && freshRow && spaceLeft >= spaceReq){
 						left = left + spacing;
 						top -= item.height()+1;
+						ColorBlock sep;
+						if (separators.size() > sepsUsed){
+							sep = separators.get(sepsUsed++);
+						} else {
+							sep = new ColorBlock(1, 1, 0xFF222222);
+							separators.add(sep);
+							content.add(sep);
+							sepsUsed++;
+						}
+						sep.size(1, item.height()+1+ITEM_SIZE);
+						sep.x = left-1;
+						sep.y = y+top;
 					} else {
 						left = 0;
 						top += ITEM_SIZE + 2;
@@ -142,6 +157,11 @@ public class ScrollingGridPane extends ScrollPane {
 		if (left > 0){
 			left = 0;
 			top += ITEM_SIZE+1;
+		}
+
+		while (separators.size() > sepsUsed){
+			ColorBlock sep = separators.remove(sepsUsed);
+			content.remove(sep);
 		}
 
 		content.setSize(width, top);

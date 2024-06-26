@@ -100,10 +100,8 @@ public class MenuPane extends Component {
 				if (Dungeon.level.feeling == Level.Feeling.NONE){
 					GameScene.show(new WndJournal());
 				} else {
-					Image icon = Icons.get(Dungeon.level.feeling);
-					icon.scale.set(2f);
-					GameScene.show(new WndTitledMessage(icon,
-							Dungeon.level.feeling.title(),
+					GameScene.show(new WndTitledMessage(Icons.getLarge(Dungeon.level.feeling),
+							Messages.titleCase(Dungeon.level.feeling.title()),
 							Dungeon.level.feeling.desc()));
 				}
 			}

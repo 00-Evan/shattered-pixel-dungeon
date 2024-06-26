@@ -22,14 +22,31 @@
 package com.shatteredpixel.shatteredpixeldungeon.journal;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Foliage;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SacrificialFire;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfAwareness;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfHealth;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DemonSpawner;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Statue;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.ImpShopkeeper;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.RatKing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.WeakFloorRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BlacksmithSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ImpSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.RatKingSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ShopkeeperSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SpawnerSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.StatueSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.WandmakerSprite;
@@ -42,6 +59,7 @@ import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class Notes {
 	
@@ -94,27 +112,22 @@ public class Notes {
 		TRAPS_FLOOR,
 		SECRETS_FLOOR,
 
-		//more special room landmarks?
-		// distant well
-		WELL_OF_HEALTH,
-		WELL_OF_AWARENESS,
+		SHOP,
 		ALCHEMY,
 		GARDEN,
-		STATUE,
+		DISTANT_WELL,
+		WELL_OF_HEALTH,
+		WELL_OF_AWARENESS,
 		SACRIFICIAL_FIRE,
-		SHOP,
+		STATUE,
 		
 		GHOST,
+		RAT_KING,
 		WANDMAKER,
 		TROLL,
 		IMP,
-		//rat king?
 
 		DEMON_SPAWNER;
-
-		public String title() {
-			return Messages.get(this, name());
-		}
 	}
 	
 	public static class LandmarkRecord extends Record {
@@ -133,54 +146,43 @@ public class Notes {
 				default:
 					return Icons.STAIRS.get();
 
-				//TODO using a 2x bloated sprite isn't ideal..
-				// but I want them to visually match what's in the game scene
 				case CHASM_FLOOR:
-					Image result = Icons.DEPTH_CHASM.get();
-					result.scale.set(2f);
-					return result;
+					return Icons.STAIRS_CHASM.get();
 				case WATER_FLOOR:
-					result = Icons.DEPTH_WATER.get();
-					result.scale.set(2f);
-					return result;
+					return Icons.STAIRS_WATER.get();
 				case GRASS_FLOOR:
-					result = Icons.DEPTH_GRASS.get();
-					result.scale.set(2f);
-					return result;
+					return Icons.STAIRS_GRASS.get();
 				case DARK_FLOOR:
-					result = Icons.DEPTH_DARK.get();
-					result.scale.set(2f);
-					return result;
+					return Icons.STAIRS_DARK.get();
 				case LARGE_FLOOR:
-					result = Icons.DEPTH_LARGE.get();
-					result.scale.set(2f);
-					return result;
+					return Icons.STAIRS_LARGE.get();
 				case TRAPS_FLOOR:
-					result = Icons.DEPTH_TRAPS.get();
-					result.scale.set(2f);
-					return result;
+					return Icons.STAIRS_TRAPS.get();
 				case SECRETS_FLOOR:
-					result = Icons.DEPTH_SECRETS.get();
-					result.scale.set(2f);
-					return result;
+					return Icons.STAIRS_SECRETS.get();
 
-				case WELL_OF_HEALTH:
-					return Icons.get(Icons.WELL_HEALTH);
-				case WELL_OF_AWARENESS:
-					return Icons.get(Icons.WELL_AWARENESS);
+				case SHOP:
+					if (depth == 20)    return new Image(new ImpSprite());
+					else                return new Image(new ShopkeeperSprite());
 				case ALCHEMY:
 					return Icons.get(Icons.ALCHEMY);
 				case GARDEN:
 					return Icons.get(Icons.GRASS);
-				case STATUE:
-					return new Image(new StatueSprite());
+				case DISTANT_WELL:
+					return Icons.get(Icons.DISTANT_WELL);
+				case WELL_OF_HEALTH:
+					return Icons.get(Icons.WELL_HEALTH);
+				case WELL_OF_AWARENESS:
+					return Icons.get(Icons.WELL_AWARENESS);
 				case SACRIFICIAL_FIRE:
 					return Icons.get(Icons.SACRIFICE_ALTAR);
-				case SHOP:
-					return Icons.get(Icons.GOLD);
+				case STATUE:
+					return new Image(new StatueSprite());
 
 				case GHOST:
 					return new Image(new GhostSprite());
+				case RAT_KING:
+					return new Image(new RatKingSprite());
 				case WANDMAKER:
 					return new Image(new WandmakerSprite());
 				case TROLL:
@@ -196,7 +198,7 @@ public class Notes {
 		@Override
 		public String title() {
 			switch (landmark) {
-				default: landmark.title();
+				default:            return Messages.get(Landmark.class, landmark.name());
 				case CHASM_FLOOR:   return Messages.get(Level.Feeling.class, "chasm_title");
 				case WATER_FLOOR:   return Messages.get(Level.Feeling.class, "water_title");
 				case GRASS_FLOOR:   return Messages.get(Level.Feeling.class, "grass_title");
@@ -210,7 +212,8 @@ public class Notes {
 		@Override
 		public String desc() {
 			switch (landmark) {
-				default: return "";
+				default:            return "";
+
 				case CHASM_FLOOR:   return Messages.get(Level.Feeling.class, "chasm_desc");
 				case WATER_FLOOR:   return Messages.get(Level.Feeling.class, "water_desc");
 				case GRASS_FLOOR:   return Messages.get(Level.Feeling.class, "grass_desc");
@@ -218,6 +221,25 @@ public class Notes {
 				case LARGE_FLOOR:   return Messages.get(Level.Feeling.class, "large_desc");
 				case TRAPS_FLOOR:   return Messages.get(Level.Feeling.class, "traps_desc");
 				case SECRETS_FLOOR: return Messages.get(Level.Feeling.class, "secrets_desc");
+
+				case SHOP:
+					if (depth == 20)    return Messages.get(ImpShopkeeper.class, "desc");
+					else                return Messages.get(Shopkeeper.class, "desc");
+				case ALCHEMY:           return Messages.get(Level.class, "alchemy_desc");
+				case GARDEN:            return Messages.get(Foliage.class, "desc");
+				case DISTANT_WELL:      return Messages.get(WeakFloorRoom.HiddenWell.class, "desc");
+				case WELL_OF_HEALTH:    return Messages.get(WaterOfHealth.class, "desc");
+				case WELL_OF_AWARENESS: return Messages.get(WaterOfAwareness.class, "desc");
+				case SACRIFICIAL_FIRE:  return Messages.get(SacrificialFire.class, "desc");
+				case STATUE:            return Messages.get(Statue.class, "desc");
+
+				case GHOST:         return Messages.get(Ghost.class, "desc");
+				case RAT_KING:      return Messages.get(RatKing.class, "desc");
+				case WANDMAKER:     return Messages.get(Wandmaker.class, "desc");
+				case TROLL:         return Messages.get(Blacksmith.class, "desc");
+				case IMP:           return Messages.get(Imp.class, "desc");
+
+				case DEMON_SPAWNER: return Messages.get(DemonSpawner.class, "desc");
 			}
 		}
 
@@ -405,16 +427,32 @@ public class Notes {
 		ArrayList<Record> filtered = new ArrayList<>();
 		for (Record rec : records){
 			if (rec.depth() == depth){
-				if (rec instanceof KeyRecord){
-					filtered.add(rec); //key records always go at the end
-				} else {
-					filtered.add(0, rec);
-				}
-
+				filtered.add(rec);
 			}
 		}
+
+		Collections.sort(filtered, comparator);
+
 		return filtered;
 	}
+
+	private static final Comparator<Record> comparator = new Comparator<Record>() {
+		@Override
+		public int compare(Record r1, Record r2) {
+			if (r1 instanceof LandmarkRecord){
+				if (r2 instanceof LandmarkRecord){
+					return ((LandmarkRecord) r1).landmark.ordinal() - ((LandmarkRecord) r2).landmark.ordinal();
+				} else {
+					return -1;
+				}
+			} else if (r2 instanceof LandmarkRecord){
+				return 1;
+			} else {
+				//matches order in key display
+				return Generator.Category.order(((KeyRecord)r2).key) - Generator.Category.order(((KeyRecord)r1).key);
+			}
+		}
+	};
 	
 	public static void remove( Record rec ){
 		records.remove(rec);

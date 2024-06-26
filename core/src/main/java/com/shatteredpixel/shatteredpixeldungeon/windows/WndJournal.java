@@ -454,7 +454,7 @@ public class WndJournal extends WndTabbed {
 						@Override
 						public boolean onClick(float x, float y) {
 							if (inside(x, y)) {
-								GameScene.show(new WndTitledMessage(rec.icon(),
+								GameScene.show(new WndJournalItem(rec.icon(),
 										Messages.titleCase(rec.title()),
 										rec.desc()));
 								return true;

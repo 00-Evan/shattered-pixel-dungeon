@@ -77,7 +77,6 @@ public enum Icons {
 	COPY,
 	PASTE,
 
-	STAIRS,
 	BACKPACK_LRG,
 	TALENT,
 	MAGNIFY,
@@ -86,9 +85,19 @@ public enum Icons {
 	CATALOG,
 	ALCHEMY,
 	GRASS,
+
+	STAIRS,
+	STAIRS_CHASM,
+	STAIRS_WATER,
+	STAIRS_GRASS,
+	STAIRS_DARK,
+	STAIRS_LARGE,
+	STAIRS_TRAPS,
+	STAIRS_SECRETS,
 	WELL_HEALTH,
 	WELL_AWARENESS,
 	SACRIFICE_ALTAR,
+	DISTANT_WELL,
 
 	//smaller icons, variable spacing
 	SKULL,
@@ -252,108 +261,133 @@ public enum Icons {
 				icon.frame( icon.texture.uvRectBySize( 192, 32, 13, 13 ) );
 				break;
 
-			case STAIRS:
-				icon.frame( icon.texture.uvRectBySize( 0, 48, 13, 16 ) );
-				break;
 			case BACKPACK_LRG:
-				icon.frame( icon.texture.uvRectBySize( 16, 48, 16, 16 ) );
+				icon.frame( icon.texture.uvRectBySize( 0, 48, 16, 16 ) );
 				break;
 			case TALENT:
-				icon.frame( icon.texture.uvRectBySize( 32, 48, 13, 13 ) );
+				icon.frame( icon.texture.uvRectBySize( 16, 48, 13, 13 ) );
 				break;
 			case MAGNIFY:
-				icon.frame( icon.texture.uvRectBySize( 48, 48, 14, 14 ) );
+				icon.frame( icon.texture.uvRectBySize( 32, 48, 14, 14 ) );
 				break;
 			case SNAKE:
-				icon.frame( icon.texture.uvRectBySize( 64, 48,  9, 13 ) );
+				icon.frame( icon.texture.uvRectBySize( 48, 48,  9, 13 ) );
 				break;
 			case BUFFS:
-				icon.frame( icon.texture.uvRectBySize( 80, 48, 16, 15 ) );
+				icon.frame( icon.texture.uvRectBySize( 64, 48, 16, 15 ) );
 				break;
 			case CATALOG:
-				icon.frame( icon.texture.uvRectBySize( 96, 48, 13, 16 ) );
+				icon.frame( icon.texture.uvRectBySize( 80, 48, 13, 16 ) );
 				break;
 			case ALCHEMY:
-				icon.frame( icon.texture.uvRectBySize( 112, 48, 16, 16 ) );
+				icon.frame( icon.texture.uvRectBySize( 96, 48, 16, 16 ) );
 				break;
 			case GRASS:
-				icon.frame( icon.texture.uvRectBySize( 128, 48, 16, 16 ) );
+				icon.frame( icon.texture.uvRectBySize( 112, 48, 16, 16 ) );
+				break;
+
+			case STAIRS:
+				icon.frame( icon.texture.uvRectBySize( 0, 64, 15, 16 ) );
+				break;
+			case STAIRS_CHASM:
+				icon.frame( icon.texture.uvRectBySize( 16, 64, 15, 16 ) );
+				break;
+			case STAIRS_WATER:
+				icon.frame( icon.texture.uvRectBySize( 32, 64, 15, 16 ) );
+				break;
+			case STAIRS_GRASS:
+				icon.frame( icon.texture.uvRectBySize( 48, 64, 15, 16 ) );
+				break;
+			case STAIRS_DARK:
+				icon.frame( icon.texture.uvRectBySize( 64, 64, 15, 16 ) );
+				break;
+			case STAIRS_LARGE:
+				icon.frame( icon.texture.uvRectBySize( 80, 64, 15, 16 ) );
+				break;
+			case STAIRS_TRAPS:
+				icon.frame( icon.texture.uvRectBySize( 96, 64, 15, 16 ) );
+				break;
+			case STAIRS_SECRETS:
+				icon.frame( icon.texture.uvRectBySize( 112, 64, 15, 16 ) );
 				break;
 			case WELL_HEALTH:
-				icon.frame( icon.texture.uvRectBySize( 144, 48, 16, 16 ) );
+				icon.frame( icon.texture.uvRectBySize( 128, 64, 16, 16 ) );
 				break;
 			case WELL_AWARENESS:
-				icon.frame( icon.texture.uvRectBySize( 160, 48, 16, 16 ) );
+				icon.frame( icon.texture.uvRectBySize( 144, 64, 16, 16 ) );
 				break;
 			case SACRIFICE_ALTAR:
-				icon.frame( icon.texture.uvRectBySize( 176, 48, 16, 16 ) );
+				icon.frame( icon.texture.uvRectBySize( 160, 64, 16, 16 ) );
+				break;
+			case DISTANT_WELL:
+				icon.frame( icon.texture.uvRectBySize( 176, 64, 16, 16 ) );
 				break;
 
 			case SKULL:
-				icon.frame( icon.texture.uvRectBySize( 0, 64, 8, 8 ) );
+				icon.frame( icon.texture.uvRectBySize( 0, 80, 8, 8 ) );
 				break;
 			case BUSY:
-				icon.frame( icon.texture.uvRectBySize( 8, 64, 8, 8 ) );
+				icon.frame( icon.texture.uvRectBySize( 8, 80, 8, 8 ) );
 				break;
 			case COMPASS:
-				icon.frame( icon.texture.uvRectBySize( 0, 72, 7, 5 ) );
+				icon.frame( icon.texture.uvRectBySize( 0, 88, 7, 5 ) );
 				break;
 			case SLEEP:
-				icon.frame( icon.texture.uvRectBySize( 16, 64, 9, 8 ) );
+				icon.frame( icon.texture.uvRectBySize( 16, 80, 9, 8 ) );
 				break;
 			case ALERT:
-				icon.frame( icon.texture.uvRectBySize( 16, 72, 8, 8 ) );
+				icon.frame( icon.texture.uvRectBySize( 16, 88, 8, 8 ) );
 				break;
 			case LOST:
-				icon.frame( icon.texture.uvRectBySize( 24, 72, 8, 8 ) );
+				icon.frame( icon.texture.uvRectBySize( 24, 88, 8, 8 ) );
 				break;
 			case DEPTH:
-				icon.frame( icon.texture.uvRectBySize( 32 + runTypeOfsX(), 64 + runTypeOfsY(), 6, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 32 + runTypeOfsX(), 80 + runTypeOfsY(), 6, 7 ) );
 				break;
 			case DEPTH_CHASM:
-				icon.frame( icon.texture.uvRectBySize( 40 + runTypeOfsX(), 64 + runTypeOfsY(), 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 40 + runTypeOfsX(), 80 + runTypeOfsY(), 7, 7 ) );
 				break;
 			case DEPTH_WATER:
-				icon.frame( icon.texture.uvRectBySize( 48 + runTypeOfsX(), 64 + runTypeOfsY(), 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 48 + runTypeOfsX(), 80 + runTypeOfsY(), 7, 7 ) );
 				break;
 			case DEPTH_GRASS:
-				icon.frame( icon.texture.uvRectBySize( 56 + runTypeOfsX(), 64 + runTypeOfsY(), 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 56 + runTypeOfsX(), 80 + runTypeOfsY(), 7, 7 ) );
 				break;
 			case DEPTH_DARK:
-				icon.frame( icon.texture.uvRectBySize( 64 + runTypeOfsX(), 64 + runTypeOfsY(), 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 64 + runTypeOfsX(), 80 + runTypeOfsY(), 7, 7 ) );
 				break;
 			case DEPTH_LARGE:
-				icon.frame( icon.texture.uvRectBySize( 72 + runTypeOfsX(), 64 + runTypeOfsY(), 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 72 + runTypeOfsX(), 80 + runTypeOfsY(), 7, 7 ) );
 				break;
 			case DEPTH_TRAPS:
-				icon.frame( icon.texture.uvRectBySize( 80 + runTypeOfsX(), 64 + runTypeOfsY(), 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 80 + runTypeOfsX(), 80 + runTypeOfsY(), 7, 7 ) );
 				break;
 			case DEPTH_SECRETS:
-				icon.frame( icon.texture.uvRectBySize( 88 + runTypeOfsX(), 64 + runTypeOfsY(), 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 88 + runTypeOfsX(), 80 + runTypeOfsY(), 7, 7 ) );
 				break;
 			case CHAL_COUNT:
-				icon.frame( icon.texture.uvRectBySize( 160, 64, 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 160, 80, 7, 7 ) );
 				break;
 			case COIN_SML:
-				icon.frame( icon.texture.uvRectBySize( 168, 64, 7, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 168, 80, 7, 7 ) );
 				break;
 			case ENERGY_SML:
-				icon.frame( icon.texture.uvRectBySize( 168, 72, 8, 7 ) );
+				icon.frame( icon.texture.uvRectBySize( 168, 88, 8, 7 ) );
 				break;
 			case BACKPACK:
-				icon.frame( icon.texture.uvRectBySize( 176, 64, 10, 10 ) );
+				icon.frame( icon.texture.uvRectBySize( 176, 80, 10, 10 ) );
 				break;
 			case SCROLL_HOLDER:
-				icon.frame( icon.texture.uvRectBySize( 186, 64, 10, 10 ) );
+				icon.frame( icon.texture.uvRectBySize( 186, 80, 10, 10 ) );
 				break;
 			case SEED_POUCH:
-				icon.frame( icon.texture.uvRectBySize( 196, 64, 10, 10 ) );
+				icon.frame( icon.texture.uvRectBySize( 196, 80, 10, 10 ) );
 				break;
 			case WAND_HOLSTER:
-				icon.frame( icon.texture.uvRectBySize( 206, 64, 10, 10 ) );
+				icon.frame( icon.texture.uvRectBySize( 206, 80, 10, 10 ) );
 				break;
 			case POTION_BANDOLIER:
-				icon.frame( icon.texture.uvRectBySize( 216, 64, 10, 10 ) );
+				icon.frame( icon.texture.uvRectBySize( 216, 80, 10, 10 ) );
 				break;
 		
 			case LIBGDX:
@@ -444,6 +478,27 @@ public enum Icons {
 				return get(DEPTH_TRAPS);
 			case SECRETS:
 				return get(DEPTH_SECRETS);
+		}
+	}
+
+	public static Image getLarge(Level.Feeling feeling){
+		switch (feeling){
+			case NONE: default:
+				return get(STAIRS);
+			case CHASM:
+				return get(STAIRS_CHASM);
+			case WATER:
+				return get(STAIRS_WATER);
+			case GRASS:
+				return get(STAIRS_GRASS);
+			case DARK:
+				return get(STAIRS_DARK);
+			case LARGE:
+				return get(STAIRS_LARGE);
+			case TRAPS:
+				return get(STAIRS_TRAPS);
+			case SECRETS:
+				return get(STAIRS_SECRETS);
 		}
 	}
 }
