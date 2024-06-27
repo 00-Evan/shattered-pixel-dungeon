@@ -150,6 +150,8 @@ public class Shopkeeper extends NPC {
 		destroy();
 
 		Notes.remove( landmark() );
+		GLog.newLine();
+		GLog.n(Messages.get(this, "flee"));
 
 		if (sprite != null) {
 			sprite.killAndErase();
