@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SacrificialFire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AdrenalineSurge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AnkhInvulnerability;
@@ -1518,6 +1519,10 @@ public class Hero extends Char {
 
 		Mob target = null;
 		for (Mob m : Dungeon.level.mobs.toArray(new Mob[0])) {
+			if (fieldOfView[ m.pos ] && m.landmark() != null){
+				Notes.add(m.landmark());
+			}
+
 			if (fieldOfView[ m.pos ] && m.alignment == Alignment.ENEMY) {
 				visible.add(m);
 				if (!visibleEnemies.contains( m )) {
@@ -1558,6 +1563,26 @@ public class Hero extends Char {
 		}
 
 		visibleEnemies = visible;
+
+		//we also scan for blob landmarks here
+		for (Blob b : Dungeon.level.blobs.values().toArray(new Blob[0])){
+			if (b.volume > 0 && b.landmark() != null && !Notes.contains(b.landmark())){
+				int cell;
+				boolean found = false;
+				//if a single cell within the blob is visible, we add the landmark
+				for (int i=b.area.top; i < b.area.bottom; i++) {
+					for (int j = b.area.left; j < b.area.right; j++) {
+						cell = j + i* Dungeon.level.width();
+						if (fieldOfView[cell] && b.cur[cell] > 0) {
+							Notes.add( b.landmark() );
+							found = true;
+							break;
+						}
+					}
+					if (found) break;
+				}
+			}
+		}
 	}
 	
 	public int visibleEnemies() {

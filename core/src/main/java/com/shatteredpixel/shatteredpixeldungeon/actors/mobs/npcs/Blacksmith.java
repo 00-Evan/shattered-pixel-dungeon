@@ -57,16 +57,20 @@ public class Blacksmith extends NPC {
 
 		properties.add(Property.IMMOVABLE);
 	}
-	
+
+	@Override
+	public Notes.Landmark landmark() {
+		return (!Quest.completed() || Quest.rewardsAvailable()) ? Notes.Landmark.TROLL : null;
+	}
+
 	@Override
 	protected boolean act() {
 		if (Dungeon.hero.buff(AscensionChallenge.class) != null){
 			die(null);
-			Notes.remove( Notes.Landmark.TROLL );
+			Notes.remove( landmark() );
 			return true;
-		}
-		if (Dungeon.level.visited[pos] && !Quest.started()){
-			Notes.add( Notes.Landmark.TROLL );
+		} else if (!Quest.rewardsAvailable() && Quest.completed()){
+			Notes.remove( landmark() );
 		}
 		return super.act();
 	}
@@ -121,7 +125,6 @@ public class Blacksmith extends NPC {
 
 							Quest.given = true;
 							Quest.completed = false;
-							Notes.add( Notes.Landmark.TROLL );
 							Item pick = Quest.pickaxe != null ? Quest.pickaxe : new Pickaxe();
 							if (pick.doPickUp( Dungeon.hero )) {
 								GLog.i( Messages.capitalize(Messages.get(Dungeon.hero, "you_now_have", pick.name()) ));

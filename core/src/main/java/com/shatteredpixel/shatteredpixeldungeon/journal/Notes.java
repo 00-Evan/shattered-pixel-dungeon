@@ -367,6 +367,10 @@ public class Notes {
 		}
 		return false;
 	}
+
+	public static boolean contains( Landmark landmark ){
+		return records.contains(new LandmarkRecord( landmark, Dungeon.depth));
+	}
 	
 	public static boolean remove( Landmark landmark ) {
 		return records.remove( new LandmarkRecord(landmark, Dungeon.depth) );

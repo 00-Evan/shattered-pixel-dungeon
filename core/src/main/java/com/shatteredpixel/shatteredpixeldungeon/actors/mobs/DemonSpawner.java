@@ -87,10 +87,6 @@ public class DemonSpawner extends Mob {
 			spawnRecorded = true;
 		}
 
-		if (Dungeon.level.visited[pos]){
-			Notes.add( Notes.Landmark.DEMON_SPAWNER );
-		}
-
 		if (Dungeon.hero.buff(AscensionChallenge.class) != null && spawnCooldown > 20){
 			spawnCooldown = 20;
 		}
@@ -146,10 +142,15 @@ public class DemonSpawner extends Mob {
 	}
 
 	@Override
+	public Notes.Landmark landmark() {
+		return Notes.Landmark.DEMON_SPAWNER;
+	}
+
+	@Override
 	public void die(Object cause) {
 		if (spawnRecorded){
 			Statistics.spawnersAlive--;
-			Notes.remove(Notes.Landmark.DEMON_SPAWNER);
+			Notes.remove(landmark());
 		}
 		GLog.h(Messages.get(this, "on_death"));
 		super.die(cause);

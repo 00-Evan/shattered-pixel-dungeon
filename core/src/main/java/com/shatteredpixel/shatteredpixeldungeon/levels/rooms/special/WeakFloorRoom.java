@@ -106,6 +106,11 @@ public class WeakFloorRoom extends SpecialRoom {
 	public static class WellID extends Blob {
 
 		@Override
+		public Notes.Landmark landmark() {
+			return Notes.Landmark.DISTANT_WELL;
+		}
+
+		@Override
 		protected void evolve() {
 			int cell;
 			for (int i=area.top-1; i <= area.bottom; i++) {
@@ -115,11 +120,6 @@ public class WeakFloorRoom extends SpecialRoom {
 						off[cell] = cur[cell];
 
 						volume += off[cell];
-						if (off[cell] > 0 && Dungeon.level.visited[cell]){
-							Notes.add( Notes.Landmark.DISTANT_WELL );
-							fullyClear(); //deletes itself after fulfilling its purpose
-							return;
-						}
 					}
 				}
 			}

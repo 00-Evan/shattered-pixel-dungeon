@@ -86,6 +86,11 @@ public class RatKing extends NPC {
 	}
 
 	@Override
+	public Notes.Landmark landmark() {
+		return Dungeon.depth == 5 ? Notes.Landmark.RAT_KING : null;
+	}
+
+	@Override
 	protected boolean act() {
 		if (Dungeon.depth < 5){
 			if (pos == Dungeon.level.exit()){
@@ -100,10 +105,6 @@ public class RatKing extends NPC {
 				sprite.killAndErase();
 			} else {
 				target = Dungeon.level.entrance();
-			}
-		} else {
-			if (Dungeon.level.heroFOV[pos]){
-				Notes.add(Notes.Landmark.RAT_KING);
 			}
 		}
 		return super.act();

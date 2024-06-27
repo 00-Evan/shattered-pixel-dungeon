@@ -91,7 +91,7 @@ public class WaterOfHealth extends WellWater {
 	}
 	
 	@Override
-	protected Landmark record() {
+	public Landmark landmark() {
 		return Landmark.WELL_OF_HEALTH;
 	}
 	

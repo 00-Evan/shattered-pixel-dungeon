@@ -44,16 +44,8 @@ public abstract class WellWater extends Blob {
 				if (Dungeon.level.insideMap(cell)) {
 					off[cell] = cur[cell];
 					volume += off[cell];
-					if (off[cell] > 0 && Dungeon.level.visited[cell]) {
-						seen = true;
-					}
 				}
 			}
-		}
-		if (seen){
-			Notes.add(record());
-		} else {
-			Notes.remove(record());
 		}
 	}
 	
@@ -63,7 +55,8 @@ public abstract class WellWater extends Blob {
 		
 		if (pos == Dungeon.hero.pos && affectHero( Dungeon.hero )) {
 			
-			cur[pos] = 0;
+			clear(pos);
+			if (volume <= 0 && landmark() != null) Notes.remove(landmark());
 			return true;
 			
 		} else if ((heap = Dungeon.level.heaps.get( pos )) != null) {
@@ -85,7 +78,8 @@ public abstract class WellWater extends Blob {
 				}
 				
 				heap.sprite.link();
-				cur[pos] = 0;
+				clear(pos);
+				if (volume <= 0 && landmark() != null) Notes.remove(landmark());
 				
 				return true;
 				
@@ -111,8 +105,6 @@ public abstract class WellWater extends Blob {
 	protected abstract boolean affectHero( Hero hero );
 	
 	protected abstract Item affectItem( Item item, int pos );
-	
-	protected abstract Notes.Landmark record();
 	
 	public static void affectCell( int cell ) {
 		
