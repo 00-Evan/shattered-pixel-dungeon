@@ -169,11 +169,11 @@ public class Ratmogrify extends ArmorAbility {
 			CellEmitter.get(rat.pos).burst(Speck.factory(Speck.WOOL), 4);
 			Sample.INSTANCE.play(Assets.Sounds.PUFF);
 
-			Dungeon.level.occupyCell(rat);
-
-			//for rare cases where a buff was keeping a mob alive (e.g. gnoll brutes)
+			//for rare cases where a buff was keeping a mob alive (e.g. gnoll brute rage)
 			if (!rat.isAlive()){
 				rat.die(this);
+			} else {
+				Dungeon.level.occupyCell(rat);
 			}
 		}
 
