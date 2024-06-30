@@ -351,10 +351,14 @@ public class Ghost extends NPC {
 				armor.upgrade(itemLevel);
 
 				// 20% base chance to be enchanted, stored separately so status isn't revealed early
+				//we generate first so that the outcome doesn't affect the number of RNG rolls
+				enchant = Weapon.Enchantment.random();
+				glyph = Armor.Glyph.random();
+
 				float enchantRoll = Random.Float();
-				if (enchantRoll < 0.2f * ParchmentScrap.enchantChanceMultiplier()){
-					enchant = Weapon.Enchantment.random();
-					glyph = Armor.Glyph.random();
+				if (enchantRoll > 0.2f * ParchmentScrap.enchantChanceMultiplier()){
+					enchant = null;
+					glyph = null;
 				}
 
 			}

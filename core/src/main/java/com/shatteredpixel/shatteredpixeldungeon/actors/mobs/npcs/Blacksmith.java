@@ -469,10 +469,14 @@ public class Blacksmith extends NPC {
 			}
 
 			// 30% base chance to be enchanted, stored separately so status isn't revealed early
+			//we generate first so that the outcome doesn't affect the number of RNG rolls
+			smithEnchant = Weapon.Enchantment.random();
+			smithGlyph = Armor.Glyph.random();
+
 			float enchantRoll = Random.Float();
-			if (enchantRoll <= 0.3f * ParchmentScrap.enchantChanceMultiplier()){
-				smithEnchant = Weapon.Enchantment.random();
-				smithGlyph = Armor.Glyph.random();
+			if (enchantRoll > 0.3f * ParchmentScrap.enchantChanceMultiplier()){
+				smithEnchant = null;
+				smithGlyph = null;
 			}
 
 		}
