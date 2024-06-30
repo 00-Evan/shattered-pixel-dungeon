@@ -64,6 +64,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
 import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
@@ -613,7 +614,14 @@ public abstract class Level implements Bundlable {
 	public ArrayList<Item> getItemsToPreserveFromSealedResurrect(){
 		ArrayList<Item> items = new ArrayList<>();
 		for (Heap h : heaps.valueList()){
-			if (h.type == Heap.Type.HEAP) items.addAll(h.items);
+			if (h.type == Heap.Type.HEAP) {
+				for (Item i : h.items){
+					if (i instanceof Bomb){
+						((Bomb) i).fuse = null;
+					}
+					items.add(i);
+				}
+			}
 		}
 		for (Mob m : mobs){
 			for (PinCushion b : m.buffs(PinCushion.class)){
