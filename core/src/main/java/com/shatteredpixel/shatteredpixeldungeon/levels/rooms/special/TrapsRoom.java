@@ -46,6 +46,15 @@ import com.watabou.utils.Reflection;
 
 public class TrapsRoom extends SpecialRoom {
 
+	//size is a bit limited to prevent too many or too few traps
+	@Override
+	public int minWidth() { return 6; }
+	public int maxWidth() { return 8; }
+
+	@Override
+	public int minHeight() { return 6; }
+	public int maxHeight() { return 8; }
+
 	public void paint( Level level ) {
 		 
 		Painter.fill( level, this, Terrain.WALL );
