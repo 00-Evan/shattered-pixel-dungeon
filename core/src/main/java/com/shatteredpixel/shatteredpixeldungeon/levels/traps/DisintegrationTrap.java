@@ -63,8 +63,8 @@ public class DisintegrationTrap extends Trap {
 					closestDist = curDist;
 				}
 			}
-			//max targeting range of 8 tiles
-			if (closestDist > 8){
+			//can't target beyond view distance, with a min of 6 (torch range)
+			if (closestDist > Math.max(6, Dungeon.level.viewDistance)){
 				target = null;
 			}
 		}
