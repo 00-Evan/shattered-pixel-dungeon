@@ -53,6 +53,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.TerrainFeaturesTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.ui.CustomNoteButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickRecipe;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
@@ -424,6 +425,7 @@ public class WndJournal extends WndTabbed {
 	private static class NotesTab extends Component {
 		
 		private ScrollingGridPane grid;
+		private CustomNoteButton custom;
 		
 		@Override
 		protected void createChildren() {
@@ -442,6 +444,33 @@ public class WndJournal extends WndTabbed {
 			grid.addHeader("_" + Messages.get(this, "title") + "_", 9, true);
 
 			grid.addHeader(Messages.get(this, "desc"), 6, true);
+
+			ArrayList<Notes.CustomRecord> customRecs = Notes.getRecords(Notes.CustomRecord.class);
+
+			if (!customRecs.isEmpty()){
+				grid.addHeader("_" + Messages.get(this, "custom_notes") + "_");
+
+				for (Notes.CustomRecord rec : customRecs){
+					ScrollingGridPane.GridItem gridItem = new ScrollingGridPane.GridItem(rec.icon()){
+						@Override
+						public boolean onClick(float x, float y) {
+							if (inside(x, y)) {
+								GameScene.show(new CustomNoteButton.CustomNoteWindow(rec));
+								return true;
+							} else {
+								return false;
+							}
+						}
+					};
+
+					Visual secondIcon = rec.secondIcon();
+					if (secondIcon != null){
+						gridItem.addSecondIcon( secondIcon );
+					}
+
+					grid.addItem(gridItem);
+				}
+			}
 
 			for (int i = Statistics.deepestFloor; i > 0; i--){
 
@@ -472,6 +501,10 @@ public class WndJournal extends WndTabbed {
 					grid.addItem(gridItem);
 				}
 			}
+
+			custom = new CustomNoteButton();
+			grid.content().add(custom);
+			custom.setPos(width-custom.width()-1, 0);
 
 			grid.setRect(x, y, width, height);
 

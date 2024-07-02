@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.RatKing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.WeakFloorRoom;
@@ -77,6 +78,8 @@ public class Notes {
 		public Visual secondIcon() { return null; }
 
 		public int quantity() { return 1; }
+
+		protected abstract int order();
 		
 		public abstract String title();
 
@@ -244,6 +247,11 @@ public class Notes {
 		}
 
 		@Override
+		protected int order(){
+			return landmark.ordinal();
+		}
+
+		@Override
 		public boolean equals(Object obj) {
 			return (obj instanceof LandmarkRecord)
 					&& landmark == ((LandmarkRecord) obj).landmark
@@ -310,6 +318,11 @@ public class Notes {
 			return key.getClass();
 		}
 
+		@Override
+		protected int order() {
+			return 1000 + Generator.Category.order(key);
+		}
+
 		public int quantity(){
 			return key.quantity();
 		}
@@ -338,6 +351,128 @@ public class Notes {
 			bundle.put( KEY, key );
 		}
 	}
+
+	public enum CustomType {
+		TEXT,
+		DEPTH, //TODO
+		ITEM, //TODO
+		ITEM_TYPE //TODO
+	}
+
+	public static class CustomRecord extends Record {
+
+		protected CustomType type;
+
+		protected int ID;
+		protected Class itemClass;
+
+		protected String title;
+		protected String body;
+
+		public CustomRecord() {}
+
+		public CustomRecord(String title, String desc) {
+			type = CustomType.TEXT;
+			this.title = title;
+			body = desc;
+		}
+
+		public CustomRecord(int depth, String title, String desc) {
+			type = CustomType.DEPTH;
+			this.depth = depth;
+			this.title = title;
+			body = desc;
+		}
+
+		public CustomRecord(Item item, String title, String desc) {
+			type = CustomType.ITEM;
+			itemClass = item.getClass();
+			this.title = title;
+			body = desc;
+		}
+
+		@Override
+		public int depth() {
+			if (type == CustomType.DEPTH){
+				return depth;
+			} else {
+				return 0;
+			}
+		}
+
+		@Override
+		public Image icon() {
+			switch (type){
+				case TEXT: default:
+					return Icons.SCROLL_COLOR.get();
+				case DEPTH:
+					return Icons.STAIRS.get();
+			}
+		}
+
+		@Override
+		public Visual secondIcon() {
+			switch (type){
+				case TEXT: default:
+					//TODO perhaps use first few chars from title?
+					return null;
+				case DEPTH:
+					BitmapText text = new BitmapText(Integer.toString(depth()), PixelScene.pixelFont);
+					text.measure();
+					return text;
+			}
+		}
+
+		@Override
+		protected int order() {
+			return 2000 + ID;
+		}
+
+		public void editText(String title, String desc){
+			this.title = title;
+			this.body = desc;
+		}
+
+		@Override
+		public String title() {
+			return title;
+		}
+
+		@Override
+		public String desc() {
+			return body;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			return obj instanceof CustomRecord && ((CustomRecord) obj).ID == ID;
+		}
+
+		private static final String TYPE        = "type";
+		private static final String ID_NUMBER   = "id_number";
+
+		private static final String TITLE       = "title";
+		private static final String BODY        = "body";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(TYPE, type);
+			bundle.put(ID_NUMBER, ID);
+			bundle.put(TITLE, title);
+			bundle.put(BODY, body);
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			type = bundle.getEnum(TYPE, CustomType.class);
+			ID = bundle.getInt(ID_NUMBER);
+
+			title = bundle.getString(TITLE);
+			body = bundle.getString(BODY);
+		}
+	}
 	
 	private static ArrayList<Record> records;
 	
@@ -345,14 +480,19 @@ public class Notes {
 		records = new ArrayList<>();
 	}
 	
-	private static final String RECORDS	= "records";
-	
+	private static final String RECORDS	        = "records";
+	private static final String NEXT_CUSTOM_ID	= "next_custom_id";
+
+	protected static int nextCustomID = 0;
+
 	public static void storeInBundle( Bundle bundle ) {
 		bundle.put( RECORDS, records );
+		bundle.put( NEXT_CUSTOM_ID, nextCustomID );
 	}
 	
 	public static void restoreFromBundle( Bundle bundle ) {
 		records = new ArrayList<>();
+		nextCustomID = bundle.getInt( NEXT_CUSTOM_ID );
 		for (Bundlable rec : bundle.getCollection( RECORDS ) ) {
 			records.add( (Record) rec );
 		}
@@ -362,7 +502,7 @@ public class Notes {
 		LandmarkRecord l = new LandmarkRecord( landmark, Dungeon.depth );
 		if (!records.contains(l)) {
 			boolean result = records.add(new LandmarkRecord(landmark, Dungeon.depth));
-			Collections.sort(records);
+			Collections.sort(records, comparator);
 			return result;
 		}
 		return false;
@@ -380,7 +520,7 @@ public class Notes {
 		KeyRecord k = new KeyRecord(key);
 		if (!records.contains(k)){
 			boolean result = records.add(k);
-			Collections.sort(records);
+			Collections.sort(records, comparator);
 			return result;
 		} else {
 			k = (KeyRecord) records.get(records.indexOf(k));
@@ -412,9 +552,23 @@ public class Notes {
 			return 0;
 		}
 	}
-	
-	public static ArrayList<Record> getRecords(){
-		return getRecords(Record.class);
+
+	public static boolean add( CustomRecord rec ){
+		rec.ID = nextCustomID++;
+		if (!records.contains(rec)){
+			boolean result = records.add(rec);
+			Collections.sort(records, comparator);
+			return result;
+		}
+		return false;
+	}
+
+	public static boolean remove( CustomRecord rec ){
+		if (records.contains(rec)){
+			records.remove(rec);
+			return true;
+		}
+		return false;
 	}
 	
 	public static <T extends Record> ArrayList<T> getRecords( Class<T> recordType ){
@@ -443,23 +597,8 @@ public class Notes {
 	private static final Comparator<Record> comparator = new Comparator<Record>() {
 		@Override
 		public int compare(Record r1, Record r2) {
-			if (r1 instanceof LandmarkRecord){
-				if (r2 instanceof LandmarkRecord){
-					return ((LandmarkRecord) r1).landmark.ordinal() - ((LandmarkRecord) r2).landmark.ordinal();
-				} else {
-					return -1;
-				}
-			} else if (r2 instanceof LandmarkRecord){
-				return 1;
-			} else {
-				//matches order in key display
-				return Generator.Category.order(((KeyRecord)r2).key) - Generator.Category.order(((KeyRecord)r1).key);
-			}
+			return r1.order() - r2.order();
 		}
 	};
-	
-	public static void remove( Record rec ){
-		records.remove(rec);
-	}
 	
 }
