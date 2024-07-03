@@ -498,7 +498,7 @@ public class Armor extends EquipableItem {
 	
 	@Override
 	public String info() {
-		String info = desc();
+		String info = super.info();
 		
 		if (levelKnown) {
 

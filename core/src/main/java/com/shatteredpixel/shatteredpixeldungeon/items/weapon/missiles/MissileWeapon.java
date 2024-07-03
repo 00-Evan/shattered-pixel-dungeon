@@ -451,7 +451,7 @@ abstract public class MissileWeapon extends Weapon {
 	@Override
 	public String info() {
 
-		String info = desc();
+		String info = super.info();
 		
 		info += "\n\n" + Messages.get( MissileWeapon.class, "stats",
 				tier,

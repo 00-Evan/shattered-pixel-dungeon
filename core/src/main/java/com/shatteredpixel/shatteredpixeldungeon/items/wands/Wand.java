@@ -253,7 +253,7 @@ public abstract class Wand extends Item {
 
 	@Override
 	public String info() {
-		String desc = desc();
+		String desc = super.info();
 
 		desc += "\n\n" + statsDesc();
 

@@ -135,7 +135,7 @@ public class SpiritBow extends Weapon {
 
 	@Override
 	public String info() {
-		String info = desc();
+		String info = super.info();
 		
 		info += "\n\n" + Messages.get( SpiritBow.class, "stats",
 				Math.round(augment.damageFactor(min())),

@@ -227,7 +227,7 @@ public abstract class Plant implements Bundlable {
 
 		@Override
 		public String info() {
-			return Messages.get( Seed.class, "info", desc() );
+			return Messages.get( Seed.class, "info", super.info() );
 		}
 		
 		public static class PlaceHolder extends Seed {

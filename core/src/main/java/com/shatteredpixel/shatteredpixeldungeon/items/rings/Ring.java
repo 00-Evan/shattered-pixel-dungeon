@@ -160,11 +160,16 @@ public class Ring extends KindofMisc {
 	public String name() {
 		return isKnown() ? super.name() : Messages.get(Ring.class, gem);
 	}
+
+	@Override
+	public String desc() {
+		return isKnown() ? super.desc() : Messages.get(this, "unknown_desc");
+	}
 	
 	@Override
 	public String info(){
-		
-		String desc = isKnown() ? super.desc() : Messages.get(this, "unknown_desc");
+
+		String desc = super.info();
 		
 		if (cursed && isEquipped( Dungeon.hero )) {
 			desc += "\n\n" + Messages.get(Ring.class, "cursed_worn");

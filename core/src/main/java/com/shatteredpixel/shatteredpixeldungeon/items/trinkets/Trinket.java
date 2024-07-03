@@ -60,9 +60,9 @@ public abstract class Trinket extends Item {
 
 	@Override
 	public String info() {
-		String desc = desc();
-		desc += "\n\n" + statsDesc();
-		return desc;
+		String info = super.info();
+		info += "\n\n" + statsDesc();
+		return info;
 	}
 
 	public abstract String statsDesc();

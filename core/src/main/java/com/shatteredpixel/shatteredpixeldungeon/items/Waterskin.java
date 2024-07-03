@@ -127,7 +127,7 @@ public class Waterskin extends Item {
 
 	@Override
 	public String info() {
-		String info = desc();
+		String info = super.info();
 
 		if (volume == 0){
 			info += "\n\n" + Messages.get(this, "desc_water");
