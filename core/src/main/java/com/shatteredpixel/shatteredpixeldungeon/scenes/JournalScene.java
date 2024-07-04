@@ -40,7 +40,7 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.audio.Music;
 
-public class BadgesScene extends PixelScene {
+public class JournalScene extends PixelScene {
 
 	public static final int WIDTH_P     = 126;
 	public static final int WIDTH_L     = 216;
