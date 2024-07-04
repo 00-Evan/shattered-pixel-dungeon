@@ -32,9 +32,10 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
+import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.NinePatch;
@@ -68,11 +69,9 @@ public class JournalScene extends PixelScene {
 
 		float top = 20;
 
-		//TODO icon title?
-		RenderedTextBlock title = PixelScene.renderTextBlock( Messages.get(this, "title"), 9 );
-		title.hardlight(Window.TITLE_COLOR);
+		IconTitle title = new IconTitle( Icons.JOURNAL.get(), Messages.get(this, "title") );
 		title.setPos(
-				(w - title.width()) / 2f,
+				(w - title.reqWidth()) / 2f,
 				(top - title.height()) / 2f
 		);
 		align(title);
@@ -85,7 +84,7 @@ public class JournalScene extends PixelScene {
 
 		panel.size(pw, ph);
 		panel.x = (w - pw) / 2f;
-		panel.y = title.bottom() + 5;
+		panel.y = top;
 		add(panel);
 
 		switch (lastIDX){

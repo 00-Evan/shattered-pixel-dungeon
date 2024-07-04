@@ -53,6 +53,7 @@ public class IconTitle extends Component {
 		icon( icon );
 		label( Messages.titleCase( item.title() ) );
 		icon.view( item );
+		layout();
 	}
 	
 	public IconTitle( Heap heap ){
@@ -60,13 +61,13 @@ public class IconTitle extends Component {
 		icon( icon );
 		label( Messages.titleCase( heap.title() ) );
 		icon.view( heap );
+		layout();
 	}
 
 	public IconTitle( Image icon, String label ) {
-		super();
-
 		icon( icon );
 		label( label );
+		layout();
 	}
 
 	@Override
@@ -106,6 +107,10 @@ public class IconTitle extends Component {
 		} else {
 			height = Math.max( imHeight, tfLabel.height() );
 		}
+	}
+
+	public float reqWidth(){
+		return imIcon.width() + tfLabel.width() + GAP;
 	}
 
 	public void icon( Image icon ) {
