@@ -23,22 +23,38 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Chrome;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BadgesGrid;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
+import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal;
 import com.watabou.noosa.Camera;
+import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.audio.Music;
 
 public class BadgesScene extends PixelScene {
+
+	public static final int WIDTH_P     = 126;
+	public static final int WIDTH_L     = 216;
+
+	private static int lastIDX = 0;
 
 	@Override
 	public void create() {
 
 		super.create();
+
+		Dungeon.hero = null;
+		Badges.loadGlobal();
+		Journal.loadGlobal();
 
 		Music.INSTANCE.playTracks(
 				new String[]{Assets.Music.THEME_1, Assets.Music.THEME_2},
@@ -50,13 +66,9 @@ public class BadgesScene extends PixelScene {
 		int w = Camera.main.width;
 		int h = Camera.main.height;
 
-		Archs archs = new Archs();
-		archs.setSize( w, h );
-		add( archs );
-
-		float margin = 5;
 		float top = 20;
 
+		//TODO icon title?
 		RenderedTextBlock title = PixelScene.renderTextBlock( Messages.get(this, "title"), 9 );
 		title.hardlight(Window.TITLE_COLOR);
 		title.setPos(
@@ -66,10 +78,137 @@ public class BadgesScene extends PixelScene {
 		align(title);
 		add(title);
 
-		Badges.loadGlobal();
-		BadgesGrid grid = new BadgesGrid(true);
-		grid.setRect(margin, top, w-(2*margin), h-top-margin);
-		add(grid);
+		NinePatch panel = Chrome.get(Chrome.Type.TOAST);
+
+		int pw = (landscape() ? WIDTH_L : WIDTH_P) + panel.marginHor();
+		int ph = h - 50 + panel.marginVer();
+
+		panel.size(pw, ph);
+		panel.x = (w - pw) / 2f;
+		panel.y = title.bottom() + 5;
+		add(panel);
+
+		switch (lastIDX){
+			case 0: default:
+				WndJournal.BadgesTab badges = new WndJournal.BadgesTab();
+				add(badges);
+				badges.setRect(panel.x + panel.marginLeft(),
+						panel.y + panel.marginTop(),
+						panel.width() - panel.marginHor(),
+						panel.height() - panel.marginVer());
+				break;
+			case 1:
+				WndJournal.CatalogTab catalog = new WndJournal.CatalogTab();
+				add(catalog);
+				catalog.setRect(panel.x + panel.marginLeft(),
+						panel.y + panel.marginTop(),
+						panel.width() - panel.marginHor(),
+						panel.height() - panel.marginVer());
+				catalog.updateList();
+				break;
+			case 2:
+				WndJournal.GuideTab guidebook = new WndJournal.GuideTab();
+				add(guidebook);
+				guidebook.setRect(panel.x + panel.marginLeft(),
+						panel.y + panel.marginTop(),
+						panel.width() - panel.marginHor(),
+						panel.height() - panel.marginVer());
+				guidebook.updateList();
+				break;
+			case 3:
+				WndJournal.AlchemyTab alchemy = new WndJournal.AlchemyTab();
+				add(alchemy);
+				alchemy.setRect(panel.x + panel.marginLeft(),
+						panel.y + panel.marginTop(),
+						panel.width() - panel.marginHor(),
+						panel.height() - panel.marginVer());
+				break;
+		}
+
+		StyledButton btnBadges =  new StyledButton(Chrome.Type.GREY_BUTTON_TR, ""){
+			@Override
+			protected void onClick() {
+				if (lastIDX != 0) {
+					lastIDX = 0;
+				}
+				ShatteredPixelDungeon.seamlessResetScene();
+				super.onClick();
+			}
+
+			@Override
+			protected String hoverText() {
+				return Messages.get(WndJournal.BadgesTab.class, "title");
+			}
+		};
+		btnBadges.icon(Icons.BADGES.get());
+		btnBadges.setRect(panel.x, panel.y + ph - 3, pw/4f + 1.5f, lastIDX == 0 ? 25 : 20);
+		align(btnBadges);
+		if (lastIDX != 0) btnBadges.icon().brightness(0.6f);
+		addToBack(btnBadges);
+
+		StyledButton btnCatalog =  new StyledButton(Chrome.Type.GREY_BUTTON_TR, ""){
+			@Override
+			protected void onClick() {
+				if (lastIDX != 1) {
+					lastIDX = 1;
+				}
+				ShatteredPixelDungeon.seamlessResetScene();
+				super.onClick();
+			}
+			@Override
+			protected String hoverText() {
+				return Messages.get(WndJournal.CatalogTab.class, "title");
+			}
+		};
+		btnCatalog.icon(Icons.CATALOG.get());
+		btnCatalog.setRect(btnBadges.right()-2, btnBadges.top(), pw/4f + 1.5f, lastIDX == 1 ? 25 : 20);
+		align(btnCatalog);
+		if (lastIDX != 1) btnCatalog.icon().brightness(0.6f);
+		addToBack(btnCatalog);
+
+		StyledButton btnGuide =  new StyledButton(Chrome.Type.GREY_BUTTON_TR, ""){
+			@Override
+			protected void onClick() {
+				if (lastIDX != 2) {
+					lastIDX = 2;
+				}
+				ShatteredPixelDungeon.seamlessResetScene();
+				super.onClick();
+			}
+			@Override
+			protected String hoverText() {
+				return Messages.get(WndJournal.GuideTab.class, "title");
+			}
+		};
+		btnGuide.icon(new ItemSprite(ItemSpriteSheet.MASTERY));
+		btnGuide.setRect(btnCatalog.right()-2, btnBadges.top(), pw/4f + 1.5f, lastIDX == 2 ? 25 : 20);
+		align(btnGuide);
+		if (lastIDX != 2) btnGuide.icon().brightness(0.6f);
+		addToBack(btnGuide);
+
+		StyledButton btnAlchemy =  new StyledButton(Chrome.Type.GREY_BUTTON_TR, ""){
+			@Override
+			protected void onClick() {
+				if (lastIDX != 3) {
+					lastIDX = 3;
+				}
+				ShatteredPixelDungeon.seamlessResetScene();
+				super.onClick();
+			}
+			@Override
+			protected String hoverText() {
+				return Messages.get(WndJournal.AlchemyTab.class, "title");
+			}
+		};
+		btnAlchemy.icon(Icons.ALCHEMY.get());
+		btnAlchemy.setRect(btnGuide.right()-2, btnBadges.top(), pw/4f + 1.5f, lastIDX == 3 ? 25 : 20);
+		align(btnAlchemy);
+		if (lastIDX != 3) btnAlchemy.icon().brightness(0.6f);
+		addToBack(btnAlchemy);
+
+		Archs archs = new Archs();
+		archs.setSize( w, h );
+		addToBack( archs );
 
 		ExitButton btnExit = new ExitButton();
 		btnExit.setPos( Camera.main.width - btnExit.width(), 0 );

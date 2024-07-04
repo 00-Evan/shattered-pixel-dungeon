@@ -110,6 +110,9 @@ public class Ring extends KindofMisc {
 		if (handler != null && handler.contains(this)){
 			image = handler.image(this);
 			gem = handler.label(this);
+		} else {
+			image = ItemSpriteSheet.RING_GARNET;
+			gem = "garnet";
 		}
 	}
 	

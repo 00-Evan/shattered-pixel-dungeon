@@ -54,7 +54,6 @@ public class ScrollingGridPane extends ScrollPane {
 	public void addItem( ScrollingGridPane.GridItem item ){
 		content.add(item);
 		items.add(item);
-		layout();
 	}
 
 	public void addHeader( String text ){
@@ -65,7 +64,6 @@ public class ScrollingGridPane extends ScrollPane {
 		GridHeader header = new GridHeader(text, size, center);
 		content.add(header);
 		items.add(header);
-		layout();
 	}
 
 	@Override
@@ -76,7 +74,6 @@ public class ScrollingGridPane extends ScrollPane {
 
 	@Override
 	protected void layout() {
-		super.layout();
 
 		float left = 0;
 		float top = 0;
@@ -122,7 +119,7 @@ public class ScrollingGridPane extends ScrollPane {
 						}
 						sep.size(1, item.height()+1+ITEM_SIZE);
 						sep.x = left-1;
-						sep.y = y+top;
+						sep.y = top;
 					} else {
 						left = 0;
 						top += ITEM_SIZE + 2;
@@ -164,6 +161,7 @@ public class ScrollingGridPane extends ScrollPane {
 		}
 
 		content.setSize(width, top);
+		super.layout();
 	}
 
 	public static class GridItem extends Component {

@@ -195,6 +195,9 @@ public class Potion extends Item {
 		if (handler != null && handler.contains(this)) {
 			image = handler.image(this);
 			color = handler.label(this);
+		} else {
+			image = ItemSpriteSheet.POTION_CRIMSON;
+			color = "crimson";
 		}
 	}
 

@@ -504,16 +504,18 @@ public class Item implements Bundlable {
 	
 	public String info() {
 
-		Notes.CustomRecord note;
-		if (this instanceof EquipableItem){
-			note = Notes.findCustomRecord(((EquipableItem) this).customNoteID);
-		} else {
-			note = Notes.findCustomRecord(getClass());
+		if (Dungeon.hero != null) {
+			Notes.CustomRecord note;
+			if (this instanceof EquipableItem) {
+				note = Notes.findCustomRecord(((EquipableItem) this).customNoteID);
+			} else {
+				note = Notes.findCustomRecord(getClass());
+			}
+			if (note != null){
+				return Messages.get(this, "custom_note", note.title()) + "\n\n" + desc();
+			}
 		}
 
-		if (note != null){
-			return "This item has a custom note: \"_" + note.title() + "_\"\n\n" + desc();
-		}
 		return desc();
 	}
 	

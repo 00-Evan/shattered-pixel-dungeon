@@ -149,6 +149,9 @@ public abstract class Scroll extends Item {
 		if (handler != null && handler.contains(this)) {
 			image = handler.image(this);
 			rune = handler.label(this);
+		} else {
+			image = ItemSpriteSheet.SCROLL_KAUNAN;
+			rune = "KAUNAN";
 		}
 	}
 	
