@@ -39,7 +39,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
-import com.watabou.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
@@ -49,6 +48,7 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.NoosaScriptNoLighting;
 import com.watabou.noosa.SkinnedBlock;
+import com.watabou.utils.BArray;
 import com.watabou.utils.DeviceCompat;
 
 import java.io.FileNotFoundException;
@@ -156,8 +156,7 @@ public class InterlevelScene extends PixelScene {
 		else if (lastRegion == 2)    loadingAsset = Assets.Interfaces.LOADING_PRISON;
 		else if (lastRegion == 3)    loadingAsset = Assets.Interfaces.LOADING_CAVES;
 		else if (lastRegion == 4)    loadingAsset = Assets.Interfaces.LOADING_CITY;
-		else if (lastRegion == 5)    loadingAsset = Assets.Interfaces.LOADING_HALLS;
-		else                         loadingAsset = Assets.Interfaces.SHADOW;
+		else                         loadingAsset = Assets.Interfaces.LOADING_HALLS;
 		
 		if (DeviceCompat.isDebug()){
 			fadeTime = 0f;
@@ -168,7 +167,7 @@ public class InterlevelScene extends PixelScene {
 			protected NoosaScript script() {
 				return NoosaScriptNoLighting.get();
 			}
-			
+
 			@Override
 			public void draw() {
 				Blending.disable();
@@ -185,12 +184,13 @@ public class InterlevelScene extends PixelScene {
 		bg.scale(4, 4);
 		bg.autoAdjust = true;
 		add(bg);
-		
+
 		Image im = new Image(TextureCache.createGradient(0xAA000000, 0xBB000000, 0xCC000000, 0xDD000000, 0xFF000000)){
 			@Override
 			public void update() {
 				super.update();
-				if (phase == Phase.FADE_IN)         aa = Math.max( 0, (timeLeft - (fadeTime - 0.333f)));
+				if (lastRegion == 6)                aa = 1;
+				else if (phase == Phase.FADE_IN)    aa = Math.max( 0, (timeLeft - (fadeTime - 0.333f)));
 				else if (phase == Phase.FADE_OUT)   aa = Math.max( 0, (0.333f - timeLeft));
 				else                                aa = 0;
 			}
