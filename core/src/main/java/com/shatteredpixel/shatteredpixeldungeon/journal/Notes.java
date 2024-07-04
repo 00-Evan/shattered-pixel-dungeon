@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.journal;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Foliage;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SacrificialFire;
@@ -46,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.BlacksmithSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ImpSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RatKingSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ShopkeeperSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SpawnerSprite;
@@ -57,6 +59,7 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.Visual;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -354,9 +357,8 @@ public class Notes {
 
 	public enum CustomType {
 		TEXT,
-		DEPTH, //TODO
-		ITEM, //TODO
-		ITEM_TYPE //TODO
+		DEPTH,
+		ITEM,
 	}
 
 	public static class CustomRecord extends Record {
@@ -391,6 +393,10 @@ public class Notes {
 			body = desc;
 		}
 
+		public int ID(){
+			return ID;
+		}
+
 		@Override
 		public int depth() {
 			if (type == CustomType.DEPTH){
@@ -407,6 +413,9 @@ public class Notes {
 					return Icons.SCROLL_COLOR.get();
 				case DEPTH:
 					return Icons.STAIRS.get();
+				case ITEM:
+					Item i = (Item) Reflection.newInstance(itemClass);
+					return new ItemSprite(i);
 			}
 		}
 
@@ -414,12 +423,19 @@ public class Notes {
 		public Visual secondIcon() {
 			switch (type){
 				case TEXT: default:
-					//TODO perhaps use first few chars from title?
 					return null;
 				case DEPTH:
 					BitmapText text = new BitmapText(Integer.toString(depth()), PixelScene.pixelFont);
 					text.measure();
 					return text;
+				case ITEM:
+					Item item = (Item) Reflection.newInstance(itemClass);
+					if (item.isIdentified() && item.icon != -1) {
+						Image secondIcon = new Image(Assets.Sprites.ITEM_ICONS);
+						secondIcon.frame(ItemSpriteSheet.Icons.film.get(item.icon));
+						return secondIcon;
+					}
+					return null;
 			}
 		}
 
@@ -451,6 +467,8 @@ public class Notes {
 		private static final String TYPE        = "type";
 		private static final String ID_NUMBER   = "id_number";
 
+		private static final String ITEM_CLASS   = "item_class";
+
 		private static final String TITLE       = "title";
 		private static final String BODY        = "body";
 
@@ -459,6 +477,7 @@ public class Notes {
 			super.storeInBundle(bundle);
 			bundle.put(TYPE, type);
 			bundle.put(ID_NUMBER, ID);
+			if (itemClass != null) bundle.put(ITEM_CLASS, itemClass);
 			bundle.put(TITLE, title);
 			bundle.put(BODY, body);
 		}
@@ -468,6 +487,8 @@ public class Notes {
 			super.restoreFromBundle(bundle);
 			type = bundle.getEnum(TYPE, CustomType.class);
 			ID = bundle.getInt(ID_NUMBER);
+
+			if (bundle.contains(ITEM_CLASS)) itemClass = bundle.getClass(ITEM_CLASS);
 
 			title = bundle.getString(TITLE);
 			body = bundle.getString(BODY);
@@ -584,7 +605,7 @@ public class Notes {
 	public static ArrayList<Record> getRecords(int depth){
 		ArrayList<Record> filtered = new ArrayList<>();
 		for (Record rec : records){
-			if (rec.depth() == depth){
+			if (rec.depth() == depth && !(rec instanceof CustomRecord)){
 				filtered.add(rec);
 			}
 		}
@@ -592,6 +613,26 @@ public class Notes {
 		Collections.sort(filtered, comparator);
 
 		return filtered;
+	}
+
+	public static CustomRecord findCustomRecord( int ID ){
+		for (Record rec : records){
+			if (rec instanceof CustomRecord && ((CustomRecord) rec).ID == ID)
+				return (CustomRecord) rec;
+		}
+		return null;
+	}
+
+	public static CustomRecord findCustomRecord( Class itemClass ){
+		for (Record rec : records){
+			if (rec instanceof CustomRecord && ((CustomRecord) rec).itemClass == itemClass)
+				return (CustomRecord) rec;
+		}
+		return null;
+	}
+
+	public static int customRecordLimit(){
+		return 5;
 	}
 
 	private static final Comparator<Record> comparator = new Comparator<Record>() {

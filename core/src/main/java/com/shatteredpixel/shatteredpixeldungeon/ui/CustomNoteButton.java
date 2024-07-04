@@ -22,15 +22,28 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournalItem;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTextInput;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Callback;
+import com.watabou.utils.Reflection;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 //this is contained in its own class as custom notes have a lot of messy window UI logic
 public class CustomNoteButton extends IconButton {
@@ -46,16 +59,194 @@ public class CustomNoteButton extends IconButton {
 	protected void onClick() {
 		super.onClick();
 
-		//TODO we want a selection window for note type here, atm it's only plaintext notes
-		Notes.CustomRecord custom = new Notes.CustomRecord(Messages.get(this, "default_title_text"), "");
-		Notes.add(custom);
-		refreshScene(custom);
+		if (Notes.getRecords(Notes.CustomRecord.class).size() >= Notes.customRecordLimit()){
+			GameScene.show(new WndTitledMessage(Icons.INFO.get(),
+					Messages.get(this, "limit_title"),
+					Messages.get(this, "limit_text")));
+			return;
+		}
+
+		GameScene.show(new WndOptions(Icons.SCROLL_COLOR.get(),
+				Messages.get(CustomNoteButton.class, "title"),
+				Messages.get(CustomNoteButton.class, "desc"),
+				Messages.get(CustomNoteButton.class, "new_text"),
+				Messages.get(CustomNoteButton.class, "new_floor"),
+				Messages.get(CustomNoteButton.class, "new_inv"),
+				Messages.get(CustomNoteButton.class, "new_type")){
+			@Override
+			protected void onSelect(int index) {
+				if (index == 0){
+					Notes.CustomRecord custom = new Notes.CustomRecord("", "");
+					addNote(custom,
+							Messages.get(CustomNoteButton.class, "new_text"),
+							Messages.get(CustomNoteButton.class, "new_text_title"));
+				} else if (index == 1){
+					GameScene.show(new WndDepthSelect());
+				} else if (index == 2){
+					GameScene.selectItem(itemSelector);
+				} else {
+					GameScene.show(new WndItemtypeSelect());
+				}
+			}
+
+			@Override
+			public void hide() {
+				//do nothing, prevents window closing when user steps back in note creation process
+			}
+
+			@Override
+			public void onBackPressed() {
+				super.hide(); //actually hide in this case
+			}
+		});
 	}
 
 	@Override
 	protected String hoverText() {
-		return Messages.get(this, "hover_text");
+		return Messages.get(this, "title");
 	}
+
+	private class WndDepthSelect extends WndTitledMessage {
+
+		public WndDepthSelect(){
+			super(Icons.STAIRS.get(),
+					Messages.get(CustomNoteButton.class, "new_floor"),
+					Messages.get(CustomNoteButton.class, "new_floor_prompt"));
+
+			int top = height+2;
+			int left = 0;
+
+			for (int i = Statistics.deepestFloor; i > 0; i --){
+				if (i % 5 == 0 && left > 0){
+					left = 0;
+					top += 17;
+				}
+				int finalI = i;
+				RedButton btnDepth = new RedButton(Integer.toString(finalI)){
+					@Override
+					protected void onClick() {
+						addNote(new Notes.CustomRecord(finalI, "", ""),
+								Messages.get(CustomNoteButton.class, "new_floor"),
+								Messages.get(CustomNoteButton.class, "new_floor_title", finalI));
+					}
+				};
+				btnDepth.setRect(left, top, 23, 16);
+				left += 24;
+				add(btnDepth);
+			}
+
+			resize(width, top + (left == 0 ? 0 : 16));
+
+		}
+
+	}
+
+	private WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
+
+		@Override
+		public String textPrompt() {
+			return	Messages.get(CustomNoteButton.class, "new_inv_prompt");
+		}
+
+		@Override
+		public boolean hideAfterSelecting() {
+			return false;
+		}
+
+		@Override
+		public boolean itemSelectable(Item item) {
+			if (item instanceof EquipableItem){
+				return ((EquipableItem) item).customNoteID == -1
+						|| Notes.findCustomRecord(((EquipableItem) item).customNoteID) == null;
+			} else {
+				return Notes.findCustomRecord(item.getClass()) == null;
+			}
+		}
+
+		@Override
+		public void onSelect( Item item ) {
+			if (item != null){
+				Notes.CustomRecord custom = new Notes.CustomRecord(item, "", "");
+				if (item instanceof EquipableItem){
+					((EquipableItem) item).customNoteID = custom.ID();
+				}
+
+				addNote(custom,
+						Messages.get(CustomNoteButton.class, "new_inv"),
+						Messages.get(CustomNoteButton.class, "new_item_title", Messages.titleCase(item.name())));
+			}
+		}
+	};
+
+	private static class WndItemtypeSelect extends WndTitledMessage {
+
+		public WndItemtypeSelect() {
+			super(Icons.SCROLL_COLOR.get(),
+					Messages.get(CustomNoteButton.class, "new_type"),
+					Messages.get(CustomNoteButton.class, "new_type_prompt"));
+
+			int top = height + 2;
+			int left = 0;
+
+			ArrayList<Item> items = new ArrayList<>();
+			for (Class<?> potionCls : Generator.Category.POTION.classes) {
+				items.add((Item) Reflection.newInstance(potionCls));
+			}
+			for (Class<?> potionCls : Generator.Category.SCROLL.classes) {
+				items.add((Item) Reflection.newInstance(potionCls));
+			}
+			for (Class<?> potionCls : Generator.Category.RING.classes) {
+				items.add((Item) Reflection.newInstance(potionCls));
+			}
+			Collections.sort(items, itemVisualcomparator);
+			for (Item item : items) {
+				ItemButton itemButton = new ItemButton(){
+					@Override
+					protected void onClick() {
+						addNote(new Notes.CustomRecord(item, "", ""),
+								Messages.get(CustomNoteButton.class, "new_type"),
+								Messages.get(CustomNoteButton.class, "new_item_title", Messages.titleCase(item.name())));
+					}
+				};
+				itemButton.item(item);
+				itemButton.setRect(left, top, 19, 19);
+				add(itemButton);
+
+				if (Notes.findCustomRecord(item.getClass()) != null){
+					itemButton.slot.enable(false);
+				}
+
+				left += 20;
+				if (left >= width - 19){
+					top += 20;
+					left = 0;
+				}
+			}
+			if (left > 0){
+				top += 20;
+				left = 0;
+			}
+
+			resize(width, top);
+		}
+	}
+
+	//items are sorted first sorted potions -> scrolls -> rings, and then based on their sprites.
+	private static Comparator<Item> itemVisualcomparator = new Comparator<Item>() {
+		@Override
+		public int compare(Item i1, Item i2) {
+			int i1Idx = i1.image();
+			int i2Idx = i2.image();
+
+			if (i1 instanceof Scroll)   i1Idx += 1000;
+			if (i1 instanceof Ring)     i1Idx += 2000;
+
+			if (i2 instanceof Scroll)   i2Idx += 1000;
+			if (i2 instanceof Ring)     i2Idx += 2000;
+
+			return i1Idx - i2Idx;
+		}
+	};
 
 	public static class CustomNoteWindow extends WndJournalItem {
 
@@ -74,7 +265,7 @@ public class CustomNoteButton extends IconButton {
 							Messages.get(CustomNoteWindow.class, "cancel")){
 						@Override
 						public void onSelect(boolean positive, String text) {
-							if (positive){
+							if (positive && !text.isEmpty()){
 								rec.editText(text, rec.desc());
 								refreshScene(rec);
 							}
@@ -133,6 +324,25 @@ public class CustomNoteButton extends IconButton {
 			resize(width, (int)delete.bottom());
 		}
 
+	}
+
+	private static void addNote(Notes.CustomRecord note, String promptTitle, String prompttext){
+		GameScene.show(new WndTextInput(promptTitle,
+				prompttext,
+				"",
+				50,
+				false,
+				Messages.get(CustomNoteWindow.class, "confirm"),
+				Messages.get(CustomNoteWindow.class, "cancel")){
+			@Override
+			public void onSelect(boolean positive, String text) {
+				if (positive && !text.isEmpty()){
+					Notes.add(note);
+					note.editText(text, "");
+					refreshScene(null);
+				}
+			}
+		});
 	}
 
 	private static void refreshScene(Notes.CustomRecord recToShow){
