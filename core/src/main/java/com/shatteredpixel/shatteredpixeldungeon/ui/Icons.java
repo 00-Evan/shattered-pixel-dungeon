@@ -166,7 +166,7 @@ public enum Icons {
 				icon.frame( icon.texture.uvRectBySize( 119, 0, 16, 16 ) );
 				break;
 			case JOURNAL:
-				icon.frame( icon.texture.uvRectBySize( 136, 0, 17, 16 ) );
+				icon.frame( icon.texture.uvRectBySize( 136, 0, 17, 15 ) );
 				break;
 
 			case EXIT:

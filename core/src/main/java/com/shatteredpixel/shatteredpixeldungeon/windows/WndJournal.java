@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -53,6 +54,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.TerrainFeaturesTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BadgesGrid;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BadgesList;
 import com.shatteredpixel.shatteredpixeldungeon.ui.CustomNoteButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickRecipe;
@@ -61,6 +64,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollingGridPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollingListPane;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
@@ -86,6 +90,7 @@ public class WndJournal extends WndTabbed {
 	private AlchemyTab alchemyTab;
 	private NotesTab notesTab;
 	private CatalogTab catalogTab;
+	private BadgesTab badgesTab;
 	
 	public static int last_index = 0;
 	
@@ -114,6 +119,11 @@ public class WndJournal extends WndTabbed {
 		add(catalogTab);
 		catalogTab.setRect(0, 0, width, height);
 		catalogTab.updateList();
+
+		badgesTab = new BadgesTab();
+		add(badgesTab);
+		badgesTab.setRect(0, 0, width, height);
+		badgesTab.updateList();
 		
 		Tab[] tabs = {
 				new IconTab( Icons.JOURNAL.get() ) {
@@ -162,6 +172,18 @@ public class WndJournal extends WndTabbed {
 					@Override
 					protected String hoverText() {
 						return Messages.get(catalogTab, "title");
+					}
+				},
+				new IconTab( Icons.BADGES.get() ) {
+					protected void select( boolean value ) {
+						super.select( value );
+						badgesTab.active = badgesTab.visible = value;
+						if (value) last_index = 4;
+					}
+
+					@Override
+					protected String hoverText() {
+						return Messages.get(badgesTab, "title");
 					}
 				}
 		};
@@ -993,52 +1015,73 @@ public class WndJournal extends WndTabbed {
 		}
 	}
 
-	public static class LoreTab extends Component{
+	public static class BadgesTab extends Component {
 
-		private ScrollingListPane list;
+		private RedButton btnLocal;
+		private RedButton btnGlobal;
+
+		private Component badgesLocal;
+		private Component badgesGlobal;
+
+		private boolean global = false;
 
 		@Override
 		protected void createChildren() {
-			list = new ScrollingListPane();
-			add( list );
+
+			btnLocal = new RedButton(Messages.get(this, "this_run")){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					global = false;
+					updateList();
+				}
+			};
+			btnLocal.icon(Icons.BADGES.get());
+			add(btnLocal);
+
+			btnGlobal = new RedButton(Messages.get(this, "overall")){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					global = true;
+					updateList();
+				}
+			};
+			btnGlobal.icon(Icons.BADGES.get());
+			add(btnGlobal);
+
+			if (Badges.filterReplacedBadges(false).size() <= 8){
+				badgesLocal = new BadgesList(false);
+			} else {
+				badgesLocal = new BadgesGrid(false);
+			}
+			add( badgesLocal );
+
+			if (Badges.filterReplacedBadges(true).size() <= 8){
+				badgesGlobal = new BadgesList(true);
+			} else {
+				badgesGlobal = new BadgesGrid(true);
+			}
+			add( badgesGlobal );
 		}
 
 		@Override
 		protected void layout() {
 			super.layout();
-			list.setRect( 0, 0, width, height);
+
+			btnLocal.setRect(0, 0, width/2, 18);
+			btnGlobal.setRect(width/2, 0, width/2, 18);
+
+			badgesLocal.setRect( 0, 20, width, height-20);
+			badgesGlobal.setRect( 0, 20, width, height-20);
 		}
 
 		private void updateList(){
-			list.addTitle(Messages.get(this, "title"));
+			badgesLocal.visible = badgesLocal.active = !global;
+			badgesGlobal.visible = badgesGlobal.active = global;
 
-			for (Document doc : Document.values()){
-				if (!doc.isLoreDoc()) continue;
-
-				boolean found = doc.anyPagesFound();
-				ScrollingListPane.ListItem item = new ScrollingListPane.ListItem(
-						doc.pageSprite(),
-						null,
-						found ? Messages.titleCase(doc.title()) : "???"
-				){
-					@Override
-					public boolean onClick(float x, float y) {
-						if (inside( x, y ) && found) {
-							ShatteredPixelDungeon.scene().addToFront( new WndDocument( doc ));
-							return true;
-						} else {
-							return false;
-						}
-					}
-				};
-				if (!found){
-					item.hardlight(0x999999);
-					item.hardlightIcon(0x999999);
-				}
-				list.addItem(item);
-			}
-
-			list.setRect(x, y, width, height);
+			btnLocal.textColor( global ? Window.WHITE : Window.TITLE_COLOR);
+			btnGlobal.textColor( global ? Window.TITLE_COLOR : Window.WHITE);
 		}
 
 	}
