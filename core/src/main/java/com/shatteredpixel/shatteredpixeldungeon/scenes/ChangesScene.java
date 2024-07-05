@@ -96,7 +96,7 @@ public class ChangesScene extends PixelScene {
 		int pw = 135 + panel.marginLeft() + panel.marginRight() - 2;
 		int ph = h - 36;
 
-		if (h >= PixelScene.MIN_HEIGHT_FULL && w >= PixelScene.MIN_WIDTH_FULL) {
+		if (h >= PixelScene.MIN_HEIGHT_FULL && w >= 300) {
 			panel.size( pw, ph );
 			panel.x = (w - pw) / 2f - pw/2 - 1;
 			panel.y = 20;
@@ -104,7 +104,7 @@ public class ChangesScene extends PixelScene {
 			rightPanel = Chrome.get(Chrome.Type.TOAST);
 			rightPanel.size( pw, ph );
 			rightPanel.x = (w - pw) / 2f + pw/2 + 1;
-			rightPanel.y = title.bottom() + 5;
+			rightPanel.y = 20;
 			add(rightPanel);
 
 			rightScroll = new ScrollPane(new Component());
