@@ -167,6 +167,7 @@ public class CustomNoteButton extends IconButton {
 		public void onSelect( Item item ) {
 			if (item != null){
 				Notes.CustomRecord custom = new Notes.CustomRecord(item, "", "");
+				custom.assignID();
 				if (item instanceof EquipableItem){
 					((EquipableItem) item).customNoteID = custom.ID();
 				}

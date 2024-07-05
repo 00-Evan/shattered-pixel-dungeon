@@ -365,7 +365,7 @@ public class Notes {
 
 		protected CustomType type;
 
-		protected int ID;
+		protected int ID = -1;
 		protected Class itemClass;
 
 		protected String title;
@@ -391,6 +391,12 @@ public class Notes {
 			itemClass = item.getClass();
 			this.title = title;
 			body = desc;
+		}
+
+		public void assignID(){
+			if (ID == -1) {
+				ID = nextCustomID++;
+			}
 		}
 
 		public int ID(){
@@ -575,7 +581,7 @@ public class Notes {
 	}
 
 	public static boolean add( CustomRecord rec ){
-		rec.ID = nextCustomID++;
+		rec.assignID();
 		if (!records.contains(rec)){
 			boolean result = records.add(rec);
 			Collections.sort(records, comparator);
