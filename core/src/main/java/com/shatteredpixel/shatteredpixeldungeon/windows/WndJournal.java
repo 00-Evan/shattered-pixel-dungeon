@@ -318,7 +318,7 @@ public class WndJournal extends WndTabbed {
 		protected void layout() {
 			super.layout();
 			
-			if (PixelScene.landscape()){
+			if (width() >= 180){
 				float buttonWidth = width()/pageButtons.length;
 				for (int i = 0; i < NUM_BUTTONS; i++) {
 					pageButtons[i].setRect(x + i*buttonWidth, y, buttonWidth, ITEM_HEIGHT);
