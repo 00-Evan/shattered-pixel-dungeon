@@ -256,9 +256,23 @@ public class CrystalPathRoom extends SpecialRoom {
 		while (true) {
 			Item reward = Generator.random(cat);
 
+			//we have to de-exotify for comparison here to weed out duplicates
+			Class rewardClass = reward.getClass();
+			if (reward instanceof ExoticPotion){
+				rewardClass = ExoticPotion.exoToReg.get(rewardClass);
+			} else if (reward instanceof ExoticScroll){
+				rewardClass = ExoticScroll.exoToReg.get(rewardClass);
+			}
+
 			boolean dupe = false;
 			for (Item i : items){
-				if (i.isSimilar(reward)){
+				Class iClass = i.getClass();
+				if (i instanceof ExoticPotion){
+					iClass = ExoticPotion.exoToReg.get(iClass);
+				} else if (i instanceof ExoticScroll){
+					iClass = ExoticScroll.exoToReg.get(iClass);
+				}
+				if (iClass == rewardClass){
 					dupes.add(reward);
 					dupe = true;
 					break;
