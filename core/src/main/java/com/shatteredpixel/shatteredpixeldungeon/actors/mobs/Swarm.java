@@ -77,7 +77,7 @@ public class Swarm extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Char.combatRoll( 1, 4 );
+		return Random.NormalIntRange( 1, 4 );
 	}
 	
 	@Override

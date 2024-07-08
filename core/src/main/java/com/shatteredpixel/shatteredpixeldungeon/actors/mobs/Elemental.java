@@ -81,10 +81,10 @@ public abstract class Elemental extends Mob {
 	@Override
 	public int damageRoll() {
 		if (!summonedALly) {
-			return Char.combatRoll(20, 25);
+			return Random.NormalIntRange(20, 25);
 		} else {
 			int regionScale = Math.max(2, (1 + Dungeon.scalingDepth()/5));
-			return Char.combatRoll(5*regionScale, 5 + 5*regionScale);
+			return Random.NormalIntRange(5*regionScale, 5 + 5*regionScale);
 		}
 	}
 	
@@ -108,10 +108,10 @@ public abstract class Elemental extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return super.drRoll() + Char.combatRoll(0, 5);
+		return super.drRoll() + Random.NormalIntRange(0, 5);
 	}
 	
-	protected int rangedCooldown = Char.combatRoll( 3, 5 );
+	protected int rangedCooldown = Random.NormalIntRange( 3, 5 );
 	
 	@Override
 	protected boolean act() {
@@ -183,7 +183,7 @@ public abstract class Elemental extends Mob {
 	@Override
 	public boolean add( Buff buff ) {
 		if (harmfulBuffs.contains( buff.getClass() )) {
-			damage( Char.combatRoll( HT/2, HT * 3/5 ), buff );
+			damage( Random.NormalIntRange( HT/2, HT * 3/5 ), buff );
 			return false;
 		} else {
 			return super.add( buff );
@@ -384,7 +384,7 @@ public abstract class Elemental extends Mob {
 		@Override
 		public int damageRoll() {
 			if (!summonedALly) {
-				return combatRoll(10, 12);
+				return Random.NormalIntRange(10, 12);
 			} else {
 				return super.damageRoll();
 			}

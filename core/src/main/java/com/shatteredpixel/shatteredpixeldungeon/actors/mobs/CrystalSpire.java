@@ -122,7 +122,7 @@ public class CrystalSpire extends Mob {
 				Char ch = Actor.findChar(i);
 
 				if (ch != null && !(ch instanceof CrystalWisp || ch instanceof CrystalSpire)){
-					int dmg = Char.combatRoll(6, 15);
+					int dmg = Random.NormalIntRange(6, 15);
 
 					//guardians are hit harder by the attack
 					if (ch instanceof CrystalGuardian) {

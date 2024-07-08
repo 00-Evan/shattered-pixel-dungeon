@@ -76,7 +76,7 @@ public class GeyserTrap extends Trap {
 
 				//does the equivalent of a bomb's damage against fiery enemies.
 				if (Char.hasProp(ch, Char.Property.FIERY)){
-					int dmg = Char.combatRoll(5 + scalingDepth(), 10 + scalingDepth()*2);
+					int dmg = Random.NormalIntRange(5 + scalingDepth(), 10 + scalingDepth()*2);
 					dmg *= 0.67f;
 					if (!ch.isImmune(GeyserTrap.class)){
 						ch.damage(dmg, this);
@@ -122,7 +122,7 @@ public class GeyserTrap extends Trap {
 
 			//does the equivalent of a bomb's damage against fiery enemies.
 			if (Char.hasProp(ch, Char.Property.FIERY)){
-				int dmg = Char.combatRoll(5 + scalingDepth(), 10 + scalingDepth()*2);
+				int dmg = Random.NormalIntRange(5 + scalingDepth(), 10 + scalingDepth()*2);
 				if (!ch.isImmune(GeyserTrap.class)){
 					ch.damage(dmg, this);
 				}

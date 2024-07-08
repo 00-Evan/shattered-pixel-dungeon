@@ -218,15 +218,15 @@ public class Mimic extends Mob {
 	@Override
 	public int damageRoll() {
 		if (alignment == Alignment.NEUTRAL){
-			return Char.combatRoll( 2 + 2*level, 2 + 2*level);
+			return Random.NormalIntRange( 2 + 2*level, 2 + 2*level);
 		} else {
-			return Char.combatRoll( 1 + level, 2 + 2*level);
+			return Random.NormalIntRange( 1 + level, 2 + 2*level);
 		}
 	}
 
 	@Override
 	public int drRoll() {
-		return super.drRoll() + Char.combatRoll(0, 1 + level/2);
+		return super.drRoll() + Random.NormalIntRange(0, 1 + level/2);
 	}
 
 	@Override

@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollSprite;
+import com.watabou.utils.Random;
 
 public class Gnoll extends Mob {
 	
@@ -42,7 +43,7 @@ public class Gnoll extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Char.combatRoll( 1, 6 );
+		return Random.NormalIntRange( 1, 6 );
 	}
 	
 	@Override
@@ -52,6 +53,6 @@ public class Gnoll extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return super.drRoll() + Char.combatRoll(0, 2);
+		return super.drRoll() + Random.NormalIntRange(0, 2);
 	}
 }

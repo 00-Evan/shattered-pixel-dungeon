@@ -61,6 +61,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Holy
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
@@ -130,7 +131,7 @@ public class AntiMagic extends Armor.Glyph {
 	}
 	
 	public static int drRoll( Char ch, int level ){
-		return Char.combatRoll(
+		return Random.NormalIntRange(
 				Math.round(level * genericProcChanceMultiplier(ch)),
 				Math.round((3 + (level*1.5f)) * genericProcChanceMultiplier(ch)));
 	}

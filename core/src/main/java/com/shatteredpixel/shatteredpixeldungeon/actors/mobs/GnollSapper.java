@@ -96,7 +96,7 @@ public class GnollSapper extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Char.combatRoll( 1, 6 );
+		return Random.NormalIntRange( 1, 6 );
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class GnollSapper extends Mob {
 
 	@Override
 	public int drRoll() {
-		return super.drRoll() + Char.combatRoll(0, 6);
+		return super.drRoll() + Random.NormalIntRange(0, 6);
 	}
 
 	@Override

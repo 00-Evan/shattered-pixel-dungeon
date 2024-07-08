@@ -322,7 +322,7 @@ public class WandOfWarding extends Wand {
 		public int drRoll() {
 			int dr = super.drRoll();
 			if (tier > 3){
-				return dr + Math.round(Char.combatRoll(0, 3 + Dungeon.scalingDepth()/2) / (7f - tier));
+				return dr + Math.round(Random.NormalIntRange(0, 3 + Dungeon.scalingDepth()/2) / (7f - tier));
 			} else {
 				return dr;
 			}
@@ -349,7 +349,7 @@ public class WandOfWarding extends Wand {
 			spend( 1f );
 
 			//always hits
-			int dmg = Char.combatRoll( 2 + wandLevel, 8 + 4*wandLevel );
+			int dmg = Hero.heroDamageIntRange( 2 + wandLevel, 8 + 4*wandLevel );
 			Char enemy = this.enemy;
 			enemy.damage( dmg, this );
 			if (enemy.isAlive()){

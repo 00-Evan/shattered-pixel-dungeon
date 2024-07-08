@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.PrismaticSprite;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 public class PrismaticImage extends NPC {
 	
@@ -151,9 +152,9 @@ public class PrismaticImage extends NPC {
 	@Override
 	public int damageRoll() {
 		if (hero != null) {
-			return Char.combatRoll( 2 + hero.lvl/4, 4 + hero.lvl/2 );
+			return Random.NormalIntRange( 2 + hero.lvl/4, 4 + hero.lvl/2 );
 		} else {
-			return Char.combatRoll( 2, 4 );
+			return Random.NormalIntRange( 2, 4 );
 		}
 	}
 	

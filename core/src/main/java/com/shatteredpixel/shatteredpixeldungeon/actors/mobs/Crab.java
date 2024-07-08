@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CrabSprite;
+import com.watabou.utils.Random;
 
 public class Crab extends Mob {
 
@@ -43,7 +44,7 @@ public class Crab extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Char.combatRoll( 1, 7 );
+		return Random.NormalIntRange( 1, 7 );
 	}
 	
 	@Override
@@ -53,6 +54,6 @@ public class Crab extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return super.drRoll() + Char.combatRoll(0, 4);
+		return super.drRoll() + Random.NormalIntRange(0, 4);
 	}
 }

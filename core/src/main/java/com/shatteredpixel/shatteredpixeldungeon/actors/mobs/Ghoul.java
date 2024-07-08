@@ -66,7 +66,7 @@ public class Ghoul extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Char.combatRoll( 16, 22 );
+		return Random.NormalIntRange( 16, 22 );
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class Ghoul extends Mob {
 
 	@Override
 	public int drRoll() {
-		return super.drRoll() + Char.combatRoll(0, 4);
+		return super.drRoll() + Random.NormalIntRange(0, 4);
 	}
 
 	@Override

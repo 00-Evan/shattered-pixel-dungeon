@@ -81,7 +81,7 @@ public class RingOfForce extends Ring {
 				&& hero.buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) == null) {
 			int level = getBuffedBonus(hero, Force.class);
 			float tier = tier(hero.STR());
-			int dmg = Char.combatRoll(min(level, tier), max(level, tier));
+			int dmg = Hero.heroDamageIntRange(min(level, tier), max(level, tier));
 			if (hero.buff(BrawlersStance.class) != null
 				&& hero.buff(BrawlersStance.class).active){
 				// 1+tier base dmg, roughly +35% dmg
@@ -91,7 +91,7 @@ public class RingOfForce extends Ring {
 			return dmg;
 		} else {
 			//attack without any ring of force influence
-			return Char.combatRoll(1, Math.max(hero.STR()-8, 1));
+			return Hero.heroDamageIntRange(1, Math.max(hero.STR()-8, 1));
 		}
 	}
 
