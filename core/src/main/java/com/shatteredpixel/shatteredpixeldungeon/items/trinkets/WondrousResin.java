@@ -49,10 +49,13 @@ public class WondrousResin extends Trinket {
 		}
 	}
 
-	//TODO currently this trims most rare/v.rare wand effects entirely. Need to improve variety there
-	// certain effects might also be extremely good with no negatives
+	//used when bonus curse effects are being created
+	public static boolean forcePositive = false;
 
 	public static float positiveCurseEffectChance(){
+		if (forcePositive){
+			return 1;
+		}
 		return positiveCurseEffectChance( trinketLevel(WondrousResin.class) );
 	}
 
