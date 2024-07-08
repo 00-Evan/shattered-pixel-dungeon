@@ -40,7 +40,6 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MimicSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Random;
 
 public class EbonyMimic extends Mimic {
 
@@ -103,10 +102,10 @@ public class EbonyMimic extends Mimic {
 	@Override
 	protected void generatePrize( boolean useDecks ) {
 		super.generatePrize( useDecks );
-		//add two extra random loot items
+		//add one extra random loot item, on top of the one granted by mimic tooth
 		items.add(Generator.randomUsingDefaults());
-		items.add(Generator.randomUsingDefaults());
-		//all existing prize items are guaranteed uncursed, and have a 50% chance to be +1 if they were +0
+
+		//all existing prize items are guaranteed uncursed, and are always at least +1
 		for (Item i : items){
 			if (i instanceof EquipableItem || i instanceof Wand){
 				i.cursed = false;
@@ -117,7 +116,7 @@ public class EbonyMimic extends Mimic {
 				if (i instanceof Armor && ((Armor) i).hasCurseGlyph()){
 					((Armor) i).inscribe(null);
 				}
-				if (!(i instanceof MissileWeapon || i instanceof Artifact) && i.level() == 0 && Random.Int(2) == 0){
+				if (!(i instanceof MissileWeapon || i instanceof Artifact) && i.level() == 0){
 					i.upgrade();
 				}
 			}

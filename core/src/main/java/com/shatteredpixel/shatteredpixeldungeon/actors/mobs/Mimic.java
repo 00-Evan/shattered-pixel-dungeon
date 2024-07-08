@@ -348,6 +348,11 @@ public class Mimic extends Mob {
 			}
 		} while (reward == null || Challenges.isItemBlocked(reward));
 		items.add(reward);
+
+		if (MimicTooth.stealthyMimics()){
+			//add an extra random item if player has a mimic tooth
+			items.add(Generator.randomUsingDefaults());
+		}
 	}
 
 }
