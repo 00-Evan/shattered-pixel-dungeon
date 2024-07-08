@@ -71,7 +71,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.DimensionalSundial;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.EyeOfNewt;
-import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MimicTooth;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MossyClump;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrapMechanism;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrinketCatalyst;
@@ -1342,10 +1341,9 @@ public abstract class Level implements Bundlable {
 			}
 
 			Dungeon.hero.mindVisionEnemies.clear();
-			boolean stealthyMimics = MimicTooth.stealthyMimics();
 			if (c.buff( MindVision.class ) != null) {
 				for (Mob mob : mobs) {
-					if (stealthyMimics && mob instanceof Mimic && mob.alignment == Char.Alignment.NEUTRAL){
+					if (mob instanceof Mimic && mob.alignment == Char.Alignment.NEUTRAL&& ((Mimic) mob).stealthy()){
 						continue;
 					}
 					for (int i : PathFinder.NEIGHBOURS9) {
@@ -1362,7 +1360,7 @@ public abstract class Level implements Bundlable {
 
 				if (mindVisRange >= 1) {
 					for (Mob mob : mobs) {
-						if (stealthyMimics && mob instanceof Mimic && mob.alignment == Char.Alignment.NEUTRAL) {
+						if (mob instanceof Mimic && mob.alignment == Char.Alignment.NEUTRAL&& ((Mimic) mob).stealthy()){
 							continue;
 						}
 						int p = mob.pos;

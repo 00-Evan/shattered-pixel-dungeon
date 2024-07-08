@@ -66,6 +66,11 @@ public class EbonyMimic extends Mimic {
 		}
 	}
 
+	@Override
+	public boolean stealthy() {
+		return true;
+	}
+
 	public void stopHiding(){
 		state = HUNTING;
 		if (sprite != null) sprite.idle();

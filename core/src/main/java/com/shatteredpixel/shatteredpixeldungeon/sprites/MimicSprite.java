@@ -23,7 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MimicTooth;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.watabou.noosa.TextureFilm;
 
 public class MimicSprite extends MobSprite {
@@ -77,12 +77,12 @@ public class MimicSprite extends MobSprite {
 	public void linkVisuals(Char ch) {
 		super.linkVisuals(ch);
 		if (ch.alignment == Char.Alignment.NEUTRAL) {
-			hideMimic();
+			hideMimic(ch);
 		}
 	}
 
-	public void hideMimic(){
-		if (MimicTooth.stealthyMimics()){
+	public void hideMimic(Char ch){
+		if (ch instanceof Mimic && ((Mimic) ch).stealthy()){
 			play(advancedHiding);
 		} else {
 			play(hiding);
@@ -119,8 +119,8 @@ public class MimicSprite extends MobSprite {
 		}
 
 		@Override
-		public void hideMimic() {
-			super.hideMimic();
+		public void hideMimic(Char ch) {
+			super.hideMimic(ch);
 			alpha(0.2f);
 		}
 
