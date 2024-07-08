@@ -116,7 +116,7 @@ public class SurfaceScene extends PixelScene {
 		add( window );
 
 		Calendar cal = GregorianCalendar.getInstance();
-		boolean dayTime = cal.get(Calendar.HOUR_OF_DAY) >= 7 && cal.get(Calendar.HOUR_OF_DAY) <= 20;
+		boolean dayTime = cal.get(Calendar.HOUR_OF_DAY) >= 8 && cal.get(Calendar.HOUR_OF_DAY) <= 19;
 		
 		Sky sky = new Sky( dayTime );
 		sky.scale.set( SKY_WIDTH, SKY_HEIGHT );

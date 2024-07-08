@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-//TODO this maybe should do something during the day too? Perhaps lightly reduce enemy spawn rates?
 public class DimensionalSundial extends Trinket {
 
 	{
@@ -37,44 +36,60 @@ public class DimensionalSundial extends Trinket {
 
 	@Override
 	protected int upgradeEnergyCost() {
-		//5 -> 2(7) -> 3(10) -> 5(15)
-		return 2 + Math.round(level()*1.33f);
+		//5 -> 8(13) -> 10(23) -> 12(35)
+		return 6+2*level();
 	}
 
 	@Override
 	public String statsDesc() {
 		if (isIdentified()){
-			return Messages.get(this, "stats_desc", (int)(100*(enemySpawnMultiplier(buffedLvl())-1f)));
+			return Messages.get(this,
+					"stats_desc",
+					(int)(100*(1f - enemySpawnMultiplierDaytime(buffedLvl()))),
+					(int)(100*(enemySpawnMultiplierNighttime(buffedLvl())-1f)));
 		} else {
-			return Messages.get(this, "typical_stats_desc", (int)(100*(enemySpawnMultiplier(0)-1f)));
+			return Messages.get(this, "typical_stats_desc",
+					(int)(100*(1f - enemySpawnMultiplierDaytime(0))),
+					(int)(100*(enemySpawnMultiplierNighttime(0)-1f)));
 		}
 	}
 
 	public static boolean sundialWarned = false;
 
 	public static float spawnMultiplierAtCurrentTime(){
-		float spawnMulti = enemySpawnMultiplier();
-		if (spawnMulti > 1f) {
+		if (trinketLevel(DimensionalSundial.class) != -1) {
 			Calendar cal = GregorianCalendar.getInstance();
-			if (cal.get(Calendar.HOUR_OF_DAY) >= 21 || cal.get(Calendar.HOUR_OF_DAY) <= 6) {
+			if (cal.get(Calendar.HOUR_OF_DAY) >= 20 || cal.get(Calendar.HOUR_OF_DAY) <= 7) {
 				if (!sundialWarned){
 					GLog.w(Messages.get(DimensionalSundial.class, "warning"));
 					sundialWarned = true;
 				}
-				return spawnMulti;
+				return enemySpawnMultiplierNighttime();
 			} else {
-				return 1f;
+				return enemySpawnMultiplierDaytime();
 			}
 		} else {
 			return 1f;
 		}
 	}
 
-	public static float enemySpawnMultiplier(){
-		return enemySpawnMultiplier(trinketLevel(DimensionalSundial.class));
+	public static float enemySpawnMultiplierDaytime(){
+		return enemySpawnMultiplierDaytime(trinketLevel(DimensionalSundial.class));
 	}
 
-	public static float enemySpawnMultiplier( int level ){
+	public static float enemySpawnMultiplierDaytime( int level ){
+		if (level == -1){
+			return 1f;
+		} else {
+			return 0.95f - 0.05f*level;
+		}
+	}
+
+	public static float enemySpawnMultiplierNighttime(){
+		return enemySpawnMultiplierNighttime(trinketLevel(DimensionalSundial.class));
+	}
+
+	public static float enemySpawnMultiplierNighttime( int level ){
 		if (level == -1){
 			return 1f;
 		} else {
