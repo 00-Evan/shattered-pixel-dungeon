@@ -38,21 +38,21 @@ public class RingOfEnergy extends Ring {
 	public String statsInfo() {
 		if (isIdentified()){
 			String info = Messages.get(this, "stats",
-					Messages.decimalFormat("#.##", 100f * (Math.pow(1.15f, soloBuffedBonus()) - 1f)));
+					Messages.decimalFormat("#.##", 100f * (Math.pow(1.175f, soloBuffedBonus()) - 1f)));
 			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero)){
 				info += "\n\n" + Messages.get(this, "combined_stats",
-						Messages.decimalFormat("#.##", 100f * (Math.pow(1.15f, combinedBuffedBonus(Dungeon.hero)) - 1f)));
+						Messages.decimalFormat("#.##", 100f * (Math.pow(1.175f, combinedBuffedBonus(Dungeon.hero)) - 1f)));
 			}
 			return info;
 		} else {
 			return Messages.get(this, "typical_stats",
-					Messages.decimalFormat("#.##", 15f));
+					Messages.decimalFormat("#.##", 17.5f));
 		}
 	}
 
 	public String upgradeStat1(int level){
 		if (cursed && cursedKnown) level = Math.min(-1, level-3);
-		return Messages.decimalFormat("#.##", 100f * (Math.pow(1.15f, level+1)-1f)) + "%";
+		return Messages.decimalFormat("#.##", 100f * (Math.pow(1.175f, level+1)-1f)) + "%";
 	}
 	
 	@Override
@@ -61,11 +61,11 @@ public class RingOfEnergy extends Ring {
 	}
 	
 	public static float wandChargeMultiplier( Char target ){
-		return (float)Math.pow(1.15, getBuffedBonus(target, Energy.class));
+		return (float)Math.pow(1.175, getBuffedBonus(target, Energy.class));
 	}
 
 	public static float artifactChargeMultiplier( Char target ){
-		float bonus = (float)Math.pow(1.15, getBuffedBonus(target, Energy.class));
+		float bonus = (float)Math.pow(1.175, getBuffedBonus(target, Energy.class));
 
 		if (target instanceof Hero && ((Hero) target).heroClass != HeroClass.ROGUE && ((Hero) target).hasTalent(Talent.LIGHT_CLOAK)){
 			bonus *= 1f + (0.2f * ((Hero) target).pointsInTalent(Talent.LIGHT_CLOAK)/3f);
@@ -75,7 +75,7 @@ public class RingOfEnergy extends Ring {
 	}
 
 	public static float armorChargeMultiplier( Char target ){
-		return (float)Math.pow(1.15, getBuffedBonus(target, Energy.class));
+		return (float)Math.pow(1.175, getBuffedBonus(target, Energy.class));
 	}
 	
 	public class Energy extends RingBuff {
