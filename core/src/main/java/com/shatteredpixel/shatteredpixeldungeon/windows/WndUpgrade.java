@@ -203,7 +203,7 @@ public class WndUpgrade extends Window {
 			Armor.Augment aug = ((Armor) toUpgrade).augment;
 			bottom = fillFields(Messages.get(this, "blocking"),
 					((Armor) toUpgrade).DRMin(levelFrom) + "-" + (((Armor) toUpgrade).DRMax(levelFrom) + aug.defenseFactor(levelFrom)),
-					((Armor) toUpgrade).DRMin(levelTo) + "-" +  (((Armor) toUpgrade).DRMax(levelFrom) + aug.defenseFactor(levelTo)),
+					((Armor) toUpgrade).DRMin(levelTo) + "-" +  (((Armor) toUpgrade).DRMax(levelTo) + aug.defenseFactor(levelTo)),
 					bottom);
 		} else if (toUpgrade instanceof RoundShield){
 			bottom = fillFields(Messages.get(this, "blocking"),
