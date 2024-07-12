@@ -95,8 +95,8 @@ public class Greataxe extends MeleeWeapon {
 				beforeAbilityUsed(hero, enemy);
 				AttackIndicator.target(enemy);
 
-				//+(12+(2*lvl)) damage, roughly +50% base damage, +55% scaling
-				int dmgBoost = augment.damageFactor(12 + 2*buffedLvl());
+				//+(15+(2*lvl)) damage, roughly +60% base damage, +55% scaling
+				int dmgBoost = augment.damageFactor(15 + 2*buffedLvl());
 
 				if (hero.attack(enemy, 1, dmgBoost, Char.INFINITE_ACCURACY)){
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
@@ -116,7 +116,7 @@ public class Greataxe extends MeleeWeapon {
 
 	@Override
 	public String abilityInfo() {
-		int dmgBoost = levelKnown ? 12 + 2*buffedLvl() : 12;
+		int dmgBoost = levelKnown ? 15 + 2*buffedLvl() : 15;
 		if (levelKnown){
 			return Messages.get(this, "ability_desc", augment.damageFactor(min()+dmgBoost), augment.damageFactor(max()+dmgBoost));
 		} else {
@@ -125,7 +125,7 @@ public class Greataxe extends MeleeWeapon {
 	}
 
 	public String upgradeAbilityStat(int level){
-		int dmgBoost = 12 + 2*level;
+		int dmgBoost = 15 + 2*level;
 		return augment.damageFactor(min(level)+dmgBoost) + "-" + augment.damageFactor(max(level)+dmgBoost);
 	}
 }

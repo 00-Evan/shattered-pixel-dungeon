@@ -62,14 +62,14 @@ public class Spear extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		//+(7+1.5*lvl) damage, roughly +65% base damage, +60% scaling
-		int dmgBoost = augment.damageFactor(7 + Math.round(1.5f*buffedLvl()));
+		//+(9+2*lvl) damage, roughly +83% base damage, +80% scaling
+		int dmgBoost = augment.damageFactor(9 + Math.round(2f*buffedLvl()));
 		Spear.spikeAbility(hero, target, 1, dmgBoost, this);
 	}
 
 	@Override
 	public String abilityInfo() {
-		int dmgBoost = levelKnown ? 7 + Math.round(1.5f*buffedLvl()) : 7;
+		int dmgBoost = levelKnown ? 9 + Math.round(2f*buffedLvl()) : 9;
 		if (levelKnown){
 			return Messages.get(this, "ability_desc", augment.damageFactor(min()+dmgBoost), augment.damageFactor(max()+dmgBoost));
 		} else {
@@ -78,7 +78,7 @@ public class Spear extends MeleeWeapon {
 	}
 
 	public String upgradeAbilityStat(int level){
-		int dmgBoost = 7 + Math.round(1.5f*level);
+		int dmgBoost = 9 + Math.round(2f*level);
 		return augment.damageFactor(min(level)+dmgBoost) + "-" + augment.damageFactor(max(level)+dmgBoost);
 	}
 
