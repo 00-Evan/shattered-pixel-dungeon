@@ -35,7 +35,9 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -182,13 +184,19 @@ public class SentryRoom extends SpecialRoom {
 		}
 
 		//1 floor set higher in probability, never cursed
-		do {
-			if (Random.Int(2) == 0) {
-				prize = Generator.randomWeapon((Dungeon.depth / 5) + 1);
-			} else {
-				prize = Generator.randomArmor((Dungeon.depth / 5) + 1);
+		//1 floor set higher in probability, never cursed
+		if (Random.Int(2) == 0) {
+			prize = Generator.randomWeapon((Dungeon.depth / 5) + 1);
+			if (((Weapon)prize).hasCurseEnchant()){
+				((Weapon) prize).enchant(null);
 			}
-		} while (prize.cursed || Challenges.isItemBlocked(prize));
+		} else {
+			prize = Generator.randomArmor((Dungeon.depth / 5) + 1);
+			if (((Armor)prize).hasCurseGlyph()){
+				((Armor) prize).inscribe(null);
+			}
+		}
+		prize.cursed = false;
 		prize.cursedKnown = true;
 
 		//33% chance for an extra update.
