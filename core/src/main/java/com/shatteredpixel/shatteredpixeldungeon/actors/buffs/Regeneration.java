@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.SaltCube;
 
 public class Regeneration extends Buff {
 	
@@ -39,6 +40,12 @@ public class Regeneration extends Buff {
 	@Override
 	public boolean act() {
 		if (target.isAlive()) {
+
+			//cancel regenning entirely in thie case
+			if (SaltCube.healthRegenMultiplier() == 0){
+				spend(REGENERATION_DELAY);
+				return true;
+			}
 
 			if (target.HP < regencap() && !((Hero)target).isStarving()) {
 				if (regenOn()) {
@@ -61,6 +68,7 @@ public class Regeneration extends Buff {
 					delay /= RingOfEnergy.artifactChargeMultiplier(target);
 				}
 			}
+			delay /= SaltCube.healthRegenMultiplier();
 			spend( delay );
 			
 		} else {

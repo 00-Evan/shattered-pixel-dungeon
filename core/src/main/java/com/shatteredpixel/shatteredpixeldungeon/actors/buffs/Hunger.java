@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfChallenge;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.SaltCube;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -106,8 +107,14 @@ public class Hunger extends Buff implements Hero.Doom {
 				level = newLevel;
 
 			}
+
+			float hungerDelay = STEP;
+			if (target.buff(Shadows.class) != null){
+				hungerDelay *= 1.5f;
+			}
+			hungerDelay /= SaltCube.hungerGainMultiplier();
 			
-			spend( target.buff( Shadows.class ) == null ? STEP : STEP * 1.5f );
+			spend( hungerDelay );
 
 		} else {
 
