@@ -267,7 +267,27 @@ public enum Talent {
 		public void tintIcon(Image icon) { icon.hardlight(0.35f, 0f, 0.7f); }
 		public float iconFadePercent() { return Math.max(0, visualcooldown() / 50); }
 	};
-	public static class RestoredAgilityTracker extends FlavourBuff{};
+	public static class LiquidAgilEVATracker extends FlavourBuff{};
+	public static class LiquidAgilACCTracker extends FlavourBuff{
+		public int uses;
+
+		{ type = buffType.POSITIVE; }
+		public int icon() { return BuffIndicator.INVERT_MARK; }
+		public void tintIcon(Image icon) { icon.hardlight(0.5f, 0f, 1f); }
+		public float iconFadePercent() { return Math.max(0, 1f - (visualcooldown() / 5)); }
+
+		private static final String USES = "uses";
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(USES, uses);
+		}
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			uses = bundle.getInt(USES);
+		}
+	};
 	public static class LethalHasteCooldown extends FlavourBuff{
 		public int icon() { return BuffIndicator.TIME; }
 		public void tintIcon(Image icon) { icon.hardlight(0.35f, 0f, 0.7f); }
@@ -276,7 +296,7 @@ public enum Talent {
 	public static class SwiftEquipCooldown extends FlavourBuff{
 		public boolean secondUse;
 		public boolean hasSecondUse(){
-			return secondUse && cooldown() > 14f;
+			return secondUse;
 		}
 
 		public int icon() { return BuffIndicator.TIME; }
@@ -616,7 +636,10 @@ public enum Talent {
 			Dungeon.observe();
 		}
 		if (hero.hasTalent(LIQUID_AGILITY)){
-			Buff.prolong(hero, RestoredAgilityTracker.class, hero.cooldown() + Math.max(0, factor-1));
+			Buff.prolong(hero, LiquidAgilEVATracker.class, hero.cooldown() + Math.max(0, factor-1));
+			if (factor >= 0.5f){
+				Buff.prolong(hero, LiquidAgilACCTracker.class, 5f).uses = Math.round(factor);
+			}
 		}
 	}
 

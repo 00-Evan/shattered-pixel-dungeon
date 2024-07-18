@@ -521,10 +521,10 @@ public class GameScene extends PixelScene {
 					if (r instanceof SecretRoom) reqSecrets--;
 				}
 
-				//60%/90% chance, use level's seed so that we get the same result for the same level
+				//75%/100% chance, use level's seed so that we get the same result for the same level
 				//offset seed slightly to avoid output patterns
 				Random.pushGenerator(Dungeon.seedCurDepth()+1);
-					if (reqSecrets <= 0 && Random.Int(10) < 3+3*Dungeon.hero.pointsInTalent(Talent.ROGUES_FORESIGHT)){
+					if (reqSecrets <= 0 && Random.Int(4) < 2+Dungeon.hero.pointsInTalent(Talent.ROGUES_FORESIGHT)){
 						GLog.p(Messages.get(this, "secret_hint"));
 					}
 				Random.popGenerator();

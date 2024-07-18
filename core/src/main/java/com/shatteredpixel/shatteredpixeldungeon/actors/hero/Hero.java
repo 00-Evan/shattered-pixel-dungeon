@@ -48,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Foresight;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.GreaterHaste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HoldFast;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
@@ -510,9 +511,9 @@ public class Hero extends Char {
 		
 		evasion *= RingOfEvasion.evasionMultiplier( this );
 
-		if (buff(Talent.RestoredAgilityTracker.class) != null){
+		if (buff(Talent.LiquidAgilEVATracker.class) != null){
 			if (pointsInTalent(Talent.LIQUID_AGILITY) == 1){
-				evasion *= 4f;
+				evasion *= 3f;
 			} else if (pointsInTalent(Talent.LIQUID_AGILITY) == 2){
 				return INFINITE_EVASION;
 			}
@@ -1681,6 +1682,10 @@ public class Hero extends Char {
 
 			float delay = 1 / speed();
 
+			if (buff(GreaterHaste.class) != null){
+				delay = 0;
+			}
+
 			if (Dungeon.level.pit[step] && !Dungeon.level.solid[step]
 					&& (!flying || buff(Levitation.class) != null && buff(Levitation.class).detachesWithinDelay(delay))){
 				if (!Chasm.jumpConfirmed){
@@ -1693,6 +1698,10 @@ public class Hero extends Char {
 				}
 				canSelfTrample = false;
 				return false;
+			}
+
+			if (buff(GreaterHaste.class) != null){
+				buff(GreaterHaste.class).spendMove();
 			}
 
 			if (subClass == HeroSubClass.FREERUNNER){
@@ -1846,6 +1855,12 @@ public class Hero extends Char {
 		boolean levelUp = false;
 		while (this.exp >= maxExp()) {
 			this.exp -= maxExp();
+
+			if (buff(Talent.WandPreservationCounter.class) != null
+				&& pointsInTalent(Talent.WAND_PRESERVATION) == 2){
+				buff(Talent.WandPreservationCounter.class).detach();
+			}
+
 			if (lvl < MAX_LEVEL) {
 				lvl++;
 				levelUp = true;
