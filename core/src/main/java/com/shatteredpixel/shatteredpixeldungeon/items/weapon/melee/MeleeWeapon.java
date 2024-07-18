@@ -308,8 +308,15 @@ public class MeleeWeapon extends Weapon {
 			} else if (this instanceof Flail && owner.buff(Flail.SpinAbilityTracker.class) != null){
 				//do nothing, this is not a regular attack so don't consume talent fx
 			} else if (owner.buff(Talent.PreciseAssaultTracker.class) != null) {
-				// 2x/4x/8x ACC for duelist if she just used a weapon ability
-				ACC *= Math.pow(2, ((Hero) owner).pointsInTalent(Talent.PRECISE_ASSAULT));
+				// 2x/5x/inf. ACC for duelist if she just used a weapon ability
+				switch (((Hero) owner).pointsInTalent(Talent.PRECISE_ASSAULT)){
+					default: case 1:
+						ACC *= 2; break;
+					case 2:
+						ACC *= 5; break;
+					case 3:
+						ACC *= Float.POSITIVE_INFINITY; break;
+				}
 				owner.buff(Talent.PreciseAssaultTracker.class).detach();
 			} else if (owner.buff(Talent.LiquidAgilACCTracker.class) != null){
 				//3x/inf. ACC, depending on talent level
