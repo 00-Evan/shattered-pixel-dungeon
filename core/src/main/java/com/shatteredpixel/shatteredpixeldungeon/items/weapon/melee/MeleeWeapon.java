@@ -307,6 +307,8 @@ public class MeleeWeapon extends Weapon {
 				ACC *= 1f + 0.1f * ((Hero) owner).pointsInTalent(Talent.PRECISE_ASSAULT);
 			} else if (this instanceof Flail && owner.buff(Flail.SpinAbilityTracker.class) != null){
 				//do nothing, this is not a regular attack so don't consume talent fx
+			} else if (this instanceof Crossbow && owner.buff(Crossbow.ChargedShot.class) != null){
+				//do nothing, this is not a regular attack so don't consume talent fx
 			} else if (owner.buff(Talent.PreciseAssaultTracker.class) != null) {
 				// 2x/5x/inf. ACC for duelist if she just used a weapon ability
 				switch (((Hero) owner).pointsInTalent(Talent.PRECISE_ASSAULT)){
