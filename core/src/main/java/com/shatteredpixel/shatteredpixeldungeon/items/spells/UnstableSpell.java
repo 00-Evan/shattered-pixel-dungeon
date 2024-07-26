@@ -98,14 +98,15 @@ public class UnstableSpell extends Spell {
 		
 		Scroll s = Reflection.newInstance(Random.chances(scrollChances));
 
-		boolean enemy = hero.visibleEnemies() != 0;
-
-		//reroll the scroll once if there is an enemy and it is a non-combat scroll
-		// or if there is no enemy and it is a combat scroll
-		if (enemy && nonCombatScrolls.contains(s.getClass())){
-			s = Reflection.newInstance(Random.chances(scrollChances));
-		} else if (!enemy && combatScrolls.contains(s.getClass())){
-			s = Reflection.newInstance(Random.chances(scrollChances));
+		//reroll the scroll until it is relevant for the situation (whether there are visible enemies)
+		if (hero.visibleEnemies() == 0){
+			while (combatScrolls.contains(s.getClass())){
+				s = Reflection.newInstance(Random.chances(scrollChances));
+			}
+		} else {
+			while (nonCombatScrolls.contains(s.getClass())){
+				s = Reflection.newInstance(Random.chances(scrollChances));
+			}
 		}
 
 		s.anonymize();
