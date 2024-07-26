@@ -71,7 +71,7 @@ public class WndMonkAbilities extends Window {
 			moveBtn.multiline = true;
 			moveBtn.setSize(width, moveBtn.reqHeight());
 			moveBtn.setRect(0, pos, width, moveBtn.reqHeight());
-			moveBtn.enable(energyBuff.energy >= abil.energyCost());
+			moveBtn.enable(abil.usable(energyBuff));
 			add(moveBtn);
 			pos = moveBtn.bottom() + MARGIN;
 		}
