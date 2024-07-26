@@ -183,12 +183,6 @@ public class MeleeWeapon extends Weapon {
 			hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldAmt), FloatingText.SHIELDING);
 		}
 
-		if (hero.buff(Talent.CombinedLethalityAbilityTracker.class) != null
-				&& hero.buff(Talent.CombinedLethalityAbilityTracker.class).weapon != null
-				&& hero.buff(Talent.CombinedLethalityAbilityTracker.class).weapon != this){
-			Buff.affect(hero, Talent.CombinedLethalityTriggerTracker.class, 5f);
-		}
-
 		updateQuickslot();
 	}
 

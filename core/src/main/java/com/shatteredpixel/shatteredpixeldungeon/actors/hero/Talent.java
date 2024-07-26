@@ -360,12 +360,6 @@ public enum Talent {
 	public static class CombinedLethalityAbilityTracker extends FlavourBuff{
 		public MeleeWeapon weapon;
 	};
-	public static class CombinedLethalityTriggerTracker extends FlavourBuff{
-		{ type = buffType.POSITIVE; }
-		public int icon() { return BuffIndicator.CORRUPT; }
-		public void tintIcon(Image icon) { icon.hardlight(0.6f, 0.15f, 0.6f); }
-		public float iconFadePercent() { return Math.max(0, 1f - (visualcooldown() / 5)); }
-	};
 	public static class CombinedEnergyAbilityTracker extends FlavourBuff{
 		public boolean monkAbilused = false;
 		public boolean wepAbilUsed = false;
