@@ -306,7 +306,7 @@ public class Ghost extends NPC {
 				Ghost ghost = new Ghost();
 				do {
 					ghost.pos = level.pointToCell(room.random());
-				} while (ghost.pos == -1 || ghost.pos == level.exit());
+				} while (ghost.pos == -1 || level.solid[ghost.pos] || ghost.pos == level.exit());
 				level.mobs.add( ghost );
 				
 				spawned = true;
