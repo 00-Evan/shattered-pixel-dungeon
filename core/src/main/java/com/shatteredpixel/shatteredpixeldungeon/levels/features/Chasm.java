@@ -134,7 +134,7 @@ public class Chasm implements Hero.Doom {
 		
 		if (b != null){
 			hero.sprite.emitter().burst( Speck.factory( Speck.JET ), 20);
-			b.detach();
+			b.processFall();
 			return;
 		}
 		
