@@ -1386,9 +1386,9 @@ public class Hero extends Char {
 			wep = belongings.attackingWeapon();
 		}
 
-		if (wep != null) damage = wep.proc( this, enemy, damage );
-
 		damage = Talent.onAttackProc( this, enemy, damage );
+
+		if (wep != null) damage = wep.proc( this, enemy, damage );
 		
 		switch (subClass) {
 		case SNIPER:
