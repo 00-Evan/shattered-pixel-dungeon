@@ -2,11 +2,15 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url = uri("https://storage.googleapis.com/r8-releases/raw")
+        }
     }
     dependencies {
-        //the R8 version bundled with AGP 8.1.0+ causes crashes on very old Android versions
-        //This affects ICS and Lollipop at least, maybe also KitKat
-        classpath 'com.android.tools.build:gradle:8.0.2'
+        //gradle version packaged with AGP 8.5 causes crashes on Android 4.4-
+        //this won't be needed once the bundled version is 8.7.2+
+        classpath 'com.android.tools:r8:8.7.4-dev'
+        classpath 'com.android.tools.build:gradle:8.5.1'
     }
 }
 
