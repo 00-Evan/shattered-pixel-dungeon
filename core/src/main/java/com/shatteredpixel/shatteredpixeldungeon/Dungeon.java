@@ -594,13 +594,8 @@ public class Dungeon {
 		return false;
 	}
 
-	// 1/4
-	// 3/4 * 1/3 = 3/12 = 1/4
-	// 3/4 * 2/3 * 1/2 = 6/24 = 1/4
-	// 1/4
-
 	private static final String INIT_VER	= "init_ver";
-	private static final String VERSION		= "version";
+	public  static final String VERSION		= "version";
 	private static final String SEED		= "seed";
 	private static final String CUSTOM_SEED	= "custom_seed";
 	private static final String DAILY	    = "daily";
