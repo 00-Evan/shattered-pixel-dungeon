@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -159,10 +160,15 @@ public class Rapier extends MeleeWeapon {
 						}
 					});
 				} else {
-					wep.beforeAbilityUsed(hero, null);
+					//spends charge but otherwise does not count as an ability use
+					Charger charger = Buff.affect(hero, Charger.class);
+					charger.partialCharge -= 1;
+					while (charger.partialCharge < 0 && charger.charges > 0) {
+						charger.charges--;
+						charger.partialCharge++;
+					}
 					GLog.w(Messages.get(Rapier.class, "ability_no_target"));
 					hero.spendAndNext(1/hero.speed());
-					wep.afterAbilityUsed(hero);
 				}
 			}
 		});
