@@ -35,6 +35,8 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
+import java.util.ArrayList;
+
 public class Wraith extends Mob {
 
 	private static final float SPAWN_DELAY	= 2f;
@@ -103,7 +105,7 @@ public class Wraith extends Mob {
 	
 	public static void spawnAround( int pos, Class<? extends Wraith> wraithClass ) {
 		for (int n : PathFinder.NEIGHBOURS4) {
-			spawnAt( pos + n, wraithClass );
+			spawnAt( pos + n, wraithClass, false );
 		}
 	}
 
@@ -112,7 +114,30 @@ public class Wraith extends Mob {
 	}
 
 	public static Wraith spawnAt( int pos, Class<? extends Wraith> wraithClass ) {
-		if ((!Dungeon.level.solid[pos] || Dungeon.level.passable[pos]) && Actor.findChar( pos ) == null) {
+		return spawnAt( pos, wraithClass, true );
+	}
+
+	private static Wraith spawnAt( int pos, Class<? extends Wraith> wraithClass, boolean allowAdjacent ) {
+
+		//if the position itself is blocked, try to place in an adjacent cell if allowed
+		if (Dungeon.level.solid[pos] || Actor.findChar( pos ) != null){
+			ArrayList<Integer> candidates = new ArrayList<>();
+
+			for (int i : PathFinder.NEIGHBOURS8){
+				if (!Dungeon.level.solid[pos+i] && Actor.findChar( pos+i ) == null){
+					candidates.add(pos+i);
+				}
+			}
+
+			if (allowAdjacent && !candidates.isEmpty()){
+				pos = Random.element(candidates);
+			} else {
+				pos = -1;
+			}
+
+		}
+
+		if (pos != -1) {
 
 			Wraith w;
 			//if no wraith type is specified, 1/100 chance for exotic, otherwise normal
