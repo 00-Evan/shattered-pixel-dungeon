@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ImpSprite;
@@ -124,7 +125,9 @@ public class Imp extends NPC {
 			}
 			
 		} else {
-			tell( Quest.alternative ? Messages.get(this, "monks_1") : Messages.get(this, "golems_1") );
+			tell( Messages.get(this, "intro") + "\n\n" + (Quest.alternative ?
+					Messages.get(this, "monks_1", Messages.titleCase(Dungeon.hero.name()))
+					: Messages.get(this, "golems_1", Messages.titleCase(Dungeon.hero.name()))) );
 			Quest.given = true;
 			Quest.completed = false;
 		}
@@ -206,13 +209,14 @@ public class Imp extends NPC {
 		}
 		
 		public static void spawn( CityLevel level ) {
-			if (!spawned && Dungeon.depth > 16 && Random.Int( 20 - Dungeon.depth ) == 0) {
+			if (!spawned && Dungeon.depth == 18) {
 				
 				Imp npc = new Imp();
 				do {
 					npc.pos = level.randomRespawnCell( npc );
 				} while (
 						npc.pos == -1 ||
+						level.map[ npc.pos ] == Terrain.EMPTY_SP || //visibility issues on these tiles
 						level.heaps.get( npc.pos ) != null ||
 						level.traps.get( npc.pos) != null ||
 						level.findMob( npc.pos ) != null ||
@@ -222,6 +226,9 @@ public class Imp extends NPC {
 				level.mobs.add( npc );
 				
 				spawned = true;
+
+				//imp always spawns on an empty tile, for better visibility
+				level.map[ npc.pos ] = Terrain.EMPTY;
 
 				//always assigns monks on floor 17, golems on floor 19, and 50/50 between either on 18
 				switch (Dungeon.depth){
