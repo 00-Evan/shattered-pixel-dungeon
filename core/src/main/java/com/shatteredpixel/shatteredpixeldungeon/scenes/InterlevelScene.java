@@ -41,15 +41,12 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
 import com.watabou.gltextures.TextureCache;
-import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.NoosaScript;
-import com.watabou.noosa.NoosaScriptNoLighting;
-import com.watabou.noosa.SkinnedBlock;
 import com.watabou.utils.BArray;
 import com.watabou.utils.DeviceCompat;
+import com.watabou.utils.Random;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -107,11 +104,9 @@ public class InterlevelScene extends PixelScene {
 		switch (mode){
 			default:
 				loadingDepth = Dungeon.depth;
-				scrollSpeed = 0;
 				break;
 			case CONTINUE:
 				loadingDepth = GamesInProgress.check(GamesInProgress.curSlot).depth;
-				scrollSpeed = 5;
 				break;
 			case DESCEND:
 				if (Dungeon.hero == null){
@@ -127,21 +122,17 @@ public class InterlevelScene extends PixelScene {
 						fadeTime = SLOW_FADE;
 					}
 				}
-				scrollSpeed = 5;
 				break;
 			case FALL:
 				loadingDepth = Dungeon.depth+1;
-				scrollSpeed = 50;
 				break;
 			case ASCEND:
 				fadeTime = FAST_FADE;
 				if (curTransition != null)  loadingDepth = curTransition.destDepth;
 				else                        loadingDepth = Dungeon.depth-1;
-				scrollSpeed = -5;
 				break;
 			case RETURN:
 				loadingDepth = returnDepth;
-				scrollSpeed = returnDepth > Dungeon.depth ? 15 : -15;
 				break;
 		}
 
@@ -152,47 +143,46 @@ public class InterlevelScene extends PixelScene {
 			lastRegion = region;
 		}
 
-		if      (lastRegion == 1)    loadingAsset = Assets.Interfaces.LOADING_SEWERS;
-		else if (lastRegion == 2)    loadingAsset = Assets.Interfaces.LOADING_PRISON;
-		else if (lastRegion == 3)    loadingAsset = Assets.Interfaces.LOADING_CAVES;
-		else if (lastRegion == 4)    loadingAsset = Assets.Interfaces.LOADING_CITY;
-		else                         loadingAsset = Assets.Interfaces.LOADING_HALLS;
+		if      (lastRegion == 1)    loadingAsset = Assets.Splashes.SEWERS;
+		else if (lastRegion == 2)    loadingAsset = Assets.Splashes.PRISON;
+		else if (lastRegion == 3)    loadingAsset = Assets.Splashes.CAVES;
+		else if (lastRegion == 4)    loadingAsset = Assets.Splashes.CITY;
+		else                         loadingAsset = Assets.Splashes.HALLS;
 		
 		if (DeviceCompat.isDebug()){
 			fadeTime = 0f;
 		}
-		
-		SkinnedBlock bg = new SkinnedBlock(Camera.main.width, Camera.main.height, loadingAsset ){
-			@Override
-			protected NoosaScript script() {
-				return NoosaScriptNoLighting.get();
-			}
 
-			@Override
-			public void draw() {
-				Blending.disable();
-				super.draw();
-				Blending.enable();
-			}
-			
-			@Override
-			public void update() {
-				super.update();
-				offset(0, Game.elapsed * scrollSpeed);
-			}
-		};
-		bg.scale(4, 4);
-		bg.autoAdjust = true;
-		add(bg);
+		Image background = new Image(loadingAsset);
+		background.scale.set(Camera.main.height/background.height);
+
+		background.x = (Camera.main.width - background.width())/2f;
+		background.y = (Camera.main.height - background.height())/2f;
+		PixelScene.align(background);
+		add(background);
+
+		Image fadeLeft, fadeRight;
+		fadeLeft = new Image(TextureCache.createGradient(0xFF000000, 0xFF000000, 0x00000000));
+		fadeLeft.x = background.x-2;
+		fadeLeft.scale.set(3, background.height());
+		fadeLeft.visible = background.x > 0;
+		add(fadeLeft);
+
+		fadeRight = new Image(fadeLeft);
+		fadeRight.x = background.x + background.width() + 2;
+		fadeRight.y = background.y + background.height();
+		fadeRight.angle = 180;
+		fadeRight.visible = background.x + background.width() < Camera.main.width;
+		add(fadeRight);
 
 		Image im = new Image(TextureCache.createGradient(0xAA000000, 0xBB000000, 0xCC000000, 0xDD000000, 0xFF000000)){
 			@Override
 			public void update() {
 				super.update();
-				if (lastRegion == 6)                aa = 1;
-				else if (phase == Phase.FADE_IN)    aa = Math.max( 0, (timeLeft - (fadeTime - 0.333f)));
-				else if (phase == Phase.FADE_OUT)   aa = Math.max( 0, (0.333f - timeLeft));
-				else                                aa = 0;
+				if (lastRegion == 6)                am = 1;
+				else if (phase == Phase.FADE_IN)    am = Math.max( 0, (timeLeft - (fadeTime - 0.333f)));
+				else if (phase == Phase.FADE_OUT)   am = Math.max( 0, (0.333f - timeLeft));
+				else                                am = 0;
 			}
 		};
 		im.angle = 90;
@@ -205,8 +195,8 @@ public class InterlevelScene extends PixelScene {
 		
 		message = PixelScene.renderTextBlock( text, 9 );
 		message.setPos(
-				(Camera.main.width - message.width()) / 2,
-				(Camera.main.height - message.height()) / 2
+				(Camera.main.width - message.width() - 6),
+				(Camera.main.height - message.height() - 6)
 		);
 		align(message);
 		add( message );
@@ -272,12 +262,10 @@ public class InterlevelScene extends PixelScene {
 
 		waitingTime += Game.elapsed;
 		
-		float p = timeLeft / fadeTime;
-		
 		switch (phase) {
 		
 		case FADE_IN:
-			message.alpha( 1 - p );
+			message.alpha( Math.max(0, fadeTime - (timeLeft-0.333f)));
 			if ((timeLeft -= Game.elapsed) <= 0) {
 				synchronized (thread) {
 					if (!thread.isAlive() && error == null) {
@@ -291,7 +279,7 @@ public class InterlevelScene extends PixelScene {
 			break;
 			
 		case FADE_OUT:
-			message.alpha( p );
+			message.alpha( Math.min(1, timeLeft+0.333f) );
 			
 			if ((timeLeft -= Game.elapsed) <= 0) {
 				Game.switchScene( GameScene.class );
@@ -335,6 +323,14 @@ public class InterlevelScene extends PixelScene {
 				}
 			}
 			break;
+		}
+
+		if (mode == Mode.FALL) {
+			message.setPos(
+					(Camera.main.width - message.width() - 6) + Random.NormalFloat(-1, 1),
+					(Camera.main.height - message.height() - 6) + Random.NormalFloat(-1, 1)
+			);
+			align(message);
 		}
 	}
 
