@@ -257,6 +257,20 @@ public class CavesBossLevel extends Level {
 	}
 
 	@Override
+	public boolean invalidHeroPos(int tile) {
+		//hero cannot be above gate, or above arena, when gate is closed
+		if (map[gate.left + gate.top*width()] == Terrain.CUSTOM_DECO){
+			Point p = cellToPoint(tile);
+			if (p.y < diggableArea.top){
+				return true;
+			} else if (p.y < gate.bottom && p.x >= gate.left && p.x < gate.right){
+				return true;
+			}
+		}
+		return super.invalidHeroPos(tile);
+	}
+
+	@Override
 	public void occupyCell(Char ch) {
 		//seal the level when the hero moves near to a pylon, the level isn't already sealed, and the gate hasn't been destroyed
 		int gatePos = pointToCell(new Point(gate.left, gate.top));
@@ -330,8 +344,8 @@ public class CavesBossLevel extends Level {
 		blobs.get(PylonEnergy.class).fullyClear();
 
 		set( entrance(), Terrain.ENTRANCE );
-		int i = 14 + 13*width();
-		for (int j = 0; j < 5; j++){
+		int i = gate.top*width();
+		for (int j = gate.left; j < gate.right; j++){
 			set( i+j, Terrain.EMPTY );
 			if (Dungeon.level.heroFOV[i+j]){
 				CellEmitter.get(i+j).burst(BlastParticle.FACTORY, 10);

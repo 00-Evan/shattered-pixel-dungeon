@@ -1467,6 +1467,11 @@ public abstract class Level implements Bundlable {
 		return (float)Math.sqrt(Math.pow(Math.abs( ax - bx ), 2) + Math.pow(Math.abs( ay - by ), 2));
 	}
 
+	//usually just if a cell is solid, but other cases exist too
+	public boolean invalidHeroPos( int tile ){
+		return !passable[tile] && !avoid[tile];
+	}
+
 	//returns true if the input is a valid tile within the level
 	public boolean insideMap( int tile ){
 				//top and bottom row and beyond

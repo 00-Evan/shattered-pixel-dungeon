@@ -294,6 +294,15 @@ public class CityBossLevel extends Level {
 	}
 
 	@Override
+	public boolean invalidHeroPos(int tile) {
+		//hero cannot be above top door if it is locked
+		if (map[topDoor] == Terrain.LOCKED_DOOR && tile <= topDoor){
+			return true;
+		}
+		return super.invalidHeroPos(tile);
+	}
+
+	@Override
 	public void occupyCell( Char ch ) {
 		if (map[bottomDoor] != Terrain.LOCKED_DOOR && map[topDoor] == Terrain.LOCKED_DOOR
 				&& ch.pos < bottomDoor && ch == Dungeon.hero) {
