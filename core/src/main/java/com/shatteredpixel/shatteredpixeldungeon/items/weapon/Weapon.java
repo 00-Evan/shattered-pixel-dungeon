@@ -331,16 +331,22 @@ abstract public class Weapon extends KindOfWeapon {
 			}
 		}
 		level(n);
-		
-		//30% chance to be cursed
-		//10% chance to be enchanted
-		float effectRoll = Random.Float();
-		if (effectRoll < 0.3f * ParchmentScrap.curseChanceMultiplier()) {
-			enchant(Enchantment.randomCurse());
-			cursed = true;
-		} else if (effectRoll >= 1f - (0.1f * ParchmentScrap.enchantChanceMultiplier())){
-			enchant();
-		}
+
+		//we use a separate RNG here so that variance due to things like parchment scrap
+		//does not affect levelgen
+		Random.pushGenerator(Random.Long());
+
+			//30% chance to be cursed
+			//10% chance to be enchanted
+			float effectRoll = Random.Float();
+			if (effectRoll < 0.3f * ParchmentScrap.curseChanceMultiplier()) {
+				enchant(Enchantment.randomCurse());
+				cursed = true;
+			} else if (effectRoll >= 1f - (0.1f * ParchmentScrap.enchantChanceMultiplier())){
+				enchant();
+			}
+
+		Random.popGenerator();
 
 		return this;
 	}
