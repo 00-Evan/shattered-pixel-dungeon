@@ -46,6 +46,7 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.utils.BArray;
 import com.watabou.utils.DeviceCompat;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
 
 import java.io.FileNotFoundException;
@@ -99,14 +100,16 @@ public class InterlevelScene extends PixelScene {
 		
 		String loadingAsset;
 		int loadingDepth;
-		final float scrollSpeed;
 		fadeTime = NORM_FADE;
+
+		long seed = Dungeon.seed;
 		switch (mode){
 			default:
 				loadingDepth = Dungeon.depth;
 				break;
 			case CONTINUE:
 				loadingDepth = GamesInProgress.check(GamesInProgress.curSlot).depth;
+				seed = GamesInProgress.check(GamesInProgress.curSlot).seed;
 				break;
 			case DESCEND:
 				if (Dungeon.hero == null){
@@ -143,11 +146,54 @@ public class InterlevelScene extends PixelScene {
 			lastRegion = region;
 		}
 
-		if      (lastRegion == 1)    loadingAsset = Assets.Splashes.SEWERS;
-		else if (lastRegion == 2)    loadingAsset = Assets.Splashes.PRISON;
-		else if (lastRegion == 3)    loadingAsset = Assets.Splashes.CAVES;
-		else if (lastRegion == 4)    loadingAsset = Assets.Splashes.CITY;
-		else                         loadingAsset = Assets.Splashes.HALLS;
+		int loadingCenter = 400;
+
+		//for portrait users, each run the splashes change what details they focus on
+		//TOD should these be uniform, or should some be more common?
+		Random.pushGenerator(seed+lastRegion);
+			switch (lastRegion){
+				case 1:
+					loadingAsset = Assets.Splashes.SEWERS;
+					switch (Random.Int(3)){
+						case 0: loadingCenter = 180; break; //focus on rats and left side
+						case 1: loadingCenter = 485; break; //focus on center pipe and door
+						case 2: loadingCenter = 700; break; //focus on right pipe
+					}
+					break;
+				case 2:
+					loadingAsset = Assets.Splashes.PRISON;
+					switch (Random.Int(3)){
+						case 0: loadingCenter = 190; break; //focus on left skeleton
+						case 1: loadingCenter = 402; break; //focus on center arch
+						case 2: loadingCenter = 650; break; //focus on right stairs
+					}
+					break;
+				case 3:
+					loadingAsset = Assets.Splashes.CAVES;
+					switch (Random.Int(3)){
+						case 0: loadingCenter = 120; break; //focus on far-left mining machinery
+						case 1: loadingCenter = 340; break; //focus on center gnoll groups
+						case 2: loadingCenter = 625; break; //focus on right gnoll
+					}
+					break;
+				case 4:
+					loadingAsset = Assets.Splashes.CITY;
+					switch (Random.Int(3)){
+						case 0: loadingCenter = 275; break; //focus on left bookcases
+						case 1: loadingCenter = 460; break; //focus on center pathway
+						case 2: loadingCenter = 625; break; //focus on right bookcases
+					}
+					break;
+				case 5: default:
+					loadingAsset = Assets.Splashes.HALLS;
+					switch (Random.Int(3)){
+						case 0: loadingCenter = 145; break; //focus on left arches
+						case 1: loadingCenter = 400; break; //focus on ripper demon
+						case 2: loadingCenter = 615; break; //focus on right arches
+					}
+					break;
+			}
+		Random.popGenerator();
 		
 		if (DeviceCompat.isDebug()){
 			fadeTime = 0f;
@@ -156,7 +202,12 @@ public class InterlevelScene extends PixelScene {
 		Image background = new Image(loadingAsset);
 		background.scale.set(Camera.main.height/background.height);
 
-		background.x = (Camera.main.width - background.width())/2f;
+		if (Camera.main.width >= background.width()){
+			background.x = (Camera.main.width - background.width())/2f;
+		} else {
+			background.x = Camera.main.width/2f - loadingCenter*background.scale.x;
+			background.x = GameMath.gate(Camera.main.width - background.width(), background.x, 0);
+		}
 		background.y = (Camera.main.height - background.height())/2f;
 		PixelScene.align(background);
 		add(background);
@@ -172,7 +223,7 @@ public class InterlevelScene extends PixelScene {
 		fadeRight.x = background.x + background.width() + 2;
 		fadeRight.y = background.y + background.height();
 		fadeRight.angle = 180;
-		fadeRight.visible = background.x + background.width() < Camera.main.width;
+		fadeRight.visible = fadeLeft.visible;
 		add(fadeRight);
 
 		Image im = new Image(TextureCache.createGradient(0xAA000000, 0xBB000000, 0xCC000000, 0xDD000000, 0xFF000000)){
