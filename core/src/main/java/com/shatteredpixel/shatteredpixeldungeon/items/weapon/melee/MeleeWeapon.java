@@ -293,7 +293,7 @@ public class MeleeWeapon extends Weapon {
 		float ACC = super.accuracyFactor(owner, target);
 
 		if (owner instanceof Hero
-				&& ((Hero) owner).hasTalent(Talent.PRECISE_ASSAULT) || ((Hero) owner).hasTalent(Talent.LIQUID_AGILITY)
+				&& (((Hero) owner).hasTalent(Talent.PRECISE_ASSAULT) || ((Hero) owner).hasTalent(Talent.LIQUID_AGILITY))
 				//does not trigger on ability attacks
 				&& ((Hero) owner).belongings.abilityWeapon != this) {
 			if (((Hero) owner).heroClass != HeroClass.DUELIST) {
