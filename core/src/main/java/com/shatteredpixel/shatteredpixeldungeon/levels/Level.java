@@ -1241,7 +1241,7 @@ public abstract class Level implements Bundlable {
 		int cy = c.pos / width();
 		
 		boolean sighted = c.buff( Blindness.class ) == null && c.buff( Shadows.class ) == null
-						&& c.buff( TimekeepersHourglass.timeStasis.class ) == null && c.isAlive();
+						&& c.isAlive();
 		if (sighted) {
 			boolean[] blocking = null;
 

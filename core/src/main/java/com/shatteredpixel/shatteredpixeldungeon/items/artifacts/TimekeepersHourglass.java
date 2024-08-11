@@ -324,8 +324,8 @@ public class TimekeepersHourglass extends Artifact {
 
 		@Override
 		public void fx(boolean on) {
-			if (on) target.sprite.add( CharSprite.State.INVISIBLE );
-			else if (target.invisible == 0) target.sprite.remove( CharSprite.State.INVISIBLE );
+			if (on) target.sprite.add( CharSprite.State.PARALYSED );
+			else if (target.invisible == 0) target.sprite.remove( CharSprite.State.PARALYSED );
 		}
 	}
 
