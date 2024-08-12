@@ -58,14 +58,18 @@ public class ScrollOfMirrorImage extends Scroll {
 		
 		readAnimation();
 	}
-	
-	//returns the number of images spawned
+
 	public static int spawnImages( Hero hero, int nImages ){
+		return spawnImages( hero, hero.pos, nImages);
+	}
+
+	//returns the number of images spawned
+	public static int spawnImages( Hero hero, int pos, int nImages ){
 		
 		ArrayList<Integer> respawnPoints = new ArrayList<>();
 		
-		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-			int p = hero.pos + PathFinder.NEIGHBOURS8[i];
+		for (int i = 0; i < PathFinder.NEIGHBOURS9.length; i++) {
+			int p = pos + PathFinder.NEIGHBOURS9[i];
 			if (Actor.findChar( p ) == null && Dungeon.level.passable[p]) {
 				respawnPoints.add( p );
 			}

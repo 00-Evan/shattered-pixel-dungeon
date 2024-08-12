@@ -552,12 +552,38 @@ public abstract class Elemental extends Mob {
 		
 		@Override
 		protected void meleeProc( Char enemy, int damage ) {
-			CursedWand.cursedEffect(null, this, enemy);
+			Ballistica aim = new Ballistica(pos, enemy.pos, Ballistica.STOP_TARGET);
+			//TODO shortcutting the fx seems fine for now but may cause problems with new cursed effects
+			//of course, not shortcutting it means actor ordering issues =S
+			CursedWand.randomValidEffect(null, this, aim, false).effect(null, this, aim, false);
 		}
-		
+
+		@Override
+		protected void zap() {
+			spend( 1f );
+
+			Invisibility.dispel(this);
+			Char enemy = this.enemy;
+			//skips accuracy check, always hits
+			rangedProc( enemy );
+
+			rangedCooldown = Random.NormalIntRange( 3, 5 );
+		}
+
+		@Override
+		public void onZapComplete() {
+			zap();
+			//next(); triggers after wand effect
+		}
+
 		@Override
 		protected void rangedProc( Char enemy ) {
-			CursedWand.cursedEffect(null, this, enemy);
+			CursedWand.cursedZap(null, this, new Ballistica(pos, enemy.pos, Ballistica.STOP_TARGET), new Callback() {
+				@Override
+				public void call() {
+					next();
+				}
+			});
 		}
 	}
 	
