@@ -142,7 +142,7 @@ public class WndHero extends WndTabbed {
 			Hero hero = Dungeon.hero;
 
 			IconTitle title = new IconTitle();
-			title.icon( HeroSprite.avatar(hero.heroClass, hero.tier()) );
+			title.icon( HeroSprite.avatar(hero) );
 			if (hero.name().equals(hero.className()))
 				title.label( Messages.get(this, "title", hero.lvl, hero.className() ).toUpperCase( Locale.ENGLISH ) );
 			else

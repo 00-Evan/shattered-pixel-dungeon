@@ -1179,11 +1179,15 @@ public class GameScene extends PixelScene {
 	}
 	
 	public static void updateKeyDisplay(){
-		if (scene != null) scene.menu.updateKeys();
+		if (scene != null && scene.menu != null) scene.menu.updateKeys();
 	}
 
 	public static void showlevelUpStars(){
-		if (scene != null) scene.status.showStarParticles();
+		if (scene != null && scene.status != null) scene.status.showStarParticles();
+	}
+
+	public static void updateAvatar(){
+		if (scene != null && scene.status != null) scene.status.updateAvatar();
 	}
 
 	public static void resetMap() {
@@ -1613,7 +1617,7 @@ public class GameScene extends PixelScene {
 				image = Icons.get(Icons.INFO);
 			} else if (objects.get(0) instanceof Hero) {
 				title = textLines.remove(0);
-				image = HeroSprite.avatar(((Hero) objects.get(0)).heroClass, ((Hero) objects.get(0)).tier());
+				image = HeroSprite.avatar((Hero) objects.get(0));
 			} else if (objects.get(0) instanceof Mob) {
 				title = textLines.remove(0);
 				image = ((Mob) objects.get(0)).sprite();

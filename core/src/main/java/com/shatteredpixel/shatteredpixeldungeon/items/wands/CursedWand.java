@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HeroDisguise;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -92,7 +93,6 @@ public class CursedWand {
 
 		boolean positiveOnly = user == Dungeon.hero && Random.Float() < WondrousResin.positiveCurseEffectChance();
 		CursedEffect effect = randomValidEffect(origin, user, bolt, positiveOnly);
-		//CursedEffect effect = new InterFloorTeleport();
 
 		effect.FX(origin, user, bolt, new Callback() {
 			@Override
@@ -526,6 +526,7 @@ public class CursedWand {
 		VERY_RARE_EFFECTS.add(new SpawnGoldenMimic());
 		VERY_RARE_EFFECTS.add(new AbortRetryFail());
 		VERY_RARE_EFFECTS.add(new RandomTransmogrify());
+		VERY_RARE_EFFECTS.add(new HeroShapeShift());
 	}
 
 	public static CursedEffect randomVeryRareEffect(){
@@ -696,6 +697,28 @@ public class CursedWand {
 			}
 			Dungeon.level.drop(result, user.pos).sprite.drop();
 			return true;
+		}
+	}
+
+	public static class HeroShapeShift extends CursedEffect{
+
+		@Override
+		public boolean valid(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+			return user instanceof Hero || Actor.findChar(bolt.collisionPos) instanceof Hero;
+		}
+
+		@Override
+		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+			if (user instanceof Hero){
+				Buff.affect(user, HeroDisguise.class, HeroDisguise.DURATION);
+				GLog.w( Messages.get(CursedWand.class, "disguise") );
+				return true;
+			} else if (Actor.findChar(bolt.collisionPos) instanceof Hero){
+				Buff.affect(Actor.findChar(bolt.collisionPos), HeroDisguise.class, HeroDisguise.DURATION);
+				GLog.w( Messages.get(CursedWand.class, "disguise") );
+				return true;
+			}
+			return false;
 		}
 	}
 
