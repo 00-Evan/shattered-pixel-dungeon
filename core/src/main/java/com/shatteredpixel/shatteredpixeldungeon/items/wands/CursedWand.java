@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ConfusionGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ParalyticGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Regrowth;
@@ -39,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HeroDisguise;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoldenMimic;
@@ -48,6 +50,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
@@ -64,7 +67,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.WondrousResin;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CursingTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ShockingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
@@ -73,6 +75,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -274,7 +277,7 @@ public class CursedWand {
 		UNCOMMON_EFFECTS.add(new RandomPlant());
 		UNCOMMON_EFFECTS.add(new HealthTransfer());
 		UNCOMMON_EFFECTS.add(new Explosion());
-		UNCOMMON_EFFECTS.add(new ShockAndRecharge());
+		UNCOMMON_EFFECTS.add(new LightningBolt());
 	}
 
 	public static CursedEffect randomUncommonEffect(){
@@ -338,7 +341,7 @@ public class CursedWand {
 					toHeal = target;
 					toDamage = user;
 				}
-				toHeal.HP = Math.min(toHeal.HT, toHeal.HP + damage);
+				toHeal.HP = Math.min(toHeal.HT, toHeal.HP + damage/2);
 				toHeal.sprite.emitter().burst(Speck.factory(Speck.HEALING), 3);
 				toHeal.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(damage), FloatingText.HEALING );
 
@@ -377,14 +380,70 @@ public class CursedWand {
 		}
 	}
 
-	public static class ShockAndRecharge extends CursedEffect {
+	public static class LightningBolt extends CursedEffect {
+
+		@Override
+		public void FX(Item origin, Char user, Ballistica bolt, Callback callback) {
+			Char ch = Actor.findChar( bolt.collisionPos );
+			if (ch != null){
+				user.sprite.parent.addToFront(new Lightning(user.sprite.center(), ch.sprite.center(), null));
+			} else {
+				user.sprite.parent.addToFront(new Lightning(user.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(bolt.collisionPos), null));
+			}
+			Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
+			callback.call();
+		}
+
 		@Override
 		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
-			//no shock if positive only
-			if (!positiveOnly) new ShockingTrap().set( user.pos ).activate();
-			Buff.prolong(user, Recharging.class, Recharging.DURATION);
-			ScrollOfRecharging.charge(user);
-			SpellSprite.show(user, SpellSprite.CHARGE);
+
+			ArrayList<Char> affected = new ArrayList<>();
+
+			user.sprite.parent.add(new Lightning(user.pos - 1, user.pos + 1, null));
+			user.sprite.parent.add(new Lightning(user.pos - Dungeon.level.width(), user.pos + Dungeon.level.width(), null));
+			user.sprite.parent.add(new Lightning(user.pos - 1 - Dungeon.level.width(), user.pos + 1 + Dungeon.level.width(), null));
+			user.sprite.parent.add(new Lightning(user.pos - 1 + Dungeon.level.width(), user.pos + 1 - Dungeon.level.width(), null));
+			for (int i : PathFinder.NEIGHBOURS9){
+				if (Actor.findChar(user.pos+i) != null){
+					affected.add(Actor.findChar(user.pos+i));
+				}
+			}
+
+			int pos = bolt.collisionPos;
+			user.sprite.parent.add(new Lightning(pos - 1, user.pos + 1, null));
+			user.sprite.parent.add(new Lightning(pos - Dungeon.level.width(), pos + Dungeon.level.width(), null));
+			user.sprite.parent.add(new Lightning(pos - 1 - Dungeon.level.width(), pos + 1 + Dungeon.level.width(), null));
+			user.sprite.parent.add(new Lightning(pos - 1 + Dungeon.level.width(), pos + 1 - Dungeon.level.width(), null));
+			for (int i : PathFinder.NEIGHBOURS9){
+				if (Actor.findChar(pos+i) != null){
+					affected.add(Actor.findChar(pos+i));
+				}
+			}
+
+			for (Char ch : affected){
+				if (ch instanceof Hero) {
+					Buff.prolong(ch, Recharging.class, Recharging.DURATION/3f);
+					ScrollOfRecharging.charge(ch);
+					SpellSprite.show(ch, SpellSprite.CHARGE);
+				}
+				//does not harm allies if positive only
+				if (ch.alignment != Char.Alignment.ALLY || !positiveOnly){
+					//shocking dart damage and a little stun
+					ch.damage(Random.NormalIntRange(5 + Dungeon.scalingDepth() / 4, 10 + Dungeon.scalingDepth() / 4), new Electricity());
+					Buff.affect(ch, Paralysis.class, Paralysis.DURATION/2f);
+					if (!ch.isAlive() && ch == Dungeon.hero){
+						if (user == Dungeon.hero && origin != null) {
+							Badges.validateDeathFromFriendlyMagic();
+							Dungeon.fail( origin );
+							GLog.n( Messages.get( CursedWand.class, "ondeath", origin.name() ) );
+						} else {
+							Badges.validateDeathFromEnemyMagic();
+							Dungeon.fail( user );
+						}
+					}
+				}
+			}
+
 			return true;
 		}
 	}
