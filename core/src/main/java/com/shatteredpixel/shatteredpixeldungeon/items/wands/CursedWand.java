@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HeroDisguise;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SuperNovaTracker;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoldenMimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
@@ -586,6 +587,7 @@ public class CursedWand {
 		VERY_RARE_EFFECTS.add(new AbortRetryFail());
 		VERY_RARE_EFFECTS.add(new RandomTransmogrify());
 		VERY_RARE_EFFECTS.add(new HeroShapeShift());
+		VERY_RARE_EFFECTS.add(new SuperNova());
 	}
 
 	public static CursedEffect randomVeryRareEffect(){
@@ -759,7 +761,7 @@ public class CursedWand {
 		}
 	}
 
-	public static class HeroShapeShift extends CursedEffect{
+	public static class HeroShapeShift extends CursedEffect {
 
 		@Override
 		public boolean valid(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
@@ -778,6 +780,22 @@ public class CursedWand {
 				return true;
 			}
 			return false;
+		}
+	}
+
+	public static class SuperNova extends CursedEffect {
+		@Override
+		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+			SuperNovaTracker nova = Buff.append(Dungeon.hero, SuperNovaTracker.class);
+			nova.pos = bolt.collisionPos;
+			nova.harmsAllies = !positiveOnly;
+			if (positiveOnly){
+				GLog.p(Messages.get(CursedWand.class, "supernova_positive"));
+			} else {
+				GLog.w(Messages.get(CursedWand.class, "supernova"));
+			}
+
+			return true;
 		}
 	}
 
