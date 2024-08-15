@@ -306,12 +306,30 @@ public class InterlevelScene extends PixelScene {
 		}
 		waitingTime = 0f;
 	}
-	
+
+	private int dots = 0;
+
 	@Override
 	public void update() {
 		super.update();
 
 		waitingTime += Game.elapsed;
+
+		if (mode != Mode.FALL && dots != Math.ceil(waitingTime / ((2*fadeTime)/3f))) {
+			String text = Messages.get(Mode.class, mode.name());
+			dots = (int)Math.ceil(waitingTime / ((2*fadeTime)/3f))%3;
+			switch (dots){
+				case 1: default:
+					message.text(text + ".");
+					break;
+				case 2:
+					message.text(text + "..");
+					break;
+				case 0:
+					message.text(text + "...");
+					break;
+			}
+		}
 		
 		switch (phase) {
 		
@@ -378,7 +396,7 @@ public class InterlevelScene extends PixelScene {
 
 		if (mode == Mode.FALL) {
 			message.setPos(
-					(Camera.main.width - message.width() - 6) + Random.NormalFloat(-1, 1),
+					(Camera.main.width - message.width() - 4) + Random.NormalFloat(-1, 1),
 					(Camera.main.height - message.height() - 6) + Random.NormalFloat(-1, 1)
 			);
 			align(message);
