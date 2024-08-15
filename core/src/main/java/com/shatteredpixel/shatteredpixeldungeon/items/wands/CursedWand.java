@@ -557,9 +557,12 @@ public class CursedWand {
 		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
 			if (!positiveOnly && Dungeon.depth > 1 && Dungeon.interfloorTeleportAllowed() && user == Dungeon.hero) {
 
-				//each depth has 1 more weight than the previous depth.
+				//starting from 10 floors up (or floor 1), each floor has 1 more weight
 				float[] depths = new float[Dungeon.depth-1];
-				for (int i = 1; i < Dungeon.depth; i++) depths[i-1] = i;
+				int start = Math.max(1, Dungeon.depth-10);
+				for (int i = start; i < Dungeon.depth; i++) {
+					depths[i-1] = i-start+1;
+				}
 				int depth = 1+Random.chances(depths);
 
 				Level.beforeTransition();
