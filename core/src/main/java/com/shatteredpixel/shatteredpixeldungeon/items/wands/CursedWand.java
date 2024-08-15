@@ -35,14 +35,19 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ParalyticGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Regrowth;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invulnerability;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HeroDisguise;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SuperNovaTracker;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.TimeStasis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoldenMimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
@@ -55,7 +60,11 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PoisonParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
@@ -70,6 +79,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CursingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
@@ -85,6 +96,7 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.io.IOException;
@@ -459,6 +471,10 @@ public class CursedWand {
 		RARE_EFFECTS.add(new CurseEquipment());
 		RARE_EFFECTS.add(new InterFloorTeleport());
 		RARE_EFFECTS.add(new SummonMonsters());
+		RARE_EFFECTS.add(new FireBall());
+		RARE_EFFECTS.add(new ConeOfColors());
+		RARE_EFFECTS.add(new MassInvuln());
+		RARE_EFFECTS.add(new Petrify());
 	}
 
 	public static CursedEffect randomRareEffect(){
@@ -572,6 +588,204 @@ public class CursedWand {
 			} else {
 				new SummoningTrap().set(bolt.collisionPos).activate();
 			}
+			return true;
+		}
+	}
+
+	public static class FireBall extends CursedEffect {
+
+		@Override
+		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+
+			Point c = Dungeon.level.cellToPoint(bolt.collisionPos);
+			boolean[] fieldOfView = new boolean[Dungeon.level.length()];
+			ShadowCaster.castShadow(c.x, c.y, Dungeon.level.width(), fieldOfView, Dungeon.level.solid, 3);
+
+			for (int i = 0; i < Dungeon.level.length(); i++){
+				if (fieldOfView[i] && !Dungeon.level.solid[i]){
+					//does not directly harm allies
+					if (positiveOnly && Actor.findChar(i) != null && Actor.findChar(i).alignment == Char.Alignment.ALLY){
+						continue;
+					}
+
+					CellEmitter.get(i).burst(FlameParticle.FACTORY, 10);
+					if (Actor.findChar(i) != null){
+						Char ch = Actor.findChar(i);
+						Burning burning = Buff.affect(ch, Burning.class);
+						burning.reignite(ch);
+						int dmg = Random.NormalIntRange(5 + Dungeon.scalingDepth(), 10 + Dungeon.scalingDepth()*2);
+						ch.damage(dmg, burning);
+					}
+					if (Dungeon.level.flamable[i]){
+						GameScene.add(Blob.seed(i, 4, Fire.class));
+					}
+
+				}
+			}
+			WandOfBlastWave.BlastWave.blast(bolt.collisionPos, 6);
+			Sample.INSTANCE.play(Assets.Sounds.BLAST);
+			Sample.INSTANCE.play(Assets.Sounds.BURNING);
+
+			return false;
+		}
+	}
+
+	public static class ConeOfColors extends CursedEffect {
+
+		private ConeAOE cone = null;
+
+		@Override
+		public void FX(Item origin, Char user, Ballistica bolt, Callback callback) {
+
+			//need to re-do bolt as it should go through chars
+			bolt = new Ballistica(bolt.sourcePos, bolt.collisionPos, Ballistica.STOP_SOLID);
+
+			cone = new ConeAOE( bolt,
+					8,
+					90,
+					Ballistica.STOP_SOLID);
+
+			Ballistica longestRay = null;
+			for (Ballistica ray : cone.outerRays){
+				if (longestRay == null || ray.dist > longestRay.dist){
+					longestRay = ray;
+				}
+				((MagicMissile)user.sprite.parent.recycle( MagicMissile.class )).reset(
+						MagicMissile.RAINBOW_CONE,
+						user.sprite,
+						ray.path.get(ray.dist),
+						null
+				);
+			}
+
+			//final zap at half distance of the longest ray, for timing of the actual effect
+			MagicMissile.boltFromChar( user.sprite.parent,
+					MagicMissile.RAINBOW_CONE,
+					user.sprite,
+					longestRay.path.get(longestRay.dist/2),
+					callback );
+			Sample.INSTANCE.play( Assets.Sounds.ZAP );
+		}
+
+		@Override
+		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+
+			ArrayList<Char> affectedChars = new ArrayList<>();
+			if (cone == null && Actor.findChar(bolt.collisionPos) != null){
+				//cone may be null in cases like chaos elemental melee
+				affectedChars.add(Actor.findChar(bolt.collisionPos));
+			} else {
+				for (Integer cell : cone.cells){
+					if (cell == user.pos) {
+						continue;
+					}
+					if (Actor.findChar(cell) != null){
+						affectedChars.add(Actor.findChar(cell));
+					}
+				}
+			}
+
+			for (Char ch : affectedChars){
+				//positive only does not harm allies
+				if (positiveOnly && ch.alignment == Char.Alignment.ALLY){
+					continue;
+				} else {
+
+					int dmg = Random.NormalIntRange(5 + Dungeon.scalingDepth(), 10 + Dungeon.scalingDepth()*2);
+					switch (Random.Int(5)){
+						case 0: default:
+							Burning burning = Buff.affect(ch, Burning.class);
+							burning.reignite(ch);
+							ch.damage(dmg, burning);
+							ch.sprite.emitter().burst(FlameParticle.FACTORY, 20);
+							break;
+						case 1:
+							ch.damage(dmg, new Frost());
+							if (ch.isAlive()) Buff.affect(ch, Frost.class, Frost.DURATION);
+							Splash.at( ch.sprite.center(), 0xFFB2D6FF, 20 );
+							break;
+						case 2:
+							Poison poison = Buff.affect(ch, Poison.class);
+							poison.set(3 + Dungeon.scalingDepth() / 2);
+							ch.damage(dmg, poison);
+							ch.sprite.emitter().burst(PoisonParticle.SPLASH, 20);
+							break;
+						case 3:
+							Ooze ooze = Buff.affect(ch, Ooze.class);
+							ooze.set(Ooze.DURATION);
+							ch.damage(dmg, ooze);
+							Splash.at( ch.sprite.center(), 0x000000, 20 );
+							break;
+						case 4:
+							ch.damage(dmg, new Electricity());
+							if (ch.isAlive()) Buff.affect(ch, Paralysis.class, Paralysis.DURATION);
+							ch.sprite.emitter().burst(SparkParticle.FACTORY, 20);
+							break;
+					}
+
+					if (ch == Dungeon.hero && !ch.isAlive()){
+						if (user == Dungeon.hero && origin != null) {
+							Badges.validateDeathFromFriendlyMagic();
+							Dungeon.fail( origin );
+							GLog.n( Messages.get( CursedWand.class, "ondeath", origin.name() ) );
+						} else {
+							Badges.validateDeathFromEnemyMagic();
+							Dungeon.fail( user );
+						}
+					}
+
+				}
+			}
+			return true;
+		}
+	}
+
+	public static class MassInvuln extends CursedEffect {
+
+		@Override
+		public void FX(Item origin, Char user, Ballistica bolt, Callback callback) {
+			callback.call(); //no vfx
+		}
+
+		@Override
+		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+
+			for (Char ch : Actor.chars()){
+				Buff.affect(ch, Invulnerability.class, 10f);
+				Buff.affect(ch, Bless.class, Bless.DURATION);
+			}
+
+			new Flare(5, 48).color(0xFFFF00, true).show(user.sprite, 3f);
+			GameScene.flash(0x80FFFF40);
+			Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+			GLog.p(Messages.get(CursedWand.class, "mass_invuln"));
+
+			return true;
+		}
+
+	}
+
+	public static class Petrify extends CursedEffect {
+
+		@Override
+		public boolean valid(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+			return user == Dungeon.hero;
+		}
+
+		@Override
+		public void FX(Item origin, Char user, Ballistica bolt, Callback callback) {
+			callback.call(); //no vfx
+		}
+
+		@Override
+		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+
+			Buff.affect(user, TimeStasis.class, 100f);
+			Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+
+			user.sprite.emitter().burst(Speck.factory(Speck.STEAM), 10);
+			GLog.w(Messages.get(CursedWand.class, "petrify"));
+
 			return true;
 		}
 	}

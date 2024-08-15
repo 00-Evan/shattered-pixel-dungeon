@@ -34,7 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SacrificialFire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AdrenalineSurge;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AnkhInvulnerability;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invulnerability;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
@@ -62,6 +62,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PhysicalEmpower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.TimeStasis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Challenge;
@@ -1439,8 +1440,10 @@ public class Hero extends Char {
 	
 	@Override
 	public void damage( int dmg, Object src ) {
-		if (buff(TimekeepersHourglass.timeStasis.class) != null)
+		if (buff(TimekeepersHourglass.timeStasis.class) != null
+				|| buff(TimeStasis.class) != null) {
 			return;
+		}
 
 		//regular damage interrupt, triggers on any damage except specific mild DOT effects
 		// unless the player recently hit 'continue moving', in which case this is ignored
@@ -1920,7 +1923,8 @@ public class Hero extends Char {
 	@Override
 	public boolean add( Buff buff ) {
 
-		if (buff(TimekeepersHourglass.timeStasis.class) != null) {
+		if (buff(TimekeepersHourglass.timeStasis.class) != null
+			|| buff(TimeStasis.class) != null) {
 			return false;
 		}
 
@@ -1984,7 +1988,7 @@ public class Hero extends Char {
 				this.HP = HT / 4;
 
 				PotionOfHealing.cure(this);
-				Buff.prolong(this, AnkhInvulnerability.class, AnkhInvulnerability.DURATION);
+				Buff.prolong(this, Invulnerability.class, Invulnerability.DURATION);
 
 				SpellSprite.show(this, SpellSprite.ANKH);
 				GameScene.flash(0x80FFFF40);
@@ -2251,11 +2255,6 @@ public class Hero extends Char {
 			return true;
 		}
 		return super.isImmune(effect);
-	}
-
-	@Override
-	public boolean isInvulnerable(Class effect) {
-		return super.isInvulnerable(effect) || buff(AnkhInvulnerability.class) != null;
 	}
 
 	public boolean search( boolean intentional ) {

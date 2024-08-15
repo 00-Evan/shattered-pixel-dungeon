@@ -248,19 +248,21 @@ public class WandOfBlastWave extends DamageWand {
 		private static final float TIME_TO_FADE = 0.2f;
 
 		private float time;
+		private float size;
 
 		public BlastWave(){
 			super(Effects.get(Effects.Type.RIPPLE));
 			origin.set(width / 2, height / 2);
 		}
 
-		public void reset(int pos) {
+		public void reset(int pos, float size) {
 			revive();
 
 			x = (pos % Dungeon.level.width()) * DungeonTilemap.SIZE + (DungeonTilemap.SIZE - width) / 2;
 			y = (pos / Dungeon.level.width()) * DungeonTilemap.SIZE + (DungeonTilemap.SIZE - height) / 2;
 
 			time = TIME_TO_FADE;
+			this.size = size;
 		}
 
 		@Override
@@ -272,15 +274,19 @@ public class WandOfBlastWave extends DamageWand {
 			} else {
 				float p = time / TIME_TO_FADE;
 				alpha(p);
-				scale.y = scale.x = (1-p)*3;
+				scale.y = scale.x = (1-p)*size;
 			}
 		}
 
 		public static void blast(int pos) {
+			blast(pos, 3);
+		}
+
+		public static void blast(int pos, float radius) {
 			Group parent = Dungeon.hero.sprite.parent;
 			BlastWave b = (BlastWave) parent.recycle(BlastWave.class);
 			parent.bringToFront(b);
-			b.reset(pos);
+			b.reset(pos, radius);
 		}
 
 	}

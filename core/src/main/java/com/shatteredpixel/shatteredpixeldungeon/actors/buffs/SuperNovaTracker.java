@@ -102,7 +102,7 @@ public class SuperNovaTracker extends Buff {
 			Sample.INSTANCE.playDelayed(Assets.Sounds.BLAST, 0.5f);
 			PixelScene.shake( 5, 2f );
 			for (int i = 0; i < Dungeon.level.length(); i++){
-				if (fieldOfView[i]){
+				if (fieldOfView[i] && !Dungeon.level.solid[i]){
 					new Bomb.ConjuredBomb().explode(i); //yes, a bomb at every cell
 					//this means that something in the blast effectively takes:
 					//5.33x bomb dmg when fully inside

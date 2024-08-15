@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invulnerability;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArcaneArmor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
@@ -1146,7 +1147,7 @@ public abstract class Char extends Actor {
 	//similar to isImmune, but only factors in damage.
 	//Is used in AI decision-making
 	public boolean isInvulnerable( Class effect ){
-		return buff(Challenge.SpectatorFreeze.class) != null;
+		return buff(Challenge.SpectatorFreeze.class) != null || buff(Invulnerability.class) != null;
 	}
 
 	protected HashSet<Property> properties = new HashSet<>();

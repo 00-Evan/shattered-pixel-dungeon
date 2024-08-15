@@ -52,6 +52,9 @@ public class ShatteredPixelDungeon extends Game {
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.MobSpawner.class,
 				"com.shatteredpixel.shatteredpixeldungeon.levels.Level$Respawner" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invulnerability.class,
+				"com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AnkhInvulnerability" );
 
 		//pre-v2.4.0
 		com.watabou.utils.Bundle.addAlias(
