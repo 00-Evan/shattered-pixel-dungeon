@@ -226,14 +226,14 @@ public class InterlevelScene extends PixelScene {
 		fadeRight.visible = fadeLeft.visible;
 		add(fadeRight);
 
-		Image im = new Image(TextureCache.createGradient(0xAA000000, 0xBB000000, 0xCC000000, 0xDD000000, 0xFF000000)){
+		Image im = new Image(TextureCache.createGradient(0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xFF000000)){
 			@Override
 			public void update() {
 				super.update();
-				if (lastRegion == 6)                am = 1;
-				else if (phase == Phase.FADE_IN)    am = Math.max( 0, (timeLeft - (fadeTime - 0.333f)));
-				else if (phase == Phase.FADE_OUT)   am = Math.max( 0, (0.333f - timeLeft));
-				else                                am = 0;
+				if (lastRegion == 6)                aa = 1;
+				else if (phase == Phase.FADE_IN)    aa = Math.max( 0, 2*(timeLeft - (fadeTime - 0.333f)));
+				else if (phase == Phase.FADE_OUT)   aa = Math.max( 0, 2*(0.333f - timeLeft));
+				else                                aa = 0;
 			}
 		};
 		im.angle = 90;
@@ -246,7 +246,7 @@ public class InterlevelScene extends PixelScene {
 		
 		message = PixelScene.renderTextBlock( text, 9 );
 		message.setPos(
-				(Camera.main.width - message.width() - 6),
+				(Camera.main.width - message.width() - 8),
 				(Camera.main.height - message.height() - 6)
 		);
 		align(message);
