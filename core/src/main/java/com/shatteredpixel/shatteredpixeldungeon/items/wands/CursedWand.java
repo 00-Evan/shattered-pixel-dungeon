@@ -76,7 +76,12 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfSir
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.WondrousResin;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CursingTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FlockTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GeyserTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ShockingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
@@ -185,6 +190,9 @@ public class CursedWand {
 		COMMON_EFFECTS.add(new SpawnRegrowth());
 		COMMON_EFFECTS.add(new RandomTeleport());
 		COMMON_EFFECTS.add(new RandomGas());
+		COMMON_EFFECTS.add(new RandomAreaEffect());
+		COMMON_EFFECTS.add(new Bubbles());
+		COMMON_EFFECTS.add(new RandomWand());
 	}
 
 	public static CursedEffect randomCommonEffect(){
@@ -281,6 +289,90 @@ public class CursedWand {
 		}
 	}
 
+	public static class RandomAreaEffect extends CursedEffect {
+		@Override
+		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+			tryForWandProc(Actor.findChar(bolt.collisionPos), origin);
+			if (Actor.findChar(bolt.collisionPos) == null){
+				Dungeon.level.pressCell(bolt.collisionPos);
+			}
+			switch (Random.Int(3)) {
+				case 0: default:
+					new BurningTrap().set(bolt.collisionPos).activate();
+					return true;
+				case 1:
+					new ChillingTrap().set(bolt.collisionPos).activate();
+					return true;
+				case 2:
+					new ShockingTrap().set(bolt.collisionPos).activate();
+					return true;
+			}
+		}
+	}
+
+	public static class Bubbles extends CursedEffect {
+
+		@Override
+		public void FX(Item origin, Char user, Ballistica bolt, Callback callback) {
+			MagicMissile.boltFromChar(user.sprite.parent,
+					MagicMissile.BUBBLES,
+					user.sprite,
+					bolt.collisionPos,
+					callback);
+			Sample.INSTANCE.play( Assets.Sounds.ZAP );
+		}
+
+		@Override
+		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+			if (Actor.findChar(bolt.collisionPos) == null){
+				Dungeon.level.pressCell(bolt.collisionPos);
+			}
+			tryForWandProc(Actor.findChar(bolt.collisionPos), origin);
+			for (int i : PathFinder.NEIGHBOURS9){
+				if (!Dungeon.level.solid[bolt.collisionPos+i]){
+					CellEmitter.get(bolt.collisionPos+i).start(Speck.factory(Speck.BUBBLE), 0.25f, 40);
+				}
+			}
+			return true;
+		}
+	}
+
+	public static class RandomWand extends CursedEffect {
+
+		private Wand wand;
+
+		@Override
+		public boolean valid(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+			//TODO we have this limit atm because some wands are coded to depend on their fx logic
+			// and chaos elementals trigger the effect directly, with no FX first
+			return super.valid(origin, user, bolt, positiveOnly) && user instanceof Hero;
+		}
+
+		@Override
+		public void FX(Item origin, Char user, Ballistica bolt, Callback callback) {
+			if (wand == null){
+				wand = (Wand)Generator.randomUsingDefaults(Generator.Category.WAND);
+			}
+			wand.fx(bolt, callback);
+		}
+
+		@Override
+		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+			if (wand == null){
+				wand = (Wand)Generator.randomUsingDefaults(Generator.Category.WAND);
+			}
+			if (origin instanceof Wand){
+				wand.upgrade(origin.level());
+			} else {
+				wand.upgrade(Dungeon.scalingDepth()/5);
+			}
+			wand.levelKnown = false;
+			wand.onZap(bolt);
+			wand = null;
+			return true;
+		}
+	}
+
 	//************************
 	//*** Uncommon Effects ***
 	//************************
@@ -291,6 +383,8 @@ public class CursedWand {
 		UNCOMMON_EFFECTS.add(new HealthTransfer());
 		UNCOMMON_EFFECTS.add(new Explosion());
 		UNCOMMON_EFFECTS.add(new LightningBolt());
+		UNCOMMON_EFFECTS.add(new Geyser());
+		UNCOMMON_EFFECTS.add(new SummonSheep());
 	}
 
 	public static CursedEffect randomUncommonEffect(){
@@ -324,6 +418,7 @@ public class CursedWand {
 		@Override
 		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
 			if (valid(origin, user, bolt, positiveOnly)) {
+				tryForWandProc(Actor.findChar(bolt.collisionPos), origin);
 				Dungeon.level.plant((Plant.Seed) Generator.randomUsingDefaults(Generator.Category.SEED), bolt.collisionPos);
 				return true;
 			} else {
@@ -433,6 +528,8 @@ public class CursedWand {
 				}
 			}
 
+			tryForWandProc(Actor.findChar(bolt.collisionPos), origin);
+
 			for (Char ch : affected){
 				if (ch instanceof Hero) {
 					Buff.prolong(ch, Recharging.class, Recharging.DURATION/3f);
@@ -457,6 +554,27 @@ public class CursedWand {
 				}
 			}
 
+			return true;
+		}
+	}
+
+	public static class Geyser extends CursedEffect{
+		@Override
+		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+			tryForWandProc(Actor.findChar(bolt.collisionPos), origin);
+			GeyserTrap geyser = new GeyserTrap();
+			geyser.pos = bolt.collisionPos;
+			geyser.source = origin == null ? user : origin;
+			geyser.activate();
+			return true;
+		}
+	}
+
+	public static class SummonSheep extends CursedEffect{
+		@Override
+		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+			tryForWandProc(Actor.findChar(bolt.collisionPos), origin);
+			new FlockTrap().set(bolt.collisionPos).activate();
 			return true;
 		}
 	}
@@ -604,6 +722,8 @@ public class CursedWand {
 			boolean[] fieldOfView = new boolean[Dungeon.level.length()];
 			ShadowCaster.castShadow(c.x, c.y, Dungeon.level.width(), fieldOfView, Dungeon.level.solid, 3);
 
+			tryForWandProc(Actor.findChar(bolt.collisionPos), origin);
+
 			for (int i = 0; i < Dungeon.level.length(); i++){
 				if (fieldOfView[i] && !Dungeon.level.solid[i]){
 					//does not directly harm allies
@@ -687,6 +807,8 @@ public class CursedWand {
 					}
 				}
 			}
+
+			tryForWandProc(Actor.findChar(bolt.collisionPos), origin);
 
 			for (Char ch : affectedChars){
 				//positive only does not harm allies

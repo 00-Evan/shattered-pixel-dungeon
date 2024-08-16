@@ -73,6 +73,7 @@ public class MagicMissile extends Emitter {
 	public static final int TOXIC_VENT      = 14;
 	public static final int ELMO            = 15;
 	public static final int POISON          = 16;
+	public static final int BUBBLES         = 17;
 
 	public static final int MAGIC_MISS_CONE = 100;
 	public static final int FROST_CONE      = 101;
@@ -190,6 +191,10 @@ public class MagicMissile extends Emitter {
 			case POISON:
 				size( 3 );
 				pour( PoisonParticle.MISSILE, 0.01f );
+				break;
+			case BUBBLES:
+				size( 10 );
+				pour( Speck.factory(Speck.BUBBLE), 0.02f );
 				break;
 
 			case MAGIC_MISS_CONE:
