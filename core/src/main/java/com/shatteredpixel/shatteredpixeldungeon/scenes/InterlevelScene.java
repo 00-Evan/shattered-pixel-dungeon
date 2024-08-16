@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -29,8 +30,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.ShadowBox;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.LostBackpack;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
@@ -38,7 +41,9 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
+import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Camera;
@@ -82,7 +87,11 @@ public class InterlevelScene extends PixelScene {
 	private Phase phase;
 	private float timeLeft;
 	
-	private RenderedTextBlock message;
+	private RenderedTextBlock loadingText;
+
+	private RenderedTextBlock storyMessage;
+	private ShadowBox storyBG;
+	private StyledButton btnContinue;
 	
 	private static Thread thread;
 	private static Exception error = null;
@@ -196,7 +205,7 @@ public class InterlevelScene extends PixelScene {
 		Random.popGenerator();
 		
 		if (DeviceCompat.isDebug()){
-			fadeTime = 0f;
+			fadeTime = 1f;
 		}
 
 		Image background = new Image(loadingAsset);
@@ -244,13 +253,44 @@ public class InterlevelScene extends PixelScene {
 
 		String text = Messages.get(Mode.class, mode.name());
 		
-		message = PixelScene.renderTextBlock( text, 9 );
-		message.setPos(
-				(Camera.main.width - message.width() - 8),
-				(Camera.main.height - message.height() - 6)
+		loadingText = PixelScene.renderTextBlock( text, 9 );
+		loadingText.setPos(
+				(Camera.main.width - loadingText.width() - 8),
+				(Camera.main.height - loadingText.height() - 6)
 		);
-		align(message);
-		add( message );
+		align(loadingText);
+		add(loadingText);
+
+		//TODo this is functional and doesn't look awful, but there's still improving to be done here
+		if (mode == Mode.DESCEND){
+			if (Dungeon.hero == null || (loadingDepth > Statistics.deepestFloor && loadingDepth % 5 == 1)){
+					storyMessage = PixelScene.renderTextBlock(Document.INTROS.pageBody(region), 6);
+					storyMessage.maxWidth( PixelScene.landscape() ? 180 : 125);
+					storyMessage.setPos((Camera.main.width-storyMessage.width())/2f, (Camera.main.height-storyMessage.height())/2f);
+
+					storyBG = new ShadowBox();
+					storyBG.boxRect(storyMessage.left()-10, storyMessage.top()-10, storyMessage.width()+20, storyMessage.height()+20);
+					storyBG.alpha(0.75f);
+					add(storyBG);
+					add(storyMessage);
+
+					btnContinue = new StyledButton(Chrome.Type.TOAST_TR, "Continue", 9){
+						@Override
+						protected void onClick() {
+							phase = Phase.FADE_OUT;
+							timeLeft = fadeTime;
+
+							btnContinue.enable(false);
+						}
+					};
+					btnContinue.icon(Icons.STAIRS.get());
+					btnContinue.setSize(btnContinue.reqWidth()+10, 22);
+					btnContinue.enable(false);
+
+					btnContinue.setPos((Camera.main.width - btnContinue.width())/2f, storyMessage.bottom()+10);
+					add(btnContinue);
+			}
+		}
 
 		phase = Phase.FADE_IN;
 		timeLeft = fadeTime;
@@ -296,8 +336,7 @@ public class InterlevelScene extends PixelScene {
 
 					synchronized (thread) {
 						if (phase == Phase.STATIC && error == null) {
-							phase = Phase.FADE_OUT;
-							timeLeft = fadeTime;
+							afterLoading();
 						}
 					}
 				}
@@ -320,13 +359,13 @@ public class InterlevelScene extends PixelScene {
 			dots = (int)Math.ceil(waitingTime / ((2*fadeTime)/3f))%3;
 			switch (dots){
 				case 1: default:
-					message.text(text + ".");
+					loadingText.text(text + ".");
 					break;
 				case 2:
-					message.text(text + "..");
+					loadingText.text(text + "..");
 					break;
 				case 0:
-					message.text(text + "...");
+					loadingText.text(text + "...");
 					break;
 			}
 		}
@@ -334,12 +373,11 @@ public class InterlevelScene extends PixelScene {
 		switch (phase) {
 		
 		case FADE_IN:
-			message.alpha( Math.max(0, fadeTime - (timeLeft-0.333f)));
+			loadingText.alpha( Math.max(0, fadeTime - (timeLeft-0.333f)));
 			if ((timeLeft -= Game.elapsed) <= 0) {
 				synchronized (thread) {
 					if (!thread.isAlive() && error == null) {
-						phase = Phase.FADE_OUT;
-						timeLeft = fadeTime;
+						afterLoading();
 					} else {
 						phase = Phase.STATIC;
 					}
@@ -348,7 +386,7 @@ public class InterlevelScene extends PixelScene {
 			break;
 			
 		case FADE_OUT:
-			message.alpha( Math.min(1, timeLeft+0.333f) );
+			loadingText.alpha( Math.min(1, timeLeft+0.333f) );
 			
 			if ((timeLeft -= Game.elapsed) <= 0) {
 				Game.switchScene( GameScene.class );
@@ -395,12 +433,22 @@ public class InterlevelScene extends PixelScene {
 		}
 
 		if (mode == Mode.FALL) {
-			message.setPos(
-					(Camera.main.width - message.width() - 4) + Random.NormalFloat(-1, 1),
-					(Camera.main.height - message.height() - 6) + Random.NormalFloat(-1, 1)
+			loadingText.setPos(
+					(Camera.main.width - loadingText.width() - 4) + Random.NormalFloat(-1, 1),
+					(Camera.main.height - loadingText.height() - 6) + Random.NormalFloat(-1, 1)
 			);
-			align(message);
+			align(loadingText);
 		}
+	}
+
+	private void afterLoading(){
+		if (btnContinue != null){
+			btnContinue.enable(true);
+		} else {
+			phase = Phase.FADE_OUT;
+			timeLeft = fadeTime;
+		}
+
 	}
 
 	private void descend() throws IOException {
