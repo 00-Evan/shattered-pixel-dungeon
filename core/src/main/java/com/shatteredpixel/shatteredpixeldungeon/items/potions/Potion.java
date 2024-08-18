@@ -307,8 +307,8 @@ public class Potion extends Item {
 			
 		} else  {
 
-			//aqua brew specifically doesn't press cells, so it can disarm traps
-			if (!(this instanceof AquaBrew)){
+			//aqua brew and storm clouds specifically don't press cells, so they can disarm traps
+			if (!(this instanceof AquaBrew) && !(this instanceof PotionOfStormClouds)){
 				Dungeon.level.pressCell( cell );
 			}
 			shatter( cell );
