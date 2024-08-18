@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.desktop;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -51,32 +50,21 @@ public class DesktopPlatformSupport extends PlatformSupport {
 			previousSizes[1] = previousSizes[0];
 		}
 		previousSizes[0] = new Point(Game.width, Game.height);
-		if (!SPDSettings.fullscreen() && !SPDSettings.windowMaximized()) {
+		if (!SPDSettings.fullscreen()) {
 			SPDSettings.windowResolution( previousSizes[0] );
 		}
 	}
-	
+
 	@Override
 	public void updateSystemUI() {
 		Gdx.app.postRunnable( new Runnable() {
 			@Override
 			public void run () {
 				if (SPDSettings.fullscreen()){
-					Gdx.graphics.setUndecorated( true );
-					Graphics.DisplayMode display = Gdx.graphics.getDisplayMode();
-					Gdx.graphics.setWindowedMode( display.width, display.height );
+					Gdx.graphics.setFullscreenMode( Gdx.graphics.getDisplayMode() );
 				} else {
 					Point p = SPDSettings.windowResolution();
-					Gdx.graphics.setUndecorated( false );
-					if (SPDSettings.windowMaximized()){
-						//if we are going from fullscreen to maximized, then don't assign window res
-						Point newP = SPDSettings.windowResolution();
-						if (newP.x == p.x && newP.y == p.y){
-							return;
-						}
-					}
 					Gdx.graphics.setWindowedMode( p.x, p.y );
-					SPDSettings.windowResolution( p );
 				}
 			}
 		} );
