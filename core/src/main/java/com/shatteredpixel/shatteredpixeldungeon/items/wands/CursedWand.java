@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HeroDisguise;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Levitation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
@@ -51,6 +52,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.TimeStasis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoldenMimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -71,6 +73,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfMetamorphosis;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfSirensSong;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.WondrousResin;
@@ -99,6 +102,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.BArray;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
@@ -193,6 +197,7 @@ public class CursedWand {
 		COMMON_EFFECTS.add(new RandomAreaEffect());
 		COMMON_EFFECTS.add(new Bubbles());
 		COMMON_EFFECTS.add(new RandomWand());
+		COMMON_EFFECTS.add(new SelfOoze());
 	}
 
 	public static CursedEffect randomCommonEffect(){
@@ -343,7 +348,7 @@ public class CursedWand {
 
 		@Override
 		public boolean valid(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
-			//TODO we have this limit atm because some wands are coded to depend on their fx logic
+			//we have this limit atm because some wands are coded to depend on their fx logic
 			// and chaos elementals trigger the effect directly, with no FX first
 			return super.valid(origin, user, bolt, positiveOnly) && user instanceof Hero;
 		}
@@ -373,6 +378,31 @@ public class CursedWand {
 		}
 	}
 
+	public static class SelfOoze extends CursedEffect{
+
+		@Override
+		public void FX(Item origin, Char user, Ballistica bolt, Callback callback) {
+			callback.call(); //no fx
+		}
+
+		@Override
+		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+			PathFinder.buildDistanceMap(user.pos, BArray.not( Dungeon.level.solid, null ), 2 );
+			for (int i = 0; i < PathFinder.distance.length; i++) {
+				if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+					Splash.at( i, 0x000000, 5);
+					Char ch = Actor.findChar(  i );
+					//does not harm hero or allies when positive only
+					if (ch != null && (!positiveOnly || ch.alignment != Char.Alignment.ALLY)){
+						Buff.affect(ch, Ooze.class).set( Ooze.DURATION );
+					}
+				}
+			}
+			Sample.INSTANCE.play(Assets.Sounds.SHATTER);
+			return true;
+		}
+	}
+
 	//************************
 	//*** Uncommon Effects ***
 	//************************
@@ -385,6 +415,8 @@ public class CursedWand {
 		UNCOMMON_EFFECTS.add(new LightningBolt());
 		UNCOMMON_EFFECTS.add(new Geyser());
 		UNCOMMON_EFFECTS.add(new SummonSheep());
+		UNCOMMON_EFFECTS.add(new Levitate());
+		UNCOMMON_EFFECTS.add(new Alarm());
 	}
 
 	public static CursedEffect randomUncommonEffect(){
@@ -575,6 +607,50 @@ public class CursedWand {
 		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
 			tryForWandProc(Actor.findChar(bolt.collisionPos), origin);
 			new FlockTrap().set(bolt.collisionPos).activate();
+			return true;
+		}
+	}
+
+	public static class Levitate extends CursedEffect {
+
+		@Override
+		public boolean valid(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+			return positiveOnly || Actor.findChar(bolt.collisionPos) != null;
+		}
+
+		@Override
+		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+			if (!positiveOnly) {
+				Char ch = Actor.findChar(bolt.collisionPos);
+				if (ch != null){
+					Buff.affect(ch, Levitation.class, Levitation.DURATION);
+				}
+			} else {
+				Buff.affect(user, Levitation.class, Levitation.DURATION);
+			}
+			return true;
+		}
+	}
+
+	public static class Alarm extends CursedEffect {
+
+		@Override
+		public void FX(Item origin, Char user, Ballistica bolt, Callback callback) {
+			callback.call(); //no vfx
+		}
+
+		@Override
+		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+			for (Mob mob : Dungeon.level.mobs) {
+				mob.beckon( user.pos );
+			}
+			user.sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
+			if (!positiveOnly){
+				Buff.affect(user, ScrollOfChallenge.ChallengeArena.class).setup(user.pos);
+				Sample.INSTANCE.play( Assets.Sounds.CHALLENGE );
+			} else {
+				Sample.INSTANCE.play(Assets.Sounds.ALERT);
+			}
 			return true;
 		}
 	}
