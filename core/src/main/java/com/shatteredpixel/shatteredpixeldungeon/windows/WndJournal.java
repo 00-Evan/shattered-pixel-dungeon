@@ -1029,7 +1029,7 @@ public class WndJournal extends WndTabbed {
 		private Component badgesLocal;
 		private Component badgesGlobal;
 
-		private boolean global = false;
+		public static boolean global = false;
 
 		@Override
 		protected void createChildren() {
