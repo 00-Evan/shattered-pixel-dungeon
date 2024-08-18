@@ -433,7 +433,8 @@ public class SPDSettings extends GameSettings {
 	public static final String KEY_WINDOW_WIDTH     = "window_width";
 	public static final String KEY_WINDOW_HEIGHT    = "window_height";
 	public static final String KEY_WINDOW_MAXIMIZED = "window_maximized";
-	
+	public static final String KEY_FULLSCREEN_MONITOR = "fullscreen_monitor";
+
 	public static void windowResolution( Point p ){
 		put(KEY_WINDOW_WIDTH, p.x);
 		put(KEY_WINDOW_HEIGHT, p.y);
@@ -452,5 +453,13 @@ public class SPDSettings extends GameSettings {
 	
 	public static boolean windowMaximized(){
 		return getBoolean( KEY_WINDOW_MAXIMIZED, false );
+	}
+
+	public static void fulLScreenMonitor( int value ){
+		put( KEY_FULLSCREEN_MONITOR, value);
+	}
+
+	public static int fulLScreenMonitor(){
+		return getInt( KEY_FULLSCREEN_MONITOR, 0 );
 	}
 }

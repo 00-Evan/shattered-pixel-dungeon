@@ -22,6 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.desktop;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -55,17 +57,38 @@ public class DesktopPlatformSupport extends PlatformSupport {
 		}
 	}
 
+	private static boolean first = false;
+
 	@Override
 	public void updateSystemUI() {
 		Gdx.app.postRunnable( new Runnable() {
 			@Override
 			public void run () {
 				if (SPDSettings.fullscreen()){
-					Gdx.graphics.setFullscreenMode( Gdx.graphics.getDisplayMode() );
+					int monitorNum = 0;
+					if (!first){
+						Graphics.Monitor[] monitors = Gdx.graphics.getMonitors();
+						for (int i = 0; i < monitors.length; i++){
+							if (((Lwjgl3Graphics.Lwjgl3Monitor)Gdx.graphics.getMonitor()).getMonitorHandle()
+									== ((Lwjgl3Graphics.Lwjgl3Monitor)monitors[i]).getMonitorHandle()) {
+								monitorNum = i;
+							}
+						}
+					} else {
+						monitorNum = SPDSettings.fulLScreenMonitor();
+					}
+
+					Graphics.Monitor[] monitors = Gdx.graphics.getMonitors();
+					if (monitors.length <= monitorNum) {
+						monitorNum = 0;
+					}
+					Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode(monitors[monitorNum]));
+					SPDSettings.fulLScreenMonitor(monitorNum);
 				} else {
 					Point p = SPDSettings.windowResolution();
 					Gdx.graphics.setWindowedMode( p.x, p.y );
 				}
+				first = false;
 			}
 		} );
 	}
