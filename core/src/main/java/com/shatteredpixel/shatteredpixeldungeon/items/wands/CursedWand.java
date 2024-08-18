@@ -35,13 +35,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ParalyticGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Regrowth;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invulnerability;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HeroDisguise;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invulnerability;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Levitation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
@@ -64,6 +64,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PitfallParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PoisonParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
@@ -84,6 +85,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CursingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FlockTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GeyserTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PitfallTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ShockingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -1003,6 +1005,7 @@ public class CursedWand {
 		VERY_RARE_EFFECTS.add(new RandomTransmogrify());
 		VERY_RARE_EFFECTS.add(new HeroShapeShift());
 		VERY_RARE_EFFECTS.add(new SuperNova());
+		VERY_RARE_EFFECTS.add(new SinkHole());
 	}
 
 	public static CursedEffect randomVeryRareEffect(){
@@ -1210,6 +1213,52 @@ public class CursedWand {
 				GLog.w(Messages.get(CursedWand.class, "supernova"));
 			}
 
+			return true;
+		}
+	}
+
+	public static class SinkHole extends CursedEffect {
+
+		@Override
+		public boolean valid(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+			//can't happen on floors where chasms aren't allowed
+			if( Dungeon.bossLevel() || Dungeon.depth > 25 || Dungeon.branch != 0){
+				return false;
+			}
+			return true;
+		}
+
+		@Override
+		public void FX(Item origin, Char user, Ballistica bolt, Callback callback) {
+			callback.call(); //no vfx
+		}
+
+		@Override
+		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+			boolean[] passable = BArray.not( Dungeon.level.solid, null );
+			BArray.or(passable, Dungeon.level.passable, passable);
+			PathFinder.buildDistanceMap( user.pos, passable, 5 );
+			ArrayList<Integer> positions = new ArrayList<>();
+			for (int i = 0; i < PathFinder.distance.length; i++) {
+				if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+					if (!Dungeon.level.solid[i] || Dungeon.level.passable[i]) {
+						CellEmitter.floor(i).burst(PitfallParticle.FACTORY4, 8);
+						positions.add(i);
+					}
+				}
+			}
+			PitfallTrap.DelayedPit p = Buff.append(Dungeon.hero, PitfallTrap.DelayedPit.class, 1);
+			p.depth = Dungeon.depth;
+			p.branch = Dungeon.branch;
+			p.setPositions(positions);
+
+			//effect does not harm hero/allies if positive only
+			if (positiveOnly){
+				p.ignoreAllies = true;
+				GLog.p(Messages.get(CursedWand.class, "sinkhole_positive"));
+			} else {
+				GLog.w(Messages.get(CursedWand.class, "sinkhole"));
+			}
 			return true;
 		}
 	}
