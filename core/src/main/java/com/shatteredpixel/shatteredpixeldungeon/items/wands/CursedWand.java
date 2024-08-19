@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.GravityChaosTracker;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HeroDisguise;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invulnerability;
@@ -119,7 +120,7 @@ public class CursedWand {
 	public static void cursedZap(final Item origin, final Char user, final Ballistica bolt, final Callback afterZap){
 
 		boolean positiveOnly = user == Dungeon.hero && Random.Float() < WondrousResin.positiveCurseEffectChance();
-		CursedEffect effect = randomValidEffect(origin, user, bolt, positiveOnly);
+		CursedEffect effect = new GravityChaos();
 
 		effect.FX(origin, user, bolt, new Callback() {
 			@Override
@@ -1258,6 +1259,26 @@ public class CursedWand {
 				GLog.p(Messages.get(CursedWand.class, "sinkhole_positive"));
 			} else {
 				GLog.w(Messages.get(CursedWand.class, "sinkhole"));
+			}
+			return true;
+		}
+	}
+
+	public static class GravityChaos extends CursedEffect{
+
+		@Override
+		public void FX(Item origin, Char user, Ballistica bolt, Callback callback) {
+			callback.call(); //no vfx
+		}
+
+		@Override
+		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+			Buff.append(user, GravityChaosTracker.class).positiveOnly = positiveOnly;
+			Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+			if (positiveOnly){
+				GLog.p(Messages.get(CursedWand.class, "gravity_positive"));
+			} else {
+				GLog.w(Messages.get(CursedWand.class, "gravity"));
 			}
 			return true;
 		}
