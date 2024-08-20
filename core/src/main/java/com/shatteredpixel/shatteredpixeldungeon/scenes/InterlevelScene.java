@@ -163,10 +163,10 @@ public class InterlevelScene extends PixelScene {
 			switch (lastRegion){
 				case 1:
 					loadingAsset = Assets.Splashes.SEWERS;
-					switch (Random.Int(3)){
+					switch (Random.Int(2)){
 						case 0: loadingCenter = 180; break; //focus on rats and left side
 						case 1: loadingCenter = 485; break; //focus on center pipe and door
-						case 2: loadingCenter = 700; break; //focus on right pipe
+						//case 2: loadingCenter = 700; break; //focus on right pipe
 					}
 					break;
 				case 2:
@@ -174,15 +174,15 @@ public class InterlevelScene extends PixelScene {
 					switch (Random.Int(3)){
 						case 0: loadingCenter = 190; break; //focus on left skeleton
 						case 1: loadingCenter = 402; break; //focus on center arch
-						case 2: loadingCenter = 650; break; //focus on right stairs
+						//case 2: loadingCenter = 650; break; //focus on right stairs
 					}
 					break;
 				case 3:
 					loadingAsset = Assets.Splashes.CAVES;
 					switch (Random.Int(3)){
-						case 0: loadingCenter = 120; break; //focus on far-left mining machinery
-						case 1: loadingCenter = 340; break; //focus on center gnoll groups
-						case 2: loadingCenter = 625; break; //focus on right gnoll
+						//case 0: loadingCenter = 120; break; //focus on far-left mining machinery
+						case 0: loadingCenter = 340; break; //focus on center gnoll groups
+						case 1: loadingCenter = 625; break; //focus on right gnoll
 					}
 					break;
 				case 4:
@@ -190,7 +190,7 @@ public class InterlevelScene extends PixelScene {
 					switch (Random.Int(3)){
 						case 0: loadingCenter = 275; break; //focus on left bookcases
 						case 1: loadingCenter = 460; break; //focus on center pathway
-						case 2: loadingCenter = 625; break; //focus on right bookcases
+						//case 2: loadingCenter = 625; break; //focus on right bookcases
 					}
 					break;
 				case 5: default:
@@ -198,7 +198,7 @@ public class InterlevelScene extends PixelScene {
 					switch (Random.Int(3)){
 						case 0: loadingCenter = 145; break; //focus on left arches
 						case 1: loadingCenter = 400; break; //focus on ripper demon
-						case 2: loadingCenter = 615; break; //focus on right arches
+						//case 2: loadingCenter = 615; break; //focus on right arches
 					}
 					break;
 			}
@@ -261,7 +261,6 @@ public class InterlevelScene extends PixelScene {
 		align(loadingText);
 		add(loadingText);
 
-		//TODo this is functional and doesn't look awful, but there's still improving to be done here
 		if (mode == Mode.DESCEND){
 			if (Dungeon.hero == null || (loadingDepth > Statistics.deepestFloor && loadingDepth % 5 == 1)){
 					storyMessage = PixelScene.renderTextBlock(Document.INTROS.pageBody(region), 6);
@@ -289,6 +288,10 @@ public class InterlevelScene extends PixelScene {
 
 					btnContinue.setPos((Camera.main.width - btnContinue.width())/2f, storyMessage.bottom()+10);
 					add(btnContinue);
+
+					btnContinue.alpha(0);
+					storyBG.alpha(0);
+					storyMessage.alpha(0);
 			}
 		}
 
@@ -352,7 +355,9 @@ public class InterlevelScene extends PixelScene {
 	public void update() {
 		super.update();
 
-		waitingTime += Game.elapsed;
+		if (btnContinue == null || !btnContinue.isActive()) {
+			waitingTime += Game.elapsed;
+		}
 
 		if (mode != Mode.FALL && dots != Math.ceil(waitingTime / ((2*fadeTime)/3f))) {
 			String text = Messages.get(Mode.class, mode.name());
@@ -387,6 +392,12 @@ public class InterlevelScene extends PixelScene {
 			
 		case FADE_OUT:
 			loadingText.alpha( Math.min(1, timeLeft+0.333f) );
+
+			if (btnContinue != null){
+				btnContinue.alpha(timeLeft/fadeTime);
+				storyMessage.alpha(btnContinue.alpha());
+				storyBG.alpha(btnContinue.alpha()*0.75f);
+			}
 			
 			if ((timeLeft -= Game.elapsed) <= 0) {
 				Game.switchScene( GameScene.class );
@@ -396,6 +407,13 @@ public class InterlevelScene extends PixelScene {
 			break;
 			
 		case STATIC:
+
+			if (btnContinue != null) {
+				btnContinue.alpha(Math.min(1, btnContinue.alpha() + Game.elapsed));
+				storyMessage.alpha(btnContinue.alpha());
+				storyBG.alpha(btnContinue.alpha()*0.75f);
+			}
+
 			if (error != null) {
 				String errorMsg;
 				if (error instanceof FileNotFoundException)     errorMsg = Messages.get(this, "file_not_found");
@@ -444,6 +462,8 @@ public class InterlevelScene extends PixelScene {
 	private void afterLoading(){
 		if (btnContinue != null){
 			btnContinue.enable(true);
+			btnContinue.alpha(0);
+			phase = Phase.STATIC;
 		} else {
 			phase = Phase.FADE_OUT;
 			timeLeft = fadeTime;
