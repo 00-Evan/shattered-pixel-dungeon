@@ -133,6 +133,15 @@ public class IconTitle extends Component {
 		tfLabel.hardlight( color );
 	}
 
+	public float alpha(){
+		return imIcon.alpha();
+	}
+
+	public void alpha( float value ){
+		tfLabel.alpha(value);
+		imIcon.alpha(value);
+	}
+
 	public void health( float value ) {
 		health.level( healthLvl = value );
 		layout();

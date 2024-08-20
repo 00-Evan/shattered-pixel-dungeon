@@ -199,7 +199,7 @@ public class Alchemize extends Spell {
 					RedButton btnEnergize = new RedButton(Messages.get(this, "energize", item.energyVal())) {
 						@Override
 						protected void onClick() {
-							WndEnergizeItem.energize(item);
+							WndEnergizeItem.energizeAll(item);
 							hide();
 							consumeAlchemize();
 						}
@@ -227,7 +227,7 @@ public class Alchemize extends Spell {
 					RedButton btnEnergizeAll = new RedButton(Messages.get(this, "energize_all", energyAll)) {
 						@Override
 						protected void onClick() {
-							WndEnergizeItem.energize(item);
+							WndEnergizeItem.energizeAll(item);
 							hide();
 							consumeAlchemize();
 						}

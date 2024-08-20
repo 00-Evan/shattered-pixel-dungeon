@@ -839,6 +839,75 @@ public class AlchemyScene extends PixelScene {
 
 		updateState();
 	}
+
+	public void showIdentify(Item item){
+		if (item.isIdentified()) return;
+
+		NinePatch BG = Chrome.get(Chrome.Type.TOAST);
+
+		IconTitle oldName = new IconTitle(item){
+			@Override
+			public synchronized void update() {
+				super.update();
+				alpha(this.alpha()-Game.elapsed);
+				if (this.alpha() <= 0){
+					killAndErase();
+				}
+			}
+		};
+		item.identify();
+		IconTitle newName = new IconTitle(item){
+
+			boolean fading;
+
+			@Override
+			public synchronized void update() {
+				super.update();
+				if (!fading) {
+					alpha(this.alpha() + Game.elapsed);
+					if (this.alpha() >= 1) {
+						fading = true;
+					}
+				} else {
+					alpha(this.alpha() - Game.elapsed);
+					BG.alpha(this.alpha());
+					if (this.alpha() <= 0){
+						killAndErase();
+						BG.killAndErase();
+					}
+				}
+			}
+		};
+		newName.alpha(-0.5f);
+
+		oldName.setSize(200, oldName.height());
+		newName.setSize(200, newName.height());
+
+		int w = (int)Math.ceil(Math.max(oldName.reqWidth(), newName.reqWidth())+5);
+
+		oldName.setSize(w, oldName.height());
+		oldName.setPos(
+				centerW - oldName.width()/2,
+				energyAdd.top()
+		);
+		align(oldName);
+
+		newName.setSize(w, oldName.height());
+		newName.setPos(
+				centerW - newName.width()/2,
+				energyAdd.top()
+		);
+		align(newName);
+
+		BG.x = oldName.left()-2;
+		BG.y = oldName.top()-2;
+		BG.size(oldName.width()+4, oldName.height()+4);
+
+		add(BG);
+		add(oldName);
+		add(newName);
+
+	}
 	
 	private class InputButton extends Component {
 		
