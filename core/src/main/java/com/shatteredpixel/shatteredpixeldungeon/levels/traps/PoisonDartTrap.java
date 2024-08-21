@@ -31,7 +31,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.PoisonDart;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
@@ -109,6 +111,7 @@ public class PoisonDartTrap extends Trap {
 											}
 											if (!finalTarget.isAlive()) {
 												Dungeon.fail(PoisonDartTrap.this);
+												GLog.n(Messages.get(PoisonDartTrap.class, "ondeath"));
 											}
 										}
 										Buff.affect( finalTarget, Poison.class ).set( poisonAmount() );
