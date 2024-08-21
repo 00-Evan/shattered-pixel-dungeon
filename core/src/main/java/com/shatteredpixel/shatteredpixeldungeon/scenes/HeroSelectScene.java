@@ -280,7 +280,7 @@ public class HeroSelectScene extends PixelScene {
 			startBtn.setPos((leftArea - startBtn.width())/2f, title.top() + uiHeight - startBtn.height());
 			align(startBtn);
 
-			btnFade = new IconButton(Icons.COMPASS.get()){
+			btnFade = new IconButton(Icons.CHEVRON.get()){
 				@Override
 				protected void onClick() {
 					enable(false);

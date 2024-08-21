@@ -61,6 +61,7 @@ public enum Icons {
 	LEFTARROW,
 	RIGHTARROW,
 	CALENDAR,
+	CHEVRON,
 
 	//misc larger icons, mainly used for buttons, tabs, and journal, spacing for 16x16
 	TARGET,
@@ -219,6 +220,9 @@ public enum Icons {
 				break;
 			case CALENDAR:
 				icon.frame( icon.texture.uvRectBySize( 224, 16, 15, 12 ) );
+				break;
+			case CHEVRON:
+				icon.frame( icon.texture.uvRectBySize( 240, 16, 13, 10 ) );
 				break;
 
 			case TARGET:

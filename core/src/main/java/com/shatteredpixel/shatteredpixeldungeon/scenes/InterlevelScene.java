@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
+import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
@@ -49,6 +50,7 @@ import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.tweeners.Tweener;
 import com.watabou.utils.BArray;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
@@ -92,6 +94,7 @@ public class InterlevelScene extends PixelScene {
 	private RenderedTextBlock storyMessage;
 	private ShadowBox storyBG;
 	private StyledButton btnContinue;
+	private IconButton btnHideStory;
 	
 	private static Thread thread;
 	private static Exception error = null;
@@ -242,7 +245,7 @@ public class InterlevelScene extends PixelScene {
 				if (lastRegion == 6)                aa = 1;
 				else if (phase == Phase.FADE_IN)    aa = Math.max( 0, 2*(timeLeft - (fadeTime - 0.333f)));
 				else if (phase == Phase.FADE_OUT)   aa = Math.max( 0, 2*(0.333f - timeLeft));
-				else                                aa = 0;
+				//else                                aa = 0;
 			}
 		};
 		im.angle = 90;
@@ -289,9 +292,69 @@ public class InterlevelScene extends PixelScene {
 					btnContinue.setPos((Camera.main.width - btnContinue.width())/2f, storyMessage.bottom()+10);
 					add(btnContinue);
 
+					btnHideStory = new IconButton(Icons.CHEVRON.get()){
+						@Override
+						protected void onClick() {
+							if (icon.visible) {
+								enable(false);
+								//button is effectively screen-sized, but invisible
+								parent.add(new Tweener(parent, 0.5f) {
+									@Override
+									protected void updateValues(float progress) {
+										float uiAlpha = 1 - progress;
+										btnContinue.alpha(uiAlpha);
+										storyBG.alpha(uiAlpha * 0.75f);
+										storyMessage.alpha(uiAlpha);
+										icon.alpha(uiAlpha);
+										loadingText.alpha(uiAlpha);
+										im.am = uiAlpha;
+									}
+
+									@Override
+									protected void onComplete() {
+										super.onComplete();
+										setRect(0, 0, Camera.main.width, Camera.main.height);
+										enable(true);
+										icon.visible = false;
+									}
+								});
+							} else {
+								setRect(btnContinue.right()+2, btnContinue.top(), 20, 21);
+								align(this);
+								icon.visible = true;
+								parent.add(new Tweener(parent, 0.5f) {
+									@Override
+									protected void updateValues(float progress) {
+										float uiAlpha = progress;
+										btnContinue.alpha(uiAlpha);
+										storyBG.alpha(uiAlpha*0.75f);
+										storyMessage.alpha(uiAlpha);
+										icon.alpha(uiAlpha);
+										loadingText.alpha(uiAlpha);
+										im.am = uiAlpha;
+									}
+								});
+							}
+						}
+
+						@Override
+						protected void onPointerDown() {
+							if (icon.visible) {
+								super.onPointerDown();
+							}
+						}
+					};
+					btnHideStory.icon().originToCenter();
+					btnHideStory.icon().angle = 180f;
+					btnHideStory.setRect(btnContinue.right()+2, btnContinue.top(), 20, 21);
+					align(btnHideStory);
+					btnHideStory.enable(false);
+					add(btnHideStory);
+
 					btnContinue.alpha(0);
 					storyBG.alpha(0);
 					storyMessage.alpha(0);
+					btnHideStory.icon().alpha(0);
 			}
 		}
 
@@ -350,6 +413,7 @@ public class InterlevelScene extends PixelScene {
 	}
 
 	private int dots = 0;
+	private boolean textFadingIn = true;
 
 	@Override
 	public void update() {
@@ -394,9 +458,10 @@ public class InterlevelScene extends PixelScene {
 			loadingText.alpha( Math.min(1, timeLeft+0.333f) );
 
 			if (btnContinue != null){
-				btnContinue.alpha(timeLeft/fadeTime);
+				btnContinue.alpha((timeLeft/fadeTime));
 				storyMessage.alpha(btnContinue.alpha());
 				storyBG.alpha(btnContinue.alpha()*0.75f);
+				btnHideStory.icon().alpha(btnContinue.alpha());
 			}
 			
 			if ((timeLeft -= Game.elapsed) <= 0) {
@@ -408,10 +473,16 @@ public class InterlevelScene extends PixelScene {
 			
 		case STATIC:
 
-			if (btnContinue != null) {
+			if (btnContinue != null && textFadingIn) {
 				btnContinue.alpha(Math.min(1, btnContinue.alpha() + Game.elapsed));
 				storyMessage.alpha(btnContinue.alpha());
 				storyBG.alpha(btnContinue.alpha()*0.75f);
+				btnHideStory.icon().alpha(btnContinue.alpha());
+
+				if (btnContinue.alpha() == 1){
+					btnHideStory.enable(true);
+					textFadingIn = false;
+				}
 			}
 
 			if (error != null) {
