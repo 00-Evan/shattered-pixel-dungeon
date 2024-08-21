@@ -104,6 +104,10 @@ public abstract class Scroll extends Item {
 	public static void initLabels() {
 		handler = new ItemStatusHandler<>( (Class<? extends Scroll>[])Generator.Category.SCROLL.classes, runes );
 	}
+
+	public static void clearLabels(){
+		handler = null;
+	}
 	
 	public static void save( Bundle bundle ) {
 		handler.save( bundle );

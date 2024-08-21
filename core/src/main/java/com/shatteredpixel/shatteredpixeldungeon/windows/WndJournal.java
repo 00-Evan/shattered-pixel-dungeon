@@ -926,7 +926,7 @@ public class WndJournal extends WndTabbed {
 				} else {
 					icon.lightness(0f);
 					title = "???";
-					desc = Messages.get(CatalogTab.class, "not_seen_trap");
+					desc = Messages.get(CatalogTab.class, "not_seen_plant");
 				}
 
 			}

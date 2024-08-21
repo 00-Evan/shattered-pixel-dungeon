@@ -149,6 +149,10 @@ public class Potion extends Item {
 	public static void initColors() {
 		handler = new ItemStatusHandler<>( (Class<? extends Potion>[])Generator.Category.POTION.classes, colors );
 	}
+
+	public static void clearColors() {
+		handler = null;
+	}
 	
 	public static void save( Bundle bundle ) {
 		handler.save( bundle );
