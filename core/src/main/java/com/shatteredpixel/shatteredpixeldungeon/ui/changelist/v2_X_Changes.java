@@ -84,75 +84,6 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("v2.4.2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SICKLE), "Weapon Ability Buffs",
-				"Overall success rates are up across the board for the Duelist and weapon abilities, but I've giving out some buffs to a few abilities that didn't benefit as strongly from v.2.4.0:\n" +
-				"_- Harvest_ bleeding increased by ~30%\n" +
-				"_- Harvest_ now deals regular damage to bleed-immune foes\n" +
-				"_- Spin_ damage boost up to 8+lvl from 6+lvl\n" +
-				"_- Runic Slash_ base enchant boost up to 300% from 200%\n\n" +
-				"I'm also making a general change to the Duelist's weapon ability charge cap to improve her scaling a tiny bit, especially at level 4:\n" +
-				"_-_ Duelist now gains another weapon charge every 3 levels, down from 4\n" +
-				"_-_ Max possible charges unchanged, but they are now reached at level 19, down from 25\n\n" +
-				"I had mentioned in v2.4.1 that I was planning to make more changes to trinkets, but I've decided to hold off on that for now."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Buffed the bonus damage on the Warrior's new _Provoked Anger_ talent. Now grants 2 or 3 damage, up from 1-2 or 2.\n" +
-				"\n" +
-				"_-_ Cursed wands can no longer turn important NPCs into sheep\n" +
-				"_-_ Spectral necromancers now only kill wraiths they are aligned with when they die\n" +
-				"_-_ Dwarf King now only clears minions that are still allied with him when transitioning phases."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by v2.4.0:_\n" +
-				"_-_ Wondrous Resin not triggering when using wild magic\n" +
-				"_-_ Lingering magic duration stacking instead of resetting when re-triggered\n" +
-				"_-_ Various rare actor order issues caused by dagger blink ability\n" +
-				"_-_ Alchemy UI disabling cancel button when it shouldn't in specific cases\n" +
-				"\n" +
-				"_Existed Prior to v2.4.0:_\n" +
-				"_-_ Various minor visual and textual errors"));
-
-		changes = new ChangeInfo("v2.4.1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.MOSSY_CLUMP), "Trinket Balance Changes",
-				"I'm making some balance tweaks to trinkets based on early gameplay data. I expect I'll be making more tweaks here later on, both to trinkets and the new Duelist abilities, once a little more time has passed.\n" +
-				"\n" +
-				"_- Mossy Clump_ upgrade cost increased\n" +
-				"\n" +
-				"_Ebony Mimics_ (from Mimic Tooth) adjusted to be more rewarding:\n" +
-				"_-_ Stats reduced by ~20%, now a little weaker than golden mimics\n" +
-				"_-_ Surprise attack damage unchanged (still really hurts!)\n" +
-				"_-_ Now contain two random item drops, in addition to normal golden mimic loot\n" +
-				"\n" +
-				"_- Trap Mechanism_ upgrade cost reduced\n" +
-				"_- Dimensional Sundial_ upgrade cost reduced\n" +
-				"_- Thirteen Leaf Clover_ upgrade cost reduced"));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Enemies seen via mind vision can now be auto-targeted, but the game won't auto-aim as aggressively for performance reasons\n" +
-				"_-_ Added dev commentary for v1.3.0"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by v2.4.0:_\n" +
-				"_-_ Saves from before v2.4 sometimes generating trinkets in the dungeon\n" +
-				"_-_ Errors when DM-300 took massive amounts of damage\n" +
-				"_-_ Duelist harvest ability being reduced by damage reduction effects twice\n" +
-				"\n" +
-				"_Existed Prior to v2.4.0:_\n" +
-				"_-_ Various minor visual bugs and typos\n" +
-				"_-_ Swiftness glyph not working near neutral characters\n" +
-				"_-_ Specific cases where damaging immune enemies would count towards regen time during boss fights\n" +
-				"_-_ Ascension hero speed debuff triggering at 7+ amulet curse stacks instead of 6+\n" +
-				"_-_ Fixed view distance becoming 0 during final boss in specific cases"));
-
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
@@ -237,6 +168,7 @@ public class v2_X_Changes {
 				"_-_ Potion and Scroll talents can now trigger from elixirs, brews, and spells\n" +
 				"_-_ Ankh resurrection window now warns if two items aren't selected\n" +
 				"_-_ Trying to attack an enemy that has charmed you now shows a warning\n" +
+				"_-_ Enemies seen via mind vision can now be auto-targeted, but the game won't auto-aim as aggressively for performance reasons\n" +
 				"\n" +
 				"_Heroes:_\n" +
 				"_-_ Gladiator and Monk now include brief ability descriptions in their subclass descriptions\n" +
@@ -246,7 +178,7 @@ public class v2_X_Changes {
 				"_-_ Thrown weapons now state when they break in the game log\n" +
 				"_-_ Tipped darts now last forever when reaching 100 uses, like other thrown weapons\n" +
 				"_-_ Dried rose now includes the ghost's strength in its description\n" +
-				"_-_ Plant effects (e.g. fadeleaf) now trigger before traps when time freeze ends" +
+				"_-_ Plant effects (e.g. fadeleaf) now trigger before traps when time freeze ends\n" +
 				"\n" +
 				"_Misc:_\n" +
 				"_-_ Updated various code dependencies\n" +
@@ -262,15 +194,26 @@ public class v2_X_Changes {
 				"_-_ Rare cases where some victory badges would not save if game was immediately closed\n" +
 				"_-_ Rare cases where game actors could continue to process for a moment when hero falls into a chasm\n" +
 				"_-_ Various cases where characters would not play death animations if they died while paralyzed\n" +
+				"_-_ Dwarf King now only clears minions that are still allied with him when transitioning phases\n" +
 				"\n" +
+				"_Heroes:_\n" +
+				"_-_ Duelist's swift equip not working during time freeze\n" +
+				"_-_ Monk's flurry of blows not using projecting enchantment when empowered\n" +
+				"_-_ Various battlemage on-hit effects not showing as magical damage\n" +
+				"_-_ Empowered strike talent not working with blastwave\n" +
+				"_-_ Challenge ability incorrectly working on neutral mobs\n" +
+				"_-_ Seer shot talent not working in blacksmith quest area",
+
 				"_Enemies:_\n" +
 				"_-_ Newborn elemental boss rarely firing its attack through walls\n" +
 				"_-_ Rare cases where the final boss could command minions to attack themselves\n" +
 				"_-_ Gnoll geomancer and sappers potentially dropping boulders next to entrance\n" +
 				"_-_ Gnoll sappers granting armor to corrupted gnoll guards\n" +
 				"_-_ Necromancer skeletons not following necromancer's aggro in some cases\n" +
+				"_-_ Spectral necromancers now only kill wraiths they are aligned with when they die\n" +
 				"_-_ Teleportation effects not accounting for large characters in specific cases\n" +
-				"_-_ DM-300 not becoming supercharged if exactly damaged to the supercharge threshold",
+				"_-_ DM-300 not becoming supercharged if exactly damaged to the supercharge threshold\n" +
+				"_-_ Specific cases where damaging immune enemies would count towards regen time during boss fights",
 
 				"_Items pt.1:_\n" +
 				"_-_ Armband not working on hiding mimics\n" +
@@ -281,6 +224,7 @@ public class v2_X_Changes {
 				"_-_ Camouflage glyph not working if hero uses ethereal chains to move into grass\n" +
 				"_-_ Sandals of nature incorrectly interacting with artifact charging\n" +
 				"_-_ Various specific errors with artifact charge boosting\n" +
+				"_-_ Cursed wands can no longer turn important NPCs into sheep\n" +
 				"_-_ King's crown not preserving armor hardening",
 				
 				"_Items pt.2:_\n" +
@@ -290,25 +234,20 @@ public class v2_X_Changes {
 				"_-_ Dwarf King's crown automatically IDing armor\n" +
 				"_-_ Armband allowing more than one steal in specific cases\n" +
 				"_-_ Swiftness glyph ignoring nearby enemies in specific cases\n" +
+				"_-_ Swiftness glyph turning off near neutral characters\n" +
 				"_-_ Stone of fear applying to hero and allies\n" +
 				"_-_ Spike ability overriding elastic enchant in some cases\n" +
 				"_-_ Geyser traps and aqua brew not extinguishing flames",
 
-				"_Heroes:_\n" +
-				"_-_ Duelist's swift equip not working during time freeze\n" +
-				"_-_ Monk's flurry of blows not using projecting enchantment when empowered\n" +
-				"_-_ Various battlemage on-hit effects not showing as magical damage\n" +
-				"_-_ Empowered strike talent not working with blastwave\n" +
-				"_-_ Challenge ability incorrectly working on neutral mobs\n" +
-				"_-_ Seer shot talent not working in blacksmith quest area\n" +
-				"\n" +
 				"_Misc:_\n" +
 				"_-_ Various minor visual and textual errors\n" +
 				"_-_ Various rare crash bugs\n" +
 				"_-_ Specific cases where unbreakable traps could spawn in halls in the caves\n" +
 				"_-_ Music not properly pausing in background on desktop in some cases\n" +
 				"_-_ Various rare errors when game launches in fullscreen\n" +
-				"_-_ 'taste vengeance' badge not being earnable in a run after unlocking it"));
+				"_-_ 'taste vengeance' badge not being earnable in a run after unlocking it\n" +
+				"_-_ Ascension hero speed debuff triggering at 7+ amulet curse stacks instead of 6+\n" +
+				"_-_ View distance becoming 0 during final boss in specific cases"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight(CharSprite.POSITIVE);
@@ -322,11 +261,11 @@ public class v2_X_Changes {
 				"_- Combo Strike_ damage up, combo duration now resets on hit (like gladiator)\n" +
 				"_- Spike_ damage up\n" +
 				"_- Defensive Stance_ charge cost down to 1 from 2, duration now scales\n" +
-				"_- Harvest_ charge cost down to 1 from 2, bleed amount dealt is now constant\n" +
+				"_- Harvest_ charge cost down to 1 from 2, bleed amount up, is now constant, and deals regular damage to bleed-immune foes\n" +
 				"_- Sword Dance_ charge cost down to 1 from 2, duration now scales, ACC boost up to 50%\n" +
 				"_- Block_ duration now scales, now keeps blocking until you attack\n" +
 				"_- Lash_ now deals bonus damage and is guaranteed to hit all targets\n" +
-				"_- Spin_ charge cost down to 1 from 2\n" +
+				"_- Spin_ charge cost down to 1 from 2, damage up\n" +
 				"_- Runic Strike_ enchant boost now scales\n" +
 				"_- Charge Shot_ AOE up to 7x7 from 5x5, dart durability boost now scales\n" +
 				"_- Retribution_ is now instant if it kills\n" +
