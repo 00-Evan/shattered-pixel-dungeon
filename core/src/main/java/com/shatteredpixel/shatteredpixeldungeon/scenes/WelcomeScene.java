@@ -202,6 +202,10 @@ public class WelcomeScene extends PixelScene {
 
 			}
 
+			message = "Greeting alpha testers! After a bit of a wait, v2.5 is finally ready for testing!\n\n" +
+					"This update is almost content complete, so I expect things to move to beta pretty quickly.\n\n" +
+					"As always, check the changes scene for full details on whats new, and please let me know if you run into any issues!";
+
 		} else {
 			message = Messages.get(this, "what_msg");
 		}
