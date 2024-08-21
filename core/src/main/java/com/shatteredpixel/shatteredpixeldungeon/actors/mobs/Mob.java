@@ -293,6 +293,9 @@ public abstract class Mob extends Char {
 		//We are charmed and current enemy is what charmed us
 		} else if (buff(Charm.class) != null && buff(Charm.class).object == enemy.id()) {
 			newEnemy = true;
+		//We are sleeping (rather than preferring existing target, we want to see if anything is closer
+		} else if (state == SLEEPING){
+			newEnemy = true;
 		}
 
 		//additionally, if we are an ally, find a new enemy if...
@@ -378,17 +381,26 @@ public abstract class Mob extends Char {
 				//go after the closest potential enemy, preferring enemies that can be reached/attacked, and the hero if two are equidistant
 				PathFinder.buildDistanceMap(pos, Dungeon.findPassable(this, Dungeon.level.passable, fieldOfView, true));
 				Char closest = null;
+				int closestDist = Integer.MAX_VALUE;
 
 				for (Char curr : enemies){
+					int currDist = Integer.MAX_VALUE;
+					//we aren't trying to move into the target, just toward them
+					for (int i : PathFinder.NEIGHBOURS8){
+						if (PathFinder.distance[curr.pos+i] < currDist){
+							currDist = PathFinder.distance[curr.pos+i];
+						}
+					}
 					if (closest == null){
 						closest = curr;
+						closestDist = currDist;
 					} else if (canAttack(closest) && !canAttack(curr)){
 						continue;
 					} else if ((canAttack(curr) && !canAttack(closest))
-							|| (PathFinder.distance[curr.pos] < PathFinder.distance[closest.pos])){
+							|| (currDist < closestDist)){
 						closest = curr;
 					} else if ( curr == Dungeon.hero &&
-							(PathFinder.distance[curr.pos] == PathFinder.distance[closest.pos]) || (canAttack(curr) && canAttack(closest))){
+							(currDist == closestDist) || (canAttack(curr) && canAttack(closest))){
 						closest = curr;
 					}
 				}
@@ -494,10 +506,10 @@ public abstract class Mob extends Char {
 
 			boolean newPath = false;
 			//scrap the current path if it's empty, no longer connects to the current location
-			//or if it's extremely inefficient and checking again may result in a much better path
+			//or if it's quite inefficient and checking again may result in a much better path
 			if (path == null || path.isEmpty()
 					|| !Dungeon.level.adjacent(pos, path.getFirst())
-					|| path.size() > 2*Dungeon.level.distance(pos, target))
+					|| path.size() > 1.33f*Dungeon.level.distance(pos, target))
 				newPath = true;
 			else if (path.getLast() != target) {
 				//if the new target is adjacent to the end of the path, adjust for that
@@ -1231,9 +1243,7 @@ public abstract class Mob extends Char {
 
 		//enemies will turn and fight if they have nowhere to run and aren't affect by terror
 		protected void nowhereToRun() {
-			if (buff( Terror.class ) == null
-					&& buffs( AllyBuff.class ).isEmpty()
-					&& buff( Dread.class ) == null) {
+			if (buff( Terror.class ) == null && buff( Dread.class ) == null) {
 				if (enemySeen) {
 					sprite.showStatus(CharSprite.WARNING, Messages.get(Mob.class, "rage"));
 					state = HUNTING;
