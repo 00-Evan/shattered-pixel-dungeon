@@ -133,7 +133,7 @@ public class InterlevelScene extends PixelScene {
 					if (Statistics.deepestFloor >= loadingDepth) {
 						fadeTime = FAST_FADE;
 					} else if (loadingDepth == 6 || loadingDepth == 11
-							|| loadingDepth == 16 || loadingDepth == 21) {
+							|| loadingDepth == 16 || loadingDepth == 21 || loadingDepth == 26) {
 						fadeTime = SLOW_FADE;
 					}
 				}
@@ -264,7 +264,7 @@ public class InterlevelScene extends PixelScene {
 		align(loadingText);
 		add(loadingText);
 
-		if (mode == Mode.DESCEND){
+		if (mode == Mode.DESCEND && lastRegion <= 5){
 			if (Dungeon.hero == null || (loadingDepth > Statistics.deepestFloor && loadingDepth % 5 == 1)){
 					storyMessage = PixelScene.renderTextBlock(Document.INTROS.pageBody(region), 6);
 					storyMessage.maxWidth( PixelScene.landscape() ? 180 : 125);
