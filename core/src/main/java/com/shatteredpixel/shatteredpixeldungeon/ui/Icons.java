@@ -435,7 +435,8 @@ public enum Icons {
 	}
 
 	private static int runTypeOfsY(){
-		if (Dungeon.dailyReplay || !Dungeon.customSeedText.isEmpty()){
+		if ((Dungeon.daily && Dungeon.dailyReplay)
+				|| (!Dungeon.daily && !Dungeon.customSeedText.isEmpty())){
 			return 8;
 		} else {
 			return 0;
