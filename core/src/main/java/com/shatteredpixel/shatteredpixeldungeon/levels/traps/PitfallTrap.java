@@ -63,7 +63,7 @@ public class PitfallTrap extends Trap {
 		for (int i : PathFinder.NEIGHBOURS9){
 			if (!Dungeon.level.solid[pos+i] || Dungeon.level.passable[pos+i]){
 				CellEmitter.floor(pos+i).burst(PitfallParticle.FACTORY4, 8);
-				positions.add(i);
+				positions.add(pos+i);
 			}
 		}
 		p.setPositions(positions);
@@ -95,7 +95,8 @@ public class PitfallTrap extends Trap {
 			if (depth == Dungeon.depth && branch == Dungeon.branch && positions != null) {
 				for (int cell : positions) {
 
-					if (Dungeon.level.solid[cell] && !Dungeon.level.passable[cell]){
+					if (!Dungeon.level.insideMap(cell)
+							|| (Dungeon.level.solid[cell] && !Dungeon.level.passable[cell])){
 						continue;
 					}
 
