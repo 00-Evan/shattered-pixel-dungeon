@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class VialOfBlood extends Trinket {
 
 	{
-		image = ItemSpriteSheet.ARTIFACT_HOURGLASS;
+		image = ItemSpriteSheet.BLOOD_VIAL;
 	}
 
 	@Override

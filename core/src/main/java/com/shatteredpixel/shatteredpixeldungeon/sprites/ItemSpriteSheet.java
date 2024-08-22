@@ -488,6 +488,7 @@ public class ItemSpriteSheet {
 	public static final int WONDROUS_RESIN  = TRINKETS+9;
 	public static final int EYE_OF_NEWT     = TRINKETS+10;
 	public static final int SALT_CUBE       = TRINKETS+11;
+	public static final int BLOOD_VIAL      = TRINKETS+12;
 	static{
 		assignItemRect(RAT_SKULL,       16, 11);
 		assignItemRect(PARCHMENT_SCRAP, 10, 14);
@@ -501,6 +502,7 @@ public class ItemSpriteSheet {
 		assignItemRect(WONDROUS_RESIN,  12, 11);
 		assignItemRect(EYE_OF_NEWT,     12, 12);
 		assignItemRect(SALT_CUBE,       12, 13);
+		assignItemRect(BLOOD_VIAL,      6,  15);
 	}
 
 	private static final int SCROLLS        =                               xy(1, 19);  //16 slots
