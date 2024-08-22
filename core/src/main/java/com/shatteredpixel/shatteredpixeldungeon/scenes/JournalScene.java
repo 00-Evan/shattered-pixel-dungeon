@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.TerrainFeaturesTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
@@ -43,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.audio.Music;
+import com.watabou.utils.SparseArray;
 
 public class JournalScene extends PixelScene {
 
@@ -63,6 +65,9 @@ public class JournalScene extends PixelScene {
 		Potion.clearColors();
 		Scroll.clearLabels();
 		Ring.clearGems();
+
+		//need to re-initialize the texture here, as it may be invalid
+		new TerrainFeaturesTilemap(new SparseArray<>(), new SparseArray<>());
 
 		Music.INSTANCE.playTracks(
 				new String[]{Assets.Music.THEME_1, Assets.Music.THEME_2},
