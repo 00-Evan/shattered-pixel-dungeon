@@ -85,6 +85,23 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("ALPHA-2", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n\n" +
+				"_Caused by ALPHA:_\n" +
+				"_-_ Crash errors when descending to floor 26\n" +
+				"_-_ Crashes after triggering pitfall traps\n" +
+				"_-_ Gravity chaos having a 1/1 trigger rate, instead of 1/800\n" +
+				"_-_ Ring of haste granting MUCH more speed than intended\n" +
+				"_-_ Enchants/Glyphs in rankings applying to catalogs in specific cases\n" +
+				"_-_ Blood vial not appearing in catalogs or in-game\n" +
+				"_-_ Upgrade window revealing properties of unknown rings\n" +
+				"_-_ Texture errors sometimes appearing on plants/traps in main menu journal screen\n" +
+				"_-_ Text errors in some Duelist talent descriptions"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
