@@ -206,7 +206,7 @@ public class Armor extends EquipableItem {
 	@Override
 	public boolean collect(Bag container) {
 		if(super.collect(container)){
-			if (isIdentified() && glyph != null){
+			if (Dungeon.hero != null && Dungeon.hero.isAlive() && isIdentified() && glyph != null){
 				Catalog.setSeen(glyph.getClass());
 			}
 			return true;
