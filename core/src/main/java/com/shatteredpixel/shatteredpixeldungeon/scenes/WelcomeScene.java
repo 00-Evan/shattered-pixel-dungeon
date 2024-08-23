@@ -243,10 +243,15 @@ public class WelcomeScene extends PixelScene {
 			Badges.loadGlobal();
 			Journal.loadGlobal();
 
-			//Dwarf King's final journal entry changed, set it as un-read
 			if (previousVersion <= ShatteredPixelDungeon.v2_4_2){
+				//Dwarf King's final journal entry changed, set it as un-read
 				if (Document.HALLS_KING.isPageRead(Document.KING_ATTRITION)){
 					Document.HALLS_KING.unreadPage(Document.KING_ATTRITION);
+				}
+
+				//don't victory nag people who have already gotten a win in older versions
+				if (Badges.isUnlocked(Badges.Badge.VICTORY)){
+					SPDSettings.victoryNagged(false);
 				}
 			}
 
