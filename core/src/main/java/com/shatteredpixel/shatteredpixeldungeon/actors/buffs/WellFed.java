@@ -85,12 +85,14 @@ public class WellFed extends Buff {
 
 	@Override
 	public String iconTextDisplay() {
-		return Integer.toString(left);
+		int visualLeft = (int)(left / SaltCube.hungerGainMultiplier());
+		return Integer.toString(visualLeft+1);
 	}
 	
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", left + 1);
+		int visualLeft = (int)(left / SaltCube.hungerGainMultiplier());
+		return Messages.get(this, "desc", visualLeft + 1);
 	}
 	
 	private static final String LEFT = "left";
