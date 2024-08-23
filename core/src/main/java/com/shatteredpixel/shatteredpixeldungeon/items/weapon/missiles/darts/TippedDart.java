@@ -77,13 +77,25 @@ public abstract class TippedDart extends Dart {
 	public void execute(final Hero hero, String action) {
 		super.execute(hero, action);
 		if (action.equals( AC_CLEAN )){
+
+			String[] options;
+			if (quantity() > 1){
+				options = new String[]{
+					Messages.get(this, "clean_all"),
+					Messages.get(this, "clean_one"),
+					Messages.get(this, "cancel")
+				};
+			} else {
+				options = new String[]{
+					Messages.get(this, "clean_one"),
+					Messages.get(this, "cancel")
+				};
+			}
 			
 			GameScene.show(new WndOptions(new ItemSprite(this),
 					Messages.titleCase(name()),
 					Messages.get(this, "clean_desc"),
-					Messages.get(this, "clean_all"),
-					Messages.get(this, "clean_one"),
-					Messages.get(this, "cancel")){
+					options){
 				@Override
 				protected void onSelect(int index) {
 					if (index == 0){
@@ -93,7 +105,7 @@ public abstract class TippedDart extends Dart {
 						hero.spend( 1f );
 						hero.busy();
 						hero.sprite.operate(hero.pos);
-					} else if (index == 1){
+					} else if (index == 1 && quantity() > 1){
 						detach(hero.belongings.backpack);
 						if (!new Dart().collect()) Dungeon.level.drop(new Dart(), hero.pos).sprite.drop();
 
