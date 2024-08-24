@@ -412,6 +412,11 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 			}
 
 			@Override
+			public boolean usable(MonkEnergy buff) {
+				return super.usable(buff) && buff.target.buff(FocusBuff.class) == null;
+			}
+
+			@Override
 			public void doAbility(Hero hero, Integer target) {
 				Buff.affect(hero, FocusBuff.class);
 
