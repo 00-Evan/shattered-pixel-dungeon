@@ -41,12 +41,12 @@ public class SaltCube extends Trinket {
 		if (isIdentified()){
 			return Messages.get(this,
 					"stats_desc",
-					Messages.decimalFormat("#.##", 100*(1f-hungerGainMultiplier(buffedLvl()))),
+					Messages.decimalFormat("#.##", 100*((1f/hungerGainMultiplier(buffedLvl()))-1f)),
 					Messages.decimalFormat("#.##", 100*(1f-healthRegenMultiplier(buffedLvl()))));
 		} else {
 			return Messages.get(this,
 					"typical_stats_desc",
-					Messages.decimalFormat("#.##", 100*(1f-hungerGainMultiplier(buffedLvl()))),
+					Messages.decimalFormat("#.##", 100*((1f/hungerGainMultiplier(buffedLvl()))-1f)),
 					Messages.decimalFormat("#.##", 100*(1f-healthRegenMultiplier(buffedLvl()))));
 		}
 	}
@@ -59,7 +59,7 @@ public class SaltCube extends Trinket {
 		if (level == -1){
 			return 1;
 		} else {
-			return 1f - 0.125f*(level+1);
+			return 1f / (1f + 0.125f*(level+1));
 		}
 	}
 
