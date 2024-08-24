@@ -523,8 +523,8 @@ public class InterlevelScene extends PixelScene {
 
 		if (mode == Mode.FALL) {
 			loadingText.setPos(
-					(Camera.main.width - loadingText.width() - 4) + Random.NormalFloat(-1, 1),
-					(Camera.main.height - loadingText.height() - 6) + Random.NormalFloat(-1, 1)
+					(Camera.main.width - loadingText.width() - 4) + Random.NormalFloat(-2, 2),
+					(Camera.main.height - loadingText.height() - 6) + Random.NormalFloat(-2, 2)
 			);
 			align(loadingText);
 		}
