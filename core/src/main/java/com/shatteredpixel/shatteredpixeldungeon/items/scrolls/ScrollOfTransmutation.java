@@ -302,6 +302,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 
 		n.level(t.trueLevel());
 		n.levelKnown = t.levelKnown;
+		n.cursedKnown = t.cursedKnown;
 		n.cursed = t.cursed;
 
 		return n;
