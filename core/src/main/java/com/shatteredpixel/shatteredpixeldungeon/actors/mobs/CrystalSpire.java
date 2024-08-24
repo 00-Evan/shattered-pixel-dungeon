@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -335,6 +336,9 @@ public class CrystalSpire extends Mob {
 						Sample.INSTANCE.playDelayed(Assets.Sounds.ROCKS, 0.1f);
 						PixelScene.shake( 3, 0.7f );
 						Blacksmith.Quest.beatBoss();
+
+						Bestiary.setSeen(CrystalSpire.class);
+						Bestiary.countEncounter(CrystalSpire.class);
 
 						if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
 							fieldOfView = new boolean[Dungeon.level.length()];
