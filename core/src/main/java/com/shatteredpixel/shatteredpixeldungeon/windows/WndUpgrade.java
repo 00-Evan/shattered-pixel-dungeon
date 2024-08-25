@@ -82,7 +82,7 @@ public class WndUpgrade extends Window {
 		int quantity = upgrader.quantity();
 		Item moreUpgradeItem = Dungeon.hero.belongings.getItem(upgrader.getClass());
 
-		if (moreUpgradeItem != upgrader){
+		if (moreUpgradeItem != null && moreUpgradeItem != upgrader){
 			quantity += moreUpgradeItem.quantity();
 		}
 
