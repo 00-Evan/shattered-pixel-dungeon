@@ -289,46 +289,6 @@ public class MeleeWeapon extends Weapon {
 	}
 
 	@Override
-	public float accuracyFactor(Char owner, Char target) {
-		float ACC = super.accuracyFactor(owner, target);
-
-		if (owner instanceof Hero
-				&& (((Hero) owner).hasTalent(Talent.PRECISE_ASSAULT) || ((Hero) owner).hasTalent(Talent.LIQUID_AGILITY))
-				//does not trigger on ability attacks
-				&& ((Hero) owner).belongings.abilityWeapon != this) {
-			if (((Hero) owner).heroClass != HeroClass.DUELIST) {
-				//persistent +10%/20%/30% ACC for other heroes
-				ACC *= 1f + 0.1f * ((Hero) owner).pointsInTalent(Talent.PRECISE_ASSAULT);
-			} else if (this instanceof Flail && owner.buff(Flail.SpinAbilityTracker.class) != null){
-				//do nothing, this is not a regular attack so don't consume talent fx
-			} else if (this instanceof Crossbow && owner.buff(Crossbow.ChargedShot.class) != null){
-				//do nothing, this is not a regular attack so don't consume talent fx
-			} else if (owner.buff(Talent.PreciseAssaultTracker.class) != null) {
-				// 2x/5x/inf. ACC for duelist if she just used a weapon ability
-				switch (((Hero) owner).pointsInTalent(Talent.PRECISE_ASSAULT)){
-					default: case 1:
-						ACC *= 2; break;
-					case 2:
-						ACC *= 5; break;
-					case 3:
-						ACC *= Float.POSITIVE_INFINITY; break;
-				}
-				owner.buff(Talent.PreciseAssaultTracker.class).detach();
-			} else if (owner.buff(Talent.LiquidAgilACCTracker.class) != null){
-				//3x/inf. ACC, depending on talent level
-				ACC *= ((Hero) owner).pointsInTalent(Talent.LIQUID_AGILITY) == 2 ? Float.POSITIVE_INFINITY : 3f;
-				Talent.LiquidAgilACCTracker buff = owner.buff(Talent.LiquidAgilACCTracker.class);
-				buff.uses--;
-				if (buff.uses <= 0) {
-					buff.detach();
-				}
-			}
-		}
-
-		return ACC;
-	}
-
-	@Override
 	public int damageRoll(Char owner) {
 		int damage = augment.damageFactor(super.damageRoll( owner ));
 
