@@ -85,6 +85,35 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("ALPHA-3", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Added a new 'victory congratulations' screen. Alpha and beta testers who already have a win will see this screen for testing purposes.\n\n" +
+				"_-_ Upgrade window now shows the remaining quantity of the upgrading item.\n" +
+				"_-_ Upgrade window now re-shows itself even when items are unidentified.\n" +
+				"_-_ Monk's focus ability button is now disabled if monk is already focused.\n" +
+				"_-_ Increased the shake effect on loading text when falling.\n" +
+				"_-_ Journal window and hero info window can now be closed via key binding."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"\n" +
+				"_Caused by AlPHA:_\n" +
+				"_-_ Salt Cube granting 2x the satiety duration as intended\n" +
+				"_-_ Quickslots not updating if rapier's lunge attack had no target\n" +
+				"_-_ Crystal Guardians and Crystal Spire not being counted as seen in catalogs\n" +
+				"_-_ Daily runs using the wrong icon color in-game\n" +
+				"_-_ Well-fed buff having an inaccurate duration text when hero has salt cube\n" +
+				"_-_ Various minor textual errors\n" +
+				"\n" +
+				"_Existed prior to AlPHA:_\n" +
+				"_-_ Precise Assault and Liquid Agility not working with unarmed melee attacks\n" +
+				"_-_ Tipped dart cleaning window showing 'clean all' and 'clean one' even with just 1 dart\n" +
+				"_-_ Trinkets becoming unidentified when transmuted\n" +
+				"_-_ Warrior being able to gain extra upgrades on his armor via hero armor transfer effect"));
+
 		changes = new ChangeInfo("ALPHA-2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
