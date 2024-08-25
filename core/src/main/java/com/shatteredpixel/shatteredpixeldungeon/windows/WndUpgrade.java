@@ -79,8 +79,20 @@ public class WndUpgrade extends Window {
 		title.setRect(0, 0, WIDTH, 0);
 		add(title);
 
+		int quantity = upgrader.quantity();
+		Item moreUpgradeItem = Dungeon.hero.belongings.getItem(upgrader.getClass());
+
+		if (moreUpgradeItem != upgrader){
+			quantity += moreUpgradeItem.quantity();
+		}
+
+		String mainText = Messages.get(this, "desc");
+		if (quantity > 1){
+			mainText += "\n" + Messages.get(this, "remaining", quantity);
+		}
+
 		RenderedTextBlock message = PixelScene.renderTextBlock( 6 );
-		message.text( Messages.get(this, "desc"), WIDTH);
+		message.text( mainText, WIDTH);
 		message.setPos(0, title.bottom()+GAP);
 		add(message);
 
@@ -405,7 +417,7 @@ public class WndUpgrade extends Window {
 
 				hide();
 
-				if (moreUpgradeItem != null && toUpgrade.isIdentified()){
+				if (moreUpgradeItem != null){
 					GameScene.show(new WndUpgrade(moreUpgradeItem, upgraded, false));
 				}
 			}
