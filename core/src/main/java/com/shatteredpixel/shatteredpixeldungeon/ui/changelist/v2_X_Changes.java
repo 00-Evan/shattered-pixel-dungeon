@@ -81,76 +81,19 @@ public class v2_X_Changes {
 
 	public static void add_v2_5_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v2.5-ALPHA", true, "");
+		ChangeInfo changes = new ChangeInfo("v2.5-BETA", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("ALPHA-4", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"\n" +
-				"_Caused by AlPHA:_\n" +
-				"_-_ Crashes when using unidentified upgrade scrolls with a quantity of 1"));
-
-		changes = new ChangeInfo("ALPHA-3", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Added a new 'victory congratulations' screen. Alpha and beta testers who already have a win will see this screen for testing purposes.\n\n" +
-				"_-_ Upgrade window now shows the remaining quantity of the upgrading item.\n" +
-				"_-_ Upgrade window now re-shows itself even when items are unidentified.\n" +
-				"_-_ Monk's focus ability button is now disabled if monk is already focused.\n" +
-				"_-_ Increased the shake effect on loading text when falling.\n" +
-				"_-_ Journal window and hero info window can now be closed via key binding."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"\n" +
-				"_Caused by AlPHA:_\n" +
-				"_-_ Salt Cube granting 2x the satiety duration as intended\n" +
-				"_-_ Quickslots not updating if rapier's lunge attack had no target\n" +
-				"_-_ Crystal Guardians and Crystal Spire not being counted as seen in catalogs\n" +
-				"_-_ Daily runs using the wrong icon color in-game\n" +
-				"_-_ Well-fed buff having an inaccurate duration text when hero has salt cube\n" +
-				"_-_ Various minor textual errors\n" +
-				"\n" +
-				"_Existed prior to AlPHA:_\n" +
-				"_-_ Precise Assault and Liquid Agility not working with unarmed melee attacks\n" +
-				"_-_ Tipped dart cleaning window showing 'clean all' and 'clean one' even with just 1 dart\n" +
-				"_-_ Trinkets becoming unidentified when transmuted\n" +
-				"_-_ Warrior being able to gain extra upgrades on his armor via hero armor transfer effect"));
-
-		changes = new ChangeInfo("ALPHA-2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n\n" +
-				"_Caused by ALPHA:_\n" +
-				"_-_ Crash errors when descending to floor 26\n" +
-				"_-_ Crashes after triggering pitfall traps\n" +
-				"_-_ Gravity chaos having a 1/1 trigger rate, instead of 1/800\n" +
-				"_-_ Ring of haste granting MUCH more speed than intended\n" +
-				"_-_ Enchants/Glyphs in rankings applying to catalogs in specific cases\n" +
-				"_-_ Blood vial not appearing in catalogs or in-game\n" +
-				"_-_ Upgrade window revealing properties of unknown rings\n" +
-				"_-_ Texture errors sometimes appearing on plants/traps in main menu journal screen\n" +
-				"_-_ Text errors in some Duelist talent descriptions"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Alpha To-Do",
-				"v2.5.0 is mostly ready, but there are a few things left that I'd like to do:\n\n" +
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Beta To-Do",
+				"v2.5.0 is almost content-complete, but I have a few things left to do first:\n\n" +
 				"_-_ There are currently 2 more trinkets that are concepted but not implemented. v2.5.0 is otherwise pretty light on new content so I would like to get them done for this update.\n" +
 				"_-_ The new loading screens still need a few small adjustments. In particular I want to experiment with a panning effect for portrait users.\n" +
-				"_-_ I want to add a little 'congratulations' window to the main game after the player gets their first win. I expect this will be very quick to add.\n" +
-				"_-_ And, of course, I'll be implementing fixes for any issues that crop up during the alpha and beta."));
+				"_-_ I'll be implementing fixes for any issues that crop up during the beta as well."));
 
 		changes.addButton( new ChangeButton(Icons.JOURNAL.get(), "Journal Overhaul!",
 				"_The game's Journal interface has been completely overhauled!_\n" +
@@ -203,7 +146,7 @@ public class v2_X_Changes {
 
 		changes.addButton( new ChangeButton(Icons.BACKPACK_LRG.get(), "Inventory Management Improvements",
 				"I've made various smaller changes to make inventory management a bit easier:\n" +
-						"\n" +
+				"\n" +
 				"_-_ The potion bandolier can now store the waterskin, and the scroll holder can now store arcane styli\n" +
 				"_-_ Dark dungeon levels no longer contain a torch, but also reduce vision by 3/8, down from 4/8\n" +
 				"_-_ Reduced the chance for multiple equipment drops from slimes, skeletons, guards, DM-200s, and golems\n" +
@@ -230,6 +173,7 @@ public class v2_X_Changes {
 
 				"_Misc:_\n" +
 				"_-_ The game now remembers which monitor it was set to fullscreen on in multi-monitor setups\n" +
+				"_-_ The journal window and hero info window can now be closed via key binding\n" +
 				"_-_ Single wraiths can now spawn adjacent to their spawning cell if it is blocked\n" +
 				"_-_ Added a little game log text when shopkeepers flee\n" +
 				"_-_ Reduced the maximum size of some trap-filled rooms\n" +
@@ -243,30 +187,36 @@ public class v2_X_Changes {
 				"_-_ Incorrect behaviour when game is force-closed from trinket selection window\n" +
 				"_-_ Scroll of remove curse not being consumed when freeing tormented spirits\n" +
 				"\n" +
+				"_Effects:_\n" +
+				"_-_ Warrior being able to gain extra upgrades on his armor via hero armor transfer effect\n" +
+				"_-_ Earthroot and living rock armor not applying to bone explosion damage\n" +
+				"_-_ Precise Assault not working with unarmed melee attacks\n" +
+				"_-_ Deferred damage sometimes being delayed on save/load\n" +
+				"_-_ Various situational errors when enemies are transmogrified over chasms",
+				
 				"_Items:_\n" +
+				"_-_ Trinkets becoming unidentified when transmuted\n" +
 				"_-_ Wondrous resin applying its effect to chaos elementals\n" +
 				"_-_ Parchment scrap incorrectly affecting level layouts on some floors\n" +
 				"_-_ Auto-aim not working correctly with cursed wands\n" +
 				"_-_ Aqua brew always knocking hero up and left when thrown on self\n" +
 				"_-_ Bomb fuses not being visually cleared when boss levels are reset by unblessed ankhs\n" +
 				"_-_ Exotic crystals and Parchment Scrap trinkets affecting levelgen in some cases\n" +
-				"_-_ Helpful darts dealing damage to allies in rare cases",
+				"_-_ Helpful darts dealing damage to allies in rare cases\n" +
+				"_-_ Tipped dart cleaning window showing 'clean all' and 'clean one' even with just 1 dart",
 				
 				"_Characters:_\n" +
 				"_-_ Final boss not immediately advancing to its final phase in some cases\n" +
 				"_-_ Sad Ghost rarely spawning inside of walls\n" +
-				"_-_ Deferred damage on dwarf king being delayed on save/load\n" +
 				"_-_ Ally position swapping working when allies are paralyzed\n" +
 				"_-_ DM-300's exposed wire shielding mechanic and the vertigo debuff interacting incorrectly\n" +
 				"_-_ Brutes not being affected by terror in specific cases\n" +
 				"_-_ Sleeping enemies not being alerted by allies in some cases\n" +
 				"_-_ Enemies not properly prioritizing targets based on distance\n" +
-				"_-_ Various situational errors when enemies are transmogrified over chasms\n" +
 				"\n" +
 				"_Misc:_\n" +
 				"_-_ Various minor visual and textual errors\n" +
 				"_-_ Surface victory badges not being added to the rankings screen\n" +
-				"_-_ Earthroot and living rock armor not applying to bone explosion damage\n" +
 				"_-_ Very rare cases of players getting outside of boss arenas"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);

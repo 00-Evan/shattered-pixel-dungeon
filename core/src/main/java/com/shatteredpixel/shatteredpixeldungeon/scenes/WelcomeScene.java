@@ -53,7 +53,7 @@ import java.util.Collections;
 
 public class WelcomeScene extends PixelScene {
 
-	private static final int LATEST_UPDATE = 783;
+	private static final int LATEST_UPDATE = 788;
 
 	//used so that the game does not keep showing the window forever if cleaning fails
 	private static boolean triedCleaningTemp = false;
@@ -202,8 +202,8 @@ public class WelcomeScene extends PixelScene {
 
 			}
 
-			message = "Greeting alpha testers! After a bit of a wait, v2.5 is finally ready for testing!\n\n" +
-					"This update is almost content complete, so I expect things to move to beta pretty quickly.\n\n" +
+			message = "Greeting beta testers! After a bit of a wait, v2.5.0 is finally ready for testing!\n\n" +
+					"There's still a little bit of content left to add before v2.5.0 is complete, so I expect this beta to last a little longer than a week.\n\n" +
 					"As always, check the changes scene for full details on whats new, and please let me know if you run into any issues!";
 
 		} else {
@@ -251,7 +251,8 @@ public class WelcomeScene extends PixelScene {
 
 				//don't victory nag people who have already gotten a win in older versions
 				if (Badges.isUnlocked(Badges.Badge.VICTORY)){
-					SPDSettings.victoryNagged(false);
+					//TODO commented out for the beta as we want to test the window!
+					//SPDSettings.victoryNagged(true);
 				}
 			}
 
