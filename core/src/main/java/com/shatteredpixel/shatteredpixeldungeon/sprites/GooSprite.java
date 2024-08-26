@@ -147,8 +147,10 @@ public class GooSprite extends MobSprite {
 	@Override
 	public void update() {
 		super.update();
-		spray.pos(center());
-		spray.visible = visible;
+		if (spray != null) {
+			spray.pos(center());
+			spray.visible = visible;
+		}
 	}
 
 	public static class GooParticle extends PixelParticle.Shrinking {
