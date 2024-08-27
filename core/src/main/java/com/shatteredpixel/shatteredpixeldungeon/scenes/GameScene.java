@@ -694,6 +694,8 @@ public class GameScene extends PixelScene {
 
 	public static boolean tagDisappeared = false;
 	public static boolean updateTags = false;
+
+	private static float waterOfs = 0;
 	
 	@Override
 	public synchronized void update() {
@@ -717,7 +719,11 @@ public class GameScene extends PixelScene {
 
 		if (notifyDelay > 0) notifyDelay -= Game.elapsed;
 
-		if (!Emitter.freezeEmitters) water.offset( 0, -5 * Game.elapsed );
+		if (!Emitter.freezeEmitters) {
+			waterOfs -= 5 * Game.elapsed;
+			water.offsetTo( 0, waterOfs );
+			waterOfs = water.offsetY(); //re-assign to account for auto adjust
+		}
 
 		if (!Actor.processing() && Dungeon.hero.isAlive()) {
 			if (actorThread == null || !actorThread.isAlive()) {
