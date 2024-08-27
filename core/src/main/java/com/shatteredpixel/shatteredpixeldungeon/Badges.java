@@ -638,7 +638,7 @@ public class Badges {
 			unlock(badge);
 			badge = Badge.RESEARCHER_3;
 		}
-		if (totalSeen >= 360) {
+		if (totalSeen >= 320) {
 			unlock(badge);
 			badge = Badge.RESEARCHER_4;
 		}
