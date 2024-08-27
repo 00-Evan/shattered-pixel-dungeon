@@ -138,8 +138,8 @@ public class Camera extends Gizmo {
 	
 	public void zoom( float value ) {
 		zoom( value,
-			scroll.x + width / 2,
-			scroll.y + height / 2 );
+			scroll.x + width / 2f,
+			scroll.y + height / 2f );
 	}
 	
 	public void zoom( float value, float fx, float fy ) {
@@ -162,7 +162,7 @@ public class Camera extends Gizmo {
 	}
 	
 	Visual followTarget = null;
-	PointF panTarget;
+	PointF panTarget = new PointF();
 	//camera moves at a speed such that it will pan to its current target in 1/intensity seconds
 	//keep in mind though that this speed is constantly decreasing, so actual pan time is higher
 	float panIntensity = 0f;
@@ -249,7 +249,7 @@ public class Camera extends Gizmo {
 	}
 	
 	public void snapTo(float x, float y ) {
-		scroll.set( x - width / 2, y - height / 2 ).offset(centerOffset);
+		scroll.set( x - width / 2f, y - height / 2f ).offset(centerOffset);
 		panIntensity = 0f;
 		followTarget = null;
 	}
