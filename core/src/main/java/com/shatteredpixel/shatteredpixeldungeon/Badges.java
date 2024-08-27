@@ -145,7 +145,7 @@ public class Badges {
 		BOSS_SLAIN_4                ( 78 ),
 		ALL_RINGS_IDENTIFIED        , //still exists internally for pre-2.5 saves
 		ALL_ARTIFACTS_IDENTIFIED    , //still exists internally for pre-2.5 saves
-		ALL_RARE_ENEMIES            ( 79 ),
+		ALL_RARE_ENEMIES            ( 79, true ),
 		DEATH_FROM_GRIM_TRAP        ( 80 ), //also disintegration traps
 		VICTORY                     ( 81 ),
 		BOSS_CHALLENGE_1            ( 82 ),
