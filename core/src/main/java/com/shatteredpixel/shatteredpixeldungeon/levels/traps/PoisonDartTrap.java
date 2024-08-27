@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.PoisonDart;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -76,20 +77,23 @@ public class PoisonDartTrap extends Trap {
 				}
 
 				//find the closest char that can be aimed at
+				//can't target beyond view distance, with a min of 6 (torch range)
+				int range = Math.max(6, Dungeon.level.viewDistance);
 				if (target == null){
 					float closestDist = Float.MAX_VALUE;
 					for (Char ch : Actor.chars()){
 						if (!ch.isAlive()) continue;
 						float curDist = Dungeon.level.trueDistance(pos, ch.pos);
-						if (ch.invisible > 0) curDist += 1000;
+						//invis targets are considered to be at max range
+						if (ch.invisible > 0) curDist = Math.max(curDist, range);
 						Ballistica bolt = new Ballistica(pos, ch.pos, Ballistica.PROJECTILE);
-						if (canTarget(ch) && bolt.collisionPos == ch.pos && curDist < closestDist){
+						if (canTarget(ch) && bolt.collisionPos == ch.pos
+								&& ( curDist < closestDist || (curDist == closestDist && target instanceof Hero))){
 							target = ch;
 							closestDist = curDist;
 						}
 					}
-					//can't target beyond view distance, with a min of 6 (torch range)
-					if (closestDist > Math.max(6, Dungeon.level.viewDistance)){
+					if (closestDist > range){
 						target = null;
 					}
 				}
