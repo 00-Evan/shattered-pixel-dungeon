@@ -242,7 +242,7 @@ public abstract class Scroll extends Item {
 	@Override
 	public String info() {
 		//skip custom notes if anonymized and un-Ided
-		return (anonymous && !isIdentified()) ? super.desc() : super.info();
+		return (anonymous && !handler.isKnown( this )) ? super.desc() : super.info();
 	}
 
 	@Override

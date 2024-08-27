@@ -177,7 +177,7 @@ public class Ring extends KindofMisc {
 	public String info(){
 
 		//skip custom notes if anonymized and un-Ided
-		String desc = (anonymous && !isIdentified()) ? super.desc() : super.info();
+		String desc = (anonymous && !handler.isKnown( this )) ? super.desc() : super.info();
 		
 		if (cursed && isEquipped( Dungeon.hero )) {
 			desc += "\n\n" + Messages.get(Ring.class, "cursed_worn");
