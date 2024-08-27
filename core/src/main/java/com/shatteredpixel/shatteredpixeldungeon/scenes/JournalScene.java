@@ -82,6 +82,7 @@ public class JournalScene extends PixelScene {
 		float top = 20;
 
 		IconTitle title = new IconTitle( Icons.JOURNAL.get(), Messages.get(this, "title") );
+		title.setSize(200, 0);
 		title.setPos(
 				(w - title.reqWidth()) / 2f,
 				(top - title.height()) / 2f
