@@ -1677,7 +1677,8 @@ public class Hero extends Char {
 				}
 				if (walkingToVisibleTrapInFog
 						&& Dungeon.level.traps.get(target) != null
-						&& Dungeon.level.traps.get(target).visible){
+						&& Dungeon.level.traps.get(target).visible
+						&& Dungeon.level.traps.get(target).active){
 					return false;
 				}
 			}
@@ -1777,6 +1778,15 @@ public class Hero extends Char {
 			fieldOfView = new boolean[Dungeon.level.length()];
 			Dungeon.level.updateFieldOfView( this, fieldOfView );
 		}
+
+		if (!Dungeon.level.visited[cell] && !Dungeon.level.mapped[cell]
+				&& Dungeon.level.traps.get(cell) != null
+				&& Dungeon.level.traps.get(cell).visible
+				&& Dungeon.level.traps.get(cell).active) {
+			walkingToVisibleTrapInFog = true;
+		} else {
+			walkingToVisibleTrapInFog = false;
+		}
 		
 		Char ch = Actor.findChar( cell );
 		Heap heap = Dungeon.level.heaps.get( cell );
@@ -1836,13 +1846,6 @@ public class Hero extends Char {
 			curAction = new HeroAction.LvlTransition( cell );
 			
 		}  else {
-			
-			if (!Dungeon.level.visited[cell] && !Dungeon.level.mapped[cell]
-					&& Dungeon.level.traps.get(cell) != null && Dungeon.level.traps.get(cell).visible) {
-				walkingToVisibleTrapInFog = true;
-			} else {
-				walkingToVisibleTrapInFog = false;
-			}
 			
 			curAction = new HeroAction.Move( cell );
 			lastAction = null;
