@@ -85,6 +85,38 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("BETA-2", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.BOMB), "Regarding Bomb Changes",
+				"I've gotten a lot of messages about the recent bomb change, so I thought I'd explain it in a bit more detail. For context, previously bomb explosions only destroyed un-upgraded equipment, and so could be used to tell if an item was upgraded.\n" +
+				"\n" +
+				"Using bombs in this way was always an unintended exploit, and something I've wanted to fix for a long time. I've been hesitant because I know experienced players use this tactic to help deal with inventory congestion though. With the recent inventory management improvements it felt like the right time to finally rip the bandaid off.\n" +
+				"\n" +
+				"Obviously I'm fine with some unintended strategies, but I felt this one was problematic as it was completely unintuitive (you're almost certainly only going to learn it from a guide) and not even remotely close to how bombs are supposed to be used.\n" +
+				"\n" +
+				"I am not planning to revert this change, but am open to making compensation adjustments elsewhere if needed."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Tengu no longer avoids ground-based effects as if he were flying\n" +
+				"_-_ Piranhas are now killed by levitation if it is applied to them\n" +
+				"_-_ Updated translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by ALPHA:_\n" +
+				"_-_ Custom notes being viewable from the catalog on unidentified items\n" +
+				"_-_ Upgrade window applying the effect of armor augments twice when showing stats\n" +
+				"_-_ 'Big Game Hunter' badge unlocking many times\n" +
+				"_-_ 'Master Researcher' badge unlocking at 360 catalog entries instead of 320" +
+				"_-_ Targeting traps ignoring invisible characters entirely\n" +
+				"_-_ Various minor textual and graphical errors" +
+				"\n" +
+				"_Existed Prior to ALPHA:_\n" +
+				"_-_ Challenge Arena effect briefly persisting between floors\n" +
+				"_-_ Very specific cases where the hero would refuse to walk onto visible traps"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
@@ -157,7 +189,7 @@ public class v2_X_Changes {
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"_Highlights:_\n" +
 				"_-_ Enemies are now less willing to follow the hero's movement path when approaching from a distance\n" +
-				"_-_ Bomb explosions no longer destroy any type of equipment, not just upgraded ones\n" +
+				"_-_ Explosion effects no longer destroy any type of equipment\n" +
 				"_-_ Improved the quality of loot from tormented spirits\n" +
 				"_-_ Traps which choose targets now have a max range of 8 tiles (or 6 on dark floors)\n" +
 				"_-_ Burn and Ooze now end the moment water is entered, but still always do at least 1 turn of damage\n" +
