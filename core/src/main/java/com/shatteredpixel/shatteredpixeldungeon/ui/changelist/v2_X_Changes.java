@@ -85,9 +85,14 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("BETA-2", false, null);
+		changes = new ChangeInfo("BETA-3 & 2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"BETA-3: Fixed the following bugs:\n" +
+				"_Caused by BETA-2:_\n" +
+				"_-_ Game crashing when opening the new journal scene, oops =S"));
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.BOMB), "Regarding Bomb Changes",
 				"I've gotten a lot of messages about the recent bomb change, so I thought I'd explain it in a bit more detail. For context, previously bomb explosions only destroyed un-upgraded equipment, and so could be used to tell if an item was upgraded.\n" +
@@ -104,8 +109,8 @@ public class v2_X_Changes {
 				"_-_ Updated translations"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by ALPHA:_\n" +
+				"BETA-2: Fixed the following bugs:\n" +
+				"_Caused by BETA:_\n" +
 				"_-_ Custom notes being viewable from the catalog on unidentified items\n" +
 				"_-_ Upgrade window applying the effect of armor augments twice when showing stats\n" +
 				"_-_ 'Big Game Hunter' badge unlocking many times\n" +
@@ -113,7 +118,7 @@ public class v2_X_Changes {
 				"_-_ Targeting traps ignoring invisible characters entirely\n" +
 				"_-_ Various minor textual and graphical errors" +
 				"\n" +
-				"_Existed Prior to ALPHA:_\n" +
+				"_Existed Prior to BETA:_\n" +
 				"_-_ Challenge Arena effect briefly persisting between floors\n" +
 				"_-_ Very specific cases where the hero would refuse to walk onto visible traps"));
 
