@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -91,8 +92,6 @@ public class Tengu extends Mob {
 		defenseSkill = 15;
 		
 		HUNTING = new Hunting();
-		
-		flying = true; //doesn't literally fly, but he is fleet-of-foot enough to avoid hazards
 		
 		properties.add(Property.BOSS);
 		
@@ -348,6 +347,7 @@ public class Tengu extends Mob {
 	}
 	
 	{
+		immunities.add( Roots.class );
 		immunities.add( Blindness.class );
 		immunities.add( Dread.class );
 		immunities.add( Terror.class );
