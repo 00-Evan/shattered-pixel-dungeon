@@ -92,6 +92,10 @@ public class PhantomPiranha extends Piranha {
 
 	private boolean teleportAway(){
 
+		if (flying){
+			return false;
+		}
+
 		ArrayList<Integer> inFOVCandidates = new ArrayList<>();
 		ArrayList<Integer> outFOVCandidates = new ArrayList<>();
 		for (int i = 0; i < Dungeon.level.length(); i++){
