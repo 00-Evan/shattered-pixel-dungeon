@@ -385,7 +385,7 @@ public class PixelScene extends Scene {
 					}
 
 					WndJournal.last_index = 4;
-					WndJournal.BadgesTab.global = badge.meta;
+					WndJournal.BadgesTab.global = badge.type != Badges.BadgeType.LOCAL;
 
 				}
 			}

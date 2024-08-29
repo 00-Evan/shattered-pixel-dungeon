@@ -42,7 +42,7 @@ public class BadgesList extends ScrollPane {
 		
 		for (Badges.Badge badge : Badges.filterReplacedBadges( global )) {
 			
-			if (badge.image == -1) {
+			if (badge.type == Badges.BadgeType.HIDDEN) {
 				continue;
 			}
 			

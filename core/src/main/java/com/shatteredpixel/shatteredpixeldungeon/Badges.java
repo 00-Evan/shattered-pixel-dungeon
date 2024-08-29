@@ -53,7 +53,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Badges {
-	
+
+	public enum BadgeType {
+		HIDDEN, //internal badges used for data tracking
+		LOCAL,  //unlocked on a per-run basis and added to overall player profile
+		GLOBAL, //unlocked for the save profile only, usually over multiple runs
+		JOURNAL //profile-based and also tied to the journal, which means they even unlock in seeded runs
+	}
+
 	public enum Badge {
 		MASTERY_WARRIOR,
 		MASTERY_MAGE,
@@ -78,14 +85,14 @@ public class Badges {
 		FOOD_EATEN_1                ( 13 ),
 		ITEMS_CRAFTED_1             ( 14 ),
 		BOSS_SLAIN_1                ( 15 ),
-		CATALOG_ONE_EQUIPMENT       ( 16, true ),
+		CATALOG_ONE_EQUIPMENT       ( 16, BadgeType.JOURNAL ),
 		DEATH_FROM_FIRE             ( 17 ),
 		DEATH_FROM_POISON           ( 18 ),
 		DEATH_FROM_GAS              ( 19 ),
 		DEATH_FROM_HUNGER           ( 20 ),
 		DEATH_FROM_FALLING          ( 21 ),
-		RESEARCHER_1                ( 22, true ),
-		GAMES_PLAYED_1              ( 23, true ),
+		RESEARCHER_1                ( 22, BadgeType.JOURNAL ),
+		GAMES_PLAYED_1              ( 23, BadgeType.GLOBAL ),
 		HIGH_SCORE_1                ( 24 ),
 
 		//silver
@@ -118,9 +125,9 @@ public class Badges {
 		BOSS_SLAIN_1_ROGUE,
 		BOSS_SLAIN_1_HUNTRESS,
 		BOSS_SLAIN_1_DUELIST,
-		BOSS_SLAIN_1_ALL_CLASSES    ( 54, true ),
-		RESEARCHER_2                ( 55, true ),
-		GAMES_PLAYED_2              ( 56, true ),
+		BOSS_SLAIN_1_ALL_CLASSES    ( 54, BadgeType.GLOBAL ),
+		RESEARCHER_2                ( 55, BadgeType.JOURNAL ),
+		GAMES_PLAYED_2              ( 56, BadgeType.GLOBAL ),
 		HIGH_SCORE_2                ( 57 ),
 
 		//gold
@@ -145,13 +152,13 @@ public class Badges {
 		BOSS_SLAIN_4                ( 78 ),
 		ALL_RINGS_IDENTIFIED        , //still exists internally for pre-2.5 saves
 		ALL_ARTIFACTS_IDENTIFIED    , //still exists internally for pre-2.5 saves
-		ALL_RARE_ENEMIES            ( 79, true ),
+		ALL_RARE_ENEMIES            ( 79, BadgeType.JOURNAL ),
 		DEATH_FROM_GRIM_TRAP        ( 80 ), //also disintegration traps
 		VICTORY                     ( 81 ),
 		BOSS_CHALLENGE_1            ( 82 ),
 		BOSS_CHALLENGE_2            ( 83 ),
-		RESEARCHER_3                ( 84, true ),
-		GAMES_PLAYED_3              ( 85, true ),
+		RESEARCHER_3                ( 84, BadgeType.JOURNAL ),
+		GAMES_PLAYED_3              ( 85, BadgeType.GLOBAL ),
 		HIGH_SCORE_3                ( 86 ),
 
 		//platinum
@@ -159,7 +166,7 @@ public class Badges {
 		LEVEL_REACHED_5             ( 97 ),
 		HAPPY_END                   ( 98 ),
 		HAPPY_END_REMAINS           ( 99 ),
-		RODNEY                      ( 100, true ),
+		RODNEY                      ( 100, BadgeType.JOURNAL ),
 		ALL_WEAPONS_IDENTIFIED      , //still exists internally for pre-2.5 saves
 		ALL_ARMOR_IDENTIFIED        , //still exists internally for pre-2.5 saves
 		ALL_WANDS_IDENTIFIED        , //still exists internally for pre-2.5 saves
@@ -169,8 +176,8 @@ public class Badges {
 		VICTORY_ROGUE,
 		VICTORY_HUNTRESS,
 		VICTORY_DUELIST,
-		VICTORY_ALL_CLASSES         ( 101, true ),
-		DEATH_FROM_ALL              ( 102, true ),
+		VICTORY_ALL_CLASSES         ( 101, BadgeType.GLOBAL ),
+		DEATH_FROM_ALL              ( 102, BadgeType.GLOBAL ),
 		BOSS_SLAIN_3_GLADIATOR,
 		BOSS_SLAIN_3_BERSERKER,
 		BOSS_SLAIN_3_WARLOCK,
@@ -181,18 +188,18 @@ public class Badges {
 		BOSS_SLAIN_3_WARDEN,
 		BOSS_SLAIN_3_CHAMPION,
 		BOSS_SLAIN_3_MONK,
-		BOSS_SLAIN_3_ALL_SUBCLASSES ( 103, true ),
+		BOSS_SLAIN_3_ALL_SUBCLASSES ( 103, BadgeType.GLOBAL ),
 		BOSS_CHALLENGE_3            ( 104 ),
 		BOSS_CHALLENGE_4            ( 105 ),
-		RESEARCHER_4                ( 106, true ),
-		GAMES_PLAYED_4              ( 107, true ),
+		RESEARCHER_4                ( 106, BadgeType.JOURNAL ),
+		GAMES_PLAYED_4              ( 107, BadgeType.GLOBAL ),
 		HIGH_SCORE_4                ( 108 ),
 		CHAMPION_1                  ( 109 ),
 
 		//diamond
 		BOSS_CHALLENGE_5            ( 120 ),
-		RESEARCHER_5                ( 121, true ),
-		GAMES_PLAYED_5              ( 122, true ),
+		RESEARCHER_5                ( 121, BadgeType.JOURNAL ),
+		GAMES_PLAYED_5              ( 122, BadgeType.GLOBAL ),
 		HIGH_SCORE_5                ( 123 ),
 		CHAMPION_2                  ( 124 ),
 		CHAMPION_3                  ( 125 );
@@ -200,14 +207,19 @@ public class Badges {
 		public boolean meta;
 
 		public int image;
-		
-		Badge( int image ) {
-			this( image, false );
+		public BadgeType type;
+
+		Badge(){
+			this(-1, BadgeType.HIDDEN);
 		}
-		
-		Badge( int image, boolean meta ) {
+
+		Badge( int image ) {
+			this( image, BadgeType.LOCAL );
+		}
+
+		Badge( int image, BadgeType type ) {
 			this.image = image;
-			this.meta = meta;
+			this.type = type;
 		}
 
 		public String title(){
@@ -216,10 +228,6 @@ public class Badges {
 
 		public String desc(){
 			return Messages.get(this, name()+".desc");
-		}
-		
-		Badge() {
-			this( -1 );
 		}
 	}
 	
@@ -1094,14 +1102,14 @@ public class Badges {
 	}
 	
 	private static void displayBadge( Badge badge ) {
-		
-		if (badge == null || !Dungeon.customSeedText.isEmpty()) {
+
+		if (badge == null || (badge.type != BadgeType.JOURNAL && !Dungeon.customSeedText.isEmpty())) {
 			return;
 		}
 		
 		if (isUnlocked( badge )) {
 			
-			if (!badge.meta) {
+			if (badge.type == BadgeType.LOCAL) {
 				GLog.h( Messages.get(Badges.class, "endorsed", badge.title()) );
 				GLog.newLine();
 			}
@@ -1132,7 +1140,7 @@ public class Badges {
 	}
 	
 	public static void unlock( Badge badge ){
-		if (!isUnlocked(badge) && Dungeon.customSeedText.isEmpty()){
+		if (!isUnlocked(badge) && (badge.type == BadgeType.JOURNAL || Dungeon.customSeedText.isEmpty())){
 			global.add( badge );
 			saveNeeded = true;
 		}
@@ -1145,7 +1153,7 @@ public class Badges {
 		Iterator<Badge> iterator = badges.iterator();
 		while (iterator.hasNext()) {
 			Badge badge = iterator.next();
-			if ((!global && badge.meta) || badge.image == -1) {
+			if ((!global && badge.type != BadgeType.LOCAL) || badge.type == BadgeType.HIDDEN) {
 				iterator.remove();
 			}
 		}

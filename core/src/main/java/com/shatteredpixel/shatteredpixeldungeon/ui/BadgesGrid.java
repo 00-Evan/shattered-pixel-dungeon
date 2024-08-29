@@ -44,7 +44,7 @@ public class BadgesGrid extends Component {
 
 		for (Badges.Badge badge : Badges.filterReplacedBadges( global )) {
 
-			if (badge.image == -1) {
+			if (badge.type == Badges.BadgeType.HIDDEN) {
 				continue;
 			}
 
@@ -57,7 +57,7 @@ public class BadgesGrid extends Component {
 
 			ArrayList<Badges.Badge> lockedBadges = new ArrayList<>();
 			for (Badges.Badge badge : Badges.Badge.values()) {
-				if (badge.image != -1 && !Badges.isUnlocked(badge)) {
+				if (badge.type != Badges.BadgeType.HIDDEN && !Badges.isUnlocked(badge)) {
 					lockedBadges.add(badge);
 				}
 			}
