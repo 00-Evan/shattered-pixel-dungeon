@@ -127,6 +127,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.MobSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BArray;
@@ -893,7 +894,12 @@ public abstract class Char extends Actor {
 	
 	public void die( Object src ) {
 		destroy();
-		if (src != Chasm.class) sprite.die();
+		if (src != Chasm.class) {
+			sprite.die();
+			if (flying && Dungeon.level != null && sprite instanceof MobSprite && Dungeon.level.map[pos] == Terrain.CHASM){
+				((MobSprite) sprite).fall();
+			}
+		}
 	}
 
 	//we cache this info to prevent having to call buff(...) in isAlive.
