@@ -576,8 +576,9 @@ public class CursedWand {
 				if (ch.alignment != Char.Alignment.ALLY || !positiveOnly){
 					//shocking dart damage and a little stun
 					ch.damage(Random.NormalIntRange(5 + Dungeon.scalingDepth() / 4, 10 + Dungeon.scalingDepth() / 4), new Electricity());
-					Buff.affect(ch, Paralysis.class, Paralysis.DURATION/2f);
-					if (!ch.isAlive() && ch == Dungeon.hero){
+					if (ch.isAlive()) {
+						Buff.affect(ch, Paralysis.class, Paralysis.DURATION / 2f);
+					} else if (ch == Dungeon.hero){
 						if (user == Dungeon.hero && origin != null) {
 							Badges.validateDeathFromFriendlyMagic();
 							Dungeon.fail( origin );
