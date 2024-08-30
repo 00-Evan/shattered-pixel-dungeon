@@ -64,6 +64,7 @@ public class MagicalInfusion extends InventorySpell {
 	}
 
 	public void reShowSelector(){
+		curItem = this;
 		GameScene.selectItem(itemSelector);
 	}
 

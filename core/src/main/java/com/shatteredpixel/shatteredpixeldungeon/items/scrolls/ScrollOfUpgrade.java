@@ -66,6 +66,7 @@ public class ScrollOfUpgrade extends InventoryScroll {
 
 	public void reShowSelector(boolean force){
 		identifiedByUse = force;
+		curItem = this;
 		GameScene.selectItem(itemSelector);
 	}
 
