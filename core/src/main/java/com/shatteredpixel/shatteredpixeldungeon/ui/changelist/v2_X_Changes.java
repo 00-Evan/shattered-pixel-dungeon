@@ -85,6 +85,27 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("BETA-4", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Traps and plants can now be added to the catalog via examine\n\n" +
+				"_-_ flying characters now visually fall into pits when they die\n" +
+				"_-_ Badges based entirely on catalog progress can now be unlocked in seeded runs\n" +
+				"_-_ Drowsy debuff now states its remaining duration in its buff description"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by BETA:_\n" +
+				"_-_ Scrolls of upgrade being usable multiple times in specific circumstances\n" +
+				"_-_ Warrior's broken seal being directly upgradeable past +1 (this wasted the scrolls)\n" +
+				"_-_ Combined lethality triggering on ranged weapon attacks\n" +
+				"_-_ New cursed wand lightning effect applying paralysis to dead characters\n" +
+				"_-_ Invulnerable VFX cancelling champion enemy auras\n" +
+				"_-_ Fixed various oddities with ring item notes vs. ring item type notes\n" +
+				"_-_ Various minor visual/textual errors"));
+
 		changes = new ChangeInfo("BETA-3 & 2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
@@ -114,7 +135,7 @@ public class v2_X_Changes {
 				"_-_ Custom notes being viewable from the catalog on unidentified items\n" +
 				"_-_ Upgrade window applying the effect of armor augments twice when showing stats\n" +
 				"_-_ 'Big Game Hunter' badge unlocking many times\n" +
-				"_-_ 'Master Researcher' badge unlocking at 360 catalog entries instead of 320" +
+				"_-_ 'Master Researcher' badge unlocking at 360 catalog entries instead of 320\n" +
 				"_-_ Targeting traps ignoring invisible characters entirely\n" +
 				"_-_ Various minor textual and graphical errors" +
 				"\n" +
