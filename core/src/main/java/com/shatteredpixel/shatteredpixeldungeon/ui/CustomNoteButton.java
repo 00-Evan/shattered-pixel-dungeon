@@ -156,6 +156,9 @@ public class CustomNoteButton extends IconButton {
 		@Override
 		public boolean itemSelectable(Item item) {
 			if (item instanceof EquipableItem){
+				if (item instanceof Ring && Notes.findCustomRecord(item.getClass()) != null){
+					return false;
+				}
 				return ((EquipableItem) item).customNoteID == -1
 						|| Notes.findCustomRecord(((EquipableItem) item).customNoteID) == null;
 			} else {
