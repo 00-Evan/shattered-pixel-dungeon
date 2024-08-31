@@ -631,7 +631,9 @@ public class Notes {
 
 	public static CustomRecord findCustomRecord( Class itemClass ){
 		for (Record rec : records){
-			if (rec instanceof CustomRecord && ((CustomRecord) rec).itemClass == itemClass)
+			if (rec instanceof CustomRecord
+					&& ((CustomRecord) rec).itemClass == itemClass
+					&& ((CustomRecord) rec).ID == -1)
 				return (CustomRecord) rec;
 		}
 		return null;
