@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RotHeart;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RotLasher;
@@ -37,7 +36,6 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 
 public class RotGardenRoom extends SpecialRoom {
 	
@@ -138,33 +136,6 @@ public class RotGardenRoom extends SpecialRoom {
 			}
 		}
 
-		//if almost every open cell next to the heart has a lasher threatening it, clear one lasher
-		int safeHeartcells = 0;
-		HashSet<Mob> adjacentLashers = new HashSet<>();
-		for (int i : PathFinder.NEIGHBOURS8){
-			if (level.map[heartPos+i] == Terrain.WALL) {
-				continue;
-			}
-			boolean foundLasher = false;
-			for (int j : PathFinder.NEIGHBOURS8){
-				if (heartPos+i+j != heartPos
-						&& level.map[heartPos+i+j] != Terrain.WALL
-						&& level.findMob(heartPos+i+j) != null){
-					foundLasher = true;
-					adjacentLashers.add(level.findMob(heartPos+i+j));
-				}
-			}
-			if (!foundLasher){
-				safeHeartcells++;
-			}
-		}
-
-		if (safeHeartcells < 2 && !adjacentLashers.isEmpty()){
-			Char toRemove = Random.element(adjacentLashers);
-			level.mobs.remove(toRemove);
-			Painter.set(level, toRemove.pos, Terrain.HIGH_GRASS);
-		}
-
 	}
 
 	private static boolean validPlantPos(boolean[] passable, boolean[] newPassable, Level level, int pos, int heartPos, int entryPos){
@@ -179,8 +150,18 @@ public class RotGardenRoom extends SpecialRoom {
 		}
 
 		newPassable[pos] = false;
-		for (int i : PathFinder.NEIGHBOURS4){
-			newPassable[pos+i] = false;
+
+		//if lasher isn't near heart, we can just use cardinal directions
+		if (level.distance(pos, heartPos) > 2){
+			for (int i : PathFinder.NEIGHBOURS4){
+				newPassable[pos+i] = false;
+			}
+		//if it is near, has to count as blocking all adjacent
+		// so that we can guarantee a safe tile to stay still in next to the heart
+		} else {
+			for (int i : PathFinder.NEIGHBOURS8){
+				newPassable[pos+i] = false;
+			}
 		}
 
 		PathFinder.buildDistanceMap(heartPos, newPassable);
