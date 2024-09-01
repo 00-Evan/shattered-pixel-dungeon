@@ -672,7 +672,9 @@ public class Badges {
 		}
 
 		//doesn't actually use catalogs, but triggers at the same time effectively
-		if (!local.contains(Badge.CATALOG_POTIONS_SCROLLS) && Potion.allKnown() && Scroll.allKnown()){
+		if (!local.contains(Badge.CATALOG_POTIONS_SCROLLS)
+				&& Potion.allKnown() && Scroll.allKnown()
+				&& Dungeon.hero != null && Dungeon.hero.isAlive()){
 			local.add(Badge.CATALOG_POTIONS_SCROLLS);
 			displayBadge(Badge.CATALOG_POTIONS_SCROLLS);
 		}
