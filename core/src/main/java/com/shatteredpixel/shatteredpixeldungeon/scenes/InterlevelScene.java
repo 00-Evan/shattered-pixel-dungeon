@@ -47,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
 import com.watabou.gltextures.TextureCache;
+import com.watabou.input.KeyEvent;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
@@ -55,6 +56,7 @@ import com.watabou.utils.BArray;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
+import com.watabou.utils.Signal;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -289,6 +291,19 @@ public class InterlevelScene extends PixelScene {
 					btnContinue.setSize(btnContinue.reqWidth()+10, 22);
 					btnContinue.enable(false);
 
+					KeyEvent.addKeyListener(new Signal.Listener<KeyEvent>() {
+						@Override
+						public boolean onSignal(KeyEvent keyEvent) {
+							if (btnContinue.active){
+								phase = Phase.FADE_OUT;
+								timeLeft = fadeTime;
+								btnContinue.enable(false);
+								return true;
+							}
+							return false;
+						}
+					});
+
 					btnContinue.setPos((Camera.main.width - btnContinue.width())/2f, storyMessage.bottom()+10);
 					add(btnContinue);
 
@@ -466,6 +481,7 @@ public class InterlevelScene extends PixelScene {
 			
 			if ((timeLeft -= Game.elapsed) <= 0) {
 				Game.switchScene( GameScene.class );
+				KeyEvent.clearListeners(); //removes potential listener for continue
 				thread = null;
 				error = null;
 			}
