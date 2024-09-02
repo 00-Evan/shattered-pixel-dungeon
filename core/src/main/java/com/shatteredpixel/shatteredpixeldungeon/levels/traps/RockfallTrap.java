@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -103,6 +104,7 @@ public class RockfallTrap extends Trap {
 				if (!ch.isAlive() && ch == Dungeon.hero){
 					Dungeon.fail( this );
 					GLog.n( Messages.get(this, "ondeath") );
+					if (reclaimed) Badges.validateDeathFromFriendlyMagic();
 				}
 			}
 		}

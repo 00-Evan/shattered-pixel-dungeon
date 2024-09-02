@@ -110,6 +110,7 @@ public class GrimTrap extends Trap {
 												Badges.validateDeathFromGrimOrDisintTrap();
 												Dungeon.fail( GrimTrap.this );
 												GLog.n( Messages.get(GrimTrap.class, "ondeath") );
+												if (reclaimed) Badges.validateDeathFromFriendlyMagic();
 											}
 										} else {
 											Sample.INSTANCE.play(Assets.Sounds.BURNING);

@@ -74,6 +74,7 @@ public class ReclaimTrap extends TargetedSpell {
 				Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);
 				ScrollOfRecharging.charge(hero);
 				storedTrap = t.getClass();
+				Bestiary.setSeen(t.getClass());
 				
 			} else {
 				GLog.w(Messages.get(this, "no_trap"));
@@ -84,7 +85,7 @@ public class ReclaimTrap extends TargetedSpell {
 			storedTrap = null;
 			
 			t.pos = bolt.collisionPos;
-			Bestiary.setSeen(t.getClass());
+			t.reclaimed = true;
 			Bestiary.countEncounter(t.getClass());
 			t.activate();
 			
