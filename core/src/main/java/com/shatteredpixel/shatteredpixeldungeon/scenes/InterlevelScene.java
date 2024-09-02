@@ -294,10 +294,28 @@ public class InterlevelScene extends PixelScene {
 					KeyEvent.addKeyListener(new Signal.Listener<KeyEvent>() {
 						@Override
 						public boolean onSignal(KeyEvent keyEvent) {
-							if (btnContinue.active){
-								phase = Phase.FADE_OUT;
-								timeLeft = fadeTime;
-								btnContinue.enable(false);
+							if (!keyEvent.pressed && btnContinue.active){
+								if (btnHideStory.active && !btnHideStory.icon().visible){
+									btnHideStory.setRect(btnContinue.right()+2, btnContinue.top(), 20, 21);
+									align(btnHideStory);
+									btnHideStory.icon().visible = true;
+									btnHideStory.parent.add(new Tweener(parent, 0.5f) {
+										@Override
+										protected void updateValues(float progress) {
+											float uiAlpha = progress;
+											btnContinue.alpha(uiAlpha);
+											storyBG.alpha(uiAlpha*0.75f);
+											storyMessage.alpha(uiAlpha);
+											btnHideStory.icon().alpha(uiAlpha);
+											loadingText.alpha(uiAlpha);
+											im.am = uiAlpha;
+										}
+									});
+								} else {
+									phase = Phase.FADE_OUT;
+									timeLeft = fadeTime;
+									btnContinue.enable(false);
+								}
 								return true;
 							}
 							return false;
@@ -496,8 +514,14 @@ public class InterlevelScene extends PixelScene {
 				btnHideStory.icon().alpha(btnContinue.alpha());
 
 				if (btnContinue.alpha() == 1){
-					btnHideStory.enable(true);
 					textFadingIn = false;
+
+					if (btnContinue.active) {
+						btnHideStory.enable(true);
+					} else {
+						//move to fade out automatically
+					}
+
 				}
 			}
 
