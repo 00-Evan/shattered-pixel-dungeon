@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 
@@ -66,6 +67,16 @@ public abstract class Trinket extends Item {
 	}
 
 	public abstract String statsDesc();
+
+	public int energyVal() {
+		return 5;
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		levelKnown = cursedKnown = true; //for pre-2.5 saves
+	}
 
 	public static class PlaceHolder extends Trinket {
 
