@@ -48,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ShardOfOblivion;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.WondrousResin;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -242,6 +243,10 @@ public abstract class Wand extends Item {
 		
 		return this;
 	}
+
+	public boolean readyToIdentify(){
+		return !isIdentified() && usesLeftToID <= 0;
+	}
 	
 	public void onHeroGainExp( float levelPercent, Hero hero ){
 		levelPercent *= Talent.itemIDSpeedFactor(hero, this);
@@ -424,9 +429,19 @@ public abstract class Wand extends Item {
 			availableUsesToID -= uses;
 			usesLeftToID -= uses;
 			if (usesLeftToID <= 0 || Dungeon.hero.pointsInTalent(Talent.SCHOLARS_INTUITION) == 2) {
-				identify();
-				GLog.p( Messages.get(Wand.class, "identify") );
-				Badges.validateItemLevelAquired( this );
+				if (ShardOfOblivion.passiveIDDisabled()){
+					if (usesLeftToID > -1){
+						GLog.p(Messages.get(ShardOfOblivion.class, "identify_ready"), name());
+					}
+					usesLeftToID = -1;
+				} else {
+					identify();
+					GLog.p(Messages.get(Wand.class, "identify"));
+					Badges.validateItemLevelAquired(this);
+				}
+			}
+			if (ShardOfOblivion.passiveIDDisabled()){
+				Buff.prolong(curUser, ShardOfOblivion.WandUseTracker.class, 50f);
 			}
 		}
 

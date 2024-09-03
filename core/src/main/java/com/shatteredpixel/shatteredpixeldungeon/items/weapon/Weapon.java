@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ParchmentScrap;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ShardOfOblivion;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Annoying;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Dazzling;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Displacing;
@@ -122,9 +123,16 @@ abstract public class Weapon extends KindOfWeapon {
 			availableUsesToID -= uses;
 			usesLeftToID -= uses;
 			if (usesLeftToID <= 0) {
-				identify();
-				GLog.p( Messages.get(Weapon.class, "identify") );
-				Badges.validateItemLevelAquired( this );
+				if (ShardOfOblivion.passiveIDDisabled()){
+					if (usesLeftToID > -1){
+						GLog.p(Messages.get(ShardOfOblivion.class, "identify_ready"), name());
+					}
+					usesLeftToID = -1;
+				} else {
+					identify();
+					GLog.p(Messages.get(Weapon.class, "identify"));
+					Badges.validateItemLevelAquired(this);
+				}
 			}
 		}
 
@@ -197,6 +205,10 @@ abstract public class Weapon extends KindOfWeapon {
 			Catalog.setSeen(enchantment.getClass());
 		}
 		return super.identify(byHero);
+	}
+
+	public boolean readyToIdentify(){
+		return !isIdentified() && usesLeftToID <= 0;
 	}
 	
 	@Override

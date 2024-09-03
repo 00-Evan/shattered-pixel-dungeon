@@ -60,6 +60,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ParchmentScrap;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ShardOfOblivion;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -221,6 +222,10 @@ public class Armor extends EquipableItem {
 			Catalog.setSeen(glyph.getClass());
 		}
 		return super.identify(byHero);
+	}
+
+	public boolean readyToIdentify(){
+		return !isIdentified() && usesLeftToID <= 0;
 	}
 
 	@Override
@@ -468,9 +473,16 @@ public class Armor extends EquipableItem {
 			availableUsesToID -= uses;
 			usesLeftToID -= uses;
 			if (usesLeftToID <= 0) {
-				identify();
-				GLog.p( Messages.get(Armor.class, "identify") );
-				Badges.validateItemLevelAquired( this );
+				if (ShardOfOblivion.passiveIDDisabled()){
+					if (usesLeftToID > -1){
+						GLog.p(Messages.get(ShardOfOblivion.class, "identify_ready"), name());
+					}
+					usesLeftToID = -1;
+				} else {
+					identify();
+					GLog.p(Messages.get(Armor.class, "identify"));
+					Badges.validateItemLevelAquired(this);
+				}
 			}
 		}
 		

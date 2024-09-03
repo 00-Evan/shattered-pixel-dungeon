@@ -56,6 +56,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ShardOfOblivion;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
@@ -451,11 +452,17 @@ public enum Talent {
 		}
 
 		if (talent == VETERANS_INTUITION && hero.pointsInTalent(VETERANS_INTUITION) == 2){
-			if (hero.belongings.armor() != null)  hero.belongings.armor.identify();
+			if (hero.belongings.armor() != null && !ShardOfOblivion.passiveIDDisabled())  {
+				hero.belongings.armor.identify();
+			}
 		}
 		if (talent == THIEFS_INTUITION && hero.pointsInTalent(THIEFS_INTUITION) == 2){
-			if (hero.belongings.ring instanceof Ring) hero.belongings.ring.identify();
-			if (hero.belongings.misc instanceof Ring) hero.belongings.misc.identify();
+			if (hero.belongings.ring instanceof Ring && !ShardOfOblivion.passiveIDDisabled()) {
+				hero.belongings.ring.identify();
+			}
+			if (hero.belongings.misc instanceof Ring && !ShardOfOblivion.passiveIDDisabled()) {
+				hero.belongings.misc.identify();
+			}
 			for (Item item : Dungeon.hero.belongings){
 				if (item instanceof Ring){
 					((Ring) item).setKnown();
@@ -467,7 +474,9 @@ public enum Talent {
 			if (hero.belongings.misc instanceof Ring) ((Ring) hero.belongings.misc).setKnown();
 		}
 		if (talent == ADVENTURERS_INTUITION && hero.pointsInTalent(ADVENTURERS_INTUITION) == 2){
-			if (hero.belongings.weapon() != null) hero.belongings.weapon().identify();
+			if (hero.belongings.weapon() != null && !ShardOfOblivion.passiveIDDisabled()){
+				hero.belongings.weapon().identify();
+			}
 		}
 
 		if (talent == PROTECTIVE_SHADOWS && hero.invisible > 0){
@@ -686,17 +695,21 @@ public enum Talent {
 	}
 
 	public static void onItemEquipped( Hero hero, Item item ){
+		boolean identify = false;
 		if (hero.pointsInTalent(VETERANS_INTUITION) == 2 && item instanceof Armor){
-			item.identify();
+			identify = true;
 		}
 		if (hero.hasTalent(THIEFS_INTUITION) && item instanceof Ring){
 			if (hero.pointsInTalent(THIEFS_INTUITION) == 2){
-				item.identify();
-			} else {
-				((Ring) item).setKnown();
+				identify = true;
 			}
+			((Ring) item).setKnown();
 		}
 		if (hero.pointsInTalent(ADVENTURERS_INTUITION) == 2 && item instanceof Weapon){
+			identify = true;
+		}
+
+		if (identify && !ShardOfOblivion.passiveIDDisabled()){
 			item.identify();
 		}
 	}

@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ShardOfOblivion;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -247,6 +248,10 @@ public class Ring extends KindofMisc {
 		levelsToID = 0;
 		return super.identify(byHero);
 	}
+
+	public boolean readyToIdentify(){
+		return !isIdentified() && levelsToID <= 0;
+	}
 	
 	@Override
 	public Item random() {
@@ -325,9 +330,16 @@ public class Ring extends KindofMisc {
 		//becomes IDed after 1 level
 		levelsToID -= levelPercent;
 		if (levelsToID <= 0){
-			identify();
-			GLog.p( Messages.get(Ring.class, "identify") );
-			Badges.validateItemLevelAquired( this );
+			if (ShardOfOblivion.passiveIDDisabled()){
+				if (levelsToID > -1){
+					GLog.p(Messages.get(ShardOfOblivion.class, "identify_ready"), name());
+				}
+				levelsToID = -1;
+			} else {
+				identify();
+				GLog.p(Messages.get(Ring.class, "identify"));
+				Badges.validateItemLevelAquired(this);
+			}
 		}
 	}
 
