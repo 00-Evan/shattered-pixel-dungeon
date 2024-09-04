@@ -352,7 +352,7 @@ public class TitleScene extends PixelScene {
 		@Override
 		protected void onClick() {
 			if (Messages.lang().status() == Languages.Status.X_UNFINISH){
-				WndSettings.last_index = 4;
+				WndSettings.last_index = 5;
 			}
 			ShatteredPixelDungeon.scene().add(new WndSettings());
 		}
