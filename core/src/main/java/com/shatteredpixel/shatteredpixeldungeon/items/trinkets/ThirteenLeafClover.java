@@ -33,7 +33,7 @@ public class ThirteenLeafClover extends Trinket {
 
 	@Override
 	protected int upgradeEnergyCost() {
-		//5 -> 5(10) -> 7(17) -> 8(25)
+		//6 -> 5(11) -> 7(18) -> 8(26)
 		return Math.round(5+1.67f*level());
 	}
 

@@ -32,7 +32,7 @@ public class ParchmentScrap extends Trinket {
 
 	@Override
 	protected int upgradeEnergyCost() {
-		//5 -> 10(15) -> 15(30) -> 20(50)
+		//6 -> 10(16) -> 15(31) -> 20(51)
 		return 10+5*level();
 	}
 
