@@ -559,7 +559,7 @@ public class CursedWand {
 			user.sprite.parent.add(new Lightning(pos - 1 - Dungeon.level.width(), pos + 1 + Dungeon.level.width(), null));
 			user.sprite.parent.add(new Lightning(pos - 1 + Dungeon.level.width(), pos + 1 - Dungeon.level.width(), null));
 			for (int i : PathFinder.NEIGHBOURS9){
-				if (Actor.findChar(pos+i) != null){
+				if (Actor.findChar(pos+i) != null && !affected.contains(Actor.findChar(pos+i))){
 					affected.add(Actor.findChar(pos+i));
 				}
 			}
