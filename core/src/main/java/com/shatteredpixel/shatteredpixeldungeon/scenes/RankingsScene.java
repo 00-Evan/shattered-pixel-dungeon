@@ -160,8 +160,8 @@ public class RankingsScene extends PixelScene {
 				}
 			};
 			btnDailies.icon().hardlight(0.5f, 1f, 2f);
-			btnDailies.setRect( left, 0, 20, 20 );
-			left += 20;
+			btnDailies.setRect( left, 0, 16, 20 );
+			left += 16;
 			add(btnDailies);
 		}
 
