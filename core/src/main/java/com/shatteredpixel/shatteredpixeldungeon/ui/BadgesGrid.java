@@ -139,7 +139,7 @@ public class BadgesGrid extends Component {
 		@Override
 		protected void onClick() {
 			Sample.INSTANCE.play( Assets.Sounds.CLICK, 0.7f, 0.7f, 1.2f );
-			Game.scene().add( new WndBadge( badge, unlocked ) );
+			Game.scene().addToFront( new WndBadge( badge, unlocked ) );
 		}
 
 		@Override
