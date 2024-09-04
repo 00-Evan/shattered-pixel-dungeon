@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.SaltCube;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Whip;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
@@ -85,18 +86,78 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("BETA-4", false, null);
+		changes = new ChangeInfo("BETA-5", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.OBLIVION_SHARD), "New Trinkets!",
+				"The _Shard of Oblivion_ and _Chaotic Censer_ are now available! This means that v2.5.0 is now content complete!\n\n" +
+				"The _Shard of Oblivion_ increases the amount of loot you'll find from enemies when you are wearing unidentified equipment.\n\n" +
+				"The _Chaotic Censer_ randomly spreads gasses nearby, that are harmful to you and to enemies.\n\n" +
+				"There are a few more final tweaks and adjustments I plan to make, but the beta is otherwise ready for release in another few days!"));
+
+		changes.addButton(new ChangeButton(new SaltCube(),
+				"Early beta analytics for the Salt Cube point toward it being very weak, so I'm giving it a large buff before full release. Clearly I've overestimated the value of the extra turns of satiety it grants:\n\n" +
+				"_-_ Extra satiety increased to 25% per level, from 12.5%.\n\n" +
+				"_-_ Health regen reduction adjusted to 30/50/65/75%, from 25/50/75/100%.\n\n" +
+				"This means you effectively trade 12.5% less total regen for 25% more satiety duration at each level of the cube, whereas previously you traded as much as 100% regen for 50% more satiety."));
+
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Traps and plants can now be added to the catalog via examine\n\n" +
-				"_-_ flying characters now visually fall into pits when they die\n" +
-				"_-_ Badges based entirely on catalog progress can now be unlocked in seeded runs\n" +
-				"_-_ Drowsy debuff now states its remaining duration in its buff description"));
+				"_-_ Added a 4th trinket crafting option, which gives a random trinket\n" +
+				"_-_ Trinkets can now be energized to get 5 energy back\n" +
+				"_-_ Improved the sprites for salt cube and chaotic censer\n" +
+				"_-_ Rings transmuted from artifacts can now be +1 or +2 if the artifact was +5 or +10.\n\n" +
+				"_-_ Pressing any bound key/button now progresses the loading screen text\n" +
+				"_-_ Further adjustments to idiosyncrasies in sleeping enemy AI\n" +
+				"_-_ Flying characters now only wake sleeping enemies they are next to\n" +
+				"_-_ Shadow clone now inherits silent steps from the Rogue\n\n" +
+				"_-_ Blooming now produces furrowed grass if regen effects are disabled during boss fights\n" +
+				"_-_ DM-300 no longer spews gas at inorganic allies\n" +
+				"_-_ Added a new buff icon for wand-based buffs\n" +
+				"_-_ Updated translations"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
+				"_Caused by BETA:_\n" +
+				"_-_ Plants and traps not actually being added to the bestiary when examined\n" +
+				"_-_ Custom notes appearing twice in ring descriptions\n" +
+				"_-_ Some runestones not getting counted in the catalogs when used\n" +
+				"_-_ Cases where badge info windows wouldn't appear\n" +
+				"_-_ Lightning effect from cursed wands potentially hitting characters twice\n" +
+				"_-_ 'fully stocked' badge unlocking after death in specific cases\n" +
+				"_-_ Various minor textual/graphical errors\n" +
+				"\n" +
+				"_Existed prior to BETA:_\n" +
+				"_-_ Duelist's Spike ability incorrectly triggering on-kill effects in specific circumstances\n" +
+				"_-_ Magically slept enemies waking up when terror expires on them\n" +
+				"_-_ Ripper Demons refusing to leap onto enemies above chasms\n" +
+				"_-_ Death via a reclaimed trap not counting as dying to your own magic item\n" +
+				"_-_ Settings defaulting to audio tab and not languages tab when user is using a language with an incomplete translation"));
+
+		changes = new ChangeInfo("BETA-2 - BETA-4", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.BOMB), "Regarding Bomb Changes",
+				"I've gotten a lot of messages about the recent bomb change, so I thought I'd explain it in a bit more detail. For context, previously bomb explosions only destroyed un-upgraded equipment, and so could be used to tell if an item was upgraded.\n" +
+				"\n" +
+				"Using bombs in this way was always an unintended exploit, and something I've wanted to fix for a long time. I've been hesitant because I know experienced players use this tactic to help deal with inventory congestion though. With the recent inventory management improvements it felt like the right time to finally rip the bandaid off.\n" +
+				"\n" +
+				"Obviously I'm fine with some unintended strategies, but I felt this one was problematic as it was completely unintuitive, lets players completely circumvent the identification mechanic, and not even remotely close to how bombs are supposed to be used.\n" +
+				"\n" +
+				"I am not planning to revert this change, but am open to making compensation adjustments elsewhere if needed."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Traps and plants can now be added to the catalog via examine\n\n" +
+				"_-_ Flying characters now visually fall into pits when they die\n" +
+				"_-_ Badges based entirely on catalog progress can now be unlocked in seeded runs\n" +
+				"_-_ Drowsy debuff now states its remaining duration in its buff description\n" +
+				"_-_ Tengu no longer avoids ground-based effects as if he were flying\n" +
+				"_-_ Piranhas are now killed by levitation if it is applied to them\n" +
+				"_-_ Updated translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"(BETA-4) Fixed the following bugs:\n" +
 				"_Caused by BETA:_\n" +
 				"_-_ Scrolls of upgrade being usable multiple times in specific circumstances\n" +
 				"_-_ Warrior's broken seal being directly upgradeable past +1 (this wasted the scrolls)\n" +
@@ -106,38 +167,15 @@ public class v2_X_Changes {
 				"_-_ Fixed various oddities with ring item notes vs. ring item type notes\n" +
 				"_-_ Various minor visual/textual errors"));
 
-		changes = new ChangeInfo("BETA-3 & 2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"BETA-3: Fixed the following bugs:\n" +
-				"_Caused by BETA-2:_\n" +
-				"_-_ Game crashing when opening the new journal scene, oops =S"));
-
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.BOMB), "Regarding Bomb Changes",
-				"I've gotten a lot of messages about the recent bomb change, so I thought I'd explain it in a bit more detail. For context, previously bomb explosions only destroyed un-upgraded equipment, and so could be used to tell if an item was upgraded.\n" +
-				"\n" +
-				"Using bombs in this way was always an unintended exploit, and something I've wanted to fix for a long time. I've been hesitant because I know experienced players use this tactic to help deal with inventory congestion though. With the recent inventory management improvements it felt like the right time to finally rip the bandaid off.\n" +
-				"\n" +
-				"Obviously I'm fine with some unintended strategies, but I felt this one was problematic as it was completely unintuitive (you're almost certainly only going to learn it from a guide) and not even remotely close to how bombs are supposed to be used.\n" +
-				"\n" +
-				"I am not planning to revert this change, but am open to making compensation adjustments elsewhere if needed."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Tengu no longer avoids ground-based effects as if he were flying\n" +
-				"_-_ Piranhas are now killed by levitation if it is applied to them\n" +
-				"_-_ Updated translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"BETA-2: Fixed the following bugs:\n" +
+				"(BETA-2&3) Fixed the following bugs:\n" +
 				"_Caused by BETA:_\n" +
 				"_-_ Custom notes being viewable from the catalog on unidentified items\n" +
 				"_-_ Upgrade window applying the effect of armor augments twice when showing stats\n" +
 				"_-_ 'Big Game Hunter' badge unlocking many times\n" +
 				"_-_ 'Master Researcher' badge unlocking at 360 catalog entries instead of 320\n" +
 				"_-_ Targeting traps ignoring invisible characters entirely\n" +
-				"_-_ Various minor textual and graphical errors" +
+				"_-_ Various minor textual and graphical errors\n" +
 				"\n" +
 				"_Existed Prior to BETA:_\n" +
 				"_-_ Challenge Arena effect briefly persisting between floors\n" +
@@ -146,12 +184,6 @@ public class v2_X_Changes {
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Beta To-Do",
-				"v2.5.0 is almost content-complete, but I have a few things left to do first:\n\n" +
-				"_-_ There are currently 2 more trinkets that are concepted but not implemented. v2.5.0 is otherwise pretty light on new content so I would like to get them done for this update.\n" +
-				"_-_ The new loading screens still need a few small adjustments. In particular I want to experiment with a panning effect for portrait users.\n" +
-				"_-_ I'll be implementing fixes for any issues that crop up during the beta as well."));
 
 		changes.addButton( new ChangeButton(Icons.JOURNAL.get(), "Journal Overhaul!",
 				"_The game's Journal interface has been completely overhauled!_\n" +
@@ -165,12 +197,15 @@ public class v2_X_Changes {
 				"The guidebook tabs are unchanged, and the lore tab has been merged into the catalogs."));
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SALT_CUBE), "New Trinkets!",
-				"_Two new trinkets have been added!_ Bringing the total to 15 trinkets.\n" +
+				"_Four new trinkets have been added!_ Bringing the total to 15 trinkets.\n" +
 				"\n" +
-				"_I plan to add 2 more trinkets before release_\n" +
+				"The _salt cube_ extends the duration that food keeps you full, but also reduces HP regeneration." +
 				"\n" +
-				"The _salt cube_ extends the duration that food keeps you full, but also reduces HP regeneration.\n" +
-				"The _vial of blood_ increases the healing granted by major healing sources, but also slows that healing down."));
+				"The _vial of blood_ increases the healing granted by major healing sources, but also slows that healing down.\n" +
+				"\n" +
+				"The _shard of oblivion_ increases the amount of loot you'll find from enemies when you are wearing unidentified equipment.\n" +
+				"\n" +
+				"The _chaotic censer_ randomly spreads gasses nearby, that are harmful to you and to enemies."));
 
 		changes.addButton( new ChangeButton(Icons.DISPLAY_LAND.get(), "Region Splash Arts!",
 				"_New splash arts have been added to the game's loading screens!_\n" +

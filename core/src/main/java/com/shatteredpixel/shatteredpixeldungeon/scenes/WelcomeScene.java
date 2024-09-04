@@ -202,8 +202,8 @@ public class WelcomeScene extends PixelScene {
 
 			}
 
-			message = "Greeting beta testers! After a bit of a wait, v2.5.0 is finally ready for testing!\n\n" +
-					"There's still a little bit of content left to add before v2.5.0 is complete, so I expect this beta to last a little longer than a week.\n\n" +
+			message = "Greeting beta testers! After a few rounds of bugfixes, the beta for v2.5.0 is almost done!\n\n" +
+					"v2.5.0 is now content complete, and though there are a few small things I'd like to adjust before release, I am expected to wrap the beta up in the next few days.\n\n" +
 					"As always, check the changes scene for full details on whats new, and please let me know if you run into any issues!";
 
 		} else {
