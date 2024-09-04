@@ -62,7 +62,7 @@ public class StoneOfAugmentation extends InventoryStone {
 		useAnimation();
 		ScrollOfUpgrade.upgrade(curUser);
 		curItem.detach( curUser.belongings.backpack );
-		
+		Catalog.countUse(getClass());
 	}
 	
 	public void apply( Armor armor, Armor.Augment augment ) {

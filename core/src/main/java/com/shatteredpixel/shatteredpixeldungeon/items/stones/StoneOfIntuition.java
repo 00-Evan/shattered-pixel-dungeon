@@ -114,7 +114,7 @@ public class StoneOfIntuition extends InventoryStone {
 				protected void onClick() {
 					super.onClick();
 					useAnimation();
-					Catalog.countUse(getClass());
+					Catalog.countUse(StoneOfIntuition.class);
 					if (item.getClass() == curGuess){
 						if (item instanceof Ring){
 							((Ring) item).setKnown();
