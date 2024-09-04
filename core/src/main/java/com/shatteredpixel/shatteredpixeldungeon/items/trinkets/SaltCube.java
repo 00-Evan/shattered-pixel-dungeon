@@ -59,7 +59,7 @@ public class SaltCube extends Trinket {
 		if (level == -1){
 			return 1;
 		} else {
-			return 1f / (1f + 0.125f*(level+1));
+			return 1f / (1f + 0.25f*(level+1));
 		}
 	}
 
@@ -68,10 +68,17 @@ public class SaltCube extends Trinket {
 	}
 
 	public static float healthRegenMultiplier( int level ){
-		if (level == -1){
-			return 1;
-		} else {
-			return 1f - 0.25f*(level+1);
+		switch (level){
+			case -1: default:
+				return 1;
+			case 0:
+				return 0.7f;
+			case 1:
+				return 0.5f;
+			case 2:
+				return 0.35f;
+			case 3:
+				return 0.25f;
 		}
 	}
 
