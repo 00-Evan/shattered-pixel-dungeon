@@ -181,7 +181,7 @@ public class Ring extends KindofMisc {
 		//skip custom notes if anonymized and un-Ided
 		String desc;
 		if (anonymous && (handler == null || !handler.isKnown( this ))){
-			desc = super.desc();
+			desc = desc();
 		} else {
 			//otherwise, check for item type note too, rings can have either
 			Notes.CustomRecord note = Notes.findCustomRecord(getClass());

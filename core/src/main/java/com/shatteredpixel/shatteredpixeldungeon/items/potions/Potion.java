@@ -379,7 +379,7 @@ public class Potion extends Item {
 	@Override
 	public String info() {
 		//skip custom notes if anonymized and un-Ided
-		return (anonymous && (handler == null || !handler.isKnown( this ))) ? super.desc() : super.info();
+		return (anonymous && (handler == null || !handler.isKnown( this ))) ? desc() : super.info();
 	}
 
 	@Override
