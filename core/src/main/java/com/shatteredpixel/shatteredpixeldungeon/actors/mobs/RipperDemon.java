@@ -196,7 +196,7 @@ public class RipperDemon extends Mob {
 								leapVictim.sprite.flash();
 								Sample.INSTANCE.play(Assets.Sounds.HIT);
 							} else {
-								enemy.sprite.showStatus( CharSprite.NEUTRAL, enemy.defenseVerb() );
+								leapVictim.sprite.showStatus( CharSprite.NEUTRAL, leapVictim.defenseVerb() );
 								Sample.INSTANCE.play(Assets.Sounds.MISS);
 							}
 						}
