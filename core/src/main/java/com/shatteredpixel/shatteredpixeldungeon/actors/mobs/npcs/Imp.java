@@ -209,20 +209,23 @@ public class Imp extends NPC {
 		}
 		
 		public static void spawn( CityLevel level ) {
-			if (!spawned && Dungeon.depth == 18) {
-				
+			if (!spawned && Dungeon.depth > 16 && Random.Int( 20 - Dungeon.depth ) == 0) {
+
 				Imp npc = new Imp();
+				int tries = 30;
 				do {
 					npc.pos = level.randomRespawnCell( npc );
+					tries--;
 				} while (
 						npc.pos == -1 ||
-						level.map[ npc.pos ] == Terrain.EMPTY_SP || //visibility issues on these tiles
+						//visibility issues on these tiles, try to avoid them
+						(tries > 0 && level.map[ npc.pos ] == Terrain.EMPTY_SP) ||
 						level.heaps.get( npc.pos ) != null ||
 						level.traps.get( npc.pos) != null ||
 						level.findMob( npc.pos ) != null ||
-						//The imp doesn't move, so he cannot obstruct a passageway
-						!(level.passable[npc.pos + PathFinder.CIRCLE4[0]] && level.passable[npc.pos + PathFinder.CIRCLE4[2]]) ||
-						!(level.passable[npc.pos + PathFinder.CIRCLE4[1]] && level.passable[npc.pos + PathFinder.CIRCLE4[3]]));
+						//don't place the imp against solid terrain
+						!level.passable[npc.pos + PathFinder.CIRCLE4[0]] || !level.passable[npc.pos + PathFinder.CIRCLE4[1]] ||
+						!level.passable[npc.pos + PathFinder.CIRCLE4[2]] || !level.passable[npc.pos + PathFinder.CIRCLE4[3]]);
 				level.mobs.add( npc );
 				
 				spawned = true;
