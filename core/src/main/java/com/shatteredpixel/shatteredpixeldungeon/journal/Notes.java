@@ -623,18 +623,18 @@ public class Notes {
 
 	public static CustomRecord findCustomRecord( int ID ){
 		for (Record rec : records){
-			if (rec instanceof CustomRecord && ((CustomRecord) rec).ID == ID)
+			if (rec instanceof CustomRecord && ((CustomRecord) rec).ID == ID) {
 				return (CustomRecord) rec;
+			}
 		}
 		return null;
 	}
 
 	public static CustomRecord findCustomRecord( Class itemClass ){
 		for (Record rec : records){
-			if (rec instanceof CustomRecord
-					&& ((CustomRecord) rec).itemClass == itemClass
-					&& ((CustomRecord) rec).ID == -1)
+			if (rec instanceof CustomRecord && ((CustomRecord) rec).itemClass == itemClass) {
 				return (CustomRecord) rec;
+			}
 		}
 		return null;
 	}

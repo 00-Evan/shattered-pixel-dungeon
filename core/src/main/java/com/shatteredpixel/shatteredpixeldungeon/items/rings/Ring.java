@@ -182,14 +182,17 @@ public class Ring extends KindofMisc {
 		String desc;
 		if (anonymous && (handler == null || !handler.isKnown( this ))){
 			desc = desc();
-		} else {
-			//otherwise, check for item type note too, rings can have either
+
+		//otherwise, check for item type note, rings can have either but not both
+		} else if (Notes.findCustomRecord(customNoteID) == null) {
 			Notes.CustomRecord note = Notes.findCustomRecord(getClass());
 			if (note != null){
 				desc = Messages.get(this, "custom_note", note.title()) + "\n\n" + super.info();
 			} else {
 				desc = super.info();
 			}
+		} else {
+			desc = super.info();
 		}
 
 		if (cursed && isEquipped( Dungeon.hero )) {
