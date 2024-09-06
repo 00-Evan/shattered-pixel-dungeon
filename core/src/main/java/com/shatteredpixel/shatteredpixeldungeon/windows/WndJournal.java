@@ -515,7 +515,11 @@ public class WndJournal extends WndTabbed {
 
 				ArrayList<Notes.Record> recs = Notes.getRecords(i);
 
-				grid.addHeader("_" + Messages.get(this, "floor_header", i) + "_");
+				if (i == Dungeon.depth) {
+					grid.addHeader("_" + Messages.get(this, "floor_header", i) + "_");
+				} else {
+					grid.addHeader(Messages.get(this, "floor_header", i));
+				}
 				for( Notes.Record rec : recs){
 
 					ScrollingGridPane.GridItem gridItem = new ScrollingGridPane.GridItem(rec.icon()){
