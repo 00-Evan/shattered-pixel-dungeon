@@ -60,9 +60,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.DimensionalSundial;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrinketCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
@@ -608,6 +608,11 @@ public class GameScene extends PixelScene {
 				Rankings.INSTANCE.totalNumber > 0 &&
 				!Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_DIEING)){
 			GameScene.flashForDocument(Document.ADVENTURERS_GUIDE, Document.GUIDE_DIEING);
+		}
+
+		TrinketCatalyst cata = Dungeon.hero.belongings.getItem(TrinketCatalyst.class);
+		if (cata != null && cata.hasRolledTrinkets()){
+			addToFront(new TrinketCatalyst.WndTrinket(cata));
 		}
 
 		if (!invVisible) toggleInvPane();

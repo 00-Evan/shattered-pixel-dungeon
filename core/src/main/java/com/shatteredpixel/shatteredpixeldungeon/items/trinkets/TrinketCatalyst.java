@@ -21,8 +21,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.trinkets;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -38,9 +41,11 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.ItemButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoItem;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSadGhost;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
 import java.io.IOException;
@@ -78,6 +83,10 @@ public class TrinketCatalyst extends Item {
 	}
 
 	private ArrayList<Trinket> rolledTrinkets = new ArrayList<>();
+
+	public boolean hasRolledTrinkets(){
+		return !rolledTrinkets.isEmpty();
+	}
 
 	private static final String ROLLED_TRINKETS = "rolled_trinkets";
 
@@ -217,7 +226,26 @@ public class TrinketCatalyst extends Item {
 							cata.detach(Dungeon.hero.belongings.backpack);
 							Catalog.countUse(cata.getClass());
 							result.identify();
-							((AlchemyScene)ShatteredPixelDungeon.scene()).craftItem(null, result);
+							if (ShatteredPixelDungeon.scene() instanceof AlchemyScene) {
+								((AlchemyScene) ShatteredPixelDungeon.scene()).craftItem(null, result);
+							} else {
+								Sample.INSTANCE.play( Assets.Sounds.PUFF );
+
+								if (result.doPickUp(Dungeon.hero)){
+									GLog.p( Messages.capitalize(Messages.get(Hero.class, "you_now_have", item.name())) );
+								} else {
+									Dungeon.level.drop(result, Dungeon.hero.pos);
+								}
+
+								Statistics.itemsCrafted++;
+								Badges.validateItemsCrafted();
+
+								try {
+									Dungeon.saveAll();
+								} catch (IOException e) {
+									ShatteredPixelDungeon.reportException(e);
+								}
+							}
 						}
 					}
 				};

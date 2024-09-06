@@ -514,6 +514,11 @@ public class AlchemyScene extends PixelScene {
 		align(btnGuide);
 		add(btnGuide);
 
+		TrinketCatalyst cata = Dungeon.hero.belongings.getItem(TrinketCatalyst.class);
+		if (cata != null && cata.hasRolledTrinkets()){
+			addToFront(new TrinketCatalyst.WndTrinket(cata));
+		}
+
 		fadeIn();
 		
 		try {
