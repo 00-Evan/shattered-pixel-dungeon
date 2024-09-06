@@ -304,11 +304,17 @@ public enum Bestiary {
 		return 0;
 	}
 
+	//used primarily when bosses are killed and need to clean up their minions
+	public static boolean skipCountingEncounters = false;
+
 	public static void countEncounter(Class<?> cls){
 		countEncounters(cls, 1);
 	}
 
 	public static void countEncounters(Class<?> cls, int encounters){
+		if (skipCountingEncounters){
+			return;
+		}
 		if (classConversions.containsKey(cls)){
 			cls = classConversions.get(cls);
 		}

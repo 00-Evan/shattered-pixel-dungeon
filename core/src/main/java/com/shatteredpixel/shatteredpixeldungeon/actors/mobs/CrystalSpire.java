@@ -353,6 +353,7 @@ public class CrystalSpire extends Mob {
 							}
 						}
 
+						Bestiary.skipCountingEncounters = true;
 						for (Char ch : Actor.chars()){
 							if (fieldOfView[ch.pos]) {
 								if (ch instanceof CrystalGuardian) {
@@ -363,6 +364,7 @@ public class CrystalSpire extends Mob {
 								}
 							}
 						}
+						Bestiary.skipCountingEncounters = false;
 
 					}
 

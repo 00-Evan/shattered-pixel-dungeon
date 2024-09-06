@@ -52,6 +52,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLightning;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -497,13 +498,11 @@ public class DwarfKing extends Mob {
 				for (Summoning s : buffs(Summoning.class)) {
 					s.detach();
 				}
-				for (Mob m : Dungeon.level.mobs.toArray(new Mob[0])) {
-					if (m.alignment == alignment) {
-						if (m instanceof Ghoul || m instanceof Monk || m instanceof Warlock || m instanceof Golem) {
-							m.die(null);
-						}
-					}
+				Bestiary.skipCountingEncounters = true;
+				for (Mob m : getSubjects()) {
+					m.die(null);
 				}
+				Bestiary.skipCountingEncounters = false;
 				for (Buff b: buffs()){
 					if (b instanceof LifeLink){
 						b.detach();
@@ -568,9 +567,11 @@ public class DwarfKing extends Mob {
 
 		Dungeon.level.unseal();
 
+		Bestiary.skipCountingEncounters = true;
 		for (Mob m : getSubjects()){
 			m.die(null);
 		}
+		Bestiary.skipCountingEncounters = false;
 
 		LloydsBeacon beacon = Dungeon.hero.belongings.getItem(LloydsBeacon.class);
 		if (beacon != null) {
