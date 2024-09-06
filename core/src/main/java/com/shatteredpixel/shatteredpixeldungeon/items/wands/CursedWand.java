@@ -648,7 +648,7 @@ public class CursedWand {
 				mob.beckon( user.pos );
 			}
 			user.sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
-			if (!positiveOnly){
+			if (positiveOnly){
 				Buff.affect(user, ScrollOfChallenge.ChallengeArena.class).setup(user.pos);
 				Sample.INSTANCE.play( Assets.Sounds.CHALLENGE );
 			} else {
