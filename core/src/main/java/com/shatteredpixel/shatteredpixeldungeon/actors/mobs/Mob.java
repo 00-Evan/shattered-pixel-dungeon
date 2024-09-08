@@ -504,11 +504,13 @@ public abstract class Mob extends Char {
 		} else {
 
 			boolean newPath = false;
+			float longFactor = state == WANDERING ? 2f : 1.33f;
 			//scrap the current path if it's empty, no longer connects to the current location
 			//or if it's quite inefficient and checking again may result in a much better path
+			//mobs are much more tolerant of inefficient paths if wandering
 			if (path == null || path.isEmpty()
 					|| !Dungeon.level.adjacent(pos, path.getFirst())
-					|| path.size() > 1.33f*Dungeon.level.distance(pos, target))
+					|| path.size() > longFactor*Dungeon.level.distance(pos, target))
 				newPath = true;
 			else if (path.getLast() != target) {
 				//if the new target is adjacent to the end of the path, adjust for that
