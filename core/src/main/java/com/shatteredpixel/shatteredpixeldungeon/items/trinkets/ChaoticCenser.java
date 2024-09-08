@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.trinkets;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blizzard;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
@@ -35,14 +36,18 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StenchGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StormCloud;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BArray;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
@@ -84,6 +89,7 @@ public class ChaoticCenser extends Trinket {
 	public static class CenserGasTracker extends Buff {
 
 		private int left = Integer.MAX_VALUE;
+		private int safeAreaDelay = 100;
 
 		@Override
 		public boolean act() {
@@ -91,15 +97,27 @@ public class ChaoticCenser extends Trinket {
 			int avgTurns = averageTurnsUntilGas();
 
 			if (avgTurns == -1){
-				detach();
+				spend(Random.NormalIntRange(2, 8));
 				return true;
-			}
-
-			if (left > avgTurns*1.1f){
+			} else if (left > avgTurns*1.1f){
 				left = Random.IntRange((int) (avgTurns*0.9f), (int) (avgTurns*1.1f));
 			}
 
 			if (left < avgTurns/5){
+
+				//censer will try to delay spawning gas in certain safe areas, atm just inside shops
+				if (safeAreaDelay >= 0) {
+					for (Char ch : Actor.chars()) {
+						if (ch instanceof Shopkeeper
+								&& Dungeon.level.distance(target.pos, ch.pos) <= 5
+								&& new Ballistica(target.pos, ch.pos, Ballistica.STOP_SOLID).collisionPos == ch.pos) {
+							int delay = Random.NormalIntRange(2, 8);
+							spend(delay);
+							safeAreaDelay -= delay;
+							return true;
+						}
+					}
+				}
 
 				//scales quadratically from ~4% at avgTurns/5, to 36% at 0, to 100% at -avgTurns/5
 				float triggerChance = (float) Math.pow( 1f - (left + avgTurns/5f)/(avgTurns/2f), 2);
@@ -131,9 +149,29 @@ public class ChaoticCenser extends Trinket {
 			//buff ticks an average of every 5 turns
 			int delay = Random.NormalIntRange(2, 8);
 			spend(delay);
+			safeAreaDelay = Math.min(safeAreaDelay+delay, 100);
 			left -= delay;
 
 			return true;
+		}
+
+		private static String LEFT = "left";
+		private static String SAFE_AREA_DELAY = "safe_area_delay";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(LEFT, left);
+			bundle.put(SAFE_AREA_DELAY, safeAreaDelay);
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			if (bundle.contains(LEFT)){
+				left = bundle.getInt(LEFT);
+				safeAreaDelay = bundle.getInt(SAFE_AREA_DELAY);
+			}
 		}
 	}
 
@@ -148,7 +186,9 @@ public class ChaoticCenser extends Trinket {
 		float gasQuantity;
 		switch (Random.chances(GAS_CAT_CHANCES[level])){
 			case 0: default:
-				gasToSpawn = Random.element(COMMON_GASSES.keySet());
+				do {
+					gasToSpawn = Random.element(COMMON_GASSES.keySet());
+				} while (!Regeneration.regenOn() && gasToSpawn == Regrowth.class);
 				gasQuantity = COMMON_GASSES.get(gasToSpawn);
 				break;
 			case 1:
