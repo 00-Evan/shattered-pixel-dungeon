@@ -523,7 +523,7 @@ public class InterlevelScene extends PixelScene {
 			}
 
 			//slowly pan the background side to side in portait mode, if story text is displayed
-			if (btnContinue != null && !textFadingIn && !landscape()){
+			if (btnContinue != null && !textFadingIn && Game.width < Game.height){
 				if (background.speed.isZero() && background.acc.isZero()){
 					background.acc.x = background.center().x >= Camera.main.width ? -1f : 1f;
 				} else {
