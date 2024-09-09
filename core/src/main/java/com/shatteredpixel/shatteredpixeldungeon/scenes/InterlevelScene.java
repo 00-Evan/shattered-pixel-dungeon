@@ -291,6 +291,7 @@ public class InterlevelScene extends PixelScene {
 					};
 					btnContinue.icon(Icons.STAIRS.get());
 					btnContinue.setSize(btnContinue.reqWidth()+10, 22);
+					btnContinue.visible = false;
 					btnContinue.enable(false);
 
 					KeyEvent.addKeyListener(new Signal.Listener<KeyEvent>() {
@@ -330,6 +331,9 @@ public class InterlevelScene extends PixelScene {
 					btnHideStory = new IconButton(Icons.CHEVRON.get()){
 						@Override
 						protected void onClick() {
+							if (btnContinue.alpha() != 0 && btnContinue.alpha() != 1){
+								return;
+							}
 							if (icon.visible) {
 								enable(false);
 								//button is effectively screen-sized, but invisible
@@ -520,13 +524,7 @@ public class InterlevelScene extends PixelScene {
 
 				if (btnContinue.alpha() == 1){
 					textFadingIn = false;
-
-					if (btnContinue.active) {
-						btnHideStory.enable(true);
-					} else {
-						//move to fade out automatically
-					}
-
+					btnHideStory.enable(true);
 				}
 			}
 
@@ -592,8 +590,10 @@ public class InterlevelScene extends PixelScene {
 
 	private void afterLoading(){
 		if (btnContinue != null){
+			btnContinue.visible = true;
+			float alpha = btnContinue.alpha();
 			btnContinue.enable(true);
-			btnContinue.alpha(0);
+			btnContinue.alpha(alpha);
 			phase = Phase.STATIC;
 		} else {
 			phase = Phase.FADE_OUT;
