@@ -86,6 +86,40 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("RC-1", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ The loading screen background now pans side to side on portrait mode\n\n" +
+				"_-_ Chaotic Censer now tries to avoid spawning gas in shops, unless hero loiters there\n" +
+				"_-_ Chaotic Censer no longer spawns regrowth if passive regen effects are disabled\n\n" +
+				"_-_ Adventuring notes window now only highlights custom notes and current floor\n" +
+				"_-_ Boss minions that die when a boss is slain no longer increment defeated count in catalog (they are still set as seen however)\n" +
+				"_-_ Further adjustments to fix for the trinket selection cancel exploit: The trinket window now re-shows itself automatically if the game was force-quit\n" +
+				"_-_ Thorns glyph no longer rebounds damage to allies\n" +
+				"_-_ Necromancers now interrupt the hero if they summon within vision\n" +
+				"_-_ Updated translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n\n" +
+				"_Caused by BETA:_\n" +
+				"_-_ Custom notes not appearing for consumable items\n" +
+				"_-_ Rare cases of level loading freezing in the dwarvern city\n" +
+				"_-_ Very rare cases of level loading freezing in the caves\n" +
+				"_-_ Imp always spawning on floor 18, instead of 17-19\n" +
+				"_-_ Cursed wand alarm effect incorrectly creating challenge arenas without wondrous resin buff, instead of with it\n" +
+				"_-_ Mobs getting caught in loops while wandering more often than prior to v2.5.0\n" +
+				"_-_ Delay for the Chaotic Censor spawning gas being reset on save/load/drop\n" +
+				"_-_ Visual errors in new loading screen on slow devices\n" +
+				"\n" +
+				"_Existed prior to BETA:_\n" +
+				"_-_ Various rare crash bugs"));
+
 		changes = new ChangeInfo("BETA-5", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
