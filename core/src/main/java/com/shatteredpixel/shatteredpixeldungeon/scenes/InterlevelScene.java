@@ -165,7 +165,6 @@ public class InterlevelScene extends PixelScene {
 		int loadingCenter = 400;
 
 		//for portrait users, each run the splashes change what details they focus on
-		//TOD should these be uniform, or should some be more common?
 		Random.pushGenerator(seed+lastRegion);
 			switch (lastRegion){
 				case 1:
@@ -173,7 +172,6 @@ public class InterlevelScene extends PixelScene {
 					switch (Random.Int(2)){
 						case 0: loadingCenter = 180; break; //focus on rats and left side
 						case 1: loadingCenter = 485; break; //focus on center pipe and door
-						//case 2: loadingCenter = 700; break; //focus on right pipe
 					}
 					break;
 				case 2:
@@ -181,13 +179,11 @@ public class InterlevelScene extends PixelScene {
 					switch (Random.Int(3)){
 						case 0: loadingCenter = 190; break; //focus on left skeleton
 						case 1: loadingCenter = 402; break; //focus on center arch
-						//case 2: loadingCenter = 650; break; //focus on right stairs
 					}
 					break;
 				case 3:
 					loadingAsset = Assets.Splashes.CAVES;
 					switch (Random.Int(3)){
-						//case 0: loadingCenter = 120; break; //focus on far-left mining machinery
 						case 0: loadingCenter = 340; break; //focus on center gnoll groups
 						case 1: loadingCenter = 625; break; //focus on right gnoll
 					}
@@ -196,8 +192,7 @@ public class InterlevelScene extends PixelScene {
 					loadingAsset = Assets.Splashes.CITY;
 					switch (Random.Int(3)){
 						case 0: loadingCenter = 275; break; //focus on left bookcases
-						case 1: loadingCenter = 460; break; //focus on center pathway
-						//case 2: loadingCenter = 625; break; //focus on right bookcases
+						case 1: loadingCenter = 485; break; //focus on center pathway
 					}
 					break;
 				case 5: default:
@@ -205,7 +200,6 @@ public class InterlevelScene extends PixelScene {
 					switch (Random.Int(3)){
 						case 0: loadingCenter = 145; break; //focus on left arches
 						case 1: loadingCenter = 400; break; //focus on ripper demon
-						//case 2: loadingCenter = 615; break; //focus on right arches
 					}
 					break;
 			}
@@ -531,7 +525,7 @@ public class InterlevelScene extends PixelScene {
 			//slowly pan the background side to side in portait mode, if story text is displayed
 			if (btnContinue != null && !textFadingIn && !landscape()){
 				if (background.speed.isZero() && background.acc.isZero()){
-					background.acc.x = background.center().x > Camera.main.width ? -1f : 1f;
+					background.acc.x = background.center().x >= Camera.main.width ? -1f : 1f;
 				} else {
 					background.speed.x = GameMath.gate(-10, background.speed.x, 10);
 					if (background.acc.x > 0 && background.x >= -25){
