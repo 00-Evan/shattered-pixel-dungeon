@@ -310,6 +310,10 @@ public class Necromancer extends Mob {
 					
 					summoning = true;
 					sprite.zap( summoningPos );
+
+					if (Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[summoningPos]){
+						Dungeon.hero.interrupt();
+					}
 					
 					spend( firstSummon ? TICK : 2*TICK );
 				} else {
