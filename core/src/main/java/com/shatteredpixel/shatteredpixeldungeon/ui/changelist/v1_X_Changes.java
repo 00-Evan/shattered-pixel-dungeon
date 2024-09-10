@@ -74,7 +74,11 @@ public class v1_X_Changes {
 				"_-_ Released October 4th, 2022\n" +
 				"_-_ 90 days after Shattered v1.3.0\n" +
 				"\n" +
-				"Dev commentary will be added here in the next major update."));
+				"I called v1.4.0 'the big patch' while it was in development, as the goal of the update was to try and clear through a backlog of smaller fixes and improvements that was starting to get very long.\n" +
+				"\n" +
+				"I've kept getting so many reports that future updates have been pretty fix-heavy too though. Some of Shattered's players are very, very dedicated to pushing the game to its limits, and so it sometimes feels like every fix I make just prompts these people to go find problems elsewhere.\n" +
+				"\n" +
+				"There was new content in v1.4.0 as well, most notably the addition of in-game lore! I've had lots of loose ideas for a proper backstory to Shattered for a long time, and v1.4.0 was the first update that started to put some of that into the actual game! Future lore has had to wait until after the addition of new heroes though."));
 
 		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.GUIDE_PAGE), "Lore Additions",
 				"_30 pages of lore text have been added to the game, scattered around the regions of the dungeon!_\n\n" +
