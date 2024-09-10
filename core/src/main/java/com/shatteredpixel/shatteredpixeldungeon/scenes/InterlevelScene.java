@@ -281,6 +281,7 @@ public class InterlevelScene extends PixelScene {
 							timeLeft = fadeTime;
 
 							btnContinue.enable(false);
+							Document.INTROS.readPage(region);
 						}
 					};
 					btnContinue.icon(Icons.STAIRS.get());
@@ -312,6 +313,7 @@ public class InterlevelScene extends PixelScene {
 									phase = Phase.FADE_OUT;
 									timeLeft = fadeTime;
 									btnContinue.enable(false);
+									Document.INTROS.readPage(region);
 								}
 								return true;
 							}
