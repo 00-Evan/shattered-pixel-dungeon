@@ -173,7 +173,6 @@ public class Statue extends Mob {
 
 	@Override
 	public boolean reset() {
-		state = PASSIVE;
 		return true;
 	}
 
