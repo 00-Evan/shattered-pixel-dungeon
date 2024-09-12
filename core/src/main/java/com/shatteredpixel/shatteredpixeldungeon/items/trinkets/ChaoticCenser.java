@@ -109,8 +109,8 @@ public class ChaoticCenser extends Trinket {
 				if (safeAreaDelay >= 0) {
 					for (Char ch : Actor.chars()) {
 						if (ch instanceof Shopkeeper
-								&& Dungeon.level.distance(target.pos, ch.pos) <= 5
-								&& new Ballistica(target.pos, ch.pos, Ballistica.STOP_SOLID).collisionPos == ch.pos) {
+								&& Dungeon.level.distance(target.pos, ch.pos) <= 6
+								&& new Ballistica(target.pos, ch.pos, Ballistica.PROJECTILE).collisionPos == ch.pos) {
 							int delay = Random.NormalIntRange(2, 8);
 							spend(delay);
 							safeAreaDelay -= delay;
