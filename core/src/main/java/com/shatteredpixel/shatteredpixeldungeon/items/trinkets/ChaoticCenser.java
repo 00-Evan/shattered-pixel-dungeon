@@ -139,10 +139,11 @@ public class ChaoticCenser extends Trinket {
 				}
 
 				if (Random.Float() < triggerChance){
-					produceGas();
-					Sample.INSTANCE.play(Assets.Sounds.GAS);
-					Dungeon.hero.interrupt();
-					left += Random.IntRange((int) (avgTurns*0.9f), (int) (avgTurns*1.1f));
+					if (produceGas()) {
+						Sample.INSTANCE.play(Assets.Sounds.GAS);
+						Dungeon.hero.interrupt();
+						left += Random.IntRange((int) (avgTurns * 0.9f), (int) (avgTurns * 1.1f));
+					}
 				}
 			}
 
@@ -175,11 +176,11 @@ public class ChaoticCenser extends Trinket {
 		}
 	}
 
-	private static void produceGas(){
+	private static boolean produceGas(){
 		int level = trinketLevel(ChaoticCenser.class);
 
 		if (level < 0 || level > 3){
-			return;
+			return false;
 		}
 
 		Class<?extends Blob> gasToSpawn;
@@ -203,7 +204,7 @@ public class ChaoticCenser extends Trinket {
 
 		Char target = null;
 		if (TargetHealthIndicator.instance != null){
-			target  = TargetHealthIndicator.instance.target();
+			target = TargetHealthIndicator.instance.target();
 		}
 
 		HashMap<Integer, Float> candidateCells = new HashMap<>();
@@ -235,10 +236,15 @@ public class ChaoticCenser extends Trinket {
 		}
 
 		if (!candidateCells.isEmpty()) {
-			int targetCell = Random.chances(candidateCells);
-			GameScene.add(Blob.seed(targetCell, (int) gasQuantity, gasToSpawn));
-			MagicMissile.boltFromChar(Dungeon.hero.sprite.parent, MISSILE_VFX.get(gasToSpawn), Dungeon.hero.sprite, targetCell, null);
+			Integer targetCell = Random.chances(candidateCells);
+			if (targetCell != null) {
+				GameScene.add(Blob.seed(targetCell, (int) gasQuantity, gasToSpawn));
+				MagicMissile.boltFromChar(Dungeon.hero.sprite.parent, MISSILE_VFX.get(gasToSpawn), Dungeon.hero.sprite, targetCell, null);
+				return true;
+			}
 		}
+
+		return false;
 
 	}
 
