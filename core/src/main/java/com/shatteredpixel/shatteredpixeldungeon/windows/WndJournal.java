@@ -363,7 +363,7 @@ public class WndJournal extends WndTabbed {
 			updateList();
 		}
 		
-		private void updateList() {
+		public void updateList() {
 
 			if (currentPageIdx != -1 && !Document.ALCHEMY_GUIDE.isPageFound(currentPageIdx)){
 				currentPageIdx = -1;
