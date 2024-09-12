@@ -209,6 +209,12 @@ public class PrisonBossLevel extends Level {
 		for (Point p : startTorches){
 			Painter.set(this, p, Terrain.WALL_DECO);
 		}
+
+		//we set up the exit for consistently with other levels, even though it's in the walls
+		LevelTransition exit = new LevelTransition(this, pointToCell(levelExit), LevelTransition.Type.REGULAR_EXIT);
+		exit.right+=2;
+		exit.bottom+=3;
+		transitions.add(exit);
 	}
 
 	//area where items/chars are preserved when moving to the arena
@@ -307,10 +313,13 @@ public class PrisonBossLevel extends Level {
 			cell += width();
 		}
 
-		LevelTransition exit = new LevelTransition(this, pointToCell(levelExit), LevelTransition.Type.REGULAR_EXIT);
-		exit.right+=2;
-		exit.bottom+=3;
-		transitions.add(exit);
+		//pre-2.5.1 saves, if exit wasn't already added
+		if (exit() == entrance()) {
+			LevelTransition exit = new LevelTransition(this, pointToCell(levelExit), LevelTransition.Type.REGULAR_EXIT);
+			exit.right += 2;
+			exit.bottom += 3;
+			transitions.add(exit);
+		}
 	}
 	
 	//keep track of removed items as the level is changed. Dump them back into the level at the end.
