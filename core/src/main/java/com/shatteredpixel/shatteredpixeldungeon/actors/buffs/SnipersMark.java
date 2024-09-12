@@ -90,11 +90,6 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 	}
 
 	@Override
-	public String desc() {
-		return Messages.get(this, "desc");
-	}
-	
-	@Override
 	public String actionName() {
 		SpiritBow bow = Dungeon.hero.belongings.getItem(SpiritBow.class);
 
