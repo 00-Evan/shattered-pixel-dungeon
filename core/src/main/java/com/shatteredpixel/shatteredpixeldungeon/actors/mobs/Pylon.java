@@ -228,8 +228,8 @@ public class Pylon extends Mob {
 
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
-		super.restoreFromBundle(bundle);
 		alignment = bundle.getEnum(ALIGNMENT, Alignment.class);
+		super.restoreFromBundle(bundle);
 		targetNeighbor = bundle.getInt(TARGET_NEIGHBOUR);
 	}
 
