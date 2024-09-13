@@ -328,6 +328,10 @@ public class CustomNoteButton extends IconButton {
 			resize(width, (int)delete.bottom());
 		}
 
+		@Override
+		protected boolean useHighlighting() {
+			return false;
+		}
 	}
 
 	private static void addNote(Notes.CustomRecord note, String promptTitle, String prompttext){

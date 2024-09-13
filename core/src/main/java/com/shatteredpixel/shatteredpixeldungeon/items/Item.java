@@ -512,7 +512,8 @@ public class Item implements Bundlable {
 				note = Notes.findCustomRecord(getClass());
 			}
 			if (note != null){
-				return Messages.get(this, "custom_note", note.title()) + "\n\n" + desc();
+				//we swap underscore(0x5F) with low macron(0x2CD) here to avoid highlighting in the item window
+				return Messages.get(this, "custom_note", note.title().replace('_', 'ˍ')) + "\n\n" + desc();
 			}
 		}
 
