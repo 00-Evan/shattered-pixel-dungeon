@@ -57,7 +57,7 @@ public class DesktopPlatformSupport extends PlatformSupport {
 		}
 	}
 
-	private static boolean first = false;
+	private static boolean first = true;
 
 	@Override
 	public void updateSystemUI() {
