@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RatSprite;
@@ -266,6 +267,8 @@ public class Ratmogrify extends ArmorAbility {
 			allied = true;
 			alignment = Alignment.ALLY;
 			timeLeft = Float.POSITIVE_INFINITY;
+			Bestiary.setSeen(original.getClass());
+			Bestiary.countEncounter(original.getClass());
 		}
 
 		public int attackSkill(Char target) {
@@ -294,6 +297,15 @@ public class Ratmogrify extends ArmorAbility {
 		public void rollToDropLoot() {
 			original.pos = pos;
 			original.rollToDropLoot();
+		}
+
+		@Override
+		public void destroy() {
+			super.destroy();
+			if (alignment == Alignment.ENEMY) {
+				Bestiary.setSeen(original.getClass());
+				Bestiary.countEncounter(original.getClass());
+			}
 		}
 
 		@Override
