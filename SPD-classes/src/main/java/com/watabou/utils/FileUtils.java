@@ -82,10 +82,8 @@ public class FileUtils {
 		for (FileHandle file : dir.list()){
 			if (file.isDirectory()){
 				foundTemp = cleanTempFiles(dirName + file.name()) || foundTemp;
-			//FIXME commenting this out for now as I suspect it may have been resulting in
-			// significantly elevated cold and warm start times on Android due to the increased IO
-			//} else if (file.length() == 0) {
-			//	file.delete();
+			} else if (file.length() == 0) {
+				file.delete();
 			} else {
 				if (file.name().endsWith(".tmp")){
 					FileHandle temp = file;
