@@ -242,14 +242,14 @@ public class SandalsOfNature extends Artifact {
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle(bundle);
-		bundle.put(SEEDS, seeds.toArray(new Class[seeds.size()]));
+		bundle.put(SEEDS, seeds.toArray(new Class[0]));
 		bundle.put(CUR_SEED_EFFECT, curSeedEffect);
 	}
 
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle(bundle);
-		if (bundle.contains(SEEDS)) {
+		if (bundle.contains(SEEDS) && bundle.getClassArray(SEEDS) != null) {
 			Collections.addAll(seeds, bundle.getClassArray(SEEDS));
 		}
 		curSeedEffect = bundle.getClass(CUR_SEED_EFFECT);
