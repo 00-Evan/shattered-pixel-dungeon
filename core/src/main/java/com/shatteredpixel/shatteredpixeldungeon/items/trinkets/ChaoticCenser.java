@@ -97,60 +97,80 @@ public class ChaoticCenser extends Trinket {
 			int avgTurns = averageTurnsUntilGas();
 
 			if (avgTurns == -1){
-				spend(Random.NormalIntRange(2, 8));
+				spend(Random.NormalIntRange(1, 5));
 				return true;
 			} else if (left > avgTurns*1.1f){
 				left = Random.IntRange((int) (avgTurns*0.9f), (int) (avgTurns*1.1f));
 			}
 
-			if (left < avgTurns/5){
+			float triggerChance = 0;
+			if (left > 0 && left <= 30) {
 
-				//censer will try to delay spawning gas in certain safe areas, atm just inside shops
+				if (TargetHealthIndicator.instance != null
+						&& TargetHealthIndicator.instance.target() != null
+						&& TargetHealthIndicator.instance.target().alignment == Char.Alignment.ENEMY
+						&& TargetHealthIndicator.instance.target().isAlive()) {
+					triggerChance = 0.5f;
+				}
+
+			} else if (left > -30 && left <= 0) {
+
+				if (TargetHealthIndicator.instance != null
+						&& TargetHealthIndicator.instance.target() != null
+						&& TargetHealthIndicator.instance.target().alignment == Char.Alignment.ENEMY
+						&& TargetHealthIndicator.instance.target().isAlive()) {
+					triggerChance = 1f;
+				} else if (Dungeon.level.openSpace[target.pos]){
+					triggerChance = 0.2f;
+				}
+
+			} else if (left <= -avgTurns/5) {
+				triggerChance = 1f;
+
+			}
+
+			if (triggerChance > 0) {
 				if (safeAreaDelay >= 0) {
+					boolean safeArea = false;
+
+					//shops are a safe area
 					for (Char ch : Actor.chars()) {
 						if (ch instanceof Shopkeeper
 								&& Dungeon.level.distance(target.pos, ch.pos) <= 6
 								&& new Ballistica(target.pos, ch.pos, Ballistica.PROJECTILE).collisionPos == ch.pos) {
-							int delay = Random.NormalIntRange(2, 8);
-							spend(delay);
-							safeAreaDelay -= delay;
-							return true;
+							safeArea = true;
 						}
 					}
-				}
 
-				//scales quadratically from ~4% at avgTurns/5, to 36% at 0, to 100% at -avgTurns/5
-				float triggerChance = (float) Math.pow( 1f - (left + avgTurns/5f)/(avgTurns/2f), 2);
-
-				//trigger chance is linearly increased by 5% for each open adjacent cell after 2
-				int openCells = 0;
-				for (int i : PathFinder.NEIGHBOURS8){
-					if (!Dungeon.level.solid[target.pos+i]){
-						openCells++;
+					//enclosed spaces are a safe area if no enemies are present
+					if ((TargetHealthIndicator.instance == null || TargetHealthIndicator.instance.target() == null
+							|| TargetHealthIndicator.instance.target().alignment != Char.Alignment.ENEMY
+							|| !TargetHealthIndicator.instance.target().isAlive())
+						&& !Dungeon.level.openSpace[target.pos]) {
+							safeArea = true;
 					}
-				}
-				if (openCells > 2){
-					triggerChance += (openCells-2)*0.05f;
-				}
 
-				//if no target is present, quadratically scale back trigger chance again, strongly
-				if (TargetHealthIndicator.instance.target() != null){
-					triggerChance = (float)Math.pow(triggerChance, 3);
-				}
-
-				if (Random.Float() < triggerChance){
-					if (produceGas()) {
-						Sample.INSTANCE.play(Assets.Sounds.GAS);
-						Dungeon.hero.interrupt();
-						left += Random.IntRange((int) (avgTurns * 0.9f), (int) (avgTurns * 1.1f));
+					if (safeArea){
+						int delay = Random.NormalIntRange(1, 5);
+						spend(delay);
+						safeAreaDelay -= delay;
+						return true;
 					}
 				}
 			}
 
-			//buff ticks an average of every 5 turns
-			int delay = Random.NormalIntRange(2, 8);
+			if (Random.Float() < triggerChance){
+				if (produceGas()) {
+					Sample.INSTANCE.play(Assets.Sounds.GAS);
+					Dungeon.hero.interrupt();
+					left += Random.IntRange((int) (avgTurns * 0.9f), (int) (avgTurns * 1.1f));
+				}
+			}
+
+			//buff ticks an average of every 3 turns
+			int delay = Random.NormalIntRange(1, 5);
 			spend(delay);
-			safeAreaDelay = Math.min(safeAreaDelay+delay, 100);
+			safeAreaDelay = Math.min(safeAreaDelay+2*delay, 100);
 			left -= delay;
 
 			return true;
@@ -203,7 +223,9 @@ public class ChaoticCenser extends Trinket {
 		}
 
 		Char target = null;
-		if (TargetHealthIndicator.instance != null){
+		if (TargetHealthIndicator.instance != null && TargetHealthIndicator.instance.target() != null
+				&& TargetHealthIndicator.instance.target().alignment == Char.Alignment.ENEMY
+				&& TargetHealthIndicator.instance.target().isAlive()) {
 			target = TargetHealthIndicator.instance.target();
 		}
 
