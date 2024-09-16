@@ -89,6 +89,52 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("v2.5.1", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CHAOTIC_CENSER), "New Trinket Buffs",
+				"Based on some early balance data it looks like some of the new trinkets aren't quite hitting the mark. I'm open to more extensive changes after getting in some more data, but for now I'm doing some simple buffs:\n" +
+				"\n" +
+				"_- Chaotic Censer_ internal RNG adjusted, now much more likely to fire gas at useful times. Now also tries to avoid firing at all in shops or enclosed spaces, as long as you don't loiter there.\n" +
+				"\n" +
+				"_- Salt Cube_ health regen loss down to 20/33/43/50% from 30/50/65/75%. This means total HP granted per food item is now unchanged with the salt cube, the regen just happens more slowly.\n" +
+				"\n" +
+				"_- Shard of Oblivion_ bonus loot per unidentified item up to 20% from 12.5%."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Jumping toward a distant well now clears it from the notes page\n" +
+				"_-_ Statue enemies no longer become passive again when ascending\n" +
+				"_-_ NPCs are now fooled by the disguise buff\n" +
+				"_-_ Sniper's Mark now shows its duration in its buff description\n" +
+				"_-_ Added Google Play Games achievements for the new researcher badges\n" +
+				"_-_ ShatteredPD is now categorized as a game on Android devices\n" +
+				"_-_ Updated Translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Caused by v2.5.0:_\n" +
+				"_-_ Various crash and freeze bugs with the chaotic censer\n" +
+				"_-_ Goo and DM-300 benefitting from terrain while levitating\n" +
+				"_-_ Defeating temporarily transmogrified enemies not counting for the bestiary\n" +
+				"_-_ Underscores being incorrectly interpreted by the game in custom notes\n" +
+				"_-_ New 'remembering fullscreen monitor' functionality for desktop users not working properly\n" +
+				"_-_ Various minor textual and graphical errors\n" +
+				"\n" +
+				"_Existed Prior to v2.5.0:_\n" +
+				"_-_ Shopkeepers often failing to clear gasses from their shops\n" +
+				"_-_ Debuffs disappearing from DM-300's pylons on save/load\n" +
+				"_-_ Rare cases of levelgen hanging\n" +
+				"_-_ Game log spam during the tutorial in specific cases\n" +
+				"_-_ Corpse Dust sometimes spawning many wraiths in quick succession after spawning none\n" +
+				"_-_ Direction compass not pointing to exit after defeating Tengu\n" +
+				"_-_ Split alchemy guide not updating with inventory state in various cases\n" +
+				"_-_ Magic well note entries not being cleared if there are two wells in a level"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
@@ -219,7 +265,7 @@ public class v2_X_Changes {
 				"_-_ Various minor visual and textual errors\n" +
 				"_-_ Surface victory badges not being added to the rankings screen\n" +
 				"_-_ Very rare cases of players getting outside of boss arenas\n" +
-				"_-_ Settings defaulting to audio tab and not languages tab when user is using a language with an incomplete translation\n",
+				"_-_ Settings defaulting to audio tab and not languages tab when user is using a language with an incomplete translation",
 				
 				"_Effects:_\n" +
 				"_-_ Warrior being able to gain extra upgrades on his armor via hero armor transfer effect\n" +
