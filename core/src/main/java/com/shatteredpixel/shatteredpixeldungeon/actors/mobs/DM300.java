@@ -323,7 +323,7 @@ public class DM300 extends Mob {
 
 		if (travelling) PixelScene.shake( supercharged ? 3 : 1, 0.25f );
 
-		if (Dungeon.level.map[pos] == Terrain.INACTIVE_TRAP && state == HUNTING) {
+		if (!flying && Dungeon.level.map[pos] == Terrain.INACTIVE_TRAP && state == HUNTING) {
 
 			//don't gain energy from cells that are energized
 			if (CavesBossLevel.PylonEnergy.volumeAt(pos, CavesBossLevel.PylonEnergy.class) > 0){
