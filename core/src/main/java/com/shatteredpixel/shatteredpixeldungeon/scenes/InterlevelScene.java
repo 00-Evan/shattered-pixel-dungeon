@@ -274,7 +274,7 @@ public class InterlevelScene extends PixelScene {
 					add(storyBG);
 					add(storyMessage);
 
-					btnContinue = new StyledButton(Chrome.Type.TOAST_TR, "Continue", 9){
+					btnContinue = new StyledButton(Chrome.Type.TOAST_TR, Messages.get(InterlevelScene.class, "continue"), 9){
 						@Override
 						protected void onClick() {
 							phase = Phase.FADE_OUT;
