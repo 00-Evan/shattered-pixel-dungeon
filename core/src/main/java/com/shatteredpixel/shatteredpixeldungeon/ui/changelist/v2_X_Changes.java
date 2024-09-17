@@ -89,10 +89,25 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v2.5.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Just a quick extra patch this time to fix a few more bugs:\n" +
+				"_Caused by v2.5.1:_\n" +
+				"_-_ Crashes when using transmutation abilities (sorry!)\n" +
+				"_-_ Shard of Oblivion description not using its new bonus loot rate\n" +
+				"\n" +
+				"_Caused by v2.5.0:_\n" +
+				"_-_ Dark floors sometimes giving 1/2 vision instead of the new value of 5/8\n" +
+				"_-_ Drop and throw actions not working on Shard of Oblivion\n" +
+				"_-_ Some flying characters visually falling into pits when they die that shouldn't (e.g. ghosts)\n" +
+				"_-_ Various minor textual errors\n" +
+				"\n" +
+				"_Existed Prior to v2.5.0:_\n" +
+				"_-_ Various minor visual bugs with stealthy mimics"));
+		
 		changes = new ChangeInfo("v2.5.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
