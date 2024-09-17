@@ -81,7 +81,7 @@ public class ShardOfOblivion extends Trinket {
 			curItem = this;
 			GameScene.selectItem(identifySelector);
 		} else {
-			super.execute(hero);
+			super.execute(hero, action);
 		}
 	}
 
