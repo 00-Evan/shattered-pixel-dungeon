@@ -113,6 +113,12 @@ public class CrystalWisp extends Mob{
 		}
 	}
 
+	@Override
+	public void die(Object cause) {
+		flying = false;
+		super.die(cause);
+	}
+
 	//used so resistances can differentiate between melee and magical attacks
 	public static class LightBeam {}
 

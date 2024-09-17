@@ -74,6 +74,12 @@ public class Swarm extends Mob {
 		generation = bundle.getInt( GENERATION );
 		if (generation > 0) EXP = 0;
 	}
+
+	@Override
+	public void die(Object cause) {
+		flying = false;
+		super.die(cause);
+	}
 	
 	@Override
 	public int damageRoll() {

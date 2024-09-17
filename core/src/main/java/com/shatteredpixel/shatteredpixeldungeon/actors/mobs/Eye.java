@@ -154,6 +154,12 @@ public class Eye extends Mob {
 		if (beamCharged) dmg /= 4;
 		super.damage(dmg, src);
 	}
+
+	@Override
+	public void die(Object cause) {
+		flying = false;
+		super.die(cause);
+	}
 	
 	//used so resistances can differentiate between melee and magical attacks
 	public static class DeathGaze{}

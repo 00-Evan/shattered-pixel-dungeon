@@ -80,6 +80,12 @@ public class Bee extends Mob {
 		potHolder = bundle.getInt( POTHOLDER );
 		if (bundle.contains(ALIGMNENT)) alignment = bundle.getEnum( ALIGMNENT, Alignment.class);
 	}
+
+	@Override
+	public void die(Object cause) {
+		flying = false;
+		super.die(cause);
+	}
 	
 	public void spawn( int level ) {
 		this.level = level;

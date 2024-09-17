@@ -226,6 +226,12 @@ public class SpiritHawk extends ArmorAbility {
 		}
 
 		@Override
+		public void die(Object cause) {
+			flying = false;
+			super.die(cause);
+		}
+
+		@Override
 		protected void spend(float time) {
 			super.spend(time);
 			timeRemaining -= time;

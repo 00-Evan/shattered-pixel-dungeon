@@ -121,6 +121,12 @@ public abstract class Elemental extends Mob {
 		
 		return super.act();
 	}
+
+	@Override
+	public void die(Object cause) {
+		flying = false;
+		super.die(cause);
+	}
 	
 	@Override
 	protected boolean canAttack( Char enemy ) {

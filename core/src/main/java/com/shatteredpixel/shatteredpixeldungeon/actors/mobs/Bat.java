@@ -62,7 +62,13 @@ public class Bat extends Mob {
 	public int drRoll() {
 		return super.drRoll() + Random.NormalIntRange(0, 4);
 	}
-	
+
+	@Override
+	public void die(Object cause) {
+		flying = false;
+		super.die(cause);
+	}
+
 	@Override
 	public int attackProc( Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
