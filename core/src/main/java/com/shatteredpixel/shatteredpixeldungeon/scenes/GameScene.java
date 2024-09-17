@@ -1332,7 +1332,7 @@ public class GameScene extends PixelScene {
 		if (scene != null) {
 			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
 				if (mob.sprite != null) {
-					if (mob instanceof Mimic && mob.state == mob.PASSIVE && ((Mimic) mob).stealthy() &&  mob.sprite.visible){
+					if (mob instanceof Mimic && mob.state == mob.PASSIVE && ((Mimic) mob).stealthy() && Dungeon.level.visited[mob.pos]){
 						//mimics stay visible in fog of war after being first seen
 						mob.sprite.visible = true;
 					} else {
