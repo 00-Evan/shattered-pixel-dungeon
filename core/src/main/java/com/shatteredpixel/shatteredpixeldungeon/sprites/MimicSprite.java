@@ -125,6 +125,14 @@ public class MimicSprite extends MobSprite {
 		}
 
 		@Override
+		public void resetColor() {
+			super.resetColor();
+			if (curAnim == advancedHiding){
+				alpha(0.2f);
+			}
+		}
+
+		@Override
 		public void play(Animation anim) {
 			if (curAnim == advancedHiding && anim != advancedHiding){
 				alpha(1f);
