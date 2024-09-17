@@ -302,7 +302,7 @@ public class Ratmogrify extends ArmorAbility {
 		@Override
 		public void destroy() {
 			super.destroy();
-			if (alignment == Alignment.ENEMY) {
+			if (alignment == Alignment.ENEMY && original != null) {
 				Bestiary.setSeen(original.getClass());
 				Bestiary.countEncounter(original.getClass());
 			}
