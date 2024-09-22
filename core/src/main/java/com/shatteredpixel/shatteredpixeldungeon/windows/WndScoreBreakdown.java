@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Group;
 
 import java.text.NumberFormat;
-import java.util.Locale;
 
 public class WndScoreBreakdown extends Window {
 
@@ -48,7 +47,7 @@ public class WndScoreBreakdown extends Window {
 
 		float pos = title.bottom()+2;
 
-		NumberFormat num = NumberFormat.getInstance(Locale.US);
+		NumberFormat num = NumberFormat.getInstance(Messages.locale());
 		if (Dungeon.initialVersion > ShatteredPixelDungeon.v1_2_3) {
 			pos = statSlot(this, Messages.get(this, "progress_title"),
 					num.format(Statistics.progressScore), pos, Statistics.progressScore >= 50_000);

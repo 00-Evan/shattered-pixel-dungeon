@@ -95,7 +95,7 @@ public class WndDailies extends Window {
 
 		top = (int) score.bottom() + 6;
 
-		NumberFormat num = NumberFormat.getInstance(Locale.US);
+		NumberFormat num = NumberFormat.getInstance(Messages.locale());
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
 		format.setTimeZone(TimeZone.getTimeZone("UTC"));
 		Date date = new Date();
