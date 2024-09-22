@@ -410,6 +410,12 @@ public class HeroSelectScene extends PixelScene {
 			heroDesc.setPos((leftPortion - heroDesc.width())/2f, heroName.bottom() + 5);
 			align(heroDesc);
 
+			while(startBtn.top() < heroDesc.bottom()){
+				heroDesc.maxWidth(heroDesc.maxWidth()+10);
+				heroDesc.setPos(Math.max(0, (leftPortion - heroDesc.width())/2f), heroName.bottom() + 5);
+				align(heroDesc);
+			}
+
 			btnFade.visible = btnFade.active = true;
 
 			startBtn.visible = startBtn.active = true;

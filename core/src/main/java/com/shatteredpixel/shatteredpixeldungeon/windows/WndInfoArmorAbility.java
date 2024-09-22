@@ -50,4 +50,8 @@ public class WndInfoArmorAbility extends WndTitledMessage {
 
 	}
 
+	@Override
+	protected float targetHeight() {
+		return super.targetHeight()-40;
+	}
 }
