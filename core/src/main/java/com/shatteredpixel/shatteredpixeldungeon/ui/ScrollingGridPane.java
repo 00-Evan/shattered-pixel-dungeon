@@ -70,6 +70,7 @@ public class ScrollingGridPane extends ScrollPane {
 	public synchronized void clear() {
 		content.clear();
 		items.clear();
+		separators.clear();
 	}
 
 	@Override
