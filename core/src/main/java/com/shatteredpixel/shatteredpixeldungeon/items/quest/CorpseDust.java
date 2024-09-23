@@ -52,6 +52,10 @@ public class CorpseDust extends Item {
 		unique = true;
 	}
 
+	@Override
+	public ArrayList<String> actions(Hero hero) {
+		return new ArrayList<>(); //yup, no dropping this one
+	}
 
 	@Override
 	public boolean isUpgradable() {
