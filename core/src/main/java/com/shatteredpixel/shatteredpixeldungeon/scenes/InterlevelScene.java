@@ -577,8 +577,11 @@ public class InterlevelScene extends PixelScene {
 
 		if (mode == Mode.FALL) {
 			loadingText.setPos(
-					(Camera.main.width - loadingText.width() - 4) + Random.NormalFloat(-2, 2),
-					(Camera.main.height - loadingText.height() - 6) + Random.NormalFloat(-2, 2)
+					//the randomization is effectively -2 to +2
+					// we don't use the generator stack as levelgen may be occurring
+					// and we don't want to accidentally use a seeded generator
+					(Camera.main.width - loadingText.width() - 4) + 4*(Random.Float(false)-0.5f),
+					(Camera.main.height - loadingText.height() - 6) + 4*(Random.Float(false)-0.5f)
 			);
 			align(loadingText);
 		}
