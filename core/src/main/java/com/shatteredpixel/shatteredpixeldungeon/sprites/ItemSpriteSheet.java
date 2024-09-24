@@ -556,7 +556,7 @@ public class ItemSpriteSheet {
 	public static final int STONE_BLINK         = STONES+4;
 	public static final int STONE_CLAIRVOYANCE  = STONES+5;
 	public static final int STONE_SLEEP         = STONES+6;
-	public static final int STONE_DISARM        = STONES+7;
+	public static final int STONE_DETECT        = STONES+7;
 	public static final int STONE_ENCHANT       = STONES+8;
 	public static final int STONE_FLOCK         = STONES+9;
 	public static final int STONE_INTUITION     = STONES+10;

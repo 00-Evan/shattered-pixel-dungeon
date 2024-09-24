@@ -101,7 +101,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlink;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfClairvoyance;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDeepSleep;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDisarming;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDetectMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFear;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFlock;
@@ -374,7 +374,7 @@ public class Generator {
 			STONE.classes = new Class<?>[]{
 					StoneOfEnchantment.class,   //1 is guaranteed to drop on floors 6-19
 					StoneOfIntuition.class,     //1 additional stone is also dropped on floors 1-3
-					StoneOfDisarming.class,
+					StoneOfDetectMagic.class,
 					StoneOfFlock.class,
 					StoneOfShock.class,
 					StoneOfBlink.class,

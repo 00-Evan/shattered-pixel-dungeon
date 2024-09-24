@@ -35,12 +35,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+//for pre-v2.5.3 saves, add a conversion in v3.0 and remove entirely later
 public class StoneOfDisarming extends Runestone {
 	
 	private static final int DIST = 8;
 	
 	{
-		image = ItemSpriteSheet.STONE_DISARM;
+		image = ItemSpriteSheet.STONE_DETECT;
 	}
 
 	@Override
