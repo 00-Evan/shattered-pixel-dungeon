@@ -53,6 +53,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.BArray;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -87,6 +88,10 @@ public class Bomb extends Item {
 	
 	public boolean explodesDestructively(){
 		return true;
+	}
+
+	protected int explosionRange(){
+		return 1;
 	}
 
 	@Override
@@ -144,25 +149,26 @@ public class Bomb extends Item {
 			}
 			
 			boolean terrainAffected = false;
-			for (int n : PathFinder.NEIGHBOURS9) {
-				int c = cell + n;
-				if (c >= 0 && c < Dungeon.level.length()) {
-					if (Dungeon.level.heroFOV[c]) {
-						CellEmitter.get(c).burst(SmokeParticle.FACTORY, 4);
+			PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), explosionRange() );
+			for (int i = 0; i < PathFinder.distance.length; i++) {
+				if (PathFinder.distance[i] != Integer.MAX_VALUE) {
+					if (Dungeon.level.heroFOV[i]) {
+						CellEmitter.get(i).burst(SmokeParticle.FACTORY, 4);
 					}
 					
-					if (Dungeon.level.flamable[c]) {
-						Dungeon.level.destroy(c);
-						GameScene.updateMap(c);
+					if (Dungeon.level.flamable[i]) {
+						Dungeon.level.destroy(i);
+						GameScene.updateMap(i);
 						terrainAffected = true;
 					}
 					
 					//destroys items / triggers bombs caught in the blast.
-					Heap heap = Dungeon.level.heaps.get(c);
-					if (heap != null)
+					Heap heap = Dungeon.level.heaps.get(i);
+					if (heap != null) {
 						heap.explode();
+					}
 					
-					Char ch = Actor.findChar(c);
+					Char ch = Actor.findChar(i);
 					if (ch != null) {
 						affected.add(ch);
 					}
@@ -339,8 +345,8 @@ public class Bomb extends Item {
 			validIngredients.put(PotionOfLiquidFlame.class,     Firebomb.class);
 			validIngredients.put(ScrollOfRage.class,            Noisemaker.class);
 			
-			validIngredients.put(PotionOfInvisibility.class,    Flashbang.class);
-			validIngredients.put(ScrollOfRecharging.class,      ShockBomb.class);
+			validIngredients.put(PotionOfInvisibility.class,    SmokeBomb.class);
+			validIngredients.put(ScrollOfRecharging.class,      FlashBangBomb.class);
 			
 			validIngredients.put(PotionOfHealing.class,         RegrowthBomb.class);
 			validIngredients.put(ScrollOfRemoveCurse.class,     HolyBomb.class);
@@ -357,8 +363,8 @@ public class Bomb extends Item {
 			bombCosts.put(Firebomb.class,       1);
 			bombCosts.put(Noisemaker.class,     1);
 			
-			bombCosts.put(Flashbang.class,      2);
-			bombCosts.put(ShockBomb.class,      2);
+			bombCosts.put(SmokeBomb.class,      2);
+			bombCosts.put(FlashBangBomb.class,      2);
 
 			bombCosts.put(RegrowthBomb.class,   3);
 			bombCosts.put(HolyBomb.class,       3);

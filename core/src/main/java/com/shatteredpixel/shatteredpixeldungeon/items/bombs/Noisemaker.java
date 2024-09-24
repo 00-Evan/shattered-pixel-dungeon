@@ -40,6 +40,11 @@ public class Noisemaker extends Bomb {
 	}
 
 	@Override
+	protected int explosionRange() {
+		return 2;
+	}
+
+	@Override
 	protected Fuse createFuse() {
 		return new NoisemakerFuse();
 	}

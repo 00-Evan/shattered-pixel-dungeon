@@ -38,18 +38,24 @@ public class Firebomb extends Bomb {
 	{
 		image = ItemSpriteSheet.FIRE_BOMB;
 	}
-	
+
+	@Override
+	protected int explosionRange() {
+		return 2;
+	}
+
 	@Override
 	public void explode(int cell) {
 		super.explode(cell);
 		
-		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
+		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), explosionRange() );
 		for (int i = 0; i < PathFinder.distance.length; i++) {
 			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-				if (Dungeon.level.pit[i])
+				if (Dungeon.level.pit[i]) {
 					GameScene.add(Blob.seed(i, 2, Fire.class));
-				else
+				} else {
 					GameScene.add(Blob.seed(i, 10, Fire.class));
+				}
 				CellEmitter.get(i).burst(FlameParticle.FACTORY, 5);
 			}
 		}

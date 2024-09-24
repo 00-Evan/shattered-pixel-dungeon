@@ -40,12 +40,17 @@ public class WoollyBomb extends Bomb {
 	{
 		image = ItemSpriteSheet.WOOLY_BOMB;
 	}
-	
+
+	@Override
+	protected int explosionRange() {
+		return 2;
+	}
+
 	@Override
 	public void explode(int cell) {
 		super.explode(cell);
 		
-		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 4 );
+		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), explosionRange()+2 );
 		ArrayList<Integer> spawnPoints = new ArrayList<>();
 		for (int i = 0; i < PathFinder.distance.length; i++) {
 			if (PathFinder.distance[i] < Integer.MAX_VALUE) {

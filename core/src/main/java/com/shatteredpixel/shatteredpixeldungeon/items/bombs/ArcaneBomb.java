@@ -42,22 +42,28 @@ public class ArcaneBomb extends Bomb {
 	{
 		image = ItemSpriteSheet.ARCANE_BOMB;
 	}
-	
+
+	@Override
+	public boolean explodesDestructively() {
+		return false;
+	}
+
+	@Override
+	protected int explosionRange() {
+		return 2;
+	}
+
 	@Override
 	protected void onThrow(int cell) {
 		super.onThrow(cell);
 		if (fuse != null){
-			PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
+			PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), explosionRange() );
 			for (int i = 0; i < PathFinder.distance.length; i++) {
-				if (PathFinder.distance[i] < Integer.MAX_VALUE)
+				if (PathFinder.distance[i] < Integer.MAX_VALUE) {
 					GameScene.add(Blob.seed(i, 3, GooWarn.class));
+				}
 			}
 		}
-	}
-	
-	@Override
-	public boolean explodesDestructively() {
-		return false;
 	}
 	
 	@Override
@@ -66,7 +72,7 @@ public class ArcaneBomb extends Bomb {
 		
 		ArrayList<Char> affected = new ArrayList<>();
 		
-		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
+		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), explosionRange() );
 		for (int i = 0; i < PathFinder.distance.length; i++) {
 			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
 				if (Dungeon.level.heroFOV[i]) {
@@ -80,10 +86,9 @@ public class ArcaneBomb extends Bomb {
 		}
 		
 		for (Char ch : affected){
-			// 100%/83%/67% bomb damage based on distance, but pierces armor.
-			int damage = Math.round(Random.NormalIntRange( Dungeon.scalingDepth()+5, 10 + Dungeon.scalingDepth() * 2 ));
-			float multiplier = 1f - (.16667f*Dungeon.level.distance(cell, ch.pos));
-			ch.damage(Math.round(damage*multiplier), this);
+			//pierces armor, and damage in 5x5 instead of 3x3
+			int damage = Math.round(Random.NormalIntRange( 4 + Dungeon.scalingDepth(), 12 + 3*Dungeon.scalingDepth() ));
+			ch.damage(damage, this);
 			if (ch == Dungeon.hero && !ch.isAlive()){
 				Badges.validateDeathFromFriendlyMagic();
 				Dungeon.fail(this);
