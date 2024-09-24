@@ -117,15 +117,7 @@ public class Bomb extends Item {
 		if (!Dungeon.level.pit[ cell ] && lightingFuse) {
 			Actor.addDelayed(fuse = createFuse().ignite(this), 2);
 		}
-		if (Actor.findChar( cell ) != null && !(Actor.findChar( cell ) instanceof Hero) ){
-			ArrayList<Integer> candidates = new ArrayList<>();
-			for (int i : PathFinder.NEIGHBOURS8)
-				if (Dungeon.level.passable[cell + i])
-					candidates.add(cell + i);
-			int newCell = candidates.isEmpty() ? cell : Random.element(candidates);
-			Dungeon.level.drop( this, newCell ).sprite.drop( cell );
-		} else
-			super.onThrow( cell );
+		super.onThrow( cell );
 	}
 
 	@Override
@@ -184,13 +176,7 @@ public class Bomb extends Item {
 					continue;
 				}
 
-				int dmg = Random.NormalIntRange(5 + Dungeon.scalingDepth(), 10 + Dungeon.scalingDepth()*2);
-
-				//those not at the center of the blast take less damage
-				if (ch.pos != cell){
-					dmg = Math.round(dmg*0.67f);
-				}
-
+				int dmg = Random.NormalIntRange(4 + Dungeon.scalingDepth(), 12 + 3*Dungeon.scalingDepth());
 				dmg -= ch.drRoll();
 
 				if (dmg > 0) {
@@ -239,15 +225,17 @@ public class Bomb extends Item {
 
 	@Override
 	public int value() {
-		return 20 * quantity;
+		return 15 * quantity;
 	}
 	
 	@Override
 	public String desc() {
+		int depth = Dungeon.depth == -1 ? 1 : Dungeon.depth;
+		String desc = Messages.get(this, "desc", 4+depth, 12+3*depth);
 		if (fuse == null)
-			return super.desc()+ "\n\n" + Messages.get(this, "desc_fuse");
+			return desc + "\n\n" + Messages.get(this, "desc_fuse");
 		else
-			return super.desc() + "\n\n" + Messages.get(this, "desc_burning");
+			return desc + "\n\n" + Messages.get(this, "desc_burning");
 	}
 
 	private static final String FUSE = "fuse";
