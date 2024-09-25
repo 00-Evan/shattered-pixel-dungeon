@@ -135,7 +135,6 @@ public class ScrollOfUpgrade extends InventoryScroll {
 		Badges.validateMageUnlock();
 
 		Catalog.countUse(item.getClass());
-		Catalog.countUse(ScrollOfUpgrade.class);
 
 		return item;
 	}
