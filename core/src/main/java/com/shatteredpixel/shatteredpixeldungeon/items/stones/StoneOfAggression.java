@@ -47,7 +47,7 @@ public class StoneOfAggression extends Runestone {
 		Char ch = Actor.findChar( cell );
 		
 		if (ch != null) {
-			if (ch.alignment == Char.Alignment.ENEMY) {
+			if (Char.hasProp(ch, Char.Property.BOSS) || Char.hasProp(ch, Char.Property.MINIBOSS)) {
 				Buff.prolong(ch, Aggression.class, Aggression.DURATION / 4f);
 			} else {
 				Buff.prolong(ch, Aggression.class, Aggression.DURATION);
@@ -80,7 +80,7 @@ public class StoneOfAggression extends Runestone {
 
 		@Override
 		public float iconFadePercent() {
-			if (target.alignment == Char.Alignment.ENEMY){
+			if (Char.hasProp(target, Char.Property.BOSS) || Char.hasProp(target, Char.Property.MINIBOSS)){
 				return Math.max(0, (DURATION/4f - visualcooldown()) / (DURATION/4f));
 			} else {
 				return Math.max(0, (DURATION - visualcooldown()) / DURATION);
