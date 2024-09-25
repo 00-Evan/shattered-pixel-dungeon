@@ -277,7 +277,7 @@ public class WandOfRegrowth extends Wand {
 	@Override
 	protected int chargesPerCast() {
 		if (cursed ||
-				(charger != null && charger.target == null && charger.target.buff(WildMagic.WildMagicTracker.class) != null)){
+				(charger != null && charger.target != null && charger.target.buff(WildMagic.WildMagicTracker.class) != null)){
 			return 1;
 		}
 		//consumes 30% of current charges, rounded up, with a min of 1 and a max of 3.
