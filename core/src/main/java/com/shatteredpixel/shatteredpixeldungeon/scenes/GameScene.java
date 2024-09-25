@@ -682,6 +682,7 @@ public class GameScene extends PixelScene {
 	@Override
 	public synchronized void onPause() {
 		try {
+			if (!Dungeon.hero.ready) waitForActorThread(500, false);
 			Dungeon.saveAll();
 			Badges.saveGlobal();
 			Journal.saveGlobal();
