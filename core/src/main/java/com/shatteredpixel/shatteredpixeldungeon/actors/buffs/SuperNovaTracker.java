@@ -105,9 +105,9 @@ public class SuperNovaTracker extends Buff {
 				if (fieldOfView[i] && !Dungeon.level.solid[i]){
 					new Bomb.ConjuredBomb().explode(i); //yes, a bomb at every cell
 					//this means that something in the blast effectively takes:
-					//5.33x bomb dmg when fully inside
-					//4.33x when along straight edge
-					//2x when outside straight edge
+					//9x bomb dmg when fully inside
+					//6x when along straight edge
+					//3x when outside straight edge
 					Dungeon.level.destroy(i);
 					if (Actor.findChar(i) == Dungeon.hero){
 						GameScene.flash(0x80FFFFFF);
