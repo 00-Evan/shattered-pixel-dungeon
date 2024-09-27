@@ -156,7 +156,7 @@ public class SpectralNecromancer extends Necromancer {
 			spend(TICK);
 			return;
 		}
-		wraith.adjustStats(0);
+		wraith.adjustStats(4);
 		Dungeon.level.occupyCell( wraith );
 		((SpectralNecromancerSprite)sprite).finishSummoning();
 
