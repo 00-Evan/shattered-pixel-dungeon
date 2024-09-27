@@ -78,6 +78,9 @@ public class MineEntrance extends CaveRoom {
 					valid = true;
 				}
 			}
+			if (height() == 7 && width() == 7){
+				valid = true;
+			}
 		} while (level.findMob(entrance) != null || !valid);
 		Painter.set( level, entrance, Terrain.ENTRANCE );
 
