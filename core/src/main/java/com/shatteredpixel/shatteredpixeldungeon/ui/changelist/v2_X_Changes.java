@@ -89,6 +89,68 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("v2.5.3-BETA-1", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.BOMB), "Bombs and Identification",
+				"I'm making a few changes as a followup to the removal of the bomb identification exploit in v2.5.0:\n" +
+				"\n" +
+				"Firstly _Stones of Detect Magic_ are a new item that replace stones of disarming. Each stone can be used on a piece of equipment to identify whether it is cursed, and whether it is enchanted/upgraded. This should give a few more options when it comes to IDing equipment. Stones of disarming will no longer appear, but existing ones will remain in runs in progress for now.",
+
+				"Secondly, here are a bunch of buffs aimed at making bombs themselves more useful:\n" +
+				"_- Bomb_ max damage +50% (this increases average damage by 33%)\n" +
+				"_- Bombs_ no longer bounce when thrown directly at characters\n" +
+				"_- Bombs_ no longer have damage falloff when characters aren't right on top of them\n" +
+				"_- Explosion-triggering effects_ (e.g. explosive traps, explosive curse) all benefit from the damage and falloff changes.\n" +
+				"_- Alchemy Bombs_ all benefit from the damage and falloff changes as well, and now deal explosion damage in a minimum AOE of 5x5 if they used to be 3x3.\n" +
+				"_- Flashbangs_ redesigned, they are now smoke bombs, and spread shrouding fog in a 5x5 AOE in addition to dealing damage.\n" +
+				"_- Shocks Bombs_ redesigned, they are now flashbangs, and deal +20% electricity damage and stun for 10 turns within their 5x5 AOE.\n" +
+				"_- Regrowth Bomb_ AOE size up to 7x7 from 5x5, now always generate at least 3 plants, up from 2."));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CHAOTIC_CENSER), "Item Balance Changes",
+				"The new trinkets are doing much better after v2.5.1, but there's still room to hand out a few buffs here. Most notably I want to address feedback where the Chaotic Censer seems to spawn gas too close to the hero too often:\n" +
+				"_- Chaotic Censer_ gas spawn range up to 2-5 tiles from 1-3\n" +
+				"_- Chaotic Censer_ gas volume reduced\n" +
+				"_- Chaotic Censer_ likelihood of spawning gas near enemies increased\n" +
+				"\n" +
+				"_- Salt Cube_ health regen loss reduced to 16/27/34/40%, from 20/33/43/50%\n" +
+				"\n" +
+				"I'm handing out a couple nerfs as well:\n" +
+				"_Stones of Aggression_ were meant to have some use during boss fights, but currently they're too strong in that case, especially with many challenges enabled.\n" +
+				"_-_ Bosses now take 1/2 damage from their minions when affected by aggression, the final boss specifically takes 1/4 damage.\n" +
+				"_-_ Aggression duration vs. regular enemies up to 20 turns, from 5.\n" +
+				"\n" +
+				"_- Mossy Clump_ upgrade cost reduction reverted, now costs 20/25/30 to upgrade again, up from 15/20/25"));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Vampiric no longer triggers on NPCs or allies\n" +
+				"_-_ Styli can now be used on known uncursed armor\n" +
+				"_-_ Wells of health and awareness descriptions are now more accurate\n" +
+				"_-_ DM-300 can no longer use an ability immediately after existing supercharge state\n" +
+				"_-_ Wraiths spawned by spectral necromancers are now more powerful"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the Following Bugs:\n" +
+				"_Caused by v2.5.0:_\n" +
+				"_-_ Various minor visual errors\n" +
+				"_-_ Very rare cases where ooze could trigger many times in a turn\n" +
+				"_-_ Cases where falling into chasms could affect level generation\n" +
+				"_-_ Corpse Dust unintentionally being set to droppable\n" +
+				"_-_ Upgrades to Sandals of Nature not counting in the new catalog\n" +
+				"_-_ Scroll of Upgrade uses counting twice in the new catalog\n" +
+				"_-_ Liquid Nature using the hero's position for thrown potions, not the thrown position\n" +
+				"_-_ Invisibility vfx persisting in rare cases when they shouldn't\n" +
+				"\n" +
+				"_Existed Prior to v2.5.0:_\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Various minor visual and textual errors\n" +
+				"_-_ One more rare levelgen freeze bug"));
+
 		changes = new ChangeInfo("v2.5.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
