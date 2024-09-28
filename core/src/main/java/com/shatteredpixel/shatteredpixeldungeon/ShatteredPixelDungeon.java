@@ -55,7 +55,7 @@ public class ShatteredPixelDungeon extends Game {
 				"com.shatteredpixel.shatteredpixeldungeon.items.bombs.ShockBomb" );
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.bombs.SmokeBomb.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.bombs.FlashBang" );
+				"com.shatteredpixel.shatteredpixeldungeon.items.bombs.Flashbang" );
 
 		//pre-v2.5.0
 		com.watabou.utils.Bundle.addAlias(
