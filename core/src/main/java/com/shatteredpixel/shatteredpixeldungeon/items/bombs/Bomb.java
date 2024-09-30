@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SmokeParticle;
@@ -149,7 +150,10 @@ public class Bomb extends Item {
 			}
 			
 			boolean terrainAffected = false;
-			PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), explosionRange() );
+			boolean[] explodable = new boolean[Dungeon.level.length()];
+			BArray.not( Dungeon.level.solid, explodable);
+			BArray.or( Dungeon.level.flamable, explodable, explodable);
+			PathFinder.buildDistanceMap( cell, explodable, explosionRange() );
 			for (int i = 0; i < PathFinder.distance.length; i++) {
 				if (PathFinder.distance[i] != Integer.MAX_VALUE) {
 					if (Dungeon.level.heroFOV[i]) {
