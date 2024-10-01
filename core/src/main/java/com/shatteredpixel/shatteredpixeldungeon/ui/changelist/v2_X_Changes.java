@@ -93,7 +93,7 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("v2.5.3-BETA-1", false, null);
+		changes = new ChangeInfo("v2.5.3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
@@ -145,7 +145,6 @@ public class v2_X_Changes {
 				"_-_ Scroll of Upgrade uses counting twice in the new catalog\n" +
 				"_-_ Liquid Nature using the wrong position for thrown potions\n" +
 				"_-_ Invisibility vfx persisting in rare cases when they shouldn't\n" +
-				"_-_ Bombs not destroying terrain during the beta for v2.5.3\n" +
 				"\n" +
 				"_Existed Prior to v2.5.0:_\n" +
 				"_-_ Various rare crash bugs\n" +
