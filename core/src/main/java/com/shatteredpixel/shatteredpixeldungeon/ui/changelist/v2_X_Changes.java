@@ -109,7 +109,7 @@ public class v2_X_Changes {
 				"_- Explosion-triggering effects_ (e.g. explosive traps, explosive curse) all benefit from the damage and falloff changes.\n" +
 				"_- Alchemy Bombs_ all benefit from the damage and falloff changes as well, and now deal explosion damage in a minimum AOE of 5x5 if they used to be 3x3.\n" +
 				"_- Flashbangs_ redesigned, they are now smoke bombs, and spread shrouding fog in a 5x5 AOE in addition to dealing damage.\n" +
-				"_- Shocks Bombs_ redesigned, they are now flashbangs, and deal +20% electricity damage and stun for 10 turns within their 5x5 AOE.\n" +
+				"_- Shocks Bombs_ redesigned, they are now flashbangs, and deal +25% electricity damage and stun for 10 turns within their 5x5 AOE.\n" +
 				"_- Regrowth Bomb_ AOE size up to 7x7 from 5x5, now always generate at least 3 plants, up from 2."));
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CHAOTIC_CENSER), "Item Balance Changes",
@@ -143,13 +143,16 @@ public class v2_X_Changes {
 				"_-_ Corpse Dust unintentionally being set to droppable\n" +
 				"_-_ Upgrades to Sandals of Nature not counting in the new catalog\n" +
 				"_-_ Scroll of Upgrade uses counting twice in the new catalog\n" +
-				"_-_ Liquid Nature using the hero's position for thrown potions, not the thrown position\n" +
+				"_-_ Liquid Nature using the wrong position for thrown potions\n" +
 				"_-_ Invisibility vfx persisting in rare cases when they shouldn't\n" +
+				"_-_ Bombs not destroying terrain during the beta for v2.5.3\n" +
 				"\n" +
 				"_Existed Prior to v2.5.0:_\n" +
 				"_-_ Various rare crash bugs\n" +
 				"_-_ Various minor visual and textual errors\n" +
-				"_-_ One more rare levelgen freeze bug"));
+				"_-_ One more rare levelgen freeze bug\n" +
+				"_-_ Wards not being targetable if they were in solid terrain\n" +
+				"_-_ Spawned mimics (e.g. via cursed wand) not scaling with ascension challenge"));
 
 		changes = new ChangeInfo("v2.5.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
