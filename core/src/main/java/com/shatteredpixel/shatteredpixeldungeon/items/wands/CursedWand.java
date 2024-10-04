@@ -1007,6 +1007,7 @@ public class CursedWand {
 		VERY_RARE_EFFECTS.add(new HeroShapeShift());
 		VERY_RARE_EFFECTS.add(new SuperNova());
 		VERY_RARE_EFFECTS.add(new SinkHole());
+		VERY_RARE_EFFECTS.add(new GravityChaos());
 	}
 
 	public static CursedEffect randomVeryRareEffect(){
