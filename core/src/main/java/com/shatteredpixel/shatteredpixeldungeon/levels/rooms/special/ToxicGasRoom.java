@@ -115,6 +115,11 @@ public class ToxicGasRoom extends SpecialRoom {
 		return gas == null || gas.volume == 0 || gas.cur[l.pointToCell(p)] == 0;
 	}
 
+	@Override
+	public boolean canPlaceTrap(Point p) {
+		return false; //room is already filled with trap-hazards, no need to add more
+	}
+
 	public static class ToxicGasSeed extends Blob {
 
 		@Override
