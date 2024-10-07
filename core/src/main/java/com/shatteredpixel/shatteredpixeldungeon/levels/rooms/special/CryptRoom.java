@@ -80,12 +80,15 @@ public class CryptRoom extends SpecialRoom {
 			return new Gold().random();
 		}
 
+		//always generate the curse to prevent parchment scrap from altering levelgen
+		Armor.Glyph curse = Armor.Glyph.randomCurse();
+
 		//if it isn't already cursed, give it a free upgrade
 		if (!prize.cursed){
 			prize.upgrade();
 			//curse the armor, unless it has a glyph
 			if (!prize.hasGoodGlyph()){
-				prize.inscribe(Armor.Glyph.randomCurse());
+				prize.inscribe(curse);
 			}
 		}
 		prize.cursed = prize.cursedKnown = true;
