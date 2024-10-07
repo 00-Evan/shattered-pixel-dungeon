@@ -86,16 +86,18 @@ public class Messages {
 
 		//store language and locale info for various string logic
 		Messages.lang = lang;
+		Locale bundleLocal;
 		if (lang == Languages.ENGLISH){
 			locale = Locale.ENGLISH;
+			bundleLocal = Locale.ROOT; //english is source, uses root locale for fetching bundle
 		} else {
 			locale = new Locale(lang.code());
+			bundleLocal = new Locale(lang.code());
 		}
 		formatters.clear();
 
 		//strictly match the language code when fetching bundles however
 		bundles = new ArrayList<>();
-		Locale bundleLocal = new Locale(lang.code());
 		for (String file : prop_files) {
 			bundles.add(I18NBundle.createBundle(Gdx.files.internal(file), bundleLocal));
 		}
