@@ -79,9 +79,9 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		} else if (item instanceof Potion){
 			return !(item instanceof Elixir || item instanceof Brew);
 
-		//all regular or exotic scrolls, except itself
+		//all regular or exotic scrolls, except itself (unless un-ided, in which case it was already consumed)
 		} else if (item instanceof Scroll){
-			return item != this || item.quantity() > 1;
+			return item != this || item.quantity() > 1 || identifiedByUse;
 
 		//all rings, wands, artifacts, trinkets, seeds, and runestones
 		} else {
