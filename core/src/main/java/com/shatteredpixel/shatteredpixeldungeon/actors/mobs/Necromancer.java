@@ -289,8 +289,10 @@ public class Necromancer extends Mob {
 				
 				summoningPos = -1;
 
-				//we can summon around blocking terrain, but not through it
-				PathFinder.buildDistanceMap(pos, BArray.not(Dungeon.level.solid, null), Dungeon.level.distance(pos, enemy.pos)+3);
+				//we can summon around blocking terrain, but not through it, except unlocked doors
+				boolean[] passable = BArray.not(Dungeon.level.solid, null);
+				BArray.or(Dungeon.level.passable, passable, passable);
+				PathFinder.buildDistanceMap(pos, passable, Dungeon.level.distance(pos, enemy.pos)+3);
 
 				for (int c : PathFinder.NEIGHBOURS8){
 					if (Actor.findChar(enemy.pos+c) == null
