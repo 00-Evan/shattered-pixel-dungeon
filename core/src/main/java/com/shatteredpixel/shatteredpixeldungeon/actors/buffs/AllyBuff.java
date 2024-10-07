@@ -34,7 +34,11 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 
 //generic class for buffs which convert an enemy into an ally
 // There is a decent amount of logic that ties into this, which is why it has its own abstract class
-public abstract class AllyBuff extends Buff{
+public abstract class AllyBuff extends Buff {
+
+	{
+		revivePersists = true;
+	}
 
 	@Override
 	public boolean attachTo(Char target) {

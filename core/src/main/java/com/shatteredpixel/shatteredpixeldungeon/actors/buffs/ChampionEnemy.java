@@ -41,6 +41,7 @@ public abstract class ChampionEnemy extends Buff {
 
 	{
 		type = buffType.POSITIVE;
+		revivePersists = true;
 	}
 
 	protected int color;

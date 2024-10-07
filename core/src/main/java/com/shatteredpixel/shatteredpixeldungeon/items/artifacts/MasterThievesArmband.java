@@ -207,6 +207,7 @@ public class MasterThievesArmband extends Artifact {
 
 	//counter of 0 for attempt but no success, 1 for success
 	public static class StolenTracker extends CounterBuff {
+		{ revivePersists = true; }
 		public void setItemStolen(boolean stolen){ if (stolen) countUp(1); }
 		public boolean itemWasStolen(){ return count() > 0; }
 	}

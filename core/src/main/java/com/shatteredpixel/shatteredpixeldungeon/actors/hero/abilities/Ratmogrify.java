@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -38,7 +37,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -140,28 +138,20 @@ public class Ratmogrify extends ArmorAbility {
 			rat.setup((Mob)ch);
 			rat.pos = ch.pos;
 
-			//preserve champion enemy buffs
-			HashSet<ChampionEnemy> champBuffs = ch.buffs(ChampionEnemy.class);
-			for (ChampionEnemy champ : champBuffs){
-				if (ch.remove(champ)) {
-					ch.sprite.clearAura();
+			//preserve some buffs
+			HashSet<Buff> persistentBuffs = new HashSet<>();
+			for (Buff b : ch.buffs()){
+				if (b.revivePersists){
+					persistentBuffs.add(b);
 				}
-			}
-
-			MasterThievesArmband.StolenTracker stealTracker = ch.buff(MasterThievesArmband.StolenTracker.class);
-			if (stealTracker != null){
-				ch.remove(stealTracker);
 			}
 
 			Actor.remove( ch );
 			ch.sprite.killAndErase();
 			Dungeon.level.mobs.remove(ch);
 
-			for (ChampionEnemy champ : champBuffs){
-				ch.add(champ);
-			}
-			if (stealTracker != null) {
-				ch.add(stealTracker);
+			for (Buff b : persistentBuffs){
+				ch.add(b);
 			}
 
 			GameScene.add(rat);

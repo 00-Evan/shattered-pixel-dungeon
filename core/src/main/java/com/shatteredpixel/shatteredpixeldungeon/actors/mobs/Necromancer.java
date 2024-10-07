@@ -26,9 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
@@ -247,11 +245,10 @@ public class Necromancer extends Mob {
 		Dungeon.level.occupyCell( mySkeleton );
 		((NecromancerSprite)sprite).finishSummoning();
 
-		for (Buff b : buffs(AllyBuff.class)){
-			Buff.affect(mySkeleton, b.getClass());
-		}
-		for (Buff b : buffs(ChampionEnemy.class)){
-			Buff.affect( mySkeleton, b.getClass());
+		for (Buff b : buffs()){
+			if (b.revivePersists) {
+				Buff.affect(mySkeleton, b.getClass());
+			}
 		}
 	}
 
