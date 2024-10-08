@@ -89,9 +89,34 @@ public class v2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v2.5.4", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Toxic gas rooms can no longer contain extra traps\n" +
+				"_-_ Updated translations and translator credits"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the Following Bugs:\n" +
+				"_Caused by v2.5.3:_\n" +
+				"_-_ New flashbang not using electricity damage type\n" +
+				"_-_ Various errors with damage numbers in bomb descriptions\n" +
+				"_-_ Various rare textual errors\n" +
+				"\n" +
+				"_Caused by v2.5.0:_\n" +
+				"_-_ Very rare Gravity Chaos cursed wand effect not being triggerable\n" +
+				"_-_ Rare cases where ambitious imp could cause terrain to not behave correctly",
+
+				"_Existed Prior to v2.5.0:_\n" +
+				"_-_ Assassinate/execute effects not working on enraged brutes\n" +
+				"_-_ Cases where a locked laboratory room could contain the solution potion to a hazard room that contains its key\n" +
+				"_-_ Cases where the gnoll geomancer could be awoken via debuff\n" +
+				"_-_ Specific cases where beacon of returning could place the hero inside of closed dooors\n" +
+				"_-_ Necromancers not being able to summon their minions in unlocked doors\n" +
+				"_-_ Specific cases where one scroll of transmutation couldn't be used on another\n" +
+				"_-_ Rare cases where the rot heart could be boxed in and not spawn gas\n" +
+				"_-_ Specific cases where the parchment scrap trinket could still influence level generation"));
 
 		changes = new ChangeInfo("v2.5.3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
