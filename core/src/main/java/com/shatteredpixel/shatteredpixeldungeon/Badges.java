@@ -75,7 +75,7 @@ public class Badges {
 		UNLOCK_ROGUE                ( 2 ),
 		UNLOCK_HUNTRESS             ( 3 ),
 		UNLOCK_DUELIST              ( 4 ),
-		//UNLOCK_CLERIC             ( 5 ),
+		UNLOCK_CLERIC               ( 5 ), //TODO CLERIC icon for this badge
 		MONSTERS_SLAIN_1            ( 6 ),
 		MONSTERS_SLAIN_2            ( 7 ),
 		GOLD_COLLECTED_1            ( 8 ),
@@ -977,6 +977,12 @@ public class Badges {
 					((MeleeWeapon) Dungeon.hero.belongings.weapon).STRReq(0) <= Dungeon.hero.STR()){
 				displayBadge(Badge.UNLOCK_DUELIST);
 			}
+		}
+	}
+
+	public static void validateClericUnlock(){
+		if (!isUnlocked(Badge.UNLOCK_CLERIC)){
+			displayBadge( Badge.UNLOCK_CLERIC );
 		}
 	}
 	

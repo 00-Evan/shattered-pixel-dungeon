@@ -334,7 +334,7 @@ public enum HeroClass {
 			case DUELIST:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_DUELIST);
 			case CLERIC:
-				return true; //TODO CLERIC cleric unlock badge
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_CLERIC);
 		}
 	}
 	
