@@ -90,8 +90,8 @@ public abstract class RemainsItem extends Item {
 				return new BowFragment();
 			case DUELIST:
 				return new BrokenHilt();
-			case CLERIC: //TODO CLERIC remains item
-				return new SealShard();
+			case CLERIC:
+				return new TornPage();
 		}
 	}
 
