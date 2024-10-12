@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
@@ -141,6 +142,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.AssassinsBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BattleAxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Cudgel;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dirk;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
@@ -414,9 +416,10 @@ public class Generator {
 					MagesStaff.class,
 					Dagger.class,
 					Gloves.class,
-					Rapier.class
+					Rapier.class,
+					Cudgel.class,
 			};
-			WEP_T1.defaultProbs = new float[]{ 2, 0, 2, 2, 2 };
+			WEP_T1.defaultProbs = new float[]{ 2, 0, 2, 2, 2, 2 };
 			WEP_T1.probs = WEP_T1.defaultProbs.clone();
 			
 			WEP_T2.classes = new Class<?>[]{
@@ -555,6 +558,7 @@ public class Generator {
 					CloakOfShadows.class,
 					DriedRose.class,
 					EtherealChains.class,
+					HolyTome.class,
 					HornOfPlenty.class,
 					MasterThievesArmband.class,
 					SandalsOfNature.class,
@@ -562,7 +566,7 @@ public class Generator {
 					TimekeepersHourglass.class,
 					UnstableSpellbook.class
 			};
-			ARTIFACT.defaultProbs = new float[]{ 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1 };
+			ARTIFACT.defaultProbs = new float[]{ 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 };
 			ARTIFACT.probs = ARTIFACT.defaultProbs.clone();
 
 			//Trinkets are unique like artifacts, but unlike them you can only have one at once

@@ -73,8 +73,8 @@ public class WndHeroInfo extends WndTabbed {
 			case DUELIST:
 				tabIcon = new ItemSprite(ItemSpriteSheet.RAPIER, null);
 				break;
-			case CLERIC: //TODO CLERIC
-				tabIcon = new ItemSprite(ItemSpriteSheet.MASTERY, null);
+			case CLERIC:
+				tabIcon = new ItemSprite(ItemSpriteSheet.ARTIFACT_TOME, null);
 				break;
 		}
 
@@ -201,10 +201,10 @@ public class WndHeroInfo extends WndTabbed {
 							new ItemSprite(ItemSpriteSheet.THROWING_SPIKE),
 							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
 					break;
-				case CLERIC: //TODO CLERIC
-					icons = new Image[]{ new ItemSprite(ItemSpriteSheet.MASTERY),
+				case CLERIC:
+					icons = new Image[]{ new ItemSprite(ItemSpriteSheet.ARTIFACT_TOME),
 							Icons.TALENT.get(),
-							new ItemSprite(ItemSpriteSheet.MACE),
+							new ItemSprite(ItemSpriteSheet.CUDGEL),
 							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
 					break;
 			}
@@ -228,6 +228,7 @@ public class WndHeroInfo extends WndTabbed {
 
 				icons[i].x = (20-icons[i].width())/2;
 				icons[i].y = info[i].top() + (info[i].height() - icons[i].height())/2;
+				PixelScene.align(icons[i]);
 
 				pos = info[i].bottom() + 4*MARGIN;
 			}

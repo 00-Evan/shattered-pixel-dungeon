@@ -460,8 +460,8 @@ public enum Icons {
 				return new ItemSprite(ItemSpriteSheet.SPIRIT_BOW);
 			case DUELIST:
 				return new ItemSprite(ItemSpriteSheet.RAPIER);
-			case CLERIC: //TODO CLERIC class sprite
-				return new ItemSprite(ItemSpriteSheet.MASTERY);
+			case CLERIC:
+				return new ItemSprite(ItemSpriteSheet.ARTIFACT_TOME);
 			default:
 				return null;
 		}

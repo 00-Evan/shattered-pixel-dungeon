@@ -48,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
@@ -65,6 +66,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurs
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Cudgel;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gloves;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
@@ -241,11 +243,14 @@ public enum HeroClass {
 
 	private static void initCleric( Hero hero ) {
 
-		//TODO Cudgel
-		(hero.belongings.weapon = new Dagger()).identify();
+		(hero.belongings.weapon = new Cudgel()).identify();
 		hero.belongings.weapon.activate(hero);
 
-		//TODO Spellbook
+		HolyTome tome = new HolyTome();
+		(hero.belongings.artifact = tome).identify();
+		hero.belongings.artifact.activate( hero );
+
+		Dungeon.quickslot.setSlot(0, tome);
 
 		new PotionOfPurity().identify();
 		new ScrollOfRemoveCurse().identify();
