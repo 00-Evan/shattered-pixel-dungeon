@@ -114,8 +114,8 @@ abstract public class ClassArmor extends Armor {
 			case DUELIST:
 				classArmor = new DuelistArmor();
 				break;
-			case CLERIC: //TODO CLERIC class armor
-				classArmor = new WarriorArmor();
+			case CLERIC:
+				classArmor = new ClericArmor();
 				break;
 		}
 		
