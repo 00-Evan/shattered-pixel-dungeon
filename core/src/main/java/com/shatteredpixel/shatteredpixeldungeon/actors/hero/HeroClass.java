@@ -301,8 +301,8 @@ public enum HeroClass {
 				return Assets.Sprites.HUNTRESS;
 			case DUELIST:
 				return Assets.Sprites.DUELIST;
-			case CLERIC: //TODO CLERIC cleric sprites
-				return Assets.Sprites.HUNTRESS;
+			case CLERIC: //TODO CLERIC finish sprite sheet
+				return Assets.Sprites.CLERIC;
 		}
 	}
 
@@ -318,8 +318,8 @@ public enum HeroClass {
 				return Assets.Splashes.HUNTRESS;
 			case DUELIST:
 				return Assets.Splashes.DUELIST;
-			case CLERIC: //TODO CLERIC cleric splash
-				return Assets.Splashes.HUNTRESS;
+			case CLERIC: //TODO CLERIC finish cleric splash
+				return Assets.Splashes.CLERIC;
 		}
 	}
 	
