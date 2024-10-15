@@ -528,7 +528,7 @@ public class DwarfKing extends Mob {
 					});
 				}
 			});
-		} else if (phase == 3 && preHP > 20 && HP < 20){
+		} else if (phase == 3 && preHP > 20 && HP < 20 && isAlive()){
 			yell( Messages.get(this, "losing") );
 		}
 	}
