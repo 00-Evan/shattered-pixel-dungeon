@@ -468,7 +468,7 @@ public class AlchemyScene extends PixelScene {
 		sparkEmitter.autoKill = false;
 		add(sparkEmitter);
 
-		StyledButton btnGuide = new StyledButton( Chrome.Type.TOAST_TR, "Guide"){
+		StyledButton btnGuide = new StyledButton( Chrome.Type.TOAST_TR, Messages.get(AlchemyScene.class, "guide")){
 			@Override
 			protected void onClick() {
 				super.onClick();
