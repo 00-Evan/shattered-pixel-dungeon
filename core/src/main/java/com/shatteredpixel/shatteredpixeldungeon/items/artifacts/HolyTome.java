@@ -21,9 +21,15 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 import java.util.ArrayList;
 
@@ -59,21 +65,95 @@ public class HolyTome extends Artifact {
 		return actions;
 	}
 
-	//levelling:
-	//starts with 3 charges at +0, reaches 10 charges at +7. +8,9,10 slightly increases charge speed
-	//levels up based on use, probably with a very similar target level system to the Cloak
+	@Override
+	public void execute( Hero hero, String action ) {
 
-	//how does the UI for actually using it work though?
+		super.execute(hero, action);
+
+		if (hero.buff(MagicImmune.class) != null) return;
+
+		if (action.equals(AC_CAST)) {
+
+			if (!isEquipped(hero)) GLog.i(Messages.get(Artifact.class, "need_to_equip"));
+			else if (charge == 0) GLog.i(Messages.get(this, "no_charge"));
+			else {
+
+				//TODO cast an actual spell!
+				charge--;
+				gainExp( 1 );
+				updateQuickslot();
+
+				hero.spend( 1f );
+				hero.busy();
+				hero.sprite.operate(hero.pos);
+
+			}
+
+		}
+	}
+
+	private void gainExp( float chargesSpent ){
+		//target hero level is 1 + 2*tome level
+		int lvlDiffFromTarget = Dungeon.hero.lvl - (1+level()*2);
+		//plus an extra one for each level after 6
+		if (level() >= 7){
+			lvlDiffFromTarget -= level()-6;
+		}
+
+		if (lvlDiffFromTarget >= 0){
+			exp += Math.round(chargesSpent * 10f * Math.pow(1.1f, lvlDiffFromTarget));
+		} else {
+			exp += Math.round(chargesSpent * 10f * Math.pow(0.75f, -lvlDiffFromTarget));
+		}
+
+		if (exp >= (level() + 1) * 50 && level() < levelCap) {
+			upgrade();
+			Catalog.countUse(HolyTome.class);
+			exp -= level() * 50;
+			GLog.p(Messages.get(this, "levelup"));
+
+		}
+	}
+
+	@Override
+	public Item upgrade() {
+		chargeCap = Math.min(chargeCap + 1, 10);
+		return super.upgrade();
+	}
 
 	@Override
 	protected ArtifactBuff passiveBuff() {
-		return new tomeRecharge();
+		return new TomeRecharge();
 	}
 
-	public class tomeRecharge extends ArtifactBuff{
+	public class TomeRecharge extends ArtifactBuff {
 
 		public void gainCharge(float levelPortion) {
-			//TODO
+			if (cursed || target.buff(MagicImmune.class) != null) return;
+
+			if (charge < chargeCap) {
+
+				//gains 2.5 charges per hero level, plus 10% per missing charge, plus another 10% for every level after 7
+				float chargeGain = (2.5f * levelPortion) * (1f+(chargeCap - charge)/10f);
+				if (level() > 7) chargeGain *= 1f + (level()-7)/10f;
+
+				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
+
+				partialCharge += chargeGain;
+
+				//charge is in increments of 1/5 max hunger value.
+				while (partialCharge >= 1) {
+					charge++;
+					partialCharge -= 1;
+
+					if (charge == chargeCap){
+						partialCharge = 0;
+					}
+					updateQuickslot();
+				}
+			} else {
+				partialCharge = 0;
+			}
 		}
 
 	}
