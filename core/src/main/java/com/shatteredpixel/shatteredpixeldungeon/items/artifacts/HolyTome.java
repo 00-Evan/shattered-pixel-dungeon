@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.GuidingLight;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
@@ -73,26 +74,28 @@ public class HolyTome extends Artifact {
 		if (hero.buff(MagicImmune.class) != null) return;
 
 		if (action.equals(AC_CAST)) {
+			usesTargeting = false;
 
 			if (!isEquipped(hero)) GLog.i(Messages.get(Artifact.class, "need_to_equip"));
 			else if (charge == 0) GLog.i(Messages.get(this, "no_charge"));
 			else {
 
-				//TODO cast an actual spell!
-				charge--;
-				gainExp( 1 );
-				updateQuickslot();
-
-				hero.spend( 1f );
-				hero.busy();
-				hero.sprite.operate(hero.pos);
+				//TODO need to flow into spell selection and not just auto-cast guiding light
+				usesTargeting = true;
+				new GuidingLight().use(this, hero);
 
 			}
 
 		}
 	}
 
-	private void gainExp( float chargesSpent ){
+	public void spendCharge( float chargesSpent ){
+		partialCharge -= chargesSpent;
+		while (partialCharge < 0){
+			charge--;
+			partialCharge++;
+		}
+
 		//target hero level is 1 + 2*tome level
 		int lvlDiffFromTarget = Dungeon.hero.lvl - (1+level()*2);
 		//plus an extra one for each level after 6
@@ -113,6 +116,8 @@ public class HolyTome extends Artifact {
 			GLog.p(Messages.get(this, "levelup"));
 
 		}
+
+		updateQuickslot();
 	}
 
 	@Override

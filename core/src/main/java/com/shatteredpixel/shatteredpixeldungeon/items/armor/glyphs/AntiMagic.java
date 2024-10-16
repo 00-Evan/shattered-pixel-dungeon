@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.ElementalStrike;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.ElementalBlast;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.WarpBeacon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.GuidingLight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CrystalWisp;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM100;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Eye;
@@ -87,6 +88,8 @@ public class AntiMagic extends Armor.Glyph {
 		RESISTS.add( ScrollOfPsionicBlast.class );
 		RESISTS.add( ScrollOfTeleportation.class );
 		RESISTS.add( HolyDart.class );
+
+		RESISTS.add( GuidingLight.class );
 
 		RESISTS.add( ElementalBlast.class );
 		RESISTS.add( CursedWand.class );
