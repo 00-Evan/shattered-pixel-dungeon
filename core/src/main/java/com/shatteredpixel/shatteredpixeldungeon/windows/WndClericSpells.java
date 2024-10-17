@@ -26,6 +26,8 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ClericSpell;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.GuidingLight;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.HolyWard;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.HolyWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -69,6 +71,8 @@ public class WndClericSpells extends Window {
 		//TODO build spell list
 		ArrayList<ClericSpell> spells = new ArrayList<>();
 		spells.add(GuidingLight.INSTANCE);
+		spells.add(HolyWeapon.INSTANCE);
+		spells.add(HolyWard.INSTANCE);
 
 		ArrayList<IconButton> spellBtns = new ArrayList<>();
 

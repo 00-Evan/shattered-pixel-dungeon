@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.ElementalStrike;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.HolyWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
@@ -113,9 +114,14 @@ abstract public class Weapon extends KindOfWeapon {
 	
 	@Override
 	public int proc( Char attacker, Char defender, int damage ) {
-		
-		if (enchantment != null && attacker.buff(MagicImmune.class) == null) {
-			damage = enchantment.proc( this, attacker, defender, damage );
+
+		if (attacker.buff(MagicImmune.class) == null) {
+			if (attacker instanceof Hero && isEquipped((Hero) attacker)
+					&& !hasCurseEnchant() && attacker.buff(HolyWeapon.HolyWepBuff.class) != null){
+				defender.damage(2, HolyWeapon.INSTANCE);
+			} else if (enchantment != null) {
+				damage = enchantment.proc(this, attacker, defender, damage);
+			}
 		}
 		
 		if (!levelKnown && attacker == Dungeon.hero) {
@@ -327,7 +333,11 @@ abstract public class Weapon extends KindOfWeapon {
 	
 	@Override
 	public String name() {
-		return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.name( super.name() ) : super.name();
+		if (isEquipped(Dungeon.hero) && !hasCurseEnchant() && Dungeon.hero.buff(HolyWeapon.HolyWepBuff.class) != null){
+			return Messages.get(HolyWeapon.class, "ench_name", super.name());
+		} else {
+			return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.name(super.name()) : super.name();
+		}
 	}
 	
 	@Override
@@ -383,7 +393,13 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 
 	public boolean hasEnchant(Class<?extends Enchantment> type, Char owner) {
-		return enchantment != null && enchantment.getClass() == type && owner.buff(MagicImmune.class) == null;
+		if (owner.buff(MagicImmune.class) != null) {
+			return false;
+		} else if (owner instanceof Hero && isEquipped((Hero) owner) && owner.buff(HolyWeapon.HolyWepBuff.class) != null){
+			return false;
+		} else {
+			return enchantment != null && enchantment.getClass() == type;
+		}
 	}
 	
 	//these are not used to process specific enchant effects, so magic immune doesn't affect them
@@ -395,9 +411,15 @@ abstract public class Weapon extends KindOfWeapon {
 		return enchantment != null && enchantment.curse();
 	}
 
+	private static ItemSprite.Glowing HOLY = new ItemSprite.Glowing( 0xFFFF00 );
+
 	@Override
 	public ItemSprite.Glowing glowing() {
-		return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.glowing() : null;
+		if (isEquipped(Dungeon.hero) && !hasCurseEnchant() && Dungeon.hero.buff(HolyWeapon.HolyWepBuff.class) != null){
+			return HOLY;
+		} else {
+			return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.glowing() : null;
+		}
 	}
 
 	public static abstract class Enchantment implements Bundlable {
