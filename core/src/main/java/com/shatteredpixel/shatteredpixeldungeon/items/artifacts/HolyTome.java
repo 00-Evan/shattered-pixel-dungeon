@@ -24,13 +24,15 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.GuidingLight;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ClericSpell;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndClericSpells;
 
 import java.util.ArrayList;
 
@@ -74,19 +76,20 @@ public class HolyTome extends Artifact {
 		if (hero.buff(MagicImmune.class) != null) return;
 
 		if (action.equals(AC_CAST)) {
-			usesTargeting = false;
 
 			if (!isEquipped(hero)) GLog.i(Messages.get(Artifact.class, "need_to_equip"));
 			else if (charge == 0) GLog.i(Messages.get(this, "no_charge"));
 			else {
 
-				//TODO need to flow into spell selection and not just auto-cast guiding light
-				usesTargeting = true;
-				new GuidingLight().use(this, hero);
+				GameScene.show(new WndClericSpells(this, hero, false));
 
 			}
 
 		}
+	}
+
+	public boolean canCast( Hero hero, ClericSpell spell ){
+		return (charge >= spell.chargeUse(hero));
 	}
 
 	public void spendCharge( float chargesSpent ){
