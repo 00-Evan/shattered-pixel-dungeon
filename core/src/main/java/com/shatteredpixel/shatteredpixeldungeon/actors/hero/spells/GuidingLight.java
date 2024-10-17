@@ -24,12 +24,14 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -74,13 +76,24 @@ public class GuidingLight extends ClericSpell {
 				if (ch != null) {
 					ch.damage(Random.NormalIntRange(2, 6), GuidingLight.this);
 					Sample.INSTANCE.play(Assets.Sounds.HIT_MAGIC, 1, Random.Float(0.87f, 1.15f));
+					if (ch.isAlive()){
+						Buff.affect(ch, GuidingLightDebuff.class);
+					}
 				}
-				//TODO needs an on-hit effect as well
 
 				tome.spendCharge( 1f );
 				hero.spend( 1f );
 				hero.next();
 			}
 		});
+	}
+
+	public static class GuidingLightDebuff extends Buff {
+
+		@Override
+		public void fx(boolean on) {
+			if (on) target.sprite.add(CharSprite.State.ILLUMINATED);
+			else target.sprite.remove(CharSprite.State.ILLUMINATED);
+		}
 	}
 }

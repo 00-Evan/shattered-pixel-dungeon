@@ -50,7 +50,7 @@ public class TorchHalo extends Halo {
 				am = -phase * brightness;
 			}
 		} else if (phase < 1) {
-			if ((phase += Game.elapsed) >= 1) {
+			if ((phase += 2*Game.elapsed) >= 1) {
 				phase = 1;
 			}
 			scale.set( phase * radius / RADIUS );
