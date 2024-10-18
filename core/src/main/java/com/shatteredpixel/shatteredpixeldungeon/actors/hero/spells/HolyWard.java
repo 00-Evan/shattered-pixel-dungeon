@@ -37,12 +37,7 @@ public class HolyWard extends ClericSpell {
 
 	@Override
 	public int icon() {
-		return HeroIcon.ENDURE; //TODO unique icon
-	}
-
-	@Override
-	public float chargeUse(Hero hero) {
-		return 1;
+		return HeroIcon.HOLY_WARD;
 	}
 
 	@Override
@@ -52,7 +47,7 @@ public class HolyWard extends ClericSpell {
 		Item.updateQuickslot();
 
 		Sample.INSTANCE.play(Assets.Sounds.READ);
-		tome.spendCharge( 1f );
+		tome.spendCharge( chargeUse(hero) );
 		hero.sprite.operate(hero.pos);
 		hero.spend( 1f );
 		hero.next();
@@ -60,9 +55,20 @@ public class HolyWard extends ClericSpell {
 
 	public static class HolyArmBuff extends FlavourBuff {
 
+		public static final float DURATION	= 50f;
+
+		{
+			type = buffType.POSITIVE;
+		}
+
 		@Override
 		public int icon() {
-			return BuffIndicator.ARMOR;
+			return BuffIndicator.HOLY_ARMOR;
+		}
+
+		@Override
+		public float iconFadePercent() {
+			return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 		}
 
 		@Override

@@ -67,16 +67,19 @@ public class HeroIcon extends Image {
 	public static final int FEINT           = 30;
 	public static final int RATMOGRIFY      = 31;
 
-	//action indicator visuals
-	public static final int BERSERK         = 32;
-	public static final int COMBO           = 33;
-	public static final int PREPARATION     = 34;
-	public static final int MOMENTUM        = 35;
-	public static final int SNIPERS_MARK    = 36;
-	public static final int WEAPON_SWAP     = 37;
-	public static final int MONK_ABILITIES  = 38;
-
 	//cleric spells
+	public static final int GUIDING_LIGHT   = 40;
+	public static final int HOLY_WEAPON     = 41;
+	public static final int HOLY_WARD       = 42;
+
+	//action indicator visuals
+	public static final int BERSERK         = 80;
+	public static final int COMBO           = 81;
+	public static final int PREPARATION     = 82;
+	public static final int MOMENTUM        = 83;
+	public static final int SNIPERS_MARK    = 84;
+	public static final int WEAPON_SWAP     = 85;
+	public static final int MONK_ABILITIES  = 86;
 
 
 	public HeroIcon(HeroSubClass subCls){

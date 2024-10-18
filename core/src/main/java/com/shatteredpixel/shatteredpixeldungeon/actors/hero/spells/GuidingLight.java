@@ -44,7 +44,7 @@ public class GuidingLight extends ClericSpell {
 
 	@Override
 	public int icon() {
-		return HeroIcon.ELEMENTAL_BLAST; //TODO unique icon
+		return HeroIcon.GUIDING_LIGHT;
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class GuidingLight extends ClericSpell {
 					}
 				}
 
-				tome.spendCharge( 1f );
+				tome.spendCharge( chargeUse(hero) );
 				hero.spend( 1f );
 				hero.next();
 			}

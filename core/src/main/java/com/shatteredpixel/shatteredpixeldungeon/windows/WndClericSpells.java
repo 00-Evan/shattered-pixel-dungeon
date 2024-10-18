@@ -21,14 +21,15 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ClericSpell;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.GuidingLight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.HolyWard;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.HolyWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -38,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.noosa.NinePatch;
 
 import java.util.ArrayList;
 
@@ -45,9 +47,11 @@ public class WndClericSpells extends Window {
 
 	protected static final int WIDTH    = 120;
 
+	public static int BTN_SIZE = 20;
+
 	public WndClericSpells(HolyTome tome, Hero cleric, boolean info){
 
-		IconTitle title = new IconTitle(new ItemSprite(tome), info ? "Spell Info" : "Cast A Spell");
+		IconTitle title = new IconTitle(new ItemSprite(tome), Messages.titleCase(Messages.get( this, info ? "info_title" : "cast_title")));
 
 		title.setRect(0, 0, WIDTH, 0);
 		add(title);
@@ -63,7 +67,7 @@ public class WndClericSpells extends Window {
 		add(btnInfo);
 
 		//TODO we might want to intercept quickslot hotkeys and auto-cast the last spell if relevant
-		RenderedTextBlock msg = PixelScene.renderTextBlock(  info ? "Select a spell to learn about it, or press the info button to switch to cast mode." : "Select a spell to cast it, or press the info button to switch to info mode.", 6);
+		RenderedTextBlock msg = PixelScene.renderTextBlock( Messages.get( this, info ? "info_desc" : "cast_desc"), 6);
 		msg.maxWidth(WIDTH);
 		msg.setPos(0, title.bottom()+4);
 		add(msg);
@@ -77,33 +81,15 @@ public class WndClericSpells extends Window {
 		ArrayList<IconButton> spellBtns = new ArrayList<>();
 
 		for (ClericSpell spell : spells){
-			IconButton spellBtn = new IconButton(new HeroIcon(spell)){
-				@Override
-				protected void onClick() {
-					if (info){
-						ShatteredPixelDungeon.scene().addToFront(new WndTitledMessage(new HeroIcon(spell), spell.name(), spell.desc()));
-					} else {
-						hide();
-						spell.use(tome, cleric);
-
-						//TODO, probably need targeting logic here
-						if (spell.useTargeting() && Dungeon.quickslot.contains(tome)){
-							QuickSlotButton.useTargeting(Dungeon.quickslot.getSlot(tome));
-						}
-					}
-				}
-			};
-			if (!info && !tome.canCast(cleric, spell)){
-				spellBtn.enable(false);
-			}
+			IconButton spellBtn = new SpellButton(spell, tome, info);
 			add(spellBtn);
 			spellBtns.add(spellBtn);
 		}
 
-		//TODO rows?
-		int left = 0;
+		//TODO rows? Maybe based on spell tiers?
+		int left = 2 + (WIDTH-spellBtns.size()*(BTN_SIZE+4))/2;
 		for (IconButton btn : spellBtns){
-			btn.setRect(left, msg.bottom()+4, 20, 20);
+			btn.setRect(left, msg.bottom()+4, BTN_SIZE, BTN_SIZE);
 			left += btn.width()+4;
 		}
 
@@ -112,5 +98,55 @@ public class WndClericSpells extends Window {
 	}
 
 	//TODO we probably want to offset this window for mobile so it appears closer to quickslots
+
+	public class SpellButton extends IconButton {
+
+		ClericSpell spell;
+		HolyTome tome;
+		boolean info;
+
+		NinePatch bg;
+
+		public SpellButton(ClericSpell spell, HolyTome tome, boolean info){
+			super(new HeroIcon(spell));
+
+			this.spell = spell;
+			this.tome = tome;
+			this.info = info;
+
+			if (!info && !tome.canCast(Dungeon.hero, spell)){
+				enable(false);
+			}
+
+			bg = Chrome.get(Chrome.Type.TOAST);
+			addToBack(bg);
+		}
+
+		@Override
+		protected void layout() {
+			super.layout();
+
+			if (bg != null) {
+				bg.size(width, height);
+				bg.x = x;
+				bg.y = y;
+			}
+		}
+
+		@Override
+		protected void onClick() {
+			if (info){
+				GameScene.show(new WndTitledMessage(new HeroIcon(spell), Messages.titleCase(spell.name()), spell.desc()));
+			} else {
+				hide();
+				spell.use(tome, Dungeon.hero);
+
+				//TODO, probably need targeting logic here
+				if (spell.useTargeting() && Dungeon.quickslot.contains(tome)){
+					QuickSlotButton.useTargeting(Dungeon.quickslot.getSlot(tome));
+				}
+			}
+		}
+	}
 
 }

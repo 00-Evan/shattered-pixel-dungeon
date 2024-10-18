@@ -37,7 +37,7 @@ public class HolyWeapon extends ClericSpell {
 
 	@Override
 	public int icon() {
-		return HeroIcon.ELEMENTAL_STRIKE; //TODO unique icon
+		return HeroIcon.HOLY_WEAPON;
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class HolyWeapon extends ClericSpell {
 		Item.updateQuickslot();
 
 		Sample.INSTANCE.play(Assets.Sounds.READ);
-		tome.spendCharge( 2f );
+		tome.spendCharge( chargeUse(hero) );
 		hero.sprite.operate(hero.pos);
 		hero.spend( 1f );
 		hero.next();
@@ -60,9 +60,20 @@ public class HolyWeapon extends ClericSpell {
 
 	public static class HolyWepBuff extends FlavourBuff {
 
+		public static final float DURATION	= 50f;
+
+		{
+			type = buffType.POSITIVE;
+		}
+
 		@Override
 		public int icon() {
-			return BuffIndicator.WEAPON;
+			return BuffIndicator.HOLY_WEAPON;
+		}
+
+		@Override
+		public float iconFadePercent() {
+			return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 		}
 
 		@Override

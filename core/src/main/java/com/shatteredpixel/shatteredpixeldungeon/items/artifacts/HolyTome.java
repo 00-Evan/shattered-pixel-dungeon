@@ -61,8 +61,7 @@ public class HolyTome extends Artifact {
 		ArrayList<String> actions = super.actions( hero );
 		if (isEquipped( hero )
 				&& !cursed
-				&& hero.buff(MagicImmune.class) == null
-				&& charge > 0) {
+				&& hero.buff(MagicImmune.class) == null) {
 			actions.add(AC_CAST);
 		}
 		return actions;
@@ -78,7 +77,6 @@ public class HolyTome extends Artifact {
 		if (action.equals(AC_CAST)) {
 
 			if (!isEquipped(hero)) GLog.i(Messages.get(Artifact.class, "need_to_equip"));
-			else if (charge == 0) GLog.i(Messages.get(this, "no_charge"));
 			else {
 
 				GameScene.show(new WndClericSpells(this, hero, false));
