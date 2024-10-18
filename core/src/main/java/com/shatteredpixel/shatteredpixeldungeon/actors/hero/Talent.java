@@ -170,6 +170,13 @@ public enum Talent {
 	//Duelist A3 T4
 	FEIGNED_RETREAT(151, 4), EXPOSE_WEAKNESS(152, 4), COUNTER_ABILITY(153, 4),
 
+	//Cleric T1
+	CLERICT1A(160), CLERICT1B(161), CLERICT1C(162), CLERICT1D(163),
+	//Cleric T2
+	CLERICT2A(164), CLERICT2B(165), CLERICT2C(166), CLERICT2D(167), CLERICT2E(168),
+	//Cleric T3
+	CLERICT3A(169, 3), CLERICT3B(170, 3),
+
 	//universal T4
 	HEROIC_ENERGY(26, 4), //See icon() and title() for special logic for this one
 	//Ratmogrify T4
@@ -415,7 +422,7 @@ public enum Talent {
 				case DUELIST:
 					return 154;
 				case CLERIC:
-					return 26; //TODO CLERIC talent sprite here
+					return 186;
 			}
 		} else {
 			return icon;
@@ -853,8 +860,8 @@ public enum Talent {
 			case DUELIST:
 				Collections.addAll(tierTalents, STRENGTHENING_MEAL, ADVENTURERS_INTUITION, PATIENT_STRIKE, AGGRESSIVE_BARRIER);
 				break;
-			case CLERIC: //TODO CLERIC T1
-				Collections.addAll(tierTalents, HEARTY_MEAL, VETERANS_INTUITION, PROVOKED_ANGER, IRON_WILL);
+			case CLERIC:
+				Collections.addAll(tierTalents, CLERICT1A, CLERICT1B, CLERICT1C, CLERICT1D);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -882,8 +889,8 @@ public enum Talent {
 			case DUELIST:
 				Collections.addAll(tierTalents, FOCUSED_MEAL, LIQUID_AGILITY, WEAPON_RECHARGING, LETHAL_HASTE, SWIFT_EQUIP);
 				break;
-			case CLERIC: //TODO CLERIC T2
-				Collections.addAll(tierTalents, IRON_STOMACH, LIQUID_WILLPOWER, RUNIC_TRANSFERENCE, LETHAL_MOMENTUM, IMPROVISED_PROJECTILES);
+			case CLERIC:
+				Collections.addAll(tierTalents, CLERICT2A, CLERICT2B, CLERICT2C, CLERICT2D, CLERICT2E);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -911,8 +918,8 @@ public enum Talent {
 			case DUELIST:
 				Collections.addAll(tierTalents, PRECISE_ASSAULT, DEADLY_FOLLOWUP);
 				break;
-			case CLERIC: //TODO CLERIC T3
-				Collections.addAll(tierTalents, HOLD_FAST, STRONGMAN);
+			case CLERIC:
+				Collections.addAll(tierTalents, CLERICT3A, CLERICT3B);
 				break;
 		}
 		for (Talent talent : tierTalents){
