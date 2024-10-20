@@ -304,7 +304,7 @@ public class Armor extends EquipableItem {
 	
 	@Override
 	public boolean isEquipped( Hero hero ) {
-		return hero.belongings.armor() == this;
+		return hero != null && hero.belongings.armor() == this;
 	}
 
 	public final int DRMax(){
