@@ -56,6 +56,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Tipp
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -188,6 +189,11 @@ public class ShopRoom extends SpecialRoom {
 			}
 
 			int cell = level.pointToCell(curItemPlace);
+			//prevents high grass from being trampled, potentially dropping dew/seeds onto shop items
+			if (level.map[cell] == Terrain.HIGH_GRASS){
+				Level.set(cell, Terrain.GRASS, level);
+				GameScene.updateMap(cell);
+			}
 			level.drop( item, cell ).type = Heap.Type.FOR_SALE;
 			itemsToSpawn.remove(item);
 		}
