@@ -74,10 +74,10 @@ public class WndScoreBreakdown extends Window {
 		}
 
 		if (Statistics.winMultiplier > 1) {
-			pos = statSlot(this, Messages.get(this, "win_multiplier"), Statistics.winMultiplier + "x", pos, false);
+			pos = statSlot(this, Messages.get(this, "win_multiplier"), Messages.decimalFormat("#.##", Statistics.winMultiplier) + "x", pos, false);
 		}
 		if (Statistics.chalMultiplier > 1) {
-			pos = statSlot(this, Messages.get(this, "challenge_multiplier"), Statistics.chalMultiplier + "x", pos, false);
+			pos = statSlot(this, Messages.get(this, "challenge_multiplier"), Messages.decimalFormat("#.##", Statistics.chalMultiplier) + "x", pos, false);
 		}
 		pos = statSlot(this, Messages.get(this, "total"), num.format(Statistics.totalScore), pos, false);
 
