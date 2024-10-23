@@ -703,7 +703,8 @@ public abstract class Mob extends Char {
 		}
 
 		//if attacked by something else than current target, and that thing is closer, switch targets
-		if (this.enemy == null
+		//or if attacked by target, simply update target position
+		if (this.enemy == null || enemy == this.enemy
 				|| (enemy != this.enemy && (Dungeon.level.distance(pos, enemy.pos) < Dungeon.level.distance(pos, this.enemy.pos)))) {
 			aggro(enemy);
 			target = enemy.pos;
