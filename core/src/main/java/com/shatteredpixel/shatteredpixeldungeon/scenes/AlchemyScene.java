@@ -220,7 +220,16 @@ public class AlchemyScene extends PixelScene {
 
 		synchronized (inputs) {
 			for (int i = 0; i < inputs.length; i++) {
-				inputs[i] = new InputButton();
+				if (inputs[i] == null) {
+					inputs[i] = new InputButton();
+				} else {
+					//in case the scene was reset without calling destroy() for some reason
+					Item item = inputs[i].item();
+					inputs[i] = new InputButton();
+					if (item != null){
+						inputs[i].item(item);
+					}
+				}
 				inputs[i].setRect(left + 10, pos, BTN_SIZE, BTN_SIZE);
 				add(inputs[i]);
 				pos += BTN_SIZE + 2;
