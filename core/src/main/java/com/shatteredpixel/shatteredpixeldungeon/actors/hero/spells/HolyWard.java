@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
@@ -48,9 +49,12 @@ public class HolyWard extends ClericSpell {
 
 		Sample.INSTANCE.play(Assets.Sounds.READ);
 		tome.spendCharge( chargeUse(hero) );
-		hero.sprite.operate(hero.pos);
+
 		hero.spend( 1f );
-		hero.next();
+		hero.busy();
+		hero.sprite.operate(hero.pos);
+
+		Invisibility.dispel();
 	}
 
 	public static class HolyArmBuff extends FlavourBuff {

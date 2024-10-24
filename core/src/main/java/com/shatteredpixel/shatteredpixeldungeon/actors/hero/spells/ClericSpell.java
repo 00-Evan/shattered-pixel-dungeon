@@ -41,11 +41,11 @@ public abstract class ClericSpell {
 	}
 
 	public String shortDesc(){
-		return Messages.get(this, "short_desc");
+		return Messages.get(this, "short_desc") + " " + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
 	}
 
 	public String desc(){
-		return Messages.get(this, "desc");
+		return Messages.get(this, "desc") + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
 	}
 
 	public int icon(){
