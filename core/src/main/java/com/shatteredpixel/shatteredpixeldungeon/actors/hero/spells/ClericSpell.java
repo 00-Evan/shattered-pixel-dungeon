@@ -21,7 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
@@ -58,6 +60,10 @@ public abstract class ClericSpell {
 		spells.add(GuidingLight.INSTANCE);
 		spells.add(HolyWeapon.INSTANCE);
 		spells.add(HolyWard.INSTANCE);
+
+		if (cleric.hasTalent(Talent.DETECT_CURSE)){
+			spells.add(DetectCurse.INSTANCE);
+		}
 
 		return spells;
 	};
