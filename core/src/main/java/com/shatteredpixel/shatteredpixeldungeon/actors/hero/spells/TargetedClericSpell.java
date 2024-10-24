@@ -24,42 +24,30 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 
-import java.util.ArrayList;
+public abstract class TargetedClericSpell extends ClericSpell {
 
-public abstract class ClericSpell {
+	@Override
+	public void onCast(HolyTome tome, Hero hero ){
+		GameScene.selectCell(new CellSelector.Listener() {
+			@Override
+			public void onSelect(Integer cell) {
+				onTargetSelected(tome, hero, cell);
+			}
 
-	public abstract void onCast(HolyTome tome, Hero hero );
-
-	public float chargeUse( Hero hero ){
-		return 1;
+			@Override
+			public String prompt() {
+				return targetingPrompt();
+			}
+		});
 	}
 
-	public String name(){
-		return Messages.get(this, "name");
+	protected String targetingPrompt(){
+		return Messages.get(this, "prompt");
 	}
 
-	public String shortDesc(){
-		return Messages.get(this, "short_desc");
-	}
-
-	public String desc(){
-		return Messages.get(this, "desc");
-	}
-
-	public int icon(){
-		return HeroIcon.NONE;
-	}
-
-	public static ArrayList<ClericSpell> getSpellList(Hero cleric){
-		ArrayList<ClericSpell> spells = new ArrayList<>();
-
-		spells.add(GuidingLight.INSTANCE);
-		spells.add(HolyWeapon.INSTANCE);
-		spells.add(HolyWard.INSTANCE);
-
-		return spells;
-	};
+	protected abstract void onTargetSelected(HolyTome tome, Hero hero, Integer target);
 
 }

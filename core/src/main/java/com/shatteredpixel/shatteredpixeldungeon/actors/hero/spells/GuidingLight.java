@@ -38,9 +38,9 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
-public class GuidingLight extends ClericSpell {
+public class GuidingLight extends TargetedClericSpell {
 
-	public static GuidingLight INSTANCE = new GuidingLight();
+	public static final GuidingLight INSTANCE = new GuidingLight();
 
 	@Override
 	public int icon() {
@@ -48,12 +48,7 @@ public class GuidingLight extends ClericSpell {
 	}
 
 	@Override
-	public String targetingPrompt() {
-		return Messages.get(this, "prompt");
-	}
-
-	@Override
-	protected void activate(HolyTome tome, Hero hero, Integer target) {
+	protected void onTargetSelected(HolyTome tome, Hero hero, Integer target) {
 		if (target == null){
 			return;
 		}

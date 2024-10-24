@@ -33,7 +33,7 @@ import com.watabou.noosa.audio.Sample;
 
 public class HolyWeapon extends ClericSpell {
 
-	public static HolyWeapon INSTANCE = new HolyWeapon();
+	public static final HolyWeapon INSTANCE = new HolyWeapon();
 
 	@Override
 	public int icon() {
@@ -46,7 +46,7 @@ public class HolyWeapon extends ClericSpell {
 	}
 
 	@Override
-	protected void activate(HolyTome tome, Hero hero, Integer target) {
+	public void onCast(HolyTome tome, Hero hero) {
 
 		Buff.affect(hero, HolyWepBuff.class, 50f);
 		Item.updateQuickslot();

@@ -25,9 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ClericSpell;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.GuidingLight;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.HolyWard;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.HolyWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.TargetedClericSpell;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -72,11 +70,7 @@ public class WndClericSpells extends Window {
 		msg.setPos(0, title.bottom()+4);
 		add(msg);
 
-		//TODO build spell list
-		ArrayList<ClericSpell> spells = new ArrayList<>();
-		spells.add(GuidingLight.INSTANCE);
-		spells.add(HolyWeapon.INSTANCE);
-		spells.add(HolyWard.INSTANCE);
+		ArrayList<ClericSpell> spells = ClericSpell.getSpellList(cleric);
 
 		ArrayList<IconButton> spellBtns = new ArrayList<>();
 
@@ -139,10 +133,10 @@ public class WndClericSpells extends Window {
 				GameScene.show(new WndTitledMessage(new HeroIcon(spell), Messages.titleCase(spell.name()), spell.desc()));
 			} else {
 				hide();
-				spell.use(tome, Dungeon.hero);
+				spell.onCast(tome, Dungeon.hero);
 
 				//TODO, probably need targeting logic here
-				if (spell.useTargeting() && Dungeon.quickslot.contains(tome)){
+				if (spell instanceof TargetedClericSpell && Dungeon.quickslot.contains(tome)){
 					QuickSlotButton.useTargeting(Dungeon.quickslot.getSlot(tome));
 				}
 			}

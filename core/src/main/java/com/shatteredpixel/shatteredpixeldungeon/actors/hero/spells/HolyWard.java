@@ -33,7 +33,7 @@ import com.watabou.noosa.audio.Sample;
 
 public class HolyWard extends ClericSpell {
 
-	public static HolyWard INSTANCE = new HolyWard();
+	public static final HolyWard INSTANCE = new HolyWard();
 
 	@Override
 	public int icon() {
@@ -41,7 +41,7 @@ public class HolyWard extends ClericSpell {
 	}
 
 	@Override
-	protected void activate(HolyTome tome, Hero hero, Integer target) {
+	public void onCast(HolyTome tome, Hero hero) {
 
 		Buff.affect(hero, HolyArmBuff.class, 50f);
 		Item.updateQuickslot();
