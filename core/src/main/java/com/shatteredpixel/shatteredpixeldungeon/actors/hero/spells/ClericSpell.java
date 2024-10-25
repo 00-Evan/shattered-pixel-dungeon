@@ -22,6 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
@@ -32,7 +35,7 @@ import java.util.ArrayList;
 
 public abstract class ClericSpell {
 
-	public abstract void onCast(HolyTome tome, Hero hero );
+	public abstract void onCast(HolyTome tome, Hero hero);
 
 	public float chargeUse( Hero hero ){
 		return 1;
@@ -54,12 +57,25 @@ public abstract class ClericSpell {
 		return HeroIcon.NONE;
 	}
 
+	public void onSpellCast(HolyTome tome, Hero hero){
+		Invisibility.dispel();
+		if (hero.hasTalent(Talent.SATIATED_SPELLS) && hero.buff(Talent.SatiatedSpellsTracker.class) != null){
+			Buff.affect(hero, Barrier.class).setShield(1 + 2*hero.pointsInTalent(Talent.SATIATED_SPELLS));
+			hero.buff(Talent.SatiatedSpellsTracker.class).detach();
+		}
+		tome.spendCharge(chargeUse(hero));
+	}
+
 	public static ArrayList<ClericSpell> getSpellList(Hero cleric){
 		ArrayList<ClericSpell> spells = new ArrayList<>();
 
 		spells.add(GuidingLight.INSTANCE);
 		spells.add(HolyWeapon.INSTANCE);
 		spells.add(HolyWard.INSTANCE);
+
+		if (cleric.hasTalent(Talent.SHIELD_OF_LIGHT)){
+			spells.add(ShieldOfLight.INSTANCE);
+		}
 
 		if (cleric.hasTalent(Talent.DETECT_CURSE)){
 			spells.add(DetectCurse.INSTANCE);

@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
@@ -70,10 +69,8 @@ public class DetectCurse extends InventoryClericSpell {
 		hero.busy();
 		hero.sprite.operate(hero.pos);
 
-		tome.spendCharge(chargeUse(hero));
-
 		Sample.INSTANCE.play( Assets.Sounds.SCAN );
-		Invisibility.dispel();
+		onSpellCast(tome, hero);
 
 	}
 

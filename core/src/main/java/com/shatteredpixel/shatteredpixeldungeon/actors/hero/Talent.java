@@ -172,7 +172,7 @@ public enum Talent {
 	FEIGNED_RETREAT(151, 4), EXPOSE_WEAKNESS(152, 4), COUNTER_ABILITY(153, 4),
 
 	//Cleric T1
-	CLERICT1A(160), DETECT_CURSE(161), SEARING_LIGHT(162), CLERICT1D(163),
+	SATIATED_SPELLS(160), DETECT_CURSE(161), SEARING_LIGHT(162), SHIELD_OF_LIGHT(163),
 	//Cleric T2
 	CLERICT2A(164), CLERICT2B(165), CLERICT2C(166), CLERICT2D(167), CLERICT2E(168),
 	//Cleric T3
@@ -389,6 +389,12 @@ public enum Talent {
 		}
 	}
 	public static class CounterAbilityTacker extends FlavourBuff{};
+	public static class SatiatedSpellsTracker extends Buff{
+		@Override
+		public int icon() {
+			return BuffIndicator.SPELL_FOOD;
+		}
+	};
 
 	int icon;
 	int maxPoints;
@@ -578,6 +584,9 @@ public enum Talent {
 				// lvl/3 / lvl/2 bonus dmg on next hit for other classes
 				Buff.affect( hero, PhysicalEmpower.class).set(Math.round(hero.lvl / (4f - hero.pointsInTalent(FOCUSED_MEAL))), 1);
 			}
+		}
+		if (hero.hasTalent(SATIATED_SPELLS)){
+			Buff.affect( hero, SatiatedSpellsTracker.class );
 		}
 	}
 
@@ -869,7 +878,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, STRENGTHENING_MEAL, ADVENTURERS_INTUITION, PATIENT_STRIKE, AGGRESSIVE_BARRIER);
 				break;
 			case CLERIC:
-				Collections.addAll(tierTalents, CLERICT1A, DETECT_CURSE, SEARING_LIGHT, CLERICT1D);
+				Collections.addAll(tierTalents, SATIATED_SPELLS, DETECT_CURSE, SEARING_LIGHT, SHIELD_OF_LIGHT);
 				break;
 		}
 		for (Talent talent : tierTalents){
