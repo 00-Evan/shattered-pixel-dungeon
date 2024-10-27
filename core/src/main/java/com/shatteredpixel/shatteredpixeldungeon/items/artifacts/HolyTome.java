@@ -121,6 +121,22 @@ public class HolyTome extends Artifact {
 		updateQuickslot();
 	}
 
+	public void directCharge(float amount){
+		if (charge < chargeCap) {
+			partialCharge += amount;
+			while (partialCharge >= 1f) {
+				charge++;
+				partialCharge--;
+			}
+			if (charge >= chargeCap){
+				partialCharge = 0;
+				charge = chargeCap;
+			}
+			updateQuickslot();
+		}
+		updateQuickslot();
+	}
+
 	@Override
 	public Item upgrade() {
 		chargeCap = Math.min(chargeCap + 1, 10);
@@ -130,6 +146,24 @@ public class HolyTome extends Artifact {
 	@Override
 	protected ArtifactBuff passiveBuff() {
 		return new TomeRecharge();
+	}
+
+	@Override
+	public void charge(Hero target, float amount) {
+		if (cursed || target.buff(MagicImmune.class) != null) return;
+
+		if (charge < chargeCap) {
+			partialCharge += 0.25f*amount;
+			while (partialCharge >= 1f) {
+				charge++;
+				partialCharge--;
+			}
+			if (charge >= chargeCap){
+				partialCharge = 0;
+				charge = chargeCap;
+			}
+			updateQuickslot();
+		}
 	}
 
 	public class TomeRecharge extends ArtifactBuff {
