@@ -50,8 +50,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Feint;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.ShadowClone;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ClericSpell;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.GuidingLight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.DirectableAlly;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -70,6 +72,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScrol
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ExoticCrystals;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ShardOfOblivion;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Lucky;
@@ -701,10 +704,11 @@ public abstract class Mob extends Char {
 
 		//if attacked by something else than current target, and that thing is closer, switch targets
 		//or if attacked by target, simply update target position
-		if (this.enemy == null || enemy == this.enemy
-				|| (enemy != this.enemy && (Dungeon.level.distance(pos, enemy.pos) < Dungeon.level.distance(pos, this.enemy.pos)))) {
+		if (state != HUNTING){
 			aggro(enemy);
 			target = enemy.pos;
+		} else {
+			recentlyAttackedBy.add(enemy);
 		}
 
 		if (buff(SoulMark.class) != null) {
@@ -772,8 +776,19 @@ public abstract class Mob extends Char {
 			if (state == SLEEPING) {
 				state = WANDERING;
 			}
-			if (state != HUNTING && !(src instanceof Corruption)) {
-				alerted = true;
+			if (!(src instanceof Corruption)) {
+				if (state != HUNTING) {
+					alerted = true;
+					//assume the hero is hitting us in these common cases
+					if (src instanceof Wand || src instanceof ClericSpell || src instanceof ArmorAbility) {
+						aggro(Dungeon.hero);
+						target = enemy.pos;
+					}
+				} else {
+					if (src instanceof Wand || src instanceof ClericSpell || src instanceof ArmorAbility) {
+						recentlyAttackedBy.add(Dungeon.hero);
+					}
+				}
 			}
 		}
 		
@@ -1162,6 +1177,9 @@ public abstract class Mob extends Char {
 		
 	}
 
+	//we keep a list of characters we were recently hit by, so we can switch targets if needed
+	protected ArrayList<Char> recentlyAttackedBy = new ArrayList<>();
+
 	protected class Hunting implements AiState {
 
 		public static final String TAG	= "HUNTING";
@@ -1174,10 +1192,31 @@ public abstract class Mob extends Char {
 			enemySeen = enemyInFOV;
 			if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy )) {
 
+				recentlyAttackedBy.clear();
 				target = enemy.pos;
 				return doAttack( enemy );
 
 			} else {
+
+				//if we cannot attack our target, but were hit by something else that
+				// is visible and attackable or closer, swap targets
+				if (!recentlyAttackedBy.isEmpty()){
+					boolean swapped = false;
+					for (Char ch : recentlyAttackedBy){
+						if (fieldOfView[ch.pos] && ch.invisible == 0 && !isCharmedBy(ch)) {
+							if (canAttack(ch) || Dungeon.level.distance(pos, ch.pos) < Dungeon.level.distance(pos, enemy.pos)) {
+								enemy = ch;
+								target = ch.pos;
+								enemyInFOV = true;
+								swapped = true;
+							}
+						}
+					}
+					recentlyAttackedBy.clear();
+					if (swapped){
+						return act( enemyInFOV, justAlerted );
+					}
+				}
 
 				if (enemyInFOV) {
 					target = enemy.pos;
