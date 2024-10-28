@@ -46,41 +46,12 @@ import java.util.ArrayList;
 public class v2_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
-		add_Coming_Soon(changeInfos);
 		add_v2_5_Changes(changeInfos);
 		add_v2_4_Changes(changeInfos);
 		add_v2_3_Changes(changeInfos);
 		add_v2_2_Changes(changeInfos);
 		add_v2_1_Changes(changeInfos);
 		add_v2_0_Changes(changeInfos);
-	}
-
-	public static void add_Coming_Soon( ArrayList<ChangeInfo> changeInfos ) {
-
-		ChangeInfo changes = new ChangeInfo("Coming Soon", true, "");
-		changes.hardlight(0xCCCCCC);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Overview",
-				"The next major update to Shattered will be v3.0.0, which will add the game's 6th hero: The Cleric!\n" +
-				"\n" +
-				"v2.0.0, which added the duelist, took about 5 months. While obviously I would like the update to release faster than that, I can't make any promises. I do expect to make some posts as development progresses though, so you should hear something from me about progress and design on the Cleric before the end of the year, ideally before December.\n" +
-				"\n" +
-				"Please keep in mind that while I always try to keep to the ETAs I provide, they are just estimates. If you don't hear from me by the ETA, it means I'm still busy with the update!"));
-
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.MASTERY), "The Cleric!",
-				"The Cleric is going to be a divine spellcaster who focuses on defense and utility magic that they access through a unique item! I expect them to contrast best with the mage, who's arcane magic abilities enhance the power of wands. I expect to share more details about the cleric in blog posts when v3.0.0 gets closer to releasing. Like all other heroes, the Cleric will have 2 subclasses, 3 armor abilities, and 26 talents!"));
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.DISPLAY), "Visual Improvements",
-				"v3.0.0 is also likely to feature some visual improvements, potentially including some of what I've teased in the recent '10 years of Shattered Pixel Dungeon' blogpost, plus a few others I've not shared yet.\n" +
-				"\n" +
-				"Unfortunately the new art is still in the early stages, and so it's very hard for me to say where things will be when v3.0.0 releases, and what things in particular might be ready."));
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Misc. Changes",
-				"As always there will be some smaller changes in v3.0.0 as well, including bugfixes and minor balance/mechanics tweaks.\n" +
-				"\n" +
-				"Given that v3.0.0 will take a while to make, I'll likely give v2.5.0 some bigger patches that usual, including any needed balance or mechanics tweaks that I don't want to delay into v3.0.0."));
-
 	}
 
 	public static void add_v2_5_Changes( ArrayList<ChangeInfo> changeInfos ) {
