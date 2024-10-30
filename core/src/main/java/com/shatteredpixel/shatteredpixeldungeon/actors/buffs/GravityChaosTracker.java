@@ -132,16 +132,19 @@ public class GravityChaosTracker extends Buff {
 	}
 
 	private static final String LEFT = "left";
+	private static final String POSITIVE_ONLY = "positive_only";
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
 		bundle.put(LEFT, left);
+		bundle.put(POSITIVE_ONLY, positiveOnly);
 	}
 
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		left = bundle.getInt(LEFT);
+		positiveOnly = bundle.getBoolean(POSITIVE_ONLY);
 	}
 }
