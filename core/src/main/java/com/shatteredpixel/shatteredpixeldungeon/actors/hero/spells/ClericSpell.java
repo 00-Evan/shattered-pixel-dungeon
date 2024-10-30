@@ -66,6 +66,7 @@ public abstract class ClericSpell {
 		tome.spendCharge(chargeUse(hero));
 	}
 
+	//TODO separate based on tiers?
 	public static ArrayList<ClericSpell> getSpellList(Hero cleric){
 		ArrayList<ClericSpell> spells = new ArrayList<>();
 
@@ -79,6 +80,10 @@ public abstract class ClericSpell {
 
 		if (cleric.hasTalent(Talent.DETECT_CURSE)){
 			spells.add(DetectCurse.INSTANCE);
+		}
+
+		if (cleric.hasTalent(Talent.DIVINE_SENSE)){
+			spells.add(DivineSense.INSTANCE);
 		}
 
 		return spells;

@@ -73,6 +73,7 @@ public class HeroIcon extends Image {
 	public static final int HOLY_WARD       = 42;
 	public static final int SHIELD_OF_LIGHT = 43;
 	public static final int DETECT_CURSE    = 44;
+	public static final int DIVINE_SENSE     = 45;
 
 	//action indicator visuals
 	public static final int BERSERK         = 80;
