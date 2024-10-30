@@ -23,7 +23,9 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ClericSpell;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.TargetedClericSpell;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
@@ -37,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.NinePatch;
 
 import java.util.ArrayList;
@@ -70,28 +73,44 @@ public class WndClericSpells extends Window {
 		msg.setPos(0, title.bottom()+4);
 		add(msg);
 
-		ArrayList<ClericSpell> spells = ClericSpell.getSpellList(cleric);
+		int top = (int)msg.bottom()+4;
 
-		ArrayList<IconButton> spellBtns = new ArrayList<>();
+		for (int i = 1; i <= Talent.MAX_TALENT_TIERS; i++) {
 
-		for (ClericSpell spell : spells){
-			IconButton spellBtn = new SpellButton(spell, tome, info);
-			add(spellBtn);
-			spellBtns.add(spellBtn);
+			ArrayList<ClericSpell> spells = ClericSpell.getSpellList(cleric, i);
+
+			if (!spells.isEmpty() && i != 1){
+				top += BTN_SIZE + 2;
+				ColorBlock sep = new ColorBlock(WIDTH, 1, 0xFF000000);
+				sep.y = top;
+				add(sep);
+				top += 3;
+			}
+
+			ArrayList<IconButton> spellBtns = new ArrayList<>();
+
+			for (ClericSpell spell : spells) {
+				IconButton spellBtn = new SpellButton(spell, tome, info);
+				add(spellBtn);
+				spellBtns.add(spellBtn);
+			}
+
+			int left = 2 + (WIDTH - spellBtns.size() * (BTN_SIZE + 4)) / 2;
+			for (IconButton btn : spellBtns) {
+				btn.setRect(left, top, BTN_SIZE, BTN_SIZE);
+				left += btn.width() + 4;
+			}
+
 		}
 
-		//TODO rows? Maybe based on spell tiers?
-		int left = 2 + (WIDTH-spellBtns.size()*(BTN_SIZE+4))/2;
-		for (IconButton btn : spellBtns){
-			btn.setRect(left, msg.bottom()+4, BTN_SIZE, BTN_SIZE);
-			left += btn.width()+4;
-		}
+		resize(WIDTH, top + BTN_SIZE);
 
-		resize(WIDTH, (int)spellBtns.get(0).bottom());
+		//if we are on mobile, offset the window down to just above the toolbar
+		if (SPDSettings.interfaceSize() != 2){
+			offset(0, (int) (GameScene.uiCamera.height/2 - 30 - height/2));
+		}
 
 	}
-
-	//TODO we probably want to offset this window for mobile so it appears closer to quickslots
 
 	public class SpellButton extends IconButton {
 

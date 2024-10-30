@@ -66,24 +66,29 @@ public abstract class ClericSpell {
 		tome.spendCharge(chargeUse(hero));
 	}
 
-	//TODO separate based on tiers?
-	public static ArrayList<ClericSpell> getSpellList(Hero cleric){
+	public static ArrayList<ClericSpell> getSpellList(Hero cleric, int tier){
 		ArrayList<ClericSpell> spells = new ArrayList<>();
 
-		spells.add(GuidingLight.INSTANCE);
-		spells.add(HolyWeapon.INSTANCE);
-		spells.add(HolyWard.INSTANCE);
+		if (tier == 1) {
 
-		if (cleric.hasTalent(Talent.SHIELD_OF_LIGHT)){
-			spells.add(ShieldOfLight.INSTANCE);
-		}
+			spells.add(GuidingLight.INSTANCE);
+			spells.add(HolyWeapon.INSTANCE);
+			spells.add(HolyWard.INSTANCE);
 
-		if (cleric.hasTalent(Talent.DETECT_CURSE)){
-			spells.add(DetectCurse.INSTANCE);
-		}
+			if (cleric.hasTalent(Talent.SHIELD_OF_LIGHT)) {
+				spells.add(ShieldOfLight.INSTANCE);
+			}
 
-		if (cleric.hasTalent(Talent.DIVINE_SENSE)){
-			spells.add(DivineSense.INSTANCE);
+			if (cleric.hasTalent(Talent.DETECT_CURSE)) {
+				spells.add(DetectCurse.INSTANCE);
+			}
+
+		} else if (tier == 2) {
+
+			if (cleric.hasTalent(Talent.DIVINE_SENSE)) {
+				spells.add(DivineSense.INSTANCE);
+			}
+
 		}
 
 		return spells;
