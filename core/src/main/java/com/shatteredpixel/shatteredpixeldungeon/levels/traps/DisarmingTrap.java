@@ -92,13 +92,18 @@ public class DisarmingTrap extends Trap{
 					PathFinder.buildDistanceMap(pos, Dungeon.level.passable);
 				} while (cell == -1 || PathFinder.distance[cell] < 10 || PathFinder.distance[cell] > 20);
 
+				if (tries < 0){
+					return;
+				}
+
 				hero.belongings.weapon = null;
 				Dungeon.quickslot.clearItem(weapon);
 				weapon.updateQuickslot();
 
 				Dungeon.level.drop(weapon, cell).seen = true;
-				for (int i : PathFinder.NEIGHBOURS9)
-					Dungeon.level.mapped[cell+i] = true;
+				for (int i : PathFinder.NEIGHBOURS9) {
+					Dungeon.level.mapped[cell + i] = true;
+				}
 				GameScene.updateFog(cell, 1);
 
 				GLog.w( Messages.get(this, "disarm") );
