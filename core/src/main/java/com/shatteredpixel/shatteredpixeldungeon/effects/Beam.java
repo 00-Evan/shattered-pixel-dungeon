@@ -66,6 +66,13 @@ public class Beam extends Image {
 		}
 	}
 
+	public static class SunRay extends Beam{
+		public SunRay(PointF s, PointF e){
+			super(s, e, Effects.Type.LIGHT_RAY, 1f);
+			tint(1, 1, 0.25f, 1);
+		}
+	}
+
 	public static class HealthRay extends Beam{
 		public HealthRay(PointF s, PointF e){
 			super(s, e, Effects.Type.HEALTH_RAY, 0.75f);

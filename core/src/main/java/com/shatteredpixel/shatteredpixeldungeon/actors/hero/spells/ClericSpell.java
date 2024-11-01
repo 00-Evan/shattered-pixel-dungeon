@@ -85,6 +85,10 @@ public abstract class ClericSpell {
 
 		} else if (tier == 2) {
 
+			if (cleric.hasTalent(Talent.SUNRAY)){
+				spells.add(Sunray.INSTANCE);
+			}
+
 			if (cleric.hasTalent(Talent.DIVINE_SENSE)) {
 				spells.add(DivineSense.INSTANCE);
 			}
