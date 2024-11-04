@@ -60,6 +60,10 @@ public abstract class InventoryStone extends Runestone {
 	protected void activate(int cell) {
 		GameScene.selectItem( itemSelector );
 	}
+
+	public void directActivate(){
+		GameScene.selectItem( itemSelector );
+	}
 	
 	protected void useAnimation() {
 		curUser.spend( 1f );

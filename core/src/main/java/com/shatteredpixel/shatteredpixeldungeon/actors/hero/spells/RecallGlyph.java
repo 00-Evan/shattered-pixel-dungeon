@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutat
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfMetamorphosis;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.InventoryStone;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
@@ -66,10 +67,16 @@ public class RecallGlyph extends ClericSpell {
 
 		item.setCurrent(hero);
 
-		//TODO runestones
 		if (item instanceof Scroll){
 			((Scroll) item).anonymize();
 			((Scroll) item).doRead();
+		} else if (item instanceof Runestone){
+			((Runestone) item).anonymize();
+			if (item instanceof InventoryStone){
+				((InventoryStone) item).directActivate();
+			} else {
+				item.doThrow(hero);
+			}
 		}
 
 		onSpellCast(tome, hero);
