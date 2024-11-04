@@ -95,7 +95,7 @@ public abstract class TargetedSpell extends Spell {
 						curUser.spendAndNext( 1f );
 						Catalog.countUse(curSpell.getClass());
 						if (Random.Float() < curSpell.talentChance){
-							Talent.onScrollUsed(curUser, curUser.pos, curSpell.talentFactor);
+							Talent.onScrollUsed(curUser, curUser.pos, curSpell.talentFactor, curSpell.getClass());
 						}
 					}
 				});

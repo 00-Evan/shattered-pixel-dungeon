@@ -687,6 +687,11 @@ public class Item implements Bundlable {
 	
 	protected static Hero curUser = null;
 	protected static Item curItem = null;
+	public void setCurrent( Hero hero ){
+		curUser = hero;
+		curItem = this;
+	}
+
 	protected static CellSelector.Listener thrower = new CellSelector.Listener() {
 		@Override
 		public void onSelect( Integer target ) {

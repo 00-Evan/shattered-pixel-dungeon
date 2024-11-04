@@ -115,7 +115,7 @@ public class UnstableSpell extends Spell {
 
 		Catalog.countUse(getClass());
 		if (Random.Float() < talentChance){
-			Talent.onScrollUsed(curUser, curUser.pos, talentFactor);
+			Talent.onScrollUsed(curUser, curUser.pos, talentFactor, getClass());
 		}
 	}
 

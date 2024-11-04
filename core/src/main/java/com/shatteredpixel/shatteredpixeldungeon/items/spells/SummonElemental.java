@@ -123,7 +123,7 @@ public class SummonElemental extends Spell {
 			detach(Dungeon.hero.belongings.backpack);
 			Catalog.countUse(getClass());
 			if (Random.Float() < talentChance){
-				Talent.onScrollUsed(curUser, curUser.pos, talentFactor);
+				Talent.onScrollUsed(curUser, curUser.pos, talentFactor, getClass());
 			}
 
 		} else {

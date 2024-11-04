@@ -261,7 +261,7 @@ public class Alchemize extends Spell {
 			}
 			Catalog.countUse(getClass());
 			if (curItem instanceof Alchemize && Random.Float() < ((Alchemize)curItem).talentChance){
-				Talent.onScrollUsed(curUser, curUser.pos, ((Alchemize) curItem).talentFactor);
+				Talent.onScrollUsed(curUser, curUser.pos, ((Alchemize) curItem).talentFactor, curItem.getClass());
 			}
 		}
 

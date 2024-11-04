@@ -87,7 +87,7 @@ public class HolyTome extends Artifact {
 	}
 
 	public boolean canCast( Hero hero, ClericSpell spell ){
-		return (charge >= spell.chargeUse(hero));
+		return (charge >= spell.chargeUse(hero) && spell.canCast(hero));
 	}
 
 	public void spendCharge( float chargesSpent ){

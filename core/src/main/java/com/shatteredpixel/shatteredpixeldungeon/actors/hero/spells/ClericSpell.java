@@ -41,6 +41,10 @@ public abstract class ClericSpell {
 		return 1;
 	}
 
+	public boolean canCast( Hero hero ){
+		return true;
+	}
+
 	public String name(){
 		return Messages.get(this, "name");
 	}
@@ -87,6 +91,10 @@ public abstract class ClericSpell {
 
 			if (cleric.hasTalent(Talent.SUNRAY)){
 				spells.add(Sunray.INSTANCE);
+			}
+
+			if (cleric.hasTalent(Talent.RECALL_GLYPH)){
+				spells.add(RecallGlyph.INSTANCE);
 			}
 
 			if (cleric.hasTalent(Talent.DIVINE_SENSE)) {

@@ -44,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WandEmpower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.GuidingLight;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.RecallGlyph;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
@@ -57,6 +58,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ShardOfOblivion;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
@@ -175,7 +177,7 @@ public enum Talent {
 	//Cleric T1
 	SATIATED_SPELLS(160), DETECT_CURSE(161), SEARING_LIGHT(162), SHIELD_OF_LIGHT(163),
 	//Cleric T2
-	ENLIGHTENING_MEAL(164), CLERICT2B(165), SUNRAY(166), DIVINE_SENSE(167), CLERICT2E(168),
+	ENLIGHTENING_MEAL(164), RECALL_GLYPH(165), SUNRAY(166), DIVINE_SENSE(167), CLERICT2E(168),
 	//Cleric T3
 	CLERICT3A(169, 3), CLERICT3B(170, 3),
 
@@ -688,7 +690,7 @@ public enum Talent {
 		}
 	}
 
-	public static void onScrollUsed( Hero hero, int pos, float factor ){
+	public static void onScrollUsed( Hero hero, int pos, float factor, Class<?extends Item> cls ){
 		if (hero.hasTalent(INSCRIBED_POWER)){
 			// 2/3 empowered wand zaps
 			Buff.affect(hero, ScrollEmpower.class).reset((int) (factor * (1 + hero.pointsInTalent(INSCRIBED_POWER))));
@@ -697,6 +699,11 @@ public enum Talent {
 			// 3/5 turns of stealth
 			Buff.affect(hero, Invisibility.class, factor * (1 + 2*hero.pointsInTalent(INSCRIBED_STEALTH)));
 			Sample.INSTANCE.play( Assets.Sounds.MELD );
+		}
+		if (hero.heroClass == HeroClass.CLERIC
+				&& hero.hasTalent(RECALL_GLYPH)
+				&& Scroll.class.isAssignableFrom(cls)){
+			Buff.affect(hero, RecallGlyph.UsedGlyphTracker.class, hero.pointsInTalent(RECALL_GLYPH) == 2 ? 300 : 10).item = cls;
 		}
 	}
 
@@ -915,7 +922,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, FOCUSED_MEAL, LIQUID_AGILITY, WEAPON_RECHARGING, LETHAL_HASTE, SWIFT_EQUIP);
 				break;
 			case CLERIC:
-				Collections.addAll(tierTalents, ENLIGHTENING_MEAL, CLERICT2B, SUNRAY, DIVINE_SENSE, CLERICT2E);
+				Collections.addAll(tierTalents, ENLIGHTENING_MEAL, RECALL_GLYPH, SUNRAY, DIVINE_SENSE, CLERICT2E);
 				break;
 		}
 		for (Talent talent : tierTalents){
