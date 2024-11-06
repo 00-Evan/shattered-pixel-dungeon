@@ -20,7 +20,7 @@ allprojects {
         appName = 'Mario Pixel Dungeon'
         appPackageName = 'com.Mariopixel.Mariodpixeldungeon'
 
-        appVersionCode = 802
+        appVersionCode = 803
         appVersionName = '1.2.3'
 
         appJavaCompatibility = JavaVersion.VERSION_1_8
