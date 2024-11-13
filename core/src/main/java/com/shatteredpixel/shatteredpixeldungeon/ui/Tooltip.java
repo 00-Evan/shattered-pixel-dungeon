@@ -73,7 +73,7 @@ public class Tooltip extends Component {
 	protected void createChildren() {
 		super.createChildren();
 
-		bg = Chrome.get(Chrome.Type.TOAST_TR);
+		bg = Chrome.get(Chrome.Type.TOAST_TR_HEAVY);
 		add(bg);
 
 		text = PixelScene.renderTextBlock(6);

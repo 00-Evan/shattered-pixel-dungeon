@@ -64,7 +64,7 @@ public class RightClickMenu extends Component {
 	}
 
 	private void setup(Image icon, String title, String... options){
-		bg = Chrome.get(Chrome.Type.TOAST_TR);
+		bg = Chrome.get(Chrome.Type.TOAST_TR_HEAVY);
 		add(bg);
 
 		this.icon = icon;
