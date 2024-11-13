@@ -656,6 +656,7 @@ public abstract class Char extends Actor {
 		ShieldOfLight.ShieldOfLightTracker shield = buff( ShieldOfLight.ShieldOfLightTracker.class);
 		if (shield != null && shield.object == enemy.id()){
 			damage -= Random.NormalIntRange(2, 4);
+			damage = Math.max(damage, 0);
 		}
 
 		return damage;

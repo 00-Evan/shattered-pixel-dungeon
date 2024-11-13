@@ -173,11 +173,16 @@ public class HolyTome extends Artifact {
 
 			if (charge < chargeCap) {
 
-				//gains 2.5 charges per hero level, plus 10% per missing charge, plus another 10% for every level after 7
-				float chargeGain = (2.5f * levelPortion) * (1f+(chargeCap - charge)/10f);
-				if (level() > 7) chargeGain *= 1f + (level()-7)/10f;
+				//gains 5 charges per hero level, plus 0.25 per missing charge, plus another 0.25 for every level after 7
+				float chargeGain = (5f * levelPortion) * (1f+(chargeCap - charge)/20f);
+				if (level() > 7) chargeGain *= 1f + (level()-7)/20f;
 
 				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
+
+				//floor 1 is very short with pre-spawned weak enemies, so nerf recharge speed here specifically
+				if (Dungeon.depth == 1){
+					chargeGain *= 0.67f;
+				}
 
 				partialCharge += chargeGain;
 

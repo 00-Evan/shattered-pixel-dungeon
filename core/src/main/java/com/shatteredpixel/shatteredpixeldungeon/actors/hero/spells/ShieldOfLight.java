@@ -63,7 +63,7 @@ public class ShieldOfLight extends TargetedClericSpell {
 		hero.sprite.operate(hero.pos);
 
 		//1 turn less as the casting is instant
-		Buff.affect( hero, ShieldOfLightTracker.class, 2f*hero.pointsInTalent(Talent.SHIELD_OF_LIGHT)).object = ch.id();
+		Buff.affect( hero, ShieldOfLightTracker.class, 1f + 2f*hero.pointsInTalent(Talent.SHIELD_OF_LIGHT)).object = ch.id();
 
 		hero.busy();
 		hero.sprite.operate(hero.pos);
@@ -74,7 +74,7 @@ public class ShieldOfLight extends TargetedClericSpell {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", 1+2*Dungeon.hero.pointsInTalent(Talent.SHIELD_OF_LIGHT)) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
+		return Messages.get(this, "desc", 2+2*Dungeon.hero.pointsInTalent(Talent.SHIELD_OF_LIGHT)) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
 	}
 
 	public static class ShieldOfLightTracker extends FlavourBuff {
@@ -92,7 +92,7 @@ public class ShieldOfLight extends TargetedClericSpell {
 
 		@Override
 		public float iconFadePercent() {
-			float duration = 1f + 2f* Dungeon.hero.pointsInTalent(Talent.SHIELD_OF_LIGHT);
+			float duration = 2f + 2f* Dungeon.hero.pointsInTalent(Talent.SHIELD_OF_LIGHT);
 			return Math.max(0, (duration - visualcooldown()) / duration);
 		}
 
