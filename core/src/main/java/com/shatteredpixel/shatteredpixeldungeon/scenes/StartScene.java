@@ -46,7 +46,7 @@ import java.util.ArrayList;
 public class StartScene extends PixelScene {
 	
 	private static final int SLOT_WIDTH = 120;
-	private static final int SLOT_HEIGHT = 30;
+	private static final int SLOT_HEIGHT = 22;
 	
 	@Override
 	public void create() {
@@ -139,8 +139,8 @@ public class StartScene extends PixelScene {
 		protected void createChildren() {
 			super.createChildren();
 			
-			bg = Chrome.get(Chrome.Type.GEM);
-			add( bg);
+			bg = Chrome.get(Chrome.Type.TOAST_TR);
+			add( bg );
 			
 			name = PixelScene.renderTextBlock(9);
 			add(name);
