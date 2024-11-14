@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Enchanting;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -51,6 +52,7 @@ public class HolyWard extends ClericSpell {
 		hero.spend( 1f );
 		hero.busy();
 		hero.sprite.operate(hero.pos);
+		if (hero.belongings.armor() != null) Enchanting.show(hero, hero.belongings.armor());
 
 		onSpellCast(tome, hero);
 	}

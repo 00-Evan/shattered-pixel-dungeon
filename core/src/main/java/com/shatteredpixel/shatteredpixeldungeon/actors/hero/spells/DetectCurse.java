@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Identification;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
@@ -68,8 +69,9 @@ public class DetectCurse extends InventoryClericSpell {
 		hero.spend( 1f );
 		hero.busy();
 		hero.sprite.operate(hero.pos);
+		hero.sprite.parent.add( new Identification( hero.sprite.center().offset( 0, -16 ) ) );
 
-		Sample.INSTANCE.play( Assets.Sounds.SCAN );
+		Sample.INSTANCE.play( Assets.Sounds.READ );
 		onSpellCast(tome, hero);
 
 	}
