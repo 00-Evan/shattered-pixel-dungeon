@@ -704,11 +704,13 @@ public abstract class Mob extends Char {
 
 		//if attacked by something else than current target, and that thing is closer, switch targets
 		//or if attacked by target, simply update target position
-		if (state != HUNTING){
-			aggro(enemy);
-			target = enemy.pos;
-		} else {
-			recentlyAttackedBy.add(enemy);
+		if (state != FLEEING) {
+			if (state != HUNTING) {
+				aggro(enemy);
+				target = enemy.pos;
+			} else {
+				recentlyAttackedBy.add(enemy);
+			}
 		}
 
 		if (buff(SoulMark.class) != null) {
@@ -776,7 +778,7 @@ public abstract class Mob extends Char {
 			if (state == SLEEPING) {
 				state = WANDERING;
 			}
-			if (!(src instanceof Corruption)) {
+			if (!(src instanceof Corruption) && state != FLEEING) {
 				if (state != HUNTING) {
 					alerted = true;
 					//assume the hero is hitting us in these common cases
