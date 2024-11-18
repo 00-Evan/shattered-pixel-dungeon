@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Enchanting;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
@@ -66,6 +67,9 @@ public class RecallGlyph extends ClericSpell {
 		Item item = Reflection.newInstance(hero.buff(UsedGlyphTracker.class).item);
 
 		item.setCurrent(hero);
+
+		hero.sprite.operate(hero.pos);
+		Enchanting.show(hero, item);
 
 		if (item instanceof Scroll){
 			((Scroll) item).anonymize();

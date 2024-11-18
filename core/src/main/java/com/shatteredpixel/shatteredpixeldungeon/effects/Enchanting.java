@@ -50,7 +50,11 @@ public class Enchanting extends ItemSprite {
 		super( item.image(), null );
 		originToCenter();
 
-		color = item.glowing().color;
+		if (item.glowing() != null) {
+			color = item.glowing().color;
+		} else {
+			color = -1;
+		}
 
 		phase = Phase.FADE_IN;
 		duration = FADE_IN_TIME;
@@ -72,7 +76,9 @@ public class Enchanting extends ItemSprite {
 				scale.set( passed / duration );
 				break;
 			case STATIC:
-				tint( color, passed / duration * 0.8f );
+				if (color != -1) {
+					tint(color, passed / duration * 0.8f);
+				}
 				break;
 			case FADE_OUT:
 				alpha( (1 - passed / duration) * ALPHA );
