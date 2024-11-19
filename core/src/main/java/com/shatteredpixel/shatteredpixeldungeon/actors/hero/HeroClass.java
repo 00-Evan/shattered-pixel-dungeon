@@ -28,6 +28,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Cleric1;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Cleric2;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Cleric3;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Challenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.ElementalStrike;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Feint;
@@ -284,8 +287,8 @@ public enum HeroClass {
 				return new ArmorAbility[]{new SpectralBlades(), new NaturesPower(), new SpiritHawk()};
 			case DUELIST:
 				return new ArmorAbility[]{new Challenge(), new ElementalStrike(), new Feint()};
-			case CLERIC: //TODO CLERIC armor abilities
-				return new ArmorAbility[]{new HeroicLeap(), new Shockwave(), new Endure()};
+			case CLERIC:
+				return new ArmorAbility[]{new Cleric1(), new Cleric2(), new Cleric3()};
 		}
 	}
 

@@ -171,7 +171,7 @@ public enum Talent {
 	CLOSE_THE_GAP(145, 4), INVIGORATING_VICTORY(146, 4), ELIMINATION_MATCH(147, 4),
 	//Elemental Strike T4
 	ELEMENTAL_REACH(148, 4), STRIKING_FORCE(149, 4), DIRECTED_POWER(150, 4),
-	//Duelist A3 T4
+	//Feint T4
 	FEIGNED_RETREAT(151, 4), EXPOSE_WEAKNESS(152, 4), COUNTER_ABILITY(153, 4),
 
 	//Cleric T1
@@ -184,6 +184,12 @@ public enum Talent {
 	PRIESTT3A(171, 3), PRIESTT3B(172, 3), PRIESTT3C(173, 3),
 	//Paladin T3
 	PALADINT3A(174, 3), PALADINT3B(175, 3), PALADINT3C(176, 3),
+	//Cleric A1 T4
+	CLERIC_A1_1(177, 4), CLERIC_A1_2(178, 4), CLERIC_A1_3(179, 4),
+	//Cleric A2 T4
+	CLERIC_A2_1(180, 4), CLERIC_A2_2(181, 4), CLERIC_A2_3(182, 4),
+	//Cleric A3 T4
+	CLERIC_A3_1(183, 4), CLERIC_A3_2(184, 4), CLERIC_A3_3(185, 4),
 
 	//universal T4
 	HEROIC_ENERGY(26, 4), //See icon() and title() for special logic for this one

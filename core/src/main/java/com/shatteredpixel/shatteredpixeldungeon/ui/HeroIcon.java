@@ -67,7 +67,10 @@ public class HeroIcon extends Image {
 	public static final int CHALLENGE       = 28;
 	public static final int ELEMENTAL_STRIKE= 29;
 	public static final int FEINT           = 30;
-	public static final int RATMOGRIFY      = 31;
+	public static final int CLERIC1         = 31;
+	public static final int CLERIC2         = 32;
+	public static final int CLERIC3         = 33;
+	public static final int RATMOGRIFY      = 34;
 
 	//cleric spells
 	public static final int GUIDING_LIGHT   = 40;

@@ -24,6 +24,9 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Cleric1;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Cleric2;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Cleric3;
 import com.shatteredpixel.shatteredpixeldungeon.items.KingsCrown;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -94,6 +97,11 @@ public class WndChooseAbility extends Window {
 			abilityButton.setSize(WIDTH-20, abilityButton.reqHeight()+2);
 			abilityButton.setRect(0, pos, WIDTH-20, abilityButton.reqHeight()+2);
 			add(abilityButton);
+
+			//TODO CLERIC no abilities are actually playable atm
+			if (ability instanceof Cleric1 || ability instanceof Cleric2 || ability instanceof Cleric3){
+				abilityButton.enable(false);
+			}
 
 			IconButton abilityInfo = new IconButton(Icons.get(Icons.INFO)){
 				@Override

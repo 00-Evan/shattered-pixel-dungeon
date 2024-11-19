@@ -91,7 +91,6 @@ public class StoneOfIntuition extends InventoryStone {
 	
 	private static Class curGuess = null;
 
-	//TODO CLERIC! yikes...
 	public class WndGuess extends Window {
 		
 		private static final int WIDTH = 120;
