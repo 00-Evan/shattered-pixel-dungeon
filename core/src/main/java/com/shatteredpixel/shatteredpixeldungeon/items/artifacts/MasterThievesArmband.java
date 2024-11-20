@@ -180,6 +180,8 @@ public class MasterThievesArmband extends Artifact {
 							Buff.prolong(ch, Blindness.class, debuffDuration);
 							Buff.prolong(ch, Cripple.class, debuffDuration);
 
+							artifactProc(ch, visiblyUpgraded(), 1);
+
 							charge--;
 							exp += 3;
 							Talent.onArtifactUsed(Dungeon.hero);

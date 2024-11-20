@@ -84,8 +84,8 @@ public class WndChooseSubclass extends Window {
 			btnCls.setRect( 0, pos, WIDTH-20, btnCls.reqHeight()+2);
 			add( btnCls );
 
-			//TODO CLERIC neither subclass is actually playable atm
-			if (subCls == HeroSubClass.PRIEST || subCls == HeroSubClass.PALADIN){
+			//TODO CLERIC paladin is not implemented yet
+			if (subCls == HeroSubClass.PALADIN){
 				btnCls.enable(false);
 			}
 

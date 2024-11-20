@@ -22,18 +22,23 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
@@ -73,7 +78,7 @@ public class GuidingLight extends TargetedClericSpell {
 					Sample.INSTANCE.play(Assets.Sounds.HIT_MAGIC, 1, Random.Float(0.87f, 1.15f));
 					ch.sprite.burst(0xFFFFFF44, 3);
 					if (ch.isAlive()){
-						Buff.affect(ch, GuidingLightDebuff.class);
+						Buff.affect(ch, Illuminated.class);
 					}
 				}
 
@@ -81,12 +86,51 @@ public class GuidingLight extends TargetedClericSpell {
 				hero.next();
 
 				onSpellCast(tome, hero);
+				Buff.affect(hero, GuidingLightPriestCooldown.class, 100f);
 
 			}
 		});
 	}
 
-	public static class GuidingLightDebuff extends Buff {
+	@Override
+	public float chargeUse(Hero hero) {
+		if (hero.subClass == HeroSubClass.PRIEST
+			&& hero.buff(GuidingLightPriestCooldown.class) == null){
+			return 0;
+		} else {
+			return 1;
+		}
+	}
+
+	public String desc(){
+		String desc = Messages.get(this, "desc");
+		if (Dungeon.hero.subClass == HeroSubClass.PRIEST){
+			desc += "\n\n" + Messages.get(this, "desc_priest");
+		}
+		return desc + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
+	}
+
+	public static class GuidingLightPriestCooldown extends FlavourBuff {
+
+		@Override
+		public int icon() {
+			return BuffIndicator.TIME;
+		}
+
+		@Override
+		public void tintIcon(Image icon) {
+			icon.hardlight(0.67f, 0.67f, 0);
+		}
+
+		public float iconFadePercent() { return Math.max(0, visualcooldown() / 100); }
+
+	}
+
+	public static class Illuminated extends Buff {
+
+		{
+			type = buffType.NEGATIVE;
+		}
 
 		@Override
 		public void fx(boolean on) {

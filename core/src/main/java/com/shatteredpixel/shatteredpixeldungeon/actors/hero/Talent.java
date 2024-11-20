@@ -829,8 +829,8 @@ public enum Talent {
 			}
 		}
 
-		if (enemy.buff(GuidingLight.GuidingLightDebuff.class) != null){
-			enemy.buff(GuidingLight.GuidingLightDebuff.class).detach();
+		if (enemy.buff(GuidingLight.Illuminated.class) != null){
+			enemy.buff(GuidingLight.Illuminated.class).detach();
 			if (hero.hasTalent(Talent.SEARING_LIGHT)){
 				dmg += 1 + 2*hero.pointsInTalent(Talent.SEARING_LIGHT);
 			}

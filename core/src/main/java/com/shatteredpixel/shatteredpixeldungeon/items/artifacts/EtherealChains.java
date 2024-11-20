@@ -198,6 +198,8 @@ public class EtherealChains extends Artifact {
 						Dungeon.observe();
 						GameScene.updateFog();
 						hero.spendAndNext(1f);
+
+						artifactProc(enemy, visiblyUpgraded(), chargeUse);
 					}
 				}));
 				hero.next();

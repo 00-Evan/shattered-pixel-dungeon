@@ -190,6 +190,8 @@ public class TalismanOfForesight extends Artifact {
 					if (ch != null && ch.alignment != Char.Alignment.NEUTRAL && ch.alignment != curUser.alignment){
 						Buff.append(curUser, CharAwareness.class, 5 + 2*level()).charID = ch.id();
 
+						artifactProc(ch, visiblyUpgraded(), (int)(3 + dist*1.08f));
+
 						if (!curUser.fieldOfView[ch.pos]){
 							earnedExp += 10;
 						}

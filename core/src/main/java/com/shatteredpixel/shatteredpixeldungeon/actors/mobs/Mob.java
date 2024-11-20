@@ -667,7 +667,7 @@ public abstract class Mob extends Char {
 	public int defenseSkill( Char enemy ) {
 		if ( !surprisedBy(enemy)
 				&& paralysed == 0
-				&& buff(GuidingLight.GuidingLightDebuff.class) == null
+				&& buff(GuidingLight.Illuminated.class) == null
 				&& !(alignment == Alignment.ALLY && enemy == Dungeon.hero)) {
 			return this.defenseSkill;
 		} else {

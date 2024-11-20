@@ -345,6 +345,10 @@ public class SandalsOfNature extends Artifact {
 					Sample.INSTANCE.play(Assets.Sounds.PLANT);
 					Sample.INSTANCE.playDelayed(Assets.Sounds.TRAMPLE, 0.25f, 1, Random.Float( 0.96f, 1.05f ) );
 
+					if (Actor.findChar(cell) != null){
+						artifactProc(Actor.findChar(cell), visiblyUpgraded(), seedChargeReqs.get(curSeedEffect));
+					}
+
 					charge -= seedChargeReqs.get(curSeedEffect);
 					Talent.onArtifactUsed(Dungeon.hero);
 					updateQuickslot();
