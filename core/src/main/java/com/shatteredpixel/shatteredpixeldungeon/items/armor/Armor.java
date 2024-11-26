@@ -467,7 +467,7 @@ public class Armor extends EquipableItem {
 
 		if (defender.buff(MagicImmune.class) == null) {
 			if (defender instanceof Hero && isEquipped((Hero) defender)
-					&& !hasCurseGlyph() && defender.buff(HolyWard.HolyArmBuff.class) != null){
+					&& defender.buff(HolyWard.HolyArmBuff.class) != null){
 				damage -= Math.round(1f * Glyph.genericProcChanceMultiplier(defender));
 			} else if (glyph != null) {
 				damage = glyph.proc( this, attacker, defender, damage );
