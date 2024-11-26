@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -99,6 +100,20 @@ public abstract class ClericSpell {
 
 			if (cleric.hasTalent(Talent.DIVINE_SENSE)) {
 				spells.add(DivineSense.INSTANCE);
+			}
+
+		} else if (tier == 3){
+
+			if (cleric.subClass == HeroSubClass.PRIEST) {
+				//TODO innate radiance spell
+
+				if (cleric.hasTalent(Talent.HOLY_LANCE)){
+					spells.add(HolyLance.INSTANCE);
+				}
+
+			} else if (cleric.subClass == HeroSubClass.PALADIN){
+				//TODO innate smite spell
+
 			}
 
 		}

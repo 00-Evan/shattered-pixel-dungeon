@@ -181,7 +181,7 @@ public enum Talent {
 	//Cleric T3
 	CLERICT3A(169, 3), LIGHT_READING(170, 3),
 	//Priest T3
-	PRIESTT3A(171, 3), PRIESTT3B(172, 3), PRIESTT3C(173, 3),
+	HOLY_LANCE(171, 3), PRIESTT3B(172, 3), PRIESTT3C(173, 3),
 	//Paladin T3
 	PALADINT3A(174, 3), PALADINT3B(175, 3), PALADINT3C(176, 3),
 	//Cleric A1 T4
@@ -1025,7 +1025,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, UNENCUMBERED_SPIRIT, MONASTIC_VIGOR, COMBINED_ENERGY);
 				break;
 			case PRIEST:
-				Collections.addAll(tierTalents, PRIESTT3A, PRIESTT3B, PRIESTT3C);
+				Collections.addAll(tierTalents, HOLY_LANCE, PRIESTT3B, PRIESTT3C);
 				break;
 			case PALADIN:
 				Collections.addAll(tierTalents, PALADINT3A, PALADINT3B, PALADINT3C);

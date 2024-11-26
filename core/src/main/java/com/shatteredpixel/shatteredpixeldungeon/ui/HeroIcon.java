@@ -81,6 +81,7 @@ public class HeroIcon extends Image {
 	public static final int SUNRAY          = 45;
 	public static final int DIVINE_SENSE    = 46;
 	public static final int RECALL_GLYPH    = 47;
+	public static final int HOLY_LANCE      = 48;
 
 	//action indicator visuals
 	public static final int BERSERK         = 80;
