@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -37,8 +38,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
@@ -157,9 +161,11 @@ public class UnstableSpellbook extends Artifact {
 								curItem = scroll;
 								charge--;
 								scroll.anonymize();
+								checkForArtifactProc(curUser, scroll);
 								scroll.doRead();
 								Talent.onArtifactUsed(Dungeon.hero);
 							} else {
+								checkForArtifactProc(curUser, fScroll);
 								fScroll.doRead();
 								Talent.onArtifactUsed(Dungeon.hero);
 							}
@@ -172,14 +178,42 @@ public class UnstableSpellbook extends Artifact {
 						}
 					});
 				} else {
+					checkForArtifactProc(curUser, scroll);
 					scroll.doRead();
 					Talent.onArtifactUsed(Dungeon.hero);
 				}
+
+				//scrolls that are AOE on all visible:
+				//lullaby
+				// rage, challenge(?)
+				// retrib, psy blast
+				// terror, dread
+
+				//Scrolls that are targeted:
+				//siren's song (also AOE tho)
+
 				updateQuickslot();
 			}
 
 		} else if (action.equals( AC_ADD )) {
 			GameScene.selectItem(itemSelector);
+		}
+	}
+
+	private void checkForArtifactProc(Hero user, Scroll scroll){
+		//if the base scroll (exotics all match) is an AOE effect, then also trigger illuminate
+		if (scroll instanceof ScrollOfLullaby
+				|| scroll instanceof ScrollOfRemoveCurse || scroll instanceof ScrollOfTerror) {
+			for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+				if (Dungeon.level.heroFOV[mob.pos]) {
+					artifactProc(mob, visiblyUpgraded(), 1);
+				}
+			}
+		//except rage, which affects everything even if it isn't visible
+		} else if (scroll instanceof ScrollOfRage){
+			for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+				artifactProc(mob, visiblyUpgraded(), 1);
+			}
 		}
 	}
 

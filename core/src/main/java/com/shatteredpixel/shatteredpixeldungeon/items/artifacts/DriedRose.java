@@ -643,13 +643,17 @@ public class DriedRose extends Artifact {
 		@Override
 		public int attackProc(Char enemy, int damage) {
 			damage = super.attackProc(enemy, damage);
-			if (rose != null && rose.weapon != null) {
-				damage = rose.weapon.proc( this, enemy, damage );
-				if (!enemy.isAlive() && enemy == Dungeon.hero){
-					Dungeon.fail(this);
-					GLog.n( Messages.capitalize(Messages.get(Char.class, "kill", name())) );
+			if (rose != null) {
+				if (rose.weapon != null) {
+					damage = rose.weapon.proc(this, enemy, damage);
+					if (!enemy.isAlive() && enemy == Dungeon.hero) {
+						Dungeon.fail(this);
+						GLog.n(Messages.capitalize(Messages.get(Char.class, "kill", name())));
+					}
 				}
+				Artifact.artifactProc(Dungeon.hero, rose.visiblyUpgraded(), 0);
 			}
+
 			return damage;
 		}
 		

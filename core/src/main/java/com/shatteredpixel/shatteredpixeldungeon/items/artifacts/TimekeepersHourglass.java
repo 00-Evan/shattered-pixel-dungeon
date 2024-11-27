@@ -120,6 +120,14 @@ public class TimekeepersHourglass extends Artifact {
 									Talent.onArtifactUsed(Dungeon.hero);
 									activeBuff.attachTo(Dungeon.hero);
 								} else if (index == 1) {
+
+									//This might be really good...
+									for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+										if (Dungeon.level.heroFOV[mob.pos]) {
+											artifactProc(mob, visiblyUpgraded(), 1);
+										}
+									}
+
 									GLog.i( Messages.get(TimekeepersHourglass.class, "onfreeze") );
 									GameScene.flash(0x80FFFFFF);
 									Sample.INSTANCE.play(Assets.Sounds.TELEPORT);

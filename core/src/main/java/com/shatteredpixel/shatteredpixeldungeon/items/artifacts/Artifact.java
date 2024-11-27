@@ -137,14 +137,6 @@ public class Artifact extends KindofMisc {
 		upgrade(Math.round((transferLvl*levelCap)/10f));
 	}
 
-	//TODO CLERIC consider all the cases in which this might happen, atm it's fairly conservative
-	// Currently works with 4/10 artifacts, could also:
-	// It should definitely trigger from unstable spellbook
-	// could possibly trigger from dried rose ghost melee
-	// maybe from hitting a target while time frozen from hourglass?
-	// could trigger from items crafted via toolkit? That's a big stretch
-	// makes no sense with horn, unless I work out some kind of self-buff that then applies to melee or spells
-	// 0 sense with chalice in all cases
 	public static void artifactProc(Char target, int artifLevel, int chargesUsed){
 		if (Dungeon.hero.subClass == HeroSubClass.PRIEST && target.buff(GuidingLight.Illuminated.class) != null) {
 			target.buff(GuidingLight.Illuminated.class).detach();
