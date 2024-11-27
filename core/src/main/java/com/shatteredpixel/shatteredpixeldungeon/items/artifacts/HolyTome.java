@@ -26,6 +26,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ClericSpell;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.DetectCurse;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.TargetedClericSpell;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
@@ -33,8 +35,12 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
+import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndClericSpells;
+import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 
@@ -203,7 +209,45 @@ public class HolyTome extends Artifact {
 		}
 	}
 
-	public class TomeRecharge extends ArtifactBuff {
+	private ClericSpell quickSpell = null;
+
+	public void setQuickSpell(ClericSpell spell){
+		quickSpell = spell;
+		if (passiveBuff != null){
+			ActionIndicator.setAction((ActionIndicator.Action) passiveBuff);
+		}
+	}
+
+	private static final String QUICK_CLS = "quick_cls";
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		if (quickSpell != null) {
+			bundle.put(QUICK_CLS, quickSpell.getClass());
+		}
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		if (bundle.contains(QUICK_CLS)){
+			Class quickCls = bundle.getClass(QUICK_CLS);
+			for (ClericSpell spell : ClericSpell.getAllSpells()){
+				if (spell.getClass() == quickCls){
+					quickSpell = spell;
+				}
+			}
+		}
+	}
+
+	public class TomeRecharge extends ArtifactBuff implements ActionIndicator.Action {
+
+		@Override
+		public void fx(boolean on) {
+			if (on && quickSpell != null)   ActionIndicator.setAction(this);
+			else                            ActionIndicator.clearAction(this);
+		}
 
 		public void gainCharge(float levelPortion) {
 			if (cursed || target.buff(MagicImmune.class) != null) return;
@@ -242,6 +286,51 @@ public class HolyTome extends Artifact {
 			}
 		}
 
+		@Override
+		public String actionName() {
+			return quickSpell.name();
+		}
+
+		@Override
+		public int actionIcon() {
+			return quickSpell.icon() + HeroIcon.SPELL_ACTION_OFFSET;
+		}
+
+		@Override
+		public int indicatorColor() {
+			if (quickSpell == DetectCurse.INSTANCE){
+				return 0x00A0FF;
+			} else {
+				return 0x002157;
+			}
+		}
+
+		@Override
+		public void doAction() {
+			if (!canCast(Dungeon.hero, quickSpell)){
+				GLog.w(Messages.get(HolyTome.this, "no_spell"));
+				return;
+			}
+
+			//TODO this is all pretty akward, might be better to just add autotarget functionality to the indicator
+			if (QuickSlotButton.targetingSlot != -1 &&
+					Dungeon.quickslot.getItem(QuickSlotButton.targetingSlot) == HolyTome.this) {
+				int cell = QuickSlotButton.autoAim(QuickSlotButton.lastTarget, HolyTome.this);
+
+				if (cell != -1){
+					GameScene.handleCell(cell);
+				} else {
+					//couldn't auto-aim, just target the position and hope for the best.
+					GameScene.handleCell( QuickSlotButton.lastTarget.pos );
+				}
+			} else {
+				quickSpell.onCast(HolyTome.this, Dungeon.hero);
+
+				if (quickSpell instanceof TargetedClericSpell && Dungeon.quickslot.contains(HolyTome.this)){
+					QuickSlotButton.useTargeting(Dungeon.quickslot.getSlot(HolyTome.this));
+				}
+			}
+		}
 	}
 
 }

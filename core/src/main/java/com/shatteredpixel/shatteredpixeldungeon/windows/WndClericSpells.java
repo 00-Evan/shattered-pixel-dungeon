@@ -38,9 +38,15 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RightClickMenu;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.input.PointerEvent;
 import com.watabou.noosa.ColorBlock;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
+import com.watabou.utils.DeviceCompat;
+import com.watabou.utils.PointF;
 
 import java.util.ArrayList;
 
@@ -67,8 +73,14 @@ public class WndClericSpells extends Window {
 		btnInfo.setRect(WIDTH-16, 0, 16, 16);
 		add(btnInfo);
 
-		//TODO we might want to intercept quickslot hotkeys and auto-cast the last spell if relevant
-		RenderedTextBlock msg = PixelScene.renderTextBlock( Messages.get( this, info ? "info_desc" : "cast_desc"), 6);
+		RenderedTextBlock msg;
+		if (info){
+			msg = PixelScene.renderTextBlock( Messages.get( this, "info_desc"), 6);
+		} else if (DeviceCompat.isDesktop()){
+			msg = PixelScene.renderTextBlock( Messages.get( this, "cast_desc_desktop"), 6);
+		} else {
+			msg = PixelScene.renderTextBlock( Messages.get( this, "cast_desc_mobile"), 6);
+		}
 		msg.maxWidth(WIDTH);
 		msg.setPos(0, title.bottom()+4);
 		add(msg);
@@ -127,8 +139,8 @@ public class WndClericSpells extends Window {
 			this.tome = tome;
 			this.info = info;
 
-			if (!info && !tome.canCast(Dungeon.hero, spell)){
-				enable(false);
+			if (!tome.canCast(Dungeon.hero, spell)){
+				icon.alpha( 0.3f );
 			}
 
 			bg = Chrome.get(Chrome.Type.TOAST);
@@ -152,13 +164,71 @@ public class WndClericSpells extends Window {
 				GameScene.show(new WndTitledMessage(new HeroIcon(spell), Messages.titleCase(spell.name()), spell.desc()));
 			} else {
 				hide();
-				spell.onCast(tome, Dungeon.hero);
 
-				//TODO, probably need targeting logic here
-				if (spell instanceof TargetedClericSpell && Dungeon.quickslot.contains(tome)){
-					QuickSlotButton.useTargeting(Dungeon.quickslot.getSlot(tome));
+
+				if(!spell.canCast(Dungeon.hero)){
+					GLog.w(Messages.get(HolyTome.class, "no_spell"));
+				} else {
+					spell.onCast(tome, Dungeon.hero);
+
+					//TODO, probably need targeting logic here
+					if (spell instanceof TargetedClericSpell && Dungeon.quickslot.contains(tome)){
+						QuickSlotButton.useTargeting(Dungeon.quickslot.getSlot(tome));
+					}
 				}
+
 			}
+		}
+
+		@Override
+		protected boolean onLongClick() {
+			hide();
+			tome.setQuickSpell(spell);
+			return true;
+		}
+
+		@Override
+		protected void onRightClick() {
+			super.onRightClick();
+			RightClickMenu r = new RightClickMenu(new Image(icon),
+					Messages.titleCase(spell.name()),
+					Messages.get(WndClericSpells.class, "cast"),
+					Messages.get(WndClericSpells.class, "info"),
+					Messages.get(WndClericSpells.class, "quick_cast")){
+				@Override
+				public void onSelect(int index) {
+					switch (index){
+						default:
+							//do nothing
+							break;
+						case 0:
+							hide();
+							if(!spell.canCast(Dungeon.hero)){
+								GLog.w(Messages.get(HolyTome.class, "no_spell"));
+							} else {
+								spell.onCast(tome, Dungeon.hero);
+
+								//TODO, probably need targeting logic here
+								if (spell instanceof TargetedClericSpell && Dungeon.quickslot.contains(tome)){
+									QuickSlotButton.useTargeting(Dungeon.quickslot.getSlot(tome));
+								}
+							}
+							break;
+						case 1:
+							GameScene.show(new WndTitledMessage(new HeroIcon(spell), Messages.titleCase(spell.name()), spell.desc()));
+							break;
+						case 2:
+							hide();
+							tome.setQuickSpell(spell);
+							break;
+					}
+				}
+			};
+			parent.addToFront(r);
+			r.camera = camera();
+			PointF mousePos = PointerEvent.currentHoverPos();
+			mousePos = camera.screenToCamera((int)mousePos.x, (int)mousePos.y);
+			r.setPos(mousePos.x-3, mousePos.y-3);
 		}
 
 		@Override

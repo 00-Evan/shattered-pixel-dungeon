@@ -83,15 +83,17 @@ public class HeroIcon extends Image {
 	public static final int RECALL_GLYPH    = 47;
 	public static final int HOLY_LANCE      = 48;
 
-	//action indicator visuals
-	public static final int BERSERK         = 80;
-	public static final int COMBO           = 81;
-	public static final int PREPARATION     = 82;
-	public static final int MOMENTUM        = 83;
-	public static final int SNIPERS_MARK    = 84;
-	public static final int WEAPON_SWAP     = 85;
-	public static final int MONK_ABILITIES  = 86;
+	//all cleric spells have a separate icon with no background for the action indicator
+	public static final int SPELL_ACTION_OFFSET      = 32;
 
+	//action indicator visuals
+	public static final int BERSERK         = 104;
+	public static final int COMBO           = 105;
+	public static final int PREPARATION     = 106;
+	public static final int MOMENTUM        = 107;
+	public static final int SNIPERS_MARK    = 108;
+	public static final int WEAPON_SWAP     = 109;
+	public static final int MONK_ABILITIES  = 110;
 
 	public HeroIcon(HeroSubClass subCls){
 		super( Assets.Interfaces.HERO_ICONS );

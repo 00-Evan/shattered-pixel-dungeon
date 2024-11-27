@@ -119,6 +119,19 @@ public abstract class ClericSpell {
 		}
 
 		return spells;
-	};
+	}
 
+	public static ArrayList<ClericSpell> getAllSpells() {
+		ArrayList<ClericSpell> spells = new ArrayList<>();
+		spells.add(GuidingLight.INSTANCE);
+		spells.add(HolyWeapon.INSTANCE);
+		spells.add(HolyWard.INSTANCE);
+		spells.add(ShieldOfLight.INSTANCE);
+		spells.add(DetectCurse.INSTANCE);
+		spells.add(Sunray.INSTANCE);
+		spells.add(RecallGlyph.INSTANCE);
+		spells.add(DivineSense.INSTANCE);
+		spells.add(HolyLance.INSTANCE);
+		return spells;
+	}
 }
