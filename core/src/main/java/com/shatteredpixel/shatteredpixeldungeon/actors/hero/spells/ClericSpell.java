@@ -105,7 +105,7 @@ public abstract class ClericSpell {
 		} else if (tier == 3){
 
 			if (cleric.subClass == HeroSubClass.PRIEST) {
-				//TODO innate radiance spell
+				spells.add(Radiance.INSTANCE);
 
 				if (cleric.hasTalent(Talent.HOLY_LANCE)){
 					spells.add(HolyLance.INSTANCE);
@@ -131,6 +131,7 @@ public abstract class ClericSpell {
 		spells.add(Sunray.INSTANCE);
 		spells.add(RecallGlyph.INSTANCE);
 		spells.add(DivineSense.INSTANCE);
+		spells.add(Radiance.INSTANCE);
 		spells.add(HolyLance.INSTANCE);
 		return spells;
 	}
