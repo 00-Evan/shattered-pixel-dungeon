@@ -68,15 +68,17 @@ public class v3_X_Changes {
 				"_-_ ... days after Shattered v2.5.0\n\n" +
 				"Dev commentary will be added here in the future."));*/
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "v3.0.0 To-Do",
-				"Here's a rough list of what needs to be done before v3.0 is ready for release, in addition to changes based on feedback:\n" +
-				"**-** Fully implement the Priest and at least one armor ability\n" +
-				"**-** Release v3.0 to Beta!\n" +
-				"**-** Implement another armor ability\n" +
-				"**-** Implement the Paladin subclass\n" +
-				"**-** Implement a 3rd armor ability\n" +
-				"**-** Polish up the Cleric visually and respond to balance/design feedback\n" +
-				"**-** Do smaller misc. changes for v3.0, primarily some balance and interface tweaks"));
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Alpha Info",
+				"Hey Alpha testers! This alpha is in a less complete state than normal, here's info about what's currently incomplete game-content wise:\n" +
+				"**-** The Cleric is missing one T2 Talent\n" +
+				"**-** The Priest is missing two of their T3 talents\n" +
+				"**-** The Paladin is not implemented\n" +
+				"**-** No armor abilities are implemented, and so I've capped Cleric runs at floor 20 for now.\n" +
+				"\n" +
+				"The following needs to be done before the Beta can release:\n" +
+				"**-** Address any bugs or other critical issues that get reported\n" +
+				"**-** Round out implementation of Cleric base talents and Priest talents\n" +
+				"**-** Fully implement at least one armor ability"));
 
 		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 1), "The Cleric!",
 				"**Shattered Pixel Dungeon has another new hero, making for six total!!**\n" +
@@ -123,8 +125,9 @@ public class v3_X_Changes {
 				"\n" +
 				"**Misc.:**\n" +
 				"**-** Camera no longer re-centers on hero when adding custom notes\n" +
+				"**-** Improved the game's monochrome Android icon\n" +
 				"**-** Improved text clarity in a few cases\n" +
-				"**-** Updated internal code libraries "));
+				"**-** Updated internal code libraries"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
@@ -136,6 +139,7 @@ public class v3_X_Changes {
 				"**-** Cursed armband not updating player gold display on desktop after stealing gold\n" +
 				"**-** Very specific cases where disarming traps could make items unattainable\n" +
 				"**-** Icecap incorrectly being blocked by high grass\n" +
+				"**-** Stone of detect magic incorrectly being usable on thrown weapons\n" +
 				"\n" +
 				"**Effects:**\n" +
 				"**-** Monk abilities which ignore armor using the incorrect damage icon\n" +
@@ -153,7 +157,7 @@ public class v3_X_Changes {
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SOMETHING), "Nothing yet!",
-				"While there are no other balance changes in v3.0 currently, I do plan to go over some balance numbers and make adjustments here before release."));
+				"While there are no other balance changes in v3.0 currently, I do plan to go over some balance numbers and make adjustments here during the beta."));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
 		changes.hardlight(CharSprite.NEGATIVE);
