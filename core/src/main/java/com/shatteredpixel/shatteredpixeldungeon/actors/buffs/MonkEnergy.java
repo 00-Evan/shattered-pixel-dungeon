@@ -193,7 +193,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 		energy = Math.min(energy+energyGain, energyCap());
 
-		if (energy > 0 && cooldown == 0){
+		if (energy >= 1 && cooldown == 0){
 			ActionIndicator.setAction(this);
 		}
 		BuffIndicator.refreshHero();
