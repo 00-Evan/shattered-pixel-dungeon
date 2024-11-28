@@ -179,7 +179,7 @@ public enum Talent {
 	//Cleric T2
 	ENLIGHTENING_MEAL(164), RECALL_GLYPH(165), SUNRAY(166), DIVINE_SENSE(167), CLERICT2E(168),
 	//Cleric T3
-	CLERICT3A(169, 3), LIGHT_READING(170, 3),
+	CLEANSE(169, 3), LIGHT_READING(170, 3),
 	//Priest T3
 	HOLY_LANCE(171, 3), PRIESTT3B(172, 3), PRIESTT3C(173, 3),
 	//Paladin T3
@@ -964,7 +964,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, PRECISE_ASSAULT, DEADLY_FOLLOWUP);
 				break;
 			case CLERIC:
-				Collections.addAll(tierTalents, CLERICT3A, LIGHT_READING);
+				Collections.addAll(tierTalents, CLEANSE, LIGHT_READING);
 				break;
 		}
 		for (Talent talent : tierTalents){

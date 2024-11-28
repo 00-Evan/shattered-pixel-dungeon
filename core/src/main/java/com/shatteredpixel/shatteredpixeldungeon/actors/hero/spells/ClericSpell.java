@@ -104,6 +104,10 @@ public abstract class ClericSpell {
 
 		} else if (tier == 3){
 
+			if (cleric.hasTalent(Talent.CLEANSE)){
+				spells.add(Cleanse.INSTANCE);
+			}
+
 			if (cleric.subClass == HeroSubClass.PRIEST) {
 				spells.add(Radiance.INSTANCE);
 
@@ -131,6 +135,7 @@ public abstract class ClericSpell {
 		spells.add(Sunray.INSTANCE);
 		spells.add(RecallGlyph.INSTANCE);
 		spells.add(DivineSense.INSTANCE);
+		spells.add(Cleanse.INSTANCE);
 		spells.add(Radiance.INSTANCE);
 		spells.add(HolyLance.INSTANCE);
 		return spells;
