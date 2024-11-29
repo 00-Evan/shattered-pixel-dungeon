@@ -166,7 +166,7 @@ public class WndClericSpells extends Window {
 				hide();
 
 
-				if(!spell.canCast(Dungeon.hero)){
+				if(!tome.canCast(Dungeon.hero, spell)){
 					GLog.w(Messages.get(HolyTome.class, "no_spell"));
 				} else {
 					spell.onCast(tome, Dungeon.hero);
@@ -203,7 +203,7 @@ public class WndClericSpells extends Window {
 							break;
 						case 0:
 							hide();
-							if(!spell.canCast(Dungeon.hero)){
+							if(!tome.canCast(Dungeon.hero, spell)){
 								GLog.w(Messages.get(HolyTome.class, "no_spell"));
 							} else {
 								spell.onCast(tome, Dungeon.hero);
