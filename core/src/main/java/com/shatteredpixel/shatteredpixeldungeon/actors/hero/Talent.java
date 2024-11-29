@@ -60,6 +60,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ShardOfOblivion;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
@@ -722,7 +723,8 @@ public enum Talent {
 		}
 		if (hero.heroClass == HeroClass.CLERIC
 				&& hero.hasTalent(RECALL_GLYPH)
-				&& Scroll.class.isAssignableFrom(cls)){
+				&& Scroll.class.isAssignableFrom(cls)
+				&& cls != ScrollOfUpgrade.class){
 			Buff.affect(hero, RecallGlyph.UsedGlyphTracker.class, hero.pointsInTalent(RECALL_GLYPH) == 2 ? 300 : 10).item = cls;
 		}
 	}
