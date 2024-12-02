@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -59,9 +60,25 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("ALPHA-3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new HolyTome(),
+				"Thanks a bunch for your early feedback!\n\n" +
+				"Aside from bug reports, the most consistent bit of feedback I've heard is that the holy tome's charging mechanic doesn't feel great. I originally concepted it as charging based on exp gain to accommodate some of my early spell designs that involved self-healing. However, once I got into more specific designs I ended up not making these sorts of spells anyway, as while healing is obviously part of the divine caster archetype, it’s also really powerful and boring.\n\n" +
+				"So at this point it’s become pretty clear to me that the existing tome recharge mechanic is a holdover from earlier design iterations, and I’m trying out scrapping it entirely. The tome now recharges based on time, roughly 33% slower than the Rogue’s Cloak of Shadows, and we’ll refine things from there. This should be a buff to recharging speed overall, although it may not feel that way after floor 10 as I’m also fixing a bug that caused Holy Lance to not consume charges."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by ALPHA:**\n" +
+				"**-** Holy Lance not consuming charges in most cases\n" +
+				"**-** Free Guiding Light cooldown debuff stacking on itself instead of only triggering once\n" +
+				"**-** Recently used glyph duration stacking instead of resetting\n" +
+				"**-** Enlightening Meal talent not reducing time in takes to eat from Horn of Plenty\n" +
+				"**-** Rare crash bugs\n\n" +
+				"**Existed Prior to ALPHA:**\n" +
+				"**-** Holiday pasty names not appearing in catalogs"));
 
 		changes = new ChangeInfo("ALPHA-2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -69,6 +86,7 @@ public class v3_X_Changes {
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
+				"**Caused by ALPHA:**\n" +
 				"**-** Recall Glyph spell working on scrolls of upgrade\n" +
 				"**-** Spells still being castable without adequate tome charges\n" +
 				"**-** One rare crash bug\n" +
