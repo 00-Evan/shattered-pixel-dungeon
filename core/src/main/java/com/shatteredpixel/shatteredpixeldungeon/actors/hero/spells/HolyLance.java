@@ -111,6 +111,7 @@ public class HolyLance extends TargetedClericSpell {
 
 									enemy.sprite.burst(0xFFFFFFFF, 10);
 									hero.spendAndNext(1f);
+									onSpellCast(tome, hero);
 									FlavourBuff.affect(hero, LanceCooldown.class, 50f);
 								}
 							});
@@ -124,6 +125,7 @@ public class HolyLance extends TargetedClericSpell {
 								public void call() {
 									Splash.at(target, 0xFFFFFFFF, 10);
 									hero.spendAndNext(1f);
+									onSpellCast(tome, hero);
 									FlavourBuff.affect(hero, LanceCooldown.class, 50f);
 								}
 							});

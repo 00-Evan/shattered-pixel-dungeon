@@ -725,7 +725,7 @@ public enum Talent {
 				&& hero.hasTalent(RECALL_GLYPH)
 				&& Scroll.class.isAssignableFrom(cls)
 				&& cls != ScrollOfUpgrade.class){
-			Buff.affect(hero, RecallGlyph.UsedGlyphTracker.class, hero.pointsInTalent(RECALL_GLYPH) == 2 ? 300 : 10).item = cls;
+			Buff.prolong(hero, RecallGlyph.UsedGlyphTracker.class, hero.pointsInTalent(RECALL_GLYPH) == 2 ? 300 : 10).item = cls;
 		}
 	}
 
@@ -733,7 +733,7 @@ public enum Talent {
 		if (hero.heroClass == HeroClass.CLERIC
 				&& hero.hasTalent(RECALL_GLYPH)
 				&& Runestone.class.isAssignableFrom(cls)){
-			Buff.affect(hero, RecallGlyph.UsedGlyphTracker.class, hero.pointsInTalent(RECALL_GLYPH) == 2 ? 300 : 10).item = cls;
+			Buff.prolong(hero, RecallGlyph.UsedGlyphTracker.class, hero.pointsInTalent(RECALL_GLYPH) == 2 ? 300 : 10).item = cls;
 		}
 	}
 

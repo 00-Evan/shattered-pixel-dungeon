@@ -87,7 +87,7 @@ public class GuidingLight extends TargetedClericSpell {
 
 				onSpellCast(tome, hero);
 				if (hero.subClass == HeroSubClass.PRIEST) {
-					Buff.affect(hero, GuidingLightPriestCooldown.class, 100f);
+					Buff.prolong(hero, GuidingLightPriestCooldown.class, 100f);
 				}
 
 			}
