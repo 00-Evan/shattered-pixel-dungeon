@@ -1888,9 +1888,6 @@ public class Hero extends Char {
 		MasterThievesArmband.Thievery armband = buff(MasterThievesArmband.Thievery.class);
 		if (armband != null) armband.gainCharge(percent);
 
-		HolyTome.TomeRecharge tome = buff(HolyTome.TomeRecharge.class);
-		if (tome != null) tome.gainCharge(percent);
-
 		Berserk berserk = buff(Berserk.class);
 		if (berserk != null) berserk.recover(percent);
 		

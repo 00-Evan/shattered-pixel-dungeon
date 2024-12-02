@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ClericSpell;
@@ -249,41 +250,38 @@ public class HolyTome extends Artifact {
 			else                            ActionIndicator.clearAction(this);
 		}
 
-		public void gainCharge(float levelPortion) {
-			if (cursed || target.buff(MagicImmune.class) != null) return;
-
-			if (charge < chargeCap) {
-
-				//gains 5 charges per hero level, plus 0.25 per missing charge, plus another 0.25 for every level after 7
-				float chargeGain = (5f * levelPortion) * (1f+(chargeCap - charge)/20f);
-				if (level() > 7) chargeGain *= 1f + (level()-7)/20f;
-
-				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
-
-				//floor 1 is very short with pre-spawned weak enemies, so nerf recharge speed here specifically
-				if (Dungeon.depth == 1){
-					chargeGain *= 0.67f;
+		@Override
+		public boolean act() {
+			if (charge < chargeCap && !cursed && target.buff(MagicImmune.class) == null) {
+				if (Regeneration.regenOn()) {
+					float missing = (chargeCap - charge);
+					if (level() > 7) missing += 5*(level() - 7)/3f;
+					float turnsToCharge = (60 - missing);
+					turnsToCharge /= RingOfEnergy.artifactChargeMultiplier(target);
+					float chargeToGain = (1f / turnsToCharge);
+					if (!isEquipped(Dungeon.hero)){
+						chargeToGain *= 0.75f*Dungeon.hero.pointsInTalent(Talent.LIGHT_READING)/3f;
+					}
+					partialCharge += chargeToGain;
 				}
 
-				if (!isEquipped(Dungeon.hero)){
-					chargeGain *= 0.75f*Dungeon.hero.pointsInTalent(Talent.LIGHT_READING)/3f;
-				}
-
-				partialCharge += chargeGain;
-
-				//charge is in increments of 1/5 max hunger value.
 				while (partialCharge >= 1) {
 					charge++;
 					partialCharge -= 1;
-
 					if (charge == chargeCap){
 						partialCharge = 0;
 					}
-					updateQuickslot();
+
 				}
 			} else {
 				partialCharge = 0;
 			}
+
+			updateQuickslot();
+
+			spend( TICK );
+
+			return true;
 		}
 
 		@Override
