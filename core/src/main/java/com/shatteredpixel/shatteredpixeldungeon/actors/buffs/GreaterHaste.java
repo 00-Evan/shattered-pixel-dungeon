@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
+import com.watabou.utils.Bundle;
 
 //currently only applies to the hero
 public class GreaterHaste extends Buff {
@@ -81,6 +82,20 @@ public class GreaterHaste extends Buff {
 	@Override
 	public String desc() {
 		return Messages.get(this, "desc", left);
+	}
+
+	private static final String LEFT	= "left";
+
+	@Override
+	public void storeInBundle( Bundle bundle ) {
+		super.storeInBundle( bundle );
+		bundle.put( LEFT, left );
+	}
+
+	@Override
+	public void restoreFromBundle( Bundle bundle ) {
+		super.restoreFromBundle(bundle);
+		left = bundle.getInt( LEFT );
 	}
 
 }
