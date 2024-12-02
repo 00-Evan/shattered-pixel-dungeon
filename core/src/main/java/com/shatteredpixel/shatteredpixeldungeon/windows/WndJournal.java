@@ -770,7 +770,7 @@ public class WndJournal extends WndTabbed {
 					title = "???";
 					desc = Messages.get(CatalogTab.class, "not_seen_item");
 				} else {
-					title = Messages.titleCase(item.trueName());
+					title = Messages.titleCase( item.name() );
 					//some items don't include direct stats, generally when they're not applicable
 					if (item instanceof ClassArmor || item instanceof SpiritBow){
 						desc += item.desc();
