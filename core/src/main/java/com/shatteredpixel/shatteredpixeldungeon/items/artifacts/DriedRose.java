@@ -1031,6 +1031,15 @@ public class DriedRose extends Artifact {
 						});
 					}
 				}
+
+				@Override
+				protected boolean onLongClick() {
+					if (item() != null && item().name() != null){
+						GameScene.show(new WndInfoItem(item()));
+						return true;
+					}
+					return false;
+				}
 			};
 			btnArmor.setRect( btnWeapon.right() + BTN_GAP, btnWeapon.top(), BTN_SIZE, BTN_SIZE );
 			if (rose.armor != null) {
