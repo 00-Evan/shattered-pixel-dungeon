@@ -94,21 +94,21 @@ public class RecallGlyph extends ClericSpell {
 			Class<? extends Item> item = hero.buff(UsedGlyphTracker.class).item;
 			if (ExoticScroll.class.isAssignableFrom(item)){
 				if (item == ScrollOfMetamorphosis.class || item == ScrollOfEnchantment.class){
+					return 8;
+				} else {
+					return 4;
+				}
+			} else if (Scroll.class.isAssignableFrom(item)){
+				if (item == ScrollOfTransmutation.class){
 					return 6;
 				} else {
 					return 3;
 				}
-			} else if (Scroll.class.isAssignableFrom(item)){
-				if (item == ScrollOfTransmutation.class){
+			} else if (Runestone.class.isAssignableFrom(item)){
+				if (item == StoneOfAugmentation.class || item == StoneOfEnchantment.class){
 					return 4;
 				} else {
 					return 2;
-				}
-			} else if (Runestone.class.isAssignableFrom(item)){
-				if (item == StoneOfAugmentation.class || item == StoneOfEnchantment.class){
-					return 2;
-				} else {
-					return 1;
 				}
 			}
 		}

@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -44,7 +45,7 @@ public class DivineSense extends ClericSpell {
 
 	@Override
 	public void onCast(HolyTome tome, Hero hero) {
-		FlavourBuff.affect(hero, DivineSenseTracker.class, 50f);
+		Buff.affect(hero, DivineSenseTracker.class, 30f);
 		Dungeon.observe();
 
 		Sample.INSTANCE.play(Assets.Sounds.READ);
@@ -62,7 +63,7 @@ public class DivineSense extends ClericSpell {
 
 	public static class DivineSenseTracker extends FlavourBuff {
 
-		public static final float DURATION = 50f;
+		public static final float DURATION = 30f;
 
 		{
 			type = buffType.POSITIVE;
