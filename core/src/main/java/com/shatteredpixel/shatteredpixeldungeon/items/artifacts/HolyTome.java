@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -245,9 +246,19 @@ public class HolyTome extends Artifact {
 	public class TomeRecharge extends ArtifactBuff implements ActionIndicator.Action {
 
 		@Override
-		public void fx(boolean on) {
-			if (on && quickSpell != null)   ActionIndicator.setAction(this);
-			else                            ActionIndicator.clearAction(this);
+		public boolean attachTo(Char target) {
+			if (super.attachTo(target)) {
+				if (quickSpell != null) ActionIndicator.setAction(this);
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		@Override
+		public void detach() {
+			super.detach();
+			ActionIndicator.clearAction(this);
 		}
 
 		@Override
