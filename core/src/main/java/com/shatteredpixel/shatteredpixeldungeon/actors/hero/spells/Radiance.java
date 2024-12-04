@@ -56,7 +56,7 @@ public class Radiance extends ClericSpell {
 		Sample.INSTANCE.play(Assets.Sounds.BLAST);
 
 		if (Dungeon.level.viewDistance < 6 ){
-			Buff.affect(hero, Light.class, Dungeon.isChallenged(Challenges.DARKNESS) ? 20 : 100);
+			Buff.prolong(hero, Light.class, Dungeon.isChallenged(Challenges.DARKNESS) ? 20 : 100);
 		}
 
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
