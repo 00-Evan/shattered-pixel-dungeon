@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfFeatherFall;
@@ -41,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MobSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
@@ -58,6 +60,11 @@ public class Chasm implements Hero.Doom {
 		Game.runOnRenderThread(new Callback() {
 			@Override
 			public void call() {
+				if (Dungeon.depth >= 20 && Dungeon.hero.heroClass == HeroClass.CLERIC){
+					GameScene.show(new WndMessage("Thanks for playing the Alpha!\n\nRuns with the Cleric cap out at floor 20 for the moment, but you'll be able to finish your run closer to the beta releases."));
+					return;
+				}
+
 				GameScene.show(
 						new WndOptions( new Image(Dungeon.level.tilesTex(), 176, 16, 16, 16),
 								Messages.get(Chasm.class, "chasm"),
