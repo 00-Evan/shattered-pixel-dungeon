@@ -80,44 +80,48 @@ public abstract class ClericSpell {
 			spells.add(HolyWeapon.INSTANCE);
 			spells.add(HolyWard.INSTANCE);
 
-			if (cleric.hasTalent(Talent.SHIELD_OF_LIGHT)) {
-				spells.add(ShieldOfLight.INSTANCE);
-			}
-
 			if (cleric.hasTalent(Talent.DETECT_CURSE)) {
 				spells.add(DetectCurse.INSTANCE);
 			}
 
-		} else if (tier == 2) {
-
-			if (cleric.hasTalent(Talent.SUNRAY)){
-				spells.add(Sunray.INSTANCE);
+			if (cleric.hasTalent(Talent.SHIELD_OF_LIGHT)) {
+				spells.add(ShieldOfLight.INSTANCE);
 			}
+
+		} else if (tier == 2) {
 
 			if (cleric.hasTalent(Talent.RECALL_GLYPH)){
 				spells.add(RecallGlyph.INSTANCE);
+			}
+
+			if (cleric.hasTalent(Talent.SUNRAY)){
+				spells.add(Sunray.INSTANCE);
 			}
 
 			if (cleric.hasTalent(Talent.DIVINE_SENSE)) {
 				spells.add(DivineSense.INSTANCE);
 			}
 
+			if (cleric.hasTalent(Talent.BLESS)){
+				spells.add(BlessSpell.INSTANCE);
+			}
+
 		} else if (tier == 3){
+
+			if (cleric.subClass == HeroSubClass.PRIEST) {
+				spells.add(Radiance.INSTANCE);
+
+			} else if (cleric.subClass == HeroSubClass.PALADIN){
+				//TODO innate smite spell
+
+			}
 
 			if (cleric.hasTalent(Talent.CLEANSE)){
 				spells.add(Cleanse.INSTANCE);
 			}
 
-			if (cleric.subClass == HeroSubClass.PRIEST) {
-				spells.add(Radiance.INSTANCE);
-
-				if (cleric.hasTalent(Talent.HOLY_LANCE)){
-					spells.add(HolyLance.INSTANCE);
-				}
-
-			} else if (cleric.subClass == HeroSubClass.PALADIN){
-				//TODO innate smite spell
-
+			if (cleric.hasTalent(Talent.HOLY_LANCE)){
+				spells.add(HolyLance.INSTANCE);
 			}
 
 		}
@@ -130,10 +134,10 @@ public abstract class ClericSpell {
 		spells.add(GuidingLight.INSTANCE);
 		spells.add(HolyWeapon.INSTANCE);
 		spells.add(HolyWard.INSTANCE);
-		spells.add(ShieldOfLight.INSTANCE);
 		spells.add(DetectCurse.INSTANCE);
-		spells.add(Sunray.INSTANCE);
+		spells.add(ShieldOfLight.INSTANCE);
 		spells.add(RecallGlyph.INSTANCE);
+		spells.add(Sunray.INSTANCE);
 		spells.add(DivineSense.INSTANCE);
 		spells.add(Cleanse.INSTANCE);
 		spells.add(Radiance.INSTANCE);
