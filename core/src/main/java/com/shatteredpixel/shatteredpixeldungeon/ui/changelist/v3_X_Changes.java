@@ -60,6 +60,36 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("ALPHA-4", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_TOME), "Spell Additions & Changes",
+				"I've added a new talent/spell in this alpha release!:\n\n" +
+				"**Bless** is a T2 spell/talent that applies the bless buff to the Cleric or another character, and applies either healing or shielding, depending on the target. I decided on another cheaper spell for T2 since recall glyph is being made more expensive.\n\n" +
+				"Expect more talents/spells for the Priest very soon, possibly tomorrow!\n\n" +
+				"I'm also making a few balance changes to existing spells based on early feedback:\n" +
+				"**- Recall Glyph** charge cost increased by 1 across the board.\n" +
+				"**- Divine Sense** duration down to 30 from 50.\n" +
+				"**- Divine Sense** charge cost up to 2 from 1, as was already stated in the UI."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by ALPHA:**\n" +
+				"**-** Exploits where the Cleric could descend past floor 20 (let me implement an armor ability first, jeez!)\n" +
+				"**-** Light buff from radiance spell stacking on itself\n" +
+				"**-** Stun from radiance spell sometimes lasting for less time than intended\n" +
+				"**-** Spells still being castable from action indicator in cases where they shouldn't\n" +
+				"**-** More rare crash bugs\n" +
+				"**-** Various minor textual errors\n\n" +
+				"**Existed Prior to ALPHA:**\n" +
+				"**-** Duration of greater haste not being preserved on save/load\n" +
+				"**-** Various minor textual errors"));
+
 		changes = new ChangeInfo("ALPHA-3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
