@@ -68,6 +68,7 @@ public class BlessSpell extends TargetedClericSpell {
 			Buff.prolong(ch, Bless.class, 2f + 2*hero.pointsInTalent(Talent.BLESS));
 			Buff.affect(ch, Barrier.class).setShield(5 + 5*hero.pointsInTalent(Talent.BLESS));
 			ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(5 + 5*hero.pointsInTalent(Talent.BLESS)), FloatingText.SHIELDING );
+			hero.busy();
 			hero.sprite.operate(ch.pos);
 		} else {
 			Buff.prolong(ch, Bless.class, 5f + 5*hero.pointsInTalent(Talent.BLESS));
@@ -87,9 +88,7 @@ public class BlessSpell extends TargetedClericSpell {
 
 			hero.sprite.zap(ch.pos);
 		}
-
-		hero.busy();
-		hero.sprite.operate(hero.pos);
+		hero.spend( 1f );
 
 		onSpellCast(tome, hero);
 	}
