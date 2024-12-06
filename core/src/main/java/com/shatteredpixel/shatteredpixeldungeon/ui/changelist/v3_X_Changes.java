@@ -60,9 +60,18 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("ALPHA-5", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Just a couple fixes this release I'm afraid, I didn't have time to finish designing and implementing new spells. Hopefully I'll be able to release another Alpha with finished Priest spells early this coming week.\n\n" +
+				"Fixed the following bugs:\n" +
+				"**Caused by ALPHA:**\n" +
+				"**-** Bless spell not spending a turn\n" +
+				"**-** Various minor visual and UI bugs with Bless\n" +
+				"**-** Minor visual bug with cleanse curse and spell action indicator\n\n" +
+				"A couple people have reported the blind from sun ray not working properly vs. ranged enemies, but I haven't been able to reproduce this. Please let me know if that happens to you!"));
 
 		changes = new ChangeInfo("ALPHA-4", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
