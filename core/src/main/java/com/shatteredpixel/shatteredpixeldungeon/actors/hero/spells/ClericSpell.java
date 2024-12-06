@@ -139,6 +139,7 @@ public abstract class ClericSpell {
 		spells.add(RecallGlyph.INSTANCE);
 		spells.add(Sunray.INSTANCE);
 		spells.add(DivineSense.INSTANCE);
+		spells.add(BlessSpell.INSTANCE);
 		spells.add(Cleanse.INSTANCE);
 		spells.add(Radiance.INSTANCE);
 		spells.add(HolyLance.INSTANCE);

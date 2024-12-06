@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ClericSpell;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.DetectCurse;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.TargetedClericSpell;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
@@ -307,11 +306,7 @@ public class HolyTome extends Artifact {
 
 		@Override
 		public int indicatorColor() {
-			if (quickSpell == DetectCurse.INSTANCE){
-				return 0x00A0FF;
-			} else {
-				return 0x002157;
-			}
+			return 0x002157;
 		}
 
 		@Override
