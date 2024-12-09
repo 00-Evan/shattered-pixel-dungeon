@@ -64,7 +64,7 @@ public class ShieldOfLight extends TargetedClericSpell {
 		hero.sprite.operate(hero.pos);
 
 		//1 turn less as the casting is instant
-		Buff.affect( hero, ShieldOfLightTracker.class, 1f + 2f*hero.pointsInTalent(Talent.SHIELD_OF_LIGHT)).object = ch.id();
+		Buff.prolong( hero, ShieldOfLightTracker.class, 1f + 2f*hero.pointsInTalent(Talent.SHIELD_OF_LIGHT)).object = ch.id();
 
 		hero.busy();
 		hero.sprite.operate(hero.pos);
