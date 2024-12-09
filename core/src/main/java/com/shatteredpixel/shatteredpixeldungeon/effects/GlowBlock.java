@@ -19,29 +19,46 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric;
+package com.shatteredpixel.shatteredpixeldungeon.effects;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
-import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.Gizmo;
 
-public class Cleric2 extends ArmorAbility {
+public class GlowBlock extends Gizmo {
 
-	@Override
-	protected void activate(ClassArmor armor, Hero hero, Integer target) {
+	private CharSprite target;
 
+	public GlowBlock(CharSprite target ) {
+		super();
+
+		this.target = target;
 	}
 
 	@Override
-	public int icon() {
-		return HeroIcon.CLERIC2;
+	public void update() {
+		super.update();
+
+		//wavers between 0.4f and 0.6f once per second
+		target.tint(1.33f, 1.33f, 0.83f, 0.5f + 0.1f*(float)Math.cos(Math.PI*2*Game.timeTotal));
+
 	}
 
-	@Override
-	public Talent[] talents() {
-		return new Talent[]{Talent.CLERIC_A2_1, Talent.CLERIC_A2_2, Talent.CLERIC_A2_3};
+	public void darken() {
+
+		target.resetColor();
+		killAndErase();
+
+	}
+
+	public static GlowBlock lighten(CharSprite sprite ) {
+
+		GlowBlock glowBlock = new GlowBlock( sprite );
+		if (sprite.parent != null) {
+			sprite.parent.add(glowBlock);
+		}
+
+		return glowBlock;
 	}
 
 }

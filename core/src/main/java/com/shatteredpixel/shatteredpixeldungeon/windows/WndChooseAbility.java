@@ -24,9 +24,9 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Cleric1;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Cleric2;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Cleric3;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.AscendedForm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Trinity;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.PowerOfMany;
 import com.shatteredpixel.shatteredpixeldungeon.items.KingsCrown;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -99,7 +99,7 @@ public class WndChooseAbility extends Window {
 			add(abilityButton);
 
 			//TODO CLERIC no abilities are actually playable atm
-			if (ability instanceof Cleric1 || ability instanceof Cleric2 || ability instanceof Cleric3){
+			if (ability instanceof AscendedForm || ability instanceof Trinity || ability instanceof PowerOfMany){
 				abilityButton.enable(false);
 			}
 

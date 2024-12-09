@@ -27,7 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbili
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 
-public class Cleric3 extends ArmorAbility {
+public class Trinity extends ArmorAbility {
 
 	@Override
 	protected void activate(ClassArmor armor, Hero hero, Integer target) {
@@ -36,12 +36,12 @@ public class Cleric3 extends ArmorAbility {
 
 	@Override
 	public int icon() {
-		return HeroIcon.CLERIC3;
+		return HeroIcon.CLERIC2;
 	}
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.CLERIC_A3_1, Talent.CLERIC_A3_2, Talent.CLERIC_A3_3};
+		return new Talent[]{Talent.CLERIC_A2_1, Talent.CLERIC_A2_2, Talent.CLERIC_A2_3};
 	}
 
 }
