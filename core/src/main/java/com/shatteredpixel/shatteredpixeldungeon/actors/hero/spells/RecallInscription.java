@@ -43,9 +43,9 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Reflection;
 
-public class RecallGlyph extends ClericSpell {
+public class RecallInscription extends ClericSpell {
 
-	public static RecallGlyph INSTANCE = new RecallGlyph();
+	public static RecallInscription INSTANCE = new RecallInscription();
 
 	@Override
 	public int icon() {
@@ -54,7 +54,7 @@ public class RecallGlyph extends ClericSpell {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", Dungeon.hero.pointsInTalent(Talent.RECALL_GLYPH) == 2 ? 300 : 10) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
+		return Messages.get(this, "desc", Dungeon.hero.pointsInTalent(Talent.RECALL_INSCRIPTION) == 2 ? 300 : 10) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public class RecallGlyph extends ClericSpell {
 
 		@Override
 		public float iconFadePercent() {
-			float duration = Dungeon.hero.pointsInTalent(Talent.RECALL_GLYPH) == 2 ? 300 : 10;
+			float duration = Dungeon.hero.pointsInTalent(Talent.RECALL_INSCRIPTION) == 2 ? 300 : 10;
 			return Math.max(0, (duration - visualcooldown()) / duration);
 		}
 

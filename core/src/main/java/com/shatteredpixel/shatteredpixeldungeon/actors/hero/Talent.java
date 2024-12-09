@@ -44,7 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WandEmpower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.GuidingLight;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.RecallGlyph;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.RecallInscription;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
@@ -176,9 +176,9 @@ public enum Talent {
 	FEIGNED_RETREAT(151, 4), EXPOSE_WEAKNESS(152, 4), COUNTER_ABILITY(153, 4),
 
 	//Cleric T1
-	SATIATED_SPELLS(160), DETECT_CURSE(161), SEARING_LIGHT(162), SHIELD_OF_LIGHT(163),
+	SATIATED_SPELLS(160), HOLY_INTUITION(161), SEARING_LIGHT(162), SHIELD_OF_LIGHT(163),
 	//Cleric T2
-	ENLIGHTENING_MEAL(164), RECALL_GLYPH(165), SUNRAY(166), DIVINE_SENSE(167), BLESS(168),
+	ENLIGHTENING_MEAL(164), RECALL_INSCRIPTION(165), SUNRAY(166), DIVINE_SENSE(167), BLESS(168),
 	//Cleric T3
 	CLEANSE(169, 3), LIGHT_READING(170, 3),
 	//Priest T3
@@ -722,18 +722,18 @@ public enum Talent {
 			Sample.INSTANCE.play( Assets.Sounds.MELD );
 		}
 		if (hero.heroClass == HeroClass.CLERIC
-				&& hero.hasTalent(RECALL_GLYPH)
+				&& hero.hasTalent(RECALL_INSCRIPTION)
 				&& Scroll.class.isAssignableFrom(cls)
 				&& cls != ScrollOfUpgrade.class){
-			Buff.prolong(hero, RecallGlyph.UsedGlyphTracker.class, hero.pointsInTalent(RECALL_GLYPH) == 2 ? 300 : 10).item = cls;
+			Buff.prolong(hero, RecallInscription.UsedGlyphTracker.class, hero.pointsInTalent(RECALL_INSCRIPTION) == 2 ? 300 : 10).item = cls;
 		}
 	}
 
 	public static void onRunestoneUsed( Hero hero, int pos, Class<?extends Item> cls ){
 		if (hero.heroClass == HeroClass.CLERIC
-				&& hero.hasTalent(RECALL_GLYPH)
+				&& hero.hasTalent(RECALL_INSCRIPTION)
 				&& Runestone.class.isAssignableFrom(cls)){
-			Buff.prolong(hero, RecallGlyph.UsedGlyphTracker.class, hero.pointsInTalent(RECALL_GLYPH) == 2 ? 300 : 10).item = cls;
+			Buff.prolong(hero, RecallInscription.UsedGlyphTracker.class, hero.pointsInTalent(RECALL_INSCRIPTION) == 2 ? 300 : 10).item = cls;
 		}
 	}
 
@@ -908,7 +908,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, STRENGTHENING_MEAL, ADVENTURERS_INTUITION, PATIENT_STRIKE, AGGRESSIVE_BARRIER);
 				break;
 			case CLERIC:
-				Collections.addAll(tierTalents, SATIATED_SPELLS, DETECT_CURSE, SEARING_LIGHT, SHIELD_OF_LIGHT);
+				Collections.addAll(tierTalents, SATIATED_SPELLS, HOLY_INTUITION, SEARING_LIGHT, SHIELD_OF_LIGHT);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -937,7 +937,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, FOCUSED_MEAL, LIQUID_AGILITY, WEAPON_RECHARGING, LETHAL_HASTE, SWIFT_EQUIP);
 				break;
 			case CLERIC:
-				Collections.addAll(tierTalents, ENLIGHTENING_MEAL, RECALL_GLYPH, SUNRAY, DIVINE_SENSE, BLESS);
+				Collections.addAll(tierTalents, ENLIGHTENING_MEAL, RECALL_INSCRIPTION, SUNRAY, DIVINE_SENSE, BLESS);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -1092,6 +1092,10 @@ public enum Talent {
 
 	private static final HashMap<String, String> renamedTalents = new HashMap<>();
 	static{
+		//v3.0.0 ALPHA
+		renamedTalents.put("DETECT_CURSE",              "HOLY_INTUITION");
+		renamedTalents.put("RECALL_GLYPH",              "RECALL_INSCRIPTION");
+
 		//v2.4.0
 		renamedTalents.put("SECONDARY_CHARGE",          "VARIED_CHARGE");
 

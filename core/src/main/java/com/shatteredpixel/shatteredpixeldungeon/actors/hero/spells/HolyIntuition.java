@@ -33,9 +33,9 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
-public class DetectCurse extends InventoryClericSpell {
+public class HolyIntuition extends InventoryClericSpell {
 
-	public static final DetectCurse INSTANCE = new DetectCurse();
+	public static final HolyIntuition INSTANCE = new HolyIntuition();
 
 	@Override
 	public int icon() {
@@ -49,7 +49,7 @@ public class DetectCurse extends InventoryClericSpell {
 
 	@Override
 	public float chargeUse(Hero hero) {
-		return 4 - hero.pointsInTalent(Talent.DETECT_CURSE);
+		return 4 - hero.pointsInTalent(Talent.HOLY_INTUITION);
 	}
 
 	@Override

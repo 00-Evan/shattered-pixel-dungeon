@@ -80,8 +80,8 @@ public abstract class ClericSpell {
 			spells.add(HolyWeapon.INSTANCE);
 			spells.add(HolyWard.INSTANCE);
 
-			if (cleric.hasTalent(Talent.DETECT_CURSE)) {
-				spells.add(DetectCurse.INSTANCE);
+			if (cleric.hasTalent(Talent.HOLY_INTUITION)) {
+				spells.add(HolyIntuition.INSTANCE);
 			}
 
 			if (cleric.hasTalent(Talent.SHIELD_OF_LIGHT)) {
@@ -90,8 +90,8 @@ public abstract class ClericSpell {
 
 		} else if (tier == 2) {
 
-			if (cleric.hasTalent(Talent.RECALL_GLYPH)){
-				spells.add(RecallGlyph.INSTANCE);
+			if (cleric.hasTalent(Talent.RECALL_INSCRIPTION)){
+				spells.add(RecallInscription.INSTANCE);
 			}
 
 			if (cleric.hasTalent(Talent.SUNRAY)){
@@ -134,9 +134,9 @@ public abstract class ClericSpell {
 		spells.add(GuidingLight.INSTANCE);
 		spells.add(HolyWeapon.INSTANCE);
 		spells.add(HolyWard.INSTANCE);
-		spells.add(DetectCurse.INSTANCE);
+		spells.add(HolyIntuition.INSTANCE);
 		spells.add(ShieldOfLight.INSTANCE);
-		spells.add(RecallGlyph.INSTANCE);
+		spells.add(RecallInscription.INSTANCE);
 		spells.add(Sunray.INSTANCE);
 		spells.add(DivineSense.INSTANCE);
 		spells.add(BlessSpell.INSTANCE);
