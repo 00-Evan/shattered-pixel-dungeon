@@ -76,12 +76,15 @@ public class BlessSpell extends TargetedClericSpell {
 			int totalHeal = 5 + 10*hero.pointsInTalent(Talent.BLESS);
 			if (ch.HT - ch.HP < totalHeal){
 				int barrier = totalHeal - (ch.HT - ch.HP);
+				barrier = Math.max(barrier, 0);
 				if (ch.HP != ch.HT) {
 					ch.HP = ch.HT;
 					ch.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(totalHeal - barrier), FloatingText.HEALING);
 				}
-				Buff.affect(ch, Barrier.class).setShield(barrier);
-				ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(barrier), FloatingText.SHIELDING );
+				if (barrier > 0) {
+					Buff.affect(ch, Barrier.class).setShield(barrier);
+					ch.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(barrier), FloatingText.SHIELDING);
+				}
 			} else {
 				ch.HP = ch.HP + totalHeal;
 				ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(totalHeal), FloatingText.HEALING );

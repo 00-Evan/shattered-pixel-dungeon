@@ -85,6 +85,7 @@ public class HeroIcon extends Image {
 	public static final int CLEANSE         = 49;
 	public static final int RADIANCE        = 50;
 	public static final int HOLY_LANCE      = 51;
+	public static final int HALLOWED_GROUND = 52;
 
 	//all cleric spells have a separate icon with no background for the action indicator
 	public static final int SPELL_ACTION_OFFSET      = 32;

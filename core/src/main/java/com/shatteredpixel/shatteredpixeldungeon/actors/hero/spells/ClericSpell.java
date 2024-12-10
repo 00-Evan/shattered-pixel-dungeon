@@ -124,6 +124,10 @@ public abstract class ClericSpell {
 				spells.add(HolyLance.INSTANCE);
 			}
 
+			if (cleric.hasTalent(Talent.HALLOWED_GROUND)){
+				spells.add(HallowedGround.INSTANCE);
+			}
+
 		}
 
 		return spells;
@@ -143,6 +147,7 @@ public abstract class ClericSpell {
 		spells.add(Cleanse.INSTANCE);
 		spells.add(Radiance.INSTANCE);
 		spells.add(HolyLance.INSTANCE);
+		spells.add(HallowedGround.INSTANCE);
 		return spells;
 	}
 }
