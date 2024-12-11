@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
@@ -30,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Image;
@@ -60,7 +62,40 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("ALPHA-5", false, null);
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("ALPHA-0.6", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new HeroIcon(HeroSubClass.PRIEST), "Priest Spells",
+				"I've added two new Priest spells! These are both focused more on utility and synergy.\n\n" +
+				"**Hallowed Ground** creates an area of terrain that's cumbersome to enemies and beneficial to the Priest and their allies. Allies are healed, the Priest get shielding, enemies get briefly rooted and slowed, and grass grows randomly.\n\n" +
+				"**Mnemonic Prayer** extends the duration of buffs on allies, or debuffs on enemies. It also re-applies illuminated if the target was illuminated previously.\n\n" +
+				"I've also lessened the blur on the Cleric's splash art again, it's almost full-detail!\n\n" +
+				"With these additions the base Cleric and Priest are now finished! I'm going to implement an armor ability over the next few days and then we'll be ready for beta!"));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**-** Retroactively renamed the alphas to \"ALPHA-0.X\"\n\n" +
+				"I've made a few changes to talent/spell names and icons for better consistency:\n" +
+				"**-** Detect Magic renamed to Holy Intuition\n" +
+				"**-** Recall Glyph renamed to Recall Inscription\n" +
+				"**-** Adjusted icons for Cleric food talents\n" +
+				"**-** Only talents that grant new spells use the 'yellow + blue' color scheme\n" +
+				"**-** Adjusted icons for Sucker Punch and Followup Strike"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by ALPHA:**\n" +
+				"**-** Holy Intuition (Detect Curse) not working on wands\n" +
+				"**-** Allies not properly triggering illuminated from guiding light\n" +
+				"**-** Shield of Light duration stacking with multiple casts instead of resetting\n\n" +
+				"**Existed Prior to ALPHA:**\n" +
+				"**-** Various minor textual errors"));
+
+		changes = new ChangeInfo("ALPHA-0.5", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
@@ -73,7 +108,7 @@ public class v3_X_Changes {
 				"**-** Minor visual bug with cleanse curse and spell action indicator\n\n" +
 				"A couple people have reported the blind from sun ray not working properly vs. ranged enemies, but I haven't been able to reproduce this. Please let me know if that happens to you!"));
 
-		changes = new ChangeInfo("ALPHA-4", false, null);
+		changes = new ChangeInfo("ALPHA-0.4", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
@@ -99,7 +134,7 @@ public class v3_X_Changes {
 				"**-** Duration of greater haste not being preserved on save/load\n" +
 				"**-** Various minor textual errors"));
 
-		changes = new ChangeInfo("ALPHA-3", false, null);
+		changes = new ChangeInfo("ALPHA-0.3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
@@ -119,7 +154,7 @@ public class v3_X_Changes {
 				"**Existed Prior to ALPHA:**\n" +
 				"**-** Holiday pasty names not appearing in catalogs"));
 
-		changes = new ChangeInfo("ALPHA-2", false, null);
+		changes = new ChangeInfo("ALPHA-0.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
