@@ -60,11 +60,11 @@ public class RecallInscription extends ClericSpell {
 	@Override
 	public void onCast(HolyTome tome, Hero hero) {
 
-		if (hero.buff(UsedGlyphTracker.class) == null){
+		if (hero.buff(UsedItemTracker.class) == null){
 			return;
 		}
 
-		Item item = Reflection.newInstance(hero.buff(UsedGlyphTracker.class).item);
+		Item item = Reflection.newInstance(hero.buff(UsedItemTracker.class).item);
 
 		item.setCurrent(hero);
 
@@ -84,14 +84,14 @@ public class RecallInscription extends ClericSpell {
 		}
 
 		onSpellCast(tome, hero);
-		hero.buff(UsedGlyphTracker.class).detach();
+		hero.buff(UsedItemTracker.class).detach();
 
 	}
 
 	@Override
 	public float chargeUse(Hero hero) {
-		if (hero.buff(UsedGlyphTracker.class) != null){
-			Class<? extends Item> item = hero.buff(UsedGlyphTracker.class).item;
+		if (hero.buff(UsedItemTracker.class) != null){
+			Class<? extends Item> item = hero.buff(UsedItemTracker.class).item;
 			if (ExoticScroll.class.isAssignableFrom(item)){
 				if (item == ScrollOfMetamorphosis.class || item == ScrollOfEnchantment.class){
 					return 8;
@@ -117,10 +117,10 @@ public class RecallInscription extends ClericSpell {
 
 	@Override
 	public boolean canCast(Hero hero) {
-		return hero.buff(UsedGlyphTracker.class) != null;
+		return hero.buff(UsedItemTracker.class) != null;
 	}
 
-	public static class UsedGlyphTracker extends FlavourBuff {
+	public static class UsedItemTracker extends FlavourBuff {
 
 		{
 			type = buffType.POSITIVE;
