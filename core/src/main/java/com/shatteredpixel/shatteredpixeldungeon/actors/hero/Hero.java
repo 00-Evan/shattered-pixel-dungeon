@@ -1909,9 +1909,9 @@ public class Hero extends Char {
 				}
 			}
 			if (buff(HallowedGround.HallowedFurrowTracker.class) != null){
-				buff(ElementalStrike.ElementalStrikeFurrowCounter.class).countDown(percent*5f);
-				if (buff(ElementalStrike.ElementalStrikeFurrowCounter.class).count() <= 0){
-					buff(ElementalStrike.ElementalStrikeFurrowCounter.class).detach();
+				buff(HallowedGround.HallowedFurrowTracker.class).countDown(percent*5f);
+				if (buff(HallowedGround.HallowedFurrowTracker.class).count() <= 0){
+					buff(HallowedGround.HallowedFurrowTracker.class).detach();
 				}
 			}
 		}
