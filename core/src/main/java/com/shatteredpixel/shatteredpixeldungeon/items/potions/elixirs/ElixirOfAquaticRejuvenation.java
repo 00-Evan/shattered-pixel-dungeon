@@ -68,6 +68,10 @@ public class ElixirOfAquaticRejuvenation extends Elixir {
 		public void set( int amount ){
 			if (amount > left) left = amount;
 		}
+
+		public void extend( float duration ) {
+			left += duration;
+		}
 		
 		@Override
 		public boolean act() {

@@ -42,6 +42,10 @@ public class AdrenalineSurge extends Buff {
 		this.interval = interval;
 		spend(interval - cooldown());
 	}
+
+	public void delay( float value ){
+		spend(value);
+	}
 	
 	public int boost(){
 		return boost;

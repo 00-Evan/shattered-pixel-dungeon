@@ -57,6 +57,10 @@ public class GreaterHaste extends Buff {
 		left = time;
 	}
 
+	public void extend( float duration ) {
+		left += duration;
+	}
+
 	@Override
 	public int icon() {
 		return BuffIndicator.HASTE;

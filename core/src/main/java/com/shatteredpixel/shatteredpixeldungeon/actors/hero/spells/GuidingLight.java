@@ -79,6 +79,7 @@ public class GuidingLight extends TargetedClericSpell {
 					ch.sprite.burst(0xFFFFFF44, 3);
 					if (ch.isAlive()){
 						Buff.affect(ch, Illuminated.class);
+						Buff.affect(ch, WasIlluminatedTracker.class);
 					}
 				}
 
@@ -140,4 +141,6 @@ public class GuidingLight extends TargetedClericSpell {
 			else target.sprite.remove(CharSprite.State.ILLUMINATED);
 		}
 	}
+
+	public static class WasIlluminatedTracker extends Buff {}
 }

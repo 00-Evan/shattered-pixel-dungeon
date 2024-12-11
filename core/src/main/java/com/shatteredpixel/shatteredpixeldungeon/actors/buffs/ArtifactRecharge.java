@@ -74,7 +74,7 @@ public class ArtifactRecharge extends Buff {
 		return this;
 	}
 	
-	public ArtifactRecharge prolong( float amount ){
+	public ArtifactRecharge extend(float amount ){
 		left += amount;
 		return this;
 	}

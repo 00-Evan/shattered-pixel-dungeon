@@ -72,6 +72,10 @@ public class WellFed extends Buff {
 			left /= 3;
 		}
 	}
+
+	public void extend( float duration ) {
+		left += duration;
+	}
 	
 	@Override
 	public int icon() {

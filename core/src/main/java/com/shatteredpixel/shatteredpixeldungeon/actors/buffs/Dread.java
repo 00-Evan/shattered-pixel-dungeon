@@ -78,6 +78,10 @@ public class Dread extends Buff {
 		return true;
 	}
 
+	public void extend( float duration ) {
+		left += duration;
+	}
+
 	private static final String LEFT	= "left";
 	private static final String OBJECT    = "object";
 

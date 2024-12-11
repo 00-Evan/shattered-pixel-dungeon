@@ -128,6 +128,10 @@ public abstract class ClericSpell {
 				spells.add(HallowedGround.INSTANCE);
 			}
 
+			if (cleric.hasTalent(Talent.MNEMONIC_PRAYER)){
+				spells.add(MnemonicPrayer.INSTANCE);
+			}
+
 		}
 
 		return spells;
@@ -148,6 +152,7 @@ public abstract class ClericSpell {
 		spells.add(Radiance.INSTANCE);
 		spells.add(HolyLance.INSTANCE);
 		spells.add(HallowedGround.INSTANCE);
+		spells.add(MnemonicPrayer.INSTANCE);
 		return spells;
 	}
 }

@@ -67,6 +67,10 @@ public class ArcaneArmor extends Buff {
 			spend(time - cooldown() - 1);
 		}
 	}
+
+	public void delay( float value ){
+		spend(value);
+	}
 	
 	@Override
 	public int icon() {

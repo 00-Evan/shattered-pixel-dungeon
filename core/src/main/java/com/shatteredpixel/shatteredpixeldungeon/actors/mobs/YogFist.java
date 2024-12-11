@@ -467,7 +467,7 @@ public abstract class YogFist extends Mob {
 			if (!isInvulnerable(src.getClass()) && !(src instanceof Viscosity.DeferedDamage)){
 				dmg = Math.round( dmg * resist( src.getClass() ));
 				if (dmg >= 0) {
-					Buff.affect(this, Viscosity.DeferedDamage.class).prolong(dmg);
+					Buff.affect(this, Viscosity.DeferedDamage.class).extend(dmg);
 					sprite.showStatus(CharSprite.WARNING, Messages.get(Viscosity.class, "deferred", dmg));
 				}
 			} else{

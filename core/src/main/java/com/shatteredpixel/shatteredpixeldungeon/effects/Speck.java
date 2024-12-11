@@ -49,6 +49,7 @@ public class Speck extends Image {
 	public static final int BUBBLE      = 12;
 	public static final int STEAM       = 13;
 	public static final int COIN        = 14;
+	public static final int DOWN        = 15;
 	
 	public static final int DISCOVER    = 101;
 	public static final int EVOKE       = 102;
@@ -222,6 +223,10 @@ public class Speck extends Image {
 			
 		case UP:
 			speed.set( 0, -20 );
+			lifespan = 1f;
+			break;
+		case DOWN:
+			speed.set( 0, 20 );
 			lifespan = 1f;
 			break;
 			
@@ -429,6 +434,7 @@ public class Speck extends Image {
 				break;
 				
 			case UP:
+			case DOWN:
 				scale.set( (float)(Math.sqrt( p < 0.5f ? p : 1 - p ) * 2) );
 				break;
 				
