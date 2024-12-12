@@ -62,9 +62,17 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("ALPHA-0.7", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Quick extra release to fix some bugs =S\n\n" +
+				"Fixed the following bugs:\n" +
+				"**Caused by ALPHA:**\n" +
+				"**-** Crashes caused by hallowed ground\n" +
+				"**-** Holy Intuition being referred to as divine intuition in some cases\n" +
+				"**-** Text display errors with recall inscription buff"));
 
 		changes = new ChangeInfo("ALPHA-0.6", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
