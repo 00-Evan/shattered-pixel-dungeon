@@ -128,6 +128,7 @@ public class BuffIndicator extends Component {
 	public static final int LIGHT_SHIELD= 76;
 	public static final int HOLY_SIGHT  = 77;
 	public static final int GLYPH_RECALL= 78;
+	public static final int ASCEND      = 79;
 
 	public static final int SIZE_SMALL  = 7;
 	public static final int SIZE_LARGE  = 16;

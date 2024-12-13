@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.AscendedForm;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
@@ -69,6 +70,9 @@ public abstract class ClericSpell {
 			hero.buff(Talent.SatiatedSpellsTracker.class).detach();
 		}
 		tome.spendCharge(chargeUse(hero));
+		if (hero.buff(AscendedForm.AscendBuff.class) != null){
+			hero.buff(AscendedForm.AscendBuff.class).incShield((int)(10*chargeUse(hero)));
+		}
 	}
 
 	public static ArrayList<ClericSpell> getSpellList(Hero cleric, int tier){

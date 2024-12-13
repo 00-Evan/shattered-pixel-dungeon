@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.AscendedForm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.ElementalStrike;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.HolyWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -270,6 +271,9 @@ abstract public class Weapon extends KindOfWeapon {
 			if (!RingOfForce.unarmedGetsWeaponEnchantment((Hero) owner)){
 				return reach;
 			}
+		}
+		if (owner instanceof Hero && owner.buff(AscendedForm.AscendBuff.class) != null){
+			reach += 2;
 		}
 		if (hasEnchant(Projecting.class, owner)){
 			return reach + Math.round(enchantment.procChanceMultiplier(owner));

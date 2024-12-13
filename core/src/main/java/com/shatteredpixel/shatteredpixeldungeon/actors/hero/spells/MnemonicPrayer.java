@@ -45,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ToxicImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WellFed;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.AscendedForm;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
@@ -90,6 +91,11 @@ public class MnemonicPrayer extends TargetedClericSpell {
 
 			for (Buff b : ch.buffs()){
 				if (b.type != Buff.buffType.POSITIVE || b.mnemonicExtended || b.icon() == BuffIndicator.NONE){
+					continue;
+				}
+
+				//no it does not boost ascended form lmao
+				if (b instanceof AscendedForm.AscendBuff){
 					continue;
 				}
 

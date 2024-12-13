@@ -66,6 +66,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.TimeStasis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.AscendedForm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Challenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.ElementalStrike;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesPower;
@@ -169,6 +170,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.Delayer;
+import com.watabou.utils.BArray;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.GameMath;
@@ -736,6 +738,15 @@ public class Hero extends Char {
 
 		if (wep != null){
 			return wep.canReach(this, enemy.pos);
+		} else if (buff(AscendedForm.AscendBuff.class) != null) {
+			boolean[] passable = BArray.not(Dungeon.level.solid, null);
+			for (Char ch : Actor.chars()) {
+				if (ch != this) passable[ch.pos] = false;
+			}
+
+			PathFinder.buildDistanceMap(enemy.pos, passable, 3);
+
+			return PathFinder.distance[pos] <= 3;
 		} else {
 			return false;
 		}
