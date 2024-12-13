@@ -132,6 +132,20 @@ public abstract class ClericSpell {
 				spells.add(MnemonicPrayer.INSTANCE);
 			}
 
+		} else if (tier == 4){
+
+			if (cleric.hasTalent(Talent.DIVINE_INTERVENTION)){
+				//TODO
+			}
+
+			if (cleric.hasTalent(Talent.JUDGEMENT)){
+				//TODO
+			}
+
+			if (cleric.hasTalent(Talent.FLASH)){
+				spells.add(Flash.INSTANCE);
+			}
+
 		}
 
 		return spells;
