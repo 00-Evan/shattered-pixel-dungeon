@@ -36,10 +36,13 @@ public class WndInfoTalent extends Window {
 
 	private static final float GAP	= 2;
 
-	private static final int WIDTH = 120;
+	private static final int WIDTH_MIN = 120;
+	private static final int WIDTH_MAX = 220;
 
 	public WndInfoTalent(Talent talent, int points, TalentButtonCallback buttonCallback){
 		super();
+
+		int width = WIDTH_MIN;
 
 		IconTitle titlebar = new IconTitle();
 
@@ -49,17 +52,25 @@ public class WndInfoTalent extends Window {
 			title += " +" + points;
 		}
 		titlebar.label( title, Window.TITLE_COLOR );
-		titlebar.setRect( 0, 0, WIDTH, 0 );
+		titlebar.setRect( 0, 0, width, 0 );
 		add( titlebar );
 
 		boolean metaDesc = (buttonCallback != null && buttonCallback.metamorphDesc()) ||
 				(Dungeon.hero != null && Dungeon.hero.metamorphedTalents.containsValue(talent));
 
 		RenderedTextBlock txtInfo = PixelScene.renderTextBlock(talent.desc(metaDesc), 6);
-		txtInfo.maxWidth(WIDTH);
+		txtInfo.maxWidth(width);
 		txtInfo.setPos(titlebar.left(), titlebar.bottom() + 2*GAP);
 		add( txtInfo );
-		resize( WIDTH, (int)(txtInfo.bottom() + GAP) );
+
+		while (PixelScene.landscape()
+				&& txtInfo.height() > 100
+				&& width < WIDTH_MAX){
+			width += 20;
+			txtInfo.maxWidth(width);
+		}
+		titlebar.setRect( 0, 0, width, 0 );
+		resize( width, (int)(txtInfo.bottom() + GAP) );
 
 		if (buttonCallback != null) {
 			RedButton button = new RedButton( buttonCallback.prompt() ) {
@@ -71,9 +82,9 @@ public class WndInfoTalent extends Window {
 				}
 			};
 			button.icon(Icons.get(Icons.TALENT));
-			button.setRect(0, txtInfo.bottom() + 2*GAP, WIDTH, 18);
+			button.setRect(0, txtInfo.bottom() + 2*GAP, width, 18);
 			add(button);
-			resize( WIDTH, (int)button.bottom()+1 );
+			resize( width, (int)button.bottom()+1 );
 		}
 
 	}

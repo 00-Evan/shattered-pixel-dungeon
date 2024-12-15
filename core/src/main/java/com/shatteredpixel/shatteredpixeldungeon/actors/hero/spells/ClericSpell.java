@@ -71,6 +71,7 @@ public abstract class ClericSpell {
 		}
 		tome.spendCharge(chargeUse(hero));
 		if (hero.buff(AscendedForm.AscendBuff.class) != null){
+			hero.buff(AscendedForm.AscendBuff.class).spellCasts++;
 			hero.buff(AscendedForm.AscendBuff.class).incShield((int)(10*chargeUse(hero)));
 		}
 	}
