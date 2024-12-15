@@ -140,11 +140,11 @@ public abstract class ClericSpell {
 		} else if (tier == 4){
 
 			if (cleric.hasTalent(Talent.DIVINE_INTERVENTION)){
-				//TODO
+				spells.add(DivineIntervention.INSTANCE);
 			}
 
 			if (cleric.hasTalent(Talent.JUDGEMENT)){
-				//TODO
+				spells.add(Judgement.INSTANCE);
 			}
 
 			if (cleric.hasTalent(Talent.FLASH)){
@@ -172,6 +172,9 @@ public abstract class ClericSpell {
 		spells.add(HolyLance.INSTANCE);
 		spells.add(HallowedGround.INSTANCE);
 		spells.add(MnemonicPrayer.INSTANCE);
+		spells.add(DivineIntervention.INSTANCE);
+		spells.add(Judgement.INSTANCE);
+		spells.add(Flash.INSTANCE);
 		return spells;
 	}
 }

@@ -23,12 +23,14 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.DivineIntervention;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -112,7 +114,11 @@ public class AscendedForm extends ArmorAbility {
 			left--;
 			if (left <= 0){
 				detach();
-				//TODO also remove divine intervention shield from allies
+				for (Char ch : Actor.chars()){
+					if (ch.buff(DivineIntervention.DivineShield.class) != null){
+						ch.buff(DivineIntervention.DivineShield.class).detach();
+					}
+				}
 				return true;
 			}
 

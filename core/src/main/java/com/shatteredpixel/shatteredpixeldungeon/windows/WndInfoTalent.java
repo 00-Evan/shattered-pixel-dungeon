@@ -64,7 +64,7 @@ public class WndInfoTalent extends Window {
 		add( txtInfo );
 
 		while (PixelScene.landscape()
-				&& txtInfo.height() > 100
+				&& txtInfo.height() > 120
 				&& width < WIDTH_MAX){
 			width += 20;
 			txtInfo.maxWidth(width);
