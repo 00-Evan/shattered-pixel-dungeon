@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -29,9 +30,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.AscendedForm;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
+import com.watabou.noosa.audio.Sample;
 
 public class DivineIntervention extends ClericSpell {
 
@@ -44,7 +48,7 @@ public class DivineIntervention extends ClericSpell {
 
 	@Override
 	public float chargeUse(Hero hero) {
-		return 2; //TODO
+		return 6;
 	}
 
 	@Override
@@ -55,11 +59,13 @@ public class DivineIntervention extends ClericSpell {
 	@Override
 	public void onCast(HolyTome tome, Hero hero) {
 
-		//TODO vfx
+		Sample.INSTANCE.play(Assets.Sounds.CHARGEUP, 1, 1.2f);
+		hero.sprite.operate(hero.pos);
 
 		for (Char ch : Actor.chars()){
 			if (ch.alignment == Char.Alignment.ALLY && ch != hero){
 				Buff.affect(ch, DivineShield.class).setShield(150 + 50*hero.pointsInTalent(Talent.DIVINE_INTERVENTION));
+				new Flare(6, 32).color(0xFFFF00, true).show(ch.sprite, 2f);
 			}
 		}
 
@@ -68,7 +74,14 @@ public class DivineIntervention extends ClericSpell {
 
 		//we apply buffs here so that the 6 charge cost and shield boost do not stack
 		hero.buff(AscendedForm.AscendBuff.class).setShield(150 + 50*hero.pointsInTalent(Talent.DIVINE_INTERVENTION));
+		new Flare(6, 32).color(0xFFFF00, true).show(hero.sprite, 2f);
 
+	}
+
+	@Override
+	public String desc() {
+		int shield = 150 + 50*Dungeon.hero.pointsInTalent(Talent.DIVINE_INTERVENTION);
+		return Messages.get(this, "desc", shield) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
 	}
 
 	public static class DivineShield extends ShieldBuff{
