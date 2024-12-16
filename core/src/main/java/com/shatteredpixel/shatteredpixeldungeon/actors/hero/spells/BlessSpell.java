@@ -73,7 +73,7 @@ public class BlessSpell extends TargetedClericSpell {
 			hero.spend( 1f );
 		} else {
 			Buff.prolong(ch, Bless.class, 5f + 5*hero.pointsInTalent(Talent.BLESS));
-			int totalHeal = 5 + 10*hero.pointsInTalent(Talent.BLESS);
+			int totalHeal = 5 + 5*hero.pointsInTalent(Talent.BLESS);
 			if (ch.HT - ch.HP < totalHeal){
 				int barrier = totalHeal - (ch.HT - ch.HP);
 				barrier = Math.max(barrier, 0);
@@ -99,7 +99,7 @@ public class BlessSpell extends TargetedClericSpell {
 
 	public String desc(){
 		int talentLvl = Dungeon.hero.pointsInTalent(Talent.BLESS);
-		return Messages.get(this, "desc", 2+2*talentLvl, 5+5*talentLvl, 5+5*talentLvl, 5+10*talentLvl) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
+		return Messages.get(this, "desc", 2+2*talentLvl, 5+5*talentLvl, 2+4*talentLvl, 5+5*talentLvl) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
 	}
 
 }
