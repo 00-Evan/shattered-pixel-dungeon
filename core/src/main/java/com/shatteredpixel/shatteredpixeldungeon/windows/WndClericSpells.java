@@ -148,6 +148,14 @@ public class WndClericSpells extends Window {
 		}
 
 		@Override
+		protected void onPointerUp() {
+			super.onPointerUp();
+			if (!tome.canCast(Dungeon.hero, spell)){
+				icon.alpha( 0.3f );
+			}
+		}
+
+		@Override
 		protected void layout() {
 			super.layout();
 
