@@ -202,8 +202,8 @@ public class WelcomeScene extends PixelScene {
 
 			}
 
-			message = "Greetings Alpha testers, and welcome to an early look at the Cleric!\n\n" +
-					"I'm releasing this Alpha so that you guys can give early feedback, but please note that the Cleric is currently quite unfinished! There will be missing features, bugs, balance issues, etc. and the game currently caps out on floor 20 for the Cleric.\n\n" +
+			message = "Greetings Alpha testers, the Cleric is now fully playable and so the alpha for v3.0 is ending soon!\n\n" +
+					"I may do further alphas after the holidays as the Paladin, Trinity, and Power of Many come online.\n\n" +
 					"As always, read the changelog for full change details, and let me know if you encounter any bugs!";
 
 		} else {

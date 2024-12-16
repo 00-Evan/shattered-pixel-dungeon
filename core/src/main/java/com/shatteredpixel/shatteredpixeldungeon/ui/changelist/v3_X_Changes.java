@@ -24,6 +24,8 @@ package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.AscendedForm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.BlessSpell;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
@@ -61,6 +63,29 @@ public class v3_X_Changes {
 		ChangeInfo changes = new ChangeInfo("v3.0", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes = new ChangeInfo("ALPHA-1.0", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Alpha Info",
+				"The Alpha for v3.0 is now winding down! I expect to release v3.0-BETA-1.0 in another few days! Please let me know if you encounter any issues so I can get them fixed before then.\n\n" +
+				"I am considering doing further alphas as v3.0 continues development after the holidays, giving you guys early peeks at the Paladin and the other two armor abilities. Said alphas will last for a day or two."));
+
+		changes.addButton( new ChangeButton(new HeroIcon(new AscendedForm()), "Ascended Form",
+				"_Ascended Form and all of its talents have been added to the alpha!_\n\n" +
+				"The Cleric projects holy energy from themselves, assuming an extended radiant form for 10 turns. While in this form the Cleric can cast new spells, gains 2 attack range, 30 shielding, and any additional spells they cast will grant 10 shielding per holy tome charge used.\\n\\nThe shielding from ascended form and its spells does not decay normally, but will immediately fade once ascended form ends. The ability can be re-used to refresh ascended form's duration."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"The Cleric can now be played past floor 20, allowing runs with them to be completed!\n\n" +
+				"**Bless** has been scaled back when used on allies, now grants 6/10 turns of bless and 10/15 healing, down from 10/15 and 15/25.\n\n" +
+				"Now that other characters trigger **illuminate** (bugfix from ALPHA-0.6), it creates an unfortunate anti-synergy with priest's illuminate bonus. To fix this, other characters now deal +10 bonus magic damage when triggering illuminate with Priest. To prevent this stacking with **Searing Light**, that talent now only triggers from the Cleric's attacks."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by ALPHA:**\n" +
+				"**-** Minor visual errors in spell window\n" +
+				"**-** Minor textual errors"));
 
 		changes = new ChangeInfo("ALPHA-0.7", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -103,24 +128,11 @@ public class v3_X_Changes {
 				"**Existed Prior to ALPHA:**\n" +
 				"**-** Various minor textual errors"));
 
-		changes = new ChangeInfo("ALPHA-0.5", false, null);
+		changes = new ChangeInfo("ALPHA-0.2 - 0.5", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Just a couple fixes this release I'm afraid, I didn't have time to finish designing and implementing new spells. Hopefully I'll be able to release another Alpha with finished Priest spells early this coming week.\n\n" +
-				"Fixed the following bugs:\n" +
-				"**Caused by ALPHA:**\n" +
-				"**-** Bless spell not spending a turn\n" +
-				"**-** Various minor visual and UI bugs with Bless\n" +
-				"**-** Minor visual bug with cleanse curse and spell action indicator\n\n" +
-				"A couple people have reported the blind from sun ray not working properly vs. ranged enemies, but I haven't been able to reproduce this. Please let me know if that happens to you!"));
-
-		changes = new ChangeInfo("ALPHA-0.4", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_TOME), "Spell Additions & Changes",
+		changes.addButton( new ChangeButton(new HeroIcon(BlessSpell.INSTANCE), "Spell Additions & Changes",
 				"I've added a new talent/spell in this alpha release!:\n\n" +
 				"**Bless** is a T2 spell/talent that applies the bless buff to the Cleric or another character, and applies either healing or shielding, depending on the target. I decided on another cheaper spell for T2 since recall glyph is being made more expensive.\n\n" +
 				"Expect more talents/spells for the Priest very soon, possibly tomorrow!\n\n" +
@@ -129,23 +141,6 @@ public class v3_X_Changes {
 				"**- Divine Sense** duration down to 30 from 50.\n" +
 				"**- Divine Sense** charge cost up to 2 from 1, as was already stated in the UI."));
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by ALPHA:**\n" +
-				"**-** Exploits where the Cleric could descend past floor 20 (let me implement an armor ability first, jeez!)\n" +
-				"**-** Light buff from radiance spell stacking on itself\n" +
-				"**-** Stun from radiance spell sometimes lasting for less time than intended\n" +
-				"**-** Spells still being castable from action indicator in cases where they shouldn't\n" +
-				"**-** More rare crash bugs\n" +
-				"**-** Various minor textual errors\n\n" +
-				"**Existed Prior to ALPHA:**\n" +
-				"**-** Duration of greater haste not being preserved on save/load\n" +
-				"**-** Various minor textual errors"));
-
-		changes = new ChangeInfo("ALPHA-0.3", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
 		changes.addButton( new ChangeButton(new HolyTome(),
 				"Thanks a bunch for your early feedback!\n\n" +
 				"Aside from bug reports, the most consistent bit of feedback I've heard is that the holy tome's charging mechanic doesn't feel great. I originally concepted it as charging based on exp gain to accommodate some of my early spell designs that involved self-healing. However, once I got into more specific designs I ended up not making these sorts of spells anyway, as while healing is obviously part of the divine caster archetype, it’s also really powerful and boring.\n\n" +
@@ -153,26 +148,10 @@ public class v3_X_Changes {
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
-				"**Caused by ALPHA:**\n" +
-				"**-** Holy Lance not consuming charges in most cases\n" +
-				"**-** Free Guiding Light cooldown debuff stacking on itself instead of only triggering once\n" +
-				"**-** Recently used glyph duration stacking instead of resetting\n" +
-				"**-** Enlightening Meal talent not reducing time in takes to eat from Horn of Plenty\n" +
-				"**-** Rare crash bugs\n\n" +
 				"**Existed Prior to ALPHA:**\n" +
-				"**-** Holiday pasty names not appearing in catalogs"));
-
-		changes = new ChangeInfo("ALPHA-0.2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by ALPHA:**\n" +
-				"**-** Recall Glyph spell working on scrolls of upgrade\n" +
-				"**-** Spells still being castable without adequate tome charges\n" +
-				"**-** One rare crash bug\n" +
-				"**-** Various small textual errors\n"));
+				"**-** Holiday pasty names not appearing in catalogs\n" +
+				"**-** Duration of greater haste not being preserved on save/load\n" +
+				"**-** Various minor textual errors"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -183,17 +162,12 @@ public class v3_X_Changes {
 				"_-_ ... days after Shattered v2.5.0\n\n" +
 				"Dev commentary will be added here in the future."));*/
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Alpha Info",
+		/*changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Alpha Info",
 				"Hey Alpha testers! This alpha is in a less complete state than normal, here's info about what's currently incomplete game-content wise:\n" +
 				"**-** The Cleric is missing one T2 Talent\n" +
 				"**-** The Priest is missing two of their T3 talents\n" +
 				"**-** The Paladin is not implemented\n" +
-				"**-** No armor abilities are implemented, and so I've capped Cleric runs at floor 20 for now.\n" +
-				"\n" +
-				"The following needs to be done before the Beta can release:\n" +
-				"**-** Address any bugs or other critical issues that get reported\n" +
-				"**-** Round out implementation of Cleric base talents and Priest talents\n" +
-				"**-** Fully implement at least one armor ability"));
+				"**-** No armor abilities are implemented, and so I've capped Cleric runs at floor 20 for now."));*/
 
 		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 1), "The Cleric!",
 				"**Shattered Pixel Dungeon has another new hero, making for six total!!**\n" +
@@ -214,7 +188,9 @@ public class v3_X_Changes {
 		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 5), "Cleric Armor Abilities",
 				"**The Cleric has three lategame armor abilities as well!**\n" +
 				"\n" +
-				"**Currently none of these abilities are implemented. At least one will be before the beta.**"));
+				"**Ascended Form** grants the Cleric access to new spells, extra attack ranged, and shielding whenever they cast spells.\n" +
+				"\n" +
+				"**Currently The other two abilities are not implemented, look out for them soon!**"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
 		changes.hardlight(CharSprite.WARNING);
@@ -272,7 +248,7 @@ public class v3_X_Changes {
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SOMETHING), "Nothing yet!",
-				"While there are no other balance changes in v3.0 currently, I do plan to go over some balance numbers and make adjustments here during the beta."));
+				"While there are no other balance changes in v3.0 currently, I do plan to go over some balance numbers and make adjustments here later in the beta."));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
 		changes.hardlight(CharSprite.NEGATIVE);
