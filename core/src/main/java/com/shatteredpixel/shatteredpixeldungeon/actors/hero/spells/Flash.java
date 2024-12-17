@@ -61,7 +61,7 @@ public class Flash extends TargetedClericSpell {
 			return;
 		}
 
-		if (Dungeon.level.solid[target] || !Dungeon.level.mapped[target]
+		if (Dungeon.level.solid[target] || (!Dungeon.level.mapped[target] && !Dungeon.level.visited[target])
 				|| Dungeon.level.distance(hero.pos, target) > 2+hero.pointsInTalent(Talent.FLASH)){
 			GLog.w(Messages.get(this, "invalid_target"));
 			return;
