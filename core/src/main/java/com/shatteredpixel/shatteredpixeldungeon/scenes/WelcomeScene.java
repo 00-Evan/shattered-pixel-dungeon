@@ -53,7 +53,7 @@ import java.util.Collections;
 
 public class WelcomeScene extends PixelScene {
 
-	private static final int LATEST_UPDATE = 804;
+	private static final int LATEST_UPDATE = 813;
 
 	//used so that the game does not keep showing the window forever if cleaning fails
 	private static boolean triedCleaningTemp = false;
@@ -202,9 +202,9 @@ public class WelcomeScene extends PixelScene {
 
 			}
 
-			message = "Greetings Alpha testers, the Cleric is now fully playable and so the alpha for v3.0 is ending soon!\n\n" +
-					"I may do further alphas after the holidays as the Paladin, Trinity, and Power of Many come online.\n\n" +
-					"As always, read the changelog for full change details, and let me know if you encounter any bugs!";
+			message = "Greetings Beta testers, and welcome to an early beta for the Cleric!\n\n" +
+					"The new hero is fully playable, but with only one subclass and one armor ability currently. I'm going to be taking things a bit easy over the holdiays, so expect things to start filling out in the new year!\n\n" +
+					"As always, read the changelog for full change details, and let me know what you think of the new hero!";
 
 		} else {
 			message = Messages.get(this, "what_msg");
