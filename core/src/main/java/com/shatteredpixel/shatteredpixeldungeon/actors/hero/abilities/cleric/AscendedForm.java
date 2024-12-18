@@ -77,7 +77,7 @@ public class AscendedForm extends ArmorAbility {
 			type = buffType.POSITIVE;
 		}
 
-		public static float DURATION = 10f;
+		public static float DURATION = 100f;
 
 		@Override
 		public int icon() {
@@ -107,6 +107,21 @@ public class AscendedForm extends ArmorAbility {
 		public void reset(){
 			setShield(30);
 			left = (int)DURATION;
+		}
+
+		@Override
+		//logic edited slightly as buff should not detach
+		public int absorbDamage(int dmg) {
+			if (shielding() <= 0) return dmg;
+
+			if (shielding() >= dmg){
+				decShield(dmg);
+				dmg = 0;
+			} else {
+				dmg -= shielding();
+				decShield(shielding());
+			}
+			return dmg;
 		}
 
 		@Override
