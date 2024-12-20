@@ -203,7 +203,7 @@ public class WelcomeScene extends PixelScene {
 			}
 
 			message = "Greetings Beta testers, and welcome to an early beta for the Cleric!\n\n" +
-					"The new hero is fully playable, but with only one subclass and one armor ability currently. I'm going to be taking things a bit easy over the holdiays, so expect things to start filling out in the new year!\n\n" +
+					"The new hero is fully playable, but with only one subclass and one armor ability currently. I'm going to be taking things a bit easy over the holidays, so expect things to start filling out in the new year!\n\n" +
 					"As always, read the changelog for full change details, and let me know what you think of the new hero!";
 
 		} else {

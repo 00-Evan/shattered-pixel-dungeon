@@ -59,6 +59,29 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-1.1", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"Hey folks, thanks for all the feedback and kind words regarding the Cleric so far! I'll likely be making some balance tweaks later on once people's impressions solidify and I have some analytics data. For the moment, I'm just making some bugfixes and a QoL tweak."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**-** Quick-selecting a spell that is already quick-selected now clears the quickspell slot.\n\n" +
+				"**-** Updated translations (expect to still see a lot of English for now, community translators have holidays around this time too!)"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by BETA:**\n" +
+				"**-** Ascended Form lasting for 100 turns instead of 10 (oops!)\n" +
+				"**-** Great Crab not blocking offensive Cleric spells\n" +
+				"**-** Holy Tome still being usable while cursed\n" +
+				"**-** Holy Weapon and Holy Ward not overriding enchants/glyphs in some cases"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
