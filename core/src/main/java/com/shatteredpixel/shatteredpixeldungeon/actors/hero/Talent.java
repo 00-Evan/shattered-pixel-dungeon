@@ -1084,10 +1084,6 @@ public enum Talent {
 
 	private static final HashMap<String, String> renamedTalents = new HashMap<>();
 	static{
-		//v3.0.0 ALPHA
-		renamedTalents.put("DETECT_CURSE",              "HOLY_INTUITION");
-		renamedTalents.put("RECALL_GLYPH",              "RECALL_INSCRIPTION");
-
 		//v2.4.0
 		renamedTalents.put("SECONDARY_CHARGE",          "VARIED_CHARGE");
 
