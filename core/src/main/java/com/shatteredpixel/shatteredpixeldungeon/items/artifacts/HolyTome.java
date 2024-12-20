@@ -86,6 +86,7 @@ public class HolyTome extends Artifact {
 		if (action.equals(AC_CAST)) {
 
 			if (!isEquipped(hero) && !hero.hasTalent(Talent.LIGHT_READING)) GLog.i(Messages.get(Artifact.class, "need_to_equip"));
+			else if (cursed)       GLog.i( Messages.get(this, "cursed") );
 			else {
 
 				GameScene.show(new WndClericSpells(this, hero, false));
@@ -318,6 +319,11 @@ public class HolyTome extends Artifact {
 
 		@Override
 		public void doAction() {
+			if (cursed){
+				GLog.w(Messages.get(HolyTome.this, "cursed"));
+				return;
+			}
+
 			if (!canCast(Dungeon.hero, quickSpell)){
 				GLog.w(Messages.get(HolyTome.this, "no_spell"));
 				return;
