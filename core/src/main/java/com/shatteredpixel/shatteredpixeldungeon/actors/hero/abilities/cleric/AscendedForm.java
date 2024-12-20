@@ -77,7 +77,7 @@ public class AscendedForm extends ArmorAbility {
 			type = buffType.POSITIVE;
 		}
 
-		public static float DURATION = 100f;
+		public static float DURATION = 10f;
 
 		@Override
 		public int icon() {
