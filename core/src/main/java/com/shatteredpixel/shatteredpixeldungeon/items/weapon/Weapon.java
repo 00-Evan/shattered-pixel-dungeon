@@ -397,12 +397,14 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 
 	public boolean hasEnchant(Class<?extends Enchantment> type, Char owner) {
-		if (owner.buff(MagicImmune.class) != null) {
+		if (enchantment == null){
 			return false;
-		} else if (owner instanceof Hero && isEquipped((Hero) owner) && owner.buff(HolyWeapon.HolyWepBuff.class) != null){
+		} else if (owner.buff(MagicImmune.class) != null) {
+			return false;
+		} else if (!enchantment.curse() && owner instanceof Hero && isEquipped((Hero) owner) && owner.buff(HolyWeapon.HolyWepBuff.class) != null){
 			return false;
 		} else {
-			return enchantment != null && enchantment.getClass() == type;
+			return enchantment.getClass() == type;
 		}
 	}
 	

@@ -679,7 +679,15 @@ public class Armor extends EquipableItem {
 	}
 
 	public boolean hasGlyph(Class<?extends Glyph> type, Char owner) {
-		return glyph != null && glyph.getClass() == type && owner.buff(MagicImmune.class) == null;
+		if (glyph == null){
+			return false;
+		} else if (owner.buff(MagicImmune.class) != null) {
+			return false;
+		} else if (!glyph.curse() && owner instanceof Hero && isEquipped((Hero) owner) && owner.buff(HolyWard.HolyArmBuff.class) != null){
+			return false;
+		} else {
+			return glyph.getClass() == type;
+		}
 	}
 
 	//these are not used to process specific glyph effects, so magic immune doesn't affect them
