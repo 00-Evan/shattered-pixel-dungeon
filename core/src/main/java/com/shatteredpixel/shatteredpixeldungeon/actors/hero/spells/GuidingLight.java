@@ -81,6 +81,8 @@ public class GuidingLight extends TargetedClericSpell {
 						Buff.affect(ch, Illuminated.class);
 						Buff.affect(ch, WasIlluminatedTracker.class);
 					}
+				} else {
+					Dungeon.level.pressCell(aim.collisionPos);
 				}
 
 				hero.spend( 1f );

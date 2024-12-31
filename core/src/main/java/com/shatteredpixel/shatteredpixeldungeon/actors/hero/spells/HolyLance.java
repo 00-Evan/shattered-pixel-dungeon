@@ -124,6 +124,7 @@ public class HolyLance extends TargetedClericSpell {
 								@Override
 								public void call() {
 									Splash.at(target, 0xFFFFFFFF, 10);
+									Dungeon.level.pressCell(aim.collisionPos);
 									hero.spendAndNext(1f);
 									onSpellCast(tome, hero);
 									FlavourBuff.affect(hero, LanceCooldown.class, 50f);
