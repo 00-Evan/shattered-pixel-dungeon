@@ -44,6 +44,11 @@ public abstract class TargetedClericSpell extends ClericSpell {
 		});
 	}
 
+	@Override
+	public boolean usesTargeting() {
+		return true;
+	}
+
 	protected String targetingPrompt(){
 		return Messages.get(this, "prompt");
 	}

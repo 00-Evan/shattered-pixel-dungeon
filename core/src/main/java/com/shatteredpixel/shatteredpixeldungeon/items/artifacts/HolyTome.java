@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ClericSpell;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.TargetedClericSpell;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
@@ -343,7 +342,7 @@ public class HolyTome extends Artifact {
 			} else {
 				quickSpell.onCast(HolyTome.this, Dungeon.hero);
 
-				if (quickSpell instanceof TargetedClericSpell && Dungeon.quickslot.contains(HolyTome.this)){
+				if (quickSpell.usesTargeting() && Dungeon.quickslot.contains(HolyTome.this)){
 					QuickSlotButton.useTargeting(Dungeon.quickslot.getSlot(HolyTome.this));
 				}
 			}

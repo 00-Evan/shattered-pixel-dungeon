@@ -59,6 +59,10 @@ public abstract class ClericSpell {
 		return Messages.get(this, "desc") + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
 	}
 
+	public boolean usesTargeting(){
+		return false;
+	}
+
 	public int icon(){
 		return HeroIcon.NONE;
 	}

@@ -57,6 +57,7 @@ public class WandOfWarding extends Wand {
 
 	{
 		image = ItemSpriteSheet.WAND_WARDING;
+		usesTargeting = false; //player usually targets wards or spaces, not enemies
 	}
 
 	@Override

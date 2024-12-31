@@ -49,6 +49,11 @@ public class BlessSpell extends TargetedClericSpell {
 	}
 
 	@Override
+	public boolean usesTargeting() {
+		return false; //targeting behaviour is often wrong
+	}
+
+	@Override
 	protected void onTargetSelected(HolyTome tome, Hero hero, Integer target) {
 		if (target == null){
 			return;
