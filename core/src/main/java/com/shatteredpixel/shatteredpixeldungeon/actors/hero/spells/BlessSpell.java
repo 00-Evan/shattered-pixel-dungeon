@@ -49,8 +49,8 @@ public class BlessSpell extends TargetedClericSpell {
 	}
 
 	@Override
-	public boolean usesTargeting() {
-		return false; //targeting behaviour is often wrong
+	public int targetingFlags(){
+		return -1; //auto-targeting behaviour is often wrong, so we don't use it
 	}
 
 	@Override

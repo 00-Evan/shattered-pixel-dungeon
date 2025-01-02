@@ -63,6 +63,10 @@ public abstract class ClericSpell {
 		return false;
 	}
 
+	public int targetingFlags(){
+		return -1; //-1 for no targeting
+	}
+
 	public int icon(){
 		return HeroIcon.NONE;
 	}

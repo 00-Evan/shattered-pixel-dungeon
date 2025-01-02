@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -92,6 +93,18 @@ public class HolyTome extends Artifact {
 
 			}
 
+		}
+	}
+
+	//used to ensure tome has variable targeting logic for whatever spell is being case
+	public ClericSpell targetingSpell = null;
+
+	@Override
+	public int targetingPos(Hero user, int dst) {
+		if (targetingSpell == null || targetingSpell.targetingFlags() == -1) {
+			return super.targetingPos(user, dst);
+		} else {
+			return new Ballistica( user.pos, dst, targetingSpell.targetingFlags() ).collisionPos;
 		}
 	}
 
@@ -328,9 +341,9 @@ public class HolyTome extends Artifact {
 				return;
 			}
 
-			//TODO this is all pretty akward, might be better to just add autotarget functionality to the indicator
 			if (QuickSlotButton.targetingSlot != -1 &&
 					Dungeon.quickslot.getItem(QuickSlotButton.targetingSlot) == HolyTome.this) {
+				targetingSpell = quickSpell;
 				int cell = QuickSlotButton.autoAim(QuickSlotButton.lastTarget, HolyTome.this);
 
 				if (cell != -1){
@@ -342,7 +355,8 @@ public class HolyTome extends Artifact {
 			} else {
 				quickSpell.onCast(HolyTome.this, Dungeon.hero);
 
-				if (quickSpell.usesTargeting() && Dungeon.quickslot.contains(HolyTome.this)){
+				if (quickSpell.targetingFlags() != -1 && Dungeon.quickslot.contains(HolyTome.this)){
+					targetingSpell = quickSpell;
 					QuickSlotButton.useTargeting(Dungeon.quickslot.getSlot(HolyTome.this));
 				}
 			}

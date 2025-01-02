@@ -55,6 +55,11 @@ public class Flash extends TargetedClericSpell {
 	}
 
 	@Override
+	public int targetingFlags() {
+		return -1; //targets an empty cell, not an enemy
+	}
+
+	@Override
 	protected void onTargetSelected(HolyTome tome, Hero hero, Integer target) {
 
 		if (target == null){

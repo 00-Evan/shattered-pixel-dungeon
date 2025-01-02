@@ -74,12 +74,17 @@ public class HolyLance extends TargetedClericSpell {
 	}
 
 	@Override
+	public int targetingFlags() {
+		return Ballistica.PROJECTILE;
+	}
+
+	@Override
 	protected void onTargetSelected(HolyTome tome, Hero hero, Integer target) {
 		if (target == null){
 			return;
 		}
 
-		Ballistica aim = new Ballistica(hero.pos, target, Ballistica.PROJECTILE);
+		Ballistica aim = new Ballistica(hero.pos, target, targetingFlags());
 
 		if (Actor.findChar( aim.collisionPos ) == hero){
 			GLog.i( Messages.get(Wand.class, "self_target") );

@@ -178,8 +178,8 @@ public class WndClericSpells extends Window {
 				} else {
 					spell.onCast(tome, Dungeon.hero);
 
-					//TODO, probably need targeting logic here
-					if (spell.usesTargeting() && Dungeon.quickslot.contains(tome)){
+					if (spell.targetingFlags() != -1 && Dungeon.quickslot.contains(tome)){
+						tome.targetingSpell = spell;
 						QuickSlotButton.useTargeting(Dungeon.quickslot.getSlot(tome));
 					}
 				}
@@ -215,8 +215,8 @@ public class WndClericSpells extends Window {
 							} else {
 								spell.onCast(tome, Dungeon.hero);
 
-								//TODO, probably need targeting logic here
-								if (spell.usesTargeting() && Dungeon.quickslot.contains(tome)){
+								if (spell.targetingFlags() != -1 && Dungeon.quickslot.contains(tome)){
+									tome.targetingSpell = spell;
 									QuickSlotButton.useTargeting(Dungeon.quickslot.getSlot(tome));
 								}
 							}

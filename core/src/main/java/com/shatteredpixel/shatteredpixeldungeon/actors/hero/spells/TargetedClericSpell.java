@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -45,8 +46,8 @@ public abstract class TargetedClericSpell extends ClericSpell {
 	}
 
 	@Override
-	public boolean usesTargeting() {
-		return true;
+	public int targetingFlags(){
+		return Ballistica.MAGIC_BOLT;
 	}
 
 	protected String targetingPrompt(){

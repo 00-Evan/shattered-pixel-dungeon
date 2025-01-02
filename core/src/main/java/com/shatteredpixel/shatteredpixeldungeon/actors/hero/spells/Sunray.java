@@ -65,7 +65,7 @@ public class Sunray extends TargetedClericSpell {
 			return;
 		}
 
-		Ballistica aim = new Ballistica(hero.pos, target, Ballistica.MAGIC_BOLT);
+		Ballistica aim = new Ballistica(hero.pos, target,  targetingFlags());
 
 		if (Actor.findChar( aim.collisionPos ) == hero){
 			GLog.i( Messages.get(Wand.class, "self_target") );

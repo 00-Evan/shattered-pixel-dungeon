@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
@@ -45,6 +46,11 @@ public class ShieldOfLight extends TargetedClericSpell {
 	@Override
 	public int icon() {
 		return HeroIcon.SHIELD_OF_LIGHT;
+	}
+
+	@Override
+	public int targetingFlags() {
+		return Ballistica.STOP_TARGET;
 	}
 
 	@Override
