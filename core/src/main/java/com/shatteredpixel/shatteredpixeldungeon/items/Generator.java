@@ -933,6 +933,22 @@ public class Generator {
 					cat.seed = bundle.getLong(cat.name().toLowerCase() + CATEGORY_SEED);
 					cat.dropped = bundle.getInt(cat.name().toLowerCase() + CATEGORY_DROPPED);
 				}
+
+				//pre-v3.0.0 conversion for artifacts specifically
+				if (cat == Category.ARTIFACT && probs.length != cat.defaultProbs.length){
+					int tomeIDX = 5;
+					int j = 0;
+					for (int i = 0; i < probs.length; i++){
+						if (i == tomeIDX){
+							cat.probs[j] = 0;
+							j++;
+						}
+						cat.probs[j] = probs[i];
+						j++;
+					}
+
+				}
+
 			}
 		}
 		
