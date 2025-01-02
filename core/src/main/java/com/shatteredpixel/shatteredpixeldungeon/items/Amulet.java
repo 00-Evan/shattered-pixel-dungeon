@@ -74,7 +74,7 @@ public class Amulet extends Item {
 			
 			if (!Statistics.amuletObtained) {
 				Statistics.amuletObtained = true;
-				hero.spend(-TIME_TO_PICK_UP);
+				hero.spend(-hero.cooldown());
 
 				//delay with an actor here so pickup behaviour can fully process.
 				Actor.add(new Actor(){
