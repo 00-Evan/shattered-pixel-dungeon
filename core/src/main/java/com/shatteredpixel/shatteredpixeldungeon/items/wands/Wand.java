@@ -218,7 +218,7 @@ public abstract class Wand extends Item {
 
 		if (Dungeon.hero.subClass == HeroSubClass.PRIEST && target.buff(GuidingLight.Illuminated.class) != null) {
 			target.buff(GuidingLight.Illuminated.class).detach();
-			target.damage(5 + wandLevel, GuidingLight.INSTANCE);
+			target.damage(Dungeon.hero.lvl, GuidingLight.INSTANCE);
 		}
 	}
 

@@ -407,7 +407,7 @@ public abstract class Char extends Actor {
 					dmg += 2 + 2*Dungeon.hero.pointsInTalent(Talent.SEARING_LIGHT);
 				}
 				if (this != Dungeon.hero && Dungeon.hero.subClass == HeroSubClass.PRIEST){
-					enemy.damage(10, GuidingLight.INSTANCE);
+					enemy.damage(Dungeon.hero.lvl, GuidingLight.INSTANCE);
 				}
 			}
 
