@@ -53,7 +53,7 @@ public class Sunray extends TargetedClericSpell {
 
 	@Override
 	public String desc() {
-		int min = Dungeon.hero.pointsInTalent(Talent.SUNRAY) == 2 ? 3 : 2;
+		int min = Dungeon.hero.pointsInTalent(Talent.SUNRAY) == 2 ? 6 : 4;
 		int max = Dungeon.hero.pointsInTalent(Talent.SUNRAY) == 2 ? 12 : 8;
 		int dur = Dungeon.hero.pointsInTalent(Talent.SUNRAY) == 2 ? 6 : 4;
 		return Messages.get(this, "desc", min, max, dur) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
@@ -91,9 +91,9 @@ public class Sunray extends TargetedClericSpell {
 				}
 			} else {
 				if (hero.pointsInTalent(Talent.SUNRAY) == 2) {
-					ch.damage(Random.NormalIntRange(3, 12), Sunray.this);
+					ch.damage(Random.NormalIntRange(6, 12), Sunray.this);
 				} else {
-					ch.damage(Random.NormalIntRange(2, 8), Sunray.this);
+					ch.damage(Random.NormalIntRange(4, 8), Sunray.this);
 				}
 			}
 
