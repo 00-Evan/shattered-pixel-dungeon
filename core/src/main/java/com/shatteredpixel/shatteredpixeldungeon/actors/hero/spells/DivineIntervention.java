@@ -48,12 +48,14 @@ public class DivineIntervention extends ClericSpell {
 
 	@Override
 	public float chargeUse(Hero hero) {
-		return 6;
+		return 5;
 	}
 
 	@Override
 	public boolean canCast(Hero hero) {
-		return super.canCast(hero) && hero.buff(AscendedForm.AscendBuff.class) != null;
+		return super.canCast(hero)
+				&& hero.buff(AscendedForm.AscendBuff.class) != null
+				&& !hero.buff(AscendedForm.AscendBuff.class).divineInverventionCast;
 	}
 
 	@Override
@@ -64,7 +66,7 @@ public class DivineIntervention extends ClericSpell {
 
 		for (Char ch : Actor.chars()){
 			if (ch.alignment == Char.Alignment.ALLY && ch != hero){
-				Buff.affect(ch, DivineShield.class).setShield(150 + 50*hero.pointsInTalent(Talent.DIVINE_INTERVENTION));
+				Buff.affect(ch, DivineShield.class).setShield(100 + 50*hero.pointsInTalent(Talent.DIVINE_INTERVENTION));
 				new Flare(6, 32).color(0xFFFF00, true).show(ch.sprite, 2f);
 			}
 		}
@@ -72,16 +74,20 @@ public class DivineIntervention extends ClericSpell {
 		hero.spendAndNext( 1f );
 		onSpellCast(tome, hero);
 
-		//we apply buffs here so that the 6 charge cost and shield boost do not stack
-		hero.buff(AscendedForm.AscendBuff.class).setShield(150 + 50*hero.pointsInTalent(Talent.DIVINE_INTERVENTION));
+		//we apply buffs here so that the 5 charge cost and shield boost do not stack
+		hero.buff(AscendedForm.AscendBuff.class).setShield(100 + 50*hero.pointsInTalent(Talent.DIVINE_INTERVENTION));
 		new Flare(6, 32).color(0xFFFF00, true).show(hero.sprite, 2f);
+
+		hero.buff(AscendedForm.AscendBuff.class).divineInverventionCast = true;
+		hero.buff(AscendedForm.AscendBuff.class).extend(hero.pointsInTalent(Talent.DIVINE_INTERVENTION));
 
 	}
 
 	@Override
 	public String desc() {
-		int shield = 150 + 50*Dungeon.hero.pointsInTalent(Talent.DIVINE_INTERVENTION);
-		return Messages.get(this, "desc", shield) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
+		int shield = 100 + 50*Dungeon.hero.pointsInTalent(Talent.DIVINE_INTERVENTION);
+		int leftBonus = Dungeon.hero.pointsInTalent(Talent.DIVINE_INTERVENTION);
+		return Messages.get(this, "desc", shield, leftBonus) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
 	}
 
 	public static class DivineShield extends ShieldBuff{

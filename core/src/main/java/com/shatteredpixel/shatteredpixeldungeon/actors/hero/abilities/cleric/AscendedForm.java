@@ -103,10 +103,15 @@ public class AscendedForm extends ArmorAbility {
 		public int left = 10;
 		public int spellCasts = 0;
 		public int flashCasts = 0;
+		public boolean divineInverventionCast = false;
 
 		public void reset(){
 			setShield(30);
 			left = (int)DURATION;
+		}
+
+		public void extend( int amt ){
+			left += amt;
 		}
 
 		@Override
@@ -149,6 +154,7 @@ public class AscendedForm extends ArmorAbility {
 		public static final String LEFT = "left";
 		public static final String SPELL_CASTS = "spell_casts";
 		public static final String FLASH_CASTS = "flash_casts";
+		public static final String DIVINE_INTERVENTION_CAST = "divine_intervention_cast";
 
 		@Override
 		public void storeInBundle(Bundle bundle) {
@@ -156,6 +162,7 @@ public class AscendedForm extends ArmorAbility {
 			bundle.put(LEFT, left);
 			bundle.put(SPELL_CASTS, spellCasts);
 			bundle.put(FLASH_CASTS, flashCasts);
+			bundle.put(DIVINE_INTERVENTION_CAST, divineInverventionCast);
 		}
 
 		@Override
@@ -164,6 +171,7 @@ public class AscendedForm extends ArmorAbility {
 			left = bundle.getInt(LEFT);
 			spellCasts = bundle.getInt(SPELL_CASTS);
 			flashCasts = bundle.getInt(FLASH_CASTS);
+			divineInverventionCast = bundle.getBoolean(DIVINE_INTERVENTION_CAST);
 		}
 	}
 
