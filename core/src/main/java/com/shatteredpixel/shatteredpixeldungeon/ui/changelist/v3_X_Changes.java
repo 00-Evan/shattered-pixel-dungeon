@@ -38,7 +38,7 @@ import java.util.ArrayList;
 public class v3_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
-		//add_Coming_Soon(changeInfos);
+		add_Coming_Soon(changeInfos);
 		add_v3_0_Changes(changeInfos);
 	}
 
@@ -48,9 +48,14 @@ public class v3_X_Changes {
 		changes.hardlight(0xCCCCCC);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Overview",
-				"..."));
-
+		changes.addButton( new ChangeButton(Icons.get(Icons.WARNING), "Older Device Support",
+				"Unfortunately I will have to make some changes in 2025 that will remove support for very old versions of iOS, Android, and Java:\n" +
+				"\n" +
+				"**iOS 11:** Support for this version of iOS is being dropped after v3.0 (this update). There were no Apple devices which got iOS 11 but not 12, so this shouldn't actually affect any users.\n" +
+				"\n" +
+				"**Android 4.0-4.4:** Due to updates to Shattered's game library (libGDX) and Google Play's billing library, I will sadly have to drop support for these older Android versions toward the end of 2025. These Android versions should still at least get v3.1 and v3.2 though.\n" +
+				"\n" +
+				"**Java 8-10:** This only affects users who play the old desktop JAR distribution, which requires a separate Java install. Support for the Java 8, 9, and 10 targets has been depreciated, at some point in the future Shattered will require Java 11 instead. I'll likely make this change at the same time as the Android change."));
 	}
 
 	public static void add_v3_0_Changes( ArrayList<ChangeInfo> changeInfos ) {
@@ -59,9 +64,67 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("BETA-1.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"Hey folks, thanks for your patience as I took a bit of a break over the holidays. We're starting a little slow with a basic bugfix/balance patch, but expect more additions in the coming days."));
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_TOME), "Cleric Balance",
+				"Now that a little time has passed and feedback has been collected, it's starting to look like the Cleric and Priest are in fact a bit weak!\n\n" +
+				"I'm making two overarching changes to improve the Cleric's spell uptime and the Priest's base power:\n" +
+				"**- Holy Tome** recharge speed increased by 33% (now equivalent to Cloak of Shadows)\n" +
+				"**- Priest** bonus illuminated damage increased to hero level, from 5 + item level",
+
+				"I'm also making a bunch of targeted buffs to specific Cleric spells:\n" +
+				"**- Searing Light** bonus damage up 4/6 at +1/+2, from 3/5\n" +
+				"**- Shield of Light** now gives 50% more armor at +2, instead of lasting 50% longer\n" +
+				"**- Bless** now gives 6/10 turns of bless on self-cast at +1/+2, up from 4/6\n" +
+				"**- Sunray** damage up to 4-8/6-12 at +1/+2, up from 2-8/3-12\n" +
+				"**- Radiance** stun duration up to 3 from 2\n\n" +
+				"**Divine Intervention** adjusted:\n" +
+				"**-** Charge cost down to 5 from 6\n" +
+				"**-** Shielding reduced to 150/200/250/300 from 200/250/300/350\n" +
+				"**-** Now extends Ascended Form for 1/2/3/4 turns"));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**-** Turned off auto-targeting in cases where it was almost always wrong (Bless spell, Wand of Warding, etc.)\n\n" +
+				"**-** Guiding Bolt and Holy Lance now affect terrain if they miss.\n\n" +
+				"**-** Camera panning to enemies now respects the 'camera follow intensity' setting.\n\n" +
+				"**-** Holy Tome and Cloak of Shadows can no longer be transmuted."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by BETA:**\n" +
+				"**-** Auto-targeting errors with some Cleric spells\n" +
+				"**-** Exploits involving stone of blink and recall inscription spell\n" +
+				"**-** Rare crash bugs caused by recall inscription\n" +
+				"**-** Rare cases where enemies would attack things that were already dead\n" +
+				"**-** Holy tome spells not triggering the enhanced rings talent\n" +
+				"**-** Quick spell indicator sometimes working without holy tome\n" +
+				"**-** Fixed bless spell stating the wrong bless duration for allies\n" +
+				"**-** Minor text errors\n\n" +
+				"**Existed Prior to BETA:**\n" +
+				"**-** Rare cases where bomb AOE could be influenced by nearby potions shattering\n" +
+				"**-** Artifact uniqueness being affected by runs from prior game versions\n" +
+				"**-** Rare cases where game win scene wouldn't trigger immediately\n" +
+				"**-** Minor text errors"));
+
+		/*Balance:
+		- Cleric Tome charge speed increased by 33%
+		- Priest illuminated trigger buffed: dmg now equal to hero level
+		Talents/Spells:
+			- searing light up to 4/6 dmg from 3/5
+			- shield of light now lasts a static 4 turns and gives 2-4 / 3-6 armor
+			- bless now gives 6/10 turns of bless on self-cast, up from 4/6
+			- sunray dmg up to 4-8/6-12 from 2-8/3-12
+			- radiance stun duration up to 3 from 2
+			divine intervention changed:
+				- cost down to 5 from 6
+				- shielding adjusted to 150/200/250/300 from 200/250/300/350
+				- now also extends ascended form for 1/2/3/4 turns
+		 */
 
 		changes = new ChangeInfo("BETA-1.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
