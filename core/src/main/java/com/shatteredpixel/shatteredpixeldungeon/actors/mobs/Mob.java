@@ -665,9 +665,21 @@ public abstract class Mob extends Char {
 	
 	@Override
 	public int defenseSkill( Char enemy ) {
+		if (buff(GuidingLight.Illuminated.class) != null){
+			//if the attacker is the hero, they must be using a weapon they have the str for
+			if (enemy instanceof Hero){
+				Hero h = (Hero) enemy;
+				if (!(h.belongings.attackingWeapon() instanceof Weapon)
+						|| ((Weapon) h.belongings.attackingWeapon()).STRReq() <= h.STR()){
+					return 0;
+				}
+			} else {
+				return 0;
+			}
+		}
+
 		if ( !surprisedBy(enemy)
 				&& paralysed == 0
-				&& buff(GuidingLight.Illuminated.class) == null
 				&& !(alignment == Alignment.ALLY && enemy == Dungeon.hero)) {
 			return this.defenseSkill;
 		} else {
