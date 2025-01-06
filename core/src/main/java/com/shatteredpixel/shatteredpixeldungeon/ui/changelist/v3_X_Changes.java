@@ -64,6 +64,25 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-1.3", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Just a few fixes today, mainly as a followup to BETA-1.2\n\n" +
+				"Fixed the following bugs:\n" +
+				"**Caused by BETA:**\n" +
+				"**-** Light Reading talent not working since BETA-1.2 (oops, sorry!)\n" +
+				"**-** Recall Inscription costing 0 charges since BETA-1.2 (also oops...)\n" +
+				"**-** Guiding light overriding weapon encumbrance acc penalty\n" +
+				"**-** Game occasionally freezing in some situations\n\n" +
+				"**Existed Prior to BETA:**\n" +
+				"**-** Rare crash bugs"));
+
 		changes = new ChangeInfo("BETA-1.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
