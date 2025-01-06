@@ -65,7 +65,6 @@ public class RecallInscription extends ClericSpell {
 		}
 
 		Item item = Reflection.newInstance(hero.buff(UsedItemTracker.class).item);
-		hero.buff(UsedItemTracker.class).detach();
 
 		item.setCurrent(hero);
 
@@ -85,6 +84,9 @@ public class RecallInscription extends ClericSpell {
 		}
 
 		onSpellCast(tome, hero);
+		if (hero.buff(UsedItemTracker.class) != null){
+			hero.buff(UsedItemTracker.class).detach();
+		}
 
 	}
 
