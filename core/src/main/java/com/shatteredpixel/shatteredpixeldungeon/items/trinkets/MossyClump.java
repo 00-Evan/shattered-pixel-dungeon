@@ -77,7 +77,7 @@ public class MossyClump extends Trinket {
 			Random.pushGenerator(Dungeon.seed+1);
 				clump.levelFeels.add(true);
 				clump.levelFeels.add(true);
-				clump.levelFeels.add(true);
+				clump.levelFeels.add(false);
 				clump.levelFeels.add(false);
 				clump.levelFeels.add(false);
 				clump.levelFeels.add(false);
