@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrapMechanism;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Patch;
@@ -460,6 +461,9 @@ public abstract class RegularPainter extends Painter {
 		//no more than one trap every 5 valid tiles.
 		nTraps = Math.min(nTraps, validCells.size()/5);
 
+		float revealedChance = TrapMechanism.revealHiddenTrapChance();
+		float revealInc = 0;
+
 		//5x traps on traps level feeling, but the extra traps are all visible
 		for (int i = 0; i < (l.feeling == Level.Feeling.TRAPS ? 5*nTraps : nTraps); i++) {
 
@@ -475,8 +479,13 @@ public abstract class RegularPainter extends Painter {
 			validCells.remove(trapPos);
 			validNonHallways.remove(trapPos);
 
-			if (i < nTraps) trap.hide();
-			else            trap.reveal();
+			revealInc += revealedChance;
+			if (i < nTraps || revealInc >= 1) {
+				trap.reveal();
+				revealInc--;
+			} else {
+				trap.hide();
+			}
 
 			l.setTrap( trap, trapPos );
 			//some traps will not be hidden
