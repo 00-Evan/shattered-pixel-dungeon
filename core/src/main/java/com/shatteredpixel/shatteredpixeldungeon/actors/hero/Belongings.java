@@ -35,8 +35,12 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ShardOfOblivion;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -320,28 +324,52 @@ public class Belongings implements Iterable<Item> {
 	
 	public void observe() {
 		if (weapon() != null) {
-			weapon().identify();
-			Badges.validateItemLevelAquired(weapon());
+			if (ShardOfOblivion.passiveIDDisabled() && weapon() instanceof Weapon){
+				((Weapon) weapon()).setIDReady();
+			} else {
+				weapon().identify();
+				Badges.validateItemLevelAquired(weapon());
+			}
+		}
+		if (secondWep() != null){
+			if (ShardOfOblivion.passiveIDDisabled() && secondWep() instanceof Weapon){
+				((Weapon) secondWep()).setIDReady();
+			} else {
+				secondWep().identify();
+				Badges.validateItemLevelAquired(secondWep());
+			}
 		}
 		if (armor() != null) {
-			armor().identify();
-			Badges.validateItemLevelAquired(armor());
+			if (ShardOfOblivion.passiveIDDisabled()){
+				armor().setIDReady();
+			} else {
+				armor().identify();
+				Badges.validateItemLevelAquired(armor());
+			}
 		}
 		if (artifact() != null) {
+			//oblivion shard does not prevent artifact IDing
 			artifact().identify();
 			Badges.validateItemLevelAquired(artifact());
 		}
 		if (misc() != null) {
-			misc().identify();
-			Badges.validateItemLevelAquired(misc());
+			if (ShardOfOblivion.passiveIDDisabled() && misc() instanceof Ring){
+				((Ring) misc()).setIDReady();
+			} else {
+				misc().identify();
+				Badges.validateItemLevelAquired(misc());
+			}
 		}
 		if (ring() != null) {
-			ring().identify();
-			Badges.validateItemLevelAquired(ring());
+			if (ShardOfOblivion.passiveIDDisabled()){
+				ring().setIDReady();
+			} else {
+				ring().identify();
+				Badges.validateItemLevelAquired(ring());
+			}
 		}
-		if (secondWep() != null){
-			secondWep().identify();
-			Badges.validateItemLevelAquired(secondWep());
+		if (ShardOfOblivion.passiveIDDisabled()){
+			GLog.p(Messages.get(ShardOfOblivion.class, "identify_ready_worn"));
 		}
 		for (Item item : backpack) {
 			if (item instanceof EquipableItem || item instanceof Wand) {

@@ -253,6 +253,10 @@ public class Ring extends KindofMisc {
 		return super.identify(byHero);
 	}
 
+	public void setIDReady(){
+		levelsToID = -1;
+	}
+
 	public boolean readyToIdentify(){
 		return !isIdentified() && levelsToID <= 0;
 	}
@@ -338,7 +342,7 @@ public class Ring extends KindofMisc {
 				if (levelsToID > -1){
 					GLog.p(Messages.get(ShardOfOblivion.class, "identify_ready"), name());
 				}
-				levelsToID = -1;
+				setIDReady();
 			} else {
 				identify();
 				GLog.p(Messages.get(Ring.class, "identify"));

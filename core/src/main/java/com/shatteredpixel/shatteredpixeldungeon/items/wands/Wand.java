@@ -250,6 +250,10 @@ public abstract class Wand extends Item {
 		return this;
 	}
 
+	public void setIDReady(){
+		usesLeftToID = -1;
+	}
+
 	public boolean readyToIdentify(){
 		return !isIdentified() && usesLeftToID <= 0;
 	}
@@ -439,7 +443,7 @@ public abstract class Wand extends Item {
 					if (usesLeftToID > -1){
 						GLog.p(Messages.get(ShardOfOblivion.class, "identify_ready"), name());
 					}
-					usesLeftToID = -1;
+					setIDReady();
 				} else {
 					identify();
 					GLog.p(Messages.get(Wand.class, "identify"));

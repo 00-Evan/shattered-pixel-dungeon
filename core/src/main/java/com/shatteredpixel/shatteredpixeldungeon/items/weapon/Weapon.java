@@ -134,7 +134,7 @@ abstract public class Weapon extends KindOfWeapon {
 					if (usesLeftToID > -1){
 						GLog.p(Messages.get(ShardOfOblivion.class, "identify_ready"), name());
 					}
-					usesLeftToID = -1;
+					setIDReady();
 				} else {
 					identify();
 					GLog.p(Messages.get(Weapon.class, "identify"));
@@ -212,6 +212,10 @@ abstract public class Weapon extends KindOfWeapon {
 			Catalog.setSeen(enchantment.getClass());
 		}
 		return super.identify(byHero);
+	}
+
+	public void setIDReady(){
+		usesLeftToID = -1;
 	}
 
 	public boolean readyToIdentify(){
