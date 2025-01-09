@@ -84,7 +84,7 @@ public class DisarmingTrap extends Trap{
 			if (weapon != null && !weapon.cursed) {
 
 				int cell;
-				int tries = 20;
+				int tries = 50;
 				do {
 					cell = Dungeon.level.randomRespawnCell( null );
 					if (tries-- < 0 && cell != -1) break;
