@@ -60,8 +60,8 @@ public class WandmakerSprite extends MobSprite {
 	@Override
 	public void die() {
 		super.die();
-		
-		remove(State.SHIELDED);
+
+		processStateRemoval(State.SHIELDED);
 		emitter().start( ElmoParticle.FACTORY, 0.03f, 60 );
 
 		if (visible) {

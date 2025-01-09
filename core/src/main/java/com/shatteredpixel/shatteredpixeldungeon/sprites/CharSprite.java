@@ -307,7 +307,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 
 	public void die() {
 		sleeping = false;
-		remove( State.PARALYSED );
+		processStateRemoval( State.PARALYSED );
 		play( die );
 
 		hideEmo();
@@ -373,8 +373,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		add(State.AURA);
 		auraColor = color;
 	}
-	
-	private synchronized void processStateAddition( State state ) {
+
+	protected synchronized void processStateAddition( State state ) {
 		switch (state) {
 			case BURNING:
 				if (burning != null) burning.on = false;
@@ -468,7 +468,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		remove(State.AURA);
 	}
 
-	private synchronized void processStateRemoval( State state ) {
+	protected synchronized void processStateRemoval( State state ) {
 		switch (state) {
 			case BURNING:
 				if (burning != null) {
@@ -717,7 +717,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		hideEmo();
 		
 		for( State s : State.values()){
-			remove(s);
+			processStateRemoval(s);
 		}
 		
 		if (health != null){
