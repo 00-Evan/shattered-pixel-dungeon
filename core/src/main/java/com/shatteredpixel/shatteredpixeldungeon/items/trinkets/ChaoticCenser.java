@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items.trinkets;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blizzard;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
@@ -36,15 +35,16 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StenchGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StormCloud;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BArray;
 import com.watabou.utils.Bundle;
@@ -99,91 +99,42 @@ public class ChaoticCenser extends Trinket {
 			if (avgTurns == -1){
 				spend(Random.NormalIntRange(1, 5));
 				return true;
-			} else if (left > avgTurns*1.1f){
-				left = Random.IntRange((int) (avgTurns*0.9f), (int) (avgTurns*1.1f));
+			} else if (left > avgTurns*1.2f){
+				left = Random.IntRange((int) (avgTurns*0.833f), (int) (avgTurns*1.2f));
 			}
 
-			float triggerChance = 0;
-			if (left > 0 && left <= 30) {
+			if (left <= 0) {
+
+				Char enemy = null;
 
 				if (TargetHealthIndicator.instance != null && TargetHealthIndicator.instance.isVisible()
 						&& TargetHealthIndicator.instance.target() != null
 						&& TargetHealthIndicator.instance.target().alignment == Char.Alignment.ENEMY
 						&& TargetHealthIndicator.instance.target().isAlive()) {
-					triggerChance = 0.75f;
-				}
 
-			} else if (left > -30 && left <= 0) {
-
-				if (TargetHealthIndicator.instance != null && TargetHealthIndicator.instance.isVisible()
-						&& TargetHealthIndicator.instance.target() != null
-						&& TargetHealthIndicator.instance.target().alignment == Char.Alignment.ENEMY
-						&& TargetHealthIndicator.instance.target().isAlive()) {
-					triggerChance = 1f;
-				} else if (Dungeon.level.openSpace[target.pos]){
-					triggerChance = 0.2f;
-				}
-
-			} else if (left <= -30) {
-				triggerChance = 1f;
-
-			}
-
-			if (triggerChance > 0) {
-				if (safeAreaDelay >= 0) {
-					boolean safeArea = false;
-
-					//shops are a safe area
-					for (Char ch : Actor.chars()) {
-						if (ch instanceof Shopkeeper
-								&& Dungeon.level.distance(target.pos, ch.pos) <= 6
-								&& new Ballistica(target.pos, ch.pos, Ballistica.PROJECTILE).collisionPos == ch.pos) {
-							safeArea = true;
-						}
-					}
-
-					//enclosed spaces are a safe area if no enemies are present
-					if ((TargetHealthIndicator.instance == null || TargetHealthIndicator.instance.target() == null
-							|| TargetHealthIndicator.instance.target().alignment != Char.Alignment.ENEMY
-							|| !TargetHealthIndicator.instance.target().isAlive())
-						&& !Dungeon.level.openSpace[target.pos]) {
-							safeArea = true;
-					}
-
-					if (safeArea){
-						int delay = Random.NormalIntRange(1, 5);
-						spend(delay);
-						safeAreaDelay -= delay;
-						return true;
+					if (produceGas(TargetHealthIndicator.instance.target())){
+						Sample.INSTANCE.play(Assets.Sounds.GAS, 0.5f);
+						Dungeon.hero.interrupt();
+						left += Random.IntRange((int) (avgTurns * 0.9f), (int) (avgTurns * 1.1f));
 					}
 				}
-			}
 
-			if (Random.Float() < triggerChance){
-				if (produceGas()) {
-					Sample.INSTANCE.play(Assets.Sounds.GAS);
-					Dungeon.hero.interrupt();
-					left += Random.IntRange((int) (avgTurns * 0.9f), (int) (avgTurns * 1.1f));
-				}
 			}
 
 			//buff ticks an average of every 3 turns
-			int delay = Random.NormalIntRange(1, 5);
+			int delay = Random.NormalIntRange(1, 3);
 			spend(delay);
-			safeAreaDelay = Math.min(safeAreaDelay+2*delay, 100);
-			left -= delay;
+			left = (int)Math.max(left-delay, -avgTurns/3f);
 
 			return true;
 		}
 
 		private static String LEFT = "left";
-		private static String SAFE_AREA_DELAY = "safe_area_delay";
 
 		@Override
 		public void storeInBundle(Bundle bundle) {
 			super.storeInBundle(bundle);
 			bundle.put(LEFT, left);
-			bundle.put(SAFE_AREA_DELAY, safeAreaDelay);
 		}
 
 		@Override
@@ -191,12 +142,11 @@ public class ChaoticCenser extends Trinket {
 			super.restoreFromBundle(bundle);
 			if (bundle.contains(LEFT)){
 				left = bundle.getInt(LEFT);
-				safeAreaDelay = bundle.getInt(SAFE_AREA_DELAY);
 			}
 		}
 	}
 
-	private static boolean produceGas(){
+	private static boolean produceGas( Char target ){
 		int level = trinketLevel(ChaoticCenser.class);
 
 		if (level < 0 || level > 3){
@@ -222,75 +172,119 @@ public class ChaoticCenser extends Trinket {
 				break;
 		}
 
-		Char target = null;
-		if (TargetHealthIndicator.instance != null && TargetHealthIndicator.instance.isVisible()
-				&& TargetHealthIndicator.instance.target() != null
-				&& TargetHealthIndicator.instance.target().alignment == Char.Alignment.ENEMY
-				&& TargetHealthIndicator.instance.target().isAlive()) {
-			target = TargetHealthIndicator.instance.target();
-		}
-
 		HashMap<Integer, Float> candidateCells = new HashMap<>();
-		PathFinder.buildDistanceMap(Dungeon.hero.pos, BArray.not(Dungeon.level.solid, null), 5);
+		PathFinder.buildDistanceMap(Dungeon.hero.pos, BArray.not(Dungeon.level.solid, null), 6);
 
-		//spawn gas in a random visible cell 2-5 tiles away, likelihood is 3,4 > 2,5
+		//spawn gas in a random visible cell 2-6 tiles away
 		for (int i = 0; i < Dungeon.level.length(); i++){
 			if (Dungeon.level.heroFOV[i] && PathFinder.distance[i] < Integer.MAX_VALUE) {
-				switch (PathFinder.distance[i]) {
-					case 3:
-					case 4:
-						candidateCells.put(i, 2f);
-						break;
-					case 2:
-					case 5:
-						candidateCells.put(i, 1f);
-						break;
+				if (PathFinder.distance[i] >= 2 && PathFinder.distance[i] <= 6) {
+					candidateCells.put(i, 0f);
 				}
 			}
 		}
 
-		//unless we have a target, then strongly prefer cells closer to target
-		if (target != null){
-			int targetpos = target.pos;
-			if (Dungeon.level.trueDistance(target.pos, Dungeon.hero.pos) >= 4){
-				//if target is a distance from the hero, aim in front of them instead
-				for (int i : PathFinder.NEIGHBOURS8){
-					while (!Dungeon.level.solid[targetpos+i]
-							&& Dungeon.level.trueDistance(target.pos+i, Dungeon.hero.pos) < Dungeon.level.trueDistance(targetpos, Dungeon.hero.pos)){
-						targetpos = target.pos+i;
-					}
+		//strongly prefer cells closer to target
+		int targetpos = target.pos;
+		if (Dungeon.level.trueDistance(target.pos, Dungeon.hero.pos) >= 4){
+			//if target is a distance from the hero, aim in front of them instead
+			for (int i : PathFinder.NEIGHBOURS8){
+				while (!Dungeon.level.solid[targetpos+i]
+						&& Dungeon.level.trueDistance(target.pos+i, Dungeon.hero.pos) < Dungeon.level.trueDistance(targetpos, Dungeon.hero.pos)){
+					targetpos = target.pos+i;
 				}
 			}
-			float closest = 100;
-			for (int cell : candidateCells.keySet()){
-				float dist = Dungeon.level.distance(cell, targetpos);
-				if (dist < closest){
-					closest = dist;
-				}
+		}
+		float closest = 100;
+		for (int cell : candidateCells.keySet()){
+			float dist = Dungeon.level.distance(cell, targetpos);
+			if (dist < closest){
+				closest = dist;
 			}
-			for (int cell : candidateCells.keySet()){
-				float dist = Dungeon.level.distance(cell, targetpos);
-				if (dist - closest == 0) {
-					candidateCells.put(cell, 4f);
-				} else if (dist - closest <= 1) {
-					candidateCells.put(cell, 1f);
-				} else {
-					candidateCells.put(cell, 0f);
-				}
+		}
+		for (int cell : candidateCells.keySet()){
+			float dist = Dungeon.level.distance(cell, targetpos);
+			if (dist - closest == 0) {
+				candidateCells.put(cell, 8f);
+			} else if (dist - closest <= 1) {
+				candidateCells.put(cell, 1f);
+			} else {
+				candidateCells.put(cell, 0f);
 			}
 		}
 
 		if (!candidateCells.isEmpty()) {
 			Integer targetCell = Random.chances(candidateCells);
 			if (targetCell != null) {
-				GameScene.add(Blob.seed(targetCell, (int) gasQuantity, gasToSpawn));
-				MagicMissile.boltFromChar(Dungeon.hero.sprite.parent, MISSILE_VFX.get(gasToSpawn), Dungeon.hero.sprite, targetCell, null);
+				Buff.affect(Dungeon.hero, GasSpewer.class, Dungeon.hero.cooldown()).set(targetCell, gasToSpawn, (int)gasQuantity);
+				GLog.w(Messages.get(ChaoticCenser.class, "spew", Messages.titleCase(Messages.get(gasToSpawn, "name")) ));
+				target.sprite.parent.addToBack(new TargetedCell(targetCell, 0xFF0000));
 				return true;
 			}
 		}
 
 		return false;
 
+	}
+
+	public static class GasSpewer extends FlavourBuff {
+
+		private int targetCell;
+
+		private int depth;
+		private int branch;
+
+		private Class<?extends Blob> gasType;
+		private int gasQuantity;
+
+		public void set( int targetCell, Class<?extends Blob> gasType, int gasQuantity){
+			this.targetCell = targetCell;
+
+			depth = Dungeon.depth;
+			branch = Dungeon.branch;
+
+			this.gasType = gasType;
+			this.gasQuantity = gasQuantity;
+		}
+
+		@Override
+		public boolean act() {
+
+			if (depth == Dungeon.depth && branch == Dungeon.branch){
+				GameScene.add(Blob.seed(targetCell, gasQuantity, gasType));
+				MagicMissile.boltFromChar(Dungeon.hero.sprite.parent, MISSILE_VFX.get(gasType), Dungeon.hero.sprite, targetCell, null);
+				Sample.INSTANCE.play(Assets.Sounds.GAS);
+			}
+
+			detach();
+			return true;
+		}
+
+		private static final String CELL = "cell";
+		private static final String DEPTH = "depth";
+		private static final String BRANCH = "branch";
+		private static final String GAS_TYPE = "gas_type";
+		private static final String GAS_QUANTITY = "gas_quantity";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(CELL, targetCell);
+			bundle.put(DEPTH, depth);
+			bundle.put(BRANCH, branch);
+			bundle.put(GAS_TYPE, gasType);
+			bundle.put(GAS_QUANTITY, gasQuantity);
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			targetCell = bundle.getInt(CELL);
+			depth = bundle.getInt(DEPTH);
+			branch = bundle.getInt(BRANCH);
+			gasType = bundle.getClass(GAS_TYPE);
+			gasQuantity = bundle.getInt(GAS_QUANTITY);
+		}
 	}
 
 	private static final float[][] GAS_CAT_CHANCES = new float[4][3];
