@@ -5,8 +5,7 @@ actors.blobs.confusiongas.desc=A cloud of confusion gas is swirling here.
 
 actors.blobs.electricity.desc=A field of electricity is sparking brightly here.
 actors.blobs.electricity.rankings_desc=Electrocuted
-actors.blobs.electricity.ondeath=You were shocked to death... or did you?????????????????????????
-
+actors.blobs.electricity.ondeath=You were shocked to death...
 actors.blobs.fire.desc=A fire is raging here like ishowsped.
 
 actors.blobs.foliage.desc=Shafts of light pierce the gloom of the underground garden.
@@ -1120,7 +1119,7 @@ actors.mobs.armoredstatue.desc=You would think that it's just another one of thi
 actors.mobs.armoredstatue.desc_arm_wep=While the statue itself is made of stone, the _%1$s_ and _%2$s_ it's wielding look real.
 
 actors.mobs.bandit.name=crazy bandit
-actors.mobs.bandit.desc=This crazy bandit farts all day and is crazy. Or is it? GET OUT-
+actors.mobs.bandit.desc=This crazy bandit is crazy
 
 actors.mobs.bat.name=vampire bat
 actors.mobs.bat.desc=These brisk and tenacious inhabitants of the caves are much more dangerous than they seem. They replenish their health with each successful attack, which allows them to defeat much larger opponents.
