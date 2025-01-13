@@ -26,22 +26,65 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.utils.Bundle;
 
 public class Trinity extends ArmorAbility {
+
+	{
+		baseChargeUse = 25;
+	}
+
+	private Class form = null;
+
+	@Override
+	public String targetingPrompt() {
+		//TODO varies based on form? Or just directly jump into item logic?
+		return super.targetingPrompt();
+	}
 
 	@Override
 	protected void activate(ClassArmor armor, Hero hero, Integer target) {
 
+		//always happens atm
+		if (form == null){
+			GLog.w("Trinity has no form currently, use one of its spells!");
+		}
+
+	}
+
+	private static final String FORM = "form";
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		if (form != null){
+			bundle.put(FORM, form);
+		}
+	}
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		if (bundle.contains(FORM)){
+			form = bundle.getClass(FORM);
+		}
 	}
 
 	@Override
 	public int icon() {
-		return HeroIcon.CLERIC2;
+		return HeroIcon.TRINITY;
+	}
+
+	@Override
+	public String desc() {
+		//TODO a lot of variance here based on form probably.
+		return super.desc();
 	}
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.CLERIC_A2_1, Talent.CLERIC_A2_2, Talent.CLERIC_A2_3};
+		return new Talent[]{Talent.BODY_FORM, Talent.MIND_FORM, Talent.SPIRIT_FORM, Talent.HEROIC_ENERGY};
 	}
 
 }

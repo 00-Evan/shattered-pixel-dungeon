@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.utils.DeviceCompat;
 
 public class WndChooseAbility extends Window {
 
@@ -98,7 +99,7 @@ public class WndChooseAbility extends Window {
 			add(abilityButton);
 
 			//TODO CLERIC these abilities aren't playable atm
-			if (ability instanceof Trinity || ability instanceof PowerOfMany){
+			if (!DeviceCompat.isDebug() && (ability instanceof Trinity || ability instanceof PowerOfMany)){
 				abilityButton.enable(false);
 			}
 

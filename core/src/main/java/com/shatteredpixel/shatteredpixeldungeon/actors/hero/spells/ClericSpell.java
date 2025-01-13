@@ -151,13 +151,21 @@ public abstract class ClericSpell {
 			if (cleric.hasTalent(Talent.DIVINE_INTERVENTION)){
 				spells.add(DivineIntervention.INSTANCE);
 			}
-
 			if (cleric.hasTalent(Talent.JUDGEMENT)){
 				spells.add(Judgement.INSTANCE);
 			}
-
 			if (cleric.hasTalent(Talent.FLASH)){
 				spells.add(Flash.INSTANCE);
+			}
+
+			if (cleric.hasTalent(Talent.BODY_FORM)){
+				spells.add(BodyForm.INSTANCE);
+			}
+			if (cleric.hasTalent(Talent.MIND_FORM)){
+				spells.add(MindForm.INSTANCE);
+			}
+			if (cleric.hasTalent(Talent.SPIRIT_FORM)){
+				spells.add(SpiritForm.INSTANCE);
 			}
 
 		}
