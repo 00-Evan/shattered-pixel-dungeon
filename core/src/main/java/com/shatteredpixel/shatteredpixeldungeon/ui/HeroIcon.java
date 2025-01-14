@@ -35,7 +35,7 @@ public class HeroIcon extends Image {
 	private static final int SIZE = 16;
 
 	//transparent icon
-	public static final int NONE    = 63;
+	public static final int NONE    = 127;
 
 	//subclasses
 	public static final int BERSERKER   = 0;
@@ -87,7 +87,10 @@ public class HeroIcon extends Image {
 	public static final int HOLY_LANCE      = 51;
 	public static final int HALLOWED_GROUND = 52;
 	public static final int MNEMONIC_PRAYER = 53;
-	//Paladin spells go here
+	public static final int SMITE           = 54;
+	public static final int LAY_ON_HANDS    = 55;
+	//56
+	//57
 	public static final int DIVINE_INTERVENTION = 58;
 	public static final int JUDGEMENT       = 59;
 	public static final int FLASH           = 60;

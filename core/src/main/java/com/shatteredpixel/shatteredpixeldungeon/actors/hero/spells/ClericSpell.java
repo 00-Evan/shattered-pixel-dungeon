@@ -135,8 +135,7 @@ public abstract class ClericSpell {
 				spells.add(Radiance.INSTANCE);
 
 			} else if (cleric.subClass == HeroSubClass.PALADIN){
-				//TODO innate smite spell
-
+				spells.add(Smite.INSTANCE);
 			}
 
 			if (cleric.hasTalent(Talent.CLEANSE)){
@@ -146,14 +145,14 @@ public abstract class ClericSpell {
 			if (cleric.hasTalent(Talent.HOLY_LANCE)){
 				spells.add(HolyLance.INSTANCE);
 			}
-
 			if (cleric.hasTalent(Talent.HALLOWED_GROUND)){
 				spells.add(HallowedGround.INSTANCE);
 			}
-
 			if (cleric.hasTalent(Talent.MNEMONIC_PRAYER)){
 				spells.add(MnemonicPrayer.INSTANCE);
 			}
+
+			//TODO paladin spells
 
 		} else if (tier == 4){
 

@@ -74,6 +74,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.En
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.HallowedGround;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.HolyWard;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.HolyWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.Smite;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
@@ -1453,6 +1454,10 @@ public class Hero extends Char {
 		} else if (buff(HolyWeapon.HolyWepBuff.class) != null) {
 			int dmg = subClass == HeroSubClass.PALADIN ? 6 : 2;
 			enemy.damage(Math.round(dmg * Weapon.Enchantment.genericProcChanceMultiplier(this)), HolyWeapon.INSTANCE);
+		}
+
+		if (buff(Smite.SmiteTracker.class) != null){
+			enemy.damage(Smite.bonusDmg(this, enemy), Smite.INSTANCE);
 		}
 		
 		switch (subClass) {
