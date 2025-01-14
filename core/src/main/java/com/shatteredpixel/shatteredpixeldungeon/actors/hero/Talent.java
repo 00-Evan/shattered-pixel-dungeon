@@ -183,7 +183,7 @@ public enum Talent {
 	//Priest T3
 	HOLY_LANCE(171, 3), HALLOWED_GROUND(172, 3), MNEMONIC_PRAYER(173, 3),
 	//Paladin T3
-	PALADINT3A(174, 3), PALADINT3B(175, 3), PALADINT3C(176, 3),
+	LAY_ON_HANDS(174, 3), PALADINT3B(175, 3), PALADINT3C(176, 3),
 	//Ascended Form T4
 	DIVINE_INTERVENTION(177, 4), JUDGEMENT(178, 4), FLASH(179, 4),
 	//Trinity T4
@@ -1022,7 +1022,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, HOLY_LANCE, HALLOWED_GROUND, MNEMONIC_PRAYER);
 				break;
 			case PALADIN:
-				Collections.addAll(tierTalents, PALADINT3A, PALADINT3B, PALADINT3C);
+				Collections.addAll(tierTalents, LAY_ON_HANDS, PALADINT3B, PALADINT3C);
 				break;
 		}
 		for (Talent talent : tierTalents){

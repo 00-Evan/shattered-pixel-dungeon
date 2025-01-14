@@ -152,7 +152,9 @@ public abstract class ClericSpell {
 				spells.add(MnemonicPrayer.INSTANCE);
 			}
 
-			//TODO paladin spells
+			if (cleric.hasTalent(Talent.LAY_ON_HANDS)){
+				spells.add(LayOnHands.INSTANCE);
+			}
 
 		} else if (tier == 4){
 
@@ -194,6 +196,8 @@ public abstract class ClericSpell {
 		spells.add(BlessSpell.INSTANCE);
 		spells.add(Cleanse.INSTANCE);
 		spells.add(Radiance.INSTANCE);
+		spells.add(Smite.INSTANCE);
+		spells.add(LayOnHands.INSTANCE);
 		spells.add(HolyLance.INSTANCE);
 		spells.add(HallowedGround.INSTANCE);
 		spells.add(MnemonicPrayer.INSTANCE);
