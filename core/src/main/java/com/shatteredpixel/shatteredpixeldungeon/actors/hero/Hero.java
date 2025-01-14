@@ -1451,7 +1451,8 @@ public class Hero extends Char {
 		if (wep != null) {
 			damage = wep.proc( this, enemy, damage );
 		} else if (buff(HolyWeapon.HolyWepBuff.class) != null) {
-			enemy.damage(Math.round(2f * Weapon.Enchantment.genericProcChanceMultiplier(this)), HolyWeapon.INSTANCE);
+			int dmg = subClass == HeroSubClass.PALADIN ? 6 : 2;
+			enemy.damage(Math.round(dmg * Weapon.Enchantment.genericProcChanceMultiplier(this)), HolyWeapon.INSTANCE);
 		}
 		
 		switch (subClass) {
@@ -1500,7 +1501,8 @@ public class Hero extends Char {
 		if (belongings.armor() != null) {
 			damage = belongings.armor().proc( enemy, this, damage );
 		} else if (buff(HolyWard.HolyArmBuff.class) != null){
-			damage -= Math.round(1f * Armor.Glyph.genericProcChanceMultiplier(enemy));
+			int blocking = subClass == HeroSubClass.PALADIN ? 3 : 1;
+			damage -= Math.round(blocking * Armor.Glyph.genericProcChanceMultiplier(enemy));
 		}
 
 		WandOfLivingEarth.RockArmor rockArmor = buff(WandOfLivingEarth.RockArmor.class);

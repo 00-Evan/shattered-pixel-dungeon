@@ -79,6 +79,15 @@ public abstract class ClericSpell {
 		}
 		tome.spendCharge(chargeUse(hero));
 		Talent.onArtifactUsed(hero);
+		if (hero.subClass == HeroSubClass.PALADIN){
+			if (this != HolyWeapon.INSTANCE && hero.buff(HolyWeapon.HolyWepBuff.class) != null){
+				Buff.affect(hero, HolyWeapon.HolyWepBuff.class, 10*chargeUse(hero));
+			}
+			if (this != HolyWard.INSTANCE && hero.buff(HolyWard.HolyArmBuff.class) != null){
+				Buff.affect(hero, HolyWard.HolyArmBuff.class, 10*chargeUse(hero));
+			}
+		}
+
 		if (hero.buff(AscendedForm.AscendBuff.class) != null){
 			hero.buff(AscendedForm.AscendBuff.class).spellCasts++;
 			hero.buff(AscendedForm.AscendBuff.class).incShield((int)(10*chargeUse(hero)));
