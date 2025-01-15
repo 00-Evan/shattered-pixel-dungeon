@@ -64,9 +64,44 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("BETA-1.4", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.CHAOTIC_CENSER), "Trinket & Weapon Ability Buffs",
+				"Overall trinket balance is in a much better place since v2.5, but there are still some that can do with being more powerful or fun to use:\n" +
+				"\n" +
+				"**- Chaotic Censer** now only spawns gasses when enemies are present, and gives a warning one moment before the gas is spewed.\n" +
+				"**- 13 Leaf Clover** slightly redesigned, now has a 15% chance to set damage to max and 10% chance to set damage to min per level. This results in ~10% more average damage at +3.\n" +
+				"**- Mimic Tooth** ebony mimics now have normal mimic stats, down from +25%, but still deal full damage on surprise attack.\n" +
+				"**- Trap Mechanism** now also makes 10% of a level's traps spawn visible per level.\n" +
+				"**- Shard of Oblivion** now prevents ID effects such as scroll of ID and wells of knowledge. Items are instead set to be ready to be IDed by the shard.",
+
+				"The Duelist continues to do better following all the changes in v2.X updates. A couple of weapon abilities are still lagging behind though, and so I'm giving them a little help:\n" +
+				"\n" +
+				"**- Combo Strike** ability damage boost buffed by 25% for Gauntlets. 33% for Sai, 50% for Gloves.\n" +
+				"**- Charged Shot** knockback +1, base bonus damage on untipped darts +1."));
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.MOSSY_CLUMP), "Trinket & Talent Nerfs",
+				"Despite nerfs in v2.5 the Mossy Clump is still far and away the strongest trinket. For now I'm going to experiment with adjusting the ratios on the floors it grants.\n" +
+				"\n" +
+				"**- Mossy Clump** now generates grassy floors 1/3 of the time and water floors 2/3 of the time, instead of 1/2 each. This will usually result in one fewer grassy floor over a whole run.",
+
+				"Thrown weapons aren't an especially popular category of item to upgrade, and I would like to make more extensive changes to them in the future, but for the moment I'm making a targeted adjustment to the Shared Upgrades talent. The bonus damage it provided wasn't tied to the tier of thrown weapon used, which made T2 thrown weapons disproportionally powerful for the Sniper.\n" +
+				"\n" +
+				"**- Shared Upgrades**  now grants 2.5%/5%/7.5% bonus damage per upgrade per tier, instead of a flat 10%/20%/30% bonus damage per upgrade. Functionally, this means -50% bonus dmg for T2 thrown weapons, -25% for T3, no changes for T4, and +25% for T5."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**-** Holy weapon and ward now work without a weapon or armor. Mainly this is to prevent antisynergy with the ring of force.\n\n" +
+				"**-** Updated Translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"**Caused by BETA:**\n" +
+				"**-** Character visual effects (burning, illuminated, etc.) persisting after death in various cases\n" +
+				"\n" +
+				"**Existed Prior to BETA:**\n" +
+				"**-** Exploits involving juggling salt cube to get slower hunger with full regen\n" +
+				"**-** Disarming traps not teleporting the hero's weapon in some cases where they should"));
 
 		changes = new ChangeInfo("BETA-1.3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -129,21 +164,6 @@ public class v3_X_Changes {
 				"**-** Artifact uniqueness being affected by runs from prior game versions\n" +
 				"**-** Rare cases where game win scene wouldn't trigger immediately\n" +
 				"**-** Minor text errors"));
-
-		/*Balance:
-		- Cleric Tome charge speed increased by 33%
-		- Priest illuminated trigger buffed: dmg now equal to hero level
-		Talents/Spells:
-			- searing light up to 4/6 dmg from 3/5
-			- shield of light now lasts a static 4 turns and gives 2-4 / 3-6 armor
-			- bless now gives 6/10 turns of bless on self-cast, up from 4/6
-			- sunray dmg up to 4-8/6-12 from 2-8/3-12
-			- radiance stun duration up to 3 from 2
-			divine intervention changed:
-				- cost down to 5 from 6
-				- shielding adjusted to 150/200/250/300 from 200/250/300/350
-				- now also extends ascended form for 1/2/3/4 turns
-		 */
 
 		changes = new ChangeInfo("BETA-1.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -266,9 +286,6 @@ public class v3_X_Changes {
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight(CharSprite.POSITIVE);
 		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SOMETHING), "Nothing yet!",
-				"While there are no other balance changes in v3.0 currently, I do plan to go over some balance numbers from v2.5.4 and make adjustments here during the beta."));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
 		changes.hardlight(CharSprite.NEGATIVE);
