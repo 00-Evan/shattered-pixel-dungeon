@@ -86,6 +86,23 @@ public class Regeneration extends Buff {
 		
 		return true;
 	}
+
+	//helper method for resetting the delay when salt cube buff changes, to counter exploits
+	public void resetDelay( SaltCube cube ){
+		ChaliceOfBlood.chaliceRegen regenBuff = Dungeon.hero.buff( ChaliceOfBlood.chaliceRegen.class);
+		float delay = REGENERATION_DELAY;
+		if (regenBuff != null && target.buff(MagicImmune.class) == null) {
+			if (regenBuff.isCursed()) {
+				delay *= 1.5f;
+			} else {
+				//15% boost at +0, scaling to a 500% boost at +10
+				delay -= 1.33f + regenBuff.itemLevel()*0.667f;
+				delay /= RingOfEnergy.artifactChargeMultiplier(target);
+			}
+		}
+		delay /= SaltCube.healthRegenMultiplier(cube.level());
+		postpone( delay );
+	}
 	
 	public int regencap(){
 		return target.HT;

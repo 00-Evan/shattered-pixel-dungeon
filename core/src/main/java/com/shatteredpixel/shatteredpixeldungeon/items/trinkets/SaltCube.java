@@ -21,6 +21,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.trinkets;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
@@ -34,6 +38,19 @@ public class SaltCube extends Trinket {
 	protected int upgradeEnergyCost() {
 		//6 -> 8(14) -> 10(24) -> 12(36)
 		return 6+2*level();
+	}
+
+	@Override
+	protected void onDetach() {
+		//resets regen delay to counter exploits involving juggling the salt cube.
+		Buff.affect(Dungeon.hero, Regeneration.class).resetDelay(this);
+	}
+
+	@Override
+	public boolean doPickUp(Hero hero, int pos) {
+		//resets regen delay to counter exploits involving juggling the salt cube.
+		Buff.affect(Dungeon.hero, Regeneration.class).resetDelay(this);
+		return super.doPickUp(hero, pos);
 	}
 
 	@Override
