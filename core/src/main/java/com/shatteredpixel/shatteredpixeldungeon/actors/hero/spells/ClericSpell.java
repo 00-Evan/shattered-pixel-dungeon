@@ -155,6 +155,12 @@ public abstract class ClericSpell {
 			if (cleric.hasTalent(Talent.LAY_ON_HANDS)){
 				spells.add(LayOnHands.INSTANCE);
 			}
+			if (cleric.hasTalent(Talent.AURA_OF_PROTECTION)){
+				spells.add(AuraOfProtection.INSTANCE);
+			}
+			if (cleric.hasTalent(Talent.WALL_OF_LIGHT)){
+				spells.add(WallOfLight.INSTANCE);
+			}
 
 		} else if (tier == 4){
 
