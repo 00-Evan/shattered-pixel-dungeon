@@ -57,6 +57,11 @@ public class AuraOfProtection extends ClericSpell {
 	}
 
 	@Override
+	public boolean canCast(Hero hero) {
+		return super.canCast(hero) && hero.hasTalent(Talent.AURA_OF_PROTECTION);
+	}
+
+	@Override
 	public void onCast(HolyTome tome, Hero hero) {
 
 		Buff.affect(hero,AuraBuff.class, AuraBuff.DURATION);

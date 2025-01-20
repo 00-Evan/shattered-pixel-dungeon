@@ -54,6 +54,11 @@ public class BlessSpell extends TargetedClericSpell {
 	}
 
 	@Override
+	public boolean canCast(Hero hero) {
+		return super.canCast(hero) && hero.hasTalent(Talent.BLESS);
+	}
+
+	@Override
 	protected void onTargetSelected(HolyTome tome, Hero hero, Integer target) {
 		if (target == null){
 			return;

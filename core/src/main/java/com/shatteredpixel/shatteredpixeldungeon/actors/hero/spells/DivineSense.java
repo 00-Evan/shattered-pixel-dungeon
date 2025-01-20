@@ -49,6 +49,11 @@ public class DivineSense extends ClericSpell {
 	}
 
 	@Override
+	public boolean canCast(Hero hero) {
+		return super.canCast(hero) && hero.hasTalent(Talent.DIVINE_SENSE);
+	}
+
+	@Override
 	public void onCast(HolyTome tome, Hero hero) {
 		Buff.affect(hero, DivineSenseTracker.class, 30f);
 		Dungeon.observe();

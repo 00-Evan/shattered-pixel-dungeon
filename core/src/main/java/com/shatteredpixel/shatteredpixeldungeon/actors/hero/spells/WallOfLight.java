@@ -43,8 +43,18 @@ public class WallOfLight extends TargetedClericSpell {
 	}
 
 	@Override
+	public int targetingFlags(){
+		return -1; //auto-targeting behaviour is often wrong, so we don't use it
+	}
+
+	@Override
 	public float chargeUse(Hero hero) {
 		return 3f;
+	}
+
+	@Override
+	public boolean canCast(Hero hero) {
+		return super.canCast(hero) && hero.hasTalent(Talent.WALL_OF_LIGHT);
 	}
 
 	@Override

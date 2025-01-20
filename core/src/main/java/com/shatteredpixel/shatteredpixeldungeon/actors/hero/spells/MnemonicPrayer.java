@@ -75,6 +75,11 @@ public class MnemonicPrayer extends TargetedClericSpell {
 	}
 
 	@Override
+	public boolean canCast(Hero hero) {
+		return super.canCast(hero) && hero.hasTalent(Talent.MNEMONIC_PRAYER);
+	}
+
+	@Override
 	@SuppressWarnings("unchecked")
 	protected void onTargetSelected(HolyTome tome, Hero hero, Integer target) {
 

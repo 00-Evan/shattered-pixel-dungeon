@@ -65,7 +65,9 @@ public class HolyLance extends TargetedClericSpell {
 
 	@Override
 	public boolean canCast(Hero hero) {
-		return super.canCast(hero) && hero.buff(LanceCooldown.class) == null;
+		return super.canCast(hero)
+				&& hero.hasTalent(Talent.HOLY_LANCE)
+				&& hero.buff(LanceCooldown.class) == null;
 	}
 
 	@Override

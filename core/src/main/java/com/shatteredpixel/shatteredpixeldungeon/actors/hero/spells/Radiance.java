@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -47,6 +48,11 @@ public class Radiance extends ClericSpell {
 	@Override
 	public float chargeUse(Hero hero) {
 		return 2;
+	}
+
+	@Override
+	public boolean canCast(Hero hero) {
+		return super.canCast(hero) && hero.subClass == HeroSubClass.PRIEST;
 	}
 
 	@Override

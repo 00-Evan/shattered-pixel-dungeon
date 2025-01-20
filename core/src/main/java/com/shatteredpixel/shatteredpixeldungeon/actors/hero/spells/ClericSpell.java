@@ -204,6 +204,8 @@ public abstract class ClericSpell {
 		spells.add(Radiance.INSTANCE);
 		spells.add(Smite.INSTANCE);
 		spells.add(LayOnHands.INSTANCE);
+		spells.add(AuraOfProtection.INSTANCE);
+		spells.add(WallOfLight.INSTANCE);
 		spells.add(HolyLance.INSTANCE);
 		spells.add(HallowedGround.INSTANCE);
 		spells.add(MnemonicPrayer.INSTANCE);

@@ -51,7 +51,9 @@ public class Flash extends TargetedClericSpell {
 
 	@Override
 	public boolean canCast(Hero hero) {
-		return super.canCast(hero) && hero.buff(AscendedForm.AscendBuff.class) != null;
+		return super.canCast(hero)
+				&& hero.hasTalent(Talent.FLASH)
+				&& hero.buff(AscendedForm.AscendBuff.class) != null;
 	}
 
 	@Override

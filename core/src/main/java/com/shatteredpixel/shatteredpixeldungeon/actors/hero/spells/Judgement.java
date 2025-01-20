@@ -52,7 +52,9 @@ public class Judgement extends ClericSpell {
 
 	@Override
 	public boolean canCast(Hero hero) {
-		return super.canCast(hero) && hero.buff(AscendedForm.AscendBuff.class) != null;
+		return super.canCast(hero)
+				&& hero.hasTalent(Talent.JUDGEMENT)
+				&& hero.buff(AscendedForm.AscendBuff.class) != null;
 	}
 
 	@Override

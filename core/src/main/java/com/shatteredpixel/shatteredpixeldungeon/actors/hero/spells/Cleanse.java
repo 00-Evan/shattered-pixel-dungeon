@@ -62,6 +62,11 @@ public class Cleanse extends ClericSpell {
 	}
 
 	@Override
+	public boolean canCast(Hero hero) {
+		return super.canCast(hero) && hero.hasTalent(Talent.CLEANSE);
+	}
+
+	@Override
 	public void onCast(HolyTome tome, Hero hero) {
 
 		ArrayList<Char> affected = new ArrayList<>();

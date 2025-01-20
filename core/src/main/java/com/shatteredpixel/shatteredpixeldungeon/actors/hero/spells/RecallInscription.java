@@ -119,7 +119,9 @@ public class RecallInscription extends ClericSpell {
 
 	@Override
 	public boolean canCast(Hero hero) {
-		return hero.buff(UsedItemTracker.class) != null;
+		return super.canCast(hero)
+				&& hero.hasTalent(Talent.RECALL_INSCRIPTION)
+				&& hero.buff(UsedItemTracker.class) != null;
 	}
 
 	public static class UsedItemTracker extends FlavourBuff {
