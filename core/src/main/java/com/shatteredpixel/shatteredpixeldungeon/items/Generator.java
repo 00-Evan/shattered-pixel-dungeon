@@ -746,7 +746,19 @@ public class Generator {
 		} else if (cat.defaultProbsTotal != null){
 			return ((Item) Reflection.newInstance(cat.classes[Random.chances(cat.defaultProbsTotal)])).random();
 		} else {
-			return ((Item) Reflection.newInstance(cat.classes[Random.chances(cat.defaultProbs)])).random();
+			Class<?> itemCls = cat.classes[Random.chances(cat.defaultProbs)];
+
+			if (ExoticPotion.regToExo.containsKey(itemCls)){
+				if (Random.Float() < ExoticCrystals.consumableExoticChance()){
+					itemCls = ExoticPotion.regToExo.get(itemCls);
+				}
+			} else if (ExoticScroll.regToExo.containsKey(itemCls)){
+				if (Random.Float() < ExoticCrystals.consumableExoticChance()){
+					itemCls = ExoticScroll.regToExo.get(itemCls);
+				}
+			}
+
+			return ((Item) Reflection.newInstance(itemCls)).random();
 		}
 	}
 	

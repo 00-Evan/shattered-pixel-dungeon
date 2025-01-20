@@ -36,7 +36,7 @@ public class Acidic extends Scorpio {
 		
 		properties.add(Property.ACIDIC);
 
-		loot = new PotionOfExperience();
+		loot = PotionOfExperience.class;
 		lootChance = 1f;
 	}
 	@Override
