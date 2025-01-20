@@ -23,12 +23,8 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.StatueSprite;
@@ -84,34 +80,18 @@ public class ArmoredStatue extends Statue {
 	}
 
 	@Override
-	public boolean isImmune(Class effect) {
-		if (effect == Burning.class
-				&& armor != null
-				&& armor.hasGlyph(Brimstone.class, this)){
-			return true;
-		}
-		return super.isImmune(effect);
-	}
-
-	@Override
 	public int defenseProc(Char enemy, int damage) {
 		damage = armor.proc(enemy, this, damage);
 		return super.defenseProc(enemy, damage);
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
-		//TODO improve this when I have proper damage source logic
-		if (armor != null && armor.hasGlyph(AntiMagic.class, this)
-				&& AntiMagic.RESISTS.contains(src.getClass())){
-			dmg -= AntiMagic.drRoll(this, armor.buffedLvl());
-			dmg = Math.max(dmg, 0);
+	public int glyphLevel(Class<? extends Armor.Glyph> cls) {
+		if (armor != null && armor.hasGlyph(cls, this)){
+			return Math.max(super.glyphLevel(cls), armor.buffedLvl());
+		} else {
+			return super.glyphLevel(cls);
 		}
-
-		super.damage( dmg, src );
-
-		//for the rose status indicator
-		Item.updateQuickslot();
 	}
 
 	@Override
@@ -123,16 +103,6 @@ public class ArmoredStatue extends Statue {
 			((StatueSprite) sprite).setArmor(3);
 		}
 		return sprite;
-	}
-
-	@Override
-	public float speed() {
-		return armor.speedFactor(this, super.speed());
-	}
-
-	@Override
-	public float stealth() {
-		return armor.stealthFactor(this, super.stealth());
 	}
 
 	@Override

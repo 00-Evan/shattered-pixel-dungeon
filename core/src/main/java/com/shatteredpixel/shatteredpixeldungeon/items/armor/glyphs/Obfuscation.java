@@ -31,8 +31,16 @@ public class Obfuscation extends Armor.Glyph {
 
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
-		//no proc effect, see armor.stealthfactor for effect.
+		//no proc effect, triggered in Char.stealth()
 		return damage;
+	}
+
+	public static float stealthBoost( Char owner, int level ){
+		if (level == -1) {
+			return 0;
+		} else {
+			return (1 + level / 3f) * genericProcChanceMultiplier(owner);
+		}
 	}
 
 	@Override

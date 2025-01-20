@@ -45,8 +45,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShaftParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
@@ -667,13 +665,6 @@ public class DriedRose extends Artifact {
 		
 		@Override
 		public void damage(int dmg, Object src) {
-			//TODO improve this when I have proper damage source logic
-			if (rose != null && rose.armor != null && rose.armor.hasGlyph(AntiMagic.class, this)
-					&& AntiMagic.RESISTS.contains(src.getClass())){
-				dmg -= AntiMagic.drRoll(this, rose.armor.buffedLvl());
-				dmg = Math.max(dmg, 0);
-			}
-			
 			super.damage( dmg, src );
 			
 			//for the rose status indicator
@@ -683,10 +674,6 @@ public class DriedRose extends Artifact {
 		@Override
 		public float speed() {
 			float speed = super.speed();
-			
-			if (rose != null && rose.armor != null){
-				speed = rose.armor.speedFactor(this, speed);
-			}
 
 			//moves 2 tiles at a time when returning to the hero
 			if (state == WANDERING
@@ -710,17 +697,6 @@ public class DriedRose extends Artifact {
 		}
 		
 		@Override
-		public float stealth() {
-			float stealth = super.stealth();
-			
-			if (rose != null && rose.armor != null){
-				stealth = rose.armor.stealthFactor(this, stealth);
-			}
-			
-			return stealth;
-		}
-		
-		@Override
 		public int drRoll() {
 			int dr = super.drRoll();
 			if (rose != null && rose.armor != null){
@@ -732,24 +708,13 @@ public class DriedRose extends Artifact {
 			return dr;
 		}
 
-		//used in some glyph calculations
-		public Armor armor(){
-			if (rose != null){
-				return rose.armor;
-			} else {
-				return null;
-			}
-		}
-
 		@Override
-		public boolean isImmune(Class effect) {
-			if (effect == Burning.class
-					&& rose != null
-					&& rose.armor != null
-					&& rose.armor.hasGlyph(Brimstone.class, this)){
-				return true;
+		public int glyphLevel(Class<? extends Armor.Glyph> cls) {
+			if (rose != null && rose.armor != null && rose.armor.hasGlyph(cls, this)){
+				return Math.max(super.glyphLevel(cls), rose.armor.buffedLvl());
+			} else {
+				return super.glyphLevel(cls);
 			}
-			return super.isImmune(effect);
 		}
 
 		@Override

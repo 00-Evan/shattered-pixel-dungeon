@@ -134,19 +134,18 @@ public class AntiMagic extends Armor.Glyph {
 	
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
-		//no proc effect, see:
-		// Hero.damage
-		// GhostHero.damage
-		// Shadowclone.damage
-		// ArmoredStatue.damage
-		// PrismaticImage.damage
+		//no proc effect, triggers in Char.damage
 		return damage;
 	}
 	
-	public static int drRoll( Char ch, int level ){
-		return Random.NormalIntRange(
-				Math.round(level * genericProcChanceMultiplier(ch)),
-				Math.round((3 + (level*1.5f)) * genericProcChanceMultiplier(ch)));
+	public static int drRoll( Char owner, int level ){
+		if (level == -1){
+			return 0;
+		} else {
+			return Random.NormalIntRange(
+					Math.round(level * genericProcChanceMultiplier(owner)),
+					Math.round((3 + (level * 1.5f)) * genericProcChanceMultiplier(owner)));
+		}
 	}
 
 	@Override
