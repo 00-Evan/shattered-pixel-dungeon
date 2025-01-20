@@ -1518,7 +1518,7 @@ public class Hero extends Char {
 		if (belongings.armor() != null && belongings.armor().hasGlyph(cls, this)){
 			return Math.max(super.glyphLevel(cls), belongings.armor.buffedLvl());
 		} else {
-			return super.glyphLevel(cls); //TODO going to have recursion?
+			return super.glyphLevel(cls);
 		}
 	}
 

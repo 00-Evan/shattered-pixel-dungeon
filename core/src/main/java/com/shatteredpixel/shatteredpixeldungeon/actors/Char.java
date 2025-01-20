@@ -684,13 +684,28 @@ public abstract class Char extends Actor {
 			damage = Math.max(damage, 0);
 		}
 
+		// hero and pris images skip this as they already benefit from hero's armor glyph proc
+		if (!(this instanceof Hero || this instanceof PrismaticImage)) {
+			if (Dungeon.hero.alignment == alignment && Dungeon.hero.belongings.armor() != null
+					&& Dungeon.level.distance(pos, Dungeon.hero.pos) <= 2
+					&& Dungeon.hero.buff(AuraOfProtection.AuraBuff.class) != null) {
+				damage = Dungeon.hero.belongings.armor().proc( enemy, this, damage );
+			}
+		}
+
 		return damage;
 	}
 
 	//Returns the level a glyph is at for a char, or -1 if they are not benefitting from that glyph
 	//This function is needed as (unlike enchantments) many glyphs trigger in a variety of cases
 	public int glyphLevel(Class<? extends Armor.Glyph> cls){
-		return -1;
+		if (Dungeon.hero != null && this != Dungeon.hero && Dungeon.hero.alignment == alignment
+				&& Dungeon.level.distance(pos, Dungeon.hero.pos) <= 2
+				&& Dungeon.hero.buff(AuraOfProtection.AuraBuff.class) != null) {
+			return Dungeon.hero.glyphLevel(cls);
+		} else {
+			return -1;
+		}
 	}
 	
 	public float speed() {

@@ -438,9 +438,20 @@ public class Armor extends EquipableItem {
 				}
 				int blocking = ((Hero) defender).subClass == HeroSubClass.PALADIN ? 3 : 1;
 				damage -= Math.round(blocking * Glyph.genericProcChanceMultiplier(defender));
-			} else if (glyph != null) {
-				damage = glyph.proc( this, attacker, defender, damage );
+			} else {
+				if (glyph != null) {
+					damage = glyph.proc(this, attacker, defender, damage);
+				}
+				//so that this effect procs for allies using this armor via aura of protection
+				if (defender.alignment == Dungeon.hero.alignment
+						&& Dungeon.level.distance(defender.pos, Dungeon.hero.pos) <= 2
+						&& Dungeon.hero.buff(AuraOfProtection.AuraBuff.class) != null
+						&& Dungeon.hero.buff(HolyWard.HolyArmBuff.class) != null) {
+					int blocking = Dungeon.hero.subClass == HeroSubClass.PALADIN ? 3 : 1;
+					damage -= Math.round(blocking * Glyph.genericProcChanceMultiplier(defender));
+				}
 			}
+			damage = Math.max(damage, 0);
 		}
 		
 		if (!levelKnown && defender == Dungeon.hero) {
