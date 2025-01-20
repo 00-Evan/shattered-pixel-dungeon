@@ -80,6 +80,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Challenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.DeathMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.AuraOfProtection;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.GuidingLight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ShieldOfLight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Brute;
@@ -438,6 +439,12 @@ public abstract class Char extends Actor {
 				dmg *= 0.67f;
 			}
 
+			if (Dungeon.hero.alignment == enemy.alignment
+					&& Dungeon.level.distance(enemy.pos, Dungeon.hero.pos) <= 2
+					&& Dungeon.hero.buff(AuraOfProtection.AuraBuff.class) != null){
+				dmg *= 0.925f - 0.075f*Dungeon.hero.pointsInTalent(Talent.AURA_OF_PROTECTION);
+			}
+
 			if (enemy.buff(MonkEnergy.MonkAbility.Meditate.MeditateResistance.class) != null){
 				dmg *= 0.2f;
 			}
@@ -734,6 +741,15 @@ public abstract class Char extends Actor {
 						link.detach();
 					}
 				}
+			}
+		}
+
+		//if dmg is from a character we already reduced it in defenseProc
+		if (!(src instanceof Char)) {
+			if (Dungeon.hero.alignment == alignment
+					&& Dungeon.level.distance(pos, Dungeon.hero.pos) <= 2
+					&& Dungeon.hero.buff(AuraOfProtection.AuraBuff.class) != null) {
+				dmg *= 0.925f - 0.075f*Dungeon.hero.pointsInTalent(Talent.AURA_OF_PROTECTION);
 			}
 		}
 

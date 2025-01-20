@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.AuraOfProtection;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.HolyWard;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
@@ -757,7 +758,15 @@ public class Armor extends EquipableItem {
 		}
 
 		public static float genericProcChanceMultiplier( Char defender ){
-			return RingOfArcana.enchantPowerMultiplier(defender);
+			float multi = RingOfArcana.enchantPowerMultiplier(defender);
+
+			if (Dungeon.hero.alignment == defender.alignment
+					&& Dungeon.level.distance(defender.pos, Dungeon.hero.pos) <= 2
+					&& Dungeon.hero.buff(AuraOfProtection.AuraBuff.class) != null){
+				multi += 0.25f + 0.25f*Dungeon.hero.pointsInTalent(Talent.AURA_OF_PROTECTION);
+			}
+
+			return multi;
 		}
 		
 		public String name() {
