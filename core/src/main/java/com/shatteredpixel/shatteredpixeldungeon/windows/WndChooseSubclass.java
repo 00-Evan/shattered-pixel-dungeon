@@ -35,7 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.watabou.utils.DeviceCompat;
 
 public class WndChooseSubclass extends Window {
 	
@@ -84,11 +83,6 @@ public class WndChooseSubclass extends Window {
 			btnCls.setSize(WIDTH-20, btnCls.reqHeight()+2);
 			btnCls.setRect( 0, pos, WIDTH-20, btnCls.reqHeight()+2);
 			add( btnCls );
-
-			//TODO CLERIC paladin is not implemented yet
-			if (!DeviceCompat.isDebug() && subCls == HeroSubClass.PALADIN){
-				btnCls.enable(false);
-			}
 
 			IconButton clsInfo = new IconButton(Icons.get(Icons.INFO)){
 				@Override

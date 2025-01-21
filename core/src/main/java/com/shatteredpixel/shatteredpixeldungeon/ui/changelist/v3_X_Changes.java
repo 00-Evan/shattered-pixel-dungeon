@@ -64,6 +64,40 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-2.0", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"Hey folks, thanks for your patience as things took a bit longer than expected to get started back up in the new year!\n\n" +
+				"I've now implemented the Paladin and hope to be implementing both outstanding armor abilities in the next couple weeks, along with other smaller changes.\n\n" +
+				"Here's what we have left before release, roughly in the order I plan to do it:\n" +
+				"**-** Address any bugs or serious balance issues as they come up\n" +
+				"**-** Visual improvements to title screen, hero select, and games in progress\n" +
+				"**-** Trinity armor ability\n" +
+				"**-** Power of Many armor ability\n" +
+				"**-** Final visual polish for the Cleric before release"));
+
+		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 6), "The Paladin!",
+				"After a bit of a long wait, **the Cleric's second subclass has been implemented!**\n\n" +
+				"**The Paladin** is focused on melee spell combat and defensive power. Their effects most strongly synergize with weapons and armor."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by BETA:**\n" +
+				"**-** Shared upgrades granting MUCH more bonus damage than intended\n" +
+				"**-** Exploits where talent spells could still be cast after being metamorphed\n" +
+				"**-** Minor text errors\n\n" +
+				"**Existed Prior to BETA:**\n" +
+				"**-** Exotic crystals trinket not applying to monster drops in many cases\n" +
+				"**-** Rare errors when cancelling scroll of enchantment on armor\n" +
+				"**-** Multiplicity glyph not working correctly with ghouls in some cases\n" +
+				"**-** Geomancer rockfall attack being cleared on save/load"));
+
 		changes = new ChangeInfo("BETA-1.4", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
@@ -96,6 +130,7 @@ public class v3_X_Changes {
 				"**-** Updated Translations"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
 				"**Caused by BETA:**\n" +
 				"**-** Character visual effects (burning, illuminated, etc.) persisting after death in various cases\n" +
 				"\n" +
@@ -103,86 +138,22 @@ public class v3_X_Changes {
 				"**-** Exploits involving juggling salt cube to get slower hunger with full regen\n" +
 				"**-** Disarming traps not teleporting the hero's weapon in some cases where they should"));
 
-		changes = new ChangeInfo("BETA-1.3", false, null);
+		changes = new ChangeInfo("BETA 1.1 to 1.3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Just a few fixes today, mainly as a followup to BETA-1.2\n\n" +
-				"Fixed the following bugs:\n" +
-				"**Caused by BETA:**\n" +
-				"**-** Light Reading talent not working since BETA-1.2 (oops, sorry!)\n" +
-				"**-** Recall Inscription costing 0 charges since BETA-1.2 (also oops...)\n" +
-				"**-** Guiding light overriding weapon encumbrance acc penalty\n" +
-				"**-** Game occasionally freezing in some situations\n\n" +
-				"**Existed Prior to BETA:**\n" +
-				"**-** Rare crash bugs"));
-
-		changes = new ChangeInfo("BETA-1.2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
-				"Hey folks, thanks for your patience as I took a bit of a break over the holidays. We're starting a little slow with a basic bugfix/balance patch, but expect more additions in the coming days."));
-
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_TOME), "Cleric Balance",
-				"Now that a little time has passed and feedback has been collected, it's starting to look like the Cleric and Priest are in fact a bit weak!\n\n" +
-				"I'm making two overarching changes to improve the Cleric's spell uptime and the Priest's base power:\n" +
-				"**- Holy Tome** recharge speed increased by 33% (now equivalent to Cloak of Shadows)\n" +
-				"**- Priest** bonus illuminated damage increased to hero level, from 5 + item level",
-
-				"I'm also making a bunch of targeted buffs to specific Cleric spells:\n" +
-				"**- Searing Light** bonus damage up 4/6 at +1/+2, from 3/5\n" +
-				"**- Shield of Light** now gives 50% more armor at +2, instead of lasting 50% longer\n" +
-				"**- Bless** now gives 6/10 turns of bless on self-cast at +1/+2, up from 4/6\n" +
-				"**- Sunray** damage up to 4-8/6-12 at +1/+2, up from 2-8/3-12\n" +
-				"**- Radiance** stun duration up to 3 from 2\n\n" +
-				"**Divine Intervention** adjusted:\n" +
-				"**-** Charge cost down to 5 from 6\n" +
-				"**-** Shielding reduced to 150/200/250/300 from 200/250/300/350\n" +
-				"**-** Now extends Ascended Form for 1/2/3/4 turns"));
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"**-** Turned off auto-targeting in cases where it was almost always wrong (Bless spell, Wand of Warding, etc.)\n\n" +
-				"**-** Guiding Bolt and Holy Lance now affect terrain if they miss.\n\n" +
 				"**-** Camera panning to enemies now respects the 'camera follow intensity' setting.\n\n" +
 				"**-** Holy Tome and Cloak of Shadows can no longer be transmuted."));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
-				"**Caused by BETA:**\n" +
-				"**-** Auto-targeting errors with some Cleric spells\n" +
-				"**-** Exploits involving stone of blink and recall inscription spell\n" +
-				"**-** Rare crash bugs caused by recall inscription\n" +
-				"**-** Rare cases where enemies would attack things that were already dead\n" +
-				"**-** Holy tome spells not triggering the enhanced rings talent\n" +
-				"**-** Quick spell indicator sometimes working without holy tome\n" +
-				"**-** Fixed bless spell stating the wrong bless duration for allies\n" +
-				"**-** Minor text errors\n\n" +
 				"**Existed Prior to BETA:**\n" +
 				"**-** Rare cases where bomb AOE could be influenced by nearby potions shattering\n" +
 				"**-** Artifact uniqueness being affected by runs from prior game versions\n" +
 				"**-** Rare cases where game win scene wouldn't trigger immediately\n" +
 				"**-** Minor text errors"));
-
-		changes = new ChangeInfo("BETA-1.1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
-				"Hey folks, thanks for all the feedback and kind words regarding the Cleric so far! I'll likely be making some balance tweaks later on once people's impressions solidify and I have some analytics data. For the moment, I'm just making some bugfixes and a QoL tweak."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** Quick-selecting a spell that is already quick-selected now clears the quickspell slot.\n\n" +
-				"**-** Updated translations (expect to still see a lot of English for now, community translators have holidays around this time too!)"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by BETA:**\n" +
-				"**-** Ascended Form lasting for 100 turns instead of 10 (oops!)\n" +
-				"**-** Great Crab not blocking offensive Cleric spells\n" +
-				"**-** Holy Tome still being usable while cursed\n" +
-				"**-** Holy Weapon and Holy Ward not overriding enchants/glyphs in some cases"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -221,7 +192,7 @@ public class v3_X_Changes {
 				"\n" +
 				"**The Priest** is focused on ranged spell combat, effects that synergize with magical items like wands and artifacts.\n" +
 				"\n" +
-				"**The Paladin has not been implemented yet, look out for them soon!**"));
+				"**The Paladin** is focused on melee spell combat and defensive power. Their effects most strongly synergize with weapons and armor."));
 
 		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 5), "Cleric Armor Abilities",
 				"**The Cleric has three lategame armor abilities as well!**\n" +

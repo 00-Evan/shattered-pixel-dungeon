@@ -202,9 +202,9 @@ public class WelcomeScene extends PixelScene {
 
 			}
 
-			message = "Greetings Beta testers, the Cleric beta continues!\n\n" +
-					"Apologies for the delay in getting the rest of the Cleric online, there have been some delays with implementation. Expect another beta in a few more days with the Paladin, and the armor abilities to follow a bit after that.\n\n" +
-					"Meanwhile this beta includes some bugfixes and balance adjustments to non-Cleric content. As always, read the changelog for full change details.";
+			message = "Greetings Beta testers, the Paladin subclass is now available to playtest!\n\n" +
+					"Thanks for your patience, I've now fully ramped up and hope to get the beta finished and ready for release in another couple of weeks.\n\n" +
+					"As always, read the changelog for full change details.";
 
 		} else {
 			message = Messages.get(this, "what_msg");
