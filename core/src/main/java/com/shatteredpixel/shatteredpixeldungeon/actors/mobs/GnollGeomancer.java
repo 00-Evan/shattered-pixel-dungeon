@@ -137,9 +137,12 @@ public class GnollGeomancer extends Mob {
 
 	@Override
 	public boolean add(Buff buff) {
-		//immune to buffs and debuff (except its own rock armor) while sleeping
-		if (state == SLEEPING && !(buff instanceof RockArmor))  return false;
-		else                                                    return super.add(buff);
+		//immune to buffs and debuff (except its own buffs) while sleeping
+		if (state == SLEEPING && !(buff instanceof RockArmor || buff instanceof DelayedRockFall)){
+			return false;
+		} else {
+			return super.add(buff);
+		}
 	}
 
 	@Override
