@@ -67,7 +67,7 @@ public class Multiplicity extends Armor.Glyph {
 			if (spawnPoints.size() > 0) {
 
 				Mob m = null;
-				if (Random.Int(2) == 5 && defender instanceof Hero){
+				if (Random.Int(2) == 0 && defender instanceof Hero){
 					m = new MirrorImage();
 					((MirrorImage)m).duplicate( (Hero)defender );
 
