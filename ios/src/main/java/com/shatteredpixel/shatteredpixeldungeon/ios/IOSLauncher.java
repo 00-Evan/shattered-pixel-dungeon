@@ -45,7 +45,6 @@ import org.robovm.apple.foundation.NSString;
 import org.robovm.apple.glkit.GLKViewDrawableColorFormat;
 import org.robovm.apple.glkit.GLKViewDrawableDepthFormat;
 import org.robovm.apple.uikit.UIApplication;
-import org.robovm.apple.uikit.UIRectEdge;
 
 import java.io.File;
 
@@ -101,12 +100,6 @@ public class IOSLauncher extends IOSApplication.Delegate {
 
 		config.hideHomeIndicator = SPDSettings.fullscreen();
 		config.overrideRingerSwitch = SPDSettings.ignoreSilentMode();
-
-		//game has to ignore input from system gestures itself, otherwise there is lag on
-		//every button press on the corner of the screen. Currently this is accomplished via
-		//clearing all pointer events on the first frame after the game is resumed.
-		//TODO this may not be needed anymore with libgdx 1.12.1
-		config.screenEdgesDeferringSystemGestures = UIRectEdge.All;
 
 		CGRect statusBarFrame = UIApplication.getSharedApplication().getStatusBarFrame();
 		double statusBarHeight = Math.min(statusBarFrame.getWidth(), statusBarFrame.getHeight());

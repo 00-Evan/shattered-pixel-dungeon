@@ -81,7 +81,16 @@ public class PointerArea extends Visual implements Signal.Listener<PointerEvent>
 					curEvent = null;
 					onClick( event );
 				}
-				
+
+			//similar to up, but no click
+			} else if (event.type == PointerEvent.Type.CANCEL) {
+
+				onPointerUp( event );
+
+				if (curEvent == event) {
+					curEvent = null;
+				}
+
 			} else if (event.type == PointerEvent.Type.HOVER) {
 				if (event.handled && hovered){
 					hovered = false;
@@ -100,7 +109,8 @@ public class PointerArea extends Visual implements Signal.Listener<PointerEvent>
 			if (event == null && curEvent != null) {
 				onDrag(curEvent);
 
-			} else if (curEvent != null && event.type == PointerEvent.Type.UP) {
+			} else if (curEvent != null &&
+					(event.type == PointerEvent.Type.UP || event.type == PointerEvent.Type.CANCEL)) {
 				onPointerUp( event );
 				curEvent = null;
 

@@ -33,7 +33,6 @@ import com.watabou.glwrap.Blending;
 import com.watabou.glwrap.Vertexbuffer;
 import com.watabou.input.ControllerHandler;
 import com.watabou.input.InputHandler;
-import com.watabou.input.PointerEvent;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
@@ -146,10 +145,7 @@ public class Game implements ApplicationListener {
 		}
 	}
 
-	///justResumed is used for two purposes:
-	//firstly, to clear pointer events when the game is resumed,
-	// this helps with input errors caused by system gestures on iOS/Android
-	//secondly, as a bit of a hack to improve start time metrics on Android,
+	//justResumed is a bit of a hack to improve start time metrics on Android,
 	// as texture refreshing leads to slow warm starts. TODO would be nice to fix this properly
 	private boolean justResumed = true;
 
@@ -162,7 +158,6 @@ public class Game implements ApplicationListener {
 		}
 
 		if (justResumed){
-			PointerEvent.clearPointerEvents();
 			justResumed = false;
 			if (DeviceCompat.isAndroid()) return;
 		}
@@ -180,8 +175,6 @@ public class Game implements ApplicationListener {
 	
 	@Override
 	public void pause() {
-		PointerEvent.clearPointerEvents();
-		
 		if (scene != null) {
 			scene.onPause();
 		}
