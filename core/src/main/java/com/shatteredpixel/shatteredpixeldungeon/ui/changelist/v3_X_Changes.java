@@ -91,6 +91,7 @@ public class v3_X_Changes {
 				"**Caused by BETA:**\n" +
 				"**-** Shared upgrades granting MUCH more bonus damage than intended\n" +
 				"**-** Exploits where talent spells could still be cast after being metamorphed\n" +
+				"**-** Phantom piranhas always teleporting when hit by Cleric spells\n" +
 				"**-** Minor text errors\n\n" +
 				"**Existed Prior to BETA:**\n" +
 				"**-** Exotic crystals trinket not applying to monster drops in many cases\n" +
