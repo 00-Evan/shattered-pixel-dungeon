@@ -68,12 +68,18 @@ public class WndChooseAbility extends Window {
 		float pos = body.bottom() + 3*GAP;
 		for (ArmorAbility ability : hero.heroClass.armorAbilities()) {
 
+			String warn;
+			if (Dungeon.initialVersion < 820){
+				warn = "_WARNING, code to track which items you have found for use in trinity was added in BETA-2.1. This run was started before that, and so some items you have encountered may not be usable with Trinity. Any items you currently hold can be made selectable by dropping and picking them back up._\n\n";
+			} else {
+				warn = "";
+			}
 			RedButton abilityButton = new RedButton(ability.shortDesc(), 6){
 				@Override
 				protected void onClick() {
 					GameScene.show(new WndOptions( new HeroIcon( ability ),
 							Messages.titleCase(ability.name()),
-							Messages.get(WndChooseAbility.this, "are_you_sure"),
+							warn + Messages.get(WndChooseAbility.this, "are_you_sure"),
 							Messages.get(WndChooseAbility.this, "yes"),
 							Messages.get(WndChooseAbility.this, "no")){
 
