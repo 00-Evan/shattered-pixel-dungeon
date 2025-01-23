@@ -64,9 +64,29 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("BETA-2.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**-** Added some internal tracking code to support the upcoming Trinity armor ability.\n\n" +
+				"**-** Updated Translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by BETA:**\n" +
+				"**-** Traps appearing visible in many more cases than intended\n" +
+				"**-** DM-300 not breaking light walls when tunneling through them\n" +
+				"**-** Piranhas ignoring walls of light\n" +
+				"**-** Cleansing the curse on an item via well of health not unlocking the Cleric\n" +
+				"**-** Various small typos\n" +
+				"\n" +
+				"**Existed Prior to BETA:**\n" +
+				"**-** Various issues with system gestures registering as game inputs on Android and iOS\n" +
+				"**-** Corrosion gas from chaotic censer always starting at 1 damage\n" +
+				"**-** Retreating characters failing to retreat through crowded area in some cases\n" +
+				"**-** Pacifist badge unlocking when it shouldn't in rare cases\n" +
+				"**-** Rat King's description sometimes being incorrect in landmarks"));
 
 		changes = new ChangeInfo("BETA-2.0", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
