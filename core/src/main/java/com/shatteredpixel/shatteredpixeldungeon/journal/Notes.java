@@ -240,7 +240,7 @@ public class Notes {
 				case STATUE:            return Messages.get(Statue.class, "desc");
 
 				case GHOST:         return Messages.get(Ghost.class, "desc");
-				case RAT_KING:      return Messages.get(RatKing.class, "desc");
+				case RAT_KING:      return new RatKing().description(); //variable description based on holiday/run state
 				case WANDMAKER:     return Messages.get(Wandmaker.class, "desc");
 				case TROLL:         return Messages.get(Blacksmith.class, "desc");
 				case IMP:           return Messages.get(Imp.class, "desc");
