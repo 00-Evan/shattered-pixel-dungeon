@@ -75,8 +75,8 @@ public class TitleScene extends PixelScene {
 		Archs archs = new Archs();
 		archs.setSize( w, h );
 		add( archs );
-		
-		Image title = BannerSprites.get( BannerSprites.Type.PIXEL_DUNGEON );
+
+		Image title = BannerSprites.get( landscape() ? BannerSprites.Type.TITLE_LAND : BannerSprites.Type.TITLE_PORT);
 		add( title );
 
 		float topRegion = Math.max(title.height - 6, h*0.45f);
@@ -86,10 +86,15 @@ public class TitleScene extends PixelScene {
 
 		align(title);
 
-		placeTorch(title.x + 22, title.y + 46);
-		placeTorch(title.x + title.width - 22, title.y + 46);
+		if (landscape()){
+			placeTorch(title.x + 30, title.y + 35);
+			placeTorch(title.x + title.width - 30, title.y + 35);
+		} else {
+			placeTorch(title.x + 16, title.y + 70);
+			placeTorch(title.x + title.width - 16, title.y + 70);
+		}
 
-		Image signs = new Image( BannerSprites.get( BannerSprites.Type.PIXEL_DUNGEON_SIGNS ) ) {
+		Image signs = new Image(BannerSprites.get( landscape() ? BannerSprites.Type.TITLE_GLOW_LAND : BannerSprites.Type.TITLE_GLOW_PORT)){
 			private float time = 0;
 			@Override
 			public void update() {
@@ -185,7 +190,7 @@ public class TitleScene extends PixelScene {
 		GAP = Math.max(GAP, 2);
 
 		if (landscape()) {
-			btnPlay.setRect(title.x-50, topRegion+GAP, ((title.width()+100)/2)-1, BTN_HEIGHT);
+			btnPlay.setRect(title.x, topRegion+GAP, ((title.width())/2)-1, BTN_HEIGHT);
 			align(btnPlay);
 			btnSupport.setRect(btnPlay.right()+2, btnPlay.top(), btnPlay.width(), BTN_HEIGHT);
 			btnRankings.setRect(btnPlay.left(), btnPlay.bottom()+ GAP, (btnPlay.width()*.67f)-1, BTN_HEIGHT);
@@ -230,7 +235,10 @@ public class TitleScene extends PixelScene {
 
 	private void placeTorch( float x, float y ) {
 		Fireball fb = new Fireball();
-		fb.setPos( x, y );
+		fb.x = x - fb.width()/2f;
+		fb.y = y - fb.height();
+
+		align(fb);
 		add( fb );
 	}
 

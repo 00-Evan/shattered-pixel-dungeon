@@ -102,7 +102,7 @@ public class WelcomeScene extends PixelScene {
 		//darkens the arches
 		add(new ColorBlock(w, h, 0x88000000));
 
-		Image title = BannerSprites.get( BannerSprites.Type.PIXEL_DUNGEON );
+		Image title = BannerSprites.get( landscape() ? BannerSprites.Type.TITLE_LAND : BannerSprites.Type.TITLE_PORT);
 		add( title );
 
 		float topRegion = Math.max(title.height - 6, h*0.45f);
@@ -112,10 +112,15 @@ public class WelcomeScene extends PixelScene {
 
 		align(title);
 
-		placeTorch(title.x + 22, title.y + 46);
-		placeTorch(title.x + title.width - 22, title.y + 46);
+		if (landscape()){
+			placeTorch(title.x + 30, title.y + 35);
+			placeTorch(title.x + title.width - 30, title.y + 35);
+		} else {
+			placeTorch(title.x + 16, title.y + 70);
+			placeTorch(title.x + title.width - 16, title.y + 70);
+		}
 
-		Image signs = new Image( BannerSprites.get( BannerSprites.Type.PIXEL_DUNGEON_SIGNS ) ) {
+		Image signs = new Image(BannerSprites.get( landscape() ? BannerSprites.Type.TITLE_GLOW_LAND : BannerSprites.Type.TITLE_GLOW_PORT)){
 			private float time = 0;
 			@Override
 			public void update() {
@@ -231,7 +236,10 @@ public class WelcomeScene extends PixelScene {
 
 	private void placeTorch( float x, float y ) {
 		Fireball fb = new Fireball();
-		fb.setPos( x, y );
+		fb.x = x - fb.width()/2f;
+		fb.y = y - fb.height();
+
+		align(fb);
 		add( fb );
 	}
 
