@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.plants;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
@@ -122,18 +123,29 @@ public class Swiftthistle extends Plant {
 		}
 
 		public void triggerPresses(){
-			for (int cell : presses){
-				Plant p = Dungeon.level.plants.get(cell);
-				if (p != null){
-					p.trigger();
-				}
-				Trap t = Dungeon.level.traps.get(cell);
-				if (t != null){
-					t.trigger();
-				}
-			}
-
+			ArrayList<Integer> toTrigger = presses;
 			presses = new ArrayList<>();
+			Actor.add(new Actor() {
+				{
+					actPriority = VFX_PRIO;
+				}
+
+				@Override
+				protected boolean act() {
+					for (int cell : toTrigger){
+						Plant p = Dungeon.level.plants.get(cell);
+						if (p != null){
+							p.trigger();
+						}
+						Trap t = Dungeon.level.traps.get(cell);
+						if (t != null){
+							t.trigger();
+						}
+					}
+					Actor.remove(this);
+					return true;
+				}
+			});
 		}
 
 		public void disarmPresses(){
