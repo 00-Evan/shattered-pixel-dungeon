@@ -69,8 +69,8 @@ public class WndChooseAbility extends Window {
 		for (ArmorAbility ability : hero.heroClass.armorAbilities()) {
 
 			String warn;
-			if (Dungeon.initialVersion < 820){
-				warn = "_WARNING, code to track which items you have found for use in trinity was added in BETA-2.1. This run was started before that, and so some items you have encountered may not be usable with Trinity. Any items you currently hold can be made selectable by dropping and picking them back up._\n\n";
+			if (Dungeon.initialVersion < 821){
+				warn = "_WARNING, code to track which items you have found for use in trinity was added in BETA-2.2. This run was started before that, and so some items you have encountered may not be usable with Trinity. Any items you currently hold can be made selectable by dropping and picking them back up._\n\n";
 			} else {
 				warn = "";
 			}

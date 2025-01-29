@@ -768,11 +768,6 @@ public enum Talent {
 		}
 	}
 
-	//note that IDing can happen in alchemy scene, so be careful with VFX here
-	public static void onItemIdentified( Hero hero, Item item ){
-		//currently no talents that trigger here, it wasn't a very popular trigger =(
-	}
-
 	public static int onAttackProc( Hero hero, Char enemy, int dmg ){
 
 		if (hero.hasTalent(Talent.PROVOKED_ANGER)

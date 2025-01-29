@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing;
@@ -53,6 +54,7 @@ public class Dewdrop extends Item {
 		
 		Waterskin flask = hero.belongings.getItem( Waterskin.class );
 		Catalog.setSeen(getClass());
+		Statistics.itemTypesDiscovered.add(getClass());
 		
 		if (flask != null && !flask.isFull()){
 

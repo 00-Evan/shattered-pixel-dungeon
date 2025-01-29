@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -500,6 +501,7 @@ public class TimekeepersHourglass extends Artifact {
 		@Override
 		public boolean doPickUp(Hero hero, int pos) {
 			Catalog.setSeen(getClass());
+			Statistics.itemTypesDiscovered.add(getClass());
 			TimekeepersHourglass hourglass = hero.belongings.getItem( TimekeepersHourglass.class );
 			if (hourglass != null && !hourglass.cursed) {
 				hourglass.upgrade();

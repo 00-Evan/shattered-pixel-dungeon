@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
@@ -489,6 +490,7 @@ public class DriedRose extends Artifact {
 		@Override
 		public boolean doPickUp(Hero hero, int pos) {
 			Catalog.setSeen(getClass());
+			Statistics.itemTypesDiscovered.add(getClass());
 			DriedRose rose = hero.belongings.getItem( DriedRose.class );
 
 			if (rose == null){

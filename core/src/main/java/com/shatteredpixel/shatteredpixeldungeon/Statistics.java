@@ -142,7 +142,7 @@ public class Statistics {
 	private static final String SNEAKS		= "sneakAttacks";
 	private static final String THROWN		= "thrownAssists";
 
-	private static final String ITEM_DISCOVERIES    = "item_discoveries";
+	private static final String ITEM_TYPES_DISCOVERED    = "item_types_discovered";
 
 	private static final String SPAWNERS	= "spawnersAlive";
 	
@@ -165,7 +165,7 @@ public class Statistics {
 		bundle.put( ALCHEMY,    itemsCrafted );
 		bundle.put( PIRANHAS,	piranhasKilled );
 		bundle.put( ANKHS,		ankhsUsed );
-		bundle.put( ITEM_DISCOVERIES, itemTypesDiscovered.toArray(new Class<?>[0]) );
+		bundle.put( ITEM_TYPES_DISCOVERED, itemTypesDiscovered.toArray(new Class<?>[0]) );
 
 		bundle.put( PROG_SCORE,  progressScore );
 		bundle.put( ITEM_VAL,    heldItemValue );
@@ -211,8 +211,8 @@ public class Statistics {
 		piranhasKilled	= bundle.getInt( PIRANHAS );
 		ankhsUsed		= bundle.getInt( ANKHS );
 
-		if (bundle.contains( ITEM_DISCOVERIES )) {
-			itemTypesDiscovered = new HashSet<>(Arrays.asList(bundle.getClassArray(ITEM_DISCOVERIES)));
+		if (bundle.contains( ITEM_TYPES_DISCOVERED )) {
+			itemTypesDiscovered = new HashSet<>(Arrays.asList(bundle.getClassArray(ITEM_TYPES_DISCOVERED)));
 		} else {
 			itemTypesDiscovered.clear();
 		}

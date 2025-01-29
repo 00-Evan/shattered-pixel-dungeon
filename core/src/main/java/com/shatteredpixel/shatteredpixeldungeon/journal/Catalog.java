@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.journal;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.ArcaneResin;
@@ -46,13 +45,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.ArcaneBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Firebomb;
-import com.shatteredpixel.shatteredpixeldungeon.items.bombs.SmokeBomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.FlashBangBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.FrostBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.HolyBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Noisemaker;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.RegrowthBomb;
-import com.shatteredpixel.shatteredpixeldungeon.items.bombs.FlashBangBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.ShrapnelBomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.SmokeBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.WoollyBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Berry;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
@@ -321,7 +320,6 @@ public enum Catalog {
 				Journal.saveNeeded = true;
 			}
 		}
-		Statistics.itemTypesDiscovered.add(cls);
 		Badges.validateCatalogBadges();
 	}
 
