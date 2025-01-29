@@ -118,21 +118,29 @@ abstract public class Weapon extends KindOfWeapon {
 	@Override
 	public int proc( Char attacker, Char defender, int damage ) {
 
+		boolean becameAlly = false;
+		boolean wasAlly = defender.alignment == Char.Alignment.ALLY;
 		if (attacker.buff(MagicImmune.class) == null) {
 			if (attacker instanceof Hero && isEquipped((Hero) attacker)
 					&& attacker.buff(HolyWeapon.HolyWepBuff.class) != null){
 				if (((Hero) attacker).subClass == HeroSubClass.PALADIN && enchantment != null){
 					damage = enchantment.proc(this, attacker, defender, damage);
+					if (defender.alignment == Char.Alignment.ALLY && !wasAlly){
+						becameAlly = true;
+					}
 				}
-				if (defender.isAlive()) {
+				if (defender.isAlive() && !becameAlly) {
 					int dmg = ((Hero) attacker).subClass == HeroSubClass.PALADIN ? 6 : 2;
 					defender.damage(Math.round(dmg * Enchantment.genericProcChanceMultiplier(attacker)), HolyWeapon.INSTANCE);
 				}
 			} else if (enchantment != null) {
 				damage = enchantment.proc(this, attacker, defender, damage);
+				if (defender.alignment == Char.Alignment.ALLY && !wasAlly){
+					becameAlly = true;
+				}
 			}
 			if (attacker instanceof Hero && isEquipped((Hero) attacker) &&
-					attacker.buff(Smite.SmiteTracker.class) != null){
+					attacker.buff(Smite.SmiteTracker.class) != null && !becameAlly){
 				defender.damage(Smite.bonusDmg((Hero) attacker, defender), Smite.INSTANCE);
 			}
 		}
