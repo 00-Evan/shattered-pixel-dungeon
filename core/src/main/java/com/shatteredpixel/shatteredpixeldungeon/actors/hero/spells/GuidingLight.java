@@ -119,12 +119,12 @@ public class GuidingLight extends TargetedClericSpell {
 
 		@Override
 		public int icon() {
-			return BuffIndicator.TIME;
+			return BuffIndicator.ILLUMINATED;
 		}
 
 		@Override
 		public void tintIcon(Image icon) {
-			icon.hardlight(0.67f, 0.67f, 0);
+			icon.brightness(0.5f);
 		}
 
 		public float iconFadePercent() { return Math.max(0, visualcooldown() / 100); }
@@ -138,9 +138,25 @@ public class GuidingLight extends TargetedClericSpell {
 		}
 
 		@Override
+		public int icon() {
+			return BuffIndicator.ILLUMINATED;
+		}
+
+		@Override
 		public void fx(boolean on) {
 			if (on) target.sprite.add(CharSprite.State.ILLUMINATED);
 			else target.sprite.remove(CharSprite.State.ILLUMINATED);
+		}
+
+		@Override
+		public String desc() {
+			String desc = super.desc();
+
+			if (Dungeon.hero.subClass == HeroSubClass.PRIEST){
+				desc += "\n\n" + Messages.get(this, "desc_priest");
+			}
+
+			return desc;
 		}
 	}
 

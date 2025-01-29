@@ -130,6 +130,7 @@ public class BuffIndicator extends Component {
 	public static final int GLYPH_RECALL= 78;
 	public static final int ASCEND      = 79;
 	public static final int PROT_AURA   = 80;
+	public static final int ILLUMINATED = 81;
 
 	public static final int SIZE_SMALL  = 7;
 	public static final int SIZE_LARGE  = 16;
