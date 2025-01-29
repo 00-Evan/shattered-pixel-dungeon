@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
@@ -90,7 +91,12 @@ public class Smite extends TargetedClericSpell {
 			public void call() {
 				AttackIndicator.target(enemy);
 
-				if (hero.attack(enemy, 1, 0, Char.INFINITE_ACCURACY)){
+				float accMult = Char.INFINITE_ACCURACY;
+				if (!(hero.belongings.attackingWeapon() instanceof Weapon)
+						|| ((Weapon) hero.belongings.attackingWeapon()).STRReq() <= hero.STR()){
+					accMult = 1;
+				}
+				if (hero.attack(enemy, 1, 0, accMult)){
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 					enemy.sprite.burst(0xFFFFFFFF, 10);
 				}
