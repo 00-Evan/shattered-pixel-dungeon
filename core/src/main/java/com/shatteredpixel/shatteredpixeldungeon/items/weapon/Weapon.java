@@ -124,7 +124,8 @@ abstract public class Weapon extends KindOfWeapon {
 		if (attacker.buff(MagicImmune.class) == null) {
 			if (attacker instanceof Hero && isEquipped((Hero) attacker)
 					&& attacker.buff(HolyWeapon.HolyWepBuff.class) != null){
-				if (((Hero) attacker).subClass == HeroSubClass.PALADIN && enchantment != null){
+				if (enchantment != null &&
+						(((Hero) attacker).subClass == HeroSubClass.PALADIN || hasCurseEnchant())){
 					damage = enchantment.proc(this, attacker, defender, damage);
 					if (defender.alignment == Char.Alignment.ALLY && !wasAlly){
 						becameAlly = true;

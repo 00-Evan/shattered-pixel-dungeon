@@ -436,7 +436,8 @@ public class Armor extends EquipableItem {
 		if (defender.buff(MagicImmune.class) == null) {
 			if (defender instanceof Hero && isEquipped((Hero) defender)
 					&& defender.buff(HolyWard.HolyArmBuff.class) != null){
-				if (((Hero) defender).subClass == HeroSubClass.PALADIN && glyph != null){
+				if (glyph != null &&
+						(((Hero) defender).subClass == HeroSubClass.PALADIN || hasCurseGlyph())){
 					damage = glyph.proc( this, attacker, defender, damage );
 				}
 				int blocking = ((Hero) defender).subClass == HeroSubClass.PALADIN ? 3 : 1;
