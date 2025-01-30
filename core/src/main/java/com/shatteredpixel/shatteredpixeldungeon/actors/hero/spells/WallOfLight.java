@@ -193,19 +193,32 @@ public class WallOfLight extends TargetedClericSpell {
 		for (int i = 0; i < steps; i++) {
 			if (leftDirY != 0) {
 				leftPos += leftDirY * Dungeon.level.width();
+				if (!Dungeon.level.insideMap(leftPos)){
+					break;
+				}
 				placeWall(leftPos, knockBackDir);
 			}
 			if (leftDirX != 0) {
 				leftPos += leftDirX;
+				if (!Dungeon.level.insideMap(leftPos)){
+					break;
+				}
 				placeWall(leftPos, knockBackDir);
 			}
-
+		}
+		for (int i = 0; i < steps; i++) {
 			if (rightDirX != 0) {
 				rightPos += rightDirX;
+				if (!Dungeon.level.insideMap(rightPos)){
+					break;
+				}
 				placeWall(rightPos, knockBackDir);
 			}
 			if (rightDirY != 0) {
 				rightPos += rightDirY * Dungeon.level.width();
+				if (!Dungeon.level.insideMap(rightPos)){
+					break;
+				}
 				placeWall(rightPos, knockBackDir);
 			}
 		}
