@@ -207,8 +207,8 @@ public class WelcomeScene extends PixelScene {
 
 			}
 
-			message = "Greetings Beta testers, the Paladin subclass is now available to playtest!\n\n" +
-					"Thanks for your patience, I've now fully ramped up and hope to get the beta finished and ready for release in another couple of weeks.\n\n" +
+			message = "Greetings Beta testers, the beta for v3.0.0 continues!\n\n" +
+					"I'm hoping to get the Priest's armor abilities online soon, but int he meantime, this beta release features some big improvements to the title and hero select screens!\n\n" +
 					"As always, read the changelog for full change details.";
 
 		} else {

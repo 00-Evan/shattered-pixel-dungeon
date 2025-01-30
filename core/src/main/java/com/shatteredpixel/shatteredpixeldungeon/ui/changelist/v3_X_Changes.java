@@ -64,6 +64,42 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-2.2", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.DISPLAY), "Visual and UI Improvements!",
+				"**Major visual improvements have been made to the game's title screen and hero select!**\n\n" +
+				"Shattered's title graphic has been totally redrawn! The new title graphic, by Aleksandar Komitov, improves on text quality and style while trying to stay true to the original title. There is now a landscape and portrait variant of this title as well.\n\n" +
+				"The game's hero splash arts have been improved as well! After so many years, Aleksandar has revised some of the game's hero splash arts to bring them up to his current standards.\n" +
+				"**-** The Huntress and Rogue have recieved major changes\n" +
+				"**-** The Mage has recieved moderate changes\n" +
+				"**-** The Duelist and Cleric have received only tiny tweaks to some face details.\n" +
+				"**-** The Warrior's splash remains unchanged for the moment, but improvements to it are coming soon as well!"));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**-** Added info about how recently runs were played to the games in progress screen, and added a sorting setting\n\n" +
+				"**-** Smite no longer guarantees a hit if the Paladin is encumbered\n" +
+				"**-** Added a buff icon for Illuminated\n\n" +
+				"**-** Traps triggered by time freeze ending now always resolve after other effects/actions (e.g. teleportation, item pickup)\n\n" +
+				"**-** Updated Translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by BETA:**\n" +
+				"**-** Smite dealing damage to freshly corrupted enemies\n" +
+				"**-** Rare crash errors\n" +
+				"**-** Minor text errors\n\n" +
+				"**Existed Prior to BETA:**" +
+				"**-** Rare cases where multiple ascension wins could be recorded for one run\n" +
+				"**-** Unstable spell never triggering scroll effects that could apply in or out of combat\n" +
+				"**-** Cursed wand effects potentially applying levitation to immovable characters\n" +
+				"**-** Ripper demons sometimes losing their target early"));
+
 		changes = new ChangeInfo("BETA-2.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
