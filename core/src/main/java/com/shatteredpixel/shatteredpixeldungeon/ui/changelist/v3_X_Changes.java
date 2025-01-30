@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -30,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.ui.TalentIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Image;
 
@@ -64,9 +66,17 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("BETA-2.3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by BETA:**\n" +
+				"**-** Smite no longer guaranteeing hits when it should\n" +
+				"**-** Buttons on title screen becoming wider than intended\n" +
+				"**-** A warning message for the upcoming Trinity armor ability appearing for all abilities\n" +
+				"**-** Holy weapon and ward overriding curse effects in some cases"));
 
 		changes = new ChangeInfo("BETA-2.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -155,63 +165,6 @@ public class v3_X_Changes {
 				"**-** Multiplicity glyph not working correctly with ghouls in some cases\n" +
 				"**-** Geomancer rockfall attack being cleared on save/load"));
 
-		changes = new ChangeInfo("BETA-1.4", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.CHAOTIC_CENSER), "Trinket & Weapon Ability Buffs",
-				"Overall trinket balance is in a much better place since v2.5, but there are still some that can do with being more powerful or fun to use:\n" +
-				"\n" +
-				"**- Chaotic Censer** now only spawns gasses when enemies are present, and gives a warning one moment before the gas is spewed.\n" +
-				"**- 13 Leaf Clover** slightly redesigned, now has a 15% chance to set damage to max and 10% chance to set damage to min per level. This results in ~10% more average damage at +3.\n" +
-				"**- Mimic Tooth** ebony mimics now have normal mimic stats, down from +25%, but still deal full damage on surprise attack.\n" +
-				"**- Trap Mechanism** now also makes 10% of a level's traps spawn visible per level.\n" +
-				"**- Shard of Oblivion** now prevents ID effects such as scroll of ID and wells of knowledge. Items are instead set to be ready to be IDed by the shard.",
-
-				"The Duelist continues to do better following all the changes in v2.X updates. A couple of weapon abilities are still lagging behind though, and so I'm giving them a little help:\n" +
-				"\n" +
-				"**- Combo Strike** ability damage boost buffed by 25% for Gauntlets. 33% for Sai, 50% for Gloves.\n" +
-				"**- Charged Shot** knockback +1, base bonus damage on untipped darts +1."));
-
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.MOSSY_CLUMP), "Trinket & Talent Nerfs",
-				"Despite nerfs in v2.5 the Mossy Clump is still far and away the strongest trinket. For now I'm going to experiment with adjusting the ratios on the floors it grants.\n" +
-				"\n" +
-				"**- Mossy Clump** now generates grassy floors 1/3 of the time and water floors 2/3 of the time, instead of 1/2 each. This will usually result in one fewer grassy floor over a whole run.",
-
-				"Thrown weapons aren't an especially popular category of item to upgrade, and I would like to make more extensive changes to them in the future, but for the moment I'm making a targeted adjustment to the Shared Upgrades talent. The bonus damage it provided wasn't tied to the tier of thrown weapon used, which made T2 thrown weapons disproportionally powerful for the Sniper.\n" +
-				"\n" +
-				"**- Shared Upgrades**  now grants 2.5%/5%/7.5% bonus damage per upgrade per tier, instead of a flat 10%/20%/30% bonus damage per upgrade. Functionally, this means -50% bonus dmg for T2 thrown weapons, -25% for T3, no changes for T4, and +25% for T5."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** Holy weapon and ward now work without a weapon or armor. Mainly this is to prevent antisynergy with the ring of force.\n\n" +
-				"**-** Updated Translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by BETA:**\n" +
-				"**-** Character visual effects (burning, illuminated, etc.) persisting after death in various cases\n" +
-				"\n" +
-				"**Existed Prior to BETA:**\n" +
-				"**-** Exploits involving juggling salt cube to get slower hunger with full regen\n" +
-				"**-** Disarming traps not teleporting the hero's weapon in some cases where they should"));
-
-		changes = new ChangeInfo("BETA 1.1 to 1.3", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** Turned off auto-targeting in cases where it was almost always wrong (Bless spell, Wand of Warding, etc.)\n\n" +
-				"**-** Camera panning to enemies now respects the 'camera follow intensity' setting.\n\n" +
-				"**-** Holy Tome and Cloak of Shadows can no longer be transmuted."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Existed Prior to BETA:**\n" +
-				"**-** Rare cases where bomb AOE could be influenced by nearby potions shattering\n" +
-				"**-** Artifact uniqueness being affected by runs from prior game versions\n" +
-				"**-** Rare cases where game win scene wouldn't trigger immediately\n" +
-				"**-** Minor text errors"));
-
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
@@ -269,20 +222,23 @@ public class v3_X_Changes {
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"**Highlights:**\n" +
+				"**-** Turned off auto-targeting in cases where it was almost always wrong (Bless spell, Wand of Warding, etc.)\n" +
 				"**-** Enemies are now more willing to switch targets if their target is retreating and they are being attacked by something else\n" +
 				"**-** Enemies are now more consistently drawn to the hero's position if they are attacked from out of visible range\n" +
 				"**-** Fixed Reclaim trap spell exploits, and allowed it to be dropped while charged\n" +
 				"**-** Improved visual contrast for symbols on runestones\n" +
 				"\n" +
 				"**Characters:**\n" +
-				"**-** Crazed bandits now have their own description\n" +
-				"\n" +
+				"**-** Crazed bandits now have their own description",
+
 				"**Effects:**\n" +
 				"**-** Blast Wave no longer knocks back characters if they are killed over a pit\n" +
+				"**-** Cloak of Shadows (and new Holy Tome) can no longer be transmuted.\n" +
 				"\n" +
 				"**Misc.:**\n" +
 				"**-** Adjusted icons for Sucker Punch and Followup Strike\n" +
 				"**-** Camera no longer re-centers on hero when adding custom notes\n" +
+				"**-** Camera panning to enemies now respects the 'camera follow intensity' setting.\n" +
 				"**-** Improved the game's monochrome Android icon\n" +
 				"**-** Improved text clarity in a few cases\n" +
 				"**-** Updated internal code libraries"));
@@ -294,11 +250,14 @@ public class v3_X_Changes {
 				"**-** Runestones working while hero is magic immune\n" +
 				"\n" +
 				"**Items:**\n" +
+				"**-** Rare cases where bomb AOE could be influenced by nearby potions shattering\n" +
+				"**-** Exploits involving juggling salt cube to get slower hunger with full regen\n" +
 				"**-** Cursed armband not updating player gold display on desktop after stealing gold\n" +
 				"**-** Very specific cases where disarming traps could make items unattainable\n" +
 				"**-** Icecap incorrectly being blocked by high grass\n" +
 				"**-** Stone of detect magic incorrectly being usable on thrown weapons\n" +
-				"\n" +
+				"**-** Artifact uniqueness being affected by runs from prior game versions",
+
 				"**Effects:**\n" +
 				"**-** Monk abilities which ignore armor using the incorrect damage icon\n" +
 				"**-** Damage type not showing when hitting downed crystal guardians\n" +
@@ -306,8 +265,10 @@ public class v3_X_Changes {
 				"**-** Certain effects not having on-death or rankings messages\n" +
 				"**-** Specific cases where cursed wand effects would forget they were spawned by wondrous resin\n" +
 				"**-** Duration of greater haste not being preserved on save/load\n" +
+				"**-** Disarming traps not teleporting the hero's weapon in some cases where they should\n" +
 				"\n" +
 				"**Misc.:**\n" +
+				"**-** Rare cases where game win scene wouldn't trigger immediately\n" +
 				"**-** Various minor textual errors\n" +
 				"**-** Various rare crash errors"));
 
@@ -315,9 +276,34 @@ public class v3_X_Changes {
 		changes.hardlight(CharSprite.POSITIVE);
 		changeInfos.add(changes);
 
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.CHAOTIC_CENSER), "Trinket Buffs",
+				"Overall trinket balance is in a much better place since v2.5, but there are still some that can do with being more powerful or fun to use:\n" +
+				"\n" +
+				"**- Chaotic Censer** now only spawns gasses when enemies are present, and gives a warning one moment before the gas is spewed.\n" +
+				"**- 13 Leaf Clover** slightly redesigned, now has a 15% chance to set damage to max and 10% chance to set damage to min per level. This results in ~10% more average damage at +3.\n" +
+				"**- Mimic Tooth** ebony mimics now have normal mimic stats, down from +25%, but still deal full damage on surprise attack.\n" +
+				"**- Trap Mechanism** now also makes 10% of a level's traps spawn visible per level.\n" +
+				"**- Shard of Oblivion** now prevents ID effects such as scroll of ID and wells of knowledge. Items are instead set to be ready to be IDed by the shard."));
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.SAI), "Weapon Ability Buffs",
+				"The Duelist continues to do better following all the changes in v2.X updates. A couple of weapon abilities are still lagging behind though, and so I'm giving them a little help:\n" +
+				"\n" +
+				"**- Combo Strike** ability damage boost buffed by 25% for Gauntlets. 33% for Sai, 50% for Gloves.\n" +
+				"**- Charged Shot** knockback +1, base bonus damage on untipped darts +1."));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
 		changes.hardlight(CharSprite.NEGATIVE);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.MOSSY_CLUMP), "Trinket Nerfs",
+				"Despite nerfs in v2.5 the Mossy Clump is still far and away the strongest trinket. For now I'm going to experiment with adjusting the ratios on the floors it grants.\n" +
+				"\n" +
+				"**- Mossy Clump** now generates grassy floors 1/3 of the time and water floors 2/3 of the time, instead of 1/2 each. This will usually result in one fewer grassy floor over a whole run."));
+
+		changes.addButton(new ChangeButton(new TalentIcon(Talent.SHARED_UPGRADES), "Shared Upgrades Nerf",
+				"Thrown weapons aren't an especially popular category of item to upgrade, and I would like to make more extensive changes to them in the future, but for the moment I'm making a targeted adjustment to the Shared Upgrades talent. The bonus damage it provided wasn't tied to the tier of thrown weapon used, which made T2 thrown weapons disproportionally powerful for the Sniper.\n" +
+				"\n" +
+				"**- Shared Upgrades** now grants 2.5%/5%/7.5% bonus damage per upgrade per tier, instead of a flat 10%/20%/30% bonus damage per upgrade. Functionally, this means -50% bonus dmg for T2 thrown weapons, -25% for T3, no changes for T4, and +25% for T5."));
 
 	}
 
