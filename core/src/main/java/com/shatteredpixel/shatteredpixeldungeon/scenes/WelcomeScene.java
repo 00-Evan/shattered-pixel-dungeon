@@ -167,6 +167,8 @@ public class WelcomeScene extends PixelScene {
 
 		float buttonY = Math.min(topRegion + (PixelScene.landscape() ? 60 : 120), h - 24);
 
+		float buttonAreaWidth = landscape() ? PixelScene.MIN_WIDTH_L-6 : PixelScene.MIN_WIDTH_P-2;
+		float btnAreaLeft = (Camera.main.width - buttonAreaWidth) / 2f;
 		if (previousVersion != 0 && !SPDSettings.intro()){
 			StyledButton changes = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(TitleScene.class, "changes")){
 				@Override
@@ -176,15 +178,15 @@ public class WelcomeScene extends PixelScene {
 					ShatteredPixelDungeon.switchScene(ChangesScene.class);
 				}
 			};
-			okay.setRect(title.x, buttonY, (title.width()/2)-2, 20);
+			okay.setRect(btnAreaLeft, buttonY, (buttonAreaWidth/2)-1, 20);
 			add(okay);
 
-			changes.setRect(okay.right()+2, buttonY, (title.width()/2)-2, 20);
+			changes.setRect(okay.right()+1, buttonY, okay.width(), 20);
 			changes.icon(Icons.get(Icons.CHANGES));
 			add(changes);
 		} else {
 			okay.text(Messages.get(TitleScene.class, "enter"));
-			okay.setRect(title.x, buttonY, title.width(), 20);
+			okay.setRect(btnAreaLeft, buttonY, buttonAreaWidth, 20);
 			okay.icon(Icons.get(Icons.ENTER));
 			add(okay);
 		}
@@ -216,8 +218,9 @@ public class WelcomeScene extends PixelScene {
 		}
 
 		text.text(message, Math.min(w-20, 300));
-		float textSpace = okay.top() - topRegion - 4;
-		text.setPos((w - text.width()) / 2f, (topRegion + 2) + (textSpace - text.height())/2);
+		float titleBottom = title.y + title.height();
+		float textSpace = okay.top() - titleBottom - 4;
+		text.setPos((w - text.width()) / 2f, (titleBottom + 2) + (textSpace - text.height())/2);
 		add(text);
 
 		if (SPDSettings.intro() && ControllerHandler.isControllerConnected()){
