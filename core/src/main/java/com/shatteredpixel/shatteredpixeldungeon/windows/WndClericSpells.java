@@ -57,12 +57,17 @@ public class WndClericSpells extends Window {
 
 	public WndClericSpells(HolyTome tome, Hero cleric, boolean info){
 
-		IconTitle title = new IconTitle(new ItemSprite(tome), Messages.titleCase(Messages.get( this, info ? "info_title" : "cast_title")));
+		IconTitle title;
+		if (!info){
+			title = new IconTitle(new ItemSprite(tome), Messages.titleCase(Messages.get(this, "cast_title")));
+		} else {
+			title = new IconTitle(Icons.INFO.get(), Messages.titleCase(Messages.get(this, "info_title")));
+		}
 
 		title.setRect(0, 0, WIDTH, 0);
 		add(title);
 
-		IconButton btnInfo = new IconButton(Icons.INFO.get()){
+		IconButton btnInfo = new IconButton(info ? new ItemSprite(tome) : Icons.INFO.get()){
 			@Override
 			protected void onClick() {
 				GameScene.show(new WndClericSpells(tome, cleric, !info));
