@@ -21,12 +21,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Trinity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class BodyForm extends ClericSpell {
 
@@ -49,7 +49,9 @@ public class BodyForm extends ClericSpell {
 
 	@Override
 	public void onCast(HolyTome tome, Hero hero) {
-		GLog.w("not implemented yet!");
+
+		GameScene.show(new Trinity.WndItemtypeSelect(tome, this));
+
 	}
 
 }

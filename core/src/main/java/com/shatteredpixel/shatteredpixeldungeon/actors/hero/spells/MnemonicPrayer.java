@@ -57,6 +57,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
+import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
@@ -92,6 +93,8 @@ public class MnemonicPrayer extends TargetedClericSpell {
 			GLog.w(Messages.get(this, "no_target"));
 			return;
 		}
+
+		QuickSlotButton.target(ch);
 
 		float extension = 2 + hero.pointsInTalent(Talent.MNEMONIC_PRAYER);
 

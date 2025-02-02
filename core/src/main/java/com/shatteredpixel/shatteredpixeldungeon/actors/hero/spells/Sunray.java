@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
+import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
@@ -75,6 +76,12 @@ public class Sunray extends TargetedClericSpell {
 		if (Actor.findChar( aim.collisionPos ) == hero){
 			GLog.i( Messages.get(Wand.class, "self_target") );
 			return;
+		}
+
+		if (Actor.findChar(aim.collisionPos) != null) {
+			QuickSlotButton.target(Actor.findChar(aim.collisionPos));
+		} else {
+			QuickSlotButton.target(Actor.findChar(target));
 		}
 
 		hero.busy();
