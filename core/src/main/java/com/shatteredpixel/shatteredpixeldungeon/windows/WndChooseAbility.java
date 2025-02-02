@@ -104,8 +104,8 @@ public class WndChooseAbility extends Window {
 			abilityButton.setRect(0, pos, WIDTH-20, abilityButton.reqHeight()+2);
 			add(abilityButton);
 
-			//TODO CLERIC these abilities aren't playable atm
-			if (!DeviceCompat.isDebug() && (ability instanceof Trinity || ability instanceof PowerOfMany)){
+			//TODO CLERIC power of many isn't playable atm
+			if (!DeviceCompat.isDebug() && ability instanceof PowerOfMany){
 				abilityButton.enable(false);
 			}
 

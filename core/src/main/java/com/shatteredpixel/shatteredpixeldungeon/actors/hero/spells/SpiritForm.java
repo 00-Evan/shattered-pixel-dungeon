@@ -21,11 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Trinity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class SpiritForm extends ClericSpell {
 
@@ -48,7 +50,17 @@ public class SpiritForm extends ClericSpell {
 
 	@Override
 	public void onCast(HolyTome tome, Hero hero) {
-		GLog.w("not implemented yet!");
+
+		GameScene.show(new Trinity.WndItemtypeSelect(tome, this));
+
+	}
+
+	public static int ringLevel(){
+		return Dungeon.hero.pointsInTalent(Talent.MIND_FORM);
+	}
+
+	public static int artifactLevel(){
+		return 2 + 2*Dungeon.hero.pointsInTalent(Talent.MIND_FORM);
 	}
 
 }
