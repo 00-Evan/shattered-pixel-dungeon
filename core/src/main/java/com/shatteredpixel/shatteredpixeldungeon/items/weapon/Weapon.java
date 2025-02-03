@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.AscendedForm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.ElementalStrike;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.BodyForm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.HolyWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.Smite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -122,6 +123,15 @@ abstract public class Weapon extends KindOfWeapon {
 		boolean becameAlly = false;
 		boolean wasAlly = defender.alignment == Char.Alignment.ALLY;
 		if (attacker.buff(MagicImmune.class) == null) {
+			//TODO body form
+			Enchantment trinityEnchant = null;
+			if (Dungeon.hero.buff(BodyForm.BodyFormBuff.class) != null){
+				trinityEnchant = Dungeon.hero.buff(BodyForm.BodyFormBuff.class).enchant();
+				if (enchantment != null && trinityEnchant != null && trinityEnchant.getClass() == enchantment.getClass()){
+					trinityEnchant = null;
+				}
+			}
+
 			if (attacker instanceof Hero && isEquipped((Hero) attacker)
 					&& attacker.buff(HolyWeapon.HolyWepBuff.class) != null){
 				if (enchantment != null &&
@@ -131,16 +141,27 @@ abstract public class Weapon extends KindOfWeapon {
 						becameAlly = true;
 					}
 				}
+				if (defender.isAlive() && !becameAlly && trinityEnchant != null){
+					damage = trinityEnchant.proc(this, attacker, defender, damage);
+				}
 				if (defender.isAlive() && !becameAlly) {
 					int dmg = ((Hero) attacker).subClass == HeroSubClass.PALADIN ? 6 : 2;
 					defender.damage(Math.round(dmg * Enchantment.genericProcChanceMultiplier(attacker)), HolyWeapon.INSTANCE);
 				}
-			} else if (enchantment != null) {
-				damage = enchantment.proc(this, attacker, defender, damage);
-				if (defender.alignment == Char.Alignment.ALLY && !wasAlly){
-					becameAlly = true;
+
+			} else {
+				if (enchantment != null) {
+					damage = enchantment.proc(this, attacker, defender, damage);
+					if (defender.alignment == Char.Alignment.ALLY && !wasAlly) {
+						becameAlly = true;
+					}
+				}
+
+				if (defender.isAlive() && !becameAlly && trinityEnchant != null){
+					damage = trinityEnchant.proc(this, attacker, defender, damage);
 				}
 			}
+
 			if (attacker instanceof Hero && isEquipped((Hero) attacker) &&
 					attacker.buff(Smite.SmiteTracker.class) != null && !becameAlly){
 				defender.damage(Smite.bonusDmg((Hero) attacker, defender), Smite.INSTANCE);

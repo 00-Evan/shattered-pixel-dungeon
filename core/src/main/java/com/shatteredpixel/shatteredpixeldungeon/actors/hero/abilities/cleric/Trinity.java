@@ -24,6 +24,8 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
@@ -77,14 +79,14 @@ public class Trinity extends ArmorAbility {
 		if (bodyForm == null && mindForm == null && spiritForm == null){
 			GLog.w(Messages.get(this, "no_imbue"));
 		} else {
-			GameScene.show(new WndUseTrinity());
+			GameScene.show(new WndUseTrinity(armor));
 		}
 
 	}
 
 	public class WndUseTrinity extends WndTitledMessage {
 
-		public WndUseTrinity() {
+		public WndUseTrinity(ClassArmor armor) {
 			super(new HeroIcon(Trinity.this),
 					Messages.titleCase(Trinity.this.name()),
 					Messages.get(WndUseTrinity.class, "text"));
@@ -100,26 +102,74 @@ public class Trinity extends ArmorAbility {
 							+ " " + trinityItemUseText(bodyForm.getClass()), 6){
 						@Override
 						protected void onClick() {
-							//TODO
+							if (Dungeon.hero.belongings.weapon() != null &&
+									((Weapon)Dungeon.hero.belongings.weapon()).enchantment.getClass().equals(bodyForm.getClass())){
+								GLog.w(Messages.get(Trinity.class, "no_duplicate"));
+								hide();
+							} else {
+								Buff.affect(Dungeon.hero, BodyForm.BodyFormBuff.class, BodyForm.duration()).setEffect(bodyForm);
+								Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+								Weapon w = new WornShortsword();
+								if (Dungeon.hero.belongings.weapon() != null) {
+									w.image = Dungeon.hero.belongings.weapon().image;
+								}
+								w.enchant((Weapon.Enchantment) bodyForm);
+								Enchanting.show(Dungeon.hero, w);
+								Dungeon.hero.sprite.operate(Dungeon.hero.pos);
+								Dungeon.hero.spendAndNext(1f);
+								armor.charge -= trinityChargeUsePerEffect(bodyForm.getClass());
+								armor.updateQuickslot();
+								Invisibility.dispel();
+								hide();
+							}
 						}
 					};
-					btnBody.icon(new ItemSprite(ItemSpriteSheet.WORN_SHORTSWORD, ((Weapon.Enchantment) bodyForm).glowing()));
+					if (Dungeon.hero.belongings.weapon() != null) {
+						btnBody.icon(new ItemSprite(Dungeon.hero.belongings.weapon().image, ((Weapon.Enchantment) bodyForm).glowing()));
+					} else {
+						btnBody.icon(new ItemSprite(ItemSpriteSheet.WORN_SHORTSWORD, ((Weapon.Enchantment) bodyForm).glowing()));
+					}
 				} else if (bodyForm instanceof Armor.Glyph){
 					btnBody = new RedButton(Messages.get(WndUseTrinity.class, "body",
 							Messages.titleCase(((Armor.Glyph)bodyForm).name()))
 							+ " " + trinityItemUseText(bodyForm.getClass()), 6){
 						@Override
 						protected void onClick() {
-							//TODO
+							if (Dungeon.hero.belongings.armor() != null &&
+									(Dungeon.hero.belongings.armor()).glyph.getClass().equals(bodyForm.getClass())){
+								GLog.w(Messages.get(Trinity.class, "no_duplicate"));
+								hide();
+							} else {
+								Buff.affect(Dungeon.hero, BodyForm.BodyFormBuff.class, BodyForm.duration()).setEffect(bodyForm);
+								Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+								Armor a = new ClothArmor();
+								if (Dungeon.hero.belongings.armor() != null) {
+									a.image = Dungeon.hero.belongings.armor().image;
+								}
+								a.inscribe((Armor.Glyph) bodyForm);
+								Enchanting.show(Dungeon.hero, a);
+								Dungeon.hero.sprite.operate(Dungeon.hero.pos);
+								Dungeon.hero.spendAndNext(1f);
+								armor.charge -= trinityChargeUsePerEffect(bodyForm.getClass());
+								armor.updateQuickslot();
+								Invisibility.dispel();
+								hide();
+							}
 						}
 					};
-					btnBody.icon(new ItemSprite(ItemSpriteSheet.ARMOR_CLOTH, ((Armor.Glyph) bodyForm).glowing()));
+					if (Dungeon.hero.belongings.armor() != null) {
+						btnBody.icon(new ItemSprite(Dungeon.hero.belongings.armor().image, ((Armor.Glyph) bodyForm).glowing()));
+					} else {
+						btnBody.icon(new ItemSprite(ItemSpriteSheet.ARMOR_CLOTH, ((Armor.Glyph) bodyForm).glowing()));
+					}
 				}
 				btnBody.multiline = true;
 				btnBody.setSize(width, 100); //for text layout
 				btnBody.setRect(0, top + 2, width, btnBody.reqHeight());
 				add(btnBody);
 				top = (int)btnBody.bottom();
+
+				btnBody.enable(armor.charge >= trinityChargeUsePerEffect(bodyForm.getClass()));
 			}
 
 			if (mindForm != null){
@@ -145,6 +195,12 @@ public class Trinity extends ArmorAbility {
 						+ " " + trinityItemUseText(spiritForm.getClass()), 6){
 					@Override
 					protected void onClick() {
+						if (Dungeon.hero.belongings.ring().getClass().equals(spiritForm.getClass())
+								|| Dungeon.hero.belongings.misc().getClass().equals(spiritForm.getClass())
+								|| Dungeon.hero.belongings.artifact().getClass().equals(spiritForm.getClass())){
+							GLog.w(Messages.get(Trinity.class, "no_duplicate"));
+							hide();
+						}
 						//TODO
 					}
 				};
@@ -241,10 +297,16 @@ public class Trinity extends ArmorAbility {
 			for (Class<?> cls : discoveredClasses){
 				if (Weapon.Enchantment.class.isAssignableFrom(cls)){
 					MeleeWeapon w = new WornShortsword();
+					if (Dungeon.hero.belongings.weapon() != null){
+						w.image = Dungeon.hero.belongings.weapon().image;
+					}
 					w.enchant((Weapon.Enchantment) Reflection.newInstance(cls));
 					options.add(w);
 				} else if (Armor.Glyph.class.isAssignableFrom(cls)) {
 					Armor a = new ClothArmor();
+					if (Dungeon.hero.belongings.armor() != null){
+						a.image = Dungeon.hero.belongings.armor().image;
+					}
 					a.inscribe((Armor.Glyph) Reflection.newInstance(cls));
 					options.add(a);
 				} else {
@@ -349,16 +411,16 @@ public class Trinity extends ArmorAbility {
 	}
 
 	public static String trinityItemUseText(Class<?> cls ){
-		float chargeUse = Dungeon.hero.armorAbility.chargeUse(Dungeon.hero);
+		float chargeUse = trinityChargeUsePerEffect(cls);
 		if (Weapon.Enchantment.class.isAssignableFrom(cls) || Armor.Glyph.class.isAssignableFrom(cls)) {
 			for (Class ench : Weapon.Enchantment.rare) {
 				if (ench.equals(cls)) {
-					return Messages.get(Trinity.class, "rare_ench_glyph_use", BodyForm.duration(), Messages.decimalFormat("#.##", 2*chargeUse));
+					return Messages.get(Trinity.class, "rare_ench_glyph_use", BodyForm.duration(), Messages.decimalFormat("#.##", chargeUse));
 				}
 			}
 			for (Class glyph : Armor.Glyph.rare){
 				if (glyph.equals(cls)){
-					return Messages.get(Trinity.class, "rare_ench_glyph_use", BodyForm.duration(), Messages.decimalFormat("#.##", 2*chargeUse));
+					return Messages.get(Trinity.class, "rare_ench_glyph_use", BodyForm.duration(), Messages.decimalFormat("#.##", chargeUse));
 				}
 			}
 			return Messages.get(Trinity.class, "ench_glyph_use", BodyForm.duration(), Messages.decimalFormat("#.##", chargeUse));
@@ -377,6 +439,27 @@ public class Trinity extends ArmorAbility {
 		}
 		return "error!";
 
+	}
+
+	public static float trinityChargeUsePerEffect(Class<?> cls){
+		float chargeUse = Dungeon.hero.armorAbility.chargeUse(Dungeon.hero);
+		if (Weapon.Enchantment.class.isAssignableFrom(cls) || Armor.Glyph.class.isAssignableFrom(cls)) {
+			for (Class ench : Weapon.Enchantment.rare) {
+				if (ench.equals(cls)) {
+					return 2*chargeUse;
+				}
+			}
+			for (Class glyph : Armor.Glyph.rare){
+				if (glyph.equals(cls)){
+					return 2*chargeUse;
+				}
+			}
+		}
+		if (Artifact.class.isAssignableFrom(cls)){
+			return chargeUse; //TODO
+		}
+		//all other effects are standard charge use
+		return chargeUse;
 	}
 
 }

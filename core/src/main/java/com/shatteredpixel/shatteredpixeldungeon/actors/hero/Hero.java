@@ -70,6 +70,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Ch
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.ElementalStrike;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesPower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.BodyForm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.HallowedGround;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.HolyWard;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.HolyWeapon;
@@ -93,6 +94,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
@@ -140,6 +142,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RoundShield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sai;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
@@ -1449,12 +1452,19 @@ public class Hero extends Char {
 		if (wep != null) {
 			damage = wep.proc( this, enemy, damage );
 		} else {
-			if (buff(HolyWeapon.HolyWepBuff.class) != null) {
-				int dmg = subClass == HeroSubClass.PALADIN ? 6 : 2;
-				enemy.damage(Math.round(dmg * Weapon.Enchantment.genericProcChanceMultiplier(this)), HolyWeapon.INSTANCE);
+			boolean wasEnemy = enemy.alignment == Alignment.ENEMY;
+			if (buff(BodyForm.BodyFormBuff.class) != null
+					&& buff(BodyForm.BodyFormBuff.class).enchant() != null){
+				damage = buff(BodyForm.BodyFormBuff.class).enchant().proc(new WornShortsword(), this, enemy, damage);
 			}
-			if (buff(Smite.SmiteTracker.class) != null){
-				enemy.damage(Smite.bonusDmg(this, enemy), Smite.INSTANCE);
+			if (!wasEnemy || enemy.alignment == Alignment.ENEMY) {
+				if (buff(HolyWeapon.HolyWepBuff.class) != null) {
+					int dmg = subClass == HeroSubClass.PALADIN ? 6 : 2;
+					enemy.damage(Math.round(dmg * Weapon.Enchantment.genericProcChanceMultiplier(this)), HolyWeapon.INSTANCE);
+				}
+				if (buff(Smite.SmiteTracker.class) != null) {
+					enemy.damage(Smite.bonusDmg(this, enemy), Smite.INSTANCE);
+				}
 			}
 		}
 		
@@ -1501,9 +1511,15 @@ public class Hero extends Char {
 		
 		if (belongings.armor() != null) {
 			damage = belongings.armor().proc( enemy, this, damage );
-		} else if (buff(HolyWard.HolyArmBuff.class) != null){
-			int blocking = subClass == HeroSubClass.PALADIN ? 3 : 1;
-			damage -= Math.round(blocking * Armor.Glyph.genericProcChanceMultiplier(enemy));
+		} else {
+			if (buff(BodyForm.BodyFormBuff.class) != null
+				&& buff(BodyForm.BodyFormBuff.class).glyph() != null){
+				damage = buff(BodyForm.BodyFormBuff.class).glyph().proc(new ClothArmor(), enemy, this, damage);
+			}
+			if (buff(HolyWard.HolyArmBuff.class) != null){
+				int blocking = subClass == HeroSubClass.PALADIN ? 3 : 1;
+				damage -= Math.round(blocking * Armor.Glyph.genericProcChanceMultiplier(enemy));
+			}
 		}
 
 		WandOfLivingEarth.RockArmor rockArmor = buff(WandOfLivingEarth.RockArmor.class);
@@ -1518,6 +1534,10 @@ public class Hero extends Char {
 	public int glyphLevel(Class<? extends Armor.Glyph> cls) {
 		if (belongings.armor() != null && belongings.armor().hasGlyph(cls, this)){
 			return Math.max(super.glyphLevel(cls), belongings.armor.buffedLvl());
+		} else if (buff(BodyForm.BodyFormBuff.class) != null
+				&& buff(BodyForm.BodyFormBuff.class).glyph() != null
+				&& buff(BodyForm.BodyFormBuff.class).glyph().getClass() == cls){
+			return belongings.armor() != null ? belongings.armor.buffedLvl() : 0;
 		} else {
 			return super.glyphLevel(cls);
 		}
