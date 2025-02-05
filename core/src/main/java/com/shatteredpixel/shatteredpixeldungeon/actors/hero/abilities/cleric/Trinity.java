@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -42,6 +43,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
@@ -52,6 +55,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
+import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -84,6 +88,14 @@ public class Trinity extends ArmorAbility {
 
 	}
 
+	@Override
+	public int targetedPos(Char user, int dst) {
+		if (mindForm != null){
+			return ((Item)mindForm).targetingPos((Hero)user, dst);
+		}
+		return super.targetedPos(user, dst);
+	}
+
 	public class WndUseTrinity extends WndTitledMessage {
 
 		public WndUseTrinity(ClassArmor armor) {
@@ -107,7 +119,7 @@ public class Trinity extends ArmorAbility {
 								GLog.w(Messages.get(Trinity.class, "no_duplicate"));
 								hide();
 							} else {
-								Buff.affect(Dungeon.hero, BodyForm.BodyFormBuff.class, BodyForm.duration()).setEffect(bodyForm);
+								Buff.prolong(Dungeon.hero, BodyForm.BodyFormBuff.class, BodyForm.duration()).setEffect(bodyForm);
 								Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 								Weapon w = new WornShortsword();
 								if (Dungeon.hero.belongings.weapon() != null) {
@@ -140,7 +152,7 @@ public class Trinity extends ArmorAbility {
 								GLog.w(Messages.get(Trinity.class, "no_duplicate"));
 								hide();
 							} else {
-								Buff.affect(Dungeon.hero, BodyForm.BodyFormBuff.class, BodyForm.duration()).setEffect(bodyForm);
+								Buff.prolong(Dungeon.hero, BodyForm.BodyFormBuff.class, BodyForm.duration()).setEffect(bodyForm);
 								Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 								Armor a = new ClothArmor();
 								if (Dungeon.hero.belongings.armor() != null) {
@@ -178,7 +190,17 @@ public class Trinity extends ArmorAbility {
 						+ " " + trinityItemUseText(mindForm.getClass()), 6){
 					@Override
 					protected void onClick() {
-						//TODO
+						hide();
+						MindForm.targetSelector mindEffect = new MindForm.targetSelector();
+						mindEffect.setEffect(mindForm);
+						GameScene.selectCell(mindEffect);
+						Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+						Enchanting.show(Dungeon.hero, (Item)mindForm);
+						Dungeon.hero.sprite.operate(Dungeon.hero.pos);
+
+						if (((Item) mindForm).usesTargeting && Dungeon.quickslot.contains(armor)){
+							QuickSlotButton.useTargeting(Dungeon.quickslot.getSlot(armor));
+						}
 					}
 				};
 				btnMind.icon(new ItemSprite((Item)mindForm));
@@ -187,6 +209,8 @@ public class Trinity extends ArmorAbility {
 				btnMind.setRect(0, top + 2, width, btnMind.reqHeight());
 				add(btnMind);
 				top = (int)btnMind.bottom();
+
+				btnMind.enable(armor.charge >= trinityChargeUsePerEffect(mindForm.getClass()));
 			}
 
 			if (spiritForm != null){
@@ -202,7 +226,7 @@ public class Trinity extends ArmorAbility {
 							hide();
 							return;
 						}
-						Buff.affect(Dungeon.hero, SpiritForm.SpiritFormBuff.class, SpiritForm.SpiritFormBuff.DURATION).setEffect(spiritForm);
+						Buff.prolong(Dungeon.hero, SpiritForm.SpiritFormBuff.class, SpiritForm.SpiritFormBuff.DURATION).setEffect(spiritForm);
 						Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 						Enchanting.show(Dungeon.hero, (Item)spiritForm);
 						Dungeon.hero.sprite.operate(Dungeon.hero.pos);
@@ -221,6 +245,8 @@ public class Trinity extends ArmorAbility {
 				btnSpirit.setRect(0, top + 2, width, btnSpirit.reqHeight());
 				add(btnSpirit);
 				top = (int)btnSpirit.bottom();
+
+				btnSpirit.enable(armor.charge >= trinityChargeUsePerEffect(spiritForm.getClass()));
 			}
 
 			resize(width, top);
@@ -440,6 +466,9 @@ public class Trinity extends ArmorAbility {
 			return Messages.get(Trinity.class, "thrown_use", MindForm.itemLevel(), Messages.decimalFormat("#.##", chargeUse));
 		}
 		if (Wand.class.isAssignableFrom(cls)){
+			if (cls.equals(WandOfFireblast.class) || cls.equals(WandOfRegrowth.class)){
+				return Messages.get(Trinity.class, "wand_multi_use", MindForm.itemLevel(), Messages.decimalFormat("#.##", chargeUse));
+			}
 			return Messages.get(Trinity.class, "wand_use", MindForm.itemLevel(), Messages.decimalFormat("#.##", chargeUse));
 		}
 		if (Ring.class.isAssignableFrom(cls)){
@@ -465,6 +494,9 @@ public class Trinity extends ArmorAbility {
 					return 2*chargeUse;
 				}
 			}
+		}
+		if (cls.equals(WandOfFireblast.class) || cls.equals(WandOfRegrowth.class)){
+			return 2*chargeUse;
 		}
 		if (Artifact.class.isAssignableFrom(cls)){
 			return chargeUse; //TODO
