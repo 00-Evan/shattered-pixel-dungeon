@@ -55,6 +55,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ItemButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
@@ -355,13 +356,14 @@ public class Trinity extends ArmorAbility {
 			int left = 0;
 
 			for (Item item : options){
-				RedButton btn = new RedButton(""){
+				ItemButton btn = new ItemButton(){
 					@Override
 					protected void onClick() {
 						GameScene.show(new WndItemConfirm(WndItemtypeSelect.this, item, tome, spell));
 					}
 				};
-				btn.icon(new ItemSprite(item));
+				btn.item(item);
+				btn.slot().textVisible(false);
 				btn.setRect(left, top, 19, 19);
 				add(btn);
 
