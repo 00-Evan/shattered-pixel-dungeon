@@ -41,6 +41,7 @@ public class RingOfForce extends Ring {
 
 	{
 		icon = ItemSpriteSheet.Icons.RING_FORCE;
+		buffClass = Force.class;
 	}
 
 	@Override

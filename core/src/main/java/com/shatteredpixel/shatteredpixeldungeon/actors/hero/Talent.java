@@ -550,6 +550,11 @@ public enum Talent {
 				}
 			}
 		}
+
+		//if we happen to have spirit form applied with a ring of might
+		if (talent == SPIRIT_FORM){
+			Dungeon.hero.updateHT(false);
+		}
 	}
 
 	public static class CachedRationsDropped extends CounterBuff{{revivePersists = true;}};

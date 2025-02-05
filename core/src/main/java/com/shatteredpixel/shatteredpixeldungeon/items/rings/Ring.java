@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EnhancedRings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.SpiritForm;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
@@ -50,6 +51,7 @@ import java.util.LinkedHashMap;
 public class Ring extends KindofMisc {
 	
 	protected Buff buff;
+	protected Class<? extends RingBuff> buffClass;
 
 	private static final LinkedHashMap<String, Integer> gems = new LinkedHashMap<String, Integer>() {
 		{
@@ -368,6 +370,12 @@ public class Ring extends KindofMisc {
 		for (RingBuff buff : target.buffs(type)) {
 			bonus += buff.level();
 		}
+		if (bonus == 0
+				&& target.buff(SpiritForm.SpiritFormBuff.class) != null
+				&& target.buff(SpiritForm.SpiritFormBuff.class).ring() != null
+				&& target.buff(SpiritForm.SpiritFormBuff.class).ring().buffClass == type){
+			bonus += target.buff(SpiritForm.SpiritFormBuff.class).ring().soloBonus();
+		}
 		return bonus;
 	}
 
@@ -376,6 +384,13 @@ public class Ring extends KindofMisc {
 		int bonus = 0;
 		for (RingBuff buff : target.buffs(type)) {
 			bonus += buff.buffedLvl();
+		}
+		if (bonus == 0
+				&& target.buff(SpiritForm.SpiritFormBuff.class) != null
+				&& target.buff(SpiritForm.SpiritFormBuff.class).ring() != null
+				&& target.buff(SpiritForm.SpiritFormBuff.class).ring().buffClass == type){
+			//TODO this works for all rings atm!
+			bonus += target.buff(SpiritForm.SpiritFormBuff.class).ring().soloBuffedBonus();
 		}
 		return bonus;
 	}

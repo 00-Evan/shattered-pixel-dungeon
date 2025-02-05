@@ -56,6 +56,7 @@ public class RingOfWealth extends Ring {
 
 	{
 		icon = ItemSpriteSheet.Icons.RING_WEALTH;
+		buffClass = Wealth.class;
 	}
 
 	private float triesToDrop = Float.MIN_VALUE;

@@ -195,13 +195,24 @@ public class Trinity extends ArmorAbility {
 						+ " " + trinityItemUseText(spiritForm.getClass()), 6){
 					@Override
 					protected void onClick() {
-						if (Dungeon.hero.belongings.ring().getClass().equals(spiritForm.getClass())
-								|| Dungeon.hero.belongings.misc().getClass().equals(spiritForm.getClass())
-								|| Dungeon.hero.belongings.artifact().getClass().equals(spiritForm.getClass())){
+						if ((Dungeon.hero.belongings.ring() != null && Dungeon.hero.belongings.ring().getClass().equals(spiritForm.getClass()))
+								|| (Dungeon.hero.belongings.misc() != null && Dungeon.hero.belongings.misc().getClass().equals(spiritForm.getClass()))
+								|| (Dungeon.hero.belongings.artifact() != null && Dungeon.hero.belongings.artifact().getClass().equals(spiritForm.getClass()))){
 							GLog.w(Messages.get(Trinity.class, "no_duplicate"));
 							hide();
+							return;
 						}
-						//TODO
+						Buff.affect(Dungeon.hero, SpiritForm.SpiritFormBuff.class, SpiritForm.SpiritFormBuff.DURATION).setEffect(spiritForm);
+						Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+						Enchanting.show(Dungeon.hero, (Item)spiritForm);
+						Dungeon.hero.sprite.operate(Dungeon.hero.pos);
+						Dungeon.hero.spendAndNext(1f);
+						armor.charge -= trinityChargeUsePerEffect(spiritForm.getClass());
+						armor.updateQuickslot();
+						Invisibility.dispel();
+						hide();
+
+						//TODO artifacts!
 					}
 				};
 				btnSpirit.icon(new ItemSprite((Item)spiritForm));

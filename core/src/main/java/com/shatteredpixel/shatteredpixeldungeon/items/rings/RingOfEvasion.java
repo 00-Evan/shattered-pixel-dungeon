@@ -30,6 +30,7 @@ public class RingOfEvasion extends Ring {
 
 	{
 		icon = ItemSpriteSheet.Icons.RING_EVASION;
+		buffClass = Evasion.class;
 	}
 
 	public String statsInfo() {
