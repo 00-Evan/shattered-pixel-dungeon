@@ -100,7 +100,9 @@ public class MindForm extends ClericSpell {
 		private MissileWeapon thrown(){
 			if (effect instanceof MissileWeapon){
 				((MissileWeapon) effect).level(effectLevel());
+				((MissileWeapon) effect).repair(100);
 				((MissileWeapon) effect).identify(false);
+				((MissileWeapon) effect).spawnedForEffect = true;
 				return (MissileWeapon) effect;
 			}
 			return null;
@@ -151,7 +153,9 @@ public class MindForm extends ClericSpell {
 					});
 				}
 			} else if (thrown() != null){
-				//TODO
+				MissileWeapon thrown = thrown();
+				thrown.cast(Dungeon.hero, target);
+				((ClassArmor)Dungeon.hero.belongings.armor()).charge -= Trinity.trinityChargeUsePerEffect(thrown.getClass());
 			}
 		}
 

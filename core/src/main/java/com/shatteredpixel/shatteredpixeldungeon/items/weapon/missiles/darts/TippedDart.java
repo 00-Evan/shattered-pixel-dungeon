@@ -130,7 +130,7 @@ public abstract class TippedDart extends Dart {
 		super.rangedHit( enemy, cell);
 		
 		//need to spawn a dart
-		if (durability <= 0){
+		if (durability <= 0 && !spawnedForEffect){
 			//attempt to stick the dart to the enemy, just drop it if we can't.
 			Dart d = new Dart();
 			Catalog.countUse(getClass());
