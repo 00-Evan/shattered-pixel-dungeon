@@ -959,7 +959,7 @@ public class v2_X_Changes {
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released June 2nd, 2023\n" +
 				"_-_ 83 days after Shattered v2.0.0\n\n" +
-				"Dev commentary will be added here in the future."));
+				"Dev commentary will be added here in the next major update."));
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAR_SCYTHE), "New Weapons!",
 				"Three new weapons have been added to the game!\n" +
@@ -1186,7 +1186,11 @@ public class v2_X_Changes {
 				"_-_ 160 days after Shattered v1.4.0\n" +
 				"_-_ 413 days after Shattered v1.0.0\n" +
 				"\n" +
-				"Dev commentary will be added here in the next major update."));
+				"v2.0.0 introduced Shattered Pixel Dungeon's first ever new hero: the Duelist!\n" +
+				"\n" +
+				"The Duelist was the first of two new heroes that were focused around active abilities, as opposed to focusing on equipment power (Warrior and Mage), or environment interaction (Rogue and Huntress). I see v2.0 as the beginning of another new era in Shattered's development, as after focusing on new platforms during most of v1.X, game updates instead started focusing on big content expansions.\n" +
+				"\n" +
+				"Unfortunately the Duelist ended up releasing quite weak. I overestimated how well an ability focused hero would perform versus the existing heroes. I erred much more on the side of making the next hero stronger, and so far that seems to be working out quite well."));
 
 		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 1), HeroClass.DUELIST.title(),
 				"_Shattered Pixel Dungeon has a new playable character!!_\n" +
