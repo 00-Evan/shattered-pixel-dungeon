@@ -210,7 +210,7 @@ public class WelcomeScene extends PixelScene {
 			}
 
 			message = "Greetings Beta testers, the beta for v3.0.0 continues!\n\n" +
-					"I'm hoping to get the Priest's armor abilities online soon, but int he meantime, this beta release features some big improvements to the title and hero select screens!\n\n" +
+					"The Trinity armor ability has been added! We're just missing one more ability and some final polish, and then we'll be pushing to release!\n\n" +
 					"As always, read the changelog for full change details.";
 
 		} else {

@@ -24,12 +24,14 @@ package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Trinity;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TalentIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
@@ -66,19 +68,39 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("BETA-2.3", false, null);
+		changes = new ChangeInfo("", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-2.4", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"With Trinity implemented the beta for v3.0 is finally getting close to wrapping up!\n\n" +
+				"There's still a bit more to do though:\n" +
+				"**-** Address any bugs or serious balance issues as they come up\n" +
+				"**-** Power of Many armor ability (I expect to get this done faster than Trinity)\n" +
+				"**-** Final visual polish for the Cleric before release"));
+
+		changes.addButton(new ChangeButton(new HeroIcon(new Trinity()), "Trinity!",
+				"**The Cleric's second armor ability is now available!**\n\n" +
+				"**Trinity** acts like three abilities in one! Each ability lets you reproduce the effect of an enchant/glyph, thrown weapon/wand, or ring/artifact that you've previously identified. New spells are used to assign effects, and Trinity itself activates them.\n\n" +
+				"Note that Trinity depends on internal tracking code that was added in BETA-2.2, if you're playing a run from before then you may not be able to select every thing you have identified."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**-** Internal adjustments to hunger and regeneration effects, they should now be more responsive when hunger or regen rate changes.\n\n" +
+				"**-** Added developer commentary for v2.0.0\n\n" +
+				"**-** Updated Translations"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
 				"**Caused by BETA:**\n" +
-				"**-** Smite no longer guaranteeing hits when it should\n" +
-				"**-** Buttons on title screen becoming wider than intended\n" +
-				"**-** A warning message for the upcoming Trinity armor ability appearing for all abilities\n" +
-				"**-** Holy weapon and ward overriding curse effects in some cases"));
+				"**-** Cleric spells incorrectly interacting with autotargeting in some cases\n" +
+				"**-** iOS launch screen using the old title graphic\n" +
+				"**-** Various minor layout/text errors"));
 
-		changes = new ChangeInfo("BETA-2.2", false, null);
+		changes = new ChangeInfo("BETA-2.2 & 2.3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
@@ -110,60 +132,33 @@ public class v3_X_Changes {
 				"**-** Cursed wand effects potentially applying levitation to immovable characters\n" +
 				"**-** Ripper demons sometimes losing their target early"));
 
-		changes = new ChangeInfo("BETA-2.1", false, null);
+		changes = new ChangeInfo("BETA-2.0 & 2.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 6), "The Paladin!",
+				"After a bit of a long wait, **the Cleric's second subclass has been implemented!**\n\n" +
+				"**The Paladin** is focused on melee spell combat and defensive power. Their effects most strongly synergize with weapons and armor."));
+
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** Added some internal tracking code to support the upcoming Trinity armor ability.\n\n" +
 				"**-** Updated Translations"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
-				"**Caused by BETA:**\n" +
-				"**-** Traps appearing visible in many more cases than intended\n" +
-				"**-** DM-300 not breaking light walls when tunneling through them\n" +
-				"**-** Piranhas ignoring walls of light\n" +
-				"**-** Cleansing the curse on an item via well of health not unlocking the Cleric\n" +
-				"**-** Various small typos\n" +
-				"\n" +
+				"**Existed Prior to BETA:**\n" +
+				"**-** Exotic crystals trinket not applying to monster drops in many cases\n" +
+				"**-** Rare errors when cancelling scroll of enchantment on armor\n" +
+				"**-** Multiplicity glyph not working correctly with ghouls in some cases\n" +
+				"**-** Geomancer rockfall attack being cleared on save/load"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
 				"**Existed Prior to BETA:**\n" +
 				"**-** Various issues with system gestures registering as game inputs on Android and iOS\n" +
 				"**-** Corrosion gas from chaotic censer always starting at 1 damage\n" +
 				"**-** Retreating characters failing to retreat through crowded area in some cases\n" +
 				"**-** Pacifist badge unlocking when it shouldn't in rare cases\n" +
 				"**-** Rat King's description sometimes being incorrect in landmarks"));
-
-		changes = new ChangeInfo("BETA-2.0", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
-				"Hey folks, thanks for your patience as things took a bit longer than expected to get started back up in the new year!\n\n" +
-				"I've now implemented the Paladin and hope to be implementing both outstanding armor abilities in the next couple weeks, along with other smaller changes.\n\n" +
-				"Here's what we have left before release, roughly in the order I plan to do it:\n" +
-				"**-** Address any bugs or serious balance issues as they come up\n" +
-				"**-** Visual improvements to title screen, hero select, and games in progress\n" +
-				"**-** Trinity armor ability\n" +
-				"**-** Power of Many armor ability\n" +
-				"**-** Final visual polish for the Cleric before release"));
-
-		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 6), "The Paladin!",
-				"After a bit of a long wait, **the Cleric's second subclass has been implemented!**\n\n" +
-				"**The Paladin** is focused on melee spell combat and defensive power. Their effects most strongly synergize with weapons and armor."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by BETA:**\n" +
-				"**-** Shared upgrades granting MUCH more bonus damage than intended\n" +
-				"**-** Exploits where talent spells could still be cast after being metamorphed\n" +
-				"**-** Phantom piranhas always teleporting when hit by Cleric spells\n" +
-				"**-** Minor text errors\n\n" +
-				"**Existed Prior to BETA:**\n" +
-				"**-** Exotic crystals trinket not applying to monster drops in many cases\n" +
-				"**-** Rare errors when cancelling scroll of enchantment on armor\n" +
-				"**-** Multiplicity glyph not working correctly with ghouls in some cases\n" +
-				"**-** Geomancer rockfall attack being cleared on save/load"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -173,20 +168,6 @@ public class v3_X_Changes {
 				"_-_ Released ..., ...\n" +
 				"_-_ ... days after Shattered v2.5.0\n\n" +
 				"Dev commentary will be added here in the future."));*/
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Beta Info",
-				"Hey Beta testers! The Beta for v3.0.0 is in an earlier state than a beta normally is, so expect it to last for a little while. Here's roughly what needs to be done before release:\n" +
-				"\n" +
-				"For the Cleric themselves:\n" +
-				"**-** Implement the **Paladin Subclass**, and **Trinity and Power of Many** armor abilities.\n" +
-				"**-** Make refinements and balance adjustments as needed based on feedback and analytics data.\n" +
-				"**-** Finalize Cleric visuals, currently many in-game visuals are WIP.\n" +
-				"\n" +
-				"And for other things:\n" +
-				"**-** Make various miscellaneous bugfixes and small tweaks, I've got a list to get through.\n" +
-				"**-** Further interface improvements to the games in progress scene\n" +
-				"**-** Visual improvements to art in the title screen and hero select.\n\n" +
-				"I'm taking a bit of a break over the holidays, so expect these items to get getting cleared early in the new year."));
 
 		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 1), "The Cleric!",
 				"**Shattered Pixel Dungeon has another new hero, making for six total!!**\n" +
