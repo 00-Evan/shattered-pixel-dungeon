@@ -110,7 +110,7 @@ public class MasterThievesArmband extends Artifact {
 		}
 	}
 
-	private CellSelector.Listener targeter = new CellSelector.Listener(){
+	public CellSelector.Listener targeter = new CellSelector.Listener(){
 
 		@Override
 		public void onSelect(Integer target) {

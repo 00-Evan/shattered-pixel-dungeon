@@ -70,6 +70,12 @@ public class TimekeepersHourglass extends Artifact {
 		defaultAction = AC_ACTIVATE;
 	}
 
+	@Override
+	public void resetForTrinity(int visibleLevel) {
+		super.resetForTrinity(visibleLevel);
+		charge = visibleLevel/2 - 1; //grants 4-10 turns of time freeze
+	}
+
 	public static final String AC_ACTIVATE = "ACTIVATE";
 
 	//keeps track of generated sandbags.

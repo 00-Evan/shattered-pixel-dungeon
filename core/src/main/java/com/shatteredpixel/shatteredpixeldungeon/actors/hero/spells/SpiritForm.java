@@ -22,21 +22,49 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Trinity;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Fadeleaf;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Firebloom;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Icecap;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Sorrowmoss;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Stormvine;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.AlchemyScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
+import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class SpiritForm extends ClericSpell {
 
@@ -49,7 +77,7 @@ public class SpiritForm extends ClericSpell {
 
 	@Override
 	public float chargeUse(Hero hero) {
-		return 4;
+		return 0;
 	}
 
 	@Override
@@ -155,6 +183,60 @@ public class SpiritForm extends ClericSpell {
 			effect = bundle.get(EFFECT);
 		}
 
+	}
+
+	public static void applyActiveArtifactEffect(ClassArmor armor, Artifact effect){
+		if (effect instanceof AlchemistsToolkit){
+			Talent.onArtifactUsed(Dungeon.hero);
+			AlchemyScene.assignToolkit((AlchemistsToolkit) effect);
+			Game.switchScene(AlchemyScene.class);
+
+		} else if (effect instanceof DriedRose){
+			ArrayList<Integer> spawnPoints = new ArrayList<>();
+			for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+				int p = Dungeon.hero.pos + PathFinder.NEIGHBOURS8[i];
+				if (Actor.findChar(p) == null && (Dungeon.level.passable[p] || Dungeon.level.avoid[p])) {
+					spawnPoints.add(p);
+				}
+			}
+			if (spawnPoints.size() > 0) {
+				Wraith w = Wraith.spawnAt(Random.element(spawnPoints), Wraith.class);
+				w.HP = w.HT = 20 + 8*artifactLevel();
+				Buff.affect(w, Corruption.class);
+			}
+			Talent.onArtifactUsed(Dungeon.hero);
+			Dungeon.hero.spendAndNext(1f);
+
+		} else if (effect instanceof EtherealChains){
+			GameScene.selectCell(((EtherealChains) effect).caster);
+			QuickSlotButton.useTargeting(Dungeon.quickslot.getSlot(armor));
+
+		} else if (effect instanceof HornOfPlenty){
+			((HornOfPlenty) effect).doEatEffect(Dungeon.hero, 1);
+
+		} else if (effect instanceof MasterThievesArmband){
+			GameScene.selectCell(((MasterThievesArmband) effect).targeter);
+			QuickSlotButton.useTargeting(Dungeon.quickslot.getSlot(armor));
+
+		} else if (effect instanceof SandalsOfNature){
+			((SandalsOfNature) effect).curSeedEffect = Random.oneOf(
+					Blindweed.Seed.class, Fadeleaf.Seed.class, Firebloom.Seed.class,
+					Icecap.Seed.class, Sorrowmoss.Seed.class, Stormvine.Seed.class
+			);
+
+			GameScene.selectCell(((SandalsOfNature) effect).cellSelector);
+			QuickSlotButton.useTargeting(Dungeon.quickslot.getSlot(armor));
+
+		} else if (effect instanceof TalismanOfForesight){
+			GameScene.selectCell(((TalismanOfForesight) effect).scry);
+
+		} else if (effect instanceof TimekeepersHourglass){
+			Buff.affect(Dungeon.hero, Swiftthistle.TimeBubble.class).reset(artifactLevel());
+			Dungeon.hero.spendAndNext(1f);
+
+		} else if (effect instanceof UnstableSpellbook){
+			((UnstableSpellbook) effect).doReadEffect(Dungeon.hero);
+		}
 	}
 
 }

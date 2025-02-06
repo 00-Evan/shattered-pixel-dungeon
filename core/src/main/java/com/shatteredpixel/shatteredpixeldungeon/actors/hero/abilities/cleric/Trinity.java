@@ -40,7 +40,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ChaliceOfBlood;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast;
@@ -227,19 +233,27 @@ public class Trinity extends ArmorAbility {
 							hide();
 							return;
 						}
-						Buff.prolong(Dungeon.hero, SpiritForm.SpiritFormBuff.class, SpiritForm.SpiritFormBuff.DURATION).setEffect(spiritForm);
+						Invisibility.dispel();
+						//Rings and the Chalice specifically get their passive effects for 20 turns
+						if (spiritForm instanceof Ring || spiritForm instanceof ChaliceOfBlood) {
+							Buff.prolong(Dungeon.hero, SpiritForm.SpiritFormBuff.class, SpiritForm.SpiritFormBuff.DURATION).setEffect(spiritForm);
+							Dungeon.hero.spendAndNext(1f);
+						} else {
+							SpiritForm.applyActiveArtifactEffect(armor, (Artifact) spiritForm);
+							//turn spending is handled within the application of the artifact effect
+						}
 						Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
-						Enchanting.show(Dungeon.hero, (Item)spiritForm);
+						Enchanting.show(Dungeon.hero, (Item) spiritForm);
 						Dungeon.hero.sprite.operate(Dungeon.hero.pos);
-						Dungeon.hero.spendAndNext(1f);
 						armor.charge -= trinityChargeUsePerEffect(spiritForm.getClass());
 						armor.updateQuickslot();
-						Invisibility.dispel();
 						hide();
-
-						//TODO artifacts!
 					}
 				};
+				if (spiritForm instanceof Artifact){
+					((Artifact) spiritForm).resetForTrinity(SpiritForm.artifactLevel());
+				}
+
 				btnSpirit.icon(new ItemSprite((Item)spiritForm));
 				btnSpirit.multiline = true;
 				btnSpirit.setSize(width, 100); //for text layout
@@ -477,7 +491,7 @@ public class Trinity extends ArmorAbility {
 			return Messages.get(Trinity.class, "ring_use", SpiritForm.ringLevel(), Messages.decimalFormat("#.##", chargeUse));
 		}
 		if (Artifact.class.isAssignableFrom(cls)){
-			return Messages.get(Trinity.class, "artifact_use", SpiritForm.artifactLevel(), Messages.decimalFormat("#.##", chargeUse));
+			return Messages.get(Trinity.class, cls.getSimpleName() + "_use", SpiritForm.artifactLevel(), Messages.decimalFormat("#.##", chargeUse));
 		}
 		return "error!";
 
@@ -488,12 +502,12 @@ public class Trinity extends ArmorAbility {
 		if (Weapon.Enchantment.class.isAssignableFrom(cls) || Armor.Glyph.class.isAssignableFrom(cls)) {
 			for (Class ench : Weapon.Enchantment.rare) {
 				if (ench.equals(cls)) {
-					return 2*chargeUse;
+					return 2*chargeUse; //50 charge
 				}
 			}
 			for (Class glyph : Armor.Glyph.rare){
 				if (glyph.equals(cls)){
-					return 2*chargeUse;
+					return 2*chargeUse; //50 charge
 				}
 			}
 		}
@@ -501,9 +515,14 @@ public class Trinity extends ArmorAbility {
 			return 2*chargeUse;
 		}
 		if (Artifact.class.isAssignableFrom(cls)){
-			return chargeUse; //TODO
+			if (cls.equals(DriedRose.class) || cls.equals(UnstableSpellbook.class)){
+				return 2*chargeUse; //50 charge
+			}
+			if (cls.equals(EtherealChains.class) || cls.equals(TalismanOfForesight.class) || cls.equals(TimekeepersHourglass.class)){
+				return 1.4f*chargeUse; //35 charge
+			}
 		}
-		//all other effects are standard charge use
+		//all other effects are standard charge use, 25 at base
 		return chargeUse;
 	}
 

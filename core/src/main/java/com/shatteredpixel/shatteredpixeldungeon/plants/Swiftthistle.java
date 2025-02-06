@@ -96,9 +96,13 @@ public class Swiftthistle extends Plant {
 		public String iconTextDisplay() {
 			return Integer.toString((int)(left + 0.001f));
 		}
-		
+
 		public void reset(){
-			left = 7f;
+			reset(6);
+		}
+
+		public void reset(int turns){
+			left = turns + 1; //add 1 as we're spending it on our action
 		}
 		
 		@Override

@@ -135,7 +135,7 @@ public class TalismanOfForesight extends Artifact {
 		return Math.min(5 + 2*level(), (charge-3)/1.08f);
 	}
 
-	private CellSelector.Listener scry = new CellSelector.Listener(){
+	public CellSelector.Listener scry = new CellSelector.Listener(){
 
 		@Override
 		public void onSelect(Integer target) {

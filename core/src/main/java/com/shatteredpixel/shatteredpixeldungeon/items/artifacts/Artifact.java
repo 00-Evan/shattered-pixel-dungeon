@@ -137,6 +137,13 @@ public class Artifact extends KindofMisc {
 		upgrade(Math.round((transferLvl*levelCap)/10f));
 	}
 
+	public void resetForTrinity(int visibleLevel){
+		level(Math.round((visibleLevel*levelCap)/10f));
+		exp = Integer.MIN_VALUE; //ensures no levelling
+		charge = chargeCap;
+		cooldown = 0;
+	}
+
 	public static void artifactProc(Char target, int artifLevel, int chargesUsed){
 		if (Dungeon.hero.subClass == HeroSubClass.PRIEST && target.buff(GuidingLight.Illuminated.class) != null) {
 			target.buff(GuidingLight.Illuminated.class).detach();
