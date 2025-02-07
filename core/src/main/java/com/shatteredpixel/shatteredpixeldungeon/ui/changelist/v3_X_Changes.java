@@ -68,9 +68,20 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("BETA-2.5", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**-** Updated Translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by BETA:**\n" +
+				"**-** Spirit Form spell unintentionally costing 0 tome charge instead of 4\n" +
+				"**-** Trinity creating extra thrown weapons in some cases\n" +
+				"**-** Crash errors when activating Trinity's body form without an enchant/glyph currently on your armor\n" +
+				"**-** iOS launch screen using the old title graphic (actually this time, I hope)"));
 
 		changes = new ChangeInfo("BETA-2.4", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
