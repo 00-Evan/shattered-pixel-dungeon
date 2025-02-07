@@ -77,7 +77,7 @@ public class SpiritForm extends ClericSpell {
 
 	@Override
 	public float chargeUse(Hero hero) {
-		return 0;
+		return 4;
 	}
 
 	@Override
