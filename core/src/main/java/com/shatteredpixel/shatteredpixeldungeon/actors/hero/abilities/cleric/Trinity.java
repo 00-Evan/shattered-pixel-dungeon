@@ -122,6 +122,7 @@ public class Trinity extends ArmorAbility {
 						@Override
 						protected void onClick() {
 							if (Dungeon.hero.belongings.weapon() != null &&
+									((Weapon)Dungeon.hero.belongings.weapon()).enchantment != null &&
 									((Weapon)Dungeon.hero.belongings.weapon()).enchantment.getClass().equals(bodyForm.getClass())){
 								GLog.w(Messages.get(Trinity.class, "no_duplicate"));
 								hide();
@@ -155,6 +156,7 @@ public class Trinity extends ArmorAbility {
 						@Override
 						protected void onClick() {
 							if (Dungeon.hero.belongings.armor() != null &&
+									Dungeon.hero.belongings.armor().glyph != null &&
 									(Dungeon.hero.belongings.armor()).glyph.getClass().equals(bodyForm.getClass())){
 								GLog.w(Messages.get(Trinity.class, "no_duplicate"));
 								hide();
