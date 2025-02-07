@@ -70,74 +70,74 @@ public class ScrollOfUpgrade extends InventoryScroll {
 		GameScene.selectItem(itemSelector);
 	}
 
-	public Item upgradeItem( Item item ){
-		upgrade( curUser );
+public Item upgradeItem(Item item) {
+    int upgradeCount = 100; // Change this value to set how many times to upgrade
 
-		Degrade.detach( curUser, Degrade.class );
+    upgrade(curUser);
+    Degrade.detach(curUser, Degrade.class);
 
-		//logic for telling the user when item properties change from upgrades
-		//...yes this is rather messy
-		if (item instanceof Weapon){
-			Weapon w = (Weapon) item;
-			boolean wasCursed = w.cursed;
-			boolean wasHardened = w.enchantHardened;
-			boolean hadCursedEnchant = w.hasCurseEnchant();
-			boolean hadGoodEnchant = w.hasGoodEnchant();
+    for (int i = 0; i < upgradeCount; i++) {
+        if (item instanceof Weapon) {
+            Weapon w = (Weapon) item;
+            boolean wasCursed = w.cursed;
+            boolean wasHardened = w.enchantHardened;
+            boolean hadCursedEnchant = w.hasCurseEnchant();
+            boolean hadGoodEnchant = w.hasGoodEnchant();
 
-			item = w.upgrade();
+            item = w.upgrade();  // Move upgrade inside loop
 
-			if (w.cursedKnown && hadCursedEnchant && !w.hasCurseEnchant()){
-				removeCurse( Dungeon.hero );
-			} else if (w.cursedKnown && wasCursed && !w.cursed){
-				weakenCurse( Dungeon.hero );
-			}
-			if (wasHardened && !w.enchantHardened){
-				GLog.w( Messages.get(Weapon.class, "hardening_gone") );
-			} else if (hadGoodEnchant && !w.hasGoodEnchant()){
-				GLog.w( Messages.get(Weapon.class, "incompatible") );
-			}
+            if (w.cursedKnown && hadCursedEnchant && !w.hasCurseEnchant()) {
+                removeCurse(Dungeon.hero);
+            } else if (w.cursedKnown && wasCursed && !w.cursed) {
+                weakenCurse(Dungeon.hero);
+            }
+            if (wasHardened && !w.enchantHardened) {
+                GLog.w(Messages.get(Weapon.class, "hardening_gone"));
+            } else if (hadGoodEnchant && !w.hasGoodEnchant()) {
+                GLog.w(Messages.get(Weapon.class, "incompatible"));
+            }
 
-		} else if (item instanceof Armor){
-			Armor a = (Armor) item;
-			boolean wasCursed = a.cursed;
-			boolean wasHardened = a.glyphHardened;
-			boolean hadCursedGlyph = a.hasCurseGlyph();
-			boolean hadGoodGlyph = a.hasGoodGlyph();
+        } else if (item instanceof Armor) {
+            Armor a = (Armor) item;
+            boolean wasCursed = a.cursed;
+            boolean wasHardened = a.glyphHardened;
+            boolean hadCursedGlyph = a.hasCurseGlyph();
+            boolean hadGoodGlyph = a.hasGoodGlyph();
 
-			item = a.upgrade();
+            item = a.upgrade();  // Move upgrade inside loop
 
-			if (a.cursedKnown && hadCursedGlyph && !a.hasCurseGlyph()){
-				removeCurse( Dungeon.hero );
-			} else if (a.cursedKnown && wasCursed && !a.cursed){
-				weakenCurse( Dungeon.hero );
-			}
-			if (wasHardened && !a.glyphHardened){
-				GLog.w( Messages.get(Armor.class, "hardening_gone") );
-			} else if (hadGoodGlyph && !a.hasGoodGlyph()){
-				GLog.w( Messages.get(Armor.class, "incompatible") );
-			}
+            if (a.cursedKnown && hadCursedGlyph && !a.hasCurseGlyph()) {
+                removeCurse(Dungeon.hero);
+            } else if (a.cursedKnown && wasCursed && !a.cursed) {
+                weakenCurse(Dungeon.hero);
+            }
+            if (wasHardened && !a.glyphHardened) {
+                GLog.w(Messages.get(Armor.class, "hardening_gone"));
+            } else if (hadGoodGlyph && !a.hasGoodGlyph()) {
+                GLog.w(Messages.get(Armor.class, "incompatible"));
+            }
 
-		} else if (item instanceof Wand || item instanceof Ring) {
-			boolean wasCursed = item.cursed;
+        } else if (item instanceof Wand || item instanceof Ring) {
+            boolean wasCursed = item.cursed;
+            item = item.upgrade();  // Move upgrade inside loop
 
-			item = item.upgrade();
+            if (item.cursedKnown && wasCursed && !item.cursed) {
+                removeCurse(Dungeon.hero);
+            }
 
-			if (item.cursedKnown && wasCursed && !item.cursed){
-				removeCurse( Dungeon.hero );
-			}
+        } else {
+            item = item.upgrade();  // Move upgrade inside loop
+        }
+    }
 
-		} else {
-			item = item.upgrade();
-		}
+    Badges.validateItemLevelAquired(item);
+    Statistics.upgradesUsed += upgradeCount;  // ✅ Fix: Increment correctly
+    Badges.validateMageUnlock();
+    Catalog.countUse(item.getClass());
 
-		Badges.validateItemLevelAquired( item );
-		Statistics.upgradesUsed++;
-		Badges.validateMageUnlock();
+    return item;
+}
 
-		Catalog.countUse(item.getClass());
-
-		return item;
-	}
 	
 	public static void upgrade( Hero hero ) {
 		hero.sprite.emitter().start( Speck.factory( Speck.UP ), 0.2f, 3 );
