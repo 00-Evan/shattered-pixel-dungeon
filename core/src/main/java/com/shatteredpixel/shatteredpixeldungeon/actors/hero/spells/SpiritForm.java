@@ -209,14 +209,18 @@ public class SpiritForm extends ClericSpell {
 
 		} else if (effect instanceof EtherealChains){
 			GameScene.selectCell(((EtherealChains) effect).caster);
-			QuickSlotButton.useTargeting(Dungeon.quickslot.getSlot(armor));
+			if (Dungeon.quickslot.contains(armor)) {
+				QuickSlotButton.useTargeting(Dungeon.quickslot.getSlot(armor));
+			}
 
 		} else if (effect instanceof HornOfPlenty){
 			((HornOfPlenty) effect).doEatEffect(Dungeon.hero, 1);
 
 		} else if (effect instanceof MasterThievesArmband){
 			GameScene.selectCell(((MasterThievesArmband) effect).targeter);
-			QuickSlotButton.useTargeting(Dungeon.quickslot.getSlot(armor));
+			if (Dungeon.quickslot.contains(armor)) {
+				QuickSlotButton.useTargeting(Dungeon.quickslot.getSlot(armor));
+			}
 
 		} else if (effect instanceof SandalsOfNature){
 			((SandalsOfNature) effect).curSeedEffect = Random.oneOf(
@@ -225,7 +229,9 @@ public class SpiritForm extends ClericSpell {
 			);
 
 			GameScene.selectCell(((SandalsOfNature) effect).cellSelector);
-			QuickSlotButton.useTargeting(Dungeon.quickslot.getSlot(armor));
+			if (Dungeon.quickslot.contains(armor)) {
+				QuickSlotButton.useTargeting(Dungeon.quickslot.getSlot(armor));
+			}
 
 		} else if (effect instanceof TalismanOfForesight){
 			GameScene.selectCell(((TalismanOfForesight) effect).scry);
