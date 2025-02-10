@@ -389,7 +389,6 @@ public class Ring extends KindofMisc {
 				&& target.buff(SpiritForm.SpiritFormBuff.class) != null
 				&& target.buff(SpiritForm.SpiritFormBuff.class).ring() != null
 				&& target.buff(SpiritForm.SpiritFormBuff.class).ring().buffClass == type){
-			//TODO this works for all rings atm!
 			bonus += target.buff(SpiritForm.SpiritFormBuff.class).ring().soloBuffedBonus();
 		}
 		return bonus;
