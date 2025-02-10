@@ -68,6 +68,32 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-2.6", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**-** Updated Translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by BETA:**\n" +
+				"**-** Uncommon crashes when using Trinity's spirit form\n" +
+				"**-** Tipped darts not being selectable with Trinity's body form\n" +
+				"**-** Trinity's body form giving enchantment effects to thrown weapons\n" +
+				"**-** Projecting enchant not working with Trinity\n" +
+				"**-** Magic immune effect working inconsistently with Trinity's magical item effects (they should be blocked)\n" +
+				"**-** Ring of Wealth not properly tracking bonus drops when used with Trinity\n" +
+				"**-** iOS launch screen using the old title graphic (actually this time for real, I hope)\n" +
+				"**-** Minor textual errors\n\n" +
+				"**Existed Prior to BETA:**\n" +
+				"**-** Various minor UI errors when holding down inventory buttons just before moving\n" +
+				"**-** Minor visual errors"));
+
 		changes = new ChangeInfo("BETA-2.5", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
