@@ -332,6 +332,11 @@ public class Trinity extends ArmorAbility {
 						discoveredClasses.add(cls);
 					}
 				}
+				for (Class<?> cls : Catalog.TIPPED_DARTS.items()) {
+					if (Statistics.itemTypesDiscovered.contains(cls)) {
+						discoveredClasses.add(cls);
+					}
+				}
 			} else if (spell == SpiritForm.INSTANCE){
 				for (Class<?> cls : Catalog.RINGS.items()) {
 					if (Statistics.itemTypesDiscovered.contains(cls)) {
