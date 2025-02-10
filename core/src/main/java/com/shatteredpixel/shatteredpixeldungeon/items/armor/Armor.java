@@ -693,6 +693,10 @@ public class Armor extends EquipableItem {
 				&& owner.buff(HolyWard.HolyArmBuff.class) != null
 				&& ((Hero) owner).subClass != HeroSubClass.PALADIN){
 			return false;
+		} else if (owner.buff(BodyForm.BodyFormBuff.class) != null
+				&& owner.buff(BodyForm.BodyFormBuff.class).glyph() != null
+				&& owner.buff(BodyForm.BodyFormBuff.class).glyph().getClass().equals(type)){
+			return true;
 		} else {
 			return glyph.getClass() == type;
 		}

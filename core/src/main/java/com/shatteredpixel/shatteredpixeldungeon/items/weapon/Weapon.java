@@ -457,8 +457,12 @@ abstract public class Weapon extends KindOfWeapon {
 				&& owner instanceof Hero
 				&& isEquipped((Hero) owner)
 				&& owner.buff(HolyWeapon.HolyWepBuff.class) != null
-				&& ((Hero) owner).subClass != HeroSubClass.PALADIN){
+				&& ((Hero) owner).subClass != HeroSubClass.PALADIN) {
 			return false;
+		} else if (owner.buff(BodyForm.BodyFormBuff.class) != null
+				&& owner.buff(BodyForm.BodyFormBuff.class).enchant() != null
+				&& owner.buff(BodyForm.BodyFormBuff.class).enchant().getClass().equals(type)){
+			return true;
 		} else {
 			return enchantment.getClass() == type;
 		}
