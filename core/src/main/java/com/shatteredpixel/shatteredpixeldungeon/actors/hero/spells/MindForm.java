@@ -54,6 +54,11 @@ public class MindForm extends ClericSpell {
 	}
 
 	@Override
+	public String desc() {
+		return Messages.get(this, "desc", itemLevel()) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
+	}
+
+	@Override
 	public float chargeUse(Hero hero) {
 		return 3;
 	}
