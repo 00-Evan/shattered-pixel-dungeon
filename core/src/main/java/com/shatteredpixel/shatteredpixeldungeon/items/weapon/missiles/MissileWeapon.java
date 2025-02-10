@@ -301,16 +301,16 @@ abstract public class MissileWeapon extends Weapon {
 	
 	protected void rangedHit( Char enemy, int cell ){
 		decrementDurability();
-		if (durability > 0){
+		if (durability > 0 && !spawnedForEffect){
 			//attempt to stick the missile weapon to the enemy, just drop it if we can't.
-			if (sticky && !spawnedForEffect && enemy != null && enemy.isActive() && enemy.alignment != Char.Alignment.ALLY){
+			if (sticky && enemy != null && enemy.isActive() && enemy.alignment != Char.Alignment.ALLY){
 				PinCushion p = Buff.affect(enemy, PinCushion.class);
 				if (p.target == enemy){
 					p.stick(this);
 					return;
 				}
 			}
-			if (!spawnedForEffect) Dungeon.level.drop( this, cell ).sprite.drop();
+			Dungeon.level.drop( this, cell ).sprite.drop();
 		}
 	}
 	
