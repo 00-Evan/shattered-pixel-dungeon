@@ -68,9 +68,14 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("BETA-2.7", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by BETA:**\n" +
+				"**-** Frequent crashes if using Ring of Wealth, caused by beta-2.6 adjustment (Sorry! =S)"));
 
 		changes = new ChangeInfo("BETA-2.6", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
