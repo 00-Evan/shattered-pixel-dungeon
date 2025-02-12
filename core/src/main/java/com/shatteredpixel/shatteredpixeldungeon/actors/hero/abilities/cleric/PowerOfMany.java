@@ -36,12 +36,12 @@ public class PowerOfMany extends ArmorAbility {
 
 	@Override
 	public int icon() {
-		return HeroIcon.CLERIC3;
+		return HeroIcon.POWER_OF_MANY;
 	}
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.CLERIC_A3_1, Talent.CLERIC_A3_2, Talent.CLERIC_A3_3};
+		return new Talent[]{Talent.BEAMING_RAY, Talent.LIFE_LINK, Talent.STASIS, Talent.HEROIC_ENERGY};
 	}
 
 }

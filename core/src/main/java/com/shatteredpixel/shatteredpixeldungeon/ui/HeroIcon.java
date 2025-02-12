@@ -69,7 +69,7 @@ public class HeroIcon extends Image {
 	public static final int FEINT           = 30;
 	public static final int ASCENDED_FORM   = 31;
 	public static final int TRINITY         = 32;
-	public static final int CLERIC3         = 33;
+	public static final int POWER_OF_MANY   = 33;
 	public static final int RATMOGRIFY      = 34;
 
 	//cleric spells
@@ -97,6 +97,9 @@ public class HeroIcon extends Image {
 	public static final int BODY_FORM       = 61;
 	public static final int MIND_FORM       = 62;
 	public static final int SPIRIT_FORM     = 63;
+	public static final int BEAMING_RAY     = 64;
+	public static final int LIFE_LINK       = 65;
+	public static final int STASIS          = 66;
 
 	//all cleric spells have a separate icon with no background for the action indicator
 	public static final int SPELL_ACTION_OFFSET      = 32;

@@ -188,8 +188,8 @@ public enum Talent {
 	DIVINE_INTERVENTION(177, 4), JUDGEMENT(178, 4), FLASH(179, 4),
 	//Trinity T4
 	BODY_FORM(180, 4), MIND_FORM(181, 4), SPIRIT_FORM(182, 4),
-	//Cleric A3 T4
-	CLERIC_A3_1(183, 4), CLERIC_A3_2(184, 4), CLERIC_A3_3(185, 4),
+	//Power of Many T4
+	BEAMING_RAY(183, 4), LIFE_LINK(184, 4), STASIS(185, 4),
 
 	//universal T4
 	HEROIC_ENERGY(26, 4), //See icon() and title() for special logic for this one
