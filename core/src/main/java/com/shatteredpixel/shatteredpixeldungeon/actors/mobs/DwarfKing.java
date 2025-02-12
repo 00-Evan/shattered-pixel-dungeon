@@ -553,7 +553,7 @@ public class DwarfKing extends Mob {
 			h.destroy();
 		}
 
-		if (Dungeon.level.solid[pos]){
+		if (pos == CityBossLevel.throne){
 			Dungeon.level.drop(new KingsCrown(), pos + Dungeon.level.width()).sprite.drop(pos);
 		} else {
 			Dungeon.level.drop(new KingsCrown(), pos).sprite.drop();
