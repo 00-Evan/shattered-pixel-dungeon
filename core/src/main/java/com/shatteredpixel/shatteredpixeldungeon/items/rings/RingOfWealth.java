@@ -113,13 +113,15 @@ public class RingOfWealth extends Ring {
 
 		if (bonus <= 0) return null;
 
-		CounterBuff triesToDrop = Buff.affect(target, TriesToDropTracker.class);
-		if (triesToDrop.count() == 0){
+		CounterBuff triesToDrop = target.buff(TriesToDropTracker.class);
+		if (triesToDrop == null){
+			triesToDrop = Buff.affect(target, TriesToDropTracker.class);
 			triesToDrop.countUp( Random.NormalIntRange(0, 20) );
 		}
 
-		CounterBuff dropsToEquip = Buff.affect(target, DropsToEquipTracker.class);
-		if (dropsToEquip.count() == 0){
+		CounterBuff dropsToEquip = target.buff(DropsToEquipTracker.class);
+		if (dropsToEquip == null){
+			dropsToEquip = Buff.affect(target, DropsToEquipTracker.class);
 			dropsToEquip.countUp( Random.NormalIntRange(5, 10) );
 		}
 
