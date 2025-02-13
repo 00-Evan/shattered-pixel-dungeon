@@ -56,9 +56,9 @@ public class Stone extends Armor.Glyph {
 		return damage;
 	}
 	
-	private boolean testing = false;
+	private static boolean testing = false;
 	
-	public boolean testingEvasion(){
+	public static boolean testingEvasion(){
 		return testing;
 	}
 
