@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.PowerOfMany;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.PrismaticImage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -41,6 +42,8 @@ public class PrismaticGuard extends Buff {
 	}
 	
 	private float HP;
+
+	private float powerOfManyTurns = 0;
 	
 	@Override
 	public boolean act() {
@@ -72,6 +75,9 @@ public class PrismaticGuard extends Buff {
 			if (bestPos != -1) {
 				PrismaticImage pris = new PrismaticImage();
 				pris.duplicate(hero, (int)Math.floor(HP) );
+				if (powerOfManyTurns > 0){
+					Buff.affect(pris, PowerOfMany.PowerBuff.class, powerOfManyTurns);
+				}
 				pris.state = pris.HUNTING;
 				GameScene.add(pris, 1);
 				ScrollOfTeleportation.appear(pris, bestPos);
@@ -86,9 +92,15 @@ public class PrismaticGuard extends Buff {
 			spend(TICK);
 		}
 		
-		LockedFloor lock = target.buff(LockedFloor.class);
 		if (HP < maxHP() && Regeneration.regenOn()){
 			HP += 0.1f;
+		}
+		if (powerOfManyTurns > 0){
+			powerOfManyTurns--;
+			if (powerOfManyTurns <= 0){
+				powerOfManyTurns = 0;
+				BuffIndicator.refreshHero();
+			}
 		}
 		
 		return true;
@@ -96,6 +108,16 @@ public class PrismaticGuard extends Buff {
 	
 	public void set( int HP ){
 		this.HP = HP;
+		powerOfManyTurns = 0;
+	}
+
+	public void set( PrismaticImage img){
+		this.HP = img.HP;
+		if (img.buff(PowerOfMany.PowerBuff.class) != null){
+			powerOfManyTurns = img.buff(PowerOfMany.PowerBuff.class).cooldown()+1;
+		} else {
+			powerOfManyTurns = 0;
+		}
 	}
 	
 	public int maxHP(){
@@ -105,6 +127,10 @@ public class PrismaticGuard extends Buff {
 	public static int maxHP( Hero hero ){
 		return 10 + (int)Math.floor(hero.lvl * 2.5f); //half of hero's HP
 	}
+
+	public boolean isEmpowered(){
+		return powerOfManyTurns > 0;
+	}
 	
 	@Override
 	public int icon() {
@@ -113,7 +139,11 @@ public class PrismaticGuard extends Buff {
 	
 	@Override
 	public void tintIcon(Image icon) {
-		icon.hardlight(1f, 1f, 2f);
+		if (isEmpowered()){
+			icon.hardlight(3f, 3f, 2f);
+		} else {
+			icon.hardlight(1f, 1f, 2f);
+		}
 	}
 
 	@Override
@@ -128,20 +158,27 @@ public class PrismaticGuard extends Buff {
 	
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", (int)HP, maxHP());
+		String desc = Messages.get(this, "desc", (int)HP, maxHP());
+		if (isEmpowered()){
+			desc += "\n\n" + Messages.get(this, "desc_many", (int)powerOfManyTurns);
+		}
+		return desc;
 	}
 	
 	private static final String HEALTH = "hp";
+	private static final String POWER_TURNS = "power_turns";
 	
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
 		bundle.put(HEALTH, HP);
+		bundle.put(POWER_TURNS, powerOfManyTurns);
 	}
 	
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		HP = bundle.getFloat(HEALTH);
+		powerOfManyTurns = bundle.getFloat(POWER_TURNS);
 	}
 }

@@ -51,6 +51,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.PowerOfMany;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Feint;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.ShadowClone;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ClericSpell;
@@ -249,7 +250,15 @@ public abstract class Mob extends Char {
 			return true;
 		}
 
-		return state.act( enemyInFOV, justAlerted );
+		boolean result = state.act( enemyInFOV, justAlerted );
+
+		//for updating hero FOV
+		if (buff(PowerOfMany.PowerBuff.class) != null){
+			Dungeon.level.updateFieldOfView( this, fieldOfView );
+			GameScene.updateFog(pos, viewDistance+(int)Math.ceil(speed()));
+		}
+
+		return result;
 	}
 	
 	//FIXME this is sort of a band-aid correction for allies needing more intelligent behaviour

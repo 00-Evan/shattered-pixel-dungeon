@@ -77,6 +77,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.PowerOfMany;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Challenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.DeathMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure;
@@ -425,6 +426,10 @@ public abstract class Char extends Actor {
 				dmg *= 1.5f;
 			}
 
+			if (buff( PowerOfMany.PowerBuff.class) != null){
+				dmg *= 1.25f;
+			}
+
 			for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
 				dmg *= buff.meleeDamageFactor();
 			}
@@ -449,6 +454,10 @@ public abstract class Char extends Actor {
 					&& Dungeon.level.distance(enemy.pos, Dungeon.hero.pos) <= 2
 					&& Dungeon.hero.buff(AuraOfProtection.AuraBuff.class) != null){
 				dmg *= 0.925f - 0.075f*Dungeon.hero.pointsInTalent(Talent.AURA_OF_PROTECTION);
+			}
+
+			if (enemy.buff(PowerOfMany.PowerBuff.class) != null){
+				dmg *= 0.75f;
 			}
 
 			if (enemy.buff(MonkEnergy.MonkAbility.Meditate.MeditateResistance.class) != null){
@@ -777,12 +786,18 @@ public abstract class Char extends Actor {
 			}
 		}
 
+		//temporarily assign to a float to avoid rounding a bunch
+		float damage = dmg;
+
 		//if dmg is from a character we already reduced it in defenseProc
 		if (!(src instanceof Char)) {
 			if (Dungeon.hero.alignment == alignment
 					&& Dungeon.level.distance(pos, Dungeon.hero.pos) <= 2
 					&& Dungeon.hero.buff(AuraOfProtection.AuraBuff.class) != null) {
-				dmg *= 0.925f - 0.075f*Dungeon.hero.pointsInTalent(Talent.AURA_OF_PROTECTION);
+				damage *= 0.925f - 0.075f*Dungeon.hero.pointsInTalent(Talent.AURA_OF_PROTECTION);
+			}
+			if (buff(PowerOfMany.PowerBuff.class) != null){
+				damage *= 0.75f;
 			}
 		}
 
@@ -805,10 +820,10 @@ public abstract class Char extends Actor {
 			Buff.detach(this, MagicalSleep.class);
 		}
 		if (this.buff(Doom.class) != null && !isImmune(Doom.class)){
-			dmg *= 1.67f;
+			damage *= 1.67f;
 		}
 		if (alignment != Alignment.ALLY && this.buff(DeathMark.DeathMarkTracker.class) != null){
-			dmg *= 1.25f;
+			damage *= 1.25f;
 		}
 
 		if (buff(Sickle.HarvestBleedTracker.class) != null){
@@ -827,15 +842,19 @@ public abstract class Char extends Actor {
 			}
 		}
 
-		for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
-			dmg = (int) Math.ceil(dmg * buff.damageTakenFactor());
-		}
-
 		Class<?> srcClass = src.getClass();
 		if (isImmune( srcClass )) {
-			dmg = 0;
+			damage = 0;
 		} else {
-			dmg = Math.round( dmg * resist( srcClass ));
+			damage *= resist( srcClass );
+		}
+
+		dmg = Math.round(damage);
+
+		//we ceil these specifically to favor the player vs. champ dmg reduction
+		// most important vs. giant champions in the earlygame
+		for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
+			dmg = (int) Math.ceil(dmg * buff.damageTakenFactor());
 		}
 		
 		//TODO improve this when I have proper damage source logic
