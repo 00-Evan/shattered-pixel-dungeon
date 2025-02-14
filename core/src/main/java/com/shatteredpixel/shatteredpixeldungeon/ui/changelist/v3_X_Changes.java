@@ -68,7 +68,25 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("BETA-2.7", false, null);
+		changes = new ChangeInfo("BETA-2.8", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**-** Partially implemented the Power of Many armor ability, still not selectable however.\n\n" +
+				"**-** Updated Translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by BETA:**\n" +
+				"**-** Crashes when using glyph of stone with Trinity\n" +
+				"**-** Ring of Wealth not giving rare equipment drops\n" +
+				"**-** Quick-spell still being usable while magic immune\n" +
+				"**-** Wall of Light placing dwarf king's crown into solid terrain in specific cases\n\n" +
+				"**Existed prior to BETA:**\n" +
+				"**-** Crashes when aqua brew is dropped down chasms"));
+
+		changes = new ChangeInfo("BETA-2.6 & 2.7", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
@@ -76,10 +94,6 @@ public class v3_X_Changes {
 				"Fixed the following bugs:\n" +
 				"**Caused by BETA:**\n" +
 				"**-** Frequent crashes if using Ring of Wealth, caused by beta-2.6 adjustment (Sorry! =S)"));
-
-		changes = new ChangeInfo("BETA-2.6", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"**-** Updated Translations"));
@@ -168,7 +182,7 @@ public class v3_X_Changes {
 				"**-** Smite dealing damage to freshly corrupted enemies\n" +
 				"**-** Rare crash errors\n" +
 				"**-** Minor text errors\n\n" +
-				"**Existed Prior to BETA:**" +
+				"**Existed Prior to BETA:**\n" +
 				"**-** Rare cases where multiple ascension wins could be recorded for one run\n" +
 				"**-** Unstable spell never triggering scroll effects that could apply in or out of combat\n" +
 				"**-** Cursed wand effects potentially applying levitation to immovable characters\n" +
