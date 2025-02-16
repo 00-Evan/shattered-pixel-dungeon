@@ -184,6 +184,10 @@ public abstract class ClericSpell {
 				spells.add(SpiritForm.INSTANCE);
 			}
 
+			if (cleric.hasTalent(Talent.BEAMING_RAY)){
+				spells.add(BeamingRay.INSTANCE);
+			}
+
 		}
 
 		return spells;
@@ -212,6 +216,10 @@ public abstract class ClericSpell {
 		spells.add(DivineIntervention.INSTANCE);
 		spells.add(Judgement.INSTANCE);
 		spells.add(Flash.INSTANCE);
+		spells.add(BodyForm.INSTANCE);
+		spells.add(MindForm.INSTANCE);
+		spells.add(SpiritForm.INSTANCE);
+		spells.add(BeamingRay.INSTANCE);
 		return spells;
 	}
 }

@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.BeamingRay;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.DirectableAlly;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -88,6 +89,10 @@ public class PowerOfMany extends ArmorAbility {
 		} else {
 			return null;
 		}
+	}
+
+	public boolean useTargeting(){
+		return false;
 	}
 
 	@Override
@@ -167,7 +172,7 @@ public class PowerOfMany extends ArmorAbility {
 		return new Talent[]{Talent.BEAMING_RAY, Talent.LIFE_LINK, Talent.STASIS, Talent.HEROIC_ENERGY};
 	}
 
-	private static Char getPoweredAlly(){
+	public static Char getPoweredAlly(){
 		for (Char ch : Actor.chars()){
 			if (ch.buff(PowerBuff.class) != null){
 				return ch;
@@ -199,6 +204,15 @@ public class PowerOfMany extends ArmorAbility {
 		public void fx(boolean on) {
 			if (on) target.sprite.add(CharSprite.State.GLOWING);
 			else    target.sprite.remove(CharSprite.State.GLOWING);
+		}
+
+		@Override
+		public boolean act() {
+			if (target.buff(BeamingRay.BeamingRayBoost.class) != null){
+				spend(TICK);
+				return true;
+			}
+			return super.act();
 		}
 
 		@Override

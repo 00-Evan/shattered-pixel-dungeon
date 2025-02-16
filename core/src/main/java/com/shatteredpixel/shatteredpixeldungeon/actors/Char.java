@@ -82,6 +82,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Ch
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.DeathMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.AuraOfProtection;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.BeamingRay;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.GuidingLight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ShieldOfLight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Brute;
@@ -427,7 +428,12 @@ public abstract class Char extends Actor {
 			}
 
 			if (buff( PowerOfMany.PowerBuff.class) != null){
-				dmg *= 1.25f;
+				if (buff( BeamingRay.BeamingRayBoost.class) != null
+					&& buff( BeamingRay.BeamingRayBoost.class).object == enemy.id()){
+					dmg *= 1.3f + 0.05f*Dungeon.hero.pointsInTalent(Talent.BEAMING_RAY);
+				} else {
+					dmg *= 1.25f;
+				}
 			}
 
 			for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
