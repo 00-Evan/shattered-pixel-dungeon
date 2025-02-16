@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.PowerOfMany;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Trinity;
 import com.shatteredpixel.shatteredpixeldungeon.items.KingsCrown;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
@@ -38,7 +37,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.watabou.utils.DeviceCompat;
 
 public class WndChooseAbility extends Window {
 
@@ -103,11 +101,6 @@ public class WndChooseAbility extends Window {
 			abilityButton.setSize(WIDTH-20, abilityButton.reqHeight()+2);
 			abilityButton.setRect(0, pos, WIDTH-20, abilityButton.reqHeight()+2);
 			add(abilityButton);
-
-			//TODO CLERIC power of many isn't playable atm
-			if (!DeviceCompat.isDebug() && ability instanceof PowerOfMany){
-				abilityButton.enable(false);
-			}
 
 			IconButton abilityInfo = new IconButton(Icons.get(Icons.INFO)){
 				@Override
