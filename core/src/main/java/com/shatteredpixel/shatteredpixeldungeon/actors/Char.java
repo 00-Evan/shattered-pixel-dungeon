@@ -84,6 +84,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.En
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.AuraOfProtection;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.BeamingRay;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.GuidingLight;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.LifeLinkSpell;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ShieldOfLight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Brute;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CrystalSpire;
@@ -462,10 +463,6 @@ public abstract class Char extends Actor {
 				dmg *= 0.925f - 0.075f*Dungeon.hero.pointsInTalent(Talent.AURA_OF_PROTECTION);
 			}
 
-			if (enemy.buff(PowerOfMany.PowerBuff.class) != null){
-				dmg *= 0.75f;
-			}
-
 			if (enemy.buff(MonkEnergy.MonkAbility.Meditate.MeditateResistance.class) != null){
 				dmg *= 0.2f;
 			}
@@ -802,7 +799,12 @@ public abstract class Char extends Actor {
 					&& Dungeon.hero.buff(AuraOfProtection.AuraBuff.class) != null) {
 				damage *= 0.925f - 0.075f*Dungeon.hero.pointsInTalent(Talent.AURA_OF_PROTECTION);
 			}
-			if (buff(PowerOfMany.PowerBuff.class) != null){
+		}
+
+		if (buff(PowerOfMany.PowerBuff.class) != null){
+			if (buff(LifeLinkSpell.LifeLinkSpellBuff.class) != null){
+				damage *= 0.70f - 0.05f*Dungeon.hero.pointsInTalent(Talent.LIFE_LINK);
+			} else {
 				damage *= 0.75f;
 			}
 		}

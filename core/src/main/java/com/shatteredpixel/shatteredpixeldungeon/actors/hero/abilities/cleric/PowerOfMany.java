@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.BeamingRay;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.LifeLinkSpell;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.DirectableAlly;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -208,7 +209,8 @@ public class PowerOfMany extends ArmorAbility {
 
 		@Override
 		public boolean act() {
-			if (target.buff(BeamingRay.BeamingRayBoost.class) != null){
+			if (target.buff(BeamingRay.BeamingRayBoost.class) != null
+				|| target.buff(LifeLinkSpell.LifeLinkSpellBuff.class) != null){
 				spend(TICK);
 				return true;
 			}
