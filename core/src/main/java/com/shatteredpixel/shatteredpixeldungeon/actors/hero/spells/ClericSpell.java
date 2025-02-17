@@ -197,6 +197,9 @@ public abstract class ClericSpell {
 			if (cleric.hasTalent(Talent.LIFE_LINK)){
 				spells.add(LifeLinkSpell.INSTANCE);
 			}
+			if (cleric.hasTalent(Talent.STASIS)){
+				spells.add(Stasis.INSTANCE);
+			}
 
 		}
 
@@ -231,6 +234,7 @@ public abstract class ClericSpell {
 		spells.add(SpiritForm.INSTANCE);
 		spells.add(BeamingRay.INSTANCE);
 		spells.add(LifeLinkSpell.INSTANCE);
+		spells.add(Stasis.INSTANCE);
 		return spells;
 	}
 }

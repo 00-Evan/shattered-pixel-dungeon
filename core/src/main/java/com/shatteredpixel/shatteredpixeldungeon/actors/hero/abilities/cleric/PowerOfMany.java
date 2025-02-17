@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.BeamingRay;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.LifeLinkSpell;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.Stasis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.DirectableAlly;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -110,6 +111,10 @@ public class PowerOfMany extends ArmorAbility {
 
 		if (hero.buff(WandOfLivingEarth.RockArmor.class) != null
 				&& hero.buff(WandOfLivingEarth.RockArmor.class).isEmpowered()){
+			allyExists = true;
+		}
+
+		if (hero.buff(Stasis.StasisBuff.class) != null){
 			allyExists = true;
 		}
 
