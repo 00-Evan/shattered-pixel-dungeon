@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.PowerOfMany;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
@@ -76,6 +77,13 @@ public class Cleanse extends ClericSpell {
 			if (Dungeon.level.heroFOV[mob.pos] && mob.alignment == Char.Alignment.ALLY) {
 				affected.add(mob);
 			}
+		}
+
+		Char ally = PowerOfMany.getPoweredAlly();
+		//hero is always affected, to just check for life linked ally
+		if (ally != null && ally.buff(LifeLinkSpell.LifeLinkSpellBuff.class) != null
+				&& !affected.contains(ally)){
+				affected.add(ally);
 		}
 
 		for (Char ch : affected) {

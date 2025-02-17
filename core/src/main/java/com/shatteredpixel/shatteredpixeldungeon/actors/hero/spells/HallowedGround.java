@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.PowerOfMany;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
@@ -53,6 +54,8 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BArray;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class HallowedGround extends TargetedClericSpell {
 
@@ -90,6 +93,8 @@ public class HallowedGround extends TargetedClericSpell {
 			return;
 		}
 
+		ArrayList<Char> affected = new ArrayList<>();
+
 		PathFinder.buildDistanceMap(target, BArray.not(Dungeon.level.solid, null), hero.pointsInTalent(Talent.HALLOWED_GROUND));
 		for (int i = 0; i < Dungeon.level.length(); i++){
 			if (PathFinder.distance[i] != Integer.MAX_VALUE){
@@ -104,27 +109,24 @@ public class HallowedGround extends TargetedClericSpell {
 
 				Char ch = Actor.findChar(i);
 				if (ch != null){
-					if (ch.alignment == Char.Alignment.ALLY){
-
-						if (ch == Dungeon.hero || ch.HP == ch.HT){
-							Buff.affect(ch, Barrier.class).incShield(10);
-							ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, "10", FloatingText.SHIELDING );
-						} else {
-							int barrier = 10 - (ch.HT - ch.HP);
-							barrier = Math.max(barrier, 0);
-							ch.HP += 10 - barrier;
-							ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(10-barrier), FloatingText.HEALING );
-							if (barrier > 0){
-								Buff.affect(ch, Barrier.class).incShield(barrier);
-								ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(barrier), FloatingText.SHIELDING );
-							}
-						}
-					} else if (!ch.flying) {
-						Buff.affect(ch, Roots.class, 1f);
-					}
+					affected.add(ch);
 				}
 			}
 		}
+
+		Char ally = PowerOfMany.getPoweredAlly();
+		if (ally != null && ally.buff(LifeLinkSpell.LifeLinkSpellBuff.class) != null){
+			if (affected.contains(hero) && !affected.contains(ally)){
+				affected.add(ally);
+			} else if (!affected.contains(hero) && affected.contains(ally)){
+				affected.add(hero);
+			}
+		}
+
+		for (Char ch : affected){
+			affectChar(ch);
+		}
+
 		//5 casts per hero level before furrowing
 		Buff.affect(hero, HallowedFurrowTracker.class).countUp(1);
 
@@ -134,6 +136,27 @@ public class HallowedGround extends TargetedClericSpell {
 
 		onSpellCast(tome, hero);
 
+	}
+
+	private void affectChar( Char ch ){
+		if (ch.alignment == Char.Alignment.ALLY){
+
+			if (ch == Dungeon.hero || ch.HP == ch.HT){
+				Buff.affect(ch, Barrier.class).incShield(10);
+				ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, "10", FloatingText.SHIELDING );
+			} else {
+				int barrier = 10 - (ch.HT - ch.HP);
+				barrier = Math.max(barrier, 0);
+				ch.HP += 10 - barrier;
+				ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(10-barrier), FloatingText.HEALING );
+				if (barrier > 0){
+					Buff.affect(ch, Barrier.class).incShield(barrier);
+					ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(barrier), FloatingText.SHIELDING );
+				}
+			}
+		} else if (!ch.flying) {
+			Buff.affect(ch, Roots.class, 1f);
+		}
 	}
 
 	public String desc(){
@@ -149,6 +172,8 @@ public class HallowedGround extends TargetedClericSpell {
 			int cell;
 
 			Fire fire = (Fire)Dungeon.level.blobs.get( Fire.class );
+
+			ArrayList<Char> affected = new ArrayList<>();
 
 			// on avg, hallowed ground produces 9/17/25 tiles of grass, 100/67/50% of total tiles
 			int chance = 10 + 10*Dungeon.hero.pointsInTalent(Talent.HALLOWED_GROUND);
@@ -184,17 +209,7 @@ public class HallowedGround extends TargetedClericSpell {
 
 						Char ch = Actor.findChar(cell);
 						if (ch != null){
-							if (ch.alignment == Char.Alignment.ALLY){
-								if (ch == Dungeon.hero || ch.HP == ch.HT){
-									Buff.affect(ch, Barrier.class).incShield(1);
-									ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, "1", FloatingText.SHIELDING );
-								} else {
-									ch.HP++;
-									ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, "1", FloatingText.HEALING );
-								}
-							} else if (!ch.flying && ch.buff(Roots.class) == null){
-								Buff.prolong(ch, Cripple.class, 1f);
-							}
+							affected.add(ch);
 						}
 
 						off[cell] = cur[cell] - 1;
@@ -203,6 +218,34 @@ public class HallowedGround extends TargetedClericSpell {
 						off[cell] = 0;
 					}
 				}
+			}
+
+			Char ally = PowerOfMany.getPoweredAlly();
+			if (ally != null && ally.buff(LifeLinkSpell.LifeLinkSpellBuff.class) != null){
+				if (affected.contains(Dungeon.hero) && !affected.contains(ally)){
+					affected.add(ally);
+				} else if (!affected.contains(Dungeon.hero) && affected.contains(ally)){
+					affected.add(Dungeon.hero);
+				}
+			}
+
+			for (Char ch :affected){
+				affectChar(ch);
+			}
+
+		}
+
+		private void affectChar( Char ch ){
+			if (ch.alignment == Char.Alignment.ALLY){
+				if (ch == Dungeon.hero || ch.HP == ch.HT){
+					Buff.affect(ch, Barrier.class).incShield(1);
+					ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, "1", FloatingText.SHIELDING );
+				} else {
+					ch.HP++;
+					ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, "1", FloatingText.HEALING );
+				}
+			} else if (!ch.flying && ch.buff(Roots.class) == null){
+				Buff.prolong(ch, Cripple.class, 1f);
 			}
 		}
 

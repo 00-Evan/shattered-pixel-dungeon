@@ -23,10 +23,13 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.PowerOfMany;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -55,14 +58,21 @@ public class DivineSense extends ClericSpell {
 
 	@Override
 	public void onCast(HolyTome tome, Hero hero) {
-		Buff.affect(hero, DivineSenseTracker.class, 30f);
+		Buff.prolong(hero, DivineSenseTracker.class, 30f);
 		Dungeon.observe();
 
 		Sample.INSTANCE.play(Assets.Sounds.READ);
 
 		hero.spend( 1f );
 		hero.busy();
+		SpellSprite.show(hero, SpellSprite.VISION);
 		hero.sprite.operate(hero.pos);
+
+		Char ally = PowerOfMany.getPoweredAlly();
+		if (ally != null && ally.buff(LifeLinkSpell.LifeLinkSpellBuff.class) != null){
+			Buff.prolong(ally, DivineSenseTracker.class, 30f);
+			SpellSprite.show(ally, SpellSprite.VISION);
+		}
 
 		onSpellCast(tome, hero);
 	}

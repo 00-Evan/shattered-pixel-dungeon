@@ -458,8 +458,8 @@ public abstract class Char extends Actor {
 			}
 
 			if (Dungeon.hero.alignment == enemy.alignment
-					&& Dungeon.level.distance(enemy.pos, Dungeon.hero.pos) <= 2
-					&& Dungeon.hero.buff(AuraOfProtection.AuraBuff.class) != null){
+					&& Dungeon.hero.buff(AuraOfProtection.AuraBuff.class) != null
+					&& (Dungeon.level.distance(enemy.pos, Dungeon.hero.pos) <= 2 || enemy.buff(LifeLinkSpell.LifeLinkSpellBuff.class) != null)){
 				dmg *= 0.925f - 0.075f*Dungeon.hero.pointsInTalent(Talent.AURA_OF_PROTECTION);
 			}
 
@@ -699,8 +699,8 @@ public abstract class Char extends Actor {
 		// hero and pris images skip this as they already benefit from hero's armor glyph proc
 		if (!(this instanceof Hero || this instanceof PrismaticImage)) {
 			if (Dungeon.hero.alignment == alignment && Dungeon.hero.belongings.armor() != null
-					&& Dungeon.level.distance(pos, Dungeon.hero.pos) <= 2
-					&& Dungeon.hero.buff(AuraOfProtection.AuraBuff.class) != null) {
+					&& Dungeon.hero.buff(AuraOfProtection.AuraBuff.class) != null
+					&& (Dungeon.level.distance(pos, Dungeon.hero.pos) <= 2 || buff(LifeLinkSpell.LifeLinkSpellBuff.class) != null)) {
 				damage = Dungeon.hero.belongings.armor().proc( enemy, this, damage );
 			}
 		}
@@ -713,8 +713,8 @@ public abstract class Char extends Actor {
 	public int glyphLevel(Class<? extends Armor.Glyph> cls){
 		if (Dungeon.hero != null && Dungeon.level != null
 				&& this != Dungeon.hero && Dungeon.hero.alignment == alignment
-				&& Dungeon.level.distance(pos, Dungeon.hero.pos) <= 2
-				&& Dungeon.hero.buff(AuraOfProtection.AuraBuff.class) != null) {
+				&& Dungeon.hero.buff(AuraOfProtection.AuraBuff.class) != null
+				&& (Dungeon.level.distance(pos, Dungeon.hero.pos) <= 2 || buff(LifeLinkSpell.LifeLinkSpellBuff.class) != null)) {
 			return Dungeon.hero.glyphLevel(cls);
 		} else {
 			return -1;
@@ -795,8 +795,8 @@ public abstract class Char extends Actor {
 		//if dmg is from a character we already reduced it in defenseProc
 		if (!(src instanceof Char)) {
 			if (Dungeon.hero.alignment == alignment
-					&& Dungeon.level.distance(pos, Dungeon.hero.pos) <= 2
-					&& Dungeon.hero.buff(AuraOfProtection.AuraBuff.class) != null) {
+					&& Dungeon.hero.buff(AuraOfProtection.AuraBuff.class) != null
+					&& (Dungeon.level.distance(pos, Dungeon.hero.pos) <= 2 || buff(LifeLinkSpell.LifeLinkSpellBuff.class) != null)) {
 				damage *= 0.925f - 0.075f*Dungeon.hero.pointsInTalent(Talent.AURA_OF_PROTECTION);
 			}
 		}

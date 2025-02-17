@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.AuraOfProtection;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.BodyForm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.HolyWard;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.LifeLinkSpell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
@@ -464,8 +465,8 @@ public class Armor extends EquipableItem {
 				}
 				//so that this effect procs for allies using this armor via aura of protection
 				if (defender.alignment == Dungeon.hero.alignment
-						&& Dungeon.level.distance(defender.pos, Dungeon.hero.pos) <= 2
 						&& Dungeon.hero.buff(AuraOfProtection.AuraBuff.class) != null
+						&& (Dungeon.level.distance(defender.pos, Dungeon.hero.pos) <= 2 || defender.buff(LifeLinkSpell.LifeLinkSpellBuff.class) != null)
 						&& Dungeon.hero.buff(HolyWard.HolyArmBuff.class) != null) {
 					int blocking = Dungeon.hero.subClass == HeroSubClass.PALADIN ? 3 : 1;
 					damage -= Math.round(blocking * Glyph.genericProcChanceMultiplier(defender));
@@ -756,8 +757,8 @@ public class Armor extends EquipableItem {
 			float multi = RingOfArcana.enchantPowerMultiplier(defender);
 
 			if (Dungeon.hero.alignment == defender.alignment
-					&& Dungeon.level.distance(defender.pos, Dungeon.hero.pos) <= 2
-					&& Dungeon.hero.buff(AuraOfProtection.AuraBuff.class) != null){
+					&& Dungeon.hero.buff(AuraOfProtection.AuraBuff.class) != null
+					&& (Dungeon.level.distance(defender.pos, Dungeon.hero.pos) <= 2 || defender.buff(LifeLinkSpell.LifeLinkSpellBuff.class) != null)){
 				multi += 0.25f + 0.25f*Dungeon.hero.pointsInTalent(Talent.AURA_OF_PROTECTION);
 			}
 

@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.PowerOfMany;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -80,6 +81,30 @@ public class LayOnHands extends TargetedClericSpell {
 
 		Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 
+		affectChar(hero, ch);
+
+		if (ch == hero){
+			hero.sprite.operate(ch.pos);
+			hero.next();
+		} else {
+			hero.sprite.zap(ch.pos);
+			hero.next();
+		}
+
+		Char ally = PowerOfMany.getPoweredAlly();
+		if (ally != null && ally.buff(LifeLinkSpell.LifeLinkSpellBuff.class) != null){
+			if (ch == hero){
+				affectChar(hero, ally); //if cast on hero, duplicate to ally
+			} else if (ally == ch) {
+				affectChar(hero, hero); //if cast on ally, duplicate to hero
+			}
+		}
+
+		onSpellCast(tome, hero);
+
+	}
+
+	private void affectChar(Hero hero, Char ch){
 		Barrier barrier = Buff.affect(ch, Barrier.class);
 		int totalHeal = 5 + 5*hero.pointsInTalent(Talent.LAY_ON_HANDS);
 		int totalBarrier = 0;
@@ -89,8 +114,6 @@ public class LayOnHands extends TargetedClericSpell {
 			totalBarrier = Math.max(0, totalBarrier);
 			Buff.affect(ch, Barrier.class).incShield(totalBarrier);
 			ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(totalBarrier), FloatingText.SHIELDING );
-			hero.sprite.operate(ch.pos);
-			hero.next();
 		} else {
 			if (ch.HT - ch.HP < totalHeal){
 				totalBarrier = totalHeal - (ch.HT - ch.HP);
@@ -100,7 +123,7 @@ public class LayOnHands extends TargetedClericSpell {
 					ch.HP = ch.HT;
 					ch.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(totalHeal - totalBarrier), FloatingText.HEALING);
 				}
-				if (totalBarrier >= 0) {
+				if (totalBarrier > 0) {
 					barrier.incShield(totalBarrier);
 					ch.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(totalBarrier), FloatingText.SHIELDING);
 				}
@@ -108,12 +131,6 @@ public class LayOnHands extends TargetedClericSpell {
 				ch.HP = ch.HP + totalHeal;
 				ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(totalHeal), FloatingText.HEALING );
 			}
-
-			hero.sprite.zap(ch.pos);
-			hero.next();
 		}
-
-		onSpellCast(tome, hero);
-
 	}
 }

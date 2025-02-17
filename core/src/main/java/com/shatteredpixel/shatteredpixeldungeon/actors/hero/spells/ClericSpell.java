@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
@@ -29,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.AscendedForm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.PowerOfMany;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
@@ -74,7 +76,12 @@ public abstract class ClericSpell {
 	public void onSpellCast(HolyTome tome, Hero hero){
 		Invisibility.dispel();
 		if (hero.hasTalent(Talent.SATIATED_SPELLS) && hero.buff(Talent.SatiatedSpellsTracker.class) != null){
-			Buff.affect(hero, Barrier.class).setShield(1 + 2*hero.pointsInTalent(Talent.SATIATED_SPELLS));
+			int amount = 1 + 2*hero.pointsInTalent(Talent.SATIATED_SPELLS);
+			Buff.affect(hero, Barrier.class).setShield(amount);
+			Char ally = PowerOfMany.getPoweredAlly();
+			if (ally != null && ally.buff(LifeLinkSpell.LifeLinkSpellBuff.class) != null){
+				Buff.affect(ally, Barrier.class).setShield(amount);
+			}
 			hero.buff(Talent.SatiatedSpellsTracker.class).detach();
 		}
 		tome.spendCharge(chargeUse(hero));

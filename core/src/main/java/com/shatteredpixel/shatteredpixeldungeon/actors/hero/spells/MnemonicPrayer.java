@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FireImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.GreaterHaste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LifeLink;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
@@ -46,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WellFed;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.AscendedForm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.PowerOfMany;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
@@ -97,7 +99,32 @@ public class MnemonicPrayer extends TargetedClericSpell {
 		QuickSlotButton.target(ch);
 
 		float extension = 2 + hero.pointsInTalent(Talent.MNEMONIC_PRAYER);
+		affectChar(ch, extension);
 
+		Char ally = PowerOfMany.getPoweredAlly();
+		if (ally != null && ally.buff(LifeLinkSpell.LifeLinkSpellBuff.class) != null){
+			if (ch == hero){
+				affectChar(ally, extension); //if cast on hero, duplicate to ally
+			} else if (ch == ally){
+				affectChar(hero, extension); //if cast on ally, duplicate to hero
+			}
+		}
+
+		if (ch == hero){
+			hero.busy();
+			hero.sprite.operate(ch.pos);
+			hero.spend( 1f );
+			BuffIndicator.refreshHero();
+		} else {
+			hero.sprite.zap(ch.pos);
+			hero.spendAndNext( 1f );
+		}
+
+		onSpellCast(tome, hero);
+
+	}
+
+	private void affectChar( Char ch, float extension ){
 		if (ch.alignment == Char.Alignment.ALLY){
 
 			Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
@@ -108,8 +135,10 @@ public class MnemonicPrayer extends TargetedClericSpell {
 					continue;
 				}
 
-				//no it does not boost ascended form lmao
-				if (b instanceof AscendedForm.AscendBuff){
+				//does not boost buffs from armor abilities or T4 spells
+				if (b instanceof AscendedForm.AscendBuff
+						|| b instanceof BodyForm.BodyFormBuff || b instanceof SpiritForm.SpiritFormBuff
+						|| b instanceof PowerOfMany.PowerBuff || b instanceof BeamingRay.BeamingRayBoost || b instanceof LifeLink || b instanceof LifeLinkSpell.LifeLinkSpellBuff){
 					continue;
 				}
 
@@ -164,19 +193,6 @@ public class MnemonicPrayer extends TargetedClericSpell {
 			}
 
 		}
-
-		if (ch == hero){
-			hero.busy();
-			hero.sprite.operate(ch.pos);
-			hero.spend( 1f );
-			BuffIndicator.refreshHero();
-		} else {
-			hero.sprite.zap(ch.pos);
-			hero.spendAndNext( 1f );
-		}
-
-		onSpellCast(tome, hero);
-
 	}
 
 	public String desc(){
