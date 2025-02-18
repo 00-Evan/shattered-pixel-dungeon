@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.PowerOfMany;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Trinity;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
@@ -68,76 +69,32 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("BETA-2.8", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** Partially implemented the Power of Many armor ability, still not selectable however.\n\n" +
-				"**-** Updated Translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by BETA:**\n" +
-				"**-** Crashes when using glyph of stone with Trinity\n" +
-				"**-** Ring of Wealth not giving rare equipment drops\n" +
-				"**-** Quick-spell still being usable while magic immune\n" +
-				"**-** Wall of Light placing dwarf king's crown into solid terrain in specific cases\n\n" +
-				"**Existed prior to BETA:**\n" +
-				"**-** Crashes when aqua brew is dropped down chasms"));
-
-		changes = new ChangeInfo("BETA-2.6 & 2.7", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by BETA:**\n" +
-				"**-** Frequent crashes if using Ring of Wealth, caused by beta-2.6 adjustment (Sorry! =S)"));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** Updated Translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by BETA:**\n" +
-				"**-** Uncommon crashes when using Trinity's spirit form\n" +
-				"**-** Tipped darts not being selectable with Trinity's body form\n" +
-				"**-** Trinity's body form giving enchantment effects to thrown weapons\n" +
-				"**-** Projecting enchant not working with Trinity\n" +
-				"**-** Magic immune effect working inconsistently with Trinity's magical item effects (they should be blocked)\n" +
-				"**-** Ring of Wealth not properly tracking bonus drops when used with Trinity\n" +
-				"**-** iOS launch screen using the old title graphic (actually this time for real, I hope)\n" +
-				"**-** Minor textual errors\n\n" +
-				"**Existed Prior to BETA:**\n" +
-				"**-** Various minor UI errors when holding down inventory buttons just before moving\n" +
-				"**-** Minor visual errors"));
-
-		changes = new ChangeInfo("BETA-2.5", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** Updated Translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by BETA:**\n" +
-				"**-** Spirit Form spell unintentionally costing 0 tome charge instead of 4\n" +
-				"**-** Trinity creating extra thrown weapons in some cases\n" +
-				"**-** Crash errors when activating Trinity's body form without an enchant/glyph currently on your armor\n" +
-				"**-** iOS launch screen using the old title graphic (actually this time, I hope)"));
-
-		changes = new ChangeInfo("BETA-2.4", false, null);
+		changes = new ChangeInfo("BETA-3.0", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
-				"With Trinity implemented the beta for v3.0 is finally getting close to wrapping up!\n\n" +
+				"The Cleric is finally content-complete! With the addition ot Power of Many the beta is now going to start winding down.\n\n" +
+				"Here's a list of what's left to do for release:\n\n" +
 				"There's still a bit more to do though:\n" +
 				"**-** Address any bugs or serious balance issues as they come up\n" +
-				"**-** Power of Many armor ability (I expect to get this done faster than Trinity)\n" +
-				"**-** Final visual polish for the Cleric before release"));
+				"**-** Metamorph effects for the Cleric's talents (may be delayed to v3.1 or a patch)\n" +
+				"**-** Final visuals for the Cleric's sprite: hair, unlock badge, hero armor, etc."));
+
+		changes.addButton(new ChangeButton(new HeroIcon(new PowerOfMany()), "Power of Many!",
+				"**The Cleric's third armor ability is now available!**\n\n" +
+				"**Power of Many** empowers an ally of your choice, or creates a new one in an empty space. This ability then lets the Cleric cast three new talent spells that work with this empowered ally.\n\n" +
+				"Power of many has a bunch of new ally-related behaviours, and I expect there'll be a bug or two somewhere. Please let me know if you encounter any!"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Existed Prior to BETA:**\n" +
+				"**-** Duelist's block ability not working properly with save/load\n" +
+				"**-** Minor visual errors"));
+
+		changes = new ChangeInfo("BETA-2.4 to 2.8", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
 
 		changes.addButton(new ChangeButton(new HeroIcon(new Trinity()), "Trinity!",
 				"**The Cleric's second armor ability is now available!**\n\n" +
@@ -151,10 +108,10 @@ public class v3_X_Changes {
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
-				"**Caused by BETA:**\n" +
-				"**-** Cleric spells incorrectly interacting with autotargeting in some cases\n" +
-				"**-** iOS launch screen using the old title graphic\n" +
-				"**-** Various minor layout/text errors"));
+				"**Existed Prior to BETA:**\n" +
+				"**-** Crashes when aqua brew is dropped down chasms\n" +
+				"**-** Various minor UI errors when holding down inventory buttons just before moving\n" +
+				"**-** Minor visual errors"));
 
 		changes = new ChangeInfo("BETA-2.2 & 2.3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -178,10 +135,6 @@ public class v3_X_Changes {
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
-				"**Caused by BETA:**\n" +
-				"**-** Smite dealing damage to freshly corrupted enemies\n" +
-				"**-** Rare crash errors\n" +
-				"**-** Minor text errors\n\n" +
 				"**Existed Prior to BETA:**\n" +
 				"**-** Rare cases where multiple ascension wins could be recorded for one run\n" +
 				"**-** Unstable spell never triggering scroll effects that could apply in or out of combat\n" +

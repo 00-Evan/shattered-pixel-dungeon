@@ -209,9 +209,9 @@ public class WelcomeScene extends PixelScene {
 
 			}
 
-			message = "Greetings Beta testers, the beta for v3.0.0 continues!\n\n" +
-					"The Trinity armor ability has been added! We're just missing one more ability and some final polish, and then we'll be pushing to release!\n\n" +
-					"As always, read the changelog for full change details.";
+			message = "Greetings Beta testers, the beta for v3.0.0 is finally starting to wind down!\n\n" +
+					"The Power of Many armor ability has been added, which means the Cleric is now content complete! There's just some minor visual changes and polishing to do before release!\n\n" +
+					"As always read the changelog for full change details, and let me know if you encounter any issues!";
 
 		} else {
 			message = Messages.get(this, "what_msg");
