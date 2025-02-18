@@ -112,8 +112,6 @@ public class Stasis extends ClericSpell {
 			hero.buff(LifeLink.class).detach();
 		}
 
-		//TODO life link cleric spells?
-
 		hero.spendAndNext(Actor.TICK);
 		Dungeon.observe();
 		GameScene.updateFog();
