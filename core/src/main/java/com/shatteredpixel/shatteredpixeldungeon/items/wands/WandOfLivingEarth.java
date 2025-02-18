@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.PowerOfMany;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.Stasis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
@@ -80,6 +81,10 @@ public class WandOfLivingEarth extends DamageWand {
 				guardian = (EarthGuardian) m;
 				break;
 			}
+		}
+
+		if (Stasis.getStasisAlly() instanceof EarthGuardian){
+			guardian = (EarthGuardian)Stasis.getStasisAlly();
 		}
 
 		RockArmor buff = curUser.buff(RockArmor.class);
@@ -176,7 +181,9 @@ public class WandOfLivingEarth extends DamageWand {
 						curUser.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + buffedLvl() / 2);
 					}
 				} else {
-					guardian.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + buffedLvl() / 2);
+					if (guardian.sprite != null) { //may be in stasis
+						guardian.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + buffedLvl() / 2);
+					}
 					guardian.setInfo(curUser, buffedLvl(), armorToAdd);
 					if (ch.alignment == Char.Alignment.ENEMY || ch.buff(Amok.class) != null) {
 						guardian.aggro(ch);
@@ -381,7 +388,7 @@ public class WandOfLivingEarth extends DamageWand {
 				this.wandLevel = wandLevel;
 				HT = 16 + 8 * wandLevel;
 			}
-			if (HP != 0){
+			if (HP != 0 && sprite != null){
 				sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(healthToAdd), FloatingText.HEALING);
 			}
 			HP = Math.min(HT, HP + healthToAdd);

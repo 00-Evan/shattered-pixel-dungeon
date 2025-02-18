@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.Stasis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.DirectableAlly;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
@@ -204,17 +205,28 @@ public class DriedRose extends Artifact {
 
 		} else if (action.equals(AC_DIRECT)){
 			if (ghost == null && ghostID != 0){
-				Actor a = Actor.findById(ghostID);
-				if (a != null){
-					ghost = (GhostHero)a;
-				} else {
-					ghostID = 0;
-				}
+				findGhost();
 			}
-			if (ghost != null) GameScene.selectCell(ghostDirector);
+			if (ghost != null && ghost != Stasis.getStasisAlly()){
+				GameScene.selectCell(ghostDirector);
+			}
 			
 		} else if (action.equals(AC_OUTFIT)){
 			GameScene.show( new WndGhostHero(this) );
+		}
+	}
+
+	private void findGhost(){
+		Actor a = Actor.findById(ghostID);
+		if (a != null){
+			ghost = (GhostHero)a;
+		} else {
+			if (Stasis.getStasisAlly() instanceof GhostHero){
+				ghost = (GhostHero) Stasis.getStasisAlly();
+				ghostID = ghost.id();
+			} else {
+				ghostID = 0;
+			}
 		}
 	}
 	
@@ -275,12 +287,7 @@ public class DriedRose extends Artifact {
 	public String status() {
 		if (ghost == null && ghostID != 0){
 			try {
-				Actor a = Actor.findById(ghostID);
-				if (a != null) {
-					ghost = (GhostHero) a;
-				} else {
-					ghostID = 0;
-				}
+				findGhost();
 			} catch ( ClassCastException e ){
 				ShatteredPixelDungeon.reportException(e);
 				ghostID = 0;
@@ -391,12 +398,7 @@ public class DriedRose extends Artifact {
 			spend( TICK );
 			
 			if (ghost == null && ghostID != 0){
-				Actor a = Actor.findById(ghostID);
-				if (a != null){
-					ghost = (GhostHero)a;
-				} else {
-					ghostID = 0;
-				}
+				findGhost();
 			}
 
 			if (ghost != null && !ghost.isAlive()){
@@ -745,6 +747,7 @@ public class DriedRose extends Artifact {
 		@Override
 		public void destroy() {
 			updateRose();
+			//TODO stasis?
 			if (rose != null) {
 				rose.ghost = null;
 				rose.charge = 0;

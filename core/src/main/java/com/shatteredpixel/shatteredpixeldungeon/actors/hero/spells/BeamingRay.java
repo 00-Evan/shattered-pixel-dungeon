@@ -95,7 +95,11 @@ public class BeamingRay extends TargetedClericSpell {
 			return;
 		}
 
-		if (Dungeon.level.distance(ally.pos, telePos) > 4*hero.pointsInTalent(Talent.BEAMING_RAY)){
+		int range = 4*hero.pointsInTalent(Talent.BEAMING_RAY);
+		if (Char.hasProp(ally, Char.Property.IMMOVABLE)){
+			range /= 2;
+		}
+		if (Dungeon.level.distance(ally.pos, telePos) > range){
 			GLog.w(Messages.get(this, "out_of_range"));
 			return;
 		}

@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.PowerOfMany;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.DirectableAlly;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -45,6 +46,7 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 
 public class Stasis extends ClericSpell {
 
@@ -91,8 +93,18 @@ public class Stasis extends ClericSpell {
 		hero.sprite.zap(ally.pos);
 		MagicMissile.boltFromChar(hero.sprite.parent, MagicMissile.LIGHT_MISSILE, ally.sprite, hero.pos, null);
 
-		//TODO preserve positive effects on ally, don't care about negative ones?
+		//TODO need to preserve buffs properly, this half works, makes durations wacky (based on current Actor.now values)
+		LinkedHashSet<Buff> buffs = ally.buffs();
 		Actor.remove(ally);
+		ally.sprite.killAndErase();
+		ally.sprite = null;
+		Dungeon.level.mobs.remove(ally);
+		for (Buff b : buffs){
+			if (b.type == Buff.buffType.POSITIVE) {
+				ally.add(b);
+			}
+		}
+
 		Buff.prolong(hero, StasisBuff.class, 20 + 20*hero.pointsInTalent(Talent.STASIS)).stasisAlly = (Mob)ally;
 		Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 
@@ -100,12 +112,19 @@ public class Stasis extends ClericSpell {
 			hero.buff(LifeLink.class).detach();
 		}
 
-		//TODO will need to make affordances for lots of edge cases like earth golem, wards limits, ghost hero, PoE ally, others?
-
-		//TODO need code in beamign ray and life link to work here, also life link cleric spells?
+		//TODO need code in beaming ray and life link to work here, also life link cleric spells?
 
 		hero.spendAndNext(Actor.TICK);
+		Dungeon.observe();
+		GameScene.updateFog();
 
+	}
+
+	public static Char getStasisAlly(){
+		if (Dungeon.hero != null && Dungeon.hero.buff(StasisBuff.class) != null){
+			return Dungeon.hero.buff(StasisBuff.class).stasisAlly;
+		}
+		return null;
 	}
 
 	public static class StasisBuff extends FlavourBuff {
@@ -145,6 +164,10 @@ public class Stasis extends ClericSpell {
 			stasisAlly.pos = Random.element(spawnPoints);
 			stasisAlly.clearTime();
 			GameScene.add(stasisAlly);
+
+			if (stasisAlly instanceof DirectableAlly){
+				((DirectableAlly) stasisAlly).clearDefensingPos();
+			}
 
 			ScrollOfTeleportation.appear(stasisAlly, stasisAlly.pos);
 			Sample.INSTANCE.play(Assets.Sounds.TELEPORT);

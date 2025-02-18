@@ -84,6 +84,10 @@ public class PowerOfMany extends ArmorAbility {
 			allyExists = true;
 		}
 
+		if (Stasis.getStasisAlly() != null){
+			allyExists = true;
+		}
+
 		if (ally instanceof LightAlly){
 			return Messages.get(this, "prompt_ally");
 		} else if (!allyExists){
@@ -114,7 +118,7 @@ public class PowerOfMany extends ArmorAbility {
 			allyExists = true;
 		}
 
-		if (hero.buff(Stasis.StasisBuff.class) != null){
+		if (Stasis.getStasisAlly() != null){
 			allyExists = true;
 		}
 
@@ -225,9 +229,6 @@ public class PowerOfMany extends ArmorAbility {
 		@Override
 		public void detach() {
 			super.detach();
-			if (target instanceof LightAlly){
-				target.die(this);
-			}
 			Dungeon.observe();
 			GameScene.updateFog();
 		}
@@ -259,6 +260,10 @@ public class PowerOfMany extends ArmorAbility {
 
 		@Override
 		protected boolean act() {
+			if (buff(PowerOfMany.PowerBuff.class) == null){
+				die(null);
+				return true;
+			}
 			int oldPos = pos;
 			boolean result = super.act();
 			//partially simulates how the hero switches to idle animation
