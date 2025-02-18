@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Pow
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 
@@ -54,7 +55,7 @@ public class LifeLinkSpell extends ClericSpell {
 	public boolean canCast(Hero hero) {
 		return super.canCast(hero)
 				&& hero.hasTalent(Talent.LIFE_LINK)
-				&& PowerOfMany.getPoweredAlly() != null;
+				&& (PowerOfMany.getPoweredAlly() != null || Stasis.getStasisAlly() != null);
 	}
 
 	@Override
@@ -65,18 +66,30 @@ public class LifeLinkSpell extends ClericSpell {
 	@Override
 	public void onCast(HolyTome tome, Hero hero) {
 
-		Char ally = PowerOfMany.getPoweredAlly();
-
-		hero.sprite.zap(ally.pos);
-		hero.sprite.parent.add(
-				new Beam.HealthRay(hero.sprite.center(), ally.sprite.center()));
-
 		int duration = 4 + 2*hero.pointsInTalent(Talent.LIFE_LINK);
 
-		Buff.prolong(hero, LifeLink.class, duration).object = ally.id();
-		Buff.prolong(ally, LifeLink.class, duration).object = hero.id();
+		Char ally = PowerOfMany.getPoweredAlly();
 
+		if (ally != null) {
+			hero.sprite.zap(ally.pos);
+			hero.sprite.parent.add(
+					new Beam.HealthRay(hero.sprite.center(), ally.sprite.center()));
+
+			Buff.prolong(hero, LifeLink.class, duration).object = ally.id();
+		} else {
+			ally = Stasis.getStasisAlly();
+			hero.sprite.operate(hero.pos);
+			hero.sprite.parent.add(
+					new Beam.HealthRay(DungeonTilemap.tileCenterToWorld(hero.pos), hero.sprite.center()));
+		}
+
+		Buff.prolong(ally, LifeLink.class, duration).object = hero.id();
 		Buff.prolong(ally, LifeLinkSpellBuff.class, duration);
+
+		if (ally == Stasis.getStasisAlly()){
+			ally.buff(LifeLink.class).clearTime();
+			ally.buff(LifeLinkSpellBuff.class).clearTime();
+		}
 
 		hero.spendAndNext(Actor.TICK);
 

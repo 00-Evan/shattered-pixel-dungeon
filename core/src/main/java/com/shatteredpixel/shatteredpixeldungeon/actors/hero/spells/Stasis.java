@@ -93,7 +93,6 @@ public class Stasis extends ClericSpell {
 		hero.sprite.zap(ally.pos);
 		MagicMissile.boltFromChar(hero.sprite.parent, MagicMissile.LIGHT_MISSILE, ally.sprite, hero.pos, null);
 
-		//TODO need to preserve buffs properly, this half works, makes durations wacky (based on current Actor.now values)
 		LinkedHashSet<Buff> buffs = ally.buffs();
 		Actor.remove(ally);
 		ally.sprite.killAndErase();
@@ -104,6 +103,7 @@ public class Stasis extends ClericSpell {
 				ally.add(b);
 			}
 		}
+		ally.clearTime();
 
 		Buff.prolong(hero, StasisBuff.class, 20 + 20*hero.pointsInTalent(Talent.STASIS)).stasisAlly = (Mob)ally;
 		Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
@@ -112,7 +112,7 @@ public class Stasis extends ClericSpell {
 			hero.buff(LifeLink.class).detach();
 		}
 
-		//TODO need code in beaming ray and life link to work here, also life link cleric spells?
+		//TODO life link cleric spells?
 
 		hero.spendAndNext(Actor.TICK);
 		Dungeon.observe();
@@ -162,11 +162,14 @@ public class Stasis extends ClericSpell {
 				spawnPoints.add(target.pos + PathFinder.NEIGHBOURS8[Random.Int(8)]);
 			}
 			stasisAlly.pos = Random.element(spawnPoints);
-			stasisAlly.clearTime();
 			GameScene.add(stasisAlly);
 
 			if (stasisAlly instanceof DirectableAlly){
 				((DirectableAlly) stasisAlly).clearDefensingPos();
+			}
+
+			if (stasisAlly.buff(LifeLink.class) != null){
+				Buff.prolong(Dungeon.hero, LifeLink.class, stasisAlly.buff(LifeLink.class).cooldown()).object = stasisAlly.id();
 			}
 
 			ScrollOfTeleportation.appear(stasisAlly, stasisAlly.pos);
