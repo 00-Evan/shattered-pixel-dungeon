@@ -769,7 +769,7 @@ public abstract class Char extends Actor {
 			return;
 		}
 
-		if (!(src instanceof LifeLink) && buff(LifeLink.class) != null){
+		if (!(src instanceof LifeLink || src instanceof Hunger) && buff(LifeLink.class) != null){
 			HashSet<LifeLink> links = buffs(LifeLink.class);
 			for (LifeLink link : links.toArray(new LifeLink[0])){
 				if (Actor.findById(link.object) == null){
