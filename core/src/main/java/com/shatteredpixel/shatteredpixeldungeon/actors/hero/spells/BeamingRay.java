@@ -66,7 +66,7 @@ public class BeamingRay extends TargetedClericSpell {
 	public boolean canCast(Hero hero) {
 		return super.canCast(hero)
 				&& hero.hasTalent(Talent.BEAMING_RAY)
-				&& PowerOfMany.getPoweredAlly() != null;
+				&& (PowerOfMany.getPoweredAlly() != null || Stasis.getStasisAlly() != null);
 	}
 
 	@Override
@@ -76,6 +76,11 @@ public class BeamingRay extends TargetedClericSpell {
 		}
 
 		Char ally = PowerOfMany.getPoweredAlly();
+
+		if (ally == null){
+			//temporary, for distance checks
+			ally = Dungeon.hero;
+		}
 
 		int telePos = target;
 
@@ -95,6 +100,10 @@ public class BeamingRay extends TargetedClericSpell {
 			return;
 		}
 
+		if (ally == Dungeon.hero){
+			ally = Stasis.getStasisAlly();
+		}
+
 		int range = 4*hero.pointsInTalent(Talent.BEAMING_RAY);
 		if (Char.hasProp(ally, Char.Property.IMMOVABLE)){
 			range /= 2;
@@ -109,9 +118,20 @@ public class BeamingRay extends TargetedClericSpell {
 			chTarget = Actor.findChar(target);
 		}
 
+		if (ally == Stasis.getStasisAlly()){
+			//TODO buffs
+			ally.pos = telePos;
+			ally.clearTime();
+			GameScene.add((Mob) ally);
+			hero.buff(Stasis.StasisBuff.class).detach();
+			hero.sprite.parent.add(
+					new Beam.SunRay(hero.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(telePos)));
+		} else {
+			hero.sprite.parent.add(
+					new Beam.SunRay(ally.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(telePos)));
+		}
+
 		hero.sprite.zap(telePos);
-		hero.sprite.parent.add(
-				new Beam.SunRay(ally.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(telePos)));
 		ScrollOfTeleportation.appear(ally, telePos);
 
 		if (chTarget == null){
@@ -132,6 +152,9 @@ public class BeamingRay extends TargetedClericSpell {
 			}
 			FlavourBuff.prolong(ally, BeamingRayBoost.class, BeamingRayBoost.DURATION).object = chTarget.id();
 		} else {
+			if (ally instanceof DirectableAlly) {
+				((DirectableAlly) ally).clearDefensingPos();
+			}
 			//just the buff with no target
 			FlavourBuff.prolong(ally, BeamingRayBoost.class, BeamingRayBoost.DURATION);
 		}
