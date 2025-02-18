@@ -526,7 +526,8 @@ public enum Talent {
 			Dungeon.observe();
 		}
 
-		if (talent == TWIN_UPGRADES || talent == DESPERATE_POWER || talent == STRONGMAN){
+		if (talent == TWIN_UPGRADES || talent == DESPERATE_POWER
+				|| talent == STRONGMAN || talent == DURABLE_PROJECTILES){
 			Item.updateQuickslot();
 		}
 
