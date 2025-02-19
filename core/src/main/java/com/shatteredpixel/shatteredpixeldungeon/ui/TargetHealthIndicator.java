@@ -40,7 +40,8 @@ public class TargetHealthIndicator extends HealthBar {
 	public void update() {
 		super.update();
 		
-		if (target != null && target.isAlive() && target.isActive() && target.sprite.visible) {
+		if (target != null && target.isAlive() && target.isActive()
+				&& target.sprite != null && target.sprite.visible) {
 			CharSprite sprite = target.sprite;
 			width = sprite.width();
 			x = sprite.x;
