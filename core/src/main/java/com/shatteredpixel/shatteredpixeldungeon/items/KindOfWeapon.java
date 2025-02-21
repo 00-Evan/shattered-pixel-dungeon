@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -110,6 +111,15 @@ abstract public class KindOfWeapon extends EquipableItem {
 					|| hero.buff(Talent.SwiftEquipCooldown.class).hasSecondUse()){
 				isSwiftEquipping = true;
 			}
+		}
+
+		// 15/25% chance
+		if (hero.heroClass != HeroClass.CLERIC && hero.hasTalent(Talent.HOLY_INTUITION)
+				&& cursed && !cursedKnown
+				&& Random.Int(20) < 1 + 2*hero.pointsInTalent(Talent.HOLY_INTUITION)){
+			cursedKnown = true;
+			GLog.p(Messages.get(this, "curse_detected"));
+			return false;
 		}
 
 		detachAll( hero.belongings.backpack );

@@ -401,13 +401,22 @@ public enum Talent {
 			wepAbilUsed = bundle.getBoolean(WEP_ABIL_USED);
 		}
 	}
-	public static class CounterAbilityTacker extends FlavourBuff{};
+	public static class CounterAbilityTacker extends FlavourBuff{}
 	public static class SatiatedSpellsTracker extends Buff{
 		@Override
 		public int icon() {
 			return BuffIndicator.SPELL_FOOD;
 		}
-	};
+	}
+	//used for metamorphed searing light
+	public static class SearingLightCooldown extends FlavourBuff{
+		@Override
+		public int icon() {
+			return BuffIndicator.TIME;
+		}
+		public void tintIcon(Image icon) { icon.hardlight(0f, 0f, 1f); }
+		public float iconFadePercent() { return Math.max(0, visualcooldown() / 20); }
+	}
 
 	int icon;
 	int maxPoints;
@@ -615,7 +624,17 @@ public enum Talent {
 			}
 		}
 		if (hero.hasTalent(SATIATED_SPELLS)){
-			Buff.affect( hero, SatiatedSpellsTracker.class );
+			if (hero.heroClass == HeroClass.CLERIC) {
+				Buff.affect(hero, SatiatedSpellsTracker.class);
+			} else {
+				//3/5 shielding, delayed up to 10 turns
+				int amount = 1 + 2*hero.pointsInTalent(SATIATED_SPELLS);
+				Barrier b = Buff.affect(hero, Barrier.class);
+				if (b.shielding() <= amount){
+					b.setShield(amount);
+					b.delay(Math.max(10-b.cooldown(), 0));
+				}
+			}
 		}
 		if (hero.hasTalent(ENLIGHTENING_MEAL)){
 			HolyTome tome = hero.belongings.getItem(HolyTome.class);
