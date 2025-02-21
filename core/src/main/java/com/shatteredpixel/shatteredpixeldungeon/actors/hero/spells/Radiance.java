@@ -69,8 +69,7 @@ public class Radiance extends ClericSpell {
 			if (mob.alignment != Char.Alignment.ALLY && Dungeon.level.heroFOV[mob.pos]) {
 				Buff.affect(mob, GuidingLight.Illuminated.class);
 				Buff.affect(mob, GuidingLight.WasIlluminatedTracker.class);
-				//exactly enough to delay them by 1 turn after the casting
-				Buff.affect(mob, Paralysis.class, mob.cooldown()+1f);
+				Buff.affect(mob, Paralysis.class, 3f);
 			}
 		}
 
