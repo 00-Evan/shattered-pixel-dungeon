@@ -211,10 +211,6 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 			Set<Talent> curTalentsAtTier = Dungeon.hero.talents.get(tier-1).keySet();
 
 			for (HeroClass cls : HeroClass.values()){
-				//TODO CLERIC only T1 talents have metamorph effects atm
-				if (tier != 1 && cls == HeroClass.CLERIC && Dungeon.hero.heroClass != HeroClass.CLERIC){
-					continue;
-				}
 
 				ArrayList<LinkedHashMap<Talent, Integer>> clsTalents = new ArrayList<>();
 				Talent.initClassTalents(cls, clsTalents);

@@ -128,13 +128,13 @@ public class StoneOfIntuition extends InventoryStone {
 					}
 					if (!anonymous) {
 						Catalog.countUse(StoneOfIntuition.class);
-						Talent.onRunestoneUsed(curUser, curUser.pos, StoneOfIntuition.class);
 						if (curUser.buff(IntuitionUseTracker.class) == null) {
 							Buff.affect(curUser, IntuitionUseTracker.class);
 						} else {
 							curItem.detach(curUser.belongings.backpack);
 							curUser.buff(IntuitionUseTracker.class).detach();
 						}
+						Talent.onRunestoneUsed(curUser, curUser.pos, StoneOfIntuition.class);
 					}
 					curGuess = null;
 					hide();
