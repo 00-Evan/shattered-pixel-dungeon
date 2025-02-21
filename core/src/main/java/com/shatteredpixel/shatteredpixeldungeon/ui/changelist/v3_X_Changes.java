@@ -69,6 +69,35 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-3.1", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"With this patch I think we are now done with text changes, balances, and bugfixes for the beta! Obviously v3.0 will receive changes after release, but for the moment things are more than stable and balanced enough to push for release, assuming no new bugs appear of course.\n\n" +
+				"The only remaining changes needed are visual:\n" +
+				"**-** Cleric's Hero armor needs to be given a unique sprite, it currently is a copy of the Warrior's.\n" +
+				"**-** Cleric's in-game sprite needs final adjustments to their hair, to more closely match the splash art.\n" +
+				"**-** Cleric's unlock badge needs to be updated according to the above hair changes.\n" +
+				"**-** Cleric's ascension victory sprite needs to be adjusted, it is currently a simple 2x scale version of their in-game sprite."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**-** Added metamorphosis effects for the Cleric's T1, T2, and shared T3 talents.\n\n" +
+				"**-** Updated Translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by BETA:**\n" +
+				"**-** Stasis not preserving some important debuffs like enthralled or corrupted\n" +
+				"**-** Beaming Ray and Stasis sometimes placing grounded allies over chasms\n" +
+				"**-** Crash bugs when using Stasis in some cases\n" +
+				"**-** Radiance not stunning for 3 turns as described\n" +
+				"**-** Various other rare crash bugs"));
+
 		changes = new ChangeInfo("BETA-3.0", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
