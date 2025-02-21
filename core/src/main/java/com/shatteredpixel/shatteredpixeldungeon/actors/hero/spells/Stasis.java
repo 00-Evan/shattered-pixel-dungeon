@@ -99,7 +99,7 @@ public class Stasis extends ClericSpell {
 		ally.sprite = null;
 		Dungeon.level.mobs.remove(ally);
 		for (Buff b : buffs){
-			if (b.type == Buff.buffType.POSITIVE) {
+			if (b.type == Buff.buffType.POSITIVE || b.revivePersists) {
 				ally.add(b);
 			}
 		}
