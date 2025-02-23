@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.BeamingRay;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ClericSpell;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.LifeLinkSpell;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.Stasis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -150,6 +151,12 @@ public class PowerOfMany extends ArmorAbility {
 					return;
 				}
 			} else {
+
+				if (!Dungeon.level.passable[target] || Dungeon.level.avoid[target]){
+					GLog.w(Messages.get(ClericSpell.class, "invalid_target"));
+					return;
+				}
+
 				ch = new LightAlly(hero.lvl);
 				ch.pos = target;
 				GameScene.add((Mob) ch);
