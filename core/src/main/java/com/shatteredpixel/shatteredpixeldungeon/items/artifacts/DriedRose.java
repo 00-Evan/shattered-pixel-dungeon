@@ -653,7 +653,6 @@ public class DriedRose extends Artifact {
 						GLog.n(Messages.capitalize(Messages.get(Char.class, "kill", name())));
 					}
 				}
-				Artifact.artifactProc(Dungeon.hero, rose.visiblyUpgraded(), 0);
 			}
 
 			return damage;
