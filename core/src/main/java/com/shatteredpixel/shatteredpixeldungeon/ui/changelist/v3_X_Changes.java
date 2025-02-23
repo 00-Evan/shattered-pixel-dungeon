@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.PowerOfMany;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Trinity;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -66,10 +65,6 @@ public class v3_X_Changes {
 	public static void add_v3_0_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
 		ChangeInfo changes = new ChangeInfo("v3.0-BETA", true, "");
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes = new ChangeInfo("", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
@@ -121,83 +116,6 @@ public class v3_X_Changes {
 				"**-** Duelist's block ability not working properly with save/load\n" +
 				"**-** Minor visual errors"));
 
-		changes = new ChangeInfo("BETA-2.4 to 2.8", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new HeroIcon(new Trinity()), "Trinity!",
-				"**The Cleric's second armor ability is now available!**\n\n" +
-				"**Trinity** acts like three abilities in one! Each ability lets you reproduce the effect of an enchant/glyph, thrown weapon/wand, or ring/artifact that you've previously identified. New spells are used to assign effects, and Trinity itself activates them.\n\n" +
-				"Note that Trinity depends on internal tracking code that was added in BETA-2.2, if you're playing a run from before then you may not be able to select every thing you have identified."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** Internal adjustments to hunger and regeneration effects, they should now be more responsive when hunger or regen rate changes.\n\n" +
-				"**-** Added developer commentary for v2.0.0\n\n" +
-				"**-** Updated Translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Existed Prior to BETA:**\n" +
-				"**-** Crashes when aqua brew is dropped down chasms\n" +
-				"**-** Various minor UI errors when holding down inventory buttons just before moving\n" +
-				"**-** Minor visual errors"));
-
-		changes = new ChangeInfo("BETA-2.2 & 2.3", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.DISPLAY), "Visual and UI Improvements!",
-				"**Major visual improvements have been made to the game's title screen and hero select!**\n\n" +
-				"Shattered's title graphic has been totally redrawn! The new title graphic, by Aleksandar Komitov, improves on text quality and style while trying to stay true to the original title. There is now a landscape and portrait variant of this title as well.\n\n" +
-				"The game's hero splash arts have been improved as well! After so many years, Aleksandar has revised some of the game's hero splash arts to bring them up to his current standards.\n" +
-				"**-** The Huntress and Rogue have recieved major changes\n" +
-				"**-** The Mage has recieved moderate changes\n" +
-				"**-** The Duelist and Cleric have received only tiny tweaks to some face details.\n" +
-				"**-** The Warrior's splash remains unchanged for the moment, but improvements to it are coming soon as well!"));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** Added info about how recently runs were played to the games in progress screen, and added a sorting setting\n\n" +
-				"**-** Smite no longer guarantees a hit if the Paladin is encumbered\n" +
-				"**-** Added a buff icon for Illuminated\n\n" +
-				"**-** Traps triggered by time freeze ending now always resolve after other effects/actions (e.g. teleportation, item pickup)\n\n" +
-				"**-** Updated Translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Existed Prior to BETA:**\n" +
-				"**-** Rare cases where multiple ascension wins could be recorded for one run\n" +
-				"**-** Unstable spell never triggering scroll effects that could apply in or out of combat\n" +
-				"**-** Cursed wand effects potentially applying levitation to immovable characters\n" +
-				"**-** Ripper demons sometimes losing their target early"));
-
-		changes = new ChangeInfo("BETA-2.0 & 2.1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 6), "The Paladin!",
-				"After a bit of a long wait, **the Cleric's second subclass has been implemented!**\n\n" +
-				"**The Paladin** is focused on melee spell combat and defensive power. Their effects most strongly synergize with weapons and armor."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** Updated Translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Existed Prior to BETA:**\n" +
-				"**-** Exotic crystals trinket not applying to monster drops in many cases\n" +
-				"**-** Rare errors when cancelling scroll of enchantment on armor\n" +
-				"**-** Multiplicity glyph not working correctly with ghouls in some cases\n" +
-				"**-** Geomancer rockfall attack being cleared on save/load"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Existed Prior to BETA:**\n" +
-				"**-** Various issues with system gestures registering as game inputs on Android and iOS\n" +
-				"**-** Corrosion gas from chaotic censer always starting at 1 damage\n" +
-				"**-** Retreating characters failing to retreat through crowded area in some cases\n" +
-				"**-** Pacifist badge unlocking when it shouldn't in rare cases\n" +
-				"**-** Rat King's description sometimes being incorrect in landmarks"));
-
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
@@ -212,9 +130,7 @@ public class v3_X_Changes {
 				"\n" +
 				"The Cleric is an entire new hero class **with a variety of unique spells that they learn via talents!** They can be unlocked by removing the curse on any piece of equipment, but existing players who already have a win will automatically unlock them!\n" +
 				"\n" +
-				"Much like how the Duelist can use a bunch of weapon abilities, I want the Cleric to be an ability-centric hero focused on Magic. Unlike the Duelist, these abilities are tied into the hero and their talents, instead of equipment items.\n" +
-				"\n" +
-				"**Note that while the Cleric is playable, they are not yet fully implemented!** Some visuals are placeholders and not all subclasses and armor abilities are implement."));
+				"Much like how the Duelist can use a bunch of weapon abilities, I want the Cleric to be an ability-centric hero focused on Magic. Unlike the Duelist, these abilities are tied into the hero and their talents, instead of equipment items."));
 
 		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 4), "Cleric Subclasses",
 				"**The Cleric has two subclasses, each with their own emphasis!**\n" +
@@ -228,28 +144,38 @@ public class v3_X_Changes {
 				"\n" +
 				"**Ascended Form** grants the Cleric access to new spells, extra attack ranged, and shielding whenever they cast spells.\n" +
 				"\n" +
-				"**Currently The other two abilities are not implemented, look out for them soon!**"));
+				"**Trinity** lets the Cleric access the effects of items they've previously identified in their run without the items themselves.\n" +
+				"\n" +
+				"**Power of Many** empowers or creates an ally for the Cleric, and grants them new spells to cast with that ally.\n"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
 		changes.hardlight(CharSprite.WARNING);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(Icons.DISPLAY.get(), "Interface Changes",
-				"You can now have up to six runs in progress, and the UI has been adjusted to accommodate for this.\n" +
+		changes.addButton( new ChangeButton(Icons.DISPLAY.get(), "Visual & Interface Changes",
+				"**Shattered's title graphic has been totally redrawn!** The new title graphic, by Aleksandar Komitov, improves on text quality and style while trying to stay true to the original title. There is now a landscape and portrait variant of this title as well.\n" +
 				"\n" +
-				"**I also plan to add a bit more information to runs in progress and make some other interface changes before release**"));
+				"The game's **Hero Splash Arts** have been improved as well! After so many years, Aleksandar has revised some of the game's hero splash arts to bring them up to his current standards:\n" +
+				"**-** The Huntress and Rogue have recieved major changes\n" +
+				"**-** The Mage has recieved moderate changes\n" +
+				"**-** The Duelist has received only tiny tweaks to some face details.\n" +
+				"**-** The Warrior's splash remains unchanged for the moment, but improvements to it are coming soon as well!\n" +
+				"\n" +
+				"The **Games in Progress screen** has been expanded too, with up to 6 runs at once, info about recency, and sorting options."));
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"**Highlights:**\n" +
 				"**-** Turned off auto-targeting in cases where it was almost always wrong (Bless spell, Wand of Warding, etc.)\n" +
 				"**-** Enemies are now more willing to switch targets if their target is retreating and they are being attacked by something else\n" +
 				"**-** Enemies are now more consistently drawn to the hero's position if they are attacked from out of visible range\n" +
+				"**-** Internal adjustments to hunger and regeneration effects, they should now be more responsive when hunger or regen rate changes.\n" +
 				"**-** Fixed Reclaim trap spell exploits, and allowed it to be dropped while charged\n" +
-				"**-** Improved visual contrast for symbols on runestones\n" +
-				"\n" +
-				"**Characters:**\n" +
-				"**-** Crazed bandits now have their own description",
+				"**-** Traps triggered by time freeze ending now always resolve after other effects/actions (e.g. teleportation, item pickup)\n" +
+				"**-** Improved visual contrast for symbols on runestones",
 
+				"**Characters:**\n" +
+				"**-** Crazed bandits now have their own description\n" +
+				"\n" +
 				"**Effects:**\n" +
 				"**-** Blast Wave no longer knocks back characters if they are killed over a pit\n" +
 				"**-** Cloak of Shadows (and new Holy Tome) can no longer be transmuted.\n" +
@@ -259,15 +185,20 @@ public class v3_X_Changes {
 				"**-** Camera no longer re-centers on hero when adding custom notes\n" +
 				"**-** Camera panning to enemies now respects the 'camera follow intensity' setting.\n" +
 				"**-** Improved the game's monochrome Android icon\n" +
+				"**-** Added developer commentary for v2.0.0\n" +
 				"**-** Improved text clarity in a few cases\n" +
 				"**-** Updated internal code libraries"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
 				"**Highlights:**\n" +
+				"**-** Various issues with system gestures registering as game inputs on Android and iOS\n" +
 				"**-** Various cases where closing the game inside of the alchemy scene could result in lost progress\n" +
+				"**-** Rare cases where multiple ascension wins could be recorded for one run\n" +
 				"**-** Runestones working while hero is magic immune\n" +
-				"\n" +
+				"**-** Unstable spell never triggering scroll effects that could apply either in or out of combat\n" +
+				"**-** Exotic crystals trinket not applying to monster drops in many cases",
+
 				"**Items:**\n" +
 				"**-** Rare cases where bomb AOE could be influenced by nearby potions shattering\n" +
 				"**-** Exploits involving juggling salt cube to get slower hunger with full regen\n" +
@@ -275,7 +206,11 @@ public class v3_X_Changes {
 				"**-** Very specific cases where disarming traps could make items unattainable\n" +
 				"**-** Icecap incorrectly being blocked by high grass\n" +
 				"**-** Stone of detect magic incorrectly being usable on thrown weapons\n" +
-				"**-** Artifact uniqueness being affected by runs from prior game versions",
+				"**-** Artifact uniqueness being affected by runs from prior game versions\n" +
+				"**-** Crashes when aqua brew is dropped down chasms\n" +
+				"**-** Rare errors when cancelling scroll of enchantment on armor\n" +
+				"**-** Multiplicity glyph not working correctly with ghouls in some cases\n" +
+				"**-** Corrosion gas from chaotic censer always starting at 1 damage",
 
 				"**Effects:**\n" +
 				"**-** Monk abilities which ignore armor using the incorrect damage icon\n" +
@@ -285,9 +220,16 @@ public class v3_X_Changes {
 				"**-** Specific cases where cursed wand effects would forget they were spawned by wondrous resin\n" +
 				"**-** Duration of greater haste not being preserved on save/load\n" +
 				"**-** Disarming traps not teleporting the hero's weapon in some cases where they should\n" +
-				"\n" +
+				"**-** Cursed wand effects potentially applying levitation to immovable characters\n" +
+				"**-** Geomancer rockfall attack being cleared on save/load",
+
 				"**Misc.:**\n" +
+				"**-** Rat King's description sometimes being incorrect in journal\n" +
+				"**-** Pacifist badge unlocking when it shouldn't in rare cases\n" +
+				"**-** Retreating characters failing to retreat through crowded area in some cases\n" +
+				"**-** Various minor UI errors when holding down inventory buttons just before moving\n" +
 				"**-** Rare cases where game win scene wouldn't trigger immediately\n" +
+				"**-** Ripper demons sometimes losing their target early\n" +
 				"**-** Various minor textual errors\n" +
 				"**-** Various rare crash errors"));
 
