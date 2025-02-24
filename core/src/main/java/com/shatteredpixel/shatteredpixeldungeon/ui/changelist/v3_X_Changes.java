@@ -68,17 +68,36 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("BETA-3.1", false, null);
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("RC-1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
-				"With this patch I think we are now done with text changes, balances, and bugfixes for the beta! Obviously v3.0 will receive changes after release, but for the moment things are more than stable and balanced enough to push for release, assuming no new bugs appear of course.\n\n" +
-				"The only remaining changes needed are visual:\n" +
-				"**-** Cleric's Hero armor needs to be given a unique sprite, it currently is a copy of the Warrior's.\n" +
-				"**-** Cleric's in-game sprite needs final adjustments to their hair, to more closely match the splash art.\n" +
-				"**-** Cleric's unlock badge needs to be updated according to the above hair changes.\n" +
-				"**-** Cleric's ascension victory sprite needs to be adjusted, it is currently a simple 2x scale version of their in-game sprite."));
+				"The beta for v3.0 is now almost over! There's still a bit of time to go as I need to update store assets with the game's new visuals, and give the translators a little more time, but expect a release in another few days!"));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARMOR_CLERIC), "Cleric Visuals",
+				"The Cleric now has new visuals for the hair on their in-game sprite, hero armor, unlock badge, and ascension victory sprite."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**-** Removed 'artifact used on enemy' effect from sad ghost's melee. Ghost is still an ally and so will still trigger illuminated for the priest.\n\n" +
+				"**-** Updated Translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by BETA:**\n" +
+				"**-** Some effects from metamorphed cleric talents working on allies when they shouldn't\n" +
+				"**-** Crashes when scroll of mystical energy was used with a ghost ally in stasis\n" +
+				"**-** Light ally being summonable in walls or over chasms\n" +
+				"**-** rare cases where visible status effects (e.g. invisibility) wouldn't appear\n" +
+				"**-** Minor textual errors"));
+
+		changes = new ChangeInfo("BETA-3.1", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"**-** Added metamorphosis effects for the Cleric's T1, T2, and shared T3 talents.\n\n" +
@@ -96,14 +115,6 @@ public class v3_X_Changes {
 		changes = new ChangeInfo("BETA-3.0", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
-				"The Cleric is finally content-complete! With the addition ot Power of Many the beta is now going to start winding down.\n\n" +
-				"Here's a list of what's left to do for release:\n\n" +
-				"There's still a bit more to do though:\n" +
-				"**-** Address any bugs or serious balance issues as they come up\n" +
-				"**-** Metamorph effects for the Cleric's talents (may be delayed to v3.1 or a patch)\n" +
-				"**-** Final visuals for the Cleric's sprite: hair, unlock badge, hero armor, etc."));
 
 		changes.addButton(new ChangeButton(new HeroIcon(new PowerOfMany()), "Power of Many!",
 				"**The Cleric's third armor ability is now available!**\n\n" +
