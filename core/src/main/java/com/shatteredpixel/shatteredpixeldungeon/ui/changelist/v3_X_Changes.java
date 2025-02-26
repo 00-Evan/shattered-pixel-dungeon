@@ -24,14 +24,12 @@ package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.PowerOfMany;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TalentIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
@@ -52,89 +50,48 @@ public class v3_X_Changes {
 		changes.hardlight(0xCCCCCC);
 		changeInfos.add(changes);
 
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Overview",
+				"The next major update to Shattered will be v3.1, which will mainly focus on followup to v3.0 and some changes to the Warrior!\n" +
+				"\n" +
+				"I expect v3.1 to be a relatively lightweight update, much like v2.1 was after the Duelist. v2.1 took almost 3 months, and while I'd like to do better than that I also don't want to end up overpromising. Hopefully you'll hear from me with progress on v3.1 sometime in mid April to mid May.\n" +
+				"\n" +
+				"Please keep in mind that while I always try to keep to the ETAs I provide, they are just estimates. If you don't hear from me by the ETA, it means I'm still busy with the update!"));
+
+		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.WARRIOR, 6), "Warrior Changes",
+				"For a long while now the Warrior has been the least appreciated class among experienced players. This is partly intended because he is meant to be the most simple, but I do think there are some changes that can be made so that the Warrior's class ability is a bit more visible and interactive. This is not going to be a hero rework, but rather some targeted changes to improve the Warrior's game feel without making him much harder for new players to use."));
+
+		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 6), "Cleric Followup",
+				"I'm more confident that the Cleric is releasing in a better initial state than the Duelist, but there will always be needed changes to balance or mechanics, and fixes for bugs. I expect to make those changes in v3.1 after taking a little time to gather feedback and gameplay data from v3.1."));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Misc. Changes",
+				"I want v3.1 to be a fairly lightweight update, so that it can come out quickly in response to v3.0, but there should be room for a few smaller changes too. In addition to the usual bugfixes and smaller QoL tweaks, I might add a couple of smaller content additions such as new trinkets and other items, a new rare enemy, etc."));
+
 		changes.addButton( new ChangeButton(Icons.get(Icons.WARNING), "Older Device Support",
 				"Unfortunately I will have to make some changes in 2025 that will remove support for very old versions of iOS, Android, and Java:\n" +
 				"\n" +
 				"**iOS 11:** Support for this version of iOS is being dropped after v3.0 (this update). There were no Apple devices which got iOS 11 but not 12, so this shouldn't actually affect any users.\n" +
 				"\n" +
-				"**Android 4.0-4.4:** Due to updates to Shattered's game library (libGDX) and Google Play's billing library, I will sadly have to drop support for these older Android versions toward the end of 2025. These Android versions should still at least get v3.1 and v3.2 though.\n" +
+				"**Android 4.0-4.4:** Due to updates to Shattered's game library (libGDX) and Google Play's billing library, I will sadly have to drop support for these older Android versions toward the end of 2025. These Android versions should still get v3.1 and v3.2 though.\n" +
 				"\n" +
 				"**Java 8-10:** This only affects users who play the old desktop JAR distribution, which requires a separate Java install. Support for the Java 8, 9, and 10 targets has been depreciated, at some point in the future Shattered will require Java 11 instead. I'll likely make this change at the same time as the Android change."));
+
 	}
 
 	public static void add_v3_0_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v3.0-BETA", true, "");
+		ChangeInfo changes = new ChangeInfo("v3.0", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes = new ChangeInfo("RC-1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
-				"The beta for v3.0 is now almost over! There's still a bit of time to go as I need to update store assets with the game's new visuals, and give the translators a little more time, but expect a release in another few days!"));
-
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARMOR_CLERIC), "Cleric Visuals",
-				"The Cleric now has new visuals for the hair on their in-game sprite, hero armor, unlock badge, and ascension victory sprite."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** Removed 'artifact used on enemy' effect from sad ghost's melee. Ghost is still an ally and so will still trigger illuminated for the priest.\n\n" +
-				"**-** Updated Translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by BETA:**\n" +
-				"**-** Some effects from metamorphed cleric talents working on allies when they shouldn't\n" +
-				"**-** Crashes when scroll of mystical energy was used with a ghost ally in stasis\n" +
-				"**-** Light ally being summonable in walls or over chasms\n" +
-				"**-** rare cases where visible status effects (e.g. invisibility) wouldn't appear\n" +
-				"**-** Minor textual errors"));
-
-		changes = new ChangeInfo("BETA-3.1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** Added metamorphosis effects for the Cleric's T1, T2, and shared T3 talents.\n\n" +
-				"**-** Updated Translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by BETA:**\n" +
-				"**-** Stasis not preserving some important debuffs like enthralled or corrupted\n" +
-				"**-** Beaming Ray and Stasis sometimes placing grounded allies over chasms\n" +
-				"**-** Crash bugs when using Stasis in some cases\n" +
-				"**-** Radiance not stunning for 3 turns as described\n" +
-				"**-** Various other rare crash bugs"));
-
-		changes = new ChangeInfo("BETA-3.0", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new HeroIcon(new PowerOfMany()), "Power of Many!",
-				"**The Cleric's third armor ability is now available!**\n\n" +
-				"**Power of Many** empowers an ally of your choice, or creates a new one in an empty space. This ability then lets the Cleric cast three new talent spells that work with this empowered ally.\n\n" +
-				"Power of many has a bunch of new ally-related behaviours, and I expect there'll be a bug or two somewhere. Please let me know if you encounter any!"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Existed Prior to BETA:**\n" +
-				"**-** Duelist's block ability not working properly with save/load\n" +
-				"**-** Minor visual errors"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		/*changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
-				"_-_ Released ..., ...\n" +
-				"_-_ ... days after Shattered v2.5.0\n\n" +
-				"Dev commentary will be added here in the future."));*/
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released February 27th, 2025\n" +
+				"_-_ 197 days after Shattered v2.5.0\n" +
+				"_-_ 548 days after Shattered v2.0.0\n\n" +
+				"Dev commentary will be added here in the future."));
 
 		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 1), "The Cleric!",
 				"**Shattered Pixel Dungeon has another new hero, making for six total!!**\n" +
@@ -150,7 +107,7 @@ public class v3_X_Changes {
 				"\n" +
 				"**The Paladin** is focused on melee spell combat and defensive power. Their effects most strongly synergize with weapons and armor."));
 
-		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 5), "Cleric Armor Abilities",
+		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 6), "Cleric Armor Abilities",
 				"**The Cleric has three lategame armor abilities as well!**\n" +
 				"\n" +
 				"**Ascended Form** grants the Cleric access to new spells, extra attack ranged, and shielding whenever they cast spells.\n" +
@@ -232,7 +189,8 @@ public class v3_X_Changes {
 				"**-** Duration of greater haste not being preserved on save/load\n" +
 				"**-** Disarming traps not teleporting the hero's weapon in some cases where they should\n" +
 				"**-** Cursed wand effects potentially applying levitation to immovable characters\n" +
-				"**-** Geomancer rockfall attack being cleared on save/load",
+				"**-** Geomancer rockfall attack being cleared on save/load\n" +
+				"**-** Duelist's block ability not working properly with save/load",
 
 				"**Misc.:**\n" +
 				"**-** Rat King's description sometimes being incorrect in journal\n" +
