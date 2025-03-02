@@ -696,9 +696,9 @@ public class HeroSelectScene extends PixelScene {
 								if (diff <= 0) {
 									long time = Game.realTime - (Game.realTime % DAY);
 
-									//earliest possible daily for v2.3.2 is Jan 30 2024
-									//which is 19,752 days after Jan 1 1970
-									time = Math.max(time, 19_752 * DAY);
+									//earliest possible daily for v3.0.1 is Mar 01 2025
+									//which is 20,148 days days after Jan 1 1970
+									time = Math.max(time, 20_148 * DAY);
 
 									SPDSettings.lastDaily(time);
 									Dungeon.dailyReplay = false;

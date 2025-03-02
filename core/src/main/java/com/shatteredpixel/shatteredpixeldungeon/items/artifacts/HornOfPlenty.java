@@ -262,11 +262,6 @@ public class HornOfPlenty extends Artifact {
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 
-		//pre-2.0.0 saves
-		if (partialCharge > 1){
-			partialCharge /= Hunger.STARVING/5f;
-		}
-
 		storedFoodEnergy = bundle.getInt(STORED);
 		
 		if (charge >= 8)       image = ItemSpriteSheet.ARTIFACT_HORN4;
