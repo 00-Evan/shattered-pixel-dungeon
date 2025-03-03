@@ -116,7 +116,7 @@ public class CavesLevel extends RegularLevel {
 	@Override
 	public boolean activateTransition(Hero hero, LevelTransition transition) {
 		if (transition.type == LevelTransition.Type.BRANCH_EXIT
-				&& (!Blacksmith.Quest.given() || Blacksmith.Quest.oldQuestMineBlocked() || Blacksmith.Quest.completed() || !Blacksmith.Quest.started())) {
+				&& (!Blacksmith.Quest.given() || Blacksmith.Quest.completed() || !Blacksmith.Quest.started())) {
 
 			Blacksmith smith = null;
 			for (Char c : Actor.chars()){
@@ -126,11 +126,9 @@ public class CavesLevel extends RegularLevel {
 				}
 			}
 
-			if (Blacksmith.Quest.oldQuestMineBlocked()){
-				GLog.w(Messages.get(Blacksmith.class, "cant_enter_old"));
-			} else if (smith == null || !Blacksmith.Quest.given() || Blacksmith.Quest.completed()) {
+			if (smith == null || !Blacksmith.Quest.given() || Blacksmith.Quest.completed()) {
 				GLog.w(Messages.get(Blacksmith.class, "entrance_blocked"));
-			} else if (!Blacksmith.Quest.started() && Blacksmith.Quest.Type() != Blacksmith.Quest.OLD){
+			} else {
 				final Pickaxe pick = hero.belongings.getItem(Pickaxe.class);
 				Game.runOnRenderThread(new Callback() {
 					@Override

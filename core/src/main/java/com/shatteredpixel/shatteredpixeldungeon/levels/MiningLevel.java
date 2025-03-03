@@ -238,7 +238,7 @@ public class MiningLevel extends CavesLevel {
 	@Override
 	public boolean activateTransition(Hero hero, LevelTransition transition) {
 		if (transition.type == LevelTransition.Type.BRANCH_ENTRANCE
-				&& !Blacksmith.Quest.completed() && Blacksmith.Quest.Type() != Blacksmith.Quest.OLD) {
+				&& !Blacksmith.Quest.completed()) {
 
 			if (hero.belongings.getItem(Pickaxe.class) == null){
 				Game.runOnRenderThread(new Callback() {
