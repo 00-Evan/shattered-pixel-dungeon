@@ -75,7 +75,7 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 		object = bundle.getInt( OBJECT );
-		percentDmgBonus = bundle.getInt( BONUS );
+		percentDmgBonus = bundle.getFloat( BONUS );
 	}
 
 	@Override
