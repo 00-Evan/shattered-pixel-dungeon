@@ -64,6 +64,10 @@ public class Feint extends ArmorAbility {
 		return HeroIcon.FEINT;
 	}
 
+	public boolean useTargeting(){
+		return false;
+	}
+
 	@Override
 	public String targetingPrompt() {
 		return Messages.get(this, "prompt");
