@@ -227,11 +227,11 @@ public class Dart extends MissileWeapon {
 	public String info() {
 		updateCrossbow();
 		if (bow != null && !bow.isIdentified()){
-			int level = bow.level();
-			//temporarily sets the level of the bow to 0 for IDing purposes
-			bow.level(0);
+			Crossbow realBow = bow;
+			//create a temporary bow for IDing purposes
+			bow = new Crossbow();
 			String info = super.info();
-			bow.level(level);
+			bow = realBow;
 			return info;
 		} else {
 			return super.info();
