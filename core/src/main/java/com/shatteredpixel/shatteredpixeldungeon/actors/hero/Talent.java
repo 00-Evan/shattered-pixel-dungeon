@@ -814,7 +814,9 @@ public enum Talent {
 					removed = true;
 				}
 			}
-			if (removed) new Flare( 6, 32 ).color(0xFF4CD2, true).show( Dungeon.hero.sprite, 2f );
+			if (removed && Dungeon.hero.sprite != null) {
+				new Flare( 6, 32 ).color(0xFF4CD2, true).show( Dungeon.hero.sprite, 2f );
+			}
 		}
 	}
 
