@@ -556,7 +556,14 @@ public class Toolbar extends Component {
 		}
 
 		float shift = 0;
-		switch(Mode.valueOf(SPDSettings.toolbarMode())){
+		Toolbar.Mode mode;
+		try {
+			mode = Mode.valueOf(SPDSettings.toolbarMode());
+		} catch (Exception e){
+			Game.reportException(e);
+			mode = PixelScene.landscape() ? Mode.GROUP : Mode.SPLIT;
+		}
+		switch(mode){
 			case SPLIT:
 				btnWait.setPos(x, y);
 				btnSearch.setPos(btnWait.right(), y);
