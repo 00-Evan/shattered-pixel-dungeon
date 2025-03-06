@@ -413,7 +413,6 @@ public class SurfaceScene extends PixelScene {
 		
 		public Avatar( HeroClass cl ) {
 			super( Assets.Sprites.AVATARS );
-			//TODO CLERIC victory sprite
 			frame( new TextureFilm( texture, WIDTH, HEIGHT ).get( cl.ordinal() ) );
 		}
 	}
