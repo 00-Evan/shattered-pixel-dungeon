@@ -54,79 +54,81 @@ public class GameLog extends Component implements Signal.Listener<String> {
 	@Override
 	public synchronized void update() {
 
-		if (!textsToAdd.isEmpty()){
-			int maxLines = SPDSettings.interfaceSize() > 0 ? 5 : 3;
-			for (String text : textsToAdd){
-				if (length != entries.size()){
-					clear();
-					recreateLines();
-				}
+		synchronized (textsToAdd){
+			if (!textsToAdd.isEmpty()){
+				int maxLines = SPDSettings.interfaceSize() > 0 ? 5 : 3;
+				for (String text : textsToAdd){
+					if (length != entries.size()){
+						clear();
+						recreateLines();
+					}
 
-				if (text.equals( GLog.NEW_LINE )){
-					lastEntry = null;
-					continue;
-				}
-
-				int color = CharSprite.DEFAULT;
-				if (text.startsWith( GLog.POSITIVE )) {
-					text = text.substring( GLog.POSITIVE.length() );
-					color = CharSprite.POSITIVE;
-				} else
-				if (text.startsWith( GLog.NEGATIVE )) {
-					text = text.substring( GLog.NEGATIVE.length() );
-					color = CharSprite.NEGATIVE;
-				} else
-				if (text.startsWith( GLog.WARNING )) {
-					text = text.substring( GLog.WARNING.length() );
-					color = CharSprite.WARNING;
-				} else
-				if (text.startsWith( GLog.HIGHLIGHT )) {
-					text = text.substring( GLog.HIGHLIGHT.length() );
-					color = CharSprite.NEUTRAL;
-				}
-
-				if (lastEntry != null && color == lastColor && lastEntry.nLines < maxLines) {
-
-					String lastMessage = lastEntry.text();
-					lastEntry.text( lastMessage.length() == 0 ? text : lastMessage + " " + text );
-
-					entries.get( entries.size() - 1 ).text = lastEntry.text();
-
-				} else {
-
-					lastEntry = PixelScene.renderTextBlock( text, 6 );
-					lastEntry.hardlight( color );
-					lastColor = color;
-					add( lastEntry );
-
-					entries.add( new Entry( text, color ) );
-
-				}
-
-				if (length > 0) {
-					int nLines;
-					do {
-						nLines = 0;
-						for (int i = 0; i < length-1; i++) {
-							nLines += ((RenderedTextBlock) members.get(i)).nLines;
-						}
-
-						if (nLines > maxLines) {
-							RenderedTextBlock r = ((RenderedTextBlock) members.get(0));
-							remove(r);
-							r.destroy();
-
-							entries.remove( 0 );
-						}
-					} while (nLines > maxLines);
-					if (entries.isEmpty()) {
+					if (text.equals( GLog.NEW_LINE )){
 						lastEntry = null;
+						continue;
+					}
+
+					int color = CharSprite.DEFAULT;
+					if (text.startsWith( GLog.POSITIVE )) {
+						text = text.substring( GLog.POSITIVE.length() );
+						color = CharSprite.POSITIVE;
+					} else
+					if (text.startsWith( GLog.NEGATIVE )) {
+						text = text.substring( GLog.NEGATIVE.length() );
+						color = CharSprite.NEGATIVE;
+					} else
+					if (text.startsWith( GLog.WARNING )) {
+						text = text.substring( GLog.WARNING.length() );
+						color = CharSprite.WARNING;
+					} else
+					if (text.startsWith( GLog.HIGHLIGHT )) {
+						text = text.substring( GLog.HIGHLIGHT.length() );
+						color = CharSprite.NEUTRAL;
+					}
+
+					if (lastEntry != null && color == lastColor && lastEntry.nLines < maxLines) {
+
+						String lastMessage = lastEntry.text();
+						lastEntry.text( lastMessage.length() == 0 ? text : lastMessage + " " + text );
+
+						entries.get( entries.size() - 1 ).text = lastEntry.text();
+
+					} else {
+
+						lastEntry = PixelScene.renderTextBlock( text, 6 );
+						lastEntry.hardlight( color );
+						lastColor = color;
+						add( lastEntry );
+
+						entries.add( new Entry( text, color ) );
+
+					}
+
+					if (length > 0) {
+						int nLines;
+						do {
+							nLines = 0;
+							for (int i = 0; i < length-1; i++) {
+								nLines += ((RenderedTextBlock) members.get(i)).nLines;
+							}
+
+							if (nLines > maxLines) {
+								RenderedTextBlock r = ((RenderedTextBlock) members.get(0));
+								remove(r);
+								r.destroy();
+
+								entries.remove( 0 );
+							}
+						} while (nLines > maxLines);
+						if (entries.isEmpty()) {
+							lastEntry = null;
+						}
 					}
 				}
-			}
 
-			layout();
-			textsToAdd.clear();
+				layout();
+				textsToAdd.clear();
+			}
 		}
 		super.update();
 	}
@@ -144,8 +146,10 @@ public class GameLog extends Component implements Signal.Listener<String> {
 	}
 
 	@Override
-	public synchronized boolean onSignal( String text ) {
-		textsToAdd.add(text);
+	public boolean onSignal( String text ) {
+		synchronized (textsToAdd) {
+			textsToAdd.add(text);
+		}
 		return false;
 	}
 
@@ -171,7 +175,9 @@ public class GameLog extends Component implements Signal.Listener<String> {
 	}
 
 	public static void wipe() {
-		entries.clear();
-		textsToAdd.clear();
+		synchronized (textsToAdd) {
+			entries.clear();
+			textsToAdd.clear();
+		}
 	}
 }
