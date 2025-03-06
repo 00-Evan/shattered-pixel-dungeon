@@ -61,7 +61,6 @@ import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class UnstableSpellbook extends Artifact {
 
@@ -330,8 +329,10 @@ public class UnstableSpellbook extends Artifact {
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle(bundle);
 		scrolls.clear();
-		if (bundle.contains(SCROLLS)) {
-			Collections.addAll(scrolls, bundle.getClassArray(SCROLLS));
+		if (bundle.contains(SCROLLS) && bundle.getClassArray(SCROLLS) != null) {
+			for (Class<?> scroll : bundle.getClassArray(SCROLLS)) {
+				if (scroll != null) scrolls.add(scroll);
+			}
 		}
 	}
 
