@@ -86,6 +86,11 @@ public class BeamingRay extends TargetedClericSpell {
 
 		int telePos = target;
 
+		if (!Dungeon.level.insideMap(telePos)){
+			GLog.w(Messages.get(this, "no_space"));
+			return;
+		}
+
 		if (Dungeon.level.solid[telePos] || !Dungeon.level.heroFOV[telePos] || Actor.findChar(telePos) != null){
 			telePos = -1;
 			for (int i : PathFinder.NEIGHBOURS8){
