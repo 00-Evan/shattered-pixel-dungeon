@@ -194,14 +194,6 @@ public class Necromancer extends Mob {
 	public void summonMinion(){
 		if (Actor.findChar(summoningPos) != null) {
 
-			//cancel if character cannot be moved
-			if (Char.hasProp(Actor.findChar(summoningPos), Property.IMMOVABLE)){
-				summoning = false;
-				((NecromancerSprite)sprite).finishSummoning();
-				spend(TICK);
-				return;
-			}
-
 			int pushPos = pos;
 			for (int c : PathFinder.NEIGHBOURS8) {
 				if (Actor.findChar(summoningPos + c) == null
@@ -210,6 +202,11 @@ public class Necromancer extends Mob {
 						&& Dungeon.level.trueDistance(pos, summoningPos + c) > Dungeon.level.trueDistance(pos, pushPos)) {
 					pushPos = summoningPos + c;
 				}
+			}
+
+			//no push if char is immovable
+			if (Char.hasProp(Actor.findChar(summoningPos), Property.IMMOVABLE)){
+				pushPos = pos;
 			}
 
 			//push enemy, or wait a turn if there is no valid pushing position
