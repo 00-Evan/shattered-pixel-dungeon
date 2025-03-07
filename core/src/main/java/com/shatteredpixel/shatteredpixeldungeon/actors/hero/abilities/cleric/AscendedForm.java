@@ -75,6 +75,8 @@ public class AscendedForm extends ArmorAbility {
 
 		{
 			type = buffType.POSITIVE;
+
+			detachesAtZero = true;
 		}
 
 		public static float DURATION = 10f;
@@ -112,21 +114,6 @@ public class AscendedForm extends ArmorAbility {
 
 		public void extend( int amt ){
 			left += amt;
-		}
-
-		@Override
-		//logic edited slightly as buff should not detach
-		public int absorbDamage(int dmg) {
-			if (shielding() <= 0) return dmg;
-
-			if (shielding() >= dmg){
-				decShield(dmg);
-				dmg = 0;
-			} else {
-				dmg -= shielding();
-				decShield(shielding());
-			}
-			return dmg;
 		}
 
 		@Override
