@@ -106,6 +106,14 @@ public class HolyWeapon extends ClericSpell {
 			super.detach();
 			Item.updateQuickslot();
 		}
+
+		public void extend(float extension){
+			if (cooldown()+extension <= 2*DURATION){
+				spend(extension);
+			} else {
+				postpone(2*DURATION);
+			}
+		}
 	}
 
 }
