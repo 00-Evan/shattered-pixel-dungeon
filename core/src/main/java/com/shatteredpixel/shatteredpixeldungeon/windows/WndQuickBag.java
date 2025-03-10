@@ -109,6 +109,7 @@ public class WndQuickBag extends Window {
 						int idx = Dungeon.quickslot.getSlot(WndQuickBag.bag);
 						if (idx != -1){
 							QuickSlotButton.useTargeting(idx);
+							bag.quickUseItem = item;
 						}
 					}
 				}
