@@ -83,6 +83,51 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("v3.0.1", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.BUFFS.get(), "Balance Changes",
+				"So far the Cleric is doing surprisingly well balance-wise! There are definitely some things to adjust, but nothing that's serious enough to need doing in a patch. I'm just making one change to put a limit on ring of energy shenanigans for the Paladin:\n" +
+				"**- Holy Weapon and Ward** can now be extended to a max of 100 turns at a time.\n" +
+				"\n" +
+				"After v3.0's nerf to the Mossy Clump, I'm going to experiment with scaling back its absurd upgrade cost. Hopefully it's at a power level now where it doesn't need to cost massively more than other trinkets:\n" +
+				"**- Mossy Clump** upgrade energy cost reduced to 10/15/20 from 20/25/30. This is now the same as other 'higher cost' trinkets."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"Firstly, two trinket changes that are meant as QoL, but are effectively mild buffs:\n" +
+				"**-** Salt Cube's regen reduction now automatically disables itself during boss fights, the trinket doesn't need to be dropped.\n" +
+				"**-** Waterskin drinking now more intelligently handles the extra healing from vial of blood, no longer consuming excess dew.\n" +
+				"\n" +
+				"And some other things:\n" +
+				"**-** Updated Translations\n" +
+				"**-** Cursed wand pitfall effect no longer drops items if triggered via wondrous resin\n" +
+				"**-** Feint armor ability no longer autotargets\n" +
+				"**-** Removed support for runs in progress from prior to v2.3.2 (Jan. 2024)\n" +
+				"**-** Removed internal code for old blacksmith quest from prior to v2.2 (Oct. 2023)"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by v3.0:**\n" +
+				"**-** Enemies getting many actions after recovering from transmogrification\n" +
+				"**-** Save/load errors with sniper's mark buff\n" +
+				"**-** Incorrect shielding amount shown when using Warrior's remains item\n" +
+				"**-** Various uncommon crash bugs\n" +
+				"\n" +
+				"**Existed Prior to v3.0:**\n" +
+				"**-** Exploit involving unidentified crossbow and curse infusion\n" +
+				"**-** Exploit involving placing wards on a necromancer's summoning position\n" +
+				"**-** Shocking enchantment missing valid targets in some cases\n" +
+				"**-** Rare cases where bees would refuse to attack near enemies vs. far ones\n" +
+				"**-** quick-using an item from a bag not using that item's autotarget properties\n" +
+				"**-** Alchemy guide items being greyed out in main menu\n" +
+				"**-** Various rare crash bugs\n" +
+				"**-** Various minor visual & textual errors"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
