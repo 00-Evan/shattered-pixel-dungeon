@@ -82,4 +82,8 @@ public class KeyEvent {
 		}
 		keyEvents.clear();
 	}
+
+	public static boolean isKeyboardKey(int keyCode){
+		return keyCode == 0 || !ControllerHandler.icControllerKey(keyCode);
+	}
 }

@@ -509,7 +509,9 @@ public class WndKeyBindings extends Window {
 			}
 
 			//ignore controller buttons on key bindings, and vice-versa
-			if (ControllerHandler.icControllerKey(event.code) != controller){
+			if (controller && !ControllerHandler.icControllerKey(event.code)){
+				return true;
+			} else if (!controller && !KeyEvent.isKeyboardKey(event.code)){
 				return true;
 			}
 
