@@ -76,12 +76,12 @@ public class StatusPane extends Component {
 	private BusyIndicator busy;
 	private CircleArc counter;
 
-	private static String asset = Assets.Interfaces.STATUS;
-
 	private boolean large;
 
 	public StatusPane( boolean large ){
 		super();
+
+		String asset = Assets.Interfaces.STATUS;
 
 		this.large = large;
 
