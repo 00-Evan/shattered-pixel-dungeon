@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -41,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
 import com.watabou.utils.Reflection;
 
 public class RecallInscription extends ClericSpell {
@@ -79,7 +81,14 @@ public class RecallInscription extends ClericSpell {
 			if (item instanceof InventoryStone){
 				((InventoryStone) item).directActivate();
 			} else {
-				item.doThrow(hero);
+				//we're already on the render thread, but we want to delay this
+				//as things like time freeze cancel can stop stone throwing from working
+				ShatteredPixelDungeon.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						item.doThrow(hero);
+					}
+				});
 			}
 		}
 
