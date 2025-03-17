@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.watabou.noosa.TextureFilm;
+import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 
@@ -77,8 +78,10 @@ public class BlacksmithSprite extends MobSprite {
 		
 		if (visible && emitter != null && anim == idle) {
 			emitter.burst( Speck.factory( Speck.FORGE ), 3 );
-			float volume = 0.2f / (Dungeon.level.distance( ch.pos, Dungeon.hero.pos ));
-			Sample.INSTANCE.play( Assets.Sounds.EVOKE, volume, volume, 0.8f  );
+			if (!Music.INSTANCE.paused()) {
+				float volume = 0.2f / (Dungeon.level.distance(ch.pos, Dungeon.hero.pos));
+				Sample.INSTANCE.play(Assets.Sounds.EVOKE, volume, volume, 0.8f);
+			}
 		}
 	}
 
