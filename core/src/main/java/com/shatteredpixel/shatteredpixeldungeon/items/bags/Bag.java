@@ -61,9 +61,7 @@ public class Bag extends Item implements Iterable<Item> {
 	@Override
 	public int targetingPos(Hero user, int dst) {
 		if (quickUseItem != null){
-			int target = quickUseItem.targetingPos(user, dst);
-			quickUseItem = null;
-			return target;
+			return quickUseItem.targetingPos(user, dst);
 		} else {
 			return super.targetingPos(user, dst);
 		}
