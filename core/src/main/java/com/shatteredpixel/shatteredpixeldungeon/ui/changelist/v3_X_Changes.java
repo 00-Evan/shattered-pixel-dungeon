@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
+import com.badlogic.gdx.utils.SharedLibraryLoader;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -34,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TalentIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Image;
+import com.watabou.utils.DeviceCompat;
 
 import java.util.ArrayList;
 
@@ -83,9 +85,36 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v3.0.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		if (DeviceCompat.isDesktop() && SharedLibraryLoader.isLinux) {
+			changes.addButton(new ChangeButton(Icons.DISPLAY.get(), "A Note for Steam Deck users",
+					"A bug was fixed in this patch which affected display scaling on Steam Deck. Due to a quirk in how the Steam Deck reported display dimensions, the game incorrectly thought Steam Deck's screen was about 4\", instead of 7\".\n" +
+					"\n" +
+					"As a result of this fix, you might notice that the interface appears differently as it now defaults to the 'full' UI mode instead of 'mobile'. If you prefer the previous interface mode, you can swap to it in the settings by using the mobile interface mode and 5x interface scale."));
+		}
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**-** Music muting while game is in background on desktop now also applies to blacksmith's hammering sfx\n" +
+				"**-** Improved number rounding logic when damage hero takes is affected by several modifiers at once\n" +
+				"**-** Updated translations and translator credits"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by v3.0:**\n" +
+				"**-** Errors with Android golden supporter UI and full interface mode\n" +
+				"**-** Cleric's Recall Glyph spell not working with some runestones while time was frozen\n" +
+				"\n" +
+				"**Existed Prior to v3.0:**\n" +
+				"**-** Game incorrectly thinking it is on a phone screen when played on Steam Deck\n" +
+				"**-** Water of Awareness buff persisting between floors if the hero is very fast\n" +
+				"**-** Various errors when saving/loading custom controller bindings\n" +
+				"**-** Visual errors when Tengu's sprite animations are frozen (e.g. via paralysis)\n" +
+				"**-** Characters still appearing as visible if knocked out of hero FOV in specific cases\n" +
+				"**-** Talisman of Foresight's scry ability not detecting hiding mimics\n" +
+				"**-** Quick-using an item from a bag not using that item's autotarget properties (for real this time)\n"));
 
 		changes = new ChangeInfo("v3.0.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
