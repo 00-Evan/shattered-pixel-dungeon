@@ -232,6 +232,10 @@ public class Hero extends Char {
 	
 	private ArrayList<Mob> visibleEnemies;
 
+	private static class Polished {
+		static private ArrayList<Mob> spottedEnemies;
+	}
+
 	//This list is maintained so that some logic checks can be skipped
 	// for enemies we know we aren't seeing normally, resulting in better performance
 	public ArrayList<Mob> mindVisionEnemies = new ArrayList<>();
@@ -245,6 +249,7 @@ public class Hero extends Char {
 		belongings = new Belongings( this );
 		
 		visibleEnemies = new ArrayList<>();
+		Polished.spottedEnemies = new ArrayList<>();
 	}
 	
 	public void updateHT( boolean boostHP ){
@@ -1635,6 +1640,7 @@ public class Hero extends Char {
 		ArrayList<Mob> visible = new ArrayList<>();
 
 		boolean newMob = false;
+		boolean firstTime = false;
 
 		Mob target = null;
 		for (Mob m : Dungeon.level.mobs.toArray(new Mob[0])) {
@@ -1646,6 +1652,11 @@ public class Hero extends Char {
 				visible.add(m);
 				if (!visibleEnemies.contains( m )) {
 					newMob = true;
+
+					if(!Polished.spottedEnemies.contains(m)) {
+						Polished.spottedEnemies.add(m);
+						firstTime = true;
+					}
 				}
 
 				//only do a simple check for mind visioned enemies, better performance
@@ -1679,6 +1690,10 @@ public class Hero extends Char {
 				Dungeon.observe();
 			}
 			interrupt();
+
+			if(firstTime) {
+				GameScene.Polished.blockInput();
+			}
 		}
 
 		visibleEnemies = visible;
@@ -2494,6 +2509,7 @@ public class Hero extends Char {
 			GLog.w( Messages.get(this, "noticed_smth") );
 			Sample.INSTANCE.play( Assets.Sounds.SECRET );
 			interrupt();
+			GameScene.Polished.blockInput();
 		}
 
 		if (foresight){

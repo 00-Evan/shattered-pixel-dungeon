@@ -207,6 +207,19 @@ public class GameScene extends PixelScene {
 	{
 		inGameScene = true;
 	}
+
+	public static class Polished {
+		//millis
+		private static final int inputBlock = 550;
+		private static long inputBlockTimer = 0;
+
+		public static void blockInput() {
+			inputBlockTimer = Game.realTime + inputBlock;
+		}
+		public static boolean canInput() {
+			return (Game.realTime > inputBlockTimer || !SPDSettings.Polished.inputBlock());
+		}
+	}
 	
 	@Override
 	public void create() {
@@ -1437,6 +1450,8 @@ public class GameScene extends PixelScene {
 	}
 	
 	public static void handleCell( int cell ) {
+		if(!Polished.canInput()) return;
+
 		cellSelector.select( cell, PointerEvent.LEFT );
 	}
 	
