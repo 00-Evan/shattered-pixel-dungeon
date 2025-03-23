@@ -27,6 +27,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Stamina;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
@@ -206,7 +208,7 @@ public class Necromancer extends Mob {
 		}
 		
 		//heal skeleton first
-		if (mySkeleton.HP < mySkeleton.HT){
+		/*if (mySkeleton.HP < mySkeleton.HT){
 
 			if (sprite.visible || mySkeleton.sprite.visible) {
 				sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
@@ -225,9 +227,35 @@ public class Necromancer extends Mob {
 			}
 			
 			Buff.affect(mySkeleton, Adrenaline.class, 3f);
+		}*/
+
+
+		if (sprite.visible || mySkeleton.sprite.visible) {
+			sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
 		}
 
-		polished.zapCooldown = Random.NormalIntRange(2, 2);
+		mySkeleton.HP = Math.min(mySkeleton.HP + mySkeleton.HT/5, mySkeleton.HT);
+		if (mySkeleton.sprite.visible) {
+			mySkeleton.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString( mySkeleton.HT/5 ), FloatingText.HEALING );
+		}
+
+		if (mySkeleton.buff(Adrenaline.class) != null) {
+			Buff.prolong(mySkeleton, Adrenaline.class, 5f);
+		}
+		else if (mySkeleton.buff(Haste.class) != null) {
+			Buff.detach(mySkeleton, Haste.class);
+			Buff.affect(mySkeleton, Adrenaline.class, 3f);
+		}
+		else if (mySkeleton.buff(Stamina.class) != null) {
+			Buff.detach(mySkeleton, Stamina.class);
+			Buff.affect(mySkeleton, Haste.class, 3f);
+		}
+		else {
+			Buff.affect(mySkeleton, Stamina.class, 3f);
+		}
+
+
+		polished.zapCooldown = Random.NormalIntRange(1, 1);
 		next();
 	}
 
@@ -273,7 +301,7 @@ public class Necromancer extends Mob {
 		}
 
 		summoning = firstSummon = false;
-		polished.summonCooldown = Random.NormalIntRange(2, 3);
+		polished.summonCooldown = Random.NormalIntRange(2, 2);
 
 		mySkeleton = new NecroSkeleton();
 		mySkeleton.pos = summoningPos;
@@ -417,7 +445,6 @@ public class Necromancer extends Mob {
 
 				} else {
 					//do nothing
-					spend(TICK);
 					return true;
 				}
 				
