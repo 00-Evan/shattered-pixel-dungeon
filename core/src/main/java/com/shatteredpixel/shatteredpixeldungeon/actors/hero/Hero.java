@@ -92,6 +92,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
@@ -107,6 +108,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArm
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Berry;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.CrystalKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
@@ -130,6 +132,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfTenacity;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfChallenge;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ThirteenLeafClover;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
@@ -157,6 +160,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.AlchemyScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -232,8 +236,23 @@ public class Hero extends Char {
 	
 	private ArrayList<Mob> visibleEnemies;
 
-	private static class Polished {
+	public static class Polished {
 		static private ArrayList<Mob> spottedEnemies;
+
+		public static int trampledItemsLast = 0;
+		private static boolean autoPickUp(Heap heap) {
+			if (heap == null) return false;
+
+			Item item = heap.peek();
+			Waterskin waterskin = Dungeon.hero.belongings.getItem(Waterskin.class);
+
+			if (item instanceof Dewdrop && waterskin == null) return false;
+			if (item instanceof Dewdrop && waterskin.isFull()) return false;
+			if (!(item instanceof Dewdrop || item instanceof Plant.Seed || item instanceof Runestone || item instanceof Berry)) return false;
+			if(!Dungeon.hero.belongings.backpack.canHold(item)) return false;
+
+			return (SPDSettings.Polished.autoPickup() && Dungeon.hero.visibleEnemies.isEmpty());
+		}
 	}
 
 	//This list is maintained so that some logic checks can be skipped
@@ -942,6 +961,8 @@ public class Hero extends Char {
 		curAction = null;
 		GameScene.resetKeyHold();
 		resting = false;
+
+		Polished.trampledItemsLast = 0;
 	}
 	
 	public void resume() {
@@ -1744,6 +1765,21 @@ public class Hero extends Char {
 	public boolean justMoved = false;
 	
 	private boolean getCloser( final int target ) {
+
+		//if hero trampled an item from grass last move, pick it up
+		if (Polished.trampledItemsLast > 0) {
+			Polished.trampledItemsLast--;
+
+			Heap heap = Dungeon.level.heaps.get(Dungeon.hero.pos);
+			if(Polished.autoPickUp(heap)) {
+				Item item = heap.peek();
+				if(item.doPickUp(Dungeon.hero)) {
+					heap.pickUp();
+					justMoved = false;
+					return true;
+				}
+			}
+		}
 
 		if (target == pos)
 			return false;
