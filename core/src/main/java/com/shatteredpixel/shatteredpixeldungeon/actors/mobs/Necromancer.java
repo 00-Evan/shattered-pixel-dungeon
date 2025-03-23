@@ -61,11 +61,23 @@ public class Necromancer extends Mob {
 		properties.add(Property.UNDEAD);
 		
 		HUNTING = new Hunting();
+
+		//make sure Necromancer moves after its summon to not get cheesed
+		actPriority = MOB_PRIO - 1;
 	}
 	
 	public boolean summoning = false;
 	public int summoningPos = -1;
-	
+
+	public class Polished {
+		private static final String SUMMON_COOLDOWN = "summon_cooldown";
+		private static final String ZAP_COOLDOWN = "zap_cooldown";
+
+		public int summonCooldown = -1;
+		public int zapCooldown = -1;
+	}
+	Polished polished = new Polished();
+
 	protected boolean firstSummon = true;
 	
 	private NecroSkeleton mySkeleton;
@@ -77,7 +89,20 @@ public class Necromancer extends Mob {
 			summoning = false;
 			if (sprite instanceof NecromancerSprite) ((NecromancerSprite) sprite).cancelSummoning();
 		}
-		return super.act();
+
+		if( state == WANDERING && paralysed <= 0 &&
+			mySkeleton != null && mySkeleton.enemySeen && mySkeleton.target != -1 )
+		{
+			state = HUNTING;
+			enemy = mySkeleton.enemy;
+			target = mySkeleton.target;
+			alerted=true;
+		}
+
+		boolean next = super.act();
+		if(polished.summonCooldown > 0 && mySkeleton == null) polished.summonCooldown--;
+		if(polished.zapCooldown > 0) polished.zapCooldown--;
+		return next;
 	}
 
 	@Override
@@ -146,8 +171,15 @@ public class Necromancer extends Mob {
 		} else if (storedSkeletonID != -1){
 			bundle.put( MY_SKELETON, storedSkeletonID );
 		}
+
+		if (polished.summonCooldown != -1) {
+			bundle.put(Polished.SUMMON_COOLDOWN, polished.summonCooldown);
+		}
+		if (polished.zapCooldown != -1) {
+			bundle.put(Polished.ZAP_COOLDOWN, polished.zapCooldown);
+		}
 	}
-	
+
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
@@ -158,6 +190,13 @@ public class Necromancer extends Mob {
 		}
 		if (bundle.contains( MY_SKELETON )){
 			storedSkeletonID = bundle.getInt( MY_SKELETON );
+		}
+
+		if (bundle.contains( Polished.SUMMON_COOLDOWN )){
+			polished.summonCooldown = bundle.getInt( Polished.SUMMON_COOLDOWN );
+		}
+		if (bundle.contains( Polished.ZAP_COOLDOWN )){
+			polished.zapCooldown = bundle.getInt( Polished.ZAP_COOLDOWN );
 		}
 	}
 	
@@ -187,7 +226,8 @@ public class Necromancer extends Mob {
 			
 			Buff.affect(mySkeleton, Adrenaline.class, 3f);
 		}
-		
+
+		polished.zapCooldown = Random.NormalIntRange(2, 2);
 		next();
 	}
 
@@ -228,19 +268,24 @@ public class Necromancer extends Mob {
 						GLog.n( Messages.capitalize(Messages.get(Char.class, "kill", name())) );
 					}
 				}
-
-				spend(TICK);
 				return;
 			}
 		}
 
 		summoning = firstSummon = false;
+		polished.summonCooldown = Random.NormalIntRange(2, 3);
 
 		mySkeleton = new NecroSkeleton();
 		mySkeleton.pos = summoningPos;
 		GameScene.add( mySkeleton );
 		Dungeon.level.occupyCell( mySkeleton );
 		((NecromancerSprite)sprite).finishSummoning();
+
+		if(enemy != null) {
+			mySkeleton.aggro(enemy);
+			mySkeleton.target = target;
+		}
+		mySkeleton.teleportSpend();
 
 		for (Buff b : buffs()){
 			if (b.revivePersists) {
@@ -271,6 +316,7 @@ public class Necromancer extends Mob {
 			
 			if (summoning){
 				summonMinion();
+				spend(TICK);
 				return true;
 			}
 			
@@ -282,7 +328,7 @@ public class Necromancer extends Mob {
 			}
 			
 			//if enemy is seen, and enemy is within range, and we have no skeleton, summon a skeleton!
-			if (enemySeen && Dungeon.level.distance(pos, enemy.pos) <= 4 && mySkeleton == null){
+			if (enemySeen && Dungeon.level.distance(pos, enemy.pos) <= 4 && mySkeleton == null && polished.summonCooldown <= 0){
 				
 				summoningPos = -1;
 
@@ -311,7 +357,7 @@ public class Necromancer extends Mob {
 						Dungeon.hero.interrupt();
 					}
 					
-					spend( firstSummon ? TICK : 2*TICK );
+					spend( firstSummon ? TICK : TICK );
 				} else {
 					//wait for a turn
 					spend(TICK);
@@ -323,7 +369,7 @@ public class Necromancer extends Mob {
 				
 				spend(TICK);
 				
-				if (!fieldOfView[mySkeleton.pos]){
+				if (!fieldOfView[mySkeleton.pos] && alignment == mySkeleton.alignment) {
 					
 					//if the skeleton is not next to the enemy
 					//teleport them to the closest spot next to the enemy that can be seen
@@ -339,7 +385,7 @@ public class Necromancer extends Mob {
 							}
 						}
 						
-						if (telePos != -1){
+						if (telePos != -1) {
 							
 							ScrollOfTeleportation.appear(mySkeleton, telePos);
 							mySkeleton.teleportSpend();
@@ -355,7 +401,7 @@ public class Necromancer extends Mob {
 					
 					return true;
 					
-				} else {
+				} else if(polished.zapCooldown <= 0 && fieldOfView[mySkeleton.pos]) {
 					
 					//zap skeleton
 					if (mySkeleton.HP < mySkeleton.HT || mySkeleton.buff(Adrenaline.class) == null) {
@@ -366,10 +412,14 @@ public class Necromancer extends Mob {
 							onZapComplete();
 						}
 					}
-					
+
+					return true;
+
+				} else {
+					//do nothing
+					spend(TICK);
+					return true;
 				}
-				
-				return true;
 				
 			//otherwise, default to regular hunting behaviour
 			} else {
@@ -389,7 +439,7 @@ public class Necromancer extends Mob {
 			maxLvl = -5;
 			
 			//20/25 health to start
-			HP = 20;
+			//HP = 20;
 		}
 
 		@Override
