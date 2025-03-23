@@ -150,7 +150,7 @@ public class CellSelector extends ScrollArea {
 	}
 	
 	public void select( int cell, int button ) {
-		if (enabled && Dungeon.hero.ready && !GameScene.interfaceBlockingHero()
+		if (enabled && Dungeon.hero.ready && !GameScene.interfaceBlockingHero() && GameScene.Polished.canInput()
 				&& listener != null && cell != -1) {
 
 			switch (button){
@@ -393,7 +393,7 @@ public class CellSelector extends ScrollArea {
 	private int lastCellMoved = 0;
 
 	private boolean moveFromActions(GameAction... actions){
-		if (Dungeon.hero == null || !Dungeon.hero.ready){
+		if (Dungeon.hero == null || !Dungeon.hero.ready || !GameScene.Polished.canInput()){
 			return false;
 		}
 

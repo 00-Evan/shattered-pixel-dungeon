@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.features;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -51,8 +52,9 @@ public class HighGrass {
 	private static boolean freezeTrample = false;
 
 	public static void trample( Level level, int pos ) {
-		
 		if (freezeTrample) return;
+
+		int trampledItems = 0;
 		
 		Char ch = Actor.findChar(pos);
 		
@@ -106,6 +108,7 @@ public class HighGrass {
 						if (droppingBerry) {
 							dropped.countUp(1);
 							level.drop(new Berry(), pos).sprite.drop();
+							trampledItems++;
 						}
 					}
 
@@ -129,8 +132,10 @@ public class HighGrass {
 				if (Random.Float() < lootChance) {
 					if (Random.Float() < PetrifiedSeed.stoneInsteadOfSeedChance()) {
 						level.drop(Generator.randomUsingDefaults(Generator.Category.STONE), pos).sprite.drop();
+						trampledItems++;
 					} else {
 						level.drop(Generator.random(Generator.Category.SEED), pos).sprite.drop();
+						trampledItems++;
 					}
 				}
 				
@@ -144,6 +149,7 @@ public class HighGrass {
 
 				if (Random.Float() < lootChance) {
 					level.drop(new Dewdrop(), pos).sprite.drop();
+					trampledItems++;
 				}
 			}
 
@@ -160,6 +166,10 @@ public class HighGrass {
 			
 			CellEmitter.get(pos).burst(LeafParticle.LEVEL_SPECIFIC, 4);
 			if (Dungeon.level.heroFOV[pos]) Dungeon.observe();
+		}
+
+		if (ch instanceof Hero && SPDSettings.Polished.autoPickup()) {
+			Hero.Polished.trampledItemsLast = trampledItems;
 		}
 	}
 }
