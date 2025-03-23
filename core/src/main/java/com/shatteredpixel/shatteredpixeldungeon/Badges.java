@@ -154,7 +154,7 @@ public class Badges {
 		BOSS_SLAIN_4                ( 78 ),
 		ALL_RINGS_IDENTIFIED        , //still exists internally for pre-2.5 saves
 		ALL_ARTIFACTS_IDENTIFIED    , //still exists internally for pre-2.5 saves
-		ALL_RARE_ENEMIES            ( 79, BadgeType.JOURNAL ),
+		ALL_RARE_ENEMIES            ( 79, BadgeType.JOURNAL ), //no longer all, just 10 as of v3.1
 		DEATH_FROM_GRIM_TRAP        ( 80 ), //also disintegration traps
 		VICTORY                     ( 81 ),
 		BOSS_CHALLENGE_1            ( 82 ),
@@ -684,7 +684,7 @@ public class Badges {
 			displayBadge(Badge.CATALOG_POTIONS_SCROLLS);
 		}
 
-		if (Bestiary.RARE.totalEntities() == Bestiary.RARE.totalSeen()){
+		if (Bestiary.RARE.totalSeen() >= 10){
 			displayBadge(Badge.ALL_RARE_ENEMIES);
 		}
 
