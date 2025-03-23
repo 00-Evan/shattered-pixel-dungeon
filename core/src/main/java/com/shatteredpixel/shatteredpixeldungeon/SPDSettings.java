@@ -321,11 +321,15 @@ public class SPDSettings extends GameSettings {
 
 	public static class Polished {
 		public static final String KEY_INPUT_BLOCK		= "input_block";
+		public static final String KEY_AUTO_PICKUP		= "auto_pickup";
 
 		public static void inputBlock( boolean value ) { put(KEY_INPUT_BLOCK, value); }
 		public static boolean inputBlock(){
 			return getBoolean(KEY_INPUT_BLOCK, true);
 		}
+
+		public static void autoPickup( boolean value ) { put(KEY_AUTO_PICKUP, value); }
+		public static boolean autoPickup() {return getBoolean(KEY_AUTO_PICKUP, true);}
 	}
 
 	//Connectivity

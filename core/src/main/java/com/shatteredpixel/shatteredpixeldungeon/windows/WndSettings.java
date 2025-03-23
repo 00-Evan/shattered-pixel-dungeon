@@ -718,7 +718,7 @@ public class WndSettings extends WndTabbed {
 		ColorBlock sep3;
 
 		CheckBox chkInputBlock;
-		//CheckBox chkAutoPickUp;
+		CheckBox chkAutoPickUp;
 
 		@Override
 		protected void createChildren() {
@@ -802,17 +802,15 @@ public class WndSettings extends WndTabbed {
 			chkInputBlock.checked(SPDSettings.Polished.inputBlock());
 			add(chkInputBlock);
 
-			/*
 			chkAutoPickUp = new CheckBox(Messages.get(WndSettings.InputTab.this, "auto_pickup")){
 				@Override
 				protected void onClick() {
 					super.onClick();
-					SPDSettings.autoPickup(checked());
+					SPDSettings.Polished.autoPickup(checked());
 				}
 			};
-			chkAutoPickUp.checked(SPDSettings.autoPickup());
+			chkAutoPickUp.checked(SPDSettings.Polished.autoPickup());
 			add(chkAutoPickUp);
-			 */
 		}
 
 		@Override
@@ -857,10 +855,10 @@ public class WndSettings extends WndTabbed {
 
 			if (width > 200) {
 				chkInputBlock.setRect(0, sep3.y + 2*GAP, width / 2 - 1, BTN_HEIGHT);
-				//chkAutoPickUp.setRect(width / 2 + 1, sep3.y + 2*GAP, width / 2 - 1, BTN_HEIGHT);
+				chkAutoPickUp.setRect(width / 2 + 1, sep3.y + 2*GAP, width / 2 - 1, BTN_HEIGHT);
 			} else {
 				chkInputBlock.setRect(0, sep3.y + 2*GAP, width, BTN_HEIGHT);
-				//chkAutoPickUp.setRect(0, chkInputBlock.bottom()+GAP, width, BTN_HEIGHT);
+				chkAutoPickUp.setRect(0, chkInputBlock.bottom()+GAP, width, BTN_HEIGHT);
 			}
 
 		}
