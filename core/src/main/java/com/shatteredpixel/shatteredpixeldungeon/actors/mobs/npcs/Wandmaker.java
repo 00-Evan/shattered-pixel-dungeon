@@ -345,7 +345,9 @@ public class Wandmaker extends NPC {
 		
 		public static ArrayList<Room> spawnRoom( ArrayList<Room> rooms) {
 			questRoomSpawned = false;
-			if (!spawned && (type != 0 || (Dungeon.depth > 6 && Random.Int( 10 - Dungeon.depth ) == 0))) {
+			// in f7, 1/3 chance (3), in f8, 1/1 chance (1)
+			int inverseChance = Dungeon.depth == 7 ? 3 : 1;
+			if (!spawned && (type != 0 || (Dungeon.depth > 6 && Random.Int( inverseChance ) == 0))) {
 
 				// decide between 1,2, or 3 for quest type.
 				if (type == 0) type = Random.Int(3)+1;
