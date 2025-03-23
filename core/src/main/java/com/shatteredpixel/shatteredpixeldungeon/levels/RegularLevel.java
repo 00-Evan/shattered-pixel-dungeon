@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
+import com.shatteredpixel.shatteredpixeldungeon.Debug;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -215,6 +216,7 @@ public abstract class RegularLevel extends Level {
 	protected void createMobs() {
 		//on floor 1, 8 pre-set mobs are created so the player can get level 2.
 		int mobsToSpawn = Dungeon.depth == 1 ? 8 : mobLimit();
+		if(Debug.DEBUG_MODE) mobsToSpawn = Math.round(mobsToSpawn * Debug.Spawn_Multiplier);
 
 		ArrayList<Room> stdRooms = new ArrayList<>();
 		for (Room room : rooms) {

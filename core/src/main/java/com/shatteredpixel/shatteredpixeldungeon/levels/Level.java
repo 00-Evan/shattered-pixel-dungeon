@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
+import com.shatteredpixel.shatteredpixeldungeon.Debug;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
@@ -733,7 +734,14 @@ public abstract class Level implements Bundlable {
 		} else {
 			cooldown = TIME_TO_RESPAWN;
 		}
-		return cooldown / DimensionalSundial.spawnMultiplierAtCurrentTime();
+
+		cooldown /= DimensionalSundial.spawnMultiplierAtCurrentTime();
+
+		if(Debug.DEBUG_MODE) {
+			if(Debug.Respawn_Multiplier == 0) cooldown = Float.MAX_VALUE;
+			else cooldown /= Debug.Respawn_Multiplier;
+		}
+		return cooldown;
 	}
 
 	public boolean spawnMob(int disLimit){

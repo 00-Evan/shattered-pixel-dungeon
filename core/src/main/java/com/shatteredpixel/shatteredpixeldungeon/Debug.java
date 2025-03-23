@@ -1,6 +1,5 @@
 package com.shatteredpixel.shatteredpixeldungeon;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
@@ -14,7 +13,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Glaive;
 import com.watabou.utils.Reflection;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -22,6 +20,10 @@ public class Debug {
 
     //SHOULD ALWAYS BE SET TO FALSE ON OFFICIAL RELEASES.
     public static final boolean DEBUG_MODE = false;
+
+
+    public static float Spawn_Multiplier = 1;
+    public static float Respawn_Multiplier = 1;
 
     public static final int Starting_Floor = 1;
     public static final int Starting_HeroLevel = 1;
