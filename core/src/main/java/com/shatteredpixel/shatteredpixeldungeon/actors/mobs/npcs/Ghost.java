@@ -301,7 +301,7 @@ public class Ghost extends NPC {
 		}
 		
 		public static void spawn( SewerLevel level, Room room ) {
-			if (!spawned && Dungeon.depth > 1 && Random.Int( 5 - Dungeon.depth ) == 0) {
+			if (!spawned && Dungeon.depth > 1 && Random.Int( 4 - Dungeon.depth ) == 0) {
 				
 				Ghost ghost = new Ghost();
 				do {
@@ -312,14 +312,16 @@ public class Ghost extends NPC {
 				spawned = true;
 				//dungeon depth determines type of quest.
 				//depth2=fetid rat, 3=gnoll trickster, 4=great crab
-				type = Dungeon.depth-1;
+				//POLISHED: 2=fetid rat; 3=gnoll; 1/3 chance great crab instead.
+				type = Random.Float() < 0.33f ? 3 : Dungeon.depth-1;
 				
 				given = false;
 				processed = false;
 				depth = Dungeon.depth;
 
-				//50%:tier2, 30%:tier3, 15%:tier4, 5%:tier5
-				switch (Random.chances(new float[]{0, 0, 10, 6, 3, 1})){
+				//Shattered: 50%:tier2, 30%:tier3, 15%:tier4, 5%:tier5
+				//POLISHED: 50% t2; 35% t3; 15% t4
+				switch (Random.chances(new float[]{0, 0, 10, 7, 3, 0})){
 					default:
 					case 2: armor = new LeatherArmor(); break;
 					case 3: armor = new MailArmor();    break;
@@ -327,7 +329,8 @@ public class Ghost extends NPC {
 					case 5: armor = new PlateArmor();   break;
 				}
 				//50%:tier2, 30%:tier3, 15%:tier4, 5%:tier5
-				int wepTier = Random.chances(new float[]{0, 0, 10, 6, 3, 1});
+				//POLISHED: 50% t2; 35% t3; 15% t4
+				int wepTier = Random.chances(new float[]{0, 0, 10, 7, 3, 0});
 				weapon = (Weapon) Generator.random(Generator.wepTiers[wepTier - 1]);
 
 				//clear weapon's starting properties
@@ -336,17 +339,17 @@ public class Ghost extends NPC {
 				weapon.cursed = false;
 
 				//50%:+0, 30%:+1, 15%:+2, 5%:+3
+				//POLISHED: 40% +0; 50% +1; 10% +2
 				float itemLevelRoll = Random.Float();
 				int itemLevel;
-				if (itemLevelRoll < 0.5f){
+				if (itemLevelRoll < 0.4f){
 					itemLevel = 0;
-				} else if (itemLevelRoll < 0.8f){
+				} else if (itemLevelRoll < 0.9f){
 					itemLevel = 1;
-				} else if (itemLevelRoll < 0.95f){
-					itemLevel = 2;
 				} else {
-					itemLevel = 3;
+					itemLevel = 2;
 				}
+
 				weapon.upgrade(itemLevel);
 				armor.upgrade(itemLevel);
 
