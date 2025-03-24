@@ -403,7 +403,7 @@ public class Necromancer extends Mob {
 							ScrollOfTeleportation.appear(mySkeleton, telePos);
 							mySkeleton.teleportSpend(enemy);
 							//its actually 2 turns.
-							polished.tpCooldown = 3;
+							polished.tpCooldown = 2;
 						}
 					}
 					
