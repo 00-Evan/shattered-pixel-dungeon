@@ -223,12 +223,12 @@ public class Necromancer extends Mob {
 		if (mySkeleton.buff(Adrenaline.class) != null) {
 			Buff.prolong(mySkeleton, Adrenaline.class, 5f);
 		}
-		else if (mySkeleton.buff(Haste.class) != null) {
-			Buff.detach(mySkeleton, Haste.class);
+		else if (mySkeleton.buff(Speed.class) != null) {
+			Buff.detach(mySkeleton, Speed.class);
 			Buff.affect(mySkeleton, Adrenaline.class, 3f);
 		}
 		else {
-			Buff.affect(mySkeleton, Haste.class, 3f);
+			Buff.affect(mySkeleton, Speed.class, 3f);
 		}
 
 
