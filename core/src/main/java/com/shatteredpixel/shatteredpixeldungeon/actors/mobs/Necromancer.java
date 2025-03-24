@@ -239,9 +239,6 @@ public class Necromancer extends Mob {
 		else {
 			Buff.affect(mySkeleton, Speed.class, 3f);
 		}
-
-
-		polished.zapCooldown = 1;
 		next();
 	}
 
@@ -412,12 +409,13 @@ public class Necromancer extends Mob {
 				} else if(polished.zapCooldown <= 0 && fieldOfView[mySkeleton.pos]) {
 					
 					//zap skeleton
+					//its actually 1 turn
+					polished.zapCooldown = 2;
 					if (sprite != null && sprite.visible){
 						sprite.zap(mySkeleton.pos);
 						return false;
 					} else {
 						onZapComplete();
-						polished.zapCooldown++;
 					}
 
 					return true;
