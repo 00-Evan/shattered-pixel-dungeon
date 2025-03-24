@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Speed;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Stamina;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
@@ -206,28 +207,6 @@ public class Necromancer extends Mob {
 		if (mySkeleton == null || mySkeleton.sprite == null || !mySkeleton.isAlive()){
 			return;
 		}
-		
-		//heal skeleton first
-		/*if (mySkeleton.HP < mySkeleton.HT){
-
-			if (sprite.visible || mySkeleton.sprite.visible) {
-				sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
-			}
-			
-			mySkeleton.HP = Math.min(mySkeleton.HP + mySkeleton.HT/5, mySkeleton.HT);
-			if (mySkeleton.sprite.visible) {
-				mySkeleton.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString( mySkeleton.HT/5 ), FloatingText.HEALING );
-			}
-			
-		//otherwise give it adrenaline
-		} else if (mySkeleton.buff(Adrenaline.class) == null) {
-
-			if (sprite.visible || mySkeleton.sprite.visible) {
-				sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
-			}
-			
-			Buff.affect(mySkeleton, Adrenaline.class, 3f);
-		}*/
 
 
 		if (sprite.visible || mySkeleton.sprite.visible) {
@@ -379,7 +358,8 @@ public class Necromancer extends Mob {
 					if (Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[summoningPos]){
 						Dungeon.hero.interrupt();
 					}
-					
+
+					//leave this in case we change it later
 					spend( firstSummon ? TICK : TICK );
 				} else {
 					//wait for a turn
@@ -409,16 +389,8 @@ public class Necromancer extends Mob {
 						}
 						
 						if (telePos != -1) {
-							
 							ScrollOfTeleportation.appear(mySkeleton, telePos);
-							mySkeleton.teleportSpend();
-							
-							if (sprite != null && sprite.visible){
-								sprite.zap(telePos);
-								return false;
-							} else {
-								onZapComplete();
-							}
+							//mySkeleton.teleportSpend();
 						}
 					}
 					
@@ -427,13 +399,11 @@ public class Necromancer extends Mob {
 				} else if(polished.zapCooldown <= 0 && fieldOfView[mySkeleton.pos]) {
 					
 					//zap skeleton
-					if (mySkeleton.HP < mySkeleton.HT || mySkeleton.buff(Adrenaline.class) == null) {
-						if (sprite != null && sprite.visible){
-							sprite.zap(mySkeleton.pos);
-							return false;
-						} else {
-							onZapComplete();
-						}
+					if (sprite != null && sprite.visible){
+						sprite.zap(mySkeleton.pos);
+						return false;
+					} else {
+						onZapComplete();
 					}
 
 					return true;
@@ -442,10 +412,13 @@ public class Necromancer extends Mob {
 					//do nothing
 					return true;
 				}
-				
-			//otherwise, default to regular hunting behaviour
+
 			} else {
-				return super.act(enemyInFOV, justAlerted);
+				if(!enemySeen) return super.act(enemyInFOV, justAlerted);
+				else {
+					spend(TICK);
+					return true;
+				}
 			}
 		}
 	}
