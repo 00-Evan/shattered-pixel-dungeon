@@ -21,8 +21,30 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.Image;
+
 public class Speed extends FlavourBuff {
-	
-	public static final float DURATION = 10f;
-	
+
+	{
+		type = buffType.POSITIVE;
+	}
+
+	public static final float DURATION	= 20f;
+
+	@Override
+	public int icon() {
+		return BuffIndicator.HASTE;
+	}
+
+	@Override
+	public void tintIcon(Image icon) {
+		icon.hardlight(0f, 0.2f, 1f);
+	}
+
+	@Override
+	public float iconFadePercent() {
+		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
+	}
+
 }

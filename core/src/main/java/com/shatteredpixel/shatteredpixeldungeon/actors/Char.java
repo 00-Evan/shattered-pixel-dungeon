@@ -747,6 +747,7 @@ public abstract class Char extends Actor {
 		float speed = baseSpeed;
 		if ( buff( Cripple.class ) != null ) speed /= 2f;
 		if ( buff( Stamina.class ) != null) speed *= 1.5f;
+		if ( buff( Speed.class ) != null) speed *= 2f;
 		if ( buff( Adrenaline.class ) != null) speed *= 2f;
 		if ( buff( Haste.class ) != null) speed *= 3f;
 		if ( buff( Dread.class ) != null) speed *= 2f;
@@ -1089,9 +1090,6 @@ public abstract class Char extends Actor {
 		} else if (buff( Chill.class ) != null) {
 			timeScale *= buff( Chill.class ).speedFactor();
 		}
-		if (buff( Speed.class ) != null) {
-			timeScale *= 2.0f;
-		}
 		
 		super.spend( time / timeScale );
 	}
@@ -1346,7 +1344,7 @@ public abstract class Char extends Actor {
 		//A character that acts in an unchanging manner. immune to AI state debuffs or stuns/slows
 		STATIC( new HashSet<Class>(),
 				new HashSet<Class>( Arrays.asList(AllyBuff.class, Dread.class, Terror.class, Amok.class, Charm.class, Sleep.class,
-									Paralysis.class, Frost.class, Chill.class, Slow.class, Speed.class) ));
+									Paralysis.class, Frost.class, Chill.class, Slow.class) ));
 
 		private HashSet<Class> resistances;
 		private HashSet<Class> immunities;
