@@ -154,14 +154,19 @@ public abstract class ChampionEnemy extends Buff {
 			color = 0x8800FF;
 		}
 
+		public int Polished_cooldown = 2;
+
 		@Override
 		public float meleeDamageFactor(boolean adjacent) {
+			if(!adjacent) Polished_cooldown = 2;
 			return 1.25f;
 		}
 
 		@Override
 		public boolean canAttackWithExtraReach(Char enemy) {
-			if (Dungeon.level.distance( target.pos, enemy.pos ) > 4){
+			int range = Polished_cooldown <= 0 ? 4 : 1;
+
+			if (Dungeon.level.distance( target.pos, enemy.pos ) > range) {
 				return false;
 			} else {
 				boolean[] passable = BArray.not(Dungeon.level.solid, null);
