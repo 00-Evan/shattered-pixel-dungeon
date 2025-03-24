@@ -260,8 +260,8 @@ public class Dungeon {
 		quickslot.reset();
 		QuickSlotButton.reset();
 		Toolbar.swappedQuickslots = false;
-		
-		depth = 1;
+
+		depth = Debug.DEBUG_MODE ? Debug.Starting_Floor : 1;
 		branch = 0;
 		generatedLevels.clear();
 
@@ -816,6 +816,8 @@ public class Dungeon {
 		Statistics.restoreFromBundle( bundle );
 		Generator.restoreFromBundle( bundle );
 
+
+		Debug.LoadGame();
 	}
 	
 	public static Level loadLevel( int save ) throws IOException {
