@@ -38,7 +38,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.LostBackpack;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.BeaconOfReturning;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.WeakFloorRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -126,6 +128,9 @@ public class Notes {
 		WELL_OF_AWARENESS,
 		SACRIFICIAL_FIRE,
 		STATUE,
+
+		LOST_PACK,
+		BEACON_LOCATION,
 		
 		GHOST,
 		RAT_KING,
@@ -185,6 +190,11 @@ public class Notes {
 				case STATUE:
 					return new Image(new StatueSprite());
 
+				case LOST_PACK:
+					return Icons.get(Icons.BACKPACK_LRG);
+				case BEACON_LOCATION:
+					return new ItemSprite(ItemSpriteSheet.RETURN_BEACON);
+
 				case GHOST:
 					return new Image(new GhostSprite());
 				case RAT_KING:
@@ -212,6 +222,9 @@ public class Notes {
 				case LARGE_FLOOR:   return Messages.get(Level.Feeling.class, "large_title");
 				case TRAPS_FLOOR:   return Messages.get(Level.Feeling.class, "traps_title");
 				case SECRETS_FLOOR: return Messages.get(Level.Feeling.class, "secrets_title");
+
+				case LOST_PACK:     return Messages.get(LostBackpack.class, "name");
+				case BEACON_LOCATION:return Messages.get(BeaconOfReturning.class, "name");
 			}
 		}
 
@@ -238,6 +251,9 @@ public class Notes {
 				case WELL_OF_AWARENESS: return Messages.get(WaterOfAwareness.class, "desc");
 				case SACRIFICIAL_FIRE:  return Messages.get(SacrificialFire.class, "desc");
 				case STATUE:            return Messages.get(Statue.class, "desc");
+
+				case LOST_PACK:         return Messages.get(LostBackpack.class, "desc");
+				case BEACON_LOCATION:   return Messages.get(BeaconOfReturning.class, "desc");
 
 				case GHOST:         return Messages.get(Ghost.class, "desc");
 				case RAT_KING:      return new RatKing().description(); //variable description based on holiday/run state
