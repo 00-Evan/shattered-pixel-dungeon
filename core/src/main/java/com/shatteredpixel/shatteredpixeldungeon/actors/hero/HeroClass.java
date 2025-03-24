@@ -152,7 +152,7 @@ public enum HeroClass {
 			}
 		}
 
-		Debug.Starting_Bag();
+		Debug.StartGame();
 	}
 
 	public Badges.Badge masteryBadge() {

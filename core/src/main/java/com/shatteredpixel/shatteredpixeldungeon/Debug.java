@@ -11,6 +11,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMappi
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Glaive;
+import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.Arrays;
 public class Debug {
 
     //SHOULD ALWAYS BE SET TO FALSE ON OFFICIAL RELEASES.
-    public static final boolean DEBUG_MODE = false;
+    public static final boolean DEBUG_MODE = DeviceCompat.isDebug();
 
 
     public static float Spawn_Multiplier = 1;
@@ -29,8 +30,9 @@ public class Debug {
     public static final int Starting_HeroLevel = 1;
     public static final int Starting_Str = 10;
 
-    private static boolean ActOnLoad = false;
-    private static ArrayList<Class<?extends Item>> Starting_Items;
+    private static final boolean ActOnStart = false;
+    private static final boolean ActOnLoad = false;
+    private static final ArrayList<Class<?extends Item>> Starting_Items;
     static {
         Starting_Items = new ArrayList<>(Arrays.asList(
                 PotionOfHaste.class, PotionOfMindVision.class, PotionOfInvisibility.class, ElixirOfFeatherFall.class,
@@ -39,7 +41,7 @@ public class Debug {
         ));
     }
     public static void Starting_Bag() {
-        if(!DEBUG_MODE || Starting_Items == null) return;
+        if(!Debug.DEBUG_MODE || Starting_Items == null) return;
 
         for(Class<?extends Item> itemType : Debug.Starting_Items) {
              DebugCollect(itemType);
@@ -49,6 +51,11 @@ public class Debug {
         DebugCollect(PlateArmor.class, 10, 1);
     }
 
+    public static void StartGame() {
+        if(!Debug.DEBUG_MODE || !Debug.ActOnStart) return;
+
+        Starting_Bag();
+    }
     public static void LoadGame() {
         if(!Debug.DEBUG_MODE || !Debug.ActOnLoad) return;
 
