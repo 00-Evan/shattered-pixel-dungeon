@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import static java.lang.Math.max;
+
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -390,7 +392,7 @@ public class Necromancer extends Mob {
 						
 						if (telePos != -1) {
 							ScrollOfTeleportation.appear(mySkeleton, telePos);
-							//mySkeleton.teleportSpend();
+							mySkeleton.teleportSpend(enemy);
 						}
 					}
 					
@@ -442,8 +444,8 @@ public class Necromancer extends Mob {
 			return 0;
 		}
 
-		private void teleportSpend(){
-			spend(TICK);
+		private void teleportSpend(Char enemy){
+			spend(max(enemy.cooldown() - this.cooldown(), 0));
 		}
 		
 		public static class NecroSkeletonSprite extends SkeletonSprite{
