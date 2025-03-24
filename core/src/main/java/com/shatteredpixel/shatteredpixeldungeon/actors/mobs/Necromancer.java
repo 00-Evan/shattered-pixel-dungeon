@@ -77,9 +77,11 @@ public class Necromancer extends Mob {
 	public class Polished {
 		private static final String SUMMON_COOLDOWN = "summon_cooldown";
 		private static final String ZAP_COOLDOWN = "zap_cooldown";
+		private static final String TP_COOLDOWN = "zap_cooldown";
 
 		public int summonCooldown = -1;
 		public int zapCooldown = -1;
+		public int tpCooldown = -1;
 	}
 	Polished polished = new Polished();
 
@@ -107,6 +109,7 @@ public class Necromancer extends Mob {
 		boolean next = super.act();
 		if(polished.summonCooldown > 0 && mySkeleton == null) polished.summonCooldown--;
 		if(polished.zapCooldown > 0) polished.zapCooldown--;
+		if(polished.tpCooldown > 0) polished.tpCooldown--;
 		return next;
 	}
 
@@ -183,6 +186,9 @@ public class Necromancer extends Mob {
 		if (polished.zapCooldown != -1) {
 			bundle.put(Polished.ZAP_COOLDOWN, polished.zapCooldown);
 		}
+		if (polished.tpCooldown != -1) {
+			bundle.put(Polished.TP_COOLDOWN, polished.tpCooldown);
+		}
 	}
 
 	@Override
@@ -202,6 +208,9 @@ public class Necromancer extends Mob {
 		}
 		if (bundle.contains( Polished.ZAP_COOLDOWN )){
 			polished.zapCooldown = bundle.getInt( Polished.ZAP_COOLDOWN );
+		}
+		if (bundle.contains( Polished.TP_COOLDOWN )){
+			polished.tpCooldown = bundle.getInt( Polished.TP_COOLDOWN );
 		}
 	}
 	
@@ -390,9 +399,11 @@ public class Necromancer extends Mob {
 							}
 						}
 						
-						if (telePos != -1) {
+						if (telePos != -1 && polished.tpCooldown <= 0) {
 							ScrollOfTeleportation.appear(mySkeleton, telePos);
 							mySkeleton.teleportSpend(enemy);
+							//its actually 2 turns.
+							polished.tpCooldown = 3;
 						}
 					}
 					
@@ -406,6 +417,7 @@ public class Necromancer extends Mob {
 						return false;
 					} else {
 						onZapComplete();
+						polished.zapCooldown++;
 					}
 
 					return true;
