@@ -182,7 +182,7 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 											if (ch != null) {
 												
 												Buff.affect( ch, Burning.class ).reignite( ch );
-												Buff.affect(ch, Cripple.class, 5f);
+												Buff.prolong(ch, Cripple.class, 5f);
 											}
 										}
 

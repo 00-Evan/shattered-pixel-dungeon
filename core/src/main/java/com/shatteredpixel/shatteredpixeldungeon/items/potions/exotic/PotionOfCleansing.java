@@ -83,7 +83,7 @@ public class PotionOfCleansing extends ExoticPotion {
 				((Hunger) b).satisfy(Hunger.STARVING);
 			}
 		}
-		Buff.affect(ch, Cleanse.class, duration);
+		Buff.prolong(ch, Cleanse.class, duration);
 	}
 
 	public static class Cleanse extends FlavourBuff {
