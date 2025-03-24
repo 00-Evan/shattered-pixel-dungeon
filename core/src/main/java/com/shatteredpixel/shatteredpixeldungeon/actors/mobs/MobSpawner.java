@@ -87,6 +87,7 @@ public class MobSpawner extends Actor {
 						Snake.class,
 						Gnoll.class, Gnoll.class, Gnoll.class,
 						Swarm.class,
+						Slime.class,
 						Slime.class));
 			case 4: case 5:
 				//1x gnoll, 1x swarm, 2x crab, 2x slime
