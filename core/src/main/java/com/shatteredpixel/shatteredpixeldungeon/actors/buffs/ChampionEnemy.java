@@ -70,11 +70,11 @@ public abstract class ChampionEnemy extends Buff {
 		return false;
 	}
 
-	public float meleeDamageFactor(){
+	public float meleeDamageFactor(boolean adjacent) {
 		return 1f;
 	}
 
-	public float damageTakenFactor(){
+	public float damageTakenFactor(boolean externalAttack){
 		return 1f;
 	}
 
@@ -139,7 +139,7 @@ public abstract class ChampionEnemy extends Buff {
 		}
 
 		@Override
-		public float meleeDamageFactor() {
+		public float meleeDamageFactor(boolean adjacent) {
 			return 1.25f;
 		}
 
@@ -155,7 +155,7 @@ public abstract class ChampionEnemy extends Buff {
 		}
 
 		@Override
-		public float meleeDamageFactor() {
+		public float meleeDamageFactor(boolean adjacent) {
 			return 1.25f;
 		}
 
@@ -184,7 +184,7 @@ public abstract class ChampionEnemy extends Buff {
 		}
 
 		@Override
-		public float damageTakenFactor() {
+		public float damageTakenFactor(boolean externalAttack) {
 			return 0.5f;
 		}
 
@@ -202,8 +202,13 @@ public abstract class ChampionEnemy extends Buff {
 		}
 
 		@Override
-		public float damageTakenFactor() {
-			return 0.2f;
+		public float meleeDamageFactor(boolean adjacent) {
+			return adjacent ? 1f : 1.25f;
+		}
+
+		@Override
+		public float damageTakenFactor(boolean externalAttack) {
+			return externalAttack ? 0.2f : 0.6f;
 		}
 
 		@Override
@@ -260,12 +265,12 @@ public abstract class ChampionEnemy extends Buff {
 		}
 
 		@Override
-		public float meleeDamageFactor() {
+		public float meleeDamageFactor(boolean adjacent) {
 			return multiplier;
 		}
 
 		@Override
-		public float damageTakenFactor() {
+		public float damageTakenFactor(boolean externalAttack) {
 			return 1f/multiplier;
 		}
 
