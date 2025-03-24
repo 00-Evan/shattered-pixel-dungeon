@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.Trinket;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
@@ -909,7 +910,14 @@ public class WndJournal extends WndTabbed {
 				} else {
 					icon.lightness(0f);
 					title = "???";
-					desc = mob.alignment == Char.Alignment.ENEMY ? Messages.get(CatalogTab.class, "not_seen_enemy") : Messages.get(CatalogTab.class, "not_seen_ally");
+					if (mob instanceof WandOfRegrowth.Lotus){
+						desc = Messages.get(CatalogTab.class, "not_seen_plant");
+					} else if (mob.alignment == Char.Alignment.ENEMY){
+						desc = Messages.get(CatalogTab.class, "not_seen_enemy");
+					} else {
+						desc = Messages.get(CatalogTab.class, "not_seen_ally");
+					}
+					desc += "\n\n" + Messages.get(mob, "discover_hint");
 				}
 
 				//we have to clip the bounds of the sprite if it's too large
@@ -943,6 +951,7 @@ public class WndJournal extends WndTabbed {
 					icon.lightness(0f);
 					title = "???";
 					desc = Messages.get(CatalogTab.class, "not_seen_trap");
+					desc += "\n\n" + Messages.get(trap, "discover_hint");
 				}
 
 			} else if (Plant.class.isAssignableFrom(entityCls)){
@@ -960,6 +969,7 @@ public class WndJournal extends WndTabbed {
 					icon.lightness(0f);
 					title = "???";
 					desc = Messages.get(CatalogTab.class, "not_seen_plant");
+					desc += "\n\n" + Messages.get(plant, "discover_hint");
 				}
 
 			}
@@ -1025,9 +1035,11 @@ public class WndJournal extends WndTabbed {
 							hardLightBG(1, 1, 1);
 						} else {
 							if (ShatteredPixelDungeon.scene() instanceof GameScene){
-								GameScene.show(new WndJournalItem(sprite, "???", Messages.get(CatalogTab.class, "not_seen_lore")));
+								GameScene.show(new WndJournalItem(sprite, "???",
+										Messages.get(CatalogTab.class, "not_seen_lore") + "\n\n" + doc.discoverHint()));
 							} else {
-								ShatteredPixelDungeon.scene().addToFront(new WndJournalItem(sprite, "???", Messages.get(CatalogTab.class, "not_seen_lore")));
+								ShatteredPixelDungeon.scene().addToFront(new WndJournalItem(sprite, "???",
+										Messages.get(CatalogTab.class, "not_seen_lore") + "\n\n" + doc.discoverHint()));
 							}
 
 						}
