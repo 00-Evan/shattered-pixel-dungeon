@@ -243,7 +243,7 @@ public abstract class ChampionEnemy extends Buff {
 
 		@Override
 		public float evasionFactor(boolean surpriseAttack) {
-			return surpriseAttack ? 1f : 2.5f;
+			return surpriseAttack ? 1.25f : 2.5f;
 		}
 	}
 
@@ -255,6 +255,10 @@ public abstract class ChampionEnemy extends Buff {
 
 		//POLISHED: base 19%->30%
 		private float multiplier = 1.3f;
+
+		public boolean Polished_hunt() {
+			return multiplier > 2f;
+		}
 
 		@Override
 		public boolean act() {

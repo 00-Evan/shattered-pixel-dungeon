@@ -1026,6 +1026,19 @@ public abstract class Mob extends Char {
 		}
 		target = cell;
 	}
+
+	private boolean Polished_huntNoti = false;
+	private void Polished_growingHunt() {
+		ChampionEnemy.Growing grow = buff(ChampionEnemy.Growing.class);
+
+		if(grow != null && grow.Polished_hunt()) {
+			target=Dungeon.hero.pos;
+			if(!Polished_huntNoti) {
+				GLog.w(Messages.get(grow.getClass(), "hunt"));
+				Polished_huntNoti = true;
+			}
+		}
+	}
 	
 	public String description() {
 		return Messages.get(this, "desc");
@@ -1184,6 +1197,8 @@ public abstract class Mob extends Char {
 		
 		protected boolean continueWandering(){
 			enemySeen = false;
+
+			Polished_growingHunt();
 			
 			int oldPos = pos;
 			if (target != -1 && getCloser( target )) {
