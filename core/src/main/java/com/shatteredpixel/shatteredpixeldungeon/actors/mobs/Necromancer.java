@@ -246,16 +246,12 @@ public class Necromancer extends Mob {
 			Buff.detach(mySkeleton, Haste.class);
 			Buff.affect(mySkeleton, Adrenaline.class, 3f);
 		}
-		else if (mySkeleton.buff(Stamina.class) != null) {
-			Buff.detach(mySkeleton, Stamina.class);
+		else {
 			Buff.affect(mySkeleton, Haste.class, 3f);
 		}
-		else {
-			Buff.affect(mySkeleton, Stamina.class, 3f);
-		}
 
 
-		polished.zapCooldown = Random.NormalIntRange(1, 1);
+		polished.zapCooldown = 1;
 		next();
 	}
 
@@ -301,7 +297,7 @@ public class Necromancer extends Mob {
 		}
 
 		summoning = firstSummon = false;
-		polished.summonCooldown = Random.NormalIntRange(2, 2);
+		polished.summonCooldown = 2;
 
 		mySkeleton = new NecroSkeleton();
 		mySkeleton.pos = summoningPos;
@@ -313,7 +309,6 @@ public class Necromancer extends Mob {
 			mySkeleton.aggro(enemy);
 			mySkeleton.target = target;
 		}
-		mySkeleton.teleportSpend();
 
 		for (Buff b : buffs()){
 			if (b.revivePersists) {
