@@ -361,9 +361,14 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	private final HashSet<State> stateAdditions = new HashSet<>();
 
 	public void add( State state ) {
-		synchronized (State.class) {
-			stateRemovals.remove(state);
-			stateAdditions.add(state);
+		//instant as it just changes an animation property that will get read later
+		if (state == State.PARALYSED){
+			paused = true;
+		} else {
+			synchronized (State.class) {
+				stateRemovals.remove(state);
+				stateAdditions.add(state);
+			}
 		}
 	}
 
@@ -460,9 +465,14 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	private final HashSet<State> stateRemovals = new HashSet<>();
 
 	public void remove( State state ) {
-		synchronized (State.class) {
-			stateAdditions.remove(state);
-			stateRemovals.add(state);
+		//instant as it just changes an animation property that will get read later
+		if (state == State.PARALYSED){
+			paused = false;
+		} else {
+			synchronized (State.class) {
+				stateAdditions.remove(state);
+				stateRemovals.add(state);
+			}
 		}
 	}
 
