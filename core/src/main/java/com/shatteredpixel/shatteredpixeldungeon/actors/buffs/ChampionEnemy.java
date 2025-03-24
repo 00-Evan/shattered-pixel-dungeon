@@ -203,12 +203,12 @@ public abstract class ChampionEnemy extends Buff {
 
 		@Override
 		public float meleeDamageFactor(boolean adjacent) {
-			return adjacent ? 1f : 1.33f;
+			return adjacent ? 1f : 1.25f;
 		}
 
 		@Override
 		public float damageTakenFactor(boolean externalAttack) {
-			return externalAttack ? 0.2f : 0.6f;
+			return externalAttack ? 0.2f : 0.5f;
 		}
 
 		@Override
