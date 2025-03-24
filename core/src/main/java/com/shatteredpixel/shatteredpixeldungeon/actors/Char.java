@@ -654,7 +654,11 @@ public abstract class Char extends Actor {
 		if (defender.buff(  Hex.class) != null) defRoll *= 0.8f;
 		if (defender.buff( Daze.class) != null) defRoll *= 0.5f;
 		for (ChampionEnemy buff : defender.buffs(ChampionEnemy.class)){
-			boolean surprise = (defender instanceof Mob && ((Mob)defender).surprisedBy(attacker));
+			boolean surprise = (
+					defender instanceof Mob && ((Mob)defender).surprisedBy(attacker) ||
+					defender.paralysed >= 0 ||
+					defender.alignment == attacker.alignment
+			);
 
 			defRoll *= buff.evasionFactor(surprise);
 		}

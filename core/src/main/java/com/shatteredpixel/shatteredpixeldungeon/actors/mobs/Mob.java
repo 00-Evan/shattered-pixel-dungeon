@@ -675,6 +675,8 @@ public abstract class Mob extends Char {
 	
 	@Override
 	public int defenseSkill( Char enemy ) {
+		if(this.buff(ChampionEnemy.Blessed.class) != null) return this.defenseSkill;
+
 		if (buff(GuidingLight.Illuminated.class) != null && Dungeon.hero.heroClass == HeroClass.CLERIC){
 			//if the attacker is the cleric, they must be using a weapon they have the str for
 			if (enemy instanceof Hero){
@@ -690,9 +692,7 @@ public abstract class Mob extends Char {
 
 		if ( !surprisedBy(enemy)
 				&& paralysed == 0
-				&& !(alignment == Alignment.ALLY && enemy == Dungeon.hero)
-				&& this.buff(ChampionEnemy.Blessed.class) == null
-		) {
+				&& !(alignment == Alignment.ALLY && enemy == Dungeon.hero)) {
 			return this.defenseSkill;
 		} else {
 			return 0;
