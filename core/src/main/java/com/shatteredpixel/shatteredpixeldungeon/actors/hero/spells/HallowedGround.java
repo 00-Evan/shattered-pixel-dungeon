@@ -127,9 +127,6 @@ public class HallowedGround extends TargetedClericSpell {
 			affectChar(ch);
 		}
 
-		//5 casts per hero level before furrowing
-		Buff.affect(hero, HallowedFurrowTracker.class).countUp(1);
-
 		Sample.INSTANCE.play(Assets.Sounds.MELD);
 		hero.sprite.zap(target);
 		hero.spendAndNext( 1f );
@@ -193,7 +190,7 @@ public class HallowedGround extends TargetedClericSpell {
 						if (c == Terrain.GRASS && Dungeon.level.plants.get(c) == null) {
 							if (Random.Int(chance) == 0) {
 								if (!Regeneration.regenOn()
-										|| (Dungeon.hero.buff(HallowedFurrowTracker.class) != null && Dungeon.hero.buff(HallowedFurrowTracker.class).count() > 5)){
+										|| (Dungeon.hero.buff(HallowedFurrowTracker.class) != null && Dungeon.hero.buff(HallowedFurrowTracker.class).count() > 100)){
 									Level.set(cell, Terrain.FURROWED_GRASS);
 								} else {
 									Level.set(cell, Terrain.HIGH_GRASS);
@@ -218,6 +215,11 @@ public class HallowedGround extends TargetedClericSpell {
 						off[cell] = 0;
 					}
 				}
+			}
+
+			//max of 100 turns of grass per hero level before it starts to furrow
+			if (volume > 0){
+				Buff.count(Dungeon.hero, HallowedFurrowTracker.class, 1);
 			}
 
 			Char ally = PowerOfMany.getPoweredAlly();
