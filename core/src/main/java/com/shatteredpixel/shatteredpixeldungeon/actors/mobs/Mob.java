@@ -690,7 +690,9 @@ public abstract class Mob extends Char {
 
 		if ( !surprisedBy(enemy)
 				&& paralysed == 0
-				&& !(alignment == Alignment.ALLY && enemy == Dungeon.hero)) {
+				&& !(alignment == Alignment.ALLY && enemy == Dungeon.hero)
+				&& this.buff(ChampionEnemy.Blessed.class) == null
+		) {
 			return this.defenseSkill;
 		} else {
 			return 0;

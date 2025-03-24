@@ -92,6 +92,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CrystalSpire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollGeomancer;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Necromancer;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogDzewa;
@@ -613,9 +614,10 @@ public abstract class Char extends Actor {
 		}
 
 		//invisible chars always hit (for the hero this is surprise attacking)
-		if (attacker.invisible > 0 && attacker.canSurpriseAttack()){
+		if (attacker.invisible > 0 && attacker.canSurpriseAttack() && defender.buff(ChampionEnemy.Blessed.class) == null) {
 			acuStat = INFINITE_ACCURACY;
 		}
+		if(attacker.buff(ChampionEnemy.Blessed.class) != null) acuStat = INFINITE_ACCURACY;
 
 		if (defender.buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class) != null){
 			defStat = INFINITE_EVASION;
@@ -634,7 +636,7 @@ public abstract class Char extends Actor {
 		if (attacker.buff(  Hex.class) != null) acuRoll *= 0.8f;
 		if (attacker.buff( Daze.class) != null) acuRoll *= 0.5f;
 		for (ChampionEnemy buff : attacker.buffs(ChampionEnemy.class)){
-			acuRoll *= buff.evasionAndAccuracyFactor();
+			acuRoll *= buff.accuracyFactor();
 		}
 		acuRoll *= AscensionChallenge.statModifier(attacker);
 		if (Dungeon.hero.heroClass != HeroClass.CLERIC
@@ -649,7 +651,9 @@ public abstract class Char extends Actor {
 		if (defender.buff(  Hex.class) != null) defRoll *= 0.8f;
 		if (defender.buff( Daze.class) != null) defRoll *= 0.5f;
 		for (ChampionEnemy buff : defender.buffs(ChampionEnemy.class)){
-			defRoll *= buff.evasionAndAccuracyFactor();
+			boolean surprise = (defender instanceof Mob && ((Mob)defender).surprisedBy(attacker));
+
+			defRoll *= buff.evasionFactor(surprise);
 		}
 		defRoll *= AscensionChallenge.statModifier(defender);
 		if (Dungeon.hero.heroClass != HeroClass.CLERIC

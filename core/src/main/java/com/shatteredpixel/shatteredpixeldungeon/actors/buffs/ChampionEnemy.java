@@ -78,7 +78,10 @@ public abstract class ChampionEnemy extends Buff {
 		return 1f;
 	}
 
-	public float evasionAndAccuracyFactor(){
+	public float accuracyFactor(){
+		return 1f;
+	}
+	public float evasionFactor(boolean surpriseAttack){
 		return 1f;
 	}
 
@@ -227,9 +230,15 @@ public abstract class ChampionEnemy extends Buff {
 			color = 0xFFFF00;
 		}
 
+		//Check Char::hit()
 		@Override
-		public float evasionAndAccuracyFactor() {
-			return 4f;
+		public float accuracyFactor() {
+			return 1f;
+		}
+
+		@Override
+		public float evasionFactor(boolean surpriseAttack) {
+			return surpriseAttack ? 1f : 2.5f;
 		}
 	}
 
@@ -239,11 +248,13 @@ public abstract class ChampionEnemy extends Buff {
 			color = 0xFF0000;
 		}
 
-		private float multiplier = 1.19f;
+		//POLISHED: base 19%->30%
+		private float multiplier = 1.3f;
 
 		@Override
 		public boolean act() {
-			multiplier += 0.01f;
+			//POLISHED: 1%->1.5%
+			multiplier += 0.015f;
 			spend(4*TICK);
 			return true;
 		}
@@ -259,7 +270,7 @@ public abstract class ChampionEnemy extends Buff {
 		}
 
 		@Override
-		public float evasionAndAccuracyFactor() {
+		public float accuracyFactor() {
 			return multiplier;
 		}
 
