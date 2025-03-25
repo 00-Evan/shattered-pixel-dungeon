@@ -53,7 +53,6 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
-import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -326,16 +325,18 @@ public class TimekeepersHourglass extends Artifact {
 
 	public class timeDebt extends ArtifactBuff {
 
-		float turnDebt = 0f;
-		float baseDelay = 0f;
+		static final float basePenalty = 0f;
+		static final float baseDelay = 0f;
+
+		float turnPenalty = 0f;
 
 		public void increase(float time) {
-			turnDebt += time;
+			turnPenalty += time;
 			spend(time);
 		}
 
 		public void endFreeze() {
-			if(turnDebt <= 0) detach();
+			if(turnPenalty <= 0) detach();
 			else slowTimers.add(this);
 		}
 
@@ -372,11 +373,11 @@ public class TimekeepersHourglass extends Artifact {
 				hunger.satisfy(turnDebt);
 			}*/
 
-			if(turnDebt > 0) {
+			if(turnPenalty > 0) {
 				GameScene.flash(0x80FFFFFF);
 				Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 
-				Slow slow = Buff.affect(target, Slow.class, 2*turnDebt);
+				Slow slow = Buff.affect(target, Slow.class, 2* turnPenalty + basePenalty);
 				target.next();
 			}
 
@@ -420,8 +421,8 @@ public class TimekeepersHourglass extends Artifact {
 		@Override
 		public String desc() {
 			DecimalFormat df = new DecimalFormat("#.##");
-			boolean isSingular = Math.floor(turnDebt + .0001f) == 1;
-			return Messages.get(this, "desc", df.format(turnDebt), isSingular ? "turn" : "turns", df.format(2*turnDebt), df.format(cooldown()));
+			boolean isSingular = Math.floor(turnPenalty + .0001f) == 1;
+			return Messages.get(this, "desc", df.format(turnPenalty), isSingular ? "turn" : "turns", df.format(2*turnPenalty + basePenalty), df.format(cooldown()));
 		}
 
 
@@ -430,14 +431,14 @@ public class TimekeepersHourglass extends Artifact {
 		public void storeInBundle(Bundle bundle) {
 			super.storeInBundle(bundle);
 
-			bundle.put( TURN_DEBT , turnDebt );
+			bundle.put( TURN_DEBT , turnPenalty);
 		}
 
 		@Override
 		public void restoreFromBundle(Bundle bundle) {
 			super.restoreFromBundle(bundle);
 
-			if(bundle.contains(TURN_DEBT)) turnDebt = bundle.getFloat( TURN_DEBT );
+			if(bundle.contains(TURN_DEBT)) turnPenalty = bundle.getFloat( TURN_DEBT );
 		}
 	}
 
