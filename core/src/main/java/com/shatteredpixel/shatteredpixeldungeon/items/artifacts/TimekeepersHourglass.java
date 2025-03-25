@@ -62,7 +62,7 @@ import java.util.ArrayList;
 
 public class TimekeepersHourglass extends Artifact {
 
-	protected ArrayList<timeDebt> slowTimers = new ArrayList<timeDebt>();
+	protected ArrayList<timeDebt> slowTimers = new ArrayList<>();
 
 	{
 		image = ItemSpriteSheet.ARTIFACT_HOURGLASS;
@@ -164,6 +164,10 @@ public class TimekeepersHourglass extends Artifact {
 		super.activate(ch);
 		if (activeBuff != null)
 			activeBuff.attachTo(ch);
+
+		for(timeDebt timer : slowTimers) {
+			timer.attachTo(ch);
+		}
 	}
 
 	@Override
@@ -237,10 +241,10 @@ public class TimekeepersHourglass extends Artifact {
 		if (activeBuff != null)
 			bundle.put( BUFF , activeBuff );
 
-		if(slowTimers != null) {
-			for (timeDebt t : slowTimers) {
-				bundle.put(TIMERS + "_" + t.id(), t);
-			}
+		int counter = 0;
+		for (timeDebt t : slowTimers) {
+			bundle.put(TIMERS + "_" + counter, t);
+			counter++;
 		}
 
 	}
@@ -262,13 +266,13 @@ public class TimekeepersHourglass extends Artifact {
 			activeBuff.restoreFromBundle(buffBundle);
 		}
 
-		Bundle timerBundle = bundle.getBundle(TIMERS);
-		if (bundle.contains(TIMERS)) {
-			for (Bundlable b : bundle.getCollection(TIMERS)) {
-				timeDebt timer = (timeDebt) b;
-				timer.restoreFromBundle(timerBundle);
-				slowTimers.add(timer);
-			}
+		int counter = 0;
+		while (bundle.contains(TIMERS + "_" + counter))
+		{
+			timeDebt timer = new timeDebt();
+			timer.restoreFromBundle(bundle.getBundle(TIMERS + "_" + counter));
+			slowTimers.add(timer);
+			counter++;
 		}
 	}
 
@@ -321,6 +325,7 @@ public class TimekeepersHourglass extends Artifact {
 
 		public void endFreeze() {
 			if(turnDebt <= 0) detach();
+			else slowTimers.add(this);
 		}
 
 		{
@@ -328,11 +333,12 @@ public class TimekeepersHourglass extends Artifact {
 			actPriority = BUFF_PRIO-5; //acts after all other buffs
 		}
 
+		public void initDelay() {
+			spend(baseDelay);
+		}
 		@Override
 		public boolean attachTo(Char target) {
 			if (super.attachTo(target)) {
-				spend(baseDelay);
-				slowTimers.add(this);
 
 				return true;
 			} else {
@@ -376,13 +382,12 @@ public class TimekeepersHourglass extends Artifact {
 				if (target.paralysed == 0) target.sprite.remove( CharSprite.State.PARALYSED );
 				if (target.invisible == 0) target.sprite.remove( CharSprite.State.INVISIBLE );
 			}
-
 			 */
 		}
 
 		@Override
 		public int icon() {
-			return BuffIndicator.CRIPPLE;
+			return BuffIndicator.TIME;
 		}
 
 		@Override
@@ -397,13 +402,14 @@ public class TimekeepersHourglass extends Artifact {
 
 		@Override
 		public String iconTextDisplay() {
-			return Integer.toString((int)(cooldown()+.0001));
+			return Integer.toString((int)(cooldown()+.0001f));
 		}
 
 		@Override
 		public String desc() {
 			DecimalFormat df = new DecimalFormat("#.##");
-			return Messages.get(this, "desc", df.format(turnDebt), df.format(2*turnDebt), df.format(cooldown()));
+			boolean isSingular = Math.floor(turnDebt + .0001f) == 1;
+			return Messages.get(this, "desc", df.format(turnDebt), isSingular ? "turn" : "turns", df.format(2*turnDebt), df.format(cooldown()));
 		}
 
 
@@ -502,7 +508,10 @@ public class TimekeepersHourglass extends Artifact {
 		@Override
 		public boolean attachTo(Char target) {
 			if (super.attachTo(target)) {
-				debt = new timeDebt();
+				if(debt == null) {
+					debt = new timeDebt();
+					debt.initDelay();
+				}
 				debt.attachTo( target );
 
 				return true;
@@ -613,7 +622,7 @@ public class TimekeepersHourglass extends Artifact {
 
 		@Override
 		public void tintIcon(Image icon) {
-			icon.hardlight(1f, 0.5f, 0);
+			icon.hardlight(1f, 1.0f, 0);
 		}
 
 		@Override
@@ -659,7 +668,10 @@ public class TimekeepersHourglass extends Artifact {
 
 			turnsToCost = bundle.getFloat( TURNSTOCOST );
 
-			if(bundle.contains(TIME_DEBT)) debt = (timeDebt) bundle.get( TIME_DEBT );
+			if(bundle.contains(TIME_DEBT)) {
+				debt = new timeDebt();
+				debt.restoreFromBundle(bundle.getBundle( TIME_DEBT ));
+			}
 		}
 	}
 

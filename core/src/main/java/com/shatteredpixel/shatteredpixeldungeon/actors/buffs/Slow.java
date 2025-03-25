@@ -40,7 +40,7 @@ public class Slow extends FlavourBuff {
 
 	@Override
 	public void tintIcon(Image icon) {
-		icon.hardlight(1f, 0.33f, 0.2f);
+		icon.hardlight(1f, 0.0f, 0.0f);
 	}
 
 	@Override
