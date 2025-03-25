@@ -147,7 +147,6 @@ public class HighGrass {
 					lootChance /= 2;
 				}
 
-				lootChance = 1;
 				if (Random.Float() < lootChance) {
 					level.drop(new Dewdrop(), pos).sprite.drop();
 					trampledItems++;
