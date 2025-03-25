@@ -7,7 +7,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.7.1'
+        classpath 'com.android.tools.build:gradle:8.9.1'
     }
 }
 
@@ -22,9 +22,9 @@ allprojects {
 
         appJavaCompatibility = JavaVersion.VERSION_1_8
 
-        appAndroidCompileSDK = 34
-        appAndroidMinSDK = 14
-        appAndroidTargetSDK = 34
+        appAndroidCompileSDK = 36   //Android 16
+        appAndroidMinSDK = 14       //Android 4.0
+        appAndroidTargetSDK = 36    //Android 16
 
         gdxVersion = '1.12.1'
         gdxControllersVersion = '2.2.4-SNAPSHOT'
