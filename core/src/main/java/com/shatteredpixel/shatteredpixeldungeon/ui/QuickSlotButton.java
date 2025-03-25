@@ -195,6 +195,14 @@ public class QuickSlotButton extends Button {
 				return SPDAction.QUICKSLOT_5;
 			case 5:
 				return SPDAction.QUICKSLOT_6;
+			case 6:
+				return SPDAction.QUICKSLOT_7;
+			case 7:
+				return SPDAction.QUICKSLOT_8;
+			case 8:
+				return SPDAction.QUICKSLOT_9;
+			case 9:
+				return SPDAction.QUICKSLOT_10;
 			default:
 				return super.keyAction();
 		}
