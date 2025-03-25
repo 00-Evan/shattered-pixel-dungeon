@@ -239,8 +239,12 @@ public class Hero extends Char {
 
 	public static class Polished {
 		static private ArrayList<Mob> spottedEnemies;
+		public static boolean noEnemiesLast = false;
 
 		public static int trampledItemsLast = 0;
+		public static boolean noEnemiesSeen() {
+			return Dungeon.hero.visibleEnemies.isEmpty();
+		}
 		private static boolean autoPickUp(Heap heap) {
 			if (heap == null) return false;
 
@@ -252,7 +256,7 @@ public class Hero extends Char {
 			if (!(item instanceof Dewdrop || item instanceof Plant.Seed || item instanceof Runestone || item instanceof Berry)) return false;
 			if(!Dungeon.hero.belongings.backpack.canHold(item)) return false;
 
-			return (SPDSettings.Polished.autoPickup() && Dungeon.hero.visibleEnemies.isEmpty());
+			return (SPDSettings.Polished.autoPickup() && noEnemiesSeen() && noEnemiesLast);
 		}
 	}
 
@@ -854,11 +858,15 @@ public class Hero extends Char {
 				Dungeon.level.updateFieldOfView(this, fieldOfView);
 			}
 		}
-		
+
 		checkVisibleMobs();
 		BuffIndicator.refreshHero();
 		BuffIndicator.refreshBoss();
-		
+
+		if(paralysed > 0 || !(curAction instanceof HeroAction.Move)) {
+			Polished.noEnemiesLast = Polished.noEnemiesSeen();
+		}
+
 		if (paralysed > 0) {
 			
 			curAction = null;
@@ -987,6 +995,7 @@ public class Hero extends Char {
 	private boolean actMove( HeroAction.Move action ) {
 
 		if (getCloser( action.dst )) {
+			if(justMoved) Polished.noEnemiesLast = Polished.noEnemiesSeen();
 			canSelfTrample = false;
 			return true;
 
@@ -1779,6 +1788,8 @@ public class Hero extends Char {
 					justMoved = false;
 					return true;
 				}
+			} else {
+				Polished.trampledItemsLast = 0;
 			}
 		}
 

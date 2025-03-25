@@ -210,7 +210,7 @@ public class GameScene extends PixelScene {
 
 	public static class Polished {
 		//millis
-		private static final int inputBlock = 550;
+		private static final int inputBlock = 500;
 		private static long inputBlockTimer = 0;
 
 		public static void blockInput() {

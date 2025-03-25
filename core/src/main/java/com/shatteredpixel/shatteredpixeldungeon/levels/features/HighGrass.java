@@ -147,6 +147,7 @@ public class HighGrass {
 					lootChance /= 2;
 				}
 
+				lootChance = 1;
 				if (Random.Float() < lootChance) {
 					level.drop(new Dewdrop(), pos).sprite.drop();
 					trampledItems++;
@@ -168,8 +169,11 @@ public class HighGrass {
 			if (Dungeon.level.heroFOV[pos]) Dungeon.observe();
 		}
 
-		if (ch instanceof Hero && SPDSettings.Polished.autoPickup()) {
+		if (ch instanceof Hero && SPDSettings.Polished.autoPickup()
+				&& Hero.Polished.noEnemiesSeen() && Hero.Polished.noEnemiesLast) {
 			Hero.Polished.trampledItemsLast = trampledItems;
+		} else {
+			Hero.Polished.trampledItemsLast = 0;
 		}
 	}
 }
