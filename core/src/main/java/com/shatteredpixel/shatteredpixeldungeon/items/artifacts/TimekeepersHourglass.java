@@ -59,6 +59,7 @@ import com.watabou.utils.Random;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class TimekeepersHourglass extends Artifact {
 
@@ -177,6 +178,16 @@ public class TimekeepersHourglass extends Artifact {
 				activeBuff.detach();
 				activeBuff = null;
 			}
+
+			for(Iterator<timeDebt> iterator = slowTimers.iterator(); iterator.hasNext();) {
+				timeDebt timer = iterator.next();
+				iterator.remove();
+
+				timer.detach();
+			}
+			/*for (timeDebt timer : slowTimers) {
+				timer.detach();
+			}*/
 			return true;
 		} else
 			return false;
@@ -355,10 +366,11 @@ public class TimekeepersHourglass extends Artifact {
 		@Override
 		public void detach() {
 
-			Hunger hunger = Buff.affect(target, Hunger.class);
+			// do we keep?
+			/*Hunger hunger = Buff.affect(target, Hunger.class);
 			if (hunger != null && !hunger.isStarving()) {
 				hunger.satisfy(turnDebt);
-			}
+			}*/
 
 			if(turnDebt > 0) {
 				GameScene.flash(0x80FFFFFF);
