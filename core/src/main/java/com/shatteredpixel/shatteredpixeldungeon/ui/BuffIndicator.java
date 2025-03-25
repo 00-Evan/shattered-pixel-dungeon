@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -314,6 +315,13 @@ public class BuffIndicator extends Component {
 				text.alpha(0.7f);
 
 				text.text(buff.iconTextDisplay());
+
+				if(buff instanceof Hunger) {
+					Hunger h = (Hunger)buff;
+
+					text.hardlight(h.textColor_red(), h.textColor_green(), h.textColor_blue());
+				}
+
 				text.measure();
 			}
 		}
