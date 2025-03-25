@@ -30,7 +30,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -51,12 +53,16 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
+import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class TimekeepersHourglass extends Artifact {
+
+	protected ArrayList<timeDebt> slowTimers = new ArrayList<timeDebt>();
 
 	{
 		image = ItemSpriteSheet.ARTIFACT_HOURGLASS;
@@ -221,6 +227,7 @@ public class TimekeepersHourglass extends Artifact {
 
 	private static final String SANDBAGS =  "sandbags";
 	private static final String BUFF =      "buff";
+	private static final String TIMERS =    "timers";
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -229,6 +236,13 @@ public class TimekeepersHourglass extends Artifact {
 
 		if (activeBuff != null)
 			bundle.put( BUFF , activeBuff );
+
+		if(slowTimers != null) {
+			for (timeDebt t : slowTimers) {
+				bundle.put(TIMERS + "_" + t.id(), t);
+			}
+		}
+
 	}
 
 	@Override
@@ -246,6 +260,15 @@ public class TimekeepersHourglass extends Artifact {
 				activeBuff = new timeStasis();
 
 			activeBuff.restoreFromBundle(buffBundle);
+		}
+
+		Bundle timerBundle = bundle.getBundle(TIMERS);
+		if (bundle.contains(TIMERS)) {
+			for (Bundlable b : bundle.getCollection(TIMERS)) {
+				timeDebt timer = (timeDebt) b;
+				timer.restoreFromBundle(timerBundle);
+				slowTimers.add(timer);
+			}
 		}
 	}
 
@@ -280,6 +303,126 @@ public class TimekeepersHourglass extends Artifact {
 			return true;
 		}
 	}
+
+	//to implement in the future
+	public class TimeParalysis extends Paralysis {
+
+	}
+
+	public class timeDebt extends ArtifactBuff {
+
+		float turnDebt = 0f;
+		float baseDelay = 0f;
+
+		public void increase(float time) {
+			turnDebt += time;
+			spend(time);
+		}
+
+		public void endFreeze() {
+			if(turnDebt <= 0) detach();
+		}
+
+		{
+			type = buffType.NEGATIVE;
+			actPriority = BUFF_PRIO-5; //acts after all other buffs
+		}
+
+		@Override
+		public boolean attachTo(Char target) {
+			if (super.attachTo(target)) {
+				spend(baseDelay);
+				slowTimers.add(this);
+
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		@Override
+		public boolean act() {
+			detach();
+			return true;
+		}
+
+		@Override
+		public void detach() {
+
+			Hunger hunger = Buff.affect(target, Hunger.class);
+			if (hunger != null && !hunger.isStarving()) {
+				hunger.satisfy(turnDebt);
+			}
+
+			if(turnDebt > 0) {
+				GameScene.flash(0x80FFFFFF);
+				Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+
+				Slow slow = Buff.affect(target, Slow.class, 2*turnDebt);
+				target.next();
+			}
+
+			super.detach();
+			slowTimers.remove(this);
+			//Dungeon.observe();
+			//updateQuickslot();
+		}
+
+		@Override
+		public void fx(boolean on) {
+			/*
+			if (on) target.sprite.add( CharSprite.State.PARALYSED );
+			else {
+				if (target.paralysed == 0) target.sprite.remove( CharSprite.State.PARALYSED );
+				if (target.invisible == 0) target.sprite.remove( CharSprite.State.INVISIBLE );
+			}
+
+			 */
+		}
+
+		@Override
+		public int icon() {
+			return BuffIndicator.CRIPPLE;
+		}
+
+		@Override
+		public void tintIcon(Image icon) {
+			icon.hardlight(1f, 0.5f, 0);
+		}
+
+		@Override
+		public float iconFadePercent() {
+			return Math.max(0, (5f - cooldown()) / 5f);
+		}
+
+		@Override
+		public String iconTextDisplay() {
+			return Integer.toString((int)(cooldown()+.0001));
+		}
+
+		@Override
+		public String desc() {
+			DecimalFormat df = new DecimalFormat("#.##");
+			return Messages.get(this, "desc", df.format(turnDebt), df.format(2*turnDebt), df.format(cooldown()));
+		}
+
+
+		public static final String TURN_DEBT = "turnDebt";
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+
+			bundle.put( TURN_DEBT , turnDebt );
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+
+			if(bundle.contains(TURN_DEBT)) turnDebt = bundle.getFloat( TURN_DEBT );
+		}
+	}
+
 
 	public class timeStasis extends ArtifactBuff {
 		
@@ -354,12 +497,27 @@ public class TimekeepersHourglass extends Artifact {
 			type = buffType.POSITIVE;
 		}
 
+		timeDebt debt;
+
+		@Override
+		public boolean attachTo(Char target) {
+			if (super.attachTo(target)) {
+				debt = new timeDebt();
+				debt.attachTo( target );
+
+				return true;
+			} else {
+				return false;
+			}
+		}
+
 		float turnsToCost = 2f;
 
 		ArrayList<Integer> presses = new ArrayList<>();
 
 		public void processTime(float time){
 			turnsToCost -= time;
+			debt.increase(time);
 
 			//use 1/1,000 to account for rounding errors
 			while (turnsToCost < -0.001f){
@@ -424,6 +582,8 @@ public class TimekeepersHourglass extends Artifact {
 
 		@Override
 		public void detach(){
+			debt.endFreeze();
+
 			updateQuickslot();
 			super.detach();
 			activeBuff = null;
@@ -473,6 +633,7 @@ public class TimekeepersHourglass extends Artifact {
 
 		private static final String PRESSES = "presses";
 		private static final String TURNSTOCOST = "turnsToCost";
+		private static final String TIME_DEBT = "timeDebt";
 
 		@Override
 		public void storeInBundle(Bundle bundle) {
@@ -484,6 +645,8 @@ public class TimekeepersHourglass extends Artifact {
 			bundle.put( PRESSES , values );
 
 			bundle.put( TURNSTOCOST , turnsToCost);
+
+			bundle.put( TIME_DEBT , debt );
 		}
 
 		@Override
@@ -495,6 +658,8 @@ public class TimekeepersHourglass extends Artifact {
 				presses.add(value);
 
 			turnsToCost = bundle.getFloat( TURNSTOCOST );
+
+			if(bundle.contains(TIME_DEBT)) debt = (timeDebt) bundle.get( TIME_DEBT );
 		}
 	}
 
