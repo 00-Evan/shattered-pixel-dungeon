@@ -38,12 +38,16 @@ import com.watabou.input.ScrollEvent;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.ScrollArea;
+import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Signal;
 
 public class CellSelector extends ScrollArea {
+
+	boolean PC = DeviceCompat.isDesktop();
+
 
 	public Listener listener = null;
 	
@@ -65,14 +69,17 @@ public class CellSelector extends ScrollArea {
 	
 	@Override
 	protected void onScroll( ScrollEvent event ) {
-		float diff = event.amount/10f;
+		float diff = event.amount/(PC ? 20f : 10f);
 		
 		//scale zoom difference so zooming is consistent
 		diff /= ((camera.zoom+1)/camera.zoom)-1;
 		diff = Math.min(1, diff);
 		mouseZoom = GameMath.gate( PixelScene.minZoom, mouseZoom - diff, PixelScene.maxZoom );
-		
-		zoom( Math.round(mouseZoom) );
+
+		if(PC) {
+			float temp = Math.round(mouseZoom*4 + .001f) / 4f;
+			zoom(temp);
+		} else zoom( Math.round(mouseZoom) );
 	}
 	
 	@Override

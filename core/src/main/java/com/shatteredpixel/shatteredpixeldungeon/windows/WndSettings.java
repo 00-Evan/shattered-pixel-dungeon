@@ -866,6 +866,9 @@ public class WndSettings extends WndTabbed {
 
 	private static class DataTab extends Component{
 
+		//POLISHED:
+		//Since we're not checking for SPD updates anyway, we can get rid of all this in the future
+
 		RenderedTextBlock title;
 		ColorBlock sep1;
 		CheckBox chkNews;
