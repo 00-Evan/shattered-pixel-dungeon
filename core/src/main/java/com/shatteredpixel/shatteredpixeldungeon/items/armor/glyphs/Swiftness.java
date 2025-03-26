@@ -50,6 +50,7 @@ public class Swiftness extends Armor.Glyph {
 			float powerMulti = Math.max(1f, procChance);
 
 			Buff.affect( defender, Stamina.class, Math.round(powerMulti * (3+level)));
+
 			//defender.sprite.centerEmitter().start(BloodParticle.BURST, 0.05f, 10);
 			//defender.sprite.centerEmitter().burst(EnergyParticle.FACTORY, 10);
 			defender.sprite.centerEmitter().burst(SparkParticle.FACTORY, 10);
@@ -59,34 +60,7 @@ public class Swiftness extends Armor.Glyph {
 	}
 
 	public static float speedBoost( Char owner, int level ){
-		/*
-		if (level == -1){
-			return 1;
-		}
-
-		boolean enemyNear = false;
-		//for each enemy, check if they are adjacent, or within 2 tiles and an adjacent cell is open
-		for (Char ch : Actor.chars()){
-			if ( Dungeon.level.distance(ch.pos, owner.pos) <= 2 && owner.alignment != ch.alignment && ch.alignment != Char.Alignment.NEUTRAL){
-				if (Dungeon.level.adjacent(ch.pos, owner.pos)){
-					enemyNear = true;
-					break;
-				} else {
-					for (int i : PathFinder.NEIGHBOURS8){
-						if (Dungeon.level.adjacent(owner.pos+i, ch.pos) && !Dungeon.level.solid[owner.pos+i]){
-							enemyNear = true;
-							break;
-						}
-					}
-				}
-			}
-		}
-		if (enemyNear){
-			return 1;
-		} else {
-			return (1.2f + 0.04f * level) * genericProcChanceMultiplier(owner);
-		}
-		 */
+		//POLISHED: removed
 
 		return 1f;
 	}
