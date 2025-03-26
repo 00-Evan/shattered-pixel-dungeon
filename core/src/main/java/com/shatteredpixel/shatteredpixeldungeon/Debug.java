@@ -2,6 +2,7 @@ package com.shatteredpixel.shatteredpixeldungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
@@ -30,14 +31,14 @@ public class Debug {
     public static final int Starting_HeroLevel = 1;
     public static final int Starting_Str = 10;
 
-    private static final boolean ActOnStart = false;
+    private static final boolean ActOnStart = true;
     private static final boolean ActOnLoad = false;
     private static final ArrayList<Class<?extends Item>> Starting_Items;
     static {
         Starting_Items = new ArrayList<>(Arrays.asList(
                 PotionOfHaste.class, PotionOfMindVision.class, PotionOfInvisibility.class, ElixirOfFeatherFall.class,
                 ScrollOfMagicMapping.class, ScrollOfTeleportation.class, ScrollOfUpgrade.class,
-                TimekeepersHourglass.class
+                TimekeepersHourglass.class, EtherealChains.class
         ));
     }
     public static void Starting_Bag() {
