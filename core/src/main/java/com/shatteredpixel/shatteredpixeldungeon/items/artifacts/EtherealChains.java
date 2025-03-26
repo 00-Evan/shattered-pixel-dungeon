@@ -238,7 +238,8 @@ public class EtherealChains extends Artifact {
 		boolean enemyFound = false;
 		for (int i : PathFinder.NEIGHBOURS8){
 			Mob mob = Dungeon.level.findMob(chain.collisionPos+i);
-			if (mob != null && mob.alignment == Char.Alignment.ENEMY ) {
+			if (mob != null && mob.alignment == Char.Alignment.ENEMY &&
+					Dungeon.hero.fieldOfView[chain.collisionPos+i] && Dungeon.hero.fieldOfView[chain.collisionPos]) {
 				enemyFound = true;
 				break;
 			}
