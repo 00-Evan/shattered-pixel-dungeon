@@ -83,8 +83,7 @@ public class FireImbue extends Buff {
 	}
 
 	public void proc(Char enemy){
-		if (Random.Int(2) == 0)
-			Buff.affect( enemy, Burning.class ).reignite( enemy );
+		Buff.affect( enemy, Burning.class ).reignite( enemy );
 
 		enemy.sprite.emitter().burst( FlameParticle.FACTORY, 2 );
 	}
