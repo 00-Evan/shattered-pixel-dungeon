@@ -6,7 +6,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Swiftness;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Berry;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
@@ -30,8 +32,8 @@ public class Debug {
     public static float Spawn_Multiplier = 1;
     public static float Respawn_Multiplier = 1;
 
-    public static final int Starting_Floor = 1;
-    public static final int Starting_HeroLevel = 1;
+    public static final int Starting_Floor = 7;
+    public static final int Starting_HeroLevel = 8;
     public static final int Starting_Str = 10;
 
     private static final boolean ActOnStart = true;
@@ -42,6 +44,7 @@ public class Debug {
                 /*PotionOfHaste.class, PotionOfMindVision.class, PotionOfInvisibility.class, ElixirOfFeatherFall.class,
                 ScrollOfMagicMapping.class, ScrollOfTeleportation.class, ScrollOfUpgrade.class,
                 TimekeepersHourglass.class*/
+                Berry.class, SmallRation.class
         ));
     }
     public static void Starting_Bag() {

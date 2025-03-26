@@ -67,6 +67,8 @@ public class HornOfPlenty extends Artifact {
 		defaultAction = AC_SNACK;
 	}
 
+
+	public static int satietyPerCharge = (int)(Hunger.STARVING/5f);
 	private int storedFoodEnergy = 0;
 
 	public static final String AC_SNACK = "SNACK";
@@ -125,7 +127,6 @@ public class HornOfPlenty extends Artifact {
 	}
 
 	public void doEatEffect(Hero hero, int chargesToUse){
-		int satietyPerCharge = (int) (Hunger.STARVING/5f);
 		if (Dungeon.isChallenged(Challenges.NO_FOOD)){
 			satietyPerCharge /= 3;
 		}
