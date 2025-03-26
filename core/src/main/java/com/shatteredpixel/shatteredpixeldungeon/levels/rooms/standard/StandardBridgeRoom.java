@@ -58,7 +58,7 @@ public abstract class StandardBridgeRoom extends StandardRoom {
 
 	@Override
 	public boolean canPlaceCharacter(Point p, Level l) {
-		return super.canPlaceItem(p, l) && (spaceRect == null || !spaceRect.inside(p));
+		return super.canPlaceCharacter(p, l) && (spaceRect == null || !spaceRect.inside(p));
 	}
 
 	//keep these so that subclasses can use them in their methods

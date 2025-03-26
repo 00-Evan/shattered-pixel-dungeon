@@ -76,7 +76,7 @@ public class RitualSiteRoom extends StandardRoom {
 
 	@Override
 	public boolean canPlaceCharacter(Point p, Level l) {
-		return super.canPlaceItem(p, l) && l.distance(CeremonialCandle.ritualPos, l.pointToCell(p)) >= 2;
+		return super.canPlaceCharacter(p, l) && l.distance(CeremonialCandle.ritualPos, l.pointToCell(p)) >= 2;
 	}
 
 	public static class RitualMarker extends CustomTilemap {
