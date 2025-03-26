@@ -50,7 +50,7 @@ import java.util.ArrayList;
 
 public class Burning extends Buff implements Hero.Doom {
 	
-	private static final float DURATION = 8f;
+	public static final float DURATION = 6f;
 	
 	private float left;
 	private boolean acted = false; //whether the debuff has done any damage at all yet
@@ -88,6 +88,10 @@ public class Burning extends Buff implements Hero.Doom {
 		return super.attachTo(target);
 	}
 
+	public static int tickDamage() {
+		return Random.NormalIntRange(1, 2) + Dungeon.scalingDepth()/5;
+	}
+
 	@Override
 	public boolean act() {
 
@@ -96,7 +100,7 @@ public class Burning extends Buff implements Hero.Doom {
 		} else if (target.isAlive() && !target.isImmune(getClass())) {
 
 			acted = true;
-			int damage = Random.NormalIntRange( 1, 3 + Dungeon.scalingDepth()/4 );
+			int damage = tickDamage();
 			Buff.detach( target, Chill.class);
 
 			if (target instanceof Hero

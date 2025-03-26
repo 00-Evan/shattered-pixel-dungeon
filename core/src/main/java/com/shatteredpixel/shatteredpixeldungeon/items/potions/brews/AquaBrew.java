@@ -57,18 +57,18 @@ public class AquaBrew extends Brew {
 
 	@Override
 	public int energyVal() {
-		return (int)(12 * (quantity/(float)Recipe.OUT_QUANTITY));
+		return (int)(14 * (quantity/(float)Recipe.OUT_QUANTITY));
 	}
 
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 
-		private static final int OUT_QUANTITY = 8;
+		private static final int OUT_QUANTITY = 6;
 
 		{
 			inputs =  new Class[]{PotionOfStormClouds.class};
 			inQuantity = new int[]{1};
 
-			cost = 8;
+			cost = 10;
 
 			output = AquaBrew.class;
 			outQuantity = OUT_QUANTITY;

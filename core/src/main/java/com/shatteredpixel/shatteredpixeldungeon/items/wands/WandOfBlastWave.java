@@ -92,6 +92,12 @@ public class WandOfBlastWave extends DamageWand {
 						&& ch.pos == bolt.collisionPos + i) {
 					Ballistica trajectory = new Ballistica(ch.pos, ch.pos + i, Ballistica.MAGIC_BOLT);
 					int strength = 1 + Math.round(buffedLvl() / 2f);
+					if (!ch.flying) {
+						while (strength > trajectory.dist ||
+								(strength > 0 && Dungeon.level.pit[trajectory.path.get(strength)])) {
+							strength--;
+						}
+					}
 					throwChar(ch, trajectory, strength, false, true, this);
 				}
 

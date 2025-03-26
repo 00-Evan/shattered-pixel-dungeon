@@ -30,7 +30,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -54,9 +56,13 @@ import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class TimekeepersHourglass extends Artifact {
+
+	protected ArrayList<timeDebt> slowTimers = new ArrayList<>();
 
 	{
 		image = ItemSpriteSheet.ARTIFACT_HOURGLASS;
@@ -158,6 +164,10 @@ public class TimekeepersHourglass extends Artifact {
 		super.activate(ch);
 		if (activeBuff != null)
 			activeBuff.attachTo(ch);
+
+		for(timeDebt timer : slowTimers) {
+			timer.attachTo(ch);
+		}
 	}
 
 	@Override
@@ -167,6 +177,16 @@ public class TimekeepersHourglass extends Artifact {
 				activeBuff.detach();
 				activeBuff = null;
 			}
+
+			for(Iterator<timeDebt> iterator = slowTimers.iterator(); iterator.hasNext();) {
+				timeDebt timer = iterator.next();
+				iterator.remove();
+
+				timer.detach();
+			}
+			/*for (timeDebt timer : slowTimers) {
+				timer.detach();
+			}*/
 			return true;
 		} else
 			return false;
@@ -221,6 +241,7 @@ public class TimekeepersHourglass extends Artifact {
 
 	private static final String SANDBAGS =  "sandbags";
 	private static final String BUFF =      "buff";
+	private static final String TIMERS =    "timers";
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -229,6 +250,13 @@ public class TimekeepersHourglass extends Artifact {
 
 		if (activeBuff != null)
 			bundle.put( BUFF , activeBuff );
+
+		int counter = 0;
+		for (timeDebt t : slowTimers) {
+			bundle.put(TIMERS + "_" + counter, t);
+			counter++;
+		}
+
 	}
 
 	@Override
@@ -246,6 +274,15 @@ public class TimekeepersHourglass extends Artifact {
 				activeBuff = new timeStasis();
 
 			activeBuff.restoreFromBundle(buffBundle);
+		}
+
+		int counter = 0;
+		while (bundle.contains(TIMERS + "_" + counter))
+		{
+			timeDebt timer = new timeDebt();
+			timer.restoreFromBundle(bundle.getBundle(TIMERS + "_" + counter));
+			slowTimers.add(timer);
+			counter++;
 		}
 	}
 
@@ -280,6 +317,131 @@ public class TimekeepersHourglass extends Artifact {
 			return true;
 		}
 	}
+
+	//to implement in the future
+	public class TimeParalysis extends Paralysis {
+
+	}
+
+	public class timeDebt extends ArtifactBuff {
+
+		static final float basePenalty = 0f;
+		static final float baseDelay = 0f;
+
+		float turnPenalty = 0f;
+
+		public void increase(float time) {
+			turnPenalty += time;
+			spend(time);
+		}
+
+		public void endFreeze() {
+			if(turnPenalty <= 0) detach();
+			else slowTimers.add(this);
+		}
+
+		{
+			type = buffType.NEGATIVE;
+			actPriority = BUFF_PRIO-5; //acts after all other buffs
+		}
+
+		public void initDelay() {
+			spend(baseDelay);
+		}
+		@Override
+		public boolean attachTo(Char target) {
+			if (super.attachTo(target)) {
+
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		@Override
+		public boolean act() {
+			detach();
+			return true;
+		}
+
+		@Override
+		public void detach() {
+
+			// do we keep?
+			/*Hunger hunger = Buff.affect(target, Hunger.class);
+			if (hunger != null && !hunger.isStarving()) {
+				hunger.satisfy(turnDebt);
+			}*/
+
+			if(turnPenalty > 0) {
+				GameScene.flash(0x80FFFFFF);
+				Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+
+				Slow slow = Buff.affect(target, Slow.class, 2* turnPenalty + basePenalty);
+				target.next();
+			}
+
+			super.detach();
+			slowTimers.remove(this);
+			//Dungeon.observe();
+			//updateQuickslot();
+		}
+
+		@Override
+		public void fx(boolean on) {
+			/*
+			if (on) target.sprite.add( CharSprite.State.PARALYSED );
+			else {
+				if (target.paralysed == 0) target.sprite.remove( CharSprite.State.PARALYSED );
+				if (target.invisible == 0) target.sprite.remove( CharSprite.State.INVISIBLE );
+			}
+			 */
+		}
+
+		@Override
+		public int icon() {
+			return BuffIndicator.TIME;
+		}
+
+		@Override
+		public void tintIcon(Image icon) {
+			icon.hardlight(1f, 0.5f, 0);
+		}
+
+		@Override
+		public float iconFadePercent() {
+			return Math.max(0, (5f - cooldown()) / 5f);
+		}
+
+		@Override
+		public String iconTextDisplay() {
+			return Integer.toString((int)(cooldown()+.0001f));
+		}
+
+		@Override
+		public String desc() {
+			DecimalFormat df = new DecimalFormat("#.##");
+			boolean isSingular = Math.floor(turnPenalty + .0001f) == 1;
+			return Messages.get(this, "desc", df.format(turnPenalty), isSingular ? "turn" : "turns", df.format(2*turnPenalty + basePenalty), df.format(cooldown()));
+		}
+
+
+		public static final String TURN_DEBT = "turnDebt";
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+
+			bundle.put( TURN_DEBT , turnPenalty);
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+
+			if(bundle.contains(TURN_DEBT)) turnPenalty = bundle.getFloat( TURN_DEBT );
+		}
+	}
+
 
 	public class timeStasis extends ArtifactBuff {
 		
@@ -354,12 +516,30 @@ public class TimekeepersHourglass extends Artifact {
 			type = buffType.POSITIVE;
 		}
 
+		timeDebt debt;
+
+		@Override
+		public boolean attachTo(Char target) {
+			if (super.attachTo(target)) {
+				if(debt == null) {
+					debt = new timeDebt();
+					debt.initDelay();
+				}
+				debt.attachTo( target );
+
+				return true;
+			} else {
+				return false;
+			}
+		}
+
 		float turnsToCost = 2f;
 
 		ArrayList<Integer> presses = new ArrayList<>();
 
 		public void processTime(float time){
 			turnsToCost -= time;
+			debt.increase(time);
 
 			//use 1/1,000 to account for rounding errors
 			while (turnsToCost < -0.001f){
@@ -424,6 +604,8 @@ public class TimekeepersHourglass extends Artifact {
 
 		@Override
 		public void detach(){
+			debt.endFreeze();
+
 			updateQuickslot();
 			super.detach();
 			activeBuff = null;
@@ -453,7 +635,7 @@ public class TimekeepersHourglass extends Artifact {
 
 		@Override
 		public void tintIcon(Image icon) {
-			icon.hardlight(1f, 0.5f, 0);
+			icon.hardlight(1f, 1.0f, 0);
 		}
 
 		@Override
@@ -473,6 +655,7 @@ public class TimekeepersHourglass extends Artifact {
 
 		private static final String PRESSES = "presses";
 		private static final String TURNSTOCOST = "turnsToCost";
+		private static final String TIME_DEBT = "timeDebt";
 
 		@Override
 		public void storeInBundle(Bundle bundle) {
@@ -484,6 +667,8 @@ public class TimekeepersHourglass extends Artifact {
 			bundle.put( PRESSES , values );
 
 			bundle.put( TURNSTOCOST , turnsToCost);
+
+			bundle.put( TIME_DEBT , debt );
 		}
 
 		@Override
@@ -495,6 +680,11 @@ public class TimekeepersHourglass extends Artifact {
 				presses.add(value);
 
 			turnsToCost = bundle.getFloat( TURNSTOCOST );
+
+			if(bundle.contains(TIME_DEBT)) {
+				debt = new timeDebt();
+				debt.restoreFromBundle(bundle.getBundle( TIME_DEBT ));
+			}
 		}
 	}
 
