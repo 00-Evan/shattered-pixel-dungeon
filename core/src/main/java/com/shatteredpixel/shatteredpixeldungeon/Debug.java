@@ -6,6 +6,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Swiftness;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
@@ -33,7 +34,7 @@ public class Debug {
     public static final int Starting_HeroLevel = 1;
     public static final int Starting_Str = 10;
 
-    private static final boolean ActOnStart = false;
+    private static final boolean ActOnStart = true;
     private static final boolean ActOnLoad = false;
     private static final ArrayList<Class<?extends Item>> Starting_Items;
     static {
