@@ -39,7 +39,7 @@ public class Blazing extends Weapon.Enchantment {
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
 		int level = Math.max( 0, weapon.buffedLvl() );
 
-		// lvl 0 - 35%
+		// lvl 0 - 33%
 		// lvl 1 - 50%
 		// lvl 2 - 60%
 		float procChance = (level+1f)/(level+3f) * procChanceMultiplier(attacker);
