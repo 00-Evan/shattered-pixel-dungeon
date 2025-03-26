@@ -79,7 +79,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.Smite;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Necromancer;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Snake;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Swarm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogDzewa;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CheckedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
@@ -1666,7 +1670,16 @@ public class Hero extends Char {
 			}
 		}
 	}
-	
+
+	private boolean interruptsInput(Mob mob) {
+		if(  mob instanceof Necromancer.NecroSkeleton ||
+			 mob instanceof Wraith ||
+			(mob instanceof Swarm && ((Swarm)mob).generation > 0) ||
+			 mob instanceof YogDzewa.Larva) {
+			return false;
+		}
+		else return true;
+	}
 	public void checkVisibleMobs() {
 		ArrayList<Mob> visible = new ArrayList<>();
 
@@ -1686,7 +1699,8 @@ public class Hero extends Char {
 
 					if(!Polished.spottedEnemies.contains(m)) {
 						Polished.spottedEnemies.add(m);
-						firstTime = true;
+
+						if(interruptsInput(m)) firstTime = true;
 					}
 				}
 
