@@ -57,7 +57,7 @@ import java.util.ArrayList;
 
 public class EtherealChains extends Artifact {
 
-	protected static final float baseCripple = 1f;
+	protected static final float baseCripple = 0f;
 
 	public static final String AC_CAST       = "CAST";
 
