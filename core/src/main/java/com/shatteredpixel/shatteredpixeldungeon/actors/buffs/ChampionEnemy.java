@@ -28,6 +28,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Snake;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.HolyBomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.HolyDart;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -158,7 +162,7 @@ public abstract class ChampionEnemy extends Buff {
 
 		@Override
 		public float meleeDamageFactor(boolean adjacent) {
-			if(!adjacent) Polished_cooldown = 2;
+			if(!adjacent) Polished_cooldown = 1;
 			return 1.25f;
 		}
 
@@ -190,11 +194,15 @@ public abstract class ChampionEnemy extends Buff {
 
 		@Override
 		public float damageTakenFactor(boolean externalAttack) {
-			return 0.5f;
+			return 0.6f;
 		}
 
 		{
 			immunities.addAll(com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic.RESISTS);
+			immunities.add(Corrosion.class);
+
+			immunities.remove(HolyBomb.HolyDamage.class);
+			immunities.remove(HolyDart.class);
 		}
 
 	}
@@ -248,7 +256,15 @@ public abstract class ChampionEnemy extends Buff {
 
 		@Override
 		public float evasionFactor(boolean surpriseAttack) {
-			return surpriseAttack ? 1.25f : 2.5f;
+			if(surpriseAttack) {
+				if(target instanceof Snake) {
+					return 0.5f;
+				}
+				else if(target instanceof Wraith) {
+					return 0.2f;
+				}
+				else return 1.25f;
+			} else return 2.5f;
 		}
 	}
 
