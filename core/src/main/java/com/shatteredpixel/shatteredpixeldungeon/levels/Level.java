@@ -382,7 +382,8 @@ public abstract class Level implements Bundlable {
 		map		= bundle.getIntArray( MAP );
 
 		visited	= bundle.getBooleanArray( VISITED );
-		traversable	= bundle.getBooleanArray( TRAVERSABLE );
+		if(bundle.contains(TRAVERSABLE))
+			traversable	= bundle.getBooleanArray( TRAVERSABLE );
 		mapped	= bundle.getBooleanArray( MAPPED );
 
 		transitions = new ArrayList<>();
@@ -464,7 +465,7 @@ public abstract class Level implements Bundlable {
 		bundle.put( HEIGHT, height );
 		bundle.put( MAP, map );
 		bundle.put( VISITED, visited );
-		bundle.put( TRAVERSABLE, traversable );
+		if(traversable != null) bundle.put( TRAVERSABLE, traversable );
 		bundle.put( MAPPED, mapped );
 		bundle.put( TRANSITIONS, transitions );
 		bundle.put( LOCKED, locked );

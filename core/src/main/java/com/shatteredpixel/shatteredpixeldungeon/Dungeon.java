@@ -945,15 +945,30 @@ public class Dungeon {
 		int t_e = Math.max( 0, y - dist-1 );
 		int b_e = Math.min( y + dist+1, level.height() - 1 );
 
-		boolean[] extension = level.heroFOV.clone();
+		int width_e = r_e - l_e + 1;
+		int height_e = b_e - t_e + 1;
 
-		for (int i = 0; i < level.length(); i++ ) {
+		boolean[] extension = level.heroFOV.clone();
+		/*for (int i = 0; i < level.length(); i++ ) {
 			if (level.passable[i] && level.heroFOV[i]) {
 				for(int offset : PathFinder.NEIGHBOURS9) {
 					extension[i + offset] = true;
 				}
 			}
+		}*/
+
+		for (int i = l; i < r; i++) {
+			for (int j = t; j < b; j++) {
+				int cell = level.pointToCell(i, j);
+
+				if (level.passable[cell] && level.heroFOV[cell]) {
+					for(int offset : PathFinder.NEIGHBOURS8) {
+						extension[cell + offset] = true;
+					}
+				}
+			}
 		}
+
 		//
 
 		for (int i = t; i <= b; i++) {
@@ -962,10 +977,12 @@ public class Dungeon {
 		}
 
 		//
-		pos = l + t * level.width();
-		for (int i = t; i <= b; i++) {
-			BArray.or( level.traversable, extension, pos, width, level.traversable );
-			pos+=level.width();
+		if(level.traversable != null) {
+			pos = l_e + t_e * level.width();
+			for (int i = t_e; i <= b_e; i++) {
+				BArray.or( level.traversable, extension, pos, width_e, level.traversable );
+				pos+=level.width();
+			}
 		}
 		//
 
@@ -1033,16 +1050,19 @@ public class Dungeon {
 				height = b - t + 1;
 
 				pos = l + t * level.width();
-
 				for (int i = t; i <= b; i++) {
 					BArray.or( level.visited, level.heroFOV, pos, width, level.visited );
 					pos+=level.width();
 				}
-				pos = l + t * level.width();
-				for (int i = t; i <= b; i++) {
-					BArray.or( level.traversable, extension, pos, width, level.traversable );
-					pos+=level.width();
+				//
+				if(level.traversable != null) {
+					pos = l_e + t_e * level.width();
+					for (int i = t_e; i <= b_e; i++) {
+						BArray.or( level.traversable, extension, pos, width_e, level.traversable );
+						pos+=level.width();
+					}
 				}
+				//
 
 				GameScene.updateFog(ch.pos, dist);
 			}
