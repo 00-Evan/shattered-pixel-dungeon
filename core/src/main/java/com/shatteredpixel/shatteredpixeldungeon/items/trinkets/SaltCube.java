@@ -72,13 +72,13 @@ public class SaltCube extends Trinket {
 			case -1: default:
 				return 1;
 			case 0:
-				return 0.84f;
+				return 0.82f;
 			case 1:
-				return 0.73f;
+				return 0.7f;
 			case 2:
-				return 0.66f;
+				return 0.62f;
 			case 3:
-				return 0.6f;
+				return 0.55f;
 		}
 	}
 
