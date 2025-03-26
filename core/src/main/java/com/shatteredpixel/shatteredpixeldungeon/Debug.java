@@ -1,7 +1,10 @@
 package com.shatteredpixel.shatteredpixeldungeon;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Swiftness;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
@@ -35,9 +38,9 @@ public class Debug {
     private static final ArrayList<Class<?extends Item>> Starting_Items;
     static {
         Starting_Items = new ArrayList<>(Arrays.asList(
-                PotionOfHaste.class, PotionOfMindVision.class, PotionOfInvisibility.class, ElixirOfFeatherFall.class,
+                /*PotionOfHaste.class, PotionOfMindVision.class, PotionOfInvisibility.class, ElixirOfFeatherFall.class,
                 ScrollOfMagicMapping.class, ScrollOfTeleportation.class, ScrollOfUpgrade.class,
-                TimekeepersHourglass.class
+                TimekeepersHourglass.class*/
         ));
     }
     public static void Starting_Bag() {
@@ -47,8 +50,9 @@ public class Debug {
              DebugCollect(itemType);
         }
 
-        DebugCollect(Glaive.class, 10, 1);
-        DebugCollect(PlateArmor.class, 10, 1);
+        //ClothArmor cloth = (ClothArmor)DebugCreate(ClothArmor.class, 1, 1);
+        //cloth.inscribe(Reflection.newInstance(Swiftness.class));
+        //cloth.collect();
     }
 
     public static void StartGame() {
@@ -79,5 +83,18 @@ public class Debug {
         i.identify();
         i.level(level);
         i.collect();
+    }
+
+    public static Item DebugCreate(Class<?extends Item> itemType, int level, int quantity) {
+        if(!DEBUG_MODE) return null;
+
+        Item i = Reflection.newInstance(itemType);
+        if(i == null) return null;
+
+        i.quantity(i.stackable ? quantity : 1);
+        i.identify();
+        i.level(level);
+
+        return i;
     }
 }
