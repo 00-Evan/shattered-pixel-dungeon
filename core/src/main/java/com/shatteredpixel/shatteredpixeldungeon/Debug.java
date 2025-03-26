@@ -37,9 +37,8 @@ public class Debug {
     static {
         Starting_Items = new ArrayList<>(Arrays.asList(
                 /*PotionOfHaste.class, PotionOfMindVision.class, PotionOfInvisibility.class, ElixirOfFeatherFall.class,
-                ScrollOfMagicMapping.class, ScrollOfTeleportation.class, ScrollOfUpgrade.class,*/
-                TimekeepersHourglass.class,
-                MysteryMeat.class
+                ScrollOfMagicMapping.class, ScrollOfTeleportation.class, ScrollOfUpgrade.class,
+                TimekeepersHourglass.class*/
         ));
     }
     public static void Starting_Bag() {
@@ -49,8 +48,9 @@ public class Debug {
              DebugCollect(itemType);
         }
 
-        //DebugCollect(Glaive.class, 10, 1);
-        //DebugCollect(PlateArmor.class, 10, 1);
+        //ClothArmor cloth = (ClothArmor)DebugCreate(ClothArmor.class, 1, 1);
+        //cloth.inscribe(Reflection.newInstance(Swiftness.class));
+        //cloth.collect();
     }
 
     public static void StartGame() {
