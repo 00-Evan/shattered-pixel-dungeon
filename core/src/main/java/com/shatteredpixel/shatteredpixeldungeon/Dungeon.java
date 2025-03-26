@@ -84,6 +84,7 @@ import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.FileUtils;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.SparseArray;
 
@@ -98,7 +99,21 @@ import java.util.TimeZone;
 
 public class Dungeon {
 
-	public boolean DEBUG_MODE = false;
+	private static void updateNearbyTiles(boolean[] extendedHeroFOV, int pos) {
+
+		int max = 1000; // < 1024 to not get out of bounds
+
+		for (int i = 0; i < 3; i++) {
+			int offset = Math.min(pos + level.pointToCell(-1, -1+i), max);
+
+			BArray.or( level.visited, level.heroFOV, offset, 3, level.visited );
+		}
+
+		for (int i = 0; i < 5; i++) {
+			int offset = Math.min(pos + level.pointToCell(-2, -2+i), max);
+			BArray.or( level.traversable, extendedHeroFOV, offset, 5, level.traversable );
+		}
+	}
 
 	//enum of items which have limited spawns, records how many have spawned
 	//could all be their own separate numbers, but this allows iterating, much nicer for bundling/initializing.
@@ -923,11 +938,36 @@ public class Dungeon {
 		int height = b - t + 1;
 		
 		int pos = l + t * level.width();
-	
+
+		//POLISHED
+		int l_e = Math.max( 0, x - dist-1 );
+		int r_e = Math.min( x + dist+1, level.width() - 1 );
+		int t_e = Math.max( 0, y - dist-1 );
+		int b_e = Math.min( y + dist+1, level.height() - 1 );
+
+		boolean[] extension = level.heroFOV.clone();
+
+		for (int i = 0; i < level.length(); i++ ) {
+			if (level.passable[i] && level.heroFOV[i]) {
+				for(int offset : PathFinder.NEIGHBOURS9) {
+					extension[i + offset] = true;
+				}
+			}
+		}
+		//
+
 		for (int i = t; i <= b; i++) {
 			BArray.or( level.visited, level.heroFOV, pos, width, level.visited );
 			pos+=level.width();
 		}
+
+		//
+		pos = l + t * level.width();
+		for (int i = t; i <= b; i++) {
+			BArray.or( level.traversable, extension, pos, width, level.traversable );
+			pos+=level.width();
+		}
+		//
 
 		//always visit adjacent tiles, even if they aren't seen
 		for (int i : PathFinder.NEIGHBOURS9){
@@ -942,9 +982,7 @@ public class Dungeon {
 					continue;
 				}
 
-				BArray.or( level.visited, level.heroFOV, m.pos - 1 - level.width(), 3, level.visited );
-				BArray.or( level.visited, level.heroFOV, m.pos - 1, 3, level.visited );
-				BArray.or( level.visited, level.heroFOV, m.pos - 1 + level.width(), 3, level.visited );
+				updateNearbyTiles(extension, m.pos);
 				//updates adjacent cells too
 				GameScene.updateFog(m.pos, 2);
 			}
@@ -952,9 +990,7 @@ public class Dungeon {
 
 		if (hero.buff(Awareness.class) != null){
 			for (Heap h : level.heaps.valueList()){
-				BArray.or( level.visited, level.heroFOV, h.pos - 1 - level.width(), 3, level.visited );
-				BArray.or( level.visited, level.heroFOV, h.pos - 1, 3, level.visited );
-				BArray.or( level.visited, level.heroFOV, h.pos - 1 + level.width(), 3, level.visited );
+				updateNearbyTiles(extension, h.pos);
 				GameScene.updateFog(h.pos, 2);
 			}
 		}
@@ -962,25 +998,19 @@ public class Dungeon {
 		for (TalismanOfForesight.CharAwareness c : hero.buffs(TalismanOfForesight.CharAwareness.class)){
 			Char ch = (Char) Actor.findById(c.charID);
 			if (ch == null || !ch.isAlive()) continue;
-			BArray.or( level.visited, level.heroFOV, ch.pos - 1 - level.width(), 3, level.visited );
-			BArray.or( level.visited, level.heroFOV, ch.pos - 1, 3, level.visited );
-			BArray.or( level.visited, level.heroFOV, ch.pos - 1 + level.width(), 3, level.visited );
+			updateNearbyTiles(extension, ch.pos);
 			GameScene.updateFog(ch.pos, 2);
 		}
 
 		for (TalismanOfForesight.HeapAwareness h : hero.buffs(TalismanOfForesight.HeapAwareness.class)){
 			if (Dungeon.depth != h.depth || Dungeon.branch != h.branch) continue;
-			BArray.or( level.visited, level.heroFOV, h.pos - 1 - level.width(), 3, level.visited );
-			BArray.or( level.visited, level.heroFOV, h.pos - 1, 3, level.visited );
-			BArray.or( level.visited, level.heroFOV, h.pos - 1 + level.width(), 3, level.visited );
+			updateNearbyTiles(extension, h.pos);
 			GameScene.updateFog(h.pos, 2);
 		}
 
 		for (RevealedArea a : hero.buffs(RevealedArea.class)){
 			if (Dungeon.depth != a.depth || Dungeon.branch != a.branch) continue;
-			BArray.or( level.visited, level.heroFOV, a.pos - 1 - level.width(), 3, level.visited );
-			BArray.or( level.visited, level.heroFOV, a.pos - 1, 3, level.visited );
-			BArray.or( level.visited, level.heroFOV, a.pos - 1 + level.width(), 3, level.visited );
+			updateNearbyTiles(extension, a.pos);
 			GameScene.updateFog(a.pos, 2);
 		}
 
@@ -1008,6 +1038,12 @@ public class Dungeon {
 					BArray.or( level.visited, level.heroFOV, pos, width, level.visited );
 					pos+=level.width();
 				}
+				pos = l + t * level.width();
+				for (int i = t; i <= b; i++) {
+					BArray.or( level.traversable, extension, pos, width, level.traversable );
+					pos+=level.width();
+				}
+
 				GameScene.updateFog(ch.pos, dist);
 			}
 		}
