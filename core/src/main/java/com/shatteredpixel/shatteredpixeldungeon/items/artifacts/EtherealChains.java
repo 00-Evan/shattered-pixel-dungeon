@@ -234,11 +234,11 @@ public class EtherealChains extends Artifact {
 			return;
 		}
 		
-		//don't pull if there are no solid objects next to the pull location
+		//don't pull if there are no enemy mobs next to the pull location
 		boolean enemyFound = false;
 		for (int i : PathFinder.NEIGHBOURS8){
-			Char ch = Actor.findChar(i);
-			if (ch instanceof Mob && ((Mob)ch).alignment == Char.Alignment.ENEMY ) {
+			Mob mob = Dungeon.level.findMob(chain.collisionPos+i);
+			if (mob != null && mob.alignment == Char.Alignment.ENEMY ) {
 				enemyFound = true;
 				break;
 			}
