@@ -251,20 +251,12 @@ public abstract class ChampionEnemy extends Buff {
 		//Check Char::hit()
 		@Override
 		public float accuracyFactor() {
-			return 1f;
+			return 4f;
 		}
 
 		@Override
 		public float evasionFactor(boolean surpriseAttack) {
-			if(surpriseAttack) {
-				if(target instanceof Snake) {
-					return 0.5f;
-				}
-				else if(target instanceof Wraith) {
-					return 0.2f;
-				}
-				else return 1.25f;
-			} else return 2.5f;
+			return 4f;
 		}
 	}
 
