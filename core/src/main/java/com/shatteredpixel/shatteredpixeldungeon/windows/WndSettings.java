@@ -133,7 +133,7 @@ public class WndSettings extends WndTabbed {
 		height = Math.max(height, data.height());
 		add( data );
 
-		add( new IconTab(Icons.get(Icons.DATA)){
+		add( new IconTab(Icons.get(Icons.SCROLL_GREY)){
 			@Override
 			protected void select(boolean value) {
 				super.select(value);
@@ -715,11 +715,6 @@ public class WndSettings extends WndTabbed {
 		OptionSlider optControlSens;
 		OptionSlider optHoldMoveSens;
 
-		ColorBlock sep3;
-
-		CheckBox chkInputBlock;
-		CheckBox chkAutoPickUp;
-
 		@Override
 		protected void createChildren() {
 			title = PixelScene.renderTextBlock(Messages.get(this, "title"), 9);
@@ -787,30 +782,6 @@ public class WndSettings extends WndTabbed {
 			};
 			optHoldMoveSens.setSelectedValue(SPDSettings.movementHoldSensitivity());
 			add(optHoldMoveSens);
-
-
-			sep3 = new ColorBlock(1, 1, 0xFF000000);
-			add(sep3);
-
-			chkInputBlock = new CheckBox(Messages.get(WndSettings.InputTab.this, "input_block")){
-				@Override
-				protected void onClick() {
-					super.onClick();
-					SPDSettings.Polished.inputBlock(checked());
-				}
-			};
-			chkInputBlock.checked(SPDSettings.Polished.inputBlock());
-			add(chkInputBlock);
-
-			chkAutoPickUp = new CheckBox(Messages.get(WndSettings.InputTab.this, "auto_pickup")){
-				@Override
-				protected void onClick() {
-					super.onClick();
-					SPDSettings.Polished.autoPickup(checked());
-				}
-			};
-			chkAutoPickUp.checked(SPDSettings.Polished.autoPickup());
-			add(chkAutoPickUp);
 		}
 
 		@Override
@@ -849,18 +820,6 @@ public class WndSettings extends WndTabbed {
 			}
 
 			height = optHoldMoveSens.bottom();
-
-			sep3.size(width, 1);
-			sep3.y = height+ GAP;
-
-			if (width > 200) {
-				chkInputBlock.setRect(0, sep3.y + 2*GAP, width / 2 - 1, BTN_HEIGHT);
-				chkAutoPickUp.setRect(width / 2 + 1, sep3.y + 2*GAP, width / 2 - 1, BTN_HEIGHT);
-			} else {
-				chkInputBlock.setRect(0, sep3.y + 2*GAP, width, BTN_HEIGHT);
-				chkAutoPickUp.setRect(0, chkInputBlock.bottom()+GAP, width, BTN_HEIGHT);
-			}
-
 		}
 	}
 
@@ -871,10 +830,10 @@ public class WndSettings extends WndTabbed {
 
 		RenderedTextBlock title;
 		ColorBlock sep1;
-		CheckBox chkNews;
-		CheckBox chkUpdates;
-		CheckBox chkBetas;
-		CheckBox chkWifi;
+		CheckBox chkQuickslot;
+		ColorBlock sep2;
+		CheckBox chkInputBlock;
+		CheckBox chkAutoPickUp;
 
 		@Override
 		protected void createChildren() {
@@ -885,54 +844,39 @@ public class WndSettings extends WndTabbed {
 			sep1 = new ColorBlock(1, 1, 0xFF000000);
 			add(sep1);
 
-			chkNews = new CheckBox(Messages.get(this, "news")){
+			chkQuickslot = new CheckBox(Messages.get(this, "quickslot")){
 				@Override
 				protected void onClick() {
 					super.onClick();
-					SPDSettings.news(checked());
-					News.clearArticles();
+					SPDSettings.quickslot(checked());
+					Toolbar.updateLayout();
 				}
 			};
-			chkNews.checked(SPDSettings.news());
-			add(chkNews);
+			chkQuickslot.checked(SPDSettings.quickslot());
+			add(chkQuickslot);
 
-			if (Updates.supportsUpdates() && Updates.supportsUpdatePrompts()) {
-				chkUpdates = new CheckBox(Messages.get(this, "updates")) {
-					@Override
-					protected void onClick() {
-						super.onClick();
-						SPDSettings.updates(checked());
-						Updates.clearUpdate();
-					}
-				};
-				chkUpdates.checked(SPDSettings.updates());
-				add(chkUpdates);
+			sep2 = new ColorBlock(1, 1, 0xFF000000);
+			add(sep2);
 
-				if (Updates.supportsBetaChannel()){
-					chkBetas = new CheckBox(Messages.get(this, "betas")) {
-						@Override
-						protected void onClick() {
-							super.onClick();
-							SPDSettings.betas(checked());
-							Updates.clearUpdate();
-						}
-					};
-					chkBetas.checked(SPDSettings.betas());
-					add(chkBetas);
+			chkInputBlock = new CheckBox(Messages.get(this, "input_block")){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					SPDSettings.Polished.inputBlock(checked());
 				}
-			}
+			};
+			chkInputBlock.checked(SPDSettings.Polished.inputBlock());
+			add(chkInputBlock);
 
-			if (!DeviceCompat.isDesktop()){
-				chkWifi = new CheckBox(Messages.get(this, "wifi")){
-					@Override
-					protected void onClick() {
-						super.onClick();
-						SPDSettings.WiFi(checked());
-					}
-				};
-				chkWifi.checked(SPDSettings.WiFi());
-				add(chkWifi);
-			}
+			chkAutoPickUp = new CheckBox(Messages.get(this, "auto_pickup")){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					SPDSettings.Polished.autoPickup(checked());
+				}
+			};
+			chkAutoPickUp.checked(SPDSettings.Polished.autoPickup());
+			add(chkAutoPickUp);
 		}
 
 		@Override
@@ -941,32 +885,25 @@ public class WndSettings extends WndTabbed {
 			sep1.size(width, 1);
 			sep1.y = title.bottom() + 3*GAP;
 
-			float pos;
-			if (width > 200 && chkUpdates != null){
-				chkNews.setRect(0, sep1.y + 1 + GAP, width/2-1, BTN_HEIGHT);
-				chkUpdates.setRect(chkNews.right() + GAP, chkNews.top(), width/2-1, BTN_HEIGHT);
-				pos = chkUpdates.bottom();
+			if (width > 200) {
+				chkQuickslot.setRect(0, sep1.y + GAP + GAP, width/2-1, BTN_HEIGHT);
 			} else {
-				chkNews.setRect(0, sep1.y + 1 + GAP, width, BTN_HEIGHT);
-				pos = chkNews.bottom();
-				if (chkUpdates != null) {
-					chkUpdates.setRect(0, chkNews.bottom() + GAP, width, BTN_HEIGHT);
-					pos = chkUpdates.bottom();
-				}
+				chkQuickslot.setRect(0, sep1.y + GAP + GAP, width, BTN_HEIGHT);
+			}
+			height = chkQuickslot.bottom();
+
+			sep2.size(width, 1);
+			sep2.y = height+ GAP;
+
+			if (width > 200) {
+				chkInputBlock.setRect(0, sep2.y + 2*GAP, width / 2 - 1, BTN_HEIGHT);
+				chkAutoPickUp.setRect(width / 2 + 1, sep2.y + 2*GAP, width / 2 - 1, BTN_HEIGHT);
+			} else {
+				chkInputBlock.setRect(0, sep2.y + 2*GAP, width, BTN_HEIGHT);
+				chkAutoPickUp.setRect(0, chkInputBlock.bottom()+GAP, width, BTN_HEIGHT);
 			}
 
-			if (chkBetas != null){
-				chkBetas.setRect(0, pos + GAP, width, BTN_HEIGHT);
-				pos = chkBetas.bottom();
-			}
-
-			if (chkWifi != null){
-				chkWifi.setRect(0, pos + GAP, width, BTN_HEIGHT);
-				pos = chkWifi.bottom();
-			}
-
-			height = pos;
-
+			height = chkAutoPickUp.bottom();
 		}
 	}
 
