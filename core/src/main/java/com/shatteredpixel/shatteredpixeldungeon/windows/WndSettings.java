@@ -715,11 +715,6 @@ public class WndSettings extends WndTabbed {
 		OptionSlider optControlSens;
 		OptionSlider optHoldMoveSens;
 
-		ColorBlock sep3;
-
-		CheckBox chkInputBlock;
-		CheckBox chkAutoPickUp;
-
 		@Override
 		protected void createChildren() {
 			title = PixelScene.renderTextBlock(Messages.get(this, "title"), 9);
@@ -787,30 +782,6 @@ public class WndSettings extends WndTabbed {
 			};
 			optHoldMoveSens.setSelectedValue(SPDSettings.movementHoldSensitivity());
 			add(optHoldMoveSens);
-
-
-			sep3 = new ColorBlock(1, 1, 0xFF000000);
-			add(sep3);
-
-			chkInputBlock = new CheckBox(Messages.get(WndSettings.InputTab.this, "input_block")){
-				@Override
-				protected void onClick() {
-					super.onClick();
-					SPDSettings.Polished.inputBlock(checked());
-				}
-			};
-			chkInputBlock.checked(SPDSettings.Polished.inputBlock());
-			add(chkInputBlock);
-
-			chkAutoPickUp = new CheckBox(Messages.get(WndSettings.InputTab.this, "auto_pickup")){
-				@Override
-				protected void onClick() {
-					super.onClick();
-					SPDSettings.Polished.autoPickup(checked());
-				}
-			};
-			chkAutoPickUp.checked(SPDSettings.Polished.autoPickup());
-			add(chkAutoPickUp);
 		}
 
 		@Override
@@ -849,18 +820,6 @@ public class WndSettings extends WndTabbed {
 			}
 
 			height = optHoldMoveSens.bottom();
-
-			sep3.size(width, 1);
-			sep3.y = height+ GAP;
-
-			if (width > 200) {
-				chkInputBlock.setRect(0, sep3.y + 2*GAP, width / 2 - 1, BTN_HEIGHT);
-				chkAutoPickUp.setRect(width / 2 + 1, sep3.y + 2*GAP, width / 2 - 1, BTN_HEIGHT);
-			} else {
-				chkInputBlock.setRect(0, sep3.y + 2*GAP, width, BTN_HEIGHT);
-				chkAutoPickUp.setRect(0, chkInputBlock.bottom()+GAP, width, BTN_HEIGHT);
-			}
-
 		}
 	}
 
@@ -869,6 +828,9 @@ public class WndSettings extends WndTabbed {
 		RenderedTextBlock title;
 		ColorBlock sep1;
 		CheckBox chkQuickslot;
+		ColorBlock sep2;
+		CheckBox chkInputBlock;
+		CheckBox chkAutoPickUp;
 
 		@Override
 		protected void createChildren() {
@@ -890,7 +852,28 @@ public class WndSettings extends WndTabbed {
 			chkQuickslot.checked(SPDSettings.quickslot());
 			add(chkQuickslot);
 
+			sep2 = new ColorBlock(1, 1, 0xFF000000);
+			add(sep2);
 
+			chkInputBlock = new CheckBox(Messages.get(this, "input_block")){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					SPDSettings.Polished.inputBlock(checked());
+				}
+			};
+			chkInputBlock.checked(SPDSettings.Polished.inputBlock());
+			add(chkInputBlock);
+
+			chkAutoPickUp = new CheckBox(Messages.get(this, "auto_pickup")){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					SPDSettings.Polished.autoPickup(checked());
+				}
+			};
+			chkAutoPickUp.checked(SPDSettings.Polished.autoPickup());
+			add(chkAutoPickUp);
 		}
 
 		@Override
@@ -899,12 +882,21 @@ public class WndSettings extends WndTabbed {
 			sep1.size(width, 1);
 			sep1.y = title.bottom() + 3*GAP;
 
-			float pos;
 			chkQuickslot.setRect(0, sep1.y + GAP + GAP, width/2-1, BTN_HEIGHT);
-			pos = chkQuickslot.bottom();
+			height = chkQuickslot.bottom();
 
-			height = pos;
+			sep2.size(width, 1);
+			sep2.y = height+ GAP;
 
+			if (width > 200) {
+				chkInputBlock.setRect(0, sep2.y + 2*GAP, width / 2 - 1, BTN_HEIGHT);
+				chkAutoPickUp.setRect(width / 2 + 1, sep2.y + 2*GAP, width / 2 - 1, BTN_HEIGHT);
+			} else {
+				chkInputBlock.setRect(0, sep2.y + 2*GAP, width, BTN_HEIGHT);
+				chkAutoPickUp.setRect(0, chkInputBlock.bottom()+GAP, width, BTN_HEIGHT);
+			}
+
+			height = chkAutoPickUp.bottom();
 		}
 	}
 
