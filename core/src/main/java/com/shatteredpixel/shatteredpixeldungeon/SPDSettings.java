@@ -338,6 +338,7 @@ public class SPDSettings extends GameSettings {
 	public static final String KEY_UPDATES	= "updates";
 	public static final String KEY_BETAS	= "betas";
 	public static final String KEY_WIFI     = "wifi";
+	public static final String KEY_QUICKSLOT= "quickslot";
 
 	public static final String KEY_NEWS_LAST_READ = "news_last_read";
 
@@ -362,7 +363,15 @@ public class SPDSettings extends GameSettings {
 	}
 
 	public static boolean betas(){
-		return getBoolean(KEY_BETAS, Game.version.contains("BETA") || Game.version.contains("RC"));
+		return getBoolean(KEY_QUICKSLOT, true);
+	}
+
+	public static void quickslot(boolean value){
+		put(KEY_BETAS, value);
+	}
+
+	public static boolean quickslot(){
+		return getBoolean(KEY_QUICKSLOT, true);
 	}
 
 	public static void WiFi(boolean value){
