@@ -399,8 +399,8 @@ public class Necromancer extends Mob {
 						if (telePos != -1 && polished.tpCooldown <= 0) {
 							ScrollOfTeleportation.appear(mySkeleton, telePos);
 							mySkeleton.teleportSpend(enemy);
-							//its actually 1 turn.
-							polished.tpCooldown = 2;
+							//its actually 2 turns
+							polished.tpCooldown = 3;
 						}
 					}
 					
