@@ -682,8 +682,6 @@ public abstract class Mob extends Char {
 	
 	@Override
 	public int defenseSkill( Char enemy ) {
-		if(this.buff(ChampionEnemy.Blessed.class) != null) return this.defenseSkill;
-
 		if (buff(GuidingLight.Illuminated.class) != null && Dungeon.hero.heroClass == HeroClass.CLERIC){
 			//if the attacker is the cleric, they must be using a weapon they have the str for
 			if (enemy instanceof Hero){
