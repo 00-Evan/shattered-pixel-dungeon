@@ -108,13 +108,12 @@ public class QuickSlotButton extends Button {
 
 			@Override
 			protected void onRightClick() {
-				//QuickSlotButton.this.onLongClick();
-				QuickSlotButton.this.onRightClick();
+				QuickSlotButton.this.onLongClick();
 			}
 
 			@Override
 			protected void onMiddleClick() {
-				onClick();
+				QuickSlotButton.this.onMiddleClick();
 			}
 
 			@Override
@@ -232,14 +231,13 @@ public class QuickSlotButton extends Button {
 
 	@Override
 	protected void onRightClick() {
-		//onClick();
-		Dungeon.quickslot.clearSlot(slotNum);
-		refresh();
+		onClick();
 	}
 
 	@Override
 	protected void onMiddleClick() {
-		onClick();
+		Dungeon.quickslot.clearSlot(slotNum);
+		refresh();
 	}
 
 	@Override
