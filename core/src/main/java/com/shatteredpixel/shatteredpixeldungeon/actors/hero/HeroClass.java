@@ -114,9 +114,10 @@ public enum HeroClass {
 
 		Waterskin waterskin = null;
 		if(!Dungeon.isChallenged(Challenges.NO_HERBALISM)) {
-			waterskin = new Waterskin();
-			waterskin.collect();
+			//
 		}
+		waterskin = new Waterskin();
+		waterskin.collect();
 
 		new ScrollOfIdentify().identify();
 
