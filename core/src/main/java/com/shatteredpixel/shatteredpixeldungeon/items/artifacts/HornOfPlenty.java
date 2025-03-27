@@ -67,6 +67,8 @@ public class HornOfPlenty extends Artifact {
 		defaultAction = AC_SNACK;
 	}
 
+
+	public static int satietyPerCharge = (int)(Hunger.STARVING/5f);
 	private int storedFoodEnergy = 0;
 
 	public static final String AC_SNACK = "SNACK";
@@ -125,7 +127,6 @@ public class HornOfPlenty extends Artifact {
 	}
 
 	public void doEatEffect(Hero hero, int chargesToUse){
-		int satietyPerCharge = (int) (Hunger.STARVING/5f);
 		if (Dungeon.isChallenged(Challenges.NO_FOOD)){
 			satietyPerCharge /= 3;
 		}
@@ -227,12 +228,11 @@ public class HornOfPlenty extends Artifact {
 		if (level() >= 10) return;
 		
 		storedFoodEnergy += food.energy;
-		//Pasties and phantom meat are worth two upgrades instead of 1.5, meat pies are worth 4 instead of 3!
-		if (food instanceof Pasty || food instanceof PhantomMeat){
-			storedFoodEnergy += Hunger.HUNGRY/2;
-		} else if (food instanceof MeatPie){
-			storedFoodEnergy += Hunger.HUNGRY;
+		//Phantom meat and Meat pie both give an extra upgrade level
+		if (food instanceof MeatPie || food instanceof PhantomMeat){
+			storedFoodEnergy += (int)Hunger.HUNGRY;
 		}
+
 		if (storedFoodEnergy >= Hunger.HUNGRY){
 			int upgrades = storedFoodEnergy / (int)Hunger.HUNGRY;
 			upgrades = Math.min(upgrades, 10 - level());

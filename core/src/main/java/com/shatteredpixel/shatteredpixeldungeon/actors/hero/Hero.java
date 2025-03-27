@@ -1613,8 +1613,9 @@ public class Hero extends Char {
 			damage = thorns.proc((int)damage, (src instanceof Char ? (Char)src : null),  this);
 		}
 
-		if (buff(Talent.WarriorFoodImmunity.class) != null){
-			if (pointsInTalent(Talent.IRON_STOMACH) == 1)       damage /= 4f;
+		Talent.WarriorFoodImmunity immu = buff(Talent.WarriorFoodImmunity.class);
+		if (immu != null){
+			if (pointsInTalent(Talent.IRON_STOMACH) == 1)       damage /= (immu.snack ? 2f : 4f);
 			else if (pointsInTalent(Talent.IRON_STOMACH) == 2)  damage = 0;
 		}
 
