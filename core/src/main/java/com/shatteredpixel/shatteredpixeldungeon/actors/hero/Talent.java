@@ -616,10 +616,13 @@ public enum Talent {
 		}
 		if (hero.hasTalent(MYSTICAL_MEAL)){
 			//3/5 turns of recharging
-			//Im not nerfing this for snack since the game already ignores horn of plenty anyway (which takes away an artifact slot)
+			int recharge = 1 + 2*(hero.pointsInTalent(MYSTICAL_MEAL));
+			//2/3
+			if(snack) recharge = 1 + (hero.pointsInTalent(MYSTICAL_MEAL));
+
 			ArtifactRecharge buff = Buff.affect( hero, ArtifactRecharge.class);
 			if (buff.left() < 1 + 2*(hero.pointsInTalent(MYSTICAL_MEAL))){
-				Buff.affect( hero, ArtifactRecharge.class).set(1 + 2*(hero.pointsInTalent(MYSTICAL_MEAL))).ignoreHornOfPlenty = foodSource instanceof HornOfPlenty;
+				Buff.affect( hero, ArtifactRecharge.class).set(recharge).ignoreHornOfPlenty = foodSource instanceof HornOfPlenty;
 			}
 			ScrollOfRecharging.charge( hero );
 			SpellSprite.show(hero, SpellSprite.CHARGE, 0, 1, 1);
@@ -691,15 +694,13 @@ public enum Talent {
 			} else {
 				//2/3 turns of recharging
 				int recharge = 1 + (hero.pointsInTalent(ENLIGHTENING_MEAL));
+				//1/2
+				if(snack) recharge--;
 
-				//not nerfing this
 				ArtifactRecharge buff = Buff.affect( hero, ArtifactRecharge.class);
 				if (buff.left() < recharge){
 					Buff.affect( hero, ArtifactRecharge.class).set(recharge).ignoreHornOfPlenty = foodSource instanceof HornOfPlenty;
 				}
-
-				//1/2
-				if(snack) recharge--;
 
 				Buff.prolong( hero, Recharging.class, recharge );
 				ScrollOfRecharging.charge( hero );
