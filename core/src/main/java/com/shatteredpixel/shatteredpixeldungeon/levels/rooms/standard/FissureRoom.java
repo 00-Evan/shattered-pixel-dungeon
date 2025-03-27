@@ -34,6 +34,16 @@ public class FissureRoom extends StandardRoom {
 	public float[] sizeCatProbs() {
 		return new float[]{6, 3, 1};
 	}
+
+	@Override
+	public int minHeight() {
+		return Math.max(5, super.minHeight());
+	}
+
+	@Override
+	public int minWidth() {
+		return Math.max(5, super.minWidth());
+	}
 	
 	@Override
 	public void paint(Level level) {
