@@ -869,9 +869,12 @@ public abstract class Mob extends Char {
 	public void die( Object cause ) {
 
 		if (cause == Chasm.class){
+			//will reincorporate after chasm rework
 			//50% chance to round up, 50% to round down
-			if (EXP % 2 == 1) EXP += Random.Int(2);
-			EXP /= 2;
+			//if (EXP % 2 == 1) EXP += Random.Int(2);
+			//EXP /= 2;
+
+			EXP = 0;
 		}
 
 		if (alignment == Alignment.ENEMY){
