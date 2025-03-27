@@ -363,11 +363,11 @@ public class SPDSettings extends GameSettings {
 	}
 
 	public static boolean betas(){
-		return getBoolean(KEY_QUICKSLOT, true);
+		return getBoolean(KEY_BETAS, true);
 	}
 
 	public static void quickslot(boolean value){
-		put(KEY_BETAS, value);
+		put(KEY_QUICKSLOT, value);
 	}
 
 	public static boolean quickslot(){
