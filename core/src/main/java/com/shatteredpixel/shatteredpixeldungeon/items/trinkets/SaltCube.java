@@ -32,7 +32,7 @@ public class SaltCube extends Trinket {
 
 	@Override
 	protected int upgradeEnergyCost() {
-		//6 -> 8(14) -> 12(24) -> 16(36)
+		//6 -> 8(14) -> 12(26) -> 16(40)
 		return 8+4*level();
 	}
 
