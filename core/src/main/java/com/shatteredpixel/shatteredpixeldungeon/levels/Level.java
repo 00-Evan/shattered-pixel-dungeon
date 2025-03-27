@@ -755,8 +755,11 @@ public abstract class Level implements Bundlable {
 
 		if (Dungeon.hero.isAlive() && mob.pos != -1 && PathFinder.distance[mob.pos] >= disLimit) {
 			GameScene.add( mob );
-			if (!mob.buffs(ChampionEnemy.class).isEmpty()){
-				GLog.w(Messages.get(ChampionEnemy.class, "warn"));
+			if (!mob.buffs(ChampionEnemy.class).isEmpty()) {
+				for (ChampionEnemy champ : mob.buffs(ChampionEnemy.class)) {
+					Class<?> type = champ.getClass();
+					GLog.w(Messages.get(type, "warn"));
+				}
 			}
 			return true;
 		} else {

@@ -28,6 +28,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Snake;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.HolyBomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.HolyDart;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -70,15 +74,18 @@ public abstract class ChampionEnemy extends Buff {
 		return false;
 	}
 
-	public float meleeDamageFactor(){
+	public float meleeDamageFactor(boolean adjacent) {
 		return 1f;
 	}
 
-	public float damageTakenFactor(){
+	public float damageTakenFactor(boolean externalAttack){
 		return 1f;
 	}
 
-	public float evasionAndAccuracyFactor(){
+	public float accuracyFactor(){
+		return 1f;
+	}
+	public float evasionFactor(boolean surpriseAttack){
 		return 1f;
 	}
 
@@ -136,7 +143,7 @@ public abstract class ChampionEnemy extends Buff {
 		}
 
 		@Override
-		public float meleeDamageFactor() {
+		public float meleeDamageFactor(boolean adjacent) {
 			return 1.25f;
 		}
 
@@ -151,14 +158,19 @@ public abstract class ChampionEnemy extends Buff {
 			color = 0x8800FF;
 		}
 
+		public int Polished_cooldown = 2;
+
 		@Override
-		public float meleeDamageFactor() {
+		public float meleeDamageFactor(boolean adjacent) {
+			if(!adjacent) Polished_cooldown = 1;
 			return 1.25f;
 		}
 
 		@Override
 		public boolean canAttackWithExtraReach(Char enemy) {
-			if (Dungeon.level.distance( target.pos, enemy.pos ) > 4){
+			int range = Polished_cooldown <= 0 ? 4 : 1;
+
+			if (Dungeon.level.distance( target.pos, enemy.pos ) > range) {
 				return false;
 			} else {
 				boolean[] passable = BArray.not(Dungeon.level.solid, null);
@@ -181,12 +193,16 @@ public abstract class ChampionEnemy extends Buff {
 		}
 
 		@Override
-		public float damageTakenFactor() {
-			return 0.5f;
+		public float damageTakenFactor(boolean externalAttack) {
+			return 0.6f;
 		}
 
 		{
 			immunities.addAll(com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic.RESISTS);
+			immunities.add(Corrosion.class);
+
+			immunities.remove(HolyBomb.HolyDamage.class);
+			immunities.remove(HolyDart.class);
 		}
 
 	}
@@ -199,8 +215,13 @@ public abstract class ChampionEnemy extends Buff {
 		}
 
 		@Override
-		public float damageTakenFactor() {
-			return 0.2f;
+		public float meleeDamageFactor(boolean adjacent) {
+			return adjacent ? 1f : 1.25f;
+		}
+
+		@Override
+		public float damageTakenFactor(boolean externalAttack) {
+			return externalAttack ? 0.2f : 0.5f;
 		}
 
 		@Override
@@ -227,8 +248,14 @@ public abstract class ChampionEnemy extends Buff {
 			color = 0xFFFF00;
 		}
 
+		//Check Char::hit()
 		@Override
-		public float evasionAndAccuracyFactor() {
+		public float accuracyFactor() {
+			return 4f;
+		}
+
+		@Override
+		public float evasionFactor(boolean surpriseAttack) {
 			return 4f;
 		}
 	}
@@ -239,27 +266,33 @@ public abstract class ChampionEnemy extends Buff {
 			color = 0xFF0000;
 		}
 
-		private float multiplier = 1.19f;
+		//POLISHED: base 19%->30%
+		private float multiplier = 1.3f;
+
+		public boolean Polished_hunt() {
+			return multiplier > 2f;
+		}
 
 		@Override
 		public boolean act() {
-			multiplier += 0.01f;
+			//POLISHED: 1%->1.5%
+			multiplier += 0.015f;
 			spend(4*TICK);
 			return true;
 		}
 
 		@Override
-		public float meleeDamageFactor() {
+		public float meleeDamageFactor(boolean adjacent) {
 			return multiplier;
 		}
 
 		@Override
-		public float damageTakenFactor() {
+		public float damageTakenFactor(boolean externalAttack) {
 			return 1f/multiplier;
 		}
 
 		@Override
-		public float evasionAndAccuracyFactor() {
+		public float accuracyFactor() {
 			return multiplier;
 		}
 
