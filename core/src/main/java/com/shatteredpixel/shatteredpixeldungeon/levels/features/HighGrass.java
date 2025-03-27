@@ -168,8 +168,11 @@ public class HighGrass {
 			if (Dungeon.level.heroFOV[pos]) Dungeon.observe();
 		}
 
-		if (ch instanceof Hero && SPDSettings.Polished.autoPickup()) {
+		if (ch instanceof Hero && SPDSettings.Polished.autoPickup()
+				&& Hero.Polished.noEnemiesSeen() && Hero.Polished.noEnemiesLast) {
 			Hero.Polished.trampledItemsLast = trampledItems;
+		} else {
+			Hero.Polished.trampledItemsLast = 0;
 		}
 	}
 }

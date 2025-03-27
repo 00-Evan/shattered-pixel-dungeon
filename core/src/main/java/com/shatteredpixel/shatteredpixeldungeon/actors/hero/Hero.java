@@ -79,7 +79,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.Smite;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Necromancer;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Snake;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Swarm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogDzewa;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CheckedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
@@ -239,8 +243,12 @@ public class Hero extends Char {
 
 	public static class Polished {
 		static private ArrayList<Mob> spottedEnemies;
+		public static boolean noEnemiesLast = false;
 
 		public static int trampledItemsLast = 0;
+		public static boolean noEnemiesSeen() {
+			return Dungeon.hero.visibleEnemies.isEmpty();
+		}
 		private static boolean autoPickUp(Heap heap) {
 			if (heap == null) return false;
 
@@ -252,7 +260,7 @@ public class Hero extends Char {
 			if (!(item instanceof Dewdrop || item instanceof Plant.Seed || item instanceof Runestone || item instanceof Berry)) return false;
 			if(!Dungeon.hero.belongings.backpack.canHold(item)) return false;
 
-			return (SPDSettings.Polished.autoPickup() && Dungeon.hero.visibleEnemies.isEmpty());
+			return (SPDSettings.Polished.autoPickup() && noEnemiesSeen() && noEnemiesLast);
 		}
 	}
 
@@ -854,11 +862,15 @@ public class Hero extends Char {
 				Dungeon.level.updateFieldOfView(this, fieldOfView);
 			}
 		}
-		
+
 		checkVisibleMobs();
 		BuffIndicator.refreshHero();
 		BuffIndicator.refreshBoss();
-		
+
+		if(paralysed > 0 || !(curAction instanceof HeroAction.Move)) {
+			Polished.noEnemiesLast = Polished.noEnemiesSeen();
+		}
+
 		if (paralysed > 0) {
 			
 			curAction = null;
@@ -987,6 +999,7 @@ public class Hero extends Char {
 	private boolean actMove( HeroAction.Move action ) {
 
 		if (getCloser( action.dst )) {
+			if(justMoved) Polished.noEnemiesLast = Polished.noEnemiesSeen();
 			canSelfTrample = false;
 			return true;
 
@@ -1658,7 +1671,16 @@ public class Hero extends Char {
 			}
 		}
 	}
-	
+
+	private boolean interruptsInput(Mob mob) {
+		if(  mob instanceof Necromancer.NecroSkeleton ||
+			 mob instanceof Wraith ||
+			(mob instanceof Swarm && ((Swarm)mob).generation > 0) ||
+			 mob instanceof YogDzewa.Larva) {
+			return false;
+		}
+		else return true;
+	}
 	public void checkVisibleMobs() {
 		ArrayList<Mob> visible = new ArrayList<>();
 
@@ -1678,7 +1700,8 @@ public class Hero extends Char {
 
 					if(!Polished.spottedEnemies.contains(m)) {
 						Polished.spottedEnemies.add(m);
-						firstTime = true;
+
+						if(interruptsInput(m)) firstTime = true;
 					}
 				}
 
@@ -1780,6 +1803,8 @@ public class Hero extends Char {
 					justMoved = false;
 					return true;
 				}
+			} else {
+				Polished.trampledItemsLast = 0;
 			}
 		}
 

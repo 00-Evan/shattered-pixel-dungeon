@@ -184,6 +184,31 @@ public class Hunger extends Buff implements Hero.Doom {
 			return BuffIndicator.STARVATION;
 		}
 	}
+	@Override
+	public String iconTextDisplay() {
+		return Integer.toString((int)(STARVING-level));
+	}
+
+	public float hungerPercentage() {
+		return (STARVING - level) / (STARVING - HUNGRY);
+	}
+	public float textColor_red() {
+		int r = 255;
+
+		return r / 255f;
+	}
+	public float textColor_green() {
+		int g = 255;
+
+		g = (int)(g*hungerPercentage());
+		return g / 255f;
+	}
+	public float textColor_blue() {
+		int b = 255;
+
+		b = (int)(b*hungerPercentage());
+		return b / 255f;
+	}
 
 	@Override
 	public String name() {

@@ -112,7 +112,11 @@ public enum HeroClass {
 		new VelvetPouch().collect();
 		Dungeon.LimitedDrops.VELVET_POUCH.drop();
 
-		Waterskin waterskin = new Waterskin();
+		Waterskin waterskin = null;
+		if(!Dungeon.isChallenged(Challenges.NO_HERBALISM)) {
+			//
+		}
+		waterskin = new Waterskin();
 		waterskin.collect();
 
 		new ScrollOfIdentify().identify();
@@ -143,7 +147,7 @@ public enum HeroClass {
 				break;
 		}
 
-		if (SPDSettings.quickslotWaterskin()) {
+		if (SPDSettings.quickslotWaterskin() && waterskin != null) {
 			for (int s = 0; s < QuickSlot.SIZE; s++) {
 				if (Dungeon.quickslot.getItem(s) == null) {
 					Dungeon.quickslot.setSlot(s, waterskin);
