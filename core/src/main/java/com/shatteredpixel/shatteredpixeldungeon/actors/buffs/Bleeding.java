@@ -97,7 +97,7 @@ public class Bleeding extends Buff {
 	public boolean act() {
 		if (target.isAlive()) {
 			
-			level = Random.NormalFloat(level / 2f, level);
+			level = Random.NormalFloat(0.7f*level, 0.8f*level);
 			int dmg = Math.round(level);
 			
 			if (dmg > 0) {
