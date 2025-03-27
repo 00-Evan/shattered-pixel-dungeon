@@ -882,7 +882,11 @@ public class WndSettings extends WndTabbed {
 			sep1.size(width, 1);
 			sep1.y = title.bottom() + 3*GAP;
 
-			chkQuickslot.setRect(0, sep1.y + GAP + GAP, width/2-1, BTN_HEIGHT);
+			if (width > 200) {
+				chkQuickslot.setRect(0, sep1.y + GAP + GAP, width/2-1, BTN_HEIGHT);
+			} else {
+				chkQuickslot.setRect(0, sep1.y + GAP + GAP, width, BTN_HEIGHT);
+			}
 			height = chkQuickslot.bottom();
 
 			sep2.size(width, 1);
